@@ -13,16 +13,17 @@
         static FindEq()
         {
             var possibles = new List<Match>();
+            var p99license = File.ReadAllText("p99licensefile.txt");
+            var p99licensehash = StringHash.sha256_hash(p99license);
+
             foreach (var f in DriveInfo.GetDrives().Where(a => a.IsReady && a.DriveType == DriveType.Fixed))
             {
                 var files = Directory.EnumerateFiles(f.Name, "eqgame.exe", new EnumerationOptions
                 {
                     IgnoreInaccessible = true,
-                    MaxRecursionDepth = 3,
+                    MaxRecursionDepth = 2,
                     RecurseSubdirectories = true
                 }).ToList();
-                var p99license = File.ReadAllText("p99licensefile.txt");
-                var p99licensehash = StringHash.sha256_hash(p99license);
 
                 foreach (var item in files)
                 {
