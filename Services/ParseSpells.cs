@@ -6,12 +6,25 @@ namespace EqTool.Services
     {
         public static Spells GetSpells()
         {
-            _ = File.ReadAllText(FindEq.BestGuessRootEqPath + "/spells_us.txt");
-
-            return new Spells
+            var ret = new Spells();
+            var spellastext = File.ReadAllLines(FindEq.BestGuessRootEqPath + "/spells_us.txt");
+            foreach (var item in spellastext)
             {
-                SpellList = new List<Spell>()
-            };
+                var splits = item.Split("^");
+                var spell = new Spell
+                {
+                    id = int.Parse(splits[0]),
+                    name = splits[1].ToLower(),
+                    buffduration = int.Parse(splits[17]),
+                    buffdurationformula = int.Parse(splits[16]),
+                    cast_on_other = splits[7],
+                    cast_on_you = splits[6],
+                    spell_fades = splits[8]
+                };
+                ret.SpellList.Add(spell);
+            }
+
+            return ret;
         }
 
     }

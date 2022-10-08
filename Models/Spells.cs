@@ -2,6 +2,6 @@
 {
     public class Spells
     {
-        public List<Spell> SpellList { get; set; }
+        public List<Spell> SpellList { get; set; } = new List<Spell>();
     }
 }

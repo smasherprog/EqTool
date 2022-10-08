@@ -29,11 +29,13 @@
         private void InitializeComponent()
         {
             this.button1 = new System.Windows.Forms.Button();
+            this.SpellListView = new System.Windows.Forms.ListView();
+            this.columnHeader1 = new System.Windows.Forms.ColumnHeader();
             this.SuspendLayout();
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(605, 290);
+            this.button1.Location = new System.Drawing.Point(676, 404);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(112, 34);
             this.button1.TabIndex = 0;
@@ -41,11 +43,22 @@
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
+            // SpellListView
+            // 
+            this.SpellListView.Columns.AddRange(new System.Windows.Forms.ColumnHeader[] {
+            this.columnHeader1});
+            this.SpellListView.Location = new System.Drawing.Point(14, 11);
+            this.SpellListView.Name = "SpellListView";
+            this.SpellListView.Size = new System.Drawing.Size(774, 387);
+            this.SpellListView.TabIndex = 1;
+            this.SpellListView.UseCompatibleStateImageBehavior = false;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(10F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.SpellListView);
             this.Controls.Add(this.button1);
             this.Name = "Form1";
             this.Text = "Form1";
@@ -56,5 +69,7 @@
         #endregion
 
         private Button button1;
+        private ListView SpellListView;
+        private ColumnHeader columnHeader1;
     }
 }
