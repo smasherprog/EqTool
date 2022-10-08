@@ -1,0 +1,59 @@
+Global Server Rules / Play Nice Policy<br>
+<br>These rules apply to all Project 1999 servers unless otherwise specified.<br>
+<br>Players are subject to these supplementary rules while playing on Project 1999. While these are by no means an all-inclusive list of the do's and don'ts on Project 1999, it provides a suitable foundation by which the player can determine what activities are appropriate.<br>
+<br>Third Party Tools, Exploiting<br>
+Project 1999 severely disallows and actively tracks players who use Third Party Programs / Cheating.<br>
+<br>Any program that provides an unintended advantage or gleams access to information not otherwise available is very strictly prohibited.<br>
+Any program that interacts, inspects, or modifies the Everquest client in any way is not allowed.<br>
+<br>Note that the programs "Macroquest" and "ShowEQ", or any program that behaves like them, are strictly disallowed.<br>
+<br>Project 1999 uses anti-cheat software to detect this type of behavior. The effort put forth to catch this is much more active than anything Sony has done on Live Everquest. Players caught breaking this rule are permanently banned.<br>
+<br>WinEQ2 by Lavishsoft is the only program with an exception to this rule.<br>
+Programs that provide audible ques or overlay information by only reading the Everquest Log Files are currently allowed.<br>
+<br>RMT (Real Money Trade) Sales<br>
+The involvement of any currency, items, or services external to Project 1999 (Including but not limited to: real money (USD, Euro, Etc), regulated or otherwise (Bitcoins), Food/Delivery, Virtual currency of any other game (Platinum on Live or other EQEmulator Servers, Beta Keys for the latest new game, etc)) for any Project 1999 virtual items or service (Including by not limited to: Items, Platinum, Powerlevelling, Accounts/Characters) is strictly forbidden.<br>
+<br>The economy of Project 1999 is tracked very closely by the Game Masters and Management, and we take this type of behavior very seriously. Violation of this rule will often result in permanent bans for all accounts involved (Buyers, Sellers, Mules/Transferers).<br>
+<br>Offers/Solicitations to violate this rule, even jokingly, will also result in disciplinary action.<br>
+<br>Kill Stealing<br>
+Kill Stealing can be defined as the intentional engagement by a player to a mob that is already engaged by other un-allied players, or a mob that clearly belongs to a player/group's area of claim.<br>
+<br>The intent of this rule is discourage and make note of habitual Kill Stealers, not to punish those who honestly try to work together or those who make an honest mistake. Its enforcement by the Project 1999 Customer Service Staff will reflect this philosophy.<br>
+<br>Arbitration / Camps<br>
+In issues of disruptions or interference such as a camp dispute, players are required to work together to reach a compromise.<br>
+<br>If this cannot be accomplished prior to the involvement of a Project 1999 CSR Staff Member, the CSR will mandate a solution. A CSR Solution is final and not open to debate. Refusal to abide by the direction of a CSR will result in account disciplinary for disruptive behavior.<br>
+<br>Due to the busy nature of the CSR and possible lack of factual information, the solution reached may not be to the best interest of both parties (a "lose-lose" situation). It is for this reason that players are highly suggested to reach a compromise on their own.<br>
+<br>The Project 1999 Staff does not define what constitutes a camp, and disputes are arbitrated on a case by case basis. A CSR's ruling may be different than previous rulings based on any number of circumstances, including (but not limited to) players involved and their history, behavior / attitude of the players, and facts gathered by the CSR.<br>
+<br>In general, a player should maintain a presence at or very near the spawn of the camp they are intending to hold, while keeping the placeholders of any relevant spawns dead. It is allowed to 'camp' multiple areas if there are no other players interested in doing so, however if another party is interested in moving into one of your camps, you must chose which one to keep and maintain your presence there.<br>
+<br>2+ Boxing<br>
+"Boxing" is not allowed on Project 1999. This is defined as playing more than one character per server by the same person. This includes one person playing multiple characters on different computers.<br>
+<br>Our servers will not allow you to log in multiple accounts from the same household / internet connection. Attempting to do so will be met with a Temporary IP Ban error.<br>
+<br>If you genuinely have multiple people playing from the same connection, you are required to request an IP Exemption in the [URL=http://www.project1999.com/forums/forumdisplay.php?f=25]Petition Forum[/B].<br>
+<br>Violation of this rule will result in disciplinary action and possible loss of accounts involved.<br>
+<br>Playing one character per server (One on Project 1999 Blue, One on Project 1999 Red, or one+ on any other EQEmulator server) is allowed.<br>
+<br>Language, Harrassment<br>
+Excessive use of foul or inappropriate language in public channels, including swear worlds, racial slures, extreme sexual innuendo, or anything that is not consistent with a family oriented fantasy environment will be considered a disruption and will be disciplined.<br>
+<br>Players are encouraged to use /ignore for anyone exhibiting this behavior, or remove themselves from the situation (Group/Guild quit). CSR's will generally not act on private messages unless the player is abusing the system (Creating new characters).<br>
+<br>Harassment is defined as the intentional targetted abuse of another player by (not limited to) following, taunting, disrupting gameplay, or creating new characters to avoid filter mechanics and/or any of the previous examples.<br>
+<br>Zone Disruptions<br>
+Disrupting the gameplay for others in a zone is not allowed. This can include, but is not limited to:<br>
+<br>* Monopolizing/Engaging/Occupying most or all of the mobs in a non-raid area. This can be with or without intent to kill.<br>
+* Deliberately using physics to block players' access through doorways or narrow areas.<br>
+* Refusal to cooperate/arbitrate with other players, particularly after the direction of a CSR.<br>
+* Abuse of public channels (Spamming, Language/Harrassment). This rule applies to OOC, Shout, Auction, Say, Emote, Spellcasting, or any action that displays a public message.<br>
+* Intentional lagging of any method (Exessive unnecessary actions, creation of numerous corpses, spamming spells and spell effects, etc).<br>
+* Causing deaths / experience loss for other players (Blocking players, intentional training, etc).<br>
+<br>Defrauding<br>
+Fraud quite simply is the act of unfaithful trade or negotations with another party. This includes false representations of your intentions. This can be lieing, deceiving, slandering, falsely representing yourself or impersonating another player, which ultimately results in the loss or damage of currency, items, camps, reputation, etc of another player.<br>
+<br>This behavior can result in disciplinary action against your account if found responsible by a CSR.<br>
+<br>Note that players are responsible for taking necessary steps to protect themselves in all transactions. Do not trust a player's word that he/she will return with the other half of a trade. Since the responsibility is on the player, the CSR will most likely not be able to get your items or currency back.<br>
+<br>This includes giving anyone access to your account. YOU are responsible for the actions of anyone on your account. This includes the loss of any virtual property as well as an disciplinary received for their actions while on your account. In general, do not share your login information.<br>
+<br>Abuse<br>
+You may not abuse any player or the Project 1999 Staff. This includes:<br>
+<br>* Any form of verbal abuse or harassment.<br>
+* Hate Mongering / Participation or Propagation of hate literature or hehavior related to real world characteristics.<br>
+* Sexual Abuse or Harassment, or any unwarranted / unwelcomed advanced, innuendo, or graphic interpretation, stalking, with or without expectations of reciprocation of any form.<br>
+* Impersonating a Player or Staff member.<br>
+* Excessive use of the Petition/Ticket system, or attacks/abuse towards any CSR.<br>
+<br>This also includes implications of favoritism. CSR may occasionally rule in your favor during a dispute for any number of reasons. To insinuate that this occurred for any special circumstances could result in disciplinary action, reversal of rulings, or otherwise.<br>
+Also note that threats of retribution or inferring that you will break these rules or a CSR ruling because of a previous CSR Ruling, or LACK OF, will result in disciplinary action.<br>
+<br>Although Everquest is a role-playing game, this can not be used as an excuse for the violation of any official rules.<br>
+<br>Guild Accountability<br>
+The leadership of a guild is responsible for ensuring that all of their members are abiding by the Project 1999 rules. Frequent or Reoccuring violations by members or the guild as whole could result in the guild being disbanded and/or possible action against the leadership.<br>
