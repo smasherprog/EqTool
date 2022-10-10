@@ -1,20 +1,20 @@
 ﻿using System.Security.Cryptography;
 using System.Text;
 
-namespace EqTool.Services
+namespace EQTool.Services
 {
     public static class StringHash
     {
         public static string sha256_hash(string value)
         {
-            StringBuilder Sb = new();
+            var Sb = new StringBuilder();
 
-            using (SHA256 hash = SHA256.Create())
+            using (var hash = SHA256.Create())
             {
-                Encoding enc = Encoding.UTF8;
-                byte[] result = hash.ComputeHash(enc.GetBytes(value));
+                var enc = Encoding.UTF8;
+                var result = hash.ComputeHash(enc.GetBytes(value));
 
-                foreach (byte b in result)
+                foreach (var b in result)
                 {
                     _ = Sb.Append(b.ToString("x2"));
                 }

@@ -1,4 +1,9 @@
-﻿namespace EqTool.Services
+﻿using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
+
+namespace EQTool.Services
 {
     public static class FindEq
     {
@@ -10,20 +15,14 @@
             public bool HasCharUiFiles { get; set; }
         }
 
+        private const string p99licensehash = "0a9ac51838f622d0e92e328692f4db73727ccf1ff0b516326a6bf104d8b4b16d";
         static FindEq()
         {
             var possibles = new List<Match>();
-            var p99license = File.ReadAllText("p99licensefile.txt");
-            var p99licensehash = StringHash.sha256_hash(p99license);
 
             foreach (var f in DriveInfo.GetDrives().Where(a => a.IsReady && a.DriveType == DriveType.Fixed))
             {
-                var files = Directory.EnumerateFiles(f.Name, "eqgame.exe", new EnumerationOptions
-                {
-                    IgnoreInaccessible = true,
-                    MaxRecursionDepth = 2,
-                    RecurseSubdirectories = true
-                }).ToList();
+                var files = GetFilesAndFolders(f.Name, "eqgame.exe", 2);
 
                 foreach (var item in files)
                 {
@@ -72,6 +71,31 @@
                 rootfolder = possibles.OrderByDescending(a => a.LastModifiedDate).Select(a => a.RootPath).FirstOrDefault();
             }
             BestGuessRootEqPath = rootfolder;
+        }
+
+        private static List<string> GetFilesAndFolders(string root, string pathtomatch, int depth)
+        {
+            var list = new List<string>();
+            try
+            {
+                try
+                {
+                    foreach (var directory in Directory.EnumerateDirectories(root).Where(a => !a.Contains("$")))
+                    {
+                        if (depth > 0)
+                        {
+                            list.AddRange(GetFilesAndFolders(directory, pathtomatch, depth - 1));
+                        }
+                    }
+                }
+                catch (UnauthorizedAccessException)
+                { }
+                list.AddRange(Directory.EnumerateFiles(root, pathtomatch));
+            }
+            catch (UnauthorizedAccessException)
+            { }
+
+            return list;
         }
     }
 }

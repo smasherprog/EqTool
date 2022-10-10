@@ -1,0 +1,35 @@
+﻿<Window x:Class="EQTool.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:EQTool"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <ListView Name="spelllistview" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling">
+        <ListView.View>
+            <GridView>
+                <GridViewColumn Header="Icon">
+                    <GridViewColumn.CellTemplate>
+                        <DataTemplate>
+                            <Image Height="40" Width="40" IsEnabled="{Binding HasSpellIcon}">
+                                <Image.Source>
+                                    <CroppedBitmap Source="{Binding SpellIcon.Icon}" SourceRect="{Binding Rect}" />
+                                </Image.Source>
+                            </Image>
+                        </DataTemplate>
+                    </GridViewColumn.CellTemplate>
+                </GridViewColumn>
+                <GridViewColumn DisplayMemberBinding="{Binding Path=id}" Header="id" />
+                <GridViewColumn DisplayMemberBinding="{Binding Path=name}" Header="name" />
+                <GridViewColumn DisplayMemberBinding="{Binding Path=cast_on_you}" Header="cast_on_you" />
+                <GridViewColumn DisplayMemberBinding="{Binding Path=cast_on_other}" Header="cast_on_other" />
+                <GridViewColumn DisplayMemberBinding="{Binding Path=spell_fades}" Header="spell_fades" />
+                <GridViewColumn DisplayMemberBinding="{Binding Path=buffdurationformula}" Header="buffdurationformula" />
+                <GridViewColumn DisplayMemberBinding="{Binding Path=spell_icon}" Header="spell_icon" />
+                <GridViewColumn DisplayMemberBinding="{Binding Path=buffduration}" Header="buffduration" />
+            </GridView>
+
+        </ListView.View>
+    </ListView>
+</Window>

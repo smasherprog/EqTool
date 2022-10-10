@@ -9,6 +9,7 @@
 obj/
 bin/
 .vs/
+packages/
 
 # Precompiled Headers
 *.gch
