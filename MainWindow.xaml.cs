@@ -2,7 +2,6 @@
 using EQTool.Services;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Drawing;
 using System.Windows;
@@ -16,6 +15,8 @@ namespace EQTool
     {
         private readonly List<Spell> AllSpells = new List<Spell>();
         private readonly System.Windows.Forms.NotifyIcon SystemTrayIcon;
+        private SpellWindow spellWindow = null;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -38,7 +39,6 @@ namespace EQTool
             };
             var spells = ParseSpells.GetSpells();
             var spellicons = SpellIcons.GetSpellIcons();
-            var spelllist = new ObservableCollection<Spell>();
 
             foreach (var item in spells)
             {
@@ -46,7 +46,6 @@ namespace EQTool
                 AllSpells.Add(mappedspell);
             }
 
-            spelllistview.ItemsSource = spelllist;
             Hide();
         }
 
@@ -65,11 +64,14 @@ namespace EQTool
             s.Checked = !s.Checked;
             if (s.Checked)
             {
-                Show();
+                spellWindow?.Close();
+                spellWindow = new SpellWindow();
+                spellWindow.Show();
             }
             else
             {
-                Hide();
+                spellWindow?.Close();
+                spellWindow = null;
             }
         }
 
