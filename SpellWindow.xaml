@@ -30,6 +30,6 @@
                 <GridViewColumn DisplayMemberBinding="{Binding Path=buffduration}" Header="buffduration" />
             </GridView>
 
-        </ListView.View>
+        </ListView.View> 
     </ListView>
 </Window>

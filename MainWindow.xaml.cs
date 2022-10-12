@@ -16,6 +16,7 @@ namespace EQTool
         private readonly List<Spell> AllSpells = new List<Spell>();
         private readonly System.Windows.Forms.NotifyIcon SystemTrayIcon;
         private SpellWindow spellWindow = null;
+        private MapWindow mapwindow = null;
 
         public MainWindow()
         {
@@ -33,6 +34,7 @@ namespace EQTool
                 Visible = true,
                 ContextMenu = new System.Windows.Forms.ContextMenu(new System.Windows.Forms.MenuItem[]
                 {
+                    new System.Windows.Forms.MenuItem("Map", Map),
                     new System.Windows.Forms.MenuItem("Spells", Spells),
                     new System.Windows.Forms.MenuItem("Exit", Exit)
                 }),
@@ -57,6 +59,24 @@ namespace EQTool
             }
             base.OnClosing(e);
         }
+
+        private void Map(object sender, EventArgs e)
+        {
+            var s = (System.Windows.Forms.MenuItem)sender;
+            s.Checked = !s.Checked;
+            if (s.Checked)
+            {
+                mapwindow?.Close();
+                mapwindow = new MapWindow();
+                mapwindow.Show();
+            }
+            else
+            {
+                mapwindow?.Close();
+                mapwindow = null;
+            }
+        }
+
 
         private void Spells(object sender, EventArgs e)
         {
