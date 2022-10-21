@@ -11,20 +11,34 @@
         <Grid.RowDefinitions>
             <RowDefinition  Height="Auto"/>
             <RowDefinition  Height="Auto"/>
+            <RowDefinition  Height="Auto"/>
+            <RowDefinition  Height="Auto"/>
+            <RowDefinition  Height="*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="Auto"/>
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
-        <TextBlock Text="Font Size" Grid.Column="0" Grid.Row="0" Margin="5,5,0,0" VerticalAlignment="Center"/>
-        <ComboBox Margin="5,0,0,0" Name="fontsizescombobox"
+        <TextBlock Text="Character" Grid.Column="0" Grid.Row="0" Margin="5,5,0,0" VerticalAlignment="Center"/>
+        <TextBlock Text="{Binding CharName}" Grid.Column="1" Grid.Row="0"  Margin="5,5,0,0" VerticalAlignment="Center"/>
+        <TextBlock Text="Your Level" Grid.Column="0" Grid.Row="1" Margin="5,5,0,0" VerticalAlignment="Center"/>
+        <ComboBox Margin="5,0,0,0"   Grid.Column="1" Grid.Row="1"  Name="levelscombobox"
                 DisplayMemberPath="Name"
                 SelectedValuePath="Name"
-                SelectionChanged="fontsizescombobox_SelectionChanged"  Grid.Column="1" Grid.Row="0" />
+                  SelectionChanged="levelscombobox_SelectionChanged"
+                  />
+
+        <TextBlock Text="Font Size" Grid.Column="0" Grid.Row="2" Margin="5,5,0,0" VerticalAlignment="Center"/>
+        <ComboBox Margin="5,0,0,0"  Grid.Column="1" Grid.Row="2" Name="fontsizescombobox"
+                DisplayMemberPath="Name"
+                SelectedValuePath="Name"
+                SelectionChanged="fontsizescombobox_SelectionChanged"/>
 
 
-        <TextBlock Text="Eq Path" Grid.Column="0" Grid.Row="1"  Margin="5,5,0,0" VerticalAlignment="Center"/>
-        <TextBlock Text="{Binding Source={x:Static localmodels:EqToolSettings.BestGuessRootEqPath}}" Grid.Column="1" Grid.Row="1"  Margin="5,5,0,0" VerticalAlignment="Center"/> 
+        <TextBlock Text="Eq Path" Grid.Column="0" Grid.Row="3"  Margin="5,5,0,0" VerticalAlignment="Center"/>
+        <TextBlock Grid.Column="1" Grid.Row="3" Text="{Binding Source={x:Static localmodels:EqToolSettings.BestGuessRootEqPath}}" Margin="5,5,0,0" VerticalAlignment="Center"/>
+
+        <Button  Grid.Column="1" Grid.Row="4" VerticalAlignment="Bottom" Click="Button_Click">Done</Button>
 
     </Grid>
 </Window>

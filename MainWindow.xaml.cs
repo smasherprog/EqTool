@@ -1,4 +1,5 @@
-﻿using EQTool.Services;
+﻿using EQTool.Models;
+using EQTool.Services;
 using System;
 using System.ComponentModel;
 using System.Drawing;
@@ -20,25 +21,36 @@ namespace EQTool
         public MainWindow()
         {
             InitializeComponent();
-            Models.EqToolSettings.BestGuessRootEqPath = FindEq.LoadEQPath();
+            Models.EqToolSettings.BestGuessRootEqPath = Properties.Settings.Default.DefaultEqDirectory;
+            if (string.IsNullOrWhiteSpace(Models.EqToolSettings.BestGuessRootEqPath))
+            {
+                Models.EqToolSettings.BestGuessRootEqPath = FindEq.LoadEQPath();
+            }
+            else if (!FindEq.IsValid(Models.EqToolSettings.BestGuessRootEqPath))
+            {
+                Models.EqToolSettings.BestGuessRootEqPath = FindEq.LoadEQPath();
+            }
+
             if (string.IsNullOrWhiteSpace(Models.EqToolSettings.BestGuessRootEqPath))
             {
                 _ = MessageBox.Show("Project 1999 game files were not able to be found.\nProject 1999 files must be installed in no deeper than 3 levels. \n\nGOOD c:/program files/everquest/eqgame.exe will be found\nBAD c:/program files/everquest/level/eqgame.exe", "Configuration", MessageBoxButton.OK, MessageBoxImage.Warning);
                 System.Windows.Application.Current.Shutdown();
                 return;
             }
-
+            Properties.Settings.Default.DefaultEqDirectory = Models.EqToolSettings.BestGuessRootEqPath;
+            EqToolSettings.FontSize = Properties.Settings.Default.FontSize;
+            Properties.Settings.Default.Save();
             SystemTrayIcon = new System.Windows.Forms.NotifyIcon
             {
                 Icon = new Icon(Application.GetResourceStream(new Uri("pack://application:,,,/eqicon.ico")).Stream),
                 Visible = true,
                 ContextMenu = new System.Windows.Forms.ContextMenu(new System.Windows.Forms.MenuItem[]
-                {
+                 {
                     new System.Windows.Forms.MenuItem("Map", Map),
                     new System.Windows.Forms.MenuItem("Spells", Spells),
-                    new System.Windows.Forms.MenuItem("Settings", Setings),
+                    new System.Windows.Forms.MenuItem("Settings", Settings),
                     new System.Windows.Forms.MenuItem("Exit", Exit)
-                }),
+                 }),
             };
 
             Hide();
@@ -61,6 +73,7 @@ namespace EQTool
             {
                 mapwindow?.Close();
                 mapwindow = new MapWindow();
+                mapwindow.Closed += (se, ee) => s.Checked = false;
                 mapwindow.Show();
             }
             else
@@ -70,7 +83,7 @@ namespace EQTool
             }
         }
 
-        private void Setings(object sender, EventArgs e)
+        private void Settings(object sender, EventArgs e)
         {
             var s = (System.Windows.Forms.MenuItem)sender;
             s.Checked = !s.Checked;
@@ -79,6 +92,7 @@ namespace EQTool
                 settingswindow?.Close();
                 settingswindow = new Settings();
                 settingswindow.Show();
+                settingswindow.Closed += (se, ee) => s.Checked = false;
             }
             else
             {
@@ -95,6 +109,7 @@ namespace EQTool
             {
                 spellWindow?.Close();
                 spellWindow = new SpellWindow();
+                spellWindow.Closed += (se, ee) => s.Checked = false;
                 spellWindow.Show();
             }
             else

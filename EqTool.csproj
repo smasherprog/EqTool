@@ -64,6 +64,7 @@
     <Compile Include="MapWindow.xaml.cs">
       <DependentUpon>MapWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Models\PlayerInfo.cs" />
     <Compile Include="Models\EqToolSettings.cs" />
     <Compile Include="Models\Polygon.cs" />
     <Compile Include="Models\UISpell.cs" />

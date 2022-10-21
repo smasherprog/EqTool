@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
 
@@ -10,15 +11,38 @@ namespace EQTool.Models
         public bool HasSpellIcon => SpellIcon != null;
         public Int32Rect Rect { get; set; }
         public string SpellName { get; set; }
+
+        public string SecondsLeftOnSpellPretty
+        {
+            get
+            {
+                var st = "";
+                if (_SecondsLeftOnSpell.Hours > 0)
+                {
+                    st += _SecondsLeftOnSpell.Hours + " hr ";
+                }
+                if (_SecondsLeftOnSpell.Minutes > 0)
+                {
+                    st += _SecondsLeftOnSpell.Minutes + " m ";
+                }
+                if (_SecondsLeftOnSpell.Seconds > 0)
+                {
+                    st += _SecondsLeftOnSpell.Seconds + " s";
+                }
+                return st;
+
+            }
+        }
+
         public string TargetName { get; set; }
-        private int _SecondsLeftOnSpell = 0;
-        public int SecondsLeftOnSpell
+        private TimeSpan _SecondsLeftOnSpell;
+        public TimeSpan SecondsLeftOnSpell
         {
             get => _SecondsLeftOnSpell;
             set
             {
                 _SecondsLeftOnSpell = value;
-                OnPropertyChanged();
+                OnPropertyChanged(nameof(SecondsLeftOnSpellPretty));
             }
         }
 

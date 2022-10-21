@@ -72,6 +72,17 @@ namespace EQTool.Services
             return rootfolder;
         }
 
+        public static bool IsValid(string root)
+        {
+            var directory = new DirectoryInfo(root);
+            var maxmoddate = directory.GetFiles()
+                .OrderByDescending(a => a.LastWriteTime)
+                .Where(a => a.Name.StartsWith("UI_") && a.Name.EndsWith(".ini"))
+                .Select(a => (DateTime?)a.LastWriteTime)
+                .FirstOrDefault();
+            return maxmoddate.HasValue;
+        }
+
         private static List<string> GetFilesAndFolders(string root, string pathtomatch, int depth)
         {
             var list = new List<string>();

@@ -7,28 +7,24 @@
         mc:Ignorable="d"
         Title="Spells" Height="450" Width="800" FontSize="{DynamicResource GlobalFontSize}">
     <ListView Name="spelllistview" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling">
-        <ListView.View>
-            <GridView>
-                <GridView.ColumnHeaderContainerStyle>
-                    <Style TargetType="GridViewColumnHeader">
-                        <Setter Property="Visibility" Value="Collapsed" />
-                    </Style>
-                </GridView.ColumnHeaderContainerStyle>
-                <GridViewColumn Header="Icon">
-                    <GridViewColumn.CellTemplate>
-                        <DataTemplate>
-                            <Image Height="40" Width="40" IsEnabled="{Binding HasSpellIcon}">
-                                <Image.Source>
-                                    <CroppedBitmap Source="{Binding SpellIcon.Icon}" SourceRect="{Binding Rect}" />
-                                </Image.Source>
-                            </Image>
-                        </DataTemplate>
-                    </GridViewColumn.CellTemplate>
-                </GridViewColumn>
-                <GridViewColumn DisplayMemberBinding="{Binding Path=SpellName}"/>
-                <GridViewColumn DisplayMemberBinding="{Binding Path=SecondsLeftOnSpell}" />
-            </GridView>
-        </ListView.View>
+        <ListView.ItemTemplate>
+            <DataTemplate>
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+                    <Image Grid.Column="0"  Height="{DynamicResource GlobalFontSize}" Width="{DynamicResource GlobalFontSize}" IsEnabled="{Binding HasSpellIcon}">
+                        <Image.Source>
+                            <CroppedBitmap Source="{Binding SpellIcon.Icon}" SourceRect="{Binding Rect}" />
+                        </Image.Source>
+                    </Image>
+                    <TextBlock Margin="2,0,0,0" Grid.Column="1" HorizontalAlignment="Center" Text="{Binding SpellName}" />
+                    <TextBlock Margin="2,0,0,0" Grid.Column="2" HorizontalAlignment="Center" Text="{Binding SecondsLeftOnSpellPretty}" />
+                </Grid>
+            </DataTemplate>
+        </ListView.ItemTemplate>
         <ListView.GroupStyle>
             <GroupStyle>
                 <GroupStyle.HeaderTemplate>
