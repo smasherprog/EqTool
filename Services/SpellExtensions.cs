@@ -20,6 +20,8 @@ namespace EQTool.Services
                 cast_on_you = spell.cast_on_you,
                 spell_fades = spell.spell_fades,
                 spell_icon = spell.spell_icon,
+                casttime = spell.casttime,
+                Level = spell.Level,
                 id = spell.id,
                 Rect = new System.Windows.Int32Rect(),
                 SpellIcon = null

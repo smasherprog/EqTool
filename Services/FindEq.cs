@@ -7,7 +7,6 @@ namespace EQTool.Services
 {
     public static class FindEq
     {
-        public static readonly string BestGuessRootEqPath = string.Empty;
         private class Match
         {
             public DateTime LastModifiedDate { get; set; }
@@ -16,7 +15,7 @@ namespace EQTool.Services
         }
 
         private const string p99licensehash = "0a9ac51838f622d0e92e328692f4db73727ccf1ff0b516326a6bf104d8b4b16d";
-        static FindEq()
+        public static string LoadEQPath()
         {
             var possibles = new List<Match>();
 
@@ -70,7 +69,7 @@ namespace EQTool.Services
             {
                 rootfolder = possibles.OrderByDescending(a => a.LastModifiedDate).Select(a => a.RootPath).FirstOrDefault();
             }
-            BestGuessRootEqPath = rootfolder;
+            return rootfolder;
         }
 
         private static List<string> GetFilesAndFolders(string root, string pathtomatch, int depth)

@@ -14,7 +14,7 @@ namespace EQTool.Services
         public static List<SpellIcon> GetSpellIcons()
         {
             var ret = new List<SpellIcon>();
-            var directory = new DirectoryInfo(FindEq.BestGuessRootEqPath + "/uifiles/default/");
+            var directory = new DirectoryInfo(EqToolSettings.BestGuessRootEqPath + "/uifiles/default/");
             var spellimages = directory.GetFiles()
                 .Where(a => a.Name.StartsWith("spells0") && a.Name.EndsWith(".tga"))
                 .ToList();

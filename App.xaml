@@ -4,6 +4,6 @@
              xmlns:local="clr-namespace:EQTool"
              StartupUri="MainWindow.xaml">
     <Application.Resources>
-         
+        <sys:Double xmlns:sys="clr-namespace:System;assembly=mscorlib" x:Key="GlobalFontSize">12</sys:Double> 
     </Application.Resources>
 </Application>

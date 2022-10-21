@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-using System.Linq;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 
 namespace EQTool
 {
@@ -13,5 +7,10 @@ namespace EQTool
     /// </summary>
     public partial class App : Application
     {
+        public static double GlobalFontSize
+        {
+            get => (double)Current.Resources["GlobalFontSize"];
+            set => Current.Resources["GlobalFontSize"] = value;
+        }
     }
 }

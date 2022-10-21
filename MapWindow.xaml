@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:EQTool"
         mc:Ignorable="d"
         Title="MapWindow" Height="450" Width="800">
+
     <Viewport3D x:Name="viewport">
-        
     </Viewport3D>
+
 </Window>

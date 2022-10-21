@@ -5,10 +5,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EQTool"
         mc:Ignorable="d"
-        Title="Spells" Height="450" Width="800">
+        Title="Spells" Height="450" Width="800" FontSize="{DynamicResource GlobalFontSize}">
     <ListView Name="spelllistview" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling">
         <ListView.View>
             <GridView>
+                <GridView.ColumnHeaderContainerStyle>
+                    <Style TargetType="GridViewColumnHeader">
+                        <Setter Property="Visibility" Value="Collapsed" />
+                    </Style>
+                </GridView.ColumnHeaderContainerStyle>
                 <GridViewColumn Header="Icon">
                     <GridViewColumn.CellTemplate>
                         <DataTemplate>
@@ -20,16 +25,18 @@
                         </DataTemplate>
                     </GridViewColumn.CellTemplate>
                 </GridViewColumn>
-                <GridViewColumn DisplayMemberBinding="{Binding Path=id}" Header="id" />
-                <GridViewColumn DisplayMemberBinding="{Binding Path=name}" Header="name" />
-                <GridViewColumn DisplayMemberBinding="{Binding Path=cast_on_you}" Header="cast_on_you" />
-                <GridViewColumn DisplayMemberBinding="{Binding Path=cast_on_other}" Header="cast_on_other" />
-                <GridViewColumn DisplayMemberBinding="{Binding Path=spell_fades}" Header="spell_fades" />
-                <GridViewColumn DisplayMemberBinding="{Binding Path=buffdurationformula}" Header="buffdurationformula" />
-                <GridViewColumn DisplayMemberBinding="{Binding Path=spell_icon}" Header="spell_icon" />
-                <GridViewColumn DisplayMemberBinding="{Binding Path=buffduration}" Header="buffduration" />
+                <GridViewColumn DisplayMemberBinding="{Binding Path=SpellName}"/>
+                <GridViewColumn DisplayMemberBinding="{Binding Path=SecondsLeftOnSpell}" />
             </GridView>
-
-        </ListView.View> 
+        </ListView.View>
+        <ListView.GroupStyle>
+            <GroupStyle>
+                <GroupStyle.HeaderTemplate>
+                    <DataTemplate>
+                        <TextBlock FontWeight="Bold" FontSize="14" Text="{Binding Name}"/>
+                    </DataTemplate>
+                </GroupStyle.HeaderTemplate>
+            </GroupStyle>
+        </ListView.GroupStyle>
     </ListView>
 </Window>
