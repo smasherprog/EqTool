@@ -17,42 +17,58 @@ namespace EQTool
         private SpellWindow spellWindow = null;
         private MapWindow mapwindow = null;
         private Settings settingswindow = null;
+        private readonly System.Windows.Forms.MenuItem MapMenuItem;
+        private readonly System.Windows.Forms.MenuItem SpellsMenuItem;
 
         public MainWindow()
         {
             InitializeComponent();
             Models.EqToolSettings.BestGuessRootEqPath = Properties.Settings.Default.DefaultEqDirectory;
-            if (string.IsNullOrWhiteSpace(Models.EqToolSettings.BestGuessRootEqPath))
+            if (!FindEq.IsValid(Models.EqToolSettings.BestGuessRootEqPath))
             {
-                Models.EqToolSettings.BestGuessRootEqPath = FindEq.LoadEQPath();
-            }
-            else if (!FindEq.IsValid(Models.EqToolSettings.BestGuessRootEqPath))
-            {
-                Models.EqToolSettings.BestGuessRootEqPath = FindEq.LoadEQPath();
+                EqToolSettings.BestGuessRootEqPath = FindEq.LoadEQPath();
             }
 
-            if (string.IsNullOrWhiteSpace(Models.EqToolSettings.BestGuessRootEqPath))
-            {
-                _ = MessageBox.Show("Project 1999 game files were not able to be found.\nProject 1999 files must be installed in no deeper than 3 levels. \n\nGOOD c:/program files/everquest/eqgame.exe will be found\nBAD c:/program files/everquest/level/eqgame.exe", "Configuration", MessageBoxButton.OK, MessageBoxImage.Warning);
-                System.Windows.Application.Current.Shutdown();
-                return;
-            }
             Properties.Settings.Default.DefaultEqDirectory = Models.EqToolSettings.BestGuessRootEqPath;
             EqToolSettings.FontSize = Properties.Settings.Default.FontSize;
             Properties.Settings.Default.Save();
+
+            var settingsbutton = new System.Windows.Forms.MenuItem("Settings", Settings);
+            SpellsMenuItem = new System.Windows.Forms.MenuItem("Spells", Spells);
+            MapMenuItem = new System.Windows.Forms.MenuItem("Map", Map);
+
+            if (!FindEq.IsValid(Models.EqToolSettings.BestGuessRootEqPath))
+            {
+                SpellsMenuItem.Enabled = false;
+                MapMenuItem.Enabled = false;
+                _ = MessageBox.Show("Project 1999 game files were not able to be found.\nYou must set the path before this program will work!", "Configuration", MessageBoxButton.OK, MessageBoxImage.Warning);
+                settingswindow = new Settings();
+                settingswindow.Show();
+                settingsbutton.Checked = true;
+                settingswindow.Closed += (se, ee) =>
+                {
+                    if (FindEq.IsValid(Models.EqToolSettings.BestGuessRootEqPath))
+                    {
+                        SpellsMenuItem.Enabled = true;
+                        MapMenuItem.Enabled = true;
+                    }
+                    settingsbutton.Checked = false;
+                };
+            }
+
+
             SystemTrayIcon = new System.Windows.Forms.NotifyIcon
             {
                 Icon = new Icon(Application.GetResourceStream(new Uri("pack://application:,,,/eqicon.ico")).Stream),
                 Visible = true,
                 ContextMenu = new System.Windows.Forms.ContextMenu(new System.Windows.Forms.MenuItem[]
                  {
-                    new System.Windows.Forms.MenuItem("Map", Map),
-                    new System.Windows.Forms.MenuItem("Spells", Spells),
-                    new System.Windows.Forms.MenuItem("Settings", Settings),
+                    MapMenuItem,
+                    SpellsMenuItem,
+                    settingsbutton                 ,
                     new System.Windows.Forms.MenuItem("Exit", Exit)
                  }),
             };
-
             Hide();
         }
 
@@ -92,7 +108,15 @@ namespace EQTool
                 settingswindow?.Close();
                 settingswindow = new Settings();
                 settingswindow.Show();
-                settingswindow.Closed += (se, ee) => s.Checked = false;
+                settingswindow.Closed += (se, ee) =>
+                {
+                    if (FindEq.IsValid(Models.EqToolSettings.BestGuessRootEqPath))
+                    {
+                        SpellsMenuItem.Enabled = true;
+                        MapMenuItem.Enabled = true;
+                    }
+                    s.Checked = false;
+                };
             }
             else
             {

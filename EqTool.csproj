@@ -64,6 +64,7 @@
     <Compile Include="MapWindow.xaml.cs">
       <DependentUpon>MapWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Models\SettingsWindowData.cs" />
     <Compile Include="Models\PlayerInfo.cs" />
     <Compile Include="Models\EqToolSettings.cs" />
     <Compile Include="Models\Polygon.cs" />
@@ -157,6 +158,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="eqicon.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="FolderBrowserDialogControl.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="open-folder.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

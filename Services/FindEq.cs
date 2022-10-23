@@ -74,6 +74,11 @@ namespace EQTool.Services
 
         public static bool IsValid(string root)
         {
+            if (string.IsNullOrWhiteSpace(root))
+            {
+                return false;
+            }
+
             var directory = new DirectoryInfo(root);
             var maxmoddate = directory.GetFiles()
                 .OrderByDescending(a => a.LastWriteTime)

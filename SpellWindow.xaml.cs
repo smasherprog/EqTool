@@ -3,6 +3,7 @@ using EQTool.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -13,9 +14,6 @@ using System.Windows.Data;
 
 namespace EQTool
 {
-    /// <summary>
-    /// Interaction logic for Window1.xaml
-    /// </summary>
     public partial class SpellWindow : Window
     {
         public ObservableCollection<UISpell> SpellList = new ObservableCollection<UISpell>();
@@ -111,6 +109,15 @@ namespace EQTool
                 var charName = charname.Substring(0, indexpart);
                 Level = players.FirstOrDefault(a => a.Name == charName)?.Level;
             }
+        }
+
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            UITimer.Stop();
+            ParseTimer.Stop();
+            UITimer.Dispose();
+            ParseTimer.Dispose();
+            base.OnClosing(e);
         }
 
         private void PollUI(object sender, EventArgs e)

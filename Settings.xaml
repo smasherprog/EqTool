@@ -7,8 +7,13 @@
         xmlns:localmodels="clr-namespace:EQTool.Models"
         mc:Ignorable="d"
         Title="Settings" Height="300" Width="400" FontSize="{DynamicResource GlobalFontSize}">
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    </Window.Resources>
     <Grid>
         <Grid.RowDefinitions>
+            <RowDefinition  Height="Auto"/>
+            <RowDefinition  Height="Auto"/>
             <RowDefinition  Height="Auto"/>
             <RowDefinition  Height="Auto"/>
             <RowDefinition  Height="Auto"/>
@@ -36,9 +41,21 @@
 
 
         <TextBlock Text="Eq Path" Grid.Column="0" Grid.Row="3"  Margin="5,5,0,0" VerticalAlignment="Center"/>
-        <TextBlock Grid.Column="1" Grid.Row="3" Text="{Binding Source={x:Static localmodels:EqToolSettings.BestGuessRootEqPath}}" Margin="5,5,0,0" VerticalAlignment="Center"/>
+        <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="3" >
+            <TextBlock Text="{Binding EqPath}" Margin="5,5,0,0" HorizontalAlignment="Left"/>
+            <Button Margin="5,5,0,0" HorizontalAlignment="Right" Click="EqFolderButtonClicked">
+                <Image Name="fileopenbuttonimage" Height="{DynamicResource GlobalFontSize}"></Image>
+            </Button>
+        </StackPanel>
 
-        <Button  Grid.Column="1" Grid.Row="4" VerticalAlignment="Bottom" Click="Button_Click">Done</Button>
+        <TextBlock Text="Logging" Grid.Column="0" Grid.Row="4" Margin="5,5,0,0" VerticalAlignment="Center"/>
+        <StackPanel Orientation="Vertical" Grid.Column="1" Grid.Row="4">
+            <TextBlock Visibility="{Binding IsLogginDisabled, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Hidden}" Text="You must enable logging in EQ for this program to work!" Margin="5,5,0,0" HorizontalAlignment="Left" Foreground="Red"/>
+            <TextBlock Visibility="{Binding IsLogginEnabled, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Hidden}" Text="Logging Enabled!" Margin="5,5,0,0" HorizontalAlignment="Left" Foreground="Green"/>
+            <Button Visibility="{Binding IsLogginDisabled, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Hidden}" Name="enablelogging" Margin="5,5,0,0" Click="enablelogging_Click">Enable Logging</Button>
+        </StackPanel>
+ 
 
+        <Button  Grid.Column="1" Grid.Row="6" VerticalAlignment="Bottom" Click="DoneButtonClicked">Done</Button>
     </Grid>
 </Window>
