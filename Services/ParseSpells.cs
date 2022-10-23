@@ -2,13 +2,20 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 
 namespace EQTool.Services
 {
     public static class ParseSpells
     {
+        private static List<SpellBase> _Spells = new List<SpellBase>();
         public static List<SpellBase> GetSpells()
         {
+            if (_Spells.Any())
+            {
+                return _Spells;
+            }
+
             var ret = new List<SpellBase>();
             var spellastext = File.ReadAllLines(EqToolSettings.BestGuessRootEqPath + "/spells_us.txt");
             foreach (var item in spellastext)
@@ -50,7 +57,7 @@ namespace EQTool.Services
                     Debug.WriteLine("sdfsdf");
                 }
             }
-
+            _Spells = ret;
             return ret;
         }
 

@@ -10,7 +10,7 @@
 
 using EQTool.Models;
 using System.Collections.Generic;
-using System.Windows.Documents;
+using System.Configuration;
 
 namespace EQTool.Properties {
     
@@ -54,12 +54,25 @@ namespace EQTool.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("")]
+        [SettingsSerializeAs(System.Configuration.SettingsSerializeAs.Binary)]
         public List<PlayerInfo> Players {
             get {
                 return ((List<PlayerInfo>)(this["Players"]));
             }
             set {
                 this["Players"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public double GlobalTriggerWindowOpacity {
+            get {
+                return ((double)(this["GlobalTriggerWindowOpacity"]));
+            }
+            set {
+                this["GlobalTriggerWindowOpacity"] = value;
             }
         }
     }

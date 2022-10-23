@@ -11,8 +11,14 @@ namespace EQTool.Services
 {
     public static class SpellIcons
     {
+        private static List<SpellIcon> _SpellIcons = new List<SpellIcon>();
         public static List<SpellIcon> GetSpellIcons()
         {
+            if (_SpellIcons.Any())
+            {
+                return _SpellIcons;
+            }
+
             var ret = new List<SpellIcon>();
             var directory = new DirectoryInfo(EqToolSettings.BestGuessRootEqPath + "/uifiles/default/");
             var spellimages = directory.GetFiles()
@@ -30,7 +36,7 @@ namespace EQTool.Services
                 };
                 ret.Add(i);
             }
-
+            _SpellIcons = ret;
             return ret;
         }
 

@@ -160,9 +160,6 @@
     <Resource Include="eqicon.ico" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="FolderBrowserDialogControl.png" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="open-folder.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

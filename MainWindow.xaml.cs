@@ -24,6 +24,7 @@ namespace EQTool
         {
             InitializeComponent();
             Models.EqToolSettings.BestGuessRootEqPath = Properties.Settings.Default.DefaultEqDirectory;
+            App.GlobalTriggerWindowOpacity = EqToolSettings.GlobalTriggerWindowOpacity = Properties.Settings.Default.GlobalTriggerWindowOpacity;
             if (!FindEq.IsValid(Models.EqToolSettings.BestGuessRootEqPath))
             {
                 EqToolSettings.BestGuessRootEqPath = FindEq.LoadEQPath();

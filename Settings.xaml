@@ -18,6 +18,7 @@
             <RowDefinition  Height="Auto"/>
             <RowDefinition  Height="Auto"/>
             <RowDefinition  Height="Auto"/>
+            <RowDefinition  Height="Auto"/>
             <RowDefinition  Height="*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -54,8 +55,13 @@
             <TextBlock Visibility="{Binding IsLogginEnabled, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Hidden}" Text="Logging Enabled!" Margin="5,5,0,0" HorizontalAlignment="Left" Foreground="Green"/>
             <Button Visibility="{Binding IsLogginDisabled, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Hidden}" Name="enablelogging" Margin="5,5,0,0" Click="enablelogging_Click">Enable Logging</Button>
         </StackPanel>
- 
-
-        <Button  Grid.Column="1" Grid.Row="6" VerticalAlignment="Bottom" Click="DoneButtonClicked">Done</Button>
+        <TextBlock Text="Transparency" Grid.Column="0" Grid.Row="6" Margin="5,5,0,0" VerticalAlignment="Center"/>
+        <StackPanel Orientation="Vertical" Grid.Column="1" Grid.Row="6">
+            <TextBlock Text="Spell Window" Margin="5,5,0,0" HorizontalAlignment="Center"/>
+            <Slider Value="{DynamicResource GlobalTriggerWindowOpacity}" Minimum="0" Maximum="1" SmallChange=".1" Margin="5,0,0,0"  Grid.Column="1" Grid.Row="6" TickFrequency=".1" ValueChanged="GlobalTriggerWindowOpacityValueChanged"  />
+        </StackPanel>
+    
+        
+        <Button  Grid.Column="1" Grid.Row="7" VerticalAlignment="Bottom" Click="DoneButtonClicked">Done</Button>
     </Grid>
 </Window>

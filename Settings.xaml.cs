@@ -8,6 +8,7 @@ using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Media.Imaging;
 
@@ -25,6 +26,8 @@ namespace EQTool
             SettingsWindowData.EqPath = EqToolSettings.BestGuessRootEqPath;
             DataContext = SettingsWindowData;
             InitializeComponent();
+            TryUpdateCharName();
+            TryCheckLoggingEnabled();
             fileopenbuttonimage.Source = Convert(Properties.Resources.open_folder);
             for (var i = 12; i < 72; i++)
             {
@@ -53,8 +56,7 @@ namespace EQTool
             levelscombobox.SelectedValue = level.ToString();
             fontsizescombobox.ItemsSource = SettingsWindowData.FontSizes;
             fontsizescombobox.SelectedValue = App.GlobalFontSize.ToString();
-            TryUpdateCharName();
-            TryCheckLoggingEnabled();
+
 
         }
 
@@ -75,7 +77,7 @@ namespace EQTool
 
         protected override void OnClosing(CancelEventArgs e)
         {
-            var players = Properties.Settings.Default.Players ?? new System.Collections.Generic.List<PlayerInfo>();
+            var players = Properties.Settings.Default.Players ?? new List<PlayerInfo>();
             if (!string.IsNullOrWhiteSpace(SettingsWindowData.CharName))
             {
                 var player = players.FirstOrDefault(a => a.Name == SettingsWindowData.CharName);
@@ -96,6 +98,7 @@ namespace EQTool
             }
 
             Properties.Settings.Default.FontSize = EqToolSettings.FontSize;
+            Properties.Settings.Default.GlobalTriggerWindowOpacity = EqToolSettings.GlobalTriggerWindowOpacity;
             Properties.Settings.Default.Save();
             base.OnClosing(e);
         }
@@ -210,6 +213,11 @@ namespace EQTool
                 File.WriteAllLines(Models.EqToolSettings.BestGuessRootEqPath + "/eqclient.ini", newlist);
             }
             catch { }
+        }
+
+        private void GlobalTriggerWindowOpacityValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            EqToolSettings.GlobalTriggerWindowOpacity = App.GlobalTriggerWindowOpacity = (sender as Slider).Value;
         }
     }
 }

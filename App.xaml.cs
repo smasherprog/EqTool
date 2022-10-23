@@ -12,5 +12,11 @@ namespace EQTool
             get => (double)Current.Resources["GlobalFontSize"];
             set => Current.Resources["GlobalFontSize"] = value;
         }
+
+        public static double GlobalTriggerWindowOpacity
+        {
+            get => (double)Current.Resources["GlobalTriggerWindowOpacity"];
+            set => Current.Resources["GlobalTriggerWindowOpacity"] = value;
+        }
     }
 }

@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using System.Timers;
 using System.Windows;
 using System.Windows.Data;
+using System.Windows.Input;
 
 namespace EQTool
 {
@@ -33,6 +34,7 @@ namespace EQTool
         public SpellWindow()
         {
             InitializeComponent();
+            _ = CommandBindings.Add(new CommandBinding(ApplicationCommands.Close, new ExecutedRoutedEventHandler(delegate (object sender, ExecutedRoutedEventArgs args) { Close(); })));
             var spells = ParseSpells.GetSpells();
             var spellicons = SpellIcons.GetSpellIcons();
 
@@ -95,7 +97,16 @@ namespace EQTool
             var view = (CollectionView)CollectionViewSource.GetDefaultView(spelllistview.ItemsSource);
             var groupDescription = new PropertyGroupDescription("TargetName");
             view.GroupDescriptions.Add(groupDescription);
+            TryUpdatePlayerLevel();
+        }
 
+        public void DragWindow(object sender, MouseButtonEventArgs args)
+        {
+            DragMove();
+        }
+
+        private void TryUpdatePlayerLevel()
+        {
             var players = Properties.Settings.Default.Players ?? new System.Collections.Generic.List<PlayerInfo>();
             var directory = new DirectoryInfo(Models.EqToolSettings.BestGuessRootEqPath + "/Logs/");
             var loggedincharlogfile = directory.GetFiles()
@@ -214,6 +225,10 @@ namespace EQTool
 
             if (UserCastingSpell != null)
             {
+                if (!Level.HasValue)
+                {
+                    Level = UserCastingSpell.Level;
+                }
                 if (message == UserCastingSpell.cast_on_you)
                 {
                     Debug.WriteLine($"Self Finished Spell: {message}");
@@ -223,7 +238,7 @@ namespace EQTool
                         UserCastingSpell = null;
                     });
                 }
-                else if (message.EndsWith(UserCastingSpell.cast_on_other))
+                else if (!string.IsNullOrWhiteSpace(UserCastingSpell.cast_on_other) && message.EndsWith(UserCastingSpell.cast_on_other))
                 {
                     var targetname = message.Replace(UserCastingSpell.cast_on_other, string.Empty).Trim();
                     Debug.WriteLine($"Self Finished Spell: {message}");
@@ -248,7 +263,7 @@ namespace EQTool
             {
                 _ = SpellList.Remove(s);
             }
-
+            TryUpdatePlayerLevel();
             SpellList.Add(new UISpell
             {
                 TargetName = target,
