@@ -23,7 +23,7 @@ namespace EQTool
 
         public Settings()
         {
-            SettingsWindowData.EqPath = EqToolSettings.BestGuessRootEqPath;
+            SettingsWindowData.EqPath = Properties.Settings.Default.DefaultEqDirectory;
             DataContext = SettingsWindowData;
             InitializeComponent();
             TryUpdateCharName();
@@ -97,8 +97,8 @@ namespace EQTool
                 Properties.Settings.Default.Players = players;
             }
 
-            Properties.Settings.Default.FontSize = EqToolSettings.FontSize;
-            Properties.Settings.Default.GlobalTriggerWindowOpacity = EqToolSettings.GlobalTriggerWindowOpacity;
+            Properties.Settings.Default.FontSize = Properties.Settings.Default.FontSize;
+            Properties.Settings.Default.GlobalTriggerWindowOpacity = Properties.Settings.Default.GlobalTriggerWindowOpacity;
             Properties.Settings.Default.Save();
             base.OnClosing(e);
         }
@@ -107,7 +107,7 @@ namespace EQTool
         {
             try
             {
-                var directory = new DirectoryInfo(Models.EqToolSettings.BestGuessRootEqPath + "/Logs/");
+                var directory = new DirectoryInfo(Properties.Settings.Default.DefaultEqDirectory + "/Logs/");
                 var loggedincharlogfile = directory.GetFiles()
                     .Where(a => a.Name.StartsWith("eqlog") && a.Name.EndsWith(".txt"))
                     .OrderByDescending(a => a.LastWriteTime)
@@ -132,7 +132,7 @@ namespace EQTool
             try
             {
                 SettingsWindowData.IsLogginEnabled = false;
-                var data = File.ReadAllLines(Models.EqToolSettings.BestGuessRootEqPath + "/eqclient.ini");
+                var data = File.ReadAllLines(Properties.Settings.Default.DefaultEqDirectory + "/eqclient.ini");
                 foreach (var item in data)
                 {
                     var line = item.ToLower().Trim().Replace(" ", string.Empty);
@@ -174,7 +174,7 @@ namespace EQTool
                 {
                     if (FindEq.IsValid(fbd.SelectedPath))
                     {
-                        SettingsWindowData.EqPath = EqToolSettings.BestGuessRootEqPath = fbd.SelectedPath;
+                        SettingsWindowData.EqPath = Properties.Settings.Default.DefaultEqDirectory = fbd.SelectedPath;
                         TryUpdateCharName();
                         TryCheckLoggingEnabled();
                     }
@@ -195,7 +195,7 @@ namespace EQTool
             }
             try
             {
-                var data = File.ReadAllLines(Models.EqToolSettings.BestGuessRootEqPath + "/eqclient.ini");
+                var data = File.ReadAllLines(Properties.Settings.Default.DefaultEqDirectory + "/eqclient.ini");
                 var newlist = new List<string>();
                 foreach (var item in data)
                 {
@@ -210,14 +210,14 @@ namespace EQTool
                         newlist.Add(item);
                     }
                 }
-                File.WriteAllLines(Models.EqToolSettings.BestGuessRootEqPath + "/eqclient.ini", newlist);
+                File.WriteAllLines(Properties.Settings.Default.DefaultEqDirectory + "/eqclient.ini", newlist);
             }
             catch { }
         }
 
         private void GlobalTriggerWindowOpacityValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            EqToolSettings.GlobalTriggerWindowOpacity = App.GlobalTriggerWindowOpacity = (sender as Slider).Value;
+            Properties.Settings.Default.GlobalTriggerWindowOpacity = App.GlobalTriggerWindowOpacity = (sender as Slider).Value;
         }
     }
 }

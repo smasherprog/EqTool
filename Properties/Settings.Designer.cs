@@ -53,17 +53,19 @@ namespace EQTool.Properties {
         
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("")]
         [SettingsSerializeAs(System.Configuration.SettingsSerializeAs.Binary)]
-        public List<PlayerInfo> Players {
-            get {
+        public List<PlayerInfo> Players
+        {
+            get
+            {
                 return ((List<PlayerInfo>)(this["Players"]));
             }
-            set {
+            set
+            {
                 this["Players"] = value;
             }
         }
-        
+
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("1")]
@@ -73,6 +75,18 @@ namespace EQTool.Properties {
             }
             set {
                 this["GlobalTriggerWindowOpacity"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("False")]
+        public bool TriggerWindowTopMost {
+            get {
+                return ((bool)(this["TriggerWindowTopMost"]));
+            }
+            set {
+                this["TriggerWindowTopMost"] = value;
             }
         }
     }

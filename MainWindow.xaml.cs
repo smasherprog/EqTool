@@ -1,5 +1,4 @@
-﻿using EQTool.Models;
-using EQTool.Services;
+﻿using EQTool.Services;
 using System;
 using System.ComponentModel;
 using System.Drawing;
@@ -23,22 +22,20 @@ namespace EQTool
         public MainWindow()
         {
             InitializeComponent();
-            Models.EqToolSettings.BestGuessRootEqPath = Properties.Settings.Default.DefaultEqDirectory;
-            App.GlobalTriggerWindowOpacity = EqToolSettings.GlobalTriggerWindowOpacity = Properties.Settings.Default.GlobalTriggerWindowOpacity;
-            if (!FindEq.IsValid(Models.EqToolSettings.BestGuessRootEqPath))
+            App.GlobalTriggerWindowOpacity = Properties.Settings.Default.GlobalTriggerWindowOpacity = Properties.Settings.Default.GlobalTriggerWindowOpacity;
+            if (!FindEq.IsValid(Properties.Settings.Default.DefaultEqDirectory))
             {
-                EqToolSettings.BestGuessRootEqPath = FindEq.LoadEQPath();
+                Properties.Settings.Default.DefaultEqDirectory = FindEq.LoadEQPath();
             }
 
-            Properties.Settings.Default.DefaultEqDirectory = Models.EqToolSettings.BestGuessRootEqPath;
-            EqToolSettings.FontSize = Properties.Settings.Default.FontSize;
+            Properties.Settings.Default.FontSize = Properties.Settings.Default.FontSize;
             Properties.Settings.Default.Save();
 
             var settingsbutton = new System.Windows.Forms.MenuItem("Settings", Settings);
             SpellsMenuItem = new System.Windows.Forms.MenuItem("Spells", Spells);
             MapMenuItem = new System.Windows.Forms.MenuItem("Map", Map);
 
-            if (!FindEq.IsValid(Models.EqToolSettings.BestGuessRootEqPath))
+            if (!FindEq.IsValid(Properties.Settings.Default.DefaultEqDirectory))
             {
                 SpellsMenuItem.Enabled = false;
                 MapMenuItem.Enabled = false;
@@ -48,7 +45,7 @@ namespace EQTool
                 settingsbutton.Checked = true;
                 settingswindow.Closed += (se, ee) =>
                 {
-                    if (FindEq.IsValid(Models.EqToolSettings.BestGuessRootEqPath))
+                    if (FindEq.IsValid(Properties.Settings.Default.DefaultEqDirectory))
                     {
                         SpellsMenuItem.Enabled = true;
                         MapMenuItem.Enabled = true;
@@ -111,7 +108,7 @@ namespace EQTool
                 settingswindow.Show();
                 settingswindow.Closed += (se, ee) =>
                 {
-                    if (FindEq.IsValid(Models.EqToolSettings.BestGuessRootEqPath))
+                    if (FindEq.IsValid(Properties.Settings.Default.DefaultEqDirectory))
                     {
                         SpellsMenuItem.Enabled = true;
                         MapMenuItem.Enabled = true;

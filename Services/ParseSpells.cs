@@ -17,7 +17,7 @@ namespace EQTool.Services
             }
 
             var ret = new List<SpellBase>();
-            var spellastext = File.ReadAllLines(EqToolSettings.BestGuessRootEqPath + "/spells_us.txt");
+            var spellastext = File.ReadAllLines(Properties.Settings.Default.DefaultEqDirectory + "/spells_us.txt");
             foreach (var item in spellastext)
             {
                 var splits = item.Split('^');

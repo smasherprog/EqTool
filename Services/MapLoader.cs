@@ -15,7 +15,7 @@ namespace EQTool.Services
         public static List<ShapeItem> Load()
         {
             var lines = new List<ShapeItem>();
-            _ = File.ReadAllLines(Models.EqToolSettings.BestGuessRootEqPath + "/map_files/blackburrow.txt");
+            _ = File.ReadAllLines(Properties.Settings.Default.DefaultEqDirectory + "/map_files/blackburrow.txt");
             //foreach (var item in text)
             //{
             //    if (item.StartsWith("L"))

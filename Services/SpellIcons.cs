@@ -20,7 +20,7 @@ namespace EQTool.Services
             }
 
             var ret = new List<SpellIcon>();
-            var directory = new DirectoryInfo(EqToolSettings.BestGuessRootEqPath + "/uifiles/default/");
+            var directory = new DirectoryInfo(Properties.Settings.Default.DefaultEqDirectory + "/uifiles/default/");
             var spellimages = directory.GetFiles()
                 .Where(a => a.Name.StartsWith("spells0") && a.Name.EndsWith(".tga"))
                 .ToList();

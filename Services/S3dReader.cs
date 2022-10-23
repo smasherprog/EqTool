@@ -9,7 +9,7 @@ namespace EQTool.Services
     {
         public List<SubS3bFile> Read()
         {
-            using (var filestream = new FileStream(EqToolSettings.BestGuessRootEqPath + "/freportn.s3d", FileMode.Open, FileAccess.Read))
+            using (var filestream = new FileStream(Properties.Settings.Default.DefaultEqDirectory + "/freportn.s3d", FileMode.Open, FileAccess.Read))
             using (var reader = new BinaryReader(filestream))
             {
                 var directoryOffset = reader.ReadInt32();

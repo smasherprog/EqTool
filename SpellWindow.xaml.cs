@@ -37,7 +37,7 @@ namespace EQTool
             _ = CommandBindings.Add(new CommandBinding(ApplicationCommands.Close, new ExecutedRoutedEventHandler(delegate (object sender, ExecutedRoutedEventArgs args) { Close(); })));
             var spells = ParseSpells.GetSpells();
             var spellicons = SpellIcons.GetSpellIcons();
-
+            Topmost = Properties.Settings.Default.TriggerWindowTopMost;
             foreach (var item in spells)
             {
                 var mappedspell = item.Map(spellicons);
@@ -108,7 +108,7 @@ namespace EQTool
         private void TryUpdatePlayerLevel()
         {
             var players = Properties.Settings.Default.Players ?? new System.Collections.Generic.List<PlayerInfo>();
-            var directory = new DirectoryInfo(Models.EqToolSettings.BestGuessRootEqPath + "/Logs/");
+            var directory = new DirectoryInfo(Properties.Settings.Default.DefaultEqDirectory + "/Logs/");
             var loggedincharlogfile = directory.GetFiles()
                 .Where(a => a.Name.StartsWith("eqlog") && a.Name.EndsWith(".txt"))
                 .OrderByDescending(a => a.LastWriteTime)
@@ -154,7 +154,7 @@ namespace EQTool
 
         private void PollUpdates(object sender, EventArgs e)
         {
-            var directory = new DirectoryInfo(Models.EqToolSettings.BestGuessRootEqPath + "/Logs/");
+            var directory = new DirectoryInfo(Properties.Settings.Default.DefaultEqDirectory + "/Logs/");
             var loggedincharlogfile = directory.GetFiles()
                 .Where(a => a.Name.StartsWith("eqlog") && a.Name.EndsWith(".txt"))
                 .OrderByDescending(a => a.LastWriteTime)
