@@ -73,6 +73,7 @@
         public string name { get; set; } // Name of the spell  
         public string cast_on_you { get; set; }
         public string cast_on_other { get; set; }
+        public int type { get; set; }
         public int Level { get; set; }
         public int casttime { get; set; }
         public string spell_fades { get; set; }

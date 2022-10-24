@@ -61,7 +61,6 @@
             <Slider Value="{DynamicResource GlobalTriggerWindowOpacity}" Minimum="0" Maximum="1" SmallChange=".1" Margin="5,0,0,0"  Grid.Column="1" Grid.Row="6" TickFrequency=".1" ValueChanged="GlobalTriggerWindowOpacityValueChanged"  />
         </StackPanel>
     
-        
         <Button  Grid.Column="1" Grid.Row="7" VerticalAlignment="Bottom" Click="DoneButtonClicked">Done</Button>
     </Grid>
 </Window>

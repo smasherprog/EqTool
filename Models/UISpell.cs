@@ -2,6 +2,7 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
+using System.Windows.Media;
 
 namespace EQTool.Models
 {
@@ -34,6 +35,8 @@ namespace EQTool.Models
             }
         }
 
+        public int TotalSecondsOnSpell { get; set; }
+
         public string TargetName { get; set; }
         private TimeSpan _SecondsLeftOnSpell;
         public TimeSpan SecondsLeftOnSpell
@@ -42,9 +45,27 @@ namespace EQTool.Models
             set
             {
                 _SecondsLeftOnSpell = value;
+                if (TotalSecondsOnSpell > 0)
+                {
+                    PercentLeftOnSpell = (int)(_SecondsLeftOnSpell.TotalSeconds / TotalSecondsOnSpell * 100);
+                }
                 OnPropertyChanged(nameof(SecondsLeftOnSpellPretty));
+                OnPropertyChanged(nameof(PercentLeftOnSpell));
             }
         }
+
+        private int _SpellType = 0;
+        public int SpellType
+        {
+            get => _SpellType;
+            set
+            {
+                _SpellType = value;
+                ProgressBarColor = _SpellType > 0 ? Brushes.DarkSeaGreen : Brushes.OrangeRed;
+            }
+        }
+        public SolidColorBrush ProgressBarColor { get; set; }
+        public int PercentLeftOnSpell { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 

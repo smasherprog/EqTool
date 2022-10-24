@@ -24,7 +24,9 @@ namespace EQTool.Services
                 Level = spell.Level,
                 id = spell.id,
                 Rect = new System.Windows.Int32Rect(),
-                SpellIcon = null
+                SpellIcon = null,
+                pvp_buffdurationformula = spell.pvp_buffdurationformula,
+                type = spell.type
             };
 
             if (spellfilenumber > 0 && spellfilenumber <= 7)

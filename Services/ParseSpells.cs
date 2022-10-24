@@ -40,6 +40,7 @@ namespace EQTool.Services
                     buffduration = int.Parse(splits[17]),
                     buffdurationformula = int.Parse(splits[16]),
                     pvp_buffdurationformula = int.Parse(splits[181]),
+                    type = int.Parse(splits[83]),
                     cast_on_other = splits[7].ToLower(),
                     casttime = int.Parse(splits[13]),
                     cast_on_you = splits[6].ToLower(),

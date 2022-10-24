@@ -264,12 +264,16 @@ namespace EQTool
                 _ = SpellList.Remove(s);
             }
             TryUpdatePlayerLevel();
+            var spellduration = TimeSpan.FromSeconds(GetDuration_inSeconds(UserCastingSpell));
             SpellList.Add(new UISpell
             {
+                TotalSecondsOnSpell = (int)spellduration.TotalSeconds,
+                PercentLeftOnSpell = 100,
+                SpellType = spell.type,
                 TargetName = target,
                 SpellName = UserCastingSpell.name,
                 Rect = UserCastingSpell.Rect,
-                SecondsLeftOnSpell = TimeSpan.FromSeconds(GetDuration_inSeconds(UserCastingSpell)),
+                SecondsLeftOnSpell = spellduration,
                 SpellIcon = UserCastingSpell.SpellIcon
             }); ;
         }
