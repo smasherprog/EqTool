@@ -48,7 +48,7 @@ namespace EQTool
                     {
                         if (CastOtherSpells.TryGetValue(mappedspell.cast_on_other, out var innerval))
                         {
-                            if (innerval.Level < mappedspell.Level)
+                            if (mappedspell.Level < 61 && mappedspell.Level > 0)
                             {
                                 CastOtherSpells[mappedspell.cast_on_other] = mappedspell;
                             }
@@ -168,21 +168,24 @@ namespace EQTool
             {
                 LastReadOffset = loggedincharlogfile.Length;
             }
-
-            using (var stream = new FileStream(loggedincharlogfile.FullName, FileMode.Open, FileAccess.Read))
-            using (var reader = new StreamReader(stream))
+            try
             {
-                LastReadOffset = stream.Seek(LastReadOffset.Value, SeekOrigin.Begin);
-                while (!reader.EndOfStream)
+                using (var stream = new FileStream(loggedincharlogfile.FullName, FileMode.Open, FileAccess.Read))
+                using (var reader = new StreamReader(stream))
                 {
-                    var line = reader.ReadLine();
-                    LastReadOffset = stream.Position;
-                    if (line.Length > 27)
+                    LastReadOffset = stream.Seek(LastReadOffset.Value, SeekOrigin.Begin);
+                    while (!reader.EndOfStream)
                     {
-                        ParseLine(line);
+                        var line = reader.ReadLine();
+                        LastReadOffset = stream.Position;
+                        if (line.Length > 27)
+                        {
+                            ParseLine(line);
+                        }
                     }
                 }
             }
+            catch { }
         }
 
         private void ParseLine(string line)
@@ -249,6 +252,41 @@ namespace EQTool
                     });
                 }
             }
+            else
+            {
+                var removename = message.IndexOf("'");
+                if (removename != -1)
+                {
+                    var spellname = message.Substring(removename).Trim();
+                    if (CastOtherSpells.TryGetValue(spellname, out var foundspell))
+                    {
+                        var targetname = message.Replace(foundspell.cast_on_other, string.Empty).Trim();
+                        Debug.WriteLine($"Other Spell: {message}");
+                        App.Current.Dispatcher.Invoke(delegate
+                        {
+                            TryAdd(foundspell, targetname);
+                        });
+                    }
+                }
+                else
+                {
+                    removename = message.IndexOf(" ");
+                    if (removename != -1)
+                    {
+                        var spellname = message.Substring(removename).Trim();
+                        if (CastOtherSpells.TryGetValue(spellname, out var foundspell))
+                        {
+                            var targetname = message.Replace(foundspell.cast_on_other, string.Empty).Trim();
+                            Debug.WriteLine($"Other Spell: {message}");
+                            App.Current.Dispatcher.Invoke(delegate
+                            {
+                                TryAdd(foundspell, targetname);
+                            });
+                        }
+                    }
+                }
+            }
+
         }
 
         private void TryAdd(Spell spell, string target)
@@ -264,40 +302,41 @@ namespace EQTool
                 _ = SpellList.Remove(s);
             }
             TryUpdatePlayerLevel();
-            var spellduration = TimeSpan.FromSeconds(GetDuration_inSeconds(UserCastingSpell));
+            var spellduration = TimeSpan.FromSeconds(GetDuration_inSeconds(spell, Level.Value));
             SpellList.Add(new UISpell
             {
                 TotalSecondsOnSpell = (int)spellduration.TotalSeconds,
                 PercentLeftOnSpell = 100,
                 SpellType = spell.type,
                 TargetName = target,
-                SpellName = UserCastingSpell.name,
-                Rect = UserCastingSpell.Rect,
+                SpellName = spell.name,
+                Rect = spell.Rect,
                 SecondsLeftOnSpell = spellduration,
-                SpellIcon = UserCastingSpell.SpellIcon
+                SpellIcon = spell.SpellIcon
             }); ;
         }
 
-        private int GetDuration_inSeconds(Spell spell)
+        private static int GetDuration_inSeconds(Spell spell, int? userlevel)
         {
             _ = spell.buffdurationformula;
             var duration = spell.buffduration;
             int spell_ticks;
+            var level = spell.Level > userlevel.Value ? spell.Level : userlevel.Value;
             switch (spell.buffdurationformula)
             {
                 case 0:
                     spell_ticks = 0;
                     break;
                 case 1:
-                    spell_ticks = (int)Math.Ceiling(Level.Value / 2.0f);
+                    spell_ticks = (int)Math.Ceiling(level / 2.0f);
                     spell_ticks = Math.Min(spell_ticks, duration);
                     break;
                 case 2:
-                    spell_ticks = (int)Math.Ceiling(Level.Value / 5.0f * 3);
+                    spell_ticks = (int)Math.Ceiling(level / 5.0f * 3);
                     spell_ticks = Math.Min(spell_ticks, duration);
                     break;
                 case 3:
-                    spell_ticks = Level.Value * 30;
+                    spell_ticks = level * 30;
                     spell_ticks = Math.Min(spell_ticks, duration);
                     break;
                 case 4:
@@ -312,23 +351,23 @@ namespace EQTool
 
                     break;
                 case 6:
-                    spell_ticks = (int)Math.Ceiling(Level.Value / 2.0f);
+                    spell_ticks = (int)Math.Ceiling(level / 2.0f);
                     spell_ticks = Math.Min(spell_ticks, duration);
                     break;
                 case 7:
-                    spell_ticks = Level.Value;
+                    spell_ticks = level;
                     spell_ticks = Math.Min(spell_ticks, duration);
                     break;
                 case 8:
-                    spell_ticks = Level.Value + 10;
+                    spell_ticks = level + 10;
                     spell_ticks = Math.Min(spell_ticks, duration);
                     break;
                 case 9:
-                    spell_ticks = (Level.Value * 2) + 10;
+                    spell_ticks = (level * 2) + 10;
                     spell_ticks = Math.Min(spell_ticks, duration);
                     break;
                 case 10:
-                    spell_ticks = (Level.Value * 3) + 10;
+                    spell_ticks = (level * 3) + 10;
                     spell_ticks = Math.Min(spell_ticks, duration);
                     break;
                 case 11:

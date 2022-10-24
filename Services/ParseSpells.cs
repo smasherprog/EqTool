@@ -41,10 +41,10 @@ namespace EQTool.Services
                     buffdurationformula = int.Parse(splits[16]),
                     pvp_buffdurationformula = int.Parse(splits[181]),
                     type = int.Parse(splits[83]),
-                    cast_on_other = splits[7].ToLower(),
+                    cast_on_other = splits[7].ToLower().Trim(),
                     casttime = int.Parse(splits[13]),
-                    cast_on_you = splits[6].ToLower(),
-                    spell_fades = splits[8].ToLower(),
+                    cast_on_you = splits[6].ToLower().Trim(),
+                    spell_fades = splits[8].ToLower().Trim(),
                     Level = levelofspell,
                     spell_icon = int.Parse(splits[144])
                 };
