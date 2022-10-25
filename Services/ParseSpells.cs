@@ -36,7 +36,7 @@ namespace EQTool.Services
                 var spell = new SpellBase
                 {
                     id = int.Parse(splits[0]),
-                    name = splits[1].ToLower(),
+                    name = splits[1],
                     buffduration = int.Parse(splits[17]),
                     buffdurationformula = int.Parse(splits[16]),
                     pvp_buffdurationformula = int.Parse(splits[181]),
@@ -49,11 +49,15 @@ namespace EQTool.Services
                     spell_icon = int.Parse(splits[144])
                 };
                 ret.Add(spell);
-                if (spell.cast_on_other == " feels the favor of the gods upon them.")
+                if (spell.cast_on_other.Contains("hand is covered with a dull aura"))
                 {
                     Debug.WriteLine("sdfsdf");
                 }
-                if (spell.name == "rune v")
+                if (spell.name == "protection of the glades")
+                {
+                    Debug.WriteLine("Protection of the ");
+                }
+                if (spell.name.Contains("Protection of the "))
                 {
                     Debug.WriteLine("sdfsdf");
                 }

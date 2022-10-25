@@ -9,8 +9,7 @@ namespace EQTool.Services
     {
         public static Spell Map(this SpellBase spell, List<SpellIcon> spellIcons)
         {
-            var spellfilenumber = (int)Math.Ceiling(spell.spell_icon / (float)36);
-
+            var spellfilenumber = (int)(spell.spell_icon / (float)36) + 1;
             var s = new Spell
             {
                 name = spell.name,

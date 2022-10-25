@@ -31,11 +31,17 @@ namespace EQTool
         private int UserCastingSpellCounter = 0;
         private int? Level = 1;
 
+        private readonly List<string> IgnoreSpellsList = new List<string>()
+        {
+            "Complete Heal",
+            "Denon`s Disruptive Discord"
+        };
+
         public SpellWindow()
         {
             InitializeComponent();
             _ = CommandBindings.Add(new CommandBinding(ApplicationCommands.Close, new ExecutedRoutedEventHandler(delegate (object sender, ExecutedRoutedEventArgs args) { Close(); })));
-            var spells = ParseSpells.GetSpells();
+            var spells = ParseSpells.GetSpells().Where(a => !IgnoreSpellsList.Contains(a.name));
             var spellicons = SpellIcons.GetSpellIcons();
             Topmost = Properties.Settings.Default.TriggerWindowTopMost;
             foreach (var item in spells)
@@ -196,7 +202,7 @@ namespace EQTool
 
             }
 
-            var message = line.Substring(27).ToLower();
+            var message = line.Substring(27);
             Debug.WriteLine(message);
             if (message.StartsWith(YouBeginCasting))
             {
@@ -257,11 +263,11 @@ namespace EQTool
                 var removename = message.IndexOf("'");
                 if (removename != -1)
                 {
-                    var spellname = message.Substring(removename).Trim();
-                    if (CastOtherSpells.TryGetValue(spellname, out var foundspell))
+                    var spellmessage = message.Substring(removename).Trim();
+                    if (CastOtherSpells.TryGetValue(spellmessage, out var foundspell))
                     {
                         var targetname = message.Replace(foundspell.cast_on_other, string.Empty).Trim();
-                        Debug.WriteLine($"Other Spell: {message}");
+                        Debug.WriteLine($"Other Spell: {foundspell.name} Message: {spellmessage}");
                         App.Current.Dispatcher.Invoke(delegate
                         {
                             TryAdd(foundspell, targetname);
@@ -273,11 +279,11 @@ namespace EQTool
                     removename = message.IndexOf(" ");
                     if (removename != -1)
                     {
-                        var spellname = message.Substring(removename).Trim();
-                        if (CastOtherSpells.TryGetValue(spellname, out var foundspell))
+                        var spellmessage = message.Substring(removename).Trim();
+                        if (CastOtherSpells.TryGetValue(spellmessage, out var foundspell))
                         {
                             var targetname = message.Replace(foundspell.cast_on_other, string.Empty).Trim();
-                            Debug.WriteLine($"Other Spell: {message}");
+                            Debug.WriteLine($"Other Spell: {foundspell.name} Message: {spellmessage}");
                             App.Current.Dispatcher.Invoke(delegate
                             {
                                 TryAdd(foundspell, targetname);
@@ -302,7 +308,7 @@ namespace EQTool
                 _ = SpellList.Remove(s);
             }
             TryUpdatePlayerLevel();
-            var spellduration = TimeSpan.FromSeconds(GetDuration_inSeconds(spell, Level.Value));
+            var spellduration = TimeSpan.FromSeconds(GetDuration_inSeconds(spell, Level));
             SpellList.Add(new UISpell
             {
                 TotalSecondsOnSpell = (int)spellduration.TotalSeconds,
