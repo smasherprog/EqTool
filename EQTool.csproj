@@ -161,8 +161,6 @@
   <ItemGroup>
     <None Include="open-folder.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="TestFolder\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
