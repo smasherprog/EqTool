@@ -57,14 +57,16 @@ namespace EQTool.Properties {
         [SettingsSerializeAs(System.Configuration.SettingsSerializeAs.Binary)]
         public List<PlayerInfo> Players
         {
-            get {
+            get
+            {
                 return ((List<PlayerInfo>)(this["Players"]));
             }
-            set {
+            set
+            {
                 this["Players"] = value;
             }
         }
-        
+
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("1")]
@@ -86,6 +88,18 @@ namespace EQTool.Properties {
             }
             set {
                 this["TriggerWindowTopMost"] = value;
+            }
+        }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("True")]
+        public bool BestGuessSpells {
+            get {
+                return ((bool)(this["BestGuessSpells"]));
+            }
+            set {
+                this["BestGuessSpells"] = value;
             }
         }
     }

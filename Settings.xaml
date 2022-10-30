@@ -19,6 +19,7 @@
             <RowDefinition  Height="Auto"/>
             <RowDefinition  Height="Auto"/>
             <RowDefinition  Height="Auto"/>
+            <RowDefinition  Height="Auto"/>
             <RowDefinition  Height="*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -31,16 +32,13 @@
         <ComboBox Margin="5,0,0,0"   Grid.Column="1" Grid.Row="1"  Name="levelscombobox"
                 DisplayMemberPath="Name"
                 SelectedValuePath="Name"
-                  SelectionChanged="levelscombobox_SelectionChanged"
-                  />
+                  SelectionChanged="levelscombobox_SelectionChanged"                  />
 
         <TextBlock Text="Font Size" Grid.Column="0" Grid.Row="2" Margin="5,5,0,0" VerticalAlignment="Center"/>
         <ComboBox Margin="5,0,0,0"  Grid.Column="1" Grid.Row="2" Name="fontsizescombobox"
                 DisplayMemberPath="Name"
                 SelectedValuePath="Name"
                 SelectionChanged="fontsizescombobox_SelectionChanged"/>
-
-
         <TextBlock Text="Eq Path" Grid.Column="0" Grid.Row="3"  Margin="5,5,0,0" VerticalAlignment="Center"/>
         <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="3" >
             <TextBlock Text="{Binding EqPath}" Margin="5,5,0,0" HorizontalAlignment="Left"/>
@@ -60,7 +58,11 @@
             <TextBlock Text="Spell Window" Margin="5,5,0,0" HorizontalAlignment="Center"/>
             <Slider Value="{DynamicResource GlobalTriggerWindowOpacity}" Minimum="0" Maximum="1" SmallChange=".1" Margin="5,0,0,0"  Grid.Column="1" Grid.Row="6" TickFrequency=".1" ValueChanged="GlobalTriggerWindowOpacityValueChanged"  />
         </StackPanel>
-    
-        <Button  Grid.Column="1" Grid.Row="7" VerticalAlignment="Bottom" Click="DoneButtonClicked">Done</Button>
+        <TextBlock Text="Guess Spells" Grid.Column="0" Grid.Row="7" Margin="5,5,0,0" VerticalAlignment="Center"/>
+        <StackPanel Orientation="Vertical" Grid.Column="1" Grid.Row="7">
+            <TextBlock Text="This setting will best guess others spells." Margin="5,5,0,0" HorizontalAlignment="Center"/>
+            <CheckBox x:Name="BestGuessSpells" HorizontalAlignment="Center" Checked="GuessSpells_Checked"  Unchecked="GuessSpells_Unchecked"/>
+        </StackPanel>
+        <Button  Grid.Column="1" Grid.Row="8" VerticalAlignment="Bottom" Click="DoneButtonClicked">Done</Button>
     </Grid>
 </Window>

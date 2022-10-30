@@ -1,7 +1,10 @@
-﻿using EQTool.Services;
+﻿using EQTool.Models;
+using EQTool.Services;
 using System;
 using System.ComponentModel;
 using System.Drawing;
+using System.IO;
+using System.Linq;
 using System.Windows;
 
 namespace EQTool
@@ -53,8 +56,9 @@ namespace EQTool
                     settingsbutton.Checked = false;
                 };
             }
-
-
+#if !DEBUG
+            MapMenuItem.Enabled = false;
+#endif 
             SystemTrayIcon = new System.Windows.Forms.NotifyIcon
             {
                 Icon = new Icon(Application.GetResourceStream(new Uri("pack://application:,,,/eqicon.ico")).Stream),
@@ -130,6 +134,23 @@ namespace EQTool
             if (s.Checked)
             {
                 spellWindow?.Close();
+                var players = Properties.Settings.Default.Players ?? new System.Collections.Generic.List<PlayerInfo>();
+                var directory = new DirectoryInfo(Properties.Settings.Default.DefaultEqDirectory + "/Logs/");
+                var loggedincharlogfile = directory.GetFiles()
+                    .Where(a => a.Name.StartsWith("eqlog") && a.Name.EndsWith(".txt"))
+                    .OrderByDescending(a => a.LastWriteTime)
+                    .FirstOrDefault();
+                if (loggedincharlogfile != null)
+                {
+                    var charname = loggedincharlogfile.Name.Replace("eqlog_", string.Empty);
+                    var indexpart = charname.IndexOf("_");
+                    var charName = charname.Substring(0, indexpart);
+                    if (!players.Any(a => a.Name == charName))
+                    {
+                        _ = MessageBox.Show("Please set your characters level in settings otherwise spell timers wont work correctly.", "Configuration", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        Settings(sender, e);
+                    }
+                }
                 spellWindow = new SpellWindow();
                 spellWindow.Closed += (se, ee) => s.Checked = false;
                 spellWindow.Show();

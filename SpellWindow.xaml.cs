@@ -30,7 +30,6 @@ namespace EQTool
         private Spell UserCastingSpell;
         private int UserCastingSpellCounter = 0;
         private int? Level = 1;
-
         private readonly List<string> IgnoreSpellsList = new List<string>()
         {
             "Complete Heal",
@@ -104,7 +103,7 @@ namespace EQTool
             var view = (CollectionView)CollectionViewSource.GetDefaultView(spelllistview.ItemsSource);
             var groupDescription = new PropertyGroupDescription("TargetName");
             view.GroupDescriptions.Add(groupDescription);
-            TryUpdatePlayerLevel();
+            _ = TryUpdatePlayerLevel();
         }
 
         public void DragWindow(object sender, MouseButtonEventArgs args)
@@ -112,7 +111,7 @@ namespace EQTool
             DragMove();
         }
 
-        private void TryUpdatePlayerLevel()
+        private FileInfo TryUpdatePlayerLevel()
         {
             var players = Properties.Settings.Default.Players ?? new System.Collections.Generic.List<PlayerInfo>();
             var directory = new DirectoryInfo(Properties.Settings.Default.DefaultEqDirectory + "/Logs/");
@@ -127,6 +126,8 @@ namespace EQTool
                 var charName = charname.Substring(0, indexpart);
                 Level = players.FirstOrDefault(a => a.Name == charName)?.Level;
             }
+
+            return loggedincharlogfile;
         }
 
         protected override void OnClosing(CancelEventArgs e)
@@ -161,21 +162,11 @@ namespace EQTool
 
         private void PollUpdates(object sender, EventArgs e)
         {
-            var players = Properties.Settings.Default.Players ?? new System.Collections.Generic.List<PlayerInfo>();
-            var directory = new DirectoryInfo(Properties.Settings.Default.DefaultEqDirectory + "/Logs/");
-            var loggedincharlogfile = directory.GetFiles()
-                .Where(a => a.Name.StartsWith("eqlog") && a.Name.EndsWith(".txt"))
-                .OrderByDescending(a => a.LastWriteTime)
-                .FirstOrDefault();
-            if (loggedincharlogfile == null)
+            var loggedincharlogfile = TryUpdatePlayerLevel();
+            if (string.IsNullOrWhiteSpace(loggedincharlogfile?.FullName))
             {
                 return;
             }
-
-            var charname = loggedincharlogfile.Name.Replace("eqlog_", string.Empty);
-            var indexpart = charname.IndexOf("_");
-            var charName = charname.Substring(0, indexpart);
-            Level = players.FirstOrDefault(a => a.Name == charName)?.Level;
 
             if (!LastReadOffset.HasValue || LastReadOffset >= loggedincharlogfile.Length)
             {
@@ -183,7 +174,7 @@ namespace EQTool
             }
             try
             {
-                using (var stream = new FileStream(loggedincharlogfile.FullName, FileMode.Open, FileAccess.Read))
+                using (var stream = new FileStream(loggedincharlogfile?.FullName, FileMode.Open, FileAccess.Read))
                 using (var reader = new StreamReader(stream))
                 {
                     LastReadOffset = stream.Seek(LastReadOffset.Value, SeekOrigin.Begin);
@@ -265,7 +256,7 @@ namespace EQTool
                     });
                 }
             }
-            else
+            else if (Properties.Settings.Default.BestGuessSpells)
             {
                 var removename = message.IndexOf("'");
                 if (removename != -1)
@@ -314,7 +305,7 @@ namespace EQTool
             {
                 _ = SpellList.Remove(s);
             }
-            TryUpdatePlayerLevel();
+            _ = TryUpdatePlayerLevel();
             var spellduration = TimeSpan.FromSeconds(GetDuration_inSeconds(spell, Level));
             SpellList.Add(new UISpell
             {

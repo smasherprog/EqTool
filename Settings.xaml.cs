@@ -56,8 +56,7 @@ namespace EQTool
             levelscombobox.SelectedValue = level.ToString();
             fontsizescombobox.ItemsSource = SettingsWindowData.FontSizes;
             fontsizescombobox.SelectedValue = App.GlobalFontSize.ToString();
-
-
+            BestGuessSpells.IsChecked = Properties.Settings.Default.BestGuessSpells;
         }
 
         private BitmapImage Convert(Bitmap src)
@@ -148,7 +147,6 @@ namespace EQTool
             }
         }
 
-
         private void fontsizescombobox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
             Debug.WriteLine(fontsizescombobox.SelectedValue);
@@ -218,6 +216,16 @@ namespace EQTool
         private void GlobalTriggerWindowOpacityValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             Properties.Settings.Default.GlobalTriggerWindowOpacity = App.GlobalTriggerWindowOpacity = (sender as Slider).Value;
+        }
+
+        private void GuessSpells_Checked(object sender, RoutedEventArgs e)
+        {
+            Properties.Settings.Default.BestGuessSpells = true;
+        }
+
+        private void GuessSpells_Unchecked(object sender, RoutedEventArgs e)
+        {
+            Properties.Settings.Default.BestGuessSpells = false;
         }
     }
 }
