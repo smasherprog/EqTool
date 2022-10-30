@@ -34,7 +34,8 @@ namespace EQTool
         private readonly List<string> IgnoreSpellsList = new List<string>()
         {
             "Complete Heal",
-            "Denon`s Disruptive Discord"
+            "Denon`s Disruptive Discord",
+            "Chords of Dissonance"
         };
 
         public SpellWindow()
@@ -160,6 +161,7 @@ namespace EQTool
 
         private void PollUpdates(object sender, EventArgs e)
         {
+            var players = Properties.Settings.Default.Players ?? new System.Collections.Generic.List<PlayerInfo>();
             var directory = new DirectoryInfo(Properties.Settings.Default.DefaultEqDirectory + "/Logs/");
             var loggedincharlogfile = directory.GetFiles()
                 .Where(a => a.Name.StartsWith("eqlog") && a.Name.EndsWith(".txt"))
@@ -169,6 +171,11 @@ namespace EQTool
             {
                 return;
             }
+
+            var charname = loggedincharlogfile.Name.Replace("eqlog_", string.Empty);
+            var indexpart = charname.IndexOf("_");
+            var charName = charname.Substring(0, indexpart);
+            Level = players.FirstOrDefault(a => a.Name == charName)?.Level;
 
             if (!LastReadOffset.HasValue || LastReadOffset >= loggedincharlogfile.Length)
             {
