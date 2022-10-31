@@ -38,14 +38,10 @@ namespace EQTool
         };
 
         private readonly EQToolSettings settings;
-        private readonly ParseSpells parseSpells;
-        private readonly SpellIcons spellIcons;
 
         public SpellWindow(EQToolSettings settings, ParseSpells parseSpells, SpellIcons spellIcons)
         {
             this.settings = settings;
-            this.parseSpells = parseSpells;
-            this.spellIcons = spellIcons;
             InitializeComponent();
             _ = CommandBindings.Add(new CommandBinding(ApplicationCommands.Close, new ExecutedRoutedEventHandler(delegate (object sender, ExecutedRoutedEventArgs args) { Close(); })));
             var spells = parseSpells.GetSpells().Where(a => !IgnoreSpellsList.Contains(a.name) && a.spell_icon > 0);
@@ -200,7 +196,7 @@ namespace EQTool
         {
             if (!Level.HasValue)
             {
-                return spells.FirstOrDefault(a => a.Level > 0 && a.Level < 60);
+                return spells.FirstOrDefault(a => a.Level > 0 && a.Level <= 60);
             }
 
             Spell closestspell = null;
