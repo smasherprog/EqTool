@@ -61,7 +61,8 @@ namespace EQTool
                 };
             }
 #if !DEBUG
-            MapMenuItem.Enabled = false;
+            MapMenuItem.Enabled = false;  
+            DpsMeterMenuItem.Enabled = false;
 #endif 
             SystemTrayIcon = new System.Windows.Forms.NotifyIcon
             {

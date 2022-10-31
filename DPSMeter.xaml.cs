@@ -123,28 +123,32 @@ namespace EQTool
             var now = DateTime.Now;
             var message = line.Substring(27);
             Debug.WriteLine(message);
-            if (message.EndsWith(HitMessage))
+            App.Current.Dispatcher.Invoke(delegate
             {
-                LastTimeFighting = DateTime.Now;
-                message = message.Replace(HitMessage, string.Empty);
-                var splits = message.Split(' ');
-                var damagedone = splits[splits.Length - 1];
-                var hittype = splits[1];
-                var nameofchar = splits[0];
-                var afterhit = message.IndexOf(hittype) + hittype.Length;
-                var forname = " for ";
-                var nameofthing = message.IndexOf(forname);
+                if (message.EndsWith(HitMessage))
+                {
+                    LastTimeFighting = DateTime.Now;
+                    message = message.Replace(HitMessage, string.Empty);
+                    var splits = message.Split(' ');
+                    var damagedone = splits[splits.Length - 1];
+                    var hittype = splits[1];
+                    var nameofchar = splits[0];
+                    var afterhit = message.IndexOf(hittype) + hittype.Length;
+                    var forname = " for ";
+                    var nameofthing = message.IndexOf(forname);
 
-                var nameofthinglength = nameofthing - afterhit;
-                var nameofthethingforreal = message.Substring(afterhit, nameofthinglength);
+                    var nameofthinglength = nameofthing - afterhit;
+                    var nameofthethingforreal = message.Substring(afterhit, nameofthinglength);
 
-                Debug.WriteLine($"'{nameofchar}' '{nameofthethingforreal}' '{damagedone}'");
-                TryAdd(nameofthethingforreal, int.Parse(damagedone), nameofchar);
-            }
-            else if (LastTimeFighting.HasValue && (now - LastTimeFighting.Value).TotalSeconds > 20)
-            {
-                LastTimeFighting = null;
-            }
+                    Debug.WriteLine($"'{nameofchar}' '{nameofthethingforreal}' '{damagedone}'");
+                    TryAdd(nameofthethingforreal, int.Parse(damagedone), nameofchar);
+                }
+                else if (LastTimeFighting.HasValue && (now - LastTimeFighting.Value).TotalSeconds > 20)
+                {
+                    LastTimeFighting = null;
+                    CurrentEntityList.Clear();
+                }
+            });
         }
 
         private void TryAdd(string nameoftarget, int damagedone, string nameofdealer)

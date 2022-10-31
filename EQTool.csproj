@@ -61,9 +61,13 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="DPSMeter.xaml.cs">
+      <DependentUpon>DPSMeter.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MapWindow.xaml.cs">
       <DependentUpon>MapWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Models\EntittyDPS.cs" />
     <Compile Include="Models\SettingsWindowData.cs" />
     <Compile Include="Models\PlayerInfo.cs" />
     <Compile Include="Models\Polygon.cs" />
@@ -100,6 +104,10 @@
     <Compile Include="SpellWindow.xaml.cs">
       <DependentUpon>SpellWindow.xaml</DependentUpon>
     </Compile>
+    <Page Include="DPSMeter.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -161,6 +169,8 @@
   <ItemGroup>
     <None Include="open-folder.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Folder Include="TestFolder\" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
