@@ -18,9 +18,11 @@ namespace EQTool
         private readonly System.Windows.Forms.NotifyIcon SystemTrayIcon;
         private SpellWindow spellWindow = null;
         private MapWindow mapwindow = null;
+        private DPSMeter dpsmeter = null;
         private Settings settingswindow = null;
         private readonly System.Windows.Forms.MenuItem MapMenuItem;
         private readonly System.Windows.Forms.MenuItem SpellsMenuItem;
+        private readonly System.Windows.Forms.MenuItem DpsMeterMenuItem;
 
         public MainWindow()
         {
@@ -37,11 +39,12 @@ namespace EQTool
             var settingsbutton = new System.Windows.Forms.MenuItem("Settings", Settings);
             SpellsMenuItem = new System.Windows.Forms.MenuItem("Spells", Spells);
             MapMenuItem = new System.Windows.Forms.MenuItem("Map", Map);
-
+            DpsMeterMenuItem = new System.Windows.Forms.MenuItem("Dps", DPS);
             if (!FindEq.IsValid(Properties.Settings.Default.DefaultEqDirectory))
             {
                 SpellsMenuItem.Enabled = false;
                 MapMenuItem.Enabled = false;
+                DpsMeterMenuItem.Enabled = false;
                 _ = MessageBox.Show("Project 1999 game files were not able to be found.\nYou must set the path before this program will work!", "Configuration", MessageBoxButton.OK, MessageBoxImage.Warning);
                 settingswindow = new Settings();
                 settingswindow.Show();
@@ -52,6 +55,7 @@ namespace EQTool
                     {
                         SpellsMenuItem.Enabled = true;
                         MapMenuItem.Enabled = true;
+                        DpsMeterMenuItem.Enabled = true;
                     }
                     settingsbutton.Checked = false;
                 };
@@ -65,6 +69,7 @@ namespace EQTool
                 Visible = true,
                 ContextMenu = new System.Windows.Forms.ContextMenu(new System.Windows.Forms.MenuItem[]
                  {
+                    DpsMeterMenuItem,
                     MapMenuItem,
                     SpellsMenuItem,
                     settingsbutton                 ,
@@ -98,6 +103,24 @@ namespace EQTool
             {
                 mapwindow?.Close();
                 mapwindow = null;
+            }
+        }
+
+        private void DPS(object sender, EventArgs e)
+        {
+            var s = (System.Windows.Forms.MenuItem)sender;
+            s.Checked = !s.Checked;
+            if (s.Checked)
+            {
+                dpsmeter?.Close();
+                dpsmeter = new DPSMeter();
+                dpsmeter.Closed += (se, ee) => s.Checked = false;
+                dpsmeter.Show();
+            }
+            else
+            {
+                dpsmeter?.Close();
+                dpsmeter = null;
             }
         }
 
