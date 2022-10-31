@@ -9,10 +9,17 @@ using TGASharpLib;
 
 namespace EQTool.Services
 {
-    public static class SpellIcons
+    public class SpellIcons
     {
-        private static List<SpellIcon> _SpellIcons = new List<SpellIcon>();
-        public static List<SpellIcon> GetSpellIcons()
+        private List<SpellIcon> _SpellIcons = new List<SpellIcon>();
+        private readonly EQToolSettings settings;
+
+        public SpellIcons(EQToolSettings settings)
+        {
+            this.settings = settings;
+        }
+
+        public List<SpellIcon> GetSpellIcons()
         {
             if (_SpellIcons.Any())
             {
@@ -20,7 +27,7 @@ namespace EQTool.Services
             }
 
             var ret = new List<SpellIcon>();
-            var directory = new DirectoryInfo(Properties.Settings.Default.DefaultEqDirectory + "/uifiles/default/");
+            var directory = new DirectoryInfo(settings.DefaultEqDirectory + "/uifiles/default/");
             var spellimages = directory.GetFiles()
                 .Where(a => a.Name.StartsWith("spells0") && a.Name.EndsWith(".tga"))
                 .ToList();
@@ -31,7 +38,7 @@ namespace EQTool.Services
                 var index = int.Parse(numberonly);
                 var i = new SpellIcon
                 {
-                    Icon = img.ToBitmap().ToBitmapImage(),
+                    Icon = ToBitmapImage(img.ToBitmap()),
                     SpellIndex = index,
                 };
                 ret.Add(i);
@@ -40,7 +47,7 @@ namespace EQTool.Services
             return ret;
         }
 
-        private static BitmapImage ToBitmapImage(this Bitmap bitmap)
+        private BitmapImage ToBitmapImage(Bitmap bitmap)
         {
             using (var memory = new MemoryStream())
             {

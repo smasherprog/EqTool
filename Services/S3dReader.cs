@@ -7,9 +7,17 @@ namespace EQTool.Services
 {
     public class S3dReader
     {
+
+        private readonly EQToolSettings settings;
+
+        public S3dReader(EQToolSettings settings)
+        {
+            this.settings = settings;
+        }
+
         public List<SubS3bFile> Read()
         {
-            using (var filestream = new FileStream(Properties.Settings.Default.DefaultEqDirectory + "/freportn.s3d", FileMode.Open, FileAccess.Read))
+            using (var filestream = new FileStream(settings.DefaultEqDirectory + "/freportn.s3d", FileMode.Open, FileAccess.Read))
             using (var reader = new BinaryReader(filestream))
             {
                 var directoryOffset = reader.ReadInt32();

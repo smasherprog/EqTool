@@ -49,7 +49,7 @@ namespace EQTool
 
         public Vector3D LeftDirection => Vector3D.CrossProduct(Camera.UpDirection, Camera.LookDirection);
 
-        public MapWindow()
+        public MapWindow(S3dReader s3DReader)
         {
             InitializeComponent();
 
@@ -67,9 +67,7 @@ namespace EQTool
                 Color = Colors.White,
                 Direction = new Vector3D(-0.61, -0.5, -0.61)
             };
-
-            var r = new S3dReader();
-            var data = r.Read();
+            var data = s3DReader.Read();
             var reader = new WLDReader();
             reader.Read(data.FirstOrDefault(a => a.Name == "freportn.wld"));
             var stuff = reader.ExportZone();

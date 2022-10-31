@@ -6,10 +6,17 @@ using System.Linq;
 
 namespace EQTool.Services
 {
-    public static class ParseSpells
+    public class ParseSpells
     {
-        private static List<SpellBase> _Spells = new List<SpellBase>();
-        public static List<SpellBase> GetSpells()
+        private List<SpellBase> _Spells = new List<SpellBase>();
+        private readonly EQToolSettings settings;
+
+        public ParseSpells(EQToolSettings settings)
+        {
+            this.settings = settings;
+        }
+
+        public List<SpellBase> GetSpells()
         {
             if (_Spells.Any())
             {
@@ -17,7 +24,7 @@ namespace EQTool.Services
             }
 
             var ret = new List<SpellBase>();
-            var spellastext = File.ReadAllLines(Properties.Settings.Default.DefaultEqDirectory + "/spells_us.txt");
+            var spellastext = File.ReadAllLines(settings.DefaultEqDirectory + "/spells_us.txt");
             foreach (var item in spellastext)
             {
                 var splits = item.Split('^');
@@ -65,6 +72,5 @@ namespace EQTool.Services
             _Spells = ret;
             return ret;
         }
-
     }
 }

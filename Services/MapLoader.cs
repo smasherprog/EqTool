@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using EQTool.Models;
+using System.Collections.Generic;
 using System.IO;
 using System.Windows.Media;
 
 namespace EQTool.Services
 {
-    public static class MapLoader
+    public class MapLoader
     {
         public class ShapeItem
         {
@@ -12,10 +13,17 @@ namespace EQTool.Services
             public Brush Stroke { get; set; }
         }
 
-        public static List<ShapeItem> Load()
+        private readonly EQToolSettings settings;
+
+        public MapLoader(EQToolSettings settings)
+        {
+            this.settings = settings;
+        }
+
+        public List<ShapeItem> Load()
         {
             var lines = new List<ShapeItem>();
-            _ = File.ReadAllLines(Properties.Settings.Default.DefaultEqDirectory + "/map_files/blackburrow.txt");
+            _ = File.ReadAllLines(settings.DefaultEqDirectory + "/map_files/blackburrow.txt");
             //foreach (var item in text)
             //{
             //    if (item.StartsWith("L"))

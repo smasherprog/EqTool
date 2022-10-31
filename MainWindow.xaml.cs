@@ -1,4 +1,5 @@
-﻿using EQTool.Models;
+﻿using Autofac;
+using EQTool.Models;
 using EQTool.Services;
 using System;
 using System.ComponentModel;
@@ -14,7 +15,7 @@ namespace EQTool
     /// </summary>
     public partial class MainWindow : Window
     {
-
+        private readonly Autofac.IContainer container;
         private readonly System.Windows.Forms.NotifyIcon SystemTrayIcon;
         private SpellWindow spellWindow = null;
         private MapWindow mapwindow = null;
@@ -27,31 +28,24 @@ namespace EQTool
         public MainWindow()
         {
             InitializeComponent();
-            App.GlobalTriggerWindowOpacity = Properties.Settings.Default.GlobalTriggerWindowOpacity = Properties.Settings.Default.GlobalTriggerWindowOpacity;
-            if (!FindEq.IsValid(Properties.Settings.Default.DefaultEqDirectory))
-            {
-                Properties.Settings.Default.DefaultEqDirectory = FindEq.LoadEQPath();
-            }
-
-            Properties.Settings.Default.FontSize = Properties.Settings.Default.FontSize;
-            Properties.Settings.Default.Save();
+            container = DI.Init();
 
             var settingsbutton = new System.Windows.Forms.MenuItem("Settings", Settings);
             SpellsMenuItem = new System.Windows.Forms.MenuItem("Spells", Spells);
             MapMenuItem = new System.Windows.Forms.MenuItem("Map", Map);
             DpsMeterMenuItem = new System.Windows.Forms.MenuItem("Dps", DPS);
-            if (!FindEq.IsValid(Properties.Settings.Default.DefaultEqDirectory))
+            if (!FindEq.IsValid(EQToolSettings.DefaultEqDirectory))
             {
                 SpellsMenuItem.Enabled = false;
                 MapMenuItem.Enabled = false;
                 DpsMeterMenuItem.Enabled = false;
                 _ = MessageBox.Show("Project 1999 game files were not able to be found.\nYou must set the path before this program will work!", "Configuration", MessageBoxButton.OK, MessageBoxImage.Warning);
-                settingswindow = new Settings();
+                settingswindow = container.Resolve<Settings>();
                 settingswindow.Show();
                 settingsbutton.Checked = true;
                 settingswindow.Closed += (se, ee) =>
                 {
-                    if (FindEq.IsValid(Properties.Settings.Default.DefaultEqDirectory))
+                    if (FindEq.IsValid(EQToolSettings.DefaultEqDirectory))
                     {
                         SpellsMenuItem.Enabled = true;
                         MapMenuItem.Enabled = true;
@@ -80,12 +74,14 @@ namespace EQTool
             Hide();
         }
 
+        private EQToolSettings EQToolSettings => container.Resolve<EQToolSettings>();
         protected override void OnClosing(CancelEventArgs e)
         {
             if (SystemTrayIcon != null)
             {
                 SystemTrayIcon.Visible = false;
             }
+            container.Resolve<EQToolSettingsLoad>().Save(EQToolSettings);
             base.OnClosing(e);
         }
 
@@ -96,7 +92,7 @@ namespace EQTool
             if (s.Checked)
             {
                 mapwindow?.Close();
-                mapwindow = new MapWindow();
+                mapwindow = container.Resolve<MapWindow>();
                 mapwindow.Closed += (se, ee) => s.Checked = false;
                 mapwindow.Show();
             }
@@ -114,7 +110,7 @@ namespace EQTool
             if (s.Checked)
             {
                 dpsmeter?.Close();
-                dpsmeter = new DPSMeter();
+                dpsmeter = container.Resolve<DPSMeter>();
                 dpsmeter.Closed += (se, ee) => s.Checked = false;
                 dpsmeter.Show();
             }
@@ -132,11 +128,11 @@ namespace EQTool
             if (s.Checked)
             {
                 settingswindow?.Close();
-                settingswindow = new Settings();
+                settingswindow = container.Resolve<Settings>();
                 settingswindow.Show();
                 settingswindow.Closed += (se, ee) =>
                 {
-                    if (FindEq.IsValid(Properties.Settings.Default.DefaultEqDirectory))
+                    if (FindEq.IsValid(EQToolSettings.DefaultEqDirectory))
                     {
                         SpellsMenuItem.Enabled = true;
                         MapMenuItem.Enabled = true;
@@ -158,8 +154,8 @@ namespace EQTool
             if (s.Checked)
             {
                 spellWindow?.Close();
-                var players = Properties.Settings.Default.Players ?? new System.Collections.Generic.List<PlayerInfo>();
-                var directory = new DirectoryInfo(Properties.Settings.Default.DefaultEqDirectory + "/Logs/");
+                var players = EQToolSettings.Players ?? new System.Collections.Generic.List<PlayerInfo>();
+                var directory = new DirectoryInfo(EQToolSettings.DefaultEqDirectory + "/Logs/");
                 var loggedincharlogfile = directory.GetFiles()
                     .Where(a => a.Name.StartsWith("eqlog") && a.Name.EndsWith(".txt"))
                     .OrderByDescending(a => a.LastWriteTime)
@@ -175,7 +171,7 @@ namespace EQTool
                         Settings(sender, e);
                     }
                 }
-                spellWindow = new SpellWindow();
+                spellWindow = container.Resolve<SpellWindow>();
                 spellWindow.Closed += (se, ee) => s.Checked = false;
                 spellWindow.Show();
             }

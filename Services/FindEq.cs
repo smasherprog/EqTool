@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace EQTool.Services
 {
-    public static class FindEq
+    public class FindEq
     {
         private class Match
         {
@@ -15,7 +15,8 @@ namespace EQTool.Services
         }
 
         private const string p99licensehash = "0a9ac51838f622d0e92e328692f4db73727ccf1ff0b516326a6bf104d8b4b16d";
-        public static string LoadEQPath()
+
+        public string LoadEQPath()
         {
             var possibles = new List<Match>();
 

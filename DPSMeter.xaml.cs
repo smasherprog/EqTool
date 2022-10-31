@@ -1,4 +1,5 @@
 ﻿using EQTool.Models;
+using EQTool.Services;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -24,8 +25,15 @@ namespace EQTool
         private long? LastReadOffset;
         private readonly string HitMessage = " points of damage.";
         private DateTime? LastTimeFighting;
-        public DPSMeter()
+        private readonly EQToolSettings settings;
+        private readonly ParseSpells parseSpells;
+        private readonly SpellIcons spellIcons;
+
+        public DPSMeter(EQToolSettings settings, ParseSpells parseSpells, SpellIcons spellIcons)
         {
+            this.settings = settings;
+            this.parseSpells = parseSpells;
+            this.spellIcons = spellIcons;
             InitializeComponent();
             ParseTimer = new System.Timers.Timer(500);
             ParseTimer.Elapsed += PollUpdates;
@@ -45,8 +53,8 @@ namespace EQTool
 
         private FileInfo TryUpdatePlayerLevel()
         {
-            var players = Properties.Settings.Default.Players ?? new System.Collections.Generic.List<PlayerInfo>();
-            var directory = new DirectoryInfo(Properties.Settings.Default.DefaultEqDirectory + "/Logs/");
+            var players = settings.Players ?? new System.Collections.Generic.List<PlayerInfo>();
+            var directory = new DirectoryInfo(settings.DefaultEqDirectory + "/Logs/");
             var loggedincharlogfile = directory.GetFiles()
                 .Where(a => a.Name.StartsWith("eqlog") && a.Name.EndsWith(".txt"))
                 .OrderByDescending(a => a.LastWriteTime)

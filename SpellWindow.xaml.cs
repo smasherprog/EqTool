@@ -24,9 +24,9 @@ namespace EQTool
         private readonly string ZoneLoadingMessage = "LOADING, PLEASE WAIT...";
         private readonly string YouBeginCasting = "you begin casting ";
         private readonly List<Spell> AllSpells = new List<Spell>();
-        private readonly Dictionary<string, Spell> CastOtherSpells = new Dictionary<string, Spell>();
-        private readonly Dictionary<string, Spell> CastOnYouSpells = new Dictionary<string, Spell>();
-        private readonly Dictionary<string, Spell> YouCastSpells = new Dictionary<string, Spell>();
+        private readonly Dictionary<string, List<Spell>> CastOtherSpells = new Dictionary<string, List<Spell>>();
+        private readonly Dictionary<string, List<Spell>> CastOnYouSpells = new Dictionary<string, List<Spell>>();
+        private readonly Dictionary<string, List<Spell>> YouCastSpells = new Dictionary<string, List<Spell>>();
         private Spell UserCastingSpell;
         private int UserCastingSpellCounter = 0;
         private int? Level = 1;
@@ -37,53 +37,57 @@ namespace EQTool
             "Chords of Dissonance"
         };
 
-        public SpellWindow()
+        private readonly EQToolSettings settings;
+        private readonly ParseSpells parseSpells;
+        private readonly SpellIcons spellIcons;
+
+        public SpellWindow(EQToolSettings settings, ParseSpells parseSpells, SpellIcons spellIcons)
         {
+            this.settings = settings;
+            this.parseSpells = parseSpells;
+            this.spellIcons = spellIcons;
             InitializeComponent();
             _ = CommandBindings.Add(new CommandBinding(ApplicationCommands.Close, new ExecutedRoutedEventHandler(delegate (object sender, ExecutedRoutedEventArgs args) { Close(); })));
-            var spells = ParseSpells.GetSpells().Where(a => !IgnoreSpellsList.Contains(a.name));
-            var spellicons = SpellIcons.GetSpellIcons();
-            Topmost = Properties.Settings.Default.TriggerWindowTopMost;
+            var spells = parseSpells.GetSpells().Where(a => !IgnoreSpellsList.Contains(a.name) && a.spell_icon > 0);
+            var spellicons = spellIcons.GetSpellIcons();
+            Topmost = settings.TriggerWindowTopMost;
             foreach (var item in spells)
             {
                 var mappedspell = item.Map(spellicons);
                 AllSpells.Add(mappedspell);
-                if (mappedspell.buffduration > 0)
+                if (mappedspell.buffduration > 0 && mappedspell.Level > 0)
                 {
                     if (!string.IsNullOrWhiteSpace(mappedspell.cast_on_other))
                     {
                         if (CastOtherSpells.TryGetValue(mappedspell.cast_on_other, out var innerval))
                         {
-                            if (mappedspell.Level < 61 && mappedspell.Level > 0)
-                            {
-                                CastOtherSpells[mappedspell.cast_on_other] = mappedspell;
-                            }
+                            CastOtherSpells[mappedspell.cast_on_other].Add(mappedspell);
                         }
                         else
                         {
-                            CastOtherSpells.Add(mappedspell.cast_on_other, mappedspell);
+                            CastOtherSpells.Add(mappedspell.cast_on_other, new List<Spell>() { mappedspell });
                         }
                     }
-                    if (!string.IsNullOrWhiteSpace(mappedspell.name) && mappedspell.Level > 0)
+                    if (!string.IsNullOrWhiteSpace(mappedspell.name))
                     {
-                        if (!YouCastSpells.ContainsKey(mappedspell.name))
+                        if (YouCastSpells.TryGetValue(mappedspell.name, out var innerval))
                         {
-                            YouCastSpells.Add(mappedspell.name, mappedspell);
+                            YouCastSpells[mappedspell.name].Add(mappedspell);
                         }
                         else
                         {
-                            Debug.WriteLine($"Skipping spell: {mappedspell.name}");
+                            YouCastSpells.Add(mappedspell.name, new List<Spell>() { mappedspell });
                         }
                     }
-                    if (!string.IsNullOrWhiteSpace(mappedspell.cast_on_you) && mappedspell.Level > 0)
+                    if (!string.IsNullOrWhiteSpace(mappedspell.cast_on_you))
                     {
-                        if (!CastOnYouSpells.ContainsKey(mappedspell.cast_on_you))
+                        if (CastOnYouSpells.TryGetValue(mappedspell.cast_on_you, out var innerval))
                         {
-                            CastOnYouSpells.Add(mappedspell.cast_on_you, mappedspell);
+                            CastOnYouSpells[mappedspell.cast_on_you].Add(mappedspell);
                         }
                         else
                         {
-                            Debug.WriteLine($"Skipping cast_on_you spell: {mappedspell.cast_on_you}");
+                            CastOnYouSpells.Add(mappedspell.cast_on_you, new List<Spell>() { mappedspell });
                         }
                     }
                 }
@@ -113,8 +117,8 @@ namespace EQTool
 
         private FileInfo TryUpdatePlayerLevel()
         {
-            var players = Properties.Settings.Default.Players ?? new System.Collections.Generic.List<PlayerInfo>();
-            var directory = new DirectoryInfo(Properties.Settings.Default.DefaultEqDirectory + "/Logs/");
+            var players = settings.Players ?? new System.Collections.Generic.List<PlayerInfo>();
+            var directory = new DirectoryInfo(settings.DefaultEqDirectory + "/Logs/");
             var loggedincharlogfile = directory.GetFiles()
                 .Where(a => a.Name.StartsWith("eqlog") && a.Name.EndsWith(".txt"))
                 .OrderByDescending(a => a.LastWriteTime)
@@ -192,6 +196,28 @@ namespace EQTool
             catch { }
         }
 
+        private Spell GetClosestmatch(List<Spell> spells)
+        {
+            if (!Level.HasValue)
+            {
+                return spells.FirstOrDefault(a => a.Level > 0 && a.Level < 60);
+            }
+
+            Spell closestspell = null;
+            var leveldelta = 100;
+            foreach (var item in spells)
+            {
+                var delta = Math.Abs(item.Level - Level.Value);
+                if (delta < leveldelta)
+                {
+                    leveldelta = delta;
+                    closestspell = item;
+                }
+            }
+
+            return closestspell;
+        }
+
         private void ParseLine(string line)
         {
             var date = line.Substring(1, 25);
@@ -205,8 +231,9 @@ namespace EQTool
             if (message.StartsWith(YouBeginCasting))
             {
                 var spellname = message.Substring(YouBeginCasting.Length - 1).Trim().TrimEnd('.');
-                if (YouCastSpells.TryGetValue(spellname, out var foundspell))
+                if (YouCastSpells.TryGetValue(spellname, out var foundspells))
                 {
+                    var foundspell = GetClosestmatch(foundspells);
                     Debug.WriteLine($"Self Casting Spell: {spellname} Delay: {foundspell.casttime}");
                     UserCastingSpell = foundspell;
                     if (!Level.HasValue)
@@ -256,14 +283,15 @@ namespace EQTool
                     });
                 }
             }
-            else if (Properties.Settings.Default.BestGuessSpells)
+            else if (settings.BestGuessSpells)
             {
                 var removename = message.IndexOf("'");
                 if (removename != -1)
                 {
                     var spellmessage = message.Substring(removename).Trim();
-                    if (CastOtherSpells.TryGetValue(spellmessage, out var foundspell))
+                    if (CastOtherSpells.TryGetValue(spellmessage, out var foundspells))
                     {
+                        var foundspell = GetClosestmatch(foundspells);
                         var targetname = message.Replace(foundspell.cast_on_other, string.Empty).Trim();
                         Debug.WriteLine($"Other Spell: {foundspell.name} Message: {spellmessage}");
                         App.Current.Dispatcher.Invoke(delegate
@@ -278,8 +306,9 @@ namespace EQTool
                     if (removename != -1)
                     {
                         var spellmessage = message.Substring(removename).Trim();
-                        if (CastOtherSpells.TryGetValue(spellmessage, out var foundspell))
+                        if (CastOtherSpells.TryGetValue(spellmessage, out var foundspells))
                         {
+                            var foundspell = GetClosestmatch(foundspells);
                             var targetname = message.Replace(foundspell.cast_on_other, string.Empty).Trim();
                             Debug.WriteLine($"Other Spell: {foundspell.name} Message: {spellmessage}");
                             App.Current.Dispatcher.Invoke(delegate
