@@ -22,7 +22,9 @@ namespace EQTool
         private readonly Timer UITimer;
         private long? LastReadOffset;
         private readonly string ZoneLoadingMessage = "LOADING, PLEASE WAIT...";
-        private readonly string YouBeginCasting = "you begin casting ";
+        private readonly string YouBeginCasting = "You begin casting ";
+        private readonly string Your = "Your ";
+        private readonly string You = "You ";
         private readonly List<Spell> AllSpells = new List<Spell>();
         private readonly Dictionary<string, List<Spell>> CastOtherSpells = new Dictionary<string, List<Spell>>();
         private readonly Dictionary<string, List<Spell>> CastOnYouSpells = new Dictionary<string, List<Spell>>();
@@ -51,8 +53,9 @@ namespace EQTool
             {
                 var mappedspell = item.Map(spellicons);
                 AllSpells.Add(mappedspell);
-                if (mappedspell.buffduration > 0 && mappedspell.Level > 0)
+                if (mappedspell.buffduration > 0)
                 {
+                    //Debug.WriteLine($"'{mappedspell.name}'---'{mappedspell.cast_on_you}'---'{mappedspell.cast_on_other}'");
                     if (!string.IsNullOrWhiteSpace(mappedspell.cast_on_other))
                     {
                         if (CastOtherSpells.TryGetValue(mappedspell.cast_on_other, out var innerval))
@@ -64,7 +67,7 @@ namespace EQTool
                             CastOtherSpells.Add(mappedspell.cast_on_other, new List<Spell>() { mappedspell });
                         }
                     }
-                    if (!string.IsNullOrWhiteSpace(mappedspell.name))
+                    if (!string.IsNullOrWhiteSpace(mappedspell.name) && mappedspell.Level > 0)
                     {
                         if (YouCastSpells.TryGetValue(mappedspell.name, out var innerval))
                         {
@@ -86,6 +89,10 @@ namespace EQTool
                             CastOnYouSpells.Add(mappedspell.cast_on_you, new List<Spell>() { mappedspell });
                         }
                     }
+                }
+                else
+                {
+                    Debug.WriteLine($"Spell {mappedspell.name} Ignored");
                 }
             }
 
@@ -252,6 +259,33 @@ namespace EQTool
                     }
                 }
             }
+            else if (message.StartsWith(You))
+            {
+                if (CastOnYouSpells.TryGetValue(message, out var foundspells))
+                {
+                    var foundspell = GetClosestmatch(foundspells);
+                    Debug.WriteLine($"Your Casting Spell: {message} Delay: {foundspell.casttime}");
+                    App.Current.Dispatcher.Invoke(delegate
+                    {
+                        TryAdd(foundspell, "You");
+                    });
+                }
+            }
+
+            if (message.StartsWith(Your))
+            {
+                var spellname = message.Substring(Your.Length - 1).Trim().TrimEnd('.');
+                if (CastOnYouSpells.TryGetValue(spellname, out var foundspells))
+                {
+                    var foundspell = GetClosestmatch(foundspells);
+                    Debug.WriteLine($"Your Casting Spell: {spellname} Delay: {foundspell.casttime}");
+                    App.Current.Dispatcher.Invoke(delegate
+                    {
+                        TryAdd(foundspell, "You");
+                    });
+                }
+            }
+
 
             if (UserCastingSpell != null)
             {
@@ -342,7 +376,7 @@ namespace EQTool
                 Rect = spell.Rect,
                 SecondsLeftOnSpell = spellduration,
                 SpellIcon = spell.SpellIcon
-            }); ;
+            });
         }
 
         private static int GetDuration_inSeconds(Spell spell, int? userlevel)
@@ -350,7 +384,7 @@ namespace EQTool
             _ = spell.buffdurationformula;
             var duration = spell.buffduration;
             int spell_ticks;
-            var level = spell.Level > userlevel.Value ? spell.Level : userlevel.Value;
+            var level = userlevel.HasValue ? (spell.Level > userlevel.Value ? spell.Level : userlevel.Value) : spell.Level;
             switch (spell.buffdurationformula)
             {
                 case 0:
