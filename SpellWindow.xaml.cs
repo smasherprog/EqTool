@@ -31,7 +31,7 @@ namespace EQTool
         private readonly Dictionary<string, List<Spell>> YouCastSpells = new Dictionary<string, List<Spell>>();
         private Spell UserCastingSpell;
         private int UserCastingSpellCounter = 0;
-        private int? Level = 1;
+        private PlayerInfo LastPlayerFound = null;
         private readonly List<string> IgnoreSpellsList = new List<string>()
         {
             "Complete Heal",
@@ -131,7 +131,13 @@ namespace EQTool
                 var charname = loggedincharlogfile.Name.Replace("eqlog_", string.Empty);
                 var indexpart = charname.IndexOf("_");
                 var charName = charname.Substring(0, indexpart);
-                Level = players.FirstOrDefault(a => a.Name == charName)?.Level;
+                var tempplayer = players.FirstOrDefault(a => a.Name == charName);
+                if (tempplayer != LastPlayerFound)
+                {
+                    SpellList.Clear();
+                    LastReadOffset = null;
+                }
+                LastPlayerFound = tempplayer;
             }
 
             return loggedincharlogfile;
@@ -201,7 +207,8 @@ namespace EQTool
 
         private Spell GetClosestmatch(List<Spell> spells)
         {
-            if (!Level.HasValue)
+            var level = LastPlayerFound?.Level;
+            if (!level.HasValue)
             {
                 return spells.FirstOrDefault(a => a.Level > 0 && a.Level <= 60);
             }
@@ -210,7 +217,7 @@ namespace EQTool
             var leveldelta = 100;
             foreach (var item in spells)
             {
-                var delta = Math.Abs(item.Level - Level.Value);
+                var delta = Math.Abs(item.Level - level.Value);
                 if (delta < leveldelta)
                 {
                     leveldelta = delta;
@@ -239,10 +246,7 @@ namespace EQTool
                     var foundspell = GetClosestmatch(foundspells);
                     Debug.WriteLine($"Self Casting Spell: {spellname} Delay: {foundspell.casttime}");
                     UserCastingSpell = foundspell;
-                    if (!Level.HasValue)
-                    {
-                        Level = UserCastingSpell.Level;
-                    }
+
                     if (UserCastingSpell.casttime > 0)
                     {
                         var oldreference = UserCastingSpell;
@@ -289,10 +293,6 @@ namespace EQTool
 
             if (UserCastingSpell != null)
             {
-                if (!Level.HasValue)
-                {
-                    Level = UserCastingSpell.Level;
-                }
                 if (message == UserCastingSpell.cast_on_you)
                 {
                     Debug.WriteLine($"Self Finished Spell: {message}");
@@ -365,7 +365,12 @@ namespace EQTool
                 _ = SpellList.Remove(s);
             }
             _ = TryUpdatePlayerLevel();
-            var spellduration = TimeSpan.FromSeconds(GetDuration_inSeconds(spell, Level));
+            var level = LastPlayerFound?.Level;
+            if (!level.HasValue)
+            {
+                level = UserCastingSpell.Level;
+            }
+            var spellduration = TimeSpan.FromSeconds(GetDuration_inSeconds(spell, level));
             SpellList.Add(new UISpell
             {
                 TotalSecondsOnSpell = (int)spellduration.TotalSeconds,
