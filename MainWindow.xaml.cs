@@ -3,7 +3,6 @@ using EQTool.Models;
 using EQTool.Services;
 using System;
 using System.ComponentModel;
-using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -61,7 +60,7 @@ namespace EQTool
 #endif 
             SystemTrayIcon = new System.Windows.Forms.NotifyIcon
             {
-                Icon = new Icon(Application.GetResourceStream(new Uri("pack://application:,,,/eqicon.ico")).Stream),
+                Icon = Properties.Resources.toolicon1,
                 Visible = true,
                 ContextMenu = new System.Windows.Forms.ContextMenu(new System.Windows.Forms.MenuItem[]
                  {
