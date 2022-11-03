@@ -24,13 +24,14 @@ namespace EQTool
         private readonly System.Windows.Forms.MenuItem MapMenuItem;
         private readonly System.Windows.Forms.MenuItem SpellsMenuItem;
         private readonly System.Windows.Forms.MenuItem DpsMeterMenuItem;
+        private readonly System.Windows.Forms.MenuItem SettingsMenuItem;
 
         public MainWindow()
         {
             InitializeComponent();
             container = DI.Init();
 
-            var settingsbutton = new System.Windows.Forms.MenuItem("Settings", Settings);
+            SettingsMenuItem = new System.Windows.Forms.MenuItem("Settings", Settings);
             SpellsMenuItem = new System.Windows.Forms.MenuItem("Spells", Spells);
             MapMenuItem = new System.Windows.Forms.MenuItem("Map", Map);
             DpsMeterMenuItem = new System.Windows.Forms.MenuItem("Dps", DPS);
@@ -42,7 +43,7 @@ namespace EQTool
                 _ = MessageBox.Show("Project 1999 game files were not able to be found.\nYou must set the path before this program will work!", "Configuration", MessageBoxButton.OK, MessageBoxImage.Warning);
                 settingswindow = container.Resolve<Settings>();
                 settingswindow.Show();
-                settingsbutton.Checked = true;
+                SettingsMenuItem.Checked = true;
                 settingswindow.Closed += (se, ee) =>
                 {
                     if (FindEq.IsValid(EQToolSettings.DefaultEqDirectory))
@@ -51,7 +52,7 @@ namespace EQTool
                         MapMenuItem.Enabled = true;
                         DpsMeterMenuItem.Enabled = true;
                     }
-                    settingsbutton.Checked = false;
+                    SettingsMenuItem.Checked = false;
                 };
             }
 #if !DEBUG
@@ -67,7 +68,7 @@ namespace EQTool
                     DpsMeterMenuItem,
                     MapMenuItem,
                     SpellsMenuItem,
-                    settingsbutton                 ,
+                    SettingsMenuItem                 ,
                     new System.Windows.Forms.MenuItem("Exit", Exit)
                  }),
             };
@@ -168,7 +169,18 @@ namespace EQTool
                     if (!players.Any(a => a.Name == charName))
                     {
                         _ = MessageBox.Show("Please set your characters level in settings otherwise spell timers wont work correctly.", "Configuration", MessageBoxButton.OK, MessageBoxImage.Warning);
-                        Settings(sender, e);
+                        settingswindow?.Close();
+                        settingswindow = container.Resolve<Settings>();
+                        settingswindow.Show();
+                        settingswindow.Closed += (se, ee) =>
+                        {
+                            if (FindEq.IsValid(EQToolSettings.DefaultEqDirectory))
+                            {
+                                SpellsMenuItem.Enabled = true;
+                                MapMenuItem.Enabled = true;
+                            }
+                            SettingsMenuItem.Checked = false;
+                        };
                     }
                 }
                 spellWindow = container.Resolve<SpellWindow>();
