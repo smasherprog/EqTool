@@ -141,10 +141,19 @@ namespace EQTool
                     var damagedone = splits[splits.Length - 1];
                     var hittype = splits[1];
                     var nameofchar = splits[0];
-                    var afterhit = message.IndexOf(hittype) + hittype.Length;
+                    var afterhit = message.IndexOf(hittype);
+                    if (afterhit == -1)
+                    {
+                        return;
+                    }
+
+                    afterhit += hittype.Length;
                     var forname = " for ";
                     var nameofthing = message.IndexOf(forname);
-
+                    if (nameofthing == -1)
+                    {
+                        return;
+                    }
                     var nameofthinglength = nameofthing - afterhit;
                     var nameofthethingforreal = message.Substring(afterhit, nameofthinglength);
 
