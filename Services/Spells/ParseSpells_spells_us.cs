@@ -28,6 +28,11 @@ namespace EQTool.Services
             foreach (var item in spellastext)
             {
                 var spell = ParseLine(item);
+                if (spell.name.StartsWith("GM "))
+                {
+                    continue;
+                }
+
                 if (spells.ContainsKey(spell.name))
                 {
                     skippedcounter++;

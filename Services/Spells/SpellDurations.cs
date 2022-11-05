@@ -32,7 +32,11 @@ namespace EQTool.Services
                         }
                     }
                 }
-                return closestspell;
+
+                if (closestspell != null)
+                {
+                    return closestspell;
+                }
             }
 
             foreach (var item in spells)
@@ -49,37 +53,41 @@ namespace EQTool.Services
             return spells.FirstOrDefault();
         }
 
-        public static int MatchClosestLevelToSpell(Spell spell, PlayerInfo player)
+        public static int? MatchClosestLevelToSpell(Spell spell, PlayerInfo player)
         {
             var userlevel = player?.Level;
             var playerclass = player?.PlayerClass;
             if (playerclass.HasValue && userlevel.HasValue)
             {
-                if (spell.Classes.ContainsKey(playerclass.Value))
+                if (spell.Classes.TryGetValue(playerclass.Value, out var foundlewvel))
                 {
-                    return userlevel.Value;
+                    return userlevel.Value < foundlewvel ? foundlewvel : userlevel.Value;
                 }
-
-                var closestlevel = userlevel.Value;
-                foreach (var item in spell.Classes)
-                {
-                    var delta = Math.Abs(item.Value - closestlevel);
-                    if (delta < closestlevel)
-                    {
-                        closestlevel = delta;
-                    }
-                }
-                return closestlevel;
             }
 
-            return spell.Classes.Values.OrderBy(a => a).FirstOrDefault();
+            if (userlevel.HasValue)
+            {
+                return userlevel.Value;
+            }
+
+            var closestlevel = userlevel.Value;
+            foreach (var item in spell.Classes)
+            {
+                var delta = Math.Abs(item.Value - closestlevel);
+                if (delta < closestlevel)
+                {
+                    closestlevel = delta;
+                }
+            }
+
+            return spell.Classes.Any() ? spell.Classes.FirstOrDefault().Value : (int?)null;
         }
 
         public static int GetDuration_inSeconds(Spell spell, PlayerInfo player)
         {
             var duration = spell.buffduration;
             int spell_ticks;
-            var level = MatchClosestLevelToSpell(spell, player);
+            var level = MatchClosestLevelToSpell(spell, player) ?? 0;
 
             switch (spell.buffdurationformula)
             {

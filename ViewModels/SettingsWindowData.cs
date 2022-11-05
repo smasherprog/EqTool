@@ -1,5 +1,9 @@
-﻿using System.Collections.ObjectModel;
+﻿using EQTool.Models;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 
 namespace EQTool.ViewModels
@@ -19,7 +23,7 @@ namespace EQTool.ViewModels
             set
             {
                 _EqPath = value;
-                OnPropertyChanged(nameof(EqPath));
+                OnPropertyChanged();
             }
         }
 
@@ -30,7 +34,7 @@ namespace EQTool.ViewModels
             set
             {
                 _CharName = value;
-                OnPropertyChanged(nameof(CharName));
+                OnPropertyChanged();
             }
         }
         private int _CharLevel = 1;
@@ -40,9 +44,22 @@ namespace EQTool.ViewModels
             set
             {
                 _CharLevel = value;
-                OnPropertyChanged(nameof(CharLevel));
+                OnPropertyChanged();
             }
         }
+
+        private PlayerClasses? _PlayerClass;
+        public PlayerClasses? PlayerClass
+        {
+            get => _PlayerClass;
+            set
+            {
+                _PlayerClass = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public List<PlayerClasses> PlayerClasses => Enum.GetValues(typeof(PlayerClasses)).Cast<PlayerClasses>().ToList();
 
         public bool EqRunning
         {
@@ -50,7 +67,7 @@ namespace EQTool.ViewModels
             set
             {
                 IsEqNotRunning = value;
-                OnPropertyChanged(nameof(IsEqRunning));
+                OnPropertyChanged();
                 OnPropertyChanged(nameof(IsEqNotRunning));
             }
         }
@@ -66,7 +83,7 @@ namespace EQTool.ViewModels
             set
             {
                 _IsLogginEnabled = value;
-                OnPropertyChanged(nameof(IsLogginEnabled));
+                OnPropertyChanged();
                 OnPropertyChanged(nameof(IsLogginDisabled));
             }
         }

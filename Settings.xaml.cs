@@ -20,16 +20,17 @@ namespace EQTool
     /// </summary>
     public partial class Settings : Window
     {
-        public SettingsWindowData SettingsWindowData = new SettingsWindowData();
+        private readonly SettingsWindowData SettingsWindowData;
         private readonly EQToolSettings settings;
         private readonly EQToolSettingsLoad toolSettingsLoad;
 
-        public Settings(EQToolSettings settings, EQToolSettingsLoad toolSettingsLoad)
+        public Settings(EQToolSettings settings, EQToolSettingsLoad toolSettingsLoad, SettingsWindowData settingsWindowData)
         {
+            SettingsWindowData = settingsWindowData;
             this.settings = settings;
             this.toolSettingsLoad = toolSettingsLoad;
             SettingsWindowData.EqPath = this.settings.DefaultEqDirectory;
-            DataContext = SettingsWindowData;
+            DataContext = settingsWindowData;
             InitializeComponent();
             TryUpdateCharName();
             TryCheckLoggingEnabled();
@@ -88,13 +89,15 @@ namespace EQTool
                 if (player != null)
                 {
                     player.Level = SettingsWindowData.CharLevel;
+                    player.PlayerClass = SettingsWindowData.PlayerClass;
                 }
                 else
                 {
                     players.Add(new PlayerInfo
                     {
                         Level = SettingsWindowData.CharLevel,
-                        Name = SettingsWindowData.CharName
+                        Name = SettingsWindowData.CharName,
+                        PlayerClass = SettingsWindowData.PlayerClass
                     });
                 }
 
@@ -156,11 +159,6 @@ namespace EQTool
         {
             Debug.WriteLine(fontsizescombobox.SelectedValue);
             App.GlobalFontSize = double.Parse(fontsizescombobox.SelectedValue as string);
-        }
-
-        private void DoneButtonClicked(object sender, RoutedEventArgs e)
-        {
-            Close();
         }
 
         private void levelscombobox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
