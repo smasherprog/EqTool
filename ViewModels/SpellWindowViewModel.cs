@@ -63,9 +63,9 @@ namespace EQTool.ViewModels
             });
         }
 
-        public void TryAdd(Spell spell, string target)
+        public void TryAdd(SpellParsingMatch match)
         {
-            if (spell == null)
+            if (match?.Spell == null)
             {
                 return;
             }
@@ -73,23 +73,29 @@ namespace EQTool.ViewModels
             appDispatcher.DispatchUI(() =>
             {
                 _ = activePlayer.Update();
-                var s = SpellList.FirstOrDefault(a => a.SpellName == spell.name && a.TargetName == target);
+                var spellname = match.Spell.name;
+                if (match.MutipleMatchesFound)
+                {
+                    spellname = "??? " + spellname;
+                }
+
+                var s = SpellList.FirstOrDefault(a => a.SpellName == spellname && match.TargetName == a.TargetName);
                 if (s != null)
                 {
                     _ = SpellList.Remove(s);
                 }
 
-                var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(spell, activePlayer.Player));
+                var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(match.Spell, activePlayer.Player));
                 SpellList.Add(new UISpell
                 {
                     TotalSecondsOnSpell = (int)spellduration.TotalSeconds,
                     PercentLeftOnSpell = 100,
-                    SpellType = spell.type,
-                    TargetName = target,
-                    SpellName = spell.name,
-                    Rect = spell.Rect,
+                    SpellType = match.Spell.type,
+                    TargetName = match.TargetName,
+                    SpellName = spellname,
+                    Rect = match.Spell.Rect,
                     SecondsLeftOnSpell = spellduration,
-                    SpellIcon = spell.SpellIcon
+                    SpellIcon = match.Spell.SpellIcon
                 });
             });
         }

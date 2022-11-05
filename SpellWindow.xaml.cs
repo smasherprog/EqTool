@@ -109,7 +109,7 @@ namespace EQTool
                             var matched = spellLogParse.MatchSpell(line);
                             if (matched?.Spell != null)
                             {
-                                spellWindowViewModel.TryAdd(matched.Spell, matched.TargetName);
+                                spellWindowViewModel.TryAdd(matched);
                             }
                         }
                     }
