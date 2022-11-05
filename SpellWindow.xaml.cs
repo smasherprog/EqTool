@@ -46,8 +46,8 @@ namespace EQTool
             UITimer.Enabled = true;
 
             var view = (CollectionView)CollectionViewSource.GetDefaultView(spelllistview.ItemsSource);
-            var groupDescription = new PropertyGroupDescription("TargetName");
-            view.GroupDescriptions.Add(groupDescription);
+            view.GroupDescriptions.Add(new PropertyGroupDescription("TargetName"));
+            view.SortDescriptions.Add(new SortDescription("TargetName", ListSortDirection.Ascending));
         }
 
         public void DragWindow(object sender, MouseButtonEventArgs args)
