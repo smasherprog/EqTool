@@ -1,16 +1,86 @@
 ﻿using EQTool.Models;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace EQTool.Services
 {
     public static class SpellDurations
     {
-        public static int GetDuration_inSeconds(Spell spell, int? userlevel)
+        public static Spell MatchClosestLevelToSpell(List<Spell> spells, PlayerInfo player)
         {
-            _ = spell.buffdurationformula;
+            var userlevel = player?.Level;
+            var playerclass = player?.PlayerClass;
+            if (playerclass.HasValue && userlevel.HasValue)
+            {
+                var closestlevel = userlevel.Value;
+                Spell closestspell = null;
+                foreach (var spell in spells)
+                {
+                    if (spell.Classes.TryGetValue(playerclass.Value, out var level))
+                    {
+                        return spell;
+                    }
+
+                    foreach (var item in spell.Classes)
+                    {
+                        var delta = Math.Abs(item.Value - closestlevel);
+                        if (delta < closestlevel)
+                        {
+                            closestspell = spell;
+                            closestlevel = delta;
+                        }
+                    }
+                }
+                return closestspell;
+            }
+
+            foreach (var item in spells)
+            {
+                foreach (var level in item.Classes)
+                {
+                    if (level.Value > 0 && level.Value <= 60)
+                    {
+                        return item;
+                    }
+                }
+            }
+
+            return spells.FirstOrDefault();
+        }
+
+        public static int MatchClosestLevelToSpell(Spell spell, PlayerInfo player)
+        {
+            var userlevel = player?.Level;
+            var playerclass = player?.PlayerClass;
+            if (playerclass.HasValue && userlevel.HasValue)
+            {
+                if (spell.Classes.ContainsKey(playerclass.Value))
+                {
+                    return userlevel.Value;
+                }
+
+                var closestlevel = userlevel.Value;
+                foreach (var item in spell.Classes)
+                {
+                    var delta = Math.Abs(item.Value - closestlevel);
+                    if (delta < closestlevel)
+                    {
+                        closestlevel = delta;
+                    }
+                }
+                return closestlevel;
+            }
+
+            return spell.Classes.Values.OrderBy(a => a).FirstOrDefault();
+        }
+
+        public static int GetDuration_inSeconds(Spell spell, PlayerInfo player)
+        {
             var duration = spell.buffduration;
             int spell_ticks;
-            var level = userlevel.HasValue ? (spell.Level > userlevel.Value ? spell.Level : userlevel.Value) : spell.Level;
+            var level = MatchClosestLevelToSpell(spell, player);
+
             switch (spell.buffdurationformula)
             {
                 case 0:

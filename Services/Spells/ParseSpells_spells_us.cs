@@ -22,55 +22,58 @@ namespace EQTool.Services
             {
                 return _Spells;
             }
-
-            var ret = new List<SpellBase>();
+            var spells = new Dictionary<string, SpellBase>();
             var spellastext = File.ReadAllLines(settings.DefaultEqDirectory + "/spells_us.txt");
+            var skippedcounter = 0;
             foreach (var item in spellastext)
             {
-                var splits = item.Split('^');
-                var levelofspell = 0;
-                for (var i = 105; i < 120; i++)
+                var spell = ParseLine(item);
+                if (spells.ContainsKey(spell.name))
                 {
-                    if (int.TryParse(splits[i], out var l))
-                    {
-                        if (l >= levelofspell && l < 255)
-                        {
-                            levelofspell = l;
-                        }
-                    }
+                    skippedcounter++;
+                    spells[spell.name] = spell;
                 }
-
-                var spell = new SpellBase
+                else
                 {
-                    id = int.Parse(splits[0]),
-                    name = splits[1],
-                    buffduration = int.Parse(splits[17]),
-                    buffdurationformula = int.Parse(splits[16]),
-                    pvp_buffdurationformula = int.Parse(splits[181]),
-                    type = int.Parse(splits[83]),
-                    cast_on_other = splits[7].Trim(),
-                    casttime = int.Parse(splits[13]),
-                    cast_on_you = splits[6].Trim(),
-                    spell_fades = splits[8].Trim(),
-                    Level = levelofspell,
-                    spell_icon = int.Parse(splits[144])
-                };
-                ret.Add(spell);
-                if (spell.cast_on_other.Contains("feet feel quick"))
-                {
-                    Debug.WriteLine("sdfsdf");
-                }
-                if (spell.cast_on_you.Contains("feet feel quick"))
-                {
-                    Debug.WriteLine("sdfsdf");
-                }
-                if (spell.name.Contains("Protection of the "))
-                {
-                    Debug.WriteLine("sdfsdf");
+                    spells.Add(spell.name, spell);
                 }
             }
-            _Spells = ret;
-            return ret;
+            Debug.WriteLine($"Skipped {skippedcounter}");
+
+            _Spells = spells.Values.ToList();
+            return _Spells;
+        }
+
+        public static SpellBase ParseLine(string line)
+        {
+            var splits = line.Split('^');
+            var classes = new Dictionary<PlayerClasses, int>();
+            for (var i = 105; i < 120; i++)
+            {
+                if (int.TryParse(splits[i], out var l))
+                {
+                    if (l >= 0 && l < 255)
+                    {
+                        classes.Add((PlayerClasses)(i - 104), l);
+                    }
+                }
+            }
+
+            return new SpellBase
+            {
+                id = int.Parse(splits[0]),
+                name = splits[1],
+                buffduration = int.Parse(splits[17]),
+                buffdurationformula = int.Parse(splits[16]),
+                pvp_buffdurationformula = int.Parse(splits[181]),
+                type = int.Parse(splits[83]),
+                cast_on_other = splits[7].Trim(),
+                casttime = int.Parse(splits[13]),
+                cast_on_you = splits[6].Trim(),
+                spell_fades = splits[8].Trim(),
+                Classes = classes,
+                spell_icon = int.Parse(splits[144])
+            };
         }
     }
 }

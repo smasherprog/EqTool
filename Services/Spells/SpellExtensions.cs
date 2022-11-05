@@ -20,7 +20,7 @@ namespace EQTool.Services
                 spell_fades = spell.spell_fades,
                 spell_icon = spell.spell_icon,
                 casttime = spell.casttime,
-                Level = spell.Level,
+                Classes = spell.Classes,
                 id = spell.id,
                 Rect = new System.Windows.Int32Rect(),
                 SpellIcon = null,

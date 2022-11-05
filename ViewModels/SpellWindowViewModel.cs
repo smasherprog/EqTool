@@ -79,8 +79,7 @@ namespace EQTool.ViewModels
                     _ = SpellList.Remove(s);
                 }
 
-                var level = activePlayer.Player?.Level;
-                var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(spell, level));
+                var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(spell, activePlayer.Player));
                 SpellList.Add(new UISpell
                 {
                     TotalSecondsOnSpell = (int)spellduration.TotalSeconds,

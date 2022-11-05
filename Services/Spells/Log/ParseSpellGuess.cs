@@ -23,7 +23,7 @@ namespace EQTool.Services.Spells.Log
                 var spellmessage = message.Substring(removename).Trim();
                 if (spells.CastOtherSpells.TryGetValue(spellmessage, out var foundspells))
                 {
-                    var foundspell = ClosestMatch.GetClosestmatch(foundspells, activePlayer.Player?.Level);
+                    var foundspell = SpellDurations.MatchClosestLevelToSpell(foundspells, activePlayer.Player);
                     var targetname = message.Replace(foundspell.cast_on_other, string.Empty).Trim();
                     Debug.WriteLine($"Other Spell: {foundspell.name} Message: {spellmessage}");
                     return new SpellParsingMatch
@@ -42,7 +42,7 @@ namespace EQTool.Services.Spells.Log
                     var spellmessage = message.Substring(removename).Trim();
                     if (spells.CastOtherSpells.TryGetValue(spellmessage, out var foundspells))
                     {
-                        var foundspell = ClosestMatch.GetClosestmatch(foundspells, activePlayer.Player?.Level);
+                        var foundspell = SpellDurations.MatchClosestLevelToSpell(foundspells, activePlayer.Player);
                         var targetname = message.Replace(foundspell.cast_on_other, string.Empty).Trim();
                         Debug.WriteLine($"Other Spell: {foundspell.name} Message: {spellmessage}");
                         return new SpellParsingMatch

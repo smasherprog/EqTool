@@ -23,6 +23,7 @@ namespace EQTool.Models
         public const string YouBeginCasting = "You begin casting ";
         public const string Your = "Your ";
         public const string You = "You ";
+        private const string InvisMessage = " fades away";
 
         public EQSpells(ParseSpells_spells_us parseSpells, SpellIcons spellIcons)
         {
@@ -40,7 +41,11 @@ namespace EQTool.Models
                 {
                     if (!string.IsNullOrWhiteSpace(mappedspell.cast_on_other))
                     {
-                        if (CastOtherSpells.TryGetValue(mappedspell.cast_on_other, out var innerval))
+                        if (mappedspell.cast_on_other.Contains(InvisMessage))
+                        {
+                            Debug.WriteLine("Skipping Other invis spell. Cant detect difference between gate and invis");
+                        }
+                        else if (CastOtherSpells.TryGetValue(mappedspell.cast_on_other, out var innerval))
                         {
                             CastOtherSpells[mappedspell.cast_on_other].Add(mappedspell);
                         }
@@ -49,7 +54,7 @@ namespace EQTool.Models
                             CastOtherSpells.Add(mappedspell.cast_on_other, new List<Spell>() { mappedspell });
                         }
                     }
-                    if (!string.IsNullOrWhiteSpace(mappedspell.name) && mappedspell.Level > 0)
+                    if (!string.IsNullOrWhiteSpace(mappedspell.name) && mappedspell.Classes.Any(a => a.Value > 0))
                     {
                         if (YouCastSpells.TryGetValue(mappedspell.name, out var innerval))
                         {

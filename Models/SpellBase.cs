@@ -1,4 +1,6 @@
-﻿namespace EQTool.Models
+﻿using System.Collections.Generic;
+
+namespace EQTool.Models
 {
     /// <summary>
     /// 
@@ -67,6 +69,24 @@
     //PvPResistBase
     //PvPResistCalc
 
+    public enum PlayerClasses
+    {
+        Warrior,
+        Cleric,
+        Paladin,
+        Ranger,
+        ShadowKnight,
+        Druid,
+        Monk,
+        Bard,
+        Rouge,
+        Shaman,
+        Necromancer,
+        Wizard,
+        Magician,
+        Enchanter
+    }
+
     public class SpellBase
     {
         public int id { get; set; } // not used 
@@ -74,8 +94,8 @@
         public string cast_on_you { get; set; }
         public string cast_on_other { get; set; }
         public int type { get; set; }
-        public int Level { get; set; }
         public int casttime { get; set; }
+        public Dictionary<PlayerClasses, int> Classes { get; set; }
         public string spell_fades { get; set; }
         public int buffdurationformula { get; set; }
         public int pvp_buffdurationformula { get; set; }
