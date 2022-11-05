@@ -2,7 +2,7 @@
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
-namespace EQTool.Models
+namespace EQTool.ViewModels
 {
     public class EQNameValue
     {

@@ -114,12 +114,22 @@
     <Compile Include="MapWindow.xaml.cs">
       <DependentUpon>MapWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Models\SpellParsingMatch.cs" />
+    <Compile Include="Models\EQSpells.cs" />
     <Compile Include="Models\EQToolSettings.cs" />
-    <Compile Include="Models\EntittyDPS.cs" />
-    <Compile Include="Models\SettingsWindowData.cs" />
+    <Compile Include="Services\AppDispatcher.cs" />
+    <Compile Include="Services\Spells\ClosestMatch.cs" />
+    <Compile Include="Services\Spells\Log\ParseSpellGuess.cs" />
+    <Compile Include="Services\Spells\SpellDurations.cs" />
+    <Compile Include="Services\Spells\Log\ParseHandleYou.cs" />
+    <Compile Include="Services\Spells\Log\SpellLogParse.cs" />
+    <Compile Include="ViewModels\ActivePlayerInfo.cs" />
+    <Compile Include="ViewModels\SpellWindowViewModel.cs" />
+    <Compile Include="ViewModels\EntittyDPS.cs" />
+    <Compile Include="ViewModels\SettingsWindowData.cs" />
     <Compile Include="Models\PlayerInfo.cs" />
     <Compile Include="Models\Polygon.cs" />
-    <Compile Include="Models\UISpell.cs" />
+    <Compile Include="ViewModels\UISpell.cs" />
     <Compile Include="Models\vecs.cs" />
     <Compile Include="Models\S3dReader.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -131,10 +141,10 @@
     <Compile Include="Services\DI.cs" />
     <Compile Include="Services\MapLoader.cs" />
     <Compile Include="Services\FindEq.cs" />
-    <Compile Include="Services\ParseSpells.cs" />
+    <Compile Include="Services\Spells\ParseSpells_spells_us.cs" />
     <Compile Include="Services\S3dReader.cs" />
-    <Compile Include="Services\SpellExtensions.cs" />
-    <Compile Include="Services\SpellIcons.cs" />
+    <Compile Include="Services\Spells\SpellExtensions.cs" />
+    <Compile Include="Services\Spells\SpellIcons.cs" />
     <Compile Include="Services\StringHash.cs" />
     <Compile Include="Services\TGASharpLib.cs" />
     <Compile Include="Services\WLD\FragmentNameCleaner.cs" />
@@ -208,9 +218,7 @@
   <ItemGroup>
     <None Include="open-folder.png" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="TestFolder\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">
       <Visible>False</Visible>

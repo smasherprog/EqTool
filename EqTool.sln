@@ -5,6 +5,8 @@ VisualStudioVersion = 17.3.32825.248
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EQTool", "EQTool.csproj", "{10E99313-7361-4503-A314-14BC052A6CAC}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EQToolTests", "..\EQToolTests\EQToolTests.csproj", "{D47D20D1-7AAA-4CF8-BE1C-C83F098DB66F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{10E99313-7361-4503-A314-14BC052A6CAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{10E99313-7361-4503-A314-14BC052A6CAC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{10E99313-7361-4503-A314-14BC052A6CAC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D47D20D1-7AAA-4CF8-BE1C-C83F098DB66F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D47D20D1-7AAA-4CF8-BE1C-C83F098DB66F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D47D20D1-7AAA-4CF8-BE1C-C83F098DB66F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D47D20D1-7AAA-4CF8-BE1C-C83F098DB66F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

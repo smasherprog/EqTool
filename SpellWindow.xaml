@@ -40,7 +40,7 @@
                   Width="10" Height="10" Padding="0" Command="ApplicationCommands.Close"/>
                 </Grid>
             </Border>
-            <ListView Name="spelllistview" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling" Grid.Row="1" Background="Transparent">
+            <ListView ItemsSource="{Binding SpellList}" Name="spelllistview" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling" Grid.Row="1" Background="Transparent">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <Grid>

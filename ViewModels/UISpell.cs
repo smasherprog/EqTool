@@ -1,17 +1,23 @@
-﻿using System;
+﻿using EQTool.Models;
+using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Media;
 
-namespace EQTool.Models
+namespace EQTool.ViewModels
 {
     public class UISpell : INotifyPropertyChanged
     {
         public SpellIcon SpellIcon { get; set; }
+
         public bool HasSpellIcon => SpellIcon != null;
+
         public Int32Rect Rect { get; set; }
+
         public string SpellName { get; set; }
+
+        public bool GuessedSpell { get; set; }
 
         public string SecondsLeftOnSpellPretty
         {
@@ -38,7 +44,9 @@ namespace EQTool.Models
         public int TotalSecondsOnSpell { get; set; }
 
         public string TargetName { get; set; }
+
         private TimeSpan _SecondsLeftOnSpell;
+
         public TimeSpan SecondsLeftOnSpell
         {
             get => _SecondsLeftOnSpell;

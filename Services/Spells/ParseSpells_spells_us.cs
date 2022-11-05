@@ -6,12 +6,12 @@ using System.Linq;
 
 namespace EQTool.Services
 {
-    public class ParseSpells
+    public class ParseSpells_spells_us
     {
         private List<SpellBase> _Spells = new List<SpellBase>();
         private readonly EQToolSettings settings;
 
-        public ParseSpells(EQToolSettings settings)
+        public ParseSpells_spells_us(EQToolSettings settings)
         {
             this.settings = settings;
         }

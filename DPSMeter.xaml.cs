@@ -1,5 +1,6 @@
 ﻿using EQTool.Models;
 using EQTool.Services;
+using EQTool.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -26,10 +27,10 @@ namespace EQTool
         private readonly string HitMessage = " points of damage.";
         private DateTime? LastTimeFighting;
         private readonly EQToolSettings settings;
-        private readonly ParseSpells parseSpells;
+        private readonly ParseSpells_spells_us parseSpells;
         private readonly SpellIcons spellIcons;
 
-        public DPSMeter(EQToolSettings settings, ParseSpells parseSpells, SpellIcons spellIcons)
+        public DPSMeter(EQToolSettings settings, ParseSpells_spells_us parseSpells, SpellIcons spellIcons)
         {
             this.settings = settings;
             this.parseSpells = parseSpells;
