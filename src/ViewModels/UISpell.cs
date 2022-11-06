@@ -19,17 +19,20 @@ namespace EQTool.ViewModels
 
         public bool GuessedSpell { get; set; }
 
-        private Visibility _ShowSpell;
+        private bool _IsColumnVisible = true;
 
-        public Visibility ShowSpell
+        public bool IsColumnVisible
         {
-            get => _ShowSpell;
+            get => _IsColumnVisible;
             set
             {
-                _ShowSpell = value;
+                _IsColumnVisible = value;
                 OnPropertyChanged();
+                OnPropertyChanged(nameof(ColumnVisiblity));
             }
         }
+
+        public Visibility ColumnVisiblity => _IsColumnVisible ? Visibility.Visible : Visibility.Collapsed;
 
         public string SecondsLeftOnSpellPretty
         {

@@ -72,6 +72,20 @@ namespace EQTool.ViewModels
             }
         }
 
+        public bool TestingMode
+        {
+            get
+            {
+                var ret = true;
+#if DEBUG
+                ret = true;
+#else
+
+                ret = false;
+#endif
+                return ret;
+            }
+        }
         public bool IsEqRunning => !IsEqNotRunning;
         public bool IsEqNotRunning { get; private set; } = false;
 

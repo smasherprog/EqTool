@@ -24,10 +24,12 @@ namespace EQTool
         private readonly EQToolSettings settings;
         private readonly EQToolSettingsLoad toolSettingsLoad;
         private readonly SpellWindowViewModel spellWindowViewModel;
+        private readonly EQSpells spells;
 
-        public Settings(EQToolSettings settings, EQToolSettingsLoad toolSettingsLoad, SettingsWindowData settingsWindowData, SpellWindowViewModel spellWindowViewModel)
+        public Settings(EQSpells spells, EQToolSettings settings, EQToolSettingsLoad toolSettingsLoad, SettingsWindowData settingsWindowData, SpellWindowViewModel spellWindowViewModel)
         {
             SettingsWindowData = settingsWindowData;
+            this.spells = spells;
             this.settings = settings;
             this.spellWindowViewModel = spellWindowViewModel;
             this.toolSettingsLoad = toolSettingsLoad;
@@ -230,7 +232,7 @@ namespace EQTool
             {
                 if (item.GuessedSpell)
                 {
-                    item.ShowSpell = Visibility.Visible;
+                    item.IsColumnVisible = true;
                 }
             }
         }
@@ -242,8 +244,33 @@ namespace EQTool
             {
                 if (item.GuessedSpell)
                 {
-                    item.ShowSpell = Visibility.Hidden;
+                    item.IsColumnVisible = false;
                 }
+            }
+        }
+
+
+        private void testspellsclicked(object sender, RoutedEventArgs e)
+        {
+            var listofspells = new List<SpellParsingMatch>
+            {
+                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Disease Cloud"), TargetName = "Joe", MutipleMatchesFound = false },
+                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Lesser Shielding"), TargetName = "Joe", MutipleMatchesFound = false },
+                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Shadow Compact"), TargetName = "Joe", MutipleMatchesFound = false },
+                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Heroic Bond"), TargetName = "Joe", MutipleMatchesFound = false },
+                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Improved Invis to Undead"), TargetName = "Joe", MutipleMatchesFound = false },
+                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Grim Aura"), TargetName = "Joe", MutipleMatchesFound = false },
+
+                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Heroic Bond"), TargetName = "Jane", MutipleMatchesFound = false },
+                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Chloroplast"), TargetName = "Jane", MutipleMatchesFound = true },
+                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Shield of Words"), TargetName = "Jane", MutipleMatchesFound = false },
+                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Boon of the Clear Mind"), TargetName = "Jane", MutipleMatchesFound = false },
+                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Gift of Brilliance"), TargetName = "Jane", MutipleMatchesFound = false }
+            };
+
+            foreach (var item in listofspells)
+            {
+                spellWindowViewModel.TryAdd(item);
             }
         }
     }

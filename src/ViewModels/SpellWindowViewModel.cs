@@ -20,6 +20,7 @@ namespace EQTool.ViewModels
             this.appDispatcher = appDispatcher;
         }
 
+
         public ObservableCollection<UISpell> _SpellList = new ObservableCollection<UISpell>();
         public ObservableCollection<UISpell> SpellList
         {

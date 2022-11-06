@@ -44,12 +44,12 @@
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <Grid>
-                            <Grid.ColumnDefinitions>
+                            <Grid.ColumnDefinitions> 
                                 <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions> 
-                            <ProgressBar Grid.Column="0" Grid.ColumnSpan="2" Value="{Binding PercentLeftOnSpell}"  Maximum="100"  Foreground="{Binding ProgressBarColor}"  />
-                            <StackPanel Orientation="Horizontal" Grid.Column="0" >
+                                <ColumnDefinition Width="*"/> 
+                            </Grid.ColumnDefinitions>
+                            <ProgressBar Visibility="{Binding ColumnVisiblity}" Grid.Column="0" Grid.ColumnSpan="2" Value="{Binding PercentLeftOnSpell}"  Maximum="100"  Foreground="{Binding ProgressBarColor}"  />
+                            <StackPanel Visibility="{Binding ColumnVisiblity}" Orientation="Horizontal" Grid.Column="0" >
                                 <Image Height="{DynamicResource GlobalFontSize}" Width="{DynamicResource GlobalFontSize}" IsEnabled="{Binding HasSpellIcon}">
                                     <Image.Source>
                                         <CroppedBitmap Source="{Binding SpellIcon.Icon}" SourceRect="{Binding Rect}" />
@@ -57,7 +57,7 @@
                                 </Image>
                                 <TextBlock HorizontalAlignment="Left" FontWeight="Bold" Text="{Binding SpellName}"/>
                             </StackPanel>
-                            <TextBlock FontWeight="Bold" Grid.Column="1" HorizontalAlignment="Right" Text="{Binding SecondsLeftOnSpellPretty}"/>
+                            <TextBlock Visibility="{Binding ColumnVisiblity}" FontWeight="Bold" Grid.Column="1" HorizontalAlignment="Right" Text="{Binding SecondsLeftOnSpellPretty}"/>
                         </Grid>
                     </DataTemplate>
                 </ListView.ItemTemplate>

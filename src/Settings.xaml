@@ -66,5 +66,8 @@
             <TextBlock Text="This setting will best guess others spells." Margin="5,5,0,0" HorizontalAlignment="Center"/>
             <CheckBox x:Name="BestGuessSpells" HorizontalAlignment="Center" Checked="GuessSpells_Checked"  Unchecked="GuessSpells_Unchecked"/>
         </StackPanel>
+        <TextBlock Text="Debug Spells" Grid.Column="0" Grid.Row="9" Margin="5,5,0,0" VerticalAlignment="Center"/>
+        <Button Margin="5,0,0,0"  Grid.Column="1" Grid.Row="9" Click="testspellsclicked" >Add Test Spells</Button>
+
     </Grid>
 </Window>
