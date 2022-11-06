@@ -19,6 +19,18 @@ namespace EQTool.ViewModels
 
         public bool GuessedSpell { get; set; }
 
+        private Visibility _ShowSpell;
+
+        public Visibility ShowSpell
+        {
+            get => _ShowSpell;
+            set
+            {
+                _ShowSpell = value;
+                OnPropertyChanged();
+            }
+        }
+
         public string SecondsLeftOnSpellPretty
         {
             get

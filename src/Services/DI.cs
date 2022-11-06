@@ -21,6 +21,7 @@ namespace EQTool.Services
             _ = builder.RegisterType<SettingsWindowData>().AsSelf().SingleInstance();
             _ = builder.RegisterType<EQSpells>().AsSelf().SingleInstance();
             _ = builder.RegisterType<ActivePlayer>().AsSelf().SingleInstance();
+            _ = builder.RegisterType<SpellWindowViewModel>().AsSelf().SingleInstance();
 
             return builder.Build();
         }

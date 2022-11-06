@@ -95,7 +95,8 @@ namespace EQTool.ViewModels
                     SpellName = spellname,
                     Rect = match.Spell.Rect,
                     SecondsLeftOnSpell = spellduration,
-                    SpellIcon = match.Spell.SpellIcon
+                    SpellIcon = match.Spell.SpellIcon,
+                    GuessedSpell = match.MutipleMatchesFound
                 });
             });
         }

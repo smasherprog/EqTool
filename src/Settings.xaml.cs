@@ -23,11 +23,13 @@ namespace EQTool
         private readonly SettingsWindowData SettingsWindowData;
         private readonly EQToolSettings settings;
         private readonly EQToolSettingsLoad toolSettingsLoad;
+        private readonly SpellWindowViewModel spellWindowViewModel;
 
-        public Settings(EQToolSettings settings, EQToolSettingsLoad toolSettingsLoad, SettingsWindowData settingsWindowData)
+        public Settings(EQToolSettings settings, EQToolSettingsLoad toolSettingsLoad, SettingsWindowData settingsWindowData, SpellWindowViewModel spellWindowViewModel)
         {
             SettingsWindowData = settingsWindowData;
             this.settings = settings;
+            this.spellWindowViewModel = spellWindowViewModel;
             this.toolSettingsLoad = toolSettingsLoad;
             SettingsWindowData.EqPath = this.settings.DefaultEqDirectory;
             DataContext = settingsWindowData;
@@ -224,11 +226,25 @@ namespace EQTool
         private void GuessSpells_Checked(object sender, RoutedEventArgs e)
         {
             settings.BestGuessSpells = true;
+            foreach (var item in spellWindowViewModel.SpellList)
+            {
+                if (item.GuessedSpell)
+                {
+                    item.ShowSpell = Visibility.Visible;
+                }
+            }
         }
 
         private void GuessSpells_Unchecked(object sender, RoutedEventArgs e)
         {
             settings.BestGuessSpells = false;
+            foreach (var item in spellWindowViewModel.SpellList)
+            {
+                if (item.GuessedSpell)
+                {
+                    item.ShowSpell = Visibility.Hidden;
+                }
+            }
         }
     }
 }

@@ -187,5 +187,19 @@ namespace EQToolTests
             Assert.AreEqual(duration, 2100);
             Assert.AreEqual(foundlevel, 54);
         }
+
+        [TestMethod]
+        public void TestShieldOfWordsWIthNolevelOrclass()
+        {
+            _ = container.Resolve<EQSpells>();
+            var line = "You begin casting Shield of Words.";
+            var service = container.Resolve<ParseHandleYouCasting>();
+            var player = container.Resolve<ActivePlayer>();
+            player.Player = new PlayerInfo { };
+            service.HandleYouBeginCastingSpellStart(line);
+            var duration = SpellDurations.GetDuration_inSeconds(player.UserCastingSpell, player.Player);
+            Assert.IsNotNull(player);
+            Assert.IsNotNull(duration);
+        }
     }
 }

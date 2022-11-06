@@ -67,7 +67,10 @@ namespace EQTool.Services
 
             if (userlevel.HasValue)
             {
-                return userlevel.Value;
+                foreach (var item in spell.Classes.OrderByDescending(a => a.Value))
+                {
+                    return userlevel < item.Value ? item.Value : userlevel;
+                }
             }
 
             var closestlevel = userlevel.Value;
