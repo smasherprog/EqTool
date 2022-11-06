@@ -43,7 +43,7 @@
             <ListView ItemsSource="{Binding SpellList}" Name="spelllistview" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling" Grid.Row="1" Background="Transparent">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <Grid Visibility="{Binding ShowSpell}">
+                        <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="*"/>
