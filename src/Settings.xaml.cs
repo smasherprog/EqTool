@@ -57,7 +57,8 @@ namespace EQTool
             }
             levelscombobox.ItemsSource = SettingsWindowData.Levels;
             var players = this.settings.Players ?? new System.Collections.Generic.List<PlayerInfo>();
-            var level = players.FirstOrDefault(a => a.Name == SettingsWindowData.CharName)?.Level;
+            var player = players.FirstOrDefault(a => a.Name == SettingsWindowData.CharName);
+            var level = player?.Level;
             if (!level.HasValue || level <= 0 || level > 60)
             {
                 level = 1;
@@ -67,6 +68,21 @@ namespace EQTool
             fontsizescombobox.ItemsSource = SettingsWindowData.FontSizes;
             fontsizescombobox.SelectedValue = App.GlobalFontSize.ToString();
             BestGuessSpells.IsChecked = this.settings.BestGuessSpells;
+            var selecteditems = new List<string>();
+            foreach (var item in settingsWindowData.PlayerClasses)
+            {
+                var it = item.ToString();
+                _ = spellbyclassselection.Items.Add(it);
+                if (player?.PlayerClasses == null || player.PlayerClasses.Any(a => a == item))
+                {
+                    selecteditems.Add(it);
+                }
+            }
+
+            foreach (var item in selecteditems)
+            {
+                _ = spellbyclassselection.SelectedItems.Add(item);
+            }
         }
 
         private BitmapImage Convert(Bitmap src)
@@ -272,6 +288,11 @@ namespace EQTool
             {
                 spellWindowViewModel.TryAdd(item);
             }
+        }
+
+        private void spellbyclassselection_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+
         }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace EQTool.Models
 {
@@ -8,5 +9,6 @@ namespace EQTool.Models
         public int Level { get; set; }
         public string Name { get; set; }
         public PlayerClasses? PlayerClass { get; set; }
+        public List<PlayerClasses> PlayerClasses { get; set; }
     }
 }

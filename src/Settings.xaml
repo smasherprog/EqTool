@@ -6,68 +6,66 @@
         xmlns:local="clr-namespace:EQTool"  
         xmlns:localmodels="clr-namespace:EQTool.Models"
         mc:Ignorable="d"
-        Title="Settings" Height="300" Width="400" FontSize="{DynamicResource GlobalFontSize}">
+        Title="Settings" Height="600" Width="350" FontSize="{DynamicResource GlobalFontSize}">
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
     </Window.Resources>
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition  Height="Auto"/>
-            <RowDefinition  Height="Auto"/>
-            <RowDefinition  Height="Auto"/>
-            <RowDefinition  Height="Auto"/>
-            <RowDefinition  Height="Auto"/>
-            <RowDefinition  Height="Auto"/>
-            <RowDefinition  Height="Auto"/>
-            <RowDefinition  Height="Auto"/>
-            <RowDefinition  Height="Auto"/>
-            <RowDefinition  Height="*"/>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="Auto"/>
-            <ColumnDefinition Width="*"/>
-        </Grid.ColumnDefinitions>
-        <TextBlock Text="Character" Grid.Column="0" Grid.Row="0" Margin="5,5,0,0" VerticalAlignment="Center"/>
-        <TextBlock Text="{Binding CharName}" Grid.Column="1" Grid.Row="0"  Margin="5,5,0,0" VerticalAlignment="Center"/>
+    <ScrollViewer  HorizontalScrollBarVisibility="Auto">
 
-        <TextBlock Text="Class" Grid.Column="0" Grid.Row="1" Margin="5,5,0,0" VerticalAlignment="Center"/>
-        <ComboBox Margin="5,0,0,0"  Grid.Column="1" Grid.Row="1" SelectedItem="{Binding PlayerClass}" ItemsSource="{Binding PlayerClasses}"></ComboBox>
-
-        <TextBlock Text="Your Level" Grid.Column="0" Grid.Row="2" Margin="5,5,0,0" VerticalAlignment="Center"/>
-        <ComboBox Margin="5,0,0,0"  Grid.Column="1" Grid.Row="2"  Name="levelscombobox" DisplayMemberPath="Name" SelectedValuePath="Name" SelectionChanged="levelscombobox_SelectionChanged" />
-
-        <TextBlock Text="Font Size" Grid.Column="0" Grid.Row="3" Margin="5,5,0,0" VerticalAlignment="Center"/>
-        <ComboBox Margin="5,0,0,0"  Grid.Column="1" Grid.Row="3" Name="fontsizescombobox" DisplayMemberPath="Name" SelectedValuePath="Name" SelectionChanged="fontsizescombobox_SelectionChanged"/>
-
-        <TextBlock Text="Eq Path" Grid.Column="0" Grid.Row="4"  Margin="5,5,0,0" VerticalAlignment="Center"/>
-        <StackPanel Orientation="Horizontal" Grid.Column="1" Grid.Row="4"  >
-            <TextBlock Text="{Binding EqPath}" Margin="5,5,0,0" HorizontalAlignment="Left"/>
-            <Button Margin="5,5,0,0" HorizontalAlignment="Right" Click="EqFolderButtonClicked">
-                <Image Name="fileopenbuttonimage" Height="{DynamicResource GlobalFontSize}"></Image>
-            </Button>
+        <StackPanel Orientation="Vertical">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Character" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
+                <TextBlock Text="{Binding CharName}" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Class" VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
+                <ComboBox  SelectedItem="{Binding PlayerClass}" ItemsSource="{Binding PlayerClasses}" MinWidth="100"></ComboBox>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Your Level"  FontWeight="Bold" VerticalAlignment="Center" MinWidth="100"/>
+                <ComboBox Name="levelscombobox" DisplayMemberPath="Name" SelectedValuePath="Name" SelectionChanged="levelscombobox_SelectionChanged" MinWidth="100"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Font Size"  FontWeight="Bold"  VerticalAlignment="Center" MinWidth="100"/>
+                <ComboBox Name="fontsizescombobox" DisplayMemberPath="Name" SelectedValuePath="Name" SelectionChanged="fontsizescombobox_SelectionChanged" MinWidth="100"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Eq Path"   VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
+                <StackPanel Orientation="Horizontal" >
+                    <TextBlock Text="{Binding EqPath}" HorizontalAlignment="Left"/>
+                    <Button Margin="5,0,0,0" HorizontalAlignment="Right" Click="EqFolderButtonClicked">
+                        <Image Name="fileopenbuttonimage" Height="{DynamicResource GlobalFontSize}"></Image>
+                    </Button>
+                </StackPanel>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Logging"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
+                <TextBlock Visibility="{Binding IsLogginDisabled, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Hidden}" Text="You must enable logging in EQ for this program to work!" Margin="5,5,0,0" HorizontalAlignment="Left" Foreground="Red"/>
+                <TextBlock Visibility="{Binding IsLogginEnabled, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Hidden}" Text="Logging Enabled!" Margin="5,5,0,0" HorizontalAlignment="Left" Foreground="Green"/>
+                <Button Visibility="{Binding IsLogginDisabled, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Hidden}" Name="enablelogging" Margin="5,5,0,0" Click="enablelogging_Click">Enable Logging</Button>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal"  HorizontalAlignment="Center">
+                <TextBlock Text="Spell Window" FontWeight="Bold" Margin="5,5,0,0" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Transparency"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
+                <Slider  Value="{DynamicResource GlobalTriggerWindowOpacity}" Minimum="0" Maximum="1" SmallChange=".1" TickFrequency=".1" ValueChanged="GlobalTriggerWindowOpacityValueChanged" MinWidth="150"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Guess Spells"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
+                <CheckBox x:Name="BestGuessSpells" HorizontalAlignment="Center" Checked="GuessSpells_Checked"  Unchecked="GuessSpells_Unchecked" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Spells By Class"  FontWeight="Bold" MinWidth="100"/>
+                <ListBox Name="spellbyclassselection" SelectionMode="Multiple" SelectionChanged="spellbyclassselection_SelectionChanged" MinWidth="100"/>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                <TextBlock Text="Debugging" FontWeight="Bold" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Spells"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
+                <Button  Click="testspellsclicked" MinWidth="100">Add Test Spells</Button>
+            </StackPanel>
         </StackPanel>
-
-        <TextBlock Text="Logging" Grid.Column="0" Grid.Row="5" Margin="5,5,0,0" VerticalAlignment="Center"/>
-        <StackPanel Orientation="Vertical" Grid.Column="1" Grid.Row="5">
-            <TextBlock Visibility="{Binding IsLogginDisabled, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Hidden}" Text="You must enable logging in EQ for this program to work!" Margin="5,5,0,0" HorizontalAlignment="Left" Foreground="Red"/>
-            <TextBlock Visibility="{Binding IsLogginEnabled, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Hidden}" Text="Logging Enabled!" Margin="5,5,0,0" HorizontalAlignment="Left" Foreground="Green"/>
-            <Button Visibility="{Binding IsLogginDisabled, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Hidden}" Name="enablelogging" Margin="5,5,0,0" Click="enablelogging_Click">Enable Logging</Button>
-        </StackPanel>
-
-        <StackPanel Background="AliceBlue" Orientation="Vertical" Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="2">
-            <TextBlock Text="Spell Window" FontWeight="Bold" Margin="5,5,0,0" VerticalAlignment="Center" HorizontalAlignment="Center"/>
-        </StackPanel>
-
-        <TextBlock Text="Transparency" Grid.Column="0" Grid.Row="7" Margin="5,5,0,0" VerticalAlignment="Center"/>
-        <Slider Grid.Column="1" Grid.Row="7" Margin="5,5,0,0" Value="{DynamicResource GlobalTriggerWindowOpacity}" Minimum="0" Maximum="1" SmallChange=".1" TickFrequency=".1" ValueChanged="GlobalTriggerWindowOpacityValueChanged"  />
-
-        <TextBlock Text="Guess Spells" Grid.Column="0" Grid.Row="8" Margin="5,5,0,0" VerticalAlignment="Center"/>
-        <StackPanel Orientation="Vertical" Grid.Column="1" Grid.Row="8">
-            <TextBlock Text="This setting will best guess others spells." Margin="5,5,0,0" HorizontalAlignment="Center"/>
-            <CheckBox x:Name="BestGuessSpells" HorizontalAlignment="Center" Checked="GuessSpells_Checked"  Unchecked="GuessSpells_Unchecked"/>
-        </StackPanel>
-        <TextBlock Text="Debug Spells" Grid.Column="0" Grid.Row="9" Margin="5,5,0,0" VerticalAlignment="Center"/>
-        <Button Margin="5,0,0,0"  Grid.Column="1" Grid.Row="9" Click="testspellsclicked" >Add Test Spells</Button>
-
-    </Grid>
+    </ScrollViewer>
 </Window>
