@@ -33,6 +33,11 @@ namespace EQTool.ViewModels
             }
         }
 
+        public void UpdateStuff()
+        {
+            OnPropertyChanged(nameof(SpellList));
+        }
+
         private long? _LastReadOffset = null;
         public long? LastReadOffset
         {

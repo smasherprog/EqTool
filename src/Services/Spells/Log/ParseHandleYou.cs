@@ -57,7 +57,7 @@ namespace EQTool.Services.Spells.Log
                 return new SpellParsingMatch
                 {
                     Spell = foundspell,
-                    TargetName = "_You"
+                    TargetName = " You"
                 };
             }
 
@@ -73,7 +73,7 @@ namespace EQTool.Services.Spells.Log
                 return new SpellParsingMatch
                 {
                     Spell = foundspell,
-                    TargetName = "_You"
+                    TargetName = " You"
                 };
             }
 
@@ -91,7 +91,7 @@ namespace EQTool.Services.Spells.Log
             return new SpellParsingMatch
             {
                 Spell = spell,
-                TargetName = "_You"
+                TargetName = " You"
             };
         }
 

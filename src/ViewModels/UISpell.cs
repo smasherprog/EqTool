@@ -68,6 +68,7 @@ namespace EQTool.ViewModels
                 _Collapse = value;
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(ColumnVisiblity));
+                OnPropertyChanged(nameof(SortingOrder));
             }
         }
 
@@ -97,6 +98,7 @@ namespace EQTool.ViewModels
 
         public int TotalSecondsOnSpell { get; set; }
 
+        public string SortingOrder => Collapse ? "~~ " + TargetName + "~~" : TargetName;
         public string TargetName { get; set; }
 
         private TimeSpan _SecondsLeftOnSpell;

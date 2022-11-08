@@ -46,10 +46,13 @@ namespace EQTool
             UITimer = new System.Timers.Timer(1000);
             UITimer.Elapsed += PollUI;
             UITimer.Enabled = true;
-
-            var view = (CollectionView)CollectionViewSource.GetDefaultView(spelllistview.ItemsSource);
-            view.GroupDescriptions.Add(new PropertyGroupDescription("TargetName"));
-            view.SortDescriptions.Add(new SortDescription("TargetName", ListSortDirection.Ascending));
+            var view = (ListCollectionView)CollectionViewSource.GetDefaultView(spelllistview.ItemsSource);
+            view.GroupDescriptions.Add(new PropertyGroupDescription("SortingOrder"));
+            view.LiveGroupingProperties.Add("SortingOrder");
+            view.IsLiveGrouping = true;
+            view.SortDescriptions.Add(new SortDescription("SortingOrder", ListSortDirection.Ascending));
+            view.IsLiveSorting = true;
+            view.LiveSortingProperties.Add("SortingOrder");
         }
 
         public void DragWindow(object sender, MouseButtonEventArgs args)
@@ -122,8 +125,8 @@ namespace EQTool
 
         private void CollapseClicked(object sender, RoutedEventArgs e)
         {
-            var targetname = ((dynamic)((Button)sender).DataContext)?.Name;
-            foreach (var item in spellWindowViewModel.SpellList.Where(a => a.TargetName == targetname))
+            var sortname = ((dynamic)((Button)sender).DataContext)?.Name;
+            foreach (var item in spellWindowViewModel.SpellList.Where(a => a.SortingOrder == sortname))
             {
                 item.Collapse = !item.Collapse;
             }
