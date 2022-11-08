@@ -65,7 +65,13 @@
                     <GroupStyle>
                         <GroupStyle.HeaderTemplate>
                             <DataTemplate>
-                                <TextBlock Background="LightGray" FontWeight="Bold" FontSize="14" Text="{Binding Name}"/>
+                                <StackPanel Orientation="Horizontal" Background="LightGray">
+                                    <TextBlock FontWeight="Bold" FontSize="14" Text="{Binding Name}" HorizontalAlignment="Left"/>
+                                    <Button Margin="5,0,0,0" Click="Button_Click" HorizontalAlignment="Right" Foreground="Red">
+                                        <Image Source="Trash.png" Height="{DynamicResource GlobalFontSize}"></Image>
+                                    </Button>
+
+                                </StackPanel>
                             </DataTemplate>
                         </GroupStyle.HeaderTemplate>
                     </GroupStyle>

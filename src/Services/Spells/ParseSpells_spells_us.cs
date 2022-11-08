@@ -53,13 +53,18 @@ namespace EQTool.Services
         {
             var splits = line.Split('^');
             var classes = new Dictionary<PlayerClasses, int>();
-            for (var i = 105; i < 120; i++)
+            for (var i = 104; i < (104 + (int)PlayerClasses.Unknown); i++)
             {
                 if (int.TryParse(splits[i], out var l))
                 {
                     if (l >= 0 && l < 255)
                     {
-                        classes.Add((PlayerClasses)(i - 104), l);
+                        var clas = (PlayerClasses)(i - 104);
+                        classes.Add(clas, l);
+                    }
+                    else
+                    {
+                        classes[PlayerClasses.Unknown] = 255;
                     }
                 }
             }

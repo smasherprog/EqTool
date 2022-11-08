@@ -1,17 +1,15 @@
 ﻿using EQTool.Models;
 using EQTool.Services;
 using EQTool.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Drawing;
-using System.Drawing.Imaging;
 using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
-using System.Windows.Media.Imaging;
 
 namespace EQTool
 {
@@ -36,9 +34,9 @@ namespace EQTool
             SettingsWindowData.EqPath = this.settings.DefaultEqDirectory;
             DataContext = settingsWindowData;
             InitializeComponent();
-            TryUpdateCharName();
+            TryUpdateSettings();
             TryCheckLoggingEnabled();
-            fileopenbuttonimage.Source = Convert(Properties.Resources.open_folder);
+            fileopenbuttonimage.Source = Properties.Resources.open_folder.ConvertToBitmapImage();
             for (var i = 12; i < 72; i++)
             {
                 SettingsWindowData.FontSizes.Add(new EQNameValue
@@ -55,55 +53,20 @@ namespace EQTool
                     Value = i
                 });
             }
-            levelscombobox.ItemsSource = SettingsWindowData.Levels;
-            var players = this.settings.Players ?? new System.Collections.Generic.List<PlayerInfo>();
-            var player = players.FirstOrDefault(a => a.Name == SettingsWindowData.CharName);
-            var level = player?.Level;
-            if (!level.HasValue || level <= 0 || level > 60)
-            {
-                level = 1;
-            }
-
-            levelscombobox.SelectedValue = level.ToString();
-            fontsizescombobox.ItemsSource = SettingsWindowData.FontSizes;
-            fontsizescombobox.SelectedValue = App.GlobalFontSize.ToString();
-            BestGuessSpells.IsChecked = this.settings.BestGuessSpells;
-            var selecteditems = new List<string>();
-            foreach (var item in settingsWindowData.PlayerClasses)
+            foreach (var item in SettingsWindowData.PlayerClasses)
             {
                 var it = item.ToString();
                 _ = spellbyclassselection.Items.Add(it);
-                if (player?.PlayerClasses == null || player.PlayerClasses.Any(a => a == item))
-                {
-                    selecteditems.Add(it);
-                }
             }
-
-            foreach (var item in selecteditems)
-            {
-                _ = spellbyclassselection.SelectedItems.Add(item);
-            }
-        }
-
-        private BitmapImage Convert(Bitmap src)
-        {
-            using (var memory = new MemoryStream())
-            {
-                src.Save(memory, ImageFormat.Png);
-                memory.Position = 0;
-                var bitmapImage = new BitmapImage();
-                bitmapImage.BeginInit();
-                bitmapImage.StreamSource = memory;
-                bitmapImage.CacheOption = BitmapCacheOption.OnLoad;
-                bitmapImage.EndInit();
-                return bitmapImage;
-            }
+            levelscombobox.ItemsSource = SettingsWindowData.Levels;
+            fontsizescombobox.ItemsSource = SettingsWindowData.FontSizes;
+            fontsizescombobox.SelectedValue = App.GlobalFontSize.ToString();
         }
 
         protected override void OnClosing(CancelEventArgs e)
         {
             var players = settings.Players ?? new List<PlayerInfo>();
-            if (!string.IsNullOrWhiteSpace(SettingsWindowData.CharName))
+            if (SettingsWindowData.HasCharName)
             {
                 var player = players.FirstOrDefault(a => a.Name == SettingsWindowData.CharName);
                 if (player != null)
@@ -113,12 +76,19 @@ namespace EQTool
                 }
                 else
                 {
-                    players.Add(new PlayerInfo
+                    player = new PlayerInfo
                     {
                         Level = SettingsWindowData.CharLevel,
                         Name = SettingsWindowData.CharName,
                         PlayerClass = SettingsWindowData.PlayerClass
-                    });
+                    };
+                    players.Add(player);
+                }
+
+                player.PlayerClasses = new List<PlayerClasses>();
+                foreach (var item in spellbyclassselection.SelectedItems)
+                {
+                    player.PlayerClasses.Add((PlayerClasses)Enum.Parse(typeof(PlayerClasses), item.ToString()));
                 }
 
                 settings.Players = players;
@@ -130,7 +100,7 @@ namespace EQTool
             base.OnClosing(e);
         }
 
-        private void TryUpdateCharName()
+        private void TryUpdateSettings()
         {
             try
             {
@@ -147,6 +117,39 @@ namespace EQTool
                 }
             }
             catch { }
+
+            var players = settings.Players ?? new System.Collections.Generic.List<PlayerInfo>();
+            var player = players.FirstOrDefault(a => a.Name == SettingsWindowData.CharName);
+            var level = player?.Level;
+            if (!level.HasValue || level <= 0 || level > 60)
+            {
+                level = 1;
+            }
+
+            if (player != null)
+            {
+                SettingsWindowData.PlayerClass = player.PlayerClass;
+            }
+
+            levelscombobox.SelectedValue = level.ToString();
+            BestGuessSpells.IsChecked = settings.BestGuessSpells;
+            var selecteditems = new List<string>();
+            foreach (var item in SettingsWindowData.PlayerClasses)
+            {
+                var it = item.ToString();
+                if (player?.PlayerClasses == null || player.PlayerClasses.Any(a => a == item))
+                {
+                    selecteditems.Add(it);
+                }
+            }
+
+            foreach (var item in selecteditems)
+            {
+                if (!spellbyclassselection.SelectedItems.Contains(item))
+                {
+                    _ = spellbyclassselection.SelectedItems.Add(item);
+                }
+            }
         }
 
         private bool IsEqRunning()
@@ -196,7 +199,7 @@ namespace EQTool
                     if (FindEq.IsValid(fbd.SelectedPath))
                     {
                         SettingsWindowData.EqPath = settings.DefaultEqDirectory = fbd.SelectedPath;
-                        TryUpdateCharName();
+                        TryUpdateSettings();
                         TryCheckLoggingEnabled();
                     }
                     else
@@ -244,27 +247,12 @@ namespace EQTool
         private void GuessSpells_Checked(object sender, RoutedEventArgs e)
         {
             settings.BestGuessSpells = true;
-            foreach (var item in spellWindowViewModel.SpellList)
-            {
-                if (item.GuessedSpell)
-                {
-                    item.IsColumnVisible = true;
-                }
-            }
         }
 
         private void GuessSpells_Unchecked(object sender, RoutedEventArgs e)
         {
             settings.BestGuessSpells = false;
-            foreach (var item in spellWindowViewModel.SpellList)
-            {
-                if (item.GuessedSpell)
-                {
-                    item.IsColumnVisible = false;
-                }
-            }
         }
-
 
         private void testspellsclicked(object sender, RoutedEventArgs e)
         {
@@ -292,7 +280,20 @@ namespace EQTool
 
         private void spellbyclassselection_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-
+            var players = settings.Players ?? new List<PlayerInfo>();
+            if (SettingsWindowData.HasCharName)
+            {
+                var player = players.FirstOrDefault(a => a.Name == SettingsWindowData.CharName);
+                if (player != null)
+                {
+                    player.PlayerClasses = new List<PlayerClasses>();
+                    foreach (var item in spellbyclassselection.SelectedItems)
+                    {
+                        player.PlayerClasses.Add((PlayerClasses)Enum.Parse(typeof(PlayerClasses), item.ToString()));
+                    }
+                    toolSettingsLoad.Save(settings);
+                }
+            }
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using EQTool.Models;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
@@ -19,20 +20,42 @@ namespace EQTool.ViewModels
 
         public bool GuessedSpell { get; set; }
 
-        private bool _IsColumnVisible = true;
+        public Dictionary<PlayerClasses, int> Classes { get; set; } = new Dictionary<PlayerClasses, int>();
 
-        public bool IsColumnVisible
+        private bool _HideGuesses = true;
+
+        public bool HideGuesses
         {
-            get => _IsColumnVisible;
+            get => _HideGuesses;
             set
             {
-                _IsColumnVisible = value;
+                if (_HideGuesses == value)
+                {
+                    return;
+                }
+                _HideGuesses = value;
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(ColumnVisiblity));
             }
         }
 
-        public Visibility ColumnVisiblity => _IsColumnVisible ? Visibility.Visible : Visibility.Collapsed;
+        private bool _HideClasses = true;
+        public bool HideClasses
+        {
+            get => _HideClasses;
+            set
+            {
+                if (_HideClasses == value)
+                {
+                    return;
+                }
+                _HideClasses = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(ColumnVisiblity));
+            }
+        }
+
+        public Visibility ColumnVisiblity => ((_HideGuesses && GuessedSpell) || _HideClasses) ? Visibility.Collapsed : Visibility.Visible;
 
         public string SecondsLeftOnSpellPretty
         {

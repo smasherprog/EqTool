@@ -8,7 +8,7 @@
         mc:Ignorable="d"
         Title="Settings" Height="600" Width="350" FontSize="{DynamicResource GlobalFontSize}">
     <Window.Resources>
-        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/> 
     </Window.Resources>
     <ScrollViewer  HorizontalScrollBarVisibility="Auto">
 
@@ -57,13 +57,21 @@
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Text="Spells By Class"  FontWeight="Bold" MinWidth="100"/>
-                <ListBox Name="spellbyclassselection" SelectionMode="Multiple" SelectionChanged="spellbyclassselection_SelectionChanged" MinWidth="100"/>
+                <StackPanel Orientation="Vertical">
+                    <TextBlock IsEnabled="{Binding HasNoCharName}" Text="You must be logged in!"  FontWeight="Bold" Foreground="Red"/>
+                    <ListBox IsEnabled="{Binding HasCharName}"
+                             Name="spellbyclassselection" 
+                             SelectionMode="Multiple" 
+                             SelectionChanged="spellbyclassselection_SelectionChanged" 
+                             MinWidth="100"> 
+                    </ListBox>
+                </StackPanel>
             </StackPanel>
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                 <TextBlock Text="Debugging" FontWeight="Bold" />
             </StackPanel>
             <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Spells"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
+                <TextBlock Text="Spells"  VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
                 <Button  Click="testspellsclicked" MinWidth="100">Add Test Spells</Button>
             </StackPanel>
         </StackPanel>

@@ -13,13 +13,14 @@ namespace EQTool.ViewModels
     {
         private readonly ActivePlayer activePlayer;
         private readonly IAppDispatcher appDispatcher;
+        private readonly EQToolSettings settings;
 
-        public SpellWindowViewModel(ActivePlayer activePlayer, IAppDispatcher appDispatcher)
+        public SpellWindowViewModel(ActivePlayer activePlayer, IAppDispatcher appDispatcher, EQToolSettings settings)
         {
             this.activePlayer = activePlayer;
             this.appDispatcher = appDispatcher;
+            this.settings = settings;
         }
-
 
         public ObservableCollection<UISpell> _SpellList = new ObservableCollection<UISpell>();
         public ObservableCollection<UISpell> SpellList
@@ -47,6 +48,7 @@ namespace EQTool.ViewModels
         {
             appDispatcher.DispatchUI(() =>
             {
+                var player = activePlayer.Player;
                 var itemstoremove = new List<UISpell>();
                 foreach (var item in SpellList)
                 {
@@ -54,6 +56,11 @@ namespace EQTool.ViewModels
                     if (item.SecondsLeftOnSpell.TotalSeconds <= 0)
                     {
                         itemstoremove.Add(item);
+                    }
+                    item.HideGuesses = !settings.BestGuessSpells;
+                    if (player != null)
+                    {
+                        item.HideClasses = !player.PlayerClasses.Any(a => item.Classes.ContainsKey(a));
                     }
                 }
 
@@ -97,6 +104,7 @@ namespace EQTool.ViewModels
                     Rect = match.Spell.Rect,
                     SecondsLeftOnSpell = spellduration,
                     SpellIcon = match.Spell.SpellIcon,
+                    Classes = match.Spell.Classes,
                     GuessedSpell = match.MutipleMatchesFound
                 });
             });

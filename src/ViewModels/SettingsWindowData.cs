@@ -35,8 +35,14 @@ namespace EQTool.ViewModels
             {
                 _CharName = value;
                 OnPropertyChanged();
+                OnPropertyChanged(nameof(HasCharName));
+                OnPropertyChanged(nameof(HasNoCharName));
             }
         }
+
+        public bool HasCharName => !string.IsNullOrWhiteSpace(_CharName);
+        public bool HasNoCharName => string.IsNullOrWhiteSpace(_CharName);
+
         private int _CharLevel = 1;
         public int CharLevel
         {

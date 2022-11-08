@@ -6,8 +6,10 @@ using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Timers;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 
@@ -116,6 +118,16 @@ namespace EQTool
                 }
             }
             catch { }
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            var targetname = ((dynamic)((Button)sender).DataContext)?.Name;
+            var listremovabls = spellWindowViewModel.SpellList.Where(a => a.TargetName == targetname).ToList();
+            foreach (var item in listremovabls)
+            {
+                _ = spellWindowViewModel.SpellList.Remove(item);
+            }
         }
     }
 }

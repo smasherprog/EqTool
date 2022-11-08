@@ -118,6 +118,7 @@
     <Compile Include="Models\EQSpells.cs" />
     <Compile Include="Models\EQToolSettings.cs" />
     <Compile Include="Services\AppDispatcher.cs" />
+    <Compile Include="Services\BitmapExtensions.cs" />
     <Compile Include="Services\Spells\Log\ParseSpellGuess.cs" />
     <Compile Include="Services\Spells\SpellDurations.cs" />
     <Compile Include="Services\Spells\Log\ParseHandleYou.cs" />
@@ -231,7 +232,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="Trash.png" />
+    <Content Include="Trash.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
