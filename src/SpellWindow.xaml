@@ -67,8 +67,8 @@
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal" Background="LightGray">
                                     <TextBlock FontWeight="Bold" FontSize="14" Text="{Binding Name}" HorizontalAlignment="Left"/>
-                                    <Button Margin="5,0,0,0" Click="Button_Click" HorizontalAlignment="Right" Foreground="Red">
-                                        <Image Source="Trash.png" Height="{DynamicResource GlobalFontSize}"></Image>
+                                    <Button Margin="5,0,0,0" Click="CollapseClicked" HorizontalAlignment="Right">
+                                        <Image Source="ToggleGuides.png" Height="{DynamicResource GlobalFontSize}"></Image>
                                     </Button>
 
                                 </StackPanel>

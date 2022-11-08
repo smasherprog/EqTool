@@ -55,7 +55,23 @@ namespace EQTool.ViewModels
             }
         }
 
-        public Visibility ColumnVisiblity => ((_HideGuesses && GuessedSpell) || _HideClasses) ? Visibility.Collapsed : Visibility.Visible;
+        private bool _Collapse = false;
+        public bool Collapse
+        {
+            get => _Collapse;
+            set
+            {
+                if (_Collapse == value)
+                {
+                    return;
+                }
+                _Collapse = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(ColumnVisiblity));
+            }
+        }
+
+        public Visibility ColumnVisiblity => ((_HideGuesses && GuessedSpell) || _HideClasses || _Collapse) ? Visibility.Collapsed : Visibility.Visible;
 
         public string SecondsLeftOnSpellPretty
         {

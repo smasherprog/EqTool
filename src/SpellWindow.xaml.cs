@@ -120,13 +120,12 @@ namespace EQTool
             catch { }
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
+        private void CollapseClicked(object sender, RoutedEventArgs e)
         {
             var targetname = ((dynamic)((Button)sender).DataContext)?.Name;
-            var listremovabls = spellWindowViewModel.SpellList.Where(a => a.TargetName == targetname).ToList();
-            foreach (var item in listremovabls)
+            foreach (var item in spellWindowViewModel.SpellList.Where(a => a.TargetName == targetname))
             {
-                _ = spellWindowViewModel.SpellList.Remove(item);
+                item.Collapse = !item.Collapse;
             }
         }
     }

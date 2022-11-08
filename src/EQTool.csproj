@@ -232,6 +232,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <Resource Include="ToggleGuides.png" />
     <Content Include="Trash.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
