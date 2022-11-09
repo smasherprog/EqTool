@@ -31,7 +31,7 @@ namespace EQTool.Services.Spells.Log
                     if (activePlayer.UserCastingSpell.casttime > 0)
                     {
                         activePlayer.UserCastingSpellCounter++;
-                        _ = Task.Delay(activePlayer.UserCastingSpell.casttime + 1500).ContinueWith(a =>
+                        _ = Task.Delay(activePlayer.UserCastingSpell.casttime + 500).ContinueWith(a =>
                         {
                             Debug.WriteLine($"Cleaning Spell");
                             appDispatcher.DispatchUI(() =>
@@ -100,10 +100,6 @@ namespace EQTool.Services.Spells.Log
             var targetname = message.Replace(activePlayer.UserCastingSpell.cast_on_other, string.Empty).Trim();
             Debug.WriteLine($"Self Finished Spell: {message}");
             var spell = activePlayer.UserCastingSpell;
-            appDispatcher.DispatchUI(() =>
-            {
-                activePlayer.UserCastingSpell = null;
-            });
             return new SpellParsingMatch
             {
                 Spell = spell,
