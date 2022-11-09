@@ -67,7 +67,7 @@ namespace EQTool.Services
 
             if (userlevel.HasValue)
             {
-                foreach (var item in spell.Classes.OrderByDescending(a => a.Value))
+                foreach (var item in spell.Classes.Where(a => a.Key != PlayerClasses.Unknown).OrderByDescending(a => a.Value))
                 {
                     return userlevel < item.Value ? item.Value : userlevel;
                 }
