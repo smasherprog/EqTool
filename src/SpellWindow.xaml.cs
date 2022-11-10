@@ -30,6 +30,7 @@ namespace EQTool
             this.appDispatcher = appDispatcher;
             this.activePlayer = activePlayer;
             this.spellLogParse = spellLogParse;
+            spellWindowViewModel.SpellList.Clear();
             _ = this.activePlayer.Update();
             this.spellWindowViewModel = spellWindowViewModel;
             DataContext = spellWindowViewModel;
