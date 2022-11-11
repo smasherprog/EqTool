@@ -17,6 +17,25 @@ namespace EQTool.ViewModels
     public class SettingsWindowData : INotifyPropertyChanged
     {
         private string _EqPath = string.Empty;
+        public SettingsWindowData()
+        {
+            for (var i = 12; i < 72; i++)
+            {
+                FontSizes.Add(new EQNameValue
+                {
+                    Name = i.ToString(),
+                    Value = i
+                });
+            }
+            for (var i = 1; i < 61; i++)
+            {
+                Levels.Add(new EQNameValue
+                {
+                    Name = i.ToString(),
+                    Value = i
+                });
+            }
+        }
         public string EqPath
         {
             get => _EqPath;

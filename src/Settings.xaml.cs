@@ -37,22 +37,7 @@ namespace EQTool
             TryUpdateSettings();
             TryCheckLoggingEnabled();
             fileopenbuttonimage.Source = Properties.Resources.open_folder.ConvertToBitmapImage();
-            for (var i = 12; i < 72; i++)
-            {
-                SettingsWindowData.FontSizes.Add(new EQNameValue
-                {
-                    Name = i.ToString(),
-                    Value = i
-                });
-            }
-            for (var i = 1; i < 61; i++)
-            {
-                SettingsWindowData.Levels.Add(new EQNameValue
-                {
-                    Name = i.ToString(),
-                    Value = i
-                });
-            }
+
             foreach (var item in SettingsWindowData.PlayerClasses)
             {
                 var it = item.ToString();
