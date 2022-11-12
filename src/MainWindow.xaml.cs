@@ -36,25 +36,22 @@ namespace EQTool
             MapMenuItem = new System.Windows.Forms.MenuItem("Map", Map);
             DpsMeterMenuItem = new System.Windows.Forms.MenuItem("Dps", DPS);
             var gitHubMenuItem = new System.Windows.Forms.MenuItem("Suggestions", Suggestions);
+            SpellsMenuItem.Enabled = false;
+            MapMenuItem.Enabled = false;
+            DpsMeterMenuItem.Enabled = false;
             if (!FindEq.IsValid(EQToolSettings.DefaultEqDirectory))
             {
-                SpellsMenuItem.Enabled = false;
-                MapMenuItem.Enabled = false;
-                DpsMeterMenuItem.Enabled = false;
                 _ = MessageBox.Show("Project 1999 game files were not able to be found.\nYou must set the path before this program will work!", "Configuration", MessageBoxButton.OK, MessageBoxImage.Warning);
-                settingswindow = container.Resolve<Settings>();
-                settingswindow.Show();
-                SettingsMenuItem.Checked = true;
-                settingswindow.Closed += (se, ee) =>
-                {
-                    if (FindEq.IsValid(EQToolSettings.DefaultEqDirectory))
-                    {
-                        SpellsMenuItem.Enabled = true;
-                        MapMenuItem.Enabled = true;
-                        DpsMeterMenuItem.Enabled = true;
-                    }
-                    SettingsMenuItem.Checked = false;
-                };
+                Settings(SettingsMenuItem, null);
+            }
+            else if (FindEq.TryCheckLoggingEnabled(EQToolSettings.DefaultEqDirectory) == false)
+            {
+                _ = MessageBox.Show("You must enable Logging before any features will work. This can be done in the settings window!", "Configuration", MessageBoxButton.OK, MessageBoxImage.Warning);
+                Settings(SettingsMenuItem, null);
+            }
+            else
+            {
+                SpellsMenuItem.Enabled = MapMenuItem.Enabled = DpsMeterMenuItem.Enabled = true;
             }
 #if !DEBUG
             MapMenuItem.Enabled = false;  
@@ -69,7 +66,7 @@ namespace EQTool
                     DpsMeterMenuItem,
                     MapMenuItem,
                     SpellsMenuItem,
-                    SettingsMenuItem                 ,
+                    SettingsMenuItem,
                     gitHubMenuItem,
                     new System.Windows.Forms.MenuItem("Exit", Exit)
                  }),
@@ -146,7 +143,7 @@ namespace EQTool
                 settingswindow.Show();
                 settingswindow.Closed += (se, ee) =>
                 {
-                    if (FindEq.IsValid(EQToolSettings.DefaultEqDirectory))
+                    if (FindEq.IsValid(EQToolSettings.DefaultEqDirectory) && FindEq.TryCheckLoggingEnabled(EQToolSettings.DefaultEqDirectory) == true)
                     {
                         SpellsMenuItem.Enabled = true;
                         MapMenuItem.Enabled = true;

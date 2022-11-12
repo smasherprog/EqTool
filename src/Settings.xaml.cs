@@ -144,23 +144,7 @@ namespace EQTool
 
         private void TryCheckLoggingEnabled()
         {
-            try
-            {
-                SettingsWindowData.IsLogginEnabled = false;
-                var data = File.ReadAllLines(settings.DefaultEqDirectory + "/eqclient.ini");
-                foreach (var item in data)
-                {
-                    var line = item.ToLower().Trim().Replace(" ", string.Empty);
-                    if (line.StartsWith("log="))
-                    {
-                        SettingsWindowData.IsLogginEnabled = line.Contains("true");
-                        return;
-                    }
-                }
-            }
-            catch
-            {
-            }
+            SettingsWindowData.IsLogginEnabled = FindEq.TryCheckLoggingEnabled(settings.DefaultEqDirectory) ?? false;
         }
 
         private void fontsizescombobox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)

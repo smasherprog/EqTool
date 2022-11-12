@@ -73,6 +73,26 @@ namespace EQTool.Services
             return rootfolder;
         }
 
+        public static bool? TryCheckLoggingEnabled(string eqdir)
+        {
+            try
+            {
+                var data = File.ReadAllLines(eqdir + "/eqclient.ini");
+                foreach (var item in data)
+                {
+                    var line = item.ToLower().Trim().Replace(" ", string.Empty);
+                    if (line.StartsWith("log="))
+                    {
+                        return line.Contains("true");
+                    }
+                }
+            }
+            catch
+            {
+            }
+            return null;
+        }
+
         public static bool IsValid(string root)
         {
             if (string.IsNullOrWhiteSpace(root))
