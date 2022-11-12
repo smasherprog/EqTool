@@ -19,6 +19,11 @@ namespace EQTool.Models
             "Chords of Dissonance"
         };
 
+        public static readonly List<string> RealSpells = new List<string>()
+        {
+            "Speed of the Shissar"
+        };
+
         public const string ZoneLoadingMessage = "LOADING, PLEASE WAIT...";
         public const string YouBeginCasting = "You begin casting ";
         public const string Your = "Your ";

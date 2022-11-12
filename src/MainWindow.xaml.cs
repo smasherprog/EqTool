@@ -3,6 +3,7 @@ using EQTool.Models;
 using EQTool.Services;
 using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -34,6 +35,7 @@ namespace EQTool
             SpellsMenuItem = new System.Windows.Forms.MenuItem("Spells", Spells);
             MapMenuItem = new System.Windows.Forms.MenuItem("Map", Map);
             DpsMeterMenuItem = new System.Windows.Forms.MenuItem("Dps", DPS);
+            var gitHubMenuItem = new System.Windows.Forms.MenuItem("Suggestions", Suggestions);
             if (!FindEq.IsValid(EQToolSettings.DefaultEqDirectory))
             {
                 SpellsMenuItem.Enabled = false;
@@ -68,10 +70,12 @@ namespace EQTool
                     MapMenuItem,
                     SpellsMenuItem,
                     SettingsMenuItem                 ,
+                    gitHubMenuItem,
                     new System.Windows.Forms.MenuItem("Exit", Exit)
                  }),
             };
             Hide();
+            Spells(SpellsMenuItem, null);
         }
 
         private EQToolSettings EQToolSettings => container.Resolve<EQToolSettings>();
@@ -83,6 +87,16 @@ namespace EQTool
             }
             container.Resolve<EQToolSettingsLoad>().Save(EQToolSettings);
             base.OnClosing(e);
+        }
+
+        private void Suggestions(object sender, EventArgs e)
+        {
+            _ = MessageBox.Show("Please, post an issue in github if you have any suggetsions or you find any bugs!", "Suggestions", MessageBoxButton.OK, MessageBoxImage.Information);
+            _ = System.Diagnostics.Process.Start(new ProcessStartInfo
+            {
+                FileName = "https://github.com/smasherprog/EqTool/issues",
+                UseShellExecute = true
+            });
         }
 
         private void Map(object sender, EventArgs e)

@@ -33,6 +33,11 @@ namespace EQTool.Services
                     continue;
                 }
 
+                if (spell.name.StartsWith("NPC"))
+                {
+                    continue;
+                }
+
                 if (spells.ContainsKey(spell.name))
                 {
                     skippedcounter++;

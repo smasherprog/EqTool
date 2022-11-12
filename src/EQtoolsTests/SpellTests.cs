@@ -123,11 +123,105 @@ namespace EQToolTests
         }
 
         [TestMethod]
+        public void TestClericAego()
+        {
+            var spells = container.Resolve<EQSpells>();
+            var aego = "Aegolism";
+            var aegospell = spells.AllSpells.FirstOrDefault(a => a.name == aego);
+            var service = container.Resolve<ParseSpellGuess>();
+            var player = container.Resolve<ActivePlayer>();
+            player.Player = new PlayerInfo
+            {
+                Level = 54,
+                PlayerClass = PlayerClasses.Cleric
+            };
+            var guesss = service.HandleBestGuessSpell(aegospell.cast_on_other);
+
+            Assert.IsNotNull(guesss);
+            Assert.IsFalse(guesss.MutipleMatchesFound);
+        }
+
+        [TestMethod]
+        public void TestCallOfThePredetorAego()
+        {
+            var spells = container.Resolve<EQSpells>();
+            var spellname = "Call of the Predator";
+            var spell = spells.AllSpells.FirstOrDefault(a => a.name == spellname);
+            var service = container.Resolve<ParseSpellGuess>();
+            var player = container.Resolve<ActivePlayer>();
+            player.Player = new PlayerInfo
+            {
+                Level = 54,
+                PlayerClass = PlayerClasses.Cleric
+            };
+            var guesss = service.HandleBestGuessSpell("Jobob " + spell.cast_on_other);
+
+            Assert.IsNotNull(guesss);
+            Assert.IsFalse(guesss.MutipleMatchesFound);
+        }
+
+        [TestMethod]
+        public void TestResistMagic()
+        {
+            var spells = container.Resolve<EQSpells>();
+            var spellname = "Group Resist Magic";
+            var spell = spells.AllSpells.FirstOrDefault(a => a.name == spellname);
+            var service = container.Resolve<ParseSpellGuess>();
+            var player = container.Resolve<ActivePlayer>();
+            player.Player = new PlayerInfo
+            {
+                Level = 54,
+                PlayerClass = PlayerClasses.Cleric
+            };
+            var guesss = service.HandleBestGuessSpell("Jobob " + spell.cast_on_other);
+
+            Assert.IsNotNull(guesss);
+            Assert.IsFalse(guesss.MutipleMatchesFound);
+        }
+
+
+        [TestMethod]
+        public void TestSpeedOfShissar()
+        {
+            var spells = container.Resolve<EQSpells>();
+            var shissar = "Speed of the Shissar";
+            var shissarspell = spells.AllSpells.FirstOrDefault(a => a.name == shissar);
+            var service = container.Resolve<ParseSpellGuess>();
+            var player = container.Resolve<ActivePlayer>();
+            player.Player = new PlayerInfo
+            {
+                Level = 54,
+                PlayerClass = PlayerClasses.Cleric
+            };
+            var guesss = service.HandleBestGuessSpell(shissarspell.cast_on_other);
+
+            Assert.IsNotNull(guesss);
+            Assert.IsFalse(guesss.MutipleMatchesFound);
+        }
+
+        [TestMethod]
         public void TestWarriorDisciplineGuess()
         {
             var spells = container.Resolve<EQSpells>();
             var line = "assumes an evasive fighting style.";
             _ = spells.CastOtherSpells.TryGetValue(line, out var spells1);
+            var player = new PlayerInfo
+            {
+                Level = 54,
+                PlayerClass = PlayerClasses.Cleric
+            };
+            var foundspell = SpellDurations.MatchClosestLevelToSpell(spells1, player);
+
+            Assert.IsNotNull(foundspell);
+        }
+
+        [TestMethod]
+        public void TestClericAegolineGuess()
+        {
+            var spells = container.Resolve<EQSpells>();
+            var aego = "Aegolism";
+            var aegospell = spells.AllSpells.FirstOrDefault(a => a.name == aego);
+            _ = spells.CastOtherSpells.TryGetValue(aegospell.cast_on_other, out var spells1);
             var player = new PlayerInfo
             {
                 Level = 54,
