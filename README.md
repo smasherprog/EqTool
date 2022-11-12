@@ -16,7 +16,7 @@ Features:
 Instructions:
 <ul>
 <li>
-Download the latest <a href="https://github.com/smasherprog/EqTool/releases">Releases</a>, Unzip it and run it.
+Download the latest <a href="https://github.com/smasherprog/EqTool/releases">Release</a>, Unzip it and run it.
 </li>
 <li>The program runs in the system tray. Look there to reopen spells window or settings!</li>
 </ul>
