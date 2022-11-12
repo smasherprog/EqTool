@@ -13,6 +13,14 @@ Features:
 <li>Have a Map which uses the 3d assets from the eq directory. This will be very helpful in places like Kedge keep or any dungeon that has overlapping areas. Of course You will be able to zoom, pan around as you would expect in a 3d viewer.(Not implemented yet)</li>
 <li>Remember the last settings for window locations/options. I hate opening nparse, only to open map and spells and reposition them because it does not remember my last configuration.(Not implemented yet)</li>
 </ul>
+Instructions:
+<ul>
+<li>
+Download the latest <a href="https://github.com/smasherprog/EqTool/releases">Releases</a>, Unzip it and run it.
+</li>
+<li>The program runs in the system tray. Look there to reopen spells window or settings!</li>
+</ul>
+<h4>Example Below</h4>
 <img src="https://user-images.githubusercontent.com/3393733/201490732-7ada2a45-7149-40ec-9297-21b2b02ac2e1.png"/>
 
  
