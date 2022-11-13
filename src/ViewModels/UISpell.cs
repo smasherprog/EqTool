@@ -39,6 +39,22 @@ namespace EQTool.ViewModels
             }
         }
 
+        private bool _ShowOnlyYou = false;
+        public bool ShowOnlyYou
+        {
+            get => _ShowOnlyYou;
+            set
+            {
+                if (_ShowOnlyYou == value)
+                {
+                    return;
+                }
+                _ShowOnlyYou = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(ColumnVisiblity));
+            }
+        }
+
         private bool _HideClasses = true;
         public bool HideClasses
         {
@@ -72,7 +88,26 @@ namespace EQTool.ViewModels
             }
         }
 
-        public Visibility ColumnVisiblity => ((_HideGuesses && GuessedSpell) || _HideClasses || _Collapse) ? Visibility.Collapsed : Visibility.Visible;
+        public Visibility ColumnVisiblity
+        {
+            get
+            {
+                if (_HideGuesses && GuessedSpell)
+                {
+                    return Visibility.Collapsed;
+                }
+                else if (_HideClasses || _Collapse)
+                {
+                    return Visibility.Collapsed;
+                }
+                else if (_ShowOnlyYou && TargetName != EQSpells.SpaceYou)
+                {
+                    return Visibility.Collapsed;
+                }
+
+                return Visibility.Visible;
+            }
+        }
 
         public string SecondsLeftOnSpellPretty
         {

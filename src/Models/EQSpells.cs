@@ -28,6 +28,7 @@ namespace EQTool.Models
         public const string YouBeginCasting = "You begin casting ";
         public const string Your = "Your ";
         public const string You = "You ";
+        public const string SpaceYou = " You ";
         private const string InvisMessage = " fades away";
 
         public EQSpells(ParseSpells_spells_us parseSpells, SpellIcons spellIcons)

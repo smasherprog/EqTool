@@ -15,5 +15,7 @@ namespace EQTool.Models
         public bool TriggerWindowTopMost { get; set; }
 
         public bool BestGuessSpells { get; set; }
+
+        public bool YouOnlySpells { get; set; }
     }
 }

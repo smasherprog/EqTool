@@ -5,6 +5,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Windows;
 
 namespace EQTool.ViewModels
 {
@@ -60,7 +61,7 @@ namespace EQTool.ViewModels
         }
 
         public bool HasCharName => !string.IsNullOrWhiteSpace(_CharName);
-        public bool HasNoCharName => string.IsNullOrWhiteSpace(_CharName);
+        public Visibility HasNoCharName => string.IsNullOrWhiteSpace(_CharName) ? Visibility.Visible : Visibility.Collapsed;
 
         private int _CharLevel = 1;
         public int CharLevel

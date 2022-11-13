@@ -63,6 +63,7 @@ namespace EQTool.ViewModels
                         itemstoremove.Add(item);
                     }
                     item.HideGuesses = !settings.BestGuessSpells;
+                    item.ShowOnlyYou = settings.YouOnlySpells;
                     if (player != null)
                     {
                         item.HideClasses = !player.PlayerClasses.Any(a => item.Classes.ContainsKey(a));

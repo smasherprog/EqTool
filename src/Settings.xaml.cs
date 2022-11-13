@@ -118,6 +118,7 @@ namespace EQTool
 
             levelscombobox.SelectedValue = level.ToString();
             BestGuessSpells.IsChecked = settings.BestGuessSpells;
+            YouSpellsOnly.IsChecked = settings.YouOnlySpells;
             var selecteditems = new List<string>();
             foreach (var item in SettingsWindowData.PlayerClasses)
             {
@@ -211,6 +212,15 @@ namespace EQTool
         private void GlobalTriggerWindowOpacityValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             settings.GlobalTriggerWindowOpacity = App.GlobalTriggerWindowOpacity = (sender as Slider).Value;
+        }
+        private void YouSpells_Checked(object sender, RoutedEventArgs e)
+        {
+            settings.YouOnlySpells = true;
+        }
+
+        private void YouSpells_Unchecked(object sender, RoutedEventArgs e)
+        {
+            settings.YouOnlySpells = false;
         }
 
         private void GuessSpells_Checked(object sender, RoutedEventArgs e)

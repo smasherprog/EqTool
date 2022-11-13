@@ -8,7 +8,7 @@
         mc:Ignorable="d"
         Title="Settings" Height="600" Width="350" FontSize="{DynamicResource GlobalFontSize}">
     <Window.Resources>
-        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/> 
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
     </Window.Resources>
     <ScrollViewer  HorizontalScrollBarVisibility="Auto">
 
@@ -52,18 +52,22 @@
                 <Slider  Value="{DynamicResource GlobalTriggerWindowOpacity}" Minimum="0" Maximum="1" SmallChange=".1" TickFrequency=".1" ValueChanged="GlobalTriggerWindowOpacityValueChanged" MinWidth="150"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Guess Spells"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
-                <CheckBox x:Name="BestGuessSpells" HorizontalAlignment="Center" Checked="GuessSpells_Checked"  Unchecked="GuessSpells_Unchecked" />
+                <TextBlock Text="Spells"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
+                <CheckBox x:Name="BestGuessSpells" Checked="GuessSpells_Checked"  Unchecked="GuessSpells_Unchecked" >Best Guess Spells and Effects</CheckBox>
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Spells"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
+                <CheckBox x:Name="YouSpellsOnly" Checked="YouSpells_Checked"  Unchecked="YouSpells_Unchecked">Only show spells that effect you</CheckBox>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Text="Spells By Class"  FontWeight="Bold" MinWidth="100"/>
                 <StackPanel Orientation="Vertical">
-                    <TextBlock IsEnabled="{Binding HasNoCharName}" Text="You must be logged in!"  FontWeight="Bold" Foreground="Red"/>
+                    <TextBlock Visibility="{Binding HasNoCharName}" Text="You must be logged in!"  FontWeight="Bold" Foreground="Red"/>
                     <ListBox IsEnabled="{Binding HasCharName}"
                              Name="spellbyclassselection" 
                              SelectionMode="Multiple" 
                              SelectionChanged="spellbyclassselection_SelectionChanged" 
-                             MinWidth="100"> 
+                             MinWidth="100">
                     </ListBox>
                 </StackPanel>
             </StackPanel>
