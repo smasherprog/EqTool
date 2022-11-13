@@ -394,5 +394,12 @@ namespace EQTool
 
             return spell_ticks * 6;
         }
+
+
+        private void clearAllSpells(object sender, RoutedEventArgs e)
+        {
+            AllSpells.Clear();
+        }
+
     }
 }
