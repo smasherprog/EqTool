@@ -22,8 +22,10 @@ Download the latest <a href="https://github.com/smasherprog/EqTool/releases">Rel
 </ul>
 <h4>Example Below</h4>
 <img src="https://user-images.githubusercontent.com/3393733/201490732-7ada2a45-7149-40ec-9297-21b2b02ac2e1.png"/>
-![image](https://user-images.githubusercontent.com/3393733/201532206-65d70f14-d585-4852-bc0e-82ff7e20e619.png)
-![image](https://user-images.githubusercontent.com/3393733/201532230-25e80549-2290-4d43-b69a-72d2da09c889.png)
+<h4>Settings Window</h4>
+<img src="https://user-images.githubusercontent.com/3393733/201532206-65d70f14-d585-4852-bc0e-82ff7e20e619.png"/>
+<h4>System Tray Icon</h4>
+<img src="https://user-images.githubusercontent.com/3393733/201532230-25e80549-2290-4d43-b69a-72d2da09c889.png"/>
 
  
 
