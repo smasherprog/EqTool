@@ -6,6 +6,8 @@ namespace EQTool.Services.Spells.Log
     public class LogDeathParse
     {
         private readonly string HasBeenSlainBy = "has been slain by";
+        private readonly string YouHaveSlain = "You have slain";
+
         public LogDeathParse()
         {
         }
@@ -19,7 +21,7 @@ namespace EQTool.Services.Spells.Log
             }
 
             var message = linelog.Substring(27);
-            Debug.WriteLine(message);
+            Debug.WriteLine($"DeathParse: " + message);
             if (message.Contains(HasBeenSlainBy))
             {
                 var nameofthingindex = message.IndexOf(HasBeenSlainBy);
@@ -30,6 +32,11 @@ namespace EQTool.Services.Spells.Log
 
                 var target = message.Substring(0, nameofthingindex).Trim();
                 return target;
+            }
+            else if (message.StartsWith(YouHaveSlain))
+            {
+                var nameofthing = message.Replace(YouHaveSlain, string.Empty).TrimEnd('!').Trim();
+                return nameofthing;
             }
 
             return null;

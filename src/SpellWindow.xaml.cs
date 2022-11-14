@@ -106,12 +106,11 @@ namespace EQTool
                 using (var reader = new StreamReader(stream))
                 {
                     _ = stream.Seek(lastreadoffset.Value, SeekOrigin.Begin);
-                    var filelength = fileinfo.Length;
                     while (!reader.EndOfStream)
                     {
                         var line = reader.ReadLine();
                         lastreadoffset = stream.Position;
-                        appDispatcher.DispatchUI(() => { spellWindowViewModel.LastReadOffset = filelength; });
+                        appDispatcher.DispatchUI(() => { spellWindowViewModel.LastReadOffset = lastreadoffset; });
                         if (line.Length > 27)
                         {
                             var matched = spellLogParse.MatchSpell(line);

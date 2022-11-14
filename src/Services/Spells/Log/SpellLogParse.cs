@@ -29,7 +29,7 @@ namespace EQTool.Services.Spells.Log
             }
 
             var message = linelog.Substring(27);
-            Debug.WriteLine(message);
+            Debug.WriteLine($"SpellParse: " + message);
             if (message.StartsWith(EQSpells.YouBeginCasting))
             {
                 parseHandleYouCasting.HandleYouBeginCastingSpellStart(message);
