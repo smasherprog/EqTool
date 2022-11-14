@@ -58,7 +58,7 @@ namespace EQTool.Services
         {
             var splits = line.Split('^');
             var classes = new Dictionary<PlayerClasses, int>();
-            for (var i = 104; i < (104 + (int)PlayerClasses.Unknown); i++)
+            for (var i = 104; i < 104 + (int)PlayerClasses.Enchanter + 1; i++)
             {
                 if (int.TryParse(splits[i], out var l))
                 {
@@ -66,10 +66,6 @@ namespace EQTool.Services
                     {
                         var clas = (PlayerClasses)(i - 104);
                         classes.Add(clas, l);
-                    }
-                    else
-                    {
-                        classes[PlayerClasses.Unknown] = 255;
                     }
                 }
             }

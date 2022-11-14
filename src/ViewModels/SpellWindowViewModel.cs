@@ -1,9 +1,11 @@
 ﻿using EQTool.Models;
 using EQTool.Services;
+using EQTool.Services.Spells;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 
@@ -53,6 +55,7 @@ namespace EQTool.ViewModels
         {
             appDispatcher.DispatchUI(() =>
             {
+                _ = activePlayer.Update();
                 var player = activePlayer.Player;
                 var itemstoremove = new List<UISpell>();
                 foreach (var item in SpellList)
@@ -64,10 +67,7 @@ namespace EQTool.ViewModels
                     }
                     item.HideGuesses = !settings.BestGuessSpells;
                     item.ShowOnlyYou = settings.YouOnlySpells;
-                    if (player != null)
-                    {
-                        item.HideClasses = !player.PlayerClasses.Any(a => item.Classes.ContainsKey(a));
-                    }
+                    item.HideClasses = player != null && SpellUIExtentions.HideSpell(player.ShowSpellsForClasses, item.Classes);
                 }
 
                 foreach (var item in itemstoremove)
@@ -116,6 +116,23 @@ namespace EQTool.ViewModels
             });
         }
 
+        public void TryRemoveTarget(string target)
+        {
+            if (string.IsNullOrWhiteSpace(target))
+            {
+                return;
+            }
+
+            appDispatcher.DispatchUI(() =>
+            {
+                var spellstormove = SpellList.Where(a => a.TargetName == target).ToList();
+                foreach (var item in spellstormove)
+                {
+                    Debug.WriteLine($"Removing {item.SpellName}");
+                    _ = SpellList.Remove(item);
+                }
+            });
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
 

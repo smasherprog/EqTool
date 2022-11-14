@@ -27,7 +27,7 @@ namespace EQTool.Services.Spells.Log
                     var foundspell = SpellDurations.MatchClosestLevelToSpell(foundspells, activePlayer.Player);
                     var targetname = message.Replace(foundspell.cast_on_other, string.Empty).Trim();
                     Debug.WriteLine($"Other Spell: {foundspell.name} Message: {spellmessage}");
-                    var multiplematches = foundspell.Classes.All(a => a.Key == PlayerClasses.Unknown || a.Value == 255) && foundspells.Count > 1;
+                    var multiplematches = foundspell.Classes.All(a => a.Value == 255) && foundspells.Count > 1;
                     if (EQSpells.RealSpells.Any(a => a == foundspell.name))
                     {
                         multiplematches = false;
@@ -51,7 +51,7 @@ namespace EQTool.Services.Spells.Log
                         var foundspell = SpellDurations.MatchClosestLevelToSpell(foundspells, activePlayer.Player);
                         var targetname = message.Replace(foundspell.cast_on_other, string.Empty).Trim();
                         Debug.WriteLine($"Other Spell: {foundspell.name} Message: {spellmessage}");
-                        var multiplematches = foundspell.Classes.All(a => a.Key == PlayerClasses.Unknown || a.Value == 255) && foundspells.Count > 1;
+                        var multiplematches = foundspell.Classes.All(a => a.Value == 255) && foundspells.Count > 1;
                         if (EQSpells.RealSpells.Any(a => a == foundspell.name))
                         {
                             multiplematches = false;

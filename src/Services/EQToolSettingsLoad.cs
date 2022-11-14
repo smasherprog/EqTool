@@ -21,7 +21,22 @@ namespace EQTool.Services
                     using (var r = new StreamReader("settings.json"))
                     {
                         var json = r.ReadToEnd();
-                        return JsonConvert.DeserializeObject<EQToolSettings>(json);
+                        var ret1 = JsonConvert.DeserializeObject<EQToolSettings>(json);
+                        if (ret1 != null)
+                        {
+                            if (ret1.Players == null)
+                            {
+                                ret1.Players = new System.Collections.Generic.List<PlayerInfo>();
+                            }
+
+                            foreach (var item in ret1.Players)
+                            {
+                                if (item.ShowSpellsForClasses == null)
+                                {
+                                    item.ShowSpellsForClasses = new System.Collections.Generic.List<PlayerClasses>();
+                                }
+                            }
+                        }
                     }
                 }
                 catch { }

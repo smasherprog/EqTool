@@ -84,8 +84,7 @@ namespace EQTool.Models
         Necromancer,
         Wizard,
         Magician,
-        Enchanter,
-        Unknown
+        Enchanter
     }
 
     public class SpellBase

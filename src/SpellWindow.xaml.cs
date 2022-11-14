@@ -24,9 +24,11 @@ namespace EQTool
         private readonly ActivePlayer activePlayer;
         private readonly SpellLogParse spellLogParse;
         private readonly IAppDispatcher appDispatcher;
+        private readonly LogDeathParse logDeathParse;
 
-        public SpellWindow(EQToolSettings settings, SpellWindowViewModel spellWindowViewModel, ActivePlayer activePlayer, SpellLogParse spellLogParse, IAppDispatcher appDispatcher)
+        public SpellWindow(EQToolSettings settings, SpellWindowViewModel spellWindowViewModel, ActivePlayer activePlayer, SpellLogParse spellLogParse, IAppDispatcher appDispatcher, LogDeathParse logDeathParse)
         {
+            this.logDeathParse = logDeathParse;
             this.appDispatcher = appDispatcher;
             this.activePlayer = activePlayer;
             this.spellLogParse = spellLogParse;
@@ -117,6 +119,9 @@ namespace EQTool
                             {
                                 spellWindowViewModel.TryAdd(matched);
                             }
+
+                            var targettoremove = logDeathParse.GetDeadTarget(line);
+                            spellWindowViewModel.TryRemoveTarget(targettoremove);
                         }
                     }
                 }

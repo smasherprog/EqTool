@@ -70,10 +70,10 @@ namespace EQTool
                     players.Add(player);
                 }
 
-                player.PlayerClasses = new List<PlayerClasses>();
+                player.ShowSpellsForClasses = new List<PlayerClasses>();
                 foreach (var item in spellbyclassselection.SelectedItems)
                 {
-                    player.PlayerClasses.Add((PlayerClasses)Enum.Parse(typeof(PlayerClasses), item.ToString()));
+                    player.ShowSpellsForClasses.Add((PlayerClasses)Enum.Parse(typeof(PlayerClasses), item.ToString()));
                 }
 
                 settings.Players = players;
@@ -123,7 +123,7 @@ namespace EQTool
             foreach (var item in SettingsWindowData.PlayerClasses)
             {
                 var it = item.ToString();
-                if (player?.PlayerClasses == null || player.PlayerClasses.Any(a => a == item))
+                if (player?.ShowSpellsForClasses == null || player.ShowSpellsForClasses.Any(a => a == item))
                 {
                     selecteditems.Add(it);
                 }
@@ -267,10 +267,10 @@ namespace EQTool
                 var player = players.FirstOrDefault(a => a.Name == SettingsWindowData.CharName);
                 if (player != null)
                 {
-                    player.PlayerClasses = new List<PlayerClasses>();
+                    player.ShowSpellsForClasses = new List<PlayerClasses>();
                     foreach (var item in spellbyclassselection.SelectedItems)
                     {
-                        player.PlayerClasses.Add((PlayerClasses)Enum.Parse(typeof(PlayerClasses), item.ToString()));
+                        player.ShowSpellsForClasses.Add((PlayerClasses)Enum.Parse(typeof(PlayerClasses), item.ToString()));
                     }
                     toolSettingsLoad.Save(settings);
                 }
