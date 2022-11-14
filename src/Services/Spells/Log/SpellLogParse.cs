@@ -37,11 +37,35 @@ namespace EQTool.Services.Spells.Log
             }
             else if (message.StartsWith(EQSpells.You))
             {
+                if (activePlayer?.UserCastingSpell != null)
+                {
+                    if (message == activePlayer.UserCastingSpell.cast_on_you)
+                    {
+                        return parseHandleYouCasting.HandleYouBeginCastingSpellEnd(message);
+                    }
+                    else if (!string.IsNullOrWhiteSpace(activePlayer.UserCastingSpell.cast_on_other) && message.EndsWith(activePlayer.UserCastingSpell.cast_on_other))
+                    {
+                        return parseHandleYouCasting.HandleYouBeginCastingSpellOtherEnd(message);
+                    }
+                }
+
                 return parseHandleYouCasting.HandleYouSpell(message);
             }
 
             if (message.StartsWith(EQSpells.Your))
             {
+                if (activePlayer?.UserCastingSpell != null)
+                {
+                    if (message == activePlayer.UserCastingSpell.cast_on_you)
+                    {
+                        return parseHandleYouCasting.HandleYouBeginCastingSpellEnd(message);
+                    }
+                    else if (!string.IsNullOrWhiteSpace(activePlayer.UserCastingSpell.cast_on_other) && message.EndsWith(activePlayer.UserCastingSpell.cast_on_other))
+                    {
+                        return parseHandleYouCasting.HandleYouBeginCastingSpellOtherEnd(message);
+                    }
+                }
+
                 return parseHandleYouCasting.HandleYourSpell(message);
             }
 

@@ -36,6 +36,7 @@ namespace EQTool.Services
                                     item.ShowSpellsForClasses = new System.Collections.Generic.List<PlayerClasses>();
                                 }
                             }
+                            return ret1;
                         }
                     }
                 }
