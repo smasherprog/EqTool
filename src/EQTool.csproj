@@ -120,12 +120,14 @@
     <Compile Include="Services\AppDispatcher.cs" />
     <Compile Include="Services\BitmapExtensions.cs" />
     <Compile Include="Services\Spells\Log\LogDeathParse.cs" />
+    <Compile Include="Services\Spells\Log\DPSLogParse.cs" />
     <Compile Include="Services\Spells\SpellUIExtentions.cs" />
     <Compile Include="Services\Spells\Log\ParseSpellGuess.cs" />
     <Compile Include="Services\Spells\SpellDurations.cs" />
     <Compile Include="Services\Spells\Log\ParseHandleYou.cs" />
     <Compile Include="Services\Spells\Log\SpellLogParse.cs" />
     <Compile Include="ViewModels\ActivePlayerInfo.cs" />
+    <Compile Include="ViewModels\DPSWindowViewModel.cs" />
     <Compile Include="ViewModels\SpellWindowViewModel.cs" />
     <Compile Include="ViewModels\EntittyDPS.cs" />
     <Compile Include="ViewModels\SettingsWindowData.cs" />

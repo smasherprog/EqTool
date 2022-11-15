@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
 namespace EQTool.ViewModels
@@ -17,19 +18,27 @@ namespace EQTool.ViewModels
             }
         }
 
-        private int _TotalSeconds = 0;
+        private DateTime _StartTime = DateTime.Now;
 
-        public int TotalSeconds
+        public DateTime StartTime
         {
-            get => _TotalSeconds;
+            get => _StartTime;
             set
             {
-                _TotalSeconds = value;
+                _StartTime = value;
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(DPS));
+                OnPropertyChanged(nameof(TotalSeconds));
             }
         }
 
+        public void UpdateDps()
+        {
+            OnPropertyChanged(nameof(DPS));
+            OnPropertyChanged(nameof(TotalSeconds));
+        }
+
+        public int TotalSeconds => (int)(DateTime.Now - _StartTime).TotalSeconds;
 
         private int _TotalDamage = 0;
 
@@ -44,7 +53,7 @@ namespace EQTool.ViewModels
             }
         }
 
-        public int DPS => (_TotalDamage > 0 && _TotalSeconds > 0) ? (_TotalDamage / _TotalSeconds) : 0;
+        public int DPS => (_TotalDamage > 0 && TotalSeconds > 0) ? (int)(_TotalDamage / (double)TotalSeconds) : 0;
 
         public event PropertyChangedEventHandler PropertyChanged;
 

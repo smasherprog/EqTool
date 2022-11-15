@@ -55,7 +55,6 @@ namespace EQTool
             }
 #if !DEBUG
             MapMenuItem.Enabled = false;  
-            DpsMeterMenuItem.Enabled = false;
 #endif 
             SystemTrayIcon = new System.Windows.Forms.NotifyIcon
             {
@@ -98,6 +97,10 @@ namespace EQTool
 
         private void Map(object sender, EventArgs e)
         {
+#if !DEBUG
+            _ = MessageBox.Show("Map is not yet enabled!", "Map", MessageBoxButton.OK, MessageBoxImage.Information);
+            return;
+#endif
             var s = (System.Windows.Forms.MenuItem)sender;
             s.Checked = !s.Checked;
             if (s.Checked)

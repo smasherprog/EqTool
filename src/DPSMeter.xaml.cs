@@ -1,15 +1,14 @@
-﻿using EQTool.Models;
-using EQTool.Services;
+﻿using EQTool.Services;
+using EQTool.Services.Spells.Log;
 using EQTool.ViewModels;
 using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
-using System.Linq;
 using System.Timers;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Input;
 
 namespace EQTool
@@ -19,32 +18,37 @@ namespace EQTool
     /// </summary>
     public partial class DPSMeter : Window
     {
-        public ObservableCollection<EntittyDPS> CurrentEntityList = new ObservableCollection<EntittyDPS>();
-        public ObservableCollection<EntittyDPS> LastEntityList = new ObservableCollection<EntittyDPS>();
+
         private readonly Timer ParseTimer;
         private readonly Timer UITimer;
-        private long? LastReadOffset;
-        private readonly string HitMessage = " points of damage.";
-        private DateTime? LastTimeFighting;
-        private readonly EQToolSettings settings;
-        private readonly ParseSpells_spells_us parseSpells;
-        private readonly SpellIcons spellIcons;
 
-        public DPSMeter(EQToolSettings settings, ParseSpells_spells_us parseSpells, SpellIcons spellIcons)
+        private readonly ActivePlayer activePlayer;
+        private readonly DPSWindowViewModel dPSWindowViewModel;
+        private readonly IAppDispatcher appDispatcher;
+        private const int Milliseconds_Delta = 100;
+        private readonly DPSLogParse dPSLogParse;
+
+        public DPSMeter(DPSLogParse dPSLogParse, ActivePlayer activePlayer, DPSWindowViewModel dPSWindowViewModel, IAppDispatcher appDispatcher)
         {
-            this.settings = settings;
-            this.parseSpells = parseSpells;
-            this.spellIcons = spellIcons;
+            this.dPSLogParse = dPSLogParse;
+            this.appDispatcher = appDispatcher;
+            this.activePlayer = activePlayer;
+            this.dPSWindowViewModel = dPSWindowViewModel;
+            DataContext = dPSWindowViewModel;
             InitializeComponent();
-            ParseTimer = new System.Timers.Timer(500);
+            ParseTimer = new System.Timers.Timer(Milliseconds_Delta);
             ParseTimer.Elapsed += PollUpdates;
             ParseTimer.Enabled = true;
 
             UITimer = new System.Timers.Timer(1000);
             UITimer.Elapsed += PollUI;
             UITimer.Enabled = true;
-
-            currentfight.ItemsSource = CurrentEntityList;
+            DpsList.ItemsSource = dPSWindowViewModel.EntityList;
+            dPSWindowViewModel.EntityList.CollectionChanged += items_CollectionChanged;
+            var view = (CollectionView)CollectionViewSource.GetDefaultView(dPSWindowViewModel.EntityList);
+            view.SortDescriptions.Add(new SortDescription("Name", ListSortDirection.Ascending));
+            view.SortDescriptions.Add(new SortDescription("DPS", ListSortDirection.Ascending));
+            view.SortDescriptions.Add(new SortDescription("Total Damage", ListSortDirection.Ascending));
         }
 
         public void DragWindow(object sender, MouseButtonEventArgs args)
@@ -52,15 +56,29 @@ namespace EQTool
             DragMove();
         }
 
-        private FileInfo TryUpdatePlayerLevel()
+        private void items_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            var players = settings.Players ?? new System.Collections.Generic.List<PlayerInfo>();
-            var directory = new DirectoryInfo(settings.DefaultEqDirectory + "/Logs/");
-            var loggedincharlogfile = directory.GetFiles()
-                .Where(a => a.Name.StartsWith("eqlog") && a.Name.EndsWith(".txt"))
-                .OrderByDescending(a => a.LastWriteTime)
-                .FirstOrDefault();
-            return loggedincharlogfile;
+            var view = DpsList.View as GridView;
+            AutoResizeGridViewColumns(view);
+        }
+
+        private static void AutoResizeGridViewColumns(GridView view)
+        {
+            if (view == null || view.Columns.Count < 1)
+            {
+                return;
+            }
+            // Simulates column auto sizing
+            foreach (var column in view.Columns)
+            {
+                // Forcing change
+                if (double.IsNaN(column.Width))
+                {
+                    column.Width = 1;
+                }
+
+                column.Width = double.NaN;
+            }
         }
 
         protected override void OnClosing(CancelEventArgs e)
@@ -69,122 +87,58 @@ namespace EQTool
             ParseTimer.Stop();
             UITimer.Dispose();
             ParseTimer.Dispose();
+            dPSWindowViewModel.EntityList.CollectionChanged -= items_CollectionChanged;
             base.OnClosing(e);
         }
 
         private void PollUI(object sender, EventArgs e)
         {
-            App.Current.Dispatcher.Invoke(delegate
-            {
-                var itemstoremove = new List<UISpell>();
-                foreach (var item in CurrentEntityList)
-                {
-                    item.TotalSeconds += 1;
-                }
-                var now = DateTime.Now;
-                if (LastTimeFighting.HasValue && (now - LastTimeFighting.Value).TotalSeconds > 20)
-                {
-                    CurrentEntityList.Clear();
-                }
-            });
+            dPSWindowViewModel.UpdateDPS();
         }
 
         private void PollUpdates(object sender, EventArgs e)
         {
-            var loggedincharlogfile = TryUpdatePlayerLevel();
-            if (string.IsNullOrWhiteSpace(loggedincharlogfile?.FullName))
+            var playerchanged = activePlayer.Update();
+            var lastreadoffset = dPSWindowViewModel.LastReadOffset;
+            if (playerchanged)
             {
+                appDispatcher.DispatchUI(() => { dPSWindowViewModel.LastReadOffset = null; });
+                lastreadoffset = null;
+            }
+            var filepath = activePlayer.LogFileName;
+            if (string.IsNullOrWhiteSpace(filepath))
+            {
+                Debug.WriteLine($"No playerfile found!");
                 return;
             }
 
-            if (!LastReadOffset.HasValue || LastReadOffset >= loggedincharlogfile.Length)
-            {
-                LastReadOffset = loggedincharlogfile.Length;
-            }
             try
             {
-                using (var stream = new FileStream(loggedincharlogfile?.FullName, FileMode.Open, FileAccess.Read))
+                var fileinfo = new FileInfo(filepath);
+                if (!lastreadoffset.HasValue || lastreadoffset > fileinfo.Length)
+                {
+                    Debug.WriteLine($"Player Switched or new Player detected");
+                    lastreadoffset = fileinfo.Length;
+                    appDispatcher.DispatchUI(() => { dPSWindowViewModel.LastReadOffset = lastreadoffset; });
+                }
+                using (var stream = new FileStream(filepath, FileMode.Open, FileAccess.Read))
                 using (var reader = new StreamReader(stream))
                 {
-                    LastReadOffset = stream.Seek(LastReadOffset.Value, SeekOrigin.Begin);
+                    _ = stream.Seek(lastreadoffset.Value, SeekOrigin.Begin);
                     while (!reader.EndOfStream)
                     {
                         var line = reader.ReadLine();
-                        LastReadOffset = stream.Position;
+                        lastreadoffset = stream.Position;
+                        appDispatcher.DispatchUI(() => { dPSWindowViewModel.LastReadOffset = lastreadoffset; });
                         if (line.Length > 27)
                         {
-                            ParseLine(line);
+                            var matched = dPSLogParse.Match(line);
+                            dPSWindowViewModel.TryAdd(matched);
                         }
                     }
                 }
             }
             catch { }
-        }
-
-        private void ParseLine(string line)
-        {
-            var date = line.Substring(1, 25);
-            if (DateTime.TryParse(date, out _))
-            {
-
-            }
-
-            var now = DateTime.Now;
-            var message = line.Substring(27);
-            Debug.WriteLine(message);
-            App.Current.Dispatcher.Invoke(delegate
-            {
-                if (message.EndsWith(HitMessage))
-                {
-                    LastTimeFighting = DateTime.Now;
-                    message = message.Replace(HitMessage, string.Empty);
-                    var splits = message.Split(' ');
-                    var damagedone = splits[splits.Length - 1];
-                    var hittype = splits[1];
-                    var nameofchar = splits[0];
-                    var afterhit = message.IndexOf(hittype);
-                    if (afterhit == -1)
-                    {
-                        return;
-                    }
-
-                    afterhit += hittype.Length;
-                    var forname = " for ";
-                    var nameofthing = message.IndexOf(forname);
-                    if (nameofthing == -1)
-                    {
-                        return;
-                    }
-                    var nameofthinglength = nameofthing - afterhit;
-                    var nameofthethingforreal = message.Substring(afterhit, nameofthinglength);
-
-                    Debug.WriteLine($"'{nameofchar}' '{nameofthethingforreal}' '{damagedone}'");
-                    TryAdd(nameofthethingforreal, int.Parse(damagedone), nameofchar);
-                }
-                else if (LastTimeFighting.HasValue && (now - LastTimeFighting.Value).TotalSeconds > 20)
-                {
-                    LastTimeFighting = null;
-                    CurrentEntityList.Clear();
-                }
-            });
-        }
-
-        private void TryAdd(string nameoftarget, int damagedone, string nameofdealer)
-        {
-            var item = CurrentEntityList.FirstOrDefault(a => a.Name == nameofdealer);
-            if (item == null)
-            {
-                CurrentEntityList.Add(new EntittyDPS
-                {
-                    Name = nameofdealer,
-                    TotalDamage = damagedone,
-                    TotalSeconds = 0
-                });
-            }
-            else
-            {
-                item.TotalDamage += damagedone;
-            }
         }
     }
 }

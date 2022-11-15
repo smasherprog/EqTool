@@ -295,5 +295,53 @@ namespace EQToolTests
             Assert.IsNotNull(player);
             Assert.IsNotNull(duration);
         }
+
+        [TestMethod]
+        public void DPSLogParse_EatingDpsParseTest()
+        {
+            var dpslogparse = container.Resolve<DPSLogParse>();
+            var line = "[Mon Nov 14 20:11:25 2022] Vebanab slices a willowisp for 56 points of damage.";
+            var match = dpslogparse.Match(line);
+
+            Assert.IsNotNull(match);
+            Assert.AreEqual(match.Name, "Vebanab");
+            Assert.AreEqual(match.TotalDamage, 56);
+        }
+
+        [TestMethod]
+        public void DPSLogParse_EatingDpsParseTest1()
+        {
+            var dpslogparse = container.Resolve<DPSLogParse>();
+            var line = "[Mon Nov 14 20:11:25 2022] a willowisp slices Vebanab for 56 points of damage.";
+            var match = dpslogparse.Match(line);
+
+            Assert.IsNotNull(match);
+            Assert.AreEqual(match.Name, "a willowisp");
+            Assert.AreEqual(match.TotalDamage, 56);
+        }
+
+        [TestMethod]
+        public void DPSLogParse_EatingDpsParseTestYou()
+        {
+            var dpslogparse = container.Resolve<DPSLogParse>();
+            var line = "[Mon Nov 14 20:11:25 2022] You crush a shadowed man for 1 point of damage.";
+            var match = dpslogparse.Match(line);
+
+            Assert.IsNotNull(match);
+            Assert.AreEqual(match.Name, "You");
+            Assert.AreEqual(match.TotalDamage, 1);
+        }
+
+        [TestMethod]
+        public void DPSLogParse_EatingDpsParseTestYouGetHit()
+        {
+            var dpslogparse = container.Resolve<DPSLogParse>();
+            var line = "[Mon Nov 14 20:11:25 2022] Guard Valon bashes YOU for 12 points of damage.";
+            var match = dpslogparse.Match(line);
+
+            Assert.IsNotNull(match);
+            Assert.AreEqual(match.Name, "Guard Valon");
+            Assert.AreEqual(match.TotalDamage, 12);
+        }
     }
 }
