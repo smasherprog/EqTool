@@ -79,53 +79,56 @@ namespace EQTool
 
         private void PollUpdates(object sender, EventArgs e)
         {
-            var playerchanged = activePlayer.Update();
-            var lastreadoffset = spellWindowViewModel.LastReadOffset;
-            if (playerchanged)
+            appDispatcher.DispatchUI(() =>
             {
-                appDispatcher.DispatchUI(() => { spellWindowViewModel.LastReadOffset = null; });
-                lastreadoffset = null;
-            }
-            var filepath = activePlayer.LogFileName;
-            if (string.IsNullOrWhiteSpace(filepath))
-            {
-                Debug.WriteLine($"No playerfile found!");
-                return;
-            }
-
-            try
-            {
-                var fileinfo = new FileInfo(filepath);
-                if (!lastreadoffset.HasValue || lastreadoffset > fileinfo.Length)
+                var playerchanged = activePlayer.Update();
+                var lastreadoffset = spellWindowViewModel.LastReadOffset;
+                if (playerchanged)
                 {
-                    Debug.WriteLine($"Player Switched or new Player detected");
-                    lastreadoffset = fileinfo.Length;
-                    appDispatcher.DispatchUI(() => { spellWindowViewModel.LastReadOffset = lastreadoffset; });
+                    spellWindowViewModel.LastReadOffset = null;
+                    lastreadoffset = null;
                 }
-                using (var stream = new FileStream(filepath, FileMode.Open, FileAccess.Read))
-                using (var reader = new StreamReader(stream))
+                var filepath = activePlayer.LogFileName;
+                if (string.IsNullOrWhiteSpace(filepath))
                 {
-                    _ = stream.Seek(lastreadoffset.Value, SeekOrigin.Begin);
-                    while (!reader.EndOfStream)
-                    {
-                        var line = reader.ReadLine();
-                        lastreadoffset = stream.Position;
-                        appDispatcher.DispatchUI(() => { spellWindowViewModel.LastReadOffset = lastreadoffset; });
-                        if (line.Length > 27)
-                        {
-                            var matched = spellLogParse.MatchSpell(line);
-                            if (matched?.Spell != null)
-                            {
-                                spellWindowViewModel.TryAdd(matched);
-                            }
+                    Debug.WriteLine($"No playerfile found!");
+                    return;
+                }
 
-                            var targettoremove = logDeathParse.GetDeadTarget(line);
-                            spellWindowViewModel.TryRemoveTarget(targettoremove);
+                try
+                {
+                    var fileinfo = new FileInfo(filepath);
+                    if (!lastreadoffset.HasValue || lastreadoffset > fileinfo.Length)
+                    {
+                        Debug.WriteLine($"Player Switched or new Player detected");
+                        lastreadoffset = fileinfo.Length;
+                        spellWindowViewModel.LastReadOffset = lastreadoffset;
+                    }
+                    using (var stream = new FileStream(filepath, FileMode.Open, FileAccess.Read))
+                    using (var reader = new StreamReader(stream))
+                    {
+                        _ = stream.Seek(lastreadoffset.Value, SeekOrigin.Begin);
+                        while (!reader.EndOfStream)
+                        {
+                            var line = reader.ReadLine();
+                            lastreadoffset = stream.Position;
+                            spellWindowViewModel.LastReadOffset = lastreadoffset;
+                            if (line.Length > 27)
+                            {
+                                var matched = spellLogParse.MatchSpell(line);
+                                if (matched?.Spell != null)
+                                {
+                                    spellWindowViewModel.TryAdd(matched);
+                                }
+
+                                var targettoremove = logDeathParse.GetDeadTarget(line);
+                                spellWindowViewModel.TryRemoveTarget(targettoremove);
+                            }
                         }
                     }
                 }
-            }
-            catch { }
+                catch { }
+            });
         }
 
         private void CollapseClicked(object sender, RoutedEventArgs e)

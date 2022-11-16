@@ -43,9 +43,21 @@
             <ListView Name="DpsList"  VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling" Grid.Row="1" Background="Transparent">
                 <ListView.View>
                     <GridView>
-                        <GridViewColumn Header="Name" DisplayMemberBinding="{Binding Name}" />
-                        <GridViewColumn Header="DPS" DisplayMemberBinding="{Binding DPS}" />
-                        <GridViewColumn Header="TotalDamage"  DisplayMemberBinding="{Binding TotalDamage}" />
+                        <GridViewColumn DisplayMemberBinding="{Binding Name}">
+                            <GridViewColumn.Header>
+                                <GridViewColumnHeader Tag="Name" Click="nameheaderclick">Name</GridViewColumnHeader>
+                            </GridViewColumn.Header>
+                        </GridViewColumn>
+                        <GridViewColumn DisplayMemberBinding="{Binding DPS}">
+                            <GridViewColumn.Header>
+                                <GridViewColumnHeader Tag="DPS" Click="nameheaderclick">DPS</GridViewColumnHeader>
+                            </GridViewColumn.Header>
+                        </GridViewColumn>
+                        <GridViewColumn DisplayMemberBinding="{Binding TotalDamage}">
+                            <GridViewColumn.Header>
+                                <GridViewColumnHeader Tag="TotalDamage" Click="nameheaderclick">TotalDamage</GridViewColumnHeader>
+                            </GridViewColumn.Header>
+                        </GridViewColumn> 
                     </GridView>
                 </ListView.View> 
             </ListView>
