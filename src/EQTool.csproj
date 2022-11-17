@@ -119,6 +119,7 @@
     <Compile Include="Models\EQToolSettings.cs" />
     <Compile Include="Services\AppDispatcher.cs" />
     <Compile Include="Services\BitmapExtensions.cs" />
+    <Compile Include="Services\LogParser.cs" />
     <Compile Include="Services\Spells\Log\LogDeathParse.cs" />
     <Compile Include="Services\Spells\Log\DPSLogParse.cs" />
     <Compile Include="Services\Spells\SpellUIExtentions.cs" />

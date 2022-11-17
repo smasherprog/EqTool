@@ -69,8 +69,7 @@
                                     <TextBlock FontWeight="Bold" FontSize="14" Text="{Binding Name}" HorizontalAlignment="Left"/>
                                     <Button Margin="5,0,0,0" Click="CollapseClicked" HorizontalAlignment="Right">
                                         <Image Source="ToggleGuides.png" Height="{DynamicResource GlobalFontSize}"></Image>
-                                    </Button>
-
+                                    </Button> 
                                 </StackPanel>
                             </DataTemplate>
                         </GroupStyle.HeaderTemplate>
@@ -90,6 +89,5 @@
                 </ListView.ItemContainerStyle>
             </ListView>
         </Grid>
-    </Border>
-
+    </Border> 
 </Window>

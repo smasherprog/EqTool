@@ -3,11 +3,10 @@ using EQTool.Services.Spells.Log;
 using EQTool.ViewModels;
 using System;
 using System.ComponentModel;
-using System.Diagnostics;
-using System.IO;
 using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -23,31 +22,37 @@ namespace EQTool
         private readonly Timer ParseTimer;
         private readonly Timer UITimer;
 
-        private readonly ActivePlayer activePlayer;
+        private readonly LogParser logParser;
         private readonly DPSWindowViewModel dPSWindowViewModel;
-        private readonly IAppDispatcher appDispatcher;
-        private const int Milliseconds_Delta = 100;
         private readonly DPSLogParse dPSLogParse;
         private SortAdorner listViewSortAdorner = null;
         private GridViewColumnHeader listViewSortCol = null;
 
-        public DPSMeter(DPSLogParse dPSLogParse, ActivePlayer activePlayer, DPSWindowViewModel dPSWindowViewModel, IAppDispatcher appDispatcher)
+        public DPSMeter(DPSLogParse dPSLogParse, LogParser logParser, DPSWindowViewModel dPSWindowViewModel)
         {
             this.dPSLogParse = dPSLogParse;
-            this.appDispatcher = appDispatcher;
-            this.activePlayer = activePlayer;
+            this.logParser = logParser;
+            this.logParser.LineReadEvent += LogParser_LineReadEvent;
             this.dPSWindowViewModel = dPSWindowViewModel;
             DataContext = dPSWindowViewModel;
             InitializeComponent();
-            ParseTimer = new System.Timers.Timer(Milliseconds_Delta);
-            ParseTimer.Elapsed += PollUpdates;
-            ParseTimer.Enabled = true;
 
             UITimer = new System.Timers.Timer(1000);
             UITimer.Elapsed += PollUI;
             UITimer.Enabled = true;
             DpsList.ItemsSource = dPSWindowViewModel.EntityList;
             dPSWindowViewModel.EntityList.CollectionChanged += items_CollectionChanged;
+            var view = (ListCollectionView)CollectionViewSource.GetDefaultView(dPSWindowViewModel.EntityList);
+            view.SortDescriptions.Add(new SortDescription("Name", ListSortDirection.Ascending));
+            view.IsLiveSorting = true;
+            view.SortDescriptions.Add(new SortDescription("DPS", ListSortDirection.Ascending));
+            view.SortDescriptions.Add(new SortDescription("Total Damage", ListSortDirection.Ascending));
+        }
+
+        private void LogParser_LineReadEvent(object sender, LogParser.LogParserEventArgs e)
+        {
+            var matched = dPSLogParse.Match(e.Line);
+            dPSWindowViewModel.TryAdd(matched);
         }
 
         public void DragWindow(object sender, MouseButtonEventArgs args)
@@ -87,6 +92,7 @@ namespace EQTool
             UITimer.Dispose();
             ParseTimer.Dispose();
             dPSWindowViewModel.EntityList.CollectionChanged -= items_CollectionChanged;
+            logParser.LineReadEvent += LogParser_LineReadEvent;
             base.OnClosing(e);
         }
 
@@ -115,54 +121,6 @@ namespace EQTool
             listViewSortAdorner = new SortAdorner(listViewSortCol, newDir);
             AdornerLayer.GetAdornerLayer(listViewSortCol).Add(listViewSortAdorner);
             DpsList.Items.SortDescriptions.Add(new SortDescription(sortBy, newDir));
-        }
-
-        private void PollUpdates(object sender, EventArgs e)
-        {
-            appDispatcher.DispatchUI(() =>
-            {
-                var playerchanged = activePlayer.Update();
-                var lastreadoffset = dPSWindowViewModel.LastReadOffset;
-                if (playerchanged)
-                {
-                    dPSWindowViewModel.LastReadOffset = null;
-                    lastreadoffset = null;
-                }
-                var filepath = activePlayer.LogFileName;
-                if (string.IsNullOrWhiteSpace(filepath))
-                {
-                    Debug.WriteLine($"No playerfile found!");
-                    return;
-                }
-
-                try
-                {
-                    var fileinfo = new FileInfo(filepath);
-                    if (!lastreadoffset.HasValue || lastreadoffset > fileinfo.Length)
-                    {
-                        Debug.WriteLine($"Player Switched or new Player detected");
-                        lastreadoffset = fileinfo.Length;
-                        dPSWindowViewModel.LastReadOffset = lastreadoffset;
-                    }
-                    using (var stream = new FileStream(filepath, FileMode.Open, FileAccess.Read))
-                    using (var reader = new StreamReader(stream))
-                    {
-                        _ = stream.Seek(lastreadoffset.Value, SeekOrigin.Begin);
-                        while (!reader.EndOfStream)
-                        {
-                            var line = reader.ReadLine();
-                            lastreadoffset = stream.Position;
-                            dPSWindowViewModel.LastReadOffset = lastreadoffset;
-                            if (line.Length > 27)
-                            {
-                                var matched = dPSLogParse.Match(line);
-                                dPSWindowViewModel.TryAdd(matched);
-                            }
-                        }
-                    }
-                }
-                catch { }
-            });
         }
 
         public class SortAdorner : Adorner

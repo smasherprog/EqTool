@@ -4,8 +4,6 @@ using EQTool.Services.Spells.Log;
 using EQTool.ViewModels;
 using System;
 using System.ComponentModel;
-using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Timers;
 using System.Windows;
@@ -21,30 +19,23 @@ namespace EQTool
         private readonly Timer UITimer;
 
         private readonly SpellWindowViewModel spellWindowViewModel;
-        private readonly ActivePlayer activePlayer;
+        private readonly LogParser logParser;
         private readonly SpellLogParse spellLogParse;
-        private readonly IAppDispatcher appDispatcher;
         private readonly LogDeathParse logDeathParse;
 
-        public SpellWindow(EQToolSettings settings, SpellWindowViewModel spellWindowViewModel, ActivePlayer activePlayer, SpellLogParse spellLogParse, IAppDispatcher appDispatcher, LogDeathParse logDeathParse)
+        public SpellWindow(EQToolSettings settings, SpellWindowViewModel spellWindowViewModel, LogParser logParser, SpellLogParse spellLogParse, LogDeathParse logDeathParse)
         {
             this.logDeathParse = logDeathParse;
-            this.appDispatcher = appDispatcher;
-            this.activePlayer = activePlayer;
+            this.logParser = logParser;
+            this.logParser.LineReadEvent += LogParser_LineReadEvent;
             this.spellLogParse = spellLogParse;
             spellWindowViewModel.SpellList = new System.Collections.ObjectModel.ObservableCollection<UISpell>();
-            _ = this.activePlayer.Update();
             this.spellWindowViewModel = spellWindowViewModel;
             DataContext = spellWindowViewModel;
             Topmost = settings.TriggerWindowTopMost;
             InitializeComponent();
 
             _ = CommandBindings.Add(new CommandBinding(ApplicationCommands.Close, new ExecutedRoutedEventHandler(delegate (object sender, ExecutedRoutedEventArgs args) { Close(); })));
-
-            PollUpdates(null, null);
-            ParseTimer = new System.Timers.Timer(500);
-            ParseTimer.Elapsed += PollUpdates;
-            ParseTimer.Enabled = true;
 
             UITimer = new System.Timers.Timer(1000);
             UITimer.Elapsed += PollUI;
@@ -57,6 +48,18 @@ namespace EQTool
             view.IsLiveSorting = true;
             view.LiveSortingProperties.Add("SortingOrder");
         }
+        private void LogParser_LineReadEvent(object sender, LogParser.LogParserEventArgs e)
+        {
+            var matched = spellLogParse.MatchSpell(e.Line);
+            if (matched?.Spell != null)
+            {
+                spellWindowViewModel.TryAdd(matched);
+            }
+
+            var targettoremove = logDeathParse.GetDeadTarget(e.Line);
+            spellWindowViewModel.TryRemoveTarget(targettoremove);
+        }
+
 
         public void DragWindow(object sender, MouseButtonEventArgs args)
         {
@@ -69,66 +72,13 @@ namespace EQTool
             ParseTimer.Stop();
             UITimer.Dispose();
             ParseTimer.Dispose();
+            logParser.LineReadEvent += LogParser_LineReadEvent;
             base.OnClosing(e);
         }
 
         private void PollUI(object sender, EventArgs e)
         {
             spellWindowViewModel.UpdateSpells();
-        }
-
-        private void PollUpdates(object sender, EventArgs e)
-        {
-            appDispatcher.DispatchUI(() =>
-            {
-                var playerchanged = activePlayer.Update();
-                var lastreadoffset = spellWindowViewModel.LastReadOffset;
-                if (playerchanged)
-                {
-                    spellWindowViewModel.LastReadOffset = null;
-                    lastreadoffset = null;
-                }
-                var filepath = activePlayer.LogFileName;
-                if (string.IsNullOrWhiteSpace(filepath))
-                {
-                    Debug.WriteLine($"No playerfile found!");
-                    return;
-                }
-
-                try
-                {
-                    var fileinfo = new FileInfo(filepath);
-                    if (!lastreadoffset.HasValue || lastreadoffset > fileinfo.Length)
-                    {
-                        Debug.WriteLine($"Player Switched or new Player detected");
-                        lastreadoffset = fileinfo.Length;
-                        spellWindowViewModel.LastReadOffset = lastreadoffset;
-                    }
-                    using (var stream = new FileStream(filepath, FileMode.Open, FileAccess.Read))
-                    using (var reader = new StreamReader(stream))
-                    {
-                        _ = stream.Seek(lastreadoffset.Value, SeekOrigin.Begin);
-                        while (!reader.EndOfStream)
-                        {
-                            var line = reader.ReadLine();
-                            lastreadoffset = stream.Position;
-                            spellWindowViewModel.LastReadOffset = lastreadoffset;
-                            if (line.Length > 27)
-                            {
-                                var matched = spellLogParse.MatchSpell(line);
-                                if (matched?.Spell != null)
-                                {
-                                    spellWindowViewModel.TryAdd(matched);
-                                }
-
-                                var targettoremove = logDeathParse.GetDeadTarget(line);
-                                spellWindowViewModel.TryRemoveTarget(targettoremove);
-                            }
-                        }
-                    }
-                }
-                catch { }
-            });
         }
 
         private void CollapseClicked(object sender, RoutedEventArgs e)

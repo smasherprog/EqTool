@@ -22,7 +22,7 @@ namespace EQTool.Services
             _ = builder.RegisterType<EQSpells>().AsSelf().SingleInstance();
             _ = builder.RegisterType<ActivePlayer>().AsSelf().SingleInstance();
             _ = builder.RegisterType<SpellWindowViewModel>().AsSelf().SingleInstance();
-
+            _ = builder.RegisterType<LogParser>().AsSelf().SingleInstance();
             return builder.Build();
         }
     }
