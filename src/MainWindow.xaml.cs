@@ -71,6 +71,7 @@ namespace EQTool
                  }),
             };
             Hide();
+
             Spells(SpellsMenuItem, null);
         }
 

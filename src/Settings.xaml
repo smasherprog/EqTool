@@ -78,6 +78,10 @@
                 <TextBlock Text="Spells"  VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
                 <Button  Click="testspellsclicked" MinWidth="100">Add Test Spells</Button>
             </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="DPS"  VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
+                <Button Name="FightVisButton"  Click="FightVisualzationClicked" MinWidth="100">Open Fight Visualizaion</Button>
+            </StackPanel>
         </StackPanel>
     </ScrollViewer>
 </Window>

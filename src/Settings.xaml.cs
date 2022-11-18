@@ -46,6 +46,9 @@ namespace EQTool
             levelscombobox.ItemsSource = SettingsWindowData.Levels;
             fontsizescombobox.ItemsSource = SettingsWindowData.FontSizes;
             fontsizescombobox.SelectedValue = App.GlobalFontSize.ToString();
+#if !DEBUG
+            FightVisButton.Visibility = Visibility.Hidden;
+#endif
         }
 
         protected override void OnClosing(CancelEventArgs e)
@@ -231,6 +234,11 @@ namespace EQTool
         private void GuessSpells_Unchecked(object sender, RoutedEventArgs e)
         {
             settings.BestGuessSpells = false;
+        }
+
+        private void FightVisualzationClicked(object sender, RoutedEventArgs e)
+        {
+            new FightVisualzation().Show();
         }
 
         private void testspellsclicked(object sender, RoutedEventArgs e)

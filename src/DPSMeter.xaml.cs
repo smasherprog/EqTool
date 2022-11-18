@@ -18,8 +18,6 @@ namespace EQTool
     /// </summary>
     public partial class DPSMeter : Window
     {
-
-        private readonly Timer ParseTimer;
         private readonly Timer UITimer;
 
         private readonly LogParser logParser;
@@ -88,9 +86,7 @@ namespace EQTool
         protected override void OnClosing(CancelEventArgs e)
         {
             UITimer.Stop();
-            ParseTimer.Stop();
             UITimer.Dispose();
-            ParseTimer.Dispose();
             dPSWindowViewModel.EntityList.CollectionChanged -= items_CollectionChanged;
             logParser.LineReadEvent += LogParser_LineReadEvent;
             base.OnClosing(e);

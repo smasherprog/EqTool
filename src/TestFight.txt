@@ -1,0 +1,378 @@
+
+[Sat Oct 15 18:38:01 2022] A burning guardian claws Huntor for 253 points of damage.
+[Sat Oct 15 18:38:01 2022] Your Location is -721.17, -1716.14, -17.50
+[Sat Oct 15 18:38:02 2022] Triten begins to cast a spell.
+[Sat Oct 15 18:38:02 2022] Huntor pierces a burning guardian for 14 points of damage.
+[Sat Oct 15 18:38:02 2022] Your Location is -734.97, -1730.88, -17.50
+[Sat Oct 15 18:38:02 2022] Huntor slashes a burning guardian for 1 point of damage.
+[Sat Oct 15 18:38:03 2022] Huntor pierces a burning guardian for 26 points of damage.
+[Sat Oct 15 18:38:03 2022] A burning guardian was pierced by thorns.
+[Sat Oct 15 18:38:03 2022] A burning guardian claws Huntor for 284 points of damage.
+[Sat Oct 15 18:38:03 2022] A burning guardian was pierced by thorns.
+[Sat Oct 15 18:38:03 2022] A burning guardian claws Huntor for 390 points of damage.
+[Sat Oct 15 18:38:03 2022] A burning guardian was pierced by thorns.
+[Sat Oct 15 18:38:03 2022] A burning guardian claws Huntor for 390 points of damage.
+[Sat Oct 15 18:38:03 2022] Huntor slashes a burning guardian for 26 points of damage.
+[Sat Oct 15 18:38:04 2022] Huntor pierces a burning guardian for 37 points of damage.
+[Sat Oct 15 18:38:04 2022] You begin casting Torpor.
+[Sat Oct 15 18:38:04 2022] Huntor is completely healed.
+[Sat Oct 15 18:38:04 2022] Dany tells the guild, '111 CH  >>  Huntor <<    111 RUNDORIG next                                                                                                                                                                                                                     '
+[Sat Oct 15 18:38:04 2022] Huntor slashes a burning guardian for 18 points of damage.
+[Sat Oct 15 18:38:05 2022] Dany begins to cast a spell.
+[Sat Oct 15 18:38:05 2022] A burning guardian was pierced by thorns.
+[Sat Oct 15 18:38:05 2022] A burning guardian claws Huntor for 242 points of damage.
+[Sat Oct 15 18:38:05 2022] Huntor pierces a burning guardian for 27 points of damage.
+[Sat Oct 15 18:38:05 2022] Babbany begins to cast a spell.
+[Sat Oct 15 18:38:06 2022] Huntor pierces a burning guardian for 21 points of damage.
+[Sat Oct 15 18:38:06 2022] A burning guardian was pierced by thorns.
+[Sat Oct 15 18:38:06 2022] A burning guardian bashes Huntor for 191 points of damage.
+[Sat Oct 15 18:38:06 2022] A burning guardian was pierced by thorns.
+[Sat Oct 15 18:38:06 2022] A burning guardian claws Huntor for 190 points of damage.
+[Sat Oct 15 18:38:07 2022] Huntor pierces a burning guardian for 25 points of damage.
+[Sat Oct 15 18:38:07 2022] Huntor pierces a burning guardian for 27 points of damage.
+[Sat Oct 15 18:38:07 2022] Huntor slashes a burning guardian for 3 points of damage.
+[Sat Oct 15 18:38:07 2022] Huntor slashes a burning guardian for 30 points of damage.
+[Sat Oct 15 18:38:07 2022] Stabbyville tells the guild, 'you get nothing Khanis'
+[Sat Oct 15 18:38:07 2022] Slimman says, '* Babbany * giggles wildly. (Twitching)'
+[Sat Oct 15 18:38:07 2022] You can't use that command right now...
+[Sat Oct 15 18:38:07 2022] You can't use that command right now...
+[Sat Oct 15 18:38:07 2022] Slimman begins to cast a spell.
+[Sat Oct 15 18:38:07 2022] Lava sears your skin.  You have taken 300 points of damage.
+[Sat Oct 15 18:38:07 2022] Huntor pierces a burning guardian for 24 points of damage.
+[Sat Oct 15 18:38:08 2022] Triten begins to cast a spell.
+[Sat Oct 15 18:38:08 2022] Marantula punches a burning guardian for 13 points of damage.
+[Sat Oct 15 18:38:08 2022] Marantula punches a burning guardian for 29 points of damage.
+[Sat Oct 15 18:38:08 2022] Marantula punches a burning guardian for 23 points of damage.
+[Sat Oct 15 18:38:08 2022] A burning guardian was pierced by thorns.
+[Sat Oct 15 18:38:08 2022] A burning guardian claws Huntor for 347 points of damage.
+[Sat Oct 15 18:38:08 2022] A burning guardian was pierced by thorns.
+[Sat Oct 15 18:38:08 2022] A burning guardian claws Huntor for 190 points of damage.
+[Sat Oct 15 18:38:08 2022] A burning guardian was pierced by thorns.
+[Sat Oct 15 18:38:08 2022] A burning guardian claws Huntor for 295 points of damage.
+[Sat Oct 15 18:38:08 2022] Marantula's skin sears.
+[Sat Oct 15 18:38:08 2022] Huntor's skin sears.
+[Sat Oct 15 18:38:08 2022] Khanis's skin sears.
+[Sat Oct 15 18:38:08 2022] A blast of heat sears your flesh  You have taken 14 points of damage.
+[Sat Oct 15 18:38:08 2022] Huntor pierces a burning guardian for 23 points of damage.
+[Sat Oct 15 18:38:08 2022] Huntor pierces a burning guardian for 23 points of damage.
+[Sat Oct 15 18:38:09 2022] Huntor is completely healed.
+[Sat Oct 15 18:38:09 2022] Marantula punches a burning guardian for 28 points of damage.
+[Sat Oct 15 18:38:09 2022] Huntor slashes a burning guardian for 24 points of damage.
+[Sat Oct 15 18:38:09 2022] Rundorig tells the guild, '222 CH>>> Huntor <<< 222  Ballor Next   '
+[Sat Oct 15 18:38:09 2022] Rundorig begins to cast a spell.
+[Sat Oct 15 18:38:10 2022] Marantula punches a burning guardian for 13 points of damage.
+[Sat Oct 15 18:38:10 2022] You fall into a state of torpor.
+[Sat Oct 15 18:38:10 2022] Huntor slashes a burning guardian for 3 points of damage.
+[Sat Oct 15 18:38:10 2022] Huntor slashes a burning guardian for 6 points of damage.
+[Sat Oct 15 18:38:10 2022] Huntor pierces a burning guardian for 27 points of damage.
+[Sat Oct 15 18:38:10 2022] Huntor pierces a burning guardian for 34 points of damage.
+[Sat Oct 15 18:38:11 2022] Huntor kicks a burning guardian for 15 points of damage.
+[Sat Oct 15 18:38:11 2022] Marantula punches a burning guardian for 19 points of damage.
+[Sat Oct 15 18:38:11 2022] Marantula punches a burning guardian for 20 points of damage.
+[Sat Oct 15 18:38:11 2022] Your spell did not take hold.
+[Sat Oct 15 18:38:11 2022] Babbany begins to cast a spell.
+[Sat Oct 15 18:38:11 2022] Huntor pierces a burning guardian for 16 points of damage.
+[Sat Oct 15 18:38:11 2022] Oaflaf has healed you for 299 points of damage.
+[Sat Oct 15 18:38:11 2022] You begin casting Malo.
+[Sat Oct 15 18:38:12 2022] Marantula punches a burning guardian for 26 points of damage.
+[Sat Oct 15 18:38:12 2022] Marantula punches a burning guardian for 10 points of damage.
+[Sat Oct 15 18:38:12 2022] Khanis slashes a burning guardian for 12 points of damage.
+[Sat Oct 15 18:38:12 2022] Khanis slashes a burning guardian for 1 point of damage.
+[Sat Oct 15 18:38:12 2022] Khanis slashes a burning guardian for 51 points of damage.
+[Sat Oct 15 18:38:12 2022] A burning guardian was pierced by thorns.
+[Sat Oct 15 18:38:12 2022] A burning guardian claws Huntor for 390 points of damage.
+[Sat Oct 15 18:38:12 2022] A burning guardian was pierced by thorns.
+[Sat Oct 15 18:38:12 2022] A burning guardian claws Huntor for 211 points of damage.
+[Sat Oct 15 18:38:12 2022] A burning guardian was pierced by thorns.
+[Sat Oct 15 18:38:12 2022] A burning guardian claws Huntor for 326 points of damage.
+[Sat Oct 15 18:38:12 2022] A burning guardian was pierced by thorns.
+[Sat Oct 15 18:38:12 2022] A burning guardian claws Huntor for 263 points of damage.
+[Sat Oct 15 18:38:12 2022] Marantula punches a burning guardian for 19 points of damage.
+[Sat Oct 15 18:38:12 2022] Marantula punches a burning guardian for 23 points of damage.
+[Sat Oct 15 18:38:12 2022] Marantula punches a burning guardian for 9 points of damage.
+[Sat Oct 15 18:38:13 2022] Huntor slashes a burning guardian for 10 points of damage.
+[Sat Oct 15 18:38:13 2022] Khanis slashes a burning guardian for 50 points of damage.
+[Sat Oct 15 18:38:13 2022] Khanis slashes a burning guardian for 87 points of damage.
+[Sat Oct 15 18:38:13 2022] Marantula kicks a burning guardian for 70 points of damage.
+[Sat Oct 15 18:38:13 2022] Huntor pierces a burning guardian for 18 points of damage.
+[Sat Oct 15 18:38:13 2022] Slimman begins to cast a spell.
+[Sat Oct 15 18:38:13 2022] Marantula punches a burning guardian for 5 points of damage.
+[Sat Oct 15 18:38:13 2022] A burning guardian was pierced by thorns.
+[Sat Oct 15 18:38:13 2022] A burning guardian claws Huntor for 390 points of damage.
+[Sat Oct 15 18:38:13 2022] Triten begins to cast a spell.
+[Sat Oct 15 18:38:14 2022] A burning guardian was pierced by thorns.
+[Sat Oct 15 18:38:14 2022] A burning guardian kicks Huntor for 200 points of damage.
+[Sat Oct 15 18:38:14 2022] Khanis slashes a burning guardian for 49 points of damage.
+[Sat Oct 15 18:38:14 2022] Marantula punches a burning guardian for 41 points of damage.
+[Sat Oct 15 18:38:14 2022] Marantula punches a burning guardian for 18 points of damage.
+[Sat Oct 15 18:38:15 2022] Huntor is completely healed.
+[Sat Oct 15 18:38:15 2022] A burning guardian was pierced by thorns.
+[Sat Oct 15 18:38:15 2022] A burning guardian claws Huntor for 295 points of damage.
+[Sat Oct 15 18:38:15 2022] A burning guardian was pierced by thorns.
+[Sat Oct 15 18:38:15 2022] A burning guardian claws Huntor for 190 points of damage.
+[Sat Oct 15 18:38:15 2022] A burning guardian was pierced by thorns.
+[Sat Oct 15 18:38:15 2022] A burning guardian claws Huntor for 390 points of damage.
+[Sat Oct 15 18:38:15 2022] The aura of protection fades.
+[Sat Oct 15 18:38:15 2022] Marantula punches a burning guardian for 11 points of damage.
+[Sat Oct 15 18:38:15 2022] Khanis slashes a burning guardian for 39 points of damage.
+[Sat Oct 15 18:38:15 2022] Khanis slashes a burning guardian for 36 points of damage.
+[Sat Oct 15 18:38:15 2022] Slimman's skin peels away.
+[Sat Oct 15 18:38:16 2022] Balordin begins to cast a spell.
+[Sat Oct 15 18:38:16 2022] Khanis slashes a burning guardian for 56 points of damage.
+[Sat Oct 15 18:38:16 2022] Huntor pierces a burning guardian for 28 points of damage.
+[Sat Oct 15 18:38:16 2022] Huntor slashes a burning guardian for 47 points of damage.
+[Sat Oct 15 18:38:16 2022] Marantula punches a burning guardian for 36 points of damage.
+[Sat Oct 15 18:38:16 2022] Marantula punches a burning guardian for 40 points of damage.
+[Sat Oct 15 18:38:16 2022] Balordin tells the guild, '333 CH >> Huntor << 333'
+[Sat Oct 15 18:38:17 2022] Marantula is blasted with chlorophyll.
+[Sat Oct 15 18:38:17 2022] A burning guardian looks very uncomfortable.
+[Sat Oct 15 18:38:17 2022] Huntor pierces a burning guardian for 14 points of damage.
+[Sat Oct 15 18:38:17 2022] Huntor pierces a burning guardian for 33 points of damage.
+[Sat Oct 15 18:38:17 2022] Marantula's skin sears.
+[Sat Oct 15 18:38:17 2022] Chunnt's skin sears.
+[Sat Oct 15 18:38:17 2022] Khanis's skin sears.
+[Sat Oct 15 18:38:17 2022] Rampagious's skin sears.
+[Sat Oct 15 18:38:17 2022] You resist the Wave of Heat spell!
+[Sat Oct 15 18:38:17 2022] Khanis slashes a burning guardian for 7 points of damage.
+[Sat Oct 15 18:38:17 2022] Khanis slashes a burning guardian for 14 points of damage.
+[Sat Oct 15 18:38:17 2022] A burning guardian was pierced by thorns.
+[Sat Oct 15 18:38:17 2022] A burning guardian claws Huntor for 390 points of damage.
+[Sat Oct 15 18:38:17 2022] A burning guardian was pierced by thorns.
+[Sat Oct 15 18:38:17 2022] A burning guardian claws Huntor for 316 points of damage.
+[Sat Oct 15 18:38:17 2022] Huntor pierces a burning guardian for 40 points of damage.
+[Sat Oct 15 18:38:17 2022] Marantula punches a burning guardian for 17 points of damage.
+[Sat Oct 15 18:38:17 2022] Marantula punches a burning guardian for 14 points of damage.
+[Sat Oct 15 18:38:17 2022] Your spell did not take hold.
+[Sat Oct 15 18:38:18 2022] Khanis slashes a burning guardian for 35 points of damage.
+[Sat Oct 15 18:38:18 2022] Marantula punches a burning guardian for 13 points of damage.
+[Sat Oct 15 18:38:18 2022] Marantula punches a burning guardian for 26 points of damage.
+[Sat Oct 15 18:38:18 2022] You begin casting Turgur's Insects.
+[Sat Oct 15 18:38:18 2022] Marantula kicks a burning guardian for 39 points of damage.
+[Sat Oct 15 18:38:19 2022] A burning guardian was pierced by thorns.
+[Sat Oct 15 18:38:19 2022] A burning guardian claws Huntor for 263 points of damage.
+[Sat Oct 15 18:38:19 2022] A burning guardian was pierced by thorns.
+[Sat Oct 15 18:38:19 2022] A burning guardian claws Huntor for 358 points of damage.
+[Sat Oct 15 18:38:19 2022] Huntor pierces a burning guardian for 37 points of damage.
+[Sat Oct 15 18:38:19 2022] Marantula punches a burning guardian for 11 points of damage.
+[Sat Oct 15 18:38:19 2022] Marantula punches a burning guardian for 9 points of damage.
+[Sat Oct 15 18:38:19 2022] Marantula punches a burning guardian for 13 points of damage.
+[Sat Oct 15 18:38:19 2022] Khanis slashes a burning guardian for 38 points of damage.
+[Sat Oct 15 18:38:19 2022] Babbany begins to cast a spell.
+[Sat Oct 15 18:38:19 2022] Huntor is completely healed.
+[Sat Oct 15 18:38:19 2022] Dany tells the guild, '111 CH  >>  Huntor <<    111 RUNDORIG next                                                                                                                                                                                                                     '
+[Sat Oct 15 18:38:19 2022] Huntor slashes a burning guardian for 47 points of damage.
+[Sat Oct 15 18:38:20 2022] Dany begins to cast a spell.
+[Sat Oct 15 18:38:20 2022] Marantula punches a burning guardian for 21 points of damage.
+[Sat Oct 15 18:38:20 2022] Marantula punches a burning guardian for 11 points of damage.
+[Sat Oct 15 18:38:20 2022] Marantula punches a burning guardian for 28 points of damage.
+[Sat Oct 15 18:38:20 2022] Lava sears your skin.  You have taken 300 points of damage.
+[Sat Oct 15 18:38:20 2022] Triten begins to cast a spell.
+[Sat Oct 15 18:38:20 2022] Khanis slashes a burning guardian for 5 points of damage.
+[Sat Oct 15 18:38:20 2022] Khanis slashes a burning guardian for 31 points of damage.
+[Sat Oct 15 18:38:20 2022] A burning guardian was pierced by thorns.
+[Sat Oct 15 18:38:20 2022] A burning guardian claws Huntor for 274 points of damage.
+[Sat Oct 15 18:38:20 2022] A burning guardian was pierced by thorns.
+[Sat Oct 15 18:38:20 2022] A burning guardian claws Huntor for 284 points of damage.
+[Sat Oct 15 18:38:21 2022] Huntor slashes a burning guardian for 9 points of damage.
+[Sat Oct 15 18:38:21 2022] Huntor pierces a burning guardian for 55 points of damage.
+[Sat Oct 15 18:38:21 2022] Slimman says, '* Babbany * giggles wildly. (Twitching)'
+[Sat Oct 15 18:38:21 2022] Marantula punches a burning guardian for 18 points of damage.
+[Sat Oct 15 18:38:21 2022] Marantula punches a burning guardian for 1 point of damage.
+[Sat Oct 15 18:38:21 2022] Khanis slashes a burning guardian for 4 points of damage.
+[Sat Oct 15 18:38:21 2022] Slimman begins to cast a spell.
+[Sat Oct 15 18:38:21 2022] Your target resisted the Turgur's Insects spell.
+[Sat Oct 15 18:38:21 2022] Khanis slashes a burning guardian for 49 points of damage.
+[Sat Oct 15 18:38:22 2022] Einskaldir pierces a burning guardian for 33 points of damage.
+[Sat Oct 15 18:38:22 2022] Einskaldir pierces a burning guardian for 24 points of damage.
+[Sat Oct 15 18:38:22 2022] Huntor pierces a burning guardian for 35 points of damage.
+[Sat Oct 15 18:38:22 2022] Marantula punches a burning guardian for 31 points of damage.
+[Sat Oct 15 18:38:22 2022] Marantula punches a burning guardian for 1 point of damage.
+[Sat Oct 15 18:38:22 2022] Marantula punches a burning guardian for 9 points of damage.
+[Sat Oct 15 18:38:22 2022] You say to your guild, 'a burning guardian Malo'
+[Sat Oct 15 18:38:22 2022] Khanis slashes a burning guardian for 63 points of damage.
+[Sat Oct 15 18:38:22 2022] A burning guardian was pierced by thorns.
+[Sat Oct 15 18:38:22 2022] A burning guardian claws Huntor for 232 points of damage.
+[Sat Oct 15 18:38:22 2022] Huntor pierces a burning guardian for 40 points of damage.
+[Sat Oct 15 18:38:23 2022] Khanis slashes a burning guardian for 50 points of damage.
+[Sat Oct 15 18:38:23 2022] Marantula punches a burning guardian for 28 points of damage.
+[Sat Oct 15 18:38:23 2022] Marantula punches a burning guardian for 19 points of damage.
+[Sat Oct 15 18:38:23 2022] Chunnt pierces a burning guardian for 39 points of damage.
+[Sat Oct 15 18:38:23 2022] Chunnt pierces a burning guardian for 41 points of damage.
+[Sat Oct 15 18:38:23 2022] Your spell did not take hold.
+[Sat Oct 15 18:38:23 2022] Einskaldir pierces a burning guardian for 51 points of damage.
+[Sat Oct 15 18:38:23 2022] Einskaldir pierces a burning guardian for 16 points of damage.
+[Sat Oct 15 18:38:23 2022] Huntor is surrounded by a thorny barrier of blades.
+[Sat Oct 15 18:38:23 2022] Khanis's body is covered with a soft glow.
+[Sat Oct 15 18:38:23 2022] Khanis slashes a burning guardian for 27 points of damage.
+[Sat Oct 15 18:38:23 2022] Oaflaf has healed you for 285 points of damage.
+[Sat Oct 15 18:38:23 2022] Marantula punches a burning guardian for 15 points of damage.
+[Sat Oct 15 18:38:23 2022] Marantula punches a burning guardian for 8 points of damage.
+[Sat Oct 15 18:38:23 2022] Huntor pierces a burning guardian for 31 points of damage.
+[Sat Oct 15 18:38:23 2022] Rygo pierces a burning guardian for 33 points of damage.
+[Sat Oct 15 18:38:24 2022] Einskaldir pierces a burning guardian for 22 points of damage.
+[Sat Oct 15 18:38:24 2022] Einskaldir pierces a burning guardian for 14 points of damage.
+[Sat Oct 15 18:38:24 2022] Chunnt shouts, 'Truffles VS Wallows? Discuss then  - Assist with >       a burning guardian  <'
+[Sat Oct 15 18:38:24 2022] Chunnt pierces a burning guardian for 46 points of damage.
+[Sat Oct 15 18:38:24 2022] Rundorig tells the guild, '222 CH>>> Huntor <<< 222  Ballor Next   '
+[Sat Oct 15 18:38:24 2022] A burning guardian was pierced by thorns.
+[Sat Oct 15 18:38:24 2022] A burning guardian claws Huntor for 200 points of damage.
+[Sat Oct 15 18:38:24 2022] Suemae crushes a burning guardian for 23 points of damage.
+[Sat Oct 15 18:38:24 2022] Suemae crushes a burning guardian for 29 points of damage.
+[Sat Oct 15 18:38:24 2022] Einskaldir pierces a burning guardian for 44 points of damage.
+[Sat Oct 15 18:38:24 2022] Rygo backstabs a burning guardian for 421 points of damage.
+[Sat Oct 15 18:38:24 2022] Rundorig begins to cast a spell.
+[Sat Oct 15 18:38:24 2022] Marantula punches a burning guardian for 15 points of damage.
+[Sat Oct 15 18:38:24 2022] Marantula punches a burning guardian for 5 points of damage.
+[Sat Oct 15 18:38:24 2022] You begin casting Cannibalize IV.
+[Sat Oct 15 18:38:24 2022] Huntor pierces a burning guardian for 31 points of damage.
+[Sat Oct 15 18:38:25 2022] Chunnt pierces a burning guardian for 34 points of damage.
+[Sat Oct 15 18:38:25 2022] You can't use that command while casting...
+[Sat Oct 15 18:38:25 2022] Einskaldir pierces a burning guardian for 24 points of damage.
+[Sat Oct 15 18:38:25 2022] Rygo pierces a burning guardian for 58 points of damage.
+[Sat Oct 15 18:38:25 2022] Huntor tells the guild, 'Assist me on the thing... a burning guardian ... '
+[Sat Oct 15 18:38:25 2022] Marantula's skin sears.
+[Sat Oct 15 18:38:25 2022] Rygo's skin sears.
+[Sat Oct 15 18:38:25 2022] Chunnt's skin sears.
+[Sat Oct 15 18:38:25 2022] Suemae's skin sears.
+[Sat Oct 15 18:38:25 2022] Khanis's skin sears.
+[Sat Oct 15 18:38:25 2022] Donthit's skin sears.
+[Sat Oct 15 18:38:25 2022] Rampagious's skin sears.
+[Sat Oct 15 18:38:25 2022] Einskaldir's skin sears.
+[Sat Oct 15 18:38:25 2022] A blast of heat sears your flesh  You have taken 123 points of damage.
+[Sat Oct 15 18:38:25 2022] Khanis slashes a burning guardian for 25 points of damage.
+[Sat Oct 15 18:38:25 2022] Marantula kicks a burning guardian for 92 points of damage.
+[Sat Oct 15 18:38:25 2022] Chunnt pierces a burning guardian for 43 points of damage.
+[Sat Oct 15 18:38:25 2022] You can't use that command while casting...
+[Sat Oct 15 18:38:25 2022] Marantula punches a burning guardian for 11 points of damage.
+[Sat Oct 15 18:38:25 2022] Marantula punches a burning guardian for 30 points of damage.
+[Sat Oct 15 18:38:25 2022] Khanis slashes a burning guardian for 13 points of damage.
+[Sat Oct 15 18:38:25 2022] Rygo slashes a burning guardian for 34 points of damage.
+[Sat Oct 15 18:38:26 2022] Triten begins to cast a spell.
+[Sat Oct 15 18:38:26 2022] Chunnt pierces a burning guardian for 81 points of damage.
+[Sat Oct 15 18:38:26 2022] A burning guardian was pierced by thorns.
+[Sat Oct 15 18:38:26 2022] A burning guardian claws Huntor for 274 points of damage.
+[Sat Oct 15 18:38:26 2022] Huntor is completely healed.
+[Sat Oct 15 18:38:26 2022] Babbany begins to cast a spell.
+[Sat Oct 15 18:38:26 2022] Rygo pierces a burning guardian for 18 points of damage.
+[Sat Oct 15 18:38:26 2022] Khanis slashes a burning guardian for 31 points of damage.
+[Sat Oct 15 18:38:26 2022] Marantula punches a burning guardian for 25 points of damage.
+[Sat Oct 15 18:38:26 2022] Marantula punches a burning guardian for 1 point of damage.
+[Sat Oct 15 18:38:26 2022] Huntor slashes a burning guardian for 25 points of damage.
+[Sat Oct 15 18:38:26 2022] Huntor pierces a burning guardian for 26 points of damage.
+[Sat Oct 15 18:38:26 2022] Chunnt pierces a burning guardian for 14 points of damage.
+[Sat Oct 15 18:38:26 2022] Chunnt pierces a burning guardian for 20 points of damage.
+[Sat Oct 15 18:38:26 2022] Khanis slashes a burning guardian for 31 points of damage.
+[Sat Oct 15 18:38:26 2022] Suemae crushes a burning guardian for 28 points of damage.
+[Sat Oct 15 18:38:27 2022] Chunnt pierces a burning guardian for 37 points of damage.
+[Sat Oct 15 18:38:27 2022] Einskaldir pierces a burning guardian for 41 points of damage.
+[Sat Oct 15 18:38:27 2022] Einskaldir pierces a burning guardian for 35 points of damage.
+[Sat Oct 15 18:38:27 2022] Your body aches as your mind clears.  You have taken 148 points of damage.
+[Sat Oct 15 18:38:27 2022] Marantula punches a burning guardian for 18 points of damage.
+[Sat Oct 15 18:38:27 2022] Rygo slashes a burning guardian for 83 points of damage.
+[Sat Oct 15 18:38:27 2022] Huntor pierces a burning guardian for 50 points of damage.
+[Sat Oct 15 18:38:27 2022] Huntor pierces a burning guardian for 12 points of damage.
+[Sat Oct 15 18:38:27 2022] Rygo pierces a burning guardian for 21 points of damage.
+[Sat Oct 15 18:38:27 2022] Khanis slashes a burning guardian for 57 points of damage.
+[Sat Oct 15 18:38:28 2022] A burning guardian was pierced by thorns.
+[Sat Oct 15 18:38:28 2022] A burning guardian claws Huntor for 390 points of damage.
+[Sat Oct 15 18:38:28 2022] Chunnt pierces a burning guardian for 17 points of damage.
+[Sat Oct 15 18:38:28 2022] Chunnt pierces a burning guardian for 45 points of damage.
+[Sat Oct 15 18:38:28 2022] Your spell did not take hold.
+[Sat Oct 15 18:38:28 2022] Einskaldir pierces a burning guardian for 51 points of damage.
+[Sat Oct 15 18:38:28 2022] Huntor pierces a burning guardian for 40 points of damage.
+[Sat Oct 15 18:38:28 2022] Huntor pierces a burning guardian for 12 points of damage.
+[Sat Oct 15 18:38:28 2022] You begin casting Turgur's Insects.
+[Sat Oct 15 18:38:29 2022] Marantula is blasted with chlorophyll.
+[Sat Oct 15 18:38:29 2022] Rygo pierces a burning guardian for 37 points of damage.
+[Sat Oct 15 18:38:29 2022] Chunnt pierces a burning guardian for 29 points of damage.
+[Sat Oct 15 18:38:29 2022] Chunnt pierces a burning guardian for 33 points of damage.
+[Sat Oct 15 18:38:29 2022] Suemae crushes a burning guardian for 51 points of damage.
+[Sat Oct 15 18:38:29 2022] Chunnt pierces a burning guardian for 30 points of damage.
+[Sat Oct 15 18:38:29 2022] Einskaldir pierces a burning guardian for 15 points of damage.
+[Sat Oct 15 18:38:29 2022] Einskaldir pierces a burning guardian for 1 point of damage.
+[Sat Oct 15 18:38:29 2022] Huntor pierces a burning guardian for 16 points of damage.
+[Sat Oct 15 18:38:29 2022] A burning guardian was pierced by thorns.
+[Sat Oct 15 18:38:29 2022] A burning guardian claws Huntor for 316 points of damage.
+[Sat Oct 15 18:38:29 2022] A burning guardian was pierced by thorns.
+[Sat Oct 15 18:38:29 2022] A burning guardian claws Huntor for 390 points of damage.
+[Sat Oct 15 18:38:29 2022] A burning guardian was pierced by thorns.
+[Sat Oct 15 18:38:29 2022] A burning guardian claws Huntor for 200 points of damage.
+[Sat Oct 15 18:38:29 2022] A burning guardian was pierced by thorns.
+[Sat Oct 15 18:38:29 2022] A burning guardian claws Huntor for 316 points of damage.
+[Sat Oct 15 18:38:29 2022] Einskaldir pierces a burning guardian for 16 points of damage.
+[Sat Oct 15 18:38:29 2022] Einskaldir pierces a burning guardian for 12 points of damage.
+[Sat Oct 15 18:38:29 2022] Dany's casting is interrupted!
+[Sat Oct 15 18:38:29 2022] Oaflaf has healed you for 256 points of damage.
+[Sat Oct 15 18:38:30 2022] A burning guardian was pierced by thorns.
+[Sat Oct 15 18:38:30 2022] A burning guardian bashes Huntor for 195 points of damage.
+[Sat Oct 15 18:38:30 2022] Chunnt pierces a burning guardian for 20 points of damage.
+[Sat Oct 15 18:38:30 2022] Chunnt pierces a burning guardian for 28 points of damage.
+[Sat Oct 15 18:38:30 2022] Khanis slashes a burning guardian for 68 points of damage.
+[Sat Oct 15 18:38:30 2022] Rygo pierces a burning guardian for 75 points of damage.
+[Sat Oct 15 18:38:30 2022] Suemae bashes a burning guardian for 9 points of damage.
+[Sat Oct 15 18:38:30 2022] Einskaldir's body is covered with a soft glow.
+[Sat Oct 15 18:38:30 2022] Suemae crushes a burning guardian for 22 points of damage.
+[Sat Oct 15 18:38:30 2022] Suemae crushes a burning guardian for 12 points of damage.
+[Sat Oct 15 18:38:30 2022] Donthit says, '<TASH> a burning guardian'
+[Sat Oct 15 18:38:31 2022] Stabbyville pierces a burning guardian for 71 points of damage.
+[Sat Oct 15 18:38:31 2022] Stabbyville crushes a burning guardian for 4 points of damage.
+[Sat Oct 15 18:38:31 2022] Einskaldir pierces a burning guardian for 91 points of damage.
+[Sat Oct 15 18:38:31 2022] Einskaldir pierces a burning guardian for 37 points of damage.
+[Sat Oct 15 18:38:31 2022] Khanis slashes a burning guardian for 13 points of damage.
+[Sat Oct 15 18:38:31 2022] Rygo slashes a burning guardian for 16 points of damage.
+[Sat Oct 15 18:38:31 2022] Donthit begins to cast a spell.
+[Sat Oct 15 18:38:31 2022] Balordin begins to cast a spell.
+[Sat Oct 15 18:38:31 2022] Khanis slashes a burning guardian for 25 points of damage.
+[Sat Oct 15 18:38:31 2022] Tyed says, 'twitching Rowman'
+[Sat Oct 15 18:38:31 2022] Balordin tells the guild, '333 CH >> Huntor << 333'
+[Sat Oct 15 18:38:31 2022] Rygo pierces a burning guardian for 17 points of damage.
+[Sat Oct 15 18:38:31 2022] Rygo pierces a burning guardian for 55 points of damage.
+[Sat Oct 15 18:38:31 2022] Einskaldir pierces a burning guardian for 1 point of damage.
+[Sat Oct 15 18:38:31 2022] A burning guardian yawns.
+[Sat Oct 15 18:38:31 2022] Chunnt pierces a burning guardian for 19 points of damage.
+[Sat Oct 15 18:38:31 2022] Chunnt pierces a burning guardian for 31 points of damage.
+[Sat Oct 15 18:38:31 2022] Dany tells the guild, '111 CH  >>  Huntor <<    111 RUNDORIG next                                                                                                                                                                                                                     '
+[Sat Oct 15 18:38:32 2022] Stabbyville crushes a burning guardian for 28 points of damage.
+[Sat Oct 15 18:38:32 2022] Stabbyville crushes a burning guardian for 29 points of damage.
+[Sat Oct 15 18:38:32 2022] Huntor pierces a burning guardian for 38 points of damage.
+[Sat Oct 15 18:38:32 2022] Dany begins to cast a spell.
+[Sat Oct 15 18:38:32 2022] Chunnt pierces a burning guardian for 15 points of damage.
+[Sat Oct 15 18:38:32 2022] Chunnt pierces a burning guardian for 85 points of damage.
+[Sat Oct 15 18:38:32 2022] Khanis slashes a burning guardian for 16 points of damage.
+[Sat Oct 15 18:38:32 2022] Huntor kicks a burning guardian for 15 points of damage.
+[Sat Oct 15 18:38:32 2022] Stabbyville pierces a burning guardian for 18 points of damage.
+[Sat Oct 15 18:38:32 2022] Einskaldir pierces a burning guardian for 45 points of damage.
+[Sat Oct 15 18:38:32 2022] Einskaldir pierces a burning guardian for 12 points of damage.
+[Sat Oct 15 18:38:32 2022] A burning guardian glances nervously about.
+[Sat Oct 15 18:38:32 2022] Rygo backstabs a burning guardian for 445 points of damage.
+[Sat Oct 15 18:38:32 2022] Rygo backstabs a burning guardian for 163 points of damage.
+[Sat Oct 15 18:38:32 2022] Khanis slashes a burning guardian for 87 points of damage.
+[Sat Oct 15 18:38:32 2022] Tyed begins to cast a spell.
+[Sat Oct 15 18:38:32 2022] Your spell did not take hold.
+[Sat Oct 15 18:38:32 2022] Huntor pierces a burning guardian for 18 points of damage.
+[Sat Oct 15 18:38:32 2022] Huntor pierces a burning guardian for 23 points of damage.
+[Sat Oct 15 18:38:32 2022] Rygo slashes a burning guardian for 32 points of damage.
+[Sat Oct 15 18:38:32 2022] Stabbyville crushes a burning guardian for 50 points of damage.
+[Sat Oct 15 18:38:33 2022] Rygo pierces a burning guardian for 43 points of damage.
+[Sat Oct 15 18:38:33 2022] Antillius crushes a burning guardian for 169 points of damage.
+[Sat Oct 15 18:38:33 2022] Antillius crushes a burning guardian for 44 points of damage.
+[Sat Oct 15 18:38:33 2022] Chunnt pierces a burning guardian for 83 points of damage.
+[Sat Oct 15 18:38:33 2022] Lava sears your skin.  You have taken 300 points of damage.
+[Sat Oct 15 18:38:33 2022] A burning guardian was pierced by thorns.
+[Sat Oct 15 18:38:33 2022] A burning guardian claws Huntor for 358 points of damage.
+[Sat Oct 15 18:38:33 2022] A burning guardian was pierced by thorns.
+[Sat Oct 15 18:38:33 2022] A burning guardian claws Huntor for 253 points of damage.
+[Sat Oct 15 18:38:33 2022] A burning guardian was pierced by thorns.
+[Sat Oct 15 18:38:33 2022] A burning guardian claws Huntor for 232 points of damage.
+[Sat Oct 15 18:38:33 2022] A burning guardian was pierced by thorns.
+[Sat Oct 15 18:38:33 2022] A burning guardian claws Huntor for 390 points of damage.
+[Sat Oct 15 18:38:33 2022] Khanis slashes a burning guardian for 17 points of damage.
+[Sat Oct 15 18:38:33 2022] Stabbyville pierces a burning guardian for 56 points of damage.
+[Sat Oct 15 18:38:33 2022] Einskaldir pierces a burning guardian for 65 points of damage.
+[Sat Oct 15 18:38:33 2022] You say to your guild, 'SLOWED <<<<< a burning guardian >>>>>>  PENIS PENIS'
+[Sat Oct 15 18:38:33 2022] Huntor pierces a burning guardian for 17 points of damage.
+[Sat Oct 15 18:38:33 2022] Stabbyville crushes a burning guardian for 3 points of damage.
+[Sat Oct 15 18:38:33 2022] Stabbyville crushes a burning guardian for 28 points of damage.
+[Sat Oct 15 18:38:33 2022] Khanis slashes a burning guardian for 37 points of damage.
+[Sat Oct 15 18:38:33 2022] You say to your guild, 'SLOWED <<<<< a burning guardian >>>>>>  PENIS PENIS'
+[Sat Oct 15 18:38:34 2022] Einskaldir pierces a burning guardian for 14 points of damage.

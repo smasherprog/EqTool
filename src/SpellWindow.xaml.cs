@@ -15,7 +15,6 @@ namespace EQTool
 {
     public partial class SpellWindow : Window
     {
-        private readonly Timer ParseTimer;
         private readonly Timer UITimer;
 
         private readonly SpellWindowViewModel spellWindowViewModel;
@@ -69,9 +68,7 @@ namespace EQTool
         protected override void OnClosing(CancelEventArgs e)
         {
             UITimer.Stop();
-            ParseTimer.Stop();
             UITimer.Dispose();
-            ParseTimer.Dispose();
             logParser.LineReadEvent += LogParser_LineReadEvent;
             base.OnClosing(e);
         }

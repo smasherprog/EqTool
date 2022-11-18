@@ -1,7 +1,8 @@
-﻿using EQTool.ViewModels;
+﻿using EQTool.Models;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 
 namespace EQTool.Services.Spells.Log
 {
@@ -28,19 +29,27 @@ namespace EQTool.Services.Spells.Log
             " pierce ",
             " pierces ",
             " backstab ",
-            " backstabs "
+            " backstabs ",
+            " claw ",
+            " claws "
         };
 
         public DPSLogParse()
         {
         }
 
-        public EntittyDPS Match(string linelog)
+        public DPSParseMatch Match(string linelog)
         {
-            var date = linelog.Substring(1, 25);
-            if (DateTime.TryParse(date, out _))
+            /// [Mon Nov 14 20:11:25 2022]
+            var date = linelog.Substring(1, 24);
+            var format = "ddd MMM dd HH:mm:ss yyyy";
+            var timestamp = DateTime.Now;
+            try
             {
-
+                timestamp = DateTime.ParseExact(date, format, CultureInfo.InvariantCulture);
+            }
+            catch (FormatException)
+            {
             }
 
             var message = linelog.Substring(27);
@@ -69,10 +78,12 @@ namespace EQTool.Services.Spells.Log
 
                 if (!string.IsNullOrWhiteSpace(nameofattacker))
                 {
-                    return new EntittyDPS
+                    return new DPSParseMatch
                     {
-                        Name = nameofattacker,
-                        TotalDamage = int.Parse(damagedone)
+                        SourceName = nameofattacker,
+                        DamageDone = int.Parse(damagedone),
+                        TimeStamp = timestamp,
+                        TargetName = nameofattacker
                     };
                 }
             }

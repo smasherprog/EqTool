@@ -304,8 +304,9 @@ namespace EQToolTests
             var match = dpslogparse.Match(line);
 
             Assert.IsNotNull(match);
-            Assert.AreEqual(match.Name, "Vebanab");
-            Assert.AreEqual(match.TotalDamage, 56);
+            Assert.AreEqual(match.TimeStamp.ToString(), "11/14/2022 8:11:25 PM");
+            Assert.AreEqual(match.SourceName, "Vebanab");
+            Assert.AreEqual(match.DamageDone, 56);
         }
 
         [TestMethod]
@@ -316,8 +317,8 @@ namespace EQToolTests
             var match = dpslogparse.Match(line);
 
             Assert.IsNotNull(match);
-            Assert.AreEqual(match.Name, "a willowisp");
-            Assert.AreEqual(match.TotalDamage, 56);
+            Assert.AreEqual(match.SourceName, "a willowisp");
+            Assert.AreEqual(match.DamageDone, 56);
         }
 
         [TestMethod]
@@ -328,8 +329,8 @@ namespace EQToolTests
             var match = dpslogparse.Match(line);
 
             Assert.IsNotNull(match);
-            Assert.AreEqual(match.Name, "You");
-            Assert.AreEqual(match.TotalDamage, 1);
+            Assert.AreEqual(match.SourceName, "You");
+            Assert.AreEqual(match.DamageDone, 1);
         }
 
         [TestMethod]
@@ -340,8 +341,8 @@ namespace EQToolTests
             var match = dpslogparse.Match(line);
 
             Assert.IsNotNull(match);
-            Assert.AreEqual(match.Name, "Guard Valon");
-            Assert.AreEqual(match.TotalDamage, 12);
+            Assert.AreEqual(match.SourceName, "Guard Valon");
+            Assert.AreEqual(match.DamageDone, 12);
         }
     }
 }

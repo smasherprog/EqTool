@@ -69,7 +69,7 @@ namespace EQTool.ViewModels
             });
         }
 
-        public void TryAdd(EntittyDPS entitiy)
+        public void TryAdd(DPSParseMatch entitiy)
         {
             if (entitiy == null)
             {
@@ -79,14 +79,19 @@ namespace EQTool.ViewModels
             appDispatcher.DispatchUI(() =>
             {
                 LastTimeFighting = DateTime.Now;
-                var item = EntityList.FirstOrDefault(a => a.Name == entitiy.Name);
+                var item = EntityList.FirstOrDefault(a => a.Name == entitiy.SourceName);
                 if (item == null)
                 {
-                    EntityList.Add(entitiy);
+                    EntityList.Add(new EntittyDPS
+                    {
+                        Name = entitiy.SourceName,
+                        StartTime = DateTime.Now,
+                        TotalDamage = entitiy.DamageDone
+                    });
                 }
                 else
                 {
-                    item.TotalDamage += entitiy.TotalDamage;
+                    item.TotalDamage += entitiy.DamageDone;
                 }
             });
         }
