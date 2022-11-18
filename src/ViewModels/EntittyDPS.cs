@@ -6,14 +6,26 @@ namespace EQTool.ViewModels
 {
     public class EntittyDPS : INotifyPropertyChanged
     {
-        private string _Name = string.Empty;
+        private string _SourceName = string.Empty;
 
-        public string Name
+        public string SourceName
         {
-            get => _Name;
+            get => _SourceName;
             set
             {
-                _Name = value;
+                _SourceName = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private string _TargetName = string.Empty;
+
+        public string TargetName
+        {
+            get => _TargetName;
+            set
+            {
+                _TargetName = value;
                 OnPropertyChanged();
             }
         }

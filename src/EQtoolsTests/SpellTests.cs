@@ -306,6 +306,7 @@ namespace EQToolTests
             Assert.IsNotNull(match);
             Assert.AreEqual(match.TimeStamp.ToString(), "11/14/2022 8:11:25 PM");
             Assert.AreEqual(match.SourceName, "Vebanab");
+            Assert.AreEqual(match.TargetName, "a willowisp");
             Assert.AreEqual(match.DamageDone, 56);
         }
 
@@ -318,6 +319,7 @@ namespace EQToolTests
 
             Assert.IsNotNull(match);
             Assert.AreEqual(match.SourceName, "a willowisp");
+            Assert.AreEqual(match.TargetName, "Vebanab");
             Assert.AreEqual(match.DamageDone, 56);
         }
 
@@ -330,6 +332,7 @@ namespace EQToolTests
 
             Assert.IsNotNull(match);
             Assert.AreEqual(match.SourceName, "You");
+            Assert.AreEqual(match.TargetName, "a shadowed man");
             Assert.AreEqual(match.DamageDone, 1);
         }
 
@@ -342,6 +345,7 @@ namespace EQToolTests
 
             Assert.IsNotNull(match);
             Assert.AreEqual(match.SourceName, "Guard Valon");
+            Assert.AreEqual(match.TargetName, "YOU");
             Assert.AreEqual(match.DamageDone, 12);
         }
 

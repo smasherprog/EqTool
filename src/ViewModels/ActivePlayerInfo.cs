@@ -1,5 +1,4 @@
 ﻿using EQTool.Models;
-using EQTool.Services;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
@@ -10,11 +9,9 @@ namespace EQTool.ViewModels
     public class ActivePlayer : INotifyPropertyChanged
     {
         private readonly EQToolSettings settings;
-        private readonly IAppDispatcher appDispatcher;
-        public ActivePlayer(EQToolSettings settings, IAppDispatcher appDispatcher)
+        public ActivePlayer(EQToolSettings settings)
         {
             this.settings = settings;
-            this.appDispatcher = appDispatcher;
         }
 
         public bool Update()
@@ -32,12 +29,9 @@ namespace EQTool.ViewModels
                 var indexpart = charname.IndexOf("_");
                 var charName = charname.Substring(0, indexpart);
                 var tempplayer = players.FirstOrDefault(a => a.Name == charName);
-                appDispatcher.DispatchUI(() =>
-                {
-                    LogFileName = loggedincharlogfile.FullName;
-                    playerchanged = tempplayer != Player;
-                    Player = tempplayer;
-                });
+                LogFileName = loggedincharlogfile.FullName;
+                playerchanged = tempplayer != Player;
+                Player = tempplayer;
             }
 
             return playerchanged;
@@ -67,17 +61,7 @@ namespace EQTool.ViewModels
             }
         }
 
-        private string _LogFileName;
-
-        public string LogFileName
-        {
-            get => _LogFileName;
-            set
-            {
-                _LogFileName = value;
-                OnPropertyChanged();
-            }
-        }
+        public string LogFileName;
 
         private PlayerInfo _Player;
 

@@ -55,7 +55,6 @@ namespace EQTool.ViewModels
         {
             appDispatcher.DispatchUI(() =>
             {
-                _ = activePlayer.Update();
                 var player = activePlayer.Player;
                 var itemstoremove = new List<UISpell>();
                 foreach (var item in SpellList)
@@ -86,7 +85,6 @@ namespace EQTool.ViewModels
 
             appDispatcher.DispatchUI(() =>
             {
-                _ = activePlayer.Update();
                 var spellname = match.Spell.name;
                 if (match.MutipleMatchesFound)
                 {

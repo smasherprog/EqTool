@@ -34,11 +34,9 @@ namespace EQTool.Services
             appDispatcher.DispatchUI(() =>
             {
                 var playerchanged = activePlayer.Update();
-                var lastreadoffset = LastReadOffset;
                 if (playerchanged)
                 {
                     LastReadOffset = null;
-                    lastreadoffset = null;
                 }
                 var filepath = activePlayer.LogFileName;
                 if (string.IsNullOrWhiteSpace(filepath))
@@ -50,21 +48,19 @@ namespace EQTool.Services
                 try
                 {
                     var fileinfo = new FileInfo(filepath);
-                    if (!lastreadoffset.HasValue || lastreadoffset > fileinfo.Length)
+                    if (!LastReadOffset.HasValue || LastReadOffset > fileinfo.Length)
                     {
                         Debug.WriteLine($"Player Switched or new Player detected");
-                        lastreadoffset = fileinfo.Length;
-                        LastReadOffset = lastreadoffset;
+                        LastReadOffset = fileinfo.Length;
                     }
                     using (var stream = new FileStream(filepath, FileMode.Open, FileAccess.Read))
                     using (var reader = new StreamReader(stream))
                     {
-                        _ = stream.Seek(lastreadoffset.Value, SeekOrigin.Begin);
+                        _ = stream.Seek(LastReadOffset.Value, SeekOrigin.Begin);
                         while (!reader.EndOfStream)
                         {
                             var line = reader.ReadLine();
-                            lastreadoffset = stream.Position;
-                            LastReadOffset = lastreadoffset;
+                            LastReadOffset = stream.Position;
                             if (line.Length > 27)
                             {
                                 LineReadEvent(this, new LogParserEventArgs { Line = line });

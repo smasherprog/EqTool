@@ -40,11 +40,14 @@ namespace EQTool
             UITimer.Enabled = true;
             DpsList.ItemsSource = dPSWindowViewModel.EntityList;
             dPSWindowViewModel.EntityList.CollectionChanged += items_CollectionChanged;
+            _ = CommandBindings.Add(new CommandBinding(ApplicationCommands.Close, new ExecutedRoutedEventHandler(delegate (object sender, ExecutedRoutedEventArgs args) { Close(); })));
             var view = (ListCollectionView)CollectionViewSource.GetDefaultView(dPSWindowViewModel.EntityList);
-            view.SortDescriptions.Add(new SortDescription("Name", ListSortDirection.Ascending));
+            view.GroupDescriptions.Add(new PropertyGroupDescription("TargetName"));
+            view.LiveGroupingProperties.Add("TargetName");
+            view.IsLiveGrouping = true;
+            view.SortDescriptions.Add(new SortDescription("TargetName", ListSortDirection.Ascending));
             view.IsLiveSorting = true;
-            view.SortDescriptions.Add(new SortDescription("DPS", ListSortDirection.Ascending));
-            view.SortDescriptions.Add(new SortDescription("Total Damage", ListSortDirection.Ascending));
+            view.LiveSortingProperties.Add("TargetName");
         }
 
         private void LogParser_LineReadEvent(object sender, LogParser.LogParserEventArgs e)

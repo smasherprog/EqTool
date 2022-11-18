@@ -79,12 +79,13 @@ namespace EQTool.ViewModels
             appDispatcher.DispatchUI(() =>
             {
                 LastTimeFighting = DateTime.Now;
-                var item = EntityList.FirstOrDefault(a => a.Name == entitiy.SourceName);
+                var item = EntityList.FirstOrDefault(a => a.SourceName == entitiy.SourceName && a.TargetName == entitiy.TargetName);
                 if (item == null)
                 {
                     EntityList.Add(new EntittyDPS
                     {
-                        Name = entitiy.SourceName,
+                        SourceName = entitiy.SourceName,
+                        TargetName = entitiy.TargetName,
                         StartTime = DateTime.Now,
                         TotalDamage = entitiy.DamageDone
                     });

@@ -66,12 +66,14 @@ namespace EQTool.Services.Spells.Log
                 var splits = message.Split(' ');
                 var damagedone = splits[splits.Length - 1];
                 var nameofattacker = string.Empty;
+                var nameoftarget = string.Empty;
                 foreach (var item in HitTypes)
                 {
                     var found = message.IndexOf(item);
                     if (found != -1)
                     {
                         nameofattacker = message.Substring(0, found + 1).Trim();
+                        nameoftarget = message.Replace(nameofattacker, string.Empty).Replace(item, string.Empty).Replace(damagedone, string.Empty).Replace(" for ", string.Empty).Trim();
                         break;
                     }
                 }
@@ -83,7 +85,7 @@ namespace EQTool.Services.Spells.Log
                         SourceName = nameofattacker,
                         DamageDone = int.Parse(damagedone),
                         TimeStamp = timestamp,
-                        TargetName = nameofattacker
+                        TargetName = nameoftarget
                     };
                 }
             }
