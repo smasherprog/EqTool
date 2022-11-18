@@ -344,5 +344,15 @@ namespace EQToolTests
             Assert.AreEqual(match.SourceName, "Guard Valon");
             Assert.AreEqual(match.DamageDone, 12);
         }
+
+        [TestMethod]
+        public void TestDeath()
+        {
+            var service = container.Resolve<LogDeathParse>();
+            var line = "[Mon Nov 14 20:11:25 2022] an ire Ghast has been slain by an ire ghast!";
+            var targettoremove = service.GetDeadTarget(line);
+
+            Assert.IsNotNull(targettoremove);
+        }
     }
 }

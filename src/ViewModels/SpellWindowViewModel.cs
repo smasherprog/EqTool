@@ -125,7 +125,7 @@ namespace EQTool.ViewModels
 
             appDispatcher.DispatchUI(() =>
             {
-                var spellstormove = SpellList.Where(a => a.TargetName == target).ToList();
+                var spellstormove = SpellList.Where(a => a.TargetName.ToLower() == target.ToLower()).ToList();
                 foreach (var item in spellstormove)
                 {
                     Debug.WriteLine($"Removing {item.SpellName}");
