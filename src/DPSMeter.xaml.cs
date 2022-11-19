@@ -1,4 +1,5 @@
-﻿using EQTool.Services;
+﻿using EQTool.Models;
+using EQTool.Services;
 using EQTool.Services.Spells.Log;
 using EQTool.ViewModels;
 using System;
@@ -26,7 +27,7 @@ namespace EQTool
         private SortAdorner listViewSortAdorner = null;
         private GridViewColumnHeader listViewSortCol = null;
 
-        public DPSMeter(DPSLogParse dPSLogParse, LogParser logParser, DPSWindowViewModel dPSWindowViewModel)
+        public DPSMeter(DPSLogParse dPSLogParse, LogParser logParser, DPSWindowViewModel dPSWindowViewModel, EQToolSettings settings)
         {
             this.dPSLogParse = dPSLogParse;
             this.logParser = logParser;
@@ -34,7 +35,7 @@ namespace EQTool
             this.dPSWindowViewModel = dPSWindowViewModel;
             DataContext = dPSWindowViewModel;
             InitializeComponent();
-
+            Topmost = settings.TriggerWindowTopMost;
             UITimer = new System.Timers.Timer(1000);
             UITimer.Elapsed += PollUI;
             UITimer.Enabled = true;
