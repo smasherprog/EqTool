@@ -63,16 +63,26 @@
                 </ListView.ItemTemplate>
                 <ListView.GroupStyle>
                     <GroupStyle>
-                        <GroupStyle.HeaderTemplate>
-                            <DataTemplate>
-                                <StackPanel Orientation="Horizontal" Background="LightGray">
-                                    <TextBlock FontWeight="Bold" FontSize="14" Text="{Binding Name}" HorizontalAlignment="Left"/>
-                                    <Button Margin="5,0,0,0" Click="CollapseClicked" HorizontalAlignment="Right">
-                                        <Image Source="ToggleGuides.png" Height="{DynamicResource GlobalFontSize}"></Image>
-                                    </Button> 
-                                </StackPanel>
-                            </DataTemplate>
-                        </GroupStyle.HeaderTemplate>
+                        <GroupStyle.ContainerStyle>
+                            <Style TargetType="{x:Type GroupItem}">
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate>
+                                            <Expander IsExpanded="True" Visibility="{Binding Items[0].HeaderVisibility}">
+                                                <Expander.Header>
+                                                    <StackPanel Orientation="Horizontal">  
+                                                        <TextBlock Text="{Binding Name}" FontWeight="Bold" FontSize="{DynamicResource GlobalFontSize}" VerticalAlignment="Bottom" />
+                                                        <TextBlock Text="{Binding ItemCount}" FontSize="{DynamicResource GlobalFontSize}" FontWeight="Bold" Margin="10,0,0,0" VerticalAlignment="Bottom" />
+                                                        <TextBlock Text=" effect(s)" FontSize="{DynamicResource GlobalFontSize}" VerticalAlignment="Bottom" /> 
+                                                    </StackPanel>
+                                                </Expander.Header>
+                                                <ItemsPresenter />
+                                            </Expander>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </GroupStyle.ContainerStyle>
                     </GroupStyle>
                 </ListView.GroupStyle>
                 <ListView.ItemContainerStyle>

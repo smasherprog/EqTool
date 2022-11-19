@@ -88,6 +88,23 @@ namespace EQTool.ViewModels
             }
         }
 
+
+        private Visibility _HeaderVisibility = Visibility.Visible;
+
+        public Visibility HeaderVisibility
+        {
+            get => _HeaderVisibility;
+            set
+            {
+                if (_HeaderVisibility == value)
+                {
+                    return;
+                }
+                _HeaderVisibility = value;
+                OnPropertyChanged();
+            }
+        }
+
         public Visibility ColumnVisiblity
         {
             get

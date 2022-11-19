@@ -4,6 +4,7 @@ using EQTool.Services.Spells.Log;
 using EQTool.ViewModels;
 using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Timers;
 using System.Windows;
@@ -40,12 +41,14 @@ namespace EQTool
             UITimer.Elapsed += PollUI;
             UITimer.Enabled = true;
             var view = (ListCollectionView)CollectionViewSource.GetDefaultView(spelllistview.ItemsSource);
+
             view.GroupDescriptions.Add(new PropertyGroupDescription("SortingOrder"));
             view.LiveGroupingProperties.Add("SortingOrder");
             view.IsLiveGrouping = true;
             view.SortDescriptions.Add(new SortDescription("SortingOrder", ListSortDirection.Ascending));
             view.IsLiveSorting = true;
             view.LiveSortingProperties.Add("SortingOrder");
+
         }
         private void LogParser_LineReadEvent(object sender, LogParser.LogParserEventArgs e)
         {
@@ -85,6 +88,11 @@ namespace EQTool
             {
                 item.Collapse = !item.Collapse;
             }
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            Debug.WriteLine("sdfsdf");
         }
     }
 }

@@ -57,6 +57,7 @@ namespace EQTool.ViewModels
             {
                 var player = activePlayer.Player;
                 var itemstoremove = new List<UISpell>();
+
                 foreach (var item in SpellList)
                 {
                     item.SecondsLeftOnSpell = TimeSpan.FromSeconds(item.SecondsLeftOnSpell.TotalSeconds - 1);
@@ -67,6 +68,33 @@ namespace EQTool.ViewModels
                     item.HideGuesses = !settings.BestGuessSpells;
                     item.ShowOnlyYou = settings.YouOnlySpells;
                     item.HideClasses = player != null && SpellUIExtentions.HideSpell(player.ShowSpellsForClasses, item.Classes);
+                }
+
+                foreach (var spells in SpellList.GroupBy(a => a.TargetName))
+                {
+                    var allspellshidden = true;
+                    foreach (var spell in spells)
+                    {
+                        if (spell.ColumnVisiblity != System.Windows.Visibility.Collapsed)
+                        {
+                            allspellshidden = false;
+                        }
+                    }
+
+                    if (allspellshidden)
+                    {
+                        foreach (var spell in spells)
+                        {
+                            spell.HeaderVisibility = System.Windows.Visibility.Collapsed;
+                        }
+                    }
+                    else
+                    {
+                        foreach (var spell in spells)
+                        {
+                            spell.HeaderVisibility = System.Windows.Visibility.Visible;
+                        }
+                    }
                 }
 
                 foreach (var item in itemstoremove)
