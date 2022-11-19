@@ -66,8 +66,7 @@ namespace EQTool
                     ItemsSource = list,
                     Title = sourcegroups.Key,
                     DependentValuePath = "Y",
-                    IndependentValuePath = "X",
-                    LegendItemStyle =
+                    IndependentValuePath = "X"
                 };
                 mcChart.Series.Add(lineseries);
             }
