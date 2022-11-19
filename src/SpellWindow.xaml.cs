@@ -4,11 +4,8 @@ using EQTool.Services.Spells.Log;
 using EQTool.ViewModels;
 using System;
 using System.ComponentModel;
-using System.Diagnostics;
-using System.Linq;
 using System.Timers;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 
@@ -42,12 +39,12 @@ namespace EQTool
             UITimer.Enabled = true;
             var view = (ListCollectionView)CollectionViewSource.GetDefaultView(spelllistview.ItemsSource);
 
-            view.GroupDescriptions.Add(new PropertyGroupDescription("SortingOrder"));
-            view.LiveGroupingProperties.Add("SortingOrder");
+            view.GroupDescriptions.Add(new PropertyGroupDescription(nameof(UISpell.TargetName)));
+            view.LiveGroupingProperties.Add(nameof(UISpell.TargetName));
             view.IsLiveGrouping = true;
-            view.SortDescriptions.Add(new SortDescription("SortingOrder", ListSortDirection.Ascending));
+            view.SortDescriptions.Add(new SortDescription(nameof(UISpell.TargetName), ListSortDirection.Ascending));
             view.IsLiveSorting = true;
-            view.LiveSortingProperties.Add("SortingOrder");
+            view.LiveSortingProperties.Add(nameof(UISpell.TargetName));
 
         }
         private void LogParser_LineReadEvent(object sender, LogParser.LogParserEventArgs e)
@@ -79,20 +76,6 @@ namespace EQTool
         private void PollUI(object sender, EventArgs e)
         {
             spellWindowViewModel.UpdateSpells();
-        }
-
-        private void CollapseClicked(object sender, RoutedEventArgs e)
-        {
-            var sortname = ((dynamic)((Button)sender).DataContext)?.Name;
-            foreach (var item in spellWindowViewModel.SpellList.Where(a => a.SortingOrder == sortname))
-            {
-                item.Collapse = !item.Collapse;
-            }
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            Debug.WriteLine("sdfsdf");
         }
     }
 }

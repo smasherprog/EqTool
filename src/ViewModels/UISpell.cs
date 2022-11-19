@@ -71,24 +71,6 @@ namespace EQTool.ViewModels
             }
         }
 
-        private bool _Collapse = false;
-        public bool Collapse
-        {
-            get => _Collapse;
-            set
-            {
-                if (_Collapse == value)
-                {
-                    return;
-                }
-                _Collapse = value;
-                OnPropertyChanged();
-                OnPropertyChanged(nameof(ColumnVisiblity));
-                OnPropertyChanged(nameof(SortingOrder));
-            }
-        }
-
-
         private Visibility _HeaderVisibility = Visibility.Visible;
 
         public Visibility HeaderVisibility
@@ -113,7 +95,7 @@ namespace EQTool.ViewModels
                 {
                     return Visibility.Collapsed;
                 }
-                else if (_HideClasses || _Collapse)
+                else if (_HideClasses)
                 {
                     return Visibility.Collapsed;
                 }
@@ -150,7 +132,6 @@ namespace EQTool.ViewModels
 
         public int TotalSecondsOnSpell { get; set; }
 
-        public string SortingOrder => Collapse ? "~~ " + TargetName + "~~" : TargetName;
         public string TargetName { get; set; }
 
         private TimeSpan _SecondsLeftOnSpell;
