@@ -1,4 +1,5 @@
-﻿using EQTool.Services.Spells.Log;
+﻿using EQTool.Models;
+using EQTool.Services.Spells.Log;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -14,12 +15,21 @@ namespace EQTool
     /// </summary>
     public partial class FightVisualzation : Window
     {
-        private readonly ObservableCollection<KeyValuePair<DateTime, int>> lineSeries = new ObservableCollection<KeyValuePair<DateTime, int>>();
+
+        private readonly ObservableCollection<ISeries> Data = new ObservableCollection<ISeries>();
+
+        public class FightDataPoint
+        {
+            public DateTime X { get; set; }
+
+            public int Y { get; set; }
+        }
+
         public FightVisualzation()
         {
             InitializeComponent();
-            ((LineSeries)mcChart.Series[0]).ItemsSource = lineSeries;
-            var dpslist = new List<KeyValuePair<DateTime, int>>();
+            DataContext = this;
+            var dpslist = new List<DPSParseMatch>();
             var dpsstuff = new DPSLogParse();
             using (var stream = new FileStream(@"C:\Users\smash\source\repos\smasherprog\EqTool\src\TestFight.txt", FileMode.Open, FileAccess.Read))
             using (var reader = new StreamReader(stream))
@@ -30,23 +40,36 @@ namespace EQTool
                     if (line.Length > 27)
                     {
                         var match = dpsstuff.Match(line);
-                        if (match?.SourceName == "A burning guardian")
+                        if (!string.IsNullOrWhiteSpace(match?.SourceName))
                         {
-                            dpslist.Add(new KeyValuePair<DateTime, int>(match.TimeStamp, match.DamageDone));
+                            dpslist.Add(match);
                         }
                     }
                 }
             }
 
-            var dpslist2 = new List<KeyValuePair<DateTime, int>>();
-            foreach (var item in dpslist.GroupBy(a => a.Key))
+            var listseries = new List<ISeries>();
+            foreach (var sourcegroups in dpslist.GroupBy(a => a.SourceName))
             {
-                dpslist2.Add(new KeyValuePair<DateTime, int>(item.Key, item.Sum(a => a.Value)));
-            }
+                var list = new List<FightDataPoint>();
+                foreach (var timegroups in sourcegroups.GroupBy(a => a.TimeStamp))
+                {
+                    list.Add(new FightDataPoint
+                    {
+                        X = timegroups.Key,
+                        Y = timegroups.Sum(a => a.DamageDone)
+                    });
+                }
 
-            foreach (var item in dpslist2)
-            {
-                lineSeries.Add(item);
+                var lineseries = new LineSeries()
+                {
+                    ItemsSource = list,
+                    Title = sourcegroups.Key,
+                    DependentValuePath = "Y",
+                    IndependentValuePath = "X",
+                    LegendItemStyle =
+                };
+                mcChart.Series.Add(lineseries);
             }
         }
     }

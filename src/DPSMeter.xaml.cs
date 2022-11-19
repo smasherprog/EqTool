@@ -42,12 +42,12 @@ namespace EQTool
             dPSWindowViewModel.EntityList.CollectionChanged += items_CollectionChanged;
             _ = CommandBindings.Add(new CommandBinding(ApplicationCommands.Close, new ExecutedRoutedEventHandler(delegate (object sender, ExecutedRoutedEventArgs args) { Close(); })));
             var view = (ListCollectionView)CollectionViewSource.GetDefaultView(dPSWindowViewModel.EntityList);
-            view.GroupDescriptions.Add(new PropertyGroupDescription("TargetName"));
-            view.LiveGroupingProperties.Add("TargetName");
+            view.GroupDescriptions.Add(new PropertyGroupDescription(nameof(EntittyDPS.TargetName)));
+            view.LiveGroupingProperties.Add(nameof(EntittyDPS.TargetName));
             view.IsLiveGrouping = true;
-            view.SortDescriptions.Add(new SortDescription("TargetName", ListSortDirection.Ascending));
+            view.SortDescriptions.Add(new SortDescription(nameof(EntittyDPS.TargetName), ListSortDirection.Ascending));
             view.IsLiveSorting = true;
-            view.LiveSortingProperties.Add("TargetName");
+            view.LiveSortingProperties.Add(nameof(EntittyDPS.TargetName));
         }
 
         private void LogParser_LineReadEvent(object sender, LogParser.LogParserEventArgs e)

@@ -10,14 +10,12 @@ namespace EQTool.ViewModels
 {
     public class DPSWindowViewModel : INotifyPropertyChanged
     {
-        private readonly IAppDispatcher appDispatcher;
-        private readonly EQToolSettings settings;
+        private readonly IAppDispatcher appDispatcher; 
         private DateTime? LastTimeFighting;
 
-        public DPSWindowViewModel(IAppDispatcher appDispatcher, EQToolSettings settings)
+        public DPSWindowViewModel(IAppDispatcher appDispatcher)
         {
             this.appDispatcher = appDispatcher;
-            this.settings = settings;
         }
 
         public ObservableCollection<EntittyDPS> _EntityList = new ObservableCollection<EntittyDPS>();

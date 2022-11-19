@@ -7,11 +7,8 @@
         xmlns:local="clr-namespace:EQTool"
         mc:Ignorable="d"
         Title="FightVisualzation" Height="450" Width="800">
-    <Grid> 
-        <DVC:Chart Name="mcChart" Background="LightSteelBlue">
-            <DVC:LineSeries IndependentValueBinding="{Binding Path=Key}"  DependentValueBinding="{Binding Path=Value}">
-               
-            </DVC:LineSeries>
-       </DVC:Chart>
+    <Grid>
+        <DVC:Chart Name="mcChart" Background="LightSteelBlue" ItemsSource="{Binding Data}">
+        </DVC:Chart>
     </Grid>
 </Window>
