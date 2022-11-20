@@ -40,7 +40,7 @@ namespace EQTool
             SpellsMenuItem.Enabled = false;
             MapMenuItem.Enabled = false;
             DpsMeterMenuItem.Enabled = false;
-            if (!FindEq.IsValid(EQToolSettings.DefaultEqDirectory))
+            if (FindEq.IsValid(EQToolSettings.DefaultEqDirectory))
             {
                 var d = new EQToolMessageBox("Configuration", "Project 1999 game files were not able to be found.\nYou must set the path before this program will work!");
                 _ = d.ShowDialog();
@@ -185,9 +185,9 @@ namespace EQTool
                 }
                 else
                 {
-                    var d = new EQToolMessageBox("Find eqgame.exe", "eqgame.exe was not found in this folder! Try again");
+                    var d = new EQToolMessageBox("Find eqgame.exe", "EQGame.exe was not able to be located, closing EQTool!");
                     _ = d.ShowDialog();
-                    FindEQ();
+                    Close();
                 }
             }
         }
