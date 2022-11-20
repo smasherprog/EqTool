@@ -91,7 +91,7 @@ namespace EQTool
 
         private void Suggestions(object sender, EventArgs e)
         {
-            _ = System.Windows.MessageBox.Show("Please, post an issue in github if you have any suggetsions or you find any bugs!", "Suggestions", MessageBoxButton.OK, MessageBoxImage.Information);
+            _ = System.Windows.MessageBox.Show("Please, post an issue in github if you have any suggestions or you find any bugs!", "Suggestions", MessageBoxButton.OK, MessageBoxImage.Information);
             _ = System.Diagnostics.Process.Start(new ProcessStartInfo
             {
                 FileName = "https://github.com/smasherprog/EqTool/issues",
