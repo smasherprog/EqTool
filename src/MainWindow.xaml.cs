@@ -40,7 +40,7 @@ namespace EQTool
             SpellsMenuItem.Enabled = false;
             MapMenuItem.Enabled = false;
             DpsMeterMenuItem.Enabled = false;
-            if (FindEq.IsValid(EQToolSettings.DefaultEqDirectory))
+            if (!FindEq.IsValid(EQToolSettings.DefaultEqDirectory))
             {
                 var d = new EQToolMessageBox("Configuration", "Project 1999 game files were not able to be found.\nYou must set the path before this program will work!");
                 _ = d.ShowDialog();
