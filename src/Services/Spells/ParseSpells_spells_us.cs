@@ -38,6 +38,11 @@ namespace EQTool.Services
                     continue;
                 }
 
+                if (spell.name.ToLower().Contains("clarity"))
+                {
+                    Debug.WriteLine($"spell.name");
+                }
+
                 if (spells.ContainsKey(spell.name))
                 {
                     skippedcounter++;

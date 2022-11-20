@@ -265,6 +265,22 @@ namespace EQToolTests
         }
 
         [TestMethod]
+        public void TestClairityDurationGuess1()
+        {
+            var spelllogparse = container.Resolve<SpellLogParse>(); 
+            var line = "[Mon Nov 14 20:11:25 2022] A soft breeze slips through your mind.";
+            var player = container.Resolve<ActivePlayer>();
+            player.Player = new PlayerInfo
+            {
+                Level = 54,
+                PlayerClass = PlayerClasses.Cleric
+            };
+            var spellmatch = spelllogparse.MatchSpell(line);
+       
+            Assert.IsNotNull(spellmatch); 
+        }
+
+        [TestMethod]
         public void TestClairityDurationGuess_part1()
         {
             var spells = container.Resolve<EQSpells>();

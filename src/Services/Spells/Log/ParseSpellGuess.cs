@@ -1,5 +1,6 @@
 ﻿using EQTool.Models;
 using EQTool.ViewModels;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
@@ -42,11 +43,12 @@ namespace EQTool.Services.Spells.Log
             }
             else
             {
-                removename = message.IndexOf(" ");
+                removename = message.IndexOf(" "); 
+                var spellmessage = message.Substring(removename).Trim();
+                var foundspells = new List<Spell>();
                 if (removename != -1)
                 {
-                    var spellmessage = message.Substring(removename).Trim();
-                    if (spells.CastOtherSpells.TryGetValue(spellmessage, out var foundspells))
+                    if (spells.CastOtherSpells.TryGetValue(spellmessage, out foundspells))
                     {
                         var foundspell = SpellDurations.MatchClosestLevelToSpell(foundspells, activePlayer.Player);
                         var targetname = message.Replace(foundspell.cast_on_other, string.Empty).Trim();
@@ -63,6 +65,24 @@ namespace EQTool.Services.Spells.Log
                             MutipleMatchesFound = multiplematches
                         };
                     }
+                }
+
+                if (spells.CastOnYouSpells.TryGetValue(message, out foundspells))
+                {
+                    var foundspell = SpellDurations.MatchClosestLevelToSpell(foundspells, activePlayer.Player);
+                    var targetname = message.Replace(foundspell.cast_on_other, string.Empty).Trim();
+                    Debug.WriteLine($"Cast On you Spell: {foundspell.name} Message: {spellmessage}");
+                    var multiplematches = foundspell.Classes.All(a => a.Value == 255) && foundspells.Count > 1;
+                    if (EQSpells.RealSpells.Any(a => a == foundspell.name))
+                    {
+                        multiplematches = false;
+                    }
+                    return new SpellParsingMatch
+                    {
+                        Spell = foundspell,
+                        TargetName = EQSpells.SpaceYou,
+                        MutipleMatchesFound = multiplematches
+                    };
                 }
             }
             return null;
