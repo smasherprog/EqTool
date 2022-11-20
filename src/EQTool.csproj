@@ -50,8 +50,11 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup>
-    <ApplicationIcon>
-    </ApplicationIcon>
+    <ApplicationIcon>logo.ico</ApplicationIcon>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject>
+    </StartupObject>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Autofac, Version=6.4.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
@@ -113,6 +116,9 @@
     </ApplicationDefinition>
     <Compile Include="DPSMeter.xaml.cs">
       <DependentUpon>DPSMeter.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="EQToolMessageBox.xaml.cs">
+      <DependentUpon>EQToolMessageBox.xaml</DependentUpon>
     </Compile>
     <Compile Include="FightVisualzation.xaml.cs">
       <DependentUpon>FightVisualzation.xaml</DependentUpon>
@@ -185,6 +191,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="EQToolMessageBox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="FightVisualzation.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -249,6 +259,7 @@
   <ItemGroup>
     <None Include="packages.config" />
     <Resource Include="ToggleGuides.png" />
+    <None Include="logo.ico" />
     <Content Include="Trash.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

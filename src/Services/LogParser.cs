@@ -6,9 +6,9 @@ using System.Timers;
 
 namespace EQTool.Services
 {
-    public class LogParser
+    public class LogParser : IDisposable
     {
-        private readonly Timer UITimer;
+        private Timer UITimer;
         private readonly ActivePlayer activePlayer;
         private readonly IAppDispatcher appDispatcher;
         private long? LastReadOffset = null;
@@ -70,6 +70,13 @@ namespace EQTool.Services
                 }
                 catch { }
             });
+        }
+
+        public void Dispose()
+        {
+            UITimer.Stop();
+            UITimer.Dispose();
+            UITimer = null;
         }
     }
 }

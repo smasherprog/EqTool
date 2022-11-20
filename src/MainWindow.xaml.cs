@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows;
+using System.Windows.Forms;
 
 namespace EQTool
 {
@@ -41,12 +42,14 @@ namespace EQTool
             DpsMeterMenuItem.Enabled = false;
             if (!FindEq.IsValid(EQToolSettings.DefaultEqDirectory))
             {
-                _ = MessageBox.Show("Project 1999 game files were not able to be found.\nYou must set the path before this program will work!", "Configuration", MessageBoxButton.OK, MessageBoxImage.Warning);
-                Settings(SettingsMenuItem, null);
+                var d = new EQToolMessageBox("Configuration", "Project 1999 game files were not able to be found.\nYou must set the path before this program will work!");
+                _ = d.ShowDialog();
+                FindEQ();
             }
             else if (FindEq.TryCheckLoggingEnabled(EQToolSettings.DefaultEqDirectory) == false)
             {
-                _ = MessageBox.Show("You must enable Logging before any features will work. This can be done in the settings window!", "Configuration", MessageBoxButton.OK, MessageBoxImage.Warning);
+                var d = new EQToolMessageBox("Configuration", "You must enable Logging before any features will work. This can be done in the settings window!");
+                _ = d.ShowDialog();
                 Settings(SettingsMenuItem, null);
             }
             else
@@ -58,7 +61,7 @@ namespace EQTool
 #endif 
             SystemTrayIcon = new System.Windows.Forms.NotifyIcon
             {
-                Icon = Properties.Resources.toolicon1,
+                Icon = Properties.Resources.logo,
                 Visible = true,
                 ContextMenu = new System.Windows.Forms.ContextMenu(new System.Windows.Forms.MenuItem[]
                  {
@@ -88,7 +91,7 @@ namespace EQTool
 
         private void Suggestions(object sender, EventArgs e)
         {
-            _ = MessageBox.Show("Please, post an issue in github if you have any suggetsions or you find any bugs!", "Suggestions", MessageBoxButton.OK, MessageBoxImage.Information);
+            _ = System.Windows.MessageBox.Show("Please, post an issue in github if you have any suggetsions or you find any bugs!", "Suggestions", MessageBoxButton.OK, MessageBoxImage.Information);
             _ = System.Diagnostics.Process.Start(new ProcessStartInfo
             {
                 FileName = "https://github.com/smasherprog/EqTool/issues",
@@ -162,6 +165,33 @@ namespace EQTool
             }
         }
 
+        private void FindEQ()
+        {
+            using (var fbd = new FolderBrowserDialog { ShowNewFolderButton = false, Description = "Find eqgame.exe", RootFolder = Environment.SpecialFolder.MyComputer })
+            {
+                var result = fbd.ShowDialog();
+                if (result == System.Windows.Forms.DialogResult.OK && !string.IsNullOrWhiteSpace(fbd.SelectedPath))
+                {
+                    if (FindEq.IsValid(fbd.SelectedPath))
+                    {
+                        EQToolSettings.DefaultEqDirectory = fbd.SelectedPath;
+                    }
+                    else
+                    {
+                        var d = new EQToolMessageBox("Find eqgame.exe", "eqgame.exe was not found in this folder! Try again");
+                        _ = d.ShowDialog();
+                        FindEQ();
+                    }
+                }
+                else
+                {
+                    var d = new EQToolMessageBox("Find eqgame.exe", "eqgame.exe was not found in this folder! Try again");
+                    _ = d.ShowDialog();
+                    FindEQ();
+                }
+            }
+        }
+
         private void Spells(object sender, EventArgs e)
         {
             var s = (System.Windows.Forms.MenuItem)sender;
@@ -182,7 +212,8 @@ namespace EQTool
                     var charName = charname.Substring(0, indexpart);
                     if (!players.Any(a => a.Name == charName))
                     {
-                        _ = MessageBox.Show("Please set your characters level in settings otherwise spell timers wont work correctly.", "Configuration", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        var d = new EQToolMessageBox("Configuration", "Please set your characters level in settings otherwise spell timers wont work correctly.");
+                        _ = d.ShowDialog();
                         settingswindow?.Close();
                         settingswindow = container.Resolve<Settings>();
                         settingswindow.Show();

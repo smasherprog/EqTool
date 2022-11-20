@@ -14,8 +14,6 @@ namespace EQTool.Services
             public bool HasCharUiFiles { get; set; }
         }
 
-        private const string p99licensehash = "0a9ac51838f622d0e92e328692f4db73727ccf1ff0b516326a6bf104d8b4b16d";
-
         public string LoadEQPath()
         {
             var possibles = new List<Match>();
@@ -28,8 +26,7 @@ namespace EQTool.Services
                 {
                     var root = Path.GetDirectoryName(item);
                     var licensetext = File.ReadAllText(root + "/license.txt");
-                    var licensehash = StringHash.sha256_hash(licensetext);
-                    if (licensehash == p99licensehash)
+                    if (licensetext.Contains("Project 1999"))
                     {
                         var directory = new DirectoryInfo(root);
                         var maxmoddate = directory.GetFiles()
