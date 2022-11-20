@@ -8,8 +8,8 @@
         Title="EQToolMessageBox" Height="200" Width="400" WindowStyle="None">
     <Grid>
         <StackPanel Orientation="Vertical">
-            <TextBox Name="EQTitle" FontSize="24" FontWeight="Medium"/>
-            <TextBox Name="EQBody" FontSize="16" TextWrapping="Wrap"/> 
+            <TextBox Name="EQTitle" Text="Title Here" FontSize="24" FontWeight="Medium"/>
+            <TextBox Name="EQBody" FontSize="14" Text="This is where the text goes to display a message" TextWrapping="Wrap"/> 
         </StackPanel>
         <Button VerticalAlignment="Bottom" Click="Button_Click">Ok</Button>
     </Grid>
