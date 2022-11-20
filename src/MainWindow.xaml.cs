@@ -102,7 +102,7 @@ namespace EQTool
         private void Map(object sender, EventArgs e)
         {
 #if !DEBUG
-            _ = MessageBox.Show("Map is not yet enabled!", "Map", MessageBoxButton.OK, MessageBoxImage.Information);
+            _ = System.Windows.MessageBox.Show("Map is not yet enabled!", "Map", MessageBoxButton.OK, MessageBoxImage.Information);
             return;
 #endif
             var s = (System.Windows.Forms.MenuItem)sender;
