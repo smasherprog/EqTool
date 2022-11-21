@@ -37,6 +37,7 @@ namespace EQTool
             MapMenuItem = new System.Windows.Forms.MenuItem("Map", Map);
             DpsMeterMenuItem = new System.Windows.Forms.MenuItem("Dps", DPS);
             var gitHubMenuItem = new System.Windows.Forms.MenuItem("Suggestions", Suggestions);
+            var whythepig = new System.Windows.Forms.MenuItem("Why the Pig?", WhyThePig);
             SpellsMenuItem.Enabled = false;
             MapMenuItem.Enabled = false;
             DpsMeterMenuItem.Enabled = false;
@@ -65,6 +66,7 @@ namespace EQTool
                 Visible = true,
                 ContextMenu = new System.Windows.Forms.ContextMenu(new System.Windows.Forms.MenuItem[]
                  {
+                     whythepig,
                     DpsMeterMenuItem,
                     MapMenuItem,
                     SpellsMenuItem,
@@ -87,6 +89,15 @@ namespace EQTool
             }
             container.Resolve<EQToolSettingsLoad>().Save(EQToolSettings);
             base.OnClosing(e);
+        }
+
+        private void WhyThePig(object sender, EventArgs e)
+        {
+            _ = System.Diagnostics.Process.Start(new ProcessStartInfo
+            {
+                FileName = "https://discord.gg/xgMreRqK",
+                UseShellExecute = true
+            });
         }
 
         private void Suggestions(object sender, EventArgs e)
