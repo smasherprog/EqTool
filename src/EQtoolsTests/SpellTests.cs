@@ -400,7 +400,7 @@ namespace EQToolTests
         public void GetCustomTimerStart()
         {
             var service = container.Resolve<LogCustomTimer>();
-            var line = "[Mon Nov 14 20:11:25 2022] Timer Start StupidGoblin 30";
+            var line = "[Mon Nov 14 20:11:25 2022] you say, 'Timer Start StupidGoblin 30'";
             var targettoremove = service.GetStartTimer(line);
 
             Assert.IsNotNull(targettoremove);
