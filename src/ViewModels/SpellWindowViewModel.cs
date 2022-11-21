@@ -72,7 +72,7 @@ namespace EQTool.ViewModels
                     }
                     item.HideGuesses = !settings.BestGuessSpells;
                     item.ShowOnlyYou = settings.YouOnlySpells;
-                    item.HideClasses = player != null && SpellUIExtentions.HideSpell(player.ShowSpellsForClasses, item.Classes);
+                    item.HideClasses = player != null && SpellUIExtentions.HideSpell(player.ShowSpellsForClasses, item.Classes) && item.TargetName != EQSpells.SpaceYou;
                 }
 
                 foreach (var spells in SpellList.GroupBy(a => a.TargetName))
