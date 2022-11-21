@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EQTool.Models;
+using System;
 using System.Diagnostics;
 
 namespace EQTool.Services.Spells.Log
@@ -7,6 +8,7 @@ namespace EQTool.Services.Spells.Log
     {
         private readonly string HasBeenSlainBy = "has been slain by";
         private readonly string YouHaveSlain = "You have slain";
+        private readonly string YouHaveBeenSlain = "You have been slain";
 
         public LogDeathParse()
         {
@@ -38,7 +40,10 @@ namespace EQTool.Services.Spells.Log
                 var nameofthing = message.Replace(YouHaveSlain, string.Empty).TrimEnd('!').Trim();
                 return nameofthing;
             }
-
+            else if (message.StartsWith(YouHaveBeenSlain))
+            {
+                return EQSpells.SpaceYou;
+            }
             return null;
         }
     }

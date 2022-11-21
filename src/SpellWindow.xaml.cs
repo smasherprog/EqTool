@@ -19,9 +19,11 @@ namespace EQTool
         private readonly LogParser logParser;
         private readonly SpellLogParse spellLogParse;
         private readonly LogDeathParse logDeathParse;
+        private readonly LogCustomTimer logCustomTimer;
 
-        public SpellWindow(EQToolSettings settings, SpellWindowViewModel spellWindowViewModel, LogParser logParser, SpellLogParse spellLogParse, LogDeathParse logDeathParse)
+        public SpellWindow(EQToolSettings settings, SpellWindowViewModel spellWindowViewModel, LogParser logParser, SpellLogParse spellLogParse, LogDeathParse logDeathParse, LogCustomTimer logCustomTimer)
         {
+            this.logCustomTimer = logCustomTimer;
             this.logDeathParse = logDeathParse;
             this.logParser = logParser;
             this.logParser.LineReadEvent += LogParser_LineReadEvent;
@@ -57,6 +59,11 @@ namespace EQTool
 
             var targettoremove = logDeathParse.GetDeadTarget(e.Line);
             spellWindowViewModel.TryRemoveTarget(targettoremove);
+
+            var customtimer = logCustomTimer.GetStartTimer(e.Line);
+            spellWindowViewModel.TryAddCustom(customtimer);
+            var canceltimer = logCustomTimer.GetCancelTimer(e.Line);
+            spellWindowViewModel.TryRemoveCustom(canceltimer);
         }
 
 

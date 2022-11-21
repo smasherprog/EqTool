@@ -158,9 +158,10 @@ namespace EQTool.ViewModels
             set
             {
                 _SpellType = value;
-                ProgressBarColor = _SpellType > 0 ? Brushes.DarkSeaGreen : Brushes.OrangeRed;
+                ProgressBarColor = _SpellType == -1 ? Brushes.LightBlue : (_SpellType > 0 ? Brushes.DarkSeaGreen : Brushes.OrangeRed);
             }
         }
+
         public SolidColorBrush ProgressBarColor { get; set; }
         public int PercentLeftOnSpell { get; set; }
 

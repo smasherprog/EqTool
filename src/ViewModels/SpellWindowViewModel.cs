@@ -8,6 +8,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using static EQTool.Services.Spells.Log.LogCustomTimer;
 
 namespace EQTool.ViewModels
 {
@@ -16,9 +17,13 @@ namespace EQTool.ViewModels
         private readonly ActivePlayer activePlayer;
         private readonly IAppDispatcher appDispatcher;
         private readonly EQToolSettings settings;
-
-        public SpellWindowViewModel(ActivePlayer activePlayer, IAppDispatcher appDispatcher, EQToolSettings settings)
+        private readonly Spell FeignDeath;
+        private readonly string CustomerTime = " Custom Timer";
+        private readonly Dictionary<PlayerClasses, int> CustomTimerClasses;
+        public SpellWindowViewModel(ActivePlayer activePlayer, IAppDispatcher appDispatcher, EQToolSettings settings, EQSpells spells)
         {
+            CustomTimerClasses = Enum.GetValues(typeof(PlayerClasses)).Cast<PlayerClasses>().Select(a => new { key = a, level = 1 }).ToDictionary(a => a.key, a => a.level);
+            FeignDeath = spells.AllSpells.FirstOrDefault(a => a.name == "Feign Death");
             this.activePlayer = activePlayer;
             this.appDispatcher = appDispatcher;
             this.settings = settings;
@@ -139,6 +144,55 @@ namespace EQTool.ViewModels
                     Classes = match.Spell.Classes,
                     GuessedSpell = match.MutipleMatchesFound
                 });
+            });
+        }
+
+        public void TryAddCustom(CustomerTimer match)
+        {
+            if (match?.Name == null)
+            {
+                return;
+            }
+
+            appDispatcher.DispatchUI(() =>
+            {
+                var s = SpellList.FirstOrDefault(a => a.SpellName == match.Name && CustomerTime == a.TargetName);
+                if (s != null)
+                {
+                    _ = SpellList.Remove(s);
+                }
+
+                var spellduration = match.DurationInSeconds;
+                SpellList.Add(new UISpell
+                {
+                    TotalSecondsOnSpell = spellduration,
+                    PercentLeftOnSpell = 100,
+                    SpellType = -1,
+                    TargetName = CustomerTime,
+                    SpellName = match.Name,
+                    Rect = FeignDeath.Rect,
+                    SecondsLeftOnSpell = TimeSpan.FromSeconds(spellduration),
+                    SpellIcon = FeignDeath.SpellIcon,
+                    Classes = CustomTimerClasses,
+                    GuessedSpell = false
+                });
+            });
+        }
+
+        public void TryRemoveCustom(string name)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                return;
+            }
+
+            appDispatcher.DispatchUI(() =>
+            {
+                var s = SpellList.FirstOrDefault(a => a.SpellName == name && CustomerTime == a.TargetName);
+                if (s != null)
+                {
+                    _ = SpellList.Remove(s);
+                }
             });
         }
 

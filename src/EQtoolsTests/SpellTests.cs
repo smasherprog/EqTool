@@ -200,6 +200,27 @@ namespace EQToolTests
         }
 
         [TestMethod]
+        public void TestSpeedOfShissar1()
+        {
+            var spells = container.Resolve<EQSpells>();
+            var spelllogparse = container.Resolve<SpellLogParse>();
+            var shissar = "Speed of the Shissar";
+            var shissarspell = spells.AllSpells.FirstOrDefault(a => a.name == shissar);
+            var line = "[Mon Nov 14 20:11:25 2022] Jobober" + shissarspell.cast_on_other;
+            var service = container.Resolve<ParseSpellGuess>();
+            var player = container.Resolve<ActivePlayer>();
+            player.Player = new PlayerInfo
+            {
+                Level = 54,
+                PlayerClass = PlayerClasses.Cleric
+            };
+            var guesss = spelllogparse.MatchSpell(line);
+
+            Assert.IsNotNull(guesss);
+            Assert.IsFalse(guesss.MutipleMatchesFound);
+        }
+
+        [TestMethod]
         public void TestWarriorDisciplineGuess()
         {
             var spells = container.Resolve<EQSpells>();
@@ -267,7 +288,7 @@ namespace EQToolTests
         [TestMethod]
         public void TestClairityDurationGuess1()
         {
-            var spelllogparse = container.Resolve<SpellLogParse>(); 
+            var spelllogparse = container.Resolve<SpellLogParse>();
             var line = "[Mon Nov 14 20:11:25 2022] A soft breeze slips through your mind.";
             var player = container.Resolve<ActivePlayer>();
             player.Player = new PlayerInfo
@@ -276,8 +297,8 @@ namespace EQToolTests
                 PlayerClass = PlayerClasses.Cleric
             };
             var spellmatch = spelllogparse.MatchSpell(line);
-       
-            Assert.IsNotNull(spellmatch); 
+
+            Assert.IsNotNull(spellmatch);
         }
 
         [TestMethod]
@@ -373,6 +394,17 @@ namespace EQToolTests
             var targettoremove = service.GetDeadTarget(line);
 
             Assert.IsNotNull(targettoremove);
+        }
+
+        [TestMethod]
+        public void GetCustomTimerStart()
+        {
+            var service = container.Resolve<LogCustomTimer>();
+            var line = "[Mon Nov 14 20:11:25 2022] Timer Start StupidGoblin 30";
+            var targettoremove = service.GetStartTimer(line);
+
+            Assert.IsNotNull(targettoremove);
+            Assert.AreEqual(30 * 60, targettoremove.DurationInSeconds);
         }
     }
 }
