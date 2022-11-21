@@ -64,13 +64,8 @@ namespace EQTool.Services.Spells.Log
 
             if (message.ToLower().StartsWith(CancelTimer))
             {
-                var removedstartimer = message.ToLower().Replace(CancelTimer, string.Empty).Trim();
-                var nameindex = removedstartimer.IndexOf(" ");
-                if (nameindex != -1)
-                {
-                    var name = removedstartimer.Substring(0, nameindex);
-                    return name;
-                }
+                var nametoremove = message.ToLower().Replace(CancelTimer, string.Empty).Trim('\'').Trim().Trim();
+                return nametoremove;
             }
 
             return null;
