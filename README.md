@@ -13,10 +13,10 @@ Features:
 <li>Have a Map which uses the 3d assets from the eq directory. This will be very helpful in places like Kedge keep or any dungeon that has overlapping areas. Of course You will be able to zoom, pan around as you would expect in a 3d viewer.(Not implemented yet)</li>
 <li>Remember the last settings for window locations/options. I hate opening nparse, only to open map and spells and reposition them because it does not remember my last configuration.(Not implemented yet)</li>
 </ul>
-Suppers Timers now! (Only Minutes are supported)
+<h5>Suppers Timers now! (Only Minutes are supported)</h5>
 <ul>
-<ll>Timer Start StupidGoblin 30</li>
-<ll>Timer Cancel StupidGoblin</li>
+<li>Timer Start StupidGoblin 30</li>
+<li>Timer Cancel StupidGoblin</li>
 </ul>
 Instructions:
 <ul>
