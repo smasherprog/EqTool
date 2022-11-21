@@ -53,7 +53,7 @@ namespace EQTool.Services
             return spells.FirstOrDefault();
         }
 
-        public static int? MatchClosestLevelToSpell(Spell spell, PlayerInfo player)
+        public static int MatchClosestLevelToSpell(Spell spell, PlayerInfo player)
         {
             var userlevel = player?.Level;
             var playerclass = player?.PlayerClass;
@@ -69,7 +69,7 @@ namespace EQTool.Services
             {
                 foreach (var item in spell.Classes.OrderByDescending(a => a.Value))
                 {
-                    return userlevel < item.Value ? item.Value : userlevel;
+                    return (userlevel < item.Value ? item.Value : userlevel) ?? 30;
                 }
                 var closestlevel = userlevel.Value;
                 foreach (var item in spell.Classes)
@@ -82,14 +82,25 @@ namespace EQTool.Services
                 }
             }
 
-            return spell.Classes.Any() ? spell.Classes.FirstOrDefault().Value : (int?)null;
+            var level = spell.Classes.Any() ? spell.Classes.FirstOrDefault().Value : (int?)null;
+            if (((level.HasValue && level <= 0) || !level.HasValue) && player != null)
+            {
+                level = player?.Level;
+            }
+
+            if ((level.HasValue && level <= 0) || !level.HasValue)
+            {
+                level = 30;
+            }
+
+            return level.Value;
         }
 
         public static int GetDuration_inSeconds(Spell spell, PlayerInfo player)
         {
             var duration = spell.buffduration;
             int spell_ticks;
-            var level = MatchClosestLevelToSpell(spell, player) ?? 0;
+            var level = MatchClosestLevelToSpell(spell, player);
 
             switch (spell.buffdurationformula)
             {

@@ -38,7 +38,7 @@ namespace EQTool.Services
                     continue;
                 }
 
-                if (spell.name.ToLower().Contains("clarity"))
+                if (spell.name.ToLower().Contains("journeyman"))
                 {
                     Debug.WriteLine($"spell.name");
                 }

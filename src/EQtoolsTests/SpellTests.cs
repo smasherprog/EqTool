@@ -50,6 +50,20 @@ namespace EQToolTests
         }
 
         [TestMethod]
+        public void TestSpellMatchCorrectlySk30_Journeymansboots()
+        {
+            var spells = container.Resolve<EQSpells>();
+            var spellname = "JourneymanBoots";
+            var spell = spells.AllSpells.FirstOrDefault(a => a.name == spellname);
+            var ret = EQTool.Services.SpellDurations.MatchClosestLevelToSpell(spell, new PlayerInfo
+            {
+                Level = 35,
+                PlayerClass = PlayerClasses.ShadowKnight
+            });
+            Assert.AreEqual(ret, 35);
+        }
+
+        [TestMethod]
         public void TestSpellMatchCorrectlySk60_GrimAura()
         {
             var spells = container.Resolve<EQSpells>();

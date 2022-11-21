@@ -43,7 +43,7 @@ namespace EQTool.Services.Spells.Log
             }
             else
             {
-                removename = message.IndexOf(" "); 
+                removename = message.IndexOf(" ");
                 var spellmessage = message.Substring(removename).Trim();
                 var foundspells = new List<Spell>();
                 if (removename != -1)
