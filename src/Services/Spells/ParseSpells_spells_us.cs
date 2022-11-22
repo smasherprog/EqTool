@@ -33,12 +33,17 @@ namespace EQTool.Services
                     continue;
                 }
 
+                if (spell.name.StartsWith("Guide "))
+                {
+                    continue;
+                }
+
                 if (spell.name.StartsWith("NPC"))
                 {
                     continue;
                 }
 
-                if (spell.name.ToLower().Contains("journeyman"))
+                if (spell.cast_on_you.ToLower().Contains("You feel quite amicable."))
                 {
                     Debug.WriteLine($"spell.name");
                 }

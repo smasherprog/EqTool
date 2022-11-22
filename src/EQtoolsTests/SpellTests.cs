@@ -64,6 +64,22 @@ namespace EQToolTests
         }
 
         [TestMethod]
+        public void TestSpellMatchCorrectlySk30_Alliance()
+        {
+            var spells = container.Resolve<EQSpells>();
+            var spellname = "Alliance";
+            var spell = spells.AllSpells.FirstOrDefault(a => a.name == spellname);
+            var spell1 = spells.AllSpells.Where(a => a.cast_on_other == spell.cast_on_other);
+            var player = new PlayerInfo
+            {
+                Level = 35,
+                PlayerClass = PlayerClasses.ShadowKnight
+            };
+            var duration = SpellDurations.GetDuration_inSeconds(spell, player);
+            Assert.AreEqual(duration, 0);
+        }
+
+        [TestMethod]
         public void TestSpellMatchCorrectlySk60_GrimAura()
         {
             var spells = container.Resolve<EQSpells>();
