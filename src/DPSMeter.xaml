@@ -46,12 +46,16 @@
                         <Grid>
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="2*"/>
-                                <ColumnDefinition Width="3*"/>
-                                <ColumnDefinition Width="5*"/>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="2*"/>
                             </Grid.ColumnDefinitions>
                             <TextBlock FontWeight="Bold" Grid.Column="0" HorizontalAlignment="Left" Text="{Binding SourceName}"/>
-                            <TextBlock FontWeight="Bold" Grid.Column="1" HorizontalAlignment="Right" Text="{Binding DPS}"/>
-                            <TextBlock FontWeight="Bold" Grid.Column="2" HorizontalAlignment="Right" Text="{Binding TotalDamage}"/>
+                            <TextBlock FontWeight="Bold" Grid.Column="1" HorizontalAlignment="Left" Text="{Binding TwelveSecondDPS}"/>
+                            <TextBlock FontWeight="Bold" Grid.Column="2" HorizontalAlignment="Left" Text="{Binding TotalTwelveSecondDamage}"/>
+                            <TextBlock FontWeight="Bold" Grid.Column="3" HorizontalAlignment="Left" Text="{Binding DPS}"/>
+                            <TextBlock FontWeight="Bold" Grid.Column="4" HorizontalAlignment="Left" Text="{Binding TotalDamage}"/>
                         </Grid>
                     </DataTemplate>
                 </ListView.ItemTemplate>
@@ -60,7 +64,8 @@
                         <GroupStyle.HeaderTemplate>
                             <DataTemplate>
                                 <StackPanel Orientation="Horizontal" Background="LightGray">
-                                    <TextBlock FontWeight="Bold" FontSize="14" Text="{Binding Name}" HorizontalAlignment="Left"/> 
+                                    <TextBlock FontWeight="Bold" FontSize="14" Text="Target: " HorizontalAlignment="Left"/>
+                                    <TextBlock  FontSize="14" Text="{Binding Name}" HorizontalAlignment="Left"/> 
                                 </StackPanel>
                             </DataTemplate>
                         </GroupStyle.HeaderTemplate>

@@ -10,7 +10,7 @@ namespace EQTool.ViewModels
 {
     public class DPSWindowViewModel : INotifyPropertyChanged
     {
-        private readonly IAppDispatcher appDispatcher; 
+        private readonly IAppDispatcher appDispatcher;
         private DateTime? LastTimeFighting;
 
         public DPSWindowViewModel(IAppDispatcher appDispatcher)
@@ -90,7 +90,11 @@ namespace EQTool.ViewModels
                 }
                 else
                 {
-                    item.TotalDamage += entitiy.DamageDone;
+                    item.AddDamage(new EntittyDPS.DamagePerTime
+                    {
+                        TimeStamp = entitiy.TimeStamp,
+                        Damage = entitiy.DamageDone
+                    });
                 }
             });
         }
