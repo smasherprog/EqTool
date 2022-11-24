@@ -1,14 +1,11 @@
 ﻿using Autofac;
 using EQTool.Models;
 using EQTool.Services;
-using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Net.Http;
 using System.Reflection;
 using System.Windows;
 
@@ -29,11 +26,9 @@ namespace EQTool
         private readonly System.Windows.Forms.MenuItem SpellsMenuItem;
         private readonly System.Windows.Forms.MenuItem DpsMeterMenuItem;
         private readonly System.Windows.Forms.MenuItem SettingsMenuItem;
-        private readonly HttpClient httpclient = new HttpClient();
 
         public MainWindow()
         {
-            httpclient.DefaultRequestHeaders.Add("User-Agent", "request");
             InitializeComponent();
             container = DI.Init();
 
@@ -69,6 +64,7 @@ namespace EQTool
                     new System.Windows.Forms.MenuItem("Exit", Exit)
                  }),
             };
+            SystemTrayIcon.BalloonTipClicked += UpdateClicked;
 
             if (!FindEq.IsValid(EQToolSettings.DefaultEqDirectory) || FindEq.TryCheckLoggingEnabled(EQToolSettings.DefaultEqDirectory) == false)
             {
@@ -81,7 +77,6 @@ namespace EQTool
                 DPS(DpsMeterMenuItem, null);
             }
 
-            CheckForNewUpdates();
             Hide();
 #if !DEBUG
             MapMenuItem.Enabled = false;  
@@ -93,36 +88,12 @@ namespace EQTool
         {
             SystemTrayIcon.Visible = false;
             SystemTrayIcon.Dispose();
+            spellWindow?.Close();
+            mapwindow?.Close();
+            dpsmeter?.Close();
+            settingswindow?.Close();
             container.Resolve<EQToolSettingsLoad>().Save(EQToolSettings);
             base.OnClosing(e);
-        }
-
-        public class GithubAsset
-        {
-            public string browser_download_url { get; set; }
-        }
-
-        public class GithubVersionInfo
-        {
-            public List<GithubAsset> assets { get; set; }
-
-            public string tag_name { get; set; }
-        }
-
-        private void CheckForNewUpdates()
-        {
-            var json = httpclient.GetAsync(new Uri("https://api.github.com/repos/smasherprog/EqTool/releases/latest")).Result.Content.ReadAsStringAsync().Result;
-            var githubdata = JsonConvert.DeserializeObject<GithubVersionInfo>(json);
-            var url = githubdata.assets.FirstOrDefault(a => !string.IsNullOrWhiteSpace(a.browser_download_url))?.browser_download_url;
-            var version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
-            if (version != githubdata.tag_name)
-            {
-                SystemTrayIcon.Text = $"A new version '{githubdata.tag_name}' of EQTool is available!";
-                SystemTrayIcon.BalloonTipTitle = $"A new version of EQTool is available!";
-                SystemTrayIcon.BalloonTipText = $"A new version '{githubdata.tag_name}' of EQTool is available!";
-                SystemTrayIcon.BalloonTipClicked += UpdateClicked;
-                SystemTrayIcon.ShowBalloonTip(2000);
-            }
         }
 
         private void UpdateClicked(object sender, EventArgs e)

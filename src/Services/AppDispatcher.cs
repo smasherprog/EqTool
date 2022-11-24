@@ -20,6 +20,11 @@ namespace EQTool.Services
     {
         public void DispatchUI(Action action)
         {
+            if (App.Current == null)
+            {
+                return;
+            }
+
             if (Thread.CurrentThread == App.Current.Dispatcher.Thread)
             {
                 action();
