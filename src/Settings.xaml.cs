@@ -118,13 +118,16 @@ namespace EQTool
             {
                 level = 1;
             }
-
             if (player != null)
             {
                 SettingsWindowData.PlayerClass = player.PlayerClass;
             }
 
-            levelscombobox.SelectedValue = level.ToString();
+            if (level.HasValue)
+            {
+                levelscombobox.SelectedValue = level.ToString();
+            }
+
             BestGuessSpells.IsChecked = settings.BestGuessSpells;
             YouSpellsOnly.IsChecked = settings.YouOnlySpells;
             var selecteditems = new List<string>();

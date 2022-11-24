@@ -4,8 +4,6 @@ using EQTool.Services;
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.IO;
-using System.Linq;
 using System.Reflection;
 using System.Windows;
 
@@ -197,36 +195,6 @@ namespace EQTool
             if (s.Checked)
             {
                 spellWindow?.Close();
-                var players = EQToolSettings.Players ?? new System.Collections.Generic.List<PlayerInfo>();
-                var directory = new DirectoryInfo(EQToolSettings.DefaultEqDirectory + "/Logs/");
-                var loggedincharlogfile = directory.GetFiles()
-                    .Where(a => a.Name.StartsWith("eqlog") && a.Name.EndsWith(".txt"))
-                    .OrderByDescending(a => a.LastWriteTime)
-                    .FirstOrDefault();
-                if (loggedincharlogfile != null)
-                {
-                    var charname = loggedincharlogfile.Name.Replace("eqlog_", string.Empty);
-                    var indexpart = charname.IndexOf("_");
-                    var charName = charname.Substring(0, indexpart);
-                    if (!players.Any(a => a.Name == charName))
-                    {
-                        var d = new EQToolMessageBox("Configuration", "Please set your characters level in settings otherwise spell timers wont work correctly.");
-                        _ = d.ShowDialog();
-                        settingswindow?.Close();
-                        settingswindow = container.Resolve<Settings>();
-                        settingswindow.Show();
-                        settingswindow.Closed += (se, ee) =>
-                        {
-                            if (FindEq.IsValid(EQToolSettings.DefaultEqDirectory))
-                            {
-                                SpellsMenuItem.Enabled = true;
-                                MapMenuItem.Enabled = true;
-                                DpsMeterMenuItem.Enabled = true;
-                            }
-                            SettingsMenuItem.Checked = false;
-                        };
-                    }
-                }
                 spellWindow = container.Resolve<SpellWindow>();
                 spellWindow.Closed += (se, ee) => s.Checked = false;
                 spellWindow.Show();
