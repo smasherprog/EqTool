@@ -117,9 +117,9 @@ namespace EQTool
             var version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
             if (version != githubdata.tag_name)
             {
-                SystemTrayIcon.Text = $"A new version '{version}' of EQTool is available!";
+                SystemTrayIcon.Text = $"A new version '{githubdata.tag_name}' of EQTool is available!";
                 SystemTrayIcon.BalloonTipTitle = $"A new version of EQTool is available!";
-                SystemTrayIcon.BalloonTipText = $"A new version '{version}' of EQTool is available!";
+                SystemTrayIcon.BalloonTipText = $"A new version '{githubdata.tag_name}' of EQTool is available!";
                 SystemTrayIcon.BalloonTipClicked += UpdateClicked;
                 SystemTrayIcon.ShowBalloonTip(2000);
             }
