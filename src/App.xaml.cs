@@ -58,7 +58,8 @@ namespace EQTool
                         {
                             FileName = path,
                             Arguments = "pong",
-                            UseShellExecute = true
+                            UseShellExecute = true,
+                            WorkingDirectory = System.IO.Directory.GetCurrentDirectory() + "/../"
                         });
                         App.Current.Shutdown();
                     }
@@ -133,7 +134,8 @@ namespace EQTool
                         {
                             FileName = path,
                             Arguments = "ping",
-                            UseShellExecute = true
+                            UseShellExecute = true,
+                            WorkingDirectory = System.IO.Directory.GetCurrentDirectory() + "/NewVersion/"
                         });
                     }
                 }
