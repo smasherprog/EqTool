@@ -27,6 +27,7 @@ namespace EQTool
             this.logDeathParse = logDeathParse;
             this.logParser = logParser;
             this.logParser.LineReadEvent += LogParser_LineReadEvent;
+            this.logParser.PlayerChangeEvent += LogParser_PlayerChangeEvent;
             this.spellLogParse = spellLogParse;
             spellWindowViewModel.SpellList = new System.Collections.ObjectModel.ObservableCollection<UISpell>();
             this.spellWindowViewModel = spellWindowViewModel;
@@ -49,13 +50,16 @@ namespace EQTool
             view.LiveSortingProperties.Add(nameof(UISpell.TargetName));
 
         }
+
+        private void LogParser_PlayerChangeEvent(object sender, LogParser.PlayerChangeEventArgs e)
+        {
+            spellWindowViewModel.ClearAllSpells();
+        }
+
         private void LogParser_LineReadEvent(object sender, LogParser.LogParserEventArgs e)
         {
             var matched = spellLogParse.MatchSpell(e.Line);
-            if (matched?.Spell != null)
-            {
-                spellWindowViewModel.TryAdd(matched);
-            }
+            spellWindowViewModel.TryAdd(matched);
 
             var targettoremove = logDeathParse.GetDeadTarget(e.Line);
             spellWindowViewModel.TryRemoveTarget(targettoremove);
@@ -77,6 +81,7 @@ namespace EQTool
             UITimer.Stop();
             UITimer.Dispose();
             logParser.LineReadEvent += LogParser_LineReadEvent;
+            logParser.PlayerChangeEvent += LogParser_PlayerChangeEvent;
             base.OnClosing(e);
         }
 

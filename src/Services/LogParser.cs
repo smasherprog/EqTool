@@ -26,8 +26,13 @@ namespace EQTool.Services
         {
             public string Line { get; set; }
         }
+        public class PlayerChangeEventArgs : EventArgs
+        {
+        }
 
         public event EventHandler<LogParserEventArgs> LineReadEvent;
+
+        public event EventHandler<PlayerChangeEventArgs> PlayerChangeEvent;
 
         private void Poll(object sender, EventArgs e)
         {
@@ -51,6 +56,7 @@ namespace EQTool.Services
                     if (!LastReadOffset.HasValue || LastReadOffset > fileinfo.Length)
                     {
                         Debug.WriteLine($"Player Switched or new Player detected");
+                        PlayerChangeEvent(this, new PlayerChangeEventArgs());
                         LastReadOffset = fileinfo.Length;
                     }
                     using (var stream = new FileStream(filepath, FileMode.Open, FileAccess.Read))

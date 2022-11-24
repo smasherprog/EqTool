@@ -109,6 +109,17 @@ namespace EQTool.ViewModels
             });
         }
 
+        public void ClearAllSpells()
+        {
+            appDispatcher.DispatchUI(() =>
+            {
+                while (SpellList.Count > 0)
+                {
+                    SpellList.RemoveAt(SpellList.Count - 1);
+                }
+            });
+        }
+
         public void TryAdd(SpellParsingMatch match)
         {
             if (match?.Spell == null)

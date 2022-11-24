@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="Dps Meter" 
         Height="450" 
-        Width="300" 
+        Width="500" 
         FontSize="{DynamicResource GlobalFontSize}"
         WindowStyle="None" 
         AllowsTransparency="True">
