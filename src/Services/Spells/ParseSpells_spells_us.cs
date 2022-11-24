@@ -34,21 +34,25 @@ namespace EQTool.Services
                     if (spell.Classes.Any() && spell.Classes.All(a => a.Value > 60 && a.Value < 255))
                     {
                         Debug.WriteLine($"Skipping {spell.name} Class Level Out of range");
+                        continue;
                     }
 
                     if (spell.name.StartsWith("GM "))
                     {
                         Debug.WriteLine($"Skipping {spell.name} GM");
+                        continue;
                     }
 
                     if (spell.name.StartsWith("Guide "))
                     {
                         Debug.WriteLine($"Skipping {spell.name} Guide");
+                        continue;
                     }
 
                     if (spell.name.StartsWith("NPC"))
                     {
                         Debug.WriteLine($"Skipping {spell.name} NPC");
+                        continue;
                     }
 
                     if (spells.ContainsKey(spell.name))
