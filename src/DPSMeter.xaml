@@ -7,7 +7,7 @@
         mc:Ignorable="d"
         Title="Dps Meter" 
         Height="450" 
-        Width="500" 
+        Width="450" 
         FontSize="{DynamicResource GlobalFontSize}"
         WindowStyle="None" 
         AllowsTransparency="True">
@@ -55,7 +55,7 @@
                         </GridViewColumn>
                         <GridViewColumn DisplayMemberBinding="{Binding TotalTwelveSecondDamage}" Width="70" >
                             <GridViewColumn.Header>
-                                <TextBlock Text="12s TotalDms" ToolTip="Highest 12 second period of Damage delt. This is good for guaging how many are required in a CH chain!" />
+                                <TextBlock Text="12s Damage" ToolTip="Highest 12 second period of Damage delt. This is good for guaging how many are required in a CH chain!" />
                             </GridViewColumn.Header>
                         </GridViewColumn>
                         <GridViewColumn DisplayMemberBinding="{Binding DPS}"  Width="70" >
@@ -65,7 +65,7 @@
                         </GridViewColumn>
                         <GridViewColumn DisplayMemberBinding="{Binding TotalDamage}" Width="70">
                             <GridViewColumn.Header>
-                                <TextBlock Text="TotalDamage" ToolTip="Total Damage done!" />
+                                <TextBlock Text="Damage" ToolTip="Total Damage done!" />
                             </GridViewColumn.Header>
                         </GridViewColumn>
                     </GridView>
