@@ -7,10 +7,58 @@ namespace EQTool.Models
 {
     public class EQSpells
     {
-        public readonly List<Spell> AllSpells = new List<Spell>();
-        public readonly Dictionary<string, List<Spell>> CastOtherSpells = new Dictionary<string, List<Spell>>();
-        public readonly Dictionary<string, List<Spell>> CastOnYouSpells = new Dictionary<string, List<Spell>>();
-        public readonly Dictionary<string, List<Spell>> YouCastSpells = new Dictionary<string, List<Spell>>();
+        private readonly List<Spell> _AllSpells = new List<Spell>();
+
+        public List<Spell> AllSpells
+        {
+            get
+            {
+                if (!_AllSpells.Any())
+                {
+                    BuildSpellInfo();
+                }
+                return _AllSpells;
+            }
+        }
+        private readonly Dictionary<string, List<Spell>> _CastOtherSpells = new Dictionary<string, List<Spell>>();
+
+        public Dictionary<string, List<Spell>> CastOtherSpells
+        {
+            get
+            {
+                if (!_CastOtherSpells.Any())
+                {
+                    BuildSpellInfo();
+                }
+                return _CastOtherSpells;
+            }
+        }
+        private readonly Dictionary<string, List<Spell>> _CastOnYouSpells = new Dictionary<string, List<Spell>>();
+
+        public Dictionary<string, List<Spell>> CastOnYouSpells
+        {
+            get
+            {
+                if (!_CastOnYouSpells.Any())
+                {
+                    BuildSpellInfo();
+                }
+                return _CastOnYouSpells;
+            }
+        }
+
+        private readonly Dictionary<string, List<Spell>> _YouCastSpells = new Dictionary<string, List<Spell>>();
+        public Dictionary<string, List<Spell>> YouCastSpells
+        {
+            get
+            {
+                if (!_YouCastSpells.Any())
+                {
+                    BuildSpellInfo();
+                }
+                return _YouCastSpells;
+            }
+        }
 
         private readonly List<string> IgnoreSpellsList = new List<string>()
         {
@@ -30,8 +78,17 @@ namespace EQTool.Models
         public const string You = "You ";
         public const string SpaceYou = " You ";
         private const string InvisMessage = " fades away";
+        private readonly ParseSpells_spells_us parseSpells;
+        private readonly SpellIcons spellIcons;
 
         public EQSpells(ParseSpells_spells_us parseSpells, SpellIcons spellIcons)
+        {
+            this.parseSpells = parseSpells;
+            this.spellIcons = spellIcons;
+            BuildSpellInfo();
+        }
+
+        private void BuildSpellInfo()
         {
             var spellicons = spellIcons.GetSpellIcons();
             var spells = parseSpells.GetSpells().Where(a => !IgnoreSpellsList.Contains(a.name) && a.spell_icon > 0);
@@ -42,7 +99,7 @@ namespace EQTool.Models
                 {
                     continue;
                 }
-                AllSpells.Add(mappedspell);
+                _AllSpells.Add(mappedspell);
                 if (mappedspell.buffduration > 0)
                 {
                     if (!string.IsNullOrWhiteSpace(mappedspell.cast_on_other))
@@ -51,35 +108,35 @@ namespace EQTool.Models
                         {
                             Debug.WriteLine("Skipping Other invis spell. Cant detect difference between gate and invis");
                         }
-                        else if (CastOtherSpells.TryGetValue(mappedspell.cast_on_other, out var innerval))
+                        else if (_CastOtherSpells.TryGetValue(mappedspell.cast_on_other, out var innerval))
                         {
-                            CastOtherSpells[mappedspell.cast_on_other].Add(mappedspell);
+                            _CastOtherSpells[mappedspell.cast_on_other].Add(mappedspell);
                         }
                         else
                         {
-                            CastOtherSpells.Add(mappedspell.cast_on_other, new List<Spell>() { mappedspell });
+                            _CastOtherSpells.Add(mappedspell.cast_on_other, new List<Spell>() { mappedspell });
                         }
                     }
                     if (!string.IsNullOrWhiteSpace(mappedspell.name) && mappedspell.Classes.Any(a => a.Value > 0))
                     {
-                        if (YouCastSpells.TryGetValue(mappedspell.name, out var innerval))
+                        if (_YouCastSpells.TryGetValue(mappedspell.name, out var innerval))
                         {
-                            YouCastSpells[mappedspell.name].Add(mappedspell);
+                            _YouCastSpells[mappedspell.name].Add(mappedspell);
                         }
                         else
                         {
-                            YouCastSpells.Add(mappedspell.name, new List<Spell>() { mappedspell });
+                            _YouCastSpells.Add(mappedspell.name, new List<Spell>() { mappedspell });
                         }
                     }
                     if (!string.IsNullOrWhiteSpace(mappedspell.cast_on_you))
                     {
-                        if (CastOnYouSpells.TryGetValue(mappedspell.cast_on_you, out var innerval))
+                        if (_CastOnYouSpells.TryGetValue(mappedspell.cast_on_you, out var innerval))
                         {
-                            CastOnYouSpells[mappedspell.cast_on_you].Add(mappedspell);
+                            _CastOnYouSpells[mappedspell.cast_on_you].Add(mappedspell);
                         }
                         else
                         {
-                            CastOnYouSpells.Add(mappedspell.cast_on_you, new List<Spell>() { mappedspell });
+                            _CastOnYouSpells.Add(mappedspell.cast_on_you, new List<Spell>() { mappedspell });
                         }
                     }
                 }

@@ -14,6 +14,7 @@ namespace EQTool.Services
             if (playerclass.HasValue && userlevel.HasValue)
             {
                 var closestlevel = userlevel.Value;
+                var smallestdelta = closestlevel;
                 Spell closestspell = null;
                 foreach (var spell in spells)
                 {
@@ -24,11 +25,11 @@ namespace EQTool.Services
 
                     foreach (var item in spell.Classes)
                     {
-                        var delta = Math.Abs(item.Value - closestlevel);
-                        if (delta < closestlevel)
+                        var delta = Math.Abs(item.Value - userlevel.Value);
+                        if (delta < smallestdelta)
                         {
                             closestspell = spell;
-                            closestlevel = delta;
+                            smallestdelta = delta;
                         }
                     }
                 }

@@ -17,7 +17,7 @@ namespace EQTool.ViewModels
 
     public class SettingsWindowData : INotifyPropertyChanged
     {
-        private string _EqPath = string.Empty;
+
         public SettingsWindowData()
         {
             for (var i = 12; i < 72; i++)
@@ -37,6 +37,8 @@ namespace EQTool.ViewModels
                 });
             }
         }
+
+        private string _EqPath = string.Empty;
         public string EqPath
         {
             get => _EqPath;
@@ -44,8 +46,35 @@ namespace EQTool.ViewModels
             {
                 _EqPath = value;
                 OnPropertyChanged();
+                OnPropertyChanged(nameof(DoesNotHaveEqPath));
+                OnPropertyChanged(nameof(HasEqPath));
+                OnPropertyChanged(nameof(MissingConfiguration));
+                OnPropertyChanged(nameof(NotMissingConfiguration));
             }
         }
+
+        public bool DoesNotHaveEqPath => string.IsNullOrWhiteSpace(_EqPath);
+        public bool HasEqPath => !string.IsNullOrWhiteSpace(_EqPath);
+
+        private bool _IsLogginEnabled = false;
+
+        public bool IsLogginEnabled
+        {
+            get => _IsLogginEnabled;
+            set
+            {
+                _IsLogginEnabled = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(IsLogginDisabled));
+                OnPropertyChanged(nameof(MissingConfiguration));
+                OnPropertyChanged(nameof(NotMissingConfiguration));
+            }
+        }
+
+        public bool IsLogginDisabled => !_IsLogginEnabled;
+
+        public bool MissingConfiguration => DoesNotHaveEqPath || IsLogginDisabled;
+        public bool NotMissingConfiguration => HasEqPath && IsLogginEnabled;
 
         private string _CharName = string.Empty;
         public string CharName
@@ -115,20 +144,6 @@ namespace EQTool.ViewModels
         public bool IsEqRunning => !IsEqNotRunning;
         public bool IsEqNotRunning { get; private set; } = false;
 
-        private bool _IsLogginEnabled = false;
-
-        public bool IsLogginEnabled
-        {
-            get => _IsLogginEnabled;
-            set
-            {
-                _IsLogginEnabled = value;
-                OnPropertyChanged();
-                OnPropertyChanged(nameof(IsLogginDisabled));
-            }
-        }
-
-        public bool IsLogginDisabled => !_IsLogginEnabled;
 
         public ObservableCollection<EQNameValue> FontSizes = new ObservableCollection<EQNameValue>();
         public ObservableCollection<EQNameValue> Levels = new ObservableCollection<EQNameValue>();

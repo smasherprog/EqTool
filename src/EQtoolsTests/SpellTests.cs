@@ -94,6 +94,21 @@ namespace EQToolTests
         }
 
         [TestMethod]
+        public void TestSpellMatchCorrectlySk60_NaltronMark()
+        {
+            var spells = container.Resolve<EQSpells>();
+            var spellname = "Naltron's Mark";
+            var spell = spells.AllSpells.FirstOrDefault(a => a.name == spellname);
+            var spell1 = spells.AllSpells.Where(a => a.cast_on_other == spell.cast_on_other).ToList();
+            var ret = EQTool.Services.SpellDurations.MatchClosestLevelToSpell(spell1, new PlayerInfo
+            {
+                Level = 60,
+                PlayerClass = PlayerClasses.ShadowKnight
+            });
+            Assert.AreEqual(ret.name, "Symbol of Naltron");
+        }
+
+        [TestMethod]
         public void TestSpellMatchCorrectlynecro1_GrimAura_wierd_but_Shouldhandle()
         {
             var spells = container.Resolve<EQSpells>();

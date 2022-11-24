@@ -32,6 +32,8 @@ namespace EQTool.ViewModels
             }
         }
 
+        public bool IsDead = false;
+
         private DateTime _StartTime = DateTime.Now;
 
         public DateTime StartTime
@@ -48,9 +50,12 @@ namespace EQTool.ViewModels
 
         public void UpdateDps()
         {
+            OnPropertyChanged(nameof(TotalTwelveSecondDamage));
+            OnPropertyChanged(nameof(TwelveSecondDPS));
+            OnPropertyChanged(nameof(TotalDamage));
             OnPropertyChanged(nameof(DPS));
-            OnPropertyChanged(nameof(TotalSeconds));
         }
+
 
         public int TotalSeconds => (int)(DateTime.Now - _StartTime).TotalSeconds;
 
@@ -74,10 +79,7 @@ namespace EQTool.ViewModels
             }
 
             TotalDamage = Damage.Sum(a => a.Damage);
-            OnPropertyChanged(nameof(TotalTwelveSecondDamage));
-            OnPropertyChanged(nameof(TwelveSecondDPS));
-            OnPropertyChanged(nameof(TotalDamage));
-            OnPropertyChanged(nameof(DPS));
+            UpdateDps();
         }
 
         private int GetDamangeAfter(int i, DateTime lasttimestamp)

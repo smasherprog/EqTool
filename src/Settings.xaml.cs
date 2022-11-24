@@ -33,6 +33,7 @@ namespace EQTool
             this.toolSettingsLoad = toolSettingsLoad;
             SettingsWindowData.EqPath = this.settings.DefaultEqDirectory;
             DataContext = settingsWindowData;
+            Topmost = true;
             InitializeComponent();
             TryUpdateSettings();
             TryCheckLoggingEnabled();
@@ -46,6 +47,10 @@ namespace EQTool
             levelscombobox.ItemsSource = SettingsWindowData.Levels;
             fontsizescombobox.ItemsSource = SettingsWindowData.FontSizes;
             fontsizescombobox.SelectedValue = App.GlobalFontSize.ToString();
+            if (SettingsWindowData.NotMissingConfiguration)
+            {
+                Height = 650;
+            }
 #if !DEBUG
             FightVisButton.Visibility = Visibility.Hidden;
 #endif
@@ -139,6 +144,10 @@ namespace EQTool
                     _ = spellbyclassselection.SelectedItems.Add(item);
                 }
             }
+            if (SettingsWindowData.NotMissingConfiguration)
+            {
+                Height = 650;
+            }
         }
 
         private bool IsEqRunning()
@@ -149,6 +158,10 @@ namespace EQTool
         private void TryCheckLoggingEnabled()
         {
             SettingsWindowData.IsLogginEnabled = FindEq.TryCheckLoggingEnabled(settings.DefaultEqDirectory) ?? false;
+            if (SettingsWindowData.NotMissingConfiguration)
+            {
+                Height = 650;
+            }
         }
 
         private void fontsizescombobox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
@@ -164,7 +177,7 @@ namespace EQTool
 
         private void EqFolderButtonClicked(object sender, RoutedEventArgs e)
         {
-            using (var fbd = new FolderBrowserDialog())
+            using (var fbd = new FolderBrowserDialog() { RootFolder = Environment.SpecialFolder.MyComputer, Description = "Select Project 1999 EQ Directory", ShowNewFolderButton = false })
             {
                 var result = fbd.ShowDialog();
                 if (result == System.Windows.Forms.DialogResult.OK && !string.IsNullOrWhiteSpace(fbd.SelectedPath))
@@ -283,6 +296,11 @@ namespace EQTool
                     toolSettingsLoad.Save(settings);
                 }
             }
+        }
+
+        private void SaveAndClose(object sender, RoutedEventArgs e)
+        {
+            Close();
         }
     }
 }

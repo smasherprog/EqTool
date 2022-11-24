@@ -41,49 +41,65 @@
                 </Grid>
             </Border>
             <ListView Name="DpsList"  VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling" Grid.Row="1" Background="Transparent">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="2*"/>
-                                <ColumnDefinition Width="2*"/>
-                                <ColumnDefinition Width="2*"/>
-                                <ColumnDefinition Width="2*"/>
-                                <ColumnDefinition Width="2*"/>
-                            </Grid.ColumnDefinitions>
-                            <TextBlock FontWeight="Bold" Grid.Column="0" HorizontalAlignment="Left" Text="{Binding SourceName}"/>
-                            <TextBlock FontWeight="Bold" Grid.Column="1" HorizontalAlignment="Left" Text="{Binding TwelveSecondDPS}"/>
-                            <TextBlock FontWeight="Bold" Grid.Column="2" HorizontalAlignment="Left" Text="{Binding TotalTwelveSecondDamage}"/>
-                            <TextBlock FontWeight="Bold" Grid.Column="3" HorizontalAlignment="Left" Text="{Binding DPS}"/>
-                            <TextBlock FontWeight="Bold" Grid.Column="4" HorizontalAlignment="Left" Text="{Binding TotalDamage}"/>
-                        </Grid>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
+                <ListView.View>
+                    <GridView>
+                        <GridViewColumn DisplayMemberBinding="{Binding SourceName}" Width="150">
+                            <GridViewColumn.Header>
+                                <TextBlock Text="Source" ToolTip="he NPC/PC who is Dealing the damage" />
+                            </GridViewColumn.Header>
+                        </GridViewColumn>
+                        <GridViewColumn DisplayMemberBinding="{Binding TwelveSecondDPS}" Width="70">
+                            <GridViewColumn.Header>
+                                <TextBlock Text="12s DPS" ToolTip="Highest 12 seconds DPS overall. This is good for guaging how many are required in a CH chain!" />
+                            </GridViewColumn.Header>
+                        </GridViewColumn>
+                        <GridViewColumn DisplayMemberBinding="{Binding TotalTwelveSecondDamage}" Width="70" >
+                            <GridViewColumn.Header>
+                                <TextBlock Text="12s TotalDms" ToolTip="Highest 12 second period of Damage delt. This is good for guaging how many are required in a CH chain!" />
+                            </GridViewColumn.Header>
+                        </GridViewColumn>
+                        <GridViewColumn DisplayMemberBinding="{Binding DPS}"  Width="70" >
+                            <GridViewColumn.Header>
+                                <TextBlock Text="DPS" ToolTip="Average DPS for entire fight!" />
+                            </GridViewColumn.Header>
+                        </GridViewColumn>
+                        <GridViewColumn DisplayMemberBinding="{Binding TotalDamage}" Width="70">
+                            <GridViewColumn.Header>
+                                <TextBlock Text="TotalDamage" ToolTip="Total Damage done!" />
+                            </GridViewColumn.Header>
+                        </GridViewColumn>
+                    </GridView>
+                </ListView.View>
                 <ListView.GroupStyle>
                     <GroupStyle>
-                        <GroupStyle.HeaderTemplate>
-                            <DataTemplate>
-                                <StackPanel Orientation="Horizontal" Background="LightGray">
-                                    <TextBlock FontWeight="Bold" FontSize="14" Text="Target: " HorizontalAlignment="Left"/>
-                                    <TextBlock  FontSize="14" Text="{Binding Name}" HorizontalAlignment="Left"/> 
-                                </StackPanel>
-                            </DataTemplate>
-                        </GroupStyle.HeaderTemplate>
+                        <GroupStyle.ContainerStyle>
+                            <Style TargetType="{x:Type GroupItem}">
+                                <Setter Property="Margin" Value="0,0,0,5"/>
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="{x:Type GroupItem}">
+                                            <Expander IsExpanded="True"
+                                          BorderBrush="Gray"
+                                          BorderThickness="0,0,0,1">
+                                                <Expander.Header>
+                                                    <DockPanel>
+                                                        <TextBlock  Text="Damage Target: " Margin="5,0,0,0" />
+                                                        <TextBlock  Text="{Binding Path=Name}" Margin="5,0,0,0" Width="150"/>
+                                                        <TextBlock  Text="{Binding Path=Item}"/>
+                                                    </DockPanel>
+                                                </Expander.Header>
+                                                <Expander.Content>
+                                                    <ItemsPresenter />
+                                                </Expander.Content>
+                                            </Expander>
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </GroupStyle.ContainerStyle>
                     </GroupStyle>
                 </ListView.GroupStyle>
-                <ListView.ItemContainerStyle>
-                    <Style TargetType="{x:Type ListViewItem}">
-                        <Setter Property="Background" Value="Transparent" />
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="{x:Type ListViewItem}">
-                                    <ContentPresenter />
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-                </ListView.ItemContainerStyle>
-            </ListView> 
+            </ListView>
         </Grid>
-    </Border> 
+    </Border>
 </Window>

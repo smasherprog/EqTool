@@ -23,44 +23,49 @@ namespace EQTool.Services
                 return _Spells;
             }
             var spells = new Dictionary<string, SpellBase>();
-            var spellastext = File.ReadAllLines(settings.DefaultEqDirectory + "/spells_us.txt");
-            var skippedcounter = 0;
-            foreach (var item in spellastext)
+            var spellsfile = new FileInfo(settings.DefaultEqDirectory + "/spells_us.txt");
+            if (spellsfile.Exists)
             {
-                var spell = ParseLine(item);
-                if (spell.name.StartsWith("GM "))
+                var spellastext = File.ReadAllLines(settings.DefaultEqDirectory + "/spells_us.txt");
+                var skippedcounter = 0;
+                foreach (var item in spellastext)
                 {
-                    continue;
-                }
+                    var spell = ParseLine(item);
+                    if (spell.Classes.Any() && spell.Classes.All(a => a.Value > 60 && a.Value < 255))
+                    {
+                        Debug.WriteLine($"Skipping {spell.name} Class Level Out of range");
+                    }
 
-                if (spell.name.StartsWith("Guide "))
-                {
-                    continue;
-                }
+                    if (spell.name.StartsWith("GM "))
+                    {
+                        Debug.WriteLine($"Skipping {spell.name} GM");
+                    }
 
-                if (spell.name.StartsWith("NPC"))
-                {
-                    continue;
-                }
+                    if (spell.name.StartsWith("Guide "))
+                    {
+                        Debug.WriteLine($"Skipping {spell.name} Guide");
+                    }
 
-                if (spell.cast_on_you.ToLower().Contains("You feel quite amicable."))
-                {
-                    Debug.WriteLine($"spell.name");
-                }
+                    if (spell.name.StartsWith("NPC"))
+                    {
+                        Debug.WriteLine($"Skipping {spell.name} NPC");
+                    }
 
-                if (spells.ContainsKey(spell.name))
-                {
-                    skippedcounter++;
-                    spells[spell.name] = spell;
+                    if (spells.ContainsKey(spell.name))
+                    {
+                        skippedcounter++;
+                        spells[spell.name] = spell;
+                    }
+                    else
+                    {
+                        spells.Add(spell.name, spell);
+                    }
                 }
-                else
-                {
-                    spells.Add(spell.name, spell);
-                }
+                Debug.WriteLine($"Skipped {skippedcounter}");
+
+                _Spells = spells.Values.ToList();
             }
-            Debug.WriteLine($"Skipped {skippedcounter}");
 
-            _Spells = spells.Values.ToList();
             return _Spells;
         }
 

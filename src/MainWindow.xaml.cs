@@ -1,13 +1,16 @@
 ﻿using Autofac;
 using EQTool.Models;
 using EQTool.Services;
+using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
+using System.Reflection;
 using System.Windows;
-using System.Windows.Forms;
 
 namespace EQTool
 {
@@ -26,9 +29,11 @@ namespace EQTool
         private readonly System.Windows.Forms.MenuItem SpellsMenuItem;
         private readonly System.Windows.Forms.MenuItem DpsMeterMenuItem;
         private readonly System.Windows.Forms.MenuItem SettingsMenuItem;
+        private readonly HttpClient httpclient = new HttpClient();
 
         public MainWindow()
         {
+            httpclient.DefaultRequestHeaders.Add("User-Agent", "request");
             InitializeComponent();
             container = DI.Init();
 
@@ -38,28 +43,15 @@ namespace EQTool
             DpsMeterMenuItem = new System.Windows.Forms.MenuItem("Dps", DPS);
             var gitHubMenuItem = new System.Windows.Forms.MenuItem("Suggestions", Suggestions);
             var whythepig = new System.Windows.Forms.MenuItem("Why the Pig?", WhyThePig);
+            var updates = new System.Windows.Forms.MenuItem("Updates", UpdateClicked);
+            var versionstring = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+            var version = new System.Windows.Forms.MenuItem(versionstring, UpdateClicked)
+            {
+                Enabled = false
+            };
             SpellsMenuItem.Enabled = false;
             MapMenuItem.Enabled = false;
             DpsMeterMenuItem.Enabled = false;
-            if (!FindEq.IsValid(EQToolSettings.DefaultEqDirectory))
-            {
-                var d = new EQToolMessageBox("Configuration", "Project 1999 game files were not able to be found.\nYou must set the path before this program will work!");
-                _ = d.ShowDialog();
-                FindEQ();
-            }
-            else if (FindEq.TryCheckLoggingEnabled(EQToolSettings.DefaultEqDirectory) == false)
-            {
-                var d = new EQToolMessageBox("Configuration", "You must enable Logging before any features will work. This can be done in the settings window!");
-                _ = d.ShowDialog();
-                Settings(SettingsMenuItem, null);
-            }
-            else
-            {
-                SpellsMenuItem.Enabled = MapMenuItem.Enabled = DpsMeterMenuItem.Enabled = true;
-            }
-#if !DEBUG
-            MapMenuItem.Enabled = false;  
-#endif 
             SystemTrayIcon = new System.Windows.Forms.NotifyIcon
             {
                 Icon = Properties.Resources.logo,
@@ -72,23 +64,74 @@ namespace EQTool
                     SpellsMenuItem,
                     SettingsMenuItem,
                     gitHubMenuItem,
+                    updates,
+                    version,
                     new System.Windows.Forms.MenuItem("Exit", Exit)
                  }),
             };
-            Hide();
 
-            Spells(SpellsMenuItem, null);
+            if (!FindEq.IsValid(EQToolSettings.DefaultEqDirectory) || FindEq.TryCheckLoggingEnabled(EQToolSettings.DefaultEqDirectory) == false)
+            {
+                Settings(SettingsMenuItem, null);
+            }
+            else
+            {
+                SpellsMenuItem.Enabled = MapMenuItem.Enabled = DpsMeterMenuItem.Enabled = true;
+                Spells(SpellsMenuItem, null);
+                DPS(DpsMeterMenuItem, null);
+            }
+
+            CheckForNewUpdates();
+            Hide();
+#if !DEBUG
+            MapMenuItem.Enabled = false;  
+#endif 
         }
 
         private EQToolSettings EQToolSettings => container.Resolve<EQToolSettings>();
         protected override void OnClosing(CancelEventArgs e)
         {
-            if (SystemTrayIcon != null)
-            {
-                SystemTrayIcon.Visible = false;
-            }
+            SystemTrayIcon.Visible = false;
+            SystemTrayIcon.Dispose();
             container.Resolve<EQToolSettingsLoad>().Save(EQToolSettings);
             base.OnClosing(e);
+        }
+
+        public class GithubAsset
+        {
+            public string browser_download_url { get; set; }
+        }
+
+        public class GithubVersionInfo
+        {
+            public List<GithubAsset> assets { get; set; }
+
+            public string tag_name { get; set; }
+        }
+
+        private void CheckForNewUpdates()
+        {
+            var json = httpclient.GetAsync(new Uri("https://api.github.com/repos/smasherprog/EqTool/releases/latest")).Result.Content.ReadAsStringAsync().Result;
+            var githubdata = JsonConvert.DeserializeObject<GithubVersionInfo>(json);
+            var url = githubdata.assets.FirstOrDefault(a => !string.IsNullOrWhiteSpace(a.browser_download_url))?.browser_download_url;
+            var version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+            if (version != githubdata.tag_name)
+            {
+                SystemTrayIcon.Text = $"A new version '{version}' of EQTool is available!";
+                SystemTrayIcon.BalloonTipTitle = $"A new version of EQTool is available!";
+                SystemTrayIcon.BalloonTipText = $"A new version '{version}' of EQTool is available!";
+                SystemTrayIcon.BalloonTipClicked += UpdateClicked;
+                SystemTrayIcon.ShowBalloonTip(2000);
+            }
+        }
+
+        private void UpdateClicked(object sender, EventArgs e)
+        {
+            _ = System.Diagnostics.Process.Start(new ProcessStartInfo
+            {
+                FileName = "https://github.com/smasherprog/EqTool/releases/latest",
+                UseShellExecute = true
+            });
         }
 
         private void WhyThePig(object sender, EventArgs e)
@@ -176,33 +219,6 @@ namespace EQTool
             }
         }
 
-        private void FindEQ()
-        {
-            using (var fbd = new FolderBrowserDialog { ShowNewFolderButton = false, Description = "Find eqgame.exe", RootFolder = Environment.SpecialFolder.MyComputer })
-            {
-                var result = fbd.ShowDialog();
-                if (result == System.Windows.Forms.DialogResult.OK && !string.IsNullOrWhiteSpace(fbd.SelectedPath))
-                {
-                    if (FindEq.IsValid(fbd.SelectedPath))
-                    {
-                        EQToolSettings.DefaultEqDirectory = fbd.SelectedPath;
-                    }
-                    else
-                    {
-                        var d = new EQToolMessageBox("Find eqgame.exe", "eqgame.exe was not found in this folder! Try again");
-                        _ = d.ShowDialog();
-                        FindEQ();
-                    }
-                }
-                else
-                {
-                    var d = new EQToolMessageBox("Find eqgame.exe", "EQGame.exe was not able to be located, closing EQTool!");
-                    _ = d.ShowDialog();
-                    Close();
-                }
-            }
-        }
-
         private void Spells(object sender, EventArgs e)
         {
             var s = (System.Windows.Forms.MenuItem)sender;
@@ -234,6 +250,7 @@ namespace EQTool
                             {
                                 SpellsMenuItem.Enabled = true;
                                 MapMenuItem.Enabled = true;
+                                DpsMeterMenuItem.Enabled = true;
                             }
                             SettingsMenuItem.Checked = false;
                         };

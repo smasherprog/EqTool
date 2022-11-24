@@ -67,6 +67,23 @@ namespace EQTool.ViewModels
             });
         }
 
+        public void TargetDied(string target)
+        {
+            if (string.IsNullOrWhiteSpace(target))
+            {
+                return;
+            }
+
+            appDispatcher.DispatchUI(() =>
+            {
+                var deadguys = EntityList.Where(a => a.TargetName == target).ToList();
+                foreach (var item in deadguys)
+                {
+                    item.IsDead = true;
+                }
+            });
+        }
+
         public void TryAdd(DPSParseMatch entitiy)
         {
             if (entitiy == null)

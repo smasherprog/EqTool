@@ -28,22 +28,26 @@ namespace EQTool.Services
 
             var ret = new List<SpellIcon>();
             var directory = new DirectoryInfo(settings.DefaultEqDirectory + "/uifiles/default/");
-            var spellimages = directory.GetFiles()
-                .Where(a => a.Name.StartsWith("spells0") && a.Name.EndsWith(".tga"))
-                .ToList();
-            foreach (var item in spellimages)
+            if (directory.Exists)
             {
-                var img = TGA.FromFile(item.FullName);
-                var numberonly = new string(item.Name.Where(a => char.IsNumber(a)).ToArray());
-                var index = int.Parse(numberonly);
-                var i = new SpellIcon
+                var spellimages = directory.GetFiles()
+                    .Where(a => a.Name.StartsWith("spells0") && a.Name.EndsWith(".tga"))
+                    .ToList();
+                foreach (var item in spellimages)
                 {
-                    Icon = ToBitmapImage(img.ToBitmap()),
-                    SpellIndex = index,
-                };
-                ret.Add(i);
+                    var img = TGA.FromFile(item.FullName);
+                    var numberonly = new string(item.Name.Where(a => char.IsNumber(a)).ToArray());
+                    var index = int.Parse(numberonly);
+                    var i = new SpellIcon
+                    {
+                        Icon = ToBitmapImage(img.ToBitmap()),
+                        SpellIndex = index,
+                    };
+                    ret.Add(i);
+                }
+                _SpellIcons = ret;
             }
-            _SpellIcons = ret;
+
             return ret;
         }
 
