@@ -31,10 +31,12 @@ Features:
 
 <h4>Example Below</h4>
 <img width="238" alt="SpellsExample" src="https://user-images.githubusercontent.com/3393733/203874211-8ecfa5f3-9e2a-49e5-8584-c7223844d85a.png">
+<h4>DPS Window/h4>
+<img width="361" alt="image" src="https://user-images.githubusercontent.com/3393733/203874454-3355cdf5-6ca2-405b-b899-2cd1faaf1a49.png">
 <h4>Settings Window</h4>
 <img width="371" alt="image" src="https://user-images.githubusercontent.com/3393733/203874278-60c99f84-c455-40e2-a96f-c56d7151f5a4.png">
 <h4>System Tray Icon</h4>
 <img width="328" alt="image" src="https://user-images.githubusercontent.com/3393733/203874331-6e131d14-2696-40f4-ad13-5a018e022e2c.png">
 
- 
+
 
