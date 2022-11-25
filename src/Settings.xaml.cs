@@ -27,6 +27,7 @@ namespace EQTool
         public Settings(EQSpells spells, EQToolSettings settings, EQToolSettingsLoad toolSettingsLoad, SettingsWindowData settingsWindowData, SpellWindowViewModel spellWindowViewModel)
         {
             SettingsWindowData = settingsWindowData;
+            Height = 200;
             this.spells = spells;
             this.settings = settings;
             this.spellWindowViewModel = spellWindowViewModel;
@@ -46,7 +47,7 @@ namespace EQTool
             }
             levelscombobox.ItemsSource = SettingsWindowData.Levels;
             fontsizescombobox.ItemsSource = SettingsWindowData.FontSizes;
-            fontsizescombobox.SelectedValue = App.GlobalFontSize.ToString();
+            fontsizescombobox.SelectedValue = settings.FontSize.ToString();
             if (SettingsWindowData.NotMissingConfiguration)
             {
                 Height = 650;
@@ -87,8 +88,9 @@ namespace EQTool
                 settings.Players = players;
             }
 
-            settings.FontSize = settings.FontSize;
-            settings.GlobalTriggerWindowOpacity = settings.GlobalTriggerWindowOpacity;
+            settings.FontSize = App.GlobalFontSize;
+            settings.GlobalTriggerWindowOpacity = App.GlobalTriggerWindowOpacity;
+            settings.GlobalDPSWindowOpacity = App.GlobalDPSWindowOpacity;
             toolSettingsLoad.Save(settings);
             base.OnClosing(e);
         }
@@ -169,7 +171,6 @@ namespace EQTool
 
         private void fontsizescombobox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
-            Debug.WriteLine(fontsizescombobox.SelectedValue);
             App.GlobalFontSize = double.Parse(fontsizescombobox.SelectedValue as string);
         }
 
@@ -232,6 +233,11 @@ namespace EQTool
         {
             settings.GlobalTriggerWindowOpacity = App.GlobalTriggerWindowOpacity = (sender as Slider).Value;
         }
+        private void GlobalDPSWindowOpacityValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            settings.GlobalDPSWindowOpacity = App.GlobalDPSWindowOpacity = (sender as Slider).Value;
+        }
+
         private void YouSpells_Checked(object sender, RoutedEventArgs e)
         {
             settings.YouOnlySpells = true;

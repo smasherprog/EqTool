@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:EQTool"  
         xmlns:localmodels="clr-namespace:EQTool.Models"
         mc:Ignorable="d"
-        Title="Settings" Height="200" Width="400" FontSize="{DynamicResource GlobalFontSize}">
+        Title="Settings" Height="600" Width="400" FontSize="{DynamicResource GlobalFontSize}">
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
     </Window.Resources>
@@ -54,13 +54,16 @@
                     <TextBlock Text="Font Size"  FontWeight="Bold"  VerticalAlignment="Center" MinWidth="100"/>
                     <ComboBox Name="fontsizescombobox" DisplayMemberPath="Name" SelectedValuePath="Name" SelectionChanged="fontsizescombobox_SelectionChanged" MinWidth="100"/>
                 </StackPanel>
-
-                <StackPanel Orientation="Horizontal"  HorizontalAlignment="Center">
-                    <TextBlock Text="Spell Window" FontWeight="Bold" Margin="5,5,0,0" />
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="DPS Opacity"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
+                    <Slider  Value="{DynamicResource GlobalDPSWindowOpacity}" Minimum="0" Maximum="1" SmallChange=".1" TickFrequency=".1" ValueChanged="GlobalDPSWindowOpacityValueChanged" MinWidth="150"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Transparency"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
+                    <TextBlock Text="Spell Opacity"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
                     <Slider  Value="{DynamicResource GlobalTriggerWindowOpacity}" Minimum="0" Maximum="1" SmallChange=".1" TickFrequency=".1" ValueChanged="GlobalTriggerWindowOpacityValueChanged" MinWidth="150"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal"  HorizontalAlignment="Center">
+                    <TextBlock Text="Spell Window" FontWeight="Bold" Margin="5,5,0,0" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Spells"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>

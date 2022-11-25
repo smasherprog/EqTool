@@ -33,6 +33,12 @@ namespace EQTool
             set => Current.Resources["GlobalTriggerWindowOpacity"] = value;
         }
 
+        public static double GlobalDPSWindowOpacity
+        {
+            get => (double)Current.Resources["GlobalDPSWindowOpacity"];
+            set => Current.Resources["GlobalDPSWindowOpacity"] = value;
+        }
+
         private void App_Startup(object sender, StartupEventArgs e)
         {
             httpclient.DefaultRequestHeaders.Add("User-Agent", "request");

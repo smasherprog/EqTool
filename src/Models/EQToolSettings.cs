@@ -12,6 +12,8 @@ namespace EQTool.Models
 
         public double GlobalTriggerWindowOpacity { get; set; }
 
+        public double GlobalDPSWindowOpacity { get; set; }
+
         public bool TriggerWindowTopMost { get; set; }
 
         public bool BestGuessSpells { get; set; }

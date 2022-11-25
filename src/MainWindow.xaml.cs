@@ -28,8 +28,8 @@ namespace EQTool
         public MainWindow()
         {
             InitializeComponent();
-            container = DI.Init();
 
+            container = DI.Init();
             SettingsMenuItem = new System.Windows.Forms.MenuItem("Settings", Settings);
             SpellsMenuItem = new System.Windows.Forms.MenuItem("Spells", Spells);
             MapMenuItem = new System.Windows.Forms.MenuItem("Map", Map);
@@ -70,6 +70,11 @@ namespace EQTool
             }
             else
             {
+                var eqsettings = container.Resolve<EQToolSettings>();
+
+                App.GlobalFontSize = eqsettings.FontSize;
+                App.GlobalTriggerWindowOpacity = eqsettings.GlobalTriggerWindowOpacity;
+                App.GlobalDPSWindowOpacity = eqsettings.GlobalDPSWindowOpacity;
                 SpellsMenuItem.Enabled = MapMenuItem.Enabled = DpsMeterMenuItem.Enabled = true;
                 Spells(SpellsMenuItem, null);
                 DPS(DpsMeterMenuItem, null);

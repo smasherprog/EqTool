@@ -41,7 +41,7 @@ namespace EQTool
             UITimer.Elapsed += PollUI;
             UITimer.Enabled = true;
             var view = (ListCollectionView)CollectionViewSource.GetDefaultView(spelllistview.ItemsSource);
-
+            App.GlobalTriggerWindowOpacity = settings.GlobalTriggerWindowOpacity;
             view.GroupDescriptions.Add(new PropertyGroupDescription(nameof(UISpell.TargetName)));
             view.LiveGroupingProperties.Add(nameof(UISpell.TargetName));
             view.IsLiveGrouping = true;

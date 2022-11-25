@@ -32,6 +32,7 @@ namespace EQTool
             this.dPSWindowViewModel = dPSWindowViewModel;
             DataContext = dPSWindowViewModel;
             InitializeComponent();
+            App.GlobalDPSWindowOpacity = settings.GlobalDPSWindowOpacity; ;
             Topmost = settings.TriggerWindowTopMost;
             UITimer = new System.Timers.Timer(1000);
             UITimer.Elapsed += PollUI;

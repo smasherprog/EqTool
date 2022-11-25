@@ -49,6 +49,8 @@ namespace EQTool.Services
                 BestGuessSpells = true,
                 FontSize = 12,
                 GlobalTriggerWindowOpacity = .5,
+                GlobalDPSWindowOpacity = .5,
+                YouOnlySpells = false,
                 Players = new System.Collections.Generic.List<PlayerInfo>(),
                 TriggerWindowTopMost = true
             };

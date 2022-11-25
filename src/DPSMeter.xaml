@@ -23,7 +23,7 @@
         </LinearGradientBrush>
     </Window.Resources>
     <Window.Background>
-        <SolidColorBrush Opacity="{DynamicResource GlobalTriggerWindowOpacity}" Color="White"/>
+        <SolidColorBrush Opacity="{DynamicResource GlobalDPSWindowOpacity}" Color="White"/>
     </Window.Background>
     <Border Background="#50FFFFFF" CornerRadius="5" BorderBrush="{StaticResource WindowFrameBrush}" BorderThickness="2,0,2,2">
         <Grid>

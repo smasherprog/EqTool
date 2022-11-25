@@ -6,5 +6,6 @@
     <Application.Resources>
         <sys:Double xmlns:sys="clr-namespace:System;assembly=mscorlib" x:Key="GlobalFontSize">12</sys:Double>
         <sys:Double xmlns:sys="clr-namespace:System;assembly=mscorlib" x:Key="GlobalTriggerWindowOpacity">1</sys:Double>
+        <sys:Double xmlns:sys="clr-namespace:System;assembly=mscorlib" x:Key="GlobalDPSWindowOpacity">1</sys:Double>
     </Application.Resources>
 </Application>
