@@ -63,6 +63,11 @@ namespace EQTool.ViewModels
         {
             Damage.Add(damage);
             TotalTwelveSecondDamage = 0;
+            if (damage.Damage > HighestHit)
+            {
+                HighestHit = damage.Damage;
+                OnPropertyChanged(nameof(HighestHit));
+            }
             var timestampstep = Damage.FirstOrDefault().TimeStamp;
             var highesttempdmg = GetDamangeAfter(0, timestampstep);
             TotalTwelveSecondDamage = Math.Max(TotalTwelveSecondDamage, highesttempdmg);
@@ -109,6 +114,7 @@ namespace EQTool.ViewModels
 
         public int TotalDamage { get; set; }
         public int TotalTwelveSecondDamage { get; set; }
+        public int HighestHit { get; set; }
 
         public int TwelveSecondDPS => (TotalTwelveSecondDamage > 0) ? (int)(TotalTwelveSecondDamage / (double)12) : 0;
         public int DPS => (TotalDamage > 0 && TotalSeconds > 0) ? (int)(TotalDamage / (double)TotalSeconds) : 0;
