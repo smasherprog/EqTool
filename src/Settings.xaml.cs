@@ -52,9 +52,6 @@ namespace EQTool
             {
                 Height = 650;
             }
-#if !DEBUG
-            FightVisButton.Visibility = Visibility.Hidden;
-#endif
         }
 
         protected override void OnClosing(CancelEventArgs e)
