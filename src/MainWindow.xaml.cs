@@ -177,6 +177,7 @@ namespace EQTool
                     {
                         SpellsMenuItem.Enabled = true;
                         MapMenuItem.Enabled = true;
+                        DpsMeterMenuItem.Enabled = true;
                     }
                     s.Checked = false;
                 };
