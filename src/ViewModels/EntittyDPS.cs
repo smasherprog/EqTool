@@ -1,8 +1,10 @@
-﻿using System;
+﻿using EQTool.Models;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Windows.Media;
 
 namespace EQTool.ViewModels
 {
@@ -16,6 +18,7 @@ namespace EQTool.ViewModels
             set
             {
                 _SourceName = value;
+                BackGroundColor = _SourceName == EQSpells.SpaceYou ? Brushes.LightBlue : Brushes.DarkSeaGreen;
                 OnPropertyChanged();
             }
         }
@@ -28,6 +31,7 @@ namespace EQTool.ViewModels
             set
             {
                 _TargetName = value;
+                BackGroundColor = _TargetName == EQSpells.SpaceYou ? Brushes.LightBlue : Brushes.DarkSeaGreen;
                 OnPropertyChanged();
             }
         }
@@ -115,6 +119,7 @@ namespace EQTool.ViewModels
         public int TotalDamage { get; set; }
         public int TotalTwelveSecondDamage { get; set; }
         public int HighestHit { get; set; }
+        public SolidColorBrush BackGroundColor { get; set; }
 
         public int TwelveSecondDPS => (TotalTwelveSecondDamage > 0) ? (int)(TotalTwelveSecondDamage / (double)12) : 0;
         public int DPS => (TotalDamage > 0 && TotalSeconds > 0) ? (int)(TotalDamage / (double)TotalSeconds) : 0;

@@ -258,11 +258,6 @@ namespace EQTool
             settings.BestGuessSpells = false;
         }
 
-        private void FightVisualzationClicked(object sender, RoutedEventArgs e)
-        {
-            new FightVisualzation().Show();
-        }
-
         private void testspellsclicked(object sender, RoutedEventArgs e)
         {
             var listofspells = new List<SpellParsingMatch>

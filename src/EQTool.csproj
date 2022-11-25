@@ -118,9 +118,6 @@
     <Compile Include="DPSMeter.xaml.cs">
       <DependentUpon>DPSMeter.xaml</DependentUpon>
     </Compile>
-    <Compile Include="EQToolMessageBox.xaml.cs">
-      <DependentUpon>EQToolMessageBox.xaml</DependentUpon>
-    </Compile>
     <Compile Include="FightVisualzation.xaml.cs">
       <DependentUpon>FightVisualzation.xaml</DependentUpon>
     </Compile>
@@ -143,6 +140,7 @@
     <Compile Include="Services\Spells\Log\ParseHandleYou.cs" />
     <Compile Include="Services\Spells\Log\SpellLogParse.cs" />
     <Compile Include="ViewModels\ActivePlayerInfo.cs" />
+    <Compile Include="ViewModels\FightVisualzationViewModel.cs" />
     <Compile Include="ViewModels\DPSWindowViewModel.cs" />
     <Compile Include="ViewModels\SpellWindowViewModel.cs" />
     <Compile Include="ViewModels\EntittyDPS.cs" />
@@ -190,10 +188,6 @@
       <DependentUpon>SpellWindow.xaml</DependentUpon>
     </Compile>
     <Page Include="DPSMeter.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="EQToolMessageBox.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

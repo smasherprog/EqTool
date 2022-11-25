@@ -19,10 +19,12 @@ namespace EQTool
         private SpellWindow spellWindow = null;
         private MapWindow mapwindow = null;
         private DPSMeter dpsmeter = null;
+        private FightVisualzation fightVisualzation = null;
         private Settings settingswindow = null;
         private readonly System.Windows.Forms.MenuItem MapMenuItem;
         private readonly System.Windows.Forms.MenuItem SpellsMenuItem;
         private readonly System.Windows.Forms.MenuItem DpsMeterMenuItem;
+        private readonly System.Windows.Forms.MenuItem DpsGraphMeterMenuItem;
         private readonly System.Windows.Forms.MenuItem SettingsMenuItem;
 
         public MainWindow()
@@ -34,6 +36,7 @@ namespace EQTool
             SpellsMenuItem = new System.Windows.Forms.MenuItem("Spells", Spells);
             MapMenuItem = new System.Windows.Forms.MenuItem("Map", Map);
             DpsMeterMenuItem = new System.Windows.Forms.MenuItem("Dps", DPS);
+            DpsGraphMeterMenuItem = new System.Windows.Forms.MenuItem("DpsGraph (BETA)", DPSGraph);
             var gitHubMenuItem = new System.Windows.Forms.MenuItem("Suggestions", Suggestions);
             var whythepig = new System.Windows.Forms.MenuItem("Why the Pig?", WhyThePig);
             var updates = new System.Windows.Forms.MenuItem("Updates", UpdateClicked);
@@ -42,17 +45,16 @@ namespace EQTool
             {
                 Enabled = false
             };
-            SpellsMenuItem.Enabled = false;
-            MapMenuItem.Enabled = false;
-            DpsMeterMenuItem.Enabled = false;
+            ToggleMenuButtons(false);
             SystemTrayIcon = new System.Windows.Forms.NotifyIcon
             {
                 Icon = Properties.Resources.logo,
                 Visible = true,
                 ContextMenu = new System.Windows.Forms.ContextMenu(new System.Windows.Forms.MenuItem[]
-                 {
+                {
                      whythepig,
                     DpsMeterMenuItem,
+                    DpsGraphMeterMenuItem,
                     MapMenuItem,
                     SpellsMenuItem,
                     SettingsMenuItem,
@@ -60,7 +62,7 @@ namespace EQTool
                     updates,
                     version,
                     new System.Windows.Forms.MenuItem("Exit", Exit)
-                 }),
+                }),
             };
             SystemTrayIcon.BalloonTipClicked += UpdateClicked;
 
@@ -75,7 +77,7 @@ namespace EQTool
                 App.GlobalFontSize = eqsettings.FontSize;
                 App.GlobalTriggerWindowOpacity = eqsettings.GlobalTriggerWindowOpacity;
                 App.GlobalDPSWindowOpacity = eqsettings.GlobalDPSWindowOpacity;
-                SpellsMenuItem.Enabled = MapMenuItem.Enabled = DpsMeterMenuItem.Enabled = true;
+                ToggleMenuButtons(true);
                 Spells(SpellsMenuItem, null);
                 DPS(DpsMeterMenuItem, null);
             }
@@ -95,6 +97,7 @@ namespace EQTool
             mapwindow?.Close();
             dpsmeter?.Close();
             settingswindow?.Close();
+            fightVisualzation?.Close();
             container.Resolve<EQToolSettingsLoad>().Save(EQToolSettings);
             base.OnClosing(e);
         }
@@ -106,6 +109,14 @@ namespace EQTool
                 FileName = "https://github.com/smasherprog/EqTool/releases/latest",
                 UseShellExecute = true
             });
+        }
+
+        private void ToggleMenuButtons(bool value)
+        {
+            SpellsMenuItem.Enabled = value;
+            MapMenuItem.Enabled = value;
+            DpsMeterMenuItem.Enabled = value;
+            DpsGraphMeterMenuItem.Enabled = value;
         }
 
         private void WhyThePig(object sender, EventArgs e)
@@ -167,6 +178,25 @@ namespace EQTool
             }
         }
 
+        private void DPSGraph(object sender, EventArgs e)
+        {
+            var s = (System.Windows.Forms.MenuItem)sender;
+            s.Checked = !s.Checked;
+            if (s.Checked)
+            {
+                fightVisualzation?.Close();
+                fightVisualzation = container.Resolve<FightVisualzation>();
+                fightVisualzation.Closed += (se, ee) => s.Checked = false;
+                fightVisualzation.Show();
+            }
+            else
+            {
+                fightVisualzation?.Close();
+                fightVisualzation = null;
+            }
+        }
+
+
         private void Settings(object sender, EventArgs e)
         {
             var s = (System.Windows.Forms.MenuItem)sender;
@@ -180,9 +210,7 @@ namespace EQTool
                 {
                     if (FindEq.IsValid(EQToolSettings.DefaultEqDirectory) && FindEq.TryCheckLoggingEnabled(EQToolSettings.DefaultEqDirectory) == true)
                     {
-                        SpellsMenuItem.Enabled = true;
-                        MapMenuItem.Enabled = true;
-                        DpsMeterMenuItem.Enabled = true;
+                        ToggleMenuButtons(true);
                     }
                     s.Checked = false;
                 };

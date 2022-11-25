@@ -8,7 +8,7 @@
         mc:Ignorable="d"
         Title="FightVisualzation" Height="450" Width="800">
     <Grid>
-        <DVC:Chart Name="mcChart" Background="LightSteelBlue" ItemsSource="{Binding Data}">
+        <DVC:Chart Name="mcChart" Background="LightSteelBlue"> 
         </DVC:Chart>
     </Grid>
 </Window>
