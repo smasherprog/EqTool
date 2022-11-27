@@ -496,5 +496,16 @@ namespace EQToolTests
             Assert.IsNotNull(targettoremove);
             Assert.AreEqual(30 * 60, targettoremove.DurationInSeconds);
         }
+
+        [TestMethod]
+        public void GetCustomTimerStart1()
+        {
+            var service = container.Resolve<LogCustomTimer>();
+            var line = "[Mon Nov 14 20:11:25 2022] you say, 'Start Timer StupidGoblin 30'";
+            var targettoremove = service.GetStartTimer(line);
+
+            Assert.IsNotNull(targettoremove);
+            Assert.AreEqual(30 * 60, targettoremove.DurationInSeconds);
+        }
     }
 }

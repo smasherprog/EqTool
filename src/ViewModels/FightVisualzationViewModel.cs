@@ -7,7 +7,6 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Controls.DataVisualization.Charting;
 
-
 namespace EQTool.ViewModels
 {
     public class FightVisualzationViewModel : INotifyPropertyChanged
@@ -75,13 +74,9 @@ namespace EQTool.ViewModels
             {
                 return;
             }
-            targetdead = targetdead.ToLower();
-            _ = DPSList.RemoveAll(a => a.TargetName == targetdead || a.SourceName == targetdead);
-            var series = lineSeries.FirstOrDefault(a => a.Title.ToString().ToLower() == targetdead);
-            if (series != null)
-            {
-                _ = mcChart.Series.Remove(series);
-            }
+            lineSeries.Clear();
+            DPSList.Clear();
+            mcChart.Series.Clear();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -113,12 +108,14 @@ namespace EQTool.ViewModels
                 if (series != null)
                 {
                     _ = mcChart.Series.Remove(series);
+                    _ = lineSeries.Remove(series);
                 }
             }
 
             if (!DPSList.Any())
             {
                 mcChart.Series.Clear();
+                lineSeries.Clear();
             }
         }
     }

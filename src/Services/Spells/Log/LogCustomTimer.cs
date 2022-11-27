@@ -6,7 +6,9 @@ namespace EQTool.Services.Spells.Log
     public class LogCustomTimer
     {
         private readonly string StartTimer = "you say, 'timer start";
+        private readonly string StartTimer1 = "you say, 'start timer";
         private readonly string CancelTimer = "you say, 'timer cancel";
+        private readonly string CancelTimer1 = "you say, 'cancel timer";
 
         public LogCustomTimer()
         {
@@ -28,10 +30,24 @@ namespace EQTool.Services.Spells.Log
 
             var message = linelog.Substring(27).Trim();
             Debug.WriteLine($"Custom Timer: " + message);
-
-            if (message.ToLower().StartsWith(StartTimer))
+            var timer = GetStartTimer(message, StartTimer);
+            if (timer != null)
             {
-                var removedstartimer = message.ToLower().Replace(StartTimer, string.Empty).Trim();
+                return timer;
+            }
+            else
+            {
+                timer = GetStartTimer(message, StartTimer1);
+            }
+
+            return timer;
+        }
+
+        private static CustomerTimer GetStartTimer(string message, string messagetolookfor)
+        {
+            if (message.ToLower().StartsWith(messagetolookfor))
+            {
+                var removedstartimer = message.ToLower().Replace(messagetolookfor, string.Empty).Trim();
                 var nameindex = removedstartimer.IndexOf(" ");
                 if (nameindex != -1)
                 {
@@ -61,10 +77,23 @@ namespace EQTool.Services.Spells.Log
 
             var message = linelog.Substring(27).Trim();
             Debug.WriteLine($"Custom Timer: " + message);
-
-            if (message.ToLower().StartsWith(CancelTimer))
+            var nametoremove = GetCancelTimer(message, CancelTimer);
+            if (!string.IsNullOrWhiteSpace(nametoremove))
             {
-                var nametoremove = message.ToLower().Replace(CancelTimer, string.Empty).Trim('\'').Trim().Trim();
+                return nametoremove;
+            }
+            else
+            {
+                nametoremove = GetCancelTimer(message, CancelTimer1);
+            }
+            return nametoremove;
+        }
+
+        private static string GetCancelTimer(string message, string messagetolookfor)
+        {
+            if (message.ToLower().StartsWith(messagetolookfor))
+            {
+                var nametoremove = message.ToLower().Replace(messagetolookfor, string.Empty).Trim('\'').Trim().Trim();
                 return nametoremove;
             }
 

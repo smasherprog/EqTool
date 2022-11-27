@@ -76,10 +76,10 @@ namespace EQTool.ViewModels
 
             appDispatcher.DispatchUI(() =>
             {
-                var deadguys = EntityList.Where(a => a.TargetName == target).ToList();
-                foreach (var item in deadguys)
+                var itemstoremove = EntityList.ToList();
+                foreach (var item in itemstoremove)
                 {
-                    item.IsDead = true;
+                    _ = EntityList.Remove(item);
                 }
             });
         }
