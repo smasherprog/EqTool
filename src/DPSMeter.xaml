@@ -70,7 +70,7 @@
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                             <GridViewColumn.Header>
-                                <TextBlock Text="12s DMG" ToolTip="Highest 12 second period of Damage delt. This is good for guaging how many are required in a CH chain!" />
+                                <TextBlock Text="12s DMG" ToolTip="Highest 12 second period of Damage dealt. This is good for gauging how many are required in a CH chain!" />
                             </GridViewColumn.Header>
                         </GridViewColumn>
                         <GridViewColumn  Width="70" >
