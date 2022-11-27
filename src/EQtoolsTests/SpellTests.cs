@@ -4,6 +4,7 @@ using EQTool.Services;
 using EQTool.Services.Spells.Log;
 using EQTool.ViewModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Linq;
 
 namespace EQToolTests
@@ -266,6 +267,27 @@ namespace EQToolTests
         }
 
         [TestMethod]
+        public void TestSpeedOfShissar2()
+        {
+            var spells = container.Resolve<EQSpells>();
+            var spelllogparse = container.Resolve<SpellLogParse>();
+            var shissar = "Speed of the Shissar";
+            var shissarspell = spells.AllSpells.FirstOrDefault(a => a.name == shissar);
+            var line = "[Sun Nov 27 10:54:46 2022] A bottomless feaster's body pulses with the spirit of the Shissar.";
+            var service = container.Resolve<ParseSpellGuess>();
+            var player = container.Resolve<ActivePlayer>();
+            player.Player = new PlayerInfo
+            {
+                Level = 54,
+                PlayerClass = PlayerClasses.Cleric
+            };
+            var guesss = spelllogparse.MatchSpell(line);
+            var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(guesss.Spell, player.Player));
+            Assert.IsNotNull(guesss);
+            Assert.IsFalse(guesss.MutipleMatchesFound);
+        }
+
+        [TestMethod]
         public void TestWarriorDisciplineGuess()
         {
             var spells = container.Resolve<EQSpells>();
@@ -362,6 +384,29 @@ namespace EQToolTests
             var duration = SpellDurations.GetDuration_inSeconds(foundspell, player);
             Assert.AreEqual(duration, 2100);
             Assert.AreEqual(foundlevel, 54);
+        }
+
+        [TestMethod]
+        public void TestClairityDurationGuess_AgumentDeath()
+        {
+            var spells = container.Resolve<EQSpells>();
+            var line = "You begin casting Augment Death.";
+            var spellname = line.Substring(EQSpells.YouBeginCasting.Length - 1).Trim().TrimEnd('.');
+            var player = new PlayerInfo
+            {
+                Level = 60,
+                PlayerClass = PlayerClasses.Necromancer
+            };
+            if (spells.YouCastSpells.TryGetValue(spellname, out var foundspells))
+            {
+                var foundspell = SpellDurations.MatchClosestLevelToSpell(foundspells, player);
+                Assert.IsNotNull(foundspell);
+                Assert.AreEqual("Augment Death", foundspell.name);
+            }
+            else
+            {
+                Assert.Fail();
+            }
         }
 
         [TestMethod]

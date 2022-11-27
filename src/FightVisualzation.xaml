@@ -7,8 +7,8 @@
         xmlns:local="clr-namespace:EQTool"
         mc:Ignorable="d"
         Title="FightVisualzation" Height="450" Width="800">
-    <Grid>
-        <DVC:Chart Name="mcChart" Background="LightSteelBlue"> 
+    <Grid> 
+        <DVC:Chart Name="mcChart" Background="LightSteelBlue" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"> 
         </DVC:Chart>
     </Grid>
 </Window>

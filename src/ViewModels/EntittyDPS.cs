@@ -87,6 +87,7 @@ namespace EQTool.ViewModels
                 }
             }
 
+            Trailing5SecondDamage = Damage.Where(a => a.TimeStamp >= DateTime.Now.AddMilliseconds(-5000)).Sum(a => a.Damage);
             TotalDamage = Damage.Sum(a => a.Damage);
             UpdateDps();
         }
@@ -116,13 +117,14 @@ namespace EQTool.ViewModels
 
         private readonly List<DamagePerTime> Damage = new List<DamagePerTime>();
 
+        private int Trailing5SecondDamage { get; set; } = 0;
         public int TotalDamage { get; set; }
         public int TotalTwelveSecondDamage { get; set; }
         public int HighestHit { get; set; }
         public SolidColorBrush BackGroundColor { get; set; }
 
         public int TwelveSecondDPS => (TotalTwelveSecondDamage > 0) ? (int)(TotalTwelveSecondDamage / (double)12) : 0;
-        public int DPS => (TotalDamage > 0 && TotalSeconds > 0) ? (int)(TotalDamage / (double)TotalSeconds) : 0;
+        public int DPS => (Trailing5SecondDamage > 0 && TotalSeconds > 0) ? (int)(Trailing5SecondDamage / (double)5) : 0;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
