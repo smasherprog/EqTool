@@ -53,17 +53,27 @@
                                 <TextBlock Text="Source" ToolTip="he NPC/PC who is Dealing the damage" />
                             </GridViewColumn.Header>
                         </GridViewColumn>
+                        <GridViewColumn  Width="70">
+                            <GridViewColumn.CellTemplate>
+                                <DataTemplate>
+                                    <TextBlock FontWeight="Bold" Text="{Binding DPS}" />
+                                </DataTemplate>
+                            </GridViewColumn.CellTemplate>
+                            <GridViewColumn.Header>
+                                <TextBlock Text="DPS" ToolTip="Average DPS for entire fight!" />
+                            </GridViewColumn.Header>
+                        </GridViewColumn>
                         <GridViewColumn Width="70">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
-                                    <TextBlock Text="{Binding HighestHit}" />
+                                    <TextBlock FontWeight="Bold" Text="{Binding HighestHit}" />
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                             <GridViewColumn.Header>
                                 <TextBlock Text="Biggest" ToolTip="Biggest single hit!" />
                             </GridViewColumn.Header>
                         </GridViewColumn>
-                        <GridViewColumn  Width="70" >
+                        <GridViewColumn  Width="70">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
                                     <TextBlock Text="{Binding TotalTwelveSecondDamage}"  />
@@ -71,16 +81,6 @@
                             </GridViewColumn.CellTemplate>
                             <GridViewColumn.Header>
                                 <TextBlock Text="12s DMG" ToolTip="Highest 12 second period of Damage dealt. This is good for gauging how many are required in a CH chain!" />
-                            </GridViewColumn.Header>
-                        </GridViewColumn>
-                        <GridViewColumn  Width="70" >
-                            <GridViewColumn.CellTemplate>
-                                <DataTemplate>
-                                    <TextBlock Text="{Binding DPS}" />
-                                </DataTemplate>
-                            </GridViewColumn.CellTemplate>
-                            <GridViewColumn.Header>
-                                <TextBlock Text="DPS" ToolTip="Average DPS for entire fight!" />
                             </GridViewColumn.Header>
                         </GridViewColumn>
                         <GridViewColumn Width="70">

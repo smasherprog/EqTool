@@ -72,6 +72,20 @@ namespace EQTool.Models
             "Speed of the Shissar"
         };
 
+        public static readonly Dictionary<string, PlayerClasses> EpicSpells = new Dictionary<string, PlayerClasses>
+        {
+            { "Wrath of Nature", PlayerClasses.Druid },
+            { "Speed of the Shissar", PlayerClasses.Enchanter },
+            { "Torment of Shadows", PlayerClasses.Necromancer },
+            { "Earthcall", PlayerClasses.Ranger },
+            { "Soul Consumption", PlayerClasses.ShadowKnight },
+            { "Curse of the Spirits", PlayerClasses.Shaman },
+            { "Barrier of Force", PlayerClasses.Wizard },
+            { "Dance of the Blade", PlayerClasses.Bard },
+            { "Celestial Tranquility", PlayerClasses.Monk },
+            { "Seething Fury", PlayerClasses.Rouge }
+        };
+
         public const string ZoneLoadingMessage = "LOADING, PLEASE WAIT...";
         public const string YouBeginCasting = "You begin casting ";
         public const string Your = "Your ";

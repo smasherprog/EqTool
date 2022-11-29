@@ -507,5 +507,6 @@ namespace EQToolTests
             Assert.IsNotNull(targettoremove);
             Assert.AreEqual(30 * 60, targettoremove.DurationInSeconds);
         }
+
     }
 }

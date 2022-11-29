@@ -89,7 +89,7 @@ namespace EQTool.Services
                 }
             }
 
-            return new SpellBase
+            var ret = new SpellBase
             {
                 id = int.Parse(splits[0]),
                 name = splits[1],
@@ -104,6 +104,13 @@ namespace EQTool.Services
                 Classes = classes,
                 spell_icon = int.Parse(splits[144])
             };
+
+            if (EQSpells.EpicSpells.TryGetValue(ret.name, out var foundepic))
+            {
+                ret.Classes[foundepic] = 46;
+            }
+
+            return ret;
         }
     }
 }
