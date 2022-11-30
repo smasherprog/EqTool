@@ -508,5 +508,48 @@ namespace EQToolTests
             Assert.AreEqual(30 * 60, targettoremove.DurationInSeconds);
         }
 
+        [TestMethod]
+        public void TestDPS()
+        {
+            var entity = new EntittyDPS();
+            entity.AddDamage(new EntittyDPS.DamagePerTime
+            {
+                Damage = 1,
+                TimeStamp = DateTime.Now.AddSeconds(-20)
+            });
+            entity.AddDamage(new EntittyDPS.DamagePerTime
+            {
+                Damage = 1,
+                TimeStamp = DateTime.Now.AddSeconds(-5)
+            });
+            entity.AddDamage(new EntittyDPS.DamagePerTime
+            {
+                Damage = 1,
+                TimeStamp = DateTime.Now.AddSeconds(-4)
+            });
+            entity.AddDamage(new EntittyDPS.DamagePerTime
+            {
+                Damage = 1,
+                TimeStamp = DateTime.Now.AddSeconds(-3)
+            });
+            entity.AddDamage(new EntittyDPS.DamagePerTime
+            {
+                Damage = 1,
+                TimeStamp = DateTime.Now.AddSeconds(-2)
+            });
+            entity.AddDamage(new EntittyDPS.DamagePerTime
+            {
+                Damage = 1,
+                TimeStamp = DateTime.Now.AddSeconds(-1)
+            });
+            entity.AddDamage(new EntittyDPS.DamagePerTime
+            {
+                Damage = 1,
+                TimeStamp = DateTime.Now.AddSeconds(10)
+            });
+            Assert.AreEqual(6, entity.TrailingDamage);
+            Assert.AreEqual(7, entity.TotalDamage);
+            Assert.AreEqual(5, entity.TotalTwelveSecondDamage);
+        }
     }
 }
