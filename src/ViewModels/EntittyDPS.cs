@@ -36,7 +36,7 @@ namespace EQTool.ViewModels
             }
         }
 
-        public bool IsDead = false;
+        public DateTime? DeathTime { get; set; }
 
         private DateTime _StartTime = DateTime.Now;
 
@@ -54,6 +54,11 @@ namespace EQTool.ViewModels
 
         public void UpdateDps()
         {
+            if (DeathTime.HasValue)
+            {
+                return;
+            }
+
             TrailingDamage = Damage.Where(a => a.TimeStamp >= DateTime.Now.AddSeconds(-12)).Sum(a => a.Damage);
             TotalDamage = Damage.Sum(a => a.Damage);
             if (Damage.Any())
@@ -81,9 +86,8 @@ namespace EQTool.ViewModels
             OnPropertyChanged(nameof(DPS));
         }
 
-
-        public int TotalSeconds => (int)(DateTime.Now - _StartTime).TotalSeconds;
-
+        public int TotalSeconds => DeathTime.HasValue ? (int)(DeathTime.Value - _StartTime).TotalSeconds : (int)(DateTime.Now - _StartTime).TotalSeconds;
+        public DateTime? LastDamageDone => Damage.LastOrDefault()?.TimeStamp;
         public void AddDamage(DamagePerTime damage)
         {
             Damage.Add(damage);

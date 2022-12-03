@@ -1,6 +1,7 @@
 ﻿using EQTool.Models;
 using EQTool.Services;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
@@ -11,7 +12,6 @@ namespace EQTool.ViewModels
     public class DPSWindowViewModel : INotifyPropertyChanged
     {
         private readonly IAppDispatcher appDispatcher;
-        private DateTime? LastTimeFighting;
 
         public DPSWindowViewModel(IAppDispatcher appDispatcher)
         {
@@ -49,20 +49,24 @@ namespace EQTool.ViewModels
         {
             appDispatcher.DispatchUI(() =>
             {
+                var itemstormove = new List<EntittyDPS>();
+                var now = DateTime.Now;
                 foreach (var item in _EntityList)
                 {
-                    item.UpdateDps();
+                    var lasttime = item.LastDamageDone ?? item.StartTime;
+                    if (Math.Abs((now - lasttime).TotalSeconds) > 20)
+                    {
+                        itemstormove.Add(item);
+                    }
+                    else
+                    {
+                        item.UpdateDps();
+                    }
                 }
 
-                var now = DateTime.Now;
-                if (LastTimeFighting.HasValue && (now - LastTimeFighting.Value).TotalSeconds > 20)
+                foreach (var item in itemstormove)
                 {
-                    LastTimeFighting = null;
-                    var itemstoremove = EntityList.ToList();
-                    foreach (var item in itemstoremove)
-                    {
-                        _ = EntityList.Remove(item);
-                    }
+                    _ = EntityList.Remove(item);
                 }
             });
         }
@@ -76,10 +80,11 @@ namespace EQTool.ViewModels
 
             appDispatcher.DispatchUI(() =>
             {
-                var itemstoremove = EntityList.ToList();
+                var t = target.ToLower();
+                var itemstoremove = EntityList.Where(a => a.TargetName.ToLower() == t).ToList();
                 foreach (var item in itemstoremove)
                 {
-                    _ = EntityList.Remove(item);
+                    item.DeathTime = DateTime.Now;
                 }
             });
         }
@@ -93,7 +98,6 @@ namespace EQTool.ViewModels
 
             appDispatcher.DispatchUI(() =>
             {
-                LastTimeFighting = DateTime.Now;
                 var item = EntityList.FirstOrDefault(a => a.SourceName == entitiy.SourceName && a.TargetName == entitiy.TargetName);
                 if (item == null)
                 {
