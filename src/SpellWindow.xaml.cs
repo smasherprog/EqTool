@@ -45,10 +45,9 @@ namespace EQTool
             view.GroupDescriptions.Add(new PropertyGroupDescription(nameof(UISpell.TargetName)));
             view.LiveGroupingProperties.Add(nameof(UISpell.TargetName));
             view.IsLiveGrouping = true;
-            view.SortDescriptions.Add(new SortDescription(nameof(UISpell.TargetName), ListSortDirection.Ascending));
+            view.SortDescriptions.Add(new SortDescription(nameof(UISpell.SecondsLeftOnSpell), ListSortDirection.Descending));
             view.IsLiveSorting = true;
-            view.LiveSortingProperties.Add(nameof(UISpell.TargetName));
-
+            view.LiveSortingProperties.Add(nameof(UISpell.SecondsLeftOnSpell)); 
         }
 
         private void LogParser_PlayerChangeEvent(object sender, LogParser.PlayerChangeEventArgs e)
