@@ -67,11 +67,6 @@ namespace EQTool.Models
             "Chords of Dissonance"
         };
 
-        public static readonly List<string> RealSpells = new List<string>()
-        {
-            "Speed of the Shissar"
-        };
-
         public static readonly Dictionary<string, PlayerClasses> EpicSpells = new Dictionary<string, PlayerClasses>
         {
             { "Wrath of Nature", PlayerClasses.Druid },

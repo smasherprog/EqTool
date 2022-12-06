@@ -12,10 +12,12 @@ namespace EQTool.ViewModels
     public class DPSWindowViewModel : INotifyPropertyChanged
     {
         private readonly IAppDispatcher appDispatcher;
+        private readonly ActivePlayer activePlayer;
 
-        public DPSWindowViewModel(IAppDispatcher appDispatcher)
+        public DPSWindowViewModel(IAppDispatcher appDispatcher, ActivePlayer activePlayer)
         {
             this.appDispatcher = appDispatcher;
+            this.activePlayer = activePlayer;
         }
 
         public ObservableCollection<EntittyDPS> _EntityList = new ObservableCollection<EntittyDPS>();
@@ -60,7 +62,34 @@ namespace EQTool.ViewModels
                     }
                     else
                     {
-                        item.UpdateDps();
+                        item.UpdateDps(activePlayer.Player);
+                    }
+                }
+
+                foreach (var items in _EntityList.GroupBy(a => a.TargetName))
+                {
+                    var allhidden = false;
+                    foreach (var group in items)
+                    {
+                        if (group.ColumnVisiblity == System.Windows.Visibility.Collapsed)
+                        {
+                            allhidden = true;
+                        }
+                    }
+
+                    if (allhidden)
+                    {
+                        foreach (var group in items)
+                        {
+                            group.HeaderVisibility = System.Windows.Visibility.Collapsed;
+                        }
+                    }
+                    else
+                    {
+                        foreach (var group in items)
+                        {
+                            group.HeaderVisibility = System.Windows.Visibility.Visible;
+                        }
                     }
                 }
 
@@ -115,7 +144,7 @@ namespace EQTool.ViewModels
                     {
                         TimeStamp = entitiy.TimeStamp,
                         Damage = entitiy.DamageDone
-                    });
+                    }, activePlayer.Player);
                 }
             });
         }
