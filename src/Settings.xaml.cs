@@ -1,6 +1,7 @@
 ﻿using ControlzEx.Theming;
 using EQTool.Models;
 using EQTool.Services;
+using EQTool.Services.Spells.Log;
 using EQTool.ViewModels;
 using MahApps.Metro.Controls;
 using System;
@@ -9,9 +10,13 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
+using System.Windows.Shapes;
+using static EQTool.Services.LogParser;
 
 namespace EQTool
 {
@@ -25,15 +30,21 @@ namespace EQTool
         private readonly EQToolSettingsLoad toolSettingsLoad;
         private readonly SpellWindowViewModel spellWindowViewModel;
         private readonly EQSpells spells;
+        private readonly DPSWindowViewModel dPSWindowViewModel;
+        private readonly DPSLogParse dPSLogParse;
+        private readonly IAppDispatcher appDispatcher;
 
-        public Settings(EQSpells spells, EQToolSettings settings, EQToolSettingsLoad toolSettingsLoad, SettingsWindowData settingsWindowData, SpellWindowViewModel spellWindowViewModel)
+        public Settings(IAppDispatcher appDispatcher, DPSLogParse dPSLogParse, EQSpells spells, EQToolSettings settings, EQToolSettingsLoad toolSettingsLoad, SettingsWindowData settingsWindowData, SpellWindowViewModel spellWindowViewModel, DPSWindowViewModel dPSWindowViewModel)
         {
             SettingsWindowData = settingsWindowData;
             Height = 200;
+            this.appDispatcher = appDispatcher;
+            this.dPSLogParse = dPSLogParse;
             this.spells = spells;
             this.settings = settings;
             this.spellWindowViewModel = spellWindowViewModel;
             this.toolSettingsLoad = toolSettingsLoad;
+            this.dPSWindowViewModel = dPSWindowViewModel;
             SettingsWindowData.EqPath = this.settings.DefaultEqDirectory;
             DataContext = settingsWindowData;
             Topmost = true;
@@ -54,7 +65,7 @@ namespace EQTool
             themecombobox.SelectedValue = settings.Theme;
             if (SettingsWindowData.NotMissingConfiguration)
             {
-                Height = 700;
+                Height = 780;
             }
         }
 
@@ -271,19 +282,24 @@ namespace EQTool
                 new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Improved Invis to Undead"), TargetName = "Joe", MutipleMatchesFound = false },
                 new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Grim Aura"), TargetName = "Joe", MutipleMatchesFound = false },
 
+                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Heroic Bond"), TargetName = EQSpells.SpaceYou, MutipleMatchesFound = false },
+
                 new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Heroic Bond"), TargetName = "bob", MutipleMatchesFound = false },
                 new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Chloroplast"), TargetName = "bob", MutipleMatchesFound = true },
                 new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Shield of Words"), TargetName = "bob", MutipleMatchesFound = false },
                 new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Boon of the Clear Mind"), TargetName = "bob", MutipleMatchesFound = false },
                 new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Gift of Brilliance"), TargetName = "bob", MutipleMatchesFound = false },
 
-                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Heroic Bond"), TargetName = " You", MutipleMatchesFound = false },
             };
 
             foreach (var item in listofspells)
             {
                 spellWindowViewModel.TryAdd(item);
             }
+
+
+            spellWindowViewModel.TryAddCustom(new LogCustomTimer.CustomerTimer { DurationInSeconds = 60 * 27, Name = "King" });
+            spellWindowViewModel.TryAddCustom(new LogCustomTimer.CustomerTimer { DurationInSeconds = 60 * 18, Name = "hall Wanderer 1" });
         }
 
         private void spellbyclassselection_SelectionChanged(object sender, SelectionChangedEventArgs e)
@@ -303,15 +319,69 @@ namespace EQTool
                 }
             }
         }
+
         private void themescombobox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             var val = themecombobox.SelectedItem as EQNameValueString;
             if (val != null)
-            { 
+            {
                 ThemeManager.Current.ChangeTheme(App.Current, val.Value);
             }
         }
-        
+
+        private void testDPS(object sender, RoutedEventArgs e)
+        {
+            if (!testdpsbutton.IsEnabled)
+            {
+                return;
+            }
+            testdpsbutton.IsEnabled = false;
+            Task.Factory.StartNew(() =>
+            {
+                try
+                {
+                    var fightlines = File.ReadLines("TestFight.txt");
+                    var fightlist = new List<DPSParseMatch>();
+                    foreach (var item in fightlines)
+                    {
+                        var match = dPSLogParse.Match(item);
+                        if (match != null)
+                        {
+                            fightlist.Add(match);
+                        }
+                    }
+
+                    var endtime = fightlist.LastOrDefault().TimeStamp;
+                    var starttime = fightlist.FirstOrDefault().TimeStamp;
+
+                    var index = 0;
+                    do
+                    {
+                        for (; index < fightlist.Count; index++)
+                        {
+                            if ((starttime - fightlist[index].TimeStamp).TotalMilliseconds > 1000)
+                            {
+                                starttime = fightlist[index].TimeStamp;
+                                if (index != 0)
+                                {
+                                    index--;
+                                }
+                                break;
+                            }
+                            else
+                            {
+                                dPSWindowViewModel.TryAdd(fightlist[index]);
+                            }
+                        }
+                        Thread.Sleep(1000);
+                    } while (index < fightlist.Count);
+                    appDispatcher.DispatchUI(() => { testdpsbutton.IsEnabled = true; });
+                }
+                catch { }
+            });
+
+        }
+
         private void SaveAndClose(object sender, RoutedEventArgs e)
         {
             Close();

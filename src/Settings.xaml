@@ -14,11 +14,11 @@
     <ScrollViewer  HorizontalScrollBarVisibility="Auto"> 
         <StackPanel Orientation="Vertical" >
             <StackPanel Orientation="Vertical" Visibility="{Binding MissingConfiguration, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}">
-                <TextBlock Text="Configuration missing!" FontWeight="Bold" FontSize="20" Foreground="Red"/>
+                <TextBlock Text="Configuration missing!" FontWeight="Bold" FontSize="20" Foreground="{DynamicResource MahApps.Brushes.Control.Validation}"/>
                 <TextBlock Text="Select your EQ path, and make sure logging is enabled!" FontWeight="Bold" FontSize="14" />
             </StackPanel>
             <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Eq Path"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100" Foreground="Red"  Visibility="{Binding DoesNotHaveEqPath, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}"/>
+                <TextBlock Text="Eq Path"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100" Foreground="{DynamicResource MahApps.Brushes.Control.Validation}"  Visibility="{Binding DoesNotHaveEqPath, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}"/>
                 <TextBlock Text="Eq Path"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100" Visibility="{Binding HasEqPath, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Visible}"/>
                 <StackPanel Orientation="Horizontal" >
                     <TextBlock Text="{Binding EqPath}" HorizontalAlignment="Left"/>
@@ -31,7 +31,7 @@
                 </StackPanel>
             </StackPanel>
             <StackPanel Orientation="Horizontal"  Visibility="{Binding HasEqPath, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Visible}" >
-                <TextBlock Text="Logging"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100" Foreground="Red"  Visibility="{Binding DoesNotHaveEqPath, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}"/>
+                <TextBlock Text="Logging"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100" Foreground="{DynamicResource MahApps.Brushes.Control.Validation}"  Visibility="{Binding DoesNotHaveEqPath, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}"/>
                 <TextBlock Text="Logging"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100" Visibility="{Binding HasEqPath, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Visible}"/>
                 <TextBlock Visibility="{Binding IsLogginEnabled, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}" Text="Logging Enabled!" Margin="5,5,0,0" HorizontalAlignment="Left" Foreground="Green"/>
                 <Button Visibility="{Binding IsLogginDisabled, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}" Name="enablelogging" Margin="5,5,0,0" Click="enablelogging_Click">Enable Logging</Button>
@@ -79,7 +79,7 @@
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Spells By Class"  FontWeight="Bold" MinWidth="100"/>
                     <StackPanel Orientation="Vertical">
-                        <TextBlock Visibility="{Binding HasNoCharName}" Text="You must be logged in!"  FontWeight="Bold" Foreground="Red"/>
+                        <TextBlock Text="You must be logged in!"  FontWeight="Bold" Foreground="{DynamicResource MahApps.Brushes.Control.Validation}"/>
                         <ListBox IsEnabled="{Binding HasCharName}"
                              Name="spellbyclassselection" 
                              SelectionMode="Multiple" 
@@ -92,8 +92,12 @@
                     <TextBlock Text="Debugging" FontWeight="Bold" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="DPS"  VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
+                    <Button Name="testdpsbutton" Click="testDPS" MinWidth="100">Add Test DPS</Button>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Spells"  VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
-                    <Button  Click="testspellsclicked" MinWidth="100">Add Test Spells</Button>
+                    <Button Click="testspellsclicked" MinWidth="100">Add Test Spells</Button>
                 </StackPanel> 
                 <Button Margin="5,20, 5, 0" Click="SaveAndClose">Save and Close</Button>
             </StackPanel> 

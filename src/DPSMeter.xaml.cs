@@ -44,9 +44,10 @@ namespace EQTool
             view.GroupDescriptions.Add(new PropertyGroupDescription(nameof(EntittyDPS.TargetName)));
             view.LiveGroupingProperties.Add(nameof(EntittyDPS.TargetName));
             view.IsLiveGrouping = true;
+            view.SortDescriptions.Add(new SortDescription(nameof(UISpell.TargetName), ListSortDirection.Ascending)); 
             view.SortDescriptions.Add(new SortDescription(nameof(EntittyDPS.TotalDamage), ListSortDirection.Descending));
             view.IsLiveSorting = true;
-            view.LiveSortingProperties.Add(nameof(EntittyDPS.TotalDamage));
+            view.LiveSortingProperties.Add(nameof(EntittyDPS.TargetName));
         }
 
         private void LogParser_LineReadEvent(object sender, LogParser.LogParserEventArgs e)

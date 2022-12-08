@@ -105,7 +105,7 @@ namespace EQTool.ViewModels
                     {
                         SourceName = entitiy.SourceName,
                         TargetName = entitiy.TargetName,
-                        StartTime = DateTime.Now,
+                        StartTime = entitiy.TimeStamp,
                         TotalDamage = entitiy.DamageDone
                     });
                 }

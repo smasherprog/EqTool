@@ -13,7 +13,7 @@
         AllowsTransparency="True">
     <mah:MetroWindow.Background>
         <SolidColorBrush Opacity="{DynamicResource GlobalTriggerWindowOpacity}" Color="{DynamicResource MahApps.Colors.ThemeBackground}"/>
-    </mah:MetroWindow.Background>
+    </mah:MetroWindow.Background> 
     <ListView ItemsSource="{Binding SpellList}" Name="spelllistview" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling" Grid.Row="1" Background="Transparent">
         <ListView.ItemTemplate>
             <DataTemplate>
