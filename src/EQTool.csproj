@@ -137,6 +137,7 @@
     <Compile Include="MapWindow.xaml.cs">
       <DependentUpon>MapWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Models\Theme.cs" />
     <Compile Include="Models\DPSParseMatch.cs" />
     <Compile Include="Models\SpellParsingMatch.cs" />
     <Compile Include="Models\EQSpells.cs" />

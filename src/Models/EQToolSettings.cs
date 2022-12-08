@@ -8,6 +8,8 @@ namespace EQTool.Models
 
         public string DefaultEqDirectory { get; set; }
 
+        public string Theme { get; set; } = "Light.Blue";
+
         public List<PlayerInfo> Players { get; set; } = new List<PlayerInfo>();
 
         public double GlobalTriggerWindowOpacity { get; set; }

@@ -14,6 +14,11 @@ namespace EQTool.ViewModels
         public string Name { get; set; }
         public double Value { get; set; }
     }
+    public class EQNameValueString
+    {
+        public string Name { get; set; }
+        public string Value { get; set; }
+    }
 
     public class SettingsWindowData : INotifyPropertyChanged
     {
@@ -34,6 +39,19 @@ namespace EQTool.ViewModels
                 {
                     Name = i.ToString(),
                     Value = i
+                });
+            } 
+            foreach(var item in Theme.ThemeColors) 
+            {
+                Themes.Add(new EQNameValueString
+                {
+                    Name = "Light " + item,
+                    Value = "Light." + item,
+                });
+                Themes.Add(new EQNameValueString
+                {
+                    Name = "Dark " + item,
+                    Value = "Dark." + item,
                 });
             }
         }
@@ -147,7 +165,7 @@ namespace EQTool.ViewModels
 
         public ObservableCollection<EQNameValue> FontSizes = new ObservableCollection<EQNameValue>();
         public ObservableCollection<EQNameValue> Levels = new ObservableCollection<EQNameValue>();
-
+        public ObservableCollection<EQNameValueString> Themes = new ObservableCollection<EQNameValueString>();
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected void OnPropertyChanged([CallerMemberName] string name = null)

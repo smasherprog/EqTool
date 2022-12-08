@@ -73,13 +73,6 @@ namespace EQTool
                     }
                     else if (e.Args[0].Contains("pong"))
                     {
-                        var theme = ThemeManager.Current.AddLibraryTheme(
-                            new LibraryTheme(
-                                new Uri("pack://application:,,,/MahApps.Metro;component/Styles/Themes/Dark.Blue.xaml"),
-                                MahAppsLibraryThemeProvider.DefaultInstance
-                                )
-                            );
-                    
                         Thread.Sleep(1000 * 2);
                         System.IO.Directory.Delete("NewVersion", true);
                         System.IO.File.Delete("EqToool.zip");
@@ -97,12 +90,6 @@ namespace EQTool
 #if !DEBUG
                 CheckForUpdates();
 #endif
-                var theme = ThemeManager.Current.AddLibraryTheme(
-    new LibraryTheme(
-        new Uri("pack://application:,,,/MahApps.Metro;component/Styles/Themes/Dark.Blue.xaml"),
-        MahAppsLibraryThemeProvider.DefaultInstance
-        )
-    );
                 mainWindow = new MainWindow();
             }
         }

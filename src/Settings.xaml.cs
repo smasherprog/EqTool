@@ -50,11 +50,12 @@ namespace EQTool
             levelscombobox.ItemsSource = SettingsWindowData.Levels;
             fontsizescombobox.ItemsSource = SettingsWindowData.FontSizes;
             fontsizescombobox.SelectedValue = settings.FontSize.ToString();
+            themecombobox.ItemsSource = SettingsWindowData.Themes;
+            themecombobox.SelectedValue = settings.Theme;
             if (SettingsWindowData.NotMissingConfiguration)
             {
-                Height = 650;
+                Height = 700;
             }
-            ThemeManager.Current.ChangeTheme(App.Current, "Dark.Blue");
         }
 
         protected override void OnClosing(CancelEventArgs e)
@@ -91,6 +92,7 @@ namespace EQTool
             settings.FontSize = App.GlobalFontSize;
             settings.GlobalTriggerWindowOpacity = App.GlobalTriggerWindowOpacity;
             settings.GlobalDPSWindowOpacity = App.GlobalDPSWindowOpacity;
+            settings.Theme = themecombobox.SelectedValue as string;
             toolSettingsLoad.Save(settings);
             base.OnClosing(e);
         }
@@ -301,7 +303,15 @@ namespace EQTool
                 }
             }
         }
-
+        private void themescombobox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            var val = themecombobox.SelectedItem as EQNameValueString;
+            if (val != null)
+            { 
+                ThemeManager.Current.ChangeTheme(App.Current, val.Value);
+            }
+        }
+        
         private void SaveAndClose(object sender, RoutedEventArgs e)
         {
             Close();

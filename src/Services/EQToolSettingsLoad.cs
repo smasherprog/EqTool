@@ -46,6 +46,7 @@ namespace EQTool.Services
             var ret = new EQToolSettings
             {
                 DefaultEqDirectory = findEq.LoadEQPath(),
+                Theme = "Light.Blue",
                 BestGuessSpells = true,
                 FontSize = 12,
                 GlobalTriggerWindowOpacity = .5,
