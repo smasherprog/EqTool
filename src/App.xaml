@@ -3,9 +3,16 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:local="clr-namespace:EQTool"
              Startup="App_Startup">
-    <Application.Resources>
-        <sys:Double xmlns:sys="clr-namespace:System;assembly=mscorlib" x:Key="GlobalFontSize">12</sys:Double>
-        <sys:Double xmlns:sys="clr-namespace:System;assembly=mscorlib" x:Key="GlobalTriggerWindowOpacity">1</sys:Double>
-        <sys:Double xmlns:sys="clr-namespace:System;assembly=mscorlib" x:Key="GlobalDPSWindowOpacity">1</sys:Double>
+    <Application.Resources> 
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Controls.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Fonts.xaml" />
+                <ResourceDictionary Source="pack://application:,,,/MahApps.Metro;component/Styles/Themes/Light.Blue.xaml" />
+            </ResourceDictionary.MergedDictionaries>
+            <sys:Double xmlns:sys="clr-namespace:System;assembly=mscorlib" x:Key="GlobalFontSize">12</sys:Double>
+            <sys:Double xmlns:sys="clr-namespace:System;assembly=mscorlib" x:Key="GlobalTriggerWindowOpacity">1</sys:Double>
+            <sys:Double xmlns:sys="clr-namespace:System;assembly=mscorlib" x:Key="GlobalDPSWindowOpacity">1</sys:Double>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

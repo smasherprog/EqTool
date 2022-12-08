@@ -2,16 +2,16 @@
 using EQTool.Services;
 using EQTool.Services.Spells.Log;
 using EQTool.ViewModels;
+using MahApps.Metro.Controls;
 using System;
 using System.ComponentModel;
 using System.Timers;
-using System.Windows;
 using System.Windows.Data;
 using System.Windows.Input;
 
 namespace EQTool
 {
-    public partial class SpellWindow : Window
+    public partial class SpellWindow : MetroWindow
     {
         private readonly Timer UITimer;
 
@@ -47,7 +47,7 @@ namespace EQTool
             view.IsLiveGrouping = true;
             view.SortDescriptions.Add(new SortDescription(nameof(UISpell.SecondsLeftOnSpell), ListSortDirection.Descending));
             view.IsLiveSorting = true;
-            view.LiveSortingProperties.Add(nameof(UISpell.SecondsLeftOnSpell)); 
+            view.LiveSortingProperties.Add(nameof(UISpell.SecondsLeftOnSpell));
         }
 
         private void LogParser_PlayerChangeEvent(object sender, LogParser.PlayerChangeEventArgs e)

@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using ControlzEx.Theming;
 using EQTool.Models;
 using EQTool.Services;
 using System;
@@ -85,7 +86,8 @@ namespace EQTool
             Hide();
 #if !DEBUG
             MapMenuItem.Enabled = false;  
-#endif 
+#endif
+
         }
 
         private EQToolSettings EQToolSettings => container.Resolve<EQToolSettings>();
@@ -100,6 +102,16 @@ namespace EQTool
             fightVisualzation?.Close();
             container.Resolve<EQToolSettingsLoad>().Save(EQToolSettings);
             base.OnClosing(e);
+        }
+
+        public void UpdateUITheme()
+        {
+            UpdateLayout();
+            spellWindow?.UpdateLayout();
+            mapwindow?.UpdateLayout();
+            dpsmeter?.UpdateLayout();
+            settingswindow?.UpdateLayout();
+            fightVisualzation?.UpdateLayout();
         }
 
         private void UpdateClicked(object sender, EventArgs e)

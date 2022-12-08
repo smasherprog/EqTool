@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿using ControlzEx.Theming;
+using MahApps.Metro.Theming;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -19,7 +21,7 @@ namespace EQTool
     public partial class App : Application
     {
         private readonly HttpClient httpclient = new HttpClient();
-        private MainWindow mainWindow;
+        private MainWindow mainWindow;  
 
         public static double GlobalFontSize
         {
@@ -38,7 +40,7 @@ namespace EQTool
             get => (double)Current.Resources["GlobalDPSWindowOpacity"];
             set => Current.Resources["GlobalDPSWindowOpacity"] = value;
         }
-
+         
         private void App_Startup(object sender, StartupEventArgs e)
         {
             httpclient.DefaultRequestHeaders.Add("User-Agent", "request");
@@ -71,6 +73,13 @@ namespace EQTool
                     }
                     else if (e.Args[0].Contains("pong"))
                     {
+                        var theme = ThemeManager.Current.AddLibraryTheme(
+                            new LibraryTheme(
+                                new Uri("pack://application:,,,/MahApps.Metro;component/Styles/Themes/Dark.Blue.xaml"),
+                                MahAppsLibraryThemeProvider.DefaultInstance
+                                )
+                            );
+                    
                         Thread.Sleep(1000 * 2);
                         System.IO.Directory.Delete("NewVersion", true);
                         System.IO.File.Delete("EqToool.zip");
@@ -88,6 +97,12 @@ namespace EQTool
 #if !DEBUG
                 CheckForUpdates();
 #endif
+                var theme = ThemeManager.Current.AddLibraryTheme(
+    new LibraryTheme(
+        new Uri("pack://application:,,,/MahApps.Metro;component/Styles/Themes/Dark.Blue.xaml"),
+        MahAppsLibraryThemeProvider.DefaultInstance
+        )
+    );
                 mainWindow = new MainWindow();
             }
         }

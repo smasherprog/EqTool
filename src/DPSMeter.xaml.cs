@@ -2,6 +2,7 @@
 using EQTool.Services;
 using EQTool.Services.Spells.Log;
 using EQTool.ViewModels;
+using MahApps.Metro.Controls;
 using System;
 using System.ComponentModel;
 using System.Timers;
@@ -14,7 +15,7 @@ namespace EQTool
     /// <summary>
     /// Interaction logic for DPSMeter.xaml
     /// </summary>
-    public partial class DPSMeter : Window
+    public partial class DPSMeter : MetroWindow
     {
         private readonly Timer UITimer;
 

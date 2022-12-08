@@ -1,6 +1,8 @@
-﻿using EQTool.Models;
+﻿using ControlzEx.Theming;
+using EQTool.Models;
 using EQTool.Services;
 using EQTool.ViewModels;
+using MahApps.Metro.Controls;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -16,7 +18,7 @@ namespace EQTool
     /// <summary>
     /// Interaction logic for Settings.xaml
     /// </summary>
-    public partial class Settings : Window
+    public partial class Settings : MetroWindow
     {
         private readonly SettingsWindowData SettingsWindowData;
         private readonly EQToolSettings settings;
@@ -52,6 +54,7 @@ namespace EQTool
             {
                 Height = 650;
             }
+            ThemeManager.Current.ChangeTheme(App.Current, "Dark.Blue");
         }
 
         protected override void OnClosing(CancelEventArgs e)
