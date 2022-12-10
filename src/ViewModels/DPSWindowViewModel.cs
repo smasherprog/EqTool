@@ -63,6 +63,14 @@ namespace EQTool.ViewModels
                         item.UpdateDps();
                     }
                 }
+                foreach (var item in _EntityList.GroupBy(a => a.TargetName))
+                {
+                    var totaldmg = item.Sum(a => a.TotalDamage);
+                    foreach (var e in item)
+                    {
+                        e.TargetTotalDamage = totaldmg;
+                    }
+                }
 
                 foreach (var item in itemstormove)
                 {
@@ -101,22 +109,21 @@ namespace EQTool.ViewModels
                 var item = EntityList.FirstOrDefault(a => a.SourceName == entitiy.SourceName && a.TargetName == entitiy.TargetName);
                 if (item == null)
                 {
-                    EntityList.Add(new EntittyDPS
+                    item = new EntittyDPS
                     {
                         SourceName = entitiy.SourceName,
                         TargetName = entitiy.TargetName,
-                        StartTime = DateTime.Now,
+                        StartTime = entitiy.TimeStamp,
                         TotalDamage = entitiy.DamageDone
-                    });
+                    };
+                    EntityList.Add(item);
                 }
-                else
+
+                item.AddDamage(new EntittyDPS.DamagePerTime
                 {
-                    item.AddDamage(new EntittyDPS.DamagePerTime
-                    {
-                        TimeStamp = entitiy.TimeStamp,
-                        Damage = entitiy.DamageDone
-                    });
-                }
+                    TimeStamp = entitiy.TimeStamp,
+                    Damage = entitiy.DamageDone
+                });
             });
         }
 

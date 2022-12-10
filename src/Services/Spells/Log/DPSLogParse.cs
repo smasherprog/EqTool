@@ -44,7 +44,11 @@ namespace EQTool.Services.Spells.Log
 
         public DPSParseMatch Match(string linelog)
         {
-            /// [Mon Nov 14 20:11:25 2022]
+            if (linelog == null || linelog.Length < 27)
+            {
+                return null;
+            }
+
             var date = linelog.Substring(1, 24);
             var format = "ddd MMM dd HH:mm:ss yyyy";
             var timestamp = DateTime.Now;

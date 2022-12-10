@@ -124,6 +124,7 @@
     <Compile Include="MapWindow.xaml.cs">
       <DependentUpon>MapWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Models\Themes.cs" />
     <Compile Include="Models\DPSParseMatch.cs" />
     <Compile Include="Models\SpellParsingMatch.cs" />
     <Compile Include="Models\EQSpells.cs" />
@@ -239,7 +240,11 @@
   <ItemGroup>
     <None Include="open-folder.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="TestFight.txt">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">
       <Visible>False</Visible>

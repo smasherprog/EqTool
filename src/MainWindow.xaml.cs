@@ -77,6 +77,7 @@ namespace EQTool
                 App.GlobalFontSize = eqsettings.FontSize;
                 App.GlobalTriggerWindowOpacity = eqsettings.GlobalTriggerWindowOpacity;
                 App.GlobalDPSWindowOpacity = eqsettings.GlobalDPSWindowOpacity;
+                App.Theme = eqsettings.Theme;
                 ToggleMenuButtons(true);
                 Spells(SpellsMenuItem, null);
                 DPS(DpsMeterMenuItem, null);

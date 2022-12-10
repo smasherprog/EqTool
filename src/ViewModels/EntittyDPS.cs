@@ -36,6 +36,7 @@ namespace EQTool.ViewModels
             }
         }
 
+
         public DateTime? DeathTime { get; set; }
 
         private DateTime _StartTime = DateTime.Now;
@@ -129,6 +130,7 @@ namespace EQTool.ViewModels
 
         public int TrailingDamage { get; private set; } = 0;
         public int TotalDamage { get; set; }
+        public int TargetTotalDamage { get; set; }
         public int TotalTwelveSecondDamage { get; set; }
         public int HighestHit { get; set; }
         public SolidColorBrush BackGroundColor { get; set; }
