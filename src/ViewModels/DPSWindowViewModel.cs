@@ -1,4 +1,13 @@
-﻿namespace EQTool.ViewModels
+﻿using EQTool.Models;
+using EQTool.Services;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Linq;
+using System.Runtime.CompilerServices;
+
+namespace EQTool.ViewModels
 {
     public class DPSWindowViewModel : INotifyPropertyChanged
     {
@@ -53,7 +62,7 @@
                     }
                     else
                     {
-                        item.UpdateDps(activePlayer.Player);
+                        item.UpdateDps(activePlayer.Player.Level);
                     }
                 }
 
@@ -83,7 +92,8 @@
                         }
                     }
                 }
-                foreach (var item in _EntityList.GroupBy(a => a.TargetName))
+                var groups = _EntityList.GroupBy(a => a.TargetName).ToList();
+                foreach (var item in groups)
                 {
                     var totaldmg = item.Sum(a => a.TotalDamage);
                     foreach (var e in item)
@@ -117,7 +127,7 @@
             });
         }
 
-        public void TryAdd(DPSParseMatch entitiy)
+        public void TryAdd(DPSParseMatch entitiy, int playerlevel)
         {
             if (entitiy == null)
             {
@@ -143,7 +153,7 @@
                 {
                     TimeStamp = entitiy.TimeStamp,
                     Damage = entitiy.DamageDone
-                });
+                }, playerlevel);
             });
         }
 

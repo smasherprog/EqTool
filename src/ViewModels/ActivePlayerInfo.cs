@@ -25,11 +25,22 @@ namespace EQTool.ViewModels
             var playerchanged = false;
             if (loggedincharlogfile != null)
             {
-                var charname = loggedincharlogfile.Name.Replace("eqlog_", string.Empty);
-                var indexpart = charname.IndexOf("_");
-                var charName = charname.Substring(0, indexpart);
+                var charname_withext = loggedincharlogfile.Name.Replace("eqlog_", string.Empty);
+                var indexpart = charname_withext.IndexOf("_");
+                var charName = charname_withext.Substring(0, indexpart);
                 var tempplayer = players.FirstOrDefault(a => a.Name == charName);
                 LogFileName = loggedincharlogfile.FullName;
+
+                if (tempplayer == null)
+                {
+                    tempplayer = new PlayerInfo
+                    {
+                        Level = 1,
+                        Name = charName,
+                        PlayerClass = null
+                    };
+                    players.Add(tempplayer);
+                }
                 playerchanged = tempplayer != Player;
                 Player = tempplayer;
             }

@@ -38,18 +38,18 @@
                     <GridView>
                         <GridViewColumn Width="150">
                             <GridViewColumn.CellTemplate>
-                                <DataTemplate >
-                                    <TextBlock Visibility="{Binding ColumnVisiblity}" Text="{Binding SourceName}"/>
+                                <DataTemplate>
+                                    <TextBlock FontWeight="Bold" Text="{Binding SourceName}"/>
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                             <GridViewColumn.Header>
-                                <TextBlock Visibility="{Binding ColumnVisiblity}" Text="Source" ToolTip="he NPC/PC who is Dealing the damage" />
+                                <TextBlock Text="Source" ToolTip="he NPC/PC who is Dealing the damage" />
                             </GridViewColumn.Header>
                         </GridViewColumn>
                         <GridViewColumn  Width="70">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
-                                    <TextBlock Visibility="{Binding ColumnVisiblity}" FontWeight="Bold" Text="{Binding DPS}" />
+                                    <TextBlock FontWeight="Bold" Text="{Binding DPS}" />
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                             <GridViewColumn.Header>
@@ -59,7 +59,7 @@
                         <GridViewColumn Width="70">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
-                                    <TextBlock Visibility="{Binding ColumnVisiblity}" FontWeight="Bold" Text="{Binding HighestHit}" />
+                                    <TextBlock FontWeight="Bold" Text="{Binding HighestHit}" />
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                             <GridViewColumn.Header>
@@ -69,7 +69,7 @@
                         <GridViewColumn  Width="70">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
-                                    <TextBlock Visibility="{Binding ColumnVisiblity}" Text="{Binding TotalTwelveSecondDamage}"  />
+                                    <TextBlock FontWeight="Bold" Text="{Binding TotalTwelveSecondDamage}"  />
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                             <GridViewColumn.Header>
@@ -79,7 +79,7 @@
                         <GridViewColumn Width="70">
                             <GridViewColumn.CellTemplate>
                                 <DataTemplate>
-                                    <TextBlock Visibility="{Binding ColumnVisiblity}" Text="{Binding TotalDamage}" />
+                                    <TextBlock FontWeight="Bold" Text="{Binding TotalDamage}" />
                                 </DataTemplate>
                             </GridViewColumn.CellTemplate>
                             <GridViewColumn.Header>
@@ -96,13 +96,13 @@
                                 <Setter Property="Template">
                                     <Setter.Value>
                                         <ControlTemplate TargetType="{x:Type GroupItem}">
-                                            <Expander IsExpanded="True" BorderBrush="Gray"  BorderThickness="0,0,0,1" Visibility="{Binding Items[0].HeaderVisibility}">
+                                            <Expander IsExpanded="True" BorderBrush="Gray"  BorderThickness="0,0,0,1">
                                                 <Expander.Header>
                                                     <DockPanel>
                                                         <TextBlock  Text="Damage Target: " Margin="5,0,0,0" />
-                                                        <TextBlock  Text="{Binding Path=Name}" Margin="5,0,0,0" Width="150"/>
-                                                        <TextBlock  Text="Damage Total: " Margin="5,0,0,0" />
-                                                        <TextBlock  Text="{Binding Items[0].TargetTotalDamage}"/> 
+                                                        <TextBlock FontWeight="Bold" Text="{Binding Path=Name}" Margin="5,0,0,0" Width="150"/>
+                                                        <TextBlock  Text="Damage Total: " Margin="5,0,0,0" Width="90"/>
+                                                        <TextBlock FontWeight="Bold" Text="{Binding Items[0].TargetTotalDamage}"/> 
                                                     </DockPanel>
                                                 </Expander.Header>
                                                 <Expander.Content>

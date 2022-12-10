@@ -22,17 +22,20 @@ namespace EQTool
         private readonly DPSWindowViewModel dPSWindowViewModel;
         private readonly DPSLogParse dPSLogParse;
         private readonly LogDeathParse logDeathParse;
+        private readonly ActivePlayer activePlayer;
 
-        public DPSMeter(DPSLogParse dPSLogParse, LogParser logParser, DPSWindowViewModel dPSWindowViewModel, EQToolSettings settings, LogDeathParse logDeathParse)
+        public DPSMeter(DPSLogParse dPSLogParse, LogParser logParser, DPSWindowViewModel dPSWindowViewModel, EQToolSettings settings, LogDeathParse logDeathParse, ActivePlayer activePlayer)
         {
+            this.activePlayer = activePlayer;
             this.logDeathParse = logDeathParse;
             this.dPSLogParse = dPSLogParse;
             this.logParser = logParser;
             this.logParser.LineReadEvent += LogParser_LineReadEvent;
             this.dPSWindowViewModel = dPSWindowViewModel;
             DataContext = dPSWindowViewModel;
+            _ = activePlayer.Update();
             InitializeComponent();
-            App.GlobalDPSWindowOpacity = settings.GlobalDPSWindowOpacity; ;
+            App.GlobalDPSWindowOpacity = settings.GlobalDPSWindowOpacity;
             Topmost = settings.TriggerWindowTopMost;
             UITimer = new System.Timers.Timer(1000);
             UITimer.Elapsed += PollUI;
@@ -52,7 +55,7 @@ namespace EQTool
         private void LogParser_LineReadEvent(object sender, LogParser.LogParserEventArgs e)
         {
             var matched = dPSLogParse.Match(e.Line);
-            dPSWindowViewModel.TryAdd(matched);
+            dPSWindowViewModel.TryAdd(matched, activePlayer.Player?.Level ?? 10);
             var targetdead = logDeathParse.GetDeadTarget(e.Line);
             dPSWindowViewModel.TargetDied(targetdead);
         }

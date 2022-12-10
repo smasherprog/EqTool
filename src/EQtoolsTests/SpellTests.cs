@@ -541,37 +541,37 @@ namespace EQToolTests
             {
                 Damage = 1,
                 TimeStamp = DateTime.Now.AddSeconds(-20)
-            }, new PlayerInfo { });
+            }, 20);
             entity.AddDamage(new EntittyDPS.DamagePerTime
             {
                 Damage = 1,
                 TimeStamp = DateTime.Now.AddSeconds(-5)
-            }, new PlayerInfo { });
+            }, 20);
             entity.AddDamage(new EntittyDPS.DamagePerTime
             {
                 Damage = 1,
                 TimeStamp = DateTime.Now.AddSeconds(-4)
-            }, new PlayerInfo { });
+            }, 20);
             entity.AddDamage(new EntittyDPS.DamagePerTime
             {
                 Damage = 1,
                 TimeStamp = DateTime.Now.AddSeconds(-3)
-            }, new PlayerInfo { });
+            }, 20);
             entity.AddDamage(new EntittyDPS.DamagePerTime
             {
                 Damage = 1,
                 TimeStamp = DateTime.Now.AddSeconds(-2)
-            }, new PlayerInfo { });
+            }, 20);
             entity.AddDamage(new EntittyDPS.DamagePerTime
             {
                 Damage = 1,
                 TimeStamp = DateTime.Now.AddSeconds(-1)
-            }, new PlayerInfo { });
+            }, 20);
             entity.AddDamage(new EntittyDPS.DamagePerTime
             {
                 Damage = 1,
                 TimeStamp = DateTime.Now.AddSeconds(10)
-            }, new PlayerInfo { });
+            }, 20);
             Assert.AreEqual(6, entity.TrailingDamage);
             Assert.AreEqual(7, entity.TotalDamage);
             Assert.AreEqual(5, entity.TotalTwelveSecondDamage);

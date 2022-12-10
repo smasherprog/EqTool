@@ -1,4 +1,13 @@
-﻿namespace EQTool.ViewModels
+﻿using EQTool.Models;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Windows;
+using System.Windows.Media;
+
+namespace EQTool.ViewModels
 {
     public class EntittyDPS : INotifyPropertyChanged
     {
@@ -60,7 +69,7 @@
             }
         }
 
-        public void UpdateDps(PlayerInfo player)
+        public void UpdateDps(int playerlevel)
         {
             if (DeathTime.HasValue)
             {
@@ -89,15 +98,9 @@
                 }
             }
 
-            if (DPS < GetMinDpsToShow(player.Level))
-            {
-                ColumnVisiblity = Visibility.Collapsed;
-            }
-            else
-            {
-                ColumnVisiblity = Visibility.Visible;
-            }
+            ColumnVisiblity = DPS < GetMinDpsToShow(playerlevel) ? Visibility.Collapsed : Visibility.Visible;
 
+            OnPropertyChanged(nameof(TargetTotalDamage));
             OnPropertyChanged(nameof(TotalTwelveSecondDamage));
             OnPropertyChanged(nameof(TotalDamage));
             OnPropertyChanged(nameof(DPS));
@@ -121,13 +124,13 @@
 
         public static int GetMinDpsToShow(int level)
         {
-            var mindpstoshow = ((level / 10) * 2) + 1;
+            var mindpstoshow = (level / 10 * 2) + 1;
             return mindpstoshow;
         }
 
         public int TotalSeconds => DeathTime.HasValue ? (int)(DeathTime.Value - _StartTime).TotalSeconds : (int)(DateTime.Now - _StartTime).TotalSeconds;
         public DateTime? LastDamageDone => Damage.LastOrDefault()?.TimeStamp;
-        public void AddDamage(DamagePerTime damage, PlayerInfo playerInfo)
+        public void AddDamage(DamagePerTime damage, int playerlevel)
         {
             Damage.Add(damage);
 
@@ -137,7 +140,7 @@
                 OnPropertyChanged(nameof(HighestHit));
             }
 
-            UpdateDps(playerInfo);
+            UpdateDps(playerlevel);
         }
 
         private int GetDamangeAfter(int i, DateTime lasttimestamp)
