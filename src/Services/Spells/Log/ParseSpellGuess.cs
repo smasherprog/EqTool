@@ -29,10 +29,6 @@ namespace EQTool.Services.Spells.Log
                     var targetname = message.Replace(foundspell.cast_on_other, string.Empty).Trim();
                     Debug.WriteLine($"Other Spell: {foundspell.name} Message: {spellmessage}");
                     var multiplematches = foundspell.Classes.All(a => a.Value == 255) && foundspells.Count > 1;
-                    if (EQSpells.RealSpells.Any(a => a == foundspell.name))
-                    {
-                        multiplematches = false;
-                    }
                     return new SpellParsingMatch
                     {
                         Spell = foundspell,
@@ -54,10 +50,6 @@ namespace EQTool.Services.Spells.Log
                         var targetname = message.Replace(foundspell.cast_on_other, string.Empty).Trim();
                         Debug.WriteLine($"Other Spell: {foundspell.name} Message: {spellmessage}");
                         var multiplematches = foundspell.Classes.All(a => a.Value == 255) && foundspells.Count > 1;
-                        if (EQSpells.RealSpells.Any(a => a == foundspell.name))
-                        {
-                            multiplematches = false;
-                        }
                         return new SpellParsingMatch
                         {
                             Spell = foundspell,
@@ -73,10 +65,6 @@ namespace EQTool.Services.Spells.Log
                     var targetname = message.Replace(foundspell.cast_on_other, string.Empty).Trim();
                     Debug.WriteLine($"Cast On you Spell: {foundspell.name} Message: {spellmessage}");
                     var multiplematches = foundspell.Classes.All(a => a.Value == 255) && foundspells.Count > 1;
-                    if (EQSpells.RealSpells.Any(a => a == foundspell.name))
-                    {
-                        multiplematches = false;
-                    }
                     return new SpellParsingMatch
                     {
                         Spell = foundspell,
