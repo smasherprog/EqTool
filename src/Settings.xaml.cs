@@ -68,6 +68,10 @@ namespace EQTool
             {
                 Height = 650;
             }
+
+#if !DEBUG
+            DebuggingStack.Visibility = Visibility.Collapsed; 
+#endif
         }
 
         protected override void OnClosing(CancelEventArgs e)

@@ -88,19 +88,23 @@
                         </ListBox>
                     </StackPanel>
                 </StackPanel>
-                <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                    <TextBlock Text="Debugging" FontWeight="Bold" />
+
+                <StackPanel Orientation="Vertical" Name="Debugging"> 
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                        <TextBlock Text="Debugging" FontWeight="Bold" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="DPS"  VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
+                        <Button Name="testdpsbutton" Click="testDPS" MinWidth="100">Add Test DPS</Button>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Spells"  VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
+                        <Button  Click="testspellsclicked" MinWidth="100">Add Test Spells</Button>
+                    </StackPanel>
                 </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="DPS"  VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
-                    <Button Name="testdpsbutton" Click="testDPS" MinWidth="100">Add Test DPS</Button>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Spells"  VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
-                    <Button  Click="testspellsclicked" MinWidth="100">Add Test Spells</Button>
-                </StackPanel> 
+
                 <Button Margin="5,20, 5, 0" Click="SaveAndClose">Save and Close</Button>
-            </StackPanel> 
+            </StackPanel>
         </StackPanel>
     </ScrollViewer>
 </Window>

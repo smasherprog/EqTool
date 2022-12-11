@@ -150,6 +150,7 @@ namespace EQTool.ViewModels
                 {
                     PercentLeftOnSpell = (int)(_SecondsLeftOnSpell.TotalSeconds / TotalSecondsOnSpell * 100);
                 }
+
                 OnPropertyChanged(nameof(SecondsLeftOnSpellPretty));
                 OnPropertyChanged(nameof(PercentLeftOnSpell));
             }
@@ -167,6 +168,7 @@ namespace EQTool.ViewModels
         }
 
         public SolidColorBrush ProgressBarColor { get; set; }
+
         public int PercentLeftOnSpell { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
