@@ -91,7 +91,11 @@ namespace EQTool.ViewModels
         {
             get
             {
-                if (_HideGuesses && GuessedSpell)
+                if (_SpellType > 0)
+                {
+                    return Visibility.Visible;
+                }
+                else if (_HideGuesses && GuessedSpell)
                 {
                     return Visibility.Collapsed;
                 }
