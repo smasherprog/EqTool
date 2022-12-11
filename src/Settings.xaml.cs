@@ -1,4 +1,20 @@
-﻿namespace EQTool
+﻿using EQTool.Models;
+using EQTool.Services;
+using EQTool.Services.Spells.Log;
+using EQTool.ViewModels;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.IO;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Forms;
+
+namespace EQTool
 {
     /// <summary>
     /// Interaction logic for Settings.xaml
@@ -355,7 +371,7 @@
                                 var msgwithout = line.Substring(indexline);
                                 var format = "ddd MMM dd HH:mm:ss yyyy";
                                 msgwithout = "[" + t.ToString(format) + msgwithout;
-                                logParser.Push(new LogParserEventArgs { Line = msgwithout });
+                                logParser.Push(new LogParser.LogParserEventArgs { Line = msgwithout });
                             }
                         }
                         Thread.Sleep(100);
