@@ -176,19 +176,30 @@ namespace EQTool
             public string tag_name { get; set; }
         }
 
+        public string Version => Assembly.GetExecutingAssembly().GetName().Version.ToString();
+
+        public (string version, string urltodownload) LatestVersionAvailable
+        {
+            get
+            {
+                var json = httpclient.GetAsync(new Uri("https://api.github.com/repos/smasherprog/EqTool/releases/latest")).Result.Content.ReadAsStringAsync().Result;
+                var githubdata = JsonConvert.DeserializeObject<GithubVersionInfo>(json);
+                var url = githubdata.assets.FirstOrDefault(a => !string.IsNullOrWhiteSpace(a.browser_download_url))?.browser_download_url;
+                return (githubdata.tag_name, url);
+            }
+        }
+
         public void CheckForUpdates()
         {
             _ = Task.Factory.StartNew(() =>
             {
                 try
                 {
-                    var json = httpclient.GetAsync(new Uri("https://api.github.com/repos/smasherprog/EqTool/releases/latest")).Result.Content.ReadAsStringAsync().Result;
-                    var githubdata = JsonConvert.DeserializeObject<GithubVersionInfo>(json);
-                    var url = githubdata.assets.FirstOrDefault(a => !string.IsNullOrWhiteSpace(a.browser_download_url))?.browser_download_url;
-                    var version = Assembly.GetExecutingAssembly().GetName().Version.ToString();
-                    if (version != githubdata.tag_name)
+                    var (version, urltodownload) = LatestVersionAvailable;
+
+                    if (Version != version)
                     {
-                        var fileBytes = httpclient.GetByteArrayAsync(url).Result;
+                        var fileBytes = httpclient.GetByteArrayAsync(urltodownload).Result;
                         File.WriteAllBytes("EqToool.zip", fileBytes);
                         if (System.IO.Directory.Exists("NewVersion"))
                         {
