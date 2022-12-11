@@ -5,7 +5,7 @@ Instructions:
 <li>
 Download the latest <a href="https://github.com/smasherprog/EqTool/releases">Release</a>, Unzip it and run it.
 </li>
-<li>The program runs in the system tray. Look there to reopen spells window or settings! Program will check for updates on startup and self update if required.</li>
+<li>The program runs in the system tray. Look there to reopen spells window or settings! Program will check for updates on startup and self update if required, but if you want to check for a new Update, use the menu in the system tray!</li>
 </ul>
 <h5>Why the pig?</h5>
 <p>https://discord.gg/xgMreRqK</p>
@@ -29,16 +29,21 @@ Features:
 <li>Cancel Timer CryptCamp</li>
 </ul>
 <img width="770" alt="image" src="https://user-images.githubusercontent.com/3393733/203874001-151ee3ab-4610-4cea-80e9-f5d727b74979.png">
-
-
-<h4>Example Below</h4>
+<h4>Trigger Window</h4>
 <img width="238" alt="SpellsExample" src="https://user-images.githubusercontent.com/3393733/203874211-8ecfa5f3-9e2a-49e5-8584-c7223844d85a.png">
 <h4>DPS Window</h4>
-<img width="361" alt="image" src="https://user-images.githubusercontent.com/3393733/203874454-3355cdf5-6ca2-405b-b899-2cd1faaf1a49.png">
+<ul>
+  <li>Source: The NPC/PC who is Dealing the damage.</li>
+   <li>DPS: Average DPS over the last 12 second window</li>
+   <li>Biggest: Biggest single hit!</li>
+   <li>12s Dmg: Highest 12 second period of Damage dealt. This is good for gauging how many are required in a CH chain!</li>
+   <li>Dmg: Total Damage done!</li>
+</ul>
+<img width="344" alt="image" src="https://user-images.githubusercontent.com/3393733/206924284-f4f32fca-76b9-4835-8c26-0aa01e4cc61a.png"> 
 <h4>Settings Window</h4>
 <img width="371" alt="image" src="https://user-images.githubusercontent.com/3393733/203874278-60c99f84-c455-40e2-a96f-c56d7151f5a4.png">
 <h4>System Tray Icon</h4>
-<img width="328" alt="image" src="https://user-images.githubusercontent.com/3393733/203874331-6e131d14-2696-40f4-ad13-5a018e022e2c.png">
+<img width="229" alt="image" src="https://user-images.githubusercontent.com/3393733/206924345-54cfa14c-b0d8-4e37-bb9a-1cb2a6e902c9.png">
 
 
 
