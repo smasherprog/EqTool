@@ -89,7 +89,7 @@
                     </StackPanel>
                 </StackPanel>
 
-                <StackPanel Orientation="Vertical" Name="Debugging"> 
+                <StackPanel Orientation="Vertical" Name="DebuggingStack"> 
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                         <TextBlock Text="Debugging" FontWeight="Bold" />
                     </StackPanel>

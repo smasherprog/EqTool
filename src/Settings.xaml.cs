@@ -29,14 +29,11 @@ namespace EQTool
         private readonly DPSWindowViewModel dPSWindowViewModel;
         private readonly DPSLogParse dPSLogParse;
         private readonly IAppDispatcher appDispatcher;
-        private readonly ActivePlayer activePlayer;
 
-        public Settings(ActivePlayer activePlayer, IAppDispatcher appDispatcher, DPSLogParse dPSLogParse, EQSpells spells, EQToolSettings settings, EQToolSettingsLoad toolSettingsLoad, SettingsWindowData settingsWindowData, SpellWindowViewModel spellWindowViewModel, DPSWindowViewModel dPSWindowViewModel)
+        public Settings(IAppDispatcher appDispatcher, DPSLogParse dPSLogParse, EQSpells spells, EQToolSettings settings, EQToolSettingsLoad toolSettingsLoad, SettingsWindowData settingsWindowData, SpellWindowViewModel spellWindowViewModel, DPSWindowViewModel dPSWindowViewModel)
         {
             SettingsWindowData = settingsWindowData;
             Height = 200;
-            this.activePlayer = activePlayer;
-            _ = this.activePlayer.Update();
             this.appDispatcher = appDispatcher;
             this.dPSLogParse = dPSLogParse;
             this.dPSWindowViewModel = dPSWindowViewModel;
@@ -376,7 +373,7 @@ namespace EQTool
                             }
                             else
                             {
-                                dPSWindowViewModel.TryAdd(itemtotadd, activePlayer.Player?.Level ?? 20);
+                                dPSWindowViewModel.TryAdd(itemtotadd);
                             }
                         }
                         Thread.Sleep(100);

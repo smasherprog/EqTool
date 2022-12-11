@@ -17,23 +17,19 @@ namespace EQTool
     public partial class DPSMeter : Window
     {
         private readonly Timer UITimer;
-
         private readonly LogParser logParser;
         private readonly DPSWindowViewModel dPSWindowViewModel;
         private readonly DPSLogParse dPSLogParse;
         private readonly LogDeathParse logDeathParse;
-        private readonly ActivePlayer activePlayer;
 
-        public DPSMeter(DPSLogParse dPSLogParse, LogParser logParser, DPSWindowViewModel dPSWindowViewModel, EQToolSettings settings, LogDeathParse logDeathParse, ActivePlayer activePlayer)
+        public DPSMeter(DPSLogParse dPSLogParse, LogParser logParser, DPSWindowViewModel dPSWindowViewModel, EQToolSettings settings, LogDeathParse logDeathParse)
         {
-            this.activePlayer = activePlayer;
             this.logDeathParse = logDeathParse;
             this.dPSLogParse = dPSLogParse;
             this.logParser = logParser;
             this.logParser.LineReadEvent += LogParser_LineReadEvent;
             this.dPSWindowViewModel = dPSWindowViewModel;
             DataContext = dPSWindowViewModel;
-            _ = activePlayer.Update();
             InitializeComponent();
             App.GlobalDPSWindowOpacity = settings.GlobalDPSWindowOpacity;
             Topmost = settings.TriggerWindowTopMost;
@@ -55,7 +51,7 @@ namespace EQTool
         private void LogParser_LineReadEvent(object sender, LogParser.LogParserEventArgs e)
         {
             var matched = dPSLogParse.Match(e.Line);
-            dPSWindowViewModel.TryAdd(matched, activePlayer.Player?.Level ?? 10);
+            dPSWindowViewModel.TryAdd(matched);
             var targetdead = logDeathParse.GetDeadTarget(e.Line);
             dPSWindowViewModel.TargetDied(targetdead);
         }

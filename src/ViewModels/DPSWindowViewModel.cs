@@ -98,7 +98,7 @@ namespace EQTool.ViewModels
             });
         }
 
-        public void TryAdd(DPSParseMatch entitiy, int playerlevel)
+        public void TryAdd(DPSParseMatch entitiy)
         {
             if (entitiy == null)
             {
