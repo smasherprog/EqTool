@@ -551,5 +551,16 @@ namespace EQToolTests
             Assert.AreEqual(7, entity.TotalDamage);
             Assert.AreEqual(5, entity.TotalTwelveSecondDamage);
         }
+        [TestMethod]
+        public void TestDPSColors()
+        {
+            var r = new EntittyDPS
+            {
+                TotalDamage = 100,
+                TargetTotalDamage = 1000
+            };
+
+            Assert.AreEqual(r.PercentOfTotalDamage, 10);
+        }
     }
 }

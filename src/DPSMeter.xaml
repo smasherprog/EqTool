@@ -57,7 +57,7 @@
                                 <ColumnDefinition Width="6*"/>
                                 <ColumnDefinition Width="5*"/>
                             </Grid.ColumnDefinitions>
-                            <ProgressBar Grid.Column="0" Grid.ColumnSpan="5" Value="{Binding PercentLeftOnSpell}"  Maximum="100"  Foreground="{Binding ProgressBarColor}"  />
+                            <ProgressBar Grid.Column="0" Grid.ColumnSpan="5" Value="{Binding PercentOfTotalDamage}"  Maximum="100"  Foreground="{Binding ProgressBarColor}"  />
                             <TextBlock Margin="10,0,0,0" HorizontalAlignment="Left" Grid.Column="0" FontWeight="Bold" Text="{Binding SourceName}" ToolTip="The NPC/PC who is Dealing the damage" />
                             <TextBlock HorizontalAlignment="Left" Grid.Column="1" FontWeight="Bold" Text="{Binding DPS}" ToolTip="Average DPS over the last 12 second window" />
                             <TextBlock HorizontalAlignment="Left" Grid.Column="2" FontWeight="Bold" Text="{Binding HighestHit}" ToolTip="Biggest single hit!" />
@@ -73,7 +73,7 @@
                                 <Setter Property="Template">
                                     <Setter.Value>
                                         <ControlTemplate>
-                                            <Expander IsExpanded="True" Visibility="{Binding Items[0].HeaderVisibility}" Background="LightGray">
+                                            <Expander IsExpanded="True" Background="LightGray">
                                                 <Expander.Header>
                                                     <Grid HorizontalAlignment="{Binding Path=HorizontalAlignment, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContentPresenter}}, Mode=OneWayToSource}" >
                                                         <Grid.ColumnDefinitions>

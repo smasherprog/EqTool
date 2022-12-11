@@ -64,11 +64,7 @@ namespace EQTool.ViewModels
                     }
                 }
 
-                foreach (var items in _EntityList.GroupBy(a => a.TargetName))
-                {
-                }
-                var groups = _EntityList.GroupBy(a => a.TargetName).ToList();
-                foreach (var item in groups)
+                foreach (var item in _EntityList.GroupBy(a => a.TargetName))
                 {
                     var totaldmg = item.Sum(a => a.TotalDamage);
                     foreach (var e in item)
