@@ -28,31 +28,6 @@ namespace EQToolTests
         }
 
         [TestMethod]
-        public void TestMinDPSToShow()
-        {
-            var dps = EntittyDPS.GetMinDpsToShow(1);
-            Assert.AreEqual(1, dps);
-
-            dps = EntittyDPS.GetMinDpsToShow(10);
-            Assert.AreEqual(3, dps);
-
-            dps = EntittyDPS.GetMinDpsToShow(20);
-            Assert.AreEqual(5, dps);
-
-            dps = EntittyDPS.GetMinDpsToShow(30);
-            Assert.AreEqual(7, dps);
-
-            dps = EntittyDPS.GetMinDpsToShow(40);
-            Assert.AreEqual(9, dps);
-
-            dps = EntittyDPS.GetMinDpsToShow(50);
-            Assert.AreEqual(11, dps);
-
-            dps = EntittyDPS.GetMinDpsToShow(60);
-            Assert.AreEqual(13, dps);
-        }
-
-        [TestMethod]
         public void TestParseGrimAura()
         {
             _ = container.Resolve<EQSpells>();
@@ -541,37 +516,37 @@ namespace EQToolTests
             {
                 Damage = 1,
                 TimeStamp = DateTime.Now.AddSeconds(-20)
-            }, 20);
+            });
             entity.AddDamage(new EntittyDPS.DamagePerTime
             {
                 Damage = 1,
                 TimeStamp = DateTime.Now.AddSeconds(-5)
-            }, 20);
+            });
             entity.AddDamage(new EntittyDPS.DamagePerTime
             {
                 Damage = 1,
                 TimeStamp = DateTime.Now.AddSeconds(-4)
-            }, 20);
+            });
             entity.AddDamage(new EntittyDPS.DamagePerTime
             {
                 Damage = 1,
                 TimeStamp = DateTime.Now.AddSeconds(-3)
-            }, 20);
+            });
             entity.AddDamage(new EntittyDPS.DamagePerTime
             {
                 Damage = 1,
                 TimeStamp = DateTime.Now.AddSeconds(-2)
-            }, 20);
+            });
             entity.AddDamage(new EntittyDPS.DamagePerTime
             {
                 Damage = 1,
                 TimeStamp = DateTime.Now.AddSeconds(-1)
-            }, 20);
+            });
             entity.AddDamage(new EntittyDPS.DamagePerTime
             {
                 Damage = 1,
                 TimeStamp = DateTime.Now.AddSeconds(10)
-            }, 20);
+            });
             Assert.AreEqual(6, entity.TrailingDamage);
             Assert.AreEqual(7, entity.TotalDamage);
             Assert.AreEqual(5, entity.TotalTwelveSecondDamage);

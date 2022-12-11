@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Windows;
 using System.Windows.Media;
 
 namespace EQTool.ViewModels
@@ -37,22 +36,6 @@ namespace EQTool.ViewModels
             }
         }
 
-        private Visibility _HeaderVisibility = Visibility.Visible;
-
-        public Visibility HeaderVisibility
-        {
-            get => _HeaderVisibility;
-            set
-            {
-                if (_HeaderVisibility == value)
-                {
-                    return;
-                }
-                _HeaderVisibility = value;
-                OnPropertyChanged();
-            }
-        }
-
         public DateTime? DeathTime { get; set; }
 
         private DateTime _StartTime = DateTime.Now;
@@ -69,7 +52,7 @@ namespace EQTool.ViewModels
             }
         }
 
-        public void UpdateDps(int playerlevel)
+        public void UpdateDps()
         {
             if (DeathTime.HasValue)
             {
@@ -98,39 +81,15 @@ namespace EQTool.ViewModels
                 }
             }
 
-            ColumnVisiblity = DPS < GetMinDpsToShow(playerlevel) ? Visibility.Collapsed : Visibility.Visible;
-
             OnPropertyChanged(nameof(TargetTotalDamage));
             OnPropertyChanged(nameof(TotalTwelveSecondDamage));
             OnPropertyChanged(nameof(TotalDamage));
             OnPropertyChanged(nameof(DPS));
         }
 
-        private Visibility _ColumnVisiblity = Visibility.Visible;
-
-        public Visibility ColumnVisiblity
-        {
-            get => _ColumnVisiblity;
-            set
-            {
-                if (_ColumnVisiblity == value)
-                {
-                    return;
-                }
-                _ColumnVisiblity = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public static int GetMinDpsToShow(int level)
-        {
-            var mindpstoshow = (level / 10 * 2) + 1;
-            return mindpstoshow;
-        }
-
         public int TotalSeconds => DeathTime.HasValue ? (int)(DeathTime.Value - _StartTime).TotalSeconds : (int)(DateTime.Now - _StartTime).TotalSeconds;
         public DateTime? LastDamageDone => Damage.LastOrDefault()?.TimeStamp;
-        public void AddDamage(DamagePerTime damage, int playerlevel)
+        public void AddDamage(DamagePerTime damage)
         {
             Damage.Add(damage);
 
@@ -140,7 +99,7 @@ namespace EQTool.ViewModels
                 OnPropertyChanged(nameof(HighestHit));
             }
 
-            UpdateDps(playerlevel);
+            UpdateDps();
         }
 
         private int GetDamangeAfter(int i, DateTime lasttimestamp)
