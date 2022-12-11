@@ -176,7 +176,7 @@ namespace EQTool
             public string tag_name { get; set; }
         }
 
-        private void CheckForUpdates()
+        public void CheckForUpdates()
         {
             _ = Task.Factory.StartNew(() =>
             {

@@ -39,7 +39,7 @@ namespace EQTool
             DpsGraphMeterMenuItem = new System.Windows.Forms.MenuItem("DpsGraph (BETA)", DPSGraph);
             var gitHubMenuItem = new System.Windows.Forms.MenuItem("Suggestions", Suggestions);
             var whythepig = new System.Windows.Forms.MenuItem("Why the Pig?", WhyThePig);
-            var updates = new System.Windows.Forms.MenuItem("Updates", UpdateClicked);
+            var updates = new System.Windows.Forms.MenuItem("Check for Update", UpdateClicked);
             var versionstring = Assembly.GetExecutingAssembly().GetName().Version.ToString();
             var version = new System.Windows.Forms.MenuItem(versionstring, UpdateClicked)
             {
@@ -105,11 +105,7 @@ namespace EQTool
 
         private void UpdateClicked(object sender, EventArgs e)
         {
-            _ = System.Diagnostics.Process.Start(new ProcessStartInfo
-            {
-                FileName = "https://github.com/smasherprog/EqTool/releases/latest",
-                UseShellExecute = true
-            });
+            (App.Current as App).CheckForUpdates();
         }
 
         private void ToggleMenuButtons(bool value)
