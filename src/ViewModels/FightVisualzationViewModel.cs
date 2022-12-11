@@ -5,7 +5,9 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Windows;
 using System.Windows.Controls.DataVisualization.Charting;
+using System.Windows.Media;
 
 namespace EQTool.ViewModels
 {
@@ -34,12 +36,21 @@ namespace EQTool.ViewModels
             var list = new ObservableCollection<DPSParseMatch>();
             if (series == null)
             {
+                var r = new Random();
+                var brush = new SolidColorBrush(System.Windows.Media.Color.FromRgb((byte)r.Next(1, 255), (byte)r.Next(1, 255), (byte)r.Next(1, 233)));
+                var style = new System.Windows.Style
+                {
+                    TargetType = typeof(LineDataPoint),
+                };
+                style.Setters.Add(new Setter(LineSeries.OpacityProperty, 0.0));
+                style.Setters.Add(new Setter(LineSeries.BackgroundProperty, brush));
                 series = new LineSeries
                 {
                     ItemsSource = list,
                     Title = match.SourceName,
                     DependentValuePath = nameof(DPSParseMatch.DamageDone),
-                    IndependentValuePath = nameof(DPSParseMatch.TimeStamp)
+                    IndependentValuePath = nameof(DPSParseMatch.TimeStamp),
+                    DataPointStyle = style,
                 };
                 lineSeries.Add(series);
                 mcChart.Series.Add(series);
@@ -49,13 +60,12 @@ namespace EQTool.ViewModels
                 list = series.ItemsSource as ObservableCollection<DPSParseMatch>;
             }
 
-            match.TargetName = match.TargetName.ToLower();
             match.SourceName = match.SourceName.ToLower();
             DPSList.Add(match);
-            var trailing5seconds = DPSList.Where(a => a.TargetName == match.TargetName && a.SourceName == match.SourceName && a.TimeStamp >= DateTime.Now.AddMilliseconds(-5000)).Sum(a => (int?)a.DamageDone);
+            var trailing5seconds = DPSList.Where(a => a.SourceName == match.SourceName && a.TimeStamp >= DateTime.Now.AddMilliseconds(-12000)).Sum(a => (int?)a.DamageDone);
             if (trailing5seconds > 0)
             {
-                var dps = (int)((double)trailing5seconds / 5);
+                var dps = (int)((double)trailing5seconds / 12);
                 var lastitem = list.LastOrDefault();
                 if (lastitem != null && (match.TimeStamp - lastitem.TimeStamp).TotalMilliseconds <= 1000)
                 {
@@ -92,11 +102,21 @@ namespace EQTool.ViewModels
             var namestormove = new List<string>();
             foreach (var item in grpdps)
             {
-                var listthing = item.OrderByDescending(a => a.TimeStamp).ToList();
-                var lasttimestamp = listthing.FirstOrDefault();
+                var lasttimestamp = item.LastOrDefault(a => !a.FakeAdd);
                 if ((DateTime.Now - lasttimestamp.TimeStamp).TotalMilliseconds > 30000)
                 {
                     namestormove.Add(item.Key);
+                }
+                else
+                {
+                    AddData(new DPSParseMatch
+                    {
+                        FakeAdd = true,
+                        DamageDone = 0,
+                        SourceName = item.Key,
+                        TargetName = "Fake",
+                        TimeStamp = DateTime.Now
+                    });
                 }
             }
 

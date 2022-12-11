@@ -34,6 +34,14 @@ namespace EQTool.Services
 
         public event EventHandler<PlayerChangeEventArgs> PlayerChangeEvent;
 
+        public void Push(LogParserEventArgs log)
+        {
+            appDispatcher.DispatchUI(() =>
+            {
+                LineReadEvent(this, log);
+            });
+        }
+
         private void Poll(object sender, EventArgs e)
         {
             appDispatcher.DispatchUI(() =>
@@ -69,7 +77,7 @@ namespace EQTool.Services
                             LastReadOffset = stream.Position;
                             if (line.Length > 27)
                             {
-                                LineReadEvent(this, new LogParserEventArgs { Line = line });
+                                LineReadEvent(this, new LogParserEventArgs { Line = line }); 
                             }
                         }
                     }

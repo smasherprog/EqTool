@@ -10,6 +10,8 @@ namespace EQTool.Models
 
         public int DamageDone { get; set; }
 
+        public bool FakeAdd { get; set; }
+
         public DateTime TimeStamp { get; set; }
     }
 }

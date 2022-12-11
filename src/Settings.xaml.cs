@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
+using static EQTool.Services.LogParser;
 
 namespace EQTool
 {
@@ -25,21 +26,18 @@ namespace EQTool
         private readonly EQToolSettings settings;
         private readonly EQToolSettingsLoad toolSettingsLoad;
         private readonly SpellWindowViewModel spellWindowViewModel;
-        private readonly EQSpells spells;
-        private readonly DPSWindowViewModel dPSWindowViewModel;
+        private readonly EQSpells spells; 
         private readonly DPSLogParse dPSLogParse;
         private readonly IAppDispatcher appDispatcher;
-        private readonly ActivePlayer activePlayer;
+        private readonly LogParser logParser;
 
-        public Settings(ActivePlayer activePlayer, IAppDispatcher appDispatcher, DPSLogParse dPSLogParse, EQSpells spells, EQToolSettings settings, EQToolSettingsLoad toolSettingsLoad, SettingsWindowData settingsWindowData, SpellWindowViewModel spellWindowViewModel, DPSWindowViewModel dPSWindowViewModel)
+        public Settings(LogParser logParser, IAppDispatcher appDispatcher, DPSLogParse dPSLogParse, EQSpells spells, EQToolSettings settings, EQToolSettingsLoad toolSettingsLoad, SettingsWindowData settingsWindowData, SpellWindowViewModel spellWindowViewModel)
         {
             SettingsWindowData = settingsWindowData;
             Height = 200;
-            this.activePlayer = activePlayer;
-            _ = this.activePlayer.Update();
+            this.logParser = logParser;
             this.appDispatcher = appDispatcher;
-            this.dPSLogParse = dPSLogParse;
-            this.dPSWindowViewModel = dPSWindowViewModel;
+            this.dPSLogParse = dPSLogParse; 
             this.spells = spells;
             this.settings = settings;
             this.spellWindowViewModel = spellWindowViewModel;
@@ -340,39 +338,37 @@ namespace EQTool
                 {
                     var filepath = Directory.GetCurrentDirectory() + "/TestFight.txt";
                     var fightlines = File.ReadLines(filepath);
-                    var fightlist = new List<DPSParseMatch>();
+                    var fightlist = new List<KeyValuePair<string, DPSParseMatch>>();
                     foreach (var item in fightlines)
                     {
                         var match = dPSLogParse.Match(item);
                         if (match != null)
                         {
-                            fightlist.Add(match);
+                            fightlist.Add(new KeyValuePair<string, DPSParseMatch>(item, match));
                         }
                     }
 
-                    var endtime = fightlist.LastOrDefault().TimeStamp;
-                    var starttime = fightlist.FirstOrDefault().TimeStamp;
+                    var endtime = fightlist.LastOrDefault().Value.TimeStamp;
+                    var starttime = fightlist.FirstOrDefault().Value.TimeStamp;
                     var starttimediff = DateTime.Now - starttime;
                     var index = 0;
                     do
                     {
                         for (; index < fightlist.Count; index++)
-                        {
-                            var itemtotadd = new DPSParseMatch
-                            {
-                                DamageDone = fightlist[index].DamageDone,
-                                SourceName = fightlist[index].SourceName,
-                                TargetName = fightlist[index].TargetName,
-                                TimeStamp = fightlist[index].TimeStamp + starttimediff
-                            };
-
-                            if (itemtotadd.TimeStamp > DateTime.Now)
+                        { 
+                            var t = fightlist[index].Value.TimeStamp + starttimediff;
+                            if (t > DateTime.Now)
                             {
                                 break;
                             }
                             else
                             {
-                                dPSWindowViewModel.TryAdd(itemtotadd, activePlayer.Player?.Level ?? 20);
+                                var line = fightlist[index].Key;
+                                var indexline = line.IndexOf("]");
+                                var msgwithout = line.Substring(indexline);
+                                var format = "ddd MMM dd HH:mm:ss yyyy";
+                                msgwithout = "[" + t.ToString(format) + msgwithout;
+                                logParser.Push(new LogParserEventArgs { Line = msgwithout });
                             }
                         }
                         Thread.Sleep(100);
