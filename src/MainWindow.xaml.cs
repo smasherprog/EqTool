@@ -120,7 +120,7 @@ namespace EQTool
         {
             _ = System.Diagnostics.Process.Start(new ProcessStartInfo
             {
-                FileName = "https://discord.gg/xgMreRqK",
+                FileName = "https://discord.gg/nSrz8hAwxM",
                 UseShellExecute = true
             });
         }
