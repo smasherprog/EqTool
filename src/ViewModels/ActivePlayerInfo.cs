@@ -60,17 +60,7 @@ namespace EQTool.ViewModels
             }
         }
 
-        private int _UserCastingSpellCounter;
-
-        public int UserCastingSpellCounter
-        {
-            get => _UserCastingSpellCounter;
-            set
-            {
-                _UserCastingSpellCounter = value;
-                OnPropertyChanged();
-            }
-        }
+        public int UserCastingSpellCounter { get; set; }
 
         public string LogFileName;
 

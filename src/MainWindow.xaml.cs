@@ -86,6 +86,7 @@ namespace EQTool
             Hide();
 #if !DEBUG
             MapMenuItem.Enabled = false;  
+            DpsGraphMeterMenuItem.Enabled = false;  
 #endif 
         }
 
@@ -113,7 +114,7 @@ namespace EQTool
             SpellsMenuItem.Enabled = value;
             MapMenuItem.Enabled = value;
             DpsMeterMenuItem.Enabled = value;
-            DpsGraphMeterMenuItem.Enabled = value;
+            //DpsGraphMeterMenuItem.Enabled = value;
         }
 
         private void WhyThePig(object sender, EventArgs e)

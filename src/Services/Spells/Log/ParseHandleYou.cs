@@ -31,7 +31,7 @@ namespace EQTool.Services.Spells.Log
                     if (activePlayer.UserCastingSpell.casttime > 0)
                     {
                         activePlayer.UserCastingSpellCounter++;
-                        _ = Task.Delay(activePlayer.UserCastingSpell.casttime + 500).ContinueWith(a =>
+                        _ = Task.Delay(activePlayer.UserCastingSpell.casttime * 4).ContinueWith(a =>
                         {
                             Debug.WriteLine($"Cleaning Spell");
                             appDispatcher.DispatchUI(() =>

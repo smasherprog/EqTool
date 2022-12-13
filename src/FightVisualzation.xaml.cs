@@ -19,8 +19,9 @@ namespace EQTool
         private readonly LogDeathParse logDeathParse;
         private readonly IAppDispatcher appDispatcher;
 
-        public FightVisualzation(LogParser logParser, DPSLogParse dPSLogParse, LogDeathParse logDeathParse, IAppDispatcher appDispatcher)
+        public FightVisualzation(LogParser logParser, DPSLogParse dPSLogParse, LogDeathParse logDeathParse, IAppDispatcher appDispatcher, FightVisualzationViewModel fightVisualzationViewModel)
         {
+            DataContext = this.fightVisualzationViewModel = fightVisualzationViewModel;
             InitializeComponent();
             UITimer = new System.Timers.Timer(1000);
             UITimer.Elapsed += PollUI;
@@ -30,7 +31,6 @@ namespace EQTool
             this.logParser = logParser;
             this.dPSLogParse = dPSLogParse;
             this.logParser.LineReadEvent += LogParser_LineReadEvent;
-            fightVisualzationViewModel = new FightVisualzationViewModel(mcChart);
         }
 
         private void LogParser_LineReadEvent(object sender, LogParser.LogParserEventArgs e)
