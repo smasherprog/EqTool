@@ -201,6 +201,21 @@ namespace EQTool
 
         public string Version => Assembly.GetExecutingAssembly().GetName().Version.ToString();
 
+        public void OpenSpellsWIndow()
+        {
+            mainWindow.OpenSpellsWindow();
+        }
+
+        public void OpenDPSWIndow()
+        {
+            mainWindow.OpenDPSWindow();
+        }
+
+        public void OpenSettingsWIndow()
+        {
+            mainWindow.OpenSettingsWindow();
+        }
+
         public (string version, string urltodownload) LatestVersionAvailable
         {
             get

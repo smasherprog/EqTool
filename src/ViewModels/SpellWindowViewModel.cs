@@ -17,17 +17,20 @@ namespace EQTool.ViewModels
         private readonly ActivePlayer activePlayer;
         private readonly IAppDispatcher appDispatcher;
         private readonly EQToolSettings settings;
-        private readonly Spell FeignDeath;
         private readonly string CustomerTime = " Custom Timer";
         private readonly Dictionary<PlayerClasses, int> CustomTimerClasses;
+
         public SpellWindowViewModel(ActivePlayer activePlayer, IAppDispatcher appDispatcher, EQToolSettings settings, EQSpells spells)
         {
             CustomTimerClasses = Enum.GetValues(typeof(PlayerClasses)).Cast<PlayerClasses>().Select(a => new { key = a, level = 1 }).ToDictionary(a => a.key, a => a.level);
-            FeignDeath = spells.AllSpells.FirstOrDefault(a => a.name == "Feign Death");
             this.activePlayer = activePlayer;
             this.appDispatcher = appDispatcher;
             this.settings = settings;
+            FeignDeath = spells.AllSpells.FirstOrDefault(a => a.name == "Feign Death");
         }
+
+
+        private Spell FeignDeath { get; set; }
 
         public ObservableCollection<UISpell> _SpellList = new ObservableCollection<UISpell>();
         public ObservableCollection<UISpell> SpellList

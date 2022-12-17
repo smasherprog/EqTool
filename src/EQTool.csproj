@@ -264,6 +264,12 @@
     <None Include="open-folder.png" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="wizard.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="dps.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="TestFight.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

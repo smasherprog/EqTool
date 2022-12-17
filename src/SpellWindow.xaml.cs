@@ -30,8 +30,7 @@ namespace EQTool
             this.logParser.PlayerChangeEvent += LogParser_PlayerChangeEvent;
             this.spellLogParse = spellLogParse;
             spellWindowViewModel.SpellList = new System.Collections.ObjectModel.ObservableCollection<UISpell>();
-            this.spellWindowViewModel = spellWindowViewModel;
-            DataContext = spellWindowViewModel;
+            DataContext = this.spellWindowViewModel = spellWindowViewModel;
             Topmost = settings.TriggerWindowTopMost;
             InitializeComponent();
 
@@ -96,6 +95,15 @@ namespace EQTool
         private void CloseWindow(object sender, RoutedEventArgs e)
         {
             Close();
+        }
+
+        private void opendps(object sender, RoutedEventArgs e)
+        {
+            (App.Current as App).OpenDPSWIndow();
+        }
+        private void opensettings(object sender, RoutedEventArgs e)
+        {
+            (App.Current as App).OpenSettingsWIndow();
         }
     }
 }

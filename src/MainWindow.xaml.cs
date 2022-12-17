@@ -73,7 +73,6 @@ namespace EQTool
             else
             {
                 var eqsettings = container.Resolve<EQToolSettings>();
-
                 App.GlobalFontSize = eqsettings.FontSize;
                 App.GlobalTriggerWindowOpacity = eqsettings.GlobalTriggerWindowOpacity;
                 App.GlobalDPSWindowOpacity = eqsettings.GlobalDPSWindowOpacity;
@@ -157,6 +156,17 @@ namespace EQTool
                 mapwindow = null;
             }
         }
+        public void OpenDPSWindow()
+        {
+            if (settingswindow != null)
+            {
+                _ = dpsmeter.Focus();
+            }
+            else
+            {
+                DPS(DpsMeterMenuItem, null);
+            }
+        }
 
         private void DPS(object sender, EventArgs e)
         {
@@ -176,6 +186,7 @@ namespace EQTool
             }
         }
 
+
         private void DPSGraph(object sender, EventArgs e)
         {
             var s = (System.Windows.Forms.MenuItem)sender;
@@ -194,6 +205,17 @@ namespace EQTool
             }
         }
 
+        public void OpenSettingsWindow()
+        {
+            if (settingswindow != null)
+            {
+                _ = settingswindow.Focus();
+            }
+            else
+            {
+                Settings(SettingsMenuItem, null);
+            }
+        }
 
         private void Settings(object sender, EventArgs e)
         {
@@ -217,6 +239,18 @@ namespace EQTool
             {
                 settingswindow?.Close();
                 settingswindow = null;
+            }
+        }
+
+        public void OpenSpellsWindow()
+        {
+            if (settingswindow != null)
+            {
+                _ = spellWindow.Focus();
+            }
+            else
+            {
+                Spells(SpellsMenuItem, null);
             }
         }
 

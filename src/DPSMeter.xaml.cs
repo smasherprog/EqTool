@@ -72,6 +72,7 @@ namespace EQTool
         {
             dPSWindowViewModel.UpdateDPS();
         }
+
         private void MinimizeWindow(object sender, RoutedEventArgs e)
         {
             WindowState = WindowState.Minimized;
@@ -80,6 +81,14 @@ namespace EQTool
         private void CloseWindow(object sender, RoutedEventArgs e)
         {
             Close();
+        }
+        private void openspells(object sender, RoutedEventArgs e)
+        {
+            (App.Current as App).OpenSpellsWIndow();
+        }
+        private void opensettings(object sender, RoutedEventArgs e)
+        {
+            (App.Current as App).OpenSettingsWIndow();
         }
     }
 }
