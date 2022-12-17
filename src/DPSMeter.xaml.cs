@@ -37,7 +37,6 @@ namespace EQTool
             UITimer.Elapsed += PollUI;
             UITimer.Enabled = true;
             DpsList.ItemsSource = dPSWindowViewModel.EntityList;
-            _ = CommandBindings.Add(new CommandBinding(ApplicationCommands.Close, new ExecutedRoutedEventHandler(delegate (object sender, ExecutedRoutedEventArgs args) { Close(); })));
             var view = (ListCollectionView)CollectionViewSource.GetDefaultView(dPSWindowViewModel.EntityList);
             view.GroupDescriptions.Add(new PropertyGroupDescription(nameof(EntittyDPS.TargetName)));
             view.LiveGroupingProperties.Add(nameof(EntittyDPS.TargetName));
@@ -72,6 +71,15 @@ namespace EQTool
         private void PollUI(object sender, EventArgs e)
         {
             dPSWindowViewModel.UpdateDPS();
+        }
+        private void MinimizeWindow(object sender, RoutedEventArgs e)
+        {
+            WindowState = WindowState.Minimized;
+        }
+
+        private void CloseWindow(object sender, RoutedEventArgs e)
+        {
+            Close();
         }
     }
 }

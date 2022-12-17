@@ -35,8 +35,6 @@ namespace EQTool
             Topmost = settings.TriggerWindowTopMost;
             InitializeComponent();
 
-            _ = CommandBindings.Add(new CommandBinding(ApplicationCommands.Close, new ExecutedRoutedEventHandler(delegate (object sender, ExecutedRoutedEventArgs args) { Close(); })));
-
             UITimer = new System.Timers.Timer(1000);
             UITimer.Elapsed += PollUI;
             UITimer.Enabled = true;
@@ -88,6 +86,16 @@ namespace EQTool
         private void PollUI(object sender, EventArgs e)
         {
             spellWindowViewModel.UpdateSpells();
+        }
+
+        private void MinimizeWindow(object sender, RoutedEventArgs e)
+        {
+            WindowState = WindowState.Minimized;
+        }
+
+        private void CloseWindow(object sender, RoutedEventArgs e)
+        {
+            Close();
         }
     }
 }
