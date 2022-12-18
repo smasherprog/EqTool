@@ -1,4 +1,5 @@
-﻿using EQTool.ViewModels;
+﻿using EQTool.Models;
+using EQTool.ViewModels;
 using System;
 using System.Diagnostics;
 using System.IO;
@@ -12,11 +13,13 @@ namespace EQTool.Services
         private readonly ActivePlayer activePlayer;
         private readonly IAppDispatcher appDispatcher;
         private long? LastReadOffset = null;
+        private readonly EQToolSettings settings;
 
-        public LogParser(ActivePlayer activePlayer, IAppDispatcher appDispatcher)
+        public LogParser(ActivePlayer activePlayer, IAppDispatcher appDispatcher, EQToolSettings settings)
         {
             this.activePlayer = activePlayer;
             this.appDispatcher = appDispatcher;
+            this.settings = settings;
             UITimer = new System.Timers.Timer(100);
             UITimer.Elapsed += Poll;
             UITimer.Enabled = true;
@@ -44,6 +47,10 @@ namespace EQTool.Services
 
         private void Poll(object sender, EventArgs e)
         {
+            if (!FindEq.IsValid(settings.DefaultEqDirectory))
+            {
+                return;
+            }
             appDispatcher.DispatchUI(() =>
             {
                 var playerchanged = activePlayer.Update();
@@ -77,7 +84,7 @@ namespace EQTool.Services
                             LastReadOffset = stream.Position;
                             if (line.Length > 27)
                             {
-                                LineReadEvent(this, new LogParserEventArgs { Line = line }); 
+                                LineReadEvent(this, new LogParserEventArgs { Line = line });
                             }
                         }
                     }

@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace EQTool.Services
 {
@@ -16,52 +18,57 @@ namespace EQTool.Services
 
         public string LoadEQPath()
         {
-            var possibles = new List<Match>();
-
-            foreach (var f in DriveInfo.GetDrives().Where(a => a.IsReady && a.DriveType == DriveType.Fixed))
+            var possibles = new ConcurrentQueue<Match>();
+            var drives = DriveInfo.GetDrives().Where(a => a.IsReady && a.DriveType == DriveType.Fixed);
+            var tasks = new List<Task>();
+            foreach (var f in drives)
             {
-                var files = GetFilesAndFolders(f.Name, "eqgame.exe", 2);
-
-                foreach (var item in files)
+                tasks.Add(Task.Factory.StartNew(() =>
                 {
-                    var root = Path.GetDirectoryName(item);
-                    var licensetext = File.ReadAllText(root + "/license.txt");
-                    if (licensetext.Contains("Project 1999"))
+                    var files = GetFilesAndFolders(f.Name, "eqgame.exe", 2);
+
+                    foreach (var item in files)
                     {
-                        var directory = new DirectoryInfo(root);
-                        var maxmoddate = directory.GetFiles()
-                            .OrderByDescending(a => a.LastWriteTime)
-                            .Where(a => a.Name.StartsWith("UI_") && a.Name.EndsWith(".ini"))
-                            .Select(a => (DateTime?)a.LastWriteTime)
-                            .FirstOrDefault();
-                        if (!maxmoddate.HasValue)
+                        var root = Path.GetDirectoryName(item);
+                        var licensetext = File.ReadAllText(root + "/license.txt");
+                        if (licensetext.Contains("Project 1999"))
                         {
-                            maxmoddate = directory.GetFiles()
-                            .OrderByDescending(a => a.LastWriteTime)
-                            .Select(a => (DateTime?)a.LastWriteTime)
-                            .FirstOrDefault();
-                            if (maxmoddate.HasValue)
+                            var directory = new DirectoryInfo(root);
+                            var maxmoddate = directory.GetFiles()
+                                .OrderByDescending(a => a.LastWriteTime)
+                                .Where(a => a.Name.StartsWith("UI_") && a.Name.EndsWith(".ini"))
+                                .Select(a => (DateTime?)a.LastWriteTime)
+                                .FirstOrDefault();
+                            if (!maxmoddate.HasValue)
                             {
-                                possibles.Add(new Match
+                                maxmoddate = directory.GetFiles()
+                                .OrderByDescending(a => a.LastWriteTime)
+                                .Select(a => (DateTime?)a.LastWriteTime)
+                                .FirstOrDefault();
+                                if (maxmoddate.HasValue)
+                                {
+                                    possibles.Enqueue(new Match
+                                    {
+                                        LastModifiedDate = maxmoddate.Value,
+                                        RootPath = root,
+                                        HasCharUiFiles = false
+                                    });
+                                }
+                            }
+                            else
+                            {
+                                possibles.Enqueue(new Match
                                 {
                                     LastModifiedDate = maxmoddate.Value,
                                     RootPath = root,
-                                    HasCharUiFiles = false
+                                    HasCharUiFiles = true
                                 });
                             }
                         }
-                        else
-                        {
-                            possibles.Add(new Match
-                            {
-                                LastModifiedDate = maxmoddate.Value,
-                                RootPath = root,
-                                HasCharUiFiles = true
-                            });
-                        }
                     }
-                }
+                }));
             }
+            var allran = Task.WaitAll(tasks.ToArray(), 1000 * 5);
             var rootfolder = possibles.Where(a => a.HasCharUiFiles).OrderByDescending(a => a.LastModifiedDate).Select(a => a.RootPath).FirstOrDefault();
             if (string.IsNullOrWhiteSpace(rootfolder))
             {
