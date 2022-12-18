@@ -69,14 +69,15 @@ namespace EQTool
             };
             var data = s3DReader.Read();
             var reader = new WLDReader();
-            reader.Read(data.FirstOrDefault(a => a.Name == "freportn.wld"));
+            reader.Read(data.FirstOrDefault(a => a.Name == "southkarana.wld"));
             var stuff = reader.ExportZone();
 
             var myModel3DGroup = new Model3DGroup();
             var myGeometryModel = new GeometryModel3D();
             var myModelVisual3D = new ModelVisual3D();
             myModel3DGroup.Children.Add(myDirectionalLight);
-            foreach (var mesh in stuff.mesh)
+            var biggestverts = stuff.mesh.OrderByDescending(a => a.Vertices.Count).Take(1).ToList();
+            foreach (var mesh in biggestverts)
             {
                 var usedVertices = new HashSet<int>();
                 var newIndices = new List<Polygon>();
@@ -207,14 +208,18 @@ namespace EQTool
                         var polygon = newIndices[currentPolygon];
                         currentPolygon++;
                         myTriangleIndicesCollection.Add(polygon.Vertex1);
+                        Debug.Assert(polygon.Vertex1 < myPositionCollection.Count);
                         myTriangleIndicesCollection.Add(polygon.Vertex2);
+                        Debug.Assert(polygon.Vertex2 < myPositionCollection.Count);
                         myTriangleIndicesCollection.Add(polygon.Vertex3);
+                        Debug.Assert(polygon.Vertex3 < myPositionCollection.Count);
                     }
                     myGeometryModel.Transform = Transform3D.Identity;
                     var material = new DiffuseMaterial(new SolidColorBrush(Colors.Gray));
                     myGeometryModel.Material = material;
                     myMeshGeometry3D.TriangleIndices = myTriangleIndicesCollection;
                     myGeometryModel.Geometry = myMeshGeometry3D;
+
                     myModel3DGroup.Children.Add(myGeometryModel);
                 }
             }

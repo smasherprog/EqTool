@@ -3,7 +3,6 @@ using Autofac.Features.ResolveAnything;
 using EQTool.Models;
 using EQTool.Services;
 using EQTool.ViewModels;
-using System.IO;
 
 namespace EQToolTests
 {
@@ -25,8 +24,6 @@ namespace EQToolTests
             _ = builder.RegisterType<ActivePlayer>().AsSelf().SingleInstance();
 
             var b = builder.Build();
-            var settings = b.Resolve<EQToolSettings>();
-            settings.DefaultEqDirectory = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
             return b;
         }
     }

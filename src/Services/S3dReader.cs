@@ -17,7 +17,7 @@ namespace EQTool.Services
 
         public List<SubS3bFile> Read()
         {
-            using (var filestream = new FileStream(settings.DefaultEqDirectory + "/freportn.s3d", FileMode.Open, FileAccess.Read))
+            using (var filestream = new FileStream(settings.DefaultEqDirectory + "/southkarana.s3d", FileMode.Open, FileAccess.Read))
             using (var reader = new BinaryReader(filestream))
             {
                 var directoryOffset = reader.ReadInt32();

@@ -142,171 +142,170 @@ namespace EQTool.Services.WLD
             var materials = GetFragmentsOfType<MaterialList>();
             return (meshes, materials);
 
-            foreach (var mesh in meshes)
-            {
+            //foreach (var mesh in meshes)
+            //{
 
-                //var usedVertices = new HashSet<int>();
-                //var newIndices = new List<Polygon>();
+            //    var usedVertices = new HashSet<int>();
+            //    var newIndices = new List<Polygon>();
 
-                //var currentPolygon = 0;
+            //    var currentPolygon = 0;
 
-                //foreach (var group in mesh.MaterialGroups)
-                //{
-                //    for (var i = 0; i < group.PolygonCount; ++i)
-                //    {
-                //        var polygon = mesh.Indices[currentPolygon];
+            //    foreach (var group in mesh.MaterialGroups)
+            //    {
+            //        for (var i = 0; i < group.PolygonCount; ++i)
+            //        {
+            //            var polygon = mesh.Indices[currentPolygon];
 
-                //        newIndices.Add(polygon.GetCopy());
-                //        currentPolygon++;
-                //        _ = usedVertices.Add(polygon.Vertex1);
-                //        _ = usedVertices.Add(polygon.Vertex2);
-                //        _ = usedVertices.Add(polygon.Vertex3);
-                //    }
-                //}
-
-
-                //usedVertices.Clear();
-
-                //for (var i = 0; i < mesh.Vertices.Count; ++i)
-                //{
-                //    _ = usedVertices.Add(i);
-                //}
+            //            newIndices.Add(polygon.GetCopy());
+            //            currentPolygon++;
+            //            _ = usedVertices.Add(polygon.Vertex1);
+            //            _ = usedVertices.Add(polygon.Vertex2);
+            //            _ = usedVertices.Add(polygon.Vertex3);
+            //        }
+            //    }
 
 
-                //var unusedVertices = 0;
-                //for (var i = mesh.Vertices.Count - 1; i >= 0; i--)
-                //{
-                //    if (usedVertices.Contains(i))
-                //    {
-                //        continue;
-                //    }
+            //    usedVertices.Clear();
 
-                //    unusedVertices++;
+            //    for (var i = 0; i < mesh.Vertices.Count; ++i)
+            //    {
+            //        _ = usedVertices.Add(i);
+            //    }
 
-                //    foreach (var polygon in newIndices)
-                //    {
-                //        if (polygon.Vertex1 >= i && polygon.Vertex1 != 0)
-                //        {
-                //            polygon.Vertex1--;
-                //        }
-                //        if (polygon.Vertex2 >= i && polygon.Vertex2 != 0)
-                //        {
-                //            polygon.Vertex2--;
-                //        }
-                //        if (polygon.Vertex3 >= i && polygon.Vertex3 != 0)
-                //        {
-                //            polygon.Vertex3--;
-                //        }
-                //    }
-                //}
 
-                //if (!_isCollisionMesh && (_isFirstMesh || _useGroups))
-                //{
-                //    _export.Append("ml");
-                //    _export.Append(",");
-                //    _export.Append(FragmentNameCleaner.CleanName(mesh.MaterialList));
-                //    _export.AppendLine();
-                //    _isFirstMesh = false;
-                //}
+            //    var unusedVertices = 0;
+            //    for (var i = mesh.Vertices.Count - 1; i >= 0; i--)
+            //    {
+            //        if (usedVertices.Contains(i))
+            //        {
+            //            continue;
+            //        }
 
-                //for (var i = 0; i < mesh.Vertices.Count; i++)
-                //{
-                //    if (!usedVertices.Contains(i))
-                //    {
-                //        continue;
-                //    }
+            //        unusedVertices++;
 
-                //    var vertex = mesh.Vertices[i];
-                //    _export.Append("v");
-                //    _export.Append(",");
-                //    _export.Append(vertex.x + mesh.Center.x);
-                //    _export.Append(",");
-                //    _export.Append(vertex.z + mesh.Center.z);
-                //    _export.Append(",");
-                //    _export.Append(vertex.y + mesh.Center.y);
-                //    _export.AppendLine();
-                //}
+            //        foreach (var polygon in newIndices)
+            //        {
+            //            if (polygon.Vertex1 >= i && polygon.Vertex1 != 0)
+            //            {
+            //                polygon.Vertex1--;
+            //            }
+            //            if (polygon.Vertex2 >= i && polygon.Vertex2 != 0)
+            //            {
+            //                polygon.Vertex2--;
+            //            }
+            //            if (polygon.Vertex3 >= i && polygon.Vertex3 != 0)
+            //            {
+            //                polygon.Vertex3--;
+            //            }
+            //        }
+            //    }
 
-                //for (var i = 0; i < mesh.TextureUvCoordinates.Count; i++)
-                //{
-                //    if (!usedVertices.Contains(i) || _isCollisionMesh)
-                //    {
-                //        continue;
-                //    }
+            //    if (!_isCollisionMesh && (_isFirstMesh || _useGroups))
+            //    {
+            //        _export.Append("ml");
+            //        _export.Append(",");
+            //        _export.Append(FragmentNameCleaner.CleanName(mesh.MaterialList));
+            //        _export.AppendLine();
+            //        _isFirstMesh = false;
+            //    }
 
-                //    var textureUv = mesh.TextureUvCoordinates[i];
-                //    _export.Append("uv");
-                //    _export.Append(",");
-                //    _export.Append(textureUv.x);
-                //    _export.Append(",");
-                //    _export.Append(textureUv.y);
-                //    _export.AppendLine();
-                //}
+            //    for (var i = 0; i < mesh.Vertices.Count; i++)
+            //    {
+            //        if (!usedVertices.Contains(i))
+            //        {
+            //            continue;
+            //        }
 
-                //for (var i = 0; i < mesh.Normals.Count; i++)
-                //{
-                //    if (!usedVertices.Contains(i) || _isCollisionMesh)
-                //    {
-                //        continue;
-                //    }
+            //        var vertex = mesh.Vertices[i];
+            //        _export.Append("v");
+            //        _export.Append(",");
+            //        _export.Append(vertex.x + mesh.Center.x);
+            //        _export.Append(",");
+            //        _export.Append(vertex.z + mesh.Center.z);
+            //        _export.Append(",");
+            //        _export.Append(vertex.y + mesh.Center.y);
+            //        _export.AppendLine();
+            //    }
 
-                //    var normal = mesh.Normals[i];
-                //    _export.Append("n");
-                //    _export.Append(",");
-                //    _export.Append(normal.x);
-                //    _export.Append(",");
-                //    _export.Append(normal.y);
-                //    _export.Append(",");
-                //    _export.Append(normal.z);
-                //    _export.AppendLine();
-                //}
+            //    for (var i = 0; i < mesh.TextureUvCoordinates.Count; i++)
+            //    {
+            //        if (!usedVertices.Contains(i) || _isCollisionMesh)
+            //        {
+            //            continue;
+            //        }
 
-                //for (var i = 0; i < mesh.Colors.Count; i++)
-                //{
-                //    if (!usedVertices.Contains(i) || _isCollisionMesh)
-                //    {
-                //        continue;
-                //    }
+            //        var textureUv = mesh.TextureUvCoordinates[i];
+            //        _export.Append("uv");
+            //        _export.Append(",");
+            //        _export.Append(textureUv.x);
+            //        _export.Append(",");
+            //        _export.Append(textureUv.y);
+            //        _export.AppendLine();
+            //    }
 
-                //    var vertexColor = mesh.Colors[i];
-                //    _export.Append("c");
-                //    _export.Append(",");
-                //    _export.Append(vertexColor.B);
-                //    _export.Append(",");
-                //    _export.Append(vertexColor.G);
-                //    _export.Append(",");
-                //    _export.Append(vertexColor.R);
-                //    _export.Append(",");
-                //    _export.Append(vertexColor.A);
-                //    _export.AppendLine();
-                //}
+            //    for (var i = 0; i < mesh.Normals.Count; i++)
+            //    {
+            //        if (!usedVertices.Contains(i) || _isCollisionMesh)
+            //        {
+            //            continue;
+            //        }
 
-                //currentPolygon = 0;
+            //        var normal = mesh.Normals[i];
+            //        _export.Append("n");
+            //        _export.Append(",");
+            //        _export.Append(normal.x);
+            //        _export.Append(",");
+            //        _export.Append(normal.y);
+            //        _export.Append(",");
+            //        _export.Append(normal.z);
+            //        _export.AppendLine();
+            //    }
 
-                //foreach (var group in mesh.MaterialGroups)
-                //{
+            //    for (var i = 0; i < mesh.Colors.Count; i++)
+            //    {
+            //        if (!usedVertices.Contains(i) || _isCollisionMesh)
+            //        {
+            //            continue;
+            //        }
 
-                //    for (var i = 0; i < group.PolygonCount; ++i)
-                //    {
-                //        var polygon = newIndices[currentPolygon];
+            //        var vertexColor = mesh.Colors[i];
+            //        _export.Append("c");
+            //        _export.Append(",");
+            //        _export.Append(vertexColor.B);
+            //        _export.Append(",");
+            //        _export.Append(vertexColor.G);
+            //        _export.Append(",");
+            //        _export.Append(vertexColor.R);
+            //        _export.Append(",");
+            //        _export.Append(vertexColor.A);
+            //        _export.AppendLine();
+            //    }
 
-                //        currentPolygon++;
+            //    currentPolygon = 0;
 
-                //        _export.Append("i");
-                //        _export.Append(",");
-                //        _export.Append(group.MaterialIndex);
-                //        _export.Append(",");
-                //        _export.Append(_currentBaseIndex + polygon.Vertex1);
-                //        _export.Append(",");
-                //        _export.Append(_currentBaseIndex + polygon.Vertex2);
-                //        _export.Append(",");
-                //        _export.Append(_currentBaseIndex + polygon.Vertex3);
-                //        _export.AppendLine();
-                //    }
-                //} 
+            //    foreach (var group in mesh.MaterialGroups)
+            //    {
 
-                Debug.WriteLine("got here");
-            }
+            //        for (var i = 0; i < group.PolygonCount; ++i)
+            //        {
+            //            var polygon = newIndices[currentPolygon];
+
+            //            currentPolygon++;
+
+            //            _export.Append("i");
+            //            _export.Append(",");
+            //            _export.Append(group.MaterialIndex);
+            //            _export.Append(",");
+            //            _export.Append(_currentBaseIndex + polygon.Vertex1);
+            //            _export.Append(",");
+            //            _export.Append(_currentBaseIndex + polygon.Vertex2);
+            //            _export.Append(",");
+            //            _export.Append(_currentBaseIndex + polygon.Vertex3);
+            //            _export.AppendLine();
+            //        }
+            //    }
+
+            Debug.WriteLine("got here");
         }
     }
 }

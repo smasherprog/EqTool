@@ -186,7 +186,6 @@ namespace EQTool
             }
         }
 
-
         private void DPSGraph(object sender, EventArgs e)
         {
             var s = (System.Windows.Forms.MenuItem)sender;
