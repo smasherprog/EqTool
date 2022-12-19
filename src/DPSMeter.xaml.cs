@@ -29,6 +29,7 @@ namespace EQTool
             this.logParser = logParser;
             this.logParser.LineReadEvent += LogParser_LineReadEvent;
             this.dPSWindowViewModel = dPSWindowViewModel;
+            this.dPSWindowViewModel.EntityList = new System.Collections.ObjectModel.ObservableCollection<EntittyDPS>();
             DataContext = dPSWindowViewModel;
             InitializeComponent();
             App.GlobalDPSWindowOpacity = settings.GlobalDPSWindowOpacity;

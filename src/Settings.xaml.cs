@@ -244,6 +244,8 @@ namespace EQTool
                 File.WriteAllLines(settings.DefaultEqDirectory + "/eqclient.ini", newlist);
             }
             catch { }
+            TryUpdateSettings();
+            TryCheckLoggingEnabled();
         }
 
         private void GlobalTriggerWindowOpacityValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)

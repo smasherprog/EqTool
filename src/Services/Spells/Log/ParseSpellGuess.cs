@@ -10,6 +10,9 @@ namespace EQTool.Services.Spells.Log
     {
         private readonly ActivePlayer activePlayer;
         private readonly EQSpells spells;
+        private readonly List<string> IgnoreSpellsForGuesses = new List<string>(){
+            "Tigir's Insects"
+        };
 
         public ParseSpellGuess(ActivePlayer activePlayer, EQSpells spells)
         {
@@ -25,6 +28,7 @@ namespace EQTool.Services.Spells.Log
                 var spellmessage = message.Substring(removename).Trim();
                 if (spells.CastOtherSpells.TryGetValue(spellmessage, out var foundspells))
                 {
+                    foundspells = foundspells.Where(a => !IgnoreSpellsForGuesses.Contains(a.name)).ToList();
                     var foundspell = SpellDurations.MatchClosestLevelToSpell(foundspells, activePlayer.Player);
                     var targetname = message.Replace(foundspell.cast_on_other, string.Empty).Trim();
                     Debug.WriteLine($"Other Spell: {foundspell.name} Message: {spellmessage}");
@@ -46,6 +50,7 @@ namespace EQTool.Services.Spells.Log
                 {
                     if (spells.CastOtherSpells.TryGetValue(spellmessage, out foundspells))
                     {
+                        foundspells = foundspells.Where(a => !IgnoreSpellsForGuesses.Contains(a.name)).ToList();
                         var foundspell = SpellDurations.MatchClosestLevelToSpell(foundspells, activePlayer.Player);
                         var targetname = message.Replace(foundspell.cast_on_other, string.Empty).Trim();
                         Debug.WriteLine($"Other Spell: {foundspell.name} Message: {spellmessage}");
@@ -61,6 +66,7 @@ namespace EQTool.Services.Spells.Log
 
                 if (spells.CastOnYouSpells.TryGetValue(message, out foundspells))
                 {
+                    foundspells = foundspells.Where(a => !IgnoreSpellsForGuesses.Contains(a.name)).ToList();
                     var foundspell = SpellDurations.MatchClosestLevelToSpell(foundspells, activePlayer.Player);
                     var targetname = message.Replace(foundspell.cast_on_other, string.Empty).Trim();
                     Debug.WriteLine($"Cast On you Spell: {foundspell.name} Message: {spellmessage}");

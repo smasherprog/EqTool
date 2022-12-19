@@ -252,7 +252,7 @@ namespace EQToolTests
             var spelllogparse = container.Resolve<SpellLogParse>();
             var shissar = "Speed of the Shissar";
             var shissarspell = spells.AllSpells.FirstOrDefault(a => a.name == shissar);
-            var line = "[Mon Nov 14 20:11:25 2022] Jobober" + shissarspell.cast_on_other;
+            var line = "[Mon Nov 14 20:11:25 2022] Jobober " + shissarspell.cast_on_other;
             var service = container.Resolve<ParseSpellGuess>();
             var player = container.Resolve<ActivePlayer>();
             player.Player = new PlayerInfo
@@ -262,6 +262,28 @@ namespace EQToolTests
             };
             var guesss = spelllogparse.MatchSpell(line);
 
+            Assert.IsNotNull(guesss);
+            Assert.IsFalse(guesss.MutipleMatchesFound);
+        }
+
+        [TestMethod]
+        public void TestSlowForShadowKnight()
+        {
+            var spells = container.Resolve<EQSpells>();
+            var spelllogparse = container.Resolve<SpellLogParse>();
+            var shissar = "Turgur's Insects";
+            var shissarspell = spells.AllSpells.FirstOrDefault(a => a.name == shissar);
+            var line = "[Mon Nov 14 20:11:25 2022] Jobober " + shissarspell.cast_on_other;
+            var service = container.Resolve<ParseSpellGuess>();
+            var player = container.Resolve<ActivePlayer>();
+            player.Player = new PlayerInfo
+            {
+                Level = 60,
+                PlayerClass = PlayerClasses.Shaman
+            };
+            var guesss = spelllogparse.MatchSpell(line);
+            var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(guesss.Spell, player.Player));
+            Assert.AreEqual(6, spellduration.TotalMinutes);
             Assert.IsNotNull(guesss);
             Assert.IsFalse(guesss.MutipleMatchesFound);
         }

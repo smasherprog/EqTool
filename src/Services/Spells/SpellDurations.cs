@@ -18,10 +18,10 @@ namespace EQTool.Services
                 Spell closestspell = null;
                 foreach (var spell in spells)
                 {
-                    if (spell.Classes.TryGetValue(playerclass.Value, out var level))
-                    {
-                        return spell;
-                    }
+                    //    if (spell.Classes.TryGetValue(playerclass.Value, out var level))
+                    //    {
+                    //        return spell;
+                    //    }
 
                     foreach (var item in spell.Classes)
                     {
