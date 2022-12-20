@@ -34,9 +34,8 @@ namespace EQTool.Services
                         if (licensetext.Contains("Project 1999"))
                         {
                             var directory = new DirectoryInfo(root);
-                            var maxmoddate = directory.GetFiles()
-                                .OrderByDescending(a => a.LastWriteTime)
-                                .Where(a => a.Name.StartsWith("UI_") && a.Name.EndsWith(".ini"))
+                            var maxmoddate = directory.GetFiles("UI_*.ini")
+                                .OrderByDescending(a => a.LastWriteTime) 
                                 .Select(a => (DateTime?)a.LastWriteTime)
                                 .FirstOrDefault();
                             if (!maxmoddate.HasValue)
@@ -105,9 +104,8 @@ namespace EQTool.Services
             }
 
             var directory = new DirectoryInfo(root);
-            var maxmoddate = directory.GetFiles()
+            var maxmoddate = directory.GetFiles("UI_*.ini")
                 .OrderByDescending(a => a.LastWriteTime)
-                .Where(a => a.Name.StartsWith("UI_") && a.Name.EndsWith(".ini"))
                 .Select(a => (DateTime?)a.LastWriteTime)
                 .FirstOrDefault();
             return maxmoddate.HasValue;

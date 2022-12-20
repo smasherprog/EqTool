@@ -533,7 +533,10 @@ namespace EQToolTests
         [TestMethod]
         public void TestDPS()
         {
-            var entity = new EntittyDPS();
+            var entity = new EntittyDPS()
+            {
+                StartTime = DateTime.Now.AddSeconds(-20)
+            };
             entity.AddDamage(new EntittyDPS.DamagePerTime
             {
                 Damage = 1,
@@ -569,10 +572,12 @@ namespace EQToolTests
                 Damage = 1,
                 TimeStamp = DateTime.Now.AddSeconds(10)
             });
+            entity.UpdateDps();  
             Assert.AreEqual(6, entity.TrailingDamage);
             Assert.AreEqual(7, entity.TotalDamage);
             Assert.AreEqual(5, entity.TotalTwelveSecondDamage);
         }
+
         [TestMethod]
         public void TestDPSColors()
         {

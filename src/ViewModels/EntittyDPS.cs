@@ -25,7 +25,7 @@ namespace EQTool.ViewModels
 
         public string SourceName_and_Info
         {
-            get => _SourceName + $"    {TotalSeconds} sec"; 
+            get => _SourceName + $"    {TotalSeconds} sec";
         }
 
         private string _TargetName = string.Empty;
@@ -57,6 +57,8 @@ namespace EQTool.ViewModels
             }
         }
 
+        private int Last12secondIndex = 0;
+
         public void UpdateDps()
         {
             if (DeathTime.HasValue)
@@ -64,51 +66,39 @@ namespace EQTool.ViewModels
                 return;
             }
 
-            TrailingDamage = Damage.Where(a => a.TimeStamp >= DateTime.Now.AddSeconds(-12)).Sum(a => a.Damage);
-            TotalDamage = Damage.Sum(a => a.Damage);
-           
             if (Damage.Any())
             {
-                var timestampstep = Damage.FirstOrDefault().TimeStamp;
-                var highesttempdmg = GetDamangeAfter(0, timestampstep);
-                TotalTwelveSecondDamage = 0;
-                TotalTwelveSecondDamage = Math.Max(TotalTwelveSecondDamage, highesttempdmg);
-
-                for (var i = 0; i < Damage.Count; i++)
-                {
-                    var item = Damage[i];
-                    var timedelta = Math.Abs((item.TimeStamp - timestampstep).TotalMilliseconds);
-                    if (timedelta >= 1000)
-                    {
-                        timestampstep = item.TimeStamp;
-                        highesttempdmg = GetDamangeAfter(i, timestampstep);
-                        TotalTwelveSecondDamage = Math.Max(TotalTwelveSecondDamage, highesttempdmg);
-                    }
-                }
+                TrailingDamage = Damage.Where(a => a.TimeStamp >= DateTime.Now.AddSeconds(-12)).Sum(a => a.Damage);
+                Update12SecondDmg();
             }
 
             OnPropertyChanged(nameof(TargetTotalDamage));
             OnPropertyChanged(nameof(TotalTwelveSecondDamage));
-            OnPropertyChanged(nameof(TotalDamage));
             OnPropertyChanged(nameof(DPS));
-            OnPropertyChanged(nameof(TotalDPS)); 
+            OnPropertyChanged(nameof(TotalDPS));
             OnPropertyChanged(nameof(SourceName_and_Info));
         }
 
-
-        public int TotalSeconds => DeathTime.HasValue ? (int)(DeathTime.Value - _StartTime).TotalSeconds : (int)(DateTime.Now - _StartTime).TotalSeconds;
-        public DateTime? LastDamageDone => Damage.LastOrDefault()?.TimeStamp;
-        public void AddDamage(DamagePerTime damage)
+        private void Update12SecondDmg()
         {
-            Damage.Add(damage);
-
-            if (damage.Damage > HighestHit)
+            var firsttimestamp = Damage.FirstOrDefault().TimeStamp;
+            var endtimestamp = Damage.LastOrDefault().TimeStamp;
+            if ((endtimestamp - firsttimestamp).TotalSeconds < 12)
             {
-                HighestHit = damage.Damage;
-                OnPropertyChanged(nameof(HighestHit));
+                TotalTwelveSecondDamage = TotalDamage;
             }
-
-            UpdateDps();
+            else if(Last12secondIndex <= Damage.Count -1)
+            {
+                var item = Damage[Last12secondIndex]; 
+                while ((endtimestamp - item.TimeStamp).TotalSeconds > 12)
+                {
+                    item = Damage[Last12secondIndex];
+                    var timestampstep = item.TimeStamp;
+                    var highesttempdmg = GetDamangeAfter(Last12secondIndex, timestampstep);
+                    TotalTwelveSecondDamage = Math.Max(TotalTwelveSecondDamage, highesttempdmg);
+                    Last12secondIndex++;
+                }
+            }
         }
 
         private int GetDamangeAfter(int i, DateTime lasttimestamp)
@@ -128,6 +118,23 @@ namespace EQTool.ViewModels
             return totaldamage;
         }
 
+        public int TotalSeconds => DeathTime.HasValue ? (int)(DeathTime.Value - _StartTime).TotalSeconds : (int)(DateTime.Now - _StartTime).TotalSeconds;
+        public DateTime? LastDamageDone => Damage.LastOrDefault()?.TimeStamp;
+
+        public void AddDamage(DamagePerTime damage)
+        {
+            Damage.Add(damage);
+            TotalDamage += damage.Damage;
+
+            if (damage.Damage > HighestHit)
+            {
+                HighestHit = damage.Damage;
+                OnPropertyChanged(nameof(HighestHit));
+            }
+
+            OnPropertyChanged(nameof(TotalDamage));
+        }
+
         public class DamagePerTime
         {
             public DateTime TimeStamp { get; set; }
@@ -138,6 +145,7 @@ namespace EQTool.ViewModels
         private readonly List<DamagePerTime> Damage = new List<DamagePerTime>();
 
         public int TrailingDamage { get; private set; } = 0;
+
         public int TotalDamage { get; set; }
 
         private int _TargetTotalDamage;

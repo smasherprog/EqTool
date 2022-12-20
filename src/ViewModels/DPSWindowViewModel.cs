@@ -52,16 +52,7 @@ namespace EQTool.ViewModels
                 var itemstormove = new List<EntittyDPS>();
                 var now = DateTime.Now; 
                 
-                var groups = _EntityList.GroupBy(a => a.TargetName).ToList();
-                foreach (var item in groups)
-                {
-                    var totaldmg = item.Sum(a => a.TotalDamage);
-                    foreach (var e in item)
-                    {
-                        e.TargetTotalDamage = totaldmg;
-                    }
-                }
-
+        
                 foreach (var item in _EntityList)
                 {
                     var lasttime = item.LastDamageDone ?? item.StartTime;
@@ -75,7 +66,8 @@ namespace EQTool.ViewModels
                     }
                 }
 
-                foreach (var item in _EntityList.GroupBy(a => a.TargetName))
+                var groups = _EntityList.GroupBy(a => a.TargetName).ToList();
+                foreach (var item in groups)
                 {
                     var totaldmg = item.Sum(a => a.TotalDamage);
                     foreach (var e in item)
@@ -83,7 +75,7 @@ namespace EQTool.ViewModels
                         e.TargetTotalDamage = totaldmg;
                     }
                 }
-             
+
                 foreach (var item in itemstormove)
                 {
                     _ = EntityList.Remove(item);

@@ -7,7 +7,7 @@
          mc:Ignorable="d"  Style="{DynamicResource MyWindowStyleDPS}"
         Title="Dps Meter" 
         Height="450" 
-        Width="480"  
+        Width="640"  
         WindowStyle="None" 
         AllowsTransparency="True">
     <WindowChrome.WindowChrome>
