@@ -23,8 +23,7 @@ namespace EQTool
         private Settings settingswindow = null;
         private readonly System.Windows.Forms.MenuItem MapMenuItem;
         private readonly System.Windows.Forms.MenuItem SpellsMenuItem;
-        private readonly System.Windows.Forms.MenuItem DpsMeterMenuItem;
-        private readonly System.Windows.Forms.MenuItem DpsGraphMeterMenuItem;
+        private readonly System.Windows.Forms.MenuItem DpsMeterMenuItem; 
         private readonly System.Windows.Forms.MenuItem SettingsMenuItem;
 
         public MainWindow()
@@ -35,8 +34,7 @@ namespace EQTool
             SettingsMenuItem = new System.Windows.Forms.MenuItem("Settings", Settings);
             SpellsMenuItem = new System.Windows.Forms.MenuItem("Spells", Spells);
             MapMenuItem = new System.Windows.Forms.MenuItem("Map", Map);
-            DpsMeterMenuItem = new System.Windows.Forms.MenuItem("Dps", DPS);
-            DpsGraphMeterMenuItem = new System.Windows.Forms.MenuItem("DpsGraph (BETA)", DPSGraph);
+            DpsMeterMenuItem = new System.Windows.Forms.MenuItem("Dps", DPS); 
             var gitHubMenuItem = new System.Windows.Forms.MenuItem("Suggestions", Suggestions);
             var whythepig = new System.Windows.Forms.MenuItem("Why the Pig?", WhyThePig);
             var updates = new System.Windows.Forms.MenuItem("Check for Update", UpdateClicked);
@@ -53,8 +51,7 @@ namespace EQTool
                 ContextMenu = new System.Windows.Forms.ContextMenu(new System.Windows.Forms.MenuItem[]
                 {
                      whythepig,
-                    DpsMeterMenuItem,
-                    DpsGraphMeterMenuItem,
+                    DpsMeterMenuItem, 
                     MapMenuItem,
                     SpellsMenuItem,
                     SettingsMenuItem,

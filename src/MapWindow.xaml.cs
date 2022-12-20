@@ -31,47 +31,61 @@ namespace EQTool
         private readonly MapLoad mapLoad;
         private readonly HelixViewport3D helixViewport3D;
         private readonly ActivePlayer activePlayer;
-        private readonly EQToolSettingsLoad toolSettingsLoad;
 
-        public MapWindow(ZoneParser zone, LogParser logParser, MapLoad mapLoad, ActivePlayer activePlayer, EQToolSettingsLoad toolSettingsLoad)
+        public MapWindow(ZoneParser zone, LogParser logParser, MapLoad mapLoad, ActivePlayer activePlayer)
         {
-            this.toolSettingsLoad = toolSettingsLoad;
             this.zoneParser = zone;
             this.logParser = logParser;
             this.mapLoad = mapLoad;
             this.activePlayer = activePlayer;
-            this.logParser.LineReadEvent += LogParser_LineReadEvent; 
+            this.logParser.LineReadEvent += LogParser_LineReadEvent;
             helixViewport3D = new HelixViewport3D();
+    
+            helixViewport3D.ShowCameraInfo = true;
             helixViewport3D.Children.Add(new DefaultLights());
             this.AddChild(helixViewport3D);
             InitializeComponent();
             var points = mapLoad.Load(zoneParser.TranslateToMapName(this.activePlayer.Player?.Zone));
-            if (points != null)
+            foreach (var item in points.Lines)
             {
-                helixViewport3D.Children.Add(points);
+                helixViewport3D.Children.Add(item);
+            }
+            foreach (var item in points.Labels)
+            {
+                helixViewport3D.Children.Add(item);
             }
         }
+
         private void LogParser_LineReadEvent(object sender, LogParser.LogParserEventArgs e)
         {
             var matched = zoneParser.Match(e.Line);
             var points = mapLoad.Load(matched);
-            if (points != null)
+            if (points.Labels.Any())
             {
-                if (this.activePlayer?.Player?.Zone != null){ 
-                    this.activePlayer.Player.Zone = matched; 
-                }
-
                 helixViewport3D.Children.Clear();
                 helixViewport3D.Children.Add(new DefaultLights());
-                helixViewport3D.Children.Add(points);
+                if (this.activePlayer?.Player?.Zone != null)
+                {
+                    this.activePlayer.Player.Zone = matched;
+                }
+
+                foreach (var item in points.Lines)
+                {
+                    helixViewport3D.Children.Add(item);
+                }
+                
+                foreach (var item in points.Labels)
+                {
+                    helixViewport3D.Children.Add(item);
+                }
+                helixViewport3D.Camera.Position = new Point3D { X = 0, Y = 4000, Z = 0 };
             }
         }
-         
+
         protected override void OnClosing(CancelEventArgs e)
-        { 
+        {
             logParser.LineReadEvent += LogParser_LineReadEvent;
             base.OnClosing(e);
         }
-
     }
 }
