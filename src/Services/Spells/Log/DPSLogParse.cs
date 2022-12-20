@@ -16,7 +16,7 @@ namespace EQTool.Services.Spells.Log
         {
             " slice ",
             " slices ",
-            " slashe ",
+            " slash ",
             " slashes ",
             " crush ",
             " crushes ",
