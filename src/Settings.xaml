@@ -49,6 +49,11 @@
                     <TextBlock Text="Class" VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
                     <ComboBox  SelectedItem="{Binding PlayerClass}" ItemsSource="{Binding PlayerClasses}" MinWidth="100"></ComboBox>
                 </StackPanel>
+
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Zone" FontWeight="Bold" VerticalAlignment="Center" MinWidth="100"/>
+                    <ComboBox Name="Zonecombobox" SelectedItem="{Binding Zone}" SelectionChanged="zoneselectionchanged" MinWidth="100"/>
+                </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Your Level"  FontWeight="Bold" VerticalAlignment="Center" MinWidth="100"/>
                     <ComboBox Name="levelscombobox" DisplayMemberPath="Name" SelectedValuePath="Name" SelectionChanged="levelscombobox_SelectionChanged" MinWidth="100"/>

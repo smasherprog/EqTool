@@ -5,8 +5,6 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
         xmlns:local="clr-namespace:EQTool"
         mc:Ignorable="d"
-        Title="FightVisualzation" Height="450" Width="800"
-          xmlns:lvc="clr-namespace:LiveChartsCore.SkiaSharpView.WPF;assembly=LiveChartsCore.SkiaSharpView.WPF">
-    <lvc:CartesianChart Series="{Binding LineSeries}" XAxes="{Binding XAxes}">
-    </lvc:CartesianChart>
+        Title="FightVisualzation" Height="450" Width="800">
+
 </Window>

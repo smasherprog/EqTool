@@ -30,22 +30,22 @@ namespace EQTool
             this.logDeathParse = logDeathParse;
             this.logParser = logParser;
             this.dPSLogParse = dPSLogParse;
-            this.logParser.LineReadEvent += LogParser_LineReadEvent;
+           // this.logParser.LineReadEvent += LogParser_LineReadEvent;
         }
 
         private void LogParser_LineReadEvent(object sender, LogParser.LogParserEventArgs e)
         {
-            var matched = dPSLogParse.Match(e.Line);
-            fightVisualzationViewModel.AddData(matched);
-            var targetdead = logDeathParse.GetDeadTarget(e.Line);
-            fightVisualzationViewModel.TargetDied(targetdead);
+            //var matched = dPSLogParse.Match(e.Line);
+            //fightVisualzationViewModel.AddData(matched);
+            //var targetdead = logDeathParse.GetDeadTarget(e.Line);
+            //fightVisualzationViewModel.TargetDied(targetdead);
         }
 
         private void PollUI(object sender, EventArgs e)
         {
             appDispatcher.DispatchUI(() =>
             {
-                fightVisualzationViewModel.UpdateDPS();
+                //fightVisualzationViewModel.UpdateDPS();
             });
         }
     }

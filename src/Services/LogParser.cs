@@ -35,7 +35,7 @@ namespace EQTool.Services
 
         public event EventHandler<LogParserEventArgs> LineReadEvent;
 
-        public event EventHandler<PlayerChangeEventArgs> PlayerChangeEvent;
+        public event EventHandler<PlayerChangeEventArgs> PlayerChangeEvent; 
 
         public void Push(LogParserEventArgs log)
         {

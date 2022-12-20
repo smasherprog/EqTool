@@ -1,6 +1,4 @@
-﻿using EQTool.Models;
-using LiveChartsCore;
-using LiveChartsCore.SkiaSharpView;
+﻿using EQTool.Models; 
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -116,21 +114,21 @@ namespace EQTool
 
         private void StartupCharts()
         {
-            LiveCharts.Configure(config =>
-               config
-                   // registers SkiaSharp as the library backend
-                   // REQUIRED unless you build your own
-                   .AddSkiaSharp()
+            //LiveCharts.Configure(config =>
+            //   config
+            //       // registers SkiaSharp as the library backend
+            //       // REQUIRED unless you build your own
+            //       .AddSkiaSharp()
 
-                   // adds the default supported types
-                   // OPTIONAL but highly recommend
-                   .AddDefaultMappers()
+            //       // adds the default supported types
+            //       // OPTIONAL but highly recommend
+            //       .AddDefaultMappers()
 
-                   // select a theme, default is Light
-                   // OPTIONAL
-                   //.AddDarkTheme()
-                   .AddLightTheme()
-               );
+            //       // select a theme, default is Light
+            //       // OPTIONAL
+            //       //.AddDarkTheme()
+            //       .AddLightTheme()
+            //   );
         }
 
         private void App_Startup(object sender, StartupEventArgs e)
