@@ -111,14 +111,15 @@ namespace EQTool.ViewModels
 
         public void TryAdd(DPSParseMatch entitiy)
         {
-            if (entitiy == null)
+            //when charmed pet and nps have the same name, everything is messed up
+            if (entitiy == null || entitiy.SourceName == entitiy.TargetName)
             {
                 return;
             }
 
             appDispatcher.DispatchUI(() =>
             {
-                var item = EntityList.FirstOrDefault(a => a.SourceName == entitiy.SourceName && a.TargetName == entitiy.TargetName);
+                var item = EntityList.FirstOrDefault(a => a.SourceName == entitiy.SourceName && a.TargetName == entitiy.TargetName && !a.DeathTime.HasValue);
                 if (item == null)
                 {
                     item = new EntittyDPS

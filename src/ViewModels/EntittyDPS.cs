@@ -23,6 +23,11 @@ namespace EQTool.ViewModels
             }
         }
 
+        public string SourceName_and_Info
+        {
+            get => _SourceName + $"    {TotalSeconds} sec"; 
+        }
+
         private string _TargetName = string.Empty;
 
         public string TargetName
@@ -61,6 +66,7 @@ namespace EQTool.ViewModels
 
             TrailingDamage = Damage.Where(a => a.TimeStamp >= DateTime.Now.AddSeconds(-12)).Sum(a => a.Damage);
             TotalDamage = Damage.Sum(a => a.Damage);
+           
             if (Damage.Any())
             {
                 var timestampstep = Damage.FirstOrDefault().TimeStamp;
@@ -85,7 +91,10 @@ namespace EQTool.ViewModels
             OnPropertyChanged(nameof(TotalTwelveSecondDamage));
             OnPropertyChanged(nameof(TotalDamage));
             OnPropertyChanged(nameof(DPS));
+            OnPropertyChanged(nameof(TotalDPS)); 
+            OnPropertyChanged(nameof(SourceName_and_Info));
         }
+
 
         public int TotalSeconds => DeathTime.HasValue ? (int)(DeathTime.Value - _StartTime).TotalSeconds : (int)(DateTime.Now - _StartTime).TotalSeconds;
         public DateTime? LastDamageDone => Damage.LastOrDefault()?.TimeStamp;
@@ -164,7 +173,8 @@ namespace EQTool.ViewModels
         public int PercentOfTotalDamage { get; set; }
         public SolidColorBrush BackGroundColor { get; set; }
         public SolidColorBrush ProgressBarColor { get; set; } = new SolidColorBrush(GetColorFromRedYellowGreenGradient(0));
-        public int DPS => (TrailingDamage > 0 && TotalSeconds > 0) ? (int)(TrailingDamage / (double)12) : 0;
+        public int TotalDPS => (TotalDamage > 0 && TotalSeconds > 0) ? (int)(TotalDamage / (double)TotalSeconds) : 0;
+        public int DPS => (TrailingDamage > 0) ? (int)(TrailingDamage / (double)12) : 0;
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName] string name = null)
         {

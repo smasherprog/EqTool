@@ -43,35 +43,43 @@
             </Border>
             <Grid Grid.Row="1"  Background="LightGray">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="190" />
+                    <ColumnDefinition Width="210" />
                     <ColumnDefinition Width="70" />
-                    <ColumnDefinition Width="70"/>
+                    <ColumnDefinition Width="70" />
+                    <ColumnDefinition Width="70" />
+                    <ColumnDefinition Width="70" />
                     <ColumnDefinition Width="70" />
                     <ColumnDefinition Width="70" />
                 </Grid.ColumnDefinitions>
                 <TextBlock HorizontalAlignment="Left" Grid.Column="0" FontWeight="Bold" Text="Source" ToolTip="The NPC/PC who is Dealing the damage" />
-                <TextBlock HorizontalAlignment="Left" Grid.Column="1" FontWeight="Bold" Text="DPS" ToolTip="Average DPS over the last 12 second window" />
-                <TextBlock HorizontalAlignment="Left" Grid.Column="2" FontWeight="Bold" Text="Biggest" ToolTip="Biggest single hit!" />
-                <TextBlock HorizontalAlignment="Left" Grid.Column="3" FontWeight="Bold" Text="12s Dmg" ToolTip="Highest 12 second period of Damage dealt. This is good for gauging how many are required in a CH chain!" />
-                <TextBlock HorizontalAlignment="Left" Grid.Column="4" FontWeight="Bold" Text="Dmg" ToolTip="Total Damage done!" />
+                <TextBlock HorizontalAlignment="Left" Grid.Column="1" FontWeight="Bold" Text="12s DPS" ToolTip="Average DPS over the last 12 second window" />
+                <TextBlock HorizontalAlignment="Left" Grid.Column="2" FontWeight="Bold" Text="12s Dmg" ToolTip="Highest 12 second period of Damage dealt. This is good for gauging how many are required in a CH chain!" />
+                <TextBlock HorizontalAlignment="Left" Grid.Column="3" FontWeight="Bold" Text="Biggest" ToolTip="Biggest single hit!" />
+                <TextBlock HorizontalAlignment="Left" Grid.Column="4" FontWeight="Bold" Text="% of DMG" ToolTip="Percent of Total Damage!" />
+                <TextBlock HorizontalAlignment="Left" Grid.Column="5" FontWeight="Bold" Text="DPS" ToolTip="Total DPS!" />
+                <TextBlock HorizontalAlignment="Left" Grid.Column="6" FontWeight="Bold" Text="DMG" ToolTip="Total Damage done!" />
             </Grid>
             <ListView Name="DpsList" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling" Grid.Row="2" Background="Transparent">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <Grid>
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="190" />
+                                <ColumnDefinition Width="210" />
                                 <ColumnDefinition Width="70" />
-                                <ColumnDefinition Width="70"/>
+                                <ColumnDefinition Width="70" />
+                                <ColumnDefinition Width="70" />
+                                <ColumnDefinition Width="70" />
                                 <ColumnDefinition Width="70" />
                                 <ColumnDefinition Width="70" />
                             </Grid.ColumnDefinitions>
-                            <ProgressBar Grid.Column="0" Grid.ColumnSpan="5" Value="{Binding PercentOfTotalDamage}"  Maximum="100"  Foreground="{Binding ProgressBarColor}"  />
-                            <TextBlock HorizontalAlignment="Stretch" Margin="10,0,0,0" Grid.Column="0" FontWeight="Bold" Text="{Binding SourceName}" ToolTip="The NPC/PC who is Dealing the damage" />
+                            <ProgressBar Grid.Column="0" Grid.ColumnSpan="7" Value="{Binding PercentOfTotalDamage}"  Maximum="100"  Foreground="{Binding ProgressBarColor}"  />
+                            <TextBlock HorizontalAlignment="Stretch" Margin="10,0,0,0" Grid.Column="0" FontWeight="Bold" Text="{Binding SourceName_and_Info}" ToolTip="The NPC/PC who is Dealing the damage" />
                             <TextBlock HorizontalAlignment="Left" Grid.Column="1" FontWeight="Bold" Text="{Binding DPS}" ToolTip="Average DPS over the last 12 second window" />
-                            <TextBlock HorizontalAlignment="Left" Grid.Column="2" FontWeight="Bold" Text="{Binding HighestHit}" ToolTip="Biggest single hit!" />
-                            <TextBlock HorizontalAlignment="Left" Grid.Column="3" FontWeight="Bold" Text="{Binding TotalTwelveSecondDamage}" ToolTip="Highest 12 second period of Damage dealt. This is good for gauging how many are required in a CH chain!" />
-                            <TextBlock HorizontalAlignment="Left" Grid.Column="4" FontWeight="Bold" Text="{Binding TotalDamage}" ToolTip="Total Damage done!" />
+                            <TextBlock HorizontalAlignment="Left" Grid.Column="2" FontWeight="Bold" Text="{Binding TotalTwelveSecondDamage}" ToolTip="Highest 12 second period of Damage dealt. This is good for gauging how many are required in a CH chain!" />
+                            <TextBlock HorizontalAlignment="Left" Grid.Column="3" FontWeight="Bold" Text="{Binding HighestHit}" ToolTip="Biggest single hit!" />
+                            <TextBlock HorizontalAlignment="Left" Grid.Column="4" FontWeight="Bold" Text="{Binding PercentOfTotalDamage}" ToolTip="Percent of Total Damage!" />
+                            <TextBlock HorizontalAlignment="Left" Grid.Column="5" FontWeight="Bold" Text="{Binding TotalDPS}" ToolTip="Total DPS!" />
+                            <TextBlock HorizontalAlignment="Left" Grid.Column="6" FontWeight="Bold" Text="{Binding TotalDamage}" ToolTip="Total Damage done!" />
                         </Grid>
                     </DataTemplate>
                 </ListView.ItemTemplate>
@@ -86,14 +94,16 @@
                                                 <Expander.Header>
                                                     <Grid HorizontalAlignment="{Binding Path=HorizontalAlignment, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContentPresenter}}, Mode=OneWayToSource}" >
                                                         <Grid.ColumnDefinitions>
-                                                            <ColumnDefinition Width="190" />
+                                                            <ColumnDefinition Width="210" />
                                                             <ColumnDefinition Width="70" />
                                                             <ColumnDefinition Width="70"/>
                                                             <ColumnDefinition Width="45" />
                                                             <ColumnDefinition Width="70" />
+                                                            <ColumnDefinition Width="70" />
+                                                            <ColumnDefinition Width="70" />
                                                         </Grid.ColumnDefinitions>
                                                         <TextBlock Grid.Column="0" Grid.ColumnSpan="5" Text="{Binding Name}" FontWeight="Bold" FontSize="{DynamicResource GlobalFontSize}" />
-                                                        <TextBlock  HorizontalAlignment="Left" Grid.Column="4" FontWeight="Bold" Text="{Binding Items[0].TargetTotalDamage}" />
+                                                        <TextBlock  HorizontalAlignment="Left" Grid.Column="6" FontWeight="Bold" Text="{Binding Items[0].TargetTotalDamage}" />
                                                     </Grid>
                                                 </Expander.Header>
                                                 <ItemsPresenter />
