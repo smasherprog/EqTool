@@ -18,8 +18,7 @@ namespace EQTool.ViewModels
         {
             var players = settings.Players ?? new System.Collections.Generic.List<PlayerInfo>();
             var directory = new DirectoryInfo(settings.DefaultEqDirectory + "/Logs/");
-            var loggedincharlogfile = directory.GetFiles()
-                .Where(a => a.Name.StartsWith("eqlog") && a.Name.EndsWith(".txt"))
+            var loggedincharlogfile = directory.GetFiles("eqlog*.txt", SearchOption.TopDirectoryOnly)
                 .OrderByDescending(a => a.LastWriteTime)
                 .FirstOrDefault();
             var playerchanged = false;
