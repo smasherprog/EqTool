@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Drawing.Imaging;
 using System.Linq;
 using System.Numerics;
 using System.Text.RegularExpressions;
@@ -17,6 +18,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
 using System.Windows.Shapes;
+using static EQTool.Services.MapLoad;
 using static System.Windows.Forms.LinkLabel;
 
 namespace EQTool
@@ -29,7 +31,6 @@ namespace EQTool
         private readonly ZoneParser zoneParser;
         private readonly LogParser logParser;
         private readonly MapLoad mapLoad;
-        private readonly HelixViewport3D helixViewport3D;
         private readonly ActivePlayer activePlayer;
 
         public MapWindow(ZoneParser zone, LogParser logParser, MapLoad mapLoad, ActivePlayer activePlayer)
@@ -38,54 +39,73 @@ namespace EQTool
             this.logParser = logParser;
             this.mapLoad = mapLoad;
             this.activePlayer = activePlayer;
-            this.logParser.LineReadEvent += LogParser_LineReadEvent;
-            helixViewport3D = new HelixViewport3D();
-    
-            helixViewport3D.ShowCameraInfo = true;
-            helixViewport3D.Children.Add(new DefaultLights());
-            this.AddChild(helixViewport3D);
             InitializeComponent();
-            var points = mapLoad.Load(zoneParser.TranslateToMapName(this.activePlayer.Player?.Zone));
-            foreach (var item in points.Lines)
-            {
-                helixViewport3D.Children.Add(item);
-            }
-            foreach (var item in points.Labels)
-            {
-                helixViewport3D.Children.Add(item);
-            }
+            viewport3d.ShowCameraInfo = true; 
+            var map = mapLoad.Load(zoneParser.TranslateToMapName(this.activePlayer.Player?.Zone));
+            addmap(map);
+            this.logParser.LineReadEvent += LogParser_LineReadEvent;
         }
 
+        private void addmap(MapDetails map)
+        {
+            if (map.Labels.Any() || map.Lines.Any())
+            {
+                viewport3d.Children.Clear();
+                viewport3d.Children.Add(new DefaultLights()); 
+                foreach (var item in map.Lines)
+                { 
+                    viewport3d.Children.Add(item);
+                }
+
+                foreach (var item in map.Labels)
+                {
+                    viewport3d.Children.Add(item);
+                }
+                var center = map.AABB.Center;
+                center.Z = map.AABB.MaxHeight;
+                viewport3d.Camera.Position = center;
+            }
+        }
         private void LogParser_LineReadEvent(object sender, LogParser.LogParserEventArgs e)
         {
             var matched = zoneParser.Match(e.Line);
-            var points = mapLoad.Load(matched);
-            if (points.Labels.Any())
+            var map = mapLoad.Load(matched);
+            if (map.Labels.Any())
             {
-                helixViewport3D.Children.Clear();
-                helixViewport3D.Children.Add(new DefaultLights());
                 if (this.activePlayer?.Player?.Zone != null)
                 {
                     this.activePlayer.Player.Zone = matched;
                 }
-
-                foreach (var item in points.Lines)
-                {
-                    helixViewport3D.Children.Add(item);
-                }
-                
-                foreach (var item in points.Labels)
-                {
-                    helixViewport3D.Children.Add(item);
-                }
-                helixViewport3D.Camera.Position = new Point3D { X = 0, Y = 4000, Z = 0 };
             }
+            addmap(map);
         }
 
         protected override void OnClosing(CancelEventArgs e)
         {
             logParser.LineReadEvent += LogParser_LineReadEvent;
             base.OnClosing(e);
+        }
+        public void DragWindow(object sender, MouseButtonEventArgs args)
+        {
+            DragMove();
+        }  
+
+        private void MinimizeWindow(object sender, RoutedEventArgs e)
+        {
+            WindowState = WindowState.Minimized;
+        }
+
+        private void CloseWindow(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+        private void openspells(object sender, RoutedEventArgs e)
+        {
+            (App.Current as App).OpenSpellsWIndow();
+        }
+        private void opensettings(object sender, RoutedEventArgs e)
+        {
+            (App.Current as App).OpenSettingsWIndow();
         }
     }
 }
