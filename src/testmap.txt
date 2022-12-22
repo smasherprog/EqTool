@@ -1,0 +1,16 @@
+﻿[Tue Dec 20 20:19:59 2022] You have entered Cabilis East.
+[Tue Dec 20 20:19:59 2022] MESSAGE OF THE DAY: Welcome to Project 1999: Green! Please take the time to visit our forums and review the Play-Nice-Policy! Friendly reminder that Real Money Trading (RMT) including account, platinum or item buying/selling will result in a permanent ban. Dual boxing multiple characters at one time will also result in a ban. 
+[Tue Dec 20 20:20:53 2022] Players on EverQuest:
+[Tue Dec 20 20:20:53 2022] ---------------------------
+[Tue Dec 20 20:20:53 2022]  AFK [15 Monk] Kicazz (Iksar)
+[Tue Dec 20 20:20:53 2022] [55 Master] Notek (Iksar) <Ancient Blood>
+[Tue Dec 20 20:20:53 2022] [ANONYMOUS] Leavemealone 
+[Tue Dec 20 20:20:53 2022] [8 Monk] Bruez (Iksar)
+[Tue Dec 20 20:20:53 2022] [ANONYMOUS] Mertsson  <Pals>
+[Tue Dec 20 20:20:53 2022] [53 Heretic] Agueybana (Iksar) <Ancient Blood>
+[Tue Dec 20 20:20:53 2022] [3 Monk] Pigy (Iksar)
+[Tue Dec 20 20:20:53 2022] There are 7 players in East Cabilis.
+[Tue Dec 20 20:20:57 2022] Your Location is 1159.11, -595.94, 3.75
+[Tue Dec 20 20:21:06 2022] Your Location is 1170.61, -589.03, 3.75
+[Tue Dec 20 20:24:06 2022] Your Location is 1180.61, -589.03, 3.75
+[Tue Dec 20 20:27:06 2022] Your Location is 1190.61, -589.03, 3.75

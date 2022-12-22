@@ -412,6 +412,41 @@ namespace EQTool
 
         }
 
+        private void textmapclicked(object sender, RoutedEventArgs e)
+        {
+            if (!testmap.IsEnabled)
+            {
+                return;
+            }
+            testmap.IsEnabled = false;
+            _ = Task.Factory.StartNew(() =>
+            {
+                try
+                {
+                    NewMethod(" You have entered Cabilis East.", 2000);
+                    NewMethod(" Your Location is 1159.11, -595.94, 3.75", 2000);
+                    NewMethod(" Your Location is 1170.11, -595.94, 3.75", 2000);
+                    NewMethod(" Your Location is 1190.11, -595.94, 3.75", 2000);
+                    NewMethod(" Your Location is 1210.11, -595.94, 3.75", 2000);
+                    appDispatcher.DispatchUI(() => { testmap.IsEnabled = true; });
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex.ToString());
+                    appDispatcher.DispatchUI(() => { testmap.IsEnabled = true; });
+                }
+            });
+
+            void NewMethod(string msg, int sleeptime)
+            {
+                var format = "ddd MMM dd HH:mm:ss yyyy";
+                var d = DateTime.Now;
+                var line = "[" + d.ToString(format) + "]" + msg;
+                logParser.Push(new LogParser.LogParserEventArgs { Line = line });
+                Thread.Sleep(sleeptime);
+            }
+        }
+
         private void SaveAndClose(object sender, RoutedEventArgs e)
         {
             Close();

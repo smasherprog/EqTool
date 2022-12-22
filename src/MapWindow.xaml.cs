@@ -1,25 +1,15 @@
-﻿using EQTool.Models;
-using EQTool.Services;
+﻿using EQTool.Services;
 using EQTool.Services.Map;
-using EQTool.Services.Spells.Log;
-using EQTool.Services.WLD;
 using EQTool.ViewModels;
 using HelixToolkit.Wpf;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Drawing.Imaging;
 using System.Linq;
-using System.Numerics;
-using System.Text.RegularExpressions;
+using System.Timers;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Media;
 using System.Windows.Media.Media3D;
-using System.Windows.Shapes;
-using static EQTool.Services.MapLoad;
-using static System.Windows.Forms.LinkLabel;
 
 namespace EQTool
 {
@@ -28,56 +18,44 @@ namespace EQTool
     /// </summary>
     public partial class MapWindow : Window
     {
-        private readonly ZoneParser zoneParser;
+        private readonly Timer UITimer;
         private readonly LogParser logParser;
-        private readonly MapLoad mapLoad;
-        private readonly ActivePlayer activePlayer;
+        private readonly MapViewModel mapViewModel; 
+        private readonly LocationParser locationParser;
+        private readonly ZoneParser zoneParser;
 
-        public MapWindow(ZoneParser zone, LogParser logParser, MapLoad mapLoad, ActivePlayer activePlayer)
+        public MapWindow(ZoneParser zoneParser, MapViewModel mapViewModel, LocationParser locationParser,  LogParser logParser)
         {
-            this.zoneParser = zone;
-            this.logParser = logParser;
-            this.mapLoad = mapLoad;
-            this.activePlayer = activePlayer;
+            this.zoneParser = zoneParser;
+            this.locationParser = locationParser;   
+            this.logParser = logParser; 
+            DataContext = this.mapViewModel = mapViewModel;
+            Topmost = true;
             InitializeComponent();
-            viewport3d.ShowCameraInfo = true; 
-            var map = mapLoad.Load(zoneParser.TranslateToMapName(this.activePlayer.Player?.Zone));
-            addmap(map);
+            this.mapViewModel.LoadDefaultMap();
             this.logParser.LineReadEvent += LogParser_LineReadEvent;
+            UITimer = new System.Timers.Timer(1000);
+            UITimer.Elapsed += UITimer_Elapsed;
+            UITimer.Enabled = true;  
         }
 
-        private void addmap(MapDetails map)
+        private void UITimer_Elapsed(object sender, ElapsedEventArgs e)
         {
-            if (map.Labels.Any() || map.Lines.Any())
-            {
-                viewport3d.Children.Clear();
-                viewport3d.Children.Add(new DefaultLights()); 
-                foreach (var item in map.Lines)
-                { 
-                    viewport3d.Children.Add(item);
-                }
-
-                foreach (var item in map.Labels)
-                {
-                    viewport3d.Children.Add(item);
-                }
-                var center = map.AABB.Center;
-                center.Z = map.AABB.MaxHeight;
-                viewport3d.Camera.Position = center;
-            }
+            mapViewModel.Update();
         }
+          
         private void LogParser_LineReadEvent(object sender, LogParser.LogParserEventArgs e)
         {
-            var matched = zoneParser.Match(e.Line);
-            var map = mapLoad.Load(matched);
-            if (map.Labels.Any())
+            var pos = locationParser.Match(e.Line);
+            if (pos.HasValue)
             {
-                if (this.activePlayer?.Player?.Zone != null)
-                {
-                    this.activePlayer.Player.Zone = matched;
-                }
+                mapViewModel.UpdateLocation(pos.Value); 
             }
-            addmap(map);
+            else
+            { 
+                var matched = zoneParser.Match(e.Line);
+                mapViewModel.LoadMap(matched); 
+            }
         }
 
         protected override void OnClosing(CancelEventArgs e)
@@ -85,10 +63,11 @@ namespace EQTool
             logParser.LineReadEvent += LogParser_LineReadEvent;
             base.OnClosing(e);
         }
+
         public void DragWindow(object sender, MouseButtonEventArgs args)
         {
             DragMove();
-        }  
+        }
 
         private void MinimizeWindow(object sender, RoutedEventArgs e)
         {
@@ -99,10 +78,12 @@ namespace EQTool
         {
             Close();
         }
+
         private void openspells(object sender, RoutedEventArgs e)
         {
             (App.Current as App).OpenSpellsWIndow();
         }
+
         private void opensettings(object sender, RoutedEventArgs e)
         {
             (App.Current as App).OpenSettingsWIndow();

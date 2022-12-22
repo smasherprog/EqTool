@@ -179,7 +179,7 @@ namespace EQTool
             else
             {
 #if !DEBUG
-                CheckForUpdates();
+               // CheckForUpdates();
 #endif
                 StartupCharts();
                 mainWindow = new MainWindow();

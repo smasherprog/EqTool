@@ -106,6 +106,10 @@
                         <TextBlock Text="Spells"  VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
                         <Button  Click="testspellsclicked" MinWidth="100">Add Test Spells</Button>
                     </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Map"  VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
+                        <Button x:Name="testmap"  Click="textmapclicked" MinWidth="100">Test Locations</Button>
+                    </StackPanel>
                 </StackPanel>
 
                 <Button Margin="5,20, 5, 0" Click="SaveAndClose">Save and Close</Button>

@@ -33,7 +33,7 @@ namespace EQTool
             container = DI.Init();
             SettingsMenuItem = new System.Windows.Forms.MenuItem("Settings", Settings);
             SpellsMenuItem = new System.Windows.Forms.MenuItem("Spells", Spells);
-            MapMenuItem = new System.Windows.Forms.MenuItem("Map", Map);
+            MapMenuItem = new System.Windows.Forms.MenuItem("Map (ALPHA)", Map);
             DpsMeterMenuItem = new System.Windows.Forms.MenuItem("Dps", DPS); 
             var gitHubMenuItem = new System.Windows.Forms.MenuItem("Suggestions", Suggestions);
             var whythepig = new System.Windows.Forms.MenuItem("Why the Pig?", WhyThePig);
@@ -79,11 +79,7 @@ namespace EQTool
                 DPS(DpsMeterMenuItem, null);
             }
 
-            Hide();
-#if !DEBUG
-            MapMenuItem.Enabled = false;  
-            DpsGraphMeterMenuItem.Enabled = false;  
-#endif 
+            Hide();  
         }
 
         private EQToolSettings EQToolSettings => container.Resolve<EQToolSettings>();
@@ -109,8 +105,7 @@ namespace EQTool
         {
             SpellsMenuItem.Enabled = value;
             MapMenuItem.Enabled = value;
-            DpsMeterMenuItem.Enabled = value;
-            //DpsGraphMeterMenuItem.Enabled = value;
+            DpsMeterMenuItem.Enabled = value; 
         }
 
         private void WhyThePig(object sender, EventArgs e)
@@ -133,11 +128,7 @@ namespace EQTool
         }
 
         private void Map(object sender, EventArgs e)
-        {
-#if !DEBUG
-            _ = System.Windows.MessageBox.Show("Map is not yet enabled!", "Map", MessageBoxButton.OK, MessageBoxImage.Information);
-            return;
-#endif
+        { 
             var s = (System.Windows.Forms.MenuItem)sender;
             s.Checked = !s.Checked;
             if (s.Checked)

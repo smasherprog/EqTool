@@ -1,69 +1,27 @@
-﻿using HelixToolkit.Wpf;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace EQTool.Services
 {
     public class MapLoad
     {
-        public class MapDetails
-        {
-            public List<HelixToolkit.Wpf.LinesVisual3D> Lines { get; set; } = new List<LinesVisual3D>();
-
-            public List<TextVisual3D> Labels { get; set; } = new List<TextVisual3D>();
-
-            public AABB AABB { get; set; } = new AABB();
-        }
-
-        public MapDetails Load(string zone)
-        {
-            var ret = new MapDetails();
+        public ParsedData Load(string zone)
+        { 
             if (string.IsNullOrWhiteSpace(zone))
             {
-                return ret;
+                zone = "freportw";
             }
 
             var dir = System.IO.Directory.GetCurrentDirectory() + "/map_files/";
             var directory = new DirectoryInfo(dir);
-            var f = directory.GetFiles().Where(a => a.Name.ToLower().StartsWith(zone)).ToList();
+            var f = directory.GetFiles(zone + "*").ToList();
             var lines = f.SelectMany(a => System.IO.File.ReadAllLines(a.FullName)).ToList();
-            var maplines = Parse(lines);
-            var colorgroups = maplines.Lines.GroupBy(a => new { a.Color.R, a.Color.G, a.Color.B }).ToList();
- 
-            foreach (var group in colorgroups)
-            {
-                var points = group.SelectMany(a => a.Points).ToList();
-                foreach (var point in points)
-                {
-                    ret.AABB.Add(point);
-                }
-                var l = new HelixToolkit.Wpf.LinesVisual3D();
-                l.Thickness = 1;
-                l.Points = new Point3DCollection(points);
-                l.Color = group.FirstOrDefault().Color;
-                ret.Lines.Add(l);
-            }
-            foreach (var item in maplines.Labels)
-            {
-                var text = new TextVisual3D();
-                ret.AABB.Add(item.Point);
-                text.Text = item.label;
-                text.Position = item.Point;
-                text.Foreground = new SolidColorBrush(item.Color);
-                text.TextDirection = new Vector3D(1, 0, 0);
-                text.UpDirection = new Vector3D(0, 1, 0);
-                text.Height = 30;
-                ret.Labels.Add(text);
-            }
-
-            return ret;
+            var maplines = Parse(lines);   
+            return maplines;
         }
 
         public class MapLine
@@ -94,32 +52,21 @@ namespace EQTool.Services
                 Min.Z = Math.Min(Min.Z, point.Z);
             }
 
-            public Point3D Center
+            public Point3D Center => new Point3D
             {
-                get
-                {
-                    return new Point3D
-                    {
-                        X = .5 * (Min.X + Max.X),
-                        Y = .5 * (Min.Y + Max.Y),
-                        Z = .5 * (Min.Z + Max.Z)
-                    };
-                }
-            }
+                X = .5 * (Min.X + Max.X),
+                Y = .5 * (Min.Y + Max.Y),
+                Z = .5 * (Min.Z + Max.Z)
+            };
 
-            public double MaxHeight 
-            {
-                get
-                {
-                    return  Max.Y - Min.Y;
-                }
-            }
+            public double MaxHeight => Max.Y - Min.Y;
         }
 
         public class ParsedData
         {
             public List<MapLine> Lines { get; set; } = new List<MapLine>();
             public List<MapLabel> Labels { get; set; } = new List<MapLabel>();
+            public AABB AABB { get; set; } = new AABB();
         }
 
         private ParsedData Parse(List<string> lines)
@@ -174,6 +121,11 @@ namespace EQTool.Services
                         Color = Color.FromRgb(byte.Parse(splits[3]), byte.Parse(splits[4]), byte.Parse(splits[5])),
                         label = splits[7]
                     });
+                }
+                foreach (var point in ret.Lines)
+                {
+                    ret.AABB.Add(point.Points[0]);
+                    ret.AABB.Add(point.Points[1]);
                 }
             }
             return ret;
