@@ -158,7 +158,7 @@ namespace EQTool
         }
         public void OpenDPSWindow()
         {
-            if (settingswindow != null)
+            if (dpsmeter != null)
             {
                 _ = dpsmeter.Focus();
             }
@@ -243,7 +243,7 @@ namespace EQTool
 
         public void OpenSpellsWindow()
         {
-            if (settingswindow != null)
+            if (spellWindow != null)
             {
                 _ = spellWindow.Focus();
             }
