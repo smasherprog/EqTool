@@ -7,22 +7,25 @@ using System.ComponentModel;
 using System.Timers;
 using System.Windows;
 using System.Windows.Data;
+using System.Windows.Forms;
 using System.Windows.Input;
 
 namespace EQTool
 {
     public partial class SpellWindow : Window
     {
-        private readonly Timer UITimer;
+        private readonly System.Timers.Timer UITimer;
 
         private readonly SpellWindowViewModel spellWindowViewModel;
         private readonly LogParser logParser;
         private readonly SpellLogParse spellLogParse;
         private readonly LogDeathParse logDeathParse;
         private readonly LogCustomTimer logCustomTimer;
+        private readonly EQToolSettings settings;
 
         public SpellWindow(EQToolSettings settings, SpellWindowViewModel spellWindowViewModel, LogParser logParser, SpellLogParse spellLogParse, LogDeathParse logDeathParse, LogCustomTimer logCustomTimer)
         {
+            this.settings = settings;
             this.logCustomTimer = logCustomTimer;
             this.logDeathParse = logDeathParse;
             this.logParser = logParser;
@@ -32,6 +35,14 @@ namespace EQTool
             spellWindowViewModel.SpellList = new System.Collections.ObjectModel.ObservableCollection<UISpell>();
             DataContext = this.spellWindowViewModel = spellWindowViewModel;
             Topmost = settings.TriggerWindowTopMost;
+            if (settings.SpellWindowState != null && WindowBounds.isPointVisibleOnAScreen(settings.SpellWindowState.WindowRect))
+            {
+                this.Left = settings.SpellWindowState.WindowRect.Left;
+                this.Top = settings.SpellWindowState.WindowRect.Top;
+                this.Height = settings.SpellWindowState.WindowRect.Height;
+                this.Width = settings.SpellWindowState.WindowRect.Width;
+                this.WindowState = settings.SpellWindowState.State;
+            }
             InitializeComponent();
 
             UITimer = new System.Timers.Timer(1000);
@@ -68,13 +79,20 @@ namespace EQTool
         }
 
 
-        public void DragWindow(object sender, MouseButtonEventArgs args)
-        {
-            DragMove();
-        }
-
         protected override void OnClosing(CancelEventArgs e)
         {
+            if (settings.SpellWindowState == null)
+            {
+                settings.SpellWindowState = new Models.WindowState();
+            }
+            settings.SpellWindowState.WindowRect = new Rect
+            {
+                X = this.Left,
+                Y = this.Top,
+                Height = this.Height,
+                Width = this.Width
+            };
+            settings.SpellWindowState.State = this.WindowState; 
             UITimer.Stop();
             UITimer.Dispose();
             logParser.LineReadEvent += LogParser_LineReadEvent;
@@ -87,20 +105,25 @@ namespace EQTool
             spellWindowViewModel.UpdateSpells();
         }
 
+        public void DragWindow(object sender, MouseButtonEventArgs args)
+        {
+            DragMove();
+        }
+
         private void MinimizeWindow(object sender, RoutedEventArgs e)
         {
-            WindowState = WindowState.Minimized;
+            WindowState = System.Windows.WindowState.Minimized;
         }
 
         private void MaximizeWindow(object sender, RoutedEventArgs e)
         {
-            if (WindowState == WindowState.Maximized)
+            if (WindowState == System.Windows.WindowState.Maximized)
             {
-                WindowState = WindowState.Normal;
+                WindowState = System.Windows.WindowState.Normal;
             }
             else
             {
-                WindowState = WindowState.Maximized;
+                WindowState = System.Windows.WindowState.Maximized;
             }
         }
 
@@ -113,9 +136,10 @@ namespace EQTool
         {
             (App.Current as App).OpenDPSWIndow();
         }
+
         private void opensettings(object sender, RoutedEventArgs e)
         {
             (App.Current as App).OpenSettingsWIndow();
-        }
+        } 
     }
 }

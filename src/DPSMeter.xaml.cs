@@ -3,10 +3,10 @@ using EQTool.Services;
 using EQTool.Services.Spells.Log;
 using EQTool.ViewModels;
 using System;
-using System.ComponentModel;
-using System.Timers;
+using System.ComponentModel; 
 using System.Windows;
 using System.Windows.Data;
+using System.Windows.Forms;
 using System.Windows.Input;
 
 namespace EQTool
@@ -16,14 +16,16 @@ namespace EQTool
     /// </summary>
     public partial class DPSMeter : Window
     {
-        private readonly Timer UITimer;
+        private readonly System.Timers.Timer UITimer;
         private readonly LogParser logParser;
         private readonly DPSWindowViewModel dPSWindowViewModel;
         private readonly DPSLogParse dPSLogParse;
         private readonly LogDeathParse logDeathParse;
+        private readonly EQToolSettings settings;
 
         public DPSMeter(DPSLogParse dPSLogParse, LogParser logParser, DPSWindowViewModel dPSWindowViewModel, EQToolSettings settings, LogDeathParse logDeathParse)
         {
+            this.settings = settings;
             this.logDeathParse = logDeathParse;
             this.dPSLogParse = dPSLogParse;
             this.logParser = logParser;
@@ -31,7 +33,15 @@ namespace EQTool
             this.dPSWindowViewModel = dPSWindowViewModel;
             this.dPSWindowViewModel.EntityList = new System.Collections.ObjectModel.ObservableCollection<EntittyDPS>();
             DataContext = dPSWindowViewModel;
-            InitializeComponent();
+            InitializeComponent(); 
+            if (settings.DpsWindowState != null && WindowBounds.isPointVisibleOnAScreen(settings.DpsWindowState.WindowRect))
+            {
+                this.Left = settings.DpsWindowState.WindowRect.Left;
+                this.Top = settings.DpsWindowState.WindowRect.Top;
+                this.Height = settings.DpsWindowState.WindowRect.Height;
+                this.Width = settings.DpsWindowState.WindowRect.Width;
+                this.WindowState = settings.DpsWindowState.State;
+            }
             App.GlobalDPSWindowOpacity = settings.GlobalDPSWindowOpacity;
             Topmost = settings.TriggerWindowTopMost;
             UITimer = new System.Timers.Timer(1000);
@@ -54,15 +64,22 @@ namespace EQTool
             dPSWindowViewModel.TryAdd(matched);
             var targetdead = logDeathParse.GetDeadTarget(e.Line);
             dPSWindowViewModel.TargetDied(targetdead);
-        }
-
-        public void DragWindow(object sender, MouseButtonEventArgs args)
-        {
-            DragMove();
-        }
+        } 
 
         protected override void OnClosing(CancelEventArgs e)
         {
+            if (settings.DpsWindowState == null)
+            {
+                settings.DpsWindowState = new Models.WindowState();
+            }
+            settings.DpsWindowState.WindowRect = new Rect
+            {
+                X = this.Left,
+                Y = this.Top,
+                Height = this.Height,
+                Width = this.Width
+            };
+            settings.DpsWindowState.State = this.WindowState;
             UITimer.Stop();
             UITimer.Dispose();
             logParser.LineReadEvent += LogParser_LineReadEvent;
@@ -74,33 +91,55 @@ namespace EQTool
             dPSWindowViewModel.UpdateDPS();
         }
 
+        public void DragWindow(object sender, MouseButtonEventArgs args)
+        {
+            DragMove();
+        }
+
         private void MinimizeWindow(object sender, RoutedEventArgs e)
         {
-            WindowState = WindowState.Minimized;
+            WindowState = System.Windows.WindowState.Minimized;
         }
 
         private void MaximizeWindow(object sender, RoutedEventArgs e)
         {
-            if (WindowState == WindowState.Maximized)
+            if (WindowState == System.Windows.WindowState.Maximized)
             {
-                WindowState = WindowState.Normal;
+                WindowState = System.Windows.WindowState.Normal;
             }
             else
             {
-                WindowState = WindowState.Maximized;
+                WindowState = System.Windows.WindowState.Maximized;
             }
         }
+
         private void CloseWindow(object sender, RoutedEventArgs e)
         {
             Close();
         }
-        private void openspells(object sender, RoutedEventArgs e)
+
+        private void opendps(object sender, RoutedEventArgs e)
         {
-            (App.Current as App).OpenSpellsWIndow();
+            (App.Current as App).OpenDPSWIndow();
         }
+
         private void opensettings(object sender, RoutedEventArgs e)
         {
             (App.Current as App).OpenSettingsWIndow();
         }
+
+        protected bool isPointVisibleOnAScreen(Point p)
+        {
+            foreach (Screen s in Screen.AllScreens)
+            {
+                if (p.X < s.Bounds.Right && p.X > s.Bounds.Left && p.Y > s.Bounds.Top && p.Y < s.Bounds.Bottom)
+                    return true;
+            }
+            return false;
+        }
+        private void openspells(object sender, RoutedEventArgs e)
+        {
+            (App.Current as App).OpenSpellsWIndow();
+        } 
     }
 }
