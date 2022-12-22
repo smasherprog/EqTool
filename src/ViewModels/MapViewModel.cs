@@ -32,24 +32,13 @@ namespace EQTool.ViewModels
             this.activePlayer = activePlayer;
             this.appDispatcher = appDispatcher;
             Lastlocation = new Point3D(0, 0, 0);
-            Transform3DGroup transGroup = new Transform3DGroup(); 
-            Transform3D transform = new TranslateTransform3D(0, 0, 0);
-            transGroup.Children.Add(transform); 
-            RotateTransform3D rotateTransform = new RotateTransform3D();
-            AxisAngleRotation3D axisAngleRotation = new AxisAngleRotation3D();
-             
-            axisAngleRotation.Axis = new Vector3D(0, 0, 1);
-            axisAngleRotation.Angle = 0;
-            rotateTransform.Rotation = axisAngleRotation;
-            transGroup.Children.Add(rotateTransform);
-
+           
             Camera = new OrthographicCamera
             {
                 Width = 300,
                 LookDirection = new Vector3D(0, 0, -100),
                 Position = new Point3D(0, 1000, 100),
-                UpDirection = new Vector3D(0, 1, 0),
-                Transform = transGroup
+                UpDirection = new Vector3D(0, 1, 0)
             };
             this.LastLookDirection = new Vector3D(0, 0, -100);
             UpdateLocation(new Point3D(0, 0, 0));
