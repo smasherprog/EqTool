@@ -34,11 +34,12 @@
                     <StackPanel Orientation="Horizontal"  HorizontalAlignment="Center">
                         <Button Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="opendps" ToolTip="Open DPS Window">
                             <Image Source="dps.png"/>
-                        </Button> 
+                        </Button>
+                        <Button Content="O" Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="opensettings" ToolTip="Open Settings Window" />
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal"  HorizontalAlignment="Right">
-                        <Button Content="O" Margin="1" FontSize="7" Width="10" Height="10" Padding="0" Click="opensettings" ToolTip="Open Settings Window" /> 
-                        <Button Content="&#xF04B;" Margin="1" FontSize="7" Width="10" Height="10" Padding="0" Click="MinimizeWindow"/>
+                    <StackPanel Orientation="Horizontal"  HorizontalAlignment="Right"> 
+                        <Button Content="_" Margin="1" FontSize="7" Width="10" Height="10" Padding="0" Click="MinimizeWindow"/>
+                        <Button Content="&#xF04B;" Margin="1" FontSize="7" Width="10" Height="10" Padding="0" Click="MaximizeWindow"/>
                         <Button Content="X" Margin="1" FontSize="7" Width="10" Height="10" Padding="0" Click="CloseWindow" />
                     </StackPanel>
                 </Grid>
