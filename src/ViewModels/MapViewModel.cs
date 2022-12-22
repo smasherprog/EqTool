@@ -2,13 +2,16 @@
 using EQTool.Services.Map;
 using HelixToolkit.Wpf;
 using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Media3D;
 
 namespace EQTool.ViewModels
@@ -29,12 +32,24 @@ namespace EQTool.ViewModels
             this.activePlayer = activePlayer;
             this.appDispatcher = appDispatcher;
             Lastlocation = new Point3D(0, 0, 0);
-            Camera = new PerspectiveCamera
+            Transform3DGroup transGroup = new Transform3DGroup(); 
+            Transform3D transform = new TranslateTransform3D(0, 0, 0);
+            transGroup.Children.Add(transform); 
+            RotateTransform3D rotateTransform = new RotateTransform3D();
+            AxisAngleRotation3D axisAngleRotation = new AxisAngleRotation3D();
+             
+            axisAngleRotation.Axis = new Vector3D(0, 0, 1);
+            axisAngleRotation.Angle = 0;
+            rotateTransform.Rotation = axisAngleRotation;
+            transGroup.Children.Add(rotateTransform);
+
+            Camera = new OrthographicCamera
             {
-                FieldOfView = 60,
+                Width = 300,
                 LookDirection = new Vector3D(0, 0, -100),
                 Position = new Point3D(0, 1000, 100),
-                UpDirection = new Vector3D(0, 1, 0)
+                UpDirection = new Vector3D(0, 1, 0),
+                Transform = transGroup
             };
             this.LastLookDirection = new Vector3D(0, 0, -100);
             UpdateLocation(new Point3D(0, 0, 0));
@@ -94,7 +109,7 @@ namespace EQTool.ViewModels
                         Text = item.label,
                         Position = item.Point,
                         Foreground = new SolidColorBrush(item.Color),
-                        TextDirection = new Vector3D(0, 1, 0),
+                        TextDirection = new Vector3D(-1, 0, 0),
                         UpDirection = new Vector3D(0, 1, 0),
                         Height = 30
                     };
