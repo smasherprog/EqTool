@@ -120,26 +120,22 @@ namespace EQTool
 
         private void opendps(object sender, RoutedEventArgs e)
         {
-            (App.Current as App).OpenDPSWIndow();
+            (App.Current as App).OpenDPSWindow();
         }
 
         private void opensettings(object sender, RoutedEventArgs e)
         {
-            (App.Current as App).OpenSettingsWIndow();
+            (App.Current as App).OpenSettingsWindow();
         }
 
-        protected bool isPointVisibleOnAScreen(Point p)
+        private void openmap(object sender, RoutedEventArgs e)
         {
-            foreach (Screen s in Screen.AllScreens)
-            {
-                if (p.X < s.Bounds.Right && p.X > s.Bounds.Left && p.Y > s.Bounds.Top && p.Y < s.Bounds.Bottom)
-                    return true;
-            }
-            return false;
+            (App.Current as App).OpenMapWindow();
         }
+
         private void openspells(object sender, RoutedEventArgs e)
         {
-            (App.Current as App).OpenSpellsWIndow();
+            (App.Current as App).OpenSpellsWindow();
         } 
     }
 }

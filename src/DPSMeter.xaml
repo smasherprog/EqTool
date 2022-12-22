@@ -33,6 +33,9 @@
                         <Button Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="openspells" ToolTip="Open Spells/Trigger Window">
                             <Image Source="wizard.png"/>
                         </Button>
+                        <Button Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="openmap" ToolTip="Open Map Window">
+                            <Image Source="map.png"/>
+                        </Button>
                         <Button Content="O" Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="opensettings" ToolTip="Open Settings Window" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal"  HorizontalAlignment="Right">

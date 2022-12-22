@@ -36,7 +36,7 @@ namespace EQTool
             this.logParser.LineReadEvent += LogParser_LineReadEvent;
             UITimer = new System.Timers.Timer(1000);
             UITimer.Elapsed += UITimer_Elapsed;
-            UITimer.Enabled = true;   
+            UITimer.Enabled = true; 
         }
 
         private void UITimer_Elapsed(object sender, ElapsedEventArgs e)
@@ -81,12 +81,12 @@ namespace EQTool
 
         private void openspells(object sender, RoutedEventArgs e)
         {
-            (App.Current as App).OpenSpellsWIndow();
+            (App.Current as App).OpenSpellsWindow();
         }
 
         private void opensettings(object sender, RoutedEventArgs e)
         {
-            (App.Current as App).OpenSettingsWIndow();
+            (App.Current as App).OpenSettingsWindow();
         }
     }
 }

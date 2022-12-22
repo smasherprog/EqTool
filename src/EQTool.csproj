@@ -272,6 +272,9 @@
     <Content Include="classic_maps\nektulos_3.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Content Include="map.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="map_files\airplane.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

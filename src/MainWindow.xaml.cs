@@ -127,6 +127,18 @@ namespace EQTool
             });
         }
 
+        public void OpenMapWindow()
+        {
+            if (mapwindow != null)
+            {
+                _ = mapwindow.Focus();
+            }
+            else
+            {
+                Map(MapMenuItem, null);
+            }
+        }
+
         private void Map(object sender, EventArgs e)
         { 
             var s = (System.Windows.Forms.MenuItem)sender;
@@ -144,9 +156,10 @@ namespace EQTool
                 mapwindow = null;
             }
         }
+
         public void OpenDPSWindow()
         {
-            if (settingswindow != null)
+            if (dpsmeter != null)
             {
                 _ = dpsmeter.Focus();
             }
@@ -231,7 +244,7 @@ namespace EQTool
 
         public void OpenSpellsWindow()
         {
-            if (settingswindow != null)
+            if (spellWindow != null)
             {
                 _ = spellWindow.Focus();
             }

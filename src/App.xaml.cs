@@ -110,26 +110,7 @@ namespace EQTool
                 t.Opacity = GlobalDPSWindowOpacity;
                 return t;
             }
-        }
-
-        private void StartupCharts()
-        {
-            //LiveCharts.Configure(config =>
-            //   config
-            //       // registers SkiaSharp as the library backend
-            //       // REQUIRED unless you build your own
-            //       .AddSkiaSharp()
-
-            //       // adds the default supported types
-            //       // OPTIONAL but highly recommend
-            //       .AddDefaultMappers()
-
-            //       // select a theme, default is Light
-            //       // OPTIONAL
-            //       //.AddDarkTheme()
-            //       .AddLightTheme()
-            //   );
-        }
+        } 
 
         private void App_Startup(object sender, StartupEventArgs e)
         {
@@ -165,8 +146,7 @@ namespace EQTool
                     {
                         Thread.Sleep(1000 * 2);
                         System.IO.Directory.Delete("NewVersion", true);
-                        System.IO.File.Delete("EqToool.zip");
-                        StartupCharts();
+                        System.IO.File.Delete("EqToool.zip"); 
                         mainWindow = new MainWindow();
                     }
                 }
@@ -179,9 +159,8 @@ namespace EQTool
             else
             {
 #if !DEBUG
-               // CheckForUpdates();
+                CheckForUpdates();
 #endif
-                StartupCharts();
                 mainWindow = new MainWindow();
             }
         }
@@ -199,17 +178,21 @@ namespace EQTool
 
         public string Version => Assembly.GetExecutingAssembly().GetName().Version.ToString();
 
-        public void OpenSpellsWIndow()
+        public void OpenSpellsWindow()
         {
             mainWindow.OpenSpellsWindow();
         }
 
-        public void OpenDPSWIndow()
+        public void OpenDPSWindow()
         {
             mainWindow.OpenDPSWindow();
         }
+        public void OpenMapWindow()
+        {
+            mainWindow.OpenMapWindow();
+        }
 
-        public void OpenSettingsWIndow()
+        public void OpenSettingsWindow()
         {
             mainWindow.OpenSettingsWindow();
         }
