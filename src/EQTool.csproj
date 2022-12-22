@@ -145,6 +145,7 @@
     <Compile Include="Services\Map\LocationParser.cs" />
     <Compile Include="Services\Map\ZoneParser.cs" />
     <Compile Include="Services\Map\MapLoad.cs" />
+    <Compile Include="Services\WindowBounds.cs" />
     <Compile Include="Services\LogParser.cs" />
     <Compile Include="Services\Spells\Log\LogCustomTimer.cs" />
     <Compile Include="Services\Spells\Log\LogDeathParse.cs" />
