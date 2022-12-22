@@ -37,7 +37,7 @@
                     </StackPanel>
                     <StackPanel Orientation="Horizontal"  HorizontalAlignment="Right">
                         <Button Content="_" Margin="1" FontSize="7" Width="10" Height="10" Padding="0" Click="MinimizeWindow"/>
-                        <Button Content="&#xF04B;" Margin="1" FontSize="7" Width="10" Height="10" Padding="0" Click="MinimizeWindow"/>
+                        <Button Content="&#xF04B;" Margin="1" FontSize="7" Width="10" Height="10" Padding="0" Click="MaximizeWindow"/>
                         <Button Content="X" Margin="1" FontSize="7" Width="10" Height="10" Padding="0" Click="CloseWindow" />
                     </StackPanel>
                 </Grid>
