@@ -19,7 +19,7 @@ Features:
 <li>DPS window</li>
 <li>Timers (Only Minutes are supported)</li>
 <li>Map which uses the 3d assets from the eq directory. This will be very helpful in places like Kedge keep or any dungeon that has overlapping areas. Of course You will be able to zoom, pan around as you would expect in a 3d viewer.(Not implemented yet)</li>
-<li>Remember the last settings for window locations/options. I hate opening nparse, only to open map and spells and reposition them because it does not remember my last configuration.(Not implemented yet)</li>
+<li>Remember the last settings for window location and size.</li>
 </ul>
 <h5>Timers (Only Minutes are supported) -- All below commands work --</h5>
 <ul>
