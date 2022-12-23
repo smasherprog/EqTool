@@ -167,6 +167,11 @@ namespace EQTool.ViewModels
                         item.UpDirection = cameraup;
                     }
                 }
+                foreach(LinesVisual3D item in DrawItems.Where(a=> a.GetType() == typeof(LinesVisual3D)))
+                {
+                    var dist = item.Points.First().DistanceTo(this.Camera.Position);
+                    if ()
+                }
             });
         }
 

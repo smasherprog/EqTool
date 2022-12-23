@@ -56,6 +56,7 @@
                     RotateAroundMouseDownPoint="True"  
                     ShowCameraInfo="True" 
                     ZoomSensitivity=".3"
+                    CameraMode="WalkAround"
                     MouseMove="viewport3d_MouseMove"
                     DefaultCamera="{Binding Camera}"  
                     ItemsSource="{Binding DrawItems}" 
