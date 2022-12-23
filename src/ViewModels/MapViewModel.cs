@@ -136,14 +136,14 @@ namespace EQTool.ViewModels
                     DrawItems.Add(text);
                 }
                 var center = map.AABB.Center;
-                center.Z -= 3000;
-                Camera.Position = center;
+            
                 var halfbox = map.AABB.MaxHeight * .2;
                 map.AABB.Min.X = map.AABB.Min.X - halfbox;
-                map.AABB.Min.Y = map.AABB.Min.X - halfbox;
-
+                map.AABB.Min.Y = map.AABB.Min.Y - halfbox;
+                center.Z -= halfbox;
+                Camera.Position = center;
                 map.AABB.Max.X = map.AABB.Max.X + halfbox;
-                map.AABB.Max.Y = map.AABB.Max.X + halfbox;
+                map.AABB.Max.Y = map.AABB.Max.Y + halfbox;
 
                 var min = map.AABB.Min;
                 var max = map.AABB.Max;
@@ -153,7 +153,7 @@ namespace EQTool.ViewModels
                     Point2 = new Point3D(max.X, min.Y, 0),
                     Point3 = new Point3D(min.X, min.Y, 0),
                     Point4 = new Point3D(min.X, max.Y, 0),
-                    Fill = new SolidColorBrush(System.Windows.Media.Color.FromArgb(255, 1, 1, 1))
+                    Fill = new SolidColorBrush(System.Windows.Media.Color.FromArgb(255, 200, 1, 1))
                 });
                 Camera.LookAt(map.AABB.Center, 2000);
             }
