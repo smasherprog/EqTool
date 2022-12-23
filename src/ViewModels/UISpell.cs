@@ -35,7 +35,7 @@ namespace EQTool.ViewModels
                 }
                 _HideGuesses = value;
                 OnPropertyChanged();
-                OnPropertyChanged(nameof(ColumnVisiblity));
+                OnPropertyChanged(nameof(ColumnVisibility));
             }
         }
 
@@ -51,7 +51,7 @@ namespace EQTool.ViewModels
                 }
                 _ShowOnlyYou = value;
                 OnPropertyChanged();
-                OnPropertyChanged(nameof(ColumnVisiblity));
+                OnPropertyChanged(nameof(ColumnVisibility));
             }
         }
 
@@ -67,7 +67,7 @@ namespace EQTool.ViewModels
                 }
                 _HideClasses = value;
                 OnPropertyChanged();
-                OnPropertyChanged(nameof(ColumnVisiblity));
+                OnPropertyChanged(nameof(ColumnVisibility));
             }
         }
 
@@ -87,7 +87,7 @@ namespace EQTool.ViewModels
             }
         }
 
-        public Visibility ColumnVisiblity
+        public Visibility ColumnVisibility
         {
             get
             {

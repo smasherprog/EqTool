@@ -76,7 +76,7 @@ namespace EQTool.Services
             return rootfolder;
         }
 
-        public static bool? TryCheckLoggingEnabled(string eqdir)
+        public static bool? TryCheckLogginggEnabled(string eqdir)
         {
             try
             {

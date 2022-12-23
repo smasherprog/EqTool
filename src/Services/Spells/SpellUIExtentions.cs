@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace EQTool.Services.Spells
 {
-    public static class SpellUIExtentions
+    public static class SpellUIExtensions
     {
         public static bool HideSpell(List<PlayerClasses> showSpellsForClasses, Dictionary<PlayerClasses, int> spellclasses)
         {

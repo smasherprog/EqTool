@@ -64,7 +64,7 @@ namespace EQToolTests
         }
 
         [TestMethod]
-        public void TestSpellMatchCorrectlynecro1_GrimAura_wierd_but_Shouldhandle()
+        public void TestSpellMatchCorrectlynecro1_GrimAura_weird_but_Shouldhandle()
         {
             var spells = container.Resolve<EQSpells>();
             var grimauraname = "Grim Aura";

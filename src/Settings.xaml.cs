@@ -46,7 +46,7 @@ namespace EQTool
             Topmost = true;
             InitializeComponent();
             TryUpdateSettings();
-            TryCheckLoggingEnabled();
+            TryCheckLogginggEnabled();
             fileopenbuttonimage.Source = Properties.Resources.open_folder.ConvertToBitmapImage();
 
             foreach (var item in SettingsWindowData.PlayerClasses)
@@ -177,9 +177,9 @@ namespace EQTool
             return Process.GetProcessesByName("eqgame").Length > 0;
         }
 
-        private void TryCheckLoggingEnabled()
+        private void TryCheckLogginggEnabled()
         {
-            SettingsWindowData.IsLogginEnabled = FindEq.TryCheckLoggingEnabled(settings.DefaultEqDirectory) ?? false;
+            SettingsWindowData.IsLoggingEnabled = FindEq.TryCheckLogginggEnabled(settings.DefaultEqDirectory) ?? false;
             if (SettingsWindowData.NotMissingConfiguration)
             {
                 Height = 650;
@@ -207,7 +207,7 @@ namespace EQTool
                     {
                         SettingsWindowData.EqPath = settings.DefaultEqDirectory = fbd.SelectedPath;
                         TryUpdateSettings();
-                        TryCheckLoggingEnabled();
+                        TryCheckLogginggEnabled();
                     }
                     else
                     {
@@ -217,11 +217,11 @@ namespace EQTool
             }
         }
 
-        private void enablelogging_Click(object sender, RoutedEventArgs e)
+        private void enableLoggingg_Click(object sender, RoutedEventArgs e)
         {
             if (IsEqRunning())
             {
-                _ = System.Windows.MessageBox.Show("You must exit EQ before you can enable Logging!", "Configuration", MessageBoxButton.OK, MessageBoxImage.Warning);
+                _ = System.Windows.MessageBox.Show("You must exit EQ before you can enable Loggingg!", "Configuration", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
             try
@@ -245,7 +245,7 @@ namespace EQTool
             }
             catch { }
             TryUpdateSettings();
-            TryCheckLoggingEnabled();
+            TryCheckLogginggEnabled();
         }
 
         private void GlobalTriggerWindowOpacityValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -281,20 +281,20 @@ namespace EQTool
         {
             var listofspells = new List<SpellParsingMatch>
             {
-                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Disease Cloud"), TargetName = "Joe", MutipleMatchesFound = false },
-                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Lesser Shielding"), TargetName = "Joe", MutipleMatchesFound = false },
-                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Shadow Compact"), TargetName = "Joe", MutipleMatchesFound = false },
-                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Heroic Bond"), TargetName = "Joe", MutipleMatchesFound = false },
-                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Improved Invis to Undead"), TargetName = "Joe", MutipleMatchesFound = false },
-                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Grim Aura"), TargetName = "Joe", MutipleMatchesFound = false },
+                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Disease Cloud"), TargetName = "Joe", MultipleMatchesFound = false },
+                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Lesser Shielding"), TargetName = "Joe", MultipleMatchesFound = false },
+                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Shadow Compact"), TargetName = "Joe", MultipleMatchesFound = false },
+                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Heroic Bond"), TargetName = "Joe", MultipleMatchesFound = false },
+                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Improved Invis to Undead"), TargetName = "Joe", MultipleMatchesFound = false },
+                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Grim Aura"), TargetName = "Joe", MultipleMatchesFound = false },
 
-                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Heroic Bond"), TargetName = EQSpells.SpaceYou, MutipleMatchesFound = false },
+                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Heroic Bond"), TargetName = EQSpells.SpaceYou, MultipleMatchesFound = false },
 
-                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Heroic Bond"), TargetName = "bob", MutipleMatchesFound = false },
-                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Chloroplast"), TargetName = "bob", MutipleMatchesFound = true },
-                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Shield of Words"), TargetName = "bob", MutipleMatchesFound = false },
-                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Boon of the Clear Mind"), TargetName = "bob", MutipleMatchesFound = false },
-                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Gift of Brilliance"), TargetName = "bob", MutipleMatchesFound = false },
+                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Heroic Bond"), TargetName = "bob", MultipleMatchesFound = false },
+                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Chloroplast"), TargetName = "bob", MultipleMatchesFound = true },
+                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Shield of Words"), TargetName = "bob", MultipleMatchesFound = false },
+                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Boon of the Clear Mind"), TargetName = "bob", MultipleMatchesFound = false },
+                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Gift of Brilliance"), TargetName = "bob", MultipleMatchesFound = false },
 
             };
 

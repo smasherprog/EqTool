@@ -28,7 +28,7 @@ namespace EQTool.Services.WLD.Fragments
         public List<Material> AdditionalMaterials { get; set; }
 
         /// <summary>
-        /// Prevents the material list from being exported multiple times due to being shared
+        /// Prevents the material list from being exported Multiple times due to being shared
         /// TODO: Move this out of here
         /// </summary>
         public bool HasBeenExported { get; set; }

@@ -15,7 +15,7 @@
         <StackPanel Orientation="Vertical" >
             <StackPanel Orientation="Vertical" Visibility="{Binding MissingConfiguration, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}">
                 <TextBlock Text="Configuration missing!" FontWeight="Bold" FontSize="20" Foreground="Red"/>
-                <TextBlock Text="Select your EQ path, and make sure logging is enabled!" FontWeight="Bold" FontSize="14" />
+                <TextBlock Text="Select your EQ path, and make sure Loggingg is enabled!" FontWeight="Bold" FontSize="14" />
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Text="Eq Path"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100" Foreground="Red"  Visibility="{Binding DoesNotHaveEqPath, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}"/>
@@ -31,10 +31,10 @@
                 </StackPanel>
             </StackPanel>
             <StackPanel Orientation="Horizontal"  Visibility="{Binding HasEqPath, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Visible}" >
-                <TextBlock Text="Logging"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100" Foreground="Red"  Visibility="{Binding DoesNotHaveEqPath, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}"/>
-                <TextBlock Text="Logging"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100" Visibility="{Binding HasEqPath, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Visible}"/>
-                <TextBlock Visibility="{Binding IsLogginEnabled, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}" Text="Logging Enabled!" Margin="5,5,0,0" HorizontalAlignment="Left" Foreground="Green"/>
-                <Button Visibility="{Binding IsLogginDisabled, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}" Name="enablelogging" Margin="5,5,0,0" Click="enablelogging_Click">Enable Logging</Button>
+                <TextBlock Text="Loggingg"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100" Foreground="Red"  Visibility="{Binding DoesNotHaveEqPath, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}"/>
+                <TextBlock Text="Loggingg"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100" Visibility="{Binding HasEqPath, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Visible}"/>
+                <TextBlock Visibility="{Binding IsLoggingEnabled, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}" Text="Loggingg Enabled!" Margin="5,5,0,0" HorizontalAlignment="Left" Foreground="Green"/>
+                <Button Visibility="{Binding IsLoggingDisabled, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}" Name="enableLoggingg" Margin="5,5,0,0" Click="enableLoggingg_Click">Enable Loggingg</Button>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Text="Theme"  FontWeight="Bold"  VerticalAlignment="Center" MinWidth="100"/>

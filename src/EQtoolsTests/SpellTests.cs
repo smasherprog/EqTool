@@ -110,7 +110,7 @@ namespace EQToolTests
         }
 
         [TestMethod]
-        public void TestSpellMatchCorrectlynecro1_GrimAura_wierd_but_Shouldhandle()
+        public void TestSpellMatchCorrectlynecro1_GrimAura_weird_but_Shouldhandle()
         {
             var spells = container.Resolve<EQSpells>();
             var grimauraname = "Grim Aura";
@@ -184,7 +184,7 @@ namespace EQToolTests
             var guesss = service.HandleBestGuessSpell(aegospell.cast_on_other);
 
             Assert.IsNotNull(guesss);
-            Assert.IsFalse(guesss.MutipleMatchesFound);
+            Assert.IsFalse(guesss.MultipleMatchesFound);
         }
 
         [TestMethod]
@@ -203,7 +203,7 @@ namespace EQToolTests
             var guesss = service.HandleBestGuessSpell("Jobob " + spell.cast_on_other);
 
             Assert.IsNotNull(guesss);
-            Assert.IsFalse(guesss.MutipleMatchesFound);
+            Assert.IsFalse(guesss.MultipleMatchesFound);
         }
 
         [TestMethod]
@@ -222,7 +222,7 @@ namespace EQToolTests
             var guesss = service.HandleBestGuessSpell("Jobob " + spell.cast_on_other);
 
             Assert.IsNotNull(guesss);
-            Assert.IsFalse(guesss.MutipleMatchesFound);
+            Assert.IsFalse(guesss.MultipleMatchesFound);
         }
 
 
@@ -242,7 +242,7 @@ namespace EQToolTests
             var guesss = service.HandleBestGuessSpell(shissarspell.cast_on_other);
 
             Assert.IsNotNull(guesss);
-            Assert.IsFalse(guesss.MutipleMatchesFound);
+            Assert.IsFalse(guesss.MultipleMatchesFound);
         }
 
         [TestMethod]
@@ -263,7 +263,7 @@ namespace EQToolTests
             var guesss = spelllogparse.MatchSpell(line);
 
             Assert.IsNotNull(guesss);
-            Assert.IsFalse(guesss.MutipleMatchesFound);
+            Assert.IsFalse(guesss.MultipleMatchesFound);
         }
 
         [TestMethod]
@@ -285,7 +285,7 @@ namespace EQToolTests
             var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(guesss.Spell, player.Player));
             Assert.AreEqual(6, spellduration.TotalMinutes);
             Assert.IsNotNull(guesss);
-            Assert.IsFalse(guesss.MutipleMatchesFound);
+            Assert.IsFalse(guesss.MultipleMatchesFound);
         }
 
         [TestMethod]
@@ -306,7 +306,7 @@ namespace EQToolTests
             var guesss = spelllogparse.MatchSpell(line);
             var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(guesss.Spell, player.Player));
             Assert.IsNotNull(guesss);
-            Assert.IsFalse(guesss.MutipleMatchesFound);
+            Assert.IsFalse(guesss.MultipleMatchesFound);
         }
 
         [TestMethod]
@@ -409,7 +409,7 @@ namespace EQToolTests
         }
 
         [TestMethod]
-        public void TestClairityDurationGuess_AgumentDeath()
+        public void TestClairityDurationGuess_augmentDeath()
         {
             var spells = container.Resolve<EQSpells>();
             var line = "You begin casting Augment Death.";
