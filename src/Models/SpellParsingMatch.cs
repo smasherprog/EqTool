@@ -6,7 +6,7 @@
 
         public Spell Spell { get; set; }
 
-        public bool MutipleMatchesFound { get; set; }
+        public bool MultipleMatchesFound { get; set; }
     }
 
 }

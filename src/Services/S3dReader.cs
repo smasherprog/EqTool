@@ -57,7 +57,7 @@ namespace EQTool.Services
                         inflatedBytes.CopyTo(fileBytes, inflatedSize);
                         if (inflatedLength != (uint)inflatedBytes.Length)
                         {
-                            throw new System.Exception("Error occured inflating data!");
+                            throw new System.Exception("Error occurred inflating data!");
                         }
 
                         inflatedSize += inflatedLength;

@@ -62,25 +62,25 @@ namespace EQTool.ViewModels
         public bool DoesNotHaveEqPath => string.IsNullOrWhiteSpace(_EqPath);
         public bool HasEqPath => !string.IsNullOrWhiteSpace(_EqPath);
 
-        private bool _IsLogginEnabled = false;
+        private bool _IsLoggingEnabled = false;
 
-        public bool IsLogginEnabled
+        public bool IsLoggingEnabled
         {
-            get => _IsLogginEnabled;
+            get => _IsLoggingEnabled;
             set
             {
-                _IsLogginEnabled = value;
+                _IsLoggingEnabled = value;
                 OnPropertyChanged();
-                OnPropertyChanged(nameof(IsLogginDisabled));
+                OnPropertyChanged(nameof(IsLoggingDisabled));
                 OnPropertyChanged(nameof(MissingConfiguration));
                 OnPropertyChanged(nameof(NotMissingConfiguration));
             }
         }
 
-        public bool IsLogginDisabled => !_IsLogginEnabled;
+        public bool IsLoggingDisabled => !_IsLoggingEnabled;
 
-        public bool MissingConfiguration => DoesNotHaveEqPath || IsLogginDisabled;
-        public bool NotMissingConfiguration => HasEqPath && IsLogginEnabled;
+        public bool MissingConfiguration => DoesNotHaveEqPath || IsLoggingDisabled;
+        public bool NotMissingConfiguration => HasEqPath && IsLoggingEnabled;
 
         private string _CharName = string.Empty;
         public string CharName
