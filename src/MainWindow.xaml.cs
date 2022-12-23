@@ -75,8 +75,14 @@ namespace EQTool
                 App.GlobalDPSWindowOpacity = eqsettings.GlobalDPSWindowOpacity;
                 App.Theme = eqsettings.Theme;
                 ToggleMenuButtons(true);
-                Spells(SpellsMenuItem, null);
-                DPS(DpsMeterMenuItem, null);
+                if (EQToolSettings.SpellWindowState == null || !EQToolSettings.SpellWindowState.Closed)
+                {
+                    Spells(SpellsMenuItem, null);
+                }
+                if (EQToolSettings.DpsWindowState == null || !EQToolSettings.DpsWindowState.Closed)
+                {
+                    DPS(DpsMeterMenuItem, null);
+                }
             }
 
             Hide();  
