@@ -3,12 +3,9 @@ using EQTool.Services.Map;
 using EQTool.ViewModels;
 using HelixToolkit.Wpf;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Linq;
-using System.Numerics;
 using System.Timers;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 
 namespace EQTool
@@ -36,10 +33,10 @@ namespace EQTool
             this.logParser.LineReadEvent += LogParser_LineReadEvent;
             UITimer = new System.Timers.Timer(1000);
             UITimer.Elapsed += UITimer_Elapsed;
-            UITimer.Enabled = true; 
-            this.viewport3d.PanGesture = new MouseGesture(MouseAction.LeftClick);
-            this.viewport3d.PanGesture2 = null;
-      
+            UITimer.Enabled = true;
+            viewport3d.PanGesture = new MouseGesture(MouseAction.LeftClick);
+            viewport3d.PanGesture2 = null;
+
         }
 
         private void UITimer_Elapsed(object sender, ElapsedEventArgs e)
@@ -55,7 +52,7 @@ namespace EQTool
                 mapViewModel.UpdateLocation(pos.Value);
             }
             else
-            { 
+            {
                 var matched = zoneParser.Match(e.Line);
                 mapViewModel.LoadMap(matched);
             }
@@ -107,14 +104,14 @@ namespace EQTool
 
         private void viewport3d_MouseMove(object sender, MouseEventArgs e)
         {
-            var vp = this.viewport3d;
+            var vp = viewport3d;
             var mpt = Mouse.GetPosition(vp);
-            var hitTests = this.viewport3d.Viewport.FindHits(mpt);
+            var hitTests = viewport3d.Viewport.FindHits(mpt);
 
-            foreach (var hit in hitTests.OrderBy(a=> a.Distance).Take(1))
-            { 
-                this.mapViewModel.MouseWorldCoordinates = hit.RayHit.PointHit;
-            } 
+            foreach (var hit in hitTests.OrderBy(a => a.Distance).Take(1))
+            {
+                mapViewModel.MouseWorldCoordinates = hit.RayHit.PointHit;
+            }
         }
     }
 }
