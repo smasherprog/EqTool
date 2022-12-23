@@ -2,14 +2,14 @@
 using EQTool.Services.Map;
 using EQTool.ViewModels;
 using HelixToolkit.Wpf;
-using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Numerics;
 using System.Timers;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media.Media3D;
 
 namespace EQTool
 {
@@ -20,15 +20,15 @@ namespace EQTool
     {
         private readonly Timer UITimer;
         private readonly LogParser logParser;
-        private readonly MapViewModel mapViewModel; 
+        private readonly MapViewModel mapViewModel;
         private readonly LocationParser locationParser;
         private readonly ZoneParser zoneParser;
 
-        public MapWindow(ZoneParser zoneParser, MapViewModel mapViewModel, LocationParser locationParser,  LogParser logParser)
+        public MapWindow(ZoneParser zoneParser, MapViewModel mapViewModel, LocationParser locationParser, LogParser logParser)
         {
             this.zoneParser = zoneParser;
-            this.locationParser = locationParser;   
-            this.logParser = logParser; 
+            this.locationParser = locationParser;
+            this.logParser = logParser;
             DataContext = this.mapViewModel = mapViewModel;
             Topmost = true;
             InitializeComponent();
@@ -36,25 +36,27 @@ namespace EQTool
             this.logParser.LineReadEvent += LogParser_LineReadEvent;
             UITimer = new System.Timers.Timer(1000);
             UITimer.Elapsed += UITimer_Elapsed;
-            UITimer.Enabled = true; 
+            UITimer.Enabled = true;
+            this.viewport3d.PanGesture = new MouseGesture(MouseAction.LeftClick);
+            this.viewport3d.PanGesture2 = null;
         }
 
         private void UITimer_Elapsed(object sender, ElapsedEventArgs e)
         {
             mapViewModel.Update();
         }
-          
+
         private void LogParser_LineReadEvent(object sender, LogParser.LogParserEventArgs e)
         {
             var pos = locationParser.Match(e.Line);
             if (pos.HasValue)
             {
-                mapViewModel.UpdateLocation(pos.Value); 
+                mapViewModel.UpdateLocation(pos.Value);
             }
             else
-            { 
+            {
                 var matched = zoneParser.Match(e.Line);
-                mapViewModel.LoadMap(matched); 
+                mapViewModel.LoadMap(matched);
             }
         }
 
@@ -71,7 +73,12 @@ namespace EQTool
 
         private void MinimizeWindow(object sender, RoutedEventArgs e)
         {
-            WindowState = WindowState.Minimized;
+            WindowState = System.Windows.WindowState.Minimized;
+        }
+
+        private void MaximizeWindow(object sender, RoutedEventArgs e)
+        {
+            WindowState = WindowState == System.Windows.WindowState.Maximized ? System.Windows.WindowState.Normal : System.Windows.WindowState.Maximized;
         }
 
         private void CloseWindow(object sender, RoutedEventArgs e)
@@ -79,14 +86,34 @@ namespace EQTool
             Close();
         }
 
-        private void openspells(object sender, RoutedEventArgs e)
+        private void opendps(object sender, RoutedEventArgs e)
         {
-            (App.Current as App).OpenSpellsWindow();
+            (App.Current as App).OpenDPSWindow();
         }
 
         private void opensettings(object sender, RoutedEventArgs e)
         {
             (App.Current as App).OpenSettingsWindow();
+        }
+        private void openmap(object sender, RoutedEventArgs e)
+        {
+            (App.Current as App).OpenMapWindow();
+        }
+        private void openspells(object sender, RoutedEventArgs e)
+        {
+            (App.Current as App).OpenSpellsWindow();
+        }
+
+        private void viewport3d_MouseMove(object sender, MouseEventArgs e)
+        {
+            var vp = this.viewport3d;
+            var mpt = Mouse.GetPosition(vp);
+            var hitTests = this.viewport3d.Viewport.FindHits(mpt);
+
+            foreach (var hit in hitTests.OrderBy(a=> a.Distance).Take(1))
+            { 
+                this.mapViewModel.MouseWorldCoordinates = hit.RayHit.PointHit;
+            } 
         }
     }
 }

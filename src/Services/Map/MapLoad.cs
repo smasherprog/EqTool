@@ -10,7 +10,7 @@ namespace EQTool.Services
     public class MapLoad
     {
         public ParsedData Load(string zone)
-        { 
+        {
             if (string.IsNullOrWhiteSpace(zone))
             {
                 zone = "freportw";
@@ -20,7 +20,7 @@ namespace EQTool.Services
             var directory = new DirectoryInfo(dir);
             var f = directory.GetFiles(zone + "*").ToList();
             var lines = f.SelectMany(a => System.IO.File.ReadAllLines(a.FullName)).ToList();
-            var maplines = Parse(lines);   
+            var maplines = Parse(lines);
             return maplines;
         }
 
@@ -88,14 +88,14 @@ namespace EQTool.Services
                         Points = new Point3D[] {
                              new Point3D
                              {
-                                 X = float.Parse(splits[0]),
-                                 Y = float.Parse(splits[1]),
+                                 X = float.Parse(splits[0]) *-1,
+                                 Y = float.Parse(splits[1]) *-1,
                                  Z = float.Parse(splits[2])
                              },
                              new Point3D
                              {
-                                 X = float.Parse(splits[3]),
-                                 Y = float.Parse(splits[4]),
+                                 X = float.Parse(splits[3])*-1,
+                                 Y = float.Parse(splits[4])*-1,
                                  Z = float.Parse(splits[5])
                              }
                          },
@@ -114,8 +114,8 @@ namespace EQTool.Services
                     {
                         Point = new Point3D
                         {
-                            X = float.Parse(splits[0]),
-                            Y = float.Parse(splits[1]),
+                            X = float.Parse(splits[0]) * -1,
+                            Y = float.Parse(splits[1]) * -1,
                             Z = float.Parse(splits[2])
                         },
                         Color = Color.FromRgb(byte.Parse(splits[3]), byte.Parse(splits[4]), byte.Parse(splits[5])),

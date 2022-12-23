@@ -1,17 +1,12 @@
 ﻿using EQTool.Services;
 using EQTool.Services.Map;
 using HelixToolkit.Wpf;
-using Newtonsoft.Json.Linq;
-using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Media;
-using System.Windows.Media.Animation;
 using System.Windows.Media.Media3D;
 
 namespace EQTool.ViewModels
@@ -32,49 +27,67 @@ namespace EQTool.ViewModels
             this.activePlayer = activePlayer;
             this.appDispatcher = appDispatcher;
             Lastlocation = new Point3D(0, 0, 0);
-           
+
             Camera = new OrthographicCamera
             {
                 Width = 300,
-                LookDirection = new Vector3D(0, 0, -100),
-                Position = new Point3D(0, 1000, 100),
+                LookDirection = new Vector3D(0, 0, 100),
+                Position = new Point3D(0, 1000, -100),
                 UpDirection = new Vector3D(0, 1, 0)
             };
-            this.LastLookDirection = new Vector3D(0, 0, -100);
+
+            LastLookDirection = new Vector3D(0, 0, 100);
             UpdateLocation(new Point3D(0, 0, 0));
         }
 
-        public ProjectionCamera Camera { get; set; }
+        public OrthographicCamera Camera { get; set; }
         private Vector3D LastLookDirection;
         private ArrowVisual3D Arrow;
         private Point3D Lastlocation;
 
         public ObservableCollection<Visual3D> DrawItems { get; set; } = new ObservableCollection<Visual3D>();
 
-        private string _MapName = string.Empty;
+        private string _Title = string.Empty;
 
-        public string MapName
+        public string Title
         {
-            get => _MapName;
+            get => _Title + $"   {_MouseWorldCoordinates.X:0.##}, {_MouseWorldCoordinates.Y:0.##}, {_MouseWorldCoordinates.Z:0.##}";
             set
             {
-                _MapName = value;
+                _Title = value;
                 OnPropertyChanged();
             }
         }
+
+        public Point3D _MouseWorldCoordinates;
+
+        public Point3D MouseWorldCoordinates
+        {
+            get => _MouseWorldCoordinates;
+            set
+            {
+                _MouseWorldCoordinates = value;
+                Debug.WriteLine($"MouseWorldCoordinates: {MouseWorldCoordinates}");
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(Title));
+            }
+        }
+
         public void LoadMap(string zone)
         {
             if (string.IsNullOrWhiteSpace(zone))
             {
                 return;
             }
+
+            Title = zone;
             Debug.WriteLine($"Loading: {zone}");
             var map = mapLoad.Load(zone);
 
             if (map.Labels.Any() || map.Lines.Any())
             {
                 DrawItems.Clear();
-                DrawItems.Add(new DefaultLights());
+
                 var colorgroups = map.Lines.GroupBy(a => new { a.Color.R, a.Color.G, a.Color.B }).ToList();
                 Debug.WriteLine($"LineGroups: {colorgroups.Count}");
                 foreach (var group in colorgroups)
@@ -105,8 +118,25 @@ namespace EQTool.ViewModels
                     DrawItems.Add(text);
                 }
                 var center = map.AABB.Center;
-                center.Z = map.AABB.MaxHeight;
+                center.Z -= 3000; 
                 Camera.Position = center;
+                var halfbox = map.AABB.MaxHeight;
+                map.AABB.Min.X = map.AABB.Min.X - halfbox;
+                map.AABB.Min.Y = map.AABB.Min.X - halfbox;
+
+                map.AABB.Max.X = map.AABB.Max.X + halfbox;
+                map.AABB.Max.Y = map.AABB.Max.X + halfbox;
+
+                var min = map.AABB.Min;
+                var max = map.AABB.Max;
+                DrawItems.Add(new QuadVisual3D
+                { 
+                    Point1 = new Point3D(max.X, max.Y, 0),
+                    Point2 = new Point3D(max.X, min.Y, 0),
+                    Point3 = new Point3D(min.X, min.Y, 0),
+                    Point4 = new Point3D(min.X, max.Y, 0),
+                    Fill = new SolidColorBrush(System.Windows.Media.Color.FromArgb(200, 1, 1, 1))
+                });
                 Camera.LookAt(map.AABB.Center, 2000);
             }
         }
@@ -117,16 +147,16 @@ namespace EQTool.ViewModels
             {
                 if (LastLookDirection != Camera.LookDirection)
                 {
-                    //var cameralooknormal = LastLookDirection = LookDirection;
-                    //var cameraup = new Vector3D(0, 1, 0);
-                    //cameralooknormal.Normalize();
-                    //cameraup.Normalize();
-                    //var textdir = Vector3D.CrossProduct(cameraup, cameralooknormal);
-                    //foreach (TextVisual3D item in DrawItems.Where(a=> a.GetType() == typeof(TextVisual3D)))
-                    //{
-                    //    item.TextDirection = textdir;
-                    //    item.UpDirection = cameraup;
-                    //}
+                    var cameralooknormal = LastLookDirection = Camera.LookDirection;
+                    var cameraup = new Vector3D(0, 1, 0);
+                    cameralooknormal.Normalize();
+                    cameraup.Normalize();
+                    var textdir = Vector3D.CrossProduct(cameraup, cameralooknormal);
+                    foreach (TextVisual3D item in DrawItems.Where(a => a.GetType() == typeof(TextVisual3D)))
+                    {
+                        item.TextDirection = textdir;
+                        item.UpDirection = cameraup;
+                    }
                 }
             });
         }
@@ -152,10 +182,10 @@ namespace EQTool.ViewModels
             appDispatcher.DispatchUI(() =>
             {
                 var vec = value - Lastlocation;
-                var endpos = (vec * 50).ToPoint3D();
+                var endpos = (vec * 30).ToPoint3D();
                 if (Arrow != null)
                 {
-                    DrawItems.Remove(Arrow);
+                    _ = DrawItems.Remove(Arrow);
                 }
                 Arrow = new ArrowVisual3D
                 {
@@ -164,7 +194,7 @@ namespace EQTool.ViewModels
                 Arrow.Direction.Normalize();
                 Arrow.Point1 = value;
                 Arrow.Point2 = endpos;
-                Arrow.Diameter = 20;
+                Arrow.Diameter = 15;
                 Arrow.Fill = System.Windows.Media.Brushes.Green;
                 Lastlocation = value;
                 DrawItems.Add(Arrow);

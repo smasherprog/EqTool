@@ -4,8 +4,9 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
         xmlns:HelixToolkit="http://helix-toolkit.org/wpf"
-        mc:Ignorable="d"  Style="{DynamicResource MyWindowStyleDPS}"
-        Title="Map" 
+        mc:Ignorable="d"  
+        Style="{DynamicResource MyWindowStyleDPS}"
+        Title="{Binding Title}" 
         Height="450" 
         Width="640"  
         WindowStyle="None" 
@@ -33,27 +34,35 @@
                         <Button Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="openspells" ToolTip="Open Spells/Trigger Window">
                             <Image Source="wizard.png"/>
                         </Button>
+                        <Button Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="opendps" ToolTip="Open DPS Window">
+                            <Image Source="dps.png"/>
+                        </Button>
+                        <Button Content="O" Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="opensettings" ToolTip="Open Settings Window" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal"  HorizontalAlignment="Right">
-                        <Button Content="O" Margin="1" FontSize="7" Width="10" Height="10" Padding="0" Click="opensettings" ToolTip="Open Settings Window" />
-                        <Button Content="&#xF04B;" Margin="1" FontSize="7" Width="10" Height="10" Padding="0" Click="MinimizeWindow"/>
+                        <Button Content="_" Margin="1" FontSize="7" Width="10" Height="10" Padding="0" Click="MinimizeWindow"/>
+                        <Button Content="&#xF04B;" Margin="1" FontSize="7" Width="10" Height="10" Padding="0" Click="MaximizeWindow"/>
                         <Button Content="X" Margin="1" FontSize="7" Width="10" Height="10" Padding="0" Click="CloseWindow" />
                     </StackPanel>
                 </Grid>
             </Border>
 
-            <!--  The HelixViewport3D supports camera manipulation, and can be used just like the Viewport3D  -->
-            <HelixToolkit:HelixViewport3D 
-                     Grid.Row="1"
+            <HelixToolkit:HelixViewport3D  
+                    Grid.Row="1"
                     Name="viewport3d" 
                     ShowFrameRate="True" 
                     ZoomExtentsWhenLoaded="True"
                     ZoomAroundMouseDownPoint="True"
-                    RotateAroundMouseDownPoint="True"
-                    IsTopBottomViewOrientedToFrontBack="True" 
-                    DefaultCamera="{Binding Camera}" 
-                    ItemsSource="{Binding DrawItems}"
-                    IsViewCubeEdgeClicksEnabled="True">
+                    RotateAroundMouseDownPoint="True"  
+                    ShowCameraInfo="True" 
+                    ZoomSensitivity=".1"
+                    MouseMove="viewport3d_MouseMove"
+                    DefaultCamera="{Binding Camera}"  
+                    ItemsSource="{Binding DrawItems}" 
+                    IsMoveEnabled="True"
+                    IsPanEnabled="True"       
+                    IsRotationEnabled="True" 
+                >
             </HelixToolkit:HelixViewport3D>
 
         </Grid>
