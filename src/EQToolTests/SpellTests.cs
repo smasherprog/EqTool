@@ -117,9 +117,9 @@ namespace EQToolTests
                 Level = 54,
                 PlayerClass = PlayerClasses.Cleric
             };
-            var guesss = service.HandleBestGuessSpell(line);
+            var guess = service.HandleBestGuessSpell(line);
 
-            Assert.IsNotNull(guesss);
+            Assert.IsNotNull(guess);
         }
 
         [TestMethod]
