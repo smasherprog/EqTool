@@ -41,7 +41,10 @@ namespace EQTool.Services
         {
             appDispatcher.DispatchUI(() =>
             {
-                LineReadEvent(this, log);
+                if(LineReadEvent != null)
+                { 
+                    LineReadEvent(this, log);
+                }
             });
         }
 
@@ -71,7 +74,10 @@ namespace EQTool.Services
                     if (!LastReadOffset.HasValue || LastReadOffset > fileinfo.Length)
                     {
                         Debug.WriteLine($"Player Switched or new Player detected");
-                        PlayerChangeEvent(this, new PlayerChangeEventArgs());
+                        if(PlayerChangeEvent != null)
+                        { 
+                            PlayerChangeEvent(this, new PlayerChangeEventArgs());
+                        }
                         LastReadOffset = fileinfo.Length;
                     }
                     using (var stream = new FileStream(filepath, FileMode.Open, FileAccess.Read))
@@ -84,7 +90,10 @@ namespace EQTool.Services
                             LastReadOffset = stream.Position;
                             if (line.Length > 27)
                             {
-                                LineReadEvent(this, new LogParserEventArgs { Line = line });
+                                if (LineReadEvent != null)
+                                {
+                                    LineReadEvent(this, new LogParserEventArgs { Line = line });
+                                } 
                             }
                         }
                     }
