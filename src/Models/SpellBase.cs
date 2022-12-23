@@ -79,7 +79,7 @@ namespace EQTool.Models
         Druid,
         Monk,
         Bard,
-        Rouge,
+        Rogue,
         Shaman,
         Necromancer,
         Wizard,

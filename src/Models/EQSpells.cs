@@ -78,7 +78,7 @@ namespace EQTool.Models
             { "Barrier of Force", PlayerClasses.Wizard },
             { "Dance of the Blade", PlayerClasses.Bard },
             { "Celestial Tranquility", PlayerClasses.Monk },
-            { "Seething Fury", PlayerClasses.Rouge }
+            { "Seething Fury", PlayerClasses.Rogue }
         };
 
         public const string ZoneLoadingMessage = "LOADING, PLEASE WAIT...";
