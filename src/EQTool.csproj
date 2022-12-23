@@ -156,6 +156,8 @@
     <Compile Include="Services\Spells\Log\ParseHandleYou.cs" />
     <Compile Include="Services\Spells\Log\SpellLogParse.cs" />
     <Compile Include="ViewModels\ActivePlayerInfo.cs" />
+    <Compile Include="ViewModels\EQTextVisual3D.cs" />
+    <Compile Include="ViewModels\EQLinesVisual3D.cs" />
     <Compile Include="ViewModels\MapViewModel.cs" />
     <Compile Include="ViewModels\FightVisualzationViewModel.cs" />
     <Compile Include="ViewModels\DPSWindowViewModel.cs" />

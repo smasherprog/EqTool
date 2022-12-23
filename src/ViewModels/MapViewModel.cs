@@ -33,8 +33,8 @@ namespace EQTool.ViewModels
             Camera = new OrthographicCamera
             {
                 Width = 500,
-                LookDirection = new Vector3D(0, 0, -100),
-                Position = new Point3D(0, 1000, 100),
+                LookDirection = new Vector3D(0, 0, 100),
+                Position = new Point3D(0, 1000, -100),
                 UpDirection = new Vector3D(0, 1, 0)
             };
 
@@ -104,12 +104,19 @@ namespace EQTool.ViewModels
                 foreach (var group in colorgroups)
                 {
                     var points = group.SelectMany(a => a.Points).ToList();
+                    var modifiedpoints = points.Select(a => new Point3D
+                    {
+                        X = a.X,
+                        Y = a.Y,
+                        Z = 0
+                    }).ToList();
                     Debug.WriteLine($"Lines: {points.Count}");
-                    var l = new HelixToolkit.Wpf.LinesVisual3D
+                    var l = new EQLinesVisual3D
                     {
                         Thickness = 1,
-                        Points = new Point3DCollection(points),
-                        Color = group.FirstOrDefault().Color
+                        Points = new Point3DCollection(modifiedpoints),
+                        Color = group.FirstOrDefault().Color,
+                        OriginalPoints = points
                     };
                     DrawItems.Add(l);
                 }
@@ -117,14 +124,14 @@ namespace EQTool.ViewModels
                 Debug.WriteLine($"Labels: {map.Labels.Count}");
                 foreach (var item in map.Labels)
                 {
-                    var text = new TextVisual3D
+                    var text = new EQTextVisual3D
                     {
                         Text = item.label,
                         Position = item.Point,
                         Foreground = new SolidColorBrush(item.Color),
                         TextDirection = new Vector3D(1, 0, 0),
                         UpDirection = new Vector3D(0, 1, 0),
-                        Height = 30
+                        Height = 30,
                     };
                     DrawItems.Add(text);
                 }
@@ -146,7 +153,7 @@ namespace EQTool.ViewModels
                     Point2 = new Point3D(max.X, min.Y, 0),
                     Point3 = new Point3D(min.X, min.Y, 0),
                     Point4 = new Point3D(min.X, max.Y, 0),
-                    Fill = new SolidColorBrush(System.Windows.Media.Color.FromArgb(0, 1, 1, 1))
+                    Fill = new SolidColorBrush(System.Windows.Media.Color.FromArgb(255, 1, 1, 1))
                 });
                 Camera.LookAt(map.AABB.Center, 2000);
             }
