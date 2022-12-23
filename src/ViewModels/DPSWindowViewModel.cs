@@ -101,33 +101,33 @@ namespace EQTool.ViewModels
             });
         }
 
-        public void TryAdd(DPSParseMatch entitiy)
+        public void TryAdd(DPSParseMatch entity)
         {
             //when charmed pet and nps have the same name, everything is messed up
-            if (entitiy == null || entitiy.SourceName == entitiy.TargetName)
+            if (entity == null || entity.SourceName == entity.TargetName)
             {
                 return;
             }
 
             appDispatcher.DispatchUI(() =>
             {
-                var item = EntityList.FirstOrDefault(a => a.SourceName == entitiy.SourceName && a.TargetName == entitiy.TargetName && !a.DeathTime.HasValue);
+                var item = EntityList.FirstOrDefault(a => a.SourceName == entity.SourceName && a.TargetName == entity.TargetName && !a.DeathTime.HasValue);
                 if (item == null)
                 {
                     item = new EntittyDPS
                     {
-                        SourceName = entitiy.SourceName,
-                        TargetName = entitiy.TargetName,
-                        StartTime = entitiy.TimeStamp,
-                        TotalDamage = entitiy.DamageDone
+                        SourceName = entity.SourceName,
+                        TargetName = entity.TargetName,
+                        StartTime = entity.TimeStamp,
+                        TotalDamage = entity.DamageDone
                     };
                     EntityList.Add(item);
                 }
 
                 item.AddDamage(new EntittyDPS.DamagePerTime
                 {
-                    TimeStamp = entitiy.TimeStamp,
-                    Damage = entitiy.DamageDone
+                    TimeStamp = entity.TimeStamp,
+                    Damage = entity.DamageDone
                 });
             });
         }

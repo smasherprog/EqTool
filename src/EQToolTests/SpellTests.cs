@@ -64,7 +64,7 @@ namespace EQToolTests
         }
 
         [TestMethod]
-        public void TestSpellMatchCorrectlynecro1_GrimAura_wierd_but_Shouldhandle()
+        public void TestSpellMatchCorrectlynecro1_GrimAura_weird_but_Shouldhandle()
         {
             var spells = container.Resolve<EQSpells>();
             var grimauraname = "Grim Aura";
@@ -117,9 +117,9 @@ namespace EQToolTests
                 Level = 54,
                 PlayerClass = PlayerClasses.Cleric
             };
-            var guesss = service.HandleBestGuessSpell(line);
+            var guess = service.HandleBestGuessSpell(line);
 
-            Assert.IsNotNull(guesss);
+            Assert.IsNotNull(guess);
         }
 
         [TestMethod]

@@ -110,7 +110,7 @@ namespace EQToolTests
         }
 
         [TestMethod]
-        public void TestSpellMatchCorrectlynecro1_GrimAura_wierd_but_Shouldhandle()
+        public void TestSpellMatchCorrectlynecro1_GrimAura_weird_but_Shouldhandle()
         {
             var spells = container.Resolve<EQSpells>();
             var grimauraname = "Grim Aura";
@@ -163,9 +163,9 @@ namespace EQToolTests
                 Level = 54,
                 PlayerClass = PlayerClasses.Cleric
             };
-            var guesss = service.HandleBestGuessSpell(line);
+            var guess = service.HandleBestGuessSpell(line);
 
-            Assert.IsNotNull(guesss);
+            Assert.IsNotNull(guess);
         }
 
         [TestMethod]
@@ -181,10 +181,10 @@ namespace EQToolTests
                 Level = 54,
                 PlayerClass = PlayerClasses.Cleric
             };
-            var guesss = service.HandleBestGuessSpell(aegospell.cast_on_other);
+            var guess = service.HandleBestGuessSpell(aegospell.cast_on_other);
 
-            Assert.IsNotNull(guesss);
-            Assert.IsFalse(guesss.MutipleMatchesFound);
+            Assert.IsNotNull(guess);
+            Assert.IsFalse(guess.MultipleMatchesFound);
         }
 
         [TestMethod]
@@ -200,10 +200,10 @@ namespace EQToolTests
                 Level = 54,
                 PlayerClass = PlayerClasses.Cleric
             };
-            var guesss = service.HandleBestGuessSpell("Jobob " + spell.cast_on_other);
+            var guess = service.HandleBestGuessSpell("Jobob " + spell.cast_on_other);
 
-            Assert.IsNotNull(guesss);
-            Assert.IsFalse(guesss.MutipleMatchesFound);
+            Assert.IsNotNull(guess);
+            Assert.IsFalse(guess.MultipleMatchesFound);
         }
 
         [TestMethod]
@@ -219,10 +219,10 @@ namespace EQToolTests
                 Level = 54,
                 PlayerClass = PlayerClasses.Cleric
             };
-            var guesss = service.HandleBestGuessSpell("Jobob " + spell.cast_on_other);
+            var guess = service.HandleBestGuessSpell("Jobob " + spell.cast_on_other);
 
-            Assert.IsNotNull(guesss);
-            Assert.IsFalse(guesss.MutipleMatchesFound);
+            Assert.IsNotNull(guess);
+            Assert.IsFalse(guess.MultipleMatchesFound);
         }
 
 
@@ -239,10 +239,10 @@ namespace EQToolTests
                 Level = 54,
                 PlayerClass = PlayerClasses.Cleric
             };
-            var guesss = service.HandleBestGuessSpell(shissarspell.cast_on_other);
+            var guess = service.HandleBestGuessSpell(shissarspell.cast_on_other);
 
-            Assert.IsNotNull(guesss);
-            Assert.IsFalse(guesss.MutipleMatchesFound);
+            Assert.IsNotNull(guess);
+            Assert.IsFalse(guess.MultipleMatchesFound);
         }
 
         [TestMethod]
@@ -260,10 +260,10 @@ namespace EQToolTests
                 Level = 54,
                 PlayerClass = PlayerClasses.Cleric
             };
-            var guesss = spelllogparse.MatchSpell(line);
+            var guess = spelllogparse.MatchSpell(line);
 
-            Assert.IsNotNull(guesss);
-            Assert.IsFalse(guesss.MutipleMatchesFound);
+            Assert.IsNotNull(guess);
+            Assert.IsFalse(guess.MultipleMatchesFound);
         }
 
         [TestMethod]
@@ -281,11 +281,11 @@ namespace EQToolTests
                 Level = 60,
                 PlayerClass = PlayerClasses.Shaman
             };
-            var guesss = spelllogparse.MatchSpell(line);
-            var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(guesss.Spell, player.Player));
+            var guess = spelllogparse.MatchSpell(line);
+            var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(guess.Spell, player.Player));
             Assert.AreEqual(6, spellduration.TotalMinutes);
-            Assert.IsNotNull(guesss);
-            Assert.IsFalse(guesss.MutipleMatchesFound);
+            Assert.IsNotNull(guess);
+            Assert.IsFalse(guess.MultipleMatchesFound);
         }
 
         [TestMethod]
@@ -303,10 +303,10 @@ namespace EQToolTests
                 Level = 54,
                 PlayerClass = PlayerClasses.Cleric
             };
-            var guesss = spelllogparse.MatchSpell(line);
-            var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(guesss.Spell, player.Player));
-            Assert.IsNotNull(guesss);
-            Assert.IsFalse(guesss.MutipleMatchesFound);
+            var guess = spelllogparse.MatchSpell(line);
+            var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(guess.Spell, player.Player));
+            Assert.IsNotNull(guess);
+            Assert.IsFalse(guess.MultipleMatchesFound);
         }
 
         [TestMethod]
@@ -409,7 +409,7 @@ namespace EQToolTests
         }
 
         [TestMethod]
-        public void TestClairityDurationGuess_AgumentDeath()
+        public void TestClairityDurationGuess_augmentDeath()
         {
             var spells = container.Resolve<EQSpells>();
             var line = "You begin casting Augment Death.";

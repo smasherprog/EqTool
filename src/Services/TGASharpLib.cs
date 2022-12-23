@@ -636,7 +636,7 @@ namespace TGASharpLib
     /// <para>5 -127: RESERVED</para>
     /// <para>128-255: Un-assigned</para>
     /// <para>Pre-multiplied Alpha Example: Suppose the Alpha channel data is being used to specify the
-    /// opacity of each pixel(for use when the image is overlayed on another image), where 0 indicates
+    /// opacity of each pixel(for use when the image is overlaid on another image), where 0 indicates
     /// that the pixel is completely transparent and a value of 1 indicates that the pixel is
     /// completely opaque(assume all component values have been normalized).</para>
     /// <para>A quadruple(a, r, g, b) of( 0.5, 1, 0, 0) would indicate that the pixel is pure red with a
@@ -1003,7 +1003,7 @@ namespace TGASharpLib
         public const int Size = 4;
 
         /// <summary>
-        /// Make full independed copy of <see cref="TgaColorKey"/>.
+        /// Make full independent copy of <see cref="TgaColorKey"/>.
         /// </summary>
         /// <returns>Copy of <see cref="TgaColorKey"/></returns>
         public TgaColorKey Clone()
@@ -1012,7 +1012,7 @@ namespace TGASharpLib
         }
 
         /// <summary>
-        /// Make full independed copy of <see cref="TgaColorKey"/>.
+        /// Make full independent copy of <see cref="TgaColorKey"/>.
         /// </summary>
         /// <returns>Copy of <see cref="TgaColorKey"/></returns>
         object ICloneable.Clone()
@@ -1159,7 +1159,7 @@ namespace TGASharpLib
         public const int Size = 5;
 
         /// <summary>
-        /// Make full independed copy of <see cref="TgaColorMapSpec"/>.
+        /// Make full independent copy of <see cref="TgaColorMapSpec"/>.
         /// </summary>
         /// <returns>Copy of <see cref="TgaColorMapSpec"/></returns>
         public TgaColorMapSpec Clone()
@@ -1168,7 +1168,7 @@ namespace TGASharpLib
         }
 
         /// <summary>
-        /// Make full independed copy of <see cref="TgaColorMapSpec"/>.
+        /// Make full independent copy of <see cref="TgaColorMapSpec"/>.
         /// </summary>
         /// <returns>Copy of <see cref="TgaColorMapSpec"/></returns>
         object ICloneable.Clone()
@@ -1276,7 +1276,7 @@ namespace TGASharpLib
         public char BlankSpaceChar { get; set; } = TgaString.DefaultBlankSpaceChar;
 
         /// <summary>
-        /// Make full independed copy of <see cref="TgaComment"/>.
+        /// Make full independent copy of <see cref="TgaComment"/>.
         /// </summary>
         /// <returns>Copy of <see cref="TgaComment"/></returns>
         public TgaComment Clone()
@@ -1285,7 +1285,7 @@ namespace TGASharpLib
         }
 
         /// <summary>
-        /// Make full independed copy of <see cref="TgaComment"/>.
+        /// Make full independent copy of <see cref="TgaComment"/>.
         /// </summary>
         /// <returns>Copy of <see cref="TgaComment"/></returns>
         object ICloneable.Clone()
@@ -1480,7 +1480,7 @@ namespace TGASharpLib
         public const int Size = 12;
 
         /// <summary>
-        /// Make full independed copy of <see cref="TgaDateTime"/>.
+        /// Make full independent copy of <see cref="TgaDateTime"/>.
         /// </summary>
         /// <returns>Copy of <see cref="TgaDateTime"/></returns>
         public TgaDateTime Clone()
@@ -1489,7 +1489,7 @@ namespace TGASharpLib
         }
 
         /// <summary>
-        /// Make full independed copy of <see cref="TgaDateTime"/>.
+        /// Make full independent copy of <see cref="TgaDateTime"/>.
         /// </summary>
         /// <returns>Copy of <see cref="TgaDateTime"/></returns>
         object ICloneable.Clone()
@@ -1660,7 +1660,7 @@ namespace TGASharpLib
         public const int Size = 10;
 
         /// <summary>
-        /// Make full independed copy of <see cref="TgaDevEntry"/>.
+        /// Make full independent copy of <see cref="TgaDevEntry"/>.
         /// </summary>
         /// <returns>Copy of <see cref="TgaDevEntry"/></returns>
         public TgaDevEntry Clone()
@@ -1669,7 +1669,7 @@ namespace TGASharpLib
         }
 
         /// <summary>
-        /// Make full independed copy of <see cref="TgaDevEntry"/>.
+        /// Make full independent copy of <see cref="TgaDevEntry"/>.
         /// </summary>
         /// <returns>Copy of <see cref="TgaDevEntry"/></returns>
         object ICloneable.Clone()
@@ -1804,7 +1804,7 @@ namespace TGASharpLib
         public const int Size = 4;
 
         /// <summary>
-        /// Make full independed copy of <see cref="TgaFraction"/>.
+        /// Make full independent copy of <see cref="TgaFraction"/>.
         /// </summary>
         /// <returns>Copy of <see cref="TgaFraction"/></returns>
         public TgaFraction Clone()
@@ -1813,7 +1813,7 @@ namespace TGASharpLib
         }
 
         /// <summary>
-        /// Make full independed copy of <see cref="TgaFraction"/>.
+        /// Make full independent copy of <see cref="TgaFraction"/>.
         /// </summary>
         /// <returns>Copy of <see cref="TgaFraction"/></returns>
         object ICloneable.Clone()
@@ -2528,7 +2528,7 @@ namespace TGASharpLib
         public static readonly TgaString XFileSignatute = new TgaString(XFileSignatuteConst, XFileSignatuteConst.Length);
 
         /// <summary>
-        /// Make full independed copy of <see cref="TgaString"/>.
+        /// Make full independent copy of <see cref="TgaString"/>.
         /// </summary>
         /// <returns>Copy of <see cref="TgaString"/></returns>
         public TgaString Clone()
@@ -2537,7 +2537,7 @@ namespace TGASharpLib
         }
 
         /// <summary>
-        /// Make full independed copy of <see cref="TgaString"/>.
+        /// Make full independent copy of <see cref="TgaString"/>.
         /// </summary>
         /// <returns>Copy of <see cref="TgaString"/></returns>
         object ICloneable.Clone()
@@ -2727,7 +2727,7 @@ namespace TGASharpLib
         public const int Size = 6;
 
         /// <summary>
-        /// Make full independed copy of <see cref="TgaTime"/>.
+        /// Make full independent copy of <see cref="TgaTime"/>.
         /// </summary>
         /// <returns>Copy of <see cref="TgaTime"/></returns>
         public TgaTime Clone()
@@ -2736,7 +2736,7 @@ namespace TGASharpLib
         }
 
         /// <summary>
-        /// Make full independed copy of <see cref="TgaTime"/>.
+        /// Make full independent copy of <see cref="TgaTime"/>.
         /// </summary>
         /// <returns>Copy of <see cref="TgaTime"/></returns>
         object ICloneable.Clone()
@@ -3044,7 +3044,7 @@ namespace TGASharpLib
         /// <summary>
         /// Make full copy of <see cref="TgaImgOrColMap"/>.
         /// </summary>
-        /// <returns>Full independed copy of <see cref="TgaImgOrColMap"/>.</returns>
+        /// <returns>Full independent copy of <see cref="TgaImgOrColMap"/>.</returns>
         public TgaImgOrColMap Clone()
         {
             return new TgaImgOrColMap(
@@ -3056,7 +3056,7 @@ namespace TGASharpLib
         /// <summary>
         /// Make full copy of <see cref="TgaImgOrColMap"/>.
         /// </summary>
-        /// <returns>Full independed copy of <see cref="TgaImgOrColMap"/>.</returns>
+        /// <returns>Full independent copy of <see cref="TgaImgOrColMap"/>.</returns>
         object ICloneable.Clone()
         {
             return Clone();
@@ -3478,7 +3478,7 @@ namespace TGASharpLib
         /// <para>5 -127: RESERVED</para>
         /// <para>128-255: Un-assigned</para>
         /// <para>Pre-multiplied Alpha Example: Suppose the Alpha channel data is being used to specify the
-        /// opacity of each pixel(for use when the image is overlayed on another image), where 0 indicates
+        /// opacity of each pixel(for use when the image is overlaid on another image), where 0 indicates
         /// that the pixel is completely transparent and a value of 1 indicates that the pixel is
         /// completely opaque(assume all component values have been normalized).</para>
         /// <para>A quadruple(a, r, g, b) of( 0.5, 1, 0, 0) would indicate that the pixel is pure red with a
@@ -3965,7 +3965,7 @@ namespace TGASharpLib
     ////////////////////////////////////////////////////////////////////////////////////////////////
 
     /// <summary>
-    /// Simplify ByteConversion operations, like concatination of byte arrays, comparing and other.
+    /// Simplify ByteConversion operations, like concatenation of byte arrays, comparing and other.
     /// </summary>
     public static class BitConverterExt
     {
@@ -4184,7 +4184,7 @@ namespace TGASharpLib
         public TgaExtArea ExtArea = null;
         public TgaFooter Footer = null;
 
-        #region TGA Creation, Loading, Saving (all are public, have reference to private metods).
+        #region TGA Creation, Loading, Saving (all are public, have reference to private methods).
         /// <summary>
         /// Create new empty <see cref="TGA"/> istance.
         /// </summary>
@@ -4200,7 +4200,7 @@ namespace TGASharpLib
         /// <param name="Height">Image Height.</param>
         /// <param name="PixDepth">Image Pixel Depth (bits / pixel), set ColorMap bpp after, if needed!</param>
         /// <param name="ImgType">Image Type (is RLE compressed, ColorMapped or GrayScaled).</param>
-        /// <param name="AttrBits">Set numder of Attrbute bits (Alpha channel bits), default: 0, 1, 8.</param>
+        /// <param name="AttrBits">Set numder of Attribute bits (Alpha channel bits), default: 0, 1, 8.</param>
         /// <param name="NewFormat">Use new 2.0 TGA XFile format?</param>
         public TGA(ushort Width, ushort Height, TgaPixelDepth PixDepth = TgaPixelDepth.Bpp24,
             TgaImageType ImgType = TgaImageType.Uncompressed_TrueColor, byte AttrBits = 0, bool NewFormat = true)
@@ -4411,9 +4411,9 @@ namespace TGASharpLib
         }
 
         /// <summary>
-        /// Make full independed copy of <see cref="TGA"/>.
+        /// Make full independent copy of <see cref="TGA"/>.
         /// </summary>
-        /// <returns>Full independed copy of <see cref="TGA"/>.</returns>
+        /// <returns>Full independent copy of <see cref="TGA"/>.</returns>
         public TGA Clone()
         {
             return new TGA(this);
@@ -4911,7 +4911,7 @@ namespace TGASharpLib
 
             if (!(stream.CanRead && stream.CanSeek))
             {
-                throw new FileLoadException("Stream reading or seeking is not avaiable!");
+                throw new FileLoadException("Stream reading or seeking is not available!");
             }
 
             try
@@ -5316,7 +5316,7 @@ namespace TGASharpLib
 
                 if (!(stream.CanWrite && stream.CanSeek))
                 {
-                    throw new FileLoadException("Stream writing or seeking is not avaiable!");
+                    throw new FileLoadException("Stream writing or seeking is not available!");
                 }
 
                 if (!CheckAndUpdateOffsets(out var CheckResult))

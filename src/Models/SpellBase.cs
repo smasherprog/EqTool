@@ -37,9 +37,9 @@ namespace EQTool.Models
     //											// If it is a number between 1-4 it means components[number] is a focus and not to expend it
     //											// If it is a valid itemid it means this item is a focus as well
     ///* 070 */	int16		formula[EFFECT_COUNT]; // Spell's value formula
-    ///* 082 */	int			LightType; // probaly another effecttype flag
+    ///* 082 */	int			LightType; // probably another effecttype flag
     ///* 083 */	int			goodEffect; //0=detrimental, 1=Beneficial, 2=Beneficial, Group Only
-    ///* 084 */	int			Activated; // probaly another effecttype flag	
+    ///* 084 */	int			Activated; // probably another effecttype flag	
     ///* 085 */	int			resisttype;
     ///* 086 */	int			effectid[EFFECT_COUNT];	// Spell's effects
     ///* 098 */	SpellTargetType	targettype;	// Spell's Target

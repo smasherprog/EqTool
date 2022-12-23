@@ -37,7 +37,7 @@ namespace EQTool.Services.Spells.Log
                     {
                         Spell = foundspell,
                         TargetName = targetname,
-                        MutipleMatchesFound = multiplematches
+                        MultipleMatchesFound = multiplematches
                     };
                 }
             }
@@ -59,7 +59,7 @@ namespace EQTool.Services.Spells.Log
                         {
                             Spell = foundspell,
                             TargetName = targetname,
-                            MutipleMatchesFound = multiplematches
+                            MultipleMatchesFound = multiplematches
                         };
                     }
                 }
@@ -75,7 +75,7 @@ namespace EQTool.Services.Spells.Log
                     {
                         Spell = foundspell,
                         TargetName = EQSpells.SpaceYou,
-                        MutipleMatchesFound = multiplematches
+                        MultipleMatchesFound = multiplematches
                     };
                 }
             }

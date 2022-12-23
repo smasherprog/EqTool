@@ -75,7 +75,7 @@ namespace EQTool.ViewModels
                     }
                     item.HideGuesses = !settings.BestGuessSpells;
                     item.ShowOnlyYou = settings.YouOnlySpells;
-                    item.HideClasses = player != null && SpellUIExtentions.HideSpell(player.ShowSpellsForClasses, item.Classes) && item.TargetName != EQSpells.SpaceYou;
+                    item.HideClasses = player != null && SpellUIExtensions.HideSpell(player.ShowSpellsForClasses, item.Classes) && item.TargetName != EQSpells.SpaceYou;
                 }
 
                 foreach (var spells in SpellList.GroupBy(a => a.TargetName))
@@ -83,7 +83,7 @@ namespace EQTool.ViewModels
                     var allspellshidden = true;
                     foreach (var spell in spells)
                     {
-                        if (spell.ColumnVisiblity != System.Windows.Visibility.Collapsed)
+                        if (spell.ColumnVisibility != System.Windows.Visibility.Collapsed)
                         {
                             allspellshidden = false;
                         }
@@ -133,7 +133,7 @@ namespace EQTool.ViewModels
             appDispatcher.DispatchUI(() =>
             {
                 var spellname = match.Spell.name;
-                if (match.MutipleMatchesFound)
+                if (match.MultipleMatchesFound)
                 {
                     spellname = "??? " + spellname;
                 }
@@ -156,7 +156,7 @@ namespace EQTool.ViewModels
                     SecondsLeftOnSpell = spellduration,
                     SpellIcon = match.Spell.SpellIcon,
                     Classes = match.Spell.Classes,
-                    GuessedSpell = match.MutipleMatchesFound
+                    GuessedSpell = match.MultipleMatchesFound
                 });
             });
         }

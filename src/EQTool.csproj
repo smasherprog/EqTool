@@ -159,7 +159,7 @@
     <Compile Include="Services\Spells\Log\LogCustomTimer.cs" />
     <Compile Include="Services\Spells\Log\LogDeathParse.cs" />
     <Compile Include="Services\Spells\Log\DPSLogParse.cs" />
-    <Compile Include="Services\Spells\SpellUIExtentions.cs" />
+    <Compile Include="Services\Spells\SpellUIExtensions.cs" />
     <Compile Include="Services\Spells\Log\ParseSpellGuess.cs" />
     <Compile Include="Services\Spells\SpellDurations.cs" />
     <Compile Include="Services\Spells\Log\ParseHandleYou.cs" />
