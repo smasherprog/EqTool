@@ -115,6 +115,11 @@ namespace EQTool
 
         private void CloseWindow(object sender, RoutedEventArgs e)
         {
+            if (settings.DpsWindowState == null)
+            {
+                settings.DpsWindowState = new Models.WindowState();
+            }
+            settings.DpsWindowState.Closed = true;
             Close();
         }
 

@@ -7,7 +7,9 @@ namespace EQTool.Models
     {
         public Rect WindowRect { get; set; }
         public System.Windows.WindowState State { get; set; }
+        public bool Closed { get; set; }
     }
+
     public class EQToolSettings
     {
         public double FontSize { get; set; }

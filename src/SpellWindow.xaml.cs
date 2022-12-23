@@ -129,6 +129,11 @@ namespace EQTool
 
         private void CloseWindow(object sender, RoutedEventArgs e)
         {
+            if (settings.SpellWindowState == null)
+            {
+                settings.SpellWindowState = new Models.WindowState();
+            }
+            settings.SpellWindowState.Closed = true;
             Close();
         }
 
