@@ -66,7 +66,7 @@ namespace EQTool
             };
             SystemTrayIcon.BalloonTipClicked += UpdateClicked;
 
-            if (!FindEq.IsValid(EQToolSettings.DefaultEqDirectory) || FindEq.TryCheckLogginggEnabled(EQToolSettings.DefaultEqDirectory) == false)
+            if (!FindEq.IsValid(EQToolSettings.DefaultEqDirectory) || FindEq.TryCheckLoggingEnabled(EQToolSettings.DefaultEqDirectory) == false)
             {
                 Settings(SettingsMenuItem, null);
             }
@@ -233,7 +233,7 @@ namespace EQTool
                 settingswindow.Show();
                 settingswindow.Closed += (se, ee) =>
                 {
-                    if (FindEq.IsValid(EQToolSettings.DefaultEqDirectory) && FindEq.TryCheckLogginggEnabled(EQToolSettings.DefaultEqDirectory) == true)
+                    if (FindEq.IsValid(EQToolSettings.DefaultEqDirectory) && FindEq.TryCheckLoggingEnabled(EQToolSettings.DefaultEqDirectory) == true)
                     {
                         ToggleMenuButtons(true);
                     }
