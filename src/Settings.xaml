@@ -15,7 +15,7 @@
         <StackPanel Orientation="Vertical" >
             <StackPanel Orientation="Vertical" Visibility="{Binding MissingConfiguration, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}">
                 <TextBlock Text="Configuration missing!" FontWeight="Bold" FontSize="20" Foreground="Red"/>
-                <TextBlock Text="Select your EQ path, and make sure Logging is enabled!" FontWeight="Bold" FontSize="14" />
+                <TextBlock Text="Select your EQ path, and make sure logging is enabled!" FontWeight="Bold" FontSize="14" />
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Text="Eq Path"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100" Foreground="Red"  Visibility="{Binding DoesNotHaveEqPath, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}"/>
