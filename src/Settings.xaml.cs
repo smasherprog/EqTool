@@ -46,7 +46,7 @@ namespace EQTool
             Topmost = true;
             InitializeComponent();
             TryUpdateSettings();
-            TryCheckLogginggEnabled();
+            TryCheckLoggingEnabled();
             fileopenbuttonimage.Source = Properties.Resources.open_folder.ConvertToBitmapImage();
 
             foreach (var item in SettingsWindowData.PlayerClasses)
@@ -177,9 +177,9 @@ namespace EQTool
             return Process.GetProcessesByName("eqgame").Length > 0;
         }
 
-        private void TryCheckLogginggEnabled()
+        private void TryCheckLoggingEnabled()
         {
-            SettingsWindowData.IsLoggingEnabled = FindEq.TryCheckLogginggEnabled(settings.DefaultEqDirectory) ?? false;
+            SettingsWindowData.IsLoggingEnabled = FindEq.TryCheckLoggingEnabled(settings.DefaultEqDirectory) ?? false;
             if (SettingsWindowData.NotMissingConfiguration)
             {
                 Height = 650;
@@ -207,7 +207,7 @@ namespace EQTool
                     {
                         SettingsWindowData.EqPath = settings.DefaultEqDirectory = fbd.SelectedPath;
                         TryUpdateSettings();
-                        TryCheckLogginggEnabled();
+                        TryCheckLoggingEnabled();
                     }
                     else
                     {
@@ -217,11 +217,11 @@ namespace EQTool
             }
         }
 
-        private void enableLoggingg_Click(object sender, RoutedEventArgs e)
+        private void enableLogging_Click(object sender, RoutedEventArgs e)
         {
             if (IsEqRunning())
             {
-                _ = System.Windows.MessageBox.Show("You must exit EQ before you can enable Loggingg!", "Configuration", MessageBoxButton.OK, MessageBoxImage.Warning);
+                _ = System.Windows.MessageBox.Show("You must exit EQ before you can enable Logging!", "Configuration", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
             try
@@ -245,7 +245,7 @@ namespace EQTool
             }
             catch { }
             TryUpdateSettings();
-            TryCheckLogginggEnabled();
+            TryCheckLoggingEnabled();
         }
 
         private void GlobalTriggerWindowOpacityValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
