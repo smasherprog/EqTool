@@ -30,9 +30,9 @@ namespace EQTool.ViewModels
 
             Camera = new OrthographicCamera
             {
-                Width = 300,
-                LookDirection = new Vector3D(0, 0, 100),
-                Position = new Point3D(0, 1000, -100),
+                Width = 500,
+                LookDirection = new Vector3D(0, 0, -100),
+                Position = new Point3D(0, 1000, 100),
                 UpDirection = new Vector3D(0, 1, 0)
             };
 
@@ -40,7 +40,16 @@ namespace EQTool.ViewModels
             UpdateLocation(new Point3D(0, 0, 0));
         }
 
-        public OrthographicCamera Camera { get; set; }
+        private OrthographicCamera _Camera;
+        public OrthographicCamera Camera
+        {
+            get => _Camera;
+            set
+            {
+                _Camera = value;
+                OnPropertyChanged();
+            }
+        }
         private Vector3D LastLookDirection;
         private ArrowVisual3D Arrow;
         private Point3D Lastlocation;
@@ -79,7 +88,7 @@ namespace EQTool.ViewModels
             {
                 return;
             }
-
+             
             Title = zone;
             Debug.WriteLine($"Loading: {zone}");
             var map = mapLoad.Load(zone);
@@ -111,16 +120,16 @@ namespace EQTool.ViewModels
                         Text = item.label,
                         Position = item.Point,
                         Foreground = new SolidColorBrush(item.Color),
-                        TextDirection = new Vector3D(-1, 0, 0),
+                        TextDirection = new Vector3D(1, 0, 0),
                         UpDirection = new Vector3D(0, 1, 0),
                         Height = 30
                     };
                     DrawItems.Add(text);
                 }
                 var center = map.AABB.Center;
-                center.Z -= 3000; 
+                center.Z -= 3000;
                 Camera.Position = center;
-                var halfbox = map.AABB.MaxHeight;
+                var halfbox = map.AABB.MaxHeight * .2;
                 map.AABB.Min.X = map.AABB.Min.X - halfbox;
                 map.AABB.Min.Y = map.AABB.Min.X - halfbox;
 
@@ -130,12 +139,12 @@ namespace EQTool.ViewModels
                 var min = map.AABB.Min;
                 var max = map.AABB.Max;
                 DrawItems.Add(new QuadVisual3D
-                { 
+                {
                     Point1 = new Point3D(max.X, max.Y, 0),
                     Point2 = new Point3D(max.X, min.Y, 0),
                     Point3 = new Point3D(min.X, min.Y, 0),
                     Point4 = new Point3D(min.X, max.Y, 0),
-                    Fill = new SolidColorBrush(System.Windows.Media.Color.FromArgb(200, 1, 1, 1))
+                    Fill = new SolidColorBrush(System.Windows.Media.Color.FromArgb(0, 1, 1, 1))
                 });
                 Camera.LookAt(map.AABB.Center, 2000);
             }

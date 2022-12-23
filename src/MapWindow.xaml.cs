@@ -36,9 +36,10 @@ namespace EQTool
             this.logParser.LineReadEvent += LogParser_LineReadEvent;
             UITimer = new System.Timers.Timer(1000);
             UITimer.Elapsed += UITimer_Elapsed;
-            UITimer.Enabled = true;
+            UITimer.Enabled = true; 
             this.viewport3d.PanGesture = new MouseGesture(MouseAction.LeftClick);
             this.viewport3d.PanGesture2 = null;
+      
         }
 
         private void UITimer_Elapsed(object sender, ElapsedEventArgs e)
@@ -54,7 +55,7 @@ namespace EQTool
                 mapViewModel.UpdateLocation(pos.Value);
             }
             else
-            {
+            { 
                 var matched = zoneParser.Match(e.Line);
                 mapViewModel.LoadMap(matched);
             }

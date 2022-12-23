@@ -88,14 +88,14 @@ namespace EQTool.Services
                         Points = new Point3D[] {
                              new Point3D
                              {
-                                 X = float.Parse(splits[0]) *-1,
-                                 Y = float.Parse(splits[1]) *-1,
+                                 Y = float.Parse(splits[0]),
+                                 X = float.Parse(splits[1]),
                                  Z = float.Parse(splits[2])
                              },
                              new Point3D
                              {
-                                 X = float.Parse(splits[3])*-1,
-                                 Y = float.Parse(splits[4])*-1,
+                                 Y = float.Parse(splits[3]),
+                                 X = float.Parse(splits[4]),
                                  Z = float.Parse(splits[5])
                              }
                          },
@@ -114,8 +114,8 @@ namespace EQTool.Services
                     {
                         Point = new Point3D
                         {
-                            X = float.Parse(splits[0]) * -1,
-                            Y = float.Parse(splits[1]) * -1,
+                            Y = float.Parse(splits[0]),
+                            X = float.Parse(splits[1]),
                             Z = float.Parse(splits[2])
                         },
                         Color = Color.FromRgb(byte.Parse(splits[3]), byte.Parse(splits[4]), byte.Parse(splits[5])),
