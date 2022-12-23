@@ -1,6 +1,8 @@
 ﻿using EQTool.Services;
 using EQTool.Services.Map;
 using HelixToolkit.Wpf;
+using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -88,7 +90,7 @@ namespace EQTool.ViewModels
             {
                 return;
             }
-             
+
             Title = zone;
             Debug.WriteLine($"Loading: {zone}");
             var map = mapLoad.Load(zone);
@@ -149,7 +151,6 @@ namespace EQTool.ViewModels
                 Camera.LookAt(map.AABB.Center, 2000);
             }
         }
-
         public void Update()
         {
             appDispatcher.DispatchUI(() =>
@@ -167,10 +168,15 @@ namespace EQTool.ViewModels
                         item.UpDirection = cameraup;
                     }
                 }
-                foreach(LinesVisual3D item in DrawItems.Where(a=> a.GetType() == typeof(LinesVisual3D)))
+                var maxdist = 100.0 * 100.0;
+                foreach (LinesVisual3D item in DrawItems.Where(a => a.GetType() == typeof(LinesVisual3D)))
                 {
-                    var dist = item.Points.First().DistanceTo(this.Camera.Position);
-                    if ()
+                    var dist = item.Points.First().DistanceToSquared(this.Camera.Position);
+                    var alpha = dist / maxdist;
+                    alpha = Math.Min(1, Math.Max(0, alpha));
+                    alpha = (alpha - 1) * -1;
+                    alpha = alpha * 255;
+                    item.Color = Color.FromArgb(200, item.Color.R, item.Color.G, item.Color.B);
                 }
             });
         }
