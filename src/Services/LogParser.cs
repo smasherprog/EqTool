@@ -41,10 +41,10 @@ namespace EQTool.Services
         {
             appDispatcher.DispatchUI(() =>
             {
-                if(LineReadEvent!= null)
-                {
+                if(LineReadEvent != null)
+                { 
                     LineReadEvent(this, log);
-                } 
+                }
             });
         }
 
@@ -74,7 +74,7 @@ namespace EQTool.Services
                     if (!LastReadOffset.HasValue || LastReadOffset > fileinfo.Length)
                     {
                         Debug.WriteLine($"Player Switched or new Player detected");
-                        if(this.PlayerChangeEvent!= null)
+                        if(PlayerChangeEvent != null)
                         { 
                             PlayerChangeEvent(this, new PlayerChangeEventArgs());
                         }
