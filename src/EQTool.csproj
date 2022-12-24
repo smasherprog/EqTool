@@ -127,6 +127,7 @@
     <Compile Include="Models\EQToolSettings.cs" />
     <Compile Include="Services\AppDispatcher.cs" />
     <Compile Include="Services\BitmapExtensions.cs" />
+    <Compile Include="Services\Fight\FightLogService.cs" />
     <Compile Include="Services\Spells\SpellUIExtentions.cs" />
     <Compile Include="Services\WindowBounds.cs" />
     <Compile Include="Services\LogParser.cs" />

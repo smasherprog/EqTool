@@ -1,5 +1,6 @@
 ﻿using EQTool.Models;
 using EQTool.Services;
+using EQTool.Services.Fight;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -12,10 +13,12 @@ namespace EQTool.ViewModels
     public class DPSWindowViewModel : INotifyPropertyChanged
     {
         private readonly IAppDispatcher appDispatcher;
+        private readonly FightLogService fightLogService;
 
-        public DPSWindowViewModel(IAppDispatcher appDispatcher)
+        public DPSWindowViewModel(IAppDispatcher appDispatcher, FightLogService fightLogService)
         {
             this.appDispatcher = appDispatcher;
+            this.fightLogService = fightLogService;
         }
 
         public ObservableCollection<EntittyDPS> _EntityList = new ObservableCollection<EntittyDPS>();
@@ -50,9 +53,9 @@ namespace EQTool.ViewModels
             appDispatcher.DispatchUI(() =>
             {
                 var itemstormove = new List<EntittyDPS>();
-                var now = DateTime.Now; 
-                
-        
+                var now = DateTime.Now;
+
+
                 foreach (var item in _EntityList)
                 {
                     var lasttime = item.LastDamageDone ?? item.StartTime;
@@ -75,7 +78,7 @@ namespace EQTool.ViewModels
                         e.TargetTotalDamage = totaldmg;
                     }
                 }
-
+                fightLogService.Log(itemstormove);
                 foreach (var item in itemstormove)
                 {
                     _ = EntityList.Remove(item);
