@@ -132,16 +132,7 @@ namespace EQTool
         {
             (App.Current as App).OpenSettingsWIndow();
         }
-
-        protected bool isPointVisibleOnAScreen(Point p)
-        {
-            foreach (Screen s in Screen.AllScreens)
-            {
-                if (p.X < s.Bounds.Right && p.X > s.Bounds.Left && p.Y > s.Bounds.Top && p.Y < s.Bounds.Bottom)
-                    return true;
-            }
-            return false;
-        }
+         
         private void openspells(object sender, RoutedEventArgs e)
         {
             (App.Current as App).OpenSpellsWIndow();

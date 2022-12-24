@@ -1,6 +1,4 @@
-﻿using EQTool.Models;
-using LiveChartsCore;
-using LiveChartsCore.SkiaSharpView;
+﻿using EQTool.Models; 
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -112,26 +110,7 @@ namespace EQTool
                 t.Opacity = GlobalDPSWindowOpacity;
                 return t;
             }
-        }
-
-        private void StartupCharts()
-        {
-            LiveCharts.Configure(config =>
-               config
-                   // registers SkiaSharp as the library backend
-                   // REQUIRED unless you build your own
-                   .AddSkiaSharp()
-
-                   // adds the default supported types
-                   // OPTIONAL but highly recommend
-                   .AddDefaultMappers()
-
-                   // select a theme, default is Light
-                   // OPTIONAL
-                   //.AddDarkTheme()
-                   .AddLightTheme()
-               );
-        }
+        } 
 
         private void App_Startup(object sender, StartupEventArgs e)
         {
@@ -167,9 +146,8 @@ namespace EQTool
                     {
                         Thread.Sleep(1000 * 2);
                         System.IO.Directory.Delete("NewVersion", true);
-                        System.IO.File.Delete("EqToool.zip");
-                        StartupCharts();
-                        mainWindow = new MainWindow();
+                        System.IO.File.Delete("EqToool.zip"); 
+                        mainWindow = new MainWindow(true);
                     }
                 }
                 catch (Exception ex)
@@ -182,9 +160,8 @@ namespace EQTool
             {
 #if !DEBUG
                 CheckForUpdates();
-#endif
-                StartupCharts();
-                mainWindow = new MainWindow();
+#endif 
+                mainWindow = new MainWindow(false);
             }
         }
 
