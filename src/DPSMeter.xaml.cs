@@ -3,10 +3,12 @@ using EQTool.Services;
 using EQTool.Services.Spells.Log;
 using EQTool.ViewModels;
 using System;
-using System.ComponentModel; 
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Forms;
 using System.Windows.Input;
 
 namespace EQTool
@@ -33,14 +35,14 @@ namespace EQTool
             this.dPSWindowViewModel = dPSWindowViewModel;
             this.dPSWindowViewModel.EntityList = new System.Collections.ObjectModel.ObservableCollection<EntittyDPS>();
             DataContext = dPSWindowViewModel;
-            InitializeComponent(); 
+            InitializeComponent();
             if (settings.DpsWindowState != null && WindowBounds.isPointVisibleOnAScreen(settings.DpsWindowState.WindowRect))
             {
-                this.Left = settings.DpsWindowState.WindowRect.Left;
-                this.Top = settings.DpsWindowState.WindowRect.Top;
-                this.Height = settings.DpsWindowState.WindowRect.Height;
-                this.Width = settings.DpsWindowState.WindowRect.Width;
-                this.WindowState = settings.DpsWindowState.State;
+                Left = settings.DpsWindowState.WindowRect.Left;
+                Top = settings.DpsWindowState.WindowRect.Top;
+                Height = settings.DpsWindowState.WindowRect.Height;
+                Width = settings.DpsWindowState.WindowRect.Width;
+                WindowState = settings.DpsWindowState.State;
             }
             App.GlobalDPSWindowOpacity = settings.GlobalDPSWindowOpacity;
             Topmost = settings.TriggerWindowTopMost;
@@ -64,7 +66,7 @@ namespace EQTool
             dPSWindowViewModel.TryAdd(matched);
             var targetdead = logDeathParse.GetDeadTarget(e.Line);
             dPSWindowViewModel.TargetDied(targetdead);
-        } 
+        }
 
         protected override void OnClosing(CancelEventArgs e)
         {
@@ -74,12 +76,12 @@ namespace EQTool
             }
             settings.DpsWindowState.WindowRect = new Rect
             {
-                X = this.Left,
-                Y = this.Top,
-                Height = this.Height,
-                Width = this.Width
+                X = Left,
+                Y = Top,
+                Height = Height,
+                Width = Width
             };
-            settings.DpsWindowState.State = this.WindowState;
+            settings.DpsWindowState.State = WindowState;
             UITimer.Stop();
             UITimer.Dispose();
             logParser.LineReadEvent += LogParser_LineReadEvent;
@@ -103,14 +105,7 @@ namespace EQTool
 
         private void MaximizeWindow(object sender, RoutedEventArgs e)
         {
-            if (WindowState == System.Windows.WindowState.Maximized)
-            {
-                WindowState = System.Windows.WindowState.Normal;
-            }
-            else
-            {
-                WindowState = System.Windows.WindowState.Maximized;
-            }
+            WindowState = WindowState == System.Windows.WindowState.Maximized ? System.Windows.WindowState.Normal : System.Windows.WindowState.Maximized;
         }
 
         private void CloseWindow(object sender, RoutedEventArgs e)
@@ -132,10 +127,24 @@ namespace EQTool
         {
             (App.Current as App).OpenSettingsWIndow();
         }
-         
+
         private void openspells(object sender, RoutedEventArgs e)
         {
             (App.Current as App).OpenSpellsWIndow();
-        } 
+        }
+
+        private void copytoclipboard(object sender, RoutedEventArgs e)
+        {
+            var name = ((sender as Button).DataContext as dynamic)?.Name as string;
+
+            var items = dPSWindowViewModel.EntityList.Where(a => a.TargetName == name);
+            var fights = new List<string>();
+            foreach (var item in items)
+            {
+                fights.Add($"{item.SourceName} DPS:${item.TotalDPS},DMG:{item.TotalDamage}-{item.PercentOfTotalDamage}");
+            }
+            var fightdetails = "Fight Details Against " + name + "   " + string.Join(" / ", fights);
+            System.Windows.Forms.Clipboard.SetText(fightdetails);
+        }
     }
 }

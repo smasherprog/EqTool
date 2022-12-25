@@ -231,9 +231,14 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="open-folder.png" />
+    <Content Include="open-folder.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Copy.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
     <Content Include="wizard.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

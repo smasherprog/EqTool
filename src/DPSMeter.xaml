@@ -88,7 +88,10 @@
                                                             <ColumnDefinition Width="45"/>
                                                             <ColumnDefinition Width="70" /> 
                                                         </Grid.ColumnDefinitions>
-                                                        <TextBlock Grid.Column="0" Grid.ColumnSpan="4" Text="{Binding Name}" FontWeight="Bold" FontSize="{DynamicResource GlobalFontSize}" />
+                                                        <TextBlock Grid.Column="0" Text="{Binding Name}" FontWeight="Bold" FontSize="{DynamicResource GlobalFontSize}" />
+                                                        <Button Grid.Column="1" Width="14" Height="14" Click="copytoclipboard" ToolTip="Copy Details to clipboard">
+                                                            <Image Source="Copy.png"/>
+                                                        </Button>
                                                         <TextBlock  HorizontalAlignment="Left" Grid.Column="3" FontWeight="Bold" Text="{Binding Items[0].TargetTotalDamage}" />
                                                     </Grid>
                                                 </Expander.Header>
