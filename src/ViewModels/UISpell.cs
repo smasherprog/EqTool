@@ -91,7 +91,7 @@ namespace EQTool.ViewModels
         {
             get
             {
-                if (_SpellType <= 0)
+                if (_SpellType <= 0 || TargetName == EQSpells.SpaceYou)
                 {
                     return Visibility.Visible;
                 }

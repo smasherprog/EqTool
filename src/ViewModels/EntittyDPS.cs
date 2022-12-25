@@ -25,7 +25,16 @@ namespace EQTool.ViewModels
 
         public string SourceName_and_Info
         {
-            get => _SourceName + $"    {TotalSeconds} sec";
+            get
+            {
+                var ret = _SourceName;
+                if (this.DeathTime.HasValue)
+                {
+                    ret += "  (Dead)";
+                }
+                ret += $"    {TotalSeconds} sec";
+                return ret;
+            }
         }
 
         private string _TargetName = string.Empty;
@@ -87,9 +96,9 @@ namespace EQTool.ViewModels
             {
                 TotalTwelveSecondDamage = TotalDamage;
             }
-            else if(Last12secondIndex <= Damage.Count -1)
+            else if (Last12secondIndex <= Damage.Count - 1)
             {
-                var item = Damage[Last12secondIndex]; 
+                var item = Damage[Last12secondIndex];
                 while ((endtimestamp - item.TimeStamp).TotalSeconds > 12)
                 {
                     item = Damage[Last12secondIndex];

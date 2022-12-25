@@ -82,7 +82,7 @@
                     <CheckBox x:Name="YouSpellsOnly" Checked="YouSpells_Checked"  Unchecked="YouSpells_Unchecked">Only show spells that effect you</CheckBox>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Spells By Class"  FontWeight="Bold" MinWidth="100"/>
+                    <TextBlock Text="Other spells"  FontWeight="Bold" MinWidth="100" ToolTip="This will filter what shows up on other players."/>
                     <StackPanel Orientation="Vertical">
                         <TextBlock Visibility="{Binding HasNoCharName}" Text="You must be logged in!"  FontWeight="Bold" Foreground="Red"/>
                         <ListBox IsEnabled="{Binding HasCharName}"

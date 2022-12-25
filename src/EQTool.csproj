@@ -129,9 +129,6 @@
     <Compile Include="DPSMeter.xaml.cs">
       <DependentUpon>DPSMeter.xaml</DependentUpon>
     </Compile>
-    <Compile Include="FightVisualzation.xaml.cs">
-      <DependentUpon>FightVisualzation.xaml</DependentUpon>
-    </Compile>
     <Compile Include="MapWindow.xaml.cs">
       <DependentUpon>MapWindow.xaml</DependentUpon>
     </Compile>
@@ -142,6 +139,7 @@
     <Compile Include="Models\EQToolSettings.cs" />
     <Compile Include="Services\AppDispatcher.cs" />
     <Compile Include="Services\BitmapExtensions.cs" />
+    <Compile Include="Services\Fight\FightLogService.cs" />
     <Compile Include="Services\Map\LocationParser.cs" />
     <Compile Include="Services\Map\ZoneParser.cs" />
     <Compile Include="Services\Map\MapLoad.cs" />
@@ -210,10 +208,6 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="FightVisualzation.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -256,7 +250,9 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="open-folder.png" />
+    <Content Include="open-folder.png">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Content Include="map.png">

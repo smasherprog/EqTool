@@ -1,13 +1,4 @@
-﻿using Autofac;
-using EQTool.Models;
-using EQTool.Services;
-using System;
-using System.ComponentModel;
-using System.Diagnostics;
-using System.Reflection;
-using System.Windows;
-
-namespace EQTool
+﻿namespace EQTool
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
@@ -19,14 +10,13 @@ namespace EQTool
         private SpellWindow spellWindow = null;
         private MapWindow mapwindow = null;
         private DPSMeter dpsmeter = null;
-        private FightVisualzation fightVisualzation = null;
         private Settings settingswindow = null;
         private readonly System.Windows.Forms.MenuItem MapMenuItem;
         private readonly System.Windows.Forms.MenuItem SpellsMenuItem;
-        private readonly System.Windows.Forms.MenuItem DpsMeterMenuItem; 
+        private readonly System.Windows.Forms.MenuItem DpsMeterMenuItem;
         private readonly System.Windows.Forms.MenuItem SettingsMenuItem;
 
-        public MainWindow()
+        public MainWindow(bool updated)
         {
             InitializeComponent();
 
@@ -34,7 +24,7 @@ namespace EQTool
             SettingsMenuItem = new System.Windows.Forms.MenuItem("Settings", Settings);
             SpellsMenuItem = new System.Windows.Forms.MenuItem("Spells", Spells);
             MapMenuItem = new System.Windows.Forms.MenuItem("Map (ALPHA)", Map);
-            DpsMeterMenuItem = new System.Windows.Forms.MenuItem("Dps", DPS); 
+            DpsMeterMenuItem = new System.Windows.Forms.MenuItem("Dps", DPS);
             var gitHubMenuItem = new System.Windows.Forms.MenuItem("Suggestions", Suggestions);
             var whythepig = new System.Windows.Forms.MenuItem("Why the Pig?", WhyThePig);
             var updates = new System.Windows.Forms.MenuItem("Check for Update", UpdateClicked);
@@ -51,7 +41,7 @@ namespace EQTool
                 ContextMenu = new System.Windows.Forms.ContextMenu(new System.Windows.Forms.MenuItem[]
                 {
                      whythepig,
-                    DpsMeterMenuItem, 
+                    DpsMeterMenuItem,
                     MapMenuItem,
                     SpellsMenuItem,
                     SettingsMenuItem,
@@ -85,7 +75,12 @@ namespace EQTool
                 }
             }
 
-            Hide();  
+            Hide();
+            if (updated)
+            {
+                SystemTrayIcon.BalloonTipClicked += UpdateNotes;
+                SystemTrayIcon.ShowBalloonTip(5000, "PigParse Updated!", "Click here for details!", System.Windows.Forms.ToolTipIcon.Info);
+            }
         }
 
         private EQToolSettings EQToolSettings => container.Resolve<EQToolSettings>();
@@ -97,9 +92,19 @@ namespace EQTool
             mapwindow?.Close();
             dpsmeter?.Close();
             settingswindow?.Close();
-            fightVisualzation?.Close();
             container.Resolve<EQToolSettingsLoad>().Save(EQToolSettings);
             base.OnClosing(e);
+        }
+
+        private void UpdateNotes(object sender, EventArgs e)
+        {
+            SystemTrayIcon.BalloonTipClicked -= UpdateNotes;
+            var versionstring = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+            _ = System.Diagnostics.Process.Start(new ProcessStartInfo
+            {
+                FileName = "https://github.com/smasherprog/EqTool/releases/tag/" + versionstring,
+                UseShellExecute = true
+            });
         }
 
         private void UpdateClicked(object sender, EventArgs e)
@@ -111,7 +116,7 @@ namespace EQTool
         {
             SpellsMenuItem.Enabled = value;
             MapMenuItem.Enabled = value;
-            DpsMeterMenuItem.Enabled = value; 
+            DpsMeterMenuItem.Enabled = value;
         }
 
         private void WhyThePig(object sender, EventArgs e)
@@ -125,7 +130,6 @@ namespace EQTool
 
         private void Suggestions(object sender, EventArgs e)
         {
-            _ = System.Windows.MessageBox.Show("Please, post an issue in github if you have any suggestions or you find any bugs!", "Suggestions", MessageBoxButton.OK, MessageBoxImage.Information);
             _ = System.Diagnostics.Process.Start(new ProcessStartInfo
             {
                 FileName = "https://github.com/smasherprog/EqTool/issues",
@@ -146,7 +150,7 @@ namespace EQTool
         }
 
         private void Map(object sender, EventArgs e)
-        { 
+        {
             var s = (System.Windows.Forms.MenuItem)sender;
             s.Checked = !s.Checked;
             if (s.Checked)
@@ -190,24 +194,6 @@ namespace EQTool
             {
                 dpsmeter?.Close();
                 dpsmeter = null;
-            }
-        }
-
-        private void DPSGraph(object sender, EventArgs e)
-        {
-            var s = (System.Windows.Forms.MenuItem)sender;
-            s.Checked = !s.Checked;
-            if (s.Checked)
-            {
-                fightVisualzation?.Close();
-                fightVisualzation = container.Resolve<FightVisualzation>();
-                fightVisualzation.Closed += (se, ee) => s.Checked = false;
-                fightVisualzation.Show();
-            }
-            else
-            {
-                fightVisualzation?.Close();
-                fightVisualzation = null;
             }
         }
 

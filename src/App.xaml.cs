@@ -1,19 +1,4 @@
-﻿using EQTool.Models; 
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.IO.Compression;
-using System.Linq;
-using System.Net.Http;
-using System.Reflection;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Media;
-
-namespace EQTool
+﻿namespace EQTool
 {
     /// <summary>
     /// Interaction logic for App.xaml
@@ -110,7 +95,7 @@ namespace EQTool
                 t.Opacity = GlobalDPSWindowOpacity;
                 return t;
             }
-        } 
+        }
 
         private void App_Startup(object sender, StartupEventArgs e)
         {
@@ -146,8 +131,8 @@ namespace EQTool
                     {
                         Thread.Sleep(1000 * 2);
                         System.IO.Directory.Delete("NewVersion", true);
-                        System.IO.File.Delete("EqToool.zip"); 
-                        mainWindow = new MainWindow();
+                        System.IO.File.Delete("EqToool.zip");
+                        mainWindow = new MainWindow(true);
                     }
                 }
                 catch (Exception ex)
@@ -160,8 +145,8 @@ namespace EQTool
             {
 #if !DEBUG
                 CheckForUpdates();
-#endif
-                mainWindow = new MainWindow();
+#endif 
+                mainWindow = new MainWindow(false);
             }
         }
 
