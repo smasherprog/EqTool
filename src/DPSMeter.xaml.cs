@@ -141,7 +141,7 @@ namespace EQTool
             var fights = new List<string>();
             foreach (var item in items)
             {
-                fights.Add($"{item.SourceName} DPS:${item.TotalDPS},DMG:{item.TotalDamage}-{item.PercentOfTotalDamage}");
+                fights.Add($"{item.SourceName} {item.PercentOfTotalDamage}% DPS:{item.TotalDPS} DMG:{item.TotalDamage}");
             }
             var fightdetails = "Fight Details Against " + name + "   " + string.Join(" / ", fights);
             System.Windows.Forms.Clipboard.SetText(fightdetails);
