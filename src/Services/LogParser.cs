@@ -35,16 +35,13 @@ namespace EQTool.Services
 
         public event EventHandler<LogParserEventArgs> LineReadEvent;
 
-        public event EventHandler<PlayerChangeEventArgs> PlayerChangeEvent; 
+        public event EventHandler<PlayerChangeEventArgs> PlayerChangeEvent;
 
         public void Push(LogParserEventArgs log)
         {
             appDispatcher.DispatchUI(() =>
             {
-                if(LineReadEvent != null)
-                { 
-                    LineReadEvent(this, log);
-                }
+                LineReadEvent?.Invoke(this, log);
             });
         }
 
@@ -74,10 +71,7 @@ namespace EQTool.Services
                     if (!LastReadOffset.HasValue || LastReadOffset > fileinfo.Length)
                     {
                         Debug.WriteLine($"Player Switched or new Player detected");
-                        if(PlayerChangeEvent != null)
-                        { 
-                            PlayerChangeEvent(this, new PlayerChangeEventArgs());
-                        }
+                        PlayerChangeEvent?.Invoke(this, new PlayerChangeEventArgs());
                         LastReadOffset = fileinfo.Length;
                     }
                     using (var stream = new FileStream(filepath, FileMode.Open, FileAccess.Read))
@@ -90,15 +84,15 @@ namespace EQTool.Services
                             LastReadOffset = stream.Position;
                             if (line.Length > 27)
                             {
-                                if (LineReadEvent != null)
-                                {
-                                    LineReadEvent(this, new LogParserEventArgs { Line = line });
-                                } 
+                                LineReadEvent?.Invoke(this, new LogParserEventArgs { Line = line });
                             }
                         }
                     }
                 }
-                catch { }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex.ToString());
+                }
             });
         }
 

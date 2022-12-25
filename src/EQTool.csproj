@@ -157,7 +157,6 @@
     <Compile Include="ViewModels\EQTextVisual3D.cs" />
     <Compile Include="ViewModels\EQLinesVisual3D.cs" />
     <Compile Include="ViewModels\MapViewModel.cs" />
-    <Compile Include="ViewModels\FightVisualzationViewModel.cs" />
     <Compile Include="ViewModels\DPSWindowViewModel.cs" />
     <Compile Include="ViewModels\SpellWindowViewModel.cs" />
     <Compile Include="ViewModels\EntittyDPS.cs" />

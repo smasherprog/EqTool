@@ -1,4 +1,17 @@
-﻿namespace EQTool
+﻿using EQTool.Models;
+using EQTool.Services;
+using EQTool.Services.Spells.Log;
+using EQTool.ViewModels;
+using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Input;
+
+namespace EQTool
 {
     /// <summary>
     /// Interaction logic for DPSMeter.xaml
@@ -112,7 +125,7 @@
 
         private void opensettings(object sender, RoutedEventArgs e)
         {
-            (App.Current as App).OpenSettingsWIndow();
+            (App.Current as App).OpenSettingsWindow();
         }
 
         private void openmap(object sender, RoutedEventArgs e)
@@ -122,7 +135,7 @@
 
         private void openspells(object sender, RoutedEventArgs e)
         {
-            (App.Current as App).OpenSpellsWIndow();
+            (App.Current as App).OpenSpellsWindow();
         }
 
         private void copytoclipboard(object sender, RoutedEventArgs e)

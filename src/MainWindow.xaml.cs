@@ -1,4 +1,13 @@
-﻿namespace EQTool
+﻿using Autofac;
+using EQTool.Models;
+using EQTool.Services;
+using System;
+using System.ComponentModel;
+using System.Diagnostics;
+using System.Reflection;
+using System.Windows;
+
+namespace EQTool
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
