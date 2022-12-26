@@ -359,6 +359,30 @@ namespace EQToolTests
         }
 
         [TestMethod]
+        public void TestSlowForNecro_Multiname_threespace()
+        {
+            var spells = container.Resolve<EQSpells>();
+            var spelllogparse = container.Resolve<SpellLogParse>();
+            var spellname = "Cripple";
+            var shissarspell = spells.AllSpells.FirstOrDefault(a => a.name == spellname);
+            var line = "[Mon Nov 14 20:11:25 2022] an Jobober rager " + shissarspell.cast_on_other;
+            var service = container.Resolve<ParseSpellGuess>();
+            var player = container.Resolve<ActivePlayer>();
+            player.Player = new PlayerInfo
+            {
+                Level = 60,
+                PlayerClass = PlayerClasses.Necromancer
+            };
+            var guess = spelllogparse.MatchSpell(line);
+            var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(guess.Spell, player.Player));
+            Assert.AreEqual(7, spellduration.TotalMinutes);
+            Assert.IsNotNull(guess);
+            Assert.AreEqual(guess.Spell.name, spellname);
+            Assert.AreEqual(guess.TargetName, "an Jobober rager");
+            Assert.IsFalse(guess.MultipleMatchesFound);
+        }
+
+        [TestMethod]
         public void TestSpeedOfShissar2()
         {
             var spells = container.Resolve<EQSpells>();

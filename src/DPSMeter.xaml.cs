@@ -148,7 +148,7 @@ namespace EQTool
             {
                 fights.Add($"{item.SourceName} {item.PercentOfTotalDamage}% DPS:{item.TotalDPS} DMG:{item.TotalDamage}");
             }
-            var fightdetails = "Fight Details Against " + name + "   " + string.Join(" / ", fights);
+            var fightdetails = "Fight Details: " + name + " Dmg: " + (items.FirstOrDefault()?.TargetTotalDamage ?? 0) + "    " + string.Join(" / ", fights);
             System.Windows.Forms.Clipboard.SetText(fightdetails);
         }
     }
