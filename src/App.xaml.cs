@@ -121,7 +121,7 @@ namespace EQTool
                 {
                     if (e.Args[0].Contains("ping"))
                     {
-                        Thread.Sleep(1000 * 2);
+                        Thread.Sleep(1000 * 5);
                         var files = System.IO.Directory.GetFiles(System.IO.Directory.GetCurrentDirectory());
 
                         // Copy the files and overwrite destination files if they already exist. 
@@ -144,7 +144,7 @@ namespace EQTool
                     }
                     else if (e.Args[0].Contains("pong"))
                     {
-                        Thread.Sleep(1000 * 2);
+                        Thread.Sleep(1000 * 5);
                         System.IO.Directory.Delete("NewVersion", true);
                         System.IO.File.Delete("EqToool.zip");
                         mainWindow = new MainWindow(true);
