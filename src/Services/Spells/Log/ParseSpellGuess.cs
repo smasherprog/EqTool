@@ -43,44 +43,76 @@ namespace EQTool.Services.Spells.Log
             }
             else
             {
+                var match = Match(message);
+                if (match != null)
+                {
+                    return match;
+                }
+
                 removename = message.IndexOf(" ");
                 if (removename != -1)
                 {
                     var spellmessage = message.Substring(removename).Trim();
-                    var foundspells = new List<Spell>();
-
-                    if (spells.CastOtherSpells.TryGetValue(spellmessage, out foundspells))
+                    match = Match(spellmessage);
+                    if (match != null)
                     {
-                        foundspells = foundspells.Where(a => !IgnoreSpellsForGuesses.Contains(a.name)).ToList();
-                        var foundspell = SpellDurations.MatchClosestLevelToSpell(foundspells, activePlayer.Player);
-                        var targetname = message.Replace(foundspell.cast_on_other, string.Empty).Trim();
-                        Debug.WriteLine($"Other Spell: {foundspell.name} Message: {spellmessage}");
-                        var multiplematches = foundspell.Classes.All(a => a.Value == 255) && foundspells.Count > 1;
-                        return new SpellParsingMatch
-                        {
-                            Spell = foundspell,
-                            TargetName = targetname,
-                            MultipleMatchesFound = multiplematches
-                        };
+                        return match;
                     }
 
-                    if (spells.CastOnYouSpells.TryGetValue(message, out foundspells))
+                    removename = spellmessage.IndexOf(" ");
+                    if (removename != -1)
                     {
-                        foundspells = foundspells.Where(a => !IgnoreSpellsForGuesses.Contains(a.name)).ToList();
-                        var foundspell = SpellDurations.MatchClosestLevelToSpell(foundspells, activePlayer.Player);
-                        var targetname = message.Replace(foundspell.cast_on_other, string.Empty).Trim();
-                        Debug.WriteLine($"Cast On you Spell: {foundspell.name} Message: {spellmessage}");
-                        var multiplematches = foundspell.Classes.All(a => a.Value == 255) && foundspells.Count > 1;
-                        return new SpellParsingMatch
+                        spellmessage = spellmessage.Substring(removename).Trim();
+                        match = Match(spellmessage);
+                        if (match != null)
                         {
-                            Spell = foundspell,
-                            TargetName = EQSpells.SpaceYou,
-                            MultipleMatchesFound = multiplematches
-                        };
+                            return match;
+                        }
                     }
                 }
-
             }
+            return null;
+        }
+
+        private SpellParsingMatch Match(string message)
+        {
+            var removename = message.IndexOf(" ");
+            if (removename != -1)
+            {
+                var spellmessage = message.Substring(removename).Trim();
+                var foundspells = new List<Spell>();
+
+                if (spells.CastOtherSpells.TryGetValue(spellmessage, out foundspells))
+                {
+                    foundspells = foundspells.Where(a => !IgnoreSpellsForGuesses.Contains(a.name)).ToList();
+                    var foundspell = SpellDurations.MatchClosestLevelToSpell(foundspells, activePlayer.Player);
+                    var targetname = message.Replace(foundspell.cast_on_other, string.Empty).Trim();
+                    Debug.WriteLine($"Other Spell: {foundspell.name} Message: {spellmessage}");
+                    var multiplematches = foundspell.Classes.All(a => a.Value == 255) && foundspells.Count > 1;
+                    return new SpellParsingMatch
+                    {
+                        Spell = foundspell,
+                        TargetName = targetname,
+                        MultipleMatchesFound = multiplematches
+                    };
+                }
+
+                if (spells.CastOnYouSpells.TryGetValue(message, out foundspells))
+                {
+                    foundspells = foundspells.Where(a => !IgnoreSpellsForGuesses.Contains(a.name)).ToList();
+                    var foundspell = SpellDurations.MatchClosestLevelToSpell(foundspells, activePlayer.Player);
+                    var targetname = message.Replace(foundspell.cast_on_other, string.Empty).Trim();
+                    Debug.WriteLine($"Cast On you Spell: {foundspell.name} Message: {spellmessage}");
+                    var multiplematches = foundspell.Classes.All(a => a.Value == 255) && foundspells.Count > 1;
+                    return new SpellParsingMatch
+                    {
+                        Spell = foundspell,
+                        TargetName = EQSpells.SpaceYou,
+                        MultipleMatchesFound = multiplematches
+                    };
+                }
+            }
+
             return null;
         }
     }

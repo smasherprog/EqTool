@@ -151,7 +151,7 @@ namespace EQTool.Models
                 }
                 else
                 {
-                   // Debug.WriteLine($"Spell {mappedspell.name} Ignored");
+                    Debug.WriteLine($"Spell {mappedspell.name} Ignored");
                 }
             }
         }

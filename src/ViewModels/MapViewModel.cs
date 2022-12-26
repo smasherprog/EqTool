@@ -29,7 +29,6 @@ namespace EQTool.ViewModels
             this.appDispatcher = appDispatcher;
 
             LastLookDirection = new Vector3D(0, 0, 100);
-            UpdateLocation(new Point3D(0, 0, 0));
         }
 
         private Vector3D LastLookDirection;

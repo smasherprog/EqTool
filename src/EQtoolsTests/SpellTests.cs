@@ -289,6 +289,29 @@ namespace EQToolTests
         }
 
         [TestMethod]
+        public void TestSlowForNecro()
+        {
+            var spells = container.Resolve<EQSpells>();
+            var spelllogparse = container.Resolve<SpellLogParse>();
+            var spellname = "Turgur's Insects";
+            var shissarspell = spells.AllSpells.FirstOrDefault(a => a.name == spellname);
+            var line = "[Mon Nov 14 20:11:25 2022] Jobober " + shissarspell.cast_on_other;
+            var service = container.Resolve<ParseSpellGuess>();
+            var player = container.Resolve<ActivePlayer>();
+            player.Player = new PlayerInfo
+            {
+                Level = 60,
+                PlayerClass = PlayerClasses.Necromancer
+            };
+            var guess = spelllogparse.MatchSpell(line);
+            var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(guess.Spell, player.Player));
+            Assert.AreEqual(6, spellduration.TotalMinutes);
+            Assert.IsNotNull(guess);
+            Assert.AreEqual(guess.Spell.name, spellname);
+            Assert.IsFalse(guess.MultipleMatchesFound);
+        }
+
+        [TestMethod]
         public void TestSpeedOfShissar2()
         {
             var spells = container.Resolve<EQSpells>();
@@ -302,6 +325,48 @@ namespace EQToolTests
             {
                 Level = 54,
                 PlayerClass = PlayerClasses.Cleric
+            };
+            var guess = spelllogparse.MatchSpell(line);
+            var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(guess.Spell, player.Player));
+            Assert.IsNotNull(guess);
+            Assert.IsFalse(guess.MultipleMatchesFound);
+        }
+
+        [TestMethod]
+        public void TestShamanEpic()
+        {
+            var spells = container.Resolve<EQSpells>();
+            var spelllogparse = container.Resolve<SpellLogParse>();
+            var shissar = "Curse of the Spirits";
+            var shissarspell = spells.AllSpells.FirstOrDefault(a => a.name == shissar);
+            var line = "[Sun Dec 25 21:33:59 2022] A Ratling is consumed by the raging spirits of the land.";
+            var service = container.Resolve<ParseSpellGuess>();
+            var player = container.Resolve<ActivePlayer>();
+            player.Player = new PlayerInfo
+            {
+                Level = 60,
+                PlayerClass = PlayerClasses.Necromancer
+            };
+            var guess = spelllogparse.MatchSpell(line);
+            var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(guess.Spell, player.Player));
+            Assert.IsNotNull(guess);
+            Assert.IsFalse(guess.MultipleMatchesFound);
+        }
+
+        [TestMethod]
+        public void TestShamanEpic1()
+        {
+            var spells = container.Resolve<EQSpells>();
+            var spelllogparse = container.Resolve<SpellLogParse>();
+            var shissar = "Curse of the Spirits";
+            var shissarspell = spells.AllSpells.FirstOrDefault(a => a.name == shissar);
+            var line = "[Sun Dec 25 21:33:59 2022] A rat Ratling is consumed by the raging spirits of the land.";
+            var service = container.Resolve<ParseSpellGuess>();
+            var player = container.Resolve<ActivePlayer>();
+            player.Player = new PlayerInfo
+            {
+                Level = 60,
+                PlayerClass = PlayerClasses.Necromancer
             };
             var guess = spelllogparse.MatchSpell(line);
             var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(guess.Spell, player.Player));
@@ -572,7 +637,7 @@ namespace EQToolTests
                 Damage = 1,
                 TimeStamp = DateTime.Now.AddSeconds(10)
             });
-            entity.UpdateDps();  
+            entity.UpdateDps();
             Assert.AreEqual(6, entity.TrailingDamage);
             Assert.AreEqual(7, entity.TotalDamage);
             Assert.AreEqual(5, entity.TotalTwelveSecondDamage);
