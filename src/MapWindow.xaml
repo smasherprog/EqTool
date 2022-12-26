@@ -50,22 +50,22 @@
             <HelixToolkit:HelixViewport3D  
                     Grid.Row="1"
                     Name="viewport3d" 
-                    ShowFrameRate="True" 
-                    ZoomExtentsWhenLoaded="True"
+                    ShowFrameRate="True"  
                     ZoomAroundMouseDownPoint="True"
                     RotateAroundMouseDownPoint="True"  
                     ShowCameraInfo="True" 
-                    ZoomSensitivity=".25"
+                    ZoomSensitivity="2"
                     CameraMode="WalkAround"
-                    MouseMove="viewport3d_MouseMove"
-                    DefaultCamera="{Binding Camera}"  
+                    MouseMove="viewport3d_MouseMove" 
                     ItemsSource="{Binding DrawItems}" 
                     IsMoveEnabled="True"
                     IsPanEnabled="True"       
                     IsRotationEnabled="True" 
                 >
-            </HelixToolkit:HelixViewport3D>
-
+                <HelixToolkit:HelixViewport3D.Camera>
+                    <OrthographicCamera Width="500" LookDirection="{Binding LookDirection}" Position="{Binding Position}"  UpDirection="0, 1, 0"/>
+                </HelixToolkit:HelixViewport3D.Camera> 
+            </HelixToolkit:HelixViewport3D> 
         </Grid>
     </Border>
 </Window>

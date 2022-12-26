@@ -1,7 +1,6 @@
 ﻿using EQTool.Services;
 using EQTool.Services.Map;
 using HelixToolkit.Wpf;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
@@ -28,33 +27,38 @@ namespace EQTool.ViewModels
             this.mapLoad = mapLoad;
             this.activePlayer = activePlayer;
             this.appDispatcher = appDispatcher;
-            Lastlocation = new Point3D(0, 0, 0);
-
-            Camera = new OrthographicCamera
-            {
-                Width = 500,
-                LookDirection = new Vector3D(0, 0, 100),
-                Position = new Point3D(0, 1000, -100),
-                UpDirection = new Vector3D(0, 1, 0)
-            };
 
             LastLookDirection = new Vector3D(0, 0, 100);
             UpdateLocation(new Point3D(0, 0, 0));
         }
 
-        private OrthographicCamera _Camera;
-        public OrthographicCamera Camera
+        private Vector3D LastLookDirection;
+        private ArrowVisual3D Arrow;
+        private Point3D? Lastlocation;
+
+        private Vector3D _LookDirection;
+
+        public Vector3D LookDirection
         {
-            get => _Camera;
+            get => _LookDirection;
             set
             {
-                _Camera = value;
+                _LookDirection = value;
                 OnPropertyChanged();
             }
         }
-        private Vector3D LastLookDirection;
-        private ArrowVisual3D Arrow;
-        private Point3D Lastlocation;
+
+        private Point3D _Position;
+
+        public Point3D Position
+        {
+            get => _Position;
+            set
+            {
+                _Position = value;
+                OnPropertyChanged();
+            }
+        }
 
         public ObservableCollection<Visual3D> DrawItems { get; set; } = new ObservableCollection<Visual3D>();
 
@@ -84,11 +88,11 @@ namespace EQTool.ViewModels
             }
         }
 
-        public void LoadMap(string zone)
+        public bool LoadMap(string zone)
         {
             if (string.IsNullOrWhiteSpace(zone))
             {
-                return;
+                return false;
             }
 
             Title = zone;
@@ -135,13 +139,13 @@ namespace EQTool.ViewModels
                     };
                     DrawItems.Add(text);
                 }
+                var halfbox = map.AABB.MaxHeight * .3;
                 var center = map.AABB.Center;
-            
-                var halfbox = map.AABB.MaxHeight * .2;
+                center.Z -= halfbox;
+                Position = center;
                 map.AABB.Min.X = map.AABB.Min.X - halfbox;
                 map.AABB.Min.Y = map.AABB.Min.Y - halfbox;
-                center.Z -= halfbox;
-                Camera.Position = center;
+
                 map.AABB.Max.X = map.AABB.Max.X + halfbox;
                 map.AABB.Max.Y = map.AABB.Max.Y + halfbox;
 
@@ -153,18 +157,21 @@ namespace EQTool.ViewModels
                     Point2 = new Point3D(max.X, min.Y, 0),
                     Point3 = new Point3D(min.X, min.Y, 0),
                     Point4 = new Point3D(min.X, max.Y, 0),
-                    Fill = new SolidColorBrush(System.Windows.Media.Color.FromArgb(255, 200, 1, 1))
+                    Fill = new SolidColorBrush(System.Windows.Media.Color.FromArgb(0, 200, 1, 1))
                 });
-                Camera.LookAt(map.AABB.Center, 2000);
+                LookDirection = map.AABB.Center - Position;
             }
+
+            return true;
         }
+
         public void Update()
         {
             appDispatcher.DispatchUI(() =>
             {
-                if (LastLookDirection != Camera.LookDirection)
+                if (LastLookDirection != LookDirection)
                 {
-                    var cameralooknormal = LastLookDirection = Camera.LookDirection;
+                    var cameralooknormal = LastLookDirection = LookDirection;
                     var cameraup = new Vector3D(0, 1, 0);
                     cameralooknormal.Normalize();
                     cameraup.Normalize();
@@ -178,11 +185,11 @@ namespace EQTool.ViewModels
                 var maxdist = 100.0 * 100.0;
                 foreach (LinesVisual3D item in DrawItems.Where(a => a.GetType() == typeof(LinesVisual3D)))
                 {
-                    var dist = item.Points.First().DistanceToSquared(this.Camera.Position);
+                    var dist = item.Points.First().DistanceToSquared(Position);
                     var alpha = dist / maxdist;
                     alpha = Math.Min(1, Math.Max(0, alpha));
                     alpha = (alpha - 1) * -1;
-                    alpha = alpha * 255;
+                    alpha *= 255;
                     item.Color = Color.FromArgb(200, item.Color.R, item.Color.G, item.Color.B);
                 }
             });
@@ -201,31 +208,42 @@ namespace EQTool.ViewModels
             {
                 z = "freportw";
             }
-            LoadMap(z);
+            _ = LoadMap(z);
         }
 
-        public void UpdateLocation(Point3D value)
+        public void UpdateLocation(Point3D value1)
         {
             appDispatcher.DispatchUI(() =>
             {
-                var vec = value - Lastlocation;
-                var endpos = (vec * 30).ToPoint3D();
+                var newval = new Point3D(value1.Y, value1.X, Position.Z + 200);
+                if (!Lastlocation.HasValue)
+                {
+                    Lastlocation = new Point3D(value1.Y, value1.X + 5, value1.Z);
+                }
+                var vec = newval - Lastlocation.Value;
+                vec.Normalize();
+                var endpos = ((vec * 100) + Lastlocation.Value.ToVector3D()).ToPoint3D();
+                Lastlocation = newval;
                 if (Arrow != null)
                 {
                     _ = DrawItems.Remove(Arrow);
                 }
                 Arrow = new ArrowVisual3D
                 {
-                    Direction = vec
+                    Direction = vec,
+                    Point1 = newval,
+                    Point2 = endpos,
+                    Diameter = 10,
+                    Fill = System.Windows.Media.Brushes.Green
                 };
-                Arrow.Direction.Normalize();
-                Arrow.Point1 = value;
-                Arrow.Point2 = endpos;
-                Arrow.Diameter = 15;
-                Arrow.Fill = System.Windows.Media.Brushes.Green;
-                Lastlocation = value;
                 DrawItems.Add(Arrow);
-                Camera.LookAt(value, 2000);
+                var newpos = new Point3D(value1.Y, value1.X, LookDirection.Z);
+                LookDirection = newpos.ToVector3D();
+                var newpos2 = new Point3D(value1.Y, value1.X, Position.Z)
+                {
+                    Z = Position.Z
+                };
+                Position = newpos2;
             });
         }
     }
