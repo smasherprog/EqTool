@@ -144,7 +144,7 @@ namespace EQTool
 
             var items = dPSWindowViewModel.EntityList.Where(a => a.TargetName == name);
             var fights = new List<string>();
-            foreach (var item in items)
+            foreach (var item in items.OrderByDescending(a => a.PercentOfTotalDamage))
             {
                 fights.Add($"{item.SourceName} {item.PercentOfTotalDamage}% DPS:{item.TotalDPS} DMG:{item.TotalDamage}");
             }
