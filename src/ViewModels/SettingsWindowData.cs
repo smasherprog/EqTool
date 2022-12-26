@@ -1,4 +1,5 @@
 ﻿using EQTool.Models;
+using EQTool.Services.Map;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -35,6 +36,11 @@ namespace EQTool.ViewModels
                     Name = i.ToString(),
                     Value = i
                 });
+            }
+
+            foreach(var item in ZoneParser.Zones)
+            {
+                this.Zones.Add(item);
             }
         }
 
@@ -86,6 +92,17 @@ namespace EQTool.ViewModels
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(HasCharName));
                 OnPropertyChanged(nameof(HasNoCharName));
+            }
+        }
+
+        private string _Zone = string.Empty;
+        public string Zone
+        {
+            get => _Zone;
+            set
+            {
+                _Zone = value;
+                OnPropertyChanged(); 
             }
         }
 
@@ -144,7 +161,7 @@ namespace EQTool.ViewModels
         public bool IsEqRunning => !IsEqNotRunning;
         public bool IsEqNotRunning { get; private set; } = false;
 
-
+        public ObservableCollection<string> Zones = new ObservableCollection<string>();
         public ObservableCollection<EQNameValue> FontSizes = new ObservableCollection<EQNameValue>();
         public ObservableCollection<EQNameValue> Levels = new ObservableCollection<EQNameValue>();
 

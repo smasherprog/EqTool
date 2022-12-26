@@ -120,17 +120,22 @@ namespace EQTool
 
         private void opendps(object sender, RoutedEventArgs e)
         {
-            (App.Current as App).OpenDPSWIndow();
+            (App.Current as App).OpenDPSWindow();
         }
 
         private void opensettings(object sender, RoutedEventArgs e)
         {
-            (App.Current as App).OpenSettingsWIndow();
+            (App.Current as App).OpenSettingsWindow();
+        }
+
+        private void openmap(object sender, RoutedEventArgs e)
+        {
+            (App.Current as App).OpenMapWindow();
         }
 
         private void openspells(object sender, RoutedEventArgs e)
         {
-            (App.Current as App).OpenSpellsWIndow();
+            (App.Current as App).OpenSpellsWindow();
         }
 
         private void copytoclipboard(object sender, RoutedEventArgs e)

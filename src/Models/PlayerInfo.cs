@@ -8,6 +8,7 @@ namespace EQTool.Models
     {
         public int Level { get; set; }
         public string Name { get; set; }
+        public string Zone { get; set; } 
         public PlayerClasses? PlayerClass { get; set; }
         public List<PlayerClasses> ShowSpellsForClasses { get; set; }
     }

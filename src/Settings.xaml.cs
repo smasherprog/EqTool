@@ -8,6 +8,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Security.Policy;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -32,7 +33,6 @@ namespace EQTool
 
         public Settings(LogParser logParser, IAppDispatcher appDispatcher, DPSLogParse dPSLogParse, EQSpells spells, EQToolSettings settings, EQToolSettingsLoad toolSettingsLoad, SettingsWindowData settingsWindowData, SpellWindowViewModel spellWindowViewModel)
         {
-            SettingsWindowData = settingsWindowData;
             Height = 200;
             this.logParser = logParser;
             this.appDispatcher = appDispatcher;
@@ -41,8 +41,8 @@ namespace EQTool
             this.settings = settings;
             this.spellWindowViewModel = spellWindowViewModel;
             this.toolSettingsLoad = toolSettingsLoad;
+            DataContext = SettingsWindowData = settingsWindowData;
             SettingsWindowData.EqPath = this.settings.DefaultEqDirectory;
-            DataContext = settingsWindowData;
             Topmost = true;
             InitializeComponent();
             TryUpdateSettings();
@@ -54,6 +54,7 @@ namespace EQTool
                 var it = item.ToString();
                 _ = spellbyclassselection.Items.Add(it);
             }
+            Zonecombobox.ItemsSource = settingsWindowData.Zones.OrderBy(a => a).ToList();
             levelscombobox.ItemsSource = SettingsWindowData.Levels;
             fontsizescombobox.ItemsSource = SettingsWindowData.FontSizes;
             fontsizescombobox.SelectedValue = settings.FontSize.ToString();
@@ -83,6 +84,7 @@ namespace EQTool
                 {
                     player.Level = SettingsWindowData.CharLevel;
                     player.PlayerClass = SettingsWindowData.PlayerClass;
+                    player.Zone = SettingsWindowData.Zone;
                 }
                 else
                 {
@@ -90,6 +92,7 @@ namespace EQTool
                     {
                         Level = SettingsWindowData.CharLevel,
                         Name = SettingsWindowData.CharName,
+                        Zone = SettingsWindowData.Zone,
                         PlayerClass = SettingsWindowData.PlayerClass
                     };
                     players.Add(player);
@@ -140,6 +143,7 @@ namespace EQTool
             if (player != null)
             {
                 SettingsWindowData.PlayerClass = player.PlayerClass;
+                SettingsWindowData.Zone = player.Zone;
             }
 
             if (level.HasValue)
@@ -324,10 +328,29 @@ namespace EQTool
                 }
             }
         }
+
         private void themescombobox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
             settings.Theme = (themecombobox.SelectedValue as Themes?) ?? Themes.Light;
             App.Theme = settings.Theme;
+        }
+
+        private void zoneselectionchanged(object sender, SelectionChangedEventArgs e)
+        {
+            var players = settings.Players ?? new List<PlayerInfo>();
+            if (SettingsWindowData.HasCharName)
+            {
+                var player = players.FirstOrDefault(a => a.Name == SettingsWindowData.CharName);
+                if (player != null)
+                {
+                    player.Zone = SettingsWindowData.Zone;
+                    toolSettingsLoad.Save(settings);
+                    var t = DateTime.Now;
+                    var format = "ddd MMM dd HH:mm:ss yyyy";
+                    var msg = "[" + t.ToString(format) + "] You have entered " + player.Zone;
+                    logParser.Push(new LogParser.LogParserEventArgs { Line = msg });
+                }
+            }
         }
 
         private void testDPS(object sender, RoutedEventArgs e)
@@ -341,7 +364,7 @@ namespace EQTool
             {
                 try
                 {
-                    var filepath = Directory.GetCurrentDirectory() + "/TestFight.txt";
+                    var filepath = Directory.GetCurrentDirectory() + "/TestFight2.txt";
                     var fightlines = File.ReadLines(filepath);
                     var fightlist = new List<KeyValuePair<string, DPSParseMatch>>();
                     foreach (var item in fightlines)
@@ -387,6 +410,41 @@ namespace EQTool
                 }
             });
 
+        }
+
+        private void textmapclicked(object sender, RoutedEventArgs e)
+        {
+            if (!testmap.IsEnabled)
+            {
+                return;
+            }
+            testmap.IsEnabled = false;
+            _ = Task.Factory.StartNew(() =>
+            {
+                try
+                {
+                    NewMethod(" You have entered Cabilis East.", 2000);
+                    NewMethod(" Your Location is 1159.11, -595.94, 3.75", 2000);
+                    NewMethod(" Your Location is 1170.11, -595.94, 3.75", 2000);
+                    NewMethod(" Your Location is 1190.11, -595.94, 3.75", 2000);
+                    NewMethod(" Your Location is 1210.11, -595.94, 3.75", 2000);
+                    appDispatcher.DispatchUI(() => { testmap.IsEnabled = true; });
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex.ToString());
+                    appDispatcher.DispatchUI(() => { testmap.IsEnabled = true; });
+                }
+            });
+
+            void NewMethod(string msg, int sleeptime)
+            {
+                var format = "ddd MMM dd HH:mm:ss yyyy";
+                var d = DateTime.Now;
+                var line = "[" + d.ToString(format) + "]" + msg;
+                logParser.Push(new LogParser.LogParserEventArgs { Line = line });
+                Thread.Sleep(sleeptime);
+            }
         }
 
         private void SaveAndClose(object sender, RoutedEventArgs e)

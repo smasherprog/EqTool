@@ -1,0 +1,1536 @@
+﻿[Mon Dec 19 17:34:52 2022] You slash an ancient tigerclaw racnar for 46 points of damage.
+[Mon Dec 19 17:34:52 2022] You slash an ancient tigerclaw racnar for 136 points of damage.
+[Mon Dec 19 17:34:52 2022] Mandair pierces an ancient tigerclaw racnar for 38 points of damage.
+[Mon Dec 19 17:34:52 2022] Mandair pierces an ancient tigerclaw racnar for 38 points of damage.
+[Mon Dec 19 17:34:52 2022] Mandair slashes an ancient tigerclaw racnar for 21 points of damage.
+[Mon Dec 19 17:34:52 2022] Mandair slashes an ancient tigerclaw racnar for 34 points of damage.
+[Mon Dec 19 17:34:52 2022] You think you are heading East.
+[Mon Dec 19 17:34:52 2022] Mandair kicks an ancient tigerclaw racnar for 6 points of damage.
+[Mon Dec 19 17:34:53 2022] An ancient tigerclaw racnar was pierced by thorns.
+[Mon Dec 19 17:34:53 2022] An ancient tigerclaw racnar hits Mandair for 244 points of damage.
+[Mon Dec 19 17:34:53 2022] An ancient tigerclaw racnar was pierced by thorns.
+[Mon Dec 19 17:34:53 2022] An ancient tigerclaw racnar hits Mandair for 234 points of damage.
+[Mon Dec 19 17:34:53 2022] An ancient tigerclaw racnar was pierced by thorns.
+[Mon Dec 19 17:34:53 2022] An ancient tigerclaw racnar hits Mandair for 228 points of damage.
+[Mon Dec 19 17:34:53 2022] Mandair pierces an ancient tigerclaw racnar for 29 points of damage.
+[Mon Dec 19 17:34:54 2022] Mandair slashes an ancient tigerclaw racnar for 4 points of damage.
+[Mon Dec 19 17:34:54 2022] Belthazar tells the guild, '<TASH> an ancient tigerclaw racnar'
+[Mon Dec 19 17:34:54 2022] Mandair pierces an ancient tigerclaw racnar for 29 points of damage.
+[Mon Dec 19 17:34:54 2022] Mandair pierces an ancient tigerclaw racnar for 21 points of damage.
+[Mon Dec 19 17:34:54 2022] Mandair pierces an ancient tigerclaw racnar for 12 points of damage.
+[Mon Dec 19 17:34:55 2022] You try to slash an ancient tigerclaw racnar, but miss!
+[Mon Dec 19 17:34:55 2022] You have no idea what direction you are facing.
+[Mon Dec 19 17:34:55 2022] An ancient tigerclaw racnar was pierced by thorns.
+[Mon Dec 19 17:34:55 2022] An ancient tigerclaw racnar bashes Mandair for 197 points of damage.
+[Mon Dec 19 17:34:55 2022] An ancient tigerclaw racnar was pierced by thorns.
+[Mon Dec 19 17:34:55 2022] An ancient tigerclaw racnar hits Mandair for 292 points of damage.
+[Mon Dec 19 17:34:55 2022] An ancient tigerclaw racnar was pierced by thorns.
+[Mon Dec 19 17:34:55 2022] An ancient tigerclaw racnar hits Mandair for 228 points of damage.
+[Mon Dec 19 17:34:56 2022] Huntor kicks an ancient tigerclaw racnar for 1 point of damage.
+[Mon Dec 19 17:34:56 2022] Huntor slashes an ancient tigerclaw racnar for 57 points of damage.
+[Mon Dec 19 17:34:56 2022] Huntor slashes an ancient tigerclaw racnar for 42 points of damage.
+[Mon Dec 19 17:34:56 2022] Huntor slashes an ancient tigerclaw racnar for 39 points of damage.
+[Mon Dec 19 17:34:56 2022] Dapiff punches an ancient tigerclaw racnar for 11 points of damage.
+[Mon Dec 19 17:34:57 2022] Mandair slashes an ancient tigerclaw racnar for 14 points of damage.
+[Mon Dec 19 17:34:57 2022] An ancient tigerclaw racnar was pierced by thorns.
+[Mon Dec 19 17:34:57 2022] An ancient tigerclaw racnar hits Mandair for 192 points of damage.
+[Mon Dec 19 17:34:57 2022] You try to slash an ancient tigerclaw racnar, but miss!
+[Mon Dec 19 17:34:57 2022] Mandair kicks an ancient tigerclaw racnar for 7 points of damage.
+[Mon Dec 19 17:34:57 2022] Huntor slashes an ancient tigerclaw racnar for 36 points of damage.
+[Mon Dec 19 17:34:57 2022] Huntor slashes an ancient tigerclaw racnar for 37 points of damage.
+[Mon Dec 19 17:34:57 2022] You think you are heading East.
+[Mon Dec 19 17:34:57 2022] Dapiff kicks an ancient tigerclaw racnar for 46 points of damage.
+[Mon Dec 19 17:34:57 2022] Huntor slashes an ancient tigerclaw racnar for 39 points of damage.
+[Mon Dec 19 17:34:58 2022] Mandair slashes an ancient tigerclaw racnar for 1 point of damage.
+[Mon Dec 19 17:34:58 2022] Mandair slashes an ancient tigerclaw racnar for 1 point of damage.
+[Mon Dec 19 17:34:58 2022] Dapiff punches an ancient tigerclaw racnar for 27 points of damage.
+[Mon Dec 19 17:34:58 2022] Huntor slashes an ancient tigerclaw racnar for 17 points of damage.
+[Mon Dec 19 17:34:58 2022] Bohji pierces an ancient tigerclaw racnar for 17 points of damage.
+[Mon Dec 19 17:34:59 2022] An ancient tigerclaw racnar was pierced by thorns.
+[Mon Dec 19 17:34:59 2022] An ancient tigerclaw racnar hits Mandair for 249 points of damage.
+[Mon Dec 19 17:34:59 2022] An ancient tigerclaw racnar was pierced by thorns.
+[Mon Dec 19 17:34:59 2022] An ancient tigerclaw racnar hits Mandair for 228 points of damage.
+[Mon Dec 19 17:34:59 2022] Mandair pierces an ancient tigerclaw racnar for 26 points of damage.
+[Mon Dec 19 17:34:59 2022] Mandair pierces an ancient tigerclaw racnar for 31 points of damage.
+[Mon Dec 19 17:34:59 2022] Dapiff punches an ancient tigerclaw racnar for 27 points of damage.
+[Mon Dec 19 17:34:59 2022] Your target resisted the Soul Consumption spell.
+[Mon Dec 19 17:34:59 2022] You slash an ancient tigerclaw racnar for 112 points of damage.
+[Mon Dec 19 17:34:59 2022] You slash an ancient tigerclaw racnar for 136 points of damage.
+[Mon Dec 19 17:34:59 2022] Mandair slashes an ancient tigerclaw racnar for 6 points of damage.
+[Mon Dec 19 17:34:59 2022] Huntor slashes an ancient tigerclaw racnar for 18 points of damage.
+[Mon Dec 19 17:34:59 2022] Huntor slashes an ancient tigerclaw racnar for 23 points of damage.
+[Mon Dec 19 17:34:59 2022] Dapiff crushes an ancient tigerclaw racnar for 2 points of damage.
+[Mon Dec 19 17:35:00 2022] Yeef begins to cast a spell.
+[Mon Dec 19 17:35:00 2022] Khanis slashes an ancient tigerclaw racnar for 24 points of damage.
+[Mon Dec 19 17:35:00 2022] Khanis slashes an ancient tigerclaw racnar for 70 points of damage.
+[Mon Dec 19 17:35:00 2022] Dapiff punches an ancient tigerclaw racnar for 21 points of damage.
+[Mon Dec 19 17:35:00 2022] Huntor slashes an ancient tigerclaw racnar for 39 points of damage.
+[Mon Dec 19 17:35:00 2022] Huntor slashes an ancient tigerclaw racnar for 19 points of damage.
+[Mon Dec 19 17:35:00 2022] An ancient tigerclaw racnar was pierced by thorns.
+[Mon Dec 19 17:35:00 2022] An ancient tigerclaw racnar hits Mandair for 276 points of damage.
+[Mon Dec 19 17:35:01 2022] An ancient tigerclaw racnar was pierced by thorns.
+[Mon Dec 19 17:35:01 2022] An ancient tigerclaw racnar hits Mandair for 244 points of damage.
+[Mon Dec 19 17:35:01 2022] Mandair slashes an ancient tigerclaw racnar for 16 points of damage.
+[Mon Dec 19 17:35:01 2022] Mandair slashes an ancient tigerclaw racnar for 1 point of damage.
+[Mon Dec 19 17:35:01 2022] Einskaldir crushes an ancient tigerclaw racnar for 18 points of damage.
+[Mon Dec 19 17:35:01 2022] Dapiff punches an ancient tigerclaw racnar for 15 points of damage.
+[Mon Dec 19 17:35:01 2022] Dapiff punches an ancient tigerclaw racnar for 23 points of damage.
+[Mon Dec 19 17:35:01 2022] Khanis slashes an ancient tigerclaw racnar for 27 points of damage.
+[Mon Dec 19 17:35:01 2022] Dapiff crushes an ancient tigerclaw racnar for 26 points of damage.
+[Mon Dec 19 17:35:01 2022] Khanis slashes an ancient tigerclaw racnar for 18 points of damage.
+[Mon Dec 19 17:35:01 2022] Huntor slashes an ancient tigerclaw racnar for 40 points of damage.
+[Mon Dec 19 17:35:01 2022] You slash an ancient tigerclaw racnar for 42 points of damage.
+[Mon Dec 19 17:35:01 2022] You slash an ancient tigerclaw racnar for 42 points of damage.
+[Mon Dec 19 17:35:01 2022] Mandair pierces an ancient tigerclaw racnar for 17 points of damage.
+[Mon Dec 19 17:35:02 2022] Mandair kicks an ancient tigerclaw racnar for 11 points of damage.
+[Mon Dec 19 17:35:02 2022] Einskaldir crushes an ancient tigerclaw racnar for 28 points of damage.
+[Mon Dec 19 17:35:02 2022] Einskaldir crushes an ancient tigerclaw racnar for 45 points of damage.
+[Mon Dec 19 17:35:02 2022] Your Location is -701.03, -1704.66, -18.12
+[Mon Dec 19 17:35:02 2022] Mandair slashes an ancient tigerclaw racnar for 17 points of damage.
+[Mon Dec 19 17:35:02 2022] Mandair slashes an ancient tigerclaw racnar for 44 points of damage.
+[Mon Dec 19 17:35:02 2022] Einskaldir pierces an ancient tigerclaw racnar for 61 points of damage.
+[Mon Dec 19 17:35:02 2022] An ancient tigerclaw racnar was pierced by thorns.
+[Mon Dec 19 17:35:02 2022] An ancient tigerclaw racnar hits Mandair for 234 points of damage.
+[Mon Dec 19 17:35:02 2022] Dapiff punches an ancient tigerclaw racnar for 15 points of damage.
+[Mon Dec 19 17:35:02 2022] You think you are heading East.
+[Mon Dec 19 17:35:03 2022] Huntor slashes an ancient tigerclaw racnar for 38 points of damage.
+[Mon Dec 19 17:35:03 2022] Einskaldir crushes an ancient tigerclaw racnar for 9 points of damage.
+[Mon Dec 19 17:35:03 2022] Huntor slashes an ancient tigerclaw racnar for 20 points of damage.
+[Mon Dec 19 17:35:03 2022] Huntor slashes an ancient tigerclaw racnar for 18 points of damage.
+[Mon Dec 19 17:35:03 2022] Khanis slashes an ancient tigerclaw racnar for 69 points of damage.
+[Mon Dec 19 17:35:03 2022] Einskaldir pierces an ancient tigerclaw racnar for 73 points of damage.
+[Mon Dec 19 17:35:03 2022] Mandair pierces an ancient tigerclaw racnar for 28 points of damage.
+[Mon Dec 19 17:35:03 2022] Mandair pierces an ancient tigerclaw racnar for 30 points of damage.
+[Mon Dec 19 17:35:03 2022] Dapiff punches an ancient tigerclaw racnar for 38 points of damage.
+[Mon Dec 19 17:35:03 2022] Khanis slashes an ancient tigerclaw racnar for 47 points of damage.
+[Mon Dec 19 17:35:03 2022] Khanis slashes an ancient tigerclaw racnar for 31 points of damage.
+[Mon Dec 19 17:35:04 2022] You try to slash an ancient tigerclaw racnar, but miss!
+[Mon Dec 19 17:35:04 2022] You try to slash an ancient tigerclaw racnar, but miss!
+[Mon Dec 19 17:35:04 2022] Einskaldir backstabs an ancient tigerclaw racnar for 250 points of damage.
+[Mon Dec 19 17:35:04 2022] Huntor slashes an ancient tigerclaw racnar for 29 points of damage.
+[Mon Dec 19 17:35:04 2022] Huntor slashes an ancient tigerclaw racnar for 24 points of damage.
+[Mon Dec 19 17:35:04 2022] An ancient tigerclaw racnar was pierced by thorns.
+[Mon Dec 19 17:35:04 2022] An ancient tigerclaw racnar hits Mandair for 202 points of damage.
+[Mon Dec 19 17:35:04 2022] An ancient tigerclaw racnar was pierced by thorns.
+[Mon Dec 19 17:35:04 2022] An ancient tigerclaw racnar hits Mandair for 255 points of damage.
+[Mon Dec 19 17:35:04 2022] An ancient tigerclaw racnar was pierced by thorns.
+[Mon Dec 19 17:35:04 2022] An ancient tigerclaw racnar hits Mandair for 192 points of damage.
+[Mon Dec 19 17:35:04 2022] An ancient tigerclaw racnar was pierced by thorns.
+[Mon Dec 19 17:35:04 2022] An ancient tigerclaw racnar hits Mandair for 286 points of damage.
+[Mon Dec 19 17:35:04 2022] an ancient tigerclaw racnar scowls at you, ready to attack -- what would you like your tombstone to say?
+[Mon Dec 19 17:35:04 2022] Dapiff punches an ancient tigerclaw racnar for 18 points of damage.
+[Mon Dec 19 17:35:04 2022] Mandair slashes an ancient tigerclaw racnar for 1 point of damage.
+[Mon Dec 19 17:35:04 2022] Mandair slashes an ancient tigerclaw racnar for 20 points of damage.
+[Mon Dec 19 17:35:04 2022] Dapiff kicks an ancient tigerclaw racnar for 39 points of damage.
+[Mon Dec 19 17:35:04 2022] Einskaldir pierces an ancient tigerclaw racnar for 27 points of damage.
+[Mon Dec 19 17:35:05 2022] An ancient tigerclaw racnar looks very uncomfortable.
+[Mon Dec 19 17:35:05 2022] Mandair pierces an ancient tigerclaw racnar for 16 points of damage.
+[Mon Dec 19 17:35:05 2022] Mandair pierces an ancient tigerclaw racnar for 34 points of damage.
+[Mon Dec 19 17:35:06 2022] Mandair slashes an ancient tigerclaw racnar for 34 points of damage.
+[Mon Dec 19 17:35:06 2022] Mandair slashes an ancient tigerclaw racnar for 28 points of damage.
+[Mon Dec 19 17:35:06 2022] Einskaldir crushes an ancient tigerclaw racnar for 24 points of damage.
+[Mon Dec 19 17:35:06 2022] An ancient tigerclaw racnar was pierced by thorns.
+[Mon Dec 19 17:35:06 2022] An ancient tigerclaw racnar hits Mandair for 202 points of damage.
+[Mon Dec 19 17:35:06 2022] An ancient tigerclaw racnar was pierced by thorns.
+[Mon Dec 19 17:35:06 2022] An ancient tigerclaw racnar hits Mandair for 192 points of damage.
+[Mon Dec 19 17:35:06 2022] An ancient tigerclaw racnar was pierced by thorns.
+[Mon Dec 19 17:35:06 2022] An ancient tigerclaw racnar hits Mandair for 218 points of damage.
+[Mon Dec 19 17:35:06 2022] Antillius crushes an ancient tigerclaw racnar for 64 points of damage.
+[Mon Dec 19 17:35:06 2022] Antillius crushes an ancient tigerclaw racnar for 99 points of damage.
+[Mon Dec 19 17:35:06 2022] You think you are heading East.
+[Mon Dec 19 17:35:06 2022] You try to slash an ancient tigerclaw racnar, but miss!
+[Mon Dec 19 17:35:06 2022] You try to slash an ancient tigerclaw racnar, but miss!
+[Mon Dec 19 17:35:06 2022] Mandair pierces an ancient tigerclaw racnar for 32 points of damage.
+[Mon Dec 19 17:35:06 2022] Huntor slashes an ancient tigerclaw racnar for 58 points of damage.
+[Mon Dec 19 17:35:06 2022] Mandair kicks an ancient tigerclaw racnar for 4 points of damage.
+[Mon Dec 19 17:35:07 2022] Antillius kicks an ancient tigerclaw racnar for 66 points of damage.
+[Mon Dec 19 17:35:07 2022] Dapiff punches an ancient tigerclaw racnar for 27 points of damage.
+[Mon Dec 19 17:35:07 2022] Mandair pierces an ancient tigerclaw racnar for 19 points of damage.
+[Mon Dec 19 17:35:07 2022] Mandair pierces an ancient tigerclaw racnar for 17 points of damage.
+[Mon Dec 19 17:35:07 2022] Einskaldir pierces an ancient tigerclaw racnar for 21 points of damage.
+[Mon Dec 19 17:35:07 2022] Huntor slashes an ancient tigerclaw racnar for 8 points of damage.
+[Mon Dec 19 17:35:07 2022] An ancient tigerclaw racnar was pierced by thorns.
+[Mon Dec 19 17:35:07 2022] An ancient tigerclaw racnar hits Mandair for 281 points of damage.
+[Mon Dec 19 17:35:08 2022] Einskaldir crushes an ancient tigerclaw racnar for 38 points of damage.
+[Mon Dec 19 17:35:08 2022] Khanis slashes an ancient tigerclaw racnar for 29 points of damage.
+[Mon Dec 19 17:35:08 2022] Yeef begins to cast a spell.
+[Mon Dec 19 17:35:08 2022] You try to bash an ancient tigerclaw racnar, but miss!
+[Mon Dec 19 17:35:08 2022] Antillius crushes an ancient tigerclaw racnar for 64 points of damage.
+[Mon Dec 19 17:35:08 2022] Your attempt to disarm failed.
+[Mon Dec 19 17:35:08 2022] Mandair pierces an ancient tigerclaw racnar for 29 points of damage.
+[Mon Dec 19 17:35:08 2022] Mandair slashes an ancient tigerclaw racnar for 10 points of damage.
+[Mon Dec 19 17:35:08 2022] An ancient tigerclaw racnar was pierced by thorns.
+[Mon Dec 19 17:35:08 2022] An ancient tigerclaw racnar hits Mandair for 281 points of damage.
+[Mon Dec 19 17:35:08 2022] You slash an ancient tigerclaw racnar for 202 points of damage.
+[Mon Dec 19 17:35:08 2022] You slash an ancient tigerclaw racnar for 63 points of damage.
+[Mon Dec 19 17:35:08 2022] You think you are heading East.
+[Mon Dec 19 17:35:08 2022] Einskaldir pierces an ancient tigerclaw racnar for 39 points of damage.
+[Mon Dec 19 17:35:08 2022] Einskaldir pierces an ancient tigerclaw racnar for 26 points of damage.
+[Mon Dec 19 17:35:08 2022] Dapiff crushes an ancient tigerclaw racnar for 2 points of damage.
+[Mon Dec 19 17:35:08 2022] Dapiff punches an ancient tigerclaw racnar for 31 points of damage.
+[Mon Dec 19 17:35:08 2022] Dapiff punches an ancient tigerclaw racnar for 31 points of damage.
+[Mon Dec 19 17:35:08 2022] Einskaldir crushes an ancient tigerclaw racnar for 1 point of damage.
+[Mon Dec 19 17:35:09 2022] Khanis slashes an ancient tigerclaw racnar for 53 points of damage.
+[Mon Dec 19 17:35:09 2022] Huntor slashes an ancient tigerclaw racnar for 39 points of damage.
+[Mon Dec 19 17:35:09 2022] Dapiff punches an ancient tigerclaw racnar for 24 points of damage.
+[Mon Dec 19 17:35:09 2022] Huntor slashes an ancient tigerclaw racnar for 25 points of damage.
+[Mon Dec 19 17:35:09 2022] Einskaldir crushes an ancient tigerclaw racnar for 13 points of damage.
+[Mon Dec 19 17:35:10 2022] Einskaldir pierces an ancient tigerclaw racnar for 41 points of damage.
+[Mon Dec 19 17:35:10 2022] Einskaldir pierces an ancient tigerclaw racnar for 54 points of damage.
+[Mon Dec 19 17:35:10 2022] Antillius crushes an ancient tigerclaw racnar for 209 points of damage.
+[Mon Dec 19 17:35:10 2022] Antillius crushes an ancient tigerclaw racnar for 38 points of damage.
+[Mon Dec 19 17:35:10 2022] Mandair pierces an ancient tigerclaw racnar for 48 points of damage.
+[Mon Dec 19 17:35:10 2022] Huntor slashes an ancient tigerclaw racnar for 28 points of damage.
+[Mon Dec 19 17:35:10 2022] Dapiff punches an ancient tigerclaw racnar for 11 points of damage.
+[Mon Dec 19 17:35:10 2022] Antillius punches an ancient tigerclaw racnar for 28 points of damage.
+[Mon Dec 19 17:35:10 2022] Antillius punches an ancient tigerclaw racnar for 25 points of damage.
+[Mon Dec 19 17:35:10 2022] You think you are heading East.
+[Mon Dec 19 17:35:10 2022] You prey's soul screams in your mind.
+[Mon Dec 19 17:35:10 2022] An ancient tigerclaw racnar staggers.
+[Mon Dec 19 17:35:10 2022] You try to slash an ancient tigerclaw racnar, but miss!
+[Mon Dec 19 17:35:10 2022] You try to slash an ancient tigerclaw racnar, but miss!
+[Mon Dec 19 17:35:10 2022] Huntor slashes an ancient tigerclaw racnar for 11 points of damage.
+[Mon Dec 19 17:35:11 2022] Mandair pierces an ancient tigerclaw racnar for 29 points of damage.
+[Mon Dec 19 17:35:11 2022] Einskaldir backstabs an ancient tigerclaw racnar for 215 points of damage.
+[Mon Dec 19 17:35:11 2022] Einskaldir pierces an ancient tigerclaw racnar for 55 points of damage.
+[Mon Dec 19 17:35:11 2022] Einskaldir pierces an ancient tigerclaw racnar for 22 points of damage.
+[Mon Dec 19 17:35:11 2022] Dapiff punches an ancient tigerclaw racnar for 40 points of damage.
+[Mon Dec 19 17:35:11 2022] Dapiff punches an ancient tigerclaw racnar for 28 points of damage.
+[Mon Dec 19 17:35:11 2022] Khanis slashes an ancient tigerclaw racnar for 22 points of damage.
+[Mon Dec 19 17:35:12 2022] Huntor slashes an ancient tigerclaw racnar for 1 point of damage.
+[Mon Dec 19 17:35:12 2022] Huntor slashes an ancient tigerclaw racnar for 1 point of damage.
+[Mon Dec 19 17:35:12 2022] You bash an ancient tigerclaw racnar for 3 points of damage.
+[Mon Dec 19 17:35:12 2022] Dapiff punches an ancient tigerclaw racnar for 30 points of damage.
+[Mon Dec 19 17:35:12 2022] Einskaldir pierces an ancient tigerclaw racnar for 40 points of damage.
+[Mon Dec 19 17:35:12 2022] Einskaldir pierces an ancient tigerclaw racnar for 35 points of damage.
+[Mon Dec 19 17:35:13 2022] You try to slash an ancient tigerclaw racnar, but miss!
+[Mon Dec 19 17:35:13 2022] You slash an ancient tigerclaw racnar for 70 points of damage.
+[Mon Dec 19 17:35:13 2022] Huntor slashes an ancient tigerclaw racnar for 12 points of damage.
+[Mon Dec 19 17:35:13 2022] Huntor slashes an ancient tigerclaw racnar for 62 points of damage.
+[Mon Dec 19 17:35:13 2022] An ancient tigerclaw racnar was pierced by thorns.
+[Mon Dec 19 17:35:13 2022] An ancient tigerclaw racnar hits Mandair for 239 points of damage.
+[Mon Dec 19 17:35:13 2022] Huntor slashes an ancient tigerclaw racnar for 1 point of damage.
+[Mon Dec 19 17:35:13 2022] Huntor slashes an ancient tigerclaw racnar for 32 points of damage.
+[Mon Dec 19 17:35:13 2022] Dapiff crushes an ancient tigerclaw racnar for 92 points of damage.
+[Mon Dec 19 17:35:13 2022] Mandair slashes an ancient tigerclaw racnar for 29 points of damage.
+[Mon Dec 19 17:35:13 2022] Mandair slashes an ancient tigerclaw racnar for 8 points of damage.
+[Mon Dec 19 17:35:14 2022] Dapiff kicks an ancient tigerclaw racnar for 46 points of damage.
+[Mon Dec 19 17:35:14 2022] Einskaldir pierces an ancient tigerclaw racnar for 68 points of damage.
+[Mon Dec 19 17:35:14 2022] Einskaldir pierces an ancient tigerclaw racnar for 39 points of damage.
+[Mon Dec 19 17:35:14 2022] Dapiff punches an ancient tigerclaw racnar for 18 points of damage.
+[Mon Dec 19 17:35:14 2022] Dapiff punches an ancient tigerclaw racnar for 46 points of damage.
+[Mon Dec 19 17:35:14 2022] Huntor slashes an ancient tigerclaw racnar for 29 points of damage.
+[Mon Dec 19 17:35:14 2022] Huntor slashes an ancient tigerclaw racnar for 12 points of damage.
+[Mon Dec 19 17:35:14 2022] Mandair slashes an ancient tigerclaw racnar for 31 points of damage.
+[Mon Dec 19 17:35:14 2022] Dapiff crushes an ancient tigerclaw racnar for 24 points of damage.
+[Mon Dec 19 17:35:14 2022] Dapiff crushes an ancient tigerclaw racnar for 48 points of damage.
+[Mon Dec 19 17:35:15 2022] Mandair pierces an ancient tigerclaw racnar for 17 points of damage.
+[Mon Dec 19 17:35:15 2022] Einskaldir pierces an ancient tigerclaw racnar for 33 points of damage.
+[Mon Dec 19 17:35:15 2022] Huntor slashes an ancient tigerclaw racnar for 21 points of damage.
+[Mon Dec 19 17:35:15 2022] Huntor slashes an ancient tigerclaw racnar for 53 points of damage.
+[Mon Dec 19 17:35:15 2022] You slash an ancient tigerclaw racnar for 42 points of damage.
+[Mon Dec 19 17:35:15 2022] You slash an ancient tigerclaw racnar for 120 points of damage.
+[Mon Dec 19 17:35:15 2022] Khanis slashes an ancient tigerclaw racnar for 20 points of damage.
+[Mon Dec 19 17:35:15 2022] Khanis slashes an ancient tigerclaw racnar for 16 points of damage.
+[Mon Dec 19 17:35:15 2022] Dapiff punches an ancient tigerclaw racnar for 19 points of damage.
+[Mon Dec 19 17:35:15 2022] Mandair pierces an ancient tigerclaw racnar for 28 points of damage.
+[Mon Dec 19 17:35:15 2022] Mandair pierces an ancient tigerclaw racnar for 25 points of damage.
+[Mon Dec 19 17:35:15 2022] Mandair slashes an ancient tigerclaw racnar for 19 points of damage.
+[Mon Dec 19 17:35:15 2022] Mandair slashes an ancient tigerclaw racnar for 57 points of damage.
+[Mon Dec 19 17:35:16 2022] Triten tells the group, 'FD pullers, will you announce when you're clean an able to be healed?'
+[Mon Dec 19 17:35:16 2022] Dapiff crushes an ancient tigerclaw racnar for 27 points of damage.
+[Mon Dec 19 17:35:16 2022] Einskaldir pierces an ancient tigerclaw racnar for 39 points of damage.
+[Mon Dec 19 17:35:16 2022] Dapiff punches an ancient tigerclaw racnar for 56 points of damage.
+[Mon Dec 19 17:35:16 2022] You try to bash an ancient tigerclaw racnar, but miss!
+[Mon Dec 19 17:35:16 2022] Khanis slashes an ancient tigerclaw racnar for 22 points of damage.
+[Mon Dec 19 17:35:16 2022] Bohji backstabs an ancient tigerclaw racnar for 120 points of damage.
+[Mon Dec 19 17:35:16 2022] Mandair pierces an ancient tigerclaw racnar for 16 points of damage.
+[Mon Dec 19 17:35:16 2022] Mandair pierces an ancient tigerclaw racnar for 22 points of damage.
+[Mon Dec 19 17:35:16 2022] Huntor slashes an ancient tigerclaw racnar for 41 points of damage.
+[Mon Dec 19 17:35:16 2022] Huntor slashes an ancient tigerclaw racnar for 77 points of damage.
+[Mon Dec 19 17:35:16 2022] Khanis slashes an ancient tigerclaw racnar for 40 points of damage.
+[Mon Dec 19 17:35:16 2022] Khanis slashes an ancient tigerclaw racnar for 24 points of damage.
+[Mon Dec 19 17:35:17 2022] Antillius punches an ancient tigerclaw racnar for 5 points of damage.
+[Mon Dec 19 17:35:17 2022] Mandair slashes an ancient tigerclaw racnar for 22 points of damage.
+[Mon Dec 19 17:35:17 2022] Yeef begins to cast a spell.
+[Mon Dec 19 17:35:17 2022] You slash an ancient tigerclaw racnar for 42 points of damage.
+[Mon Dec 19 17:35:17 2022] You try to slash an ancient tigerclaw racnar, but miss!
+[Mon Dec 19 17:35:17 2022] Mandair pierces an ancient tigerclaw racnar for 24 points of damage.
+[Mon Dec 19 17:35:17 2022] Khanis slashes an ancient tigerclaw racnar for 1 point of damage.
+[Mon Dec 19 17:35:17 2022] Dapiff crushes an ancient tigerclaw racnar for 17 points of damage.
+[Mon Dec 19 17:35:17 2022] Dapiff crushes an ancient tigerclaw racnar for 58 points of damage.
+[Mon Dec 19 17:35:17 2022] Einskaldir pierces an ancient tigerclaw racnar for 19 points of damage.
+[Mon Dec 19 17:35:17 2022] Einskaldir pierces an ancient tigerclaw racnar for 13 points of damage.
+[Mon Dec 19 17:35:18 2022] Antillius punches an ancient tigerclaw racnar for 10 points of damage.
+[Mon Dec 19 17:35:18 2022] Huntor slashes an ancient tigerclaw racnar for 19 points of damage.
+[Mon Dec 19 17:35:18 2022] Huntor slashes an ancient tigerclaw racnar for 38 points of damage.
+[Mon Dec 19 17:35:18 2022] Antillius crushes an ancient tigerclaw racnar for 196 points of damage.
+[Mon Dec 19 17:35:18 2022] Dapiff punches an ancient tigerclaw racnar for 15 points of damage.
+[Mon Dec 19 17:35:18 2022] Mandair slashes an ancient tigerclaw racnar for 59 points of damage.
+[Mon Dec 19 17:35:18 2022] Einskaldir backstabs an ancient tigerclaw racnar for 310 points of damage.
+[Mon Dec 19 17:35:18 2022] Bohji pierces an ancient tigerclaw racnar for 66 points of damage.
+[Mon Dec 19 17:35:18 2022] Your attempt to disarm failed.
+[Mon Dec 19 17:35:18 2022] Mandair pierces an ancient tigerclaw racnar for 32 points of damage.
+[Mon Dec 19 17:35:18 2022] Mandair pierces an ancient tigerclaw racnar for 20 points of damage.
+[Mon Dec 19 17:35:18 2022] Einskaldir crushes an ancient tigerclaw racnar for 47 points of damage.
+[Mon Dec 19 17:35:19 2022] Einskaldir pierces an ancient tigerclaw racnar for 41 points of damage.
+[Mon Dec 19 17:35:19 2022] Dapiff punches an ancient tigerclaw racnar for 45 points of damage.
+[Mon Dec 19 17:35:19 2022] Dapiff punches an ancient tigerclaw racnar for 44 points of damage.
+[Mon Dec 19 17:35:19 2022] Dapiff crushes an ancient tigerclaw racnar for 48 points of damage.
+[Mon Dec 19 17:35:19 2022] Huntor slashes an ancient tigerclaw racnar for 24 points of damage.
+[Mon Dec 19 17:35:19 2022] Einskaldir crushes an ancient tigerclaw racnar for 9 points of damage.
+[Mon Dec 19 17:35:19 2022] Huntor slashes an ancient tigerclaw racnar for 18 points of damage.
+[Mon Dec 19 17:35:19 2022] Bohji slashes an ancient tigerclaw racnar for 24 points of damage.
+[Mon Dec 19 17:35:19 2022] Bohji pierces an ancient tigerclaw racnar for 52 points of damage.
+[Mon Dec 19 17:35:19 2022] You slash an ancient tigerclaw racnar for 42 points of damage.
+[Mon Dec 19 17:35:19 2022] You slash an ancient tigerclaw racnar for 94 points of damage.
+[Mon Dec 19 17:35:20 2022] Dapiff punches an ancient tigerclaw racnar for 38 points of damage.
+[Mon Dec 19 17:35:20 2022] Antillius kicks an ancient tigerclaw racnar for 42 points of damage.
+[Mon Dec 19 17:35:20 2022] An ancient tigerclaw racnar was pierced by thorns.
+[Mon Dec 19 17:35:20 2022] An ancient tigerclaw racnar hits Mandair for 260 points of damage.
+[Mon Dec 19 17:35:20 2022] Antillius crushes an ancient tigerclaw racnar for 49 points of damage.
+[Mon Dec 19 17:35:20 2022] Khanis slashes an ancient tigerclaw racnar for 61 points of damage.
+[Mon Dec 19 17:35:20 2022] Mandair pierces an ancient tigerclaw racnar for 51 points of damage.
+[Mon Dec 19 17:35:20 2022] Huntor slashes an ancient tigerclaw racnar for 31 points of damage.
+[Mon Dec 19 17:35:20 2022] Huntor slashes an ancient tigerclaw racnar for 21 points of damage.
+[Mon Dec 19 17:35:20 2022] Dapiff crushes an ancient tigerclaw racnar for 21 points of damage.
+[Mon Dec 19 17:35:20 2022] Huntor slashes an ancient tigerclaw racnar for 9 points of damage.
+[Mon Dec 19 17:35:20 2022] Mandair slashes an ancient tigerclaw racnar for 19 points of damage.
+[Mon Dec 19 17:35:21 2022] Dapiff punches an ancient tigerclaw racnar for 17 points of damage.
+[Mon Dec 19 17:35:21 2022] Mandair kicks an ancient tigerclaw racnar for 4 points of damage.
+[Mon Dec 19 17:35:21 2022] Antillius punches an ancient tigerclaw racnar for 43 points of damage.
+[Mon Dec 19 17:35:21 2022] Antillius punches an ancient tigerclaw racnar for 12 points of damage.
+[Mon Dec 19 17:35:21 2022] Khanis slashes an ancient tigerclaw racnar for 1 point of damage.
+[Mon Dec 19 17:35:21 2022] You bash an ancient tigerclaw racnar for 7 points of damage.
+[Mon Dec 19 17:35:21 2022] Mandair pierces an ancient tigerclaw racnar for 28 points of damage.
+[Mon Dec 19 17:35:21 2022] Einskaldir crushes an ancient tigerclaw racnar for 34 points of damage.
+[Mon Dec 19 17:35:22 2022] Huntor slashes an ancient tigerclaw racnar for 57 points of damage.
+[Mon Dec 19 17:35:22 2022] Huntor Scores a critical hit!(32)
+[Mon Dec 19 17:35:22 2022] Huntor slashes an ancient tigerclaw racnar for 43 points of damage.
+[Mon Dec 19 17:35:22 2022] Antillius punches an ancient tigerclaw racnar for 11 points of damage.
+[Mon Dec 19 17:35:22 2022] Antillius punches an ancient tigerclaw racnar for 35 points of damage.
+[Mon Dec 19 17:35:22 2022] You slash an ancient tigerclaw racnar for 42 points of damage.
+[Mon Dec 19 17:35:22 2022] Mandair slashes an ancient tigerclaw racnar for 62 points of damage.
+[Mon Dec 19 17:35:22 2022] Mandair slashes an ancient tigerclaw racnar for 25 points of damage.
+[Mon Dec 19 17:35:22 2022] Antillius punches an ancient tigerclaw racnar for 32 points of damage.
+[Mon Dec 19 17:35:22 2022] Antillius punches an ancient tigerclaw racnar for 36 points of damage.
+[Mon Dec 19 17:35:22 2022] Khanis slashes an ancient tigerclaw racnar for 36 points of damage.
+[Mon Dec 19 17:35:22 2022] Khanis slashes an ancient tigerclaw racnar for 7 points of damage.
+[Mon Dec 19 17:35:22 2022] Mandair pierces an ancient tigerclaw racnar for 24 points of damage.
+[Mon Dec 19 17:35:22 2022] Mandair pierces an ancient tigerclaw racnar for 42 points of damage.
+[Mon Dec 19 17:35:22 2022] Dapiff kicks an ancient tigerclaw racnar for 45 points of damage.
+[Mon Dec 19 17:35:22 2022] Dapiff punches an ancient tigerclaw racnar for 29 points of damage.
+[Mon Dec 19 17:35:22 2022] Khanis slashes an ancient tigerclaw racnar for 51 points of damage.
+[Mon Dec 19 17:35:22 2022] Khanis slashes an ancient tigerclaw racnar for 35 points of damage.
+[Mon Dec 19 17:35:22 2022] Einskaldir crushes an ancient tigerclaw racnar for 39 points of damage.
+[Mon Dec 19 17:35:22 2022] Huntor kicks an ancient tigerclaw racnar for 15 points of damage.
+[Mon Dec 19 17:35:23 2022] Einskaldir pierces an ancient tigerclaw racnar for 24 points of damage.
+[Mon Dec 19 17:35:23 2022] Antillius crushes an ancient tigerclaw racnar for 54 points of damage.
+[Mon Dec 19 17:35:23 2022] Huntor slashes an ancient tigerclaw racnar for 40 points of damage.
+[Mon Dec 19 17:35:23 2022] Huntor slashes an ancient tigerclaw racnar for 19 points of damage.
+[Mon Dec 19 17:35:23 2022] Mandair slashes an ancient tigerclaw racnar for 45 points of damage.
+[Mon Dec 19 17:35:23 2022] Khanis slashes an ancient tigerclaw racnar for 39 points of damage.
+[Mon Dec 19 17:35:23 2022] Khanis slashes an ancient tigerclaw racnar for 70 points of damage.
+[Mon Dec 19 17:35:23 2022] Dapiff punches an ancient tigerclaw racnar for 11 points of damage.
+[Mon Dec 19 17:35:23 2022] An ancient tigerclaw racnar was pierced by thorns.
+[Mon Dec 19 17:35:23 2022] An ancient tigerclaw racnar hits Mandair for 255 points of damage.
+[Mon Dec 19 17:35:23 2022] Einskaldir crushes an ancient tigerclaw racnar for 45 points of damage.
+[Mon Dec 19 17:35:23 2022] Einskaldir crushes an ancient tigerclaw racnar for 19 points of damage.
+[Mon Dec 19 17:35:23 2022] Khanis slashes an ancient tigerclaw racnar for 69 points of damage.
+[Mon Dec 19 17:35:23 2022] Dapiff crushes an ancient tigerclaw racnar for 17 points of damage.
+[Mon Dec 19 17:35:24 2022] Huntor slashes an ancient tigerclaw racnar for 41 points of damage.
+[Mon Dec 19 17:35:24 2022] Mandair pierces an ancient tigerclaw racnar for 18 points of damage.
+[Mon Dec 19 17:35:24 2022] Dapiff punches an ancient tigerclaw racnar for 11 points of damage.
+[Mon Dec 19 17:35:24 2022] Einskaldir pierces an ancient tigerclaw racnar for 35 points of damage.
+[Mon Dec 19 17:35:24 2022] You slash an ancient tigerclaw racnar for 67 points of damage.
+[Mon Dec 19 17:35:24 2022] You try to slash an ancient tigerclaw racnar, but miss!
+[Mon Dec 19 17:35:24 2022] Huntor slashes an ancient tigerclaw racnar for 18 points of damage.
+[Mon Dec 19 17:35:24 2022] You think you are heading East.
+[Mon Dec 19 17:35:24 2022] Mandair slashes an ancient tigerclaw racnar for 6 points of damage.
+[Mon Dec 19 17:35:25 2022] Dapiff punches an ancient tigerclaw racnar for 30 points of damage.
+[Mon Dec 19 17:35:25 2022] Mandair pierces an ancient tigerclaw racnar for 45 points of damage.
+[Mon Dec 19 17:35:25 2022] Huntor slashes an ancient tigerclaw racnar for 41 points of damage.
+[Mon Dec 19 17:35:25 2022] Dapiff crushes an ancient tigerclaw racnar for 57 points of damage.
+[Mon Dec 19 17:35:25 2022] Einskaldir crushes an ancient tigerclaw racnar for 54 points of damage.
+[Mon Dec 19 17:35:25 2022] Einskaldir pierces an ancient tigerclaw racnar for 46 points of damage.
+[Mon Dec 19 17:35:25 2022] Einskaldir pierces an ancient tigerclaw racnar for 37 points of damage.
+[Mon Dec 19 17:35:25 2022] Huntor slashes an ancient tigerclaw racnar for 12 points of damage.
+[Mon Dec 19 17:35:25 2022] You bash an ancient tigerclaw racnar for 8 points of damage.
+[Mon Dec 19 17:35:26 2022] Dapiff punches an ancient tigerclaw racnar for 43 points of damage.
+[Mon Dec 19 17:35:26 2022] Dapiff punches an ancient tigerclaw racnar for 13 points of damage.
+[Mon Dec 19 17:35:26 2022] Mandair pierces an ancient tigerclaw racnar for 20 points of damage.
+[Mon Dec 19 17:35:26 2022] Mandair pierces an ancient tigerclaw racnar for 27 points of damage.
+[Mon Dec 19 17:35:26 2022] Khanis slashes an ancient tigerclaw racnar for 24 points of damage.
+[Mon Dec 19 17:35:26 2022] Antillius punches an ancient tigerclaw racnar for 15 points of damage.
+[Mon Dec 19 17:35:26 2022] Huntor slashes an ancient tigerclaw racnar for 41 points of damage.
+[Mon Dec 19 17:35:26 2022] Einskaldir crushes an ancient tigerclaw racnar for 7 points of damage.
+[Mon Dec 19 17:35:26 2022] Einskaldir crushes an ancient tigerclaw racnar for 21 points of damage.
+[Mon Dec 19 17:35:26 2022] Khanis slashes an ancient tigerclaw racnar for 1 point of damage.
+[Mon Dec 19 17:35:26 2022] You slash an ancient tigerclaw racnar for 42 points of damage.
+[Mon Dec 19 17:35:26 2022] Yeef begins to cast a spell.
+[Mon Dec 19 17:35:26 2022] Antillius kicks an ancient tigerclaw racnar for 42 points of damage.
+[Mon Dec 19 17:35:27 2022] Dapiff punches an ancient tigerclaw racnar for 23 points of damage.
+[Mon Dec 19 17:35:27 2022] Huntor slashes an ancient tigerclaw racnar for 45 points of damage.
+[Mon Dec 19 17:35:27 2022] Mandair kicks an ancient tigerclaw racnar for 6 points of damage.
+[Mon Dec 19 17:35:27 2022] Antillius punches an ancient tigerclaw racnar for 12 points of damage.
+[Mon Dec 19 17:35:27 2022] Antillius punches an ancient tigerclaw racnar for 23 points of damage.
+[Mon Dec 19 17:35:27 2022] An ancient tigerclaw racnar was pierced by thorns.
+[Mon Dec 19 17:35:27 2022] An ancient tigerclaw racnar hits Mandair for 286 points of damage.
+[Mon Dec 19 17:35:27 2022] Mandair slashes an ancient tigerclaw racnar for 16 points of damage.
+[Mon Dec 19 17:35:27 2022] Khanis slashes an ancient tigerclaw racnar for 49 points of damage.
+[Mon Dec 19 17:35:27 2022] Khanis slashes an ancient tigerclaw racnar for 64 points of damage.
+[Mon Dec 19 17:35:27 2022] Huntor slashes an ancient tigerclaw racnar for 25 points of damage.
+[Mon Dec 19 17:35:27 2022] Khanis slashes an ancient tigerclaw racnar for 19 points of damage.
+[Mon Dec 19 17:35:27 2022] Dapiff punches an ancient tigerclaw racnar for 44 points of damage.
+[Mon Dec 19 17:35:27 2022] Dapiff punches an ancient tigerclaw racnar for 35 points of damage.
+[Mon Dec 19 17:35:28 2022] Antillius punches an ancient tigerclaw racnar for 5 points of damage.
+[Mon Dec 19 17:35:28 2022] Antillius punches an ancient tigerclaw racnar for 11 points of damage.
+[Mon Dec 19 17:35:28 2022] Mandair pierces an ancient tigerclaw racnar for 17 points of damage.
+[Mon Dec 19 17:35:28 2022] Mandair pierces an ancient tigerclaw racnar for 12 points of damage.
+[Mon Dec 19 17:35:28 2022] Huntor slashes an ancient tigerclaw racnar for 21 points of damage.
+[Mon Dec 19 17:35:28 2022] You have no idea what direction you are facing.
+[Mon Dec 19 17:35:28 2022] Khanis slashes an ancient tigerclaw racnar for 50 points of damage.
+[Mon Dec 19 17:35:28 2022] Khanis slashes an ancient tigerclaw racnar for 25 points of damage.
+[Mon Dec 19 17:35:29 2022] You slash an ancient tigerclaw racnar for 71 points of damage.
+[Mon Dec 19 17:35:29 2022] You slash an ancient tigerclaw racnar for 114 points of damage.
+[Mon Dec 19 17:35:29 2022] Mandair Scores a critical hit!(23)
+[Mon Dec 19 17:35:29 2022] Mandair pierces an ancient tigerclaw racnar for 34 points of damage.
+[Mon Dec 19 17:35:29 2022] Mandair pierces an ancient tigerclaw racnar for 47 points of damage.
+[Mon Dec 19 17:35:29 2022] Huntor kicks an ancient tigerclaw racnar for 1 point of damage.
+[Mon Dec 19 17:35:29 2022] Your Location is -705.05, -1709.36, -18.12
+[Mon Dec 19 17:35:29 2022] Dapiff punches an ancient tigerclaw racnar for 30 points of damage.
+[Mon Dec 19 17:35:29 2022] Huntor slashes an ancient tigerclaw racnar for 21 points of damage.
+[Mon Dec 19 17:35:29 2022] Einskaldir crushes an ancient tigerclaw racnar for 21 points of damage.
+[Mon Dec 19 17:35:29 2022] Mandair slashes an ancient tigerclaw racnar for 25 points of damage.
+[Mon Dec 19 17:35:29 2022] Huntor slashes an ancient tigerclaw racnar for 44 points of damage.
+[Mon Dec 19 17:35:29 2022] Antillius regards you indifferently -- looks like quite a gamble.
+[Mon Dec 19 17:35:30 2022] You are inspecting Antillius.
+[Mon Dec 19 17:35:30 2022] You try to bash an ancient tigerclaw racnar, but miss!
+[Mon Dec 19 17:35:30 2022] Dapiff punches an ancient tigerclaw racnar for 13 points of damage.
+[Mon Dec 19 17:35:30 2022] Dapiff punches an ancient tigerclaw racnar for 24 points of damage.
+[Mon Dec 19 17:35:30 2022] Einskaldir backstabs an ancient tigerclaw racnar for 361 points of damage.
+[Mon Dec 19 17:35:30 2022] Einskaldir backstabs an ancient tigerclaw racnar for 110 points of damage.
+[Mon Dec 19 17:35:30 2022] Your attempt to disarm failed.
+[Mon Dec 19 17:35:30 2022] Einskaldir crushes an ancient tigerclaw racnar for 5 points of damage.
+[Mon Dec 19 17:35:30 2022] Einskaldir crushes an ancient tigerclaw racnar for 33 points of damage.
+[Mon Dec 19 17:35:30 2022] Khanis slashes an ancient tigerclaw racnar for 84 points of damage.
+[Mon Dec 19 17:35:30 2022] An ancient tigerclaw racnar was pierced by thorns.
+[Mon Dec 19 17:35:30 2022] An ancient tigerclaw racnar hits Mandair for 207 points of damage.
+[Mon Dec 19 17:35:30 2022] Antillius punches an ancient tigerclaw racnar for 23 points of damage.
+[Mon Dec 19 17:35:30 2022] Einskaldir pierces an ancient tigerclaw racnar for 35 points of damage.
+[Mon Dec 19 17:35:30 2022] Einskaldir pierces an ancient tigerclaw racnar for 35 points of damage.
+[Mon Dec 19 17:35:30 2022] Huntor slashes an ancient tigerclaw racnar for 23 points of damage.
+[Mon Dec 19 17:35:30 2022] Mandair pierces an ancient tigerclaw racnar for 25 points of damage.
+[Mon Dec 19 17:35:30 2022] Mandair slashes an ancient tigerclaw racnar for 18 points of damage.
+[Mon Dec 19 17:35:31 2022] Yeef peers through a telescope.
+[Mon Dec 19 17:35:31 2022] Antillius kicks an ancient tigerclaw racnar for 42 points of damage.
+[Mon Dec 19 17:35:31 2022] You try to slash an ancient tigerclaw racnar, but miss!
+[Mon Dec 19 17:35:31 2022] You slash an ancient tigerclaw racnar for 118 points of damage.
+[Mon Dec 19 17:35:31 2022] Dapiff punches an ancient tigerclaw racnar for 50 points of damage.
+[Mon Dec 19 17:35:31 2022] Yeef begins to cast a spell.
+[Mon Dec 19 17:35:31 2022] Antillius punches an ancient tigerclaw racnar for 7 points of damage.
+[Mon Dec 19 17:35:31 2022] Antillius punches an ancient tigerclaw racnar for 18 points of damage.
+[Mon Dec 19 17:35:31 2022] Dapiff crushes an ancient tigerclaw racnar for 18 points of damage.
+[Mon Dec 19 17:35:31 2022] Einskaldir crushes an ancient tigerclaw racnar for 20 points of damage.
+[Mon Dec 19 17:35:31 2022] Einskaldir crushes an ancient tigerclaw racnar for 32 points of damage.
+[Mon Dec 19 17:35:31 2022] Antillius punches an ancient tigerclaw racnar for 18 points of damage.
+[Mon Dec 19 17:35:31 2022] Antillius punches an ancient tigerclaw racnar for 23 points of damage.
+[Mon Dec 19 17:35:31 2022] Antillius punches an ancient tigerclaw racnar for 28 points of damage.
+[Mon Dec 19 17:35:31 2022] Khanis slashes an ancient tigerclaw racnar for 45 points of damage.
+[Mon Dec 19 17:35:31 2022] Mandair pierces an ancient tigerclaw racnar for 12 points of damage.
+[Mon Dec 19 17:35:31 2022] Mandair pierces an ancient tigerclaw racnar for 15 points of damage.
+[Mon Dec 19 17:35:32 2022] Huntor slashes an ancient tigerclaw racnar for 38 points of damage.
+[Mon Dec 19 17:35:32 2022] Huntor slashes an ancient tigerclaw racnar for 14 points of damage.
+[Mon Dec 19 17:35:32 2022] Dapiff punches an ancient tigerclaw racnar for 41 points of damage.
+[Mon Dec 19 17:35:32 2022] Antillius punches an ancient tigerclaw racnar for 18 points of damage.
+[Mon Dec 19 17:35:32 2022] Antillius punches an ancient tigerclaw racnar for 4 points of damage.
+[Mon Dec 19 17:35:32 2022] Einskaldir pierces an ancient tigerclaw racnar for 13 points of damage.
+[Mon Dec 19 17:35:32 2022] Mandair slashes an ancient tigerclaw racnar for 28 points of damage.
+[Mon Dec 19 17:35:32 2022] Antillius punches an ancient tigerclaw racnar for 15 points of damage.
+[Mon Dec 19 17:35:32 2022] Einskaldir crushes an ancient tigerclaw racnar for 5 points of damage.
+[Mon Dec 19 17:35:33 2022] Dapiff punches an ancient tigerclaw racnar for 28 points of damage.
+[Mon Dec 19 17:35:33 2022] Khanis slashes an ancient tigerclaw racnar for 20 points of damage.
+[Mon Dec 19 17:35:33 2022] Antillius crushes an ancient tigerclaw racnar for 170 points of damage.
+[Mon Dec 19 17:35:33 2022] Huntor slashes an ancient tigerclaw racnar for 57 points of damage.
+[Mon Dec 19 17:35:33 2022] Huntor slashes an ancient tigerclaw racnar for 23 points of damage.
+[Mon Dec 19 17:35:33 2022] Mandair slashes an ancient tigerclaw racnar for 24 points of damage.
+[Mon Dec 19 17:35:33 2022] You tell your party, 'will do mr triten'
+[Mon Dec 19 17:35:33 2022] Einskaldir pierces an ancient tigerclaw racnar for 46 points of damage.
+[Mon Dec 19 17:35:33 2022] You try to slash an ancient tigerclaw racnar, but miss!
+[Mon Dec 19 17:35:33 2022] Your Location is -704.15, -1709.35, -18.12
+[Mon Dec 19 17:35:33 2022] Mandair pierces an ancient tigerclaw racnar for 29 points of damage.
+[Mon Dec 19 17:35:33 2022] Mandair Scores a critical hit!(32)
+[Mon Dec 19 17:35:33 2022] Mandair pierces an ancient tigerclaw racnar for 43 points of damage.
+[Mon Dec 19 17:35:33 2022] Dapiff punches an ancient tigerclaw racnar for 14 points of damage.
+[Mon Dec 19 17:35:33 2022] Dapiff punches an ancient tigerclaw racnar for 17 points of damage.
+[Mon Dec 19 17:35:33 2022] Yeef winces.
+[Mon Dec 19 17:35:34 2022] You think you are heading East.
+[Mon Dec 19 17:35:34 2022] Khanis slashes an ancient tigerclaw racnar for 26 points of damage.
+[Mon Dec 19 17:35:34 2022] Khanis slashes an ancient tigerclaw racnar for 41 points of damage.
+[Mon Dec 19 17:35:34 2022] Mandair pierces an ancient tigerclaw racnar for 12 points of damage.
+[Mon Dec 19 17:35:34 2022] An ancient tigerclaw racnar was pierced by thorns.
+[Mon Dec 19 17:35:34 2022] An ancient tigerclaw racnar hits Mandair for 255 points of damage.
+[Mon Dec 19 17:35:34 2022] An ancient tigerclaw racnar was pierced by thorns.
+[Mon Dec 19 17:35:34 2022] An ancient tigerclaw racnar hits Mandair for 292 points of damage.
+[Mon Dec 19 17:35:34 2022] Yeef peers through a telescope.
+[Mon Dec 19 17:35:34 2022] Huntor slashes an ancient tigerclaw racnar for 39 points of damage.
+[Mon Dec 19 17:35:34 2022] Mandair pierces an ancient tigerclaw racnar for 15 points of damage.
+[Mon Dec 19 17:35:34 2022] Mandair slashes an ancient tigerclaw racnar for 5 points of damage.
+[Mon Dec 19 17:35:34 2022] Yeef's spell fizzles!
+[Mon Dec 19 17:35:34 2022] You bash an ancient tigerclaw racnar for 9 points of damage.
+[Mon Dec 19 17:35:34 2022] Antillius punches an ancient tigerclaw racnar for 29 points of damage.
+[Mon Dec 19 17:35:34 2022] Khanis slashes an ancient tigerclaw racnar for 27 points of damage.
+[Mon Dec 19 17:35:34 2022] Khanis slashes an ancient tigerclaw racnar for 28 points of damage.
+[Mon Dec 19 17:35:35 2022] Yeef begins to cast a spell.
+[Mon Dec 19 17:35:35 2022] Antillius punches an ancient tigerclaw racnar for 21 points of damage.
+[Mon Dec 19 17:35:35 2022] Huntor kicks an ancient tigerclaw racnar for 1 point of damage.
+[Mon Dec 19 17:35:35 2022] Huntor slashes an ancient tigerclaw racnar for 16 points of damage.
+[Mon Dec 19 17:35:35 2022] Khanis slashes an ancient tigerclaw racnar for 76 points of damage.
+[Mon Dec 19 17:35:35 2022] Dapiff punches an ancient tigerclaw racnar for 30 points of damage.
+[Mon Dec 19 17:35:35 2022] Dapiff punches an ancient tigerclaw racnar for 24 points of damage.
+[Mon Dec 19 17:35:35 2022] Mandair pierces an ancient tigerclaw racnar for 21 points of damage.
+[Mon Dec 19 17:35:35 2022] Mandair pierces an ancient tigerclaw racnar for 22 points of damage.
+[Mon Dec 19 17:35:35 2022] You prey's soul screams in your mind.
+[Mon Dec 19 17:35:35 2022] An ancient tigerclaw racnar staggers.
+[Mon Dec 19 17:35:35 2022] You try to slash an ancient tigerclaw racnar, but miss!
+[Mon Dec 19 17:35:35 2022] You try to slash an ancient tigerclaw racnar, but miss!
+[Mon Dec 19 17:35:35 2022] Dapiff crushes an ancient tigerclaw racnar for 59 points of damage.
+[Mon Dec 19 17:35:35 2022] Huntor slashes an ancient tigerclaw racnar for 58 points of damage.
+[Mon Dec 19 17:35:36 2022] Khanis regards you indifferently -- looks like quite a gamble.
+[Mon Dec 19 17:35:36 2022] Antillius kicks an ancient tigerclaw racnar for 42 points of damage.
+[Mon Dec 19 17:35:36 2022] Einskaldir pierces an ancient tigerclaw racnar for 55 points of damage.
+[Mon Dec 19 17:35:36 2022] Einskaldir pierces an ancient tigerclaw racnar for 22 points of damage.
+[Mon Dec 19 17:35:36 2022] Dapiff punches an ancient tigerclaw racnar for 15 points of damage.
+[Mon Dec 19 17:35:36 2022] Huntor slashes an ancient tigerclaw racnar for 8 points of damage.
+[Mon Dec 19 17:35:36 2022] Einskaldir backstabs an ancient tigerclaw racnar for 95 points of damage.
+[Mon Dec 19 17:35:36 2022] Einskaldir backstabs an ancient tigerclaw racnar for 313 points of damage.
+[Mon Dec 19 17:35:36 2022] Mandair pierces an ancient tigerclaw racnar for 39 points of damage.
+[Mon Dec 19 17:35:36 2022] Mandair pierces an ancient tigerclaw racnar for 29 points of damage.
+[Mon Dec 19 17:35:36 2022] Khanis slashes an ancient tigerclaw racnar for 41 points of damage.
+[Mon Dec 19 17:35:36 2022] Antillius punches an ancient tigerclaw racnar for 23 points of damage.
+[Mon Dec 19 17:35:37 2022] Khanis slashes an ancient tigerclaw racnar for 49 points of damage.
+[Mon Dec 19 17:35:37 2022] Huntor slashes an ancient tigerclaw racnar for 23 points of damage.
+[Mon Dec 19 17:35:37 2022] Huntor slashes an ancient tigerclaw racnar for 61 points of damage.
+[Mon Dec 19 17:35:37 2022] Huntor slashes an ancient tigerclaw racnar for 40 points of damage.
+[Mon Dec 19 17:35:37 2022] Mandair slashes an ancient tigerclaw racnar for 40 points of damage.
+[Mon Dec 19 17:35:37 2022] Dapiff punches an ancient tigerclaw racnar for 24 points of damage.
+[Mon Dec 19 17:35:37 2022] Mandair pierces an ancient tigerclaw racnar for 53 points of damage.
+[Mon Dec 19 17:35:37 2022] Mandair pierces an ancient tigerclaw racnar for 20 points of damage.
+[Mon Dec 19 17:35:37 2022] Huntor slashes an ancient tigerclaw racnar for 42 points of damage.
+[Mon Dec 19 17:35:37 2022] Yeef winces.
+[Mon Dec 19 17:35:37 2022] Antillius crushes an ancient tigerclaw racnar for 130 points of damage.
+[Mon Dec 19 17:35:37 2022] Antillius crushes an ancient tigerclaw racnar for 100 points of damage.
+[Mon Dec 19 17:35:37 2022] An ancient tigerclaw racnar was pierced by thorns.
+[Mon Dec 19 17:35:37 2022] An ancient tigerclaw racnar hits Mandair for 292 points of damage.
+[Mon Dec 19 17:35:37 2022] An ancient tigerclaw racnar was pierced by thorns.
+[Mon Dec 19 17:35:37 2022] An ancient tigerclaw racnar hits Mandair for 270 points of damage.
+[Mon Dec 19 17:35:37 2022] Khanis slashes an ancient tigerclaw racnar for 18 points of damage.
+[Mon Dec 19 17:35:38 2022] Khanis slashes an ancient tigerclaw racnar for 45 points of damage.
+[Mon Dec 19 17:35:38 2022] You slash an ancient tigerclaw racnar for 98 points of damage.
+[Mon Dec 19 17:35:38 2022] You try to slash an ancient tigerclaw racnar, but miss!
+[Mon Dec 19 17:35:38 2022] Dapiff punches an ancient tigerclaw racnar for 16 points of damage.
+[Mon Dec 19 17:35:38 2022] Yeef peers through a telescope.
+[Mon Dec 19 17:35:38 2022] Yeef begins to cast a spell.
+[Mon Dec 19 17:35:38 2022] Mandair pierces an ancient tigerclaw racnar for 24 points of damage.
+[Mon Dec 19 17:35:38 2022] Mandair Scores a critical hit!(59)
+[Mon Dec 19 17:35:38 2022] Mandair slashes an ancient tigerclaw racnar for 59 points of damage.
+[Mon Dec 19 17:35:38 2022] Einskaldir pierces an ancient tigerclaw racnar for 58 points of damage.
+[Mon Dec 19 17:35:38 2022] Mandair kicks an ancient tigerclaw racnar for 16 points of damage.
+[Mon Dec 19 17:35:38 2022] Dapiff crushes an ancient tigerclaw racnar for 68 points of damage.
+[Mon Dec 19 17:35:39 2022] Dapiff punches an ancient tigerclaw racnar for 26 points of damage.
+[Mon Dec 19 17:35:39 2022] Khanis slashes an ancient tigerclaw racnar for 36 points of damage.
+[Mon Dec 19 17:35:39 2022] Khanis slashes an ancient tigerclaw racnar for 24 points of damage.
+[Mon Dec 19 17:35:39 2022] You try to bash an ancient tigerclaw racnar, but miss!
+[Mon Dec 19 17:35:39 2022] Mandair pierces an ancient tigerclaw racnar for 27 points of damage.
+[Mon Dec 19 17:35:39 2022] Triten tells the group, 'tyvm :)'
+[Mon Dec 19 17:35:39 2022] Antillius punches an ancient tigerclaw racnar for 12 points of damage.
+[Mon Dec 19 17:35:39 2022] Huntor slashes an ancient tigerclaw racnar for 42 points of damage.
+[Mon Dec 19 17:35:39 2022] Mandair slashes an ancient tigerclaw racnar for 1 point of damage.
+[Mon Dec 19 17:35:39 2022] Dapiff punches an ancient tigerclaw racnar for 17 points of damage.
+[Mon Dec 19 17:35:39 2022] Einskaldir pierces an ancient tigerclaw racnar for 60 points of damage.
+[Mon Dec 19 17:35:40 2022] Khanis slashes an ancient tigerclaw racnar for 13 points of damage.
+[Mon Dec 19 17:35:40 2022] Khanis slashes an ancient tigerclaw racnar for 14 points of damage.
+[Mon Dec 19 17:35:40 2022] Khanis slashes an ancient tigerclaw racnar for 21 points of damage.
+[Mon Dec 19 17:35:40 2022] Huntor kicks an ancient tigerclaw racnar for 14 points of damage.
+[Mon Dec 19 17:35:40 2022] You try to slash an ancient tigerclaw racnar, but miss!
+[Mon Dec 19 17:35:40 2022] You try to slash an ancient tigerclaw racnar, but miss!
+[Mon Dec 19 17:35:40 2022] Mandair pierces an ancient tigerclaw racnar for 28 points of damage.
+[Mon Dec 19 17:35:40 2022] Dapiff crushes an ancient tigerclaw racnar for 22 points of damage.
+[Mon Dec 19 17:35:40 2022] Antillius punches an ancient tigerclaw racnar for 27 points of damage.
+[Mon Dec 19 17:35:40 2022] Dapiff punches an ancient tigerclaw racnar for 17 points of damage.
+[Mon Dec 19 17:35:40 2022] Your attempt to disarm failed.
+[Mon Dec 19 17:35:40 2022] Huntor slashes an ancient tigerclaw racnar for 21 points of damage.
+[Mon Dec 19 17:35:40 2022] Mandair slashes an ancient tigerclaw racnar for 18 points of damage.
+[Mon Dec 19 17:35:40 2022] Huntor slashes an ancient tigerclaw racnar for 19 points of damage.
+[Mon Dec 19 17:35:41 2022] An ancient tigerclaw racnar was pierced by thorns.
+[Mon Dec 19 17:35:41 2022] An ancient tigerclaw racnar hits Mandair for 223 points of damage.
+[Mon Dec 19 17:35:41 2022] Einskaldir pierces an ancient tigerclaw racnar for 13 points of damage.
+[Mon Dec 19 17:35:41 2022] Mandair pierces an ancient tigerclaw racnar for 16 points of damage.
+[Mon Dec 19 17:35:41 2022] Antillius punches an ancient tigerclaw racnar for 28 points of damage.
+[Mon Dec 19 17:35:41 2022] Antillius punches an ancient tigerclaw racnar for 15 points of damage.
+[Mon Dec 19 17:35:41 2022] Dapiff punches an ancient tigerclaw racnar for 29 points of damage.
+[Mon Dec 19 17:35:41 2022] Dapiff crushes an ancient tigerclaw racnar for 32 points of damage.
+[Mon Dec 19 17:35:42 2022] Huntor slashes an ancient tigerclaw racnar for 39 points of damage.
+[Mon Dec 19 17:35:42 2022] Antillius kicks an ancient tigerclaw racnar for 45 points of damage.
+[Mon Dec 19 17:35:42 2022] An ancient tigerclaw racnar was pierced by thorns.
+[Mon Dec 19 17:35:42 2022] An ancient tigerclaw racnar bashes Mandair for 192 points of damage.
+[Mon Dec 19 17:35:42 2022] Antillius punches an ancient tigerclaw racnar for 33 points of damage.
+[Mon Dec 19 17:35:42 2022] Antillius punches an ancient tigerclaw racnar for 15 points of damage.
+[Mon Dec 19 17:35:42 2022] Huntor slashes an ancient tigerclaw racnar for 49 points of damage.
+[Mon Dec 19 17:35:42 2022] Huntor slashes an ancient tigerclaw racnar for 19 points of damage.
+[Mon Dec 19 17:35:42 2022] Einskaldir crushes an ancient tigerclaw racnar for 22 points of damage.
+[Mon Dec 19 17:35:42 2022] Dapiff punches an ancient tigerclaw racnar for 50 points of damage.
+[Mon Dec 19 17:35:42 2022] Antillius punches an ancient tigerclaw racnar for 1 point of damage.
+[Mon Dec 19 17:35:42 2022] Antillius punches an ancient tigerclaw racnar for 17 points of damage.
+[Mon Dec 19 17:35:42 2022] You prey's soul screams in your mind.
+[Mon Dec 19 17:35:42 2022] An ancient tigerclaw racnar staggers.
+[Mon Dec 19 17:35:42 2022] You try to slash an ancient tigerclaw racnar, but miss!
+[Mon Dec 19 17:35:42 2022] You try to slash an ancient tigerclaw racnar, but miss!
+[Mon Dec 19 17:35:42 2022] Antillius crushes an ancient tigerclaw racnar for 98 points of damage.
+[Mon Dec 19 17:35:42 2022] Antillius crushes an ancient tigerclaw racnar for 93 points of damage.
+[Mon Dec 19 17:35:42 2022] Antillius crushes an ancient tigerclaw racnar for 114 points of damage.
+[Mon Dec 19 17:35:43 2022] Huntor slashes an ancient tigerclaw racnar for 25 points of damage.
+[Mon Dec 19 17:35:43 2022] Khanis slashes an ancient tigerclaw racnar for 32 points of damage.
+[Mon Dec 19 17:35:43 2022] Khanis slashes an ancient tigerclaw racnar for 39 points of damage.
+[Mon Dec 19 17:35:43 2022] Dapiff punches an ancient tigerclaw racnar for 24 points of damage.
+[Mon Dec 19 17:35:43 2022] Einskaldir crushes an ancient tigerclaw racnar for 22 points of damage.
+[Mon Dec 19 17:35:43 2022] You bash an ancient tigerclaw racnar for 10 points of damage.
+[Mon Dec 19 17:35:43 2022] Huntor slashes an ancient tigerclaw racnar for 67 points of damage.
+[Mon Dec 19 17:35:43 2022] Yeef peers through a telescope.
+[Mon Dec 19 17:35:43 2022] Einskaldir pierces an ancient tigerclaw racnar for 63 points of damage.
+[Mon Dec 19 17:35:44 2022] Mandair pierces an ancient tigerclaw racnar for 25 points of damage.
+[Mon Dec 19 17:35:44 2022] Mandair pierces an ancient tigerclaw racnar for 35 points of damage.
+[Mon Dec 19 17:35:44 2022] Mandair slashes an ancient tigerclaw racnar for 18 points of damage.
+[Mon Dec 19 17:35:44 2022] Dapiff punches an ancient tigerclaw racnar for 14 points of damage.
+[Mon Dec 19 17:35:44 2022] Khanis slashes an ancient tigerclaw racnar for 1 point of damage.
+[Mon Dec 19 17:35:44 2022] Huntor slashes an ancient tigerclaw racnar for 58 points of damage.
+[Mon Dec 19 17:35:44 2022] Dapiff tells the group, 'yup yup ill announce when to heal'
+[Mon Dec 19 17:35:44 2022] Bohji pierces an ancient tigerclaw racnar for 45 points of damage.
+[Mon Dec 19 17:35:44 2022] Khanis slashes an ancient tigerclaw racnar for 76 points of damage.
+[Mon Dec 19 17:35:44 2022] Huntor kicks an ancient tigerclaw racnar for 18 points of damage.
+[Mon Dec 19 17:35:44 2022] Yeef begins to cast a spell.
+[Mon Dec 19 17:35:44 2022] Huntor slashes an ancient tigerclaw racnar for 17 points of damage.
+[Mon Dec 19 17:35:44 2022] Huntor slashes an ancient tigerclaw racnar for 40 points of damage.
+[Mon Dec 19 17:35:44 2022] An ancient tigerclaw racnar was pierced by thorns.
+[Mon Dec 19 17:35:44 2022] An ancient tigerclaw racnar hits Mandair for 255 points of damage.
+[Mon Dec 19 17:35:44 2022] An ancient tigerclaw racnar was pierced by thorns.
+[Mon Dec 19 17:35:44 2022] An ancient tigerclaw racnar hits Mandair for 197 points of damage.
+[Mon Dec 19 17:35:44 2022] You slash an ancient tigerclaw racnar for 55 points of damage.
+[Mon Dec 19 17:35:44 2022] Dapiff crushes an ancient tigerclaw racnar for 34 points of damage.
+[Mon Dec 19 17:35:44 2022] Dapiff crushes an ancient tigerclaw racnar for 45 points of damage.
+[Mon Dec 19 17:35:44 2022] Mandair kicks an ancient tigerclaw racnar for 8 points of damage.
+[Mon Dec 19 17:35:44 2022] Antillius crushes an ancient tigerclaw racnar for 189 points of damage.
+[Mon Dec 19 17:35:45 2022] Dapiff punches an ancient tigerclaw racnar for 18 points of damage.
+[Mon Dec 19 17:35:45 2022] Dapiff punches an ancient tigerclaw racnar for 19 points of damage.
+[Mon Dec 19 17:35:45 2022] Einskaldir pierces an ancient tigerclaw racnar for 73 points of damage.
+[Mon Dec 19 17:35:45 2022] Khanis slashes an ancient tigerclaw racnar for 66 points of damage.
+[Mon Dec 19 17:35:45 2022] Huntor slashes an ancient tigerclaw racnar for 8 points of damage.
+[Mon Dec 19 17:35:45 2022] Bohji slashes an ancient tigerclaw racnar for 35 points of damage.
+[Mon Dec 19 17:35:45 2022] Khanis slashes an ancient tigerclaw racnar for 23 points of damage.
+[Mon Dec 19 17:35:45 2022] Khanis slashes an ancient tigerclaw racnar for 12 points of damage.
+[Mon Dec 19 17:35:45 2022] Bohji pierces an ancient tigerclaw racnar for 42 points of damage.
+[Mon Dec 19 17:35:45 2022] Bohji pierces an ancient tigerclaw racnar for 83 points of damage.
+[Mon Dec 19 17:35:45 2022] Mandair pierces an ancient tigerclaw racnar for 29 points of damage.
+[Mon Dec 19 17:35:46 2022] Huntor slashes an ancient tigerclaw racnar for 57 points of damage.
+[Mon Dec 19 17:35:46 2022] Einskaldir crushes an ancient tigerclaw racnar for 3 points of damage.
+[Mon Dec 19 17:35:46 2022] Mandair slashes an ancient tigerclaw racnar for 59 points of damage.
+[Mon Dec 19 17:35:46 2022] Antillius kicks an ancient tigerclaw racnar for 42 points of damage.
+[Mon Dec 19 17:35:46 2022] Khanis slashes an ancient tigerclaw racnar for 22 points of damage.
+[Mon Dec 19 17:35:46 2022] Khanis slashes an ancient tigerclaw racnar for 12 points of damage.
+[Mon Dec 19 17:35:46 2022] Bohji pierces an ancient tigerclaw racnar for 20 points of damage.
+[Mon Dec 19 17:35:46 2022] Mandair pierces an ancient tigerclaw racnar for 25 points of damage.
+[Mon Dec 19 17:35:46 2022] Mandair pierces an ancient tigerclaw racnar for 21 points of damage.
+[Mon Dec 19 17:35:46 2022] Bohji backstabs an ancient tigerclaw racnar for 217 points of damage.
+[Mon Dec 19 17:35:47 2022] Yeef winces.
+[Mon Dec 19 17:35:47 2022] Antillius punches an ancient tigerclaw racnar for 12 points of damage.
+[Mon Dec 19 17:35:47 2022] You slash an ancient tigerclaw racnar for 118 points of damage.
+[Mon Dec 19 17:35:47 2022] You slash an ancient tigerclaw racnar for 49 points of damage.
+[Mon Dec 19 17:35:47 2022] Huntor slashes an ancient tigerclaw racnar for 19 points of damage.
+[Mon Dec 19 17:35:47 2022] Einskaldir crushes an ancient tigerclaw racnar for 18 points of damage.
+[Mon Dec 19 17:35:47 2022] Yeef peers through a telescope.
+[Mon Dec 19 17:35:47 2022] You try to bash an ancient tigerclaw racnar, but miss!
+[Mon Dec 19 17:35:47 2022] Dapiff punches an ancient tigerclaw racnar for 18 points of damage.
+[Mon Dec 19 17:35:47 2022] Yeef begins to cast a spell.
+[Mon Dec 19 17:35:47 2022] Mandair pierces an ancient tigerclaw racnar for 26 points of damage.
+[Mon Dec 19 17:35:47 2022] Mandair slashes an ancient tigerclaw racnar for 1 point of damage.
+[Mon Dec 19 17:35:48 2022] Khanis slashes an ancient tigerclaw racnar for 12 points of damage.
+[Mon Dec 19 17:35:48 2022] Khanis slashes an ancient tigerclaw racnar for 87 points of damage.
+[Mon Dec 19 17:35:48 2022] Bohji pierces an ancient tigerclaw racnar for 51 points of damage.
+[Mon Dec 19 17:35:48 2022] Bohji slashes an ancient tigerclaw racnar for 11 points of damage.
+[Mon Dec 19 17:35:48 2022] An ancient tigerclaw racnar was pierced by thorns.
+[Mon Dec 19 17:35:48 2022] An ancient tigerclaw racnar hits Mandair for 197 points of damage.
+[Mon Dec 19 17:35:48 2022] An ancient tigerclaw racnar was pierced by thorns.
+[Mon Dec 19 17:35:48 2022] An ancient tigerclaw racnar hits Mandair for 276 points of damage.
+[Mon Dec 19 17:35:48 2022] An ancient tigerclaw racnar was pierced by thorns.
+[Mon Dec 19 17:35:48 2022] An ancient tigerclaw racnar hits Mandair for 249 points of damage.
+[Mon Dec 19 17:35:48 2022] An ancient tigerclaw racnar was pierced by thorns.
+[Mon Dec 19 17:35:48 2022] An ancient tigerclaw racnar hits Mandair for 270 points of damage.
+[Mon Dec 19 17:35:48 2022] Dapiff punches an ancient tigerclaw racnar for 42 points of damage.
+[Mon Dec 19 17:35:48 2022] Dapiff punches an ancient tigerclaw racnar for 20 points of damage.
+[Mon Dec 19 17:35:48 2022] Huntor slashes an ancient tigerclaw racnar for 28 points of damage.
+[Mon Dec 19 17:35:48 2022] Huntor kicks an ancient tigerclaw racnar for 10 points of damage.
+[Mon Dec 19 17:35:48 2022] Antillius crushes an ancient tigerclaw racnar for 166 points of damage.
+[Mon Dec 19 17:35:48 2022] Huntor slashes an ancient tigerclaw racnar for 43 points of damage.
+[Mon Dec 19 17:35:48 2022] Huntor slashes an ancient tigerclaw racnar for 24 points of damage.
+[Mon Dec 19 17:35:49 2022] Einskaldir pierces an ancient tigerclaw racnar for 85 points of damage.
+[Mon Dec 19 17:35:49 2022] Mandair slashes an ancient tigerclaw racnar for 22 points of damage.
+[Mon Dec 19 17:35:49 2022] Khanis slashes an ancient tigerclaw racnar for 77 points of damage.
+[Mon Dec 19 17:35:49 2022] Einskaldir crushes an ancient tigerclaw racnar for 8 points of damage.
+[Mon Dec 19 17:35:49 2022] Dapiff punches an ancient tigerclaw racnar for 24 points of damage.
+[Mon Dec 19 17:35:49 2022] You slash an ancient tigerclaw racnar for 129 points of damage.
+[Mon Dec 19 17:35:49 2022] Bohji slashes an ancient tigerclaw racnar for 1 point of damage.
+[Mon Dec 19 17:35:49 2022] Bohji slashes an ancient tigerclaw racnar for 1 point of damage.
+[Mon Dec 19 17:35:49 2022] Dapiff tells the group, 'so dont gotta worry til then'
+[Mon Dec 19 17:35:49 2022] Khanis slashes an ancient tigerclaw racnar for 26 points of damage.
+[Mon Dec 19 17:35:49 2022] Einskaldir backstabs an ancient tigerclaw racnar for 87 points of damage.
+[Mon Dec 19 17:35:50 2022] Dapiff punches an ancient tigerclaw racnar for 28 points of damage.
+[Mon Dec 19 17:35:50 2022] Yeef winces.
+[Mon Dec 19 17:35:50 2022] Mandair slashes an ancient tigerclaw racnar for 1 point of damage.
+[Mon Dec 19 17:35:50 2022] Mandair slashes an ancient tigerclaw racnar for 49 points of damage.
+[Mon Dec 19 17:35:50 2022] Einskaldir pierces an ancient tigerclaw racnar for 78 points of damage.
+[Mon Dec 19 17:35:50 2022] Khanis slashes an ancient tigerclaw racnar for 63 points of damage.
+[Mon Dec 19 17:35:50 2022] Dapiff kicks an ancient tigerclaw racnar for 54 points of damage.
+[Mon Dec 19 17:35:50 2022] Khanis slashes an ancient tigerclaw racnar for 13 points of damage.
+[Mon Dec 19 17:35:50 2022] Yeef peers through a telescope.
+[Mon Dec 19 17:35:50 2022] Antillius crushes an ancient tigerclaw racnar for 48 points of damage.
+[Mon Dec 19 17:35:50 2022] Antillius crushes an ancient tigerclaw racnar for 178 points of damage.
+[Mon Dec 19 17:35:50 2022] Mandair pierces an ancient tigerclaw racnar for 25 points of damage.
+[Mon Dec 19 17:35:50 2022] Yeef begins to cast a spell.
+[Mon Dec 19 17:35:50 2022] Huntor slashes an ancient tigerclaw racnar for 21 points of damage.
+[Mon Dec 19 17:35:50 2022] Dapiff crushes an ancient tigerclaw racnar for 32 points of damage.
+[Mon Dec 19 17:35:51 2022] Dapiff punches an ancient tigerclaw racnar for 26 points of damage.
+[Mon Dec 19 17:35:51 2022] Huntor slashes an ancient tigerclaw racnar for 31 points of damage.
+[Mon Dec 19 17:35:51 2022] Huntor slashes an ancient tigerclaw racnar for 74 points of damage.
+[Mon Dec 19 17:35:51 2022] Bohji pierces an ancient tigerclaw racnar for 46 points of damage.
+[Mon Dec 19 17:35:51 2022] Bohji pierces an ancient tigerclaw racnar for 13 points of damage.
+[Mon Dec 19 17:35:51 2022] Bohji slashes an ancient tigerclaw racnar for 20 points of damage.
+[Mon Dec 19 17:35:51 2022] Your attempt to disarm failed.
+[Mon Dec 19 17:35:51 2022] Khanis slashes an ancient tigerclaw racnar for 12 points of damage.
+[Mon Dec 19 17:35:51 2022] Mandair pierces an ancient tigerclaw racnar for 34 points of damage.
+[Mon Dec 19 17:35:51 2022] You try to slash an ancient tigerclaw racnar, but miss!
+[Mon Dec 19 17:35:51 2022] An ancient tigerclaw racnar was pierced by thorns.
+[Mon Dec 19 17:35:51 2022] An ancient tigerclaw racnar hits Mandair for 228 points of damage.
+[Mon Dec 19 17:35:51 2022] Dapiff punches an ancient tigerclaw racnar for 29 points of damage.
+[Mon Dec 19 17:35:51 2022] Bohji backstabs an ancient tigerclaw racnar for 120 points of damage.
+[Mon Dec 19 17:35:51 2022] Antillius punches an ancient tigerclaw racnar for 18 points of damage.
+[Mon Dec 19 17:35:52 2022] You try to bash an ancient tigerclaw racnar, but miss!
+[Mon Dec 19 17:35:52 2022] Antillius kicks an ancient tigerclaw racnar for 45 points of damage.
+[Mon Dec 19 17:35:52 2022] Huntor slashes an ancient tigerclaw racnar for 39 points of damage.
+[Mon Dec 19 17:35:52 2022] Bohji slashes an ancient tigerclaw racnar for 19 points of damage.
+[Mon Dec 19 17:35:52 2022] Bohji pierces an ancient tigerclaw racnar for 40 points of damage.
+[Mon Dec 19 17:35:52 2022] Bohji pierces an ancient tigerclaw racnar for 45 points of damage.
+[Mon Dec 19 17:35:52 2022] Antillius punches an ancient tigerclaw racnar for 16 points of damage.
+[Mon Dec 19 17:35:52 2022] Antillius punches an ancient tigerclaw racnar for 14 points of damage.
+[Mon Dec 19 17:35:52 2022] Dapiff punches an ancient tigerclaw racnar for 24 points of damage.
+[Mon Dec 19 17:35:52 2022] Huntor kicks an ancient tigerclaw racnar for 13 points of damage.
+[Mon Dec 19 17:35:53 2022] Huntor slashes an ancient tigerclaw racnar for 8 points of damage.
+[Mon Dec 19 17:35:53 2022] Your Location is -703.34, -1710.64, -18.12
+[Mon Dec 19 17:35:53 2022] Mandair pierces an ancient tigerclaw racnar for 24 points of damage.
+[Mon Dec 19 17:35:53 2022] Khanis slashes an ancient tigerclaw racnar for 72 points of damage.
+[Mon Dec 19 17:35:53 2022] Antillius punches an ancient tigerclaw racnar for 1 point of damage.
+[Mon Dec 19 17:35:53 2022] Dapiff punches an ancient tigerclaw racnar for 17 points of damage.
+[Mon Dec 19 17:35:53 2022] Huntor slashes an ancient tigerclaw racnar for 16 points of damage.
+[Mon Dec 19 17:35:53 2022] Bohji pierces an ancient tigerclaw racnar for 26 points of damage.
+[Mon Dec 19 17:35:53 2022] Bohji pierces an ancient tigerclaw racnar for 41 points of damage.
+[Mon Dec 19 17:35:53 2022] You slash an ancient tigerclaw racnar for 65 points of damage.
+[Mon Dec 19 17:35:53 2022] Dapiff crushes an ancient tigerclaw racnar for 77 points of damage.
+[Mon Dec 19 17:35:54 2022] Mandair Scores a critical hit!(32)
+[Mon Dec 19 17:35:54 2022] Mandair slashes an ancient tigerclaw racnar for 32 points of damage.
+[Mon Dec 19 17:35:54 2022] Einskaldir crushes an ancient tigerclaw racnar for 42 points of damage.
+[Mon Dec 19 17:35:54 2022] Einskaldir pierces an ancient tigerclaw racnar for 55 points of damage.
+[Mon Dec 19 17:35:54 2022] Einskaldir pierces an ancient tigerclaw racnar for 76 points of damage.
+[Mon Dec 19 17:35:54 2022] Antillius crushes an ancient tigerclaw racnar for 111 points of damage.
+[Mon Dec 19 17:35:54 2022] You think you are heading East.
+[Mon Dec 19 17:35:54 2022] Mandair pierces an ancient tigerclaw racnar for 52 points of damage.
+[Mon Dec 19 17:35:54 2022] Dapiff punches an ancient tigerclaw racnar for 30 points of damage.
+[Mon Dec 19 17:35:54 2022] Khanis slashes an ancient tigerclaw racnar for 40 points of damage.
+[Mon Dec 19 17:35:54 2022] Yeef tells the guild, 'not likeing my slow'
+[Mon Dec 19 17:35:54 2022] Bohji slashes an ancient tigerclaw racnar for 36 points of damage.
+[Mon Dec 19 17:35:54 2022] Bohji pierces an ancient tigerclaw racnar for 35 points of damage.
+[Mon Dec 19 17:35:54 2022] Bohji pierces an ancient tigerclaw racnar for 35 points of damage.
+[Mon Dec 19 17:35:55 2022] Mandair pierces an ancient tigerclaw racnar for 12 points of damage.
+[Mon Dec 19 17:35:55 2022] An ancient tigerclaw racnar was pierced by thorns.
+[Mon Dec 19 17:35:55 2022] An ancient tigerclaw racnar hits Mandair for 213 points of damage.
+[Mon Dec 19 17:35:55 2022] An ancient tigerclaw racnar was pierced by thorns.
+[Mon Dec 19 17:35:55 2022] An ancient tigerclaw racnar hits Mandair for 223 points of damage.
+[Mon Dec 19 17:35:55 2022] Dapiff punches an ancient tigerclaw racnar for 20 points of damage.
+[Mon Dec 19 17:35:55 2022] Dapiff punches an ancient tigerclaw racnar for 25 points of damage.
+[Mon Dec 19 17:35:55 2022] Khanis slashes an ancient tigerclaw racnar for 49 points of damage.
+[Mon Dec 19 17:35:55 2022] Einskaldir backstabs an ancient tigerclaw racnar for 87 points of damage.
+[Mon Dec 19 17:35:55 2022] Khanis slashes an ancient tigerclaw racnar for 17 points of damage.
+[Mon Dec 19 17:35:55 2022] Khanis slashes an ancient tigerclaw racnar for 65 points of damage.
+[Mon Dec 19 17:35:55 2022] Mandair kicks an ancient tigerclaw racnar for 7 points of damage.
+[Mon Dec 19 17:35:56 2022] You try to slash an ancient tigerclaw racnar, but miss!
+[Mon Dec 19 17:35:56 2022] You slash an ancient tigerclaw racnar for 74 points of damage.
+[Mon Dec 19 17:35:56 2022] You try to bash an ancient tigerclaw racnar, but miss!
+[Mon Dec 19 17:35:56 2022] Dapiff punches an ancient tigerclaw racnar for 31 points of damage.
+[Mon Dec 19 17:35:56 2022] Mandair pierces an ancient tigerclaw racnar for 44 points of damage.
+[Mon Dec 19 17:35:56 2022] Antillius crushes an ancient tigerclaw racnar for 42 points of damage.
+[Mon Dec 19 17:35:56 2022] Antillius crushes an ancient tigerclaw racnar for 74 points of damage.
+[Mon Dec 19 17:35:56 2022] Bohji pierces an ancient tigerclaw racnar for 36 points of damage.
+[Mon Dec 19 17:35:56 2022] Bohji slashes an ancient tigerclaw racnar for 41 points of damage.
+[Mon Dec 19 17:35:56 2022] Yeef begins to cast a spell.
+[Mon Dec 19 17:35:56 2022] Mandair slashes an ancient tigerclaw racnar for 25 points of damage.
+[Mon Dec 19 17:35:56 2022] Khanis slashes an ancient tigerclaw racnar for 34 points of damage.
+[Mon Dec 19 17:35:56 2022] Einskaldir pierces an ancient tigerclaw racnar for 13 points of damage.
+[Mon Dec 19 17:35:56 2022] Einskaldir pierces an ancient tigerclaw racnar for 22 points of damage.
+[Mon Dec 19 17:35:57 2022] Dapiff punches an ancient tigerclaw racnar for 22 points of damage.
+[Mon Dec 19 17:35:57 2022] Khanis slashes an ancient tigerclaw racnar for 31 points of damage.
+[Mon Dec 19 17:35:57 2022] Huntor kicks an ancient tigerclaw racnar for 4 points of damage.
+[Mon Dec 19 17:35:57 2022] Mandair pierces an ancient tigerclaw racnar for 15 points of damage.
+[Mon Dec 19 17:35:57 2022] Huntor slashes an ancient tigerclaw racnar for 47 points of damage.
+[Mon Dec 19 17:35:57 2022] Huntor slashes an ancient tigerclaw racnar for 25 points of damage.
+[Mon Dec 19 17:35:57 2022] Antillius kicks an ancient tigerclaw racnar for 42 points of damage.
+[Mon Dec 19 17:35:57 2022] Huntor slashes an ancient tigerclaw racnar for 23 points of damage.
+[Mon Dec 19 17:35:57 2022] Huntor slashes an ancient tigerclaw racnar for 14 points of damage.
+[Mon Dec 19 17:35:57 2022] Bohji slashes an ancient tigerclaw racnar for 13 points of damage.
+[Mon Dec 19 17:35:57 2022] Bohji pierces an ancient tigerclaw racnar for 29 points of damage.
+[Mon Dec 19 17:35:57 2022] Bohji pierces an ancient tigerclaw racnar for 55 points of damage.
+[Mon Dec 19 17:35:57 2022] Mandair pierces an ancient tigerclaw racnar for 21 points of damage.
+[Mon Dec 19 17:35:57 2022] Mandair slashes an ancient tigerclaw racnar for 1 point of damage.
+[Mon Dec 19 17:35:57 2022] Antillius punches an ancient tigerclaw racnar for 6 points of damage.
+[Mon Dec 19 17:35:58 2022] Mandair pierces an ancient tigerclaw racnar for 26 points of damage.
+[Mon Dec 19 17:35:58 2022] Antillius punches an ancient tigerclaw racnar for 27 points of damage.
+[Mon Dec 19 17:35:58 2022] Dapiff kicks an ancient tigerclaw racnar for 39 points of damage.
+[Mon Dec 19 17:35:58 2022] Dapiff crushes an ancient tigerclaw racnar for 40 points of damage.
+[Mon Dec 19 17:35:58 2022] You try to slash an ancient tigerclaw racnar, but miss!
+[Mon Dec 19 17:35:58 2022] Huntor slashes an ancient tigerclaw racnar for 16 points of damage.
+[Mon Dec 19 17:35:58 2022] Huntor slashes an ancient tigerclaw racnar for 54 points of damage.
+[Mon Dec 19 17:35:58 2022] Huntor slashes an ancient tigerclaw racnar for 49 points of damage.
+[Mon Dec 19 17:35:58 2022] Bohji pierces an ancient tigerclaw racnar for 13 points of damage.
+[Mon Dec 19 17:35:58 2022] Yeef winces.
+[Mon Dec 19 17:35:59 2022] Mandair pierces an ancient tigerclaw racnar for 40 points of damage.
+[Mon Dec 19 17:35:59 2022] Antillius crushes an ancient tigerclaw racnar for 110 points of damage.
+[Mon Dec 19 17:35:59 2022] Einskaldir crushes an ancient tigerclaw racnar for 28 points of damage.
+[Mon Dec 19 17:35:59 2022] Khanis slashes an ancient tigerclaw racnar for 36 points of damage.
+[Mon Dec 19 17:35:59 2022] Khanis slashes an ancient tigerclaw racnar for 54 points of damage.
+[Mon Dec 19 17:35:59 2022] Einskaldir pierces an ancient tigerclaw racnar for 27 points of damage.
+[Mon Dec 19 17:35:59 2022] Dapiff punches an ancient tigerclaw racnar for 28 points of damage.
+[Mon Dec 19 17:35:59 2022] Huntor slashes an ancient tigerclaw racnar for 14 points of damage.
+[Mon Dec 19 17:36:00 2022] Mandair pierces an ancient tigerclaw racnar for 32 points of damage.
+[Mon Dec 19 17:36:00 2022] Bohji slashes an ancient tigerclaw racnar for 16 points of damage.
+[Mon Dec 19 17:36:00 2022] Bohji slashes an ancient tigerclaw racnar for 6 points of damage.
+[Mon Dec 19 17:36:00 2022] Bohji pierces an ancient tigerclaw racnar for 50 points of damage.
+[Mon Dec 19 17:36:00 2022] You try to bash an ancient tigerclaw racnar, but miss!
+[Mon Dec 19 17:36:00 2022] Mandair kicks an ancient tigerclaw racnar for 13 points of damage.
+[Mon Dec 19 17:36:00 2022] Mandair slashes an ancient tigerclaw racnar for 11 points of damage.
+[Mon Dec 19 17:36:00 2022] Dapiff punches an ancient tigerclaw racnar for 24 points of damage.
+[Mon Dec 19 17:36:00 2022] You try to slash an ancient tigerclaw racnar, but miss!
+[Mon Dec 19 17:36:00 2022] Einskaldir pierces an ancient tigerclaw racnar for 41 points of damage.
+[Mon Dec 19 17:36:00 2022] Einskaldir pierces an ancient tigerclaw racnar for 55 points of damage.
+[Mon Dec 19 17:36:00 2022] Huntor slashes an ancient tigerclaw racnar for 13 points of damage.
+[Mon Dec 19 17:36:00 2022] Huntor slashes an ancient tigerclaw racnar for 7 points of damage.
+[Mon Dec 19 17:36:00 2022] Mandair pierces an ancient tigerclaw racnar for 20 points of damage.
+[Mon Dec 19 17:36:00 2022] Mandair pierces an ancient tigerclaw racnar for 24 points of damage.
+[Mon Dec 19 17:36:01 2022] Einskaldir crushes an ancient tigerclaw racnar for 21 points of damage.
+[Mon Dec 19 17:36:01 2022] Antillius crushes an ancient tigerclaw racnar for 72 points of damage.
+[Mon Dec 19 17:36:01 2022] Antillius crushes an ancient tigerclaw racnar for 97 points of damage.
+[Mon Dec 19 17:36:01 2022] Huntor slashes an ancient tigerclaw racnar for 33 points of damage.
+[Mon Dec 19 17:36:01 2022] Huntor slashes an ancient tigerclaw racnar for 12 points of damage.
+[Mon Dec 19 17:36:01 2022] Bohji slashes an ancient tigerclaw racnar for 57 points of damage.
+[Mon Dec 19 17:36:01 2022] Dapiff punches an ancient tigerclaw racnar for 39 points of damage.
+[Mon Dec 19 17:36:01 2022] Huntor kicks an ancient tigerclaw racnar for 16 points of damage.
+[Mon Dec 19 17:36:01 2022] Bohji pierces an ancient tigerclaw racnar for 41 points of damage.
+[Mon Dec 19 17:36:01 2022] Khanis slashes an ancient tigerclaw racnar for 57 points of damage.
+[Mon Dec 19 17:36:01 2022] Mandair slashes an ancient tigerclaw racnar for 65 points of damage.
+[Mon Dec 19 17:36:01 2022] Your attempt to disarm failed.
+[Mon Dec 19 17:36:01 2022] Khanis slashes an ancient tigerclaw racnar for 28 points of damage.
+[Mon Dec 19 17:36:01 2022] Mandair pierces an ancient tigerclaw racnar for 21 points of damage.
+[Mon Dec 19 17:36:01 2022] Mandair pierces an ancient tigerclaw racnar for 31 points of damage.
+[Mon Dec 19 17:36:02 2022] Einskaldir pierces an ancient tigerclaw racnar for 13 points of damage.
+[Mon Dec 19 17:36:02 2022] Einskaldir crushes an ancient tigerclaw racnar for 14 points of damage.
+[Mon Dec 19 17:36:02 2022] Einskaldir crushes an ancient tigerclaw racnar for 22 points of damage.
+[Mon Dec 19 17:36:02 2022] Antillius kicks an ancient tigerclaw racnar for 42 points of damage.
+[Mon Dec 19 17:36:02 2022] Dapiff punches an ancient tigerclaw racnar for 11 points of damage.
+[Mon Dec 19 17:36:02 2022] An ancient tigerclaw racnar was pierced by thorns.
+[Mon Dec 19 17:36:02 2022] An ancient tigerclaw racnar hits Mandair for 192 points of damage.
+[Mon Dec 19 17:36:02 2022] An ancient tigerclaw racnar was pierced by thorns.
+[Mon Dec 19 17:36:02 2022] An ancient tigerclaw racnar hits Mandair for 292 points of damage.
+[Mon Dec 19 17:36:02 2022] Yeef begins to cast a spell.
+[Mon Dec 19 17:36:02 2022] Bohji backstabs an ancient tigerclaw racnar for 120 points of damage.
+[Mon Dec 19 17:36:02 2022] Bohji backstabs an ancient tigerclaw racnar for 120 points of damage.
+[Mon Dec 19 17:36:02 2022] Bohji slashes an ancient tigerclaw racnar for 11 points of damage.
+[Mon Dec 19 17:36:02 2022] Huntor slashes an ancient tigerclaw racnar for 18 points of damage.
+[Mon Dec 19 17:36:02 2022] Huntor slashes an ancient tigerclaw racnar for 15 points of damage.
+[Mon Dec 19 17:36:02 2022] Khanis slashes an ancient tigerclaw racnar for 39 points of damage.
+[Mon Dec 19 17:36:02 2022] Khanis slashes an ancient tigerclaw racnar for 43 points of damage.
+[Mon Dec 19 17:36:02 2022] Mandair pierces an ancient tigerclaw racnar for 19 points of damage.
+[Mon Dec 19 17:36:02 2022] Dapiff crushes an ancient tigerclaw racnar for 89 points of damage.
+[Mon Dec 19 17:36:02 2022] Khanis slashes an ancient tigerclaw racnar for 15 points of damage.
+[Mon Dec 19 17:36:02 2022] Khanis slashes an ancient tigerclaw racnar for 59 points of damage.
+[Mon Dec 19 17:36:02 2022] You slash an ancient tigerclaw racnar for 164 points of damage.
+[Mon Dec 19 17:36:03 2022] Huntor slashes an ancient tigerclaw racnar for 13 points of damage.
+[Mon Dec 19 17:36:03 2022] Huntor slashes an ancient tigerclaw racnar for 25 points of damage.
+[Mon Dec 19 17:36:03 2022] Einskaldir crushes an ancient tigerclaw racnar for 17 points of damage.
+[Mon Dec 19 17:36:03 2022] Antillius crushes an ancient tigerclaw racnar for 147 points of damage.
+[Mon Dec 19 17:36:03 2022] Antillius crushes an ancient tigerclaw racnar for 163 points of damage.
+[Mon Dec 19 17:36:03 2022] Einskaldir pierces an ancient tigerclaw racnar for 23 points of damage.
+[Mon Dec 19 17:36:03 2022] Bohji slashes an ancient tigerclaw racnar for 28 points of damage.
+[Mon Dec 19 17:36:03 2022] Huntor slashes an ancient tigerclaw racnar for 28 points of damage.
+[Mon Dec 19 17:36:03 2022] Antillius punches an ancient tigerclaw racnar for 5 points of damage.
+[Mon Dec 19 17:36:03 2022] Antillius punches an ancient tigerclaw racnar for 12 points of damage.
+[Mon Dec 19 17:36:03 2022] Dapiff punches an ancient tigerclaw racnar for 17 points of damage.
+[Mon Dec 19 17:36:03 2022] Dapiff punches an ancient tigerclaw racnar for 21 points of damage.
+[Mon Dec 19 17:36:04 2022] Mandair slashes an ancient tigerclaw racnar for 27 points of damage.
+[Mon Dec 19 17:36:04 2022] Khanis slashes an ancient tigerclaw racnar for 31 points of damage.
+[Mon Dec 19 17:36:04 2022] Huntor slashes an ancient tigerclaw racnar for 24 points of damage.
+[Mon Dec 19 17:36:04 2022] Huntor slashes an ancient tigerclaw racnar for 6 points of damage.
+[Mon Dec 19 17:36:04 2022] You bash an ancient tigerclaw racnar for 7 points of damage.
+[Mon Dec 19 17:36:04 2022] Einskaldir pierces an ancient tigerclaw racnar for 29 points of damage.
+[Mon Dec 19 17:36:04 2022] Khanis slashes an ancient tigerclaw racnar for 29 points of damage.
+[Mon Dec 19 17:36:04 2022] Khanis slashes an ancient tigerclaw racnar for 5 points of damage.
+[Mon Dec 19 17:36:04 2022] Mandair pierces an ancient tigerclaw racnar for 21 points of damage.
+[Mon Dec 19 17:36:04 2022] Dapiff punches an ancient tigerclaw racnar for 33 points of damage.
+[Mon Dec 19 17:36:04 2022] Dapiff punches an ancient tigerclaw racnar for 18 points of damage.
+[Mon Dec 19 17:36:04 2022] Yeef winces.
+[Mon Dec 19 17:36:05 2022] Huntor slashes an ancient tigerclaw racnar for 18 points of damage.
+[Mon Dec 19 17:36:05 2022] Huntor slashes an ancient tigerclaw racnar for 29 points of damage.
+[Mon Dec 19 17:36:05 2022] Antillius punches an ancient tigerclaw racnar for 17 points of damage.
+[Mon Dec 19 17:36:05 2022] You try to slash an ancient tigerclaw racnar, but miss!
+[Mon Dec 19 17:36:05 2022] You slash an ancient tigerclaw racnar for 105 points of damage.
+[Mon Dec 19 17:36:05 2022] Bohji pierces an ancient tigerclaw racnar for 49 points of damage.
+[Mon Dec 19 17:36:05 2022] Mandair slashes an ancient tigerclaw racnar for 38 points of damage.
+[Mon Dec 19 17:36:05 2022] Khanis slashes an ancient tigerclaw racnar for 31 points of damage.
+[Mon Dec 19 17:36:05 2022] Huntor kicks an ancient tigerclaw racnar for 7 points of damage.
+[Mon Dec 19 17:36:05 2022] Antillius punches an ancient tigerclaw racnar for 41 points of damage.
+[Mon Dec 19 17:36:05 2022] Antillius punches an ancient tigerclaw racnar for 30 points of damage.
+[Mon Dec 19 17:36:05 2022] Yeef peers through a telescope.
+[Mon Dec 19 17:36:05 2022] Mandair pierces an ancient tigerclaw racnar for 27 points of damage.
+[Mon Dec 19 17:36:05 2022] Dapiff punches an ancient tigerclaw racnar for 35 points of damage.
+[Mon Dec 19 17:36:05 2022] Dapiff punches an ancient tigerclaw racnar for 29 points of damage.
+[Mon Dec 19 17:36:05 2022] Khanis slashes an ancient tigerclaw racnar for 70 points of damage.
+[Mon Dec 19 17:36:05 2022] An ancient tigerclaw racnar was pierced by thorns.
+[Mon Dec 19 17:36:05 2022] An ancient tigerclaw racnar hits Mandair for 265 points of damage.
+[Mon Dec 19 17:36:05 2022] An ancient tigerclaw racnar was pierced by thorns.
+[Mon Dec 19 17:36:05 2022] An ancient tigerclaw racnar hits Mandair for 265 points of damage.
+[Mon Dec 19 17:36:05 2022] An ancient tigerclaw racnar was pierced by thorns.
+[Mon Dec 19 17:36:05 2022] An ancient tigerclaw racnar hits Mandair for 255 points of damage.
+[Mon Dec 19 17:36:05 2022] Dapiff crushes an ancient tigerclaw racnar for 50 points of damage.
+[Mon Dec 19 17:36:05 2022] Dapiff crushes an ancient tigerclaw racnar for 7 points of damage.
+[Mon Dec 19 17:36:06 2022] Antillius crushes an ancient tigerclaw racnar for 131 points of damage.
+[Mon Dec 19 17:36:06 2022] Bohji slashes an ancient tigerclaw racnar for 19 points of damage.
+[Mon Dec 19 17:36:06 2022] Huntor slashes an ancient tigerclaw racnar for 35 points of damage.
+[Mon Dec 19 17:36:06 2022] Bohji pierces an ancient tigerclaw racnar for 32 points of damage.
+[Mon Dec 19 17:36:06 2022] Khanis slashes an ancient tigerclaw racnar for 39 points of damage.
+[Mon Dec 19 17:36:06 2022] Mandair pierces an ancient tigerclaw racnar for 25 points of damage.
+[Mon Dec 19 17:36:06 2022] Mandair Scores a critical hit!(32)
+[Mon Dec 19 17:36:06 2022] Mandair slashes an ancient tigerclaw racnar for 32 points of damage.
+[Mon Dec 19 17:36:06 2022] Mandair kicks an ancient tigerclaw racnar for 11 points of damage.
+[Mon Dec 19 17:36:07 2022] Yeef begins to cast a spell.
+[Mon Dec 19 17:36:07 2022] Einskaldir pierces an ancient tigerclaw racnar for 39 points of damage.
+[Mon Dec 19 17:36:07 2022] Bohji slashes an ancient tigerclaw racnar for 25 points of damage.
+[Mon Dec 19 17:36:07 2022] Dapiff punches an ancient tigerclaw racnar for 26 points of damage.
+[Mon Dec 19 17:36:07 2022] Dapiff punches an ancient tigerclaw racnar for 28 points of damage.
+[Mon Dec 19 17:36:07 2022] You slash an ancient tigerclaw racnar for 42 points of damage.
+[Mon Dec 19 17:36:07 2022] You try to slash an ancient tigerclaw racnar, but miss!
+[Mon Dec 19 17:36:07 2022] Mandair pierces an ancient tigerclaw racnar for 34 points of damage.
+[Mon Dec 19 17:36:07 2022] Huntor slashes an ancient tigerclaw racnar for 45 points of damage.
+[Mon Dec 19 17:36:07 2022] Antillius kicks an ancient tigerclaw racnar for 44 points of damage.
+[Mon Dec 19 17:36:07 2022] Khanis slashes an ancient tigerclaw racnar for 87 points of damage.
+[Mon Dec 19 17:36:07 2022] Bohji pierces an ancient tigerclaw racnar for 62 points of damage.
+[Mon Dec 19 17:36:07 2022] Mandair slashes an ancient tigerclaw racnar for 67 points of damage.
+[Mon Dec 19 17:36:07 2022] Khanis slashes an ancient tigerclaw racnar for 11 points of damage.
+[Mon Dec 19 17:36:07 2022] Bohji backstabs an ancient tigerclaw racnar for 120 points of damage.
+[Mon Dec 19 17:36:08 2022] Einskaldir crushes an ancient tigerclaw racnar for 39 points of damage.
+[Mon Dec 19 17:36:08 2022] Dapiff punches an ancient tigerclaw racnar for 19 points of damage.
+[Mon Dec 19 17:36:08 2022] Dapiff punches an ancient tigerclaw racnar for 26 points of damage.
+[Mon Dec 19 17:36:08 2022] Mandair pierces an ancient tigerclaw racnar for 29 points of damage.
+[Mon Dec 19 17:36:08 2022] Einskaldir pierces an ancient tigerclaw racnar for 43 points of damage.
+[Mon Dec 19 17:36:08 2022] Bohji slashes an ancient tigerclaw racnar for 24 points of damage.
+[Mon Dec 19 17:36:08 2022] Bohji slashes an ancient tigerclaw racnar for 17 points of damage.
+[Mon Dec 19 17:36:08 2022] An ancient tigerclaw racnar hits Huntor for 265 points of damage.
+[Mon Dec 19 17:36:08 2022] Khanis slashes an ancient tigerclaw racnar for 26 points of damage.
+[Mon Dec 19 17:36:08 2022] Khanis slashes an ancient tigerclaw racnar for 24 points of damage.
+[Mon Dec 19 17:36:08 2022] Einskaldir crushes an ancient tigerclaw racnar for 41 points of damage.
+[Mon Dec 19 17:36:09 2022] Bohji pierces an ancient tigerclaw racnar for 30 points of damage.
+[Mon Dec 19 17:36:09 2022] Mandair slashes an ancient tigerclaw racnar for 28 points of damage.
+[Mon Dec 19 17:36:09 2022] Dapiff punches an ancient tigerclaw racnar for 34 points of damage.
+[Mon Dec 19 17:36:09 2022] Dapiff punches an ancient tigerclaw racnar for 19 points of damage.
+[Mon Dec 19 17:36:09 2022] You bash an ancient tigerclaw racnar for 18 points of damage.
+[Mon Dec 19 17:36:09 2022] Antillius punches an ancient tigerclaw racnar for 29 points of damage.
+[Mon Dec 19 17:36:09 2022] An ancient tigerclaw racnar was pierced by thorns.
+[Mon Dec 19 17:36:09 2022] An ancient tigerclaw racnar hits Mandair for 197 points of damage.
+[Mon Dec 19 17:36:09 2022] An ancient tigerclaw racnar was pierced by thorns.
+[Mon Dec 19 17:36:09 2022] An ancient tigerclaw racnar hits Mandair for 192 points of damage.
+[Mon Dec 19 17:36:09 2022] Mandair pierces an ancient tigerclaw racnar for 12 points of damage.
+[Mon Dec 19 17:36:09 2022] Yeef winces.
+[Mon Dec 19 17:36:09 2022] Huntor slashes an ancient tigerclaw racnar for 37 points of damage.
+[Mon Dec 19 17:36:09 2022] You slash an ancient tigerclaw racnar for 114 points of damage.
+[Mon Dec 19 17:36:09 2022] You try to slash an ancient tigerclaw racnar, but miss!
+[Mon Dec 19 17:36:09 2022] Einskaldir backstabs an ancient tigerclaw racnar for 516 points of damage.
+[Mon Dec 19 17:36:09 2022] Dapiff punches an ancient tigerclaw racnar for 28 points of damage.
+[Mon Dec 19 17:36:09 2022] Khanis slashes an ancient tigerclaw racnar for 12 points of damage.
+[Mon Dec 19 17:36:10 2022] Antillius punches an ancient tigerclaw racnar for 36 points of damage.
+[Mon Dec 19 17:36:10 2022] Antillius punches an ancient tigerclaw racnar for 45 points of damage.
+[Mon Dec 19 17:36:10 2022] Huntor slashes an ancient tigerclaw racnar for 42 points of damage.
+[Mon Dec 19 17:36:10 2022] Antillius punches an ancient tigerclaw racnar for 24 points of damage.
+[Mon Dec 19 17:36:10 2022] Bohji pierces an ancient tigerclaw racnar for 53 points of damage.
+[Mon Dec 19 17:36:10 2022] Bohji pierces an ancient tigerclaw racnar for 29 points of damage.
+[Mon Dec 19 17:36:10 2022] Mandair pierces an ancient tigerclaw racnar for 25 points of damage.
+[Mon Dec 19 17:36:10 2022] Mandair slashes an ancient tigerclaw racnar for 10 points of damage.
+[Mon Dec 19 17:36:10 2022] Dapiff crushes an ancient tigerclaw racnar for 31 points of damage.
+[Mon Dec 19 17:36:10 2022] Dapiff crushes an ancient tigerclaw racnar for 12 points of damage.
+[Mon Dec 19 17:36:10 2022] Huntor kicks an ancient tigerclaw racnar for 14 points of damage.
+[Mon Dec 19 17:36:10 2022] Yeef peers through a telescope.
+[Mon Dec 19 17:36:10 2022] Yeef begins to cast a spell.
+[Mon Dec 19 17:36:10 2022] Antillius punches an ancient tigerclaw racnar for 23 points of damage.
+[Mon Dec 19 17:36:10 2022] Dapiff punches an ancient tigerclaw racnar for 22 points of damage.
+[Mon Dec 19 17:36:10 2022] Huntor slashes an ancient tigerclaw racnar for 32 points of damage.
+[Mon Dec 19 17:36:11 2022] Mandair kicks an ancient tigerclaw racnar for 5 points of damage.
+[Mon Dec 19 17:36:11 2022] Antillius punches an ancient tigerclaw racnar for 18 points of damage.
+[Mon Dec 19 17:36:11 2022] Bohji slashes an ancient tigerclaw racnar for 40 points of damage.
+[Mon Dec 19 17:36:11 2022] Bohji slashes an ancient tigerclaw racnar for 10 points of damage.
+[Mon Dec 19 17:36:11 2022] Khanis slashes an ancient tigerclaw racnar for 12 points of damage.
+[Mon Dec 19 17:36:11 2022] Einskaldir pierces an ancient tigerclaw racnar for 77 points of damage.
+[Mon Dec 19 17:36:11 2022] Mandair pierces an ancient tigerclaw racnar for 25 points of damage.
+[Mon Dec 19 17:36:11 2022] Mandair pierces an ancient tigerclaw racnar for 20 points of damage.
+[Mon Dec 19 17:36:11 2022] Huntor slashes an ancient tigerclaw racnar for 39 points of damage.
+[Mon Dec 19 17:36:11 2022] Huntor Scores a critical hit!(37)
+[Mon Dec 19 17:36:11 2022] Huntor slashes an ancient tigerclaw racnar for 48 points of damage.
+[Mon Dec 19 17:36:11 2022] Khanis slashes an ancient tigerclaw racnar for 26 points of damage.
+[Mon Dec 19 17:36:11 2022] Bohji pierces an ancient tigerclaw racnar for 89 points of damage.
+[Mon Dec 19 17:36:11 2022] Mandair slashes an ancient tigerclaw racnar for 40 points of damage.
+[Mon Dec 19 17:36:11 2022] Antillius crushes an ancient tigerclaw racnar for 110 points of damage.
+[Mon Dec 19 17:36:11 2022] Dapiff punches an ancient tigerclaw racnar for 13 points of damage.
+[Mon Dec 19 17:36:11 2022] Dapiff punches an ancient tigerclaw racnar for 14 points of damage.
+[Mon Dec 19 17:36:11 2022] Dapiff crushes an ancient tigerclaw racnar for 26 points of damage.
+[Mon Dec 19 17:36:11 2022] Einskaldir crushes an ancient tigerclaw racnar for 14 points of damage.
+[Mon Dec 19 17:36:11 2022] Huntor slashes an ancient tigerclaw racnar for 27 points of damage.
+[Mon Dec 19 17:36:12 2022] You slash an ancient tigerclaw racnar for 118 points of damage.
+[Mon Dec 19 17:36:12 2022] You try to slash an ancient tigerclaw racnar, but miss!
+[Mon Dec 19 17:36:12 2022] Khanis slashes an ancient tigerclaw racnar for 43 points of damage.
+[Mon Dec 19 17:36:12 2022] Mandair pierces an ancient tigerclaw racnar for 47 points of damage.
+[Mon Dec 19 17:36:12 2022] Bohji slashes an ancient tigerclaw racnar for 60 points of damage.
+[Mon Dec 19 17:36:12 2022] Your attempt to disarm failed.
+[Mon Dec 19 17:36:12 2022] Dapiff punches an ancient tigerclaw racnar for 13 points of damage.
+[Mon Dec 19 17:36:12 2022] Khanis slashes an ancient tigerclaw racnar for 82 points of damage.
+[Mon Dec 19 17:36:12 2022] Huntor Scores a critical hit!(85)
+[Mon Dec 19 17:36:12 2022] Huntor slashes an ancient tigerclaw racnar for 96 points of damage.
+[Mon Dec 19 17:36:12 2022] The scream fades away.
+[Mon Dec 19 17:36:12 2022] Antillius kicks an ancient tigerclaw racnar for 46 points of damage.
+[Mon Dec 19 17:36:12 2022] Bohji pierces an ancient tigerclaw racnar for 82 points of damage.
+[Mon Dec 19 17:36:12 2022] An ancient tigerclaw racnar was pierced by thorns.
+[Mon Dec 19 17:36:12 2022] An ancient tigerclaw racnar hits Mandair for 228 points of damage.
+[Mon Dec 19 17:36:12 2022] Einskaldir crushes an ancient tigerclaw racnar for 22 points of damage.
+[Mon Dec 19 17:36:13 2022] Mandair pierces an ancient tigerclaw racnar for 28 points of damage.
+[Mon Dec 19 17:36:13 2022] Khanis slashes an ancient tigerclaw racnar for 38 points of damage.
+[Mon Dec 19 17:36:13 2022] Bohji backstabs an ancient tigerclaw racnar for 120 points of damage.
+[Mon Dec 19 17:36:13 2022] Dapiff crushes an ancient tigerclaw racnar for 63 points of damage.
+[Mon Dec 19 17:36:13 2022] You try to bash an ancient tigerclaw racnar, but miss!
+[Mon Dec 19 17:36:13 2022] Einskaldir pierces an ancient tigerclaw racnar for 26 points of damage.
+[Mon Dec 19 17:36:13 2022] Khanis slashes an ancient tigerclaw racnar for 80 points of damage.
+[Mon Dec 19 17:36:13 2022] Huntor slashes an ancient tigerclaw racnar for 18 points of damage.
+[Mon Dec 19 17:36:13 2022] Huntor slashes an ancient tigerclaw racnar for 31 points of damage.
+[Mon Dec 19 17:36:14 2022] Bohji pierces an ancient tigerclaw racnar for 43 points of damage.
+[Mon Dec 19 17:36:14 2022] Bohji pierces an ancient tigerclaw racnar for 42 points of damage.
+[Mon Dec 19 17:36:14 2022] Huntor slashes an ancient tigerclaw racnar for 5 points of damage.
+[Mon Dec 19 17:36:14 2022] Khanis slashes an ancient tigerclaw racnar for 26 points of damage.
+[Mon Dec 19 17:36:14 2022] You try to slash an ancient tigerclaw racnar, but miss!
+[Mon Dec 19 17:36:14 2022] Dapiff kicks an ancient tigerclaw racnar for 56 points of damage.
+[Mon Dec 19 17:36:14 2022] Bohji slashes an ancient tigerclaw racnar for 9 points of damage.
+[Mon Dec 19 17:36:14 2022] Einskaldir crushes an ancient tigerclaw racnar for 54 points of damage.
+[Mon Dec 19 17:36:14 2022] Yeef peers through a telescope.
+[Mon Dec 19 17:36:15 2022] Khanis slashes an ancient tigerclaw racnar for 23 points of damage.
+[Mon Dec 19 17:36:15 2022] Einskaldir pierces an ancient tigerclaw racnar for 39 points of damage.
+[Mon Dec 19 17:36:15 2022] Mandair pierces an ancient tigerclaw racnar for 28 points of damage.
+[Mon Dec 19 17:36:15 2022] Dapiff punches an ancient tigerclaw racnar for 28 points of damage.
+[Mon Dec 19 17:36:15 2022] Dapiff punches an ancient tigerclaw racnar for 21 points of damage.
+[Mon Dec 19 17:36:15 2022] Yeef begins to cast a spell.
+[Mon Dec 19 17:36:15 2022] Khanis slashes an ancient tigerclaw racnar for 1 point of damage.
+[Mon Dec 19 17:36:15 2022] Antillius punches an ancient tigerclaw racnar for 31 points of damage.
+[Mon Dec 19 17:36:15 2022] Antillius punches an ancient tigerclaw racnar for 9 points of damage.
+[Mon Dec 19 17:36:15 2022] Mandair slashes an ancient tigerclaw racnar for 37 points of damage.
+[Mon Dec 19 17:36:15 2022] Bohji pierces an ancient tigerclaw racnar for 36 points of damage.
+[Mon Dec 19 17:36:15 2022] Antillius punches an ancient tigerclaw racnar for 12 points of damage.
+[Mon Dec 19 17:36:15 2022] Einskaldir backstabs an ancient tigerclaw racnar for 298 points of damage.
+[Mon Dec 19 17:36:15 2022] Einskaldir crushes an ancient tigerclaw racnar for 6 points of damage.
+[Mon Dec 19 17:36:15 2022] Bohji slashes an ancient tigerclaw racnar for 12 points of damage.
+[Mon Dec 19 17:36:16 2022] Mandair pierces an ancient tigerclaw racnar for 36 points of damage.
+[Mon Dec 19 17:36:16 2022] Mandair pierces an ancient tigerclaw racnar for 24 points of damage.
+[Mon Dec 19 17:36:16 2022] Dapiff punches an ancient tigerclaw racnar for 26 points of damage.
+[Mon Dec 19 17:36:16 2022] Dapiff punches an ancient tigerclaw racnar for 47 points of damage.
+[Mon Dec 19 17:36:16 2022] Antillius punches an ancient tigerclaw racnar for 9 points of damage.
+[Mon Dec 19 17:36:16 2022] Khanis slashes an ancient tigerclaw racnar for 49 points of damage.
+[Mon Dec 19 17:36:16 2022] Khanis slashes an ancient tigerclaw racnar for 39 points of damage.
+[Mon Dec 19 17:36:16 2022] Einskaldir pierces an ancient tigerclaw racnar for 13 points of damage.
+[Mon Dec 19 17:36:16 2022] Einskaldir pierces an ancient tigerclaw racnar for 37 points of damage.
+[Mon Dec 19 17:36:16 2022] Khanis slashes an ancient tigerclaw racnar for 54 points of damage.
+[Mon Dec 19 17:36:16 2022] Huntor slashes an ancient tigerclaw racnar for 30 points of damage.
+[Mon Dec 19 17:36:16 2022] Dapiff crushes an ancient tigerclaw racnar for 41 points of damage.
+[Mon Dec 19 17:36:16 2022] Dapiff crushes an ancient tigerclaw racnar for 68 points of damage.
+[Mon Dec 19 17:36:16 2022] Huntor slashes an ancient tigerclaw racnar for 59 points of damage.
+[Mon Dec 19 17:36:16 2022] An ancient tigerclaw racnar was pierced by thorns.
+[Mon Dec 19 17:36:16 2022] An ancient tigerclaw racnar hits Mandair for 192 points of damage.
+[Mon Dec 19 17:36:16 2022] You try to slash an ancient tigerclaw racnar, but miss!
+[Mon Dec 19 17:36:16 2022] Dapiff punches an ancient tigerclaw racnar for 24 points of damage.
+[Mon Dec 19 17:36:16 2022] Dapiff punches an ancient tigerclaw racnar for 28 points of damage.
+[Mon Dec 19 17:36:16 2022] Einskaldir crushes an ancient tigerclaw racnar for 22 points of damage.
+[Mon Dec 19 17:36:16 2022] Einskaldir crushes an ancient tigerclaw racnar for 1 point of damage.
+[Mon Dec 19 17:36:16 2022] Mandair pierces an ancient tigerclaw racnar for 41 points of damage.
+[Mon Dec 19 17:36:16 2022] Mandair pierces an ancient tigerclaw racnar for 31 points of damage.
+[Mon Dec 19 17:36:16 2022] Antillius punches an ancient tigerclaw racnar for 17 points of damage.
+[Mon Dec 19 17:36:17 2022] Khanis slashes an ancient tigerclaw racnar for 36 points of damage.
+[Mon Dec 19 17:36:17 2022] Khanis slashes an ancient tigerclaw racnar for 60 points of damage.
+[Mon Dec 19 17:36:17 2022] Triten tells the group, 'if you die and lose cleric HP buff, i can cast Natureskin as an alternate'
+[Mon Dec 19 17:36:17 2022] Khanis slashes an ancient tigerclaw racnar for 41 points of damage.
+[Mon Dec 19 17:36:17 2022] Khanis slashes an ancient tigerclaw racnar for 19 points of damage.
+[Mon Dec 19 17:36:17 2022] Yeef winces.
+[Mon Dec 19 17:36:17 2022] Mandair pierces an ancient tigerclaw racnar for 28 points of damage.
+[Mon Dec 19 17:36:17 2022] Mandair pierces an ancient tigerclaw racnar for 39 points of damage.
+[Mon Dec 19 17:36:17 2022] Mandair slashes an ancient tigerclaw racnar for 44 points of damage.
+[Mon Dec 19 17:36:17 2022] Einskaldir crushes an ancient tigerclaw racnar for 13 points of damage.
+[Mon Dec 19 17:36:17 2022] Antillius kicks an ancient tigerclaw racnar for 42 points of damage.
+[Mon Dec 19 17:36:17 2022] Bohji pierces an ancient tigerclaw racnar for 42 points of damage.
+[Mon Dec 19 17:36:17 2022] Bohji pierces an ancient tigerclaw racnar for 32 points of damage.
+[Mon Dec 19 17:36:18 2022] Antillius crushes an ancient tigerclaw racnar for 84 points of damage.
+[Mon Dec 19 17:36:18 2022] You have no idea what direction you are facing.
+[Mon Dec 19 17:36:18 2022] Bohji slashes an ancient tigerclaw racnar for 7 points of damage.
+[Mon Dec 19 17:36:18 2022] Bohji slashes an ancient tigerclaw racnar for 10 points of damage.
+[Mon Dec 19 17:36:18 2022] Yeef peers through a telescope.
+[Mon Dec 19 17:36:18 2022] Khanis slashes an ancient tigerclaw racnar for 46 points of damage.
+[Mon Dec 19 17:36:18 2022] Khanis slashes an ancient tigerclaw racnar for 13 points of damage.
+[Mon Dec 19 17:36:18 2022] Dapiff punches an ancient tigerclaw racnar for 19 points of damage.
+[Mon Dec 19 17:36:18 2022] Dapiff punches an ancient tigerclaw racnar for 43 points of damage.
+[Mon Dec 19 17:36:18 2022] Mandair pierces an ancient tigerclaw racnar for 12 points of damage.
+[Mon Dec 19 17:36:18 2022] You try to slash an ancient tigerclaw racnar, but miss!
+[Mon Dec 19 17:36:18 2022] You slash an ancient tigerclaw racnar for 90 points of damage.
+[Mon Dec 19 17:36:18 2022] Einskaldir crushes an ancient tigerclaw racnar for 8 points of damage.
+[Mon Dec 19 17:36:18 2022] Einskaldir pierces an ancient tigerclaw racnar for 82 points of damage.
+[Mon Dec 19 17:36:18 2022] Huntor slashes an ancient tigerclaw racnar for 17 points of damage.
+[Mon Dec 19 17:36:19 2022] You bash an ancient tigerclaw racnar for 2 points of damage.
+[Mon Dec 19 17:36:19 2022] Bohji pierces an ancient tigerclaw racnar for 20 points of damage.
+[Mon Dec 19 17:36:19 2022] Dapiff punches an ancient tigerclaw racnar for 58 points of damage.
+[Mon Dec 19 17:36:19 2022] Khanis slashes an ancient tigerclaw racnar for 20 points of damage.
+[Mon Dec 19 17:36:19 2022] Bohji slashes an ancient tigerclaw racnar for 14 points of damage.
+[Mon Dec 19 17:36:19 2022] Mandair pierces an ancient tigerclaw racnar for 12 points of damage.
+[Mon Dec 19 17:36:19 2022] Mandair pierces an ancient tigerclaw racnar for 39 points of damage.
+[Mon Dec 19 17:36:19 2022] Khanis slashes an ancient tigerclaw racnar for 59 points of damage.
+[Mon Dec 19 17:36:19 2022] Yeef begins to cast a spell.
+[Mon Dec 19 17:36:19 2022] An ancient tigerclaw racnar was pierced by thorns.
+[Mon Dec 19 17:36:19 2022] An ancient tigerclaw racnar hits Mandair for 197 points of damage.
+[Mon Dec 19 17:36:19 2022] An ancient tigerclaw racnar was pierced by thorns.
+[Mon Dec 19 17:36:19 2022] An ancient tigerclaw racnar hits Mandair for 223 points of damage.
+[Mon Dec 19 17:36:20 2022] Einskaldir pierces an ancient tigerclaw racnar for 57 points of damage.
+[Mon Dec 19 17:36:20 2022] Huntor slashes an ancient tigerclaw racnar for 39 points of damage.
+[Mon Dec 19 17:36:20 2022] Dapiff punches an ancient tigerclaw racnar for 11 points of damage.
+[Mon Dec 19 17:36:20 2022] Mandair slashes an ancient tigerclaw racnar for 26 points of damage.
+[Mon Dec 19 17:36:20 2022] Mandair Scores a critical hit!(32)
+[Mon Dec 19 17:36:20 2022] Mandair slashes an ancient tigerclaw racnar for 32 points of damage.
+[Mon Dec 19 17:36:20 2022] Bohji pierces an ancient tigerclaw racnar for 17 points of damage.
+[Mon Dec 19 17:36:20 2022] Huntor kicks an ancient tigerclaw racnar for 1 point of damage.
+[Mon Dec 19 17:36:20 2022] Mandair pierces an ancient tigerclaw racnar for 31 points of damage.
+[Mon Dec 19 17:36:20 2022] Dapiff crushes an ancient tigerclaw racnar for 10 points of damage.
+[Mon Dec 19 17:36:21 2022] Khanis slashes an ancient tigerclaw racnar for 22 points of damage.
+[Mon Dec 19 17:36:21 2022] You slash an ancient tigerclaw racnar for 42 points of damage.
+[Mon Dec 19 17:36:21 2022] You slash an ancient tigerclaw racnar for 148 points of damage.
+[Mon Dec 19 17:36:21 2022] Einskaldir backstabs an ancient tigerclaw racnar for 87 points of damage.
+[Mon Dec 19 17:36:21 2022] Huntor Scores a critical hit!(32)
+[Mon Dec 19 17:36:21 2022] Huntor slashes an ancient tigerclaw racnar for 43 points of damage.
+[Mon Dec 19 17:36:21 2022] Einskaldir pierces an ancient tigerclaw racnar for 79 points of damage.
+[Mon Dec 19 17:36:21 2022] Einskaldir pierces an ancient tigerclaw racnar for 39 points of damage.
+[Mon Dec 19 17:36:21 2022] Khanis slashes an ancient tigerclaw racnar for 23 points of damage.
+[Mon Dec 19 17:36:21 2022] Bohji pierces an ancient tigerclaw racnar for 43 points of damage.
+[Mon Dec 19 17:36:21 2022] Bohji pierces an ancient tigerclaw racnar for 41 points of damage.
+[Mon Dec 19 17:36:21 2022] Einskaldir crushes an ancient tigerclaw racnar for 35 points of damage.
+[Mon Dec 19 17:36:22 2022] Bohji slashes an ancient tigerclaw racnar for 20 points of damage.
+[Mon Dec 19 17:36:22 2022] Bohji slashes an ancient tigerclaw racnar for 49 points of damage.
+[Mon Dec 19 17:36:22 2022] Antillius punches an ancient tigerclaw racnar for 28 points of damage.
+[Mon Dec 19 17:36:22 2022] Antillius punches an ancient tigerclaw racnar for 29 points of damage.
+[Mon Dec 19 17:36:22 2022] Khanis slashes an ancient tigerclaw racnar for 51 points of damage.
+[Mon Dec 19 17:36:22 2022] Khanis slashes an ancient tigerclaw racnar for 15 points of damage.
+[Mon Dec 19 17:36:22 2022] Yeef winces.
+[Mon Dec 19 17:36:22 2022] Mandair pierces an ancient tigerclaw racnar for 30 points of damage.
+[Mon Dec 19 17:36:22 2022] Khanis slashes an ancient tigerclaw racnar for 31 points of damage.
+[Mon Dec 19 17:36:22 2022] Huntor slashes an ancient tigerclaw racnar for 19 points of damage.
+[Mon Dec 19 17:36:22 2022] Huntor slashes an ancient tigerclaw racnar for 20 points of damage.
+[Mon Dec 19 17:36:22 2022] Einskaldir pierces an ancient tigerclaw racnar for 22 points of damage.
+[Mon Dec 19 17:36:22 2022] Einskaldir crushes an ancient tigerclaw racnar for 19 points of damage.
+[Mon Dec 19 17:36:22 2022] Mandair slashes an ancient tigerclaw racnar for 43 points of damage.
+[Mon Dec 19 17:36:22 2022] Dapiff punches an ancient tigerclaw racnar for 29 points of damage.
+[Mon Dec 19 17:36:22 2022] Antillius punches an ancient tigerclaw racnar for 1 point of damage.
+[Mon Dec 19 17:36:22 2022] Antillius punches an ancient tigerclaw racnar for 24 points of damage.
+[Mon Dec 19 17:36:22 2022] Yeef peers through a telescope.
+[Mon Dec 19 17:36:22 2022] Bohji pierces an ancient tigerclaw racnar for 41 points of damage.
+[Mon Dec 19 17:36:22 2022] Your attempt to disarm failed.
+[Mon Dec 19 17:36:23 2022] Huntor slashes an ancient tigerclaw racnar for 9 points of damage.
+[Mon Dec 19 17:36:23 2022] Bohji slashes an ancient tigerclaw racnar for 24 points of damage.
+[Mon Dec 19 17:36:23 2022] You think you are heading East.
+[Mon Dec 19 17:36:23 2022] You slash an ancient tigerclaw racnar for 68 points of damage.
+[Mon Dec 19 17:36:23 2022] You try to slash an ancient tigerclaw racnar, but miss!
+[Mon Dec 19 17:36:23 2022] Yeef begins to cast a spell.
+[Mon Dec 19 17:36:23 2022] Khanis slashes an ancient tigerclaw racnar for 46 points of damage.
+[Mon Dec 19 17:36:23 2022] Mandair pierces an ancient tigerclaw racnar for 18 points of damage.
+[Mon Dec 19 17:36:23 2022] An ancient tigerclaw racnar was pierced by thorns.
+[Mon Dec 19 17:36:23 2022] An ancient tigerclaw racnar hits Mandair for 292 points of damage.
+[Mon Dec 19 17:36:23 2022] An ancient tigerclaw racnar was pierced by thorns.
+[Mon Dec 19 17:36:23 2022] An ancient tigerclaw racnar hits Mandair for 286 points of damage.
+[Mon Dec 19 17:36:23 2022] Your Location is -703.65, -1710.63, -18.12
+[Mon Dec 19 17:36:23 2022] Bohji backstabs an ancient tigerclaw racnar for 120 points of damage.
+[Mon Dec 19 17:36:23 2022] Dapiff punches an ancient tigerclaw racnar for 23 points of damage.
+[Mon Dec 19 17:36:23 2022] Dapiff punches an ancient tigerclaw racnar for 18 points of damage.
+[Mon Dec 19 17:36:23 2022] Dapiff kicks an ancient tigerclaw racnar for 81 points of damage.
+[Mon Dec 19 17:36:23 2022] Antillius crushes an ancient tigerclaw racnar for 188 points of damage.
+[Mon Dec 19 17:36:23 2022] Dapiff crushes an ancient tigerclaw racnar for 38 points of damage.
+[Mon Dec 19 17:36:23 2022] Dapiff crushes an ancient tigerclaw racnar for 87 points of damage.
+[Mon Dec 19 17:36:24 2022] Huntor slashes an ancient tigerclaw racnar for 21 points of damage.
+[Mon Dec 19 17:36:24 2022] Huntor slashes an ancient tigerclaw racnar for 32 points of damage.
+[Mon Dec 19 17:36:24 2022] Einskaldir pierces an ancient tigerclaw racnar for 68 points of damage.
+[Mon Dec 19 17:36:24 2022] Einskaldir pierces an ancient tigerclaw racnar for 20 points of damage.
+[Mon Dec 19 17:36:24 2022] Antillius kicks an ancient tigerclaw racnar for 42 points of damage.
+[Mon Dec 19 17:36:24 2022] Mandair pierces an ancient tigerclaw racnar for 27 points of damage.
+[Mon Dec 19 17:36:24 2022] Bohji slashes an ancient tigerclaw racnar for 38 points of damage.
+[Mon Dec 19 17:36:24 2022] Mandair tells the guild, 'khanis group needs a healer...or he needs tob e in my group'
+[Mon Dec 19 17:36:24 2022] Dapiff punches an ancient tigerclaw racnar for 37 points of damage.
+[Mon Dec 19 17:36:24 2022] Khanis slashes an ancient tigerclaw racnar for 21 points of damage.
+[Mon Dec 19 17:36:24 2022] Einskaldir crushes an ancient tigerclaw racnar for 22 points of damage.
+[Mon Dec 19 17:36:25 2022] You tell your party, 'ty ty'
+[Mon Dec 19 17:36:25 2022] Huntor slashes an ancient tigerclaw racnar for 27 points of damage.
+[Mon Dec 19 17:36:25 2022] Mandair pierces an ancient tigerclaw racnar for 12 points of damage.
+[Mon Dec 19 17:36:25 2022] Mandair slashes an ancient tigerclaw racnar for 34 points of damage.
+[Mon Dec 19 17:36:25 2022] Einskaldir pierces an ancient tigerclaw racnar for 49 points of damage.
+[Mon Dec 19 17:36:25 2022] Huntor kicks an ancient tigerclaw racnar for 1 point of damage.
+[Mon Dec 19 17:36:25 2022] Bohji pierces an ancient tigerclaw racnar for 71 points of damage.
+[Mon Dec 19 17:36:25 2022] You slash an ancient tigerclaw racnar for 70 points of damage.
+[Mon Dec 19 17:36:25 2022] Einskaldir crushes an ancient tigerclaw racnar for 40 points of damage.
+[Mon Dec 19 17:36:25 2022] Antillius crushes an ancient tigerclaw racnar for 181 points of damage.
+[Mon Dec 19 17:36:25 2022] Antillius crushes an ancient tigerclaw racnar for 83 points of damage.
+[Mon Dec 19 17:36:25 2022] Khanis slashes an ancient tigerclaw racnar for 12 points of damage.
+[Mon Dec 19 17:36:25 2022] You try to bash an ancient tigerclaw racnar, but miss!
+[Mon Dec 19 17:36:25 2022] Yeef winces.
+[Mon Dec 19 17:36:25 2022] Khanis slashes an ancient tigerclaw racnar for 26 points of damage.
+[Mon Dec 19 17:36:26 2022] Mandair pierces an ancient tigerclaw racnar for 20 points of damage.
+[Mon Dec 19 17:36:26 2022] Mandair tells the guild, 'for ramp'
+[Mon Dec 19 17:36:26 2022] Dapiff punches an ancient tigerclaw racnar for 20 points of damage.
+[Mon Dec 19 17:36:26 2022] Your Location is -703.65, -1710.63, -18.12
+[Mon Dec 19 17:36:26 2022] Huntor slashes an ancient tigerclaw racnar for 12 points of damage.
+[Mon Dec 19 17:36:26 2022] Huntor slashes an ancient tigerclaw racnar for 48 points of damage.
+[Mon Dec 19 17:36:26 2022] Mandair slashes an ancient tigerclaw racnar for 9 points of damage.
+[Mon Dec 19 17:36:26 2022] You think you are heading East.
+[Mon Dec 19 17:36:26 2022] Einskaldir pierces an ancient tigerclaw racnar for 40 points of damage.
+[Mon Dec 19 17:36:26 2022] Einskaldir crushes an ancient tigerclaw racnar for 46 points of damage.
+[Mon Dec 19 17:36:26 2022] Einskaldir crushes an ancient tigerclaw racnar for 19 points of damage.
+[Mon Dec 19 17:36:26 2022] Bohji pierces an ancient tigerclaw racnar for 42 points of damage.
+[Mon Dec 19 17:36:26 2022] Bohji pierces an ancient tigerclaw racnar for 13 points of damage.
+[Mon Dec 19 17:36:26 2022] An ancient tigerclaw racnar was pierced by thorns.
+[Mon Dec 19 17:36:26 2022] An ancient tigerclaw racnar hits Mandair for 265 points of damage.
+[Mon Dec 19 17:36:27 2022] An ancient tigerclaw racnar was pierced by thorns.
+[Mon Dec 19 17:36:27 2022] An ancient tigerclaw racnar hits Mandair for 255 points of damage.
+[Mon Dec 19 17:36:27 2022] An ancient tigerclaw racnar was pierced by thorns.
+[Mon Dec 19 17:36:27 2022] An ancient tigerclaw racnar hits Mandair for 286 points of damage.
+[Mon Dec 19 17:36:27 2022] Einskaldir backstabs an ancient tigerclaw racnar for 87 points of damage.
+[Mon Dec 19 17:36:27 2022] Khanis slashes an ancient tigerclaw racnar for 87 points of damage.
+[Mon Dec 19 17:36:27 2022] Yeef peers through a telescope.
+[Mon Dec 19 17:36:27 2022] Dapiff punches an ancient tigerclaw racnar for 37 points of damage.
+[Mon Dec 19 17:36:27 2022] Mandair kicks an ancient tigerclaw racnar for 1 point of damage.
+[Mon Dec 19 17:36:27 2022] Mandair pierces an ancient tigerclaw racnar for 16 points of damage.
+[Mon Dec 19 17:36:27 2022] Mandair pierces an ancient tigerclaw racnar for 36 points of damage.
+[Mon Dec 19 17:36:27 2022] Antillius punches an ancient tigerclaw racnar for 33 points of damage.
+[Mon Dec 19 17:36:27 2022] Antillius punches an ancient tigerclaw racnar for 12 points of damage.
+[Mon Dec 19 17:36:27 2022] Antillius punches an ancient tigerclaw racnar for 18 points of damage.
+[Mon Dec 19 17:36:27 2022] Huntor slashes an ancient tigerclaw racnar for 22 points of damage.
+[Mon Dec 19 17:36:27 2022] Mandair slashes an ancient tigerclaw racnar for 18 points of damage.
+[Mon Dec 19 17:36:27 2022] You slash an ancient tigerclaw racnar for 42 points of damage.
+[Mon Dec 19 17:36:27 2022] Yeef begins to cast a spell.
+[Mon Dec 19 17:36:28 2022] Dapiff punches an ancient tigerclaw racnar for 15 points of damage.
+[Mon Dec 19 17:36:28 2022] Bohji pierces an ancient tigerclaw racnar for 45 points of damage.
+[Mon Dec 19 17:36:28 2022] Bohji slashes an ancient tigerclaw racnar for 57 points of damage.
+[Mon Dec 19 17:36:28 2022] Bohji slashes an ancient tigerclaw racnar for 8 points of damage.
+[Mon Dec 19 17:36:28 2022] Mandair pierces an ancient tigerclaw racnar for 42 points of damage.
+[Mon Dec 19 17:36:28 2022] Khanis slashes an ancient tigerclaw racnar for 39 points of damage.
+[Mon Dec 19 17:36:28 2022] Dapiff crushes an ancient tigerclaw racnar for 15 points of damage.
+[Mon Dec 19 17:36:28 2022] Dapiff crushes an ancient tigerclaw racnar for 46 points of damage.
+[Mon Dec 19 17:36:28 2022] Antillius punches an ancient tigerclaw racnar for 26 points of damage.
+[Mon Dec 19 17:36:28 2022] Huntor slashes an ancient tigerclaw racnar for 2 points of damage.
+[Mon Dec 19 17:36:28 2022] Einskaldir crushes an ancient tigerclaw racnar for 41 points of damage.
+[Mon Dec 19 17:36:28 2022] Einskaldir crushes an ancient tigerclaw racnar for 26 points of damage.
+[Mon Dec 19 17:36:28 2022] Bohji backstabs an ancient tigerclaw racnar for 120 points of damage.
+[Mon Dec 19 17:36:28 2022] Yeef's casting is interrupted!
+[Mon Dec 19 17:36:29 2022] Huntor slashes an ancient tigerclaw racnar for 25 points of damage.
+[Mon Dec 19 17:36:29 2022] Mandair pierces an ancient tigerclaw racnar for 34 points of damage.
+[Mon Dec 19 17:36:29 2022] Mandair slashes an ancient tigerclaw racnar for 43 points of damage.
+[Mon Dec 19 17:36:29 2022] Mandair slashes an ancient tigerclaw racnar for 30 points of damage.
+[Mon Dec 19 17:36:29 2022] Einskaldir pierces an ancient tigerclaw racnar for 23 points of damage.
+[Mon Dec 19 17:36:29 2022] Einskaldir pierces an ancient tigerclaw racnar for 41 points of damage.
+[Mon Dec 19 17:36:29 2022] Antillius punches an ancient tigerclaw racnar for 11 points of damage.
+[Mon Dec 19 17:36:29 2022] Bohji slashes an ancient tigerclaw racnar for 10 points of damage.
+[Mon Dec 19 17:36:29 2022] Bohji slashes an ancient tigerclaw racnar for 12 points of damage.
+[Mon Dec 19 17:36:29 2022] Khanis slashes an ancient tigerclaw racnar for 48 points of damage.
+[Mon Dec 19 17:36:29 2022] Dapiff punches an ancient tigerclaw racnar for 14 points of damage.
+[Mon Dec 19 17:36:29 2022] You think you are heading East.
+[Mon Dec 19 17:36:29 2022] Yeef begins to cast a spell.
+[Mon Dec 19 17:36:29 2022] Dapiff crushes an ancient tigerclaw racnar for 84 points of damage.
+[Mon Dec 19 17:36:30 2022] Mandair pierces an ancient tigerclaw racnar for 16 points of damage.
+[Mon Dec 19 17:36:30 2022] Huntor kicks an ancient tigerclaw racnar for 15 points of damage.
+[Mon Dec 19 17:36:30 2022] Khanis slashes an ancient tigerclaw racnar for 14 points of damage.
+[Mon Dec 19 17:36:30 2022] You slash an ancient tigerclaw racnar for 118 points of damage.
+[Mon Dec 19 17:36:30 2022] You try to slash an ancient tigerclaw racnar, but miss!
+[Mon Dec 19 17:36:30 2022] Antillius crushes an ancient tigerclaw racnar for 119 points of damage.
+[Mon Dec 19 17:36:30 2022] Antillius kicks an ancient tigerclaw racnar for 74 points of damage.
+[Mon Dec 19 17:36:30 2022] Huntor slashes an ancient tigerclaw racnar for 44 points of damage.
+[Mon Dec 19 17:36:30 2022] Mandair slashes an ancient tigerclaw racnar for 8 points of damage.
+[Mon Dec 19 17:36:30 2022] An ancient tigerclaw racnar was pierced by thorns.
+[Mon Dec 19 17:36:30 2022] An ancient tigerclaw racnar hits Mandair for 234 points of damage.
+[Mon Dec 19 17:36:30 2022] An ancient tigerclaw racnar was pierced by thorns.
+[Mon Dec 19 17:36:30 2022] An ancient tigerclaw racnar hits Mandair for 223 points of damage.
+[Mon Dec 19 17:36:30 2022] Bohji slashes an ancient tigerclaw racnar for 26 points of damage.
+[Mon Dec 19 17:36:30 2022] Bohji slashes an ancient tigerclaw racnar for 1 point of damage.
+[Mon Dec 19 17:36:30 2022] Einskaldir pierces an ancient tigerclaw racnar for 83 points of damage.
+[Mon Dec 19 17:36:30 2022] Einskaldir pierces an ancient tigerclaw racnar for 61 points of damage.
+[Mon Dec 19 17:36:30 2022] Bohji pierces an ancient tigerclaw racnar for 19 points of damage.
+[Mon Dec 19 17:36:30 2022] Dapiff punches an ancient tigerclaw racnar for 42 points of damage.
+[Mon Dec 19 17:36:30 2022] You bash an ancient tigerclaw racnar for 1 point of damage.
+[Mon Dec 19 17:36:30 2022] Khanis slashes an ancient tigerclaw racnar for 70 points of damage.
+[Mon Dec 19 17:36:30 2022] Mandair pierces an ancient tigerclaw racnar for 38 points of damage.
+[Mon Dec 19 17:36:30 2022] Mandair pierces an ancient tigerclaw racnar for 37 points of damage.
+[Mon Dec 19 17:36:31 2022] Your Location is -703.65, -1710.63, -18.12
+[Mon Dec 19 17:36:31 2022] Khanis slashes an ancient tigerclaw racnar for 28 points of damage.
+[Mon Dec 19 17:36:31 2022] Dapiff crushes an ancient tigerclaw racnar for 14 points of damage.
+[Mon Dec 19 17:36:31 2022] Dapiff crushes an ancient tigerclaw racnar for 2 points of damage.
+[Mon Dec 19 17:36:31 2022] Dapiff punches an ancient tigerclaw racnar for 56 points of damage.
+[Mon Dec 19 17:36:31 2022] Dapiff punches an ancient tigerclaw racnar for 23 points of damage.
+[Mon Dec 19 17:36:31 2022] Mandair slashes an ancient tigerclaw racnar for 35 points of damage.
+[Mon Dec 19 17:36:31 2022] Bohji slashes an ancient tigerclaw racnar for 68 points of damage.
+[Mon Dec 19 17:36:31 2022] Bohji slashes an ancient tigerclaw racnar for 44 points of damage.
+[Mon Dec 19 17:36:31 2022] Bohji pierces an ancient tigerclaw racnar for 45 points of damage.
+[Mon Dec 19 17:36:31 2022] Khanis slashes an ancient tigerclaw racnar for 63 points of damage.
+[Mon Dec 19 17:36:31 2022] Einskaldir pierces an ancient tigerclaw racnar for 27 points of damage.
+[Mon Dec 19 17:36:31 2022] Mandair pierces an ancient tigerclaw racnar for 43 points of damage.
+[Mon Dec 19 17:36:31 2022] Huntor slashes an ancient tigerclaw racnar for 1 point of damage.
+[Mon Dec 19 17:36:32 2022] Antillius crushes an ancient tigerclaw racnar for 123 points of damage.
+[Mon Dec 19 17:36:32 2022] Dapiff punches an ancient tigerclaw racnar for 17 points of damage.
+[Mon Dec 19 17:36:32 2022] Yeef winces.
+[Mon Dec 19 17:36:32 2022] You slash an ancient tigerclaw racnar for 145 points of damage.
+[Mon Dec 19 17:36:32 2022] Einskaldir backstabs an ancient tigerclaw racnar for 378 points of damage.
+[Mon Dec 19 17:36:32 2022] Mandair pierces an ancient tigerclaw racnar for 28 points of damage.
+[Mon Dec 19 17:36:32 2022] Mandair pierces an ancient tigerclaw racnar for 27 points of damage.
+[Mon Dec 19 17:36:32 2022] Mandair slashes an ancient tigerclaw racnar for 28 points of damage.
+[Mon Dec 19 17:36:32 2022] Huntor slashes an ancient tigerclaw racnar for 31 points of damage.
+[Mon Dec 19 17:36:32 2022] Dapiff crushes an ancient tigerclaw racnar for 32 points of damage.
+[Mon Dec 19 17:36:32 2022] Bohji slashes an ancient tigerclaw racnar for 21 points of damage.
+[Mon Dec 19 17:36:33 2022] Dapiff kicks an ancient tigerclaw racnar for 89 points of damage.
+[Mon Dec 19 17:36:33 2022] Bohji pierces an ancient tigerclaw racnar for 64 points of damage.
+[Mon Dec 19 17:36:33 2022] Antillius punches an ancient tigerclaw racnar for 15 points of damage.
+[Mon Dec 19 17:36:33 2022] Antillius punches an ancient tigerclaw racnar for 19 points of damage.
+[Mon Dec 19 17:36:33 2022] Khanis slashes an ancient tigerclaw racnar for 26 points of damage.
+[Mon Dec 19 17:36:33 2022] Khanis slashes an ancient tigerclaw racnar for 65 points of damage.
+[Mon Dec 19 17:36:33 2022] Your attempt to disarm failed.
+[Mon Dec 19 17:36:33 2022] You think you are heading East.
+[Mon Dec 19 17:36:33 2022] Mandair kicks an ancient tigerclaw racnar for 1 point of damage.
+[Mon Dec 19 17:36:33 2022] Einskaldir crushes an ancient tigerclaw racnar for 56 points of damage.
+[Mon Dec 19 17:36:33 2022] Mandair pierces an ancient tigerclaw racnar for 12 points of damage.
+[Mon Dec 19 17:36:33 2022] Bohji backstabs an ancient tigerclaw racnar for 120 points of damage.
+[Mon Dec 19 17:36:33 2022] Bohji backstabs an ancient tigerclaw racnar for 534 points of damage.
+[Mon Dec 19 17:36:34 2022] An ancient tigerclaw racnar was pierced by thorns.
+[Mon Dec 19 17:36:34 2022] An ancient tigerclaw racnar hits Mandair for 213 points of damage.
+[Mon Dec 19 17:36:34 2022] An ancient tigerclaw racnar was pierced by thorns.
+[Mon Dec 19 17:36:34 2022] An ancient tigerclaw racnar hits Mandair for 234 points of damage.
+[Mon Dec 19 17:36:34 2022] An ancient tigerclaw racnar was pierced by thorns.
+[Mon Dec 19 17:36:34 2022] An ancient tigerclaw racnar hits Mandair for 223 points of damage.
+[Mon Dec 19 17:36:34 2022] Dapiff punches an ancient tigerclaw racnar for 50 points of damage.
+[Mon Dec 19 17:36:34 2022] Mandair slashes an ancient tigerclaw racnar for 20 points of damage.
+[Mon Dec 19 17:36:34 2022] Antillius punches an ancient tigerclaw racnar for 9 points of damage.
+[Mon Dec 19 17:36:34 2022] Huntor slashes an ancient tigerclaw racnar for 14 points of damage.
+[Mon Dec 19 17:36:34 2022] Bohji slashes an ancient tigerclaw racnar for 9 points of damage.
+[Mon Dec 19 17:36:34 2022] Khanis slashes an ancient tigerclaw racnar for 24 points of damage.
+[Mon Dec 19 17:36:34 2022] Bohji pierces an ancient tigerclaw racnar for 38 points of damage.
+[Mon Dec 19 17:36:34 2022] Khanis slashes an ancient tigerclaw racnar for 39 points of damage.
+[Mon Dec 19 17:36:34 2022] Einskaldir pierces an ancient tigerclaw racnar for 32 points of damage.
+[Mon Dec 19 17:36:34 2022] Einskaldir pierces an ancient tigerclaw racnar for 56 points of damage.
+[Mon Dec 19 17:36:34 2022] Einskaldir crushes an ancient tigerclaw racnar for 12 points of damage.
+[Mon Dec 19 17:36:34 2022] Your Location is -703.65, -1710.63, -18.12
+[Mon Dec 19 17:36:34 2022] You slash an ancient tigerclaw racnar for 122 points of damage.
+[Mon Dec 19 17:36:34 2022] Mandair pierces an ancient tigerclaw racnar for 43 points of damage.
+[Mon Dec 19 17:36:34 2022] Dapiff punches an ancient tigerclaw racnar for 24 points of damage.
+[Mon Dec 19 17:36:34 2022] Antillius punches an ancient tigerclaw racnar for 3 points of damage.
+[Mon Dec 19 17:36:34 2022] Antillius punches an ancient tigerclaw racnar for 26 points of damage.
+[Mon Dec 19 17:36:35 2022] Antillius punches an ancient tigerclaw racnar for 12 points of damage.
+[Mon Dec 19 17:36:35 2022] You try to bash an ancient tigerclaw racnar, but miss!
+[Mon Dec 19 17:36:35 2022] Bohji slashes an ancient tigerclaw racnar for 58 points of damage.
+[Mon Dec 19 17:36:35 2022] Huntor slashes an ancient tigerclaw racnar for 51 points of damage.
+[Mon Dec 19 17:36:35 2022] Einskaldir crushes an ancient tigerclaw racnar for 18 points of damage.
+[Mon Dec 19 17:36:35 2022] Bohji pierces an ancient tigerclaw racnar for 39 points of damage.
+[Mon Dec 19 17:36:35 2022] Mandair pierces an ancient tigerclaw racnar for 14 points of damage.
+[Mon Dec 19 17:36:35 2022] Dapiff punches an ancient tigerclaw racnar for 52 points of damage.
+[Mon Dec 19 17:36:35 2022] Einskaldir pierces an ancient tigerclaw racnar for 39 points of damage.
+[Mon Dec 19 17:36:35 2022] Antillius kicks an ancient tigerclaw racnar for 51 points of damage.
+[Mon Dec 19 17:36:35 2022] Antillius crushes an ancient tigerclaw racnar for 64 points of damage.
+[Mon Dec 19 17:36:35 2022] Antillius crushes an ancient tigerclaw racnar for 64 points of damage.
+[Mon Dec 19 17:36:35 2022] Antillius crushes an ancient tigerclaw racnar for 110 points of damage.
+[Mon Dec 19 17:36:35 2022] Dapiff crushes an ancient tigerclaw racnar for 26 points of damage.
+[Mon Dec 19 17:36:36 2022] Yeef begins to cast a spell.
+[Mon Dec 19 17:36:36 2022] Mandair pierces an ancient tigerclaw racnar for 29 points of damage.
+[Mon Dec 19 17:36:36 2022] Dapiff punches an ancient tigerclaw racnar for 16 points of damage.
+[Mon Dec 19 17:36:36 2022] Bohji slashes an ancient tigerclaw racnar for 20 points of damage.
+[Mon Dec 19 17:36:36 2022] Huntor slashes an ancient tigerclaw racnar for 43 points of damage.
+[Mon Dec 19 17:36:36 2022] Bohji pierces an ancient tigerclaw racnar for 33 points of damage.
+[Mon Dec 19 17:36:36 2022] You slash an ancient tigerclaw racnar for 61 points of damage.
+[Mon Dec 19 17:36:36 2022] You slash an ancient tigerclaw racnar for 171 points of damage.
+[Mon Dec 19 17:36:37 2022] Einskaldir pierces an ancient tigerclaw racnar for 61 points of damage.
+[Mon Dec 19 17:36:37 2022] Dapiff punches an ancient tigerclaw racnar for 18 points of damage.
+[Mon Dec 19 17:36:37 2022] Dapiff punches an ancient tigerclaw racnar for 19 points of damage.
+[Mon Dec 19 17:36:37 2022] Huntor slashes an ancient tigerclaw racnar for 40 points of damage.
+[Mon Dec 19 17:36:37 2022] Huntor slashes an ancient tigerclaw racnar for 45 points of damage.
+[Mon Dec 19 17:36:37 2022] An ancient tigerclaw racnar was pierced by thorns.
+[Mon Dec 19 17:36:37 2022] An ancient tigerclaw racnar hits Mandair for 244 points of damage.
+[Mon Dec 19 17:36:37 2022] An ancient tigerclaw racnar was pierced by thorns.
+[Mon Dec 19 17:36:37 2022] An ancient tigerclaw racnar hits Mandair for 260 points of damage.
+[Mon Dec 19 17:36:37 2022] Mandair pierces an ancient tigerclaw racnar for 12 points of damage.
+[Mon Dec 19 17:36:37 2022] Mandair pierces an ancient tigerclaw racnar for 14 points of damage.
+[Mon Dec 19 17:36:37 2022] Einskaldir crushes an ancient tigerclaw racnar for 18 points of damage.
+[Mon Dec 19 17:36:37 2022] Einskaldir crushes an ancient tigerclaw racnar for 13 points of damage.
+[Mon Dec 19 17:36:37 2022] Bohji slashes an ancient tigerclaw racnar for 20 points of damage.
+[Mon Dec 19 17:36:37 2022] Khanis slashes an ancient tigerclaw racnar for 12 points of damage.
+[Mon Dec 19 17:36:37 2022] Antillius crushes an ancient tigerclaw racnar for 87 points of damage.
+[Mon Dec 19 17:36:37 2022] Antillius crushes an ancient tigerclaw racnar for 171 points of damage.
+[Mon Dec 19 17:36:37 2022] Antillius punches an ancient tigerclaw racnar for 22 points of damage.
+[Mon Dec 19 17:36:38 2022] Bohji pierces an ancient tigerclaw racnar for 13 points of damage.
+[Mon Dec 19 17:36:38 2022] Dapiff punches an ancient tigerclaw racnar for 17 points of damage.
+[Mon Dec 19 17:36:38 2022] Einskaldir pierces an ancient tigerclaw racnar for 78 points of damage.
+[Mon Dec 19 17:36:38 2022] Mandair pierces an ancient tigerclaw racnar for 28 points of damage.
+[Mon Dec 19 17:36:38 2022] Einskaldir crushes an ancient tigerclaw racnar for 21 points of damage.
+[Mon Dec 19 17:36:38 2022] Dapiff kicks an ancient tigerclaw racnar for 39 points of damage.
+[Mon Dec 19 17:36:38 2022] Einskaldir backstabs an ancient tigerclaw racnar for 87 points of damage.
+[Mon Dec 19 17:36:38 2022] Einskaldir backstabs an ancient tigerclaw racnar for 194 points of damage.
+[Mon Dec 19 17:36:38 2022] Yeef winces.
+[Mon Dec 19 17:36:38 2022] an ancient tigerclaw racnar has become ENRAGED.
+[Mon Dec 19 17:36:38 2022] Khanis slashes an ancient tigerclaw racnar for 9 points of damage.
+[Mon Dec 19 17:36:38 2022] Khanis slashes an ancient tigerclaw racnar for 28 points of damage.
+[Mon Dec 19 17:36:38 2022] Dapiff crushes an ancient tigerclaw racnar for 22 points of damage.
+[Mon Dec 19 17:36:38 2022] Dapiff crushes an ancient tigerclaw racnar for 16 points of damage.
+[Mon Dec 19 17:36:39 2022] Khanis slashes an ancient tigerclaw racnar for 54 points of damage.
+[Mon Dec 19 17:36:39 2022] Bohji backstabs an ancient tigerclaw racnar for 138 points of damage.
+[Mon Dec 19 17:36:39 2022] Dapiff punches an ancient tigerclaw racnar for 28 points of damage.
+[Mon Dec 19 17:36:39 2022] Dapiff punches an ancient tigerclaw racnar for 34 points of damage.
+[Mon Dec 19 17:36:39 2022] An ancient tigerclaw racnar hits Huntor for 223 points of damage.
+[Mon Dec 19 17:36:39 2022] An ancient tigerclaw racnar hits Huntor for 286 points of damage.
+[Mon Dec 19 17:36:39 2022] You try to slash an ancient tigerclaw racnar, but miss!
+[Mon Dec 19 17:36:39 2022] You slash an ancient tigerclaw racnar for 71 points of damage.
+[Mon Dec 19 17:36:39 2022] An ancient tigerclaw racnar was pierced by thorns.
+[Mon Dec 19 17:36:39 2022] An ancient tigerclaw racnar hits Mandair for 234 points of damage.
+[Mon Dec 19 17:36:39 2022] Bohji pierces an ancient tigerclaw racnar for 45 points of damage.
+[Mon Dec 19 17:36:39 2022] Bohji pierces an ancient tigerclaw racnar for 85 points of damage.
+[Mon Dec 19 17:36:39 2022] You try to bash an ancient tigerclaw racnar, but miss!
+[Mon Dec 19 17:36:39 2022] Einskaldir crushes an ancient tigerclaw racnar for 21 points of damage.
+[Mon Dec 19 17:36:39 2022] Einskaldir pierces an ancient tigerclaw racnar for 16 points of damage.
+[Mon Dec 19 17:36:39 2022] An ancient tigerclaw racnar hits Huntor for 192 points of damage.
+[Mon Dec 19 17:36:39 2022] An ancient tigerclaw racnar hits Huntor for 192 points of damage.
+[Mon Dec 19 17:36:39 2022] Antillius punches an ancient tigerclaw racnar for 23 points of damage.
+[Mon Dec 19 17:36:39 2022] Khanis slashes an ancient tigerclaw racnar for 9 points of damage.
+[Mon Dec 19 17:36:39 2022] Khanis slashes an ancient tigerclaw racnar for 35 points of damage.
+[Mon Dec 19 17:36:40 2022] Dapiff punches an ancient tigerclaw racnar for 19 points of damage.
+[Mon Dec 19 17:36:40 2022] Khanis slashes an ancient tigerclaw racnar for 34 points of damage.
+[Mon Dec 19 17:36:40 2022] Khanis slashes an ancient tigerclaw racnar for 12 points of damage.
+[Mon Dec 19 17:36:40 2022] An ancient tigerclaw racnar was pierced by thorns.
+[Mon Dec 19 17:36:40 2022] An ancient tigerclaw racnar hits Mandair for 260 points of damage.
+[Mon Dec 19 17:36:40 2022] Einskaldir crushes an ancient tigerclaw racnar for 12 points of damage.
+[Mon Dec 19 17:36:40 2022] Einskaldir crushes an ancient tigerclaw racnar for 48 points of damage.
+[Mon Dec 19 17:36:40 2022] An ancient tigerclaw racnar was pierced by thorns.
+[Mon Dec 19 17:36:40 2022] An ancient tigerclaw racnar hits Mandair for 223 points of damage.
+[Mon Dec 19 17:36:40 2022] Bohji pierces an ancient tigerclaw racnar for 31 points of damage.
+[Mon Dec 19 17:36:40 2022] Bohji pierces an ancient tigerclaw racnar for 53 points of damage.
+[Mon Dec 19 17:36:40 2022] Antillius kicks an ancient tigerclaw racnar for 42 points of damage.
+[Mon Dec 19 17:36:40 2022] Dapiff punches an ancient tigerclaw racnar for 30 points of damage.
+[Mon Dec 19 17:36:40 2022] Einskaldir pierces an ancient tigerclaw racnar for 41 points of damage.
+[Mon Dec 19 17:36:40 2022] Einskaldir pierces an ancient tigerclaw racnar for 41 points of damage.
+[Mon Dec 19 17:36:41 2022] An ancient tigerclaw racnar was pierced by thorns.
+[Mon Dec 19 17:36:41 2022] An ancient tigerclaw racnar hits Mandair for 255 points of damage.
+[Mon Dec 19 17:36:41 2022] You try to slash an ancient tigerclaw racnar, but miss!
+[Mon Dec 19 17:36:41 2022] Dapiff punches an ancient tigerclaw racnar for 20 points of damage.
+[Mon Dec 19 17:36:41 2022] Yeef begins to cast a spell.
+[Mon Dec 19 17:36:41 2022] Dapiff crushes an ancient tigerclaw racnar for 10 points of damage.
+[Mon Dec 19 17:36:41 2022] Bohji pierces an ancient tigerclaw racnar for 40 points of damage.
+[Mon Dec 19 17:36:42 2022] Khanis slashes an ancient tigerclaw racnar for 37 points of damage.
+[Mon Dec 19 17:36:42 2022] Einskaldir pierces an ancient tigerclaw racnar for 30 points of damage.
+[Mon Dec 19 17:36:42 2022] Dapiff punches an ancient tigerclaw racnar for 44 points of damage.
+[Mon Dec 19 17:36:42 2022] Khanis slashes an ancient tigerclaw racnar for 36 points of damage.
+[Mon Dec 19 17:36:42 2022] Bohji slashes an ancient tigerclaw racnar for 13 points of damage.
+[Mon Dec 19 17:36:42 2022] An ancient tigerclaw racnar was pierced by thorns.
+[Mon Dec 19 17:36:42 2022] An ancient tigerclaw racnar hits Mandair for 228 points of damage.
+[Mon Dec 19 17:36:43 2022] Khanis slashes an ancient tigerclaw racnar for 45 points of damage.
+[Mon Dec 19 17:36:43 2022] Dapiff crushes an ancient tigerclaw racnar for 50 points of damage.
+[Mon Dec 19 17:36:43 2022] Einskaldir crushes an ancient tigerclaw racnar for 12 points of damage.
+[Mon Dec 19 17:36:43 2022] Dapiff punches an ancient tigerclaw racnar for 30 points of damage.
+[Mon Dec 19 17:36:43 2022] You try to bash an ancient tigerclaw racnar, but miss!
+[Mon Dec 19 17:36:43 2022] You slash an ancient tigerclaw racnar for 102 points of damage.
+[Mon Dec 19 17:36:43 2022] You slash an ancient tigerclaw racnar for 42 points of damage.
+[Mon Dec 19 17:36:43 2022] Khanis slashes an ancient tigerclaw racnar for 46 points of damage.
+[Mon Dec 19 17:36:43 2022] Your attempt to disarm failed.
+[Mon Dec 19 17:36:43 2022] Bohji slashes an ancient tigerclaw racnar for 44 points of damage.
+[Mon Dec 19 17:36:44 2022] An ancient tigerclaw racnar was pierced by thorns.
+[Mon Dec 19 17:36:44 2022] An ancient tigerclaw racnar hits Mandair for 255 points of damage.
+[Mon Dec 19 17:36:44 2022] An ancient tigerclaw racnar was pierced by thorns.
+[Mon Dec 19 17:36:44 2022] An ancient tigerclaw racnar hits Mandair for 213 points of damage.
+[Mon Dec 19 17:36:44 2022] An ancient tigerclaw racnar was pierced by thorns.
+[Mon Dec 19 17:36:44 2022] An ancient tigerclaw racnar hits Mandair for 292 points of damage.
+[Mon Dec 19 17:36:44 2022] An ancient tigerclaw racnar was pierced by thorns.
+[Mon Dec 19 17:36:44 2022] An ancient tigerclaw racnar hits Mandair for 213 points of damage.
+[Mon Dec 19 17:36:44 2022] Bohji backstabs an ancient tigerclaw racnar for 296 points of damage.
+[Mon Dec 19 17:36:44 2022] Yeef winces.
+[Mon Dec 19 17:36:44 2022] Einskaldir crushes an ancient tigerclaw racnar for 43 points of damage.
+[Mon Dec 19 17:36:44 2022] Einskaldir crushes an ancient tigerclaw racnar for 25 points of damage.
+[Mon Dec 19 17:36:44 2022] Bohji pierces an ancient tigerclaw racnar for 41 points of damage.
+[Mon Dec 19 17:36:44 2022] Bohji pierces an ancient tigerclaw racnar for 39 points of damage.
+[Mon Dec 19 17:36:44 2022] An ancient tigerclaw racnar was pierced by thorns.
+[Mon Dec 19 17:36:44 2022] An ancient tigerclaw racnar hits Mandair for 223 points of damage.
+[Mon Dec 19 17:36:44 2022] Dapiff crushes an ancient tigerclaw racnar for 19 points of damage.
+[Mon Dec 19 17:36:45 2022] Bohji slashes an ancient tigerclaw racnar for 68 points of damage.
+[Mon Dec 19 17:36:45 2022] Dapiff kicks an ancient tigerclaw racnar for 98 points of damage.
+[Mon Dec 19 17:36:45 2022] Antillius kicks an ancient tigerclaw racnar for 101 points of damage.
+[Mon Dec 19 17:36:45 2022] Mandair tells the guild, '<<< ENRAGE,  an ancient tigerclaw racnar IS ENRAGED >>>'
+[Mon Dec 19 17:36:45 2022] Bohji pierces an ancient tigerclaw racnar for 93 points of damage.
+[Mon Dec 19 17:36:45 2022] Mandair says, '<<<ENRAGE, an ancient tigerclaw racnar IS ENRAGED >>>'
+[Mon Dec 19 17:36:46 2022] You slash an ancient tigerclaw racnar for 110 points of damage.
+[Mon Dec 19 17:36:46 2022] Dapiff punches an ancient tigerclaw racnar for 29 points of damage.
+[Mon Dec 19 17:36:46 2022] Khanis slashes an ancient tigerclaw racnar for 63 points of damage.
+[Mon Dec 19 17:36:46 2022] Khanis slashes an ancient tigerclaw racnar for 26 points of damage.
+[Mon Dec 19 17:36:46 2022] Khanis slashes an ancient tigerclaw racnar for 23 points of damage.
+[Mon Dec 19 17:36:46 2022] Bohji slashes an ancient tigerclaw racnar for 22 points of damage.
+[Mon Dec 19 17:36:46 2022] Bohji slashes an ancient tigerclaw racnar for 52 points of damage.
+[Mon Dec 19 17:36:46 2022] Einskaldir crushes an ancient tigerclaw racnar for 13 points of damage.
+[Mon Dec 19 17:36:46 2022] Einskaldir crushes an ancient tigerclaw racnar for 19 points of damage.
+[Mon Dec 19 17:36:46 2022] Dapiff punches an ancient tigerclaw racnar for 27 points of damage.
+[Mon Dec 19 17:36:47 2022] Bohji pierces an ancient tigerclaw racnar for 57 points of damage.
+[Mon Dec 19 17:36:47 2022] Bohji pierces an ancient tigerclaw racnar for 71 points of damage.
+[Mon Dec 19 17:36:47 2022] Triten begins to cast a spell.
+[Mon Dec 19 17:36:47 2022] Einskaldir pierces an ancient tigerclaw racnar for 23 points of damage.
+[Mon Dec 19 17:36:47 2022] Khanis slashes an ancient tigerclaw racnar for 37 points of damage.
+[Mon Dec 19 17:36:47 2022] Antillius punches an ancient tigerclaw racnar for 12 points of damage.
+[Mon Dec 19 17:36:47 2022] Antillius punches an ancient tigerclaw racnar for 35 points of damage.
+[Mon Dec 19 17:36:47 2022] Antillius punches an ancient tigerclaw racnar for 32 points of damage.
+[Mon Dec 19 17:36:47 2022] Antillius punches an ancient tigerclaw racnar for 41 points of damage.
+[Mon Dec 19 17:36:47 2022] Dapiff punches an ancient tigerclaw racnar for 45 points of damage.
+[Mon Dec 19 17:36:48 2022] An ancient tigerclaw racnar was pierced by thorns.
+[Mon Dec 19 17:36:48 2022] An ancient tigerclaw racnar hits Mandair for 292 points of damage.
+[Mon Dec 19 17:36:48 2022] Bohji pierces an ancient tigerclaw racnar for 58 points of damage.
+[Mon Dec 19 17:36:48 2022] You slash an ancient tigerclaw racnar for 62 points of damage.
+[Mon Dec 19 17:36:48 2022] Einskaldir crushes an ancient tigerclaw racnar for 22 points of damage.
+[Mon Dec 19 17:36:48 2022] You try to bash an ancient tigerclaw racnar, but miss!
+[Mon Dec 19 17:36:48 2022] Antillius crushes an ancient tigerclaw racnar for 125 points of damage.
+[Mon Dec 19 17:36:48 2022] Khanis slashes an ancient tigerclaw racnar for 10 points of damage.
+[Mon Dec 19 17:36:48 2022] You think you are heading East.
+[Mon Dec 19 17:36:48 2022] Khanis slashes an ancient tigerclaw racnar for 22 points of damage.
+[Mon Dec 19 17:36:48 2022] Khanis slashes an ancient tigerclaw racnar for 25 points of damage.
+[Mon Dec 19 17:36:48 2022] Einskaldir pierces an ancient tigerclaw racnar for 77 points of damage.
+[Mon Dec 19 17:36:48 2022] Huntor Scores a critical hit!(47)
+[Mon Dec 19 17:36:48 2022] Huntor slashes an ancient tigerclaw racnar for 47 points of damage.
+[Mon Dec 19 17:36:48 2022] Huntor slashes an ancient tigerclaw racnar for 12 points of damage.
+[Mon Dec 19 17:36:49 2022] Yeef begins to cast a spell.
+[Mon Dec 19 17:36:49 2022] Belthazar punches an ancient tigerclaw racnar for 1 point of damage.
+[Mon Dec 19 17:36:49 2022] Einskaldir crushes an ancient tigerclaw racnar for 15 points of damage.
+[Mon Dec 19 17:36:49 2022] Dapiff punches an ancient tigerclaw racnar for 14 points of damage.
+[Mon Dec 19 17:36:49 2022] Bohji backstabs an ancient tigerclaw racnar for 120 points of damage.
+[Mon Dec 19 17:36:49 2022] Khanis slashes an ancient tigerclaw racnar for 16 points of damage.
+[Mon Dec 19 17:36:49 2022] Khanis slashes an ancient tigerclaw racnar for 21 points of damage.
+[Mon Dec 19 17:36:49 2022] Bohji pierces an ancient tigerclaw racnar for 96 points of damage.
+[Mon Dec 19 17:36:49 2022] Khanis slashes an ancient tigerclaw racnar for 22 points of damage.
+[Mon Dec 19 17:36:49 2022] Khanis slashes an ancient tigerclaw racnar for 39 points of damage.
+[Mon Dec 19 17:36:49 2022] Antillius kicks an ancient tigerclaw racnar for 103 points of damage.
+[Mon Dec 19 17:36:50 2022] Bohji slashes an ancient tigerclaw racnar for 11 points of damage.
+[Mon Dec 19 17:36:50 2022] Huntor slashes an ancient tigerclaw racnar for 33 points of damage.
+[Mon Dec 19 17:36:50 2022] Einskaldir crushes an ancient tigerclaw racnar for 1 point of damage.
+[Mon Dec 19 17:36:50 2022] Einskaldir backstabs an ancient tigerclaw racnar for 236 points of damage.
+[Mon Dec 19 17:36:50 2022] Dapiff punches an ancient tigerclaw racnar for 11 points of damage.
+[Mon Dec 19 17:36:50 2022] Huntor kicks an ancient tigerclaw racnar for 8 points of damage.
+[Mon Dec 19 17:36:50 2022] Antillius crushes an ancient tigerclaw racnar for 114 points of damage.
+[Mon Dec 19 17:36:50 2022] an ancient tigerclaw racnar has been slain by Antillius!
+[Mon Dec 19 17:36:51 2022] Yeef winces.

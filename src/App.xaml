@@ -15,5 +15,9 @@
             <Setter Property="Background" Value="Black" />
             <Setter Property="FontSize" Value="12"/>
         </Style>
+        <Style x:Key="MyWindowStyleMap" TargetType="{x:Type Window}">
+            <Setter Property="Background" Value="White" />
+            <Setter Property="FontSize" Value="12"/>
+        </Style>
     </Application.Resources>
 </Application>
