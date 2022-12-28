@@ -112,6 +112,21 @@ namespace EQTool
             }
         }
 
+        private static void CopyFilesRecursively(string sourcePath, string targetPath)
+        {
+            //Now Create all of the directories
+            foreach (var dirPath in Directory.GetDirectories(sourcePath, "*", SearchOption.AllDirectories))
+            {
+                _ = Directory.CreateDirectory(dirPath.Replace(sourcePath, targetPath));
+            }
+
+            //Copy all the files & Replaces any files with the same name
+            foreach (var newPath in Directory.GetFiles(sourcePath, "*.*", SearchOption.AllDirectories))
+            {
+                File.Copy(newPath, newPath.Replace(sourcePath, targetPath), true);
+            }
+        }
+
         private void App_Startup(object sender, StartupEventArgs e)
         {
             httpclient.DefaultRequestHeaders.Add("User-Agent", "request");
@@ -123,15 +138,8 @@ namespace EQTool
                     {
                         Thread.Sleep(1000 * 5);
                         var files = System.IO.Directory.GetFiles(System.IO.Directory.GetCurrentDirectory());
+                        CopyFilesRecursively(System.IO.Directory.GetCurrentDirectory(), System.IO.Directory.GetCurrentDirectory() + "/../");
 
-                        // Copy the files and overwrite destination files if they already exist. 
-                        foreach (var s in files)
-                        {
-                            // Use static Path methods to extract only the file name from the path.
-                            var fileName = System.IO.Path.GetFileName(s);
-                            var destFile = System.IO.Path.Combine(System.IO.Directory.GetCurrentDirectory() + "/../", fileName);
-                            System.IO.File.Copy(s, destFile, true);
-                        }
                         var path = System.IO.Directory.GetCurrentDirectory() + "/../EQTool.exe";
                         _ = System.Diagnostics.Process.Start(new ProcessStartInfo
                         {
