@@ -38,6 +38,14 @@ namespace EQTool
             var whythepig = new System.Windows.Forms.MenuItem("Why the Pig?", WhyThePig);
             var updates = new System.Windows.Forms.MenuItem("Check for Update", UpdateClicked);
             var versionstring = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+            var beta = false;
+#if Beta
+            beta=true;
+#endif
+            if (beta)
+            {
+                versionstring = "Beta-" + versionstring;
+            }
             var version = new System.Windows.Forms.MenuItem(versionstring, UpdateClicked)
             {
                 Enabled = false
