@@ -25,7 +25,7 @@
                     <Button Margin="5,0,0,0" HorizontalAlignment="Right" Click="EqFolderButtonClicked">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock>Browse</TextBlock>
-                            <Image Name="fileopenbuttonimage" Height="{DynamicResource GlobalFontSize}" Margin="5,0,0,0" ></Image>
+                            <Image Source="pack://application:,,,/open-folder.png" Height="{DynamicResource GlobalFontSize}" Margin="5,0,0,0" ></Image>
                         </StackPanel>
                     </Button>
                 </StackPanel>

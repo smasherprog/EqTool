@@ -8,7 +8,6 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Security.Policy;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -47,7 +46,6 @@ namespace EQTool
             InitializeComponent();
             TryUpdateSettings();
             TryCheckLoggingEnabled();
-            fileopenbuttonimage.Source = Properties.Resources.open_folder.ConvertToBitmapImage();
 
             foreach (var item in SettingsWindowData.PlayerClasses)
             {

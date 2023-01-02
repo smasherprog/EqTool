@@ -61,6 +61,40 @@ namespace EQTool.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
+        ///&lt;configuration&gt;
+        ///    &lt;configSections&gt;
+        ///        &lt;sectionGroup name=&quot;userSettings&quot; type=&quot;System.Configuration.UserSettingsGroup, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
+        ///            &lt;section name=&quot;EQTool.Properties.Settings&quot; type=&quot;System.Configuration.ClientSettingsSection, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot; allowExeDefinition=&quot;MachineToLocalUser&quot; requirePermission=&quot;false&quot; /&gt;
+        ///        &lt;/sectionG [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string App {
+            get {
+                return ResourceManager.GetString("App", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Copy {
+            get {
+                object obj = ResourceManager.GetObject("Copy", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap dps {
+            get {
+                object obj = ResourceManager.GetObject("dps", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
         internal static System.Drawing.Icon logo {
@@ -71,11 +105,83 @@ namespace EQTool.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon logo1 {
+            get {
+                object obj = ResourceManager.GetObject("logo1", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap map {
+            get {
+                object obj = ResourceManager.GetObject("map", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap open_folder {
             get {
                 object obj = ResourceManager.GetObject("open_folder", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to 
+        ///[Mon Nov 21 16:56:58 2022] An ancient shard wyvern hits Huntor for 342 points of damage.
+        ///[Mon Nov 21 16:56:58 2022] An ancient shard wyvern hits Huntor for 364 points of damage.
+        ///[Mon Nov 21 16:56:59 2022] Huntor pierces an ancient shard wyvern for 7 points of damage.
+        ///[Mon Nov 21 16:57:00 2022] Haripotter begins to cast a spell.
+        ///[Mon Nov 21 16:57:00 2022] Dany begins to cast a spell.
+        ///[Mon Nov 21 16:57:00 2022] Huntor Scores a critical hit!(66)
+        ///[Mon Nov 21 16:57:02 2022] Your Location is -645.07, -173 [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string TestFight {
+            get {
+                return ResourceManager.GetString("TestFight", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to [Mon Dec 19 17:34:52 2022] You slash an ancient tigerclaw racnar for 46 points of damage.
+        ///[Mon Dec 19 17:34:52 2022] You slash an ancient tigerclaw racnar for 136 points of damage.
+        ///[Mon Dec 19 17:34:52 2022] Mandair pierces an ancient tigerclaw racnar for 38 points of damage.
+        ///[Mon Dec 19 17:34:52 2022] Mandair pierces an ancient tigerclaw racnar for 38 points of damage.
+        ///[Mon Dec 19 17:34:52 2022] Mandair slashes an ancient tigerclaw racnar for 21 points of damage.
+        ///[Mon Dec 19 17:34:52 2022] Mandair sla [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string TestFight2 {
+            get {
+                return ResourceManager.GetString("TestFight2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to [Tue Dec 20 20:19:59 2022] You have entered Cabilis East.
+        ///[Tue Dec 20 20:19:59 2022] MESSAGE OF THE DAY: Welcome to Project 1999: Green! Please take the time to visit our forums and review the Play-Nice-Policy! Friendly reminder that Real Money Trading (RMT) including account, platinum or item buying/selling will result in a permanent ban. Dual boxing multiple characters at one time will also result in a ban. 
+        ///[Tue Dec 20 20:20:53 2022] Players on EverQuest:
+        ///[Tue Dec 20 20:20:53 2022] ------------------- [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string testmap {
+            get {
+                return ResourceManager.GetString("testmap", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap wizard {
+            get {
+                object obj = ResourceManager.GetObject("wizard", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

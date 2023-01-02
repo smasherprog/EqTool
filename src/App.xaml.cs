@@ -126,6 +126,84 @@ namespace EQTool
                 File.Copy(newPath, newPath.Replace(sourcePath, targetPath), true);
             }
         }
+        private void DeleteOldFiles()
+        {
+            var oldfiles = new List<string>()
+            {
+                "Autofac.dll",
+                "Autofac.xml",
+                "Copy.png",
+                "DotNetProjects.DataVisualization.Toolkit.dll",
+                "dps.png",
+                "EQTool.pdb",
+                "FightLog.csv",
+                "HarfBuzzSharp.dll",
+                "HarfBuzzSharp.pdb",
+                "HarfBuzzSharp.xml",
+                "HelixToolkit.dll",
+                "HelixToolkit.Wpf.dll",
+                "HelixToolkit.Wpf.xml",
+                "HelixToolkit.xml",
+                "libHarfBuzzSharp.dylib",
+                "libSkiaSharp.dylib",
+                "LiveChartsCore.dll",
+                "LiveChartsCore.SkiaSharpView.dll",
+                "LiveChartsCore.SkiaSharpView.WPF.dll",
+                "LiveChartsCore.SkiaSharpView.WPF.xml",
+                "LiveChartsCore.SkiaSharpView.xml",
+                "LiveChartsCore.xml",
+                "map.png",
+                "Microsoft.Bcl.AsyncInterfaces.dll",
+                "Microsoft.Bcl.AsyncInterfaces.xml",
+                "Microsoft.Extensions.Logging.Abstractions.dll",
+                "Microsoft.Extensions.Logging.Abstractions.xml",
+                "Newtonsoft.Json.dll",
+                "Newtonsoft.Json.xml",
+                "open-folder.png",
+                "settings.json",
+                "SharpDX.dll",
+                "SharpDX.pdb",
+                "SkiaSharp.dll",
+                "SkiaSharp.HarfBuzz.dll",
+                "SkiaSharp.HarfBuzz.pdb",
+                "SkiaSharp.HarfBuzz.xml",
+                "SkiaSharp.pdb",
+                "SkiaSharp.Views.Desktop.Common.dll",
+                "SkiaSharp.Views.Desktop.Common.pdb",
+                "SkiaSharp.Views.Desktop.Common.xml",
+                "SkiaSharp.Views.WPF.dll",
+                "SkiaSharp.Views.WPF.pdb",
+                "SkiaSharp.Views.WPF.xml",
+                "SkiaSharp.xml",
+                "System.Buffers.dll",
+                "System.Buffers.xml",
+                "System.Diagnostics.DiagnosticSource.dll",
+                "System.Diagnostics.DiagnosticSource.xml",
+                "System.Drawing.Common.dll",
+                "System.Drawing.Common.xml",
+                "System.Memory.dll",
+                "System.Memory.xml",
+                "System.Numerics.Vectors.dll",
+                "System.Numerics.Vectors.xml",
+                "System.Runtime.CompilerServices.Unsafe.dll",
+                "System.Runtime.CompilerServices.Unsafe.xml",
+                "System.Threading.Tasks.Extensions.dll",
+                "System.Threading.Tasks.Extensions.xml",
+                "TestFight.txt",
+                "TestFight2.txt",
+                "Trash.png",
+                "wizard.png"
+              };
+            try
+            {
+                System.IO.Directory.Delete(System.IO.Directory.GetCurrentDirectory() + "/../map_files", true);
+                foreach (var item in oldfiles)
+                {
+                    System.IO.File.Delete(System.IO.Directory.GetCurrentDirectory() + $"/../{item}");
+                }
+            }
+            catch { }
+        }
 
         private void App_Startup(object sender, StartupEventArgs e)
         {
@@ -137,6 +215,7 @@ namespace EQTool
                     if (e.Args[0].Contains("ping"))
                     {
                         Thread.Sleep(1000 * 5);
+                        DeleteOldFiles();
                         var files = System.IO.Directory.GetFiles(System.IO.Directory.GetCurrentDirectory());
                         CopyFilesRecursively(System.IO.Directory.GetCurrentDirectory(), System.IO.Directory.GetCurrentDirectory() + "/../");
 
@@ -168,7 +247,7 @@ namespace EQTool
             {
 #if !DEBUG
                 CheckForUpdates();
-#endif 
+#endif
                 mainWindow = new MainWindow(false);
             }
         }
