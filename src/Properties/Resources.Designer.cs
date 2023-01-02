@@ -63,10 +63,17 @@ namespace EQTool.Properties {
         /// <summary>
         ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
         ///&lt;configuration&gt;
-        ///    &lt;configSections&gt;
-        ///        &lt;sectionGroup name=&quot;userSettings&quot; type=&quot;System.Configuration.UserSettingsGroup, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
-        ///            &lt;section name=&quot;EQTool.Properties.Settings&quot; type=&quot;System.Configuration.ClientSettingsSection, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot; allowExeDefinition=&quot;MachineToLocalUser&quot; requirePermission=&quot;false&quot; /&gt;
-        ///        &lt;/sectionG [rest of string was truncated]&quot;;.
+        ///    &lt;startup&gt; 
+        ///        &lt;supportedRuntime version=&quot;v4.0&quot; sku=&quot;.NETFramework,Version=v4.7.2&quot; /&gt;
+        ///    &lt;/startup&gt; 
+        ///  &lt;runtime&gt;
+        ///    &lt;assemblyBinding xmlns=&quot;urn:schemas-microsoft-com:asm.v1&quot;&gt;
+        ///      &lt;dependentAssembly&gt;
+        ///        &lt;assemblyIdentity name=&quot;System.Memory&quot; publicKeyToken=&quot;cc7b13ffcd2ddd51&quot; culture=&quot;neutral&quot; /&gt;
+        ///        &lt;bindingRedirect oldVersion=&quot;0.0.0.0-4.0.1.2&quot; newVersion=&quot;4.0.1.2&quot; /&gt;
+        ///      &lt;/dependentAssembly&gt;
+        ///      &lt;dependentAssembly&gt;
+        ///  [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string App {
             get {
@@ -131,6 +138,16 @@ namespace EQTool.Properties {
             get {
                 object obj = ResourceManager.GetObject("open_folder", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon sickpic {
+            get {
+                object obj = ResourceManager.GetObject("sickpic", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
             }
         }
         
