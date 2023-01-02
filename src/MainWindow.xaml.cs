@@ -46,7 +46,7 @@ namespace EQTool
             if (beta)
             {
                 versionstring = "Beta-" + versionstring;
-                logo = Properties.Resources.sickpic
+                logo = Properties.Resources.sickpic;
             }
 
             var version = new System.Windows.Forms.MenuItem(versionstring, UpdateClicked)
