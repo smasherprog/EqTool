@@ -18,20 +18,27 @@ namespace EQTool
             {
                 _ = OnResolveAssembly(null, new ResolveEventArgs("System.Threading.Tasks.Extensions"));
                 AppDomain.CurrentDomain.AssemblyResolve += OnResolveAssembly;
-                if (!File.Exists(configFile))
+                var debugging = false;
+#if DEBUG
+                debugging = true;
+#endif
+                if (!debugging)
                 {
-                    UpdateConfig();
-                    Thread.Sleep(1000);
-                    return;
-                }
-                else
-                {
-                    var fileondisk = File.ReadAllText(configFile);
-                    if (fileondisk != Resources.App)
+                    if (!File.Exists(configFile))
                     {
                         UpdateConfig();
                         Thread.Sleep(1000);
                         return;
+                    }
+                    else
+                    {
+                        var fileondisk = File.ReadAllText(configFile);
+                        if (fileondisk != Resources.App)
+                        {
+                            UpdateConfig();
+                            Thread.Sleep(1000);
+                            return;
+                        }
                     }
                 }
 

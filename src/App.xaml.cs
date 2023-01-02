@@ -261,6 +261,8 @@ namespace EQTool
         {
             public List<GithubAsset> assets { get; set; }
             public string tag_name { get; set; }
+            public bool prerelease { get; set; }
+            public DateTime created_at { get; set; }
         }
 
         public string Version => Assembly.GetExecutingAssembly().GetName().Version.ToString();
@@ -288,10 +290,15 @@ namespace EQTool
         {
             get
             {
-                var json = httpclient.GetAsync(new Uri("https://api.github.com/repos/smasherprog/EqTool/releases/latest")).Result.Content.ReadAsStringAsync().Result;
-                var githubdata = JsonConvert.DeserializeObject<GithubVersionInfo>(json);
-                var url = githubdata.assets.FirstOrDefault(a => !string.IsNullOrWhiteSpace(a.browser_download_url))?.browser_download_url;
-                return (githubdata.tag_name, url);
+                var prerelease = false;
+#if Beta
+                prerelease = true;
+#endif
+                var json = httpclient.GetAsync(new Uri("https://api.github.com/repos/smasherprog/EqTool/releases")).Result.Content.ReadAsStringAsync().Result;
+                var githubdata = JsonConvert.DeserializeObject<List<GithubVersionInfo>>(json);
+                var release = githubdata.OrderByDescending(a => a.created_at).FirstOrDefault(a => a.prerelease == prerelease);
+                var downloadurl = release.assets.FirstOrDefault(a => !string.IsNullOrWhiteSpace(a.browser_download_url))?.browser_download_url;
+                return (release.tag_name, downloadurl);
             }
         }
 
