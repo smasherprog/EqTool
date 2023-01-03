@@ -68,7 +68,6 @@ namespace EQTool
             style.Setters.Add(new Setter(Window.BackgroundProperty, BackGroundBrushTrigger));
             Application.Current.Resources["MyWindowStyleTrigger"] = style;
         }
-
         private static SolidColorBrush BackGroundBrushTrigger
         {
             get
