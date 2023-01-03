@@ -233,7 +233,11 @@ namespace EQTool
                     {
                         Thread.Sleep(1000 * 5);
                         System.IO.Directory.Delete("NewVersion", true);
-                        System.IO.File.Delete("EqToool.zip");
+                        try
+                        {
+                            System.IO.File.Delete("EqToool.zip");
+                        }
+                        catch { }
                         mainWindow = new MainWindow(true);
                     }
                 }
@@ -245,7 +249,7 @@ namespace EQTool
             }
             else
             {
-#if !DEBUG
+#if Release
                 CheckForUpdates();
 #endif
                 mainWindow = new MainWindow(false);
@@ -313,13 +317,17 @@ namespace EQTool
                     if (Version != version)
                     {
                         var fileBytes = httpclient.GetByteArrayAsync(urltodownload).Result;
-                        File.WriteAllBytes("EqToool.zip", fileBytes);
+                        var filename = Path.GetFileName(urltodownload);
+                        File.WriteAllBytes(filename, fileBytes);
                         if (System.IO.Directory.Exists("NewVersion"))
                         {
                             System.IO.Directory.Delete("NewVersion", true);
                         }
 
-                        ZipFile.ExtractToDirectory("EqToool.zip", "NewVersion");
+                        if (filename.EndsWith(".zip"))
+                        {
+                            ZipFile.ExtractToDirectory("EqToool.zip", "NewVersion");
+                        }
 
                         if (Thread.CurrentThread == App.Current.Dispatcher.Thread)
                         {
