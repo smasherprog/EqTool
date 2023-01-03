@@ -251,7 +251,7 @@ namespace EQTool
             else
             {
 #if Release
-                CheckForUpdates();
+               CheckForUpdates();
 #endif
                 mainWindow = new MainWindow(false);
             }
@@ -317,17 +317,21 @@ namespace EQTool
 
                     if (Version != version)
                     {
-                        var fileBytes = httpclient.GetByteArrayAsync(urltodownload).Result;
-                        var filename = Path.GetFileName(urltodownload);
-                        File.WriteAllBytes(filename, fileBytes);
                         if (System.IO.Directory.Exists("NewVersion"))
                         {
                             System.IO.Directory.Delete("NewVersion", true);
                         }
-
+                        var fileBytes = httpclient.GetByteArrayAsync(urltodownload).Result;
+                        var filename = Path.GetFileName(urltodownload);
                         if (filename.EndsWith(".zip"))
                         {
+                            File.WriteAllBytes(filename, fileBytes);
                             ZipFile.ExtractToDirectory("EqToool.zip", "NewVersion");
+                        }
+                        else
+                        {
+                            _ = System.IO.Directory.CreateDirectory("NewVersion");
+                            File.WriteAllBytes("NewVersion/" + filename, fileBytes);
                         }
 
                         if (Thread.CurrentThread == App.Current.Dispatcher.Thread)
