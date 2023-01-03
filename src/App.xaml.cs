@@ -327,12 +327,12 @@ namespace EQTool
                         if (filename.EndsWith(".zip"))
                         {
                             File.WriteAllBytes(filename, fileBytes);
-                            ZipFile.ExtractToDirectory("EqToool.zip", "NewVersion");
+                            ZipFile.ExtractToDirectory("EqToool.zip", System.IO.Directory.GetCurrentDirectory() + "/NewVersion");
                         }
                         else
                         {
-                            _ = System.IO.Directory.CreateDirectory("NewVersion");
-                            File.WriteAllBytes("NewVersion/" + filename, fileBytes);
+                            _ = System.IO.Directory.CreateDirectory(System.IO.Directory.GetCurrentDirectory() + "/NewVersion");
+                            File.WriteAllBytes(System.IO.Directory.GetCurrentDirectory() + "/NewVersion/" + filename, fileBytes);
                         }
 
                         if (Thread.CurrentThread == App.Current.Dispatcher.Thread)
