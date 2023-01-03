@@ -39,8 +39,9 @@ namespace EQTool
             var updates = new System.Windows.Forms.MenuItem("Check for Update", UpdateClicked);
             var versionstring = Assembly.GetExecutingAssembly().GetName().Version.ToString();
             var beta = false;
-#if Beta
-            beta=true;
+
+#if Beta || DEBUG
+            beta = true;
 #endif 
             var logo = Properties.Resources.logo;
             if (beta)
