@@ -249,8 +249,8 @@ namespace EQTool
             }
             else
             {
-#if Release
-               CheckForUpdates();
+#if !DEBUG
+                CheckForUpdates();
 #endif
                 mainWindow = new MainWindow(false);
             }
@@ -275,7 +275,7 @@ namespace EQTool
             {
                 var v = Assembly.GetExecutingAssembly().GetName().Version.ToString();
 #if Beta
-                v = "Beta-" +v;
+                v = "Beta-" + v;
 #endif
                 return v;
             }
