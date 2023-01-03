@@ -333,7 +333,7 @@ namespace EQTool
                         var filename = Path.GetFileName(urltodownload);
                         if (filename.EndsWith(".zip"))
                         {
-                            File.WriteAllBytes(filename, fileBytes);
+                            File.WriteAllBytes("EqToool.zip", fileBytes);
                             ZipFile.ExtractToDirectory("EqToool.zip", System.IO.Directory.GetCurrentDirectory() + "/NewVersion");
                         }
                         else
