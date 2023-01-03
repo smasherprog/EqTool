@@ -298,7 +298,6 @@ namespace EQTool
         {
             mainWindow.OpenSettingsWindow();
         }
-
         public (string version, string urltodownload) LatestVersionAvailable
         {
             get
