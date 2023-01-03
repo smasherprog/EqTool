@@ -38,6 +38,18 @@ namespace EQTool
             var whythepig = new System.Windows.Forms.MenuItem("Why the Pig?", WhyThePig);
             var updates = new System.Windows.Forms.MenuItem("Check for Update", UpdateClicked);
             var versionstring = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+            var beta = false;
+
+#if Beta || DEBUG
+            beta = true;
+#endif 
+            var logo = Properties.Resources.logo;
+            if (beta)
+            {
+                versionstring = "Beta-" + versionstring;
+                logo = Properties.Resources.sickpic;
+            }
+
             var version = new System.Windows.Forms.MenuItem(versionstring, UpdateClicked)
             {
                 Enabled = false
@@ -45,7 +57,7 @@ namespace EQTool
             ToggleMenuButtons(false);
             SystemTrayIcon = new System.Windows.Forms.NotifyIcon
             {
-                Icon = Properties.Resources.logo,
+                Icon = logo,
                 Visible = true,
                 ContextMenu = new System.Windows.Forms.ContextMenu(new System.Windows.Forms.MenuItem[]
                 {

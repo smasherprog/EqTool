@@ -31,10 +31,10 @@
                     <TextBlock Foreground="White" FontWeight="Bold" VerticalAlignment="Center" Margin="10,1,10,1" Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}, Path=Title}"/>
                     <StackPanel Orientation="Horizontal"  HorizontalAlignment="Center">
                         <Button Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="openspells" ToolTip="Open Spells/Trigger Window">
-                            <Image Source="wizard.png"/>
+                            <Image Source="pack://application:,,,/wizard.png"/>
                         </Button>
                         <Button Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="openmap" ToolTip="Open Map Window">
-                            <Image Source="map.png"/>
+                            <Image Source="pack://application:,,,/map.png"/>
                         </Button>
                         <Button Content="O" Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="opensettings" ToolTip="Open Settings Window" />
                     </StackPanel>
@@ -93,7 +93,7 @@
                                                         </Grid.ColumnDefinitions>
                                                         <TextBlock Grid.Column="0" Text="{Binding Name}" FontWeight="Bold" FontSize="{DynamicResource GlobalFontSize}" />
                                                         <Button Grid.Column="1" Width="14" Height="14" Click="copytoclipboard" ToolTip="Copy Details to clipboard">
-                                                            <Image Source="Copy.png"/>
+                                                            <Image Source="pack://application:,,,/Copy.png"/>
                                                         </Button>
                                                         <TextBlock  HorizontalAlignment="Left" Grid.Column="3" FontWeight="Bold" Text="{Binding Items[0].TargetTotalDamage}" />
                                                     </Grid>

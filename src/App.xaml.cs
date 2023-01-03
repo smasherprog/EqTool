@@ -68,7 +68,6 @@ namespace EQTool
             style.Setters.Add(new Setter(Window.BackgroundProperty, BackGroundBrushTrigger));
             Application.Current.Resources["MyWindowStyleTrigger"] = style;
         }
-
         private static SolidColorBrush BackGroundBrushTrigger
         {
             get
@@ -127,6 +126,85 @@ namespace EQTool
             }
         }
 
+        private void DeleteOldFiles()
+        {
+            var oldfiles = new List<string>()
+            {
+                "Autofac.dll",
+                "Autofac.xml",
+                "Copy.png",
+                "DotNetProjects.DataVisualization.Toolkit.dll",
+                "dps.png",
+                "EQTool.pdb",
+                "FightLog.csv",
+                "HarfBuzzSharp.dll",
+                "HarfBuzzSharp.pdb",
+                "HarfBuzzSharp.xml",
+                "HelixToolkit.dll",
+                "HelixToolkit.Wpf.dll",
+                "HelixToolkit.Wpf.xml",
+                "HelixToolkit.xml",
+                "libHarfBuzzSharp.dylib",
+                "libSkiaSharp.dylib",
+                "LiveChartsCore.dll",
+                "LiveChartsCore.SkiaSharpView.dll",
+                "LiveChartsCore.SkiaSharpView.WPF.dll",
+                "LiveChartsCore.SkiaSharpView.WPF.xml",
+                "LiveChartsCore.SkiaSharpView.xml",
+                "LiveChartsCore.xml",
+                "map.png",
+                "Microsoft.Bcl.AsyncInterfaces.dll",
+                "Microsoft.Bcl.AsyncInterfaces.xml",
+                "Microsoft.Extensions.Logging.Abstractions.dll",
+                "Microsoft.Extensions.Logging.Abstractions.xml",
+                "Newtonsoft.Json.dll",
+                "Newtonsoft.Json.xml",
+                "open-folder.png",
+                "settings.json",
+                "SharpDX.dll",
+                "SharpDX.pdb",
+                "SkiaSharp.dll",
+                "SkiaSharp.HarfBuzz.dll",
+                "SkiaSharp.HarfBuzz.pdb",
+                "SkiaSharp.HarfBuzz.xml",
+                "SkiaSharp.pdb",
+                "SkiaSharp.Views.Desktop.Common.dll",
+                "SkiaSharp.Views.Desktop.Common.pdb",
+                "SkiaSharp.Views.Desktop.Common.xml",
+                "SkiaSharp.Views.WPF.dll",
+                "SkiaSharp.Views.WPF.pdb",
+                "SkiaSharp.Views.WPF.xml",
+                "SkiaSharp.xml",
+                "System.Buffers.dll",
+                "System.Buffers.xml",
+                "System.Diagnostics.DiagnosticSource.dll",
+                "System.Diagnostics.DiagnosticSource.xml",
+                "System.Drawing.Common.dll",
+                "System.Drawing.Common.xml",
+                "System.Memory.dll",
+                "System.Memory.xml",
+                "System.Numerics.Vectors.dll",
+                "System.Numerics.Vectors.xml",
+                "System.Runtime.CompilerServices.Unsafe.dll",
+                "System.Runtime.CompilerServices.Unsafe.xml",
+                "System.Threading.Tasks.Extensions.dll",
+                "System.Threading.Tasks.Extensions.xml",
+                "TestFight.txt",
+                "TestFight2.txt",
+                "Trash.png",
+                "wizard.png"
+              };
+            try
+            {
+                System.IO.Directory.Delete(System.IO.Directory.GetCurrentDirectory() + "/../map_files", true);
+                foreach (var item in oldfiles)
+                {
+                    System.IO.File.Delete(System.IO.Directory.GetCurrentDirectory() + $"/../{item}");
+                }
+            }
+            catch { }
+        }
+
         private void App_Startup(object sender, StartupEventArgs e)
         {
             httpclient.DefaultRequestHeaders.Add("User-Agent", "request");
@@ -137,6 +215,7 @@ namespace EQTool
                     if (e.Args[0].Contains("ping"))
                     {
                         Thread.Sleep(1000 * 5);
+                        DeleteOldFiles();
                         var files = System.IO.Directory.GetFiles(System.IO.Directory.GetCurrentDirectory());
                         CopyFilesRecursively(System.IO.Directory.GetCurrentDirectory(), System.IO.Directory.GetCurrentDirectory() + "/../");
 
@@ -154,7 +233,11 @@ namespace EQTool
                     {
                         Thread.Sleep(1000 * 5);
                         System.IO.Directory.Delete("NewVersion", true);
-                        System.IO.File.Delete("EqToool.zip");
+                        try
+                        {
+                            System.IO.File.Delete("EqToool.zip");
+                        }
+                        catch { }
                         mainWindow = new MainWindow(true);
                     }
                 }
@@ -168,7 +251,7 @@ namespace EQTool
             {
 #if !DEBUG
                 CheckForUpdates();
-#endif 
+#endif
                 mainWindow = new MainWindow(false);
             }
         }
@@ -177,14 +260,25 @@ namespace EQTool
         {
             public string browser_download_url { get; set; }
         }
-
         public class GithubVersionInfo
         {
             public List<GithubAsset> assets { get; set; }
             public string tag_name { get; set; }
+            public bool prerelease { get; set; }
+            public DateTime created_at { get; set; }
         }
 
-        public string Version => Assembly.GetExecutingAssembly().GetName().Version.ToString();
+        public string Version
+        {
+            get
+            {
+                var v = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+#if Beta
+                v = "Beta-" + v;
+#endif
+                return v;
+            }
+        }
 
         public void OpenSpellsWindow()
         {
@@ -195,6 +289,7 @@ namespace EQTool
         {
             mainWindow.OpenDPSWindow();
         }
+
         public void OpenMapWindow()
         {
             mainWindow.OpenMapWindow();
@@ -209,10 +304,15 @@ namespace EQTool
         {
             get
             {
-                var json = httpclient.GetAsync(new Uri("https://api.github.com/repos/smasherprog/EqTool/releases/latest")).Result.Content.ReadAsStringAsync().Result;
-                var githubdata = JsonConvert.DeserializeObject<GithubVersionInfo>(json);
-                var url = githubdata.assets.FirstOrDefault(a => !string.IsNullOrWhiteSpace(a.browser_download_url))?.browser_download_url;
-                return (githubdata.tag_name, url);
+                var prerelease = false;
+#if Beta
+                prerelease = true;
+#endif
+                var json = httpclient.GetAsync(new Uri("https://api.github.com/repos/smasherprog/EqTool/releases")).Result.Content.ReadAsStringAsync().Result;
+                var githubdata = JsonConvert.DeserializeObject<List<GithubVersionInfo>>(json);
+                var release = githubdata.OrderByDescending(a => a.created_at).FirstOrDefault(a => a.prerelease == prerelease);
+                var downloadurl = release.assets.FirstOrDefault(a => !string.IsNullOrWhiteSpace(a.browser_download_url))?.browser_download_url;
+                return (release.tag_name, downloadurl);
             }
         }
 
@@ -226,14 +326,22 @@ namespace EQTool
 
                     if (Version != version)
                     {
-                        var fileBytes = httpclient.GetByteArrayAsync(urltodownload).Result;
-                        File.WriteAllBytes("EqToool.zip", fileBytes);
                         if (System.IO.Directory.Exists("NewVersion"))
                         {
                             System.IO.Directory.Delete("NewVersion", true);
                         }
-
-                        ZipFile.ExtractToDirectory("EqToool.zip", "NewVersion");
+                        var fileBytes = httpclient.GetByteArrayAsync(urltodownload).Result;
+                        var filename = Path.GetFileName(urltodownload);
+                        if (filename.EndsWith(".zip"))
+                        {
+                            File.WriteAllBytes(filename, fileBytes);
+                            ZipFile.ExtractToDirectory("EqToool.zip", System.IO.Directory.GetCurrentDirectory() + "/NewVersion");
+                        }
+                        else
+                        {
+                            _ = System.IO.Directory.CreateDirectory(System.IO.Directory.GetCurrentDirectory() + "/NewVersion");
+                            File.WriteAllBytes(System.IO.Directory.GetCurrentDirectory() + "/NewVersion/" + filename, fileBytes);
+                        }
 
                         if (Thread.CurrentThread == App.Current.Dispatcher.Thread)
                         {
@@ -260,7 +368,6 @@ namespace EQTool
                 {
 
                 }
-
             });
         }
     }

@@ -8,7 +8,6 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Security.Policy;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -47,7 +46,6 @@ namespace EQTool
             InitializeComponent();
             TryUpdateSettings();
             TryCheckLoggingEnabled();
-            fileopenbuttonimage.Source = Properties.Resources.open_folder.ConvertToBitmapImage();
 
             foreach (var item in SettingsWindowData.PlayerClasses)
             {
@@ -69,7 +67,7 @@ namespace EQTool
                 Height = 650;
             }
 
-#if !DEBUG
+#if Release
             DebuggingStack.Visibility = Visibility.Collapsed;
 #endif
         }
@@ -364,8 +362,8 @@ namespace EQTool
             {
                 try
                 {
-                    var filepath = Directory.GetCurrentDirectory() + "/TestFight2.txt";
-                    var fightlines = File.ReadLines(filepath);
+
+                    var fightlines = Properties.Resources.TestFight2.Split(new string[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
                     var fightlist = new List<KeyValuePair<string, DPSParseMatch>>();
                     foreach (var item in fightlines)
                     {

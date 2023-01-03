@@ -16,10 +16,21 @@ namespace EQTool.Services
                 zone = "freportw";
             }
 
-            var dir = System.IO.Directory.GetCurrentDirectory() + "/map_files/";
-            var directory = new DirectoryInfo(dir);
-            var f = directory.GetFiles(zone + "*").ToList();
-            var lines = f.SelectMany(a => System.IO.File.ReadAllLines(a.FullName)).ToList();
+            var list = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceNames();
+
+            var lines = new List<string>();
+            var resourcenames = list.Where(a => a.StartsWith("EQTool.map_files." + zone)).ToList();
+            foreach (var item in resourcenames)
+            {
+                using (var stream = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream(item))
+                using (var reader = new StreamReader(stream))
+                {
+                    var l = reader.ReadToEnd();
+                    var splits = l.Split(new string[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
+                    lines.AddRange(splits);
+                }
+            }
+
             var maplines = Parse(lines);
             return maplines;
         }
@@ -73,7 +84,7 @@ namespace EQTool.Services
         {
             var ret = new ParsedData();
 
-            foreach (var item in lines)
+            foreach (var item in lines.Where(a => !string.IsNullOrWhiteSpace(a)))
             {
                 if (item.StartsWith("L "))
                 {
