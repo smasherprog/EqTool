@@ -2,6 +2,7 @@
 using System;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 using System.Reflection;
 using System.Threading;
 
@@ -12,7 +13,7 @@ namespace EQTool
         private const string configFile = "EQTool.exe.config";
 
         [STAThread]
-        public static void Main()
+        public static void Main(string[] args)
         {
             try
             {
@@ -20,7 +21,7 @@ namespace EQTool
                 AppDomain.CurrentDomain.AssemblyResolve += OnResolveAssembly;
                 if (!File.Exists(configFile))
                 {
-                    UpdateConfig();
+                    UpdateConfig(args);
                     Thread.Sleep(1000);
                     return;
                 }
@@ -29,7 +30,7 @@ namespace EQTool
                     var fileondisk = File.ReadAllText(configFile);
                     if (fileondisk != Resources.App)
                     {
-                        UpdateConfig();
+                        UpdateConfig(args);
                         Thread.Sleep(1000);
                         return;
                     }
@@ -43,13 +44,14 @@ namespace EQTool
             }
         }
 
-        private static void UpdateConfig()
+        private static void UpdateConfig(string[] args)
         {
             File.WriteAllText(configFile, Resources.App);
             var path = System.IO.Directory.GetCurrentDirectory() + "/EQTool.exe";
             _ = System.Diagnostics.Process.Start(new ProcessStartInfo
             {
                 FileName = path,
+                Arguments = args.FirstOrDefault(),
                 UseShellExecute = true
             });
         }
