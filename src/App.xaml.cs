@@ -261,6 +261,7 @@ namespace EQTool
             public string browser_download_url { get; set; }
         }
 
+
         public class GithubVersionInfo
         {
             public List<GithubAsset> assets { get; set; }
