@@ -160,7 +160,6 @@ namespace EQTool
                 "Newtonsoft.Json.dll",
                 "Newtonsoft.Json.xml",
                 "open-folder.png",
-                "settings.json",
                 "SharpDX.dll",
                 "SharpDX.pdb",
                 "SkiaSharp.dll",
