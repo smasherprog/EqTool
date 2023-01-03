@@ -43,7 +43,6 @@ namespace EQTool
                 File.WriteAllText("Errors", e.ToString());
             }
         }
-
         private static void UpdateConfig(string[] args)
         {
             File.WriteAllText(configFile, Resources.App);
