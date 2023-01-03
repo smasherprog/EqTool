@@ -269,7 +269,17 @@ namespace EQTool
             public DateTime created_at { get; set; }
         }
 
-        public string Version => Assembly.GetExecutingAssembly().GetName().Version.ToString();
+        public string Version
+        {
+            get
+            {
+                var v = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+#if Beta
+                v = "Beta-" +v;
+#endif
+                return v;
+            }
+        }
 
         public void OpenSpellsWindow()
         {
