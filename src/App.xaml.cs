@@ -314,7 +314,6 @@ namespace EQTool
                 return (release.tag_name, downloadurl);
             }
         }
-
         public void CheckForUpdates()
         {
             _ = Task.Factory.StartNew(() =>
