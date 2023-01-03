@@ -234,7 +234,7 @@ namespace EQTool
                         System.IO.Directory.Delete("NewVersion", true);
                         try
                         {
-                            System.IO.File.Delete("EqToool.zip");
+                            System.IO.File.Delete("EqTool.zip");
                         }
                         catch { }
                         mainWindow = new MainWindow(true);
