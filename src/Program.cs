@@ -55,7 +55,6 @@ namespace EQTool
                 UseShellExecute = true
             });
         }
-
         private static Assembly OnResolveAssembly(object sender, ResolveEventArgs args)
         {
             var executingAssembly = Assembly.GetExecutingAssembly();
