@@ -126,6 +126,7 @@ namespace EQTool
                 File.Copy(newPath, newPath.Replace(sourcePath, targetPath), true);
             }
         }
+
         private void DeleteOldFiles()
         {
             var oldfiles = new List<string>()
