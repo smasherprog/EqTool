@@ -360,7 +360,6 @@ namespace EQTool
                 {
 
                 }
-
             });
         }
     }
