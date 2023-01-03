@@ -281,6 +281,7 @@ namespace EQTool
         {
             mainWindow.OpenDPSWindow();
         }
+
         public void OpenMapWindow()
         {
             mainWindow.OpenMapWindow();
