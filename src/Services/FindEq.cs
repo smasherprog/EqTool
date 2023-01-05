@@ -102,13 +102,18 @@ namespace EQTool.Services
             {
                 return false;
             }
+            try
+            {
+                var directory = new DirectoryInfo(root);
+                var maxmoddate = directory.GetFiles("UI_*.ini")
+                    .OrderByDescending(a => a.LastWriteTime)
+                    .Select(a => (DateTime?)a.LastWriteTime)
+                    .FirstOrDefault();
+                return maxmoddate.HasValue;
+            }
+            catch { }
 
-            var directory = new DirectoryInfo(root);
-            var maxmoddate = directory.GetFiles("UI_*.ini")
-                .OrderByDescending(a => a.LastWriteTime)
-                .Select(a => (DateTime?)a.LastWriteTime)
-                .FirstOrDefault();
-            return maxmoddate.HasValue;
+            return false;
         }
 
         private static List<string> GetFilesAndFolders(string root, string pathtomatch, int depth)
