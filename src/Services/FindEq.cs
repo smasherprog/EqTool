@@ -102,6 +102,7 @@ namespace EQTool.Services
             {
                 return false;
             }
+
             try
             {
                 var directory = new DirectoryInfo(root);
