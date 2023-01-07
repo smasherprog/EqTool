@@ -1,6 +1,7 @@
 ﻿using EQTool.Models;
 using EQTool.ViewModels;
 using System.Diagnostics;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace EQTool.Services.Spells.Log
@@ -27,6 +28,11 @@ namespace EQTool.Services.Spells.Log
                 Debug.WriteLine($"Self Casting Spell: {spellname} Delay: {foundspell.casttime}");
                 appDispatcher.DispatchUI(() =>
                 {
+                    if (activePlayer.Player != null && !activePlayer.Player.PlayerClass.HasValue && foundspell.Classes.Count == 1)
+                    {
+                        activePlayer.Player.PlayerClass = foundspell.Classes.FirstOrDefault().Key;
+                    }
+
                     activePlayer.UserCastingSpell = foundspell;
                     if (activePlayer.UserCastingSpell.casttime > 0)
                     {
