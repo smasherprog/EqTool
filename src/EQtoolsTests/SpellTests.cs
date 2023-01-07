@@ -774,5 +774,48 @@ namespace EQToolTests
             service.HandleYouBeginCastingSpellStart(line);
             Assert.IsNull(player.Player?.PlayerClass);
         }
+
+        [TestMethod]
+        public void TestLevelDetectionThroughSpells()
+        {
+            _ = container.Resolve<EQSpells>();
+            var line = "You begin casting Aegolism.";
+            var service = container.Resolve<ParseHandleYouCasting>();
+            var player = container.Resolve<ActivePlayer>();
+            player.Player = new PlayerInfo { };
+            service.HandleYouBeginCastingSpellStart(line);
+            Assert.AreEqual(player.Player.Level, 60);
+        }
+
+        [TestMethod]
+        public void TestLevelDetectionThroughBackstab()
+        {
+            var dpslogparse = container.Resolve<DPSLogParse>();
+            var line = "[Mon Nov 14 20:11:25 2022] You backstab a willowisp for 56 points of damage.";
+            var player = container.Resolve<ActivePlayer>();
+            player.Player = new PlayerInfo { };
+            _ = dpslogparse.Match(line);
+            Assert.AreEqual(player.Player.PlayerClass, PlayerClasses.Rogue);
+        }
+
+        [TestMethod]
+        public void TestLevelDetectionThroughBackstabNullCheck()
+        {
+            var dpslogparse = container.Resolve<DPSLogParse>();
+            var line = "[Mon Nov 14 20:11:25 2022] You backstab a willowisp for 56 points of damage.";
+            _ = dpslogparse.Match(line);
+        }
+
+        [TestMethod]
+        public void TestLevelDetectionThroughKick()
+        {
+            var dpslogparse = container.Resolve<DPSLogParse>();
+            var line = "[Mon Nov 14 20:11:25 2022] You kick a willowisp for 56 points of damage.";
+            _ = dpslogparse.Match(line);
+            var player = container.Resolve<ActivePlayer>();
+            player.Player = new PlayerInfo { };
+
+            Assert.IsNull(player.Player.PlayerClass);
+        }
     }
 }

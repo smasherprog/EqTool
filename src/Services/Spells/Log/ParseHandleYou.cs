@@ -28,9 +28,20 @@ namespace EQTool.Services.Spells.Log
                 Debug.WriteLine($"Self Casting Spell: {spellname} Delay: {foundspell.casttime}");
                 appDispatcher.DispatchUI(() =>
                 {
-                    if (activePlayer.Player != null && !activePlayer.Player.PlayerClass.HasValue && foundspell.Classes.Count == 1)
+                    if (activePlayer.Player != null)
                     {
-                        activePlayer.Player.PlayerClass = foundspell.Classes.FirstOrDefault().Key;
+                        if (foundspell.Classes.Count == 1)
+                        {
+                            if (!activePlayer.Player.PlayerClass.HasValue)
+                            {
+                                activePlayer.Player.PlayerClass = foundspell.Classes.FirstOrDefault().Key;
+                            }
+
+                            if (activePlayer.Player.Level < foundspell.Classes.FirstOrDefault().Value)
+                            {
+                                activePlayer.Player.Level = foundspell.Classes.FirstOrDefault().Value;
+                            }
+                        }
                     }
 
                     activePlayer.UserCastingSpell = foundspell;
