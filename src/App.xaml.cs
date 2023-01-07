@@ -145,7 +145,6 @@
                 "Newtonsoft.Json.dll",
                 "Newtonsoft.Json.xml",
                 "open-folder.png",
-                "settings.json",
                 "SharpDX.dll",
                 "SharpDX.pdb",
                 "SkiaSharp.dll",
@@ -228,7 +227,7 @@
                         System.IO.Directory.Delete("NewVersion", true);
                         try
                         {
-                            System.IO.File.Delete("EqToool.zip");
+                            System.IO.File.Delete("EqTool.zip");
                         }
                         catch { }
                         mainWindow = new MainWindow(true);
@@ -292,7 +291,6 @@
         {
             mainWindow.OpenSettingsWindow();
         }
-
         public (string version, string urltodownload) LatestVersionAvailable
         {
             get
@@ -308,7 +306,6 @@
                 return (release.tag_name, downloadurl);
             }
         }
-
         public void CheckForUpdates()
         {
             _ = Task.Factory.StartNew(() =>
@@ -327,8 +324,8 @@
                         var filename = Path.GetFileName(urltodownload);
                         if (filename.EndsWith(".zip"))
                         {
-                            File.WriteAllBytes(filename, fileBytes);
-                            ZipFile.ExtractToDirectory("EqToool.zip", System.IO.Directory.GetCurrentDirectory() + "/NewVersion");
+                            File.WriteAllBytes("EqTool.zip", fileBytes);
+                            ZipFile.ExtractToDirectory("EqTool.zip", System.IO.Directory.GetCurrentDirectory() + "/NewVersion");
                         }
                         else
                         {

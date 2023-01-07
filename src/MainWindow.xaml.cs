@@ -74,7 +74,6 @@ namespace EQTool
                 }),
             };
             SystemTrayIcon.BalloonTipClicked += UpdateClicked;
-
             if (!FindEq.IsValid(EQToolSettings.DefaultEqDirectory) || FindEq.TryCheckLoggingEnabled(EQToolSettings.DefaultEqDirectory) == false)
             {
                 Settings(SettingsMenuItem, null);
