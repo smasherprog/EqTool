@@ -1,4 +1,5 @@
 ﻿using EQTool.Models;
+using EQTool.Services.Spells.Log;
 using EQTool.ViewModels;
 using System;
 using System.Diagnostics;
@@ -14,11 +15,13 @@ namespace EQTool.Services
         private readonly IAppDispatcher appDispatcher;
         private long? LastReadOffset = null;
         private readonly EQToolSettings settings;
+        private readonly LevelLogParse levelLogParse;
 
-        public LogParser(ActivePlayer activePlayer, IAppDispatcher appDispatcher, EQToolSettings settings)
+        public LogParser(ActivePlayer activePlayer, IAppDispatcher appDispatcher, EQToolSettings settings, LevelLogParse levelLogParse)
         {
             this.activePlayer = activePlayer;
             this.appDispatcher = appDispatcher;
+            this.levelLogParse = levelLogParse;
             this.settings = settings;
             UITimer = new System.Timers.Timer(100);
             UITimer.Elapsed += Poll;
@@ -70,9 +73,9 @@ namespace EQTool.Services
                     var fileinfo = new FileInfo(filepath);
                     if (!LastReadOffset.HasValue || LastReadOffset > fileinfo.Length)
                     {
-                        Debug.WriteLine($"Player Switched or new Player detected");
-                        PlayerChangeEvent?.Invoke(this, new PlayerChangeEventArgs());
+                        Debug.WriteLine($"Player Switched or new Player detected {filepath} {fileinfo.Length}");
                         LastReadOffset = fileinfo.Length;
+                        PlayerChangeEvent?.Invoke(this, new PlayerChangeEventArgs());
                     }
                     using (var stream = new FileStream(filepath, FileMode.Open, FileAccess.Read))
                     using (var reader = new StreamReader(stream))
@@ -82,6 +85,7 @@ namespace EQTool.Services
                         {
                             var line = reader.ReadLine();
                             LastReadOffset = stream.Position;
+                            levelLogParse.MatchLevel(line);
                             if (line.Length > 27)
                             {
                                 LineReadEvent?.Invoke(this, new LogParserEventArgs { Line = line });
@@ -91,6 +95,7 @@ namespace EQTool.Services
                 }
                 catch (Exception ex)
                 {
+                    LastReadOffset = null;
                     Debug.WriteLine(ex.ToString());
                 }
             });

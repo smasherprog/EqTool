@@ -1,19 +1,4 @@
-﻿using EQTool.Models;
-using Newtonsoft.Json;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using System.IO.Compression;
-using System.Linq;
-using System.Net.Http;
-using System.Reflection;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Media;
-
-namespace EQTool
+﻿namespace EQTool
 {
     /// <summary>
     /// Interaction logic for App.xaml
@@ -207,6 +192,14 @@ namespace EQTool
 
         private void App_Startup(object sender, StartupEventArgs e)
         {
+            var debugging = false;
+#if DEBUG
+            debugging = true;
+#endif
+            if (!debugging)
+            {
+                AppCenter.Start("9be42804-8d4f-4431-9120-06f3a0370c4c", typeof(Analytics), typeof(Crashes));
+            }
             httpclient.DefaultRequestHeaders.Add("User-Agent", "request");
             if (e.Args.Length == 1)
             {

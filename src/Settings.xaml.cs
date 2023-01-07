@@ -21,7 +21,7 @@ namespace EQTool
     /// </summary>
     public partial class Settings : Window
     {
-        private readonly SettingsWindowData SettingsWindowData;
+        private readonly SettingsWindowViewModel SettingsWindowData;
         private readonly EQToolSettings settings;
         private readonly EQToolSettingsLoad toolSettingsLoad;
         private readonly SpellWindowViewModel spellWindowViewModel;
@@ -30,7 +30,7 @@ namespace EQTool
         private readonly IAppDispatcher appDispatcher;
         private readonly LogParser logParser;
 
-        public Settings(LogParser logParser, IAppDispatcher appDispatcher, DPSLogParse dPSLogParse, EQSpells spells, EQToolSettings settings, EQToolSettingsLoad toolSettingsLoad, SettingsWindowData settingsWindowData, SpellWindowViewModel spellWindowViewModel)
+        public Settings(LogParser logParser, IAppDispatcher appDispatcher, DPSLogParse dPSLogParse, EQSpells spells, EQToolSettings settings, EQToolSettingsLoad toolSettingsLoad, SettingsWindowViewModel settingsWindowData, SpellWindowViewModel spellWindowViewModel)
         {
             Height = 200;
             this.logParser = logParser;
@@ -74,37 +74,6 @@ namespace EQTool
 
         protected override void OnClosing(CancelEventArgs e)
         {
-            var players = settings.Players ?? new List<PlayerInfo>();
-            if (SettingsWindowData.HasCharName)
-            {
-                var player = players.FirstOrDefault(a => a.Name == SettingsWindowData.CharName);
-                if (player != null)
-                {
-                    player.Level = SettingsWindowData.CharLevel;
-                    player.PlayerClass = SettingsWindowData.PlayerClass;
-                    player.Zone = SettingsWindowData.Zone;
-                }
-                else
-                {
-                    player = new PlayerInfo
-                    {
-                        Level = SettingsWindowData.CharLevel,
-                        Name = SettingsWindowData.CharName,
-                        Zone = SettingsWindowData.Zone,
-                        PlayerClass = SettingsWindowData.PlayerClass
-                    };
-                    players.Add(player);
-                }
-
-                player.ShowSpellsForClasses = new List<PlayerClasses>();
-                foreach (var item in spellbyclassselection.SelectedItems)
-                {
-                    player.ShowSpellsForClasses.Add((PlayerClasses)Enum.Parse(typeof(PlayerClasses), item.ToString()));
-                }
-
-                settings.Players = players;
-            }
-
             settings.FontSize = App.GlobalFontSize;
             settings.GlobalTriggerWindowOpacity = App.GlobalTriggerWindowOpacity;
             settings.GlobalDPSWindowOpacity = App.GlobalDPSWindowOpacity;
@@ -115,42 +84,10 @@ namespace EQTool
 
         private void TryUpdateSettings()
         {
-            try
-            {
-                var directory = new DirectoryInfo(settings.DefaultEqDirectory + "/Logs/");
-                var loggedincharlogfile = directory.GetFiles()
-                    .Where(a => a.Name.StartsWith("eqlog") && a.Name.EndsWith(".txt"))
-                    .OrderByDescending(a => a.LastWriteTime)
-                    .FirstOrDefault();
-                if (loggedincharlogfile != null)
-                {
-                    var charname = loggedincharlogfile.Name.Replace("eqlog_", string.Empty);
-                    var indexpart = charname.IndexOf("_");
-                    SettingsWindowData.CharName = charname.Substring(0, indexpart);
-                }
-            }
-            catch { }
-
-            var players = settings.Players ?? new System.Collections.Generic.List<PlayerInfo>();
-            var player = players.FirstOrDefault(a => a.Name == SettingsWindowData.CharName);
-            var level = player?.Level;
-            if (!level.HasValue || level <= 0 || level > 60)
-            {
-                level = 1;
-            }
-            if (player != null)
-            {
-                SettingsWindowData.PlayerClass = player.PlayerClass;
-                SettingsWindowData.Zone = player.Zone;
-            }
-
-            if (level.HasValue)
-            {
-                levelscombobox.SelectedValue = level.ToString();
-            }
-
+            SettingsWindowData.Update();
             BestGuessSpells.IsChecked = settings.BestGuessSpells;
             YouSpellsOnly.IsChecked = settings.YouOnlySpells;
+            var player = SettingsWindowData.ActivePlayer.Player;
             var selecteditems = new List<string>();
             foreach (var item in SettingsWindowData.PlayerClasses)
             {
@@ -191,11 +128,6 @@ namespace EQTool
         private void fontsizescombobox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
             App.GlobalFontSize = double.Parse(fontsizescombobox.SelectedValue as string);
-        }
-
-        private void levelscombobox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
-        {
-            SettingsWindowData.CharLevel = int.Parse(levelscombobox.SelectedValue as string);
         }
 
         private void EqFolderButtonClicked(object sender, RoutedEventArgs e)
@@ -311,19 +243,15 @@ namespace EQTool
 
         private void spellbyclassselection_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            var players = settings.Players ?? new List<PlayerInfo>();
-            if (SettingsWindowData.HasCharName)
+            var player = SettingsWindowData.ActivePlayer.Player;
+            if (player != null)
             {
-                var player = players.FirstOrDefault(a => a.Name == SettingsWindowData.CharName);
-                if (player != null)
+                player.ShowSpellsForClasses = new List<PlayerClasses>();
+                foreach (var item in spellbyclassselection.SelectedItems)
                 {
-                    player.ShowSpellsForClasses = new List<PlayerClasses>();
-                    foreach (var item in spellbyclassselection.SelectedItems)
-                    {
-                        player.ShowSpellsForClasses.Add((PlayerClasses)Enum.Parse(typeof(PlayerClasses), item.ToString()));
-                    }
-                    toolSettingsLoad.Save(settings);
+                    player.ShowSpellsForClasses.Add((PlayerClasses)Enum.Parse(typeof(PlayerClasses), item.ToString()));
                 }
+                toolSettingsLoad.Save(settings);
             }
         }
 
@@ -335,19 +263,14 @@ namespace EQTool
 
         private void zoneselectionchanged(object sender, SelectionChangedEventArgs e)
         {
-            var players = settings.Players ?? new List<PlayerInfo>();
-            if (SettingsWindowData.HasCharName)
+            var player = SettingsWindowData.ActivePlayer.Player;
+            if (player != null)
             {
-                var player = players.FirstOrDefault(a => a.Name == SettingsWindowData.CharName);
-                if (player != null)
-                {
-                    player.Zone = SettingsWindowData.Zone;
-                    toolSettingsLoad.Save(settings);
-                    var t = DateTime.Now;
-                    var format = "ddd MMM dd HH:mm:ss yyyy";
-                    var msg = "[" + t.ToString(format) + "] You have entered " + player.Zone;
-                    logParser.Push(new LogParser.LogParserEventArgs { Line = msg });
-                }
+                toolSettingsLoad.Save(settings);
+                var t = DateTime.Now;
+                var format = "ddd MMM dd HH:mm:ss yyyy";
+                var msg = "[" + t.ToString(format) + "] You have entered " + player.Zone;
+                logParser.Push(new LogParser.LogParserEventArgs { Line = msg });
             }
         }
 

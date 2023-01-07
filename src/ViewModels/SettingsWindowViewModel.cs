@@ -16,11 +16,11 @@ namespace EQTool.ViewModels
         public double Value { get; set; }
     }
 
-    public class SettingsWindowData : INotifyPropertyChanged
+    public class SettingsWindowViewModel : INotifyPropertyChanged
     {
-
-        public SettingsWindowData()
+        public SettingsWindowViewModel(ActivePlayer activePlayer)
         {
+            ActivePlayer = activePlayer;
             for (var i = 12; i < 72; i++)
             {
                 FontSizes.Add(new EQNameValue
@@ -31,16 +31,25 @@ namespace EQTool.ViewModels
             }
             for (var i = 1; i < 61; i++)
             {
-                Levels.Add(new EQNameValue
-                {
-                    Name = i.ToString(),
-                    Value = i
-                });
+                Levels.Add(i);
             }
 
-            foreach(var item in ZoneParser.Zones)
+            foreach (var item in ZoneParser.Zones)
             {
-                this.Zones.Add(item);
+                Zones.Add(item);
+            }
+        }
+
+        private ActivePlayer _ActivePlayer;
+        public ActivePlayer ActivePlayer
+        {
+            get => _ActivePlayer;
+            set
+            {
+                _ActivePlayer = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(HasCharName));
+                OnPropertyChanged(nameof(HasNoCharName));
             }
         }
 
@@ -82,54 +91,8 @@ namespace EQTool.ViewModels
         public bool MissingConfiguration => DoesNotHaveEqPath || IsLoggingDisabled;
         public bool NotMissingConfiguration => HasEqPath && IsLoggingEnabled;
 
-        private string _CharName = string.Empty;
-        public string CharName
-        {
-            get => _CharName;
-            set
-            {
-                _CharName = value;
-                OnPropertyChanged();
-                OnPropertyChanged(nameof(HasCharName));
-                OnPropertyChanged(nameof(HasNoCharName));
-            }
-        }
-
-        private string _Zone = string.Empty;
-        public string Zone
-        {
-            get => _Zone;
-            set
-            {
-                _Zone = value;
-                OnPropertyChanged(); 
-            }
-        }
-
-        public bool HasCharName => !string.IsNullOrWhiteSpace(_CharName);
-        public Visibility HasNoCharName => string.IsNullOrWhiteSpace(_CharName) ? Visibility.Visible : Visibility.Collapsed;
-
-        private int _CharLevel = 1;
-        public int CharLevel
-        {
-            get => _CharLevel;
-            set
-            {
-                _CharLevel = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private PlayerClasses? _PlayerClass;
-        public PlayerClasses? PlayerClass
-        {
-            get => _PlayerClass;
-            set
-            {
-                _PlayerClass = value;
-                OnPropertyChanged();
-            }
-        }
+        public bool HasCharName => !string.IsNullOrWhiteSpace(ActivePlayer?.Player?.Name);
+        public Visibility HasNoCharName => string.IsNullOrWhiteSpace(ActivePlayer?.Player?.Name) ? Visibility.Visible : Visibility.Collapsed;
 
         public List<PlayerClasses> PlayerClasses => Enum.GetValues(typeof(PlayerClasses)).Cast<PlayerClasses>().ToList();
 
@@ -163,7 +126,14 @@ namespace EQTool.ViewModels
 
         public ObservableCollection<string> Zones = new ObservableCollection<string>();
         public ObservableCollection<EQNameValue> FontSizes = new ObservableCollection<EQNameValue>();
-        public ObservableCollection<EQNameValue> Levels = new ObservableCollection<EQNameValue>();
+        public ObservableCollection<int> Levels = new ObservableCollection<int>();
+
+        public void Update()
+        {
+            _ = ActivePlayer.Update();
+        }
+
+
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -171,6 +141,5 @@ namespace EQTool.ViewModels
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
-
     }
 }

@@ -725,5 +725,31 @@ namespace EQToolTests
 
             Assert.AreEqual(r.PercentOfTotalDamage, 10);
         }
+
+        [TestMethod]
+        public void TestLevelUpMatch()
+        {
+            var loger = container.Resolve<LevelLogParse>();
+            var player = container.Resolve<ActivePlayer>();
+            player.Player = new PlayerInfo
+            {
+                Level = 54,
+                PlayerClass = PlayerClasses.Cleric
+            };
+            loger.MatchLevel("[Thu Nov 24 15:32:13 2022] You have gained a level! Welcome to level 2!");
+            Assert.AreEqual(2, player.Player.Level);
+
+            loger.MatchLevel("[Thu Nov 24 15:32:13 2022] You have gained a level! Welcome to level 60!");
+            Assert.AreEqual(60, player.Player.Level);
+        }
+
+        [TestMethod]
+        public void TestLevelUpMatch_NoPlayeryer_DoNoexplode()
+        {
+            var loger = container.Resolve<LevelLogParse>();
+            _ = container.Resolve<ActivePlayer>();
+            loger.MatchLevel("[Thu Nov 24 15:32:13 2022] You have gained a level! Welcome to level 2!");
+            loger.MatchLevel("[Thu Nov 24 15:32:13 2022] You have gained a level! Welcome to level 60!");
+        }
     }
 }
