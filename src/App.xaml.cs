@@ -210,7 +210,7 @@ namespace EQTool
         private void App_Startup(object sender, StartupEventArgs e)
         {
             var counter = 0;
-            while (Process.GetProcessesByName("eqgame").Count() != 1)
+            while (Process.GetProcessesByName("eqgame").Count() != 0)
             {
                 Thread.Sleep(1000);
                 if (counter++ > 6)
