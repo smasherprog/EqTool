@@ -209,6 +209,17 @@ namespace EQTool
 
         private void App_Startup(object sender, StartupEventArgs e)
         {
+            var counter = 0;
+            while (Process.GetProcessesByName("eqgame").Count() != 1)
+            {
+                Thread.Sleep(1000);
+                if (counter++ > 6)
+                {
+                    App.Current.Shutdown();
+                    return;
+                }
+            }
+
             var debugging = false;
 #if DEBUG
             debugging = true;
@@ -216,18 +227,8 @@ namespace EQTool
             if (!debugging)
             {
                 AppCenter.Start("9be42804-8d4f-4431-9120-06f3a0370c4c", typeof(Analytics), typeof(Crashes));
-                // prevent multiple runs of this!
+            }
 
-            }
-            var counter = 0;
-            while (Process.GetProcessesByName("eqgame").Count() != 1)
-            {
-                Thread.Sleep(1000);
-                if (counter++ > 6)
-                {
-                    return;
-                }
-            }
             httpclient.DefaultRequestHeaders.Add("User-Agent", "request");
             if (e.Args.Length == 1)
             {
