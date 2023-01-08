@@ -23,6 +23,11 @@ namespace EQTool.Services.Spells.Log
         {
             var message = linelog.Substring(27);
             Debug.WriteLine($"SpellParse: " + message);
+            if (message.StartsWith(EQSpells.YouSpellisInterupted))
+            {
+                activePlayer.UserCastingSpell = null;
+                return null;
+            }
             if (message.StartsWith(EQSpells.YouBeginCasting))
             {
                 parseHandleYouCasting.HandleYouBeginCastingSpellStart(message);
