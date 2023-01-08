@@ -71,7 +71,7 @@ namespace EQTool.Services
                 try
                 {
                     var fileinfo = new FileInfo(filepath);
-                    if (!LastReadOffset.HasValue || LastReadOffset > fileinfo.Length)
+                    if (!LastReadOffset.HasValue || (LastReadOffset > fileinfo.Length && fileinfo.Length > 0))
                     {
                         Debug.WriteLine($"Player Switched or new Player detected {filepath} {fileinfo.Length}");
                         LastReadOffset = fileinfo.Length;
@@ -95,7 +95,6 @@ namespace EQTool.Services
                 }
                 catch (Exception ex)
                 {
-                    LastReadOffset = null;
                     Debug.WriteLine(ex.ToString());
                 }
             });
