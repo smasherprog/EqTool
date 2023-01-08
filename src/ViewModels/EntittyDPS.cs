@@ -39,6 +39,7 @@ namespace EQTool.ViewModels
             }
         }
 
+
         private string _TargetName = string.Empty;
 
         public string TargetName
