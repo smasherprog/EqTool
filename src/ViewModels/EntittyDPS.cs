@@ -23,12 +23,14 @@ namespace EQTool.ViewModels
             }
         }
 
-        public string SourceName_and_Info
+        public string SourceName_and_Info => $"{_SourceName}    {TotalSeconds} sec";
+
+        public string TargetName_and_Info
         {
             get
             {
-                var ret = _SourceName;
-                if (this.DeathTime.HasValue)
+                var ret = _TargetName;
+                if (DeathTime.HasValue)
                 {
                     ret += "  (Dead)";
                 }
@@ -50,7 +52,19 @@ namespace EQTool.ViewModels
             }
         }
 
-        public DateTime? DeathTime { get; set; }
+        private DateTime? _DeathTime;
+
+        public DateTime? DeathTime
+        {
+            get => _DeathTime;
+            set
+            {
+                _DeathTime = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(TargetName_and_Info));
+                OnPropertyChanged(nameof(SourceName_and_Info));
+            }
+        }
 
         private DateTime _StartTime = DateTime.Now;
 

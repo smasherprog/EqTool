@@ -91,7 +91,7 @@
                                                             <ColumnDefinition Width="45"/>
                                                             <ColumnDefinition Width="70" /> 
                                                         </Grid.ColumnDefinitions>
-                                                        <TextBlock Grid.Column="0" Text="{Binding Name}" FontWeight="Bold" FontSize="{DynamicResource GlobalFontSize}" />
+                                                        <TextBlock Grid.Column="0" Text="{Binding Items[0].TargetName_and_Info}" FontWeight="Bold" FontSize="{DynamicResource GlobalFontSize}" />
                                                         <Button Grid.Column="1" Width="14" Height="14" Click="copytoclipboard" ToolTip="Copy Details to clipboard">
                                                             <Image Source="pack://application:,,,/Copy.png"/>
                                                         </Button>
