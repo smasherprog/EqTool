@@ -1,6 +1,5 @@
 ﻿using EQTool.Models;
 using EQTool.ViewModels;
-using System;
 using System.Diagnostics;
 
 namespace EQTool.Services.Spells.Log
@@ -22,12 +21,6 @@ namespace EQTool.Services.Spells.Log
 
         public SpellParsingMatch MatchSpell(string linelog)
         {
-            var date = linelog.Substring(1, 25);
-            if (DateTime.TryParse(date, out _))
-            {
-
-            }
-
             var message = linelog.Substring(27);
             Debug.WriteLine($"SpellParse: " + message);
             if (message.StartsWith(EQSpells.YouBeginCasting))

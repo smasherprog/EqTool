@@ -209,7 +209,27 @@ namespace EQTool
 
         private void App_Startup(object sender, StartupEventArgs e)
         {
-            AppCenter.Start("9be42804-8d4f-4431-9120-06f3a0370c4c", typeof(Analytics), typeof(Crashes));
+            var counter = 0;
+            Thread.Sleep(1000);
+            while (Process.GetProcessesByName("eqgame").Count() != 1)
+            {
+                Thread.Sleep(1000);
+                if (counter++ > 6)
+                {
+                    App.Current.Shutdown();
+                    return;
+                }
+            }
+
+            var debugging = false;
+#if DEBUG
+            debugging = true;
+#endif
+            if (!debugging)
+            {
+                AppCenter.Start("9be42804-8d4f-4431-9120-06f3a0370c4c", typeof(Analytics), typeof(Crashes));
+            }
+
             httpclient.DefaultRequestHeaders.Add("User-Agent", "request");
             if (e.Args.Length == 1)
             {
@@ -217,7 +237,6 @@ namespace EQTool
                 {
                     if (e.Args[0].Contains("ping"))
                     {
-                        Thread.Sleep(1000 * 5);
                         DeleteOldFiles();
                         var files = System.IO.Directory.GetFiles(System.IO.Directory.GetCurrentDirectory());
                         CopyFilesRecursively(System.IO.Directory.GetCurrentDirectory(), System.IO.Directory.GetCurrentDirectory() + "/../");
@@ -234,7 +253,6 @@ namespace EQTool
                     }
                     else if (e.Args[0].Contains("pong"))
                     {
-                        Thread.Sleep(1000 * 5);
                         System.IO.Directory.Delete("NewVersion", true);
                         try
                         {

@@ -20,7 +20,7 @@ namespace EQToolTests
             _ = builder.RegisterType<FakeAppDispatcher>().As<IAppDispatcher>().SingleInstance();
             _ = builder.RegisterType<SpellIcons>().AsSelf().SingleInstance();
             _ = builder.RegisterType<ParseSpells_spells_us>().AsSelf().SingleInstance();
-            _ = builder.RegisterType<SettingsWindowData>().AsSelf().SingleInstance();
+            _ = builder.RegisterType<SettingsWindowViewModel>().AsSelf().SingleInstance();
             _ = builder.RegisterType<EQSpells>().AsSelf().SingleInstance();
             _ = builder.RegisterType<ActivePlayer>().AsSelf().SingleInstance();
             _ = builder.RegisterType<SpellWindowViewModel>().AsSelf().SingleInstance();

@@ -725,5 +725,97 @@ namespace EQToolTests
 
             Assert.AreEqual(r.PercentOfTotalDamage, 10);
         }
+
+        [TestMethod]
+        public void TestLevelUpMatch()
+        {
+            var loger = container.Resolve<LevelLogParse>();
+            var player = container.Resolve<ActivePlayer>();
+            player.Player = new PlayerInfo
+            {
+                Level = 54,
+                PlayerClass = PlayerClasses.Cleric
+            };
+            loger.MatchLevel("[Thu Nov 24 15:32:13 2022] You have gained a level! Welcome to level 2!");
+            Assert.AreEqual(2, player.Player.Level);
+
+            loger.MatchLevel("[Thu Nov 24 15:32:13 2022] You have gained a level! Welcome to level 60!");
+            Assert.AreEqual(60, player.Player.Level);
+        }
+
+        [TestMethod]
+        public void TestLevelUpMatch_NoPlayeryer_DoNoexplode()
+        {
+            var loger = container.Resolve<LevelLogParse>();
+            _ = container.Resolve<ActivePlayer>();
+            loger.MatchLevel("[Thu Nov 24 15:32:13 2022] You have gained a level! Welcome to level 2!");
+            loger.MatchLevel("[Thu Nov 24 15:32:13 2022] You have gained a level! Welcome to level 60!");
+        }
+
+        [TestMethod]
+        public void TestClassDetectionSpell1()
+        {
+            _ = container.Resolve<EQSpells>();
+            var line = "You begin casting Aegolism.";
+            var service = container.Resolve<ParseHandleYouCasting>();
+            var player = container.Resolve<ActivePlayer>();
+            player.Player = new PlayerInfo { };
+            service.HandleYouBeginCastingSpellStart(line);
+            Assert.AreEqual(player.Player.PlayerClass, PlayerClasses.Cleric);
+        }
+
+        [TestMethod]
+        public void TestClassDetectionSpell1_TestNulls()
+        {
+            _ = container.Resolve<EQSpells>();
+            var line = "You begin casting Aegolism.";
+            var service = container.Resolve<ParseHandleYouCasting>();
+            var player = container.Resolve<ActivePlayer>();
+            service.HandleYouBeginCastingSpellStart(line);
+            Assert.IsNull(player.Player?.PlayerClass);
+        }
+
+        [TestMethod]
+        public void TestLevelDetectionThroughSpells()
+        {
+            _ = container.Resolve<EQSpells>();
+            var line = "You begin casting Aegolism.";
+            var service = container.Resolve<ParseHandleYouCasting>();
+            var player = container.Resolve<ActivePlayer>();
+            player.Player = new PlayerInfo { };
+            service.HandleYouBeginCastingSpellStart(line);
+            Assert.AreEqual(player.Player.Level, 60);
+        }
+
+        [TestMethod]
+        public void TestLevelDetectionThroughBackstab()
+        {
+            var dpslogparse = container.Resolve<DPSLogParse>();
+            var line = "[Mon Nov 14 20:11:25 2022] You backstab a willowisp for 56 points of damage.";
+            var player = container.Resolve<ActivePlayer>();
+            player.Player = new PlayerInfo { };
+            _ = dpslogparse.Match(line);
+            Assert.AreEqual(player.Player.PlayerClass, PlayerClasses.Rogue);
+        }
+
+        [TestMethod]
+        public void TestLevelDetectionThroughBackstabNullCheck()
+        {
+            var dpslogparse = container.Resolve<DPSLogParse>();
+            var line = "[Mon Nov 14 20:11:25 2022] You backstab a willowisp for 56 points of damage.";
+            _ = dpslogparse.Match(line);
+        }
+
+        [TestMethod]
+        public void TestLevelDetectionThroughKick()
+        {
+            var dpslogparse = container.Resolve<DPSLogParse>();
+            var line = "[Mon Nov 14 20:11:25 2022] You kick a willowisp for 56 points of damage.";
+            _ = dpslogparse.Match(line);
+            var player = container.Resolve<ActivePlayer>();
+            player.Player = new PlayerInfo { };
+
+            Assert.IsNull(player.Player.PlayerClass);
+        }
     }
 }

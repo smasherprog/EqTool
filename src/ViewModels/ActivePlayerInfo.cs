@@ -36,7 +36,8 @@ namespace EQTool.ViewModels
                     {
                         Level = 1,
                         Name = charName,
-                        PlayerClass = null
+                        PlayerClass = null,
+                        Zone = "freportw"
                     };
                     players.Add(tempplayer);
                 }

@@ -198,6 +198,7 @@
     <Compile Include="Services\Map\LocationParser.cs" />
     <Compile Include="Services\Map\ZoneParser.cs" />
     <Compile Include="Services\Map\MapLoad.cs" />
+    <Compile Include="Services\Spells\Log\LevelLogParse.cs" />
     <Compile Include="Services\Spells\SpellUIExtentions.cs" />
     <Compile Include="Services\WindowBounds.cs" />
     <Compile Include="Services\LogParser.cs" />
@@ -215,7 +216,7 @@
     <Compile Include="ViewModels\DPSWindowViewModel.cs" />
     <Compile Include="ViewModels\SpellWindowViewModel.cs" />
     <Compile Include="ViewModels\EntittyDPS.cs" />
-    <Compile Include="ViewModels\SettingsWindowData.cs" />
+    <Compile Include="ViewModels\SettingsWindowViewModel.cs" />
     <Compile Include="Models\PlayerInfo.cs" />
     <Compile Include="Models\Polygon.cs" />
     <Compile Include="ViewModels\UISpell.cs" />

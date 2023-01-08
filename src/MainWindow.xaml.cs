@@ -24,6 +24,7 @@ namespace EQTool
         private readonly System.Windows.Forms.MenuItem SpellsMenuItem;
         private readonly System.Windows.Forms.MenuItem DpsMeterMenuItem;
         private readonly System.Windows.Forms.MenuItem SettingsMenuItem;
+        private readonly LogParser logParser;
 
         public MainWindow(bool updated)
         {
@@ -96,6 +97,7 @@ namespace EQTool
             }
 
             Hide();
+            logParser = container.Resolve<LogParser>();
             if (updated)
             {
                 SystemTrayIcon.BalloonTipClicked += UpdateNotes;
