@@ -35,7 +35,7 @@ namespace EQTool.Services
                         {
                             var directory = new DirectoryInfo(root);
                             var maxmoddate = directory.GetFiles("UI_*.ini")
-                                .OrderByDescending(a => a.LastWriteTime) 
+                                .OrderByDescending(a => a.LastWriteTime)
                                 .Select(a => (DateTime?)a.LastWriteTime)
                                 .FirstOrDefault();
                             if (!maxmoddate.HasValue)
@@ -132,11 +132,11 @@ namespace EQTool.Services
                         }
                     }
                 }
-                catch (UnauthorizedAccessException)
+                catch
                 { }
                 list.AddRange(Directory.EnumerateFiles(root, pathtomatch));
             }
-            catch (UnauthorizedAccessException)
+            catch
             { }
 
             return list;
