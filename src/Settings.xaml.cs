@@ -44,7 +44,15 @@ namespace EQTool
             SettingsWindowData.EqPath = this.settings.DefaultEqDirectory;
             Topmost = true;
             InitializeComponent();
-            TryUpdateSettings();
+            try
+            {
+                TryUpdateSettings();
+            }
+            catch
+            {
+
+            }
+
             TryCheckLoggingEnabled();
 
             foreach (var item in SettingsWindowData.PlayerClasses)
