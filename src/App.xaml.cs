@@ -209,19 +209,20 @@ namespace EQTool
 
         private void App_Startup(object sender, StartupEventArgs e)
         {
-            var counter = 0;
-            do
-            {
-                var count = Process.GetProcessesByName("eqtool").Count();
-                if (counter++ > 6)
-                {
-                    App.Current.Shutdown();
-                    return;
-                }
-                Thread.Sleep(1000);
-            }
-            while (Process.GetProcessesByName("eqtool").Count() != 1);
-
+            //var counter = 0;
+            //var count = 0;
+            //do
+            //{
+            //    count = Process.GetProcessesByName("eqtool").Count();
+            //    Debug.WriteLine(count);
+            //    if (counter++ > 6)
+            //    {
+            //        App.Current.Shutdown();
+            //        return;
+            //    }
+            //    Thread.Sleep(1000);
+            //}
+            //while (count != 1);
 
             var debugging = false;
 #if DEBUG
