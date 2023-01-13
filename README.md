@@ -19,8 +19,6 @@ Features:
 <li>DPS window</li>
 <li>Auto detect level and class!</li>
 <li>Timers (Only Minutes are supported)</li>
-<li>Map which uses the 3d assets from the eq directory. This will be very helpful in places like Kedge keep or any dungeon that has overlapping areas. Of course You will be able to zoom, pan around as you would expect in a 3d viewer.(Not implemented yet)</li>
-<li>Remember the last settings for window location and size.</li>
 </ul>
 <h5>Timers (Only Minutes are supported) -- All below commands work --</h5>
 <ul>
@@ -46,5 +44,11 @@ Features:
 <h4>System Tray Icon</h4>
 <img width="229" alt="image" src="https://user-images.githubusercontent.com/3393733/206924345-54cfa14c-b0d8-4e37-bb9a-1cb2a6e902c9.png">
 
-
+<h4>TO DO List</h4>
+<ul>
+<li>Add donals BP to timers list</li>
+<li>Add window for mob info that pulls from wiki when a mob is con'd. Should be minimalist: hp, ac, attacks, resists, loot, factions</li>
+<li>Finish Map</li>
+<li>Rename Application to Pig Parse</li>
+<ul>
 
