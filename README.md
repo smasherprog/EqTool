@@ -46,6 +46,7 @@ Features:
 
 <h4>TO DO List</h4>
 <ul>
+<li>use the "Spell has worn off" messages to remove timers from list</li>
 <li>Add donals BP to timers list</li>
 <li>Add window for mob info that pulls from wiki when a mob is con'd. Should be minimalist: hp, ac, attacks, resists, loot, factions</li>
 <li>Finish Map</li>
