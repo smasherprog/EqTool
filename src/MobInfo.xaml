@@ -5,7 +5,7 @@
         Style="{DynamicResource MyWindowStyleMap}"
         Title="{Binding Title}" 
         Height="200" 
-        Width="400"  
+        Width="530"  
         WindowStyle="None" 
         AllowsTransparency="True">
 
@@ -99,6 +99,9 @@
                         <TextBlock Text="Special" Width="100"></TextBlock>
                         <TextBlock Text="{Binding Special}"></TextBlock>
                     </StackPanel>
+                </StackPanel>
+                <StackPanel Orientation="Vertical">
+                    <Image Source="{Binding ImageUrl}" MaxHeight="150" MaxWidth="150" />
                 </StackPanel>
             </StackPanel>
         </Grid>

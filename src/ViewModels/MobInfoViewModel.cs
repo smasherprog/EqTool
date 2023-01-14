@@ -34,6 +34,18 @@ namespace EQTool.ViewModels
             }
         }
 
+        private string _ImageUrl = string.Empty;
+
+        public string ImageUrl
+        {
+            get => _ImageUrl;
+            set
+            {
+                _ImageUrl = value;
+                OnPropertyChanged();
+            }
+        }
+
         private string _Name = string.Empty;
 
         public string Name
@@ -206,7 +218,12 @@ namespace EQTool.ViewModels
             Name = GetValue("name", splits);
             Race = GetValue("race", splits);
             Class = GetValue("class", splits)?.Replace("[[", string.Empty).Replace("]]", string.Empty);
-            Level = GetValue("level", splits);
+            var lvl = GetValue("level", splits)?.Where(a => char.IsDigit(a) || a == ' ' || a == '-')?.ToArray();
+            if (lvl != null)
+            {
+                Level = new string(lvl);
+            }
+
             AgroRadius = GetValue("agro_radius", splits);
             RunSpeed = GetValue("run_speed", splits);
             AC = GetValue("AC", splits);
@@ -217,11 +234,17 @@ namespace EQTool.ViewModels
             AttackSpeed = GetValue("attack_speed", splits);
             DamagePerHit = GetValue("damage_per_hit", splits);
             Special = GetValue("special", splits);
-
             if (!string.IsNullOrWhiteSpace(Name))
             {
                 var name = HttpUtility.UrlEncode(Name.Replace(' ', '_'));
                 Url = $"https://wiki.project1999.com/{name}";
+            }
+
+            var imageurl = GetValue("imagefilename", splits);
+            if (!string.IsNullOrWhiteSpace(imageurl) && imageurl.Length > 2)
+            {
+                imageurl = char.ToUpper(imageurl[0]) + imageurl.Substring(1, imageurl.Length - 1);
+                ImageUrl = $"https://wiki.project1999.com/images/{imageurl}";
             }
         }
 
