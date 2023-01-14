@@ -23,6 +23,7 @@ namespace EQTool
             this.conLogParse = conLogParse;
             this.logParser.LineReadEvent += LogParser_LineReadEvent;
             DataContext = mobInfoViewModel = new ViewModels.MobInfoViewModel();
+            Topmost = true;
             InitializeComponent();
 
         }

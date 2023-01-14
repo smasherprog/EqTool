@@ -8,7 +8,7 @@ namespace EQTool.ViewModels
 {
     public class MobInfoViewModel : INotifyPropertyChanged
     {
-        public string Title = "Mob Info";
+        public string Title { get; set; } = "Mob Info";
         private string _Results = string.Empty;
 
         public string Results
