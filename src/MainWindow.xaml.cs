@@ -20,10 +20,12 @@ namespace EQTool
         private MapWindow mapwindow = null;
         private DPSMeter dpsmeter = null;
         private Settings settingswindow = null;
+        private MobInfo MobInfoswindow = null;
         private readonly System.Windows.Forms.MenuItem MapMenuItem;
         private readonly System.Windows.Forms.MenuItem SpellsMenuItem;
         private readonly System.Windows.Forms.MenuItem DpsMeterMenuItem;
         private readonly System.Windows.Forms.MenuItem SettingsMenuItem;
+        private readonly System.Windows.Forms.MenuItem MobInfoMenuItem;
         private readonly LogParser logParser;
 
         public MainWindow(bool updated)
@@ -35,6 +37,7 @@ namespace EQTool
             SpellsMenuItem = new System.Windows.Forms.MenuItem("Spells", Spells);
             MapMenuItem = new System.Windows.Forms.MenuItem("Map (ALPHA)", Map);
             DpsMeterMenuItem = new System.Windows.Forms.MenuItem("Dps", DPS);
+            MobInfoMenuItem = new System.Windows.Forms.MenuItem("Mob Info", MobInfo);
             var gitHubMenuItem = new System.Windows.Forms.MenuItem("Suggestions", Suggestions);
             var whythepig = new System.Windows.Forms.MenuItem("Why the Pig?", WhyThePig);
             var updates = new System.Windows.Forms.MenuItem("Check for Update", UpdateClicked);
@@ -66,6 +69,7 @@ namespace EQTool
                     DpsMeterMenuItem,
                     MapMenuItem,
                     SpellsMenuItem,
+                    MobInfoMenuItem,
                     SettingsMenuItem,
                     gitHubMenuItem,
                     updates,
@@ -113,6 +117,7 @@ namespace EQTool
             spellWindow?.Close();
             mapwindow?.Close();
             dpsmeter?.Close();
+            MobInfoswindow?.Close();
             settingswindow?.Close();
             container.Resolve<EQToolSettingsLoad>().Save(EQToolSettings);
             base.OnClosing(e);
@@ -198,6 +203,24 @@ namespace EQTool
             else
             {
                 DPS(DpsMeterMenuItem, null);
+            }
+        }
+
+        private void MobInfo(object sender, EventArgs e)
+        {
+            var s = (System.Windows.Forms.MenuItem)sender;
+            s.Checked = !s.Checked;
+            if (s.Checked)
+            {
+                MobInfoswindow?.Close();
+                MobInfoswindow = container.Resolve<MobInfo>();
+                MobInfoswindow.Closed += (se, ee) => s.Checked = false;
+                MobInfoswindow.Show();
+            }
+            else
+            {
+                MobInfoswindow?.Close();
+                MobInfoswindow = null;
             }
         }
 

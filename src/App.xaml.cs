@@ -23,7 +23,7 @@ namespace EQTool
     /// </summary>
     public partial class App : Application
     {
-        private readonly HttpClient httpclient = new HttpClient();
+        public static HttpClient httpclient = new HttpClient();
         private MainWindow mainWindow;
 
         public static double GlobalFontSize
