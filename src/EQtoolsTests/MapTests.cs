@@ -24,7 +24,7 @@ namespace EQtoolsTests
             var zoneloader = new ZoneParser();
             var zone = zoneloader.Match("[Sat Oct 08 11:31:38 2022] There are 15 players in The Plane of Hate.");
             Assert.IsNotNull(zone);
-            Assert.AreEqual("plane of hate", zone);
+            Assert.AreEqual("the plane of hate", zone);
             var pretyname = zoneloader.TranslateToMapName(zone);
             Assert.AreEqual("hateplane", pretyname);
         }
