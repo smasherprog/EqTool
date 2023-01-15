@@ -35,7 +35,7 @@
                 </Grid>
             </Border>
             <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Stretch">
-                <StackPanel Orientation="Vertical">
+                <StackPanel Orientation="Vertical" Margin="0, 0, 8, 0" Width="200">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Name" Width="100"></TextBlock>
                         <TextBlock>
@@ -66,7 +66,7 @@
                     </StackPanel>
 
                 </StackPanel>
-                <StackPanel Orientation="Vertical">
+                <StackPanel Orientation="Vertical" Width="200">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="AC" Width="100"></TextBlock>
                         <TextBlock Text="{Binding AC}"></TextBlock>
@@ -97,7 +97,7 @@
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Special" Width="100"></TextBlock>
-                        <TextBlock Text="{Binding Special}"></TextBlock>
+                        <TextBlock Text="{Binding Special}" TextWrapping="WrapWithOverflow"></TextBlock>
                     </StackPanel>
                 </StackPanel>
                 <StackPanel Orientation="Vertical">

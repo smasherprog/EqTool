@@ -52,15 +52,15 @@
 
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Zone" FontWeight="Bold" VerticalAlignment="Center" MinWidth="100"/>
-                    <ComboBox Name="Zonecombobox" SelectedItem="{Binding ActivePlayer.Player.Zone}" SelectionChanged="zoneselectionchanged" MinWidth="100"/>
+                    <ComboBox SelectedItem="{Binding ActivePlayer.Player.Zone}" ItemsSource="{Binding Zones}"  SelectionChanged="zoneselectionchanged" MinWidth="100"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Your Level"  FontWeight="Bold" VerticalAlignment="Center" MinWidth="100"/>
-                    <ComboBox Name="levelscombobox" SelectedItem="{Binding ActivePlayer.Player.Level}" MinWidth="100"/>
+                    <ComboBox SelectedItem="{Binding ActivePlayer.Player.Level}" ItemsSource="{Binding Levels}" MinWidth="100"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Font Size"  FontWeight="Bold"  VerticalAlignment="Center" MinWidth="100"/>
-                    <ComboBox Name="fontsizescombobox" DisplayMemberPath="Name" SelectedValuePath="Name" SelectionChanged="fontsizescombobox_SelectionChanged" MinWidth="100"/>
+                    <ComboBox  SelectedItem="{Binding FontSize}"  ItemsSource="{Binding FontSizes}" SelectionChanged="fontsizescombobox_SelectionChanged" MinWidth="100"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="DPS Opacity"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>

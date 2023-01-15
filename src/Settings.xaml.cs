@@ -60,10 +60,7 @@ namespace EQTool
                 var it = item.ToString();
                 _ = spellbyclassselection.Items.Add(it);
             }
-            Zonecombobox.ItemsSource = settingsWindowData.Zones.OrderBy(a => a).ToList();
-            levelscombobox.ItemsSource = SettingsWindowData.Levels;
-            fontsizescombobox.ItemsSource = SettingsWindowData.FontSizes;
-            fontsizescombobox.SelectedValue = settings.FontSize.ToString();
+
             themecombobox.ItemsSource = new List<KeyValuePair<string, Themes>>()
             {
                 new KeyValuePair<string, Themes>(Themes.Light.ToString(), Themes.Light),
@@ -80,13 +77,18 @@ namespace EQTool
 #endif
         }
 
-        protected override void OnClosing(CancelEventArgs e)
+        private void SaveConfig()
         {
             settings.FontSize = App.GlobalFontSize;
             settings.GlobalTriggerWindowOpacity = App.GlobalTriggerWindowOpacity;
             settings.GlobalDPSWindowOpacity = App.GlobalDPSWindowOpacity;
             settings.Theme = App.Theme;
             toolSettingsLoad.Save(settings);
+        }
+
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            SaveConfig();
             base.OnClosing(e);
         }
 
@@ -135,7 +137,8 @@ namespace EQTool
 
         private void fontsizescombobox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
-            App.GlobalFontSize = double.Parse(fontsizescombobox.SelectedValue as string);
+            App.GlobalFontSize = SettingsWindowData.FontSize;
+            SaveConfig();
         }
 
         private void EqFolderButtonClicked(object sender, RoutedEventArgs e)
@@ -267,6 +270,7 @@ namespace EQTool
         {
             settings.Theme = (themecombobox.SelectedValue as Themes?) ?? Themes.Light;
             App.Theme = settings.Theme;
+            SaveConfig();
         }
 
         private void zoneselectionchanged(object sender, SelectionChangedEventArgs e)

@@ -1,4 +1,5 @@
 ﻿using EQTool.Models;
+using EQTool.Services.Map;
 using EQTool.Services.Spells.Log;
 using EQTool.ViewModels;
 using System;
@@ -16,9 +17,11 @@ namespace EQTool.Services
         private long? LastReadOffset = null;
         private readonly EQToolSettings settings;
         private readonly LevelLogParse levelLogParse;
+        private readonly ZoneParser zoneParser;
 
-        public LogParser(ActivePlayer activePlayer, IAppDispatcher appDispatcher, EQToolSettings settings, LevelLogParse levelLogParse)
+        public LogParser(ActivePlayer activePlayer, IAppDispatcher appDispatcher, EQToolSettings settings, LevelLogParse levelLogParse, ZoneParser zoneParser)
         {
+            this.zoneParser = zoneParser;
             this.activePlayer = activePlayer;
             this.appDispatcher = appDispatcher;
             this.levelLogParse = levelLogParse;
@@ -86,6 +89,15 @@ namespace EQTool.Services
                             var line = reader.ReadLine();
                             LastReadOffset = stream.Position;
                             levelLogParse.MatchLevel(line);
+                            var matchedzone = zoneParser.Match(line);
+                            if (!string.IsNullOrWhiteSpace(matchedzone))
+                            {
+                                var p = activePlayer.Player;
+                                if (p != null)
+                                {
+                                    p.Zone = matchedzone;
+                                }
+                            }
                             if (line.Length > 27)
                             {
                                 LineReadEvent?.Invoke(this, new LogParserEventArgs { Line = line });

@@ -36,7 +36,14 @@ namespace EQTool
             UITimer.Enabled = true;
             viewport3d.PanGesture = new MouseGesture(MouseAction.LeftClick);
             viewport3d.PanGesture2 = null;
-
+            var debugging = false;
+#if DEBUG
+            debugging = true;
+#endif
+            if (debugging)
+            {
+                viewport3d.ShowCameraInfo = true;
+            }
         }
 
         private void UITimer_Elapsed(object sender, ElapsedEventArgs e)
@@ -54,6 +61,7 @@ namespace EQTool
             else
             {
                 var matched = zoneParser.Match(e.Line);
+                matched = zoneParser.TranslateToMapName(matched);
                 _ = mapViewModel.LoadMap(matched);
             }
         }

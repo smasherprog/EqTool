@@ -1,7 +1,6 @@
 ﻿using EQTool.Services;
 using EQTool.Services.Map;
 using HelixToolkit.Wpf;
-using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -27,12 +26,10 @@ namespace EQTool.ViewModels
             this.mapLoad = mapLoad;
             this.activePlayer = activePlayer;
             this.appDispatcher = appDispatcher;
-
-            LastLookDirection = new Vector3D(0, 0, 100);
         }
 
-        private Vector3D LastLookDirection;
-        private ArrowVisual3D Arrow;
+
+        private PieSliceVisual3D PlayerVisualLocation;
         private Point3D? Lastlocation;
 
         private Vector3D _LookDirection;
@@ -168,36 +165,17 @@ namespace EQTool.ViewModels
         {
             appDispatcher.DispatchUI(() =>
             {
-                if (LastLookDirection != LookDirection)
-                {
-                    var cameralooknormal = LastLookDirection = LookDirection;
-                    var cameraup = new Vector3D(0, 1, 0);
-                    cameralooknormal.Normalize();
-                    cameraup.Normalize();
-                    var textdir = Vector3D.CrossProduct(cameraup, cameralooknormal);
-                    foreach (TextVisual3D item in DrawItems.Where(a => a.GetType() == typeof(TextVisual3D)))
-                    {
-                        item.TextDirection = textdir;
-                        item.UpDirection = cameraup;
-                    }
-                }
-                var maxdist = 100.0 * 100.0;
-                foreach (LinesVisual3D item in DrawItems.Where(a => a.GetType() == typeof(LinesVisual3D)))
-                {
-                    var dist = item.Points.First().DistanceToSquared(Position);
-                    var alpha = dist / maxdist;
-                    alpha = Math.Min(1, Math.Max(0, alpha));
-                    alpha = (alpha - 1) * -1;
-                    alpha *= 255;
-                    item.Color = Color.FromArgb(200, item.Color.R, item.Color.G, item.Color.B);
-                }
+                //var maxdist = 100.0 * 100.0;
+                //foreach (LinesVisual3D item in DrawItems.Where(a => a.GetType() == typeof(LinesVisual3D)))
+                //{
+                //    var dist = item.Points.First().DistanceToSquared(Position);
+                //    var alpha = dist / maxdist;
+                //    alpha = Math.Min(1, Math.Max(0, alpha));
+                //    alpha = (alpha - 1) * -1;
+                //    alpha *= 255;
+                //    item.Color = Color.FromArgb(200, item.Color.R, item.Color.G, item.Color.B);
+                //}
             });
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged([CallerMemberName] string name = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
 
         public void LoadDefaultMap()
@@ -223,19 +201,32 @@ namespace EQTool.ViewModels
                 vec.Normalize();
                 var endpos = ((vec * 100) + Lastlocation.Value.ToVector3D()).ToPoint3D();
                 Lastlocation = newval;
-                if (Arrow != null)
+                if (PlayerVisualLocation != null)
                 {
-                    _ = DrawItems.Remove(Arrow);
+                    _ = DrawItems.Remove(PlayerVisualLocation);
                 }
-                Arrow = new ArrowVisual3D
-                {
-                    Direction = vec,
-                    Point1 = newval,
-                    Point2 = endpos,
-                    Diameter = 10,
-                    Fill = System.Windows.Media.Brushes.Green
-                };
-                DrawItems.Add(Arrow);
+
+                PlayerVisualLocation = new PieSliceVisual3D();
+                PlayerVisualLocation.BeginEdit();
+                PlayerVisualLocation.Center = newval;
+                PlayerVisualLocation.Normal = new Vector3D(0, 1, 0);
+                PlayerVisualLocation.UpVector = new Vector3D(0, 1, 0);
+                PlayerVisualLocation.InnerRadius = 40;
+                PlayerVisualLocation.OuterRadius = 40 * 1.3;
+                PlayerVisualLocation.StartAngle = 0;
+                PlayerVisualLocation.EndAngle = 260;
+                PlayerVisualLocation.Fill = Brushes.Gray;
+                PlayerVisualLocation.EndEdit();
+
+                //Arrow = new ArrowVisual3D
+                //{
+                //    Direction = vec,
+                //    Point1 = newval,
+                //    Point2 = endpos,
+                //    Diameter = 10,
+                //    Fill = System.Windows.Media.Brushes.Green
+                //};
+                DrawItems.Add(PlayerVisualLocation);
                 var newpos = new Point3D(value1.Y, value1.X, LookDirection.Z);
                 LookDirection = newpos.ToVector3D();
                 var newpos2 = new Point3D(value1.Y, value1.X, Position.Z)
@@ -245,5 +236,12 @@ namespace EQTool.ViewModels
                 Position = newpos2;
             });
         }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected void OnPropertyChanged([CallerMemberName] string name = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
+
     }
 }

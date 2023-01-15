@@ -10,34 +10,25 @@ using System.Windows;
 
 namespace EQTool.ViewModels
 {
-    public class EQNameValue
-    {
-        public string Name { get; set; }
-        public double Value { get; set; }
-    }
-
     public class SettingsWindowViewModel : INotifyPropertyChanged
     {
-        public SettingsWindowViewModel(ActivePlayer activePlayer)
+        public SettingsWindowViewModel(ActivePlayer activePlayer, EQToolSettings settings)
         {
             ActivePlayer = activePlayer;
             for (var i = 12; i < 72; i++)
             {
-                FontSizes.Add(new EQNameValue
-                {
-                    Name = i.ToString(),
-                    Value = i
-                });
+                FontSizes.Add(i);
             }
             for (var i = 1; i < 61; i++)
             {
                 Levels.Add(i);
             }
 
-            foreach (var item in ZoneParser.Zones)
+            foreach (var item in ZoneParser.Zones.OrderBy(a => a))
             {
                 Zones.Add(item);
             }
+            FontSize = (int)settings.FontSize;
         }
 
         private ActivePlayer _ActivePlayer;
@@ -107,6 +98,17 @@ namespace EQTool.ViewModels
             }
         }
 
+        private int _FontSize;
+        public int FontSize
+        {
+            get => _FontSize;
+            set
+            {
+                _FontSize = value;
+                OnPropertyChanged();
+            }
+        }
+
         public bool TestingMode
         {
             get
@@ -124,9 +126,9 @@ namespace EQTool.ViewModels
         public bool IsEqRunning => !IsEqNotRunning;
         public bool IsEqNotRunning { get; private set; } = false;
 
-        public ObservableCollection<string> Zones = new ObservableCollection<string>();
-        public ObservableCollection<EQNameValue> FontSizes = new ObservableCollection<EQNameValue>();
-        public ObservableCollection<int> Levels = new ObservableCollection<int>();
+        public ObservableCollection<string> Zones { get; set; } = new ObservableCollection<string>();
+        public ObservableCollection<int> FontSizes { get; set; } = new ObservableCollection<int>();
+        public ObservableCollection<int> Levels { get; set; } = new ObservableCollection<int>();
 
         public void Update()
         {

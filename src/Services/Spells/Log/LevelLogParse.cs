@@ -15,17 +15,20 @@ namespace EQTool.Services.Spells.Log
 
         public void MatchLevel(string linelog)
         {
-            var message = linelog.Substring(27);
-            Debug.WriteLine($"LevelLogParse: " + message);
-            if (message.StartsWith(YouHaveGainedALevel))
+            if (string.IsNullOrWhiteSpace(linelog) || linelog.Length >= 27)
             {
-                var levelstring = message.Replace(YouHaveGainedALevel, string.Empty).Trim().TrimEnd('!');
-                if (int.TryParse(levelstring, out var level))
+                var message = linelog.Substring(27);
+                Debug.WriteLine($"LevelLogParse: " + message);
+                if (message.StartsWith(YouHaveGainedALevel))
                 {
-                    var player = activePlayer.Player;
-                    if (player != null)
+                    var levelstring = message.Replace(YouHaveGainedALevel, string.Empty).Trim().TrimEnd('!');
+                    if (int.TryParse(levelstring, out var level))
                     {
-                        player.Level = level;
+                        var player = activePlayer.Player;
+                        if (player != null)
+                        {
+                            player.Level = level;
+                        }
                     }
                 }
             }
