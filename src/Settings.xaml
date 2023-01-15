@@ -94,21 +94,25 @@
                     </StackPanel>
                 </StackPanel>
 
-                <StackPanel Orientation="Vertical" Name="DebuggingStack"> 
+                <StackPanel Orientation="Vertical" Name="DebuggingStack">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                         <TextBlock Text="Debugging" FontWeight="Bold" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="DPS"  VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
-                        <Button Name="testdpsbutton" Click="testDPS" MinWidth="100">Add Test DPS</Button>
+                        <Button Click="testDPS" MinWidth="100">Add Test DPS</Button>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Spells"  VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
-                        <Button  Click="testspellsclicked" MinWidth="100">Add Test Spells</Button>
+                        <Button Click="testspellsclicked"  MinWidth="100">Add Test Spells</Button>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Map"  VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
-                        <Button x:Name="testmap"  Click="textmapclicked" MinWidth="100">Test Locations</Button>
+                        <Button Click="textmapclicked" MinWidth="100">Test Locations</Button>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Map"  VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
+                        <Button Click="mobconclicked" MinWidth="100">Test Mob</Button>
                     </StackPanel>
                 </StackPanel>
 

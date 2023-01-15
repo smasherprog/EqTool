@@ -197,6 +197,11 @@
     <Compile Include="Models\SpellParsingMatch.cs" />
     <Compile Include="Models\EQSpells.cs" />
     <Compile Include="Models\EQToolSettings.cs" />
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+      <DependentUpon>Settings.settings</DependentUpon>
+    </Compile>
     <Compile Include="Services\AppDispatcher.cs" />
     <Compile Include="Services\Fight\FightLogService.cs" />
     <Compile Include="Services\Map\LocationParser.cs" />
@@ -802,6 +807,10 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="runtimes\win-x64\native\e_sqlite3.dll" />

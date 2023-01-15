@@ -14,7 +14,6 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Media;
 
 namespace EQTool
 {
@@ -26,17 +25,6 @@ namespace EQTool
         public static HttpClient httpclient = new HttpClient();
         private MainWindow mainWindow;
 
-        public static double GlobalFontSize
-        {
-            get => (double)Current.Resources["GlobalFontSize"];
-            set
-            {
-                Current.Resources["GlobalFontSize"] = value;
-                SetThemeValuesDPS();
-                SetThemeValuesTriggers();
-            }
-        }
-
         private static Themes _Theme = Themes.Light;
 
         public static Themes Theme
@@ -45,72 +33,7 @@ namespace EQTool
             set
             {
                 _Theme = value;
-                SetThemeValuesDPS();
-                SetThemeValuesTriggers();
-            }
-        }
-
-        public static double GlobalTriggerWindowOpacity
-        {
-            get => (double)Current.Resources["GlobalTriggerWindowOpacity"];
-            set
-            {
-                Current.Resources["GlobalTriggerWindowOpacity"] = value;
-                SetThemeValuesTriggers();
-            }
-        }
-
-        private static void SetThemeValuesTriggers()
-        {
-            var style = new Style
-            {
-                TargetType = typeof(Window)
-            };
-
-            style.Setters.Add(new Setter(Window.FontSizeProperty, GlobalFontSize));
-            style.Setters.Add(new Setter(Window.BackgroundProperty, BackGroundBrushTrigger));
-            Application.Current.Resources["MyWindowStyleTrigger"] = style;
-        }
-        private static SolidColorBrush BackGroundBrushTrigger
-        {
-            get
-            {
-                var t = _Theme == Themes.Light ? new SolidColorBrush(Colors.White) : new SolidColorBrush(Colors.Black);
-                t.Opacity = GlobalTriggerWindowOpacity;
-                return t;
-            }
-        }
-
-        public static double GlobalDPSWindowOpacity
-        {
-            get => (double)Current.Resources["GlobalDPSWindowOpacity"];
-            set
-            {
-                Current.Resources["GlobalDPSWindowOpacity"] = value;
-                SetThemeValuesDPS();
-            }
-        }
-
-        private static void SetThemeValuesDPS()
-        {
-            var style = new Style
-            {
-                TargetType = typeof(Window)
-            };
-
-            style.Setters.Add(new Setter(Window.FontSizeProperty, GlobalFontSize));
-            style.Setters.Add(new Setter(Window.BackgroundProperty, BackGroundBrushDPS));
-            Application.Current.Resources["MyWindowStyleDPS"] = style;
-        }
-
-
-        private static SolidColorBrush BackGroundBrushDPS
-        {
-            get
-            {
-                var t = _Theme == Themes.Light ? new SolidColorBrush(Colors.White) : new SolidColorBrush(Colors.Black);
-                t.Opacity = GlobalDPSWindowOpacity;
-                return t;
+                EQTool.Properties.Settings.Default.ColorMode = value.ToString();
             }
         }
 

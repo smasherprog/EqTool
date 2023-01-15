@@ -4,10 +4,8 @@ using EQTool.Services.Spells.Log;
 using EQTool.ViewModels;
 using System;
 using System.ComponentModel;
-using System.Timers;
 using System.Windows;
 using System.Windows.Data;
-using System.Windows.Forms;
 using System.Windows.Input;
 
 namespace EQTool
@@ -37,11 +35,11 @@ namespace EQTool
             Topmost = settings.TriggerWindowTopMost;
             if (settings.SpellWindowState != null && WindowBounds.isPointVisibleOnAScreen(settings.SpellWindowState.WindowRect))
             {
-                this.Left = settings.SpellWindowState.WindowRect.Left;
-                this.Top = settings.SpellWindowState.WindowRect.Top;
-                this.Height = settings.SpellWindowState.WindowRect.Height;
-                this.Width = settings.SpellWindowState.WindowRect.Width;
-                this.WindowState = settings.SpellWindowState.State;
+                Left = settings.SpellWindowState.WindowRect.Left;
+                Top = settings.SpellWindowState.WindowRect.Top;
+                Height = settings.SpellWindowState.WindowRect.Height;
+                Width = settings.SpellWindowState.WindowRect.Width;
+                WindowState = settings.SpellWindowState.State;
             }
             InitializeComponent();
 
@@ -49,7 +47,7 @@ namespace EQTool
             UITimer.Elapsed += PollUI;
             UITimer.Enabled = true;
             var view = (ListCollectionView)CollectionViewSource.GetDefaultView(spelllistview.ItemsSource);
-            App.GlobalTriggerWindowOpacity = settings.GlobalTriggerWindowOpacity;
+            Properties.Settings.Default.GlobalTriggerWindowOpacity = settings.GlobalTriggerWindowOpacity;
             view.GroupDescriptions.Add(new PropertyGroupDescription(nameof(UISpell.TargetName)));
             view.LiveGroupingProperties.Add(nameof(UISpell.TargetName));
             view.IsLiveGrouping = true;
@@ -87,12 +85,12 @@ namespace EQTool
             }
             settings.SpellWindowState.WindowRect = new Rect
             {
-                X = this.Left,
-                Y = this.Top,
-                Height = this.Height,
-                Width = this.Width
+                X = Left,
+                Y = Top,
+                Height = Height,
+                Width = Width
             };
-            settings.SpellWindowState.State = this.WindowState; 
+            settings.SpellWindowState.State = WindowState;
             UITimer.Stop();
             UITimer.Dispose();
             logParser.LineReadEvent += LogParser_LineReadEvent;
@@ -117,14 +115,7 @@ namespace EQTool
 
         private void MaximizeWindow(object sender, RoutedEventArgs e)
         {
-            if (WindowState == System.Windows.WindowState.Maximized)
-            {
-                WindowState = System.Windows.WindowState.Normal;
-            }
-            else
-            {
-                WindowState = System.Windows.WindowState.Maximized;
-            }
+            WindowState = WindowState == System.Windows.WindowState.Maximized ? System.Windows.WindowState.Normal : System.Windows.WindowState.Maximized;
         }
 
         private void CloseWindow(object sender, RoutedEventArgs e)

@@ -16,13 +16,11 @@ namespace EQTool.ViewModels
         private readonly MapLoad mapLoad;
         private readonly ActivePlayer activePlayer;
         private readonly IAppDispatcher appDispatcher;
-        private readonly LogParser logParser;
         private readonly ZoneParser zoneParser;
 
-        public MapViewModel(ZoneParser zoneParser, LogParser logParser, MapLoad mapLoad, ActivePlayer activePlayer, IAppDispatcher appDispatcher)
+        public MapViewModel(ZoneParser zoneParser, MapLoad mapLoad, ActivePlayer activePlayer, IAppDispatcher appDispatcher)
         {
             this.zoneParser = zoneParser;
-            this.logParser = logParser;
             this.mapLoad = mapLoad;
             this.activePlayer = activePlayer;
             this.appDispatcher = appDispatcher;
@@ -192,7 +190,7 @@ namespace EQTool.ViewModels
         {
             appDispatcher.DispatchUI(() =>
             {
-                var newval = new Point3D(value1.Y, value1.X, Position.Z + 200);
+                var newval = new Point3D(value1.Y, value1.X, -1000);
                 if (!Lastlocation.HasValue)
                 {
                     Lastlocation = new Point3D(value1.Y, value1.X + 5, value1.Z);
@@ -209,8 +207,8 @@ namespace EQTool.ViewModels
                 PlayerVisualLocation = new PieSliceVisual3D();
                 PlayerVisualLocation.BeginEdit();
                 PlayerVisualLocation.Center = newval;
-                PlayerVisualLocation.Normal = new Vector3D(0, 1, 0);
-                PlayerVisualLocation.UpVector = new Vector3D(0, 1, 0);
+                PlayerVisualLocation.Normal = new Vector3D(0, 0, -1);
+                PlayerVisualLocation.UpVector = new Vector3D(0, 0, -1);
                 PlayerVisualLocation.InnerRadius = 40;
                 PlayerVisualLocation.OuterRadius = 40 * 1.3;
                 PlayerVisualLocation.StartAngle = 0;

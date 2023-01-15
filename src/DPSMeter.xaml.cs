@@ -44,7 +44,7 @@ namespace EQTool
                 Width = settings.DpsWindowState.WindowRect.Width;
                 WindowState = settings.DpsWindowState.State;
             }
-            App.GlobalDPSWindowOpacity = settings.GlobalDPSWindowOpacity;
+            Properties.Settings.Default.GlobalDPSWindowOpacity = settings.GlobalDPSWindowOpacity;
             Topmost = settings.TriggerWindowTopMost;
             UITimer = new System.Timers.Timer(1000);
             UITimer.Elapsed += PollUI;
