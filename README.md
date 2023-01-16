@@ -15,8 +15,9 @@ Features:
 <li>Detect EQ directory location instead of user required to enter it.</li> 
 <li>Detect Spells cast on others (this is a best guess as I am reading the log file so chloroplast and Regrowth of the growth have the same message)</li>
 <li>Filter spells show by class</li> 
+<li>Mob Info Window gives details about mobs tht you con in game. Click the name to goto the Wiki -- More info will be added soon!</li>
 <li>Automatically remove dead npc/player from the spell list.</li>
-<li>DPS window</li>
+<li>DPS window. Saves fight data to a CSV so you can review later!</li>
 <li>Auto detect level and class!</li>
 <li>Timers (Only Minutes are supported)</li>
 </ul>
@@ -26,29 +27,17 @@ Features:
 <li>Start Timer CryptCamp 35</li>
 <li>Timer Cancel CryptCamp</li>
 <li>Cancel Timer CryptCamp</li>
-</ul>
-<img width="770" alt="image" src="https://user-images.githubusercontent.com/3393733/203874001-151ee3ab-4610-4cea-80e9-f5d727b74979.png">
-<h4>Trigger Window</h4>
-<img width="238" alt="SpellsExample" src="https://user-images.githubusercontent.com/3393733/203874211-8ecfa5f3-9e2a-49e5-8584-c7223844d85a.png">
-<h4>DPS Window</h4>
-<ul>
-  <li>Source: The NPC/PC who is Dealing the damage.</li>
-   <li>DPS: Average DPS over the last 12 second window</li>
-   <li>Biggest: Biggest single hit!</li>
-   <li>12s Dmg: Highest 12 second period of Damage dealt. This is good for gauging how many are required in a CH chain!</li>
-   <li>Dmg: Total Damage done!</li>
-</ul>
-<img width="344" alt="image" src="https://user-images.githubusercontent.com/3393733/206924284-f4f32fca-76b9-4835-8c26-0aa01e4cc61a.png"> 
-<h4>Settings Window</h4>
-<img width="371" alt="image" src="https://user-images.githubusercontent.com/3393733/203874278-60c99f84-c455-40e2-a96f-c56d7151f5a4.png">
+</ul> 
+<img width="880" alt="image" src="https://user-images.githubusercontent.com/3393733/212717548-652c9757-9d7b-4caa-a5dc-e2931ff036f6.png">
+
 <h4>System Tray Icon</h4>
-<img width="229" alt="image" src="https://user-images.githubusercontent.com/3393733/206924345-54cfa14c-b0d8-4e37-bb9a-1cb2a6e902c9.png">
+<img width="152" alt="image" src="https://user-images.githubusercontent.com/3393733/212717141-6e26b9af-660a-493d-9f73-2c3464b7c224.png">
 
 <h4>TO DO List</h4>
 <ul>
 <li>use the "Spell has worn off" messages to remove timers from list</li>
 <li>Add donals BP to timers list</li>
-<li>Add window for mob info that pulls from wiki when a mob is con'd. Should be minimalist: hp, ac, attacks, resists, loot, factions</li>
+<li>Add window for mob info that pulls from wiki when a mob is con'd. Should be minimalist: hp, ac, attacks, resists, loot, factions (In Progress)</li>
 <li>Finish Map</li>
 <li>Rename Application to Pig Parse</li>
 <ul>
