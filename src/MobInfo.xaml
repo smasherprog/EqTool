@@ -104,8 +104,8 @@
                     </StackPanel>
                 </StackPanel>
                 <StackPanel Orientation="Vertical">
-                    <StackPanel Orientation="Horizontal" MaxHeight="200" MaxWidth="200">
-                        <Image Source="{Binding ImageUrl}" />
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="{Binding ImageUrl}" Stretch="Uniform"  MaxHeight="200" MaxWidth="200" />
                     </StackPanel> 
                 </StackPanel>
             </StackPanel>
