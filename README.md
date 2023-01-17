@@ -21,7 +21,7 @@ Features:
 <li>Auto detect level and class!</li>
 <li>Timers (Only Minutes are supported)</li>
 </ul>
-<h5>Timers (Only Minutes are supported) -- All below commands work --</h5>
+<h5>Timers (Only Minutes are supported) -- All below commands work in regular say!</h5>
 <ul>
 <li>Timer Start CryptCamp 35</li>
 <li>Start Timer CryptCamp 35</li>
