@@ -34,7 +34,7 @@ namespace EQtoolsTests
 | attacks_per_round = Normal (3) - Flurry (6)
 | attack_speed      = 78%
 | damage_per_hit    = 161 - 264
-| special           = [[Lava Breath]], Enrage, Summon, Uncharmable, Unfearable, Unmezzable, See Invis
+| special           = [[Lava Breath]], Enrage, Summon, Uncharmable, Unfearable, <br />Unmezzable, See Invis
 
 | description = Rampages and Flurries. Casts Lava Breath. Huge aggro radius and looks just like a cragwurm.
 
@@ -75,6 +75,8 @@ namespace EQtoolsTests
                 Results = ResponseFromServer
             };
             Assert.AreEqual("Mraaka", model.Name);
+            Assert.AreEqual("Warrior", model.Class);
+            Assert.AreEqual("[[Lava Breath]], Enrage, Summon, Uncharmable, Unfearable, Unmezzable, See Invis", model.Special);
         }
 
     }

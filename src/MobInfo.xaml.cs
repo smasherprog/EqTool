@@ -63,6 +63,11 @@ namespace EQTool
             _ = Process.Start(new ProcessStartInfo(e.Uri.AbsoluteUri));
             e.Handled = true;
         }
+        private void Hyperlink_RequestNavigatebutton(object sender, RoutedEventArgs args)
+        {
+            _ = Process.Start(new ProcessStartInfo(mobInfoViewModel.Url));
+        }
+
 
         public void DragWindow(object sender, MouseButtonEventArgs args)
         {
@@ -103,6 +108,5 @@ namespace EQTool
         {
             (App.Current as App).OpenSpellsWindow();
         }
-
     }
 }

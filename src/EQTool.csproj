@@ -818,6 +818,9 @@
     <EmbeddedResource Include="runtimes\win10-x64\nativeassets\uap10.0\e_sqlite3.dll" />
     <EmbeddedResource Include="runtimes\win10-x86\nativeassets\uap10.0\e_sqlite3.dll" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="HyperlinkForward.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="AfterResolveReferences">
     <ItemGroup>

@@ -72,6 +72,7 @@ namespace EQTool
 
             var customtimer = logCustomTimer.GetStartTimer(e.Line);
             spellWindowViewModel.TryAddCustom(customtimer);
+
             var canceltimer = logCustomTimer.GetCancelTimer(e.Line);
             spellWindowViewModel.TryRemoveCustom(canceltimer);
         }

@@ -3,6 +3,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Web;
+using System.Windows;
 
 namespace EQTool.ViewModels
 {
@@ -31,8 +32,11 @@ namespace EQTool.ViewModels
             {
                 _Url = value;
                 OnPropertyChanged();
+                OnPropertyChanged(nameof(HaseUrl));
             }
         }
+
+        public Visibility HaseUrl => string.IsNullOrWhiteSpace(Url) ? Visibility.Collapsed : Visibility.Visible;
 
         private string _ImageUrl = string.Empty;
 
@@ -233,7 +237,7 @@ namespace EQTool.ViewModels
             AttacksPerRound = GetValue("attacks_per_round", splits);
             AttackSpeed = GetValue("attack_speed", splits);
             DamagePerHit = GetValue("damage_per_hit", splits);
-            Special = GetValue("special", splits);
+            Special = GetValue("special", splits)?.Replace("<br />", string.Empty).Replace("<br/>", string.Empty);
             if (!string.IsNullOrWhiteSpace(Name))
             {
                 var name = HttpUtility.UrlEncode(Name.Replace(' ', '_'));
