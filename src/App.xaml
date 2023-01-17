@@ -9,30 +9,72 @@
         <sys:Double xmlns:sys="clr-namespace:System;assembly=mscorlib" x:Key="GlobalTriggerWindowOpacity">1</sys:Double>
         <sys:Double xmlns:sys="clr-namespace:System;assembly=mscorlib" x:Key="GlobalDPSWindowOpacity">1</sys:Double>
         <Style x:Key="MyWindowStyleDPS" TargetType="{x:Type Window}">
-            <Setter Property="FontSize" Value="{Binding Source={x:Static properties:Settings.Default}, Path=GlobalFontSize}" />
-            <Setter Property="Opacity" Value="{Binding Source={x:Static properties:Settings.Default}, Path=GlobalDPSWindowOpacity}" />
-            <Style.Triggers>
+            <Setter Property="FontSize" Value="{Binding Source={x:Static properties:Settings.Default}, Path=GlobalFontSize}" /> 
+            <Style.Triggers> 
                 <DataTrigger Binding="{Binding Source={x:Static properties:Settings.Default}, Path=ColorMode}" Value="Light">
-                    <Setter Property="Background" Value="#E1D9D1" />
+                    <Setter Property="Background">
+                        <Setter.Value>
+                            <SolidColorBrush Color="#E1D9D1" Opacity="{Binding Source={x:Static properties:Settings.Default}, Path=GlobalDPSWindowOpacity}" />
+                        </Setter.Value>
+                    </Setter>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Source={x:Static properties:Settings.Default}, Path=GlobalDPSWindowOpacity}" Value="Light">
+                    <Setter Property="Background">
+                        <Setter.Value>
+                            <SolidColorBrush Color="#E1D9D1" Opacity="{Binding Source={x:Static properties:Settings.Default}, Path=GlobalDPSWindowOpacity}" />
+                        </Setter.Value>
+                    </Setter>
                 </DataTrigger>
                 <DataTrigger Binding="{Binding Source={x:Static properties:Settings.Default}, Path=ColorMode}" Value="Dark">
-                    <Setter Property="Background" Value="#121212" />
+                    <Setter Property="Background">
+                        <Setter.Value>
+                            <SolidColorBrush Color="#121212" Opacity="{Binding Source={x:Static properties:Settings.Default}, Path=GlobalDPSWindowOpacity}" />
+                        </Setter.Value>
+                    </Setter>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Source={x:Static properties:Settings.Default}, Path=GlobalDPSWindowOpacity}" Value="Dark">
+                    <Setter Property="Background">
+                        <Setter.Value>
+                            <SolidColorBrush Color="#121212" Opacity="{Binding Source={x:Static properties:Settings.Default}, Path=GlobalDPSWindowOpacity}" />
+                        </Setter.Value>
+                    </Setter>
                 </DataTrigger>
             </Style.Triggers>
         </Style>
         <Style x:Key="MyWindowStyleTrigger" TargetType="{x:Type Window}">
-            <Setter Property="Opacity" Value="{Binding Source={x:Static properties:Settings.Default}, Path=GlobalTriggerWindowOpacity}" />
             <Setter Property="FontSize" Value="{Binding Source={x:Static properties:Settings.Default}, Path=GlobalFontSize}" />
             <Style.Triggers>
                 <DataTrigger Binding="{Binding Source={x:Static properties:Settings.Default}, Path=ColorMode}" Value="Light">
-                    <Setter Property="Background" Value="#E1D9D1" />
+                    <Setter Property="Background">
+                        <Setter.Value>
+                            <SolidColorBrush Color="#E1D9D1" Opacity="{Binding Source={x:Static properties:Settings.Default}, Path=GlobalTriggerWindowOpacity}" />
+                        </Setter.Value>
+                    </Setter>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Source={x:Static properties:Settings.Default}, Path=GlobalTriggerWindowOpacity}" Value="Light">
+                    <Setter Property="Background">
+                        <Setter.Value>
+                            <SolidColorBrush Color="#E1D9D1" Opacity="{Binding Source={x:Static properties:Settings.Default}, Path=GlobalTriggerWindowOpacity}" />
+                        </Setter.Value>
+                    </Setter>
                 </DataTrigger>
                 <DataTrigger Binding="{Binding Source={x:Static properties:Settings.Default}, Path=ColorMode}" Value="Dark">
-                    <Setter Property="Background" Value="#121212" />
+                    <Setter Property="Background">
+                        <Setter.Value>
+                            <SolidColorBrush Color="#121212" Opacity="{Binding Source={x:Static properties:Settings.Default}, Path=GlobalTriggerWindowOpacity}" />
+                        </Setter.Value>
+                    </Setter>
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Source={x:Static properties:Settings.Default}, Path=GlobalTriggerWindowOpacity}" Value="Dark">
+                    <Setter Property="Background">
+                        <Setter.Value>
+                            <SolidColorBrush Color="#121212" Opacity="{Binding Source={x:Static properties:Settings.Default}, Path=GlobalTriggerWindowOpacity}" />
+                        </Setter.Value>
+                    </Setter>
                 </DataTrigger>
             </Style.Triggers>
         </Style>
-        <Style x:Key="MyWindowStyleMap" TargetType="{x:Type Window}"> 
+        <Style x:Key="MyWindowStyleMap" TargetType="{x:Type Window}">
             <Setter Property="FontSize" Value="{Binding Source={x:Static properties:Settings.Default}, Path=GlobalFontSize}" />
             <Style.Triggers>
                 <DataTrigger Binding="{Binding Source={x:Static properties:Settings.Default}, Path=ColorMode}" Value="Light">
@@ -45,14 +87,14 @@
         </Style>
         <Style x:Key="MyMobWindowSyle" TargetType="{x:Type Window}">
             <Setter Property="FontSize" Value="{Binding Source={x:Static properties:Settings.Default}, Path=GlobalFontSize}" />
-            <Style.Triggers> 
+            <Style.Triggers>
                 <DataTrigger Binding="{Binding Source={x:Static properties:Settings.Default}, Path=ColorMode}" Value="Light">
-                    <Setter Property="Background" Value="#E1D9D1" /> 
+                    <Setter Property="Background" Value="#E1D9D1" />
                 </DataTrigger>
                 <DataTrigger Binding="{Binding Source={x:Static properties:Settings.Default}, Path=ColorMode}" Value="Dark">
-                    <Setter Property="Background" Value="#121212" /> 
+                    <Setter Property="Background" Value="#121212" />
                 </DataTrigger>
-            </Style.Triggers> 
+            </Style.Triggers>
         </Style>
         <Style x:Key="MyMobTextBoxWindowSyle" TargetType="{x:Type TextBlock}">
             <Setter Property="FontSize" Value="{Binding Source={x:Static properties:Settings.Default}, Path=GlobalFontSize}" />
