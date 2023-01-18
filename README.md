@@ -23,10 +23,10 @@ Features:
 </ul>
 <h5>Timers (Only Minutes are supported) -- All below commands work in regular say!</h5>
 <ul>
-<li>Timer Start CryptCamp 35</li>
-<li>Start Timer CryptCamp 35</li>
-<li>Timer Cancel CryptCamp</li>
-<li>Cancel Timer CryptCamp</li>
+<li>Timer Start Crypt Camp 35</li>
+<li>Start Timer Crypt Camp 35</li>
+<li>Timer Cancel Crypt Camp</li>
+<li>Cancel Timer Crypt Camp</li>
 </ul> 
 <img width="880" alt="image" src="https://user-images.githubusercontent.com/3393733/212717548-652c9757-9d7b-4caa-a5dc-e2931ff036f6.png">
 
