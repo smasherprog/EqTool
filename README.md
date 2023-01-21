@@ -23,10 +23,10 @@ Features:
 </ul>
 <h5>Timers (Only Minutes are supported) -- All below commands work in regular say!</h5>
 <ul>
-<li>Timer Start CryptCamp 35</li>
-<li>Start Timer CryptCamp 35</li>
-<li>Timer Cancel CryptCamp</li>
-<li>Cancel Timer CryptCamp</li>
+<li>Timer Start Crypt Camp 35</li>
+<li>Start Timer Crypt Camp 35</li>
+<li>Timer Cancel Crypt Camp</li>
+<li>Cancel Timer Crypt Camp</li>
 </ul> 
 <img width="880" alt="image" src="https://user-images.githubusercontent.com/3393733/212717548-652c9757-9d7b-4caa-a5dc-e2931ff036f6.png">
 
@@ -40,6 +40,13 @@ Features:
 <li>Add window for mob info that pulls from wiki when a mob is con'd. Should be minimalist: hp, ac, attacks, resists, loot, factions (In Progress)</li>
 <li>Finish Map</li>
 <li>Rename Application to Pig Parse</li>
+<li>Add ability to delete individual spells and entire section</li>
+<li>Make settings window respect theme</li>
+<li>Enrage alert/advanced alert.</li>
+<li>charm break alert</li>
+<li>Add network check and display and issues.</li>
+<liMake settings window and Mob window remember last position/size/state</li>
+<li>Add loot TAB to Mob Window. This tab will show item name, looted from, player name who looted, and unix geek price data, running total looted.</li>
 <li>Purchase Code signing certificate</li>
 <ul>
 
