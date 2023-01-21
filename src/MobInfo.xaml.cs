@@ -41,7 +41,7 @@ namespace EQTool
                     var response = res.Content.ReadAsStringAsync().Result;
                     if (response.StartsWith("#REDIRECT"))
                     {
-                        name = response.Replace("#REDIRECT", string.Empty)?.Replace("[[", string.Empty)?.Replace("]]", string.Empty)?.Trim();
+                        name = response.Replace("#REDIRECT", string.Empty)?.Replace("[[:", string.Empty)?.Replace("[[", string.Empty)?.Replace("]]", string.Empty)?.Trim();
                         name = HttpUtility.UrlEncode(name.Replace(' ', '_'));
                         url = $"https://wiki.project1999.com/{name}?action=raw";
                         res = App.httpclient.GetAsync(url).Result;
