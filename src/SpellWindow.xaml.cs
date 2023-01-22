@@ -20,8 +20,8 @@ namespace EQTool
         private readonly LogDeathParse logDeathParse;
         private readonly LogCustomTimer logCustomTimer;
         private readonly EQToolSettings settings;
-
-        public SpellWindow(EQToolSettings settings, SpellWindowViewModel spellWindowViewModel, LogParser logParser, SpellLogParse spellLogParse, LogDeathParse logDeathParse, LogCustomTimer logCustomTimer)
+        private readonly EQToolSettingsLoad toolSettingsLoad;
+        public SpellWindow(EQToolSettings settings, SpellWindowViewModel spellWindowViewModel, LogParser logParser, SpellLogParse spellLogParse, LogDeathParse logDeathParse, LogCustomTimer logCustomTimer, EQToolSettingsLoad toolSettingsLoad)
         {
             this.settings = settings;
             this.logCustomTimer = logCustomTimer;
@@ -55,6 +55,25 @@ namespace EQTool
             view.SortDescriptions.Add(new SortDescription(nameof(UISpell.SecondsLeftOnSpell), ListSortDirection.Descending));
             view.IsLiveSorting = true;
             view.LiveSortingProperties.Add(nameof(UISpell.SecondsLeftOnSpell));
+            this.toolSettingsLoad = toolSettingsLoad;
+            SizeChanged += DPSMeter_SizeChanged;
+            StateChanged += SpellWindow_StateChanged;
+            LocationChanged += DPSMeter_LocationChanged;
+        }
+
+        private void SpellWindow_StateChanged(object sender, EventArgs e)
+        {
+            SaveState();
+        }
+
+        private void DPSMeter_LocationChanged(object sender, EventArgs e)
+        {
+            SaveState();
+        }
+
+        private void DPSMeter_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            SaveState();
         }
 
         private void LogParser_PlayerChangeEvent(object sender, LogParser.PlayerChangeEventArgs e)
@@ -77,8 +96,7 @@ namespace EQTool
             spellWindowViewModel.TryRemoveCustom(canceltimer);
         }
 
-
-        protected override void OnClosing(CancelEventArgs e)
+        private void SaveState()
         {
             if (settings.SpellWindowState == null)
             {
@@ -92,10 +110,19 @@ namespace EQTool
                 Width = Width
             };
             settings.SpellWindowState.State = WindowState;
+            settings.DpsWindowState.State = WindowState;
+            toolSettingsLoad.Save(settings);
+            Properties.Settings.Default.Save();
+        }
+
+
+        protected override void OnClosing(CancelEventArgs e)
+        {
             UITimer.Stop();
             UITimer.Dispose();
             logParser.LineReadEvent += LogParser_LineReadEvent;
             logParser.PlayerChangeEvent += LogParser_PlayerChangeEvent;
+            SaveState();
             base.OnClosing(e);
         }
 

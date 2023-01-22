@@ -24,8 +24,9 @@ namespace EQTool
         private readonly DPSLogParse dPSLogParse;
         private readonly LogDeathParse logDeathParse;
         private readonly EQToolSettings settings;
+        private readonly EQToolSettingsLoad toolSettingsLoad;
 
-        public DPSMeter(DPSLogParse dPSLogParse, LogParser logParser, DPSWindowViewModel dPSWindowViewModel, EQToolSettings settings, LogDeathParse logDeathParse)
+        public DPSMeter(DPSLogParse dPSLogParse, LogParser logParser, DPSWindowViewModel dPSWindowViewModel, EQToolSettings settings, LogDeathParse logDeathParse, EQToolSettingsLoad toolSettingsLoad)
         {
             this.settings = settings;
             this.logDeathParse = logDeathParse;
@@ -58,8 +59,26 @@ namespace EQTool
             view.SortDescriptions.Add(new SortDescription(nameof(EntittyDPS.TotalDamage), ListSortDirection.Descending));
             view.IsLiveSorting = true;
             view.LiveSortingProperties.Add(nameof(EntittyDPS.TotalDamage));
+            this.toolSettingsLoad = toolSettingsLoad;
+            SizeChanged += DPSMeter_SizeChanged;
+            StateChanged += SpellWindow_StateChanged;
+            LocationChanged += DPSMeter_LocationChanged;
         }
 
+        private void SpellWindow_StateChanged(object sender, EventArgs e)
+        {
+            SaveState();
+        }
+
+        private void DPSMeter_LocationChanged(object sender, EventArgs e)
+        {
+            SaveState();
+        }
+
+        private void DPSMeter_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            SaveState();
+        }
         private void LogParser_LineReadEvent(object sender, LogParser.LogParserEventArgs e)
         {
             var matched = dPSLogParse.Match(e.Line);
@@ -69,6 +88,15 @@ namespace EQTool
         }
 
         protected override void OnClosing(CancelEventArgs e)
+        {
+            UITimer.Stop();
+            UITimer.Dispose();
+            logParser.LineReadEvent += LogParser_LineReadEvent;
+            SaveState();
+            base.OnClosing(e);
+        }
+
+        private void SaveState()
         {
             if (settings.DpsWindowState == null)
             {
@@ -82,15 +110,18 @@ namespace EQTool
                 Width = Width
             };
             settings.DpsWindowState.State = WindowState;
-            UITimer.Stop();
-            UITimer.Dispose();
-            logParser.LineReadEvent += LogParser_LineReadEvent;
-            base.OnClosing(e);
+            toolSettingsLoad.Save(settings);
+            Properties.Settings.Default.Save();
         }
 
         private void PollUI(object sender, EventArgs e)
         {
             dPSWindowViewModel.UpdateDPS();
+        }
+
+        public void DragWindowDone(object sender, MouseButtonEventArgs args)
+        {
+            SaveState();
         }
 
         public void DragWindow(object sender, MouseButtonEventArgs args)
