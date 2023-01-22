@@ -45,6 +45,10 @@ namespace EQTool
                 Width = settings.DpsWindowState.WindowRect.Width;
                 WindowState = settings.DpsWindowState.State;
             }
+            if (settings.DpsWindowState != null)
+            {
+                settings.DpsWindowState.Closed = false;
+            }
             Properties.Settings.Default.GlobalDPSWindowOpacity = settings.GlobalDPSWindowOpacity;
             Topmost = settings.TriggerWindowTopMost;
             UITimer = new System.Timers.Timer(1000);
@@ -60,6 +64,7 @@ namespace EQTool
             view.IsLiveSorting = true;
             view.LiveSortingProperties.Add(nameof(EntittyDPS.TotalDamage));
             this.toolSettingsLoad = toolSettingsLoad;
+
             SaveState();
             SizeChanged += DPSMeter_SizeChanged;
             StateChanged += SpellWindow_StateChanged;
@@ -93,7 +98,6 @@ namespace EQTool
             UITimer.Stop();
             UITimer.Dispose();
             logParser.LineReadEvent += LogParser_LineReadEvent;
-            SaveState();
             base.OnClosing(e);
         }
 
@@ -146,6 +150,7 @@ namespace EQTool
                 settings.DpsWindowState = new Models.WindowState();
             }
             settings.DpsWindowState.Closed = true;
+            SaveState();
             Close();
         }
 

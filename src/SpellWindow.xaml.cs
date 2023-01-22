@@ -56,6 +56,10 @@ namespace EQTool
             view.IsLiveSorting = true;
             view.LiveSortingProperties.Add(nameof(UISpell.SecondsLeftOnSpell));
             this.toolSettingsLoad = toolSettingsLoad;
+            if (settings.SpellWindowState != null)
+            {
+                settings.SpellWindowState.Closed = false;
+            }
             SaveState();
             SizeChanged += DPSMeter_SizeChanged;
             StateChanged += SpellWindow_StateChanged;
@@ -121,7 +125,6 @@ namespace EQTool
             UITimer.Dispose();
             logParser.LineReadEvent += LogParser_LineReadEvent;
             logParser.PlayerChangeEvent += LogParser_PlayerChangeEvent;
-            SaveState();
             base.OnClosing(e);
         }
 
@@ -152,6 +155,7 @@ namespace EQTool
                 settings.SpellWindowState = new Models.WindowState();
             }
             settings.SpellWindowState.Closed = true;
+            SaveState();
             Close();
         }
 

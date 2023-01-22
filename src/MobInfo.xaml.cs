@@ -40,7 +40,10 @@ namespace EQTool
                 WindowState = settings.MobWindowState.State;
             }
             InitializeComponent();
-
+            if (settings.MobWindowState != null)
+            {
+                settings.MobWindowState.Closed = false;
+            }
             SaveState();
             SizeChanged += DPSMeter_SizeChanged;
             StateChanged += SpellWindow_StateChanged;
@@ -160,6 +163,7 @@ namespace EQTool
                 settings.MobWindowState = new Models.WindowState();
             }
             settings.MobWindowState.Closed = true;
+            SaveState();
             Close();
         }
 
