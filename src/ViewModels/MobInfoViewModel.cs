@@ -18,10 +18,30 @@ namespace EQTool.ViewModels
             set
             {
                 _Results = value;
+                _ErrorResults = string.Empty;
                 Parse();
                 OnPropertyChanged();
+                OnPropertyChanged(nameof(HasErrors));
+                OnPropertyChanged(nameof(HasNoErrors));
             }
         }
+
+        private string _ErrorResults = string.Empty;
+
+        public string ErrorResults
+        {
+            get => _ErrorResults;
+            set
+            {
+                _ErrorResults = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(HasErrors));
+                OnPropertyChanged(nameof(HasNoErrors));
+            }
+        }
+
+        public Visibility HasNoErrors => !string.IsNullOrWhiteSpace(_ErrorResults) ? Visibility.Collapsed : Visibility.Visible;
+        public Visibility HasErrors => !string.IsNullOrWhiteSpace(_ErrorResults) ? Visibility.Visible : Visibility.Collapsed;
 
         private string _Url = string.Empty;
 

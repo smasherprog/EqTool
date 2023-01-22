@@ -1,6 +1,8 @@
 ﻿using EQTool.Services;
 using EQTool.Services.Spells.Log;
 using System.Diagnostics;
+using System.Net;
+using System.Net.Http;
 using System.Web;
 using System.Windows;
 using System.Windows.Input;
@@ -33,29 +35,49 @@ namespace EQTool
             var matched = conLogParse.ConMatch(e.Line);
             if (!string.IsNullOrWhiteSpace(matched))
             {
-                var name = HttpUtility.UrlEncode(matched.Trim().Replace(' ', '_'));
-                var url = $"https://wiki.project1999.com/{name}?action=raw";
-                var res = App.httpclient.GetAsync(url).Result;
-                if (res.StatusCode == System.Net.HttpStatusCode.OK)
+                mobInfoViewModel.Results = string.Empty;
+                try
                 {
-                    var response = res.Content.ReadAsStringAsync().Result;
-                    if (response.StartsWith("#REDIRECT"))
+                    var name = HttpUtility.UrlEncode(matched.Trim().Replace(' ', '_'));
+                    var url = $"https://wiki.project1999.com/{name}?action=raw";
+                    var res = App.httpclient.GetAsync(url).Result;
+                    if (res.StatusCode == System.Net.HttpStatusCode.OK)
                     {
-                        name = response.Replace("#REDIRECT", string.Empty)?.Replace("[[:", string.Empty)?.Replace("[[", string.Empty)?.Replace("]]", string.Empty)?.Trim();
-                        name = HttpUtility.UrlEncode(name.Replace(' ', '_'));
-                        url = $"https://wiki.project1999.com/{name}?action=raw";
-                        res = App.httpclient.GetAsync(url).Result;
-                        if (res.StatusCode == System.Net.HttpStatusCode.OK)
+                        var response = res.Content.ReadAsStringAsync().Result;
+                        if (response.StartsWith("#REDIRECT"))
                         {
-                            mobInfoViewModel.Results = res.Content.ReadAsStringAsync().Result;
+                            name = response.Replace("#REDIRECT", string.Empty)?.Replace("[[:", string.Empty)?.Replace("[[", string.Empty)?.Replace("]]", string.Empty)?.Trim();
+                            name = HttpUtility.UrlEncode(name.Replace(' ', '_'));
+                            url = $"https://wiki.project1999.com/{name}?action=raw";
+                            res = App.httpclient.GetAsync(url).Result;
+                            if (res.StatusCode == System.Net.HttpStatusCode.OK)
+                            {
+                                mobInfoViewModel.Results = res.Content.ReadAsStringAsync().Result;
+                            }
+                        }
+                        else
+                        {
+                            mobInfoViewModel.Results = response;
                         }
                     }
-                    else
+                }
+                catch (System.AggregateException er)
+                {
+                    if (er.InnerException != null && er.InnerException.GetType() == typeof(HttpRequestException))
                     {
-                        mobInfoViewModel.Results = response;
+                        var err = er.InnerException as HttpRequestException;
+                        if (err.InnerException?.GetType() == typeof(WebException))
+                        {
+                            var innererr = err.InnerException as WebException;
+                            mobInfoViewModel.ErrorResults = innererr.Message;
+                        }
+                        else
+                        {
+
+                            mobInfoViewModel.ErrorResults = err.Message;
+                        }
                     }
                 }
-
             }
         }
         private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)

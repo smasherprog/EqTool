@@ -48,7 +48,12 @@
                 <StackPanel.Resources>
                     <Style TargetType="TextBlock" BasedOn="{StaticResource ResourceKey=MyMobTextBoxWindowSyle}"/>
                 </StackPanel.Resources>
-                <StackPanel Orientation="Vertical" Margin="0, 0, 8, 0" Width="200">
+                <StackPanel Orientation="Vertical" Visibility="{Binding HasErrors}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock FontSize="16" Foreground="Red" Text="{Binding ErrorResults}"></TextBlock>
+                    </StackPanel>
+                </StackPanel>
+                <StackPanel Orientation="Vertical" Margin="0, 0, 8, 0" Width="200" Visibility="{Binding HasNoErrors}">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Name" Width="100"></TextBlock>
                         <TextBlock>
@@ -83,7 +88,7 @@
                     </StackPanel>
 
                 </StackPanel>
-                <StackPanel Orientation="Vertical" Width="200">
+                <StackPanel Orientation="Vertical" Width="200"  Visibility="{Binding HasNoErrors}">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="AC" Width="100"></TextBlock>
                         <TextBlock Text="{Binding AC}"></TextBlock>
@@ -119,7 +124,7 @@
                         <TextBlock Margin="10, 5, 0, 0" Text="{Binding Special}" TextWrapping="WrapWithOverflow" Width="195"></TextBlock>
                     </StackPanel>
                 </StackPanel>
-                <StackPanel Orientation="Vertical">
+                <StackPanel Orientation="Vertical" Visibility="{Binding HasNoErrors}">
                     <StackPanel Orientation="Horizontal">
                         <Image Source="{Binding ImageUrl}" Stretch="Uniform"  MaxHeight="200" MaxWidth="200" />
                     </StackPanel>
