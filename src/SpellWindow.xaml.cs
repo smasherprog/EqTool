@@ -56,6 +56,7 @@ namespace EQTool
             view.IsLiveSorting = true;
             view.LiveSortingProperties.Add(nameof(UISpell.SecondsLeftOnSpell));
             this.toolSettingsLoad = toolSettingsLoad;
+            SaveState();
             SizeChanged += DPSMeter_SizeChanged;
             StateChanged += SpellWindow_StateChanged;
             LocationChanged += DPSMeter_LocationChanged;

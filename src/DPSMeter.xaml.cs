@@ -60,6 +60,7 @@ namespace EQTool
             view.IsLiveSorting = true;
             view.LiveSortingProperties.Add(nameof(EntittyDPS.TotalDamage));
             this.toolSettingsLoad = toolSettingsLoad;
+            SaveState();
             SizeChanged += DPSMeter_SizeChanged;
             StateChanged += SpellWindow_StateChanged;
             LocationChanged += DPSMeter_LocationChanged;
