@@ -111,7 +111,6 @@ namespace EQTool
                 Width = Width
             };
             settings.SpellWindowState.State = WindowState;
-            settings.DpsWindowState.State = WindowState;
             toolSettingsLoad.Save(settings);
             Properties.Settings.Default.Save();
         }
