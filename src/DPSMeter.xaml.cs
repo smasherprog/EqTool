@@ -112,7 +112,6 @@ namespace EQTool
             };
             settings.DpsWindowState.State = WindowState;
             toolSettingsLoad.Save(settings);
-            Properties.Settings.Default.Save();
         }
 
         private void PollUI(object sender, EventArgs e)

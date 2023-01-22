@@ -112,7 +112,6 @@ namespace EQTool
             };
             settings.SpellWindowState.State = WindowState;
             toolSettingsLoad.Save(settings);
-            Properties.Settings.Default.Save();
         }
 
 

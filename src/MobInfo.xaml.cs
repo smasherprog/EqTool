@@ -1,5 +1,7 @@
-﻿using EQTool.Services;
+﻿using EQTool.Models;
+using EQTool.Services;
 using EQTool.Services.Spells.Log;
+using System;
 using System.Diagnostics;
 using System.Net;
 using System.Net.Http;
@@ -18,18 +20,63 @@ namespace EQTool
         private readonly LogParser logParser;
         private readonly ConLogParse conLogParse;
         private readonly ViewModels.MobInfoViewModel mobInfoViewModel;
-
-        public MobInfo(LogParser logParser, ConLogParse conLogParse)
+        private readonly EQToolSettings settings;
+        private readonly EQToolSettingsLoad toolSettingsLoad;
+        public MobInfo(LogParser logParser, ConLogParse conLogParse, EQToolSettings settings, EQToolSettingsLoad toolSettingsLoad)
         {
+            this.settings = settings;
+            this.toolSettingsLoad = toolSettingsLoad;
             this.logParser = logParser;
             this.conLogParse = conLogParse;
             this.logParser.LineReadEvent += LogParser_LineReadEvent;
             DataContext = mobInfoViewModel = new ViewModels.MobInfoViewModel();
             Topmost = true;
+            if (settings.MobWindowState != null && WindowBounds.isPointVisibleOnAScreen(settings.MobWindowState.WindowRect))
+            {
+                Left = settings.MobWindowState.WindowRect.Left;
+                Top = settings.MobWindowState.WindowRect.Top;
+                Height = settings.MobWindowState.WindowRect.Height;
+                Width = settings.MobWindowState.WindowRect.Width;
+                WindowState = settings.MobWindowState.State;
+            }
             InitializeComponent();
 
+            SaveState();
+            SizeChanged += DPSMeter_SizeChanged;
+            StateChanged += SpellWindow_StateChanged;
+            LocationChanged += DPSMeter_LocationChanged;
         }
 
+        private void SpellWindow_StateChanged(object sender, EventArgs e)
+        {
+            SaveState();
+        }
+
+        private void DPSMeter_LocationChanged(object sender, EventArgs e)
+        {
+            SaveState();
+        }
+
+        private void DPSMeter_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            SaveState();
+        }
+        private void SaveState()
+        {
+            if (settings.MobWindowState == null)
+            {
+                settings.MobWindowState = new Models.WindowState();
+            }
+            settings.MobWindowState.WindowRect = new Rect
+            {
+                X = Left,
+                Y = Top,
+                Height = Height,
+                Width = Width
+            };
+            settings.MobWindowState.State = WindowState;
+            toolSettingsLoad.Save(settings);
+        }
         private void LogParser_LineReadEvent(object sender, LogParser.LogParserEventArgs e)
         {
             var matched = conLogParse.ConMatch(e.Line);
@@ -108,6 +155,11 @@ namespace EQTool
 
         private void CloseWindow(object sender, RoutedEventArgs e)
         {
+            if (settings.MobWindowState == null)
+            {
+                settings.MobWindowState = new Models.WindowState();
+            }
+            settings.MobWindowState.Closed = true;
             Close();
         }
 

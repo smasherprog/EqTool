@@ -15,10 +15,12 @@ namespace EQTool.Models
         public double FontSize { get; set; }
 
         public string DefaultEqDirectory { get; set; }
-         
+
         public WindowState SpellWindowState { get; set; }
 
         public WindowState DpsWindowState { get; set; }
+
+        public WindowState MobWindowState { get; set; }
 
         public Themes Theme { get; set; } = Themes.Light;
 

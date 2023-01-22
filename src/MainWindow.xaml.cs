@@ -98,6 +98,10 @@ namespace EQTool
                 {
                     DPS(DpsMeterMenuItem, null);
                 }
+                if (EQToolSettings.MobWindowState == null || !EQToolSettings.MobWindowState.Closed)
+                {
+                    MobInfo(MobInfoMenuItem, null);
+                }
             }
 
             Hide();
