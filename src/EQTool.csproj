@@ -821,6 +821,9 @@
   <ItemGroup>
     <Resource Include="HyperlinkForward.png" />
   </ItemGroup>
+  <ItemGroup>
+    <Resource Include="toolbox.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="AfterResolveReferences">
     <ItemGroup>

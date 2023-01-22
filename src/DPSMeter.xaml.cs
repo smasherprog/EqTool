@@ -169,6 +169,11 @@ namespace EQTool
             (App.Current as App).OpenSpellsWindow();
         }
 
+        private void openmobinfo(object sender, RoutedEventArgs e)
+        {
+            (App.Current as App).OpenMobInfoWindow();
+        }
+
         private void copytoclipboard(object sender, RoutedEventArgs e)
         {
             var name = ((sender as Button).DataContext as dynamic)?.Name as string;

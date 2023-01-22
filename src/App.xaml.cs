@@ -242,6 +242,12 @@ namespace EQTool
             mainWindow.OpenMapWindow();
         }
 
+
+        public void OpenMobInfoWindow()
+        {
+            mainWindow.OpenMobInfoWindow();
+        }
+
         public void OpenSettingsWindow()
         {
             mainWindow.OpenSettingsWindow();

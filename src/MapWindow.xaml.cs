@@ -92,6 +92,11 @@ namespace EQTool
             Close();
         }
 
+        private void openmobinfo(object sender, RoutedEventArgs e)
+        {
+            (App.Current as App).OpenMobInfoWindow();
+        }
+
         private void opendps(object sender, RoutedEventArgs e)
         {
             (App.Current as App).OpenDPSWindow();

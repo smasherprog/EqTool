@@ -168,6 +168,10 @@ namespace EQTool
         {
             (App.Current as App).OpenMapWindow();
         }
+        private void openmobinfo(object sender, RoutedEventArgs e)
+        {
+            (App.Current as App).OpenMobInfoWindow();
+        }
 
     }
 }

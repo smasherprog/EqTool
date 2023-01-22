@@ -188,7 +188,11 @@ namespace EQTool
             {
                 mapwindow?.Close();
                 mapwindow = container.Resolve<MapWindow>();
-                mapwindow.Closed += (se, ee) => s.Checked = false;
+                mapwindow.Closed += (se, ee) =>
+                {
+                    s.Checked = false;
+                    mapwindow = null;
+                };
                 mapwindow.Show();
             }
             else
@@ -210,6 +214,18 @@ namespace EQTool
             }
         }
 
+        public void OpenMobInfoWindow()
+        {
+            if (MobInfoswindow != null)
+            {
+                _ = MobInfoswindow.Focus();
+            }
+            else
+            {
+                MobInfo(MobInfoMenuItem, null);
+            }
+        }
+
         private void MobInfo(object sender, EventArgs e)
         {
             var s = (System.Windows.Forms.MenuItem)sender;
@@ -218,7 +234,11 @@ namespace EQTool
             {
                 MobInfoswindow?.Close();
                 MobInfoswindow = container.Resolve<MobInfo>();
-                MobInfoswindow.Closed += (se, ee) => s.Checked = false;
+                MobInfoswindow.Closed += (se, ee) =>
+                {
+                    s.Checked = false;
+                    MobInfoswindow = null;
+                };
                 MobInfoswindow.Show();
             }
             else
@@ -236,7 +256,11 @@ namespace EQTool
             {
                 dpsmeter?.Close();
                 dpsmeter = container.Resolve<DPSMeter>();
-                dpsmeter.Closed += (se, ee) => s.Checked = false;
+                dpsmeter.Closed += (se, ee) =>
+                {
+                    s.Checked = false;
+                    dpsmeter = null;
+                };
                 dpsmeter.Show();
             }
             else
@@ -274,6 +298,7 @@ namespace EQTool
                         ToggleMenuButtons(true);
                     }
                     s.Checked = false;
+                    settingswindow = null;
                 };
             }
             else
@@ -303,7 +328,11 @@ namespace EQTool
             {
                 spellWindow?.Close();
                 spellWindow = container.Resolve<SpellWindow>();
-                spellWindow.Closed += (se, ee) => s.Checked = false;
+                spellWindow.Closed += (se, ee) =>
+                {
+                    s.Checked = false;
+                    spellWindow = null;
+                };
                 spellWindow.Show();
             }
             else
@@ -317,5 +346,6 @@ namespace EQTool
         {
             System.Windows.Application.Current.Shutdown();
         }
+
     }
 }
