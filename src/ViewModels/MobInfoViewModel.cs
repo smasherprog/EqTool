@@ -1,19 +1,53 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Text.RegularExpressions;
 using System.Web;
 using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Documents;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
 
 namespace EQTool.ViewModels
 {
+    public class TestUriViewModel : INotifyPropertyChanged
+    {
+        private string _Name = string.Empty;
+
+        public string Name
+        {
+            get => _Name;
+            set
+            {
+                _Name = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private string _Url = string.Empty;
+
+        public string Url
+        {
+            get => _Url;
+            set
+            {
+                _Url = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(HaseUrl));
+                OnPropertyChanged(nameof(HaseNoUrl));
+            }
+        }
+
+        public Visibility HaseNoUrl => string.IsNullOrWhiteSpace(Url) ? Visibility.Visible : Visibility.Collapsed;
+
+        public Visibility HaseUrl => string.IsNullOrWhiteSpace(Url) ? Visibility.Collapsed : Visibility.Visible;
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected void OnPropertyChanged([CallerMemberName] string name = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
+    }
+
     public class MobInfoViewModel : INotifyPropertyChanged
     {
         public string Title { get; set; } = "Mob Info";
@@ -226,9 +260,10 @@ namespace EQTool.ViewModels
                 OnPropertyChanged();
             }
         }
-        private ObservableCollection<TextBlock> _Specials = new ObservableCollection<TextBlock>();
 
-        public ObservableCollection<TextBlock> Specials
+        private ObservableCollection<TestUriViewModel> _Specials = new ObservableCollection<TestUriViewModel>();
+
+        public ObservableCollection<TestUriViewModel> Specials
         {
             get => _Specials;
             set
@@ -237,17 +272,46 @@ namespace EQTool.ViewModels
                 OnPropertyChanged();
             }
         }
-        private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
+
+        private ObservableCollection<TestUriViewModel> _KnownLoot = new ObservableCollection<TestUriViewModel>();
+
+        public ObservableCollection<TestUriViewModel> KnownLoot
         {
-            _ = Process.Start(new ProcessStartInfo(e.Uri.AbsoluteUri));
-            e.Handled = true;
+            get => _KnownLoot;
+            set
+            {
+                _KnownLoot = value;
+                OnPropertyChanged();
+            }
         }
 
-        private void Hyperlink_RequestNavigatebutton(object sender, RoutedEventArgs args)
+        private ObservableCollection<TestUriViewModel> _Factions = new ObservableCollection<TestUriViewModel>();
+
+        public ObservableCollection<TestUriViewModel> Factions
         {
-            var s = sender as Button;
-            var h = (s.Parent as System.Windows.Documents.InlineUIContainer).Parent as Hyperlink;
-            _ = Process.Start(new ProcessStartInfo(h.NavigateUri.AbsoluteUri));
+            get => _Factions;
+            set
+            {
+                _Factions = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private ObservableCollection<TestUriViewModel> _OpposingFactions = new ObservableCollection<TestUriViewModel>();
+
+        public ObservableCollection<TestUriViewModel> OpposingFactions
+        {
+            get => _OpposingFactions;
+            set
+            {
+                _OpposingFactions = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public static string StripHTML(string input)
+        {
+            return Regex.Replace(input, "<.*?>", string.Empty);
         }
 
         private void Parse()
@@ -261,9 +325,14 @@ namespace EQTool.ViewModels
             {
                 _ = Specials.Remove(item);
             }
+            spec = KnownLoot.ToList();
+            foreach (var item in spec)
+            {
+                _ = KnownLoot.Remove(item);
+            }
 
             var cleanresults = Results.Replace("\r\n", "\n");
-            var splits = cleanresults.Split('\n').Where(a => !string.IsNullOrWhiteSpace(a)).ToList();
+            var splits = cleanresults.Split('|').Where(a => !string.IsNullOrWhiteSpace(a)).Select(a => a.Trim().TrimStart('\n')).ToList();
             Name = GetValue("name", splits);
             Race = GetValue("race", splits);
             Class = GetValue("class", splits)?.Replace("[[", string.Empty).Replace("]]", string.Empty);
@@ -282,27 +351,88 @@ namespace EQTool.ViewModels
             AttacksPerRound = GetValue("attacks_per_round", splits);
             AttackSpeed = GetValue("attack_speed", splits);
             DamagePerHit = GetValue("damage_per_hit", splits);
-            var specials = GetValue("special", splits).Replace("<br />", string.Empty).Replace("<br/>", string.Empty).Replace("<br>", string.Empty).Replace("<br >", string.Empty).Split(',');
+            var specials = StripHTML(GetValue("special", splits)).Split(',');
             foreach (var item in specials)
             {
                 if (item.Contains("[["))
                 {
-                    var wrappertext = new TextBlock();
-                    var hyperlink = new Hyperlink();
                     var name = item.Replace("[[", string.Empty).Replace("]]", string.Empty).Trim();
-                    hyperlink.NavigateUri = new System.Uri($"https://wiki.project1999.com/{name}");
-                    hyperlink.RequestNavigate += Hyperlink_RequestNavigate;
-                    hyperlink.Inlines.Add(new TextBlock { Text = name, Padding = new Thickness(2, 0, 2, 0) });
-                    var b = new Button { Margin = new Thickness(1), FontSize = 7, Width = 14, Height = 14, ToolTip = "Open in web Browser", Content = new Image { Source = new BitmapImage(new Uri("pack://application:,,,/HyperlinkForward.png")) } };
-                    b.Click += Hyperlink_RequestNavigatebutton;
-                    hyperlink.Inlines.Add(b);
-                    wrappertext.Inlines.Add(hyperlink);
-                    Specials.Add(wrappertext);
+                    Specials.Add(new TestUriViewModel
+                    {
+                        Url = $"https://wiki.project1999.com/{name}",
+                        Name = name
+                    });
                 }
                 else
                 {
-                    var wrappertext = new TextBlock { Text = item };
-                    Specials.Add(wrappertext);
+                    Specials.Add(new TestUriViewModel
+                    {
+                        Url = string.Empty,
+                        Name = item
+                    });
+                }
+            }
+            specials = StripHTML(GetValue("known_loot", splits)).Split(new[] { '\n' }, System.StringSplitOptions.RemoveEmptyEntries);
+            foreach (var item in specials.Where(a => !string.IsNullOrWhiteSpace(a)))
+            {
+                var indexof = item.IndexOf("{{");
+                if (indexof != -1)
+                {
+                    var indexofend = item.IndexOf("}}");
+                    if (indexofend != -1)
+                    {
+                        var model = new TestUriViewModel();
+                        var diff = indexofend - (indexof + 3);
+                        model.Name = item.Substring(indexof + 3, diff).Trim();
+                        model.Url = $"https://wiki.project1999.com/" + model.Name.Replace(' ', '_');
+                        KnownLoot.Add(model);
+                    }
+                }
+                else
+                {
+                    KnownLoot.Add(new TestUriViewModel
+                    {
+                        Url = string.Empty,
+                        Name = item
+                    });
+                }
+            }
+
+            specials = StripHTML(GetValue("factions", splits)).Split(new[] { '\n' }, System.StringSplitOptions.RemoveEmptyEntries);
+            foreach (var item in specials)
+            {
+                var indexof = item.IndexOf("[[");
+                if (indexof != -1)
+                {
+                    var indexofend = item.IndexOf("]]");
+                    if (indexofend != -1)
+                    {
+                        var model = new TestUriViewModel();
+                        var diff = indexofend - (indexof + 2);
+                        model.Name = item.Substring(indexof + 2, diff).Trim();
+                        model.Url = $"https://wiki.project1999.com/" + model.Name.Replace(' ', '_');
+                        model.Name += "  " + item.Substring(indexofend + 2).Trim();
+                        Factions.Add(model);
+                    }
+                }
+            }
+
+            specials = StripHTML(GetValue("opposing_factions", splits)).Split(new[] { '\n' }, System.StringSplitOptions.RemoveEmptyEntries);
+            foreach (var item in specials)
+            {
+                var indexof = item.IndexOf("[[");
+                if (indexof != -1)
+                {
+                    var indexofend = item.IndexOf("]]");
+                    if (indexofend != -1)
+                    {
+                        var model = new TestUriViewModel();
+                        var diff = indexofend - (indexof + 2);
+                        model.Name = item.Substring(indexof + 2, diff).Trim();
+                        model.Url = $"https://wiki.project1999.com/" + model.Name.Replace(' ', '_');
+                        model.Name += "  " + item.Substring(indexofend + 2).Trim();
+                        OpposingFactions.Add(model);
+                    }
                 }
             }
 
@@ -322,7 +452,9 @@ namespace EQTool.ViewModels
 
         private string GetValue(string propname, List<string> lines)
         {
-            return lines.FirstOrDefault(a => a.StartsWith("| " + propname))?.Split('=')?.LastOrDefault()?.Trim();
+            var ret = lines.FirstOrDefault(a => a.StartsWith(propname));
+            var index = ret.IndexOf('=');
+            return index != -1 ? ret.Substring(index + 1).Trim() : string.Empty;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
