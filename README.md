@@ -43,7 +43,6 @@ Features:
 <li>Finish Map</li>
 <li>Rename Application to Pig Parse</li>
 <li>Add ability to delete individual spells and entire section</li>
-<li>Make settings window respect theme</li>
 <li>Enrage alert/advanced alert.</li>
 <li>charm break alert</li>
 <liMake settings window and Mob window remember last position/size/state</li>
