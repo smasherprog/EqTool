@@ -31,7 +31,7 @@ Features:
 <li>Timer Cancel Crypt Camp</li>
 <li>Cancel Timer Crypt Camp</li>
 </ul> 
-<img width="880" alt="image" src="https://user-images.githubusercontent.com/3393733/212717548-652c9757-9d7b-4caa-a5dc-e2931ff036f6.png">
+<img width="808" alt="image" src="https://user-images.githubusercontent.com/3393733/215292103-89c83b08-c495-4b65-806e-beec92ade86e.png">
 
 <h4>System Tray Icon</h4>
 <img width="152" alt="image" src="https://user-images.githubusercontent.com/3393733/212717141-6e26b9af-660a-493d-9f73-2c3464b7c224.png">
@@ -39,7 +39,6 @@ Features:
 <h4>TO DO List</h4>
 <ul>
 <li>Add donals BP to timers list</li>
-<li>Add window for mob info that pulls from wiki when a mob is con'd. Should be minimalist: hp, ac, attacks, resists, loot, factions (In Progress)</li>
 <li>Finish Map</li>
 <li>Rename Application to Pig Parse</li>
 <li>Add ability to delete individual spells and entire section</li>
