@@ -18,7 +18,8 @@ Features:
 <li>Detect EQ directory location instead of user required to enter it.</li> 
 <li>Detect Spells cast on others (this is a best guess as I am reading the log file so chloroplast and Regrowth of the growth have the same message)</li>
 <li>Filter spells show by class</li> 
-<li>Mob Info Window gives details about mobs tht you con in game. Click the name to goto the Wiki -- More info will be added soon!</li>
+<li>Remove Spells from List if "Worn off message occurs"</li> 
+<li>Mob Info Window gives details about mobs tht you con in game.</li>
 <li>Automatically remove dead npc/player from the spell list.</li>
 <li>DPS window. Saves fight data to a CSV so you can review later!</li>
 <li>Auto detect level and class!</li>
@@ -31,7 +32,7 @@ Features:
 <li>Timer Cancel Crypt Camp</li>
 <li>Cancel Timer Crypt Camp</li>
 </ul> 
-<img width="880" alt="image" src="https://user-images.githubusercontent.com/3393733/212717548-652c9757-9d7b-4caa-a5dc-e2931ff036f6.png">
+<img width="808" alt="image" src="https://user-images.githubusercontent.com/3393733/215292103-89c83b08-c495-4b65-806e-beec92ade86e.png">
 
 <h4>System Tray Icon</h4>
 <img width="152" alt="image" src="https://user-images.githubusercontent.com/3393733/212717141-6e26b9af-660a-493d-9f73-2c3464b7c224.png">
@@ -39,11 +40,9 @@ Features:
 <h4>TO DO List</h4>
 <ul>
 <li>Add donals BP to timers list</li>
-<li>Add window for mob info that pulls from wiki when a mob is con'd. Should be minimalist: hp, ac, attacks, resists, loot, factions (In Progress)</li>
 <li>Finish Map</li>
 <li>Rename Application to Pig Parse</li>
 <li>Add ability to delete individual spells and entire section</li>
-<li>Make settings window respect theme</li>
 <li>Enrage alert/advanced alert.</li>
 <li>charm break alert</li>
 <liMake settings window and Mob window remember last position/size/state</li>
