@@ -5,14 +5,15 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EQTool"  
         xmlns:localmodels="clr-namespace:EQTool.Models"
+        Style="{StaticResource MySettingsWindowSyle}"
         mc:Ignorable="d"
-        Title="Settings" Height="600" Width="400" FontSize="{DynamicResource GlobalFontSize}">
+        Title="Settings" Height="600" Width="400">
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
     </Window.Resources>
     <ScrollViewer  HorizontalScrollBarVisibility="Auto">
 
-        <StackPanel Orientation="Vertical" >
+        <StackPanel Orientation="Vertical"> 
             <StackPanel Orientation="Vertical" Visibility="{Binding MissingConfiguration, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}">
                 <TextBlock Text="Configuration missing!" FontWeight="Bold" FontSize="20" Foreground="Red"/>
                 <TextBlock Text="Select your EQ path, and make sure logging is enabled!" FontWeight="Bold" FontSize="14" />
@@ -38,29 +39,29 @@
             </StackPanel>
             <StackPanel Orientation="Horizontal">
                 <TextBlock Text="Theme"  FontWeight="Bold"  VerticalAlignment="Center" MinWidth="100"/>
-                <ComboBox Name="themecombobox" DisplayMemberPath="Key" SelectedValuePath="Value" SelectionChanged="themescombobox_SelectionChanged" MinWidth="100"/>
+                <ComboBox Name="themecombobox" DisplayMemberPath="Key" SelectedValuePath="Value" SelectionChanged="themescombobox_SelectionChanged" MinWidth="150"/>
             </StackPanel>
-            <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" Visibility="{Binding NotMissingConfiguration, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Visible}">
+            <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" Visibility="{Binding NotMissingConfiguration, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Visible}"> 
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Character" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
                     <TextBlock Text="{Binding ActivePlayer.Player.Name}" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Class" VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
-                    <ComboBox  SelectedItem="{Binding ActivePlayer.Player.PlayerClass}" ItemsSource="{Binding PlayerClasses}" MinWidth="100"></ComboBox>
+                    <ComboBox SelectedItem="{Binding ActivePlayer.Player.PlayerClass}" ItemsSource="{Binding PlayerClasses}" MinWidth="150"></ComboBox>
                 </StackPanel>
 
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Zone" FontWeight="Bold" VerticalAlignment="Center" MinWidth="100"/>
-                    <ComboBox SelectedItem="{Binding ActivePlayer.Player.Zone}" ItemsSource="{Binding Zones}"  SelectionChanged="zoneselectionchanged" MinWidth="100"/>
+                    <ComboBox SelectedItem="{Binding ActivePlayer.Player.Zone}" ItemsSource="{Binding Zones}"  SelectionChanged="zoneselectionchanged" MinWidth="150"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Your Level"  FontWeight="Bold" VerticalAlignment="Center" MinWidth="100"/>
-                    <ComboBox SelectedItem="{Binding ActivePlayer.Player.Level}" ItemsSource="{Binding Levels}" MinWidth="100"/>
+                    <ComboBox SelectedItem="{Binding ActivePlayer.Player.Level}" ItemsSource="{Binding Levels}" MinWidth="150"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Font Size"  FontWeight="Bold"  VerticalAlignment="Center" MinWidth="100"/>
-                    <ComboBox  SelectedItem="{Binding FontSize}"  ItemsSource="{Binding FontSizes}" SelectionChanged="fontsizescombobox_SelectionChanged" MinWidth="100"/>
+                    <ComboBox  SelectedItem="{Binding FontSize}"  ItemsSource="{Binding FontSizes}" SelectionChanged="fontsizescombobox_SelectionChanged" MinWidth="150"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="DPS Opacity"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
@@ -75,7 +76,7 @@
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Spells"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
-                    <CheckBox x:Name="BestGuessSpells" Checked="GuessSpells_Checked"  Unchecked="GuessSpells_Unchecked" >Best Guess Spells and Effects</CheckBox>
+                    <CheckBox x:Name="BestGuessSpells" Checked="GuessSpells_Checked"  Unchecked="GuessSpells_Unchecked">Best Guess Spells and Effects</CheckBox>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Spells"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
@@ -89,7 +90,7 @@
                              Name="spellbyclassselection" 
                              SelectionMode="Multiple" 
                              SelectionChanged="spellbyclassselection_SelectionChanged" 
-                             MinWidth="100">
+                             MinWidth="150">
                         </ListBox>
                     </StackPanel>
                 </StackPanel>

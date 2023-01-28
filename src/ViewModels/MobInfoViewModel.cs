@@ -1,9 +1,16 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Web;
 using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Documents;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
 
 namespace EQTool.ViewModels
 {
@@ -219,16 +226,28 @@ namespace EQTool.ViewModels
                 OnPropertyChanged();
             }
         }
-        private string _Special = string.Empty;
+        private ObservableCollection<TextBlock> _Specials = new ObservableCollection<TextBlock>();
 
-        public string Special
+        public ObservableCollection<TextBlock> Specials
         {
-            get => _Special;
+            get => _Specials;
             set
             {
-                _Special = value;
+                _Specials = value;
                 OnPropertyChanged();
             }
+        }
+        private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
+        {
+            _ = Process.Start(new ProcessStartInfo(e.Uri.AbsoluteUri));
+            e.Handled = true;
+        }
+
+        private void Hyperlink_RequestNavigatebutton(object sender, RoutedEventArgs args)
+        {
+            var s = sender as Button;
+            var h = (s.Parent as System.Windows.Documents.InlineUIContainer).Parent as Hyperlink;
+            _ = Process.Start(new ProcessStartInfo(h.NavigateUri.AbsoluteUri));
         }
 
         private void Parse()
@@ -237,6 +256,12 @@ namespace EQTool.ViewModels
             {
                 return;
             }
+            var spec = Specials.ToList();
+            foreach (var item in spec)
+            {
+                _ = Specials.Remove(item);
+            }
+
             var cleanresults = Results.Replace("\r\n", "\n");
             var splits = cleanresults.Split('\n').Where(a => !string.IsNullOrWhiteSpace(a)).ToList();
             Name = GetValue("name", splits);
@@ -257,7 +282,30 @@ namespace EQTool.ViewModels
             AttacksPerRound = GetValue("attacks_per_round", splits);
             AttackSpeed = GetValue("attack_speed", splits);
             DamagePerHit = GetValue("damage_per_hit", splits);
-            Special = GetValue("special", splits)?.Replace("<br />", string.Empty).Replace("<br/>", string.Empty);
+            var specials = GetValue("special", splits).Replace("<br />", string.Empty).Replace("<br/>", string.Empty).Replace("<br>", string.Empty).Replace("<br >", string.Empty).Split(',');
+            foreach (var item in specials)
+            {
+                if (item.Contains("[["))
+                {
+                    var wrappertext = new TextBlock();
+                    var hyperlink = new Hyperlink();
+                    var name = item.Replace("[[", string.Empty).Replace("]]", string.Empty).Trim();
+                    hyperlink.NavigateUri = new System.Uri($"https://wiki.project1999.com/{name}");
+                    hyperlink.RequestNavigate += Hyperlink_RequestNavigate;
+                    hyperlink.Inlines.Add(new TextBlock { Text = name, Padding = new Thickness(2, 0, 2, 0) });
+                    var b = new Button { Margin = new Thickness(1), FontSize = 7, Width = 14, Height = 14, ToolTip = "Open in web Browser", Content = new Image { Source = new BitmapImage(new Uri("pack://application:,,,/HyperlinkForward.png")) } };
+                    b.Click += Hyperlink_RequestNavigatebutton;
+                    hyperlink.Inlines.Add(b);
+                    wrappertext.Inlines.Add(hyperlink);
+                    Specials.Add(wrappertext);
+                }
+                else
+                {
+                    var wrappertext = new TextBlock { Text = item };
+                    Specials.Add(wrappertext);
+                }
+            }
+
             if (!string.IsNullOrWhiteSpace(Name))
             {
                 var name = HttpUtility.UrlEncode(Name.Replace(' ', '_'));
