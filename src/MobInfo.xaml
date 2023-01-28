@@ -179,7 +179,7 @@
                     </ListView>
                 </StackPanel>
                 <StackPanel Orientation="Vertical" Visibility="{Binding HasNoErrors}">
-                    <TextBlock>Knwon Loot</TextBlock>
+                    <TextBlock>Known Loot</TextBlock>
                     <ListView Margin="10, 0, 0, 0" Style="{StaticResource MyListViewStyle}" ItemsSource="{Binding KnownLoot}">
                         <ListView.ItemTemplate>
                             <DataTemplate>

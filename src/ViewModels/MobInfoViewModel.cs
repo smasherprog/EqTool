@@ -351,15 +351,15 @@ namespace EQTool.ViewModels
             AttacksPerRound = GetValue("attacks_per_round", splits);
             AttackSpeed = GetValue("attack_speed", splits);
             DamagePerHit = GetValue("damage_per_hit", splits);
-            var specials = StripHTML(GetValue("special", splits)).Split(',');
+            var specials = StripHTML(GetValue("special", splits)).Split(new[] { ',', '\n' });
             foreach (var item in specials)
             {
                 if (item.Contains("[["))
                 {
-                    var name = item.Replace("[[", string.Empty).Replace("]]", string.Empty).Trim();
+                    var name = item.Replace("[[", string.Empty).Replace("]]", string.Empty).Trim('*').Trim();
                     Specials.Add(new TestUriViewModel
                     {
-                        Url = $"https://wiki.project1999.com/{name}",
+                        Url = $"https://wiki.project1999.com/" + name.Replace(' ', '_'),
                         Name = name
                     });
                 }
@@ -368,7 +368,7 @@ namespace EQTool.ViewModels
                     Specials.Add(new TestUriViewModel
                     {
                         Url = string.Empty,
-                        Name = item
+                        Name = item.Trim()
                     });
                 }
             }

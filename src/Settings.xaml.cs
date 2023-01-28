@@ -360,7 +360,7 @@ namespace EQTool
         {
             var format = "ddd MMM dd HH:mm:ss yyyy";
             var d = DateTime.Now;
-            var line = "[" + d.ToString(format) + "] Gozzrem regards you indifferently -- You could probably win this fight.";
+            var line = "[" + d.ToString(format) + "] Vilefang regards you indifferently -- You could probably win this fight.";
             logParser.Push(new LogParser.LogParserEventArgs { Line = line });
         }
 

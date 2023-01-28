@@ -140,5 +140,77 @@ namespace EQtoolsTests
             Assert.AreEqual("Paladin", model.Class);
             // Assert.AreEqual("[[Lava Breath]], Enrage, Summon, Uncharmable, Unfearable, Unmezzable, See Invis", model.Special);
         }
+
+
+
+        private const string ResponsFromServer3 = @"{{Velious Era}}
+{{Namedmobpage
+
+| imagefilename     = npc_vilefang.png
+
+| emu_id            = 123036
+| illia_id          = 7972
+
+| name              = Vilefang
+| race              = Giant Snake
+| class             = [[Warrior]]
+| level             = 60
+| agro_radius       = 75
+| run_speed         = 1.8
+
+| zone              = [[Dragon Necropolis]]
+| location          = 100% @ (-315, -1257)
+| respawn_time      = 1 Day
+
+| AC                = 511
+| HP                = 19000
+| HP_regen          = 13
+| mana_regen        = 0
+
+| attacks_per_round = 2
+| attack_speed      = 81%
+| damage_per_hit    = 142  - 284
+| special           = 
+High MR, Summons
+*[[Blinding Poison III]]
+*[[Deadly Poison]]
+
+| description = The single target blind can be cast from well outside melee range. [[Nightmare Hide]] can remove it.
+
+| known_loot = 
+
+<ul><li>  {{:Infestation}}                   <span class='drare'>(Common)</span> <span class='ddb'>[Overall: 50.0%]</span>
+</li><li> {{:Poison Etched Wristband}}       <span class='drare'>(Common)</span> <span class='ddb'>[Overall: 50.0%]</span>
+</li><li> {{:Chipped Fang}}                  <span class='drare'>(Always)</span> <span class='ddb'>[Overall: 17.5%]</span>
+</li><li> {{:Old Dragon Horn}}               <span class='drare'>(Common)</span> <span class='ddb'>[Overall: 17.5%]</span>
+</li></ul>
+
+| factions = 
+
+* None
+
+| opposing_factions = 
+
+* None
+
+| related_quests = 
+
+* [[Ralgyn's Promise]]
+
+}}
+
+[[Category:Dragon Necropolis]]";
+
+        [TestMethod]
+        public void ParseName3()
+        {
+            var model = new MobInfoViewModel
+            {
+                Results = ResponsFromServer3
+            };
+            Assert.AreEqual("Vilefang", model.Name);
+            Assert.AreEqual("Warrior", model.Class);
+            // Assert.AreEqual("[[Lava Breath]], Enrage, Summon, Uncharmable, Unfearable, Unmezzable, See Invis", model.Special);
+        }
     }
 }
