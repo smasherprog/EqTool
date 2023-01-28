@@ -21,8 +21,11 @@ namespace EQTool
         private readonly LogCustomTimer logCustomTimer;
         private readonly EQToolSettings settings;
         private readonly EQToolSettingsLoad toolSettingsLoad;
-        public SpellWindow(EQToolSettings settings, SpellWindowViewModel spellWindowViewModel, LogParser logParser, SpellLogParse spellLogParse, LogDeathParse logDeathParse, LogCustomTimer logCustomTimer, EQToolSettingsLoad toolSettingsLoad)
+        private readonly SpellWornOffLogParse spellWornOffLogParse;
+
+        public SpellWindow(SpellWornOffLogParse spellWornOffLogParse, EQToolSettings settings, SpellWindowViewModel spellWindowViewModel, LogParser logParser, SpellLogParse spellLogParse, LogDeathParse logDeathParse, LogCustomTimer logCustomTimer, EQToolSettingsLoad toolSettingsLoad)
         {
+            this.spellWornOffLogParse = spellWornOffLogParse;
             this.settings = settings;
             this.logCustomTimer = logCustomTimer;
             this.logDeathParse = logDeathParse;
@@ -99,6 +102,9 @@ namespace EQTool
 
             var canceltimer = logCustomTimer.GetCancelTimer(e.Line);
             spellWindowViewModel.TryRemoveCustom(canceltimer);
+
+            var spelltoremove = spellWornOffLogParse.MatchSpell(e.Line);
+            spellWindowViewModel.TryRemoveUnambiguousSpell(spelltoremove);
         }
 
         private void SaveState()

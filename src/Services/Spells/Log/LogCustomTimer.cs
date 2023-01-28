@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Diagnostics;
 using System.Linq;
 
 namespace EQTool.Services.Spells.Log
@@ -30,7 +29,6 @@ namespace EQTool.Services.Spells.Log
             }
 
             var message = linelog.Substring(27).Trim();
-            Debug.WriteLine($"Custom Timer: " + message);
             var timer = GetStartTimer(message, StartTimer);
             if (timer != null)
             {
@@ -74,7 +72,6 @@ namespace EQTool.Services.Spells.Log
             }
 
             var message = linelog.Substring(27).Trim();
-            Debug.WriteLine($"Custom Timer: " + message);
             var nametoremove = GetCancelTimer(message, CancelTimer);
             if (!string.IsNullOrWhiteSpace(nametoremove))
             {

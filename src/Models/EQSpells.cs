@@ -89,6 +89,7 @@ namespace EQTool.Models
         public const string Your = "Your ";
         public const string You = "You ";
         public const string SpaceYou = " You ";
+        public const string SpellHasWornoff = "spell has worn off.";
         private const string InvisMessage = " fades away";
         private readonly ParseSpells_spells_us parseSpells;
         private readonly SpellIcons spellIcons;

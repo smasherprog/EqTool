@@ -1,5 +1,4 @@
 ﻿using EQTool.ViewModels;
-using System.Diagnostics;
 
 namespace EQTool.Services.Spells.Log
 {
@@ -18,7 +17,6 @@ namespace EQTool.Services.Spells.Log
             if (string.IsNullOrWhiteSpace(linelog) || linelog.Length >= 27)
             {
                 var message = linelog.Substring(27);
-                Debug.WriteLine($"LevelLogParse: " + message);
                 if (message.StartsWith(YouHaveGainedALevel))
                 {
                     var levelstring = message.Replace(YouHaveGainedALevel, string.Empty).Trim().TrimEnd('!');

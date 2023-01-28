@@ -1,6 +1,5 @@
 ﻿using EQTool.Models;
 using EQTool.ViewModels;
-using System.Diagnostics;
 
 namespace EQTool.Services.Spells.Log
 {
@@ -22,7 +21,6 @@ namespace EQTool.Services.Spells.Log
         public SpellParsingMatch MatchSpell(string linelog)
         {
             var message = linelog.Substring(27);
-            Debug.WriteLine($"SpellParse: " + message);
             if (message.StartsWith(EQSpells.YouSpellisInterupted))
             {
                 activePlayer.UserCastingSpell = null;

@@ -209,6 +209,7 @@
     <Compile Include="Services\Map\MapLoad.cs" />
     <Compile Include="Services\Spells\Log\ConLogParse.cs" />
     <Compile Include="Services\Spells\Log\LevelLogParse.cs" />
+    <Compile Include="Services\Spells\Log\SpellWornOffLogParse.cs" />
     <Compile Include="Services\Spells\SpellUIExtentions.cs" />
     <Compile Include="Services\WindowBounds.cs" />
     <Compile Include="Services\LogParser.cs" />

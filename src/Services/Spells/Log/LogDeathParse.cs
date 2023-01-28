@@ -1,6 +1,5 @@
 ﻿using EQTool.Models;
 using System;
-using System.Diagnostics;
 
 namespace EQTool.Services.Spells.Log
 {
@@ -23,7 +22,6 @@ namespace EQTool.Services.Spells.Log
             }
 
             var message = linelog.Substring(27);
-            Debug.WriteLine($"DeathParse: " + message);
             if (message.Contains(HasBeenSlainBy))
             {
                 var nameofthingindex = message.IndexOf(HasBeenSlainBy);
