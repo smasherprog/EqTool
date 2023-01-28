@@ -1,9 +1,12 @@
 # EqTool
 
+<h2>THIS PROGRAM WORKS SOLELY BY READING YOUR LOG FILE. This is legal according to the <a href="https://www.project1999.com/forums/showthread.php?t=325349">rules.</a></h2>
+<img width="851" alt="image" src="https://user-images.githubusercontent.com/3393733/214930917-994fa61b-f1c8-414b-9761-1c93ca247b63.png">
+
 Instructions:
 <ul>
 <li>
-<h2>Download the latest <a href="https://github.com/smasherprog/EqTool/releases/download/1.0.1.744/EQTool_1.0.1.744.zip">EQTool.zip</a>, Unzip it and run it.</h2>
+<h2>Download the latest <a href="https://github.com/smasherprog/EqTool/releases/download/1.0.1.765/EQTool_1.0.1.765.zip">EQTool.zip</a>, Unzip it and run it.</h2>
 </li>
 <li>The program runs in the system tray. Look there to reopen spells window or settings! Program will check for updates on startup and self update if required, but if you want to check for a new Update, use the menu in the system tray!</li>
 </ul>
