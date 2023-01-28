@@ -19,7 +19,7 @@ Features:
 <li>Detect Spells cast on others (this is a best guess as I am reading the log file so chloroplast and Regrowth of the growth have the same message)</li>
 <li>Filter spells show by class</li> 
 <li>Remove Spells from List if "Worn off message occurs"</li> 
-<li>Mob Info Window gives details about mobs tht you con in game. Click the name to goto the Wiki -- More info will be added soon!</li>
+<li>Mob Info Window gives details about mobs tht you con in game.</li>
 <li>Automatically remove dead npc/player from the spell list.</li>
 <li>DPS window. Saves fight data to a CSV so you can review later!</li>
 <li>Auto detect level and class!</li>
