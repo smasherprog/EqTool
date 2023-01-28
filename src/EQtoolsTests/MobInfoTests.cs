@@ -79,5 +79,66 @@ namespace EQtoolsTests
             // Assert.AreEqual("[[Lava Breath]], Enrage, Summon, Uncharmable, Unfearable, Unmezzable, See Invis", model.Special);
         }
 
+        private const string ResponsFromServer2 = @"{{Classic Era}}
+{{Namedmobpage
+
+| imagefilename     = npc_taia_lyfol.png
+
+| emu_id            = 51095
+| illia_id          = 20183
+
+| name              = Taia Lyfol
+| race              = [[Erudite]]
+| class             = [[Paladin]]
+| level             = 37
+| agro_radius       = 35
+| run_speed         = 1.25
+
+| zone              = [[Lake Rathetear]]
+| location          = 100% @ (2573, -895)
+
+| AC                = 259
+| HP                = 1739
+| HP_regen          = 1
+| mana_regen        = 1
+
+| attacks_per_round = 2
+| attack_speed      = 100%
+| damage_per_hit    = 14  - 88
+| special           = Root, Stun (spell), Heal, Lay on Hands (rarely)
+
+| description = AFK camp, 6min 40s respawn timer. This NPC will not drop any money or items ever!
+
+| known_loot = 
+
+* None
+
+| factions = 
+
+* None
+
+| opposing_factions = 
+
+* None
+
+| related_quests = 
+
+* None
+
+}}
+
+[[Category:Lake Rathetear]]";
+
+        [TestMethod]
+        public void ParseName1()
+        {
+            var model = new MobInfoViewModel
+            {
+                Results = ResponsFromServer2
+            };
+            Assert.AreEqual("Taia Lyfol", model.Name);
+            Assert.AreEqual("Paladin", model.Class);
+            // Assert.AreEqual("[[Lava Breath]], Enrage, Summon, Uncharmable, Unfearable, Unmezzable, See Invis", model.Special);
+        }
     }
 }
