@@ -23,6 +23,7 @@ Features:
 <li>Automatically remove dead npc/player from the spell list.</li>
 <li>DPS window. Saves fight data to a CSV so you can review later!</li>
 <li>Auto detect level and class!</li>
+<li>Mapping is Work in Progress!!!</li>
 <li>Timers (Only Minutes are supported)</li>
 </ul>
 <h5>Timers (Only Minutes are supported) -- All below commands work in regular say!</h5>
