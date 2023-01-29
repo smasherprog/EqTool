@@ -18,9 +18,11 @@ namespace EQTool.Services
         private readonly EQToolSettings settings;
         private readonly LevelLogParse levelLogParse;
         private readonly ZoneParser zoneParser;
+        private readonly EQToolSettingsLoad toolSettingsLoad;
 
-        public LogParser(ActivePlayer activePlayer, IAppDispatcher appDispatcher, EQToolSettings settings, LevelLogParse levelLogParse, ZoneParser zoneParser)
+        public LogParser(EQToolSettingsLoad toolSettingsLoad, ActivePlayer activePlayer, IAppDispatcher appDispatcher, EQToolSettings settings, LevelLogParse levelLogParse, ZoneParser zoneParser)
         {
+            this.toolSettingsLoad = toolSettingsLoad;
             this.zoneParser = zoneParser;
             this.activePlayer = activePlayer;
             this.appDispatcher = appDispatcher;
@@ -96,6 +98,7 @@ namespace EQTool.Services
                                 if (p != null)
                                 {
                                     p.Zone = matchedzone;
+                                    toolSettingsLoad.Save(settings);
                                 }
                             }
                             if (line.Length > 27)

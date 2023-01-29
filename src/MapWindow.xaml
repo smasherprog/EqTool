@@ -67,7 +67,7 @@
                     IsRotationEnabled="False" 
                 >
                 <HelixToolkit:HelixViewport3D.Camera>
-                    <OrthographicCamera Width="500" LookDirection="{Binding LookDirection}" Position="{Binding Position}"  UpDirection="0, 1, 0"/>
+                    <OrthographicCamera Width="500" LookDirection="{Binding LookDirection}" Position="{Binding Position}" Changed="OrthographicCamera_Changed"  UpDirection="0, 1, 0"/>
                 </HelixToolkit:HelixViewport3D.Camera>
             </HelixToolkit:HelixViewport3D>
         </Grid>

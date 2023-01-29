@@ -3,10 +3,12 @@ using EQTool.Services.Map;
 using EQTool.ViewModels;
 using HelixToolkit.Wpf;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Timers;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media.Media3D;
 
 namespace EQTool
 {
@@ -56,7 +58,9 @@ namespace EQTool
             var pos = locationParser.Match(e.Line);
             if (pos.HasValue)
             {
-                mapViewModel.UpdateLocation(pos.Value);
+                var newval = new Point3D(pos.Value.Y, pos.Value.X, -10);
+                viewport3d.Camera.LookAt(newval, 10);
+                mapViewModel.UpdateLocation(pos.Value, viewport3d.Camera.Position);
             }
             else
             {
@@ -126,6 +130,11 @@ namespace EQTool
             {
                 mapViewModel.MouseWorldCoordinates = hit.RayHit.PointHit;
             }
+        }
+
+        private void OrthographicCamera_Changed(object sender, System.EventArgs e)
+        {
+            Debug.WriteLine("Changed");
         }
     }
 }

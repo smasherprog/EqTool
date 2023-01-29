@@ -26,7 +26,6 @@ namespace EQTool.ViewModels
             this.appDispatcher = appDispatcher;
         }
 
-
         private ArrowVisual3D PlayerVisualLocation;
         private SphereVisual3D PlayerVisualLocationSphere;
         private Point3D? Lastlocation;
@@ -188,21 +187,22 @@ namespace EQTool.ViewModels
             _ = LoadMap(z);
         }
 
-        public void UpdateLocation(Point3D value1)
+        public void UpdateLocation(Point3D value1, Point3D camera_position)
         {
             appDispatcher.DispatchUI(() =>
             {
-                var newval = new Point3D(value1.Y, value1.X, -10);
+                var newval = new Point3D(value1.Y, value1.X, -40);
                 if (!Lastlocation.HasValue)
                 {
-                    Lastlocation = new Point3D(value1.Y, value1.X + 5, -10);
+                    Lastlocation = new Point3D(value1.Y, value1.X, newval.Z);
                 }
-                var vec = newval - Lastlocation.Value;
+                var vec = newval - new Point3D(Lastlocation.Value.X, Lastlocation.Value.Y, -40);
                 vec.Normalize();
-                var endpos = ((vec * 34) + newval.ToVector3D()).ToPoint3D();
-                Lastlocation = newval;
+                var endpos = ((vec * 30) + newval.ToVector3D()).ToPoint3D();
+                Lastlocation = new Point3D(value1.Y, value1.X, newval.Z);
                 _ = DrawItems.Remove(PlayerVisualLocation);
                 _ = DrawItems.Remove(PlayerVisualLocationSphere);
+
                 PlayerVisualLocationSphere = new SphereVisual3D
                 {
                     Radius = 8,
