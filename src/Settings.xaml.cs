@@ -158,7 +158,7 @@ namespace EQTool
                 var result = fbd.ShowDialog();
                 if (result == System.Windows.Forms.DialogResult.OK && !string.IsNullOrWhiteSpace(fbd.SelectedPath))
                 {
-                    if (FindEq.IsValid(fbd.SelectedPath))
+                    if (FindEq.IsProject1999Folder(fbd.SelectedPath))
                     {
                         SettingsWindowData.EqPath = settings.DefaultEqDirectory = fbd.SelectedPath;
                         TryUpdateSettings();
@@ -166,7 +166,7 @@ namespace EQTool
                     }
                     else
                     {
-                        _ = System.Windows.Forms.MessageBox.Show("eqgame.exe was not found in this folder!", "Message");
+                        _ = System.Windows.Forms.MessageBox.Show("eqgame.exe was not found in this folder. Make sure this is your project 1999 Folder!", "Message");
                     }
                 }
             }

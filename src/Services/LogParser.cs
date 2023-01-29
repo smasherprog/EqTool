@@ -53,7 +53,7 @@ namespace EQTool.Services
 
         private void Poll(object sender, EventArgs e)
         {
-            if (!FindEq.IsValid(settings.DefaultEqDirectory))
+            if (!FindEq.HasLogFiles(settings.DefaultEqDirectory))
             {
                 return;
             }

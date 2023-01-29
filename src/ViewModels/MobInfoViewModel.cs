@@ -462,6 +462,10 @@ namespace EQTool.ViewModels
         private string GetValue(string propname, List<string> lines)
         {
             var ret = lines.FirstOrDefault(a => a.StartsWith(propname));
+            if (string.IsNullOrWhiteSpace(ret))
+            {
+                return string.Empty;
+            }
             var index = ret.IndexOf('=');
             return index != -1 ? ret.Substring(index + 1).Trim() : string.Empty;
         }
