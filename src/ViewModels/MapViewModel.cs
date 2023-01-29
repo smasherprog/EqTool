@@ -27,7 +27,8 @@ namespace EQTool.ViewModels
         }
 
 
-        private PieSliceVisual3D PlayerVisualLocation;
+        private ArrowVisual3D PlayerVisualLocation;
+        private SphereVisual3D PlayerVisualLocationSphere;
         private Point3D? Lastlocation;
 
         private Vector3D _LookDirection;
@@ -154,6 +155,7 @@ namespace EQTool.ViewModels
                     Fill = new SolidColorBrush(System.Windows.Media.Color.FromArgb(0, 200, 1, 1))
                 });
                 LookDirection = map.AABB.Center - Position;
+                DrawItems.Add(new DefaultLights());
             }
 
             return true;
@@ -190,48 +192,35 @@ namespace EQTool.ViewModels
         {
             appDispatcher.DispatchUI(() =>
             {
-                var newval = new Point3D(value1.Y, value1.X, -1000);
+                var newval = new Point3D(value1.Y, value1.X, -10);
                 if (!Lastlocation.HasValue)
                 {
-                    Lastlocation = new Point3D(value1.Y, value1.X + 5, value1.Z);
+                    Lastlocation = new Point3D(value1.Y, value1.X + 5, -10);
                 }
                 var vec = newval - Lastlocation.Value;
                 vec.Normalize();
-                var endpos = ((vec * 100) + Lastlocation.Value.ToVector3D()).ToPoint3D();
+                var endpos = ((vec * 34) + newval.ToVector3D()).ToPoint3D();
                 Lastlocation = newval;
-                if (PlayerVisualLocation != null)
+                _ = DrawItems.Remove(PlayerVisualLocation);
+                _ = DrawItems.Remove(PlayerVisualLocationSphere);
+                PlayerVisualLocationSphere = new SphereVisual3D
                 {
-                    _ = DrawItems.Remove(PlayerVisualLocation);
-                }
-
-                PlayerVisualLocation = new PieSliceVisual3D();
-                PlayerVisualLocation.BeginEdit();
-                PlayerVisualLocation.Center = newval;
-                PlayerVisualLocation.Normal = new Vector3D(0, 0, -1);
-                PlayerVisualLocation.UpVector = new Vector3D(0, 0, -1);
-                PlayerVisualLocation.InnerRadius = 40;
-                PlayerVisualLocation.OuterRadius = 40 * 1.3;
-                PlayerVisualLocation.StartAngle = 0;
-                PlayerVisualLocation.EndAngle = 260;
-                PlayerVisualLocation.Fill = Brushes.Gray;
-                PlayerVisualLocation.EndEdit();
-
-                //Arrow = new ArrowVisual3D
-                //{
-                //    Direction = vec,
-                //    Point1 = newval,
-                //    Point2 = endpos,
-                //    Diameter = 10,
-                //    Fill = System.Windows.Media.Brushes.Green
-                //};
-                DrawItems.Add(PlayerVisualLocation);
-                var newpos = new Point3D(value1.Y, value1.X, LookDirection.Z);
-                LookDirection = newpos.ToVector3D();
-                var newpos2 = new Point3D(value1.Y, value1.X, Position.Z)
-                {
-                    Z = Position.Z
+                    Radius = 8,
+                    Fill = System.Windows.Media.Brushes.LimeGreen,
+                    Center = newval
                 };
-                Position = newpos2;
+
+                PlayerVisualLocation = new ArrowVisual3D
+                {
+                    Direction = vec,
+                    Point1 = newval,
+                    Point2 = endpos,
+                    Diameter = 5,
+                    Fill = System.Windows.Media.Brushes.LimeGreen
+                };
+
+                DrawItems.Add(PlayerVisualLocation);
+                DrawItems.Add(PlayerVisualLocationSphere);
             });
         }
 
