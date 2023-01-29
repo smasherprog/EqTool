@@ -330,7 +330,16 @@ namespace EQTool.ViewModels
             {
                 _ = KnownLoot.Remove(item);
             }
-
+            spec = Factions.ToList();
+            foreach (var item in spec)
+            {
+                _ = Factions.Remove(item);
+            }
+            spec = OpposingFactions.ToList();
+            foreach (var item in spec)
+            {
+                _ = OpposingFactions.Remove(item);
+            }
             var cleanresults = Results.Replace("\r\n", "\n");
             var splits = cleanresults.Split('|').Where(a => !string.IsNullOrWhiteSpace(a)).Select(a => a.Trim().TrimStart('\n')).ToList();
             Name = GetValue("name", splits);
