@@ -133,6 +133,10 @@ namespace EQTool.ViewModels
         public void Update()
         {
             _ = ActivePlayer.Update();
+            OnPropertyChanged(nameof(ActivePlayer));
+            OnPropertyChanged(nameof(HasCharName));
+            OnPropertyChanged(nameof(HasNoCharName));
+
         }
 
 
