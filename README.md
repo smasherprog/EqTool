@@ -48,6 +48,5 @@ Features:
 <li>charm break alert</li>
 <liMake settings window and Mob window remember last position/size/state</li>
 <li>Add loot TAB to Mob Window. This tab will show item name, looted from, player name who looted, and unix geek price data, running total looted.</li>
-<li>Purchase Code signing certificate (InProgress)</li>
 <ul>
 
