@@ -61,13 +61,14 @@
                     ZoomSensitivity="2"
                     CameraMode="WalkAround"
                     MouseMove="viewport3d_MouseMove" 
+                    CameraChanged="viewport3d_CameraChanged" 
                     ItemsSource="{Binding DrawItems}" 
                     IsMoveEnabled="True"
                     IsPanEnabled="True"       
-                    IsRotationEnabled="False" 
+                    IsRotationEnabled="False"  
                 >
                 <HelixToolkit:HelixViewport3D.Camera>
-                    <OrthographicCamera Width="500" LookDirection="{Binding LookDirection}" Position="{Binding Position}" Changed="OrthographicCamera_Changed"  UpDirection="0, 1, 0"/>
+                    <PerspectiveCamera FieldOfView="45" LookDirection="{Binding LookDirection}" Position="{Binding Position}" UpDirection="0, 1, 0"/>
                 </HelixToolkit:HelixViewport3D.Camera>
             </HelixToolkit:HelixViewport3D>
         </Grid>

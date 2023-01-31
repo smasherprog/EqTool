@@ -3,7 +3,6 @@ using EQTool.Services.Map;
 using EQTool.ViewModels;
 using HelixToolkit.Wpf;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Linq;
 using System.Timers;
 using System.Windows;
@@ -132,9 +131,9 @@ namespace EQTool
             }
         }
 
-        private void OrthographicCamera_Changed(object sender, System.EventArgs e)
+        private void viewport3d_CameraChanged(object sender, RoutedEventArgs e)
         {
-            Debug.WriteLine("Changed");
+            mapViewModel.UpdatePlayerVisual(viewport3d.Camera.Position);
         }
     }
 }

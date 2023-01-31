@@ -123,11 +123,6 @@ namespace EQTool
             dPSWindowViewModel.UpdateDPS();
         }
 
-        public void DragWindowDone(object sender, MouseButtonEventArgs args)
-        {
-            SaveState();
-        }
-
         public void DragWindow(object sender, MouseButtonEventArgs args)
         {
             DragMove();
