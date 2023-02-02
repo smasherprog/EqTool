@@ -6,7 +6,7 @@
 Instructions:
 <ul>
 <li>
-<h2>Download the latest <a href="https://github.com/smasherprog/EqTool/releases/download/1.0.1.774/EQTool_1.0.1.774.zip">EQTool.zip</a>, Unzip it and run it.</h2>
+<h2>Download the latest <a href="https://github.com/smasherprog/EqTool/releases/download/1.0.1.784/EQTool_1.0.1.784.zip">EQTool.zip</a>, Unzip it and run it.</h2>
 </li>
 <li>The program runs in the system tray. Look there to reopen spells window or settings! Program will check for updates on startup and self update if required, but if you want to check for a new Update, use the menu in the system tray!</li>
 </ul>
@@ -48,6 +48,5 @@ Features:
 <li>charm break alert</li>
 <liMake settings window and Mob window remember last position/size/state</li>
 <li>Add loot TAB to Mob Window. This tab will show item name, looted from, player name who looted, and unix geek price data, running total looted.</li>
-<li>Purchase Code signing certificate (InProgress)</li>
 <ul>
 
