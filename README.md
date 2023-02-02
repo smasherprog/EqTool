@@ -41,6 +41,9 @@ Features:
 
 <h4>TO DO List</h4>
 <ul>
+<li>Respawn Time in Mob Info window</li>
+<li>Ability Hide/show mob info data</li>
+<li>Automatically add timer when named npc dies. Use Wiki for notable npc names</li>
 <li>Add donals BP to timers list</li>
 <li>Finish Map</li>
 <li>Rename Application to Pig Parse</li>
