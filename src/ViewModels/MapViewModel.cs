@@ -208,12 +208,12 @@ namespace EQTool.ViewModels
         {
             appDispatcher.DispatchUI(() =>
             {
-                var newval = new Point3D(value1.Y, value1.X, camera_position.Z + 100);
+                var newval = new Point3D(value1.Y, value1.X, camera_position.Z + 200);
                 if (!Lastlocation.HasValue)
                 {
                     Lastlocation = new Point3D(value1.Y, value1.X, newval.Z);
                 }
-                var vec = newval - new Point3D(Lastlocation.Value.X, Lastlocation.Value.Y, camera_position.Z + 150);
+                var vec = newval - new Point3D(Lastlocation.Value.X, Lastlocation.Value.Y, camera_position.Z + 200);
                 vec.Normalize();
                 var endpos = ((vec * 30) + newval.ToVector3D()).ToPoint3D();
                 Lastlocation = new Point3D(value1.Y, value1.X, newval.Z);
@@ -256,14 +256,14 @@ namespace EQTool.ViewModels
                 {
                     Radius = 2,
                     Fill = System.Windows.Media.Brushes.Red,
-                    Center = new Point3D(PlayerVisualLocationSphere.Center.X, PlayerVisualLocationSphere.Center.Y, camera_position.Z + 150)
+                    Center = new Point3D(PlayerVisualLocationSphere.Center.X, PlayerVisualLocationSphere.Center.Y, camera_position.Z + 200)
                 };
 
                 PlayerVisualLocation = new ArrowVisual3D
                 {
                     Direction = PlayerVisualLocation.Direction,
-                    Point1 = new Point3D(PlayerVisualLocation.Point1.X, PlayerVisualLocation.Point1.Y, camera_position.Z + 150),
-                    Point2 = new Point3D(PlayerVisualLocation.Point2.X, PlayerVisualLocation.Point2.Y, camera_position.Z + 150),
+                    Point1 = new Point3D(PlayerVisualLocation.Point1.X, PlayerVisualLocation.Point1.Y, camera_position.Z + 200),
+                    Point2 = new Point3D(PlayerVisualLocation.Point2.X, PlayerVisualLocation.Point2.Y, camera_position.Z + 200),
                     Diameter = 1,
                     Fill = System.Windows.Media.Brushes.Red
                 };

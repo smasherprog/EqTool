@@ -57,8 +57,12 @@ namespace EQTool
             var pos = locationParser.Match(e.Line);
             if (pos.HasValue)
             {
-                var newval = new Point3D(pos.Value.Y, pos.Value.X, -10);
-                viewport3d.Camera.LookAt(newval, 10);
+                var newval = new Vector3D(pos.Value.Y, pos.Value.X, -10);
+                var newlookdir = newval - new Vector3D(newval.X, newval.Y, newval.Z - 10);
+                newlookdir.Normalize();
+                viewport3d.Camera.Position = new Point3D(newval.X, newval.Y, viewport3d.Camera.Position.Z);
+                viewport3d.Camera.LookDirection = newlookdir;
+                viewport3d.Camera.UpDirection = new Vector3D(0, 1, 0);
                 mapViewModel.UpdateLocation(pos.Value, viewport3d.Camera.Position);
             }
             else
