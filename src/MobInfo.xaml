@@ -93,14 +93,14 @@
                         <TextBlock Text="HP" Width="100"></TextBlock>
                         <TextBlock Text="{Binding HP}"></TextBlock>
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal">
+                    <!--<StackPanel Orientation="Horizontal">
                         <TextBlock Text="HPRegen" Width="100"></TextBlock>
                         <TextBlock Text="{Binding HPRegen}"></TextBlock>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="ManaRegen" Width="100"></TextBlock>
                         <TextBlock Text="{Binding ManaRegen}"></TextBlock>
-                    </StackPanel>
+                    </StackPanel>-->
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="AttacksPerRound" Width="100"></TextBlock>
                         <TextBlock Text="{Binding AttacksPerRound}"></TextBlock>

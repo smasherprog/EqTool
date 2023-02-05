@@ -361,6 +361,10 @@ namespace EQTool.ViewModels
             AttacksPerRound = GetValue("attacks_per_round", splits);
             AttackSpeed = GetValue("attack_speed", splits);
             DamagePerHit = GetValue("damage_per_hit", splits);
+            if (DamagePerHit?.Contains('\n') == true)
+            {
+                DamagePerHit = DamagePerHit.Split('\n')[0];
+            }
             var specials = StripHTML(GetValue("special", splits)).Split(new[] { ',', '\n' });
             foreach (var item in specials)
             {
