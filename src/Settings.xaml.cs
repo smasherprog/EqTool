@@ -353,14 +353,13 @@ namespace EQTool
                     appDispatcher.DispatchUI(() => { testdpsbutton.IsEnabled = true; });
                 }
             });
-
         }
 
         private void mobconclicked(object sender, RoutedEventArgs e)
         {
             var format = "ddd MMM dd HH:mm:ss yyyy";
             var d = DateTime.Now;
-            var line = "[" + d.ToString(format) + "] Vilefang regards you indifferently -- You could probably win this fight.";
+            var line = "[" + d.ToString(format) + "] An ancient tigerclaw racnar regards you indifferently -- You could probably win this fight.";
             logParser.Push(new LogParser.LogParserEventArgs { Line = line });
         }
 

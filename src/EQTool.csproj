@@ -207,6 +207,7 @@
     <Compile Include="Services\Map\LocationParser.cs" />
     <Compile Include="Services\Map\ZoneParser.cs" />
     <Compile Include="Services\Map\MapLoad.cs" />
+    <Compile Include="Services\Parsing\MobInfoParsing.cs" />
     <Compile Include="Services\Spells\Log\ConLogParse.cs" />
     <Compile Include="Services\Spells\Log\LevelLogParse.cs" />
     <Compile Include="Services\Spells\Log\SpellWornOffLogParse.cs" />

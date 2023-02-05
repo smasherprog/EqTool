@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using EQTool.Services.Parsing;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
@@ -340,8 +341,8 @@ namespace EQTool.ViewModels
             {
                 _ = OpposingFactions.Remove(item);
             }
-            var cleanresults = Results.Replace("\r\n", "\n");
-            var splits = cleanresults.Split('|').Where(a => !string.IsNullOrWhiteSpace(a)).Select(a => a.Trim().TrimStart('\n')).ToList();
+            var cleanresults = Results.Replace("\r\n", "\n").Replace("| ", "^");
+            var splits = cleanresults.Split('^').Where(a => !string.IsNullOrWhiteSpace(a)).Select(a => a.Trim().TrimStart('\n')).ToList();
             Name = GetValue("name", splits);
             Race = GetValue("race", splits);
             Class = GetValue("class", splits)?.Replace("[[", string.Empty).Replace("]]", string.Empty);
@@ -381,30 +382,10 @@ namespace EQTool.ViewModels
                     });
                 }
             }
-            specials = StripHTML(GetValue("known_loot", splits)).Split(new[] { '\n' }, System.StringSplitOptions.RemoveEmptyEntries);
-            foreach (var item in specials.Where(a => !string.IsNullOrWhiteSpace(a)))
+            var known_loot = MobInfoParsing.ParseKnwonLoot(splits);
+            foreach (var item in known_loot)
             {
-                var indexof = item.IndexOf("{{");
-                if (indexof != -1)
-                {
-                    var indexofend = item.IndexOf("}}");
-                    if (indexofend != -1)
-                    {
-                        var model = new TestUriViewModel();
-                        var diff = indexofend - (indexof + 3);
-                        model.Name = item.Substring(indexof + 3, diff).Trim();
-                        model.Url = $"https://wiki.project1999.com/" + model.Name.Replace(' ', '_');
-                        KnownLoot.Add(model);
-                    }
-                }
-                else
-                {
-                    KnownLoot.Add(new TestUriViewModel
-                    {
-                        Url = string.Empty,
-                        Name = item
-                    });
-                }
+                KnownLoot.Add(item);
             }
 
             specials = StripHTML(GetValue("factions", splits)).Split(new[] { '\n' }, System.StringSplitOptions.RemoveEmptyEntries);

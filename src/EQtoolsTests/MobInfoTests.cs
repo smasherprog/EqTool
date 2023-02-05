@@ -1,5 +1,7 @@
-﻿using EQTool.ViewModels;
+﻿using EQTool.Services.Parsing;
+using EQTool.ViewModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Linq;
 
 namespace EQtoolsTests
 {
@@ -141,8 +143,6 @@ namespace EQtoolsTests
             // Assert.AreEqual("[[Lava Breath]], Enrage, Summon, Uncharmable, Unfearable, Unmezzable, See Invis", model.Special);
         }
 
-
-
         private const string ResponsFromServer3 = @"{{Velious Era}}
 {{Namedmobpage
 
@@ -211,6 +211,85 @@ High MR, Summons
             Assert.AreEqual("Vilefang", model.Name);
             Assert.AreEqual("Warrior", model.Class);
             // Assert.AreEqual("[[Lava Breath]], Enrage, Summon, Uncharmable, Unfearable, Unmezzable, See Invis", model.Special);
+        }
+
+        private const string ResponsFromServer4 = @"{{Velious Era}}{{Namedmobpage
+
+| imagefilename     = a_burning_guardian.png
+
+| emu_id            = 124032
+| illia_id          = 6708
+
+| name              = a burning guardian
+| race              = Wurm
+| class             = [[Warrior]]
+| level             = 64
+| agro_radius       = 70
+| run_speed         = 1.85
+
+| zone              = [[Temple of Veeshan]]
+| location          = 50% @ (-1040, -1040), 50% @ (-1540, -1355), 50% @ (-820, -1117)
+
+| AC                = 543
+| HP                = 25000
+| HP_regen          = 18
+| mana_regen        = 0
+
+| attacks_per_round = 2
+| attack_speed      = 80%
+| damage_per_hit    = 146  - 296
+| special           = See Invis
+
+<b>Casts:</b>
+<ul><li>[[Rain of Molten Lava]]</li>(PB AE 300 Fire Damage)
+<li>[[Wave of Heat]]</li>(PB AE 200 Fire Damage)</ul>
+
+| description = Check out [[HOT Mobs Guide]].
+
+| known_loot = 
+
+<ul><li>  [[Form of the Great Bear|Spell: Form of the Great Bear]]<span class='drare'>(Ultra Rare)</span> <span class='ddb'>[Overall: 0.9%]</span>
+</li><li> [[Circle of Cobalt Scar|Spell: Circle of Cobalt Scar]]<span class='drare'>(Ultra Rare)</span> <span class='ddb'>[Overall: 0.9%]</span>
+</li><li> [[Stun Command|Spell: Stun Command]]<span class='drare'>(Ultra Rare)</span> <span class='ddb'>[Overall: 0.9%]</span>
+</li><li> [[Nature Walker's Behest|Spell: Nature Walker`s Behest]]<span class='drare'>(Ultra Rare)</span> <span class='ddb'>[Overall: 1.9%]</span>
+</li><li> {{:Wurm Meat}}                     <span class='drare'>(Uncommon)</span> <span class='ddb'>[Overall: 48.1%]</span>
+</li></ul>
+
+| factions = 
+
+* None
+
+| opposing_factions = 
+
+* None
+
+| related_quests = 
+
+* None
+
+}}
+
+[[Category:Temple of Veeshan]]";
+
+        [TestMethod]
+        public void ParseName2()
+        {
+            var model = new MobInfoViewModel
+            {
+                Results = ResponsFromServer4
+            };
+            Assert.AreEqual("a burning guardian", model.Name);
+            Assert.AreEqual("Warrior", model.Class);
+            // Assert.AreEqual("[[Lava Breath]], Enrage, Summon, Uncharmable, Unfearable, Unmezzable, See Invis", model.Special);
+        }
+
+        [TestMethod]
+        public void ParseKnownLoot()
+        {
+            var cleanresults = ResponsFromServer4.Replace("\r\n", "\n").Replace("| ", "^");
+            var splits = cleanresults.Split('^').Where(a => !string.IsNullOrWhiteSpace(a)).Select(a => a.Trim().TrimStart('\n')).ToList();
+            var ret = MobInfoParsing.ParseKnwonLoot(splits);
+            Assert.IsNotNull(ret);
         }
     }
 }
