@@ -341,7 +341,7 @@ namespace EQTool.ViewModels
             {
                 _ = OpposingFactions.Remove(item);
             }
-            var cleanresults = Results.Replace("\r\n", "\n").Replace("| ", "^");
+            var cleanresults = Results.Replace("\r\n", "\n").Replace("|imagefilename", "^imagefilename").Replace("| ", "^");
             var splits = cleanresults.Split('^').Where(a => !string.IsNullOrWhiteSpace(a)).Select(a => a.Trim().TrimStart('\n')).ToList();
             Name = GetValue("name", splits);
             Race = GetValue("race", splits);
