@@ -8,6 +8,7 @@ using System.Timers;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media.Media3D;
+using static EQTool.ViewModels.MapViewModel;
 
 namespace EQTool
 {
@@ -30,7 +31,15 @@ namespace EQTool
             DataContext = this.mapViewModel = mapViewModel;
             Topmost = true;
             InitializeComponent();
-            this.mapViewModel.LoadDefaultMap();
+            viewport3d.Camera.Position = new Point3D(0, 1, 0);
+            viewport3d.Camera.LookDirection = new Vector3D(0, 1, 0);
+            viewport3d.Camera.UpDirection = new Vector3D(0, 1, 0);
+            var camera = this.mapViewModel.LoadDefaultMap();
+            if (camera != null)
+            {
+                viewport3d.Camera.Position = camera.Position;
+                viewport3d.Camera.LookDirection = camera.LookDirection;
+            }
             this.logParser.LineReadEvent += LogParser_LineReadEvent;
             UITimer = new System.Timers.Timer(1000);
             UITimer.Elapsed += UITimer_Elapsed;
@@ -43,7 +52,15 @@ namespace EQTool
 #endif
             if (debugging)
             {
+                viewport3d.IsPanEnabled = false;
+                viewport3d.ShowFrameRate = true;
                 viewport3d.ShowCameraInfo = true;
+            }
+            else
+            {
+                viewport3d.IsPanEnabled = false;
+                viewport3d.ShowFrameRate = false;
+                viewport3d.ShowCameraInfo = false;
             }
         }
 
@@ -55,21 +72,25 @@ namespace EQTool
         private void LogParser_LineReadEvent(object sender, LogParser.LogParserEventArgs e)
         {
             var pos = locationParser.Match(e.Line);
+            CameraDetail camera;
             if (pos.HasValue)
             {
-                var newval = new Vector3D(pos.Value.Y, pos.Value.X, -10);
-                var newlookdir = newval - new Vector3D(newval.X, newval.Y, newval.Z - 10);
-                newlookdir.Normalize();
-                viewport3d.Camera.Position = new Point3D(newval.X, newval.Y, viewport3d.Camera.Position.Z);
-                viewport3d.Camera.LookDirection = newlookdir;
-                viewport3d.Camera.UpDirection = new Vector3D(0, 1, 0);
-                mapViewModel.UpdateLocation(pos.Value, viewport3d.Camera.Position);
+                camera = mapViewModel.UpdateLocation(pos.Value, new MapViewModel.CameraDetail
+                {
+                    Position = viewport3d.Camera.Position,
+                    LookDirection = viewport3d.Camera.LookDirection
+                });
             }
             else
             {
                 var matched = zoneParser.Match(e.Line);
                 matched = zoneParser.TranslateToMapName(matched);
-                _ = mapViewModel.LoadMap(matched);
+                camera = mapViewModel.LoadMap(matched);
+            }
+            if (camera != null)
+            {
+                viewport3d.Camera.Position = camera.Position;
+                viewport3d.Camera.LookDirection = camera.LookDirection;
             }
         }
 

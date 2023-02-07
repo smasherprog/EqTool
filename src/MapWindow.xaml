@@ -21,7 +21,7 @@
             <GradientStop Color="Gray" Offset="1"/>
         </LinearGradientBrush>
     </Window.Resources>
-    <Border Background="#50FFFFFF" CornerRadius="5" BorderBrush="{StaticResource WindowFrameBrush}" BorderThickness="2,0,2,2">
+    <Border Background="#30FFFFFF" CornerRadius="5" BorderBrush="{StaticResource WindowFrameBrush}" BorderThickness="2,0,2,2">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="20" />
@@ -52,23 +52,22 @@
 
             <HelixToolkit:HelixViewport3D  
                     Grid.Row="1"
-                    Name="viewport3d" 
-                    ShowFrameRate="False"  
+                    Name="viewport3d"  
                     ZoomAroundMouseDownPoint="True"
                     RotateAroundMouseDownPoint="False"  
                     ShowViewCube="False"
                     ShowCameraInfo="False" 
-                    ZoomSensitivity="2"
+                    ZoomSensitivity="1"
                     CameraMode="WalkAround"
                     MouseMove="viewport3d_MouseMove" 
                     CameraChanged="viewport3d_CameraChanged" 
                     ItemsSource="{Binding DrawItems}" 
-                    IsMoveEnabled="True"
-                    IsPanEnabled="True"       
+                    IsMoveEnabled="True"    
                     IsRotationEnabled="False"  
+                    IsZoomEnabled="True"
                 >
                 <HelixToolkit:HelixViewport3D.Camera>
-                    <PerspectiveCamera FieldOfView="45" LookDirection="{Binding LookDirection}" Position="{Binding Position}" UpDirection="0, 1, 0"/>
+                    <PerspectiveCamera FieldOfView="45"/>
                 </HelixToolkit:HelixViewport3D.Camera>
             </HelixToolkit:HelixViewport3D>
         </Grid>

@@ -290,6 +290,11 @@ High MR, Summons
             var splits = cleanresults.Split('^').Where(a => !string.IsNullOrWhiteSpace(a)).Select(a => a.Trim().TrimStart('\n')).ToList();
             var ret = MobInfoParsing.ParseKnwonLoot(splits);
             Assert.IsNotNull(ret);
+            Assert.AreEqual(5, ret.Count);
+            Assert.IsTrue(ret.Any(a => a.Name == "Form of the Great Bear"));
+            Assert.IsTrue(ret.Any(a => a.Name == "Circle of Cobalt Scar"));
+            Assert.IsTrue(ret.Any(a => a.Name == "Stun Command"));
+            Assert.IsTrue(ret.Any(a => a.Name == "Nature Walker's Behest"));
         }
     }
 }
