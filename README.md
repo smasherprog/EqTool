@@ -41,6 +41,7 @@ Features:
 
 <h4>TO DO List</h4>
 <ul>
+<li>Self update when NOT in use</li>
 <li>Raid Group suggestions for guild: AOE; CH Chain; AOE+Ch Chain; Other</li>
 <li>Respawn Time in Mob Info window</li>
 <li>Ability Hide/show mob info data</li>
