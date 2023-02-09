@@ -1,6 +1,5 @@
 ﻿using EQTool.Services.Map;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Runtime.InteropServices;
 
 namespace EQtoolsTests
 {
@@ -13,7 +12,10 @@ namespace EQtoolsTests
             var zoneloader = new ZoneParser();
             var zone = zoneloader.Match("[Sat Oct 08 11:37:45 2022] You have entered Plane of Hate.");
             Assert.IsNotNull(zone);
-            Assert.AreEqual("hateplane", zone);
+
+            Assert.AreEqual("plane of hate", zone);
+            var pretyname = zoneloader.TranslateToMapName(zone);
+            Assert.AreEqual("hateplane", pretyname);
         }
 
         [TestMethod]
@@ -22,7 +24,9 @@ namespace EQtoolsTests
             var zoneloader = new ZoneParser();
             var zone = zoneloader.Match("[Sat Oct 08 11:31:38 2022] There are 15 players in The Plane of Hate.");
             Assert.IsNotNull(zone);
-            Assert.AreEqual("hateplane", zone);
+            Assert.AreEqual("the plane of hate", zone);
+            var pretyname = zoneloader.TranslateToMapName(zone);
+            Assert.AreEqual("hateplane", pretyname);
         }
 
         [TestMethod]
@@ -31,7 +35,9 @@ namespace EQtoolsTests
             var zoneloader = new ZoneParser();
             var zone = zoneloader.Match("[Sat Oct 08 13:36:33 2022] You have entered Plane of Mischief.");
             Assert.IsNotNull(zone);
-            Assert.AreEqual("mischiefplane", zone);
+            Assert.AreEqual("plane of mischief", zone);
+            var pretyname = zoneloader.TranslateToMapName(zone);
+            Assert.AreEqual("mischiefplane", pretyname);
         }
 
         [TestMethod]
@@ -40,7 +46,9 @@ namespace EQtoolsTests
             var zoneloader = new ZoneParser();
             var zone = zoneloader.Match("[Thu Dec 15 07:04:14 2022] There are 4 players in Plane of Mischief.");
             Assert.IsNotNull(zone);
-            Assert.AreEqual("mischiefplane", zone);
+            Assert.AreEqual("plane of mischief", zone);
+            var pretyname = zoneloader.TranslateToMapName(zone);
+            Assert.AreEqual("mischiefplane", pretyname);
         }
     }
 }

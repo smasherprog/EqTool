@@ -1,4 +1,5 @@
 ﻿using EQTool.Models;
+using EQTool.Services.Map;
 using EQTool.Services.Spells.Log;
 using EQTool.ViewModels;
 using System;
@@ -16,9 +17,13 @@ namespace EQTool.Services
         private long? LastReadOffset = null;
         private readonly EQToolSettings settings;
         private readonly LevelLogParse levelLogParse;
+        private readonly ZoneParser zoneParser;
+        private readonly EQToolSettingsLoad toolSettingsLoad;
 
-        public LogParser(ActivePlayer activePlayer, IAppDispatcher appDispatcher, EQToolSettings settings, LevelLogParse levelLogParse)
+        public LogParser(EQToolSettingsLoad toolSettingsLoad, ActivePlayer activePlayer, IAppDispatcher appDispatcher, EQToolSettings settings, LevelLogParse levelLogParse, ZoneParser zoneParser)
         {
+            this.toolSettingsLoad = toolSettingsLoad;
+            this.zoneParser = zoneParser;
             this.activePlayer = activePlayer;
             this.appDispatcher = appDispatcher;
             this.levelLogParse = levelLogParse;
@@ -50,7 +55,7 @@ namespace EQTool.Services
 
         private void Poll(object sender, EventArgs e)
         {
-            if (!FindEq.IsValid(settings.DefaultEqDirectory))
+            if (!FindEq.HasLogFiles(settings.DefaultEqDirectory))
             {
                 return;
             }
@@ -71,7 +76,7 @@ namespace EQTool.Services
                 try
                 {
                     var fileinfo = new FileInfo(filepath);
-                    if (!LastReadOffset.HasValue || LastReadOffset > fileinfo.Length)
+                    if (!LastReadOffset.HasValue || (LastReadOffset > fileinfo.Length && fileinfo.Length > 0))
                     {
                         Debug.WriteLine($"Player Switched or new Player detected {filepath} {fileinfo.Length}");
                         LastReadOffset = fileinfo.Length;
@@ -86,6 +91,16 @@ namespace EQTool.Services
                             var line = reader.ReadLine();
                             LastReadOffset = stream.Position;
                             levelLogParse.MatchLevel(line);
+                            var matchedzone = zoneParser.Match(line);
+                            if (!string.IsNullOrWhiteSpace(matchedzone))
+                            {
+                                var p = activePlayer.Player;
+                                if (p != null)
+                                {
+                                    p.Zone = matchedzone;
+                                    toolSettingsLoad.Save(settings);
+                                }
+                            }
                             if (line.Length > 27)
                             {
                                 LineReadEvent?.Invoke(this, new LogParserEventArgs { Line = line });
@@ -95,7 +110,6 @@ namespace EQTool.Services
                 }
                 catch (Exception ex)
                 {
-                    LastReadOffset = null;
                     Debug.WriteLine(ex.ToString());
                 }
             });

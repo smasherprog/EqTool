@@ -648,22 +648,69 @@ namespace EQToolTests
         public void GetCustomTimerStart()
         {
             var service = container.Resolve<LogCustomTimer>();
-            var line = "[Mon Nov 14 20:11:25 2022] you say, 'Timer Start StupidGoblin 30'";
+            var line = "[Mon Nov 14 20:11:25 2022] You say, 'Timer Start StupidGoblin 30'";
             var targettoremove = service.GetStartTimer(line);
 
             Assert.IsNotNull(targettoremove);
             Assert.AreEqual(30 * 60, targettoremove.DurationInSeconds);
+            Assert.AreEqual("stupidgoblin", targettoremove.Name);
         }
 
         [TestMethod]
         public void GetCustomTimerStart1()
         {
             var service = container.Resolve<LogCustomTimer>();
-            var line = "[Mon Nov 14 20:11:25 2022] you say, 'Start Timer StupidGoblin 30'";
+            var line = "[Mon Nov 14 20:11:25 2022] You say, 'Start Timer StupidGoblin 30'";
             var targettoremove = service.GetStartTimer(line);
 
             Assert.IsNotNull(targettoremove);
             Assert.AreEqual(30 * 60, targettoremove.DurationInSeconds);
+            Assert.AreEqual("stupidgoblin", targettoremove.Name);
+        }
+
+        [TestMethod]
+        public void GetCustomTimerStart_TestSpaces()
+        {
+            var service = container.Resolve<LogCustomTimer>();
+            var line = "[Mon Nov 14 20:11:25 2022] You say, 'Start Timer StupidGoblin with club near me 30'";
+            var targettoremove = service.GetStartTimer(line);
+
+            Assert.IsNotNull(targettoremove);
+            Assert.AreEqual(30 * 60, targettoremove.DurationInSeconds);
+            Assert.AreEqual("stupidgoblin with club near me", targettoremove.Name);
+        }
+
+        [TestMethod]
+        public void GetCustomTimerCancel()
+        {
+            var service = container.Resolve<LogCustomTimer>();
+            var line = "[Mon Nov 14 20:11:25 2022] You say, 'Timer Cancel StupidGoblin'";
+            var targettoremove = service.GetCancelTimer(line);
+
+            Assert.IsNotNull(targettoremove);
+            Assert.AreEqual("stupidgoblin", targettoremove);
+        }
+
+        [TestMethod]
+        public void GetCustomTimerCancel1()
+        {
+            var service = container.Resolve<LogCustomTimer>();
+            var line = "[Mon Nov 14 20:11:25 2022] You say, 'Cancel Timer StupidGoblin'";
+            var targettoremove = service.GetCancelTimer(line);
+
+            Assert.IsNotNull(targettoremove);
+            Assert.AreEqual("stupidgoblin", targettoremove);
+        }
+
+        [TestMethod]
+        public void GetCustomTimerCancel_TestSpaces()
+        {
+            var service = container.Resolve<LogCustomTimer>();
+            var line = "[Mon Nov 14 20:11:25 2022] You say, 'Cancel Timer StupidGoblin with club near me'";
+            var targettoremove = service.GetCancelTimer(line);
+
+            Assert.IsNotNull(targettoremove);
+            Assert.AreEqual("stupidgoblin with club near me", targettoremove);
         }
 
         [TestMethod]

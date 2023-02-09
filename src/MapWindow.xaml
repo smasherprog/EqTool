@@ -21,7 +21,7 @@
             <GradientStop Color="Gray" Offset="1"/>
         </LinearGradientBrush>
     </Window.Resources>
-    <Border Background="#50FFFFFF" CornerRadius="5" BorderBrush="{StaticResource WindowFrameBrush}" BorderThickness="2,0,2,2">
+    <Border Background="#30FFFFFF" CornerRadius="5" BorderBrush="{StaticResource WindowFrameBrush}" BorderThickness="2,0,2,2">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="20" />
@@ -31,6 +31,9 @@
                 <Grid>
                     <TextBlock Foreground="White" FontWeight="Bold" VerticalAlignment="Center" Margin="10,1,10,1" Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}, Path=Title}"/>
                     <StackPanel Orientation="Horizontal"  HorizontalAlignment="Center">
+                        <Button Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="openmobinfo" ToolTip="Open Mob Info Window">
+                            <Image Source="pack://application:,,,/toolbox.png"/>
+                        </Button>
                         <Button Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="openspells" ToolTip="Open Spells/Trigger Window">
                             <Image Source="pack://application:,,,/wizard.png"/>
                         </Button>
@@ -49,23 +52,24 @@
 
             <HelixToolkit:HelixViewport3D  
                     Grid.Row="1"
-                    Name="viewport3d" 
-                    ShowFrameRate="True"  
+                    Name="viewport3d"  
                     ZoomAroundMouseDownPoint="True"
-                    RotateAroundMouseDownPoint="True"  
-                    ShowCameraInfo="True" 
-                    ZoomSensitivity="2"
+                    RotateAroundMouseDownPoint="False"  
+                    ShowViewCube="False"
+                    ShowCameraInfo="False" 
+                    ZoomSensitivity="1"
                     CameraMode="WalkAround"
                     MouseMove="viewport3d_MouseMove" 
+                    CameraChanged="viewport3d_CameraChanged" 
                     ItemsSource="{Binding DrawItems}" 
-                    IsMoveEnabled="True"
-                    IsPanEnabled="True"       
-                    IsRotationEnabled="True" 
+                    IsMoveEnabled="True"    
+                    IsRotationEnabled="False"  
+                    IsZoomEnabled="True"
                 >
                 <HelixToolkit:HelixViewport3D.Camera>
-                    <OrthographicCamera Width="500" LookDirection="{Binding LookDirection}" Position="{Binding Position}"  UpDirection="0, 1, 0"/>
-                </HelixToolkit:HelixViewport3D.Camera> 
-            </HelixToolkit:HelixViewport3D> 
+                    <PerspectiveCamera FieldOfView="45"/>
+                </HelixToolkit:HelixViewport3D.Camera>
+            </HelixToolkit:HelixViewport3D>
         </Grid>
     </Border>
 </Window>

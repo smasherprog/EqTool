@@ -2,7 +2,6 @@
 using EQTool.ViewModels;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Globalization;
 
 namespace EQTool.Services.Spells.Log
@@ -64,7 +63,6 @@ namespace EQTool.Services.Spells.Log
             }
 
             var message = linelog.Substring(27);
-            Debug.WriteLine($"DPSParse: " + message);
             if (message.Contains(WasHitByNonMelee))
             {
                 return null;

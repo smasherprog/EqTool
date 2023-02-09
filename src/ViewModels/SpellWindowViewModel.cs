@@ -193,6 +193,23 @@ namespace EQTool.ViewModels
             });
         }
 
+        public void TryRemoveUnambiguousSpell(string name)
+        {
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                return;
+            }
+
+            appDispatcher.DispatchUI(() =>
+            {
+                var s = SpellList.Where(a => a.SpellName == name);
+                if (s.Count() == 1)
+                {
+                    _ = SpellList.Remove(s.FirstOrDefault());
+                }
+            });
+        }
+
         public void TryRemoveCustom(string name)
         {
             if (string.IsNullOrWhiteSpace(name))

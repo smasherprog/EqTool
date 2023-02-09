@@ -24,8 +24,9 @@ namespace EQTool
         private readonly DPSLogParse dPSLogParse;
         private readonly LogDeathParse logDeathParse;
         private readonly EQToolSettings settings;
+        private readonly EQToolSettingsLoad toolSettingsLoad;
 
-        public DPSMeter(DPSLogParse dPSLogParse, LogParser logParser, DPSWindowViewModel dPSWindowViewModel, EQToolSettings settings, LogDeathParse logDeathParse)
+        public DPSMeter(DPSLogParse dPSLogParse, LogParser logParser, DPSWindowViewModel dPSWindowViewModel, EQToolSettings settings, LogDeathParse logDeathParse, EQToolSettingsLoad toolSettingsLoad)
         {
             this.settings = settings;
             this.logDeathParse = logDeathParse;
@@ -44,7 +45,11 @@ namespace EQTool
                 Width = settings.DpsWindowState.WindowRect.Width;
                 WindowState = settings.DpsWindowState.State;
             }
-            App.GlobalDPSWindowOpacity = settings.GlobalDPSWindowOpacity;
+            if (settings.DpsWindowState != null)
+            {
+                settings.DpsWindowState.Closed = false;
+            }
+            Properties.Settings.Default.GlobalDPSWindowOpacity = settings.GlobalDPSWindowOpacity;
             Topmost = settings.TriggerWindowTopMost;
             UITimer = new System.Timers.Timer(1000);
             UITimer.Elapsed += PollUI;
@@ -58,8 +63,28 @@ namespace EQTool
             view.SortDescriptions.Add(new SortDescription(nameof(EntittyDPS.TotalDamage), ListSortDirection.Descending));
             view.IsLiveSorting = true;
             view.LiveSortingProperties.Add(nameof(EntittyDPS.TotalDamage));
+            this.toolSettingsLoad = toolSettingsLoad;
+
+            SaveState();
+            SizeChanged += DPSMeter_SizeChanged;
+            StateChanged += SpellWindow_StateChanged;
+            LocationChanged += DPSMeter_LocationChanged;
         }
 
+        private void SpellWindow_StateChanged(object sender, EventArgs e)
+        {
+            SaveState();
+        }
+
+        private void DPSMeter_LocationChanged(object sender, EventArgs e)
+        {
+            SaveState();
+        }
+
+        private void DPSMeter_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            SaveState();
+        }
         private void LogParser_LineReadEvent(object sender, LogParser.LogParserEventArgs e)
         {
             var matched = dPSLogParse.Match(e.Line);
@@ -69,6 +94,14 @@ namespace EQTool
         }
 
         protected override void OnClosing(CancelEventArgs e)
+        {
+            UITimer.Stop();
+            UITimer.Dispose();
+            logParser.LineReadEvent += LogParser_LineReadEvent;
+            base.OnClosing(e);
+        }
+
+        private void SaveState()
         {
             if (settings.DpsWindowState == null)
             {
@@ -82,10 +115,7 @@ namespace EQTool
                 Width = Width
             };
             settings.DpsWindowState.State = WindowState;
-            UITimer.Stop();
-            UITimer.Dispose();
-            logParser.LineReadEvent += LogParser_LineReadEvent;
-            base.OnClosing(e);
+            toolSettingsLoad.Save(settings);
         }
 
         private void PollUI(object sender, EventArgs e)
@@ -115,6 +145,7 @@ namespace EQTool
                 settings.DpsWindowState = new Models.WindowState();
             }
             settings.DpsWindowState.Closed = true;
+            SaveState();
             Close();
         }
 
@@ -136,6 +167,11 @@ namespace EQTool
         private void openspells(object sender, RoutedEventArgs e)
         {
             (App.Current as App).OpenSpellsWindow();
+        }
+
+        private void openmobinfo(object sender, RoutedEventArgs e)
+        {
+            (App.Current as App).OpenMobInfoWindow();
         }
 
         private void copytoclipboard(object sender, RoutedEventArgs e)

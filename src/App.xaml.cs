@@ -11,7 +11,6 @@ using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Media;
 
 namespace EQTool
 {
@@ -20,19 +19,8 @@ namespace EQTool
     /// </summary>
     public partial class App : Application
     {
-        private readonly HttpClient httpclient = new HttpClient();
+        public static HttpClient httpclient = new HttpClient();
         private MainWindow mainWindow;
-
-        public static double GlobalFontSize
-        {
-            get => (double)Current.Resources["GlobalFontSize"];
-            set
-            {
-                Current.Resources["GlobalFontSize"] = value;
-                SetThemeValuesDPS();
-                SetThemeValuesTriggers();
-            }
-        }
 
         private static Themes _Theme = Themes.Light;
 
@@ -42,72 +30,7 @@ namespace EQTool
             set
             {
                 _Theme = value;
-                SetThemeValuesDPS();
-                SetThemeValuesTriggers();
-            }
-        }
-
-        public static double GlobalTriggerWindowOpacity
-        {
-            get => (double)Current.Resources["GlobalTriggerWindowOpacity"];
-            set
-            {
-                Current.Resources["GlobalTriggerWindowOpacity"] = value;
-                SetThemeValuesTriggers();
-            }
-        }
-
-        private static void SetThemeValuesTriggers()
-        {
-            var style = new Style
-            {
-                TargetType = typeof(Window)
-            };
-
-            style.Setters.Add(new Setter(Window.FontSizeProperty, GlobalFontSize));
-            style.Setters.Add(new Setter(Window.BackgroundProperty, BackGroundBrushTrigger));
-            Application.Current.Resources["MyWindowStyleTrigger"] = style;
-        }
-        private static SolidColorBrush BackGroundBrushTrigger
-        {
-            get
-            {
-                var t = _Theme == Themes.Light ? new SolidColorBrush(Colors.White) : new SolidColorBrush(Colors.Black);
-                t.Opacity = GlobalTriggerWindowOpacity;
-                return t;
-            }
-        }
-
-        public static double GlobalDPSWindowOpacity
-        {
-            get => (double)Current.Resources["GlobalDPSWindowOpacity"];
-            set
-            {
-                Current.Resources["GlobalDPSWindowOpacity"] = value;
-                SetThemeValuesDPS();
-            }
-        }
-
-        private static void SetThemeValuesDPS()
-        {
-            var style = new Style
-            {
-                TargetType = typeof(Window)
-            };
-
-            style.Setters.Add(new Setter(Window.FontSizeProperty, GlobalFontSize));
-            style.Setters.Add(new Setter(Window.BackgroundProperty, BackGroundBrushDPS));
-            Application.Current.Resources["MyWindowStyleDPS"] = style;
-        }
-
-
-        private static SolidColorBrush BackGroundBrushDPS
-        {
-            get
-            {
-                var t = _Theme == Themes.Light ? new SolidColorBrush(Colors.White) : new SolidColorBrush(Colors.Black);
-                t.Opacity = GlobalDPSWindowOpacity;
-                return t;
+                EQTool.Properties.Settings.Default.ColorMode = value.ToString();
             }
         }
 
@@ -206,17 +129,20 @@ namespace EQTool
 
         private void App_Startup(object sender, StartupEventArgs e)
         {
-            var counter = 0;
-            Thread.Sleep(1000);
-            while (Process.GetProcessesByName("eqgame").Count() != 1)
-            {
-                Thread.Sleep(1000);
-                if (counter++ > 6)
-                {
-                    App.Current.Shutdown();
-                    return;
-                }
-            }
+            //var counter = 0;
+            //var count = 0;
+            //do
+            //{
+            //    count = Process.GetProcessesByName("eqtool").Count();
+            //    Debug.WriteLine(count);
+            //    if (counter++ > 6)
+            //    {
+            //        App.Current.Shutdown();
+            //        return;
+            //    }
+            //    Thread.Sleep(1000);
+            //}
+            //while (count != 1);
 
             //            var debugging = false;
             //#if DEBUG
@@ -311,6 +237,12 @@ namespace EQTool
         public void OpenMapWindow()
         {
             mainWindow.OpenMapWindow();
+        }
+
+
+        public void OpenMobInfoWindow()
+        {
+            mainWindow.OpenMobInfoWindow();
         }
 
         public void OpenSettingsWindow()

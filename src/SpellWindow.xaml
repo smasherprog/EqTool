@@ -32,6 +32,9 @@
                 <Grid>
                     <TextBlock Foreground="White" FontWeight="Bold" VerticalAlignment="Center" Margin="10,1,10,1" Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}, Path=Title}"/>
                     <StackPanel Orientation="Horizontal"  HorizontalAlignment="Center">
+                        <Button Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="openmobinfo" ToolTip="Open Mob Info Window">
+                            <Image Source="pack://application:,,,/toolbox.png"/>
+                        </Button>
                         <Button Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="opendps" ToolTip="Open DPS Window">
                             <Image Source="pack://application:,,,/dps.png"/>
                         </Button>

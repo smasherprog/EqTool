@@ -20,10 +20,12 @@ namespace EQTool
         private MapWindow mapwindow = null;
         private DPSMeter dpsmeter = null;
         private Settings settingswindow = null;
+        private MobInfo MobInfoswindow = null;
         private readonly System.Windows.Forms.MenuItem MapMenuItem;
         private readonly System.Windows.Forms.MenuItem SpellsMenuItem;
         private readonly System.Windows.Forms.MenuItem DpsMeterMenuItem;
         private readonly System.Windows.Forms.MenuItem SettingsMenuItem;
+        private readonly System.Windows.Forms.MenuItem MobInfoMenuItem;
         private readonly LogParser logParser;
 
         public MainWindow(bool updated)
@@ -35,6 +37,7 @@ namespace EQTool
             SpellsMenuItem = new System.Windows.Forms.MenuItem("Spells", Spells);
             MapMenuItem = new System.Windows.Forms.MenuItem("Map (ALPHA)", Map);
             DpsMeterMenuItem = new System.Windows.Forms.MenuItem("Dps", DPS);
+            MobInfoMenuItem = new System.Windows.Forms.MenuItem("Mob Info", MobInfo);
             var gitHubMenuItem = new System.Windows.Forms.MenuItem("Suggestions", Suggestions);
             var whythepig = new System.Windows.Forms.MenuItem("Why the Pig?", WhyThePig);
             var updates = new System.Windows.Forms.MenuItem("Check for Update", UpdateClicked);
@@ -66,6 +69,7 @@ namespace EQTool
                     DpsMeterMenuItem,
                     MapMenuItem,
                     SpellsMenuItem,
+                    MobInfoMenuItem,
                     SettingsMenuItem,
                     gitHubMenuItem,
                     updates,
@@ -74,16 +78,16 @@ namespace EQTool
                 }),
             };
             SystemTrayIcon.BalloonTipClicked += UpdateClicked;
-            if (!FindEq.IsValid(EQToolSettings.DefaultEqDirectory) || FindEq.TryCheckLoggingEnabled(EQToolSettings.DefaultEqDirectory) == false)
+            if (!FindEq.IsProject1999Folder(EQToolSettings.DefaultEqDirectory) || FindEq.TryCheckLoggingEnabled(EQToolSettings.DefaultEqDirectory) == false)
             {
                 Settings(SettingsMenuItem, null);
             }
             else
             {
                 var eqsettings = container.Resolve<EQToolSettings>();
-                App.GlobalFontSize = eqsettings.FontSize;
-                App.GlobalTriggerWindowOpacity = eqsettings.GlobalTriggerWindowOpacity;
-                App.GlobalDPSWindowOpacity = eqsettings.GlobalDPSWindowOpacity;
+                Properties.Settings.Default.GlobalFontSize = eqsettings.FontSize;
+                Properties.Settings.Default.GlobalTriggerWindowOpacity = eqsettings.GlobalTriggerWindowOpacity;
+                Properties.Settings.Default.GlobalDPSWindowOpacity = eqsettings.GlobalDPSWindowOpacity;
                 App.Theme = eqsettings.Theme;
                 ToggleMenuButtons(true);
                 if (EQToolSettings.SpellWindowState == null || !EQToolSettings.SpellWindowState.Closed)
@@ -93,6 +97,10 @@ namespace EQTool
                 if (EQToolSettings.DpsWindowState == null || !EQToolSettings.DpsWindowState.Closed)
                 {
                     DPS(DpsMeterMenuItem, null);
+                }
+                if (EQToolSettings.MobWindowState == null || !EQToolSettings.MobWindowState.Closed)
+                {
+                    MobInfo(MobInfoMenuItem, null);
                 }
             }
 
@@ -113,6 +121,7 @@ namespace EQTool
             spellWindow?.Close();
             mapwindow?.Close();
             dpsmeter?.Close();
+            MobInfoswindow?.Close();
             settingswindow?.Close();
             container.Resolve<EQToolSettingsLoad>().Save(EQToolSettings);
             base.OnClosing(e);
@@ -179,7 +188,11 @@ namespace EQTool
             {
                 mapwindow?.Close();
                 mapwindow = container.Resolve<MapWindow>();
-                mapwindow.Closed += (se, ee) => s.Checked = false;
+                mapwindow.Closed += (se, ee) =>
+                {
+                    s.Checked = false;
+                    mapwindow = null;
+                };
                 mapwindow.Show();
             }
             else
@@ -201,6 +214,40 @@ namespace EQTool
             }
         }
 
+        public void OpenMobInfoWindow()
+        {
+            if (MobInfoswindow != null)
+            {
+                _ = MobInfoswindow.Focus();
+            }
+            else
+            {
+                MobInfo(MobInfoMenuItem, null);
+            }
+        }
+
+        private void MobInfo(object sender, EventArgs e)
+        {
+            var s = (System.Windows.Forms.MenuItem)sender;
+            s.Checked = !s.Checked;
+            if (s.Checked)
+            {
+                MobInfoswindow?.Close();
+                MobInfoswindow = container.Resolve<MobInfo>();
+                MobInfoswindow.Closed += (se, ee) =>
+                {
+                    s.Checked = false;
+                    MobInfoswindow = null;
+                };
+                MobInfoswindow.Show();
+            }
+            else
+            {
+                MobInfoswindow?.Close();
+                MobInfoswindow = null;
+            }
+        }
+
         private void DPS(object sender, EventArgs e)
         {
             var s = (System.Windows.Forms.MenuItem)sender;
@@ -209,7 +256,11 @@ namespace EQTool
             {
                 dpsmeter?.Close();
                 dpsmeter = container.Resolve<DPSMeter>();
-                dpsmeter.Closed += (se, ee) => s.Checked = false;
+                dpsmeter.Closed += (se, ee) =>
+                {
+                    s.Checked = false;
+                    dpsmeter = null;
+                };
                 dpsmeter.Show();
             }
             else
@@ -242,11 +293,12 @@ namespace EQTool
                 settingswindow.Show();
                 settingswindow.Closed += (se, ee) =>
                 {
-                    if (FindEq.IsValid(EQToolSettings.DefaultEqDirectory) && FindEq.TryCheckLoggingEnabled(EQToolSettings.DefaultEqDirectory) == true)
+                    if (FindEq.IsProject1999Folder(EQToolSettings.DefaultEqDirectory) && FindEq.TryCheckLoggingEnabled(EQToolSettings.DefaultEqDirectory) == true)
                     {
                         ToggleMenuButtons(true);
                     }
                     s.Checked = false;
+                    settingswindow = null;
                 };
             }
             else
@@ -276,7 +328,11 @@ namespace EQTool
             {
                 spellWindow?.Close();
                 spellWindow = container.Resolve<SpellWindow>();
-                spellWindow.Closed += (se, ee) => s.Checked = false;
+                spellWindow.Closed += (se, ee) =>
+                {
+                    s.Checked = false;
+                    spellWindow = null;
+                };
                 spellWindow.Show();
             }
             else
@@ -290,5 +346,6 @@ namespace EQTool
         {
             System.Windows.Application.Current.Shutdown();
         }
+
     }
 }

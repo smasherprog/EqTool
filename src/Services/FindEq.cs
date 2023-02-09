@@ -35,7 +35,7 @@ namespace EQTool.Services
                         {
                             var directory = new DirectoryInfo(root);
                             var maxmoddate = directory.GetFiles("UI_*.ini")
-                                .OrderByDescending(a => a.LastWriteTime) 
+                                .OrderByDescending(a => a.LastWriteTime)
                                 .Select(a => (DateTime?)a.LastWriteTime)
                                 .FirstOrDefault();
                             if (!maxmoddate.HasValue)
@@ -76,6 +76,26 @@ namespace EQTool.Services
             return rootfolder;
         }
 
+        public static bool IsProject1999Folder(string rootfolder)
+        {
+            if (string.IsNullOrWhiteSpace(rootfolder))
+            {
+                return false;
+            }
+
+            try
+            {
+                var licensetext = File.ReadAllText(rootfolder + "/license.txt");
+                if (licensetext.Contains("Project 1999"))
+                {
+                    return true;
+                }
+            }
+            catch { }
+
+            return false;
+        }
+
         public static bool? TryCheckLoggingEnabled(string eqdir)
         {
             try
@@ -96,7 +116,7 @@ namespace EQTool.Services
             return null;
         }
 
-        public static bool IsValid(string root)
+        public static bool HasLogFiles(string root)
         {
             if (string.IsNullOrWhiteSpace(root))
             {
@@ -105,12 +125,7 @@ namespace EQTool.Services
 
             try
             {
-                var directory = new DirectoryInfo(root);
-                var maxmoddate = directory.GetFiles("UI_*.ini")
-                    .OrderByDescending(a => a.LastWriteTime)
-                    .Select(a => (DateTime?)a.LastWriteTime)
-                    .FirstOrDefault();
-                return maxmoddate.HasValue;
+                return Directory.EnumerateFiles(root + "/Logs/", "eqlog*.txt", SearchOption.TopDirectoryOnly).Any();
             }
             catch { }
 
@@ -132,11 +147,11 @@ namespace EQTool.Services
                         }
                     }
                 }
-                catch (UnauthorizedAccessException)
+                catch
                 { }
                 list.AddRange(Directory.EnumerateFiles(root, pathtomatch));
             }
-            catch (UnauthorizedAccessException)
+            catch
             { }
 
             return list;

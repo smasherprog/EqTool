@@ -7,6 +7,8 @@ using System.Linq;
 using System.Timers;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Media.Media3D;
+using static EQTool.ViewModels.MapViewModel;
 
 namespace EQTool
 {
@@ -29,14 +31,37 @@ namespace EQTool
             DataContext = this.mapViewModel = mapViewModel;
             Topmost = true;
             InitializeComponent();
-            this.mapViewModel.LoadDefaultMap();
+            viewport3d.Camera.Position = new Point3D(0, 1, 0);
+            viewport3d.Camera.LookDirection = new Vector3D(0, 1, 0);
+            viewport3d.Camera.UpDirection = new Vector3D(0, 1, 0);
+            var camera = this.mapViewModel.LoadDefaultMap();
+            if (camera != null)
+            {
+                viewport3d.Camera.Position = camera.Position;
+                viewport3d.Camera.LookDirection = camera.LookDirection;
+            }
             this.logParser.LineReadEvent += LogParser_LineReadEvent;
             UITimer = new System.Timers.Timer(1000);
             UITimer.Elapsed += UITimer_Elapsed;
             UITimer.Enabled = true;
             viewport3d.PanGesture = new MouseGesture(MouseAction.LeftClick);
             viewport3d.PanGesture2 = null;
-
+            var debugging = false;
+#if DEBUG
+            debugging = true;
+#endif
+            if (debugging)
+            {
+                viewport3d.IsPanEnabled = false;
+                viewport3d.ShowFrameRate = true;
+                viewport3d.ShowCameraInfo = true;
+            }
+            else
+            {
+                viewport3d.IsPanEnabled = false;
+                viewport3d.ShowFrameRate = false;
+                viewport3d.ShowCameraInfo = false;
+            }
         }
 
         private void UITimer_Elapsed(object sender, ElapsedEventArgs e)
@@ -47,14 +72,25 @@ namespace EQTool
         private void LogParser_LineReadEvent(object sender, LogParser.LogParserEventArgs e)
         {
             var pos = locationParser.Match(e.Line);
+            CameraDetail camera;
             if (pos.HasValue)
             {
-                mapViewModel.UpdateLocation(pos.Value);
+                camera = mapViewModel.UpdateLocation(pos.Value, new MapViewModel.CameraDetail
+                {
+                    Position = viewport3d.Camera.Position,
+                    LookDirection = viewport3d.Camera.LookDirection
+                });
             }
             else
             {
                 var matched = zoneParser.Match(e.Line);
-                _ = mapViewModel.LoadMap(matched);
+                matched = zoneParser.TranslateToMapName(matched);
+                camera = mapViewModel.LoadMap(matched);
+            }
+            if (camera != null)
+            {
+                viewport3d.Camera.Position = camera.Position;
+                viewport3d.Camera.LookDirection = camera.LookDirection;
             }
         }
 
@@ -82,6 +118,11 @@ namespace EQTool
         private void CloseWindow(object sender, RoutedEventArgs e)
         {
             Close();
+        }
+
+        private void openmobinfo(object sender, RoutedEventArgs e)
+        {
+            (App.Current as App).OpenMobInfoWindow();
         }
 
         private void opendps(object sender, RoutedEventArgs e)
@@ -113,6 +154,11 @@ namespace EQTool
             {
                 mapViewModel.MouseWorldCoordinates = hit.RayHit.PointHit;
             }
+        }
+
+        private void viewport3d_CameraChanged(object sender, RoutedEventArgs e)
+        {
+            mapViewModel.UpdatePlayerVisual(viewport3d.Camera.Position);
         }
     }
 }

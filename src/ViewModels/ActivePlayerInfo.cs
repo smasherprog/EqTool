@@ -44,6 +44,10 @@ namespace EQTool.ViewModels
                 playerchanged = tempplayer != Player;
                 Player = tempplayer;
             }
+            else
+            {
+                Player = null;
+            }
 
             return playerchanged;
         }

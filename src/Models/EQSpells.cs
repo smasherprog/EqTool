@@ -1,4 +1,5 @@
 ﻿using EQTool.Services;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -20,7 +21,7 @@ namespace EQTool.Models
                 return _AllSpells;
             }
         }
-        private readonly Dictionary<string, List<Spell>> _CastOtherSpells = new Dictionary<string, List<Spell>>();
+        private readonly Dictionary<string, List<Spell>> _CastOtherSpells = new Dictionary<string, List<Spell>>(StringComparer.OrdinalIgnoreCase);
 
         public Dictionary<string, List<Spell>> CastOtherSpells
         {
@@ -33,7 +34,7 @@ namespace EQTool.Models
                 return _CastOtherSpells;
             }
         }
-        private readonly Dictionary<string, List<Spell>> _CastOnYouSpells = new Dictionary<string, List<Spell>>();
+        private readonly Dictionary<string, List<Spell>> _CastOnYouSpells = new Dictionary<string, List<Spell>>(StringComparer.OrdinalIgnoreCase);
 
         public Dictionary<string, List<Spell>> CastOnYouSpells
         {
@@ -47,7 +48,7 @@ namespace EQTool.Models
             }
         }
 
-        private readonly Dictionary<string, List<Spell>> _YouCastSpells = new Dictionary<string, List<Spell>>();
+        private readonly Dictionary<string, List<Spell>> _YouCastSpells = new Dictionary<string, List<Spell>>(StringComparer.OrdinalIgnoreCase);
         public Dictionary<string, List<Spell>> YouCastSpells
         {
             get
@@ -83,9 +84,12 @@ namespace EQTool.Models
 
         public const string ZoneLoadingMessage = "LOADING, PLEASE WAIT...";
         public const string YouBeginCasting = "You begin casting ";
+        public const string YouSpellisInterupted = "Your spell is interrupted.";
+
         public const string Your = "Your ";
         public const string You = "You ";
         public const string SpaceYou = " You ";
+        public const string SpellHasWornoff = "spell has worn off.";
         private const string InvisMessage = " fades away";
         private readonly ParseSpells_spells_us parseSpells;
         private readonly SpellIcons spellIcons;

@@ -1,8 +1,5 @@
-﻿using EQTool.Models;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
-using System.Globalization;
 using System.Linq;
 
 namespace EQTool.Services.Map
@@ -10,11 +7,11 @@ namespace EQTool.Services.Map
     public class ZoneParser
     {
         private readonly string Youhaveentered = "You have entered ";
-        private readonly string Thereare = "There are "; 
+        private readonly string Thereare = "There are ";
         private readonly string spaceinspace = " in ";
 
-        private static Dictionary<string, string> ZoneNameMapper = new Dictionary<string, string>();
-        private static Dictionary<string, string> ZoneWhoMapper = new Dictionary<string, string>();
+        private static readonly Dictionary<string, string> ZoneNameMapper = new Dictionary<string, string>();
+        private static readonly Dictionary<string, string> ZoneWhoMapper = new Dictionary<string, string>();
 
         static ZoneParser()
         {
@@ -177,7 +174,7 @@ namespace EQTool.Services.Map
             ZoneNameMapper.Add("chardok", "chardok");
             ZoneNameMapper.Add("kithicor woods", "kithicor");
             ZoneNameMapper.Add("temple of solusek ro", "soltemple");
-        } 
+        }
 
         public static List<string> Zones => ZoneNameMapper.Keys.ToList();
 
@@ -194,16 +191,7 @@ namespace EQTool.Services.Map
                 name = n;
             }
 
-            if(ZoneNameMapper.TryGetValue(name, out n))
-            {
-                return n;
-            }
-
-            return name;
-        }
-
-        public ZoneParser()
-        {
+            return ZoneNameMapper.TryGetValue(name, out n) ? n : name;
         }
 
         public string Match(string linelog)
@@ -218,16 +206,16 @@ namespace EQTool.Services.Map
             if (message.StartsWith(Youhaveentered))
             {
                 message = message.Replace(Youhaveentered, string.Empty).Trim().TrimEnd('.').ToLower();
-                return TranslateToMapName(message);
+                return message;
             }
             else if (message.StartsWith(Thereare))
             {
                 message = message.Replace(Thereare, string.Empty).Trim();
                 var inindex = message.IndexOf(spaceinspace);
-                if(inindex != -1)
+                if (inindex != -1)
                 {
-                    message = message.Substring(inindex + spaceinspace.Length).Trim().TrimEnd('.').ToLower(); 
-                    return TranslateToMapName(message);
+                    message = message.Substring(inindex + spaceinspace.Length).Trim().TrimEnd('.').ToLower();
+                    return message;
                 }
             }
 

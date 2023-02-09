@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Diagnostics;
+using System.Linq;
 
 namespace EQTool.Services.Spells.Log
 {
@@ -29,7 +29,6 @@ namespace EQTool.Services.Spells.Log
             }
 
             var message = linelog.Substring(27).Trim();
-            Debug.WriteLine($"Custom Timer: " + message);
             var timer = GetStartTimer(message, StartTimer);
             if (timer != null)
             {
@@ -48,19 +47,16 @@ namespace EQTool.Services.Spells.Log
             if (message.ToLower().StartsWith(messagetolookfor))
             {
                 var removedstartimer = message.ToLower().Replace(messagetolookfor, string.Empty).Trim();
-                var nameindex = removedstartimer.IndexOf(" ");
-                if (nameindex != -1)
+                var numbersonly = new string(removedstartimer.Where(a => char.IsDigit(a)).ToArray());
+                if (int.TryParse(numbersonly, out var minutesint))
                 {
-                    var name = removedstartimer.Substring(0, nameindex);
-                    var minutes = removedstartimer.Replace(name, string.Empty).Trim('\'').Trim(); ;
-                    if (int.TryParse(minutes, out var minutesint))
+                    var nameasstring = minutesint.ToString();
+                    var name = removedstartimer.Replace(nameasstring, string.Empty).Trim('\'').Trim();
+                    return new CustomerTimer
                     {
-                        return new CustomerTimer
-                        {
-                            Name = name,
-                            DurationInSeconds = minutesint * 60
-                        };
-                    }
+                        Name = name,
+                        DurationInSeconds = minutesint * 60
+                    };
                 }
             }
 
@@ -76,7 +72,6 @@ namespace EQTool.Services.Spells.Log
             }
 
             var message = linelog.Substring(27).Trim();
-            Debug.WriteLine($"Custom Timer: " + message);
             var nametoremove = GetCancelTimer(message, CancelTimer);
             if (!string.IsNullOrWhiteSpace(nametoremove))
             {

@@ -19,7 +19,7 @@ namespace EQTool
             {
                 _ = OnResolveAssembly(null, new ResolveEventArgs("System.Threading.Tasks.Extensions"));
                 AppDomain.CurrentDomain.AssemblyResolve += OnResolveAssembly;
-                //WriteSqlLiteDlls();
+                WriteSqlLiteDlls();
                 if (!File.Exists(configFile))
                 {
                     UpdateConfig(args);
@@ -39,24 +39,30 @@ namespace EQTool
 
                 App.Main();
             }
+            catch (Exception ex)
+            {
+                File.AppendAllText("Errors.txt", ex.ToString());
+                throw;
+            }
+        }
 
         private static void UpdateConfig(string[] args)
+        {
+            File.WriteAllText(configFile, Resources.App);
+            var path = System.IO.Directory.GetCurrentDirectory() + "/EQTool.exe";
+            _ = System.Diagnostics.Process.Start(new ProcessStartInfo
             {
-                File.WriteAllText(configFile, Resources.App);
-                var path = System.IO.Directory.GetCurrentDirectory() + "/EQTool.exe";
-                _ = System.Diagnostics.Process.Start(new ProcessStartInfo
-                {
-                    FileName = path,
-                    Arguments = args.FirstOrDefault(),
-                    UseShellExecute = true
-                });
-            }
+                FileName = path,
+                Arguments = args.FirstOrDefault(),
+                UseShellExecute = true
+            });
+        }
 
-            private static void WriteSqlLiteDlls()
-            {
-                var executingAssembly = Assembly.GetExecutingAssembly().GetManifestResourceNames();
+        private static void WriteSqlLiteDlls()
+        {
+            var executingAssembly = Assembly.GetExecutingAssembly().GetManifestResourceNames();
 
-                var dlls = new List<KeyValuePair<string, string>>()
+            var dlls = new List<KeyValuePair<string, string>>()
             {
                 new KeyValuePair<string, string>("EQTool.runtimes.win10_x64", "runtimes\\win10-x64\\nativeassets\\uap10.0"),
                 new KeyValuePair<string, string>("EQTool.runtimes.win10_x86", "runtimes\\win10-x86\\nativeassets\\uap10.0"),
@@ -64,57 +70,57 @@ namespace EQTool
                 new KeyValuePair<string, string>("EQTool.runtimes.win_x86", "runtimes\\win-x86\\native"),
             };
 
-                foreach (var item in dlls)
-                {
-                    var found = executingAssembly.FirstOrDefault(a => a.StartsWith(item.Key));
-                    var assemblyName = new AssemblyName("e_sqlite3");
-                    var path = assemblyName.Name + ".dll";
-                    using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(found))
-                    {
-                        if (stream == null)
-                        {
-                            continue;
-                        }
-
-                        var assemblyRawBytes = new byte[stream.Length];
-                        _ = stream.Read(assemblyRawBytes, 0, assemblyRawBytes.Length);
-
-                        try
-                        {
-                            _ = Directory.CreateDirectory(item.Value);
-                            File.WriteAllBytes(Directory.GetCurrentDirectory() + "/" + item.Value + "/e_sqlite3.dll", assemblyRawBytes);
-                        }
-                        catch { }
-                    }
-                }
-
-            }
-
-            private static Assembly OnResolveAssembly(object sender, ResolveEventArgs args)
+            foreach (var item in dlls)
             {
-                var executingAssembly = Assembly.GetExecutingAssembly();
-                var assemblyName = new AssemblyName(args.Name);
+                var found = executingAssembly.FirstOrDefault(a => a.StartsWith(item.Key));
+                var assemblyName = new AssemblyName("e_sqlite3");
                 var path = assemblyName.Name + ".dll";
-                Debug.WriteLine($"Try Resolve {args.Name}");
-                using (var stream = executingAssembly.GetManifestResourceStream(path))
+                using (var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(found))
                 {
                     if (stream == null)
                     {
-                        return null;
+                        continue;
                     }
 
                     var assemblyRawBytes = new byte[stream.Length];
                     _ = stream.Read(assemblyRawBytes, 0, assemblyRawBytes.Length);
-                    if (args.Name.StartsWith("System.Threading.Tasks.Extensions"))
+
+                    try
                     {
-                        try
-                        {
-                            File.WriteAllBytes("System.Threading.Tasks.Extensions.dll", assemblyRawBytes);
-                        }
-                        catch { }
+                        _ = Directory.CreateDirectory(item.Value);
+                        File.WriteAllBytes(Directory.GetCurrentDirectory() + "/" + item.Value + "/e_sqlite3.dll", assemblyRawBytes);
                     }
-                    return Assembly.Load(assemblyRawBytes);
+                    catch { }
                 }
+            }
+
+        }
+
+        private static Assembly OnResolveAssembly(object sender, ResolveEventArgs args)
+        {
+            var executingAssembly = Assembly.GetExecutingAssembly();
+            var assemblyName = new AssemblyName(args.Name);
+            var path = assemblyName.Name + ".dll";
+            Debug.WriteLine($"Try Resolve {args.Name}");
+            using (var stream = executingAssembly.GetManifestResourceStream(path))
+            {
+                if (stream == null)
+                {
+                    return null;
+                }
+
+                var assemblyRawBytes = new byte[stream.Length];
+                _ = stream.Read(assemblyRawBytes, 0, assemblyRawBytes.Length);
+                if (args.Name.StartsWith("System.Threading.Tasks.Extensions"))
+                {
+                    try
+                    {
+                        File.WriteAllBytes("System.Threading.Tasks.Extensions.dll", assemblyRawBytes);
+                    }
+                    catch { }
+                }
+                return Assembly.Load(assemblyRawBytes);
             }
         }
     }
+}

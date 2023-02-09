@@ -1,0 +1,252 @@
+﻿<Window x:Class="EQTool.MobInfo"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+        xmlns:local="clr-namespace:EQTool"
+        Style="{StaticResource MyMobWindowSyle}"
+        Title="{Binding Title}" 
+        Height="350" 
+        Width="700"  
+        WindowStyle="None" 
+        SizeToContent="WidthAndHeight"
+        AllowsTransparency="True">
+
+    <WindowChrome.WindowChrome>
+        <WindowChrome CaptionHeight="0" ResizeBorderThickness="5" />
+    </WindowChrome.WindowChrome>
+    <Window.Resources>
+        <LinearGradientBrush x:Key="WindowFrameBrush" StartPoint="0,0.5" EndPoint="1,0.5">
+            <GradientStop Color="CadetBlue" Offset="0.4"/>
+            <GradientStop Color="Gray" Offset="1"/>
+        </LinearGradientBrush>
+    </Window.Resources>
+    <Border Background="#50FFFFFF" CornerRadius="5" BorderBrush="{StaticResource WindowFrameBrush}" BorderThickness="2,0,2,2">
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="20" />
+                <RowDefinition/>
+            </Grid.RowDefinitions>
+            <Border Background="{StaticResource WindowFrameBrush}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" CornerRadius="5,5,0,0" Margin="-1,0,-1,0" MouseLeftButtonDown="DragWindow">
+                <Grid>
+                    <TextBlock Foreground="White" FontWeight="Bold" VerticalAlignment="Center" Margin="10,1,10,1" Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}, Path=Title}"/>
+                    <StackPanel Orientation="Horizontal"  HorizontalAlignment="Center">
+                        <Button Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="openspells" ToolTip="Open Spells/Trigger Window">
+                            <Image Source="pack://application:,,,/wizard.png"/>
+                        </Button>
+                        <Button Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="openmap" ToolTip="Open Map Window">
+                            <Image Source="pack://application:,,,/map.png"/>
+                        </Button>
+                        <Button Content="O" Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="opensettings" ToolTip="Open Settings Window" />
+                    </StackPanel> 
+                    <StackPanel Orientation="Horizontal"  HorizontalAlignment="Right">
+                        <Button Content="_" Margin="1" FontSize="7" Width="10" Height="10" Padding="0" Click="MinimizeWindow"/>
+                        <Button Content="&#xF04B;" Margin="1" FontSize="7" Width="10" Height="10" Padding="0" Click="MaximizeWindow"/>
+                        <Button Content="X" Margin="1" FontSize="7" Width="10" Height="10" Padding="0" Click="CloseWindow" />
+                    </StackPanel>
+                </Grid>
+            </Border>
+            <StackPanel Grid.Row="1" Orientation="Horizontal" HorizontalAlignment="Stretch">
+                <StackPanel.Resources>
+                    <Style TargetType="TextBlock" BasedOn="{StaticResource ResourceKey=MyMobTextBoxWindowSyle}"/>
+                </StackPanel.Resources>
+                <StackPanel Orientation="Vertical" Visibility="{Binding HasErrors}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock FontSize="16" Foreground="Red" Text="{Binding ErrorResults}"></TextBlock>
+                    </StackPanel>
+                </StackPanel>
+                <StackPanel Orientation="Vertical" Margin="0, 0, 8, 0" Width="200" Visibility="{Binding HasNoErrors}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Name" Width="100"></TextBlock>
+                        <TextBlock>
+                             <Hyperlink NavigateUri="{Binding Url}" RequestNavigate="Hyperlink_RequestNavigate">
+                                 <TextBlock Text="{Binding Name}"></TextBlock>     
+                                 <Button Visibility="{Binding HaseUrl}" Margin="1" FontSize="7" Width="14" Height="14" Padding="0" ToolTip="Open in Web Browser" Click="Hyperlink_RequestNavigatebutton">
+                                    <Image Source="pack://application:,,,/HyperlinkForward.png"/>
+                                </Button>
+                             </Hyperlink> 
+                        </TextBlock>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Race" Width="100"></TextBlock>
+                        <TextBlock Text="{Binding Race}"></TextBlock>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Class" Width="100"></TextBlock>
+                        <TextBlock Text="{Binding Class}"></TextBlock>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Level" Width="100"></TextBlock>
+                        <TextBlock Text="{Binding Level}"></TextBlock>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="AgroRadius" Width="100"></TextBlock>
+                        <TextBlock Text="{Binding AgroRadius}"></TextBlock>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="RunSpeed" Width="100"></TextBlock>
+                        <TextBlock Text="{Binding RunSpeed}"></TextBlock>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="AC" Width="100"></TextBlock>
+                        <TextBlock Text="{Binding AC}"></TextBlock>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="HP" Width="100"></TextBlock>
+                        <TextBlock Text="{Binding HP}"></TextBlock>
+                    </StackPanel>
+                    <!--<StackPanel Orientation="Horizontal">
+                        <TextBlock Text="HPRegen" Width="100"></TextBlock>
+                        <TextBlock Text="{Binding HPRegen}"></TextBlock>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="ManaRegen" Width="100"></TextBlock>
+                        <TextBlock Text="{Binding ManaRegen}"></TextBlock>
+                    </StackPanel>-->
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="AttacksPerRound" Width="100"></TextBlock>
+                        <TextBlock Text="{Binding AttacksPerRound}"></TextBlock>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="AttackSpeed" Width="100"></TextBlock>
+                        <TextBlock Text="{Binding AttackSpeed}"></TextBlock>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="DamagePerHit" Width="100"></TextBlock>
+                        <TextBlock Text="{Binding DamagePerHit}"></TextBlock>
+                    </StackPanel>
+
+                    <TextBlock>Factions</TextBlock>
+                    <ListView Margin="10, 0, 0, 0" Style="{StaticResource MyListViewStyle}" ItemsSource="{Binding Factions}">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel>
+                                    <TextBlock Visibility="{Binding HaseUrl}">
+                                         <Hyperlink NavigateUri="{Binding Url}" RequestNavigate="Hyperlink_RequestNavigate">
+                                          <TextBlock Text="{Binding Name}" Style="{StaticResource MyMobUrlSyle}"></TextBlock>     
+                                             <Button Visibility="{Binding HaseUrl}" Margin="1" FontSize="7" Width="14" Height="14" Padding="0" ToolTip="Open in Web Browser" Click="Hyperlink_RequestNavigatebutton">
+                                                <Image Source="pack://application:,,,/HyperlinkForward.png"/>
+                                            </Button>
+                                         </Hyperlink> 
+                                        </TextBlock>
+                                    <TextBlock Visibility="{Binding HaseNoUrl}" Text="{Binding Name}">
+                                    </TextBlock>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="{x:Type ListViewItem}">
+                                <Setter Property="Background" Value="Transparent" />
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="{x:Type ListViewItem}">
+                                            <ContentPresenter />
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </ListView.ItemContainerStyle>
+                    </ListView>
+                    <TextBlock>Opposing Factions</TextBlock>
+                    <ListView Margin="10, 0, 0, 0" Style="{StaticResource MyListViewStyle}" ItemsSource="{Binding OpposingFactions}">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel>
+                                    <TextBlock Visibility="{Binding HaseUrl}">
+                                         <Hyperlink NavigateUri="{Binding Url}" RequestNavigate="Hyperlink_RequestNavigate">
+                                          <TextBlock Text="{Binding Name}" Style="{StaticResource MyMobUrlSyle}"></TextBlock>     
+                                             <Button Visibility="{Binding HaseUrl}" Margin="1" FontSize="7" Width="14" Height="14" Padding="0" ToolTip="Open in Web Browser" Click="Hyperlink_RequestNavigatebutton">
+                                                <Image Source="pack://application:,,,/HyperlinkForward.png"/>
+                                            </Button>
+                                         </Hyperlink> 
+                                        </TextBlock>
+                                    <TextBlock Visibility="{Binding HaseNoUrl}" Text="{Binding Name}">
+                                    </TextBlock>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="{x:Type ListViewItem}">
+                                <Setter Property="Background" Value="Transparent" />
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="{x:Type ListViewItem}">
+                                            <ContentPresenter />
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </ListView.ItemContainerStyle>
+                    </ListView>
+                </StackPanel>
+                <StackPanel Orientation="Vertical" Visibility="{Binding HasNoErrors}">
+                    <TextBlock>Known Loot</TextBlock>
+                    <ListView Margin="10, 0, 0, 0" Style="{StaticResource MyListViewStyle}" ItemsSource="{Binding KnownLoot}" MaxHeight="300">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel>
+                                    <TextBlock Visibility="{Binding HaseUrl}">
+                                         <Hyperlink NavigateUri="{Binding Url}" RequestNavigate="Hyperlink_RequestNavigate">
+                                             <TextBlock Text="{Binding Name}" Style="{StaticResource MyMobUrlSyle}"></TextBlock>     
+                                             <Button Visibility="{Binding HaseUrl}" Margin="1" FontSize="7" Width="14" Height="14" Padding="0" ToolTip="Open in Web Browser" Click="Hyperlink_RequestNavigatebutton">
+                                                <Image Source="pack://application:,,,/HyperlinkForward.png"/>
+                                            </Button>
+                                         </Hyperlink> 
+                                        </TextBlock>
+                                    <TextBlock Visibility="{Binding HaseNoUrl}" Text="{Binding Name}">
+                                    </TextBlock>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="{x:Type ListViewItem}">
+                                <Setter Property="Background" Value="Transparent" />
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="{x:Type ListViewItem}">
+                                            <ContentPresenter />
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </ListView.ItemContainerStyle>
+                    </ListView>
+                    <TextBlock>Specials</TextBlock>
+                    <ListView Margin="10, 0, 0, 0" Style="{StaticResource MyListViewStyle}" ItemsSource="{Binding Specials}">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel>
+                                    <TextBlock Visibility="{Binding HaseUrl}">
+                                         <Hyperlink NavigateUri="{Binding Url}" RequestNavigate="Hyperlink_RequestNavigate">
+                                          <TextBlock Text="{Binding Name}" Style="{StaticResource MyMobUrlSyle}"></TextBlock>     
+                                             <Button Visibility="{Binding HaseUrl}" Margin="1" FontSize="7" Width="14" Height="14" Padding="0" ToolTip="Open in Web Browser" Click="Hyperlink_RequestNavigatebutton">
+                                                <Image Source="pack://application:,,,/HyperlinkForward.png"/>
+                                            </Button>
+                                         </Hyperlink> 
+                                        </TextBlock>
+                                    <TextBlock Visibility="{Binding HaseNoUrl}" Text="{Binding Name}">
+                                    </TextBlock>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="{x:Type ListViewItem}">
+                                <Setter Property="Background" Value="Transparent" />
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="{x:Type ListViewItem}">
+                                            <ContentPresenter />
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </ListView.ItemContainerStyle>
+                    </ListView>
+                </StackPanel>
+                <StackPanel Orientation="Vertical" Visibility="{Binding HasNoErrors}">
+                    <StackPanel Orientation="Horizontal">
+                        <Image Source="{Binding ImageUrl}" Stretch="Uniform"  MaxHeight="250" MaxWidth="250" />
+                    </StackPanel>
+                </StackPanel>
+            </StackPanel>
+        </Grid>
+    </Border>
+</Window>

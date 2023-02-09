@@ -44,7 +44,15 @@ namespace EQTool
             SettingsWindowData.EqPath = this.settings.DefaultEqDirectory;
             Topmost = true;
             InitializeComponent();
-            TryUpdateSettings();
+            try
+            {
+                TryUpdateSettings();
+            }
+            catch
+            {
+
+            }
+
             TryCheckLoggingEnabled();
 
             foreach (var item in SettingsWindowData.PlayerClasses)
@@ -52,33 +60,45 @@ namespace EQTool
                 var it = item.ToString();
                 _ = spellbyclassselection.Items.Add(it);
             }
-            Zonecombobox.ItemsSource = settingsWindowData.Zones.OrderBy(a => a).ToList();
-            levelscombobox.ItemsSource = SettingsWindowData.Levels;
-            fontsizescombobox.ItemsSource = SettingsWindowData.FontSizes;
-            fontsizescombobox.SelectedValue = settings.FontSize.ToString();
+
             themecombobox.ItemsSource = new List<KeyValuePair<string, Themes>>()
             {
                 new KeyValuePair<string, Themes>(Themes.Light.ToString(), Themes.Light),
                 new KeyValuePair<string, Themes>(Themes.Dark.ToString(), Themes.Dark)
             };
             themecombobox.SelectedValue = settings.Theme;
-            if (SettingsWindowData.NotMissingConfiguration)
-            {
-                Height = 650;
-            }
+
+            var releasemode = false;
 
 #if Release
-            DebuggingStack.Visibility = Visibility.Collapsed;
+            releasemode = true;
 #endif
+            if (releasemode)
+            {
+                DebuggingStack.Visibility = Visibility.Collapsed;
+                if (SettingsWindowData.NotMissingConfiguration)
+                {
+                    Height = 620;
+                }
+            }
+            else if (SettingsWindowData.NotMissingConfiguration)
+            {
+                Height = 720;
+            }
+        }
+
+        private void SaveConfig()
+        {
+            settings.FontSize = Properties.Settings.Default.GlobalFontSize;
+            settings.GlobalTriggerWindowOpacity = Properties.Settings.Default.GlobalTriggerWindowOpacity;
+            settings.GlobalDPSWindowOpacity = Properties.Settings.Default.GlobalDPSWindowOpacity;
+            toolSettingsLoad.Save(settings);
+            Properties.Settings.Default.Save();
         }
 
         protected override void OnClosing(CancelEventArgs e)
         {
-            settings.FontSize = App.GlobalFontSize;
-            settings.GlobalTriggerWindowOpacity = App.GlobalTriggerWindowOpacity;
-            settings.GlobalDPSWindowOpacity = App.GlobalDPSWindowOpacity;
-            settings.Theme = App.Theme;
-            toolSettingsLoad.Save(settings);
+            SaveConfig();
             base.OnClosing(e);
         }
 
@@ -127,7 +147,8 @@ namespace EQTool
 
         private void fontsizescombobox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
-            App.GlobalFontSize = double.Parse(fontsizescombobox.SelectedValue as string);
+            Properties.Settings.Default.GlobalFontSize = SettingsWindowData.FontSize;
+            SaveConfig();
         }
 
         private void EqFolderButtonClicked(object sender, RoutedEventArgs e)
@@ -137,7 +158,7 @@ namespace EQTool
                 var result = fbd.ShowDialog();
                 if (result == System.Windows.Forms.DialogResult.OK && !string.IsNullOrWhiteSpace(fbd.SelectedPath))
                 {
-                    if (FindEq.IsValid(fbd.SelectedPath))
+                    if (FindEq.IsProject1999Folder(fbd.SelectedPath))
                     {
                         SettingsWindowData.EqPath = settings.DefaultEqDirectory = fbd.SelectedPath;
                         TryUpdateSettings();
@@ -145,7 +166,7 @@ namespace EQTool
                     }
                     else
                     {
-                        _ = System.Windows.Forms.MessageBox.Show("eqgame.exe was not found in this folder!", "Message");
+                        _ = System.Windows.Forms.MessageBox.Show("eqgame.exe was not found in this folder. Make sure this is your project 1999 Folder!", "Message");
                     }
                 }
             }
@@ -184,11 +205,11 @@ namespace EQTool
 
         private void GlobalTriggerWindowOpacityValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            settings.GlobalTriggerWindowOpacity = App.GlobalTriggerWindowOpacity = (sender as Slider).Value;
+            settings.GlobalTriggerWindowOpacity = Properties.Settings.Default.GlobalTriggerWindowOpacity = (sender as Slider).Value;
         }
         private void GlobalDPSWindowOpacityValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            settings.GlobalDPSWindowOpacity = App.GlobalDPSWindowOpacity = (sender as Slider).Value;
+            settings.GlobalDPSWindowOpacity = Properties.Settings.Default.GlobalDPSWindowOpacity = (sender as Slider).Value;
         }
 
         private void YouSpells_Checked(object sender, RoutedEventArgs e)
@@ -259,6 +280,7 @@ namespace EQTool
         {
             settings.Theme = (themecombobox.SelectedValue as Themes?) ?? Themes.Light;
             App.Theme = settings.Theme;
+            SaveConfig();
         }
 
         private void zoneselectionchanged(object sender, SelectionChangedEventArgs e)
@@ -276,6 +298,7 @@ namespace EQTool
 
         private void testDPS(object sender, RoutedEventArgs e)
         {
+            var testdpsbutton = sender as System.Windows.Controls.Button;
             if (!testdpsbutton.IsEnabled)
             {
                 return;
@@ -330,11 +353,19 @@ namespace EQTool
                     appDispatcher.DispatchUI(() => { testdpsbutton.IsEnabled = true; });
                 }
             });
+        }
 
+        private void mobconclicked(object sender, RoutedEventArgs e)
+        {
+            var format = "ddd MMM dd HH:mm:ss yyyy";
+            var d = DateTime.Now;
+            var line = "[" + d.ToString(format) + "] A Shadow regards you indifferently -- You could probably win this fight.";
+            logParser.Push(new LogParser.LogParserEventArgs { Line = line });
         }
 
         private void textmapclicked(object sender, RoutedEventArgs e)
         {
+            var testmap = sender as System.Windows.Controls.Button;
             if (!testmap.IsEnabled)
             {
                 return;

@@ -4,10 +4,8 @@ using EQTool.Services.Spells.Log;
 using EQTool.ViewModels;
 using System;
 using System.ComponentModel;
-using System.Timers;
 using System.Windows;
 using System.Windows.Data;
-using System.Windows.Forms;
 using System.Windows.Input;
 
 namespace EQTool
@@ -22,9 +20,12 @@ namespace EQTool
         private readonly LogDeathParse logDeathParse;
         private readonly LogCustomTimer logCustomTimer;
         private readonly EQToolSettings settings;
+        private readonly EQToolSettingsLoad toolSettingsLoad;
+        private readonly SpellWornOffLogParse spellWornOffLogParse;
 
-        public SpellWindow(EQToolSettings settings, SpellWindowViewModel spellWindowViewModel, LogParser logParser, SpellLogParse spellLogParse, LogDeathParse logDeathParse, LogCustomTimer logCustomTimer)
+        public SpellWindow(SpellWornOffLogParse spellWornOffLogParse, EQToolSettings settings, SpellWindowViewModel spellWindowViewModel, LogParser logParser, SpellLogParse spellLogParse, LogDeathParse logDeathParse, LogCustomTimer logCustomTimer, EQToolSettingsLoad toolSettingsLoad)
         {
+            this.spellWornOffLogParse = spellWornOffLogParse;
             this.settings = settings;
             this.logCustomTimer = logCustomTimer;
             this.logDeathParse = logDeathParse;
@@ -37,11 +38,11 @@ namespace EQTool
             Topmost = settings.TriggerWindowTopMost;
             if (settings.SpellWindowState != null && WindowBounds.isPointVisibleOnAScreen(settings.SpellWindowState.WindowRect))
             {
-                this.Left = settings.SpellWindowState.WindowRect.Left;
-                this.Top = settings.SpellWindowState.WindowRect.Top;
-                this.Height = settings.SpellWindowState.WindowRect.Height;
-                this.Width = settings.SpellWindowState.WindowRect.Width;
-                this.WindowState = settings.SpellWindowState.State;
+                Left = settings.SpellWindowState.WindowRect.Left;
+                Top = settings.SpellWindowState.WindowRect.Top;
+                Height = settings.SpellWindowState.WindowRect.Height;
+                Width = settings.SpellWindowState.WindowRect.Width;
+                WindowState = settings.SpellWindowState.State;
             }
             InitializeComponent();
 
@@ -49,7 +50,7 @@ namespace EQTool
             UITimer.Elapsed += PollUI;
             UITimer.Enabled = true;
             var view = (ListCollectionView)CollectionViewSource.GetDefaultView(spelllistview.ItemsSource);
-            App.GlobalTriggerWindowOpacity = settings.GlobalTriggerWindowOpacity;
+            Properties.Settings.Default.GlobalTriggerWindowOpacity = settings.GlobalTriggerWindowOpacity;
             view.GroupDescriptions.Add(new PropertyGroupDescription(nameof(UISpell.TargetName)));
             view.LiveGroupingProperties.Add(nameof(UISpell.TargetName));
             view.IsLiveGrouping = true;
@@ -57,6 +58,30 @@ namespace EQTool
             view.SortDescriptions.Add(new SortDescription(nameof(UISpell.SecondsLeftOnSpell), ListSortDirection.Descending));
             view.IsLiveSorting = true;
             view.LiveSortingProperties.Add(nameof(UISpell.SecondsLeftOnSpell));
+            this.toolSettingsLoad = toolSettingsLoad;
+            if (settings.SpellWindowState != null)
+            {
+                settings.SpellWindowState.Closed = false;
+            }
+            SaveState();
+            SizeChanged += DPSMeter_SizeChanged;
+            StateChanged += SpellWindow_StateChanged;
+            LocationChanged += DPSMeter_LocationChanged;
+        }
+
+        private void SpellWindow_StateChanged(object sender, EventArgs e)
+        {
+            SaveState();
+        }
+
+        private void DPSMeter_LocationChanged(object sender, EventArgs e)
+        {
+            SaveState();
+        }
+
+        private void DPSMeter_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            SaveState();
         }
 
         private void LogParser_PlayerChangeEvent(object sender, LogParser.PlayerChangeEventArgs e)
@@ -74,12 +99,15 @@ namespace EQTool
 
             var customtimer = logCustomTimer.GetStartTimer(e.Line);
             spellWindowViewModel.TryAddCustom(customtimer);
+
             var canceltimer = logCustomTimer.GetCancelTimer(e.Line);
             spellWindowViewModel.TryRemoveCustom(canceltimer);
+
+            var spelltoremove = spellWornOffLogParse.MatchSpell(e.Line);
+            spellWindowViewModel.TryRemoveUnambiguousSpell(spelltoremove);
         }
 
-
-        protected override void OnClosing(CancelEventArgs e)
+        private void SaveState()
         {
             if (settings.SpellWindowState == null)
             {
@@ -87,12 +115,18 @@ namespace EQTool
             }
             settings.SpellWindowState.WindowRect = new Rect
             {
-                X = this.Left,
-                Y = this.Top,
-                Height = this.Height,
-                Width = this.Width
+                X = Left,
+                Y = Top,
+                Height = Height,
+                Width = Width
             };
-            settings.SpellWindowState.State = this.WindowState; 
+            settings.SpellWindowState.State = WindowState;
+            toolSettingsLoad.Save(settings);
+        }
+
+
+        protected override void OnClosing(CancelEventArgs e)
+        {
             UITimer.Stop();
             UITimer.Dispose();
             logParser.LineReadEvent += LogParser_LineReadEvent;
@@ -117,14 +151,7 @@ namespace EQTool
 
         private void MaximizeWindow(object sender, RoutedEventArgs e)
         {
-            if (WindowState == System.Windows.WindowState.Maximized)
-            {
-                WindowState = System.Windows.WindowState.Normal;
-            }
-            else
-            {
-                WindowState = System.Windows.WindowState.Maximized;
-            }
+            WindowState = WindowState == System.Windows.WindowState.Maximized ? System.Windows.WindowState.Normal : System.Windows.WindowState.Maximized;
         }
 
         private void CloseWindow(object sender, RoutedEventArgs e)
@@ -134,6 +161,7 @@ namespace EQTool
                 settings.SpellWindowState = new Models.WindowState();
             }
             settings.SpellWindowState.Closed = true;
+            SaveState();
             Close();
         }
 
@@ -149,6 +177,10 @@ namespace EQTool
         private void openmap(object sender, RoutedEventArgs e)
         {
             (App.Current as App).OpenMapWindow();
+        }
+        private void openmobinfo(object sender, RoutedEventArgs e)
+        {
+            (App.Current as App).OpenMobInfoWindow();
         }
 
     }

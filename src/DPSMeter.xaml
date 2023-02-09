@@ -30,6 +30,9 @@
                 <Grid>
                     <TextBlock Foreground="White" FontWeight="Bold" VerticalAlignment="Center" Margin="10,1,10,1" Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}, Path=Title}"/>
                     <StackPanel Orientation="Horizontal"  HorizontalAlignment="Center">
+                        <Button Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="openmobinfo" ToolTip="Open Mob Info Window">
+                            <Image Source="pack://application:,,,/toolbox.png"/>
+                        </Button>
                         <Button Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="openspells" ToolTip="Open Spells/Trigger Window">
                             <Image Source="pack://application:,,,/wizard.png"/>
                         </Button>
@@ -91,7 +94,7 @@
                                                             <ColumnDefinition Width="45"/>
                                                             <ColumnDefinition Width="70" /> 
                                                         </Grid.ColumnDefinitions>
-                                                        <TextBlock Grid.Column="0" Text="{Binding Name}" FontWeight="Bold" FontSize="{DynamicResource GlobalFontSize}" />
+                                                        <TextBlock Grid.Column="0" Text="{Binding Items[0].TargetName_and_Info}" FontWeight="Bold" FontSize="{DynamicResource GlobalFontSize}" />
                                                         <Button Grid.Column="1" Width="14" Height="14" Click="copytoclipboard" ToolTip="Copy Details to clipboard">
                                                             <Image Source="pack://application:,,,/Copy.png"/>
                                                         </Button>
