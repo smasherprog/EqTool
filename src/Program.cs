@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EQTool.Properties;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
