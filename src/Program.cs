@@ -20,7 +20,7 @@ namespace EQTool
             {
                 _ = OnResolveAssembly(null, new ResolveEventArgs("System.Threading.Tasks.Extensions"));
                 AppDomain.CurrentDomain.AssemblyResolve += OnResolveAssembly;
-                WriteSqlLiteDlls();
+                //WriteSqlLiteDlls();
                 if (!File.Exists(configFile))
                 {
                     UpdateConfig(args);
