@@ -2,7 +2,6 @@
 using EQTool.Services.Map;
 using HelixToolkit.Wpf;
 using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -66,7 +65,6 @@ namespace EQTool.ViewModels
             public Vector3D LookDirection { get; set; }
         }
 
-        private readonly List<EQTextVisual3D> Labels = new List<EQTextVisual3D>();
 
         public CameraDetail LoadMap(string zone)
         {
@@ -82,7 +80,6 @@ namespace EQTool.ViewModels
             if (map.Labels.Any() || map.Lines.Any())
             {
                 DrawItems.Clear();
-                Labels.Clear();
                 //var colorgroups = map.Lines.GroupBy(a => new { a.Color.R, a.Color.G, a.Color.B }).ToList();
                 //Debug.WriteLine($"LineGroups: {colorgroups.Count}");
                 //foreach (var group in colorgroups)
@@ -147,7 +144,6 @@ namespace EQTool.ViewModels
                         Height = 20
                     };
                     DrawItems.Add(text);
-                    Labels.Add(text);
                 }
 
                 DrawItems.Add(new QuadVisual3D
