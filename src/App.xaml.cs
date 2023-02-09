@@ -1,7 +1,4 @@
 ﻿using EQTool.Models;
-using Microsoft.AppCenter;
-using Microsoft.AppCenter.Analytics;
-using Microsoft.AppCenter.Crashes;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -130,22 +127,32 @@ namespace EQTool
             catch { }
         }
 
+        private bool WaitForEQToolToStop()
+        {
+            var counter = 0;
+            int count;
+            do
+            {
+                count = Process.GetProcessesByName("eqtool").Count();
+                if (counter++ > 6)
+                {
+                    return false;
+                }
+                Debug.WriteLine($"Waiting for eqtool {count} on counter {counter}");
+                Thread.Sleep(1000);
+            }
+            while (count != 1);
+            return true;
+        }
+
         private void App_Startup(object sender, StartupEventArgs e)
         {
-            //var counter = 0;
-            //var count = 0;
-            //do
-            //{
-            //    count = Process.GetProcessesByName("eqtool").Count();
-            //    Debug.WriteLine(count);
-            //    if (counter++ > 6)
-            //    {
-            //        App.Current.Shutdown();
-            //        return;
-            //    }
-            //    Thread.Sleep(1000);
-            //}
-            //while (count != 1);
+            if (!WaitForEQToolToStop())
+            {
+                MessageBox.Show("Another EQTool is currently running. You must shut that one down first!", "Multiple EQTools running!", MessageBoxButton.OK, MessageBoxImage.Error);
+                App.Current.Shutdown();
+                return;
+            }
 
             var debugging = false;
 #if DEBUG
