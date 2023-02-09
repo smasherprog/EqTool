@@ -134,7 +134,7 @@ namespace EQTool
             do
             {
                 count = Process.GetProcessesByName("eqtool").Count();
-                if (counter++ > 20)
+                if (counter++ > 6)
                 {
                     return false;
                 }
@@ -149,6 +149,7 @@ namespace EQTool
         {
             if (!WaitForEQToolToStop())
             {
+                MessageBox.Show("Another EQTool is currently running. You must shut that one down first!", "Multiple EQTools running!", MessageBoxButton.OK, MessageBoxImage.Error);
                 App.Current.Shutdown();
                 return;
             }
