@@ -1,6 +1,8 @@
 ﻿using EQTool.Services;
 using EQTool.Services.Map;
 using HelixToolkit.Wpf;
+using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -64,6 +66,8 @@ namespace EQTool.ViewModels
             public Vector3D LookDirection { get; set; }
         }
 
+        private readonly List<EQTextVisual3D> Labels = new List<EQTextVisual3D>();
+
         public CameraDetail LoadMap(string zone)
         {
             if (string.IsNullOrWhiteSpace(zone))
@@ -78,7 +82,7 @@ namespace EQTool.ViewModels
             if (map.Labels.Any() || map.Lines.Any())
             {
                 DrawItems.Clear();
-
+                Labels.Clear();
                 //var colorgroups = map.Lines.GroupBy(a => new { a.Color.R, a.Color.G, a.Color.B }).ToList();
                 //Debug.WriteLine($"LineGroups: {colorgroups.Count}");
                 //foreach (var group in colorgroups)
@@ -116,21 +120,7 @@ namespace EQTool.ViewModels
                         OriginalPoints = group.Points.ToList()
                     };
                     DrawItems.Add(l);
-                }
 
-                Debug.WriteLine($"Labels: {map.Labels.Count}");
-                foreach (var item in map.Labels)
-                {
-                    var text = new EQTextVisual3D
-                    {
-                        Text = item.label,
-                        Position = item.Point,
-                        Foreground = new SolidColorBrush(item.Color),
-                        TextDirection = new Vector3D(1, 0, 0),
-                        UpDirection = new Vector3D(0, 1, 0),
-                        Height = 30,
-                    };
-                    DrawItems.Add(text);
                 }
                 var halfbox = map.AABB.MaxHeight * .3;
                 var center = map.AABB.Center;
@@ -143,6 +133,23 @@ namespace EQTool.ViewModels
 
                 var min = map.AABB.Min;
                 var max = map.AABB.Max;
+
+                Debug.WriteLine($"Labels: {map.Labels.Count}");
+                foreach (var item in map.Labels)
+                {
+                    var text = new EQTextVisual3D
+                    {
+                        Text = item.label.Replace('_', ' '),
+                        Position = item.Point,
+                        Foreground = new SolidColorBrush(item.Color),
+                        TextDirection = new Vector3D(1, 0, 0),
+                        UpDirection = new Vector3D(0, 1, 0),
+                        Height = 20
+                    };
+                    DrawItems.Add(text);
+                    Labels.Add(text);
+                }
+
                 DrawItems.Add(new QuadVisual3D
                 {
                     Point1 = new Point3D(max.X, max.Y, 0),
@@ -194,6 +201,10 @@ namespace EQTool.ViewModels
                 //}
             });
         }
+        public T Clamp<T>(T val, T min, T max) where T : IComparable<T>
+        {
+            return val.CompareTo(min) < 0 ? min : val.CompareTo(max) > 0 ? max : val;
+        }
 
         public CameraDetail LoadDefaultMap()
         {
@@ -236,7 +247,6 @@ namespace EQTool.ViewModels
 
         public void UpdatePlayerVisual(Point3D camera_position)
         {
-
             if (PlayerVisualLocation == null || PlayerVisualLocationSphere == null)
             {
                 return;
@@ -250,7 +260,6 @@ namespace EQTool.ViewModels
             PlayerVisualLocation.Point1 = new Point3D(PlayerVisualLocation.Point1.X, PlayerVisualLocation.Point1.Y, camera_position.Z + 300);
             PlayerVisualLocation.Point2 = new Point3D(PlayerVisualLocation.Point2.X, PlayerVisualLocation.Point2.Y, camera_position.Z + 300);
             PlayerVisualLocation.EndEdit();
-
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

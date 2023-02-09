@@ -52,7 +52,7 @@ namespace EQTool
 #endif
             if (debugging)
             {
-                viewport3d.IsPanEnabled = false;
+                viewport3d.IsPanEnabled = true;
                 viewport3d.ShowFrameRate = true;
                 viewport3d.ShowCameraInfo = true;
             }
