@@ -207,15 +207,14 @@ namespace EQTool.ViewModels
 
         public CameraDetail UpdateLocation(Point3D value1, CameraDetail cameraDetail)
         {
-            //LookDirection = new Vector3D(value1.Y, value1.X, LookDirection.Z);
-            var newval = new Point3D(value1.Y, value1.X, cameraDetail.Position.Z + 200);
+            var newval = new Point3D(value1.Y, value1.X, cameraDetail.Position.Z + 300);
             if (!Lastlocation.HasValue)
             {
                 Lastlocation = new Point3D(value1.Y, value1.X, newval.Z);
             }
-            var vec = newval - new Point3D(Lastlocation.Value.X, Lastlocation.Value.Y, cameraDetail.Position.Z + 200);
+            var vec = newval - new Point3D(Lastlocation.Value.X, Lastlocation.Value.Y, cameraDetail.Position.Z + 300);
             vec.Normalize();
-            var endpos = ((vec * 30) + newval.ToVector3D()).ToPoint3D();
+            var endpos = ((vec * 20) + newval.ToVector3D()).ToPoint3D();
             Lastlocation = new Point3D(value1.Y, value1.X, newval.Z);
 
 
@@ -227,7 +226,7 @@ namespace EQTool.ViewModels
             PlayerVisualLocation.Direction = vec;
             PlayerVisualLocation.Point1 = newval;
             PlayerVisualLocation.Point2 = endpos;
-            PlayerVisualLocationSphere.EndEdit();
+            PlayerVisualLocation.EndEdit();
             return new CameraDetail
             {
                 LookDirection = cameraDetail.LookDirection,
@@ -244,13 +243,13 @@ namespace EQTool.ViewModels
             };
 
             PlayerVisualLocationSphere.BeginEdit();
-            PlayerVisualLocationSphere.Center = new Point3D(PlayerVisualLocationSphere.Center.X, PlayerVisualLocationSphere.Center.Y, camera_position.Z + 200);
+            PlayerVisualLocationSphere.Center = new Point3D(PlayerVisualLocationSphere.Center.X, PlayerVisualLocationSphere.Center.Y, camera_position.Z + 300);
             PlayerVisualLocationSphere.EndEdit();
             PlayerVisualLocation.BeginEdit();
             PlayerVisualLocation.Direction = PlayerVisualLocation.Direction;
-            PlayerVisualLocation.Point1 = new Point3D(PlayerVisualLocation.Point1.X, PlayerVisualLocation.Point1.Y, camera_position.Z + 200);
-            PlayerVisualLocation.Point2 = new Point3D(PlayerVisualLocation.Point2.X, PlayerVisualLocation.Point2.Y, camera_position.Z + 200);
-            PlayerVisualLocationSphere.EndEdit();
+            PlayerVisualLocation.Point1 = new Point3D(PlayerVisualLocation.Point1.X, PlayerVisualLocation.Point1.Y, camera_position.Z + 300);
+            PlayerVisualLocation.Point2 = new Point3D(PlayerVisualLocation.Point2.X, PlayerVisualLocation.Point2.Y, camera_position.Z + 300);
+            PlayerVisualLocation.EndEdit();
 
         }
 
