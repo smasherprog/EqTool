@@ -127,22 +127,31 @@ namespace EQTool
             catch { }
         }
 
+        private bool WaitForEQToolToStop()
+        {
+            var counter = 0;
+            int count;
+            do
+            {
+                count = Process.GetProcessesByName("eqtool").Count();
+                if (counter++ > 20)
+                {
+                    return false;
+                }
+                Debug.WriteLine($"Waiting for eqtool {count}");
+                Thread.Sleep(1000);
+            }
+            while (count != 1);
+            return true;
+        }
+
         private void App_Startup(object sender, StartupEventArgs e)
         {
-            //var counter = 0;
-            //var count = 0;
-            //do
-            //{
-            //    count = Process.GetProcessesByName("eqtool").Count();
-            //    Debug.WriteLine(count);
-            //    if (counter++ > 6)
-            //    {
-            //        App.Current.Shutdown();
-            //        return;
-            //    }
-            //    Thread.Sleep(1000);
-            //}
-            //while (count != 1);
+            if (!WaitForEQToolToStop())
+            {
+                App.Current.Shutdown();
+                return;
+            }
 
             //            var debugging = false;
             //#if DEBUG
@@ -187,6 +196,7 @@ namespace EQTool
                 }
                 catch (Exception ex)
                 {
+                    File.AppendAllText("Errors.txt", ex.ToString());
                     MessageBox.Show(ex.Message);
                     App.Current.Shutdown();
                 }
