@@ -138,7 +138,7 @@ namespace EQTool
                 {
                     return false;
                 }
-                Debug.WriteLine($"Waiting for eqtool {count}");
+                Debug.WriteLine($"Waiting for eqtool {count} on counter {counter}");
                 Thread.Sleep(1000);
             }
             while (count != 1);
