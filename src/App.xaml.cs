@@ -1,16 +1,11 @@
-﻿using EQTool.Models;
-using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.IO.Compression;
 using System.Linq;
-using System.Net.Http;
 using System.Reflection;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows;
 
 namespace EQTool
 {
@@ -145,6 +140,24 @@ namespace EQTool
             return true;
         }
 
+        private bool WaitForEQToolToStop()
+        {
+            var counter = 0;
+            int count;
+            do
+            {
+                count = Process.GetProcessesByName("eqtool").Count();
+                if (counter++ > 6)
+                {
+                    return false;
+                }
+                Debug.WriteLine($"Waiting for eqtool {count} on counter {counter}");
+                Thread.Sleep(1000);
+            }
+            while (count != 1);
+            return true;
+        }
+
         private void App_Startup(object sender, StartupEventArgs e)
         {
             if (!WaitForEQToolToStop())
@@ -152,6 +165,15 @@ namespace EQTool
                 MessageBox.Show("Another EQTool is currently running. You must shut that one down first!", "Multiple EQTools running!", MessageBoxButton.OK, MessageBoxImage.Error);
                 App.Current.Shutdown();
                 return;
+            }
+
+            var debugging = false;
+#if DEBUG
+            debugging = true;
+#endif
+            if (!debugging)
+            {
+                //AppCenter.Start("9be42804-8d4f-4431-9120-06f3a0370c4c", typeof(Analytics), typeof(Crashes));
             }
 
             //            var debugging = false;
