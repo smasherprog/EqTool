@@ -85,6 +85,7 @@ namespace EQTool
         {
             SaveState();
         }
+
         private void LogParser_LineReadEvent(object sender, LogParser.LogParserEventArgs e)
         {
             var matched = dPSLogParse.Match(e.Line);
@@ -95,9 +96,10 @@ namespace EQTool
 
         protected override void OnClosing(CancelEventArgs e)
         {
-            UITimer.Stop();
-            UITimer.Dispose();
             logParser.LineReadEvent -= LogParser_LineReadEvent;
+            SizeChanged -= DPSMeter_SizeChanged;
+            StateChanged -= SpellWindow_StateChanged;
+            LocationChanged -= DPSMeter_LocationChanged;
             base.OnClosing(e);
         }
 

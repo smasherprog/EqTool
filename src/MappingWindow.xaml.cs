@@ -60,7 +60,7 @@ namespace EQTool
 
         protected override void OnClosing(CancelEventArgs e)
         {
-            logParser.LineReadEvent += LogParser_LineReadEvent;
+            logParser.LineReadEvent -= LogParser_LineReadEvent;
             base.OnClosing(e);
         }
 
