@@ -97,7 +97,10 @@ namespace EQTool
         {
             UITimer.Stop();
             UITimer.Dispose();
-            logParser.LineReadEvent += LogParser_LineReadEvent;
+            SizeChanged -= DPSMeter_SizeChanged;
+            StateChanged -= SpellWindow_StateChanged;
+            LocationChanged -= DPSMeter_LocationChanged;
+            logParser.LineReadEvent -= LogParser_LineReadEvent;
             base.OnClosing(e);
         }
 

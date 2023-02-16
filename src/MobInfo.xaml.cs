@@ -2,6 +2,7 @@
 using EQTool.Services;
 using EQTool.Services.Spells.Log;
 using System;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Net;
 using System.Net.Http;
@@ -48,6 +49,15 @@ namespace EQTool
             SizeChanged += DPSMeter_SizeChanged;
             StateChanged += SpellWindow_StateChanged;
             LocationChanged += DPSMeter_LocationChanged;
+        }
+
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            SizeChanged -= DPSMeter_SizeChanged;
+            StateChanged -= SpellWindow_StateChanged;
+            LocationChanged -= DPSMeter_LocationChanged;
+            logParser.LineReadEvent -= LogParser_LineReadEvent;
+            base.OnClosing(e);
         }
 
         private void SpellWindow_StateChanged(object sender, EventArgs e)

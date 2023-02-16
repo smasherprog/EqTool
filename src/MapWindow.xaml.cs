@@ -64,6 +64,14 @@ namespace EQTool
             }
         }
 
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            UITimer.Stop();
+            UITimer.Dispose();
+            logParser.LineReadEvent -= LogParser_LineReadEvent;
+            base.OnClosing(e);
+        }
+
         private void UITimer_Elapsed(object sender, ElapsedEventArgs e)
         {
             mapViewModel.Update();
@@ -92,12 +100,6 @@ namespace EQTool
                 viewport3d.Camera.Position = camera.Position;
                 viewport3d.Camera.LookDirection = camera.LookDirection;
             }
-        }
-
-        protected override void OnClosing(CancelEventArgs e)
-        {
-            logParser.LineReadEvent += LogParser_LineReadEvent;
-            base.OnClosing(e);
         }
 
         public void DragWindow(object sender, MouseButtonEventArgs args)
