@@ -1,15 +1,7 @@
-﻿using EQTool.Models;
-using EQTool.Services;
-using EQTool.Services.Spells.Log;
-using EQTool.ViewModels;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Input;
 
 namespace EQTool
 {
@@ -96,10 +88,12 @@ namespace EQTool
 
         protected override void OnClosing(CancelEventArgs e)
         {
-            logParser.LineReadEvent -= LogParser_LineReadEvent;
+            UITimer.Stop();
+            UITimer.Dispose();
             SizeChanged -= DPSMeter_SizeChanged;
             StateChanged -= SpellWindow_StateChanged;
             LocationChanged -= DPSMeter_LocationChanged;
+            logParser.LineReadEvent -= LogParser_LineReadEvent;
             base.OnClosing(e);
         }
 

@@ -43,6 +43,7 @@ Features:
 <ul>
 <li>Self update when NOT in use</li>
 <li>Raid Group suggestions for guild: AOE; CH Chain; AOE+Ch Chain; Other</li>
+<li>Better track players levels and classes</li>
 <li>Respawn Time in Mob Info window</li>
 <li>Ability Hide/show mob info data</li>
 <li>Automatically add timer when named npc dies. Use Wiki for notable npc names</li>

@@ -1,10 +1,5 @@
-﻿using EQTool.Services;
-using EQTool.Services.Map;
-using EQTool.ViewModels;
-using System.ComponentModel;
+﻿using System.ComponentModel;
 using System.Timers;
-using System.Windows;
-using System.Windows.Input;
 
 namespace EQTool
 {
@@ -32,6 +27,14 @@ namespace EQTool
             UITimer = new System.Timers.Timer(1000);
             UITimer.Elapsed += UITimer_Elapsed;
             UITimer.Enabled = true;
+        }
+
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            UITimer.Stop();
+            UITimer.Dispose();
+            logParser.LineReadEvent -= LogParser_LineReadEvent;
+            base.OnClosing(e);
         }
 
         private void UITimer_Elapsed(object sender, ElapsedEventArgs e)
