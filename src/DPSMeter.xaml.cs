@@ -1,7 +1,15 @@
-﻿using System;
+﻿using EQTool.Models;
+using EQTool.Services;
+using EQTool.Services.Spells.Log;
+using EQTool.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Input;
 
 namespace EQTool
 {

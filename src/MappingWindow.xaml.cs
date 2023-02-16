@@ -1,5 +1,10 @@
-﻿using System.ComponentModel;
+﻿using EQTool.Services;
+using EQTool.Services.Map;
+using EQTool.ViewModels;
+using System.ComponentModel;
 using System.Timers;
+using System.Windows;
+using System.Windows.Input;
 
 namespace EQTool
 {
@@ -59,12 +64,6 @@ namespace EQTool
                     ViewPort.Attach(Map);
                 }
             }
-        }
-
-        protected override void OnClosing(CancelEventArgs e)
-        {
-            logParser.LineReadEvent -= LogParser_LineReadEvent;
-            base.OnClosing(e);
         }
 
         public void DragWindow(object sender, MouseButtonEventArgs args)
