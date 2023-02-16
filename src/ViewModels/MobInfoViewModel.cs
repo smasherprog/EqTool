@@ -439,6 +439,18 @@ namespace EQTool.ViewModels
             var imageurl = GetValue("imagefilename", splits);
             if (!string.IsNullOrWhiteSpace(imageurl) && imageurl.Length > 2)
             {
+                var indexof = imageurl.IndexOf(".png");
+                if (indexof != -1)
+                {
+                    imageurl = imageurl.Substring(0, indexof + 4);
+                }
+
+                indexof = imageurl.IndexOf(".jpg");
+                if (indexof != -1)
+                {
+                    imageurl = imageurl.Substring(0, indexof + 4);
+                }
+
                 imageurl = char.ToUpper(imageurl[0]) + imageurl.Substring(1, imageurl.Length - 1);
                 ImageUrl = $"https://wiki.project1999.com/images/{imageurl}";
             }

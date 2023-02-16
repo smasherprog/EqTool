@@ -71,6 +71,17 @@ namespace EQTool
             LocationChanged += DPSMeter_LocationChanged;
         }
 
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            UITimer.Stop();
+            UITimer.Dispose();
+            SizeChanged -= DPSMeter_SizeChanged;
+            StateChanged -= SpellWindow_StateChanged;
+            LocationChanged -= DPSMeter_LocationChanged;
+            logParser.LineReadEvent -= LogParser_LineReadEvent;
+            base.OnClosing(e);
+        }
+
         private void SpellWindow_StateChanged(object sender, EventArgs e)
         {
             SaveState();
@@ -94,16 +105,6 @@ namespace EQTool
             dPSWindowViewModel.TargetDied(targetdead);
         }
 
-        protected override void OnClosing(CancelEventArgs e)
-        {
-            UITimer.Stop();
-            UITimer.Dispose();
-            SizeChanged -= DPSMeter_SizeChanged;
-            StateChanged -= SpellWindow_StateChanged;
-            LocationChanged -= DPSMeter_LocationChanged;
-            logParser.LineReadEvent -= LogParser_LineReadEvent;
-            base.OnClosing(e);
-        }
 
         private void SaveState()
         {
