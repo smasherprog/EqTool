@@ -1,4 +1,5 @@
-﻿using System;
+﻿using HelixToolkit.Wpf;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -71,6 +72,7 @@ namespace EQTool.Services
             };
 
             public double MaxHeight => Max.Y - Min.Y;
+            public double MaxWidth => Max.X - Min.X;
         }
 
         public class ParsedData
@@ -78,6 +80,24 @@ namespace EQTool.Services
             public List<MapLine> Lines { get; set; } = new List<MapLine>();
             public List<MapLabel> Labels { get; set; } = new List<MapLabel>();
             public AABB AABB { get; set; } = new AABB();
+        }
+
+        private static Point3D RotatePoint(Point3D pointToRotate, Point3D centerPoint, double angleInDegrees)
+        {
+            var angleInRadians = angleInDegrees * (Math.PI / 180);
+            var cosTheta = Math.Cos(angleInRadians);
+            var sinTheta = Math.Sin(angleInRadians);
+            return new Point3D
+            {
+                X =
+                    (int)
+                    ((cosTheta * (pointToRotate.X - centerPoint.X)) -
+                    (sinTheta * (pointToRotate.Y - centerPoint.Y)) + centerPoint.X),
+                Y =
+                    (int)
+                    ((sinTheta * (pointToRotate.X - centerPoint.X)) +
+                    (cosTheta * (pointToRotate.Y - centerPoint.Y)) + centerPoint.Y)
+            };
         }
 
         private ParsedData Parse(List<string> lines)
@@ -99,14 +119,14 @@ namespace EQTool.Services
                         Points = new Point3D[] {
                              new Point3D
                              {
-                                 X = float.Parse(splits[0]) *-1,
-                                 Y = float.Parse(splits[1]) *-1,
+                                 X = float.Parse(splits[0]),
+                                 Y = float.Parse(splits[1]),
                                  Z = float.Parse(splits[2])
                              },
                              new Point3D
                              {
-                                 X = float.Parse(splits[3]) *-1,
-                                 Y = float.Parse(splits[4]) * -1,
+                                 X = float.Parse(splits[3]),
+                                 Y = float.Parse(splits[4]),
                                  Z = float.Parse(splits[5])
                              }
                          },
@@ -125,8 +145,8 @@ namespace EQTool.Services
                     {
                         Point = new Point3D
                         {
-                            X = float.Parse(splits[0]) * -1,
-                            Y = float.Parse(splits[1]) * -1,
+                            X = float.Parse(splits[0]),
+                            Y = float.Parse(splits[1]),
                             Z = float.Parse(splits[2])
                         },
                         Color = Color.FromRgb(byte.Parse(splits[3]), byte.Parse(splits[4]), byte.Parse(splits[5])),
@@ -139,6 +159,33 @@ namespace EQTool.Services
                     ret.AABB.Add(point.Points[1]);
                 }
             }
+
+            ret.AABB = new AABB();
+            foreach (var point in ret.Lines)
+            {
+                ret.AABB.Add(point.Points[0]);
+                ret.AABB.Add(point.Points[1]);
+            }
+            var min = ret.AABB.Min;
+
+            foreach (var item in ret.Lines)
+            {
+                item.Points[0] = (item.Points[0] - min).ToPoint3D();
+                item.Points[1] = (item.Points[1] - min).ToPoint3D();
+            }
+
+            foreach (var item in ret.Labels)
+            {
+                item.Point = (item.Point - min).ToPoint3D();
+            }
+
+            ret.AABB = new AABB();
+            foreach (var point in ret.Lines)
+            {
+                ret.AABB.Add(point.Points[0]);
+                ret.AABB.Add(point.Points[1]);
+            }
+
             return ret;
         }
     }

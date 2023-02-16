@@ -17,7 +17,7 @@ namespace EQTool
         private readonly Autofac.IContainer container;
         private readonly System.Windows.Forms.NotifyIcon SystemTrayIcon;
         private SpellWindow spellWindow = null;
-        private MapWindow mapwindow = null;
+        private MappingWindow mapwindow = null;
         private DPSMeter dpsmeter = null;
         private Settings settingswindow = null;
         private MobInfo MobInfoswindow = null;
@@ -111,6 +111,7 @@ namespace EQTool
                 SystemTrayIcon.BalloonTipClicked += UpdateNotes;
                 SystemTrayIcon.ShowBalloonTip(5000, "PigParse Updated!", "Click here for details!", System.Windows.Forms.ToolTipIcon.Info);
             }
+            container.Resolve<MappingWindow>().Show();
         }
 
         private EQToolSettings EQToolSettings => container.Resolve<EQToolSettings>();
@@ -187,7 +188,7 @@ namespace EQTool
             if (s.Checked)
             {
                 mapwindow?.Close();
-                mapwindow = container.Resolve<MapWindow>();
+                mapwindow = container.Resolve<MappingWindow>();
                 mapwindow.Closed += (se, ee) =>
                 {
                     s.Checked = false;

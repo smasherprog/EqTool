@@ -97,7 +97,7 @@ namespace EQTool
         {
             UITimer.Stop();
             UITimer.Dispose();
-            logParser.LineReadEvent += LogParser_LineReadEvent;
+            logParser.LineReadEvent -= LogParser_LineReadEvent;
             base.OnClosing(e);
         }
 

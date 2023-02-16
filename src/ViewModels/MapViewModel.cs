@@ -7,8 +7,10 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
+using System.Windows.Shapes;
 
 namespace EQTool.ViewModels
 {
@@ -59,78 +61,37 @@ namespace EQTool.ViewModels
             }
         }
 
-        public class CameraDetail
-        {
-            public Point3D Position { get; set; }
-            public Vector3D LookDirection { get; set; }
-        }
-
-
-        public CameraDetail LoadMap(string zone)
+        public bool LoadMap(string zone, Canvas canvas)
         {
             if (string.IsNullOrWhiteSpace(zone))
             {
-                return null;
+                return false;
             }
 
             Title = zone;
             Debug.WriteLine($"Loading: {zone}");
             var map = mapLoad.Load(zone);
-
             if (map.Labels.Any() || map.Lines.Any())
             {
-                DrawItems.Clear();
-                //var colorgroups = map.Lines.GroupBy(a => new { a.Color.R, a.Color.G, a.Color.B }).ToList();
-                //Debug.WriteLine($"LineGroups: {colorgroups.Count}");
-                //foreach (var group in colorgroups)
-                //{
-                //    var points = group.SelectMany(a => a.Points).ToList();
-                //    var modifiedpoints = points.Select(a => new Point3D
-                //    {
-                //        X = a.X,
-                //        Y = a.Y,
-                //        Z = 0
-                //    }).ToList();
-                //    Debug.WriteLine($"Lines: {points.Count}");
-                //    var l = new EQLinesVisual3D
-                //    {
-                //        Thickness = 1,
-                //        Points = new Point3DCollection(modifiedpoints),
-                //        Color = group.FirstOrDefault().Color,
-                //        OriginalPoints = points
-                //    };
-                //    DrawItems.Add(l);
-                //}
-
-                foreach (var group in map.Lines)
-                {
-                    var l = new EQLinesVisual3D
-                    {
-                        Thickness = 1,
-                        Points = new Point3DCollection(group.Points.Select(a => new Point3D
-                        {
-                            X = a.X,
-                            Y = a.Y,
-                            Z = 0
-                        })),
-                        Color = group.Color,
-                        OriginalPoints = group.Points.ToList()
-                    };
-                    DrawItems.Add(l);
-
-                }
-                var halfbox = map.AABB.MaxHeight * .3;
-                var center = map.AABB.Center;
-                center.Z -= map.AABB.MaxHeight;
-                map.AABB.Min.X = map.AABB.Min.X - halfbox;
-                map.AABB.Min.Y = map.AABB.Min.Y - halfbox;
-
-                map.AABB.Max.X = map.AABB.Max.X + halfbox;
-                map.AABB.Max.Y = map.AABB.Max.Y + halfbox;
-
+                canvas.Children.Clear();
                 var min = map.AABB.Min;
                 var max = map.AABB.Max;
+                foreach (var group in map.Lines)
+                {
+                    var l = new Line
+                    {
+                        X1 = group.Points[0].X,
+                        Y1 = group.Points[0].Y,
+                        X2 = group.Points[1].X,
+                        Y2 = group.Points[1].Y,
+                        StrokeThickness = 2,
+                        Stroke = new SolidColorBrush(group.Color)
+                    };
+                    _ = canvas.Children.Add(l);
+                }
 
+                canvas.Height = Math.Abs(map.AABB.MaxHeight);
+                canvas.Width = Math.Abs(map.AABB.MaxWidth);
                 Debug.WriteLine($"Labels: {map.Labels.Count}");
                 foreach (var item in map.Labels)
                 {
@@ -168,17 +129,10 @@ namespace EQTool.ViewModels
                     Diameter = 1,
                     Fill = System.Windows.Media.Brushes.LimeGreen
                 };
-                DrawItems.Add(PlayerVisualLocation);
-                DrawItems.Add(PlayerVisualLocationSphere);
-                DrawItems.Add(new DefaultLights());
-                return new CameraDetail
-                {
-                    Position = center,
-                    LookDirection = map.AABB.Center - center
-                };
+                return true;
             }
 
-            return null;
+            return false;
         }
 
         public void Update()
@@ -202,44 +156,46 @@ namespace EQTool.ViewModels
             return val.CompareTo(min) < 0 ? min : val.CompareTo(max) > 0 ? max : val;
         }
 
-        public CameraDetail LoadDefaultMap()
+        public bool LoadDefaultMap(Canvas canvas)
         {
+            _ = activePlayer.Update();
             var z = zoneParser.TranslateToMapName(activePlayer.Player?.Zone);
             if (string.IsNullOrWhiteSpace(z))
             {
                 z = "freportw";
             }
-            return LoadMap(z);
+            return LoadMap(z, canvas);
         }
 
-        public CameraDetail UpdateLocation(Point3D value1, CameraDetail cameraDetail)
+        public void UpdateLocation(Point3D value1)
         {
-            var newval = new Point3D(value1.Y, value1.X, cameraDetail.Position.Z + 300);
-            if (!Lastlocation.HasValue)
-            {
-                Lastlocation = new Point3D(value1.Y, value1.X, newval.Z);
-            }
-            var vec = newval - new Point3D(Lastlocation.Value.X, Lastlocation.Value.Y, cameraDetail.Position.Z + 300);
-            vec.Normalize();
-            var endpos = ((vec * 20) + newval.ToVector3D()).ToPoint3D();
-            Lastlocation = new Point3D(value1.Y, value1.X, newval.Z);
+            //var newval = new Point3D(value1.Y, value1.X, cameraDetail.Position.Z + 300);
+            //if (!Lastlocation.HasValue)
+            //{
+            //    Lastlocation = new Point3D(value1.Y, value1.X, newval.Z);
+            //}
+            //var vec = newval - new Point3D(Lastlocation.Value.X, Lastlocation.Value.Y, cameraDetail.Position.Z + 300);
+            //vec.Normalize();
+            //var endpos = ((vec * 20) + newval.ToVector3D()).ToPoint3D();
+            //Lastlocation = new Point3D(value1.Y, value1.X, newval.Z);
 
 
-            PlayerVisualLocationSphere.BeginEdit();
-            PlayerVisualLocationSphere.Center = newval;
-            PlayerVisualLocationSphere.EndEdit();
+            //PlayerVisualLocationSphere.BeginEdit();
+            //PlayerVisualLocationSphere.Center = newval;
+            //PlayerVisualLocationSphere.EndEdit();
 
-            PlayerVisualLocation.BeginEdit();
-            PlayerVisualLocation.Direction = vec;
-            PlayerVisualLocation.Point1 = newval;
-            PlayerVisualLocation.Point2 = endpos;
-            PlayerVisualLocation.EndEdit();
-            return new CameraDetail
-            {
-                LookDirection = cameraDetail.LookDirection,
-                Position = new Point3D(value1.Y, value1.X, cameraDetail.Position.Z)
-            };
+            //PlayerVisualLocation.BeginEdit();
+            //PlayerVisualLocation.Direction = vec;
+            //PlayerVisualLocation.Point1 = newval;
+            //PlayerVisualLocation.Point2 = endpos;
+            //PlayerVisualLocation.EndEdit();
+            //return new CameraDetail
+            //{
+            //    LookDirection = cameraDetail.LookDirection,
+            //    Position = new Point3D(value1.Y, value1.X, cameraDetail.Position.Z)
+            //};
         }
+
 
         public void UpdatePlayerVisual(Point3D camera_position)
         {
