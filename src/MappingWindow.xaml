@@ -21,7 +21,7 @@
             <GradientStop Color="Gray" Offset="1"/>
         </LinearGradientBrush>
     </Window.Resources>
-    <Border Background="#30FFFFFF" CornerRadius="5" BorderBrush="{StaticResource WindowFrameBrush}" BorderThickness="2,0,2,2">
+    <Border Background="Transparent" CornerRadius="5" BorderBrush="{StaticResource WindowFrameBrush}" BorderThickness="2,0,2,2">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="20" />
@@ -49,11 +49,14 @@
                     </StackPanel>
                 </Grid>
             </Border>
-
-            <local:EqToolViewport x:Name="ViewPort" Grid.Row="1" MinZoom="-1" ZoomX=".1" ZoomY=".1" MaxZoom="50" ZoomSpeed="1.1">
+            <Viewbox Stretch="Uniform" Grid.Row="1">
+                <local:PanAndZoomCanvas x:Name="Map"  HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" />
+            </Viewbox> 
+        
+            <!--<local:EqToolViewport x:Name="ViewPort" Grid.Row="1" MinZoom="-1" ZoomX=".1" ZoomY=".1" MaxZoom="50" ZoomSpeed="1.1">
                 <Canvas x:Name="Map" Background="White"> 
                 </Canvas>
-            </local:EqToolViewport> 
+            </local:EqToolViewport>-->
         </Grid>
     </Border>
 </Window>

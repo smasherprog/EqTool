@@ -1,4 +1,5 @@
-﻿using EQTool.Services;
+﻿using EQTool.Models;
+using EQTool.Services;
 using EQTool.Services.Map;
 using HelixToolkit.Wpf;
 using System;
@@ -20,6 +21,9 @@ namespace EQTool.ViewModels
         private readonly ActivePlayer activePlayer;
         private readonly IAppDispatcher appDispatcher;
         private readonly ZoneParser zoneParser;
+
+        private System.Windows.Media.Color _lineColor = System.Windows.Media.Color.FromArgb(0xFF, 0x66, 0x66, 0x66);
+        private System.Windows.Media.Color _backgroundColor = System.Windows.Media.Color.FromArgb(0xFF, 0x33, 0x33, 0x33);
 
         public MapViewModel(ZoneParser zoneParser, MapLoad mapLoad, ActivePlayer activePlayer, IAppDispatcher appDispatcher)
         {
@@ -74,18 +78,52 @@ namespace EQTool.ViewModels
             if (map.Labels.Any() || map.Lines.Any())
             {
                 canvas.Children.Clear();
+
                 var min = map.AABB.Min;
                 var max = map.AABB.Max;
+
+                // draw lines
+                for (var x = min.X; x <= max.X; x += 500)
+                {
+                    _ = new Line
+                    {
+                        Stroke = new SolidColorBrush(_lineColor),
+                        X1 = x,
+                        Y1 = min.Y,
+                        X2 = x,
+                        Y2 = max.Y,
+                        StrokeThickness = x % 1000 == 0 ? 6 : 2
+                    };
+                    // _ = canvas.Children.Add(verticalLine);
+                }
+
+                for (var y = min.Y; y <= max.Y; y += 500)
+                {
+                    _ = new Line
+                    {
+                        Stroke = new SolidColorBrush(_lineColor),
+                        X1 = min.X,
+                        Y1 = y,
+                        X2 = max.X,
+                        Y2 = y,
+                        StrokeThickness = y % 1000 == 0 ? 6 : 2
+                    };
+                    // _ = canvas.Children.Add(horizontalLine);
+                }
+
+
                 foreach (var group in map.Lines)
                 {
+                    var c = EQMapColor.GetThemedColors(group.Color);
                     var l = new Line
                     {
+                        Tag = c,
                         X1 = group.Points[0].X,
                         Y1 = group.Points[0].Y,
                         X2 = group.Points[1].X,
                         Y2 = group.Points[1].Y,
                         StrokeThickness = 2,
-                        Stroke = new SolidColorBrush(group.Color)
+                        Stroke = new SolidColorBrush(App.Theme == Themes.Light ? c.LightColor : c.DarkColor)
                     };
                     _ = canvas.Children.Add(l);
                 }
@@ -95,16 +133,17 @@ namespace EQTool.ViewModels
                 Debug.WriteLine($"Labels: {map.Labels.Count}");
                 foreach (var item in map.Labels)
                 {
-                    var text = new EQTextVisual3D
+                    var c = EQMapColor.GetThemedColors(item.Color);
+                    var text = new TextBlock
                     {
+                        Tag = c,
                         Text = item.label.Replace('_', ' '),
-                        Position = item.Point,
-                        Foreground = new SolidColorBrush(item.Color),
-                        TextDirection = new Vector3D(1, 0, 0),
-                        UpDirection = new Vector3D(0, 1, 0),
-                        Height = 20
+                        Foreground = new SolidColorBrush(App.Theme == Themes.Light ? c.LightColor : c.DarkColor),
+                        Height = 30
                     };
-                    DrawItems.Add(text);
+                    _ = canvas.Children.Add(text);
+                    Canvas.SetLeft(text, item.Point.X);
+                    Canvas.SetTop(text, item.Point.Y);
                 }
 
                 DrawItems.Add(new QuadVisual3D
@@ -134,6 +173,7 @@ namespace EQTool.ViewModels
 
             return false;
         }
+
 
         public void Update()
         {

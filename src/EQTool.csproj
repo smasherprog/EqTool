@@ -164,12 +164,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="EqToolViewport.cs" />
     <Compile Include="MappingWindow.xaml.cs">
       <DependentUpon>MappingWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="MobInfo.xaml.cs">
       <DependentUpon>MobInfo.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EQMapColor.cs" />
+    <Compile Include="PanAndZoomCanvas.xaml.cs">
+      <DependentUpon>PanAndZoomCanvas.xaml</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="DPSMeter.xaml.cs">
@@ -186,6 +189,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="Services\AppDispatcher.cs" />
+    <Compile Include="Services\HSLColor.cs" />
     <Compile Include="Services\Fight\FightLogService.cs" />
     <Compile Include="Services\Map\LocationParser.cs" />
     <Compile Include="Services\Map\ZoneParser.cs" />
@@ -276,6 +280,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="MobInfo.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PanAndZoomCanvas.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

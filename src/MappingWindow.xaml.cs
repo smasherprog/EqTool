@@ -1,10 +1,14 @@
-﻿using EQTool.Services;
+﻿using EQTool.Models;
+using EQTool.Services;
 using EQTool.Services.Map;
 using EQTool.ViewModels;
 using System.ComponentModel;
 using System.Timers;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Shapes;
 
 namespace EQTool
 {
@@ -27,6 +31,7 @@ namespace EQTool
             DataContext = this.mapViewModel = mapViewModel;
             Topmost = true;
             InitializeComponent();
+            App.ThemeChangedEvent += App_ThemeChangedEvent;
             _ = mapViewModel.LoadDefaultMap(Map);
             this.logParser.LineReadEvent += LogParser_LineReadEvent;
             UITimer = new System.Timers.Timer(1000);
@@ -34,10 +39,28 @@ namespace EQTool
             UITimer.Enabled = true;
         }
 
+        private void App_ThemeChangedEvent(object sender, App.ThemeChangeEventArgs e)
+        {
+            foreach (var item in Map.Children)
+            {
+                if (item is Line l)
+                {
+                    var c = l.Tag as EQMapColor;
+                    l.Stroke = new SolidColorBrush(e.Theme == Themes.Light ? c.LightColor : c.DarkColor);
+                }
+                else if (item is TextBlock t)
+                {
+                    var c = t.Tag as EQMapColor;
+                    t.Foreground = new SolidColorBrush(e.Theme == Themes.Light ? c.LightColor : c.DarkColor);
+                }
+            }
+        }
+
         protected override void OnClosing(CancelEventArgs e)
         {
             UITimer.Stop();
             UITimer.Dispose();
+            App.ThemeChangedEvent -= App_ThemeChangedEvent;
             logParser.LineReadEvent -= LogParser_LineReadEvent;
             base.OnClosing(e);
         }
@@ -60,8 +83,7 @@ namespace EQTool
                 matched = zoneParser.TranslateToMapName(matched);
                 if (mapViewModel.LoadMap(matched, Map))
                 {
-                    ViewPort.Detach();
-                    ViewPort.Attach(Map);
+                    Map.Reset();
                 }
             }
         }

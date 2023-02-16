@@ -31,8 +31,16 @@ namespace EQTool
             {
                 _Theme = value;
                 EQTool.Properties.Settings.Default.ColorMode = value.ToString();
+                ThemeChangedEvent?.Invoke(null, new ThemeChangeEventArgs { Theme = value });
             }
         }
+        public class ThemeChangeEventArgs : EventArgs
+        {
+            public Themes Theme { get; set; }
+        }
+
+        public static event EventHandler<ThemeChangeEventArgs> ThemeChangedEvent;
+
 
         private static void CopyFilesRecursively(string sourcePath, string targetPath)
         {

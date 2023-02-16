@@ -1,5 +1,4 @@
-﻿using HelixToolkit.Wpf;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -160,31 +159,31 @@ namespace EQTool.Services
                 }
             }
 
-            ret.AABB = new AABB();
-            foreach (var point in ret.Lines)
-            {
-                ret.AABB.Add(point.Points[0]);
-                ret.AABB.Add(point.Points[1]);
-            }
-            var min = ret.AABB.Min;
+            //ret.AABB = new AABB();
+            //foreach (var point in ret.Lines)
+            //{
+            //    ret.AABB.Add(point.Points[0]);
+            //    ret.AABB.Add(point.Points[1]);
+            //}
+            //var min = ret.AABB.Min;
 
-            foreach (var item in ret.Lines)
-            {
-                item.Points[0] = (item.Points[0] - min).ToPoint3D();
-                item.Points[1] = (item.Points[1] - min).ToPoint3D();
-            }
+            //foreach (var item in ret.Lines)
+            //{
+            //    item.Points[0] = (item.Points[0] - min).ToPoint3D();
+            //    item.Points[1] = (item.Points[1] - min).ToPoint3D();
+            //}
 
-            foreach (var item in ret.Labels)
-            {
-                item.Point = (item.Point - min).ToPoint3D();
-            }
+            //foreach (var item in ret.Labels)
+            //{
+            //    item.Point = (item.Point - min).ToPoint3D();
+            //}
 
-            ret.AABB = new AABB();
-            foreach (var point in ret.Lines)
-            {
-                ret.AABB.Add(point.Points[0]);
-                ret.AABB.Add(point.Points[1]);
-            }
+            //ret.AABB = new AABB();
+            //foreach (var point in ret.Lines)
+            //{
+            //    ret.AABB.Add(point.Points[0]);
+            //    ret.AABB.Add(point.Points[1]);
+            //}
 
             return ret;
         }
