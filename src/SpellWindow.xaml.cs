@@ -68,6 +68,17 @@ namespace EQTool
             StateChanged += SpellWindow_StateChanged;
             LocationChanged += DPSMeter_LocationChanged;
         }
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            UITimer.Stop();
+            UITimer.Dispose();
+            SizeChanged -= DPSMeter_SizeChanged;
+            StateChanged -= SpellWindow_StateChanged;
+            LocationChanged -= DPSMeter_LocationChanged;
+            logParser.LineReadEvent -= LogParser_LineReadEvent;
+            logParser.PlayerChangeEvent -= LogParser_PlayerChangeEvent;
+            base.OnClosing(e);
+        }
 
         private void SpellWindow_StateChanged(object sender, EventArgs e)
         {
@@ -124,17 +135,7 @@ namespace EQTool
             toolSettingsLoad.Save(settings);
         }
 
-        protected override void OnClosing(CancelEventArgs e)
-        {
-            UITimer.Stop();
-            UITimer.Dispose();
-            SizeChanged -= DPSMeter_SizeChanged;
-            StateChanged -= SpellWindow_StateChanged;
-            LocationChanged -= DPSMeter_LocationChanged;
-            logParser.LineReadEvent -= LogParser_LineReadEvent;
-            logParser.PlayerChangeEvent -= LogParser_PlayerChangeEvent;
-            base.OnClosing(e);
-        }
+
 
         private void PollUI(object sender, EventArgs e)
         {
