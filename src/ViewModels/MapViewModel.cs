@@ -30,7 +30,8 @@ namespace EQTool.ViewModels
             this.appDispatcher = appDispatcher;
         }
 
-        private Point3D? Lastlocation;
+        private Point Lastlocation = new Point(0, 0);
+        private Point3D AABBCenter = new Point3D(0, 0, 0);
 
         public Polyline PlayerLocationIcon { get; set; }
 
@@ -60,7 +61,7 @@ namespace EQTool.ViewModels
             }
         }
 
-        public bool LoadMap(string zone, Canvas canvas)
+        public bool LoadMap(string zone, PanAndZoomCanvas canvas)
         {
             if (string.IsNullOrWhiteSpace(zone))
             {
@@ -122,40 +123,36 @@ namespace EQTool.ViewModels
                         new Point(25,0)
                      }),
                     Stroke = new SolidColorBrush(System.Windows.Media.Color.FromRgb(61, 235, 52)),
-                    StrokeThickness = 3
+                    StrokeThickness = 10
                 };
+                AABBCenter = map.AABB.Center;
                 _ = canvas.Children.Add(PlayerLocationIcon);
-                Canvas.SetLeft(PlayerLocationIcon, map.AABB.Center.X);
-                Canvas.SetTop(PlayerLocationIcon, map.AABB.Center.Y);
+                Canvas.SetLeft(PlayerLocationIcon, AABBCenter.X);
+                Canvas.SetTop(PlayerLocationIcon, AABBCenter.Y);
                 return true;
             }
 
             return false;
         }
-
-
-        public void Update()
+        private static Point3D RotatePoint(Point3D pointToRotate, Point3D centerPoint, double angleInDegrees)
         {
-            appDispatcher.DispatchUI(() =>
+            var angleInRadians = angleInDegrees * (Math.PI / 180);
+            var cosTheta = Math.Cos(angleInRadians);
+            var sinTheta = Math.Sin(angleInRadians);
+            return new Point3D
             {
-                //var maxdist = 100.0 * 100.0;
-                //foreach (LinesVisual3D item in DrawItems.Where(a => a.GetType() == typeof(LinesVisual3D)))
-                //{
-                //    var dist = item.Points.First().DistanceToSquared(Position);
-                //    var alpha = dist / maxdist;
-                //    alpha = Math.Min(1, Math.Max(0, alpha));
-                //    alpha = (alpha - 1) * -1;
-                //    alpha *= 255;
-                //    item.Color = Color.FromArgb(200, item.Color.R, item.Color.G, item.Color.B);
-                //}
-            });
-        }
-        public T Clamp<T>(T val, T min, T max) where T : IComparable<T>
-        {
-            return val.CompareTo(min) < 0 ? min : val.CompareTo(max) > 0 ? max : val;
+                X =
+                    (int)
+                    ((cosTheta * (pointToRotate.X - centerPoint.X)) -
+                    (sinTheta * (pointToRotate.Y - centerPoint.Y)) + centerPoint.X),
+                Y =
+                    (int)
+                    ((sinTheta * (pointToRotate.X - centerPoint.X)) +
+                    (cosTheta * (pointToRotate.Y - centerPoint.Y)) + centerPoint.Y)
+            };
         }
 
-        public bool LoadDefaultMap(Canvas canvas)
+        public bool LoadDefaultMap(PanAndZoomCanvas canvas)
         {
             _ = activePlayer.Update();
             var z = zoneParser.TranslateToMapName(activePlayer.Player?.Zone);
@@ -166,51 +163,19 @@ namespace EQTool.ViewModels
             return LoadMap(z, canvas);
         }
 
-        public void UpdateLocation(Point3D value1)
+        public void UpdateLocation(Point3D value1, PanAndZoomCanvas canvas)
         {
-            //var newval = new Point3D(value1.Y, value1.X, cameraDetail.Position.Z + 300);
-            //if (!Lastlocation.HasValue)
-            //{
-            //    Lastlocation = new Point3D(value1.Y, value1.X, newval.Z);
-            //}
-            //var vec = newval - new Point3D(Lastlocation.Value.X, Lastlocation.Value.Y, cameraDetail.Position.Z + 300);
+            //value1 = RotatePoint(value1, new Point3D(AABBCenter.X, AABBCenter.Y, 0), 180);
+
+            //var vec = newval - new Point3D(Lastlocation.Value.X, Lastlocation.Value.Y);
             //vec.Normalize();
             //var endpos = ((vec * 20) + newval.ToVector3D()).ToPoint3D();
-            //Lastlocation = new Point3D(value1.Y, value1.X, newval.Z);
+            Lastlocation = new Point(value1.X, value1.Y);
 
+            Canvas.SetLeft(PlayerLocationIcon, -Lastlocation.Y * canvas.CurrentScaling);
+            Canvas.SetTop(PlayerLocationIcon, -Lastlocation.X * canvas.CurrentScaling);
 
-            //PlayerVisualLocationSphere.BeginEdit();
-            //PlayerVisualLocationSphere.Center = newval;
-            //PlayerVisualLocationSphere.EndEdit();
-
-            //PlayerVisualLocation.BeginEdit();
-            //PlayerVisualLocation.Direction = vec;
-            //PlayerVisualLocation.Point1 = newval;
-            //PlayerVisualLocation.Point2 = endpos;
-            //PlayerVisualLocation.EndEdit();
-            //return new CameraDetail
-            //{
-            //    LookDirection = cameraDetail.LookDirection,
-            //    Position = new Point3D(value1.Y, value1.X, cameraDetail.Position.Z)
-            //};
-        }
-
-
-        public void UpdatePlayerVisual(Point3D camera_position)
-        {
-            //if (PlayerVisualLocation == null || PlayerVisualLocationSphere == null)
-            //{
-            //    return;
-            //};
-
-            //PlayerVisualLocationSphere.BeginEdit();
-            //PlayerVisualLocationSphere.Center = new Point3D(PlayerVisualLocationSphere.Center.X, PlayerVisualLocationSphere.Center.Y, camera_position.Z + 300);
-            //PlayerVisualLocationSphere.EndEdit();
-            //PlayerVisualLocation.BeginEdit();
-            //PlayerVisualLocation.Direction = PlayerVisualLocation.Direction;
-            //PlayerVisualLocation.Point1 = new Point3D(PlayerVisualLocation.Point1.X, PlayerVisualLocation.Point1.Y, camera_position.Z + 300);
-            //PlayerVisualLocation.Point2 = new Point3D(PlayerVisualLocation.Point2.X, PlayerVisualLocation.Point2.Y, camera_position.Z + 300);
-            //PlayerVisualLocation.EndEdit();
+            PlayerLocationIcon.RenderTransform = canvas.Transform;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

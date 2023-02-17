@@ -10,7 +10,7 @@ namespace EQTool
     /// </summary>
     public partial class PanAndZoomCanvas : Canvas
     {
-        private MatrixTransform _transform = new MatrixTransform();
+        public MatrixTransform Transform = new MatrixTransform();
         private Point _initialMousePosition;
 
         public PanAndZoomCanvas()
@@ -23,8 +23,10 @@ namespace EQTool
 
         public void Reset()
         {
-            _transform = new MatrixTransform();
+            Transform = new MatrixTransform();
         }
+
+        public float CurrentScaling { get; set; } = 1.0f;
 
         public float Zoomfactor { get; set; } = 1.1f;
 
@@ -32,7 +34,7 @@ namespace EQTool
         {
             if (e.ChangedButton == MouseButton.Left)
             {
-                _initialMousePosition = _transform.Inverse.Transform(e.GetPosition(this));
+                _initialMousePosition = Transform.Inverse.Transform(e.GetPosition(this));
             }
         }
 
@@ -40,14 +42,14 @@ namespace EQTool
         {
             if (e.LeftButton == MouseButtonState.Pressed)
             {
-                var mousePosition = _transform.Inverse.Transform(e.GetPosition(this));
+                var mousePosition = Transform.Inverse.Transform(e.GetPosition(this));
                 var delta = Point.Subtract(mousePosition, _initialMousePosition);
                 var translate = new TranslateTransform(delta.X, delta.Y);
-                _transform.Matrix = translate.Value * _transform.Matrix;
+                Transform.Matrix = translate.Value * Transform.Matrix;
 
                 foreach (UIElement child in Children)
                 {
-                    child.RenderTransform = _transform;
+                    child.RenderTransform = Transform;
                 }
             }
         }
@@ -62,9 +64,10 @@ namespace EQTool
 
             var mousePostion = e.GetPosition(this);
 
-            var scaleMatrix = _transform.Matrix;
+            var scaleMatrix = Transform.Matrix;
             scaleMatrix.ScaleAt(scaleFactor, scaleFactor, mousePostion.X, mousePostion.Y);
-            _transform.Matrix = scaleMatrix;
+            Transform.Matrix = scaleMatrix;
+            CurrentScaling *= scaleFactor;
 
             foreach (UIElement child in Children)
             {
@@ -77,7 +80,7 @@ namespace EQTool
                 Canvas.SetLeft(child, sx);
                 Canvas.SetTop(child, sy);
 
-                child.RenderTransform = _transform;
+                child.RenderTransform = Transform;
             }
         }
     }

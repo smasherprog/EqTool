@@ -3,7 +3,6 @@ using EQTool.Services;
 using EQTool.Services.Map;
 using EQTool.ViewModels;
 using System.ComponentModel;
-using System.Timers;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -17,7 +16,7 @@ namespace EQTool
     /// </summary>
     public partial class MappingWindow : Window
     {
-        private readonly Timer UITimer;
+
         private readonly LogParser logParser;
         private readonly MapViewModel mapViewModel;
         private readonly LocationParser locationParser;
@@ -34,9 +33,7 @@ namespace EQTool
             App.ThemeChangedEvent += App_ThemeChangedEvent;
             _ = mapViewModel.LoadDefaultMap(Map);
             this.logParser.LineReadEvent += LogParser_LineReadEvent;
-            UITimer = new System.Timers.Timer(1000);
-            UITimer.Elapsed += UITimer_Elapsed;
-            UITimer.Enabled = true;
+
         }
 
         private void App_ThemeChangedEvent(object sender, App.ThemeChangeEventArgs e)
@@ -58,16 +55,9 @@ namespace EQTool
 
         protected override void OnClosing(CancelEventArgs e)
         {
-            UITimer.Stop();
-            UITimer.Dispose();
             App.ThemeChangedEvent -= App_ThemeChangedEvent;
             logParser.LineReadEvent -= LogParser_LineReadEvent;
             base.OnClosing(e);
-        }
-
-        private void UITimer_Elapsed(object sender, ElapsedEventArgs e)
-        {
-            mapViewModel.Update();
         }
 
         private void LogParser_LineReadEvent(object sender, LogParser.LogParserEventArgs e)
@@ -75,7 +65,7 @@ namespace EQTool
             var pos = locationParser.Match(e.Line);
             if (pos.HasValue)
             {
-
+                mapViewModel.UpdateLocation(pos.Value, Map);
             }
             else
             {
@@ -130,15 +120,6 @@ namespace EQTool
         private void openspells(object sender, RoutedEventArgs e)
         {
             (App.Current as App).OpenSpellsWindow();
-        }
-
-        private void viewport3d_MouseMove(object sender, MouseEventArgs e)
-        {
-        }
-
-        private void viewport3d_CameraChanged(object sender, RoutedEventArgs e)
-        {
-
         }
     }
 }
