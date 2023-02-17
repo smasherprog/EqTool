@@ -19,7 +19,7 @@ namespace EQTool.Services
             var list = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceNames();
 
             var lines = new List<string>();
-            var resourcenames = list.Where(a => a.StartsWith("EQTool.map_files." + zone)).ToList();
+            var resourcenames = list.Where(a => a.ToLower().StartsWith("eqtool.map_files." + zone)).ToList();
             foreach (var item in resourcenames)
             {
                 using (var stream = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream(item))
