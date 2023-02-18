@@ -1,0 +1,6 @@
+P 562.9219, 2683.3853, -20.9052,  255, 0, 0,  3,  to_East_Commonlands
+P -315.3357, -3057.5610, -18.8685,  255, 0, 0,  3,  to_The_Lavastorm_Mountains
+P 770.7639, -429.6965, 29.7153,  255, 255, 255,  2,  Minor_Spires
+P 341.6879, -741.6835, -7.2264,  255, 0, 0,  3,  to_The_Plane_of_Knowledge_(Click_Book)
+P 1108.0546, -2271.7407, 0.6260, 255, 0, 0,  3,  to_Neriak_-_Foreign_Quarter
+P 173.9999, 1169.6333, -4.9990,  0, 128, 0,  2,  Blugurg_(Merchant)

@@ -12,6 +12,7 @@ using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
 using System.Windows.Shapes;
+using static EQTool.Services.MapLoad;
 
 namespace EQTool.ViewModels
 {
@@ -20,18 +21,17 @@ namespace EQTool.ViewModels
         private readonly MapLoad mapLoad;
         private readonly ActivePlayer activePlayer;
         private readonly IAppDispatcher appDispatcher;
-        private readonly ZoneParser zoneParser;
 
-        public MapViewModel(ZoneParser zoneParser, MapLoad mapLoad, ActivePlayer activePlayer, IAppDispatcher appDispatcher)
+        public MapViewModel(MapLoad mapLoad, ActivePlayer activePlayer, IAppDispatcher appDispatcher)
         {
-            this.zoneParser = zoneParser;
             this.mapLoad = mapLoad;
             this.activePlayer = activePlayer;
             this.appDispatcher = appDispatcher;
         }
 
         private Point Lastlocation = new Point(0, 0);
-        private Point3D AABBCenter = new Point3D(0, 0, 0);
+        public AABB AABB = new AABB();
+        private Point3D MapOffset = new Point3D(0, 0, 0);
 
         public Polyline PlayerLocationIcon { get; set; }
 
@@ -73,6 +73,8 @@ namespace EQTool.ViewModels
             var map = mapLoad.Load(zone);
             if (map.Labels.Any() || map.Lines.Any())
             {
+                MapOffset = map.Offset;
+                var linethickness = MathHelper.ChangeRange(Math.Max(map.AABB.MaxWidth, map.AABB.MaxHeight), 1000, 35000, 2, 10);
                 canvas.Children.Clear();
                 _ = map.AABB.Min;
                 _ = map.AABB.Max;
@@ -87,7 +89,7 @@ namespace EQTool.ViewModels
                         Y1 = group.Points[0].Y,
                         X2 = group.Points[1].X,
                         Y2 = group.Points[1].Y,
-                        StrokeThickness = 3,
+                        StrokeThickness = linethickness,
                         Stroke = new SolidColorBrush(App.Theme == Themes.Light ? c.LightColor : c.DarkColor)
                     };
                     _ = canvas.Children.Add(l);
@@ -117,7 +119,7 @@ namespace EQTool.ViewModels
                      {
                         new Point(25, 25),
                         new Point(0,50),
-                        new Point(25,75 ),
+                        new Point(25,75),
                         new Point(50,50),
                         new Point(25,25),
                         new Point(25,0)
@@ -125,10 +127,10 @@ namespace EQTool.ViewModels
                     Stroke = new SolidColorBrush(System.Windows.Media.Color.FromRgb(61, 235, 52)),
                     StrokeThickness = 10
                 };
-                AABBCenter = map.AABB.Center;
+                AABB = map.AABB;
                 _ = canvas.Children.Add(PlayerLocationIcon);
-                Canvas.SetLeft(PlayerLocationIcon, AABBCenter.X);
-                Canvas.SetTop(PlayerLocationIcon, AABBCenter.Y);
+                Canvas.SetLeft(PlayerLocationIcon, AABB.Center.X);
+                Canvas.SetTop(PlayerLocationIcon, AABB.Center.Y);
                 return true;
             }
 
@@ -155,7 +157,7 @@ namespace EQTool.ViewModels
         public bool LoadDefaultMap(PanAndZoomCanvas canvas)
         {
             _ = activePlayer.Update();
-            var z = zoneParser.TranslateToMapName(activePlayer.Player?.Zone);
+            var z = ZoneParser.TranslateToMapName(activePlayer.Player?.Zone);
             if (string.IsNullOrWhiteSpace(z))
             {
                 z = "freportw";
@@ -170,12 +172,12 @@ namespace EQTool.ViewModels
             //var vec = newval - new Point3D(Lastlocation.Value.X, Lastlocation.Value.Y);
             //vec.Normalize();
             //var endpos = ((vec * 20) + newval.ToVector3D()).ToPoint3D();
-            Lastlocation = new Point(value1.X, value1.Y);
+            Lastlocation = new Point(value1.X + MapOffset.Y, value1.Y + MapOffset.X);
 
             Canvas.SetLeft(PlayerLocationIcon, -Lastlocation.Y * canvas.CurrentScaling);
             Canvas.SetTop(PlayerLocationIcon, -Lastlocation.X * canvas.CurrentScaling);
 
-            PlayerLocationIcon.RenderTransform = canvas.Transform;
+            PlayerLocationIcon.RenderTransform = new TranslateTransform(canvas.Transform.Value.OffsetX, canvas.Transform.Value.OffsetY);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

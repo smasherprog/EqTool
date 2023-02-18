@@ -1,7 +1,6 @@
 ﻿using Autofac;
 using Autofac.Features.ResolveAnything;
 using EQTool.Models;
-using EQTool.Services.Map;
 using EQTool.ViewModels;
 
 namespace EQTool.Services
@@ -25,7 +24,6 @@ namespace EQTool.Services
             _ = builder.RegisterType<SpellWindowViewModel>().AsSelf().SingleInstance();
             _ = builder.RegisterType<LogParser>().AsSelf().SingleInstance();
             _ = builder.RegisterType<DPSWindowViewModel>().AsSelf().SingleInstance();
-            _ = builder.RegisterType<ZoneParser>().AsSelf().SingleInstance();
 
             return builder.Build();
         }

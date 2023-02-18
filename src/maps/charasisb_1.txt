@@ -1,0 +1,8 @@
+P -66.6527, 374.8603, -0.2904, 255, 0, 0, 3, to_Howling_Stones
+P -67.0000, 355.0000, -0.2894, 255, 0, 0, 2, Succor
+P -2.9129, 155.5440, -0.5749, 240, 240, 240, 2, Blocked_Door
+P -38.5579, 347.2873, -0.6590, 0, 0, 0, 2, Praetor_Noctis_Torg
+P -2.2737, -1.4487, -5.7277, 127, 64, 0, 2, Arisen_Gloriant_Kra`du_(Hunter)
+P -440.4568, 52.1972, -0.7625, 127, 64, 0, 2, a_Kar`zok_grave_robber_(Hunter)
+P -324.0000, -110.0000, 1.0000, 127, 64, 0, 2, a_Kar`zok_infiltrator_(Hunter)
+P 402.0000, 42.0000, -3.0000, 127, 64, 0, 2, Xalgoz_the_Arisen_(Hunter)

@@ -2,6 +2,7 @@
 using EQTool.Services;
 using EQTool.Services.Map;
 using EQTool.ViewModels;
+using System;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
@@ -20,11 +21,9 @@ namespace EQTool
         private readonly LogParser logParser;
         private readonly MapViewModel mapViewModel;
         private readonly LocationParser locationParser;
-        private readonly ZoneParser zoneParser;
 
-        public MappingWindow(ZoneParser zoneParser, MapViewModel mapViewModel, LocationParser locationParser, LogParser logParser)
+        public MappingWindow(MapViewModel mapViewModel, LocationParser locationParser, LogParser logParser)
         {
-            this.zoneParser = zoneParser;
             this.locationParser = locationParser;
             this.logParser = logParser;
             DataContext = this.mapViewModel = mapViewModel;
@@ -32,8 +31,8 @@ namespace EQTool
             InitializeComponent();
             App.ThemeChangedEvent += App_ThemeChangedEvent;
             _ = mapViewModel.LoadDefaultMap(Map);
+            Map.MapSize = Math.Max(mapViewModel.AABB.MaxWidth, mapViewModel.AABB.MaxHeight);
             this.logParser.LineReadEvent += LogParser_LineReadEvent;
-
         }
 
         private void App_ThemeChangedEvent(object sender, App.ThemeChangeEventArgs e)
@@ -69,11 +68,12 @@ namespace EQTool
             }
             else
             {
-                var matched = zoneParser.Match(e.Line);
-                matched = zoneParser.TranslateToMapName(matched);
+                var matched = ZoneParser.Match(e.Line);
+                matched = ZoneParser.TranslateToMapName(matched);
                 if (mapViewModel.LoadMap(matched, Map))
                 {
                     Map.Reset();
+                    Map.MapSize = Math.Max(mapViewModel.AABB.MaxWidth, mapViewModel.AABB.MaxHeight);
                 }
             }
         }

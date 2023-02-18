@@ -131,7 +131,7 @@
             <Setter Property="FontSize" Value="{Binding Source={x:Static properties:Settings.Default}, Path=GlobalFontSize}" />
             <Style.Triggers>
                 <DataTrigger Binding="{Binding Source={x:Static properties:Settings.Default}, Path=ColorMode}" Value="Light">
-                    <Setter Property="Background" Value="#E1D9D1" />
+                    <Setter Property="Background" Value="White" />
                 </DataTrigger>
                 <DataTrigger Binding="{Binding Source={x:Static properties:Settings.Default}, Path=ColorMode}" Value="Dark">
                     <Setter Property="Background" Value="Black" />

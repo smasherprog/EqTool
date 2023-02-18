@@ -1,7 +1,10 @@
-﻿using System.Windows;
+﻿using EQTool.Models;
+using System.Diagnostics;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Shapes;
 
 namespace EQTool
 {
@@ -27,7 +30,18 @@ namespace EQTool
         }
 
         public float CurrentScaling { get; set; } = 1.0f;
+        private double _MapSize = 1.0;
+        public double MapSize
+        {
+            get => _MapSize;
+            set
+            {
+                _MapSize = value;
+                BaseLineThickness = MathHelper.ChangeRange(MapSize, 1000, 35000, 2, 10);
+            }
+        }
 
+        private double BaseLineThickness = 2;
         public float Zoomfactor { get; set; } = 1.1f;
 
         private void PanAndZoomCanvas_MouseDown(object sender, MouseButtonEventArgs e)
@@ -46,10 +60,9 @@ namespace EQTool
                 var delta = Point.Subtract(mousePosition, _initialMousePosition);
                 var translate = new TranslateTransform(delta.X, delta.Y);
                 Transform.Matrix = translate.Value * Transform.Matrix;
-
                 foreach (UIElement child in Children)
                 {
-                    child.RenderTransform = Transform;
+                    child.RenderTransform = child is Polyline ? new TranslateTransform(Transform.Value.OffsetX, Transform.Value.OffsetY) : (Transform)Transform;
                 }
             }
         }
@@ -66,9 +79,16 @@ namespace EQTool
 
             var scaleMatrix = Transform.Matrix;
             scaleMatrix.ScaleAt(scaleFactor, scaleFactor, mousePostion.X, mousePostion.Y);
+            if (CurrentScaling * scaleFactor < 1)
+            {
+                // dont allow zooming out too far
+                return;
+            }
+
+            Debug.WriteLine(CurrentScaling);
+
             Transform.Matrix = scaleMatrix;
             CurrentScaling *= scaleFactor;
-
             foreach (UIElement child in Children)
             {
                 var x = Canvas.GetLeft(child);
@@ -79,8 +99,7 @@ namespace EQTool
 
                 Canvas.SetLeft(child, sx);
                 Canvas.SetTop(child, sy);
-
-                child.RenderTransform = Transform;
+                child.RenderTransform = child is Polyline ? new TranslateTransform(Transform.Value.OffsetX, Transform.Value.OffsetY) : (Transform)Transform;
             }
         }
     }

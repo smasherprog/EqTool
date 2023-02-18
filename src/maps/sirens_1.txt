@@ -1,0 +1,30 @@
+P -71.0000, 630.0000, 0.0000, 240, 0, 0, 3, to_Cobalt_Scar
+P 89.0000, -225.0000, 0.0000, 240, 0, 0, 3, to_The_Western_Wastes
+P 33.0000, -196.0000, 0.0030, 240, 0, 0, 2, Succor
+P 169.4164, 584.2921, -115.2963, 240, 240, 0, 2, Underwater_Entrance_to_Castle
+P 60.7202, -24.7368, -137.9354, 0, 0, 0, 2, Faleniel_of_Darkwater
+P 140.4267, 207.5862, 0.4187, 0, 0, 0, 2, Wygrish
+P 11.7506, -260.7651, -137.9354, 127, 64, 0, 2, an_alluring_siren_(Hunter)
+P -35.0599, -138.3152, -82.9667, 127, 64, 0, 2, an_alluring_siren_(Hunter,Roam)
+P 175.0632, -136.6646, -137.9345, 127, 64, 0, 2, an_allluring_siren_(Hunter)
+P -28.3189, -109.4662, -56.9667, 127, 64, 0, 2, a_deadly_siren_(Hunter)
+P 44.4942, -113.5488, -102.9667, 127, 64, 0, 2, a_deadly_siren_(Hunter)
+P -20.1614, -72.1497, 0.0020, 127, 64, 0, 2, an_enthralled_ulthork_(Hunter)
+P -7.8613, 423.0141, -115.6342, 127, 64, 0, 2, Fellspine_(Hunter,Roam)
+P 381.3658, 709.6785, -121.7525, 127, 64, 0, 2, Fellspine_(Hunter)
+P 144.7177, -181.0692, 0.0020, 127, 64, 0, 2, a_giant_walrus_(Hunter)
+P -67.9787, 411.9740, -90.9657, 127, 64, 0, 2, a_giant_walrus_(Hunter)
+P 163.1755, -164.8500, 0.0020, 127, 64, 0, 2, a_massive_manatee_(Hunter)
+P -53.5233, 301.1125, -90.9657, 127, 64, 0, 2, a_massive_walrus_(Hunter)
+P 169.2656, -179.8353, 0.0020, 127, 64, 0, 2, a_massive_walrus_(Hunter)
+P 101.9983, 64.3044, 0.0020, 127, 64, 0, 2, a_massive_walrus_(Hunter)
+P 597.0991, 380.3453, -169.1209, 127, 64, 0, 2, a_neriad_sea_princess_(Hunter)
+P 677.6390, 407.0074, -177.1356, 127, 64, 0, 2, a_neriad_sea_princess_(Hunter)
+P 167.3012, 685.1625, -155.9354, 127, 64, 0, 2, a_rampaging_ulthork_(Hunter)
+P 232.2871, 817.3185, -74.9667, 127, 64, 0, 2, shimmering_sea_spirit_(Hunter)
+P 288.2954, 534.5681, -54.9667, 127, 64, 0, 2, a_siren_coercer_(Hunter)
+P 256.3439, 586.6588, -30.9980, 127, 64, 0, 2, a_siren_seductress_(Hunter)
+P 322.6837, 476.4466, -48.8044, 127, 64, 0, 2, a_siren_seductress_(Hunter)
+P 748.8485, 553.5483, -70.9667, 127, 64, 0, 2, a_siren_temptress_(Hunter)
+
+

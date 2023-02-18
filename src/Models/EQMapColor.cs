@@ -1,4 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 
 namespace EQTool.Models
 {
@@ -6,6 +9,49 @@ namespace EQTool.Models
     {
         public System.Windows.Media.Color DarkColor { get; set; }
         public System.Windows.Media.Color LightColor { get; set; }
+        public System.Windows.Media.Color OriginalColor { get; set; }
+
+
+        private static readonly List<EQMapColor> ColorMapping = new List<EQMapColor>()
+        {
+            new EQMapColor
+            {
+                OriginalColor = System.Windows.Media.Color.FromRgb(0,0,0),
+                LightColor = System.Windows.Media.Color.FromRgb(0,0,0),
+                DarkColor=System.Windows.Media.Color.FromRgb(255,255,255),
+            },
+            new EQMapColor
+            {
+                OriginalColor = System.Windows.Media.Color.FromRgb(255,168,102),
+                LightColor = System.Windows.Media.Color.FromRgb(255,168,102),
+                DarkColor=System.Windows.Media.Color.FromRgb(255,168,102)
+            },
+            new EQMapColor
+            {
+                OriginalColor = System.Windows.Media.Color.FromRgb(204,102,0),
+                LightColor = System.Windows.Media.Color.FromRgb(204,102,0),
+                DarkColor=System.Windows.Media.Color.FromRgb(204,102,0)
+            },
+            new EQMapColor
+            {
+                OriginalColor = System.Windows.Media.Color.FromRgb(102,255,102),
+                LightColor = System.Windows.Media.Color.FromRgb(102,255,102),
+                DarkColor=System.Windows.Media.Color.FromRgb(102,255,102)
+            },
+            new EQMapColor
+            {
+                OriginalColor = System.Windows.Media.Color.FromRgb( 0,204,0),
+                LightColor = System.Windows.Media.Color.FromRgb( 0,204,0),
+                DarkColor=System.Windows.Media.Color.FromRgb(0,204,0)
+            },
+            new EQMapColor
+            {
+                OriginalColor = System.Windows.Media.Color.FromRgb(102,255,255),
+                LightColor = System.Windows.Media.Color.FromRgb(102,255,255),
+                DarkColor=System.Windows.Media.Color.FromRgb(102,255,255)
+            }
+        };
+
         public static EQMapColor GetThemedColors(System.Windows.Media.Color color)
         {
             System.Windows.Media.Color GetDarkThemeTransformedColor(System.Windows.Media.Color c)
@@ -13,12 +59,25 @@ namespace EQTool.Models
                 var ctrrt = new HslColor(c);
                 return ctrrt.l < 0.1 ? System.Windows.Media.Color.FromRgb(255, 255, 255) : ctrrt.Lighten(1).ToRgb();
             }
-
             return new EQMapColor
             {
                 DarkColor = GetDarkThemeTransformedColor(color),
                 LightColor = color
             };
+            var colors = ColorMapping.FirstOrDefault(a => a.OriginalColor == color);
+            if (colors == null)
+            {
+                Debug.WriteLine("Couldnt Find Colors");
+                return new EQMapColor
+                {
+                    DarkColor = GetDarkThemeTransformedColor(color),
+                    LightColor = color
+                };
+            }
+            else
+            {
+                return colors;
+            }
         }
     }
 
@@ -150,6 +209,19 @@ namespace EQTool.Models
             }
 
             return hue < 60 ? q1 + ((q2 - q1) * hue / 60) : hue < 180 ? q2 : hue < 240 ? q1 + ((q2 - q1) * (240 - hue) / 60) : q1;
+        }
+    }
+
+    public static class MathHelper
+    {
+        public static double ChangeRange(double x, double fromleft, double fromright, double toleft, double toright)
+        {
+            var fromrange = Math.Abs(fromleft - fromright);
+            var torange = Math.Abs(toleft - toright);
+            var scale = torange / fromrange;
+            var invtrans = fromleft < fromright ? -fromleft : -fromright;
+            var trans = toleft < toright ? toleft : toright;
+            return ((x - invtrans) * scale) + trans;
         }
     }
 }
