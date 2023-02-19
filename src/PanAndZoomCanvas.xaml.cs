@@ -27,6 +27,7 @@ namespace EQTool
         public void Reset()
         {
             Transform = new MatrixTransform();
+            CurrentScaling = 1.0f;
         }
 
         public float CurrentScaling { get; set; } = 1.0f;
@@ -60,6 +61,7 @@ namespace EQTool
                 var delta = Point.Subtract(mousePosition, _initialMousePosition);
                 var translate = new TranslateTransform(delta.X, delta.Y);
                 Transform.Matrix = translate.Value * Transform.Matrix;
+                _ = new MatrixTransform();
                 foreach (UIElement child in Children)
                 {
                     child.RenderTransform = child is Polyline ? new TranslateTransform(Transform.Value.OffsetX, Transform.Value.OffsetY) : (Transform)Transform;

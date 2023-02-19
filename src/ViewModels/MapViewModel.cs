@@ -125,7 +125,7 @@ namespace EQTool.ViewModels
                         new Point(25,0)
                      }),
                     Stroke = new SolidColorBrush(System.Windows.Media.Color.FromRgb(61, 235, 52)),
-                    StrokeThickness = 10
+                    StrokeThickness = 15
                 };
                 AABB = map.AABB;
                 _ = canvas.Children.Add(PlayerLocationIcon);
