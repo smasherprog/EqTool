@@ -24,15 +24,26 @@ namespace EQTool
             MouseWheel += PanAndZoomCanvas_MouseWheel;
         }
 
-        public void Reset()
+        public void Reset(double mapsize)
         {
             Transform = new MatrixTransform();
             CurrentScaling = 1.0f;
+            _ = new MatrixTransform();
+
+            foreach (UIElement child in Children)
+            {
+                if (!(child is Polyline))
+                {
+                    child.RenderTransform = Transform;
+                }
+            }
+
+            MapSize = mapsize;
         }
 
         public float CurrentScaling { get; set; } = 1.0f;
         private double _MapSize = 1.0;
-        public double MapSize
+        private double MapSize
         {
             get => _MapSize;
             set

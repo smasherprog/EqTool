@@ -31,7 +31,8 @@ namespace EQTool
             InitializeComponent();
             App.ThemeChangedEvent += App_ThemeChangedEvent;
             _ = mapViewModel.LoadDefaultMap(Map);
-            Map.MapSize = Math.Max(mapViewModel.AABB.MaxWidth, mapViewModel.AABB.MaxHeight);
+            Map.Reset(Math.Max(mapViewModel.AABB.MaxWidth, mapViewModel.AABB.MaxHeight));
+            Map.EndInit();
             this.logParser.LineReadEvent += LogParser_LineReadEvent;
         }
 
@@ -72,8 +73,8 @@ namespace EQTool
                 matched = ZoneParser.TranslateToMapName(matched);
                 if (mapViewModel.LoadMap(matched, Map))
                 {
-                    Map.Reset();
-                    Map.MapSize = Math.Max(mapViewModel.AABB.MaxWidth, mapViewModel.AABB.MaxHeight);
+                    Map.Reset(Math.Max(mapViewModel.AABB.MaxWidth, mapViewModel.AABB.MaxHeight));
+                    Map.EndInit();
                 }
             }
         }
