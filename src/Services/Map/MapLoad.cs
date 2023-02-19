@@ -16,7 +16,7 @@ namespace EQTool.Services
             {
                 zone = "freportw";
             }
-
+            var lines = new List<string>();
             var checkformanualmaps = System.IO.Directory.GetCurrentDirectory() + "/maps";
             if (System.IO.Directory.Exists(checkformanualmaps))
             {
@@ -31,7 +31,6 @@ namespace EQTool.Services
                 //    }
                 //}
 
-                var lines = new List<string>();
                 var resourcenames = Directory.GetFiles(checkformanualmaps, zone + "*.txt").ToList();
                 foreach (var item in resourcenames)
                 {
@@ -43,15 +42,13 @@ namespace EQTool.Services
                         lines.AddRange(splits);
                     }
                 }
-
-                var maplines = Parse(lines);
-                return maplines;
             }
-            else
+
+            if (!lines.Any())
             {
                 var list = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceNames();
 
-                var lines = new List<string>();
+
                 var resourcenames = list.Where(a => a.ToLower().StartsWith("eqtool.map_files." + zone)).ToList();
                 foreach (var item in resourcenames)
                 {
@@ -63,10 +60,9 @@ namespace EQTool.Services
                         lines.AddRange(splits);
                     }
                 }
-
-                var maplines = Parse(lines);
-                return maplines;
             }
+
+            return Parse(lines);
         }
 
         public class MapLine
