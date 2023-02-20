@@ -6,6 +6,5 @@
         xmlns:local="clr-namespace:EQTool"
         mc:Ignorable="d"
         Background="Transparent"
-       >
- 
+       > 
 </Canvas >

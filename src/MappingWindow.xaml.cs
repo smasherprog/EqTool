@@ -31,8 +31,8 @@ namespace EQTool
             InitializeComponent();
             App.ThemeChangedEvent += App_ThemeChangedEvent;
             _ = mapViewModel.LoadDefaultMap(Map);
+
             Map.Reset(Math.Max(mapViewModel.AABB.MaxWidth, mapViewModel.AABB.MaxHeight));
-            Map.EndInit();
             this.logParser.LineReadEvent += LogParser_LineReadEvent;
         }
 
@@ -47,6 +47,7 @@ namespace EQTool
                 }
                 else if (item is TextBlock t)
                 {
+
                     var c = t.Tag as EQMapColor;
                     t.Foreground = new SolidColorBrush(e.Theme == Themes.Light ? c.LightColor : c.DarkColor);
                 }
@@ -74,7 +75,6 @@ namespace EQTool
                 if (mapViewModel.LoadMap(matched, Map))
                 {
                     Map.Reset(Math.Max(mapViewModel.AABB.MaxWidth, mapViewModel.AABB.MaxHeight));
-                    Map.EndInit();
                 }
             }
         }

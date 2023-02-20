@@ -76,9 +76,6 @@ namespace EQTool.ViewModels
                 MapOffset = map.Offset;
                 var linethickness = MathHelper.ChangeRange(Math.Max(map.AABB.MaxWidth, map.AABB.MaxHeight), 1000, 35000, 2, 10);
                 canvas.Children.Clear();
-                _ = map.AABB.Min;
-                _ = map.AABB.Max;
-
                 foreach (var group in map.Lines)
                 {
                     var c = EQMapColor.GetThemedColors(group.Color);
@@ -90,8 +87,7 @@ namespace EQTool.ViewModels
                         X2 = group.Points[1].X,
                         Y2 = group.Points[1].Y,
                         StrokeThickness = linethickness,
-                        Stroke = new SolidColorBrush(App.Theme == Themes.Light ? c.LightColor : c.DarkColor),
-                        RenderTransform = new MatrixTransform()
+                        Stroke = new SolidColorBrush(App.Theme == Themes.Light ? c.LightColor : c.DarkColor)
                     };
                     _ = canvas.Children.Add(l);
                 }
@@ -107,8 +103,7 @@ namespace EQTool.ViewModels
                         Tag = c,
                         Text = item.label.Replace('_', ' '),
                         Foreground = new SolidColorBrush(App.Theme == Themes.Light ? c.LightColor : c.DarkColor),
-                        Height = 50,
-                        RenderTransform = new MatrixTransform()
+                        Height = 50
                     };
                     _ = canvas.Children.Add(text);
                     Canvas.SetLeft(text, item.Point.X);
@@ -127,8 +122,7 @@ namespace EQTool.ViewModels
                         new Point(25,0)
                      }),
                     Stroke = new SolidColorBrush(System.Windows.Media.Color.FromRgb(61, 235, 52)),
-                    StrokeThickness = 15,
-                    RenderTransform = new MatrixTransform()
+                    StrokeThickness = 15
                 };
                 AABB = map.AABB;
                 _ = canvas.Children.Add(PlayerLocationIcon);

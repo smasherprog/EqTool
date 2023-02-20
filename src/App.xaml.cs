@@ -161,7 +161,6 @@ namespace EQTool
                 App.Current.Shutdown();
                 return;
             }
-
             httpclient.DefaultRequestHeaders.Add("User-Agent", "request");
             if (e.Args.Length == 1)
             {

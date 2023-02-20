@@ -133,8 +133,8 @@ namespace EQTool.Services
         private ParsedData Parse(List<string> lines)
         {
             var ret = new ParsedData();
-
-            foreach (var item in lines.Where(a => !string.IsNullOrWhiteSpace(a)))
+            var ls = lines.Where(a => !string.IsNullOrWhiteSpace(a)).ToList();
+            foreach (var item in ls)
             {
                 if (item.StartsWith("L "))
                 {
@@ -182,11 +182,6 @@ namespace EQTool.Services
                         Color = Color.FromRgb(byte.Parse(splits[3]), byte.Parse(splits[4]), byte.Parse(splits[5])),
                         label = splits[7]
                     });
-                }
-                foreach (var point in ret.Lines)
-                {
-                    ret.AABB.Add(point.Points[0]);
-                    ret.AABB.Add(point.Points[1]);
                 }
             }
 

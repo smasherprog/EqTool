@@ -28,8 +28,6 @@ namespace EQTool
         {
             Transform = new MatrixTransform();
             CurrentScaling = 1.0f;
-            _ = new MatrixTransform();
-
             foreach (UIElement child in Children)
             {
                 if (!(child is Polyline))
@@ -64,6 +62,7 @@ namespace EQTool
             }
         }
 
+
         private void PanAndZoomCanvas_MouseMove(object sender, MouseEventArgs e)
         {
             if (e.LeftButton == MouseButtonState.Pressed)
@@ -72,7 +71,7 @@ namespace EQTool
                 var delta = Point.Subtract(mousePosition, _initialMousePosition);
                 var translate = new TranslateTransform(delta.X, delta.Y);
                 Transform.Matrix = translate.Value * Transform.Matrix;
-                _ = new MatrixTransform();
+
                 foreach (UIElement child in Children)
                 {
                     child.RenderTransform = child is Polyline ? new TranslateTransform(Transform.Value.OffsetX, Transform.Value.OffsetY) : (Transform)Transform;
