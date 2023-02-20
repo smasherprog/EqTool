@@ -30,8 +30,7 @@ namespace EQTool
             Topmost = true;
             InitializeComponent();
             App.ThemeChangedEvent += App_ThemeChangedEvent;
-            _ = mapViewModel.LoadDefaultMap(Map);
-
+            _ = mapViewModel.LoadDefaultMap(Map); 
             Map.Reset(Math.Max(mapViewModel.AABB.MaxWidth, mapViewModel.AABB.MaxHeight));
             this.logParser.LineReadEvent += LogParser_LineReadEvent;
         }

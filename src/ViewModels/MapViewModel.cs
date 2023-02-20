@@ -9,6 +9,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Ink;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
 using System.Windows.Shapes;
@@ -72,22 +73,40 @@ namespace EQTool.ViewModels
             Debug.WriteLine($"Loading: {zone}");
             var map = mapLoad.Load(zone);
             if (map.Labels.Any() || map.Lines.Any())
-            {
+            { 
+                var colordic = new Dictionary<System.Windows.Media.Color, Tuple<EQMapColor, SolidColorBrush>>();
+                foreach (var group in map.Lines)
+                {
+                    if (!colordic.ContainsKey(group.Color))
+                    {
+                        var c = EQMapColor.GetThemedColors(group.Color);
+                        colordic[group.Color] = Tuple.Create(EQMapColor.GetThemedColors(group.Color), new SolidColorBrush(App.Theme == Themes.Light ? c.LightColor : c.DarkColor));
+                    } 
+                }
+                foreach (var group in map.Labels)
+                {
+                    if (!colordic.ContainsKey(group.Color))
+                    {
+                        var c = EQMapColor.GetThemedColors(group.Color);
+                        colordic[group.Color] = Tuple.Create(EQMapColor.GetThemedColors(group.Color), new SolidColorBrush(App.Theme == Themes.Light ? c.LightColor : c.DarkColor));
+                    }
+                }
                 MapOffset = map.Offset;
                 var linethickness = MathHelper.ChangeRange(Math.Max(map.AABB.MaxWidth, map.AABB.MaxHeight), 1000, 35000, 2, 10);
                 canvas.Children.Clear();
                 foreach (var group in map.Lines)
                 {
-                    var c = EQMapColor.GetThemedColors(group.Color);
+                    var colorstuff = colordic[group.Color];
                     var l = new Line
                     {
-                        Tag = c,
+                        Tag = colorstuff.Item1,
                         X1 = group.Points[0].X,
                         Y1 = group.Points[0].Y,
                         X2 = group.Points[1].X,
                         Y2 = group.Points[1].Y,
                         StrokeThickness = linethickness,
-                        Stroke = new SolidColorBrush(App.Theme == Themes.Light ? c.LightColor : c.DarkColor)
+                        Stroke = colorstuff.Item2,
+                        RenderTransform = canvas.Transform
                     };
                     _ = canvas.Children.Add(l);
                 }
@@ -97,13 +116,14 @@ namespace EQTool.ViewModels
                 Debug.WriteLine($"Labels: {map.Labels.Count}");
                 foreach (var item in map.Labels)
                 {
-                    var c = EQMapColor.GetThemedColors(item.Color);
+                    var colorstuff = colordic[item.Color];
                     var text = new TextBlock
                     {
-                        Tag = c,
+                        Tag = colorstuff.Item1,
                         Text = item.label.Replace('_', ' '),
-                        Foreground = new SolidColorBrush(App.Theme == Themes.Light ? c.LightColor : c.DarkColor),
-                        Height = 50
+                        Height = 50,
+                        Foreground = colorstuff.Item2,
+                        RenderTransform = canvas.Transform
                     };
                     _ = canvas.Children.Add(text);
                     Canvas.SetLeft(text, item.Point.X);
