@@ -35,7 +35,7 @@ namespace EQTool
             container = DI.Init();
             SettingsMenuItem = new System.Windows.Forms.MenuItem("Settings", Settings);
             SpellsMenuItem = new System.Windows.Forms.MenuItem("Spells", Spells);
-            MapMenuItem = new System.Windows.Forms.MenuItem("Map (ALPHA)", Map);
+            MapMenuItem = new System.Windows.Forms.MenuItem("Map (Beta)", Map);
             DpsMeterMenuItem = new System.Windows.Forms.MenuItem("Dps", DPS);
             MobInfoMenuItem = new System.Windows.Forms.MenuItem("Mob Info", MobInfo);
             var gitHubMenuItem = new System.Windows.Forms.MenuItem("Suggestions", Suggestions);
