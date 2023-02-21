@@ -9,7 +9,6 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Ink;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
 using System.Windows.Shapes;
@@ -73,7 +72,7 @@ namespace EQTool.ViewModels
             Debug.WriteLine($"Loading: {zone}");
             var map = mapLoad.Load(zone);
             if (map.Labels.Any() || map.Lines.Any())
-            { 
+            {
                 var colordic = new Dictionary<System.Windows.Media.Color, Tuple<EQMapColor, SolidColorBrush>>();
                 foreach (var group in map.Lines)
                 {
@@ -81,7 +80,7 @@ namespace EQTool.ViewModels
                     {
                         var c = EQMapColor.GetThemedColors(group.Color);
                         colordic[group.Color] = Tuple.Create(EQMapColor.GetThemedColors(group.Color), new SolidColorBrush(App.Theme == Themes.Light ? c.LightColor : c.DarkColor));
-                    } 
+                    }
                 }
                 foreach (var group in map.Labels)
                 {
@@ -129,7 +128,7 @@ namespace EQTool.ViewModels
                     Canvas.SetLeft(text, item.Point.X);
                     Canvas.SetTop(text, item.Point.Y);
                 }
-
+                var playlocthikness = MathHelper.ChangeRange(Math.Max(map.AABB.MaxWidth, map.AABB.MaxHeight), 1000, 35000, 10, 15);
                 PlayerLocationIcon = new Polyline
                 {
                     Points = new PointCollection(new List<Point>
@@ -142,7 +141,7 @@ namespace EQTool.ViewModels
                         new Point(25,0)
                      }),
                     Stroke = new SolidColorBrush(System.Windows.Media.Color.FromRgb(61, 235, 52)),
-                    StrokeThickness = 15
+                    StrokeThickness = playlocthikness
                 };
                 AABB = map.AABB;
                 _ = canvas.Children.Add(PlayerLocationIcon);
