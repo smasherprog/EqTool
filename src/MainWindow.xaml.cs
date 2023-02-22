@@ -111,7 +111,6 @@ namespace EQTool
                 SystemTrayIcon.BalloonTipClicked += UpdateNotes;
                 SystemTrayIcon.ShowBalloonTip(5000, "PigParse Updated!", "Click here for details!", System.Windows.Forms.ToolTipIcon.Info);
             }
-            container.Resolve<MappingWindow>().Show();
         }
 
         private EQToolSettings EQToolSettings => container.Resolve<EQToolSettings>();
