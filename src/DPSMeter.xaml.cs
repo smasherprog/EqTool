@@ -105,7 +105,6 @@ namespace EQTool
             dPSWindowViewModel.TargetDied(targetdead);
         }
 
-
         private void SaveState()
         {
             if (settings.DpsWindowState == null)
