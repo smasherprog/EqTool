@@ -46,5 +46,12 @@ namespace EQtoolsTests
             var pretyname = ZoneParser.TranslateToMapName(zone);
             Assert.AreEqual("mischiefplane", pretyname);
         }
+
+        [TestMethod]
+        public void NoMatchZones()
+        {
+            var zone = ZoneParser.Match("[Tue Feb 21 20:36:39 2023] There are no players in EverQuest that match those who filters.");
+            Assert.AreEqual(string.Empty, zone);
+        }
     }
 }

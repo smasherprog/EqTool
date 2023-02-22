@@ -68,11 +68,11 @@ namespace EQTool.ViewModels
                 return false;
             }
 
-            Title = zone;
-            Debug.WriteLine($"Loading: {zone}");
             var map = mapLoad.Load(zone);
             if (map.Labels.Any() || map.Lines.Any())
             {
+                Title = zone;
+                Debug.WriteLine($"Loading: {zone}");
                 var colordic = new Dictionary<System.Windows.Media.Color, Tuple<EQMapColor, SolidColorBrush>>();
                 foreach (var group in map.Lines)
                 {

@@ -47,8 +47,6 @@ namespace EQTool.Services
             if (!lines.Any())
             {
                 var list = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceNames();
-
-
                 var resourcenames = list.Where(a => a.ToLower().StartsWith("eqtool.map_files." + zone)).ToList();
                 foreach (var item in resourcenames)
                 {

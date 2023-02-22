@@ -7,6 +7,7 @@ namespace EQTool.Services.Map
     public static class ZoneParser
     {
         private const string Youhaveentered = "You have entered ";
+        private const string Therearenoplayers = "There are no players in EverQuest that match those who filters.";
         private const string Thereare = "There are ";
         private const string spaceinspace = " in ";
 
@@ -203,7 +204,11 @@ namespace EQTool.Services.Map
 
             var message = linelog.Substring(27);
             Debug.WriteLine($"ZoneParse: " + message);
-            if (message.StartsWith(Youhaveentered))
+            if (message.StartsWith(Therearenoplayers))
+            {
+                return string.Empty;
+            }
+            else if (message.StartsWith(Youhaveentered))
             {
                 message = message.Replace(Youhaveentered, string.Empty).Trim().TrimEnd('.').ToLower();
                 return message;
