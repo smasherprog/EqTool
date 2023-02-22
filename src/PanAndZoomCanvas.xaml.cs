@@ -1,5 +1,4 @@
-﻿using EQTool.Models;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -24,26 +23,17 @@ namespace EQTool
             MouseWheel += PanAndZoomCanvas_MouseWheel;
         }
 
-        public void Reset(double mapsize)
+        public void Reset()
         {
             Transform = new MatrixTransform();
             CurrentScaling = 1.0f;
-            MapSize = mapsize;
-        }
-
-        public float CurrentScaling { get; set; } = 1.0f;
-        private double _MapSize = 1.0;
-        private double MapSize
-        {
-            get => _MapSize;
-            set
+            foreach (UIElement child in Children)
             {
-                _MapSize = value;
-                BaseLineThickness = MathHelper.ChangeRange(MapSize, 1000, 35000, 2, 10);
+                child.RenderTransform = Transform;
             }
         }
 
-        private double BaseLineThickness = 2;
+        public float CurrentScaling { get; set; } = 1.0f;
         public float Zoomfactor { get; set; } = 1.1f;
 
         private void PanAndZoomCanvas_MouseDown(object sender, MouseButtonEventArgs e)
