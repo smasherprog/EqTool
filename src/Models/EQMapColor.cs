@@ -59,10 +59,15 @@ namespace EQTool.Models
                 var ctrrt = new HslColor(c);
                 return ctrrt.l < 0.1 ? System.Windows.Media.Color.FromRgb(255, 255, 255) : ctrrt.Lighten(1).ToRgb();
             }
+            System.Windows.Media.Color GetLightThemeTransformedColor(System.Windows.Media.Color c)
+            {
+                var ctrrt = new HslColor(c);
+                return ctrrt.l > 0.9 ? System.Windows.Media.Color.FromRgb(0, 0, 0) : c;
+            }
             return new EQMapColor
             {
                 DarkColor = GetDarkThemeTransformedColor(color),
-                LightColor = color
+                LightColor = GetLightThemeTransformedColor(color)
             };
             var colors = ColorMapping.FirstOrDefault(a => a.OriginalColor == color);
             if (colors == null)
