@@ -215,7 +215,7 @@ namespace EQTool
             else
             {
 #if !DEBUG
-                //CheckForUpdates();
+                CheckForUpdates();
 #endif
                 mainWindow = new MainWindow(false);
             }
