@@ -17,13 +17,11 @@ namespace EQTool.Services
         private long? LastReadOffset = null;
         private readonly EQToolSettings settings;
         private readonly LevelLogParse levelLogParse;
-        private readonly ZoneParser zoneParser;
         private readonly EQToolSettingsLoad toolSettingsLoad;
 
-        public LogParser(EQToolSettingsLoad toolSettingsLoad, ActivePlayer activePlayer, IAppDispatcher appDispatcher, EQToolSettings settings, LevelLogParse levelLogParse, ZoneParser zoneParser)
+        public LogParser(EQToolSettingsLoad toolSettingsLoad, ActivePlayer activePlayer, IAppDispatcher appDispatcher, EQToolSettings settings, LevelLogParse levelLogParse)
         {
             this.toolSettingsLoad = toolSettingsLoad;
-            this.zoneParser = zoneParser;
             this.activePlayer = activePlayer;
             this.appDispatcher = appDispatcher;
             this.levelLogParse = levelLogParse;
@@ -91,7 +89,7 @@ namespace EQTool.Services
                             var line = reader.ReadLine();
                             LastReadOffset = stream.Position;
                             levelLogParse.MatchLevel(line);
-                            var matchedzone = zoneParser.Match(line);
+                            var matchedzone = ZoneParser.Match(line);
                             if (!string.IsNullOrWhiteSpace(matchedzone))
                             {
                                 var p = activePlayer.Player;

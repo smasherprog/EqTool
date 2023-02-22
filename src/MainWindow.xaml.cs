@@ -17,7 +17,7 @@ namespace EQTool
         private readonly Autofac.IContainer container;
         private readonly System.Windows.Forms.NotifyIcon SystemTrayIcon;
         private SpellWindow spellWindow = null;
-        private MapWindow mapwindow = null;
+        private MappingWindow mapwindow = null;
         private DPSMeter dpsmeter = null;
         private Settings settingswindow = null;
         private MobInfo MobInfoswindow = null;
@@ -35,7 +35,7 @@ namespace EQTool
             container = DI.Init();
             SettingsMenuItem = new System.Windows.Forms.MenuItem("Settings", Settings);
             SpellsMenuItem = new System.Windows.Forms.MenuItem("Spells", Spells);
-            MapMenuItem = new System.Windows.Forms.MenuItem("Map (ALPHA)", Map);
+            MapMenuItem = new System.Windows.Forms.MenuItem("Map (Beta)", Map);
             DpsMeterMenuItem = new System.Windows.Forms.MenuItem("Dps", DPS);
             MobInfoMenuItem = new System.Windows.Forms.MenuItem("Mob Info", MobInfo);
             var gitHubMenuItem = new System.Windows.Forms.MenuItem("Suggestions", Suggestions);
@@ -187,7 +187,7 @@ namespace EQTool
             if (s.Checked)
             {
                 mapwindow?.Close();
-                mapwindow = container.Resolve<MapWindow>();
+                mapwindow = container.Resolve<MappingWindow>();
                 mapwindow.Closed += (se, ee) =>
                 {
                     s.Checked = false;

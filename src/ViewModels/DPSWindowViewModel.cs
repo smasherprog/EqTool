@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 
@@ -126,7 +127,7 @@ namespace EQTool.ViewModels
                     };
                     EntityList.Add(item);
                 }
-
+                Debug.WriteLine($"{entity.TargetName} {entity.DamageDone}");
                 item.AddDamage(new EntittyDPS.DamagePerTime
                 {
                     TimeStamp = entity.TimeStamp,

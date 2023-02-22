@@ -53,10 +53,10 @@ namespace EQTool
 
         protected override void OnClosing(CancelEventArgs e)
         {
+            logParser.LineReadEvent -= LogParser_LineReadEvent;
             SizeChanged -= DPSMeter_SizeChanged;
             StateChanged -= SpellWindow_StateChanged;
             LocationChanged -= DPSMeter_LocationChanged;
-            logParser.LineReadEvent -= LogParser_LineReadEvent;
             base.OnClosing(e);
         }
 

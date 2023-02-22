@@ -1,4 +1,7 @@
 ﻿using EQTool.Models;
+using Microsoft.AppCenter;
+using Microsoft.AppCenter.Analytics;
+using Microsoft.AppCenter.Crashes;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -31,8 +34,16 @@ namespace EQTool
             {
                 _Theme = value;
                 EQTool.Properties.Settings.Default.ColorMode = value.ToString();
+                ThemeChangedEvent?.Invoke(null, new ThemeChangeEventArgs { Theme = value });
             }
         }
+        public class ThemeChangeEventArgs : EventArgs
+        {
+            public Themes Theme { get; set; }
+        }
+
+        public static event EventHandler<ThemeChangeEventArgs> ThemeChangedEvent;
+
 
         private static void CopyFilesRecursively(string sourcePath, string targetPath)
         {
@@ -153,14 +164,13 @@ namespace EQTool
                 App.Current.Shutdown();
                 return;
             }
-
             var debugging = false;
 #if DEBUG
             debugging = true;
 #endif
             if (!debugging)
             {
-                //AppCenter.Start("9be42804-8d4f-4431-9120-06f3a0370c4c", typeof(Analytics), typeof(Crashes));
+                AppCenter.Start("9be42804-8d4f-4431-9120-06f3a0370c4c", typeof(Analytics), typeof(Crashes));
             }
 
             httpclient.DefaultRequestHeaders.Add("User-Agent", "request");
@@ -197,6 +207,7 @@ namespace EQTool
                 }
                 catch (Exception ex)
                 {
+                    File.AppendAllText("Errors.txt", ex.ToString());
                     MessageBox.Show(ex.Message);
                     App.Current.Shutdown();
                 }
@@ -249,7 +260,6 @@ namespace EQTool
             mainWindow.OpenMapWindow();
         }
 
-
         public void OpenMobInfoWindow()
         {
             mainWindow.OpenMobInfoWindow();
@@ -259,6 +269,7 @@ namespace EQTool
         {
             mainWindow.OpenSettingsWindow();
         }
+
         public (string version, string urltodownload) LatestVersionAvailable
         {
             get
@@ -322,9 +333,9 @@ namespace EQTool
                         });
                     }
                 }
-                catch
+                catch (Exception ex)
                 {
-
+                    File.AppendAllText("Errors.txt", ex.ToString());
                 }
             });
         }

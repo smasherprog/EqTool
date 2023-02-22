@@ -1,13 +1,18 @@
-﻿using EQTool.Services;
+﻿using EQTool.Models;
+using EQTool.Services;
 using EQTool.Services.Map;
-using HelixToolkit.Wpf;
-using System.Collections.ObjectModel;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
+using System.Windows.Shapes;
+using static EQTool.Services.MapLoad;
 
 namespace EQTool.ViewModels
 {
@@ -16,21 +21,19 @@ namespace EQTool.ViewModels
         private readonly MapLoad mapLoad;
         private readonly ActivePlayer activePlayer;
         private readonly IAppDispatcher appDispatcher;
-        private readonly ZoneParser zoneParser;
 
-        public MapViewModel(ZoneParser zoneParser, MapLoad mapLoad, ActivePlayer activePlayer, IAppDispatcher appDispatcher)
+        public MapViewModel(MapLoad mapLoad, ActivePlayer activePlayer, IAppDispatcher appDispatcher)
         {
-            this.zoneParser = zoneParser;
             this.mapLoad = mapLoad;
             this.activePlayer = activePlayer;
             this.appDispatcher = appDispatcher;
         }
 
-        private ArrowVisual3D PlayerVisualLocation;
-        private SphereVisual3D PlayerVisualLocationSphere;
-        private Point3D? Lastlocation;
+        private Point Lastlocation = new Point(0, 0);
+        public AABB AABB = new AABB();
+        private Point3D MapOffset = new Point3D(0, 0, 0);
 
-        public ObservableCollection<Visual3D> DrawItems { get; set; } = new ObservableCollection<Visual3D>();
+        public Shape PlayerLocationIcon { get; set; }
 
         private string _Title = string.Empty;
 
@@ -58,199 +61,150 @@ namespace EQTool.ViewModels
             }
         }
 
-        public class CameraDetail
-        {
-            public Point3D Position { get; set; }
-            public Vector3D LookDirection { get; set; }
-        }
-
-        public CameraDetail LoadMap(string zone)
+        public bool LoadMap(string zone, PanAndZoomCanvas canvas)
         {
             if (string.IsNullOrWhiteSpace(zone))
             {
-                return null;
+                return false;
             }
 
             Title = zone;
             Debug.WriteLine($"Loading: {zone}");
             var map = mapLoad.Load(zone);
-
             if (map.Labels.Any() || map.Lines.Any())
             {
-                DrawItems.Clear();
-
-                //var colorgroups = map.Lines.GroupBy(a => new { a.Color.R, a.Color.G, a.Color.B }).ToList();
-                //Debug.WriteLine($"LineGroups: {colorgroups.Count}");
-                //foreach (var group in colorgroups)
-                //{
-                //    var points = group.SelectMany(a => a.Points).ToList();
-                //    var modifiedpoints = points.Select(a => new Point3D
-                //    {
-                //        X = a.X,
-                //        Y = a.Y,
-                //        Z = 0
-                //    }).ToList();
-                //    Debug.WriteLine($"Lines: {points.Count}");
-                //    var l = new EQLinesVisual3D
-                //    {
-                //        Thickness = 1,
-                //        Points = new Point3DCollection(modifiedpoints),
-                //        Color = group.FirstOrDefault().Color,
-                //        OriginalPoints = points
-                //    };
-                //    DrawItems.Add(l);
-                //}
-
+                var colordic = new Dictionary<System.Windows.Media.Color, Tuple<EQMapColor, SolidColorBrush>>();
                 foreach (var group in map.Lines)
                 {
-                    var l = new EQLinesVisual3D
+                    if (!colordic.ContainsKey(group.Color))
                     {
-                        Thickness = 1,
-                        Points = new Point3DCollection(group.Points.Select(a => new Point3D
-                        {
-                            X = a.X,
-                            Y = a.Y,
-                            Z = 0
-                        })),
-                        Color = group.Color,
-                        OriginalPoints = group.Points.ToList()
+                        var c = EQMapColor.GetThemedColors(group.Color);
+                        colordic[group.Color] = Tuple.Create(c, new SolidColorBrush(App.Theme == Themes.Light ? c.LightColor : c.DarkColor));
+                    }
+                }
+                foreach (var group in map.Labels)
+                {
+                    if (!colordic.ContainsKey(group.Color))
+                    {
+                        var c = EQMapColor.GetThemedColors(group.Color);
+                        colordic[group.Color] = Tuple.Create(c, new SolidColorBrush(App.Theme == Themes.Light ? c.LightColor : c.DarkColor));
+                    }
+                }
+                MapOffset = map.Offset;
+                var linethickness = MathHelper.ChangeRange(Math.Max(map.AABB.MaxWidth, map.AABB.MaxHeight), 1000, 35000, 2, 10);
+                canvas.Children.Clear();
+                foreach (var group in map.Lines)
+                {
+                    var colorstuff = colordic[group.Color];
+                    var l = new Line
+                    {
+                        Tag = colorstuff.Item1,
+                        X1 = group.Points[0].X,
+                        Y1 = group.Points[0].Y,
+                        X2 = group.Points[1].X,
+                        Y2 = group.Points[1].Y,
+                        StrokeThickness = linethickness,
+                        Stroke = colorstuff.Item2,
+                        RenderTransform = canvas.Transform
                     };
-                    DrawItems.Add(l);
+                    _ = canvas.Children.Add(l);
                 }
 
+                canvas.Height = Math.Abs(map.AABB.MaxHeight);
+                canvas.Width = Math.Abs(map.AABB.MaxWidth);
                 Debug.WriteLine($"Labels: {map.Labels.Count}");
                 foreach (var item in map.Labels)
                 {
-                    var text = new EQTextVisual3D
+                    var colorstuff = colordic[item.Color];
+                    var text = new TextBlock
                     {
-                        Text = item.label,
-                        Position = item.Point,
-                        Foreground = new SolidColorBrush(item.Color),
-                        TextDirection = new Vector3D(1, 0, 0),
-                        UpDirection = new Vector3D(0, 1, 0),
-                        Height = 30,
+                        Tag = colorstuff.Item1,
+                        Text = item.label.Replace('_', ' '),
+                        Height = 50,
+                        Foreground = colorstuff.Item2,
+                        RenderTransform = canvas.Transform
                     };
-                    DrawItems.Add(text);
+                    _ = canvas.Children.Add(text);
+                    Canvas.SetLeft(text, item.Point.X);
+                    Canvas.SetTop(text, item.Point.Y);
                 }
-                var halfbox = map.AABB.MaxHeight * .3;
-                var center = map.AABB.Center;
-                center.Z -= map.AABB.MaxHeight;
-                map.AABB.Min.X = map.AABB.Min.X - halfbox;
-                map.AABB.Min.Y = map.AABB.Min.Y - halfbox;
 
-                map.AABB.Max.X = map.AABB.Max.X + halfbox;
-                map.AABB.Max.Y = map.AABB.Max.Y + halfbox;
+                var playerlocsize = MathHelper.ChangeRange(Math.Max(map.AABB.MaxWidth, map.AABB.MaxHeight), 500, 35000, 40, 1750);
+                var playerstrokthickness = MathHelper.ChangeRange(Math.Max(map.AABB.MaxWidth, map.AABB.MaxHeight), 500, 35000, 15, 400);
+                //PlayerLocationIcon = new Polyline
+                //{
+                //    Points = new PointCollection(new List<Point>
+                //     {
+                //      new Point(25, 25),
+                //        new Point(0,50),
+                //        new Point(25,75),
+                //        new Point(50,50),
+                //        new Point(25,25),
+                //        new Point(25,0)
+                //     }),
+                //    Stroke = new SolidColorBrush(System.Windows.Media.Color.FromRgb(61, 235, 52)),
+                //    StrokeThickness = 20
+                //};
 
-                var min = map.AABB.Min;
-                var max = map.AABB.Max;
-                DrawItems.Add(new QuadVisual3D
+                PlayerLocationIcon = new Ellipse
                 {
-                    Point1 = new Point3D(max.X, max.Y, 0),
-                    Point2 = new Point3D(max.X, min.Y, 0),
-                    Point3 = new Point3D(min.X, min.Y, 0),
-                    Point4 = new Point3D(min.X, max.Y, 0),
-                    Fill = new SolidColorBrush(System.Windows.Media.Color.FromArgb(0, 200, 1, 1))
-                });
-                PlayerVisualLocationSphere = new SphereVisual3D
-                {
-                    Radius = 2,
-                    Fill = System.Windows.Media.Brushes.LimeGreen,
-                    Center = new Point3D(0, 0, -1000)
+                    Height = playerlocsize,
+                    Width = playerlocsize,
+                    Stroke = new SolidColorBrush(System.Windows.Media.Color.FromRgb(61, 235, 52)),
+                    StrokeThickness = playerstrokthickness
                 };
-                PlayerVisualLocation = new ArrowVisual3D
-                {
-                    Direction = new Vector3D(1, 0, 0),
-                    Point1 = new Point3D(0, 0, -1000),
-                    Point2 = new Point3D(1000, 0, -1000),
-                    Diameter = 1,
-                    Fill = System.Windows.Media.Brushes.LimeGreen
-                };
-                DrawItems.Add(PlayerVisualLocation);
-                DrawItems.Add(PlayerVisualLocationSphere);
-                DrawItems.Add(new DefaultLights());
-                return new CameraDetail
-                {
-                    Position = center,
-                    LookDirection = map.AABB.Center - center
-                };
+
+                AABB = map.AABB;
+                _ = canvas.Children.Add(PlayerLocationIcon);
+                Canvas.SetLeft(PlayerLocationIcon, AABB.Center.X);
+                Canvas.SetTop(PlayerLocationIcon, AABB.Center.Y);
+                return true;
             }
 
-            return null;
+            return false;
         }
-
-        public void Update()
+        private static Point3D RotatePoint(Point3D pointToRotate, Point3D centerPoint, double angleInDegrees)
         {
-            appDispatcher.DispatchUI(() =>
+            var angleInRadians = angleInDegrees * (Math.PI / 180);
+            var cosTheta = Math.Cos(angleInRadians);
+            var sinTheta = Math.Sin(angleInRadians);
+            return new Point3D
             {
-                //var maxdist = 100.0 * 100.0;
-                //foreach (LinesVisual3D item in DrawItems.Where(a => a.GetType() == typeof(LinesVisual3D)))
-                //{
-                //    var dist = item.Points.First().DistanceToSquared(Position);
-                //    var alpha = dist / maxdist;
-                //    alpha = Math.Min(1, Math.Max(0, alpha));
-                //    alpha = (alpha - 1) * -1;
-                //    alpha *= 255;
-                //    item.Color = Color.FromArgb(200, item.Color.R, item.Color.G, item.Color.B);
-                //}
-            });
+                X =
+                    (int)
+                    ((cosTheta * (pointToRotate.X - centerPoint.X)) -
+                    (sinTheta * (pointToRotate.Y - centerPoint.Y)) + centerPoint.X),
+                Y =
+                    (int)
+                    ((sinTheta * (pointToRotate.X - centerPoint.X)) +
+                    (cosTheta * (pointToRotate.Y - centerPoint.Y)) + centerPoint.Y)
+            };
         }
 
-        public CameraDetail LoadDefaultMap()
+        public bool LoadDefaultMap(PanAndZoomCanvas canvas)
         {
-            var z = zoneParser.TranslateToMapName(activePlayer.Player?.Zone);
+            _ = activePlayer.Update();
+            var z = ZoneParser.TranslateToMapName(activePlayer.Player?.Zone);
             if (string.IsNullOrWhiteSpace(z))
             {
                 z = "freportw";
             }
-            return LoadMap(z);
+            return LoadMap(z, canvas);
         }
 
-        public CameraDetail UpdateLocation(Point3D value1, CameraDetail cameraDetail)
+        public void UpdateLocation(Point3D value1, PanAndZoomCanvas canvas)
         {
-            var newval = new Point3D(value1.Y, value1.X, cameraDetail.Position.Z + 300);
-            if (!Lastlocation.HasValue)
-            {
-                Lastlocation = new Point3D(value1.Y, value1.X, newval.Z);
-            }
-            var vec = newval - new Point3D(Lastlocation.Value.X, Lastlocation.Value.Y, cameraDetail.Position.Z + 300);
-            vec.Normalize();
-            var endpos = ((vec * 20) + newval.ToVector3D()).ToPoint3D();
-            Lastlocation = new Point3D(value1.Y, value1.X, newval.Z);
+            //value1 = RotatePoint(value1, new Point3D(AABBCenter.X, AABBCenter.Y, 0), 180);
 
+            //var vec = newval - new Point3D(Lastlocation.Value.X, Lastlocation.Value.Y);
+            //vec.Normalize();
+            //var endpos = ((vec * 20) + newval.ToVector3D()).ToPoint3D();
+            Lastlocation = new Point(value1.X + MapOffset.Y, value1.Y + MapOffset.X);
 
-            PlayerVisualLocationSphere.BeginEdit();
-            PlayerVisualLocationSphere.Center = newval;
-            PlayerVisualLocationSphere.EndEdit();
+            Canvas.SetLeft(PlayerLocationIcon, -Lastlocation.Y * canvas.CurrentScaling);
+            Canvas.SetTop(PlayerLocationIcon, -Lastlocation.X * canvas.CurrentScaling);
 
-            PlayerVisualLocation.BeginEdit();
-            PlayerVisualLocation.Direction = vec;
-            PlayerVisualLocation.Point1 = newval;
-            PlayerVisualLocation.Point2 = endpos;
-            PlayerVisualLocation.EndEdit();
-            return new CameraDetail
-            {
-                LookDirection = cameraDetail.LookDirection,
-                Position = new Point3D(value1.Y, value1.X, cameraDetail.Position.Z)
-            };
-        }
-
-        public void UpdatePlayerVisual(Point3D camera_position)
-        {
-
-            if (PlayerVisualLocation == null || PlayerVisualLocationSphere == null)
-            {
-                return;
-            };
-
-            PlayerVisualLocationSphere.BeginEdit();
-            PlayerVisualLocationSphere.Center = new Point3D(PlayerVisualLocationSphere.Center.X, PlayerVisualLocationSphere.Center.Y, camera_position.Z + 300);
-            PlayerVisualLocationSphere.EndEdit();
-            PlayerVisualLocation.BeginEdit();
-            PlayerVisualLocation.Direction = PlayerVisualLocation.Direction;
-            PlayerVisualLocation.Point1 = new Point3D(PlayerVisualLocation.Point1.X, PlayerVisualLocation.Point1.Y, camera_position.Z + 300);
-            PlayerVisualLocation.Point2 = new Point3D(PlayerVisualLocation.Point2.X, PlayerVisualLocation.Point2.Y, camera_position.Z + 300);
-            PlayerVisualLocation.EndEdit();
-
+            PlayerLocationIcon.RenderTransform = new TranslateTransform(canvas.Transform.Value.OffsetX, canvas.Transform.Value.OffsetY);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

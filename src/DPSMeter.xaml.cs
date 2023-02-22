@@ -96,6 +96,7 @@ namespace EQTool
         {
             SaveState();
         }
+
         private void LogParser_LineReadEvent(object sender, LogParser.LogParserEventArgs e)
         {
             var matched = dPSLogParse.Match(e.Line);

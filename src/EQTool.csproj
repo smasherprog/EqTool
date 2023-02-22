@@ -29,6 +29,8 @@
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
     <TargetFrameworkProfile />
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -100,20 +102,14 @@
     <Reference Include="Autofac, Version=6.5.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
       <HintPath>..\packages\Autofac.6.5.0\lib\netstandard2.0\Autofac.dll</HintPath>
     </Reference>
-    <Reference Include="HelixToolkit, Version=2.23.0.0, Culture=neutral, PublicKeyToken=52aa3500039caf0d, processorArchitecture=MSIL">
-      <HintPath>..\packages\HelixToolkit.2.23.0\lib\netstandard2.0\HelixToolkit.dll</HintPath>
-    </Reference>
-    <Reference Include="HelixToolkit.Wpf, Version=2.23.0.0, Culture=neutral, PublicKeyToken=52aa3500039caf0d, processorArchitecture=MSIL">
-      <HintPath>..\packages\HelixToolkit.Wpf.2.23.0\lib\net45\HelixToolkit.Wpf.dll</HintPath>
-    </Reference>
     <Reference Include="Microsoft.AppCenter, Version=0.0.0.0, Culture=neutral, PublicKeyToken=8a600e2fee7ba272, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AppCenter.5.0.1\lib\net472\Microsoft.AppCenter.dll</HintPath>
+      <HintPath>..\packages\Microsoft.AppCenter.4.5.1\lib\net472\Microsoft.AppCenter.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AppCenter.Analytics, Version=0.0.0.0, Culture=neutral, PublicKeyToken=8a600e2fee7ba272, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AppCenter.Analytics.5.0.1\lib\net472\Microsoft.AppCenter.Analytics.dll</HintPath>
+      <HintPath>..\packages\Microsoft.AppCenter.Analytics.4.5.1\lib\net472\Microsoft.AppCenter.Analytics.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.AppCenter.Crashes, Version=0.0.0.0, Culture=neutral, PublicKeyToken=8a600e2fee7ba272, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.AppCenter.Crashes.5.0.1\lib\net472\Microsoft.AppCenter.Crashes.dll</HintPath>
+      <HintPath>..\packages\Microsoft.AppCenter.Crashes.4.5.1\lib\net472\Microsoft.AppCenter.Crashes.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Bcl.AsyncInterfaces, Version=7.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Bcl.AsyncInterfaces.7.0.0\lib\net462\Microsoft.Bcl.AsyncInterfaces.dll</HintPath>
@@ -124,14 +120,17 @@
     <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.13.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="SQLitePCLRaw.batteries_v2, Version=2.1.3.1795, Culture=neutral, PublicKeyToken=8226ea5df37bcae9, processorArchitecture=MSIL">
-      <HintPath>..\packages\SQLitePCLRaw.bundle_e_sqlite3.2.1.3\lib\net461\SQLitePCLRaw.batteries_v2.dll</HintPath>
+    <Reference Include="SQLitePCLRaw.batteries_v2, Version=2.0.2.669, Culture=neutral, PublicKeyToken=8226ea5df37bcae9, processorArchitecture=MSIL">
+      <HintPath>..\packages\SQLitePCLRaw.bundle_green.2.0.2\lib\net461\SQLitePCLRaw.batteries_v2.dll</HintPath>
     </Reference>
-    <Reference Include="SQLitePCLRaw.core, Version=2.1.3.1795, Culture=neutral, PublicKeyToken=1488e028ca7ab535, processorArchitecture=MSIL">
-      <HintPath>..\packages\SQLitePCLRaw.core.2.1.3\lib\netstandard2.0\SQLitePCLRaw.core.dll</HintPath>
+    <Reference Include="SQLitePCLRaw.core, Version=2.0.2.669, Culture=neutral, PublicKeyToken=1488e028ca7ab535, processorArchitecture=MSIL">
+      <HintPath>..\packages\SQLitePCLRaw.core.2.0.2\lib\netstandard2.0\SQLitePCLRaw.core.dll</HintPath>
     </Reference>
-    <Reference Include="SQLitePCLRaw.provider.dynamic_cdecl, Version=2.1.3.1795, Culture=neutral, PublicKeyToken=b68184102cba0b3b, processorArchitecture=MSIL">
-      <HintPath>..\packages\SQLitePCLRaw.provider.dynamic_cdecl.2.1.3\lib\netstandard2.0\SQLitePCLRaw.provider.dynamic_cdecl.dll</HintPath>
+    <Reference Include="SQLitePCLRaw.nativelibrary, Version=2.0.2.669, Culture=neutral, PublicKeyToken=502ed628492ab262, processorArchitecture=MSIL">
+      <HintPath>..\packages\SQLitePCLRaw.bundle_green.2.0.2\lib\net461\SQLitePCLRaw.nativelibrary.dll</HintPath>
+    </Reference>
+    <Reference Include="SQLitePCLRaw.provider.dynamic_cdecl, Version=2.0.2.669, Culture=neutral, PublicKeyToken=b68184102cba0b3b, processorArchitecture=MSIL">
+      <HintPath>..\packages\SQLitePCLRaw.provider.dynamic_cdecl.2.0.2\lib\netstandard2.0\SQLitePCLRaw.provider.dynamic_cdecl.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
@@ -182,15 +181,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="MappingWindow.xaml.cs">
+      <DependentUpon>MappingWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MobInfo.xaml.cs">
       <DependentUpon>MobInfo.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Models\EQMapColor.cs" />
+    <Compile Include="PanAndZoomCanvas.xaml.cs">
+      <DependentUpon>PanAndZoomCanvas.xaml</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="DPSMeter.xaml.cs">
       <DependentUpon>DPSMeter.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="MapWindow.xaml.cs">
-      <DependentUpon>MapWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\Themes.cs" />
     <Compile Include="Models\DPSParseMatch.cs" />
@@ -203,6 +206,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="Services\AppDispatcher.cs" />
+    <Compile Include="Services\HSLColor.cs" />
     <Compile Include="Services\Fight\FightLogService.cs" />
     <Compile Include="Services\Map\LocationParser.cs" />
     <Compile Include="Services\Map\ZoneParser.cs" />
@@ -223,8 +227,6 @@
     <Compile Include="Services\Spells\Log\SpellLogParse.cs" />
     <Compile Include="ViewModels\ActivePlayerInfo.cs" />
     <Compile Include="ViewModels\MobInfoViewModel.cs" />
-    <Compile Include="ViewModels\EQTextVisual3D.cs" />
-    <Compile Include="ViewModels\EQLinesVisual3D.cs" />
     <Compile Include="ViewModels\MapViewModel.cs" />
     <Compile Include="ViewModels\DPSWindowViewModel.cs" />
     <Compile Include="ViewModels\SpellWindowViewModel.cs" />
@@ -288,11 +290,15 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="MapWindow.xaml">
+    <Page Include="MappingWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="MobInfo.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PanAndZoomCanvas.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -328,6 +334,43 @@
   <ItemGroup>
     <Resource Include="dps.png" />
     <Resource Include="map.png" />
+    <Resource Include="wizard.png" />
+    <Resource Include="TestFight2.txt" />
+    <Resource Include="testmap.txt" />
+    <Resource Include="TestFight.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.7.2 %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="logo.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="sickpic.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="HyperlinkForward.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="toolbox.png" />
+  </ItemGroup>
+  <ItemGroup>
     <EmbeddedResource Include="map_files\airplane.txt" />
     <EmbeddedResource Include="map_files\AirPlane_1.txt" />
     <EmbeddedResource Include="map_files\airplane_2.txt" />
@@ -784,47 +827,6 @@
     <EmbeddedResource Include="map_files\Westwastes_1.txt" />
     <EmbeddedResource Include="map_files\westwastes_2.txt" />
     <EmbeddedResource Include="map_files\westwastes_3.txt" />
-    <Resource Include="wizard.png" />
-    <Resource Include="TestFight2.txt" />
-    <Resource Include="testmap.txt" />
-    <Resource Include="TestFight.txt" />
-  </ItemGroup>
-  <ItemGroup>
-    <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">
-      <Visible>False</Visible>
-      <ProductName>Microsoft .NET Framework 4.7.2 %28x86 and x64%29</ProductName>
-      <Install>true</Install>
-    </BootstrapperPackage>
-    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
-      <Visible>False</Visible>
-      <ProductName>.NET Framework 3.5 SP1</ProductName>
-      <Install>false</Install>
-    </BootstrapperPackage>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="logo.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="sickpic.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="packages.config" />
-    <None Include="Properties\Settings.settings">
-      <Generator>SettingsSingleFileGenerator</Generator>
-      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
-    </None>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="runtimes\win-x64\native\e_sqlite3.dll" />
-    <EmbeddedResource Include="runtimes\win-x86\native\e_sqlite3.dll" />
-    <EmbeddedResource Include="runtimes\win10-x64\nativeassets\uap10.0\e_sqlite3.dll" />
-    <EmbeddedResource Include="runtimes\win10-x86\nativeassets\uap10.0\e_sqlite3.dll" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="HyperlinkForward.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="toolbox.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="AfterResolveReferences">
@@ -833,5 +835,12 @@
         <LogicalName>%(ReferenceCopyLocalPaths.DestinationSubDirectory)%(ReferenceCopyLocalPaths.Filename)%(ReferenceCopyLocalPaths.Extension)</LogicalName>
       </EmbeddedResource>
     </ItemGroup>
+  </Target>
+  <Import Project="..\packages\SQLitePCLRaw.lib.e_sqlite3.2.0.2\build\net461\SQLitePCLRaw.lib.e_sqlite3.targets" Condition="Exists('..\packages\SQLitePCLRaw.lib.e_sqlite3.2.0.2\build\net461\SQLitePCLRaw.lib.e_sqlite3.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\SQLitePCLRaw.lib.e_sqlite3.2.0.2\build\net461\SQLitePCLRaw.lib.e_sqlite3.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\SQLitePCLRaw.lib.e_sqlite3.2.0.2\build\net461\SQLitePCLRaw.lib.e_sqlite3.targets'))" />
   </Target>
 </Project>

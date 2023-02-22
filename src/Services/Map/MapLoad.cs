@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows.Media;
@@ -15,24 +16,53 @@ namespace EQTool.Services
             {
                 zone = "freportw";
             }
-
-            var list = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceNames();
-
             var lines = new List<string>();
-            var resourcenames = list.Where(a => a.StartsWith("EQTool.map_files." + zone)).ToList();
-            foreach (var item in resourcenames)
+            var checkformanualmaps = System.IO.Directory.GetCurrentDirectory() + "/maps";
+            if (System.IO.Directory.Exists(checkformanualmaps))
             {
-                using (var stream = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream(item))
-                using (var reader = new StreamReader(stream))
+
+                //foreach (var item in ZoneParser.Zones)
+                //{
+                //    var zonen = ZoneParser.TranslateToMapName(item);
+                //    var files = Directory.GetFiles(checkformanualmaps, zonen + "*.txt").Where(a => !a.Contains("_2")).ToList();
+                //    foreach (var cleanfile in files)
+                //    {
+                //        File.Copy(cleanfile, "C:\\Users\\smash\\source\\repos\\smasherprog\\EqTool\\src\\bin\\Debug\\maps\\cleanfiles\\" + Path.GetFileName(cleanfile), true);
+                //    }
+                //}
+
+                var resourcenames = Directory.GetFiles(checkformanualmaps, zone + "*.txt").ToList();
+                foreach (var item in resourcenames)
                 {
-                    var l = reader.ReadToEnd();
-                    var splits = l.Split(new string[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
-                    lines.AddRange(splits);
+                    using (var stream = new FileStream(item, FileMode.Open, FileAccess.Read))
+                    using (var reader = new StreamReader(stream))
+                    {
+                        var l = reader.ReadToEnd();
+                        var splits = l.Split(new string[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
+                        lines.AddRange(splits);
+                    }
                 }
             }
 
-            var maplines = Parse(lines);
-            return maplines;
+            if (!lines.Any())
+            {
+                var list = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceNames();
+
+
+                var resourcenames = list.Where(a => a.ToLower().StartsWith("eqtool.map_files." + zone)).ToList();
+                foreach (var item in resourcenames)
+                {
+                    using (var stream = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream(item))
+                    using (var reader = new StreamReader(stream))
+                    {
+                        var l = reader.ReadToEnd();
+                        var splits = l.Split(new string[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
+                        lines.AddRange(splits);
+                    }
+                }
+            }
+
+            return Parse(lines);
         }
 
         public class MapLine
@@ -71,6 +101,7 @@ namespace EQTool.Services
             };
 
             public double MaxHeight => Max.Y - Min.Y;
+            public double MaxWidth => Max.X - Min.X;
         }
 
         public class ParsedData
@@ -78,13 +109,32 @@ namespace EQTool.Services
             public List<MapLine> Lines { get; set; } = new List<MapLine>();
             public List<MapLabel> Labels { get; set; } = new List<MapLabel>();
             public AABB AABB { get; set; } = new AABB();
+            public Point3D Offset { get; set; }
+        }
+
+        private static Point3D RotatePoint(Point3D pointToRotate, Point3D centerPoint, double angleInDegrees)
+        {
+            var angleInRadians = angleInDegrees * (Math.PI / 180);
+            var cosTheta = Math.Cos(angleInRadians);
+            var sinTheta = Math.Sin(angleInRadians);
+            return new Point3D
+            {
+                X =
+                    (int)
+                    ((cosTheta * (pointToRotate.X - centerPoint.X)) -
+                    (sinTheta * (pointToRotate.Y - centerPoint.Y)) + centerPoint.X),
+                Y =
+                    (int)
+                    ((sinTheta * (pointToRotate.X - centerPoint.X)) +
+                    (cosTheta * (pointToRotate.Y - centerPoint.Y)) + centerPoint.Y)
+            };
         }
 
         private ParsedData Parse(List<string> lines)
         {
             var ret = new ParsedData();
-
-            foreach (var item in lines.Where(a => !string.IsNullOrWhiteSpace(a)))
+            var ls = lines.Where(a => !string.IsNullOrWhiteSpace(a)).ToList();
+            foreach (var item in ls)
             {
                 if (item.StartsWith("L "))
                 {
@@ -99,14 +149,14 @@ namespace EQTool.Services
                         Points = new Point3D[] {
                              new Point3D
                              {
-                                 X = float.Parse(splits[0]) *-1,
-                                 Y = float.Parse(splits[1]) *-1,
+                                 X = float.Parse(splits[0]),
+                                 Y = float.Parse(splits[1]),
                                  Z = float.Parse(splits[2])
                              },
                              new Point3D
                              {
-                                 X = float.Parse(splits[3]) *-1,
-                                 Y = float.Parse(splits[4]) * -1,
+                                 X = float.Parse(splits[3]),
+                                 Y = float.Parse(splits[4]),
                                  Z = float.Parse(splits[5])
                              }
                          },
@@ -125,20 +175,53 @@ namespace EQTool.Services
                     {
                         Point = new Point3D
                         {
-                            X = float.Parse(splits[0]) * -1,
-                            Y = float.Parse(splits[1]) * -1,
+                            X = float.Parse(splits[0]),
+                            Y = float.Parse(splits[1]),
                             Z = float.Parse(splits[2])
                         },
                         Color = Color.FromRgb(byte.Parse(splits[3]), byte.Parse(splits[4]), byte.Parse(splits[5])),
                         label = splits[7]
                     });
                 }
-                foreach (var point in ret.Lines)
-                {
-                    ret.AABB.Add(point.Points[0]);
-                    ret.AABB.Add(point.Points[1]);
-                }
             }
+
+            ret.AABB = new AABB();
+            foreach (var point in ret.Lines)
+            {
+                ret.AABB.Add(point.Points[0]);
+                ret.AABB.Add(point.Points[1]);
+            }
+            var min = ret.AABB.Min;
+
+            foreach (var item in ret.Lines)
+            {
+                item.Points[0].X = item.Points[0].X - min.X;
+                item.Points[0].Y = item.Points[0].Y - min.Y;
+                item.Points[0].Z = item.Points[0].Z - min.Z;
+
+                item.Points[1].X = item.Points[1].X - min.X;
+                item.Points[1].Y = item.Points[1].Y - min.Y;
+                item.Points[1].Z = item.Points[1].Z - min.Z;
+            }
+            ret.Offset = min;
+            foreach (var item in ret.Labels)
+            {
+                item.Point = new Point3D
+                {
+                    X = item.Point.X - min.X,
+                    Y = item.Point.Y - min.Y,
+                    Z = item.Point.Z - min.Z
+                };
+            }
+
+            ret.AABB = new AABB();
+            foreach (var point in ret.Lines)
+            {
+                ret.AABB.Add(point.Points[0]);
+                ret.AABB.Add(point.Points[1]);
+            }
+            var biggestdim = ret.AABB.MaxHeight > ret.AABB.MaxWidth ? ret.AABB.MaxHeight : ret.AABB.MaxWidth;
+            Debug.WriteLine($"{biggestdim}");
             return ret;
         }
     }

@@ -4,11 +4,11 @@ using System.Linq;
 
 namespace EQTool.Services.Map
 {
-    public class ZoneParser
+    public static class ZoneParser
     {
-        private readonly string Youhaveentered = "You have entered ";
-        private readonly string Thereare = "There are ";
-        private readonly string spaceinspace = " in ";
+        private const string Youhaveentered = "You have entered ";
+        private const string Thereare = "There are ";
+        private const string spaceinspace = " in ";
 
         private static readonly Dictionary<string, string> ZoneNameMapper = new Dictionary<string, string>();
         private static readonly Dictionary<string, string> ZoneWhoMapper = new Dictionary<string, string>();
@@ -178,7 +178,7 @@ namespace EQTool.Services.Map
 
         public static List<string> Zones => ZoneNameMapper.Keys.ToList();
 
-        public string TranslateToMapName(string name)
+        public static string TranslateToMapName(string name)
         {
             name = name?.ToLower()?.Trim();
             if (string.IsNullOrWhiteSpace(name))
@@ -194,7 +194,7 @@ namespace EQTool.Services.Map
             return ZoneNameMapper.TryGetValue(name, out n) ? n : name;
         }
 
-        public string Match(string linelog)
+        public static string Match(string linelog)
         {
             if (linelog == null || linelog.Length < 27)
             {

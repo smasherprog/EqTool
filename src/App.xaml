@@ -9,23 +9,33 @@
         <sys:Double xmlns:sys="clr-namespace:System;assembly=mscorlib" x:Key="GlobalTriggerWindowOpacity">1</sys:Double>
         <sys:Double xmlns:sys="clr-namespace:System;assembly=mscorlib" x:Key="GlobalDPSWindowOpacity">1</sys:Double>
 
+        <!--<Style TargetType="{x:Type local:PanAndZoomCanvas}">
+            <Style.Triggers>
+                <DataTrigger Binding="{Binding Source={x:Static properties:Settings.Default}, Path=ColorMode}" Value="Light">
+                    <Setter Property="Background" Value="#E1D9D1" />
+                </DataTrigger>
+                <DataTrigger Binding="{Binding Source={x:Static properties:Settings.Default}, Path=ColorMode}" Value="Dark">
+                    <Setter Property="Background" Value="#333333" />
+                </DataTrigger>
+            </Style.Triggers>
+        </Style>-->
         <Style x:Key="MyMobUrlSyle" TargetType="{x:Type TextBlock}">
             <Setter Property="FontSize" Value="{Binding Source={x:Static properties:Settings.Default}, Path=GlobalFontSize}" />
             <Style.Triggers>
                 <DataTrigger Binding="{Binding Source={x:Static properties:Settings.Default}, Path=ColorMode}" Value="Light">
-                    <Setter Property="Foreground" Value="#18545C" /> 
+                    <Setter Property="Foreground" Value="#18545C" />
                 </DataTrigger>
                 <DataTrigger Binding="{Binding Source={x:Static properties:Settings.Default}, Path=ColorMode}" Value="Dark">
                     <Setter Property="Foreground" Value="#86C1F5" />
                 </DataTrigger>
             </Style.Triggers>
         </Style>
-        
+
 
         <Style x:Key="MySettingsWindowSyle" TargetType="{x:Type Window}">
             <Setter Property="FontSize" Value="{Binding Source={x:Static properties:Settings.Default}, Path=GlobalFontSize}" />
             <Setter Property="Background" Value="#E1D9D1" />
-        </Style> 
+        </Style>
         <Style x:Key="MyListViewStyle" TargetType="{x:Type ListView}">
             <Setter Property="FontSize" Value="{Binding Source={x:Static properties:Settings.Default}, Path=GlobalFontSize}" />
             <Style.Triggers>
@@ -121,10 +131,10 @@
             <Setter Property="FontSize" Value="{Binding Source={x:Static properties:Settings.Default}, Path=GlobalFontSize}" />
             <Style.Triggers>
                 <DataTrigger Binding="{Binding Source={x:Static properties:Settings.Default}, Path=ColorMode}" Value="Light">
-                    <Setter Property="Background" Value="#E1D9D1" />
+                    <Setter Property="Background" Value="White" />
                 </DataTrigger>
                 <DataTrigger Binding="{Binding Source={x:Static properties:Settings.Default}, Path=ColorMode}" Value="Dark">
-                    <Setter Property="Background" Value="#121212" />
+                    <Setter Property="Background" Value="Black" />
                 </DataTrigger>
             </Style.Triggers>
         </Style>
