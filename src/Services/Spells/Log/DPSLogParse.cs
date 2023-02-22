@@ -15,6 +15,8 @@ namespace EQTool.Services.Spells.Log
 
         private readonly List<string> HitTypes = new List<string>()
         {
+            " strike ",
+            " strikes ",
             " slice ",
             " slices ",
             " slash ",
