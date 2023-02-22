@@ -216,12 +216,7 @@ namespace EQTool.Models
     {
         public static double ChangeRange(double x, double fromleft, double fromright, double toleft, double toright)
         {
-            var fromrange = Math.Abs(fromleft - fromright);
-            var torange = Math.Abs(toleft - toright);
-            var scale = torange / fromrange;
-            var invtrans = fromleft < fromright ? -fromleft : -fromright;
-            var trans = toleft < toright ? toleft : toright;
-            return ((x - invtrans) * scale) + trans;
+            return ((x - fromleft) * (toright - toleft) / (fromright - fromleft)) + toleft;
         }
     }
 }

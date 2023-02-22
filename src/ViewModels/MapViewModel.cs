@@ -33,7 +33,7 @@ namespace EQTool.ViewModels
         public AABB AABB = new AABB();
         private Point3D MapOffset = new Point3D(0, 0, 0);
 
-        public Polyline PlayerLocationIcon { get; set; }
+        public Shape PlayerLocationIcon { get; set; }
 
         private string _Title = string.Empty;
 
@@ -79,7 +79,7 @@ namespace EQTool.ViewModels
                     if (!colordic.ContainsKey(group.Color))
                     {
                         var c = EQMapColor.GetThemedColors(group.Color);
-                        colordic[group.Color] = Tuple.Create(EQMapColor.GetThemedColors(group.Color), new SolidColorBrush(App.Theme == Themes.Light ? c.LightColor : c.DarkColor));
+                        colordic[group.Color] = Tuple.Create(c, new SolidColorBrush(App.Theme == Themes.Light ? c.LightColor : c.DarkColor));
                     }
                 }
                 foreach (var group in map.Labels)
@@ -87,7 +87,7 @@ namespace EQTool.ViewModels
                     if (!colordic.ContainsKey(group.Color))
                     {
                         var c = EQMapColor.GetThemedColors(group.Color);
-                        colordic[group.Color] = Tuple.Create(EQMapColor.GetThemedColors(group.Color), new SolidColorBrush(App.Theme == Themes.Light ? c.LightColor : c.DarkColor));
+                        colordic[group.Color] = Tuple.Create(c, new SolidColorBrush(App.Theme == Themes.Light ? c.LightColor : c.DarkColor));
                     }
                 }
                 MapOffset = map.Offset;
@@ -128,21 +128,32 @@ namespace EQTool.ViewModels
                     Canvas.SetLeft(text, item.Point.X);
                     Canvas.SetTop(text, item.Point.Y);
                 }
-                var playlocthikness = MathHelper.ChangeRange(Math.Max(map.AABB.MaxWidth, map.AABB.MaxHeight), 1000, 35000, 10, 15);
-                PlayerLocationIcon = new Polyline
+
+                var playerlocsize = MathHelper.ChangeRange(Math.Max(map.AABB.MaxWidth, map.AABB.MaxHeight), 500, 35000, 40, 1750);
+                var playerstrokthickness = MathHelper.ChangeRange(Math.Max(map.AABB.MaxWidth, map.AABB.MaxHeight), 500, 35000, 15, 400);
+                //PlayerLocationIcon = new Polyline
+                //{
+                //    Points = new PointCollection(new List<Point>
+                //     {
+                //      new Point(25, 25),
+                //        new Point(0,50),
+                //        new Point(25,75),
+                //        new Point(50,50),
+                //        new Point(25,25),
+                //        new Point(25,0)
+                //     }),
+                //    Stroke = new SolidColorBrush(System.Windows.Media.Color.FromRgb(61, 235, 52)),
+                //    StrokeThickness = 20
+                //};
+
+                PlayerLocationIcon = new Ellipse
                 {
-                    Points = new PointCollection(new List<Point>
-                     {
-                        new Point(25, 25),
-                        new Point(0,50),
-                        new Point(25,75),
-                        new Point(50,50),
-                        new Point(25,25),
-                        new Point(25,0)
-                     }),
+                    Height = playerlocsize,
+                    Width = playerlocsize,
                     Stroke = new SolidColorBrush(System.Windows.Media.Color.FromRgb(61, 235, 52)),
-                    StrokeThickness = playlocthikness
+                    StrokeThickness = playerstrokthickness
                 };
+
                 AABB = map.AABB;
                 _ = canvas.Children.Add(PlayerLocationIcon);
                 Canvas.SetLeft(PlayerLocationIcon, AABB.Center.X);

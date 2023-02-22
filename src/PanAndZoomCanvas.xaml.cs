@@ -28,14 +28,6 @@ namespace EQTool
         {
             Transform = new MatrixTransform();
             CurrentScaling = 1.0f;
-            foreach (UIElement child in Children)
-            {
-                if (!(child is Polyline))
-                {
-                    child.RenderTransform = Transform;
-                }
-            }
-
             MapSize = mapsize;
         }
 
@@ -74,7 +66,7 @@ namespace EQTool
 
                 foreach (UIElement child in Children)
                 {
-                    child.RenderTransform = child is Polyline ? new TranslateTransform(Transform.Value.OffsetX, Transform.Value.OffsetY) : (Transform)Transform;
+                    child.RenderTransform = child is Ellipse ? new TranslateTransform(Transform.Value.OffsetX, Transform.Value.OffsetY) : (Transform)Transform;
                 }
             }
         }
@@ -111,7 +103,7 @@ namespace EQTool
 
                 Canvas.SetLeft(child, sx);
                 Canvas.SetTop(child, sy);
-                child.RenderTransform = child is Polyline ? new TranslateTransform(Transform.Value.OffsetX, Transform.Value.OffsetY) : (Transform)Transform;
+                child.RenderTransform = child is Ellipse ? new TranslateTransform(Transform.Value.OffsetX, Transform.Value.OffsetY) : (Transform)Transform;
             }
         }
     }
