@@ -164,14 +164,12 @@ namespace EQTool
                 App.Current.Shutdown();
                 return;
             }
-            var debugging = false;
+
 #if DEBUG
-            debugging = true;
 #endif
-            if (!debugging)
-            {
-                AppCenter.Start("9be42804-8d4f-4431-9120-06f3a0370c4c", typeof(Analytics), typeof(Crashes));
-            }
+
+            AppCenter.Start("9be42804-8d4f-4431-9120-06f3a0370c4c", typeof(Analytics), typeof(Crashes));
+
 
             httpclient.DefaultRequestHeaders.Add("User-Agent", "request");
             if (e.Args.Length == 1)
