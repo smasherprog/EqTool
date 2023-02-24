@@ -1,8 +1,4 @@
-﻿using EQTool.Models;
-using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Globalization;
+﻿using System.Diagnostics;
 using System.Linq;
 using System.Windows.Media.Media3D;
 

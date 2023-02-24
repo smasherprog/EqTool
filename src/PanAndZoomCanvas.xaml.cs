@@ -53,7 +53,6 @@ namespace EQTool
                 var delta = Point.Subtract(mousePosition, _initialMousePosition);
                 var translate = new TranslateTransform(delta.X, delta.Y);
                 Transform.Matrix = translate.Value * Transform.Matrix;
-
                 foreach (UIElement child in Children)
                 {
                     child.RenderTransform = child is Ellipse ? new TranslateTransform(Transform.Value.OffsetX, Transform.Value.OffsetY) : (Transform)Transform;
@@ -73,7 +72,7 @@ namespace EQTool
 
             var scaleMatrix = Transform.Matrix;
             scaleMatrix.ScaleAt(scaleFactor, scaleFactor, mousePostion.X, mousePostion.Y);
-            if (CurrentScaling * scaleFactor < 1)
+            if (CurrentScaling * scaleFactor < 1 || CurrentScaling * scaleFactor > 40)
             {
                 // dont allow zooming out too far
                 return;
