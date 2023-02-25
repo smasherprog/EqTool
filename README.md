@@ -24,7 +24,7 @@ Features:
 <li>DPS window. Saves fight data to a CSV so you can review later!</li>
 <li>Auto detect level and class!</li>
 <li>DPS is trailing 12 second average.</li>
-<li>Mapping is Work in Progress!!!</li>
+<li>Maps</li>
 <li>Timers (Only Minutes are supported)</li>
 </ul>
 <h5>Timers (Only Minutes are supported) -- All below commands work in regular say!</h5>
@@ -33,7 +33,9 @@ Features:
 <li>Start Timer Crypt Camp 35</li>
 <li>Timer Cancel Crypt Camp</li>
 <li>Cancel Timer Crypt Camp</li>
-</ul> 
+</ul>
+<img width="806" alt="image" src="https://user-images.githubusercontent.com/3393733/221380745-7b584b8d-cc75-4132-aab3-4d632d34bfbe.png">
+
 <img width="808" alt="image" src="https://user-images.githubusercontent.com/3393733/215292103-89c83b08-c495-4b65-806e-beec92ade86e.png">
 
 <h4>System Tray Icon</h4>
