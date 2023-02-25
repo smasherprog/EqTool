@@ -39,7 +39,7 @@ namespace EQTool.ViewModels
 
         public string Title
         {
-            get => _Title + $"   {_MouseWorldCoordinates.X:0.##}, {_MouseWorldCoordinates.Y:0.##}, {_MouseWorldCoordinates.Z:0.##}";
+            get => _Title + $"   {Lastlocation.X:0.##}, {Lastlocation.Y:0.##}, {Lastlocation.Z:0.##}";
             set
             {
                 _Title = value;
@@ -48,20 +48,6 @@ namespace EQTool.ViewModels
         }
 
         private string LoadedZone = string.Empty;
-
-        public Point3D _MouseWorldCoordinates;
-
-        public Point3D MouseWorldCoordinates
-        {
-            get => _MouseWorldCoordinates;
-            set
-            {
-                _MouseWorldCoordinates = value;
-                //Debug.WriteLine($"MouseWorldCoordinates: {MouseWorldCoordinates}");
-                OnPropertyChanged();
-                OnPropertyChanged(nameof(Title));
-            }
-        }
 
         public class Mapdata : MapLine
         {
@@ -234,6 +220,7 @@ namespace EQTool.ViewModels
 
         public void UpdateLocation(Point3D value1, PanAndZoomCanvas canvas)
         {
+            OnPropertyChanged(nameof(Title));
             var newdir = new Point3D(value1.X, value1.Y, 0) - new Point3D(Lastlocation.X, Lastlocation.Y, 0);
             newdir.Normalize();
             var angle = GetAngleBetweenPoints(new Point3D(value1.X, value1.Y, 0), new Point3D(Lastlocation.X, Lastlocation.Y, 0)) * -1;
