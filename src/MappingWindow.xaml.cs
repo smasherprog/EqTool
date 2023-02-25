@@ -9,6 +9,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using static EQTool.ViewModels.MapViewModel;
 
 namespace EQTool
 {
@@ -91,14 +92,14 @@ namespace EQTool
             {
                 if (item is Line l)
                 {
-                    var c = l.Tag as EQMapColor;
-                    l.Stroke = new SolidColorBrush(e.Theme == Themes.Light ? c.LightColor : c.DarkColor);
+                    var c = l.Tag as Mapdata;
+                    l.Stroke = new SolidColorBrush(e.Theme == Themes.Light ? c.MapColor.LightColor : c.MapColor.DarkColor);
                 }
                 else if (item is TextBlock t)
                 {
 
-                    var c = t.Tag as EQMapColor;
-                    t.Foreground = new SolidColorBrush(e.Theme == Themes.Light ? c.LightColor : c.DarkColor);
+                    var c = t.Tag as Mapdata;
+                    t.Foreground = new SolidColorBrush(e.Theme == Themes.Light ? c.MapColor.LightColor : c.MapColor.DarkColor);
                 }
             }
         }

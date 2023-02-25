@@ -67,7 +67,8 @@ namespace EQTool.Models
             return new EQMapColor
             {
                 DarkColor = GetDarkThemeTransformedColor(color),
-                LightColor = GetLightThemeTransformedColor(color)
+                LightColor = GetLightThemeTransformedColor(color),
+                OriginalColor = color
             };
             var colors = ColorMapping.FirstOrDefault(a => a.OriginalColor == color);
             if (colors == null)

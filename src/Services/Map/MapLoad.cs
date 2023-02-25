@@ -195,11 +195,11 @@ namespace EQTool.Services
             {
                 item.Points[0].X = item.Points[0].X - min.X;
                 item.Points[0].Y = item.Points[0].Y - min.Y;
-                item.Points[0].Z = item.Points[0].Z - min.Z;
+                item.Points[0].Z = item.Points[0].Z;
 
                 item.Points[1].X = item.Points[1].X - min.X;
                 item.Points[1].Y = item.Points[1].Y - min.Y;
-                item.Points[1].Z = item.Points[1].Z - min.Z;
+                item.Points[1].Z = item.Points[1].Z;
             }
             ret.Offset = min;
             foreach (var item in ret.Labels)
@@ -208,7 +208,7 @@ namespace EQTool.Services
                 {
                     X = item.Point.X - min.X,
                     Y = item.Point.Y - min.Y,
-                    Z = item.Point.Z - min.Z
+                    Z = item.Point.Z
                 };
             }
 
