@@ -43,6 +43,7 @@ namespace EQTool
             DataContext = SettingsWindowData = settingsWindowData;
             SettingsWindowData.EqPath = this.settings.DefaultEqDirectory;
             Topmost = true;
+
             InitializeComponent();
             try
             {
@@ -359,7 +360,7 @@ namespace EQTool
         {
             var format = "ddd MMM dd HH:mm:ss yyyy";
             var d = DateTime.Now;
-            var line = "[" + d.ToString(format) + "] Ayillish regards you indifferently -- You could probably win this fight.";
+            var line = "[" + d.ToString(format) + "] a burning guardian regards you indifferently -- You could probably win this fight.";
             logParser.Push(new LogParser.LogParserEventArgs { Line = line });
         }
 

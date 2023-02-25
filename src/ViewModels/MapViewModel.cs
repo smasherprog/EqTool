@@ -47,6 +47,8 @@ namespace EQTool.ViewModels
             }
         }
 
+        private string LoadedZone = string.Empty;
+
         public Point3D _MouseWorldCoordinates;
 
         public Point3D MouseWorldCoordinates
@@ -63,7 +65,7 @@ namespace EQTool.ViewModels
 
         public bool LoadMap(string zone, PanAndZoomCanvas canvas)
         {
-            if (string.IsNullOrWhiteSpace(zone))
+            if (string.IsNullOrWhiteSpace(zone) || zone == LoadedZone)
             {
                 return false;
             }
@@ -71,7 +73,7 @@ namespace EQTool.ViewModels
             var map = mapLoad.Load(zone);
             if (map.Labels.Any() || map.Lines.Any())
             {
-                Title = zone;
+                LoadedZone = Title = zone;
                 Debug.WriteLine($"Loading: {zone}");
                 var colordic = new Dictionary<System.Windows.Media.Color, Tuple<EQMapColor, SolidColorBrush>>();
                 foreach (var group in map.Lines)
