@@ -177,7 +177,7 @@ namespace EQTool.Services.Map
             ZoneNameMapper.Add("temple of solusek ro", "soltemple");
         }
 
-        public static List<string> Zones => ZoneNameMapper.Keys.ToList();
+        public static List<string> Zones => ZoneNameMapper.Keys.Concat(ZoneWhoMapper.Keys).Distinct().ToList();
 
         public static string TranslateToMapName(string name)
         {
