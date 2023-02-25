@@ -33,7 +33,7 @@ namespace EQTool.ViewModels
         public AABB AABB = new AABB();
         private Point3D MapOffset = new Point3D(0, 0, 0);
 
-        public Shape PlayerLocationIcon { get; set; }
+        public ArrowLine PlayerLocationIcon { get; set; }
 
         private string _Title = string.Empty;
 
@@ -154,7 +154,8 @@ namespace EQTool.ViewModels
                     X2 = 0,
                     Y2 = playerlocsize,
                     ArrowLength = playerlocsize / 4,
-                    ArrowEnds = ArrowEnds.End
+                    ArrowEnds = ArrowEnds.End,
+                    RotateTransform = new RotateTransform()
                 };
                 //PlayerLocationIcon = new Ellipse
                 //{
@@ -218,12 +219,12 @@ namespace EQTool.ViewModels
             newdir.Normalize();
             var angle = GetAngleBetweenPoints(new Point3D(value1.X, value1.Y, 0), new Point3D(Lastlocation.X, Lastlocation.Y, 0)) * -1;
             Lastlocation = value1;
-            var rot = new RotateTransform(angle);
+            PlayerLocationIcon.RotateTransform = new RotateTransform(angle);
             Canvas.SetLeft(PlayerLocationIcon, -(value1.Y + MapOffset.X) * canvas.CurrentScaling);
             Canvas.SetTop(PlayerLocationIcon, -(value1.X + MapOffset.Y) * canvas.CurrentScaling);
             var transform = new MatrixTransform();
             var translation = new TranslateTransform(canvas.Transform.Value.OffsetX, canvas.Transform.Value.OffsetY);
-            transform.Matrix = rot.Value * translation.Value;
+            transform.Matrix = PlayerLocationIcon.RotateTransform.Value * translation.Value;
             PlayerLocationIcon.RenderTransform = transform;
         }
 

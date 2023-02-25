@@ -1,9 +1,9 @@
-﻿using System.Diagnostics;
+﻿using EQTool.Shapes;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Shapes;
 
 namespace EQTool
 {
@@ -55,7 +55,17 @@ namespace EQTool
                 Transform.Matrix = translate.Value * Transform.Matrix;
                 foreach (UIElement child in Children)
                 {
-                    child.RenderTransform = child is Ellipse ? new TranslateTransform(Transform.Value.OffsetX, Transform.Value.OffsetY) : (Transform)Transform;
+                    if (child is ArrowLine c)
+                    {
+                        var transform = new MatrixTransform();
+                        var translation = new TranslateTransform(Transform.Value.OffsetX, Transform.Value.OffsetY);
+                        transform.Matrix = c.RotateTransform.Value * translation.Value;
+                        c.RenderTransform = transform;
+                    }
+                    else
+                    {
+                        child.RenderTransform = Transform;
+                    }
                 }
             }
         }
@@ -92,7 +102,17 @@ namespace EQTool
 
                 Canvas.SetLeft(child, sx);
                 Canvas.SetTop(child, sy);
-                child.RenderTransform = child is Ellipse ? new TranslateTransform(Transform.Value.OffsetX, Transform.Value.OffsetY) : (Transform)Transform;
+                if (child is ArrowLine c)
+                {
+                    var transform = new MatrixTransform();
+                    var translation = new TranslateTransform(Transform.Value.OffsetX, Transform.Value.OffsetY);
+                    transform.Matrix = c.RotateTransform.Value * translation.Value;
+                    c.RenderTransform = transform;
+                }
+                else
+                {
+                    child.RenderTransform = Transform;
+                }
             }
         }
     }

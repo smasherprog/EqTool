@@ -84,9 +84,8 @@ namespace EQTool.Shapes
             get => (double)GetValue(Y2Property);
         }
 
-        /// <summary>
-        ///     Gets a value that represents the Geometry of the ArrowLine.
-        /// </summary>
+        public RotateTransform RotateTransform { get; set; }
+
         protected override Geometry DefiningGeometry
         {
             get
