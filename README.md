@@ -49,8 +49,7 @@ Features:
 <li>Respawn Time in Mob Info window</li>
 <li>Ability Hide/show mob info data</li>
 <li>Automatically add timer when named npc dies. Use Wiki for notable npc names</li>
-<li>Add donals BP to timers list</li>
-<li>Finish Map</li>
+<li>Add donals BP to timers list</li> 
 <li>Rename Application to Pig Parse</li>
 <li>Add ability to delete individual spells and entire section</li>
 <li>Enrage alert/advanced alert.</li>
