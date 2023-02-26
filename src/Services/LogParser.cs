@@ -6,6 +6,7 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Timers;
+using System.Windows.Media.Media3D;
 
 namespace EQTool.Services
 {
@@ -18,9 +19,13 @@ namespace EQTool.Services
         private readonly EQToolSettings settings;
         private readonly LevelLogParse levelLogParse;
         private readonly EQToolSettingsLoad toolSettingsLoad;
+        private readonly LocationParser locationParser;
+        private readonly ZoneViewModel zoneViewModel;
 
-        public LogParser(EQToolSettingsLoad toolSettingsLoad, ActivePlayer activePlayer, IAppDispatcher appDispatcher, EQToolSettings settings, LevelLogParse levelLogParse)
+        public LogParser(ZoneViewModel zoneViewModel, LocationParser locationParser, EQToolSettingsLoad toolSettingsLoad, ActivePlayer activePlayer, IAppDispatcher appDispatcher, EQToolSettings settings, LevelLogParse levelLogParse)
         {
+            this.zoneViewModel = zoneViewModel;
+            this.locationParser = locationParser;
             this.toolSettingsLoad = toolSettingsLoad;
             this.activePlayer = activePlayer;
             this.appDispatcher = appDispatcher;
@@ -39,16 +44,57 @@ namespace EQTool.Services
         {
         }
 
+        public class PlayerZonedEventArgs : EventArgs
+        {
+            public string Zone { get; set; }
+        }
+        public class PlayerLocationEventArgs : EventArgs
+        {
+            public Point3D Location { get; set; }
+        }
+
         public event EventHandler<LogParserEventArgs> LineReadEvent;
 
         public event EventHandler<PlayerChangeEventArgs> PlayerChangeEvent;
+
+        public event EventHandler<PlayerZonedEventArgs> PlayerZonedEvent;
+
+        public event EventHandler<PlayerLocationEventArgs> PlayerLocationEvent;
+
 
         public void Push(LogParserEventArgs log)
         {
             appDispatcher.DispatchUI(() =>
             {
-                LineReadEvent?.Invoke(this, log);
+                MainRun(log.Line);
             });
+        }
+
+        private void MainRun(string line)
+        {
+            var pos = locationParser.Match(line);
+            if (pos.HasValue)
+            {
+                PlayerLocationEvent?.Invoke(this, new PlayerLocationEventArgs { Location = pos.Value });
+            }
+
+            levelLogParse.MatchLevel(line);
+            var matchedzone = ZoneParser.Match(line);
+            if (!string.IsNullOrWhiteSpace(matchedzone))
+            {
+                var p = activePlayer.Player;
+                if (p != null && p.Zone != zoneViewModel.Name)
+                {
+                    zoneViewModel.Name = matchedzone;
+                    p.Zone = matchedzone;
+                    toolSettingsLoad.Save(settings);
+                }
+                PlayerZonedEvent?.Invoke(this, new PlayerZonedEventArgs { Zone = matchedzone });
+            }
+            if (line.Length > 27)
+            {
+                LineReadEvent?.Invoke(this, new LogParserEventArgs { Line = line });
+            }
         }
 
         private void Poll(object sender, EventArgs e)
@@ -88,21 +134,7 @@ namespace EQTool.Services
                         {
                             var line = reader.ReadLine();
                             LastReadOffset = stream.Position;
-                            levelLogParse.MatchLevel(line);
-                            var matchedzone = ZoneParser.Match(line);
-                            if (!string.IsNullOrWhiteSpace(matchedzone))
-                            {
-                                var p = activePlayer.Player;
-                                if (p != null)
-                                {
-                                    p.Zone = matchedzone;
-                                    toolSettingsLoad.Save(settings);
-                                }
-                            }
-                            if (line.Length > 27)
-                            {
-                                LineReadEvent?.Invoke(this, new LogParserEventArgs { Line = line });
-                            }
+                            MainRun(line);
                         }
                     }
                 }

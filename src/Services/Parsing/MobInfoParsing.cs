@@ -18,6 +18,10 @@ namespace EQTool.Services.Parsing
             var specials = StripHTML(GetValue(name, splits)).Split(new[] { '\n' }, System.StringSplitOptions.RemoveEmptyEntries);
             foreach (var item in specials.Where(a => !string.IsNullOrWhiteSpace(a)))
             {
+                if (item.ToLower().Trim().Contains("casts:"))
+                {
+                    continue;
+                }
                 var indexof = item.IndexOf("{{");
                 if (indexof != -1)
                 {

@@ -1,5 +1,4 @@
 ﻿using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 
 namespace EQTool.Services.Map
@@ -326,7 +325,7 @@ namespace EQTool.Services.Map
             }
 
             var message = linelog.Substring(27);
-            Debug.WriteLine($"ZoneParse: " + message);
+            //Debug.WriteLine($"ZoneParse: " + message);
             if (message.StartsWith(Therearenoplayers))
             {
                 return string.Empty;

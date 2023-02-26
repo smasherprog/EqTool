@@ -4,9 +4,6 @@ using EQTool.Services.Spells.Log;
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Net;
-using System.Net.Http;
-using System.Web;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Navigation;
@@ -23,8 +20,11 @@ namespace EQTool
         private readonly ViewModels.MobInfoViewModel mobInfoViewModel;
         private readonly EQToolSettings settings;
         private readonly EQToolSettingsLoad toolSettingsLoad;
-        public MobInfo(LogParser logParser, ConLogParse conLogParse, EQToolSettings settings, EQToolSettingsLoad toolSettingsLoad)
+        private readonly WikiApi wikiApi;
+
+        public MobInfo(WikiApi wikiApi, LogParser logParser, ConLogParse conLogParse, EQToolSettings settings, EQToolSettingsLoad toolSettingsLoad)
         {
+            this.wikiApi = wikiApi;
             this.settings = settings;
             this.toolSettingsLoad = toolSettingsLoad;
             this.logParser = logParser;
@@ -95,51 +95,17 @@ namespace EQTool
             var matched = conLogParse.ConMatch(e.Line);
             if (!string.IsNullOrWhiteSpace(matched))
             {
-                mobInfoViewModel.Results = string.Empty;
                 try
                 {
-                    var name = HttpUtility.UrlEncode(matched.Trim().Replace(' ', '_'));
-                    var url = $"https://wiki.project1999.com/{name}?action=raw";
-                    var res = App.httpclient.GetAsync(url).Result;
-                    if (res.StatusCode == System.Net.HttpStatusCode.OK)
-                    {
-                        var response = res.Content.ReadAsStringAsync().Result;
-                        if (response.StartsWith("#REDIRECT"))
-                        {
-                            name = response.Replace("#REDIRECT", string.Empty)?.Replace("[[:", string.Empty)?.Replace("[[", string.Empty)?.Replace("]]", string.Empty)?.Trim();
-                            name = HttpUtility.UrlEncode(name.Replace(' ', '_'));
-                            url = $"https://wiki.project1999.com/{name}?action=raw";
-                            res = App.httpclient.GetAsync(url).Result;
-                            if (res.StatusCode == System.Net.HttpStatusCode.OK)
-                            {
-                                mobInfoViewModel.Results = res.Content.ReadAsStringAsync().Result;
-                            }
-                        }
-                        else
-                        {
-                            mobInfoViewModel.Results = response;
-                        }
-                    }
+                    mobInfoViewModel.Results = wikiApi.GetData(matched);
                 }
-                catch (System.AggregateException er)
+                catch (Exception ex)
                 {
-                    if (er.InnerException != null && er.InnerException.GetType() == typeof(HttpRequestException))
-                    {
-                        var err = er.InnerException as HttpRequestException;
-                        if (err.InnerException?.GetType() == typeof(WebException))
-                        {
-                            var innererr = err.InnerException as WebException;
-                            mobInfoViewModel.ErrorResults = innererr.Message;
-                        }
-                        else
-                        {
-
-                            mobInfoViewModel.ErrorResults = err.Message;
-                        }
-                    }
+                    mobInfoViewModel.ErrorResults = ex.Message;
                 }
             }
         }
+
         private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
         {
             _ = Process.Start(new ProcessStartInfo(e.Uri.AbsoluteUri));

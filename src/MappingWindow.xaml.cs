@@ -20,15 +20,13 @@ namespace EQTool
     {
         private readonly LogParser logParser;
         private readonly MapViewModel mapViewModel;
-        private readonly LocationParser locationParser;
         private readonly EQToolSettings settings;
         private readonly EQToolSettingsLoad toolSettingsLoad;
 
-        public MappingWindow(MapViewModel mapViewModel, LocationParser locationParser, LogParser logParser, EQToolSettings settings, EQToolSettingsLoad toolSettingsLoad)
+        public MappingWindow(MapViewModel mapViewModel, LogParser logParser, EQToolSettings settings, EQToolSettingsLoad toolSettingsLoad)
         {
             this.settings = settings;
             this.toolSettingsLoad = toolSettingsLoad;
-            this.locationParser = locationParser;
             this.logParser = logParser;
             DataContext = this.mapViewModel = mapViewModel;
             Topmost = true;
@@ -48,12 +46,28 @@ namespace EQTool
             App.ThemeChangedEvent += App_ThemeChangedEvent;
             _ = mapViewModel.LoadDefaultMap(Map);
             Map.Reset();
-            this.logParser.LineReadEvent += LogParser_LineReadEvent;
+            this.logParser.PlayerLocationEvent += LogParser_PlayerLocationEvent;
+            this.logParser.PlayerZonedEvent += LogParser_PlayerZonedEvent;
             SaveState();
             SizeChanged += Window_SizeChanged;
             StateChanged += Window_StateChanged;
             LocationChanged += Window_LocationChanged;
         }
+
+        private void LogParser_PlayerLocationEvent(object sender, LogParser.PlayerLocationEventArgs e)
+        {
+            mapViewModel.UpdateLocation(e.Location, Map);
+        }
+
+        private void LogParser_PlayerZonedEvent(object sender, LogParser.PlayerZonedEventArgs e)
+        {
+            var matched = ZoneParser.TranslateToMapName(e.Zone);
+            if (mapViewModel.LoadMap(matched, Map))
+            {
+                Map.Reset();
+            }
+        }
+
         private void Window_StateChanged(object sender, EventArgs e)
         {
             SaveState();
@@ -107,26 +121,9 @@ namespace EQTool
         protected override void OnClosing(CancelEventArgs e)
         {
             App.ThemeChangedEvent -= App_ThemeChangedEvent;
-            logParser.LineReadEvent -= LogParser_LineReadEvent;
+            logParser.PlayerLocationEvent -= LogParser_PlayerLocationEvent;
+            logParser.PlayerZonedEvent -= LogParser_PlayerZonedEvent;
             base.OnClosing(e);
-        }
-
-        private void LogParser_LineReadEvent(object sender, LogParser.LogParserEventArgs e)
-        {
-            var pos = locationParser.Match(e.Line);
-            if (pos.HasValue)
-            {
-                mapViewModel.UpdateLocation(pos.Value, Map);
-            }
-            else
-            {
-                var matched = ZoneParser.Match(e.Line);
-                matched = ZoneParser.TranslateToMapName(matched);
-                if (mapViewModel.LoadMap(matched, Map))
-                {
-                    Map.Reset();
-                }
-            }
         }
 
         public void DragWindow(object sender, MouseButtonEventArgs args)
