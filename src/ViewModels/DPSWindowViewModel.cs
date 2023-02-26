@@ -20,6 +20,7 @@ namespace EQTool.ViewModels
         {
             this.appDispatcher = appDispatcher;
             this.fightLogService = fightLogService;
+            Title = "Dps Meter v" + App.Version;
         }
 
         public ObservableCollection<EntittyDPS> _EntityList = new ObservableCollection<EntittyDPS>();
@@ -37,6 +38,18 @@ namespace EQTool.ViewModels
         {
             OnPropertyChanged(nameof(EntityList));
         }
+
+        private string _Title = null;
+        public string Title
+        {
+            get => _Title;
+            set
+            {
+                _Title = value;
+                OnPropertyChanged();
+            }
+        }
+
 
         private long? _LastReadOffset = null;
         public long? LastReadOffset

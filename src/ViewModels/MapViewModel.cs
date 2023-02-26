@@ -39,7 +39,7 @@ namespace EQTool.ViewModels
 
         public string Title
         {
-            get => _Title + $"   {Lastlocation.X:0.##}, {Lastlocation.Y:0.##}, {Lastlocation.Z:0.##}";
+            get => _Title + "  v" + App.Version + $"   {Lastlocation.X:0.##}, {Lastlocation.Y:0.##}, {Lastlocation.Z:0.##}";
             set
             {
                 _Title = value;

@@ -1,7 +1,4 @@
 ﻿using EQTool.Models;
-using Microsoft.AppCenter;
-using Microsoft.AppCenter.Analytics;
-using Microsoft.AppCenter.Crashes;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -164,14 +161,6 @@ namespace EQTool
                 App.Current.Shutdown();
                 return;
             }
-            var debugging = false;
-#if DEBUG
-            debugging = true;
-#endif
-            if (!debugging)
-            {
-                AppCenter.Start("9be42804-8d4f-4431-9120-06f3a0370c4c", typeof(Analytics), typeof(Crashes));
-            }
 
             httpclient.DefaultRequestHeaders.Add("User-Agent", "request");
             if (e.Args.Length == 1)
@@ -233,15 +222,21 @@ namespace EQTool
             public DateTime created_at { get; set; }
         }
 
-        public string Version
+        private static string _Version = string.Empty;
+        public static string Version
         {
             get
             {
+                if (!string.IsNullOrWhiteSpace(_Version))
+                {
+                    return _Version;
+                }
                 var v = Assembly.GetExecutingAssembly().GetName().Version.ToString();
 #if Beta
                 v = "Beta-" + v;
 #endif
-                return v;
+                _Version = v;
+                return _Version;
             }
         }
 

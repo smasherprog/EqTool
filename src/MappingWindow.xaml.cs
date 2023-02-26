@@ -30,6 +30,7 @@ namespace EQTool
             this.logParser = logParser;
             DataContext = this.mapViewModel = mapViewModel;
             Topmost = true;
+
             InitializeComponent();
             if (settings.MapWindowState != null && WindowBounds.isPointVisibleOnAScreen(settings.MapWindowState.WindowRect))
             {

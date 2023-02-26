@@ -26,6 +26,7 @@ namespace EQTool.ViewModels
             this.activePlayer = activePlayer;
             this.appDispatcher = appDispatcher;
             this.settings = settings;
+            Title = "Triggers v" + App.Version;
             FeignDeath = spells.AllSpells.FirstOrDefault(a => a.name == "Feign Death");
         }
 
@@ -39,6 +40,17 @@ namespace EQTool.ViewModels
             set
             {
                 _SpellList = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private string _Title = null;
+        public string Title
+        {
+            get => _Title;
+            set
+            {
+                _Title = value;
                 OnPropertyChanged();
             }
         }

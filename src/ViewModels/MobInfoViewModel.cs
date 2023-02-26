@@ -51,7 +51,7 @@ namespace EQTool.ViewModels
 
     public class MobInfoViewModel : INotifyPropertyChanged
     {
-        public string Title { get; set; } = "Mob Info";
+        public string Title { get; set; } = "Mob Info v" + App.Version;
         private string _Results = string.Empty;
 
         public string Results
