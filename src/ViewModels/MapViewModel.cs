@@ -84,7 +84,7 @@ namespace EQTool.ViewModels
                     }
                 }
                 MapOffset = map.Offset;
-                var linethickness = MathHelper.ChangeRange(Math.Max(map.AABB.MaxWidth, map.AABB.MaxHeight), 1000, 35000, 2, 10);
+                var linethickness = MathHelper.ChangeRange(Math.Max(map.AABB.MaxWidth, map.AABB.MaxHeight), 800, 35000, 2, 40);
                 canvas.Children.Clear();
                 foreach (var group in map.Lines)
                 {
@@ -112,6 +112,7 @@ namespace EQTool.ViewModels
                 canvas.Height = Math.Abs(map.AABB.MaxHeight);
                 canvas.Width = Math.Abs(map.AABB.MaxWidth);
                 Debug.WriteLine($"Labels: {map.Labels.Count}");
+                var labelscaling = MathHelper.ChangeRange(Math.Max(map.AABB.MaxWidth, map.AABB.MaxHeight), 500, 35000, 40, 200);
                 foreach (var item in map.Labels)
                 {
                     var colorstuff = colordic[item.Color];
@@ -125,7 +126,7 @@ namespace EQTool.ViewModels
                     {
                         Tag = d,
                         Text = item.label.Replace('_', ' '),
-                        Height = 50,
+                        Height = labelscaling,
                         Foreground = colorstuff.Item2,
                         RenderTransform = canvas.Transform
                     };
