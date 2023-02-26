@@ -1,6 +1,5 @@
 ﻿using EQTool.Models;
 using EQTool.Services;
-using EQTool.Services.Spells.Log;
 using EQTool.ViewModels;
 using System;
 using System.ComponentModel;
@@ -13,26 +12,22 @@ namespace EQTool
     public partial class SpellWindow : Window
     {
         private readonly System.Timers.Timer UITimer;
-
         private readonly SpellWindowViewModel spellWindowViewModel;
         private readonly LogParser logParser;
-        private readonly SpellLogParse spellLogParse;
-        private readonly LogDeathParse logDeathParse;
-        private readonly LogCustomTimer logCustomTimer;
         private readonly EQToolSettings settings;
         private readonly EQToolSettingsLoad toolSettingsLoad;
-        private readonly SpellWornOffLogParse spellWornOffLogParse;
 
-        public SpellWindow(SpellWornOffLogParse spellWornOffLogParse, EQToolSettings settings, SpellWindowViewModel spellWindowViewModel, LogParser logParser, SpellLogParse spellLogParse, LogDeathParse logDeathParse, LogCustomTimer logCustomTimer, EQToolSettingsLoad toolSettingsLoad)
+
+        public SpellWindow(EQToolSettings settings, SpellWindowViewModel spellWindowViewModel, LogParser logParser, EQToolSettingsLoad toolSettingsLoad)
         {
-            this.spellWornOffLogParse = spellWornOffLogParse;
             this.settings = settings;
-            this.logCustomTimer = logCustomTimer;
-            this.logDeathParse = logDeathParse;
             this.logParser = logParser;
-            this.logParser.LineReadEvent += LogParser_LineReadEvent;
+            this.logParser.SpellWornsOffEvent += LogParser_SpellWornsOffEvent;
+            this.logParser.StartCastingEvent += LogParser_StartCastingEvent;
+            this.logParser.DeadEvent += LogParser_DeadEvent;
+            this.logParser.StartTimerEvent += LogParser_StartTimerEvent;
+            this.logParser.CancelTimerEvent += LogParser_CancelTimerEvent;
             this.logParser.PlayerChangeEvent += LogParser_PlayerChangeEvent;
-            this.spellLogParse = spellLogParse;
             spellWindowViewModel.SpellList = new System.Collections.ObjectModel.ObservableCollection<UISpell>();
             DataContext = this.spellWindowViewModel = spellWindowViewModel;
             Topmost = settings.TriggerWindowTopMost;
@@ -68,6 +63,32 @@ namespace EQTool
             StateChanged += SpellWindow_StateChanged;
             LocationChanged += DPSMeter_LocationChanged;
         }
+
+        private void LogParser_SpellWornsOffEvent(object sender, LogParser.StartWornsOffEventArgs e)
+        {
+            spellWindowViewModel.TryRemoveUnambiguousSpell(e.SpellName);
+        }
+
+        private void LogParser_StartCastingEvent(object sender, LogParser.StartCastingEventArgs e)
+        {
+            spellWindowViewModel.TryAdd(e.Spell);
+        }
+
+        private void LogParser_DeadEvent(object sender, LogParser.DeadEventArgs e)
+        {
+            spellWindowViewModel.TryRemoveTarget(e.Name);
+        }
+
+        private void LogParser_CancelTimerEvent(object sender, LogParser.CancelTimerEventArgs e)
+        {
+            spellWindowViewModel.TryRemoveCustom(e.Name);
+        }
+
+        private void LogParser_StartTimerEvent(object sender, LogParser.StartTimerEventArgs e)
+        {
+            spellWindowViewModel.TryAddCustom(e.CustomerTimer);
+        }
+
         protected override void OnClosing(CancelEventArgs e)
         {
             UITimer.Stop();
@@ -75,7 +96,11 @@ namespace EQTool
             SizeChanged -= DPSMeter_SizeChanged;
             StateChanged -= SpellWindow_StateChanged;
             LocationChanged -= DPSMeter_LocationChanged;
-            logParser.LineReadEvent -= LogParser_LineReadEvent;
+            logParser.SpellWornsOffEvent -= LogParser_SpellWornsOffEvent;
+            logParser.StartCastingEvent -= LogParser_StartCastingEvent;
+            logParser.DeadEvent -= LogParser_DeadEvent;
+            logParser.StartTimerEvent -= LogParser_StartTimerEvent;
+            logParser.CancelTimerEvent -= LogParser_CancelTimerEvent;
             logParser.PlayerChangeEvent -= LogParser_PlayerChangeEvent;
             base.OnClosing(e);
         }
@@ -98,24 +123,6 @@ namespace EQTool
         private void LogParser_PlayerChangeEvent(object sender, LogParser.PlayerChangeEventArgs e)
         {
             spellWindowViewModel.ClearAllSpells();
-        }
-
-        private void LogParser_LineReadEvent(object sender, LogParser.LogParserEventArgs e)
-        {
-            var matched = spellLogParse.MatchSpell(e.Line);
-            spellWindowViewModel.TryAdd(matched);
-
-            var targettoremove = logDeathParse.GetDeadTarget(e.Line);
-            spellWindowViewModel.TryRemoveTarget(targettoremove);
-
-            var customtimer = logCustomTimer.GetStartTimer(e.Line);
-            spellWindowViewModel.TryAddCustom(customtimer);
-
-            var canceltimer = logCustomTimer.GetCancelTimer(e.Line);
-            spellWindowViewModel.TryRemoveCustom(canceltimer);
-
-            var spelltoremove = spellWornOffLogParse.MatchSpell(e.Line);
-            spellWindowViewModel.TryRemoveUnambiguousSpell(spelltoremove);
         }
 
         private void SaveState()

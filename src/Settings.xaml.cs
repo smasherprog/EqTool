@@ -293,7 +293,7 @@ namespace EQTool
                 var t = DateTime.Now;
                 var format = "ddd MMM dd HH:mm:ss yyyy";
                 var msg = "[" + t.ToString(format) + "] You have entered " + player.Zone;
-                logParser.Push(new LogParser.LogParserEventArgs { Line = msg });
+                logParser.Push(msg);
             }
         }
 
@@ -341,7 +341,7 @@ namespace EQTool
                                 var msgwithout = line.Substring(indexline);
                                 var format = "ddd MMM dd HH:mm:ss yyyy";
                                 msgwithout = "[" + t.ToString(format) + msgwithout;
-                                logParser.Push(new LogParser.LogParserEventArgs { Line = msgwithout });
+                                logParser.Push(msgwithout);
                             }
                         }
                         Thread.Sleep(100);
@@ -361,7 +361,7 @@ namespace EQTool
             var format = "ddd MMM dd HH:mm:ss yyyy";
             var d = DateTime.Now;
             var line = "[" + d.ToString(format) + "] greater war boned skeleton regards you indifferently -- You could probably win this fight.";
-            logParser.Push(new LogParser.LogParserEventArgs { Line = line });
+            logParser.Push(line);
         }
 
         private void textmapclicked(object sender, RoutedEventArgs e)
@@ -395,7 +395,7 @@ namespace EQTool
                 var format = "ddd MMM dd HH:mm:ss yyyy";
                 var d = DateTime.Now;
                 var line = "[" + d.ToString(format) + "]" + msg;
-                logParser.Push(new LogParser.LogParserEventArgs { Line = line });
+                logParser.Push(line);
                 Thread.Sleep(sleeptime);
             }
         }

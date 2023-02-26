@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Windows.Media;
@@ -147,15 +148,15 @@ namespace EQTool.Services
                         Points = new Point3D[] {
                              new Point3D
                              {
-                                 X = float.Parse(splits[0]),
-                                 Y = float.Parse(splits[1]),
-                                 Z = float.Parse(splits[2])
+                                 X = float.Parse(splits[0], CultureInfo.InvariantCulture),
+                                 Y = float.Parse(splits[1], CultureInfo.InvariantCulture),
+                                 Z = float.Parse(splits[2], CultureInfo.InvariantCulture)
                              },
                              new Point3D
                              {
-                                 X = float.Parse(splits[3]),
-                                 Y = float.Parse(splits[4]),
-                                 Z = float.Parse(splits[5])
+                                 X = float.Parse(splits[3], CultureInfo.InvariantCulture),
+                                 Y = float.Parse(splits[4], CultureInfo.InvariantCulture),
+                                 Z = float.Parse(splits[5], CultureInfo.InvariantCulture)
                              }
                          },
                         Color = Color.FromRgb(byte.Parse(splits[6]), byte.Parse(splits[7]), byte.Parse(splits[8]))
@@ -173,11 +174,11 @@ namespace EQTool.Services
                     {
                         Point = new Point3D
                         {
-                            X = float.Parse(splits[0]),
-                            Y = float.Parse(splits[1]),
-                            Z = float.Parse(splits[2])
+                            X = float.Parse(splits[0], CultureInfo.InvariantCulture),
+                            Y = float.Parse(splits[1], CultureInfo.InvariantCulture),
+                            Z = float.Parse(splits[2], CultureInfo.InvariantCulture)
                         },
-                        Color = Color.FromRgb(byte.Parse(splits[3]), byte.Parse(splits[4]), byte.Parse(splits[5])),
+                        Color = Color.FromRgb(byte.Parse(splits[3], CultureInfo.InvariantCulture), byte.Parse(splits[4], CultureInfo.InvariantCulture), byte.Parse(splits[5], CultureInfo.InvariantCulture)),
                         label = splits[7]
                     });
                 }

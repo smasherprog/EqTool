@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System.Globalization;
+using System.Linq;
 using System.Windows.Media.Media3D;
 
 namespace EQTool.Services.Map
@@ -20,7 +21,7 @@ namespace EQTool.Services.Map
                 var pos = message.Replace(YourLocationis, string.Empty)
                     .Trim()
                     .Split(',')
-                    .Select(s => float.Parse(s.Trim()))
+                    .Select(s => float.Parse(s.Trim(), CultureInfo.InvariantCulture))
                     .ToList();
                 var ret = new Point3D { X = pos[0], Y = pos[1], Z = pos[2] };
                 //Debug.WriteLine($"Pos x={ret.X}, y={ret.Y}, z={ret.Z}");

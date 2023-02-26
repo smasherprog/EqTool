@@ -136,16 +136,22 @@ namespace EQTool.ViewModels
                         SourceName = entity.SourceName,
                         TargetName = entity.TargetName,
                         StartTime = entity.TimeStamp,
-                        TotalDamage = entity.DamageDone
+                        TotalDamage = entity.DamageDone,
+                        TotalTwelveSecondDamage = entity.DamageDone,
+                        TrailingDamage = entity.DamageDone,
+                        HighestHit = entity.DamageDone
                     };
                     EntityList.Add(item);
                 }
-                Debug.WriteLine($"{entity.TargetName} {entity.DamageDone}");
-                item.AddDamage(new EntittyDPS.DamagePerTime
+                else
                 {
-                    TimeStamp = entity.TimeStamp,
-                    Damage = entity.DamageDone
-                });
+                    Debug.WriteLine($"{entity.TargetName} {entity.DamageDone}");
+                    item.AddDamage(new EntittyDPS.DamagePerTime
+                    {
+                        TimeStamp = entity.TimeStamp,
+                        Damage = entity.DamageDone
+                    });
+                }
             });
         }
 

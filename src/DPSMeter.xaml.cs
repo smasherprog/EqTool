@@ -1,6 +1,5 @@
 ﻿using EQTool.Models;
 using EQTool.Services;
-using EQTool.Services.Spells.Log;
 using EQTool.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -21,18 +20,15 @@ namespace EQTool
         private readonly System.Timers.Timer UITimer;
         private readonly LogParser logParser;
         private readonly DPSWindowViewModel dPSWindowViewModel;
-        private readonly DPSLogParse dPSLogParse;
-        private readonly LogDeathParse logDeathParse;
         private readonly EQToolSettings settings;
         private readonly EQToolSettingsLoad toolSettingsLoad;
 
-        public DPSMeter(DPSLogParse dPSLogParse, LogParser logParser, DPSWindowViewModel dPSWindowViewModel, EQToolSettings settings, LogDeathParse logDeathParse, EQToolSettingsLoad toolSettingsLoad)
+        public DPSMeter(LogParser logParser, DPSWindowViewModel dPSWindowViewModel, EQToolSettings settings, EQToolSettingsLoad toolSettingsLoad)
         {
             this.settings = settings;
-            this.logDeathParse = logDeathParse;
-            this.dPSLogParse = dPSLogParse;
             this.logParser = logParser;
-            this.logParser.LineReadEvent += LogParser_LineReadEvent;
+            this.logParser.FightHitEvent += LogParser_FightHitEvent;
+            this.logParser.DeadEvent += LogParser_DeadEvent;
             this.dPSWindowViewModel = dPSWindowViewModel;
             this.dPSWindowViewModel.EntityList = new System.Collections.ObjectModel.ObservableCollection<EntittyDPS>();
             DataContext = dPSWindowViewModel;
@@ -71,6 +67,16 @@ namespace EQTool
             LocationChanged += DPSMeter_LocationChanged;
         }
 
+        private void LogParser_FightHitEvent(object sender, LogParser.FightHitEventArgs e)
+        {
+            dPSWindowViewModel.TryAdd(e.HitInformation);
+        }
+
+        private void LogParser_DeadEvent(object sender, LogParser.DeadEventArgs e)
+        {
+            dPSWindowViewModel.TargetDied(e.Name);
+        }
+
         protected override void OnClosing(CancelEventArgs e)
         {
             UITimer.Stop();
@@ -78,7 +84,8 @@ namespace EQTool
             SizeChanged -= DPSMeter_SizeChanged;
             StateChanged -= SpellWindow_StateChanged;
             LocationChanged -= DPSMeter_LocationChanged;
-            logParser.LineReadEvent -= LogParser_LineReadEvent;
+            logParser.DeadEvent -= LogParser_DeadEvent;
+            logParser.FightHitEvent -= LogParser_FightHitEvent;
             base.OnClosing(e);
         }
 
@@ -95,14 +102,6 @@ namespace EQTool
         private void DPSMeter_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             SaveState();
-        }
-
-        private void LogParser_LineReadEvent(object sender, LogParser.LogParserEventArgs e)
-        {
-            var matched = dPSLogParse.Match(e.Line);
-            dPSWindowViewModel.TryAdd(matched);
-            var targetdead = logDeathParse.GetDeadTarget(e.Line);
-            dPSWindowViewModel.TargetDied(targetdead);
         }
 
         private void SaveState()

@@ -7,6 +7,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Timers;
 using System.Windows.Media.Media3D;
+using static EQTool.Services.Spells.Log.LogCustomTimer;
 
 namespace EQTool.Services
 {
@@ -21,9 +22,34 @@ namespace EQTool.Services
         private readonly EQToolSettingsLoad toolSettingsLoad;
         private readonly LocationParser locationParser;
         private readonly ZoneViewModel zoneViewModel;
+        private readonly DPSLogParse dPSLogParse;
+        private readonly LogDeathParse logDeathParse;
+        private readonly ConLogParse conLogParse;
+        private readonly LogCustomTimer logCustomTimer;
+        private readonly SpellLogParse spellLogParse;
+        private readonly SpellWornOffLogParse spellWornOffLogParse;
 
-        public LogParser(ZoneViewModel zoneViewModel, LocationParser locationParser, EQToolSettingsLoad toolSettingsLoad, ActivePlayer activePlayer, IAppDispatcher appDispatcher, EQToolSettings settings, LevelLogParse levelLogParse)
+        public LogParser(
+            SpellWornOffLogParse spellWornOffLogParse,
+            SpellLogParse spellLogParse,
+            LogCustomTimer logCustomTimer,
+            ConLogParse conLogParse,
+            LogDeathParse logDeathParse,
+            DPSLogParse dPSLogParse,
+            ZoneViewModel zoneViewModel,
+            LocationParser locationParser,
+            EQToolSettingsLoad toolSettingsLoad,
+            ActivePlayer activePlayer,
+            IAppDispatcher appDispatcher,
+            EQToolSettings settings,
+            LevelLogParse levelLogParse)
         {
+            this.spellWornOffLogParse = spellWornOffLogParse;
+            this.spellLogParse = spellLogParse;
+            this.logCustomTimer = logCustomTimer;
+            this.conLogParse = conLogParse;
+            this.logDeathParse = logDeathParse;
+            this.dPSLogParse = dPSLogParse;
             this.zoneViewModel = zoneViewModel;
             this.locationParser = locationParser;
             this.toolSettingsLoad = toolSettingsLoad;
@@ -36,10 +62,6 @@ namespace EQTool.Services
             UITimer.Enabled = true;
         }
 
-        public class LogParserEventArgs : EventArgs
-        {
-            public string Line { get; set; }
-        }
         public class PlayerChangeEventArgs : EventArgs
         {
         }
@@ -52,8 +74,53 @@ namespace EQTool.Services
         {
             public Point3D Location { get; set; }
         }
+        public class FightHitEventArgs : EventArgs
+        {
+            public DPSParseMatch HitInformation { get; set; }
+        }
+        public class DeadEventArgs : EventArgs
+        {
+            public string Name { get; set; }
+        }
 
-        public event EventHandler<LogParserEventArgs> LineReadEvent;
+        public class ConEventArgs : EventArgs
+        {
+            public string Name { get; set; }
+        }
+
+        public class StartTimerEventArgs : EventArgs
+        {
+            public CustomerTimer CustomerTimer { get; set; }
+        }
+
+        public class CancelTimerEventArgs : EventArgs
+        {
+            public string Name { get; set; }
+        }
+
+        public class StartCastingEventArgs : EventArgs
+        {
+            public SpellParsingMatch Spell { get; set; }
+        }
+
+        public class StartWornsOffEventArgs : EventArgs
+        {
+            public string SpellName { get; set; }
+        }
+
+        public event EventHandler<StartWornsOffEventArgs> SpellWornsOffEvent;
+
+        public event EventHandler<StartCastingEventArgs> StartCastingEvent;
+
+        public event EventHandler<CancelTimerEventArgs> CancelTimerEvent;
+
+        public event EventHandler<StartTimerEventArgs> StartTimerEvent;
+
+        public event EventHandler<ConEventArgs> ConEvent;
+
+        public event EventHandler<DeadEventArgs> DeadEvent;
+
+        public event EventHandler<FightHitEventArgs> FightHitEvent;
 
         public event EventHandler<PlayerChangeEventArgs> PlayerChangeEvent;
 
@@ -62,11 +129,11 @@ namespace EQTool.Services
         public event EventHandler<PlayerLocationEventArgs> PlayerLocationEvent;
 
 
-        public void Push(LogParserEventArgs log)
+        public void Push(string log)
         {
             appDispatcher.DispatchUI(() =>
             {
-                MainRun(log.Line);
+                MainRun(log);
             });
         }
 
@@ -76,6 +143,48 @@ namespace EQTool.Services
             if (pos.HasValue)
             {
                 PlayerLocationEvent?.Invoke(this, new PlayerLocationEventArgs { Location = pos.Value });
+            }
+
+            var matched = dPSLogParse.Match(line);
+            if (matched != null)
+            {
+                FightHitEvent?.Invoke(this, new FightHitEventArgs { HitInformation = matched });
+            }
+
+            var name = logDeathParse.GetDeadTarget(line);
+            if (!string.IsNullOrWhiteSpace(name))
+            {
+                DeadEvent?.Invoke(this, new DeadEventArgs { Name = name });
+            }
+
+            name = conLogParse.ConMatch(line);
+            if (!string.IsNullOrWhiteSpace(name))
+            {
+                ConEvent?.Invoke(this, new ConEventArgs { Name = name });
+            }
+
+            var customtimer = logCustomTimer.GetStartTimer(line);
+            if (customtimer != null)
+            {
+                StartTimerEvent?.Invoke(this, new StartTimerEventArgs { CustomerTimer = customtimer });
+            }
+
+            name = logCustomTimer.GetCancelTimer(line);
+            if (!string.IsNullOrWhiteSpace(name))
+            {
+                CancelTimerEvent?.Invoke(this, new CancelTimerEventArgs { Name = name });
+            }
+
+            var matchedspell = spellLogParse.MatchSpell(line);
+            if (matchedspell != null)
+            {
+                StartCastingEvent?.Invoke(this, new StartCastingEventArgs { Spell = matchedspell });
+            }
+
+            name = spellWornOffLogParse.MatchSpell(line);
+            if (!string.IsNullOrWhiteSpace(name))
+            {
+                SpellWornsOffEvent?.Invoke(this, new StartWornsOffEventArgs { SpellName = name });
             }
 
             levelLogParse.MatchLevel(line);
@@ -93,7 +202,7 @@ namespace EQTool.Services
             }
             if (line.Length > 27)
             {
-                LineReadEvent?.Invoke(this, new LogParserEventArgs { Line = line });
+                // LineReadEvent?.Invoke(this, new LogParserEventArgs { Line = line });
             }
         }
 

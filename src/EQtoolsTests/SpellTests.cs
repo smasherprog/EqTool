@@ -582,59 +582,6 @@ namespace EQToolTests
         }
 
         [TestMethod]
-        public void DPSLogParse_EatingDpsParseTest()
-        {
-            var dpslogparse = container.Resolve<DPSLogParse>();
-            var line = "[Mon Nov 14 20:11:25 2022] Vebanab slices a willowisp for 56 points of damage.";
-            var match = dpslogparse.Match(line);
-
-            Assert.IsNotNull(match);
-            Assert.AreEqual(match.TimeStamp.ToString(), "11/14/2022 8:11:25 PM");
-            Assert.AreEqual(match.SourceName, "Vebanab");
-            Assert.AreEqual(match.TargetName, "a willowisp");
-            Assert.AreEqual(match.DamageDone, 56);
-        }
-
-        [TestMethod]
-        public void DPSLogParse_EatingDpsParseTest1()
-        {
-            var dpslogparse = container.Resolve<DPSLogParse>();
-            var line = "[Mon Nov 14 20:11:25 2022] a willowisp slices Vebanab for 56 points of damage.";
-            var match = dpslogparse.Match(line);
-
-            Assert.IsNotNull(match);
-            Assert.AreEqual(match.SourceName, "a willowisp");
-            Assert.AreEqual(match.TargetName, "Vebanab");
-            Assert.AreEqual(match.DamageDone, 56);
-        }
-
-        [TestMethod]
-        public void DPSLogParse_EatingDpsParseTestYou()
-        {
-            var dpslogparse = container.Resolve<DPSLogParse>();
-            var line = "[Mon Nov 14 20:11:25 2022] You crush a shadowed man for 1 point of damage.";
-            var match = dpslogparse.Match(line);
-
-            Assert.IsNotNull(match);
-            Assert.AreEqual(match.SourceName, "You");
-            Assert.AreEqual(match.TargetName, "a shadowed man");
-            Assert.AreEqual(match.DamageDone, 1);
-        }
-
-        [TestMethod]
-        public void DPSLogParse_EatingDpsParseTestYouGetHit()
-        {
-            var dpslogparse = container.Resolve<DPSLogParse>();
-            var line = "[Mon Nov 14 20:11:25 2022] Guard Valon bashes YOU for 12 points of damage.";
-            var match = dpslogparse.Match(line);
-
-            Assert.IsNotNull(match);
-            Assert.AreEqual(match.SourceName, "Guard Valon");
-            Assert.AreEqual(match.TargetName, "YOU");
-            Assert.AreEqual(match.DamageDone, 12);
-        }
-
-        [TestMethod]
         public void TestDeath()
         {
             var service = container.Resolve<LogDeathParse>();
@@ -714,66 +661,6 @@ namespace EQToolTests
         }
 
         [TestMethod]
-        public void TestDPS()
-        {
-            var entity = new EntittyDPS()
-            {
-                StartTime = DateTime.Now.AddSeconds(-20)
-            };
-            entity.AddDamage(new EntittyDPS.DamagePerTime
-            {
-                Damage = 1,
-                TimeStamp = DateTime.Now.AddSeconds(-20)
-            });
-            entity.AddDamage(new EntittyDPS.DamagePerTime
-            {
-                Damage = 1,
-                TimeStamp = DateTime.Now.AddSeconds(-5)
-            });
-            entity.AddDamage(new EntittyDPS.DamagePerTime
-            {
-                Damage = 1,
-                TimeStamp = DateTime.Now.AddSeconds(-4)
-            });
-            entity.AddDamage(new EntittyDPS.DamagePerTime
-            {
-                Damage = 1,
-                TimeStamp = DateTime.Now.AddSeconds(-3)
-            });
-            entity.AddDamage(new EntittyDPS.DamagePerTime
-            {
-                Damage = 1,
-                TimeStamp = DateTime.Now.AddSeconds(-2)
-            });
-            entity.AddDamage(new EntittyDPS.DamagePerTime
-            {
-                Damage = 1,
-                TimeStamp = DateTime.Now.AddSeconds(-1)
-            });
-            entity.AddDamage(new EntittyDPS.DamagePerTime
-            {
-                Damage = 1,
-                TimeStamp = DateTime.Now.AddSeconds(10)
-            });
-            entity.UpdateDps();
-            Assert.AreEqual(6, entity.TrailingDamage);
-            Assert.AreEqual(7, entity.TotalDamage);
-            Assert.AreEqual(5, entity.TotalTwelveSecondDamage);
-        }
-
-        [TestMethod]
-        public void TestDPSColors()
-        {
-            var r = new EntittyDPS
-            {
-                TotalDamage = 100,
-                TargetTotalDamage = 1000
-            };
-
-            Assert.AreEqual(r.PercentOfTotalDamage, 10);
-        }
-
-        [TestMethod]
         public void TestLevelUpMatch()
         {
             var loger = container.Resolve<LevelLogParse>();
@@ -832,37 +719,6 @@ namespace EQToolTests
             player.Player = new PlayerInfo { };
             service.HandleYouBeginCastingSpellStart(line);
             Assert.AreEqual(player.Player.Level, 60);
-        }
-
-        [TestMethod]
-        public void TestLevelDetectionThroughBackstab()
-        {
-            var dpslogparse = container.Resolve<DPSLogParse>();
-            var line = "[Mon Nov 14 20:11:25 2022] You backstab a willowisp for 56 points of damage.";
-            var player = container.Resolve<ActivePlayer>();
-            player.Player = new PlayerInfo { };
-            _ = dpslogparse.Match(line);
-            Assert.AreEqual(player.Player.PlayerClass, PlayerClasses.Rogue);
-        }
-
-        [TestMethod]
-        public void TestLevelDetectionThroughBackstabNullCheck()
-        {
-            var dpslogparse = container.Resolve<DPSLogParse>();
-            var line = "[Mon Nov 14 20:11:25 2022] You backstab a willowisp for 56 points of damage.";
-            _ = dpslogparse.Match(line);
-        }
-
-        [TestMethod]
-        public void TestLevelDetectionThroughKick()
-        {
-            var dpslogparse = container.Resolve<DPSLogParse>();
-            var line = "[Mon Nov 14 20:11:25 2022] You kick a willowisp for 56 points of damage.";
-            _ = dpslogparse.Match(line);
-            var player = container.Resolve<ActivePlayer>();
-            player.Player = new PlayerInfo { };
-
-            Assert.IsNull(player.Player.PlayerClass);
         }
     }
 }

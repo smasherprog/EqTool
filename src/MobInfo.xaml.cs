@@ -1,6 +1,5 @@
 ﻿using EQTool.Models;
 using EQTool.Services;
-using EQTool.Services.Spells.Log;
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -16,20 +15,18 @@ namespace EQTool
     public partial class MobInfo : Window
     {
         private readonly LogParser logParser;
-        private readonly ConLogParse conLogParse;
         private readonly ViewModels.MobInfoViewModel mobInfoViewModel;
         private readonly EQToolSettings settings;
         private readonly EQToolSettingsLoad toolSettingsLoad;
         private readonly WikiApi wikiApi;
 
-        public MobInfo(WikiApi wikiApi, LogParser logParser, ConLogParse conLogParse, EQToolSettings settings, EQToolSettingsLoad toolSettingsLoad)
+        public MobInfo(WikiApi wikiApi, LogParser logParser, EQToolSettings settings, EQToolSettingsLoad toolSettingsLoad)
         {
             this.wikiApi = wikiApi;
             this.settings = settings;
             this.toolSettingsLoad = toolSettingsLoad;
             this.logParser = logParser;
-            this.conLogParse = conLogParse;
-            this.logParser.LineReadEvent += LogParser_LineReadEvent;
+            this.logParser.ConEvent += LogParser_ConEvent;
             DataContext = mobInfoViewModel = new ViewModels.MobInfoViewModel();
             Topmost = true;
             if (settings.MobWindowState != null && WindowBounds.isPointVisibleOnAScreen(settings.MobWindowState.WindowRect))
@@ -51,9 +48,21 @@ namespace EQTool
             LocationChanged += DPSMeter_LocationChanged;
         }
 
+        private void LogParser_ConEvent(object sender, LogParser.ConEventArgs e)
+        {
+            try
+            {
+                mobInfoViewModel.Results = wikiApi.GetData(e.Name);
+            }
+            catch (Exception ex)
+            {
+                mobInfoViewModel.ErrorResults = ex.Message;
+            }
+        }
+
         protected override void OnClosing(CancelEventArgs e)
         {
-            logParser.LineReadEvent -= LogParser_LineReadEvent;
+            logParser.ConEvent -= LogParser_ConEvent;
             SizeChanged -= DPSMeter_SizeChanged;
             StateChanged -= SpellWindow_StateChanged;
             LocationChanged -= DPSMeter_LocationChanged;
@@ -89,21 +98,6 @@ namespace EQTool
             };
             settings.MobWindowState.State = WindowState;
             toolSettingsLoad.Save(settings);
-        }
-        private void LogParser_LineReadEvent(object sender, LogParser.LogParserEventArgs e)
-        {
-            var matched = conLogParse.ConMatch(e.Line);
-            if (!string.IsNullOrWhiteSpace(matched))
-            {
-                try
-                {
-                    mobInfoViewModel.Results = wikiApi.GetData(matched);
-                }
-                catch (Exception ex)
-                {
-                    mobInfoViewModel.ErrorResults = ex.Message;
-                }
-            }
         }
 
         private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
