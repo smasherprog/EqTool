@@ -43,6 +43,7 @@ Features:
 
 <h4>TO DO List</h4>
 <ul>
+<li>Remove spells from self using the worn off messages.</li>
 <li>Self update when NOT in use</li>
 <li>Raid Group suggestions for guild: AOE; CH Chain; AOE+Ch Chain; Other</li>
 <li>Better track players levels and classes</li>
