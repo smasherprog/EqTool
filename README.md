@@ -59,6 +59,7 @@ Features:
 <li>Always on top toggle for each window</li>
 <li>Add Transparency setting for Map window</li>
 <li>Map window add toggle to follow location</li>
+<li>Map window make it possible to go entierly transparent!</li>  
 <liMake settings window and Mob window remember last position/size/state</li>
 <li>Add loot TAB to Mob Window. This tab will show item name, looted from, player name who looted, and unix geek price data, running total looted.</li>
 <ul>
