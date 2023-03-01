@@ -20,8 +20,7 @@ Features:
 <li>Filter spells show by class</li> 
 <li>Remove Spells from List if "Worn off message occurs"</li> 
 <li>Mob Info Window gives details about mobs tht you con in game.</li>
-<li>Automatically remove dead npc/player from the spell list.</li>
-<li>DPS window. Saves fight data to a CSV so you can review later!</li>
+<li>Automatically remove dead npc/player from the spell list.</li> 
 <li>Auto detect level and class!</li>
 <li>DPS is trailing 12 second average.</li>
 <li>Maps</li>
