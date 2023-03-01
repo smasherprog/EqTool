@@ -97,3 +97,9 @@ Features:
 <li>I set up my movement keys 'a' and 'd' to activate my hotbar 1 macro which has a /loc in it.</li> 
 </ul>
 
+<h4>How do i get the latest update?</h4> 
+<ul>
+<li>Goto the system tray, click the pig icon and goto check for updates.</li> 
+<li>Updates are checked for every timee the application starts as well.</li> 
+<li>If an update is available it will download and start the new version. The old version will be deleted.</li> 
+</ul>
