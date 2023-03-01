@@ -103,3 +103,8 @@ Features:
 <li>Updates are checked for every timee the application starts as well.</li> 
 <li>If an update is available it will download and start the new version. The old version will be deleted.</li> 
 </ul>
+
+<h4>Why do the spell effect still show for dead npcs?</h4> 
+<ul>
+<li>This program reads your log file. So, if you were too far away to see the 'slain' message, then there is no way for EQTool to know the npc is dead.</li> 
+</ul>
