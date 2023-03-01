@@ -107,3 +107,8 @@ Features:
 <ul>
 <li>This program reads your log file. So, if you were too far away to see the 'slain' message, then there is no way for EQTool to know the npc is dead.</li> 
 </ul>
+
+<h4>Why do the see spell effects for others even though I checked the box 'Only show spells that effect you?'</h4> 
+<ul>
+<li>EQTool will ALWAYS show detrimental spell effects on everyone. The reason is that EQTool CANNOT tell the difference between an NPC and a PC. This means that in order to show spell effects on NPC, like slow/tash, etc, i must show ALL detrimental spell effects on all NPS/PC alike.</li> 
+</ul>
