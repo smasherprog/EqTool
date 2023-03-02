@@ -86,7 +86,7 @@ Features:
 
 <h4>I only want to see cleric buffs; there are too many buffs to see!</h4> 
 <ul>
-<li>Great, goto settings and make sure that cleric is the only class selected in the "Other Soells" section.</li> 
+<li>Great, goto settings and make sure that cleric is the only class selected in the "Other Spells" section.</li> 
 </ul>
 
 <h4>I have everything working, but i dont see my location on the map, why?</h4> 
