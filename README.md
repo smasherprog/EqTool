@@ -40,6 +40,7 @@ Features:
 
 <h4>TO DO List</h4>
 <ul>
+<li>Add Related Quests to Mob info.</li>
 <li>Enable EQ logging automatically if EQ is not running.</li>
 <li>Add option to auto prune eq log file. EQ logfiles can cause issues with EQ itself if they get too large!</li>
 <li>Self update when NOT in use</li>
