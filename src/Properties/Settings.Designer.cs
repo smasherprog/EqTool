@@ -70,5 +70,17 @@ namespace EQTool.Properties {
                 this["GlobalDPSWindowOpacity"] = value;
             }
         }
+        
+        [global::System.Configuration.UserScopedSettingAttribute()]
+        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
+        [global::System.Configuration.DefaultSettingValueAttribute("1")]
+        public double GlobalMapWindowOpacity {
+            get {
+                return ((double)(this["GlobalMapWindowOpacity"]));
+            }
+            set {
+                this["GlobalMapWindowOpacity"] = value;
+            }
+        }
     }
 }

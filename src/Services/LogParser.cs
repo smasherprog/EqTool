@@ -3,17 +3,17 @@ using EQTool.Services.Map;
 using EQTool.Services.Spells.Log;
 using EQTool.ViewModels;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Timers;
+using System.Linq;
 using System.Windows.Media.Media3D;
-using static EQTool.Services.Spells.Log.LogCustomTimer;
 
 namespace EQTool.Services
 {
     public class LogParser : IDisposable
     {
-        private Timer UITimer;
+        private System.Timers.Timer UITimer;
         private readonly ActivePlayer activePlayer;
         private readonly IAppDispatcher appDispatcher;
         private long? LastReadOffset = null;
@@ -90,7 +90,7 @@ namespace EQTool.Services
 
         public class StartTimerEventArgs : EventArgs
         {
-            public CustomerTimer CustomerTimer { get; set; }
+            public LogCustomTimer.CustomerTimer CustomerTimer { get; set; }
         }
 
         public class CancelTimerEventArgs : EventArgs
@@ -103,12 +103,19 @@ namespace EQTool.Services
             public SpellParsingMatch Spell { get; set; }
         }
 
-        public class StartWornsOffEventArgs : EventArgs
+        public class SpellWornOffOtherEventArgs : EventArgs
         {
             public string SpellName { get; set; }
         }
 
-        public event EventHandler<StartWornsOffEventArgs> SpellWornsOffEvent;
+        public class SpellWornOffSelfEventArgs : EventArgs
+        {
+            public List<string> SpellNames { get; set; }
+        }
+
+        public event EventHandler<SpellWornOffSelfEventArgs> SpellWornOffSelfEvent;
+
+        public event EventHandler<SpellWornOffOtherEventArgs> SpellWornOtherOffEvent;
 
         public event EventHandler<StartCastingEventArgs> StartCastingEvent;
 
@@ -137,58 +144,77 @@ namespace EQTool.Services
             });
         }
 
-        private void MainRun(string line)
+        private void MainRun(string line1)
         {
-            var pos = locationParser.Match(line);
+            if (line1 == null || line1.Length < 27)
+            {
+                return;
+            }
+
+            var date = line1.Substring(1, 24);
+            var message = line1.Substring(27).Trim();
+            var pos = locationParser.Match(message);
             if (pos.HasValue)
             {
                 PlayerLocationEvent?.Invoke(this, new PlayerLocationEventArgs { Location = pos.Value });
             }
 
-            var matched = dPSLogParse.Match(line);
+            var matched = dPSLogParse.Match(message, date);
             if (matched != null)
             {
                 FightHitEvent?.Invoke(this, new FightHitEventArgs { HitInformation = matched });
             }
 
-            var name = logDeathParse.GetDeadTarget(line);
+            var name = logDeathParse.GetDeadTarget(message);
             if (!string.IsNullOrWhiteSpace(name))
             {
                 DeadEvent?.Invoke(this, new DeadEventArgs { Name = name });
             }
 
-            name = conLogParse.ConMatch(line);
+            name = conLogParse.ConMatch(message);
             if (!string.IsNullOrWhiteSpace(name))
             {
                 ConEvent?.Invoke(this, new ConEventArgs { Name = name });
             }
 
-            var customtimer = logCustomTimer.GetStartTimer(line);
+            var customtimer = logCustomTimer.GetStartTimer(message);
             if (customtimer != null)
             {
                 StartTimerEvent?.Invoke(this, new StartTimerEventArgs { CustomerTimer = customtimer });
             }
 
-            name = logCustomTimer.GetCancelTimer(line);
+            name = logCustomTimer.GetCancelTimer(message);
             if (!string.IsNullOrWhiteSpace(name))
             {
                 CancelTimerEvent?.Invoke(this, new CancelTimerEventArgs { Name = name });
             }
 
-            var matchedspell = spellLogParse.MatchSpell(line);
+            var matchedspell = spellLogParse.MatchSpell(message);
             if (matchedspell != null)
             {
                 StartCastingEvent?.Invoke(this, new StartCastingEventArgs { Spell = matchedspell });
             }
 
-            name = spellWornOffLogParse.MatchSpell(line);
+            name = spellWornOffLogParse.MatchWornOffOtherSpell(message);
             if (!string.IsNullOrWhiteSpace(name))
             {
-                SpellWornsOffEvent?.Invoke(this, new StartWornsOffEventArgs { SpellName = name });
+                Debug.WriteLine($"MatchWornOffOtherSpell {name}");
+                SpellWornOtherOffEvent?.Invoke(this, new SpellWornOffOtherEventArgs { SpellName = name });
             }
 
-            levelLogParse.MatchLevel(line);
-            var matchedzone = ZoneParser.Match(line);
+            var spells = spellWornOffLogParse.MatchWornOffSelfSpell(message);
+            if (spells.Any())
+            {
+                foreach (var item in spells)
+                {
+                    Debug.WriteLine($"MatchWornOffSelfSpell {item}");
+                }
+
+                SpellWornOffSelfEvent?.Invoke(this, new SpellWornOffSelfEventArgs { SpellNames = spells });
+            }
+
+            levelLogParse.MatchLevel(message);
+            var matchedzone = ZoneParser.Match(message);
             if (!string.IsNullOrWhiteSpace(matchedzone))
             {
                 var p = activePlayer.Player;
@@ -199,10 +225,6 @@ namespace EQTool.Services
                     toolSettingsLoad.Save(settings);
                 }
                 PlayerZonedEvent?.Invoke(this, new PlayerZonedEventArgs { Zone = matchedzone });
-            }
-            if (line.Length > 27)
-            {
-                // LineReadEvent?.Invoke(this, new LogParserEventArgs { Line = line });
             }
         }
 

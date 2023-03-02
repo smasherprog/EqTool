@@ -3,8 +3,7 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:EQTool"  
-        xmlns:localmodels="clr-namespace:EQTool.Models"
+        xmlns:properties="clr-namespace:EQTool.Properties"
         Style="{StaticResource MySettingsWindowSyle}"
         mc:Ignorable="d"
         Title="Settings" Height="600" Width="400">
@@ -13,7 +12,7 @@
     </Window.Resources>
     <ScrollViewer  HorizontalScrollBarVisibility="Auto">
 
-        <StackPanel Orientation="Vertical"> 
+        <StackPanel Orientation="Vertical">
             <StackPanel Orientation="Vertical" Visibility="{Binding MissingConfiguration, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}">
                 <TextBlock Text="Configuration missing!" FontWeight="Bold" FontSize="20" Foreground="Red"/>
                 <TextBlock Text="Select your EQ path, and make sure logging is enabled!" FontWeight="Bold" FontSize="14" />
@@ -44,7 +43,7 @@
             <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" Visibility="{Binding NotMissingConfiguration, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Visible}">
                 <TextBlock Visibility="{Binding HasNoCharName}" HorizontalAlignment="Center" Text="Functionality disabled until you log in!"  FontWeight="Bold" Foreground="Red"/>
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Character" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/> 
+                    <TextBlock Text="Character" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
                     <TextBlock Text="{Binding ActivePlayer.Player.Name}" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
@@ -66,11 +65,15 @@
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="DPS Opacity"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
-                    <Slider  Value="{DynamicResource GlobalDPSWindowOpacity}" Minimum="0" Maximum="1" SmallChange=".1" TickFrequency=".1" ValueChanged="GlobalDPSWindowOpacityValueChanged" MinWidth="150"/>
+                    <Slider Value="{Binding Source={x:Static properties:Settings.Default}, Path=GlobalDPSWindowOpacity}" Minimum="0" Maximum="1" SmallChange=".1" TickFrequency=".1" ValueChanged="SaleSettings" MinWidth="150"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Spell Opacity"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
-                    <Slider  Value="{DynamicResource GlobalTriggerWindowOpacity}" Minimum="0" Maximum="1" SmallChange=".1" TickFrequency=".1" ValueChanged="GlobalTriggerWindowOpacityValueChanged" MinWidth="150"/>
+                    <Slider Value="{Binding Source={x:Static properties:Settings.Default}, Path=GlobalTriggerWindowOpacity}"  Minimum="0" Maximum="1" SmallChange=".1" TickFrequency=".1" ValueChanged="SaleSettings" MinWidth="150"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Map Opacity"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
+                    <Slider  Value="{Binding Source={x:Static properties:Settings.Default}, Path=GlobalMapWindowOpacity}" Minimum="0" Maximum="1" SmallChange=".1" TickFrequency=".1" ValueChanged="SaleSettings" MinWidth="150"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal"  HorizontalAlignment="Center">
                     <TextBlock Text="Spell Window" FontWeight="Bold" Margin="5,5,0,0" />
@@ -85,7 +88,7 @@
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Other spells"  FontWeight="Bold" MinWidth="100" ToolTip="This will filter what shows up on other players."/>
-                    <StackPanel Orientation="Vertical"> 
+                    <StackPanel Orientation="Vertical">
                         <ListBox IsEnabled="{Binding HasCharName}"
                              Name="spellbyclassselection" 
                              SelectionMode="Multiple" 

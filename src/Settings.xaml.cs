@@ -91,8 +91,6 @@ namespace EQTool
         private void SaveConfig()
         {
             settings.FontSize = Properties.Settings.Default.GlobalFontSize;
-            settings.GlobalTriggerWindowOpacity = Properties.Settings.Default.GlobalTriggerWindowOpacity;
-            settings.GlobalDPSWindowOpacity = Properties.Settings.Default.GlobalDPSWindowOpacity;
             toolSettingsLoad.Save(settings);
             Properties.Settings.Default.Save();
         }
@@ -204,13 +202,9 @@ namespace EQTool
             TryCheckLoggingEnabled();
         }
 
-        private void GlobalTriggerWindowOpacityValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        private void SaleSettings(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            settings.GlobalTriggerWindowOpacity = Properties.Settings.Default.GlobalTriggerWindowOpacity = (sender as Slider).Value;
-        }
-        private void GlobalDPSWindowOpacityValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            settings.GlobalDPSWindowOpacity = Properties.Settings.Default.GlobalDPSWindowOpacity = (sender as Slider).Value;
+            Properties.Settings.Default.Save();
         }
 
         private void YouSpells_Checked(object sender, RoutedEventArgs e)
@@ -314,7 +308,14 @@ namespace EQTool
                     var fightlist = new List<KeyValuePair<string, DPSParseMatch>>();
                     foreach (var item in fightlines)
                     {
-                        var match = dPSLogParse.Match(item);
+                        if (item == null || item.Length < 27)
+                        {
+                            continue;
+                        }
+
+                        var date = item.Substring(1, 24);
+                        var message = item.Substring(27).Trim();
+                        var match = dPSLogParse.Match(message, date);
                         if (match != null)
                         {
                             fightlist.Add(new KeyValuePair<string, DPSParseMatch>(item, match));

@@ -46,14 +46,8 @@ namespace EQTool.Services.Spells.Log
             this.activePlayer = activePlayer;
         }
 
-        public DPSParseMatch Match(string linelog)
+        public DPSParseMatch Match(string message, string date)
         {
-            if (linelog == null || linelog.Length < 27)
-            {
-                return null;
-            }
-
-            var date = linelog.Substring(1, 24);
             var format = "ddd MMM dd HH:mm:ss yyyy";
             var timestamp = DateTime.Now;
             try
@@ -64,7 +58,6 @@ namespace EQTool.Services.Spells.Log
             {
             }
 
-            var message = linelog.Substring(27);
             if (message.Contains(WasHitByNonMelee))
             {
                 return null;

@@ -7,14 +7,8 @@ namespace EQTool.Services.Map
     public class LocationParser
     {
         private readonly string YourLocationis = "Your Location is ";
-        public Point3D? Match(string linelog)
+        public Point3D? Match(string message)
         {
-            if (linelog == null || linelog.Length < 27)
-            {
-                return null;
-            }
-            //[Mon Sep 26 06:43:43 2022] Your Location is 971.48, -2875.58, 18.35
-            var message = linelog.Substring(27);
             //Debug.WriteLine($"LocationParser: " + message);
             if (message.StartsWith(YourLocationis))
             {

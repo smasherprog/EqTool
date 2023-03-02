@@ -28,10 +28,6 @@ namespace EQTool.Models
 
         public List<PlayerInfo> Players { get; set; } = new List<PlayerInfo>();
 
-        public double GlobalTriggerWindowOpacity { get; set; }
-
-        public double GlobalDPSWindowOpacity { get; set; }
-
         public bool TriggerWindowTopMost { get; set; }
 
         public bool BestGuessSpells { get; set; }

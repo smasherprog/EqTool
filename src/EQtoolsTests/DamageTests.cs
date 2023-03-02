@@ -21,8 +21,9 @@ namespace EQToolTests
         public void DPSLogParse_EatingDpsParseTest()
         {
             var dpslogparse = container.Resolve<DPSLogParse>();
-            var line = "[Mon Nov 14 20:11:25 2022] Vebanab slices a willowisp for 56 points of damage.";
-            var match = dpslogparse.Match(line);
+            var message = "Vebanab slices a willowisp for 56 points of damage.";
+            var date = "[Mon Nov 14 20:11:25 2022]";
+            var match = dpslogparse.Match(message, date);
 
             Assert.IsNotNull(match);
             Assert.AreEqual(match.TimeStamp.ToString(), "11/14/2022 8:11:25 PM");
@@ -35,8 +36,9 @@ namespace EQToolTests
         public void DPSLogParse_EatingDpsParseTest1()
         {
             var dpslogparse = container.Resolve<DPSLogParse>();
-            var line = "[Mon Nov 14 20:11:25 2022] a willowisp slices Vebanab for 56 points of damage.";
-            var match = dpslogparse.Match(line);
+            var message = "a willowisp slices Vebanab for 56 points of damage.";
+            var date = "[Mon Nov 14 20:11:25 2022]";
+            var match = dpslogparse.Match(message, date);
 
             Assert.IsNotNull(match);
             Assert.AreEqual(match.SourceName, "a willowisp");
@@ -48,8 +50,9 @@ namespace EQToolTests
         public void DPSLogParse_EatingDpsParseTestYou()
         {
             var dpslogparse = container.Resolve<DPSLogParse>();
-            var line = "[Mon Nov 14 20:11:25 2022] You crush a shadowed man for 1 point of damage.";
-            var match = dpslogparse.Match(line);
+            var message = "You crush a shadowed man for 1 point of damage.";
+            var date = "[Mon Nov 14 20:11:25 2022]";
+            var match = dpslogparse.Match(message, date);
 
             Assert.IsNotNull(match);
             Assert.AreEqual(match.SourceName, "You");
@@ -61,8 +64,9 @@ namespace EQToolTests
         public void DPSLogParse_EatingDpsParseTestYouGetHit()
         {
             var dpslogparse = container.Resolve<DPSLogParse>();
-            var line = "[Mon Nov 14 20:11:25 2022] Guard Valon bashes YOU for 12 points of damage.";
-            var match = dpslogparse.Match(line);
+            var message = "Guard Valon bashes YOU for 12 points of damage.";
+            var date = "[Mon Nov 14 20:11:25 2022]";
+            var match = dpslogparse.Match(message, date);
 
             Assert.IsNotNull(match);
             Assert.AreEqual(match.SourceName, "Guard Valon");
@@ -199,10 +203,12 @@ namespace EQToolTests
         public void TestLevelDetectionThroughBackstab()
         {
             var dpslogparse = container.Resolve<DPSLogParse>();
-            var line = "[Mon Nov 14 20:11:25 2022] You backstab a willowisp for 56 points of damage.";
+            var message = "You backstab a willowisp for 56 points of damage.";
+            var date = "[Mon Nov 14 20:11:25 2022]";
+
             var player = container.Resolve<ActivePlayer>();
             player.Player = new PlayerInfo { };
-            _ = dpslogparse.Match(line);
+            _ = dpslogparse.Match(message, date);
             Assert.AreEqual(player.Player.PlayerClass, PlayerClasses.Rogue);
         }
 
@@ -210,16 +216,18 @@ namespace EQToolTests
         public void TestLevelDetectionThroughBackstabNullCheck()
         {
             var dpslogparse = container.Resolve<DPSLogParse>();
-            var line = "[Mon Nov 14 20:11:25 2022] You backstab a willowisp for 56 points of damage.";
-            _ = dpslogparse.Match(line);
+            var message = "You backstab a willowisp for 56 points of damage.";
+            var date = "[Mon Nov 14 20:11:25 2022]";
+            _ = dpslogparse.Match(message, date);
         }
 
         [TestMethod]
         public void TestLevelDetectionThroughKick()
         {
             var dpslogparse = container.Resolve<DPSLogParse>();
-            var line = "[Mon Nov 14 20:11:25 2022] You kick a willowisp for 56 points of damage.";
-            _ = dpslogparse.Match(line);
+            var message = "You backstab a kick for 56 points of damage.";
+            var date = "[Mon Nov 14 20:11:25 2022]";
+            _ = dpslogparse.Match(message, date);
             var player = container.Resolve<ActivePlayer>();
             player.Player = new PlayerInfo { };
 

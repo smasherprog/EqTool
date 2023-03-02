@@ -205,19 +205,36 @@ namespace EQTool.ViewModels
             });
         }
 
-        public void TryRemoveUnambiguousSpell(string name)
+        public void TryRemoveUnambiguousSpellOther(string possiblespell)
         {
-            if (string.IsNullOrWhiteSpace(name))
+            if (string.IsNullOrWhiteSpace(possiblespell))
             {
                 return;
             }
 
             appDispatcher.DispatchUI(() =>
             {
-                var s = SpellList.Where(a => a.SpellName == name);
+                var s = SpellList.Where(a => a.SpellName == possiblespell && a.TargetName != EQSpells.SpaceYou).ToList();
                 if (s.Count() == 1)
                 {
                     _ = SpellList.Remove(s.FirstOrDefault());
+                }
+            });
+        }
+
+        public void TryRemoveUnambiguousSpellSelf(List<string> possiblespellnames)
+        {
+            if (!possiblespellnames.Any())
+            {
+                return;
+            }
+
+            appDispatcher.DispatchUI(() =>
+            {
+                var spells = SpellList.Where(a => possiblespellnames.Contains(a.SpellName) && a.TargetName == EQSpells.SpaceYou).ToList();
+                if (spells.Count() == 1)
+                {
+                    _ = SpellList.Remove(spells.FirstOrDefault());
                 }
             });
         }

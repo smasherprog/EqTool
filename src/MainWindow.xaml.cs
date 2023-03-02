@@ -86,8 +86,6 @@ namespace EQTool
             {
                 var eqsettings = container.Resolve<EQToolSettings>();
                 Properties.Settings.Default.GlobalFontSize = eqsettings.FontSize;
-                Properties.Settings.Default.GlobalTriggerWindowOpacity = eqsettings.GlobalTriggerWindowOpacity;
-                Properties.Settings.Default.GlobalDPSWindowOpacity = eqsettings.GlobalDPSWindowOpacity;
                 App.Theme = eqsettings.Theme;
                 ToggleMenuButtons(true);
                 if (EQToolSettings.SpellWindowState == null || !EQToolSettings.SpellWindowState.Closed)

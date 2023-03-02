@@ -317,14 +317,8 @@ namespace EQTool.Services.Map
             return ZoneNameMapper.TryGetValue(name, out n) ? n : name;
         }
 
-        public static string Match(string linelog)
+        public static string Match(string message)
         {
-            if (linelog == null || linelog.Length < 27)
-            {
-                return string.Empty;
-            }
-
-            var message = linelog.Substring(27);
             //Debug.WriteLine($"ZoneParse: " + message);
             if (message.StartsWith(Therearenoplayers))
             {

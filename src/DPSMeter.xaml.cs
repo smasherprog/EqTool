@@ -45,7 +45,6 @@ namespace EQTool
             {
                 settings.DpsWindowState.Closed = false;
             }
-            Properties.Settings.Default.GlobalDPSWindowOpacity = settings.GlobalDPSWindowOpacity;
             Topmost = settings.TriggerWindowTopMost;
             UITimer = new System.Timers.Timer(1000);
             UITimer.Elapsed += PollUI;

@@ -3,7 +3,9 @@ using EQTool.Services;
 using EQTool.ViewModels;
 using System;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 
@@ -22,7 +24,8 @@ namespace EQTool
         {
             this.settings = settings;
             this.logParser = logParser;
-            this.logParser.SpellWornsOffEvent += LogParser_SpellWornsOffEvent;
+            this.logParser.SpellWornOtherOffEvent += LogParser_SpellWornOtherOffEvent;
+            this.logParser.SpellWornOffSelfEvent += LogParser_SpellWornOffSelfEvent;
             this.logParser.StartCastingEvent += LogParser_StartCastingEvent;
             this.logParser.DeadEvent += LogParser_DeadEvent;
             this.logParser.StartTimerEvent += LogParser_StartTimerEvent;
@@ -45,7 +48,6 @@ namespace EQTool
             UITimer.Elapsed += PollUI;
             UITimer.Enabled = true;
             var view = (ListCollectionView)CollectionViewSource.GetDefaultView(spelllistview.ItemsSource);
-            Properties.Settings.Default.GlobalTriggerWindowOpacity = settings.GlobalTriggerWindowOpacity;
             view.GroupDescriptions.Add(new PropertyGroupDescription(nameof(UISpell.TargetName)));
             view.LiveGroupingProperties.Add(nameof(UISpell.TargetName));
             view.IsLiveGrouping = true;
@@ -64,9 +66,14 @@ namespace EQTool
             LocationChanged += DPSMeter_LocationChanged;
         }
 
-        private void LogParser_SpellWornsOffEvent(object sender, LogParser.StartWornsOffEventArgs e)
+        private void LogParser_SpellWornOffSelfEvent(object sender, LogParser.SpellWornOffSelfEventArgs e)
         {
-            spellWindowViewModel.TryRemoveUnambiguousSpell(e.SpellName);
+            spellWindowViewModel.TryRemoveUnambiguousSpellSelf(e.SpellNames);
+        }
+
+        private void LogParser_SpellWornOtherOffEvent(object sender, LogParser.SpellWornOffOtherEventArgs e)
+        {
+            spellWindowViewModel.TryRemoveUnambiguousSpellOther(e.SpellName);
         }
 
         private void LogParser_StartCastingEvent(object sender, LogParser.StartCastingEventArgs e)
@@ -96,7 +103,8 @@ namespace EQTool
             SizeChanged -= DPSMeter_SizeChanged;
             StateChanged -= SpellWindow_StateChanged;
             LocationChanged -= DPSMeter_LocationChanged;
-            logParser.SpellWornsOffEvent -= LogParser_SpellWornsOffEvent;
+            logParser.SpellWornOtherOffEvent -= LogParser_SpellWornOtherOffEvent;
+            logParser.SpellWornOffSelfEvent -= LogParser_SpellWornOffSelfEvent;
             logParser.StartCastingEvent -= LogParser_StartCastingEvent;
             logParser.DeadEvent -= LogParser_DeadEvent;
             logParser.StartTimerEvent -= LogParser_StartTimerEvent;
@@ -192,6 +200,14 @@ namespace EQTool
         {
             (App.Current as App).OpenMobInfoWindow();
         }
-
+        private void RemoveFromSpells(object sender, RoutedEventArgs e)
+        {
+            var name = ((sender as Button).DataContext as dynamic)?.Name as string;
+            var items = spellWindowViewModel.SpellList.Where(a => a.TargetName == name).ToList();
+            foreach (var item in items)
+            {
+                _ = spellWindowViewModel.SpellList.Remove(item);
+            }
+        }
     }
 }

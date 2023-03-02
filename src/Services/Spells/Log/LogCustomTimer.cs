@@ -20,15 +20,8 @@ namespace EQTool.Services.Spells.Log
             public int DurationInSeconds { get; set; }
         }
 
-        public CustomerTimer GetStartTimer(string linelog)
-        {
-            var date = linelog.Substring(1, 25);
-            if (DateTime.TryParse(date, out _))
-            {
-
-            }
-
-            var message = linelog.Substring(27).Trim();
+        public CustomerTimer GetStartTimer(string message)
+        {  
             var timer = GetStartTimer(message, StartTimer);
             if (timer != null)
             {
@@ -63,15 +56,8 @@ namespace EQTool.Services.Spells.Log
             return null;
         }
 
-        public string GetCancelTimer(string linelog)
+        public string GetCancelTimer(string message)
         {
-            var date = linelog.Substring(1, 25);
-            if (DateTime.TryParse(date, out _))
-            {
-
-            }
-
-            var message = linelog.Substring(27).Trim();
             var nametoremove = GetCancelTimer(message, CancelTimer);
             if (!string.IsNullOrWhiteSpace(nametoremove))
             {
