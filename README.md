@@ -33,9 +33,7 @@ Features:
 <li>Timer Cancel Crypt Camp</li>
 <li>Cancel Timer Crypt Camp</li>
 </ul>
-<img width="806" alt="image" src="https://user-images.githubusercontent.com/3393733/221380745-7b584b8d-cc75-4132-aab3-4d632d34bfbe.png">
-
-<img width="808" alt="image" src="https://user-images.githubusercontent.com/3393733/215292103-89c83b08-c495-4b65-806e-beec92ade86e.png">
+<img width="1150" alt="image" src="https://user-images.githubusercontent.com/3393733/222487918-bf41211b-439e-4d2e-8b4d-e2a5f09a2bbd.png">
 
 <h4>System Tray Icon</h4>
 <img width="152" alt="image" src="https://user-images.githubusercontent.com/3393733/212717141-6e26b9af-660a-493d-9f73-2c3464b7c224.png">
@@ -109,4 +107,11 @@ Features:
 <h4>Why do the see spell effects for others even though I checked the box 'Only show spells that effect you?'</h4> 
 <ul>
 <li>EQTool will ALWAYS show detrimental spell effects on everyone. The reason is that EQTool CANNOT tell the difference between an NPC and a PC. This means that in order to show spell effects on NPC, like slow/tash, etc, i must show ALL detrimental spell effects on all NPS/PC alike.</li> 
+</ul>
+
+<h4>How do I remove an NPC/Player from the spell list?</h4> 
+<img width="218" alt="image" src="https://user-images.githubusercontent.com/3393733/222474771-41cc3276-9a9e-4a30-b868-5fb4d0b87de4.png">
+<ul>
+<li>This can happen for many reasons. The most common being that they left the group and you want to remove them from the list.</li>
+<li>Click the Trashcan next to the next and that NPC/Player will be removed from the list. This is a one-time action and if you cast on them again, they will reappear.</li> 
 </ul>
