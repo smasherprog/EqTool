@@ -5,6 +5,7 @@ using EQTool.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Windows.Media.Media3D;
@@ -144,6 +145,19 @@ namespace EQTool.Services
             });
         }
 
+        public static DateTime Parse(string datestamp)
+        {
+            var format = "ddd MMM dd HH:mm:ss yyyy";
+            try
+            {
+                return DateTime.ParseExact(datestamp, format, CultureInfo.InvariantCulture);
+            }
+            catch (FormatException)
+            {
+            }
+            return DateTime.Now;
+        }
+
         private void MainRun(string line1)
         {
             if (line1 == null || line1.Length < 27)
@@ -153,13 +167,14 @@ namespace EQTool.Services
 
             var date = line1.Substring(1, 24);
             var message = line1.Substring(27).Trim();
+            var timestamp = Parse(date);
             var pos = locationParser.Match(message);
             if (pos.HasValue)
             {
                 PlayerLocationEvent?.Invoke(this, new PlayerLocationEventArgs { Location = pos.Value });
             }
 
-            var matched = dPSLogParse.Match(message, date);
+            var matched = dPSLogParse.Match(message, timestamp);
             if (matched != null)
             {
                 FightHitEvent?.Invoke(this, new FightHitEventArgs { HitInformation = matched });

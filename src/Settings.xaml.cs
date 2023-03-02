@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -315,7 +316,16 @@ namespace EQTool
 
                         var date = item.Substring(1, 24);
                         var message = item.Substring(27).Trim();
-                        var match = dPSLogParse.Match(message, date);
+                        var format = "ddd MMM dd HH:mm:ss yyyy";
+                        var timestamp = DateTime.Now;
+                        try
+                        {
+                            timestamp = DateTime.ParseExact(date, format, CultureInfo.InvariantCulture);
+                        }
+                        catch (FormatException)
+                        {
+                        }
+                        var match = dPSLogParse.Match(message, timestamp);
                         if (match != null)
                         {
                             fightlist.Add(new KeyValuePair<string, DPSParseMatch>(item, match));

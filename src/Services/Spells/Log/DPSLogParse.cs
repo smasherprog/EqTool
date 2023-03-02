@@ -2,7 +2,6 @@
 using EQTool.ViewModels;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 
 namespace EQTool.Services.Spells.Log
 {
@@ -46,18 +45,8 @@ namespace EQTool.Services.Spells.Log
             this.activePlayer = activePlayer;
         }
 
-        public DPSParseMatch Match(string message, string date)
+        public DPSParseMatch Match(string message, DateTime date)
         {
-            var format = "ddd MMM dd HH:mm:ss yyyy";
-            var timestamp = DateTime.Now;
-            try
-            {
-                timestamp = DateTime.ParseExact(date, format, CultureInfo.InvariantCulture);
-            }
-            catch (FormatException)
-            {
-            }
-
             if (message.Contains(WasHitByNonMelee))
             {
                 return null;
@@ -98,7 +87,7 @@ namespace EQTool.Services.Spells.Log
                     {
                         SourceName = nameofattacker,
                         DamageDone = int.Parse(damagedone),
-                        TimeStamp = timestamp,
+                        TimeStamp = date,
                         TargetName = nameoftarget
                     };
                 }

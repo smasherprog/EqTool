@@ -251,7 +251,7 @@ namespace EQToolTests
             var spelllogparse = container.Resolve<SpellLogParse>();
             var shissar = "Speed of the Shissar";
             var shissarspell = spells.AllSpells.FirstOrDefault(a => a.name == shissar);
-            var line = "[Mon Nov 14 20:11:25 2022] Jobober " + shissarspell.cast_on_other;
+            var line = "Jobober " + shissarspell.cast_on_other;
             var service = container.Resolve<ParseSpellGuess>();
             var player = container.Resolve<ActivePlayer>();
             player.Player = new PlayerInfo
@@ -272,7 +272,7 @@ namespace EQToolTests
             var spelllogparse = container.Resolve<SpellLogParse>();
             var shissar = "Turgur's Insects";
             var shissarspell = spells.AllSpells.FirstOrDefault(a => a.name == shissar);
-            var line = "[Mon Nov 14 20:11:25 2022] Jobober " + shissarspell.cast_on_other;
+            var line = "Jobober " + shissarspell.cast_on_other;
             var service = container.Resolve<ParseSpellGuess>();
             var player = container.Resolve<ActivePlayer>();
             player.Player = new PlayerInfo
@@ -294,7 +294,7 @@ namespace EQToolTests
             var spelllogparse = container.Resolve<SpellLogParse>();
             var spellname = "Turgur's Insects";
             var shissarspell = spells.AllSpells.FirstOrDefault(a => a.name == spellname);
-            var line = "[Mon Nov 14 20:11:25 2022] Jobober " + shissarspell.cast_on_other;
+            var line = "Jobober " + shissarspell.cast_on_other;
             var service = container.Resolve<ParseSpellGuess>();
             var player = container.Resolve<ActivePlayer>();
             player.Player = new PlayerInfo
@@ -317,7 +317,7 @@ namespace EQToolTests
             var spelllogparse = container.Resolve<SpellLogParse>();
             var spellname = "Turgur's Insects";
             var shissarspell = spells.AllSpells.FirstOrDefault(a => a.name == spellname);
-            var line = "[Mon Nov 14 20:11:25 2022] an Jobober " + shissarspell.cast_on_other;
+            var line = "an Jobober " + shissarspell.cast_on_other;
             var service = container.Resolve<ParseSpellGuess>();
             var player = container.Resolve<ActivePlayer>();
             player.Player = new PlayerInfo
@@ -341,7 +341,7 @@ namespace EQToolTests
             var spelllogparse = container.Resolve<SpellLogParse>();
             var spellname = "Turgur's Insects";
             var shissarspell = spells.AllSpells.FirstOrDefault(a => a.name == spellname);
-            var line = "[Mon Nov 14 20:11:25 2022] an Jobober rager " + shissarspell.cast_on_other;
+            var line = "an Jobober rager " + shissarspell.cast_on_other;
             var service = container.Resolve<ParseSpellGuess>();
             var player = container.Resolve<ActivePlayer>();
             player.Player = new PlayerInfo
@@ -365,7 +365,7 @@ namespace EQToolTests
             var spelllogparse = container.Resolve<SpellLogParse>();
             var spellname = "Cripple";
             var shissarspell = spells.AllSpells.FirstOrDefault(a => a.name == spellname);
-            var line = "[Mon Nov 14 20:11:25 2022] an Jobober rager " + shissarspell.cast_on_other;
+            var line = "an Jobober rager " + shissarspell.cast_on_other;
             var service = container.Resolve<ParseSpellGuess>();
             var player = container.Resolve<ActivePlayer>();
             player.Player = new PlayerInfo
@@ -389,7 +389,7 @@ namespace EQToolTests
             var spelllogparse = container.Resolve<SpellLogParse>();
             var shissar = "Speed of the Shissar";
             var shissarspell = spells.AllSpells.FirstOrDefault(a => a.name == shissar);
-            var line = "[Sun Nov 27 10:54:46 2022] A bottomless feaster's body pulses with the spirit of the Shissar.";
+            var line = "A bottomless feaster's body pulses with the spirit of the Shissar.";
             var service = container.Resolve<ParseSpellGuess>();
             var player = container.Resolve<ActivePlayer>();
             player.Player = new PlayerInfo
@@ -410,7 +410,7 @@ namespace EQToolTests
             var spelllogparse = container.Resolve<SpellLogParse>();
             var shissar = "Curse of the Spirits";
             var shissarspell = spells.AllSpells.FirstOrDefault(a => a.name == shissar);
-            var line = "[Sun Dec 25 21:33:59 2022] A Ratling is consumed by the raging spirits of the land.";
+            var line = "A Ratling is consumed by the raging spirits of the land.";
             var service = container.Resolve<ParseSpellGuess>();
             var player = container.Resolve<ActivePlayer>();
             player.Player = new PlayerInfo
@@ -431,7 +431,7 @@ namespace EQToolTests
             var spelllogparse = container.Resolve<SpellLogParse>();
             var shissar = "Curse of the Spirits";
             var shissarspell = spells.AllSpells.FirstOrDefault(a => a.name == shissar);
-            var line = "[Sun Dec 25 21:33:59 2022] A rat Ratling is consumed by the raging spirits of the land.";
+            var line = "A rat Ratling is consumed by the raging spirits of the land.";
             var service = container.Resolve<ParseSpellGuess>();
             var player = container.Resolve<ActivePlayer>();
             player.Player = new PlayerInfo
@@ -514,7 +514,7 @@ namespace EQToolTests
         public void TestClairityDurationGuess1()
         {
             var spelllogparse = container.Resolve<SpellLogParse>();
-            var line = "[Mon Nov 14 20:11:25 2022] A soft breeze slips through your mind.";
+            var line = "A soft breeze slips through your mind.";
             var player = container.Resolve<ActivePlayer>();
             player.Player = new PlayerInfo
             {
@@ -585,7 +585,7 @@ namespace EQToolTests
         public void TestDeath()
         {
             var service = container.Resolve<LogDeathParse>();
-            var line = "[Mon Nov 14 20:11:25 2022] an ire Ghast has been slain by an ire ghast!";
+            var line = "an ire Ghast has been slain by an ire ghast!";
             var targettoremove = service.GetDeadTarget(line);
 
             Assert.IsNotNull(targettoremove);
@@ -595,7 +595,7 @@ namespace EQToolTests
         public void GetCustomTimerStart()
         {
             var service = container.Resolve<LogCustomTimer>();
-            var line = "[Mon Nov 14 20:11:25 2022] You say, 'Timer Start StupidGoblin 30'";
+            var line = "You say, 'Timer Start StupidGoblin 30'";
             var targettoremove = service.GetStartTimer(line);
 
             Assert.IsNotNull(targettoremove);
@@ -607,7 +607,7 @@ namespace EQToolTests
         public void GetCustomTimerStart1()
         {
             var service = container.Resolve<LogCustomTimer>();
-            var line = "[Mon Nov 14 20:11:25 2022] You say, 'Start Timer StupidGoblin 30'";
+            var line = "You say, 'Start Timer StupidGoblin 30'";
             var targettoremove = service.GetStartTimer(line);
 
             Assert.IsNotNull(targettoremove);
@@ -619,7 +619,7 @@ namespace EQToolTests
         public void GetCustomTimerStart_TestSpaces()
         {
             var service = container.Resolve<LogCustomTimer>();
-            var line = "[Mon Nov 14 20:11:25 2022] You say, 'Start Timer StupidGoblin with club near me 30'";
+            var line = "You say, 'Start Timer StupidGoblin with club near me 30'";
             var targettoremove = service.GetStartTimer(line);
 
             Assert.IsNotNull(targettoremove);
@@ -631,7 +631,7 @@ namespace EQToolTests
         public void GetCustomTimerCancel()
         {
             var service = container.Resolve<LogCustomTimer>();
-            var line = "[Mon Nov 14 20:11:25 2022] You say, 'Timer Cancel StupidGoblin'";
+            var line = "You say, 'Timer Cancel StupidGoblin'";
             var targettoremove = service.GetCancelTimer(line);
 
             Assert.IsNotNull(targettoremove);
@@ -642,7 +642,7 @@ namespace EQToolTests
         public void GetCustomTimerCancel1()
         {
             var service = container.Resolve<LogCustomTimer>();
-            var line = "[Mon Nov 14 20:11:25 2022] You say, 'Cancel Timer StupidGoblin'";
+            var line = "You say, 'Cancel Timer StupidGoblin'";
             var targettoremove = service.GetCancelTimer(line);
 
             Assert.IsNotNull(targettoremove);
@@ -653,7 +653,7 @@ namespace EQToolTests
         public void GetCustomTimerCancel_TestSpaces()
         {
             var service = container.Resolve<LogCustomTimer>();
-            var line = "[Mon Nov 14 20:11:25 2022] You say, 'Cancel Timer StupidGoblin with club near me'";
+            var line = "You say, 'Cancel Timer StupidGoblin with club near me'";
             var targettoremove = service.GetCancelTimer(line);
 
             Assert.IsNotNull(targettoremove);
@@ -670,10 +670,10 @@ namespace EQToolTests
                 Level = 54,
                 PlayerClass = PlayerClasses.Cleric
             };
-            loger.MatchLevel("[Thu Nov 24 15:32:13 2022] You have gained a level! Welcome to level 2!");
+            loger.MatchLevel("You have gained a level! Welcome to level 2!");
             Assert.AreEqual(2, player.Player.Level);
 
-            loger.MatchLevel("[Thu Nov 24 15:32:13 2022] You have gained a level! Welcome to level 60!");
+            loger.MatchLevel("You have gained a level! Welcome to level 60!");
             Assert.AreEqual(60, player.Player.Level);
         }
 
@@ -682,8 +682,8 @@ namespace EQToolTests
         {
             var loger = container.Resolve<LevelLogParse>();
             _ = container.Resolve<ActivePlayer>();
-            loger.MatchLevel("[Thu Nov 24 15:32:13 2022] You have gained a level! Welcome to level 2!");
-            loger.MatchLevel("[Thu Nov 24 15:32:13 2022] You have gained a level! Welcome to level 60!");
+            loger.MatchLevel("You have gained a level! Welcome to level 2!");
+            loger.MatchLevel("You have gained a level! Welcome to level 60!");
         }
 
         [TestMethod]
@@ -719,6 +719,14 @@ namespace EQToolTests
             player.Player = new PlayerInfo { };
             service.HandleYouBeginCastingSpellStart(line);
             Assert.AreEqual(player.Player.Level, 60);
+        }
+
+        [TestMethod]
+        public void DateParseTest()
+        {
+            var line = "Sat Oct 08 11:31:38 2022";
+            var d = LogParser.Parse(line);
+            Assert.AreEqual(d.ToString(), "10/8/2022 11:31:38 AM");
         }
     }
 }
