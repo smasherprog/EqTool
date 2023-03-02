@@ -44,7 +44,6 @@ Features:
 <ul>
 <li>Enable EQ logging automatically if EQ is not running.</li>
 <li>Add option to auto prune eq log file. EQ logfiles can cause issues with EQ itself if they get too large!</li>
-<li>Remove spells from self using the worn off messages.</li>
 <li>Self update when NOT in use</li>
 <li>Raid Group suggestions for guild: AOE; CH Chain; AOE+Ch Chain; Other</li>
 <li>Better track players levels and classes</li>
@@ -58,7 +57,6 @@ Features:
 <li>charm break alert</li>
 <li>charm spell effect removal</li>
 <li>Always on top toggle for each window</li>
-<li>Add Transparency setting for Map window</li>
 <li>Map window add toggle to follow location</li>
 <li>Map window make it possible to go entierly transparent!</li>  
 <liMake settings window and Mob window remember last position/size/state</li>
