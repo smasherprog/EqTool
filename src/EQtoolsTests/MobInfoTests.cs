@@ -369,5 +369,83 @@ High MR, Summons
             Assert.IsTrue(model.Specials.Any(a => a.Url.ToString() == "https://wiki.project1999.com/Wave_of_Heat"));
         }
 
+        private const string ResponsFromServer6 = @"{{Velious Era}}{{bug}}{{Namedmobpage
+
+| imagefilename     = npc_gozzrem.png
+| width             = 200px
+
+| emu_id            = 124105
+| illia_id          = 6321
+
+| name              = Gozzrem
+| race              = Lava Dragon
+| class             = [[Cleric]]
+| level             = 66
+| agro_radius       = 70
+| run_speed         = 0
+
+| zone              = [[Temple of Veeshan]]
+| location          = 15% @ (-691, -210)
+| respawn_time      = 7 days +/- 8 hours
+
+| AC                = 1057
+| HP                = ~140k
+| HP_regen          = 101
+| mana_regen        = 101
+
+| attacks_per_round = 3
+| attack_speed      = 78%
+| damage_per_hit    = 272  - 630
+| special           = [[Frost Breath]], Enrage, Summon, Immune to Flee, Uncharmable,<br> Unfearable, Unsnareable, Unslowable, Unmezzable, Unstunnable, See Invis, See Hide
+
+| description = Cold Resist. Dispells 1 slot with AE. Weak to Fire nukes and lures. Does cast CH and gates.
+
+'''Although Gozzrem was named by the patch notes as intended to be perma-rooted, it currently is not rooted as of 6/11/2021.'''
+
+| known_loot = 
+
+<ul><li>  {{:Bracelet of Protection}}        <span class='drare'>(Uncommon)</span> <span class='ddb'>[1] 2x 100% (12%)</span>
+</li><li> {{:Rekeklo's War Sword}}           <span class='drare'>(Uncommon)</span> <span class='ddb'>[1] 2x 100% (12%)</span>
+</li><li> {{:Wand of the Black Dragon Eye}}  <span class='drare'>(Uncommon)</span> <span class='ddb'>[1] 2x 100% (12%)</span>
+</li><li> {{:Cloak of Silver Eyes}}          <span class='drare'>(Uncommon)</span> <span class='ddb'>[1] 2x 100% (12%)</span>
+</li><li> {{:Shovel of the Harvest}}         <span class='drare'>(Uncommon)</span> <span class='ddb'>[1] 2x 100% (12%)</span>
+</li><li> {{:Unopenable Box}}                <span class='drare'>(Uncommon)</span> <span class='ddb'>[1] 2x 100% (12%)</span>
+</li><li> {{:Eye of the Rigtorgn}}           <span class='drare'>(Uncommon)</span> <span class='ddb'>[1] 2x 100% (12%)</span>
+</li><li> {{:Circlet of Silver Skies}}       <span class='drare'>(Uncommon)</span> <span class='ddb'>[1] 2x 100% (12%)</span>
+</li></ul>
+
+| factions = 
+
+* [[Claws of Veeshan]] <span class='profac'>(-150)</span>
+* [[Yelinak]] <span class='profac'>(-100)</span>
+
+| opposing_factions = 
+
+* [[Kromzek]] <span class='oppfac'>(100)</span>
+
+| related_quests = 
+
+* [[The First Arcane Test]]
+* [[The Second Arcane Test]]
+* [[Wisdom - The Long Battle]]
+* [[Wisdom - The Short Battle]]
+
+}}
+
+[[Category:Temple of Veeshan]]";
+
+        [TestMethod]
+        public void ParseSpecialsGozz()
+        {
+            var model = new MobInfoViewModel
+            {
+                Results = ResponsFromServer6
+            };
+            Assert.AreEqual("Gozzrem", model.Name);
+            Assert.AreEqual("Cleric", model.Class);
+            Assert.AreEqual(3, model.Specials.Count);
+            Assert.IsTrue(model.Specials.Any(a => a.Url.ToString() == "https://wiki.project1999.com/Rain_of_Molten_Lava"));
+            Assert.IsTrue(model.Specials.Any(a => a.Url.ToString() == "https://wiki.project1999.com/Wave_of_Heat"));
+        }
     }
 }

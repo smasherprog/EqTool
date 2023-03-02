@@ -15,8 +15,15 @@ namespace EQTool.Services.Parsing
         private static List<TestUriViewModel> Parse(string name, List<string> splits)
         {
             var ret = new List<TestUriViewModel>();
-            var specials = StripHTML(GetValue(name, splits)).Split(new[] { '\n' }, System.StringSplitOptions.RemoveEmptyEntries);
-            foreach (var item in specials.Where(a => !string.IsNullOrWhiteSpace(a)))
+            var specials = StripHTML(GetValue(name, splits)).Split(new[] { '\n' }, System.StringSplitOptions.RemoveEmptyEntries).ToList();
+            var specialcopy = new List<string>();
+            foreach (var item in specials)
+            {
+                var s = item.Split(',');
+                specialcopy.AddRange(s.Select(x => x.Trim()).Where(a => !string.IsNullOrWhiteSpace(a)));
+            }
+
+            foreach (var item in specialcopy.Where(a => !string.IsNullOrWhiteSpace(a)))
             {
                 if (item.ToLower().Trim().Contains("casts:"))
                 {
