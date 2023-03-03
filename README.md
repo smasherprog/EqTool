@@ -40,6 +40,7 @@ Features:
 
 <h4>TO DO List</h4>
 <ul>
+<li>Add location to mouse hover on map</li>
 <li>Seive Counter</li>
 <li>Add Related Quests to Mob info.</li>
 <li>Enable EQ logging automatically if EQ is not running.</li>
