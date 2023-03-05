@@ -2,7 +2,6 @@
 using EQTool.ViewModels;
 using System;
 using System.Collections.Generic;
-using System.Globalization;
 
 namespace EQTool.Services.Spells.Log
 {
@@ -15,6 +14,8 @@ namespace EQTool.Services.Spells.Log
 
         private readonly List<string> HitTypes = new List<string>()
         {
+            " strike ",
+            " strikes ",
             " slice ",
             " slices ",
             " slash ",
@@ -44,25 +45,8 @@ namespace EQTool.Services.Spells.Log
             this.activePlayer = activePlayer;
         }
 
-        public DPSParseMatch Match(string linelog)
+        public DPSParseMatch Match(string message, DateTime date)
         {
-            if (linelog == null || linelog.Length < 27)
-            {
-                return null;
-            }
-
-            var date = linelog.Substring(1, 24);
-            var format = "ddd MMM dd HH:mm:ss yyyy";
-            var timestamp = DateTime.Now;
-            try
-            {
-                timestamp = DateTime.ParseExact(date, format, CultureInfo.InvariantCulture);
-            }
-            catch (FormatException)
-            {
-            }
-
-            var message = linelog.Substring(27);
             if (message.Contains(WasHitByNonMelee))
             {
                 return null;
@@ -103,7 +87,7 @@ namespace EQTool.Services.Spells.Log
                     {
                         SourceName = nameofattacker,
                         DamageDone = int.Parse(damagedone),
-                        TimeStamp = timestamp,
+                        TimeStamp = date,
                         TargetName = nameoftarget
                     };
                 }

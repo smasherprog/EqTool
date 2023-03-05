@@ -1,10 +1,9 @@
-﻿using EQTool.Models;
+﻿using EQTool.Shapes;
 using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Shapes;
 
 namespace EQTool
 {
@@ -24,26 +23,17 @@ namespace EQTool
             MouseWheel += PanAndZoomCanvas_MouseWheel;
         }
 
-        public void Reset(double mapsize)
+        public void Reset()
         {
             Transform = new MatrixTransform();
             CurrentScaling = 1.0f;
-            MapSize = mapsize;
-        }
-
-        public float CurrentScaling { get; set; } = 1.0f;
-        private double _MapSize = 1.0;
-        private double MapSize
-        {
-            get => _MapSize;
-            set
+            foreach (UIElement child in Children)
             {
-                _MapSize = value;
-                BaseLineThickness = MathHelper.ChangeRange(MapSize, 1000, 35000, 2, 10);
+                child.RenderTransform = Transform;
             }
         }
 
-        private double BaseLineThickness = 2;
+        public float CurrentScaling { get; set; } = 1.0f;
         public float Zoomfactor { get; set; } = 1.1f;
 
         private void PanAndZoomCanvas_MouseDown(object sender, MouseButtonEventArgs e)
@@ -63,10 +53,19 @@ namespace EQTool
                 var delta = Point.Subtract(mousePosition, _initialMousePosition);
                 var translate = new TranslateTransform(delta.X, delta.Y);
                 Transform.Matrix = translate.Value * Transform.Matrix;
-
                 foreach (UIElement child in Children)
                 {
-                    child.RenderTransform = child is Ellipse ? new TranslateTransform(Transform.Value.OffsetX, Transform.Value.OffsetY) : (Transform)Transform;
+                    if (child is ArrowLine c)
+                    {
+                        var transform = new MatrixTransform();
+                        var translation = new TranslateTransform(Transform.Value.OffsetX, Transform.Value.OffsetY);
+                        transform.Matrix = c.RotateTransform.Value * translation.Value;
+                        c.RenderTransform = transform;
+                    }
+                    else
+                    {
+                        child.RenderTransform = Transform;
+                    }
                 }
             }
         }
@@ -83,7 +82,7 @@ namespace EQTool
 
             var scaleMatrix = Transform.Matrix;
             scaleMatrix.ScaleAt(scaleFactor, scaleFactor, mousePostion.X, mousePostion.Y);
-            if (CurrentScaling * scaleFactor < 1)
+            if (CurrentScaling * scaleFactor < 1 || CurrentScaling * scaleFactor > 40)
             {
                 // dont allow zooming out too far
                 return;
@@ -103,7 +102,17 @@ namespace EQTool
 
                 Canvas.SetLeft(child, sx);
                 Canvas.SetTop(child, sy);
-                child.RenderTransform = child is Ellipse ? new TranslateTransform(Transform.Value.OffsetX, Transform.Value.OffsetY) : (Transform)Transform;
+                if (child is ArrowLine c)
+                {
+                    var transform = new MatrixTransform();
+                    var translation = new TranslateTransform(Transform.Value.OffsetX, Transform.Value.OffsetY);
+                    transform.Matrix = c.RotateTransform.Value * translation.Value;
+                    c.RenderTransform = transform;
+                }
+                else
+                {
+                    child.RenderTransform = Transform;
+                }
             }
         }
     }

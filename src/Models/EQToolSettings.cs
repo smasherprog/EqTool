@@ -18,6 +18,8 @@ namespace EQTool.Models
 
         public WindowState DpsWindowState { get; set; }
 
+        public WindowState MapWindowState { get; set; }
+
         public WindowState MobWindowState { get; set; }
 
         public Themes Theme { get; set; } = Themes.Light;

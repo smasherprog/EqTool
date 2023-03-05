@@ -168,7 +168,7 @@ namespace EQTool.ViewModels
 
         private readonly List<DamagePerTime> Damage = new List<DamagePerTime>();
 
-        public int TrailingDamage { get; private set; } = 0;
+        public int TrailingDamage { get; set; } = 0;
 
         public int TotalDamage { get; set; }
 

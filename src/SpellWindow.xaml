@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EQTool"
         mc:Ignorable="d"  Style="{DynamicResource MyWindowStyleTrigger}"
-        Title="Triggers" 
+        Title="{Binding Title}" 
         Height="450" 
         Width="300"  
         WindowStyle="None" 
@@ -21,7 +21,7 @@
             <GradientStop Color="Gray" Offset="1"/>
         </LinearGradientBrush>
     </Window.Resources>
-    <Border Background="#50FFFFFF" CornerRadius="5" BorderBrush="{StaticResource WindowFrameBrush}" BorderThickness="2,0,2,2">
+    <Border Background="#50FFFFFF" CornerRadius="5" BorderBrush="{StaticResource WindowFrameBrush}" BorderThickness="1,0,1,1">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="20" />
@@ -84,6 +84,9 @@
                                                         <TextBlock Text="{Binding Name}" FontWeight="Bold" FontSize="{DynamicResource GlobalFontSize}" VerticalAlignment="Bottom" />
                                                         <TextBlock Text="{Binding ItemCount}" FontSize="{DynamicResource GlobalFontSize}" FontWeight="Bold" Margin="10,0,0,0" VerticalAlignment="Bottom" />
                                                         <TextBlock Text=" effect(s)" FontSize="{DynamicResource GlobalFontSize}" VerticalAlignment="Bottom" />
+                                                        <Button Margin="5, 0, 0, 0" Width="14" Height="14" Click="RemoveFromSpells" ToolTip="Remove from list">
+                                                            <Image Source="pack://application:,,,/Trash.png"/>
+                                                        </Button>
                                                     </StackPanel>
                                                 </Expander.Header>
                                                 <ItemsPresenter />

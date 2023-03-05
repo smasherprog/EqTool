@@ -18,9 +18,8 @@ namespace EQTool.Services.Spells.Log
             this.activePlayer = activePlayer;
         }
 
-        public SpellParsingMatch MatchSpell(string linelog)
+        public SpellParsingMatch MatchSpell(string message)
         {
-            var message = linelog.Substring(27);
             if (message.StartsWith(EQSpells.YouSpellisInterupted))
             {
                 activePlayer.UserCastingSpell = null;

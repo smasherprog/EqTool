@@ -22,9 +22,8 @@ namespace EQTool.Services.Spells.Log
 
         }
 
-        public string ConMatch(string linelog)
-        {
-            var message = linelog.Substring(27);
+        public string ConMatch(string message)
+        { 
             foreach (var item in ConMessages)
             {
                 var indexof = message.IndexOf(item);

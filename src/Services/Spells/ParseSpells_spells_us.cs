@@ -1,6 +1,5 @@
 ﻿using EQTool.Models;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 
@@ -39,7 +38,7 @@ namespace EQTool.Services
 
                     if (spell.name.StartsWith("GM "))
                     {
-                       // Debug.WriteLine($"Skipping {spell.name} GM");
+                        // Debug.WriteLine($"Skipping {spell.name} GM");
                         continue;
                     }
 
@@ -65,7 +64,7 @@ namespace EQTool.Services
                         spells.Add(spell.name, spell);
                     }
                 }
-               // Debug.WriteLine($"Skipped {skippedcounter}");
+                // Debug.WriteLine($"Skipped {skippedcounter}");
 
                 _Spells = spells.Values.ToList();
             }

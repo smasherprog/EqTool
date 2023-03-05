@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Windows.Media;
@@ -47,8 +48,6 @@ namespace EQTool.Services
             if (!lines.Any())
             {
                 var list = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceNames();
-
-
                 var resourcenames = list.Where(a => a.ToLower().StartsWith("eqtool.map_files." + zone)).ToList();
                 foreach (var item in resourcenames)
                 {
@@ -149,15 +148,15 @@ namespace EQTool.Services
                         Points = new Point3D[] {
                              new Point3D
                              {
-                                 X = float.Parse(splits[0]),
-                                 Y = float.Parse(splits[1]),
-                                 Z = float.Parse(splits[2])
+                                 X = float.Parse(splits[0], CultureInfo.InvariantCulture),
+                                 Y = float.Parse(splits[1], CultureInfo.InvariantCulture),
+                                 Z = float.Parse(splits[2], CultureInfo.InvariantCulture)
                              },
                              new Point3D
                              {
-                                 X = float.Parse(splits[3]),
-                                 Y = float.Parse(splits[4]),
-                                 Z = float.Parse(splits[5])
+                                 X = float.Parse(splits[3], CultureInfo.InvariantCulture),
+                                 Y = float.Parse(splits[4], CultureInfo.InvariantCulture),
+                                 Z = float.Parse(splits[5], CultureInfo.InvariantCulture)
                              }
                          },
                         Color = Color.FromRgb(byte.Parse(splits[6]), byte.Parse(splits[7]), byte.Parse(splits[8]))
@@ -175,11 +174,11 @@ namespace EQTool.Services
                     {
                         Point = new Point3D
                         {
-                            X = float.Parse(splits[0]),
-                            Y = float.Parse(splits[1]),
-                            Z = float.Parse(splits[2])
+                            X = float.Parse(splits[0], CultureInfo.InvariantCulture),
+                            Y = float.Parse(splits[1], CultureInfo.InvariantCulture),
+                            Z = float.Parse(splits[2], CultureInfo.InvariantCulture)
                         },
-                        Color = Color.FromRgb(byte.Parse(splits[3]), byte.Parse(splits[4]), byte.Parse(splits[5])),
+                        Color = Color.FromRgb(byte.Parse(splits[3], CultureInfo.InvariantCulture), byte.Parse(splits[4], CultureInfo.InvariantCulture), byte.Parse(splits[5], CultureInfo.InvariantCulture)),
                         label = splits[7]
                     });
                 }
@@ -197,11 +196,11 @@ namespace EQTool.Services
             {
                 item.Points[0].X = item.Points[0].X - min.X;
                 item.Points[0].Y = item.Points[0].Y - min.Y;
-                item.Points[0].Z = item.Points[0].Z - min.Z;
+                item.Points[0].Z = item.Points[0].Z;
 
                 item.Points[1].X = item.Points[1].X - min.X;
                 item.Points[1].Y = item.Points[1].Y - min.Y;
-                item.Points[1].Z = item.Points[1].Z - min.Z;
+                item.Points[1].Z = item.Points[1].Z;
             }
             ret.Offset = min;
             foreach (var item in ret.Labels)
@@ -210,7 +209,7 @@ namespace EQTool.Services
                 {
                     X = item.Point.X - min.X,
                     Y = item.Point.Y - min.Y,
-                    Z = item.Point.Z - min.Z
+                    Z = item.Point.Z
                 };
             }
 

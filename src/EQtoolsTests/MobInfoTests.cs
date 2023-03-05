@@ -296,5 +296,156 @@ High MR, Summons
             Assert.IsTrue(ret.Any(a => a.Name == "Stun Command"));
             Assert.IsTrue(ret.Any(a => a.Name == "Nature Walker's Behest"));
         }
+
+        private const string ResponsFromServer5 = @"{{Velious Era}}{{Namedmobpage
+
+| imagefilename     = a_burning_guardian.png
+
+| emu_id            = 124032
+| illia_id          = 6708
+
+| name              = a burning guardian
+| race              = Wurm
+| class             = [[Warrior]]
+| level             = 64
+| agro_radius       = 70
+| run_speed         = 1.85
+
+| zone              = [[Temple of Veeshan]]
+| location          = 50% @ (-1040, -1040), 50% @ (-1540, -1355), 50% @ (-820, -1117)
+
+| AC                = 543
+| HP                = 25000
+| HP_regen          = 18
+| mana_regen        = 0
+
+| attacks_per_round = 2
+| attack_speed      = 80%
+| damage_per_hit    = 146  - 296
+| special           = See Invis
+
+<b>Casts:</b>
+<ul><li>[[Rain of Molten Lava]]</li>(PB AE 300 Fire Damage)
+<li>[[Wave of Heat]]</li>(PB AE 200 Fire Damage)</ul>
+
+| description = Check out [[HOT Mobs Guide]].
+
+| known_loot = 
+
+<ul><li>  [[Form of the Great Bear|Spell: Form of the Great Bear]]<span class='drare'>(Ultra Rare)</span> <span class='ddb'>[Overall: 0.9%]</span>
+</li><li> [[Circle of Cobalt Scar|Spell: Circle of Cobalt Scar]]<span class='drare'>(Ultra Rare)</span> <span class='ddb'>[Overall: 0.9%]</span>
+</li><li> [[Stun Command|Spell: Stun Command]]<span class='drare'>(Ultra Rare)</span> <span class='ddb'>[Overall: 0.9%]</span>
+</li><li> [[Nature Walker's Behest|Spell: Nature Walker`s Behest]]<span class='drare'>(Ultra Rare)</span> <span class='ddb'>[Overall: 1.9%]</span>
+</li><li> {{:Wurm Meat}}                     <span class='drare'>(Uncommon)</span> <span class='ddb'>[Overall: 48.1%]</span>
+</li></ul>
+
+| factions = 
+
+* None
+
+| opposing_factions = 
+
+* None
+
+| related_quests = 
+
+* None
+
+}}
+
+[[Category:Temple of Veeshan]]";
+
+        [TestMethod]
+        public void ParseSpecials()
+        {
+            var model = new MobInfoViewModel
+            {
+                Results = ResponsFromServer4
+            };
+            Assert.AreEqual("a burning guardian", model.Name);
+            Assert.AreEqual("Warrior", model.Class);
+            Assert.AreEqual(3, model.Specials.Count);
+            Assert.IsTrue(model.Specials.Any(a => a.Url.ToString() == "https://wiki.project1999.com/Rain_of_Molten_Lava"));
+            Assert.IsTrue(model.Specials.Any(a => a.Url.ToString() == "https://wiki.project1999.com/Wave_of_Heat"));
+        }
+
+        private const string ResponsFromServer6 = @"{{Velious Era}}{{bug}}{{Namedmobpage
+
+| imagefilename     = npc_gozzrem.png
+| width             = 200px
+
+| emu_id            = 124105
+| illia_id          = 6321
+
+| name              = Gozzrem
+| race              = Lava Dragon
+| class             = [[Cleric]]
+| level             = 66
+| agro_radius       = 70
+| run_speed         = 0
+
+| zone              = [[Temple of Veeshan]]
+| location          = 15% @ (-691, -210)
+| respawn_time      = 7 days +/- 8 hours
+
+| AC                = 1057
+| HP                = ~140k
+| HP_regen          = 101
+| mana_regen        = 101
+
+| attacks_per_round = 3
+| attack_speed      = 78%
+| damage_per_hit    = 272  - 630
+| special           = [[Frost Breath]], Enrage, Summon, Immune to Flee, Uncharmable,<br> Unfearable, Unsnareable, Unslowable, Unmezzable, Unstunnable, See Invis, See Hide
+
+| description = Cold Resist. Dispells 1 slot with AE. Weak to Fire nukes and lures. Does cast CH and gates.
+
+'''Although Gozzrem was named by the patch notes as intended to be perma-rooted, it currently is not rooted as of 6/11/2021.'''
+
+| known_loot = 
+
+<ul><li>  {{:Bracelet of Protection}}        <span class='drare'>(Uncommon)</span> <span class='ddb'>[1] 2x 100% (12%)</span>
+</li><li> {{:Rekeklo's War Sword}}           <span class='drare'>(Uncommon)</span> <span class='ddb'>[1] 2x 100% (12%)</span>
+</li><li> {{:Wand of the Black Dragon Eye}}  <span class='drare'>(Uncommon)</span> <span class='ddb'>[1] 2x 100% (12%)</span>
+</li><li> {{:Cloak of Silver Eyes}}          <span class='drare'>(Uncommon)</span> <span class='ddb'>[1] 2x 100% (12%)</span>
+</li><li> {{:Shovel of the Harvest}}         <span class='drare'>(Uncommon)</span> <span class='ddb'>[1] 2x 100% (12%)</span>
+</li><li> {{:Unopenable Box}}                <span class='drare'>(Uncommon)</span> <span class='ddb'>[1] 2x 100% (12%)</span>
+</li><li> {{:Eye of the Rigtorgn}}           <span class='drare'>(Uncommon)</span> <span class='ddb'>[1] 2x 100% (12%)</span>
+</li><li> {{:Circlet of Silver Skies}}       <span class='drare'>(Uncommon)</span> <span class='ddb'>[1] 2x 100% (12%)</span>
+</li></ul>
+
+| factions = 
+
+* [[Claws of Veeshan]] <span class='profac'>(-150)</span>
+* [[Yelinak]] <span class='profac'>(-100)</span>
+
+| opposing_factions = 
+
+* [[Kromzek]] <span class='oppfac'>(100)</span>
+
+| related_quests = 
+
+* [[The First Arcane Test]]
+* [[The Second Arcane Test]]
+* [[Wisdom - The Long Battle]]
+* [[Wisdom - The Short Battle]]
+
+}}
+
+[[Category:Temple of Veeshan]]";
+
+        [TestMethod]
+        public void ParseSpecialsGozz()
+        {
+            var model = new MobInfoViewModel
+            {
+                Results = ResponsFromServer6
+            };
+            Assert.AreEqual("Gozzrem", model.Name);
+            Assert.AreEqual("Cleric", model.Class);
+            Assert.AreEqual(3, model.Specials.Count);
+            Assert.IsTrue(model.Specials.Any(a => a.Url.ToString() == "https://wiki.project1999.com/Rain_of_Molten_Lava"));
+            Assert.IsTrue(model.Specials.Any(a => a.Url.ToString() == "https://wiki.project1999.com/Wave_of_Heat"));
+        }
     }
 }

@@ -9,10 +9,26 @@ namespace EQTool.Services.Parsing
     {
         public static List<TestUriViewModel> ParseKnwonLoot(List<string> splits)
         {
+            return Parse("known_loot", splits);
+        }
+
+        private static List<TestUriViewModel> Parse(string name, List<string> splits)
+        {
             var ret = new List<TestUriViewModel>();
-            var specials = StripHTML(GetValue("known_loot", splits)).Split(new[] { '\n' }, System.StringSplitOptions.RemoveEmptyEntries);
-            foreach (var item in specials.Where(a => !string.IsNullOrWhiteSpace(a)))
+            var specials = StripHTML(GetValue(name, splits)).Split(new[] { '\n' }, System.StringSplitOptions.RemoveEmptyEntries).ToList();
+            var specialcopy = new List<string>();
+            foreach (var item in specials)
             {
+                var s = item.Split(',');
+                specialcopy.AddRange(s.Select(x => x.Trim()).Where(a => !string.IsNullOrWhiteSpace(a)));
+            }
+
+            foreach (var item in specialcopy.Where(a => !string.IsNullOrWhiteSpace(a)))
+            {
+                if (item.ToLower().Trim().Contains("casts:"))
+                {
+                    continue;
+                }
                 var indexof = item.IndexOf("{{");
                 if (indexof != -1)
                 {
@@ -66,6 +82,11 @@ namespace EQTool.Services.Parsing
             }
 
             return ret;
+        }
+
+        public static List<TestUriViewModel> ParseSpecials(List<string> splits)
+        {
+            return Parse("special", splits);
         }
 
         public static string StripHTML(string input)

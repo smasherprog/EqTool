@@ -13,15 +13,8 @@ namespace EQTool.Services.Spells.Log
         {
         }
 
-        public string GetDeadTarget(string linelog)
-        {
-            var date = linelog.Substring(1, 25);
-            if (DateTime.TryParse(date, out _))
-            {
-
-            }
-
-            var message = linelog.Substring(27);
+        public string GetDeadTarget(string message)
+        { 
             if (message.Contains(HasBeenSlainBy))
             {
                 var nameofthingindex = message.IndexOf(HasBeenSlainBy);

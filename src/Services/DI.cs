@@ -24,6 +24,7 @@ namespace EQTool.Services
             _ = builder.RegisterType<SpellWindowViewModel>().AsSelf().SingleInstance();
             _ = builder.RegisterType<LogParser>().AsSelf().SingleInstance();
             _ = builder.RegisterType<DPSWindowViewModel>().AsSelf().SingleInstance();
+            _ = builder.RegisterType<ZoneViewModel>().AsSelf().SingleInstance();
 
             return builder.Build();
         }

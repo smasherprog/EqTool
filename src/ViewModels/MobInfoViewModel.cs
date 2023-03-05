@@ -51,7 +51,7 @@ namespace EQTool.ViewModels
 
     public class MobInfoViewModel : INotifyPropertyChanged
     {
-        public string Title { get; set; } = "Mob Info";
+        public string Title { get; set; } = "Mob Info v" + App.Version;
         private string _Results = string.Empty;
 
         public string Results
@@ -365,34 +365,20 @@ namespace EQTool.ViewModels
             {
                 DamagePerHit = DamagePerHit.Split('\n')[0];
             }
-            var specials = StripHTML(GetValue("special", splits)).Split(new[] { ',', '\n' });
-            foreach (var item in specials)
+
+            var specialslist = MobInfoParsing.ParseSpecials(splits);
+            foreach (var item in specialslist)
             {
-                if (item.Contains("[["))
-                {
-                    var name = item.Replace("[[", string.Empty).Replace("]]", string.Empty).Trim('*').Trim();
-                    Specials.Add(new TestUriViewModel
-                    {
-                        Url = $"https://wiki.project1999.com/" + name.Replace(' ', '_'),
-                        Name = name
-                    });
-                }
-                else
-                {
-                    Specials.Add(new TestUriViewModel
-                    {
-                        Url = string.Empty,
-                        Name = item.Trim()
-                    });
-                }
+                Specials.Add(item);
             }
+
             var known_loot = MobInfoParsing.ParseKnwonLoot(splits);
             foreach (var item in known_loot)
             {
                 KnownLoot.Add(item);
             }
 
-            specials = StripHTML(GetValue("factions", splits)).Split(new[] { '\n' }, System.StringSplitOptions.RemoveEmptyEntries);
+            var specials = StripHTML(GetValue("factions", splits)).Split(new[] { '\n' }, System.StringSplitOptions.RemoveEmptyEntries);
             foreach (var item in specials)
             {
                 var indexof = item.IndexOf("[[");

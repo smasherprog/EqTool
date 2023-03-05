@@ -12,21 +12,17 @@ namespace EQTool.Services.Spells.Log
             this.activePlayer = activePlayer;
         }
 
-        public void MatchLevel(string linelog)
+        public void MatchLevel(string message)
         {
-            if (string.IsNullOrWhiteSpace(linelog) || linelog.Length >= 27)
+            if (message.StartsWith(YouHaveGainedALevel))
             {
-                var message = linelog.Substring(27);
-                if (message.StartsWith(YouHaveGainedALevel))
+                var levelstring = message.Replace(YouHaveGainedALevel, string.Empty).Trim().TrimEnd('!');
+                if (int.TryParse(levelstring, out var level))
                 {
-                    var levelstring = message.Replace(YouHaveGainedALevel, string.Empty).Trim().TrimEnd('!');
-                    if (int.TryParse(levelstring, out var level))
+                    var player = activePlayer.Player;
+                    if (player != null)
                     {
-                        var player = activePlayer.Player;
-                        if (player != null)
-                        {
-                            player.Level = level;
-                        }
+                        player.Level = level;
                     }
                 }
             }

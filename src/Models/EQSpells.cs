@@ -61,6 +61,19 @@ namespace EQTool.Models
             }
         }
 
+        private readonly Dictionary<string, List<Spell>> _WornOffSpells = new Dictionary<string, List<Spell>>(StringComparer.OrdinalIgnoreCase);
+        public Dictionary<string, List<Spell>> WornOffSpells
+        {
+            get
+            {
+                if (!_WornOffSpells.Any())
+                {
+                    BuildSpellInfo();
+                }
+                return _WornOffSpells;
+            }
+        }
+
         private readonly List<string> IgnoreSpellsList = new List<string>()
         {
             "Complete Heal",
@@ -152,10 +165,21 @@ namespace EQTool.Models
                             _CastOnYouSpells.Add(mappedspell.cast_on_you, new List<Spell>() { mappedspell });
                         }
                     }
+                    if (!string.IsNullOrWhiteSpace(mappedspell.spell_fades))
+                    {
+                        if (_WornOffSpells.TryGetValue(mappedspell.spell_fades, out var innerval))
+                        {
+                            _WornOffSpells[mappedspell.spell_fades].Add(mappedspell);
+                        }
+                        else
+                        {
+                            _WornOffSpells.Add(mappedspell.spell_fades, new List<Spell>() { mappedspell });
+                        }
+                    }
                 }
                 else
                 {
-                    Debug.WriteLine($"Spell {mappedspell.name} Ignored");
+                    // Debug.WriteLine($"Spell {mappedspell.name} Ignored");
                 }
             }
         }

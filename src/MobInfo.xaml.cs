@@ -1,12 +1,8 @@
 ﻿using EQTool.Models;
 using EQTool.Services;
-using EQTool.Services.Spells.Log;
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
-using System.Net;
-using System.Net.Http;
-using System.Web;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Navigation;
@@ -19,17 +15,18 @@ namespace EQTool
     public partial class MobInfo : Window
     {
         private readonly LogParser logParser;
-        private readonly ConLogParse conLogParse;
         private readonly ViewModels.MobInfoViewModel mobInfoViewModel;
         private readonly EQToolSettings settings;
         private readonly EQToolSettingsLoad toolSettingsLoad;
-        public MobInfo(LogParser logParser, ConLogParse conLogParse, EQToolSettings settings, EQToolSettingsLoad toolSettingsLoad)
+        private readonly WikiApi wikiApi;
+
+        public MobInfo(WikiApi wikiApi, LogParser logParser, EQToolSettings settings, EQToolSettingsLoad toolSettingsLoad)
         {
+            this.wikiApi = wikiApi;
             this.settings = settings;
             this.toolSettingsLoad = toolSettingsLoad;
             this.logParser = logParser;
-            this.conLogParse = conLogParse;
-            this.logParser.LineReadEvent += LogParser_LineReadEvent;
+            this.logParser.ConEvent += LogParser_ConEvent;
             DataContext = mobInfoViewModel = new ViewModels.MobInfoViewModel();
             InitializeComponent();
             WindowExtensions.AdjustWindow(settings.MobWindowState, this);
@@ -39,9 +36,21 @@ namespace EQTool
             LocationChanged += DPSMeter_LocationChanged;
         }
 
+        private void LogParser_ConEvent(object sender, LogParser.ConEventArgs e)
+        {
+            try
+            {
+                mobInfoViewModel.Results = wikiApi.GetData(e.Name);
+            }
+            catch (Exception ex)
+            {
+                mobInfoViewModel.ErrorResults = ex.Message;
+            }
+        }
+
         protected override void OnClosing(CancelEventArgs e)
         {
-            logParser.LineReadEvent -= LogParser_LineReadEvent;
+            logParser.ConEvent -= LogParser_ConEvent;
             SizeChanged -= DPSMeter_SizeChanged;
             StateChanged -= SpellWindow_StateChanged;
             LocationChanged -= DPSMeter_LocationChanged;
@@ -67,56 +76,7 @@ namespace EQTool
             WindowExtensions.SaveWindowState(settings.MobWindowState, this);
             toolSettingsLoad.Save(settings);
         }
-        private void LogParser_LineReadEvent(object sender, LogParser.LogParserEventArgs e)
-        {
-            var matched = conLogParse.ConMatch(e.Line);
-            if (!string.IsNullOrWhiteSpace(matched))
-            {
-                mobInfoViewModel.Results = string.Empty;
-                try
-                {
-                    var name = HttpUtility.UrlEncode(matched.Trim().Replace(' ', '_'));
-                    var url = $"https://wiki.project1999.com/{name}?action=raw";
-                    var res = App.httpclient.GetAsync(url).Result;
-                    if (res.StatusCode == System.Net.HttpStatusCode.OK)
-                    {
-                        var response = res.Content.ReadAsStringAsync().Result;
-                        if (response.StartsWith("#REDIRECT"))
-                        {
-                            name = response.Replace("#REDIRECT", string.Empty)?.Replace("[[:", string.Empty)?.Replace("[[", string.Empty)?.Replace("]]", string.Empty)?.Trim();
-                            name = HttpUtility.UrlEncode(name.Replace(' ', '_'));
-                            url = $"https://wiki.project1999.com/{name}?action=raw";
-                            res = App.httpclient.GetAsync(url).Result;
-                            if (res.StatusCode == System.Net.HttpStatusCode.OK)
-                            {
-                                mobInfoViewModel.Results = res.Content.ReadAsStringAsync().Result;
-                            }
-                        }
-                        else
-                        {
-                            mobInfoViewModel.Results = response;
-                        }
-                    }
-                }
-                catch (System.AggregateException er)
-                {
-                    if (er.InnerException != null && er.InnerException.GetType() == typeof(HttpRequestException))
-                    {
-                        var err = er.InnerException as HttpRequestException;
-                        if (err.InnerException?.GetType() == typeof(WebException))
-                        {
-                            var innererr = err.InnerException as WebException;
-                            mobInfoViewModel.ErrorResults = innererr.Message;
-                        }
-                        else
-                        {
 
-                            mobInfoViewModel.ErrorResults = err.Message;
-                        }
-                    }
-                }
-            }
-        }
         private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
         {
             _ = Process.Start(new ProcessStartInfo(e.Uri.AbsoluteUri));
