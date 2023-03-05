@@ -1,10 +1,15 @@
-﻿using System;
+﻿using Autofac;
+using EQTool.Models;
+using EQTool.Services;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net.Http;
 using System.Reflection;
 using System.Threading;
+using System.Windows;
 
 namespace EQTool
 {

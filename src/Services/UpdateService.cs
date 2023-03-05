@@ -114,7 +114,7 @@ namespace EQTool.Services
 
         public UpdateStatus ApplyUpdate(string parameter)
         {
-            if (string.IsNullOrWhiteSpace(parameter))
+            if (!string.IsNullOrWhiteSpace(parameter))
             {
                 if (parameter.Contains("ping"))
                 {

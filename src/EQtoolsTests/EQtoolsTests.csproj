@@ -148,7 +148,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EQTool.csproj">
-      <Project>{10e99313-7361-4503-a314-14bc052a6cac}</Project>
+      <Project>{10E99313-7361-4503-A314-14BC052A6CAC}</Project>
       <Name>EQTool</Name>
     </ProjectReference>
   </ItemGroup>

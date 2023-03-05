@@ -105,10 +105,6 @@ namespace EQTool
 
         private void CloseWindow(object sender, RoutedEventArgs e)
         {
-            if (settings.MobWindowState == null)
-            {
-                settings.MobWindowState = new Models.WindowState();
-            }
             settings.MobWindowState.Closed = true;
             SaveState();
             Close();

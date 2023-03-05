@@ -1,5 +1,13 @@
-﻿using System;
+﻿using EQTool.Models;
+using EQTool.Services;
+using EQTool.ViewModels;
 using System.ComponentModel;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Shapes;
+using static EQTool.ViewModels.MapViewModel;
 
 namespace EQTool
 {
@@ -20,12 +28,22 @@ namespace EQTool
             this.logParser = logParser;
             DataContext = this.mapViewModel = mapViewModel;
             Topmost = true;
-
             InitializeComponent();
+
             App.ThemeChangedEvent += App_ThemeChangedEvent;
             _ = mapViewModel.LoadDefaultMap(Map);
-            Map.Reset(Math.Max(mapViewModel.AABB.MaxWidth, mapViewModel.AABB.MaxHeight));
-            this.logParser.LineReadEvent += LogParser_LineReadEvent;
+            this.logParser.PlayerLocationEvent += LogParser_PlayerLocationEvent;
+            this.logParser.PlayerZonedEvent += LogParser_PlayerZonedEvent;
+        }
+
+        private void LogParser_PlayerZonedEvent(object sender, LogParser.PlayerZonedEventArgs e)
+        {
+            _ = mapViewModel.LoadMap(e.Zone, Map);
+        }
+
+        private void LogParser_PlayerLocationEvent(object sender, LogParser.PlayerLocationEventArgs e)
+        {
+            mapViewModel.UpdateLocation(e.Location, Map);
         }
 
         private void App_ThemeChangedEvent(object sender, App.ThemeChangeEventArgs e)
@@ -69,14 +87,15 @@ namespace EQTool
             WindowState = WindowState == System.Windows.WindowState.Maximized ? System.Windows.WindowState.Normal : System.Windows.WindowState.Maximized;
         }
 
+        private void SaveState()
+        {
+            WindowExtensions.SaveWindowState(settings.MapWindowState, this);
+            toolSettingsLoad.Save(settings);
+        }
+
         private void CloseWindow(object sender, RoutedEventArgs e)
         {
-            if (settings.MapWindowState == null)
-            {
-                settings.MapWindowState = new Models.WindowState();
-            }
-            settings.MapWindowState.Closed = true;
-            SaveState();
+            WindowExtensions.SaveWindowState(settings.MapWindowState, this);
             Close();
         }
 

@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Windows;
 
 namespace EQTool.Models
 {

@@ -126,8 +126,6 @@ namespace EQTool
             toolSettingsLoad.Save(settings);
         }
 
-
-
         private void PollUI(object sender, EventArgs e)
         {
             spellWindowViewModel.UpdateSpells();
@@ -150,10 +148,6 @@ namespace EQTool
 
         private void CloseWindow(object sender, RoutedEventArgs e)
         {
-            if (settings.SpellWindowState == null)
-            {
-                settings.SpellWindowState = new Models.WindowState();
-            }
             settings.SpellWindowState.Closed = true;
             SaveState();
             Close();
