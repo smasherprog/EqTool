@@ -5,7 +5,7 @@
     <Setting Name="ColorMode" Type="System.String" Scope="User">
       <Value Profile="(Default)">Light</Value>
     </Setting>
-    <Setting Name="GlobalFontSize" Type="System.Double" Scope="User">
+    <Setting Name="GlobalFontSize" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">12</Value>
     </Setting>
     <Setting Name="GlobalTriggerWindowOpacity" Type="System.Double" Scope="User">

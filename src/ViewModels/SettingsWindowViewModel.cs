@@ -28,7 +28,6 @@ namespace EQTool.ViewModels
             {
                 Zones.Add(item);
             }
-            FontSize = (int)settings.FontSize;
         }
 
         private ActivePlayer _ActivePlayer;
@@ -95,17 +94,6 @@ namespace EQTool.ViewModels
                 IsEqNotRunning = value;
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(IsEqNotRunning));
-            }
-        }
-
-        private int _FontSize;
-        public int FontSize
-        {
-            get => _FontSize;
-            set
-            {
-                _FontSize = value;
-                OnPropertyChanged();
             }
         }
 

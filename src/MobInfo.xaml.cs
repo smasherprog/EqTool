@@ -31,20 +31,8 @@ namespace EQTool
             this.conLogParse = conLogParse;
             this.logParser.LineReadEvent += LogParser_LineReadEvent;
             DataContext = mobInfoViewModel = new ViewModels.MobInfoViewModel();
-            Topmost = true;
-            if (settings.MobWindowState != null && WindowBounds.isPointVisibleOnAScreen(settings.MobWindowState.WindowRect))
-            {
-                Left = settings.MobWindowState.WindowRect.Left;
-                Top = settings.MobWindowState.WindowRect.Top;
-                Height = settings.MobWindowState.WindowRect.Height;
-                Width = settings.MobWindowState.WindowRect.Width;
-                WindowState = settings.MobWindowState.State;
-            }
             InitializeComponent();
-            if (settings.MobWindowState != null)
-            {
-                settings.MobWindowState.Closed = false;
-            }
+            WindowExtensions.AdjustWindow(settings.MobWindowState, this);
             SaveState();
             SizeChanged += DPSMeter_SizeChanged;
             StateChanged += SpellWindow_StateChanged;
@@ -76,18 +64,7 @@ namespace EQTool
         }
         private void SaveState()
         {
-            if (settings.MobWindowState == null)
-            {
-                settings.MobWindowState = new Models.WindowState();
-            }
-            settings.MobWindowState.WindowRect = new Rect
-            {
-                X = Left,
-                Y = Top,
-                Height = Height,
-                Width = Width
-            };
-            settings.MobWindowState.State = WindowState;
+            WindowExtensions.SaveWindowState(settings.MobWindowState, this);
             toolSettingsLoad.Save(settings);
         }
         private void LogParser_LineReadEvent(object sender, LogParser.LogParserEventArgs e)

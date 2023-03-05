@@ -35,17 +35,8 @@ namespace EQTool
             this.spellLogParse = spellLogParse;
             spellWindowViewModel.SpellList = new System.Collections.ObjectModel.ObservableCollection<UISpell>();
             DataContext = this.spellWindowViewModel = spellWindowViewModel;
-            Topmost = settings.TriggerWindowTopMost;
-            if (settings.SpellWindowState != null && WindowBounds.isPointVisibleOnAScreen(settings.SpellWindowState.WindowRect))
-            {
-                Left = settings.SpellWindowState.WindowRect.Left;
-                Top = settings.SpellWindowState.WindowRect.Top;
-                Height = settings.SpellWindowState.WindowRect.Height;
-                Width = settings.SpellWindowState.WindowRect.Width;
-                WindowState = settings.SpellWindowState.State;
-            }
             InitializeComponent();
-
+            WindowExtensions.AdjustWindow(settings.SpellWindowState, this);
             UITimer = new System.Timers.Timer(1000);
             UITimer.Elapsed += PollUI;
             UITimer.Enabled = true;
@@ -59,10 +50,6 @@ namespace EQTool
             view.IsLiveSorting = true;
             view.LiveSortingProperties.Add(nameof(UISpell.SecondsLeftOnSpell));
             this.toolSettingsLoad = toolSettingsLoad;
-            if (settings.SpellWindowState != null)
-            {
-                settings.SpellWindowState.Closed = false;
-            }
             SaveState();
             SizeChanged += DPSMeter_SizeChanged;
             StateChanged += SpellWindow_StateChanged;
@@ -120,18 +107,7 @@ namespace EQTool
 
         private void SaveState()
         {
-            if (settings.SpellWindowState == null)
-            {
-                settings.SpellWindowState = new Models.WindowState();
-            }
-            settings.SpellWindowState.WindowRect = new Rect
-            {
-                X = Left,
-                Y = Top,
-                Height = Height,
-                Width = Width
-            };
-            settings.SpellWindowState.State = WindowState;
+            WindowExtensions.SaveWindowState(settings.SpellWindowState, this);
             toolSettingsLoad.Save(settings);
         }
 

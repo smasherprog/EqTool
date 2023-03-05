@@ -32,6 +32,9 @@
                         <Button Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="openspells" ToolTip="Open Spells/Trigger Window">
                             <Image Source="pack://application:,,,/wizard.png"/>
                         </Button>
+                        <Button Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="opendps" ToolTip="Open DPS Window">
+                            <Image Source="pack://application:,,,/dps.png"/>
+                        </Button>
                         <Button Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="openmap" ToolTip="Open Map Window">
                             <Image Source="pack://application:,,,/map.png"/>
                         </Button>

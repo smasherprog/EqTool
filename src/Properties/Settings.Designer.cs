@@ -38,9 +38,9 @@ namespace EQTool.Properties {
         [global::System.Configuration.UserScopedSettingAttribute()]
         [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
         [global::System.Configuration.DefaultSettingValueAttribute("12")]
-        public double GlobalFontSize {
+        public int GlobalFontSize {
             get {
-                return ((double)(this["GlobalFontSize"]));
+                return ((int)(this["GlobalFontSize"]));
             }
             set {
                 this["GlobalFontSize"] = value;

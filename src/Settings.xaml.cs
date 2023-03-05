@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Threading;
@@ -30,9 +31,16 @@ namespace EQTool
         private readonly IAppDispatcher appDispatcher;
         private readonly LogParser logParser;
 
-        public Settings(LogParser logParser, IAppDispatcher appDispatcher, DPSLogParse dPSLogParse, EQSpells spells, EQToolSettings settings, EQToolSettingsLoad toolSettingsLoad, SettingsWindowViewModel settingsWindowData, SpellWindowViewModel spellWindowViewModel)
+        public Settings(
+            LogParser logParser,
+            IAppDispatcher appDispatcher,
+            DPSLogParse dPSLogParse,
+            EQSpells spells,
+            EQToolSettings settings,
+            EQToolSettingsLoad toolSettingsLoad,
+            SettingsWindowViewModel settingsWindowData,
+            SpellWindowViewModel spellWindowViewModel)
         {
-            Height = 200;
             this.logParser = logParser;
             this.appDispatcher = appDispatcher;
             this.dPSLogParse = dPSLogParse;
@@ -76,22 +84,11 @@ namespace EQTool
             if (releasemode)
             {
                 DebuggingStack.Visibility = Visibility.Collapsed;
-                if (SettingsWindowData.NotMissingConfiguration)
-                {
-                    Height = 620;
-                }
-            }
-            else if (SettingsWindowData.NotMissingConfiguration)
-            {
-                Height = 720;
             }
         }
 
         private void SaveConfig()
         {
-            settings.FontSize = Properties.Settings.Default.GlobalFontSize;
-            settings.GlobalTriggerWindowOpacity = Properties.Settings.Default.GlobalTriggerWindowOpacity;
-            settings.GlobalDPSWindowOpacity = Properties.Settings.Default.GlobalDPSWindowOpacity;
             toolSettingsLoad.Save(settings);
             Properties.Settings.Default.Save();
         }
@@ -125,10 +122,6 @@ namespace EQTool
                     _ = spellbyclassselection.SelectedItems.Add(item);
                 }
             }
-            if (SettingsWindowData.NotMissingConfiguration)
-            {
-                Height = 650;
-            }
         }
 
         private bool IsEqRunning()
@@ -139,15 +132,10 @@ namespace EQTool
         private void TryCheckLoggingEnabled()
         {
             SettingsWindowData.IsLoggingEnabled = FindEq.TryCheckLoggingEnabled(settings.DefaultEqDirectory) ?? false;
-            if (SettingsWindowData.NotMissingConfiguration)
-            {
-                Height = 650;
-            }
         }
 
         private void fontsizescombobox_SelectionChanged(object sender, System.Windows.Controls.SelectionChangedEventArgs e)
         {
-            Properties.Settings.Default.GlobalFontSize = SettingsWindowData.FontSize;
             SaveConfig();
         }
 
@@ -203,33 +191,31 @@ namespace EQTool
             TryCheckLoggingEnabled();
         }
 
-        private void GlobalTriggerWindowOpacityValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
+        private void SaveSettings(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            settings.GlobalTriggerWindowOpacity = Properties.Settings.Default.GlobalTriggerWindowOpacity = (sender as Slider).Value;
-        }
-        private void GlobalDPSWindowOpacityValueChanged(object sender, RoutedPropertyChangedEventArgs<double> e)
-        {
-            settings.GlobalDPSWindowOpacity = Properties.Settings.Default.GlobalDPSWindowOpacity = (sender as Slider).Value;
+            SaveConfig();
         }
 
-        private void YouSpells_Checked(object sender, RoutedEventArgs e)
+        private void DamageAlwaysOntop_Checked(object sender, RoutedEventArgs e)
         {
-            settings.YouOnlySpells = true;
+            var s = sender as System.Windows.Controls.CheckBox;
+            settings.DpsWindowState.TopMost = s.IsChecked ?? false;
+
+            SaveConfig();
         }
 
-        private void YouSpells_Unchecked(object sender, RoutedEventArgs e)
+        private void YouSpells_Click(object sender, RoutedEventArgs e)
         {
-            settings.YouOnlySpells = false;
+            var s = sender as System.Windows.Controls.CheckBox;
+            settings.YouOnlySpells = s.IsChecked ?? false;
+            SaveConfig();
         }
 
-        private void GuessSpells_Checked(object sender, RoutedEventArgs e)
+        private void GuessSpells_Click(object sender, RoutedEventArgs e)
         {
-            settings.BestGuessSpells = true;
-        }
-
-        private void GuessSpells_Unchecked(object sender, RoutedEventArgs e)
-        {
-            settings.BestGuessSpells = false;
+            var s = sender as System.Windows.Controls.CheckBox;
+            settings.BestGuessSpells = s.IsChecked ?? false;
+            SaveConfig();
         }
 
         private void testspellsclicked(object sender, RoutedEventArgs e)
@@ -272,7 +258,7 @@ namespace EQTool
                 {
                     player.ShowSpellsForClasses.Add((PlayerClasses)Enum.Parse(typeof(PlayerClasses), item.ToString()));
                 }
-                toolSettingsLoad.Save(settings);
+                SaveConfig();
             }
         }
 
@@ -288,11 +274,11 @@ namespace EQTool
             var player = SettingsWindowData.ActivePlayer.Player;
             if (player != null)
             {
-                toolSettingsLoad.Save(settings);
                 var t = DateTime.Now;
                 var format = "ddd MMM dd HH:mm:ss yyyy";
                 var msg = "[" + t.ToString(format) + "] You have entered " + player.Zone;
-                logParser.Push(new LogParser.LogParserEventArgs { Line = msg });
+                logParser.Push(msg);
+                SaveConfig();
             }
         }
 
@@ -313,7 +299,23 @@ namespace EQTool
                     var fightlist = new List<KeyValuePair<string, DPSParseMatch>>();
                     foreach (var item in fightlines)
                     {
-                        var match = dPSLogParse.Match(item);
+                        if (item == null || item.Length < 27)
+                        {
+                            continue;
+                        }
+
+                        var date = item.Substring(1, 24);
+                        var message = item.Substring(27).Trim();
+                        var format = "ddd MMM dd HH:mm:ss yyyy";
+                        var timestamp = DateTime.Now;
+                        try
+                        {
+                            timestamp = DateTime.ParseExact(date, format, CultureInfo.InvariantCulture);
+                        }
+                        catch (FormatException)
+                        {
+                        }
+                        var match = dPSLogParse.Match(message, timestamp);
                         if (match != null)
                         {
                             fightlist.Add(new KeyValuePair<string, DPSParseMatch>(item, match));
@@ -340,7 +342,7 @@ namespace EQTool
                                 var msgwithout = line.Substring(indexline);
                                 var format = "ddd MMM dd HH:mm:ss yyyy";
                                 msgwithout = "[" + t.ToString(format) + msgwithout;
-                                logParser.Push(new LogParser.LogParserEventArgs { Line = msgwithout });
+                                logParser.Push(msgwithout);
                             }
                         }
                         Thread.Sleep(100);
@@ -359,8 +361,8 @@ namespace EQTool
         {
             var format = "ddd MMM dd HH:mm:ss yyyy";
             var d = DateTime.Now;
-            var line = "[" + d.ToString(format) + "] Ayillish regards you indifferently -- You could probably win this fight.";
-            logParser.Push(new LogParser.LogParserEventArgs { Line = line });
+            var line = "[" + d.ToString(format) + "] Gozzrem regards you indifferently -- You could probably win this fight.";
+            logParser.Push(line);
         }
 
         private void textmapclicked(object sender, RoutedEventArgs e)
@@ -394,14 +396,9 @@ namespace EQTool
                 var format = "ddd MMM dd HH:mm:ss yyyy";
                 var d = DateTime.Now;
                 var line = "[" + d.ToString(format) + "]" + msg;
-                logParser.Push(new LogParser.LogParserEventArgs { Line = line });
+                logParser.Push(line);
                 Thread.Sleep(sleeptime);
             }
-        }
-
-        private void SaveAndClose(object sender, RoutedEventArgs e)
-        {
-            Close();
         }
     }
 }

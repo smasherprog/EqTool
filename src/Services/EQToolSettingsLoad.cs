@@ -1,6 +1,4 @@
-﻿using EQTool.Models;
-using Newtonsoft.Json;
-using System.IO;
+﻿using System.IO;
 
 namespace EQTool.Services
 {
@@ -47,12 +45,33 @@ namespace EQTool.Services
             {
                 DefaultEqDirectory = findEq.LoadEQPath(),
                 BestGuessSpells = true,
-                FontSize = 12,
-                GlobalTriggerWindowOpacity = .5,
-                GlobalDPSWindowOpacity = .5,
                 YouOnlySpells = false,
                 Players = new System.Collections.Generic.List<PlayerInfo>(),
-                TriggerWindowTopMost = true
+                DpsWindowState = new WindowState
+                {
+                    Closed = false,
+                    State = System.Windows.WindowState.Normal,
+                    TopMost = true
+                },
+                MapWindowState = new WindowState
+                {
+                    Closed = false,
+                    State = System.Windows.WindowState.Normal,
+                    TopMost = true
+                },
+                MobWindowState = new WindowState
+                {
+                    Closed = false,
+                    State = System.Windows.WindowState.Normal,
+                    TopMost = true
+                },
+                SpellWindowState = new WindowState
+                {
+                    Closed = false,
+                    State = System.Windows.WindowState.Normal,
+                    TopMost = true
+                },
+                Theme = Themes.Light
             };
             return ret;
         }

@@ -9,6 +9,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
+using static EQTool.ViewModels.MapViewModel;
 
 namespace EQTool
 {
@@ -17,22 +18,65 @@ namespace EQTool
     /// </summary>
     public partial class MappingWindow : Window
     {
-
         private readonly LogParser logParser;
         private readonly MapViewModel mapViewModel;
-        private readonly LocationParser locationParser;
+        private readonly EQToolSettings settings;
+        private readonly EQToolSettingsLoad toolSettingsLoad;
 
-        public MappingWindow(MapViewModel mapViewModel, LocationParser locationParser, LogParser logParser)
+        public MappingWindow(MapViewModel mapViewModel, LogParser logParser, EQToolSettings settings, EQToolSettingsLoad toolSettingsLoad)
         {
-            this.locationParser = locationParser;
+            this.settings = settings;
+            this.toolSettingsLoad = toolSettingsLoad;
             this.logParser = logParser;
             DataContext = this.mapViewModel = mapViewModel;
             Topmost = true;
+
             InitializeComponent();
+            WindowExtensions.AdjustWindow(settings.MapWindowState, this);
             App.ThemeChangedEvent += App_ThemeChangedEvent;
-            _ = mapViewModel.LoadDefaultMap(Map); 
-            Map.Reset(Math.Max(mapViewModel.AABB.MaxWidth, mapViewModel.AABB.MaxHeight));
-            this.logParser.LineReadEvent += LogParser_LineReadEvent;
+            _ = mapViewModel.LoadDefaultMap(Map);
+            Map.Reset();
+            this.logParser.PlayerLocationEvent += LogParser_PlayerLocationEvent;
+            this.logParser.PlayerZonedEvent += LogParser_PlayerZonedEvent;
+            SaveState();
+            SizeChanged += Window_SizeChanged;
+            StateChanged += Window_StateChanged;
+            LocationChanged += Window_LocationChanged;
+        }
+
+        private void LogParser_PlayerLocationEvent(object sender, LogParser.PlayerLocationEventArgs e)
+        {
+            mapViewModel.UpdateLocation(e.Location, Map);
+        }
+
+        private void LogParser_PlayerZonedEvent(object sender, LogParser.PlayerZonedEventArgs e)
+        {
+            var matched = ZoneParser.TranslateToMapName(e.Zone);
+            if (mapViewModel.LoadMap(matched, Map))
+            {
+                Map.Reset();
+            }
+        }
+
+        private void Window_StateChanged(object sender, EventArgs e)
+        {
+            SaveState();
+        }
+
+        private void Window_LocationChanged(object sender, EventArgs e)
+        {
+            SaveState();
+        }
+
+        private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            SaveState();
+        }
+
+        private void SaveState()
+        {
+            WindowExtensions.SaveWindowState(settings.MapWindowState, this);
+            toolSettingsLoad.Save(settings);
         }
 
         private void App_ThemeChangedEvent(object sender, App.ThemeChangeEventArgs e)
@@ -41,14 +85,14 @@ namespace EQTool
             {
                 if (item is Line l)
                 {
-                    var c = l.Tag as EQMapColor;
-                    l.Stroke = new SolidColorBrush(e.Theme == Themes.Light ? c.LightColor : c.DarkColor);
+                    var c = l.Tag as Mapdata;
+                    l.Stroke = new SolidColorBrush(e.Theme == Themes.Light ? c.MapColor.LightColor : c.MapColor.DarkColor);
                 }
                 else if (item is TextBlock t)
                 {
 
-                    var c = t.Tag as EQMapColor;
-                    t.Foreground = new SolidColorBrush(e.Theme == Themes.Light ? c.LightColor : c.DarkColor);
+                    var c = t.Tag as Mapdata;
+                    t.Foreground = new SolidColorBrush(e.Theme == Themes.Light ? c.MapColor.LightColor : c.MapColor.DarkColor);
                 }
             }
         }
@@ -56,26 +100,9 @@ namespace EQTool
         protected override void OnClosing(CancelEventArgs e)
         {
             App.ThemeChangedEvent -= App_ThemeChangedEvent;
-            logParser.LineReadEvent -= LogParser_LineReadEvent;
+            logParser.PlayerLocationEvent -= LogParser_PlayerLocationEvent;
+            logParser.PlayerZonedEvent -= LogParser_PlayerZonedEvent;
             base.OnClosing(e);
-        }
-
-        private void LogParser_LineReadEvent(object sender, LogParser.LogParserEventArgs e)
-        {
-            var pos = locationParser.Match(e.Line);
-            if (pos.HasValue)
-            {
-                mapViewModel.UpdateLocation(pos.Value, Map);
-            }
-            else
-            {
-                var matched = ZoneParser.Match(e.Line);
-                matched = ZoneParser.TranslateToMapName(matched);
-                if (mapViewModel.LoadMap(matched, Map))
-                {
-                    Map.Reset(Math.Max(mapViewModel.AABB.MaxWidth, mapViewModel.AABB.MaxHeight));
-                }
-            }
         }
 
         public void DragWindow(object sender, MouseButtonEventArgs args)
@@ -95,6 +122,12 @@ namespace EQTool
 
         private void CloseWindow(object sender, RoutedEventArgs e)
         {
+            if (settings.MapWindowState == null)
+            {
+                settings.MapWindowState = new Models.WindowState();
+            }
+            settings.MapWindowState.Closed = true;
+            SaveState();
             Close();
         }
 
