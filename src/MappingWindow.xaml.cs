@@ -1,15 +1,5 @@
-﻿using EQTool.Models;
-using EQTool.Services;
-using EQTool.Services.Map;
-using EQTool.ViewModels;
-using System;
+﻿using System;
 using System.ComponentModel;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Shapes;
-using static EQTool.ViewModels.MapViewModel;
 
 namespace EQTool
 {
@@ -32,51 +22,10 @@ namespace EQTool
             Topmost = true;
 
             InitializeComponent();
-            WindowExtensions.AdjustWindow(settings.MapWindowState, this);
             App.ThemeChangedEvent += App_ThemeChangedEvent;
             _ = mapViewModel.LoadDefaultMap(Map);
-            Map.Reset();
-            this.logParser.PlayerLocationEvent += LogParser_PlayerLocationEvent;
-            this.logParser.PlayerZonedEvent += LogParser_PlayerZonedEvent;
-            SaveState();
-            SizeChanged += Window_SizeChanged;
-            StateChanged += Window_StateChanged;
-            LocationChanged += Window_LocationChanged;
-        }
-
-        private void LogParser_PlayerLocationEvent(object sender, LogParser.PlayerLocationEventArgs e)
-        {
-            mapViewModel.UpdateLocation(e.Location, Map);
-        }
-
-        private void LogParser_PlayerZonedEvent(object sender, LogParser.PlayerZonedEventArgs e)
-        {
-            var matched = ZoneParser.TranslateToMapName(e.Zone);
-            if (mapViewModel.LoadMap(matched, Map))
-            {
-                Map.Reset();
-            }
-        }
-
-        private void Window_StateChanged(object sender, EventArgs e)
-        {
-            SaveState();
-        }
-
-        private void Window_LocationChanged(object sender, EventArgs e)
-        {
-            SaveState();
-        }
-
-        private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            SaveState();
-        }
-
-        private void SaveState()
-        {
-            WindowExtensions.SaveWindowState(settings.MapWindowState, this);
-            toolSettingsLoad.Save(settings);
+            Map.Reset(Math.Max(mapViewModel.AABB.MaxWidth, mapViewModel.AABB.MaxHeight));
+            this.logParser.LineReadEvent += LogParser_LineReadEvent;
         }
 
         private void App_ThemeChangedEvent(object sender, App.ThemeChangeEventArgs e)
