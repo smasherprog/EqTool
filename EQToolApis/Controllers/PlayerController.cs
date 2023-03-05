@@ -1,10 +1,8 @@
-﻿using EQToolApi.DB;
-using EQToolApi.DB.Models;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web.Http;
+﻿using EQToolApis.DB;
+using EQToolApis.DB.Models;
+using Microsoft.AspNetCore.Mvc;
 
-namespace EQToolApi.Controllers
+namespace EQToolApis.Controllers
 {
     public class PlayerRequest
     {
@@ -18,23 +16,28 @@ namespace EQToolApi.Controllers
         public int Level { get; set; }
     }
 
-    public class PlayerController : ApiController
+    [Route("api/player")]
+    public class PlayerController : ControllerBase
     {
-        private readonly EQToolContext dbcontext = new EQToolContext();
+        private readonly EQToolContext dbcontext;
+        public PlayerController(EQToolContext dbcontext)
+        {
+            this.dbcontext = dbcontext;
+        }
 
-        [Route("api/player/getall")]
+        [Route("getall")]
         public List<Player> Get()
         {
             return dbcontext.Players.ToList();
         }
 
-        [Route("api/player/getbyname")]
-        public Player GetGetByName([FromUri] PlayerRequest playerRequest)
+        [Route("getbyname")]
+        public Player GetGetByName([FromQuery] PlayerRequest playerRequest)
         {
             return dbcontext.Players.FirstOrDefault(a => a.Name == playerRequest.Name && a.Server == playerRequest.Server);
         }
 
-        [Route("api/player/getbynames"), HttpPost]
+        [Route("getbynames"), HttpPost]
         public List<Player> GetByNames([FromBody] List<PlayerRequest> models)
         {
             var ret = new List<Player>();
@@ -47,7 +50,7 @@ namespace EQToolApi.Controllers
             return ret;
         }
 
-        [Route("api/player/upsertplayer"), HttpPost]
+        [Route("upsertplayer"), HttpPost]
         public void Update([FromBody] Player model)
         {
             var p = dbcontext.Players.FirstOrDefault(a => a.Name == model.Name && a.Server == model.Server);
@@ -60,12 +63,6 @@ namespace EQToolApi.Controllers
                 p.Level = model.Level;
             }
             _ = dbcontext.SaveChanges();
-        }
-
-        protected override void Dispose(bool disposing)
-        {
-            base.Dispose(disposing);
-            dbcontext.Dispose();
         }
     }
 }
