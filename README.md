@@ -40,6 +40,7 @@ Features:
 
 <h4>TO DO List</h4>
 <ul>
+<li>Fix overlapping Map on window</li>
 <li>Determine pet level based on the maxhit and add to the DPS window</li>
 <li>Add location to mouse hover on map</li>
 <li>Seive Counter</li>
