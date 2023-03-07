@@ -66,6 +66,16 @@ Features:
 </ul>
 
 <h3>Faqs</h3>
+<h4>Why does chrome warn me?</h4> 
+<img width="359" alt="image" src="https://user-images.githubusercontent.com/3393733/223326270-a079946d-57dc-41dd-a58e-f46a0c776b54.png">
+<ul>
+<li>Ignore it and download!</li> 
+</ul>
+<h4>Why does the program not start?</h4> 
+<img width="944" alt="image" src="https://user-images.githubusercontent.com/3393733/223326377-7cab3be5-bee5-4029-b513-0e8b2ff0bb78.png">
+<ul>
+<li>In the above image, you are running the exe from INSIDE the zip. You must first EXTRACT the exe, then you can run it!</li> 
+</ul>
 <h4>Why does my settings window say Configuration missing?</h4> 
 <img alt="image" src="https://user-images.githubusercontent.com/3393733/222051822-fc4b750d-2efa-4eb9-bc00-589d3cc5b781.png">
 <ul>
