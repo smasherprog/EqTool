@@ -6,7 +6,7 @@
 Instructions:
 <ul>
 <li>
-<h2>Download the latest <a href="https://github.com/smasherprog/EqTool/releases/download/1.0.1.869/EQTool_1.0.1.869.zip">EQTool.zip</a>, Unzip it and run EQTool.exe</h2>
+<h2>Download the latest <a href="https://github.com/smasherprog/EqTool/releases/download/1.0.1.874/EQTool_1.0.1.874.zip">EQTool.zip</a>, Unzip it and run EQTool.exe</h2>
 </li>
 <li>The program runs in the system tray. Look there to reopen spells window or settings! Program will check for updates on startup and self update if required, but if you want to check for a new Update, use the menu in the system tray!</li>
 </ul>
@@ -33,15 +33,18 @@ Features:
 <li>Timer Cancel Crypt Camp</li>
 <li>Cancel Timer Crypt Camp</li>
 </ul>
-<img width="806" alt="image" src="https://user-images.githubusercontent.com/3393733/221380745-7b584b8d-cc75-4132-aab3-4d632d34bfbe.png">
-
-<img width="808" alt="image" src="https://user-images.githubusercontent.com/3393733/215292103-89c83b08-c495-4b65-806e-beec92ade86e.png">
+<img width="1150" alt="image" src="https://user-images.githubusercontent.com/3393733/222487918-bf41211b-439e-4d2e-8b4d-e2a5f09a2bbd.png">
 
 <h4>System Tray Icon</h4>
 <img width="152" alt="image" src="https://user-images.githubusercontent.com/3393733/212717141-6e26b9af-660a-493d-9f73-2c3464b7c224.png">
 
 <h4>TO DO List</h4>
 <ul>
+<li>Fix overlapping Map on window</li>
+<li>Determine pet level based on the maxhit and add to the DPS window</li>
+<li>Add location to mouse hover on map</li>
+<li>Seive Counter</li>
+<li>Add Related Quests to Mob info.</li>
 <li>Enable EQ logging automatically if EQ is not running.</li>
 <li>Add option to auto prune eq log file. EQ logfiles can cause issues with EQ itself if they get too large!</li>
 <li>Self update when NOT in use</li>
@@ -52,7 +55,6 @@ Features:
 <li>Automatically add timer when named npc dies. Use Wiki for notable npc names</li>
 <li>Add donals BP to timers list</li> 
 <li>Rename Application to Pig Parse</li>
-<li>Add ability to delete individual spells and entire section</li>
 <li>Enrage alert/advanced alert.</li>
 <li>charm break alert</li>
 <li>charm spell effect removal</li>
@@ -64,6 +66,21 @@ Features:
 </ul>
 
 <h3>Faqs</h3>
+<h4>Why does chrome warn me?</h4> 
+<img width="359" alt="image" src="https://user-images.githubusercontent.com/3393733/223326270-a079946d-57dc-41dd-a58e-f46a0c776b54.png">
+<ul>
+<li>Ignore it and download!</li> 
+</ul>
+<h4>Why does windows pop up a blue screen?</h4> 
+<img width="427" alt="image" src="https://user-images.githubusercontent.com/3393733/223328194-0946d278-09dc-4504-bed8-172d63fa98e0.png">
+<ul>
+<li>Press More info and "Run anyway"</li> 
+</ul>
+<h4>Why does the program not start?</h4> 
+<img width="944" alt="image" src="https://user-images.githubusercontent.com/3393733/223326377-7cab3be5-bee5-4029-b513-0e8b2ff0bb78.png">
+<ul>
+<li>In the above image, you are running the exe from INSIDE the zip. You must first EXTRACT the exe, then you can run it!</li> 
+</ul>
 <h4>Why does my settings window say Configuration missing?</h4> 
 <img alt="image" src="https://user-images.githubusercontent.com/3393733/222051822-fc4b750d-2efa-4eb9-bc00-589d3cc5b781.png">
 <ul>
@@ -109,4 +126,11 @@ Features:
 <h4>Why do the see spell effects for others even though I checked the box 'Only show spells that effect you?'</h4> 
 <ul>
 <li>EQTool will ALWAYS show detrimental spell effects on everyone. The reason is that EQTool CANNOT tell the difference between an NPC and a PC. This means that in order to show spell effects on NPC, like slow/tash, etc, i must show ALL detrimental spell effects on all NPS/PC alike.</li> 
+</ul>
+
+<h4>How do I remove an NPC/Player from the spell list?</h4> 
+<img width="218" alt="image" src="https://user-images.githubusercontent.com/3393733/222474771-41cc3276-9a9e-4a30-b868-5fb4d0b87de4.png">
+<ul>
+<li>This can happen for many reasons. The most common being that they left the group and you want to remove them from the list.</li>
+<li>Click the Trashcan next to the next and that NPC/Player will be removed from the list. This is a one-time action and if you cast on them again, they will reappear.</li> 
 </ul>
