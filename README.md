@@ -41,7 +41,7 @@ Features:
 <h4>TO DO List</h4>
 <ul>
 <li>Release to single exe, not a zip</li>
-<li>Support eq running from program files (without running as admin) log files gogo AppData/Local/VirtualStore</li>
+<li>Support eq running from program files (without running as admin) log files goto AppData/Local/VirtualStore</li>
 <li>Fix overlapping Map on window</li>
 <li>Determine pet level based on the maxhit and add to the DPS window</li>
 <li>Add location to mouse hover on map</li>
