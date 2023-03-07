@@ -71,6 +71,11 @@ Features:
 <ul>
 <li>Ignore it and download!</li> 
 </ul>
+<h4>Why does windows pop up a blue screen?</h4> 
+<img width="427" alt="image" src="https://user-images.githubusercontent.com/3393733/223328194-0946d278-09dc-4504-bed8-172d63fa98e0.png">
+<ul>
+<li>Press More info and "Run anyway"</li> 
+</ul>
 <h4>Why does the program not start?</h4> 
 <img width="944" alt="image" src="https://user-images.githubusercontent.com/3393733/223326377-7cab3be5-bee5-4029-b513-0e8b2ff0bb78.png">
 <ul>
