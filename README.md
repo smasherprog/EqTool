@@ -10,6 +10,8 @@ Instructions:
 </li>
 <li>The program runs in the system tray. Look there to reopen spells window or settings! Program will check for updates on startup and self update if required, but if you want to check for a new Update, use the menu in the system tray!</li>
 </ul>
+<h4>Knwon Issues:</h4>
+<p>Running everquest from program files is not supported currently. This is currently being worked on and will be fixed no later than 3/11/23</p>
 <h5>Why the pig?</h5>
 <p>https://discord.gg/nSrz8hAwxM</p>
 Features:
@@ -40,6 +42,7 @@ Features:
 
 <h4>TO DO List</h4>
 <ul>
+<li>Support running from program files directory.</li>
 <li>Release to single exe, not a zip</li>
 <li>Support eq running from program files (without running as admin) log files goto AppData/Local/VirtualStore</li>
 <li>Fix overlapping Map on window</li>
