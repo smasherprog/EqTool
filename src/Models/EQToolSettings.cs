@@ -14,6 +14,7 @@ namespace EQTool.Models
     public class EQToolSettings
     {
         public string DefaultEqDirectory { get; set; }
+        public string EqLogDirectory { get; set; }
 
         public WindowState SpellWindowState { get; set; }
 

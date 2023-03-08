@@ -1,8 +1,4 @@
-﻿using EQTool.Models;
-using EQTool.Services;
-using EQTool.Services.Spells.Log;
-using EQTool.ViewModels;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -11,9 +7,6 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Forms;
 
 namespace EQTool
 {
@@ -101,6 +94,12 @@ namespace EQTool
 
         private void TryUpdateSettings()
         {
+            var logfounddata = FindEq.GetLogFileLocation(new FindEq.FindEQData { EqBaseLocation = settings.DefaultEqDirectory, EQlogLocation = settings.EqLogDirectory });
+            if (logfounddata?.Found == true)
+            {
+                settings.EqLogDirectory = logfounddata.Location;
+                SettingsWindowData.EqLogPath = logfounddata.Location;
+            }
             SettingsWindowData.Update();
             BestGuessSpells.IsChecked = settings.BestGuessSpells;
             YouSpellsOnly.IsChecked = settings.YouOnlySpells;

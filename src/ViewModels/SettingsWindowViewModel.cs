@@ -43,6 +43,17 @@ namespace EQTool.ViewModels
             }
         }
 
+        private string _EqLogPath = string.Empty;
+        public string EqLogPath
+        {
+            get => _EqLogPath;
+            set
+            {
+                _EqLogPath = value;
+                OnPropertyChanged(); 
+            }
+        }
+
         private string _EqPath = string.Empty;
         public string EqPath
         {

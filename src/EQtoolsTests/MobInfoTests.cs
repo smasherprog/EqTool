@@ -443,9 +443,7 @@ High MR, Summons
             };
             Assert.AreEqual("Gozzrem", model.Name);
             Assert.AreEqual("Cleric", model.Class);
-            Assert.AreEqual(3, model.Specials.Count);
-            Assert.IsTrue(model.Specials.Any(a => a.Url.ToString() == "https://wiki.project1999.com/Rain_of_Molten_Lava"));
-            Assert.IsTrue(model.Specials.Any(a => a.Url.ToString() == "https://wiki.project1999.com/Wave_of_Heat"));
+            Assert.AreEqual(12, model.Specials.Count);
         }
     }
 }

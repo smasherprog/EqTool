@@ -4871,7 +4871,7 @@ namespace TGASharpLib
 
             try
             {
-                using (var FS = new FileStream(filename, FileMode.Open))
+                using (var FS = new FileStream(filename, FileMode.Open, FileAccess.Read))
                 {
                     return LoadFunc(FS);
                 }
