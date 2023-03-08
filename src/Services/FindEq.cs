@@ -69,8 +69,6 @@ namespace EQTool.Services
                                     HasCharUiFiles = true
                                 });
                             }
-
-
                         }
                     }
                 }));
