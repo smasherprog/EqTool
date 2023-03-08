@@ -104,6 +104,12 @@ namespace EQTool
 
         private void TryUpdateSettings()
         {
+            var logfounddata = FindEq.GetLogFileLocation(new FindEq.FindEQData { EqBaseLocation = settings.DefaultEqDirectory, EQlogLocation = settings.EqLogDirectory });
+            if (logfounddata?.Found == true)
+            {
+                settings.EqLogDirectory = logfounddata.Location;
+                SettingsWindowData.EqLogPath = logfounddata.Location;
+            }
             SettingsWindowData.Update();
             BestGuessSpells.IsChecked = settings.BestGuessSpells;
             YouSpellsOnly.IsChecked = settings.YouOnlySpells;
@@ -129,6 +135,7 @@ namespace EQTool
             {
                 Height = 650;
             }
+            SaveConfig();
         }
 
         private bool IsEqRunning()

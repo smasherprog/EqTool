@@ -15,6 +15,7 @@ namespace EQTool.Models
         public double FontSize { get; set; }
 
         public string DefaultEqDirectory { get; set; }
+        public string EqLogDirectory { get; set; }
 
         public WindowState SpellWindowState { get; set; }
 

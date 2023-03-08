@@ -245,10 +245,12 @@ namespace EQTool.Services
 
         private void Poll(object sender, EventArgs e)
         {
-            if (!FindEq.HasLogFiles(settings.DefaultEqDirectory))
+            var logfounddata = FindEq.GetLogFileLocation(new FindEq.FindEQData { EqBaseLocation = settings.DefaultEqDirectory, EQlogLocation = settings.EqLogDirectory });
+            if (logfounddata == null && logfounddata.Found)
             {
                 return;
             }
+            settings.EqLogDirectory = logfounddata.Location;
             appDispatcher.DispatchUI(() =>
             {
                 var playerchanged = activePlayer.Update();

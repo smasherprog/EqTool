@@ -30,6 +30,10 @@
                     </Button>
                 </StackPanel>
             </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Eq Log Path"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/> 
+                <TextBlock Text="{Binding EqLogPath}" HorizontalAlignment="Left" MinWidth="150"/> 
+            </StackPanel>
             <StackPanel Orientation="Horizontal"  Visibility="{Binding HasEqPath, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Visible}" >
                 <TextBlock Text="Logging"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100" Foreground="Red"  Visibility="{Binding DoesNotHaveEqPath, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}"/>
                 <TextBlock Text="Logging"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100" Visibility="{Binding HasEqPath, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Visible}"/>

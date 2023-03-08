@@ -42,10 +42,11 @@ namespace EQTool.Services
                 }
                 catch { }
             }
-
+            var match = findEq.LoadEQPath();
             var ret = new EQToolSettings
             {
-                DefaultEqDirectory = findEq.LoadEQPath(),
+                DefaultEqDirectory = match?.EqBaseLocation,
+                EqLogDirectory = match?.EQlogLocation,
                 BestGuessSpells = true,
                 FontSize = 12,
                 YouOnlySpells = false,

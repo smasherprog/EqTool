@@ -26,7 +26,34 @@ namespace EQTool
         private readonly System.Windows.Forms.MenuItem DpsMeterMenuItem;
         private readonly System.Windows.Forms.MenuItem SettingsMenuItem;
         private readonly System.Windows.Forms.MenuItem MobInfoMenuItem;
-        private readonly LogParser logParser;
+
+        private EQToolSettings _EQToolSettings;
+
+        private EQToolSettings EQToolSettings
+        {
+            get
+            {
+                if (_EQToolSettings == null)
+                {
+                    _EQToolSettings = container.Resolve<EQToolSettings>();
+                }
+                return _EQToolSettings;
+            }
+        }
+
+        private LogParser _logParser;
+
+        private LogParser logParser
+        {
+            get
+            {
+                if (_logParser == null)
+                {
+                    _logParser = container.Resolve<LogParser>();
+                }
+                return _logParser;
+            }
+        }
 
         public MainWindow(bool updated)
         {
@@ -35,7 +62,7 @@ namespace EQTool
             container = DI.Init();
             SettingsMenuItem = new System.Windows.Forms.MenuItem("Settings", Settings);
             SpellsMenuItem = new System.Windows.Forms.MenuItem("Spells", Spells);
-            MapMenuItem = new System.Windows.Forms.MenuItem("Map (Beta)", Map);
+            MapMenuItem = new System.Windows.Forms.MenuItem("Map", Map);
             DpsMeterMenuItem = new System.Windows.Forms.MenuItem("Dps", DPS);
             MobInfoMenuItem = new System.Windows.Forms.MenuItem("Mob Info", MobInfo);
             var gitHubMenuItem = new System.Windows.Forms.MenuItem("Suggestions", Suggestions);
@@ -84,9 +111,13 @@ namespace EQTool
             }
             else
             {
-                var eqsettings = container.Resolve<EQToolSettings>();
-                Properties.Settings.Default.GlobalFontSize = eqsettings.FontSize;
-                App.Theme = eqsettings.Theme;
+                var logfounddata = FindEq.GetLogFileLocation(new FindEq.FindEQData { EqBaseLocation = EQToolSettings.DefaultEqDirectory, EQlogLocation = EQToolSettings.EqLogDirectory });
+                if (logfounddata?.Found == true)
+                {
+                    EQToolSettings.EqLogDirectory = logfounddata.Location;
+                }
+                Properties.Settings.Default.GlobalFontSize = EQToolSettings.FontSize;
+                App.Theme = EQToolSettings.Theme;
                 ToggleMenuButtons(true);
                 if (EQToolSettings.SpellWindowState == null || !EQToolSettings.SpellWindowState.Closed)
                 {
@@ -107,7 +138,6 @@ namespace EQTool
             }
 
             Hide();
-            logParser = container.Resolve<LogParser>();
             if (updated)
             {
                 SystemTrayIcon.BalloonTipClicked += UpdateNotes;
@@ -115,7 +145,7 @@ namespace EQTool
             }
         }
 
-        private EQToolSettings EQToolSettings => container.Resolve<EQToolSettings>();
+
         protected override void OnClosing(CancelEventArgs e)
         {
             SystemTrayIcon.Visible = false;
@@ -150,6 +180,7 @@ namespace EQTool
             SpellsMenuItem.Enabled = value;
             MapMenuItem.Enabled = value;
             DpsMeterMenuItem.Enabled = value;
+            MobInfoMenuItem.Enabled = value;
         }
 
         private void WhyThePig(object sender, EventArgs e)
