@@ -19,7 +19,7 @@ namespace EQTool.ViewModels
             get => _Name;
             set
             {
-                _Name = value;
+                _Name = !string.IsNullOrWhiteSpace(value) ? Regex.Replace(value, " {2,}", " ") : value;
                 OnPropertyChanged();
             }
         }
@@ -372,48 +372,22 @@ namespace EQTool.ViewModels
                 Specials.Add(item);
             }
 
-            var known_loot = MobInfoParsing.ParseKnwonLoot(splits);
+            var known_loot = MobInfoParsing.ParseKnownLoot(splits);
             foreach (var item in known_loot)
             {
                 KnownLoot.Add(item);
             }
 
-            var specials = StripHTML(GetValue("factions", splits)).Split(new[] { '\n' }, System.StringSplitOptions.RemoveEmptyEntries);
-            foreach (var item in specials)
+            var factions = MobInfoParsing.ParseFactions(splits);
+            foreach (var item in factions)
             {
-                var indexof = item.IndexOf("[[");
-                if (indexof != -1)
-                {
-                    var indexofend = item.IndexOf("]]");
-                    if (indexofend != -1)
-                    {
-                        var model = new TestUriViewModel();
-                        var diff = indexofend - (indexof + 2);
-                        model.Name = item.Substring(indexof + 2, diff).Trim();
-                        model.Url = $"https://wiki.project1999.com/" + model.Name.Replace(' ', '_');
-                        model.Name += "  " + item.Substring(indexofend + 2).Trim();
-                        Factions.Add(model);
-                    }
-                }
+                Factions.Add(item);
             }
 
-            specials = StripHTML(GetValue("opposing_factions", splits)).Split(new[] { '\n' }, System.StringSplitOptions.RemoveEmptyEntries);
-            foreach (var item in specials)
+            factions = MobInfoParsing.ParseOpposingFactions(splits);
+            foreach (var item in factions)
             {
-                var indexof = item.IndexOf("[[");
-                if (indexof != -1)
-                {
-                    var indexofend = item.IndexOf("]]");
-                    if (indexofend != -1)
-                    {
-                        var model = new TestUriViewModel();
-                        var diff = indexofend - (indexof + 2);
-                        model.Name = item.Substring(indexof + 2, diff).Trim();
-                        model.Url = $"https://wiki.project1999.com/" + model.Name.Replace(' ', '_');
-                        model.Name += "  " + item.Substring(indexofend + 2).Trim();
-                        OpposingFactions.Add(model);
-                    }
-                }
+                OpposingFactions.Add(item);
             }
 
             if (!string.IsNullOrWhiteSpace(Name))

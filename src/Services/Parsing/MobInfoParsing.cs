@@ -7,7 +7,7 @@ namespace EQTool.Services.Parsing
 {
     public static class MobInfoParsing
     {
-        public static List<TestUriViewModel> ParseKnwonLoot(List<string> splits)
+        public static List<TestUriViewModel> ParseKnownLoot(List<string> splits)
         {
             return Parse("known_loot", splits);
         }
@@ -38,6 +38,7 @@ namespace EQTool.Services.Parsing
                         var model = new TestUriViewModel();
                         var diff = indexofend - (indexof + 3);
                         model.Name = item.Substring(indexof + 3, diff).Trim();
+
                         model.Url = $"https://wiki.project1999.com/" + model.Name.Replace(' ', '_');
                         ret.Add(model);
                     }
@@ -58,15 +59,32 @@ namespace EQTool.Services.Parsing
                         }
                         else
                         {
-                            indexofend = item.IndexOf("]]");
+                            indexofend = item.IndexOf("(Faction)");
                             if (indexofend != -1)
                             {
                                 var model = new TestUriViewModel();
                                 var diff = indexofend - (indexof + 2);
                                 model.Name = item.Substring(indexof + 2, diff).Trim();
                                 model.Url = $"https://wiki.project1999.com/" + model.Name.Replace(' ', '_');
-                                model.Name += "  " + item.Substring(indexofend + 2).Trim();
+                                indexofend = item.IndexOf("]]");
+                                if (indexofend != -1)
+                                {
+                                    model.Name += item.Substring(indexofend + 2);
+                                }
                                 ret.Add(model);
+                            }
+                            else
+                            {
+                                indexofend = item.IndexOf("]]");
+                                if (indexofend != -1)
+                                {
+                                    var model = new TestUriViewModel();
+                                    var diff = indexofend - (indexof + 2);
+                                    model.Name = item.Substring(indexof + 2, diff).Trim();
+                                    model.Url = $"https://wiki.project1999.com/" + model.Name.Replace(' ', '_');
+                                    model.Name += "  " + item.Substring(indexofend + 2).Trim();
+                                    ret.Add(model);
+                                }
                             }
                         }
                     }
@@ -87,6 +105,15 @@ namespace EQTool.Services.Parsing
         public static List<TestUriViewModel> ParseSpecials(List<string> splits)
         {
             return Parse("special", splits);
+        }
+
+        public static List<TestUriViewModel> ParseFactions(List<string> splits)
+        {
+            return Parse("factions", splits);
+        }
+        public static List<TestUriViewModel> ParseOpposingFactions(List<string> splits)
+        {
+            return Parse("opposing_factions", splits);
         }
 
         public static string StripHTML(string input)

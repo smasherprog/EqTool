@@ -15,7 +15,7 @@ namespace EQTool.Services
                 w.WindowState = windowState.State;
             }
 
-            w.Topmost = windowState.TopMost;
+
         }
 
         public static void SaveWindowState(EQTool.Models.WindowState windowState, Window w)

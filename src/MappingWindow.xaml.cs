@@ -29,7 +29,8 @@ namespace EQTool
             DataContext = this.mapViewModel = mapViewModel;
             Topmost = true;
             InitializeComponent();
-
+            WindowExtensions.AdjustWindow(settings.MapWindowState, this);
+            Topmost = Properties.Settings.Default.GlobalMapWindowAlwaysOnTop;
             App.ThemeChangedEvent += App_ThemeChangedEvent;
             _ = mapViewModel.LoadDefaultMap(Map);
             this.logParser.PlayerLocationEvent += LogParser_PlayerLocationEvent;

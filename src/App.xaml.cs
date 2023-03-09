@@ -373,5 +373,28 @@ namespace EQTool
         {
             System.Windows.Application.Current.Shutdown();
         }
+
+        internal static void ApplyAlwaysOnTop()
+        {
+            foreach (var item in WindowList)
+            {
+                if (item is DPSMeter w)
+                {
+                    w.Topmost = EQTool.Properties.Settings.Default.GlobalDpsWindowAlwaysOnTop;
+                }
+                else if (item is MappingWindow w1)
+                {
+                    w1.Topmost = EQTool.Properties.Settings.Default.GlobalMapWindowAlwaysOnTop;
+                }
+                else if (item is MobInfo w2)
+                {
+                    w2.Topmost = EQTool.Properties.Settings.Default.GlobalMobWindowAlwaysOnTop;
+                }
+                else if (item is SpellWindow w3)
+                {
+                    w3.Topmost = EQTool.Properties.Settings.Default.GlobalTriggerWindowAlwaysOnTop;
+                }
+            }
+        }
     }
 }

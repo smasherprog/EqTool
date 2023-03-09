@@ -53,26 +53,22 @@ namespace EQTool.Services
                 DpsWindowState = new WindowState
                 {
                     Closed = false,
-                    State = System.Windows.WindowState.Normal,
-                    TopMost = true
+                    State = System.Windows.WindowState.Normal
                 },
                 MapWindowState = new WindowState
                 {
                     Closed = false,
-                    State = System.Windows.WindowState.Normal,
-                    TopMost = true
+                    State = System.Windows.WindowState.Normal
                 },
                 MobWindowState = new WindowState
                 {
                     Closed = false,
-                    State = System.Windows.WindowState.Normal,
-                    TopMost = true
+                    State = System.Windows.WindowState.Normal
                 },
                 SpellWindowState = new WindowState
                 {
                     Closed = false,
-                    State = System.Windows.WindowState.Normal,
-                    TopMost = true
+                    State = System.Windows.WindowState.Normal
                 },
                 Theme = Themes.Light
             };

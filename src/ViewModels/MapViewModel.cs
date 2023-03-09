@@ -58,7 +58,11 @@ namespace EQTool.ViewModels
             {
                 return false;
             }
-
+            zone = ZoneParser.TranslateToMapName(zone);
+            if (string.IsNullOrWhiteSpace(zone))
+            {
+                zone = "freportw";
+            }
             var map = mapLoad.Load(zone);
             if (map.Labels.Any() || map.Lines.Any())
             {

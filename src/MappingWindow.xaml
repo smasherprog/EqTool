@@ -49,10 +49,11 @@
                     </StackPanel>
                 </Grid>
             </Border>
-            <Viewbox Stretch="Uniform" Grid.Row="1">
-                <local:PanAndZoomCanvas x:Name="Map"  HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" />
-            </Viewbox> 
-        
+       
+                <Viewbox Stretch="Uniform" Grid.Row="1">
+                    <local:PanAndZoomCanvas x:Name="Map"  HorizontalAlignment="Stretch"  VerticalAlignment="Stretch" />
+                </Viewbox>
+       
             <!--<local:EqToolViewport x:Name="ViewPort" Grid.Row="1" MinZoom="-1" ZoomX=".1" ZoomY=".1" MaxZoom="50" ZoomSpeed="1.1">
                 <Canvas x:Name="Map" Background="White"> 
                 </Canvas>

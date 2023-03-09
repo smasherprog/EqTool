@@ -179,7 +179,6 @@ namespace EQTool
                 var newlist = new List<string>();
                 foreach (var item in data)
                 {
-
                     var line = item.ToLower().Trim().Replace(" ", string.Empty);
                     if (line.StartsWith("log="))
                     {
@@ -197,16 +196,14 @@ namespace EQTool
             TryCheckLoggingEnabled();
         }
 
-        private void SaveSettings(object sender, RoutedPropertyChangedEventArgs<double> e)
+        private void SaveAlwaysOntopCheckBoxSettings(object sender, RoutedEventArgs e)
         {
             SaveConfig();
+            App.ApplyAlwaysOnTop();
         }
 
-        private void DamageAlwaysOntop_Checked(object sender, RoutedEventArgs e)
+        private void SaveSettings(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
-            var s = sender as System.Windows.Controls.CheckBox;
-            settings.DpsWindowState.TopMost = s.IsChecked ?? false;
-
             SaveConfig();
         }
 
@@ -367,7 +364,7 @@ namespace EQTool
         {
             var format = "ddd MMM dd HH:mm:ss yyyy";
             var d = DateTime.Now;
-            var line = "[" + d.ToString(format) + "] Gozzrem regards you indifferently -- You could probably win this fight.";
+            var line = "[" + d.ToString(format) + "] A pyre golem regards you indifferently -- You could probably win this fight.";
             logParser.Push(line);
         }
 
@@ -406,5 +403,6 @@ namespace EQTool
                 Thread.Sleep(sleeptime);
             }
         }
+
     }
 }

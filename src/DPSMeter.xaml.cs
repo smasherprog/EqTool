@@ -34,7 +34,7 @@ namespace EQTool
             DataContext = dPSWindowViewModel;
             InitializeComponent();
             WindowExtensions.AdjustWindow(settings.DpsWindowState, this);
-
+            Topmost = Properties.Settings.Default.GlobalDpsWindowAlwaysOnTop;
             UITimer = new System.Timers.Timer(1000);
             UITimer.Elapsed += PollUI;
             UITimer.Enabled = true;

@@ -68,41 +68,62 @@
                     <TextBlock Text="Font Size"  FontWeight="Bold"  VerticalAlignment="Center" MinWidth="100"/>
                     <ComboBox  SelectedItem="{Binding Source={x:Static properties:Settings.Default}, Path=GlobalFontSize}" ItemsSource="{Binding FontSizes}" SelectionChanged="fontsizescombobox_SelectionChanged" MinWidth="150"/>
                 </StackPanel>
-                <Separator/>
+   
                 <TextBlock Text="Damage Window" HorizontalAlignment="Center" FontWeight="Bold" Margin="5,5,0,0"/>
                 <StackPanel Orientation="Vertical">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Always on top" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
-                        <CheckBox Name="DamageAlwaysOntop"  Click="DamageAlwaysOntop_Checked" ></CheckBox>
+                        <CheckBox IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=GlobalDpsWindowAlwaysOnTop}" Click="SaveAlwaysOntopCheckBoxSettings" ></CheckBox>
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal"> 
-                        <TextBlock Text="Opacity"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
-                        <Slider Value="{Binding Source={x:Static properties:Settings.Default}, Path=GlobalDPSWindowOpacity}" Minimum="0" Maximum="1" SmallChange=".1" TickFrequency=".1" ValueChanged="SaveSettings" MinWidth="150"/>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Window Opacity"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
+                        <Slider Value="{Binding Source={x:Static properties:Settings.Default}, Path=GlobalDPSWindowOpacity}" Minimum=".01" Maximum="1" SmallChange=".1" TickFrequency=".1" ValueChanged="SaveSettings" MinWidth="150"/>
                     </StackPanel>
                 </StackPanel>
-                <Separator/>
 
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Spell Opacity"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
-                    <Slider Value="{Binding Source={x:Static properties:Settings.Default}, Path=GlobalTriggerWindowOpacity}"  Minimum="0" Maximum="1" SmallChange=".1" TickFrequency=".1" ValueChanged="SaveSettings" MinWidth="150"/>
+                <TextBlock Text="Mob Window" HorizontalAlignment="Center" FontWeight="Bold" Margin="5,5,0,0"/>
+                <StackPanel Orientation="Vertical">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Always on top" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
+                        <CheckBox IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=GlobalMobWindowAlwaysOnTop}" Click="SaveAlwaysOntopCheckBoxSettings" ></CheckBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Window Opacity" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
+                        <Slider Value="{Binding Source={x:Static properties:Settings.Default}, Path=GlobalMobWindowOpacity}" Minimum=".01" Maximum="1" SmallChange=".1" TickFrequency=".1" ValueChanged="SaveSettings" MinWidth="150"/>
+                    </StackPanel>
+                </StackPanel>
+                <TextBlock Text="Map Window" HorizontalAlignment="Center" FontWeight="Bold" Margin="5,5,0,0"/>
+                <StackPanel Orientation="Vertical">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Always on top" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
+                        <CheckBox IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=GlobalMapWindowAlwaysOnTop}" Click="SaveAlwaysOntopCheckBoxSettings" ></CheckBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Window Opacity" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
+                        <Slider Value="{Binding Source={x:Static properties:Settings.Default}, Path=GlobalMapWindowOpacity}" Minimum=".01" Maximum="1" SmallChange=".1" TickFrequency=".1" ValueChanged="SaveSettings" MinWidth="150"/>
+                    </StackPanel>
+                </StackPanel>
+                <TextBlock Text="Triggers Window" HorizontalAlignment="Center" FontWeight="Bold" Margin="5,5,0,0"/>
+                <StackPanel Orientation="Vertical">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Always on top" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
+                        <CheckBox IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=GlobalTriggerWindowAlwaysOnTop}" Click="SaveAlwaysOntopCheckBoxSettings" ></CheckBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Window Opacity"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
+                        <Slider Value="{Binding Source={x:Static properties:Settings.Default}, Path=GlobalTriggerWindowOpacity}" Minimum=".01" Maximum="1" SmallChange=".1" TickFrequency=".1" ValueChanged="SaveSettings" MinWidth="150"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Best Guess"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
+                        <CheckBox x:Name="BestGuessSpells" Click="GuessSpells_Click" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Effect Me only"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
+                        <CheckBox x:Name="YouSpellsOnly" Click="YouSpells_Click" />
+                    </StackPanel>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Map Opacity"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
-                    <Slider  Value="{Binding Source={x:Static properties:Settings.Default}, Path=GlobalMapWindowOpacity}" Minimum="0" Maximum="1" SmallChange=".1" TickFrequency=".1" ValueChanged="SaveSettings" MinWidth="150"/>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal"  HorizontalAlignment="Center">
-                    <TextBlock Text="Spell Window" FontWeight="Bold" Margin="5,5,0,0" />
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Spells"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
-                    <CheckBox x:Name="BestGuessSpells" Click="GuessSpells_Click">Best Guess Spells and Effects</CheckBox>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Spells"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
-                    <CheckBox x:Name="YouSpellsOnly" Click="YouSpells_Click">Only show spells that effect you</CheckBox>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Other spells"  FontWeight="Bold" MinWidth="100" ToolTip="This will filter what shows up on other players."/>
+                    <TextBlock Text="Spell Filters"  FontWeight="Bold" MinWidth="100" ToolTip="This will filter what shows up on other players."/>
                     <StackPanel Orientation="Vertical">
                         <ListBox IsEnabled="{Binding HasCharName}"
                              Name="spellbyclassselection" 
