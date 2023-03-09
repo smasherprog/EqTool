@@ -27,7 +27,7 @@ namespace EQTool.Services
             var possibles = new ConcurrentQueue<Match>();
             var drives = DriveInfo.GetDrives().Where(a => a.IsReady && a.DriveType == DriveType.Fixed);
             var tasks = new List<Task>();
-            foreach (var f in drives.Take(1))
+            foreach (var f in drives)
             {
                 tasks.Add(Task.Factory.StartNew(() =>
                 {

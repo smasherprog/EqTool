@@ -20,13 +20,11 @@ namespace EQTool.ViewModels
     {
         private readonly MapLoad mapLoad;
         private readonly ActivePlayer activePlayer;
-        private readonly IAppDispatcher appDispatcher;
 
-        public MapViewModel(MapLoad mapLoad, ActivePlayer activePlayer, IAppDispatcher appDispatcher)
+        public MapViewModel(MapLoad mapLoad, ActivePlayer activePlayer)
         {
             this.mapLoad = mapLoad;
             this.activePlayer = activePlayer;
-            this.appDispatcher = appDispatcher;
         }
 
         private Point3D Lastlocation = new Point3D(0, 0, 0);

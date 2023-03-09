@@ -18,6 +18,7 @@ namespace EQTool.Services
         private readonly ActivePlayer activePlayer;
         private readonly IAppDispatcher appDispatcher;
         private long? LastReadOffset = null;
+        private string LastLogFilename = string.Empty;
         private readonly EQToolSettings settings;
         private readonly LevelLogParse levelLogParse;
         private readonly EQToolSettingsLoad toolSettingsLoad;
@@ -254,11 +255,13 @@ namespace EQTool.Services
             appDispatcher.DispatchUI(() =>
             {
                 var playerchanged = activePlayer.Update();
-                if (playerchanged)
+                var filepath = activePlayer.LogFileName;
+                if (playerchanged || filepath != LastLogFilename)
                 {
                     LastReadOffset = null;
+                    LastLogFilename = filepath;
                 }
-                var filepath = activePlayer.LogFileName;
+
                 if (string.IsNullOrWhiteSpace(filepath))
                 {
                     Debug.WriteLine($"No playerfile found!");
