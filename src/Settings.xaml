@@ -87,10 +87,10 @@
                         <TextBlock Text="Always on top" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
                         <CheckBox IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=GlobalMobWindowAlwaysOnTop}" Click="SaveAlwaysOntopCheckBoxSettings" ></CheckBox>
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal">
+                    <!--<StackPanel Orientation="Horizontal">
                         <TextBlock Text="Window Opacity" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
                         <Slider Value="{Binding Source={x:Static properties:Settings.Default}, Path=GlobalMobWindowOpacity}" Minimum=".01" Maximum="1" SmallChange=".1" TickFrequency=".1" ValueChanged="SaveSettings" MinWidth="150"/>
-                    </StackPanel>
+                    </StackPanel>-->
                 </StackPanel>
                 <TextBlock Text="Map Window" HorizontalAlignment="Center" FontWeight="Bold" Margin="5,5,0,0"/>
                 <StackPanel Orientation="Vertical">
