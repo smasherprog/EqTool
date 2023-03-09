@@ -4,7 +4,6 @@ using EQTool.Services;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Reflection;
@@ -104,13 +103,11 @@ namespace EQTool
             DispatcherUnhandledException += (s, e) =>
             {
                 LogUnhandledException(e.Exception, "Application.Current.DispatcherUnhandledException");
-                e.Handled = true;
             };
 
             TaskScheduler.UnobservedTaskException += (s, e) =>
             {
                 LogUnhandledException(e.Exception, "TaskScheduler.UnobservedTaskException");
-                e.SetObserved();
             };
         }
 
@@ -126,19 +123,7 @@ namespace EQTool
 
             httpclient.DefaultRequestHeaders.Add("User-Agent", "request");
             var updateservice = new UpdateService();
-            var did_update = UpdateService.UpdateStatus.NoUpdateApplied;
-            try
-            {
-                did_update = updateservice.ApplyUpdate(e.Args.FirstOrDefault());
-            }
-            catch (Exception ex)
-            {
-                File.AppendAllText("Errors.txt", ex.ToString());
-                MessageBox.Show(ex.Message);
-                App.Current.Shutdown();
-                return;
-            }
-
+            var did_update = updateservice.ApplyUpdate(e.Args.FirstOrDefault());
             if (did_update == UpdateService.UpdateStatus.UpdatesApplied)
             {
                 return;
@@ -296,10 +281,6 @@ namespace EQTool
             if (FindEq.IsProject1999Folder(EQToolSettings.DefaultEqDirectory) && FindEq.TryCheckLoggingEnabled(EQToolSettings.DefaultEqDirectory) == true)
             {
                 ToggleMenuButtons(true);
-                OpenSpellsWindow();
-                OpenDPSWindow();
-                OpenMapWindow();
-                OpenMobInfoWindow();
             }
         }
 
