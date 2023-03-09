@@ -8,7 +8,9 @@ using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Reflection;
+using System.Text;
 using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 
 namespace EQTool
@@ -74,9 +76,47 @@ namespace EQTool
         {
             new UpdateService().CheckForUpdates(Version);
         }
+        public class ExceptionRequest
+        {
+            public string Exception { get; set; }
+        }
+
+        private void LogUnhandledException(Exception exception, string source)
+        {
+            var msg = new ExceptionRequest
+            {
+                Exception = $"Unhandled exception ({source}) {exception}"
+            };
+            var msagasjson = Newtonsoft.Json.JsonConvert.SerializeObject(msg);
+            try
+            {
+                var content = new StringContent(msagasjson, Encoding.UTF8, "application/json");
+                var result = httpclient.PostAsync("https://pigparse.azurewebsites.net/api/eqtool/exception", content).Result;
+            }
+            catch { }
+        }
+
+        private void SetupExceptionHandling()
+        {
+            AppDomain.CurrentDomain.UnhandledException += (s, e) =>
+                LogUnhandledException((Exception)e.ExceptionObject, "AppDomain.CurrentDomain.UnhandledException");
+
+            DispatcherUnhandledException += (s, e) =>
+            {
+                LogUnhandledException(e.Exception, "Application.Current.DispatcherUnhandledException");
+                e.Handled = true;
+            };
+
+            TaskScheduler.UnobservedTaskException += (s, e) =>
+            {
+                LogUnhandledException(e.Exception, "TaskScheduler.UnobservedTaskException");
+                e.SetObserved();
+            };
+        }
 
         private void App_Startup(object sender, StartupEventArgs e)
         {
+            SetupExceptionHandling();
             if (!WaitForEQToolToStop())
             {
                 MessageBox.Show("Another EQTool is currently running. You must shut that one down first!", "Multiple EQTools running!", MessageBoxButton.OK, MessageBoxImage.Error);
