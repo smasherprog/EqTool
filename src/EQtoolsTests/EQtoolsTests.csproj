@@ -88,6 +88,7 @@
     <Reference Include="Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions, Version=14.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
       <HintPath>..\..\packages\MSTest.TestFramework.2.2.10\lib\net45\Microsoft.VisualStudio.TestPlatform.TestFramework.Extensions.dll</HintPath>
     </Reference>
+    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\..\packages\System.Buffers.4.5.1\lib\net461\System.Buffers.dll</HintPath>
@@ -112,6 +113,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DI.cs" />
+    <Compile Include="FindEqTests.cs" />
     <Compile Include="MobInfoTests.cs" />
     <Compile Include="DamageTests.cs" />
     <Compile Include="SpellTests.cs" />
@@ -148,7 +150,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EQTool.csproj">
-      <Project>{10e99313-7361-4503-a314-14bc052a6cac}</Project>
+      <Project>{10E99313-7361-4503-A314-14BC052A6CAC}</Project>
       <Name>EQTool</Name>
     </ProjectReference>
   </ItemGroup>

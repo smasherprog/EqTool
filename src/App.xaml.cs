@@ -1,13 +1,13 @@
-﻿using EQTool.Models;
-using Newtonsoft.Json;
+﻿using Autofac;
+using EQTool.Models;
+using EQTool.Services;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
-using System.IO.Compression;
 using System.Linq;
 using System.Net.Http;
 using System.Reflection;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -20,7 +20,19 @@ namespace EQTool
     public partial class App : Application
     {
         public static HttpClient httpclient = new HttpClient();
-        private MainWindow mainWindow;
+
+        private Autofac.IContainer container;
+        private System.Windows.Forms.NotifyIcon SystemTrayIcon;
+
+        private System.Windows.Forms.MenuItem MapMenuItem;
+        private System.Windows.Forms.MenuItem SpellsMenuItem;
+        private System.Windows.Forms.MenuItem DpsMeterMenuItem;
+        private System.Windows.Forms.MenuItem SettingsMenuItem;
+        private System.Windows.Forms.MenuItem MobInfoMenuItem;
+        private LogParser logParser => container.Resolve<LogParser>();
+
+        private EQToolSettings EQToolSettings => container.Resolve<EQToolSettings>();
+        public static List<Window> WindowList = new List<Window>();
 
         private static Themes _Theme = Themes.Light;
 
@@ -41,100 +53,6 @@ namespace EQTool
 
         public static event EventHandler<ThemeChangeEventArgs> ThemeChangedEvent;
 
-
-        private static void CopyFilesRecursively(string sourcePath, string targetPath)
-        {
-            //Now Create all of the directories
-            foreach (var dirPath in Directory.GetDirectories(sourcePath, "*", SearchOption.AllDirectories))
-            {
-                _ = Directory.CreateDirectory(dirPath.Replace(sourcePath, targetPath));
-            }
-
-            //Copy all the files & Replaces any files with the same name
-            foreach (var newPath in Directory.GetFiles(sourcePath, "*.*", SearchOption.AllDirectories))
-            {
-                File.Copy(newPath, newPath.Replace(sourcePath, targetPath), true);
-            }
-        }
-
-        private void DeleteOldFiles()
-        {
-            var oldfiles = new List<string>()
-            {
-                "Autofac.dll",
-                "Autofac.xml",
-                "Copy.png",
-                "DotNetProjects.DataVisualization.Toolkit.dll",
-                "dps.png",
-                "EQTool.pdb",
-                "FightLog.csv",
-                "HarfBuzzSharp.dll",
-                "HarfBuzzSharp.pdb",
-                "HarfBuzzSharp.xml",
-                "HelixToolkit.dll",
-                "HelixToolkit.Wpf.dll",
-                "HelixToolkit.Wpf.xml",
-                "HelixToolkit.xml",
-                "libHarfBuzzSharp.dylib",
-                "libSkiaSharp.dylib",
-                "LiveChartsCore.dll",
-                "LiveChartsCore.SkiaSharpView.dll",
-                "LiveChartsCore.SkiaSharpView.WPF.dll",
-                "LiveChartsCore.SkiaSharpView.WPF.xml",
-                "LiveChartsCore.SkiaSharpView.xml",
-                "LiveChartsCore.xml",
-                "map.png",
-                "Microsoft.Bcl.AsyncInterfaces.dll",
-                "Microsoft.Bcl.AsyncInterfaces.xml",
-                "Microsoft.Extensions.Logging.Abstractions.dll",
-                "Microsoft.Extensions.Logging.Abstractions.xml",
-                "Newtonsoft.Json.dll",
-                "Newtonsoft.Json.xml",
-                "open-folder.png",
-                "SharpDX.dll",
-                "SharpDX.pdb",
-                "SkiaSharp.dll",
-                "SkiaSharp.HarfBuzz.dll",
-                "SkiaSharp.HarfBuzz.pdb",
-                "SkiaSharp.HarfBuzz.xml",
-                "SkiaSharp.pdb",
-                "SkiaSharp.Views.Desktop.Common.dll",
-                "SkiaSharp.Views.Desktop.Common.pdb",
-                "SkiaSharp.Views.Desktop.Common.xml",
-                "SkiaSharp.Views.WPF.dll",
-                "SkiaSharp.Views.WPF.pdb",
-                "SkiaSharp.Views.WPF.xml",
-                "SkiaSharp.xml",
-                "System.Buffers.dll",
-                "System.Buffers.xml",
-                "System.Diagnostics.DiagnosticSource.dll",
-                "System.Diagnostics.DiagnosticSource.xml",
-                "System.Drawing.Common.dll",
-                "System.Drawing.Common.xml",
-                "System.Memory.dll",
-                "System.Memory.xml",
-                "System.Numerics.Vectors.dll",
-                "System.Numerics.Vectors.xml",
-                "System.Runtime.CompilerServices.Unsafe.dll",
-                "System.Runtime.CompilerServices.Unsafe.xml",
-                "System.Threading.Tasks.Extensions.dll",
-                "System.Threading.Tasks.Extensions.xml",
-                "TestFight.txt",
-                "TestFight2.txt",
-                "Trash.png",
-                "wizard.png"
-              };
-            try
-            {
-                System.IO.Directory.Delete(System.IO.Directory.GetCurrentDirectory() + "/../map_files", true);
-                foreach (var item in oldfiles)
-                {
-                    System.IO.File.Delete(System.IO.Directory.GetCurrentDirectory() + $"/../{item}");
-                }
-            }
-            catch { }
-        }
-
         private bool WaitForEQToolToStop()
         {
             var counter = 0;
@@ -153,8 +71,49 @@ namespace EQTool
             return true;
         }
 
+        public void CheckForUpdates(object sender, EventArgs e)
+        {
+            new UpdateService().CheckForUpdates(Version);
+        }
+        public class ExceptionRequest
+        {
+            public string Exception { get; set; }
+        }
+
+        private void LogUnhandledException(Exception exception, string source)
+        {
+            var msg = new ExceptionRequest
+            {
+                Exception = $"Unhandled exception ({source}) {exception}"
+            };
+            var msagasjson = Newtonsoft.Json.JsonConvert.SerializeObject(msg);
+            try
+            {
+                var content = new StringContent(msagasjson, Encoding.UTF8, "application/json");
+                var result = httpclient.PostAsync("https://pigparse.azurewebsites.net/api/eqtool/exception", content).Result;
+            }
+            catch { }
+        }
+
+        private void SetupExceptionHandling()
+        {
+            AppDomain.CurrentDomain.UnhandledException += (s, e) =>
+                LogUnhandledException((Exception)e.ExceptionObject, "AppDomain.CurrentDomain.UnhandledException");
+
+            DispatcherUnhandledException += (s, e) =>
+            {
+                LogUnhandledException(e.Exception, "Application.Current.DispatcherUnhandledException");
+            };
+
+            TaskScheduler.UnobservedTaskException += (s, e) =>
+            {
+                LogUnhandledException(e.Exception, "TaskScheduler.UnobservedTaskException");
+            };
+        }
+
         private void App_Startup(object sender, StartupEventArgs e)
         {
+            SetupExceptionHandling();
             if (!WaitForEQToolToStop())
             {
                 MessageBox.Show("Another EQTool is currently running. You must shut that one down first!", "Multiple EQTools running!", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -163,51 +122,102 @@ namespace EQTool
             }
 
             httpclient.DefaultRequestHeaders.Add("User-Agent", "request");
-            if (e.Args.Length == 1)
+            var updateservice = new UpdateService();
+            var did_update = updateservice.ApplyUpdate(e.Args.FirstOrDefault());
+            if (did_update == UpdateService.UpdateStatus.UpdatesApplied)
             {
-                try
-                {
-                    if (e.Args[0].Contains("ping"))
-                    {
-                        DeleteOldFiles();
-                        var files = System.IO.Directory.GetFiles(System.IO.Directory.GetCurrentDirectory());
-                        CopyFilesRecursively(System.IO.Directory.GetCurrentDirectory(), System.IO.Directory.GetCurrentDirectory() + "/../");
+                return;
+            }
+            else if (did_update == UpdateService.UpdateStatus.NoUpdateApplied)
+            {
+#if !DEBUG
+                updateservice.CheckForUpdates(Version);
+#endif
+            }
+            InitStuff();
+        }
 
-                        var path = System.IO.Directory.GetCurrentDirectory() + "/../EQTool.exe";
-                        _ = System.Diagnostics.Process.Start(new ProcessStartInfo
-                        {
-                            FileName = path,
-                            Arguments = "pong",
-                            UseShellExecute = true,
-                            WorkingDirectory = System.IO.Directory.GetCurrentDirectory() + "/../"
-                        });
-                        App.Current.Shutdown();
-                    }
-                    else if (e.Args[0].Contains("pong"))
-                    {
-                        System.IO.Directory.Delete("NewVersion", true);
-                        try
-                        {
-                            System.IO.File.Delete("EqTool.zip");
-                        }
-                        catch { }
-                        mainWindow = new MainWindow(true);
-                    }
-                }
-                catch (Exception ex)
+        private void InitStuff()
+        {
+            container = DI.Init();
+            SettingsMenuItem = new System.Windows.Forms.MenuItem("Settings", ToggleSettingsWindow);
+            SpellsMenuItem = new System.Windows.Forms.MenuItem("Spells", ToggleSpellsWindow);
+            MapMenuItem = new System.Windows.Forms.MenuItem("Map", ToggleMapWindow);
+            DpsMeterMenuItem = new System.Windows.Forms.MenuItem("Dps", ToggleDPSWindow);
+            MobInfoMenuItem = new System.Windows.Forms.MenuItem("Mob Info", ToggleMobInfoWindow);
+            var gitHubMenuItem = new System.Windows.Forms.MenuItem("Suggestions", Suggestions);
+            var whythepig = new System.Windows.Forms.MenuItem("Why the Pig?", WhyThePig);
+            var updates = new System.Windows.Forms.MenuItem("Check for Update", CheckForUpdates);
+            var versionstring = Assembly.GetExecutingAssembly().GetName().Version.ToString();
+            var beta = false;
+
+#if Beta || DEBUG
+            beta = true;
+#endif
+
+            var logo = EQTool.Properties.Resources.logo;
+            if (beta)
+            {
+                versionstring = "Beta-" + versionstring;
+                logo = EQTool.Properties.Resources.sickpic;
+            }
+
+            var version = new System.Windows.Forms.MenuItem(versionstring)
+            {
+                Enabled = false
+            };
+            ToggleMenuButtons(false);
+            SystemTrayIcon = new System.Windows.Forms.NotifyIcon
+            {
+                Icon = logo,
+                Visible = true,
+                ContextMenu = new System.Windows.Forms.ContextMenu(new System.Windows.Forms.MenuItem[]
                 {
-                    File.AppendAllText("Errors.txt", ex.ToString());
-                    MessageBox.Show(ex.Message);
-                    App.Current.Shutdown();
+                     whythepig,
+                    DpsMeterMenuItem,
+                    MapMenuItem,
+                    SpellsMenuItem,
+                    MobInfoMenuItem,
+                    SettingsMenuItem,
+                    gitHubMenuItem,
+                    updates,
+                    version,
+                    new System.Windows.Forms.MenuItem("Exit", OnExit)
+                }),
+            };
+
+            var hasvalideqdir = FindEq.IsProject1999Folder(EQToolSettings.DefaultEqDirectory);
+            if (!hasvalideqdir || FindEq.TryCheckLoggingEnabled(EQToolSettings.DefaultEqDirectory) == false)
+            {
+                if (!hasvalideqdir)
+                {
+                    EQToolSettings.DefaultEqDirectory = string.Empty;
                 }
+                OpenSettingsWindow();
             }
             else
             {
-#if !DEBUG
-                CheckForUpdates();
-#endif
-                mainWindow = new MainWindow(false);
+                App.Theme = EQToolSettings.Theme;
+                ToggleMenuButtons(true);
+                if (!EQToolSettings.SpellWindowState.Closed)
+                {
+                    OpenSpellsWindow();
+                }
+                if (!EQToolSettings.DpsWindowState.Closed)
+                {
+                    OpenDPSWindow();
+                }
+                if (!EQToolSettings.MapWindowState.Closed)
+                {
+                    OpenMapWindow();
+                }
+                if (!EQToolSettings.MobWindowState.Closed)
+                {
+                    OpenMobInfoWindow();
+                }
             }
+
+            logParser.PlayerChangeEvent += LogParser_PlayerChangeEvent;
         }
 
         public class GithubAsset
@@ -240,99 +250,172 @@ namespace EQTool
             }
         }
 
-        public void OpenSpellsWindow()
+        private void ToggleMenuButtons(bool value)
         {
-            mainWindow.OpenSpellsWindow();
+            MapMenuItem.Enabled = value;
+            SpellsMenuItem.Enabled = value;
+            DpsMeterMenuItem.Enabled = value;
+            MobInfoMenuItem.Enabled = value;
+        }
+
+        private void WhyThePig(object sender, EventArgs e)
+        {
+            _ = System.Diagnostics.Process.Start(new ProcessStartInfo
+            {
+                FileName = "https://discord.gg/nSrz8hAwxM",
+                UseShellExecute = true
+            });
+        }
+
+        private void Suggestions(object sender, EventArgs e)
+        {
+            _ = System.Diagnostics.Process.Start(new ProcessStartInfo
+            {
+                FileName = "https://github.com/smasherprog/EqTool/issues",
+                UseShellExecute = true
+            });
+        }
+
+        private void LogParser_PlayerChangeEvent(object sender, LogParser.PlayerChangeEventArgs e)
+        {
+            if (FindEq.IsProject1999Folder(EQToolSettings.DefaultEqDirectory) && FindEq.TryCheckLoggingEnabled(EQToolSettings.DefaultEqDirectory) == true)
+            {
+                ToggleMenuButtons(true);
+            }
+        }
+
+        private void ToggleWindow<T>(System.Windows.Forms.MenuItem m) where T : Window
+        {
+            var w = WindowList.FirstOrDefault(a => a.GetType() == typeof(T));
+            m.Checked = !m.Checked;
+            if (m.Checked)
+            {
+                if (w != null)
+                {
+                    _ = w.Focus();
+                }
+                else
+                {
+                    w?.Close();
+                    w = container.Resolve<T>();
+                    WindowList.Add(w);
+                    w.Closed += (se, ee) =>
+                    {
+                        m.Checked = false;
+                        _ = WindowList.Remove(w);
+                    };
+                    w.Show();
+                }
+            }
+            else
+            {
+                w?.Close();
+                _ = WindowList.Remove(w);
+            }
+        }
+
+        private void OpenWindow<T>(System.Windows.Forms.MenuItem m) where T : Window
+        {
+            var w = WindowList.FirstOrDefault(a => a.GetType() == typeof(T));
+            if (w != null)
+            {
+                _ = w.Focus();
+            }
+            else
+            {
+                m.Checked = true;
+                w?.Close();
+                w = container.Resolve<T>();
+                WindowList.Add(w);
+                w.Closed += (se, ee) =>
+                {
+                    m.Checked = false;
+                    _ = WindowList.Remove(w);
+                };
+                w.Show();
+            }
+        }
+
+        public void ToggleMapWindow(object sender, EventArgs e)
+        {
+            var s = (System.Windows.Forms.MenuItem)sender;
+            ToggleWindow<MappingWindow>(s);
+        }
+
+        public void ToggleDPSWindow(object sender, EventArgs e)
+        {
+            var s = (System.Windows.Forms.MenuItem)sender;
+            ToggleWindow<DPSMeter>(s);
+        }
+
+        public void ToggleMobInfoWindow(object sender, EventArgs e)
+        {
+            var s = (System.Windows.Forms.MenuItem)sender;
+            ToggleWindow<MobInfo>(s);
+        }
+
+        public void ToggleSettingsWindow(object sender, EventArgs e)
+        {
+            var s = (System.Windows.Forms.MenuItem)sender;
+            ToggleWindow<Settings>(s);
+        }
+        public void ToggleSpellsWindow(object sender, EventArgs e)
+        {
+            var s = (System.Windows.Forms.MenuItem)sender;
+            ToggleWindow<SpellWindow>(s);
         }
 
         public void OpenDPSWindow()
         {
-            mainWindow.OpenDPSWindow();
+            OpenWindow<DPSMeter>(DpsMeterMenuItem);
         }
 
         public void OpenMapWindow()
         {
-            mainWindow.OpenMapWindow();
+            OpenWindow<MappingWindow>(MapMenuItem);
         }
 
         public void OpenMobInfoWindow()
         {
-            mainWindow.OpenMobInfoWindow();
+            OpenWindow<MobInfo>(MobInfoMenuItem);
         }
 
         public void OpenSettingsWindow()
         {
-            mainWindow.OpenSettingsWindow();
+            OpenWindow<Settings>(SettingsMenuItem);
         }
 
-        public (string version, string urltodownload) LatestVersionAvailable
+        public void OpenSpellsWindow()
         {
-            get
+            OpenWindow<SpellWindow>(SpellsMenuItem);
+        }
+
+        private void OnExit(object sender, EventArgs e)
+        {
+            System.Windows.Application.Current.Shutdown();
+        }
+
+        internal static void ApplyAlwaysOnTop()
+        {
+            foreach (var item in WindowList)
             {
-                var prerelease = false;
-#if Beta
-                prerelease = true;
-#endif
-                var json = httpclient.GetAsync(new Uri("https://api.github.com/repos/smasherprog/EqTool/releases")).Result.Content.ReadAsStringAsync().Result;
-                var githubdata = JsonConvert.DeserializeObject<List<GithubVersionInfo>>(json);
-                var release = githubdata.OrderByDescending(a => a.created_at).FirstOrDefault(a => a.prerelease == prerelease);
-                var downloadurl = release.assets.FirstOrDefault(a => !string.IsNullOrWhiteSpace(a.browser_download_url))?.browser_download_url;
-                return (release.tag_name, downloadurl);
+                if (item is DPSMeter w)
+                {
+                    w.Topmost = EQTool.Properties.Settings.Default.GlobalDpsWindowAlwaysOnTop;
+                }
+                else if (item is MappingWindow w1)
+                {
+                    w1.Topmost = EQTool.Properties.Settings.Default.GlobalMapWindowAlwaysOnTop;
+                }
+                else if (item is MobInfo w2)
+                {
+                    w2.Topmost = EQTool.Properties.Settings.Default.GlobalMobWindowAlwaysOnTop;
+                }
+                else if (item is SpellWindow w3)
+                {
+                    w3.Topmost = EQTool.Properties.Settings.Default.GlobalTriggerWindowAlwaysOnTop;
+                }
             }
-        }
-        public void CheckForUpdates()
-        {
-            _ = Task.Factory.StartNew(() =>
-            {
-                try
-                {
-                    var (version, urltodownload) = LatestVersionAvailable;
-
-                    if (Version != version)
-                    {
-                        if (System.IO.Directory.Exists("NewVersion"))
-                        {
-                            System.IO.Directory.Delete("NewVersion", true);
-                        }
-                        var fileBytes = httpclient.GetByteArrayAsync(urltodownload).Result;
-                        var filename = Path.GetFileName(urltodownload);
-                        if (filename.EndsWith(".zip"))
-                        {
-                            File.WriteAllBytes("EqTool.zip", fileBytes);
-                            ZipFile.ExtractToDirectory("EqTool.zip", System.IO.Directory.GetCurrentDirectory() + "/NewVersion");
-                        }
-                        else
-                        {
-                            _ = System.IO.Directory.CreateDirectory(System.IO.Directory.GetCurrentDirectory() + "/NewVersion");
-                            File.WriteAllBytes(System.IO.Directory.GetCurrentDirectory() + "/NewVersion/" + filename, fileBytes);
-                        }
-
-                        if (Thread.CurrentThread == App.Current.Dispatcher.Thread)
-                        {
-                            mainWindow.Close();
-                        }
-                        else
-                        {
-                            App.Current.Dispatcher.Invoke(() =>
-                            {
-                                mainWindow.Close();
-                            });
-                        }
-                        var path = System.IO.Directory.GetCurrentDirectory() + "/NewVersion/EQTool.exe";
-                        _ = System.Diagnostics.Process.Start(new ProcessStartInfo
-                        {
-                            FileName = path,
-                            Arguments = "ping",
-                            UseShellExecute = true,
-                            WorkingDirectory = System.IO.Directory.GetCurrentDirectory() + "/NewVersion/"
-                        });
-                    }
-                }
-                catch (Exception ex)
-                {
-                    File.AppendAllText("Errors.txt", ex.ToString());
-                }
-            });
         }
     }
 }

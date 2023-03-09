@@ -9,14 +9,20 @@ namespace EQTool.Services
 {
     public class FindEq
     {
-        private class Match
+        private class Match : FindEQData
         {
             public DateTime LastModifiedDate { get; set; }
-            public string RootPath { get; set; }
             public bool HasCharUiFiles { get; set; }
         }
 
-        public string LoadEQPath()
+        public class FindEQData
+        {
+            public string EqBaseLocation { get; set; }
+
+            public string EQlogLocation { get; set; }
+        }
+
+        public FindEQData LoadEQPath()
         {
             var possibles = new ConcurrentQueue<Match>();
             var drives = DriveInfo.GetDrives().Where(a => a.IsReady && a.DriveType == DriveType.Fixed);
@@ -33,14 +39,14 @@ namespace EQTool.Services
                         var licensetext = File.ReadAllText(root + "/license.txt");
                         if (licensetext.Contains("Project 1999"))
                         {
-                            var directory = new DirectoryInfo(root);
-                            var maxmoddate = directory.GetFiles("UI_*.ini")
-                                .OrderByDescending(a => a.LastWriteTime)
-                                .Select(a => (DateTime?)a.LastWriteTime)
-                                .FirstOrDefault();
-                            if (!maxmoddate.HasValue)
+                            var dirdata = GetUIFiles(root)
+                                                        .OrderByDescending(a => a.LastWriteTime)
+                                                        .Select(a => new { a.LastWriteTime, a.FullName })
+                                                        .FirstOrDefault();
+                            if (dirdata != null)
                             {
-                                maxmoddate = directory.GetFiles()
+                                var directory = new DirectoryInfo(root);
+                                var maxmoddate = directory.GetFiles()
                                 .OrderByDescending(a => a.LastWriteTime)
                                 .Select(a => (DateTime?)a.LastWriteTime)
                                 .FirstOrDefault();
@@ -49,7 +55,7 @@ namespace EQTool.Services
                                     possibles.Enqueue(new Match
                                     {
                                         LastModifiedDate = maxmoddate.Value,
-                                        RootPath = root,
+                                        EqBaseLocation = root,
                                         HasCharUiFiles = false
                                     });
                                 }
@@ -58,8 +64,8 @@ namespace EQTool.Services
                             {
                                 possibles.Enqueue(new Match
                                 {
-                                    LastModifiedDate = maxmoddate.Value,
-                                    RootPath = root,
+                                    LastModifiedDate = dirdata.LastWriteTime,
+                                    EqBaseLocation = root,
                                     HasCharUiFiles = true
                                 });
                             }
@@ -68,11 +74,17 @@ namespace EQTool.Services
                 }));
             }
             var allran = Task.WaitAll(tasks.ToArray(), 1000 * 5);
-            var rootfolder = possibles.Where(a => a.HasCharUiFiles).OrderByDescending(a => a.LastModifiedDate).Select(a => a.RootPath).FirstOrDefault();
-            if (string.IsNullOrWhiteSpace(rootfolder))
+            var rootfolder = possibles.Where(a => a.HasCharUiFiles).OrderByDescending(a => a.LastModifiedDate).FirstOrDefault();
+            if (rootfolder == null)
             {
-                rootfolder = possibles.OrderByDescending(a => a.LastModifiedDate).Select(a => a.RootPath).FirstOrDefault();
+                rootfolder = possibles.OrderByDescending(a => a.LastModifiedDate).FirstOrDefault();
             }
+            var logifles = GetLogFileLocation(new FindEQData
+            {
+                EqBaseLocation = rootfolder?.EqBaseLocation,
+                EQlogLocation = rootfolder?.EQlogLocation,
+            });
+            rootfolder.EQlogLocation = logifles.Location;
             return rootfolder;
         }
 
@@ -116,20 +128,101 @@ namespace EQTool.Services
             return null;
         }
 
-        public static bool HasLogFiles(string root)
+        private static string GetVirtualStoreLocation(string path)
+        {
+            return Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\VirtualStore\\" + path.Substring(3);
+        }
+
+
+        public static FileInfo[] GetUIFiles(string root)
         {
             if (string.IsNullOrWhiteSpace(root))
             {
-                return false;
+                return new FileInfo[0];
             }
 
             try
             {
-                return Directory.EnumerateFiles(root + "/Logs/", "eqlog*.txt", SearchOption.TopDirectoryOnly).Any();
+                var directory = new DirectoryInfo(root);
+                var files = directory.GetFiles("UI_*.ini", SearchOption.TopDirectoryOnly);
+                if (files.Any())
+                {
+                    return files;
+                }
             }
             catch { }
 
-            return false;
+            try
+            {
+                root = GetVirtualStoreLocation(root);
+                var directory = new DirectoryInfo(root);
+                var files = directory.GetFiles("UI_*.ini", SearchOption.TopDirectoryOnly);
+                if (files.Any())
+                {
+                    return files;
+                }
+            }
+            catch { }
+
+            return new FileInfo[0];
+        }
+
+        public class LogFileInfo
+        {
+            public string Location { get; set; }
+            public bool Found { get; set; }
+        }
+
+        public static LogFileInfo GetLogFileLocation(FindEQData data)
+        {
+            var ret = new LogFileInfo { Found = false };
+            try
+            {
+                if (!string.IsNullOrWhiteSpace(data.EQlogLocation))
+                {
+                    ret.Found = Directory.EnumerateFiles(data.EQlogLocation, "eqlog*.txt", SearchOption.TopDirectoryOnly).Any();
+                }
+            }
+            catch { }
+            if (ret.Found)
+            {
+                ret.Location = data.EQlogLocation;
+                return ret;
+            }
+
+            try
+            {
+                if (!string.IsNullOrWhiteSpace(data.EqBaseLocation))
+                {
+                    ret.Found = Directory.EnumerateFiles(data.EqBaseLocation + "/Logs/", "eqlog*.txt", SearchOption.TopDirectoryOnly).Any();
+                }
+            }
+            catch { }
+            if (ret.Found)
+            {
+                ret.Location = data.EqBaseLocation + "/Logs/";
+                return ret;
+            }
+
+            var root = string.Empty;
+            try
+            {
+                if (!string.IsNullOrWhiteSpace(data.EqBaseLocation))
+                {
+                    root = GetVirtualStoreLocation(data.EqBaseLocation) + "/Logs/";
+                    ret.Found = Directory.EnumerateFiles(root, "eqlog*.txt", SearchOption.TopDirectoryOnly).Any();
+                }
+            }
+            catch { }
+            if (ret.Found)
+            {
+                ret.Location = root;
+                return ret;
+            }
+
+
+
+            return ret;
         }
 
         private static List<string> GetFilesAndFolders(string root, string pathtomatch, int depth)

@@ -1,8 +1,6 @@
 ﻿using EQTool.Models;
 using EQTool.Services;
-using EQTool.Services.Map;
 using EQTool.ViewModels;
-using System;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
@@ -30,75 +28,23 @@ namespace EQTool
             this.logParser = logParser;
             DataContext = this.mapViewModel = mapViewModel;
             Topmost = true;
-
             InitializeComponent();
-            if (settings.MapWindowState != null && WindowBounds.isPointVisibleOnAScreen(settings.MapWindowState.WindowRect))
-            {
-                Left = settings.MapWindowState.WindowRect.Left;
-                Top = settings.MapWindowState.WindowRect.Top;
-                Height = settings.MapWindowState.WindowRect.Height;
-                Width = settings.MapWindowState.WindowRect.Width;
-                WindowState = settings.MapWindowState.State;
-            }
-            if (settings.MapWindowState != null)
-            {
-                settings.MapWindowState.Closed = false;
-            }
+            WindowExtensions.AdjustWindow(settings.MapWindowState, this);
+            Topmost = Properties.Settings.Default.GlobalMapWindowAlwaysOnTop;
             App.ThemeChangedEvent += App_ThemeChangedEvent;
             _ = mapViewModel.LoadDefaultMap(Map);
-            Map.Reset();
             this.logParser.PlayerLocationEvent += LogParser_PlayerLocationEvent;
             this.logParser.PlayerZonedEvent += LogParser_PlayerZonedEvent;
-            SaveState();
-            SizeChanged += Window_SizeChanged;
-            StateChanged += Window_StateChanged;
-            LocationChanged += Window_LocationChanged;
+        }
+
+        private void LogParser_PlayerZonedEvent(object sender, LogParser.PlayerZonedEventArgs e)
+        {
+            _ = mapViewModel.LoadMap(e.Zone, Map);
         }
 
         private void LogParser_PlayerLocationEvent(object sender, LogParser.PlayerLocationEventArgs e)
         {
             mapViewModel.UpdateLocation(e.Location, Map);
-        }
-
-        private void LogParser_PlayerZonedEvent(object sender, LogParser.PlayerZonedEventArgs e)
-        {
-            var matched = ZoneParser.TranslateToMapName(e.Zone);
-            if (mapViewModel.LoadMap(matched, Map))
-            {
-                Map.Reset();
-            }
-        }
-
-        private void Window_StateChanged(object sender, EventArgs e)
-        {
-            SaveState();
-        }
-
-        private void Window_LocationChanged(object sender, EventArgs e)
-        {
-            SaveState();
-        }
-
-        private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            SaveState();
-        }
-
-        private void SaveState()
-        {
-            if (settings.MapWindowState == null)
-            {
-                settings.MapWindowState = new Models.WindowState();
-            }
-            settings.MapWindowState.WindowRect = new Rect
-            {
-                X = Left,
-                Y = Top,
-                Height = Height,
-                Width = Width
-            };
-            settings.MapWindowState.State = WindowState;
-            toolSettingsLoad.Save(settings);
         }
 
         private void App_ThemeChangedEvent(object sender, App.ThemeChangeEventArgs e)
@@ -142,14 +88,15 @@ namespace EQTool
             WindowState = WindowState == System.Windows.WindowState.Maximized ? System.Windows.WindowState.Normal : System.Windows.WindowState.Maximized;
         }
 
+        private void SaveState()
+        {
+            WindowExtensions.SaveWindowState(settings.MapWindowState, this);
+            toolSettingsLoad.Save(settings);
+        }
+
         private void CloseWindow(object sender, RoutedEventArgs e)
         {
-            if (settings.MapWindowState == null)
-            {
-                settings.MapWindowState = new Models.WindowState();
-            }
-            settings.MapWindowState.Closed = true;
-            SaveState();
+            WindowExtensions.SaveWindowState(settings.MapWindowState, this);
             Close();
         }
 

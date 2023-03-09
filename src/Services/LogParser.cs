@@ -18,6 +18,7 @@ namespace EQTool.Services
         private readonly ActivePlayer activePlayer;
         private readonly IAppDispatcher appDispatcher;
         private long? LastReadOffset = null;
+        private string LastLogFilename = string.Empty;
         private readonly EQToolSettings settings;
         private readonly LevelLogParse levelLogParse;
         private readonly EQToolSettingsLoad toolSettingsLoad;
@@ -232,6 +233,7 @@ namespace EQTool.Services
             var matchedzone = ZoneParser.Match(message);
             if (!string.IsNullOrWhiteSpace(matchedzone))
             {
+                matchedzone = ZoneParser.TranslateToMapName(matchedzone);
                 var p = activePlayer.Player;
                 if (p != null && p.Zone != zoneViewModel.Name)
                 {
@@ -245,18 +247,22 @@ namespace EQTool.Services
 
         private void Poll(object sender, EventArgs e)
         {
-            if (!FindEq.HasLogFiles(settings.DefaultEqDirectory))
+            var logfounddata = FindEq.GetLogFileLocation(new FindEq.FindEQData { EqBaseLocation = settings.DefaultEqDirectory, EQlogLocation = settings.EqLogDirectory });
+            if (logfounddata == null && logfounddata.Found)
             {
                 return;
             }
+            settings.EqLogDirectory = logfounddata.Location;
             appDispatcher.DispatchUI(() =>
             {
                 var playerchanged = activePlayer.Update();
-                if (playerchanged)
+                var filepath = activePlayer.LogFileName;
+                if (playerchanged || filepath != LastLogFilename)
                 {
                     LastReadOffset = null;
+                    LastLogFilename = filepath;
                 }
-                var filepath = activePlayer.LogFileName;
+
                 if (string.IsNullOrWhiteSpace(filepath))
                 {
                     Debug.WriteLine($"No playerfile found!");

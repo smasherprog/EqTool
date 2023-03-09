@@ -6,11 +6,12 @@
         xmlns:properties="clr-namespace:EQTool.Properties"
         Style="{StaticResource MySettingsWindowSyle}"
         mc:Ignorable="d"
-        Title="Settings" Height="600" Width="400">
+        SizeToContent="WidthAndHeight"
+        Title="Settings">
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
     </Window.Resources>
-    <ScrollViewer  HorizontalScrollBarVisibility="Auto">
+    <ScrollViewer HorizontalScrollBarVisibility="Auto" Padding="7">
 
         <StackPanel Orientation="Vertical">
             <StackPanel Orientation="Vertical" Visibility="{Binding MissingConfiguration, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}">
@@ -18,7 +19,7 @@
                 <TextBlock Text="Select your EQ path, and make sure logging is enabled!" FontWeight="Bold" FontSize="14" />
             </StackPanel>
             <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Eq Path"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100" Foreground="Red"  Visibility="{Binding DoesNotHaveEqPath, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}"/>
+                <TextBlock Text="Eq Path"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100" Foreground="Red" Visibility="{Binding DoesNotHaveEqPath, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}"/>
                 <TextBlock Text="Eq Path"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100" Visibility="{Binding HasEqPath, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Visible}"/>
                 <StackPanel Orientation="Horizontal" >
                     <TextBlock Text="{Binding EqPath}" HorizontalAlignment="Left"/>
@@ -30,9 +31,13 @@
                     </Button>
                 </StackPanel>
             </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="Eq Log Path"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/> 
+                <TextBlock Text="{Binding EqLogPath}" HorizontalAlignment="Left" MinWidth="150"/> 
+            </StackPanel>
             <StackPanel Orientation="Horizontal"  Visibility="{Binding HasEqPath, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Visible}" >
-                <TextBlock Text="Logging"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100" Foreground="Red"  Visibility="{Binding DoesNotHaveEqPath, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}"/>
-                <TextBlock Text="Logging"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100" Visibility="{Binding HasEqPath, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Visible}"/>
+                <TextBlock Text="Logging"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100" Visibility="{Binding IsLoggingEnabled, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}"/>
+                <TextBlock Text="Logging"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100" Foreground="Red"  Visibility="{Binding IsLoggingDisabled, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Visible}"/>
                 <TextBlock Visibility="{Binding IsLoggingEnabled, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}" Text="Logging Enabled!" Margin="5,5,0,0" HorizontalAlignment="Left" Foreground="Green"/>
                 <Button Visibility="{Binding IsLoggingDisabled, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}" Name="enableLogging" Margin="5,5,0,0" Click="enableLogging_Click">Enable Logging</Button>
             </StackPanel>
@@ -61,33 +66,64 @@
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Font Size"  FontWeight="Bold"  VerticalAlignment="Center" MinWidth="100"/>
-                    <ComboBox  SelectedItem="{Binding FontSize}"  ItemsSource="{Binding FontSizes}" SelectionChanged="fontsizescombobox_SelectionChanged" MinWidth="150"/>
+                    <ComboBox  SelectedItem="{Binding Source={x:Static properties:Settings.Default}, Path=GlobalFontSize}" ItemsSource="{Binding FontSizes}" SelectionChanged="fontsizescombobox_SelectionChanged" MinWidth="150"/>
+                </StackPanel>
+   
+                <TextBlock Text="Damage Window" HorizontalAlignment="Center" FontWeight="Bold" Margin="5,5,0,0"/>
+                <StackPanel Orientation="Vertical">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Always on top" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
+                        <CheckBox IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=GlobalDpsWindowAlwaysOnTop}" Click="SaveAlwaysOntopCheckBoxSettings" ></CheckBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Window Opacity"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
+                        <Slider Value="{Binding Source={x:Static properties:Settings.Default}, Path=GlobalDPSWindowOpacity}" Minimum=".01" Maximum="1" SmallChange=".1" TickFrequency=".1" ValueChanged="SaveSettings" MinWidth="150"/>
+                    </StackPanel>
+                </StackPanel>
+
+                <TextBlock Text="Mob Window" HorizontalAlignment="Center" FontWeight="Bold" Margin="5,5,0,0"/>
+                <StackPanel Orientation="Vertical">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Always on top" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
+                        <CheckBox IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=GlobalMobWindowAlwaysOnTop}" Click="SaveAlwaysOntopCheckBoxSettings" ></CheckBox>
+                    </StackPanel>
+                    <!--<StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Window Opacity" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
+                        <Slider Value="{Binding Source={x:Static properties:Settings.Default}, Path=GlobalMobWindowOpacity}" Minimum=".01" Maximum="1" SmallChange=".1" TickFrequency=".1" ValueChanged="SaveSettings" MinWidth="150"/>
+                    </StackPanel>-->
+                </StackPanel>
+                <TextBlock Text="Map Window" HorizontalAlignment="Center" FontWeight="Bold" Margin="5,5,0,0"/>
+                <StackPanel Orientation="Vertical">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Always on top" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
+                        <CheckBox IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=GlobalMapWindowAlwaysOnTop}" Click="SaveAlwaysOntopCheckBoxSettings" ></CheckBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Window Opacity" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
+                        <Slider Value="{Binding Source={x:Static properties:Settings.Default}, Path=GlobalMapWindowOpacity}" Minimum=".01" Maximum="1" SmallChange=".1" TickFrequency=".1" ValueChanged="SaveSettings" MinWidth="150"/>
+                    </StackPanel>
+                </StackPanel>
+                <TextBlock Text="Triggers Window" HorizontalAlignment="Center" FontWeight="Bold" Margin="5,5,0,0"/>
+                <StackPanel Orientation="Vertical">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Always on top" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
+                        <CheckBox IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=GlobalTriggerWindowAlwaysOnTop}" Click="SaveAlwaysOntopCheckBoxSettings" ></CheckBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Window Opacity"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
+                        <Slider Value="{Binding Source={x:Static properties:Settings.Default}, Path=GlobalTriggerWindowOpacity}" Minimum=".01" Maximum="1" SmallChange=".1" TickFrequency=".1" ValueChanged="SaveSettings" MinWidth="150"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Best Guess"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
+                        <CheckBox x:Name="BestGuessSpells" Click="GuessSpells_Click" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Effect Me only"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
+                        <CheckBox x:Name="YouSpellsOnly" Click="YouSpells_Click" />
+                    </StackPanel>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="DPS Opacity"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
-                    <Slider Value="{Binding Source={x:Static properties:Settings.Default}, Path=GlobalDPSWindowOpacity}" Minimum="0" Maximum="1" SmallChange=".1" TickFrequency=".1" ValueChanged="SaleSettings" MinWidth="150"/>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Spell Opacity"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
-                    <Slider Value="{Binding Source={x:Static properties:Settings.Default}, Path=GlobalTriggerWindowOpacity}"  Minimum="0" Maximum="1" SmallChange=".1" TickFrequency=".1" ValueChanged="SaleSettings" MinWidth="150"/>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Map Opacity"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
-                    <Slider  Value="{Binding Source={x:Static properties:Settings.Default}, Path=GlobalMapWindowOpacity}" Minimum="0" Maximum="1" SmallChange=".1" TickFrequency=".1" ValueChanged="SaleSettings" MinWidth="150"/>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal"  HorizontalAlignment="Center">
-                    <TextBlock Text="Spell Window" FontWeight="Bold" Margin="5,5,0,0" />
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Spells"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
-                    <CheckBox x:Name="BestGuessSpells" Checked="GuessSpells_Checked"  Unchecked="GuessSpells_Unchecked">Best Guess Spells and Effects</CheckBox>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Spells"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
-                    <CheckBox x:Name="YouSpellsOnly" Checked="YouSpells_Checked"  Unchecked="YouSpells_Unchecked">Only show spells that effect you</CheckBox>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Other spells"  FontWeight="Bold" MinWidth="100" ToolTip="This will filter what shows up on other players."/>
+                    <TextBlock Text="Spell Filters"  FontWeight="Bold" MinWidth="100" ToolTip="This will filter what shows up on other players."/>
                     <StackPanel Orientation="Vertical">
                         <ListBox IsEnabled="{Binding HasCharName}"
                              Name="spellbyclassselection" 
@@ -119,8 +155,6 @@
                         <Button Click="mobconclicked" MinWidth="100">Test Mob</Button>
                     </StackPanel>
                 </StackPanel>
-
-                <Button Margin="5,20, 5, 0" Click="SaveAndClose">Save and Close</Button>
             </StackPanel>
         </StackPanel>
     </ScrollViewer>

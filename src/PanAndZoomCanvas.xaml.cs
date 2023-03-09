@@ -7,9 +7,6 @@ using System.Windows.Media;
 
 namespace EQTool
 {
-    /// <summary>
-    /// Interaction logic for PanAndZoomCanvas.xaml
-    /// </summary>
     public partial class PanAndZoomCanvas : Canvas
     {
         public MatrixTransform Transform = new MatrixTransform();

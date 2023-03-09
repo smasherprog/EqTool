@@ -20,13 +20,11 @@ namespace EQTool.ViewModels
     {
         private readonly MapLoad mapLoad;
         private readonly ActivePlayer activePlayer;
-        private readonly IAppDispatcher appDispatcher;
 
-        public MapViewModel(MapLoad mapLoad, ActivePlayer activePlayer, IAppDispatcher appDispatcher)
+        public MapViewModel(MapLoad mapLoad, ActivePlayer activePlayer)
         {
             this.mapLoad = mapLoad;
             this.activePlayer = activePlayer;
-            this.appDispatcher = appDispatcher;
         }
 
         private Point3D Lastlocation = new Point3D(0, 0, 0);
@@ -60,8 +58,16 @@ namespace EQTool.ViewModels
             {
                 return false;
             }
-
+            zone = ZoneParser.TranslateToMapName(zone);
+            if (string.IsNullOrWhiteSpace(zone))
+            {
+                zone = "freportw";
+            }
+            var stop = new Stopwatch();
+            stop.Start();
             var map = mapLoad.Load(zone);
+            stop.Stop();
+            Debug.WriteLine($"Time to load {zone} - {stop.ElapsedMilliseconds}ms");
             if (map.Labels.Any() || map.Lines.Any())
             {
                 LoadedZone = Title = zone;

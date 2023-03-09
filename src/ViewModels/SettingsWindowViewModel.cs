@@ -28,7 +28,6 @@ namespace EQTool.ViewModels
             {
                 Zones.Add(item);
             }
-            FontSize = (int)settings.FontSize;
         }
 
         private ActivePlayer _ActivePlayer;
@@ -41,6 +40,17 @@ namespace EQTool.ViewModels
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(HasCharName));
                 OnPropertyChanged(nameof(HasNoCharName));
+            }
+        }
+
+        private string _EqLogPath = string.Empty;
+        public string EqLogPath
+        {
+            get => _EqLogPath;
+            set
+            {
+                _EqLogPath = value;
+                OnPropertyChanged(); 
             }
         }
 
@@ -95,17 +105,6 @@ namespace EQTool.ViewModels
                 IsEqNotRunning = value;
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(IsEqNotRunning));
-            }
-        }
-
-        private int _FontSize;
-        public int FontSize
-        {
-            get => _FontSize;
-            set
-            {
-                _FontSize = value;
-                OnPropertyChanged();
             }
         }
 

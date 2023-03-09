@@ -5,7 +5,7 @@
     <Setting Name="ColorMode" Type="System.String" Scope="User">
       <Value Profile="(Default)">Light</Value>
     </Setting>
-    <Setting Name="GlobalFontSize" Type="System.Double" Scope="User">
+    <Setting Name="GlobalFontSize" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">12</Value>
     </Setting>
     <Setting Name="GlobalTriggerWindowOpacity" Type="System.Double" Scope="User">
@@ -16,6 +16,21 @@
     </Setting>
     <Setting Name="GlobalMapWindowOpacity" Type="System.Double" Scope="User">
       <Value Profile="(Default)">1</Value>
+    </Setting>
+    <Setting Name="GlobalMobWindowOpacity" Type="System.Double" Scope="User">
+      <Value Profile="(Default)">1</Value>
+    </Setting>
+    <Setting Name="GlobalTriggerWindowAlwaysOnTop" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="GlobalDpsWindowAlwaysOnTop" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="GlobalMapWindowAlwaysOnTop" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
+    </Setting>
+    <Setting Name="GlobalMobWindowAlwaysOnTop" Type="System.Boolean" Scope="User">
+      <Value Profile="(Default)">True</Value>
     </Setting>
   </Settings>
 </SettingsFile>

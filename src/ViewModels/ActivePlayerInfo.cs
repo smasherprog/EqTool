@@ -16,37 +16,45 @@ namespace EQTool.ViewModels
 
         public bool Update()
         {
-            var players = settings.Players ?? new System.Collections.Generic.List<PlayerInfo>();
-            var directory = new DirectoryInfo(settings.DefaultEqDirectory + "/Logs/");
-            var loggedincharlogfile = directory.GetFiles("eqlog*.txt", SearchOption.TopDirectoryOnly)
-                .OrderByDescending(a => a.LastWriteTime)
-                .FirstOrDefault();
             var playerchanged = false;
-            if (loggedincharlogfile != null)
+            try
             {
-                var charname_withext = loggedincharlogfile.Name.Replace("eqlog_", string.Empty);
-                var indexpart = charname_withext.IndexOf("_");
-                var charName = charname_withext.Substring(0, indexpart);
-                var tempplayer = players.FirstOrDefault(a => a.Name == charName);
-                LogFileName = loggedincharlogfile.FullName;
+                var players = settings.Players ?? new System.Collections.Generic.List<PlayerInfo>();
+                var directory = new DirectoryInfo(settings.EqLogDirectory);
+                var loggedincharlogfile = directory.GetFiles("eqlog*.txt", SearchOption.TopDirectoryOnly)
+                    .OrderByDescending(a => a.LastWriteTime)
+                    .FirstOrDefault();
 
-                if (tempplayer == null)
+                if (loggedincharlogfile != null)
                 {
-                    tempplayer = new PlayerInfo
+                    var charname_withext = loggedincharlogfile.Name.Replace("eqlog_", string.Empty);
+                    var indexpart = charname_withext.IndexOf("_");
+                    var charName = charname_withext.Substring(0, indexpart);
+                    var tempplayer = players.FirstOrDefault(a => a.Name == charName);
+                    LogFileName = loggedincharlogfile.FullName;
+
+                    if (tempplayer == null)
                     {
-                        Level = 1,
-                        Name = charName,
-                        PlayerClass = null,
-                        Zone = "freportw"
-                    };
-                    players.Add(tempplayer);
+                        tempplayer = new PlayerInfo
+                        {
+                            Level = 1,
+                            Name = charName,
+                            PlayerClass = null,
+                            Zone = "freportw"
+                        };
+                        players.Add(tempplayer);
+                    }
+                    playerchanged = tempplayer != Player;
+                    Player = tempplayer;
                 }
-                playerchanged = tempplayer != Player;
-                Player = tempplayer;
+                else
+                {
+                    Player = null;
+                }
             }
-            else
+            catch
             {
-                Player = null;
+
             }
 
             return playerchanged;

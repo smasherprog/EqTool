@@ -288,7 +288,7 @@ High MR, Summons
         {
             var cleanresults = ResponsFromServer4.Replace("\r\n", "\n").Replace("| ", "^");
             var splits = cleanresults.Split('^').Where(a => !string.IsNullOrWhiteSpace(a)).Select(a => a.Trim().TrimStart('\n')).ToList();
-            var ret = MobInfoParsing.ParseKnwonLoot(splits);
+            var ret = MobInfoParsing.ParseKnownLoot(splits);
             Assert.IsNotNull(ret);
             Assert.AreEqual(5, ret.Count);
             Assert.IsTrue(ret.Any(a => a.Name == "Form of the Great Bear"));
@@ -422,6 +422,8 @@ High MR, Summons
 | opposing_factions = 
 
 * [[Kromzek]] <span class='oppfac'>(100)</span>
+* [[Drusella Sathir (Faction)|Drusella Sathir]] <span class='profac'>(-20)</span>
+* [[Venril Sathir (Faction)|Venril Sathir]] <span class='profac'>(-30)</span>
 
 | related_quests = 
 
@@ -444,6 +446,13 @@ High MR, Summons
             Assert.AreEqual("Gozzrem", model.Name);
             Assert.AreEqual("Cleric", model.Class);
             Assert.AreEqual(12, model.Specials.Count);
+            Assert.AreEqual(2, model.Factions.Count);
+            Assert.IsTrue(model.Factions.Any(a => a.Name == "Claws of Veeshan (-150)"));
+            Assert.IsTrue(model.Factions.Any(a => a.Name == "Yelinak (-100)"));
+            Assert.AreEqual(3, model.OpposingFactions.Count);
+            Assert.IsTrue(model.OpposingFactions.Any(a => a.Name == "Kromzek (100)"));
+            Assert.IsTrue(model.OpposingFactions.Any(a => a.Name == "Drusella Sathir (-20)"));
+            Assert.IsTrue(model.OpposingFactions.Any(a => a.Name == "Venril Sathir (-30)"));
         }
     }
 }

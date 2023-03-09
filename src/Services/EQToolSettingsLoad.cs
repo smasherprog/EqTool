@@ -42,15 +42,35 @@ namespace EQTool.Services
                 }
                 catch { }
             }
-
+            var match = findEq.LoadEQPath();
             var ret = new EQToolSettings
             {
-                DefaultEqDirectory = findEq.LoadEQPath(),
+                DefaultEqDirectory = match?.EqBaseLocation,
+                EqLogDirectory = match?.EQlogLocation,
                 BestGuessSpells = true,
-                FontSize = 12,
                 YouOnlySpells = false,
                 Players = new System.Collections.Generic.List<PlayerInfo>(),
-                TriggerWindowTopMost = true
+                DpsWindowState = new WindowState
+                {
+                    Closed = false,
+                    State = System.Windows.WindowState.Normal
+                },
+                MapWindowState = new WindowState
+                {
+                    Closed = false,
+                    State = System.Windows.WindowState.Normal
+                },
+                MobWindowState = new WindowState
+                {
+                    Closed = false,
+                    State = System.Windows.WindowState.Normal
+                },
+                SpellWindowState = new WindowState
+                {
+                    Closed = false,
+                    State = System.Windows.WindowState.Normal
+                },
+                Theme = Themes.Light
             };
             return ret;
         }

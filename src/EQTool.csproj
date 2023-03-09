@@ -185,6 +185,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="Services\AppDispatcher.cs" />
+    <Compile Include="Services\UpdateService.cs" />
     <Compile Include="Services\HSLColor.cs" />
     <Compile Include="Services\Fight\FightLogService.cs" />
     <Compile Include="Services\Map\LocationParser.cs" />
@@ -196,6 +197,7 @@
     <Compile Include="Services\Spells\Log\SpellWornOffLogParse.cs" />
     <Compile Include="Services\Spells\SpellUIExtentions.cs" />
     <Compile Include="Services\WikiApi.cs" />
+    <Compile Include="Services\WindowExtensions.cs" />
     <Compile Include="Services\WindowBounds.cs" />
     <Compile Include="Services\LogParser.cs" />
     <Compile Include="Services\Spells\Log\LogCustomTimer.cs" />
@@ -262,16 +264,8 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
-    <Compile Include="MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
     <Page Include="MappingWindow.xaml">

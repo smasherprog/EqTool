@@ -33,19 +33,8 @@ namespace EQTool
             this.dPSWindowViewModel.EntityList = new System.Collections.ObjectModel.ObservableCollection<EntittyDPS>();
             DataContext = dPSWindowViewModel;
             InitializeComponent();
-            if (settings.DpsWindowState != null && WindowBounds.isPointVisibleOnAScreen(settings.DpsWindowState.WindowRect))
-            {
-                Left = settings.DpsWindowState.WindowRect.Left;
-                Top = settings.DpsWindowState.WindowRect.Top;
-                Height = settings.DpsWindowState.WindowRect.Height;
-                Width = settings.DpsWindowState.WindowRect.Width;
-                WindowState = settings.DpsWindowState.State;
-            }
-            if (settings.DpsWindowState != null)
-            {
-                settings.DpsWindowState.Closed = false;
-            }
-            Topmost = settings.TriggerWindowTopMost;
+            WindowExtensions.AdjustWindow(settings.DpsWindowState, this);
+            Topmost = Properties.Settings.Default.GlobalDpsWindowAlwaysOnTop;
             UITimer = new System.Timers.Timer(1000);
             UITimer.Elapsed += PollUI;
             UITimer.Enabled = true;
@@ -105,18 +94,7 @@ namespace EQTool
 
         private void SaveState()
         {
-            if (settings.DpsWindowState == null)
-            {
-                settings.DpsWindowState = new Models.WindowState();
-            }
-            settings.DpsWindowState.WindowRect = new Rect
-            {
-                X = Left,
-                Y = Top,
-                Height = Height,
-                Width = Width
-            };
-            settings.DpsWindowState.State = WindowState;
+            WindowExtensions.SaveWindowState(settings.DpsWindowState, this);
             toolSettingsLoad.Save(settings);
         }
 
@@ -142,10 +120,6 @@ namespace EQTool
 
         private void CloseWindow(object sender, RoutedEventArgs e)
         {
-            if (settings.DpsWindowState == null)
-            {
-                settings.DpsWindowState = new Models.WindowState();
-            }
             settings.DpsWindowState.Closed = true;
             SaveState();
             Close();
