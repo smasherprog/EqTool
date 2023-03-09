@@ -10,8 +10,6 @@ Instructions:
 </li>
 <li>The program runs in the system tray. Look there to reopen spells window or settings! Program will check for updates on startup and self update if required, but if you want to check for a new Update, use the menu in the system tray!</li>
 </ul>
-<h4>Knwon Issues:</h4>
-<p>Running everquest from program files is not supported currently. This is currently being worked on and will be fixed no later than 3/11/23</p>
 <h5>Why the pig?</h5>
 <p>https://discord.gg/nSrz8hAwxM</p>
 Features:
@@ -41,10 +39,8 @@ Features:
 <img width="152" alt="image" src="https://user-images.githubusercontent.com/3393733/212717141-6e26b9af-660a-493d-9f73-2c3464b7c224.png">
 
 <h4>TO DO List</h4>
-<ul>
-<li>Support running from program files directory.</li>
-<li>Release to single exe, not a zip</li>
-<li>Support eq running from program files (without running as admin) log files goto AppData/Local/VirtualStore</li>
+<ul> 
+<li>Release to single exe, not a zip</li> 
 <li>Fix overlapping Map on window</li>
 <li>Determine pet level based on the maxhit and add to the DPS window</li>
 <li>Add location to mouse hover on map</li>
@@ -62,11 +58,8 @@ Features:
 <li>Rename Application to Pig Parse</li>
 <li>Enrage alert/advanced alert.</li>
 <li>charm break alert</li>
-<li>charm spell effect removal</li>
-<li>Always on top toggle for each window</li>
-<li>Map window add toggle to follow location</li>
-<li>Map window make it possible to go entierly transparent!</li>  
-<liMake settings window and Mob window remember last position/size/state</li>
+<li>charm spell effect removal</li> 
+<li>Map window add toggle to follow location</li>   
 <li>Add loot TAB to Mob Window. This tab will show item name, looted from, player name who looted, and unix geek price data, running total looted.</li>
 </ul>
 
