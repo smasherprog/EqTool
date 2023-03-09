@@ -233,6 +233,7 @@ namespace EQTool.Services
             var matchedzone = ZoneParser.Match(message);
             if (!string.IsNullOrWhiteSpace(matchedzone))
             {
+                matchedzone = ZoneParser.TranslateToMapName(matchedzone);
                 var p = activePlayer.Player;
                 if (p != null && p.Zone != zoneViewModel.Name)
                 {
