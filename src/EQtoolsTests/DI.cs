@@ -15,7 +15,35 @@ namespace EQToolTests
             _ = builder.RegisterSource(new AnyConcreteTypeNotAlreadyRegisteredSource());
             _ = builder.Register(a =>
             {
-                return a.Resolve<EQToolSettingsLoad>().Load();
+                return new EQToolSettings
+                {
+                    DefaultEqDirectory = string.Empty,
+                    EqLogDirectory = string.Empty,
+                    BestGuessSpells = true,
+                    YouOnlySpells = false,
+                    Players = new System.Collections.Generic.List<PlayerInfo>(),
+                    DpsWindowState = new WindowState
+                    {
+                        Closed = false,
+                        State = System.Windows.WindowState.Normal
+                    },
+                    MapWindowState = new WindowState
+                    {
+                        Closed = false,
+                        State = System.Windows.WindowState.Normal
+                    },
+                    MobWindowState = new WindowState
+                    {
+                        Closed = false,
+                        State = System.Windows.WindowState.Normal
+                    },
+                    SpellWindowState = new WindowState
+                    {
+                        Closed = false,
+                        State = System.Windows.WindowState.Normal
+                    },
+                    Theme = Themes.Light
+                };
             }).AsSelf().SingleInstance();
             _ = builder.RegisterType<FakeAppDispatcher>().As<IAppDispatcher>().SingleInstance();
             _ = builder.RegisterType<SpellIcons>().AsSelf().SingleInstance();
