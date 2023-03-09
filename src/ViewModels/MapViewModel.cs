@@ -63,7 +63,11 @@ namespace EQTool.ViewModels
             {
                 zone = "freportw";
             }
+            var stop = new Stopwatch();
+            stop.Start();
             var map = mapLoad.Load(zone);
+            stop.Stop();
+            Debug.WriteLine($"Time to load {zone} - {stop.ElapsedMilliseconds}ms");
             if (map.Labels.Any() || map.Lines.Any())
             {
                 LoadedZone = Title = zone;
