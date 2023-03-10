@@ -8,6 +8,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
@@ -44,6 +45,21 @@ namespace EQTool.ViewModels
                 OnPropertyChanged();
             }
         }
+
+        private Point _LastMouselocation = new Point(0, 0);
+
+        private Point LastMouselocation
+        {
+            get => _LastMouselocation;
+            set
+            {
+                _LastMouselocation = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(MouseLocation));
+            }
+        }
+
+        public string MouseLocation => $"   {LastMouselocation.X:0.##}, {LastMouselocation.Y:0.##}";
 
         private string LoadedZone = string.Empty;
 
@@ -288,5 +304,13 @@ namespace EQTool.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
 
+        public void MouseMove(Point mousePosition, object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            mousePosition.Y += MapOffset.Y;
+            mousePosition.X += MapOffset.X;
+            mousePosition.Y *= -1;
+            mousePosition.X *= -1;
+            LastMouselocation = mousePosition;
+        }
     }
 }

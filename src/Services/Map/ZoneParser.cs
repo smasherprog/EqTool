@@ -6,7 +6,7 @@ namespace EQTool.Services.Map
     public static class ZoneParser
     {
         private const string Youhaveentered = "You have entered ";
-        private const string Therearenoplayers = "There are no players in EverQuest that match those who filters.";
+        private const string Therearenoplayers = "There are no players ";
         private const string Thereare = "There are ";
         private const string spaceinspace = " in ";
 

@@ -123,5 +123,11 @@ namespace EQTool
         {
             (App.Current as App).OpenSpellsWindow();
         }
+
+        private void Map_MouseMove(object sender, MouseEventArgs e)
+        {
+            var mousePosition = Map.Transform.Inverse.Transform(e.GetPosition(sender as IInputElement));
+            mapViewModel.MouseMove(mousePosition, sender, e);
+        }
     }
 }
