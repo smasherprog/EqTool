@@ -23,7 +23,6 @@ namespace EQTool.Services
         private readonly LevelLogParse levelLogParse;
         private readonly EQToolSettingsLoad toolSettingsLoad;
         private readonly LocationParser locationParser;
-        private readonly ZoneViewModel zoneViewModel;
         private readonly DPSLogParse dPSLogParse;
         private readonly LogDeathParse logDeathParse;
         private readonly ConLogParse conLogParse;
@@ -38,7 +37,6 @@ namespace EQTool.Services
             ConLogParse conLogParse,
             LogDeathParse logDeathParse,
             DPSLogParse dPSLogParse,
-            ZoneViewModel zoneViewModel,
             LocationParser locationParser,
             EQToolSettingsLoad toolSettingsLoad,
             ActivePlayer activePlayer,
@@ -52,7 +50,6 @@ namespace EQTool.Services
             this.conLogParse = conLogParse;
             this.logDeathParse = logDeathParse;
             this.dPSLogParse = dPSLogParse;
-            this.zoneViewModel = zoneViewModel;
             this.locationParser = locationParser;
             this.toolSettingsLoad = toolSettingsLoad;
             this.activePlayer = activePlayer;
@@ -233,11 +230,12 @@ namespace EQTool.Services
             var matchedzone = ZoneParser.Match(message);
             if (!string.IsNullOrWhiteSpace(matchedzone))
             {
+                var b4matchedzone = matchedzone;
                 matchedzone = ZoneParser.TranslateToMapName(matchedzone);
+                Debug.WriteLine($"Zone Change Detected {matchedzone}--{b4matchedzone}");
                 var p = activePlayer.Player;
-                if (p != null && p.Zone != zoneViewModel.Name)
+                if (p != null)
                 {
-                    zoneViewModel.Name = matchedzone;
                     p.Zone = matchedzone;
                     toolSettingsLoad.Save(settings);
                 }
@@ -278,6 +276,7 @@ namespace EQTool.Services
                         LastReadOffset = fileinfo.Length;
                         PlayerChangeEvent?.Invoke(this, new PlayerChangeEventArgs());
                     }
+                    var linelist = new List<string>();
                     using (var stream = new FileStream(filepath, FileMode.Open, FileAccess.Read))
                     using (var reader = new StreamReader(stream))
                     {
@@ -285,9 +284,14 @@ namespace EQTool.Services
                         while (!reader.EndOfStream)
                         {
                             var line = reader.ReadLine();
+                            linelist.Add(line);
                             LastReadOffset = stream.Position;
-                            MainRun(line);
                         }
+                    }
+
+                    foreach (var line in linelist)
+                    {
+                        MainRun(line);
                     }
                 }
                 catch (Exception ex)
