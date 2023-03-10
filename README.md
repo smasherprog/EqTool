@@ -39,7 +39,8 @@ Features:
 <img width="152" alt="image" src="https://user-images.githubusercontent.com/3393733/212717141-6e26b9af-660a-493d-9f73-2c3464b7c224.png">
 
 <h4>TO DO List</h4>
-<ul> 
+<ul>
+<li>Prevent Map panning outside of bounds/li> 
 <li>Release to single exe, not a zip</li> 
 <li>Fix overlapping Map on window</li>
 <li>Determine pet level based on the maxhit and add to the DPS window</li>
