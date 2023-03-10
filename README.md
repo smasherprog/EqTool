@@ -40,6 +40,7 @@ Features:
 
 <h4>TO DO List</h4>
 <ul> 
+<li>Sense heading arrow pointer</li> 
 <li>Release to single exe, not a zip</li> 
 <li>Fix overlapping Map on window</li>
 <li>Determine pet level based on the maxhit and add to the DPS window</li>
