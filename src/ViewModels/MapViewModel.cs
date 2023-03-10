@@ -207,7 +207,6 @@ namespace EQTool.ViewModels
 
         public bool LoadDefaultMap(PanAndZoomCanvas canvas)
         {
-
             _ = activePlayer.Update();
             var z = ZoneParser.TranslateToMapName(activePlayer.Player?.Zone);
             if (string.IsNullOrWhiteSpace(z))
