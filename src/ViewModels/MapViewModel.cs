@@ -70,6 +70,7 @@ namespace EQTool.ViewModels
             Debug.WriteLine($"Time to load {zone} - {stop.ElapsedMilliseconds}ms");
             if (map.Labels.Any() || map.Lines.Any())
             {
+                canvas.Reset();
                 LoadedZone = Title = zone;
                 Debug.WriteLine($"Loading: {zone}");
                 var colordic = new Dictionary<System.Windows.Media.Color, Tuple<EQMapColor, SolidColorBrush>>();
@@ -206,6 +207,7 @@ namespace EQTool.ViewModels
 
         public bool LoadDefaultMap(PanAndZoomCanvas canvas)
         {
+
             _ = activePlayer.Update();
             var z = ZoneParser.TranslateToMapName(activePlayer.Player?.Zone);
             if (string.IsNullOrWhiteSpace(z))
