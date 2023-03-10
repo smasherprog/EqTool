@@ -431,6 +431,9 @@ High MR, Summons
 * [[The Second Arcane Test]]
 * [[Wisdom - The Long Battle]]
 * [[Wisdom - The Short Battle]]
+* [[Warrior Pike Quests|Warrior Pike #2 (Footman's Pike)]]
+* [[Dreadscale Armor Quests|Dreadscale Boots]]
+* [[Monk Shackle Quests|Shackle of Bronze]]
 
 }}
 
@@ -453,6 +456,12 @@ High MR, Summons
             Assert.IsTrue(model.OpposingFactions.Any(a => a.Name == "Kromzek (100)"));
             Assert.IsTrue(model.OpposingFactions.Any(a => a.Name == "Drusella Sathir (-20)"));
             Assert.IsTrue(model.OpposingFactions.Any(a => a.Name == "Venril Sathir (-30)"));
+            Assert.AreEqual(7, model.RelatedQuests.Count);
+            Assert.IsTrue(model.RelatedQuests.Any(a => a.Name == "Wisdom - The Long Battle"));
+            Assert.IsTrue(model.RelatedQuests.Any(a => a.Url == "https://wiki.project1999.com/Wisdom_-_The_Long_Battle"));
+            Assert.IsTrue(model.RelatedQuests.Any(a => a.Name == "Warrior Pike Quests"));
+            Assert.IsTrue(model.RelatedQuests.Any(a => a.Name == "Dreadscale Armor Quests"));
+            Assert.IsTrue(model.RelatedQuests.Any(a => a.Name == "Monk Shackle Quests"));
         }
     }
 }

@@ -19,7 +19,7 @@ namespace EQTool.ViewModels
             get => _Name;
             set
             {
-                _Name = !string.IsNullOrWhiteSpace(value) ? Regex.Replace(value, " {2,}", " ") : value;
+                _Name = !string.IsNullOrWhiteSpace(value) ? Regex.Replace(value, " {2,}", " ").Trim() : value;
                 OnPropertyChanged();
             }
         }

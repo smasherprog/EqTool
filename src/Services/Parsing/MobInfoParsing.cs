@@ -38,7 +38,6 @@ namespace EQTool.Services.Parsing
                         var model = new TestUriViewModel();
                         var diff = indexofend - (indexof + 3);
                         model.Name = item.Substring(indexof + 3, diff).Trim();
-
                         model.Url = $"https://wiki.project1999.com/" + model.Name.Replace(' ', '_');
                         ret.Add(model);
                     }
@@ -48,29 +47,29 @@ namespace EQTool.Services.Parsing
                     indexof = item.IndexOf("[[");
                     if (indexof != -1)
                     {
-                        var indexofend = item.IndexOf("|Spell:");
+                        var indexofend = item.IndexOf("(Faction)");
                         if (indexofend != -1)
                         {
                             var model = new TestUriViewModel();
                             var diff = indexofend - (indexof + 2);
                             model.Name = item.Substring(indexof + 2, diff).Trim();
                             model.Url = $"https://wiki.project1999.com/" + model.Name.Replace(' ', '_');
+                            indexofend = item.IndexOf("]]");
+                            if (indexofend != -1)
+                            {
+                                model.Name += item.Substring(indexofend + 2);
+                            }
                             ret.Add(model);
                         }
                         else
                         {
-                            indexofend = item.IndexOf("(Faction)");
+                            indexofend = item.IndexOf("|");
                             if (indexofend != -1)
                             {
                                 var model = new TestUriViewModel();
                                 var diff = indexofend - (indexof + 2);
                                 model.Name = item.Substring(indexof + 2, diff).Trim();
                                 model.Url = $"https://wiki.project1999.com/" + model.Name.Replace(' ', '_');
-                                indexofend = item.IndexOf("]]");
-                                if (indexofend != -1)
-                                {
-                                    model.Name += item.Substring(indexofend + 2);
-                                }
                                 ret.Add(model);
                             }
                             else
@@ -82,7 +81,7 @@ namespace EQTool.Services.Parsing
                                     var diff = indexofend - (indexof + 2);
                                     model.Name = item.Substring(indexof + 2, diff).Trim();
                                     model.Url = $"https://wiki.project1999.com/" + model.Name.Replace(' ', '_');
-                                    model.Name += "  " + item.Substring(indexofend + 2).Trim();
+                                    model.Name += " " + item.Substring(indexofend + 2);
                                     ret.Add(model);
                                 }
                             }
