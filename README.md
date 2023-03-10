@@ -40,7 +40,7 @@ Features:
 
 <h4>TO DO List</h4>
 <ul>
-<li>Prevent Map panning outside of bounds/li> 
+<li>Prevent Map panning outside of bounds</li> 
 <li>Release to single exe, not a zip</li> 
 <li>Fix overlapping Map on window</li>
 <li>Determine pet level based on the maxhit and add to the DPS window</li>
