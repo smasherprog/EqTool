@@ -310,6 +310,18 @@ namespace EQTool.ViewModels
             }
         }
 
+        private ObservableCollection<TestUriViewModel> _RelatedQuests = new ObservableCollection<TestUriViewModel>();
+
+        public ObservableCollection<TestUriViewModel> RelatedQuests
+        {
+            get => _RelatedQuests;
+            set
+            {
+                _RelatedQuests = value;
+                OnPropertyChanged();
+            }
+        }
+
         public static string StripHTML(string input)
         {
             return Regex.Replace(input, "<.*?>", string.Empty);
@@ -341,7 +353,15 @@ namespace EQTool.ViewModels
             {
                 _ = OpposingFactions.Remove(item);
             }
-            var cleanresults = Results.Replace("\r\n", "\n").Replace("|imagefilename", "^imagefilename").Replace("| ", "^");
+            spec = _RelatedQuests.ToList();
+            foreach (var item in spec)
+            {
+                _ = _RelatedQuests.Remove(item);
+            }
+            var cleanresults = Results;
+            var lastindexof = cleanresults.LastIndexOf("}}");
+            cleanresults = cleanresults.Substring(0, lastindexof);
+            cleanresults = cleanresults.Replace("\r\n", "\n").Replace("|imagefilename", "^imagefilename").Replace("| ", "^");
             var splits = cleanresults.Split('^').Where(a => !string.IsNullOrWhiteSpace(a)).Select(a => a.Trim().TrimStart('\n')).ToList();
             Name = GetValue("name", splits);
             Race = GetValue("race", splits);
@@ -366,28 +386,34 @@ namespace EQTool.ViewModels
                 DamagePerHit = DamagePerHit.Split('\n')[0];
             }
 
-            var specialslist = MobInfoParsing.ParseSpecials(splits);
-            foreach (var item in specialslist)
+            var infos = MobInfoParsing.ParseSpecials(splits);
+            foreach (var item in infos)
             {
                 Specials.Add(item);
             }
 
-            var known_loot = MobInfoParsing.ParseKnownLoot(splits);
-            foreach (var item in known_loot)
+            infos = MobInfoParsing.ParseKnownLoot(splits);
+            foreach (var item in infos)
             {
                 KnownLoot.Add(item);
             }
 
-            var factions = MobInfoParsing.ParseFactions(splits);
-            foreach (var item in factions)
+            infos = MobInfoParsing.ParseFactions(splits);
+            foreach (var item in infos)
             {
                 Factions.Add(item);
             }
 
-            factions = MobInfoParsing.ParseOpposingFactions(splits);
-            foreach (var item in factions)
+            infos = MobInfoParsing.ParseOpposingFactions(splits);
+            foreach (var item in infos)
             {
                 OpposingFactions.Add(item);
+            }
+
+            infos = MobInfoParsing.ParseRelatedQuests(splits);
+            foreach (var item in infos)
+            {
+                RelatedQuests.Add(item);
             }
 
             if (!string.IsNullOrWhiteSpace(Name))

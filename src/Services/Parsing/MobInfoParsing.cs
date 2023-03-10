@@ -115,6 +115,10 @@ namespace EQTool.Services.Parsing
         {
             return Parse("opposing_factions", splits);
         }
+        public static List<TestUriViewModel> ParseRelatedQuests(List<string> splits)
+        {
+            return Parse("related_quests", splits);
+        }
 
         public static string StripHTML(string input)
         {

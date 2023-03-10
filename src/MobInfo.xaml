@@ -179,6 +179,37 @@
                             </Style>
                         </ListView.ItemContainerStyle>
                     </ListView>
+                    <TextBlock>Related Quests</TextBlock>
+                    <ListView Margin="10, 0, 0, 0" Style="{StaticResource MyListViewStyle}" ItemsSource="{Binding RelatedQuests}">
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <StackPanel>
+                                    <TextBlock Visibility="{Binding HaseUrl}">
+                                         <Hyperlink NavigateUri="{Binding Url}" RequestNavigate="Hyperlink_RequestNavigate">
+                                          <TextBlock Text="{Binding Name}" Style="{StaticResource MyMobUrlSyle}"></TextBlock>     
+                                             <Button Visibility="{Binding HaseUrl}" Margin="1" FontSize="7" Width="14" Height="14" Padding="0" ToolTip="Open in Web Browser" Click="Hyperlink_RequestNavigatebutton">
+                                                <Image Source="pack://application:,,,/HyperlinkForward.png"/>
+                                            </Button>
+                                         </Hyperlink> 
+                                        </TextBlock>
+                                    <TextBlock Visibility="{Binding HaseNoUrl}" Text="{Binding Name}">
+                                    </TextBlock>
+                                </StackPanel>
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                        <ListView.ItemContainerStyle>
+                            <Style TargetType="{x:Type ListViewItem}">
+                                <Setter Property="Background" Value="Transparent" />
+                                <Setter Property="Template">
+                                    <Setter.Value>
+                                        <ControlTemplate TargetType="{x:Type ListViewItem}">
+                                            <ContentPresenter />
+                                        </ControlTemplate>
+                                    </Setter.Value>
+                                </Setter>
+                            </Style>
+                        </ListView.ItemContainerStyle>
+                    </ListView>
                 </StackPanel>
                 <StackPanel Orientation="Vertical" Visibility="{Binding HasNoErrors}">
                     <TextBlock>Known Loot</TextBlock>
