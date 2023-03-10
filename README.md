@@ -39,11 +39,10 @@ Features:
 <img width="152" alt="image" src="https://user-images.githubusercontent.com/3393733/212717141-6e26b9af-660a-493d-9f73-2c3464b7c224.png">
 
 <h4>TO DO List</h4>
-<ul> 
-<li>Release to single exe, not a zip</li> 
-<li>Fix overlapping Map on window</li>
-<li>Determine pet level based on the maxhit and add to the DPS window</li>
-<li>Add location to mouse hover on map</li>
+<ul>
+<li>Prevent Map panning outside of bounds</li> 
+<li>Release to single exe, not a zip</li>  
+<li>Determine pet level based on the maxhit and add to the DPS window</li> 
 <li>Seive Counter</li> 
 <li>Enable EQ logging automatically if EQ is not running.</li>
 <li>Add option to auto prune eq log file. EQ logfiles can cause issues with EQ itself if they get too large!</li>
