@@ -85,7 +85,11 @@ namespace EQTool.Services
                 EQlogLocation = rootfolder?.EQlogLocation,
             });
 
-            rootfolder.EQlogLocation = logifles.Location;
+            if (rootfolder != null)
+            {
+                rootfolder.EQlogLocation = logifles.Location;
+            }
+
             return rootfolder;
         }
 
