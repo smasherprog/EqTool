@@ -32,44 +32,47 @@ namespace EQTool.Services
                 tasks.Add(Task.Factory.StartNew(() =>
                 {
                     var files = GetFilesAndFolders(f.Name, "eqgame.exe", 2);
-
                     foreach (var item in files)
                     {
-                        var root = Path.GetDirectoryName(item);
-                        var licensetext = File.ReadAllText(root + "/license.txt");
-                        if (licensetext.Contains("Project 1999"))
+                        try
                         {
-                            var dirdata = GetUIFiles(root)
-                                                        .OrderByDescending(a => a.LastWriteTime)
-                                                        .Select(a => new { a.LastWriteTime, a.FullName })
-                                                        .FirstOrDefault();
-                            if (dirdata != null)
+                            var root = Path.GetDirectoryName(item);
+                            var licensetext = File.ReadAllText(root + "/license.txt");
+                            if (licensetext.Contains("Project 1999"))
                             {
-                                var directory = new DirectoryInfo(root);
-                                var maxmoddate = directory.GetFiles()
-                                .OrderByDescending(a => a.LastWriteTime)
-                                .Select(a => (DateTime?)a.LastWriteTime)
-                                .FirstOrDefault();
-                                if (maxmoddate.HasValue)
+                                var dirdata = GetUIFiles(root)
+                                                            .OrderByDescending(a => a.LastWriteTime)
+                                                            .Select(a => new { a.LastWriteTime, a.FullName })
+                                                            .FirstOrDefault();
+                                if (dirdata != null)
+                                {
+                                    var directory = new DirectoryInfo(root);
+                                    var maxmoddate = directory.GetFiles()
+                                    .OrderByDescending(a => a.LastWriteTime)
+                                    .Select(a => (DateTime?)a.LastWriteTime)
+                                    .FirstOrDefault();
+                                    if (maxmoddate.HasValue)
+                                    {
+                                        possibles.Enqueue(new Match
+                                        {
+                                            LastModifiedDate = maxmoddate.Value,
+                                            EqBaseLocation = root,
+                                            HasCharUiFiles = false
+                                        });
+                                    }
+                                }
+                                else
                                 {
                                     possibles.Enqueue(new Match
                                     {
-                                        LastModifiedDate = maxmoddate.Value,
+                                        LastModifiedDate = dirdata.LastWriteTime,
                                         EqBaseLocation = root,
-                                        HasCharUiFiles = false
+                                        HasCharUiFiles = true
                                     });
                                 }
                             }
-                            else
-                            {
-                                possibles.Enqueue(new Match
-                                {
-                                    LastModifiedDate = dirdata.LastWriteTime,
-                                    EqBaseLocation = root,
-                                    HasCharUiFiles = true
-                                });
-                            }
                         }
+                        catch { }
                     }
                 }));
             }
