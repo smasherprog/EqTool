@@ -77,6 +77,7 @@ namespace EQTool
         }
         public class ExceptionRequest
         {
+            public string Version { get; set; }
             public string Exception { get; set; }
         }
 
@@ -84,6 +85,7 @@ namespace EQTool
         {
             var msg = new ExceptionRequest
             {
+                Version = Version,
                 Exception = $"Unhandled exception ({source}) {exception}"
             };
             var msagasjson = Newtonsoft.Json.JsonConvert.SerializeObject(msg);

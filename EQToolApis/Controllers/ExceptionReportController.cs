@@ -1,10 +1,13 @@
 ﻿using EQToolApis.DB;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace EQToolApis.Controllers
 {
     public class ExceptionRequest
     {
+        [MaxLength(24)]
+        public string Version { get; set; }
         public string Exception { get; set; }
     }
 
@@ -22,6 +25,7 @@ namespace EQToolApis.Controllers
             _ = dbcontext.EqToolExceptions.Add(new DB.Models.EqToolException
             {
                 Exception = model.Exception,
+                Version = model.Version,
                 DateCreated = DateTime.UtcNow
             });
 

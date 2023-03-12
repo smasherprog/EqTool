@@ -9,6 +9,9 @@ namespace EQToolApis.DB.Models
 
         public string Exception { get; set; }
 
+        [MaxLength(24)]
+        public string Version { get; set; }
+
         public DateTime DateCreated { get; set; }
     }
 }
