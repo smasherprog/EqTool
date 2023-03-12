@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EQToolApis.Migrations
 {
     [DbContext(typeof(EQToolContext))]
-    [Migration("20230312155400_addversiontotable")]
+    [Migration("20230312171119_addversiontotable")]
     partial class addversiontotable
     {
         /// <inheritdoc />

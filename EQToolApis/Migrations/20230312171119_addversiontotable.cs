@@ -10,27 +10,21 @@ namespace EQToolApis.Migrations
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AlterColumn<string>(
+            migrationBuilder.AddColumn<string>(
                 name: "Version",
                 table: "EqToolExceptions",
                 type: "nvarchar(24)",
                 maxLength: 24,
                 nullable: false,
-                oldClrType: typeof(string),
-                oldType: "nvarchar(max)");
+                defaultValue: "");
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.AlterColumn<string>(
+            migrationBuilder.DropColumn(
                 name: "Version",
-                table: "EqToolExceptions",
-                type: "nvarchar(max)",
-                nullable: false,
-                oldClrType: typeof(string),
-                oldType: "nvarchar(24)",
-                oldMaxLength: 24);
+                table: "EqToolExceptions");
         }
     }
 }
