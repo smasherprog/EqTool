@@ -10,6 +10,9 @@ namespace EQToolApis.DB
             : base(options)
         {
         }
+
+        public DbSet<EQTunnelMessage> EQTunnelMessages { get; set; }
+
         public DbSet<Player> Players { get; set; }
 
         public DbSet<EqToolException> EqToolExceptions { get; set; }

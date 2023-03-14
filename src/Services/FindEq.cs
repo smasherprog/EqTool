@@ -228,8 +228,6 @@ namespace EQTool.Services
                 return ret;
             }
 
-
-
             return ret;
         }
 
