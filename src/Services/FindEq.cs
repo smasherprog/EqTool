@@ -82,15 +82,18 @@ namespace EQTool.Services
             {
                 rootfolder = possibles.OrderByDescending(a => a.LastModifiedDate).FirstOrDefault();
             }
-            var logifles = GetLogFileLocation(new FindEQData
-            {
-                EqBaseLocation = rootfolder?.EqBaseLocation,
-                EQlogLocation = rootfolder?.EQlogLocation,
-            });
 
             if (rootfolder != null)
             {
-                rootfolder.EQlogLocation = logifles.Location;
+                var logifles = GetLogFileLocation(new FindEQData
+                {
+                    EqBaseLocation = rootfolder.EqBaseLocation,
+                    EQlogLocation = rootfolder.EQlogLocation,
+                });
+                if (logifles.Found)
+                {
+                    rootfolder.EQlogLocation = logifles.Location;
+                }
             }
 
             return rootfolder;
@@ -189,47 +192,43 @@ namespace EQTool.Services
                 if (!string.IsNullOrWhiteSpace(data.EQlogLocation))
                 {
                     ret.Found = Directory.EnumerateFiles(data.EQlogLocation, "eqlog*.txt", SearchOption.TopDirectoryOnly).Any();
+                    if (ret.Found)
+                    {
+                        ret.Location = data.EQlogLocation;
+                        return ret;
+                    }
                 }
             }
             catch { }
-            if (ret.Found)
-            {
-                ret.Location = data.EQlogLocation;
-                return ret;
-            }
 
             try
             {
                 if (!string.IsNullOrWhiteSpace(data.EqBaseLocation))
                 {
                     ret.Found = Directory.EnumerateFiles(data.EqBaseLocation + "/Logs/", "eqlog*.txt", SearchOption.TopDirectoryOnly).Any();
+                    if (ret.Found)
+                    {
+                        ret.Location = data.EqBaseLocation + "/Logs/";
+                        return ret;
+                    }
                 }
             }
             catch { }
-            if (ret.Found)
-            {
-                ret.Location = data.EqBaseLocation + "/Logs/";
-                return ret;
-            }
 
-            var root = string.Empty;
             try
             {
                 if (!string.IsNullOrWhiteSpace(data.EqBaseLocation))
                 {
-                    root = GetVirtualStoreLocation(data.EqBaseLocation) + "/Logs/";
+                    var root = GetVirtualStoreLocation(data.EqBaseLocation) + "/Logs/";
                     ret.Found = Directory.EnumerateFiles(root, "eqlog*.txt", SearchOption.TopDirectoryOnly).Any();
+                    if (ret.Found)
+                    {
+                        ret.Location = root;
+                        return ret;
+                    }
                 }
             }
             catch { }
-            if (ret.Found)
-            {
-                ret.Location = root;
-                return ret;
-            }
-
-
-
             return ret;
         }
 
