@@ -40,6 +40,7 @@ Features:
 
 <h4>TO DO List</h4>
 <ul>
+<li>Fix Map z axis display issues: epecially in POM.</li> 
 <li>Prevent Map panning outside of bounds</li> 
 <li>Release to single exe, not a zip</li>  
 <li>Determine pet level based on the maxhit and add to the DPS window</li> 
