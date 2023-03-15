@@ -41,8 +41,7 @@ Features:
 <h4>TO DO List</h4>
 <ul>
 <li>Save spells cast on you when you log and restore when you log back in</li>   
-<li>Map window add toggle to follow location</li>   
-<li>Fix Map z axis display issues: epecially in POM.</li> 
+<li>Map window add toggle to follow location</li>    
 <li>Prevent Map panning outside of bounds</li> 
 <li>Release to single exe, not a zip</li>  
 <li>Determine pet level based on the maxhit and add to the DPS window</li> 
