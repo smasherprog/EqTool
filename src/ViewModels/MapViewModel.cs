@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
@@ -242,6 +243,21 @@ namespace EQTool.ViewModels
             return deg;
         }
 
+        private static T Clamp<T>(T val, T min, T max) where T : IComparable<T>
+        {
+            return val.CompareTo(min) < 0 ? min : val.CompareTo(max) > 0 ? max : val;
+        }
+
+        private Point3D GetClosestPointOnFiniteLine(Vector3 point, Vector3 line_start, Vector3 line_end)
+        {
+            var line_direction = line_end - line_start;
+            var line_length = line_direction.LengthSquared();
+            line_direction = Vector3.Normalize(line_direction);
+            var project_length = Clamp(Vector3.Dot(point - line_start, line_direction), 0f, line_length);
+            var r = line_start + (line_direction * project_length);
+            return new Point3D(r.X, r.Y, r.Z);
+        }
+
         public void UpdateLocation(Point3D value1, PanAndZoomCanvas canvas)
         {
             OnPropertyChanged(nameof(Title));
@@ -260,6 +276,7 @@ namespace EQTool.ViewModels
             {
                 var lastloc = new Point3D(-(value1.Y + MapOffset.X), -(value1.X + MapOffset.Y), Lastlocation.Z);
                 var closest = canvas.Children[0] as Line;
+                var secondclosest = canvas.Children[1] as Line;
                 var closestmapdata = closest.Tag as Mapdata;
                 var cloestdist = (closestmapdata.Points[0] - lastloc).LengthSquared;
                 foreach (var child in canvas.Children)
@@ -267,32 +284,34 @@ namespace EQTool.ViewModels
                     if (child is Line a)
                     {
                         var m = a.Tag as Mapdata;
-                        var possible = (m.Points[0] - lastloc).LengthSquared;
-                        //Debug.WriteLine($"{m.Points[0]} - {lastloc} = {possible}");
+                        var closestpoint = GetClosestPointOnFiniteLine(
+                             new Vector3((float)lastloc.X, (float)lastloc.Y, (float)lastloc.Z),
+                            new Vector3((float)m.Points[0].X, (float)m.Points[0].Y, (float)m.Points[0].Z),
+                            new Vector3((float)m.Points[1].X, (float)m.Points[1].Y, (float)m.Points[1].Z)
+                           );
+
+                        var possible = (closestpoint - lastloc).LengthSquared;
                         if (possible < cloestdist)
                         {
+                            //Debug.WriteLine($"{closestpoint} - {lastloc} = {possible}");
                             //Debug.WriteLine($"Lower {possible} {cloestdist}");
                             cloestdist = possible;
-                            closest = a;
-                        }
-                        possible = (m.Points[1] - lastloc).LengthSquared;
-                        //Debug.WriteLine($"{m.Points[1]} - {lastloc} = {possible}");
-                        if (possible < cloestdist)
-                        {
-                            //Debug.WriteLine($"Lower {possible} {cloestdist}");
-                            cloestdist = possible;
+                            secondclosest = closest;
                             closest = a;
                         }
                     }
                 }
                 closestmapdata = closest.Tag as Mapdata;
-                //closest.Stroke = new SolidColorBrush(System.Windows.Media.Color.FromRgb(255, 0, 0));
+                // closest.Stroke = new SolidColorBrush(System.Windows.Media.Color.FromRgb(255, 0, 0));
+
+                //secondclosest.Stroke = new SolidColorBrush(System.Windows.Media.Color.FromRgb(0, 255, 0));
+                var secondclosestmapdata = secondclosest.Tag as Mapdata;
                 foreach (var child in canvas.Children)
                 {
                     if (child is Line a)
                     {
                         var m = a.Tag as Mapdata;
-                        a.Stroke.Opacity = m.MapColor.OriginalColor != closestmapdata.MapColor.OriginalColor ? .25 : 1;
+                        a.Stroke.Opacity = (m.MapColor.OriginalColor != closestmapdata.MapColor.OriginalColor && m.MapColor.OriginalColor != secondclosestmapdata.MapColor.OriginalColor) ? .10 : 1;
                     }
                 }
             }
