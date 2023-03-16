@@ -6,7 +6,7 @@
 Instructions:
 <ul>
 <li>
-<h2>Download the latest <a href="https://github.com/smasherprog/EqTool/releases/download/1.0.1.911/EQTool_1.0.1.911.zip">EQTool.zip</a>, Unzip it and run EQTool.exe</h2>
+<h2>Download the latest <a href="https://github.com/smasherprog/EqTool/releases/download/1.0.1.938/EQTool_1.0.1.938.zip">EQTool.zip</a>, Unzip it and run EQTool.exe</h2>
 </li>
 <li>The program runs in the system tray. Look there to reopen spells window or settings! Program will check for updates on startup and self update if required, but if you want to check for a new Update, use the menu in the system tray!</li>
 </ul>
