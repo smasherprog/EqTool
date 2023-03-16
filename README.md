@@ -6,7 +6,7 @@
 Instructions:
 <ul>
 <li>
-<h2>Download the latest <a href="https://github.com/smasherprog/EqTool/releases/download/1.0.1.911/EQTool_1.0.1.911.zip">EQTool.zip</a>, Unzip it and run EQTool.exe</h2>
+<h2>Download the latest <a href="https://github.com/smasherprog/EqTool/releases/download/1.0.1.938/EQTool_1.0.1.938.zip">EQTool.zip</a>, Unzip it and run EQTool.exe</h2>
 </li>
 <li>The program runs in the system tray. Look there to reopen spells window or settings! Program will check for updates on startup and self update if required, but if you want to check for a new Update, use the menu in the system tray!</li>
 </ul>
@@ -40,6 +40,9 @@ Features:
 
 <h4>TO DO List</h4>
 <ul>
+<li>Add Waypoint Command to add loc to map</li>   
+<li>Save spells cast on you when you log and restore when you log back in</li>   
+<li>Map window add toggle to follow location</li>    
 <li>Prevent Map panning outside of bounds</li> 
 <li>Release to single exe, not a zip</li>  
 <li>Determine pet level based on the maxhit and add to the DPS window</li> 
@@ -57,7 +60,7 @@ Features:
 <li>Enrage alert/advanced alert.</li>
 <li>charm break alert</li>
 <li>charm spell effect removal</li> 
-<li>Map window add toggle to follow location</li>   
+
 <li>Add loot TAB to Mob Window. This tab will show item name, looted from, player name who looted, and unix geek price data, running total looted.</li>
 </ul>
 
