@@ -48,7 +48,6 @@ namespace EQTool
             view.IsLiveSorting = true;
             view.LiveSortingProperties.Add(nameof(UISpell.SecondsLeftOnSpell));
             this.toolSettingsLoad = toolSettingsLoad;
-            SaveState();
             SizeChanged += DPSMeter_SizeChanged;
             StateChanged += SpellWindow_StateChanged;
             LocationChanged += DPSMeter_LocationChanged;
@@ -98,7 +97,20 @@ namespace EQTool
             logParser.StartTimerEvent -= LogParser_StartTimerEvent;
             logParser.CancelTimerEvent -= LogParser_CancelTimerEvent;
             logParser.PlayerChangeEvent -= LogParser_PlayerChangeEvent;
+            SaveState();
             base.OnClosing(e);
+        }
+
+        private void SaveState()
+        {
+            WindowExtensions.SaveWindowState(settings.SpellWindowState, this);
+            toolSettingsLoad.Save(settings);
+        }
+
+        private void CloseWindow(object sender, RoutedEventArgs e)
+        {
+            settings.SpellWindowState.Closed = true;
+            Close();
         }
 
         private void SpellWindow_StateChanged(object sender, EventArgs e)
@@ -121,12 +133,6 @@ namespace EQTool
             spellWindowViewModel.ClearAllSpells();
         }
 
-        private void SaveState()
-        {
-            WindowExtensions.SaveWindowState(settings.SpellWindowState, this);
-            toolSettingsLoad.Save(settings);
-        }
-
         private void PollUI(object sender, EventArgs e)
         {
             spellWindowViewModel.UpdateSpells();
@@ -147,12 +153,6 @@ namespace EQTool
             WindowState = WindowState == System.Windows.WindowState.Maximized ? System.Windows.WindowState.Normal : System.Windows.WindowState.Maximized;
         }
 
-        private void CloseWindow(object sender, RoutedEventArgs e)
-        {
-            settings.SpellWindowState.Closed = true;
-            SaveState();
-            Close();
-        }
 
         private void opendps(object sender, RoutedEventArgs e)
         {

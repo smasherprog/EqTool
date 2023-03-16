@@ -48,8 +48,6 @@ namespace EQTool
             view.IsLiveSorting = true;
             view.LiveSortingProperties.Add(nameof(EntittyDPS.TotalDamage));
             this.toolSettingsLoad = toolSettingsLoad;
-
-            SaveState();
             SizeChanged += DPSMeter_SizeChanged;
             StateChanged += SpellWindow_StateChanged;
             LocationChanged += DPSMeter_LocationChanged;
@@ -74,7 +72,20 @@ namespace EQTool
             LocationChanged -= DPSMeter_LocationChanged;
             logParser.DeadEvent -= LogParser_DeadEvent;
             logParser.FightHitEvent -= LogParser_FightHitEvent;
+            SaveState();
             base.OnClosing(e);
+        }
+
+        private void CloseWindow(object sender, RoutedEventArgs e)
+        {
+            settings.DpsWindowState.Closed = true;
+            Close();
+        }
+
+        private void SaveState()
+        {
+            WindowExtensions.SaveWindowState(settings.DpsWindowState, this);
+            toolSettingsLoad.Save(settings);
         }
 
         private void SpellWindow_StateChanged(object sender, EventArgs e)
@@ -92,11 +103,6 @@ namespace EQTool
             SaveState();
         }
 
-        private void SaveState()
-        {
-            WindowExtensions.SaveWindowState(settings.DpsWindowState, this);
-            toolSettingsLoad.Save(settings);
-        }
 
         private void PollUI(object sender, EventArgs e)
         {
@@ -118,12 +124,7 @@ namespace EQTool
             WindowState = WindowState == System.Windows.WindowState.Maximized ? System.Windows.WindowState.Normal : System.Windows.WindowState.Maximized;
         }
 
-        private void CloseWindow(object sender, RoutedEventArgs e)
-        {
-            settings.DpsWindowState.Closed = true;
-            SaveState();
-            Close();
-        }
+
 
         private void opendps(object sender, RoutedEventArgs e)
         {

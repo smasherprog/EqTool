@@ -31,7 +31,6 @@ namespace EQTool
             InitializeComponent();
             WindowExtensions.AdjustWindow(settings.MobWindowState, this);
             Topmost = Properties.Settings.Default.GlobalMobWindowAlwaysOnTop;
-            SaveState();
             SizeChanged += DPSMeter_SizeChanged;
             StateChanged += SpellWindow_StateChanged;
             LocationChanged += DPSMeter_LocationChanged;
@@ -55,7 +54,20 @@ namespace EQTool
             SizeChanged -= DPSMeter_SizeChanged;
             StateChanged -= SpellWindow_StateChanged;
             LocationChanged -= DPSMeter_LocationChanged;
+            SaveState();
             base.OnClosing(e);
+        }
+        private void SaveState()
+        {
+            WindowExtensions.SaveWindowState(settings.MobWindowState, this);
+            toolSettingsLoad.Save(settings);
+        }
+
+        private void CloseWindow(object sender, RoutedEventArgs e)
+        {
+            settings.MobWindowState.Closed = true;
+
+            Close();
         }
 
         private void SpellWindow_StateChanged(object sender, EventArgs e)
@@ -71,11 +83,6 @@ namespace EQTool
         private void DPSMeter_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             SaveState();
-        }
-        private void SaveState()
-        {
-            WindowExtensions.SaveWindowState(settings.MobWindowState, this);
-            toolSettingsLoad.Save(settings);
         }
 
         private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
@@ -104,12 +111,6 @@ namespace EQTool
             WindowState = WindowState == System.Windows.WindowState.Maximized ? System.Windows.WindowState.Normal : System.Windows.WindowState.Maximized;
         }
 
-        private void CloseWindow(object sender, RoutedEventArgs e)
-        {
-            settings.MobWindowState.Closed = true;
-            SaveState();
-            Close();
-        }
 
         private void opendps(object sender, RoutedEventArgs e)
         {

@@ -15,13 +15,61 @@ namespace EQTool.Models
         public string DefaultEqDirectory { get; set; }
         public string EqLogDirectory { get; set; }
 
-        public WindowState SpellWindowState { get; set; }
+        private WindowState _SpellWindowState;
+        public WindowState SpellWindowState
+        {
+            get
+            {
+                if (_SpellWindowState == null)
+                {
+                    _SpellWindowState = new WindowState();
+                }
+                return _SpellWindowState;
+            }
+            set => _SpellWindowState = value ?? new WindowState();
+        }
 
-        public WindowState DpsWindowState { get; set; }
+        private WindowState _DpsWindowState;
+        public WindowState DpsWindowState
+        {
+            get
+            {
+                if (_DpsWindowState == null)
+                {
+                    _DpsWindowState = new WindowState();
+                }
+                return _DpsWindowState;
+            }
+            set => _DpsWindowState = value ?? new WindowState();
+        }
 
-        public WindowState MapWindowState { get; set; }
+        private WindowState _MapWindowState;
+        public WindowState MapWindowState
+        {
+            get
+            {
+                if (_MapWindowState == null)
+                {
+                    _MapWindowState = new WindowState();
+                }
+                return _MapWindowState;
+            }
+            set => _MapWindowState = value ?? new WindowState();
+        }
 
-        public WindowState MobWindowState { get; set; }
+        private WindowState _MobWindowState;
+        public WindowState MobWindowState
+        {
+            get
+            {
+                if (_MobWindowState == null)
+                {
+                    _MobWindowState = new WindowState();
+                }
+                return _MobWindowState;
+            }
+            set => _MobWindowState = value ?? new WindowState();
+        }
 
         public Themes Theme { get; set; } = Themes.Light;
 

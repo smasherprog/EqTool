@@ -27,7 +27,6 @@ namespace EQTool
             this.toolSettingsLoad = toolSettingsLoad;
             this.logParser = logParser;
             DataContext = this.mapViewModel = mapViewModel;
-            Topmost = true;
             InitializeComponent();
             WindowExtensions.AdjustWindow(settings.MapWindowState, this);
             Topmost = Properties.Settings.Default.GlobalMapWindowAlwaysOnTop;
@@ -70,7 +69,20 @@ namespace EQTool
             App.ThemeChangedEvent -= App_ThemeChangedEvent;
             logParser.PlayerLocationEvent -= LogParser_PlayerLocationEvent;
             logParser.PlayerZonedEvent -= LogParser_PlayerZonedEvent;
+            SaveState();
             base.OnClosing(e);
+        }
+
+        private void SaveState()
+        {
+            WindowExtensions.SaveWindowState(settings.MapWindowState, this);
+            toolSettingsLoad.Save(settings);
+        }
+
+        private void CloseWindow(object sender, RoutedEventArgs e)
+        {
+            settings.MapWindowState.Closed = true;
+            Close();
         }
 
         public void DragWindow(object sender, MouseButtonEventArgs args)
@@ -88,17 +100,7 @@ namespace EQTool
             WindowState = WindowState == System.Windows.WindowState.Maximized ? System.Windows.WindowState.Normal : System.Windows.WindowState.Maximized;
         }
 
-        private void SaveState()
-        {
-            WindowExtensions.SaveWindowState(settings.MapWindowState, this);
-            toolSettingsLoad.Save(settings);
-        }
 
-        private void CloseWindow(object sender, RoutedEventArgs e)
-        {
-            WindowExtensions.SaveWindowState(settings.MapWindowState, this);
-            Close();
-        }
 
         private void openmobinfo(object sender, RoutedEventArgs e)
         {
