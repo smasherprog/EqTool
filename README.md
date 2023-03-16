@@ -83,7 +83,7 @@ Features:
 <h4>Why does my settings window say Configuration missing?</h4> 
 <img alt="image" src="https://user-images.githubusercontent.com/3393733/222051822-fc4b750d-2efa-4eb9-bc00-589d3cc5b781.png">
 <ul>
-<li>EQTool was unable to automatically detect your P99 install folder. You must specific it yourself!</li>
+<li>EQTool was unable to automatically detect your P99 install folder. You must specify it yourself!</li>
 <li>EQTool detected that eq logging is turned off. You must click enable logging. This will turn on EQ's logging which is where EQTool gets informatioon from.</li>
 </ul>
 
