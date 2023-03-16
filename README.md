@@ -40,6 +40,7 @@ Features:
 
 <h4>TO DO List</h4>
 <ul>
+<li>Add Waypoint Command to add loc to map</li>   
 <li>Save spells cast on you when you log and restore when you log back in</li>   
 <li>Map window add toggle to follow location</li>    
 <li>Prevent Map panning outside of bounds</li> 
