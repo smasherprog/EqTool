@@ -136,6 +136,7 @@ namespace EQToolApis.Services
             private Timer? _timer = null;
             private readonly IDiscordService discordService;
             private readonly IServiceProvider services;
+            private bool Processing = false;
 
             public TimedHostedService(ILogger<TimedHostedService> logger, IDiscordService discordService, IServiceProvider services)
             {
@@ -153,62 +154,75 @@ namespace EQToolApis.Services
 
             private void DoWork(object? state)
             {
-                discordService.Login();
-                using (var scope = services.CreateScope())
+                if (Processing)
                 {
-                    var dbcontext = scope.ServiceProvider.GetRequiredService<EQToolContext>();
-                    var lastidread = dbcontext.EQTunnelMessages.Where(a => a.Server == Servers.Green).Select(a => (long?)a.DiscordMessageId).OrderByDescending(a => a).FirstOrDefault();
-                    var messages = discordService.ReadMessages(lastidread);
-                    foreach (var item in messages)
-                    {
-                        var embed = item.embeds.FirstOrDefault();
-                        if (embed != null && embed.fields != null)
-                        {
-                            var eqplayer = dbcontext.EQAuctionPlayers.FirstOrDefault(a => a.Name == embed.AuctionPerson);
-                            if (eqplayer == null)
-                            {
-                                eqplayer = new EQAuctionPlayer
-                                {
-                                    Name = embed.AuctionPerson.Trim()
-                                };
-                                _ = dbcontext.EQAuctionPlayers.Add(eqplayer);
-                                _ = dbcontext.SaveChanges();
-                            }
-
-                            var m = new DB.Models.EQTunnelMessage
-                            {
-                                AuctionType = embed.AuctionType,
-                                EQAuctionPlayerId = eqplayer.EQAuctionPlayerId,
-                                DiscordMessageId = item.id,
-                                Server = Servers.Green,
-                                TunnelTimestamp = embed.timestamp,
-                                EQTunnelAuctionItems = new List<EQTunnelAuctionItem>()
-                            };
-                            foreach (var it in embed.fields)
-                            {
-                                var eqitem = dbcontext.EQitems.FirstOrDefault(a => a.ItemName == it.ItemName);
-                                if (eqitem == null)
-                                {
-                                    eqitem = new EQitem
-                                    {
-                                        ItemName = it.ItemName
-                                    };
-                                    _ = dbcontext.EQitems.Add(eqitem);
-                                    _ = dbcontext.SaveChanges();
-                                }
-                                m.EQTunnelAuctionItems.Add(new EQTunnelAuctionItem
-                                {
-                                    AuctionPrice = it.Price,
-                                    EQitemId = eqitem.EQitemId
-                                });
-                            }
-                            _ = dbcontext.EQTunnelMessages.Add(m);
-                        }
-                    }
-                    _ = dbcontext.SaveChanges();
+                    return;
                 }
 
-                _logger.LogInformation("Timed Hosted Service is working.");
+                Processing = truel;
+                try
+                {
+                    discordService.Login();
+                    using (var scope = services.CreateScope())
+                    {
+                        var dbcontext = scope.ServiceProvider.GetRequiredService<EQToolContext>();
+                        var lastidread = dbcontext.EQTunnelMessages.Where(a => a.Server == Servers.Green).Select(a => (long?)a.DiscordMessageId).OrderByDescending(a => a).FirstOrDefault();
+                        var messages = discordService.ReadMessages(lastidread);
+                        foreach (var item in messages)
+                        {
+                            var embed = item.embeds.FirstOrDefault();
+                            if (embed != null && embed.fields != null)
+                            {
+                                var eqplayer = dbcontext.EQAuctionPlayers.FirstOrDefault(a => a.Name == embed.AuctionPerson);
+                                if (eqplayer == null)
+                                {
+                                    eqplayer = new EQAuctionPlayer
+                                    {
+                                        Name = embed.AuctionPerson.Trim()
+                                    };
+                                    _ = dbcontext.EQAuctionPlayers.Add(eqplayer);
+                                    _ = dbcontext.SaveChanges();
+                                }
+
+                                var m = new DB.Models.EQTunnelMessage
+                                {
+                                    AuctionType = embed.AuctionType,
+                                    EQAuctionPlayerId = eqplayer.EQAuctionPlayerId,
+                                    DiscordMessageId = item.id,
+                                    Server = Servers.Green,
+                                    TunnelTimestamp = embed.timestamp,
+                                    EQTunnelAuctionItems = new List<EQTunnelAuctionItem>()
+                                };
+                                foreach (var it in embed.fields)
+                                {
+                                    var eqitem = dbcontext.EQitems.FirstOrDefault(a => a.ItemName == it.ItemName);
+                                    if (eqitem == null)
+                                    {
+                                        eqitem = new EQitem
+                                        {
+                                            ItemName = it.ItemName
+                                        };
+                                        _ = dbcontext.EQitems.Add(eqitem);
+                                        _ = dbcontext.SaveChanges();
+                                    }
+                                    m.EQTunnelAuctionItems.Add(new EQTunnelAuctionItem
+                                    {
+                                        AuctionPrice = it.Price,
+                                        EQitemId = eqitem.EQitemId
+                                    });
+                                }
+                                _ = dbcontext.EQTunnelMessages.Add(m);
+                            }
+                        }
+                        _ = dbcontext.SaveChanges();
+                    }
+
+                    _logger.LogInformation("Timed Hosted Service is working.");
+                }
+                finally
+                {
+                    Processing = false;
+                }
             }
 
             public Task StopAsync(CancellationToken stoppingToken)

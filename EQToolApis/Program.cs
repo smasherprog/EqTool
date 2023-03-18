@@ -13,8 +13,8 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.Configure<DiscordServiceOptions>(options =>
 {
-    options.login = builder.Configuration.GetSection("Discord").GetValue<string>("Login");
-    options.password = builder.Configuration.GetSection("Discord").GetValue<string>("Password");
+    options.login = builder.Configuration.GetValue<string>("DiscordLogin");
+    options.password = builder.Configuration.GetValue<string>("DiscordPassword");
 })
 .AddSingleton<IDiscordService, DiscordService>();
 builder.Services.AddHostedService<TimedHostedService>();
@@ -31,5 +31,4 @@ app.UseHttpsRedirection();
 app.UseRouting();
 app.MapControllers();
 app.MapRazorPages();
-
 app.Run();
