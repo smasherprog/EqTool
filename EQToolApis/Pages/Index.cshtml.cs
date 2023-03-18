@@ -1,18 +1,22 @@
 using EQToolApis.DB;
 using EQToolApis.DB.Models;
+using EQToolApis.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 
 namespace EQToolApis.Pages
 {
     public class IndexModel : PageModel
     {
         private readonly EQToolContext context;
+        public readonly string Login;
 
-        public IndexModel(EQToolContext context)
+        public IndexModel(EQToolContext context, IOptions<DiscordServiceOptions> options)
         {
             this.context = context;
+            Login = options.Value.login;
         }
 
         public List<EQTunnelMessage> EQTunnelMessages => context.EQTunnelMessages
