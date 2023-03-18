@@ -1,14 +1,15 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore;
 
 namespace EQToolApis.DB.Models
 {
+    [PrimaryKey(nameof(EQTunnelAuctionItemId))]
     public class EQTunnelAuctionItem
     {
-        [Key]
         public long EQTunnelAuctionItemId { get; set; }
 
-        [MaxLength(64)]
-        public string ItemName { get; set; }
+        public int EQitemId { get; set; }
+
+        public EQitem EQitem { get; set; }
 
         public int? AuctionPrice { get; set; }
 

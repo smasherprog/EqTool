@@ -10,6 +10,11 @@ namespace EQToolApis.DB
             : base(options)
         {
         }
+        public DbSet<EQAuctionPlayer> EQAuctionPlayers { get; set; }
+
+        public DbSet<EQitem> EQitems { get; set; }
+
+        public DbSet<EQTunnelAuctionItem> EQTunnelAuctionItems { get; set; }
 
         public DbSet<EQTunnelMessage> EQTunnelMessages { get; set; }
 

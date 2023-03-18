@@ -1,15 +1,17 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System.ComponentModel.DataAnnotations;
 
 namespace EQToolApis.DB.Models
 {
+    [PrimaryKey(nameof(EQTunnelMessageId)), Index(nameof(DiscordMessageId)), Index(nameof(Server))]
     public class EQTunnelMessage
     {
-        [PrimaryKey]
         public long EQTunnelMessageId { get; set; }
 
-        [MaxLength(32)]
-        public string AuctionPerson { get; set; }
+        public long DiscordMessageId { get; set; }
+
+        public int EQAuctionPlayerId { get; set; }
+
+        public EQAuctionPlayer EQAuctionPlayer { get; set; }
 
         public Servers Server { get; set; }
 

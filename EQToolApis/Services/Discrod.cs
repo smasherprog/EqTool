@@ -63,11 +63,30 @@ namespace EQToolApis.Services
 
         public class embedFields
         {
-            public int? Price => name == "No Price Listed" ? null : int.TryParse(new string(name.Where(a => char.IsDigit(a)).ToArray()), out var p) ? p : null;
+            public int? Price
+            {
+                get
+                {
+                    if (name == "No Price Listed")
+                    {
+                        return null;
+                    }
+                    _ = int.TryParse(new string(name.Where(a => char.IsDigit(a)).ToArray()), out var p);
+                    if (name.EndsWith("pp"))
+                    {
+                        return p;
+                    }
+                    else if (name.EndsWith("k"))
+                    {
+                        return p * 1000;
+                    }
+                    return p;
+                }
+            }
 
             public string ItemName => string.IsNullOrWhiteSpace(value) || !value.Contains("[") || !value.Contains("]")
                         ? string.Empty
-                        : value.Substring(1, value.IndexOf("]"));
+                        : value.Substring(1, value.IndexOf("]")).Trim(']').Trim('[').Trim();
 
             public string name { get; set; }
             public string value { get; set; }
@@ -76,7 +95,7 @@ namespace EQToolApis.Services
         public class MessageEmbed
         {
             public string title { get; set; }
-            public AuctionType AuctionType => title.StartsWith("**[ WTB ]**") ? AuctionType.WTB : AuctionType.WTS;
+            public AuctionType AuctionType => title.StartsWith("**[ WTB ]**") ? AuctionType.WTB : (title.StartsWith("**[ WTS ]**") ? AuctionType.WTS : AuctionType.BOTH);
             public string AuctionPerson => title[(title.LastIndexOf("**") + 2)..].Trim();
             public DateTimeOffset timestamp { get; set; }
             public List<embedFields> fields { get; set; }
@@ -102,6 +121,11 @@ namespace EQToolApis.Services
                 msg.Method = HttpMethod.Get;
                 var result = _client.SendAsync(msg).Result;
                 var resultstring = result.Content.ReadAsStringAsync().Result;
+                if (result.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+                {
+                    loginResponse = null;
+                    return new List<Message>();
+                }
                 return Newtonsoft.Json.JsonConvert.DeserializeObject<List<Message>>(resultstring);
             }
         }
@@ -133,28 +157,49 @@ namespace EQToolApis.Services
                 using (var scope = services.CreateScope())
                 {
                     var dbcontext = scope.ServiceProvider.GetRequiredService<EQToolContext>();
-                    var lastidread = dbcontext.EQTunnelMessages.Where(a => a.Server == Servers.Green).Select(a => (long?)a.EQTunnelMessageId).OrderByDescending(a => a).FirstOrDefault();
+                    var lastidread = dbcontext.EQTunnelMessages.Where(a => a.Server == Servers.Green).Select(a => (long?)a.DiscordMessageId).OrderByDescending(a => a).FirstOrDefault();
                     var messages = discordService.ReadMessages(lastidread);
                     foreach (var item in messages)
                     {
                         var embed = item.embeds.FirstOrDefault();
                         if (embed != null && embed.fields != null)
                         {
+                            var eqplayer = dbcontext.EQAuctionPlayers.FirstOrDefault(a => a.Name == embed.AuctionPerson);
+                            if (eqplayer == null)
+                            {
+                                eqplayer = new EQAuctionPlayer
+                                {
+                                    Name = embed.AuctionPerson.Trim()
+                                };
+                                _ = dbcontext.EQAuctionPlayers.Add(eqplayer);
+                                _ = dbcontext.SaveChanges();
+                            }
+
                             var m = new DB.Models.EQTunnelMessage
                             {
                                 AuctionType = embed.AuctionType,
-                                AuctionPerson = embed.AuctionPerson,
-                                EQTunnelMessageId = item.id,
+                                EQAuctionPlayerId = eqplayer.EQAuctionPlayerId,
+                                DiscordMessageId = item.id,
                                 Server = Servers.Green,
                                 TunnelTimestamp = embed.timestamp,
                                 EQTunnelAuctionItems = new List<EQTunnelAuctionItem>()
                             };
                             foreach (var it in embed.fields)
                             {
+                                var eqitem = dbcontext.EQitems.FirstOrDefault(a => a.ItemName == it.ItemName);
+                                if (eqitem == null)
+                                {
+                                    eqitem = new EQitem
+                                    {
+                                        ItemName = it.ItemName
+                                    };
+                                    _ = dbcontext.EQitems.Add(eqitem);
+                                    _ = dbcontext.SaveChanges();
+                                }
                                 m.EQTunnelAuctionItems.Add(new EQTunnelAuctionItem
                                 {
                                     AuctionPrice = it.Price,
-                                    ItemName = it.ItemName
+                                    EQitemId = eqitem.EQitemId
                                 });
                             }
                             _ = dbcontext.EQTunnelMessages.Add(m);

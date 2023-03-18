@@ -1,10 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
 
 namespace EQToolApis.DB.Models
 {
+    [PrimaryKey(nameof(Id))]
     public class EqToolException
     {
-        [Key]
         public int Id { get; set; }
 
         public string Exception { get; set; }
