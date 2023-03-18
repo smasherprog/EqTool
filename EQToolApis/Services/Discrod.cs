@@ -219,6 +219,10 @@ namespace EQToolApis.Services
 
                     _logger.LogInformation("Timed Hosted Service is working.");
                 }
+                catch (Exception e)
+                {
+                    _logger.LogError(e.ToString());
+                }
                 finally
                 {
                     Processing = false;
