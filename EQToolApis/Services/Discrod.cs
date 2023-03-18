@@ -58,7 +58,13 @@ namespace EQToolApis.Services
                 password = password
             };
             var result = _client.PostAsJsonAsync("https://discord.com/api/v9/auth/login", req).Result;
-            loginResponse = result.Content.ReadFromJsonAsync<LoginResponse>().Result;
+            var res = result.Content.ReadAsStringAsync().Result;
+            var resobject = Newtonsoft.Json.JsonConvert.DeserializeObject<LoginResponse>(res);
+            loginResponse = resobject;
+            if (string.IsNullOrWhiteSpace(loginResponse.Token))
+            {
+                throw new Exception($"Login Failed: {res}");
+            }
         }
 
         public class embedFields
