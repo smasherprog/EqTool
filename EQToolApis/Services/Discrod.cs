@@ -159,7 +159,7 @@ namespace EQToolApis.Services
                     return;
                 }
 
-                Processing = truel;
+                Processing = true;
                 try
                 {
                     discordService.Login();
