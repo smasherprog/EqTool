@@ -1,53 +1,182 @@
-﻿using Discord;
-using Discord.WebSocket;
+﻿using EQToolApis.DB;
+using EQToolApis.DB.Models;
 using Microsoft.Extensions.Options;
-using System.Diagnostics;
+using static EQToolApis.Services.DiscordService;
 
 namespace EQToolApis.Services
 {
-    internal interface IDiscordService
+    public interface IDiscordService
     {
-        public SocketTextChannel GetSocketTextChannel(ulong channelId);
+        public void Login();
+        public List<Message> ReadMessages(long? lastid);
     }
+
     public class DiscordServiceOptions
     {
-        public string BotToken { get; set; }
+        public string login { get; set; }
+        public string password { get; set; }
     }
 
     public class DiscordService : IDiscordService
     {
-        private readonly ILogger _logger;
-        private readonly DiscordSocketClient _client;
+        private readonly HttpClient _client = new();
+        private LoginResponse loginResponse;
+        private readonly string login;
+        private readonly string password;
 
-        public DiscordService(IOptions<DiscordServiceOptions> options, ILogger<DiscordService> logger)
+        public DiscordService(IOptions<DiscordServiceOptions> options)
         {
-            _logger = logger;
-            _client = new DiscordSocketClient();
-            _client.Log += LogDiscord;
-            _client.Ready += OnReady;
-            _ = _client.LoginAsync(TokenType.Bot, options.Value.BotToken);
-            _ = _client.StartAsync();
+            login = options.Value.login;
+            password = options.Value.password;
         }
 
-        public SocketTextChannel GetSocketTextChannel(ulong channelId)
+        public class LoginRequest
         {
-            return _client.GetChannel(channelId) as SocketTextChannel;
+            public string captcha_key { get; set; }
+            public string gift_code_sku_id { get; set; }
+            public string login { get; set; }
+            public string login_source { get; set; }
+            public string password { get; set; }
+            public bool undelete { get; set; } = false;
         }
 
-        private async Task OnReady()
+        public class LoginResponse
         {
-            var channel = GetSocketTextChannel(672512233435168784);
-            var msgs = await channel.GetMessagesAsync(5).FlattenAsync();
-            foreach (var msg in msgs)
+            public string Token { get; set; }
+            public string user_id { get; set; }
+        }
+
+        public void Login()
+        {
+            if (loginResponse != null)
             {
-                Debug.WriteLine(msg);
+                return;
+            }
+            var req = new LoginRequest
+            {
+                login = login,
+                password = password
+            };
+            var result = _client.PostAsJsonAsync("https://discord.com/api/v9/auth/login", req).Result;
+            loginResponse = result.Content.ReadFromJsonAsync<LoginResponse>().Result;
+        }
+
+        public class embedFields
+        {
+            public int? Price => name == "No Price Listed" ? null : int.TryParse(new string(name.Where(a => char.IsDigit(a)).ToArray()), out var p) ? p : null;
+
+            public string ItemName => string.IsNullOrWhiteSpace(value) || !value.Contains("[") || !value.Contains("]")
+                        ? string.Empty
+                        : value.Substring(1, value.IndexOf("]"));
+
+            public string name { get; set; }
+            public string value { get; set; }
+        }
+
+        public class MessageEmbed
+        {
+            public string title { get; set; }
+            public AuctionType AuctionType => title.StartsWith("**[ WTB ]**") ? AuctionType.WTB : AuctionType.WTS;
+            public string AuctionPerson => title[(title.LastIndexOf("**") + 2)..].Trim();
+            public DateTimeOffset timestamp { get; set; }
+            public List<embedFields> fields { get; set; }
+        }
+
+        public class Message
+        {
+            public long id { get; set; }
+            public List<MessageEmbed> embeds { get; set; }
+        }
+
+        public List<Message> ReadMessages(long? lastid)
+        {
+            var url = "https://discord.com/api/v9/channels/672512233435168784/messages?limit=50";
+            if (lastid.HasValue)
+            {
+                url = $"https://discord.com/api/v9/channels/672512233435168784/messages?after={lastid.Value}&limit=50";
+            }
+            using (var msg = new HttpRequestMessage())
+            {
+                msg.Headers.Add("authorization", loginResponse.Token);
+                msg.RequestUri = new Uri(url);
+                msg.Method = HttpMethod.Get;
+                var result = _client.SendAsync(msg).Result;
+                var resultstring = result.Content.ReadAsStringAsync().Result;
+                return Newtonsoft.Json.JsonConvert.DeserializeObject<List<Message>>(resultstring);
             }
         }
 
-        private Task LogDiscord(LogMessage msg)
+        public class TimedHostedService : IHostedService, IDisposable
         {
-            _logger.LogInformation(msg.ToString());
-            return Task.CompletedTask;
+            private readonly ILogger<TimedHostedService> _logger;
+            private Timer? _timer = null;
+            private readonly IDiscordService discordService;
+            private readonly IServiceProvider services;
+
+            public TimedHostedService(ILogger<TimedHostedService> logger, IDiscordService discordService, IServiceProvider services)
+            {
+                this.services = services;
+                _logger = logger;
+                this.discordService = discordService;
+            }
+
+            public Task StartAsync(CancellationToken stoppingToken)
+            {
+                _logger.LogInformation("Timed Hosted Service running.");
+                _timer = new Timer(DoWork, null, TimeSpan.Zero, TimeSpan.FromSeconds(10));
+                return Task.CompletedTask;
+            }
+
+            private void DoWork(object? state)
+            {
+                discordService.Login();
+                using (var scope = services.CreateScope())
+                {
+                    var dbcontext = scope.ServiceProvider.GetRequiredService<EQToolContext>();
+                    var lastidread = dbcontext.EQTunnelMessages.Where(a => a.Server == Servers.Green).Select(a => (long?)a.EQTunnelMessageId).OrderByDescending(a => a).FirstOrDefault();
+                    var messages = discordService.ReadMessages(lastidread);
+                    foreach (var item in messages)
+                    {
+                        var embed = item.embeds.FirstOrDefault();
+                        if (embed != null && embed.fields != null)
+                        {
+                            var m = new DB.Models.EQTunnelMessage
+                            {
+                                AuctionType = embed.AuctionType,
+                                AuctionPerson = embed.AuctionPerson,
+                                EQTunnelMessageId = item.id,
+                                Server = Servers.Green,
+                                TunnelTimestamp = embed.timestamp,
+                                EQTunnelAuctionItems = new List<EQTunnelAuctionItem>()
+                            };
+                            foreach (var it in embed.fields)
+                            {
+                                m.EQTunnelAuctionItems.Add(new EQTunnelAuctionItem
+                                {
+                                    AuctionPrice = it.Price,
+                                    ItemName = it.ItemName
+                                });
+                            }
+                            _ = dbcontext.EQTunnelMessages.Add(m);
+                        }
+                    }
+                    _ = dbcontext.SaveChanges();
+                }
+
+                _logger.LogInformation("Timed Hosted Service is working.");
+            }
+
+            public Task StopAsync(CancellationToken stoppingToken)
+            {
+                _logger.LogInformation("Timed Hosted Service is stopping.");
+                _ = (_timer?.Change(Timeout.Infinite, 0));
+                return Task.CompletedTask;
+            }
+
+            public void Dispose()
+            {
+                _timer?.Dispose();
+            }
         }
     }
 }
