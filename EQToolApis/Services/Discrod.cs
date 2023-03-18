@@ -32,7 +32,7 @@ namespace EQToolApis.Services
 
         public class LoginRequest
         {
-            public string captcha_key { get; set; }
+            public string captcha_key { get; set; } = null;
             public string gift_code_sku_id { get; set; }
             public string login { get; set; }
             public string login_source { get; set; }
@@ -160,6 +160,7 @@ namespace EQToolApis.Services
 
             private void DoWork(object? state)
             {
+                return;
                 if (Processing)
                 {
                     return;
