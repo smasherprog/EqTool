@@ -75,14 +75,14 @@ namespace EQToolApis.Services
                     {
                         return null;
                     }
-                    _ = int.TryParse(new string(name.Where(a => char.IsDigit(a)).ToArray()), out var p);
+                    _ = float.TryParse(new string(name.Where(a => char.IsDigit(a) || a == '.').ToArray()), out var p);
                     if (name.EndsWith("pp"))
                     {
-                        return p;
+                        return (int)p;
                     }
                     else if (name.EndsWith("k"))
                     {
-                        return p * 1000;
+                        return (int)(p * 1000);
                     }
                     return p;
                 }
