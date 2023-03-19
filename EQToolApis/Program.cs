@@ -34,7 +34,7 @@ builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("HangfireAccess", cfgPolicy =>
     {
-        cfgPolicy.AddAuthenticationSchemes(OpenIdConnectDefaults.AuthenticationScheme).RequireAuthenticatedUser();
+        cfgPolicy.RequireAuthenticatedUser();
     });
 });
 builder.Services.Configure<DiscordServiceOptions>(options =>
