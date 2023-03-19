@@ -70,7 +70,7 @@ namespace EQToolApis.Services
             {
                 get
                 {
-                    if (name == "No Price Listed")
+                    if (name == "No Price Listed" || name.StartsWith("00") || name.Contains("00000000000000000"))
                     {
                         return null;
                     }
