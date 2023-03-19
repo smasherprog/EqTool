@@ -1,7 +1,26 @@
 ﻿@page
 @model EQToolApis.Pages.IndexModel
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD" crossorigin="anonymous">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+<script>
+    $(document).ready(function () {
+        $("#myInput").on("keyup", function () {
+            var value = $(this).val().toLowerCase();
+            $("#myTable1 tr").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+            $("#myTable2 tr").filter(function () {
+                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+            });
+        });
+    });
+</script>
 <div class="container">
+    <div class="row">
+        <div class="col-offset-6 col-4">
+            <input class="form-control" id="myInput" type="text" placeholder="Search..">
+        </div>
+    </div>
     <div class="row">
         <div class="col-offset-1 col-5">
             <table class="table table-sm table-bordered table-striped">
@@ -13,7 +32,7 @@
                         <th>Average Price</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="myTable1">
                     @foreach (var auctions in Model.AuctionItemsCol1)
                     {
                         <tr>
@@ -26,7 +45,7 @@
                 </tbody>
             </table>
         </div>
-        <div class="col-5"> 
+        <div class="col-5">
             <table class="table table-sm table-bordered table-striped">
                 <thead>
                     <tr>
@@ -36,7 +55,7 @@
                         <th>Average Price</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody id="myTable2">
                     @foreach (var auctions in Model.AuctionItemsCol2)
                     {
                         <tr>

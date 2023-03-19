@@ -248,7 +248,9 @@ namespace EQToolApis.Services
                 {
                     return;
                 }
-
+#if DEBUG
+                return;
+#endif
                 Processing = true;
                 try
                 {

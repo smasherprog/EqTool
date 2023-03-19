@@ -32,7 +32,7 @@ namespace EQToolApis.Pages
                 if (!_AuctionItems.Any())
                 {
                     _AuctionItems = context.EQTunnelAuctionItems
-                        .Where(a => a.EQTunnelMessage.AuctionType == AuctionType.WTS)
+                       .Where(a => a.EQTunnelMessage.AuctionType == AuctionType.WTS)
                        .GroupBy(a => a.EQitemId)
                        .Select(a => new AuctionItem
                        {
