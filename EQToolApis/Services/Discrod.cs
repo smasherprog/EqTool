@@ -169,26 +169,17 @@ namespace EQToolApis.Services
             }
         }
 
-        public class TimedHostedService : IHostedService, IDisposable
+        public class DiscordJob
         {
-            private readonly ILogger<TimedHostedService> _logger;
-            private Timer? _timer = null;
+            private readonly ILogger<DiscordJob> _logger;
             private readonly IDiscordService discordService;
-            private readonly IServiceProvider services;
-            private bool Processing = false;
+            private readonly EQToolContext dbcontext;
 
-            public TimedHostedService(ILogger<TimedHostedService> logger, IDiscordService discordService, IServiceProvider services)
+            public DiscordJob(ILogger<DiscordJob> logger, IDiscordService discordService, EQToolContext dbcontext)
             {
-                this.services = services;
+                this.dbcontext = dbcontext;
                 _logger = logger;
                 this.discordService = discordService;
-            }
-
-            public Task StartAsync(CancellationToken stoppingToken)
-            {
-                _logger.LogInformation("Timed Hosted Service running.");
-                _timer = new Timer(DoWork, null, TimeSpan.Zero, TimeSpan.FromSeconds(10));
-                return Task.CompletedTask;
             }
 
             private void AddMessages(List<Message> messages, EQToolContext dbcontext)
@@ -241,50 +232,27 @@ namespace EQToolApis.Services
                 }
                 _ = dbcontext.SaveChanges();
             }
-            private void DoWork(object? state)
+
+            public void ReadFutureMessages()
             {
-                if (Processing)
-                {
-                    return;
-                }
-#if DEBUG
+                discordService.Login();
+                var lastidread = dbcontext.EQTunnelMessages.Where(a => a.Server == Servers.Green).Select(a => (long?)a.DiscordMessageId).OrderByDescending(a => a).FirstOrDefault();
+                AddMessages(discordService.ReadMessages(lastidread), dbcontext);
+            }
+
+            public void ReadPastMessages()
+            {
+                discordService.Login();
+                var lastidread = dbcontext.EQTunnelMessages.Where(a => a.Server == Servers.Green).Select(a => (long?)a.DiscordMessageId).OrderBy(a => a).FirstOrDefault();
+                AddMessages(discordService.ReadMessageHistory(lastidread), dbcontext);
+            }
+
+            public void StartItemPricing()
+            {
                 return;
-#endif
-                Processing = true;
-                try
-                {
-                    discordService.Login();
-                    using (var scope = services.CreateScope())
-                    {
-                        var dbcontext = scope.ServiceProvider.GetRequiredService<EQToolContext>();
-                        var lastidread = dbcontext.EQTunnelMessages.Where(a => a.Server == Servers.Green).Select(a => (long?)a.DiscordMessageId).OrderByDescending(a => a).FirstOrDefault();
-                        AddMessages(discordService.ReadMessages(lastidread), dbcontext);
-                        lastidread = dbcontext.EQTunnelMessages.Where(a => a.Server == Servers.Green).Select(a => (long?)a.DiscordMessageId).OrderBy(a => a).FirstOrDefault();
-                        AddMessages(discordService.ReadMessageHistory(lastidread), dbcontext);
-                    }
-
-                    _logger.LogInformation("Timed Hosted Service is working.");
-                }
-                catch (Exception e)
-                {
-                    _logger.LogError(e.ToString());
-                }
-                finally
-                {
-                    Processing = false;
-                }
-            }
-
-            public Task StopAsync(CancellationToken stoppingToken)
-            {
-                _logger.LogInformation("Timed Hosted Service is stopping.");
-                _ = (_timer?.Change(Timeout.Infinite, 0));
-                return Task.CompletedTask;
-            }
-
-            public void Dispose()
-            {
-                _timer?.Dispose();
+                discordService.Login();
+                var lastidread = dbcontext.EQTunnelMessages.Where(a => a.Server == Servers.Green).Select(a => (long?)a.DiscordMessageId).OrderBy(a => a).FirstOrDefault();
+                AddMessages(discordService.ReadMessageHistory(lastidread), dbcontext);
             }
         }
     }
