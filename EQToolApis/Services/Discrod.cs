@@ -84,7 +84,7 @@ namespace EQToolApis.Services
                     {
                         return (int)(p * 1000);
                     }
-                    return p;
+                    return (int)p;
                 }
             }
 
