@@ -34,6 +34,7 @@ namespace EQTool
             _ = mapViewModel.LoadDefaultMap(Map);
             this.logParser.PlayerLocationEvent += LogParser_PlayerLocationEvent;
             this.logParser.PlayerZonedEvent += LogParser_PlayerZonedEvent;
+            SaveState();
         }
 
         private void LogParser_PlayerZonedEvent(object sender, LogParser.PlayerZonedEventArgs e)

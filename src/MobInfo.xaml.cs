@@ -34,6 +34,7 @@ namespace EQTool
             SizeChanged += DPSMeter_SizeChanged;
             StateChanged += SpellWindow_StateChanged;
             LocationChanged += DPSMeter_LocationChanged;
+            SaveState();
         }
 
         private void LogParser_ConEvent(object sender, LogParser.ConEventArgs e)
