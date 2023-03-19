@@ -34,8 +34,7 @@ builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("HangfireAccess", cfgPolicy =>
     {
-        cfgPolicy.AddRequirements().RequireAuthenticatedUser();
-        cfgPolicy.AddAuthenticationSchemes(OpenIdConnectDefaults.AuthenticationScheme);
+        cfgPolicy.AddAuthenticationSchemes(OpenIdConnectDefaults.AuthenticationScheme).RequireAuthenticatedUser();
     });
 });
 builder.Services.Configure<DiscordServiceOptions>(options =>
@@ -58,8 +57,8 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.UseEndpoints(endpoints =>
 {
-    endpoints.MapHangfireDashboard().RequireAuthorization("HangfireAccess");
     endpoints.MapControllers();
+    endpoints.MapHangfireDashboard().RequireAuthorization("HangfireAccess");
 });
 app.MapControllers();
 app.MapRazorPages();
