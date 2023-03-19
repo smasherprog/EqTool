@@ -1,15 +1,14 @@
 ﻿using EQToolApis.DB;
 using EQToolApis.DB.Models;
 using Microsoft.Extensions.Options;
-using static EQToolApis.Services.DiscordService;
 
 namespace EQToolApis.Services
 {
     public interface IDiscordService
     {
         public void Login();
-        public List<Message> ReadMessages(long? lastid);
-        public List<Message> ReadMessageHistory(long? lastid);
+        public List<DiscordService.Message> ReadMessages(long? lastid);
+        public List<DiscordService.Message> ReadMessageHistory(long? lastid);
     }
 
     public class DiscordServiceOptions
@@ -76,7 +75,7 @@ namespace EQToolApis.Services
                         return null;
                     }
 
-                    _ = float.TryParse(new string(name.Where(a => char.IsDigit(a)).ToArray()), out var p);
+                    _ = float.TryParse(new string(name.Where(a => char.IsDigit(a) || a == '.').ToArray()), out var p);
                     if (name.EndsWith("pp"))
                     {
                         if (p <= 0)

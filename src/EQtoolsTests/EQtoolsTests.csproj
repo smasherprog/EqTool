@@ -114,6 +114,7 @@
   <ItemGroup>
     <Compile Include="DI.cs" />
     <Compile Include="FindEqTests.cs" />
+    <Compile Include="DiscordTests.cs" />
     <Compile Include="MobInfoTests.cs" />
     <Compile Include="DamageTests.cs" />
     <Compile Include="SpellTests.cs" />
