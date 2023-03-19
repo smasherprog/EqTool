@@ -53,6 +53,7 @@ namespace EQToolApis.Pages
 
         public List<AuctionItem> AuctionItemsCol2 => AuctionItems.Skip(AuctionItems.Count / 2).ToList();
 
+
         public IActionResult OnGet()
         {
             return Page();

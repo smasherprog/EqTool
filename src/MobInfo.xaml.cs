@@ -34,6 +34,7 @@ namespace EQTool
             SizeChanged += DPSMeter_SizeChanged;
             StateChanged += SpellWindow_StateChanged;
             LocationChanged += DPSMeter_LocationChanged;
+            settings.MobWindowState.Closed = false;
             SaveState();
         }
 

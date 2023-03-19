@@ -14,8 +14,6 @@ namespace EQTool.Services
                 w.Width = windowState.WindowRect.Value.Width;
                 w.WindowState = windowState.State;
             }
-
-
         }
 
         public static void SaveWindowState(EQTool.Models.WindowState windowState, Window w)
