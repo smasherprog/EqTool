@@ -1,6 +1,7 @@
 using EQToolApis.DB;
 using EQToolApis.Services;
 using Hangfire;
+using Hangfire.Dashboard;
 using Hangfire.SqlServer;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.EntityFrameworkCore;
@@ -34,7 +35,8 @@ builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("HangfireAccess", cfgPolicy =>
     {
-        cfgPolicy.RequireAuthenticatedUser();
+        cfgPolicy.AddAuthenticationSchemes(OpenIdConnectDefaults.AuthenticationScheme)
+                    .RequireAuthenticatedUser();
     });
 });
 builder.Services.Configure<DiscordServiceOptions>(options =>
@@ -58,7 +60,11 @@ app.UseAuthorization();
 app.UseEndpoints(endpoints =>
 {
     endpoints.MapControllers();
-    endpoints.MapHangfireDashboard().RequireAuthorization("HangfireAccess");
+    endpoints.MapHangfireDashboard("/hangfire", new DashboardOptions()
+    {
+        Authorization = new List<IDashboardAuthorizationFilter> { }
+    })
+    .RequireAuthorization("HangfireAccess");
 });
 app.MapControllers();
 app.MapRazorPages();
