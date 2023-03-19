@@ -30,6 +30,14 @@ builder.Services.AddHangfire(configuration => configuration
          DashboardJobListLimit = 2
      }));
 builder.Services.AddHangfireServer();
+builder.Services.AddAuthorization(options =>
+{
+    options.AddPolicy("HangfireAccess", cfgPolicy =>
+    {
+        cfgPolicy.AddRequirements().RequireAuthenticatedUser();
+        cfgPolicy.AddAuthenticationSchemes(OpenIdConnectDefaults.AuthenticationScheme);
+    });
+});
 builder.Services.Configure<DiscordServiceOptions>(options =>
 {
     options.token = builder.Configuration.GetValue<string>("DiscordToken");
@@ -50,8 +58,8 @@ app.UseAuthentication();
 app.UseAuthorization();
 app.UseEndpoints(endpoints =>
 {
+    endpoints.MapHangfireDashboard().RequireAuthorization("HangfireAccess");
     endpoints.MapControllers();
-    endpoints.MapHangfireDashboard();
 });
 app.MapControllers();
 app.MapRazorPages();

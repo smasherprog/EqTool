@@ -1,5 +1,6 @@
 ﻿using EQToolApis.DB;
 using EQToolApis.DB.Models;
+using Hangfire;
 using Microsoft.Extensions.Options;
 
 namespace EQToolApis.Services
@@ -171,14 +172,14 @@ namespace EQToolApis.Services
 
         public class DiscordJob
         {
-            private readonly ILogger<DiscordJob> _logger;
+            private readonly IBackgroundJobClient backgroundJobClient;
             private readonly IDiscordService discordService;
             private readonly EQToolContext dbcontext;
 
-            public DiscordJob(ILogger<DiscordJob> logger, IDiscordService discordService, EQToolContext dbcontext)
+            public DiscordJob(ILogger<DiscordJob> logger, IDiscordService discordService, EQToolContext dbcontext, IBackgroundJobClient backgroundJobClient)
             {
                 this.dbcontext = dbcontext;
-                _logger = logger;
+                this.backgroundJobClient = backgroundJobClient;
                 this.discordService = discordService;
             }
 
@@ -249,10 +250,14 @@ namespace EQToolApis.Services
 
             public void StartItemPricing()
             {
-                return;
+                var ids = new Queue<int>(dbcontext.EQitems.Select(a => a.EQitemId).ToList());
+                _ = backgroundJobClient.Enqueue<DiscordJob>(a => a.DoItemPricing(ids));
+            }
+            public void DoItemPricing(Queue<int> items)
+            {
                 discordService.Login();
-                var lastidread = dbcontext.EQTunnelMessages.Where(a => a.Server == Servers.Green).Select(a => (long?)a.DiscordMessageId).OrderBy(a => a).FirstOrDefault();
-                AddMessages(discordService.ReadMessageHistory(lastidread), dbcontext);
+
+                // backgroundJobClient.Enqueue<DiscordJob>(a => a.DoItemPricing(ids));
             }
         }
     }
