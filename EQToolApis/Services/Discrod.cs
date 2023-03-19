@@ -13,21 +13,18 @@ namespace EQToolApis.Services
 
     public class DiscordServiceOptions
     {
-        public string login { get; set; }
-        public string password { get; set; }
+        public string token { get; set; }
     }
 
     public class DiscordService : IDiscordService
     {
         private readonly HttpClient _client = new();
-        private LoginResponse loginResponse;
-        private readonly string login;
-        private readonly string password;
+
+        private readonly string token;
 
         public DiscordService(IOptions<DiscordServiceOptions> options)
         {
-            login = options.Value.login;
-            password = options.Value.password;
+            token = options.Value.token;
         }
 
         public class LoginRequest
@@ -48,23 +45,23 @@ namespace EQToolApis.Services
 
         public void Login()
         {
-            if (loginResponse != null)
-            {
-                return;
-            }
-            var req = new LoginRequest
-            {
-                login = login,
-                password = password
-            };
-            var result = _client.PostAsJsonAsync("https://discord.com/api/v9/auth/login", req).Result;
-            var res = result.Content.ReadAsStringAsync().Result;
-            var resobject = Newtonsoft.Json.JsonConvert.DeserializeObject<LoginResponse>(res);
-            loginResponse = resobject;
-            if (string.IsNullOrWhiteSpace(loginResponse.Token))
-            {
-                throw new Exception($"Login Failed: {res}");
-            }
+            //if (loginResponse != null)
+            //{
+            //    return;
+            //}
+            //var req = new LoginRequest
+            //{
+            //    login = login,
+            //    password = password
+            //};
+            //var result = _client.PostAsJsonAsync("https://discord.com/api/v9/auth/login", req).Result;
+            //var res = result.Content.ReadAsStringAsync().Result;
+            //var resobject = Newtonsoft.Json.JsonConvert.DeserializeObject<LoginResponse>(res);
+            //loginResponse = resobject;
+            //if (string.IsNullOrWhiteSpace(loginResponse.Token))
+            //{
+            //    throw new Exception($"Login Failed: {res}");
+            //}
         }
 
         public class embedFields
@@ -122,17 +119,14 @@ namespace EQToolApis.Services
             }
             using (var msg = new HttpRequestMessage())
             {
-                msg.Headers.Add("authorization", loginResponse.Token);
+                msg.Headers.Add("authorization", token);
                 msg.RequestUri = new Uri(url);
                 msg.Method = HttpMethod.Get;
                 var result = _client.SendAsync(msg).Result;
                 var resultstring = result.Content.ReadAsStringAsync().Result;
-                if (result.StatusCode == System.Net.HttpStatusCode.Unauthorized)
-                {
-                    loginResponse = null;
-                    return new List<Message>();
-                }
-                return Newtonsoft.Json.JsonConvert.DeserializeObject<List<Message>>(resultstring);
+                return result.StatusCode == System.Net.HttpStatusCode.Unauthorized
+                    ? new List<Message>()
+                    : Newtonsoft.Json.JsonConvert.DeserializeObject<List<Message>>(resultstring);
             }
         }
 
@@ -160,7 +154,6 @@ namespace EQToolApis.Services
 
             private void DoWork(object? state)
             {
-                return;
                 if (Processing)
                 {
                     return;

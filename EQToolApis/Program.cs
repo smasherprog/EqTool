@@ -12,8 +12,7 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.Configure<DiscordServiceOptions>(options =>
 {
-    options.login = builder.Configuration.GetValue<string>("DiscordLogin");
-    options.password = builder.Configuration.GetValue<string>("DiscordPassword");
+    options.token = builder.Configuration.GetValue<string>("DiscordToken");
 })
 .AddSingleton<IDiscordService, DiscordService>();
 builder.Services.AddHostedService<TimedHostedService>();
