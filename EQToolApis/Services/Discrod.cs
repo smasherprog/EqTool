@@ -238,9 +238,7 @@ namespace EQToolApis.Services
             {
                 discordService.Login();
                 var lastidread = dbcontext.EQTunnelMessages.Where(a => a.Server == Servers.Green).Select(a => (long?)a.DiscordMessageId).OrderByDescending(a => a).FirstOrDefault();
-                AddMessages(discordService.ReadMessages(lastidread), dbcontext); 
-                lastidread = dbcontext.EQTunnelMessages.Where(a => a.Server == Servers.Green).Select(a => (long?)a.DiscordMessageId).OrderByDescending(a => a).FirstOrDefault();
-                AddMessages(discordService.ReadMessages(lastidread), dbcontext);
+                AddMessages(discordService.ReadMessages(lastidread), dbcontext);  
             }
 
             public void ReadPastMessages()
@@ -248,6 +246,8 @@ namespace EQToolApis.Services
                 discordService.Login();
                 var lastidread = dbcontext.EQTunnelMessages.Where(a => a.Server == Servers.Green).Select(a => (long?)a.DiscordMessageId).OrderBy(a => a).FirstOrDefault();
                 AddMessages(discordService.ReadMessageHistory(lastidread), dbcontext); 
+                lastidread = dbcontext.EQTunnelMessages.Where(a => a.Server == Servers.Green).Select(a => (long?)a.DiscordMessageId).OrderBy(a => a).FirstOrDefault();
+                AddMessages(discordService.ReadMessageHistory(lastidread), dbcontext);
                 lastidread = dbcontext.EQTunnelMessages.Where(a => a.Server == Servers.Green).Select(a => (long?)a.DiscordMessageId).OrderBy(a => a).FirstOrDefault();
                 AddMessages(discordService.ReadMessageHistory(lastidread), dbcontext);
             }
