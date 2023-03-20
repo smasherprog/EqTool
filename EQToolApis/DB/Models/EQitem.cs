@@ -11,7 +11,9 @@ namespace EQToolApis.DB.Models
         [MaxLength(64)]
         public string ItemName { get; set; }
 
-        public DateTimeOffset LastSeen { get; set; }
+        public DateTimeOffset LastWTBSeen { get; set; }
+
+        public DateTimeOffset LastWTSSeen { get; set; }
 
         public int TotalWTSAuctionCount { get; set; }
 

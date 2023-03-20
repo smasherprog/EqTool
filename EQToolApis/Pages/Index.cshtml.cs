@@ -42,7 +42,7 @@ namespace EQToolApis.Pages
                                   TotalLast6MonthsAverage = a.EQitem.TotalWTSLast6MonthsAverage,
                                   TotalAuctionCount = a.EQitem.TotalWTSAuctionCount,
                                   TotalAuctionAverage = a.EQitem.TotalWTSAuctionAverage,
-                                  LastSeen = a.EQitem.LastSeen
+                                  LastSeen = a.EQitem.LastWTSSeen
                               })
                               .Select(a => a.Key).ToList();
 
@@ -62,7 +62,7 @@ namespace EQToolApis.Pages
                                   TotalLast6MonthsAverage = a.EQitem.TotalWTBLast6MonthsAverage,
                                   TotalAuctionCount = a.EQitem.TotalWTBAuctionCount,
                                   TotalAuctionAverage = a.EQitem.TotalWTBAuctionAverage,
-                                  LastSeen = a.EQitem.LastSeen
+                                  LastSeen = a.EQitem.LastWTBSeen
                               })
                               .Select(a => a.Key).ToList();
 
