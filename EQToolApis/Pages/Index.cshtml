@@ -10,10 +10,7 @@
             var value = $(this).val().toLowerCase();
             $("#myTable1 tr").filter(function () {
                 $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-            });
-            $("#myTable2 tr").filter(function () {
-                $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-            });
+            }); 
         });
     });
 </script>
@@ -35,9 +32,10 @@
     <div class="row">
         <div class="col-12">
             <div class="tableFixHead">
-                <table class="table table-sm table-bordered table-striped">
+                <table class="table table-sm table-bordered">
                     <thead class="thead-dark">
                         <tr>
+                            <th>Type</th>
                             <th>Last Seen</th>
                             <th>Item</th>
                             <th title="Total Actions in the last 30 days">30d Count</th>
@@ -54,20 +52,21 @@
                     </thead>
                     <tbody id="myTable1">
                         @foreach (var auctions in Model.AuctionItems)
-                        {
-                            <tr>
+                        { 
+                            <tr class="@(auctions.AuctionType == EQToolApis.DB.AuctionType.WTS ? "table-success" : "table-warning")">
+                                <td> @auctions.AuctionType </td>
                                 <td> @auctions.LastSeen.ToString("yyyy-MM-dd") </td>
                                 <td> @auctions.ItemName </td>
                                 <td> @auctions.TotalLast30DaysCount </td>
-                                <td> @auctions.TotalLast30DaysAverage.ToString("n0") </td>
+                                <td> @auctions.TotalLast30DaysAverage.ToString("n0")pp </td>
                                 <td> @auctions.TotalLast60DaysCount </td>
-                                <td> @auctions.TotalLast60DaysAverage.ToString("n0") </td>
+                                <td> @auctions.TotalLast60DaysAverage.ToString("n0")pp </td>
                                 <td> @auctions.TotalLast90DaysCount </td>
-                                <td> @auctions.TotalLast90DaysAverage.ToString("n0") </td>
+                                <td> @auctions.TotalLast90DaysAverage.ToString("n0")pp </td>
                                 <td> @auctions.TotalLast6MonthsCount </td>
-                                <td> @auctions.TotalLast6MonthsAverage.ToString("n0") </td>
+                                <td> @auctions.TotalLast6MonthsAverage.ToString("n0")pp </td>
                                 <td> @auctions.TotalAuctionCount </td>
-                                <td> @auctions.TotalAuctionAverage.ToString("n0") </td>
+                                <td> @auctions.TotalAuctionAverage.ToString("n0")pp </td>
                             </tr>
                         }
                     </tbody>
@@ -77,6 +76,8 @@
     </div>
     <h3>Stats:</h3>
     <dl class="row">
+        <dt class="col-sm-3">History Import</dt>
+        <dd class="col-sm-9">@Model.LastSeen</dd>
         <dt class="col-sm-3">Total Unique Auction Players</dt>
         <dd class="col-sm-9">@Model.TotalEQAuctionPlayers.ToString("n0")</dd>
         <dt class="col-sm-3">Total Unique Auctioned Items</dt>

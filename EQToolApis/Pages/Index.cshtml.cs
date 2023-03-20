@@ -1,16 +1,13 @@
 using EQToolApis.DB;
-using EQToolApis.DB.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using System;
 
 namespace EQToolApis.Pages
 {
     public class IndexModel : PageModel
     {
         private readonly EQToolContext context;
-        private static List<AuctionItem> ItemCache = new List<AuctionItem>();
+        private static List<AuctionItem> ItemCache = new();
         private static DateTime LastItemCache = DateTime.MinValue;
         public IndexModel(EQToolContext context)
         {
@@ -30,9 +27,10 @@ namespace EQToolApis.Pages
                         {
                             LastItemCache = DateTime.Now;
                             ItemCache = context.EQTunnelAuctionItems
-                              .Where(a => a.EQTunnelMessage.AuctionType == AuctionType.WTS)
+                              .Where(a => a.EQTunnelMessage.AuctionType != AuctionType.BOTH)
                               .GroupBy(a => new AuctionItem
                               {
+                                  AuctionType = a.EQTunnelMessage.AuctionType,
                                   ItemName = a.EQitem.ItemName,
                                   TotalLast30DaysAverage = a.EQitem.TotalLast30DaysAverage,
                                   TotalLast30DaysCount = a.EQitem.TotalLast30DaysCount,
@@ -48,6 +46,7 @@ namespace EQToolApis.Pages
                               })
                               .Select(a => a.Key).ToList()
                               .OrderBy(a => a.ItemName)
+                              .ThenBy(a => a.AuctionType)
                               .ToList();
                         }
                     }
@@ -61,6 +60,8 @@ namespace EQToolApis.Pages
         public int TotalEQitems => context.EQitems.Count();
         public int TotalEQTunnelAuctionItems => context.EQTunnelAuctionItems.Count();
         public int TotalEQTunnelMessages => context.EQTunnelMessages.Count();
+
+        public DateTimeOffset LastSeen => context.EQTunnelMessages.OrderByDescending(a => a.TunnelTimestamp).Select(a => a.TunnelTimestamp).FirstOrDefault();
 
         public IActionResult OnGet()
         {

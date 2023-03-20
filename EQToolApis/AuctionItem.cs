@@ -1,9 +1,12 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using EQToolApis.DB;
+using System.ComponentModel.DataAnnotations;
 
 namespace EQToolApis
 {
     public class AuctionItem
     {
+        public AuctionType AuctionType { get; set; }
+
         [MaxLength(64)]
         public string ItemName { get; set; }
 
