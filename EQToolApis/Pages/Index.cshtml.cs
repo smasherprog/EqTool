@@ -37,8 +37,8 @@ namespace EQToolApis.Pages
                        .Select(a => new AuctionItem
                        {
                            ItemName = a.First().EQitem.ItemName,
-                           AveragePrice = (int)a.Average(b => b.AuctionPrice ?? 0),
-                           Count = a.Count(),
+                           AveragePrice = a.First().EQitem.TotalLast30DaysAverage,
+                           Count = a.First().EQitem.TotalLast30DaysCount,
                            LastSeen = a.Select(b => b.EQTunnelMessage.TunnelTimestamp).OrderByDescending(b => b).FirstOrDefault()
                        }).ToList()
                        .OrderBy(a => a.ItemName)

@@ -253,10 +253,33 @@ namespace EQToolApis.Services
                 var ids = new Queue<int>(dbcontext.EQitems.Select(a => a.EQitemId).ToList());
                 _ = backgroundJobClient.Enqueue<DiscordJob>(a => a.DoItemPricing(ids));
             }
-            public void DoItemPricing(Queue<int> items)
+            public void DoItemPricing(Queue<int> ids)
             {
                 discordService.Login();
+                var id = ids.Dequeue();
+                var item = dbcontext.EQitems.FirstOrDefault(a => a.EQitemId == id);
 
+                var d = DateTimeOffset.UtcNow.AddMonths(-1);
+                item.TotalLast30DaysCount = dbcontext.EQTunnelAuctionItems.Count(a => a.EQitemId == id && a.EQTunnelMessage.TunnelTimestamp >= d);
+                item.TotalLast30DaysAverage = (int)(dbcontext.EQTunnelAuctionItems.Where(a => a.EQitemId == id && a.EQTunnelMessage.TunnelTimestamp >= d && a.AuctionPrice.HasValue).Average(a => a.AuctionPrice) ?? 0);
+                d = DateTimeOffset.UtcNow.AddMonths(-2);
+                item.TotalLast60DaysCount = dbcontext.EQTunnelAuctionItems.Count(a => a.EQitemId == id && a.EQTunnelMessage.TunnelTimestamp >= d);
+                item.TotalLast60DaysAverage = (int)(dbcontext.EQTunnelAuctionItems.Where(a => a.EQitemId == id && a.EQTunnelMessage.TunnelTimestamp >= d && a.AuctionPrice.HasValue).Average(a => a.AuctionPrice) ?? 0);
+                d = DateTimeOffset.UtcNow.AddMonths(-3);
+                item.TotalLast90DaysCount = dbcontext.EQTunnelAuctionItems.Count(a => a.EQitemId == id && a.EQTunnelMessage.TunnelTimestamp >= d);
+                item.TotalLast90DaysAverage = (int)(dbcontext.EQTunnelAuctionItems.Where(a => a.EQitemId == id && a.EQTunnelMessage.TunnelTimestamp >= d && a.AuctionPrice.HasValue).Average(a => a.AuctionPrice) ?? 0);
+                d = DateTimeOffset.UtcNow.AddMonths(-6);
+                item.TotalLast6MonthsCount = dbcontext.EQTunnelAuctionItems.Count(a => a.EQitemId == id && a.EQTunnelMessage.TunnelTimestamp >= d);
+                item.TotalLast6MonthsAverage = (int)(dbcontext.EQTunnelAuctionItems.Where(a => a.EQitemId == id && a.EQTunnelMessage.TunnelTimestamp >= d && a.AuctionPrice.HasValue).Average(a => a.AuctionPrice) ?? 0);
+
+                d = DateTimeOffset.UtcNow.AddYears(-1);
+                item.TotalLastYearCount = dbcontext.EQTunnelAuctionItems.Count(a => a.EQitemId == id && a.EQTunnelMessage.TunnelTimestamp >= d);
+                item.TotalLastYearAverage = (int)(dbcontext.EQTunnelAuctionItems.Where(a => a.EQitemId == id && a.EQTunnelMessage.TunnelTimestamp >= d && a.AuctionPrice.HasValue).Average(a => a.AuctionPrice) ?? 0);
+
+                item.TotalAuctionCount = dbcontext.EQTunnelAuctionItems.Count(a => a.EQitemId == id);
+                item.TotalAuctionAverage = (int)(dbcontext.EQTunnelAuctionItems.Where(a => a.EQitemId == id && a.EQTunnelMessage.TunnelTimestamp >= d && a.AuctionPrice.HasValue).Average(a => a.AuctionPrice) ?? 0);
+
+                _ = backgroundJobClient.Enqueue<DiscordJob>(a => a.DoItemPricing(ids));
             }
         }
     }
