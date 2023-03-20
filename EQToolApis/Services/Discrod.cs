@@ -250,6 +250,8 @@ namespace EQToolApis.Services
                 AddMessages(discordService.ReadMessageHistory(lastidread), dbcontext);
                 lastidread = dbcontext.EQTunnelMessages.Where(a => a.Server == Servers.Green).Select(a => (long?)a.DiscordMessageId).OrderBy(a => a).FirstOrDefault();
                 AddMessages(discordService.ReadMessageHistory(lastidread), dbcontext);
+                lastidread = dbcontext.EQTunnelMessages.Where(a => a.Server == Servers.Green).Select(a => (long?)a.DiscordMessageId).OrderBy(a => a).FirstOrDefault();
+                AddMessages(discordService.ReadMessageHistory(lastidread), dbcontext);
             }
 
             public void StartItemPricing()
