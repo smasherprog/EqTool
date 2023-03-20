@@ -257,6 +257,7 @@ namespace EQToolApis.Services
 
             public string DoItemPricing(Queue<int> ids)
             {
+
                 discordService.Login();
                 var id = ids.Dequeue();
                 var item = dbcontext.EQitems.FirstOrDefault(a => a.EQitemId == id);
@@ -283,7 +284,10 @@ namespace EQToolApis.Services
 
                 item.LastSeen = dbcontext.EQTunnelAuctionItems.Select(b => b.EQTunnelMessage.TunnelTimestamp).OrderByDescending(b => b).FirstOrDefault();
                 _ = dbcontext.SaveChanges();
-                _ = backgroundJobClient.Enqueue<DiscordJob>(a => a.DoItemPricing(ids));
+                if (ids.Any())
+                {
+                    _ = backgroundJobClient.Enqueue<DiscordJob>(a => a.DoItemPricing(ids));
+                }
 
                 return $"Worked on {id}, avg {item.TotalLast30DaysAverage} ";
             }
