@@ -76,18 +76,14 @@
         </div>
     </div>
     <h3>Stats:</h3>
-    <div class="row">
-        <dl class="dl-horizontal">
-            <dt class="col-sm-3">TotalEQAuctionPlayers</dt>
-            <dd class="col-sm-9">@Model.TotalEQAuctionPlayers</dd>
-            <dt class="col-sm-3">TotalEQitems</dt>
-            <dd class="col-sm-9">@Model.TotalEQitems</dd>
-            <dt class="col-sm-3">TotalEQTunnelAuctionItems</dt>
-            <dd class="col-sm-9">@Model.TotalEQTunnelAuctionItems</dd>
-            <dt class="col-sm-3">TotalEQTunnelMessages</dt>
-            <dd class="col-sm-9">@Model.TotalEQTunnelMessages</dd>
-        </dl>
-        <div class="col-12">
-        </div>
-    </div>
+    <dl class="row">
+        <dt class="col-sm-3">Total Unique Auction Players</dt>
+        <dd class="col-sm-9">@Model.TotalEQAuctionPlayers.ToString("n0")</dd>
+        <dt class="col-sm-3">Total Unique Auctioned Items</dt>
+        <dd class="col-sm-9">@Model.TotalEQitems.ToString("n0")</dd>
+        <dt class="col-sm-3">Total Tunnel Auctioned Items</dt>
+        <dd class="col-sm-9">@Model.TotalEQTunnelAuctionItems.ToString("n0")</dd>
+        <dt class="col-sm-3">Total Tunnel Auctions</dt>
+        <dd class="col-sm-9">@Model.TotalEQTunnelMessages.ToString("n0")</dd>
+    </dl> 
 </div>

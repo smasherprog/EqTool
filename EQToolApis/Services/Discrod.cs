@@ -254,7 +254,6 @@ namespace EQToolApis.Services
                 _ = backgroundJobClient.Enqueue<DiscordJob>(a => a.DoItemPricing(ids));
             }
 
-
             public string DoItemPricing(Queue<int> ids)
             {
                 discordService.Login();
