@@ -24,7 +24,7 @@ namespace EQToolApis.Pages
                 var d = DateTime.Now;
                 if (!ItemCache.Any() || (d - LastItemCache).TotalHours > 1)
                 {
-                    lock (LastItemCache)
+                    lock (ItemCache)
                     {
                         if (!ItemCache.Any() || (d - LastItemCache).TotalHours > 1)
                         {
