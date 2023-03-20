@@ -13,29 +13,53 @@ namespace EQToolApis.DB.Models
 
         public DateTimeOffset LastSeen { get; set; }
 
-        public int TotalAuctionCount { get; set; }
+        public int TotalWTSAuctionCount { get; set; }
 
-        public int TotalAuctionAverage { get; set; }
+        public int TotalWTSAuctionAverage { get; set; }
 
-        public int TotalLast30DaysCount { get; set; }
+        public int TotalWTSLast30DaysCount { get; set; }
 
-        public int TotalLast30DaysAverage { get; set; }
+        public int TotalWTSLast30DaysAverage { get; set; }
 
-        public int TotalLast60DaysCount { get; set; }
+        public int TotalWTSLast60DaysCount { get; set; }
 
-        public int TotalLast60DaysAverage { get; set; }
+        public int TotalWTSLast60DaysAverage { get; set; }
 
-        public int TotalLast90DaysCount { get; set; }
+        public int TotalWTSLast90DaysCount { get; set; }
 
-        public int TotalLast90DaysAverage { get; set; }
+        public int TotalWTSLast90DaysAverage { get; set; }
 
-        public int TotalLast6MonthsCount { get; set; }
+        public int TotalWTSLast6MonthsCount { get; set; }
 
-        public int TotalLast6MonthsAverage { get; set; }
+        public int TotalWTSLast6MonthsAverage { get; set; }
 
-        public int TotalLastYearCount { get; set; }
+        public int TotalWTSLastYearCount { get; set; }
 
-        public int TotalLastYearAverage { get; set; }
+        public int TotalWTSLastYearAverage { get; set; }
+
+        public int TotalWTBAuctionCount { get; set; }
+
+        public int TotalWTBAuctionAverage { get; set; }
+
+        public int TotalWTBLast30DaysCount { get; set; }
+
+        public int TotalWTBLast30DaysAverage { get; set; }
+
+        public int TotalWTBLast60DaysCount { get; set; }
+
+        public int TotalWTBLast60DaysAverage { get; set; }
+
+        public int TotalWTBLast90DaysCount { get; set; }
+
+        public int TotalWTBLast90DaysAverage { get; set; }
+
+        public int TotalWTBLast6MonthsCount { get; set; }
+
+        public int TotalWTBLast6MonthsAverage { get; set; }
+
+        public int TotalWTBLastYearCount { get; set; }
+
+        public int TotalWTBLastYearAverage { get; set; }
 
         public ICollection<EQTunnelAuctionItem> EQTunnelAuctionItems { get; set; }
     }

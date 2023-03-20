@@ -4,6 +4,7 @@ using EQToolApis.DB;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EQToolApis.Migrations
 {
     [DbContext(typeof(EQToolContext))]
-    partial class EQToolContextModelSnapshot : ModelSnapshot
+    [Migration("20230320144821_ChangedItemWTSColumns")]
+    partial class ChangedItemWTSColumns
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -101,8 +104,6 @@ namespace EQToolApis.Migrations
 
                     b.HasIndex("TunnelTimestamp");
 
-                    b.HasIndex("TunnelTimestamp", "AuctionType");
-
                     b.ToTable("EQTunnelMessages");
                 });
 
@@ -121,42 +122,6 @@ namespace EQToolApis.Migrations
 
                     b.Property<DateTimeOffset>("LastSeen")
                         .HasColumnType("datetimeoffset");
-
-                    b.Property<int>("TotalWTBAuctionAverage")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TotalWTBAuctionCount")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TotalWTBLast30DaysAverage")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TotalWTBLast30DaysCount")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TotalWTBLast60DaysAverage")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TotalWTBLast60DaysCount")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TotalWTBLast6MonthsAverage")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TotalWTBLast6MonthsCount")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TotalWTBLast90DaysAverage")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TotalWTBLast90DaysCount")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TotalWTBLastYearAverage")
-                        .HasColumnType("int");
-
-                    b.Property<int>("TotalWTBLastYearCount")
-                        .HasColumnType("int");
 
                     b.Property<int>("TotalWTSAuctionAverage")
                         .HasColumnType("int");
