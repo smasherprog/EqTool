@@ -277,7 +277,7 @@ namespace EQToolApis.Services
                 item.TotalLastYearAverage = (int)(dbcontext.EQTunnelAuctionItems.Where(a => a.EQitemId == id && a.EQTunnelMessage.TunnelTimestamp >= d && a.AuctionPrice.HasValue).Average(a => a.AuctionPrice) ?? 0);
 
                 item.TotalAuctionCount = dbcontext.EQTunnelAuctionItems.Count(a => a.EQitemId == id);
-                item.TotalAuctionAverage = (int)(dbcontext.EQTunnelAuctionItems.Where(a => a.EQitemId == id && a.EQTunnelMessage.TunnelTimestamp >= d && a.AuctionPrice.HasValue).Average(a => a.AuctionPrice) ?? 0);
+                item.TotalAuctionAverage = (int)(dbcontext.EQTunnelAuctionItems.Where(a => a.EQitemId == id).Average(a => a.AuctionPrice) ?? 0);
 
                 _ = backgroundJobClient.Enqueue<DiscordJob>(a => a.DoItemPricing(ids));
             }

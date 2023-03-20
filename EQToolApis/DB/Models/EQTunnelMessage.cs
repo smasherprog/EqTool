@@ -2,7 +2,7 @@
 
 namespace EQToolApis.DB.Models
 {
-    [PrimaryKey(nameof(EQTunnelMessageId)), Index(nameof(DiscordMessageId)), Index(nameof(Server)), Index(nameof(AuctionType))]
+    [PrimaryKey(nameof(EQTunnelMessageId)), Index(nameof(DiscordMessageId)), Index(nameof(Server)), Index(nameof(AuctionType)), Index(nameof(TunnelTimestamp))]
     public class EQTunnelMessage
     {
         public long EQTunnelMessageId { get; set; }
