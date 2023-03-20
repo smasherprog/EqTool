@@ -11,6 +11,8 @@ namespace EQToolApis.DB.Models
         [MaxLength(64)]
         public string ItemName { get; set; }
 
+        public DateTimeOffset LastSeen { get; set; }
+
         public int TotalAuctionCount { get; set; }
 
         public int TotalAuctionAverage { get; set; }

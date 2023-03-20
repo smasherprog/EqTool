@@ -281,8 +281,10 @@ namespace EQToolApis.Services
                 item.TotalAuctionCount = dbcontext.EQTunnelAuctionItems.Count(a => a.EQitemId == id);
                 item.TotalAuctionAverage = (int)(dbcontext.EQTunnelAuctionItems.Where(a => a.EQitemId == id).Average(a => a.AuctionPrice) ?? 0);
 
-                _ = backgroundJobClient.Enqueue<DiscordJob>(a => a.DoItemPricing(ids));
+                item.LastSeen = dbcontext.EQTunnelAuctionItems.Select(b => b.EQTunnelMessage.TunnelTimestamp).OrderByDescending(b => b).FirstOrDefault();
                 _ = dbcontext.SaveChanges();
+                _ = backgroundJobClient.Enqueue<DiscordJob>(a => a.DoItemPricing(ids));
+
                 return $"Worked on {id}, avg {item.TotalLast30DaysAverage} ";
             }
         }

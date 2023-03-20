@@ -33,13 +33,13 @@ namespace EQToolApis.Pages
                 {
                     _AuctionItems = context.EQTunnelAuctionItems
                        .Where(a => a.EQTunnelMessage.AuctionType == AuctionType.WTS)
-                       .GroupBy(a => a.EQitemId)
+                       .GroupBy(a => new { a.EQitem.ItemName, a.EQitem.TotalLast30DaysAverage, a.EQitem.TotalLast30DaysCount, a.EQitem.LastSeen })
                        .Select(a => new AuctionItem
                        {
-                           ItemName = a.First().EQitem.ItemName,
-                           AveragePrice = a.First().EQitem.TotalLast30DaysAverage,
-                           Count = a.First().EQitem.TotalLast30DaysCount,
-                           LastSeen = a.Select(b => b.EQTunnelMessage.TunnelTimestamp).OrderByDescending(b => b).FirstOrDefault()
+                           ItemName = a.Key.ItemName,
+                           AveragePrice = a.Key.TotalLast30DaysAverage,
+                           Count = a.Key.TotalLast30DaysCount,
+                           LastSeen = a.Key.LastSeen
                        }).ToList()
                        .OrderBy(a => a.ItemName)
                        .ToList();
