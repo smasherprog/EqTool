@@ -83,7 +83,7 @@ namespace EQToolApis.Pages
         public int TotalEQTunnelAuctionItems => context.EQTunnelAuctionItems.Count();
         public int TotalEQTunnelMessages => context.EQTunnelMessages.Count();
 
-        public DateTimeOffset LastSeen => context.EQTunnelMessages.OrderByDescending(a => a.TunnelTimestamp).Select(a => a.TunnelTimestamp).FirstOrDefault();
+        public DateTimeOffset LastSeen => context.EQTunnelMessages.OrderBy(a => a.TunnelTimestamp).Select(a => a.TunnelTimestamp).FirstOrDefault();
 
         public IActionResult OnGet()
         {
