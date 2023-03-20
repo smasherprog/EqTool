@@ -85,7 +85,7 @@ if (isrelease)
         backgroundclient.AddOrUpdate<DiscordService.DiscordJob>(nameof(DiscordService.DiscordJob.StartItemPricing), (a) => a.StartItemPricing(), Cron.Daily());
         backgroundclient.AddOrUpdate<UIDataBuild>(nameof(UIDataBuild.BuildData), (a) => a.BuildData(), "*/10 * * * *");
         var runnow = scope.ServiceProvider.GetRequiredService<IBackgroundJobClient>();
-        runnow.Enqueue<UIDataBuild>((a) => a.BuildData());
+        runnow.Schedule<UIDataBuild>((a) => a.BuildData(), TimeSpan.FromSeconds(10));
     }
 }
 app.Run();
