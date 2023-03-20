@@ -253,7 +253,9 @@ namespace EQToolApis.Services
                 var ids = new Queue<int>(dbcontext.EQitems.Select(a => a.EQitemId).ToList());
                 _ = backgroundJobClient.Enqueue<DiscordJob>(a => a.DoItemPricing(ids));
             }
-            public void DoItemPricing(Queue<int> ids)
+
+
+            public string DoItemPricing(Queue<int> ids)
             {
                 discordService.Login();
                 var id = ids.Dequeue();
@@ -280,6 +282,8 @@ namespace EQToolApis.Services
                 item.TotalAuctionAverage = (int)(dbcontext.EQTunnelAuctionItems.Where(a => a.EQitemId == id).Average(a => a.AuctionPrice) ?? 0);
 
                 _ = backgroundJobClient.Enqueue<DiscordJob>(a => a.DoItemPricing(ids));
+                _ = dbcontext.SaveChanges();
+                return $"Worked on {id}, avg {item.TotalLast30DaysAverage} ";
             }
         }
     }
