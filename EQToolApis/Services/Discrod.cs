@@ -257,7 +257,6 @@ namespace EQToolApis.Services
 
             public string DoItemPricing(Queue<int> ids)
             {
-
                 discordService.Login();
                 var id = ids.Dequeue();
                 var item = dbcontext.EQitems.FirstOrDefault(a => a.EQitemId == id);
