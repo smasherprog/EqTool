@@ -83,6 +83,9 @@ if (isrelease)
         backgroundclient.AddOrUpdate<DiscordService.DiscordJob>(nameof(DiscordService.DiscordJob.ReadFutureMessages), (a) => a.ReadFutureMessages(), Cron.Minutely());
         backgroundclient.AddOrUpdate<DiscordService.DiscordJob>(nameof(DiscordService.DiscordJob.ReadPastMessages), (a) => a.ReadPastMessages(), Cron.Minutely());
         backgroundclient.AddOrUpdate<DiscordService.DiscordJob>(nameof(DiscordService.DiscordJob.StartItemPricing), (a) => a.StartItemPricing(), Cron.Daily());
+        backgroundclient.AddOrUpdate<UIDataBuild>(nameof(UIDataBuild.BuildData), (a) => a.BuildData(), "*/10 * * * *");
+        var runnow = scope.ServiceProvider.GetRequiredService<IBackgroundJobClient>();
+        runnow.Enqueue<UIDataBuild>((a) => a.BuildData());
     }
 }
 app.Run();
