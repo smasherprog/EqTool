@@ -56,6 +56,12 @@ namespace EQToolApis.Pages
                 return _AuctionItems;
             }
         }
+
+        public int TotalEQAuctionPlayers => context.EQAuctionPlayers.Count();
+        public int TotalEQitems => context.EQitems.Count();
+        public int TotalEQTunnelAuctionItems => context.EQTunnelAuctionItems.Count();
+        public int TotalEQTunnelMessages => context.EQTunnelMessages.Count();
+
         public IActionResult OnGet()
         {
             return Page();

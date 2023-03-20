@@ -17,13 +17,13 @@
         });
     });
 </script>
-<style> 
+<style>
 
-        .tableFixHead thead th {
-            position: sticky;
-            top: 0;
-            z-index: 1;
-        }
+    .tableFixHead thead th {
+        position: sticky;
+        top: 0;
+        z-index: 1;
+    }
 </style>
 
 <div class="container-fluid">
@@ -45,7 +45,7 @@
                             <th title="Total Actions in the last 60 days">60d Count</th>
                             <th title="Average over last 60 days">60d Avg</th>
                             <th title="Total Actions in the last 90 days">90d Count</th>
-                            <th title="Average over last 90 days">90d Avg</th> 
+                            <th title="Average over last 90 days">90d Avg</th>
                             <th title="Total Actions in the last 6 Month">6M Count</th>
                             <th title="Average over last 6 Month">6M Avg</th>
                             <th title="Total Actions in the last All time">All Count</th>
@@ -75,5 +75,19 @@
             </div>
         </div>
     </div>
-
+    <h3>Stats:</h3>
+    <div class="row">
+        <dl class="dl-horizontal">
+            <dt class="col-sm-3">TotalEQAuctionPlayers</dt>
+            <dd class="col-sm-9">@Model.TotalEQAuctionPlayers</dd>
+            <dt class="col-sm-3">TotalEQitems</dt>
+            <dd class="col-sm-9">@Model.TotalEQitems</dd>
+            <dt class="col-sm-3">TotalEQTunnelAuctionItems</dt>
+            <dd class="col-sm-9">@Model.TotalEQTunnelAuctionItems</dd>
+            <dt class="col-sm-3">TotalEQTunnelMessages</dt>
+            <dd class="col-sm-9">@Model.TotalEQTunnelMessages</dd>
+        </dl>
+        <div class="col-12">
+        </div>
+    </div>
 </div>
