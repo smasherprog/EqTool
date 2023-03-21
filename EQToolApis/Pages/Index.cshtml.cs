@@ -23,9 +23,9 @@ namespace EQToolApis.Pages
             {
                 if (!UIDataBuild.ItemCache.Any())
                 {
-                    this.uIDataBuild.BuildData();
+                    uIDataBuild.BuildData();
                 }
-                return UIDataBuild.ItemCache; 
+                return UIDataBuild.ItemCache;
             }
         }
 #else
@@ -35,6 +35,8 @@ namespace EQToolApis.Pages
         public int TotalEQitems => context.EQitems.Count();
         public int TotalEQTunnelAuctionItems => context.EQTunnelAuctionItems.Count();
         public int TotalEQTunnelMessages => context.EQTunnelMessages.Count();
+
+        public DateTimeOffset RecentImportTimeStamp => context.EQTunnelMessages.OrderByDescending(a => a.TunnelTimestamp).Select(a => a.TunnelTimestamp).FirstOrDefault();
 
         public DateTimeOffset LastSeen => context.EQTunnelMessages.OrderBy(a => a.TunnelTimestamp).Select(a => a.TunnelTimestamp).FirstOrDefault();
 

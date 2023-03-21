@@ -6,6 +6,13 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <script>
     $(document).ready(function () {
+        var key = $(".mytime").each(function (i, obj) {
+            var element = $(this); // <div> or <span> element.
+            var utc = element.attr("utc"); // "2018-12-28T02:36:13.6774675Z"
+            var d = new Date(utc);
+            var l = d.toLocaleString(); // Runs client side, so will be client's local time!
+            element.text(l);
+        });
         $("#myInput").on("keyup", function () {
             var value = $(this).val().toLowerCase();
             if (value && value.length >= 2) { 
@@ -28,9 +35,12 @@
         z-index: 1;
     }
 </style>
-
-<span class="text-success">Green Data</span>
-<input class="form-control" id="myInput" type="text" placeholder="Search..">
+<div class="row">
+    <div class="col-6">
+        <span class="text-success float-left">Green Data </span>   <b class="ml-3 float-left">Last Update <span class="mytime" utc="@Model.RecentImportTimeStamp.ToString("o")"></span></b>
+        <input class="form-control" id="myInput" type="text" placeholder="Search.."> 
+    </div>
+</div>
 
 <table class="table-bordered">
     <thead>
@@ -55,7 +65,7 @@
         {
             <tr class="@(auctions.AuctionType == EQToolApis.DB.AuctionType.WTS ? "table-success" : "table-warning")">
                 <td> @auctions.AuctionType </td>
-                <td> @auctions.LastSeen.ToString("yyyy-MM-dd") </td>
+                <td class="mytime" utc="@auctions.LastSeen.ToString("o")">                </td> 
                 <td> <a href="/ItemDetails/@auctions.ItemId/@Servers.Green" target="_blank">@auctions.ItemName </a>  <a class="float-right" href="https://wiki.project1999.com/@(auctions.ItemName.Replace(' ', '_'))" target="_blank"><i class="fa fa-external-link"></i></a> </td>
                 <td> @auctions.TotalLast30DaysCount </td>
                 <td> @auctions.TotalLast30DaysAverage.ToString("n0")pp </td>
