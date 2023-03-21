@@ -1,4 +1,5 @@
 ﻿using EQToolApis.DB;
+using EQToolApis.Models;
 
 namespace EQToolApis.Services
 {
@@ -19,6 +20,7 @@ namespace EQToolApis.Services
                        .Where(a => a.EQTunnelMessage.AuctionType == AuctionType.WTS)
                        .GroupBy(a => new AuctionItem
                        {
+                           ItemId = a.EQitemId,
                            AuctionType = a.EQTunnelMessage.AuctionType,
                            ItemName = a.EQitem.ItemName,
                            TotalLast30DaysAverage = a.EQitem.TotalWTSLast30DaysAverage,
@@ -39,6 +41,7 @@ namespace EQToolApis.Services
               .Where(a => a.EQTunnelMessage.AuctionType == AuctionType.WTB)
               .GroupBy(a => new AuctionItem
               {
+                  ItemId = a.EQitemId,
                   AuctionType = a.EQTunnelMessage.AuctionType,
                   ItemName = a.EQitem.ItemName,
                   TotalLast30DaysAverage = a.EQitem.TotalWTBLast30DaysAverage,

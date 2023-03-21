@@ -1,13 +1,13 @@
 ﻿using EQToolApis.DB;
-using System.ComponentModel.DataAnnotations;
 
-namespace EQToolApis
+namespace EQToolApis.Models
 {
     public class AuctionItem
     {
+        public int ItemId { get; set; }
+
         public AuctionType AuctionType { get; set; }
 
-        [MaxLength(64)]
         public string ItemName { get; set; }
 
         public DateTimeOffset LastSeen { get; set; }

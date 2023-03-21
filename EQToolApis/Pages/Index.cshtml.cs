@@ -1,4 +1,5 @@
 using EQToolApis.DB;
+using EQToolApis.Models;
 using EQToolApis.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
