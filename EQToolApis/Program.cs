@@ -43,7 +43,8 @@ builder.Services.Configure<DiscordServiceOptions>(options =>
 {
     options.token = builder.Configuration.GetValue<string>("DiscordToken");
 })
-.AddSingleton<IDiscordService, DiscordService>();
+.AddSingleton<IDiscordService, DiscordService>()
+.AddScoped<UIDataBuild>();
 
 builder.Services.AddMvc();
 var app = builder.Build();
@@ -83,6 +84,7 @@ if (isrelease)
         backgroundclient.AddOrUpdate<DiscordService.DiscordJob>(nameof(DiscordService.DiscordJob.ReadFutureMessages), (a) => a.ReadFutureMessages(), Cron.Minutely());
         backgroundclient.AddOrUpdate<DiscordService.DiscordJob>(nameof(DiscordService.DiscordJob.ReadPastMessages), (a) => a.ReadPastMessages(), Cron.Minutely());
         backgroundclient.AddOrUpdate<DiscordService.DiscordJob>(nameof(DiscordService.DiscordJob.StartItemPricing), (a) => a.StartItemPricing(), Cron.Hourly());
+        backgroundclient.AddOrUpdate<SQLIndexRebuild>(nameof(SQLIndexRebuild.RebuildAll), (a) => a.RebuildAll(), Cron.Daily());
         backgroundclient.AddOrUpdate<UIDataBuild>(nameof(UIDataBuild.BuildData), (a) => a.BuildData(), "*/10 * * * *");
         var runnow = scope.ServiceProvider.GetRequiredService<IBackgroundJobClient>();
         runnow.Schedule<UIDataBuild>((a) => a.BuildData(), TimeSpan.FromSeconds(10));
