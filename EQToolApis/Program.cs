@@ -47,6 +47,7 @@ builder.Services.Configure<DiscordServiceOptions>(options =>
 .AddScoped<UIDataBuild>();
 
 builder.Services.AddMvc();
+builder.Services.AddApplicationInsightsTelemetry(builder.Configuration["APPLICATIONINSIGHTS_CONNECTION_STRING"]);
 var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {

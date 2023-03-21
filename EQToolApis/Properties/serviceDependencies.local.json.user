@@ -18,7 +18,7 @@
     "appInsights1.resourceGroupName": {
       "Name": "appInsights1.resourceGroupName",
       "Type": "resourceGroup",
-      "Value": "DefaultResourceGroup-WUS"
+      "Value": "EQTool"
     }
   }
 }

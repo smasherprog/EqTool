@@ -4,7 +4,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <ApplicationInsightsResourceId>/subscriptions/fc1796be-a6b4-4ed9-99dd-5287fc0c4375/resourceGroups/DefaultResourceGroup-WUS/providers/microsoft.insights/components/EQToolApis</ApplicationInsightsResourceId>
+    <ApplicationInsightsResourceId>/subscriptions/fc1796be-a6b4-4ed9-99dd-5287fc0c4375/resourceGroups/EQTool/providers/microsoft.insights/components/PigParse</ApplicationInsightsResourceId>
     <UserSecretsId>62ce98aa-651d-4005-b774-d9d1dd57e122</UserSecretsId>
   </PropertyGroup>
 
