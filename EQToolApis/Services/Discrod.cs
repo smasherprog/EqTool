@@ -288,6 +288,7 @@ namespace EQToolApis.Services
 
                 item.LastWTSSeen = dbcontext.EQTunnelAuctionItems.Where(a => a.EQTunnelMessage.AuctionType == AuctionType.WTS).Select(b => b.EQTunnelMessage.TunnelTimestamp).OrderByDescending(b => b).FirstOrDefault();
 
+                d = DateTimeOffset.UtcNow.AddMonths(-1);
                 item.TotalWTBLast30DaysCount = dbcontext.EQTunnelAuctionItems.Count(a => a.EQitemId == id && a.EQTunnelMessage.TunnelTimestamp >= d && a.EQTunnelMessage.AuctionType == AuctionType.WTB);
                 item.TotalWTBLast30DaysAverage = (int)(dbcontext.EQTunnelAuctionItems.Where(a => a.EQitemId == id && a.EQTunnelMessage.TunnelTimestamp >= d && a.EQTunnelMessage.AuctionType == AuctionType.WTB && a.AuctionPrice.HasValue).Average(a => a.AuctionPrice) ?? 0);
                 d = DateTimeOffset.UtcNow.AddMonths(-2);
