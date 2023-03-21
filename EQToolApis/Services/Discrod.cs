@@ -190,6 +190,14 @@ namespace EQToolApis.Services
                     var embed = item.embeds.FirstOrDefault();
                     if (embed != null && embed.fields != null)
                     {
+                        foreach (var it in embed.fields)
+                        {
+                            if (it.name.Contains("000000000000000000000"))
+                            {
+                                continue;/// bad data pricing can be off
+                            }
+                        }
+
                         var eqplayer = dbcontext.EQAuctionPlayers.FirstOrDefault(a => a.Name == embed.AuctionPerson);
                         if (eqplayer == null)
                         {
