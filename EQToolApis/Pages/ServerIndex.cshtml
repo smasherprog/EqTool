@@ -1,0 +1,84 @@
+﻿@page "/ServerIndex/{server}"
+@using EQToolApis.DB;
+@model EQToolApis.Pages.ServerIndexModel
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<script>
+    $(document).ready(function () {
+        var key = $(".mytime").each(function (i, obj) {
+            var element = $(this); // <div> or <span> element.
+            var utc = element.attr("utc"); // "2018-12-28T02:36:13.6774675Z"
+            var d = new Date(utc);
+            var l = d.toLocaleString(); // Runs client side, so will be client's local time!
+            element.text(l);
+        });
+        $("#myInput").on("keyup", function () {
+            var value = $(this).val().toLowerCase();
+            if (value && value.length >= 2) {
+                $("#myTable1 tr").filter(function () {
+                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
+                });
+            } else {
+                $("#myTable1 tr").filter(function () {
+                    $(this).show();
+                });
+            }
+        });
+    });
+</script>
+<style>
+
+    .tableFixHead thead th {
+        position: sticky;
+        top: 0;
+        z-index: 1;
+    }
+</style>
+<div class="row">
+    <div class="col-6">
+        <span class="text-success float-left">@Model.Server Data </span>
+        <input class="form-control" id="myInput" type="text" placeholder="Search..">
+    </div>
+</div>
+<div class="tableFixHead">
+    <table class="table-bordered">
+        <thead class="thead-dark">
+            <tr>
+                <th>Type</th>
+                <th>Last Seen</th>
+                <th>Item</th>
+                <th title="Total Actions in the last 30 days">30d Count</th>
+                <th title="Average over last 30 days">30d Avg</th>
+                <th title="Total Actions in the last 60 days">60d Count</th>
+                <th title="Average over last 60 days">60d Avg</th>
+                <th title="Total Actions in the last 90 days">90d Count</th>
+                <th title="Average over last 90 days">90d Avg</th>
+                <th title="Total Actions in the last 6 Month">6M Count</th>
+                <th title="Average over last 6 Month">6M Avg</th>
+                <th title="Total Actions in the last All time">All Count</th>
+                <th title="Average over last All time">All Avg</th>
+            </tr>
+        </thead>
+        <tbody id="myTable1">
+            @foreach (var auctions in Model.AuctionItems)
+            {
+                <tr class="@(auctions.AuctionType == EQToolApis.DB.AuctionType.WTS ? "table-success" : "table-warning")">
+                    <td> @auctions.AuctionType </td>
+                    <td class="mytime" utc="@auctions.LastSeen.ToString("o")">                </td>
+                    <td> <a href="/ItemDetails/@auctions.ItemId/@Model.Server" target="_blank">@auctions.ItemName </a>  <a class="float-right" href="https://wiki.project1999.com/@(auctions.ItemName.Replace(' ', '_'))" target="_blank"><i class="fa fa-external-link"></i></a> </td>
+                    <td> @auctions.TotalLast30DaysCount </td>
+                    <td> @auctions.TotalLast30DaysAverage.ToString("n0")pp </td>
+                    <td> @auctions.TotalLast60DaysCount </td>
+                    <td> @auctions.TotalLast60DaysAverage.ToString("n0")pp </td>
+                    <td> @auctions.TotalLast90DaysCount </td>
+                    <td> @auctions.TotalLast90DaysAverage.ToString("n0")pp </td>
+                    <td> @auctions.TotalLast6MonthsCount </td>
+                    <td> @auctions.TotalLast6MonthsAverage.ToString("n0")pp </td>
+                    <td> @auctions.TotalAuctionCount </td>
+                    <td> @auctions.TotalAuctionAverage.ToString("n0")pp </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

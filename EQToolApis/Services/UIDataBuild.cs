@@ -7,17 +7,17 @@ namespace EQToolApis.Services
     {
         private readonly EQToolContext dbcontext;
 
-        public static List<AuctionItem> ItemCache = new();
+        public static List<AuctionItem>[] ItemCache = new List<AuctionItem>[(int)(Servers.Blue + 1)];
 
         public UIDataBuild(EQToolContext dbcontext)
         {
             this.dbcontext = dbcontext;
         }
 
-        public void BuildData()
+        public void BuildData(Servers server)
         {
             var wts = dbcontext.EQTunnelAuctionItems
-                       .Where(a => a.EQTunnelMessage.AuctionType == AuctionType.WTS)
+                       .Where(a => a.EQTunnelMessage.AuctionType == AuctionType.WTS && a.EQTunnelMessage.Server == server)
                        .GroupBy(a => new AuctionItem
                        {
                            ItemId = a.EQitemId,
@@ -38,7 +38,7 @@ namespace EQToolApis.Services
                        .Select(a => a.Key).ToList();
 
             var wtb = dbcontext.EQTunnelAuctionItems
-              .Where(a => a.EQTunnelMessage.AuctionType == AuctionType.WTB)
+              .Where(a => a.EQTunnelMessage.AuctionType == AuctionType.WTB && a.EQTunnelMessage.Server == server)
               .GroupBy(a => new AuctionItem
               {
                   ItemId = a.EQitemId,
@@ -58,7 +58,7 @@ namespace EQToolApis.Services
               })
               .Select(a => a.Key).ToList();
 
-            ItemCache = wts.Concat(wtb)
+            ItemCache[(int)server] = wts.Concat(wtb)
             .OrderBy(a => a.ItemName)
             .ThenBy(a => a.AuctionType)
             .ToList();

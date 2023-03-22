@@ -71,7 +71,7 @@ app.UseEndpoints(endpoints =>
 app.MapControllers();
 app.MapRazorPages();
 
-var isrelease = false;
+var isrelease = true;
 
 #if !DEBUG
     isrelease = true;
@@ -82,13 +82,19 @@ if (isrelease)
     using (var scope = app.Services.CreateScope())
     {
         var backgroundclient = scope.ServiceProvider.GetRequiredService<IRecurringJobManager>();
-        backgroundclient.AddOrUpdate<DiscordService.DiscordJob>(nameof(DiscordService.DiscordJob.ReadFutureMessages), (a) => a.ReadFutureMessages(), Cron.Minutely());
-        backgroundclient.AddOrUpdate<DiscordService.DiscordJob>(nameof(DiscordService.DiscordJob.ReadPastMessages), (a) => a.ReadPastMessages(), Cron.Minutely());
-        backgroundclient.AddOrUpdate<DiscordService.DiscordJob>(nameof(DiscordService.DiscordJob.StartItemPricing), (a) => a.StartItemPricing(), Cron.Hourly());
+        backgroundclient.AddOrUpdate<DiscordService.DiscordJob>(nameof(DiscordService.DiscordJob.ReadFutureMessages) + Servers.Blue, (a) => a.ReadFutureMessages(Servers.Blue), Cron.Minutely());
+        backgroundclient.AddOrUpdate<DiscordService.DiscordJob>(nameof(DiscordService.DiscordJob.ReadPastMessages) + Servers.Blue, (a) => a.ReadPastMessages(Servers.Blue), Cron.Minutely());
+        backgroundclient.AddOrUpdate<DiscordService.DiscordJob>(nameof(DiscordService.DiscordJob.StartItemPricing) + Servers.Blue, (a) => a.StartItemPricing(Servers.Blue), "20 */1 * * *");
+
+        backgroundclient.AddOrUpdate<DiscordService.DiscordJob>(nameof(DiscordService.DiscordJob.ReadFutureMessages) + Servers.Green, (a) => a.ReadFutureMessages(Servers.Green), Cron.Minutely());
+        backgroundclient.AddOrUpdate<DiscordService.DiscordJob>(nameof(DiscordService.DiscordJob.ReadPastMessages) + Servers.Green, (a) => a.ReadPastMessages(Servers.Green), Cron.Minutely());
+        backgroundclient.AddOrUpdate<DiscordService.DiscordJob>(nameof(DiscordService.DiscordJob.StartItemPricing) + Servers.Green, (a) => a.StartItemPricing(Servers.Green), "0 */1 * * *");
         backgroundclient.AddOrUpdate<SQLIndexRebuild>(nameof(SQLIndexRebuild.RebuildAll), (a) => a.RebuildAll(), Cron.Daily());
-        backgroundclient.AddOrUpdate<UIDataBuild>(nameof(UIDataBuild.BuildData), (a) => a.BuildData(), "*/10 * * * *");
+        backgroundclient.AddOrUpdate<UIDataBuild>(nameof(UIDataBuild.BuildData) + Servers.Green, (a) => a.BuildData(Servers.Green), "*/10 * * * *");
+        backgroundclient.AddOrUpdate<UIDataBuild>(nameof(UIDataBuild.BuildData) + Servers.Blue, (a) => a.BuildData(Servers.Blue), "*/15 * * * *");
         var runnow = scope.ServiceProvider.GetRequiredService<IBackgroundJobClient>();
-        runnow.Schedule<UIDataBuild>((a) => a.BuildData(), TimeSpan.FromSeconds(10));
+        //runnow.Schedule<UIDataBuild>((a) => a.BuildData(Servers.Green), TimeSpan.FromSeconds(10));
+        //runnow.Schedule<UIDataBuild>((a) => a.BuildData(Servers.Blue), TimeSpan.FromSeconds(10));
     }
 }
 app.Run();

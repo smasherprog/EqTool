@@ -21,5 +21,15 @@ namespace EQToolApis.Services
             _ = dbcontext.Database.ExecuteSqlRaw("ALTER INDEX ALL ON [EQTunnelMessages] REBUILD WITH (FILLFACTOR = 80, SORT_IN_TEMPDB = ON, STATISTICS_NORECOMPUTE = ON)");
             _ = dbcontext.Database.ExecuteSqlRaw("ALTER INDEX ALL ON [Players] REBUILD WITH (FILLFACTOR = 80, SORT_IN_TEMPDB = ON, STATISTICS_NORECOMPUTE = ON)");
         }
+
+        //        public void FixOutlierData()
+        //        {
+        //            dbcontext.Database.SetCommandTimeout(TimeSpan.FromMinutes(2));
+        //            _ = dbcontext.Database.ExecuteSqlRaw(@"update eai
+        //set eai.AuctionPrice = null
+        //  from EQTunnelAuctionItems eai
+        //  join EQitems i on eai.EQitemId = i.EQitemId
+        //  where eai.AuctionPrice is NOT null AND eai.AuctionPrice < [TotalWTSLast30DaysAverage]*.1");
+        //        }
     }
 }

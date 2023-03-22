@@ -3,7 +3,6 @@
     public enum Servers : byte
     {
         Green,
-        Blue,
-        Red
+        Blue
     }
 }

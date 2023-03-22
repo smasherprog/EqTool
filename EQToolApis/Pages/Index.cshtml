@@ -3,7 +3,6 @@
 @model EQToolApis.Pages.IndexModel
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <script>
     $(document).ready(function () {
         var key = $(".mytime").each(function (i, obj) {
@@ -13,84 +12,108 @@
             var l = d.toLocaleString(); // Runs client side, so will be client's local time!
             element.text(l);
         });
-        $("#myInput").on("keyup", function () {
-            var value = $(this).val().toLowerCase();
-            if (value && value.length >= 2) { 
-                $("#myTable1 tr").filter(function () {
-                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-                });
-            } else { 
-                $("#myTable1 tr").filter(function () {
-                    $(this).show();
-                });
-            }
-        });
     });
 </script>
-<style>
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="jumbotron">
+                <h1 class="display-4">P99 Tunnel Prices</h1>
+                <p class="lead">This site monitors continuously prices in the tunnel!</p>
+                <hr class="my-4">
+                <p>If you discover prices discrepancies, please open an issue on <a href="https://github.com/smasherprog/EqTool" target="_blank">Github</a> </p>
+                <table>
+                    <tbody>
+                        <tr>
+                            <th>Total Unique Players</th>
+                            <td>@Model.AllData.TotalEQAuctionPlayers.ToString("n0")</td>
+                        </tr>
+                        <tr>
+                            <th>Total Unique Items</th>
+                            <td>@Model.AllData.TotalUniqueItems.ToString("n0")</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
+            <div class="card-deck">
+                <div class="card border-success mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title text-success">Green Server</h5>
+                        <p class="card-text">
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <th>Total Actioned Items</th>
+                                        <td>@Model.AllData.GreenServerData.TotalEQTunnelAuctionItems.ToString("n0")</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Total Actions</th>
+                                        <td>@Model.AllData.GreenServerData.TotalEQTunnelMessages.ToString("n0")</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Last Updated</th>
+                                        <td class="mytime" utc="@Model.AllData.GreenServerData.RecentImportTimeStamp.ToString("o")"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Oldest Import</th>
+                                        <td class="mytime" utc="@Model.AllData.GreenServerData.OldestImportTimeStamp.ToString("o")"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </p>
+                        <a href="/ServerIndex/@Servers.Green" target="_blank" class="btn btn-success">Prices</a>
+                    </div>
+                </div>
+                <div class="card border-primary mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title text-primary">Blue Server</h5>
+                        <p class="card-text">
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <th>Total Actioned Items</th>
+                                        <td>@Model.AllData.BlueServerData.TotalEQTunnelAuctionItems.ToString("n0")</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Total Actions</th>
+                                        <td>@Model.AllData.BlueServerData.TotalEQTunnelMessages.ToString("n0")</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Last Updated</th>
+                                        <td class="mytime" utc="@Model.AllData.BlueServerData.RecentImportTimeStamp.ToString("o")"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Oldest Import</th>
+                                        <td class="mytime" utc="@Model.AllData.BlueServerData.OldestImportTimeStamp.ToString("o")"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </p>
+                        <a href="/ServerIndex/@Servers.Blue" target="_blank" class="btn btn-primary">Prices</a>
+                    </div>
+                </div>
 
-    .tableFixHead thead th {
-        position: sticky;
-        top: 0;
-        z-index: 1;
-    }
-</style>
-<div class="row">
-    <div class="col-6">
-        <span class="text-success float-left">Green Data </span>   <b class="ml-3 float-left">Last Update <span class="mytime" utc="@Model.RecentImportTimeStamp.ToString("o")"></span></b>
-        <input class="form-control" id="myInput" type="text" placeholder="Search.."> 
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6 offset-md-3"> 
+            <div class="card border-dark mb-3">
+                <div class="card-body">
+                    <h5 class="card-title text-dark ">EQ Tool</h5>
+                    <p class="card-text">
+                        <ul class="list-group list-group-flush">
+                            <li class="list-group-item">Map, DPS, SPell Timer, Mob Info and more</li>
+                        </ul>
+                        <img src="https://user-images.githubusercontent.com/3393733/222487918-bf41211b-439e-4d2e-8b4d-e2a5f09a2bbd.png" height="400" />
+                    </p>
+                    <a href="https://github.com/smasherprog/EqTool" target="_blank" class="btn btn-dark">EQTool</a>
+                </div>
+            </div>
+        </div>
     </div>
 </div>
-
-<table class="table-bordered">
-    <thead>
-        <tr>
-            <th>Type</th>
-            <th>Last Seen</th>
-            <th>Item</th>
-            <th title="Total Actions in the last 30 days">30d Count</th>
-            <th title="Average over last 30 days">30d Avg</th>
-            <th title="Total Actions in the last 60 days">60d Count</th>
-            <th title="Average over last 60 days">60d Avg</th>
-            <th title="Total Actions in the last 90 days">90d Count</th>
-            <th title="Average over last 90 days">90d Avg</th>
-            <th title="Total Actions in the last 6 Month">6M Count</th>
-            <th title="Average over last 6 Month">6M Avg</th>
-            <th title="Total Actions in the last All time">All Count</th>
-            <th title="Average over last All time">All Avg</th>
-        </tr>
-    </thead>
-    <tbody id="myTable1">
-        @foreach (var auctions in Model.AuctionItems)
-        {
-            <tr class="@(auctions.AuctionType == EQToolApis.DB.AuctionType.WTS ? "table-success" : "table-warning")">
-                <td> @auctions.AuctionType </td>
-                <td class="mytime" utc="@auctions.LastSeen.ToString("o")">                </td> 
-                <td> <a href="/ItemDetails/@auctions.ItemId/@Servers.Green" target="_blank">@auctions.ItemName </a>  <a class="float-right" href="https://wiki.project1999.com/@(auctions.ItemName.Replace(' ', '_'))" target="_blank"><i class="fa fa-external-link"></i></a> </td>
-                <td> @auctions.TotalLast30DaysCount </td>
-                <td> @auctions.TotalLast30DaysAverage.ToString("n0")pp </td>
-                <td> @auctions.TotalLast60DaysCount </td>
-                <td> @auctions.TotalLast60DaysAverage.ToString("n0")pp </td>
-                <td> @auctions.TotalLast90DaysCount </td>
-                <td> @auctions.TotalLast90DaysAverage.ToString("n0")pp </td>
-                <td> @auctions.TotalLast6MonthsCount </td>
-                <td> @auctions.TotalLast6MonthsAverage.ToString("n0")pp </td>
-                <td> @auctions.TotalAuctionCount </td>
-                <td> @auctions.TotalAuctionAverage.ToString("n0")pp </td>
-            </tr>
-        }
-    </tbody>
-</table>
-<h3>Stats:</h3>
-<dl class="row">
-    <dt class="col-sm-3">History Import</dt>
-    <dd class="col-sm-9">@Model.LastSeen</dd>
-    <dt class="col-sm-3">Total Unique Auction Players</dt>
-    <dd class="col-sm-9">@Model.TotalEQAuctionPlayers.ToString("n0")</dd>
-    <dt class="col-sm-3">Total Unique Auctioned Items</dt>
-    <dd class="col-sm-9">@Model.TotalEQitems.ToString("n0")</dd>
-    <dt class="col-sm-3">Total Tunnel Auctioned Items</dt>
-    <dd class="col-sm-9">@Model.TotalEQTunnelAuctionItems.ToString("n0")</dd>
-    <dt class="col-sm-3">Total Tunnel Auctions</dt>
-    <dd class="col-sm-9">@Model.TotalEQTunnelMessages.ToString("n0")</dd>
-</dl>
