@@ -3,13 +3,15 @@ using System.ComponentModel.DataAnnotations;
 
 namespace EQToolApis.DB.Models
 {
-    [PrimaryKey(nameof(EQitemId))]
+    [PrimaryKey(nameof(EQitemId)), Index(nameof(Server)), Index(nameof(ItemName), nameof(Server))]
     public class EQitem
     {
         public int EQitemId { get; set; }
 
         [MaxLength(64)]
         public string ItemName { get; set; }
+
+        public Servers Server { get; set; }
 
         public DateTimeOffset LastWTBSeen { get; set; }
 

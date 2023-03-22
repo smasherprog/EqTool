@@ -201,11 +201,12 @@ namespace EQToolApis.Services
                             }
                         }
 
-                        var eqplayer = dbcontext.EQAuctionPlayers.FirstOrDefault(a => a.Name == embed.AuctionPerson);
+                        var eqplayer = dbcontext.EQAuctionPlayers.FirstOrDefault(a => a.Name == embed.AuctionPerson && a.Server == server);
                         if (eqplayer == null)
                         {
                             eqplayer = new EQAuctionPlayer
                             {
+                                Server = server,
                                 Name = embed.AuctionPerson.Trim()
                             };
                             _ = dbcontext.EQAuctionPlayers.Add(eqplayer);
@@ -223,12 +224,13 @@ namespace EQToolApis.Services
                         };
                         foreach (var it in embed.fields)
                         {
-                            var eqitem = dbcontext.EQitems.FirstOrDefault(a => a.ItemName == it.ItemName);
+                            var eqitem = dbcontext.EQitems.FirstOrDefault(a => a.ItemName == it.ItemName && a.Server == server);
                             if (eqitem == null)
                             {
                                 eqitem = new EQitem
                                 {
-                                    ItemName = it.ItemName
+                                    ItemName = it.ItemName,
+                                    Server = server
                                 };
                                 _ = dbcontext.EQitems.Add(eqitem);
                                 _ = dbcontext.SaveChanges();
@@ -267,7 +269,7 @@ namespace EQToolApis.Services
 
             public void StartItemPricing(Servers server)
             {
-                var ids = new Queue<int>(dbcontext.EQitems.Select(a => a.EQitemId).ToList());
+                var ids = new Queue<int>(dbcontext.EQitems.Where(a => a.Server == server).Select(a => a.EQitemId).ToList());
                 _ = backgroundJobClient.Enqueue<DiscordJob>(a => a.DoItemPricing(server, ids));
             }
 

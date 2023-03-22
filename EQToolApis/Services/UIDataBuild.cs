@@ -29,7 +29,7 @@ namespace EQToolApis.Services
         public void BuildData(Servers server)
         {
             var wts = dbcontext.EQTunnelAuctionItems
-                       .Where(a => a.EQTunnelMessage.AuctionType == AuctionType.WTS && a.EQTunnelMessage.Server == server)
+                       .Where(a => a.EQTunnelMessage.AuctionType == AuctionType.WTS && a.EQTunnelMessage.Server == server && a.EQitem.Server == server)
                        .GroupBy(a => new AuctionItem
                        {
                            ItemId = a.EQitemId,
@@ -50,7 +50,7 @@ namespace EQToolApis.Services
                        .Select(a => a.Key).ToList();
 
             var wtb = dbcontext.EQTunnelAuctionItems
-              .Where(a => a.EQTunnelMessage.AuctionType == AuctionType.WTB && a.EQTunnelMessage.Server == server)
+              .Where(a => a.EQTunnelMessage.AuctionType == AuctionType.WTB && a.EQTunnelMessage.Server == server && a.EQitem.Server == server)
               .GroupBy(a => new AuctionItem
               {
                   ItemId = a.EQitemId,
