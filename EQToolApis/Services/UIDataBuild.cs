@@ -1,5 +1,6 @@
 ﻿using EQToolApis.DB;
 using EQToolApis.Models;
+using Hangfire;
 
 namespace EQToolApis.Services
 {
@@ -8,10 +9,21 @@ namespace EQToolApis.Services
         private readonly EQToolContext dbcontext;
 
         public static List<AuctionItem>[] ItemCache = new List<AuctionItem>[(int)(Servers.Blue + 1)];
+        private readonly IBackgroundJobClient backgroundJobClient;
 
-        public UIDataBuild(EQToolContext dbcontext)
+        public UIDataBuild(EQToolContext dbcontext, IBackgroundJobClient backgroundJobClient)
         {
             this.dbcontext = dbcontext;
+            this.backgroundJobClient = backgroundJobClient;
+        }
+        public void BuildDataGreen()
+        {
+            BuildData(Servers.Green);
+        }
+
+        public void BuildDataBlue()
+        {
+            BuildData(Servers.Blue);
         }
 
         public void BuildData(Servers server)

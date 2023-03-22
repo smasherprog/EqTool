@@ -71,7 +71,7 @@ app.UseEndpoints(endpoints =>
 app.MapControllers();
 app.MapRazorPages();
 
-var isrelease = true;
+var isrelease = false;
 
 #if !DEBUG
     isrelease = true;
@@ -93,8 +93,8 @@ if (isrelease)
         backgroundclient.AddOrUpdate<UIDataBuild>(nameof(UIDataBuild.BuildData) + Servers.Green, (a) => a.BuildData(Servers.Green), "*/10 * * * *");
         backgroundclient.AddOrUpdate<UIDataBuild>(nameof(UIDataBuild.BuildData) + Servers.Blue, (a) => a.BuildData(Servers.Blue), "*/15 * * * *");
         var runnow = scope.ServiceProvider.GetRequiredService<IBackgroundJobClient>();
-        //runnow.Schedule<UIDataBuild>((a) => a.BuildData(Servers.Green), TimeSpan.FromSeconds(10));
-        //runnow.Schedule<UIDataBuild>((a) => a.BuildData(Servers.Blue), TimeSpan.FromSeconds(10));
+        runnow.Schedule<UIDataBuild>((a) => a.BuildDataGreen(), TimeSpan.FromSeconds(10));
+        runnow.Schedule<UIDataBuild>((a) => a.BuildDataBlue(), TimeSpan.FromSeconds(10));
     }
 }
 app.Run();
