@@ -37,12 +37,12 @@
 </style>
 <div class="row">
     <div class="col-6">
-        <span class="float-left @(@Model.Server == Servers.Green ? "table-success" : "table-primary")">@Model.Server Data </span>
+        <span class="float-left>@Model.Server Data </span>
         <input class="form-control" id="myInput" type="text" placeholder="Search..">
     </div>
 </div>
 <div class="tableFixHead">
-    <table class="table-bordered">
+    <table class="table-bordered table-striped">
         <thead>
             <tr>
                 <th class="bg-primary">Type</th>
@@ -63,7 +63,7 @@
         <tbody id="myTable1">
             @foreach (var auctions in Model.AuctionItems)
             {
-                <tr class="@(auctions.AuctionType == EQToolApis.DB.AuctionType.WTS ? "table-success" : "table-warning")">
+                <tr>
                     <td> @auctions.AuctionType </td>
                     <td class="mytime" utc="@auctions.LastSeen.ToString("o")">                </td>
                     <td> <a href="/ItemDetails/@auctions.ItemId/@Model.Server" target="_blank">@auctions.ItemName </a>  <a class="float-right" href="https://wiki.project1999.com/@(auctions.ItemName.Replace(' ', '_'))" target="_blank"><i class="fa fa-external-link"></i></a> </td>

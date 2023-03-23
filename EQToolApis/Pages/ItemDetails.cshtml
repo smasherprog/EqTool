@@ -30,7 +30,7 @@
 </div>
 
 <div class="tableFixHead">
-    <table class="table-bordered">
+    <table class="table-bordered table-striped">
         <thead>
             <tr>
                 <th class="bg-primary">Type</th>
@@ -42,7 +42,7 @@
         <tbody>
             @foreach (var auctions in Model.Item.Items)
             {
-                <tr class="@(auctions.AuctionType == EQToolApis.DB.AuctionType.WTS ? "table-success" : "table-warning")">
+                <tr>
                     <td> @auctions.AuctionType </td>
                     <td> @auctions.PlayerName </td>
                     <td> @auctions.AuctionPrice </td>

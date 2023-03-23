@@ -186,8 +186,9 @@ namespace EQToolApis.Services
                 this.discordService = discordService;
             }
 
-            private void AddMessages(List<Message> messages, Servers server)
+            private int AddMessages(List<Message> messages, Servers server)
             {
+                var itemsadded = 0;
                 foreach (var item in messages)
                 {
                     var embed = item.embeds.FirstOrDefault();
@@ -224,6 +225,7 @@ namespace EQToolApis.Services
                         };
                         foreach (var it in embed.fields)
                         {
+                            itemsadded += 1;
                             var eqitem = dbcontext.EQitems.FirstOrDefault(a => a.ItemName == it.ItemName && a.Server == server);
                             if (eqitem == null)
                             {
@@ -246,26 +248,28 @@ namespace EQToolApis.Services
                     }
                 }
                 _ = dbcontext.SaveChanges();
+                return itemsadded;
             }
 
-            public void ReadFutureMessages(Servers server)
+            public string ReadFutureMessages(Servers server)
             {
                 discordService.Login();
                 var lastidread = dbcontext.EQTunnelMessages.Where(a => a.Server == server).Select(a => (long?)a.DiscordMessageId).OrderByDescending(a => a).FirstOrDefault();
-                AddMessages(discordService.ReadMessages(lastidread, server), server);
+                return AddMessages(discordService.ReadMessages(lastidread, server), server) + " messages added";
             }
 
-            public void ReadPastMessages(Servers server)
+            public string ReadPastMessages(Servers server)
             {
                 discordService.Login();
                 var lastidread = dbcontext.EQTunnelMessages.Where(a => a.Server == server).Select(a => (long?)a.DiscordMessageId).OrderBy(a => a).FirstOrDefault();
-                AddMessages(discordService.ReadMessageHistory(lastidread, server), server);
+                var added = AddMessages(discordService.ReadMessageHistory(lastidread, server), server);
                 lastidread = dbcontext.EQTunnelMessages.Where(a => a.Server == server).Select(a => (long?)a.DiscordMessageId).OrderBy(a => a).FirstOrDefault();
-                AddMessages(discordService.ReadMessageHistory(lastidread, server), server);
+                added += AddMessages(discordService.ReadMessageHistory(lastidread, server), server);
                 lastidread = dbcontext.EQTunnelMessages.Where(a => a.Server == server).Select(a => (long?)a.DiscordMessageId).OrderBy(a => a).FirstOrDefault();
-                AddMessages(discordService.ReadMessageHistory(lastidread, server), server);
+                added += AddMessages(discordService.ReadMessageHistory(lastidread, server), server);
                 lastidread = dbcontext.EQTunnelMessages.Where(a => a.Server == server).Select(a => (long?)a.DiscordMessageId).OrderBy(a => a).FirstOrDefault();
-                AddMessages(discordService.ReadMessageHistory(lastidread, server), server);
+                added += AddMessages(discordService.ReadMessageHistory(lastidread, server), server);
+                return added + " messages added";
             }
 
             public void StartItemPricing(Servers server)
