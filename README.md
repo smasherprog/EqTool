@@ -40,6 +40,9 @@ Features:
 
 <h4>TO DO List</h4>
 <ul>
+<li>Do better job at showing different map levels. </li>
+<li>Show BEST dps in title of dps window</li>   
+<li>Show others on map</li>   
 <li>Add Waypoint Command to add loc to map</li>   
 <li>Save spells cast on you when you log and restore when you log back in</li>   
 <li>Map window add toggle to follow location</li>    
