@@ -11,6 +11,8 @@ namespace EQToolApis.DB.Models
 
         public EQitem EQitem { get; set; }
 
+        public Servers Server { get; set; }
+
         public int? AuctionPrice { get; set; }
 
         public long EQTunnelMessageId { get; set; }

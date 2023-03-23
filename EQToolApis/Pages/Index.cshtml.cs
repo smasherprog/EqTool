@@ -48,7 +48,7 @@ namespace EQToolApis.Pages
                 {
                     OldestImportTimeStamp = context.EQTunnelMessages.Where(a => a.Server == Servers.Green).OrderBy(a => a.TunnelTimestamp).Select(a => a.TunnelTimestamp).FirstOrDefault(),
                     RecentImportTimeStamp = context.EQTunnelMessages.Where(a => a.Server == Servers.Green).OrderByDescending(a => a.TunnelTimestamp).Select(a => a.TunnelTimestamp).FirstOrDefault(),
-                    TotalEQTunnelAuctionItems = context.EQTunnelAuctionItems.Where(a => a.EQTunnelMessage.Server == Servers.Green).Count(),
+                    TotalEQTunnelAuctionItems = context.EQTunnelAuctionItems.Where(a => a.Server == Servers.Green).Count(),
                     TotalEQTunnelMessages = context.EQTunnelMessages.Where(a => a.Server == Servers.Green).Count()
                 },
 
@@ -56,7 +56,7 @@ namespace EQToolApis.Pages
                 {
                     OldestImportTimeStamp = context.EQTunnelMessages.Where(a => a.Server == Servers.Blue).OrderBy(a => a.TunnelTimestamp).Select(a => a.TunnelTimestamp).FirstOrDefault(),
                     RecentImportTimeStamp = context.EQTunnelMessages.Where(a => a.Server == Servers.Blue).OrderByDescending(a => a.TunnelTimestamp).Select(a => a.TunnelTimestamp).FirstOrDefault(),
-                    TotalEQTunnelAuctionItems = context.EQTunnelAuctionItems.Where(a => a.EQTunnelMessage.Server == Servers.Blue).Count(),
+                    TotalEQTunnelAuctionItems = context.EQTunnelAuctionItems.Where(a => a.Server == Servers.Blue).Count(),
                     TotalEQTunnelMessages = context.EQTunnelMessages.Where(a => a.Server == Servers.Blue).Count()
                 }
             };

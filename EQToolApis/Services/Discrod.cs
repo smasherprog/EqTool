@@ -237,6 +237,7 @@ namespace EQToolApis.Services
                             }
                             m.EQTunnelAuctionItems.Add(new EQTunnelAuctionItem
                             {
+                                Server = server,
                                 AuctionPrice = it.Price,
                                 EQitemId = eqitem.EQitemId
                             });
