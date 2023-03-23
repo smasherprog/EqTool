@@ -26,11 +26,7 @@
                     $(this).show();
                 });
             }
-        });
-        var clusterize = new Clusterize({
-            scrollId: 'scrollArea',
-            contentId: 'contentArea'
-        });
+        }); 
     });
 </script>
 <style>
@@ -43,11 +39,11 @@
 </style>
 <div class="row">
     <div class="col-6">
-        <span class="float-left>@Model.Server Data </span>
-        <input class="form-control" id="myInput" type="text" placeholder="Search..">
+        <span class="float-left">@Model.Server Data </span>
+        <input class="form-control" id="myInput" type="text" placeholder="Search.."/>
     </div>
 </div>
-<div class="tableFixHead">
+<div class="tableFixHead" >
     <table class="table-bordered table-striped">
         <thead>
             <tr>
