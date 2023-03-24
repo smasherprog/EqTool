@@ -75,7 +75,7 @@ namespace EQToolApis.Services
             var items = new List<AuctionItem>();
 
             var wts = dbcontext.EQitems
-                    .Where(a => a.Server == server)
+                    .Where(a => a.Server == server && a.LastWTSSeen.HasValue)
                     .Select(a => new AuctionItem
                     {
                         ItemId = a.EQitemId,
@@ -92,12 +92,12 @@ namespace EQToolApis.Services
                         TotalAuctionAverage = a.TotalWTSAuctionAverage,
                         TotalLastYearAverage = a.TotalWTSLastYearAverage,
                         TotalLastYearCount = a.TotalWTSLastYearCount,
-                        LastSeen = a.LastWTSSeen,
+                        LastSeen = a.LastWTSSeen.Value,
                         AuctionType = AuctionType.WTS
                     }).ToList();
 
             var wtb = dbcontext.EQitems
-                .Where(a => a.Server == server)
+                .Where(a => a.Server == server && a.LastWTBSeen.HasValue)
                 .Select(a => new AuctionItem
                 {
                     ItemId = a.EQitemId,
@@ -114,7 +114,7 @@ namespace EQToolApis.Services
                     TotalAuctionAverage = a.TotalWTBAuctionAverage,
                     TotalLastYearAverage = a.TotalWTBLastYearAverage,
                     TotalLastYearCount = a.TotalWTBLastYearCount,
-                    LastSeen = a.LastWTBSeen,
+                    LastSeen = a.LastWTBSeen.Value,
                     AuctionType = AuctionType.WTB
                 }).ToList();
 

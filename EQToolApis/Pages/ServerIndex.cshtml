@@ -8,15 +8,7 @@
 <script type="text/javascript" src="https://unpkg.com/tabulator-tables@5.4.4/dist/js/tabulator.min.js"></script>
 <script>
     $(document).ready(function () {
-        var key = $(".mytime").each(function (i, obj) {
-            var element = $(this); // <div> or <span> element.
-            var utc = element.attr("utc"); // "2018-12-28T02:36:13.6774675Z"
-            var d = new Date(utc);
-            var l = d.toLocaleString(); // Runs client side, so will be client's local time!
-            element.text(l);
-        });
-        var fieldEl = document.getElementById("filter-field");
-        var typeEl = document.getElementById("filter-type");
+        let tableData = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.AuctionItems,  new Newtonsoft.Json.Converters.StringEnumConverter()));
         var valueEl = document.getElementById("filter-value");
 
         //Custom filter example
@@ -26,88 +18,62 @@
 
         //Trigger setFilter function with correct parameters
         function updateFilter() {
-            var filterVal = fieldEl.options[fieldEl.selectedIndex].value;
-            var typeVal = typeEl.options[typeEl.selectedIndex].value;
-
-            var filter = filterVal == "function" ? customFilter : filterVal;
-
-            if (filterVal == "function") {
-                typeEl.disabled = true;
-                valueEl.disabled = true;
-            } else {
-                typeEl.disabled = false;
-                valueEl.disabled = false;
-            }
-
-            if (filterVal) {
-                table.setFilter(filter, typeVal, valueEl.value);
-            }
+            debugger;
+            table.setFilter("ItemName", "like", valueEl.value);
         }
 
-        //Update filters on value change
-        document.getElementById("filter-field").addEventListener("change", updateFilter);
-        document.getElementById("filter-type").addEventListener("change", updateFilter);
         document.getElementById("filter-value").addEventListener("keyup", updateFilter);
 
         //Clear filters on "Clear Filters" button click
         document.getElementById("filter-clear").addEventListener("click", function () {
-            fieldEl.value = "";
-            typeEl.value = "=";
             valueEl.value = "";
 
             table.clearFilter();
         });
-
-        var table = new Tabulator("#example-table", {
-            layout: "fitDataFill"
-        });
-    });
-</script> 
-<div class="row">
-    <div class="col-6">
-        <span class="float-left">@Model.Server Data </span>   
-        <input id="filter-value" type="text" placeholder="value to filter">
-        <button id="filter-clear">Clear Filter</button> 
-    </div>
-</div> 
-<div id="example-table" class="tableFixHead" >
-    <table class="table-bordered table-striped">
-        <thead>
-            <tr>
-                <th>Type</th>
-                <th>Last Seen</th>
-                <th>Item</th>
-                <th title="Total Actions in the last 30 days">30d Count</th>
-                <th title="Average over last 30 days">30d Avg</th>
-                <th title="Total Actions in the last 60 days">60d Count</th>
-                <th title="Average over last 60 days">60d Avg</th>
-                <th title="Total Actions in the last 90 days">90d Count</th>
-                <th title="Average over last 90 days">90d Avg</th>
-                <th title="Total Actions in the last 6 Month">6M Count</th>
-                <th title="Average over last 6 Month">6M Avg</th>
-                <th title="Total Actions in the last All time">All Count</th>
-                <th title="Average over last All time">All Avg</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var auctions in Model.AuctionItems)
+        window.opem
+        var table = new Tabulator("#example-table",
             {
-                <tr>
-                    <td> @auctions.AuctionType </td>
-                    <td class="mytime" utc="@auctions.LastSeen?.ToString("o")">  </td>
-                    <td> <a href="/ItemDetails/@auctions.ItemId/@Model.Server" target="_blank">@auctions.ItemName </a>  <a class="float-right" href="https://wiki.project1999.com/@(auctions.ItemName.Replace(' ', '_'))" target="_blank"><i class="fa fa-external-link"></i></a> </td>
-                    <td> @auctions.TotalLast30DaysCount </td>
-                    <td> @auctions.TotalLast30DaysAverage.ToString("n0")pp </td>
-                    <td> @auctions.TotalLast60DaysCount </td>
-                    <td> @auctions.TotalLast60DaysAverage.ToString("n0")pp </td>
-                    <td> @auctions.TotalLast90DaysCount </td>
-                    <td> @auctions.TotalLast90DaysAverage.ToString("n0")pp </td>
-                    <td> @auctions.TotalLast6MonthsCount </td>
-                    <td> @auctions.TotalLast6MonthsAverage.ToString("n0")pp </td>
-                    <td> @auctions.TotalAuctionCount </td>
-                    <td> @auctions.TotalAuctionAverage.ToString("n0")pp </td>
-                </tr>
-            }
-        </tbody>
-    </table>
+                maxHeight: "90%",
+                layout: "fitDataStretch",
+                data: tableData, //set initial table data
+                columns: [
+                    { title: "Type", field: "AuctionType" },
+                    {
+                        title: "Last Seen", field: "LastSeen",
+                        formatter: function (cell, formatterParams) {
+                            let lastseen = cell.getRow().getData().LastSeen;
+                            let d = new Date(lastseen);
+                            return d.toLocaleString();
+                        }
+                    },
+                    {
+                        title: "Item", field: "ItemName",
+                        formatter: function (cell, formatterParams) {
+                            var row = cell.getRow().getData();
+                            return `<a href="/ItemDetails/${row.ItemId}/@(Model.Server)" target="_blank">${row.ItemName} </a>  <a class="float-right" href="https://wiki.project1999.com/${row.ItemName.replace(' ', '_')}" target="_blank"><i class="fa fa-external-link"></i></a> `;
+                        }
+                    },
+                    { title: "30d Count", field: "TotalLast30DaysCount" },
+                    { title: "30d Avg", field: "TotalLast30DaysAverage" },
+                    { title: "60d Count", field: "TotalLast60DaysCount" },
+                    { title: "60d Avg", field: "TotalLast60DaysAverage" },
+                    { title: "90d Count", field: "TotalLast90DaysCount" },
+                    { title: "90d Avg", field: "TotalLast90DaysAverage" },
+                    { title: "6M Count", field: "TotalLast6MonthsCount" },
+                    { title: "6M Avg", field: "TotalLast6MonthsAverage" },
+                    { title: "All Count", field: "TotalAuctionCount" },
+                    { title: "All Avg", field: "TotalAuctionAverage" },
+                ],
+                progressiveRender: true, //enable progressive rendering
+                progressiveRenderSize: 500, //sets the number of rows to render per block (default = 20)
+                progressiveRenderMargin: 350,
+            });
+    });
+</script>
+
+<div class="w-100 vh-100">
+    <h3>@Model.Server Data </h3>
+    <input id="filter-value" type="text" placeholder="value to filter">
+    <button id="filter-clear">Clear Filter</button>
+    <div id="example-table"></div>
 </div>
