@@ -19,7 +19,7 @@
                     {
                         title: "Timestamp", field: "TunnelTimestamp",
                         formatter: function (cell, formatterParams) {
-                            let lastseen = cell.getRow().getData().Timestamp;
+                            let lastseen = cell.getRow().getData().TunnelTimestamp;
                             let d = new Date(lastseen);
                             return d.toLocaleString();
                         }
