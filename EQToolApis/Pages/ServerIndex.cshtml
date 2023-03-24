@@ -4,8 +4,8 @@
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/clusterize.js/0.19.0/clusterize.min.css" integrity="sha512-8KLHxyeJ2I3BzL2ma1RZxwT1cc/U5Rz/uJg+G25tCrQ8sFfPz3MfJdKZegZDPijTxK2A3+b4kAXvzyK/OLLU5A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/clusterize.js/0.19.0/clusterize.min.js" integrity="sha512-sCslfbDbPoJepZJxo6S3mdJwYYt0SX+C9G1SYez6/yGuXcPrZXM9tqZQMpujvMZlujVve98JSzimWbYAlQzvFQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<link href="https://unpkg.com/tabulator-tables@5.4.4/dist/css/tabulator.min.css" rel="stylesheet">
+<script type="text/javascript" src="https://unpkg.com/tabulator-tables@5.4.4/dist/js/tabulator.min.js"></script>
 <script>
     $(document).ready(function () {
         var key = $(".mytime").each(function (i, obj) {
@@ -15,59 +15,86 @@
             var l = d.toLocaleString(); // Runs client side, so will be client's local time!
             element.text(l);
         });
-        $("#myInput").on("keyup", function () {
-            var value = $(this).val().toLowerCase();
-            if (value && value.length >= 2) {
-                $("#myTable1 tr").filter(function () {
-                    $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)
-                });
-            } else {
-                $("#myTable1 tr").filter(function () {
-                    $(this).show();
-                });
-            }
-        }); 
-    });
-</script>
-<style>
+        var fieldEl = document.getElementById("filter-field");
+        var typeEl = document.getElementById("filter-type");
+        var valueEl = document.getElementById("filter-value");
 
-    .tableFixHead thead th {
-        position: sticky;
-        top: 0;
-        z-index: 1;
-    }
-</style>
+        //Custom filter example
+        function customFilter(data) {
+            return data.car && data.rating < 3;
+        }
+
+        //Trigger setFilter function with correct parameters
+        function updateFilter() {
+            var filterVal = fieldEl.options[fieldEl.selectedIndex].value;
+            var typeVal = typeEl.options[typeEl.selectedIndex].value;
+
+            var filter = filterVal == "function" ? customFilter : filterVal;
+
+            if (filterVal == "function") {
+                typeEl.disabled = true;
+                valueEl.disabled = true;
+            } else {
+                typeEl.disabled = false;
+                valueEl.disabled = false;
+            }
+
+            if (filterVal) {
+                table.setFilter(filter, typeVal, valueEl.value);
+            }
+        }
+
+        //Update filters on value change
+        document.getElementById("filter-field").addEventListener("change", updateFilter);
+        document.getElementById("filter-type").addEventListener("change", updateFilter);
+        document.getElementById("filter-value").addEventListener("keyup", updateFilter);
+
+        //Clear filters on "Clear Filters" button click
+        document.getElementById("filter-clear").addEventListener("click", function () {
+            fieldEl.value = "";
+            typeEl.value = "=";
+            valueEl.value = "";
+
+            table.clearFilter();
+        });
+
+        var table = new Tabulator("#example-table", {
+            layout: "fitDataFill"
+        });
+    });
+</script> 
 <div class="row">
     <div class="col-6">
-        <span class="float-left">@Model.Server Data </span>
-        <input class="form-control" id="myInput" type="text" placeholder="Search.."/>
+        <span class="float-left">@Model.Server Data </span>   
+        <input id="filter-value" type="text" placeholder="value to filter">
+        <button id="filter-clear">Clear Filter</button> 
     </div>
-</div>
-<div class="tableFixHead" >
+</div> 
+<div id="example-table" class="tableFixHead" >
     <table class="table-bordered table-striped">
         <thead>
             <tr>
-                <th class="bg-primary">Type</th>
-                <th class="bg-primary">Last Seen</th>
-                <th class="bg-primary">Item</th>
-                <th class="bg-primary" title="Total Actions in the last 30 days">30d Count</th>
-                <th class="bg-primary" title="Average over last 30 days">30d Avg</th>
-                <th class="bg-primary" title="Total Actions in the last 60 days">60d Count</th>
-                <th class="bg-primary" title="Average over last 60 days">60d Avg</th>
-                <th class="bg-primary" title="Total Actions in the last 90 days">90d Count</th>
-                <th class="bg-primary" title="Average over last 90 days">90d Avg</th>
-                <th class="bg-primary" title="Total Actions in the last 6 Month">6M Count</th>
-                <th class="bg-primary" title="Average over last 6 Month">6M Avg</th>
-                <th class="bg-primary" title="Total Actions in the last All time">All Count</th>
-                <th class="bg-primary" title="Average over last All time">All Avg</th>
+                <th>Type</th>
+                <th>Last Seen</th>
+                <th>Item</th>
+                <th title="Total Actions in the last 30 days">30d Count</th>
+                <th title="Average over last 30 days">30d Avg</th>
+                <th title="Total Actions in the last 60 days">60d Count</th>
+                <th title="Average over last 60 days">60d Avg</th>
+                <th title="Total Actions in the last 90 days">90d Count</th>
+                <th title="Average over last 90 days">90d Avg</th>
+                <th title="Total Actions in the last 6 Month">6M Count</th>
+                <th title="Average over last 6 Month">6M Avg</th>
+                <th title="Total Actions in the last All time">All Count</th>
+                <th title="Average over last All time">All Avg</th>
             </tr>
         </thead>
-        <tbody id="myTable1">
+        <tbody>
             @foreach (var auctions in Model.AuctionItems)
             {
                 <tr>
                     <td> @auctions.AuctionType </td>
-                    <td class="mytime" utc="@auctions.LastSeen.ToString("o")">                </td>
+                    <td class="mytime" utc="@auctions.LastSeen?.ToString("o")">  </td>
                     <td> <a href="/ItemDetails/@auctions.ItemId/@Model.Server" target="_blank">@auctions.ItemName </a>  <a class="float-right" href="https://wiki.project1999.com/@(auctions.ItemName.Replace(' ', '_'))" target="_blank"><i class="fa fa-external-link"></i></a> </td>
                     <td> @auctions.TotalLast30DaysCount </td>
                     <td> @auctions.TotalLast30DaysAverage.ToString("n0")pp </td>

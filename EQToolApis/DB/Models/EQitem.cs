@@ -13,9 +13,9 @@ namespace EQToolApis.DB.Models
 
         public Servers Server { get; set; }
 
-        public DateTimeOffset LastWTBSeen { get; set; }
+        public DateTimeOffset? LastWTBSeen { get; set; }
 
-        public DateTimeOffset LastWTSSeen { get; set; }
+        public DateTimeOffset? LastWTSSeen { get; set; }
 
         public int TotalWTSAuctionCount { get; set; }
 

@@ -18,13 +18,13 @@ namespace EQToolApis.Pages
 
         public IActionResult OnGet([FromRoute] int itemid, [FromRoute] Servers server)
         {
-            Item.ItemName = context.EQTunnelAuctionItems
-                .Where(a => a.EQitemId == itemid && a.EQTunnelMessage.Server == server && a.EQitem.Server == server)
-                .Select(a => a.EQitem.ItemName)
+            Item.ItemName = context.EQitems
+                .Where(a => a.EQitemId == itemid && a.Server == server)
+                .Select(a => a.ItemName)
                 .FirstOrDefault();
 
             Item.Items = context.EQTunnelAuctionItems
-                .Where(a => a.EQitemId == itemid && a.EQTunnelMessage.Server == server && a.EQitem.Server == server)
+                .Where(a => a.EQitemId == itemid && a.Server == server)
                 .Select(a => new ItemAuctionDetail
                 {
                     AuctionType = a.EQTunnelMessage.AuctionType,

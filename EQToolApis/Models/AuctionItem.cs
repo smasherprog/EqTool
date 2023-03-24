@@ -10,7 +10,7 @@ namespace EQToolApis.Models
 
         public string ItemName { get; set; }
 
-        public DateTimeOffset LastSeen { get; set; }
+        public DateTimeOffset? LastSeen { get; set; }
 
         public int TotalAuctionCount { get; set; }
 
