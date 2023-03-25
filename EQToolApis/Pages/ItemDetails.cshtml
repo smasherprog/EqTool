@@ -14,8 +14,14 @@
                 data: tableData, //set initial table data
                 columns: [
                     { title: "Type", field: "AuctionType" },
-                    { title: "Player Name", field: "PlayerName" }, 
-                    { title: "Auction Price", field: "AuctionPrice" },
+                    { title: "Player Name", field: "PlayerName" },
+                    {
+                        title: "Auction Price", field: "AuctionPrice",
+                        formatter: function (cell, formatterParams) {
+                            let price = cell.getRow().getData().TotalLast30DaysAverage;
+                            return price + "pp";
+                        }
+                    },
                     {
                         title: "Timestamp", field: "TunnelTimestamp",
                         formatter: function (cell, formatterParams) {
@@ -23,19 +29,18 @@
                             let d = new Date(lastseen);
                             return d.toLocaleString();
                         }
-                    }, 
+                    },
                 ],
                 progressiveRender: true, //enable progressive rendering
                 progressiveRenderSize: 500, //sets the number of rows to render per block (default = 20)
                 progressiveRenderMargin: 350
             });
 
-        });
-</script> 
+    });
+</script>
 <div class="w-100 vh-100">
     <div class="col-6">
         <h2> <a href="https://wiki.project1999.com/@(Model.Item.ItemName.Replace(' ', '_'))" target="_blank">@Model.Item.ItemName <i class="fa fa-external-link"></i></a> </h2>
     </div>
     <div id="example-table"></div>
 </div>
- 
