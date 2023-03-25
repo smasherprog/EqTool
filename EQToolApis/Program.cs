@@ -1,3 +1,12 @@
+using EQToolApis.DB;
+using EQToolApis.Services;
+using Hangfire;
+using Hangfire.Dashboard;
+using Hangfire.SqlServer;
+using Microsoft.AspNetCore.Authentication.OpenIdConnect;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Web;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
