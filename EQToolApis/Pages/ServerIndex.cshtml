@@ -10,27 +10,15 @@
     $(document).ready(function () {
         let tableData = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.AuctionItems,  new Newtonsoft.Json.Converters.StringEnumConverter()));
         var valueEl = document.getElementById("filter-value");
-
-        //Custom filter example
-        function customFilter(data) {
-            return data.car && data.rating < 3;
-        }
-
-        //Trigger setFilter function with correct parameters
-        function updateFilter() {
-            debugger;
+        function updateFilter() { 
             table.setFilter("ItemName", "like", valueEl.value);
         }
 
-        document.getElementById("filter-value").addEventListener("keyup", updateFilter);
-
-        //Clear filters on "Clear Filters" button click
+        document.getElementById("filter-value").addEventListener("keyup", updateFilter); 
         document.getElementById("filter-clear").addEventListener("click", function () {
-            valueEl.value = "";
-
+            valueEl.value = ""; 
             table.clearFilter();
-        });
-        window.opem
+        }); 
         var table = new Tabulator("#example-table",
             {
                 maxHeight: "90%",
