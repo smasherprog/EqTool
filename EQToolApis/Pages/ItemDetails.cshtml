@@ -18,7 +18,7 @@
                     {
                         title: "Auction Price", field: "AuctionPrice",
                         formatter: function (cell, formatterParams) {
-                            let price = cell.getRow().getData().TotalLast30DaysAverage;
+                            let price = cell.getRow().getData().AuctionPrice;
                             return price + "pp";
                         }
                     },

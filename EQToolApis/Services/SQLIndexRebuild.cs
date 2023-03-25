@@ -33,6 +33,12 @@ namespace EQToolApis.Services
             _ = dbcontext.Database.ExecuteSqlRaw("ALTER INDEX ALL ON [EQTunnelMessages] REBUILD WITH (FILLFACTOR = 80, SORT_IN_TEMPDB = ON, STATISTICS_NORECOMPUTE = ON)");
             _ = dbcontext.Database.ExecuteSqlRaw("ALTER INDEX ALL ON [Players] REBUILD WITH (FILLFACTOR = 80, SORT_IN_TEMPDB = ON, STATISTICS_NORECOMPUTE = ON)");
         }
+
+        public void FixDups()
+        {
+            dbcontext.Database.SetCommandTimeout(TimeSpan.FromMinutes(10));
+        }
+
         //        public void FixOutlierData()
         //        {
         //            dbcontext.Database.SetCommandTimeout(TimeSpan.FromMinutes(2));
