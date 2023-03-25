@@ -37,6 +37,25 @@ namespace EQToolApis.Services
         public void FixDups()
         {
             dbcontext.Database.SetCommandTimeout(TimeSpan.FromMinutes(10));
+            _ = dbcontext.Database.ExecuteSqlRaw(@"update eqautionitem
+set eqautionitem.EQitemId = dups.DupItemId
+from EQTunnelAuctionItems eqautionitem 
+join EQitems eqitem on eqautionitem.EQitemId = eqitem.EQitemId
+join (select item.Server as DupServer, item.ItemName as DupName, MAX(item.EQitemId) DupItemId from EQitems item
+group by item.Server, item.ItemName
+having count(*)>1) as dups on eqitem.ItemName = dups.DupName AND eqitem.Server = dups.DupServer");
+            _ = dbcontext.Database.ExecuteSqlRaw(@"delete from EQitems
+where EQitemId IN (select MIN(item.EQitemId) EQitemId from EQitems item
+group by item.Server, item.ItemName
+having count(*)>1)");
+            _ = dbcontext.Database.ExecuteSqlRaw(@"delete from EQitems
+where EQitemId IN (select MIN(item.EQitemId) EQitemId from EQitems item
+group by item.Server, item.ItemName
+having count(*)>1)");
+            _ = dbcontext.Database.ExecuteSqlRaw(@"delete from EQitems
+where EQitemId IN (select MIN(item.EQitemId) EQitemId from EQitems item
+group by item.Server, item.ItemName
+having count(*)>1)");
         }
 
         //        public void FixOutlierData()
