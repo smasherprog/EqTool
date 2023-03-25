@@ -6,7 +6,17 @@
 <script type="text/javascript" src="https://unpkg.com/tabulator-tables@5.4.4/dist/js/tabulator.min.js"></script>
 <script>
     $(document).ready(function () {
-        let tableData = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.Item.Items,  new Newtonsoft.Json.Converters.StringEnumConverter()));
+        let tableData = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.Item.Items,  new Newtonsoft.Json.Converters.StringEnumConverter())); 
+        var valueEl = document.getElementById("filter-value");
+        function updateFilter() {
+            table.setFilter("PlayerName", "like", valueEl.value);
+        }
+
+        document.getElementById("filter-value").addEventListener("keyup", updateFilter);
+        document.getElementById("filter-clear").addEventListener("click", function () {
+            valueEl.value = "";
+            table.clearFilter();
+        });
         var table = new Tabulator("#example-table",
             {
                 maxHeight: "90%",
@@ -39,8 +49,8 @@
     });
 </script>
 <div class="w-100 vh-100">
-    <div class="col-6">
-        <h2> <a href="https://wiki.project1999.com/@(Model.Item.ItemName.Replace(' ', '_'))" target="_blank">@Model.Item.ItemName <i class="fa fa-external-link"></i></a> </h2>
-    </div>
+    <h3><a href="https://wiki.project1999.com/@(Model.Item.ItemName.Replace(' ', '_'))" target="_blank">@Model.Item.ItemName <i class="fa fa-external-link"></i></a> </h3>
+    <input id="filter-value" type="text" placeholder="Filter by Player">
+    <button id="filter-clear">Clear Filter</button>
     <div id="example-table"></div>
 </div>
