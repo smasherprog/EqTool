@@ -1,5 +1,6 @@
 ﻿using EQToolApis.DB;
 using EQToolApis.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace EQToolApis.Services
 {
@@ -48,6 +49,7 @@ namespace EQToolApis.Services
 
         public void BuildSummaryData()
         {
+            dbcontext.Database.SetCommandTimeout(TimeSpan.FromMinutes(10));
             AllData = new AllData
             {
                 TotalEQAuctionPlayers = dbcontext.EQAuctionPlayers.Count(),
@@ -72,6 +74,7 @@ namespace EQToolApis.Services
 
         public void BuildData(Servers server)
         {
+            dbcontext.Database.SetCommandTimeout(TimeSpan.FromMinutes(10));
             var items = new List<AuctionItem>();
 
             var wts = dbcontext.EQitems
