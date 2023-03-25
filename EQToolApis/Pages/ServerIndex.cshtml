@@ -58,7 +58,7 @@
                         title: "30d Avg", field: "TotalLast30DaysAverage",
                         formatter: function (cell, formatterParams) {
                             let price = cell.getRow().getData().TotalLast30DaysAverage;
-                            return price + "pp";
+                            return price ? price + "pp" : '';
                         }
                     },
                     { title: "60d Count", field: "TotalLast60DaysCount" },
@@ -66,7 +66,7 @@
                         title: "60d Avg", field: "TotalLast60DaysAverage",
                         formatter: function (cell, formatterParams) {
                             let price = cell.getRow().getData().TotalLast30DaysAverage;
-                            return price + "pp";
+                            return price ? price + "pp" : '';
                         }
                     },
                     { title: "90d Count", field: "TotalLast90DaysCount" },
@@ -74,7 +74,7 @@
                         title: "90d Avg", field: "TotalLast90DaysAverage",
                         formatter: function (cell, formatterParams) {
                             let price = cell.getRow().getData().TotalLast30DaysAverage;
-                            return price + "pp";
+                            return price ? price + "pp" : '';
                         }
                     },
                     { title: "6M Count", field: "TotalLast6MonthsCount" },
@@ -82,7 +82,7 @@
                         title: "6M Avg", field: "TotalLast6MonthsAverage",
                         formatter: function (cell, formatterParams) {
                             let price = cell.getRow().getData().TotalLast30DaysAverage;
-                            return price + "pp";
+                            return price ? price + "pp" : '';
                         }
                     },
                     { title: "All Count", field: "TotalAuctionCount" },
@@ -90,7 +90,7 @@
                         title: "All Avg", field: "TotalAuctionAverage",
                         formatter: function (cell, formatterParams) {
                             let price = cell.getRow().getData().TotalLast30DaysAverage;
-                            return price + "pp";
+                            return price ? price + "pp" : '';
                         }
                     },
                 ],
