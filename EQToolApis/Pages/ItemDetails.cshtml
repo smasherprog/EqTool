@@ -19,10 +19,7 @@
                         title: "Auction Price", field: "AuctionPrice",
                         formatter: function (cell, formatterParams) {
                             let price = cell.getRow().getData().AuctionPrice;
-                            if(price){
-                                   return price + "pp";
-                            }
-                            return '';
+                            return price ? price + "pp" : ''; 
                         }
                     },
                     {
