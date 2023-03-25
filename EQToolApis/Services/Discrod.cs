@@ -304,6 +304,7 @@ namespace EQToolApis.Services
                 foreach (var item in items)
                 {
                     var d = DateTimeOffset.UtcNow.AddMonths(-1);
+                    var id = item.EQitemId;
                     if (pricingDate == PricingDate.ThirtyDays)
                     {
                         item.TotalWTSLast30DaysCount = dbcontext.EQTunnelAuctionItems.Count(a => a.EQitemId == id && a.EQTunnelMessage.TunnelTimestamp >= d && a.EQTunnelMessage.AuctionType == AuctionType.WTS);
