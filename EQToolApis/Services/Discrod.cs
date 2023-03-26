@@ -263,12 +263,6 @@ namespace EQToolApis.Services
                 discordService.Login();
                 var lastidread = dbcontext.EQTunnelMessages.Where(a => a.Server == server).Select(a => (long?)a.DiscordMessageId).OrderBy(a => a).FirstOrDefault();
                 var added = AddMessages(discordService.ReadMessageHistory(lastidread, server), server);
-                lastidread = dbcontext.EQTunnelMessages.Where(a => a.Server == server).Select(a => (long?)a.DiscordMessageId).OrderBy(a => a).FirstOrDefault();
-                added += AddMessages(discordService.ReadMessageHistory(lastidread, server), server);
-                lastidread = dbcontext.EQTunnelMessages.Where(a => a.Server == server).Select(a => (long?)a.DiscordMessageId).OrderBy(a => a).FirstOrDefault();
-                added += AddMessages(discordService.ReadMessageHistory(lastidread, server), server);
-                lastidread = dbcontext.EQTunnelMessages.Where(a => a.Server == server).Select(a => (long?)a.DiscordMessageId).OrderBy(a => a).FirstOrDefault();
-                added += AddMessages(discordService.ReadMessageHistory(lastidread, server), server);
                 return added + " messages added";
             }
 
