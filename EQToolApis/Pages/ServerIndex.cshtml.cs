@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace EQToolApis.Pages
 {
+    [ResponseCache(Duration = 30, Location = ResponseCacheLocation.Any, VaryByHeader = "server")]
     public class ServerIndexModel : PageModel
     {
         private readonly UIDataBuild uIDataBuild;

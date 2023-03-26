@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 
 namespace EQToolApis.Pages
 {
+    [ResponseCache(Duration = 30, Location = ResponseCacheLocation.Any, VaryByHeader = "*")]
     public class ItemDetailsModel : PageModel
     {
         private readonly EQToolContext context;

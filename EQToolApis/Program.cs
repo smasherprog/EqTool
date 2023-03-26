@@ -16,6 +16,7 @@ builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
 
 builder.Services.AddRazorPages();
 builder.Services.AddControllers();
+builder.Services.AddResponseCaching();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddHangfire(configuration => configuration
      .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
@@ -57,6 +58,7 @@ using (var scope = app.Services.CreateScope())
 
 app.UseHttpsRedirection();
 app.UseRouting();
+app.UseResponseCaching();
 app.UseAuthentication();
 app.UseAuthorization();
 app.UseEndpoints(endpoints =>

@@ -4,6 +4,10 @@
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <link href="https://unpkg.com/tabulator-tables@5.4.4/dist/css/tabulator.min.css" rel="stylesheet">
 <script type="text/javascript" src="https://unpkg.com/tabulator-tables@5.4.4/dist/js/tabulator.min.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.2.1/chart.umd.js" integrity="sha512-vCUbejtS+HcWYtDHRF2T5B0BKwVG/CLeuew5uT2AiX4SJ2Wff52+kfgONvtdATqkqQMC9Ye5K+Td0OTaz+P7cw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.0/moment.min.js" integrity="sha512-Izh34nqeeR7/nwthfeE0SI3c8uhFSnqxV0sI9TvTcXiFJkMd6fB644O64BRq2P/LA/+7eRvCw4GmLsXksyTHBg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-adapter-moment/1.0.1/chartjs-adapter-moment.min.js" integrity="sha512-hVy4KxCKgnXi2ok7rlnlPma4JHXI1VPQeempoaclV1GwRHrDeaiuS1pI6DVldaj5oh6Opy2XJ2CTljQLPkaMrQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <script>
     $(document).ready(function () {
         let tableData = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.Item.Items,  new Newtonsoft.Json.Converters.StringEnumConverter())); 
@@ -45,11 +49,38 @@
                 progressiveRenderSize: 500, //sets the number of rows to render per block (default = 20)
                 progressiveRenderMargin: 350
             });
+  
+        //let chardata = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.Item.ChartItems,  new Newtonsoft.Json.Converters.StringEnumConverter()));
+        //const ctx = document.getElementById('myChart');
 
+        //const chart = new Chart(ctx, {
+        //    type: 'line',
+        //    data:{
+        //        datasets: [{
+        //            data: chardata
+        //        }]
+        //    }, 
+        //    options: {
+        //        scales: {
+        //            x: {
+        //                type: 'time',
+        //            }
+        //        },
+        //        plugins: {
+        //            legend: {
+        //                display: false
+        //            }
+        //        }
+        //    }
+        //});
     });
 </script>
+
+   
+
 <div class="w-100 vh-100">
-    <h3><a href="https://wiki.project1999.com/@(Model.Item.ItemName.Replace(' ', '_'))" target="_blank">@Model.Item.ItemName <i class="fa fa-external-link"></i></a> </h3>
+    <h3><a href="https://wiki.project1999.com/@(Model.Item.ItemName.Replace(' ', '_'))" target="_blank">@Model.Item.ItemName <i class="fa fa-external-link"></i></a> </h3> 
+@*    <canvas id="myChart" height="300"></canvas>*@
     <input id="filter-value" type="text" placeholder="Filter by Player">
     <button id="filter-clear">Clear Filter</button>
     <div id="example-table"></div>
