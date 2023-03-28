@@ -28,7 +28,7 @@ namespace EQToolApis.Controllers
             return UIDataBuild.ItemCache[(int)server];
 
 #else
-            return UIDataBuild.ItemCache[(int)Server];
+            return UIDataBuild.ItemCache[(int)server];
 #endif
         }
 
