@@ -1,6 +1,4 @@
 ﻿using EQToolApis.DB;
-using Newtonsoft.Json.Converters;
-using System.Text.Json.Serialization;
 
 namespace EQToolApis.Models
 {
@@ -8,7 +6,6 @@ namespace EQToolApis.Models
     {
         public int ItemId { get; set; }
 
-        [JsonConverter(typeof(StringEnumConverter))]
         public AuctionType AuctionType { get; set; }
 
         public string ItemName { get; set; }
