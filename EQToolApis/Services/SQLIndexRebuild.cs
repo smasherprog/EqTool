@@ -62,7 +62,7 @@ having count(*)>1)");
         {
             dbcontext.Database.SetCommandTimeout(TimeSpan.FromMinutes(10));
             _ = dbcontext.Database.ExecuteSqlRaw(@"delete eqit 
-from EQTunnelMessages eqit where DiscordMessageId IN (select DiscordMessageId from EQTunnelMessages
+from EQTunnelMessages eqit where DiscordMessageId IN (select top 2000 DiscordMessageId from EQTunnelMessages
 group by DiscordMessageId
 having count(*) >1)");
         }
