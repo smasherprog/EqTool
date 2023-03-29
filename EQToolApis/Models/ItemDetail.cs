@@ -23,12 +23,6 @@ namespace EQToolApis.Models
     {
         public List<ItemAuctionDetail> Items { get; set; }
 
-        public List<CharJsFormat> ChartItems => Items.Where(a => a.AuctionPrice.HasValue).Select(a => new CharJsFormat
-        {
-            x = a.TunnelTimestamp,
-            y = a.AuctionPrice.Value
-        }).ToList();
-
         public string? ItemName { get; set; }
     }
 }

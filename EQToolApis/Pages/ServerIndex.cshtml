@@ -20,12 +20,7 @@
                     }
                     let lastseen = data[i].lastSeen;
                     let d = new Date(lastseen);
-                    data[i].lastSeen = d.toLocaleString();
-                    data[i].totalLast30DaysAverage = data[i].totalLast30DaysAverage ? data[i].totalLast30DaysAverage + "pp" : '';
-                    data[i].totalLast60DaysAverage = data[i].totalLast60DaysAverage ? data[i].totalLast60DaysAverage + "pp" : '';
-                    data[i].totalLast90DaysAverage = data[i].totalLast90DaysAverage ? data[i].totalLast90DaysAverage + "pp" : '';
-                    data[i].totalLast6MonthsAverage = data[i].totalLast6MonthsAverage ? data[i].totalLast6MonthsAverage + "pp" : '';
-                    data[i].totalAuctionAverage = data[i].totalAuctionAverage ? data[i].totalAuctionAverage + "pp" : '';
+                    data[i].lastSeen = d.toLocaleString(); 
                 }
             }
 
@@ -41,19 +36,49 @@
                             title: "Item", field: "itemName",
                             formatter: function (cell, formatterParams) {
                                 let row = cell.getRow().getData();
-                                return `<div><a href="/ItemDetails/${row.itemId}/@(Model.Server)" target="_blank">${row.itemName} </a>  <a class="float-right" href="https://wiki.project1999.com/${row.itemName.replace(' ', '_')}" target="_blank"><i class="fa fa-external-link"></i></a></div>`;
+                                return `<div><a href="/ItemDetails/${row.itemId}/@(Model.Server)">${row.itemName} </a>  <a class="float-right" href="https://wiki.project1999.com/${row.itemName.replace(' ', '_')}" target="_blank"><i class="fa fa-external-link"></i></a></div>`;
                             }
                         },
                         { title: "30d Count", field: "totalLast30DaysCount" },
-                        { title: "30d Avg", field: "totalLast30DaysAverage" },
+                        {
+                            title: "30d Avg", field: "totalLast30DaysAverage",
+                            formatter: function (cell, formatterParams) {
+                                let price = cell.getRow().getData().totalLast30DaysAverage;
+                                return price ? price + "pp" : '';
+                            }
+                        },
                         { title: "60d Count", field: "totalLast60DaysCount" },
-                        { title: "60d Avg", field: "totalLast60DaysAverage" },
+                        {
+                            title: "60d Avg", field: "totalLast60DaysAverage",
+                            formatter: function (cell, formatterParams) {
+                                let price = cell.getRow().getData().totalLast60DaysAverage;
+                                return price ? price + "pp" : '';
+                            }
+                        },
                         { title: "90d Count", field: "totalLast90DaysCount" },
-                        { title: "90d Avg", field: "totalLast90DaysAverage" },
+                        {
+                            title: "90d Avg", field: "totalLast90DaysAverage",
+                            formatter: function (cell, formatterParams) {
+                                let price = cell.getRow().getData().totalLast90DaysAverage;
+                                return price ? price + "pp" : '';
+                            }
+                        },
                         { title: "6M Count", field: "totalLast6MonthsCount" },
-                        { title: "6M Avg", field: "totalLast6MonthsAverage" },
+                        {
+                            title: "6M Avg", field: "totalLast6MonthsAverage",
+                            formatter: function (cell, formatterParams) {
+                                let price = cell.getRow().getData().totalLast6MonthsAverage;
+                                return price ? price + "pp" : '';
+                            }
+                        },
                         { title: "All Count", field: "totalAuctionCount" },
-                        { title: "All Avg", field: "totalAuctionAverage" }
+                        {
+                            title: "All Avg", field: "totalAuctionAverage",
+                            formatter: function (cell, formatterParams) {
+                                let price = cell.getRow().getData().totalAuctionAverage;
+                                return price ? price + "pp" : '';
+                            }
+                        }
                     ],
                     progressiveRender: true, //enable progressive rendering
                     progressiveRenderSize: 500, //sets the number of rows to render per block (default = 20)

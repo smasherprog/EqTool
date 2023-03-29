@@ -11,23 +11,31 @@
 <script>
     $(document).ready(function () {
         $.get("/api/serveritemdetail/@Model.Server/@Model.ItemId", function (data, status) {
+            let wtsdata = [];
+            let wtbdata = [];
             if (data.items) {
-            
-                        for (let i = 0; i < data.items.length; i++) {
+
+                for (let i = 0; i < data.items.length; i++) {
                     if (data.items[i].auctionType == 0) {
                         data.items[i].auctionType = 'WTS';
+                        if (data.items[i].auctionPrice) {
+                            wtsdata.push({ x: data.items[i].tunnelTimestamp, y: data.items[i].auctionPrice });
+                        }
                     } else if (data.items[i].auctionType == 1) {
                         data.items[i].auctionType = 'WTB';
+                        if (data.items[i].auctionPrice) {
+                            wtbdata.push({ x: data.items[i].tunnelTimestamp, y: data.items[i].auctionPrice });
+                        }
                     } else if (data.items[i].auctionType == 2) {
                         data.items[i].auctionType = 'BOTH';
                     }
                     let tunnelTimestamp = data.items[i].tunnelTimestamp;
                     let d = new Date(tunnelTimestamp);
                     data.items[i].tunnelTimestamp = d.toLocaleString();
-                    data.items[i].auctionPrice = data.items[i].auctionPrice ? data.items[i].auctionPrice + "pp" : '';
                 }
+
             }
-            if(data){
+            if (data) {
                 document.getElementById('ItemName').innerHTML = `<a href="https://wiki.project1999.com/${data.itemName.replace(' ', '_')}" target = "_blank"> ${data.itemName} <i class="fa fa-external-link" > </i></a >`;
             }
             var table = new Tabulator("#example-table",
@@ -38,7 +46,13 @@
                     columns: [
                         { title: "Type", field: "auctionType" },
                         { title: "Player Name", field: "playerName" },
-                        { title: "Auction Price", field: "auctionPrice" },
+                        {
+                            title: "Auction Price", field: "auctionPrice",
+                            formatter: function (cell, formatterParams) {
+                                let price = cell.getRow().getData().auctionPrice;
+                                return price ? price + "pp" : '';
+                            }
+                        },
                         { title: "Timestamp", field: "tunnelTimestamp" }
                     ],
                     progressiveRender: true, //enable progressive rendering
@@ -55,30 +69,34 @@
                 valueEl.value = "";
                 table.clearFilter();
             });
+            const ctx = document.getElementById('myChart');
+            const chart = new Chart(ctx, {
+                type: 'scatter',
+                data: {
+                    datasets: [
+                        {
+                            label: 'WTS',
+                            data: wtsdata
+                        },
+                        {
+                            label: 'WTB',
+                            data: wtbdata
+                        },
+                    ]
+                },
+                options: {
+                    animation: false,
+                    spanGaps: true, // enable for all datasets
+                    scales: {
+                        x: {
+                            type: 'time',
+                        }
+                    }
+                }
+            });
         });
 
-        //const ctx = document.getElementById('myChart');
 
-        //const chart = new Chart(ctx, {
-        //    type: 'line',
-        //    data:{
-        //        datasets: [{
-        //            data: chardata
-        //        }]
-        //    },
-        //    options: {
-        //        scales: {
-        //            x: {
-        //                type: 'time',
-        //            }
-        //        },
-        //        plugins: {
-        //            legend: {
-        //                display: false
-        //            }
-        //        }
-        //    }
-        //});
     });
 </script>
 
@@ -86,7 +104,7 @@
 
 <div class="w-100 vh-100">
     <h3 id="ItemName"></h3>
-    @*    <canvas id="myChart" height="300"></canvas>*@
+    <canvas id="myChart" style="max-height:300px"></canvas>
     <input id="filter-value" type="text" placeholder="Filter by Player">
     <button id="filter-clear">Clear Filter</button>
     <div id="example-table"></div>
