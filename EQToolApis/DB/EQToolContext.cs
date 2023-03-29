@@ -20,6 +20,8 @@ namespace EQToolApis.DB
 
         public DbSet<Player> Players { get; set; }
 
+        public DbSet<ServerMessage> ServerMessages { get; set; }
+
         public DbSet<EqToolException> EqToolExceptions { get; set; }
     }
 }
