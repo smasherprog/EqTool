@@ -1,5 +1,5 @@
 using EQToolApis.DB;
-using EQToolApis.DB.Models;
+using EQToolApis.Models;
 using EQToolApis.Services;
 using Hangfire;
 using Hangfire.Dashboard;
@@ -55,45 +55,39 @@ builder.Services.Configure<DiscordServiceOptions>(options =>
     using (var scope = a.CreateScope())
     {
         var dbcontext = scope.ServiceProvider.GetRequiredService<EQToolContext>();
+        d.TotalEQAuctionPlayers = dbcontext.EQAuctionPlayers.Count();
+        d.TotalUniqueItems = dbcontext.EQitems.Count();
         d.ServerData[(int)Servers.Green] = new ServerDBData
         {
             OrderByDescendingDiscordMessageId = dbcontext.EQTunnelMessages.Where(a => a.Server == Servers.Green).Select(a => (long?)a.DiscordMessageId).OrderByDescending(a => a).FirstOrDefault(),
-            OrderByDiscordMessageId = dbcontext.EQTunnelMessages.Where(a => a.Server == Servers.Green).Select(a => (long?)a.DiscordMessageId).OrderBy(a => a).FirstOrDefault()
+            OrderByDiscordMessageId = dbcontext.EQTunnelMessages.Where(a => a.Server == Servers.Green).Select(a => (long?)a.DiscordMessageId).OrderBy(a => a).FirstOrDefault(),
+            OldestImportTimeStamp = dbcontext.EQTunnelMessages.Where(a => a.Server == Servers.Green).OrderBy(a => a.TunnelTimestamp).Select(a => a.TunnelTimestamp).FirstOrDefault(),
+            RecentImportTimeStamp = dbcontext.EQTunnelMessages.Where(a => a.Server == Servers.Green).OrderByDescending(a => a.TunnelTimestamp).Select(a => a.TunnelTimestamp).FirstOrDefault(),
+            TotalEQTunnelAuctionItems = dbcontext.EQTunnelAuctionItems.Where(a => a.Server == Servers.Green).Count(),
+            TotalEQTunnelMessages = dbcontext.EQTunnelMessages.Where(a => a.Server == Servers.Green).Count()
         };
 
         d.ServerData[(int)Servers.Blue] = new ServerDBData
         {
             OrderByDescendingDiscordMessageId = dbcontext.EQTunnelMessages.Where(a => a.Server == Servers.Blue).Select(a => (long?)a.DiscordMessageId).OrderByDescending(a => a).FirstOrDefault(),
-            OrderByDiscordMessageId = dbcontext.EQTunnelMessages.Where(a => a.Server == Servers.Blue).Select(a => (long?)a.DiscordMessageId).OrderBy(a => a).FirstOrDefault()
+            OrderByDiscordMessageId = dbcontext.EQTunnelMessages.Where(a => a.Server == Servers.Blue).Select(a => (long?)a.DiscordMessageId).OrderBy(a => a).FirstOrDefault(),
+            OldestImportTimeStamp = dbcontext.EQTunnelMessages.Where(a => a.Server == Servers.Blue).OrderBy(a => a.TunnelTimestamp).Select(a => a.TunnelTimestamp).FirstOrDefault(),
+            RecentImportTimeStamp = dbcontext.EQTunnelMessages.Where(a => a.Server == Servers.Blue).OrderByDescending(a => a.TunnelTimestamp).Select(a => a.TunnelTimestamp).FirstOrDefault(),
+            TotalEQTunnelAuctionItems = dbcontext.EQTunnelAuctionItems.Where(a => a.Server == Servers.Blue).Count(),
+            TotalEQTunnelMessages = dbcontext.EQTunnelMessages.Where(a => a.Server == Servers.Blue).Count()
         };
     }
     return d;
-})
-.AddSingleton<AllData>(a =>
+}).AddSingleton<PlayerCache>(a =>
 {
+    var d = new PlayerCache();
     using (var scope = a.CreateScope())
     {
         var dbcontext = scope.ServiceProvider.GetRequiredService<EQToolContext>();
-        return new AllData
-        {
-            TotalEQAuctionPlayers = dbcontext.EQAuctionPlayers.Count(),
-            TotalUniqueItems = dbcontext.EQitems.Count(),
-            GreenServerData = new ServerData
-            {
-                OldestImportTimeStamp = dbcontext.EQTunnelMessages.Where(a => a.Server == Servers.Green).OrderBy(a => a.TunnelTimestamp).Select(a => a.TunnelTimestamp).FirstOrDefault(),
-                RecentImportTimeStamp = dbcontext.EQTunnelMessages.Where(a => a.Server == Servers.Green).OrderByDescending(a => a.TunnelTimestamp).Select(a => a.TunnelTimestamp).FirstOrDefault(),
-                TotalEQTunnelAuctionItems = dbcontext.EQTunnelAuctionItems.Where(a => a.Server == Servers.Green).Count(),
-                TotalEQTunnelMessages = dbcontext.EQTunnelMessages.Where(a => a.Server == Servers.Green).Count()
-            },
-            BlueServerData = new ServerData
-            {
-                OldestImportTimeStamp = dbcontext.EQTunnelMessages.Where(a => a.Server == Servers.Blue).OrderBy(a => a.TunnelTimestamp).Select(a => a.TunnelTimestamp).FirstOrDefault(),
-                RecentImportTimeStamp = dbcontext.EQTunnelMessages.Where(a => a.Server == Servers.Blue).OrderByDescending(a => a.TunnelTimestamp).Select(a => a.TunnelTimestamp).FirstOrDefault(),
-                TotalEQTunnelAuctionItems = dbcontext.EQTunnelAuctionItems.Where(a => a.Server == Servers.Blue).Count(),
-                TotalEQTunnelMessages = dbcontext.EQTunnelMessages.Where(a => a.Server == Servers.Blue).Count()
-            }
-        };
+        var allplayers = dbcontext.EQAuctionPlayers.AsNoTracking().ToList();
+        d.Players = allplayers.Select(a => new AuctionPlayer { EQAuctionPlayerId = a.EQAuctionPlayerId, Name = a.Name }).ToDictionary(a => a.EQAuctionPlayerId);
     }
+    return d;
 })
 .AddScoped<UIDataBuild>();
 

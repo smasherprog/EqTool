@@ -1,6 +1,6 @@
 using EQToolApis.DB;
 using EQToolApis.DB.Models;
-using EQToolApis.Services;
+using EQToolApis.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -8,9 +8,9 @@ namespace EQToolApis.Pages
 {
     public class IndexModel : PageModel
     {
-        public readonly AllData AllData;
+        public readonly DBData AllData;
         private readonly EQToolContext eQToolContext;
-        public IndexModel(AllData allData, EQToolContext eQToolContext)
+        public IndexModel(DBData allData, EQToolContext eQToolContext)
         {
             AllData = allData;
             this.eQToolContext = eQToolContext;

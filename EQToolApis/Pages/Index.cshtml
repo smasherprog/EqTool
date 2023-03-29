@@ -55,19 +55,19 @@
                                 <tbody>
                                     <tr>
                                         <th>Total Actioned Items</th>
-                                        <td>@Model.AllData.GreenServerData.TotalEQTunnelAuctionItems.ToString("n0")</td>
+                                        <td>@Model.AllData.ServerData[(int)Servers.Green].TotalEQTunnelAuctionItems.ToString("n0")</td>
                                     </tr>
                                     <tr>
                                         <th>Total Actions</th>
-                                        <td>@Model.AllData.GreenServerData.TotalEQTunnelMessages.ToString("n0")</td>
+                                        <td>@Model.AllData.ServerData[(int)Servers.Green].TotalEQTunnelMessages.ToString("n0")</td>
                                     </tr>
                                     <tr>
                                         <th>Last Updated</th>
-                                        <td class="mytime" utc="@Model.AllData.GreenServerData.RecentImportTimeStamp.ToString("o")"></td>
+                                        <td class="mytime" utc="@Model.AllData.ServerData[(int)Servers.Green].RecentImportTimeStamp.ToString("o")"></td>
                                     </tr>
                                     <tr>
                                         <th>Oldest Import</th>
-                                        <td class="mytime" utc="@Model.AllData.GreenServerData.OldestImportTimeStamp.ToString("o")"></td>
+                                        <td class="mytime" utc="@Model.AllData.ServerData[(int)Servers.Green].OldestImportTimeStamp.ToString("o")"></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -83,19 +83,19 @@
                                 <tbody>
                                     <tr>
                                         <th>Total Actioned Items</th>
-                                        <td>@Model.AllData.BlueServerData.TotalEQTunnelAuctionItems.ToString("n0")</td>
+                                        <td>@Model.AllData.ServerData[(int)Servers.Blue].TotalEQTunnelAuctionItems.ToString("n0")</td>
                                     </tr>
                                     <tr>
                                         <th>Total Actions</th>
-                                        <td>@Model.AllData.BlueServerData.TotalEQTunnelMessages.ToString("n0")</td>
+                                        <td>@Model.AllData.ServerData[(int)Servers.Blue].TotalEQTunnelMessages.ToString("n0")</td>
                                     </tr>
                                     <tr>
                                         <th>Last Updated</th>
-                                        <td class="mytime" utc="@Model.AllData.BlueServerData.RecentImportTimeStamp.ToString("o")"></td>
+                                        <td class="mytime" utc="@Model.AllData.ServerData[(int)Servers.Blue].RecentImportTimeStamp.ToString("o")"></td>
                                     </tr>
                                     <tr>
                                         <th>Oldest Import</th>
-                                        <td class="mytime" utc="@Model.AllData.BlueServerData.OldestImportTimeStamp.ToString("o")"></td>
+                                        <td class="mytime" utc="@Model.AllData.ServerData[(int)Servers.Blue].OldestImportTimeStamp.ToString("o")"></td>
                                     </tr>
                                 </tbody>
                             </table>

@@ -1,5 +1,6 @@
 ﻿using EQToolApis.DB;
 using EQToolApis.DB.Models;
+using EQToolApis.Models;
 using Hangfire;
 using Microsoft.Extensions.Options;
 
@@ -179,11 +180,10 @@ namespace EQToolApis.Services
             private readonly IDiscordService discordService;
             private readonly EQToolContext dbcontext;
             private readonly DBData dBData;
-            private readonly AllData allData;
-
-            public DiscordJob(AllData allData, DBData dBData, IDiscordService discordService, EQToolContext dbcontext, IBackgroundJobClient backgroundJobClient)
+            private readonly PlayerCache playerCache;
+            public DiscordJob(PlayerCache playerCache, DBData dBData, IDiscordService discordService, EQToolContext dbcontext, IBackgroundJobClient backgroundJobClient)
             {
-                this.allData = allData;
+                this.playerCache = playerCache;
                 this.dBData = dBData;
                 this.dbcontext = dbcontext;
                 this.backgroundJobClient = backgroundJobClient;
@@ -217,7 +217,17 @@ namespace EQToolApis.Services
                             };
                             _ = dbcontext.EQAuctionPlayers.Add(eqplayer);
                             _ = dbcontext.SaveChanges();
-                            _ = Interlocked.Add(ref allData.TotalEQAuctionPlayers, 1);
+                            playerCache.PlayersLock.EnterWriteLock();
+                            try
+                            {
+                                playerCache.Players.Add(eqplayer.EQAuctionPlayerId, new AuctionPlayer { EQAuctionPlayerId = eqplayer.EQAuctionPlayerId, Name = eqplayer.Name });
+                            }
+                            finally
+                            {
+                                playerCache.PlayersLock.ExitWriteLock();
+                            }
+
+                            _ = Interlocked.Add(ref dBData.TotalEQAuctionPlayers, 1);
                         }
 
                         var m = new DB.Models.EQTunnelMessage
@@ -242,7 +252,7 @@ namespace EQToolApis.Services
                                 };
                                 _ = dbcontext.EQitems.Add(eqitem);
                                 _ = dbcontext.SaveChanges();
-                                _ = Interlocked.Add(ref allData.TotalUniqueItems, 1);
+                                _ = Interlocked.Add(ref dBData.TotalUniqueItems, 1);
                             }
                             m.EQTunnelAuctionItems.Add(new EQTunnelAuctionItem
                             {
@@ -250,13 +260,9 @@ namespace EQToolApis.Services
                                 AuctionPrice = it.Price,
                                 EQitemId = eqitem.EQitemId
                             });
-                            _ = server == Servers.Green
-                                ? Interlocked.Add(ref allData.GreenServerData.TotalEQTunnelAuctionItems, 1)
-                                : Interlocked.Add(ref allData.BlueServerData.TotalEQTunnelAuctionItems, 1);
+                            _ = Interlocked.Add(ref dBData.ServerData[(int)server].TotalEQTunnelAuctionItems, 1);
                         }
-                        _ = server == Servers.Green
-                                ? Interlocked.Add(ref allData.GreenServerData.TotalEQTunnelMessages, 1)
-                                : Interlocked.Add(ref allData.BlueServerData.TotalEQTunnelMessages, 1);
+                        _ = Interlocked.Add(ref dBData.ServerData[(int)server].TotalEQTunnelMessages, 1);
                         _ = dbcontext.EQTunnelMessages.Add(m);
                         messagesinserted.Add(m);
                     }
@@ -276,15 +282,7 @@ namespace EQToolApis.Services
                     var oldid = dBData.ServerData[(int)server].OrderByDescendingDiscordMessageId.Value;
                     lock (dBData)
                     {
-                        if (server == Servers.Green)
-                        {
-                            allData.GreenServerData.RecentImportTimeStamp = messages.Select(a => a.TunnelTimestamp).OrderByDescending(a => a).FirstOrDefault();
-                        }
-                        else
-                        {
-                            allData.BlueServerData.RecentImportTimeStamp = messages.Select(a => a.TunnelTimestamp).OrderByDescending(a => a).FirstOrDefault();
-                        }
-
+                        dBData.ServerData[(int)server].RecentImportTimeStamp = messages.Select(a => a.TunnelTimestamp).OrderByDescending(a => a).FirstOrDefault();
                         dBData.ServerData[(int)server].OrderByDescendingDiscordMessageId = dBData.ServerData[(int)server].OrderByDescendingDiscordMessageId.HasValue
                             ? Math.Max(dBData.ServerData[(int)server].OrderByDescendingDiscordMessageId.Value, id)
                             : id;
@@ -305,14 +303,7 @@ namespace EQToolApis.Services
                     var id = messages.Select(a => a.DiscordMessageId).OrderBy(a => a).FirstOrDefault();
                     lock (dBData)
                     {
-                        if (server == Servers.Green)
-                        {
-                            allData.GreenServerData.OldestImportTimeStamp = messages.Select(a => a.TunnelTimestamp).OrderBy(a => a).FirstOrDefault();
-                        }
-                        else
-                        {
-                            allData.BlueServerData.OldestImportTimeStamp = messages.Select(a => a.TunnelTimestamp).OrderBy(a => a).FirstOrDefault();
-                        }
+                        dBData.ServerData[(int)server].OldestImportTimeStamp = messages.Select(a => a.TunnelTimestamp).OrderBy(a => a).FirstOrDefault();
                         var oldid = dBData.ServerData[(int)server].OrderByDiscordMessageId.Value;
                         dBData.ServerData[(int)server].OrderByDiscordMessageId = dBData.ServerData[(int)server].OrderByDiscordMessageId.HasValue
                             ? Math.Min(dBData.ServerData[(int)server].OrderByDiscordMessageId.Value, id)

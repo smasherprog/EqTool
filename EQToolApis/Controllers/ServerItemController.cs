@@ -9,11 +9,12 @@ namespace EQToolApis.Controllers
     {
         private readonly UIDataBuild uIDataBuild;
         private readonly EQToolContext context;
-
-        public ServerItemController(UIDataBuild uIDataBuild, EQToolContext context)
+        private readonly PlayerCache playerCache;
+        public ServerItemController(UIDataBuild uIDataBuild, EQToolContext context, PlayerCache playerCache)
         {
             this.uIDataBuild = uIDataBuild;
             this.context = context;
+            this.playerCache = playerCache;
         }
 
         [Route("api/serveritem/{server}")]
@@ -36,25 +37,43 @@ namespace EQToolApis.Controllers
         [ResponseCache(Duration = 10, Location = ResponseCacheLocation.Any, VaryByHeader = "itemid")]
         public ItemDetail GetItemDetail(Servers server, int itemid)
         {
+            var items = context.EQTunnelAuctionItems
+                .Where(a => a.EQitemId == itemid && a.Server == server)
+                .Select(a => new
+                {
+                    a.EQTunnelMessage.AuctionType,
+                    a.AuctionPrice,
+                    a.EQTunnelMessage.EQAuctionPlayerId,
+                    a.EQTunnelMessage.TunnelTimestamp
+                }).ToList();
+
             ItemDetail Item = new()
             {
                 ItemName = context.EQitems
                     .Where(a => a.EQitemId == itemid && a.Server == server)
                     .Select(a => a.ItemName)
                     .FirstOrDefault(),
-
-                Items = context.EQTunnelAuctionItems
-                .Where(a => a.EQitemId == itemid && a.Server == server)
-                .Select(a => new ItemAuctionDetail
-                {
-                    AuctionType = a.EQTunnelMessage.AuctionType,
-                    PlayerName = a.EQTunnelMessage.EQAuctionPlayer.Name,
-                    AuctionPrice = a.AuctionPrice,
-                    TunnelTimestamp = a.EQTunnelMessage.TunnelTimestamp
-                }).ToList()
-                .OrderByDescending(a => a.TunnelTimestamp)
-                .ToList()
+                Items = new List<ItemAuctionDetail>()
             };
+            playerCache.PlayersLock.EnterReadLock();
+            try
+            {
+                foreach (var item in items)
+                {
+                    Item.Items.Add(new ItemAuctionDetail
+                    {
+                        AuctionType = item.AuctionType,
+                        PlayerName = playerCache.Players[item.EQAuctionPlayerId].Name,
+                        AuctionPrice = item.AuctionPrice,
+                        TunnelTimestamp = item.TunnelTimestamp
+                    });
+                }
+            }
+            finally
+            {
+                playerCache.PlayersLock.ExitReadLock();
+            }
+            Item.Items = Item.Items.OrderByDescending(a => a.TunnelTimestamp).ToList();
             return Item;
         }
     }

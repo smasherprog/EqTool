@@ -2,12 +2,6 @@
 
 namespace EQToolApis.Models
 {
-    public class CharJsFormat
-    {
-        public DateTimeOffset x { get; set; }
-        public int y { get; set; }
-    }
-
     public class ItemAuctionDetail
     {
         public AuctionType AuctionType { get; set; }

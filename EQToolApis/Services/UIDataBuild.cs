@@ -4,27 +4,6 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EQToolApis.Services
 {
-    public class ServerData
-    {
-        public int TotalEQTunnelMessages;
-
-        public int TotalEQTunnelAuctionItems;
-
-        public DateTimeOffset RecentImportTimeStamp { get; set; }
-
-        public DateTimeOffset OldestImportTimeStamp { get; set; }
-    }
-
-    public class AllData
-    {
-        public int TotalEQAuctionPlayers;
-
-        public int TotalUniqueItems;
-
-        public ServerData GreenServerData { get; set; } = new ServerData();
-
-        public ServerData BlueServerData { get; set; } = new ServerData();
-    }
 
     public class UIDataBuild
     {
@@ -36,6 +15,7 @@ namespace EQToolApis.Services
         {
             this.dbcontext = dbcontext;
         }
+
         public void BuildDataGreen()
         {
             BuildData(Servers.Green);
