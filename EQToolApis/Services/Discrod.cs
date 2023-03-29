@@ -179,9 +179,11 @@ namespace EQToolApis.Services
             private readonly IDiscordService discordService;
             private readonly EQToolContext dbcontext;
             private readonly DBData dBData;
+            private readonly AllData allData;
 
-            public DiscordJob(DBData dBData, IDiscordService discordService, EQToolContext dbcontext, IBackgroundJobClient backgroundJobClient)
+            public DiscordJob(AllData allData, DBData dBData, IDiscordService discordService, EQToolContext dbcontext, IBackgroundJobClient backgroundJobClient)
             {
+                this.allData = allData;
                 this.dBData = dBData;
                 this.dbcontext = dbcontext;
                 this.backgroundJobClient = backgroundJobClient;
@@ -215,6 +217,7 @@ namespace EQToolApis.Services
                             };
                             _ = dbcontext.EQAuctionPlayers.Add(eqplayer);
                             _ = dbcontext.SaveChanges();
+                            _ = Interlocked.Add(ref allData.TotalEQAuctionPlayers, 1);
                         }
 
                         var m = new DB.Models.EQTunnelMessage
@@ -239,6 +242,7 @@ namespace EQToolApis.Services
                                 };
                                 _ = dbcontext.EQitems.Add(eqitem);
                                 _ = dbcontext.SaveChanges();
+                                _ = Interlocked.Add(ref allData.TotalUniqueItems, 1);
                             }
                             m.EQTunnelAuctionItems.Add(new EQTunnelAuctionItem
                             {
@@ -246,7 +250,13 @@ namespace EQToolApis.Services
                                 AuctionPrice = it.Price,
                                 EQitemId = eqitem.EQitemId
                             });
+                            _ = server == Servers.Green
+                                ? Interlocked.Add(ref allData.GreenServerData.TotalEQTunnelAuctionItems, 1)
+                                : Interlocked.Add(ref allData.BlueServerData.TotalEQTunnelAuctionItems, 1);
                         }
+                        _ = server == Servers.Green
+                                ? Interlocked.Add(ref allData.GreenServerData.TotalEQTunnelMessages, 1)
+                                : Interlocked.Add(ref allData.BlueServerData.TotalEQTunnelMessages, 1);
                         _ = dbcontext.EQTunnelMessages.Add(m);
                         messagesinserted.Add(m);
                     }
@@ -266,6 +276,15 @@ namespace EQToolApis.Services
                     var oldid = dBData.ServerData[(int)server].OrderByDiscordMessageId.Value;
                     lock (dBData)
                     {
+                        if (server == Servers.Green)
+                        {
+                            this.allData.GreenServerData.RecentImportTimeStamp = messages.Select(a => a.TunnelTimestamp).OrderByDescending(a => a).FirstOrDefault();
+                        }
+                        else
+                        {
+                            this.allData.BlueServerData.RecentImportTimeStamp = messages.Select(a => a.TunnelTimestamp).OrderByDescending(a => a).FirstOrDefault();
+                        }
+
                         dBData.ServerData[(int)server].OrderByDescendingDiscordMessageId = dBData.ServerData[(int)server].OrderByDescendingDiscordMessageId.HasValue
                             ? Math.Min(dBData.ServerData[(int)server].OrderByDescendingDiscordMessageId.Value, id)
                             : id;
@@ -286,6 +305,14 @@ namespace EQToolApis.Services
                     var id = messages.Select(a => a.DiscordMessageId).OrderBy(a => a).FirstOrDefault();
                     lock (dBData)
                     {
+                        if (server == Servers.Green)
+                        {
+                            this.allData.GreenServerData.OldestImportTimeStamp = messages.Select(a => a.TunnelTimestamp).OrderBy(a => a).FirstOrDefault();
+                        }
+                        else
+                        {
+                            this.allData.BlueServerData.OldestImportTimeStamp = messages.Select(a => a.TunnelTimestamp).OrderBy(a => a).FirstOrDefault();
+                        }
                         var oldid = dBData.ServerData[(int)server].OrderByDiscordMessageId.Value;
                         dBData.ServerData[(int)server].OrderByDiscordMessageId = dBData.ServerData[(int)server].OrderByDiscordMessageId.HasValue
                             ? Math.Max(dBData.ServerData[(int)server].OrderByDiscordMessageId.Value, id)

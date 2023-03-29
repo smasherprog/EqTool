@@ -6,9 +6,9 @@ namespace EQToolApis.Services
 {
     public class ServerData
     {
-        public int TotalEQTunnelMessages { get; set; }
+        public int TotalEQTunnelMessages;
 
-        public int TotalEQTunnelAuctionItems { get; set; }
+        public int TotalEQTunnelAuctionItems;
 
         public DateTimeOffset RecentImportTimeStamp { get; set; }
 
@@ -17,9 +17,9 @@ namespace EQToolApis.Services
 
     public class AllData
     {
-        public int TotalEQAuctionPlayers { get; set; }
+        public int TotalEQAuctionPlayers;
 
-        public int TotalUniqueItems { get; set; }
+        public int TotalUniqueItems;
 
         public ServerData GreenServerData { get; set; } = new ServerData();
 
@@ -31,7 +31,6 @@ namespace EQToolApis.Services
         private readonly EQToolContext dbcontext;
 
         public static List<AuctionItem>[] ItemCache = new List<AuctionItem>[(int)(Servers.Blue + 1)];
-        public static AllData AllData = new();
 
         public UIDataBuild(EQToolContext dbcontext)
         {
@@ -45,30 +44,6 @@ namespace EQToolApis.Services
         public void BuildDataBlue()
         {
             BuildData(Servers.Blue);
-        }
-
-        public void BuildSummaryData()
-        {
-            dbcontext.Database.SetCommandTimeout(TimeSpan.FromMinutes(10));
-            AllData = new AllData
-            {
-                TotalEQAuctionPlayers = dbcontext.EQAuctionPlayers.Count(),
-                TotalUniqueItems = dbcontext.EQitems.Count(),
-                GreenServerData = new ServerData
-                {
-                    OldestImportTimeStamp = dbcontext.EQTunnelMessages.Where(a => a.Server == Servers.Green).OrderBy(a => a.TunnelTimestamp).Select(a => a.TunnelTimestamp).FirstOrDefault(),
-                    RecentImportTimeStamp = dbcontext.EQTunnelMessages.Where(a => a.Server == Servers.Green).OrderByDescending(a => a.TunnelTimestamp).Select(a => a.TunnelTimestamp).FirstOrDefault(),
-                    TotalEQTunnelAuctionItems = dbcontext.EQTunnelAuctionItems.Where(a => a.Server == Servers.Green).Count(),
-                    TotalEQTunnelMessages = dbcontext.EQTunnelMessages.Where(a => a.Server == Servers.Green).Count()
-                }, 
-                BlueServerData = new ServerData
-                {
-                    OldestImportTimeStamp = dbcontext.EQTunnelMessages.Where(a => a.Server == Servers.Blue).OrderBy(a => a.TunnelTimestamp).Select(a => a.TunnelTimestamp).FirstOrDefault(),
-                    RecentImportTimeStamp = dbcontext.EQTunnelMessages.Where(a => a.Server == Servers.Blue).OrderByDescending(a => a.TunnelTimestamp).Select(a => a.TunnelTimestamp).FirstOrDefault(),
-                    TotalEQTunnelAuctionItems = dbcontext.EQTunnelAuctionItems.Where(a => a.Server == Servers.Blue).Count(),
-                    TotalEQTunnelMessages = dbcontext.EQTunnelMessages.Where(a => a.Server == Servers.Blue).Count()
-                }
-            };
         }
 
         public void BuildData(Servers server)
