@@ -18,7 +18,7 @@ namespace EQToolApis.Controllers
         }
 
         [Route("api/serveritem/{server}")]
-        [ResponseCache(Duration = 30, Location = ResponseCacheLocation.Any, VaryByHeader = "server")]
+        [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Any, VaryByHeader = "server")]
         public List<AuctionItem> Get(Servers server)
         {
 #if DEBUG
@@ -34,7 +34,7 @@ namespace EQToolApis.Controllers
         }
 
         [Route("api/serveritemdetail/{server}/{itemid}")]
-        [ResponseCache(Duration = 10, Location = ResponseCacheLocation.Any, VaryByHeader = "itemid")]
+        [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Any, VaryByHeader = "itemid")]
         public ItemDetail GetItemDetail(Servers server, int itemid)
         {
             var items = context.EQTunnelAuctionItems
