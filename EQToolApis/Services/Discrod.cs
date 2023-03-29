@@ -178,17 +178,20 @@ namespace EQToolApis.Services
             private readonly IBackgroundJobClient backgroundJobClient;
             private readonly IDiscordService discordService;
             private readonly EQToolContext dbcontext;
+            private readonly DBData dBData;
 
-            public DiscordJob(ILogger<DiscordJob> logger, IDiscordService discordService, EQToolContext dbcontext, IBackgroundJobClient backgroundJobClient)
+            public DiscordJob(DBData dBData, IDiscordService discordService, EQToolContext dbcontext, IBackgroundJobClient backgroundJobClient)
             {
+                this.dBData = dBData;
                 this.dbcontext = dbcontext;
                 this.backgroundJobClient = backgroundJobClient;
                 this.discordService = discordService;
             }
 
-            private int AddMessages(List<Message> messages, Servers server)
+            private List<EQTunnelMessage> AddMessages(List<Message> messages, Servers server)
             {
                 var itemsadded = 0;
+                var messagesinserted = new List<EQTunnelMessage>();
                 foreach (var item in messages)
                 {
                     var embed = item.embeds.FirstOrDefault();
@@ -245,25 +248,53 @@ namespace EQToolApis.Services
                             });
                         }
                         _ = dbcontext.EQTunnelMessages.Add(m);
+                        messagesinserted.Add(m);
                     }
                 }
                 _ = dbcontext.SaveChanges();
-                return itemsadded;
+                return messagesinserted;
             }
 
             public string ReadFutureMessages(Servers server)
             {
                 discordService.Login();
-                var lastidread = dbcontext.EQTunnelMessages.Where(a => a.Server == server).Select(a => (long?)a.DiscordMessageId).OrderByDescending(a => a).FirstOrDefault();
-                return AddMessages(discordService.ReadMessages(lastidread, server), server) + " messages added";
+                var lastidread = dBData.ServerData[(int)server].OrderByDescendingDiscordMessageId;
+                var messages = AddMessages(discordService.ReadMessages(lastidread, server), server);
+                if (messages.Any())
+                {
+                    var id = messages.Select(a => a.DiscordMessageId).OrderByDescending(a => a).FirstOrDefault();
+                    var oldid = dBData.ServerData[(int)server].OrderByDiscordMessageId.Value;
+                    lock (dBData)
+                    {
+                        dBData.ServerData[(int)server].OrderByDescendingDiscordMessageId = dBData.ServerData[(int)server].OrderByDescendingDiscordMessageId.HasValue
+                            ? Math.Min(dBData.ServerData[(int)server].OrderByDescendingDiscordMessageId.Value, id)
+                            : id;
+                        return messages.Count + $" messages added. {oldid} -> {id}";
+                    }
+                }
+
+                return messages.Count + " messages added";
             }
 
             public string ReadPastMessages(Servers server)
             {
                 discordService.Login();
-                var lastidread = dbcontext.EQTunnelMessages.Where(a => a.Server == server).Select(a => (long?)a.DiscordMessageId).OrderBy(a => a).FirstOrDefault();
-                var added = AddMessages(discordService.ReadMessageHistory(lastidread, server), server);
-                return added + " messages added";
+                var lastidread = dBData.ServerData[(int)server].OrderByDiscordMessageId;
+                var messages = AddMessages(discordService.ReadMessageHistory(lastidread, server), server);
+                if (messages.Any())
+                {
+                    var id = messages.Select(a => a.DiscordMessageId).OrderBy(a => a).FirstOrDefault();
+                    lock (dBData)
+                    {
+                        var oldid = dBData.ServerData[(int)server].OrderByDiscordMessageId.Value;
+                        dBData.ServerData[(int)server].OrderByDiscordMessageId = dBData.ServerData[(int)server].OrderByDiscordMessageId.HasValue
+                            ? Math.Max(dBData.ServerData[(int)server].OrderByDiscordMessageId.Value, id)
+                            : id;
+                        return messages.Count + $" messages added. {oldid} -> {id}";
+                    }
+                }
+
+                return messages.Count + " messages added";
             }
 
             public enum PricingDate
