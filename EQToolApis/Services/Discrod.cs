@@ -273,7 +273,7 @@ namespace EQToolApis.Services
                 if (messages.Any())
                 {
                     var id = messages.Select(a => a.DiscordMessageId).OrderByDescending(a => a).FirstOrDefault();
-                    var oldid = dBData.ServerData[(int)server].OrderByDiscordMessageId.Value;
+                    var oldid = dBData.ServerData[(int)server].OrderByDescendingDiscordMessageId.Value;
                     lock (dBData)
                     {
                         if (server == Servers.Green)
