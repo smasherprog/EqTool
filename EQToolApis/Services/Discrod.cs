@@ -278,17 +278,17 @@ namespace EQToolApis.Services
                     {
                         if (server == Servers.Green)
                         {
-                            this.allData.GreenServerData.RecentImportTimeStamp = messages.Select(a => a.TunnelTimestamp).OrderByDescending(a => a).FirstOrDefault();
+                            allData.GreenServerData.RecentImportTimeStamp = messages.Select(a => a.TunnelTimestamp).OrderByDescending(a => a).FirstOrDefault();
                         }
                         else
                         {
-                            this.allData.BlueServerData.RecentImportTimeStamp = messages.Select(a => a.TunnelTimestamp).OrderByDescending(a => a).FirstOrDefault();
+                            allData.BlueServerData.RecentImportTimeStamp = messages.Select(a => a.TunnelTimestamp).OrderByDescending(a => a).FirstOrDefault();
                         }
 
                         dBData.ServerData[(int)server].OrderByDescendingDiscordMessageId = dBData.ServerData[(int)server].OrderByDescendingDiscordMessageId.HasValue
-                            ? Math.Min(dBData.ServerData[(int)server].OrderByDescendingDiscordMessageId.Value, id)
+                            ? Math.Max(dBData.ServerData[(int)server].OrderByDescendingDiscordMessageId.Value, id)
                             : id;
-                        return messages.Count + $" messages added. {oldid} -> {id}";
+                        return messages.Count + $" messages added. {oldid} -> {dBData.ServerData[(int)server].OrderByDescendingDiscordMessageId}";
                     }
                 }
 
@@ -307,17 +307,17 @@ namespace EQToolApis.Services
                     {
                         if (server == Servers.Green)
                         {
-                            this.allData.GreenServerData.OldestImportTimeStamp = messages.Select(a => a.TunnelTimestamp).OrderBy(a => a).FirstOrDefault();
+                            allData.GreenServerData.OldestImportTimeStamp = messages.Select(a => a.TunnelTimestamp).OrderBy(a => a).FirstOrDefault();
                         }
                         else
                         {
-                            this.allData.BlueServerData.OldestImportTimeStamp = messages.Select(a => a.TunnelTimestamp).OrderBy(a => a).FirstOrDefault();
+                            allData.BlueServerData.OldestImportTimeStamp = messages.Select(a => a.TunnelTimestamp).OrderBy(a => a).FirstOrDefault();
                         }
                         var oldid = dBData.ServerData[(int)server].OrderByDiscordMessageId.Value;
                         dBData.ServerData[(int)server].OrderByDiscordMessageId = dBData.ServerData[(int)server].OrderByDiscordMessageId.HasValue
-                            ? Math.Max(dBData.ServerData[(int)server].OrderByDiscordMessageId.Value, id)
+                            ? Math.Min(dBData.ServerData[(int)server].OrderByDiscordMessageId.Value, id)
                             : id;
-                        return messages.Count + $" messages added. {oldid} -> {id}";
+                        return messages.Count + $" messages added. {oldid} -> {dBData.ServerData[(int)server].OrderByDiscordMessageId}";
                     }
                 }
 

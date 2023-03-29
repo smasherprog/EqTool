@@ -34,7 +34,7 @@ namespace EQToolApis.Services
             _ = dbcontext.Database.ExecuteSqlRaw("ALTER INDEX ALL ON [Players] REBUILD WITH (FILLFACTOR = 80, SORT_IN_TEMPDB = ON, STATISTICS_NORECOMPUTE = ON)");
         }
 
-        public void FixDups()
+        public void ItemDupFix()
         {
             dbcontext.Database.SetCommandTimeout(TimeSpan.FromMinutes(10));
             _ = dbcontext.Database.ExecuteSqlRaw(@"update eqautionitem
@@ -56,6 +56,15 @@ having count(*)>1)");
 where EQitemId IN (select MIN(item.EQitemId) EQitemId from EQitems item
 group by item.Server, item.ItemName
 having count(*)>1)");
+        }
+
+        public void MessageDupFix()
+        {
+            dbcontext.Database.SetCommandTimeout(TimeSpan.FromMinutes(10));
+            _ = dbcontext.Database.ExecuteSqlRaw(@"delete eqit 
+from EQTunnelMessages eqit where DiscordMessageId IN (select DiscordMessageId from EQTunnelMessages
+group by DiscordMessageId
+having count(*) >1)");
         }
 
         //        public void FixOutlierData()
