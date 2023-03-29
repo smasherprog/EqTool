@@ -29,9 +29,12 @@ builder.Services.AddHangfire(configuration => configuration
          QueuePollInterval = TimeSpan.Zero,
          UseRecommendedIsolationLevel = true,
          DisableGlobalLocks = true,
-         DashboardJobListLimit = 1
+         DashboardJobListLimit = 2
      }));
-builder.Services.AddHangfireServer();
+builder.Services.AddHangfireServer(a =>
+{
+    a.WorkerCount = 1;
+});
 builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("HangfireAccess", cfgPolicy =>

@@ -12,7 +12,7 @@ namespace EQToolApis.Controllers
 
         public ServerItemController(UIDataBuild uIDataBuild, EQToolContext context)
         {
-            this.uIDataBuild = uIDataBuild; 
+            this.uIDataBuild = uIDataBuild;
             this.context = context;
         }
 
@@ -36,13 +36,14 @@ namespace EQToolApis.Controllers
         [ResponseCache(Duration = 10, Location = ResponseCacheLocation.Any, VaryByHeader = "itemid")]
         public ItemDetail GetItemDetail(Servers server, int itemid)
         {
-            ItemDetail Item = new();
-            Item.ItemName = context.EQitems
+            ItemDetail Item = new()
+            {
+                ItemName = context.EQitems
                     .Where(a => a.EQitemId == itemid && a.Server == server)
                     .Select(a => a.ItemName)
-                    .FirstOrDefault();
+                    .FirstOrDefault(),
 
-            Item.Items = context.EQTunnelAuctionItems
+                Items = context.EQTunnelAuctionItems
                 .Where(a => a.EQitemId == itemid && a.Server == server)
                 .Select(a => new ItemAuctionDetail
                 {
@@ -52,7 +53,8 @@ namespace EQToolApis.Controllers
                     TunnelTimestamp = a.EQTunnelMessage.TunnelTimestamp
                 }).ToList()
                 .OrderByDescending(a => a.TunnelTimestamp)
-                .ToList();
+                .ToList()
+            };
             return Item;
         }
     }
