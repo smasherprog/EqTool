@@ -66,14 +66,24 @@ from EQTunnelMessages eqit where DiscordMessageId IN (select top 2000 DiscordMes
 group by DiscordMessageId
 having count(*) >1)");
         }
-        public void FixOutlierData()
+        public void FixOutlierDataMaxCleanup()
         {
             dbcontext.Database.SetCommandTimeout(TimeSpan.FromMinutes(10));
             _ = dbcontext.Database.ExecuteSqlRaw(@"update eqpi
-set eqpi.AuctionPrice = null
+set eqpi.AuctionPrice = null 
 from EQTunnelAuctionItems eqpi
 join EQitems eqitem on eqitem.EQitemId = eqpi.EQitemId
-where eqpi.AuctionPrice is not null and (eqpi.AuctionPrice < eqitem.TotalWTSLast90DaysAverage * .2 OR eqpi.AuctionPrice > eqitem.TotalWTSLast90DaysAverage * 3 ) AND eqitem.TotalWTSLast90DaysAverage >100");
+where eqpi.AuctionPrice is not null and (eqpi.AuctionPrice > eqitem.TotalWTSLast6MonthsAverage * 7 ) AND eqitem.TotalWTSLast6MonthsAverage > 40");
+        }
+
+        public void FixOutlierDataAfterMaxCleanup()
+        {
+            dbcontext.Database.SetCommandTimeout(TimeSpan.FromMinutes(10));
+            _ = dbcontext.Database.ExecuteSqlRaw(@"update eqpi
+set eqpi.AuctionPrice = null 
+from EQTunnelAuctionItems eqpi
+join EQitems eqitem on eqitem.EQitemId = eqpi.EQitemId
+where eqpi.AuctionPrice is not null and (eqpi.AuctionPrice < eqitem.TotalWTSLast6MonthsAverage * .2 OR eqpi.AuctionPrice > eqitem.TotalWTSLast6MonthsAverage * 3.5 ) AND eqitem.TotalWTSLast6MonthsAverage >100");
         }
     }
 }
