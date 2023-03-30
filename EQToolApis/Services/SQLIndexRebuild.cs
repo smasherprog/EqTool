@@ -66,15 +66,14 @@ from EQTunnelMessages eqit where DiscordMessageId IN (select top 2000 DiscordMes
 group by DiscordMessageId
 having count(*) >1)");
         }
-
-        //        public void FixOutlierData()
-        //        {
-        //            dbcontext.Database.SetCommandTimeout(TimeSpan.FromMinutes(2));
-        //            _ = dbcontext.Database.ExecuteSqlRaw(@"update eai
-        //set eai.AuctionPrice = null
-        //  from EQTunnelAuctionItems eai
-        //  join EQitems i on eai.EQitemId = i.EQitemId
-        //  where eai.AuctionPrice is NOT null AND eai.AuctionPrice < [TotalWTSLast30DaysAverage]*.1");
-        //        }
+        public void FixOutlierData()
+        {
+            dbcontext.Database.SetCommandTimeout(TimeSpan.FromMinutes(10));
+            _ = dbcontext.Database.ExecuteSqlRaw(@"update eqpi
+set eqpi.AuctionPrice = null
+from EQTunnelAuctionItems eqpi
+join EQitems eqitem on eqitem.EQitemId = eqpi.EQitemId
+where eqpi.AuctionPrice is not null and (eqpi.AuctionPrice < eqitem.TotalWTSLast90DaysAverage * .2 OR eqpi.AuctionPrice > eqitem.TotalWTSLast90DaysAverage * 3 ) AND eqitem.TotalWTSLast90DaysAverage >100");
+        }
     }
 }
