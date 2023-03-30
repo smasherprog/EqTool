@@ -54,7 +54,8 @@ builder.Services.Configure<DiscordServiceOptions>(options =>
     var d = new DBData();
     using (var scope = a.CreateScope())
     {
-        var dbcontext = scope.ServiceProvider.GetRequiredService<EQToolContext>();
+        var dbcontext = scope.ServiceProvider.GetRequiredService<EQToolContext>(); 
+        dbcontext.Database.SetCommandTimeout(TimeSpan.FromMinutes(10));
         d.TotalEQAuctionPlayers = dbcontext.EQAuctionPlayers.Count();
         d.TotalUniqueItems = dbcontext.EQitems.Count();
         d.ServerData[(int)Servers.Green] = new ServerDBData
@@ -84,6 +85,7 @@ builder.Services.Configure<DiscordServiceOptions>(options =>
     using (var scope = a.CreateScope())
     {
         var dbcontext = scope.ServiceProvider.GetRequiredService<EQToolContext>();
+        dbcontext.Database.SetCommandTimeout(TimeSpan.FromMinutes(10));
         var allplayers = dbcontext.EQAuctionPlayers.AsNoTracking().ToList();
         d.Players = allplayers.Select(a => new AuctionPlayer { EQAuctionPlayerId = a.EQAuctionPlayerId, Name = a.Name }).ToDictionary(a => a.EQAuctionPlayerId);
     }

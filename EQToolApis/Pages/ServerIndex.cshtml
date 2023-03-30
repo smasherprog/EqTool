@@ -36,7 +36,7 @@
                             title: "Item", field: "itemName",
                             formatter: function (cell, formatterParams) {
                                 let row = cell.getRow().getData();
-                                return `<div><a href="/ItemDetails/${row.itemId}/@(Model.Server)">${row.itemName} </a>  <a class="float-right" href="https://wiki.project1999.com/${row.itemName.replace(' ', '_')}" target="_blank"><i class="fa fa-external-link"></i></a></div>`;
+                                return `<div><a href="/ItemDetails/${row.itemId}">${row.itemName} </a>  <a class="float-right" href="https://wiki.project1999.com/${row.itemName.replace(' ', '_')}" target="_blank"><i class="fa fa-external-link"></i></a></div>`;
                             }
                         },
                         { title: "30d Count", field: "totalLast30DaysCount" },

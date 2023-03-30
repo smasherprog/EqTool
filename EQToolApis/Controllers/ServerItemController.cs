@@ -33,12 +33,12 @@ namespace EQToolApis.Controllers
 #endif
         }
 
-        [Route("api/serveritemdetail/{server}/{itemid}")]
+        [Route("api/serveritemdetail/{itemid}")]
         [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Any, VaryByHeader = "itemid")]
-        public ItemDetail GetItemDetail(Servers server, int itemid)
+        public ItemDetail GetItemDetail(int itemid)
         {
             var items = context.EQTunnelAuctionItems
-                .Where(a => a.EQitemId == itemid && a.Server == server)
+                .Where(a => a.EQitemId == itemid)
                 .Select(a => new
                 {
                     a.EQTunnelMessage.AuctionType,
@@ -50,7 +50,7 @@ namespace EQToolApis.Controllers
             ItemDetail Item = new()
             {
                 ItemName = context.EQitems
-                    .Where(a => a.EQitemId == itemid && a.Server == server)
+                    .Where(a => a.EQitemId == itemid)
                     .Select(a => a.ItemName)
                     .FirstOrDefault(),
                 Items = new List<ItemAuctionDetail>()
