@@ -19,25 +19,19 @@ builder.Services.AddRazorPages();
 builder.Services.AddControllers();
 builder.Services.AddResponseCaching();
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddHangfire((provider, configuration) =>
-{
-    configuration
-         .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
-         .UseSimpleAssemblyNameTypeSerializer()
-         .UseRecommendedSerializerSettings()
-         .UseSqlServerStorage(builder.Configuration.GetConnectionString("HangfireConnection"), new SqlServerStorageOptions
-         {
-             CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
-             SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5),
-             QueuePollInterval = TimeSpan.Zero,
-             UseRecommendedIsolationLevel = true,
-             DisableGlobalLocks = true,
-             DashboardJobListLimit = 2
-         });
-    var retry = provider.GetRequiredService<AutomaticRetryAttribute>();
-    retry.Attempts = 1;
-    configuration.UseFilter(retry);
-});
+builder.Services.AddHangfire(configuration => configuration
+     .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
+     .UseSimpleAssemblyNameTypeSerializer()
+     .UseRecommendedSerializerSettings()
+     .UseSqlServerStorage(builder.Configuration.GetConnectionString("HangfireConnection"), new SqlServerStorageOptions
+     {
+         CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
+         SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5),
+         QueuePollInterval = TimeSpan.Zero,
+         UseRecommendedIsolationLevel = true,
+         DisableGlobalLocks = true,
+         DashboardJobListLimit = 2
+     }));
 builder.Services.AddHangfireServer(a =>
 {
     a.WorkerCount = 1;
