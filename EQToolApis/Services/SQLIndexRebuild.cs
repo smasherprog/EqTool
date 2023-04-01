@@ -24,7 +24,7 @@ namespace EQToolApis.Services
         }
         public void RebuildEQTunnelAuctionItems()
         {
-            dbcontext.Database.SetCommandTimeout(TimeSpan.FromMinutes(20));
+            dbcontext.Database.SetCommandTimeout(TimeSpan.FromMinutes(10));
             _ = dbcontext.Database.ExecuteSqlRaw("ALTER INDEX ALL ON [EQTunnelAuctionItems] REBUILD WITH (FILLFACTOR = 80, SORT_IN_TEMPDB = ON, STATISTICS_NORECOMPUTE = ON)");
         }
         public void RebuildEQTunnelAuctionEQTunnelMessages()

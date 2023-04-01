@@ -3,6 +3,7 @@ using EQToolApis.DB.Models;
 using EQToolApis.Models;
 using Hangfire;
 using Microsoft.Extensions.Options;
+using System.ComponentModel;
 
 namespace EQToolApis.Services
 {
@@ -271,6 +272,7 @@ namespace EQToolApis.Services
                 return messagesinserted;
             }
 
+            [AutomaticRetry(Attempts = 0), DisplayName("ReadFutureMessages {0}")]
             public string ReadFutureMessages(Servers server)
             {
                 discordService.Login();
@@ -293,6 +295,7 @@ namespace EQToolApis.Services
                 return messages.Count + " messages added";
             }
 
+            [AutomaticRetry(Attempts = 0), DisplayName("ReadPastMessages {0}")]
             public string ReadPastMessages(Servers server)
             {
                 discordService.Login();
@@ -325,6 +328,7 @@ namespace EQToolApis.Services
                 AllTime
             }
 
+            [AutomaticRetry(Attempts = 0), DisplayName("Build Pricing {0} {1}")]
             public void StartItemPricing(Servers server, PricingDate pricingDate)
             {
                 var ids = new Queue<int>(dbcontext.EQitems.Where(a => a.Server == server).Select(a => a.EQitemId).ToList());
