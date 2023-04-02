@@ -35,49 +35,49 @@ namespace EQToolApis.Services
                     .Where(a => a.Server == server && a.LastWTSSeen.HasValue)
                     .Select(a => new AuctionItem
                     {
-                        ItemId = a.EQitemId,
-                        ItemName = a.ItemName,
-                        TotalLast30DaysAverage = a.TotalWTSLast30DaysAverage,
-                        TotalLast30DaysCount = a.TotalWTSLast30DaysCount,
-                        TotalLast60DaysCount = a.TotalWTSLast60DaysCount,
-                        TotalLast60DaysAverage = a.TotalWTSLast60DaysAverage,
-                        TotalLast90DaysCount = a.TotalWTSLast90DaysCount,
-                        TotalLast90DaysAverage = a.TotalWTSLast90DaysAverage,
-                        TotalLast6MonthsCount = a.TotalWTSLast6MonthsCount,
-                        TotalLast6MonthsAverage = a.TotalWTSLast6MonthsAverage,
-                        TotalAuctionCount = a.TotalWTSAuctionCount,
-                        TotalAuctionAverage = a.TotalWTSAuctionAverage,
-                        TotalLastYearAverage = a.TotalWTSLastYearAverage,
-                        TotalLastYearCount = a.TotalWTSLastYearCount,
-                        LastSeen = a.LastWTSSeen.Value,
-                        AuctionType = AuctionType.WTS
+                        i = a.EQitemId,
+                        n = a.ItemName,
+                        a30 = a.TotalWTSLast30DaysAverage,
+                        t30 = a.TotalWTSLast30DaysCount,
+                        t60 = a.TotalWTSLast60DaysCount,
+                        a60 = a.TotalWTSLast60DaysAverage,
+                        t90 = a.TotalWTSLast90DaysCount,
+                        a90 = a.TotalWTSLast90DaysAverage,
+                        t6m = a.TotalWTSLast6MonthsCount,
+                        a6m = a.TotalWTSLast6MonthsAverage,
+                        tc = a.TotalWTSAuctionCount,
+                        ta = a.TotalWTSAuctionAverage,
+                        ay = a.TotalWTSLastYearAverage,
+                        ty = a.TotalWTSLastYearCount,
+                        l = a.LastWTSSeen.Value,
+                        t = AuctionType.WTS
                     }).ToList();
 
             var wtb = dbcontext.EQitems
                 .Where(a => a.Server == server && a.LastWTBSeen.HasValue)
                 .Select(a => new AuctionItem
                 {
-                    ItemId = a.EQitemId,
-                    ItemName = a.ItemName,
-                    TotalLast30DaysAverage = a.TotalWTBLast30DaysAverage,
-                    TotalLast30DaysCount = a.TotalWTBLast30DaysCount,
-                    TotalLast60DaysCount = a.TotalWTBLast60DaysCount,
-                    TotalLast60DaysAverage = a.TotalWTBLast60DaysAverage,
-                    TotalLast90DaysCount = a.TotalWTBLast90DaysCount,
-                    TotalLast90DaysAverage = a.TotalWTBLast90DaysAverage,
-                    TotalLast6MonthsCount = a.TotalWTBLast6MonthsCount,
-                    TotalLast6MonthsAverage = a.TotalWTBLast6MonthsAverage,
-                    TotalAuctionCount = a.TotalWTBAuctionCount,
-                    TotalAuctionAverage = a.TotalWTBAuctionAverage,
-                    TotalLastYearAverage = a.TotalWTBLastYearAverage,
-                    TotalLastYearCount = a.TotalWTBLastYearCount,
-                    LastSeen = a.LastWTBSeen.Value,
-                    AuctionType = AuctionType.WTB
+                    i = a.EQitemId,
+                    n = a.ItemName,
+                    a30 = a.TotalWTBLast30DaysAverage,
+                    t30 = a.TotalWTBLast30DaysCount,
+                    t60 = a.TotalWTBLast60DaysCount,
+                    a60 = a.TotalWTBLast60DaysAverage,
+                    t90 = a.TotalWTBLast90DaysCount,
+                    a90 = a.TotalWTBLast90DaysAverage,
+                    t6m = a.TotalWTBLast6MonthsCount,
+                    a6m = a.TotalWTBLast6MonthsAverage,
+                    tc = a.TotalWTBAuctionCount,
+                    ta = a.TotalWTBAuctionAverage,
+                    ay = a.TotalWTBLastYearAverage,
+                    ty = a.TotalWTBLastYearCount,
+                    l = a.LastWTBSeen.Value,
+                    t = AuctionType.WTB
                 }).ToList();
 
             ItemCache[(int)server] = wts.Concat(wtb)
-            .OrderBy(a => a.ItemName)
-            .ThenBy(a => a.AuctionType)
+            .OrderBy(a => a.n)
+            .ThenBy(a => a.t)
             .ToList();
         }
     }

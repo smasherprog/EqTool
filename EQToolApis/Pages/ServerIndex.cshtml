@@ -11,16 +11,16 @@
         $.get("/api/ServerItem/@Model.Server", function (data, status) {
             if (data) {
                 for (let i = 0; i < data.length; i++) {
-                    if (data[i].auctionType == 0) {
-                        data[i].auctionType = 'WTS';
-                    } else if (data[i].auctionType == 1) {
-                        data[i].auctionType = 'WTB';
-                    } else if (data[i].auctionType == 2) {
-                        data[i].auctionType = 'BOTH';
+                    if (data[i].t == 0) {
+                        data[i].t = 'WTS';
+                    } else if (data[i].t == 1) {
+                        data[i].t = 'WTB';
+                    } else if (data[i].t == 2) {
+                        data[i].t = 'BOTH';
                     }
-                    let lastseen = data[i].lastSeen;
-                    let d = new Date(lastseen);
-                    data[i].lastSeen = d.toLocaleString(); 
+                    let l = data[i].l;
+                    let d = new Date(l);
+                    data[i].l = d.toLocaleString(); 
                 }
             }
 
@@ -30,52 +30,52 @@
                     layout: "fitDataStretch",
                     data: data, //set initial table data
                     columns: [
-                        { title: "Type", field: "auctionType" },
-                        { title: "Last Seen", field: "lastSeen" },
+                        { title: "Type", field: "t" },
+                        { title: "Last Seen", field: "l" },
                         {
-                            title: "Item", field: "itemName",
+                            title: "Item", field: "n",
                             formatter: function (cell, formatterParams) {
                                 let row = cell.getRow().getData();
-                                return `<div><a href="/ItemDetails/${row.itemId}">${row.itemName} </a>  <a class="float-right" href="https://wiki.project1999.com/${row.itemName.replace(' ', '_')}" target="_blank"><i class="fa fa-external-link"></i></a></div>`;
+                                return `<div><a href="/ItemDetails/${row.i}">${row.n} </a>  <a class="float-right" href="https://wiki.project1999.com/${row.n.replace(' ', '_')}" target="_blank"><i class="fa fa-external-link"></i></a></div>`;
                             }
                         },
-                        { title: "30d Count", field: "totalLast30DaysCount" },
+                        { title: "30d Count", field: "t30" },
                         {
-                            title: "30d Avg", field: "totalLast30DaysAverage",
+                            title: "30d Avg", field: "a30",
                             formatter: function (cell, formatterParams) {
-                                let price = cell.getRow().getData().totalLast30DaysAverage;
+                                let price = cell.getRow().getData().a30;
                                 return price ? price + "pp" : '';
                             }
                         },
-                        { title: "60d Count", field: "totalLast60DaysCount" },
+                        { title: "60d Count", field: "t60" },
                         {
-                            title: "60d Avg", field: "totalLast60DaysAverage",
+                            title: "60d Avg", field: "a60",
                             formatter: function (cell, formatterParams) {
-                                let price = cell.getRow().getData().totalLast60DaysAverage;
+                                let price = cell.getRow().getData().a60;
                                 return price ? price + "pp" : '';
                             }
                         },
-                        { title: "90d Count", field: "totalLast90DaysCount" },
+                        { title: "90d Count", field: "t90" },
                         {
-                            title: "90d Avg", field: "totalLast90DaysAverage",
+                            title: "90d Avg", field: "a90",
                             formatter: function (cell, formatterParams) {
-                                let price = cell.getRow().getData().totalLast90DaysAverage;
+                                let price = cell.getRow().getData().a90;
                                 return price ? price + "pp" : '';
                             }
                         },
-                        { title: "6M Count", field: "totalLast6MonthsCount" },
+                        { title: "6M Count", field: "t6m" },
                         {
-                            title: "6M Avg", field: "totalLast6MonthsAverage",
+                            title: "6M Avg", field: "a6m",
                             formatter: function (cell, formatterParams) {
-                                let price = cell.getRow().getData().totalLast6MonthsAverage;
+                                let price = cell.getRow().getData().a6m;
                                 return price ? price + "pp" : '';
                             }
                         },
-                        { title: "All Count", field: "totalAuctionCount" },
+                        { title: "All Count", field: "ty" },
                         {
-                            title: "All Avg", field: "totalAuctionAverage",
+                            title: "All Avg", field: "ay",
                             formatter: function (cell, formatterParams) {
-                                let price = cell.getRow().getData().totalAuctionAverage;
+                                let price = cell.getRow().getData().ay;
                                 return price ? price + "pp" : '';
                             }
                         }
@@ -87,7 +87,7 @@
                 });
             let valueEl = document.getElementById("filter-value");
             function updateFilter() {
-                table.setFilter("itemName", "like", valueEl.value);
+                table.setFilter("n", "like", valueEl.value);
             }
 
             document.getElementById("filter-value").addEventListener("keyup", updateFilter);

@@ -53,27 +53,29 @@ namespace EQToolApis.Controllers
                     .Where(a => a.EQitemId == itemid)
                     .Select(a => a.ItemName)
                     .FirstOrDefault(),
-                Items = new List<ItemAuctionDetail>()
+                Items = new List<ItemAuctionDetail>(),
+                Players = new Dictionary<int, string>()
             };
             playerCache.PlayersLock.EnterReadLock();
             try
-            {
-                foreach (var item in items)
+            { 
+                foreach (var i in items)
                 {
                     Item.Items.Add(new ItemAuctionDetail
                     {
-                        AuctionType = item.AuctionType,
-                        PlayerName = playerCache.Players[item.EQAuctionPlayerId].Name,
-                        AuctionPrice = item.AuctionPrice,
-                        TunnelTimestamp = item.TunnelTimestamp
+                        u = i.AuctionType,
+                         i = i.EQAuctionPlayerId,
+                        p = i.AuctionPrice,
+                        t = i.TunnelTimestamp
                     });
-                }
+                    Item.Players.TryAdd(i.EQAuctionPlayerId, playerCache.Players[i.EQAuctionPlayerId].Name);
+                } 
             }
             finally
             {
                 playerCache.PlayersLock.ExitReadLock();
             }
-            Item.Items = Item.Items.OrderByDescending(a => a.TunnelTimestamp).ToList();
+            Item.Items = Item.Items.OrderByDescending(a => a.t).ToList();
             return Item;
         }
     }

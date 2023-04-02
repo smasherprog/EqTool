@@ -4,13 +4,13 @@ namespace EQToolApis.Models
 {
     public class ItemAuctionDetail
     {
-        public AuctionType AuctionType { get; set; }
+        public AuctionType u { get; set; }
 
-        public string PlayerName { get; set; }
+        public int i { get; set; }
 
-        public int? AuctionPrice { get; set; }
+        public int? p { get; set; }
 
-        public DateTimeOffset TunnelTimestamp { get; set; }
+        public DateTimeOffset t { get; set; }
     }
 
     public class ItemDetail
@@ -18,5 +18,7 @@ namespace EQToolApis.Models
         public List<ItemAuctionDetail> Items { get; set; }
 
         public string? ItemName { get; set; }
+
+        public Dictionary<int, string> Players { get; set; }
     }
 }

@@ -13,27 +13,26 @@
         $.get("/api/serveritemdetail/@Model.ItemId", function (data, status) {
             let wtsdata = [];
             let wtbdata = [];
-            if (data.items) {
-
+            if (data.items) { 
                 for (let i = 0; i < data.items.length; i++) {
-                    if (data.items[i].auctionType == 0) {
-                        data.items[i].auctionType = 'WTS';
-                        if (data.items[i].auctionPrice) {
-                            wtsdata.push({ x: data.items[i].tunnelTimestamp, y: data.items[i].auctionPrice });
+                    if (data.items[i].u == 0) {
+                        data.items[i].u = 'WTS';
+                        if (data.items[i].p) {
+                            wtsdata.push({ x: data.items[i].t, y: data.items[i].p });
                         }
-                    } else if (data.items[i].auctionType == 1) {
-                        data.items[i].auctionType = 'WTB';
-                        if (data.items[i].auctionPrice) {
-                            wtbdata.push({ x: data.items[i].tunnelTimestamp, y: data.items[i].auctionPrice });
+                    } else if (data.items[i].u == 1) {
+                        data.items[i].u = 'WTB';
+                        if (data.items[i].p) {
+                            wtbdata.push({ x: data.items[i].t, y: data.items[i].p });
                         }
-                    } else if (data.items[i].auctionType == 2) {
-                        data.items[i].auctionType = 'BOTH';
+                    } else if (data.items[i].u == 2) {
+                        data.items[i].u = 'BOTH';
                     }
-                    let tunnelTimestamp = data.items[i].tunnelTimestamp;
+                    let tunnelTimestamp = data.items[i].t;
                     let d = new Date(tunnelTimestamp);
-                    data.items[i].tunnelTimestamp = d.toLocaleString();
-                }
-
+                    data.items[i].t = d.toLocaleString();
+                    data.items[i].n = data.players[data.items[i].i];
+                } 
             }
             if (data) {
                 document.getElementById('ItemName').innerHTML = `<a href="https://wiki.project1999.com/${data.itemName.replace(' ', '_')}" target = "_blank"> ${data.itemName} <i class="fa fa-external-link" > </i></a >`;
@@ -44,16 +43,16 @@
                     layout: "fitDataStretch",
                     data: data.items, //set initial table data
                     columns: [
-                        { title: "Type", field: "auctionType" },
-                        { title: "Player Name", field: "playerName" },
+                        { title: "Type", field: "u" },
+                        { title: "Player Name", field: "n" },
                         {
-                            title: "Auction Price", field: "auctionPrice",
+                            title: "Auction Price", field: "p",
                             formatter: function (cell, formatterParams) {
-                                let price = cell.getRow().getData().auctionPrice;
+                                let price = cell.getRow().getData().p;
                                 return price ? price + "pp" : '';
                             }
                         },
-                        { title: "Timestamp", field: "tunnelTimestamp" }
+                        { title: "Timestamp", field: "t" }
                     ],
                     progressiveRender: true, //enable progressive rendering
                     progressiveRenderSize: 500, //sets the number of rows to render per block (default = 20)
@@ -61,7 +60,7 @@
                 });
             let valueEl = document.getElementById("filter-value");
             function updateFilter() {
-                table.setFilter("playerName", "like", valueEl.value);
+                table.setFilter("n", "like", valueEl.value);
             }
 
             document.getElementById("filter-value").addEventListener("keyup", updateFilter);
@@ -108,9 +107,10 @@
 
 
 <div class="w-100 vh-100">
-    <h3 id="ItemName"></h3>
+    <button type="button" onclick="history.back()" class="btn btn-primary float-left">Go Back</button>
+    <h3 id="ItemName" class="float-left ml-5"></h3>
     <canvas id="myChart" style="max-height:300px"></canvas>
-    <input id="filter-value" type="text" placeholder="Filter by Player">
+    <input id="filter-value" type="text" placeholder="Filter by Player">  
     <button id="filter-clear">Clear Filter</button>
     <div id="example-table"></div>
 </div>
