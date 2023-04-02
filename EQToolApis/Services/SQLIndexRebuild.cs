@@ -1,5 +1,7 @@
 ﻿using EQToolApis.DB;
+using Hangfire;
 using Microsoft.EntityFrameworkCore;
+using System.ComponentModel;
 
 namespace EQToolApis.Services
 {
@@ -11,22 +13,29 @@ namespace EQToolApis.Services
             this.dbcontext = dbcontext;
         }
 
+        [AutomaticRetry(Attempts = 0)]
         public void RebuildEQAuctionPlayers()
         {
             dbcontext.Database.SetCommandTimeout(TimeSpan.FromMinutes(20));
             _ = dbcontext.Database.ExecuteSqlRaw("ALTER INDEX ALL ON [EQAuctionPlayers] REBUILD WITH (FILLFACTOR = 80, SORT_IN_TEMPDB = ON, STATISTICS_NORECOMPUTE = ON)");
         }
+
+        [AutomaticRetry(Attempts = 0)]
         public void RebuildEQitems()
         {
             dbcontext.Database.SetCommandTimeout(TimeSpan.FromMinutes(20));
             _ = dbcontext.Database.ExecuteSqlRaw("ALTER INDEX ALL ON [EqToolExceptions] REBUILD WITH (FILLFACTOR = 80, SORT_IN_TEMPDB = ON, STATISTICS_NORECOMPUTE = ON)");
             _ = dbcontext.Database.ExecuteSqlRaw("ALTER INDEX ALL ON [EQitems] REBUILD WITH (FILLFACTOR = 80, SORT_IN_TEMPDB = ON, STATISTICS_NORECOMPUTE = ON)");
         }
+
+        [AutomaticRetry(Attempts = 0)]
         public void RebuildEQTunnelAuctionItems()
         {
             dbcontext.Database.SetCommandTimeout(TimeSpan.FromMinutes(10));
             _ = dbcontext.Database.ExecuteSqlRaw("ALTER INDEX ALL ON [EQTunnelAuctionItems] REBUILD WITH (FILLFACTOR = 80, SORT_IN_TEMPDB = ON, STATISTICS_NORECOMPUTE = ON)");
         }
+
+        [AutomaticRetry(Attempts = 0)]
         public void RebuildEQTunnelAuctionEQTunnelMessages()
         {
             dbcontext.Database.SetCommandTimeout(TimeSpan.FromMinutes(20));
@@ -34,6 +43,7 @@ namespace EQToolApis.Services
             _ = dbcontext.Database.ExecuteSqlRaw("ALTER INDEX ALL ON [Players] REBUILD WITH (FILLFACTOR = 80, SORT_IN_TEMPDB = ON, STATISTICS_NORECOMPUTE = ON)");
         }
 
+        [AutomaticRetry(Attempts = 0)]
         public void ItemDupFix()
         {
             dbcontext.Database.SetCommandTimeout(TimeSpan.FromMinutes(10));
@@ -58,6 +68,7 @@ group by item.Server, item.ItemName
 having count(*)>1)");
         }
 
+        [AutomaticRetry(Attempts = 0)]
         public void MessageDupFix()
         {
             dbcontext.Database.SetCommandTimeout(TimeSpan.FromMinutes(10));
