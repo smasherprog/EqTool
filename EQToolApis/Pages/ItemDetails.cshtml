@@ -106,7 +106,16 @@
                 document.title = data.itemName;
                 for (let key in data.players) {
                     let value = data.players[key];
-                    $('#playerselect').append(`<option value="${key}" selected>${value}</option>`);
+                    let count=0;
+                    for (let i = 0; i < data.items.length; i++) {
+                        if (data.items[i].p && key == data.items[i].i) {
+                            count +=1;
+                        }
+                    }
+                    if (count>0){
+                        $('#playerselect').append(`<option value="${key}" selected>${value} ${count}</option>`);
+                    }
+               
                 }
                 $('#playerselect').multiselect({
                     includeSelectAllOption: true,
