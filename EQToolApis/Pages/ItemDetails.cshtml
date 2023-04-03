@@ -1,89 +1,34 @@
 ﻿@page "/ItemDetails/{itemid}"
 @model EQToolApis.Pages.ItemDetailsModel
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js" integrity="sha512-pumBsjNRGGqkPzKHndZMaAG+bir374sORyzM3uulLV14lN5LyykqNk8eEeUlUkB3U0M4FApyaHraT65ihJhDpQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<link href="https://unpkg.com/tabulator-tables@5.4.4/dist/css/tabulator.min.css" rel="stylesheet">
-<script type="text/javascript" src="https://unpkg.com/tabulator-tables@5.4.4/dist/js/tabulator.min.js"></script>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css" integrity="sha512-rt/SrQ4UNIaGfDyEXZtNcyWvQeOq0QLygHluFQcSjaGB04IxWhal71tKuzP6K8eYXYB6vJV4pHkXcmFGGQ1/0w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js" integrity="sha512-pumBsjNRGGqkPzKHndZMaAG+bir374sORyzM3uulLV14lN5LyykqNk8eEeUlUkB3U0M4FApyaHraT65ihJhDpQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link href="https://unpkg.com/tabulator-tables@5.4.4/dist/css/tabulator.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/1.1.2/css/bootstrap-multiselect.min.css" integrity="sha512-fZNmykQ6RlCyzGl9he+ScLrlU0LWeaR6MO/Kq9lelfXOw54O63gizFMSD5fVgZvU1YfDIc6mxom5n60qJ1nCrQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.2.1/chart.umd.js" integrity="sha512-vCUbejtS+HcWYtDHRF2T5B0BKwVG/CLeuew5uT2AiX4SJ2Wff52+kfgONvtdATqkqQMC9Ye5K+Td0OTaz+P7cw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.0/moment.min.js" integrity="sha512-Izh34nqeeR7/nwthfeE0SI3c8uhFSnqxV0sI9TvTcXiFJkMd6fB644O64BRq2P/LA/+7eRvCw4GmLsXksyTHBg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-adapter-moment/1.0.1/chartjs-adapter-moment.min.js" integrity="sha512-hVy4KxCKgnXi2ok7rlnlPma4JHXI1VPQeempoaclV1GwRHrDeaiuS1pI6DVldaj5oh6Opy2XJ2CTljQLPkaMrQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<script>
-    $(document).ready(function () {
-        $.get("/api/serveritemdetail/@Model.ItemId", function (data, status) {
-            let wtsdata = [];
-            let wtbdata = [];
-            if (data.items) { 
-                for (let i = 0; i < data.items.length; i++) {
-                    if (data.items[i].u == 0) {
-                        data.items[i].u = 'WTS';
-                        if (data.items[i].p) {
-                            wtsdata.push({ x: data.items[i].t, y: data.items[i].p });
-                        }
-                    } else if (data.items[i].u == 1) {
-                        data.items[i].u = 'WTB';
-                        if (data.items[i].p) {
-                            wtbdata.push({ x: data.items[i].t, y: data.items[i].p });
-                        }
-                    } else if (data.items[i].u == 2) {
-                        data.items[i].u = 'BOTH';
-                    }
-                    let tunnelTimestamp = data.items[i].t;
-                    let d = new Date(tunnelTimestamp);
-                    data.items[i].t = d.toLocaleString();
-                    data.items[i].n = data.players[data.items[i].i];
-                } 
-            }
-            if (data) {
-                document.getElementById('ItemName').innerHTML = `<a href="https://wiki.project1999.com/${data.itemName.replace(' ', '_')}" target = "_blank"> ${data.itemName} <i class="fa fa-external-link" > </i></a >`;
-            }
-            var table = new Tabulator("#example-table",
-                {
-                    maxHeight: "90%",
-                    layout: "fitDataStretch",
-                    data: data.items, //set initial table data
-                    columns: [
-                        { title: "Type", field: "u" },
-                        { title: "Player Name", field: "n" },
-                        {
-                            title: "Auction Price", field: "p",
-                            formatter: function (cell, formatterParams) {
-                                let price = cell.getRow().getData().p;
-                                return price ? price + "pp" : '';
-                            }
-                        },
-                        { title: "Timestamp", field: "t" }
-                    ],
-                    progressiveRender: true, //enable progressive rendering
-                    progressiveRenderSize: 500, //sets the number of rows to render per block (default = 20)
-                    progressiveRenderMargin: 350
-                });
-            let valueEl = document.getElementById("filter-value");
-            function updateFilter() {
-                table.setFilter("n", "like", valueEl.value);
-            }
+    <script type="text/javascript" src="https://unpkg.com/tabulator-tables@5.4.4/dist/js/tabulator.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.bundle.min.js" integrity="sha512-igl8WEUuas9k5dtnhKqyyld6TzzRjvMqLC79jkgT3z02FvJyHAuUtyemm/P/jYSne1xwFI06ezQxEwweaiV7VA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/1.1.2/js/bootstrap-multiselect.min.js" integrity="sha512-lxQ4VnKKW7foGFV6L9zlSe+6QppP9B2t+tMMaV4s4iqAv4iHIyXED7O+fke1VeLNaRdoVkVt8Hw/jmZ+XocsXQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
-            document.getElementById("filter-value").addEventListener("keyup", updateFilter);
-            document.getElementById("filter-clear").addEventListener("click", function () {
-                valueEl.value = "";
-                table.clearFilter();
-            });
-            const ctx = document.getElementById('myChart');
-            const chart = new Chart(ctx, {
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.2.1/chart.umd.js" integrity="sha512-vCUbejtS+HcWYtDHRF2T5B0BKwVG/CLeuew5uT2AiX4SJ2Wff52+kfgONvtdATqkqQMC9Ye5K+Td0OTaz+P7cw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.0/moment.min.js" integrity="sha512-Izh34nqeeR7/nwthfeE0SI3c8uhFSnqxV0sI9TvTcXiFJkMd6fB644O64BRq2P/LA/+7eRvCw4GmLsXksyTHBg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/chartjs-adapter-moment/1.0.1/chartjs-adapter-moment.min.js" integrity="sha512-hVy4KxCKgnXi2ok7rlnlPma4JHXI1VPQeempoaclV1GwRHrDeaiuS1pI6DVldaj5oh6Opy2XJ2CTljQLPkaMrQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+
+    <script>
+        let originaldata = [];
+        $(document).ready(function () {
+            var table;
+            var chart = new Chart(document.getElementById('myChart'), {
                 type: 'scatter',
                 data: {
-                    datasets: [
-                        {
-                            label: 'WTS',
-                            data: wtsdata
-                        },
-                        {
-                            label: 'WTB',
-                            data: wtbdata
-                        },
-                    ]
+                    datasets: []
                 },
                 options: {
+                    maintainAspectRatio: false,
+                    responsive: true,
                     animation: false,
                     spanGaps: true, // enable for all datasets
                     scales: {
@@ -92,25 +37,146 @@
                         }
                     },
                     plugins: {
+                        legend: { display: false },
                         tooltip: {
-                            enabled: false // <-- this option disables tooltips
+                            callbacks: {
+                                label: function (TooltipItem) {
+                                    return TooltipItem.dataset.label + ' ' + TooltipItem.raw.extradata.u + ' ' + TooltipItem.parsed.y + 'pp';
+                                }
+                            }
                         }
                     }
                 }
             });
+            function updatedata() {
+                console.log('rebuilding data');
+                let playeridstoshow = [];
+                let playerkeywordstofilter = [];
+                $('#playerselect :selected').each(function (i, value) {
+                    playeridstoshow.push(+value.value);
+                    playerkeywordstofilter.push(value.text);
+                });
+                let playerstoshow = playerkeywordstofilter.join(' ');
+                table.setFilter("n", "keywords", playerstoshow, { matchAll: false });
+                let data = {
+                    items: originaldata.items.filter(a => playeridstoshow.includes(a.i)),
+                    players: originaldata.players,
+                    itemName: originaldata.itemName
+                }
+                let chartdata = [];
+                if (data.items) {
+                    let itemsbyplayer = data.items.reduce(function (r, a) {
+                        r[a.i] = r[a.i] || [];
+                        r[a.i].push(a);
+                        return r;
+                    }, Object.create(null));
+                    let everyoneelselist =
+                    {
+                        label: 'Others',
+                        data: []
+                    };
+                    Object.entries(itemsbyplayer).forEach(itemsplayer => {
+                        let id = itemsplayer[0];
+                        let itemsbyplayer =
+                        {
+                            label: data.players[id],
+                            data: []
+                        };
+                        let shouldadd = false;
+                        let itemarray = itemsplayer[1];
+                        for (let j = 0; j < itemarray.length; j++) {
+                            if (itemarray[j].p) {
+                                shouldadd = true;
+                                itemsbyplayer.data.push({ x: itemarray[j].t, y: itemarray[j].p, extradata: itemarray[j] });
+                            }
+                        }
+                        if (shouldadd) {
+                            chartdata.push(itemsbyplayer);
+                        }
+                    });
+                }
+                chart.data.datasets = chartdata;
+                chart.update();
+            }
+
+            $.get("/api/serveritemdetail/@Model.ItemId", function (data, status) {
+
+                originaldata = data;
+                document.getElementById('ItemName').innerHTML = `<a href="https://wiki.project1999.com/${data.itemName.replace(' ', '_')}" target = "_blank"> ${data.itemName} <i class="fa fa-external-link"></i></a >`;
+                document.title = data.itemName;
+                for (let key in data.players) {
+                    let value = data.players[key];
+                    $('#playerselect').append(`<option value="${key}" selected>${value}</option>`);
+                }
+                $('#playerselect').multiselect({
+                    includeSelectAllOption: true,
+                    enableFiltering: true,
+                    maxHeight: 200,
+                    onSelectAll: function (options) { updatedata(); },
+                    onChange: function (option, checked, select) { updatedata(); }
+
+                });
+                if (data.items) {
+                    for (let i = 0; i < data.items.length; i++) {
+                        if (data.items[i].u == 0) {
+                            data.items[i].u = 'WTS';
+                        } else if (data.items[i].u == 1) {
+                            data.items[i].u = 'WTB';
+                        } else if (data.items[i].u == 2) {
+                            data.items[i].u = 'BOTH';
+                        }
+                        let tunnelTimestamp = data.items[i].t;
+                        let d = new Date(tunnelTimestamp);
+                        data.items[i].t = d.toLocaleString();
+                        data.items[i].n = data.players[data.items[i].i];
+                    }
+                }
+                let ele = document.getElementById('TableData');
+                table = new Tabulator(ele,
+                    {
+                        maxHeight: "100%",
+                        layout: "fitDataStretch",
+                        data: data.items, //set initial table data
+                        columns: [
+                            { title: "Type", field: "u" },
+                            { title: "Player Name", field: "n" },
+                            {
+                                title: "Auction Price", field: "p",
+                                formatter: function (cell, formatterParams) {
+                                    let price = cell.getRow().getData().p;
+                                    return price ? price + "pp" : '';
+                                }
+                            },
+                            { title: "Timestamp", field: "t" }
+                        ],
+                        progressiveRender: true, //enable progressive rendering
+                        progressiveRenderSize: 500, //sets the number of rows to render per block (default = 20)
+                        progressiveRenderMargin: 350
+                    });
+                updatedata();
+            });
         });
+    </script>
+</head>
 
+<body>
+    <div class="row">
+        <div class="col-12">
+            <button type="button" onclick="history.back()" class="btn btn-primary float-left">Go Back</button>
+            <h3 id="ItemName" class="float-left ml-5"></h3>
+        </div>
+    </div>
 
-    });
-</script>
+    <div class="w-100" style="height: 30vh!important;">
+        <canvas id="myChart" class="h-100"></canvas>
+    </div>
+    <div class="w-100">
+        <h5>Players:  <select id="playerselect" multiple="multiple"></select></h5>
+    </div>
+    <div class="w-100" style="height: 60vh!important;">
+        <div id="TableData"></div>
+    </div>
 
+</body>
+</html>
 
-
-<div class="w-100 vh-100">
-    <button type="button" onclick="history.back()" class="btn btn-primary float-left">Go Back</button>
-    <h3 id="ItemName" class="float-left ml-5"></h3>
-    <canvas id="myChart" style="max-height:300px"></canvas>
-    <input id="filter-value" type="text" placeholder="Filter by Player">  
-    <button id="filter-clear">Clear Filter</button>
-    <div id="example-table"></div>
-</div>
