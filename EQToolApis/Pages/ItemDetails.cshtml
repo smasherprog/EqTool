@@ -25,8 +25,13 @@
             function average(ctx) {
                 if (ctx.chart.data.datasets.length == 0) {
                     return 0;
-                }
-                const values = ctx.chart.data.datasets[0].data.map(a => a.y);
+                } 
+                let values = [];
+                ctx.chart.data.datasets.forEach(a => {
+                    a.data.forEach(a => {
+                        values.push(a.y);
+                    }); 
+                });
                 var m = values.reduce((a, b) => {
                     let k = a + b;
                     return k;
@@ -40,7 +45,12 @@
                 if (ctx.chart.data.datasets.length == 0) {
                     return 0;
                 }
-                const values = ctx.chart.data.datasets[0].data.map(a=> a.y);
+                let values = [];
+                ctx.chart.data.datasets.forEach(a=>{
+                    a.data.forEach(a => {
+                        values.push(a.y);
+                    });
+                }); 
                 const n = values.length;
                 const mean = average(ctx);
                 let v = Math.sqrt(values.map(x => Math.pow(x - mean, 2)).reduce((a, b) => (a + b)) / n) *3;
@@ -268,8 +278,8 @@
     <div class="row">
         <div class="col-12">
             <button type="button" onclick="history.back()" class="btn btn-primary float-left">Go Back</button>
-            <h3 id="ItemName" class="float-left ml-5"></h3>
-            <small>Lines below are 3 standard deviations from the mean!</small>
+            <h3 id="ItemName" class="float-left ml-5 mr-2"></h3>
+            <small> Lines below are 3 standard deviations from the mean!</small>
         </div>
     </div>
 
