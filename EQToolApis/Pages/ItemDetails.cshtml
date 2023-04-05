@@ -25,18 +25,20 @@
             function average(ctx) {
                 if (ctx.chart.data.datasets.length == 0) {
                     return 0;
-                } 
+                }
                 let values = [];
                 ctx.chart.data.datasets.forEach(a => {
                     a.data.forEach(a => {
-                        values.push(a.y);
-                    }); 
+                        if (a.y > 1) {
+                            values.push(a.y);
+                        } 
+                    });
                 });
                 var m = values.reduce((a, b) => {
                     let k = a + b;
                     return k;
                 }
-                 , 0);
+                    , 0);
                 let v = m / values.length;
                 return v;
             }
@@ -46,14 +48,16 @@
                     return 0;
                 }
                 let values = [];
-                ctx.chart.data.datasets.forEach(a=>{
+                ctx.chart.data.datasets.forEach(a => {
                     a.data.forEach(a => {
-                        values.push(a.y);
+                       if (a.y > 1) {
+                            values.push(a.y);
+                        } 
                     });
-                }); 
+                });
                 const n = values.length;
                 const mean = average(ctx);
-                let v = Math.sqrt(values.map(x => Math.pow(x - mean, 2)).reduce((a, b) => (a + b)) / n) *3;
+                let v = Math.sqrt(values.map(x => Math.pow(x - mean, 2)).reduce((a, b) => (a + b)) / n) * 3;
                 return v;
             }
             const annotation1 = {
