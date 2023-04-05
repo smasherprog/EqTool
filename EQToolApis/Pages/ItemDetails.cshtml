@@ -104,23 +104,34 @@
                 originaldata = data;
                 document.getElementById('ItemName').innerHTML = `<a href="https://wiki.project1999.com/${data.itemName.replace(' ', '_')}" target = "_blank"> ${data.itemName} <i class="fa fa-external-link"></i></a >`;
                 document.title = data.itemName;
+                let pl = [];
                 for (let key in data.players) {
                     let value = data.players[key];
-                    let count=0;
+                    let count = 0;
                     for (let i = 0; i < data.items.length; i++) {
                         if (data.items[i].p && key == data.items[i].i) {
-                            count +=1;
+                            count += 1;
                         }
                     }
-                    if (count>0){
-                        $('#playerselect').append(`<option value="${key}" selected>${value} (${count})</option>`);
+                    if (count > 0) {
+                        pl.push({ count: count, key: key })
                     }
-               
                 }
+
+                pl = pl.sort(function (a, b) {
+                    return b.count - a.count;
+                });
+                pl.forEach(a=> {
+                    let value = data.players[a.key];
+                    $('#playerselect').append(`<option value="${a.key}" selected>${value} (${a.count})</option>`);
+
+                } );
                 $('#playerselect').multiselect({
                     includeSelectAllOption: true,
                     enableFiltering: true,
                     maxHeight: 200,
+                    filterBehavior: 'text',
+                    enableCaseInsensitiveFiltering: true,
                     onSelectAll: function (options) { updatedata(); },
                     onChange: function (option, checked, select) { updatedata(); }
 
