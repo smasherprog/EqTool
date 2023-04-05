@@ -50,9 +50,9 @@
                 let values = [];
                 ctx.chart.data.datasets.forEach(a => {
                     a.data.forEach(a => {
-                       if (a.y > 1) {
+                        if (a.y > 1) {
                             values.push(a.y);
-                        } 
+                        }
                     });
                 });
                 const n = values.length;
