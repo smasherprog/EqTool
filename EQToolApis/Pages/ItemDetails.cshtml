@@ -39,6 +39,9 @@
                     plugins: {
                         legend: { display: false },
                         tooltip: {
+                            animation: {
+                                duration: 0
+                            },
                             callbacks: {
                                 label: function (TooltipItem) {
                                     return TooltipItem.dataset.label + ' ' + TooltipItem.raw.extradata.u + ' ' + TooltipItem.parsed.y + 'pp';
