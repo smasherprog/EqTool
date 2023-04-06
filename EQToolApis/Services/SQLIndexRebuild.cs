@@ -94,7 +94,7 @@ where eqpi.AuctionPrice is not null and (eqpi.AuctionPrice > eqitem.TotalWTSLast
 set eqpi.AuctionPrice = null 
 from EQTunnelAuctionItems eqpi
 join EQitems eqitem on eqitem.EQitemId = eqpi.EQitemId
-where eqpi.AuctionPrice is not null and (eqpi.AuctionPrice < eqitem.TotalWTSLast6MonthsAverage * .2 OR eqpi.AuctionPrice > eqitem.TotalWTSLast6MonthsAverage * 3.5 ) AND eqitem.TotalWTSLast6MonthsAverage >100");
+where eqpi.AuctionPrice is not null and eqpi.AuctionPrice < eqitem.TotalWTSLast6MonthsAverage * .2 AND eqitem.TotalWTSLast6MonthsAverage >50");
         }
     }
 }
