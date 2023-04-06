@@ -115,6 +115,7 @@ namespace EQTool
 
         private void App_Startup(object sender, StartupEventArgs e)
         {
+            this.ShutdownMode = ShutdownMode.OnExplicitShutdown;
             SetupExceptionHandling();
             if (!WaitForEQToolToStop())
             {
