@@ -94,7 +94,7 @@ Features:
 <li>EQTool detected that eq logging is turned off. You must click enable logging. This will turn on EQ's logging which is where EQTool gets informatioon from.</li>
 </ul>
 
-<h4>Do i have to set my class and level?</h4> 
+<h4>Do I have to set my class and level?</h4> 
 <ul>
 <li>If you cast spells eqtool will automatically detect your class and level once you start casting spells.</li>
 <li>You should still enter your class and level. It helps ensure calculations on spell durations are accurate.</li>
@@ -139,4 +139,12 @@ Features:
 <ul>
 <li>This can happen for many reasons. The most common being that they left the group and you want to remove them from the list.</li>
 <li>Click the Trashcan next to the next and that NPC/Player will be removed from the list. This is a one-time action and if you cast on them again, they will reappear.</li> 
+</ul>
+
+<h4>Where and how are sieves tracked?</h4>  
+![image](https://user-images.githubusercontent.com/3393733/230679391-92754265-ec66-4643-ad30-5b6e4cdd164b.png)
+
+<ul>
+<li>Every time a message for the enchanter Mana sieve spell is encountered, the counter is incremented.</li>
+<li>So, if you are in range of the sieve messages, you will have an accurate count in the Trigger list.</li> 
 </ul>
