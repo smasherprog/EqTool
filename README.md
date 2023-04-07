@@ -73,17 +73,17 @@ Features:
 
 <h3>Faqs</h3>
 <h4>Why does chrome warn me?</h4> 
-<img width="359" alt="image" src="https://user-images.githubusercontent.com/3393733/223326270-a079946d-57dc-41dd-a58e-f46a0c776b54.png">
+<img alt="image" src="https://user-images.githubusercontent.com/3393733/223326270-a079946d-57dc-41dd-a58e-f46a0c776b54.png">
 <ul>
 <li>Ignore it and download!</li> 
 </ul>
 <h4>Why does windows pop up a blue screen?</h4> 
-<img width="427" alt="image" src="https://user-images.githubusercontent.com/3393733/223328194-0946d278-09dc-4504-bed8-172d63fa98e0.png">
+<img height="300" alt="image" src="https://user-images.githubusercontent.com/3393733/223328194-0946d278-09dc-4504-bed8-172d63fa98e0.png">
 <ul>
 <li>Press More info and "Run anyway"</li> 
 </ul>
 <h4>Why does the program not start?</h4> 
-<img width="944" alt="image" src="https://user-images.githubusercontent.com/3393733/223326377-7cab3be5-bee5-4029-b513-0e8b2ff0bb78.png">
+<img height="300" alt="image" src="https://user-images.githubusercontent.com/3393733/223326377-7cab3be5-bee5-4029-b513-0e8b2ff0bb78.png">
 <ul>
 <li>In the above image, you are running the exe from INSIDE the zip. You must first EXTRACT the exe, then you can run it!</li> 
 </ul>
@@ -135,16 +135,24 @@ Features:
 </ul>
 
 <h4>How do I remove an NPC/Player from the spell list?</h4> 
-<img width="218" alt="image" src="https://user-images.githubusercontent.com/3393733/222474771-41cc3276-9a9e-4a30-b868-5fb4d0b87de4.png">
+<img alt="image" src="https://user-images.githubusercontent.com/3393733/222474771-41cc3276-9a9e-4a30-b868-5fb4d0b87de4.png">
 <ul>
 <li>This can happen for many reasons. The most common being that they left the group and you want to remove them from the list.</li>
 <li>Click the Trashcan next to the next and that NPC/Player will be removed from the list. This is a one-time action and if you cast on them again, they will reappear.</li> 
 </ul>
 
 <h4>Where and how are sieves tracked?</h4>  
-![image](https://user-images.githubusercontent.com/3393733/230679391-92754265-ec66-4643-ad30-5b6e4cdd164b.png)
-
+<img alt="image" src="https://user-images.githubusercontent.com/3393733/230679391-92754265-ec66-4643-ad30-5b6e4cdd164b.png">
 <ul>
 <li>Every time a message for the enchanter Mana sieve spell is encountered, the counter is incremented.</li>
 <li>So, if you are in range of the sieve messages, you will have an accurate count in the Trigger list.</li> 
 </ul>
+
+<h4>What is this DPS session tracking?</h4>  
+<img alt="image" src="https://user-images.githubusercontent.com/3393733/230679632-732b2d60-e471-4508-bcfe-720f37ae2c35.png">
+<ul>
+<li>The first row is the saved fight data which shows all-time-best DPS, Biggest hit and Total Damage.</li>
+<li>Current Session is best DPS, Biggest hit and Total Damage, except the timeframe starts since you have logged on.</li>
+<li>Last Session is the old session data. You can use this to compare weapon swapping and differnt setups.</li>
+</ul>
+
