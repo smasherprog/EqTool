@@ -83,18 +83,27 @@ namespace EQTool.ViewModels
                 OnPropertyChanged();
             }
         }
-         
+
+        public static bool ShouldRemove(DateTime now, DateTime? lastdmgdone, DateTime startime, int groupcount)
+        {
+            var lasttime = lastdmgdone.HasValue && lastdmgdone.Value > startime ? lastdmgdone.Value : startime;
+            var timeup = Math.Abs((now - lasttime).TotalSeconds);
+            var secondstosubtract = groupcount * 20;
+            secondstosubtract = Math.Min(60, secondstosubtract);
+            var secthreshhold = 80 - secondstosubtract;
+            return timeup > 40;
+        }
+
         public void UpdateDPS()
         {
             appDispatcher.DispatchUI(() =>
             {
                 var itemstormove = new List<EntittyDPS>();
                 var now = DateTime.Now;
-
+                var groups = _EntityList.GroupBy(a => a.TargetName).ToList();
                 foreach (var item in _EntityList)
                 {
-                    var lasttime = item.LastDamageDone ?? item.StartTime;
-                    if (Math.Abs((now - lasttime).TotalSeconds) > 20)
+                    if (ShouldRemove(now, item.LastDamageDone, item.StartTime, groups.Count))
                     {
                         itemstormove.Add(item);
                     }
@@ -104,7 +113,6 @@ namespace EQTool.ViewModels
                     }
                 }
 
-                var groups = _EntityList.GroupBy(a => a.TargetName).ToList();
                 foreach (var item in groups)
                 {
                     var totaldmg = item.Sum(a => a.TotalDamage);
@@ -122,7 +130,7 @@ namespace EQTool.ViewModels
                 var you = _EntityList.FirstOrDefault(a => a.SourceName == "You" && a.TotalSeconds > 20);
                 if (you != null)
                 {
-                    if ( this.ActivePlayer.Player != null)
+                    if (this.ActivePlayer.Player != null)
                     {
                         this.ActivePlayer.Player.BestPlayerDamage.HighestDPS = Math.Max(this.ActivePlayer.Player.BestPlayerDamage.HighestDPS, you.DPS);
                         this.ActivePlayer.Player.BestPlayerDamage.TargetTotalDamage = Math.Max(this.ActivePlayer.Player.BestPlayerDamage.TargetTotalDamage, you.TotalDamage);

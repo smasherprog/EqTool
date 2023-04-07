@@ -1,6 +1,7 @@
 ﻿using EQTool.Services.Parsing;
 using EQTool.ViewModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Linq;
 
 namespace EQtoolsTests
@@ -462,6 +463,48 @@ High MR, Summons
             Assert.IsTrue(model.RelatedQuests.Any(a => a.Name == "Warrior Pike Quests"));
             Assert.IsTrue(model.RelatedQuests.Any(a => a.Name == "Dreadscale Armor Quests"));
             Assert.IsTrue(model.RelatedQuests.Any(a => a.Name == "Monk Shackle Quests"));
+        }
+
+        [TestMethod]
+        public void TestRemove1()
+        {
+            var now = DateTime.Now;
+            var shouldremove = DPSWindowViewModel.ShouldRemove(now, null, now.AddSeconds(-5), 1);
+            Assert.IsFalse(shouldremove);
+
+            shouldremove = DPSWindowViewModel.ShouldRemove(now, null, now.AddSeconds(-40), 1);
+            Assert.IsFalse(shouldremove);
+            shouldremove = DPSWindowViewModel.ShouldRemove(now, null, now.AddSeconds(-41), 1);
+            Assert.IsTrue(shouldremove);
+
+            shouldremove = DPSWindowViewModel.ShouldRemove(now, now.AddSeconds(-39), now.AddSeconds(-60), 1);
+            Assert.IsFalse(shouldremove);
+            shouldremove = DPSWindowViewModel.ShouldRemove(now, now.AddSeconds(-41), now.AddSeconds(-60), 1);
+            Assert.IsTrue(shouldremove);
+        
+            //shouldremove = DPSWindowViewModel.ShouldRemove(now, null, now.AddSeconds(-59), 1);
+            //Assert.IsFalse(shouldremove);
+            //shouldremove = DPSWindowViewModel.ShouldRemove(now, null, now.AddSeconds(-61), 1);
+            //Assert.IsTrue(shouldremove);
+
+            //shouldremove = DPSWindowViewModel.ShouldRemove(now, now.AddSeconds(-20), now.AddSeconds(-61), 1);
+            //Assert.IsFalse(shouldremove);
+
+            //shouldremove = DPSWindowViewModel.ShouldRemove(now, now.AddSeconds(-20), now.AddSeconds(-61), 8);
+            //Assert.IsFalse(shouldremove);
+
+            //shouldremove = DPSWindowViewModel.ShouldRemove(now, now.AddSeconds(-41), now.AddSeconds(-61), 2);
+            //Assert.IsTrue(shouldremove);
+            //shouldremove = DPSWindowViewModel.ShouldRemove(now, now.AddSeconds(-39), now.AddSeconds(-61), 2);
+            //Assert.IsFalse(shouldremove);
+
+            //shouldremove = DPSWindowViewModel.ShouldRemove(now, now.AddSeconds(-20), now.AddSeconds(-61), 3);
+            //Assert.IsFalse(shouldremove);
+            //shouldremove = DPSWindowViewModel.ShouldRemove(now, now.AddSeconds(-21), now.AddSeconds(-61), 3);
+            //Assert.IsTrue(shouldremove);
+
+            //shouldremove = DPSWindowViewModel.ShouldRemove(now, now.AddSeconds(-19), now.AddSeconds(-61), 8);
+            //Assert.IsFalse(shouldremove);
         }
     }
 }
