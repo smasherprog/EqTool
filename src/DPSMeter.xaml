@@ -22,7 +22,8 @@
     <Border Background="#50FFFFFF" CornerRadius="5" BorderBrush="{StaticResource WindowFrameBrush}" BorderThickness="1,0,1,1">
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="20" />
+                <RowDefinition Height="Auto" />
+                <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="Auto" />
@@ -61,8 +62,8 @@
                 <TextBlock HorizontalAlignment="Left" Grid.Column="1" FontWeight="Bold" Text="DPS" ToolTip="Total DPS!" />
                 <TextBlock HorizontalAlignment="Left" Grid.Column="2" FontWeight="Bold" Text="Biggest" ToolTip="Biggest single hit!" />
                 <TextBlock HorizontalAlignment="Left" Grid.Column="3" FontWeight="Bold" Text="DMG" ToolTip="Total Damage done!" />
-            </Grid>
-            <Grid Grid.Row="2"  Background="AliceBlue">
+            </Grid> 
+            <Grid Grid.Row="2" Background="AliceBlue">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="210" />
                     <ColumnDefinition Width="70" />
@@ -75,7 +76,7 @@
                 <TextBlock HorizontalAlignment="Left" Grid.Column="2" FontWeight="Bold" Text="{Binding ActivePlayer.Player.BestPlayerDamage.HighestHit}" ToolTip="Biggest single hit!" />
                 <TextBlock HorizontalAlignment="Left" Grid.Column="3" FontWeight="Bold" Text="{Binding ActivePlayer.Player.BestPlayerDamage.TargetTotalDamage}" ToolTip="Total Damage done!" />
             </Grid>
-            <Grid Grid.Row="3" Background="AliceBlue">
+            <Grid Grid.Row="3" Background="AliceBlue" Visibility="{Binding SessionPlayerDamage.LastSessionPlayerDamageVisability}">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="160" />
                     <ColumnDefinition Width="50" />
@@ -83,15 +84,31 @@
                     <ColumnDefinition Width="70" />
                     <ColumnDefinition Width="70" />
                 </Grid.ColumnDefinitions>
-                <TextBlock HorizontalAlignment="Left" Grid.Column="0" FontWeight="Bold" Text="Session Best" ToolTip="Your All time Best" />
-                <Button Grid.Column="1" Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="ResetSessionData" ToolTip="Reset Session Data" >
+                <TextBlock HorizontalAlignment="Left" Grid.Column="0" FontWeight="Bold" Text="Last Session" ToolTip="Last Session" />
+                <Button Grid.Column="1" Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="RemoveLastSession" ToolTip="Remove Last session" >
                     <Image Source="pack://application:,,,/trash.png"/>
                 </Button>
-                <TextBlock HorizontalAlignment="Left" Grid.Column="2" FontWeight="Bold" Text="{Binding SessionPlayerDamage.HighestDPS}" ToolTip="Total DPS!" />
-                <TextBlock HorizontalAlignment="Left" Grid.Column="3" FontWeight="Bold" Text="{Binding SessionPlayerDamage.HighestHit}" ToolTip="Biggest single hit!" />
-                <TextBlock HorizontalAlignment="Left" Grid.Column="4" FontWeight="Bold" Text="{Binding SessionPlayerDamage.TargetTotalDamage}" ToolTip="Total Damage done!" />
+                <TextBlock HorizontalAlignment="Left" Grid.Column="2" FontWeight="Bold" Text="{Binding SessionPlayerDamage.LastSessionPlayerDamage.HighestDPS}" ToolTip="Total DPS!" />
+                <TextBlock HorizontalAlignment="Left" Grid.Column="3" FontWeight="Bold" Text="{Binding SessionPlayerDamage.LastSessionPlayerDamage.HighestHit}" ToolTip="Biggest single hit!" />
+                <TextBlock HorizontalAlignment="Left" Grid.Column="4" FontWeight="Bold" Text="{Binding SessionPlayerDamage.LastSessionPlayerDamage.TargetTotalDamage}" ToolTip="Total Damage done!" />
             </Grid>
-            <ListView Name="DpsList" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling" Grid.Row="4" Background="Transparent">
+            <Grid Grid.Row="4" Background="AliceBlue">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="160" />
+                    <ColumnDefinition Width="50" />
+                    <ColumnDefinition Width="70" />
+                    <ColumnDefinition Width="70" />
+                    <ColumnDefinition Width="70" />
+                </Grid.ColumnDefinitions>
+                <TextBlock HorizontalAlignment="Left" Grid.Column="0" FontWeight="Bold" Text="Current Session" ToolTip="Your All time Best" />
+                <Button Grid.Column="1" Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="MoveCurrentToLastSession" ToolTip="Move current session data to Last" >
+                    <Image Source="pack://application:,,,/trash.png"/>
+                </Button>
+                <TextBlock HorizontalAlignment="Left" Grid.Column="2" FontWeight="Bold" Text="{Binding SessionPlayerDamage.CurrentSessionPlayerDamage.HighestDPS}" ToolTip="Total DPS!" />
+                <TextBlock HorizontalAlignment="Left" Grid.Column="3" FontWeight="Bold" Text="{Binding SessionPlayerDamage.CurrentSessionPlayerDamage.HighestHit}" ToolTip="Biggest single hit!" />
+                <TextBlock HorizontalAlignment="Left" Grid.Column="4" FontWeight="Bold" Text="{Binding SessionPlayerDamage.CurrentSessionPlayerDamage.TargetTotalDamage}" ToolTip="Total Damage done!" />
+            </Grid>
+            <ListView Name="DpsList" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling" Grid.Row="5" Background="Transparent">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <Grid>

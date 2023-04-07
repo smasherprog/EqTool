@@ -40,6 +40,17 @@ namespace EQTool.ViewModels
             OnPropertyChanged(nameof(EntityList));
         }
 
+        private SessionPlayerDamage _LastPlayerDamage = null;
+        public SessionPlayerDamage LastPlayerDamage
+        {
+            get => _LastPlayerDamage;
+            set
+            {
+                _LastPlayerDamage = value;
+                OnPropertyChanged();
+            }
+        }
+
         private SessionPlayerDamage _SessionPlayerDamage = null;
         public SessionPlayerDamage SessionPlayerDamage
         {
@@ -72,18 +83,7 @@ namespace EQTool.ViewModels
                 OnPropertyChanged();
             }
         }
-
-        private long? _LastReadOffset = null;
-        public long? LastReadOffset
-        {
-            get => _LastReadOffset;
-            set
-            {
-                _LastReadOffset = value;
-                OnPropertyChanged();
-            }
-        }
-
+         
         public void UpdateDPS()
         {
             appDispatcher.DispatchUI(() =>
@@ -128,9 +128,9 @@ namespace EQTool.ViewModels
                         this.ActivePlayer.Player.BestPlayerDamage.HighestHit = Math.Max(this.ActivePlayer.Player.BestPlayerDamage.HighestHit, you.HighestHit);
                     }
                     //this.OnPropertyChanged(nameof(ActivePlayer));
-                    this.SessionPlayerDamage.HighestDPS = Math.Max(this.SessionPlayerDamage.HighestDPS, you.DPS);
-                    this.SessionPlayerDamage.TargetTotalDamage = Math.Max(this.SessionPlayerDamage.TargetTotalDamage, you.TotalDamage);
-                    this.SessionPlayerDamage.HighestHit = Math.Max(this.SessionPlayerDamage.HighestHit, you.HighestHit);
+                    this.SessionPlayerDamage.CurrentSessionPlayerDamage.HighestDPS = Math.Max(this.SessionPlayerDamage.CurrentSessionPlayerDamage.HighestDPS, you.DPS);
+                    this.SessionPlayerDamage.CurrentSessionPlayerDamage.TargetTotalDamage = Math.Max(this.SessionPlayerDamage.CurrentSessionPlayerDamage.TargetTotalDamage, you.TotalDamage);
+                    this.SessionPlayerDamage.CurrentSessionPlayerDamage.HighestHit = Math.Max(this.SessionPlayerDamage.CurrentSessionPlayerDamage.HighestHit, you.HighestHit);
                     //this.OnPropertyChanged(nameof(SessionPlayerDamage));
                 }
             });

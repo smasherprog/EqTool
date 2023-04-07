@@ -165,9 +165,16 @@ namespace EQTool
             System.Windows.Forms.Clipboard.SetText(fightdetails);
         }
 
-        private void ResetSessionData(object sender, RoutedEventArgs e)
-        {
-            this.dPSWindowViewModel.SessionPlayerDamage = new SessionPlayerDamage();
+        private void MoveCurrentToLastSession(object sender, RoutedEventArgs e)
+        { 
+            this.dPSWindowViewModel.SessionPlayerDamage.LastSessionPlayerDamage = this.dPSWindowViewModel.SessionPlayerDamage.CurrentSessionPlayerDamage;
+            this.dPSWindowViewModel.SessionPlayerDamage.CurrentSessionPlayerDamage = new PlayerDamage();
         }
+
+        private void RemoveLastSession(object sender, RoutedEventArgs e)
+        {
+            this.dPSWindowViewModel.SessionPlayerDamage.LastSessionPlayerDamage = null;
+        }
+        
     }
 }

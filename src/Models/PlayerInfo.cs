@@ -1,12 +1,59 @@
-﻿using System;
+﻿using EQTool.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Windows;
 
 namespace EQTool.Models
 {
-    public class SessionPlayerDamage : PlayerDamage
+    public class SessionPlayerDamage : INotifyPropertyChanged
     {
+        private PlayerDamage _CurrentSessionPlayerDamage;
+        public PlayerDamage CurrentSessionPlayerDamage
+        {
+            get
+            {
+                if (this._CurrentSessionPlayerDamage == null)
+                {
+                    this._CurrentSessionPlayerDamage = new PlayerDamage();
+                }
+                return _CurrentSessionPlayerDamage;
+            }
+            set
+            {
+                if (value == null)
+                {
+                    this._CurrentSessionPlayerDamage = new PlayerDamage();
+                }
+                else
+                {
+                    this._CurrentSessionPlayerDamage = value;
+                }
+                OnPropertyChanged();
+            }
+        }
+
+        public Visibility LastSessionPlayerDamageVisability => _LastSessionPlayerDamage != null ? Visibility.Visible : Visibility.Collapsed;
+
+        private PlayerDamage _LastSessionPlayerDamage;
+        public PlayerDamage LastSessionPlayerDamage
+        {
+            get => _LastSessionPlayerDamage;
+            set
+            {
+                _LastSessionPlayerDamage = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(LastSessionPlayerDamageVisability));
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void OnPropertyChanged([CallerMemberName] string name = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
     }
 
     [Serializable]
