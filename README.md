@@ -26,6 +26,8 @@ Features:
 <li>Automatically remove dead npc/player from the spell list.</li> 
 <li>Auto detect level and class!</li>
 <li>DPS is trailing 12 second average.</li>
+<li>Show fight Session data for comparisons.</li>
+<li>Seive Counter</li>
 <li>Maps</li>
 <li>Timers (Only Minutes are supported)</li>
 </ul>
@@ -36,7 +38,7 @@ Features:
 <li>Timer Cancel Crypt Camp</li>
 <li>Cancel Timer Crypt Camp</li>
 </ul>
-<img width="1150" alt="image" src="https://user-images.githubusercontent.com/3393733/222487918-bf41211b-439e-4d2e-8b4d-e2a5f09a2bbd.png">
+<img width="1150" alt="image" src="https://user-images.githubusercontent.com/3393733/230678396-8f706c5c-94e0-4153-91e9-fef9a84b5537.png">
 
 <h4>System Tray Icon</h4>
 <img width="152" alt="image" src="https://user-images.githubusercontent.com/3393733/212717141-6e26b9af-660a-493d-9f73-2c3464b7c224.png">
