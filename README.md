@@ -44,8 +44,7 @@ Features:
 <h4>TO DO List</h4>
 <ul>
 <li>WHen char change occurs load the map.</li>
-<li>Do better job at showing different map levels. </li>
-<li>Show BEST dps in title of dps window</li>   
+<li>Do better job at showing different map levels. </li> 
 <li>Show others on map</li>   
 <li>Add Waypoint Command to add loc to map</li>   
 <li>Save spells cast on you when you log and restore when you log back in</li>   
@@ -53,7 +52,6 @@ Features:
 <li>Prevent Map panning outside of bounds</li> 
 <li>Release to single exe, not a zip</li>  
 <li>Determine pet level based on the maxhit and add to the DPS window</li> 
-<li>Seive Counter</li> 
 <li>Enable EQ logging automatically if EQ is not running.</li>
 <li>Add option to auto prune eq log file. EQ logfiles can cause issues with EQ itself if they get too large!</li>
 <li>Self update when NOT in use</li>
