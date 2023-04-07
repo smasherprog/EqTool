@@ -45,7 +45,6 @@ Features:
 
 <h4>TO DO List</h4>
 <ul>
-<li>WHen char change occurs load the map.</li>
 <li>Do better job at showing different map levels. </li> 
 <li>Show others on map</li>   
 <li>Add Waypoint Command to add loc to map</li>   
