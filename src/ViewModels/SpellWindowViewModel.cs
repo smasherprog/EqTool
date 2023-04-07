@@ -81,7 +81,7 @@ namespace EQTool.ViewModels
                 foreach (var item in SpellList)
                 {
                     item.SecondsLeftOnSpell = TimeSpan.FromSeconds(item.SecondsLeftOnSpell.TotalSeconds - 1);
-                    if (item.SecondsLeftOnSpell.TotalSeconds <= 0)
+                    if (item.SecondsLeftOnSpell.TotalSeconds <= 0 && !item.PersistentSpell)
                     {
                         itemstoremove.Add(item);
                     }
@@ -150,14 +150,10 @@ namespace EQTool.ViewModels
                     spellname = "??? " + spellname;
                 }
 
-                var s = SpellList.FirstOrDefault(a => a.SpellName == spellname && match.TargetName == a.TargetName);
-                if (s != null)
-                {
-                    _ = SpellList.Remove(s);
-                }
-
+                var ismanasieve = spellname == "Mana Sieve";
+                var ispersistent = ismanasieve;
                 var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(match.Spell, activePlayer.Player));
-                SpellList.Add(new UISpell
+                var uispell = new UISpell
                 {
                     TotalSecondsOnSpell = (int)spellduration.TotalSeconds,
                     PercentLeftOnSpell = 100,
@@ -165,11 +161,30 @@ namespace EQTool.ViewModels
                     TargetName = match.TargetName,
                     SpellName = spellname,
                     Rect = match.Spell.Rect,
+                    PersistentSpell = ispersistent,
+                    SieveCounter = ismanasieve ? 1 : (int?)null,
                     SecondsLeftOnSpell = spellduration,
                     SpellIcon = match.Spell.SpellIcon,
                     Classes = match.Spell.Classes,
                     GuessedSpell = match.MultipleMatchesFound
-                });
+                };
+                var s = SpellList.FirstOrDefault(a => a.SpellName == spellname && match.TargetName == a.TargetName);
+                if (s != null)
+                {
+                    if (ispersistent)
+                    {
+                        s.SieveCounter += 1;
+                    }
+                    else
+                    {
+                        _ = SpellList.Remove(s);
+                        SpellList.Add(uispell);
+                    }
+                }
+                else
+                {
+                    SpellList.Add(uispell);
+                }
             });
         }
 

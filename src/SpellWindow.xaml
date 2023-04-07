@@ -66,6 +66,7 @@
                                     </Image.Source>
                                 </Image>
                                 <TextBlock HorizontalAlignment="Left" FontWeight="Bold" Text="{Binding SpellName}"/>
+                                <TextBlock HorizontalAlignment="Left" FontWeight="Bold" Text="{Binding SpellExtraData}"/>
                             </StackPanel>
                             <TextBlock Visibility="{Binding ColumnVisibility}" FontWeight="Bold" Grid.Column="1" HorizontalAlignment="Right" Text="{Binding SecondsLeftOnSpellPretty}"/>
                         </Grid>

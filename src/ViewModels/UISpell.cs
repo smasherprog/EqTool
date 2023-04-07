@@ -16,7 +16,35 @@ namespace EQTool.ViewModels
 
         public Int32Rect Rect { get; set; }
 
-        public string SpellName { get; set; }
+        private string _SpellName = string.Empty;
+
+        public string SpellName
+        {
+            get => _SpellName;
+            set
+            {
+                _SpellName = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string SpellExtraData
+        {
+            get => _SieveCounter.HasValue ? " --> Sieves: " + _SieveCounter.Value : string.Empty;
+        }
+
+        private int? _SieveCounter = null;
+
+        public int? SieveCounter
+        {
+            get => _SieveCounter;
+            set
+            {
+                _SieveCounter = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(SpellExtraData));
+            }
+        }
 
         public bool GuessedSpell { get; set; }
 
@@ -133,6 +161,8 @@ namespace EQTool.ViewModels
 
             }
         }
+
+        public bool PersistentSpell { get; set; }
 
         public int TotalSecondsOnSpell { get; set; }
 
