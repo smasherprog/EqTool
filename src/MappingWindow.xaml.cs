@@ -34,8 +34,14 @@ namespace EQTool
             _ = mapViewModel.LoadDefaultMap(Map);
             this.logParser.PlayerLocationEvent += LogParser_PlayerLocationEvent;
             this.logParser.PlayerZonedEvent += LogParser_PlayerZonedEvent;
+            this.logParser.PlayerChangeEvent += LogParser_PlayerChangeEvent;
             settings.MapWindowState.Closed = false;
             SaveState();
+        }
+
+        private void LogParser_PlayerChangeEvent(object sender, LogParser.PlayerChangeEventArgs e)
+        {
+         
         }
 
         private void LogParser_PlayerZonedEvent(object sender, LogParser.PlayerZonedEventArgs e)
@@ -71,6 +77,7 @@ namespace EQTool
             App.ThemeChangedEvent -= App_ThemeChangedEvent;
             logParser.PlayerLocationEvent -= LogParser_PlayerLocationEvent;
             logParser.PlayerZonedEvent -= LogParser_PlayerZonedEvent;
+            this.logParser.PlayerChangeEvent -= LogParser_PlayerChangeEvent;
             SaveState();
             base.OnClosing(e);
         }
