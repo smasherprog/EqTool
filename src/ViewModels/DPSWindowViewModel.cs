@@ -118,7 +118,8 @@ namespace EQTool.ViewModels
                 {
                     _ = EntityList.Remove(item);
                 }
-                var you = _EntityList.FirstOrDefault(a => a.SourceName == "You");
+
+                var you = _EntityList.FirstOrDefault(a => a.SourceName == "You" && a.TotalSeconds > 20);
                 if (you != null)
                 {
                     if ( this.ActivePlayer.Player != null)
