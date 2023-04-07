@@ -125,9 +125,7 @@ namespace EQTool
         {
             WindowState = WindowState == System.Windows.WindowState.Maximized ? System.Windows.WindowState.Normal : System.Windows.WindowState.Maximized;
         }
-
-
-
+         
         private void opendps(object sender, RoutedEventArgs e)
         {
             (App.Current as App).OpenDPSWindow();
@@ -165,6 +163,11 @@ namespace EQTool
             }
             var fightdetails = "Fight Details: " + name + " Dmg: " + (items.FirstOrDefault()?.TargetTotalDamage ?? 0) + "    " + string.Join(" / ", fights);
             System.Windows.Forms.Clipboard.SetText(fightdetails);
+        }
+
+        private void ResetSessionData(object sender, RoutedEventArgs e)
+        {
+            this.dPSWindowViewModel.SessionPlayerDamage = new SessionPlayerDamage();
         }
     }
 }

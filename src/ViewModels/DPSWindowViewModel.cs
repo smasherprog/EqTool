@@ -15,12 +15,13 @@ namespace EQTool.ViewModels
     {
         private readonly IAppDispatcher appDispatcher;
         private readonly FightLogService fightLogService;
-
-        public DPSWindowViewModel(IAppDispatcher appDispatcher, FightLogService fightLogService)
+        public DPSWindowViewModel(IAppDispatcher appDispatcher, FightLogService fightLogService, ActivePlayer activePlayer, SessionPlayerDamage sessionPlayerDamage)
         {
             this.appDispatcher = appDispatcher;
             this.fightLogService = fightLogService;
             Title = "Dps Meter v" + App.Version;
+            this.ActivePlayer = activePlayer;
+            this.SessionPlayerDamage = sessionPlayerDamage;
         }
 
         public ObservableCollection<EntittyDPS> _EntityList = new ObservableCollection<EntittyDPS>();
@@ -39,6 +40,28 @@ namespace EQTool.ViewModels
             OnPropertyChanged(nameof(EntityList));
         }
 
+        private SessionPlayerDamage _SessionPlayerDamage = null;
+        public SessionPlayerDamage SessionPlayerDamage
+        {
+            get => _SessionPlayerDamage;
+            set
+            {
+                _SessionPlayerDamage = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private ActivePlayer _activePlayer = null;
+        public ActivePlayer ActivePlayer
+        {
+            get => _activePlayer;
+            set
+            {
+                _activePlayer = value;
+                OnPropertyChanged();
+            }
+        }
+
         private string _Title = null;
         public string Title
         {
@@ -49,7 +72,6 @@ namespace EQTool.ViewModels
                 OnPropertyChanged();
             }
         }
-
 
         private long? _LastReadOffset = null;
         public long? LastReadOffset
@@ -68,7 +90,6 @@ namespace EQTool.ViewModels
             {
                 var itemstormove = new List<EntittyDPS>();
                 var now = DateTime.Now;
-
 
                 foreach (var item in _EntityList)
                 {
@@ -96,6 +117,21 @@ namespace EQTool.ViewModels
                 foreach (var item in itemstormove)
                 {
                     _ = EntityList.Remove(item);
+                }
+                var you = _EntityList.FirstOrDefault(a => a.SourceName == "You");
+                if (you != null)
+                {
+                    if ( this.ActivePlayer.Player != null)
+                    {
+                        this.ActivePlayer.Player.BestPlayerDamage.HighestDPS = Math.Max(this.ActivePlayer.Player.BestPlayerDamage.HighestDPS, you.DPS);
+                        this.ActivePlayer.Player.BestPlayerDamage.TargetTotalDamage = Math.Max(this.ActivePlayer.Player.BestPlayerDamage.TargetTotalDamage, you.TotalDamage);
+                        this.ActivePlayer.Player.BestPlayerDamage.HighestHit = Math.Max(this.ActivePlayer.Player.BestPlayerDamage.HighestHit, you.HighestHit);
+                    }
+                    //this.OnPropertyChanged(nameof(ActivePlayer));
+                    this.SessionPlayerDamage.HighestDPS = Math.Max(this.SessionPlayerDamage.HighestDPS, you.DPS);
+                    this.SessionPlayerDamage.TargetTotalDamage = Math.Max(this.SessionPlayerDamage.TargetTotalDamage, you.TotalDamage);
+                    this.SessionPlayerDamage.HighestHit = Math.Max(this.SessionPlayerDamage.HighestHit, you.HighestHit);
+                    //this.OnPropertyChanged(nameof(SessionPlayerDamage));
                 }
             });
         }
