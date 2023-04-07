@@ -27,7 +27,7 @@ Features:
 <li>Auto detect level and class!</li>
 <li>DPS is trailing 12 second average.</li>
 <li>Show fight Session data for comparisons.</li>
-<li>Seive Counter</li>
+<li>Sieve Counter</li>
 <li>Maps</li>
 <li>Timers (Only Minutes are supported)</li>
 </ul>
