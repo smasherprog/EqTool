@@ -41,7 +41,7 @@ namespace EQTool
 
         private void LogParser_PlayerChangeEvent(object sender, LogParser.PlayerChangeEventArgs e)
         {
-         
+            _ = mapViewModel.LoadDefaultMap(Map);
         }
 
         private void LogParser_PlayerZonedEvent(object sender, LogParser.PlayerZonedEventArgs e)
