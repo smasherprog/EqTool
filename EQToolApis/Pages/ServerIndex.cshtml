@@ -8,7 +8,7 @@
 <script type="text/javascript" src="https://unpkg.com/tabulator-tables@5.4.4/dist/js/tabulator.min.js"></script>
 <script>
     $(document).ready(function () {
-        $.get("/api/ServerItem/@Model.Server", function (data, status) {
+        $.get("/api/item/getall/@Model.Server", function (data, status) {
             if (data) {
                 for (let i = 0; i < data.length; i++) {
                     if (data[i].t == 0) {

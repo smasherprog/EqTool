@@ -201,8 +201,7 @@
                 chart.update();
             }
 
-            $.get("/api/serveritemdetail/@Model.ItemId", function (data, status) {
-
+            $.get("/api/item/getdetails/@Model.ItemId", function (data, status) { 
                 originaldata = data;
                 document.getElementById('ItemName').innerHTML = `<a href="https://wiki.project1999.com/${data.itemName.replace(' ', '_')}" target = "_blank"> ${data.itemName} <i class="fa fa-external-link"></i></a >`;
                 document.title = data.itemName;
