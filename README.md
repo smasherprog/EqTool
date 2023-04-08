@@ -28,6 +28,7 @@ Features:
 <li>DPS is trailing 12 second average.</li>
 <li>Show fight Session data for comparisons.</li>
 <li>Sieve Counter</li>
+<li>Save spells cast on you when you log out so when you log back in they resume counter!</li>
 <li>Maps</li>
 <li>Timers (Only Minutes are supported)</li>
 </ul>
@@ -47,8 +48,7 @@ Features:
 <ul>
 <li>Do better job at showing different map levels. </li> 
 <li>Show others on map</li>   
-<li>Add Waypoint Command to add loc to map</li>   
-<li>Save spells cast on you when you log and restore when you log back in</li>   
+<li>Add Waypoint Command to add loc to map</li>    
 <li>Map window add toggle to follow location</li>    
 <li>Prevent Map panning outside of bounds</li> 
 <li>Release to single exe, not a zip</li>  
