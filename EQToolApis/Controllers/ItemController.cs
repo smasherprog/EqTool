@@ -23,6 +23,8 @@ namespace EQToolApis.Controllers
         /// <returns></returns>
         [Route("api/item/getall/{server}")]
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Any, VaryByHeader = "server")]
         public List<AuctionItem> Get(Servers server)
         {
@@ -40,7 +42,9 @@ namespace EQToolApis.Controllers
          
         [Route("api/item/getdetails/{server}/{itemname}")]
         [HttpGet]
-        [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Any, VaryByHeader = "itemid")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Any, VaryByHeader = "*")]
         public ItemDetail GetItemDetail(Servers server, string itemname)
         {
             var items = context.EQTunnelAuctionItems
