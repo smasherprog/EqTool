@@ -27,7 +27,7 @@ namespace EQToolApis.Controllers
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Any, VaryByQueryKeys = new[] { "*" })]
-        public List<AuctionItem> Get([DefaultValue("Green")] Servers server, [DefaultValue(100)] int? top)
+        public List<AuctionItem> Get([DefaultValue(Servers.Green)] Servers server, [DefaultValue(100)] int? top)
         {
             List<AuctionItem> ret;
 #if DEBUG
@@ -52,7 +52,7 @@ namespace EQToolApis.Controllers
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Any, VaryByQueryKeys = new[] { "*" })]
-        public ItemDetail GetItemDetail([DefaultValue("Green")] Servers server, [DefaultValue("A Black Throne")] string itemname)
+        public ItemDetail GetItemDetail([DefaultValue(Servers.Green)]  Servers server, [DefaultValue("A Black Throne")] string itemname)
         { 
             var items = context.EQTunnelAuctionItems
                 .Where(a => a.EQitem.ItemName == itemname && a.EQitem.Server == server)
