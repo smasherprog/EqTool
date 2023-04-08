@@ -65,6 +65,8 @@ namespace EQTool.Services
         {
         }
 
+        public long? LastLogReadOffset { get { return LastReadOffset; } }
+
         public class PlayerZonedEventArgs : EventArgs
         {
             public string Zone { get; set; }

@@ -7,6 +7,8 @@
         public Spell Spell { get; set; }
 
         public bool MultipleMatchesFound { get; set; }
+
+        public int? TotalSecondsOverride { get; set; }
     }
 
 }

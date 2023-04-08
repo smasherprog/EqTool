@@ -100,6 +100,12 @@ namespace EQTool.Models
         }
     }
 
+    public class YouSpells
+    {
+        public string Name { get; set; }
+        public int TotalSecondsLeft { get; set; }
+    }
+
     [Serializable]
     public class PlayerInfo : INotifyPropertyChanged
     {
@@ -169,6 +175,32 @@ namespace EQTool.Models
             set
             {
                 _PlayerClass = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private List<YouSpells> _YouSpells;
+
+        public List<YouSpells> YouSpells
+        {
+            get
+            {
+                if (this._YouSpells == null)
+                {
+                    this._YouSpells = new List<YouSpells>();
+                }
+                return this._YouSpells;
+            }
+            set
+            {
+                if (value == null)
+                {
+                    this._YouSpells = new List<YouSpells>();
+                }
+                else
+                {
+                    _YouSpells = value;
+                }
                 OnPropertyChanged();
             }
         }

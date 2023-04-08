@@ -3,6 +3,7 @@ using EQTool.Services;
 using EQTool.ViewModels;
 using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -18,21 +19,27 @@ namespace EQTool
         private readonly LogParser logParser;
         private readonly EQToolSettings settings;
         private readonly EQToolSettingsLoad toolSettingsLoad;
+        private readonly ActivePlayer activePlayer;
+        private long? LastLogReadOffset;
 
-
-        public SpellWindow(EQToolSettings settings, SpellWindowViewModel spellWindowViewModel, LogParser logParser, EQToolSettingsLoad toolSettingsLoad)
+        public SpellWindow(EQToolSettings settings, SpellWindowViewModel spellWindowViewModel, LogParser logParser, EQToolSettingsLoad toolSettingsLoad, ActivePlayer activePlayer)
         {
             this.settings = settings;
             this.logParser = logParser;
+            this.activePlayer = activePlayer;
             this.logParser.SpellWornOtherOffEvent += LogParser_SpellWornOtherOffEvent;
             this.logParser.SpellWornOffSelfEvent += LogParser_SpellWornOffSelfEvent;
             this.logParser.StartCastingEvent += LogParser_StartCastingEvent;
             this.logParser.DeadEvent += LogParser_DeadEvent;
             this.logParser.StartTimerEvent += LogParser_StartTimerEvent;
             this.logParser.CancelTimerEvent += LogParser_CancelTimerEvent;
-            this.logParser.PlayerChangeEvent += LogParser_PlayerChangeEvent;
+            this.logParser.PlayerChangeEvent += LogParser_PlayerChangeEvent; 
             spellWindowViewModel.SpellList = new System.Collections.ObjectModel.ObservableCollection<UISpell>();
-            DataContext = this.spellWindowViewModel = spellWindowViewModel;
+            DataContext = this.spellWindowViewModel = spellWindowViewModel; 
+            if (this.activePlayer.Player != null)
+            {
+                spellWindowViewModel.AddSavedYouSpells(this.activePlayer.Player.YouSpells);
+            }
             InitializeComponent();
             WindowExtensions.AdjustWindow(settings.SpellWindowState, this);
             Topmost = Properties.Settings.Default.GlobalTriggerWindowAlwaysOnTop;
@@ -52,9 +59,10 @@ namespace EQTool
             StateChanged += SpellWindow_StateChanged;
             LocationChanged += DPSMeter_LocationChanged;
             settings.SpellWindowState.Closed = false;
+      
             SaveState();
         }
-
+         
         private void LogParser_SpellWornOffSelfEvent(object sender, LogParser.SpellWornOffSelfEventArgs e)
         {
             spellWindowViewModel.TryRemoveUnambiguousSpellSelf(e.SpellNames);
@@ -64,7 +72,7 @@ namespace EQTool
         {
             spellWindowViewModel.TryRemoveUnambiguousSpellOther(e.SpellName);
         }
-
+         
         private void LogParser_StartCastingEvent(object sender, LogParser.StartCastingEventArgs e)
         {
             spellWindowViewModel.TryAdd(e.Spell);
@@ -103,8 +111,25 @@ namespace EQTool
             base.OnClosing(e);
         }
 
+        private void TrySaveYouSpellData()
+        {
+            long? oldLastLogReadOffset = this.LastLogReadOffset;
+            var logerLastLogReadOffset = this.logParser.LastLogReadOffset;
+            if (this.activePlayer.Player != null && oldLastLogReadOffset != logerLastLogReadOffset)
+            {
+                Debug.WriteLine("Saving You Spell Data");
+                this.LastLogReadOffset = logerLastLogReadOffset;
+                this.activePlayer.Player.YouSpells = spellWindowViewModel.SpellList.Select(a => new YouSpells
+                {
+                    Name = a.SpellName,
+                    TotalSecondsLeft = (int)a.SecondsLeftOnSpell.TotalSeconds,
+                }).ToList();
+            }
+        }
+
         private void SaveState()
         {
+            TrySaveYouSpellData();
             WindowExtensions.SaveWindowState(settings.SpellWindowState, this);
             toolSettingsLoad.Save(settings);
         }
@@ -131,12 +156,19 @@ namespace EQTool
         }
 
         private void LogParser_PlayerChangeEvent(object sender, LogParser.PlayerChangeEventArgs e)
-        {
+        { 
             spellWindowViewModel.ClearAllSpells();
+            this.LastLogReadOffset = this.logParser.LastLogReadOffset;
+            if (this.activePlayer.Player != null)
+            {
+                spellWindowViewModel.AddSavedYouSpells(this.activePlayer.Player.YouSpells);
+            }
         }
 
         private void PollUI(object sender, EventArgs e)
         {
+            TrySaveYouSpellData();
+            toolSettingsLoad.Save(settings);
             spellWindowViewModel.UpdateSpells();
         }
 
@@ -154,8 +186,7 @@ namespace EQTool
         {
             WindowState = WindowState == System.Windows.WindowState.Maximized ? System.Windows.WindowState.Normal : System.Windows.WindowState.Maximized;
         }
-
-
+         
         private void opendps(object sender, RoutedEventArgs e)
         {
             (App.Current as App).OpenDPSWindow();

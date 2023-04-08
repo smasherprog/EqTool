@@ -8,6 +8,7 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Text.RegularExpressions;
 using static EQTool.Services.Spells.Log.LogCustomTimer;
 
 namespace EQTool.ViewModels
@@ -17,6 +18,7 @@ namespace EQTool.ViewModels
         private readonly ActivePlayer activePlayer;
         private readonly IAppDispatcher appDispatcher;
         private readonly EQToolSettings settings;
+        private readonly EQSpells spells;
         private readonly string CustomerTime = " Custom Timer";
         private readonly Dictionary<PlayerClasses, int> CustomTimerClasses;
 
@@ -28,6 +30,7 @@ namespace EQTool.ViewModels
             this.settings = settings;
             Title = "Triggers v" + App.Version;
             FeignDeath = spells.AllSpells.FirstOrDefault(a => a.name == "Feign Death");
+            this.spells = spells;
         }
 
 
@@ -217,6 +220,40 @@ namespace EQTool.ViewModels
                     Classes = CustomTimerClasses,
                     GuessedSpell = false
                 });
+            });
+        }
+
+        public void AddSavedYouSpells(List<YouSpells> youspells)
+        {
+            if (youspells == null || !youspells.Any())
+            {
+                return;
+            }
+
+            appDispatcher.DispatchUI(() =>
+            {
+                foreach (var item in youspells)
+                {
+                    var match = this.spells.AllSpells.FirstOrDefault(a => a.name == item.Name);
+                    var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(match, activePlayer.Player));
+                    var savedspellduration = item.TotalSecondsLeft;
+                    var uispell = new UISpell
+                    {
+                        TotalSecondsOnSpell = (int)spellduration.TotalSeconds,
+                        PercentLeftOnSpell = 100,
+                        SpellType = match.type,
+                        TargetName = EQSpells.SpaceYou,
+                        SpellName = match.name,
+                        Rect = match.Rect,
+                        PersistentSpell = false,
+                        SieveCounter = (int?)null,
+                        SecondsLeftOnSpell = TimeSpan.FromSeconds(savedspellduration),
+                        SpellIcon = match.SpellIcon,
+                        Classes = match.Classes,
+                        GuessedSpell = false
+                    };
+                    SpellList.Add(uispell);
+                }
             });
         }
 
