@@ -16,6 +16,7 @@ namespace EQToolApis.Controllers
         public int Level { get; set; }
     }
 
+    [ApiExplorerSettings(IgnoreApi = true)]
     [Route("api/player")]
     public class PlayerController : ControllerBase
     {

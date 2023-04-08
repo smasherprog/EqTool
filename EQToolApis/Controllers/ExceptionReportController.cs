@@ -11,6 +11,7 @@ namespace EQToolApis.Controllers
         public string Exception { get; set; }
     }
 
+    [ApiExplorerSettings(IgnoreApi = true)]
     public class ExceptionReportController : ControllerBase
     {
         private readonly EQToolContext dbcontext;

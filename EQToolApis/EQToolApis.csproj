@@ -1,13 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk.Web">
 
   <PropertyGroup>
+	  <GenerateDocumentationFile>true</GenerateDocumentationFile>
+	  <NoWarn>$(NoWarn);1591</NoWarn>
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <ApplicationInsightsResourceId>/subscriptions/fc1796be-a6b4-4ed9-99dd-5287fc0c4375/resourceGroups/EQTool/providers/microsoft.insights/components/PigParse</ApplicationInsightsResourceId>
     <UserSecretsId>62ce98aa-651d-4005-b774-d9d1dd57e122</UserSecretsId>
-  </PropertyGroup>
-
+  </PropertyGroup> 
   <ItemGroup>
     <PackageReference Include="Azure.Identity" Version="1.8.2" />
     <PackageReference Include="Hangfire.AspNetCore" Version="1.7.33" />
