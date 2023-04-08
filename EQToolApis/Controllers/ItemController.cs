@@ -21,12 +21,12 @@ namespace EQToolApis.Controllers
         /// </summary>
         /// <param name="server"></param>
         /// <returns></returns>
-        [Route("api/item/getall/{server}")]
+        [Route("api/item/getall/{server}/{top?}")]
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Any, VaryByHeader = "server")]
-        public List<AuctionItem> Get(Servers server)
+        [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Any, VaryByHeader = "*")]
+        public List<AuctionItem> Get(Servers server, int? top = 100)
         {
 #if DEBUG
             if (UIDataBuild.ItemCache[(int)server] == null)
@@ -39,7 +39,7 @@ namespace EQToolApis.Controllers
             return UIDataBuild.ItemCache[(int)server];
 #endif
         }
-         
+
         [Route("api/item/getdetails/{server}/{itemname}")]
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
@@ -120,18 +120,18 @@ namespace EQToolApis.Controllers
             };
             playerCache.PlayersLock.EnterReadLock();
             try
-            { 
+            {
                 foreach (var i in items)
                 {
                     Item.Items.Add(new ItemAuctionDetail
                     {
                         u = i.AuctionType,
-                         i = i.EQAuctionPlayerId,
+                        i = i.EQAuctionPlayerId,
                         p = i.AuctionPrice,
                         t = i.TunnelTimestamp
                     });
                     Item.Players.TryAdd(i.EQAuctionPlayerId, playerCache.Players[i.EQAuctionPlayerId].Name);
-                } 
+                }
             }
             finally
             {
