@@ -47,7 +47,7 @@ namespace EQToolApis.Controllers
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Any, VaryByQueryKeys = new[] { "*" })]
-        public ItemDetail GetItemDetail([DefaultValue(Servers.Green)]  Servers server, [DefaultValue("10 Dose Greater Potion of Purity")] string itemname)
+        public ItemDetail GetItemDetail([DefaultValue(Servers.Green)] Servers server, [DefaultValue("10 Dose Greater Potion of Purity")] string itemname)
         { 
             var items = context.EQTunnelAuctionItems
                 .Where(a => a.EQitem.ItemName == itemname && a.EQitem.Server == server)
