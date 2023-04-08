@@ -113,7 +113,7 @@ builder.Services.Configure<DiscordServiceOptions>(options =>
         };
 #endif
 
-    }
+    } 
     return d;
 }).AddSingleton<PlayerCache>(a =>
 {

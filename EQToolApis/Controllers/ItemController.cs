@@ -2,6 +2,8 @@
 using EQToolApis.Models;
 using EQToolApis.Services;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace EQToolApis.Controllers
 {
@@ -21,32 +23,37 @@ namespace EQToolApis.Controllers
         /// </summary>
         /// <param name="server"></param>
         /// <returns></returns>
-        [Route("api/item/getall/{server}/{top?}")]
+        [Route("api/item/getall/{server}/{top}/")]
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Any, VaryByHeader = "*")]
-        public List<AuctionItem> Get(Servers server, int? top = 100)
+        [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Any, VaryByQueryKeys = new[] { "*" })]
+        public List<AuctionItem> Get([DefaultValue("Green")] Servers server, [DefaultValue(100)] int? top)
         {
+            List<AuctionItem> ret;
 #if DEBUG
             if (UIDataBuild.ItemCache[(int)server] == null)
             {
                 uIDataBuild.BuildData(server);
             }
-            return UIDataBuild.ItemCache[(int)server];
+            ret = UIDataBuild.ItemCache[(int)server];
 
 #else
-            return UIDataBuild.ItemCache[(int)server];
+            ret = UIDataBuild.ItemCache[(int)server];
 #endif
+            if (top.HasValue)
+            {
+                return ret.OrderBy(a => a.n).Take(top.Value).ToList();
+            }
+
+            return ret;
         }
 
         [Route("api/item/getdetails/{server}/{itemname}")]
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status204NoContent)]
-        [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Any, VaryByHeader = "*")]
-        public ItemDetail GetItemDetail(Servers server, string itemname)
-        {
+        [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Any, VaryByQueryKeys = new[] { "*" })]
+        public ItemDetail GetItemDetail([DefaultValue("Green")] Servers server, [DefaultValue("A Black Throne")] string itemname)
+        { 
             var items = context.EQTunnelAuctionItems
                 .Where(a => a.EQitem.ItemName == itemname && a.EQitem.Server == server)
                 .Select(a => new
@@ -96,9 +103,9 @@ namespace EQToolApis.Controllers
         /// <returns></returns>
         [Route("api/item/getdetails/{itemid}")]
         [HttpGet]
-        [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Any, VaryByHeader = "itemid")]
-        public ItemDetail GetItemDetail(int itemid)
-        {
+        [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Any, VaryByQueryKeys = new[] { "*" })]
+        public ItemDetail GetItemDetail([DefaultValue(368)] int itemid)
+        { 
             var items = context.EQTunnelAuctionItems
                 .Where(a => a.EQitemId == itemid)
                 .Select(a => new
