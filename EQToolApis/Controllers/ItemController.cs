@@ -47,7 +47,7 @@ namespace EQToolApis.Controllers
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Any, VaryByQueryKeys = new[] { "*" })]
-        public ItemDetail GetItemDetail([DefaultValue(Servers.Green)]  Servers server, [DefaultValue("A Black Throne")] string itemname)
+        public ItemDetail GetItemDetail([DefaultValue(Servers.Green)]  Servers server, [DefaultValue("10 Dose Greater Potion of Purity")] string itemname)
         { 
             var items = context.EQTunnelAuctionItems
                 .Where(a => a.EQitem.ItemName == itemname && a.EQitem.Server == server)
@@ -99,7 +99,7 @@ namespace EQToolApis.Controllers
         [Route("api/item/getdetails/{itemid}")]
         [HttpGet]
         [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Any, VaryByQueryKeys = new[] { "*" })]
-        public ItemDetail GetItemDetail([DefaultValue(368)] int itemid)
+        public ItemDetail GetItemDetail([DefaultValue(1981)] int itemid)
         { 
             var items = context.EQTunnelAuctionItems
                 .Where(a => a.EQitemId == itemid)
