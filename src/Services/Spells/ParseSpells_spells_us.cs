@@ -32,7 +32,18 @@ namespace EQTool.Services
             "HandOfHolyVengeanceIRecourse",
             "Complete Heal",
             "Denon`s Disruptive Discord",
-            "Chords of Dissonance"
+            "Chords of Dissonance",
+            "Infection Test 1",
+            "Infection Test 2",
+            "Levitate Test",
+            "Test GLT",
+            "Test GMD",
+            "Test Shield",
+            "Test GACD",
+            "Bond of Sathir",
+            "Soul Consumption R.",
+            "Soul Claw Strike",
+            "Malevolent Vex"
         };
 
         private List<string> IgnoreRomanNumerals = new List<string>()
@@ -44,11 +55,15 @@ namespace EQTool.Services
            " V",
            " VI",
            " VII",
-           " VII",
+           " VIII",
            " IX",
-           " X"
-        };
-
+           " X",
+            " X",
+            " XI",
+            " XII",
+            " XIII",
+            " XIV"
+        }; 
         private List<string> GoodRomanNumeralSpells = new List<string>()
         {
             "Cannibalize",

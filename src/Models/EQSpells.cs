@@ -137,7 +137,10 @@ namespace EQTool.Models
                     {
                         if (_CastOnYouSpells.TryGetValue(mappedspell.cast_on_you, out var innerval))
                         {
-                            _CastOnYouSpells[mappedspell.cast_on_you].Add(mappedspell);
+                            if (!(mappedspell.Classes.Any() && mappedspell.SpellType == SpellType.Self))
+                            {
+                                _CastOnYouSpells[mappedspell.cast_on_you].Add(mappedspell);
+                            }
                         }
                         else
                         {
