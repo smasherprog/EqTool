@@ -74,27 +74,6 @@ namespace EQTool.Models
             }
         }
 
-        private readonly List<string> IgnoreSpellsList = new List<string>()
-        {
-            "Complete Heal",
-            "Denon`s Disruptive Discord",
-            "Chords of Dissonance"
-        };
-
-        public static readonly Dictionary<string, PlayerClasses> EpicSpells = new Dictionary<string, PlayerClasses>
-        {
-            { "Wrath of Nature", PlayerClasses.Druid },
-            { "Speed of the Shissar", PlayerClasses.Enchanter },
-            { "Torment of Shadows", PlayerClasses.Necromancer },
-            { "Earthcall", PlayerClasses.Ranger },
-            { "Soul Consumption", PlayerClasses.ShadowKnight },
-            { "Curse of the Spirits", PlayerClasses.Shaman },
-            { "Barrier of Force", PlayerClasses.Wizard },
-            { "Dance of the Blade", PlayerClasses.Bard },
-            { "Celestial Tranquility", PlayerClasses.Monk },
-            { "Seething Fury", PlayerClasses.Rogue }
-        };
-
         public const string ZoneLoadingMessage = "LOADING, PLEASE WAIT...";
         public const string YouBeginCasting = "You begin casting ";
         public const string YouSpellisInterupted = "Your spell is interrupted.";
@@ -117,7 +96,7 @@ namespace EQTool.Models
         private void BuildSpellInfo()
         {
             var spellicons = spellIcons.GetSpellIcons();
-            var spells = parseSpells.GetSpells().Where(a => !IgnoreSpellsList.Contains(a.name) && a.spell_icon > 0);
+            var spells = parseSpells.GetSpells().Where(a => a.spell_icon > 0);
             foreach (var item in spells)
             {
                 var mappedspell = item.Map(spellicons);
@@ -181,7 +160,7 @@ namespace EQTool.Models
                 {
                     // Debug.WriteLine($"Spell {mappedspell.name} Ignored");
                 }
-            }
+            } 
         }
     }
 }

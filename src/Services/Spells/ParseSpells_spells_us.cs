@@ -23,8 +23,67 @@ namespace EQTool.Services
             "FireElementalAttack2",
             "Outbreak",
             "Paroxysm of Zek",
-            "Dark Madness", 
-            "Peace of the Disciple Strike"
+            "Dark Madness",
+            "Peace of the Disciple Strike",
+            "HandOfHolyVengeanceIRecourse",
+            "HandOfHolyVengeanceIIRecourse",
+            "HandOfHolyVengeanceIVRecourse",
+            "HandOfHolyVengeanceVRecourse",
+            "HandOfHolyVengeanceIRecourse",
+            "Complete Heal",
+            "Denon`s Disruptive Discord",
+            "Chords of Dissonance"
+        };
+
+        private List<string> IgnoreRomanNumerals = new List<string>()
+        {
+            " I",
+            " II",
+            " III",
+            " IV",
+           " V",
+           " VI",
+           " VII",
+           " VII",
+           " IX",
+           " X"
+        };
+
+        private List<string> GoodRomanNumeralSpells = new List<string>()
+        {
+            "Cannibalize",
+            "Rune",
+            "Yaulp",
+            "Burnout",
+            "Contact Poison",
+            "Berserker Madness",
+            "Brittle Haste",
+            "Feeble Mind",
+            "Injected Poison",
+            "Clarity",
+            "Monster Summoning",
+            "Dizzy",
+            "Berserker Madness",
+            "Blinding Poison",
+            "Feeble Mind"
+        };
+
+        public static readonly Dictionary<string, PlayerClasses> EpicSpells = new Dictionary<string, PlayerClasses>
+        {
+            { "Wrath of Nature", PlayerClasses.Druid },
+            { "Speed of the Shissar", PlayerClasses.Enchanter },
+            { "Torment of Shadows", PlayerClasses.Necromancer },
+            { "Earthcall", PlayerClasses.Ranger },
+            { "Soul Consumption", PlayerClasses.ShadowKnight },
+            { "Curse of the Spirits", PlayerClasses.Shaman },
+            { "Barrier of Force", PlayerClasses.Wizard },
+            { "Dance of the Blade", PlayerClasses.Bard },
+            { "Celestial Tranquility", PlayerClasses.Monk },
+            { "Seething Fury", PlayerClasses.Rogue }
+        };
+        private List<SpellType> IgnoreSpellTypes = new List<SpellType>()
+        {
+              SpellType.RagZhezumSpecial
         };
 
         public List<SpellBase> GetSpells()
@@ -33,6 +92,9 @@ namespace EQTool.Services
             {
                 return _Spells;
             }
+
+            var stopwatch = new Stopwatch();
+            stopwatch.Start();
             var spells = new Dictionary<string, SpellBase>();
             var spellsfile = new FileInfo(settings.DefaultEqDirectory + "/spells_us.txt");
             if (spellsfile.Exists)
@@ -56,19 +118,12 @@ namespace EQTool.Services
                         )
                     {
                         continue;
-                    }
-
-                    if (spell.Classes.Any() && spell.Classes.All(a => a.Value > 60 && a.Value < 255))
+                    } 
+                    if (spell.Classes.Any() && spell.Classes.All(a => a.Value > 60 && a.Value <= 255))
                     {
                         //Debug.WriteLine($"Skipping {spell.name} Class Level Out of range");
                         continue;
-                    }
-
-                    if (spell.name.StartsWith("Lifetap"))
-                    {
-                        // Debug.WriteLine($"Skipping {spell.name} GM");
-                        continue;
-                    }
+                    } 
 
                     if (spell.name.StartsWith("GM "))
                     {
@@ -99,11 +154,25 @@ namespace EQTool.Services
                         //Debug.WriteLine($"Skipping {spell.name} DescrNumber");
                         continue;
                     }
+
                     if (IgnoreSpells.Contains(spell.name))
                     {
                         //Debug.WriteLine($"Skipping {spell.name} DescrNumber");
                         continue;
                     }
+
+                    if (!GoodRomanNumeralSpells.Any(a => spell.name.StartsWith(a)) && IgnoreRomanNumerals.Any(a => spell.name.EndsWith(a)))
+                    {
+                        //Debug.WriteLine($"Skipping {spell.name} RomanNumerals");
+                        continue;
+                    }
+
+                    if (IgnoreSpellTypes.Contains(spell.SpellType))
+                    {
+                        //Debug.WriteLine($"Skipping {spell.SpellType} {spell.name} IgnoreSpellTypes");
+                        continue;
+                    }
+
                     if (spells.ContainsKey(spell.name))
                     {
                         skippedcounter++;
@@ -118,7 +187,8 @@ namespace EQTool.Services
 
                 _Spells = spells.Values.ToList();
             }
-
+            stopwatch.Stop();
+            Debug.Write($"Took {stopwatch.ElapsedMilliseconds}ms to build spells");
             return _Spells;
         }
 
@@ -139,6 +209,7 @@ namespace EQTool.Services
             }
             var resisttype = (ResistType)Enum.Parse(typeof(ResistType), splits[85]);
             var descrtype = (DescrNumber)Enum.Parse(typeof(DescrNumber), splits[157]);
+            var spelltype = (SpellType)Enum.Parse(typeof(SpellType), splits[98]);
             var ret = new SpellBase
             {
                 id = int.Parse(splits[0]),
@@ -155,10 +226,11 @@ namespace EQTool.Services
                 spell_icon = int.Parse(splits[144]),
                 resisttype = resisttype,
                 ResistCheck = int.Parse(splits[147]),
-                DescrNumber = descrtype
+                DescrNumber = descrtype,
+                SpellType = spelltype
             };
 
-            if (EQSpells.EpicSpells.TryGetValue(ret.name, out var foundepic))
+            if (EpicSpells.TryGetValue(ret.name, out var foundepic))
             {
                 ret.Classes[foundepic] = 46;
             }

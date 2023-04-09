@@ -25,7 +25,11 @@ namespace EQTool.Services
                 Rect = new System.Windows.Int32Rect(),
                 SpellIcon = null,
                 pvp_buffdurationformula = spell.pvp_buffdurationformula,
-                type = spell.type
+                type = spell.type,
+                SpellType = spell.SpellType,
+                DescrNumber = spell.DescrNumber,
+                ResistCheck = spell.ResistCheck,
+                resisttype = spell.resisttype
             };
 
             if (spellfilenumber > 0 && spellfilenumber <= 7)
