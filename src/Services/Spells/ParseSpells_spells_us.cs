@@ -63,7 +63,7 @@ namespace EQTool.Services
             " XII",
             " XIII",
             " XIV"
-        }; 
+        };
         private List<string> GoodRomanNumeralSpells = new List<string>()
         {
             "Cannibalize",
@@ -126,19 +126,18 @@ namespace EQTool.Services
                 foreach (var item in spellastext)
                 {
                     var spell = ParseLine(item);
-                    index++;
-                    if (string.IsNullOrWhiteSpace(spell.name) &&
-                        string.IsNullOrWhiteSpace(spell.cast_on_other) &&
-                        string.IsNullOrWhiteSpace(spell.cast_on_you)
+                    if (string.IsNullOrWhiteSpace(spell.name) 
+                        spell.buffduration > 0 &&
+                        spell.spell_icon > 0
                         )
                     {
                         continue;
-                    } 
+                    }
                     if (spell.Classes.Any() && spell.Classes.All(a => a.Value > 60 && a.Value <= 255))
                     {
                         //Debug.WriteLine($"Skipping {spell.name} Class Level Out of range");
                         continue;
-                    } 
+                    }
 
                     if (spell.name.StartsWith("GM "))
                     {

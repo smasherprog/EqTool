@@ -96,7 +96,7 @@ namespace EQTool.Models
         private void BuildSpellInfo()
         {
             var spellicons = spellIcons.GetSpellIcons();
-            var spells = parseSpells.GetSpells().Where(a => a.spell_icon > 0);
+            var spells = parseSpells.GetSpells();
             foreach (var item in spells)
             {
                 var mappedspell = item.Map(spellicons);
@@ -105,65 +105,59 @@ namespace EQTool.Models
                     continue;
                 }
                 _AllSpells.Add(mappedspell);
-                if (mappedspell.buffduration > 0)
+
+                if (!string.IsNullOrWhiteSpace(mappedspell.cast_on_other))
                 {
-                    if (!string.IsNullOrWhiteSpace(mappedspell.cast_on_other))
+                    if (mappedspell.cast_on_other.Contains(InvisMessage))
                     {
-                        if (mappedspell.cast_on_other.Contains(InvisMessage))
-                        {
-                            Debug.WriteLine("Skipping Other invis spell. Cant detect difference between gate and invis");
-                        }
-                        else if (_CastOtherSpells.TryGetValue(mappedspell.cast_on_other, out var innerval))
-                        {
-                            _CastOtherSpells[mappedspell.cast_on_other].Add(mappedspell);
-                        }
-                        else
-                        {
-                            _CastOtherSpells.Add(mappedspell.cast_on_other, new List<Spell>() { mappedspell });
-                        }
+                        Debug.WriteLine("Skipping Other invis spell. Cant detect difference between gate and invis");
                     }
-                    if (!string.IsNullOrWhiteSpace(mappedspell.name) && mappedspell.Classes.Any(a => a.Value > 0))
+                    else if (_CastOtherSpells.TryGetValue(mappedspell.cast_on_other, out var innerval))
                     {
-                        if (_YouCastSpells.TryGetValue(mappedspell.name, out var innerval))
-                        {
-                            _YouCastSpells[mappedspell.name].Add(mappedspell);
-                        }
-                        else
-                        {
-                            _YouCastSpells.Add(mappedspell.name, new List<Spell>() { mappedspell });
-                        }
+                        _CastOtherSpells[mappedspell.cast_on_other].Add(mappedspell);
                     }
-                    if (!string.IsNullOrWhiteSpace(mappedspell.cast_on_you))
+                    else
                     {
-                        if (_CastOnYouSpells.TryGetValue(mappedspell.cast_on_you, out var innerval))
-                        {
-                            if (!(mappedspell.Classes.Any() && mappedspell.SpellType == SpellType.Self))
-                            {
-                                _CastOnYouSpells[mappedspell.cast_on_you].Add(mappedspell);
-                            }
-                        }
-                        else
-                        {
-                            _CastOnYouSpells.Add(mappedspell.cast_on_you, new List<Spell>() { mappedspell });
-                        }
-                    }
-                    if (!string.IsNullOrWhiteSpace(mappedspell.spell_fades))
-                    {
-                        if (_WornOffSpells.TryGetValue(mappedspell.spell_fades, out var innerval))
-                        {
-                            _WornOffSpells[mappedspell.spell_fades].Add(mappedspell);
-                        }
-                        else
-                        {
-                            _WornOffSpells.Add(mappedspell.spell_fades, new List<Spell>() { mappedspell });
-                        }
+                        _CastOtherSpells.Add(mappedspell.cast_on_other, new List<Spell>() { mappedspell });
                     }
                 }
-                else
+                if (!string.IsNullOrWhiteSpace(mappedspell.name) && mappedspell.Classes.Any(a => a.Value > 0))
                 {
-                    // Debug.WriteLine($"Spell {mappedspell.name} Ignored");
+                    if (_YouCastSpells.TryGetValue(mappedspell.name, out var innerval))
+                    {
+                        _YouCastSpells[mappedspell.name].Add(mappedspell);
+                    }
+                    else
+                    {
+                        _YouCastSpells.Add(mappedspell.name, new List<Spell>() { mappedspell });
+                    }
                 }
-            } 
+                if (!string.IsNullOrWhiteSpace(mappedspell.cast_on_you))
+                {
+                    if (_CastOnYouSpells.TryGetValue(mappedspell.cast_on_you, out var innerval))
+                    {
+                        if (!(mappedspell.Classes.Any() && mappedspell.SpellType == SpellType.Self))
+                        {
+                            _CastOnYouSpells[mappedspell.cast_on_you].Add(mappedspell);
+                        }
+                    }
+                    else
+                    {
+                        _CastOnYouSpells.Add(mappedspell.cast_on_you, new List<Spell>() { mappedspell });
+                    }
+                }
+                if (!string.IsNullOrWhiteSpace(mappedspell.spell_fades))
+                {
+                    if (_WornOffSpells.TryGetValue(mappedspell.spell_fades, out var innerval))
+                    {
+                        _WornOffSpells[mappedspell.spell_fades].Add(mappedspell);
+                    }
+                    else
+                    {
+                        _WornOffSpells.Add(mappedspell.spell_fades, new List<Spell>() { mappedspell });
+                    }
+                }
+            }
         }
     }
 }
