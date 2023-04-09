@@ -101,6 +101,7 @@ namespace EQTool.Services
               SpellType.RagZhezumSpecial
         };
 
+    
         public List<SpellBase> GetSpells()
         {
             if (_Spells.Any())

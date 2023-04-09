@@ -1,8 +1,17 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace EQTool.Services.Map
 {
+    public class ZoneInfo
+    {
+        public string Name { get; set; }
+        public TimeSpan RespawnTime { get; set; }
+        public List<string> NotableNPCs { get; set; } = new List<string>();
+
+    }
+
     public static class ZoneParser
     {
         private const string Youhaveentered = "You have entered ";
@@ -10,9 +19,10 @@ namespace EQTool.Services.Map
         private const string Thereare = "There are ";
         private const string spaceinspace = " in ";
 
-        private static readonly Dictionary<string, string> ZoneNameMapper = new Dictionary<string, string>();
-        private static readonly Dictionary<string, string> ZoneWhoMapper = new Dictionary<string, string>();
+        public static readonly Dictionary<string, string> ZoneNameMapper = new Dictionary<string, string>();
+        public static readonly Dictionary<string, string> ZoneWhoMapper = new Dictionary<string, string>();
         public static readonly Dictionary<string, bool> NoZoneZHelping = new Dictionary<string, bool>();
+        public static readonly Dictionary<string, ZoneInfo> ZoneInfoMap = new Dictionary<string, ZoneInfo>();
 
         static ZoneParser()
         {
@@ -52,6 +62,193 @@ namespace EQTool.Services.Map
             ZoneWhoMapper.Add("qeynos catacombs", "qeynos aqueduct system");
             ZoneWhoMapper.Add("felwithe", "northern felwithe");
             ZoneWhoMapper.Add("kaladim", "south kaladim");
+
+
+            //ZoneInfoMap.Add("airplane", new ZoneInfo
+            //{
+            //    NotableNPCs = new List<string>()
+            //    {
+            //        "Thunder Spirit Princess",
+            //        "Noble Dojorn",
+            //        "Protector of Sky",
+            //        "Gorgalosk",
+            //        "Keeper of Souls",
+            //        "The Spiroc Lord",
+            //        "The Spiroc Guardian",
+            //        "Bazzt Zzzt",
+            //        "Sister of the Spire",
+            //        "Eye of Veeshan"
+            //    },
+            //    RespawnTime = new TimeSpan(8, 0, 0)
+            //});
+            //ZoneInfoMap.Add("akanon", new ZoneInfo
+            //{
+            //    NotableNPCs = new List<string>()
+            //    { 
+            //    },
+            //    RespawnTime = new TimeSpan(0, 6, 40)
+            //});
+            //ZoneInfoMap.Add("arena", new ZoneInfo
+            //{
+            //    NotableNPCs = new List<string>()
+            //    { 
+            //    },
+            //    RespawnTime = new TimeSpan(0)
+            //});
+            //ZoneInfoMap.Add("befallen", new ZoneInfo
+            //{
+            //    NotableNPCs = new List<string>()
+            //    {
+            //        "",
+            //        "",
+            //        "",
+            //        "",
+            //        "",
+            //        "",
+            //        "",
+            //        "",
+            //        "",
+            //        "",
+            //    },
+            //    RespawnTime = new TimeSpan(0, 6, 40)
+            //});
+            //ZoneInfoMap.Add("beholder", new ZoneInfo
+            //{
+            //    NotableNPCs = new List<string>()
+            //    {
+            //        "",
+            //        "",
+            //        "",
+            //        "",
+            //        "",
+            //        "",
+            //        "",
+            //        "",
+            //        "",
+            //        "",
+            //    },
+            //    RespawnTime = new TimeSpan(0, 6, 40)
+            //});
+            //ZoneInfoMap.Add("blackburrow", true);
+            //ZoneInfoMap.Add("burningwood", false);
+            //ZoneInfoMap.Add("butcher", false);
+            //ZoneInfoMap.Add("cabeast", false);
+            //ZoneInfoMap.Add("cabwest", false);
+            //ZoneInfoMap.Add("cauldron", false);
+            //ZoneInfoMap.Add("cazicthule", false);
+            //ZoneInfoMap.Add("charasis", false);
+            //ZoneInfoMap.Add("chardok", true);
+            //ZoneInfoMap.Add("citymist", true);
+            //ZoneInfoMap.Add("cobaltscar", false);
+            //ZoneInfoMap.Add("commons", false);
+            //ZoneInfoMap.Add("crushbone", false);
+            //ZoneInfoMap.Add("crystal", false);
+            //ZoneInfoMap.Add("dalnir", true);
+            //ZoneInfoMap.Add("dreadlands", false);
+            //ZoneInfoMap.Add("droga", false);
+            //ZoneInfoMap.Add("eastkarana", false);
+            //ZoneInfoMap.Add("eastwastes", false);
+            //ZoneInfoMap.Add("ecommons", false);
+            //ZoneInfoMap.Add("emeraldjungle", false);
+            //ZoneInfoMap.Add("erudnext", false);
+            //ZoneInfoMap.Add("erudnint", true);
+            //ZoneInfoMap.Add("erudsxing", false);
+            //ZoneInfoMap.Add("everfrost", false);
+            //ZoneInfoMap.Add("fearplane", false);
+            //ZoneInfoMap.Add("feerrott", false);
+            //ZoneInfoMap.Add("felwithea", true);
+            //ZoneInfoMap.Add("felwitheb", false);
+            //ZoneInfoMap.Add("fieldofbone", false);
+            //ZoneInfoMap.Add("firiona", false);
+            //ZoneInfoMap.Add("freporte", true);
+            //ZoneInfoMap.Add("freportn", false);
+            //ZoneInfoMap.Add("freportw", false);
+            //ZoneInfoMap.Add("frontiermtns", false);
+            //ZoneInfoMap.Add("frozenshadow", false);
+            //ZoneInfoMap.Add("gfaydark", false);
+            //ZoneInfoMap.Add("greatdivide", false);
+            //ZoneInfoMap.Add("grobb", false);
+            //ZoneInfoMap.Add("growthplane", false);
+            //ZoneInfoMap.Add("gukbottom", true);
+            //ZoneInfoMap.Add("guktop", true);
+            //ZoneInfoMap.Add("halas", false);
+            //ZoneInfoMap.Add("hateplane", true);
+            //ZoneInfoMap.Add("highkeep", true);
+            //ZoneInfoMap.Add("highpass", false);
+            //ZoneInfoMap.Add("hole", true);
+            //ZoneInfoMap.Add("iceclad", false);
+            //ZoneInfoMap.Add("innothule", false);
+            //ZoneInfoMap.Add("kael", false);
+            //ZoneInfoMap.Add("kaesora", true);
+            //ZoneInfoMap.Add("kaladima", false);
+            //ZoneInfoMap.Add("kaladimb", false);
+            //ZoneInfoMap.Add("karnor", true);
+            //ZoneInfoMap.Add("kedge", true);
+            //ZoneInfoMap.Add("kerraridge", false);
+            //ZoneInfoMap.Add("kithicor", false);
+            //ZoneInfoMap.Add("kurn", false);
+            //ZoneInfoMap.Add("lakeofillomen", false);
+            //ZoneInfoMap.Add("lakerathe", false);
+            //ZoneInfoMap.Add("lavastorm", false);
+            //ZoneInfoMap.Add("lfaydark", false);
+            //ZoneInfoMap.Add("mischiefplane", true);
+            //ZoneInfoMap.Add("mistmoore", true);
+            //ZoneInfoMap.Add("misty", false);
+            //ZoneInfoMap.Add("najena", true);
+            //ZoneInfoMap.Add("necropolis", false);
+            //ZoneInfoMap.Add("nektulos", false);
+            //ZoneInfoMap.Add("neriaka", false);
+            //ZoneInfoMap.Add("neriakb", false);
+            //ZoneInfoMap.Add("neriakc", false);
+            //ZoneInfoMap.Add("northkarana", false);
+            //ZoneInfoMap.Add("nro", false);
+            //ZoneInfoMap.Add("nurga", false);
+            //ZoneInfoMap.Add("oasis", false);
+            //ZoneInfoMap.Add("oggok", false);
+            //ZoneInfoMap.Add("oot", false);
+            //ZoneInfoMap.Add("overthere", false);
+            //ZoneInfoMap.Add("paineel", false);
+            //ZoneInfoMap.Add("paw", true);
+            //ZoneInfoMap.Add("permafrost", true);
+            //ZoneInfoMap.Add("qcat", true);
+            //ZoneInfoMap.Add("qey2hh1", false);
+            //ZoneInfoMap.Add("qeynos", true);
+            //ZoneInfoMap.Add("qeynos2", false);
+            //ZoneInfoMap.Add("qeytoqrg", false);
+            //ZoneInfoMap.Add("qrg", true);
+            //ZoneInfoMap.Add("rathemtn", false);
+            //ZoneInfoMap.Add("rivervale", false);
+            //ZoneInfoMap.Add("runnyeye", true);
+            //ZoneInfoMap.Add("sebilis", true);
+            //ZoneInfoMap.Add("sirens", true);
+            //ZoneInfoMap.Add("skyfire", false);
+            //ZoneInfoMap.Add("skyshrine", true);
+            //ZoneInfoMap.Add("sleeper", false);
+            //ZoneInfoMap.Add("soldunga", true);
+            //ZoneInfoMap.Add("soldungb", true);
+            //ZoneInfoMap.Add("soltemple", true);
+            //ZoneInfoMap.Add("southkarana", false);
+            //ZoneInfoMap.Add("sro", false);
+            //ZoneInfoMap.Add("steamfont", false);
+            //ZoneInfoMap.Add("stonebrunt", false);
+            //ZoneInfoMap.Add("swampofnohope", false);
+            //ZoneInfoMap.Add("templeveeshan", false);
+            //ZoneInfoMap.Add("thurgadina", false);
+            //ZoneInfoMap.Add("thurgadinb", true);
+            //ZoneInfoMap.Add("timorous", false);
+            //ZoneInfoMap.Add("tox", false);
+            //ZoneInfoMap.Add("trakanon", false);
+            //ZoneInfoMap.Add("unrest", true);
+            //ZoneInfoMap.Add("veeshan", false);
+            //ZoneInfoMap.Add("velketor", true);
+            //ZoneInfoMap.Add("wakening", false);
+            //ZoneInfoMap.Add("warrens", false);
+            //ZoneInfoMap.Add("warslikswood", false);
+            //ZoneInfoMap.Add("westwastes", false);
+
+
+
+
 
             NoZoneZHelping.Add("airplane", false);
             NoZoneZHelping.Add("akanon", false);
