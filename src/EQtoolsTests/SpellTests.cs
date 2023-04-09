@@ -79,6 +79,16 @@ namespace EQToolTests
             var duration = SpellDurations.GetDuration_inSeconds(spell, player);
             Assert.AreEqual(duration, 0);
         }
+         
+        [TestMethod]
+        public void TestSpellMatchCorrectlyManaSieve()
+        {
+            var spells = container.Resolve<EQSpells>();
+            var spellname = "Mana Sieve";
+            var spell = spells.AllSpells.FirstOrDefault(a => a.name == spellname);
+            var spell1 = spells.AllSpells.Where(a => a.cast_on_other == spell.cast_on_other).ToList();
+            Assert.AreEqual(1, spell1.Count);
+        }
 
         [TestMethod]
         public void TestSpellMatchCorrectlySk60_GrimAura()

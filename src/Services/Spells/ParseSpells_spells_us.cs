@@ -1,5 +1,8 @@
 ﻿using EQTool.Models;
+using EQTool.ViewModels;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 
@@ -15,6 +18,15 @@ namespace EQTool.Services
             this.settings = settings;
         }
 
+        private HashSet<string> IgnoreSpells = new HashSet<string>()
+        {
+            "FireElementalAttack2",
+            "Outbreak",
+            "Paroxysm of Zek",
+            "Dark Madness", 
+            "Peace of the Disciple Strike"
+        };
+
         public List<SpellBase> GetSpells()
         {
             if (_Spells.Any())
@@ -27,12 +39,34 @@ namespace EQTool.Services
             {
                 var spellastext = File.ReadAllLines(settings.DefaultEqDirectory + "/spells_us.txt");
                 var skippedcounter = 0;
+                var index = 0;
+                var desctypes = new List<DescrNumber>() {
+                 DescrNumber.ThePlanes,
+                 DescrNumber.Luclin,
+                 DescrNumber.Taelosia,
+                 DescrNumber.Discord
+                };
                 foreach (var item in spellastext)
                 {
                     var spell = ParseLine(item);
+                    index++;
+                    if (string.IsNullOrWhiteSpace(spell.name) &&
+                        string.IsNullOrWhiteSpace(spell.cast_on_other) &&
+                        string.IsNullOrWhiteSpace(spell.cast_on_you)
+                        )
+                    {
+                        continue;
+                    }
+
                     if (spell.Classes.Any() && spell.Classes.All(a => a.Value > 60 && a.Value < 255))
                     {
                         //Debug.WriteLine($"Skipping {spell.name} Class Level Out of range");
+                        continue;
+                    }
+
+                    if (spell.name.StartsWith("Lifetap"))
+                    {
+                        // Debug.WriteLine($"Skipping {spell.name} GM");
                         continue;
                     }
 
@@ -54,6 +88,22 @@ namespace EQTool.Services
                         continue;
                     }
 
+                    if (spell.resisttype > ResistType.DISEASE)
+                    {
+                        //Debug.WriteLine($"Skipping {spell.name} ResistType");
+                        continue;
+                    }
+
+                    if (!spell.name.StartsWith("Alter Plane") && (desctypes.Contains(spell.DescrNumber) || spell.DescrNumber >= DescrNumber.Traps2))
+                    {
+                        //Debug.WriteLine($"Skipping {spell.name} DescrNumber");
+                        continue;
+                    }
+                    if (IgnoreSpells.Contains(spell.name))
+                    {
+                        //Debug.WriteLine($"Skipping {spell.name} DescrNumber");
+                        continue;
+                    }
                     if (spells.ContainsKey(spell.name))
                     {
                         skippedcounter++;
@@ -87,7 +137,8 @@ namespace EQTool.Services
                     }
                 }
             }
-
+            var resisttype = (ResistType)Enum.Parse(typeof(ResistType), splits[85]);
+            var descrtype = (DescrNumber)Enum.Parse(typeof(DescrNumber), splits[157]);
             var ret = new SpellBase
             {
                 id = int.Parse(splits[0]),
@@ -101,7 +152,10 @@ namespace EQTool.Services
                 cast_on_you = splits[6].Trim(),
                 spell_fades = splits[8].Trim(),
                 Classes = classes,
-                spell_icon = int.Parse(splits[144])
+                spell_icon = int.Parse(splits[144]),
+                resisttype = resisttype,
+                ResistCheck = int.Parse(splits[147]),
+                DescrNumber = descrtype
             };
 
             if (EQSpells.EpicSpells.TryGetValue(ret.name, out var foundepic))
