@@ -126,9 +126,10 @@ namespace EQTool.Services
                 foreach (var item in spellastext)
                 {
                     var spell = ParseLine(item);
-                    if (string.IsNullOrWhiteSpace(spell.name) 
-                        spell.buffduration > 0 &&
-                        spell.spell_icon > 0
+                    if (string.IsNullOrWhiteSpace(spell.name) &&
+                        string.IsNullOrWhiteSpace(spell.cast_on_you) &&
+                        spell.buffduration <= 0 &&
+                        spell.spell_icon <= 0
                         )
                     {
                         continue;
