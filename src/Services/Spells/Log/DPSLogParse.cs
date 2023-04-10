@@ -39,7 +39,8 @@ namespace EQTool.Services.Spells.Log
             " backstab ",
             " backstabs ",
             " claw ",
-            " claws "
+            " claws ",
+            " gores "
         };
 
         public DPSLogParse(ActivePlayer activePlayer)
