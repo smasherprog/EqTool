@@ -6,10 +6,7 @@ using EQTool.Services.Spells.Log;
 using EQTool.ViewModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Windows.Documents;
 
 namespace EQToolTests
 {
@@ -60,61 +57,61 @@ namespace EQToolTests
 
         [TestMethod]
         public void ExtractZonesToFile1()
-        //{
-        //    var api = container.Resolve<WikiApi>();
-        //    var allkeys = ZoneParser.NoZoneZHelping.Keys
-        //     .Concat(ZoneParser.ZoneNameMapper.Keys)
-        //      .Concat(ZoneParser.ZoneWhoMapper.Keys)
-        //      .Distinct()
-        //      .ToList();
-        //    var list = new List<ZoneInfo>();
-        //    var notablenpc = "! ''' Notable NPCs: '''";
-        //    foreach (var item in allkeys)
-        //    {
-        //        var zoneinfo = new ZoneInfo();
-        //        zoneinfo.Name = item;
-        //        if (!System.IO.File.Exists($"c:/test/{item}.txt"))
-        //        {
-        //            continue;
-        //        }
-        //        var apireturn = System.IO.File.ReadAllText($"c:/test/{item}.txt");
-        //        apireturn = apireturn.Replace("\r", "").Replace("\n", "");
-        //        var notablenpcindex = apireturn.IndexOf(notablenpc);
-        //        if (notablenpcindex != -1)
-        //        {
-        //            var rest = apireturn.Substring(notablenpcindex + notablenpc.Length);
-        //            notablenpcindex = rest.IndexOf("|");
-        //            if (notablenpcindex != -1)
-        //            {
-        //                rest = rest.Substring(notablenpcindex + 1);
-        //                notablenpcindex = rest.IndexOf("|");
-        //                if (notablenpcindex != -1)
-        //                {
-        //                    rest = rest.Substring(0, notablenpcindex);
-        //                    rest = rest.Replace("'''", "");
-        //                    var namessplit1 = rest.Split(',')
-        //                      .Where(a => a.Contains("[[") && a.Contains("]]"))
-        //                      .ToList();
-        //                    var namessplit = new List<string>();
-        //                    foreach (var iitssd in namessplit1)
-        //                    {
-        //                        var beg = iitssd.IndexOf("[[") + 2;
-        //                        var end = iitssd.IndexOf("]]");
-        //                        var t = iitssd.Substring(beg, end - beg).Trim();
-        //                        namessplit.Add(t);
-        //                    }
-        //                    zoneinfo.NotableNPCs = namessplit;
-        //                }
-        //            }
-        //        }
-        //        list.Add(zoneinfo);
-        //    }
+        {
+            //    var api = container.Resolve<WikiApi>();
+            //    var allkeys = ZoneParser.NoZoneZHelping.Keys
+            //     .Concat(ZoneParser.ZoneNameMapper.Keys)
+            //      .Concat(ZoneParser.ZoneWhoMapper.Keys)
+            //      .Distinct()
+            //      .ToList();
+            //    var list = new List<ZoneInfo>();
+            //    var notablenpc = "! ''' Notable NPCs: '''";
+            //    foreach (var item in allkeys)
+            //    {
+            //        var zoneinfo = new ZoneInfo();
+            //        zoneinfo.Name = item;
+            //        if (!System.IO.File.Exists($"c:/test/{item}.txt"))
+            //        {
+            //            continue;
+            //        }
+            //        var apireturn = System.IO.File.ReadAllText($"c:/test/{item}.txt");
+            //        apireturn = apireturn.Replace("\r", "").Replace("\n", "");
+            //        var notablenpcindex = apireturn.IndexOf(notablenpc);
+            //        if (notablenpcindex != -1)
+            //        {
+            //            var rest = apireturn.Substring(notablenpcindex + notablenpc.Length);
+            //            notablenpcindex = rest.IndexOf("|");
+            //            if (notablenpcindex != -1)
+            //            {
+            //                rest = rest.Substring(notablenpcindex + 1);
+            //                notablenpcindex = rest.IndexOf("|");
+            //                if (notablenpcindex != -1)
+            //                {
+            //                    rest = rest.Substring(0, notablenpcindex);
+            //                    rest = rest.Replace("'''", "");
+            //                    var namessplit1 = rest.Split(',')
+            //                      .Where(a => a.Contains("[[") && a.Contains("]]"))
+            //                      .ToList();
+            //                    var namessplit = new List<string>();
+            //                    foreach (var iitssd in namessplit1)
+            //                    {
+            //                        var beg = iitssd.IndexOf("[[") + 2;
+            //                        var end = iitssd.IndexOf("]]");
+            //                        var t = iitssd.Substring(beg, end - beg).Trim();
+            //                        namessplit.Add(t);
+            //                    }
+            //                    zoneinfo.NotableNPCs = namessplit;
+            //                }
+            //            }
+            //        }
+            //        list.Add(zoneinfo);
+            //    }
 
-        //    foreach (var item in list)
-        //    {
-        //        Debug.WriteLine(item.Name);
-        //        Debug.WriteLine(string.Join(",", item.NotableNPCs));
-        //    }
+            //    foreach (var item in list)
+            //    {
+            //        Debug.WriteLine(item.Name);
+            //        Debug.WriteLine(string.Join(",", item.NotableNPCs));
+            //    }
         }
 
         [TestMethod]

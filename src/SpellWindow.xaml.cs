@@ -33,9 +33,9 @@ namespace EQTool
             this.logParser.DeadEvent += LogParser_DeadEvent;
             this.logParser.StartTimerEvent += LogParser_StartTimerEvent;
             this.logParser.CancelTimerEvent += LogParser_CancelTimerEvent;
-            this.logParser.PlayerChangeEvent += LogParser_PlayerChangeEvent; 
+            this.logParser.PlayerChangeEvent += LogParser_PlayerChangeEvent;
             spellWindowViewModel.SpellList = new System.Collections.ObjectModel.ObservableCollection<UISpell>();
-            DataContext = this.spellWindowViewModel = spellWindowViewModel; 
+            DataContext = this.spellWindowViewModel = spellWindowViewModel;
             if (this.activePlayer.Player != null)
             {
                 spellWindowViewModel.AddSavedYouSpells(this.activePlayer.Player.YouSpells);
@@ -59,10 +59,10 @@ namespace EQTool
             StateChanged += SpellWindow_StateChanged;
             LocationChanged += DPSMeter_LocationChanged;
             settings.SpellWindowState.Closed = false;
-      
+
             SaveState();
         }
-         
+
         private void LogParser_SpellWornOffSelfEvent(object sender, LogParser.SpellWornOffSelfEventArgs e)
         {
             spellWindowViewModel.TryRemoveUnambiguousSpellSelf(e.SpellNames);
@@ -72,7 +72,7 @@ namespace EQTool
         {
             spellWindowViewModel.TryRemoveUnambiguousSpellOther(e.SpellName);
         }
-         
+
         private void LogParser_StartCastingEvent(object sender, LogParser.StartCastingEventArgs e)
         {
             spellWindowViewModel.TryAdd(e.Spell);
@@ -113,13 +113,13 @@ namespace EQTool
 
         private void TrySaveYouSpellData()
         {
-            long? oldLastLogReadOffset = this.LastLogReadOffset;
-            var logerLastLogReadOffset = this.logParser.LastLogReadOffset;
-            if (this.activePlayer.Player != null && oldLastLogReadOffset != logerLastLogReadOffset)
+            var oldLastLogReadOffset = LastLogReadOffset;
+            var logerLastLogReadOffset = logParser.LastLogReadOffset;
+            if (activePlayer.Player != null && oldLastLogReadOffset != logerLastLogReadOffset)
             {
                 Debug.WriteLine("Saving You Spell Data");
-                this.LastLogReadOffset = logerLastLogReadOffset;
-                this.activePlayer.Player.YouSpells = spellWindowViewModel.SpellList.Select(a => new YouSpells
+                LastLogReadOffset = logerLastLogReadOffset;
+                activePlayer.Player.YouSpells = spellWindowViewModel.SpellList.Where(a => a.TargetName == EQSpells.SpaceYou).Select(a => new YouSpells
                 {
                     Name = a.SpellName,
                     TotalSecondsLeft = (int)a.SecondsLeftOnSpell.TotalSeconds,
@@ -156,12 +156,12 @@ namespace EQTool
         }
 
         private void LogParser_PlayerChangeEvent(object sender, LogParser.PlayerChangeEventArgs e)
-        { 
+        {
             spellWindowViewModel.ClearAllSpells();
-            this.LastLogReadOffset = this.logParser.LastLogReadOffset;
-            if (this.activePlayer.Player != null)
+            LastLogReadOffset = logParser.LastLogReadOffset;
+            if (activePlayer.Player != null)
             {
-                spellWindowViewModel.AddSavedYouSpells(this.activePlayer.Player.YouSpells);
+                spellWindowViewModel.AddSavedYouSpells(activePlayer.Player.YouSpells);
             }
         }
 
@@ -186,7 +186,7 @@ namespace EQTool
         {
             WindowState = WindowState == System.Windows.WindowState.Maximized ? System.Windows.WindowState.Normal : System.Windows.WindowState.Maximized;
         }
-         
+
         private void opendps(object sender, RoutedEventArgs e)
         {
             (App.Current as App).OpenDPSWindow();
