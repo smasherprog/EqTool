@@ -17,7 +17,6 @@ namespace EQTool.Services
         private System.Timers.Timer UITimer;
         private readonly ActivePlayer activePlayer;
         private readonly IAppDispatcher appDispatcher;
-        private long? LastReadOffset = null;
         private string LastLogFilename = string.Empty;
         private readonly EQToolSettings settings;
         private readonly LevelLogParse levelLogParse;
@@ -29,7 +28,7 @@ namespace EQTool.Services
         private readonly LogCustomTimer logCustomTimer;
         private readonly SpellLogParse spellLogParse;
         private readonly SpellWornOffLogParse spellWornOffLogParse;
-
+        private bool Processing = false;
         public LogParser(
             SpellWornOffLogParse spellWornOffLogParse,
             SpellLogParse spellLogParse,
@@ -65,7 +64,7 @@ namespace EQTool.Services
         {
         }
 
-        public long? LastLogReadOffset { get { return LastReadOffset; } }
+        public long? LastLogReadOffset { get; private set; } = null;
 
         public class PlayerZonedEventArgs : EventArgs
         {
@@ -160,89 +159,98 @@ namespace EQTool.Services
 
         private void MainRun(string line1)
         {
-            if (line1 == null || line1.Length < 27)
+            if (line1 == null || line1.Length < 27 || Processing)
             {
                 return;
             }
-
-            var date = line1.Substring(1, 24);
-            var message = line1.Substring(27).Trim();
-            var timestamp = Parse(date);
-            var pos = locationParser.Match(message);
-            if (pos.HasValue)
+            Processing = true;
+            try
             {
-                PlayerLocationEvent?.Invoke(this, new PlayerLocationEventArgs { Location = pos.Value });
-            }
 
-            var matched = dPSLogParse.Match(message, timestamp);
-            if (matched != null)
-            {
-                FightHitEvent?.Invoke(this, new FightHitEventArgs { HitInformation = matched });
-            }
-
-            var name = logDeathParse.GetDeadTarget(message);
-            if (!string.IsNullOrWhiteSpace(name))
-            {
-                DeadEvent?.Invoke(this, new DeadEventArgs { Name = name });
-            }
-
-            name = conLogParse.ConMatch(message);
-            if (!string.IsNullOrWhiteSpace(name))
-            {
-                ConEvent?.Invoke(this, new ConEventArgs { Name = name });
-            }
-
-            var customtimer = logCustomTimer.GetStartTimer(message);
-            if (customtimer != null)
-            {
-                StartTimerEvent?.Invoke(this, new StartTimerEventArgs { CustomerTimer = customtimer });
-            }
-
-            name = logCustomTimer.GetCancelTimer(message);
-            if (!string.IsNullOrWhiteSpace(name))
-            {
-                CancelTimerEvent?.Invoke(this, new CancelTimerEventArgs { Name = name });
-            }
-
-            var matchedspell = spellLogParse.MatchSpell(message);
-            if (matchedspell != null)
-            {
-                StartCastingEvent?.Invoke(this, new StartCastingEventArgs { Spell = matchedspell });
-            }
-
-            name = spellWornOffLogParse.MatchWornOffOtherSpell(message);
-            if (!string.IsNullOrWhiteSpace(name))
-            {
-                Debug.WriteLine($"MatchWornOffOtherSpell {name}");
-                SpellWornOtherOffEvent?.Invoke(this, new SpellWornOffOtherEventArgs { SpellName = name });
-            }
-
-            var spells = spellWornOffLogParse.MatchWornOffSelfSpell(message);
-            if (spells.Any())
-            {
-                foreach (var item in spells)
+                var date = line1.Substring(1, 24);
+                var message = line1.Substring(27).Trim();
+                var timestamp = Parse(date);
+                var pos = locationParser.Match(message);
+                if (pos.HasValue)
                 {
-                    Debug.WriteLine($"MatchWornOffSelfSpell {item}");
+                    PlayerLocationEvent?.Invoke(this, new PlayerLocationEventArgs { Location = pos.Value });
                 }
 
-                SpellWornOffSelfEvent?.Invoke(this, new SpellWornOffSelfEventArgs { SpellNames = spells });
-            }
-
-            levelLogParse.MatchLevel(message);
-            var matchedzone = ZoneParser.Match(message);
-            if (!string.IsNullOrWhiteSpace(matchedzone))
-            {
-                var b4matchedzone = matchedzone;
-                matchedzone = ZoneParser.TranslateToMapName(matchedzone);
-                Debug.WriteLine($"Zone Change Detected {matchedzone}--{b4matchedzone}");
-                var p = activePlayer.Player;
-                if (p != null)
+                var matched = dPSLogParse.Match(message, timestamp);
+                if (matched != null)
                 {
-                    p.Zone = matchedzone;
-                    toolSettingsLoad.Save(settings);
+                    FightHitEvent?.Invoke(this, new FightHitEventArgs { HitInformation = matched });
                 }
-                PlayerZonedEvent?.Invoke(this, new PlayerZonedEventArgs { Zone = matchedzone });
+
+                var name = logDeathParse.GetDeadTarget(message);
+                if (!string.IsNullOrWhiteSpace(name))
+                {
+                    DeadEvent?.Invoke(this, new DeadEventArgs { Name = name });
+                }
+
+                name = conLogParse.ConMatch(message);
+                if (!string.IsNullOrWhiteSpace(name))
+                {
+                    ConEvent?.Invoke(this, new ConEventArgs { Name = name });
+                }
+
+                var customtimer = logCustomTimer.GetStartTimer(message);
+                if (customtimer != null)
+                {
+                    StartTimerEvent?.Invoke(this, new StartTimerEventArgs { CustomerTimer = customtimer });
+                }
+
+                name = logCustomTimer.GetCancelTimer(message);
+                if (!string.IsNullOrWhiteSpace(name))
+                {
+                    CancelTimerEvent?.Invoke(this, new CancelTimerEventArgs { Name = name });
+                }
+
+                var matchedspell = spellLogParse.MatchSpell(message);
+                if (matchedspell != null)
+                {
+                    StartCastingEvent?.Invoke(this, new StartCastingEventArgs { Spell = matchedspell });
+                }
+
+                name = spellWornOffLogParse.MatchWornOffOtherSpell(message);
+                if (!string.IsNullOrWhiteSpace(name))
+                {
+                    Debug.WriteLine($"MatchWornOffOtherSpell {name}");
+                    SpellWornOtherOffEvent?.Invoke(this, new SpellWornOffOtherEventArgs { SpellName = name });
+                }
+
+                var spells = spellWornOffLogParse.MatchWornOffSelfSpell(message);
+                if (spells.Any())
+                {
+                    foreach (var item in spells)
+                    {
+                        Debug.WriteLine($"MatchWornOffSelfSpell {item}");
+                    }
+
+                    SpellWornOffSelfEvent?.Invoke(this, new SpellWornOffSelfEventArgs { SpellNames = spells });
+                }
+
+                levelLogParse.MatchLevel(message);
+                var matchedzone = ZoneParser.Match(message);
+                if (!string.IsNullOrWhiteSpace(matchedzone))
+                {
+                    var b4matchedzone = matchedzone;
+                    matchedzone = ZoneParser.TranslateToMapName(matchedzone);
+                    Debug.WriteLine($"Zone Change Detected {matchedzone}--{b4matchedzone}");
+                    var p = activePlayer.Player;
+                    if (p != null)
+                    {
+                        p.Zone = matchedzone;
+                        toolSettingsLoad.Save(settings);
+                    }
+                    PlayerZonedEvent?.Invoke(this, new PlayerZonedEventArgs { Zone = matchedzone });
+                }
             }
+            catch (Exception e)
+            {
+                App.LogUnhandledException(e, "LogParser");
+            }
+            Processing = false;
         }
 
         private void Poll(object sender, EventArgs e)
@@ -259,7 +267,7 @@ namespace EQTool.Services
                 var filepath = activePlayer.LogFileName;
                 if (playerchanged || filepath != LastLogFilename)
                 {
-                    LastReadOffset = null;
+                    LastLogReadOffset = null;
                     LastLogFilename = filepath;
                 }
 
@@ -272,22 +280,22 @@ namespace EQTool.Services
                 try
                 {
                     var fileinfo = new FileInfo(filepath);
-                    if (!LastReadOffset.HasValue || (LastReadOffset > fileinfo.Length && fileinfo.Length > 0))
+                    if (!LastLogReadOffset.HasValue || (LastLogReadOffset > fileinfo.Length && fileinfo.Length > 0))
                     {
                         Debug.WriteLine($"Player Switched or new Player detected {filepath} {fileinfo.Length}");
-                        LastReadOffset = fileinfo.Length;
+                        LastLogReadOffset = fileinfo.Length;
                         PlayerChangeEvent?.Invoke(this, new PlayerChangeEventArgs());
                     }
                     var linelist = new List<string>();
                     using (var stream = new FileStream(filepath, FileMode.Open, FileAccess.Read))
                     using (var reader = new StreamReader(stream))
                     {
-                        _ = stream.Seek(LastReadOffset.Value, SeekOrigin.Begin);
+                        _ = stream.Seek(LastLogReadOffset.Value, SeekOrigin.Begin);
                         while (!reader.EndOfStream)
                         {
                             var line = reader.ReadLine();
                             linelist.Add(line);
-                            LastReadOffset = stream.Position;
+                            LastLogReadOffset = stream.Position;
                         }
                     }
 

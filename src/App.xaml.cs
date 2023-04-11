@@ -81,7 +81,7 @@ namespace EQTool
             public string Exception { get; set; }
         }
 
-        private void LogUnhandledException(Exception exception, string source)
+        public static void LogUnhandledException(Exception exception, string source)
         {
             var msg = new ExceptionRequest
             {
@@ -115,7 +115,7 @@ namespace EQTool
 
         private void App_Startup(object sender, StartupEventArgs e)
         {
-            this.ShutdownMode = ShutdownMode.OnExplicitShutdown;
+            ShutdownMode = ShutdownMode.OnExplicitShutdown;
             SetupExceptionHandling();
             if (!WaitForEQToolToStop())
             {

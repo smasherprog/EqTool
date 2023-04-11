@@ -63,188 +63,631 @@ namespace EQTool.Services.Map
             ZoneWhoMapper.Add("felwithe", "northern felwithe");
             ZoneWhoMapper.Add("kaladim", "south kaladim");
 
-
-            //ZoneInfoMap.Add("airplane", new ZoneInfo
-            //{
-            //    NotableNPCs = new List<string>()
-            //    {
-            //        "Thunder Spirit Princess",
-            //        "Noble Dojorn",
-            //        "Protector of Sky",
-            //        "Gorgalosk",
-            //        "Keeper of Souls",
-            //        "The Spiroc Lord",
-            //        "The Spiroc Guardian",
-            //        "Bazzt Zzzt",
-            //        "Sister of the Spire",
-            //        "Eye of Veeshan"
-            //    },
-            //    RespawnTime = new TimeSpan(8, 0, 0)
-            //});
-            //ZoneInfoMap.Add("akanon", new ZoneInfo
-            //{
-            //    NotableNPCs = new List<string>()
-            //    { 
-            //    },
-            //    RespawnTime = new TimeSpan(0, 6, 40)
-            //});
-            //ZoneInfoMap.Add("arena", new ZoneInfo
-            //{
-            //    NotableNPCs = new List<string>()
-            //    { 
-            //    },
-            //    RespawnTime = new TimeSpan(0)
-            //});
-            //ZoneInfoMap.Add("befallen", new ZoneInfo
-            //{
-            //    NotableNPCs = new List<string>()
-            //    {
-            //        "",
-            //        "",
-            //        "",
-            //        "",
-            //        "",
-            //        "",
-            //        "",
-            //        "",
-            //        "",
-            //        "",
-            //    },
-            //    RespawnTime = new TimeSpan(0, 6, 40)
-            //});
-            //ZoneInfoMap.Add("beholder", new ZoneInfo
-            //{
-            //    NotableNPCs = new List<string>()
-            //    {
-            //        "",
-            //        "",
-            //        "",
-            //        "",
-            //        "",
-            //        "",
-            //        "",
-            //        "",
-            //        "",
-            //        "",
-            //    },
-            //    RespawnTime = new TimeSpan(0, 6, 40)
-            //});
-            //ZoneInfoMap.Add("blackburrow", true);
-            //ZoneInfoMap.Add("burningwood", false);
-            //ZoneInfoMap.Add("butcher", false);
-            //ZoneInfoMap.Add("cabeast", false);
-            //ZoneInfoMap.Add("cabwest", false);
-            //ZoneInfoMap.Add("cauldron", false);
-            //ZoneInfoMap.Add("cazicthule", false);
-            //ZoneInfoMap.Add("charasis", false);
-            //ZoneInfoMap.Add("chardok", true);
-            //ZoneInfoMap.Add("citymist", true);
-            //ZoneInfoMap.Add("cobaltscar", false);
-            //ZoneInfoMap.Add("commons", false);
-            //ZoneInfoMap.Add("crushbone", false);
-            //ZoneInfoMap.Add("crystal", false);
-            //ZoneInfoMap.Add("dalnir", true);
-            //ZoneInfoMap.Add("dreadlands", false);
-            //ZoneInfoMap.Add("droga", false);
-            //ZoneInfoMap.Add("eastkarana", false);
-            //ZoneInfoMap.Add("eastwastes", false);
-            //ZoneInfoMap.Add("ecommons", false);
-            //ZoneInfoMap.Add("emeraldjungle", false);
-            //ZoneInfoMap.Add("erudnext", false);
-            //ZoneInfoMap.Add("erudnint", true);
-            //ZoneInfoMap.Add("erudsxing", false);
-            //ZoneInfoMap.Add("everfrost", false);
-            //ZoneInfoMap.Add("fearplane", false);
-            //ZoneInfoMap.Add("feerrott", false);
-            //ZoneInfoMap.Add("felwithea", true);
-            //ZoneInfoMap.Add("felwitheb", false);
-            //ZoneInfoMap.Add("fieldofbone", false);
-            //ZoneInfoMap.Add("firiona", false);
-            //ZoneInfoMap.Add("freporte", true);
-            //ZoneInfoMap.Add("freportn", false);
-            //ZoneInfoMap.Add("freportw", false);
-            //ZoneInfoMap.Add("frontiermtns", false);
-            //ZoneInfoMap.Add("frozenshadow", false);
-            //ZoneInfoMap.Add("gfaydark", false);
-            //ZoneInfoMap.Add("greatdivide", false);
-            //ZoneInfoMap.Add("grobb", false);
-            //ZoneInfoMap.Add("growthplane", false);
-            //ZoneInfoMap.Add("gukbottom", true);
-            //ZoneInfoMap.Add("guktop", true);
-            //ZoneInfoMap.Add("halas", false);
-            //ZoneInfoMap.Add("hateplane", true);
-            //ZoneInfoMap.Add("highkeep", true);
-            //ZoneInfoMap.Add("highpass", false);
-            //ZoneInfoMap.Add("hole", true);
-            //ZoneInfoMap.Add("iceclad", false);
-            //ZoneInfoMap.Add("innothule", false);
-            //ZoneInfoMap.Add("kael", false);
-            //ZoneInfoMap.Add("kaesora", true);
-            //ZoneInfoMap.Add("kaladima", false);
-            //ZoneInfoMap.Add("kaladimb", false);
-            //ZoneInfoMap.Add("karnor", true);
-            //ZoneInfoMap.Add("kedge", true);
-            //ZoneInfoMap.Add("kerraridge", false);
-            //ZoneInfoMap.Add("kithicor", false);
-            //ZoneInfoMap.Add("kurn", false);
-            //ZoneInfoMap.Add("lakeofillomen", false);
-            //ZoneInfoMap.Add("lakerathe", false);
-            //ZoneInfoMap.Add("lavastorm", false);
-            //ZoneInfoMap.Add("lfaydark", false);
-            //ZoneInfoMap.Add("mischiefplane", true);
-            //ZoneInfoMap.Add("mistmoore", true);
-            //ZoneInfoMap.Add("misty", false);
-            //ZoneInfoMap.Add("najena", true);
-            //ZoneInfoMap.Add("necropolis", false);
-            //ZoneInfoMap.Add("nektulos", false);
-            //ZoneInfoMap.Add("neriaka", false);
-            //ZoneInfoMap.Add("neriakb", false);
-            //ZoneInfoMap.Add("neriakc", false);
-            //ZoneInfoMap.Add("northkarana", false);
-            //ZoneInfoMap.Add("nro", false);
-            //ZoneInfoMap.Add("nurga", false);
-            //ZoneInfoMap.Add("oasis", false);
-            //ZoneInfoMap.Add("oggok", false);
-            //ZoneInfoMap.Add("oot", false);
-            //ZoneInfoMap.Add("overthere", false);
-            //ZoneInfoMap.Add("paineel", false);
-            //ZoneInfoMap.Add("paw", true);
-            //ZoneInfoMap.Add("permafrost", true);
-            //ZoneInfoMap.Add("qcat", true);
-            //ZoneInfoMap.Add("qey2hh1", false);
-            //ZoneInfoMap.Add("qeynos", true);
-            //ZoneInfoMap.Add("qeynos2", false);
-            //ZoneInfoMap.Add("qeytoqrg", false);
-            //ZoneInfoMap.Add("qrg", true);
-            //ZoneInfoMap.Add("rathemtn", false);
-            //ZoneInfoMap.Add("rivervale", false);
-            //ZoneInfoMap.Add("runnyeye", true);
-            //ZoneInfoMap.Add("sebilis", true);
-            //ZoneInfoMap.Add("sirens", true);
-            //ZoneInfoMap.Add("skyfire", false);
-            //ZoneInfoMap.Add("skyshrine", true);
-            //ZoneInfoMap.Add("sleeper", false);
-            //ZoneInfoMap.Add("soldunga", true);
-            //ZoneInfoMap.Add("soldungb", true);
-            //ZoneInfoMap.Add("soltemple", true);
-            //ZoneInfoMap.Add("southkarana", false);
-            //ZoneInfoMap.Add("sro", false);
-            //ZoneInfoMap.Add("steamfont", false);
-            //ZoneInfoMap.Add("stonebrunt", false);
-            //ZoneInfoMap.Add("swampofnohope", false);
-            //ZoneInfoMap.Add("templeveeshan", false);
-            //ZoneInfoMap.Add("thurgadina", false);
-            //ZoneInfoMap.Add("thurgadinb", true);
-            //ZoneInfoMap.Add("timorous", false);
-            //ZoneInfoMap.Add("tox", false);
-            //ZoneInfoMap.Add("trakanon", false);
-            //ZoneInfoMap.Add("unrest", true);
-            //ZoneInfoMap.Add("veeshan", false);
-            //ZoneInfoMap.Add("velketor", true);
-            //ZoneInfoMap.Add("wakening", false);
-            //ZoneInfoMap.Add("warrens", false);
-            //ZoneInfoMap.Add("warslikswood", false);
-            //ZoneInfoMap.Add("westwastes", false);
+            ZoneInfoMap.Add("airplane", new ZoneInfo
+            {
+                NotableNPCs = new List<string>()
+                {
+                    "Thunder Spirit Princess",
+                    "Noble Dojorn",
+                    "Protector of Sky",
+                    "Gorgalosk",
+                    "Keeper of Souls",
+                    "The Spiroc Lord",
+                    "The Spiroc Guardian",
+                    "Bazzt Zzzt",
+                    "Sister of the Spire",
+                    "Eye of Veeshan"
+                },
+                RespawnTime = new TimeSpan(8, 0, 0)
+            });
+            ZoneInfoMap.Add("akanon", new ZoneInfo
+            {
+                NotableNPCs = new List<string>()
+                {
+                },
+                RespawnTime = new TimeSpan(0, 6, 40)
+            });
+            ZoneInfoMap.Add("arena", new ZoneInfo
+            {
+                NotableNPCs = new List<string>()
+                {
+                },
+                RespawnTime = new TimeSpan(0)
+            });
+            ZoneInfoMap.Add("befallen", new ZoneInfo
+            {
+                NotableNPCs = new List<string>()
+                {
+                   "Boondin Babbinsbort","Commander Windstream","An Elf Skeleton","Gynok Moltor","Priest Amiaz","Skeleton Lrodd","The Thaumaturgist"
+                },
+                RespawnTime = new TimeSpan(0, 6, 40)
+            });
+            ZoneInfoMap.Add("beholder", new ZoneInfo
+            {
+                NotableNPCs = new List<string>()
+                {
+                    "King Xorbb","Lord Syrkl","Lord Sviir","Lord Soptyvr","SpinFlint","Brahhm","Yymp the Infernal","Qlei","Goblin Alchemist"
+                },
+                RespawnTime = new TimeSpan(0, 6, 40)
+            });
+            ZoneInfoMap.Add("blackburrow", new ZoneInfo
+            {
+                NotableNPCs = new List<string>()
+                {
+                    "Lord Elgnub","Master Brewer","Refugee Splitpaw","a gnoll commander","Splitpaw Commander",
+                },
+                RespawnTime = new TimeSpan(0, 6, 40)
+            });
+            ZoneInfoMap.Add("burningwood", new ZoneInfo
+            {
+                NotableNPCs = new List<string>()
+                {
+                    "",
+                },
+                RespawnTime = new TimeSpan(0, 6, 40)
+            });
+            ZoneInfoMap.Add("butcher", new ZoneInfo
+            {
+                NotableNPCs = new List<string>()
+                {
+                    "",
+                },
+                RespawnTime = new TimeSpan(0, 6, 40)
+            });
+            ZoneInfoMap.Add("cabeast", new ZoneInfo
+            {
+                NotableNPCs = new List<string>()
+                {
+                    "",
+                },
+                RespawnTime = new TimeSpan(0, 6, 40)
+            });
+            ZoneInfoMap.Add("cabwest", new ZoneInfo
+            {
+                NotableNPCs = new List<string>()
+                {
+                    "",
+                },
+                RespawnTime = new TimeSpan(0, 6, 40)
+            });
+            ZoneInfoMap.Add("cauldron", new ZoneInfo
+            {
+                NotableNPCs = new List<string>()
+                {
+                    "",
+                },
+                RespawnTime = new TimeSpan(0, 6, 40)
+            });
+            ZoneInfoMap.Add("cazicthule", new ZoneInfo
+            {
+                NotableNPCs = new List<string>()
+                {
+                    "",
+                },
+                RespawnTime = new TimeSpan(0, 6, 40)
+            });
+            ZoneInfoMap.Add("charasis", new ZoneInfo
+            {
+                NotableNPCs = new List<string>()
+                {
+                    "Sentient Bile","The Crypt Excavator","The Crypt Feaster","The Crypt Keeper","Drusella Sathir","Embalming Fluid","The Golem Master","Reanimated Plaguebone","Skeletal Procurator","The Skeleton Sepulcher","The Spectre Spiritualist","The Undertaker Lord",
+                },
+                RespawnTime = new TimeSpan(0, 6, 40)
+            });
+            ZoneInfoMap.Add("chardok", new ZoneInfo
+            {
+                NotableNPCs = new List<string>()
+                {
+                    "",
+                },
+                RespawnTime = new TimeSpan(0, 6, 40)
+            });
+            ZoneInfoMap.Add("citymist", new ZoneInfo
+            {
+                NotableNPCs = new List<string>()
+                {
+                    "",
+                },
+                RespawnTime = new TimeSpan(0, 6, 40)
+            });
+            ZoneInfoMap.Add("cobaltscar", new ZoneInfo
+            {
+                NotableNPCs = new List<string>()
+                {
+                    "",
+                },
+                RespawnTime = new TimeSpan(0, 6, 40)
+            });
+            ZoneInfoMap.Add("commons", new ZoneInfo
+            {
+                NotableNPCs = new List<string>()
+                {
+                    "",
+                },
+                RespawnTime = new TimeSpan(0, 6, 40)
+            });
+            ZoneInfoMap.Add("crushbone", new ZoneInfo
+            {
+                NotableNPCs = new List<string>()
+                {
+                    "Orc Taskmaster","Orc Trainer","Orc Warlord","Ambassador DVinn","Lord Darish","Rondo Dunfire","Retlon Brenclog","Emperor Crush","The Prophet",
+                },
+                RespawnTime = new TimeSpan(0, 6, 40)
+            });
+            ZoneInfoMap.Add("crystal", new ZoneInfo
+            {
+                NotableNPCs = new List<string>()
+                {
+                    "",
+                },
+                RespawnTime = new TimeSpan(0, 6, 40)
+            });
+            ZoneInfoMap.Add("dalnir", new ZoneInfo
+            {
+                NotableNPCs = new List<string>()
+                {
+                    "Coerced Channeler","Coerced Crusader","Coerced Penkeeper","a coerced revenant","a coerced smith","Kly Imprecator","The Kly Overseer","The Kly","Spectral Crusader","an undead blacksmith","lumpy goo",
+                },
+                RespawnTime = new TimeSpan(0, 6, 40)
+            });
+            ZoneInfoMap.Add("dreadlands", new ZoneInfo
+            {
+                NotableNPCs = new List<string>()
+                {
+                    "Gorenaire","A dread widow","a mountain giant patriarch","a wulfare lonewolf","wraithbone champion",
+                },
+                RespawnTime = new TimeSpan(0, 6, 40)
+            });
+            ZoneInfoMap.Add("droga", new ZoneInfo
+            {
+                NotableNPCs = new List<string>()
+                {
+                    "a goblin bodyguard","Chief Rokgus","a goblin canyoneer","a maddened Burynai","Soothsayer Dregzak",
+                },
+                RespawnTime = new TimeSpan(0, 6, 40)
+            });
+            ZoneInfoMap.Add("eastkarana", new ZoneInfo
+            {
+                NotableNPCs = new List<string>()
+                {
+                    "",
+                },
+                RespawnTime = new TimeSpan(0, 6, 40)
+            });
+            ZoneInfoMap.Add("eastwastes", new ZoneInfo
+            {
+                NotableNPCs = new List<string>()
+                {
+                    "",
+                },
+                RespawnTime = new TimeSpan(0, 6, 40)
+            });
+            ZoneInfoMap.Add("ecommons", new ZoneInfo
+            {
+                NotableNPCs = new List<string>()
+                {
+                    "",
+                },
+                RespawnTime = new TimeSpan(0, 6, 40)
+            });
+            ZoneInfoMap.Add("emeraldjungle", new ZoneInfo
+            {
+                NotableNPCs = new List<string>()
+                {
+                    "",
+                },
+                RespawnTime = new TimeSpan(0, 6, 40)
+            });
+            ZoneInfoMap.Add("erudnext", new ZoneInfo
+            {
+                NotableNPCs = new List<string>()
+                {
+                    "",
+                },
+                RespawnTime = new TimeSpan(0, 6, 40)
+            });
+            ZoneInfoMap.Add("erudnint", new ZoneInfo
+            {
+                NotableNPCs = new List<string>()
+                {
+                    "",
+                },
+                RespawnTime = new TimeSpan(0, 6, 40)
+            });
+            ZoneInfoMap.Add("erudsxing", new ZoneInfo
+            {
+                NotableNPCs = new List<string>()
+                {
+                    "",
+                },
+                RespawnTime = new TimeSpan(0, 6, 40)
+            });
+            ZoneInfoMap.Add("everfrost", new ZoneInfo
+            {
+                NotableNPCs = new List<string>()
+                {
+                    "Karg IceBear","Lich of Miragul","Megan","Tundra Jack","Iceberg","Snowflake","Sulon McMoor","Redwind","Martar IceBear","Dark Assassin","Corrupted wooly",
+                },
+                RespawnTime = new TimeSpan(0, 6, 40)
+            });
+            ZoneInfoMap.Add("fearplane", new ZoneInfo
+            {
+                NotableNPCs = new List<string>()
+                {
+                    "",
+                },
+                RespawnTime = new TimeSpan(0, 6, 40)
+            });
+            ZoneInfoMap.Add("feerrott", new ZoneInfo
+            {
+                NotableNPCs = new List<string>()
+                {
+                    "Annaelia Wylassi","Aqaar Aluram","Cyndreela","Dark Assassin","Eleann Morkul","Oknoggin Stonesmacker","Roror","Spanner Scrapsnatcher",
+                },
+                RespawnTime = new TimeSpan(0, 6, 40)
+            });
+            ZoneInfoMap.Add("felwithea", new ZoneInfo
+            {
+                NotableNPCs = new List<string>()
+                {
+                    "",
+                },
+                RespawnTime = new TimeSpan(0, 6, 40)
+            });
+            ZoneInfoMap.Add("felwitheb", new ZoneInfo
+            {
+                NotableNPCs = new List<string>()
+                {
+                    "",
+                },
+                RespawnTime = new TimeSpan(0, 6, 40)
+            });
+            ZoneInfoMap.Add("fieldofbone", new ZoneInfo
+            {
+                NotableNPCs = new List<string>()
+                {
+                    "",
+                },
+                RespawnTime = new TimeSpan(0, 6, 40)
+            });
+            ZoneInfoMap.Add("firiona", new ZoneInfo
+            {
+                NotableNPCs = new List<string>()
+                {
+                    "",
+                },
+                RespawnTime = new TimeSpan(0, 6, 40)
+            });
+            ZoneInfoMap.Add("freporte", new ZoneInfo
+            {
+                NotableNPCs = new List<string>()
+                {
+                    "",
+                },
+                RespawnTime = new TimeSpan(0, 6, 40)
+            });
+            ZoneInfoMap.Add("freportn", new ZoneInfo
+            {
+                NotableNPCs = new List<string>()
+                {
+                    "",
+                },
+                RespawnTime = new TimeSpan(0, 6, 40)
+            });
+            ZoneInfoMap.Add("freportw", new ZoneInfo
+            {
+                NotableNPCs = new List<string>()
+                {
+                    "",
+                },
+                RespawnTime = new TimeSpan(0, 6, 40)
+            });
+            ZoneInfoMap.Add("frontiermtns", new ZoneInfo
+            {
+                NotableNPCs = new List<string>()
+                {
+                    "",
+                },
+                RespawnTime = new TimeSpan(0, 6, 40)
+            });
+            ZoneInfoMap.Add("frozenshadow", new ZoneInfo
+            {
+                NotableNPCs = new List<string>()
+                {
+                    "Large Undead Gnoll","Xalgoti","Zorglim the Dead","Enraged Shadowbeast","Amontehepna","Narmak Berreka","maggot infested flesh","Eugie","Isopca","Lerty","Nosja","Otdd","Pelpa","Priest Majes Medory","Tihgren","Varjie","Vyakna","enraged relative","lucid spirit of Abrams","Vhal'Sera",
+                },
+                RespawnTime = new TimeSpan(0, 6, 40)
+            });
+            ZoneInfoMap.Add("gfaydark", new ZoneInfo
+            {
+                NotableNPCs = new List<string>()
+                {
+                    "",
+                },
+                RespawnTime = new TimeSpan(0, 6, 40)
+            });
+            ZoneInfoMap.Add("greatdivide", new ZoneInfo
+            {
+                NotableNPCs = new List<string>()
+                {
+                    "",
+                },
+                RespawnTime = new TimeSpan(0, 6, 40)
+            });
+            ZoneInfoMap.Add("grobb", new ZoneInfo
+            {
+                NotableNPCs = new List<string>()
+                {
+                    "",
+                },
+                RespawnTime = new TimeSpan(0, 6, 40)
+            });
+            ZoneInfoMap.Add("growthplane", new ZoneInfo
+            {
+                NotableNPCs = new List<string>()
+                {
+                    "",
+                },
+                RespawnTime = new TimeSpan(0, 6, 40)
+            });
+            ZoneInfoMap.Add("gukbottom", new ZoneInfo
+            {
+                NotableNPCs = new List<string>()
+                {
+                    "",
+                },
+                RespawnTime = new TimeSpan(0, 6, 40)
+            });
+            ZoneInfoMap.Add("guktop", new ZoneInfo
+            {
+                NotableNPCs = new List<string>()
+                {
+                    "a froglok gaz squire","a froglok idealist","a froglok realist","a froglok necromancer","a froglok scryer","a froglok summoner","a froglok nokta shaman","a froglok shin knight","the froglok shin lord","Tempus","a giant heart spider",
+                },
+                RespawnTime = new TimeSpan(0, 6, 40)
+            });
+            ZoneInfoMap.Add("halas", new ZoneInfo
+            {
+                NotableNPCs = new List<string>()
+                {
+                    "",
+                },
+                RespawnTime = new TimeSpan(0, 6, 40)
+            });
+            ZoneInfoMap.Add("hateplane", new ZoneInfo
+            {
+                NotableNPCs = new List<string>()
+                {
+                    "",
+                },
+                RespawnTime = new TimeSpan(0, 6, 40)
+            });
+            ZoneInfoMap.Add("highkeep", new ZoneInfo
+            {
+                NotableNPCs = new List<string>()
+                {
+                    "Captain Boshinko","Mistress Anna","Osargen","Princess Lenia",
+                },
+                RespawnTime = new TimeSpan(0, 6, 40)
+            });
+            ZoneInfoMap.Add("highpass", new ZoneInfo
+            {
+                NotableNPCs = new List<string>()
+                {
+                    "Cyrla Shadowstepper","Dyllin Starsine","Hagnis Shralok","Recfek Shralok","Vopuk Shralok","Vexven Mucktail","Grenix Mucktail","Barn Bloodstone",
+                },
+                RespawnTime = new TimeSpan(0, 6, 40)
+            });
+            ZoneInfoMap.Add("hole", new ZoneInfo
+            {
+                NotableNPCs = new List<string>()
+                {
+                    "",
+                },
+                RespawnTime = new TimeSpan(0, 6, 40)
+            });
+            ZoneInfoMap.Add("iceclad", new ZoneInfo
+            {
+                NotableNPCs = new List<string>()
+                {
+                    "Balix Misteyes","Corudoth","Garou","Lodizal","Midnight","Pulsating Icestorm","Stormfeather",
+                },
+                RespawnTime = new TimeSpan(0, 6, 40)
+            });
+            ZoneInfoMap.Add("innothule", new ZoneInfo
+            {
+                NotableNPCs = new List<string>()
+                {
+                    "Bunk Oden","Jojoojojgogogoguna","Jyle Windstorm","Jojongua","Zimbittle","a troll slayer","Spore Guardian","Lynuga",
+                },
+                RespawnTime = new TimeSpan(0, 6, 40)
+            });
+            ZoneInfoMap.Add("kael", new ZoneInfo
+            {
+                NotableNPCs = new List<string>()
+                {
+                    "Avatar of War","Statue of Rallos Zek","Derakor the Vindicator","King Tormax","Bjrakor the Cold","Captain Bvellos","Gkrean Prophet of Tallon","Semkak Prophet of Vallon","Gorul Longshanks","Keldor Dek`Torek","Noble Helssen","Slaggak the Trainer","Staff Sergeant Drioc","Vkjor","Wenglawks Kkeak",
+                },
+                RespawnTime = new TimeSpan(0, 6, 40)
+            });
+            ZoneInfoMap.Add("kaesora", new ZoneInfo
+            {
+                NotableNPCs = new List<string>()
+                {
+                    "Hungered Ravener","failed crypt raider","Frenzied Strathbone","Reaver of Xalgoz","spectral guardian","spectral librarian","Strathbone Runelord","tortured librarian","Warder of Xalgoz","Xalgoz",
+                },
+                RespawnTime = new TimeSpan(0, 6, 40)
+            });
+            ZoneInfoMap.Add("kaladima", new ZoneInfo
+            {
+                NotableNPCs = new List<string>()
+                {
+                    "",
+                },
+                RespawnTime = new TimeSpan(0, 6, 40)
+            });
+            ZoneInfoMap.Add("kaladimb", new ZoneInfo
+            {
+                NotableNPCs = new List<string>()
+                {
+                    "",
+                },
+                RespawnTime = new TimeSpan(0, 6, 40)
+            });
+            ZoneInfoMap.Add("karnor", new ZoneInfo
+            {
+                NotableNPCs = new List<string>()
+                {
+                    "",
+                },
+                RespawnTime = new TimeSpan(0, 6, 40)
+            });
+            ZoneInfoMap.Add("kedge", new ZoneInfo
+            {
+                NotableNPCs = new List<string>()
+                {
+                    "Phinigel Autropos","Cauldronboil","Cauldronbubble","Coralyn Kelpmaiden","Estrella of Gloomwater","Fierce Impaler","a ferocious cauldron shark","Frenzied Cauldron Shark","Golden Haired Mermaid","Stiletto Fang Piranha","Seahorse Patriarch","Seahorse Matriarch","Shellara Ebbhunter","Undertow","Swirlspine",
+                },
+                RespawnTime = new TimeSpan(0, 6, 40)
+            });
+            ZoneInfoMap.Add("kerraridge", new ZoneInfo
+            {
+                NotableNPCs = new List<string>()
+                {
+                    "",
+                },
+                RespawnTime = new TimeSpan(0, 6, 40)
+            });
+            ZoneInfoMap.Add("kithicor", new ZoneInfo
+            {
+                NotableNPCs = new List<string>()
+                {
+                    "",
+                },
+                RespawnTime = new TimeSpan(0, 6, 40)
+            });
+            ZoneInfoMap.Add("kurn", new ZoneInfo
+            {
+                NotableNPCs = new List<string>()
+                {
+                    "Bargynn","Burynai Forager","fingered skeleton","an odd mole","a skeletal cook","thick boned skeleton","undead crusader","an undead jester",
+                },
+                RespawnTime = new TimeSpan(0, 6, 40)
+            });
+            ZoneInfoMap.Add("lakeofillomen", new ZoneInfo
+            {
+                NotableNPCs = new List<string>()
+                {
+                    "a sarnak courier","Professor Akabao","Chancellor of Di`Zok","Lord Gorelik","Advisor Sh'Orok",
+                },
+                RespawnTime = new TimeSpan(0, 6, 40)
+            });
+            ZoneInfoMap.Add("lakerathe", new ZoneInfo
+            {
+                NotableNPCs = new List<string>()
+                {
+                    "",
+                },
+                RespawnTime = new TimeSpan(0, 6, 40)
+            });
+            ZoneInfoMap.Add("lavastorm", new ZoneInfo
+            {
+                NotableNPCs = new List<string>()
+                {
+                    "Deep Lava Basilisk","Eejag","Hykallen","A lesser nightmare","Sir Lindeal","a warbone monk","a warbone spearman",
+                },
+                RespawnTime = new TimeSpan(0, 6, 40)
+            });
+            ZoneInfoMap.Add("lfaydark", new ZoneInfo
+            {
+                NotableNPCs = new List<string>()
+                {
+                    "",
+                },
+                RespawnTime = new TimeSpan(0, 6, 40)
+            });
+            ZoneInfoMap.Add("mischiefplane", new ZoneInfo
+            {
+                NotableNPCs = new List<string>()
+                {
+                    "",
+                },
+                RespawnTime = new TimeSpan(0, 6, 40)
+            });
+            ZoneInfoMap.Add("mistmoore", new ZoneInfo
+            {
+                NotableNPCs = new List<string>()
+                {
+                    "an advisor","an avenging caitiff","Black Dire","Butler Syncall","a cloaked dhampyre","a deathly usher","Enynti","Garton Viswin","a glyphed ghoul","an imp familiar","Lasna Cheroon","Maid Issis","Mayong Mistmoore","Mynthi Davissi","Princess Cherista","Ssynthi","Xicotl",
+                },
+                RespawnTime = new TimeSpan(0, 6, 40)
+            });
+            ZoneInfoMap.Add("misty", new ZoneInfo
+            {
+                NotableNPCs = new List<string>()
+                {
+                    "",
+                },
+                RespawnTime = new TimeSpan(0, 6, 40)
+            });
+            ZoneInfoMap.Add("najena", new ZoneInfo
+            {
+                NotableNPCs = new List<string>()
+                {
+                    "Akksstaff","BoneCracker","Drelzna","Ekeros","Linara Parlone","Moosh","Najena (NPC)","Officer Grush","Rathyl","Rathyl reincarnate","Trazdon","a visiting priestess","The Widowmistress",
+                },
+                RespawnTime = new TimeSpan(0, 6, 40)
+            });
+            ZoneInfoMap.Add("necropolis", new ZoneInfo { NotableNPCs = new List<string>() { "", }, RespawnTime = new TimeSpan(0, 6, 40) });
+            ZoneInfoMap.Add("nektulos", new ZoneInfo { NotableNPCs = new List<string>() { "Leatherfoot Deputy", "Leatherfoot Medic", "Kirak Vil", }, RespawnTime = new TimeSpan(0, 6, 40) });
+            ZoneInfoMap.Add("neriaka", new ZoneInfo { NotableNPCs = new List<string>() { "", }, RespawnTime = new TimeSpan(0, 6, 40) });
+            ZoneInfoMap.Add("neriakb", new ZoneInfo { NotableNPCs = new List<string>() { "", }, RespawnTime = new TimeSpan(0, 6, 40) });
+            ZoneInfoMap.Add("neriakc", new ZoneInfo { NotableNPCs = new List<string>() { "", }, RespawnTime = new TimeSpan(0, 6, 40) });
+            ZoneInfoMap.Add("northkarana", new ZoneInfo { NotableNPCs = new List<string>() { "", }, RespawnTime = new TimeSpan(0, 6, 40) });
+            ZoneInfoMap.Add("nro", new ZoneInfo { NotableNPCs = new List<string>() { "Dorn B`Dynn", "Dunedigger", "Rahotep", }, RespawnTime = new TimeSpan(0, 6, 40) });
+            ZoneInfoMap.Add("nurga", new ZoneInfo { NotableNPCs = new List<string>() { "Overseer Dlubish", "A Sleeping Ogre", "Trunt", }, RespawnTime = new TimeSpan(0, 6, 40) });
+            ZoneInfoMap.Add("oasis", new ZoneInfo { NotableNPCs = new List<string>() { "Cazel", "Hatar", "Lockjaw", "Young Ronin", }, RespawnTime = new TimeSpan(0, 6, 40) });
+            ZoneInfoMap.Add("oggok", new ZoneInfo { NotableNPCs = new List<string>() { "", }, RespawnTime = new TimeSpan(0, 6, 40) });
+            ZoneInfoMap.Add("oot", new ZoneInfo { NotableNPCs = new List<string>() { "Capt Surestout", "Nerbilik", "Oracle of K`Arnon", "Boog Mudtoe", "Gornit", "Sentry Xyrin", "Gull Skytalon", "Allizewsaur", "Ancient Cyclops", "Brawn", "Quag Maelstrom", "Seplawishinl Bladeblight", "Soarin Brightfeather", "tainted seafury cyclops", "corrupted seafury cyclops", "Wiltin Windwalker", "A Goblin", }, RespawnTime = new TimeSpan(0, 6, 40) });
+            ZoneInfoMap.Add("overthere", new ZoneInfo { NotableNPCs = new List<string>() { "Admiral Tylix", "Captain Rottgrime", "General V`Deers", "Impaler Tzilug", "Tourmaline", "Corundium", "Stishovite", "Tektite", "A Cliff Golem", }, RespawnTime = new TimeSpan(0, 6, 40) });
+            ZoneInfoMap.Add("paineel", new ZoneInfo { NotableNPCs = new List<string>() { "", }, RespawnTime = new TimeSpan(0, 6, 40) });
+            ZoneInfoMap.Add("paw", new ZoneInfo { NotableNPCs = new List<string>() { "Brother Hayle", "The Ishva Mal", "Kurrpok Splitpaw", "Tesch Val Kadvem", "Tesch Val Deval`Nmak", "Nisch Val Torash Mashk", "Rosch Val L'Vlor" }, RespawnTime = new TimeSpan(0, 6, 40) });
+            ZoneInfoMap.Add("permafrost", new ZoneInfo { NotableNPCs = new List<string>() { "Lady Vox", "Priest of Nagafen", "High Priest Zaharn", "A goblin alchemist (Permafrost)", "King Thex'Ka IV", "Goblin Archeologist", "Goblin Patriarch", "Goblin Preacher", "Goblin Jail Master", "Goblin Scryer", "Elite Honor Guard", "Injured Polar Bear", "Ice Goblin Champion", "Ice Giant Diplomat", }, RespawnTime = new TimeSpan(0, 6, 40) });
+            ZoneInfoMap.Add("qcat", new ZoneInfo { NotableNPCs = new List<string>() { "", }, RespawnTime = new TimeSpan(0, 6, 40) });
+            ZoneInfoMap.Add("qey2hh1", new ZoneInfo { NotableNPCs = new List<string>() { "", }, RespawnTime = new TimeSpan(0, 6, 40) });
+            ZoneInfoMap.Add("qeynos", new ZoneInfo { NotableNPCs = new List<string>() { "", }, RespawnTime = new TimeSpan(0, 6, 40) });
+            ZoneInfoMap.Add("qeynos2", new ZoneInfo { NotableNPCs = new List<string>() { "", }, RespawnTime = new TimeSpan(0, 6, 40) });
+            ZoneInfoMap.Add("qeytoqrg", new ZoneInfo { NotableNPCs = new List<string>() { "", }, RespawnTime = new TimeSpan(0, 6, 40) });
+            ZoneInfoMap.Add("qrg", new ZoneInfo { NotableNPCs = new List<string>() { "", }, RespawnTime = new TimeSpan(0, 6, 40) });
+            ZoneInfoMap.Add("rathemtn", new ZoneInfo { NotableNPCs = new List<string>() { "", }, RespawnTime = new TimeSpan(0, 6, 40) });
+            ZoneInfoMap.Add("rivervale", new ZoneInfo { NotableNPCs = new List<string>() { "", }, RespawnTime = new TimeSpan(0, 6, 40) });
+            ZoneInfoMap.Add("runnyeye", new ZoneInfo { NotableNPCs = new List<string>() { "Borxx", "an Evil Eye prisoner", "Sludge Dankmire", "A Goblin Captain", "Goblin Warlord", "The Goblin King", "Slime Elemental", "Gelatinous Cube", }, RespawnTime = new TimeSpan(0, 6, 40) });
+            ZoneInfoMap.Add("sebilis", new ZoneInfo { NotableNPCs = new List<string>() { "Arch Duke Iatol", "Baron Yosig", "blood of chottal", "Brogg", "crypt caretaker", "Emperor Chottal", "frenzied pox scarab", "Froggy", "froglok armorer", "froglok armsman", "froglok chef", "froglok commander", "froglok ostiary", "froglok pickler", "froglok repairer", "Gangrenous scarab", "Gruplinort", "Harbinger Freglor", "Hierophant Prime Grekal", "myconid spore king", "a necrosis scarab", "sebilite protector", "Tolapumj", "Trakanon", }, RespawnTime = new TimeSpan(0, 6, 40) });
+            ZoneInfoMap.Add("sirens", new ZoneInfo { NotableNPCs = new List<string>() { "", }, RespawnTime = new TimeSpan(0, 6, 40) });
+            ZoneInfoMap.Add("skyfire", new ZoneInfo { NotableNPCs = new List<string>() { "Black Scar", "Eldrig the Old", "Faerie of Dismay", "Felia Goldenwing", "Guardian of Felia", "Jennus Lyklobar", "a lava walker", "a shadow drake", "a soul devourer", "Talendor", "a wandering wurm", "a wurm spirit", }, RespawnTime = new TimeSpan(0, 6, 40) });
+            ZoneInfoMap.Add("skyshrine", new ZoneInfo { NotableNPCs = new List<string>() { "", }, RespawnTime = new TimeSpan(0, 6, 40) });
+            ZoneInfoMap.Add("sleeper", new ZoneInfo { NotableNPCs = new List<string>() { "", }, RespawnTime = new TimeSpan(0, 6, 40) });
+            ZoneInfoMap.Add("soldunga", new ZoneInfo { NotableNPCs = new List<string>() { "Captain Bipnubble", "CWG Model EXG", "Fire Goblin Bartender", "Inferno Goblin Captain", "Fire Goblin Drunkard", "Goblin High Shaman", "Solusek Goblin King", "Gabbie Mardoddle", "flame goblin foreman", "Inferno Goblin Torturer", "Kindle", "Kobold predator", "lava elemental", "Lord Gimblox", "Lynada the Exiled", "Marfen Binkdirple", "Reckless Efreeti", "Singe", }, RespawnTime = new TimeSpan(0, 6, 40) });
+            ZoneInfoMap.Add("soldungb", new ZoneInfo { NotableNPCs = new List<string>() { "", }, RespawnTime = new TimeSpan(0, 6, 40) });
+            ZoneInfoMap.Add("soltemple", new ZoneInfo { NotableNPCs = new List<string>() { "", }, RespawnTime = new TimeSpan(0, 6, 40) });
+            ZoneInfoMap.Add("southkarana", new ZoneInfo { NotableNPCs = new List<string>() { "", }, RespawnTime = new TimeSpan(0, 6, 40) });
+            ZoneInfoMap.Add("sro", new ZoneInfo { NotableNPCs = new List<string>() { "Ancient Cyclops", "Erg Bluntbruiser", "Ortallius", "Rathmana Allin", "Sandgiant Husam", "Scrounge", "Terrorantula", "Young Ronin", }, RespawnTime = new TimeSpan(0, 6, 40) });
+            ZoneInfoMap.Add("steamfont", new ZoneInfo { NotableNPCs = new List<string>() { "Feddi Dooger", "A Kobold Missionary", "Meldrath The Malignant", "Minotaur Hero", "Minotaur Lord", "Renux Herkanor", "Nilit's contraption", }, RespawnTime = new TimeSpan(0, 6, 40) });
+            ZoneInfoMap.Add("stonebrunt", new ZoneInfo { NotableNPCs = new List<string>() { "", }, RespawnTime = new TimeSpan(0, 6, 40) });
+            ZoneInfoMap.Add("swampofnohope", new ZoneInfo { NotableNPCs = new List<string>() { "", }, RespawnTime = new TimeSpan(0, 6, 40) });
+            ZoneInfoMap.Add("templeveeshan", new ZoneInfo { NotableNPCs = new List<string>() { "Casalen", "Dozekar the Cursed", "Essedera", "Grozzmel", "Krigara", "Lepethida", "Midayor", "Tavekalem", "Ymmeln", "Gozzrem", "Lendiniara the Keeper", "Telkorenar", "Cekenar", "Dagarn the Destroyer", "Eashen of the Sky", "Ikatiar the Venom", "Jorlleag", "Lady Mirenilla", "Lady Nevederia", "Lord Feshlak", "Lord Koi'Doken", "Lord Kreizenn", "Lord Vyemm", "Sevalak", "Vulak`Aerr", "Zlexak", }, RespawnTime = new TimeSpan(0, 6, 40) });
+            ZoneInfoMap.Add("thurgadina", new ZoneInfo { NotableNPCs = new List<string>() { "", }, RespawnTime = new TimeSpan(0, 6, 40) });
+            ZoneInfoMap.Add("thurgadinb", new ZoneInfo { NotableNPCs = new List<string>() { "", }, RespawnTime = new TimeSpan(0, 6, 40) });
+            ZoneInfoMap.Add("timorous", new ZoneInfo { NotableNPCs = new List<string>() { "", }, RespawnTime = new TimeSpan(0, 6, 40) });
+            ZoneInfoMap.Add("tox", new ZoneInfo { NotableNPCs = new List<string>() { "", }, RespawnTime = new TimeSpan(0, 6, 40) });
+            ZoneInfoMap.Add("trakanon", new ZoneInfo { NotableNPCs = new List<string>() { "", }, RespawnTime = new TimeSpan(0, 6, 40) });
+            ZoneInfoMap.Add("unrest", new ZoneInfo { NotableNPCs = new List<string>() { "Garanel Rucksif", "a priest of najena", "Khrix Fritchoff", "Khrix's Abomination", "Torklar Battlemaster", "Shadowpincer", "reclusive ghoul magus", }, RespawnTime = new TimeSpan(0, 6, 40) });
+            ZoneInfoMap.Add("veeshan", new ZoneInfo { NotableNPCs = new List<string>() { "", }, RespawnTime = new TimeSpan(0, 6, 40) });
+            ZoneInfoMap.Add("velketor", new ZoneInfo { NotableNPCs = new List<string>() { "", }, RespawnTime = new TimeSpan(0, 6, 40) });
+            ZoneInfoMap.Add("wakening", new ZoneInfo { NotableNPCs = new List<string>() { "", }, RespawnTime = new TimeSpan(0, 6, 40) });
+            ZoneInfoMap.Add("warrens", new ZoneInfo { NotableNPCs = new List<string>() { "", }, RespawnTime = new TimeSpan(0, 6, 40) });
+            ZoneInfoMap.Add("warslikswood", new ZoneInfo { NotableNPCs = new List<string>() { "", }, RespawnTime = new TimeSpan(0, 6, 40) });
+            ZoneInfoMap.Add("westwastes", new ZoneInfo { NotableNPCs = new List<string>() { "Atpaev", "Ayillish", "Bratavar", "Bufa", "Cargalia", "Del Sapara", "Derasinal", "Draazak", "Entariz", "Esorpa of the Ring", "Gafala", "Gangel", "Glati", "Harla Dar", "Hechaeva", "Honvar", "Ionat", "Jen Sapara", "Kar Sapara", "Karkona", "Klandicar", "Linbrak", "Makala", "Mazi", "Melalafen", "Myga", "Neordla", "Nintal", "Onava", "Pantrilla", "Quoza", "Sivar", "Sontalak", "Uiliak", "Vitaela", "Von", "Vraptin", "Yal", "Yeldema", "Zil Sapara", "Icehackle", "Makil Rargon", "Mraaka", "Scout Charisa", "Strong Horn", "Tantor", "The Dragon Sage", "Tranala", "Tsiraka", }, RespawnTime = new TimeSpan(0, 6, 40) });
 
 
 
