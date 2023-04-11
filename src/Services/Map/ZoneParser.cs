@@ -186,7 +186,7 @@ namespace EQTool.Services.Map
             {
                 NotableNPCs = new List<string>()
                 {
-                    "",
+                    "a black reaver","an army behemoth","Captain of the Guard","a human skeleton","Lhranc","Lord Ghiosk","Lord Rak`Ashiir","Neh`Ashiir","spectral courier","Wraith of Jaxion",
                 },
                 RespawnTime = new TimeSpan(0, 6, 40)
             });
@@ -346,7 +346,7 @@ namespace EQTool.Services.Map
             {
                 NotableNPCs = new List<string>()
                 {
-                    "",
+                    "A scaled prowler","A skeletal jester","Burynaibane Spider","Carrion Queen","Gharg Oberbord","Iksar Dakoit","Jairnel Marfury","Kerosh Blackhand","Targishin","The Tangrin","a burynai cutter","a scourgetail scorpion",
                 },
                 RespawnTime = new TimeSpan(0, 6, 40)
             });
@@ -643,7 +643,7 @@ namespace EQTool.Services.Map
             ZoneInfoMap.Add("neriaka", new ZoneInfo { NotableNPCs = new List<string>() { "", }, RespawnTime = new TimeSpan(0, 6, 40) });
             ZoneInfoMap.Add("neriakb", new ZoneInfo { NotableNPCs = new List<string>() { "", }, RespawnTime = new TimeSpan(0, 6, 40) });
             ZoneInfoMap.Add("neriakc", new ZoneInfo { NotableNPCs = new List<string>() { "", }, RespawnTime = new TimeSpan(0, 6, 40) });
-            ZoneInfoMap.Add("northkarana", new ZoneInfo { NotableNPCs = new List<string>() { "", }, RespawnTime = new TimeSpan(0, 6, 40) });
+            ZoneInfoMap.Add("northkarana", new ZoneInfo { NotableNPCs = new List<string>() { "Xanuusus", "Ashenpaw", "Zahal the Vile", "GrimFeather", "Swiftclaw", "Lieutenant Midraim", "The Silver Griffon", "Timbur the Tiny", "Korvik the Cursed", }, RespawnTime = new TimeSpan(0, 6, 40) });
             ZoneInfoMap.Add("nro", new ZoneInfo { NotableNPCs = new List<string>() { "Dorn B`Dynn", "Dunedigger", "Rahotep", }, RespawnTime = new TimeSpan(0, 6, 40) });
             ZoneInfoMap.Add("nurga", new ZoneInfo { NotableNPCs = new List<string>() { "Overseer Dlubish", "A Sleeping Ogre", "Trunt", }, RespawnTime = new TimeSpan(0, 6, 40) });
             ZoneInfoMap.Add("oasis", new ZoneInfo { NotableNPCs = new List<string>() { "Cazel", "Hatar", "Lockjaw", "Young Ronin", }, RespawnTime = new TimeSpan(0, 6, 40) });
@@ -674,7 +674,7 @@ namespace EQTool.Services.Map
             ZoneInfoMap.Add("sro", new ZoneInfo { NotableNPCs = new List<string>() { "Ancient Cyclops", "Erg Bluntbruiser", "Ortallius", "Rathmana Allin", "Sandgiant Husam", "Scrounge", "Terrorantula", "Young Ronin", }, RespawnTime = new TimeSpan(0, 6, 40) });
             ZoneInfoMap.Add("steamfont", new ZoneInfo { NotableNPCs = new List<string>() { "Feddi Dooger", "A Kobold Missionary", "Meldrath The Malignant", "Minotaur Hero", "Minotaur Lord", "Renux Herkanor", "Nilit's contraption", }, RespawnTime = new TimeSpan(0, 6, 40) });
             ZoneInfoMap.Add("stonebrunt", new ZoneInfo { NotableNPCs = new List<string>() { "", }, RespawnTime = new TimeSpan(0, 6, 40) });
-            ZoneInfoMap.Add("swampofnohope", new ZoneInfo { NotableNPCs = new List<string>() { "", }, RespawnTime = new TimeSpan(0, 6, 40) });
+            ZoneInfoMap.Add("swampofnohope", new ZoneInfo { NotableNPCs = new List<string>() { "Bloodgorge", "an escaped froglok", "Deadeye", "Dreesix Ghoultongue", "Dugroz", "Fakraa the Forsaken", "Fangor", "Frayk", "Froglok Repairer", "Froszik the Impaler", "Grik the Exiled", "Grimewurm", "Grizshnok", "Soblohg", "Two Tails", "Ulump Pujluk", "Venomwing", }, RespawnTime = new TimeSpan(0, 6, 40) });
             ZoneInfoMap.Add("templeveeshan", new ZoneInfo { NotableNPCs = new List<string>() { "Casalen", "Dozekar the Cursed", "Essedera", "Grozzmel", "Krigara", "Lepethida", "Midayor", "Tavekalem", "Ymmeln", "Gozzrem", "Lendiniara the Keeper", "Telkorenar", "Cekenar", "Dagarn the Destroyer", "Eashen of the Sky", "Ikatiar the Venom", "Jorlleag", "Lady Mirenilla", "Lady Nevederia", "Lord Feshlak", "Lord Koi'Doken", "Lord Kreizenn", "Lord Vyemm", "Sevalak", "Vulak`Aerr", "Zlexak", }, RespawnTime = new TimeSpan(0, 6, 40) });
             ZoneInfoMap.Add("thurgadina", new ZoneInfo { NotableNPCs = new List<string>() { "", }, RespawnTime = new TimeSpan(0, 6, 40) });
             ZoneInfoMap.Add("thurgadinb", new ZoneInfo { NotableNPCs = new List<string>() { "", }, RespawnTime = new TimeSpan(0, 6, 40) });
