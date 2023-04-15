@@ -70,6 +70,18 @@ namespace EQTool.Services.Spells.Log
                         {
                             return match;
                         }
+
+                        removename = spellmessage.IndexOf(" ");
+                        if (removename != -1)
+                        {
+                            nextfirst = firstpart + spellmessage.Substring(0, removename) + " ";
+                            spellmessage = spellmessage.Substring(removename).Trim();
+                            match = Match(spellmessage, nextfirst);
+                            if (match != null)
+                            {
+                                return match;
+                            }
+                        }
                     }
                 }
             }

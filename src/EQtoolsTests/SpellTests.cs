@@ -268,6 +268,23 @@ namespace EQToolTests
         }
 
         [TestMethod]
+        public void TestManaSeive()
+        {
+            _ = container.Resolve<EQSpells>();
+            var line = "An ancient Frost guardian staggers in pain.";
+            var service = container.Resolve<ParseSpellGuess>();
+            var player = container.Resolve<ActivePlayer>();
+            player.Player = new PlayerInfo
+            {
+                Level = 54,
+                PlayerClass = PlayerClasses.Enchanter
+            };
+            var guess = service.HandleBestGuessSpell(line);
+
+            Assert.IsNotNull(guess);
+        }
+
+        [TestMethod]
         public void TestClericAego()
         {
             var spells = container.Resolve<EQSpells>();
@@ -310,6 +327,25 @@ namespace EQToolTests
         {
             var spells = container.Resolve<EQSpells>();
             var spellname = "Group Resist Magic";
+            var spell = spells.AllSpells.FirstOrDefault(a => a.name == spellname);
+            var service = container.Resolve<ParseSpellGuess>();
+            var player = container.Resolve<ActivePlayer>();
+            player.Player = new PlayerInfo
+            {
+                Level = 54,
+                PlayerClass = PlayerClasses.Cleric
+            };
+            var guess = service.HandleBestGuessSpell("Jobob " + spell.cast_on_other);
+
+            Assert.IsNotNull(guess);
+            Assert.IsFalse(guess.MultipleMatchesFound);
+        }
+
+        [TestMethod]
+        public void TestSavageSpirit()
+        {
+            var spells = container.Resolve<EQSpells>();
+            var spellname = "Savage Spirit";
             var spell = spells.AllSpells.FirstOrDefault(a => a.name == spellname);
             var service = container.Resolve<ParseSpellGuess>();
             var player = container.Resolve<ActivePlayer>();
