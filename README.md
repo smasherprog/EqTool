@@ -157,3 +157,8 @@ Features:
 <li>Last Session is the old session data. You can use this to compare weapon swapping and differnt setups.</li>
 </ul>
 
+<h4>What cant i see others DPS? I only see my own!</h4>  
+<img alt="image" src="https://user-images.githubusercontent.com/3393733/232231377-1259ae63-f644-4e49-a246-8f1101f71190.png">
+<ul>
+<li>Turn on others hits in your eqsettings!</li>
+</ul>
