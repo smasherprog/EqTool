@@ -46,6 +46,8 @@ Features:
 
 <h4>TO DO List</h4>
 <ul>
+<li>Add option to enable OTHERS hits for DPS meter. </li> 
+<li>Add option to ONLY show buffs that You have cast. </li> 
 <li>Do better job at showing different map levels. </li> 
 <li>Show others on map</li>   
 <li>Add Waypoint Command to add loc to map</li>    
@@ -155,3 +157,8 @@ Features:
 <li>Last Session is the old session data. You can use this to compare weapon swapping and differnt setups.</li>
 </ul>
 
+<h4>Why cant I see others DPS? I only see my own!</h4>  
+<img alt="image" src="https://user-images.githubusercontent.com/3393733/232231377-1259ae63-f644-4e49-a246-8f1101f71190.png">
+<ul>
+<li>Turn on others hits in your eqsettings!</li>
+</ul>
