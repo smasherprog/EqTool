@@ -2,6 +2,7 @@
 using EQToolApis.Models;
 using EQToolApis.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System.Collections.Generic;
 using System.ComponentModel;
 
@@ -42,13 +43,67 @@ namespace EQToolApis.Controllers
 #endif
             return ret;
         }
-         
+
+        /// <summary>
+        /// Use this API when you want just the averages and counts for the item. This is MUCH faster than the getdetails function and should be preferred.
+        /// </summary>
+        /// <param name="server"></param>
+        /// <param name="itemname"></param>
+        /// <returns></returns>
+        [Route("api/item/get/{server}/{itemname}")]
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Any, VaryByQueryKeys = new[] { "*" })]
+        public Item GetItem([DefaultValue(Servers.Green)] Servers server, [DefaultValue("10 Dose Greater Potion of Purity")] string itemname)
+        {
+            var item = context.EQitems
+                        .Where(a => a.Server == server && a.ItemName == itemname)
+                        .Select(a => new Item
+                        {
+                            EQitemId = a.EQitemId,
+                            ItemName = a.ItemName,
+                            TotalWTSLast30DaysAverage = a.TotalWTSLast30DaysAverage,
+                            TotalWTSLast30DaysCount = a.TotalWTSLast30DaysCount,
+                            TotalWTSLast60DaysCount = a.TotalWTSLast60DaysCount,
+                            TotalWTSLast60DaysAverage = a.TotalWTSLast60DaysAverage,
+                            TotalWTSLast90DaysCount = a.TotalWTSLast90DaysCount,
+                            TotalWTSLast90DaysAverage = a.TotalWTSLast90DaysAverage,
+                            TotalWTSLast6MonthsCount = a.TotalWTSLast6MonthsCount,
+                            TotalWTSLast6MonthsAverage = a.TotalWTSLast6MonthsAverage,
+                            TotalWTSAuctionCount = a.TotalWTSAuctionCount,
+                            TotalWTSAuctionAverage = a.TotalWTSAuctionAverage,
+                            TotalWTSLastYearAverage = a.TotalWTSLastYearAverage,
+                            TotalWTSLastYearCount = a.TotalWTSLastYearCount,
+                            LastWTSSeen = a.LastWTSSeen,
+                            TotalWTBLast30DaysAverage = a.TotalWTBLast30DaysAverage,
+                            TotalWTBLast30DaysCount = a.TotalWTBLast30DaysCount,
+                            TotalWTBLast60DaysCount = a.TotalWTBLast60DaysCount,
+                            TotalWTBLast60DaysAverage = a.TotalWTBLast60DaysAverage,
+                            TotalWTBLast90DaysCount = a.TotalWTBLast90DaysCount,
+                            TotalWTBLast90DaysAverage = a.TotalWTBLast90DaysAverage,
+                            TotalWTBLast6MonthsCount = a.TotalWTBLast6MonthsCount,
+                            TotalWTBLast6MonthsAverage = a.TotalWTBLast6MonthsAverage,
+                            TotalWTBAuctionCount = a.TotalWTBAuctionCount,
+                            TotalWTBAuctionAverage = a.TotalWTBAuctionAverage,
+                            TotalWTBLastYearAverage = a.TotalWTBLastYearAverage,
+                            TotalWTBLastYearCount = a.TotalWTBLastYearCount,
+                            LastWTBSeen = a.LastWTBSeen
+                        }).FirstOrDefault();
+            return item;
+        }
+
+        /// <summary>
+        /// Use this API when you want Full history on item. This might transfer ALOT of data, so only use it if you need it!
+        /// </summary>
+        /// <param name="server"></param>
+        /// <param name="itemname"></param>
+        /// <returns></returns>
         [Route("api/item/getdetails/{server}/{itemname}")]
         [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Any, VaryByQueryKeys = new[] { "*" })]
         public ItemDetail GetItemDetail([DefaultValue(Servers.Green)] Servers server, [DefaultValue("10 Dose Greater Potion of Purity")] string itemname)
-        { 
+        {
             var items = context.EQTunnelAuctionItems
                 .Where(a => a.EQitem.ItemName == itemname && a.EQitem.Server == server)
                 .Select(a => new
@@ -100,7 +155,7 @@ namespace EQToolApis.Controllers
         [HttpGet]
         [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Any, VaryByQueryKeys = new[] { "*" })]
         public ItemDetail GetItemDetail([DefaultValue(1981)] int itemid)
-        { 
+        {
             var items = context.EQTunnelAuctionItems
                 .Where(a => a.EQitemId == itemid)
                 .Select(a => new
