@@ -190,7 +190,7 @@ namespace EQTool.ViewModels
                 }
                 else
                 {
-                    Debug.WriteLine($"{entity.TargetName} {entity.DamageDone}");
+                    //Debug.WriteLine($"{entity.TargetName} {entity.DamageDone}");
                     item.AddDamage(new EntittyDPS.DamagePerTime
                     {
                         TimeStamp = entity.TimeStamp,

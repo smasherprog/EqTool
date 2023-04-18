@@ -90,7 +90,7 @@ namespace EQTool.Services.Spells.Log
 
         private SpellParsingMatch Match(string message, string removedpart)
         {
-            Debug.WriteLine($"Match '{removedpart}'");
+           // Debug.WriteLine($"Match '{removedpart}'");
             var removename = message.IndexOf(" ");
             if (removename != -1)
             {

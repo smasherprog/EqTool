@@ -116,8 +116,7 @@ namespace EQTool
             var oldLastLogReadOffset = LastLogReadOffset;
             var logerLastLogReadOffset = logParser.LastLogReadOffset;
             if (activePlayer.Player != null && oldLastLogReadOffset != logerLastLogReadOffset)
-            {
-                Debug.WriteLine("Saving You Spell Data");
+            { 
                 LastLogReadOffset = logerLastLogReadOffset;
                 activePlayer.Player.YouSpells = spellWindowViewModel.SpellList.Where(a => a.TargetName == EQSpells.SpaceYou).Select(a => new YouSpells
                 {
