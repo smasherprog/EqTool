@@ -116,7 +116,7 @@ namespace EQTool.Services.Spells.Log
                 {
                     foundspells = foundspells.Where(a => !IgnoreSpellsForGuesses.Contains(a.name)).ToList();
                     var foundspell = SpellDurations.MatchClosestLevelToSpell(foundspells, activePlayer.Player);
-                    var targetname = removedpart + message.Replace(foundspell.cast_on_other, string.Empty).Trim();
+                    var targetname = removedpart + message.Replace(foundspell.cast_on_you, string.Empty).Trim();
                     Debug.WriteLine($"Cast On you Spell: {foundspell.name} Message: {spellmessage}");
                     var multiplematches = foundspell.Classes.All(a => a.Value == 255) && foundspells.Count > 1;
                     return new SpellParsingMatch
