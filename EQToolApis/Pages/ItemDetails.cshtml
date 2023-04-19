@@ -21,7 +21,7 @@
         let originaldata = [];
         Chart.register('chartjs-plugin-annotation');
         $(document).ready(function () {
-
+            $('#nodmfforyou').hide();
             function average(ctx) {
                 if (ctx.chart.data.datasets.length == 0) {
                     return 0;
@@ -31,7 +31,7 @@
                     a.data.forEach(a => {
                         if (a.y > 1) {
                             values.push(a.y);
-                        } 
+                        }
                     });
                 });
                 var m = values.reduce((a, b) => {
@@ -201,8 +201,11 @@
                 chart.update();
             }
 
-            $.get("/api/item/getdetails/@Model.ItemId", function (data, status) { 
+            $.get("/api/item/getdetails/@Model.ItemId", function (data, status) {
                 originaldata = data;
+                if (data.itemName == 'Dead Man Floating') {
+                    $('#nodmfforyou').show();
+                }
                 document.getElementById('ItemName').innerHTML = `<a href="https://wiki.project1999.com/${data.itemName.replace(' ', '_')}" target = "_blank"> ${data.itemName} <i class="fa fa-external-link"></i></a >`;
                 document.title = data.itemName;
                 let pl = [];
@@ -292,8 +295,11 @@
     <div class="w-100" style="height: 30vh!important;">
         <canvas id="myChart" class="h-100"></canvas>
     </div>
-    <div class="w-100">
-        <h5>Players:  <select id="playerselect" multiple="multiple"></select></h5>
+    <div class="row">
+        <div class="col-12">
+            <h5 class="float-left">Players:  <select id="playerselect" multiple="multiple"></select></h5>
+            <div class="float-left" id="nodmfforyou">No DMF for you stabbyville! </div>
+        </div>
     </div>
     <div class="w-100" style="height: 60vh!important;">
         <div id="TableData"></div>
