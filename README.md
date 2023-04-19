@@ -46,6 +46,7 @@ Features:
 
 <h4>TO DO List</h4>
 <ul>
+<li>Add visual cue that buff is under 1 minute left. </li> 
 <li>Add option to enable OTHERS hits for DPS meter. </li> 
 <li>Add option to ONLY show buffs that You have cast. </li> 
 <li>Do better job at showing different map levels. </li> 
