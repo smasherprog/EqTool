@@ -46,6 +46,7 @@ Features:
 
 <h4>TO DO List</h4>
 <ul>
+<li>Use the current zone to better display correct mob info. For example Orc centurions can be in multiple zones! </li> 
 <li>Extend Mob Info Window to show Players. Add note field to window that is saved locally. </li> 
 <li>Add visual cue that buff is under 1 minute left. </li> 
 <li>Add option to enable OTHERS hits for DPS meter. </li> 
