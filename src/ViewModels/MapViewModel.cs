@@ -47,6 +47,7 @@ namespace EQTool.ViewModels
             }
         }
 
+        private bool MapLoading = false;
         private Point _LastMouselocation = new Point(0, 0);
 
         private Point LastMouselocation
@@ -71,155 +72,151 @@ namespace EQTool.ViewModels
 
         public bool LoadMap(string zone, PanAndZoomCanvas canvas)
         {
-            if (string.IsNullOrWhiteSpace(zone) || zone == LoadedZone)
+            if (MapLoading)
             {
                 return false;
             }
-            zone = ZoneParser.TranslateToMapName(zone);
-            if (string.IsNullOrWhiteSpace(zone))
+
+            try
             {
-                zone = "freportw";
-            }
-            var stop = new Stopwatch();
-            stop.Start();
-            var map = mapLoad.Load(zone);
-            stop.Stop();
-            Debug.WriteLine($"Time to load {zone} - {stop.ElapsedMilliseconds}ms");
-            if (map.Labels.Any() || map.Lines.Any())
-            {
-                canvas.Reset();
-                LoadedZone = Title = zone;
-                Debug.WriteLine($"Loading: {zone}");
-                var colordic = new Dictionary<System.Windows.Media.Color, Tuple<EQMapColor, SolidColorBrush>>();
-                foreach (var group in map.Lines)
+                MapLoading = true;
+                if (string.IsNullOrWhiteSpace(zone) || zone == LoadedZone)
                 {
-                    if (!colordic.ContainsKey(group.Color))
+                    return false;
+                }
+                zone = ZoneParser.TranslateToMapName(zone);
+                if (string.IsNullOrWhiteSpace(zone))
+                {
+                    zone = "freportw";
+                }
+                var stop = new Stopwatch();
+                stop.Start();
+                var map = mapLoad.Load(zone);
+                stop.Stop();
+                Debug.WriteLine($"Time to load {zone} - {stop.ElapsedMilliseconds}ms");
+                if (map.Labels.Any() || map.Lines.Any())
+                {
+                    canvas.Reset();
+                    LoadedZone = Title = zone;
+                    Debug.WriteLine($"Loading: {zone}");
+                    var colordic = new Dictionary<System.Windows.Media.Color, Tuple<EQMapColor, SolidColorBrush>>();
+                    foreach (var group in map.Lines)
                     {
-                        var c = EQMapColor.GetThemedColors(group.Color);
-                        colordic[group.Color] = Tuple.Create(c, new SolidColorBrush(App.Theme == Themes.Light ? c.LightColor : c.DarkColor));
+                        if (!colordic.ContainsKey(group.Color))
+                        {
+                            var c = EQMapColor.GetThemedColors(group.Color);
+                            colordic[group.Color] = Tuple.Create(c, new SolidColorBrush(App.Theme == Themes.Light ? c.LightColor : c.DarkColor));
+                        }
                     }
-                }
-                foreach (var group in map.Labels)
-                {
-                    if (!colordic.ContainsKey(group.Color))
+                    foreach (var group in map.Labels)
                     {
-                        var c = EQMapColor.GetThemedColors(group.Color);
-                        colordic[group.Color] = Tuple.Create(c, new SolidColorBrush(App.Theme == Themes.Light ? c.LightColor : c.DarkColor));
+                        if (!colordic.ContainsKey(group.Color))
+                        {
+                            var c = EQMapColor.GetThemedColors(group.Color);
+                            colordic[group.Color] = Tuple.Create(c, new SolidColorBrush(App.Theme == Themes.Light ? c.LightColor : c.DarkColor));
+                        }
                     }
-                }
-                MapOffset = map.Offset;
-                var linethickness = MathHelper.ChangeRange(Math.Max(map.AABB.MaxWidth, map.AABB.MaxHeight), 800, 35000, 2, 40);
-                canvas.Children.Clear();
-                foreach (var group in map.Lines)
-                {
-                    var colorstuff = colordic[group.Color];
-                    var d = new Mapdata
+                    MapOffset = map.Offset;
+                    var linethickness = MathHelper.ChangeRange(Math.Max(map.AABB.MaxWidth, map.AABB.MaxHeight), 800, 35000, 2, 40);
+                    canvas.Children.Clear();
+                    foreach (var group in map.Lines)
                     {
-                        MapColor = colordic[group.Color].Item1,
-                        Points = group.Points,
-                        Color = group.Color
-                    };
-                    var l = new Line
+                        var colorstuff = colordic[group.Color];
+                        var d = new Mapdata
+                        {
+                            MapColor = colordic[group.Color].Item1,
+                            Points = group.Points,
+                            Color = group.Color
+                        };
+                        var l = new Line
+                        {
+                            Tag = d,
+                            X1 = group.Points[0].X,
+                            Y1 = group.Points[0].Y,
+                            X2 = group.Points[1].X,
+                            Y2 = group.Points[1].Y,
+                            StrokeThickness = linethickness,
+                            Stroke = colorstuff.Item2,
+                            RenderTransform = canvas.Transform
+                        };
+                        _ = canvas.Children.Add(l);
+                    }
+
+                    canvas.Height = Math.Abs(map.AABB.MaxHeight);
+                    canvas.Width = Math.Abs(map.AABB.MaxWidth);
+                    Debug.WriteLine($"Labels: {map.Labels.Count}");
+                    var labelscaling = MathHelper.ChangeRange(Math.Max(map.AABB.MaxWidth, map.AABB.MaxHeight), 500, 35000, 40, 200);
+                    foreach (var item in map.Labels)
                     {
-                        Tag = d,
-                        X1 = group.Points[0].X,
-                        Y1 = group.Points[0].Y,
-                        X2 = group.Points[1].X,
-                        Y2 = group.Points[1].Y,
-                        StrokeThickness = linethickness,
-                        Stroke = colorstuff.Item2,
-                        RenderTransform = canvas.Transform
+                        var colorstuff = colordic[item.Color];
+                        var d = new Mapdata
+                        {
+                            MapColor = colordic[item.Color].Item1,
+                            Points = new[] { item.Point },
+                            Color = item.Color
+                        };
+                        var text = new TextBlock
+                        {
+                            Tag = d,
+                            Text = item.label.Replace('_', ' '),
+                            Height = labelscaling,
+                            Foreground = colorstuff.Item2,
+                            RenderTransform = canvas.Transform
+                        };
+                        _ = canvas.Children.Add(text);
+                        Canvas.SetLeft(text, item.Point.X);
+                        Canvas.SetTop(text, item.Point.Y);
+                    }
+
+                    var playerlocsize = MathHelper.ChangeRange(Math.Max(map.AABB.MaxWidth, map.AABB.MaxHeight), 500, 35000, 40, 1750);
+                    var playerstrokthickness = MathHelper.ChangeRange(Math.Max(map.AABB.MaxWidth, map.AABB.MaxHeight), 500, 35000, 3, 40);
+                    //PlayerLocationIcon = new Polyline
+                    //{
+                    //    Points = new PointCollection(new List<Point>
+                    //     {
+                    //      new Point(25, 25),
+                    //        new Point(0,50),
+                    //        new Point(25,75),
+                    //        new Point(50,50),
+                    //        new Point(25,25),
+                    //        new Point(25,0)
+                    //     }),
+                    //    Stroke = new SolidColorBrush(System.Windows.Media.Color.FromRgb(61, 235, 52)),
+                    //    StrokeThickness = 20
+                    //};
+                    PlayerLocationIcon = new ArrowLine
+                    {
+                        Stroke = new SolidColorBrush(System.Windows.Media.Color.FromRgb(61, 235, 52)),
+                        StrokeThickness = playerstrokthickness,
+                        X1 = 0,
+                        Y1 = 0,
+                        X2 = 0,
+                        Y2 = playerlocsize,
+                        ArrowLength = playerlocsize / 4,
+                        ArrowEnds = ArrowEnds.End,
+                        RotateTransform = new RotateTransform()
                     };
-                    _ = canvas.Children.Add(l);
+                    //PlayerLocationIcon = new Ellipse
+                    //{
+                    //    Height = playerlocsize,
+                    //    Width = playerlocsize,
+                    //    Stroke = new SolidColorBrush(System.Windows.Media.Color.FromRgb(61, 235, 52)),
+                    //    StrokeThickness = playerstrokthickness
+                    //};
+
+                    AABB = map.AABB;
+                    _ = canvas.Children.Add(PlayerLocationIcon);
+                    Canvas.SetLeft(PlayerLocationIcon, AABB.Center.X + (playerlocsize / 2));
+                    Canvas.SetTop(PlayerLocationIcon, AABB.Center.Y + (playerlocsize / 2));
+                    return true;
                 }
 
-                canvas.Height = Math.Abs(map.AABB.MaxHeight);
-                canvas.Width = Math.Abs(map.AABB.MaxWidth);
-                Debug.WriteLine($"Labels: {map.Labels.Count}");
-                var labelscaling = MathHelper.ChangeRange(Math.Max(map.AABB.MaxWidth, map.AABB.MaxHeight), 500, 35000, 40, 200);
-                foreach (var item in map.Labels)
-                {
-                    var colorstuff = colordic[item.Color];
-                    var d = new Mapdata
-                    {
-                        MapColor = colordic[item.Color].Item1,
-                        Points = new[] { item.Point },
-                        Color = item.Color
-                    };
-                    var text = new TextBlock
-                    {
-                        Tag = d,
-                        Text = item.label.Replace('_', ' '),
-                        Height = labelscaling,
-                        Foreground = colorstuff.Item2,
-                        RenderTransform = canvas.Transform
-                    };
-                    _ = canvas.Children.Add(text);
-                    Canvas.SetLeft(text, item.Point.X);
-                    Canvas.SetTop(text, item.Point.Y);
-                }
-
-                var playerlocsize = MathHelper.ChangeRange(Math.Max(map.AABB.MaxWidth, map.AABB.MaxHeight), 500, 35000, 40, 1750);
-                var playerstrokthickness = MathHelper.ChangeRange(Math.Max(map.AABB.MaxWidth, map.AABB.MaxHeight), 500, 35000, 3, 40);
-                //PlayerLocationIcon = new Polyline
-                //{
-                //    Points = new PointCollection(new List<Point>
-                //     {
-                //      new Point(25, 25),
-                //        new Point(0,50),
-                //        new Point(25,75),
-                //        new Point(50,50),
-                //        new Point(25,25),
-                //        new Point(25,0)
-                //     }),
-                //    Stroke = new SolidColorBrush(System.Windows.Media.Color.FromRgb(61, 235, 52)),
-                //    StrokeThickness = 20
-                //};
-                PlayerLocationIcon = new ArrowLine
-                {
-                    Stroke = new SolidColorBrush(System.Windows.Media.Color.FromRgb(61, 235, 52)),
-                    StrokeThickness = playerstrokthickness,
-                    X1 = 0,
-                    Y1 = 0,
-                    X2 = 0,
-                    Y2 = playerlocsize,
-                    ArrowLength = playerlocsize / 4,
-                    ArrowEnds = ArrowEnds.End,
-                    RotateTransform = new RotateTransform()
-                };
-                //PlayerLocationIcon = new Ellipse
-                //{
-                //    Height = playerlocsize,
-                //    Width = playerlocsize,
-                //    Stroke = new SolidColorBrush(System.Windows.Media.Color.FromRgb(61, 235, 52)),
-                //    StrokeThickness = playerstrokthickness
-                //};
-
-                AABB = map.AABB;
-                _ = canvas.Children.Add(PlayerLocationIcon);
-                Canvas.SetLeft(PlayerLocationIcon, AABB.Center.X + (playerlocsize / 2));
-                Canvas.SetTop(PlayerLocationIcon, AABB.Center.Y + (playerlocsize / 2));
-                return true;
+                return false;
             }
-
-            return false;
-        }
-        private static Point3D RotatePoint(Point3D pointToRotate, Point3D centerPoint, double angleInDegrees)
-        {
-            var angleInRadians = angleInDegrees * (Math.PI / 180);
-            var cosTheta = Math.Cos(angleInRadians);
-            var sinTheta = Math.Sin(angleInRadians);
-            return new Point3D
+            finally
             {
-                X =
-                    (int)
-                    ((cosTheta * (pointToRotate.X - centerPoint.X)) -
-                    (sinTheta * (pointToRotate.Y - centerPoint.Y)) + centerPoint.X),
-                Y =
-                    (int)
-                    ((sinTheta * (pointToRotate.X - centerPoint.X)) +
-                    (cosTheta * (pointToRotate.Y - centerPoint.Y)) + centerPoint.Y)
-            };
+                MapLoading = false;
+            }
         }
 
         public bool LoadDefaultMap(PanAndZoomCanvas canvas)
@@ -260,6 +257,11 @@ namespace EQTool.ViewModels
 
         public void UpdateLocation(Point3D value1, PanAndZoomCanvas canvas)
         {
+            if (MapLoading)
+            {
+                return;
+            }
+
             OnPropertyChanged(nameof(Title));
             var newdir = new Point3D(value1.X, value1.Y, 0) - new Point3D(Lastlocation.X, Lastlocation.Y, 0);
             newdir.Normalize();
