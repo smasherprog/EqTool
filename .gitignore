@@ -33,3 +33,6 @@ packages/
 *.exe
 *.out
 *.app
+
+# VS Code
+*.vscode
