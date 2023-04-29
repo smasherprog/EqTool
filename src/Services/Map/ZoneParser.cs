@@ -182,7 +182,7 @@ namespace EQTool.Services.Map
             {
                 Name = "chardok",
                 ShowAllMapLevels = false,
-                ZoneLevelHeight = 10,
+                ZoneLevelHeight = 30,
                 NotableNPCs = new List<string>()
                 {
                     "",
