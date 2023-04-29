@@ -16,7 +16,7 @@ namespace EQToolApis.Services
 
     public class DiscordServiceOptions
     {
-        public string token { get; set; }
+        public string? token { get; set; }
     }
 
     public class DiscordService : IDiscordService
@@ -35,18 +35,18 @@ namespace EQToolApis.Services
 
         public class LoginRequest
         {
-            public string captcha_key { get; set; } = null;
-            public string gift_code_sku_id { get; set; }
-            public string login { get; set; }
-            public string login_source { get; set; }
-            public string password { get; set; }
+            public string? captcha_key { get; set; } = null;
+            public string? gift_code_sku_id { get; set; }
+            public string? login { get; set; }
+            public string? login_source { get; set; }
+            public string? password { get; set; }
             public bool undelete { get; set; } = false;
         }
 
         public class LoginResponse
         {
-            public string Token { get; set; }
-            public string user_id { get; set; }
+            public string? Token { get; set; }
+            public string? user_id { get; set; }
         }
 
         public void Login()
@@ -116,23 +116,23 @@ namespace EQToolApis.Services
                         ? string.Empty
                         : value.Substring(1, value.IndexOf("]")).Trim(']').Trim('[').Trim();
 
-            public string name { get; set; }
-            public string value { get; set; }
+            public string? name { get; set; }
+            public string? value { get; set; }
         }
 
         public class MessageEmbed
         {
-            public string title { get; set; }
+            public string? title { get; set; }
             public AuctionType AuctionType => title.StartsWith("**[ WTB ]**") ? AuctionType.WTB : (title.StartsWith("**[ WTS ]**") ? AuctionType.WTS : AuctionType.BOTH);
             public string AuctionPerson => title[(title.LastIndexOf("**") + 2)..].Trim();
             public DateTimeOffset timestamp { get; set; }
-            public List<embedFields> fields { get; set; }
+            public List<embedFields>? fields { get; set; }
         }
 
         public class Message
         {
             public long id { get; set; }
-            public List<MessageEmbed> embeds { get; set; }
+            public List<MessageEmbed>? embeds { get; set; }
         }
 
         public List<Message> ReadMessages(long? lastid, Servers server)
@@ -255,12 +255,21 @@ namespace EQToolApis.Services
                                 _ = dbcontext.SaveChanges();
                                 _ = Interlocked.Add(ref dBData.TotalUniqueItems, 1);
                             }
-                            m.EQTunnelAuctionItems.Add(new EQTunnelAuctionItem
+                            var auctionitem = new EQTunnelAuctionItem
                             {
                                 Server = server,
                                 AuctionPrice = it.Price,
                                 EQitemId = eqitem.EQitemId
-                            });
+                            };
+                            //ignore bogus prices
+                            if (eqitem.TotalWTBLast6MonthsCount > 100 && eqitem.TotalWTBLast6MonthsAverage > 0)
+                            {
+                                if (it.Price > eqitem.TotalWTBLast6MonthsAverage * 7)
+                                {
+                                    auctionitem.AuctionPrice = null;
+                                }
+                            }
+                            m.EQTunnelAuctionItems.Add(auctionitem);
                             _ = Interlocked.Add(ref dBData.ServerData[(int)server].TotalEQTunnelAuctionItems, 1);
                         }
                         _ = Interlocked.Add(ref dBData.ServerData[(int)server].TotalEQTunnelMessages, 1);
