@@ -39,8 +39,8 @@ namespace EQToolTests
         [TestMethod]
         public void ExtractZonesToFile()
         {
-            var api = container.Resolve<WikiApi>();
-            var allkeys = ZoneParser.NoZoneZHelping.Keys
+            _ = container.Resolve<WikiApi>();
+            var allkeys = ZoneParser.ZoneInfoMap.Keys
                 .Concat(ZoneParser.ZoneNameMapper.Keys)
                  .Concat(ZoneParser.ZoneWhoMapper.Keys)
                  .Distinct()
