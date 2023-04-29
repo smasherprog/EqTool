@@ -159,14 +159,12 @@ namespace EQTool.Services
 
         private void MainRun(string line1)
         {
-            if (line1 == null || line1.Length < 27 || Processing)
+            if (line1 == null || line1.Length < 27)
             {
                 return;
             }
-            Processing = true;
             try
             {
-
                 var date = line1.Substring(1, 24);
                 var message = line1.Substring(27).Trim();
                 var timestamp = Parse(date);
@@ -250,11 +248,14 @@ namespace EQTool.Services
             {
                 App.LogUnhandledException(e, "LogParser");
             }
-            Processing = false;
         }
 
         private void Poll(object sender, EventArgs e)
         {
+            if (Processing)
+            {
+                return;
+            }
             var logfounddata = FindEq.GetLogFileLocation(new FindEq.FindEQData { EqBaseLocation = settings.DefaultEqDirectory, EQlogLocation = settings.EqLogDirectory });
             if (logfounddata == null && logfounddata.Found)
             {
@@ -263,22 +264,27 @@ namespace EQTool.Services
             settings.EqLogDirectory = logfounddata.Location;
             appDispatcher.DispatchUI(() =>
             {
-                var playerchanged = activePlayer.Update();
-                var filepath = activePlayer.LogFileName;
-                if (playerchanged || filepath != LastLogFilename)
+                if (Processing)
                 {
-                    LastLogReadOffset = null;
-                    LastLogFilename = filepath;
-                }
-
-                if (string.IsNullOrWhiteSpace(filepath))
-                {
-                    Debug.WriteLine($"No playerfile found!");
                     return;
                 }
-
+                Processing = true;
                 try
                 {
+                    var playerchanged = activePlayer.Update();
+                    var filepath = activePlayer.LogFileName;
+                    if (playerchanged || filepath != LastLogFilename)
+                    {
+                        LastLogReadOffset = null;
+                        LastLogFilename = filepath;
+                    }
+
+                    if (string.IsNullOrWhiteSpace(filepath))
+                    {
+                        Debug.WriteLine($"No playerfile found!");
+                        return;
+                    }
+
                     var fileinfo = new FileInfo(filepath);
                     if (!LastLogReadOffset.HasValue || (LastLogReadOffset > fileinfo.Length && fileinfo.Length > 0))
                     {
@@ -306,7 +312,11 @@ namespace EQTool.Services
                 }
                 catch (Exception ex)
                 {
-                    Debug.WriteLine(ex.ToString());
+                    App.LogUnhandledException(ex, "LogParser DispatchUI");
+                }
+                finally
+                {
+                    Processing = false;
                 }
             });
         }

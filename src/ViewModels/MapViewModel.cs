@@ -3,7 +3,6 @@ using EQTool.Services;
 using EQTool.Services.Map;
 using EQTool.Shapes;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
@@ -99,32 +98,32 @@ namespace EQTool.ViewModels
                     canvas.Reset();
                     LoadedZone = Title = zone;
                     Debug.WriteLine($"Loading: {zone}");
-                    var colordic = new Dictionary<System.Windows.Media.Color, Tuple<EQMapColor, SolidColorBrush>>();
-                    foreach (var group in map.Lines)
-                    {
-                        if (!colordic.ContainsKey(group.Color))
-                        {
-                            var c = EQMapColor.GetThemedColors(group.Color);
-                            colordic[group.Color] = Tuple.Create(c, new SolidColorBrush(App.Theme == Themes.Light ? c.LightColor : c.DarkColor));
-                        }
-                    }
-                    foreach (var group in map.Labels)
-                    {
-                        if (!colordic.ContainsKey(group.Color))
-                        {
-                            var c = EQMapColor.GetThemedColors(group.Color);
-                            colordic[group.Color] = Tuple.Create(c, new SolidColorBrush(App.Theme == Themes.Light ? c.LightColor : c.DarkColor));
-                        }
-                    }
+                    //var colordic = new Dictionary<System.Windows.Media.Color, Tuple<EQMapColor, SolidColorBrush>>();
+                    //foreach (var group in map.Lines)
+                    //{
+                    //    if (!colordic.ContainsKey(group.Color))
+                    //    {
+                    //        var c = EQMapColor.GetThemedColors(group.Color);
+                    //        colordic[group.Color] = Tuple.Create(c, new SolidColorBrush(App.Theme == Themes.Light ? c.LightColor : c.DarkColor));
+                    //    }
+                    //}
+                    //foreach (var group in map.Labels)
+                    //{
+                    //    if (!colordic.ContainsKey(group.Color))
+                    //    {
+                    //        var c = EQMapColor.GetThemedColors(group.Color);
+                    //        colordic[group.Color] = Tuple.Create(c, new SolidColorBrush(App.Theme == Themes.Light ? c.LightColor : c.DarkColor));
+                    //    }
+                    //}
                     MapOffset = map.Offset;
                     var linethickness = MathHelper.ChangeRange(Math.Max(map.AABB.MaxWidth, map.AABB.MaxHeight), 800, 35000, 2, 40);
                     canvas.Children.Clear();
                     foreach (var group in map.Lines)
                     {
-                        var colorstuff = colordic[group.Color];
+                        var c = EQMapColor.GetThemedColors(group.Color);
+                        var colorstuff = new SolidColorBrush(App.Theme == Themes.Light ? c.LightColor : c.DarkColor);
                         var d = new Mapdata
                         {
-                            MapColor = colordic[group.Color].Item1,
                             Points = group.Points,
                             Color = group.Color
                         };
@@ -136,7 +135,7 @@ namespace EQTool.ViewModels
                             X2 = group.Points[1].X,
                             Y2 = group.Points[1].Y,
                             StrokeThickness = linethickness,
-                            Stroke = colorstuff.Item2,
+                            Stroke = colorstuff,
                             RenderTransform = canvas.Transform
                         };
                         _ = canvas.Children.Add(l);
@@ -148,10 +147,10 @@ namespace EQTool.ViewModels
                     var labelscaling = MathHelper.ChangeRange(Math.Max(map.AABB.MaxWidth, map.AABB.MaxHeight), 500, 35000, 40, 200);
                     foreach (var item in map.Labels)
                     {
-                        var colorstuff = colordic[item.Color];
+                        var c = EQMapColor.GetThemedColors(item.Color);
+                        var colorstuff = new SolidColorBrush(App.Theme == Themes.Light ? c.LightColor : c.DarkColor);
                         var d = new Mapdata
                         {
-                            MapColor = colordic[item.Color].Item1,
                             Points = new[] { item.Point },
                             Color = item.Color
                         };
@@ -160,7 +159,7 @@ namespace EQTool.ViewModels
                             Tag = d,
                             Text = item.label.Replace('_', ' '),
                             Height = labelscaling,
-                            Foreground = colorstuff.Item2,
+                            Foreground = colorstuff,
                             RenderTransform = canvas.Transform
                         };
                         _ = canvas.Children.Add(text);
@@ -274,46 +273,35 @@ namespace EQTool.ViewModels
             var translation = new TranslateTransform(canvas.Transform.Value.OffsetX, canvas.Transform.Value.OffsetY);
             transform.Matrix = PlayerLocationIcon.RotateTransform.Value * translation.Value;
             PlayerLocationIcon.RenderTransform = transform;
-            if (ZoneParser.NoZoneZHelping[LoadedZone] && canvas.Children.Count > 0)
+            var zoneinfo = ZoneParser.ZoneInfoMap[LoadedZone];
+            if (!zoneinfo.ShowAllMapLevels && canvas.Children.Count > 0)
             {
                 var lastloc = new Point3D(-(value1.Y + MapOffset.X), -(value1.X + MapOffset.Y), Lastlocation.Z);
-                var closest = canvas.Children[0] as Line;
-                var secondclosest = canvas.Children[1] as Line;
-                var closestmapdata = closest.Tag as Mapdata;
-                var cloestdist = (closestmapdata.Points[0] - lastloc).LengthSquared;
+                var twiceheight = zoneinfo.ZoneLevelHeight * 2;
                 foreach (var child in canvas.Children)
                 {
                     if (child is Line a)
                     {
                         var m = a.Tag as Mapdata;
-                        var closestpoint = GetClosestPointOnFiniteLine(
-                             new Vector3((float)lastloc.X, (float)lastloc.Y, (float)lastloc.Z),
-                            new Vector3((float)m.Points[0].X, (float)m.Points[0].Y, (float)m.Points[0].Z),
-                            new Vector3((float)m.Points[1].X, (float)m.Points[1].Y, (float)m.Points[1].Z)
-                           );
+                        var shortestdistance = Math.Abs(m.Points[0].Z - lastloc.Z);
+                        shortestdistance = Math.Min(Math.Abs(m.Points[1].Z - lastloc.Z), shortestdistance);
 
-                        var possible = (closestpoint - lastloc).LengthSquared;
-                        if (possible < cloestdist)
+                        if (shortestdistance < zoneinfo.ZoneLevelHeight)
                         {
-                            //Debug.WriteLine($"{closestpoint} - {lastloc} = {possible}");
-                            //Debug.WriteLine($"Lower {possible} {cloestdist}");
-                            cloestdist = possible;
-                            secondclosest = closest;
-                            closest = a;
+                            a.Stroke.Opacity = 1;
                         }
-                    }
-                }
-                closestmapdata = closest.Tag as Mapdata;
-                // closest.Stroke = new SolidColorBrush(System.Windows.Media.Color.FromRgb(255, 0, 0));
-
-                //secondclosest.Stroke = new SolidColorBrush(System.Windows.Media.Color.FromRgb(0, 255, 0));
-                var secondclosestmapdata = secondclosest.Tag as Mapdata;
-                foreach (var child in canvas.Children)
-                {
-                    if (child is Line a)
-                    {
-                        var m = a.Tag as Mapdata;
-                        a.Stroke.Opacity = (m.MapColor.OriginalColor != closestmapdata.MapColor.OriginalColor && m.MapColor.OriginalColor != secondclosestmapdata.MapColor.OriginalColor) ? .10 : 1;
+                        else if (shortestdistance >= zoneinfo.ZoneLevelHeight && shortestdistance <= twiceheight + zoneinfo.ZoneLevelHeight)
+                        {
+                            var dist = ((shortestdistance - zoneinfo.ZoneLevelHeight) * -1) + twiceheight; //changed range to [0,80] with 0 being the FURTHest distance
+                            dist = (dist / twiceheight) + .1; // scale to [.1,1.1] 
+                            _ = Clamp(dist, .1, 1);
+                            a.Stroke.Opacity = dist;
+                            //Debug.WriteLine(dist.ToString());
+                        }
+                        else
+                        {
+                            a.Stroke.Opacity = .1;
+                        }
                     }
                 }
             }

@@ -46,6 +46,7 @@ namespace EQTool
             }
             catch (Exception ex)
             {
+                App.LogUnhandledException(ex, $"LogParser_ConEvent {e.Name}");
                 mobInfoViewModel.ErrorResults = ex.Message;
             }
         }

@@ -1,5 +1,4 @@
 ﻿using EQTool.Shapes;
-using System.Diagnostics;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
@@ -84,8 +83,6 @@ namespace EQTool
                 // dont allow zooming out too far
                 return;
             }
-
-            Debug.WriteLine(CurrentScaling);
 
             Transform.Matrix = scaleMatrix;
             CurrentScaling *= scaleFactor;

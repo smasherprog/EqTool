@@ -1,16 +1,304 @@
-﻿[Tue Dec 20 20:19:59 2022] You have entered Cabilis East.
-[Tue Dec 20 20:19:59 2022] MESSAGE OF THE DAY: Welcome to Project 1999: Green! Please take the time to visit our forums and review the Play-Nice-Policy! Friendly reminder that Real Money Trading (RMT) including account, platinum or item buying/selling will result in a permanent ban. Dual boxing multiple characters at one time will also result in a ban. 
-[Tue Dec 20 20:20:53 2022] Players on EverQuest:
-[Tue Dec 20 20:20:53 2022] ---------------------------
-[Tue Dec 20 20:20:53 2022]  AFK [15 Monk] Kicazz (Iksar)
-[Tue Dec 20 20:20:53 2022] [55 Master] Notek (Iksar) <Ancient Blood>
-[Tue Dec 20 20:20:53 2022] [ANONYMOUS] Leavemealone 
-[Tue Dec 20 20:20:53 2022] [8 Monk] Bruez (Iksar)
-[Tue Dec 20 20:20:53 2022] [ANONYMOUS] Mertsson  <Pals>
-[Tue Dec 20 20:20:53 2022] [53 Heretic] Agueybana (Iksar) <Ancient Blood>
-[Tue Dec 20 20:20:53 2022] [3 Monk] Pigy (Iksar)
-[Tue Dec 20 20:20:53 2022] There are 7 players in East Cabilis.
-[Tue Dec 20 20:20:57 2022] Your Location is 1159.11, -595.94, 3.75
-[Tue Dec 20 20:21:06 2022] Your Location is 1170.61, -589.03, 3.75
-[Tue Dec 20 20:24:06 2022] Your Location is 1180.61, -589.03, 3.75
-[Tue Dec 20 20:27:06 2022] Your Location is 1190.61, -589.03, 3.75
+﻿[Sun Apr 23 08:43:28 2023] You have entered Plane of Mischief. 
+[Sun Apr 23 08:43:30 2023] Your Location is 1939.00, -519.00, -6.25
+[Sun Apr 23 08:43:32 2023] Your Location is 1939.00, -519.00, -6.25
+[Sun Apr 23 08:43:32 2023] Your Location is 1934.45, -512.79, -6.25
+[Sun Apr 23 08:43:35 2023] Your Location is 699.60, -154.62, 178.69
+[Sun Apr 23 08:43:35 2023] Your Location is 705.28, -164.76, 178.69
+[Sun Apr 23 08:43:36 2023] Your Location is 687.09, -127.18, 178.69
+[Sun Apr 23 08:43:37 2023] Your Location is 674.45, -114.09, 178.69
+[Sun Apr 23 08:43:37 2023] Your Location is 664.25, -93.82, 178.69
+[Sun Apr 23 08:43:39 2023] Your Location is 760.00, -127.00, 178.69
+[Sun Apr 23 08:43:40 2023] Your Location is 61.68, -398.87, 118.72
+[Sun Apr 23 08:43:41 2023] You feel your health begin to drain away.
+[Sun Apr 23 08:43:41 2023] Your Location is 38.89, -395.40, 118.72
+[Sun Apr 23 08:43:42 2023] Your Location is 9.16, -391.23, 118.72
+[Sun Apr 23 08:43:42 2023] You forget Sedulous Subversion.
+[Sun Apr 23 08:43:42 2023] Your Location is -11.34, -360.15, 129.69
+[Sun Apr 23 08:43:47 2023] Beginning to memorize Dead Man Floating...
+[Sun Apr 23 08:43:47 2023] You have finished memorizing Dead Man Floating.
+[Sun Apr 23 08:43:48 2023] Your Location is -9.53, -342.95, 138.69
+[Sun Apr 23 08:43:48 2023] Your Location is -11.09, -323.33, 148.69
+[Sun Apr 23 08:43:49 2023] Your Location is -18.61, -316.30, 148.69
+[Sun Apr 23 08:43:50 2023] Your Location is -38.17, -331.01, 148.69
+[Sun Apr 23 08:43:51 2023] Your Location is -67.48, -345.60, 148.69
+[Sun Apr 23 08:43:51 2023] Your Location is -83.84, -341.18, 148.69
+[Sun Apr 23 08:43:52 2023] Your Location is -133.63, -337.06, 148.69
+[Sun Apr 23 08:43:53 2023] Your Location is -154.98, -305.71, 143.69
+[Sun Apr 23 08:43:54 2023] Your Location is -115.57, -292.17, 138.47
+[Sun Apr 23 08:43:55 2023] Your Location is -116.76, -323.08, 127.82
+[Sun Apr 23 08:43:56 2023] Your Location is -130.24, -352.69, 123.69
+[Sun Apr 23 08:43:57 2023] Your Location is -138.88, -380.25, 123.69
+[Sun Apr 23 08:43:58 2023] Your Location is -188.75, -394.33, 123.69
+[Sun Apr 23 08:43:59 2023] Your Location is -213.51, -392.73, 123.69
+[Sun Apr 23 08:44:02 2023] Your Location is -340.67, -379.36, 123.69
+[Sun Apr 23 08:44:02 2023] Your Location is -348.69, -366.87, 123.69
+[Sun Apr 23 08:44:03 2023] Your Location is -386.45, -318.24, 85.99
+[Sun Apr 23 08:44:04 2023] Your Location is -398.92, -301.95, 85.23 
+[Sun Apr 23 08:44:12 2023] Your Location is -427.72, -46.60, 75.18
+[Sun Apr 23 08:44:13 2023] Your Location is -422.55, -18.83, 74.04
+[Sun Apr 23 08:44:23 2023] Your Location is -265.89, 220.32, 60.24
+[Sun Apr 23 08:44:23 2023] Your Location is -259.33, 240.40, 58.88
+[Sun Apr 23 08:44:24 2023] Your Location is -260.50, 262.83, 57.34
+[Sun Apr 23 08:44:25 2023] Your Location is -270.71, 280.52, 55.93
+[Sun Apr 23 08:44:32 2023] Your Location is -441.65, 361.88, 94.72
+[Sun Apr 23 08:44:33 2023] Your Location is -495.67, 366.94, 94.72
+[Sun Apr 23 08:44:35 2023] Your Location is -609.35, 380.52, 94.72
+[Sun Apr 23 08:44:38 2023] Your Location is -693.76, 369.58, 94.72
+[Sun Apr 23 08:44:39 2023] You begin casting Dead Man Floating.
+[Sun Apr 23 08:44:45 2023] You become like the dead.
+[Sun Apr 23 08:44:50 2023] Players on EverQuest:
+[Sun Apr 23 08:44:50 2023] ---------------------------
+[Sun Apr 23 08:44:50 2023] [60 Oracle] Tuknir (Bear) <Safe Space>
+[Sun Apr 23 08:44:50 2023] [58 Luminary] Kiltocanni (Bear)
+[Sun Apr 23 08:44:50 2023] [ANONYMOUS] Gnomans  <Good Guys>
+[Sun Apr 23 08:44:50 2023] [ANONYMOUS] Scythrax  <Ancient Blood>
+[Sun Apr 23 08:44:50 2023] [60 Warlock] Dewbes (Skeleton) <Good Guys>
+[Sun Apr 23 08:44:50 2023] [58 Luminary] Lezah (Bear) <Safe Space>
+[Sun Apr 23 08:44:50 2023] [60 Warlock] Vasanle (Iksar) <The Drift>
+[Sun Apr 23 08:44:50 2023] There are 7 players in Plane of Mischief.
+[Sun Apr 23 08:44:50 2023] Your Location is -695.19, 369.40, 94.88
+[Sun Apr 23 08:44:57 2023] Your Location is -704.82, 382.38, 96.51
+[Sun Apr 23 08:44:58 2023] Your Location is -706.21, 384.26, 96.19
+[Sun Apr 23 08:44:58 2023] You can't reach that, get closer.
+[Sun Apr 23 08:44:59 2023] You can't reach that, get closer.
+[Sun Apr 23 08:44:59 2023] Your Location is -696.15, 414.46, 96.49
+[Sun Apr 23 08:45:00 2023] Your Location is -694.76, 433.53, 96.21
+[Sun Apr 23 08:45:01 2023] You can't reach that, get closer.
+[Sun Apr 23 08:45:01 2023] You can't reach that, get closer.
+[Sun Apr 23 08:45:01 2023] Your Location is -688.08, 465.78, 96.54
+[Sun Apr 23 08:45:01 2023] You can't reach that, get closer.
+[Sun Apr 23 08:45:01 2023] Your Location is -683.51, 486.01, 96.64
+[Sun Apr 23 08:45:02 2023] Your Location is -680.59, 514.99, 96.74
+[Sun Apr 23 08:45:03 2023] LOADING, PLEASE WAIT...
+[Sun Apr 23 08:45:10 2023] You have entered Cobalt Scar.
+[Sun Apr 23 08:45:13 2023] Your Location is 76.00, 560.00, 55.83
+[Sun Apr 23 08:45:15 2023] Your Location is 76.00, 560.00, 56.56
+[Sun Apr 23 08:45:16 2023] Your Location is 90.38, 570.78, 56.29
+[Sun Apr 23 08:45:17 2023] Your Location is 114.55, 548.86, 55.98
+[Sun Apr 23 08:45:17 2023] Your Location is 114.33, 531.80, 56.49
+[Sun Apr 23 08:45:17 2023] Your Location is 102.26, 509.81, 56.00
+[Sun Apr 23 08:45:18 2023] Your Location is 89.06, 500.43, 56.32
+[Sun Apr 23 08:45:19 2023] Your Location is 51.92, 459.52, 56.23
+[Sun Apr 23 08:45:20 2023] Your Location is 32.94, 448.43, 55.89
+[Sun Apr 23 08:45:20 2023] Your Location is 8.35, 448.99, 55.98
+[Sun Apr 23 08:45:20 2023] Your Location is -4.61, 455.62, 55.73
+[Sun Apr 23 08:45:21 2023] Your Location is -31.29, 465.69, 55.84
+[Sun Apr 23 08:45:21 2023] Your Location is -45.76, 469.08, 55.78
+[Sun Apr 23 08:45:22 2023] Your Location is -69.11, 472.33, 55.77
+[Sun Apr 23 08:45:29 2023] There are no players in EverQuest that match those who filters.
+[Sun Apr 23 08:45:32 2023] Your Location is -523.33, 511.59, 55.87
+[Sun Apr 23 08:45:33 2023] Your Location is -572.67, 522.06, 55.76
+[Sun Apr 23 08:45:37 2023] Your Location is -747.40, 607.61, 76.15
+[Sun Apr 23 08:45:39 2023] Your Location is -824.14, 674.75, 86.98
+[Sun Apr 23 08:45:49 2023] Your Location is -919.46, 751.16, 292.94
+[Sun Apr 23 08:45:50 2023] Your Location is -935.82, 814.27, 297.59
+[Sun Apr 23 08:45:51 2023] Your Location is -940.91, 840.80, 302.68
+[Sun Apr 23 08:45:51 2023] Your Location is -942.36, 863.15, 310.19
+[Sun Apr 23 08:45:52 2023] Your Location is -922.45, 889.70, 319.92
+[Sun Apr 23 08:45:53 2023] Your Location is -894.60, 894.19, 325.12
+[Sun Apr 23 08:45:55 2023] Your Location is -807.70, 896.33, 339.78
+[Sun Apr 23 08:45:55 2023] Your Location is -788.67, 903.12, 340.23
+[Sun Apr 23 08:45:56 2023] Your Location is -767.60, 911.52, 350.33
+[Sun Apr 23 08:45:57 2023] Your Location is -745.05, 887.61, 362.73
+[Sun Apr 23 08:45:57 2023] Your Location is -770.09, 865.59, 375.50
+[Sun Apr 23 08:45:59 2023] Your Location is -772.90, 901.88, 378.06
+[Sun Apr 23 08:46:00 2023] Your Location is -723.73, 898.35, 401.84
+[Sun Apr 23 08:46:01 2023] Your Location is -691.19, 897.20, 403.87
+[Sun Apr 23 08:46:01 2023] Your Location is -669.23, 891.45, 405.92
+[Sun Apr 23 08:46:02 2023] LOADING, PLEASE WAIT...
+[Sun Apr 23 08:46:12 2023] You have entered Skyshrine.
+[Sun Apr 23 08:46:16 2023] Osino begins to cast a spell.
+[Sun Apr 23 08:46:19 2023] Your Location is 449.00, -328.00, 44.83
+[Sun Apr 23 08:46:20 2023] Your Location is 449.00, -328.00, 44.51
+[Sun Apr 23 08:46:21 2023] Your Location is 449.00, -328.00, 44.69
+[Sun Apr 23 08:46:23 2023] Gmog tells you, 'ok at t1 '
+[Sun Apr 23 08:46:23 2023] Your Location is 440.00, -329.22, 44.24
+[Sun Apr 23 08:46:23 2023] Your Location is 418.70, -330.84, 43.74
+[Sun Apr 23 08:46:24 2023] Your Location is 407.84, -330.85, 43.78
+[Sun Apr 23 08:46:26 2023] Your Location is 387.88, -328.50, 43.72
+[Sun Apr 23 08:46:27 2023] Your Location is 367.70, -320.09, 44.11
+[Sun Apr 23 08:46:27 2023] Your Location is 359.34, -309.91, 43.72
+[Sun Apr 23 08:46:27 2023] Your Location is 349.45, -287.85, 48.74
+[Sun Apr 23 08:46:28 2023] a gargoyle guard regards you as an ally -- You could probably win this fight.
+[Sun Apr 23 08:46:28 2023] Your Location is 348.05, -253.62, 48.72
+[Sun Apr 23 08:46:29 2023] Gmog tells you, 'Ogre'
+[Sun Apr 23 08:46:34 2023] It will take you about 30 seconds to prepare your camp.
+[Sun Apr 23 08:46:36 2023] You told Gmog, 'camping over'
+[Sun Apr 23 08:46:38 2023] It will take about 25 more seconds to prepare your camp.
+[Sun Apr 23 08:46:43 2023] It will take about 20 more seconds to prepare your camp.
+[Sun Apr 23 08:46:44 2023] Zalerez begins to cast a spell.
+[Sun Apr 23 08:46:48 2023] It will take about 15 more seconds to prepare your camp.
+[Sun Apr 23 08:46:53 2023] It will take about 10 more seconds to prepare your camp.
+[Sun Apr 23 08:46:53 2023] Zalerez begins to cast a spell.
+[Sun Apr 23 08:46:58 2023] It will take about 5 more seconds to prepare your camp.
+[Sun Apr 23 08:48:52 2023] Welcome to EverQuest!
+[Sun Apr 23 08:48:52 2023] You have entered Skyshrine.
+[Sun Apr 23 08:48:52 2023] MESSAGE OF THE DAY: Welcome to Project 1999: Green! Please take the time to visit our forums and review the Play-Nice-Policy! Friendly reminder that Real Money Trading (RMT) including account, platinum or item buying/selling will result in a permanent ban. Dual boxing multiple characters at one time will also result in a ban. 
+[Sun Apr 23 08:48:52 2023] GUILD MOTD: Piggies - quick upper isle clear tonight, be at WC spires at 6:30pm EST. https://discord.gg/S4xGH3N5KX
+[Sun Apr 23 08:49:02 2023] Commander Leuz begins to cast a spell.
+[Sun Apr 23 08:49:07 2023] Your Location is 454.45, -235.99, 16.87
+[Sun Apr 23 08:49:07 2023] Your Location is 477.38, -236.07, 16.04
+[Sun Apr 23 08:49:07 2023] Your Location is 492.44, -235.85, 15.36
+[Sun Apr 23 08:49:21 2023] Suez begins to cast a spell.
+[Sun Apr 23 08:49:26 2023] Your Location is 531.24, -333.40, -11.23
+[Sun Apr 23 08:49:28 2023] Your Location is 514.77, -389.39, -11.25
+[Sun Apr 23 08:49:29 2023] Your Location is 519.49, -390.96, -11.25
+[Sun Apr 23 08:49:30 2023] Osino begins to cast a spell.
+[Sun Apr 23 08:49:32 2023] Your Location is 474.84, -392.68, 13.75
+[Sun Apr 23 08:49:35 2023] Your Location is 458.99, -499.38, 13.84
+[Sun Apr 23 08:49:36 2023] Your Location is 457.02, -531.50, 13.75
+[Sun Apr 23 08:49:37 2023] Chymot begins to cast a spell.
+[Sun Apr 23 08:49:37 2023] Your Location is 481.11, -556.92, 13.75
+[Sun Apr 23 08:49:37 2023] Your Location is 508.05, -557.54, 13.75
+[Sun Apr 23 08:49:38 2023] Your Location is 531.99, -574.40, 13.75
+[Sun Apr 23 08:49:42 2023] Your Location is 532.72, -739.00, 13.98
+[Sun Apr 23 08:49:42 2023] Your Location is 538.09, -760.96, 14.17
+[Sun Apr 23 08:49:43 2023] Your Location is 594.62, -764.79, 14.20
+[Sun Apr 23 08:49:44 2023] Your Location is 611.41, -758.05, 14.37
+[Sun Apr 23 08:49:45 2023] Your Location is 608.65, -747.26, 13.79
+[Sun Apr 23 08:49:46 2023] Your Location is 596.70, -728.54, 14.31
+[Sun Apr 23 08:49:47 2023] Pyrox tells you, 'Welcome to my bank!'
+[Sun Apr 23 08:49:54 2023] Pyrox tells you, 'Come back soon!'
+[Sun Apr 23 08:49:56 2023] Your Location is 570.37, -678.40, 14.02
+[Sun Apr 23 08:49:56 2023] Your Location is 570.37, -678.40, 14.24
+[Sun Apr 23 08:49:56 2023] Pyrox tells you, 'Welcome to my bank!'
+[Sun Apr 23 08:50:24 2023] a crystal spider begins to cast a spell.
+[Sun Apr 23 08:51:08 2023] Your Location is 572.85, -681.83, 14.67
+[Sun Apr 23 08:51:09 2023] Your Location is 573.74, -701.84, 13.75
+[Sun Apr 23 08:51:09 2023] Pyrox tells you, 'Come back soon!'
+[Sun Apr 23 08:51:10 2023] Your Location is 580.64, -712.94, 13.75
+[Sun Apr 23 08:51:10 2023] Your Location is 590.54, -722.02, 13.78
+[Sun Apr 23 08:51:11 2023] Your Location is 606.56, -737.97, 13.75
+[Sun Apr 23 08:51:13 2023] Your Location is 607.55, -738.21, 13.75
+[Sun Apr 23 08:51:14 2023] Your Location is 575.24, -700.55, 13.75
+[Sun Apr 23 08:51:14 2023] Your Location is 568.80, -684.85, 13.75
+[Sun Apr 23 08:51:15 2023] Pyrox tells you, 'Welcome to my bank!'
+[Sun Apr 23 08:51:26 2023] Your Location is 567.83, -682.92, 14.11
+[Sun Apr 23 08:51:27 2023] Pyrox tells you, 'Come back soon!'
+[Sun Apr 23 08:51:27 2023] Your Location is 587.92, -705.57, 13.75
+[Sun Apr 23 08:51:28 2023] Your Location is 595.55, -726.62, 13.75
+[Sun Apr 23 08:51:28 2023] Your Location is 598.53, -732.87, 13.75
+[Sun Apr 23 08:51:29 2023] Your Location is 605.81, -736.93, 13.75
+[Sun Apr 23 08:51:29 2023] Your Location is 614.18, -763.50, 13.75
+[Sun Apr 23 08:51:31 2023] Your Location is 547.72, -764.06, 13.79
+[Sun Apr 23 08:51:32 2023] Your Location is 527.76, -717.64, 14.17
+[Sun Apr 23 08:51:34 2023] Your Location is 531.71, -627.58, 13.75
+[Sun Apr 23 08:51:35 2023] Your Location is 532.57, -580.52, 13.75
+[Sun Apr 23 08:51:36 2023] Your Location is 507.29, -555.23, 13.75
+[Sun Apr 23 08:51:37 2023] Your Location is 480.27, -553.03, 13.77
+[Sun Apr 23 08:51:38 2023] Your Location is 455.91, -526.88, 13.75
+[Sun Apr 23 08:51:39 2023] Your Location is 455.19, -482.92, 14.03
+[Sun Apr 23 08:51:40 2023] Your Location is 459.19, -415.64, 14.08
+[Sun Apr 23 08:51:41 2023] Your Location is 481.64, -392.12, 14.43
+[Sun Apr 23 08:51:44 2023] Your Location is 531.43, -320.50, -5.18
+[Sun Apr 23 08:51:46 2023] a crystal spider begins to cast a spell.
+[Sun Apr 23 08:51:46 2023] Your Location is 533.23, -229.20, 14.36
+[Sun Apr 23 08:51:47 2023] Your Location is 495.71, -234.76, 13.92
+[Sun Apr 23 08:51:48 2023] Your Location is 466.28, -236.11, 13.83
+[Sun Apr 23 08:51:53 2023] Commander Leuz begins to cast a spell.
+[Sun Apr 23 08:51:54 2023] Your Location is 346.73, -269.52, 49.05
+[Sun Apr 23 08:51:54 2023] Your Location is 346.66, -301.14, 48.59
+[Sun Apr 23 08:51:55 2023] Your Location is 351.02, -318.66, 48.40
+[Sun Apr 23 08:51:57 2023] Your Location is 351.02, -318.66, 48.96
+[Sun Apr 23 08:51:58 2023] Your Location is 367.00, -325.41, 48.72
+[Sun Apr 23 08:52:01 2023] You can't reach that, get closer.
+[Sun Apr 23 08:52:01 2023] You can't reach that, get closer.
+[Sun Apr 23 08:52:01 2023] You can't reach that, get closer.
+[Sun Apr 23 08:52:01 2023] You can't reach that, get closer.
+[Sun Apr 23 08:52:01 2023] You can't reach that, get closer.
+[Sun Apr 23 08:52:02 2023] Your Location is 521.59, -325.47, 48.77
+[Sun Apr 23 08:52:03 2023] It's locked and you're not holding the key.
+[Sun Apr 23 08:52:03 2023] Your Location is 556.17, -327.38, 48.70
+[Sun Apr 23 08:52:04 2023] It's locked and you're not holding the key.
+[Sun Apr 23 08:52:04 2023] Your Location is 556.34, -326.86, 48.30
+[Sun Apr 23 08:52:04 2023] Your Location is 556.34, -326.86, 48.46
+[Sun Apr 23 08:52:04 2023] It's locked and you're not holding the key.
+[Sun Apr 23 08:52:06 2023] Your Location is 557.98, -318.16, 47.72
+[Sun Apr 23 08:52:08 2023] Your Location is 593.05, -284.95, 49.33
+[Sun Apr 23 08:52:09 2023] You haven't recovered yet...
+[Sun Apr 23 08:52:09 2023] You haven't recovered yet...
+[Sun Apr 23 08:52:09 2023] You begin casting Gate.
+[Sun Apr 23 08:52:09 2023] You haven't recovered yet...
+[Sun Apr 23 08:52:09 2023] You haven't recovered yet...
+[Sun Apr 23 08:52:09 2023] You haven't recovered yet...
+[Sun Apr 23 08:52:09 2023] You haven't recovered yet...
+[Sun Apr 23 08:52:15 2023] LOADING, PLEASE WAIT...
+[Sun Apr 23 08:52:24 2023] You have entered Plane of Mischief.
+[Sun Apr 23 08:52:31 2023] Your Location is 1939.00, -519.00, -2.96
+[Sun Apr 23 08:52:32 2023] Your Location is 1917.96, -502.49, -3.05
+[Sun Apr 23 08:52:33 2023] Your Location is 1908.91, -490.15, -3.16
+[Sun Apr 23 08:52:33 2023] Your Location is 1906.15, -482.79, -2.74
+[Sun Apr 23 08:52:34 2023] My Right Hand regards you indifferently -- what would you like your tombstone to say?
+[Sun Apr 23 08:52:34 2023] Your Location is 696.17, -144.98, 178.69
+[Sun Apr 23 08:52:34 2023] Your Location is 705.27, -160.87, 178.69
+[Sun Apr 23 08:52:35 2023] Your Location is 687.02, -127.03, 178.85
+[Sun Apr 23 08:52:36 2023] Your Location is 672.59, -103.50, 178.69
+[Sun Apr 23 08:52:36 2023] Your Location is 670.61, -91.26, 178.69
+[Sun Apr 23 08:52:38 2023] Your Location is 760.00, -126.99, 178.69
+[Sun Apr 23 08:52:39 2023] Your Location is 55.73, -400.61, 119.66
+[Sun Apr 23 08:52:40 2023] Your Location is 21.12, -390.07, 118.72
+[Sun Apr 23 08:52:41 2023] Your Location is 6.65, -386.49, 120.72
+[Sun Apr 23 08:52:41 2023] Your Location is -10.80, -353.23, 133.69
+[Sun Apr 23 08:52:42 2023] Your Location is -13.21, -329.85, 145.69
+[Sun Apr 23 08:52:43 2023] Your Location is -38.18, -330.35, 148.69
+[Sun Apr 23 08:52:45 2023] Your Location is -136.92, -338.61, 148.69
+[Sun Apr 23 08:52:46 2023] Your Location is -154.84, -312.24, 145.92
+[Sun Apr 23 08:52:47 2023] Your Location is -120.43, -297.77, 138.69
+[Sun Apr 23 08:52:48 2023] Your Location is -115.26, -323.09, 128.05
+[Sun Apr 23 08:52:49 2023] Your Location is -126.97, -357.21, 124.69
+[Sun Apr 23 08:52:50 2023] Your Location is -140.69, -378.97, 123.75
+[Sun Apr 23 08:52:51 2023] Your Location is -173.25, -397.72, 123.69
+[Sun Apr 23 08:52:51 2023] Your Location is -213.95, -393.27, 123.69
+[Sun Apr 23 08:52:52 2023] Your Location is -236.09, -391.45, 123.70
+[Sun Apr 23 08:52:52 2023] Your Location is -251.03, -390.46, 123.69
+[Sun Apr 23 08:52:53 2023] Your Location is -273.68, -392.46, 123.69
+[Sun Apr 23 08:52:53 2023] Your Location is -289.40, -393.24, 123.69
+[Sun Apr 23 08:52:54 2023] Your Location is -316.27, -390.18, 123.69
+[Sun Apr 23 08:52:57 2023] Your Location is -413.64, -286.64, 114.32
+[Sun Apr 23 08:52:58 2023] Your Location is -427.18, -236.98, 109.76
+[Sun Apr 23 08:52:59 2023] Your Location is -427.13, -206.95, 107.06
+[Sun Apr 23 08:53:05 2023] Your Location is -376.30, 41.60, 55.75
+[Sun Apr 23 08:53:13 2023] Your Location is -267.43, 240.78, 54.79
+[Sun Apr 23 08:53:14 2023] Your Location is -260.52, 263.77, 54.74
+[Sun Apr 23 08:53:14 2023] Your Location is -263.21, 281.51, 55.34
+[Sun Apr 23 08:53:15 2023] Your Location is -269.49, 297.85, 54.79
+[Sun Apr 23 08:53:23 2023] You can't reach that, get closer.
+[Sun Apr 23 08:53:23 2023] You can't reach that, get closer.
+[Sun Apr 23 08:53:24 2023] You can't reach that, get closer.
+[Sun Apr 23 08:53:24 2023] You can't reach that, get closer.
+[Sun Apr 23 08:53:24 2023] You can't reach that, get closer.
+[Sun Apr 23 08:53:24 2023] Your Location is -590.68, 438.23, 97.10
+[Sun Apr 23 08:53:26 2023] Your Location is -626.20, 472.94, 97.14
+[Sun Apr 23 08:53:26 2023] Your Location is -646.59, 496.90, 97.39
+[Sun Apr 23 08:53:27 2023] LOADING, PLEASE WAIT...
+[Sun Apr 23 08:53:35 2023] You have entered Cobalt Scar.
+[Sun Apr 23 08:53:50 2023] Your Location is 76.00, 560.00, 56.34
+[Sun Apr 23 08:53:51 2023] Your Location is 92.87, 547.36, 55.73
+[Sun Apr 23 08:53:52 2023] Your Location is 92.16, 502.82, 55.72
+[Sun Apr 23 08:53:53 2023] Your Location is 65.75, 468.33, 55.72
+[Sun Apr 23 08:53:54 2023] Your Location is 39.33, 436.65, 55.79
+[Sun Apr 23 08:54:16 2023] Your Location is -564.08, -397.92, 56.10
+[Sun Apr 23 08:54:17 2023] Your Location is -586.72, -416.90, 56.66
+[Sun Apr 23 08:54:17 2023] Your Location is -623.46, -436.19, 56.72
+[Sun Apr 23 08:54:28 2023] Your Location is -913.90, -327.78, 159.50
+[Sun Apr 23 08:54:29 2023] Your Location is -917.78, -323.42, 173.28
+[Sun Apr 23 08:54:35 2023] Your Location is -1069.18, -407.12, 297.82
+[Sun Apr 23 08:54:36 2023] Your Location is -1073.41, -444.38, 298.12
+[Sun Apr 23 08:54:42 2023] a wyvern regards you as an ally -- You could probably win this fight.
+[Sun Apr 23 08:54:43 2023] a wyvern regards you as an ally -- You could probably win this fight.
+[Sun Apr 23 08:54:44 2023] Nalyara regards you indifferently -- it appears to be quite formidable.
+[Sun Apr 23 08:54:52 2023] a cobalt drake regards you as an ally -- You could probably win this fight.
+[Sun Apr 23 08:54:52 2023] Your Location is -1058.53, -1185.92, 297.90
+[Sun Apr 23 08:54:55 2023] Your Location is -1049.75, -1330.65, 297.53
+[Sun Apr 23 08:54:56 2023] Your Location is -1054.87, -1359.41, 304.90
+[Sun Apr 23 08:54:58 2023] Your Location is -1058.07, -1448.34, 324.81
+[Sun Apr 23 08:54:59 2023] Your Location is -1054.32, -1481.08, 323.51
+[Sun Apr 23 08:55:02 2023] You begin casting Feign Death.
+[Sun Apr 23 08:55:03 2023] You can't use that command right now...
+[Sun Apr 23 08:55:03 2023] You can't use that command right now...
+[Sun Apr 23 08:55:06 2023] It will take you about 30 seconds to prepare your camp.
+[Sun Apr 23 08:55:10 2023] It will take about 25 more seconds to prepare your camp.
+[Sun Apr 23 08:55:15 2023] It will take about 20 more seconds to prepare your camp.
+[Sun Apr 23 08:55:20 2023] It will take about 15 more seconds to prepare your camp.
+[Sun Apr 23 08:55:25 2023] It will take about 10 more seconds to prepare your camp. 
+[Sun Apr 23 08:55:30 2023] It will take about 5 more seconds to prepare your camp.

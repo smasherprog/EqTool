@@ -326,7 +326,6 @@ namespace EQTool
                         }
                     }
 
-                    var endtime = fightlist.LastOrDefault().Value.TimeStamp;
                     var starttime = fightlist.FirstOrDefault().Value.TimeStamp;
                     var starttimediff = DateTime.Now - starttime;
                     var index = 0;
@@ -379,13 +378,56 @@ namespace EQTool
             testmap.IsEnabled = false;
             _ = Task.Factory.StartNew(() =>
             {
+                var fightlines = Properties.Resources.testmap.Split(new string[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
+                var lines = new List<KeyValuePair<DateTime, string>>();
+                foreach (var item in fightlines)
+                {
+                    if (item == null || item.Length < 27)
+                    {
+                        continue;
+                    }
+
+                    var date = item.Substring(1, 24);
+                    var message = item.Substring(27).Trim();
+                    var format = "ddd MMM dd HH:mm:ss yyyy";
+                    var timestamp = DateTime.Now;
+                    try
+                    {
+                        timestamp = DateTime.ParseExact(date, format, CultureInfo.InvariantCulture);
+                        lines.Add(new KeyValuePair<DateTime, string>(timestamp, item));
+                    }
+                    catch (FormatException)
+                    {
+                    }
+                }
+                var starttime = lines.FirstOrDefault().Key;
                 try
                 {
-                    NewMethod(" You have entered Cabilis East.", 2000);
-                    NewMethod(" Your Location is 1159.11, -595.94, 3.75", 2000);
-                    NewMethod(" Your Location is 1170.11, -595.94, 3.75", 2000);
-                    NewMethod(" Your Location is 1190.11, -595.94, 3.75", 2000);
-                    NewMethod(" Your Location is 1210.11, -595.94, 3.75", 2000);
+
+                    var starttimediff = DateTime.Now - starttime;
+                    var index = 0;
+                    do
+                    {
+                        for (; index < lines.Count; index++)
+                        {
+                            var t = lines[index].Key + starttimediff;
+                            if (t > DateTime.Now)
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                var line = lines[index].Value;
+                                var indexline = line.IndexOf("]");
+                                var msgwithout = line.Substring(indexline);
+                                var format = "ddd MMM dd HH:mm:ss yyyy";
+                                msgwithout = "[" + t.ToString(format) + msgwithout;
+                                logParser.Push(msgwithout);
+                            }
+                        }
+                        Thread.Sleep(100);
+                    } while (index < lines.Count);
+
                     appDispatcher.DispatchUI(() => { testmap.IsEnabled = true; });
                 }
                 catch (Exception ex)
@@ -394,16 +436,6 @@ namespace EQTool
                     appDispatcher.DispatchUI(() => { testmap.IsEnabled = true; });
                 }
             });
-
-            void NewMethod(string msg, int sleeptime)
-            {
-                var format = "ddd MMM dd HH:mm:ss yyyy";
-                var d = DateTime.Now;
-                var line = "[" + d.ToString(format) + "]" + msg;
-                logParser.Push(line);
-                Thread.Sleep(sleeptime);
-            }
         }
-
     }
 }

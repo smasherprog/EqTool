@@ -83,14 +83,14 @@ namespace EQTool
 
         public static void LogUnhandledException(Exception exception, string source)
         {
-            var msg = new ExceptionRequest
-            {
-                Version = Version,
-                Exception = $"Unhandled exception ({source}) {exception}"
-            };
-            var msagasjson = Newtonsoft.Json.JsonConvert.SerializeObject(msg);
             try
             {
+                var msg = new ExceptionRequest
+                {
+                    Version = Version,
+                    Exception = $"Unhandled exception ({source}) {exception}"
+                };
+                var msagasjson = Newtonsoft.Json.JsonConvert.SerializeObject(msg);
                 var content = new StringContent(msagasjson, Encoding.UTF8, "application/json");
                 var result = httpclient.PostAsync("https://pigparse.azurewebsites.net/api/eqtool/exception", content).Result;
             }
