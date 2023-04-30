@@ -124,6 +124,7 @@ namespace EQTool.ViewModels
                         var colorstuff = new SolidColorBrush(App.Theme == Themes.Light ? c.LightColor : c.DarkColor);
                         var d = new Mapdata
                         {
+                            MapColor = c,
                             Points = group.Points,
                             Color = group.Color
                         };
@@ -151,6 +152,7 @@ namespace EQTool.ViewModels
                         var colorstuff = new SolidColorBrush(App.Theme == Themes.Light ? c.LightColor : c.DarkColor);
                         var d = new Mapdata
                         {
+                            MapColor = c,
                             Points = new[] { item.Point },
                             Color = item.Color
                         };
