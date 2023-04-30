@@ -262,9 +262,9 @@ namespace EQToolApis.Services
                                 EQitemId = eqitem.EQitemId
                             };
                             //ignore bogus prices
-                            if (eqitem.TotalWTBLast6MonthsCount > 100 && eqitem.TotalWTBLast6MonthsAverage > 0)
+                            if (eqitem.TotalWTSLast6MonthsCount > 100 && eqitem.TotalWTSLast6MonthsAverage > 0)
                             {
-                                if (it.Price > eqitem.TotalWTBLast6MonthsAverage * 7)
+                                if (it.Price > eqitem.TotalWTSLast6MonthsAverage * 7)
                                 {
                                     auctionitem.AuctionPrice = null;
                                 }
