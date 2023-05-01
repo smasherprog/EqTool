@@ -79,7 +79,7 @@ Features:
 <li>Parse Raw tunnel Data instead of relying on TunnelQuest </li> 
 <li>Add Medial pricing to chart </li> 
 <li>Collapse data from same person auctioning same item multiple times over a time period </li> 
-
+<li>Add Person search. </li> 
 
 <li>Add loot TAB to Mob Window. This tab will show item name, looted from, player name who looted, and unix geek price data, running total looted.</li>
 </ul>
