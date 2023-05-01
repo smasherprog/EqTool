@@ -72,6 +72,7 @@ Features:
 <li>Enrage alert/advanced alert.</li>
 <li>charm break alert</li>
 <li>charm spell effect removal</li> 
+</ul>
 
 <h4>TO DO List PigParse Pricing</h4>
 <ul>
