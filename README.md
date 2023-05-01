@@ -44,7 +44,7 @@ Features:
 <h4>System Tray Icon</h4>
 <img width="152" alt="image" src="https://user-images.githubusercontent.com/3393733/212717141-6e26b9af-660a-493d-9f73-2c3464b7c224.png">
 
-<h4>TO DO List</h4>
+<h4>TO DO List EQTool</h4>
 <ul>
 <li>Add prices to mob indo. </li> 
 <li>Remove mob seive counter automatically after a set amount of time. Currently, it must be removed manually. </li> 
@@ -72,6 +72,13 @@ Features:
 <li>Enrage alert/advanced alert.</li>
 <li>charm break alert</li>
 <li>charm spell effect removal</li> 
+
+<h4>TO DO List PigParse Pricing</h4>
+<ul>
+<li>Parse Raw tunnel Data instead of relying on TunnelQuest </li> 
+<li>Add Medial pricing to chart </li> 
+<li>Collapse data from same person auctioning same item multiple times over a time period </li> 
+
 
 <li>Add loot TAB to Mob Window. This tab will show item name, looted from, player name who looted, and unix geek price data, running total looted.</li>
 </ul>
