@@ -310,15 +310,9 @@ namespace EQTool.Services
                         MainRun(line);
                     }
                 }
-                catch (Exception ex)
+                catch (Exception ex) when (!(ex is System.IO.IOException))
                 {
-                    if (ex is System.IO.IOException tex)
-                    {
-                        if (!tex.Message.Contains("because it is being used by another process"))
-                        {
-                            App.LogUnhandledException(ex, "LogParser DispatchUI");
-                        }
-                    }
+                    App.LogUnhandledException(ex, "LogParser DispatchUI");
                 }
                 finally
                 {

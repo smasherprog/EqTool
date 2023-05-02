@@ -258,7 +258,7 @@ namespace EQTool.ViewModels
 
         public void UpdateLocation(Point3D value1, PanAndZoomCanvas canvas)
         {
-            if (MapLoading)
+            if (MapLoading || PlayerLocationIcon == null)
             {
                 return;
             }

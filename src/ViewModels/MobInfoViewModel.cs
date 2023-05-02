@@ -360,6 +360,11 @@ namespace EQTool.ViewModels
             }
             var cleanresults = Results;
             var lastindexof = cleanresults.LastIndexOf("}}");
+            if (lastindexof == -1)
+            {
+                return;
+            }
+
             cleanresults = cleanresults.Substring(0, lastindexof);
             cleanresults = cleanresults.Replace("\r\n", "\n").Replace("|imagefilename", "^imagefilename").Replace("| ", "^");
             var splits = cleanresults.Split('^').Where(a => !string.IsNullOrWhiteSpace(a)).Select(a => a.Trim().TrimStart('\n')).ToList();
