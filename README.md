@@ -45,8 +45,7 @@ Features:
 <img width="152" alt="image" src="https://user-images.githubusercontent.com/3393733/212717141-6e26b9af-660a-493d-9f73-2c3464b7c224.png">
 
 <h4>TO DO List EQTool</h4>
-<ul>
-<li>Attribute clickie/proc damage to your damage total.</li> 
+<ul> 
 <li>Add prices to mob indo. </li> 
 <li>Remove mob seive counter automatically after a set amount of time. Currently, it must be removed manually. </li> 
 <li>Use the current zone to better display correct mob info. For example Orc centurions can be in multiple zones! </li> 
