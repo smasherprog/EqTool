@@ -31,6 +31,19 @@ namespace EQToolTests
         }
 
         [TestMethod]
+        public void DPSLogParse_NonMelleTest()
+        {
+            var dpslogparse = container.Resolve<DPSLogParse>();
+            var message = "Ratman Rager was hit by non-melee for 45 points of damage.";
+            var match = dpslogparse.Match(message, DateTime.Now);
+
+            Assert.IsNotNull(match);
+            Assert.AreEqual(match.SourceName, "You");
+            Assert.AreEqual(match.TargetName, "Ratman Rager");
+            Assert.AreEqual(match.DamageDone, 45);
+        }
+
+        [TestMethod]
         public void DPSLogParse_EatingDpsParseTest1()
         {
             var dpslogparse = container.Resolve<DPSLogParse>();

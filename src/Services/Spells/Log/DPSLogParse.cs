@@ -9,7 +9,8 @@ namespace EQTool.Services.Spells.Log
     {
         private readonly string PointsOfDamage = " points of damage.";
         private readonly string PointOfDamage = " point of damage.";
-        private readonly string WasHitByNonMelee = "was hit by non-melee";
+        private readonly string WasHitByNonMelee = "was hit by non-melee for";
+
         private readonly ActivePlayer activePlayer;
 
         private readonly List<string> HitTypes = new List<string>()
@@ -50,12 +51,23 @@ namespace EQTool.Services.Spells.Log
 
         public DPSParseMatch Match(string message, DateTime date)
         {
-            if (message.Contains(WasHitByNonMelee))
+            var nonmelleindex = message.IndexOf(WasHitByNonMelee);
+            if (nonmelleindex > -1)
             {
-                return null;
+                message = message.Replace(PointsOfDamage, string.Empty);
+                message = message.Replace(PointOfDamage, string.Empty);
+                var nameoftarget = message.Substring(0, nonmelleindex).Trim();
+                message = message.Replace(nameoftarget, string.Empty);
+                var damagedone = message.Replace(WasHitByNonMelee, string.Empty).Trim();
+                return new DPSParseMatch
+                {
+                    SourceName = "You",
+                    DamageDone = int.Parse(damagedone),
+                    TimeStamp = date,
+                    TargetName = nameoftarget
+                };
             }
-
-            if (message.EndsWith(PointsOfDamage) || message.EndsWith(PointOfDamage))
+            else if (message.EndsWith(PointsOfDamage) || message.EndsWith(PointOfDamage))
             {
                 message = message.Replace(PointsOfDamage, string.Empty);
                 message = message.Replace(PointOfDamage, string.Empty);
