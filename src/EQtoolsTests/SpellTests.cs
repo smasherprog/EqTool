@@ -560,6 +560,28 @@ namespace EQToolTests
         }
 
         [TestMethod]
+        public void TestShamanEpic2()
+        {
+            var spells = container.Resolve<EQSpells>();
+            var spelllogparse = container.Resolve<SpellLogParse>();
+            var shissar = "Curse of the Spirits";
+            var shissarspell = spells.AllSpells.FirstOrDefault(a => a.name == shissar);
+            var line = "Gkrean Prophet of Tallon is consumed by the raging spirits of the land.";
+            var service = container.Resolve<ParseSpellGuess>();
+            var player = container.Resolve<ActivePlayer>();
+            player.Player = new PlayerInfo
+            {
+                Level = 60,
+                PlayerClass = PlayerClasses.Necromancer
+            };
+            var guess = spelllogparse.MatchSpell(line);
+            var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(guess.Spell, player.Player));
+            Assert.IsNotNull(guess);
+            Assert.AreEqual("Gkrean Prophet of Tallon", guess.TargetName);
+            Assert.IsFalse(guess.MultipleMatchesFound);
+        }
+
+        [TestMethod]
         public void TestShamanEpic1()
         {
             var spells = container.Resolve<EQSpells>();
