@@ -205,6 +205,9 @@
                 originaldata = data;
                 if (data.itemName == 'Dead Man Floating' || data.itemName == 'Dead Men Floating') {
                     $('#nodmfforyou').show();
+                } 
+                if (data.itemName == 'Jasper') {
+                    $('#danylovesjasper').show();
                 }
                 document.getElementById('ItemName').innerHTML = `<a href="https://wiki.project1999.com/${data.itemName.replace(' ', '_')}" target = "_blank"> ${data.itemName} <i class="fa fa-external-link"></i></a >`;
                 document.title = data.itemName;
@@ -299,6 +302,7 @@
         <div class="col-12">
             <h5 class="float-left">Players:  <select id="playerselect" multiple="multiple"></select></h5>
             <h5 class="ml-2 float-left" id="nodmfforyou">No DMF for you Stabbyville&#60;The Drift&#62;! </h5>
+            <h5 class="ml-2 float-left" id="danylovesjasper">Send Dany&#60;The Drift&#62; a tell every time you destroy a jasper -- he loves it! </h5>
         </div>
     </div>
     <div class="w-100" style="height: 60vh!important;">
