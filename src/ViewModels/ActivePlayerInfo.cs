@@ -20,18 +20,29 @@ namespace EQTool.ViewModels
             var charname_withext = logfilenbame.Replace("eqlog_", string.Empty);
             var indexpart = charname_withext.IndexOf("_");
             var charName = charname_withext.Substring(0, indexpart);
-            indexpart = charname_withext.IndexOf("P1999");
-            var server = charname_withext.Substring(0, indexpart);
-            _ = Enum.TryParse<Servers>(server, true, out var server_type);
-            return new PlayerInfo
+
+            var p = new PlayerInfo
             {
                 Level = 1,
                 Name = charName,
                 PlayerClass = null,
-                Zone = "freportw",
-                Server = server_type
+                Zone = "freportw"
             };
 
+            indexpart = charname_withext.IndexOf("P1999");
+            if (indexpart != -1)
+            {
+                var server = charname_withext.Substring(indexpart + "P1999".Length);
+                var ext = _ = server.IndexOf(".");
+                server = server.Substring(0, ext);
+                if (ext != -1)
+                {
+                    _ = Enum.TryParse<Servers>(server, true, out var server_type);
+                    p.Server = server_type;
+                }
+            }
+
+            return p;
         }
         public bool Update()
         {
