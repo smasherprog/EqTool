@@ -228,7 +228,7 @@
                                                         <TextBlock Text="{Binding Name}" Style="{StaticResource MyMobUrlSyle}"></TextBlock>     
                                                     </Hyperlink> 
                                                 </TextBlock>
-                                                <TextBlock Visibility="{Binding HaseNoUrl}" Text="{Binding Name}" Style="{StaticResource MyMobUrlSyle}"></TextBlock>
+                                                <TextBlock Visibility="{Binding HaseNoUrl}" Text="{Binding Name}" Style="{StaticResource MyMobTextBoxWindowSyle}"></TextBlock>
                                             </StackPanel>
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
@@ -243,7 +243,7 @@
                                                     </Hyperlink> 
                                                 </TextBlock>
 
-                                                <TextBlock Visibility="{Binding HasePriceUrlNoUrl}" Text="{Binding Price}" Style="{StaticResource MyMobUrlSyle}"></TextBlock>
+                                                <TextBlock Visibility="{Binding HasePriceUrlNoUrl}" Text="{Binding Price}" Style="{StaticResource MyMobTextBoxWindowSyle}"></TextBlock>
 
                                             </StackPanel>
                                         </DataTemplate>
