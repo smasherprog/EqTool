@@ -28,6 +28,7 @@ Features:
 <li>DPS is trailing 12 second average.</li>
 <li>Show fight Session data for comparisons.</li>
 <li>Sieve Counter</li>
+<li>Mob info shows pricing data for each item!</li>
 <li>Save spells cast on you when you log out so when you log back in they resume counter!</li>
 <li>Maps</li>
 <li>Timers (Only Minutes are supported)</li>
