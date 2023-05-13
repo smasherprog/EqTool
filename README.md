@@ -46,6 +46,7 @@ Features:
 
 <h4>TO DO List EQTool</h4>
 <ul> 
+<li>Add table with item names to rebuild pricing for specific items,. </li> 
 <li>Add prices to mob indo. </li> 
 <li>Remove mob seive counter automatically after a set amount of time. Currently, it must be removed manually. </li> 
 <li>Use the current zone to better display correct mob info. For example Orc centurions can be in multiple zones! </li> 
@@ -77,8 +78,7 @@ Features:
 <h4>TO DO List PigParse Pricing</h4>
 <ul>
 <li>Parse Raw tunnel Data instead of relying on TunnelQuest </li> 
-<li>Add Medial pricing to chart </li> 
-<li>Collapse data from same person auctioning same item multiple times over a time period </li> 
+<li>Add Median pricing to chart </li>  
 <li>Add Person search. </li> 
 
 <li>Add loot TAB to Mob Window. This tab will show item name, looted from, player name who looted, and unix geek price data, running total looted.</li>
