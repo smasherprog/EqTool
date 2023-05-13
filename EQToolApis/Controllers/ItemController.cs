@@ -141,6 +141,55 @@ namespace EQToolApis.Controllers
         }
 
         /// <summary>
+        /// A bulk version of api/item/get/{server}/{itemname}
+        /// </summary>
+        /// <param name="itemsLookups"></param>
+        /// <returns></returns>
+        [Route("api/item/postmultiple/{server}")]
+        [HttpPost]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Any, VaryByQueryKeys = new[] { "*" })]
+        public List<Item> PostMultipleItem([FromBody] ItemsLookups itemsLookups)
+        {
+            var itemnames = itemsLookups.Itemnames.Where(a => !string.IsNullOrWhiteSpace(a)).Distinct().ToList();
+            var items = context.EQitems
+                        .Where(a => a.Server == itemsLookups.Server && itemnames.Contains(a.ItemName))
+                        .Select(a => new Item
+                        {
+                            EQitemId = a.EQitemId,
+                            ItemName = a.ItemName,
+                            TotalWTSLast30DaysAverage = a.TotalWTSLast30DaysAverage,
+                            TotalWTSLast30DaysCount = a.TotalWTSLast30DaysCount,
+                            TotalWTSLast60DaysCount = a.TotalWTSLast60DaysCount,
+                            TotalWTSLast60DaysAverage = a.TotalWTSLast60DaysAverage,
+                            TotalWTSLast90DaysCount = a.TotalWTSLast90DaysCount,
+                            TotalWTSLast90DaysAverage = a.TotalWTSLast90DaysAverage,
+                            TotalWTSLast6MonthsCount = a.TotalWTSLast6MonthsCount,
+                            TotalWTSLast6MonthsAverage = a.TotalWTSLast6MonthsAverage,
+                            TotalWTSAuctionCount = a.TotalWTSAuctionCount,
+                            TotalWTSAuctionAverage = a.TotalWTSAuctionAverage,
+                            TotalWTSLastYearAverage = a.TotalWTSLastYearAverage,
+                            TotalWTSLastYearCount = a.TotalWTSLastYearCount,
+                            LastWTSSeen = a.LastWTSSeen,
+                            TotalWTBLast30DaysAverage = a.TotalWTBLast30DaysAverage,
+                            TotalWTBLast30DaysCount = a.TotalWTBLast30DaysCount,
+                            TotalWTBLast60DaysCount = a.TotalWTBLast60DaysCount,
+                            TotalWTBLast60DaysAverage = a.TotalWTBLast60DaysAverage,
+                            TotalWTBLast90DaysCount = a.TotalWTBLast90DaysCount,
+                            TotalWTBLast90DaysAverage = a.TotalWTBLast90DaysAverage,
+                            TotalWTBLast6MonthsCount = a.TotalWTBLast6MonthsCount,
+                            TotalWTBLast6MonthsAverage = a.TotalWTBLast6MonthsAverage,
+                            TotalWTBAuctionCount = a.TotalWTBAuctionCount,
+                            TotalWTBAuctionAverage = a.TotalWTBAuctionAverage,
+                            TotalWTBLastYearAverage = a.TotalWTBLastYearAverage,
+                            TotalWTBLastYearCount = a.TotalWTBLastYearCount,
+                            LastWTBSeen = a.LastWTBSeen
+                        }).ToList();
+            return items;
+        }
+
+
+        /// <summary>
         /// Use this API when you want Full history on item. This might transfer ALOT of data, so only use it if you need it!
         /// </summary>
         /// <param name="server"></param>
