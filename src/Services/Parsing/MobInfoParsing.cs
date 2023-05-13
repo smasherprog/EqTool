@@ -7,9 +7,13 @@ namespace EQTool.Services.Parsing
 {
     public static class MobInfoParsing
     {
-        public static List<TestUriViewModel> ParseKnownLoot(List<string> splits)
+        public static List<PricingUriViewModel> ParseKnownLoot(List<string> splits)
         {
-            return Parse("known_loot", splits);
+            return Parse("known_loot", splits).Select(x => new PricingUriViewModel
+            {
+                Name = x.Name,
+                Url = x.Url,
+            }).ToList();
         }
 
         private static List<TestUriViewModel> Parse(string name, List<string> splits)

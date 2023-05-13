@@ -1,8 +1,10 @@
 ﻿using EQTool.Models;
 using EQTool.Services;
+using EQTool.ViewModels;
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Navigation;
@@ -19,9 +21,13 @@ namespace EQTool
         private readonly EQToolSettings settings;
         private readonly EQToolSettingsLoad toolSettingsLoad;
         private readonly WikiApi wikiApi;
+        private readonly PigParseApi pigParseApi;
+        private readonly ActivePlayer activePlayer;
 
-        public MobInfo(WikiApi wikiApi, LogParser logParser, EQToolSettings settings, EQToolSettingsLoad toolSettingsLoad)
+        public MobInfo(ActivePlayer activePlayer, PigParseApi pigParseApi, WikiApi wikiApi, LogParser logParser, EQToolSettings settings, EQToolSettingsLoad toolSettingsLoad)
         {
+            this.activePlayer = activePlayer;
+            this.pigParseApi = pigParseApi;
             this.wikiApi = wikiApi;
             this.settings = settings;
             this.toolSettingsLoad = toolSettingsLoad;
@@ -42,7 +48,25 @@ namespace EQTool
         {
             try
             {
-                mobInfoViewModel.Results = wikiApi.GetData(e.Name);
+                if (e.Name != mobInfoViewModel.Name)
+                {
+                    mobInfoViewModel.Results = wikiApi.GetData(e.Name);
+                    var items = mobInfoViewModel.KnownLoot.Where(a => a.HaseUrl == Visibility.Visible).Select(a => a.Name?.Trim()).Where(a => !string.IsNullOrWhiteSpace(a)).ToList();
+                    if (activePlayer?.Player?.Server != null && items.Any())
+                    {
+                        var itemprices = pigParseApi.GetData(items, activePlayer.Player.Server.Value);
+                        foreach (var item in itemprices)
+                        {
+                            var loot = mobInfoViewModel.KnownLoot.FirstOrDefault(a => a.Name.Equals(item.ItemName, StringComparison.OrdinalIgnoreCase));
+                            if (loot != null)
+                            {
+                                loot.Price = item.TotalWTBLast6MonthsAverage.ToString("N2");
+                                loot.PriceUrl = $"https://pigparse.azurewebsites.net/ItemDetails/{item.EQitemId}";
+                            }
+                        }
+                    }
+                }
+
             }
             catch (Exception ex)
             {

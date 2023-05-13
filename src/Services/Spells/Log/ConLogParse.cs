@@ -23,14 +23,14 @@ namespace EQTool.Services.Spells.Log
         }
 
         public string ConMatch(string message)
-        { 
+        {
             foreach (var item in ConMessages)
             {
                 var indexof = message.IndexOf(item);
                 if (indexof != -1)
                 {
                     var nameofthis = message.Substring(0, indexof);
-                    return nameofthis;
+                    return nameofthis?.Trim();
                 }
             }
             return string.Empty;

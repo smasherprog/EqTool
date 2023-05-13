@@ -49,6 +49,39 @@ namespace EQTool.ViewModels
         }
     }
 
+    public class PricingUriViewModel : TestUriViewModel
+    {
+        private string _Price = string.Empty;
+
+        public string Price
+        {
+            get => _Price;
+            set
+            {
+                _Price = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private string _PriceUrl = string.Empty;
+
+        public string PriceUrl
+        {
+            get => _PriceUrl;
+            set
+            {
+                _PriceUrl = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(HasePriceUrl));
+                OnPropertyChanged(nameof(HasePriceUrlNoUrl));
+            }
+        }
+
+        public Visibility HasePriceUrlNoUrl => string.IsNullOrWhiteSpace(PriceUrl) ? Visibility.Visible : Visibility.Collapsed;
+
+        public Visibility HasePriceUrl => string.IsNullOrWhiteSpace(PriceUrl) ? Visibility.Collapsed : Visibility.Visible;
+    }
+
     public class MobInfoViewModel : INotifyPropertyChanged
     {
         public string Title { get; set; } = "Mob Info v" + App.Version;
@@ -119,7 +152,7 @@ namespace EQTool.ViewModels
             get => _Name;
             set
             {
-                _Name = value;
+                _Name = value?.Trim();
                 OnPropertyChanged();
             }
         }
@@ -274,9 +307,9 @@ namespace EQTool.ViewModels
             }
         }
 
-        private ObservableCollection<TestUriViewModel> _KnownLoot = new ObservableCollection<TestUriViewModel>();
+        private ObservableCollection<PricingUriViewModel> _KnownLoot = new ObservableCollection<PricingUriViewModel>();
 
-        public ObservableCollection<TestUriViewModel> KnownLoot
+        public ObservableCollection<PricingUriViewModel> KnownLoot
         {
             get => _KnownLoot;
             set
@@ -338,8 +371,8 @@ namespace EQTool.ViewModels
             {
                 _ = Specials.Remove(item);
             }
-            spec = KnownLoot.ToList();
-            foreach (var item in spec)
+            var knwonloot = KnownLoot.ToList();
+            foreach (var item in knwonloot)
             {
                 _ = KnownLoot.Remove(item);
             }
@@ -397,8 +430,8 @@ namespace EQTool.ViewModels
                 Specials.Add(item);
             }
 
-            infos = MobInfoParsing.ParseKnownLoot(splits);
-            foreach (var item in infos)
+            var knownloot = MobInfoParsing.ParseKnownLoot(splits);
+            foreach (var item in knownloot)
             {
                 KnownLoot.Add(item);
             }

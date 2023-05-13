@@ -1,4 +1,5 @@
 ﻿using EQTool.Models;
+using System;
 using System.ComponentModel;
 using System.IO;
 using System.Linq;
@@ -14,6 +15,24 @@ namespace EQTool.ViewModels
             this.settings = settings;
         }
 
+        public static PlayerInfo GetInfoFromString(string logfilenbame)
+        {
+            var charname_withext = logfilenbame.Replace("eqlog_", string.Empty);
+            var indexpart = charname_withext.IndexOf("_");
+            var charName = charname_withext.Substring(0, indexpart);
+            indexpart = charname_withext.IndexOf("P1999");
+            var server = charname_withext.Substring(0, indexpart);
+            _ = Enum.TryParse<Servers>(server, true, out var server_type);
+            return new PlayerInfo
+            {
+                Level = 1,
+                Name = charName,
+                PlayerClass = null,
+                Zone = "freportw",
+                Server = server_type
+            };
+
+        }
         public bool Update()
         {
             var playerchanged = false;
@@ -27,23 +46,22 @@ namespace EQTool.ViewModels
 
                 if (loggedincharlogfile != null)
                 {
-                    var charname_withext = loggedincharlogfile.Name.Replace("eqlog_", string.Empty);
-                    var indexpart = charname_withext.IndexOf("_");
-                    var charName = charname_withext.Substring(0, indexpart);
-                    var tempplayer = players.FirstOrDefault(a => a.Name == charName);
+                    var parseinfo = GetInfoFromString(loggedincharlogfile.Name);
+                    var tempplayer = players.FirstOrDefault(a => a.Name == parseinfo.Name);
                     LogFileName = loggedincharlogfile.FullName;
 
                     if (tempplayer == null)
                     {
-                        tempplayer = new PlayerInfo
-                        {
-                            Level = 1,
-                            Name = charName,
-                            PlayerClass = null,
-                            Zone = "freportw"
-                        };
-                        players.Add(tempplayer);
+                        players.Add(parseinfo);
                     }
+                    else
+                    {
+                        if (!tempplayer.Server.HasValue)
+                        {
+                            tempplayer.Server = parseinfo?.Server;
+                        }
+                    }
+
                     playerchanged = tempplayer != Player;
                     Player = tempplayer;
                 }

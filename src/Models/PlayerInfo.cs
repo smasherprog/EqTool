@@ -1,5 +1,4 @@
-﻿using EQTool.ViewModels;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -7,6 +6,13 @@ using System.Windows;
 
 namespace EQTool.Models
 {
+    public enum Servers
+    {
+        Green,
+        Blue,
+        Red
+    }
+
     public class SessionPlayerDamage : INotifyPropertyChanged
     {
         private PlayerDamage _CurrentSessionPlayerDamage;
@@ -14,22 +20,15 @@ namespace EQTool.Models
         {
             get
             {
-                if (this._CurrentSessionPlayerDamage == null)
+                if (_CurrentSessionPlayerDamage == null)
                 {
-                    this._CurrentSessionPlayerDamage = new PlayerDamage();
+                    _CurrentSessionPlayerDamage = new PlayerDamage();
                 }
                 return _CurrentSessionPlayerDamage;
             }
             set
             {
-                if (value == null)
-                {
-                    this._CurrentSessionPlayerDamage = new PlayerDamage();
-                }
-                else
-                {
-                    this._CurrentSessionPlayerDamage = value;
-                }
+                _CurrentSessionPlayerDamage = value ?? new PlayerDamage();
                 OnPropertyChanged();
             }
         }
@@ -126,22 +125,15 @@ namespace EQTool.Models
         {
             get
             {
-                if (this._BestPlayerDamage == null)
+                if (_BestPlayerDamage == null)
                 {
-                    this._BestPlayerDamage = new PlayerDamage();
+                    _BestPlayerDamage = new PlayerDamage();
                 }
                 return _BestPlayerDamage;
             }
             set
             {
-                if (value == null)
-                {
-                    this._BestPlayerDamage = new PlayerDamage();
-                }
-                else
-                {
-                    _BestPlayerDamage = value;
-                }
+                _BestPlayerDamage = value ?? new PlayerDamage();
                 OnPropertyChanged();
             }
         }
@@ -179,28 +171,32 @@ namespace EQTool.Models
             }
         }
 
+        private Servers? _Server;
+        public Servers? Server
+        {
+            get => _Server;
+            set
+            {
+                _Server = value;
+                OnPropertyChanged();
+            }
+        }
+
         private List<YouSpells> _YouSpells;
 
         public List<YouSpells> YouSpells
         {
             get
             {
-                if (this._YouSpells == null)
+                if (_YouSpells == null)
                 {
-                    this._YouSpells = new List<YouSpells>();
+                    _YouSpells = new List<YouSpells>();
                 }
-                return this._YouSpells;
+                return _YouSpells;
             }
             set
             {
-                if (value == null)
-                {
-                    this._YouSpells = new List<YouSpells>();
-                }
-                else
-                {
-                    _YouSpells = value;
-                }
+                _YouSpells = value ?? new List<YouSpells>();
                 OnPropertyChanged();
             }
         }
