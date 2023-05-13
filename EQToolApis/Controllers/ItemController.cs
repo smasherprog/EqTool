@@ -145,7 +145,7 @@ namespace EQToolApis.Controllers
         /// </summary>
         /// <param name="itemsLookups"></param>
         /// <returns></returns>
-        [Route("api/item/postmultiple/{server}")]
+        [Route("api/item/postmultiple")]
         [HttpPost]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Any, VaryByQueryKeys = new[] { "*" })]
