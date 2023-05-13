@@ -47,7 +47,6 @@ Features:
 <h4>TO DO List EQTool</h4>
 <ul> 
 <li>Add table with item names to rebuild pricing for specific items,. </li> 
-<li>Add prices to mob indo. </li> 
 <li>Remove mob seive counter automatically after a set amount of time. Currently, it must be removed manually. </li> 
 <li>Use the current zone to better display correct mob info. For example Orc centurions can be in multiple zones! </li> 
 <li>Extend Mob Info Window to show Players. Add note field to window that is saved locally. </li> 
