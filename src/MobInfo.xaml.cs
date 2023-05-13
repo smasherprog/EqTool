@@ -60,7 +60,7 @@ namespace EQTool
                             var loot = mobInfoViewModel.KnownLoot.FirstOrDefault(a => a.Name.Equals(item.ItemName, StringComparison.OrdinalIgnoreCase));
                             if (loot != null)
                             {
-                                loot.Price = item.TotalWTBLast6MonthsAverage.ToString("N2");
+                                loot.Price = item.TotalWTSLast6MonthsAverage.ToString("N2");
                                 loot.PriceUrl = $"https://pigparse.azurewebsites.net/ItemDetails/{item.EQitemId}";
                             }
                         }
