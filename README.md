@@ -47,6 +47,7 @@ Features:
 
 <h4>TO DO List EQTool</h4>
 <ul> 
+ <li>Scale Text labels with zoom! </li> 
 <li>Remove mob seive counter automatically after a set amount of time. Currently, it must be removed manually. </li> 
 <li>Use the current zone to better display correct mob info. For example Orc centurions can be in multiple zones! </li> 
 <li>Extend Mob Info Window to show Players. Add note field to window that is saved locally. </li> 
