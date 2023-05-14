@@ -47,8 +47,6 @@ Features:
 
 <h4>TO DO List EQTool</h4>
 <ul> 
- <li>Trim table history for common items like bonechips. More data doesnt improve price data. </li> 
-<li>Add table with item names to rebuild pricing for specific items. </li> 
 <li>Remove mob seive counter automatically after a set amount of time. Currently, it must be removed manually. </li> 
 <li>Use the current zone to better display correct mob info. For example Orc centurions can be in multiple zones! </li> 
 <li>Extend Mob Info Window to show Players. Add note field to window that is saved locally. </li> 
@@ -81,7 +79,8 @@ Features:
 <li>Parse Raw tunnel Data instead of relying on TunnelQuest </li> 
 <li>Add Median pricing to chart </li>  
 <li>Add Person search. </li> 
-
+ <li>Trim table history for common items like bonechips. More data doesnt improve price data. </li> 
+<li>Add table with item names to rebuild pricing for specific items. </li> 
 <li>Add loot TAB to Mob Window. This tab will show item name, looted from, player name who looted, and unix geek price data, running total looted.</li>
 </ul>
 
