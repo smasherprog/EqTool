@@ -6,7 +6,6 @@ using System;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
-using System.Numerics;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Controls;
@@ -64,11 +63,6 @@ namespace EQTool.ViewModels
 
         private string LoadedZone = string.Empty;
 
-        public class Mapdata : MapLine
-        {
-            public EQMapColor MapColor { get; set; }
-        }
-
         public bool LoadMap(string zone, PanAndZoomCanvas canvas)
         {
             if (MapLoading)
@@ -95,7 +89,7 @@ namespace EQTool.ViewModels
                 Debug.WriteLine($"Time to load {zone} - {stop.ElapsedMilliseconds}ms");
                 if (map.Labels.Any() || map.Lines.Any())
                 {
-                    canvas.Reset();
+                    canvas.Reset(Math.Max(map.AABB.MaxWidth, map.AABB.MaxHeight));
                     LoadedZone = Title = zone;
                     Debug.WriteLine($"Loading: {zone}");
                     //var colordic = new Dictionary<System.Windows.Media.Color, Tuple<EQMapColor, SolidColorBrush>>();
@@ -118,19 +112,15 @@ namespace EQTool.ViewModels
                     MapOffset = map.Offset;
                     var linethickness = MathHelper.ChangeRange(Math.Max(map.AABB.MaxWidth, map.AABB.MaxHeight), 800, 35000, 2, 40);
                     canvas.Children.Clear();
+                    var textcolor = new SolidColorBrush(App.Theme == Themes.Light ? System.Windows.Media.Color.FromRgb(0, 0, 0) : System.Windows.Media.Color.FromRgb(255, 255, 255));
                     foreach (var group in map.Lines)
                     {
                         var c = EQMapColor.GetThemedColors(group.Color);
+                        group.ThemeColors = c;
                         var colorstuff = new SolidColorBrush(App.Theme == Themes.Light ? c.LightColor : c.DarkColor);
-                        var d = new Mapdata
-                        {
-                            MapColor = c,
-                            Points = group.Points,
-                            Color = group.Color
-                        };
                         var l = new Line
                         {
-                            Tag = d,
+                            Tag = group,
                             X1 = group.Points[0].X,
                             Y1 = group.Points[0].Y,
                             X2 = group.Points[1].X,
@@ -145,25 +135,19 @@ namespace EQTool.ViewModels
                     canvas.Height = Math.Abs(map.AABB.MaxHeight);
                     canvas.Width = Math.Abs(map.AABB.MaxWidth);
                     Debug.WriteLine($"Labels: {map.Labels.Count}");
-                    var labelscaling = MathHelper.ChangeRange(Math.Max(map.AABB.MaxWidth, map.AABB.MaxHeight), 500, 35000, 40, 200);
+                    var smallscaling = MathHelper.ChangeRange(Math.Max(map.AABB.MaxWidth, map.AABB.MaxHeight), 500, 35000, 30, 100);
+                    var largescaling = MathHelper.ChangeRange(Math.Max(map.AABB.MaxWidth, map.AABB.MaxHeight), 500, 35000, 60, 200);
                     foreach (var item in map.Labels)
                     {
-                        var c = EQMapColor.GetThemedColors(item.Color);
-                        var colorstuff = new SolidColorBrush(App.Theme == Themes.Light ? c.LightColor : c.DarkColor);
-                        var d = new Mapdata
-                        {
-                            MapColor = c,
-                            Points = new[] { item.Point },
-                            Color = item.Color
-                        };
                         var text = new TextBlock
                         {
-                            Tag = d,
+                            Tag = item,
                             Text = item.label.Replace('_', ' '),
-                            Height = labelscaling,
-                            Foreground = colorstuff,
+                            FontSize = item.LabelSize == LabelSize.Large ? largescaling : smallscaling,
+                            Foreground = textcolor,
                             RenderTransform = canvas.Transform
                         };
+
                         _ = canvas.Children.Add(text);
                         Canvas.SetLeft(text, item.Point.X);
                         Canvas.SetTop(text, item.Point.Y);
@@ -246,16 +230,6 @@ namespace EQTool.ViewModels
             return val.CompareTo(min) < 0 ? min : val.CompareTo(max) > 0 ? max : val;
         }
 
-        private Point3D GetClosestPointOnFiniteLine(Vector3 point, Vector3 line_start, Vector3 line_end)
-        {
-            var line_direction = line_end - line_start;
-            var line_length = line_direction.LengthSquared();
-            line_direction = Vector3.Normalize(line_direction);
-            var project_length = Clamp(Vector3.Dot(point - line_start, line_direction), 0f, line_length);
-            var r = line_start + (line_direction * project_length);
-            return new Point3D(r.X, r.Y, r.Z);
-        }
-
         public void UpdateLocation(Point3D value1, PanAndZoomCanvas canvas)
         {
             if (MapLoading || PlayerLocationIcon == null)
@@ -284,7 +258,7 @@ namespace EQTool.ViewModels
                 {
                     if (child is Line a)
                     {
-                        var m = a.Tag as Mapdata;
+                        var m = a.Tag as MapLine;
                         var shortestdistance = Math.Abs(m.Points[0].Z - lastloc.Z);
                         shortestdistance = Math.Min(Math.Abs(m.Points[1].Z - lastloc.Z), shortestdistance);
 
@@ -298,7 +272,6 @@ namespace EQTool.ViewModels
                             dist = (dist / twiceheight) + .1; // scale to [.1,1.1] 
                             _ = Clamp(dist, .1, 1);
                             a.Stroke.Opacity = dist;
-                            //Debug.WriteLine(dist.ToString());
                         }
                         else
                         {

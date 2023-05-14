@@ -1,10 +1,10 @@
-﻿using System;
+﻿using EQTool.Models;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Windows.Media;
 using System.Windows.Media.Media3D;
 
 namespace EQTool.Services
@@ -67,14 +67,25 @@ namespace EQTool.Services
         public class MapLine
         {
             public Point3D[] Points { get; set; }
-            public Color Color { get; set; }
+
+            public System.Windows.Media.Color Color { get; set; }
+
+            public EQMapColor ThemeColors { get; set; }
+        }
+
+        public enum LabelSize
+        {
+            Small,
+            Medium,
+            Large
         }
 
         public class MapLabel
         {
             public Point3D Point { get; set; }
-            public Color Color { get; set; }
+            public System.Windows.Media.Color Color { get; set; }
             public string label { get; set; }
+            public LabelSize LabelSize { get; set; }
         }
 
         public class AABB
@@ -159,7 +170,7 @@ namespace EQTool.Services
                                  Z = float.Parse(splits[5], CultureInfo.InvariantCulture)
                              }
                          },
-                        Color = Color.FromRgb(byte.Parse(splits[6]), byte.Parse(splits[7]), byte.Parse(splits[8]))
+                        Color = System.Windows.Media.Color.FromRgb(byte.Parse(splits[6]), byte.Parse(splits[7]), byte.Parse(splits[8]))
                     });
                 }
                 else if (item.StartsWith("P "))
@@ -178,7 +189,8 @@ namespace EQTool.Services
                             Y = float.Parse(splits[1], CultureInfo.InvariantCulture),
                             Z = float.Parse(splits[2], CultureInfo.InvariantCulture)
                         },
-                        Color = Color.FromRgb(byte.Parse(splits[3], CultureInfo.InvariantCulture), byte.Parse(splits[4], CultureInfo.InvariantCulture), byte.Parse(splits[5], CultureInfo.InvariantCulture)),
+                        Color = System.Windows.Media.Color.FromRgb(byte.Parse(splits[3], CultureInfo.InvariantCulture), byte.Parse(splits[4], CultureInfo.InvariantCulture), byte.Parse(splits[5], CultureInfo.InvariantCulture)),
+                        LabelSize = splits[7].StartsWith("to_", StringComparison.OrdinalIgnoreCase) ? LabelSize.Large : LabelSize.Small,
                         label = splits[7]
                     });
                 }

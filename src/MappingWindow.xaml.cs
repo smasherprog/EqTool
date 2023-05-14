@@ -7,7 +7,7 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Shapes;
-using static EQTool.ViewModels.MapViewModel;
+using static EQTool.Services.MapLoad;
 
 namespace EQTool
 {
@@ -56,18 +56,18 @@ namespace EQTool
 
         private void App_ThemeChangedEvent(object sender, App.ThemeChangeEventArgs e)
         {
+            var textcolor = new SolidColorBrush(App.Theme == Themes.Light ? System.Windows.Media.Color.FromRgb(0, 0, 0) : System.Windows.Media.Color.FromRgb(255, 255, 255));
             foreach (var item in Map.Children)
             {
                 if (item is Line l)
                 {
-                    var c = l.Tag as Mapdata;
-                    l.Stroke = new SolidColorBrush(e.Theme == Themes.Light ? c.MapColor.LightColor : c.MapColor.DarkColor);
+                    var c = l.Tag as MapLine;
+                    l.Stroke = new SolidColorBrush(e.Theme == Themes.Light ? c.ThemeColors.LightColor : c.ThemeColors.DarkColor);
                 }
                 else if (item is TextBlock t)
                 {
-
-                    var c = t.Tag as Mapdata;
-                    t.Foreground = new SolidColorBrush(e.Theme == Themes.Light ? c.MapColor.LightColor : c.MapColor.DarkColor);
+                    _ = t.Tag as MapLabel;
+                    t.Foreground = textcolor;
                 }
             }
         }
@@ -77,7 +77,7 @@ namespace EQTool
             App.ThemeChangedEvent -= App_ThemeChangedEvent;
             logParser.PlayerLocationEvent -= LogParser_PlayerLocationEvent;
             logParser.PlayerZonedEvent -= LogParser_PlayerZonedEvent;
-            this.logParser.PlayerChangeEvent -= LogParser_PlayerChangeEvent;
+            logParser.PlayerChangeEvent -= LogParser_PlayerChangeEvent;
             SaveState();
             base.OnClosing(e);
         }
