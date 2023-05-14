@@ -8,7 +8,6 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Text.RegularExpressions;
 using static EQTool.Services.Spells.Log.LogCustomTimer;
 
 namespace EQTool.ViewModels
@@ -81,10 +80,15 @@ namespace EQTool.ViewModels
                 var player = activePlayer.Player;
                 var itemstoremove = new List<UISpell>();
 
+                var d = DateTime.Now;
                 foreach (var item in SpellList)
                 {
                     item.SecondsLeftOnSpell = TimeSpan.FromSeconds(item.SecondsLeftOnSpell.TotalSeconds - 1);
                     if (item.SecondsLeftOnSpell.TotalSeconds <= 0 && !item.PersistentSpell)
+                    {
+                        itemstoremove.Add(item);
+                    }
+                    else if (item.PersistentSpell && (d - item.AddedDateTime).TotalMinutes > 5)
                     {
                         itemstoremove.Add(item);
                     }
@@ -93,7 +97,8 @@ namespace EQTool.ViewModels
                     item.HideClasses = player != null && SpellUIExtensions.HideSpell(player.ShowSpellsForClasses, item.Classes) && item.TargetName != EQSpells.SpaceYou;
                 }
 
-                foreach (var spells in SpellList.GroupBy(a => a.TargetName))
+                var groupedspells = SpellList.GroupBy(a => a.TargetName).ToList();
+                foreach (var spells in groupedspells)
                 {
                     var allspellshidden = true;
                     foreach (var spell in spells)
@@ -158,6 +163,7 @@ namespace EQTool.ViewModels
                 var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(match.Spell, activePlayer.Player));
                 var uispell = new UISpell
                 {
+                    AddedDateTime = DateTime.Now,
                     TotalSecondsOnSpell = (int)spellduration.TotalSeconds,
                     PercentLeftOnSpell = 100,
                     SpellType = match.Spell.type,
@@ -174,9 +180,10 @@ namespace EQTool.ViewModels
                 var s = SpellList.FirstOrDefault(a => a.SpellName == spellname && match.TargetName == a.TargetName);
                 if (s != null)
                 {
-                    if (ispersistent)
+                    if (ismanasieve)
                     {
                         s.SieveCounter += 1;
+                        s.AddedDateTime = DateTime.Now;
                     }
                     else
                     {
@@ -209,6 +216,7 @@ namespace EQTool.ViewModels
                 var spellduration = match.DurationInSeconds;
                 SpellList.Add(new UISpell
                 {
+                    AddedDateTime = DateTime.Now,
                     TotalSecondsOnSpell = spellduration,
                     PercentLeftOnSpell = 100,
                     SpellType = -1,
@@ -234,11 +242,12 @@ namespace EQTool.ViewModels
             {
                 foreach (var item in youspells)
                 {
-                    var match = this.spells.AllSpells.FirstOrDefault(a => a.name == item.Name);
+                    var match = spells.AllSpells.FirstOrDefault(a => a.name == item.Name);
                     var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(match, activePlayer.Player));
                     var savedspellduration = item.TotalSecondsLeft;
                     var uispell = new UISpell
                     {
+                        AddedDateTime = DateTime.Now,
                         TotalSecondsOnSpell = (int)spellduration.TotalSeconds,
                         PercentLeftOnSpell = 100,
                         SpellType = match.type,
@@ -246,7 +255,7 @@ namespace EQTool.ViewModels
                         SpellName = match.name,
                         Rect = match.Rect,
                         PersistentSpell = false,
-                        SieveCounter = (int?)null,
+                        SieveCounter = null,
                         SecondsLeftOnSpell = TimeSpan.FromSeconds(savedspellduration),
                         SpellIcon = match.SpellIcon,
                         Classes = match.Classes,

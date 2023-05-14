@@ -12,6 +12,8 @@ namespace EQTool.ViewModels
     {
         public SpellIcon SpellIcon { get; set; }
 
+        public DateTime AddedDateTime { get; set; }
+
         public bool HasSpellIcon => SpellIcon != null;
 
         public Int32Rect Rect { get; set; }
@@ -28,10 +30,7 @@ namespace EQTool.ViewModels
             }
         }
 
-        public string SpellExtraData
-        {
-            get => _SieveCounter.HasValue ? " --> Sieves: " + _SieveCounter.Value : string.Empty;
-        }
+        public string SpellExtraData => _SieveCounter.HasValue ? " --> Sieves: " + _SieveCounter.Value : string.Empty;
 
         private int? _SieveCounter = null;
 
