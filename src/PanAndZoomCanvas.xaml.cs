@@ -118,7 +118,6 @@ namespace EQTool
                 else if (child is TextBlock t)
                 {
                     var textdata = t.Tag as MapLabel;
-
                     if (textdata.LabelSize == LabelSize.Large)
                     {
                         var largescaling = MathHelper.ChangeRange(MaxDims, 500, 35000, 60, 200);

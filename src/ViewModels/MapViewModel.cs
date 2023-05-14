@@ -112,7 +112,6 @@ namespace EQTool.ViewModels
                     MapOffset = map.Offset;
                     var linethickness = MathHelper.ChangeRange(Math.Max(map.AABB.MaxWidth, map.AABB.MaxHeight), 800, 35000, 2, 40);
                     canvas.Children.Clear();
-                    var textcolor = new SolidColorBrush(App.Theme == Themes.Light ? System.Windows.Media.Color.FromRgb(0, 0, 0) : System.Windows.Media.Color.FromRgb(255, 255, 255));
                     foreach (var group in map.Lines)
                     {
                         var c = EQMapColor.GetThemedColors(group.Color);
@@ -144,7 +143,7 @@ namespace EQTool.ViewModels
                             Tag = item,
                             Text = item.label.Replace('_', ' '),
                             FontSize = item.LabelSize == LabelSize.Large ? largescaling : smallscaling,
-                            Foreground = textcolor,
+                            Foreground = new SolidColorBrush(App.Theme == Themes.Light ? System.Windows.Media.Color.FromRgb(0, 0, 0) : System.Windows.Media.Color.FromRgb(255, 255, 255)),
                             RenderTransform = canvas.Transform
                         };
 
@@ -276,6 +275,28 @@ namespace EQTool.ViewModels
                         else
                         {
                             a.Stroke.Opacity = .1;
+                        }
+                    }
+                    else if (child is TextBlock t)
+                    {
+                        var m = t.Tag as MapLabel;
+                        var shortestdistance = Math.Abs(m.Point.Z - lastloc.Z);
+                        shortestdistance = Math.Min(Math.Abs(m.Point.Z - lastloc.Z), shortestdistance);
+
+                        if (shortestdistance < zoneinfo.ZoneLevelHeight)
+                        {
+                            t.Foreground.Opacity = 1;
+                        }
+                        else if (shortestdistance >= zoneinfo.ZoneLevelHeight && shortestdistance <= twiceheight + zoneinfo.ZoneLevelHeight)
+                        {
+                            var dist = ((shortestdistance - zoneinfo.ZoneLevelHeight) * -1) + twiceheight; //changed range to [0,80] with 0 being the FURTHest distance
+                            dist = (dist / twiceheight) + .1; // scale to [.1,1.1] 
+                            _ = Clamp(dist, .1, 1);
+                            t.Foreground.Opacity = dist;
+                        }
+                        else
+                        {
+                            t.Foreground.Opacity = .1;
                         }
                     }
                 }

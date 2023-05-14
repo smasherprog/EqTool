@@ -56,7 +56,6 @@ namespace EQTool
 
         private void App_ThemeChangedEvent(object sender, App.ThemeChangeEventArgs e)
         {
-            var textcolor = new SolidColorBrush(App.Theme == Themes.Light ? System.Windows.Media.Color.FromRgb(0, 0, 0) : System.Windows.Media.Color.FromRgb(255, 255, 255));
             foreach (var item in Map.Children)
             {
                 if (item is Line l)
@@ -67,7 +66,7 @@ namespace EQTool
                 else if (item is TextBlock t)
                 {
                     _ = t.Tag as MapLabel;
-                    t.Foreground = textcolor;
+                    t.Foreground = new SolidColorBrush(App.Theme == Themes.Light ? System.Windows.Media.Color.FromRgb(0, 0, 0) : System.Windows.Media.Color.FromRgb(255, 255, 255));
                 }
             }
         }
