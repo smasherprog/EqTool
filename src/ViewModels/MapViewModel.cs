@@ -134,8 +134,8 @@ namespace EQTool.ViewModels
                     canvas.Height = Math.Abs(map.AABB.MaxHeight);
                     canvas.Width = Math.Abs(map.AABB.MaxWidth);
                     Debug.WriteLine($"Labels: {map.Labels.Count}");
-                    var smallscaling = MathHelper.ChangeRange(Math.Max(map.AABB.MaxWidth, map.AABB.MaxHeight), 500, 35000, 30, 100);
-                    var largescaling = MathHelper.ChangeRange(Math.Max(map.AABB.MaxWidth, map.AABB.MaxHeight), 500, 35000, 60, 200);
+                    var smallscaling = MathHelper.ChangeRange(Math.Max(map.AABB.MaxWidth, map.AABB.MaxHeight), 500, 35000, 20, 100);
+                    var largescaling = MathHelper.ChangeRange(Math.Max(map.AABB.MaxWidth, map.AABB.MaxHeight), 500, 35000, 50, 150);
                     foreach (var item in map.Labels)
                     {
                         var text = new TextBlock

@@ -120,7 +120,7 @@ namespace EQTool
                     var textdata = t.Tag as MapLabel;
                     if (textdata.LabelSize == LabelSize.Large)
                     {
-                        var largescaling = MathHelper.ChangeRange(MaxDims, 500, 35000, 60, 200);
+                        var largescaling = MathHelper.ChangeRange(MaxDims, 500, 35000, 40, 120);
                         largescaling *= currentlabelscaling;
                         largescaling = (int)Clamp(largescaling, 5, 200);
                         if (t.FontSize != largescaling)
@@ -130,7 +130,7 @@ namespace EQTool
                     }
                     else
                     {
-                        var smallscaling = MathHelper.ChangeRange(MaxDims, 500, 35000, 30, 100);
+                        var smallscaling = MathHelper.ChangeRange(MaxDims, 500, 35000, 20, 80);
                         smallscaling *= currentlabelscaling;
                         smallscaling = (int)Clamp(smallscaling, 5, 100);
                         if (t.FontSize != smallscaling)
