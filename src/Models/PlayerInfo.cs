@@ -86,6 +86,16 @@ namespace EQTool.Models
             get => _HighestHit;
             set
             {
+                if (_HighestHit >= 32000)
+                {
+                    _HighestHit = 0;
+                }
+
+                if (value >= 32000)
+                {
+                    return;
+                }
+
                 _HighestHit = value;
                 OnPropertyChanged();
             }
