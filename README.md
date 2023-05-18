@@ -47,9 +47,7 @@ Features:
 
 <h4>TO DO List EQTool</h4>
 <ul> 
- <li>Rogues biggest hit need to ignore assassinat. </li> 
 <li>Tab under Mob info window for last few minutes of Random rolls ordered by highest to lowest. </li> 
-<li>Dont show pricing for decimals. </li> 
 <li>Use the current zone to better display correct mob info. For example Orc centurions can be in multiple zones! </li> 
 <li>Extend Mob Info Window to show Players. Add note field to window that is saved locally. </li> 
 <li>Add visual cue that buff is under 1 minute left. </li> 
