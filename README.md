@@ -47,6 +47,7 @@ Features:
 
 <h4>TO DO List EQTool</h4>
 <ul> 
+ <li>Add Timers to map and make icons movable.</li> 
 <li>Tab under Mob info window for last few minutes of Random rolls ordered by highest to lowest. </li> 
 <li>Use the current zone to better display correct mob info. For example Orc centurions can be in multiple zones! </li> 
 <li>Extend Mob Info Window to show Players. Add note field to window that is saved locally. </li> 
