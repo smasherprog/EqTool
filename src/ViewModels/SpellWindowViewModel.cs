@@ -73,6 +73,15 @@ namespace EQTool.ViewModels
             }
         }
 
+        public void ClearYouSpells()
+        {
+            var itemstoremove = SpellList.Where(a => a.TargetName == EQSpells.SpaceYou).ToList();
+            foreach (var item in itemstoremove)
+            {
+                _ = SpellList.Remove(item);
+            }
+        }
+
         public void UpdateSpells()
         {
             appDispatcher.DispatchUI(() =>

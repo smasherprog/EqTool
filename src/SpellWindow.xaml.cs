@@ -3,7 +3,6 @@ using EQTool.Services;
 using EQTool.ViewModels;
 using System;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -108,6 +107,7 @@ namespace EQTool
             logParser.CancelTimerEvent -= LogParser_CancelTimerEvent;
             logParser.PlayerChangeEvent -= LogParser_PlayerChangeEvent;
             SaveState();
+            spellWindowViewModel.SpellList = new System.Collections.ObjectModel.ObservableCollection<UISpell>();
             base.OnClosing(e);
         }
 
@@ -116,7 +116,7 @@ namespace EQTool
             var oldLastLogReadOffset = LastLogReadOffset;
             var logerLastLogReadOffset = logParser.LastLogReadOffset;
             if (activePlayer.Player != null && oldLastLogReadOffset != logerLastLogReadOffset)
-            { 
+            {
                 LastLogReadOffset = logerLastLogReadOffset;
                 activePlayer.Player.YouSpells = spellWindowViewModel.SpellList.Where(a => a.TargetName == EQSpells.SpaceYou).Select(a => new YouSpells
                 {
@@ -156,12 +156,12 @@ namespace EQTool
 
         private void LogParser_PlayerChangeEvent(object sender, LogParser.PlayerChangeEventArgs e)
         {
-            spellWindowViewModel.ClearAllSpells();
             LastLogReadOffset = logParser.LastLogReadOffset;
             if (activePlayer.Player != null)
             {
                 spellWindowViewModel.AddSavedYouSpells(activePlayer.Player.YouSpells);
             }
+            spellWindowViewModel.ClearYouSpells();
         }
 
         private void PollUI(object sender, EventArgs e)
