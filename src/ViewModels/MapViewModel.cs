@@ -146,10 +146,20 @@ namespace EQTool.ViewModels
                             Foreground = new SolidColorBrush(App.Theme == Themes.Light ? System.Windows.Media.Color.FromRgb(0, 0, 0) : System.Windows.Media.Color.FromRgb(255, 255, 255)),
                             RenderTransform = canvas.Transform
                         };
-
+                        var circle = new Ellipse()
+                        {
+                            Tag = item,
+                            Width = 10,
+                            Height = 10,
+                            Stroke = Brushes.Red,
+                            StrokeThickness = 3
+                        };
+                        _ = canvas.Children.Add(circle);
                         _ = canvas.Children.Add(text);
                         Canvas.SetLeft(text, item.Point.X);
                         Canvas.SetTop(text, item.Point.Y);
+                        Canvas.SetLeft(circle, item.Point.X);
+                        Canvas.SetTop(circle, item.Point.Y);
                     }
 
                     var playerlocsize = MathHelper.ChangeRange(Math.Max(map.AABB.MaxWidth, map.AABB.MaxHeight), 500, 35000, 40, 1750);
@@ -297,6 +307,28 @@ namespace EQTool.ViewModels
                         else
                         {
                             t.Foreground.Opacity = .1;
+                        }
+                    }
+                    else if (child is Ellipse e)
+                    {
+                        var m = e.Tag as MapLabel;
+                        var shortestdistance = Math.Abs(m.Point.Z - lastloc.Z);
+                        shortestdistance = Math.Min(Math.Abs(m.Point.Z - lastloc.Z), shortestdistance);
+
+                        if (shortestdistance < zoneinfo.ZoneLevelHeight)
+                        {
+                            e.Stroke.Opacity = 1;
+                        }
+                        else if (shortestdistance >= zoneinfo.ZoneLevelHeight && shortestdistance <= twiceheight + zoneinfo.ZoneLevelHeight)
+                        {
+                            var dist = ((shortestdistance - zoneinfo.ZoneLevelHeight) * -1) + twiceheight; //changed range to [0,80] with 0 being the FURTHest distance
+                            dist = (dist / twiceheight) + .1; // scale to [.1,1.1] 
+                            _ = Clamp(dist, .1, 1);
+                            e.Stroke.Opacity = dist;
+                        }
+                        else
+                        {
+                            e.Stroke.Opacity = .1;
                         }
                     }
                 }

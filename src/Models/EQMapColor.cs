@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 
 namespace EQTool.Models
 {
@@ -70,20 +68,6 @@ namespace EQTool.Models
                 LightColor = GetLightThemeTransformedColor(color),
                 OriginalColor = color
             };
-            var colors = ColorMapping.FirstOrDefault(a => a.OriginalColor == color);
-            if (colors == null)
-            {
-                Debug.WriteLine("Couldnt Find Colors");
-                return new EQMapColor
-                {
-                    DarkColor = GetDarkThemeTransformedColor(color),
-                    LightColor = color
-                };
-            }
-            else
-            {
-                return colors;
-            }
         }
     }
 

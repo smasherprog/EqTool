@@ -52,15 +52,6 @@ namespace EQTool
             SettingsWindowData.EqPath = this.settings.DefaultEqDirectory;
             Topmost = true;
             InitializeComponent();
-            try
-            {
-                TryUpdateSettings();
-            }
-            catch
-            {
-
-            }
-
             TryCheckLoggingEnabled();
 
             foreach (var item in SettingsWindowData.PlayerClasses)
@@ -84,6 +75,15 @@ namespace EQTool
             if (releasemode)
             {
                 DebuggingStack.Visibility = Visibility.Collapsed;
+            }
+
+            try
+            {
+                TryUpdateSettings();
+            }
+            catch
+            {
+
             }
         }
 

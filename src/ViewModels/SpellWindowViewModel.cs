@@ -92,12 +92,12 @@ namespace EQTool.ViewModels
                 var d = DateTime.Now;
                 foreach (var item in SpellList)
                 {
-                    item.SecondsLeftOnSpell = TimeSpan.FromSeconds(item.SecondsLeftOnSpell.TotalSeconds - 1);
+                    item.UpdateTimeLeft();
                     if (item.SecondsLeftOnSpell.TotalSeconds <= 0 && !item.PersistentSpell)
                     {
                         itemstoremove.Add(item);
                     }
-                    else if (item.PersistentSpell && (d - item.AddedDateTime).TotalMinutes > 5)
+                    else if (item.PersistentSpell && (d - item.UpdatedDateTime).TotalMinutes > 5)
                     {
                         itemstoremove.Add(item);
                     }
@@ -170,10 +170,9 @@ namespace EQTool.ViewModels
                 var ismanasieve = spellname == "Mana Sieve";
                 var ispersistent = ismanasieve;
                 var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(match.Spell, activePlayer.Player));
-                var uispell = new UISpell
+                var uispell = new UISpell(DateTime.Now.AddSeconds((int)spellduration.TotalSeconds))
                 {
-                    AddedDateTime = DateTime.Now,
-                    TotalSecondsOnSpell = (int)spellduration.TotalSeconds,
+                    UpdatedDateTime = DateTime.Now,
                     PercentLeftOnSpell = 100,
                     SpellType = match.Spell.type,
                     TargetName = match.TargetName,
@@ -181,7 +180,6 @@ namespace EQTool.ViewModels
                     Rect = match.Spell.Rect,
                     PersistentSpell = ispersistent,
                     SieveCounter = ismanasieve ? 1 : (int?)null,
-                    SecondsLeftOnSpell = spellduration,
                     SpellIcon = match.Spell.SpellIcon,
                     Classes = match.Spell.Classes,
                     GuessedSpell = match.MultipleMatchesFound
@@ -192,7 +190,7 @@ namespace EQTool.ViewModels
                     if (ismanasieve)
                     {
                         s.SieveCounter += 1;
-                        s.AddedDateTime = DateTime.Now;
+                        s.UpdatedDateTime = DateTime.Now;
                     }
                     else
                     {
@@ -223,16 +221,14 @@ namespace EQTool.ViewModels
                 }
 
                 var spellduration = match.DurationInSeconds;
-                SpellList.Add(new UISpell
+                SpellList.Add(new UISpell(DateTime.Now.AddSeconds(spellduration))
                 {
-                    AddedDateTime = DateTime.Now,
-                    TotalSecondsOnSpell = spellduration,
+                    UpdatedDateTime = DateTime.Now,
                     PercentLeftOnSpell = 100,
                     SpellType = -1,
                     TargetName = CustomerTime,
                     SpellName = match.Name,
                     Rect = FeignDeath.Rect,
-                    SecondsLeftOnSpell = TimeSpan.FromSeconds(spellduration),
                     SpellIcon = FeignDeath.SpellIcon,
                     Classes = CustomTimerClasses,
                     GuessedSpell = false
@@ -254,10 +250,9 @@ namespace EQTool.ViewModels
                     var match = spells.AllSpells.FirstOrDefault(a => a.name == item.Name);
                     var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(match, activePlayer.Player));
                     var savedspellduration = item.TotalSecondsLeft;
-                    var uispell = new UISpell
+                    var uispell = new UISpell(DateTime.Now.AddSeconds(savedspellduration))
                     {
-                        AddedDateTime = DateTime.Now,
-                        TotalSecondsOnSpell = (int)spellduration.TotalSeconds,
+                        UpdatedDateTime = DateTime.Now,
                         PercentLeftOnSpell = 100,
                         SpellType = match.type,
                         TargetName = EQSpells.SpaceYou,
@@ -265,7 +260,6 @@ namespace EQTool.ViewModels
                         Rect = match.Rect,
                         PersistentSpell = false,
                         SieveCounter = null,
-                        SecondsLeftOnSpell = TimeSpan.FromSeconds(savedspellduration),
                         SpellIcon = match.SpellIcon,
                         Classes = match.Classes,
                         GuessedSpell = false

@@ -10,9 +10,31 @@ namespace EQTool.ViewModels
 {
     public class UISpell : INotifyPropertyChanged
     {
+        public UISpell(DateTime endtime)
+        {
+            _TimerEndDateTime = endtime;
+            UpdateTimeLeft();
+        }
+
         public SpellIcon SpellIcon { get; set; }
 
-        public DateTime AddedDateTime { get; set; }
+        public DateTime UpdatedDateTime { get; set; }
+
+        private TimeSpan _SecondsLeftOnSpell;
+
+        public int TotalSecondsOnSpell { get; }
+
+        public TimeSpan SecondsLeftOnSpell => _SecondsLeftOnSpell;
+
+        private readonly DateTime _TimerEndDateTime;
+
+        public void UpdateTimeLeft()
+        {
+            _SecondsLeftOnSpell = _TimerEndDateTime - DateTime.Now;
+            OnPropertyChanged(nameof(SecondsLeftOnSpell));
+            OnPropertyChanged(nameof(SecondsLeftOnSpellPretty));
+            OnPropertyChanged(nameof(PercentLeftOnSpell));
+        }
 
         public bool HasSpellIcon => SpellIcon != null;
 
@@ -163,27 +185,7 @@ namespace EQTool.ViewModels
 
         public bool PersistentSpell { get; set; }
 
-        public int TotalSecondsOnSpell { get; set; }
-
         public string TargetName { get; set; }
-
-        private TimeSpan _SecondsLeftOnSpell;
-
-        public TimeSpan SecondsLeftOnSpell
-        {
-            get => _SecondsLeftOnSpell;
-            set
-            {
-                _SecondsLeftOnSpell = value;
-                if (TotalSecondsOnSpell > 0)
-                {
-                    PercentLeftOnSpell = (int)(_SecondsLeftOnSpell.TotalSeconds / TotalSecondsOnSpell * 100);
-                }
-
-                OnPropertyChanged(nameof(SecondsLeftOnSpellPretty));
-                OnPropertyChanged(nameof(PercentLeftOnSpell));
-            }
-        }
 
         private int _SpellType = 0;
         public int SpellType

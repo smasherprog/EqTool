@@ -1,6 +1,7 @@
 ﻿using EQTool.Models;
 using EQTool.Services;
 using EQTool.ViewModels;
+using System;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Controls;
@@ -35,8 +36,39 @@ namespace EQTool
             this.logParser.PlayerLocationEvent += LogParser_PlayerLocationEvent;
             this.logParser.PlayerZonedEvent += LogParser_PlayerZonedEvent;
             this.logParser.PlayerChangeEvent += LogParser_PlayerChangeEvent;
+            SizeChanged += Window_SizeChanged;
+            StateChanged += Window_StateChanged;
+            LocationChanged += Window_LocationChanged;
+            KeyDown += PanAndZoomCanvas_KeyDown;
             settings.MapWindowState.Closed = false;
             SaveState();
+        }
+
+        private void PanAndZoomCanvas_KeyDown(object sender, KeyEventArgs e)
+        {
+            var scale = (int)MathHelper.ChangeRange(Math.Max(mapViewModel.AABB.MaxWidth, mapViewModel.AABB.MaxHeight), 500, 35000, 60, 300);
+            switch (e.Key)
+            {
+                case Key.Left:
+                case Key.A:
+                    Map.MoveMap(scale, 0);
+                    break;
+                case Key.Right:
+                case Key.D:
+                    Map.MoveMap(-scale, 0);
+                    break;
+                case Key.Up:
+                case Key.W:
+                    Map.MoveMap(0, scale);
+                    break;
+                case Key.Down:
+                case Key.S:
+                    Map.MoveMap(0, -scale);
+                    break;
+                default:
+                    return;
+
+            }
         }
 
         private void LogParser_PlayerChangeEvent(object sender, LogParser.PlayerChangeEventArgs e)
@@ -77,6 +109,9 @@ namespace EQTool
             logParser.PlayerLocationEvent -= LogParser_PlayerLocationEvent;
             logParser.PlayerZonedEvent -= LogParser_PlayerZonedEvent;
             logParser.PlayerChangeEvent -= LogParser_PlayerChangeEvent;
+            SizeChanged -= Window_SizeChanged;
+            StateChanged -= Window_StateChanged;
+            LocationChanged -= Window_LocationChanged;
             SaveState();
             base.OnClosing(e);
         }
@@ -91,6 +126,20 @@ namespace EQTool
         {
             settings.MapWindowState.Closed = true;
             Close();
+        }
+        private void Window_StateChanged(object sender, EventArgs e)
+        {
+            SaveState();
+        }
+
+        private void Window_LocationChanged(object sender, EventArgs e)
+        {
+            SaveState();
+        }
+
+        private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            SaveState();
         }
 
         public void DragWindow(object sender, MouseButtonEventArgs args)
@@ -107,8 +156,6 @@ namespace EQTool
         {
             WindowState = WindowState == System.Windows.WindowState.Maximized ? System.Windows.WindowState.Normal : System.Windows.WindowState.Maximized;
         }
-
-
 
         private void openmobinfo(object sender, RoutedEventArgs e)
         {

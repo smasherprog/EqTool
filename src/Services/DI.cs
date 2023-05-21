@@ -26,7 +26,7 @@ namespace EQTool.Services
             _ = builder.RegisterType<DPSWindowViewModel>().AsSelf().SingleInstance();
             _ = builder.RegisterType<ZoneViewModel>().AsSelf().SingleInstance();
             _ = builder.RegisterType<SessionPlayerDamage>().AsSelf().SingleInstance();
-            
+
             return builder.Build();
         }
     }
