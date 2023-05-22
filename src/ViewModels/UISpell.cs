@@ -13,6 +13,7 @@ namespace EQTool.ViewModels
         public UISpell(DateTime endtime)
         {
             _TimerEndDateTime = endtime;
+            TotalSecondsOnSpell = (_TimerEndDateTime - DateTime.Now).TotalSeconds;
             UpdateTimeLeft();
         }
 
