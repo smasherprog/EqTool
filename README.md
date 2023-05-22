@@ -55,7 +55,6 @@ Features:
 <li>Extend Mob Info Window to show Players. Add note field to window that is saved locally. </li> 
 <li>Add visual cue that buff is under 1 minute left. </li> 
 <li>Add option to enable OTHERS hits for DPS meter. </li> 
-<li>Add option to ONLY show buffs that You have cast. </li> 
 <li>Show others on map</li>   
 <li>Add Waypoint Command to add loc to map</li>    
 <li>Map window add toggle to follow location</li>    
