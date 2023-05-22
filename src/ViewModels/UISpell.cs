@@ -31,6 +31,10 @@ namespace EQTool.ViewModels
         public void UpdateTimeLeft()
         {
             _SecondsLeftOnSpell = _TimerEndDateTime - DateTime.Now;
+            if (TotalSecondsOnSpell > 0)
+            {
+                PercentLeftOnSpell = (int)(_SecondsLeftOnSpell.TotalSeconds / TotalSecondsOnSpell * 100);
+            }
             OnPropertyChanged(nameof(SecondsLeftOnSpell));
             OnPropertyChanged(nameof(SecondsLeftOnSpellPretty));
             OnPropertyChanged(nameof(PercentLeftOnSpell));
