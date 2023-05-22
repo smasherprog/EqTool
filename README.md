@@ -72,8 +72,7 @@ Features:
 <li>Automatically add timer when named npc dies. Use Wiki for notable npc names</li>
 <li>Add donals BP to timers list</li> 
 <li>Rename Application to Pig Parse</li>
-<li>Enrage alert/advanced alert.</li>
-<li>charm break alert</li>
+<li>Enrage / Charm Break alerts.</li>
 <li>charm spell effect removal</li> 
 </ul>
 
