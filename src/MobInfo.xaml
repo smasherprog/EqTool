@@ -219,7 +219,7 @@
                     <ListView Margin="10, 0, 0, 0" Style="{StaticResource MyListViewStyle}" ItemsSource="{Binding KnownLoot}" MaxHeight="300">
                         <ListView.View>
                             <GridView>
-                                <GridViewColumn Header="Name" Width="150">
+                                <GridViewColumn Header="Name">
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
                                             <StackPanel Orientation="Horizontal">
@@ -233,7 +233,7 @@
                                         </DataTemplate>
                                     </GridViewColumn.CellTemplate>
                                 </GridViewColumn>
-                                <GridViewColumn Header="Price" Width="46">
+                                <GridViewColumn Header="Price">
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
                                             <StackPanel Orientation="Horizontal">
