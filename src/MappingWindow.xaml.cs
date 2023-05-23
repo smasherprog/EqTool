@@ -100,6 +100,13 @@ namespace EQTool
                     _ = t.Tag as MapLabel;
                     t.Foreground = new SolidColorBrush(App.Theme == Themes.Light ? System.Windows.Media.Color.FromRgb(0, 0, 0) : System.Windows.Media.Color.FromRgb(255, 255, 255));
                 }
+                else if (item is MapWidget mw)
+                {
+                    _ = mw.Tag as MapLabel;
+                    var textlabel = new SolidColorBrush(App.Theme == Themes.Light ? System.Windows.Media.Color.FromRgb(0, 0, 0) : System.Windows.Media.Color.FromRgb(255, 255, 255));
+                    var forgregroundlabel = new SolidColorBrush(App.Theme == Themes.Light ? System.Windows.Media.Color.FromRgb(255, 255, 255) : System.Windows.Media.Color.FromRgb(0, 0, 0));
+                    mw.SetTheme(textlabel, forgregroundlabel);
+                }
             }
         }
 

@@ -1,17 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
+﻿using System.Windows.Controls;
 using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace EQTool
 {
@@ -20,9 +8,17 @@ namespace EQTool
     /// </summary>
     public partial class MapWidget : UserControl
     {
-        public MapWidget()
+        public MapWidget(int timer)
         {
             InitializeComponent();
+            ClockTextValue.Text = timer.ToString();
+        }
+
+        public void SetTheme(Brush labelb, Brush backgroundb)
+        {
+            ClockText.Foreground = labelb;
+            ClockTextValue.Foreground = labelb;
+            Background = backgroundb;
         }
     }
 }

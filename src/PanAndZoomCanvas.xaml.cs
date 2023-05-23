@@ -21,6 +21,7 @@ namespace EQTool
         private bool _dragging;
         private UIElement _selectedElement;
         private Vector _draggingDelta;
+        private Point _mouseuppoint;
 
         public PanAndZoomCanvas()
         {
@@ -54,16 +55,16 @@ namespace EQTool
         }
         private void AddTimer(object sender, RoutedEventArgs e)
         {
-            var w = new MapWidget()
-            {
-                Width = 200,
-                Height = 150
-            };
-            MapWidgets.Add(w);
-            _ = Children.Add(w);
-            w.Header.Text = "Widget 1";
-            Canvas.SetTop(w, 100);
-            Canvas.SetLeft(w, 100);
+            var mw = new MapWidget(int.Parse(panAndZoomViewModel.TimerValue));
+            var textlabel = new SolidColorBrush(App.Theme == Themes.Light ? System.Windows.Media.Color.FromRgb(0, 0, 0) : System.Windows.Media.Color.FromRgb(255, 255, 255));
+            var forgregroundlabel = new SolidColorBrush(App.Theme == Themes.Light ? System.Windows.Media.Color.FromRgb(255, 255, 255) : System.Windows.Media.Color.FromRgb(0, 0, 0));
+            mw.SetTheme(textlabel, forgregroundlabel);
+            MapWidgets.Add(mw);
+            _ = Children.Add(mw);
+            Canvas.SetTop(mw, _mouseuppoint.Y - Transform.Value.OffsetY);
+            Canvas.SetLeft(mw, _mouseuppoint.X - Transform.Value.OffsetX);
+            mw.RenderTransform = Transform;
+
             TimerMenu.IsOpen = false;
         }
 
@@ -143,6 +144,7 @@ namespace EQTool
 
         private void PanAndZoomCanvas_MouseUp(object sender, MouseButtonEventArgs e)
         {
+            _mouseuppoint = e.GetPosition(this);
             _dragging = false;
         }
 
@@ -197,13 +199,11 @@ namespace EQTool
 
             if (_dragging && e.LeftButton == MouseButtonState.Pressed)
             {
-                var x = Mouse.GetPosition(this).X;
-                var y = Mouse.GetPosition(this).Y;
-
+                var mpos = Mouse.GetPosition(this);
                 if (_selectedElement != null)
                 {
-                    Canvas.SetLeft(_selectedElement, x + _draggingDelta.X);
-                    Canvas.SetTop(_selectedElement, y + _draggingDelta.Y);
+                    Canvas.SetLeft(_selectedElement, mpos.X + _draggingDelta.X);
+                    Canvas.SetTop(_selectedElement, mpos.Y + _draggingDelta.Y);
                 }
             }
         }
@@ -214,7 +214,7 @@ namespace EQTool
 
         private void PanAndZoomCanvas_MouseWheel(object sender, MouseWheelEventArgs e)
         {
-            if (TimerOpen)
+            if (TimerOpen || _dragging)
             {
                 return;
             }
