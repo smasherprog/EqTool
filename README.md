@@ -47,13 +47,14 @@ Features:
 
 <h4>TO DO List EQTool</h4>
 <ul> 
+ <li>Pricing table data is too packed, expand to take up a min amount of space.</li>   
+ <li>Add code to detect pet and always show buffs for your pet.</li> 
  <li>Add Timers to map and make icons movable.</li> 
 <li>Tab under Mob info window for last few minutes of Random rolls ordered by highest to lowest. </li> 
 <li>Use the current zone to better display correct mob info. For example Orc centurions can be in multiple zones! </li> 
 <li>Extend Mob Info Window to show Players. Add note field to window that is saved locally. </li> 
 <li>Add visual cue that buff is under 1 minute left. </li> 
 <li>Add option to enable OTHERS hits for DPS meter. </li> 
-<li>Add option to ONLY show buffs that You have cast. </li> 
 <li>Show others on map</li>   
 <li>Add Waypoint Command to add loc to map</li>    
 <li>Map window add toggle to follow location</li>    
@@ -70,8 +71,7 @@ Features:
 <li>Automatically add timer when named npc dies. Use Wiki for notable npc names</li>
 <li>Add donals BP to timers list</li> 
 <li>Rename Application to Pig Parse</li>
-<li>Enrage alert/advanced alert.</li>
-<li>charm break alert</li>
+<li>Enrage / Charm Break alerts.</li>
 <li>charm spell effect removal</li> 
 </ul>
 
