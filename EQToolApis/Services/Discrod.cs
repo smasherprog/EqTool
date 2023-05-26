@@ -268,6 +268,10 @@ namespace EQToolApis.Services
                                 {
                                     auctionitem.AuctionPrice = null;
                                 }
+                                else if (it.Price < eqitem.TotalWTSLast6MonthsAverage * .1)
+                                {
+                                    auctionitem.AuctionPrice = null;
+                                }
                             }
                             m.EQTunnelAuctionItems.Add(auctionitem);
                             _ = Interlocked.Add(ref dBData.ServerData[(int)server].TotalEQTunnelAuctionItems, 1);
