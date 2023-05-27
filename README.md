@@ -1,4 +1,8 @@
-# EqTool / PigParse Pricing 
+# PigParse
+
+ 
+[![Watch the video](https://github.com/smasherprog/EqTool/assets/3393733/a521a32f-ae8f-4b6e-9a1e-2eea6ab3fdd7)](https://www.youtube.com/watch?v=mH-4-UAzJqA)
+ 
 
 <h2>THIS PROGRAM WORKS SOLELY BY READING YOUR LOG FILE. This is legal according to the <a href="https://www.project1999.com/forums/showthread.php?t=325349">rules.</a></h2>
 <img width="851" alt="image" src="https://user-images.githubusercontent.com/3393733/214930917-994fa61b-f1c8-414b-9761-1c93ca247b63.png">
@@ -29,6 +33,8 @@ Features:
 <li>Show fight Session data for comparisons.</li>
 <li>Sieve Counter</li>
 <li>Mob info shows pricing data for each item!</li>
+<li>Timers on map for easy TOD tracking!</li>
+<li>Pricing information in Mob info window.</li>
 <li>Save spells cast on you when you log out so when you log back in they resume counter!</li>
 <li>Maps</li>
 <li>Timers (Only Minutes are supported)</li>
@@ -40,8 +46,8 @@ Features:
 <li>Timer Cancel Crypt Camp</li>
 <li>Cancel Timer Crypt Camp</li>
 </ul>
-<img width="1150" alt="image" src="https://user-images.githubusercontent.com/3393733/230678396-8f706c5c-94e0-4153-91e9-fef9a84b5537.png">
-
+<img width="1624" alt="image" src="https://github.com/smasherprog/EqTool/assets/3393733/3c53a1d8-44c4-499b-9e92-ea5d5f38275e">
+ 
 <h4>System Tray Icon</h4>
 <img width="152" alt="image" src="https://user-images.githubusercontent.com/3393733/212717141-6e26b9af-660a-493d-9f73-2c3464b7c224.png">
 
@@ -85,7 +91,7 @@ Features:
 <li>Add loot TAB to Mob Window. This tab will show item name, looted from, player name who looted, and unix geek price data, running total looted.</li>
 </ul>
 
-<h3>Faqs</h3>
+<h3>FAQS</h3>
 <h4>Why does chrome warn me?</h4> 
 <img alt="image" src="https://user-images.githubusercontent.com/3393733/223326270-a079946d-57dc-41dd-a58e-f46a0c776b54.png">
 <ul>
@@ -175,3 +181,13 @@ Features:
 <ul>
 <li>Turn on others hits in your eqsettings!</li>
 </ul>
+
+<h4>Map timers, how do they work?</h4>  
+<ul>
+<li>Right click in the map and a menu will appear, add the time, and press add.</li>
+<li>You can move the timer around by dragging it.</li>
+<li>You can delete the timer by right clicking over it and  clicking the delete option.</li>
+<li>Timer color starts at Green and changes to Red the closer it gets to zero time remaining. Timers will last for 4 minutes after the time has expired then automatically remove themselves.</li>
+</ul>
+<img alt="image" src="https://user-images.githubusercontent.com/3393733/232231377-1259ae63-f644-4e49-a246-8f1101f71190.png">
+
