@@ -47,6 +47,7 @@ Features:
 
 <h4>TO DO List EQTool</h4>
 <ul> 
+ <li>Add timers for cooldowns on abilities, like mend, defensive, etc.</li> 
  <li>Add code to detect pet and always show buffs for your pet.</li> 
  <li>Add Timers to map and make icons movable.</li> 
 <li>Tab under Mob info window for last few minutes of Random rolls ordered by highest to lowest. </li> 
