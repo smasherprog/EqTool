@@ -177,3 +177,13 @@ Features:
 <ul>
 <li>Turn on others hits in your eqsettings!</li>
 </ul>
+
+<h4>Map timers, how do they work?</h4>  
+<ul>
+<li>Right click in the map and a menu will appear, add the time, and press add.</li>
+<li>You can move the timer around by dragging it.</li>
+<li>You can delete the timer by right clicking over it and  clicking the delete option.</li>
+<li>Timer color starts at Green and changes to Red the closer it gets to zero time remaining. Timers will last for 4 minutes after the time has expired then automatically remove themselves.</li>
+</ul>
+<img alt="image" src="https://user-images.githubusercontent.com/3393733/232231377-1259ae63-f644-4e49-a246-8f1101f71190.png">
+
