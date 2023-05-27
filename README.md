@@ -1,4 +1,4 @@
-# EqTool / PigParse Pricing 
+# PigParse
 
  
 [![Watch the video](https://github.com/smasherprog/EqTool/assets/3393733/a521a32f-ae8f-4b6e-9a1e-2eea6ab3fdd7)](https://www.youtube.com/watch?v=mH-4-UAzJqA)
