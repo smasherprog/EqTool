@@ -242,12 +242,11 @@ namespace EQTool.ViewModels
             return val.CompareTo(min) < 0 ? min : val.CompareTo(max) > 0 ? max : val;
         }
 
-        public void MoveToPlayerLocation(MapWidget mw, PanAndZoomCanvas map)
+        public void MoveToPlayerLocation(MapWidget mw, MatrixTransform transform)
         {
             Canvas.SetLeft(mw, Canvas.GetLeft(PlayerLocationIcon));
             Canvas.SetTop(mw, Canvas.GetTop(PlayerLocationIcon));
-            var translation = new TranslateTransform(map.Transform.Value.OffsetX, map.Transform.Value.OffsetY);
-            mw.RenderTransform = translation;
+            mw.RenderTransform = transform;
         }
 
         public void UpdateLocation(Point3D value1, PanAndZoomCanvas canvas)

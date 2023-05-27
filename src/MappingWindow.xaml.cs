@@ -59,7 +59,7 @@ namespace EQTool
             {
                 var timer = Map.ZoneRespawnTime;
                 var mw = Map.AddTimer(timer, e.Name);
-                mapViewModel.MoveToPlayerLocation(mw, Map);
+                mapViewModel.MoveToPlayerLocation(mw, Map.Transform);
             };
         }
 
