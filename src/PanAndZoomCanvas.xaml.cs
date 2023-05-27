@@ -35,9 +35,6 @@ namespace EQTool
             TimeSpanControl.DefaultValue = TimeSpan.FromMinutes(72);
             TimeSpanControl.Value = TimeSpan.FromMinutes(72);
             TimeSpanControl.DisplayDefaultValueOnEmptyText = true;
-            TimeSpanControl.Maximum = TimeSpan.FromMinutes(120);
-            TimeSpanControl.Minimum = TimeSpan.FromMinutes(1);
-
         }
 
         public void UpdateTimerWidgest()
@@ -81,20 +78,26 @@ namespace EQTool
                 return;
             }
         }
-        public double SmallFontSize => MathHelper.ChangeRange(MaxDims, 500, 35000, 10, 50);
+
+        private double SmallFontSize => MathHelper.ChangeRange(MaxDims, 500, 35000, 10, 50);
         private void AddTimer(object sender, RoutedEventArgs e)
         {
-            var mw = new MapWidget(DateTime.Now.Add(TimeSpanControl.Value.Value), SmallFontSize);
+            var mw = AddTimer(TimeSpanControl.Value.Value, string.Empty);
+            Canvas.SetTop(mw, _mouseuppoint.Y - Transform.Value.OffsetY);
+            Canvas.SetLeft(mw, _mouseuppoint.X - Transform.Value.OffsetX);
+            mw.RenderTransform = Transform;
+            TimerMenu.IsOpen = false;
+        }
+
+        public MapWidget AddTimer(TimeSpan ts, string name)
+        {
+            var mw = new MapWidget(DateTime.Now.Add(ts), SmallFontSize, name);
             var textlabel = new SolidColorBrush(App.Theme == Themes.Light ? System.Windows.Media.Color.FromRgb(0, 0, 0) : System.Windows.Media.Color.FromRgb(255, 255, 255));
             var forgregroundlabel = new SolidColorBrush(App.Theme == Themes.Light ? System.Windows.Media.Color.FromRgb(255, 255, 255) : System.Windows.Media.Color.FromRgb(0, 0, 0));
             mw.SetTheme(textlabel, forgregroundlabel);
             MapWidgets.Add(mw);
             _ = Children.Add(mw);
-            Canvas.SetTop(mw, _mouseuppoint.Y - Transform.Value.OffsetY);
-            Canvas.SetLeft(mw, _mouseuppoint.X - Transform.Value.OffsetX);
-            mw.RenderTransform = Transform;
-
-            TimerMenu.IsOpen = false;
+            return mw;
         }
 
         private void DeleteTimer(object sender, RoutedEventArgs e)
@@ -125,6 +128,7 @@ namespace EQTool
         public float CurrentScaling { get; set; } = 1.0f;
         public float Zoomfactor { get; set; } = 1.1f;
         public bool TimerOpen { get; private set; }
+        public TimeSpan ZoneRespawnTime => ZoneParser.ZoneInfoMap.TryGetValue(ZoneName, out var zoneInfo) ? zoneInfo.RespawnTime : new TimeSpan(0, 6, 40);
 
         private void PanAndZoomCanvas_MouseDown(object sender, MouseButtonEventArgs e)
         {
@@ -325,7 +329,7 @@ namespace EQTool
         private void TimerMenu_Opened(object sender, RoutedEventArgs e)
         {
             TimerOpen = true;
-            TimeSpanControl.Value = ZoneParser.ZoneInfoMap.TryGetValue(ZoneName, out var zoneInfo) ? zoneInfo.RespawnTime : new TimeSpan(0, 5, 40);
+            TimeSpanControl.Value = ZoneParser.ZoneInfoMap.TryGetValue(ZoneName, out var zoneInfo) ? zoneInfo.RespawnTime : new TimeSpan(0, 6, 40);
         }
     }
 }

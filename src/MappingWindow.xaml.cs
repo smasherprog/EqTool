@@ -23,6 +23,7 @@ namespace EQTool
         private readonly EQToolSettingsLoad toolSettingsLoad;
         private readonly IAppDispatcher appDispatcher;
         private readonly System.Timers.Timer UITimer;
+        private bool AutomaticallyAddTimerOnDeath = false;
 
         public MappingWindow(MapViewModel mapViewModel, LogParser logParser, EQToolSettings settings, EQToolSettingsLoad toolSettingsLoad, IAppDispatcher appDispatcher)
         {
@@ -40,6 +41,7 @@ namespace EQTool
             this.logParser.PlayerLocationEvent += LogParser_PlayerLocationEvent;
             this.logParser.PlayerZonedEvent += LogParser_PlayerZonedEvent;
             this.logParser.PlayerChangeEvent += LogParser_PlayerChangeEvent;
+            this.logParser.DeadEvent += LogParser_DeadEvent;
             SizeChanged += Window_SizeChanged;
             StateChanged += Window_StateChanged;
             LocationChanged += Window_LocationChanged;
@@ -49,6 +51,16 @@ namespace EQTool
             UITimer = new System.Timers.Timer(1000);
             UITimer.Elapsed += UITimer_Elapsed;
             UITimer.Enabled = true;
+        }
+
+        private void LogParser_DeadEvent(object sender, LogParser.DeadEventArgs e)
+        {
+            if (AutomaticallyAddTimerOnDeath)
+            {
+                var timer = Map.ZoneRespawnTime;
+                var mw = Map.AddTimer(timer, e.Name);
+                mapViewModel.MoveToPlayerLocation(mw, Map);
+            };
         }
 
         private void UITimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
@@ -130,6 +142,7 @@ namespace EQTool
             logParser.PlayerLocationEvent -= LogParser_PlayerLocationEvent;
             logParser.PlayerZonedEvent -= LogParser_PlayerZonedEvent;
             logParser.PlayerChangeEvent -= LogParser_PlayerChangeEvent;
+            logParser.DeadEvent -= LogParser_DeadEvent;
             SizeChanged -= Window_SizeChanged;
             StateChanged -= Window_StateChanged;
             LocationChanged -= Window_LocationChanged;
@@ -206,6 +219,21 @@ namespace EQTool
         {
             var mousePosition = Map.Transform.Inverse.Transform(e.GetPosition(sender as IInputElement));
             mapViewModel.MouseMove(mousePosition, sender, e);
+        }
+
+        private void autoaddtimer(object sender, RoutedEventArgs e)
+        {
+            AutomaticallyAddTimerOnDeath = !AutomaticallyAddTimerOnDeath;
+            if (AutomaticallyAddTimerOnDeath)
+            {
+                TimerToggle.ToolTip = "Stop adding timer to npcs on death.";
+                TimerToggle.Foreground = new SolidColorBrush(System.Windows.Media.Color.FromRgb(255, 0, 0));
+            }
+            else
+            {
+                TimerToggle.ToolTip = "Add timer to npcs on death.";
+                TimerToggle.Foreground = new SolidColorBrush(System.Windows.Media.Color.FromRgb(0, 255, 0));
+            }
         }
     }
 }

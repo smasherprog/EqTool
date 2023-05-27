@@ -11,13 +11,16 @@ namespace EQTool
     {
         private readonly DateTime EndTime;
         private readonly int TotalInitialSeconds;
-        public MapWidget(DateTime endtime, double smallFontSize)
+        public MapWidget(DateTime endtime, double smallFontSize, string name)
         {
             InitializeComponent();
             ClockTextValue.FontSize = smallFontSize;
             EndTime = endtime;
             TotalInitialSeconds = (int)(EndTime - DateTime.Now).TotalSeconds;
             _ = Update();
+            Label.Text = name;
+            Label.Visibility = string.IsNullOrWhiteSpace(name) ? System.Windows.Visibility.Collapsed : System.Windows.Visibility.Visible;
+            ClockText.Visibility = string.IsNullOrWhiteSpace(name) ? System.Windows.Visibility.Visible : System.Windows.Visibility.Collapsed;
         }
 
         public void SetTheme(Brush labelb, Brush backgroundb)
@@ -48,15 +51,9 @@ namespace EQTool
                 timespanstring += $"{timepart}:";
             }
             timepart = timespan.Minutes;
-            if (timepart > 0)
-            {
-                timespanstring += $"{timepart:D2}:";
-            }
+            timespanstring += $"{timepart:D2}:";
             timepart = timespan.Seconds;
-            if (timepart > 0)
-            {
-                timespanstring += $"{timepart:D2}";
-            }
+            timespanstring += $"{timepart:D2}";
 
             ClockTextValue.Text = timespanstring;
             return (int)timespan.TotalSeconds;
