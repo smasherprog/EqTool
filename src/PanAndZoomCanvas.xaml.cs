@@ -1,4 +1,5 @@
 ﻿using EQTool.Models;
+using EQTool.Services.Map;
 using EQTool.Shapes;
 using EQTool.ViewModels;
 using System;
@@ -31,6 +32,33 @@ namespace EQTool
             MouseUp += PanAndZoomCanvas_MouseUp;
             MouseMove += PanAndZoomCanvas_MouseMove;
             MouseWheel += PanAndZoomCanvas_MouseWheel;
+            TimeSpanControl.DefaultValue = TimeSpan.FromMinutes(72);
+            TimeSpanControl.Value = TimeSpan.FromMinutes(72);
+            TimeSpanControl.DisplayDefaultValueOnEmptyText = true;
+            TimeSpanControl.Maximum = TimeSpan.FromMinutes(120);
+            TimeSpanControl.Minimum = TimeSpan.FromMinutes(1);
+
+        }
+
+        public void UpdateTimerWidgest()
+        {
+            var removewidgets = new List<MapWidget>();
+            foreach (var item in MapWidgets)
+            {
+                if (item is MapWidget m)
+                {
+                    if (m.Update() <= -60 * 4)
+                    {
+                        removewidgets.Add(item);
+                    }
+                }
+            }
+
+            foreach (var item in removewidgets)
+            {
+                _ = MapWidgets.Remove(item);
+                Children.Remove(item);
+            }
         }
 
         private bool IsNumericInput(string text)
@@ -53,9 +81,10 @@ namespace EQTool
                 return;
             }
         }
+        public double SmallFontSize => MathHelper.ChangeRange(MaxDims, 500, 35000, 10, 50);
         private void AddTimer(object sender, RoutedEventArgs e)
         {
-            var mw = new MapWidget(int.Parse(panAndZoomViewModel.TimerValue));
+            var mw = new MapWidget(DateTime.Now.Add(TimeSpanControl.Value.Value), SmallFontSize);
             var textlabel = new SolidColorBrush(App.Theme == Themes.Light ? System.Windows.Media.Color.FromRgb(0, 0, 0) : System.Windows.Media.Color.FromRgb(255, 255, 255));
             var forgregroundlabel = new SolidColorBrush(App.Theme == Themes.Light ? System.Windows.Media.Color.FromRgb(255, 255, 255) : System.Windows.Media.Color.FromRgb(0, 0, 0));
             mw.SetTheme(textlabel, forgregroundlabel);
@@ -78,10 +107,12 @@ namespace EQTool
                 _selectedElement = null;
             }
         }
+        private string ZoneName = string.Empty;
 
-        public void Reset(double dims)
+        public void Reset(double dims, string zone)
         {
             MaxDims = dims;
+            ZoneName = zone;
             Transform = new MatrixTransform();
             CurrentScaling = 1.0f;
             foreach (UIElement child in Children)
@@ -91,7 +122,6 @@ namespace EQTool
         }
 
         private double MaxDims { get; set; } = 1.0f;
-
         public float CurrentScaling { get; set; } = 1.0f;
         public float Zoomfactor { get; set; } = 1.1f;
         public bool TimerOpen { get; private set; }
@@ -295,6 +325,7 @@ namespace EQTool
         private void TimerMenu_Opened(object sender, RoutedEventArgs e)
         {
             TimerOpen = true;
+            TimeSpanControl.Value = ZoneParser.ZoneInfoMap.TryGetValue(ZoneName, out var zoneInfo) ? zoneInfo.RespawnTime : new TimeSpan(0, 5, 40);
         }
     }
 }

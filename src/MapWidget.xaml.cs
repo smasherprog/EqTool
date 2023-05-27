@@ -1,4 +1,5 @@
-﻿using System.Windows.Controls;
+﻿using System;
+using System.Windows.Controls;
 using System.Windows.Media;
 
 namespace EQTool
@@ -8,10 +9,15 @@ namespace EQTool
     /// </summary>
     public partial class MapWidget : UserControl
     {
-        public MapWidget(int timer)
+        private readonly DateTime EndTime;
+        private readonly int TotalInitialSeconds;
+        public MapWidget(DateTime endtime, double smallFontSize)
         {
             InitializeComponent();
-            ClockTextValue.Text = timer.ToString();
+            ClockTextValue.FontSize = smallFontSize;
+            EndTime = endtime;
+            TotalInitialSeconds = (int)(EndTime - DateTime.Now).TotalSeconds;
+            _ = Update();
         }
 
         public void SetTheme(Brush labelb, Brush backgroundb)
@@ -19,6 +25,41 @@ namespace EQTool
             ClockText.Foreground = labelb;
             ClockTextValue.Foreground = labelb;
             Background = backgroundb;
+        }
+
+        private static System.Windows.Media.Color GetColorFromRedYellowGreenGradient(double percentage)
+        {
+            var red = (percentage > 50 ? 1 - (2 * (percentage - 50) / 100.0) : 1.0) * 255;
+            var green = (percentage > 50 ? 1.0 : 2 * percentage / 100.0) * 200;
+            var blue = 0.0;
+            var r = System.Windows.Media.Color.FromArgb(200, (byte)red, (byte)green, (byte)blue);
+            return r;
+        }
+
+        public int Update()
+        {
+            var timespan = EndTime - DateTime.Now;
+            var timespanstring = string.Empty;
+            var percentleft = timespan.TotalSeconds / TotalInitialSeconds * 100;
+            Background = new SolidColorBrush(GetColorFromRedYellowGreenGradient(percentleft));
+            var timepart = (int)timespan.TotalHours;
+            if (timepart > 0)
+            {
+                timespanstring += $"{timepart}:";
+            }
+            timepart = timespan.Minutes;
+            if (timepart > 0)
+            {
+                timespanstring += $"{timepart:D2}:";
+            }
+            timepart = timespan.Seconds;
+            if (timepart > 0)
+            {
+                timespanstring += $"{timepart:D2}";
+            }
+
+            ClockTextValue.Text = timespanstring;
+            return (int)timespan.TotalSeconds;
         }
     }
 }

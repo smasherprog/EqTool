@@ -3,19 +3,20 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:EQTool"
+        xmlns:ui="using:Microsoft.Toolkit.Uwp.UI"
+        xmlns:local="clr-namespace:EQTool" xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
         mc:Ignorable="d"
         Background="Transparent"
        >
     <Canvas.ContextMenu>
-        <ContextMenu Width="110" Name="TimerMenu" Closed="TimerMenu_Closed" Opened="TimerMenu_Opened">
-            <MenuItem  Name="AddTimerMenuItem"  Click="AddTimer">
+        <ContextMenu Width="130" Name="TimerMenu" Closed="TimerMenu_Closed" Opened="TimerMenu_Opened">
+            <MenuItem Name="AddTimerMenuItem"  Click="AddTimer">
                 <MenuItem.Icon>
                     <TextBlock Foreground="Green">⏲</TextBlock>
                 </MenuItem.Icon>
                 <MenuItem.Header>
                     <StackPanel Orientation="Horizontal">
-                        <TextBox Width="30" Text="{Binding TimerValue}" PreviewTextInput="TextBox_PreviewTextInput" VerticalAlignment="Center" TextAlignment="Center"/>
+                        <local:CustomTimeSpanUpDown x:Name="TimeSpanControl"/>
                         <Label VerticalAlignment="Top" VerticalContentAlignment="Top">Add</Label> 
                     </StackPanel>
                 </MenuItem.Header>

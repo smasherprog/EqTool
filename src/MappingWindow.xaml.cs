@@ -21,14 +21,18 @@ namespace EQTool
         private readonly MapViewModel mapViewModel;
         private readonly EQToolSettings settings;
         private readonly EQToolSettingsLoad toolSettingsLoad;
+        private readonly IAppDispatcher appDispatcher;
+        private readonly System.Timers.Timer UITimer;
 
-        public MappingWindow(MapViewModel mapViewModel, LogParser logParser, EQToolSettings settings, EQToolSettingsLoad toolSettingsLoad)
+        public MappingWindow(MapViewModel mapViewModel, LogParser logParser, EQToolSettings settings, EQToolSettingsLoad toolSettingsLoad, IAppDispatcher appDispatcher)
         {
             this.settings = settings;
             this.toolSettingsLoad = toolSettingsLoad;
+            this.appDispatcher = appDispatcher;
             this.logParser = logParser;
             DataContext = this.mapViewModel = mapViewModel;
             InitializeComponent();
+
             WindowExtensions.AdjustWindow(settings.MapWindowState, this);
             Topmost = Properties.Settings.Default.GlobalMapWindowAlwaysOnTop;
             App.ThemeChangedEvent += App_ThemeChangedEvent;
@@ -42,6 +46,14 @@ namespace EQTool
             KeyDown += PanAndZoomCanvas_KeyDown;
             settings.MapWindowState.Closed = false;
             SaveState();
+            UITimer = new System.Timers.Timer(1000);
+            UITimer.Elapsed += UITimer_Elapsed;
+            UITimer.Enabled = true;
+        }
+
+        private void UITimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            appDispatcher.DispatchUI(() => Map.UpdateTimerWidgest());
         }
 
         private void PanAndZoomCanvas_KeyDown(object sender, KeyEventArgs e)
@@ -112,6 +124,8 @@ namespace EQTool
 
         protected override void OnClosing(CancelEventArgs e)
         {
+            UITimer?.Stop();
+            UITimer?.Dispose();
             App.ThemeChangedEvent -= App_ThemeChangedEvent;
             logParser.PlayerLocationEvent -= LogParser_PlayerLocationEvent;
             logParser.PlayerZonedEvent -= LogParser_PlayerZonedEvent;

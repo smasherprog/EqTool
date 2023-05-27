@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows.Controls;
 
@@ -13,8 +14,8 @@ namespace EQTool.ViewModels
             Children = collection;
         }
 
-        private string _TimerValue = "72";
-        public string TimerValue
+        private TimeSpan _TimerValue = TimeSpan.FromMinutes(72);
+        public TimeSpan TimerValue
         {
             get => _TimerValue;
             set

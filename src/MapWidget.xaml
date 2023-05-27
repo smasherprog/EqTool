@@ -3,13 +3,13 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:EQTool"
-             mc:Ignorable="d" >
+             xmlns:local="clr-namespace:EQTool"  
+             mc:Ignorable="d">
     <Border>
         <Grid>
             <Grid.RowDefinitions>
-                <RowDefinition Height="30"/>
-                <RowDefinition Height="*" />
+                <RowDefinition/>
+                <RowDefinition/>
             </Grid.RowDefinitions> 
             <TextBlock Name="ClockText" Grid.Row="0" Text="⏰" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" />
             <TextBlock Name="ClockTextValue" Grid.Row="1" Text="27" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White" />

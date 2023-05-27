@@ -77,7 +77,7 @@ namespace EQTool.Services.Map
                 {
                    "Boondin Babbinsbort","Commander Windstream","An Elf Skeleton","Gynok Moltor","Priest Amiaz","Skeleton Lrodd","The Thaumaturgist"
                 },
-                RespawnTime = new TimeSpan(0, 6, 40)
+                RespawnTime = new TimeSpan(0, 19, 0)
             });
             ZoneInfoMap.Add("beholder", new ZoneInfo
             {
@@ -88,7 +88,7 @@ namespace EQTool.Services.Map
                 {
                     "King Xorbb","Lord Syrkl","Lord Sviir","Lord Soptyvr","SpinFlint","Brahhm","Yymp the Infernal","Qlei","Goblin Alchect"
                 },
-                RespawnTime = new TimeSpan(0, 6, 40)
+                RespawnTime = new TimeSpan(0, 6, 0)
             });
             ZoneInfoMap.Add("blackburrow", new ZoneInfo
             {
@@ -99,7 +99,7 @@ namespace EQTool.Services.Map
                 {
                     "Lord Elgnub","Master Brewer","Refugee Splitpaw","a gnoll commander","Splitpaw Commander",
                 },
-                RespawnTime = new TimeSpan(0, 6, 40)
+                RespawnTime = new TimeSpan(0, 22, 0)
             });
             ZoneInfoMap.Add("burningwood", new ZoneInfo
             {
@@ -121,7 +121,7 @@ namespace EQTool.Services.Map
                 {
                     "",
                 },
-                RespawnTime = new TimeSpan(0, 6, 40)
+                RespawnTime = new TimeSpan(0, 10, 0)
             });
             ZoneInfoMap.Add("cabeast", new ZoneInfo
             {
@@ -165,7 +165,7 @@ namespace EQTool.Services.Map
                 {
                     "",
                 },
-                RespawnTime = new TimeSpan(0, 6, 40)
+                RespawnTime = new TimeSpan(0, 22, 00)
             });
             ZoneInfoMap.Add("charasis", new ZoneInfo
             {
@@ -176,7 +176,7 @@ namespace EQTool.Services.Map
                 {
                     "Sentient Bile","The Crypt Excavator","The Crypt Feaster","The Crypt Keeper","Drusella Sathir","Embalming Fluid","The Golem Master","Reanimated Plaguebone","Skeletal Procurator","The Skeleton Sepulcher","The Spectre Spiritualist","The Undertaker Lord",
                 },
-                RespawnTime = new TimeSpan(0, 6, 40)
+                RespawnTime = new TimeSpan(0, 20, 30)
             });
             ZoneInfoMap.Add("chardok", new ZoneInfo
             {
@@ -187,7 +187,7 @@ namespace EQTool.Services.Map
                 {
                     "",
                 },
-                RespawnTime = new TimeSpan(0, 6, 40)
+                RespawnTime = new TimeSpan(0, 18, 00)
             });
             ZoneInfoMap.Add("citymist", new ZoneInfo
             {
@@ -198,7 +198,7 @@ namespace EQTool.Services.Map
                 {
                     "a black reaver","an army behemoth","Captain of the Guard","a human skeleton","Lhranc","Lord Ghiosk","Lord Rak`Ashiir","Neh`Ashiir","spectral courier","Wraith of Jaxion",
                 },
-                RespawnTime = new TimeSpan(0, 6, 40)
+                RespawnTime = new TimeSpan(0, 22, 00)
             });
             ZoneInfoMap.Add("cobaltscar", new ZoneInfo
             {
@@ -209,7 +209,7 @@ namespace EQTool.Services.Map
                 {
                     "",
                 },
-                RespawnTime = new TimeSpan(0, 6, 40)
+                RespawnTime = new TimeSpan(0, 22, 00)
             });
             ZoneInfoMap.Add("commons", new ZoneInfo
             {
@@ -231,7 +231,7 @@ namespace EQTool.Services.Map
                 {
                     "Orc Taskmaster","Orc Trainer","Orc Warlord","Ambassador DVinn","Lord Darish","Rondo Dunfire","Retlon Brenclog","Emperor Crush","The Prophet",
                 },
-                RespawnTime = new TimeSpan(0, 6, 40)
+                RespawnTime = new TimeSpan(0, 9, 00)
             });
             ZoneInfoMap.Add("crystal", new ZoneInfo
             {
@@ -242,7 +242,7 @@ namespace EQTool.Services.Map
                 {
                     "",
                 },
-                RespawnTime = new TimeSpan(0, 6, 40)
+                RespawnTime = new TimeSpan(0, 14, 45)
             });
             ZoneInfoMap.Add("dalnir", new ZoneInfo
             {
@@ -253,7 +253,7 @@ namespace EQTool.Services.Map
                 {
                     "Coerced Channeler","Coerced Crusader","Coerced Penkeeper","a coerced revenant","a coerced smith","Kly Imprecator","The Kly Overseer","The Kly","Spectral Crusader","an undead blacksmith","lumpy goo",
                 },
-                RespawnTime = new TimeSpan(0, 6, 40)
+                RespawnTime = new TimeSpan(0, 12, 00)
             });
             ZoneInfoMap.Add("dreadlands", new ZoneInfo
             {
@@ -275,7 +275,7 @@ namespace EQTool.Services.Map
                 {
                     "a goblin bodyguard","Chief Rokgus","a goblin canyoneer","a maddened Burynai","Soothsayer Dregzak",
                 },
-                RespawnTime = new TimeSpan(0, 6, 40)
+                RespawnTime = new TimeSpan(0, 20, 30)
             });
             ZoneInfoMap.Add("eastkarana", new ZoneInfo
             {
@@ -341,7 +341,7 @@ namespace EQTool.Services.Map
                 {
                     "",
                 },
-                RespawnTime = new TimeSpan(0, 6, 40)
+                RespawnTime = new TimeSpan(0, 24, 0)
             });
             ZoneInfoMap.Add("erudsxing", new ZoneInfo
             {
@@ -374,7 +374,7 @@ namespace EQTool.Services.Map
                 {
                     "",
                 },
-                RespawnTime = new TimeSpan(0, 6, 40)
+                RespawnTime = new TimeSpan(8, 0, 0)
             });
             ZoneInfoMap.Add("feerrott", new ZoneInfo
             {
@@ -396,7 +396,7 @@ namespace EQTool.Services.Map
                 {
                     "",
                 },
-                RespawnTime = new TimeSpan(0, 6, 40)
+                RespawnTime = new TimeSpan(0, 24, 0)
             });
             ZoneInfoMap.Add("felwitheb", new ZoneInfo
             {
@@ -407,7 +407,7 @@ namespace EQTool.Services.Map
                 {
                     "",
                 },
-                RespawnTime = new TimeSpan(0, 6, 40)
+                RespawnTime = new TimeSpan(0, 24, 0)
             });
             ZoneInfoMap.Add("fieldofbone", new ZoneInfo
             {
@@ -460,7 +460,7 @@ namespace EQTool.Services.Map
                 {
                     "",
                 },
-                RespawnTime = new TimeSpan(0, 6, 40)
+                RespawnTime = new TimeSpan(0, 24, 0)
             });
             ZoneInfoMap.Add("frontiermtns", new ZoneInfo
             {
@@ -482,7 +482,7 @@ namespace EQTool.Services.Map
                 {
                     "Large Undead Gnoll","Xalgoti","Zorglim the Dead","Enraged Shadowbeast","Amontehepna","Narmak Berreka","maggot infested flesh","Eugie","Isopca","Lerty","Nosja","Otdd","Pelpa","Priest Majes Medory","Tihgren","Varjie","Vyakna","enraged relative","lucid spirit of Abrams","Vhal'Sera",
                 },
-                RespawnTime = new TimeSpan(0, 6, 40)
+                RespawnTime = new TimeSpan(0, 20, 0)
             });
             ZoneInfoMap.Add("gfaydark", new ZoneInfo
             {
@@ -493,7 +493,7 @@ namespace EQTool.Services.Map
                 {
                     "",
                 },
-                RespawnTime = new TimeSpan(0, 6, 40)
+                RespawnTime = new TimeSpan(0, 7, 5)
             });
             ZoneInfoMap.Add("greatdivide", new ZoneInfo
             {
@@ -504,7 +504,7 @@ namespace EQTool.Services.Map
                 {
                     "",
                 },
-                RespawnTime = new TimeSpan(0, 6, 40)
+                RespawnTime = new TimeSpan(0, 10, 40)
             });
             ZoneInfoMap.Add("grobb", new ZoneInfo
             {
@@ -515,7 +515,7 @@ namespace EQTool.Services.Map
                 {
                     "",
                 },
-                RespawnTime = new TimeSpan(0, 6, 40)
+                RespawnTime = new TimeSpan(0, 24, 0)
             });
             ZoneInfoMap.Add("growthplane", new ZoneInfo
             {
@@ -526,7 +526,7 @@ namespace EQTool.Services.Map
                 {
                     "",
                 },
-                RespawnTime = new TimeSpan(0, 6, 40)
+                RespawnTime = new TimeSpan(12, 0, 0)
             });
             ZoneInfoMap.Add("gukbottom", new ZoneInfo
             {
@@ -537,7 +537,7 @@ namespace EQTool.Services.Map
                 {
                     "",
                 },
-                RespawnTime = new TimeSpan(0, 6, 40)
+                RespawnTime = new TimeSpan(0, 28, 0)
             });
             ZoneInfoMap.Add("guktop", new ZoneInfo
             {
@@ -548,7 +548,7 @@ namespace EQTool.Services.Map
                 {
                     "a froglok gaz squire","a froglok idealist","a froglok realist","a froglok necromancer","a froglok scryer","a froglok summoner","a froglok nokta shaman","a froglok shin knight","the froglok shin lord","Tempus","a giant heart spider",
                 },
-                RespawnTime = new TimeSpan(0, 6, 40)
+                RespawnTime = new TimeSpan(0, 28, 0)
             });
             ZoneInfoMap.Add("halas", new ZoneInfo
             {
@@ -559,7 +559,7 @@ namespace EQTool.Services.Map
                 {
                     "",
                 },
-                RespawnTime = new TimeSpan(0, 6, 40)
+                RespawnTime = new TimeSpan(0, 24, 0)
             });
             ZoneInfoMap.Add("hateplane", new ZoneInfo
             {
@@ -581,7 +581,7 @@ namespace EQTool.Services.Map
                 {
                     "Captain Boshinko","Mistress Anna","Osargen","Princess Lenia",
                 },
-                RespawnTime = new TimeSpan(0, 6, 40)
+                RespawnTime = new TimeSpan(0, 10, 0)
             });
             ZoneInfoMap.Add("highpass", new ZoneInfo
             {
@@ -592,7 +592,7 @@ namespace EQTool.Services.Map
                 {
                     "Cyrla Shadowstepper","Dyllin Starsine","Hagnis Shralok","Recfek Shralok","Vopuk Shralok","Vexven Mucktail","Grenix Mucktail","Barn Bloodstone",
                 },
-                RespawnTime = new TimeSpan(0, 6, 40)
+                RespawnTime = new TimeSpan(0, 5, 0)
             });
             ZoneInfoMap.Add("hole", new ZoneInfo
             {
@@ -603,7 +603,7 @@ namespace EQTool.Services.Map
                 {
                     "",
                 },
-                RespawnTime = new TimeSpan(0, 6, 40)
+                RespawnTime = new TimeSpan(0, 21, 30)
             });
             ZoneInfoMap.Add("iceclad", new ZoneInfo
             {
@@ -636,7 +636,7 @@ namespace EQTool.Services.Map
                 {
                     "Avatar of War","Statue of Rallos Zek","Derakor the Vindicator","King Tormax","Bjrakor the Cold","Captain Bvellos","Gkrean Prophet of Tallon","Semkak Prophet of Vallon","Gorul Longshanks","Keldor Dek`Torek","Noble Helssen","Slaggak the Trainer","Staff Sergeant Drioc","Vkjor","Wenglawks Kkeak",
                 },
-                RespawnTime = new TimeSpan(0, 6, 40)
+                RespawnTime = new TimeSpan(0, 28, 0)
             });
             ZoneInfoMap.Add("kaesora", new ZoneInfo
             {
@@ -647,7 +647,7 @@ namespace EQTool.Services.Map
                 {
                     "Hungered Ravener","failed crypt raider","Frenzied Strathbone","Reaver of Xalgoz","spectral guardian","spectral librarian","Strathbone Runelord","tortured librarian","Warder of Xalgoz","Xalgoz",
                 },
-                RespawnTime = new TimeSpan(0, 6, 40)
+                RespawnTime = new TimeSpan(0, 18, 0)
             });
             ZoneInfoMap.Add("kaladima", new ZoneInfo
             {
@@ -680,7 +680,7 @@ namespace EQTool.Services.Map
                 {
                     "",
                 },
-                RespawnTime = new TimeSpan(0, 6, 40)
+                RespawnTime = new TimeSpan(0, 27, 0)
             });
             ZoneInfoMap.Add("kedge", new ZoneInfo
             {
@@ -691,7 +691,7 @@ namespace EQTool.Services.Map
                 {
                     "Phinigel Autropos","Cauldronboil","Cauldronbubble","Coralyn Kelpmaiden","Estrella of Gloomwater","Fierce Impaler","a ferocious cauldron shark","Frenzied Cauldron Shark","Golden Haired Mermaid","Stiletto Fang Piranha","Seahorse Patriarch","Seahorse Matriarch","Shellara Ebbhunter","Undertow","Swirlspine",
                 },
-                RespawnTime = new TimeSpan(0, 6, 40)
+                RespawnTime = new TimeSpan(0, 22, 0)
             });
             ZoneInfoMap.Add("kerraridge", new ZoneInfo
             {
@@ -702,7 +702,7 @@ namespace EQTool.Services.Map
                 {
                     "",
                 },
-                RespawnTime = new TimeSpan(0, 6, 40)
+                RespawnTime = new TimeSpan(0, 17, 45)
             });
             ZoneInfoMap.Add("kithicor", new ZoneInfo
             {
@@ -724,7 +724,7 @@ namespace EQTool.Services.Map
                 {
                     "Bargynn","Burynai Forager","fingered skeleton","an odd mole","a skeletal cook","thick boned skeleton","undead crusader","an undead jester",
                 },
-                RespawnTime = new TimeSpan(0, 6, 40)
+                RespawnTime = new TimeSpan(0, 18, 20)
             });
             ZoneInfoMap.Add("lakeofillomen", new ZoneInfo
             {
@@ -779,7 +779,7 @@ namespace EQTool.Services.Map
                 {
                     "",
                 },
-                RespawnTime = new TimeSpan(0, 6, 40)
+                RespawnTime = new TimeSpan(1, 10, 10)
             });
             ZoneInfoMap.Add("mistmoore", new ZoneInfo
             {
@@ -790,7 +790,7 @@ namespace EQTool.Services.Map
                 {
                     "an advisor","an avenging caitiff","Black Dire","Butler Syncall","a cloaked dhampyre","a deathly usher","Enynti","Garton Viswin","a glyphed ghoul","an imp familiar","Lasna Cheroon","Maid Issis","Mayong Mistmoore","Mynthi Davissi","Princess Cherista","Ssynthi","Xicotl",
                 },
-                RespawnTime = new TimeSpan(0, 6, 40)
+                RespawnTime = new TimeSpan(0, 22, 00)
             });
             ZoneInfoMap.Add("misty", new ZoneInfo
             {
@@ -812,7 +812,7 @@ namespace EQTool.Services.Map
                 {
                     "Akksstaff","BoneCracker","Drelzna","Ekeros","Linara Parlone","Moosh","Najena (NPC)","Officer Grush","Rathyl","Rathyl reincarnate","Trazdon","a visiting priestess","The Widowmistress",
                 },
-                RespawnTime = new TimeSpan(0, 6, 40)
+                RespawnTime = new TimeSpan(0, 18, 30)
             });
             ZoneInfoMap.Add("necropolis", new ZoneInfo
             {
@@ -820,7 +820,7 @@ namespace EQTool.Services.Map
                 ShowAllMapLevels = true,
                 ZoneLevelHeight = 10,
                 NotableNPCs = new List<string>() { "", },
-                RespawnTime = new TimeSpan(0, 6, 40)
+                RespawnTime = new TimeSpan(0, 27, 00)
             });
             ZoneInfoMap.Add("nektulos", new ZoneInfo
             {
@@ -836,7 +836,7 @@ namespace EQTool.Services.Map
                 ShowAllMapLevels = true,
                 ZoneLevelHeight = 10,
                 NotableNPCs = new List<string>() { "", },
-                RespawnTime = new TimeSpan(0, 6, 40)
+                RespawnTime = new TimeSpan(0, 24, 0)
             });
             ZoneInfoMap.Add("neriakb", new ZoneInfo
             {
@@ -844,7 +844,7 @@ namespace EQTool.Services.Map
                 ShowAllMapLevels = true,
                 ZoneLevelHeight = 10,
                 NotableNPCs = new List<string>() { "", },
-                RespawnTime = new TimeSpan(0, 6, 40)
+                RespawnTime = new TimeSpan(0, 24, 0)
             });
             ZoneInfoMap.Add("neriakc", new ZoneInfo
             {
@@ -852,7 +852,7 @@ namespace EQTool.Services.Map
                 ShowAllMapLevels = true,
                 ZoneLevelHeight = 10,
                 NotableNPCs = new List<string>() { "", },
-                RespawnTime = new TimeSpan(0, 6, 40)
+                RespawnTime = new TimeSpan(0, 24, 0)
             });
             ZoneInfoMap.Add("northkarana", new ZoneInfo
             {
@@ -876,7 +876,7 @@ namespace EQTool.Services.Map
                 ShowAllMapLevels = true,
                 ZoneLevelHeight = 10,
                 NotableNPCs = new List<string>() { "Overseer Dlubish", "A Sleeping Ogre", "Trunt", },
-                RespawnTime = new TimeSpan(0, 6, 40)
+                RespawnTime = new TimeSpan(0, 20, 30)
             });
             ZoneInfoMap.Add("oasis", new ZoneInfo
             {
@@ -884,7 +884,7 @@ namespace EQTool.Services.Map
                 ShowAllMapLevels = true,
                 ZoneLevelHeight = 10,
                 NotableNPCs = new List<string>() { "Cazel", "Hatar", "Lockjaw", "Young Ronin", },
-                RespawnTime = new TimeSpan(0, 6, 40)
+                RespawnTime = new TimeSpan(0, 16, 30)
             });
             ZoneInfoMap.Add("oggok", new ZoneInfo
             {
@@ -892,7 +892,7 @@ namespace EQTool.Services.Map
                 ShowAllMapLevels = true,
                 ZoneLevelHeight = 10,
                 NotableNPCs = new List<string>() { "", },
-                RespawnTime = new TimeSpan(0, 6, 40)
+                RespawnTime = new TimeSpan(0, 24, 00)
             });
             ZoneInfoMap.Add("oot", new ZoneInfo
             {
@@ -900,7 +900,7 @@ namespace EQTool.Services.Map
                 ShowAllMapLevels = true,
                 ZoneLevelHeight = 10,
                 NotableNPCs = new List<string>() { "Capt Surestout", "Nerbilik", "Oracle of K`Arnon", "Boog Mudtoe", "Gornit", "Sentry Xyrin", "Gull Skytalon", "Allizewsaur", "Ancient Cyclops", "Brawn", "Quag Maelstrom", "Seplawishinl Bladeblight", "Soarin Brightfeather", "tainted seafury cyclops", "corrupted seafury cyclops", "Wiltin Windwalker", "A Goblin", },
-                RespawnTime = new TimeSpan(0, 6, 40)
+                RespawnTime = new TimeSpan(0, 6, 0)
             });
             ZoneInfoMap.Add("overthere", new ZoneInfo
             {
@@ -916,7 +916,7 @@ namespace EQTool.Services.Map
                 ShowAllMapLevels = true,
                 ZoneLevelHeight = 10,
                 NotableNPCs = new List<string>() { "", },
-                RespawnTime = new TimeSpan(0, 6, 40)
+                RespawnTime = new TimeSpan(0, 10, 30)
             });
             ZoneInfoMap.Add("paw", new ZoneInfo
             {
@@ -924,7 +924,7 @@ namespace EQTool.Services.Map
                 ShowAllMapLevels = false,
                 ZoneLevelHeight = 10,
                 NotableNPCs = new List<string>() { "Brother Hayle", "The Ishva Mal", "Kurrpok Splitpaw", "Tesch Val Kadvem", "Tesch Val Deval`Nmak", "Nisch Val Torash Mashk", "Rosch Val L'Vlor" },
-                RespawnTime = new TimeSpan(0, 6, 40)
+                RespawnTime = new TimeSpan(0, 22, 0)
             });
             ZoneInfoMap.Add("permafrost", new ZoneInfo
             {
@@ -932,7 +932,7 @@ namespace EQTool.Services.Map
                 ShowAllMapLevels = false,
                 ZoneLevelHeight = 10,
                 NotableNPCs = new List<string>() { "Lady Vox", "Priest of Nagafen", "High Priest Zaharn", "A goblin alchemist (Permafrost)", "King Thex'Ka IV", "Goblin Archeologist", "Goblin Patriarch", "Goblin Preacher", "Goblin Jail Master", "Goblin Scryer", "Elite Honor Guard", "Injured Polar Bear", "Ice Goblin Champion", "Ice Giant Diplomat", },
-                RespawnTime = new TimeSpan(0, 6, 40)
+                RespawnTime = new TimeSpan(0, 22, 0)
             });
             ZoneInfoMap.Add("qcat", new ZoneInfo
             {
@@ -940,7 +940,7 @@ namespace EQTool.Services.Map
                 ShowAllMapLevels = false,
                 ZoneLevelHeight = 10,
                 NotableNPCs = new List<string>() { "", },
-                RespawnTime = new TimeSpan(0, 6, 40)
+                RespawnTime = new TimeSpan(0, 12, 0)
             });
             ZoneInfoMap.Add("qey2hh1", new ZoneInfo
             {
@@ -996,7 +996,7 @@ namespace EQTool.Services.Map
                 ShowAllMapLevels = true,
                 ZoneLevelHeight = 10,
                 NotableNPCs = new List<string>() { "", },
-                RespawnTime = new TimeSpan(0, 6, 40)
+                RespawnTime = new TimeSpan(0, 22, 0)
             });
             ZoneInfoMap.Add("runnyeye", new ZoneInfo
             {
@@ -1004,7 +1004,7 @@ namespace EQTool.Services.Map
                 ShowAllMapLevels = false,
                 ZoneLevelHeight = 10,
                 NotableNPCs = new List<string>() { "Borxx", "an Evil Eye prisoner", "Sludge Dankmire", "A Goblin Captain", "Goblin Warlord", "The Goblin King", "Slime Elemental", "Gelatinous Cube", },
-                RespawnTime = new TimeSpan(0, 6, 40)
+                RespawnTime = new TimeSpan(0, 22, 0)
             });
             ZoneInfoMap.Add("sebilis", new ZoneInfo
             {
@@ -1012,7 +1012,7 @@ namespace EQTool.Services.Map
                 ShowAllMapLevels = false,
                 ZoneLevelHeight = 10,
                 NotableNPCs = new List<string>() { "Arch Duke Iatol", "Baron Yosig", "blood of chottal", "Brogg", "crypt caretaker", "Emperor Chottal", "frenzied pox scarab", "Froggy", "froglok armorer", "froglok armsman", "froglok chef", "froglok commander", "froglok ostiary", "froglok pickler", "froglok repairer", "Gangrenous scarab", "Gruplinort", "Harbinger Freglor", "Hierophant Prime Grekal", "myconid spore king", "a necrosis scarab", "sebilite protector", "Tolapumj", "Trakanon", },
-                RespawnTime = new TimeSpan(0, 6, 40)
+                RespawnTime = new TimeSpan(0, 27, 0)
             });
             ZoneInfoMap.Add("sirens", new ZoneInfo
             {
@@ -1020,7 +1020,7 @@ namespace EQTool.Services.Map
                 ShowAllMapLevels = false,
                 ZoneLevelHeight = 10,
                 NotableNPCs = new List<string>() { "", },
-                RespawnTime = new TimeSpan(0, 6, 40)
+                RespawnTime = new TimeSpan(0, 28, 0)
             });
             ZoneInfoMap.Add("skyfire", new ZoneInfo
             {
@@ -1028,7 +1028,7 @@ namespace EQTool.Services.Map
                 ShowAllMapLevels = true,
                 ZoneLevelHeight = 10,
                 NotableNPCs = new List<string>() { "Black Scar", "Eldrig the Old", "Faerie of Dismay", "Felia Goldenwing", "Guardian of Felia", "Jennus Lyklobar", "a lava walker", "a shadow drake", "a soul devourer", "Talendor", "a wandering wurm", "a wurm spirit", },
-                RespawnTime = new TimeSpan(0, 6, 40)
+                RespawnTime = new TimeSpan(0, 13, 0)
             });
             ZoneInfoMap.Add("skyshrine", new ZoneInfo
             {
@@ -1036,7 +1036,7 @@ namespace EQTool.Services.Map
                 ShowAllMapLevels = false,
                 ZoneLevelHeight = 10,
                 NotableNPCs = new List<string>() { "", },
-                RespawnTime = new TimeSpan(0, 6, 40)
+                RespawnTime = new TimeSpan(0, 30, 0)
             });
             ZoneInfoMap.Add("sleeper", new ZoneInfo
             {
@@ -1044,7 +1044,7 @@ namespace EQTool.Services.Map
                 ShowAllMapLevels = true,
                 ZoneLevelHeight = 10,
                 NotableNPCs = new List<string>() { "", },
-                RespawnTime = new TimeSpan(0, 6, 40)
+                RespawnTime = new TimeSpan(8, 0, 0)
             });
             ZoneInfoMap.Add("soldunga", new ZoneInfo
             {
@@ -1052,7 +1052,7 @@ namespace EQTool.Services.Map
                 ShowAllMapLevels = false,
                 ZoneLevelHeight = 10,
                 NotableNPCs = new List<string>() { "Captain Bipnubble", "CWG Model EXG", "Fire Goblin Bartender", "Inferno Goblin Captain", "Fire Goblin Drunkard", "Goblin High Shaman", "Solusek Goblin King", "Gabbie Mardoddle", "flame goblin foreman", "Inferno Goblin Torturer", "Kindle", "Kobold predator", "lava elemental", "Lord Gimblox", "Lynada the Exiled", "Marfen Binkdirple", "Reckless Efreeti", "Singe", },
-                RespawnTime = new TimeSpan(0, 6, 40)
+                RespawnTime = new TimeSpan(0, 18, 0)
             });
             ZoneInfoMap.Add("soldungb", new ZoneInfo
             {
@@ -1060,7 +1060,7 @@ namespace EQTool.Services.Map
                 ShowAllMapLevels = false,
                 ZoneLevelHeight = 10,
                 NotableNPCs = new List<string>() { "", },
-                RespawnTime = new TimeSpan(0, 6, 40)
+                RespawnTime = new TimeSpan(0, 22, 0)
             });
             ZoneInfoMap.Add("soltemple", new ZoneInfo
             {
@@ -1068,7 +1068,7 @@ namespace EQTool.Services.Map
                 ShowAllMapLevels = false,
                 ZoneLevelHeight = 10,
                 NotableNPCs = new List<string>() { "", },
-                RespawnTime = new TimeSpan(0, 6, 40)
+                RespawnTime = new TimeSpan(0, 5, 0)
             });
             ZoneInfoMap.Add("southkarana", new ZoneInfo
             {
@@ -1100,7 +1100,7 @@ namespace EQTool.Services.Map
                 ShowAllMapLevels = true,
                 ZoneLevelHeight = 10,
                 NotableNPCs = new List<string>() { "", },
-                RespawnTime = new TimeSpan(0, 6, 40)
+                RespawnTime = new TimeSpan(0, 11, 10)
             });
             ZoneInfoMap.Add("swampofnohope", new ZoneInfo
             {
@@ -1116,7 +1116,7 @@ namespace EQTool.Services.Map
                 ShowAllMapLevels = true,
                 ZoneLevelHeight = 10,
                 NotableNPCs = new List<string>() { "Casalen", "Dozekar the Cursed", "Essedera", "Grozzmel", "Krigara", "Lepethida", "Midayor", "Tavekalem", "Ymmeln", "Gozzrem", "Lendiniara the Keeper", "Telkorenar", "Cekenar", "Dagarn the Destroyer", "Eashen of the Sky", "Ikatiar the Venom", "Jorlleag", "Lady Mirenilla", "Lady Nevederia", "Lord Feshlak", "Lord Koi'Doken", "Lord Kreizenn", "Lord Vyemm", "Sevalak", "Vulak`Aerr", "Zlexak", },
-                RespawnTime = new TimeSpan(0, 6, 40)
+                RespawnTime = new TimeSpan(1, 12, 00)
             });
             ZoneInfoMap.Add("thurgadina", new ZoneInfo
             {
@@ -1124,7 +1124,7 @@ namespace EQTool.Services.Map
                 ShowAllMapLevels = true,
                 ZoneLevelHeight = 10,
                 NotableNPCs = new List<string>() { "", },
-                RespawnTime = new TimeSpan(0, 6, 40)
+                RespawnTime = new TimeSpan(0, 7, 00)
             });
             ZoneInfoMap.Add("thurgadinb", new ZoneInfo
             {
@@ -1132,7 +1132,7 @@ namespace EQTool.Services.Map
                 ShowAllMapLevels = false,
                 ZoneLevelHeight = 10,
                 NotableNPCs = new List<string>() { "", },
-                RespawnTime = new TimeSpan(0, 6, 40)
+                RespawnTime = new TimeSpan(0, 7, 00)
             });
             ZoneInfoMap.Add("timorous", new ZoneInfo
             {
@@ -1140,7 +1140,7 @@ namespace EQTool.Services.Map
                 ShowAllMapLevels = true,
                 ZoneLevelHeight = 10,
                 NotableNPCs = new List<string>() { "", },
-                RespawnTime = new TimeSpan(0, 6, 40)
+                RespawnTime = new TimeSpan(0, 12, 0)
             });
             ZoneInfoMap.Add("tox", new ZoneInfo
             {
@@ -1164,7 +1164,7 @@ namespace EQTool.Services.Map
                 ShowAllMapLevels = false,
                 ZoneLevelHeight = 10,
                 NotableNPCs = new List<string>() { "Garanel Rucksif", "a priest of najena", "Khrix Fritchoff", "Khrix's Abomination", "Torklar Battlemaster", "Shadowpincer", "reclusive ghoul magus", },
-                RespawnTime = new TimeSpan(0, 6, 40)
+                RespawnTime = new TimeSpan(0, 22, 0)
             });
             ZoneInfoMap.Add("veeshan", new ZoneInfo
             {
@@ -1172,7 +1172,7 @@ namespace EQTool.Services.Map
                 ShowAllMapLevels = true,
                 ZoneLevelHeight = 10,
                 NotableNPCs = new List<string>() { "", },
-                RespawnTime = new TimeSpan(0, 6, 40)
+                RespawnTime = new TimeSpan(1, 12, 0)
             });
             ZoneInfoMap.Add("velketor", new ZoneInfo
             {
@@ -1180,7 +1180,7 @@ namespace EQTool.Services.Map
                 ShowAllMapLevels = false,
                 ZoneLevelHeight = 10,
                 NotableNPCs = new List<string>() { "", },
-                RespawnTime = new TimeSpan(0, 6, 40)
+                RespawnTime = new TimeSpan(0, 32, 50)
             });
             ZoneInfoMap.Add("wakening", new ZoneInfo
             {

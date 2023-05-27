@@ -63,6 +63,10 @@ namespace EQTool.ViewModels
 
         private string LoadedZone = string.Empty;
 
+        public double ZoneLabelFontSize => MathHelper.ChangeRange(Math.Max(AABB.MaxWidth, AABB.MaxHeight), 500, 35000, 50, 150);
+        public double OtherLabelFontSize => MathHelper.ChangeRange(Math.Max(AABB.MaxWidth, AABB.MaxHeight), 500, 35000, 20, 100);
+        public double SmallFontSize => MathHelper.ChangeRange(Math.Max(AABB.MaxWidth, AABB.MaxHeight), 500, 35000, 10, 50);
+
         public bool LoadMap(string zone, PanAndZoomCanvas canvas)
         {
             if (MapLoading)
@@ -89,7 +93,8 @@ namespace EQTool.ViewModels
                 Debug.WriteLine($"Time to load {zone} - {stop.ElapsedMilliseconds}ms");
                 if (map.Labels.Any() || map.Lines.Any())
                 {
-                    canvas.Reset(Math.Max(map.AABB.MaxWidth, map.AABB.MaxHeight));
+                    canvas.Reset(Math.Max(map.AABB.MaxWidth, map.AABB.MaxHeight), zone);
+                    AABB = map.AABB;
                     LoadedZone = Title = zone;
                     Debug.WriteLine($"Loading: {zone}");
                     //var colordic = new Dictionary<System.Windows.Media.Color, Tuple<EQMapColor, SolidColorBrush>>();
@@ -134,15 +139,13 @@ namespace EQTool.ViewModels
                     canvas.Height = Math.Abs(map.AABB.MaxHeight);
                     canvas.Width = Math.Abs(map.AABB.MaxWidth);
                     Debug.WriteLine($"Labels: {map.Labels.Count}");
-                    var smallscaling = MathHelper.ChangeRange(Math.Max(map.AABB.MaxWidth, map.AABB.MaxHeight), 500, 35000, 20, 100);
-                    var largescaling = MathHelper.ChangeRange(Math.Max(map.AABB.MaxWidth, map.AABB.MaxHeight), 500, 35000, 50, 150);
                     foreach (var item in map.Labels)
                     {
                         var text = new TextBlock
                         {
                             Tag = item,
                             Text = item.label.Replace('_', ' '),
-                            FontSize = item.LabelSize == LabelSize.Large ? largescaling : smallscaling,
+                            FontSize = item.LabelSize == LabelSize.Large ? ZoneLabelFontSize : OtherLabelFontSize,
                             Foreground = new SolidColorBrush(App.Theme == Themes.Light ? System.Windows.Media.Color.FromRgb(0, 0, 0) : System.Windows.Media.Color.FromRgb(255, 255, 255)),
                             RenderTransform = canvas.Transform
                         };
@@ -198,7 +201,7 @@ namespace EQTool.ViewModels
                     //    StrokeThickness = playerstrokthickness
                     //};
 
-                    AABB = map.AABB;
+
                     _ = canvas.Children.Add(PlayerLocationIcon);
                     Canvas.SetLeft(PlayerLocationIcon, AABB.Center.X + (playerlocsize / 2));
                     Canvas.SetTop(PlayerLocationIcon, AABB.Center.Y + (playerlocsize / 2));
