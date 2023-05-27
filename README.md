@@ -29,6 +29,8 @@ Features:
 <li>Show fight Session data for comparisons.</li>
 <li>Sieve Counter</li>
 <li>Mob info shows pricing data for each item!</li>
+<li>Timers on map for easy TOD tracking!</li>
+<li>Pricing information in Mob info window.</li>
 <li>Save spells cast on you when you log out so when you log back in they resume counter!</li>
 <li>Maps</li>
 <li>Timers (Only Minutes are supported)</li>
@@ -40,8 +42,8 @@ Features:
 <li>Timer Cancel Crypt Camp</li>
 <li>Cancel Timer Crypt Camp</li>
 </ul>
-<img width="1150" alt="image" src="https://user-images.githubusercontent.com/3393733/230678396-8f706c5c-94e0-4153-91e9-fef9a84b5537.png">
-
+<img width="1624" alt="image" src="https://github.com/smasherprog/EqTool/assets/3393733/3c53a1d8-44c4-499b-9e92-ea5d5f38275e">
+ 
 <h4>System Tray Icon</h4>
 <img width="152" alt="image" src="https://user-images.githubusercontent.com/3393733/212717141-6e26b9af-660a-493d-9f73-2c3464b7c224.png">
 
@@ -85,7 +87,7 @@ Features:
 <li>Add loot TAB to Mob Window. This tab will show item name, looted from, player name who looted, and unix geek price data, running total looted.</li>
 </ul>
 
-<h3>Faqs</h3>
+<h3>FAQS</h3>
 <h4>Why does chrome warn me?</h4> 
 <img alt="image" src="https://user-images.githubusercontent.com/3393733/223326270-a079946d-57dc-41dd-a58e-f46a0c776b54.png">
 <ul>
