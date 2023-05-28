@@ -75,28 +75,51 @@ namespace EQTool
         {
             new UpdateService().CheckForUpdates(Version);
         }
+        public enum BuildType
+        {
+            Release,
+            Debug,
+            Test,
+            Beta
+        }
+
+        public enum EventType
+        {
+            Error,
+            StartUp,
+            Update,
+            OpenMap,
+            OpenMobInfo,
+            OpenDPS,
+            OpenTriggers
+        }
+
         public class ExceptionRequest
         {
             public string Version { get; set; }
             public string Exception { get; set; }
+            public EventType EventType { get; set; }
+            public BuildType BuildType { get; set; }
         }
 
         public static void LogUnhandledException(Exception exception, string source)
         {
-            var build = "Release";
+            var build = BuildType.Release;
 #if TEST
-            build = "Test";
+            build =  BuildType.Test;
 #elif DEBUG
-            build = "Debug";
+            build = BuildType.Debug;
 #elif BETA
-            build = "Beta";
+            build = BuildType.Beta;
 #endif
             try
             {
                 var msg = new ExceptionRequest
                 {
                     Version = Version,
-                    Exception = $"{build} Unhandled exception ({source}) {exception}"
+                    Exception = $"Unhandled exception ({source}) {exception}",
+                    EventType = EventType.Error,
+                    BuildType = build
                 };
                 var msagasjson = Newtonsoft.Json.JsonConvert.SerializeObject(msg);
                 var content = new StringContent(msagasjson, Encoding.UTF8, "application/json");

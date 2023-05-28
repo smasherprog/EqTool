@@ -10,6 +10,8 @@ namespace EQToolApis.Controllers
         public string? Version { get; set; }
         public string? Message { get; set; }
         public EventType? EventType { get; set; }
+        public BuildType? BuildType { get; set; }
+
     }
 
     [ApiExplorerSettings(IgnoreApi = true)]
@@ -31,7 +33,8 @@ namespace EQToolApis.Controllers
                 Version = model.Version,
                 DateCreated = DateTime.UtcNow,
                 EventType = model.EventType,
-                IpAddress = ip
+                IpAddress = ip,
+                BuildType = model.BuildType
             });
 
             _ = dbcontext.SaveChanges();

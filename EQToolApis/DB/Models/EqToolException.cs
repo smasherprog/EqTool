@@ -19,5 +19,6 @@ namespace EQToolApis.DB.Models
         public DateTime DateCreated { get; set; }
 
         public EventType? EventType { get; set; }
+        public BuildType? BuildType { get; set; }
     }
 }
