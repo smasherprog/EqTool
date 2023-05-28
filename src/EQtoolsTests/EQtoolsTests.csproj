@@ -133,6 +133,7 @@
     <Compile Include="DI.cs" />
     <Compile Include="FindEqTests.cs" />
     <Compile Include="DiscordTests.cs" />
+    <Compile Include="ParsingTests.cs" />
     <Compile Include="MobInfoTests.cs" />
     <Compile Include="DamageTests.cs" />
     <Compile Include="LogFileNameTests.cs" />

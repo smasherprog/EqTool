@@ -1375,10 +1375,10 @@ namespace EQTool.Services.Map
             ZoneNameMapper.Add("chardok", "chardok");
             ZoneNameMapper.Add("kithicor woods", "kithicor");
             ZoneNameMapper.Add("temple of solusek ro", "soltemple");
+            Zones = ZoneInfoMap.Keys.ToList();
         }
 
-        public static List<string> Zones => ZoneInfoMap.Keys.ToList();
-
+        public static readonly List<string> Zones;
         public static string TranslateToMapName(string name)
         {
             name = name?.ToLower()?.Trim();
