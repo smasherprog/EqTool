@@ -155,7 +155,7 @@ namespace EQTool.Services
                 try
                 {
                     var prerelease = false;
-#if Beta
+#if BETA
                     prerelease = true;
 #endif
                     var json = httpclient.GetAsync(new Uri("https://api.github.com/repos/smasherprog/EqTool/releases")).Result.Content.ReadAsStringAsync().Result;

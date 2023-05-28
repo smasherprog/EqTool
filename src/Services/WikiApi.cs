@@ -1,4 +1,5 @@
-﻿using System.Net;
+﻿using EQTool.ViewModels;
+using System.Net;
 using System.Net.Http;
 using System.Web;
 
@@ -6,12 +7,20 @@ namespace EQTool.Services
 {
     public class WikiApi
     {
-        public WikiApi()
+        private readonly ActivePlayer activePlayer;
+        public WikiApi(ActivePlayer activePlayer)
         {
+            this.activePlayer = activePlayer;
         }
 
         public string GetData(string name)
         {
+            var currentzone = activePlayer?.Player?.Zone;
+            if (name == "Snitch" && currentzone == "mischiefplane")
+            {
+                name = "Snitch_(PoM)";
+            }
+
             try
             {
                 name = HttpUtility.UrlEncode(name.Trim().Replace(' ', '_'));

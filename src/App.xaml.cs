@@ -83,12 +83,20 @@ namespace EQTool
 
         public static void LogUnhandledException(Exception exception, string source)
         {
+            var build = "Release";
+#if TEST
+            build = "Test";
+#elif DEBUG
+            build = "Debug";
+#elif BETA
+            build = "Beta";
+#endif
             try
             {
                 var msg = new ExceptionRequest
                 {
                     Version = Version,
-                    Exception = $"Unhandled exception ({source}) {exception}"
+                    Exception = $"{build} Unhandled exception ({source}) {exception}"
                 };
                 var msagasjson = Newtonsoft.Json.JsonConvert.SerializeObject(msg);
                 var content = new StringContent(msagasjson, Encoding.UTF8, "application/json");
@@ -154,7 +162,7 @@ namespace EQTool
             var versionstring = Assembly.GetExecutingAssembly().GetName().Version.ToString();
             var beta = false;
 
-#if Beta || DEBUG
+#if BETA || DEBUG
             beta = true;
 #endif
 
@@ -245,7 +253,7 @@ namespace EQTool
                     return _Version;
                 }
                 var v = Assembly.GetExecutingAssembly().GetName().Version.ToString();
-#if Beta
+#if BETA
                 v = "Beta-" + v;
 #endif
                 _Version = v;

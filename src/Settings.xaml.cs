@@ -69,7 +69,7 @@ namespace EQTool
 
             var releasemode = false;
 
-#if Release
+#if RELEASE
             releasemode = true;
 #endif
             if (releasemode)
