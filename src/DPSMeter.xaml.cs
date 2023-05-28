@@ -23,8 +23,9 @@ namespace EQTool
         private readonly EQToolSettings settings;
         private readonly EQToolSettingsLoad toolSettingsLoad;
 
-        public DPSMeter(LogParser logParser, DPSWindowViewModel dPSWindowViewModel, EQToolSettings settings, EQToolSettingsLoad toolSettingsLoad)
+        public DPSMeter(LogParser logParser, DPSWindowViewModel dPSWindowViewModel, EQToolSettings settings, EQToolSettingsLoad toolSettingsLoad, LoggingService loggingService)
         {
+            loggingService.Log(string.Empty, App.EventType.OpenDPS);
             this.settings = settings;
             this.logParser = logParser;
             this.logParser.FightHitEvent += LogParser_FightHitEvent;
@@ -125,7 +126,7 @@ namespace EQTool
         {
             WindowState = WindowState == System.Windows.WindowState.Maximized ? System.Windows.WindowState.Normal : System.Windows.WindowState.Maximized;
         }
-         
+
         private void opendps(object sender, RoutedEventArgs e)
         {
             (App.Current as App).OpenDPSWindow();
@@ -166,15 +167,15 @@ namespace EQTool
         }
 
         private void MoveCurrentToLastSession(object sender, RoutedEventArgs e)
-        { 
-            this.dPSWindowViewModel.SessionPlayerDamage.LastSessionPlayerDamage = this.dPSWindowViewModel.SessionPlayerDamage.CurrentSessionPlayerDamage;
-            this.dPSWindowViewModel.SessionPlayerDamage.CurrentSessionPlayerDamage = new PlayerDamage();
+        {
+            dPSWindowViewModel.SessionPlayerDamage.LastSessionPlayerDamage = dPSWindowViewModel.SessionPlayerDamage.CurrentSessionPlayerDamage;
+            dPSWindowViewModel.SessionPlayerDamage.CurrentSessionPlayerDamage = new PlayerDamage();
         }
 
         private void RemoveLastSession(object sender, RoutedEventArgs e)
         {
-            this.dPSWindowViewModel.SessionPlayerDamage.LastSessionPlayerDamage = null;
+            dPSWindowViewModel.SessionPlayerDamage.LastSessionPlayerDamage = null;
         }
-        
+
     }
 }

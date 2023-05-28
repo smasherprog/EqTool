@@ -6,7 +6,7 @@ namespace EQTool.Services
 {
     public class LoggingService
     {
-        public HttpClient httpclient = new HttpClient();
+        private readonly HttpClient httpclient = new HttpClient();
 
         public void Log(string message, EventType eventType)
         {
@@ -24,7 +24,7 @@ namespace EQTool.Services
                 {
                     Version = App.Version,
                     Exception = message,
-                    EventType = EventType.Error,
+                    EventType = eventType,
                     BuildType = build
                 };
                 var msagasjson = Newtonsoft.Json.JsonConvert.SerializeObject(msg);

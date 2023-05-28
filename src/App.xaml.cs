@@ -174,6 +174,7 @@ namespace EQTool
         private void InitStuff()
         {
             container = DI.Init();
+            container.Resolve<LoggingService>().Log(string.Empty, EventType.StartUp);
             SettingsMenuItem = new System.Windows.Forms.MenuItem("Settings", ToggleSettingsWindow);
             SpellsMenuItem = new System.Windows.Forms.MenuItem("Spells", ToggleSpellsWindow);
             MapMenuItem = new System.Windows.Forms.MenuItem("Map", ToggleMapWindow);

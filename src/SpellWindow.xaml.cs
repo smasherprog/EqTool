@@ -21,8 +21,9 @@ namespace EQTool
         private readonly ActivePlayer activePlayer;
         private long? LastLogReadOffset;
 
-        public SpellWindow(EQToolSettings settings, SpellWindowViewModel spellWindowViewModel, LogParser logParser, EQToolSettingsLoad toolSettingsLoad, ActivePlayer activePlayer)
+        public SpellWindow(EQToolSettings settings, SpellWindowViewModel spellWindowViewModel, LogParser logParser, EQToolSettingsLoad toolSettingsLoad, ActivePlayer activePlayer, LoggingService loggingService)
         {
+            loggingService.Log(string.Empty, App.EventType.OpenMap);
             this.settings = settings;
             this.logParser = logParser;
             this.activePlayer = activePlayer;

@@ -25,8 +25,9 @@ namespace EQTool
         private readonly System.Timers.Timer UITimer;
         private bool AutomaticallyAddTimerOnDeath = false;
 
-        public MappingWindow(MapViewModel mapViewModel, LogParser logParser, EQToolSettings settings, EQToolSettingsLoad toolSettingsLoad, IAppDispatcher appDispatcher)
+        public MappingWindow(MapViewModel mapViewModel, LogParser logParser, EQToolSettings settings, EQToolSettingsLoad toolSettingsLoad, IAppDispatcher appDispatcher, LoggingService loggingService)
         {
+            loggingService.Log(string.Empty, App.EventType.OpenMap);
             this.settings = settings;
             this.toolSettingsLoad = toolSettingsLoad;
             this.appDispatcher = appDispatcher;

@@ -24,8 +24,9 @@ namespace EQTool
         private readonly PigParseApi pigParseApi;
         private readonly ActivePlayer activePlayer;
 
-        public MobInfo(ActivePlayer activePlayer, PigParseApi pigParseApi, WikiApi wikiApi, LogParser logParser, EQToolSettings settings, EQToolSettingsLoad toolSettingsLoad)
+        public MobInfo(ActivePlayer activePlayer, PigParseApi pigParseApi, WikiApi wikiApi, LogParser logParser, EQToolSettings settings, EQToolSettingsLoad toolSettingsLoad, LoggingService loggingService)
         {
+            loggingService.Log(string.Empty, App.EventType.OpenMobInfo);
             this.activePlayer = activePlayer;
             this.pigParseApi = pigParseApi;
             this.wikiApi = wikiApi;
