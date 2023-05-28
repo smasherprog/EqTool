@@ -2,7 +2,7 @@
 
  
 [![Watch the video](http://img.youtube.com/vi/mH-4-UAzJqA/0.jpg)](https://www.youtube.com/watch?v=mH-4-UAzJqA)
-<h3>You tube link above</h3>
+
 <h2>THIS PROGRAM WORKS SOLELY BY READING YOUR LOG FILE. This is legal according to the <a href="https://www.project1999.com/forums/showthread.php?t=325349">rules.</a></h2>
 <img width="851" alt="image" src="https://user-images.githubusercontent.com/3393733/214930917-994fa61b-f1c8-414b-9761-1c93ca247b63.png">
 
