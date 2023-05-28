@@ -8,11 +8,16 @@ namespace EQToolApis.DB.Models
     {
         public int Id { get; set; }
 
-        public string Exception { get; set; }
+        public string? Exception { get; set; }
 
         [MaxLength(24)]
-        public string Version { get; set; }
+        public string? Version { get; set; }
+
+        [MaxLength(24)]
+        public string? IpAddress { get; set; }
 
         public DateTime DateCreated { get; set; }
+
+        public EventType? EventType { get; set; }
     }
 }

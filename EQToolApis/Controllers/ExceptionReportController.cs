@@ -7,8 +7,9 @@ namespace EQToolApis.Controllers
     public class ExceptionRequest
     {
         [MaxLength(24)]
-        public string Version { get; set; }
-        public string Exception { get; set; }
+        public string? Version { get; set; }
+        public string? Message { get; set; }
+        public EventType? EventType { get; set; }
     }
 
     [ApiExplorerSettings(IgnoreApi = true)]
@@ -23,11 +24,14 @@ namespace EQToolApis.Controllers
         [Route("api/eqtool/exception"), HttpPost]
         public void Update([FromBody] ExceptionRequest model)
         {
+            var ip = HttpContext.Connection.RemoteIpAddress?.ToString();
             _ = dbcontext.EqToolExceptions.Add(new DB.Models.EqToolException
             {
-                Exception = model.Exception,
+                Exception = model.Message,
                 Version = model.Version,
-                DateCreated = DateTime.UtcNow
+                DateCreated = DateTime.UtcNow,
+                EventType = model.EventType,
+                IpAddress = ip
             });
 
             _ = dbcontext.SaveChanges();
