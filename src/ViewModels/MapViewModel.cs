@@ -254,7 +254,6 @@ namespace EQTool.ViewModels
             if (l.Stroke.IsFrozen)
             {
                 l.Stroke = l.Stroke.Clone();
-                Debug.WriteLine("FROZEN");
             }
 
             l.Stroke.Opacity = v;
@@ -265,7 +264,6 @@ namespace EQTool.ViewModels
             if (l.Stroke.IsFrozen)
             {
                 l.Stroke = l.Stroke.Clone();
-                Debug.WriteLine("FROZEN");
             }
 
             l.Stroke.Opacity = v;
@@ -276,7 +274,6 @@ namespace EQTool.ViewModels
             if (l.Foreground.IsFrozen)
             {
                 l.Foreground = l.Foreground.Clone();
-                Debug.WriteLine("FROZEN");
             }
 
             l.Foreground.Opacity = v;
