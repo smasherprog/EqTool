@@ -249,6 +249,39 @@ namespace EQTool.ViewModels
             mw.RenderTransform = transform;
         }
 
+        private void SetOpacity(Line l, double v)
+        {
+            if (l.Stroke.IsFrozen)
+            {
+                l.Stroke = l.Stroke.Clone();
+                Debug.WriteLine("FROZEN");
+            }
+
+            l.Stroke.Opacity = v;
+        }
+
+        private void SetOpacity(Ellipse l, double v)
+        {
+            if (l.Stroke.IsFrozen)
+            {
+                l.Stroke = l.Stroke.Clone();
+                Debug.WriteLine("FROZEN");
+            }
+
+            l.Stroke.Opacity = v;
+        }
+
+        private void SetOpacity(TextBlock l, double v)
+        {
+            if (l.Foreground.IsFrozen)
+            {
+                l.Foreground = l.Foreground.Clone();
+                Debug.WriteLine("FROZEN");
+            }
+
+            l.Foreground.Opacity = v;
+        }
+
         public void UpdateLocation(Point3D value1, PanAndZoomCanvas canvas)
         {
             if (MapLoading || PlayerLocationIcon == null)
@@ -283,18 +316,18 @@ namespace EQTool.ViewModels
 
                         if (shortestdistance < zoneinfo.ZoneLevelHeight)
                         {
-                            a.Stroke.Opacity = 1;
+                            SetOpacity(a, 1);
                         }
                         else if (shortestdistance >= zoneinfo.ZoneLevelHeight && shortestdistance <= twiceheight + zoneinfo.ZoneLevelHeight)
                         {
                             var dist = ((shortestdistance - zoneinfo.ZoneLevelHeight) * -1) + twiceheight; //changed range to [0,80] with 0 being the FURTHest distance
                             dist = (dist / twiceheight) + .1; // scale to [.1,1.1] 
                             _ = Clamp(dist, .1, 1);
-                            a.Stroke.Opacity = dist;
+                            SetOpacity(a, dist);
                         }
                         else
                         {
-                            a.Stroke.Opacity = .1;
+                            SetOpacity(a, .1);
                         }
                     }
                     else if (child is TextBlock t)
@@ -305,18 +338,18 @@ namespace EQTool.ViewModels
 
                         if (shortestdistance < zoneinfo.ZoneLevelHeight)
                         {
-                            t.Foreground.Opacity = 1;
+                            SetOpacity(t, 1);
                         }
                         else if (shortestdistance >= zoneinfo.ZoneLevelHeight && shortestdistance <= twiceheight + zoneinfo.ZoneLevelHeight)
                         {
                             var dist = ((shortestdistance - zoneinfo.ZoneLevelHeight) * -1) + twiceheight; //changed range to [0,80] with 0 being the FURTHest distance
                             dist = (dist / twiceheight) + .1; // scale to [.1,1.1] 
                             _ = Clamp(dist, .1, 1);
-                            t.Foreground.Opacity = dist;
+                            SetOpacity(t, dist);
                         }
                         else
                         {
-                            t.Foreground.Opacity = .1;
+                            SetOpacity(t, .1);
                         }
                     }
                     else if (child is Ellipse e)
@@ -327,18 +360,18 @@ namespace EQTool.ViewModels
 
                         if (shortestdistance < zoneinfo.ZoneLevelHeight)
                         {
-                            e.Stroke.Opacity = 1;
+                            SetOpacity(e, 1);
                         }
                         else if (shortestdistance >= zoneinfo.ZoneLevelHeight && shortestdistance <= twiceheight + zoneinfo.ZoneLevelHeight)
                         {
                             var dist = ((shortestdistance - zoneinfo.ZoneLevelHeight) * -1) + twiceheight; //changed range to [0,80] with 0 being the FURTHest distance
                             dist = (dist / twiceheight) + .1; // scale to [.1,1.1] 
                             _ = Clamp(dist, .1, 1);
-                            e.Stroke.Opacity = dist;
+                            SetOpacity(e, dist);
                         }
                         else
                         {
-                            e.Stroke.Opacity = .1;
+                            SetOpacity(e, .1);
                         }
                     }
                 }
