@@ -97,7 +97,7 @@ namespace EQTool
         public class ExceptionRequest
         {
             public string Version { get; set; }
-            public string Exception { get; set; }
+            public string Message { get; set; }
             public EventType EventType { get; set; }
             public BuildType BuildType { get; set; }
         }
@@ -117,7 +117,7 @@ namespace EQTool
                 var msg = new ExceptionRequest
                 {
                     Version = Version,
-                    Exception = $"Unhandled exception ({source}) {exception}",
+                    Message = $"Unhandled exception ({source}) {exception}",
                     EventType = EventType.Error,
                     BuildType = build
                 };

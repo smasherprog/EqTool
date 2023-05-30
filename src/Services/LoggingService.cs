@@ -23,7 +23,7 @@ namespace EQTool.Services
                 var msg = new ExceptionRequest
                 {
                     Version = App.Version,
-                    Exception = message,
+                    Message = message,
                     EventType = eventType,
                     BuildType = build
                 };
