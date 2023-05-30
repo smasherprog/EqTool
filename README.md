@@ -54,8 +54,7 @@ Features:
 <ul> 
  <li>Add timers for cooldowns on abilities, like mend, defensive, etc.</li> 
  <li>Add code to detect pet and always show buffs for your pet.</li> 
-<li>Tab under Mob info window for last few minutes of Random rolls ordered by highest to lowest. </li> 
-<li>Use the current zone to better display correct mob info. For example Orc centurions can be in multiple zones! </li> 
+<li>Tab under Mob info window for last few minutes of Random rolls ordered by highest to lowest. </li>  
 <li>Extend Mob Info Window to show Players. Add note field to window that is saved locally. </li> 
 <li>Add visual cue that buff is under 1 minute left. </li> 
 <li>Add option to enable OTHERS hits for DPS meter. </li> 
