@@ -9,6 +9,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Shapes;
 using static EQTool.Services.MapLoad;
 
 namespace EQTool
@@ -16,6 +17,7 @@ namespace EQTool
     public partial class PanAndZoomCanvas : Canvas
     {
         public MatrixTransform Transform = new MatrixTransform();
+        public MapViewModel mapViewModel;
         private Point _initialMousePosition;
         private readonly PanAndZoomViewModel panAndZoomViewModel;
         private readonly List<MapWidget> MapWidgets = new List<MapWidget>();
@@ -224,6 +226,13 @@ namespace EQTool
                         transform.Matrix = c.RotateTransform.Value * translation.Value;
                         c.RenderTransform = transform;
                     }
+                    else if (child is Ellipse el)
+                    {
+                        var transform = new MatrixTransform();
+                        var translation = new TranslateTransform(Transform.Value.OffsetX, Transform.Value.OffsetY);
+                        transform.Matrix = translation.Value;
+                        el.RenderTransform = transform;
+                    }
                     else
                     {
                         child.RenderTransform = Transform;
@@ -281,17 +290,39 @@ namespace EQTool
                 var sx = x * scaleFactor;
                 var sy = y * scaleFactor;
 
-                Canvas.SetLeft(child, sx);
-                Canvas.SetTop(child, sy);
+
                 if (child is ArrowLine c)
                 {
+                    Canvas.SetLeft(child, sx);
+                    Canvas.SetTop(child, sy);
                     var transform = new MatrixTransform();
                     var translation = new TranslateTransform(Transform.Value.OffsetX, Transform.Value.OffsetY);
                     transform.Matrix = c.RotateTransform.Value * translation.Value;
                     c.RenderTransform = transform;
                 }
+                else if (child is Ellipse el)
+                {
+                    if (!string.IsNullOrWhiteSpace(el.Name))
+                    {
+                        var heighdiv2 = mapViewModel.PlayerLocationCircle.Height / 2 / CurrentScaling;
+                        Canvas.SetLeft(el, -(mapViewModel.Lastlocation.Y + mapViewModel.MapOffset.X + heighdiv2) * CurrentScaling);
+                        Canvas.SetTop(el, -(mapViewModel.Lastlocation.X + mapViewModel.MapOffset.Y + heighdiv2) * CurrentScaling);
+                    }
+                    else
+                    {
+                        Canvas.SetLeft(child, sx);
+                        Canvas.SetTop(child, sy);
+                    }
+
+                    var transform = new MatrixTransform();
+                    var translation = new TranslateTransform(Transform.Value.OffsetX, Transform.Value.OffsetY);
+                    transform.Matrix = translation.Value;
+                    el.RenderTransform = transform;
+                }
                 else if (child is TextBlock t)
                 {
+                    Canvas.SetLeft(child, sx);
+                    Canvas.SetTop(child, sy);
                     var textdata = t.Tag as MapLabel;
                     if (textdata.LabelSize == LabelSize.Large)
                     {
@@ -316,6 +347,8 @@ namespace EQTool
                 }
                 else
                 {
+                    Canvas.SetLeft(child, sx);
+                    Canvas.SetTop(child, sy);
                     child.RenderTransform = Transform;
                 }
             }

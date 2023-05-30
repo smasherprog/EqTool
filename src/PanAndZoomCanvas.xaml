@@ -4,10 +4,10 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:ui="using:Microsoft.Toolkit.Uwp.UI"
-        xmlns:local="clr-namespace:EQTool" xmlns:xctk="http://schemas.xceed.com/wpf/xaml/toolkit"
+        xmlns:local="clr-namespace:EQTool" 
         mc:Ignorable="d"
         Background="Transparent"
-       >
+       > 
     <Canvas.ContextMenu>
         <ContextMenu Width="130" Name="TimerMenu" Closed="TimerMenu_Closed" Opened="TimerMenu_Opened">
             <MenuItem Name="AddTimerMenuItem"  Click="AddTimer">
@@ -30,5 +30,5 @@
                 </MenuItem.Header>
             </MenuItem>
         </ContextMenu>
-    </Canvas.ContextMenu>
+    </Canvas.ContextMenu> 
 </Canvas >

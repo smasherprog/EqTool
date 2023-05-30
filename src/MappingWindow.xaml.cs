@@ -34,7 +34,7 @@ namespace EQTool
             this.logParser = logParser;
             DataContext = this.mapViewModel = mapViewModel;
             InitializeComponent();
-
+            Map.mapViewModel = mapViewModel;
             WindowExtensions.AdjustWindow(settings.MapWindowState, this);
             Topmost = Properties.Settings.Default.GlobalMapWindowAlwaysOnTop;
             App.ThemeChangedEvent += App_ThemeChangedEvent;

@@ -27,11 +27,13 @@ namespace EQTool.ViewModels
             this.activePlayer = activePlayer;
         }
 
-        private Point3D Lastlocation = new Point3D(0, 0, 0);
+        public Point3D Lastlocation = new Point3D(0, 0, 0);
         public AABB AABB = new AABB();
-        private Point3D MapOffset = new Point3D(0, 0, 0);
+        public Point3D MapOffset = new Point3D(0, 0, 0);
 
         public ArrowLine PlayerLocationIcon { get; set; }
+
+        public Ellipse PlayerLocationCircle { get; set; }
 
         private string _Title = string.Empty;
 
@@ -63,9 +65,9 @@ namespace EQTool.ViewModels
 
         private string LoadedZone = string.Empty;
 
-        public double ZoneLabelFontSize => MathHelper.ChangeRange(Math.Max(AABB.MaxWidth, AABB.MaxHeight), 500, 35000, 50, 150);
-        public double OtherLabelFontSize => MathHelper.ChangeRange(Math.Max(AABB.MaxWidth, AABB.MaxHeight), 500, 35000, 20, 100);
-        public double SmallFontSize => MathHelper.ChangeRange(Math.Max(AABB.MaxWidth, AABB.MaxHeight), 500, 35000, 10, 50);
+        public double ZoneLabelFontSize => MathHelper.ChangeRange(Math.Max(AABB.MaxWidth, AABB.MaxHeight), 500, 35000, 20, 170);
+        public double OtherLabelFontSize => MathHelper.ChangeRange(Math.Max(AABB.MaxWidth, AABB.MaxHeight), 500, 35000, 10, 110);
+        public double SmallFontSize => MathHelper.ChangeRange(Math.Max(AABB.MaxWidth, AABB.MaxHeight), 500, 35000, 7, 50);
 
         public bool LoadMap(string zone, PanAndZoomCanvas canvas)
         {
@@ -167,22 +169,23 @@ namespace EQTool.ViewModels
 
                     var playerlocsize = MathHelper.ChangeRange(Math.Max(map.AABB.MaxWidth, map.AABB.MaxHeight), 500, 35000, 40, 1750);
                     var playerstrokthickness = MathHelper.ChangeRange(Math.Max(map.AABB.MaxWidth, map.AABB.MaxHeight), 500, 35000, 3, 40);
-                    //PlayerLocationIcon = new Polyline
-                    //{
-                    //    Points = new PointCollection(new List<Point>
-                    //     {
-                    //      new Point(25, 25),
-                    //        new Point(0,50),
-                    //        new Point(25,75),
-                    //        new Point(50,50),
-                    //        new Point(25,25),
-                    //        new Point(25,0)
-                    //     }),
-                    //    Stroke = new SolidColorBrush(System.Windows.Media.Color.FromRgb(61, 235, 52)),
-                    //    StrokeThickness = 20
-                    //};
+                    PlayerLocationCircle = new Ellipse
+                    {
+                        Name = "PlayerLocationCircle",
+                        Height = playerlocsize / 4,
+                        Width = playerlocsize / 4,
+                        Stroke = new SolidColorBrush(System.Windows.Media.Color.FromRgb(61, 235, 52)),
+                        StrokeThickness = playerstrokthickness,
+                        RenderTransform = new RotateTransform()
+                    };
+
+                    _ = canvas.Children.Add(PlayerLocationCircle);
+                    Canvas.SetLeft(PlayerLocationCircle, AABB.Center.X + PlayerLocationCircle.Height + (PlayerLocationCircle.Height / 2));
+                    Canvas.SetTop(PlayerLocationCircle, AABB.Center.Y + PlayerLocationCircle.Height + (PlayerLocationCircle.Height / 2));
+
                     PlayerLocationIcon = new ArrowLine
                     {
+                        Name = "PlayerLocation",
                         Stroke = new SolidColorBrush(System.Windows.Media.Color.FromRgb(61, 235, 52)),
                         StrokeThickness = playerstrokthickness,
                         X1 = 0,
@@ -193,18 +196,11 @@ namespace EQTool.ViewModels
                         ArrowEnds = ArrowEnds.End,
                         RotateTransform = new RotateTransform()
                     };
-                    //PlayerLocationIcon = new Ellipse
-                    //{
-                    //    Height = playerlocsize,
-                    //    Width = playerlocsize,
-                    //    Stroke = new SolidColorBrush(System.Windows.Media.Color.FromRgb(61, 235, 52)),
-                    //    StrokeThickness = playerstrokthickness
-                    //};
-
 
                     _ = canvas.Children.Add(PlayerLocationIcon);
                     Canvas.SetLeft(PlayerLocationIcon, AABB.Center.X + (playerlocsize / 2));
                     Canvas.SetTop(PlayerLocationIcon, AABB.Center.Y + (playerlocsize / 2));
+
                     return true;
                 }
 
@@ -294,10 +290,17 @@ namespace EQTool.ViewModels
             PlayerLocationIcon.RotateTransform = new RotateTransform(angle);
             Canvas.SetLeft(PlayerLocationIcon, -(value1.Y + MapOffset.X) * canvas.CurrentScaling);
             Canvas.SetTop(PlayerLocationIcon, -(value1.X + MapOffset.Y) * canvas.CurrentScaling);
+            var heighdiv2 = PlayerLocationCircle.Height / 2 / canvas.CurrentScaling;
+            Canvas.SetLeft(PlayerLocationCircle, -(value1.Y + MapOffset.X + heighdiv2) * canvas.CurrentScaling);
+            Canvas.SetTop(PlayerLocationCircle, -(value1.X + MapOffset.Y + heighdiv2) * canvas.CurrentScaling);
             var transform = new MatrixTransform();
             var translation = new TranslateTransform(canvas.Transform.Value.OffsetX, canvas.Transform.Value.OffsetY);
             transform.Matrix = PlayerLocationIcon.RotateTransform.Value * translation.Value;
             PlayerLocationIcon.RenderTransform = transform;
+            var transform2 = new MatrixTransform();
+            _ = new TranslateTransform(canvas.Transform.Value.OffsetX, canvas.Transform.Value.OffsetY);
+            transform2.Matrix = translation.Value;
+            PlayerLocationCircle.RenderTransform = transform2;
             var zoneinfo = ZoneParser.ZoneInfoMap[LoadedZone];
             if (!zoneinfo.ShowAllMapLevels && canvas.Children.Count > 0)
             {
@@ -351,24 +354,27 @@ namespace EQTool.ViewModels
                     }
                     else if (child is Ellipse e)
                     {
-                        var m = e.Tag as MapLabel;
-                        var shortestdistance = Math.Abs(m.Point.Z - lastloc.Z);
-                        shortestdistance = Math.Min(Math.Abs(m.Point.Z - lastloc.Z), shortestdistance);
+                        if (e != PlayerLocationCircle)
+                        {
+                            var m = e.Tag as MapLabel;
+                            var shortestdistance = Math.Abs(m.Point.Z - lastloc.Z);
+                            shortestdistance = Math.Min(Math.Abs(m.Point.Z - lastloc.Z), shortestdistance);
 
-                        if (shortestdistance < zoneinfo.ZoneLevelHeight)
-                        {
-                            SetOpacity(e, 1);
-                        }
-                        else if (shortestdistance >= zoneinfo.ZoneLevelHeight && shortestdistance <= twiceheight + zoneinfo.ZoneLevelHeight)
-                        {
-                            var dist = ((shortestdistance - zoneinfo.ZoneLevelHeight) * -1) + twiceheight; //changed range to [0,80] with 0 being the FURTHest distance
-                            dist = (dist / twiceheight) + .1; // scale to [.1,1.1] 
-                            _ = Clamp(dist, .1, 1);
-                            SetOpacity(e, dist);
-                        }
-                        else
-                        {
-                            SetOpacity(e, .1);
+                            if (shortestdistance < zoneinfo.ZoneLevelHeight)
+                            {
+                                SetOpacity(e, 1);
+                            }
+                            else if (shortestdistance >= zoneinfo.ZoneLevelHeight && shortestdistance <= twiceheight + zoneinfo.ZoneLevelHeight)
+                            {
+                                var dist = ((shortestdistance - zoneinfo.ZoneLevelHeight) * -1) + twiceheight; //changed range to [0,80] with 0 being the FURTHest distance
+                                dist = (dist / twiceheight) + .1; // scale to [.1,1.1] 
+                                _ = Clamp(dist, .1, 1);
+                                SetOpacity(e, dist);
+                            }
+                            else
+                            {
+                                SetOpacity(e, .1);
+                            }
                         }
                     }
                 }
