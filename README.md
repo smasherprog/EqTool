@@ -51,7 +51,8 @@ Features:
 <img width="152" alt="image" src="https://user-images.githubusercontent.com/3393733/212717141-6e26b9af-660a-493d-9f73-2c3464b7c224.png">
 
 <h4>TO DO List EQTool</h4>
-<ul> 
+<ul>  
+ <li>Add notice if eq is in program files and logging is not enabled.</li> 
  <li>Add context menu to toggle pather vs static.</li> 
  <li>Add timers for cooldowns on abilities, like mend, defensive, etc.</li> 
  <li>Add code to detect pet and always show buffs for your pet.</li> 
