@@ -175,21 +175,29 @@ namespace EQTool
             }
             try
             {
-                var data = File.ReadAllLines(settings.DefaultEqDirectory + "/eqclient.ini");
-                var newlist = new List<string>();
-                foreach (var item in data)
+                if (settings.DefaultEqDirectory.ToLower().Contains("program files"))
                 {
-                    var line = item.ToLower().Trim().Replace(" ", string.Empty);
-                    if (line.StartsWith("log="))
-                    {
-                        newlist.Add("Log=TRUE");
-                    }
-                    else
-                    {
-                        newlist.Add(item);
-                    }
+
                 }
-                File.WriteAllLines(settings.DefaultEqDirectory + "/eqclient.ini", newlist);
+                else
+                {
+                    var data = File.ReadAllLines(settings.DefaultEqDirectory + "/eqclient.ini");
+                    var newlist = new List<string>();
+                    foreach (var item in data)
+                    {
+                        var line = item.ToLower().Trim().Replace(" ", string.Empty);
+                        if (line.StartsWith("log="))
+                        {
+                            newlist.Add("Log=TRUE");
+                        }
+                        else
+                        {
+                            newlist.Add(item);
+                        }
+                    }
+                    File.WriteAllLines(settings.DefaultEqDirectory + "/eqclient.ini", newlist);
+                }
+
             }
             catch { }
             TryUpdateSettings();
