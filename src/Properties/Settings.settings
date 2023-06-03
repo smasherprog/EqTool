@@ -3,7 +3,7 @@
   <Profiles />
   <Settings>
     <Setting Name="ColorMode" Type="System.String" Scope="User">
-      <Value Profile="(Default)">Light</Value>
+      <Value Profile="(Default)">Dark</Value>
     </Setting>
     <Setting Name="GlobalFontSize" Type="System.Int32" Scope="User">
       <Value Profile="(Default)">12</Value>
