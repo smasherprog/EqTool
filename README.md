@@ -52,7 +52,6 @@ Features:
 
 <h4>TO DO List EQTool</h4>
 <ul>  
- <li>Add notice if eq is in program files and logging is not enabled.</li> 
  <li>Add context menu to toggle pather vs static.</li> 
  <li>Add timers for cooldowns on abilities, like mend, defensive, etc.</li> 
  <li>Add code to detect pet and always show buffs for your pet.</li> 
