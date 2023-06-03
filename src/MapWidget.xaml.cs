@@ -43,6 +43,12 @@ namespace EQTool
         {
             var timespan = EndTime - DateTime.Now;
             var timespanstring = string.Empty;
+            if (timespan.TotalSeconds <= 0)
+            {
+                ClockTextValue.Text = "00:00:00";
+                Background = new SolidColorBrush(GetColorFromRedYellowGreenGradient(0));
+                return 0;
+            }
             var percentleft = timespan.TotalSeconds / TotalInitialSeconds * 100;
             Background = new SolidColorBrush(GetColorFromRedYellowGreenGradient(percentleft));
             var timepart = (int)timespan.TotalHours;
