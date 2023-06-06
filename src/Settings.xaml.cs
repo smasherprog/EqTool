@@ -177,7 +177,7 @@ namespace EQTool
             {
                 if (settings.DefaultEqDirectory.ToLower().Contains("program files"))
                 {
-
+                    _ = System.Windows.MessageBox.Show("Everquest is installed in program files. YOU MUST ADD LOG=TRUE to the eqclient.ini yourself.", "Configuration", MessageBoxButton.OK, MessageBoxImage.Warning);
                 }
                 else
                 {
@@ -197,7 +197,6 @@ namespace EQTool
                     }
                     File.WriteAllLines(settings.DefaultEqDirectory + "/eqclient.ini", newlist);
                 }
-
             }
             catch { }
             TryUpdateSettings();

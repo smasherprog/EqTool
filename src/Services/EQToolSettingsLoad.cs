@@ -1,5 +1,6 @@
 ﻿using EQTool.Models;
 using Newtonsoft.Json;
+using System;
 using System.IO;
 
 namespace EQTool.Services
@@ -7,9 +8,11 @@ namespace EQTool.Services
     public class EQToolSettingsLoad
     {
         private readonly FindEq findEq;
-        public EQToolSettingsLoad(FindEq findEq)
+        private readonly LoggingService loggingService;
+        public EQToolSettingsLoad(FindEq findEq, LoggingService loggingService)
         {
             this.findEq = findEq;
+            this.loggingService = loggingService;
         }
 
         public EQToolSettings Load()
@@ -40,7 +43,10 @@ namespace EQTool.Services
                         }
                     }
                 }
-                catch { }
+                catch (Exception e)
+                {
+                    loggingService.Log(e.ToString(), App.EventType.Error);
+                }
             }
             var match = findEq.LoadEQPath();
             var ret = new EQToolSettings
@@ -82,9 +88,9 @@ namespace EQTool.Services
                 var txt = JsonConvert.SerializeObject(model, Formatting.Indented);
                 File.WriteAllText("settings.json", txt);
             }
-            catch
+            catch (Exception e)
             {
-
+                loggingService.Log(e.ToString(), App.EventType.Error);
             }
         }
     }

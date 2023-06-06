@@ -110,5 +110,48 @@ namespace EQTool.Services.Spells.Log
 
             return null;
         }
+
+        public enum PetLevel
+        {
+            Best,
+            AboveAverage,
+            Average,
+            BelowAverage,
+            Worst
+        }
+
+        public static PetLevel GetPetLevel(int hit, PlayerClasses playerClasses, int playerlevel)
+        {
+            if (playerClasses == PlayerClasses.Magician)
+            {
+                switch (hit)
+                {
+                    case 12 when playerlevel <= 4:
+                    case 16 when playerlevel <= 8:
+                    case 18 when playerlevel <= 12:
+                    case 20 when playerlevel <= 16:
+                    case 22 when playerlevel <= 20:
+                    case 26 when playerlevel <= 24:
+                    case 28 when playerlevel <= 29:
+                    case 34 when playerlevel <= 34:
+                    case 40 when playerlevel <= 39:
+                    case 48 when playerlevel <= 44:
+                    case 56 when playerlevel <= 49:
+                    case 58 when playerlevel <= 51:
+                    case 60 when playerlevel <= 57:
+                        return PetLevel.Best;
+                    case 11:
+                        return PetLevel.AboveAverage;
+                    case 10:
+                        return PetLevel.Average;
+                    case 9:
+                        return PetLevel.BelowAverage;
+                    case 8:
+                        return PetLevel.Worst;
+                }
+            }
+
+            return PetLevel.AboveAverage;
+        }
     }
 }

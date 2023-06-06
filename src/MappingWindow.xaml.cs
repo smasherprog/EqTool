@@ -139,7 +139,7 @@ namespace EQTool
         {
             UITimer?.Stop();
             UITimer?.Dispose();
-            App.ThemeChangedEvent -= App_ThemeChangedEvent;
+            App?.ThemeChangedEvent -= App_ThemeChangedEvent;
             logParser.PlayerLocationEvent -= LogParser_PlayerLocationEvent;
             logParser.PlayerZonedEvent -= LogParser_PlayerZonedEvent;
             logParser.PlayerChangeEvent -= LogParser_PlayerChangeEvent;
@@ -147,6 +147,7 @@ namespace EQTool
             SizeChanged -= Window_SizeChanged;
             StateChanged -= Window_StateChanged;
             LocationChanged -= Window_LocationChanged;
+            KeyDown -= PanAndZoomCanvas_KeyDown;
             SaveState();
             base.OnClosing(e);
         }
