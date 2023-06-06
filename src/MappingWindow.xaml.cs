@@ -139,7 +139,7 @@ namespace EQTool
         {
             UITimer?.Stop();
             UITimer?.Dispose();
-            App?.ThemeChangedEvent -= App_ThemeChangedEvent;
+            App.ThemeChangedEvent -= App_ThemeChangedEvent;
             logParser.PlayerLocationEvent -= LogParser_PlayerLocationEvent;
             logParser.PlayerZonedEvent -= LogParser_PlayerZonedEvent;
             logParser.PlayerChangeEvent -= LogParser_PlayerChangeEvent;
