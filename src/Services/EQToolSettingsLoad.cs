@@ -15,37 +15,39 @@ namespace EQTool.Services
             this.loggingService = loggingService;
         }
 
-        public EQToolSettings Load()
+        public EQToolSettings Load(int counter = 0)
         {
             if (File.Exists("settings.json"))
             {
                 try
                 {
-                    using (var r = new StreamReader("settings.json"))
+                    var json = File.ReadAllText("settings.json");
+                    var ret1 = JsonConvert.DeserializeObject<EQToolSettings>(json);
+                    if (ret1 != null)
                     {
-                        var json = r.ReadToEnd();
-                        var ret1 = JsonConvert.DeserializeObject<EQToolSettings>(json);
-                        if (ret1 != null)
+                        if (ret1.Players == null)
                         {
-                            if (ret1.Players == null)
-                            {
-                                ret1.Players = new System.Collections.Generic.List<PlayerInfo>();
-                            }
-
-                            foreach (var item in ret1.Players)
-                            {
-                                if (item.ShowSpellsForClasses == null)
-                                {
-                                    item.ShowSpellsForClasses = new System.Collections.Generic.List<PlayerClasses>();
-                                }
-                            }
-                            return ret1;
+                            ret1.Players = new System.Collections.Generic.List<PlayerInfo>();
                         }
+
+                        foreach (var item in ret1.Players)
+                        {
+                            if (item.ShowSpellsForClasses == null)
+                            {
+                                item.ShowSpellsForClasses = new System.Collections.Generic.List<PlayerClasses>();
+                            }
+                        }
+                        return ret1;
                     }
                 }
                 catch (Exception e)
                 {
+                    if (counter++ < 1)
+                    {
+                        return Load(counter);
+                    }
                     loggingService.Log(e.ToString(), App.EventType.Error);
+
                 }
             }
             var match = findEq.LoadEQPath();
