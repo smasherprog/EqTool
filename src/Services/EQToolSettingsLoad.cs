@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.IO;
+using System.Threading;
 
 namespace EQTool.Services
 {
@@ -44,6 +45,7 @@ namespace EQTool.Services
                 {
                     if (counter++ < 1)
                     {
+                        Thread.Sleep(1000);
                         return Load(counter);
                     }
 
