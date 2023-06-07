@@ -41,8 +41,7 @@ namespace EQToolTests
                     {
                         Closed = false,
                         State = System.Windows.WindowState.Normal
-                    },
-                    Theme = Themes.Light
+                    }
                 };
             }).AsSelf().SingleInstance();
             _ = builder.RegisterType<FakeAppDispatcher>().As<IAppDispatcher>().SingleInstance();
