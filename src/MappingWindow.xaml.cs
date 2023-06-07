@@ -4,11 +4,8 @@ using EQTool.ViewModels;
 using System;
 using System.ComponentModel;
 using System.Windows;
-using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
-using System.Windows.Shapes;
-using static EQTool.Services.MapLoad;
 
 namespace EQTool
 {
@@ -37,7 +34,6 @@ namespace EQTool
             Map.mapViewModel = mapViewModel;
             WindowExtensions.AdjustWindow(settings.MapWindowState, this);
             Topmost = Properties.Settings.Default.GlobalMapWindowAlwaysOnTop;
-            App.ThemeChangedEvent += App_ThemeChangedEvent;
             _ = mapViewModel.LoadDefaultMap(Map);
             this.logParser.PlayerLocationEvent += LogParser_PlayerLocationEvent;
             this.logParser.PlayerZonedEvent += LogParser_PlayerZonedEvent;
@@ -111,35 +107,10 @@ namespace EQTool
             mapViewModel.UpdateLocation(e.Location, Map);
         }
 
-        private void App_ThemeChangedEvent(object sender, App.ThemeChangeEventArgs e)
-        {
-            foreach (var item in Map.Children)
-            {
-                if (item is Line l)
-                {
-                    var c = l.Tag as MapLine;
-                    l.Stroke = new SolidColorBrush(e.Theme == Themes.Light ? c.ThemeColors.LightColor : c.ThemeColors.DarkColor);
-                }
-                else if (item is TextBlock t)
-                {
-                    _ = t.Tag as MapLabel;
-                    t.Foreground = new SolidColorBrush(App.Theme == Themes.Light ? System.Windows.Media.Color.FromRgb(0, 0, 0) : System.Windows.Media.Color.FromRgb(255, 255, 255));
-                }
-                else if (item is MapWidget mw)
-                {
-                    _ = mw.Tag as MapLabel;
-                    var textlabel = new SolidColorBrush(App.Theme == Themes.Light ? System.Windows.Media.Color.FromRgb(0, 0, 0) : System.Windows.Media.Color.FromRgb(255, 255, 255));
-                    var forgregroundlabel = new SolidColorBrush(App.Theme == Themes.Light ? System.Windows.Media.Color.FromRgb(255, 255, 255) : System.Windows.Media.Color.FromRgb(0, 0, 0));
-                    mw.SetTheme(textlabel, forgregroundlabel);
-                }
-            }
-        }
-
         protected override void OnClosing(CancelEventArgs e)
         {
             UITimer?.Stop();
             UITimer?.Dispose();
-            App.ThemeChangedEvent -= App_ThemeChangedEvent;
             logParser.PlayerLocationEvent -= LogParser_PlayerLocationEvent;
             logParser.PlayerZonedEvent -= LogParser_PlayerZonedEvent;
             logParser.PlayerChangeEvent -= LogParser_PlayerChangeEvent;

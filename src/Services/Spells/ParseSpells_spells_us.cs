@@ -1,5 +1,4 @@
 ﻿using EQTool.Models;
-using EQTool.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -18,7 +17,7 @@ namespace EQTool.Services
             this.settings = settings;
         }
 
-        private HashSet<string> IgnoreSpells = new HashSet<string>()
+        private readonly HashSet<string> IgnoreSpells = new HashSet<string>()
         {
             "FireElementalAttack2",
             "Outbreak",
@@ -46,7 +45,7 @@ namespace EQTool.Services
             "Malevolent Vex"
         };
 
-        private List<string> IgnoreRomanNumerals = new List<string>()
+        private readonly List<string> IgnoreRomanNumerals = new List<string>()
         {
             " I",
             " II",
@@ -64,7 +63,7 @@ namespace EQTool.Services
             " XIII",
             " XIV"
         };
-        private List<string> GoodRomanNumeralSpells = new List<string>()
+        private readonly List<string> GoodRomanNumeralSpells = new List<string>()
         {
             "Cannibalize",
             "Rune",
@@ -96,12 +95,12 @@ namespace EQTool.Services
             { "Celestial Tranquility", PlayerClasses.Monk },
             { "Seething Fury", PlayerClasses.Rogue }
         };
-        private List<SpellType> IgnoreSpellTypes = new List<SpellType>()
+        private readonly List<SpellType> IgnoreSpellTypes = new List<SpellType>()
         {
               SpellType.RagZhezumSpecial
         };
 
-    
+
         public List<SpellBase> GetSpells()
         {
             if (_Spells.Any())
@@ -117,7 +116,6 @@ namespace EQTool.Services
             {
                 var spellastext = File.ReadAllLines(settings.DefaultEqDirectory + "/spells_us.txt");
                 var skippedcounter = 0;
-                var index = 0;
                 var desctypes = new List<DescrNumber>() {
                  DescrNumber.ThePlanes,
                  DescrNumber.Luclin,

@@ -71,8 +71,6 @@ namespace EQTool.Models
             set => _MobWindowState = value ?? new WindowState();
         }
 
-        public Themes Theme { get; set; } = Themes.Light;
-
         public List<PlayerInfo> Players { get; set; } = new List<PlayerInfo>();
 
         public bool BestGuessSpells { get; set; }

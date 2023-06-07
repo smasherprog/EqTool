@@ -123,7 +123,7 @@ namespace EQTool.ViewModels
                     {
                         var c = EQMapColor.GetThemedColors(group.Color);
                         group.ThemeColors = c;
-                        var colorstuff = new SolidColorBrush(App.Theme == Themes.Light ? c.LightColor : c.DarkColor);
+                        var colorstuff = new SolidColorBrush(c.DarkColor);
                         var l = new Line
                         {
                             Tag = group,
@@ -148,7 +148,7 @@ namespace EQTool.ViewModels
                             Tag = item,
                             Text = item.label.Replace('_', ' '),
                             FontSize = item.LabelSize == LabelSize.Large ? ZoneLabelFontSize : OtherLabelFontSize,
-                            Foreground = new SolidColorBrush(App.Theme == Themes.Light ? System.Windows.Media.Color.FromRgb(0, 0, 0) : System.Windows.Media.Color.FromRgb(255, 255, 255)),
+                            Foreground = new SolidColorBrush(System.Windows.Media.Color.FromRgb(255, 255, 255)),
                             RenderTransform = canvas.Transform
                         };
                         var circle = new Ellipse()

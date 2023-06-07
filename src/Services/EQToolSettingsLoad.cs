@@ -46,6 +46,7 @@ namespace EQTool.Services
                     {
                         return Load(counter);
                     }
+
                     loggingService.Log(e.ToString(), App.EventType.Error);
 
                 }
@@ -77,8 +78,7 @@ namespace EQTool.Services
                 {
                     Closed = false,
                     State = System.Windows.WindowState.Normal
-                },
-                Theme = Themes.Light
+                }
             };
             return ret;
         }

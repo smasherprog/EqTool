@@ -215,7 +215,6 @@
     <Compile Include="DPSMeter.xaml.cs">
       <DependentUpon>DPSMeter.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Models\Themes.cs" />
     <Compile Include="Models\DPSParseMatch.cs" />
     <Compile Include="Models\SpellParsingMatch.cs" />
     <Compile Include="Models\EQSpells.cs" />

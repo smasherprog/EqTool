@@ -94,8 +94,8 @@ namespace EQTool
         public MapWidget AddTimer(TimeSpan ts, string name)
         {
             var mw = new MapWidget(DateTime.Now.Add(ts), SmallFontSize, name);
-            var textlabel = new SolidColorBrush(App.Theme == Themes.Light ? System.Windows.Media.Color.FromRgb(0, 0, 0) : System.Windows.Media.Color.FromRgb(255, 255, 255));
-            var forgregroundlabel = new SolidColorBrush(App.Theme == Themes.Light ? System.Windows.Media.Color.FromRgb(255, 255, 255) : System.Windows.Media.Color.FromRgb(0, 0, 0));
+            var textlabel = new SolidColorBrush(System.Windows.Media.Color.FromRgb(255, 255, 255));
+            var forgregroundlabel = new SolidColorBrush(System.Windows.Media.Color.FromRgb(0, 0, 0));
             mw.SetTheme(textlabel, forgregroundlabel);
             MapWidgets.Add(mw);
             _ = Children.Add(mw);

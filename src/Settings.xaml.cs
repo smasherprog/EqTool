@@ -60,12 +60,6 @@ namespace EQTool
                 _ = spellbyclassselection.Items.Add(it);
             }
 
-            themecombobox.ItemsSource = new List<KeyValuePair<string, Themes>>()
-            {
-                new KeyValuePair<string, Themes>(Themes.Light.ToString(), Themes.Light),
-                new KeyValuePair<string, Themes>(Themes.Dark.ToString(), Themes.Dark)
-            };
-            themecombobox.SelectedValue = settings.Theme;
 
             var releasemode = false;
 
@@ -271,13 +265,6 @@ namespace EQTool
                 }
                 SaveConfig();
             }
-        }
-
-        private void themescombobox_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            settings.Theme = (themecombobox.SelectedValue as Themes?) ?? Themes.Light;
-            App.Theme = settings.Theme;
-            SaveConfig();
         }
 
         private void zoneselectionchanged(object sender, SelectionChangedEventArgs e)

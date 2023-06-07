@@ -34,25 +34,6 @@ namespace EQTool
         private EQToolSettings EQToolSettings => container.Resolve<EQToolSettings>();
         public static List<Window> WindowList = new List<Window>();
 
-        private static Themes _Theme = Themes.Light;
-
-        public static Themes Theme
-        {
-            get => _Theme;
-            set
-            {
-                _Theme = value;
-                EQTool.Properties.Settings.Default.ColorMode = value.ToString();
-                ThemeChangedEvent?.Invoke(null, new ThemeChangeEventArgs { Theme = value });
-            }
-        }
-        public class ThemeChangeEventArgs : EventArgs
-        {
-            public Themes Theme { get; set; }
-        }
-
-        public static event EventHandler<ThemeChangeEventArgs> ThemeChangedEvent;
-
         private bool WaitForEQToolToStop()
         {
             var counter = 0;
@@ -232,7 +213,6 @@ namespace EQTool
             }
             else
             {
-                App.Theme = EQToolSettings.Theme;
                 ToggleMenuButtons(true);
                 if (!EQToolSettings.SpellWindowState.Closed)
                 {

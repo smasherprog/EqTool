@@ -40,11 +40,7 @@
                 <TextBlock Text="Logging"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100" Foreground="Red"  Visibility="{Binding IsLoggingDisabled, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Visible}"/>
                 <TextBlock Visibility="{Binding IsLoggingEnabled, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}" Text="Logging Enabled!" Margin="5,5,0,0" HorizontalAlignment="Left" Foreground="Green"/>
                 <Button Visibility="{Binding IsLoggingDisabled, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}" Name="enableLogging" Margin="5,5,0,0" Click="enableLogging_Click">Enable Logging</Button>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Theme"  FontWeight="Bold"  VerticalAlignment="Center" MinWidth="100"/>
-                <ComboBox Name="themecombobox" DisplayMemberPath="Key" SelectedValuePath="Value" SelectionChanged="themescombobox_SelectionChanged" MinWidth="150"/>
-            </StackPanel>
+            </StackPanel> 
             <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" Visibility="{Binding NotMissingConfiguration, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Visible}">
                 <TextBlock Visibility="{Binding HasNoCharName}" HorizontalAlignment="Center" Text="Functionality disabled until you log in!"  FontWeight="Bold" Foreground="Red"/>
                 <StackPanel Orientation="Horizontal">
