@@ -30,7 +30,7 @@ namespace EQTool
         private System.Windows.Forms.MenuItem SettingsMenuItem;
         private System.Windows.Forms.MenuItem MobInfoMenuItem;
         private LogParser logParser => container.Resolve<LogParser>();
-
+        private PlayerTrackerService PlayerTrackerService;
         private EQToolSettings EQToolSettings => container.Resolve<EQToolSettings>();
         public static List<Window> WindowList = new List<Window>();
 
@@ -231,7 +231,7 @@ namespace EQTool
                     OpenMobInfoWindow();
                 }
             }
-
+            PlayerTrackerService = container.Resolve<PlayerTrackerService>();
             logParser.PlayerChangeEvent += LogParser_PlayerChangeEvent;
         }
 

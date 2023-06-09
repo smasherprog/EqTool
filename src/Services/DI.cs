@@ -27,6 +27,7 @@ namespace EQTool.Services
             _ = builder.RegisterType<ZoneViewModel>().AsSelf().SingleInstance();
             _ = builder.RegisterType<SessionPlayerDamage>().AsSelf().SingleInstance();
             _ = builder.RegisterType<LoggingService>().AsSelf().SingleInstance();
+            _ = builder.RegisterType<PlayerTrackerService>().AsSelf().SingleInstance();
 
             return builder.Build();
         }

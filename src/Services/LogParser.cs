@@ -28,7 +28,10 @@ namespace EQTool.Services
         private readonly LogCustomTimer logCustomTimer;
         private readonly SpellLogParse spellLogParse;
         private readonly SpellWornOffLogParse spellWornOffLogParse;
+        private readonly PlayerWhoLogParse playerWhoLogParse;
+
         private bool Processing = false;
+
         public LogParser(
             SpellWornOffLogParse spellWornOffLogParse,
             SpellLogParse spellLogParse,
@@ -41,7 +44,8 @@ namespace EQTool.Services
             ActivePlayer activePlayer,
             IAppDispatcher appDispatcher,
             EQToolSettings settings,
-            LevelLogParse levelLogParse)
+            LevelLogParse levelLogParse,
+            PlayerWhoLogParse playerWhoLogParse)
         {
             this.spellWornOffLogParse = spellWornOffLogParse;
             this.spellLogParse = spellLogParse;
@@ -55,6 +59,7 @@ namespace EQTool.Services
             this.appDispatcher = appDispatcher;
             this.levelLogParse = levelLogParse;
             this.settings = settings;
+            this.playerWhoLogParse = playerWhoLogParse;
             UITimer = new System.Timers.Timer(100);
             UITimer.Elapsed += Poll;
             UITimer.Enabled = true;
@@ -98,7 +103,7 @@ namespace EQTool.Services
             public string Name { get; set; }
         }
 
-        public class StartCastingEventArgs : EventArgs
+        public class SpellEventArgs : EventArgs
         {
             public SpellParsingMatch Spell { get; set; }
         }
@@ -113,11 +118,23 @@ namespace EQTool.Services
             public List<string> SpellNames { get; set; }
         }
 
+        public class WhoPlayerEventArgs : EventArgs
+        {
+            public PlayerWhoLogParse.PlayerInfo PlayerInfo { get; set; }
+        }
+        public class WhoEventArgs : EventArgs
+        {
+        }
+
+        public event EventHandler<WhoEventArgs> WhoEvent;
+
+        public event EventHandler<WhoPlayerEventArgs> WhoPlayerEvent;
+
         public event EventHandler<SpellWornOffSelfEventArgs> SpellWornOffSelfEvent;
 
         public event EventHandler<SpellWornOffOtherEventArgs> SpellWornOtherOffEvent;
 
-        public event EventHandler<StartCastingEventArgs> StartCastingEvent;
+        public event EventHandler<SpellEventArgs> StartCastingEvent;
 
         public event EventHandler<CancelTimerEventArgs> CancelTimerEvent;
 
@@ -172,60 +189,76 @@ namespace EQTool.Services
                 if (pos.HasValue)
                 {
                     PlayerLocationEvent?.Invoke(this, new PlayerLocationEventArgs { Location = pos.Value });
+                    return;
+                }
+
+                var playerwho = playerWhoLogParse.ParsePlayerInfo(message);
+                if (playerwho != null)
+                {
+                    WhoPlayerEvent?.Invoke(this, new WhoPlayerEventArgs { PlayerInfo = playerwho });
+                    return;
+                }
+
+                if (playerWhoLogParse.IsZoneWhoLine(message))
+                {
+                    WhoEvent?.Invoke(this, new WhoEventArgs());
+                    return;
                 }
 
                 var matched = dPSLogParse.Match(message, timestamp);
                 if (matched != null)
                 {
                     FightHitEvent?.Invoke(this, new FightHitEventArgs { HitInformation = matched });
+                    return;
                 }
 
                 var name = logDeathParse.GetDeadTarget(message);
                 if (!string.IsNullOrWhiteSpace(name))
                 {
                     DeadEvent?.Invoke(this, new DeadEventArgs { Name = name });
+                    return;
                 }
 
                 name = conLogParse.ConMatch(message);
                 if (!string.IsNullOrWhiteSpace(name))
                 {
                     ConEvent?.Invoke(this, new ConEventArgs { Name = name });
+                    return;
                 }
 
                 var customtimer = logCustomTimer.GetStartTimer(message);
                 if (customtimer != null)
                 {
                     StartTimerEvent?.Invoke(this, new StartTimerEventArgs { CustomerTimer = customtimer });
+                    return;
                 }
 
                 name = logCustomTimer.GetCancelTimer(message);
                 if (!string.IsNullOrWhiteSpace(name))
                 {
                     CancelTimerEvent?.Invoke(this, new CancelTimerEventArgs { Name = name });
+                    return;
                 }
 
                 var matchedspell = spellLogParse.MatchSpell(message);
                 if (matchedspell != null)
                 {
-                    StartCastingEvent?.Invoke(this, new StartCastingEventArgs { Spell = matchedspell });
+                    StartCastingEvent?.Invoke(this, new SpellEventArgs { Spell = matchedspell });
+                    return;
                 }
 
                 name = spellWornOffLogParse.MatchWornOffOtherSpell(message);
                 if (!string.IsNullOrWhiteSpace(name))
                 {
-                    Debug.WriteLine($"MatchWornOffOtherSpell {name}");
                     SpellWornOtherOffEvent?.Invoke(this, new SpellWornOffOtherEventArgs { SpellName = name });
+                    return;
                 }
 
                 var spells = spellWornOffLogParse.MatchWornOffSelfSpell(message);
                 if (spells.Any())
                 {
-                    foreach (var item in spells)
-                    {
-                        Debug.WriteLine($"MatchWornOffSelfSpell {item}");
-                    }
-
                     SpellWornOffSelfEvent?.Invoke(this, new SpellWornOffSelfEventArgs { SpellNames = spells });
+                    return;
                 }
 
                 levelLogParse.MatchLevel(message);
@@ -242,6 +275,7 @@ namespace EQTool.Services
                         toolSettingsLoad.Save(settings);
                     }
                     PlayerZonedEvent?.Invoke(this, new PlayerZonedEventArgs { Zone = matchedzone });
+                    return;
                 }
             }
             catch (Exception e)

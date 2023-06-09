@@ -73,7 +73,7 @@ namespace EQTool
             spellWindowViewModel.TryRemoveUnambiguousSpellOther(e.SpellName);
         }
 
-        private void LogParser_StartCastingEvent(object sender, LogParser.StartCastingEventArgs e)
+        private void LogParser_StartCastingEvent(object sender, LogParser.SpellEventArgs e)
         {
             spellWindowViewModel.TryAdd(e.Spell);
         }

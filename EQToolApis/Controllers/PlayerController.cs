@@ -1,19 +1,15 @@
 ﻿using EQToolApis.DB;
 using EQToolApis.DB.Models;
 using Microsoft.AspNetCore.Mvc;
+using System.ComponentModel.DataAnnotations;
 
 namespace EQToolApis.Controllers
 {
     public class PlayerRequest
     {
-        public string Name { get; set; }
+        [MaxLength(24), MinLength(3)]
+        public string? Name { get; set; }
         public Servers Server { get; set; }
-    }
-    public class PlayerCreate
-    {
-        public string Name { get; set; }
-        public Servers Server { get; set; }
-        public int Level { get; set; }
     }
 
     [ApiExplorerSettings(IgnoreApi = true)]
@@ -58,11 +54,19 @@ namespace EQToolApis.Controllers
             if (p == null)
             {
                 _ = dbcontext.Players.Add(model);
+                p = model;
             }
-            else if (model.Level > p.Level)
+
+            if (model.Level > p.Level)
             {
                 p.Level = model.Level;
             }
+            if (p.GuildName != model.GuildName)
+            {
+                p.GuildName = model.GuildName;
+            }
+
+            p.PlayerClass ??= model.PlayerClass;
             _ = dbcontext.SaveChanges();
         }
     }
