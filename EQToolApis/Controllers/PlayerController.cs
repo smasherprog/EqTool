@@ -7,8 +7,17 @@ namespace EQToolApis.Controllers
 {
     public class PlayerRequest
     {
-        [MaxLength(24), MinLength(3)]
+        [MaxLength(24), MinLength(3), Required]
         public string? Name { get; set; }
+        [EnumDataType(typeof(Servers))]
+        public Servers Server { get; set; }
+    }
+
+    public class PlayerUpdateRequest
+    {
+        [Required]
+        public List<Player>? Players { get; set; }
+        [EnumDataType(typeof(Servers))]
         public Servers Server { get; set; }
     }
 
@@ -47,26 +56,36 @@ namespace EQToolApis.Controllers
             return ret;
         }
 
-        [Route("upsertplayer"), HttpPost]
-        public void Update([FromBody] Player model)
+        [Route("upsertplayers"), HttpPost]
+        public void Update([FromBody] PlayerUpdateRequest model)
         {
-            var p = dbcontext.Players.FirstOrDefault(a => a.Name == model.Name && a.Server == model.Server);
-            if (p == null)
+            var players = model.Players.Select(a => a.Name).Distinct().ToList();
+            var dbplayers = dbcontext.Players.Where(a => players.Contains(a.Name) && a.Server == model.Server).ToList();
+            foreach (var item in model.Players)
             {
-                _ = dbcontext.Players.Add(model);
-                p = model;
+                var p = dbplayers.FirstOrDefault(a => a.Name.ToLower() == item.Name.ToLower());
+                if (p == null)
+                {
+                    _ = dbcontext.Players.Add(item);
+                    p = item;
+                }
+
+                if (item.Level > p.Level)
+                {
+                    p.Level = item.Level;
+                }
+
+                if (p.GuildName != item.GuildName && string.IsNullOrWhiteSpace(item.GuildName))
+                {
+                    p.GuildName = item.GuildName;
+                }
+
+                if (p.PlayerClass != item.PlayerClass && item.PlayerClass.HasValue)
+                {
+                    p.PlayerClass = item.PlayerClass;
+                }
             }
 
-            if (model.Level > p.Level)
-            {
-                p.Level = model.Level;
-            }
-            if (p.GuildName != model.GuildName)
-            {
-                p.GuildName = model.GuildName;
-            }
-
-            p.PlayerClass ??= model.PlayerClass;
             _ = dbcontext.SaveChanges();
         }
     }
