@@ -52,6 +52,7 @@ Features:
 
 <h4>TO DO List EQTool</h4>
 <ul>  
+   <li>Warn if ran from a folder with no write access.</li> 
   <li>Add zone dump of names.</li> 
  <li>Add context menu to toggle pather vs static.</li> 
  <li>Add timers for cooldowns on abilities, like mend, defensive, etc.</li> 
