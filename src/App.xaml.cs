@@ -4,6 +4,7 @@ using EQTool.Services;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Reflection;
@@ -125,8 +126,37 @@ namespace EQTool
             };
         }
 
+        private bool ShouldShutDownDueToNoWriteAccess()
+        {
+            try
+            {
+                File.Delete("test.json");
+            }
+            catch { }
+            try
+            {
+                File.WriteAllText("test.json", "test");
+            }
+            catch (UnauthorizedAccessException)
+            {
+                _ = MessageBox.Show("EQTool is running from a directory where it does not have permission to save settings. Please, move it to a folder where it can write!", "EQTool Permissions!", MessageBoxButton.OK, MessageBoxImage.Error);
+                return true;
+            }
+            try
+            {
+                File.Delete("test.json");
+            }
+            catch { }
+            return false;
+        }
+
         private void App_Startup(object sender, StartupEventArgs e)
         {
+            if (ShouldShutDownDueToNoWriteAccess())
+            {
+                App.Current.Shutdown();
+                return;
+            }
             ShutdownMode = ShutdownMode.OnExplicitShutdown;
             SetupExceptionHandling();
             if (!WaitForEQToolToStop())
