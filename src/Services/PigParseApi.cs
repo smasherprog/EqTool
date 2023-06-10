@@ -1,7 +1,10 @@
 ﻿using EQTool.Models;
+using EQTool.Services.Spells.Log;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
 using System.Net.Http;
 using System.Text;
 
@@ -101,6 +104,27 @@ namespace EQTool.Services
             }
 
             return new List<Item>();
+        }
+
+        public void SendData(List<PlayerWhoLogParse.PlayerInfo> players, Models.Servers server)
+        {
+            if (!players.Any())
+            {
+                return;
+            }
+            Debug.WriteLine($"Sending {players.Count} Players");
+            var url = $"https://pigparse.azurewebsites.net/api/player/upsertplayers";
+            var json = JsonConvert.SerializeObject(new
+            {
+                Server = server,
+                Players = players
+            });
+            var data = new StringContent(json, Encoding.UTF8, "application/json");
+            var res = App.httpclient.PostAsync(url, data).Result;
+            if (res.StatusCode == System.Net.HttpStatusCode.OK)
+            {
+                _ = res.Content.ReadAsStringAsync().Result;
+            }
         }
     }
 }

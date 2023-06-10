@@ -30,7 +30,7 @@ namespace EQTool.Services.Spells.Log
         public class PlayerInfo
         {
             public string Name { get; set; }
-            public PlayerClasses? Class { get; set; }
+            public PlayerClasses? PlayerClass { get; set; }
             public int? Level { get; set; }
             public string GuildName { get; set; }
         }
@@ -71,7 +71,7 @@ namespace EQTool.Services.Spells.Log
                 {
                     if (item.Value.Contains(classguess))
                     {
-                        guess.Class = item.Key;
+                        guess.PlayerClass = item.Key;
                         break;
                     }
                 }
