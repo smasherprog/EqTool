@@ -280,7 +280,7 @@ namespace EQTool.Services
             }
             catch (Exception e)
             {
-                App.LogUnhandledException(e, "LogParser");
+                App.LogUnhandledException(e, $"LogParser '{line1}'");
             }
         }
 
