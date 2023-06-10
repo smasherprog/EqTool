@@ -23,7 +23,7 @@ namespace EQToolTests
             Assert.AreEqual("Rundorig", guess.Name);
             Assert.AreEqual("The Drift", guess.GuildName);
             Assert.IsNull(guess.Level);
-            Assert.IsNull(guess.Class);
+            Assert.IsNull(guess.PlayerClass);
         }
 
         [TestMethod]
@@ -35,7 +35,7 @@ namespace EQToolTests
             Assert.AreEqual("Rundorig", guess.Name);
             Assert.AreEqual("The Drift", guess.GuildName);
             Assert.IsNull(guess.Level);
-            Assert.IsNull(guess.Class);
+            Assert.IsNull(guess.PlayerClass);
         }
 
         [TestMethod]
@@ -47,7 +47,7 @@ namespace EQToolTests
             Assert.AreEqual("Dany", guess.Name);
             Assert.AreEqual("The Drift", guess.GuildName);
             Assert.AreEqual(60, guess.Level);
-            Assert.AreEqual(PlayerClasses.Cleric, guess.Class);
+            Assert.AreEqual(PlayerClasses.Cleric, guess.PlayerClass);
         }
 
         [TestMethod]
@@ -59,7 +59,7 @@ namespace EQToolTests
             Assert.AreEqual("Bdain", guess.Name);
             Assert.AreEqual("The Drift", guess.GuildName);
             Assert.AreEqual(58, guess.Level);
-            Assert.AreEqual(PlayerClasses.Warrior, guess.Class);
+            Assert.AreEqual(PlayerClasses.Warrior, guess.PlayerClass);
         }
 
         [TestMethod]
@@ -71,7 +71,7 @@ namespace EQToolTests
             Assert.AreEqual("Bdain", guess.Name);
             Assert.AreEqual("The Drift", guess.GuildName);
             Assert.AreEqual(1, guess.Level);
-            Assert.AreEqual(PlayerClasses.Bard, guess.Class);
+            Assert.AreEqual(PlayerClasses.Bard, guess.PlayerClass);
         }
 
         [TestMethod]
@@ -83,7 +83,7 @@ namespace EQToolTests
             Assert.AreEqual("Bdain", guess.Name);
             Assert.IsNull(guess.GuildName);
             Assert.AreEqual(1, guess.Level);
-            Assert.AreEqual(PlayerClasses.Bard, guess.Class);
+            Assert.AreEqual(PlayerClasses.Bard, guess.PlayerClass);
         }
 
         [TestMethod]
@@ -95,7 +95,7 @@ namespace EQToolTests
             Assert.AreEqual("Rundorig", guess.Name);
             Assert.IsNull(guess.GuildName);
             Assert.IsNull(guess.Level);
-            Assert.IsNull(guess.Class);
+            Assert.IsNull(guess.PlayerClass);
         }
 
         [TestMethod]
@@ -107,7 +107,7 @@ namespace EQToolTests
             Assert.AreEqual("Rundorig", guess.Name);
             Assert.IsNull(guess.GuildName);
             Assert.IsNull(guess.Level);
-            Assert.IsNull(guess.Class);
+            Assert.IsNull(guess.PlayerClass);
         }
     }
 }
