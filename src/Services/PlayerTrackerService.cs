@@ -65,6 +65,11 @@ namespace EQTool.Services
 
         private void LogParser_WhoPlayerEvent(object sender, LogParser.WhoPlayerEventArgs e)
         {
+            if (activePlayer.Player != null && e.PlayerInfo.Name == activePlayer.Player.Name && !string.IsNullOrWhiteSpace(e.PlayerInfo.GuildName))
+            {
+                activePlayer.Player.GuildName = e.PlayerInfo.GuildName;
+            }
+
             lock (ContainerLock)
             {
                 if (Player.TryGetValue(e.PlayerInfo.Name, out var playerinfo))

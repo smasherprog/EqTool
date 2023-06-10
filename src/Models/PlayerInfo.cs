@@ -159,6 +159,18 @@ namespace EQTool.Models
             }
         }
 
+        private string _GuildName;
+        public string GuildName
+        {
+            get => _GuildName;
+            set
+            {
+                _GuildName = value;
+                OnPropertyChanged();
+            }
+        }
+
+
         private string _Zone;
         public string Zone
         {

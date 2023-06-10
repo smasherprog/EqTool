@@ -48,6 +48,10 @@
                     <TextBlock Text="{Binding ActivePlayer.Player.Name}" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Guild" VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
+                    <TextBlock Text="{Binding ActivePlayer.Player.GuildName}" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Class" VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
                     <ComboBox IsEnabled="{Binding HasCharName}" SelectedItem="{Binding ActivePlayer.Player.PlayerClass}" ItemsSource="{Binding PlayerClasses}" MinWidth="150"></ComboBox>
                 </StackPanel>
