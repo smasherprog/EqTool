@@ -10,6 +10,8 @@ namespace EQTool.Services
     {
         private readonly FindEq findEq;
         private readonly LoggingService loggingService;
+        private readonly object filelock = new object();
+
         public EQToolSettingsLoad(FindEq findEq, LoggingService loggingService)
         {
             this.findEq = findEq;
@@ -90,7 +92,10 @@ namespace EQTool.Services
             try
             {
                 var txt = JsonConvert.SerializeObject(model, Formatting.Indented);
-                File.WriteAllText("settings.json", txt);
+                lock (filelock)
+                {
+                    File.WriteAllText("settings.json", txt);
+                }
             }
             catch (Exception e)
             {
