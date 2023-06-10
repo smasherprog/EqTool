@@ -184,6 +184,11 @@ namespace EQTool.Services
             {
                 var date = line1.Substring(1, 24);
                 var message = line1.Substring(27).Trim();
+                if (string.IsNullOrWhiteSpace(message))
+                {
+                    return;
+                }
+
                 var timestamp = Parse(date);
                 var pos = locationParser.Match(message);
                 if (pos.HasValue)

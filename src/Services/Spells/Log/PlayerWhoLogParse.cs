@@ -42,6 +42,12 @@ namespace EQTool.Services.Spells.Log
 
         public PlayerInfo ParsePlayerInfo(string message)
         {
+
+            if (!message.StartsWith("AFK") && !message.StartsWith("["))
+            {
+                return null;
+            }
+
             var begindex = message.IndexOf('[');
             if (begindex == -1)
             {

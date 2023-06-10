@@ -109,5 +109,13 @@ namespace EQToolTests
             Assert.IsNull(guess.Level);
             Assert.IsNull(guess.PlayerClass);
         }
+
+        [TestMethod]
+        public void GuildMOTD()
+        {
+            var service = container.Resolve<PlayerWhoLogParse>();
+            var guess = service.ParsePlayerInfo("GUILD MOTD: <<>> things go here [ test ] ");
+            Assert.IsNull(guess);
+        }
     }
 }
