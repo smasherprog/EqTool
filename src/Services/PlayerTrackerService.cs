@@ -50,7 +50,7 @@ namespace EQTool.Services
             }
             catch (Exception ex)
             {
-                loggingService.Log(ex.Message.ToString(), App.EventType.Error);
+                loggingService.Log(ex.ToString(), App.EventType.Error);
             }
         }
 
