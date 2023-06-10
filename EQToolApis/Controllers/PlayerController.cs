@@ -63,6 +63,7 @@ namespace EQToolApis.Controllers
             var dbplayers = dbcontext.Players.Where(a => players.Contains(a.Name) && a.Server == model.Server).ToList();
             foreach (var item in model.Players)
             {
+                item.Server = model.Server;
                 var p = dbplayers.FirstOrDefault(a => a.Name.ToLower() == item.Name.ToLower());
                 if (p == null)
                 {
