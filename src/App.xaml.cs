@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using EQTool.Models;
 using EQTool.Services;
+using EQTool.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -31,6 +32,7 @@ namespace EQTool
         private System.Windows.Forms.MenuItem SettingsMenuItem;
         private System.Windows.Forms.MenuItem MobInfoMenuItem;
         private LogParser logParser => container.Resolve<LogParser>();
+        private System.Timers.Timer UITimer;
         private PlayerTrackerService PlayerTrackerService;
         private EQToolSettings EQToolSettings => container.Resolve<EQToolSettings>();
         public static List<Window> WindowList = new List<Window>();
@@ -185,6 +187,9 @@ namespace EQTool
         private void InitStuff()
         {
             container = DI.Init();
+            UITimer = new System.Timers.Timer(30000);
+            UITimer.Elapsed += UITimer_Elapsed;
+            UITimer.Enabled = true;
             container.Resolve<LoggingService>().Log(string.Empty, EventType.StartUp);
             SettingsMenuItem = new System.Windows.Forms.MenuItem("Settings", ToggleSettingsWindow);
             SpellsMenuItem = new System.Windows.Forms.MenuItem("Spells", ToggleSpellsWindow);
@@ -265,10 +270,27 @@ namespace EQTool
             logParser.PlayerChangeEvent += LogParser_PlayerChangeEvent;
         }
 
+        private void UITimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+            var dispatcher = container.Resolve<IAppDispatcher>();
+            dispatcher.DispatchUI(() =>
+            {
+                var spellstuff = container.Resolve<SpellWindowViewModel>();
+                if (spellstuff != null)
+                {
+                    if (spellstuff.SpellList.GroupBy(a => a.TargetName).Count() < 4)
+                    {
+                        new UpdateService().CheckForUpdates(Version);
+                    }
+                }
+            });
+        }
+
         public class GithubAsset
         {
             public string browser_download_url { get; set; }
         }
+
         public class GithubVersionInfo
         {
             public List<GithubAsset> assets { get; set; }

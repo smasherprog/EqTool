@@ -203,9 +203,9 @@ namespace EQTool.Services
                         });
                     }
                 }
-                catch (Exception ex)
+                catch (Exception)
                 {
-                    File.AppendAllText("Errors.txt", ex.ToString());
+                    //File.AppendAllText("Errors.txt", ex.ToString());
                 }
             });
         }
