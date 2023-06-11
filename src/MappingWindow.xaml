@@ -43,10 +43,7 @@
                         </Button>
                         <Button Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="opendps" ToolTip="Open DPS Window">
                             <Image Source="pack://application:,,,/dps.png"/>
-                        </Button>
-                        <Button Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="opendps" ToolTip="Open DPS Window">
-                            <Image Source="pack://application:,,,/dps.png"/>
-                        </Button>
+                        </Button> 
                         <Button x:Name="TimerToggle" Foreground="Green" Background="White" Content="⏰" Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="autoaddtimer" ToolTip="Add timer to npcs on death." />
                         <Button Content="O" Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="opensettings" ToolTip="Open Settings Window" /> 
                     </StackPanel>
