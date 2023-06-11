@@ -39,6 +39,11 @@ namespace EQTool.Services
         private void UITimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
             var playerstosync = new List<PlayerWhoLogParse.PlayerInfo>();
+            if (activePlayer.Player?.Server == null)
+            {
+                return;
+            }
+
             lock (ContainerLock)
             {
                 playerstosync = DirtyPlayers.Values.ToList();
