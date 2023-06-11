@@ -7,8 +7,8 @@ namespace EQToolApis.Controllers
 {
     public class PlayerRequest
     {
-        [MaxLength(24), MinLength(3), Required]
-        public string? Name { get; set; }
+        [Required]
+        public List<string>? Players { get; set; }
         [EnumDataType(typeof(Servers))]
         public Servers Server { get; set; }
     }
@@ -38,22 +38,16 @@ namespace EQToolApis.Controllers
         }
 
         [Route("getbyname")]
-        public Player GetGetByName([FromQuery] PlayerRequest playerRequest)
+        public List<Player> GetGetByName([FromQuery] PlayerRequest playerRequest)
         {
-            return dbcontext.Players.FirstOrDefault(a => a.Name == playerRequest.Name && a.Server == playerRequest.Server);
+            return dbcontext.Players.Where(a => playerRequest.Players.Contains(a.Name) && a.Server == playerRequest.Server).ToList();
         }
 
         [Route("getbynames"), HttpPost]
-        public List<Player> GetByNames([FromBody] List<PlayerRequest> models)
+        public List<Player> GetByNames([FromBody] PlayerUpdateRequest playerRequest)
         {
-            var ret = new List<Player>();
-            foreach (var item in models.GroupBy(a => a.Server))
-            {
-                var names = item.Select(a => a.Name).ToList();
-                ret.AddRange(dbcontext.Players.Where(a => names.Contains(a.Name) && a.Server == item.Key).ToList());
-            }
-
-            return ret;
+            var names = playerRequest.Players.Select(a => a.Name).Distinct().ToList();
+            return dbcontext.Players.Where(a => names.Contains(a.Name) && a.Server == playerRequest.Server).ToList();
         }
 
         [Route("upsertplayers"), HttpPost]
