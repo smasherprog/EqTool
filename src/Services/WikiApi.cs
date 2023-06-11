@@ -87,6 +87,18 @@ namespace EQTool.Services
             {
                 name = "Snitch_(PoM)";
             }
+            else if (name == "Cazic Thule")
+            {
+                name = "Cazic_Thule_(God)";
+            }
+            else if (name == "Innoruuk")
+            {
+                name = "Innoruuk_(God)";
+            }
+            else if (name == "Bristlebane")
+            {
+                name = "Bristlebane_(God)";
+            }
 
             try
             {

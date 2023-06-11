@@ -188,8 +188,10 @@ namespace EQTool
         {
             container = DI.Init();
             UITimer = new System.Timers.Timer(60000);
+#if !DEBUG
             UITimer.Elapsed += UITimer_Elapsed;
             UITimer.Enabled = true;
+#endif
             container.Resolve<LoggingService>().Log(string.Empty, EventType.StartUp);
             SettingsMenuItem = new System.Windows.Forms.MenuItem("Settings", ToggleSettingsWindow);
             SpellsMenuItem = new System.Windows.Forms.MenuItem("Spells", ToggleSpellsWindow);
