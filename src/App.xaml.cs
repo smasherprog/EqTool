@@ -187,7 +187,7 @@ namespace EQTool
         private void InitStuff()
         {
             container = DI.Init();
-            UITimer = new System.Timers.Timer(30000);
+            UITimer = new System.Timers.Timer(60000);
             UITimer.Elapsed += UITimer_Elapsed;
             UITimer.Enabled = true;
             container.Resolve<LoggingService>().Log(string.Empty, EventType.StartUp);
