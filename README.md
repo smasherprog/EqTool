@@ -36,6 +36,7 @@ Features:
 <li>Pricing information in Mob info window.</li>
 <li>Save spells cast on you when you log out so when you log back in they resume counter!</li>
 <li>Maps</li>
+ <li>Automatic self update.</li>
 <li>Timers (Only Minutes are supported)</li>
 </ul>
 <h5>Timers (Only Minutes are supported) -- All below commands work in regular say!</h5>
