@@ -317,7 +317,6 @@ namespace EQTool
             }
         }
 
-        //testingupdates
         private void ToggleMenuButtons(bool value)
         {
             MapMenuItem.Enabled = value;
