@@ -138,6 +138,7 @@
     <Compile Include="DamageTests.cs" />
     <Compile Include="LogFileNameTests.cs" />
     <Compile Include="PlayerParsingTests.cs" />
+    <Compile Include="GroupTests.cs" />
     <Compile Include="SpellTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="MapTests.cs" />

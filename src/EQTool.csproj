@@ -227,6 +227,7 @@
     </Compile>
     <Compile Include="Services\AppDispatcher.cs" />
     <Compile Include="Services\LoggingService.cs" />
+    <Compile Include="Services\PlayerGroupService.cs" />
     <Compile Include="Services\PlayerTrackerService.cs" />
     <Compile Include="Services\Spells\Log\PlayerWhoLogParse.cs" />
     <Compile Include="Services\UpdateService.cs" />

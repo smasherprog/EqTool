@@ -106,7 +106,7 @@ namespace EQTool.Services
             return new List<Item>();
         }
 
-        public void SendData(List<PlayerWhoLogParse.PlayerInfo> players, Models.Servers server)
+        public void SendPlayerData(List<PlayerWhoLogParse.PlayerInfo> players, Models.Servers server)
         {
             if (!players.Any())
             {
@@ -125,6 +125,36 @@ namespace EQTool.Services
             {
                 _ = res.Content.ReadAsStringAsync().Result;
             }
+        }
+
+        public List<PlayerWhoLogParse.PlayerInfo> GetPlayerData(List<string> players, Models.Servers server)
+        {
+            try
+            {
+                if (!players.Any())
+                {
+                    return new List<PlayerWhoLogParse.PlayerInfo>();
+                }
+                Debug.WriteLine($"Sending {players.Count} Players");
+                var url = $"https://pigparse.azurewebsites.net/api/player/getbynames";
+                var json = JsonConvert.SerializeObject(new
+                {
+                    Server = server,
+                    Players = players
+                });
+                var data = new StringContent(json, Encoding.UTF8, "application/json");
+                var res = App.httpclient.PostAsync(url, data).Result;
+                if (res.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    var response = res.Content.ReadAsStringAsync().Result;
+                    return Newtonsoft.Json.JsonConvert.DeserializeObject<List<PlayerWhoLogParse.PlayerInfo>>(response);
+                }
+            }
+            catch
+            {
+            }
+
+            return new List<PlayerWhoLogParse.PlayerInfo>();
         }
     }
 }

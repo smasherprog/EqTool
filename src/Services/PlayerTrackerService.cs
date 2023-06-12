@@ -13,6 +13,7 @@ namespace EQTool.Services
         private readonly PigParseApi pigParseApi;
         private readonly ActivePlayer activePlayer;
         private readonly LoggingService loggingService;
+        private readonly PlayerGroupService playerGroupService;
         private readonly Dictionary<string, PlayerWhoLogParse.PlayerInfo> Player = new Dictionary<string, PlayerWhoLogParse.PlayerInfo>(StringComparer.InvariantCultureIgnoreCase);
         private readonly Dictionary<string, PlayerWhoLogParse.PlayerInfo> PlayerZones = new Dictionary<string, PlayerWhoLogParse.PlayerInfo>(StringComparer.InvariantCultureIgnoreCase);
         private readonly Dictionary<string, PlayerWhoLogParse.PlayerInfo> DirtyPlayers = new Dictionary<string, PlayerWhoLogParse.PlayerInfo>(StringComparer.InvariantCultureIgnoreCase);
@@ -20,11 +21,12 @@ namespace EQTool.Services
         private readonly System.Timers.Timer UITimer;
         private readonly object ContainerLock = new object();
 
-        public PlayerTrackerService(LogParser logParser, ActivePlayer activePlayer, PigParseApi pigParseApi, LoggingService loggingService)
+        public PlayerTrackerService(LogParser logParser, ActivePlayer activePlayer, PigParseApi pigParseApi, LoggingService loggingService, PlayerGroupService playerGroupService)
         {
             _ = activePlayer.Update();
             CurrentZone = activePlayer.Player?.Zone;
             this.logParser = logParser;
+            this.playerGroupService = playerGroupService;
             this.logParser.PlayerZonedEvent += LogParser_PlayerZonedEvent;
             this.logParser.WhoEvent += LogParser_WhoEvent;
             this.logParser.WhoPlayerEvent += LogParser_WhoPlayerEvent;
@@ -51,7 +53,7 @@ namespace EQTool.Services
             }
             try
             {
-                pigParseApi.SendData(playerstosync, activePlayer.Player.Server.Value);
+                pigParseApi.SendPlayerData(playerstosync, activePlayer.Player.Server.Value);
             }
             catch (Exception ex)
             {
@@ -98,15 +100,16 @@ namespace EQTool.Services
                 else
                 {
                     Player.Add(e.PlayerInfo.Name, e.PlayerInfo);
-                    if (!PlayerZones.ContainsKey(e.PlayerInfo.Name))
-                    {
-                        PlayerZones[e.PlayerInfo.Name] = e.PlayerInfo;
-                    }
                     if (!DirtyPlayers.ContainsKey(e.PlayerInfo.Name))
                     {
                         DirtyPlayers[e.PlayerInfo.Name] = e.PlayerInfo;
                     }
                     Debug.WriteLine($"Adding {e.PlayerInfo.Name} {e.PlayerInfo.Level} {e.PlayerInfo.GuildName} {e.PlayerInfo.PlayerClass}");
+                }
+
+                if (!PlayerZones.ContainsKey(e.PlayerInfo.Name))
+                {
+                    PlayerZones[e.PlayerInfo.Name] = e.PlayerInfo;
                 }
             }
 
@@ -123,5 +126,43 @@ namespace EQTool.Services
                 }
             }
         }
+
+        public List<Group> CreateGroups(GroupOptimization groupOptimization)
+        {
+            if (string.IsNullOrWhiteSpace(activePlayer.Player?.GuildName))
+            {
+                return new List<Group>();
+            }
+
+            var players = new List<PlayerWhoLogParse.PlayerInfo>();
+            lock (ContainerLock)
+            {
+                players = PlayerZones.Values.ToList();
+            }
+
+            var uknownplayerdata = players.Where(a => !a.PlayerClass.HasValue || !a.Level.HasValue).Select(a => a.Name).ToList();
+            var playerdatafromserver = pigParseApi.GetPlayerData(uknownplayerdata, activePlayer.Player.Server.Value);
+            foreach (var item in playerdatafromserver)
+            {
+                var playerlocally = players.FirstOrDefault(a => a.Name == item.Name);
+                if (playerlocally != null)
+                {
+                    playerlocally.Level = playerlocally.Level ?? item.Level;
+                    playerlocally.PlayerClass = playerlocally.PlayerClass ?? item.PlayerClass;
+                }
+            }
+
+            players = players.Where(a => a.GuildName == activePlayer.Player.GuildName).ToList();
+            switch (groupOptimization)
+            {
+                case GroupOptimization.CHChain:
+                    return playerGroupService.CreateChChainGroups(players);
+                case GroupOptimization.Standard:
+                    return playerGroupService.CreateStandardGroups(players);
+                default:
+                    return new List<Group>();
+            }
+        }
+
     }
 }

@@ -30,6 +30,7 @@ namespace EQTool
         private System.Windows.Forms.MenuItem SpellsMenuItem;
         private System.Windows.Forms.MenuItem DpsMeterMenuItem;
         private System.Windows.Forms.MenuItem SettingsMenuItem;
+        private System.Windows.Forms.MenuItem GroupSuggestionsMenuItem;
         private System.Windows.Forms.MenuItem MobInfoMenuItem;
         private LogParser logParser => container.Resolve<LogParser>();
         private System.Timers.Timer UITimer;
@@ -194,6 +195,8 @@ namespace EQTool
 #endif
             container.Resolve<LoggingService>().Log(string.Empty, EventType.StartUp);
             SettingsMenuItem = new System.Windows.Forms.MenuItem("Settings", ToggleSettingsWindow);
+            var standardgroup = new System.Windows.Forms.MenuItem("Standard Groups", CreateStandardGroup);
+            GroupSuggestionsMenuItem = new System.Windows.Forms.MenuItem("Group Suggestions", new System.Windows.Forms.MenuItem[] { standardgroup });
             SpellsMenuItem = new System.Windows.Forms.MenuItem("Spells", ToggleSpellsWindow);
             MapMenuItem = new System.Windows.Forms.MenuItem("Map", ToggleMapWindow);
             DpsMeterMenuItem = new System.Windows.Forms.MenuItem("Dps", ToggleDPSWindow);
@@ -227,6 +230,7 @@ namespace EQTool
                 ContextMenu = new System.Windows.Forms.ContextMenu(new System.Windows.Forms.MenuItem[]
                 {
                      whythepig,
+                     GroupSuggestionsMenuItem,
                     DpsMeterMenuItem,
                     MapMenuItem,
                     SpellsMenuItem,
@@ -325,7 +329,33 @@ namespace EQTool
             SpellsMenuItem.Enabled = value;
             DpsMeterMenuItem.Enabled = value;
             MobInfoMenuItem.Enabled = value;
+            GroupSuggestionsMenuItem.Enabled = value;
         }
+
+        private void CreateStandardGroup(object sender, EventArgs e)
+        {
+            var grpstring = new List<string>();
+            var groups = PlayerTrackerService.CreateGroups(GroupOptimization.Standard);
+            var groupindex = 1;
+            foreach (var group in groups)
+            {
+                var str = $"Group {groupindex++} ";
+                foreach (var player in group.Players)
+                {
+                    str += player.Name + ",";
+                }
+                grpstring.Add(str);
+            }
+            if (grpstring.Any())
+            {
+                System.Windows.Forms.Clipboard.SetText(string.Join("\r\n", grpstring));
+            }
+            else
+            {
+                System.Windows.Forms.Clipboard.SetText("You must /who in the zone before group suggestions can be made!");
+            }
+        }
+
 
         private void WhyThePig(object sender, EventArgs e)
         {
@@ -428,6 +458,8 @@ namespace EQTool
             var s = (System.Windows.Forms.MenuItem)sender;
             ToggleWindow<Settings>(s);
         }
+
+
         public void ToggleSpellsWindow(object sender, EventArgs e)
         {
             var s = (System.Windows.Forms.MenuItem)sender;

@@ -29,7 +29,7 @@ namespace EQTool.Services
         private readonly SpellLogParse spellLogParse;
         private readonly SpellWornOffLogParse spellWornOffLogParse;
         private readonly PlayerWhoLogParse playerWhoLogParse;
-
+        private bool StartingWhoOfZone = false;
         private bool Processing = false;
 
         public LogParser(
@@ -198,7 +198,7 @@ namespace EQTool.Services
                 }
 
                 var playerwho = playerWhoLogParse.ParsePlayerInfo(message);
-                if (playerwho != null)
+                if (playerwho != null && StartingWhoOfZone)
                 {
                     WhoPlayerEvent?.Invoke(this, new WhoPlayerEventArgs { PlayerInfo = playerwho });
                     return;
@@ -206,8 +206,13 @@ namespace EQTool.Services
 
                 if (playerWhoLogParse.IsZoneWhoLine(message))
                 {
+                    StartingWhoOfZone = true;
                     WhoEvent?.Invoke(this, new WhoEventArgs());
                     return;
+                }
+                else
+                {
+                    StartingWhoOfZone = message == "---------------------------" && StartingWhoOfZone;
                 }
 
                 var matched = dPSLogParse.Match(message, timestamp);
