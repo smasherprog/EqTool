@@ -182,7 +182,6 @@ namespace EQTool.Services
                 {
                     groups[groupindex++].Players.Add(melee);
                     _ = players.Remove(melee);
-                    _ = melees.Remove(melee);
                 }
             }
 
