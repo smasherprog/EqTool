@@ -339,7 +339,7 @@ namespace EQTool
             var groupindex = 1;
             foreach (var group in groups)
             {
-                var str = $"Group {groupindex++} ";
+                var str = $"/gu Group {groupindex++} ";
                 foreach (var player in group.Players)
                 {
                     str += player.Name + ",";

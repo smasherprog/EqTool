@@ -63,10 +63,17 @@ namespace EQTool.Services
 
         private void LogParser_WhoEvent(object sender, LogParser.WhoEventArgs e)
         {
-            Debug.WriteLine("Clearing zone Players");
             lock (ContainerLock)
             {
-                PlayerZones.Clear();
+                if (CurrentZone != activePlayer.Player?.Zone)
+                {
+                    Debug.WriteLine("Clearing zone Players");
+                    PlayerZones.Clear();
+                }
+                else
+                {
+                    Debug.WriteLine("NOT Clearing zone Players");
+                }
             }
         }
 
@@ -119,10 +126,14 @@ namespace EQTool.Services
         {
             if (CurrentZone != e.Zone)
             {
-                Debug.WriteLine("Clearing zone Players");
-                lock (ContainerLock)
+                if (CurrentZone != activePlayer.Player?.Zone)
                 {
+                    Debug.WriteLine("Clearing zone Players");
                     PlayerZones.Clear();
+                }
+                else
+                {
+                    Debug.WriteLine("NOT Clearing zone Players");
                 }
             }
         }
