@@ -17,7 +17,7 @@ namespace EQTool.Services
         private readonly Dictionary<string, PlayerWhoLogParse.PlayerInfo> Player = new Dictionary<string, PlayerWhoLogParse.PlayerInfo>(StringComparer.InvariantCultureIgnoreCase);
         private readonly Dictionary<string, PlayerWhoLogParse.PlayerInfo> PlayerZones = new Dictionary<string, PlayerWhoLogParse.PlayerInfo>(StringComparer.InvariantCultureIgnoreCase);
         private readonly Dictionary<string, PlayerWhoLogParse.PlayerInfo> DirtyPlayers = new Dictionary<string, PlayerWhoLogParse.PlayerInfo>(StringComparer.InvariantCultureIgnoreCase);
-        private readonly string CurrentZone;
+        private string CurrentZone;
         private readonly System.Timers.Timer UITimer;
         private readonly object ContainerLock = new object();
 
@@ -67,6 +67,7 @@ namespace EQTool.Services
             {
                 if (CurrentZone != activePlayer.Player?.Zone)
                 {
+                    CurrentZone = activePlayer.Player?.Zone;
                     Debug.WriteLine("Clearing zone Players");
                     PlayerZones.Clear();
                 }
@@ -128,6 +129,7 @@ namespace EQTool.Services
             {
                 if (CurrentZone != activePlayer.Player?.Zone)
                 {
+                    CurrentZone = activePlayer.Player?.Zone;
                     Debug.WriteLine("Clearing zone Players");
                     PlayerZones.Clear();
                 }
