@@ -196,6 +196,7 @@ namespace EQTool
             container.Resolve<LoggingService>().Log(string.Empty, EventType.StartUp);
             SettingsMenuItem = new System.Windows.Forms.MenuItem("Settings", ToggleSettingsWindow);
             var standardgroup = new System.Windows.Forms.MenuItem("Standard Groups", CreateStandardGroup);
+            var hotgroup = new System.Windows.Forms.MenuItem("HOT Groups", HOTGroup);
             GroupSuggestionsMenuItem = new System.Windows.Forms.MenuItem("Group Suggestions", new System.Windows.Forms.MenuItem[] { standardgroup });
             SpellsMenuItem = new System.Windows.Forms.MenuItem("Spells", ToggleSpellsWindow);
             MapMenuItem = new System.Windows.Forms.MenuItem("Map", ToggleMapWindow);
@@ -334,8 +335,18 @@ namespace EQTool
 
         private void CreateStandardGroup(object sender, EventArgs e)
         {
+            CreateGroup(GroupOptimization.Standard);
+        }
+
+        private void CreateHOTGroup(object sender, EventArgs e)
+        {
+            CreateGroup(GroupOptimization.HOTGroup);
+        }
+
+        private void CreateGroup(GroupOptimization grp)
+        {
             var grpstring = new List<string>();
-            var groups = PlayerTrackerService.CreateGroups(GroupOptimization.Standard);
+            var groups = PlayerTrackerService.CreateGroups(grp);
             var groupindex = 1;
             foreach (var group in groups)
             {
@@ -355,7 +366,6 @@ namespace EQTool
                 System.Windows.Forms.Clipboard.SetText("You must /who in the zone before group suggestions can be made!");
             }
         }
-
 
         private void WhyThePig(object sender, EventArgs e)
         {

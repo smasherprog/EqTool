@@ -168,8 +168,8 @@ namespace EQTool.Services
             players = players.Where(a => a.GuildName == activePlayer.Player.GuildName).ToList();
             switch (groupOptimization)
             {
-                case GroupOptimization.CHChain:
-                    return playerGroupService.CreateChChainGroups(players);
+                case GroupOptimization.HOTGroup:
+                    return playerGroupService.CreateHOTGroups(players);
                 case GroupOptimization.Standard:
                     return playerGroupService.CreateStandardGroups(players);
                 default:
