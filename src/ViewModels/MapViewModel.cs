@@ -61,7 +61,7 @@ namespace EQTool.ViewModels
             }
         }
 
-        public string MouseLocation => $"   {LastMouselocation.X:0.##}, {LastMouselocation.Y:0.##}";
+        public string MouseLocation => $"   {LastMouselocation.Y:0.##}, {LastMouselocation.X:0.##}";
 
         private string LoadedZone = string.Empty;
 

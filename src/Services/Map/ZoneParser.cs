@@ -746,7 +746,7 @@ namespace EQTool.Services.Map
                 {
                     "",
                 },
-                RespawnTime = new TimeSpan(0, 6, 40)
+                RespawnTime = new TimeSpan(0, 6, 0)
             });
             ZoneInfoMap.Add("lavastorm", new ZoneInfo
             {
