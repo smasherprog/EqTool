@@ -6,8 +6,8 @@ namespace EQToolApis.DB.Models
     public class ServerMessage
     {
         public int Id { get; set; }
-        public string Title { get; set; }
-        public string AlertType { get; set; }
-        public string Message { get; set; }
+        public string Title { get; set; } = string.Empty;
+        public string AlertType { get; set; } = string.Empty;
+        public string Message { get; set; } = string.Empty;
     }
 }

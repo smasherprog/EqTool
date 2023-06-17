@@ -16,7 +16,7 @@ namespace EQToolApis.Services
 
     public class DiscordServiceOptions
     {
-        public string? token { get; set; }
+        public string token { get; set; } = string.Empty;
     }
 
     public class DiscordService : IDiscordService
@@ -34,19 +34,19 @@ namespace EQToolApis.Services
         }
 
         public class LoginRequest
-        {
-            public string? captcha_key { get; set; } = null;
-            public string? gift_code_sku_id { get; set; }
-            public string? login { get; set; }
-            public string? login_source { get; set; }
-            public string? password { get; set; }
+        {   
+            public string captcha_key { get; set; } = string.Empty;
+            public string gift_code_sku_id { get; set; } = string.Empty;
+            public string login { get; set; } = string.Empty;
+            public string login_source { get; set; } = string.Empty;
+            public string password { get; set; } = string.Empty;
             public bool undelete { get; set; } = false;
         }
 
         public class LoginResponse
         {
-            public string? Token { get; set; }
-            public string? user_id { get; set; }
+            public string Token { get; set; } = string.Empty;
+            public string user_id { get; set; } = string.Empty;
         }
 
         public void Login()

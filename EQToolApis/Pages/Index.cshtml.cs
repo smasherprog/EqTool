@@ -16,10 +16,10 @@ namespace EQToolApis.Pages
             this.eQToolContext = eQToolContext;
         }
 
-        public ServerMessage ServerMessage { get; set; }
+        public ServerMessage ServerMessage { get; set; } = new ServerMessage();
         public IActionResult OnGet()
         {
-            ServerMessage = eQToolContext.ServerMessages.FirstOrDefault();
+            ServerMessage = this.eQToolContext.ServerMessages.FirstOrDefault();
             return Page();
         }
     }

@@ -24,13 +24,13 @@ namespace EQToolApis.Models
 
     public class ItemDetail
     {
-        public List<ItemAuctionDetail> Items { get; set; }
+        public List<ItemAuctionDetail> Items { get; set; } = new List<ItemAuctionDetail>();
 
-        public string? ItemName { get; set; }
+        public string ItemName { get; set; } = string.Empty;
         /// <summary>
         /// This is to reduce on the amount of data sent. All players are listed here for the Items array. 
         /// Use the variable    i    to lookup  a player.
         /// </summary>
-        public Dictionary<int, string> Players { get; set; }
+        public Dictionary<int, string> Players { get; set; } = new Dictionary<int, string>();
     }
 }

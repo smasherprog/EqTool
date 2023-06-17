@@ -196,8 +196,9 @@ namespace EQTool
             container.Resolve<LoggingService>().Log(string.Empty, EventType.StartUp);
             SettingsMenuItem = new System.Windows.Forms.MenuItem("Settings", ToggleSettingsWindow);
             var standardgroup = new System.Windows.Forms.MenuItem("Standard Groups", CreateStandardGroup);
-            var hotgroup = new System.Windows.Forms.MenuItem("HOT Groups", HOTGroup);
-            GroupSuggestionsMenuItem = new System.Windows.Forms.MenuItem("Group Suggestions", new System.Windows.Forms.MenuItem[] { standardgroup });
+            var hotclericsamegroup = new System.Windows.Forms.MenuItem("HOT Clerics Same Group", CreateHOTClericsSameGroup);
+            var hotclericsparsegroup = new System.Windows.Forms.MenuItem("HOT Clerics Sparse Group", CreateHOTClericsSparseGroup);
+            GroupSuggestionsMenuItem = new System.Windows.Forms.MenuItem("Group Suggestions", new System.Windows.Forms.MenuItem[] { standardgroup, hotclericsamegroup, hotclericsparsegroup });
             SpellsMenuItem = new System.Windows.Forms.MenuItem("Spells", ToggleSpellsWindow);
             MapMenuItem = new System.Windows.Forms.MenuItem("Map", ToggleMapWindow);
             DpsMeterMenuItem = new System.Windows.Forms.MenuItem("Dps", ToggleDPSWindow);
@@ -338,9 +339,14 @@ namespace EQTool
             CreateGroup(GroupOptimization.Standard);
         }
 
-        private void CreateHOTGroup(object sender, EventArgs e)
+        private void CreateHOTClericsSparseGroup(object sender, EventArgs e)
         {
-            CreateGroup(GroupOptimization.HOTGroup);
+            CreateGroup(GroupOptimization.HOT_Cleric_SparseGroup);
+        }
+
+        private void CreateHOTClericsSameGroup(object sender, EventArgs e)
+        {
+            CreateGroup(GroupOptimization.HOT_Cleric_SameGroup);
         }
 
         private void CreateGroup(GroupOptimization grp)

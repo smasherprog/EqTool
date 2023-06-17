@@ -9,7 +9,7 @@ namespace EQToolApis.DB.Models
         public int EQitemId { get; set; }
 
         [MaxLength(64)]
-        public string ItemName { get; set; }
+        public string ItemName { get; set; } = string.Empty;
 
         public Servers Server { get; set; }
 

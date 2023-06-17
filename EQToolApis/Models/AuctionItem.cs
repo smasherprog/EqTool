@@ -16,7 +16,7 @@ namespace EQToolApis.Models
         /// <summary>
         /// Item Name
         /// </summary>
-        public string n { get; set; }
+        public string n { get; set; } = string.Empty;
         /// <summary>
         /// Last Time seen in tunnel
         /// </summary>
@@ -76,7 +76,7 @@ namespace EQToolApis.Models
         public int EQitemId { get; set; }
 
         [MaxLength(64)]
-        public string ItemName { get; set; }
+        public string ItemName { get; set; } = string.Empty;
 
         public Servers Server { get; set; }
 
