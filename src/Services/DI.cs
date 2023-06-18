@@ -11,6 +11,7 @@ namespace EQTool.Services
         {
             var builder = new ContainerBuilder();
             _ = builder.RegisterSource(new AnyConcreteTypeNotAlreadyRegisteredSource());
+            _ = builder.RegisterType<EQToolSettingsLoad>().AsSelf().SingleInstance();
             _ = builder.Register(a =>
             {
                 return a.Resolve<EQToolSettingsLoad>().Load();
