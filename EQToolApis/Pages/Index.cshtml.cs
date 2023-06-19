@@ -19,7 +19,7 @@ namespace EQToolApis.Pages
         public ServerMessage ServerMessage { get; set; } = new ServerMessage();
         public IActionResult OnGet()
         {
-            ServerMessage = this.eQToolContext.ServerMessages.FirstOrDefault();
+            ServerMessage = eQToolContext.ServerMessages.FirstOrDefault();
             return Page();
         }
     }

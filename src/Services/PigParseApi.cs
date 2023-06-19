@@ -127,6 +127,30 @@ namespace EQTool.Services
             }
         }
 
+        public class DeathData
+        {
+            public string Name { get; set; }
+            public string Zone { get; set; }
+            public double? LocX { get; set; }
+            public double? LocY { get; set; }
+        }
+
+        public void SendDeath(DeathData death, Models.Servers server)
+        {
+            var url = $"https://pigparse.azurewebsites.net/api/zone/death";
+            var json = JsonConvert.SerializeObject(new
+            {
+                Server = server,
+                Death = death
+            });
+            var data = new StringContent(json, Encoding.UTF8, "application/json");
+            var res = App.httpclient.PostAsync(url, data).Result;
+            if (res.StatusCode == System.Net.HttpStatusCode.OK)
+            {
+                _ = res.Content.ReadAsStringAsync().Result;
+            }
+        }
+
         public List<PlayerWhoLogParse.PlayerInfo> GetPlayerData(List<string> players, Models.Servers server)
         {
             try

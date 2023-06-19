@@ -1,4 +1,5 @@
 using EQToolApis.DB;
+using EQToolApis.DB.Models;
 using EQToolApis.Models;
 using EQToolApis.Services;
 using Hangfire;
@@ -9,7 +10,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Web;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
-using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -86,11 +86,11 @@ builder.Services.Configure<DiscordServiceOptions>(options =>
         d.TotalUniqueItems = 0;
         d.ServerData[(int)Servers.Green] = new ServerDBData
         {
-         };
+        };
 
         d.ServerData[(int)Servers.Blue] = new ServerDBData
         {
-         };
+        };
 #else
         d.TotalEQAuctionPlayers = dbcontext.EQAuctionPlayers.Count();
         d.TotalUniqueItems = dbcontext.EQitems.Count();
@@ -115,7 +115,7 @@ builder.Services.Configure<DiscordServiceOptions>(options =>
         };
 #endif
 
-    } 
+    }
     return d;
 }).AddSingleton<PlayerCache>(a =>
 {
@@ -138,6 +138,18 @@ using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<EQToolContext>();
     db.Database.Migrate();
+    var Zones = ZoneParser.Zones;
+    var dbzones = db.EQZones.ToList();
+    foreach (var zone in Zones)
+    {
+        if (!dbzones.Any(a => a.Name == zone))
+        {
+            _ = db.EQZones.Add(new EQZone
+            {
+                Name = zone
+            });
+        }
+    }
 }
 
 app.UseHttpsRedirection();

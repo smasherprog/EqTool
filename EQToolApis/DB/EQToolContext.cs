@@ -9,7 +9,17 @@ namespace EQToolApis.DB
         public EQToolContext(DbContextOptions options)
             : base(options)
         {
+
         }
+
+        public DbSet<APILog> APILogs { get; set; }
+
+        public DbSet<IPBan> IPBans { get; set; }
+
+        public DbSet<EQZone> EQZones { get; set; }
+
+        public DbSet<EQDeath> EQDeaths { get; set; }
+
         public DbSet<EQAuctionPlayer> EQAuctionPlayers { get; set; }
 
         public DbSet<EQitem> EQitems { get; set; }
@@ -23,5 +33,6 @@ namespace EQToolApis.DB
         public DbSet<ServerMessage> ServerMessages { get; set; }
 
         public DbSet<EqToolException> EqToolExceptions { get; set; }
+
     }
 }

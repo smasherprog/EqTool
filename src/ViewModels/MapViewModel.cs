@@ -118,7 +118,7 @@ namespace EQTool.ViewModels
                     //}
                     MapOffset = map.Offset;
                     var linethickness = MathHelper.ChangeRange(Math.Max(map.AABB.MaxWidth, map.AABB.MaxHeight), 800, 35000, 2, 40);
-                    canvas.Children.Clear();
+
                     foreach (var group in map.Lines)
                     {
                         var c = EQMapColor.GetThemedColors(group.Color);

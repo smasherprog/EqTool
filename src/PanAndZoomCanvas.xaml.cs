@@ -37,6 +37,7 @@ namespace EQTool
             TimeSpanControl.DefaultValue = TimeSpan.FromMinutes(72);
             TimeSpanControl.Value = TimeSpan.FromMinutes(72);
             TimeSpanControl.DisplayDefaultValueOnEmptyText = true;
+
         }
 
         public void UpdateTimerWidgest()
@@ -120,10 +121,7 @@ namespace EQTool
             ZoneName = zone;
             Transform = new MatrixTransform();
             CurrentScaling = 1.0f;
-            foreach (UIElement child in Children)
-            {
-                child.RenderTransform = Transform;
-            }
+            Children.Clear();
         }
 
         private double MaxDims { get; set; } = 1.0f;

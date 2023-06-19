@@ -6,8 +6,8 @@
         xmlns:ui="using:Microsoft.Toolkit.Uwp.UI"
         xmlns:local="clr-namespace:EQTool" 
         mc:Ignorable="d"
-        Background="Transparent"
-       > 
+        Background="Transparent" 
+       >
     <Canvas.ContextMenu>
         <ContextMenu Width="130" Name="TimerMenu" Closed="TimerMenu_Closed" Opened="TimerMenu_Opened">
             <MenuItem Name="AddTimerMenuItem"  Click="AddTimer">
@@ -17,7 +17,7 @@
                 <MenuItem.Header>
                     <StackPanel Orientation="Horizontal">
                         <local:CustomTimeSpanUpDown x:Name="TimeSpanControl"/>
-                        <Label VerticalAlignment="Top" VerticalContentAlignment="Top">Add</Label> 
+                        <Label VerticalAlignment="Top" VerticalContentAlignment="Top">Add</Label>
                     </StackPanel>
                 </MenuItem.Header>
             </MenuItem>
