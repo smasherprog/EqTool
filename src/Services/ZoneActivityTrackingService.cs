@@ -31,6 +31,11 @@ namespace EQTool.Services
 
         private void LogParser_DeadEvent(object sender, LogParser.DeadEventArgs e)
         {
+            if (activePlayer.Player?.Server == null)
+            {
+                return;
+            }
+
             try
             {
                 Debug.WriteLine($"Zone activity death: {e.Name}");
