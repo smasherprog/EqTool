@@ -4,6 +4,7 @@ using EQToolApis.DB;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EQToolApis.Migrations
 {
     [DbContext(typeof(EQToolContext))]
-    partial class EQToolContextModelSnapshot : ModelSnapshot
+    [Migration("20230619214518_AddedServerToEventTable")]
+    partial class AddedServerToEventTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -32,9 +35,6 @@ namespace EQToolApis.Migrations
 
                     b.Property<short>("APIAction")
                         .HasColumnType("smallint");
-
-                    b.Property<DateTime>("CreatedDate")
-                        .HasColumnType("datetime2");
 
                     b.Property<string>("IpAddress")
                         .HasMaxLength(24)
@@ -94,8 +94,8 @@ namespace EQToolApis.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
+                        .HasMaxLength(48)
+                        .HasColumnType("nvarchar(48)");
 
                     b.Property<byte>("Server")
                         .HasColumnType("tinyint");

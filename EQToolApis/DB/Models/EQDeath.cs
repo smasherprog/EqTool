@@ -8,11 +8,13 @@ namespace EQToolApis.DB.Models
     {
         public int EQDeathId { get; set; }
 
+        public Servers Server { get; set; }
+
         public int EQZoneId { get; set; }
 
         public EQZone EQZone { get; set; }
 
-        [MaxLength(48)]
+        [MaxLength(64)]
         public string Name { get; set; }
 
         public double? LocX { get; set; }

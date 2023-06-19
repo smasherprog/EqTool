@@ -35,6 +35,9 @@ namespace EQTool
         private LogParser logParser => container.Resolve<LogParser>();
         private System.Timers.Timer UITimer;
         private PlayerTrackerService PlayerTrackerService;
+        private ZoneActivityTrackingService ZoneActivityTrackingService;
+
+
         private EQToolSettings EQToolSettings => container.Resolve<EQToolSettings>();
         public static List<Window> WindowList = new List<Window>();
 
@@ -275,6 +278,7 @@ namespace EQTool
                 }
             }
             PlayerTrackerService = container.Resolve<PlayerTrackerService>();
+            ZoneActivityTrackingService = container.Resolve<ZoneActivityTrackingService>();
             logParser.PlayerChangeEvent += LogParser_PlayerChangeEvent;
         }
 
