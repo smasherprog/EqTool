@@ -412,6 +412,8 @@ namespace EQTool.Services.Map
             ZoneInfoMap.Add("fieldofbone", new ZoneInfo
             {
                 Name = "fieldofbone",
+                ShowAllMapLevels = true,
+                ZoneLevelHeight = 10,
                 NotableNPCs = new List<string>()
                 {
                     "A scaled prowler","A skeletal jester","Burynaibane Spider","Carrion Queen","Gharg Oberbord","Iksar Dakoit","Jairnel Marfury","Kerosh Blackhand","Targishin","The Tangrin","a burynai cutter","a scourgetail scorpion",
