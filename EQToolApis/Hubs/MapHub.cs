@@ -15,8 +15,9 @@ namespace EQToolApis.Hubs
             {
                 if (player.ZoneName != playerLocation.ZoneName)
                 {
-                    await Clients.Group($"{player.Server}-{player.ZoneName}").SendAsync("ReceivePlayerLeftZone", player);
-                    Debug.WriteLine($"{player.Server}-{player.ZoneName}, ReceivePlayerLeftZone {player.PlayerName}, {player.ZoneName}");
+                    await Groups.RemoveFromGroupAsync(Context.ConnectionId, player.GroupName);
+                    await Clients.Group(player.GroupName).SendAsync("ReceivePlayerLeftZone", player);
+                    Debug.WriteLine($"{player.GroupName}, ReceivePlayerLeftZone {player.PlayerName}, {player.ZoneName}");
                 }
             }
             else
@@ -27,20 +28,22 @@ namespace EQToolApis.Hubs
                     Server = playerLocation.Server,
                     ZoneName = playerLocation.ZoneName
                 };
+                await Groups.AddToGroupAsync(Context.ConnectionId, player.GroupName);
                 _ = connections.TryAdd(Context.ConnectionId, player);
-                Debug.WriteLine($"{player.Server}-{player.ZoneName}, TryAdd {player.PlayerName}, {player.ZoneName}");
+                Debug.WriteLine($"{player.GroupName}, TryAdd {player.PlayerName}, {player.ZoneName}");
             }
 
-            await Clients.Group($"{playerLocation.Server}-{playerLocation.ZoneName}").SendAsync("ReceivePlayerLocation", playerLocation);
-            Debug.WriteLine($"{playerLocation} > {playerLocation.Server}, {playerLocation.PlayerName}, {playerLocation.ZoneName}, {playerLocation.X}, {playerLocation.Y}, {playerLocation.Z}");
+            await Clients.Group(player.GroupName).SendAsync("ReceivePlayerLocation", playerLocation);
+            Debug.WriteLine($"{player.GroupName}, {playerLocation.PlayerName}, {playerLocation.ZoneName}, {playerLocation.X}, {playerLocation.Y}, {playerLocation.Z}");
         }
 
         public override async Task OnDisconnectedAsync(Exception? exception)
         {
             if (connections.TryGetValue(Context.ConnectionId, out var player))
             {
-                await Clients.Group($"{player.Server}-{player.ZoneName}").SendAsync("ReceivePlayerLeftZone", player);
-                Debug.WriteLine($"{player.Server}-{player.ZoneName}, ReceivePlayerLeftZone {player.PlayerName}, {player.ZoneName}");
+                await Groups.RemoveFromGroupAsync(Context.ConnectionId, player.GroupName);
+                await Clients.Group(player.GroupName).SendAsync("ReceivePlayerLeftZone", player);
+                Debug.WriteLine($"{player.GroupName}, ReceivePlayerLeftZone {player.PlayerName}, {player.ZoneName}");
             }
 
             _ = base.OnDisconnectedAsync(exception);
