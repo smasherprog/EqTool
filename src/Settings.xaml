@@ -154,6 +154,10 @@
                         <TextBlock Text="Map"  VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
                         <Button Click="mobconclicked" MinWidth="100">Test Mob</Button>
                     </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Map"  VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
+                        <Button Click="signalrplayerloc" MinWidth="100">Test PlayerLocation</Button>
+                    </StackPanel>
                 </StackPanel>
             </StackPanel>
         </StackPanel>

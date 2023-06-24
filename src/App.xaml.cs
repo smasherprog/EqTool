@@ -1,7 +1,6 @@
 ﻿using Autofac;
 using EQTool.Models;
 using EQTool.Services;
-using EQTool.Services.Map;
 using EQTool.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -244,7 +243,6 @@ namespace EQTool
                     new System.Windows.Forms.MenuItem("Exit", OnExit)
                 }),
             };
-            container.Resolve<SignalRMapService>().Connect();
             var hasvalideqdir = FindEq.IsProject1999Folder(EQToolSettings.DefaultEqDirectory);
             if (!hasvalideqdir || FindEq.TryCheckLoggingEnabled(EQToolSettings.DefaultEqDirectory) == false)
             {
