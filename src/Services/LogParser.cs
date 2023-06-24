@@ -78,6 +78,7 @@ namespace EQTool.Services
         public class PlayerLocationEventArgs : EventArgs
         {
             public Point3D Location { get; set; }
+            public PlayerInfo PlayerInfo { get; set; }
         }
         public class FightHitEventArgs : EventArgs
         {
@@ -193,7 +194,7 @@ namespace EQTool.Services
                 var pos = locationParser.Match(message);
                 if (pos.HasValue)
                 {
-                    PlayerLocationEvent?.Invoke(this, new PlayerLocationEventArgs { Location = pos.Value });
+                    PlayerLocationEvent?.Invoke(this, new PlayerLocationEventArgs { Location = pos.Value, PlayerInfo=activePlayer.Player });
                     return;
                 }
 

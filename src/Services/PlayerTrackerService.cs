@@ -11,7 +11,7 @@ namespace EQTool.Services
     {
         private readonly LogParser logParser;
         private readonly PigParseApi pigParseApi;
-        private readonly ActivePlayer activePlayer;
+        internal readonly ActivePlayer activePlayer;
         private readonly LoggingService loggingService;
         private readonly PlayerGroupService playerGroupService;
         private readonly Dictionary<string, PlayerWhoLogParse.PlayerInfo> Player = new Dictionary<string, PlayerWhoLogParse.PlayerInfo>(StringComparer.InvariantCultureIgnoreCase);

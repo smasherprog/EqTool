@@ -1,7 +1,10 @@
 ﻿using Autofac;
 using EQTool.Models;
+using EQToolShared.HubModels;
 using EQTool.Services;
+using EQTool.Services.Map;
 using EQTool.ViewModels;
+using Microsoft.AspNetCore.SignalR.Client;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -40,6 +43,10 @@ namespace EQTool
 
         private EQToolSettings EQToolSettings => container.Resolve<EQToolSettings>();
         public static List<Window> WindowList = new List<Window>();
+
+        public static SignalRMapService MapService { get; private set; }
+
+
 
         private bool WaitForEQToolToStop()
         {
@@ -259,6 +266,22 @@ namespace EQTool
             }
             else
             {
+                //#if DEBUG
+                try
+                {
+                    // TODO: Put somewhere that attempts to connect until service is available and reconnects if dropped
+                    HubConnection hubConnection = new HubConnectionBuilder()
+                        .WithUrl("https://pigparse.org/EqToolMap")
+                        .Build();
+                    //hubConnection.HandshakeTimeout = new TimeSpan(0, 0, 3);
+                    MapService = new SignalRMapService(hubConnection);
+                    MapService.Connect();
+                }
+                catch (Exception ex) {
+                    Debug.Print(ex.Message);
+                }
+                //#endif
+
                 ToggleMenuButtons(true);
                 if (!EQToolSettings.SpellWindowState.Closed)
                 {
@@ -280,6 +303,30 @@ namespace EQTool
             PlayerTrackerService = container.Resolve<PlayerTrackerService>();
             ZoneActivityTrackingService = container.Resolve<ZoneActivityTrackingService>();
             logParser.PlayerChangeEvent += LogParser_PlayerChangeEvent;
+
+
+            logParser.PlayerLocationEvent += LogParser_PlayerLocationEvent;
+
+        }
+
+
+        private void LogParser_PlayerLocationEvent(object sender, LogParser.PlayerLocationEventArgs e)
+        {
+            if (MapService==null) return;
+            try {
+                MapService.SendPlayerLocation(new PlayerLocation()
+                {
+                    PlayerName = this.PlayerTrackerService.activePlayer.Player.Name,
+                    ZoneName = e.PlayerInfo.Zone,
+                    Server = e.PlayerInfo.Server,
+                    X = e.Location.X,
+                    Y = e.Location.Y,
+                    Z = e.Location.Z
+                });
+            }
+            catch
+            {
+            }
         }
 
         private void UITimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)

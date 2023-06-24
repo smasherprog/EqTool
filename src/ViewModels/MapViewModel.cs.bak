@@ -1,10 +1,8 @@
 ﻿using EQTool.Models;
-using EQToolShared.HubModels;
 using EQTool.Services;
 using EQTool.Services.Map;
 using EQTool.Shapes;
 using System;
-using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
@@ -221,7 +219,7 @@ namespace EQTool.ViewModels
                 if (canvas == null)
                     return false;
 
-                var otherPlayerPrevious = OtherPlayers.SingleOrDefault(p => p.Location.ZoneName == otherPlayerLocation.ZoneName && p.Location.PlayerName == otherPlayerLocation.PlayerName);
+                var otherPlayerPrevious = OtherPlayers.SingleOrDefault(p => p.Location.MapName == otherPlayerLocation.MapName && p.Location.PlayerName == otherPlayerLocation.PlayerName);
 
                 // remove other player old label from canvas
                 if (otherPlayerPrevious != null)
