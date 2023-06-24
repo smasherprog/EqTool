@@ -7,6 +7,7 @@ namespace EQToolShared.HubModels
         public Servers Server { get; set; }
         public string PlayerName { get; set; }
         public string ZoneName { get; set; }
+        public string GroupName => $"{Server}-{ZoneName}";
     }
 
     public class PlayerLocation
