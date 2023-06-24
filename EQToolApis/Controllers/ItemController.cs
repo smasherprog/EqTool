@@ -1,6 +1,7 @@
 ﻿using EQToolApis.DB;
 using EQToolApis.Models;
 using EQToolApis.Services;
+using EQToolShared.Enums;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel;
 

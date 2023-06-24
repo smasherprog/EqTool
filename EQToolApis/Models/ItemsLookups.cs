@@ -1,4 +1,4 @@
-﻿using EQToolApis.DB;
+﻿using EQToolShared.Enums;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 

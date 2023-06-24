@@ -55,7 +55,7 @@ namespace EQTool
                     var items = mobInfoViewModel.KnownLoot.Where(a => a.HaseUrl == Visibility.Visible).Select(a => a.Name?.Trim()).Where(a => !string.IsNullOrWhiteSpace(a)).ToList();
                     if (activePlayer?.Player?.Server != null && items.Any())
                     {
-                        var itemprices = pigParseApi.GetData(items, activePlayer.Player.Server.Value);
+                        var itemprices = pigParseApi.GetData(items, activePlayer.Player.Server);
                         foreach (var item in itemprices)
                         {
                             var loot = mobInfoViewModel.KnownLoot.FirstOrDefault(a => a.Name.Equals(item.ItemName, StringComparison.OrdinalIgnoreCase));

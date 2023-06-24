@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using EQToolShared.Enums;
+using Microsoft.EntityFrameworkCore;
 
 namespace EQToolApis.DB.Models
 {

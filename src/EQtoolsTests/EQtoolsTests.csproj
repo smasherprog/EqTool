@@ -172,6 +172,10 @@
     </Content>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\EQToolShared\EQToolShared.csproj">
+      <Project>{debdc0ee-39f6-413d-80d7-955ca98a85cc}</Project>
+      <Name>EQToolShared</Name>
+    </ProjectReference>
     <ProjectReference Include="..\EQTool.csproj">
       <Project>{10E99313-7361-4503-A314-14BC052A6CAC}</Project>
       <Name>EQTool</Name>

@@ -1,12 +1,12 @@
-﻿using EQToolApis.DB;
+﻿using EQToolShared.Enums;
 
-namespace EQToolApis.Models
+namespace EQToolShared.HubModels
 {
     public class Player
     {
         public Servers Server { get; set; }
         public string PlayerName { get; set; }
-        public string ZoneName { get; set; } 
+        public string ZoneName { get; set; }
     }
 
     public class PlayerLocation

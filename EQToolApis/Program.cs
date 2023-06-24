@@ -3,6 +3,7 @@ using EQToolApis.DB.Models;
 using EQToolApis.Hubs;
 using EQToolApis.Models;
 using EQToolApis.Services;
+using EQToolShared.Enums;
 using Hangfire;
 using Hangfire.Dashboard;
 using Hangfire.SqlServer;

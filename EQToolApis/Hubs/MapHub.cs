@@ -1,4 +1,4 @@
-﻿using EQToolApis.Models;
+﻿using EQToolShared.HubModels;
 using Microsoft.AspNetCore.SignalR;
 using System.Collections.Concurrent;
 using System.Diagnostics;

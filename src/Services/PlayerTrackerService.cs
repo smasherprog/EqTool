@@ -53,7 +53,7 @@ namespace EQTool.Services
             }
             try
             {
-                pigParseApi.SendPlayerData(playerstosync, activePlayer.Player.Server.Value);
+                pigParseApi.SendPlayerData(playerstosync, activePlayer.Player.Server);
             }
             catch (Exception ex)
             {
@@ -154,7 +154,7 @@ namespace EQTool.Services
             }
 
             var uknownplayerdata = players.Where(a => !a.PlayerClass.HasValue || !a.Level.HasValue).Select(a => a.Name).ToList();
-            var playerdatafromserver = pigParseApi.GetPlayerData(uknownplayerdata, activePlayer.Player.Server.Value);
+            var playerdatafromserver = pigParseApi.GetPlayerData(uknownplayerdata, activePlayer.Player.Server);
             foreach (var item in playerdatafromserver)
             {
                 var playerlocally = players.FirstOrDefault(a => a.Name == item.Name);

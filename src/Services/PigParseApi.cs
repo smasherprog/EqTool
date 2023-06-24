@@ -1,5 +1,5 @@
-﻿using EQTool.Models;
-using EQTool.Services.Spells.Log;
+﻿using EQTool.Services.Spells.Log;
+using EQToolShared.Enums;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -81,7 +81,7 @@ namespace EQTool.Services
         {
         }
 
-        public List<Item> GetData(List<string> names, Models.Servers server)
+        public List<Item> GetData(List<string> names, Servers server)
         {
             try
             {
@@ -106,7 +106,7 @@ namespace EQTool.Services
             return new List<Item>();
         }
 
-        public void SendPlayerData(List<PlayerWhoLogParse.PlayerInfo> players, Models.Servers server)
+        public void SendPlayerData(List<PlayerWhoLogParse.PlayerInfo> players, Servers server)
         {
             if (!players.Any())
             {
@@ -135,7 +135,7 @@ namespace EQTool.Services
             public double? LocY { get; set; }
         }
 
-        public void SendDeath(DeathData death, Models.Servers server)
+        public void SendDeath(DeathData death, Servers server)
         {
             var url = $"https://pigparse.azurewebsites.net/api/zone/death";
             var json = JsonConvert.SerializeObject(new
@@ -151,7 +151,7 @@ namespace EQTool.Services
             }
         }
 
-        public List<PlayerWhoLogParse.PlayerInfo> GetPlayerData(List<string> players, Models.Servers server)
+        public List<PlayerWhoLogParse.PlayerInfo> GetPlayerData(List<string> players, Servers server)
         {
             try
             {

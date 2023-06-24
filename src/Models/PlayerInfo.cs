@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EQToolShared.Enums;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -6,13 +7,6 @@ using System.Windows;
 
 namespace EQTool.Models
 {
-    public enum Servers
-    {
-        Green,
-        Blue,
-        Red
-    }
-
     public class SessionPlayerDamage : INotifyPropertyChanged
     {
         private PlayerDamage _CurrentSessionPlayerDamage;
@@ -193,8 +187,8 @@ namespace EQTool.Models
             }
         }
 
-        private Servers? _Server;
-        public Servers? Server
+        private Servers _Server;
+        public Servers Server
         {
             get => _Server;
             set

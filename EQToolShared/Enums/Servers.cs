@@ -1,8 +1,9 @@
-﻿namespace EQToolApis.DB
+﻿namespace EQToolShared.Enums
 {
     public enum Servers : byte
     {
         Green,
-        Blue
+        Blue,
+        Red
     }
 }

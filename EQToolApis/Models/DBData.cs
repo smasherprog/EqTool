@@ -1,4 +1,4 @@
-﻿using EQToolApis.DB;
+﻿using EQToolShared.Enums;
 
 namespace EQToolApis.Models
 {

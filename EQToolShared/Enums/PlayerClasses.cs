@@ -1,4 +1,4 @@
-﻿namespace EQToolApis.DB
+﻿namespace EQToolShared.Enums
 {
     public enum PlayerClasses : byte
     {

@@ -1,4 +1,6 @@
-﻿namespace EQTool.Models
+﻿using EQToolShared.Enums;
+
+namespace EQTool.Models
 {
     public class PlayerRequest
     {

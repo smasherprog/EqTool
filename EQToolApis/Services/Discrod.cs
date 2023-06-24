@@ -1,6 +1,7 @@
 ﻿using EQToolApis.DB;
 using EQToolApis.DB.Models;
 using EQToolApis.Models;
+using EQToolShared.Enums;
 using Hangfire;
 using Microsoft.Extensions.Options;
 using System.ComponentModel;
@@ -34,7 +35,7 @@ namespace EQToolApis.Services
         }
 
         public class LoginRequest
-        {   
+        {
             public string captcha_key { get; set; } = string.Empty;
             public string gift_code_sku_id { get; set; } = string.Empty;
             public string login { get; set; } = string.Empty;

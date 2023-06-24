@@ -1,5 +1,5 @@
-﻿using EQTool.Models;
-using EQTool.ViewModels;
+﻿using EQTool.ViewModels;
+using EQToolShared.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace EQToolTests

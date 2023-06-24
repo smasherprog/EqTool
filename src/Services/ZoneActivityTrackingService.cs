@@ -45,7 +45,7 @@ namespace EQTool.Services
                     LocY = LastLocation.HasValue ? LastLocation.Value.Y : (double?)null,
                     Zone = activePlayer.Player.Zone,
                     Name = e.Name
-                }, activePlayer.Player.Server.Value);
+                }, activePlayer.Player.Server);
             }
             catch (Exception ex)
             {

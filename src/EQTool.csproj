@@ -861,6 +861,12 @@
   <ItemGroup>
     <Resource Include="Trash.png" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\EQToolShared\EQToolShared.csproj">
+      <Project>{DEBDC0EE-39F6-413D-80D7-955CA98A85CC}</Project>
+      <Name>EQToolShared</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="AfterResolveReferences">
     <ItemGroup>

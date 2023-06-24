@@ -1,4 +1,5 @@
 ﻿using EQToolApis.DB;
+using EQToolShared.Enums;
 using System.ComponentModel.DataAnnotations;
 
 namespace EQToolApis.Models
@@ -8,7 +9,7 @@ namespace EQToolApis.Models
         /// <summary>
         /// itemid
         /// </summary>
-        public int i { get; set; } 
+        public int i { get; set; }
         /// <summary>
         /// auction Type
         /// </summary>
@@ -70,7 +71,7 @@ namespace EQToolApis.Models
         /// </summary>
         public int ay { get; set; }
     }
-     
+
     public class Item
     {
         public int EQitemId { get; set; }

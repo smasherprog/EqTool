@@ -1,4 +1,5 @@
 ﻿using EQTool.Models;
+using EQToolShared.Enums;
 using System;
 using System.ComponentModel;
 using System.IO;
@@ -67,10 +68,7 @@ namespace EQTool.ViewModels
                     }
                     else
                     {
-                        if (!tempplayer.Server.HasValue)
-                        {
-                            tempplayer.Server = parseinfo?.Server;
-                        }
+                        tempplayer.Server = parseinfo.Server;
                     }
 
                     playerchanged = tempplayer != Player;
