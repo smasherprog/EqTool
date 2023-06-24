@@ -1,5 +1,6 @@
 using EQToolApis.DB;
 using EQToolApis.DB.Models;
+using EQToolApis.Hubs;
 using EQToolApis.Models;
 using EQToolApis.Services;
 using Hangfire;
@@ -172,7 +173,7 @@ app.MapControllers();
 app.UseSwagger();
 app.UseSwaggerUI();
 app.MapRazorPages();
-
+app.MapHub<MapHub>("/EqToolMap");
 var isrelease = false;
 
 #if !DEBUG
