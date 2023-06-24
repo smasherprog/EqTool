@@ -19,6 +19,7 @@ builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
         .AddMicrosoftIdentityWebApp(builder.Configuration.GetSection("AzureAd"));
 
 builder.Services.AddRazorPages();
+builder.Services.AddSignalR();
 builder.Services.AddControllers();
 builder.Services.AddResponseCaching();
 builder.Services.AddEndpointsApiExplorer();
