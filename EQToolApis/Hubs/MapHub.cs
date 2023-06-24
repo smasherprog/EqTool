@@ -11,23 +11,25 @@ namespace EQToolApis.Hubs
 
         public async Task SendPlayerLocation(PlayerLocation playerLocation)
         {
-            if (connections.TryGetValue(Context.ConnectionId, out var player))
+            var player = new Player
+            {
+                PlayerName = playerLocation.PlayerName,
+                Server = playerLocation.Server,
+                ZoneName = playerLocation.ZoneName
+            };
+            if (!connections.TryAdd(Context.ConnectionId, player))
             {
                 if (player.ZoneName != playerLocation.ZoneName)
                 {
                     await Groups.RemoveFromGroupAsync(Context.ConnectionId, player.GroupName);
                     await Clients.Group(player.GroupName).SendAsync("ReceivePlayerLeftZone", player);
+                    player.ZoneName = playerLocation.ZoneName;
+                    await Groups.AddToGroupAsync(Context.ConnectionId, player.GroupName);
                     Debug.WriteLine($"{player.GroupName}, ReceivePlayerLeftZone {player.PlayerName}, {player.ZoneName}");
                 }
             }
             else
             {
-                player = new Player
-                {
-                    PlayerName = playerLocation.PlayerName,
-                    Server = playerLocation.Server,
-                    ZoneName = playerLocation.ZoneName
-                };
                 await Groups.AddToGroupAsync(Context.ConnectionId, player.GroupName);
                 _ = connections.TryAdd(Context.ConnectionId, player);
                 Debug.WriteLine($"{player.GroupName}, TryAdd {player.PlayerName}, {player.ZoneName}");
@@ -39,7 +41,7 @@ namespace EQToolApis.Hubs
 
         public override async Task OnDisconnectedAsync(Exception? exception)
         {
-            if (connections.TryGetValue(Context.ConnectionId, out var player))
+            if (connections.TryRemove(Context.ConnectionId, out var player))
             {
                 await Groups.RemoveFromGroupAsync(Context.ConnectionId, player.GroupName);
                 await Clients.Group(player.GroupName).SendAsync("ReceivePlayerLeftZone", player);
