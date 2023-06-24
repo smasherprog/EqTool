@@ -3,7 +3,6 @@ using EQTool.Services;
 using EQTool.Services.Map;
 using EQTool.ViewModels;
 using EQToolShared.HubModels;
-using Microsoft.AspNetCore.SignalR.Client;
 using System;
 using System.ComponentModel;
 using System.Windows;
@@ -24,10 +23,18 @@ namespace EQTool
         private readonly IAppDispatcher appDispatcher;
         private readonly System.Timers.Timer UITimer;
         private bool AutomaticallyAddTimerOnDeath = false;
-        private SignalRMapService signalRMapService;
-        private PlayerTrackerService playerTrackerService;
+        private readonly SignalRMapService signalRMapService;
+        private readonly PlayerTrackerService playerTrackerService;
 
-        public MappingWindow(MapViewModel mapViewModel, LogParser logParser, EQToolSettings settings, EQToolSettingsLoad toolSettingsLoad, IAppDispatcher appDispatcher, LoggingService loggingService, PlayerTrackerService playerTrackerService)
+        public MappingWindow(
+            MapViewModel mapViewModel,
+            LogParser logParser,
+            EQToolSettings settings,
+            EQToolSettingsLoad toolSettingsLoad,
+            IAppDispatcher appDispatcher,
+            SignalRMapService signalRMapService,
+            LoggingService loggingService,
+            PlayerTrackerService playerTrackerService)
         {
             loggingService.Log(string.Empty, App.EventType.OpenMap);
             this.settings = settings;
@@ -55,7 +62,7 @@ namespace EQTool
             UITimer.Elapsed += UITimer_Elapsed;
             UITimer.Enabled = true;
 
-            this.signalRMapService = App.MapService;
+            this.signalRMapService = signalRMapService;
             this.signalRMapService.PlayerLocationReceived += SignalRMapService_PlayerLocationReceived;
 
         }
@@ -63,14 +70,14 @@ namespace EQTool
         private void SignalRMapService_PlayerLocationReceived(PlayerLocation obj)
         {
             //Debug.Print($"{obj} > {obj.Server}, {obj.PlayerName}, {obj.ZoneName}, {obj.X}, {obj.Y}, {obj.Z}");
-            if (obj != null && obj.PlayerName != null && playerTrackerService != null && playerTrackerService.activePlayer.Player != null && 
-                obj.PlayerName != playerTrackerService.activePlayer.Player.Name && 
+            if (obj != null && obj.PlayerName != null && playerTrackerService != null && playerTrackerService.activePlayer.Player != null &&
+                obj.PlayerName != playerTrackerService.activePlayer.Player.Name &&
                 obj.Server == playerTrackerService.activePlayer.Player.Server &&
                 obj.ZoneName == playerTrackerService.activePlayer.Player.Zone)
             {
-                Application.Current.Dispatcher.Invoke((Action)delegate
+                Application.Current.Dispatcher.Invoke(delegate
                 {
-                    mapViewModel.UpdateOtherPlayerLocations(obj, Map);
+                    _ = mapViewModel.UpdateOtherPlayerLocations(obj, Map);
                 });
             }
         }
@@ -135,8 +142,8 @@ namespace EQTool
             // Bring map to front if not already always on top
             if (EQTool.Properties.Settings.Default.GlobalMapWindowAlwaysOnTop == false)
             {
-                this.Topmost = true;
-                this.Topmost = false;
+                Topmost = true;
+                Topmost = false;
             }
         }
 
@@ -152,6 +159,7 @@ namespace EQTool
             StateChanged -= Window_StateChanged;
             LocationChanged -= Window_LocationChanged;
             KeyDown -= PanAndZoomCanvas_KeyDown;
+            signalRMapService.PlayerLocationReceived -= SignalRMapService_PlayerLocationReceived;
             SaveState();
             base.OnClosing(e);
         }
