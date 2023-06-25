@@ -843,7 +843,7 @@ namespace EQTool.Services.Map
             ZoneInfoMap.Add("neriakb", new ZoneInfo
             {
                 Name = "neriakb",
-                ShowAllMapLevels = true,
+                ShowAllMapLevels = false,
                 ZoneLevelHeight = 10,
                 NotableNPCs = new List<string>() { "", },
                 RespawnTime = new TimeSpan(0, 24, 0)

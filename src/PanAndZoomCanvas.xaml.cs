@@ -82,7 +82,6 @@ namespace EQTool
             }
         }
 
-        private double SmallFontSize => MathHelper.ChangeRange(MaxDims, 500, 35000, 10, 50);
         private void AddTimer(object sender, RoutedEventArgs e)
         {
             var mw = AddTimer(TimeSpanControl.Value.Value, string.Empty);
@@ -252,6 +251,9 @@ namespace EQTool
         {
             return val.CompareTo(min) < 0 ? min : val.CompareTo(max) > 0 ? max : val;
         }
+        public double ZoneLabelFontSize => MathHelper.ChangeRange(MaxDims, 500, 35000, 14, 170);
+        public double OtherLabelFontSize => MathHelper.ChangeRange(MaxDims, 500, 35000, 6, 110);
+        public double SmallFontSize => MathHelper.ChangeRange(MaxDims, 500, 35000, 7, 50);
 
         private void PanAndZoomCanvas_MouseWheel(object sender, MouseWheelEventArgs e)
         {
@@ -324,7 +326,7 @@ namespace EQTool
                     var textdata = t.Tag as MapLabel;
                     if (textdata.LabelSize == LabelSize.Large)
                     {
-                        var largescaling = MathHelper.ChangeRange(MaxDims, 500, 35000, 40, 120);
+                        var largescaling = ZoneLabelFontSize;
                         largescaling *= currentlabelscaling;
                         largescaling = (int)Clamp(largescaling, 5, 200);
                         if (t.FontSize != largescaling)
@@ -334,7 +336,7 @@ namespace EQTool
                     }
                     else
                     {
-                        var smallscaling = MathHelper.ChangeRange(MaxDims, 500, 35000, 20, 80);
+                        var smallscaling = OtherLabelFontSize;
                         smallscaling *= currentlabelscaling;
                         smallscaling = (int)Clamp(smallscaling, 5, 100);
                         if (t.FontSize != smallscaling)
