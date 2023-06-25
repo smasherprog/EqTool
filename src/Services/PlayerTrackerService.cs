@@ -15,7 +15,7 @@ namespace EQTool.Services
         private readonly LoggingService loggingService;
         private readonly PlayerGroupService playerGroupService;
         private readonly Dictionary<string, PlayerWhoLogParse.PlayerInfo> Player = new Dictionary<string, PlayerWhoLogParse.PlayerInfo>(StringComparer.InvariantCultureIgnoreCase);
-        private readonly Dictionary<string, PlayerWhoLogParse.PlayerInfo> PlayerZones = new Dictionary<string, PlayerWhoLogParse.PlayerInfo>(StringComparer.InvariantCultureIgnoreCase);
+        private readonly Dictionary<string, PlayerWhoLogParse.PlayerInfo> PlayersInZones = new Dictionary<string, PlayerWhoLogParse.PlayerInfo>(StringComparer.InvariantCultureIgnoreCase);
         private readonly Dictionary<string, PlayerWhoLogParse.PlayerInfo> DirtyPlayers = new Dictionary<string, PlayerWhoLogParse.PlayerInfo>(StringComparer.InvariantCultureIgnoreCase);
         private string CurrentZone;
         private readonly System.Timers.Timer UITimer;
@@ -69,7 +69,7 @@ namespace EQTool.Services
                 {
                     CurrentZone = activePlayer.Player?.Zone;
                     Debug.WriteLine("Clearing zone Players");
-                    PlayerZones.Clear();
+                    PlayersInZones.Clear();
                 }
                 else
                 {
@@ -115,9 +115,9 @@ namespace EQTool.Services
                     Debug.WriteLine($"Adding {e.PlayerInfo.Name} {e.PlayerInfo.Level} {e.PlayerInfo.GuildName} {e.PlayerInfo.PlayerClass}");
                 }
 
-                if (!PlayerZones.ContainsKey(e.PlayerInfo.Name))
+                if (!PlayersInZones.ContainsKey(e.PlayerInfo.Name))
                 {
-                    PlayerZones[e.PlayerInfo.Name] = e.PlayerInfo;
+                    PlayersInZones[e.PlayerInfo.Name] = e.PlayerInfo;
                 }
             }
 
@@ -125,17 +125,20 @@ namespace EQTool.Services
 
         private void LogParser_PlayerZonedEvent(object sender, LogParser.PlayerZonedEventArgs e)
         {
-            if (CurrentZone != e.Zone)
+            lock (ContainerLock)
             {
-                if (CurrentZone != activePlayer.Player?.Zone)
+                if (CurrentZone != e.Zone)
                 {
-                    CurrentZone = activePlayer.Player?.Zone;
-                    Debug.WriteLine("Clearing zone Players");
-                    PlayerZones.Clear();
-                }
-                else
-                {
-                    Debug.WriteLine("NOT Clearing zone Players");
+                    if (CurrentZone != activePlayer.Player?.Zone)
+                    {
+                        CurrentZone = activePlayer.Player?.Zone;
+                        Debug.WriteLine("Clearing zone Players");
+                        PlayersInZones.Clear();
+                    }
+                    else
+                    {
+                        Debug.WriteLine("NOT Clearing zone Players");
+                    }
                 }
             }
         }
@@ -150,7 +153,7 @@ namespace EQTool.Services
             var players = new List<PlayerWhoLogParse.PlayerInfo>();
             lock (ContainerLock)
             {
-                players = PlayerZones.Values.ToList();
+                players = PlayersInZones.Values.ToList();
             }
 
             var uknownplayerdata = players.Where(a => !a.PlayerClass.HasValue || !a.Level.HasValue).Select(a => a.Name).ToList();
