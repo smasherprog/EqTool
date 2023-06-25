@@ -127,19 +127,9 @@ namespace EQTool.Services
         {
             lock (ContainerLock)
             {
-                if (CurrentZone != e.Zone)
-                {
-                    if (CurrentZone != activePlayer.Player?.Zone)
-                    {
-                        CurrentZone = activePlayer.Player?.Zone;
-                        Debug.WriteLine("Clearing zone Players");
-                        PlayersInZones.Clear();
-                    }
-                    else
-                    {
-                        Debug.WriteLine("NOT Clearing zone Players");
-                    }
-                }
+                CurrentZone = activePlayer.Player?.Zone;
+                Debug.WriteLine("Clearing zone Players");
+                PlayersInZones.Clear();
             }
         }
 
