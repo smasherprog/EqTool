@@ -42,7 +42,6 @@ namespace EQTool.Services.Spells.Log
 
         public PlayerInfo ParsePlayerInfo(string message)
         {
-
             if (!message.StartsWith("AFK") && !message.StartsWith("["))
             {
                 return null;
@@ -71,7 +70,11 @@ namespace EQTool.Services.Spells.Log
             if (spaceindex < endindex)
             {
                 var levelsring = message.Substring(1, spaceindex - 1).Trim();
-                guess.Level = int.Parse(levelsring);
+                if (int.TryParse(levelsring, out var levelguess))
+                {
+                    guess.Level = levelguess;
+                }
+
                 var classguess = message.Substring(spaceindex, endindex - spaceindex).Trim();
                 foreach (var item in ClassMapping)
                 {
