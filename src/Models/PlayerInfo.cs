@@ -187,8 +187,8 @@ namespace EQTool.Models
             }
         }
 
-        private Servers _Server;
-        public Servers Server
+        private Servers? _Server;
+        public Servers? Server
         {
             get => _Server;
             set

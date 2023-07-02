@@ -53,7 +53,7 @@ namespace EQTool.Services
             }
             try
             {
-                pigParseApi.SendPlayerData(playerstosync, activePlayer.Player.Server);
+                pigParseApi.SendPlayerData(playerstosync, activePlayer.Player.Server.Value);
             }
             catch (Exception ex)
             {
@@ -135,7 +135,7 @@ namespace EQTool.Services
 
         public List<Group> CreateGroups(GroupOptimization groupOptimization)
         {
-            if (string.IsNullOrWhiteSpace(activePlayer.Player?.GuildName))
+            if (string.IsNullOrWhiteSpace(activePlayer.Player?.GuildName) || activePlayer.Player.Server == null)
             {
                 return new List<Group>();
             }
@@ -147,7 +147,7 @@ namespace EQTool.Services
             }
 
             var uknownplayerdata = players.Where(a => !a.PlayerClass.HasValue || !a.Level.HasValue).Select(a => a.Name).ToList();
-            var playerdatafromserver = pigParseApi.GetPlayerData(uknownplayerdata, activePlayer.Player.Server);
+            var playerdatafromserver = pigParseApi.GetPlayerData(uknownplayerdata, activePlayer.Player.Server.Value);
             foreach (var item in playerdatafromserver)
             {
                 var playerlocally = players.FirstOrDefault(a => a.Name == item.Name);
