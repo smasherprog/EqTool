@@ -170,7 +170,7 @@ builder.Services.Configure<DiscordServiceOptions>(options =>
                 }
 
                 var npcdata = new List<NoteableNPC>();
-                foreach (var npc in zone.Value.NotableNPCs)
+                foreach (var npc in zone.Value.NotableNPCs.Where(a => !string.IsNullOrWhiteSpace(a)))
                 {
                     npcdata.Add(new NoteableNPC
                     {
@@ -216,13 +216,13 @@ using (var scope = app.Services.CreateScope())
         var dbzone = dbzones.FirstOrDefault(a => a.Name == zone.Value.Name);
         if (dbzone != null)
         {
-            foreach (var npc in zone.Value.NotableNPCs)
+            foreach (var npc in zone.Value.NotableNPCs.Where(a=> !string.IsNullOrWhiteSpace(a)))
             {
                 if (!notablenpcs.Any(a => a.Name == npc))
                 {
                     _ = db.EQNotableNPCs.Add(new EQNotableNPC
                     {
-                        Name = zone.Value.Name,
+                        Name = npc,
                         EQZoneId = dbzone.EQZoneId
                     });
                 }

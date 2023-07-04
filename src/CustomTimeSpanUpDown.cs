@@ -2,6 +2,7 @@
 
 namespace EQTool
 {
+
     public class CustomTimeSpanUpDown : Xceed.Wpf.Toolkit.TimeSpanUpDown
     {
         protected override TimeSpan? ConvertTextToValue(string text)
