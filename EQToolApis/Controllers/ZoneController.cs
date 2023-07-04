@@ -34,7 +34,7 @@ namespace EQToolApis.Controllers
             }, ip);
         }
 
-        [Route("npactivity"), HttpPost]
+        [Route("npcactivity"), HttpPost]
         public void Seen([FromBody] NPCActivityRequest model)
         {
             var ip = HttpContext.Connection.RemoteIpAddress?.ToString();

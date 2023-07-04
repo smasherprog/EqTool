@@ -61,7 +61,7 @@ namespace EQTool.Services
 
         public void SendNPCActivity(NPCActivityRequest activity)
         {
-            var url = $"https://pigparse.azurewebsites.net/api/zone/seen";
+            var url = $"https://pigparse.azurewebsites.net/api/zone/npcactivity";
             var json = JsonConvert.SerializeObject(activity);
             var data = new StringContent(json, Encoding.UTF8, "application/json");
             var res = App.httpclient.PostAsync(url, data).Result;
