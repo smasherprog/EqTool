@@ -22,6 +22,7 @@ namespace EQTool.ViewModels
     {
         private readonly MapLoad mapLoad;
         private readonly ActivePlayer activePlayer;
+        private readonly LoggingService loggingService;
         private MatrixTransform Transform = new MatrixTransform();
         private Point _initialMousePosition;
         private Point _mouseuppoint;
@@ -45,10 +46,11 @@ namespace EQTool.ViewModels
 
         public AABB AABB = new AABB();
 
-        public MapViewModel(MapLoad mapLoad, ActivePlayer activePlayer)
+        public MapViewModel(MapLoad mapLoad, ActivePlayer activePlayer, LoggingService loggingService)
         {
             this.mapLoad = mapLoad;
             this.activePlayer = activePlayer;
+            this.loggingService = loggingService;
         }
 
         private TimeSpan _TimerValue = TimeSpan.FromMinutes(72);
@@ -130,7 +132,6 @@ namespace EQTool.ViewModels
                     zone = "freportw";
                 }
 
-                ZoneName = zone;
                 var stop = new Stopwatch();
                 stop.Start();
                 var map = mapLoad.Load(zone);
@@ -332,11 +333,21 @@ namespace EQTool.ViewModels
             }
         }
 
+        private int failedzonelogcounter = 0;
+
         public void UpdateLocation(Point3D value1)
         {
-            if (MapLoading || PlayerLocationIcon == null || Children == null)
+            if (MapLoading || PlayerLocationIcon == null || Children == null || string.IsNullOrWhiteSpace(ZoneName))
             {
                 return;
+            }
+
+            if (!EQToolShared.Map.ZoneParser.ZoneInfoMap.TryGetValue(ZoneName, out var zoneinfo))
+            {
+                if (failedzonelogcounter == 0 || failedzonelogcounter++ % 20 == 0)
+                {
+                    loggingService.Log($"Zone {ZoneName} Not found.", App.EventType.Error);
+                }
             }
 
             OnPropertyChanged(nameof(Title));
@@ -358,7 +369,7 @@ namespace EQTool.ViewModels
             _ = new TranslateTransform(Transform.Value.OffsetX, Transform.Value.OffsetY);
             transform2.Matrix = translation.Value;
             PlayerLocationCircle.RenderTransform = transform2;
-            var zoneinfo = EQToolShared.Map.ZoneParser.ZoneInfoMap[ZoneName];
+
             if (!zoneinfo.ShowAllMapLevels && Children.Count > 0)
             {
                 var lastloc = new Point3D(-(value1.Y + MapOffset.X), -(value1.X + MapOffset.Y), Lastlocation.Z);
