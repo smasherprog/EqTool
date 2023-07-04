@@ -604,6 +604,27 @@ namespace EQToolTests
         }
 
         [TestMethod]
+        public void TestShamanAcumen()
+        {
+            var spells = container.Resolve<EQSpells>();
+            var spelllogparse = container.Resolve<SpellLogParse>();
+            var spellname = "Acumen";
+            var spellclass = spells.AllSpells.FirstOrDefault(a => a.name == spellname);
+            var line = EQSpells.YouBeginCasting + " " + spellname;
+            var service = container.Resolve<ParseSpellGuess>();
+            var player = container.Resolve<ActivePlayer>();
+            player.Player = new PlayerInfo
+            {
+                Level = 60,
+                PlayerClass = PlayerClasses.Shaman
+            };
+            var guess = spelllogparse.MatchSpell(line);
+            var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(guess.Spell, player.Player));
+            Assert.IsNotNull(guess);
+            Assert.IsFalse(guess.MultipleMatchesFound);
+        }
+
+        [TestMethod]
         public void TestShamanUsingTashStick()
         {
             var spells = container.Resolve<EQSpells>();

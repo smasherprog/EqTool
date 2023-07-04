@@ -116,7 +116,6 @@ namespace EQTool.Services
             if (spellsfile.Exists)
             {
                 var spellastext = File.ReadAllLines(settings.DefaultEqDirectory + "/spells_us.txt");
-                var skippedcounter = 0;
                 var desctypes = new List<DescrNumber>() {
                  DescrNumber.ThePlanes,
                  DescrNumber.Luclin,
@@ -188,10 +187,18 @@ namespace EQTool.Services
                         continue;
                     }
 
-                    if (spells.ContainsKey(spell.name))
+                    if (spells.TryGetValue(spell.name, out var spellinlist))
                     {
-                        skippedcounter++;
-                        spells[spell.name] = spell;
+                        if (spellinlist.Classes.Any() && !spell.Classes.Any())
+                        {
+                            //Debug.WriteLine($"NOT updating Duplicate Spell {spell.name}");
+                        }
+                        else
+                        {
+                            //Debug.WriteLine($"Duplicate Spell Update {spell.name}");
+                            //skippedcounter++;
+                            spells[spell.name] = spell;
+                        }
                     }
                     else
                     {
