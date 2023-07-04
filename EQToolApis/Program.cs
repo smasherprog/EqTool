@@ -218,7 +218,7 @@ using (var scope = app.Services.CreateScope())
         {
             foreach (var npc in zone.Value.NotableNPCs)
             {
-                if (!notablenpcs.Any(a => a.Name == zone.Value.Name))
+                if (!notablenpcs.Any(a => a.Name == npc))
                 {
                     _ = db.EQNotableNPCs.Add(new EQNotableNPC
                     {
