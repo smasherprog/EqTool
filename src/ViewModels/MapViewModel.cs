@@ -25,7 +25,6 @@ namespace EQTool.ViewModels
         private MatrixTransform Transform = new MatrixTransform();
         private Point _initialMousePosition;
         private Point _mouseuppoint;
-        private Point3D Lastlocation = new Point3D(0, 0, 0);
         private Point3D MapOffset = new Point3D(0, 0, 0);
         private bool MapLoading = false;
         private ArrowLine PlayerLocationIcon;
@@ -63,8 +62,20 @@ namespace EQTool.ViewModels
             }
         }
 
+        private Point3D _Lastlocation = new Point3D(0, 0, 0);
+        public Point3D Lastlocation
+        {
+            get => _Lastlocation;
+            set
+            {
+                _Lastlocation = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(Title));
+            }
+        }
+
         public TimeSpan ZoneRespawnTime => EQToolShared.Map.ZoneParser.ZoneInfoMap.TryGetValue(ZoneName, out var zoneInfo) ? zoneInfo.RespawnTime : new TimeSpan(0, 6, 40);
-        private string Title => _ZoneName + "  v" + App.Version + $"   {Lastlocation.X:0.##}, {Lastlocation.Y:0.##}, {Lastlocation.Z:0.##}";
+        public string Title => _ZoneName + "  v" + App.Version + $"   {Lastlocation.X:0.##}, {Lastlocation.Y:0.##}, {Lastlocation.Z:0.##}";
 
         private string _ZoneName = string.Empty;
 
@@ -376,6 +387,7 @@ namespace EQTool.ViewModels
                     }
                 }
             }
+
         }
 
         public void MouseMove(Point mousePosition)
