@@ -1,4 +1,4 @@
-﻿using EQTool.Models;
+﻿using EQToolShared.Enums;
 using System.Collections.Generic;
 
 namespace EQTool.Services.Spells.Log
@@ -27,20 +27,12 @@ namespace EQTool.Services.Spells.Log
             };
         }
 
-        public class PlayerInfo
-        {
-            public string Name { get; set; }
-            public PlayerClasses? PlayerClass { get; set; }
-            public int? Level { get; set; }
-            public string GuildName { get; set; }
-        }
-
         public bool IsZoneWhoLine(string message)
         {
             return message == "Players on EverQuest:";
         }
 
-        public PlayerInfo ParsePlayerInfo(string message)
+        public EQToolShared.APIModels.PlayerControllerModels.Player ParsePlayerInfo(string message)
         {
             if (!message.StartsWith("AFK") && !message.StartsWith("["))
             {
@@ -66,7 +58,7 @@ namespace EQTool.Services.Spells.Log
             }
 
 
-            var guess = new PlayerInfo();
+            var guess = new EQToolShared.APIModels.PlayerControllerModels.Player();
             if (spaceindex < endindex)
             {
                 var levelsring = message.Substring(1, spaceindex - 1).Trim();

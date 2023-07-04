@@ -1,4 +1,8 @@
-﻿namespace EQToolApis.Services
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+
+namespace EQToolShared.Map
 {
     public class ZoneInfo
     {
@@ -12,6 +16,11 @@
 
     public static class ZoneParser
     {
+        private const string Youhaveentered = "You have entered ";
+        private const string Therearenoplayers = "There are no players ";
+        private const string Thereare = "There are ";
+        private const string spaceinspace = " in ";
+
         public static readonly Dictionary<string, string> ZoneNameMapper = new Dictionary<string, string>();
         public static readonly Dictionary<string, string> ZoneWhoMapper = new Dictionary<string, string>();
         public static readonly Dictionary<string, ZoneInfo> ZoneInfoMap = new Dictionary<string, ZoneInfo>();
@@ -403,6 +412,8 @@
             ZoneInfoMap.Add("fieldofbone", new ZoneInfo
             {
                 Name = "fieldofbone",
+                ShowAllMapLevels = true,
+                ZoneLevelHeight = 10,
                 NotableNPCs = new List<string>()
                 {
                     "A scaled prowler","A skeletal jester","Burynaibane Spider","Carrion Queen","Gharg Oberbord","Iksar Dakoit","Jairnel Marfury","Kerosh Blackhand","Targishin","The Tangrin","a burynai cutter","a scourgetail scorpion",
@@ -832,7 +843,7 @@
             ZoneInfoMap.Add("neriakb", new ZoneInfo
             {
                 Name = "neriakb",
-                ShowAllMapLevels = true,
+                ShowAllMapLevels = false,
                 ZoneLevelHeight = 10,
                 NotableNPCs = new List<string>() { "", },
                 RespawnTime = new TimeSpan(0, 24, 0)
@@ -1370,5 +1381,46 @@
         }
 
         public static readonly List<string> Zones;
+        public static string TranslateToMapName(string name)
+        {
+            name = name?.ToLower()?.Trim();
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                return string.Empty;
+            }
+
+            if (ZoneWhoMapper.TryGetValue(name, out var n))
+            {
+                name = n;
+            }
+
+            return ZoneNameMapper.TryGetValue(name, out n) ? n : name;
+        }
+
+        public static string Match(string message)
+        {
+            //Debug.WriteLine($"ZoneParse: " + message);
+            if (message.StartsWith(Therearenoplayers))
+            {
+                return string.Empty;
+            }
+            else if (message.StartsWith(Youhaveentered))
+            {
+                message = message.Replace(Youhaveentered, string.Empty).Trim().TrimEnd('.').ToLower();
+                return message;
+            }
+            else if (message.StartsWith(Thereare))
+            {
+                message = message.Replace(Thereare, string.Empty).Trim();
+                var inindex = message.IndexOf(spaceinspace);
+                if (inindex != -1)
+                {
+                    message = message.Substring(inindex + spaceinspace.Length).Trim().TrimEnd('.').ToLower();
+                    return message;
+                }
+            }
+
+            return string.Empty;
+        }
     }
 }

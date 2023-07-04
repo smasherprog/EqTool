@@ -75,12 +75,8 @@ namespace EQTool.Services.Spells.Log
                     return parseHandleYouCasting.HandleYouBeginCastingSpellOtherEnd(message);
                 }
             }
-            else if (settings.BestGuessSpells)
-            {
-                return parseSpellGuess.HandleBestGuessSpell(message);
-            }
 
-            return null;
+            return settings.BestGuessSpells ? parseSpellGuess.HandleBestGuessSpell(message) : null;
         }
     }
 }

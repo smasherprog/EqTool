@@ -1,5 +1,5 @@
 ﻿using EQToolApis.DB;
-using EQToolApis.Models;
+using EQToolShared.APIModels.ItemControllerModels;
 using EQToolShared.Enums;
 using Microsoft.EntityFrameworkCore;
 

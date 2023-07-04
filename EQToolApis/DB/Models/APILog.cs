@@ -5,11 +5,12 @@ namespace EQToolApis.DB.Models
 {
     public enum APIAction : short
     {
-        DeathActivityNoZone,
+        DONTUSE,
         DeathActivity,
         PlayerUpdate,
         PlayerAdded,
-        DeathEvent
+        DeathEvent,
+        NPCActivity
     }
 
     [PrimaryKey(nameof(APILogId))]
@@ -17,12 +18,12 @@ namespace EQToolApis.DB.Models
     {
         public int APILogId { get; set; }
 
-        [MaxLength(24)]
-        public string? IpAddress { get; set; }
+        [MaxLength(24), Required]
+        public string IpAddress { get; set; } = string.Empty;
 
         public APIAction APIAction { get; set; }
 
-        public string LogMessage { get; set; }
+        public string LogMessage { get; set; } = string.Empty;
 
         public DateTime CreatedDate { get; set; } = DateTime.UtcNow;
     }

@@ -4,6 +4,7 @@ using EQToolApis.DB;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EQToolApis.Migrations
 {
     [DbContext(typeof(EQToolContext))]
-    partial class EQToolContextModelSnapshot : ModelSnapshot
+    [Migration("20230704212305_AddNPCTrackingTables")]
+    partial class AddNPCTrackingTables
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -39,13 +42,11 @@ namespace EQToolApis.Migrations
                     b.Property<string>("IpAddress")
                         .IsRequired()
                         .HasMaxLength(24)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(24)");
+                        .HasColumnType("nvarchar(24)");
 
                     b.Property<string>("LogMessage")
                         .IsRequired()
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(max)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("APILogId");
 
@@ -63,8 +64,7 @@ namespace EQToolApis.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(64)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(64)");
+                        .HasColumnType("nvarchar(64)");
 
                     b.Property<byte>("Server")
                         .HasColumnType("tinyint");
@@ -99,8 +99,7 @@ namespace EQToolApis.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(64)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(64)");
+                        .HasColumnType("nvarchar(64)");
 
                     b.Property<byte>("Server")
                         .HasColumnType("tinyint");
@@ -159,8 +158,7 @@ namespace EQToolApis.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(64)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(64)");
+                        .HasColumnType("nvarchar(64)");
 
                     b.HasKey("EQNotableNPCId");
 
@@ -251,8 +249,7 @@ namespace EQToolApis.Migrations
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasMaxLength(48)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(48)");
+                        .HasColumnType("nvarchar(48)");
 
                     b.HasKey("EQZoneId");
 
@@ -270,8 +267,7 @@ namespace EQToolApis.Migrations
                     b.Property<string>("ItemName")
                         .IsRequired()
                         .HasMaxLength(64)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(64)");
+                        .HasColumnType("nvarchar(64)");
 
                     b.Property<DateTimeOffset?>("LastWTBSeen")
                         .HasColumnType("datetimeoffset");
@@ -381,18 +377,15 @@ namespace EQToolApis.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("Exception")
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(max)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("IpAddress")
                         .HasMaxLength(24)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(24)");
+                        .HasColumnType("nvarchar(24)");
 
                     b.Property<string>("Version")
                         .HasMaxLength(24)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(24)");
+                        .HasColumnType("nvarchar(24)");
 
                     b.HasKey("Id");
 
@@ -403,8 +396,7 @@ namespace EQToolApis.Migrations
                 {
                     b.Property<string>("IpAddress")
                         .HasMaxLength(24)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(24)");
+                        .HasColumnType("nvarchar(24)");
 
                     b.HasKey("IpAddress");
 
@@ -415,16 +407,14 @@ namespace EQToolApis.Migrations
                 {
                     b.Property<string>("Name")
                         .HasMaxLength(24)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(24)");
+                        .HasColumnType("nvarchar(24)");
 
                     b.Property<byte>("Server")
                         .HasColumnType("tinyint");
 
                     b.Property<string>("GuildName")
                         .HasMaxLength(48)
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(48)");
+                        .HasColumnType("nvarchar(48)");
 
                     b.Property<byte?>("Level")
                         .HasColumnType("tinyint");
@@ -447,18 +437,15 @@ namespace EQToolApis.Migrations
 
                     b.Property<string>("AlertType")
                         .IsRequired()
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(max)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Message")
                         .IsRequired()
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(max)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title")
                         .IsRequired()
-                        .IsUnicode(false)
-                        .HasColumnType("varchar(max)");
+                        .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
 

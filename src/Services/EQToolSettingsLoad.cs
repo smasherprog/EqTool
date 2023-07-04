@@ -1,4 +1,5 @@
 ﻿using EQTool.Models;
+using EQToolShared.Enums;
 using Newtonsoft.Json;
 using System;
 using System.IO;

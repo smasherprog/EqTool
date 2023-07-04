@@ -18,6 +18,7 @@ namespace EQTool
         private readonly MapViewModel mapViewModel;
         private readonly EQToolSettings settings;
         private readonly EQToolSettingsLoad toolSettingsLoad;
+        private readonly PanAndZoomCanvas Map;
         private readonly IAppDispatcher appDispatcher;
         private readonly System.Timers.Timer UITimer;
         private bool AutomaticallyAddTimerOnDeath = false;
@@ -31,10 +32,18 @@ namespace EQTool
             this.logParser = logParser;
             DataContext = this.mapViewModel = mapViewModel;
             InitializeComponent();
+            MapViewBox.Child = Map = new PanAndZoomCanvas(mapViewModel)
+            {
+                HorizontalAlignment = HorizontalAlignment.Stretch,
+                VerticalAlignment = VerticalAlignment.Stretch
+            };
+
             Map.mapViewModel = mapViewModel;
             WindowExtensions.AdjustWindow(settings.MapWindowState, this);
             Topmost = Properties.Settings.Default.GlobalMapWindowAlwaysOnTop;
-            _ = mapViewModel.LoadDefaultMap(Map);
+            _ = mapViewModel.LoadDefaultMap(Map.Children);
+            Map.Height = Math.Abs(mapViewModel.AABB.MaxHeight);
+            Map.Width = Math.Abs(mapViewModel.AABB.MaxWidth);
             this.logParser.PlayerLocationEvent += LogParser_PlayerLocationEvent;
             this.logParser.PlayerZonedEvent += LogParser_PlayerZonedEvent;
             this.logParser.PlayerChangeEvent += LogParser_PlayerChangeEvent;
@@ -54,15 +63,15 @@ namespace EQTool
         {
             if (AutomaticallyAddTimerOnDeath)
             {
-                var timer = Map.ZoneRespawnTime;
-                var mw = Map.AddTimer(timer, e.Name);
-                mapViewModel.MoveToPlayerLocation(mw, Map.Transform);
+                var timer = mapViewModel.ZoneRespawnTime;
+                var mw = mapViewModel.AddTimer(timer, e.Name);
+                mapViewModel.MoveToPlayerLocation(mw);
             };
         }
 
         private void UITimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
-            appDispatcher.DispatchUI(() => Map.UpdateTimerWidgest());
+            appDispatcher.DispatchUI(() => mapViewModel.UpdateTimerWidgest());
         }
 
         private void PanAndZoomCanvas_KeyDown(object sender, KeyEventArgs e)
@@ -72,19 +81,19 @@ namespace EQTool
             {
                 case Key.Left:
                 case Key.A:
-                    Map.MoveMap(scale, 0);
+                    mapViewModel.MoveMap(scale, 0);
                     break;
                 case Key.Right:
                 case Key.D:
-                    Map.MoveMap(-scale, 0);
+                    mapViewModel.MoveMap(-scale, 0);
                     break;
                 case Key.Up:
                 case Key.W:
-                    Map.MoveMap(0, scale);
+                    mapViewModel.MoveMap(0, scale);
                     break;
                 case Key.Down:
                 case Key.S:
-                    Map.MoveMap(0, -scale);
+                    mapViewModel.MoveMap(0, -scale);
                     break;
                 default:
                     return;
@@ -94,12 +103,20 @@ namespace EQTool
 
         private void LogParser_PlayerChangeEvent(object sender, LogParser.PlayerChangeEventArgs e)
         {
-            _ = mapViewModel.LoadDefaultMap(Map);
+            if (mapViewModel.LoadDefaultMap(Map.Children))
+            {
+                Map.Height = Math.Abs(mapViewModel.AABB.MaxHeight);
+                Map.Width = Math.Abs(mapViewModel.AABB.MaxWidth);
+            }
         }
 
         private void LogParser_PlayerZonedEvent(object sender, LogParser.PlayerZonedEventArgs e)
         {
-            _ = mapViewModel.LoadMap(e.Zone, Map);
+            if (mapViewModel.LoadMap(e.Zone, Map.Children))
+            {
+                Map.Height = Math.Abs(mapViewModel.AABB.MaxHeight);
+                Map.Width = Math.Abs(mapViewModel.AABB.MaxWidth);
+            }
         }
 
         private void LogParser_PlayerLocationEvent(object sender, LogParser.PlayerLocationEventArgs e)
@@ -190,8 +207,7 @@ namespace EQTool
 
         private void Map_MouseMove(object sender, MouseEventArgs e)
         {
-            var mousePosition = Map.Transform.Inverse.Transform(e.GetPosition(sender as IInputElement));
-            mapViewModel.MouseMove(mousePosition, sender, e);
+            mapViewModel.MouseMove(e.GetPosition(sender as IInputElement));
         }
 
         private void autoaddtimer(object sender, RoutedEventArgs e)

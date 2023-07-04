@@ -1,5 +1,5 @@
 ﻿using EQTool.Models;
-using EQTool.Services.Map;
+using EQToolShared.Enums;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -24,7 +24,7 @@ namespace EQTool.ViewModels
                 Levels.Add(i);
             }
 
-            foreach (var item in ZoneParser.Zones.OrderBy(a => a))
+            foreach (var item in EQToolShared.Map.ZoneParser.Zones.OrderBy(a => a))
             {
                 Zones.Add(item);
             }
@@ -50,7 +50,7 @@ namespace EQTool.ViewModels
             set
             {
                 _EqLogPath = value;
-                OnPropertyChanged(); 
+                OnPropertyChanged();
             }
         }
 

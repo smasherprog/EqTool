@@ -2,6 +2,7 @@
 using EQTool.Models;
 using EQTool.Services.Spells.Log;
 using EQTool.ViewModels;
+using EQToolShared.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Linq;

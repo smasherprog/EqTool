@@ -2,6 +2,7 @@
 using EQTool.Services;
 using EQTool.Services.Spells.Log;
 using EQTool.ViewModels;
+using EQToolShared.Enums;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -354,12 +355,21 @@ namespace EQTool
             });
         }
 
-        private void mobconclicked(object sender, RoutedEventArgs e)
+        private void logpush(object sender, RoutedEventArgs e)
         {
-            var format = "ddd MMM dd HH:mm:ss yyyy";
-            var d = DateTime.Now;
-            var line = "[" + d.ToString(format) + "] Irak Altil regards you indifferently -- You could probably win this fight.";
-            logParser.Push(line);
+            var logtext = LogPushText.Text?.Trim();
+            if (string.IsNullOrWhiteSpace(logtext))
+            {
+                return;
+            }
+            if (!logtext.StartsWith("["))
+            {
+                var format = "ddd MMM dd HH:mm:ss yyyy";
+                var d = DateTime.Now;
+                logtext = "[" + d.ToString(format) + "] " + logtext;
+            }
+            LogPushText.Text = string.Empty;
+            logParser.Push(logtext);
         }
 
         private void textmapclicked(object sender, RoutedEventArgs e)

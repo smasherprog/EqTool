@@ -183,6 +183,11 @@ namespace EQToolApis.Services
             private readonly EQToolContext dbcontext;
             private readonly DBData dBData;
             private readonly PlayerCache playerCache;
+            private readonly List<string> IgnoreList = new List<string>()
+            {
+                "Bone Chips"
+            };
+
             public DiscordJob(PlayerCache playerCache, DBData dBData, IDiscordService discordService, EQToolContext dbcontext, IBackgroundJobClient backgroundJobClient)
             {
                 this.playerCache = playerCache;
@@ -244,6 +249,10 @@ namespace EQToolApis.Services
                         foreach (var it in embed.fields)
                         {
                             itemsadded += 1;
+                            if (IgnoreList.Contains(it.ItemName))
+                            {
+                                continue;
+                            }
                             var eqitem = dbcontext.EQitems.FirstOrDefault(a => a.ItemName == it.ItemName && a.Server == server);
                             if (eqitem == null)
                             {

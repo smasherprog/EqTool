@@ -1,5 +1,6 @@
 ﻿using EQTool.Models;
 using EQTool.ViewModels;
+using EQToolShared.Enums;
 using System;
 using System.Collections.Generic;
 

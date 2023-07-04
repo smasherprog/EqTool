@@ -89,6 +89,22 @@ namespace EQTool.Services.Spells.Log
             if (spells.CastOtherSpells.TryGetValue(spellmessage, out foundspells))
             {
                 foundspells = foundspells.Where(a => !IgnoreSpellsForGuesses.Contains(a.name)).ToList();
+                var filteroutaoespells = foundspells.Where(a =>
+                     a.SpellType != SpellType.PointBlankAreaofEffect &&
+                     a.SpellType != SpellType.TargetedAreaofEffect &&
+                     a.SpellType != SpellType.TargetedAreaofEffectLifeTap &&
+                     a.SpellType != SpellType.AreaofEffectUndead &&
+                     a.SpellType != SpellType.AreaofEffectSummoned &&
+                     a.SpellType != SpellType.AreaofEffectCaster &&
+                     a.SpellType != SpellType.AreaPCOnly &&
+                     a.SpellType != SpellType.AreaNPCOnly &&
+                     a.SpellType != SpellType.AreaofEffectPCV2
+                ).ToList();
+                if (filteroutaoespells.Any())
+                {
+                    foundspells = filteroutaoespells;
+                }
+
                 var foundspell = SpellDurations.MatchClosestLevelToSpell(foundspells, activePlayer.Player);
                 Debug.WriteLine($"Other Spell: {foundspell.name} Message: {spellmessage}");
                 var multiplematches = foundspell.Classes.All(a => a.Value == 255) && foundspells.Count > 1;

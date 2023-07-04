@@ -2,6 +2,7 @@
 using EQTool.Services.Map;
 using EQTool.Services.Spells.Log;
 using EQTool.ViewModels;
+using EQToolShared.Map;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -120,7 +121,7 @@ namespace EQTool.Services
 
         public class WhoPlayerEventArgs : EventArgs
         {
-            public PlayerWhoLogParse.PlayerInfo PlayerInfo { get; set; }
+            public EQToolShared.APIModels.PlayerControllerModels.Player PlayerInfo { get; set; }
         }
         public class WhoEventArgs : EventArgs
         {
@@ -301,7 +302,7 @@ namespace EQTool.Services
                 return;
             }
             var logfounddata = FindEq.GetLogFileLocation(new FindEq.FindEQData { EqBaseLocation = settings.DefaultEqDirectory, EQlogLocation = settings.EqLogDirectory });
-            if (logfounddata == null && logfounddata.Found)
+            if (logfounddata == null || !logfounddata.Found)
             {
                 return;
             }
