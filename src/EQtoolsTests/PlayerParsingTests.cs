@@ -1,6 +1,6 @@
 ﻿using Autofac;
-using EQTool.Models;
 using EQTool.Services.Spells.Log;
+using EQToolShared.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace EQToolTests

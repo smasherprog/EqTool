@@ -1,6 +1,8 @@
 ﻿using EQTool.Models;
 using EQTool.Services;
+using EQTool.Services.Map;
 using EQTool.ViewModels;
+using EQToolShared.HubModels;
 using System;
 using System.ComponentModel;
 using System.Windows;
@@ -18,23 +20,43 @@ namespace EQTool
         private readonly MapViewModel mapViewModel;
         private readonly EQToolSettings settings;
         private readonly EQToolSettingsLoad toolSettingsLoad;
+        private readonly PanAndZoomCanvas Map;
         private readonly IAppDispatcher appDispatcher;
         private readonly System.Timers.Timer UITimer;
         private bool AutomaticallyAddTimerOnDeath = false;
+        private readonly SignalRMapService signalRMapService;
+        private readonly PlayerTrackerService playerTrackerService;
 
-        public MappingWindow(MapViewModel mapViewModel, LogParser logParser, EQToolSettings settings, EQToolSettingsLoad toolSettingsLoad, IAppDispatcher appDispatcher, LoggingService loggingService)
+        public MappingWindow(
+            MapViewModel mapViewModel,
+            LogParser logParser,
+            EQToolSettings settings,
+            EQToolSettingsLoad toolSettingsLoad,
+            IAppDispatcher appDispatcher,
+            SignalRMapService signalRMapService,
+            LoggingService loggingService,
+            PlayerTrackerService playerTrackerService)
         {
             loggingService.Log(string.Empty, App.EventType.OpenMap);
             this.settings = settings;
             this.toolSettingsLoad = toolSettingsLoad;
             this.appDispatcher = appDispatcher;
+            this.playerTrackerService = playerTrackerService;
             this.logParser = logParser;
             DataContext = this.mapViewModel = mapViewModel;
             InitializeComponent();
+            MapViewBox.Child = Map = new PanAndZoomCanvas(mapViewModel)
+            {
+                HorizontalAlignment = HorizontalAlignment.Stretch,
+                VerticalAlignment = VerticalAlignment.Stretch
+            };
+
             Map.mapViewModel = mapViewModel;
             WindowExtensions.AdjustWindow(settings.MapWindowState, this);
             Topmost = Properties.Settings.Default.GlobalMapWindowAlwaysOnTop;
-            _ = mapViewModel.LoadDefaultMap(Map);
+            _ = mapViewModel.LoadDefaultMap(Map.Children);
+            Map.Height = Math.Abs(mapViewModel.AABB.MaxHeight);
+            Map.Width = Math.Abs(mapViewModel.AABB.MaxWidth);
             this.logParser.PlayerLocationEvent += LogParser_PlayerLocationEvent;
             this.logParser.PlayerZonedEvent += LogParser_PlayerZonedEvent;
             this.logParser.PlayerChangeEvent += LogParser_PlayerChangeEvent;
@@ -48,21 +70,39 @@ namespace EQTool
             UITimer = new System.Timers.Timer(1000);
             UITimer.Elapsed += UITimer_Elapsed;
             UITimer.Enabled = true;
+
+            this.signalRMapService = signalRMapService;
+            // this.signalRMapService.PlayerLocationReceived += SignalRMapService_PlayerLocationReceived;
+        }
+
+        private void SignalRMapService_PlayerLocationReceived(PlayerLocation obj)
+        {
+            ////Debug.Print($"{obj} > {obj.Server}, {obj.PlayerName}, {obj.ZoneName}, {obj.X}, {obj.Y}, {obj.Z}");
+            //if (obj != null && obj.PlayerName != null && playerTrackerService != null && playerTrackerService.activePlayer.Player != null &&
+            //    obj.PlayerName != playerTrackerService.activePlayer.Player.Name &&
+            //    obj.Server == playerTrackerService.activePlayer.Player.Server &&
+            //    obj.ZoneName == playerTrackerService.activePlayer.Player.Zone)
+            //{
+            //    Application.Current.Dispatcher.Invoke(delegate
+            //    {
+            //        _ = mapViewModel.UpdateOtherPlayerLocations(obj, Map);
+            //    });
+            //}
         }
 
         private void LogParser_DeadEvent(object sender, LogParser.DeadEventArgs e)
         {
             if (AutomaticallyAddTimerOnDeath)
             {
-                var timer = Map.ZoneRespawnTime;
-                var mw = Map.AddTimer(timer, e.Name);
-                mapViewModel.MoveToPlayerLocation(mw, Map.Transform);
+                var timer = mapViewModel.ZoneRespawnTime;
+                var mw = mapViewModel.AddTimer(timer, e.Name);
+                mapViewModel.MoveToPlayerLocation(mw);
             };
         }
 
         private void UITimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
-            appDispatcher.DispatchUI(() => Map.UpdateTimerWidgest());
+            appDispatcher.DispatchUI(() => mapViewModel.UpdateTimerWidgest());
         }
 
         private void PanAndZoomCanvas_KeyDown(object sender, KeyEventArgs e)
@@ -72,19 +112,19 @@ namespace EQTool
             {
                 case Key.Left:
                 case Key.A:
-                    Map.MoveMap(scale, 0);
+                    mapViewModel.MoveMap(scale, 0);
                     break;
                 case Key.Right:
                 case Key.D:
-                    Map.MoveMap(-scale, 0);
+                    mapViewModel.MoveMap(-scale, 0);
                     break;
                 case Key.Up:
                 case Key.W:
-                    Map.MoveMap(0, scale);
+                    mapViewModel.MoveMap(0, scale);
                     break;
                 case Key.Down:
                 case Key.S:
-                    Map.MoveMap(0, -scale);
+                    mapViewModel.MoveMap(0, -scale);
                     break;
                 default:
                     return;
@@ -94,17 +134,25 @@ namespace EQTool
 
         private void LogParser_PlayerChangeEvent(object sender, LogParser.PlayerChangeEventArgs e)
         {
-            _ = mapViewModel.LoadDefaultMap(Map);
+            if (mapViewModel.LoadDefaultMap(Map.Children))
+            {
+                Map.Height = Math.Abs(mapViewModel.AABB.MaxHeight);
+                Map.Width = Math.Abs(mapViewModel.AABB.MaxWidth);
+            }
         }
 
         private void LogParser_PlayerZonedEvent(object sender, LogParser.PlayerZonedEventArgs e)
         {
-            _ = mapViewModel.LoadMap(e.Zone, Map);
+            if (mapViewModel.LoadMap(e.Zone, Map.Children))
+            {
+                Map.Height = Math.Abs(mapViewModel.AABB.MaxHeight);
+                Map.Width = Math.Abs(mapViewModel.AABB.MaxWidth);
+            }
         }
 
         private void LogParser_PlayerLocationEvent(object sender, LogParser.PlayerLocationEventArgs e)
         {
-            mapViewModel.UpdateLocation(e.Location, Map);
+            mapViewModel.UpdateLocation(e.Location);
         }
 
         protected override void OnClosing(CancelEventArgs e)
@@ -119,6 +167,7 @@ namespace EQTool
             StateChanged -= Window_StateChanged;
             LocationChanged -= Window_LocationChanged;
             KeyDown -= PanAndZoomCanvas_KeyDown;
+            // signalRMapService.PlayerLocationReceived -= SignalRMapService_PlayerLocationReceived;
             SaveState();
             base.OnClosing(e);
         }
@@ -190,8 +239,7 @@ namespace EQTool
 
         private void Map_MouseMove(object sender, MouseEventArgs e)
         {
-            var mousePosition = Map.Transform.Inverse.Transform(e.GetPosition(sender as IInputElement));
-            mapViewModel.MouseMove(mousePosition, sender, e);
+            mapViewModel.MouseMove(e.GetPosition(sender as IInputElement));
         }
 
         private void autoaddtimer(object sender, RoutedEventArgs e)

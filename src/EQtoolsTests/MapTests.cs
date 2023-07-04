@@ -1,4 +1,4 @@
-﻿using EQTool.Services.Map;
+﻿using EQToolShared.Map;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace EQtoolsTests

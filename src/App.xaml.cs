@@ -16,9 +16,6 @@ using System.Windows;
 
 namespace EQTool
 {
-    /// <summary>
-    /// Interaction logic for App.xaml
-    /// </summary>
     public partial class App : Application
     {
         public static HttpClient httpclient = new HttpClient();
@@ -36,7 +33,6 @@ namespace EQTool
         private System.Timers.Timer UITimer;
         private PlayerTrackerService PlayerTrackerService;
         private ZoneActivityTrackingService ZoneActivityTrackingService;
-
 
         private EQToolSettings EQToolSettings => container.Resolve<EQToolSettings>();
         public static List<Window> WindowList = new List<Window>();
@@ -247,7 +243,6 @@ namespace EQTool
                     new System.Windows.Forms.MenuItem("Exit", OnExit)
                 }),
             };
-
             var hasvalideqdir = FindEq.IsProject1999Folder(EQToolSettings.DefaultEqDirectory);
             if (!hasvalideqdir || FindEq.TryCheckLoggingEnabled(EQToolSettings.DefaultEqDirectory) == false)
             {
@@ -259,6 +254,7 @@ namespace EQTool
             }
             else
             {
+
                 ToggleMenuButtons(true);
                 if (!EQToolSettings.SpellWindowState.Closed)
                 {
@@ -280,6 +276,7 @@ namespace EQTool
             PlayerTrackerService = container.Resolve<PlayerTrackerService>();
             ZoneActivityTrackingService = container.Resolve<ZoneActivityTrackingService>();
             logParser.PlayerChangeEvent += LogParser_PlayerChangeEvent;
+
         }
 
         private void UITimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)

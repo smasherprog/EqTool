@@ -5,6 +5,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js" integrity="sha512-pumBsjNRGGqkPzKHndZMaAG+bir374sORyzM3uulLV14lN5LyykqNk8eEeUlUkB3U0M4FApyaHraT65ihJhDpQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <link href="https://unpkg.com/tabulator-tables@5.4.4/dist/css/tabulator.min.css" rel="stylesheet">
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/luxon@3.3.0/build/global/luxon.min.js"></script>
 <script type="text/javascript" src="https://unpkg.com/tabulator-tables@5.4.4/dist/js/tabulator.min.js"></script>
 <script>
     $(document).ready(function () {
@@ -34,6 +35,10 @@
                         { title: "Last Seen", field: "l" },
                         {
                             title: "Item", field: "n",
+                            sorterParams: {
+                                format: "yyyy-MM-dd hh:mm:ss tt",
+                                alignEmptyValues: "top",
+                            },
                             formatter: function (cell, formatterParams) {
                                 let row = cell.getRow().getData();
                                 return `<div><a href="/ItemDetails/${row.i}">${row.n} </a>  <a class="float-right" href="https://wiki.project1999.com/${row.n.replace(' ', '_')}" target="_blank"><i class="fa fa-external-link"></i></a></div>`;
