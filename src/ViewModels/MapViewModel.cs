@@ -1,20 +1,8 @@
-﻿using EQTool.Models;
-using EQTool.Services;
-using EQTool.Shapes;
-using EQToolShared.Map;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Media3D;
-using System.Windows.Shapes;
-using static EQTool.Services.MapLoad;
 
 namespace EQTool.ViewModels
 {
@@ -52,16 +40,9 @@ namespace EQTool.ViewModels
             this.activePlayer = activePlayer;
         }
 
-        private TimeSpan _TimerValue = TimeSpan.FromMinutes(72);
-        public TimeSpan TimerValue
-        {
-            get => _TimerValue;
-            set
-            {
-                _TimerValue = value;
-                OnPropertyChanged();
-            }
-        }
+        public Point3D Lastlocation = new Point3D(0, 0, 0);
+        public AABB AABB = new AABB();
+        public Point3D MapOffset = new Point3D(0, 0, 0);
 
         public TimeSpan ZoneRespawnTime => EQToolShared.Map.ZoneParser.ZoneInfoMap.TryGetValue(ZoneName, out var zoneInfo) ? zoneInfo.RespawnTime : new TimeSpan(0, 6, 40);
         private string Title => _ZoneName + "  v" + App.Version + $"   {Lastlocation.X:0.##}, {Lastlocation.Y:0.##}, {Lastlocation.Z:0.##}";
@@ -224,428 +205,480 @@ namespace EQTool.ViewModels
                 MapLoading = false;
             }
         }
-
-        public bool LoadDefaultMap(UIElementCollection children)
+        public bool UpdateOtherPlayerLocations(PlayerLocation otherPlayerLocation, PanAndZoomCanvas canvas)
         {
-            _ = activePlayer.Update();
-            var z = ZoneParser.TranslateToMapName(activePlayer.Player?.Zone);
-            if (string.IsNullOrWhiteSpace(z))
+            try
             {
-                z = "freportw";
-            }
-            return LoadMap(z, children);
-        }
+                if (canvas == null)
+                    return false;
 
-        private static double GetAngleBetweenPoints(Point3D pt1, Point3D pt2)
-        {
-            var dx = pt2.X - pt1.X;
-            var dy = pt2.Y - pt1.Y;
-            var deg = Math.Atan2(dy, dx) * (180 / Math.PI);
-            if (deg < 0) { deg += 360; }
+                var otherPlayerPrevious = OtherPlayers.SingleOrDefault(p => p.Location.ZoneName == otherPlayerLocation.ZoneName && p.Location.PlayerName == otherPlayerLocation.PlayerName);
 
-            return deg;
-        }
-
-        private static T Clamp<T>(T val, T min, T max) where T : IComparable<T>
-        {
-            return val.CompareTo(min) < 0 ? min : val.CompareTo(max) > 0 ? max : val;
-        }
-
-        public void MoveToPlayerLocation(MapWidget mw)
-        {
-            Canvas.SetLeft(mw, Canvas.GetLeft(PlayerLocationIcon));
-            Canvas.SetTop(mw, Canvas.GetTop(PlayerLocationIcon));
-            mw.RenderTransform = Transform;
-        }
-
-        private void SetOpacity(Shape l, double v)
-        {
-            if (l.Stroke.IsFrozen)
-            {
-                l.Stroke = l.Stroke.Clone();
-            }
-
-            l.Stroke.Opacity = v;
-        }
-
-        private void SetOpacity(TextBlock l, double v)
-        {
-            if (l.Foreground.IsFrozen)
-            {
-                l.Foreground = l.Foreground.Clone();
-            }
-
-            l.Foreground.Opacity = v;
-        }
-
-        private void AdjustOpacity(double shortestdistance, Shape shape, ZoneInfo zoneinfo, Point3D lastloc)
-        {
-            var twiceheight = zoneinfo.ZoneLevelHeight * 2;
-            if (shortestdistance < zoneinfo.ZoneLevelHeight)
-            {
-                SetOpacity(shape, 1);
-            }
-            else if (shortestdistance >= zoneinfo.ZoneLevelHeight && shortestdistance <= twiceheight + zoneinfo.ZoneLevelHeight)
-            {
-                var dist = ((shortestdistance - zoneinfo.ZoneLevelHeight) * -1) + twiceheight; //changed range to [0,80] with 0 being the FURTHest distance
-                dist = (dist / twiceheight) + .1; // scale to [.1,1.1] 
-                _ = Clamp(dist, .1, 1);
-                SetOpacity(shape, dist);
-            }
-            else
-            {
-                SetOpacity(shape, .1);
-            }
-        }
-
-        private void AdjustOpacity(TextBlock t, ZoneInfo zoneinfo, Point3D lastloc)
-        {
-            var twiceheight = zoneinfo.ZoneLevelHeight * 2;
-            var m = t.Tag as MapLabel;
-            var shortestdistance = Math.Abs(m.Point.Z - lastloc.Z);
-
-            if (shortestdistance < zoneinfo.ZoneLevelHeight)
-            {
-                SetOpacity(t, 1);
-            }
-            else if (shortestdistance >= zoneinfo.ZoneLevelHeight && shortestdistance <= twiceheight + zoneinfo.ZoneLevelHeight)
-            {
-                var dist = ((shortestdistance - zoneinfo.ZoneLevelHeight) * -1) + twiceheight; //changed range to [0,80] with 0 being the FURTHest distance
-                dist = (dist / twiceheight) + .1; // scale to [.1,1.1] 
-                _ = Clamp(dist, .1, 1);
-                SetOpacity(t, dist);
-            }
-            else
-            {
-                SetOpacity(t, .1);
-            }
-        }
-
-        public void UpdateLocation(Point3D value1, PanAndZoomCanvas canvas)
-        {
-            if (MapLoading || PlayerLocationIcon == null)
-            {
-                return;
-            }
-
-            OnPropertyChanged(nameof(Title));
-            var newdir = new Point3D(value1.X, value1.Y, 0) - new Point3D(Lastlocation.X, Lastlocation.Y, 0);
-            newdir.Normalize();
-            var angle = GetAngleBetweenPoints(new Point3D(value1.X, value1.Y, 0), new Point3D(Lastlocation.X, Lastlocation.Y, 0)) * -1;
-            Lastlocation = value1;
-            PlayerLocationIcon.RotateTransform = new RotateTransform(angle);
-            Canvas.SetLeft(PlayerLocationIcon, -(value1.Y + MapOffset.X) * CurrentScaling);
-            Canvas.SetTop(PlayerLocationIcon, -(value1.X + MapOffset.Y) * CurrentScaling);
-            var heighdiv2 = PlayerLocationCircle.Height / 2 / CurrentScaling;
-            Canvas.SetLeft(PlayerLocationCircle, -(value1.Y + MapOffset.X + heighdiv2) * CurrentScaling);
-            Canvas.SetTop(PlayerLocationCircle, -(value1.X + MapOffset.Y + heighdiv2) * CurrentScaling);
-            var transform = new MatrixTransform();
-            var translation = new TranslateTransform(Transform.Value.OffsetX, Transform.Value.OffsetY);
-            transform.Matrix = PlayerLocationIcon.RotateTransform.Value * translation.Value;
-            PlayerLocationIcon.RenderTransform = transform;
-            var transform2 = new MatrixTransform();
-            _ = new TranslateTransform(Transform.Value.OffsetX, Transform.Value.OffsetY);
-            transform2.Matrix = translation.Value;
-            PlayerLocationCircle.RenderTransform = transform2;
-            var zoneinfo = EQToolShared.Map.ZoneParser.ZoneInfoMap[ZoneName];
-            if (!zoneinfo.ShowAllMapLevels && canvas.Children.Count > 0)
-            {
-                var lastloc = new Point3D(-(value1.Y + MapOffset.X), -(value1.X + MapOffset.Y), Lastlocation.Z);
-                _ = zoneinfo.ZoneLevelHeight * 2;
-                foreach (var child in canvas.Children)
+                // remove other player old label from canvas
+                if (otherPlayerPrevious != null)
                 {
-                    if (child is Line a)
+                    foreach (var element in otherPlayerPrevious.MapElements)
                     {
-                        var m = a.Tag as MapLine;
-                        var shortestdistance = Math.Abs(m.Points[0].Z - lastloc.Z);
-                        shortestdistance = Math.Min(Math.Abs(m.Points[1].Z - lastloc.Z), shortestdistance);
-                        AdjustOpacity(shortestdistance, a, zoneinfo, lastloc);
+                        canvas.Children.Remove(element);
                     }
-                    else if (child is TextBlock t)
+                    OtherPlayers.Remove(otherPlayerPrevious);
+                }
+
+                var item = new MapLabel()
+                {
+                    Color = System.Windows.Media.Color.FromRgb(50, 255, 50),
+                    label = otherPlayerLocation.PlayerName,
+                    LabelSize = LabelSize.Large,
+                    Point = new Point3D(otherPlayerLocation.X, otherPlayerLocation.Y, otherPlayerLocation.Z),
+                    //Id = "OtherPlayer_" + otherPlayerLocation.PlayerName
+                };
+                var text = new TextBlock
+                {
+                    Tag = item,
+                    Text = item.label.Replace('_', ' '),
+                    FontSize = item.LabelSize == LabelSize.Large ? ZoneLabelFontSize : OtherLabelFontSize,
+                    //Foreground = new SolidColorBrush(System.Windows.Media.Color.FromRgb(255, 255, 255)),
+                    Foreground = new SolidColorBrush(item.Color),
+                    RenderTransform = canvas.Transform
+                };
+                var circle = new Ellipse()
+                {
+                    Tag = item,
+                    Width = 10,
+                    Height = 10,
+                    //Stroke = Brushes.Red,
+                    Stroke = new SolidColorBrush(item.Color),
+                    StrokeThickness = 3
+                };
+                var circleIdx = canvas.Children.Add(circle);
+                var textIdx = canvas.Children.Add(text);
+
+                var otherPlayer = new OtherPlayer() { Location = otherPlayerLocation };
+                otherPlayer.MapElements.Add((FrameworkElement)canvas.Children[circleIdx]);
+                otherPlayer.MapElements.Add((FrameworkElement)canvas.Children[textIdx]);
+                OtherPlayers.Add(otherPlayer);
+
+                public bool LoadDefaultMap(PanAndZoomCanvas canvas)
+                {
+                    _ = activePlayer.Update();
+                    var z = ZoneParser.TranslateToMapName(activePlayer.Player?.Zone);
+                    if (string.IsNullOrWhiteSpace(z))
                     {
-                        AdjustOpacity(t, zoneinfo, lastloc);
+                        z = "freportw";
                     }
-                    else if (child is Ellipse e)
+                    return LoadMap(z, children);
+                }
+
+                private static double GetAngleBetweenPoints(Point3D pt1, Point3D pt2)
+                {
+                    var dx = pt2.X - pt1.X;
+                    var dy = pt2.Y - pt1.Y;
+                    var deg = Math.Atan2(dy, dx) * (180 / Math.PI);
+                    if (deg < 0) { deg += 360; }
+
+                    return deg;
+                }
+
+                private static T Clamp<T>(T val, T min, T max) where T : IComparable<T>
+                {
+                    return val.CompareTo(min) < 0 ? min : val.CompareTo(max) > 0 ? max : val;
+                }
+
+                public void MoveToPlayerLocation(MapWidget mw)
+                {
+                    Canvas.SetLeft(mw, Canvas.GetLeft(PlayerLocationIcon));
+                    Canvas.SetTop(mw, Canvas.GetTop(PlayerLocationIcon));
+                    mw.RenderTransform = Transform;
+                }
+
+                private void SetOpacity(Shape l, double v)
+                {
+                    if (l.Stroke.IsFrozen)
                     {
-                        if (e != PlayerLocationCircle)
+                        l.Stroke = l.Stroke.Clone();
+                    }
+
+                    l.Stroke.Opacity = v;
+                }
+
+                private void SetOpacity(TextBlock l, double v)
+                {
+                    if (l.Foreground.IsFrozen)
+                    {
+                        l.Foreground = l.Foreground.Clone();
+                    }
+
+                    l.Foreground.Opacity = v;
+                }
+
+                private void AdjustOpacity(double shortestdistance, Shape shape, ZoneInfo zoneinfo, Point3D lastloc)
+                {
+                    var twiceheight = zoneinfo.ZoneLevelHeight * 2;
+                    if (shortestdistance < zoneinfo.ZoneLevelHeight)
+                    {
+                        SetOpacity(shape, 1);
+                    }
+                    else if (shortestdistance >= zoneinfo.ZoneLevelHeight && shortestdistance <= twiceheight + zoneinfo.ZoneLevelHeight)
+                    {
+                        var dist = ((shortestdistance - zoneinfo.ZoneLevelHeight) * -1) + twiceheight; //changed range to [0,80] with 0 being the FURTHest distance
+                        dist = (dist / twiceheight) + .1; // scale to [.1,1.1] 
+                        _ = Clamp(dist, .1, 1);
+                        SetOpacity(shape, dist);
+                    }
+                    else
+                    {
+                        SetOpacity(shape, .1);
+                    }
+                }
+
+                private void AdjustOpacity(TextBlock t, ZoneInfo zoneinfo, Point3D lastloc)
+                {
+                    var twiceheight = zoneinfo.ZoneLevelHeight * 2;
+                    var m = t.Tag as MapLabel;
+                    var shortestdistance = Math.Abs(m.Point.Z - lastloc.Z);
+
+                    if (shortestdistance < zoneinfo.ZoneLevelHeight)
+                    {
+                        SetOpacity(t, 1);
+                    }
+                    else if (shortestdistance >= zoneinfo.ZoneLevelHeight && shortestdistance <= twiceheight + zoneinfo.ZoneLevelHeight)
+                    {
+                        var dist = ((shortestdistance - zoneinfo.ZoneLevelHeight) * -1) + twiceheight; //changed range to [0,80] with 0 being the FURTHest distance
+                        dist = (dist / twiceheight) + .1; // scale to [.1,1.1] 
+                        _ = Clamp(dist, .1, 1);
+                        SetOpacity(t, dist);
+                    }
+                    else
+                    {
+                        SetOpacity(t, .1);
+                    }
+                }
+
+                public void UpdateLocation(Point3D value1, PanAndZoomCanvas canvas)
+                {
+                    if (MapLoading || PlayerLocationIcon == null)
+                    {
+                        return;
+                    }
+
+                    OnPropertyChanged(nameof(Title));
+                    var newdir = new Point3D(value1.X, value1.Y, 0) - new Point3D(Lastlocation.X, Lastlocation.Y, 0);
+                    newdir.Normalize();
+                    var angle = GetAngleBetweenPoints(new Point3D(value1.X, value1.Y, 0), new Point3D(Lastlocation.X, Lastlocation.Y, 0)) * -1;
+                    Lastlocation = value1;
+                    PlayerLocationIcon.RotateTransform = new RotateTransform(angle);
+                    Canvas.SetLeft(PlayerLocationIcon, -(value1.Y + MapOffset.X) * CurrentScaling);
+                    Canvas.SetTop(PlayerLocationIcon, -(value1.X + MapOffset.Y) * CurrentScaling);
+                    var heighdiv2 = PlayerLocationCircle.Height / 2 / CurrentScaling;
+                    Canvas.SetLeft(PlayerLocationCircle, -(value1.Y + MapOffset.X + heighdiv2) * CurrentScaling);
+                    Canvas.SetTop(PlayerLocationCircle, -(value1.X + MapOffset.Y + heighdiv2) * CurrentScaling);
+                    var transform = new MatrixTransform();
+                    var translation = new TranslateTransform(Transform.Value.OffsetX, Transform.Value.OffsetY);
+                    transform.Matrix = PlayerLocationIcon.RotateTransform.Value * translation.Value;
+                    PlayerLocationIcon.RenderTransform = transform;
+                    var transform2 = new MatrixTransform();
+                    _ = new TranslateTransform(Transform.Value.OffsetX, Transform.Value.OffsetY);
+                    transform2.Matrix = translation.Value;
+                    PlayerLocationCircle.RenderTransform = transform2;
+                    var zoneinfo = EQToolShared.Map.ZoneParser.ZoneInfoMap[ZoneName];
+                    if (!zoneinfo.ShowAllMapLevels && canvas.Children.Count > 0)
+                    {
+                        var lastloc = new Point3D(-(value1.Y + MapOffset.X), -(value1.X + MapOffset.Y), Lastlocation.Z);
+                        _ = zoneinfo.ZoneLevelHeight * 2;
+                        foreach (var child in canvas.Children)
                         {
-                            var m = e.Tag as MapLabel;
-                            var shortestdistance = Math.Abs(m.Point.Z - lastloc.Z);
-                            AdjustOpacity(shortestdistance, e, zoneinfo, lastloc);
+                            if (child is Line a)
+                            {
+                                var m = a.Tag as MapLine;
+                                var shortestdistance = Math.Abs(m.Points[0].Z - lastloc.Z);
+                                shortestdistance = Math.Min(Math.Abs(m.Points[1].Z - lastloc.Z), shortestdistance);
+                                AdjustOpacity(shortestdistance, a, zoneinfo, lastloc);
+                            }
+                            else if (child is TextBlock t)
+                            {
+                                AdjustOpacity(t, zoneinfo, lastloc);
+                            }
+                            else if (child is Ellipse e)
+                            {
+                                if (e != PlayerLocationCircle)
+                                {
+                                    var m = e.Tag as MapLabel;
+                                    var shortestdistance = Math.Abs(m.Point.Z - lastloc.Z);
+                                    AdjustOpacity(shortestdistance, e, zoneinfo, lastloc);
+                                }
+                            }
                         }
                     }
                 }
-            }
-        }
 
-        public void MouseMove(Point mousePosition)
-        {
-            mousePosition = Transform.Inverse.Transform(mousePosition);
-            mousePosition.Y += MapOffset.Y;
-            mousePosition.X += MapOffset.X;
-            mousePosition.Y *= -1;
-            mousePosition.X *= -1;
-            LastMouselocation = mousePosition;
-        }
-
-        public void UpdateTimerWidgest()
-        {
-            var removewidgets = new List<MapWidget>();
-            foreach (var item in TimerWidgets)
-            {
-                if (item is MapWidget m)
+                public void MouseMove(Point mousePosition)
                 {
-                    if (m.Update() <= -60 * 4)
+                    mousePosition = Transform.Inverse.Transform(mousePosition);
+                    mousePosition.Y += MapOffset.Y;
+                    mousePosition.X += MapOffset.X;
+                    mousePosition.Y *= -1;
+                    mousePosition.X *= -1;
+                    LastMouselocation = mousePosition;
+                }
+
+                public void UpdateTimerWidgest()
+                {
+                    var removewidgets = new List<MapWidget>();
+                    foreach (var item in TimerWidgets)
                     {
-                        removewidgets.Add(item);
+                        if (item is MapWidget m)
+                        {
+                            if (m.Update() <= -60 * 4)
+                            {
+                                removewidgets.Add(item);
+                            }
+                        }
+                    }
+
+                    foreach (var item in removewidgets)
+                    {
+                        _ = TimerWidgets.Remove(item);
+                        Children.Remove(item);
                     }
                 }
-            }
 
-            foreach (var item in removewidgets)
-            {
-                _ = TimerWidgets.Remove(item);
-                Children.Remove(item);
-            }
-        }
-
-        public MapWidget AddTimer(TimeSpan timer, string title)
-        {
-            var mw = new MapWidget(DateTime.Now.Add(timer), SmallFontSize, title);
-            var textlabel = new SolidColorBrush(System.Windows.Media.Color.FromRgb(255, 255, 255));
-            var forgregroundlabel = new SolidColorBrush(System.Windows.Media.Color.FromRgb(0, 0, 0));
-            mw.SetTheme(textlabel, forgregroundlabel);
-            TimerWidgets.Add(mw);
-            _ = Children.Add(mw);
-            Canvas.SetTop(mw, _mouseuppoint.Y - Transform.Value.OffsetY);
-            Canvas.SetLeft(mw, _mouseuppoint.X - Transform.Value.OffsetX);
-            mw.RenderTransform = Transform;
-            return mw;
-        }
-
-        public void DeleteSelectedTimer()
-        {
-            if (_selectedElement is MapWidget w)
-            {
-                _ = TimerWidgets.Remove(w);
-                Children.Remove(w);
-                _dragging = false;
-                _selectedElement = null;
-            }
-        }
-
-        public void PanAndZoomCanvas_MouseDown(Point mousePostion, MouseButtonEventArgs e)
-        {
-            if (e.ChangedButton == MouseButton.Right)
-            {
-                _selectedElement = e.Source is MapWidget ? (UIElement)e.Source : null;
-            }
-            if (TimerOpen)
-            {
-                return;
-            }
-            if (e.ChangedButton == MouseButton.Left)
-            {
-                if (e.Source is MapWidget)
+                public MapWidget AddTimer(TimeSpan timer, string title)
                 {
-                    _selectedElement = (UIElement)e.Source;
-                    var x = Canvas.GetLeft(_selectedElement);
-                    var y = Canvas.GetTop(_selectedElement);
-                    var elementPosition = new Point(x, y);
-                    _draggingDelta = elementPosition - mousePostion;
-                    _dragging = true;
+                    var mw = new MapWidget(DateTime.Now.Add(timer), SmallFontSize, title);
+                    var textlabel = new SolidColorBrush(System.Windows.Media.Color.FromRgb(255, 255, 255));
+                    var forgregroundlabel = new SolidColorBrush(System.Windows.Media.Color.FromRgb(0, 0, 0));
+                    mw.SetTheme(textlabel, forgregroundlabel);
+                    TimerWidgets.Add(mw);
+                    _ = Children.Add(mw);
+                    Canvas.SetTop(mw, _mouseuppoint.Y - Transform.Value.OffsetY);
+                    Canvas.SetLeft(mw, _mouseuppoint.X - Transform.Value.OffsetX);
+                    mw.RenderTransform = Transform;
+                    return mw;
                 }
-                else
+
+                public void DeleteSelectedTimer()
                 {
+                    if (_selectedElement is MapWidget w)
+                    {
+                        _ = TimerWidgets.Remove(w);
+                        Children.Remove(w);
+                        _dragging = false;
+                        _selectedElement = null;
+                    }
+                }
+
+                public void PanAndZoomCanvas_MouseDown(Point mousePostion, MouseButtonEventArgs e)
+                {
+                    if (e.ChangedButton == MouseButton.Right)
+                    {
+                        _selectedElement = e.Source is MapWidget ? (UIElement)e.Source : null;
+                    }
+                    if (TimerOpen)
+                    {
+                        return;
+                    }
+                    if (e.ChangedButton == MouseButton.Left)
+                    {
+                        if (e.Source is MapWidget)
+                        {
+                            _selectedElement = (UIElement)e.Source;
+                            var x = Canvas.GetLeft(_selectedElement);
+                            var y = Canvas.GetTop(_selectedElement);
+                            var elementPosition = new Point(x, y);
+                            _draggingDelta = elementPosition - mousePostion;
+                            _dragging = true;
+                        }
+                        else
+                        {
+                            _dragging = false;
+                            _selectedElement = null;
+                        }
+                    }
+
+                    if (!_dragging && e.ChangedButton == MouseButton.Left)
+                    {
+                        _initialMousePosition = Transform.Inverse.Transform(mousePostion);
+                    }
+                }
+
+                public void PanAndZoomCanvas_MouseUp(Point mousePostion)
+                {
+                    _mouseuppoint = mousePostion;
                     _dragging = false;
-                    _selectedElement = null;
                 }
-            }
 
-            if (!_dragging && e.ChangedButton == MouseButton.Left)
-            {
-                _initialMousePosition = Transform.Inverse.Transform(mousePostion);
-            }
-        }
-
-        public void PanAndZoomCanvas_MouseUp(Point mousePostion)
-        {
-            _mouseuppoint = mousePostion;
-            _dragging = false;
-        }
-
-        public void MoveMap(int x, int y)
-        {
-            var translate = new TranslateTransform(x, y);
-            Transform.Matrix = translate.Value * Transform.Matrix;
-            foreach (UIElement child in Children)
-            {
-                if (child is ArrowLine c)
+                public void MoveMap(int x, int y)
                 {
-                    var transform = new MatrixTransform();
-                    var translation = new TranslateTransform(Transform.Value.OffsetX, Transform.Value.OffsetY);
-                    transform.Matrix = c.RotateTransform.Value * translation.Value;
-                    c.RenderTransform = transform;
-                }
-                else
-                {
-                    child.RenderTransform = Transform;
-                }
-            }
-        }
-
-        public void PanAndZoomCanvas_MouseMove(Point mousePostion, MouseEventArgs e)
-        {
-            if (TimerOpen)
-            {
-                return;
-            }
-
-            if (!_dragging && e.LeftButton == MouseButtonState.Pressed)
-            {
-                var mousePosition = Transform.Inverse.Transform(mousePostion);
-                var delta = Point.Subtract(mousePosition, _initialMousePosition);
-                var translate = new TranslateTransform(delta.X, delta.Y);
-                Transform.Matrix = translate.Value * Transform.Matrix;
-                foreach (UIElement child in Children)
-                {
-                    if (child is ArrowLine c)
+                    var translate = new TranslateTransform(x, y);
+                    Transform.Matrix = translate.Value * Transform.Matrix;
+                    foreach (UIElement child in Children)
                     {
-                        var transform = new MatrixTransform();
-                        var translation = new TranslateTransform(Transform.Value.OffsetX, Transform.Value.OffsetY);
-                        transform.Matrix = c.RotateTransform.Value * translation.Value;
-                        c.RenderTransform = transform;
-                    }
-                    else if (child is Ellipse el)
-                    {
-                        var transform = new MatrixTransform();
-                        var translation = new TranslateTransform(Transform.Value.OffsetX, Transform.Value.OffsetY);
-                        transform.Matrix = translation.Value;
-                        el.RenderTransform = transform;
-                    }
-                    else
-                    {
-                        child.RenderTransform = Transform;
-                    }
-                }
-            }
-
-            if (_dragging && e.LeftButton == MouseButtonState.Pressed)
-            {
-                if (_selectedElement != null)
-                {
-                    Canvas.SetLeft(_selectedElement, mousePostion.X + _draggingDelta.X);
-                    Canvas.SetTop(_selectedElement, mousePostion.Y + _draggingDelta.Y);
-                }
-            }
-        }
-
-        public void PanAndZoomCanvas_MouseWheel(Point mousePostion, int delta)
-        {
-            if (TimerOpen || _dragging)
-            {
-                return;
-            }
-
-            var scaleFactor = Zoomfactor;
-            if (delta < 0)
-            {
-                scaleFactor = 1f / scaleFactor;
-            }
-
-            var scaleMatrix = Transform.Matrix;
-            scaleMatrix.ScaleAt(scaleFactor, scaleFactor, mousePostion.X, mousePostion.Y);
-            if (CurrentScaling * scaleFactor < 1 || CurrentScaling * scaleFactor > 40)
-            {
-                // dont allow zooming out too far
-                return;
-            }
-
-            Transform.Matrix = scaleMatrix;
-            CurrentScaling *= scaleFactor;
-            Debug.WriteLine(CurrentScaling);
-            var currentlabelscaling = (CurrentScaling / 40 * -1) + 1;
-            foreach (UIElement child in Children)
-            {
-                var x = Canvas.GetLeft(child);
-                var y = Canvas.GetTop(child);
-
-                var sx = x * scaleFactor;
-                var sy = y * scaleFactor;
-
-
-                if (child is ArrowLine c)
-                {
-                    Canvas.SetLeft(child, sx);
-                    Canvas.SetTop(child, sy);
-                    var transform = new MatrixTransform();
-                    var translation = new TranslateTransform(Transform.Value.OffsetX, Transform.Value.OffsetY);
-                    transform.Matrix = c.RotateTransform.Value * translation.Value;
-                    c.RenderTransform = transform;
-                }
-                else if (child is Ellipse el)
-                {
-                    if (!string.IsNullOrWhiteSpace(el.Name))
-                    {
-                        var heighdiv2 = PlayerLocationCircle.Height / 2 / CurrentScaling;
-                        Canvas.SetLeft(el, -(Lastlocation.Y + MapOffset.X + heighdiv2) * CurrentScaling);
-                        Canvas.SetTop(el, -(Lastlocation.X + MapOffset.Y + heighdiv2) * CurrentScaling);
-                    }
-                    else
-                    {
-                        Canvas.SetLeft(child, sx);
-                        Canvas.SetTop(child, sy);
-                    }
-
-                    var transform = new MatrixTransform();
-                    var translation = new TranslateTransform(Transform.Value.OffsetX, Transform.Value.OffsetY);
-                    transform.Matrix = translation.Value;
-                    el.RenderTransform = transform;
-                }
-                else if (child is TextBlock t)
-                {
-                    Canvas.SetLeft(child, sx);
-                    Canvas.SetTop(child, sy);
-                    var textdata = t.Tag as MapLabel;
-                    if (textdata.LabelSize == LabelSize.Large)
-                    {
-                        var largescaling = ZoneLabelFontSize;
-                        largescaling *= currentlabelscaling;
-                        largescaling = (int)Clamp(largescaling, 5, 200);
-                        if (t.FontSize != largescaling)
+                        if (child is ArrowLine c)
                         {
-                            t.FontSize = largescaling;
+                            var transform = new MatrixTransform();
+                            var translation = new TranslateTransform(Transform.Value.OffsetX, Transform.Value.OffsetY);
+                            transform.Matrix = c.RotateTransform.Value * translation.Value;
+                            c.RenderTransform = transform;
                         }
-                    }
-                    else
-                    {
-                        var smallscaling = OtherLabelFontSize;
-                        smallscaling *= currentlabelscaling;
-                        smallscaling = (int)Clamp(smallscaling, 5, 100);
-                        if (t.FontSize != smallscaling)
+                        else
                         {
-                            t.FontSize = smallscaling;
+                            child.RenderTransform = Transform;
                         }
                     }
                 }
-                else
+
+                public void PanAndZoomCanvas_MouseMove(Point mousePostion, MouseEventArgs e)
                 {
-                    Canvas.SetLeft(child, sx);
-                    Canvas.SetTop(child, sy);
-                    child.RenderTransform = Transform;
+                    if (TimerOpen)
+                    {
+                        return;
+                    }
+
+                    if (!_dragging && e.LeftButton == MouseButtonState.Pressed)
+                    {
+                        var mousePosition = Transform.Inverse.Transform(mousePostion);
+                        var delta = Point.Subtract(mousePosition, _initialMousePosition);
+                        var translate = new TranslateTransform(delta.X, delta.Y);
+                        Transform.Matrix = translate.Value * Transform.Matrix;
+                        foreach (UIElement child in Children)
+                        {
+                            if (child is ArrowLine c)
+                            {
+                                var transform = new MatrixTransform();
+                                var translation = new TranslateTransform(Transform.Value.OffsetX, Transform.Value.OffsetY);
+                                transform.Matrix = c.RotateTransform.Value * translation.Value;
+                                c.RenderTransform = transform;
+                            }
+                            else if (child is Ellipse el)
+                            {
+                                var transform = new MatrixTransform();
+                                var translation = new TranslateTransform(Transform.Value.OffsetX, Transform.Value.OffsetY);
+                                transform.Matrix = translation.Value;
+                                el.RenderTransform = transform;
+                            }
+                            else
+                            {
+                                child.RenderTransform = Transform;
+                            }
+                        }
+                    }
+
+                    if (_dragging && e.LeftButton == MouseButtonState.Pressed)
+                    {
+                        if (_selectedElement != null)
+                        {
+                            Canvas.SetLeft(_selectedElement, mousePostion.X + _draggingDelta.X);
+                            Canvas.SetTop(_selectedElement, mousePostion.Y + _draggingDelta.Y);
+                        }
+                    }
                 }
-            }
-        }
 
-        public void TimerMenu_Closed()
-        {
-            TimerOpen = false;
-        }
+                public void PanAndZoomCanvas_MouseWheel(Point mousePostion, int delta)
+                {
+                    if (TimerOpen || _dragging)
+                    {
+                        return;
+                    }
 
-        public void TimerMenu_Opened()
-        {
-            TimerOpen = true;
-        }
+                    var scaleFactor = Zoomfactor;
+                    if (delta < 0)
+                    {
+                        scaleFactor = 1f / scaleFactor;
+                    }
+
+                    var scaleMatrix = Transform.Matrix;
+                    scaleMatrix.ScaleAt(scaleFactor, scaleFactor, mousePostion.X, mousePostion.Y);
+                    if (CurrentScaling * scaleFactor < 1 || CurrentScaling * scaleFactor > 40)
+                    {
+                        // dont allow zooming out too far
+                        return;
+                    }
+
+                    Transform.Matrix = scaleMatrix;
+                    CurrentScaling *= scaleFactor;
+                    Debug.WriteLine(CurrentScaling);
+                    var currentlabelscaling = (CurrentScaling / 40 * -1) + 1;
+                    foreach (UIElement child in Children)
+                    {
+                        var x = Canvas.GetLeft(child);
+                        var y = Canvas.GetTop(child);
+
+                        var sx = x * scaleFactor;
+                        var sy = y * scaleFactor;
+
+
+                        if (child is ArrowLine c)
+                        {
+                            Canvas.SetLeft(child, sx);
+                            Canvas.SetTop(child, sy);
+                            var transform = new MatrixTransform();
+                            var translation = new TranslateTransform(Transform.Value.OffsetX, Transform.Value.OffsetY);
+                            transform.Matrix = c.RotateTransform.Value * translation.Value;
+                            c.RenderTransform = transform;
+                        }
+                        else if (child is Ellipse el)
+                        {
+                            if (!string.IsNullOrWhiteSpace(el.Name))
+                            {
+                                var heighdiv2 = PlayerLocationCircle.Height / 2 / CurrentScaling;
+                                Canvas.SetLeft(el, -(Lastlocation.Y + MapOffset.X + heighdiv2) * CurrentScaling);
+                                Canvas.SetTop(el, -(Lastlocation.X + MapOffset.Y + heighdiv2) * CurrentScaling);
+                            }
+                            else
+                            {
+                                Canvas.SetLeft(child, sx);
+                                Canvas.SetTop(child, sy);
+                            }
+
+                            var transform = new MatrixTransform();
+                            var translation = new TranslateTransform(Transform.Value.OffsetX, Transform.Value.OffsetY);
+                            transform.Matrix = translation.Value;
+                            el.RenderTransform = transform;
+                        }
+                        else if (child is TextBlock t)
+                        {
+                            Canvas.SetLeft(child, sx);
+                            Canvas.SetTop(child, sy);
+                            var textdata = t.Tag as MapLabel;
+                            if (textdata.LabelSize == LabelSize.Large)
+                            {
+                                var largescaling = ZoneLabelFontSize;
+                                largescaling *= currentlabelscaling;
+                                largescaling = (int)Clamp(largescaling, 5, 200);
+                                if (t.FontSize != largescaling)
+                                {
+                                    t.FontSize = largescaling;
+                                }
+                            }
+                            else
+                            {
+                                var smallscaling = OtherLabelFontSize;
+                                smallscaling *= currentlabelscaling;
+                                smallscaling = (int)Clamp(smallscaling, 5, 100);
+                                if (t.FontSize != smallscaling)
+                                {
+                                    t.FontSize = smallscaling;
+                                }
+                            }
+                        }
+                        else
+                        {
+                            Canvas.SetLeft(child, sx);
+                            Canvas.SetTop(child, sy);
+                            child.RenderTransform = Transform;
+                        }
+                    }
+                }
+
+                public void TimerMenu_Closed()
+                {
+                    TimerOpen = false;
+                }
+
+                public void TimerMenu_Opened()
+                {
+                    TimerOpen = true;
+                }
 
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName] string name = null)
