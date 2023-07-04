@@ -619,9 +619,8 @@ namespace EQToolTests
                 PlayerClass = PlayerClasses.Shaman
             };
             var guess = spelllogparse.MatchSpell(line);
-            var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(guess.Spell, player.Player));
-            Assert.IsNotNull(guess);
-            Assert.IsFalse(guess.MultipleMatchesFound);
+            Assert.IsNull(guess);
+            Assert.IsNotNull(player.UserCastingSpell);
         }
 
         [TestMethod]
