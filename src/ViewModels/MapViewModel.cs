@@ -312,59 +312,59 @@ namespace EQTool.ViewModels
 
         public void UpdateLocation(Point3D value1, PanAndZoomCanvas canvas)
         {
-            if (MapLoading || PlayerLocationIcon == null)
-            {
-                return;
-            }
+            //if (MapLoading || PlayerLocationIcon == null)
+            //{
+            //    return;
+            //}
 
-            OnPropertyChanged(nameof(Title));
-            var newdir = new Point3D(value1.X, value1.Y, 0) - new Point3D(Lastlocation.X, Lastlocation.Y, 0);
-            newdir.Normalize();
-            var angle = GetAngleBetweenPoints(new Point3D(value1.X, value1.Y, 0), new Point3D(Lastlocation.X, Lastlocation.Y, 0)) * -1;
-            Lastlocation = value1;
-            PlayerLocationIcon.RotateTransform = new RotateTransform(angle);
-            Canvas.SetLeft(PlayerLocationIcon, -(value1.Y + MapOffset.X) * CurrentScaling);
-            Canvas.SetTop(PlayerLocationIcon, -(value1.X + MapOffset.Y) * CurrentScaling);
-            var heighdiv2 = PlayerLocationCircle.Height / 2 / CurrentScaling;
-            Canvas.SetLeft(PlayerLocationCircle, -(value1.Y + MapOffset.X + heighdiv2) * CurrentScaling);
-            Canvas.SetTop(PlayerLocationCircle, -(value1.X + MapOffset.Y + heighdiv2) * CurrentScaling);
-            var transform = new MatrixTransform();
-            var translation = new TranslateTransform(Transform.Value.OffsetX, Transform.Value.OffsetY);
-            transform.Matrix = PlayerLocationIcon.RotateTransform.Value * translation.Value;
-            PlayerLocationIcon.RenderTransform = transform;
-            var transform2 = new MatrixTransform();
-            _ = new TranslateTransform(Transform.Value.OffsetX, Transform.Value.OffsetY);
-            transform2.Matrix = translation.Value;
-            PlayerLocationCircle.RenderTransform = transform2;
-            var zoneinfo = EQToolShared.Map.ZoneParser.ZoneInfoMap[ZoneName];
-            if (!zoneinfo.ShowAllMapLevels && canvas.Children.Count > 0)
-            {
-                var lastloc = new Point3D(-(value1.Y + MapOffset.X), -(value1.X + MapOffset.Y), Lastlocation.Z);
-                _ = zoneinfo.ZoneLevelHeight * 2;
-                foreach (var child in canvas.Children)
-                {
-                    if (child is Line a)
-                    {
-                        var m = a.Tag as MapLine;
-                        var shortestdistance = Math.Abs(m.Points[0].Z - lastloc.Z);
-                        shortestdistance = Math.Min(Math.Abs(m.Points[1].Z - lastloc.Z), shortestdistance);
-                        AdjustOpacity(shortestdistance, a, zoneinfo, lastloc);
-                    }
-                    else if (child is TextBlock t)
-                    {
-                        AdjustOpacity(t, zoneinfo, lastloc);
-                    }
-                    else if (child is Ellipse e)
-                    {
-                        if (e != PlayerLocationCircle)
-                        {
-                            var m = e.Tag as MapLabel;
-                            var shortestdistance = Math.Abs(m.Point.Z - lastloc.Z);
-                            AdjustOpacity(shortestdistance, e, zoneinfo, lastloc);
-                        }
-                    }
-                }
-            }
+            //OnPropertyChanged(nameof(Title));
+            //var newdir = new Point3D(value1.X, value1.Y, 0) - new Point3D(Lastlocation.X, Lastlocation.Y, 0);
+            //newdir.Normalize();
+            //var angle = GetAngleBetweenPoints(new Point3D(value1.X, value1.Y, 0), new Point3D(Lastlocation.X, Lastlocation.Y, 0)) * -1;
+            //Lastlocation = value1;
+            //PlayerLocationIcon.RotateTransform = new RotateTransform(angle);
+            //Canvas.SetLeft(PlayerLocationIcon, -(value1.Y + MapOffset.X) * CurrentScaling);
+            //Canvas.SetTop(PlayerLocationIcon, -(value1.X + MapOffset.Y) * CurrentScaling);
+            //var heighdiv2 = PlayerLocationCircle.Height / 2 / CurrentScaling;
+            //Canvas.SetLeft(PlayerLocationCircle, -(value1.Y + MapOffset.X + heighdiv2) * CurrentScaling);
+            //Canvas.SetTop(PlayerLocationCircle, -(value1.X + MapOffset.Y + heighdiv2) * CurrentScaling);
+            //var transform = new MatrixTransform();
+            //var translation = new TranslateTransform(Transform.Value.OffsetX, Transform.Value.OffsetY);
+            //transform.Matrix = PlayerLocationIcon.RotateTransform.Value * translation.Value;
+            //PlayerLocationIcon.RenderTransform = transform;
+            //var transform2 = new MatrixTransform();
+            //_ = new TranslateTransform(Transform.Value.OffsetX, Transform.Value.OffsetY);
+            //transform2.Matrix = translation.Value;
+            //PlayerLocationCircle.RenderTransform = transform2;
+            //var zoneinfo = EQToolShared.Map.ZoneParser.ZoneInfoMap[ZoneName];
+            //if (!zoneinfo.ShowAllMapLevels && canvas.Children.Count > 0)
+            //{
+            //    var lastloc = new Point3D(-(value1.Y + MapOffset.X), -(value1.X + MapOffset.Y), Lastlocation.Z);
+            //    _ = zoneinfo.ZoneLevelHeight * 2;
+            //    foreach (var child in canvas.Children)
+            //    {
+            //        if (child is Line a)
+            //        {
+            //            var m = a.Tag as MapLine;
+            //            var shortestdistance = Math.Abs(m.Points[0].Z - lastloc.Z);
+            //            shortestdistance = Math.Min(Math.Abs(m.Points[1].Z - lastloc.Z), shortestdistance);
+            //            AdjustOpacity(shortestdistance, a, zoneinfo, lastloc);
+            //        }
+            //        else if (child is TextBlock t)
+            //        {
+            //            AdjustOpacity(t, zoneinfo, lastloc);
+            //        }
+            //        else if (child is Ellipse e)
+            //        {
+            //            if (e != PlayerLocationCircle)
+            //            {
+            //                var m = e.Tag as MapLabel;
+            //                var shortestdistance = Math.Abs(m.Point.Z - lastloc.Z);
+            //                AdjustOpacity(shortestdistance, e, zoneinfo, lastloc);
+            //            }
+            //        }
+            //    }
+            //}
         }
 
         public void MouseMove(Point mousePosition)
