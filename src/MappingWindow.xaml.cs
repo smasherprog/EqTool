@@ -72,23 +72,22 @@ namespace EQTool
             UITimer.Enabled = true;
 
             this.signalRMapService = signalRMapService;
-            this.signalRMapService.PlayerLocationReceived += SignalRMapService_PlayerLocationReceived;
-
+            // this.signalRMapService.PlayerLocationReceived += SignalRMapService_PlayerLocationReceived;
         }
 
         private void SignalRMapService_PlayerLocationReceived(PlayerLocation obj)
         {
-            //Debug.Print($"{obj} > {obj.Server}, {obj.PlayerName}, {obj.ZoneName}, {obj.X}, {obj.Y}, {obj.Z}");
-            if (obj != null && obj.PlayerName != null && playerTrackerService != null && playerTrackerService.activePlayer.Player != null &&
-                obj.PlayerName != playerTrackerService.activePlayer.Player.Name &&
-                obj.Server == playerTrackerService.activePlayer.Player.Server &&
-                obj.ZoneName == playerTrackerService.activePlayer.Player.Zone)
-            {
-                Application.Current.Dispatcher.Invoke(delegate
-                {
-                    _ = mapViewModel.UpdateOtherPlayerLocations(obj, Map);
-                });
-            }
+            ////Debug.Print($"{obj} > {obj.Server}, {obj.PlayerName}, {obj.ZoneName}, {obj.X}, {obj.Y}, {obj.Z}");
+            //if (obj != null && obj.PlayerName != null && playerTrackerService != null && playerTrackerService.activePlayer.Player != null &&
+            //    obj.PlayerName != playerTrackerService.activePlayer.Player.Name &&
+            //    obj.Server == playerTrackerService.activePlayer.Player.Server &&
+            //    obj.ZoneName == playerTrackerService.activePlayer.Player.Zone)
+            //{
+            //    Application.Current.Dispatcher.Invoke(delegate
+            //    {
+            //        _ = mapViewModel.UpdateOtherPlayerLocations(obj, Map);
+            //    });
+            //}
         }
 
         private void LogParser_DeadEvent(object sender, LogParser.DeadEventArgs e)
@@ -176,7 +175,7 @@ namespace EQTool
             StateChanged -= Window_StateChanged;
             LocationChanged -= Window_LocationChanged;
             KeyDown -= PanAndZoomCanvas_KeyDown;
-            signalRMapService.PlayerLocationReceived -= SignalRMapService_PlayerLocationReceived;
+            // signalRMapService.PlayerLocationReceived -= SignalRMapService_PlayerLocationReceived;
             SaveState();
             base.OnClosing(e);
         }
