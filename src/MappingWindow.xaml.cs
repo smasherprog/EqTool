@@ -152,15 +152,7 @@ namespace EQTool
 
         private void LogParser_PlayerLocationEvent(object sender, LogParser.PlayerLocationEventArgs e)
         {
-            mapViewModel.UpdateLocation(e.Location, Map);
-
-            // TODO: Add option to settings window for user to check to "Bring to Front on /loc"
-            // Bring map to front if not already always on top
-            if (EQTool.Properties.Settings.Default.GlobalMapWindowAlwaysOnTop == false)
-            {
-                Topmost = true;
-                Topmost = false;
-            }
+            mapViewModel.UpdateLocation(e.Location);
         }
 
         protected override void OnClosing(CancelEventArgs e)

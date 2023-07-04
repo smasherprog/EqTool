@@ -321,9 +321,9 @@ namespace EQTool.ViewModels
             }
         }
 
-        public void UpdateLocation(Point3D value1, PanAndZoomCanvas canvas)
+        public void UpdateLocation(Point3D value1)
         {
-            if (MapLoading || PlayerLocationIcon == null)
+            if (MapLoading || PlayerLocationIcon == null || Children == null)
             {
                 return;
             }
@@ -348,11 +348,11 @@ namespace EQTool.ViewModels
             transform2.Matrix = translation.Value;
             PlayerLocationCircle.RenderTransform = transform2;
             var zoneinfo = EQToolShared.Map.ZoneParser.ZoneInfoMap[ZoneName];
-            if (!zoneinfo.ShowAllMapLevels && canvas.Children.Count > 0)
+            if (!zoneinfo.ShowAllMapLevels && Children.Count > 0)
             {
                 var lastloc = new Point3D(-(value1.Y + MapOffset.X), -(value1.X + MapOffset.Y), Lastlocation.Z);
                 _ = zoneinfo.ZoneLevelHeight * 2;
-                foreach (var child in canvas.Children)
+                foreach (var child in Children)
                 {
                     if (child is Line a)
                     {
