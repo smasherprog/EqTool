@@ -1,8 +1,6 @@
 ﻿using EQTool.Models;
 using EQTool.Services;
-using EQTool.Services.Map;
 using EQTool.ViewModels;
-using EQToolShared.HubModels;
 using System;
 using System.ComponentModel;
 using System.Windows;
@@ -24,8 +22,6 @@ namespace EQTool
         private readonly IAppDispatcher appDispatcher;
         private readonly System.Timers.Timer UITimer;
         private bool AutomaticallyAddTimerOnDeath = false;
-        private readonly SignalRMapService signalRMapService;
-        private readonly PlayerTrackerService playerTrackerService;
 
         public MappingWindow(
             MapViewModel mapViewModel,
@@ -33,15 +29,12 @@ namespace EQTool
             EQToolSettings settings,
             EQToolSettingsLoad toolSettingsLoad,
             IAppDispatcher appDispatcher,
-            SignalRMapService signalRMapService,
-            LoggingService loggingService,
-            PlayerTrackerService playerTrackerService)
+            LoggingService loggingService)
         {
             loggingService.Log(string.Empty, App.EventType.OpenMap);
             this.settings = settings;
             this.toolSettingsLoad = toolSettingsLoad;
             this.appDispatcher = appDispatcher;
-            this.playerTrackerService = playerTrackerService;
             this.logParser = logParser;
             DataContext = this.mapViewModel = mapViewModel;
             InitializeComponent();
@@ -70,24 +63,6 @@ namespace EQTool
             UITimer = new System.Timers.Timer(1000);
             UITimer.Elapsed += UITimer_Elapsed;
             UITimer.Enabled = true;
-
-            this.signalRMapService = signalRMapService;
-            // this.signalRMapService.PlayerLocationReceived += SignalRMapService_PlayerLocationReceived;
-        }
-
-        private void SignalRMapService_PlayerLocationReceived(PlayerLocation obj)
-        {
-            ////Debug.Print($"{obj} > {obj.Server}, {obj.PlayerName}, {obj.ZoneName}, {obj.X}, {obj.Y}, {obj.Z}");
-            //if (obj != null && obj.PlayerName != null && playerTrackerService != null && playerTrackerService.activePlayer.Player != null &&
-            //    obj.PlayerName != playerTrackerService.activePlayer.Player.Name &&
-            //    obj.Server == playerTrackerService.activePlayer.Player.Server &&
-            //    obj.ZoneName == playerTrackerService.activePlayer.Player.Zone)
-            //{
-            //    Application.Current.Dispatcher.Invoke(delegate
-            //    {
-            //        _ = mapViewModel.UpdateOtherPlayerLocations(obj, Map);
-            //    });
-            //}
         }
 
         private void LogParser_DeadEvent(object sender, LogParser.DeadEventArgs e)

@@ -1,7 +1,6 @@
 ﻿using Autofac;
 using Autofac.Features.ResolveAnything;
 using EQTool.Models;
-using EQTool.Services.Map;
 using EQTool.ViewModels;
 
 namespace EQTool.Services
@@ -31,7 +30,6 @@ namespace EQTool.Services
             _ = builder.RegisterType<LoggingService>().AsSelf().SingleInstance();
             _ = builder.RegisterType<PlayerTrackerService>().AsSelf().SingleInstance();
             _ = builder.RegisterType<ZoneActivityTrackingService>().AsSelf().SingleInstance();
-            _ = builder.RegisterType<SignalRMapService>().AsSelf().SingleInstance();
 
             return builder.Build();
         }

@@ -328,7 +328,6 @@
     </Compile>
     <Compile Include="Services\AppDispatcher.cs" />
     <Compile Include="Services\LoggingService.cs" />
-    <Compile Include="Services\Map\SignalRMapService.cs" />
     <Compile Include="Services\PlayerGroupService.cs" />
     <Compile Include="Services\ZoneActivityTrackingService.cs" />
     <Compile Include="Services\PlayerTrackerService.cs" />
