@@ -59,7 +59,6 @@ namespace EQTool
             StateChanged += SpellWindow_StateChanged;
             LocationChanged += DPSMeter_LocationChanged;
             settings.SpellWindowState.Closed = false;
-
             SaveState();
         }
 
@@ -112,24 +111,27 @@ namespace EQTool
             base.OnClosing(e);
         }
 
-        private void TrySaveYouSpellData()
+        private bool TrySaveYouSpellData()
         {
             var oldLastLogReadOffset = LastLogReadOffset;
             var logerLastLogReadOffset = logParser.LastLogReadOffset;
             if (activePlayer.Player != null && oldLastLogReadOffset != logerLastLogReadOffset)
             {
                 LastLogReadOffset = logerLastLogReadOffset;
+                var before = activePlayer.Player.YouSpells ?? new System.Collections.Generic.List<YouSpells>();
                 activePlayer.Player.YouSpells = spellWindowViewModel.SpellList.Where(a => a.TargetName == EQSpells.SpaceYou).Select(a => new YouSpells
                 {
                     Name = a.SpellName,
                     TotalSecondsLeft = (int)a.SecondsLeftOnSpell.TotalSeconds,
                 }).ToList();
+                return before.Count != activePlayer.Player.YouSpells.Count;
             }
+            return false;
         }
 
         private void SaveState()
         {
-            TrySaveYouSpellData();
+            _ = TrySaveYouSpellData();
             WindowExtensions.SaveWindowState(settings.SpellWindowState, this);
             toolSettingsLoad.Save(settings);
         }
@@ -167,8 +169,10 @@ namespace EQTool
 
         private void PollUI(object sender, EventArgs e)
         {
-            TrySaveYouSpellData();
-            toolSettingsLoad.Save(settings);
+            if (TrySaveYouSpellData())
+            {
+                toolSettingsLoad.Save(settings);
+            }
             spellWindowViewModel.UpdateSpells();
         }
 

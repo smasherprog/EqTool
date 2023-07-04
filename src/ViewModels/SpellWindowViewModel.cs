@@ -1,6 +1,7 @@
 ﻿using EQTool.Models;
 using EQTool.Services;
 using EQTool.Services.Spells;
+using EQToolShared.Enums;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;

@@ -1,4 +1,4 @@
-﻿using EQTool.Models;
+﻿using EQToolShared.Enums;
 using System.Collections.Generic;
 
 namespace EQTool.Services.Spells

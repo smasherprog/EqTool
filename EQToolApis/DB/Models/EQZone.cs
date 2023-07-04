@@ -8,8 +8,8 @@ namespace EQToolApis.DB.Models
     {
         public int EQZoneId { get; set; }
 
-        [MaxLength(48)]
-        public string Name { get; set; }
+        [MaxLength(48), Required]
+        public string Name { get; set; } = string.Empty;
 
         public ICollection<EQDeath> EQDeaths { get; set; }
     }

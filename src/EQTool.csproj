@@ -337,7 +337,6 @@
     <Compile Include="Services\HSLColor.cs" />
     <Compile Include="Services\Fight\FightLogService.cs" />
     <Compile Include="Services\Map\LocationParser.cs" />
-    <Compile Include="Services\Map\ZoneParser.cs" />
     <Compile Include="Services\Map\MapLoad.cs" />
     <Compile Include="Services\Parsing\MobInfoParsing.cs" />
     <Compile Include="Services\Spells\Log\ConLogParse.cs" />
@@ -360,7 +359,6 @@
     <Compile Include="Shapes\ArrowLine.cs" />
     <Compile Include="Shapes\ArrowLineBase.cs" />
     <Compile Include="ViewModels\ActivePlayerInfo.cs" />
-    <Compile Include="ViewModels\PanAndZoomViewModel.cs" />
     <Compile Include="ViewModels\ZoneViewModel.cs" />
     <Compile Include="ViewModels\MobInfoViewModel.cs" />
     <Compile Include="ViewModels\MapViewModel.cs" />

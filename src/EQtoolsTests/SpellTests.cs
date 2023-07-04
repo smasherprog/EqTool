@@ -1,9 +1,10 @@
 ﻿using Autofac;
 using EQTool.Models;
 using EQTool.Services;
-using EQTool.Services.Map;
 using EQTool.Services.Spells.Log;
 using EQTool.ViewModels;
+using EQToolShared.Enums;
+using EQToolShared.Map;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Linq;
@@ -603,6 +604,27 @@ namespace EQToolTests
         }
 
         [TestMethod]
+        public void TestShamanUsingTashStick()
+        {
+            var spells = container.Resolve<EQSpells>();
+            var spelllogparse = container.Resolve<SpellLogParse>();
+            var shissar = "Tashan";
+            var shissarspell = spells.AllSpells.FirstOrDefault(a => a.name == shissar);
+            var line = "A rat glances nervously about.";
+            var service = container.Resolve<ParseSpellGuess>();
+            var player = container.Resolve<ActivePlayer>();
+            player.Player = new PlayerInfo
+            {
+                Level = 60,
+                PlayerClass = PlayerClasses.Shaman
+            };
+            var guess = spelllogparse.MatchSpell(line);
+            var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(guess.Spell, player.Player));
+            Assert.IsNotNull(guess);
+            Assert.IsFalse(guess.MultipleMatchesFound);
+        }
+
+        [TestMethod]
         public void TestWarriorDisciplineGuess()
         {
             var spells = container.Resolve<EQSpells>();
@@ -884,6 +906,42 @@ namespace EQToolTests
             var line = "Sat Oct 08 11:31:38 2022";
             var d = LogParser.Parse(line);
             Assert.AreEqual(d.ToString(), "10/8/2022 11:31:38 AM");
+        }
+
+        [TestMethod]
+        public void TashStickTest()
+        {
+            var logparser = container.Resolve<LogParser>();
+            var spells = container.Resolve<EQSpells>();
+            var player = container.Resolve<ActivePlayer>();
+            player.Player = new PlayerInfo
+            {
+                Level = 60,
+                PlayerClass = PlayerClasses.Shaman
+            };
+            var spellname = "Focus of Spirit";
+
+            player.UserCastingSpell = spells.AllSpells.FirstOrDefault(a => a.name == spellname);
+            var spellnamefound = string.Empty;
+            var line = "[Mon Jul 03 23:00:25 2023] TwentyTwo glances nervously about.";
+            logparser.WhoEvent += (a, b) => Assert.Fail("DontHit");
+            logparser.WhoPlayerEvent += (a, b) => Assert.Fail("DontHit");
+            logparser.SpellWornOffSelfEvent += (a, b) => Assert.Fail("DontHit");
+            logparser.SpellWornOtherOffEvent += (a, b) => Assert.Fail("DontHit");
+            logparser.StartCastingEvent += (a, b) =>
+            {
+                spellnamefound = b.Spell.Spell.name;
+            };
+            logparser.CancelTimerEvent += (a, b) => Assert.Fail("DontHit");
+            logparser.StartTimerEvent += (a, b) => Assert.Fail("DontHit");
+            logparser.ConEvent += (a, b) => Assert.Fail("DontHit");
+            logparser.DeadEvent += (a, b) => Assert.Fail("DontHit");
+            logparser.FightHitEvent += (a, b) => Assert.Fail("DontHit");
+            logparser.PlayerChangeEvent += (a, b) => Assert.Fail("DontHit");
+            logparser.PlayerZonedEvent += (a, b) => Assert.Fail("DontHit");
+            logparser.PlayerLocationEvent += (a, b) => Assert.Fail("DontHit");
+            logparser.Push(line);
+            Assert.AreEqual(spellnamefound, "Tashanian");
         }
     }
 }

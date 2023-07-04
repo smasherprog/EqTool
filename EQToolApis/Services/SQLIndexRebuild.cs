@@ -1,7 +1,6 @@
 ﻿using EQToolApis.DB;
 using Hangfire;
 using Microsoft.EntityFrameworkCore;
-using System.ComponentModel;
 
 namespace EQToolApis.Services
 {
@@ -95,6 +94,12 @@ set eqpi.AuctionPrice = null
 from EQTunnelAuctionItems eqpi
 join EQitems eqitem on eqitem.EQitemId = eqpi.EQitemId
 where eqpi.AuctionPrice is not null and eqpi.AuctionPrice < eqitem.TotalWTSLast6MonthsAverage * .1 AND eqitem.TotalWTSLast6MonthsAverage >50");
+        }
+
+        public void DeleteApiLogs()
+        {
+            dbcontext.Database.SetCommandTimeout(TimeSpan.FromMinutes(10));
+            _ = dbcontext.Database.ExecuteSqlRaw(@"delete from [dbo].[APILogs] where CreatedDate < DATEADD(day, -30, SYSDATETIME())");
         }
     }
 }

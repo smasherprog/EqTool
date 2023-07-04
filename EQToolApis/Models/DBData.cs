@@ -38,4 +38,23 @@ namespace EQToolApis.Models
         public ReaderWriterLockSlim PlayersLock = new();
         public Dictionary<int, AuctionPlayer> Players = new();
     }
+
+    public class NoteableNPC
+    {
+        public DateTimeOffset? LastSeen { get; set; }
+        public DateTimeOffset? LastDeath { get; set; }
+        public string Name { get; set; } = string.Empty;
+        public int EQNotableNPCId { get; set; }
+    }
+
+
+    public class NoteableNPCZone
+    {
+        public Dictionary<string, List<NoteableNPC>> Zones = new();
+    }
+
+    public class NoteableNPCCache
+    {
+        public NoteableNPCZone[] ServerData { get; set; } = new NoteableNPCZone[(int)Servers.Red];
+    }
 }

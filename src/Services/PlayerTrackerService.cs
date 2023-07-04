@@ -1,5 +1,4 @@
-﻿using EQTool.Services.Spells.Log;
-using EQTool.ViewModels;
+﻿using EQTool.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -14,9 +13,9 @@ namespace EQTool.Services
         internal readonly ActivePlayer activePlayer;
         private readonly LoggingService loggingService;
         private readonly PlayerGroupService playerGroupService;
-        private readonly Dictionary<string, PlayerWhoLogParse.PlayerInfo> Player = new Dictionary<string, PlayerWhoLogParse.PlayerInfo>(StringComparer.InvariantCultureIgnoreCase);
-        private readonly Dictionary<string, PlayerWhoLogParse.PlayerInfo> PlayerZones = new Dictionary<string, PlayerWhoLogParse.PlayerInfo>(StringComparer.InvariantCultureIgnoreCase);
-        private readonly Dictionary<string, PlayerWhoLogParse.PlayerInfo> DirtyPlayers = new Dictionary<string, PlayerWhoLogParse.PlayerInfo>(StringComparer.InvariantCultureIgnoreCase);
+        private readonly Dictionary<string, EQToolShared.APIModels.PlayerControllerModels.Player> Player = new Dictionary<string, EQToolShared.APIModels.PlayerControllerModels.Player>(StringComparer.InvariantCultureIgnoreCase);
+        private readonly Dictionary<string, EQToolShared.APIModels.PlayerControllerModels.Player> PlayersInZones = new Dictionary<string, EQToolShared.APIModels.PlayerControllerModels.Player>(StringComparer.InvariantCultureIgnoreCase);
+        private readonly Dictionary<string, EQToolShared.APIModels.PlayerControllerModels.Player> DirtyPlayers = new Dictionary<string, EQToolShared.APIModels.PlayerControllerModels.Player>(StringComparer.InvariantCultureIgnoreCase);
         private string CurrentZone;
         private readonly System.Timers.Timer UITimer;
         private readonly object ContainerLock = new object();
@@ -40,7 +39,7 @@ namespace EQTool.Services
 
         private void UITimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
-            var playerstosync = new List<PlayerWhoLogParse.PlayerInfo>();
+            var playerstosync = new List<EQToolShared.APIModels.PlayerControllerModels.Player>();
             if (activePlayer.Player?.Server == null)
             {
                 return;
@@ -53,7 +52,7 @@ namespace EQTool.Services
             }
             try
             {
-                pigParseApi.SendPlayerData(playerstosync, activePlayer.Player.Server);
+                pigParseApi.SendPlayerData(playerstosync, activePlayer.Player.Server.Value);
             }
             catch (Exception ex)
             {
@@ -69,7 +68,7 @@ namespace EQTool.Services
                 {
                     CurrentZone = activePlayer.Player?.Zone;
                     Debug.WriteLine("Clearing zone Players");
-                    PlayerZones.Clear();
+                    PlayersInZones.Clear();
                 }
                 else
                 {
@@ -97,6 +96,7 @@ namespace EQTool.Services
                     {
                         if (!DirtyPlayers.ContainsKey(e.PlayerInfo.Name))
                         {
+                            Debug.WriteLine($"DirtyPlayer Add {e.PlayerInfo.Name}");
                             DirtyPlayers[e.PlayerInfo.Name] = e.PlayerInfo;
                         }
                     }
@@ -111,13 +111,14 @@ namespace EQTool.Services
                     if (!DirtyPlayers.ContainsKey(e.PlayerInfo.Name))
                     {
                         DirtyPlayers[e.PlayerInfo.Name] = e.PlayerInfo;
+                        Debug.WriteLine($"DirtyPlayer Add {e.PlayerInfo.Name}");
                     }
                     Debug.WriteLine($"Adding {e.PlayerInfo.Name} {e.PlayerInfo.Level} {e.PlayerInfo.GuildName} {e.PlayerInfo.PlayerClass}");
                 }
 
-                if (!PlayerZones.ContainsKey(e.PlayerInfo.Name))
+                if (!PlayersInZones.ContainsKey(e.PlayerInfo.Name))
                 {
-                    PlayerZones[e.PlayerInfo.Name] = e.PlayerInfo;
+                    PlayersInZones[e.PlayerInfo.Name] = e.PlayerInfo;
                 }
             }
 
@@ -125,36 +126,29 @@ namespace EQTool.Services
 
         private void LogParser_PlayerZonedEvent(object sender, LogParser.PlayerZonedEventArgs e)
         {
-            if (CurrentZone != e.Zone)
+            lock (ContainerLock)
             {
-                if (CurrentZone != activePlayer.Player?.Zone)
-                {
-                    CurrentZone = activePlayer.Player?.Zone;
-                    Debug.WriteLine("Clearing zone Players");
-                    PlayerZones.Clear();
-                }
-                else
-                {
-                    Debug.WriteLine("NOT Clearing zone Players");
-                }
+                CurrentZone = activePlayer.Player?.Zone;
+                Debug.WriteLine("Clearing zone Players");
+                PlayersInZones.Clear();
             }
         }
 
         public List<Group> CreateGroups(GroupOptimization groupOptimization)
         {
-            if (string.IsNullOrWhiteSpace(activePlayer.Player?.GuildName))
+            if (string.IsNullOrWhiteSpace(activePlayer.Player?.GuildName) || activePlayer.Player.Server == null)
             {
                 return new List<Group>();
             }
 
-            var players = new List<PlayerWhoLogParse.PlayerInfo>();
+            var players = new List<EQToolShared.APIModels.PlayerControllerModels.Player>();
             lock (ContainerLock)
             {
-                players = PlayerZones.Values.ToList();
+                players = PlayersInZones.Values.ToList();
             }
 
             var uknownplayerdata = players.Where(a => !a.PlayerClass.HasValue || !a.Level.HasValue).Select(a => a.Name).ToList();
-            var playerdatafromserver = pigParseApi.GetPlayerData(uknownplayerdata, activePlayer.Player.Server);
+            var playerdatafromserver = pigParseApi.GetPlayerData(uknownplayerdata, activePlayer.Player.Server.Value);
             foreach (var item in playerdatafromserver)
             {
                 var playerlocally = players.FirstOrDefault(a => a.Name == item.Name);

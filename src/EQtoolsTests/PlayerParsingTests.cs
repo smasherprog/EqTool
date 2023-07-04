@@ -1,6 +1,6 @@
 ﻿using Autofac;
-using EQTool.Models;
 using EQTool.Services.Spells.Log;
+using EQToolShared.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace EQToolTests
@@ -115,6 +115,22 @@ namespace EQToolTests
         {
             var service = container.Resolve<PlayerWhoLogParse>();
             var guess = service.ParsePlayerInfo("GUILD MOTD: <<>> things go here [ test ] ");
+            Assert.IsNull(guess);
+        }
+
+        [TestMethod]
+        public void TestRandomCharacters()
+        {
+            var service = container.Resolve<PlayerWhoLogParse>();
+            var guess = service.ParsePlayerInfo(" [TESTER 10:00PM] [VIEW] bla bla bla bla bla ' ");
+            Assert.IsNull(guess);
+        }
+
+        [TestMethod]
+        public void TestRandomCharacters1()
+        {
+            var service = container.Resolve<PlayerWhoLogParse>();
+            var guess = service.ParsePlayerInfo(" [ TESTER 10:00PM] [VIEW] bla bla bla bla bla ' ");
             Assert.IsNull(guess);
         }
     }

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using EQToolShared.Enums;
+using System.Collections.Generic;
 
 namespace EQTool.Models
 {
@@ -68,24 +69,6 @@ namespace EQTool.Models
     //Deletable
     //PvPResistBase
     //PvPResistCalc
-
-    public enum PlayerClasses
-    {
-        Warrior,
-        Cleric,
-        Paladin,
-        Ranger,
-        ShadowKnight,
-        Druid,
-        Monk,
-        Bard,
-        Rogue,
-        Shaman,
-        Necromancer,
-        Wizard,
-        Magician,
-        Enchanter
-    }
 
     public enum ResistType
     {

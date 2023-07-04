@@ -1,7 +1,6 @@
 ﻿using Autofac;
-using EQTool.Models;
 using EQTool.Services;
-using EQTool.Services.Spells.Log;
+using EQToolShared.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
 
@@ -15,42 +14,42 @@ namespace EQToolTests
         {
             container = DI.Init();
         }
-         
+
         [TestMethod]
         public void GroupTest_HOT_ClericSameGroup_4_groups()
         {
             var service = container.Resolve<PlayerGroupService>();
-            var groups = service.CreateHOT_Clerics_SameGroups(new System.Collections.Generic.List<PlayerWhoLogParse.PlayerInfo>
+            var groups = service.CreateHOT_Clerics_SameGroups(new System.Collections.Generic.List<EQToolShared.APIModels.PlayerControllerModels.Player>
             {
-                    new PlayerWhoLogParse.PlayerInfo { PlayerClass = PlayerClasses.Cleric },
-                    new PlayerWhoLogParse.PlayerInfo { PlayerClass = PlayerClasses.Cleric },
-                    new PlayerWhoLogParse.PlayerInfo { PlayerClass = PlayerClasses.Enchanter },
-                    new PlayerWhoLogParse.PlayerInfo { PlayerClass = PlayerClasses.Enchanter },
-                    new PlayerWhoLogParse.PlayerInfo { PlayerClass = PlayerClasses.Warrior },
-                    new PlayerWhoLogParse.PlayerInfo { PlayerClass = PlayerClasses.Warrior },
-                    new PlayerWhoLogParse.PlayerInfo { PlayerClass = PlayerClasses.Necromancer },
-                    new PlayerWhoLogParse.PlayerInfo { PlayerClass = PlayerClasses.Necromancer },
-                    new PlayerWhoLogParse.PlayerInfo { PlayerClass = PlayerClasses.Bard },
-                    new PlayerWhoLogParse.PlayerInfo { PlayerClass = PlayerClasses.Bard },
-                    new PlayerWhoLogParse.PlayerInfo { PlayerClass = PlayerClasses.Rogue },
-                    new PlayerWhoLogParse.PlayerInfo { PlayerClass = PlayerClasses.Ranger },
+                    new EQToolShared.APIModels.PlayerControllerModels.Player { PlayerClass = PlayerClasses.Cleric },
+                    new EQToolShared.APIModels.PlayerControllerModels.Player { PlayerClass = PlayerClasses.Cleric },
+                    new EQToolShared.APIModels.PlayerControllerModels.Player { PlayerClass = PlayerClasses.Enchanter },
+                    new EQToolShared.APIModels.PlayerControllerModels.Player { PlayerClass = PlayerClasses.Enchanter },
+                    new EQToolShared.APIModels.PlayerControllerModels.Player { PlayerClass = PlayerClasses.Warrior },
+                    new EQToolShared.APIModels.PlayerControllerModels.Player { PlayerClass = PlayerClasses.Warrior },
+                    new EQToolShared.APIModels.PlayerControllerModels.Player { PlayerClass = PlayerClasses.Necromancer },
+                    new EQToolShared.APIModels.PlayerControllerModels.Player { PlayerClass = PlayerClasses.Necromancer },
+                    new EQToolShared.APIModels.PlayerControllerModels.Player { PlayerClass = PlayerClasses.Bard },
+                    new EQToolShared.APIModels.PlayerControllerModels.Player { PlayerClass = PlayerClasses.Bard },
+                    new EQToolShared.APIModels.PlayerControllerModels.Player { PlayerClass = PlayerClasses.Rogue },
+                    new EQToolShared.APIModels.PlayerControllerModels.Player { PlayerClass = PlayerClasses.Ranger },
 
-                    new PlayerWhoLogParse.PlayerInfo { PlayerClass = PlayerClasses.Cleric },
-                    new PlayerWhoLogParse.PlayerInfo { PlayerClass = PlayerClasses.Cleric },
-                    new PlayerWhoLogParse.PlayerInfo { PlayerClass = PlayerClasses.Enchanter },
-                    new PlayerWhoLogParse.PlayerInfo { PlayerClass = PlayerClasses.ShadowKnight },
-                    new PlayerWhoLogParse.PlayerInfo { PlayerClass = PlayerClasses.Warrior },
-                    new PlayerWhoLogParse.PlayerInfo { PlayerClass = PlayerClasses.Druid },
-                    new PlayerWhoLogParse.PlayerInfo { PlayerClass = PlayerClasses.Necromancer },
-                    new PlayerWhoLogParse.PlayerInfo { PlayerClass = PlayerClasses.Magician },
-                    new PlayerWhoLogParse.PlayerInfo { PlayerClass = PlayerClasses.Bard },
-                    new PlayerWhoLogParse.PlayerInfo { PlayerClass = PlayerClasses.Druid },
-                    new PlayerWhoLogParse.PlayerInfo { PlayerClass = PlayerClasses.Shaman, Level=60 },
-                    new PlayerWhoLogParse.PlayerInfo { PlayerClass = PlayerClasses.Ranger }
+                    new EQToolShared.APIModels.PlayerControllerModels.Player { PlayerClass = PlayerClasses.Cleric },
+                    new EQToolShared.APIModels.PlayerControllerModels.Player { PlayerClass = PlayerClasses.Cleric },
+                    new EQToolShared.APIModels.PlayerControllerModels.Player { PlayerClass = PlayerClasses.Enchanter },
+                    new EQToolShared.APIModels.PlayerControllerModels.Player { PlayerClass = PlayerClasses.ShadowKnight },
+                    new EQToolShared.APIModels.PlayerControllerModels.Player { PlayerClass = PlayerClasses.Warrior },
+                    new EQToolShared.APIModels.PlayerControllerModels.Player { PlayerClass = PlayerClasses.Druid },
+                    new EQToolShared.APIModels.PlayerControllerModels.Player { PlayerClass = PlayerClasses.Necromancer },
+                    new EQToolShared.APIModels.PlayerControllerModels.Player { PlayerClass = PlayerClasses.Magician },
+                    new EQToolShared.APIModels.PlayerControllerModels.Player { PlayerClass = PlayerClasses.Bard },
+                    new EQToolShared.APIModels.PlayerControllerModels.Player { PlayerClass = PlayerClasses.Druid },
+                    new EQToolShared.APIModels.PlayerControllerModels.Player { PlayerClass = PlayerClasses.Shaman, Level=60 },
+                    new EQToolShared.APIModels.PlayerControllerModels.Player { PlayerClass = PlayerClasses.Ranger }
             });
 
             Assert.AreEqual(4, groups.Count);
-             
+
             Assert.IsTrue(groups[0].Players.Any(a => a.PlayerClass == PlayerClasses.Cleric));
             Assert.IsTrue(groups[0].Players.Any(a => a.PlayerClass == PlayerClasses.Bard));
             Assert.IsTrue(groups[0].Players.Any(a => a.PlayerClass == PlayerClasses.Cleric));
@@ -84,20 +83,20 @@ namespace EQToolTests
         public void GroupTest_Standard_Balanced_2_groups()
         {
             var service = container.Resolve<PlayerGroupService>();
-            var groups = service.CreateStandardGroups(new System.Collections.Generic.List<PlayerWhoLogParse.PlayerInfo>
+            var groups = service.CreateStandardGroups(new System.Collections.Generic.List<EQToolShared.APIModels.PlayerControllerModels.Player>
             {
-                    new PlayerWhoLogParse.PlayerInfo { PlayerClass = PlayerClasses.Cleric },
-                    new PlayerWhoLogParse.PlayerInfo { PlayerClass = PlayerClasses.Cleric },
-                    new PlayerWhoLogParse.PlayerInfo { PlayerClass = PlayerClasses.Enchanter },
-                    new PlayerWhoLogParse.PlayerInfo { PlayerClass = PlayerClasses.Enchanter },
-                    new PlayerWhoLogParse.PlayerInfo { PlayerClass = PlayerClasses.Warrior },
-                    new PlayerWhoLogParse.PlayerInfo { PlayerClass = PlayerClasses.Warrior },
-                    new PlayerWhoLogParse.PlayerInfo { PlayerClass = PlayerClasses.Necromancer },
-                    new PlayerWhoLogParse.PlayerInfo { PlayerClass = PlayerClasses.Necromancer },
-                    new PlayerWhoLogParse.PlayerInfo { PlayerClass = PlayerClasses.Bard },
-                    new PlayerWhoLogParse.PlayerInfo { PlayerClass = PlayerClasses.Bard },
-                    new PlayerWhoLogParse.PlayerInfo { PlayerClass = PlayerClasses.Rogue },
-                    new PlayerWhoLogParse.PlayerInfo { PlayerClass = PlayerClasses.Ranger }
+                    new EQToolShared.APIModels.PlayerControllerModels.Player { PlayerClass = PlayerClasses.Cleric },
+                    new EQToolShared.APIModels.PlayerControllerModels.Player { PlayerClass = PlayerClasses.Cleric },
+                    new EQToolShared.APIModels.PlayerControllerModels.Player { PlayerClass = PlayerClasses.Enchanter },
+                    new EQToolShared.APIModels.PlayerControllerModels.Player { PlayerClass = PlayerClasses.Enchanter },
+                    new EQToolShared.APIModels.PlayerControllerModels.Player { PlayerClass = PlayerClasses.Warrior },
+                    new EQToolShared.APIModels.PlayerControllerModels.Player { PlayerClass = PlayerClasses.Warrior },
+                    new EQToolShared.APIModels.PlayerControllerModels.Player { PlayerClass = PlayerClasses.Necromancer },
+                    new EQToolShared.APIModels.PlayerControllerModels.Player { PlayerClass = PlayerClasses.Necromancer },
+                    new EQToolShared.APIModels.PlayerControllerModels.Player { PlayerClass = PlayerClasses.Bard },
+                    new EQToolShared.APIModels.PlayerControllerModels.Player { PlayerClass = PlayerClasses.Bard },
+                    new EQToolShared.APIModels.PlayerControllerModels.Player { PlayerClass = PlayerClasses.Rogue },
+                    new EQToolShared.APIModels.PlayerControllerModels.Player { PlayerClass = PlayerClasses.Ranger }
             });
 
             Assert.AreEqual(2, groups.Count);
@@ -119,33 +118,33 @@ namespace EQToolTests
         public void GroupTest_Standard_Balanced_4_groups()
         {
             var service = container.Resolve<PlayerGroupService>();
-            var groups = service.CreateStandardGroups(new System.Collections.Generic.List<PlayerWhoLogParse.PlayerInfo>
+            var groups = service.CreateStandardGroups(new System.Collections.Generic.List<EQToolShared.APIModels.PlayerControllerModels.Player>
             {
-                    new PlayerWhoLogParse.PlayerInfo { PlayerClass = PlayerClasses.Cleric },
-                    new PlayerWhoLogParse.PlayerInfo { PlayerClass = PlayerClasses.Cleric },
-                    new PlayerWhoLogParse.PlayerInfo { PlayerClass = PlayerClasses.Enchanter },
-                    new PlayerWhoLogParse.PlayerInfo { PlayerClass = PlayerClasses.Enchanter },
-                    new PlayerWhoLogParse.PlayerInfo { PlayerClass = PlayerClasses.Warrior },
-                    new PlayerWhoLogParse.PlayerInfo { PlayerClass = PlayerClasses.Warrior },
-                    new PlayerWhoLogParse.PlayerInfo { PlayerClass = PlayerClasses.Necromancer },
-                    new PlayerWhoLogParse.PlayerInfo { PlayerClass = PlayerClasses.Necromancer },
-                    new PlayerWhoLogParse.PlayerInfo { PlayerClass = PlayerClasses.Bard },
-                    new PlayerWhoLogParse.PlayerInfo { PlayerClass = PlayerClasses.Bard },
-                    new PlayerWhoLogParse.PlayerInfo { PlayerClass = PlayerClasses.Rogue },
-                    new PlayerWhoLogParse.PlayerInfo { PlayerClass = PlayerClasses.Ranger },
+                    new EQToolShared.APIModels.PlayerControllerModels.Player { PlayerClass = PlayerClasses.Cleric },
+                    new EQToolShared.APIModels.PlayerControllerModels.Player { PlayerClass = PlayerClasses.Cleric },
+                    new EQToolShared.APIModels.PlayerControllerModels.Player { PlayerClass = PlayerClasses.Enchanter },
+                    new EQToolShared.APIModels.PlayerControllerModels.Player { PlayerClass = PlayerClasses.Enchanter },
+                    new EQToolShared.APIModels.PlayerControllerModels.Player { PlayerClass = PlayerClasses.Warrior },
+                    new EQToolShared.APIModels.PlayerControllerModels.Player { PlayerClass = PlayerClasses.Warrior },
+                    new EQToolShared.APIModels.PlayerControllerModels.Player { PlayerClass = PlayerClasses.Necromancer },
+                    new EQToolShared.APIModels.PlayerControllerModels.Player { PlayerClass = PlayerClasses.Necromancer },
+                    new EQToolShared.APIModels.PlayerControllerModels.Player { PlayerClass = PlayerClasses.Bard },
+                    new EQToolShared.APIModels.PlayerControllerModels.Player { PlayerClass = PlayerClasses.Bard },
+                    new EQToolShared.APIModels.PlayerControllerModels.Player { PlayerClass = PlayerClasses.Rogue },
+                    new EQToolShared.APIModels.PlayerControllerModels.Player { PlayerClass = PlayerClasses.Ranger },
 
-                    new PlayerWhoLogParse.PlayerInfo { PlayerClass = PlayerClasses.Cleric },
-                    new PlayerWhoLogParse.PlayerInfo { PlayerClass = PlayerClasses.Cleric },
-                    new PlayerWhoLogParse.PlayerInfo { PlayerClass = PlayerClasses.Enchanter },
-                    new PlayerWhoLogParse.PlayerInfo { PlayerClass = PlayerClasses.Enchanter },
-                    new PlayerWhoLogParse.PlayerInfo { PlayerClass = PlayerClasses.Warrior },
-                    new PlayerWhoLogParse.PlayerInfo { PlayerClass = PlayerClasses.Warrior },
-                    new PlayerWhoLogParse.PlayerInfo { PlayerClass = PlayerClasses.Necromancer },
-                    new PlayerWhoLogParse.PlayerInfo { PlayerClass = PlayerClasses.Necromancer },
-                    new PlayerWhoLogParse.PlayerInfo { PlayerClass = PlayerClasses.Bard },
-                    new PlayerWhoLogParse.PlayerInfo { PlayerClass = PlayerClasses.Bard },
-                    new PlayerWhoLogParse.PlayerInfo { PlayerClass = PlayerClasses.Rogue },
-                    new PlayerWhoLogParse.PlayerInfo { PlayerClass = PlayerClasses.Ranger }
+                    new EQToolShared.APIModels.PlayerControllerModels.Player { PlayerClass = PlayerClasses.Cleric },
+                    new EQToolShared.APIModels.PlayerControllerModels.Player { PlayerClass = PlayerClasses.Cleric },
+                    new EQToolShared.APIModels.PlayerControllerModels.Player { PlayerClass = PlayerClasses.Enchanter },
+                    new EQToolShared.APIModels.PlayerControllerModels.Player { PlayerClass = PlayerClasses.Enchanter },
+                    new EQToolShared.APIModels.PlayerControllerModels.Player { PlayerClass = PlayerClasses.Warrior },
+                    new EQToolShared.APIModels.PlayerControllerModels.Player { PlayerClass = PlayerClasses.Warrior },
+                    new EQToolShared.APIModels.PlayerControllerModels.Player { PlayerClass = PlayerClasses.Necromancer },
+                    new EQToolShared.APIModels.PlayerControllerModels.Player { PlayerClass = PlayerClasses.Necromancer },
+                    new EQToolShared.APIModels.PlayerControllerModels.Player { PlayerClass = PlayerClasses.Bard },
+                    new EQToolShared.APIModels.PlayerControllerModels.Player { PlayerClass = PlayerClasses.Bard },
+                    new EQToolShared.APIModels.PlayerControllerModels.Player { PlayerClass = PlayerClasses.Rogue },
+                    new EQToolShared.APIModels.PlayerControllerModels.Player { PlayerClass = PlayerClasses.Ranger }
             });
 
             Assert.AreEqual(4, groups.Count);
@@ -181,33 +180,33 @@ namespace EQToolTests
         public void GroupTest_Standard_OutOfBalanced_4_groups()
         {
             var service = container.Resolve<PlayerGroupService>();
-            var groups = service.CreateStandardGroups(new System.Collections.Generic.List<PlayerWhoLogParse.PlayerInfo>
+            var groups = service.CreateStandardGroups(new System.Collections.Generic.List<EQToolShared.APIModels.PlayerControllerModels.Player>
             {
-                    new PlayerWhoLogParse.PlayerInfo { PlayerClass = PlayerClasses.Cleric },
-                    new PlayerWhoLogParse.PlayerInfo { PlayerClass = PlayerClasses.Cleric },
-                    new PlayerWhoLogParse.PlayerInfo { PlayerClass = PlayerClasses.Enchanter },
-                    new PlayerWhoLogParse.PlayerInfo { PlayerClass = PlayerClasses.Enchanter },
-                    new PlayerWhoLogParse.PlayerInfo { PlayerClass = PlayerClasses.Warrior },
-                    new PlayerWhoLogParse.PlayerInfo { PlayerClass = PlayerClasses.Warrior },
-                    new PlayerWhoLogParse.PlayerInfo { PlayerClass = PlayerClasses.Necromancer },
-                    new PlayerWhoLogParse.PlayerInfo { PlayerClass = PlayerClasses.Necromancer },
-                    new PlayerWhoLogParse.PlayerInfo { PlayerClass = PlayerClasses.Bard },
-                    new PlayerWhoLogParse.PlayerInfo { PlayerClass = PlayerClasses.Bard },
-                    new PlayerWhoLogParse.PlayerInfo { PlayerClass = PlayerClasses.Rogue },
-                    new PlayerWhoLogParse.PlayerInfo { PlayerClass = PlayerClasses.Ranger },
+                    new EQToolShared.APIModels.PlayerControllerModels.Player { PlayerClass = PlayerClasses.Cleric },
+                    new EQToolShared.APIModels.PlayerControllerModels.Player { PlayerClass = PlayerClasses.Cleric },
+                    new EQToolShared.APIModels.PlayerControllerModels.Player { PlayerClass = PlayerClasses.Enchanter },
+                    new EQToolShared.APIModels.PlayerControllerModels.Player { PlayerClass = PlayerClasses.Enchanter },
+                    new EQToolShared.APIModels.PlayerControllerModels.Player { PlayerClass = PlayerClasses.Warrior },
+                    new EQToolShared.APIModels.PlayerControllerModels.Player { PlayerClass = PlayerClasses.Warrior },
+                    new EQToolShared.APIModels.PlayerControllerModels.Player { PlayerClass = PlayerClasses.Necromancer },
+                    new EQToolShared.APIModels.PlayerControllerModels.Player { PlayerClass = PlayerClasses.Necromancer },
+                    new EQToolShared.APIModels.PlayerControllerModels.Player { PlayerClass = PlayerClasses.Bard },
+                    new EQToolShared.APIModels.PlayerControllerModels.Player { PlayerClass = PlayerClasses.Bard },
+                    new EQToolShared.APIModels.PlayerControllerModels.Player { PlayerClass = PlayerClasses.Rogue },
+                    new EQToolShared.APIModels.PlayerControllerModels.Player { PlayerClass = PlayerClasses.Ranger },
 
-                    new PlayerWhoLogParse.PlayerInfo { PlayerClass = PlayerClasses.Druid },
-                    new PlayerWhoLogParse.PlayerInfo { PlayerClass = PlayerClasses.Druid },
-                    new PlayerWhoLogParse.PlayerInfo { PlayerClass = PlayerClasses.Enchanter },
-                    new PlayerWhoLogParse.PlayerInfo { PlayerClass = PlayerClasses.Paladin },
-                    new PlayerWhoLogParse.PlayerInfo { PlayerClass = PlayerClasses.Warrior },
-                    new PlayerWhoLogParse.PlayerInfo { PlayerClass = PlayerClasses.Warrior },
-                    new PlayerWhoLogParse.PlayerInfo { PlayerClass = PlayerClasses.Necromancer },
-                    new PlayerWhoLogParse.PlayerInfo { PlayerClass = PlayerClasses.Necromancer },
-                    new PlayerWhoLogParse.PlayerInfo { PlayerClass = PlayerClasses.Rogue },
-                    new PlayerWhoLogParse.PlayerInfo { PlayerClass = PlayerClasses.Rogue },
-                    new PlayerWhoLogParse.PlayerInfo { PlayerClass = PlayerClasses.Rogue },
-                    new PlayerWhoLogParse.PlayerInfo { PlayerClass = PlayerClasses.Ranger }
+                    new EQToolShared.APIModels.PlayerControllerModels.Player { PlayerClass = PlayerClasses.Druid },
+                    new EQToolShared.APIModels.PlayerControllerModels.Player { PlayerClass = PlayerClasses.Druid },
+                    new EQToolShared.APIModels.PlayerControllerModels.Player { PlayerClass = PlayerClasses.Enchanter },
+                    new EQToolShared.APIModels.PlayerControllerModels.Player { PlayerClass = PlayerClasses.Paladin },
+                    new EQToolShared.APIModels.PlayerControllerModels.Player { PlayerClass = PlayerClasses.Warrior },
+                    new EQToolShared.APIModels.PlayerControllerModels.Player { PlayerClass = PlayerClasses.Warrior },
+                    new EQToolShared.APIModels.PlayerControllerModels.Player { PlayerClass = PlayerClasses.Necromancer },
+                    new EQToolShared.APIModels.PlayerControllerModels.Player { PlayerClass = PlayerClasses.Necromancer },
+                    new EQToolShared.APIModels.PlayerControllerModels.Player { PlayerClass = PlayerClasses.Rogue },
+                    new EQToolShared.APIModels.PlayerControllerModels.Player { PlayerClass = PlayerClasses.Rogue },
+                    new EQToolShared.APIModels.PlayerControllerModels.Player { PlayerClass = PlayerClasses.Rogue },
+                    new EQToolShared.APIModels.PlayerControllerModels.Player { PlayerClass = PlayerClasses.Ranger }
             });
 
             Assert.AreEqual(4, groups.Count);
@@ -225,7 +224,7 @@ namespace EQToolTests
             Assert.IsTrue(groups[1].Players.Any(a => a.PlayerClass == PlayerClasses.Rogue));
             Assert.IsTrue(groups[1].Players.Any(a => a.PlayerClass == PlayerClasses.Warrior));
             Assert.IsTrue(groups[1].Players.Any(a => a.PlayerClass == PlayerClasses.Warrior));
-             
+
             Assert.IsTrue(groups[2].Players.Any(a => a.PlayerClass == PlayerClasses.Druid));
             Assert.IsTrue(groups[2].Players.Any(a => a.PlayerClass == PlayerClasses.Enchanter));
             Assert.IsTrue(groups[2].Players.Any(a => a.PlayerClass == PlayerClasses.Rogue));
@@ -235,7 +234,7 @@ namespace EQToolTests
 
             Assert.IsTrue(groups[3].Players.Any(a => a.PlayerClass == PlayerClasses.Druid));
             Assert.IsTrue(groups[3].Players.Any(a => a.PlayerClass == PlayerClasses.Rogue));
-            Assert.IsTrue(groups[3].Players.Any(a => a.PlayerClass == PlayerClasses.Paladin)); 
+            Assert.IsTrue(groups[3].Players.Any(a => a.PlayerClass == PlayerClasses.Paladin));
             Assert.IsTrue(groups[3].Players.Any(a => a.PlayerClass == PlayerClasses.Necromancer));
             Assert.IsTrue(groups[3].Players.Any(a => a.PlayerClass == PlayerClasses.Necromancer));
             Assert.IsTrue(groups[3].Players.Any(a => a.PlayerClass == PlayerClasses.Necromancer));

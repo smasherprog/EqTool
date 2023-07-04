@@ -1,9 +1,8 @@
 ﻿using EQTool.Models;
 using EQTool.Services;
-using EQTool.Services.Map;
 using EQTool.Services.Spells.Log;
 using EQTool.ViewModels;
-using EQToolShared.HubModels;
+using EQToolShared.Enums;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -32,7 +31,6 @@ namespace EQTool
         private readonly DPSLogParse dPSLogParse;
         private readonly IAppDispatcher appDispatcher;
         private readonly LogParser logParser;
-        private readonly SignalRMapService signalRMapService;
 
         public Settings(
             LogParser logParser,
@@ -41,11 +39,9 @@ namespace EQTool
             EQSpells spells,
             EQToolSettings settings,
             EQToolSettingsLoad toolSettingsLoad,
-            SignalRMapService signalRMapService,
             SettingsWindowViewModel settingsWindowData,
             SpellWindowViewModel spellWindowViewModel)
         {
-            this.signalRMapService = signalRMapService;
             this.logParser = logParser;
             this.appDispatcher = appDispatcher;
             this.dPSLogParse = dPSLogParse;
@@ -359,95 +355,21 @@ namespace EQTool
             });
         }
 
-        private void signalrplayerloc(object sender, RoutedEventArgs e)
+        private void logpush(object sender, RoutedEventArgs e)
         {
-            var testmap = sender as System.Windows.Controls.Button;
-            if (!testmap.IsEnabled)
+            var logtext = LogPushText.Text?.Trim();
+            if (string.IsNullOrWhiteSpace(logtext))
             {
                 return;
             }
-            testmap.IsEnabled = false;
-            _ = Task.Factory.StartNew(() =>
+            if (!logtext.StartsWith("["))
             {
-                var parsingservice = new LocationParser();
-                var fightlines = Properties.Resources.testmap.Split(new string[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
-                var lines = new List<KeyValuePair<DateTime, string>>();
-                foreach (var item in fightlines)
-                {
-                    if (item == null || item.Length < 27)
-                    {
-                        continue;
-                    }
-
-                    var date = item.Substring(1, 24);
-                    var message = item.Substring(27).Trim();
-                    var format = "ddd MMM dd HH:mm:ss yyyy";
-                    var timestamp = DateTime.Now;
-                    try
-                    {
-                        timestamp = DateTime.ParseExact(date, format, CultureInfo.InvariantCulture);
-                        lines.Add(new KeyValuePair<DateTime, string>(timestamp, item));
-                    }
-                    catch (FormatException)
-                    {
-                    }
-                }
-                var starttime = lines.FirstOrDefault().Key;
-                try
-                {
-
-                    var starttimediff = DateTime.Now - starttime;
-                    var index = 0;
-                    do
-                    {
-                        for (; index < lines.Count; index++)
-                        {
-                            var t = lines[index].Key + starttimediff;
-                            if (t > DateTime.Now)
-                            {
-                                break;
-                            }
-                            else
-                            {
-                                var line = lines[index].Value;
-                                var indexline = line.IndexOf("]");
-                                var msgwithout = line.Substring(indexline + 1).Trim();
-                                var loc = parsingservice.Match(msgwithout);
-                                if (loc.HasValue)
-                                {
-                                    signalRMapService.SendPlayerLocation(new PlayerLocation
-                                    {
-                                        PlayerName = "FakePlayer",
-                                        ZoneName = SettingsWindowData.ActivePlayer.Player.Zone,
-                                        Server = SettingsWindowData.ActivePlayer.Player.Server,
-                                        X = loc.Value.X,
-                                        Y = loc.Value.Y,
-                                        Z = loc.Value.Z
-                                    });
-                                }
-                            }
-                        }
-                        Thread.Sleep(100);
-                    } while (index < lines.Count);
-
-                    appDispatcher.DispatchUI(() => { testmap.IsEnabled = true; });
-                }
-                catch (Exception ex)
-                {
-                    Debug.WriteLine(ex.ToString());
-                    appDispatcher.DispatchUI(() => { testmap.IsEnabled = true; });
-                }
-            });
-
-        }
-
-
-        private void mobconclicked(object sender, RoutedEventArgs e)
-        {
-            var format = "ddd MMM dd HH:mm:ss yyyy";
-            var d = DateTime.Now;
-            var line = "[" + d.ToString(format) + "] Irak Altil regards you indifferently -- You could probably win this fight.";
-            logParser.Push(line);
+                var format = "ddd MMM dd HH:mm:ss yyyy";
+                var d = DateTime.Now;
+                logtext = "[" + d.ToString(format) + "] " + logtext;
+            }
+            LogPushText.Text = string.Empty;
+            logParser.Push(logtext);
         }
 
         private void textmapclicked(object sender, RoutedEventArgs e)

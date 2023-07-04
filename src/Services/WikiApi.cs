@@ -1,5 +1,5 @@
-﻿using EQTool.Services.Map;
-using EQTool.ViewModels;
+﻿using EQTool.ViewModels;
+using EQToolShared.Map;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -60,7 +60,7 @@ namespace EQTool.Services
                 r.ZonePart = name;
             }
             zone = zone?.ToLower() ?? string.Empty;
-            var zonnamemapper = ZoneParser.ZoneNameMapper.FirstOrDefault(a => a.Value == zone);
+            var zonnamemapper = EQToolShared.Map.ZoneParser.ZoneNameMapper.FirstOrDefault(a => a.Value == zone);
 
             foreach (var item in data)
             {
