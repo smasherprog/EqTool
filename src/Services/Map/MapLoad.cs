@@ -110,8 +110,8 @@ namespace EQTool.Services
                 Z = .5 * (Min.Z + Max.Z)
             };
 
-            public double MaxHeight => Max.Y - Min.Y;
-            public double MaxWidth => Max.X - Min.X;
+            public double MaxHeight => Max.Y == double.MinValue || Min.Y == double.MaxValue ? 600 : Max.Y - Min.Y;
+            public double MaxWidth => Max.X == double.MinValue || Min.X == double.MaxValue ? 600 : Max.X - Min.X;
         }
 
         public class ParsedData
