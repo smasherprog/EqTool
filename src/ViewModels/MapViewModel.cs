@@ -118,14 +118,14 @@ namespace EQTool.ViewModels
             {
                 return false;
             }
+            if (string.IsNullOrWhiteSpace(zone))
+            {
+                zone = "freportw";
+            }
             Children = children;
+            MapLoading = true;
             try
             {
-                MapLoading = true;
-                if (string.IsNullOrWhiteSpace(zone))
-                {
-                    return false;
-                }
                 zone = ZoneParser.TranslateToMapName(zone);
                 if (string.IsNullOrWhiteSpace(zone))
                 {

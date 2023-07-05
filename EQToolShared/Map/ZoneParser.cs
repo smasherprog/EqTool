@@ -273,7 +273,7 @@ namespace EQToolShared.Map
                 ZoneLevelHeight = 10,
                 NotableNPCs = new List<string>()
                 {
-                    "a goblin bodyguard","Chief Rokgus","a goblin canyoneer","a maddened Burynai","Soothsayer Dregzak",
+                    "a goblin bodyguard","Chief Rokgus","a goblin canyoneer","a maddened Burynai","Soothsayer Dregzak", "An angry goblin", "Warlord Skargus"
                 },
                 RespawnTime = new TimeSpan(0, 20, 30)
             });
@@ -1205,7 +1205,7 @@ namespace EQToolShared.Map
                 Name = "warslikswood",
                 ShowAllMapLevels = true,
                 ZoneLevelHeight = 10,
-                NotableNPCs = new List<string>() { "", },
+                NotableNPCs = new List<string>() { "A shady goblin", "Grachnist the Destroyer", "Pit Fighter Dob", "Ssolet Dnaas", "Iksar Knight", "Iksar Bandit Lord" },
                 RespawnTime = new TimeSpan(0, 6, 40)
             });
             ZoneInfoMap.Add("westwastes", new ZoneInfo
@@ -1213,7 +1213,7 @@ namespace EQToolShared.Map
                 Name = "westwastes",
                 ShowAllMapLevels = true,
                 ZoneLevelHeight = 10,
-                NotableNPCs = new List<string>() { "Atpaev", "Ayillish", "Bratavar", "Bufa", "Cargalia", "Del Sapara", "Derasinal", "Draazak", "Entariz", "Esorpa of the Ring", "Gafala", "Gangel", "Glati", "Harla Dar", "Hechaeva", "Honvar", "Ionat", "Jen Sapara", "Kar Sapara", "Karkona", "Klandicar", "Linbrak", "Makala", "Mazi", "Melalafen", "Myga", "Neordla", "Nintal", "Onava", "Pantrilla", "Quoza", "Sivar", "Sontalak", "Uiliak", "Vitaela", "Von", "Vraptin", "Yal", "Yeldema", "Zil Sapara", "Icehackle", "Makil Rargon", "Mraaka", "Scout Charisa", "Strong Horn", "Tantor", "The Dragon Sage", "Tranala", "Tsiraka", },
+                NotableNPCs = new List<string>() { "Atpaev", "Ayillish", "Bratavar", "Bufa", "Cargalia", "Del Sapara", "Derasinal", "Draazak", "Entariz", "Esorpa of the Ring", "Gafala", "Gangel", "Glati", "Harla Dar", "Hechaeva", "Honvar", "Ionat", "Jen Sapara", "Kar Sapara", "Karkona", "Klandicar", "Linbrak", "Makala", "Mazi", "Melalafen", "Myga", "Neordla", "Nintal", "Onava", "Pantrilla", "Quoza", "Sivar", "Sontalak", "Uiliak", "Vitaela", "Von", "Vraptin", "Yal", "Yeldema", "Zil Sapara", "Icehackle", "Makil Rargon", "Mraaka", "Scout Charisa", "Strong Horn", "Tantor", "The Dragon Sage", "Tranala", "Tsiraka", "A Kromzek Captain" },
                 RespawnTime = new TimeSpan(0, 6, 40)
             });
 
