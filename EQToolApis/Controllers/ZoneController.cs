@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace EQToolApis.Controllers
 {
-    [ApiExplorerSettings(IgnoreApi = true)]
+    //[ApiExplorerSettings(IgnoreApi = true)]
     [Route("api/zone")]
     public class ZoneController : ControllerBase
     {

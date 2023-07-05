@@ -55,6 +55,13 @@ namespace EQToolApis.Models
 
     public class NoteableNPCCache
     {
+        public NoteableNPCCache()
+        {
+            ServerData = new NoteableNPCZone[(int)Servers.Red + 1];
+            ServerData[(int)Servers.Green] = new NoteableNPCZone();
+            ServerData[(int)Servers.Blue] = new NoteableNPCZone();
+            ServerData[(int)Servers.Red] = new NoteableNPCZone();
+        }
         public NoteableNPCZone[] ServerData { get; set; } = new NoteableNPCZone[(int)Servers.Red + 1];
     }
 }
