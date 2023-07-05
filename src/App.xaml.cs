@@ -187,7 +187,7 @@ namespace EQTool
         private void InitStuff()
         {
             container = DI.Init();
-            UITimer = new System.Timers.Timer(60000);
+            UITimer = new System.Timers.Timer(1000 * 60);
 #if !DEBUG
             UITimer.Elapsed += UITimer_Elapsed;
             UITimer.Enabled = true;
@@ -276,21 +276,33 @@ namespace EQTool
             PlayerTrackerService = container.Resolve<PlayerTrackerService>();
             ZoneActivityTrackingService = container.Resolve<ZoneActivityTrackingService>();
             logParser.PlayerChangeEvent += LogParser_PlayerChangeEvent;
-
         }
 
+        private bool updatecalled = false;
         private void UITimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
             var dispatcher = container.Resolve<IAppDispatcher>();
             dispatcher.DispatchUI(() =>
             {
-                var spellstuff = container.Resolve<SpellWindowViewModel>();
-                if (spellstuff != null)
+                if (updatecalled)
                 {
-                    if (spellstuff.SpellList.GroupBy(a => a.TargetName).Count() < 4)
+                    return;
+                }
+                updatecalled = true;
+                try
+                {
+                    var spellstuff = container.Resolve<SpellWindowViewModel>();
+                    if (spellstuff != null)
                     {
-                        new UpdateService().CheckForUpdates(Version);
+                        if (spellstuff.SpellList.GroupBy(a => a.TargetName).Count() < 4)
+                        {
+                            new UpdateService().CheckForUpdates(Version);
+                        }
                     }
+                }
+                finally
+                {
+                    updatecalled = false;
                 }
             });
         }
