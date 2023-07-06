@@ -52,7 +52,8 @@ Features:
 <img width="152" alt="image" src="https://user-images.githubusercontent.com/3393733/212717141-6e26b9af-660a-493d-9f73-2c3464b7c224.png">
 
 <h4>TO DO List EQTool</h4>
-<ul> 
+<ul>  
+ <li>Cache spell parsing and map files for faster load times.</li>  
  <li>Make timers resetable.</li>  
  <li>Add Support for NON p99 clients.</li>  
  <li>Fix buff timers when updating.</li> 
