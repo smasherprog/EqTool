@@ -25,9 +25,12 @@ namespace EQTool
 
         private void AddTimer(object sender, RoutedEventArgs e)
         {
-            _ = mapViewModel.AddTimer(TimeSpanControl.Value.Value, string.Empty);
-            TimerMenu.IsOpen = false;
-            mapViewModel.TimerMenu_Closed();
+            if (TimeSpanControl.Value.HasValue)
+            {
+                _ = mapViewModel.AddTimer(TimeSpanControl.Value.Value, string.Empty);
+                TimerMenu.IsOpen = false;
+                mapViewModel.TimerMenu_Closed();
+            }
         }
 
         private void DeleteTimer(object sender, RoutedEventArgs e)
