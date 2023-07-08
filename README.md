@@ -53,6 +53,7 @@ Features:
 
 <h4>TO DO List EQTool</h4>
 <ul>  
+  <li>Dont reset timers on a /who.</li>  
  <li>Cache spell parsing and map files for faster load times.</li>  
  <li>Make timers resetable.</li>  
  <li>Add Support for NON p99 clients.</li>  
