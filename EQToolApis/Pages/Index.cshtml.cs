@@ -24,7 +24,9 @@ namespace EQToolApis.Pages
                 new KeyValuePair<string, string>("westwastes", "Scout Charisa"),
                 new KeyValuePair<string, string>("westwastes", "A Kromzek Captain"),
                 new KeyValuePair<string, string>("droga", "An angry goblin"),
-                new KeyValuePair<string, string>("droga", "Warlord Skargus")
+                new KeyValuePair<string, string>("droga", "Warlord Skargus"),
+                new KeyValuePair<string, string>("warslikswood", "A shady goblin")
+
             };
 
             foreach (var item in keyname)
