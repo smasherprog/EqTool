@@ -28,7 +28,7 @@
                         <p>@Model.ServerMessage.Message</p>
                     </div>
                 }
-                <hr class="my-4">  
+                <hr class="my-4">
                 <p>For API documentation, please refer to <a href="/swagger">Swagger</a> </p>
                 <p>If you discover prices discrepancies, please open an issue on <a href="https://github.com/smasherprog/EqTool" target="_blank">Github</a> </p>
                 <table>
@@ -43,7 +43,7 @@
                         </tr>
                     </tbody>
                 </table>
-             
+
             </div>
         </div>
     </div>
@@ -111,7 +111,41 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-md-6 offset-md-3">
+        <div class="col-md-8 offset-md-2">
+            <div class="card-deck">
+                <div class="card border-success mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title text-success">Green Server TOD's <small>(times are all Local times)</small></h5>
+                        <p class="card-text">
+                            <table>
+                                <tbody>
+                                    @foreach (var item in Model.GreenNoteableNPCs)
+                                    {
+                                        <tr>
+                                            <th class="pr-5">@item.Name</th>
+                                            @if (item.LastDeath.HasValue)
+                                            {
+                                                <td class="mytime" utc="@item.LastDeath.Value.ToString("o")"></td>
+                                            }
+                                            else if (item.LastSeen.HasValue)
+                                            {
+                                                <td class="mytime" utc="@item.LastSeen.Value.ToString("o")"></td>
+                                            } else
+                                            {
+                                                <td>N/A</td>
+                                            } 
+                                        </tr>
+                                    }
+                                </tbody>
+                            </table>
+                        </p>
+                    </div>
+                </div> 
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-8 offset-md-2">
             <div class="card border-dark mb-3">
                 <div class="card-body">
                     <h5 class="card-title text-dark ">EQ Tool</h5>
