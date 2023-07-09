@@ -11,14 +11,14 @@ namespace EQToolApis.Pages
     {
         public readonly DBData AllData;
         public readonly NoteableNPCCache noteableNPCCache;
-        private readonly EQToolContext eQToolContext;
-        public List<NoteableNPC> GreenNoteableNPCs = new List<NoteableNPC>();
+        public List<TODModel> GreenNoteableNPCs = new List<TODModel>();
+        public ServerMessage ServerMessage { get; set; } = new ServerMessage();
 
         public IndexModel(DBData allData, EQToolContext eQToolContext, NoteableNPCCache noteableNPCCache)
         {
             AllData = allData;
-            this.eQToolContext = eQToolContext;
             this.noteableNPCCache = noteableNPCCache;
+            ServerMessage = eQToolContext.ServerMessages.FirstOrDefault();
             var keyname = new List<KeyValuePair<string, string>>()
             {
                 new KeyValuePair<string, string>("westwastes", "Scout Charisa"),
@@ -31,30 +31,56 @@ namespace EQToolApis.Pages
 
             foreach (var item in keyname)
             {
-                var def = new NoteableNPC { EQNotableNPCId = 0, Name = item.Value };
+                var def = new TODModel
+                {
+                    FixedTimeNPCDateTimes = new List<DateTimeOffset>(),
+                    RangeTimeNPCDateTime = new List<RangeTimeNPCDateTime>(),
+                    Name = item.Value
+                };
+                GreenNoteableNPCs.Add(def);
                 if (noteableNPCCache.ServerData[(int)Servers.Green].Zones.TryGetValue(item.Key, out var npc))
                 {
                     var n = npc.FirstOrDefault(a => a.Name == item.Value);
                     if (n != null)
                     {
-                        GreenNoteableNPCs.Add(n);
+                        def.EventTime = n.LastDeath ?? n.LastSeen ?? null;
+                        if (n.Name == "Scout Charisa" && def.EventTime.HasValue)
+                        {
+                            for (var i = 1; i <= 5; i++)
+                            {
+                                def.FixedTimeNPCDateTimes.Add(def.EventTime.Value.AddHours(10 * i));
+                            }
+                        }
+                        else if (n.Name == "A Kromzek Captain" && def.EventTime.HasValue)
+                        {
+                            for (var i = 1; i <= 5; i++)
+                            {
+                                def.FixedTimeNPCDateTimes.Add(def.EventTime.Value.AddHours(10 * i));
+                            }
+                        }
+                        else if (n.Name == "An angry goblin" && def.EventTime.HasValue)
+                        {
+                            def.RangeTimeNPCDateTime.Add(new RangeTimeNPCDateTime
+                            {
+                                BegWindow = def.EventTime.Value.AddMinutes(-432),
+                                EndWindow = def.EventTime.Value.AddMinutes(432)
+                            });
+                        }
+                        else if (n.Name == "A shady goblin" && def.EventTime.HasValue)
+                        {
+                            for (var i = 1; i <= 5; i++)
+                            {
+                                def.FixedTimeNPCDateTimes.Add(def.EventTime.Value.AddHours(24 * i));
+                            }
+                        }
                     }
-                    else
-                    {
-                        GreenNoteableNPCs.Add(def);
-                    }
-                }
-                else
-                {
-                    GreenNoteableNPCs.Add(def);
                 }
             }
         }
 
-        public ServerMessage ServerMessage { get; set; } = new ServerMessage();
+
         public IActionResult OnGet()
         {
-            ServerMessage = eQToolContext.ServerMessages.FirstOrDefault();
             return Page();
         }
     }

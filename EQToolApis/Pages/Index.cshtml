@@ -123,24 +123,40 @@
                                     {
                                         <tr>
                                             <th class="pr-5">@item.Name</th>
-                                            @if (item.LastDeath.HasValue)
+                                            @if (item.EventTime.HasValue)
                                             {
-                                                <td class="mytime" utc="@item.LastDeath.Value.ToString("o")"></td>
+                                                <td class="mytime" utc="@item.EventTime.Value.ToString("o")"></td>
                                             }
-                                            else if (item.LastSeen.HasValue)
-                                            {
-                                                <td class="mytime" utc="@item.LastSeen.Value.ToString("o")"></td>
-                                            } else
+                                            else
                                             {
                                                 <td>N/A</td>
-                                            } 
+                                            }
+
                                         </tr>
+                                        @foreach (var fixedtime in item.FixedTimeNPCDateTimes)
+                                        {
+                                            <tr>
+                                                <th class="text-right">(Guess)</th>
+                                                <td class="mytime" utc="@fixedtime.ToString("o")"></td>
+                                            </tr>
+                                        }
+                                        @foreach (var rangedtime in item.RangeTimeNPCDateTime)
+                                        {
+                                            <tr>
+                                                <th class="pr-5">@item.Name (Guess)</th>
+                                                <td>
+                                                    <span class="mytime" utc="@rangedtime.BegWindow.ToString("o")"></span>
+                                                    <span> - </span>
+                                                    <span class="mytime" utc="@rangedtime.EndWindow.ToString("o")"></span>
+                                                </td>
+                                            </tr>
+                                        }
                                     }
                                 </tbody>
                             </table>
                         </p>
                     </div>
-                </div> 
+                </div>
             </div>
         </div>
     </div>
