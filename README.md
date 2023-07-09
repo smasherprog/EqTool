@@ -71,8 +71,6 @@ Features:
 <li>Release to single exe, not a zip</li>  
 <li>Determine pet level based on the maxhit and add to the DPS window</li> 
 <li>Add option to auto prune eq log file. EQ logfiles can cause issues with EQ itself if they get too large!</li>
-<li>Raid Group suggestions for guild: AOE; CH Chain; AOE+Ch Chain; Other</li>
-<li>Better track players levels and classes</li>
 <li>Respawn Time in Mob Info window</li>
 <li>Ability Hide/show mob info data</li>
 <li>Automatically add timer when named npc dies. Use Wiki for notable npc names</li>
