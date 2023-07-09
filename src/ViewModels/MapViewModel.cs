@@ -118,6 +118,7 @@ namespace EQTool.ViewModels
             {
                 return false;
             }
+            zone = ZoneParser.TranslateToMapName(zone);
             if (string.IsNullOrWhiteSpace(zone))
             {
                 zone = "freportw";
@@ -128,19 +129,11 @@ namespace EQTool.ViewModels
             }
             Children = children;
             MapLoading = true;
+            var stop = new Stopwatch();
+            stop.Start();
             try
             {
-                zone = ZoneParser.TranslateToMapName(zone);
-                if (string.IsNullOrWhiteSpace(zone))
-                {
-                    zone = "freportw";
-                }
-
-                var stop = new Stopwatch();
-                stop.Start();
                 var map = mapLoad.Load(zone);
-                stop.Stop();
-                Debug.WriteLine($"Time to load {zone} - {stop.ElapsedMilliseconds}ms");
                 if (map.Labels.Any() || map.Lines.Any())
                 {
                     Reset();
@@ -237,6 +230,8 @@ namespace EQTool.ViewModels
             }
             finally
             {
+                stop.Stop();
+                Debug.WriteLine($"Time to load {zone} - {stop.ElapsedMilliseconds}ms");
                 MapLoading = false;
             }
         }

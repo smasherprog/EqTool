@@ -1,55 +1,44 @@
 ﻿using System;
-using System.Collections.Generic;
 
 namespace EQTool.Models
 {
+    [Serializable]
+    public struct Colour
+    {
+        public byte A;
+        public byte R;
+        public byte G;
+        public byte B;
+
+        public Colour(byte a, byte r, byte g, byte b)
+        {
+            A = a;
+            R = r;
+            G = g;
+            B = b;
+        }
+
+        public Colour(System.Windows.Media.Color color) : this(color.A, color.R, color.G, color.B)
+        {
+        }
+
+        public static implicit operator Colour(System.Windows.Media.Color color)
+        {
+            return new Colour(color);
+        }
+
+        public static implicit operator System.Windows.Media.Color(Colour colour)
+        {
+            return System.Windows.Media.Color.FromArgb(colour.A, colour.R, colour.G, colour.B);
+        }
+    }
+
+    [Serializable]
     public class EQMapColor
     {
-        public System.Windows.Media.Color DarkColor { get; set; }
-        public System.Windows.Media.Color LightColor { get; set; }
-        public System.Windows.Media.Color OriginalColor { get; set; }
-
-
-        private static readonly List<EQMapColor> ColorMapping = new List<EQMapColor>()
-        {
-            new EQMapColor
-            {
-                OriginalColor = System.Windows.Media.Color.FromRgb(0,0,0),
-                LightColor = System.Windows.Media.Color.FromRgb(0,0,0),
-                DarkColor=System.Windows.Media.Color.FromRgb(255,255,255),
-            },
-            new EQMapColor
-            {
-                OriginalColor = System.Windows.Media.Color.FromRgb(255,168,102),
-                LightColor = System.Windows.Media.Color.FromRgb(255,168,102),
-                DarkColor=System.Windows.Media.Color.FromRgb(255,168,102)
-            },
-            new EQMapColor
-            {
-                OriginalColor = System.Windows.Media.Color.FromRgb(204,102,0),
-                LightColor = System.Windows.Media.Color.FromRgb(204,102,0),
-                DarkColor=System.Windows.Media.Color.FromRgb(204,102,0)
-            },
-            new EQMapColor
-            {
-                OriginalColor = System.Windows.Media.Color.FromRgb(102,255,102),
-                LightColor = System.Windows.Media.Color.FromRgb(102,255,102),
-                DarkColor=System.Windows.Media.Color.FromRgb(102,255,102)
-            },
-            new EQMapColor
-            {
-                OriginalColor = System.Windows.Media.Color.FromRgb( 0,204,0),
-                LightColor = System.Windows.Media.Color.FromRgb( 0,204,0),
-                DarkColor=System.Windows.Media.Color.FromRgb(0,204,0)
-            },
-            new EQMapColor
-            {
-                OriginalColor = System.Windows.Media.Color.FromRgb(102,255,255),
-                LightColor = System.Windows.Media.Color.FromRgb(102,255,255),
-                DarkColor=System.Windows.Media.Color.FromRgb(102,255,255)
-            }
-        };
-
+        public Colour DarkColor { get; set; }
+        public Colour LightColor { get; set; }
+        public Colour OriginalColor { get; set; }
         public static EQMapColor GetThemedColors(System.Windows.Media.Color color)
         {
             System.Windows.Media.Color GetDarkThemeTransformedColor(System.Windows.Media.Color c)

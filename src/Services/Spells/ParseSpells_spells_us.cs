@@ -12,10 +12,12 @@ namespace EQTool.Services
     {
         private List<SpellBase> _Spells = new List<SpellBase>();
         private readonly EQToolSettings settings;
+        private readonly LoggingService loggingService;
 
-        public ParseSpells_spells_us(EQToolSettings settings)
+        public ParseSpells_spells_us(EQToolSettings settings, LoggingService loggingService)
         {
             this.settings = settings;
+            this.loggingService = loggingService;
         }
 
         private readonly HashSet<string> IgnoreSpells = new HashSet<string>()
@@ -115,6 +117,22 @@ namespace EQTool.Services
             var spellsfile = new FileInfo(settings.DefaultEqDirectory + "/spells_us.txt");
             if (spellsfile.Exists)
             {
+                var spellfilename = $"SpellCache{App.Version}{spellsfile.LastWriteTimeUtc}";
+                spellfilename = new string(spellfilename.Where(a => char.IsLetterOrDigit(a)).ToArray()) + ".bin";
+                if (File.Exists(spellfilename))
+                {
+                    try
+                    {
+                        _Spells = BinarySerializer.ReadFromBinaryFile<List<SpellBase>>(spellfilename);
+                        stopwatch.Stop();
+                        Debug.Write($"Took {stopwatch.ElapsedMilliseconds}ms to build spells");
+                        return _Spells;
+                    }
+                    catch (Exception ex)
+                    {
+                        loggingService.Log(ex.ToString(), App.EventType.Error);
+                    }
+                }
                 var spellastext = File.ReadAllLines(settings.DefaultEqDirectory + "/spells_us.txt");
                 var desctypes = new List<DescrNumber>() {
                  DescrNumber.ThePlanes,
@@ -208,9 +226,27 @@ namespace EQTool.Services
                 // Debug.WriteLine($"Skipped {skippedcounter}");
 
                 _Spells = spells.Values.ToList();
+                stopwatch.Stop();
+                Debug.Write($"Took {stopwatch.ElapsedMilliseconds}ms to build spells");
+                try
+                {
+                    var filetodelete = Directory.GetFiles(Directory.GetCurrentDirectory(), "SpellCache*", SearchOption.TopDirectoryOnly).FirstOrDefault();
+                    File.Delete(filetodelete);
+                }
+                catch (Exception)
+                {
+
+                }
+                try
+                {
+                    BinarySerializer.WriteToBinaryFile(spellfilename, _Spells);
+                }
+                catch (Exception ex)
+                {
+                    loggingService.Log(ex.ToString(), App.EventType.Error);
+                }
             }
-            stopwatch.Stop();
-            Debug.Write($"Took {stopwatch.ElapsedMilliseconds}ms to build spells");
+
             return _Spells;
         }
 

@@ -1,4 +1,5 @@
 ﻿using EQToolShared.Enums;
+using System;
 using System.Collections.Generic;
 
 namespace EQTool.Models
@@ -269,6 +270,7 @@ namespace EQTool.Models
         HasteSpellFocus = 145
     }
 
+    [Serializable]
     public class SpellBase
     {
         public int id { get; set; } // not used 

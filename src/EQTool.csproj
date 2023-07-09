@@ -327,6 +327,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="Services\AppDispatcher.cs" />
+    <Compile Include="Services\BinarySerializer.cs" />
     <Compile Include="Services\LoggingService.cs" />
     <Compile Include="Services\PlayerGroupService.cs" />
     <Compile Include="Services\ZoneActivityTrackingService.cs" />

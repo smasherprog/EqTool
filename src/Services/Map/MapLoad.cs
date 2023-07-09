@@ -11,8 +11,15 @@ namespace EQTool.Services
 {
     public class MapLoad
     {
+        private readonly LoggingService loggingService;
+        public MapLoad(LoggingService loggingService)
+        {
+            this.loggingService = loggingService;
+        }
         public ParsedData Load(string zone)
         {
+            var stop = new Stopwatch();
+            stop.Start();
             if (string.IsNullOrWhiteSpace(zone))
             {
                 zone = "freportw";
@@ -21,17 +28,6 @@ namespace EQTool.Services
             var checkformanualmaps = System.IO.Directory.GetCurrentDirectory() + "/maps";
             if (System.IO.Directory.Exists(checkformanualmaps))
             {
-
-                //foreach (var item in ZoneParser.Zones)
-                //{
-                //    var zonen = ZoneParser.TranslateToMapName(item);
-                //    var files = Directory.GetFiles(checkformanualmaps, zonen + "*.txt").Where(a => !a.Contains("_2")).ToList();
-                //    foreach (var cleanfile in files)
-                //    {
-                //        File.Copy(cleanfile, "C:\\Users\\smash\\source\\repos\\smasherprog\\EqTool\\src\\bin\\Debug\\maps\\cleanfiles\\" + Path.GetFileName(cleanfile), true);
-                //    }
-                //}
-
                 var resourcenames = Directory.GetFiles(checkformanualmaps, zone + "*.txt").ToList();
                 foreach (var item in resourcenames)
                 {
@@ -44,6 +40,35 @@ namespace EQTool.Services
                     }
                 }
             }
+            var oldcachedmaps = Directory.GetDirectories(System.IO.Directory.GetCurrentDirectory(), "cachedmaps*");
+            var version = "cachedmaps" + App.Version.Replace(".", string.Empty).Trim();
+            foreach (var item in oldcachedmaps)
+            {
+                if (!item.Contains(version))
+                {
+                    Directory.Delete(item, true);
+                }
+            }
+            checkformanualmaps = System.IO.Directory.GetCurrentDirectory() + $"/{version}";
+            if (System.IO.File.Exists(checkformanualmaps + "/" + zone + ".bin"))
+            {
+                try
+                {
+                    var data = BinarySerializer.ReadFromBinaryFile<ParsedData>(checkformanualmaps + "/" + zone + ".bin");
+                    stop.Stop();
+                    Debug.WriteLine($"Time to load map from Cache {zone} {stop.ElapsedMilliseconds}");
+                    return data;
+                }
+                catch (Exception ex)
+                {
+                    loggingService.Log(ex.ToString(), App.EventType.Error);
+                }
+            }
+            try
+            {
+                _ = Directory.CreateDirectory(checkformanualmaps);
+            }
+            catch { }
 
             if (!lines.Any())
             {
@@ -61,14 +86,27 @@ namespace EQTool.Services
                 }
             }
 
-            return Parse(lines);
+            var d = Parse(lines);
+            stop.Stop();
+            Debug.WriteLine($"Time to load map {zone} {stop.ElapsedMilliseconds}");
+            try
+            {
+
+                BinarySerializer.WriteToBinaryFile(checkformanualmaps + "/" + zone + ".bin", d);
+            }
+            catch (Exception ex)
+            {
+                loggingService.Log(ex.ToString(), App.EventType.Error);
+            }
+            return d;
         }
 
+        [Serializable]
         public class MapLine
         {
             public Point3D[] Points { get; set; }
 
-            public System.Windows.Media.Color Color { get; set; }
+            public Colour Color { get; set; }
 
             public EQMapColor ThemeColors { get; set; }
         }
@@ -80,14 +118,16 @@ namespace EQTool.Services
             Large
         }
 
+        [Serializable]
         public class MapLabel
         {
             public Point3D Point { get; set; }
-            public System.Windows.Media.Color Color { get; set; }
+            public Colour Color { get; set; }
             public string label { get; set; }
             public LabelSize LabelSize { get; set; }
         }
 
+        [Serializable]
         public class AABB
         {
             public Point3D Min = new Point3D { X = double.MaxValue, Y = double.MaxValue, Z = double.MaxValue };
@@ -114,30 +154,13 @@ namespace EQTool.Services
             public double MaxWidth => Max.X == double.MinValue || Min.X == double.MaxValue ? 600 : Max.X - Min.X;
         }
 
+        [Serializable]
         public class ParsedData
         {
             public List<MapLine> Lines { get; set; } = new List<MapLine>();
             public List<MapLabel> Labels { get; set; } = new List<MapLabel>();
             public AABB AABB { get; set; } = new AABB();
             public Point3D Offset { get; set; }
-        }
-
-        private static Point3D RotatePoint(Point3D pointToRotate, Point3D centerPoint, double angleInDegrees)
-        {
-            var angleInRadians = angleInDegrees * (Math.PI / 180);
-            var cosTheta = Math.Cos(angleInRadians);
-            var sinTheta = Math.Sin(angleInRadians);
-            return new Point3D
-            {
-                X =
-                    (int)
-                    ((cosTheta * (pointToRotate.X - centerPoint.X)) -
-                    (sinTheta * (pointToRotate.Y - centerPoint.Y)) + centerPoint.X),
-                Y =
-                    (int)
-                    ((sinTheta * (pointToRotate.X - centerPoint.X)) +
-                    (cosTheta * (pointToRotate.Y - centerPoint.Y)) + centerPoint.Y)
-            };
         }
 
         private ParsedData Parse(List<string> lines)

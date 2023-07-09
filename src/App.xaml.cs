@@ -186,6 +186,7 @@ namespace EQTool
 
         private void InitStuff()
         {
+            EQTool.Properties.Settings.Default.ColorMode = "Dark";
             container = DI.Init();
             UITimer = new System.Timers.Timer(1000 * 60);
 #if !DEBUG
