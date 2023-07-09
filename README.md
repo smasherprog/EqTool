@@ -55,8 +55,7 @@ Features:
 <ul>  
   <li>Dont reset timers on a /who.</li>  
  <li>Cache spell parsing and map files for faster load times.</li>  
- <li>Make timers resetable.</li>  
- <li>Add Support for NON p99 clients.</li>  
+ <li>Make timers resetable.</li>   
  <li>Fix buff timers when updating.</li> 
   <li>Add zone dump of names.</li> 
  <li>Add context menu to toggle pather vs static.</li> 
