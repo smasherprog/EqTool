@@ -122,6 +122,10 @@ namespace EQTool.ViewModels
             {
                 zone = "freportw";
             }
+            if (zone == ZoneName)
+            {
+                return false;
+            }
             Children = children;
             MapLoading = true;
             try
