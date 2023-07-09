@@ -4,12 +4,11 @@
 <head>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css" integrity="sha512-rt/SrQ4UNIaGfDyEXZtNcyWvQeOq0QLygHluFQcSjaGB04IxWhal71tKuzP6K8eYXYB6vJV4pHkXcmFGGQ1/0w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.4/jquery.min.js" integrity="sha512-pumBsjNRGGqkPzKHndZMaAG+bir374sORyzM3uulLV14lN5LyykqNk8eEeUlUkB3U0M4FApyaHraT65ihJhDpQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <link href="https://unpkg.com/tabulator-tables@5.4.4/dist/css/tabulator.min.css" rel="stylesheet">
+    <link href="https://unpkg.com/tabulator-tables@5.5.0/dist/css/tabulator.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/1.1.2/css/bootstrap-multiselect.min.css" integrity="sha512-fZNmykQ6RlCyzGl9he+ScLrlU0LWeaR6MO/Kq9lelfXOw54O63gizFMSD5fVgZvU1YfDIc6mxom5n60qJ1nCrQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    
-    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/luxon@3.3.0/build/global/luxon.min.js"></script>
-    <script type="text/javascript" src="https://unpkg.com/tabulator-tables@5.4.4/dist/js/tabulator.min.js"></script>
+
+    <script type="text/javascript" src="https://unpkg.com/tabulator-tables@5.5.0/dist/js/tabulator.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/js/bootstrap.bundle.min.js" integrity="sha512-igl8WEUuas9k5dtnhKqyyld6TzzRjvMqLC79jkgT3z02FvJyHAuUtyemm/P/jYSne1xwFI06ezQxEwweaiV7VA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-multiselect/1.1.2/js/bootstrap-multiselect.min.js" integrity="sha512-lxQ4VnKKW7foGFV6L9zlSe+6QppP9B2t+tMMaV4s4iqAv4iHIyXED7O+fke1VeLNaRdoVkVt8Hw/jmZ+XocsXQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 
@@ -205,9 +204,9 @@
             $.get("/api/item/getdetails/@Model.ItemId", function (data, status) {
                 originaldata = data;
                 if (data.itemName == 'Dead Man Floating' || data.itemName == 'Dead Men Floating') {
-                    $('#nodmfforyou').show(); 
+                    $('#nodmfforyou').show();
                     $('#danylovesjasper').hide();
-                }  
+                }
                 document.getElementById('ItemName').innerHTML = `<a href="https://wiki.project1999.com/${data.itemName.replace(' ', '_')}" target = "_blank"> ${data.itemName} <i class="fa fa-external-link"></i></a >`;
                 document.title = data.itemName;
                 let pl = [];
@@ -253,7 +252,7 @@
                         }
                         let tunnelTimestamp = data.items[i].t;
                         let d = new Date(tunnelTimestamp);
-                        data.items[i].t = d.toLocaleString();
+                        data.items[i].t = d;
                         data.items[i].n = data.players[data.items[i].i];
                     }
                 }
@@ -274,10 +273,18 @@
                                 }
                             },
                             {
-                                title: "Timestamp", field: "t",
-                                sorterParams: {
-                                    format: "yyyy-MM-dd hh:mm:ss tt",
-                                    alignEmptyValues: "top",
+                                title: "Timestamp",
+                                field: "t",
+                                sorter: function (a, b, aRow, bRow, column, dir, sorterParams) {
+                                    //a, b - the two values being compared
+                                    //aRow, bRow - the row components for the values being compared (useful if you need to access additional fields in the row data for the sort)
+                                    //column - the column component for the column being sorted
+                                    //dir - the direction of the sort ("asc" or "desc")
+                                    //sorterParams - sorterParams object from column definition array
+                                    return a.getTime() - b.getTime();
+                                },
+                                formatter: function (cell, formatterParams) {
+                                    return cell.getRow().getData().t.toLocaleString();
                                 }
                             }
                         ],
