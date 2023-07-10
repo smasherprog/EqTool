@@ -66,6 +66,14 @@ namespace EQToolApis.Pages
                                 EndWindow = def.EventTime.Value.AddMinutes(432)
                             });
                         }
+                        else if (n.Name == "Warlord Skargus" && def.EventTime.HasValue)
+                        {
+                            def.RangeTimeNPCDateTime.Add(new RangeTimeNPCDateTime
+                            {
+                                BegWindow = def.EventTime.Value.AddMinutes(-432),
+                                EndWindow = def.EventTime.Value.AddMinutes(432)
+                            });
+                        }
                         else if (n.Name == "A shady goblin" && def.EventTime.HasValue)
                         {
                             for (var i = 1; i <= 5; i++)
