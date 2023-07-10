@@ -3,7 +3,6 @@ using System;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
-using System.Windows.Media;
 
 namespace EQTool
 {
@@ -14,7 +13,6 @@ namespace EQTool
         public PanAndZoomCanvas(MapViewModel mapViewModel)
         {
             InitializeComponent();
-            Background = new SolidColorBrush(System.Windows.Media.Color.FromArgb(240, 30, 30, 30));
             DataContext = mapViewModel;
             MouseDown += PanAndZoomCanvas_MouseDown;
             MouseUp += PanAndZoomCanvas_MouseUp;
