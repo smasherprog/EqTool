@@ -295,7 +295,7 @@ namespace EQToolShared.Map
                 ZoneLevelHeight = 10,
                 NotableNPCs = new List<string>()
                 {
-                    "",
+                    "Boridain Glacierbane", "Gloradin Coldheart", "Chief Ry`Gorr","Corbin Blackwell","Ekelng Thunderstone","Firbrand the Black","Oracle of Ry'Gorr","Fjloaren Icebane","Garadain Glacierbane","Ghrek Squatnot","Tain Hammerfrost","Warden Bruke"
                 },
                 RespawnTime = new TimeSpan(0, 6, 40)
             });
@@ -504,7 +504,7 @@ namespace EQToolShared.Map
                 ZoneLevelHeight = 10,
                 NotableNPCs = new List<string>()
                 {
-                    "",
+                    "Sentry Badain",  "Bekerak Coldbones",  "Blizzent",  "Bloodmaw", "Captain Stonefist",  "Drakkel Blood Wolf",  "Fergul Frostsky",  "Gralk Dwarfkiller","Icetooth",  "Korf Brokenhammer",  "Relik",  "Shardtooth","Shardwurm Broodmother",  "Shardwurm Matriarch",  "a Tizmak Spiritcaller",  "Vluudeen","Vores the Hunter","Yaka Razorhoof"
                 },
                 RespawnTime = new TimeSpan(0, 10, 40)
             });
