@@ -22,6 +22,7 @@ namespace EQTool
         private readonly IAppDispatcher appDispatcher;
         private readonly System.Timers.Timer UITimer;
         private bool AutomaticallyAddTimerOnDeath = false;
+        private float _aspectRatio = 1.0f;
 
         public MappingWindow(
             MapViewModel mapViewModel,
@@ -45,11 +46,12 @@ namespace EQTool
             };
 
             Map.mapViewModel = mapViewModel;
-            WindowExtensions.AdjustWindow(settings.MapWindowState, this);
             Topmost = Properties.Settings.Default.GlobalMapWindowAlwaysOnTop;
             _ = mapViewModel.LoadDefaultMap(Map.Children);
             Map.Height = Math.Abs(mapViewModel.AABB.MaxHeight);
             Map.Width = Math.Abs(mapViewModel.AABB.MaxWidth);
+            _aspectRatio = (float)(Map.Width / Map.Height);
+            WindowExtensions.AdjustWindow(settings.MapWindowState, this);
             this.logParser.PlayerLocationEvent += LogParser_PlayerLocationEvent;
             this.logParser.PlayerZonedEvent += LogParser_PlayerZonedEvent;
             this.logParser.PlayerChangeEvent += LogParser_PlayerChangeEvent;
@@ -113,6 +115,9 @@ namespace EQTool
             {
                 Map.Height = Math.Abs(mapViewModel.AABB.MaxHeight);
                 Map.Width = Math.Abs(mapViewModel.AABB.MaxWidth);
+                _aspectRatio = (float)(Map.Width / Map.Height);
+                Height++;
+                Height--;
             }
         }
 
@@ -122,6 +127,9 @@ namespace EQTool
             {
                 Map.Height = Math.Abs(mapViewModel.AABB.MaxHeight);
                 Map.Width = Math.Abs(mapViewModel.AABB.MaxWidth);
+                _aspectRatio = (float)(Map.Width / Map.Height);
+                Height++;
+                Height--;
             }
         }
 
@@ -147,6 +155,13 @@ namespace EQTool
             base.OnClosing(e);
         }
 
+        protected override void OnRenderSizeChanged(SizeChangedInfo sizeInfo)
+        {
+            Height = sizeInfo.NewSize.Width / _aspectRatio;
+            Width = sizeInfo.NewSize.Height * _aspectRatio;
+            base.OnRenderSizeChanged(sizeInfo);
+        }
+
         private void SaveState()
         {
             WindowExtensions.SaveWindowState(settings.MapWindowState, this);
@@ -158,6 +173,7 @@ namespace EQTool
             settings.MapWindowState.Closed = true;
             Close();
         }
+
         private void Window_StateChanged(object sender, EventArgs e)
         {
             SaveState();

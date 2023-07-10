@@ -9,8 +9,7 @@
         Title="{Binding Title}" 
         Height="450" 
         Width="640"  
-        WindowStyle="None" 
-
+        WindowStyle="None"  
         AllowsTransparency="True">  
 
     <WindowChrome.WindowChrome>
@@ -28,8 +27,8 @@
                 <RowDefinition Height="20" />
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <Viewbox Name="MapViewBox" Stretch="Uniform" Grid.Row="1"  MouseMove="Map_MouseMove"> 
-            </Viewbox>
+            <Viewbox Name="MapViewBox" Stretch="Uniform" Grid.Row="1" MouseMove="Map_MouseMove">
+            </Viewbox> 
             <Border Background="{StaticResource WindowFrameBrush}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" CornerRadius="5,5,0,0" Margin="-1,0,-1,0" MouseLeftButtonDown="DragWindow"  Grid.Row="0">
                 <Grid>
                     <TextBlock Foreground="White" FontWeight="Bold" VerticalAlignment="Center" Margin="10,1,10,1" Text="{Binding Title}"/>
@@ -42,11 +41,10 @@
                         </Button>
                         <Button Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="opendps" ToolTip="Open DPS Window">
                             <Image Source="pack://application:,,,/dps.png"/>
-                        </Button> 
+                        </Button>
                         <Button x:Name="TimerToggle" Foreground="Green" Background="White" Content="⏰" Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="autoaddtimer" ToolTip="Add timer to npcs on death." />
-                        <Button Content="O" Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="opensettings" ToolTip="Open Settings Window" /> 
+                        <Button Content="O" Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="opensettings" ToolTip="Open Settings Window" />
                     </StackPanel>
-
                     <StackPanel Orientation="Horizontal"  HorizontalAlignment="Right">
                         <TextBlock Foreground="White" FontWeight="Bold" VerticalAlignment="Center" Margin="10,1,10,1" Text="{Binding MouseLocation}"/>
                         <Button Content="_" Margin="1" FontSize="7" Width="10" Height="10" Padding="0" Click="MinimizeWindow"/>

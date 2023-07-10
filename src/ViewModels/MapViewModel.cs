@@ -573,16 +573,23 @@ namespace EQTool.ViewModels
             if (delta < 0)
             {
                 scaleFactor = 1f / scaleFactor;
+                if (CurrentScaling == 1.0f)
+                {
+                    return;
+                }
+            }
+
+            if (CurrentScaling * scaleFactor > 40)
+            {
+                return;
+            }
+            if (CurrentScaling * scaleFactor < 1 && CurrentScaling != 1.0f)
+            {
+                scaleFactor = 1.0f / CurrentScaling;
             }
 
             var scaleMatrix = Transform.Matrix;
             scaleMatrix.ScaleAt(scaleFactor, scaleFactor, mousePostion.X, mousePostion.Y);
-            if (CurrentScaling * scaleFactor < 1 || CurrentScaling * scaleFactor > 40)
-            {
-                // dont allow zooming out too far
-                return;
-            }
-
             Transform.Matrix = scaleMatrix;
             CurrentScaling *= scaleFactor;
             Debug.WriteLine(CurrentScaling);

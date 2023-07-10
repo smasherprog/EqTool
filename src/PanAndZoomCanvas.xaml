@@ -6,7 +6,6 @@
         xmlns:ui="using:Microsoft.Toolkit.Uwp.UI"
         xmlns:local="clr-namespace:EQTool" 
         mc:Ignorable="d"
-        Background="Transparent" 
        >
     <Canvas.ContextMenu>
         <ContextMenu Width="130" Name="TimerMenu" Closed="TimerMenu_Closed" Opened="TimerMenu_Opened">
