@@ -53,7 +53,6 @@ Features:
 
 <h4>TO DO List EQTool</h4>
 <ul>  
- <li>Cache spell parsing and map files for faster load times.</li>  
  <li>Make timers resetable.</li>   
  <li>Fix buff timers when updating.</li> 
   <li>Add zone dump of names.</li> 
