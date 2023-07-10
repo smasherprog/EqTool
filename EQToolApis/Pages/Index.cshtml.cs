@@ -70,8 +70,8 @@ namespace EQToolApis.Pages
                         {
                             def.RangeTimeNPCDateTime.Add(new RangeTimeNPCDateTime
                             {
-                                BegWindow = def.EventTime.Value.AddMinutes(-432),
-                                EndWindow = def.EventTime.Value.AddMinutes(432)
+                                BegWindow = def.EventTime.Value.AddDays(3).AddMinutes(-432),
+                                EndWindow = def.EventTime.Value.AddDays(3).AddMinutes(432)
                             });
                         }
                         else if (n.Name == "A shady goblin" && def.EventTime.HasValue)
