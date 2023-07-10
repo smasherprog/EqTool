@@ -143,7 +143,15 @@
                                         @foreach (var rangedtime in item.RangeTimeNPCDateTime)
                                         {
                                             <tr>
-                                                <th class="text-right">(Guess)</th>
+                                                @if (item.RangeTimeNPCDateTime.Count > 1)
+                                                {
+                                                    <th class="text-right">(Guess)</th>
+                                                }
+                                                else
+                                                {
+                                                    <th class="text-right">(Window)</th>
+                                                }
+
                                                 <td>
                                                     <span class="mytime" utc="@rangedtime.BegWindow.ToString("o")"></span>
                                                     <span> - </span>
