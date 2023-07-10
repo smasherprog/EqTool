@@ -66,7 +66,6 @@ Features:
 <li>Show others on map</li>   
 <li>Add Waypoint Command to add loc to map</li>    
 <li>Map window add toggle to follow location</li>    
-<li>Prevent Map panning outside of bounds</li> 
 <li>Release to single exe, not a zip</li>  
 <li>Determine pet level based on the maxhit and add to the DPS window</li> 
 <li>Add option to auto prune eq log file. EQ logfiles can cause issues with EQ itself if they get too large!</li>
