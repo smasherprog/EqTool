@@ -119,6 +119,13 @@
                         <p class="card-text">
                             <table>
                                 <tbody>
+                                    @foreach (var item in Model.Quakes)
+                                    {
+                                        <tr>
+                                            <th class="pr-5">Quake Time</th>
+                                            <td class="mytime" utc="@item.ToString("o")"></td>
+                                        </tr>
+                                    }
                                     @foreach (var item in Model.GreenNoteableNPCs)
                                     {
                                         <tr>

@@ -16,6 +16,8 @@ namespace EQToolApis.DB
 
         public DbSet<IPBan> IPBans { get; set; }
 
+        public DbSet<QuakeTime> QuakeTimes { get; set; }
+
         public DbSet<EQZone> EQZones { get; set; }
 
         public DbSet<EQDeath> EQDeaths { get; set; }

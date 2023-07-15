@@ -13,6 +13,7 @@ namespace EQToolApis.Pages
         public readonly NoteableNPCCache noteableNPCCache;
         public List<TODModel> GreenNoteableNPCs = new List<TODModel>();
         public ServerMessage ServerMessage { get; set; } = new ServerMessage();
+        public List<DateTimeOffset> Quakes = new List<DateTimeOffset>();
 
         public IndexModel(DBData allData, EQToolContext eQToolContext, NoteableNPCCache noteableNPCCache)
         {
@@ -28,7 +29,7 @@ namespace EQToolApis.Pages
                 new KeyValuePair<string, string>("warslikswood", "A shady goblin")
 
             };
-
+            Quakes = eQToolContext.QuakeTimes.OrderByDescending(a => a.DateTime).Take(3).Select(a => a.DateTime).ToList();
             foreach (var item in keyname)
             {
                 var def = new TODModel
