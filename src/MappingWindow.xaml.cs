@@ -54,7 +54,7 @@ namespace EQTool
             WindowExtensions.AdjustWindow(settings.MapWindowState, this);
             this.logParser.PlayerLocationEvent += LogParser_PlayerLocationEvent;
             this.logParser.PlayerZonedEvent += LogParser_PlayerZonedEvent;
-            this.logParser.PlayerChangeEvent += LogParser_PlayerChangeEvent;
+            this.logParser.EnteredWorldEvent += LogParser_EnteredWorldEvent;
             this.logParser.DeadEvent += LogParser_DeadEvent;
             SizeChanged += Window_SizeChanged;
             StateChanged += Window_StateChanged;
@@ -109,7 +109,7 @@ namespace EQTool
             }
         }
 
-        private void LogParser_PlayerChangeEvent(object sender, LogParser.PlayerChangeEventArgs e)
+        private void LogParser_EnteredWorldEvent(object sender, LogParser.EnteredWorldArgs e)
         {
             if (mapViewModel.LoadDefaultMap(Map.Children))
             {
@@ -144,7 +144,7 @@ namespace EQTool
             UITimer?.Dispose();
             logParser.PlayerLocationEvent -= LogParser_PlayerLocationEvent;
             logParser.PlayerZonedEvent -= LogParser_PlayerZonedEvent;
-            logParser.PlayerChangeEvent -= LogParser_PlayerChangeEvent;
+            logParser.EnteredWorldEvent -= LogParser_EnteredWorldEvent;
             logParser.DeadEvent -= LogParser_DeadEvent;
             SizeChanged -= Window_SizeChanged;
             StateChanged -= Window_StateChanged;

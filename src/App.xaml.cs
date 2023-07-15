@@ -276,7 +276,6 @@ namespace EQTool
             }
             PlayerTrackerService = container.Resolve<PlayerTrackerService>();
             ZoneActivityTrackingService = container.Resolve<ZoneActivityTrackingService>();
-            logParser.PlayerChangeEvent += LogParser_PlayerChangeEvent;
         }
 
         private bool updatecalled = false;
@@ -403,14 +402,6 @@ namespace EQTool
                 FileName = "https://github.com/smasherprog/EqTool/issues",
                 UseShellExecute = true
             });
-        }
-
-        private void LogParser_PlayerChangeEvent(object sender, LogParser.PlayerChangeEventArgs e)
-        {
-            if (FindEq.IsProject1999Folder(EQToolSettings.DefaultEqDirectory) && FindEq.TryCheckLoggingEnabled(EQToolSettings.DefaultEqDirectory) == true)
-            {
-                ToggleMenuButtons(true);
-            }
         }
 
         private void ToggleWindow<T>(System.Windows.Forms.MenuItem m) where T : Window
