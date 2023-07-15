@@ -13,11 +13,12 @@ namespace EQTool.Services.Spells.Log
         private readonly List<string> IgnoreSpellsForGuesses = new List<string>(){
             "Tigir's Insects"
         };
-
+        private readonly Spell HealSpell;
         public ParseSpellGuess(ActivePlayer activePlayer, EQSpells spells)
         {
             this.activePlayer = activePlayer;
             this.spells = spells;
+            HealSpell = spells.AllSpells.FirstOrDefault(a => a.name == "Chloroblast");
         }
 
         public SpellParsingMatch HandleBestGuessSpell(string message)

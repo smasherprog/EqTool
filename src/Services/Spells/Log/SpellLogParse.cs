@@ -1,5 +1,6 @@
 ﻿using EQTool.Models;
 using EQTool.ViewModels;
+using System.Linq;
 
 namespace EQTool.Services.Spells.Log
 {
@@ -9,17 +10,50 @@ namespace EQTool.Services.Spells.Log
         private readonly ParseHandleYouCasting parseHandleYouCasting;
         private readonly ParseSpellGuess parseSpellGuess;
         private readonly EQToolSettings settings;
+        private readonly EQSpells spells;
+        private readonly Spell HealSpell;
 
-        public SpellLogParse(ParseSpellGuess parseSpellGuess, ParseHandleYouCasting parseHandleYouCasting, ActivePlayer activePlayer, EQToolSettings settings)
+        public SpellLogParse(ParseSpellGuess parseSpellGuess, ParseHandleYouCasting parseHandleYouCasting, ActivePlayer activePlayer, EQToolSettings settings, EQSpells spells)
         {
             this.parseSpellGuess = parseSpellGuess;
             this.settings = settings;
             this.parseHandleYouCasting = parseHandleYouCasting;
             this.activePlayer = activePlayer;
+            HealSpell = spells.AllSpells.FirstOrDefault(a => a.name == "Chloroblast");
         }
 
         public SpellParsingMatch MatchSpell(string message)
         {
+            if (message == "You mend your wounds and heal some damage.")
+            {
+                return new SpellParsingMatch
+                {
+                    MultipleMatchesFound = false,
+                    Spell = new Spell
+                    {
+                        buffduration = HealSpell.buffduration,
+                        buffdurationformula = HealSpell.buffduration,
+                        casttime = HealSpell.casttime,
+                        cast_on_other = HealSpell.cast_on_other,
+                        cast_on_you = HealSpell.cast_on_you,
+                        Classes = new System.Collections.Generic.Dictionary<EQToolShared.Enums.PlayerClasses, int>() { { EQToolShared.Enums.PlayerClasses.Monk, 1 } },
+                        DescrNumber = HealSpell.DescrNumber,
+                        id = HealSpell.id,
+                        name = "Mend",
+                        pvp_buffdurationformula = HealSpell.pvp_buffdurationformula,
+                        Rect = HealSpell.Rect,
+                        ResistCheck = HealSpell.ResistCheck,
+                        resisttype = HealSpell.resisttype,
+                        SpellIcon = HealSpell.SpellIcon,
+                        SpellType = HealSpell.SpellType,
+                        spell_fades = HealSpell.spell_fades,
+                        spell_icon = HealSpell.spell_icon,
+                        type = HealSpell.type
+                    },
+                    TargetName = EQSpells.SpaceYou,
+                    TotalSecondsOverride = 6 * 60
+                };
+            }
             if (message.StartsWith(EQSpells.YouSpellisInterupted))
             {
                 activePlayer.UserCastingSpell = null;

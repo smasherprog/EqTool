@@ -71,8 +71,12 @@ namespace EQTool
             }
             catch (Exception ex)
             {
-                App.LogUnhandledException(ex, $"LogParser_ConEvent {e.Name}");
                 mobInfoViewModel.ErrorResults = ex.Message;
+                if (!mobInfoViewModel.ErrorResults.Contains("The underlying connection was closed:"))
+                {
+                    mobInfoViewModel.ErrorResults = "The server is down. Try again";
+                    App.LogUnhandledException(ex, $"LogParser_ConEvent {e.Name}");
+                }
             }
         }
 

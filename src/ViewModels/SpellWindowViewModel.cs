@@ -171,7 +171,8 @@ namespace EQTool.ViewModels
                 var ismanasieve = spellname == "Mana Sieve";
                 var ispersistent = ismanasieve;
                 var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(match.Spell, activePlayer.Player));
-                var uispell = new UISpell(DateTime.Now.AddSeconds((int)spellduration.TotalSeconds))
+                var duraction = match.TotalSecondsOverride ?? spellduration.TotalSeconds;
+                var uispell = new UISpell(DateTime.Now.AddSeconds((int)duraction))
                 {
                     UpdatedDateTime = DateTime.Now,
                     PercentLeftOnSpell = 100,
