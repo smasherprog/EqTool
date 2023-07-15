@@ -229,6 +229,15 @@ namespace EQToolTests
         }
 
         [TestMethod]
+        public void TestGuildChatCopyAndPaste()
+        {
+            var dpslogparse = container.Resolve<DPSLogParse>();
+            var message = "vasanle tells the guild, '[Sun Jul 10 21:05:30 2022] pigy was hit by non-melee for 1500 points of damage.  [Sun Jul 10 21:05:30 2022] pigy staggers.'";
+            var match = dpslogparse.Match(message, DateTime.Now);
+            Assert.IsNotNull(match);
+        }
+
+        [TestMethod]
         public void TestLevelDetectionThroughKick()
         {
             var dpslogparse = container.Resolve<DPSLogParse>();

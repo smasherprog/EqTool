@@ -52,6 +52,10 @@ namespace EQTool.Services.Spells.Log
 
         public DPSParseMatch Match(string message, DateTime date)
         {
+            if (message.Contains("tells"))
+            {
+                return null;
+            }
             var nonmelleindex = message.IndexOf(WasHitByNonMelee);
             if (nonmelleindex > -1)
             {
