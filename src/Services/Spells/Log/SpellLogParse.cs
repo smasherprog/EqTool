@@ -24,7 +24,7 @@ namespace EQTool.Services.Spells.Log
 
         public SpellParsingMatch MatchSpell(string message)
         {
-            if (message == "You mend your wounds and heal some damage.")
+            if (message == "You mend your wounds and heal some damage." || message == "You have failed to mend your wounds.")
             {
                 return new SpellParsingMatch
                 {

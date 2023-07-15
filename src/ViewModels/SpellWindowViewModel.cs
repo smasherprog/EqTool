@@ -250,23 +250,26 @@ namespace EQTool.ViewModels
                 foreach (var item in youspells)
                 {
                     var match = spells.AllSpells.FirstOrDefault(a => a.name == item.Name);
-                    var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(match, activePlayer.Player));
-                    var savedspellduration = item.TotalSecondsLeft;
-                    var uispell = new UISpell(DateTime.Now.AddSeconds(savedspellduration))
+                    if (match != null)
                     {
-                        UpdatedDateTime = DateTime.Now,
-                        PercentLeftOnSpell = 100,
-                        SpellType = match.type,
-                        TargetName = EQSpells.SpaceYou,
-                        SpellName = match.name,
-                        Rect = match.Rect,
-                        PersistentSpell = false,
-                        SieveCounter = null,
-                        SpellIcon = match.SpellIcon,
-                        Classes = match.Classes,
-                        GuessedSpell = false
-                    };
-                    SpellList.Add(uispell);
+                        var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(match, activePlayer.Player));
+                        var savedspellduration = item.TotalSecondsLeft;
+                        var uispell = new UISpell(DateTime.Now.AddSeconds(savedspellduration))
+                        {
+                            UpdatedDateTime = DateTime.Now,
+                            PercentLeftOnSpell = 100,
+                            SpellType = match.type,
+                            TargetName = EQSpells.SpaceYou,
+                            SpellName = match.name,
+                            Rect = match.Rect,
+                            PersistentSpell = false,
+                            SieveCounter = null,
+                            SpellIcon = match.SpellIcon,
+                            Classes = match.Classes,
+                            GuessedSpell = false
+                        };
+                        SpellList.Add(uispell);
+                    }
                 }
             });
         }
