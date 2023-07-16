@@ -34,10 +34,8 @@ namespace EQTool.Services
             }
 
             var timestamp = LogFileDateTimeParse.ParseDateTime(date);
-            var delta = (timestamp - DateTime.Now).TotalSeconds;
+            var delta = (DateTime.Now - timestamp).TotalSeconds;
             return delta <= 4 && delta >= 0 && message == "Welcome to EverQuest!";
         }
-
-
     }
 }
