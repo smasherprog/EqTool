@@ -1394,7 +1394,7 @@ namespace EQToolShared.Map
                 name = n;
             }
 
-            return ZoneNameMapper.TryGetValue(name, out n) ? n : name;
+            return ZoneNameMapper.TryGetValue(name, out n) ? n : string.Empty;
         }
 
         public static string Match(string message)

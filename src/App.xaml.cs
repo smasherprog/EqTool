@@ -181,7 +181,15 @@ namespace EQTool
                 updateservice.CheckForUpdates(Version);
 #endif
             }
-            InitStuff();
+            try
+            {
+                InitStuff();
+            }
+            catch (Exception ex)
+            {
+                LogUnhandledException(ex, "InitStuff");
+                Thread.Sleep(1000 * 20);/// Sleep for 20 seconds here this will hopfully allow the update to occur and fix any problems
+            }
         }
 
         private void InitStuff()
