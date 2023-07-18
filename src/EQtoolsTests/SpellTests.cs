@@ -727,6 +727,21 @@ namespace EQToolTests
         }
 
         [TestMethod]
+        public void TestHealForDamage()
+        {
+            var spelllogparse = container.Resolve<SpellLogParse>();
+            var line = "You mend your wounds and heal some damage.";
+            var player = container.Resolve<ActivePlayer>();
+            player.Player = new PlayerInfo
+            {
+                Level = 54,
+                PlayerClass = PlayerClasses.Cleric
+            };
+            var spellmatch = spelllogparse.MatchSpell(line);
+            Assert.IsNotNull(spellmatch);
+        }
+
+        [TestMethod]
         public void TestClairityDurationGuess_part1()
         {
             var spells = container.Resolve<EQSpells>();
