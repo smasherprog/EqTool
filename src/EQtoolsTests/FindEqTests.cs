@@ -6,8 +6,13 @@ namespace EQtoolsTests
     public class FindEqTests
     {
         [TestMethod]
-        public void HateZoneTest()
+        public void ProgramFilesTest()
         {
+            //var result = FindEq.GetLogFileLocation(new FindEq.FindEQData
+            //{
+            //    EqBaseLocation = @"C:\Program Files\Everquest\Everquest"
+            //});
+            //Assert.IsNotNull(result);
         }
     }
 }
