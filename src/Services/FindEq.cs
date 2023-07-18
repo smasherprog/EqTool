@@ -186,6 +186,12 @@ namespace EQTool.Services
 
         public static LogFileInfo GetLogFileLocation(FindEQData data)
         {
+            var seperator = "\\";
+            if (!string.IsNullOrWhiteSpace(data.EqBaseLocation))
+            {
+                seperator = data.EqBaseLocation.Contains("/") ? "/" : "\\";
+            }
+
             var ret = new LogFileInfo { Found = false };
             try
             {
@@ -200,17 +206,15 @@ namespace EQTool.Services
                 }
             }
             catch { }
-
+            var logs = $"{seperator}Logs{seperator}";
+            var filepossibles = new List<FileInfo>();
             try
             {
                 if (!string.IsNullOrWhiteSpace(data.EqBaseLocation))
                 {
-                    ret.Found = Directory.EnumerateFiles(data.EqBaseLocation + "/Logs/", "eqlog*.txt", SearchOption.TopDirectoryOnly).Any();
-                    if (ret.Found)
-                    {
-                        ret.Location = data.EqBaseLocation + "/Logs/";
-                        return ret;
-                    }
+                    var directory = new DirectoryInfo(data.EqBaseLocation + logs);
+                    var files = directory.GetFiles("eqlog*.txt", SearchOption.TopDirectoryOnly);
+                    filepossibles.AddRange(files);
                 }
             }
             catch { }
@@ -219,16 +223,19 @@ namespace EQTool.Services
             {
                 if (!string.IsNullOrWhiteSpace(data.EqBaseLocation))
                 {
-                    var root = GetVirtualStoreLocation(data.EqBaseLocation) + "/Logs/";
-                    ret.Found = Directory.EnumerateFiles(root, "eqlog*.txt", SearchOption.TopDirectoryOnly).Any();
-                    if (ret.Found)
-                    {
-                        ret.Location = root;
-                        return ret;
-                    }
+                    var root = GetVirtualStoreLocation(data.EqBaseLocation) + logs;
+                    var directory = new DirectoryInfo(root);
+                    var files = directory.GetFiles("eqlog*.txt", SearchOption.TopDirectoryOnly);
+                    filepossibles.AddRange(files);
                 }
             }
             catch { }
+            var newestfile = filepossibles.OrderByDescending(a => a.LastWriteTime).FirstOrDefault()?.FullName;
+            if (!string.IsNullOrWhiteSpace(newestfile))
+            {
+                ret.Location = Path.GetDirectoryName(newestfile);
+                ret.Found = true;
+            }
             return ret;
         }
 
