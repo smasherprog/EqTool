@@ -248,11 +248,17 @@ namespace EQToolApis.Services
                         };
                         foreach (var it in embed.fields)
                         {
-                            itemsadded += 1;
+
                             if (IgnoreList.Contains(it.ItemName))
                             {
                                 continue;
                             }
+                            if (it.ItemName.ToLower() == "fungus covered scale tunic" && it.Price > 80000 && it.Price < 35000)
+                            {
+                                continue;
+                            }
+
+                            itemsadded += 1;
                             var eqitem = dbcontext.EQitems.FirstOrDefault(a => a.ItemName == it.ItemName && a.Server == server);
                             if (eqitem == null)
                             {
