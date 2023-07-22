@@ -235,7 +235,7 @@ if (isrelease)
         backgroundclient.AddOrUpdate<SQLIndexRebuild>(nameof(SQLIndexRebuild.RebuildEQTunnelAuctionEQTunnelMessages), (a) => a.RebuildEQTunnelAuctionEQTunnelMessages(), Cron.Never);
         backgroundclient.AddOrUpdate<SQLIndexRebuild>(nameof(SQLIndexRebuild.RebuildEQitems), (a) => a.RebuildEQitems(), Cron.Never);
 
-        backgroundclient.AddOrUpdate<NotableNpcCacheService>(nameof(NotableNpcCacheService.BuildCache) + Servers.Green, (a) => a.BuildCache(), "*/10 * * * *");
+        backgroundclient.AddOrUpdate<NotableNpcCacheService>(nameof(NotableNpcCacheService.BuildCache) + Servers.Green, (a) => a.BuildCache(), "*/20 * * * *");
         backgroundclient.AddOrUpdate<UIDataBuild>(nameof(UIDataBuild.BuildData) + Servers.Green, (a) => a.BuildData(Servers.Green), "*/7 * * * *");
         backgroundclient.AddOrUpdate<UIDataBuild>(nameof(UIDataBuild.BuildData) + Servers.Blue, (a) => a.BuildData(Servers.Blue), "*/30 * * * *");
         backgroundclient.AddOrUpdate<SQLIndexRebuild>(nameof(SQLIndexRebuild.MessageDupFix), (a) => a.MessageDupFix(), Cron.Daily);
