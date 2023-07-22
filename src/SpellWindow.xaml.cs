@@ -19,7 +19,6 @@ namespace EQTool
         private readonly EQToolSettings settings;
         private readonly EQToolSettingsLoad toolSettingsLoad;
         private readonly ActivePlayer activePlayer;
-        private long? LastLogReadOffset;
 
         public SpellWindow(EQToolSettings settings, SpellWindowViewModel spellWindowViewModel, LogParser logParser, EQToolSettingsLoad toolSettingsLoad, ActivePlayer activePlayer, LoggingService loggingService)
         {
@@ -28,12 +27,13 @@ namespace EQTool
             this.logParser = logParser;
             this.activePlayer = activePlayer;
             this.logParser.SpellWornOtherOffEvent += LogParser_SpellWornOtherOffEvent;
+            this.logParser.CampEvent += LogParser_CampEvent;
+            this.logParser.EnteredWorldEvent += LogParser_EnteredWorldEvent;
             this.logParser.SpellWornOffSelfEvent += LogParser_SpellWornOffSelfEvent;
             this.logParser.StartCastingEvent += LogParser_StartCastingEvent;
             this.logParser.DeadEvent += LogParser_DeadEvent;
             this.logParser.StartTimerEvent += LogParser_StartTimerEvent;
             this.logParser.CancelTimerEvent += LogParser_CancelTimerEvent;
-            this.logParser.PlayerChangeEvent += LogParser_PlayerChangeEvent;
             spellWindowViewModel.SpellList = new System.Collections.ObjectModel.ObservableCollection<UISpell>();
             DataContext = this.spellWindowViewModel = spellWindowViewModel;
             if (this.activePlayer.Player != null)
@@ -60,6 +60,22 @@ namespace EQTool
             LocationChanged += DPSMeter_LocationChanged;
             settings.SpellWindowState.Closed = false;
             SaveState();
+        }
+
+        private void LogParser_CampEvent(object sender, LogParser.CampEventArgs e)
+        {
+            TrySaveYouSpellData();
+            toolSettingsLoad.Save(settings);
+            spellWindowViewModel.ClearYouSpells();
+        }
+
+        private void LogParser_EnteredWorldEvent(object sender, LogParser.EnteredWorldArgs e)
+        {
+            spellWindowViewModel.ClearYouSpells();
+            if (activePlayer.Player != null)
+            {
+                spellWindowViewModel.AddSavedYouSpells(activePlayer.Player.YouSpells);
+            }
         }
 
         private void LogParser_SpellWornOffSelfEvent(object sender, LogParser.SpellWornOffSelfEventArgs e)
@@ -100,38 +116,34 @@ namespace EQTool
             StateChanged -= SpellWindow_StateChanged;
             LocationChanged -= DPSMeter_LocationChanged;
             logParser.SpellWornOtherOffEvent -= LogParser_SpellWornOtherOffEvent;
+            logParser.CampEvent -= LogParser_CampEvent;
+            logParser.EnteredWorldEvent -= LogParser_EnteredWorldEvent;
             logParser.SpellWornOffSelfEvent -= LogParser_SpellWornOffSelfEvent;
             logParser.StartCastingEvent -= LogParser_StartCastingEvent;
             logParser.DeadEvent -= LogParser_DeadEvent;
             logParser.StartTimerEvent -= LogParser_StartTimerEvent;
             logParser.CancelTimerEvent -= LogParser_CancelTimerEvent;
-            logParser.PlayerChangeEvent -= LogParser_PlayerChangeEvent;
             SaveState();
             spellWindowViewModel.SpellList = new System.Collections.ObjectModel.ObservableCollection<UISpell>();
             base.OnClosing(e);
         }
 
-        private bool TrySaveYouSpellData()
+        private void TrySaveYouSpellData()
         {
-            var oldLastLogReadOffset = LastLogReadOffset;
-            var logerLastLogReadOffset = logParser.LastLogReadOffset;
-            if (activePlayer.Player != null && oldLastLogReadOffset != logerLastLogReadOffset)
+            if (activePlayer.Player != null)
             {
-                LastLogReadOffset = logerLastLogReadOffset;
                 var before = activePlayer.Player.YouSpells ?? new System.Collections.Generic.List<YouSpells>();
                 activePlayer.Player.YouSpells = spellWindowViewModel.SpellList.Where(a => a.TargetName == EQSpells.SpaceYou).Select(a => new YouSpells
                 {
                     Name = a.SpellName,
                     TotalSecondsLeft = (int)a.SecondsLeftOnSpell.TotalSeconds,
                 }).ToList();
-                return before.Count != activePlayer.Player.YouSpells.Count;
             }
-            return false;
         }
 
         private void SaveState()
         {
-            _ = TrySaveYouSpellData();
+            TrySaveYouSpellData();
             WindowExtensions.SaveWindowState(settings.SpellWindowState, this);
             toolSettingsLoad.Save(settings);
         }
@@ -157,22 +169,8 @@ namespace EQTool
             SaveState();
         }
 
-        private void LogParser_PlayerChangeEvent(object sender, LogParser.PlayerChangeEventArgs e)
-        {
-            LastLogReadOffset = logParser.LastLogReadOffset;
-            if (activePlayer.Player != null)
-            {
-                spellWindowViewModel.AddSavedYouSpells(activePlayer.Player.YouSpells);
-            }
-            spellWindowViewModel.ClearYouSpells();
-        }
-
         private void PollUI(object sender, EventArgs e)
         {
-            if (TrySaveYouSpellData())
-            {
-                toolSettingsLoad.Save(settings);
-            }
             spellWindowViewModel.UpdateSpells();
         }
 

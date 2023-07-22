@@ -1394,7 +1394,12 @@ namespace EQToolShared.Map
                 name = n;
             }
 
-            return ZoneNameMapper.TryGetValue(name, out n) ? n : name;
+            if (ZoneNameMapper.TryGetValue(name, out n))
+            {
+                name = n;
+            }
+
+            return Zones.Any(a => a == name) ? name : string.Empty;
         }
 
         public static string Match(string message)
@@ -1416,7 +1421,10 @@ namespace EQToolShared.Map
                 if (inindex != -1)
                 {
                     message = message.Substring(inindex + spaceinspace.Length).Trim().TrimEnd('.').ToLower();
-                    return message;
+                    if (message != "everquest")
+                    {
+                        return message;
+                    }
                 }
             }
 

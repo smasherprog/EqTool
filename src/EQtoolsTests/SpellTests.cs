@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using EQTool.Models;
 using EQTool.Services;
+using EQTool.Services.Parsing;
 using EQTool.Services.Spells.Log;
 using EQTool.ViewModels;
 using EQToolShared.Enums;
@@ -939,7 +940,7 @@ namespace EQToolTests
         public void DateParseTest()
         {
             var line = "Sat Oct 08 11:31:38 2022";
-            var d = LogParser.Parse(line);
+            var d = LogFileDateTimeParse.ParseDateTime(line);
             Assert.AreEqual(d.ToString(), "10/8/2022 11:31:38 AM");
         }
 
@@ -972,7 +973,6 @@ namespace EQToolTests
             logparser.ConEvent += (a, b) => Assert.Fail("DontHit");
             logparser.DeadEvent += (a, b) => Assert.Fail("DontHit");
             logparser.FightHitEvent += (a, b) => Assert.Fail("DontHit");
-            logparser.PlayerChangeEvent += (a, b) => Assert.Fail("DontHit");
             logparser.PlayerZonedEvent += (a, b) => Assert.Fail("DontHit");
             logparser.PlayerLocationEvent += (a, b) => Assert.Fail("DontHit");
             logparser.Push(line);

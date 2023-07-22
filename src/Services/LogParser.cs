@@ -1,12 +1,12 @@
 ﻿using EQTool.Models;
 using EQTool.Services.Map;
+using EQTool.Services.Parsing;
 using EQTool.Services.Spells.Log;
 using EQTool.ViewModels;
 using EQToolShared.Map;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Windows.Media.Media3D;
@@ -30,10 +30,14 @@ namespace EQTool.Services
         private readonly SpellLogParse spellLogParse;
         private readonly SpellWornOffLogParse spellWornOffLogParse;
         private readonly PlayerWhoLogParse playerWhoLogParse;
+        private readonly EnterWorldParser enterWorldParser;
         private bool StartingWhoOfZone = false;
         private bool Processing = false;
+        private bool StillCamping = false;
+        private bool HasUsedStartupEnterWorld = false;
 
         public LogParser(
+            EnterWorldParser enterWorldParser,
             SpellWornOffLogParse spellWornOffLogParse,
             SpellLogParse spellLogParse,
             LogCustomTimer logCustomTimer,
@@ -48,6 +52,7 @@ namespace EQTool.Services
             LevelLogParse levelLogParse,
             PlayerWhoLogParse playerWhoLogParse)
         {
+            this.enterWorldParser = enterWorldParser;
             this.spellWornOffLogParse = spellWornOffLogParse;
             this.spellLogParse = spellLogParse;
             this.logCustomTimer = logCustomTimer;
@@ -66,11 +71,7 @@ namespace EQTool.Services
             UITimer.Enabled = true;
         }
 
-        public class PlayerChangeEventArgs : EventArgs
-        {
-        }
-
-        public long? LastLogReadOffset { get; private set; } = null;
+        private long? LastLogReadOffset { get; set; } = null;
 
         public class PlayerZonedEventArgs : EventArgs
         {
@@ -124,9 +125,9 @@ namespace EQTool.Services
         {
             public EQToolShared.APIModels.PlayerControllerModels.Player PlayerInfo { get; set; }
         }
-        public class WhoEventArgs : EventArgs
-        {
-        }
+        public class WhoEventArgs : EventArgs { }
+        public class CampEventArgs : EventArgs { }
+        public class EnteredWorldArgs : EventArgs { }
 
         public event EventHandler<WhoEventArgs> WhoEvent;
 
@@ -148,12 +149,13 @@ namespace EQTool.Services
 
         public event EventHandler<FightHitEventArgs> FightHitEvent;
 
-        public event EventHandler<PlayerChangeEventArgs> PlayerChangeEvent;
-
         public event EventHandler<PlayerZonedEventArgs> PlayerZonedEvent;
 
         public event EventHandler<PlayerLocationEventArgs> PlayerLocationEvent;
 
+        public event EventHandler<CampEventArgs> CampEvent;
+
+        public event EventHandler<EnteredWorldArgs> EnteredWorldEvent;
 
         public void Push(string log)
         {
@@ -161,19 +163,6 @@ namespace EQTool.Services
             {
                 MainRun(log);
             });
-        }
-
-        public static DateTime Parse(string datestamp)
-        {
-            var format = "ddd MMM dd HH:mm:ss yyyy";
-            try
-            {
-                return DateTime.ParseExact(datestamp, format, CultureInfo.InvariantCulture);
-            }
-            catch (FormatException)
-            {
-            }
-            return DateTime.Now;
         }
 
         private void MainRun(string line1)
@@ -191,11 +180,41 @@ namespace EQTool.Services
                     return;
                 }
 
-                var timestamp = Parse(date);
+                var timestamp = LogFileDateTimeParse.ParseDateTime(date);
                 var pos = locationParser.Match(message);
                 if (pos.HasValue)
                 {
-                    PlayerLocationEvent?.Invoke(this, new PlayerLocationEventArgs { Location = pos.Value, PlayerInfo=activePlayer.Player });
+                    PlayerLocationEvent?.Invoke(this, new PlayerLocationEventArgs { Location = pos.Value, PlayerInfo = activePlayer.Player });
+                    return;
+                }
+
+                if (message == "It will take about 5 more seconds to prepare your camp.")
+                {
+                    StillCamping = true;
+                    _ = System.Threading.Tasks.Task.Factory.StartNew(() =>
+                    {
+                        System.Threading.Thread.Sleep(1000 * 6);
+                        if (StillCamping)
+                        {
+                            appDispatcher.DispatchUI(() =>
+                            {
+                                Debug.WriteLine("CampEvent");
+                                CampEvent?.Invoke(this, new CampEventArgs());
+                            });
+                        }
+                    });
+                    return;
+                }
+                else if (message == "You abandon your preparations to camp.")
+                {
+                    StillCamping = false;
+                    return;
+                }
+                else if (message == "Welcome to EverQuest!")
+                {
+                    HasUsedStartupEnterWorld = true;
+                    Debug.WriteLine("EnteredWorldEvent In Game");
+                    EnteredWorldEvent?.Invoke(this, new EnteredWorldArgs());
                     return;
                 }
 
@@ -289,6 +308,7 @@ namespace EQTool.Services
                     PlayerZonedEvent?.Invoke(this, new PlayerZonedEventArgs { Zone = matchedzone });
                     return;
                 }
+
             }
             catch (Exception e)
             {
@@ -332,16 +352,39 @@ namespace EQTool.Services
                     }
 
                     var fileinfo = new FileInfo(filepath);
+                    var newplayerdetected = false;
                     if (!LastLogReadOffset.HasValue || (LastLogReadOffset > fileinfo.Length && fileinfo.Length > 0))
                     {
                         Debug.WriteLine($"Player Switched or new Player detected {filepath} {fileinfo.Length}");
                         LastLogReadOffset = fileinfo.Length;
-                        PlayerChangeEvent?.Invoke(this, new PlayerChangeEventArgs());
+                        StillCamping = false;
+                        newplayerdetected = true;
                     }
                     var linelist = new List<string>();
                     using (var stream = new FileStream(filepath, FileMode.Open, FileAccess.Read))
                     using (var reader = new StreamReader(stream))
                     {
+                        var lookbacksize = 4000;
+                        if (newplayerdetected && LastLogReadOffset.Value > lookbacksize)
+                        {
+                            _ = stream.Seek(LastLogReadOffset.Value - lookbacksize, SeekOrigin.Begin);
+                            var buffer = new byte[lookbacksize];
+                            _ = stream.Read(buffer, 0, lookbacksize);
+                            using (var ms = new MemoryStream(buffer))
+                            using (var innerstream = new StreamReader(ms))
+                            {
+                                while (!innerstream.EndOfStream)
+                                {
+                                    if (enterWorldParser.HasEnteredWorld(innerstream.ReadLine()))
+                                    {
+                                        HasUsedStartupEnterWorld = true;
+                                        Debug.WriteLine("EnteredWorldEvent Player Changed");
+                                        EnteredWorldEvent?.Invoke(this, new EnteredWorldArgs());
+                                        break;
+                                    }
+                                }
+                            }
+                        }
                         _ = stream.Seek(LastLogReadOffset.Value, SeekOrigin.Begin);
                         while (!reader.EndOfStream)
                         {
@@ -351,6 +394,12 @@ namespace EQTool.Services
                         }
                     }
 
+                    if (!HasUsedStartupEnterWorld && linelist.Any())
+                    {
+                        HasUsedStartupEnterWorld = true;
+                        Debug.WriteLine("EnteredWorldEvent First Time");
+                        EnteredWorldEvent?.Invoke(this, new EnteredWorldArgs());
+                    }
                     foreach (var line in linelist)
                     {
                         MainRun(line);
