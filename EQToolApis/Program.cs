@@ -132,62 +132,10 @@ builder.Services.Configure<DiscordServiceOptions>(options =>
         d.Players = allplayers.Select(a => new AuctionPlayer { EQAuctionPlayerId = a.EQAuctionPlayerId, Name = a.Name }).ToDictionary(a => a.EQAuctionPlayerId);
     }
     return d;
-}).AddSingleton(a =>
-{
-    var d = new NoteableNPCCache();
-    using (var scope = a.CreateScope())
-    {
-        var dbcontext = scope.ServiceProvider.GetRequiredService<EQToolContext>();
-        var zones = ZoneParser.ZoneInfoMap;
-        var dbzones = dbcontext.EQZones.ToList();
-        var notablenpcs = dbcontext.EQNotableNPCs.ToList();
-        foreach (Servers server in Enum.GetValues(typeof(Servers)))
-        {
-            var deathnpcs = dbcontext.EQNotableActivities
-            .Where(a => a.Server == server && a.IsDeath)
-            .GroupBy(a => a.EQNotableNPCId)
-            .Select(a => new
-            {
-                LastDeath = a.OrderByDescending(a => a.EQNotableActivityId).Select(b => b.ActivityTime).FirstOrDefault(),
-                a.FirstOrDefault().EQNotableNPC.Name
-            }).ToList();
-
-            var lastseennpcs = dbcontext.EQNotableActivities
-               .Where(a => a.Server == server && !a.IsDeath)
-               .GroupBy(a => a.EQNotableNPCId)
-               .Select(a => new
-               {
-                   LastSeen = a.OrderByDescending(a => a.EQNotableActivityId).Select(b => b.ActivityTime).FirstOrDefault(),
-                   a.FirstOrDefault().EQNotableNPC.Name
-               }).ToList();
-
-            foreach (var zone in zones)
-            {
-                var dbzone = dbzones.FirstOrDefault(a => a.Name == zone.Key);
-                if (dbzone == null)
-                {
-                    continue;
-                }
-
-                var npcdata = new List<NoteableNPC>();
-                foreach (var npc in zone.Value.NotableNPCs.Where(a => !string.IsNullOrWhiteSpace(a)))
-                {
-                    npcdata.Add(new NoteableNPC
-                    {
-                        LastDeath = deathnpcs.FirstOrDefault(a => a.Name == npc)?.LastDeath,
-                        LastSeen = lastseennpcs.FirstOrDefault(a => a.Name == npc)?.LastSeen,
-                        Name = npc,
-                        EQNotableNPCId = notablenpcs.FirstOrDefault(a => a.Name == npc).EQNotableNPCId
-                    });
-                }
-
-                d.ServerData[(int)server].Zones.Add(zone.Key, npcdata);
-            }
-        }
-    }
-    return d;
 })
+.AddSingleton<NoteableNPCCache>()
 .AddScoped<UIDataBuild>()
+.AddScoped<NotableNpcCacheService>()
 .AddScoped<NpcTrackingService>();
 
 builder.Services.AddMvc();
@@ -216,7 +164,7 @@ using (var scope = app.Services.CreateScope())
         var dbzone = dbzones.FirstOrDefault(a => a.Name == zone.Value.Name);
         if (dbzone != null)
         {
-            foreach (var npc in zone.Value.NotableNPCs.Where(a=> !string.IsNullOrWhiteSpace(a)))
+            foreach (var npc in zone.Value.NotableNPCs.Where(a => !string.IsNullOrWhiteSpace(a)))
             {
                 if (!notablenpcs.Any(a => a.Name == npc))
                 {
@@ -287,6 +235,7 @@ if (isrelease)
         backgroundclient.AddOrUpdate<SQLIndexRebuild>(nameof(SQLIndexRebuild.RebuildEQTunnelAuctionEQTunnelMessages), (a) => a.RebuildEQTunnelAuctionEQTunnelMessages(), Cron.Never);
         backgroundclient.AddOrUpdate<SQLIndexRebuild>(nameof(SQLIndexRebuild.RebuildEQitems), (a) => a.RebuildEQitems(), Cron.Never);
 
+        backgroundclient.AddOrUpdate<NotableNpcCacheService>(nameof(NotableNpcCacheService.BuildCache) + Servers.Green, (a) => a.BuildCache(), "*/10 * * * *");
         backgroundclient.AddOrUpdate<UIDataBuild>(nameof(UIDataBuild.BuildData) + Servers.Green, (a) => a.BuildData(Servers.Green), "*/7 * * * *");
         backgroundclient.AddOrUpdate<UIDataBuild>(nameof(UIDataBuild.BuildData) + Servers.Blue, (a) => a.BuildData(Servers.Blue), "*/30 * * * *");
         backgroundclient.AddOrUpdate<SQLIndexRebuild>(nameof(SQLIndexRebuild.MessageDupFix), (a) => a.MessageDupFix(), Cron.Daily);
@@ -296,8 +245,9 @@ if (isrelease)
         backgroundclient.AddOrUpdate<SQLIndexRebuild>(nameof(SQLIndexRebuild.DeleteApiLogs), (a) => a.DeleteApiLogs(), "0 6 * * *");
 
         var runnow = scope.ServiceProvider.GetRequiredService<IBackgroundJobClient>();
-        runnow.Schedule<UIDataBuild>((a) => a.BuildDataGreen(), TimeSpan.FromSeconds(20));
-        runnow.Schedule<UIDataBuild>((a) => a.BuildDataBlue(), TimeSpan.FromSeconds(10));
+        runnow.Schedule<UIDataBuild>((a) => a.BuildDataGreen(), TimeSpan.FromSeconds(30));
+        runnow.Schedule<UIDataBuild>((a) => a.BuildDataBlue(), TimeSpan.FromSeconds(15));
+        runnow.Schedule<NotableNpcCacheService>((a) => a.BuildCache(), TimeSpan.FromSeconds(10));
     }
 }
 app.Run();
