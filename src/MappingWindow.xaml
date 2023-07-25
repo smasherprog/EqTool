@@ -10,7 +10,7 @@
         Height="450" 
         Width="640"  
         WindowStyle="None"  
-        AllowsTransparency="True">  
+        Background="#1a1919">  
 
     <WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="0" ResizeBorderThickness="5" />

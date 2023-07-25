@@ -175,6 +175,12 @@ namespace EQToolApis.Services
                     : Newtonsoft.Json.JsonConvert.DeserializeObject<List<Message>>(resultstring);
             }
         }
+        public class ThrottledItem
+        {
+            public int ItemId { get; set; }
+
+            public DateTime LastAdd { get; set; }
+        }
 
         public class DiscordJob
         {
@@ -183,10 +189,7 @@ namespace EQToolApis.Services
             private readonly EQToolContext dbcontext;
             private readonly DBData dBData;
             private readonly PlayerCache playerCache;
-            private readonly List<string> IgnoreList = new List<string>()
-            {
-                "Bone Chips"
-            };
+            private readonly List<ThrottledItem>[] ThrottleList = new List<ThrottledItem>[(int)(Servers.Blue + 1)];
 
             public DiscordJob(PlayerCache playerCache, DBData dBData, IDiscordService discordService, EQToolContext dbcontext, IBackgroundJobClient backgroundJobClient)
             {
@@ -195,11 +198,14 @@ namespace EQToolApis.Services
                 this.dbcontext = dbcontext;
                 this.backgroundJobClient = backgroundJobClient;
                 this.discordService = discordService;
+                for (var i = 0; i < ThrottleList.Length; i++)
+                {
+                    ThrottleList[i] = new List<ThrottledItem>();
+                }
             }
 
             private List<EQTunnelMessage> AddMessages(List<Message> messages, Servers server)
             {
-                var itemsadded = 0;
                 var messagesinserted = new List<EQTunnelMessage>();
                 foreach (var item in messages)
                 {
@@ -248,17 +254,11 @@ namespace EQToolApis.Services
                         };
                         foreach (var it in embed.fields)
                         {
-
-                            if (IgnoreList.Contains(it.ItemName))
-                            {
-                                continue;
-                            }
                             if (it.ItemName.ToLower() == "fungus covered scale tunic" && it.Price > 80000 && it.Price < 35000)
                             {
                                 continue;
                             }
 
-                            itemsadded += 1;
                             var eqitem = dbcontext.EQitems.FirstOrDefault(a => a.ItemName == it.ItemName && a.Server == server);
                             if (eqitem == null)
                             {
@@ -271,6 +271,21 @@ namespace EQToolApis.Services
                                 _ = dbcontext.SaveChanges();
                                 _ = Interlocked.Add(ref dBData.TotalUniqueItems, 1);
                             }
+                            if (eqitem.TotalWTBLast90DaysCount > 3000)
+                            {
+                                var iteminthrottlelist = ThrottleList[(int)server].FirstOrDefault(a => a.ItemId == eqitem.EQitemId);
+                                if (iteminthrottlelist == null)
+                                {
+                                    iteminthrottlelist = new ThrottledItem { ItemId = eqitem.EQitemId, LastAdd = DateTime.Now };
+                                    ThrottleList[(int)server].Add(iteminthrottlelist);
+                                }
+                                else if ((DateTime.Now - iteminthrottlelist.LastAdd).TotalMinutes < 5)
+                                {
+                                    continue;
+                                }
+                                iteminthrottlelist.LastAdd = DateTime.Now;
+                            }
+
                             var auctionitem = new EQTunnelAuctionItem
                             {
                                 Server = server,

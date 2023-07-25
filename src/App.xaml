@@ -13,7 +13,7 @@
                     <Setter Property="Background" Value="#E1D9D1" />
                 </DataTrigger>
                 <DataTrigger Binding="{Binding Source={x:Static properties:Settings.Default}, Path=ColorMode}" Value="Dark">
-                    <Setter Property="Background" Value="#333333" />
+                    <Setter Property="Background" Value="#1a1919" />
                 </DataTrigger>
             </Style.Triggers>
         </Style>-->
@@ -47,7 +47,7 @@
                 <DataTrigger Binding="{Binding Source={x:Static properties:Settings.Default}, Path=ColorMode}" Value="Dark">
                     <Setter Property="Background">
                         <Setter.Value>
-                            <SolidColorBrush Color="#333333" />
+                            <SolidColorBrush Color="#1a1919" />
                         </Setter.Value>
                     </Setter>
                     <Setter Property="Foreground">
@@ -79,14 +79,14 @@
                 <DataTrigger Binding="{Binding Source={x:Static properties:Settings.Default}, Path=ColorMode}" Value="Dark">
                     <Setter Property="Background">
                         <Setter.Value>
-                            <SolidColorBrush Color="#121212" Opacity="{Binding Source={x:Static properties:Settings.Default}, Path=GlobalDPSWindowOpacity}" />
+                            <SolidColorBrush Color="#1a1919" Opacity="{Binding Source={x:Static properties:Settings.Default}, Path=GlobalDPSWindowOpacity}" />
                         </Setter.Value>
                     </Setter>
                 </DataTrigger>
                 <DataTrigger Binding="{Binding Source={x:Static properties:Settings.Default}, Path=GlobalDPSWindowOpacity}" Value="Dark">
                     <Setter Property="Background">
                         <Setter.Value>
-                            <SolidColorBrush Color="#121212" Opacity="{Binding Source={x:Static properties:Settings.Default}, Path=GlobalDPSWindowOpacity}" />
+                            <SolidColorBrush Color="#1a1919" Opacity="{Binding Source={x:Static properties:Settings.Default}, Path=GlobalDPSWindowOpacity}" />
                         </Setter.Value>
                     </Setter>
                 </DataTrigger>
@@ -112,14 +112,14 @@
                 <DataTrigger Binding="{Binding Source={x:Static properties:Settings.Default}, Path=ColorMode}" Value="Dark">
                     <Setter Property="Background">
                         <Setter.Value>
-                            <SolidColorBrush Color="#121212" Opacity="{Binding Source={x:Static properties:Settings.Default}, Path=GlobalTriggerWindowOpacity}" />
+                            <SolidColorBrush Color="#1a1919" Opacity="{Binding Source={x:Static properties:Settings.Default}, Path=GlobalTriggerWindowOpacity}" />
                         </Setter.Value>
                     </Setter>
                 </DataTrigger>
                 <DataTrigger Binding="{Binding Source={x:Static properties:Settings.Default}, Path=GlobalTriggerWindowOpacity}" Value="Dark">
                     <Setter Property="Background">
                         <Setter.Value>
-                            <SolidColorBrush Color="#121212" Opacity="{Binding Source={x:Static properties:Settings.Default}, Path=GlobalTriggerWindowOpacity}" />
+                            <SolidColorBrush Color="#1a1919" Opacity="{Binding Source={x:Static properties:Settings.Default}, Path=GlobalTriggerWindowOpacity}" />
                         </Setter.Value>
                     </Setter>
                 </DataTrigger>
@@ -145,14 +145,14 @@
                 <DataTrigger Binding="{Binding Source={x:Static properties:Settings.Default}, Path=ColorMode}" Value="Dark">
                     <Setter Property="Background">
                         <Setter.Value>
-                            <SolidColorBrush Color="#121212" Opacity="{Binding Source={x:Static properties:Settings.Default}, Path=GlobalMapWindowOpacity}" />
+                            <SolidColorBrush Color="#1a1919" Opacity="{Binding Source={x:Static properties:Settings.Default}, Path=GlobalMapWindowOpacity}" />
                         </Setter.Value>
                     </Setter>
                 </DataTrigger>
                 <DataTrigger Binding="{Binding Source={x:Static properties:Settings.Default}, Path=GlobalMapWindowOpacity}" Value="Dark">
                     <Setter Property="Background">
                         <Setter.Value>
-                            <SolidColorBrush Color="#121212" Opacity="{Binding Source={x:Static properties:Settings.Default}, Path=GlobalMapWindowOpacity}" />
+                            <SolidColorBrush Color="#1a1919" Opacity="{Binding Source={x:Static properties:Settings.Default}, Path=GlobalMapWindowOpacity}" />
                         </Setter.Value>
                     </Setter>
                 </DataTrigger> 
@@ -165,7 +165,7 @@
                     <Setter Property="Background" Value="#E1D9D1" />
                 </DataTrigger>
                 <DataTrigger Binding="{Binding Source={x:Static properties:Settings.Default}, Path=ColorMode}" Value="Dark">
-                    <Setter Property="Background" Value="#121212" />
+                    <Setter Property="Background" Value="#1a1919" />
                 </DataTrigger>
             </Style.Triggers>
         </Style>
@@ -173,7 +173,7 @@
             <Setter Property="FontSize" Value="{Binding Source={x:Static properties:Settings.Default}, Path=GlobalFontSize}" />
             <Style.Triggers>
                 <DataTrigger Binding="{Binding Source={x:Static properties:Settings.Default}, Path=ColorMode}" Value="Light">
-                    <Setter Property="Foreground" Value="#121212" />
+                    <Setter Property="Foreground" Value="#1a1919" />
                 </DataTrigger>
                 <DataTrigger Binding="{Binding Source={x:Static properties:Settings.Default}, Path=ColorMode}" Value="Dark">
                     <Setter Property="Foreground" Value="WhiteSmoke" />

@@ -102,14 +102,17 @@ namespace EQTool.Services.Spells.Log
                             activePlayer.Player.PlayerClass = PlayerClasses.Rogue;
                         }
                     }
-
-                    return new DPSParseMatch
+                    var bignumber = long.Parse(damagedone);
+                    if (bignumber < int.MaxValue)
                     {
-                        SourceName = nameofattacker,
-                        DamageDone = int.Parse(damagedone),
-                        TimeStamp = date,
-                        TargetName = nameoftarget
-                    };
+                        return new DPSParseMatch
+                        {
+                            SourceName = nameofattacker,
+                            DamageDone = (int)bignumber,
+                            TimeStamp = date,
+                            TargetName = nameoftarget
+                        };
+                    }
                 }
             }
 
