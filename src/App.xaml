@@ -40,14 +40,14 @@
                 <DataTrigger Binding="{Binding Source={x:Static properties:Settings.Default}, Path=ColorMode}" Value="Light">
                     <Setter Property="Background">
                         <Setter.Value>
-                            <SolidColorBrush Color="#E1D9D1" />
+                            <SolidColorBrush Color="#1a1919" Opacity=".95" />
                         </Setter.Value>
                     </Setter>
                 </DataTrigger>
                 <DataTrigger Binding="{Binding Source={x:Static properties:Settings.Default}, Path=ColorMode}" Value="Dark">
                     <Setter Property="Background">
                         <Setter.Value>
-                            <SolidColorBrush Color="#1a1919" />
+                            <SolidColorBrush Color="#1a1919" Opacity=".95"  />
                         </Setter.Value>
                     </Setter>
                     <Setter Property="Foreground">

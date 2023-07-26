@@ -9,8 +9,9 @@
         Title="{Binding Title}" 
         Height="450" 
         Width="640"  
-        WindowStyle="None"  
-        Background="#1a1919">  
+        WindowStyle="None"    
+        AllowsTransparency="True"
+        >  
 
     <WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="0" ResizeBorderThickness="5" />
@@ -21,7 +22,7 @@
             <GradientStop Color="Gray" Offset="1"/>
         </LinearGradientBrush>
     </Window.Resources>
-    <Border Background="Transparent" CornerRadius="5" BorderBrush="{StaticResource WindowFrameBrush}" BorderThickness="1,0,1,1">
+    <Border  CornerRadius="5" BorderBrush="{StaticResource WindowFrameBrush}" BorderThickness="1,0,1,1">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="20" />
