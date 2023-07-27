@@ -71,7 +71,7 @@ namespace EQToolApis.Pages
                         {
                             def.RangeTimeNPCDateTime.Add(new RangeTimeNPCDateTime
                             {
-                                BegWindow = def.EventTime.Value.AddDays(3).AddMinutes(-432),
+                                BegWindow = def.EventTime.Value,
                                 EndWindow = def.EventTime.Value.AddDays(3).AddMinutes(432)
                             });
                         }
