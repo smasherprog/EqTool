@@ -54,8 +54,7 @@ Features:
 <h4>TO DO List EQTool</h4>
 <ul>  
  <li>Add cooldowntimer for discs.</li>   
- <li>Add group suggestions for each raid mob in game.</li>   
- <li>Fix Map to not respect aspect ratio of map.</li>   
+ <li>Add group suggestions for each raid mob in game.</li>    
  <li>Fix discipline timers.</li>   
  <li>Make timers resetable.</li>   
  <li>Fix buff timers when updating.</li> 
