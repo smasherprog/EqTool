@@ -23,7 +23,7 @@ namespace EQToolApis.Pages
             var keyname = new List<KeyValuePair<string, string>>()
             {
                 new KeyValuePair<string, string>("westwastes", "Scout Charisa"),
-                new KeyValuePair<string, string>("westwastes", "A Kromzek Captain"),
+                new KeyValuePair<string, string>("westwastes", "a Kromzek Captain"),
                 new KeyValuePair<string, string>("droga", "An angry goblin"),
                 new KeyValuePair<string, string>("droga", "Warlord Skargus"),
                 new KeyValuePair<string, string>("warslikswood", "A shady goblin")
@@ -52,7 +52,7 @@ namespace EQToolApis.Pages
                                 def.FixedTimeNPCDateTimes.Add(def.EventTime.Value.AddHours(10 * i));
                             }
                         }
-                        else if (n.Name == "A Kromzek Captain" && def.EventTime.HasValue)
+                        else if (n.Name == "a Kromzek Captain" && def.EventTime.HasValue)
                         {
                             for (var i = 1; i <= 5; i++)
                             {
