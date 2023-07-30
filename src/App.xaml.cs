@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Reflection;
 using System.Text;
@@ -154,6 +155,7 @@ namespace EQTool
 
         private void App_Startup(object sender, StartupEventArgs e)
         {
+            ServicePointManager.ServerCertificateValidationCallback += (sender1, cert, chain, sslPolicyErrors) => true;
             if (ShouldShutDownDueToNoWriteAccess())
             {
                 App.Current.Shutdown();
