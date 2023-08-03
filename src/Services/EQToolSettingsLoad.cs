@@ -98,9 +98,9 @@ namespace EQTool.Services
                     File.WriteAllText("settings.json", txt);
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                loggingService.Log(e.ToString(), App.EventType.Error);
+                //loggingService.Log(e.ToString(), App.EventType.Error);
             }
         }
     }
