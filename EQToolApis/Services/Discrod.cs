@@ -245,7 +245,7 @@ namespace EQToolApis.Services
                 var messages2 = AddMessages(possiblemessages2, server);
                 if (messages2.Any())
                 {
-                    var id = messages2.Select(a => a.id).OrderByDescending(a => a).FirstOrDefault();
+                    var id = messages2.Select(a => a.DiscordMessageId).OrderByDescending(a => a).FirstOrDefault();
                     var oldid = dBData.ServerData[(int)server].OrderByDescendingDiscordMessageId.Value;
                     lock (dBData)
                     {
