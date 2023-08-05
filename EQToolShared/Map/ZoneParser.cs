@@ -19,6 +19,8 @@ namespace EQToolShared.Map
         private const string Youhaveentered = "You have entered ";
         private const string Therearenoplayers = "There are no players ";
         private const string Thereare = "There are ";
+        private const string Thereis = "There is ";
+        private const string Youhaveenteredareapvp = "You have entered an Arena (PvP) area.";
         private const string spaceinspace = " in ";
 
         public static readonly Dictionary<string, string> ZoneNameMapper = new Dictionary<string, string>();
@@ -1405,7 +1407,7 @@ namespace EQToolShared.Map
         public static string Match(string message)
         {
             //Debug.WriteLine($"ZoneParse: " + message);
-            if (message.StartsWith(Therearenoplayers))
+            if (message.StartsWith(Therearenoplayers) || message.StartsWith(Youhaveenteredareapvp))
             {
                 return string.Empty;
             }
@@ -1417,6 +1419,19 @@ namespace EQToolShared.Map
             else if (message.StartsWith(Thereare))
             {
                 message = message.Replace(Thereare, string.Empty).Trim();
+                var inindex = message.IndexOf(spaceinspace);
+                if (inindex != -1)
+                {
+                    message = message.Substring(inindex + spaceinspace.Length).Trim().TrimEnd('.').ToLower();
+                    if (message != "everquest")
+                    {
+                        return message;
+                    }
+                }
+            }
+            else if (message.StartsWith(Thereis))
+            {
+                message = message.Replace(Thereis, string.Empty).Trim();
                 var inindex = message.IndexOf(spaceinspace);
                 if (inindex != -1)
                 {
