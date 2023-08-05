@@ -495,6 +495,13 @@
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
     </None>
+    <EmbeddedResource Include="Spells\spells01.tga" />
+    <EmbeddedResource Include="Spells\spells02.tga" />
+    <EmbeddedResource Include="Spells\spells03.tga" />
+    <EmbeddedResource Include="Spells\spells04.tga" />
+    <EmbeddedResource Include="Spells\spells05.tga" />
+    <EmbeddedResource Include="Spells\spells06.tga" />
+    <EmbeddedResource Include="Spells\spells07.tga" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="HyperlinkForward.png" />

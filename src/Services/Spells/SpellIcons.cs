@@ -27,16 +27,14 @@ namespace EQTool.Services
             }
 
             var ret = new List<SpellIcon>();
-            var directory = new DirectoryInfo(settings.DefaultEqDirectory + "/uifiles/default/");
-            if (directory.Exists)
+            var list = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceNames();
+            var resourcenames = list.Where(a => a.ToLower().StartsWith("eqtool.spells.")).ToList();
+            foreach (var item in resourcenames)
             {
-                var spellimages = directory.GetFiles()
-                    .Where(a => a.Name.StartsWith("spells0") && a.Name.EndsWith(".tga"))
-                    .ToList();
-                foreach (var item in spellimages)
+                using (var stream = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream(item))
                 {
-                    var img = TGA.FromFile(item.FullName);
-                    var numberonly = new string(item.Name.Where(a => char.IsNumber(a)).ToArray());
+                    var img = TGA.FromStream(stream);
+                    var numberonly = new string(item.Where(a => char.IsNumber(a)).ToArray());
                     var index = int.Parse(numberonly);
                     var i = new SpellIcon
                     {
@@ -45,9 +43,9 @@ namespace EQTool.Services
                     };
                     ret.Add(i);
                 }
-                _SpellIcons = ret;
-            }
 
+            }
+            _SpellIcons = ret;
             return ret;
         }
 
