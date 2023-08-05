@@ -48,6 +48,7 @@
     <Compile Include="APIModels\ItemControllerModels.cs" />
     <Compile Include="APIModels\PlayerControllerModels.cs" />
     <Compile Include="APIModels\ZoneControllerModels.cs" />
+    <Compile Include="Discord\Models.cs" />
     <Compile Include="Enums\AuctionType.cs" />
     <Compile Include="Enums\EventType.cs" />
     <Compile Include="Enums\PlayerClasses.cs" />
