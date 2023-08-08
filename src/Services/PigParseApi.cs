@@ -71,6 +71,22 @@ namespace EQTool.Services
             }
         }
 
+        public void SendQuake()
+        {
+            try
+            {
+                var url = $"https://pigparse.azurewebsites.net/api/zone/quake";
+                var json = "{}";
+                var data = new StringContent(json, Encoding.UTF8, "application/json");
+                var res = App.httpclient.PostAsync(url, data).Result;
+                if (res.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    _ = res.Content.ReadAsStringAsync().Result;
+                }
+            }
+            catch { }
+        }
+
         public List<Player> GetPlayerData(List<string> players, Servers server)
         {
             try

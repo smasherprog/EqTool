@@ -286,6 +286,12 @@ namespace EQTool
             }
             PlayerTrackerService = container.Resolve<PlayerTrackerService>();
             ZoneActivityTrackingService = container.Resolve<ZoneActivityTrackingService>();
+            logParser.QuakeEvent += LogParser_QuakeEvent;
+        }
+
+        private void LogParser_QuakeEvent(object sender, LogParser.QuakeArgs e)
+        {
+            container.Resolve<PigParseApi>().SendQuake();
         }
 
         private bool updatecalled = false;

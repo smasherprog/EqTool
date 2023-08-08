@@ -31,12 +31,15 @@ namespace EQTool.Services
         private readonly SpellWornOffLogParse spellWornOffLogParse;
         private readonly PlayerWhoLogParse playerWhoLogParse;
         private readonly EnterWorldParser enterWorldParser;
+        private readonly QuakeParser quakeParser;
+
         private bool StartingWhoOfZone = false;
         private bool Processing = false;
         private bool StillCamping = false;
         private bool HasUsedStartupEnterWorld = false;
 
         public LogParser(
+            QuakeParser quakeParser,
             EnterWorldParser enterWorldParser,
             SpellWornOffLogParse spellWornOffLogParse,
             SpellLogParse spellLogParse,
@@ -52,6 +55,7 @@ namespace EQTool.Services
             LevelLogParse levelLogParse,
             PlayerWhoLogParse playerWhoLogParse)
         {
+            this.quakeParser = quakeParser;
             this.enterWorldParser = enterWorldParser;
             this.spellWornOffLogParse = spellWornOffLogParse;
             this.spellLogParse = spellLogParse;
@@ -129,11 +133,15 @@ namespace EQTool.Services
         public class CampEventArgs : EventArgs { }
         public class EnteredWorldArgs : EventArgs { }
 
+        public class QuakeArgs : EventArgs { }
+
         public event EventHandler<WhoEventArgs> WhoEvent;
 
         public event EventHandler<WhoPlayerEventArgs> WhoPlayerEvent;
 
         public event EventHandler<SpellWornOffSelfEventArgs> SpellWornOffSelfEvent;
+
+        public event EventHandler<QuakeArgs> QuakeEvent;
 
         public event EventHandler<SpellWornOffOtherEventArgs> SpellWornOtherOffEvent;
 
@@ -289,6 +297,13 @@ namespace EQTool.Services
                 if (spells.Any())
                 {
                     SpellWornOffSelfEvent?.Invoke(this, new SpellWornOffSelfEventArgs { SpellNames = spells });
+                    return;
+                }
+
+                var quaked = quakeParser.IsQuake(message);
+                if (spells.Any())
+                {
+                    QuakeEvent?.Invoke(this, new QuakeArgs());
                     return;
                 }
 

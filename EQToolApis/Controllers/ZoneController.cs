@@ -44,5 +44,20 @@ namespace EQToolApis.Controllers
             }
             notableNpcService.Add(model, ip);
         }
+
+        [Route("quake"), HttpPost]
+        public void Quake()
+        {
+            var ip = HttpContext.Connection.RemoteIpAddress?.ToString();
+            if (string.IsNullOrWhiteSpace(ip) || dbcontext.IPBans.Any(a => a.IpAddress == ip))
+            {
+                return;
+            }
+            var d = DateTimeOffset.UtcNow.AddHours(-2);
+            if (!dbcontext.QuakeTimes.Any(a => a.DateTime > d))
+            {
+                _ = dbcontext.QuakeTimes.Add(new DB.Models.QuakeTime { DateTime = DateTimeOffset.UtcNow });
+            }
+        }
     }
 }
