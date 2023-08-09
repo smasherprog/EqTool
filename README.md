@@ -52,18 +52,18 @@ Features:
 <img width="152" alt="image" src="https://user-images.githubusercontent.com/3393733/212717141-6e26b9af-660a-493d-9f73-2c3464b7c224.png">
 
 <h4>TO DO List EQTool</h4>
-<ul>  
+<ul>    
+ <li>Add Ability to bind a hotkey to toggle a window open/close.</li>   
  <li>Add cooldowntimer for discs.</li>   
  <li>Add group suggestions for each raid mob in game.</li>    
  <li>Fix discipline timers.</li>   
  <li>Make timers resetable.</li>   
- <li>Fix buff timers when updating.</li> 
+ <li>Fix buff timers when updating, when update occurs buffs dissapear.</li> 
   <li>Add zone dump of names.</li> 
  <li>Add context menu to toggle pather vs static.</li> 
  <li>Add timers for cooldowns on abilities, like mend, defensive, etc.</li> 
  <li>Add code to detect pet and always show buffs for your pet.</li> 
-<li>Tab under Mob info window for last few minutes of Random rolls ordered by highest to lowest. </li>  
-<li>Extend Mob Info Window to show Players. Add note field to window that is saved locally. </li> 
+<li>Tab under Mob info window for last few minutes of Random rolls ordered by highest to lowest. </li>   
 <li>Add visual cue that buff is under 1 minute left. </li> 
 <li>Add option to enable OTHERS hits for DPS meter. </li> 
 <li>Show others on map</li>   
