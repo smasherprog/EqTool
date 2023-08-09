@@ -53,6 +53,7 @@ Features:
 
 <h4>TO DO List EQTool</h4>
 <ul>    
+ <li>Port application to be cross platform(mac, win, linux).</li>   
  <li>Add Ability to bind a hotkey to toggle a window open/close.</li>   
  <li>Add cooldowntimer for discs.</li>   
  <li>Add group suggestions for each raid mob in game.</li>    
