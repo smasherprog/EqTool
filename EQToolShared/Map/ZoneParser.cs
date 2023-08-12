@@ -132,7 +132,7 @@ namespace EQToolShared.Map
                 ZoneLevelHeight = 10,
                 NotableNPCs = new List<string>()
                 {
-                    "",
+                    "Vessel Drozlin",
                 },
                 RespawnTime = new TimeSpan(0, 6, 40)
             });
@@ -319,7 +319,7 @@ namespace EQToolShared.Map
                 ZoneLevelHeight = 10,
                 NotableNPCs = new List<string>()
                 {
-                    "",
+                    "Engorged Soulsipper", "Severilous", "Totem Fiendling",
                 },
                 RespawnTime = new TimeSpan(0, 6, 40)
             });
@@ -374,7 +374,7 @@ namespace EQToolShared.Map
                 ZoneLevelHeight = 10,
                 NotableNPCs = new List<string>()
                 {
-                    "",
+                    "Fright","Dread", "Terror", "Dracoliche", "Cazic Thule"
                 },
                 RespawnTime = new TimeSpan(8, 0, 0)
             });
@@ -572,7 +572,7 @@ namespace EQToolShared.Map
                 ZoneLevelHeight = 10,
                 NotableNPCs = new List<string>()
                 {
-                    "",
+                    "Ashenbone Broodmaster", "Avatar of Abhorrence", "Coercer T`vala", "Grandmaster R`Tal", "High Priest M`kari", "Lord of Ire", "Lord of Loathing", "Magi P`Tasa", "Master of Spite", "Mistress of Scorn", "Maestro of Rancor", "Innoruuk"
                 },
                 RespawnTime = new TimeSpan(0, 6, 40)
             });
