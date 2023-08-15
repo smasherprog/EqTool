@@ -9,7 +9,7 @@ namespace EQToolApis.Hubs
     {
         private static readonly ConcurrentDictionary<string, Player> connections = new ConcurrentDictionary<string, Player>();
 
-        public async Task SendPlayerLocation(PlayerLocation playerLocation)
+        public async Task SendPlayerEvent(PlayerEventData playerLocation)
         {
             var player = new Player
             {
