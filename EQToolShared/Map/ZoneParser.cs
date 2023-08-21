@@ -605,7 +605,7 @@ namespace EQToolShared.Map
                 ZoneLevelHeight = 10,
                 NotableNPCs = new List<string>()
                 {
-                    "",
+                    "Bejeweled Elemental","Commander Yarik","Caradon","Dartain the Lost","Ghost of Kindle","Ghost of Glohnor","Gibartik","High Scale Kirn","Initiate Sirlis","Irslak the Wretched","Jaeil the Wretched","Keeper of the Tombs","Kejar the Mighty","Master Yael","Niltoth the Unholy","Nortlav the Scalekeeper","Polzin Mrid","a ratman guard","Rocksoul","Schnozz the Flighty","Stonegrinder Minion","Stonesoul the Unmoving","Ulrik the Devout",
                 },
                 RespawnTime = new TimeSpan(0, 21, 30)
             });
