@@ -301,7 +301,7 @@ namespace EQTool.Services
                 }
 
                 var quaked = quakeParser.IsQuake(message);
-                if (spells.Any())
+                if (quaked)
                 {
                     QuakeEvent?.Invoke(this, new QuakeArgs());
                     return;
