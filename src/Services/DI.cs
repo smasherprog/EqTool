@@ -30,7 +30,8 @@ namespace EQTool.Services
             _ = builder.RegisterType<LoggingService>().AsSelf().SingleInstance();
             _ = builder.RegisterType<PlayerTrackerService>().AsSelf().SingleInstance();
             _ = builder.RegisterType<ZoneActivityTrackingService>().AsSelf().SingleInstance();
-
+            _ = builder.RegisterType<TimersService>().AsSelf().SingleInstance();
+            
             return builder.Build();
         }
     }

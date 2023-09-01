@@ -18,6 +18,12 @@ using static EQTool.Services.MapLoad;
 
 namespace EQTool.ViewModels
 {
+    public class PlayerLocationCircle
+    {
+        public Ellipse Ellipse;
+        public ArrowLine ArrowLine;
+    }
+
     public class MapViewModel : INotifyPropertyChanged
     {
         private readonly MapLoad mapLoad;
@@ -28,8 +34,8 @@ namespace EQTool.ViewModels
         private Point _mouseuppoint;
         private Point3D MapOffset = new Point3D(0, 0, 0);
         private bool MapLoading = false;
-        private ArrowLine PlayerLocationIcon;
-        private Ellipse PlayerLocationCircle;
+        private PlayerLocationCircle PlayerLocation;
+        private Ellipse PlayerTrackRadius;
         private UIElementCollection Children;
         private float CurrentScaling = 1.0f;
         private readonly float Zoomfactor = 1.1f;
@@ -37,7 +43,7 @@ namespace EQTool.ViewModels
         private UIElement _selectedElement;
         private Vector _draggingDelta;
         private bool TimerOpen = false;
-        private readonly List<MapWidget> TimerWidgets = new List<MapWidget>();
+        private readonly TimersService timersService;
 
         public string MouseLocation => $"   {LastMouselocation.Y:0.##}, {LastMouselocation.X:0.##}";
         public double ZoneLabelFontSize => MathHelper.ChangeRange(Math.Max(AABB.MaxWidth, AABB.MaxHeight), 500, 35000, 14, 170);
@@ -46,8 +52,9 @@ namespace EQTool.ViewModels
 
         public AABB AABB = new AABB();
 
-        public MapViewModel(MapLoad mapLoad, ActivePlayer activePlayer, LoggingService loggingService)
+        public MapViewModel(MapLoad mapLoad, ActivePlayer activePlayer, LoggingService loggingService, TimersService timersService)
         {
+            this.timersService = timersService;
             this.mapLoad = mapLoad;
             this.activePlayer = activePlayer;
             this.loggingService = loggingService;
@@ -191,38 +198,45 @@ namespace EQTool.ViewModels
 
                     var playerlocsize = MathHelper.ChangeRange(Math.Max(map.AABB.MaxWidth, map.AABB.MaxHeight), 500, 35000, 40, 1750);
                     var playerstrokthickness = MathHelper.ChangeRange(Math.Max(map.AABB.MaxWidth, map.AABB.MaxHeight), 500, 35000, 3, 40);
-                    PlayerLocationCircle = new Ellipse
+                    PlayerLocation = new PlayerLocationCircle
                     {
-                        Name = "PlayerLocationCircle",
-                        Height = playerlocsize / 4,
-                        Width = playerlocsize / 4,
-                        Stroke = new SolidColorBrush(System.Windows.Media.Color.FromRgb(61, 235, 52)),
-                        StrokeThickness = playerstrokthickness,
-                        RenderTransform = new RotateTransform()
+                        Ellipse = new Ellipse()
+                        {
+                            Height = playerlocsize / 4,
+                            Width = playerlocsize / 4,
+                            Stroke = new SolidColorBrush(System.Windows.Media.Color.FromRgb(61, 235, 52)),
+                            StrokeThickness = playerstrokthickness,
+                            RenderTransform = new RotateTransform()
+                        },
+                        ArrowLine = new ArrowLine()
+                        {
+                            Stroke = new SolidColorBrush(System.Windows.Media.Color.FromRgb(61, 235, 52)),
+                            StrokeThickness = playerstrokthickness,
+                            X1 = 0,
+                            Y1 = 0,
+                            X2 = 0,
+                            Y2 = playerlocsize,
+                            ArrowLength = playerlocsize / 4,
+                            ArrowEnds = ArrowEnds.End,
+                            RotateTransform = new RotateTransform()
+                        }
                     };
 
-                    _ = Children.Add(PlayerLocationCircle);
-                    Canvas.SetLeft(PlayerLocationCircle, AABB.Center.X + PlayerLocationCircle.Height + (PlayerLocationCircle.Height / 2));
-                    Canvas.SetTop(PlayerLocationCircle, AABB.Center.Y + PlayerLocationCircle.Height + (PlayerLocationCircle.Height / 2));
+                    _ = Children.Add(PlayerLocation.Ellipse);
+                    Canvas.SetLeft(PlayerLocation.Ellipse, AABB.Center.X + PlayerLocation.Ellipse.Height + (PlayerLocation.Ellipse.Height / 2));
+                    Canvas.SetTop(PlayerLocation.Ellipse, AABB.Center.Y + PlayerLocation.Ellipse.Height + (PlayerLocation.Ellipse.Height / 2));
 
-                    PlayerLocationIcon = new ArrowLine
+                    _ = Children.Add(PlayerLocation.ArrowLine);
+                    Canvas.SetLeft(PlayerLocation.ArrowLine, AABB.Center.X + (playerlocsize / 2));
+                    Canvas.SetTop(PlayerLocation.ArrowLine, AABB.Center.Y + (playerlocsize / 2));
+                    var widgets = timersService.LoadTimersForZone(ZoneName);
+                    foreach (var mw in widgets)
                     {
-                        Name = "PlayerLocation",
-                        Stroke = new SolidColorBrush(System.Windows.Media.Color.FromRgb(61, 235, 52)),
-                        StrokeThickness = playerstrokthickness,
-                        X1 = 0,
-                        Y1 = 0,
-                        X2 = 0,
-                        Y2 = playerlocsize,
-                        ArrowLength = playerlocsize / 4,
-                        ArrowEnds = ArrowEnds.End,
-                        RotateTransform = new RotateTransform()
-                    };
-
-                    _ = Children.Add(PlayerLocationIcon);
-                    Canvas.SetLeft(PlayerLocationIcon, AABB.Center.X + (playerlocsize / 2));
-                    Canvas.SetTop(PlayerLocationIcon, AABB.Center.Y + (playerlocsize / 2));
-
+                        _ = Children.Add(mw);
+                        Canvas.SetTop(mw, (mw.Tag as TimerInfo).Location.Y);
+                        Canvas.SetLeft(mw, (mw.Tag as TimerInfo).Location.X);
+                        mw.RenderTransform = Transform;
+                    }
                     return true;
                 }
 
@@ -264,8 +278,9 @@ namespace EQTool.ViewModels
 
         public void MoveToPlayerLocation(MapWidget mw)
         {
-            Canvas.SetLeft(mw, Canvas.GetLeft(PlayerLocationIcon));
-            Canvas.SetTop(mw, Canvas.GetTop(PlayerLocationIcon));
+            (mw.Tag as TimerInfo).Location = new Point(Canvas.GetLeft(PlayerLocation.ArrowLine), Canvas.GetTop(PlayerLocation.ArrowLine));
+            Canvas.SetLeft(mw, Canvas.GetLeft(PlayerLocation.ArrowLine));
+            Canvas.SetTop(mw, Canvas.GetTop(PlayerLocation.ArrowLine));
             mw.RenderTransform = Transform;
         }
 
@@ -336,7 +351,7 @@ namespace EQTool.ViewModels
 
         public void UpdateLocation(Point3D value1)
         {
-            if (MapLoading || PlayerLocationIcon == null || Children == null || string.IsNullOrWhiteSpace(ZoneName))
+            if (MapLoading || PlayerLocation?.ArrowLine == null || Children == null || string.IsNullOrWhiteSpace(ZoneName))
             {
                 return;
             }
@@ -354,20 +369,20 @@ namespace EQTool.ViewModels
             newdir.Normalize();
             var angle = GetAngleBetweenPoints(new Point3D(value1.X, value1.Y, 0), new Point3D(Lastlocation.X, Lastlocation.Y, 0)) * -1;
             Lastlocation = value1;
-            PlayerLocationIcon.RotateTransform = new RotateTransform(angle);
-            Canvas.SetLeft(PlayerLocationIcon, -(value1.Y + MapOffset.X) * CurrentScaling);
-            Canvas.SetTop(PlayerLocationIcon, -(value1.X + MapOffset.Y) * CurrentScaling);
-            var heighdiv2 = PlayerLocationCircle.Height / 2 / CurrentScaling;
-            Canvas.SetLeft(PlayerLocationCircle, -(value1.Y + MapOffset.X + heighdiv2) * CurrentScaling);
-            Canvas.SetTop(PlayerLocationCircle, -(value1.X + MapOffset.Y + heighdiv2) * CurrentScaling);
+            PlayerLocation.ArrowLine.RotateTransform = new RotateTransform(angle);
+            Canvas.SetLeft(PlayerLocation.ArrowLine, -(value1.Y + MapOffset.X) * CurrentScaling);
+            Canvas.SetTop(PlayerLocation.ArrowLine, -(value1.X + MapOffset.Y) * CurrentScaling);
+            var heighdiv2 = PlayerLocation.Ellipse.Height / 2 / CurrentScaling;
+            Canvas.SetLeft(PlayerLocation.Ellipse, -(value1.Y + MapOffset.X + heighdiv2) * CurrentScaling);
+            Canvas.SetTop(PlayerLocation.Ellipse, -(value1.X + MapOffset.Y + heighdiv2) * CurrentScaling);
             var transform = new MatrixTransform();
             var translation = new TranslateTransform(Transform.Value.OffsetX, Transform.Value.OffsetY);
-            transform.Matrix = PlayerLocationIcon.RotateTransform.Value * translation.Value;
-            PlayerLocationIcon.RenderTransform = transform;
+            transform.Matrix = PlayerLocation.ArrowLine.RotateTransform.Value * translation.Value;
+            PlayerLocation.ArrowLine.RenderTransform = transform;
             var transform2 = new MatrixTransform();
             _ = new TranslateTransform(Transform.Value.OffsetX, Transform.Value.OffsetY);
             transform2.Matrix = translation.Value;
-            PlayerLocationCircle.RenderTransform = transform2;
+            PlayerLocation.Ellipse.RenderTransform = transform2;
 
             if (!zoneinfo.ShowAllMapLevels && Children.Count > 0)
             {
@@ -388,7 +403,7 @@ namespace EQTool.ViewModels
                     }
                     else if (child is Ellipse e)
                     {
-                        if (e != PlayerLocationCircle)
+                        if (e != PlayerLocation.Ellipse)
                         {
                             var m = e.Tag as MapLabel;
                             var shortestdistance = Math.Abs(m.Point.Z - lastloc.Z);
@@ -413,31 +428,39 @@ namespace EQTool.ViewModels
         public void UpdateTimerWidgest()
         {
             var removewidgets = new List<MapWidget>();
-            foreach (var item in TimerWidgets)
+            foreach (var item in Children)
             {
                 if (item is MapWidget m)
                 {
                     if (m.Update() <= -60 * 4)
                     {
-                        removewidgets.Add(item);
+                        removewidgets.Add(m);
                     }
                 }
             }
 
             foreach (var item in removewidgets)
             {
-                _ = TimerWidgets.Remove(item);
+                timersService.RemoveTimer(new RemoveTimerInfo
+                {
+                    Name = item.Name,
+                    ZoneName = ZoneName
+                });
                 Children.Remove(item);
             }
         }
 
         public MapWidget AddTimer(TimeSpan timer, string title)
         {
-            var mw = new MapWidget(DateTime.Now.Add(timer), SmallFontSize, title);
-            var textlabel = new SolidColorBrush(System.Windows.Media.Color.FromRgb(255, 255, 255));
-            var forgregroundlabel = new SolidColorBrush(System.Windows.Media.Color.FromRgb(0, 0, 0));
-            mw.SetTheme(textlabel, forgregroundlabel);
-            TimerWidgets.Add(mw);
+            var mw = timersService.AddTimer(new TimerInfo
+            {
+                Duration = timer,
+                Name = title,
+                ZoneName = ZoneName,
+                Fontsize = SmallFontSize,
+                StartTime = DateTime.Now,
+                Location = new Point(_mouseuppoint.X - Transform.Value.OffsetX, _mouseuppoint.Y - Transform.Value.OffsetY)
+            });
             _ = Children.Add(mw);
             Canvas.SetTop(mw, _mouseuppoint.Y - Transform.Value.OffsetY);
             Canvas.SetLeft(mw, _mouseuppoint.X - Transform.Value.OffsetX);
@@ -449,7 +472,11 @@ namespace EQTool.ViewModels
         {
             if (_selectedElement is MapWidget w)
             {
-                _ = TimerWidgets.Remove(w);
+                timersService.RemoveTimer(new RemoveTimerInfo
+                {
+                    Name = w.Name,
+                    ZoneName = ZoneName
+                });
                 Children.Remove(w);
                 _dragging = false;
                 _selectedElement = null;
@@ -558,6 +585,10 @@ namespace EQTool.ViewModels
                 {
                     Canvas.SetLeft(_selectedElement, mousePostion.X + _draggingDelta.X);
                     Canvas.SetTop(_selectedElement, mousePostion.Y + _draggingDelta.Y);
+                    if (_selectedElement is MapWidget m)
+                    {
+                        (m.Tag as TimerInfo).Location = new Point(mousePostion.X + _draggingDelta.X, mousePostion.Y + _draggingDelta.Y);
+                    }
                 }
             }
         }
@@ -614,9 +645,9 @@ namespace EQTool.ViewModels
                 }
                 else if (child is Ellipse el)
                 {
-                    if (!string.IsNullOrWhiteSpace(el.Name))
+                    if (PlayerLocation.Ellipse == el)
                     {
-                        var heighdiv2 = PlayerLocationCircle.Height / 2 / CurrentScaling;
+                        var heighdiv2 = el.Height / 2 / CurrentScaling;
                         Canvas.SetLeft(el, -(Lastlocation.Y + MapOffset.X + heighdiv2) * CurrentScaling);
                         Canvas.SetTop(el, -(Lastlocation.X + MapOffset.Y + heighdiv2) * CurrentScaling);
                     }
