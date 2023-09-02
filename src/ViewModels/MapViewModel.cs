@@ -2,6 +2,7 @@
 using EQTool.Services;
 using EQTool.Shapes;
 using EQToolShared.Map;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -36,7 +37,7 @@ namespace EQTool.ViewModels
         private bool MapLoading = false;
         private PlayerLocationCircle PlayerLocation;
         private Ellipse PlayerTrackRadius;
-        private UIElementCollection Children;
+        private Canvas Canvas;
         private float CurrentScaling = 1.0f;
         private readonly float Zoomfactor = 1.1f;
         private bool _dragging;
@@ -116,10 +117,10 @@ namespace EQTool.ViewModels
         {
             Transform = new MatrixTransform();
             CurrentScaling = 1.0f;
-            Children?.Clear();
+            Canvas?.Children?.Clear();
         }
 
-        public bool LoadMap(string zone, UIElementCollection children)
+        public bool LoadMap(string zone, Canvas canvas)
         {
             if (MapLoading)
             {
@@ -134,7 +135,7 @@ namespace EQTool.ViewModels
             {
                 return false;
             }
-            Children = children;
+            Canvas = canvas;
             MapLoading = true;
             var stop = new Stopwatch();
             stop.Start();
@@ -166,7 +167,7 @@ namespace EQTool.ViewModels
                             Stroke = colorstuff,
                             RenderTransform = Transform
                         };
-                        _ = Children.Add(l);
+                        _ = canvas.Children.Add(l);
                     }
 
                     Debug.WriteLine($"Labels: {map.Labels.Count}");
@@ -188,8 +189,8 @@ namespace EQTool.ViewModels
                             Stroke = Brushes.Red,
                             StrokeThickness = 3
                         };
-                        _ = Children.Add(circle);
-                        _ = Children.Add(text);
+                        _ = canvas.Children.Add(circle);
+                        _ = canvas.Children.Add(text);
                         Canvas.SetLeft(text, item.Point.X);
                         Canvas.SetTop(text, item.Point.Y);
                         Canvas.SetLeft(circle, item.Point.X);
@@ -222,19 +223,19 @@ namespace EQTool.ViewModels
                         }
                     };
 
-                    _ = Children.Add(PlayerLocation.Ellipse);
+                    _ = canvas.Children.Add(PlayerLocation.Ellipse);
                     Canvas.SetLeft(PlayerLocation.Ellipse, AABB.Center.X + PlayerLocation.Ellipse.Height + (PlayerLocation.Ellipse.Height / 2));
                     Canvas.SetTop(PlayerLocation.Ellipse, AABB.Center.Y + PlayerLocation.Ellipse.Height + (PlayerLocation.Ellipse.Height / 2));
 
-                    _ = Children.Add(PlayerLocation.ArrowLine);
+                    _ = canvas.Children.Add(PlayerLocation.ArrowLine);
                     Canvas.SetLeft(PlayerLocation.ArrowLine, AABB.Center.X + (playerlocsize / 2));
                     Canvas.SetTop(PlayerLocation.ArrowLine, AABB.Center.Y + (playerlocsize / 2));
                     var widgets = timersService.LoadTimersForZone(ZoneName);
                     foreach (var mw in widgets)
                     {
-                        _ = Children.Add(mw);
-                        Canvas.SetTop(mw, (mw.Tag as TimerInfo).Location.Y);
-                        Canvas.SetLeft(mw, (mw.Tag as TimerInfo).Location.X);
+                        _ = canvas.Children.Add(mw);
+                        Canvas.SetTop(mw, mw.TimerInfo.Location.Y);
+                        Canvas.SetLeft(mw, mw.TimerInfo.Location.X);
                         mw.RenderTransform = Transform;
                     }
                     return true;
@@ -250,7 +251,7 @@ namespace EQTool.ViewModels
             }
         }
 
-        public bool LoadDefaultMap(UIElementCollection children)
+        public bool LoadDefaultMap(Canvas canvas)
         {
             _ = activePlayer.Update();
             var z = ZoneParser.TranslateToMapName(activePlayer.Player?.Zone);
@@ -258,7 +259,7 @@ namespace EQTool.ViewModels
             {
                 z = "freportw";
             }
-            return LoadMap(z, children);
+            return LoadMap(z, canvas);
         }
 
         private static double GetAngleBetweenPoints(Point3D pt1, Point3D pt2)
@@ -278,7 +279,7 @@ namespace EQTool.ViewModels
 
         public void MoveToPlayerLocation(MapWidget mw)
         {
-            (mw.Tag as TimerInfo).Location = new Point(Canvas.GetLeft(PlayerLocation.ArrowLine), Canvas.GetTop(PlayerLocation.ArrowLine));
+            mw.TimerInfo.Location = new Point(Canvas.GetLeft(PlayerLocation.ArrowLine), Canvas.GetTop(PlayerLocation.ArrowLine));
             Canvas.SetLeft(mw, Canvas.GetLeft(PlayerLocation.ArrowLine));
             Canvas.SetTop(mw, Canvas.GetTop(PlayerLocation.ArrowLine));
             mw.RenderTransform = Transform;
@@ -351,7 +352,7 @@ namespace EQTool.ViewModels
 
         public void UpdateLocation(Point3D value1)
         {
-            if (MapLoading || PlayerLocation?.ArrowLine == null || Children == null || string.IsNullOrWhiteSpace(ZoneName))
+            if (MapLoading || PlayerLocation?.ArrowLine == null || Canvas == null || string.IsNullOrWhiteSpace(ZoneName))
             {
                 return;
             }
@@ -384,11 +385,11 @@ namespace EQTool.ViewModels
             transform2.Matrix = translation.Value;
             PlayerLocation.Ellipse.RenderTransform = transform2;
 
-            if (!zoneinfo.ShowAllMapLevels && Children.Count > 0)
+            if (!zoneinfo.ShowAllMapLevels && Canvas.Children.Count > 0)
             {
                 var lastloc = new Point3D(-(value1.Y + MapOffset.X), -(value1.X + MapOffset.Y), Lastlocation.Z);
                 _ = zoneinfo.ZoneLevelHeight * 2;
-                foreach (var child in Children)
+                foreach (var child in Canvas.Children)
                 {
                     if (child is Line a)
                     {
@@ -416,19 +417,19 @@ namespace EQTool.ViewModels
         }
 
         public void MouseMove(Point mousePosition)
-        {
-            mousePosition = Transform.Inverse.Transform(mousePosition);
-            mousePosition.Y += MapOffset.Y;
+        { 
+            mousePosition = Transform.Inverse.Transform(mousePosition); 
             mousePosition.X += MapOffset.X;
-            mousePosition.Y *= -1;
+            mousePosition.Y += MapOffset.Y;
             mousePosition.X *= -1;
+            mousePosition.Y *= -1;
             LastMouselocation = mousePosition;
         }
 
         public void UpdateTimerWidgest()
         {
             var removewidgets = new List<MapWidget>();
-            foreach (var item in Children)
+            foreach (var item in Canvas.Children)
             {
                 if (item is MapWidget m)
                 {
@@ -446,7 +447,7 @@ namespace EQTool.ViewModels
                     Name = item.Name,
                     ZoneName = ZoneName
                 });
-                Children.Remove(item);
+                Canvas.Children.Remove(item);
             }
         }
 
@@ -461,7 +462,7 @@ namespace EQTool.ViewModels
                 StartTime = DateTime.Now,
                 Location = new Point(_mouseuppoint.X - Transform.Value.OffsetX, _mouseuppoint.Y - Transform.Value.OffsetY)
             });
-            _ = Children.Add(mw);
+            _ = Canvas.Children.Add(mw);
             Canvas.SetTop(mw, _mouseuppoint.Y - Transform.Value.OffsetY);
             Canvas.SetLeft(mw, _mouseuppoint.X - Transform.Value.OffsetX);
             mw.RenderTransform = Transform;
@@ -477,7 +478,7 @@ namespace EQTool.ViewModels
                     Name = w.Name,
                     ZoneName = ZoneName
                 });
-                Children.Remove(w);
+                Canvas.Children.Remove(w);
                 _dragging = false;
                 _selectedElement = null;
             }
@@ -527,7 +528,7 @@ namespace EQTool.ViewModels
         {
             var translate = new TranslateTransform(x, y);
             Transform.Matrix = translate.Value * Transform.Matrix;
-            foreach (UIElement child in Children)
+            foreach (UIElement child in Canvas.Children)
             {
                 if (child is ArrowLine c)
                 {
@@ -556,7 +557,7 @@ namespace EQTool.ViewModels
                 var delta = Point.Subtract(mousePosition, _initialMousePosition);
                 var translate = new TranslateTransform(delta.X, delta.Y);
                 Transform.Matrix = translate.Value * Transform.Matrix;
-                foreach (UIElement child in Children)
+                foreach (UIElement child in Canvas.Children)
                 {
                     if (child is ArrowLine c)
                     {
@@ -587,7 +588,11 @@ namespace EQTool.ViewModels
                     Canvas.SetTop(_selectedElement, mousePostion.Y + _draggingDelta.Y);
                     if (_selectedElement is MapWidget m)
                     {
-                        (m.Tag as TimerInfo).Location = new Point(mousePostion.X + _draggingDelta.X, mousePostion.Y + _draggingDelta.Y);
+                        var point = new Point(Canvas.GetLeft(_selectedElement), Canvas.GetTop(_selectedElement));
+                        Debug.WriteLine($"2 {point}");
+                        point = _selectedElement.RenderTransform.Inverse.Transform(point);
+                        Debug.WriteLine($"3 {point}");
+                        m.TimerInfo.Location = _selectedElement.RenderTransform.Inverse.Transform(point);
                     }
                 }
             }
@@ -623,9 +628,8 @@ namespace EQTool.ViewModels
             scaleMatrix.ScaleAt(scaleFactor, scaleFactor, mousePostion.X, mousePostion.Y);
             Transform.Matrix = scaleMatrix;
             CurrentScaling *= scaleFactor;
-            Debug.WriteLine(CurrentScaling);
             var currentlabelscaling = (CurrentScaling / 40 * -1) + 1;
-            foreach (UIElement child in Children)
+            foreach (UIElement child in Canvas.Children)
             {
                 var x = Canvas.GetLeft(child);
                 var y = Canvas.GetTop(child);

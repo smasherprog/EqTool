@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Media;
 
@@ -11,8 +12,20 @@ namespace EQTool.Services
         public string ZoneName { get; set; }
         public DateTime StartTime { get; set; }
         public TimeSpan Duration { get; set; }
+        public DateTime EndTime => StartTime.Add(Duration);
         public double Fontsize { get; set; }
-        public Point Location { get; set; }
+        private Point _Location = new Point();
+        public Point Location
+        {
+            get
+            {
+                return _Location;
+            }
+            set
+            { 
+                _Location = value; 
+            }
+        }
     }
 
     public class RemoveTimerInfo
@@ -35,12 +48,11 @@ namespace EQTool.Services
                     var expiredtime = timerInfo.StartTime.Add(timerInfo.Duration);
                     if (expiredtime > DateTime.Now)
                     {
-                        var mw = new MapWidget(timerInfo.StartTime.Add(timerInfo.Duration), timerInfo.Fontsize, timerInfo.Name);
+                        var mw = new MapWidget(timerInfo);
                         var textlabel = new SolidColorBrush(System.Windows.Media.Color.FromRgb(255, 255, 255));
                         var forgregroundlabel = new SolidColorBrush(System.Windows.Media.Color.FromRgb(0, 0, 0));
                         mw.SetTheme(textlabel, forgregroundlabel);
-                        ret.Add(mw);
-                        mw.Tag = timerInfo;
+                        ret.Add(mw); 
                     }
                     else
                     {
@@ -66,10 +78,10 @@ namespace EQTool.Services
 
         public MapWidget AddTimer(TimerInfo addTimer)
         {
-            var mw = new MapWidget(addTimer.StartTime.Add(addTimer.Duration), addTimer.Fontsize, addTimer.Name);
+            var mw = new MapWidget(addTimer);
             var textlabel = new SolidColorBrush(System.Windows.Media.Color.FromRgb(255, 255, 255));
             var forgregroundlabel = new SolidColorBrush(System.Windows.Media.Color.FromRgb(0, 0, 0));
-            mw.SetTheme(textlabel, forgregroundlabel);
+            mw.SetTheme(textlabel, forgregroundlabel); 
             if (ZoneTimers.TryGetValue(addTimer.ZoneName, out var zone))
             {
                 zone.Add(addTimer);

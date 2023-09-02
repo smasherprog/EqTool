@@ -3,6 +3,7 @@ using EQTool.Services;
 using EQTool.ViewModels;
 using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Media;
@@ -46,7 +47,7 @@ namespace EQTool
 
             Map.mapViewModel = mapViewModel;
             Topmost = Properties.Settings.Default.GlobalMapWindowAlwaysOnTop;
-            _ = mapViewModel.LoadDefaultMap(Map.Children);
+            _ = mapViewModel.LoadDefaultMap(Map);
             Map.Height = Math.Abs(mapViewModel.AABB.MaxHeight);
             Map.Width = Math.Abs(mapViewModel.AABB.MaxWidth);
             WindowExtensions.AdjustWindow(settings.MapWindowState, this);
@@ -109,7 +110,7 @@ namespace EQTool
 
         private void LogParser_EnteredWorldEvent(object sender, LogParser.EnteredWorldArgs e)
         {
-            if (mapViewModel.LoadDefaultMap(Map.Children))
+            if (mapViewModel.LoadDefaultMap(Map))
             {
                 Map.Height = Math.Abs(mapViewModel.AABB.MaxHeight);
                 Map.Width = Math.Abs(mapViewModel.AABB.MaxWidth);
@@ -118,7 +119,7 @@ namespace EQTool
 
         private void LogParser_PlayerZonedEvent(object sender, LogParser.PlayerZonedEventArgs e)
         {
-            if (mapViewModel.LoadMap(e.Zone, Map.Children))
+            if (mapViewModel.LoadMap(e.Zone, Map))
             {
                 Map.Height = Math.Abs(mapViewModel.AABB.MaxHeight);
                 Map.Width = Math.Abs(mapViewModel.AABB.MaxWidth);
@@ -214,8 +215,8 @@ namespace EQTool
         }
 
         private void Map_MouseMove(object sender, MouseEventArgs e)
-        {
-            mapViewModel.MouseMove(e.GetPosition(sender as IInputElement));
+        { 
+            mapViewModel.MouseMove(e.GetPosition(Map));
         }
 
         private void autoaddtimer(object sender, RoutedEventArgs e)

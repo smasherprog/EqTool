@@ -254,8 +254,7 @@ namespace EQTool.Services
                 ret.AABB.Add(point.Points[0]);
                 ret.AABB.Add(point.Points[1]);
             }
-            var biggestdim = ret.AABB.MaxHeight > ret.AABB.MaxWidth ? ret.AABB.MaxHeight : ret.AABB.MaxWidth;
-            Debug.WriteLine($"{biggestdim}");
+            var biggestdim = ret.AABB.MaxHeight > ret.AABB.MaxWidth ? ret.AABB.MaxHeight : ret.AABB.MaxWidth; 
             return ret;
         }
     }
