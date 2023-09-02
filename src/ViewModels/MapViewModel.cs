@@ -412,8 +412,7 @@ namespace EQTool.ViewModels
                         }
                     }
                 }
-            }
-
+            } 
         }
 
         public void MouseMove(Point mousePosition)
