@@ -27,13 +27,7 @@ namespace EQTool.Services
             }
         }
     }
-
-    public class RemoveTimerInfo
-    {
-        public string Name { get; set; }
-        public string ZoneName { get; set; }
-    }
-
+     
     public class TimersService
     {
         private Dictionary<string, List<TimerInfo>> ZoneTimers = new Dictionary<string, List<TimerInfo>>();
@@ -68,11 +62,11 @@ namespace EQTool.Services
             return ret;
         }
 
-        public void RemoveTimer(RemoveTimerInfo removeTimerInfo)
+        public void RemoveTimer(TimerInfo removeTimerInfo)
         {
             if (ZoneTimers.TryGetValue(removeTimerInfo.ZoneName, out var zone))
             {
-                zone.RemoveAll(a => a.Name == removeTimerInfo.Name);
+                zone.RemoveAll(a => a == removeTimerInfo);
             }
         }
 

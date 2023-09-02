@@ -378,11 +378,7 @@ namespace EQTool.ViewModels
 
             foreach (var item in removewidgets)
             {
-                timersService.RemoveTimer(new RemoveTimerInfo
-                {
-                    Name = item.Name,
-                    ZoneName = ZoneName
-                });
+                timersService.RemoveTimer(item.TimerInfo);
                 Canvas.Children.Remove(item);
             }
         }
@@ -414,11 +410,7 @@ namespace EQTool.ViewModels
         {
             if (_selectedElement is MapWidget w)
             {
-                timersService.RemoveTimer(new RemoveTimerInfo
-                {
-                    Name = w.Name,
-                    ZoneName = ZoneName
-                });
+                timersService.RemoveTimer(w.TimerInfo);
                 Canvas.Children.Remove(w);
                 _dragging = false;
                 _selectedElement = null;
