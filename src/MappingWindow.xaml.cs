@@ -215,7 +215,7 @@ namespace EQTool
 
         private void Map_MouseMove(object sender, MouseEventArgs e)
         {
-            mapViewModel.MouseMove(e.GetPosition(sender as IInputElement));
+            mapViewModel.MouseMove(e.GetPosition(Map));
         }
 
         private void autoaddtimer(object sender, RoutedEventArgs e)
