@@ -234,9 +234,9 @@ namespace EQTool.ViewModels
                     foreach (var mw in widgets)
                     {
                         _ = canvas.Children.Add(mw);
-                        Canvas.SetTop(mw, mw.TimerInfo.Location.Y);
-                        Canvas.SetLeft(mw, mw.TimerInfo.Location.X);
-                        mw.RenderTransform = Transform;
+                        Canvas.SetLeft(mw, -mw.TimerInfo.Location.X - MapOffset.X);
+                        Canvas.SetTop(mw, -mw.TimerInfo.Location.Y - MapOffset.Y);
+                        mw.RenderTransform = new RotateTransform();
                     }
                     return true;
                 }
@@ -283,69 +283,6 @@ namespace EQTool.ViewModels
             Canvas.SetLeft(mw, Canvas.GetLeft(PlayerLocation.ArrowLine));
             Canvas.SetTop(mw, Canvas.GetTop(PlayerLocation.ArrowLine));
             mw.RenderTransform = Transform;
-        }
-
-        private void SetOpacity(Shape l, double v)
-        {
-            if (l.Stroke.IsFrozen)
-            {
-                l.Stroke = l.Stroke.Clone();
-            }
-
-            l.Stroke.Opacity = v;
-        }
-
-        private void SetOpacity(TextBlock l, double v)
-        {
-            if (l.Foreground.IsFrozen)
-            {
-                l.Foreground = l.Foreground.Clone();
-            }
-
-            l.Foreground.Opacity = v;
-        }
-
-        private void AdjustOpacity(double shortestdistance, Shape shape, ZoneInfo zoneinfo, Point3D lastloc)
-        {
-            var twiceheight = zoneinfo.ZoneLevelHeight * 2;
-            if (shortestdistance < zoneinfo.ZoneLevelHeight)
-            {
-                SetOpacity(shape, 1);
-            }
-            else if (shortestdistance >= zoneinfo.ZoneLevelHeight && shortestdistance <= twiceheight + zoneinfo.ZoneLevelHeight)
-            {
-                var dist = ((shortestdistance - zoneinfo.ZoneLevelHeight) * -1) + twiceheight; //changed range to [0,80] with 0 being the FURTHest distance
-                dist = (dist / twiceheight) + .1; // scale to [.1,1.1] 
-                _ = Clamp(dist, .1, 1);
-                SetOpacity(shape, dist);
-            }
-            else
-            {
-                SetOpacity(shape, .1);
-            }
-        }
-
-        private void AdjustOpacity(TextBlock t, ZoneInfo zoneinfo, Point3D lastloc)
-        {
-            var twiceheight = zoneinfo.ZoneLevelHeight * 2;
-            var m = t.Tag as MapLabel;
-            var shortestdistance = Math.Abs(m.Point.Z - lastloc.Z);
-
-            if (shortestdistance < zoneinfo.ZoneLevelHeight)
-            {
-                SetOpacity(t, 1);
-            }
-            else if (shortestdistance >= zoneinfo.ZoneLevelHeight && shortestdistance <= twiceheight + zoneinfo.ZoneLevelHeight)
-            {
-                var dist = ((shortestdistance - zoneinfo.ZoneLevelHeight) * -1) + twiceheight; //changed range to [0,80] with 0 being the FURTHest distance
-                dist = (dist / twiceheight) + .1; // scale to [.1,1.1] 
-                _ = Clamp(dist, .1, 1);
-                SetOpacity(t, dist);
-            }
-            else
-            {
-                SetOpacity(t, .1);
-            }
         }
 
         private int failedzonelogcounter = 0;
@@ -396,11 +333,11 @@ namespace EQTool.ViewModels
                         var m = a.Tag as MapLine;
                         var shortestdistance = Math.Abs(m.Points[0].Z - lastloc.Z);
                         shortestdistance = Math.Min(Math.Abs(m.Points[1].Z - lastloc.Z), shortestdistance);
-                        AdjustOpacity(shortestdistance, a, zoneinfo, lastloc);
+                        MapOpacityHelper.AdjustOpacity(shortestdistance, a, zoneinfo, lastloc);
                     }
                     else if (child is TextBlock t)
                     {
-                        AdjustOpacity(t, zoneinfo, lastloc);
+                        MapOpacityHelper.AdjustOpacity(t, zoneinfo, lastloc);
                     }
                     else if (child is Ellipse e)
                     {
@@ -408,16 +345,16 @@ namespace EQTool.ViewModels
                         {
                             var m = e.Tag as MapLabel;
                             var shortestdistance = Math.Abs(m.Point.Z - lastloc.Z);
-                            AdjustOpacity(shortestdistance, e, zoneinfo, lastloc);
+                            MapOpacityHelper.AdjustOpacity(shortestdistance, e, zoneinfo, lastloc);
                         }
                     }
                 }
-            } 
+            }
         }
 
         public void MouseMove(Point mousePosition)
-        { 
-            mousePosition = Transform.Inverse.Transform(mousePosition); 
+        {
+            mousePosition = Transform.Inverse.Transform(mousePosition);
             mousePosition.X += MapOffset.X;
             mousePosition.Y += MapOffset.Y;
             mousePosition.X *= -1;
@@ -452,6 +389,11 @@ namespace EQTool.ViewModels
 
         public MapWidget AddTimer(TimeSpan timer, string title)
         {
+            var mousePosition = Transform.Inverse.Transform(_mouseuppoint);
+            mousePosition.X += MapOffset.X;
+            mousePosition.Y += MapOffset.Y;
+            mousePosition.X *= -1;
+            mousePosition.Y *= -1;
             var mw = timersService.AddTimer(new TimerInfo
             {
                 Duration = timer,
@@ -459,7 +401,7 @@ namespace EQTool.ViewModels
                 ZoneName = ZoneName,
                 Fontsize = SmallFontSize,
                 StartTime = DateTime.Now,
-                Location = new Point(_mouseuppoint.X - Transform.Value.OffsetX, _mouseuppoint.Y - Transform.Value.OffsetY)
+                Location = mousePosition
             });
             _ = Canvas.Children.Add(mw);
             Canvas.SetTop(mw, _mouseuppoint.Y - Transform.Value.OffsetY);
