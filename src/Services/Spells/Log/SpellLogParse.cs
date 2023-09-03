@@ -9,8 +9,7 @@ namespace EQTool.Services.Spells.Log
         private readonly ActivePlayer activePlayer;
         private readonly ParseHandleYouCasting parseHandleYouCasting;
         private readonly ParseSpellGuess parseSpellGuess;
-        private readonly EQToolSettings settings;
-        private readonly EQSpells spells;
+        private readonly EQToolSettings settings; 
         private readonly Spell HealSpell;
 
         public SpellLogParse(ParseSpellGuess parseSpellGuess, ParseHandleYouCasting parseHandleYouCasting, ActivePlayer activePlayer, EQToolSettings settings, EQSpells spells)

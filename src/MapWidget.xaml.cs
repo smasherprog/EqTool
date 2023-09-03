@@ -17,14 +17,11 @@ namespace EQTool
             TimerInfo = timerInfo;
             ClockTextValue.FontSize = TimerInfo.Fontsize;  
             _ = Update();
-            Label.Text = TimerInfo.Name;
-            Label.Visibility = string.IsNullOrWhiteSpace(TimerInfo.Name) ? System.Windows.Visibility.Collapsed : System.Windows.Visibility.Visible;
-            ClockText.Visibility = string.IsNullOrWhiteSpace(TimerInfo.Name) ? System.Windows.Visibility.Visible : System.Windows.Visibility.Collapsed;
+            Label.Text = TimerInfo.Name; 
         }
 
         public void SetTheme(Brush labelb, Brush backgroundb)
-        {
-            ClockText.Foreground = labelb;
+        { 
             ClockTextValue.Foreground = labelb;
             Background = backgroundb;
         }

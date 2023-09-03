@@ -19,10 +19,19 @@ namespace EQTool
         private readonly EQToolSettings settings;
         private readonly EQToolSettingsLoad toolSettingsLoad;
         private readonly ActivePlayer activePlayer;
+        private readonly TimersService timersService;
 
-        public SpellWindow(EQToolSettings settings, SpellWindowViewModel spellWindowViewModel, LogParser logParser, EQToolSettingsLoad toolSettingsLoad, ActivePlayer activePlayer, LoggingService loggingService)
+        public SpellWindow(
+            TimersService timersService,
+            EQToolSettings settings,
+            SpellWindowViewModel spellWindowViewModel,
+            LogParser logParser,
+            EQToolSettingsLoad toolSettingsLoad,
+            ActivePlayer activePlayer,
+            LoggingService loggingService)
         {
             loggingService.Log(string.Empty, App.EventType.OpenMap);
+            this.timersService = timersService;
             this.settings = settings;
             this.logParser = logParser;
             this.activePlayer = activePlayer;
@@ -93,8 +102,15 @@ namespace EQTool
             spellWindowViewModel.TryAdd(e.Spell);
         }
 
+        public TimeSpan ZoneRespawnTime => EQToolShared.Map.ZoneParser.ZoneInfoMap.TryGetValue(activePlayer?.Player?.Zone, out var zoneInfo) ? zoneInfo.RespawnTime : new TimeSpan(0, 6, 40);
+
         private void LogParser_DeadEvent(object sender, LogParser.DeadEventArgs e)
         {
+            spellWindowViewModel.TryAddCustom(new Services.Spells.Log.LogCustomTimer.CustomerTimer
+            {
+                Name = e.Name,
+                DurationInSeconds = (int)ZoneRespawnTime.TotalSeconds
+            });
             spellWindowViewModel.TryRemoveTarget(e.Name);
         }
 

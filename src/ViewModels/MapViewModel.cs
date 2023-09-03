@@ -35,7 +35,7 @@ namespace EQTool.ViewModels
         private Point _mouseuppoint;
         private Point3D MapOffset = new Point3D(0, 0, 0);
         private bool MapLoading = false;
-        private PlayerLocationCircle PlayerLocation; 
+        private PlayerLocationCircle PlayerLocation;
         private Canvas Canvas;
         private float CurrentScaling = 1.0f;
         private readonly float Zoomfactor = 1.1f;
@@ -170,6 +170,8 @@ namespace EQTool.ViewModels
                     }
 
                     Debug.WriteLine($"Labels: {map.Labels.Count}");
+                    var locationdotsize = MathHelper.ChangeRange(Math.Max(map.AABB.MaxWidth, map.AABB.MaxHeight), 500, 35000, 20, 150);
+                    var locationthickness = MathHelper.ChangeRange(Math.Max(map.AABB.MaxWidth, map.AABB.MaxHeight), 500, 35000, 5, 20);
                     foreach (var item in map.Labels)
                     {
                         var text = new TextBlock
@@ -183,10 +185,10 @@ namespace EQTool.ViewModels
                         var circle = new Ellipse()
                         {
                             Tag = item,
-                            Width = 10,
-                            Height = 10,
+                            Width = locationdotsize,
+                            Height = locationdotsize,
                             Stroke = Brushes.Red,
-                            StrokeThickness = 3
+                            StrokeThickness = locationthickness
                         };
                         _ = canvas.Children.Add(circle);
                         _ = canvas.Children.Add(text);
@@ -274,18 +276,6 @@ namespace EQTool.ViewModels
         private static T Clamp<T>(T val, T min, T max) where T : IComparable<T>
         {
             return val.CompareTo(min) < 0 ? min : val.CompareTo(max) > 0 ? max : val;
-        }
-
-        public void MoveToPlayerLocation(MapWidget mw)
-        {
-            if (PlayerLocation == null)
-            {
-                return;
-            }
-            mw.TimerInfo.Location = new Point(Canvas.GetLeft(PlayerLocation.ArrowLine), Canvas.GetTop(PlayerLocation.ArrowLine));
-            Canvas.SetLeft(mw, Canvas.GetLeft(PlayerLocation.ArrowLine));
-            Canvas.SetTop(mw, Canvas.GetTop(PlayerLocation.ArrowLine));
-            mw.RenderTransform = Transform;
         }
 
         private int failedzonelogcounter = 0;
@@ -385,6 +375,17 @@ namespace EQTool.ViewModels
                 Canvas.Children.Remove(item);
             }
         }
+        public void MoveToPlayerLocation(MapWidget mw)
+        {
+            if (PlayerLocation == null)
+            {
+                return;
+            }
+            mw.TimerInfo.Location = new Point(Lastlocation.Y, Lastlocation.X);
+            Canvas.SetLeft(mw, Canvas.GetLeft(PlayerLocation.ArrowLine));
+            Canvas.SetTop(mw, Canvas.GetTop(PlayerLocation.ArrowLine));
+            mw.RenderTransform = Transform;
+        }
 
         public MapWidget AddTimer(TimeSpan timer, string title)
         {
@@ -409,7 +410,7 @@ namespace EQTool.ViewModels
             return mw;
         }
 
-        public void DeleteSelectedTimer()
+        public TimerInfo DeleteSelectedTimer()
         {
             if (_selectedElement is MapWidget w)
             {
@@ -417,6 +418,30 @@ namespace EQTool.ViewModels
                 Canvas.Children.Remove(w);
                 _dragging = false;
                 _selectedElement = null;
+                return w.TimerInfo;
+            }
+            return null;
+        }
+
+        public void DeleteSelectedTimerByName(string name)
+        {
+            var timer = timersService.RemoveTimer(name);
+            if (timer != null)
+            {
+                MapWidget wremove = null;
+                foreach (var item in Canvas.Children)
+                {
+                    if (item is MapWidget w && w.TimerInfo.Name == name)
+                    {
+                        wremove = w;
+                        break;
+                    }
+                }
+
+                if (wremove != null)
+                {
+                    Canvas.Children.Remove(wremove);
+                }
             }
         }
 
