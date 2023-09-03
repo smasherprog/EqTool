@@ -35,8 +35,7 @@ namespace EQTool.ViewModels
         private Point _mouseuppoint;
         private Point3D MapOffset = new Point3D(0, 0, 0);
         private bool MapLoading = false;
-        private PlayerLocationCircle PlayerLocation;
-        private Ellipse PlayerTrackRadius;
+        private PlayerLocationCircle PlayerLocation; 
         private Canvas Canvas;
         private float CurrentScaling = 1.0f;
         private readonly float Zoomfactor = 1.1f;
@@ -279,6 +278,10 @@ namespace EQTool.ViewModels
 
         public void MoveToPlayerLocation(MapWidget mw)
         {
+            if (PlayerLocation == null)
+            {
+                return;
+            }
             mw.TimerInfo.Location = new Point(Canvas.GetLeft(PlayerLocation.ArrowLine), Canvas.GetTop(PlayerLocation.ArrowLine));
             Canvas.SetLeft(mw, Canvas.GetLeft(PlayerLocation.ArrowLine));
             Canvas.SetTop(mw, Canvas.GetTop(PlayerLocation.ArrowLine));

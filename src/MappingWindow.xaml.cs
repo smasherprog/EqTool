@@ -22,7 +22,7 @@ namespace EQTool
         private readonly PanAndZoomCanvas Map;
         private readonly IAppDispatcher appDispatcher;
         private readonly System.Timers.Timer UITimer;
-        private bool AutomaticallyAddTimerOnDeath = false;
+        private bool AutomaticallyAddTimerOnDeath = true;
 
         public MappingWindow(
             MapViewModel mapViewModel,
