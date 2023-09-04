@@ -397,8 +397,8 @@ namespace EQTool.ViewModels
             mousePosition.Y *= -1;
             if (autoIncrementDuplicateNames && timersService.TimerExists(ZoneName, title))
             {
-                deathcounter = deathcounter > 99 ? 1 : deathcounter;
-                title += "_" + deathcounter++;
+                deathcounter = ++deathcounter > 999 ? 1 : deathcounter;
+                title += "_" + deathcounter;
             }
             var mw = timersService.AddTimer(new TimerInfo
             {
