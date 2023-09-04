@@ -387,13 +387,19 @@ namespace EQTool.ViewModels
             mw.RenderTransform = Transform;
         }
 
-        public MapWidget AddTimer(TimeSpan timer, string title)
+        private int deathcounter = 1;
+        public MapWidget AddTimer(TimeSpan timer, string title, bool autoIncrementDuplicateNames)
         {
             var mousePosition = Transform.Inverse.Transform(_mouseuppoint);
             mousePosition.X += MapOffset.X;
             mousePosition.Y += MapOffset.Y;
             mousePosition.X *= -1;
             mousePosition.Y *= -1;
+            if (autoIncrementDuplicateNames && timersService.TimerExists(ZoneName, title))
+            {
+                deathcounter = deathcounter > 99 ? 1 : deathcounter;
+                title += "_" + deathcounter++;
+            }
             var mw = timersService.AddTimer(new TimerInfo
             {
                 Duration = timer,

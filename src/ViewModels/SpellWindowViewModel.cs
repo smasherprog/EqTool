@@ -19,7 +19,7 @@ namespace EQTool.ViewModels
         private readonly IAppDispatcher appDispatcher;
         private readonly EQToolSettings settings;
         private readonly EQSpells spells;
-        private readonly string CustomerTime = " Custom Timer";
+        public readonly string CustomerTime = " Custom Timer";
         private readonly Dictionary<PlayerClasses, int> CustomTimerClasses;
 
         public SpellWindowViewModel(ActivePlayer activePlayer, IAppDispatcher appDispatcher, EQToolSettings settings, EQSpells spells)

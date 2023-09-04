@@ -63,6 +63,15 @@ namespace EQTool.Services
             return ret;
         }
 
+        public bool TimerExists(string zonename, string name)
+        {
+            if (ZoneTimers.TryGetValue(zonename, out var zone))
+            {
+                return zone.Any(a => a.Name == name);
+            }
+            return false;
+        }
+
         public void RemoveTimer(TimerInfo removeTimerInfo)
         {
             if (ZoneTimers.TryGetValue(removeTimerInfo.ZoneName, out var zone))

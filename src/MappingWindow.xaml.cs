@@ -86,7 +86,7 @@ namespace EQTool
          
         private void LogParser_StartTimerEvent(object sender, LogParser.StartTimerEventArgs e)
         {
-            var mw = mapViewModel.AddTimer(TimeSpan.FromSeconds(e.CustomerTimer.DurationInSeconds), e.CustomerTimer.Name);
+            var mw = mapViewModel.AddTimer(TimeSpan.FromSeconds(e.CustomerTimer.DurationInSeconds), e.CustomerTimer.Name, false);
             mapViewModel.MoveToPlayerLocation(mw);
         }
 
@@ -94,10 +94,11 @@ namespace EQTool
         {
             mapViewModel.DeleteSelectedTimerByName(e.Name);
         }
+
         private void Map_StartTimerEvent(object sender, LogParser.StartTimerEventArgs e)
         {
             mapViewModel.TimerMenu_Closed();
-            var mw = mapViewModel.AddTimer(TimeSpan.FromSeconds(e.CustomerTimer.DurationInSeconds), e.CustomerTimer.Name);
+            var mw = mapViewModel.AddTimer(TimeSpan.FromSeconds(e.CustomerTimer.DurationInSeconds), e.CustomerTimer.Name, true);
         }
 
         private void Map_CancelTimerEvent(object sender, EventArgs e)
@@ -107,8 +108,8 @@ namespace EQTool
 
         private void LogParser_DeadEvent(object sender, LogParser.DeadEventArgs e)
         {
-            var timer = mapViewModel.ZoneRespawnTime;
-            var mw = mapViewModel.AddTimer(timer, e.Name);
+            var timer = mapViewModel.ZoneRespawnTime; 
+            var mw = mapViewModel.AddTimer(timer, e.Name, true);
             mapViewModel.MoveToPlayerLocation(mw);
         }
 
