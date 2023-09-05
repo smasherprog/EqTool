@@ -1,5 +1,4 @@
 ﻿using EQTool.Models;
-using System;
 
 namespace EQTool.Services.Spells.Log
 {
@@ -14,9 +13,14 @@ namespace EQTool.Services.Spells.Log
         }
 
         public string GetDeadTarget(string message)
-        { 
+        {
             if (message.Contains(HasBeenSlainBy))
             {
+                if (message.StartsWith("Eye of "))
+                {
+                    return string.Empty;
+                }
+
                 var nameofthingindex = message.IndexOf(HasBeenSlainBy);
                 if (nameofthingindex == -1)
                 {
