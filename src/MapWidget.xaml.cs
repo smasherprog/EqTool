@@ -47,7 +47,7 @@ namespace EQTool
             {
                 ClockTextValue.Text = "00:00:00";
                 Background = new SolidColorBrush(GetColorFromRedYellowGreenGradient(0));
-                return 0;
+                return (int)timespan.TotalSeconds;
             }
             var percentleft = timespan.TotalSeconds / TotalInitialSeconds * 100;
             Background = new SolidColorBrush(GetColorFromRedYellowGreenGradient(percentleft));
