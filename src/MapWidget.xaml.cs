@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EQTool.Services;
+using System;
 using System.Windows.Controls;
 using System.Windows.Media;
 
@@ -8,24 +9,19 @@ namespace EQTool
     /// Interaction logic for MapWidget.xaml
     /// </summary>
     public partial class MapWidget : UserControl
-    {
-        private readonly DateTime EndTime;
-        private readonly int TotalInitialSeconds;
-        public MapWidget(DateTime endtime, double smallFontSize, string name)
+    {  
+        public TimerInfo TimerInfo { get; private set; }    
+        public MapWidget(TimerInfo timerInfo)
         {
             InitializeComponent();
-            ClockTextValue.FontSize = smallFontSize;
-            EndTime = endtime;
-            TotalInitialSeconds = (int)(EndTime - DateTime.Now).TotalSeconds;
+            TimerInfo = timerInfo;
+            ClockTextValue.FontSize = TimerInfo.Fontsize;  
             _ = Update();
-            Label.Text = name;
-            Label.Visibility = string.IsNullOrWhiteSpace(name) ? System.Windows.Visibility.Collapsed : System.Windows.Visibility.Visible;
-            ClockText.Visibility = string.IsNullOrWhiteSpace(name) ? System.Windows.Visibility.Visible : System.Windows.Visibility.Collapsed;
+            Label.Text = TimerInfo.Name; 
         }
 
         public void SetTheme(Brush labelb, Brush backgroundb)
-        {
-            ClockText.Foreground = labelb;
+        { 
             ClockTextValue.Foreground = labelb;
             Background = backgroundb;
         }
@@ -41,7 +37,7 @@ namespace EQTool
 
         public int Update()
         {
-            var timespan = EndTime - DateTime.Now;
+            var timespan = TimerInfo.EndTime - DateTime.Now;
             var timespanstring = string.Empty;
             if (timespan.TotalSeconds <= 0)
             {
@@ -49,7 +45,7 @@ namespace EQTool
                 Background = new SolidColorBrush(GetColorFromRedYellowGreenGradient(0));
                 return (int)timespan.TotalSeconds;
             }
-            var percentleft = timespan.TotalSeconds / TotalInitialSeconds * 100;
+            var percentleft = timespan.TotalSeconds / TimerInfo.Duration.TotalSeconds * 100;
             Background = new SolidColorBrush(GetColorFromRedYellowGreenGradient(percentleft));
             var timepart = (int)timespan.TotalHours;
             if (timepart > 0)

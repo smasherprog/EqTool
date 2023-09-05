@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using System.Windows.Media.Media3D;
 
 namespace EQTool.Services
@@ -46,7 +47,15 @@ namespace EQTool.Services
             {
                 if (!item.Contains(version))
                 {
-                    Directory.Delete(item, true);
+                    try
+                    {
+                        Directory.Delete(item, true);
+                    }
+                    catch
+                    {
+                        Thread.Sleep(2000);
+                        Directory.Delete(item, true);
+                    }
                 }
             }
             checkformanualmaps = System.IO.Directory.GetCurrentDirectory() + $"/{version}";
@@ -255,7 +264,6 @@ namespace EQTool.Services
                 ret.AABB.Add(point.Points[1]);
             }
             var biggestdim = ret.AABB.MaxHeight > ret.AABB.MaxWidth ? ret.AABB.MaxHeight : ret.AABB.MaxWidth;
-            Debug.WriteLine($"{biggestdim}");
             return ret;
         }
     }

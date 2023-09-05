@@ -437,7 +437,7 @@ namespace EQToolShared.Map
             {
                 Name = "freporte",
                 ShowAllMapLevels = false,
-                ZoneLevelHeight = 10,
+                ZoneLevelHeight = 15,
                 NotableNPCs = new List<string>()
                 {
                     "",

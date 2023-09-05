@@ -37,6 +37,14 @@ namespace EQTool.Services
             this.loggingService = loggingService;
         }
 
+        public bool IsPlayer(string name)
+        {
+            lock(ContainerLock)
+            {
+                return Player.ContainsKey(name);
+            }
+        }
+
         private void UITimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
             var playerstosync = new List<EQToolShared.APIModels.PlayerControllerModels.Player>();

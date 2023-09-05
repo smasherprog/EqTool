@@ -53,7 +53,6 @@ Features:
 
 <h4>TO DO List EQTool</h4>
 <ul>   
- <li>Enable shrinking of triggers window by truncating spell name</li>   
  <li>Port application to be cross platform(mac, win, linux).</li>   
  <li>Add Ability to bind a hotkey to toggle a window open/close.</li>   
  <li>Add cooldowntimer for discs.</li>   

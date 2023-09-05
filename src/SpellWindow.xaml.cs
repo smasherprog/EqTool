@@ -4,10 +4,12 @@ using EQTool.ViewModels;
 using System;
 using System.ComponentModel;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
+using static EQTool.Services.Spells.Log.LogCustomTimer;
 
 namespace EQTool
 {
@@ -19,10 +21,19 @@ namespace EQTool
         private readonly EQToolSettings settings;
         private readonly EQToolSettingsLoad toolSettingsLoad;
         private readonly ActivePlayer activePlayer;
+        private readonly TimersService timersService;
 
-        public SpellWindow(EQToolSettings settings, SpellWindowViewModel spellWindowViewModel, LogParser logParser, EQToolSettingsLoad toolSettingsLoad, ActivePlayer activePlayer, LoggingService loggingService)
+        public SpellWindow(
+            TimersService timersService,
+            EQToolSettings settings,
+            SpellWindowViewModel spellWindowViewModel,
+            LogParser logParser,
+            EQToolSettingsLoad toolSettingsLoad,
+            ActivePlayer activePlayer,
+            LoggingService loggingService)
         {
             loggingService.Log(string.Empty, App.EventType.OpenMap);
+            this.timersService = timersService;
             this.settings = settings;
             this.logParser = logParser;
             this.activePlayer = activePlayer;
@@ -93,8 +104,25 @@ namespace EQTool
             spellWindowViewModel.TryAdd(e.Spell);
         }
 
+        public TimeSpan ZoneRespawnTime => EQToolShared.Map.ZoneParser.ZoneInfoMap.TryGetValue(activePlayer?.Player?.Zone, out var zoneInfo) ? zoneInfo.RespawnTime : new TimeSpan(0, 6, 40);
+
+        private int deathcounter = 1;
         private void LogParser_DeadEvent(object sender, LogParser.DeadEventArgs e)
         {
+            var add = new Services.Spells.Log.LogCustomTimer.CustomerTimer
+            {
+                Name = e.Name,
+                DurationInSeconds = (int)ZoneRespawnTime.TotalSeconds
+            };
+
+            var exisitngdeathentry = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellName == add.Name && spellWindowViewModel.CustomerTime == a.TargetName);
+            if (exisitngdeathentry != null)
+            {
+                deathcounter = ++deathcounter > 999 ? 1 : deathcounter;
+                add.Name += "_" + deathcounter;
+            }
+
+            spellWindowViewModel.TryAddCustom(add);
             spellWindowViewModel.TryRemoveTarget(e.Name);
         }
 

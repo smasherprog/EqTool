@@ -328,6 +328,7 @@
     <Compile Include="Services\AppDispatcher.cs" />
     <Compile Include="Services\BinarySerializer.cs" />
     <Compile Include="Services\LoggingService.cs" />
+    <Compile Include="Services\MapOpacityHelper.cs" />
     <Compile Include="Services\Parsing\QuakeParser.cs" />
     <Compile Include="Services\Parsing\LogFileDateTimeParse.cs" />
     <Compile Include="Services\Parsing\EnterWorldParser.cs" />
@@ -361,6 +362,7 @@
     <Compile Include="Shapes\ArrowLine.cs" />
     <Compile Include="Shapes\ArrowLineBase.cs" />
     <Compile Include="ViewModels\ActivePlayerInfo.cs" />
+    <Compile Include="Services\TimersService.cs" />
     <Compile Include="ViewModels\ZoneViewModel.cs" />
     <Compile Include="ViewModels\MobInfoViewModel.cs" />
     <Compile Include="ViewModels\MapViewModel.cs" />

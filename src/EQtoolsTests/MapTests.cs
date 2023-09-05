@@ -59,6 +59,6 @@ namespace EQtoolsTests
         {
             var zone = ZoneParser.Match("There are no players in East Commonlands that match those who filters.");
             Assert.AreEqual(string.Empty, zone);
-        }
+        } 
     }
 }
