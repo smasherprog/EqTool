@@ -9,19 +9,19 @@ namespace EQTool
     /// Interaction logic for MapWidget.xaml
     /// </summary>
     public partial class MapWidget : UserControl
-    {  
-        public TimerInfo TimerInfo { get; private set; }    
+    {
+        public TimerInfo TimerInfo { get; private set; }
         public MapWidget(TimerInfo timerInfo)
         {
             InitializeComponent();
             TimerInfo = timerInfo;
-            ClockTextValue.FontSize = TimerInfo.Fontsize;  
+            ClockTextValue.FontSize = TimerInfo.Fontsize;
             _ = Update();
-            Label.Text = TimerInfo.Name; 
+            Label.Text = TimerInfo.Name;
         }
 
         public void SetTheme(Brush labelb, Brush backgroundb)
-        { 
+        {
             ClockTextValue.Foreground = labelb;
             Background = backgroundb;
         }
@@ -39,14 +39,6 @@ namespace EQTool
         {
             var timespan = TimerInfo.EndTime - DateTime.Now;
             var timespanstring = string.Empty;
-            if (timespan.TotalSeconds <= 0)
-            {
-                ClockTextValue.Text = "00:00:00";
-                Background = new SolidColorBrush(GetColorFromRedYellowGreenGradient(0));
-                return (int)timespan.TotalSeconds;
-            }
-            var percentleft = timespan.TotalSeconds / TimerInfo.Duration.TotalSeconds * 100;
-            Background = new SolidColorBrush(GetColorFromRedYellowGreenGradient(percentleft));
             var timepart = (int)timespan.TotalHours;
             if (timepart > 0)
             {
@@ -58,6 +50,14 @@ namespace EQTool
             timespanstring += $"{timepart:D2}";
 
             ClockTextValue.Text = timespanstring;
+            if (timespan.TotalSeconds <= 0)
+            {
+                Background = new SolidColorBrush(GetColorFromRedYellowGreenGradient(0));
+                return (int)timespan.TotalSeconds;
+            }
+            var percentleft = timespan.TotalSeconds / TimerInfo.Duration.TotalSeconds * 100;
+            Background = new SolidColorBrush(GetColorFromRedYellowGreenGradient(percentleft));
+
             return (int)timespan.TotalSeconds;
         }
     }
