@@ -5,6 +5,7 @@ using EQTool.ViewModels;
 using EQToolShared.Enums;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
@@ -18,9 +19,12 @@ using System.Windows.Forms;
 
 namespace EQTool
 {
-    /// <summary>
-    /// Interaction logic for Settings.xaml
-    /// </summary>
+    public class BoolStringClass
+    {
+        public string TheText { get; set; }
+        public int TheValue { get; set; }
+    }
+
     public partial class Settings : Window
     {
         private readonly SettingsWindowViewModel SettingsWindowData;
@@ -58,7 +62,8 @@ namespace EQTool
             foreach (var item in SettingsWindowData.PlayerClasses)
             {
                 var it = item.ToString();
-                _ = spellbyclassselection.Items.Add(it);
+                var v = new BoolStringClass { TheText = it, TheValue = (int)item };
+                _ = spellbyclassselection.Items.Add(v);
             }
 
 
