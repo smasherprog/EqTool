@@ -1,10 +1,10 @@
 ﻿using EQTool.Models;
 using EQTool.Services;
 using EQTool.ViewModels;
+using EQToolShared.Map;
 using System;
 using System.ComponentModel;
 using System.Linq;
-using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -104,15 +104,16 @@ namespace EQTool
             spellWindowViewModel.TryAdd(e.Spell);
         }
 
-        public TimeSpan ZoneRespawnTime => EQToolShared.Map.ZoneParser.ZoneInfoMap.TryGetValue(activePlayer?.Player?.Zone, out var zoneInfo) ? zoneInfo.RespawnTime : new TimeSpan(0, 6, 40);
+
 
         private int deathcounter = 1;
         private void LogParser_DeadEvent(object sender, LogParser.DeadEventArgs e)
         {
-            var add = new Services.Spells.Log.LogCustomTimer.CustomerTimer
+            var zonetimer = ZoneSpawnTimes.GetSpawnTime(e.Name, activePlayer?.Player?.Zone);
+            var add = new CustomerTimer
             {
                 Name = e.Name,
-                DurationInSeconds = (int)ZoneRespawnTime.TotalSeconds
+                DurationInSeconds = (int)zonetimer.TotalSeconds
             };
 
             var exisitngdeathentry = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellName == add.Name && spellWindowViewModel.CustomerTime == a.TargetName);

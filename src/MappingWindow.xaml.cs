@@ -1,12 +1,11 @@
 ﻿using EQTool.Models;
 using EQTool.Services;
 using EQTool.ViewModels;
+using EQToolShared.Map;
 using System;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Media;
 
 namespace EQTool
 {
@@ -83,7 +82,7 @@ namespace EQTool
         {
             mapViewModel.TimerMenu_Closed();
         }
-         
+
         private void LogParser_StartTimerEvent(object sender, LogParser.StartTimerEventArgs e)
         {
             var mw = mapViewModel.AddTimer(TimeSpan.FromSeconds(e.CustomerTimer.DurationInSeconds), e.CustomerTimer.Name, false);
@@ -108,8 +107,8 @@ namespace EQTool
 
         private void LogParser_DeadEvent(object sender, LogParser.DeadEventArgs e)
         {
-            var timer = mapViewModel.ZoneRespawnTime; 
-            var mw = mapViewModel.AddTimer(timer, e.Name, true);
+            var zonetimer = ZoneSpawnTimes.GetSpawnTime(e.Name, mapViewModel.ZoneName);
+            var mw = mapViewModel.AddTimer(zonetimer, e.Name, true);
             mapViewModel.MoveToPlayerLocation(mw);
         }
 
@@ -188,7 +187,7 @@ namespace EQTool
             Map.CancelTimerEvent -= Map_CancelTimerEvent;
             Map.TimerMenu_ClosedEvent -= Map_TimerMenu_ClosedEvent;
             Map.TimerMenu_OpenedEvent -= Map_TimerMenu_OpenedEvent;
-            Map.PanAndZoomCanvas_MouseDownEvent -= Map_PanAndZoomCanvas_MouseDownEvent; 
+            Map.PanAndZoomCanvas_MouseDownEvent -= Map_PanAndZoomCanvas_MouseDownEvent;
             // signalRMapService.PlayerLocationReceived -= SignalRMapService_PlayerLocationReceived;
             SaveState();
             base.OnClosing(e);

@@ -1,4 +1,4 @@
-﻿using EQTool.ViewModels;
+﻿using EQToolShared.Map;
 using System;
 using System.Windows;
 using System.Windows.Controls;
@@ -16,7 +16,7 @@ namespace EQTool
         public PanAndZoomCanvas()
         {
             InitializeComponent();
-            MouseDown += PanAndZoomCanvas_MouseDown; 
+            MouseDown += PanAndZoomCanvas_MouseDown;
             TimeSpanControl.DefaultValue = TimeSpan.FromMinutes(72);
             TimeSpanControl.Value = TimeSpan.FromMinutes(72);
             TimeSpanControl.DisplayDefaultValueOnEmptyText = true;
@@ -62,20 +62,20 @@ namespace EQTool
                     DeleteTimerMenuItem.Visibility = Visibility.Collapsed;
                 }
             }
-            PanAndZoomCanvas_MouseDownEvent?.Invoke(this, e); 
-        } 
+            PanAndZoomCanvas_MouseDownEvent?.Invoke(this, e);
+        }
 
         public event EventHandler<RoutedEventArgs> TimerMenu_ClosedEvent;
         private void TimerMenu_Closed(object sender, RoutedEventArgs e)
         {
-            TimerMenu_ClosedEvent?.Invoke(this, e); 
+            TimerMenu_ClosedEvent?.Invoke(this, e);
         }
 
         public event EventHandler<RoutedEventArgs> TimerMenu_OpenedEvent;
         private void TimerMenu_Opened(object sender, RoutedEventArgs e)
         {
             TimerMenu_OpenedEvent?.Invoke(this, e);
-            TimeSpanControl.Value = EQToolShared.Map.ZoneParser.ZoneInfoMap.TryGetValue(ZoneName, out var zoneInfo) ? zoneInfo.RespawnTime : new TimeSpan(0, 6, 40);
+            TimeSpanControl.Value = ZoneSpawnTimes.GetSpawnTime(string.Empty, ZoneName);
         }
     }
 }

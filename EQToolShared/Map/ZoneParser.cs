@@ -4,14 +4,21 @@ using System.Linq;
 
 namespace EQToolShared.Map
 {
+    public class NpcSpawnTime
+    {
+        public string Name { get; set; }
+        public TimeSpan RespawnTime { get; set; }
+    }
+
     public class ZoneInfo
     {
         public bool ShowAllMapLevels { get; set; }
         public int ZoneLevelHeight { get; set; }
         public string Name { get; set; }
         public TimeSpan RespawnTime { get; set; }
+        public List<NpcSpawnTime> NpcSpawnTimes { get; set; } = new List<NpcSpawnTime>();
+        public List<NpcSpawnTime> NpcContainsSpawnTimes { get; set; } = new List<NpcSpawnTime>();
         public List<string> NotableNPCs { get; set; } = new List<string>();
-
     }
 
     public static class ZoneParser
@@ -585,7 +592,38 @@ namespace EQToolShared.Map
                 {
                     "Captain Boshinko","Mistress Anna","Osargen","Princess Lenia",
                 },
-                RespawnTime = new TimeSpan(0, 10, 0)
+                NpcContainsSpawnTimes = new List<NpcSpawnTime>()
+                {
+                    new NpcSpawnTime
+                    {
+                        Name = "Goblin",
+                        RespawnTime = new TimeSpan(0, 10, 0)
+                    }
+                },
+                NpcSpawnTimes = new List<NpcSpawnTime>()
+                {
+                    new NpcSpawnTime
+                    {
+                        Name = "Guard Blayle",
+                        RespawnTime = new TimeSpan(0, 3, 0)
+                    },
+                     new NpcSpawnTime
+                    {
+                        Name = "A noble",
+                        RespawnTime = new TimeSpan(0, 6, 0)
+                    },
+                     new NpcSpawnTime
+                    {
+                        Name = "Isabella Cellus",
+                        RespawnTime = new TimeSpan(0, 6, 0)
+                    },
+                     new NpcSpawnTime
+                    {
+                        Name = "Captain Boshinko",
+                        RespawnTime = new TimeSpan(0, 6, 0)
+                    }
+                },
+                RespawnTime = new TimeSpan(0, 18, 0)
             });
             ZoneInfoMap.Add("highpass", new ZoneInfo
             {
@@ -1216,6 +1254,14 @@ namespace EQToolShared.Map
                 ShowAllMapLevels = true,
                 ZoneLevelHeight = 10,
                 NotableNPCs = new List<string>() { "Atpaev", "Ayillish", "Bratavar", "Bufa", "Cargalia", "Del Sapara", "Derasinal", "Draazak", "Entariz", "Esorpa of the Ring", "Gafala", "Gangel", "Glati", "Harla Dar", "Hechaeva", "Honvar", "Ionat", "Jen Sapara", "Kar Sapara", "Karkona", "Klandicar", "Linbrak", "Makala", "Mazi", "Melalafen", "Myga", "Neordla", "Nintal", "Onava", "Pantrilla", "Quoza", "Sivar", "Sontalak", "Uiliak", "Vitaela", "Von", "Vraptin", "Yal", "Yeldema", "Zil Sapara", "Icehackle", "Makil Rargon", "Mraaka", "Scout Charisa", "Strong Horn", "Tantor", "The Dragon Sage", "Tranala", "Tsiraka", "a Kromzek Captain" },
+                NpcSpawnTimes = new List<NpcSpawnTime>()
+                 {
+                     new NpcSpawnTime
+                     {
+                        Name = "An elder wyvern",
+                        RespawnTime = new TimeSpan(0, 30, 0)
+                     }
+                 },
                 RespawnTime = new TimeSpan(0, 6, 40)
             });
 
