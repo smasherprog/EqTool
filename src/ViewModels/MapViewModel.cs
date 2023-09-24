@@ -2,7 +2,6 @@
 using EQTool.Services;
 using EQTool.Shapes;
 using EQToolShared.Map;
-using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -36,7 +35,6 @@ namespace EQTool.ViewModels
         private Point3D MapOffset = new Point3D(0, 0, 0);
         private bool MapLoading = false;
         private PlayerLocationCircle PlayerLocation;
-        private Ellipse PlayerTrackRadius;
         private Canvas Canvas;
         private float CurrentScaling = 1.0f;
         private readonly float Zoomfactor = 1.1f;
@@ -84,7 +82,6 @@ namespace EQTool.ViewModels
             }
         }
 
-        public TimeSpan ZoneRespawnTime => EQToolShared.Map.ZoneParser.ZoneInfoMap.TryGetValue(ZoneName, out var zoneInfo) ? zoneInfo.RespawnTime : new TimeSpan(0, 6, 40);
         public string Title => _ZoneName + "  v" + App.Version + $"   {Lastlocation.X:0.##}, {Lastlocation.Y:0.##}, {Lastlocation.Z:0.##}";
 
         private string _ZoneName = string.Empty;
@@ -171,6 +168,8 @@ namespace EQTool.ViewModels
                     }
 
                     Debug.WriteLine($"Labels: {map.Labels.Count}");
+                    var locationdotsize = MathHelper.ChangeRange(Math.Max(map.AABB.MaxWidth, map.AABB.MaxHeight), 500, 35000, 20, 150);
+                    var locationthickness = MathHelper.ChangeRange(Math.Max(map.AABB.MaxWidth, map.AABB.MaxHeight), 500, 35000, 5, 20);
                     foreach (var item in map.Labels)
                     {
                         var text = new TextBlock
@@ -184,10 +183,10 @@ namespace EQTool.ViewModels
                         var circle = new Ellipse()
                         {
                             Tag = item,
-                            Width = 10,
-                            Height = 10,
+                            Width = locationdotsize,
+                            Height = locationdotsize,
                             Stroke = Brushes.Red,
-                            StrokeThickness = 3
+                            StrokeThickness = locationthickness
                         };
                         _ = canvas.Children.Add(circle);
                         _ = canvas.Children.Add(text);
@@ -275,14 +274,6 @@ namespace EQTool.ViewModels
         private static T Clamp<T>(T val, T min, T max) where T : IComparable<T>
         {
             return val.CompareTo(min) < 0 ? min : val.CompareTo(max) > 0 ? max : val;
-        }
-
-        public void MoveToPlayerLocation(MapWidget mw)
-        {
-            mw.TimerInfo.Location = new Point(Canvas.GetLeft(PlayerLocation.ArrowLine), Canvas.GetTop(PlayerLocation.ArrowLine));
-            Canvas.SetLeft(mw, Canvas.GetLeft(PlayerLocation.ArrowLine));
-            Canvas.SetTop(mw, Canvas.GetTop(PlayerLocation.ArrowLine));
-            mw.RenderTransform = Transform;
         }
 
         private int failedzonelogcounter = 0;
@@ -382,14 +373,31 @@ namespace EQTool.ViewModels
                 Canvas.Children.Remove(item);
             }
         }
+        public void MoveToPlayerLocation(MapWidget mw)
+        {
+            if (PlayerLocation == null)
+            {
+                return;
+            }
+            mw.TimerInfo.Location = new Point(Lastlocation.Y, Lastlocation.X);
+            Canvas.SetLeft(mw, Canvas.GetLeft(PlayerLocation.ArrowLine));
+            Canvas.SetTop(mw, Canvas.GetTop(PlayerLocation.ArrowLine));
+            mw.RenderTransform = Transform;
+        }
 
-        public MapWidget AddTimer(TimeSpan timer, string title)
+        private int deathcounter = 1;
+        public MapWidget AddTimer(TimeSpan timer, string title, bool autoIncrementDuplicateNames)
         {
             var mousePosition = Transform.Inverse.Transform(_mouseuppoint);
             mousePosition.X += MapOffset.X;
             mousePosition.Y += MapOffset.Y;
             mousePosition.X *= -1;
             mousePosition.Y *= -1;
+            if (autoIncrementDuplicateNames && timersService.TimerExists(ZoneName, title))
+            {
+                deathcounter = ++deathcounter > 999 ? 1 : deathcounter;
+                title += "_" + deathcounter;
+            }
             var mw = timersService.AddTimer(new TimerInfo
             {
                 Duration = timer,
@@ -406,7 +414,7 @@ namespace EQTool.ViewModels
             return mw;
         }
 
-        public void DeleteSelectedTimer()
+        public TimerInfo DeleteSelectedTimer()
         {
             if (_selectedElement is MapWidget w)
             {
@@ -414,6 +422,30 @@ namespace EQTool.ViewModels
                 Canvas.Children.Remove(w);
                 _dragging = false;
                 _selectedElement = null;
+                return w.TimerInfo;
+            }
+            return null;
+        }
+
+        public void DeleteSelectedTimerByName(string name)
+        {
+            var timer = timersService.RemoveTimer(name);
+            if (timer != null)
+            {
+                MapWidget wremove = null;
+                foreach (var item in Canvas.Children)
+                {
+                    if (item is MapWidget w && w.TimerInfo.Name == name)
+                    {
+                        wremove = w;
+                        break;
+                    }
+                }
+
+                if (wremove != null)
+                {
+                    Canvas.Children.Remove(wremove);
+                }
             }
         }
 

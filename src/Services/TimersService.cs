@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Windows;
 using System.Windows.Media;
 
@@ -22,12 +23,12 @@ namespace EQTool.Services
                 return _Location;
             }
             set
-            { 
-                _Location = value; 
+            {
+                _Location = value;
             }
         }
     }
-     
+
     public class TimersService
     {
         private Dictionary<string, List<TimerInfo>> ZoneTimers = new Dictionary<string, List<TimerInfo>>();
@@ -46,7 +47,7 @@ namespace EQTool.Services
                         var textlabel = new SolidColorBrush(System.Windows.Media.Color.FromRgb(255, 255, 255));
                         var forgregroundlabel = new SolidColorBrush(System.Windows.Media.Color.FromRgb(0, 0, 0));
                         mw.SetTheme(textlabel, forgregroundlabel);
-                        ret.Add(mw); 
+                        ret.Add(mw);
                     }
                     else
                     {
@@ -62,6 +63,15 @@ namespace EQTool.Services
             return ret;
         }
 
+        public bool TimerExists(string zonename, string name)
+        {
+            if (ZoneTimers.TryGetValue(zonename, out var zone))
+            {
+                return zone.Any(a => a.Name == name);
+            }
+            return false;
+        }
+
         public void RemoveTimer(TimerInfo removeTimerInfo)
         {
             if (ZoneTimers.TryGetValue(removeTimerInfo.ZoneName, out var zone))
@@ -70,12 +80,26 @@ namespace EQTool.Services
             }
         }
 
+        public TimerInfo RemoveTimer(string name)
+        {
+            foreach (var item in ZoneTimers.Values)
+            {
+                var t = item.FirstOrDefault(a => a.Name == name);
+                if (t != null)
+                {
+                    item.Remove(t);
+                    return t;
+                }
+            }
+            return null;
+        }
+
         public MapWidget AddTimer(TimerInfo addTimer)
         {
             var mw = new MapWidget(addTimer);
             var textlabel = new SolidColorBrush(System.Windows.Media.Color.FromRgb(255, 255, 255));
             var forgregroundlabel = new SolidColorBrush(System.Windows.Media.Color.FromRgb(0, 0, 0));
-            mw.SetTheme(textlabel, forgregroundlabel); 
+            mw.SetTheme(textlabel, forgregroundlabel);
             if (ZoneTimers.TryGetValue(addTimer.ZoneName, out var zone))
             {
                 zone.Add(addTimer);
@@ -87,6 +111,5 @@ namespace EQTool.Services
 
             return mw;
         }
-
     }
 }

@@ -52,8 +52,8 @@ Features:
 <img width="152" alt="image" src="https://user-images.githubusercontent.com/3393733/212717141-6e26b9af-660a-493d-9f73-2c3464b7c224.png">
 
 <h4>TO DO List EQTool</h4>
-<ul>   
- <li>Enable shrinking of triggers window by truncating spell name</li>   
+<ul> 
+ <li>Add code to show MOB hits per second.</li>   
  <li>Port application to be cross platform(mac, win, linux).</li>   
  <li>Add Ability to bind a hotkey to toggle a window open/close.</li>   
  <li>Add cooldowntimer for discs.</li>   
@@ -113,7 +113,7 @@ Features:
 <img alt="image" src="https://user-images.githubusercontent.com/3393733/222051822-fc4b750d-2efa-4eb9-bc00-589d3cc5b781.png">
 <ul>
 <li>EQTool was unable to automatically detect your P99 install folder. You must specify it yourself!</li>
-<li>EQTool detected that eq logging is turned off. You must click enable logging. This will turn on EQ's logging which is where EQTool gets informatioon from.</li>
+<li>EQTool detected that eq logging is turned off. You must click enable logging. This will turn on EQ's logging which is where EQTool gets information from.</li>
 </ul>
 
 <h4>Do I have to set my class and level?</h4> 

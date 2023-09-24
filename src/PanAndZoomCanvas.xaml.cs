@@ -1,4 +1,4 @@
-﻿using EQTool.ViewModels;
+﻿using EQToolShared.Map;
 using System;
 using System.Windows;
 using System.Windows.Controls;
@@ -8,36 +8,45 @@ namespace EQTool
 {
     public partial class PanAndZoomCanvas : Canvas
     {
-        public MapViewModel mapViewModel;
+        public event EventHandler<EventArgs> CancelTimerEvent;
 
-        public PanAndZoomCanvas(MapViewModel mapViewModel)
+        public event EventHandler<Services.LogParser.StartTimerEventArgs> StartTimerEvent;
+        public string ZoneName = "freportw";
+
+        public PanAndZoomCanvas()
         {
             InitializeComponent();
-            DataContext = mapViewModel;
             MouseDown += PanAndZoomCanvas_MouseDown;
-            MouseUp += PanAndZoomCanvas_MouseUp;
-            MouseMove += PanAndZoomCanvas_MouseMove;
-            MouseWheel += PanAndZoomCanvas_MouseWheel;
             TimeSpanControl.DefaultValue = TimeSpan.FromMinutes(72);
             TimeSpanControl.Value = TimeSpan.FromMinutes(72);
             TimeSpanControl.DisplayDefaultValueOnEmptyText = true;
         }
 
+        private int TimerCounter = 1;
         private void AddTimer(object sender, RoutedEventArgs e)
         {
             if (TimeSpanControl.Value.HasValue)
             {
-                _ = mapViewModel.AddTimer(TimeSpanControl.Value.Value, string.Empty);
+                var timername = $"Timer {TimerCounter++}";
+                StartTimerEvent?.Invoke(this,
+                    new Services.LogParser.StartTimerEventArgs
+                    {
+                        CustomerTimer = new Services.Spells.Log.LogCustomTimer.CustomerTimer
+                        {
+                            Name = timername,
+                            DurationInSeconds = (int)TimeSpanControl.Value.Value.TotalSeconds
+                        }
+                    });
                 TimerMenu.IsOpen = false;
-                mapViewModel.TimerMenu_Closed();
             }
         }
 
         private void DeleteTimer(object sender, RoutedEventArgs e)
         {
-            mapViewModel.DeleteSelectedTimer();
+            CancelTimerEvent?.Invoke(this, new EventArgs());
         }
 
+        public event EventHandler<MouseButtonEventArgs> PanAndZoomCanvas_MouseDownEvent;
         private void PanAndZoomCanvas_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ChangedButton == MouseButton.Right)
@@ -53,36 +62,20 @@ namespace EQTool
                     DeleteTimerMenuItem.Visibility = Visibility.Collapsed;
                 }
             }
-            var mousePostion = e.GetPosition(this);
-            mapViewModel.PanAndZoomCanvas_MouseDown(mousePostion, e);
+            PanAndZoomCanvas_MouseDownEvent?.Invoke(this, e);
         }
 
-        private void PanAndZoomCanvas_MouseUp(object sender, MouseButtonEventArgs e)
-        {
-            var mousePostion = e.GetPosition(this);
-            mapViewModel.PanAndZoomCanvas_MouseUp(mousePostion);
-        }
-
-        private void PanAndZoomCanvas_MouseMove(object sender, MouseEventArgs e)
-        {
-            var mousePostion = e.GetPosition(this);
-            mapViewModel.PanAndZoomCanvas_MouseMove(mousePostion, e);
-        }
-
-        private void PanAndZoomCanvas_MouseWheel(object sender, MouseWheelEventArgs e)
-        {
-            var mousePostion = e.GetPosition(this);
-            mapViewModel.PanAndZoomCanvas_MouseWheel(mousePostion, e.Delta);
-        }
+        public event EventHandler<RoutedEventArgs> TimerMenu_ClosedEvent;
         private void TimerMenu_Closed(object sender, RoutedEventArgs e)
         {
-            mapViewModel.TimerMenu_Closed();
+            TimerMenu_ClosedEvent?.Invoke(this, e);
         }
 
+        public event EventHandler<RoutedEventArgs> TimerMenu_OpenedEvent;
         private void TimerMenu_Opened(object sender, RoutedEventArgs e)
         {
-            mapViewModel.TimerMenu_Opened();
-            TimeSpanControl.Value = EQToolShared.Map.ZoneParser.ZoneInfoMap.TryGetValue(mapViewModel.ZoneName, out var zoneInfo) ? zoneInfo.RespawnTime : new TimeSpan(0, 6, 40);
+            TimerMenu_OpenedEvent?.Invoke(this, e);
+            TimeSpanControl.Value = ZoneSpawnTimes.GetSpawnTime(string.Empty, ZoneName);
         }
     }
 }

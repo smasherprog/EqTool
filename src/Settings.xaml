@@ -125,14 +125,10 @@
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Spell Filters"  FontWeight="Bold" MinWidth="100" ToolTip="This will filter what shows up on other players."/>
                     <StackPanel Orientation="Vertical">
-                        <ListBox IsEnabled="{Binding HasCharName}"
-                             Name="spellbyclassselection" 
-                             SelectionMode="Multiple" 
-                             SelectionChanged="spellbyclassselection_SelectionChanged" 
-                             MinWidth="150">
+                        <ListBox IsEnabled="{Binding HasCharName}" ItemsSource="{Binding SelectedPlayerClasses}" MinWidth="150">
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
-                                    <CheckBox Content="{Binding TheText}"   Tag="{Binding TheValue}"  />
+                                    <CheckBox Content="{Binding TheText}" Tag="{Binding TheValue}" Checked="CheckBoxZone_Checked" IsChecked="{Binding IsChecked}" Margin="0,5,0,0"/>
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
                         </ListBox>

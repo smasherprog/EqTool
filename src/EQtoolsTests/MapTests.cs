@@ -18,6 +18,17 @@ namespace EQtoolsTests
         }
 
         [TestMethod]
+        public void KaelZoneTest()
+        {
+            var zone = ZoneParser.Match("There is 1 player in Kael Drakkal.");
+            Assert.IsNotNull(zone);
+
+            Assert.AreEqual("kael drakkal", zone);
+            var pretyname = ZoneParser.TranslateToMapName(zone);
+            Assert.AreEqual("kael", pretyname);
+        }
+
+        [TestMethod]
         public void HateWhoTest()
         {
             var zone = ZoneParser.Match("There are 15 players in The Plane of Hate.");
