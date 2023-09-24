@@ -40,6 +40,9 @@ namespace EQTool
 
         private bool WaitForEQToolToStop()
         {
+#if DEBUG
+            return true;
+#endif
             var counter = 0;
             int count;
             do

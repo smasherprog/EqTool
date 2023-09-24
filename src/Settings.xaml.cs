@@ -10,6 +10,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -18,9 +19,31 @@ using System.Windows.Forms;
 
 namespace EQTool
 {
-    /// <summary>
-    /// Interaction logic for Settings.xaml
-    /// </summary>
+    public class BoolStringClass : INotifyPropertyChanged
+    {
+        public string TheText { get; set; }
+
+        public PlayerClasses TheValue { get; set; }
+
+        private bool _IsChecked { get; set; }
+
+        public bool IsChecked
+        {
+            get => _IsChecked; set
+            {
+                _IsChecked = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void OnPropertyChanged([CallerMemberName] string name = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
+    }
+
     public partial class Settings : Window
     {
         private readonly SettingsWindowViewModel SettingsWindowData;
@@ -54,14 +77,6 @@ namespace EQTool
             Topmost = true;
             InitializeComponent();
             TryCheckLoggingEnabled();
-
-            foreach (var item in SettingsWindowData.PlayerClasses)
-            {
-                var it = item.ToString();
-                _ = spellbyclassselection.Items.Add(it);
-            }
-
-
             var releasemode = false;
 
 #if RELEASE
@@ -106,21 +121,19 @@ namespace EQTool
             BestGuessSpells.IsChecked = settings.BestGuessSpells;
             YouSpellsOnly.IsChecked = settings.YouOnlySpells;
             var player = SettingsWindowData.ActivePlayer.Player;
-            var selecteditems = new List<string>();
-            foreach (var item in SettingsWindowData.PlayerClasses)
+
+            if (player?.ShowSpellsForClasses != null)
             {
-                var it = item.ToString();
-                if (player?.ShowSpellsForClasses == null || player.ShowSpellsForClasses.Any(a => a == item))
+                foreach (var item in SettingsWindowData.SelectedPlayerClasses)
                 {
-                    selecteditems.Add(it);
+                    item.IsChecked = player.ShowSpellsForClasses.Contains(item.TheValue);
                 }
             }
-
-            foreach (var item in selecteditems)
+            else
             {
-                if (!spellbyclassselection.SelectedItems.Contains(item))
+                foreach (var item in SettingsWindowData.SelectedPlayerClasses)
                 {
-                    _ = spellbyclassselection.SelectedItems.Add(item);
+                    item.IsChecked = false;
                 }
             }
         }
@@ -254,17 +267,23 @@ namespace EQTool
             spellWindowViewModel.TryAddCustom(new LogCustomTimer.CustomerTimer { DurationInSeconds = 60 * 18, Name = "hall Wanderer 1" });
         }
 
-        private void spellbyclassselection_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        private void CheckBoxZone_Checked(object sender, RoutedEventArgs e)
         {
+            var chkZone = (System.Windows.Controls.CheckBox)sender;
             var player = SettingsWindowData.ActivePlayer.Player;
             if (player != null)
             {
-                player.ShowSpellsForClasses = new List<PlayerClasses>();
-                foreach (var item in spellbyclassselection.SelectedItems)
+                var item = (PlayerClasses)chkZone.Tag;
+                if (chkZone.IsChecked == true && !player.ShowSpellsForClasses.Any(a => a == item))
                 {
-                    player.ShowSpellsForClasses.Add((PlayerClasses)Enum.Parse(typeof(PlayerClasses), item.ToString()));
+                    player.ShowSpellsForClasses.Add(item);
+                    SaveConfig();
                 }
-                SaveConfig();
+                else if (chkZone.IsChecked == false && player.ShowSpellsForClasses.Any(a => a == item))
+                {
+                    player.ShowSpellsForClasses.Remove(item);
+                    SaveConfig();
+                }
             }
         }
 

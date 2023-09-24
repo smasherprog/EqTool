@@ -104,8 +104,6 @@ namespace EQTool
             spellWindowViewModel.TryAdd(e.Spell);
         }
 
-
-
         private int deathcounter = 1;
         private void LogParser_DeadEvent(object sender, LogParser.DeadEventArgs e)
         {

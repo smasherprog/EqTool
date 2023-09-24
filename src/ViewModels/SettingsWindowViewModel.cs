@@ -28,6 +28,12 @@ namespace EQTool.ViewModels
             {
                 Zones.Add(item);
             }
+
+            foreach (var item in Enum.GetValues(typeof(PlayerClasses)).Cast<PlayerClasses>())
+            {
+                var listitem = new BoolStringClass { TheText = item.ToString(), TheValue = item, IsChecked = false };
+                this.SelectedPlayerClasses.Add(listitem);
+            }
         }
 
         private ActivePlayer _ActivePlayer;
@@ -95,6 +101,7 @@ namespace EQTool.ViewModels
         public bool HasCharName => !string.IsNullOrWhiteSpace(ActivePlayer?.Player?.Name);
         public Visibility HasNoCharName => string.IsNullOrWhiteSpace(ActivePlayer?.Player?.Name) ? Visibility.Visible : Visibility.Collapsed;
 
+        public ObservableCollection<BoolStringClass> SelectedPlayerClasses { get; set; } = new ObservableCollection<BoolStringClass>();
         public List<PlayerClasses> PlayerClasses => Enum.GetValues(typeof(PlayerClasses)).Cast<PlayerClasses>().ToList();
 
         public bool EqRunning

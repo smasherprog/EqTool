@@ -32,15 +32,15 @@
                 </StackPanel>
             </StackPanel>
             <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Eq Log Path"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/> 
-                <TextBlock Text="{Binding EqLogPath}" HorizontalAlignment="Left" MinWidth="150"/> 
+                <TextBlock Text="Eq Log Path"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
+                <TextBlock Text="{Binding EqLogPath}" HorizontalAlignment="Left" MinWidth="150"/>
             </StackPanel>
             <StackPanel Orientation="Horizontal"  Visibility="{Binding HasEqPath, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Visible}" >
                 <TextBlock Text="Logging"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100" Visibility="{Binding IsLoggingEnabled, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}"/>
                 <TextBlock Text="Logging"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100" Foreground="Red"  Visibility="{Binding IsLoggingDisabled, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Visible}"/>
                 <TextBlock Visibility="{Binding IsLoggingEnabled, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}" Text="Logging Enabled!" Margin="5,5,0,0" HorizontalAlignment="Left" Foreground="Green"/>
                 <Button Visibility="{Binding IsLoggingDisabled, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}" Name="enableLogging" Margin="5,5,0,0" Click="enableLogging_Click">Enable Logging</Button>
-            </StackPanel> 
+            </StackPanel>
             <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" Visibility="{Binding NotMissingConfiguration, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Visible}">
                 <TextBlock Visibility="{Binding HasNoCharName}" HorizontalAlignment="Center" Text="Functionality disabled until you log in!"  FontWeight="Bold" Foreground="Red"/>
                 <StackPanel Orientation="Horizontal">
@@ -68,7 +68,7 @@
                     <TextBlock Text="Font Size"  FontWeight="Bold"  VerticalAlignment="Center" MinWidth="100"/>
                     <ComboBox  SelectedItem="{Binding Source={x:Static properties:Settings.Default}, Path=GlobalFontSize}" ItemsSource="{Binding FontSizes}" SelectionChanged="fontsizescombobox_SelectionChanged" MinWidth="150"/>
                 </StackPanel>
-   
+
                 <TextBlock Text="Damage Window" HorizontalAlignment="Center" FontWeight="Bold" Margin="5,5,0,0"/>
                 <StackPanel Orientation="Vertical">
                     <StackPanel Orientation="Horizontal">
@@ -125,11 +125,12 @@
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Spell Filters"  FontWeight="Bold" MinWidth="100" ToolTip="This will filter what shows up on other players."/>
                     <StackPanel Orientation="Vertical">
-                        <ListBox IsEnabled="{Binding HasCharName}"
-                             Name="spellbyclassselection" 
-                             SelectionMode="Multiple" 
-                             SelectionChanged="spellbyclassselection_SelectionChanged" 
-                             MinWidth="150">
+                        <ListBox IsEnabled="{Binding HasCharName}" ItemsSource="{Binding SelectedPlayerClasses}" MinWidth="150">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <CheckBox Content="{Binding TheText}" Tag="{Binding TheValue}" Checked="CheckBoxZone_Checked" IsChecked="{Binding IsChecked}" Margin="0,5,0,0"/>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
                         </ListBox>
                     </StackPanel>
                 </StackPanel>
@@ -154,7 +155,7 @@
                         <TextBlock Text="Log Push"  VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
                         <TextBox x:Name="LogPushText" MinWidth="100"></TextBox>
                         <Button Click="logpush">Push</Button>
-                    </StackPanel> 
+                    </StackPanel>
                 </StackPanel>
             </StackPanel>
         </StackPanel>
