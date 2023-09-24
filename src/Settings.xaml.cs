@@ -1,21 +1,12 @@
-﻿using EQTool.Models;
-using EQTool.Services;
-using EQTool.Services.Spells.Log;
-using EQTool.ViewModels;
-using EQToolShared.Enums;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Forms;
 
 namespace EQTool
 {

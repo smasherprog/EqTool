@@ -425,6 +425,48 @@ namespace EQToolTests
         }
 
         [TestMethod]
+        public void TestSlowForMagePetHaste()
+        {
+            var spells = container.Resolve<EQSpells>();
+            var spelllogparse = container.Resolve<SpellLogParse>();
+            var spellname = "Burnout";
+            var shissarspell = spells.AllSpells.FirstOrDefault(a => a.name == spellname);
+            var line = "You begin casting Burnout." ; 
+            var player = container.Resolve<ActivePlayer>();
+            player.Player = new PlayerInfo
+            {
+                Level = 21,
+                PlayerClass = PlayerClasses.Magician
+            }; 
+            var guess = spelllogparse.MatchSpell(line); 
+            Assert.AreEqual(shissarspell, player.UserCastingSpell); 
+        }
+
+        [TestMethod]
+        public void TestSlowForMagePetHaste1()
+        {
+            var spells = container.Resolve<EQSpells>();
+            var spelllogparse = container.Resolve<SpellLogParse>();
+            var spellname = "Burnout";
+            var shissarspell = spells.AllSpells.FirstOrDefault(a => a.name == spellname);
+            var line = "Jobober " + shissarspell.cast_on_other;
+            var service = container.Resolve<ParseSpellGuess>();
+            var player = container.Resolve<ActivePlayer>();
+            player.Player = new PlayerInfo
+            {
+                Level = 21,
+                PlayerClass = PlayerClasses.Magician
+            };
+            player.UserCastingSpell = shissarspell;
+            var guess = spelllogparse.MatchSpell(line);
+            var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(guess.Spell, player.Player));
+            Assert.AreEqual(6, spellduration.TotalMinutes);
+            Assert.IsNotNull(guess);
+            Assert.AreEqual(guess.Spell.name, spellname);
+            Assert.IsFalse(guess.MultipleMatchesFound);
+        }
+
+        [TestMethod]
         public void TestSlowForNecro()
         {
             var spells = container.Resolve<EQSpells>();
