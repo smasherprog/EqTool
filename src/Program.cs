@@ -15,27 +15,34 @@ namespace EQTool
         [STAThread]
         public static void Main(string[] args)
         {
+            var debug = false;
+#if DEBUG
+            debug = true;
+#endif
             try
             {
-                _ = OnResolveAssembly(null, new ResolveEventArgs("System.Threading.Tasks.Extensions"));
-                AppDomain.CurrentDomain.AssemblyResolve += OnResolveAssembly;
-                if (!File.Exists(configFile))
+                if (!debug)
                 {
-                    UpdateConfig(args);
-                    Thread.Sleep(1000);
-                    return;
-                }
-                else
-                {
-                    var fileondisk = File.ReadAllText(configFile);
-                    if (fileondisk != Resources.App)
+                    _ = OnResolveAssembly(null, new ResolveEventArgs("System.Threading.Tasks.Extensions"));
+                    AppDomain.CurrentDomain.AssemblyResolve += OnResolveAssembly;
+                    if (!File.Exists(configFile))
                     {
                         UpdateConfig(args);
                         Thread.Sleep(1000);
                         return;
                     }
+                    else
+                    {
+                        var fileondisk = File.ReadAllText(configFile);
+                        if (fileondisk != Resources.App)
+                        {
+                            UpdateConfig(args);
+                            Thread.Sleep(1000);
+                            return;
+                        }
+                    }
                 }
-
+               
                 App.Main();
             }
             catch (Exception ex)
