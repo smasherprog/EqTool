@@ -217,7 +217,7 @@ namespace EQTool.Models
             }
         }
 
-        public List<PlayerClasses> ShowSpellsForClasses { get; set; }
+        public List<PlayerClasses> ShowSpellsForClasses { get; set; } 
 
         public event PropertyChangedEventHandler PropertyChanged;
 
