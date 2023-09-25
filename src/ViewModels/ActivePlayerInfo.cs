@@ -27,7 +27,8 @@ namespace EQTool.ViewModels
                 Level = 1,
                 Name = charName,
                 PlayerClass = null,
-                Zone = "freportw"
+                Zone = "freportw", 
+                ShowSpellsForClasses = Enum.GetValues(typeof(PlayerClasses)).Cast<PlayerClasses>().ToList()
             };
 
             indexpart = charname_withext.IndexOf("P1999");
