@@ -1118,6 +1118,14 @@ namespace EQToolShared.Map
                 ShowAllMapLevels = true,
                 ZoneLevelHeight = 10,
                 NotableNPCs = new List<string>() { "", },
+                NpcSpawnTimes = new List<NpcSpawnTime>()
+                 {
+                     new NpcSpawnTime
+                     {
+                          Name = "High Shaman Phido",
+                          RespawnTime = new TimeSpan(0, 22, 0)
+                     }
+                 },
                 RespawnTime = new TimeSpan(0, 6, 40)
             });
             ZoneInfoMap.Add("sro", new ZoneInfo

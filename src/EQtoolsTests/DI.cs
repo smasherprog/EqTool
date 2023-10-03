@@ -3,6 +3,7 @@ using Autofac.Features.ResolveAnything;
 using EQTool.Models;
 using EQTool.Services;
 using EQTool.ViewModels;
+using EQToolShared.Discord;
 using System.IO;
 
 namespace EQToolTests
@@ -53,6 +54,7 @@ namespace EQToolTests
             _ = builder.RegisterType<SpellWindowViewModel>().AsSelf().SingleInstance();
             _ = builder.RegisterType<LogParser>().AsSelf().SingleInstance();
             _ = builder.RegisterType<DPSWindowViewModel>().AsSelf().SingleInstance();
+            _ = builder.RegisterType<DiscordAuctionParse>().AsSelf().SingleInstance();
 
             var b = builder.Build();
             var settings = b.Resolve<EQToolSettings>();

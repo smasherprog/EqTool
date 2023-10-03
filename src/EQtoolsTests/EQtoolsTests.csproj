@@ -136,6 +136,7 @@
     <Compile Include="DI.cs" />
     <Compile Include="FindEqTests.cs" />
     <Compile Include="DiscordTests.cs" />
+    <Compile Include="AuctionParsingTests.cs" />
     <Compile Include="ParsingTests.cs" />
     <Compile Include="MobInfoTests.cs" />
     <Compile Include="DamageTests.cs" />
