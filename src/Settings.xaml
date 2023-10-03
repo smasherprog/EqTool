@@ -128,7 +128,7 @@
                         <ListBox IsEnabled="{Binding HasCharName}" ItemsSource="{Binding SelectedPlayerClasses}" MinWidth="150">
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
-                                    <CheckBox Content="{Binding TheText}" Tag="{Binding TheValue}" Checked="CheckBoxZone_Checked" IsChecked="{Binding IsChecked}" Margin="0,5,0,0"/>
+                                    <CheckBox Content="{Binding TheText}" Tag="{Binding TheValue}" Unchecked="CheckBoxZone_Checked" Checked="CheckBoxZone_Checked" IsChecked="{Binding IsChecked}" Margin="0,5,0,0"/>
                                 </DataTemplate>
                             </ListBox.ItemTemplate>
                         </ListBox>

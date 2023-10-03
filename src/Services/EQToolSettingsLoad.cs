@@ -3,6 +3,7 @@ using EQToolShared.Enums;
 using Newtonsoft.Json;
 using System;
 using System.IO;
+using System.Linq;
 using System.Threading;
 
 namespace EQTool.Services
@@ -38,7 +39,7 @@ namespace EQTool.Services
                         {
                             if (item.ShowSpellsForClasses == null)
                             {
-                                item.ShowSpellsForClasses = new System.Collections.Generic.List<PlayerClasses>();
+                                item.ShowSpellsForClasses = Enum.GetValues(typeof(PlayerClasses)).Cast<PlayerClasses>().ToList();
                             }
                         }
                         return ret1;
