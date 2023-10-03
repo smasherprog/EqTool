@@ -58,12 +58,22 @@ namespace EQToolShared.Discord
 
             if (itembreakindex == -1)
             {
+                itembreakindex = input.Length;
+                if (input.Length == 0 || string.IsNullOrWhiteSpace(input))
+                {
+                    return null;
+                }
+            }
+            var itemname = input.Substring(0, itembreakindex).Trim();
+            if (string.IsNullOrWhiteSpace(itemname))
+            {
                 return null;
             }
+
             return new NextItem
             {
                 Input = input.Substring(itembreakindex).Trim(),
-                Name = input.Substring(0, itembreakindex).Trim()
+                Name = itemname
             };
         }
 
@@ -85,7 +95,7 @@ namespace EQToolShared.Discord
             {
                 return null;
             }
-            input = auctiontype.input;
+            input = auctiontype.input.Trim('\'');
             NextItem item = null;
             var counter = 0;
             do
