@@ -1,6 +1,7 @@
 ﻿using EQToolShared.Enums;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace EQToolShared.Discord
 {
@@ -47,9 +48,15 @@ namespace EQToolShared.Discord
         private NextItem GetNextItem(string input)
         {
             var itembreakindex = -1;
+            var pricestartindex = -1;
             for (var i = 0; i < input.Length; i++)
             {
-                if (!(input[i] == ' ' || char.IsLetter(input[i]) || input[i] == '`' || input[i] == '\''))
+                if (char.IsDigit(input[i]) && pricestartindex == -1)
+                {
+                    pricestartindex = i;
+                }
+
+                if (!(input[i] == ' ' || char.IsLetterOrDigit(input[i]) || input[i] == '`' || input[i] == ':' || input[i] == '\''))
                 {
                     itembreakindex = i;
                     break;
@@ -64,16 +71,41 @@ namespace EQToolShared.Discord
                     return null;
                 }
             }
-            var itemname = input.Substring(0, itembreakindex).Trim();
+            if (pricestartindex == -1)
+            {
+                pricestartindex = itembreakindex;
+            }
+
+            var itemname = input.Substring(0, pricestartindex).Trim();
             if (string.IsNullOrWhiteSpace(itemname))
             {
                 return null;
             }
+            var price = (int?)null;
+            if (pricestartindex != itembreakindex)
+            {
+                var pricestring = input.Substring(pricestartindex, itembreakindex - pricestartindex).Trim();
+                if (!string.IsNullOrWhiteSpace(pricestring) && pricestring.IndexOf("x", StringComparison.OrdinalIgnoreCase) == -1)
+                {
+                    var pricemultiple = 1;
+                    if (pricestring.IndexOf("k", StringComparison.OrdinalIgnoreCase) != -1)
+                    {
+                        pricemultiple = 1000;
+                    }
+                    pricestring = new string(pricestring.Where(a => char.IsDigit(a)).ToArray());
+                    if (int.TryParse(pricestring, out var possibleprice))
+                    {
+                        price = possibleprice * pricemultiple;
+                    }
+                }
 
+            }
+            itembreakindex = itembreakindex + 1 <= input.Length ? itembreakindex + 1 : itembreakindex;
             return new NextItem
             {
                 Input = input.Substring(itembreakindex).Trim(),
-                Name = itemname
+                Name = itemname,
+                Price = price
             };
         }
 
@@ -101,6 +133,8 @@ namespace EQToolShared.Discord
             do
             {
                 item = GetNextItem(input);
+                auctiontype = GetAuctionType(auctiontype.auctiontype, input);
+                input = auctiontype.input;
                 if (item != null)
                 {
                     input = item.Input;
