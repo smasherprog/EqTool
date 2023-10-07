@@ -1166,6 +1166,34 @@ namespace EQToolShared.Map
                 ShowAllMapLevels = true,
                 ZoneLevelHeight = 10,
                 NotableNPCs = new List<string>() { "Casalen", "Dozekar the Cursed", "Essedera", "Grozzmel", "Krigara", "Lepethida", "Midayor", "Tavekalem", "Ymmeln", "Gozzrem", "Lendiniara the Keeper", "Telkorenar", "Cekenar", "Dagarn the Destroyer", "Eashen of the Sky", "Ikatiar the Venom", "Jorlleag", "Lady Mirenilla", "Lady Nevederia", "Lord Feshlak", "Lord Koi'Doken", "Lord Kreizenn", "Lord Vyemm", "Sevalak", "Vulak`Aerr", "Zlexak", },
+                NpcSpawnTimes = new List<NpcSpawnTime>()
+                 {
+                     new NpcSpawnTime
+                     {
+                        Name = "A crimson claw hatchling",
+                        RespawnTime = new TimeSpan(0, 6, 0)
+                     },
+                      new NpcSpawnTime
+                     {
+                        Name = "A shard wyvern hatchling",
+                        RespawnTime = new TimeSpan(0, 6, 0)
+                     },
+                       new NpcSpawnTime
+                     {
+                        Name = "A skyseeker hatchling",
+                        RespawnTime = new TimeSpan(0, 6, 0)
+                     },
+                        new NpcSpawnTime
+                     {
+                        Name = "An ebon wing hatchling",
+                        RespawnTime = new TimeSpan(0, 6, 0)
+                     },
+                        new NpcSpawnTime
+                     {
+                        Name = "An emerald eye hatchling",
+                        RespawnTime = new TimeSpan(0, 6, 0)
+                     }
+                 },
                 RespawnTime = new TimeSpan(1, 12, 00)
             });
             ZoneInfoMap.Add("thurgadina", new ZoneInfo
