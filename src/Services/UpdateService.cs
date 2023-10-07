@@ -163,7 +163,7 @@ namespace EQTool.Services
                     var releases = githubdata.OrderByDescending(a => a.created_at).Where(a => a.name != null).ToList();
                     var release = releases.FirstOrDefault(a => a.prerelease == prerelease && !a.name.Contains("Quarm"));
 #if QUARM
-                    release = releases.FirstOrDefault(a => a.name.Contains("Quarm"));
+                    //release = releases.FirstOrDefault(a => a.name.Contains("Quarm"));
 #endif
                     var downloadurl = release.assets.FirstOrDefault(a => !string.IsNullOrWhiteSpace(a.browser_download_url))?.browser_download_url;
 
