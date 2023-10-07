@@ -62,9 +62,9 @@ namespace EQTool.Properties {
         
         /// <summary>
         ///   Looks up a localized string similar to &lt;?xml version=&quot;1.0&quot; encoding=&quot;utf-8&quot;?&gt;
-        ///&lt;configuration&gt;
+        ///&lt;configuration&gt; 
         ///    &lt;configSections&gt;
-        ///        &lt;sectionGroup name=&quot;userSettings&quot; type=&quot;System.Configuration.UserSettingsGroup, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot; &gt;
+        ///        &lt;sectionGroup name=&quot;userSettings&quot; type=&quot;System.Configuration.UserSettingsGroup, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot;&gt;
         ///            &lt;section name=&quot;EQTool.Properties.Settings&quot; type=&quot;System.Configuration.ClientSettingsSection, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089&quot; allowExeDefinition=&quot;MachineToLocalUser&quot; requirePermission=&quot;false&quot; /&gt;
         ///        &lt;/section [rest of string was truncated]&quot;;.
         /// </summary>
@@ -105,26 +105,6 @@ namespace EQTool.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
-        /// </summary>
-        internal static System.Drawing.Icon logo {
-            get {
-                object obj = ResourceManager.GetObject("logo", resourceCulture);
-                return ((System.Drawing.Icon)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
-        /// </summary>
-        internal static System.Drawing.Icon logo1 {
-            get {
-                object obj = ResourceManager.GetObject("logo1", resourceCulture);
-                return ((System.Drawing.Icon)(obj));
-            }
-        }
-        
-        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap map {
@@ -141,6 +121,26 @@ namespace EQTool.Properties {
             get {
                 object obj = ResourceManager.GetObject("open_folder", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon pig {
+            get {
+                object obj = ResourceManager.GetObject("pig", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon Quarm {
+            get {
+                object obj = ResourceManager.GetObject("Quarm", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
             }
         }
         
@@ -185,10 +185,14 @@ namespace EQTool.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to [Tue Dec 20 20:19:59 2022] You have entered Cabilis East.
-        ///[Tue Dec 20 20:19:59 2022] MESSAGE OF THE DAY: Welcome to Project 1999: Green! Please take the time to visit our forums and review the Play-Nice-Policy! Friendly reminder that Real Money Trading (RMT) including account, platinum or item buying/selling will result in a permanent ban. Dual boxing multiple characters at one time will also result in a ban. 
-        ///[Tue Dec 20 20:20:53 2022] Players on EverQuest:
-        ///[Tue Dec 20 20:20:53 2022] ------------------- [rest of string was truncated]&quot;;.
+        ///   Looks up a localized string similar to [Sun Apr 23 08:43:28 2023] You have entered Plane of Mischief. 
+        ///[Sun Apr 23 08:43:30 2023] Your Location is 1939.00, -519.00, -6.25
+        ///[Sun Apr 23 08:43:32 2023] Your Location is 1939.00, -519.00, -6.25
+        ///[Sun Apr 23 08:43:32 2023] Your Location is 1934.45, -512.79, -6.25
+        ///[Sun Apr 23 08:43:35 2023] Your Location is 699.60, -154.62, 178.69
+        ///[Sun Apr 23 08:43:35 2023] Your Location is 705.28, -164.76, 178.69
+        ///[Sun Apr 23 08:43:36 2023] Your Location is 687.09, -127.18, 178.69
+        ///[Sun Apr 23 08:43:37 2023] Your L [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string testmap {
             get {

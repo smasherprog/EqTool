@@ -226,7 +226,10 @@ namespace EQTool
             beta = true;
 #endif
 
-            var logo = EQTool.Properties.Resources.logo;
+            var logo = EQTool.Properties.Resources.pig;
+#if QUARM
+            logo = EQTool.Properties.Resources.Quarm;
+#endif
             if (beta)
             {
                 versionstring = "Beta-" + versionstring;
@@ -334,6 +337,7 @@ namespace EQTool
         public class GithubVersionInfo
         {
             public List<GithubAsset> assets { get; set; }
+            public string name { get; set; }
             public string tag_name { get; set; }
             public bool prerelease { get; set; }
             public DateTime created_at { get; set; }

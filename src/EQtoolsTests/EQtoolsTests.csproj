@@ -75,8 +75,8 @@
     <LangVersion>7.3</LangVersion>
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Test|AnyCPU'">
-    <OutputPath>bin\Test\</OutputPath>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Quarm|AnyCPU'">
+    <OutputPath>bin\Quarm\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
@@ -84,8 +84,8 @@
     <LangVersion>7.3</LangVersion>
     <ErrorReport>prompt</ErrorReport>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Test|x86'">
-    <OutputPath>bin\x86\Test\</OutputPath>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Quarm|x86'">
+    <OutputPath>bin\x86\Quarm\</OutputPath>
     <DefineConstants>TRACE</DefineConstants>
     <Optimize>true</Optimize>
     <DebugType>pdbonly</DebugType>
