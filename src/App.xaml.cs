@@ -44,6 +44,9 @@ namespace EQTool
 #endif
         private bool WaitForEQToolToStop()
         {
+#if DEBUG
+            return true;
+#endif
             var counter = 0;
             int count;
             do
@@ -347,6 +350,7 @@ namespace EQTool
             public string tag_name { get; set; }
             public bool prerelease { get; set; }
             public DateTime created_at { get; set; }
+            public DateTime published_at { get; set; }
         }
 
         private static string _Version = string.Empty;
