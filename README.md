@@ -1,18 +1,14 @@
 # PigParse
-
+![image](https://github.com/smasherprog/EqTool/assets/3393733/228140b7-e3ad-4e3b-b0fb-528b7f9b4415)
+<h2>THIS PROGRAM WORKS SOLELY BY READING YOUR LOG FILE.</h2>
  
-[![Watch the video](http://img.youtube.com/vi/mH-4-UAzJqA/0.jpg)](https://www.youtube.com/watch?v=mH-4-UAzJqA)
-
-<h2>THIS PROGRAM WORKS SOLELY BY READING YOUR LOG FILE. This is legal according to the <a href="https://www.project1999.com/forums/showthread.php?t=325349">rules.</a></h2>
-<img width="851" alt="image" src="https://user-images.githubusercontent.com/3393733/214930917-994fa61b-f1c8-414b-9761-1c93ca247b63.png">
-
-<h5>PigParse Pricing </h5>
-<p>Data is pulled in real time from the tunnel. If you discover any pricing problems or if you have ideas, post an issue!</p>
-
 Instructions:
 <ul>
 <li>
-<h2>Download the latest <a href="https://github.com/smasherprog/EqTool/releases">EQTool.zip</a>, Unzip it and run EQTool.exe</h2>
+<h2>Project 1999: Download the latest <a href="https://github.com/smasherprog/EqTool/releases/download/3.23.108.11/EQTool_Project19993.23.108.11.zip">EQTool_Project1999.zip</a>, Unzip it and run EQTool.exe</h2>
+</li>
+<li>
+<h2>Project Quarm: Download the latest <a href="https://github.com/smasherprog/EqTool/releases/download/4.23.108.5/EQTool_Quarm4.23.108.5.zip">EQTool_Quarm.zip</a>, Unzip it and run PQTool.exe</h2>
 </li>
 <li>The program runs in the system tray. Look there to reopen spells window or settings! Program will check for updates on startup and self update if required, but if you want to check for a new Update, use the menu in the system tray!</li>
 </ul>
