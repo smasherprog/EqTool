@@ -61,6 +61,7 @@ namespace EQToolApis.Models
             ServerData[(int)Servers.Green] = new NoteableNPCZone();
             ServerData[(int)Servers.Blue] = new NoteableNPCZone();
             ServerData[(int)Servers.Red] = new NoteableNPCZone();
+            ServerData[(int)Servers.Quarm] = new NoteableNPCZone();
         }
         public NoteableNPCZone[] ServerData { get; set; } = new NoteableNPCZone[(int)Servers.MaxServers];
     }
