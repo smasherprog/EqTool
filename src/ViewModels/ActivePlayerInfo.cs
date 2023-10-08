@@ -27,7 +27,7 @@ namespace EQTool.ViewModels
                 Level = 1,
                 Name = charName,
                 PlayerClass = null,
-                Zone = "freportw", 
+                Zone = "freportw",
                 ShowSpellsForClasses = Enum.GetValues(typeof(PlayerClasses)).Cast<PlayerClasses>().ToList()
             };
 
@@ -42,6 +42,10 @@ namespace EQTool.ViewModels
                     _ = Enum.TryParse<Servers>(server, true, out var server_type);
                     p.Server = server_type;
                 }
+            }
+            else if (logfilenbame.IndexOf("pq.proj.txt") != -1)
+            {
+                p.Server = Servers.Quarm;
             }
 
             return p;

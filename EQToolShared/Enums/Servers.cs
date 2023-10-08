@@ -4,6 +4,7 @@
     {
         Green,
         Blue,
-        Red
+        Red,
+        Quarm
     }
 }
