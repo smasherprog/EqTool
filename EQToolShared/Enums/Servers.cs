@@ -5,6 +5,7 @@
         Green,
         Blue,
         Red,
-        Quarm
+        Quarm,
+        MaxServers
     }
 }
