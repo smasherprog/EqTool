@@ -70,7 +70,7 @@ namespace EQTool
             Debug,
             Test,
             Beta,
-            ReleaseQuarm
+            Quarm
         }
 
         public enum EventType
@@ -101,6 +101,8 @@ namespace EQTool
             build = BuildType.Debug;
 #elif BETA
             build = BuildType.Beta;
+#elif QUARM
+            build = BuildType.Quarm;
 #endif
             try
             {
