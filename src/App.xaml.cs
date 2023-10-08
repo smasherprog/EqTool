@@ -37,22 +37,23 @@ namespace EQTool
 
         private EQToolSettings EQToolSettings => container.Resolve<EQToolSettings>();
         public static List<Window> WindowList = new List<Window>();
-
+#if QUARM
+        private const string programName = "pqtool";
+#else
+        private const string programName = "eqtool";
+#endif
         private bool WaitForEQToolToStop()
         {
-#if DEBUG
-            return true;
-#endif
             var counter = 0;
             int count;
             do
             {
-                count = Process.GetProcessesByName("eqtool").Count();
+                count = Process.GetProcessesByName(programName).Count();
                 if (counter++ > 6)
                 {
                     return false;
                 }
-                Debug.WriteLine($"Waiting for eqtool {count} on counter {counter}");
+                Debug.WriteLine($"Waiting for {programName} {count} on counter {counter}");
                 Thread.Sleep(1000);
             }
             while (count != 1);

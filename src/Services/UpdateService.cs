@@ -111,7 +111,11 @@ namespace EQTool.Services
             OldFilesDeleted,
             NoUpdateApplied
         }
-
+#if QUARM
+        private const string programName = "PQTool.exe";
+#else
+        private const string programName = "EQTool.exe";
+#endif
         public UpdateStatus ApplyUpdate(string parameter)
         {
             if (!string.IsNullOrWhiteSpace(parameter))
@@ -122,7 +126,7 @@ namespace EQTool.Services
                     _ = System.IO.Directory.GetFiles(System.IO.Directory.GetCurrentDirectory());
                     CopyFilesRecursively(System.IO.Directory.GetCurrentDirectory(), System.IO.Directory.GetCurrentDirectory() + "/../");
 
-                    var path = System.IO.Directory.GetCurrentDirectory() + "/../EQTool.exe";
+                    var path = System.IO.Directory.GetCurrentDirectory() + $"/../{programName}";
                     _ = System.Diagnostics.Process.Start(new ProcessStartInfo
                     {
                         FileName = path,
@@ -197,7 +201,7 @@ namespace EQTool.Services
                                 System.Windows.Application.Current.Shutdown();
                             });
                         }
-                        var path = System.IO.Directory.GetCurrentDirectory() + "/NewVersion/EQTool.exe";
+                        var path = System.IO.Directory.GetCurrentDirectory() + $"/NewVersion/{programName}";
                         _ = System.Diagnostics.Process.Start(new ProcessStartInfo
                         {
                             FileName = path,

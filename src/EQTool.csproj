@@ -41,7 +41,8 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <ApplicationIcon>logo.ico</ApplicationIcon>
+    <ApplicationIcon>logo.ico</ApplicationIcon> 
+	<AssemblyName>EQTool</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -52,7 +53,8 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
     <DebugSymbols>true</DebugSymbols>
-    <ApplicationIcon>logo.ico</ApplicationIcon>
+    <ApplicationIcon>logo.ico</ApplicationIcon> 
+	<AssemblyName>EQTool</AssemblyName>
   </PropertyGroup>
   <PropertyGroup>
     <StartupObject>EQTool.Program</StartupObject>
@@ -68,6 +70,7 @@
     <ErrorReport>prompt</ErrorReport>
     <Prefer32Bit>true</Prefer32Bit>
     <ApplicationIcon>logo.ico</ApplicationIcon>
+	 <AssemblyName>EQTool</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -79,6 +82,7 @@
     <ErrorReport>prompt</ErrorReport>
     <Prefer32Bit>true</Prefer32Bit>
     <ApplicationIcon>logo.ico</ApplicationIcon>
+	 <AssemblyName>EQTool</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Release|x86'">
     <OutputPath>bin\x86\Release\</OutputPath>
@@ -90,6 +94,7 @@
     <ErrorReport>prompt</ErrorReport>
     <Prefer32Bit>true</Prefer32Bit>
     <ApplicationIcon>logo.ico</ApplicationIcon>
+	 <AssemblyName>EQTool</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Beta|x86'">
     <OutputPath>bin\x86\Beta\</OutputPath>
@@ -101,6 +106,7 @@
     <ErrorReport>prompt</ErrorReport>
     <Prefer32Bit>true</Prefer32Bit>
     <ApplicationIcon>logo.ico</ApplicationIcon>
+	 <AssemblyName>EQTool</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Quarm|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
@@ -112,7 +118,8 @@
     <LangVersion>7.3</LangVersion>
     <ErrorReport>prompt</ErrorReport>
     <Prefer32Bit>true</Prefer32Bit>
-    <ApplicationIcon>clipboard.ico</ApplicationIcon>
+    <ApplicationIcon>clipboard.ico</ApplicationIcon>   
+	<AssemblyName>PQTool</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Quarm|x86'">
     <OutputPath>bin\x86\Quarm\</OutputPath>
@@ -123,7 +130,8 @@
     <LangVersion>7.3</LangVersion>
     <ErrorReport>prompt</ErrorReport>
     <Prefer32Bit>true</Prefer32Bit>
-    <ApplicationIcon>clipboard.ico</ApplicationIcon>
+    <ApplicationIcon>clipboard.ico</ApplicationIcon>   
+	<AssemblyName>PQTool</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Test|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
@@ -135,6 +143,7 @@
     <LangVersion>7.3</LangVersion>
     <ErrorReport>prompt</ErrorReport>
     <Prefer32Bit>true</Prefer32Bit>
+	 <AssemblyName>EQTool</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Test|x86'">
     <OutputPath>bin\x86\Test\</OutputPath>
@@ -145,6 +154,7 @@
     <LangVersion>7.3</LangVersion>
     <ErrorReport>prompt</ErrorReport>
     <Prefer32Bit>true</Prefer32Bit>
+	 <AssemblyName>EQTool</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug_Quarm|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
@@ -154,7 +164,8 @@
     <PlatformTarget>AnyCPU</PlatformTarget>
     <LangVersion>7.3</LangVersion>
     <ErrorReport>prompt</ErrorReport>
-    <Prefer32Bit>true</Prefer32Bit>
+    <Prefer32Bit>true</Prefer32Bit>   
+	<AssemblyName>PQTool</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug_Quarm|x86'">
     <DebugSymbols>true</DebugSymbols>
@@ -164,7 +175,8 @@
     <PlatformTarget>x86</PlatformTarget>
     <LangVersion>7.3</LangVersion>
     <ErrorReport>prompt</ErrorReport>
-    <Prefer32Bit>true</Prefer32Bit>
+    <Prefer32Bit>true</Prefer32Bit>   
+	<AssemblyName>PQTool</AssemblyName>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Autofac, Version=7.0.1.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">

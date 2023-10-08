@@ -10,7 +10,12 @@ namespace EQTool
 {
     public class Program
     {
-        private const string configFile = "EQTool.exe.config";
+#if QUARM
+        private const string programName = "PQTool.exe";
+#else
+        private const string programName = "EQTool.exe";
+#endif
+        private static string configFile = $"{programName}.config";
 
         [STAThread]
         public static void Main(string[] args)
@@ -42,7 +47,7 @@ namespace EQTool
                         }
                     }
                 }
-               
+
                 App.Main();
             }
             catch (Exception ex)
@@ -55,7 +60,7 @@ namespace EQTool
         private static void UpdateConfig(string[] args)
         {
             File.WriteAllText(configFile, Resources.App);
-            var path = System.IO.Directory.GetCurrentDirectory() + "/EQTool.exe";
+            var path = System.IO.Directory.GetCurrentDirectory() + $"/{programName}";
             _ = System.Diagnostics.Process.Start(new ProcessStartInfo
             {
                 FileName = path,
