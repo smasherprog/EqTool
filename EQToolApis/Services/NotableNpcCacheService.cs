@@ -23,6 +23,10 @@ namespace EQToolApis.Services
             var notablenpcs = toolContext.EQNotableNPCs.ToList();
             foreach (Servers server in Enum.GetValues(typeof(Servers)))
             {
+                if (server == Servers.MaxServers)
+                {
+                    continue;
+                }
                 var deathnpcs = toolContext.EQNotableActivities
                 .Where(a => a.Server == server && a.IsDeath)
                 .GroupBy(a => a.EQNotableNPCId)
