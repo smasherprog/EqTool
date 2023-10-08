@@ -24,6 +24,98 @@ namespace EQTool.Services
 
         public FindEQData LoadEQPath()
         {
+#if QUARM
+            return this.LoadEQPath_ForQuarm();
+#else
+            return this.LoadEQPath_ForP99();
+#endif
+        }
+
+        private FindEQData LoadEQPath_ForQuarm()
+        {
+            var possibles = new ConcurrentQueue<Match>();
+            var drives = DriveInfo.GetDrives().Where(a => a.IsReady && a.DriveType == DriveType.Fixed);
+            var tasks = new List<Task>();
+            foreach (var f in drives)
+            {
+                tasks.Add(Task.Factory.StartNew(() =>
+                {
+                    var files = GetFilesAndFolders(f.Name, "eqgame.exe", 2);
+                    foreach (var item in files)
+                    {
+                        try
+                        {
+                            var root = Path.GetDirectoryName(item);
+                            var eqmaxexists = false;
+                            try
+                            {
+                                var directory = new DirectoryInfo(root);
+                                eqmaxexists = directory.GetFiles("eqmac.exe", SearchOption.TopDirectoryOnly).Any();
+                            }
+                            catch { }
+                            if (eqmaxexists)
+                            {
+                                var dirdata = GetUIFiles(root)
+                                                            .OrderByDescending(a => a.LastWriteTime)
+                                                            .Select(a => new { a.LastWriteTime, a.FullName })
+                                                            .FirstOrDefault();
+                                if (dirdata != null)
+                                {
+                                    var directory = new DirectoryInfo(root);
+                                    var maxmoddate = directory.GetFiles()
+                                    .OrderByDescending(a => a.LastWriteTime)
+                                    .Select(a => (DateTime?)a.LastWriteTime)
+                                    .FirstOrDefault();
+                                    if (maxmoddate.HasValue)
+                                    {
+                                        possibles.Enqueue(new Match
+                                        {
+                                            LastModifiedDate = maxmoddate.Value,
+                                            EqBaseLocation = root,
+                                            HasCharUiFiles = false
+                                        });
+                                    }
+                                }
+                                else
+                                {
+                                    possibles.Enqueue(new Match
+                                    {
+                                        LastModifiedDate = dirdata.LastWriteTime,
+                                        EqBaseLocation = root,
+                                        HasCharUiFiles = true
+                                    });
+                                }
+                            }
+                        }
+                        catch { }
+                    }
+                }));
+            }
+            var allran = Task.WaitAll(tasks.ToArray(), 1000 * 5);
+            var rootfolder = possibles.Where(a => a.HasCharUiFiles).OrderByDescending(a => a.LastModifiedDate).FirstOrDefault();
+            if (rootfolder == null)
+            {
+                rootfolder = possibles.OrderByDescending(a => a.LastModifiedDate).FirstOrDefault();
+            }
+
+            if (rootfolder != null)
+            {
+                var logifles = GetLogFileLocation(new FindEQData
+                {
+                    EqBaseLocation = rootfolder.EqBaseLocation,
+                    EQlogLocation = rootfolder.EQlogLocation,
+                });
+                if (logifles.Found)
+                {
+                    rootfolder.EQlogLocation = logifles.Location;
+                }
+            }
+
+            return rootfolder;
+        }
+
+        private FindEQData LoadEQPath_ForP99()
+        {
             var possibles = new ConcurrentQueue<Match>();
             var drives = DriveInfo.GetDrives().Where(a => a.IsReady && a.DriveType == DriveType.Fixed);
             var tasks = new List<Task>();
@@ -98,8 +190,45 @@ namespace EQTool.Services
 
             return rootfolder;
         }
+        public static bool IsValidEqFolder(string rootfolder)
+        {
+            if (string.IsNullOrWhiteSpace(rootfolder))
+            {
+                return false;
+            }
 
-        public static bool IsProject1999Folder(string rootfolder)
+#if QUARM
+            return IsQuarmFolder(rootfolder);
+#else
+            return IsProject1999Folder(rootfolder);
+#endif
+        }
+
+        private static bool IsQuarmFolder(string rootfolder)
+        {
+            if (string.IsNullOrWhiteSpace(rootfolder))
+            {
+                return false;
+            }
+            var seperator = "\\";
+            if (!string.IsNullOrWhiteSpace(rootfolder))
+            {
+                seperator = rootfolder.Contains("/") ? "/" : "\\";
+            }
+            if (!rootfolder.EndsWith(seperator))
+            {
+                rootfolder += seperator;
+            }
+            try
+            {
+                return File.Exists(rootfolder + "eqmac.exe");
+            }
+            catch { }
+
+            return false;
+        }
+
+        private static bool IsProject1999Folder(string rootfolder)
         {
             if (string.IsNullOrWhiteSpace(rootfolder))
             {
@@ -186,6 +315,10 @@ namespace EQTool.Services
 
         public static LogFileInfo GetLogFileLocation(FindEQData data)
         {
+            var searchPatterm = "eqlog*.txt";
+#if QUARM
+            searchPatterm = "eqlog_*_pq.proj.txt";
+#endif
             var seperator = "\\";
             if (!string.IsNullOrWhiteSpace(data.EqBaseLocation))
             {
@@ -197,7 +330,7 @@ namespace EQTool.Services
             {
                 if (!string.IsNullOrWhiteSpace(data.EQlogLocation))
                 {
-                    ret.Found = Directory.EnumerateFiles(data.EQlogLocation, "eqlog*.txt", SearchOption.TopDirectoryOnly).Any();
+                    ret.Found = Directory.EnumerateFiles(data.EQlogLocation, searchPatterm, SearchOption.TopDirectoryOnly).Any();
                     if (ret.Found)
                     {
                         ret.Location = data.EQlogLocation;
@@ -207,13 +340,16 @@ namespace EQTool.Services
             }
             catch { }
             var logs = $"{seperator}Logs{seperator}";
+#if QUARM
+            logs = seperator;
+#endif
             var filepossibles = new List<FileInfo>();
             try
             {
                 if (!string.IsNullOrWhiteSpace(data.EqBaseLocation))
                 {
                     var directory = new DirectoryInfo(data.EqBaseLocation + logs);
-                    var files = directory.GetFiles("eqlog*.txt", SearchOption.TopDirectoryOnly);
+                    var files = directory.GetFiles(searchPatterm, SearchOption.TopDirectoryOnly);
                     filepossibles.AddRange(files);
                 }
             }
@@ -225,7 +361,7 @@ namespace EQTool.Services
                 {
                     var root = GetVirtualStoreLocation(data.EqBaseLocation) + logs;
                     var directory = new DirectoryInfo(root);
-                    var files = directory.GetFiles("eqlog*.txt", SearchOption.TopDirectoryOnly);
+                    var files = directory.GetFiles(searchPatterm, SearchOption.TopDirectoryOnly);
                     filepossibles.AddRange(files);
                 }
             }

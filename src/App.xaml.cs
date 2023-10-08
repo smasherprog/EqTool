@@ -68,7 +68,8 @@ namespace EQTool
             Release,
             Debug,
             Test,
-            Beta
+            Beta,
+            ReleaseQuarm
         }
 
         public enum EventType
@@ -260,7 +261,7 @@ namespace EQTool
                     new System.Windows.Forms.MenuItem("Exit", OnExit)
                 }),
             };
-            var hasvalideqdir = FindEq.IsProject1999Folder(EQToolSettings.DefaultEqDirectory);
+            var hasvalideqdir = FindEq.IsValidEqFolder(EQToolSettings.DefaultEqDirectory);
             if (!hasvalideqdir || FindEq.TryCheckLoggingEnabled(EQToolSettings.DefaultEqDirectory) == false)
             {
                 if (!hasvalideqdir)
@@ -271,7 +272,6 @@ namespace EQTool
             }
             else
             {
-
                 ToggleMenuButtons(true);
                 if (!EQToolSettings.SpellWindowState.Closed)
                 {
@@ -290,9 +290,12 @@ namespace EQTool
                     OpenMobInfoWindow();
                 }
             }
+#if RELEASE
             PlayerTrackerService = container.Resolve<PlayerTrackerService>();
             ZoneActivityTrackingService = container.Resolve<ZoneActivityTrackingService>();
             logParser.QuakeEvent += LogParser_QuakeEvent;
+#endif
+
         }
 
         private void LogParser_QuakeEvent(object sender, LogParser.QuakeArgs e)
@@ -361,7 +364,7 @@ namespace EQTool
             }
         }
 
-        private void ToggleMenuButtons(bool value)
+        public void ToggleMenuButtons(bool value)
         {
             MapMenuItem.Enabled = value;
             SpellsMenuItem.Enabled = value;

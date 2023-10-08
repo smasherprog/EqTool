@@ -146,6 +146,26 @@
     <ErrorReport>prompt</ErrorReport>
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug_Quarm|AnyCPU'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\Debug_Quarm\</OutputPath>
+    <DefineConstants>TRACE;DEBUG;QUARM</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug_Quarm|x86'">
+    <DebugSymbols>true</DebugSymbols>
+    <OutputPath>bin\x86\Debug_Quarm\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DebugType>full</DebugType>
+    <PlatformTarget>x86</PlatformTarget>
+    <LangVersion>7.3</LangVersion>
+    <ErrorReport>prompt</ErrorReport>
+    <Prefer32Bit>true</Prefer32Bit>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Autofac, Version=7.0.1.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
       <HintPath>..\packages\Autofac.7.0.1\lib\netstandard2.0\Autofac.dll</HintPath>
@@ -1005,6 +1025,13 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="QuarmSpells\spells01.tga" />
+    <EmbeddedResource Include="QuarmSpells\spells02.tga" />
+    <EmbeddedResource Include="QuarmSpells\spells03.tga" />
+    <EmbeddedResource Include="QuarmSpells\spells04.tga" />
+    <EmbeddedResource Include="QuarmSpells\spells05.tga" />
+    <EmbeddedResource Include="QuarmSpells\spells06.tga" />
+    <EmbeddedResource Include="QuarmSpells\spells07.tga" />
     <None Include="Resources\Quarm.bmp" />
   </ItemGroup>
   <ItemGroup>

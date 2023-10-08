@@ -114,7 +114,11 @@ namespace EQTool.Services
             var stopwatch = new Stopwatch();
             stopwatch.Start();
             var spells = new Dictionary<string, SpellBase>();
-            var spellsfile = new FileInfo(settings.DefaultEqDirectory + "/spells_us.txt");
+            var spellfile = "/spells_us.txt";
+#if QUARM
+            spellfile = "/spells_en.txt";
+#endif
+            var spellsfile = new FileInfo(settings.DefaultEqDirectory + spellfile);
             if (spellsfile.Exists)
             {
                 var spellfilename = $"SpellCache{App.Version}{spellsfile.LastWriteTimeUtc}";
@@ -133,7 +137,7 @@ namespace EQTool.Services
                         loggingService.Log(ex.ToString(), App.EventType.Error);
                     }
                 }
-                var spellastext = File.ReadAllLines(settings.DefaultEqDirectory + "/spells_us.txt");
+                var spellastext = File.ReadAllLines(settings.DefaultEqDirectory + spellfile);
                 var desctypes = new List<DescrNumber>() {
                  DescrNumber.ThePlanes,
                  DescrNumber.Luclin,
@@ -142,12 +146,17 @@ namespace EQTool.Services
                 };
                 foreach (var item in spellastext)
                 {
-                    var spell = ParseLine(item);
-                    if (string.IsNullOrWhiteSpace(spell.name) &&
+                    SpellBase spell = null;
+#if QUARM
+                    spell = ParseQuarmLine(item);
+#else
+                    spell = ParseP99Line(item);
+#endif 
+                    if (spell == null || (string.IsNullOrWhiteSpace(spell.name) &&
                         string.IsNullOrWhiteSpace(spell.cast_on_you) &&
                         spell.buffduration <= 0 &&
                         spell.spell_icon <= 0
-                        )
+                        ))
                     {
                         continue;
                     }
@@ -250,50 +259,83 @@ namespace EQTool.Services
             return _Spells;
         }
 
-        public static SpellBase ParseLine(string line)
+
+        public static SpellBase ParseQuarmLine(string line)
         {
-            var splits = line.Split('^');
-            var classes = new Dictionary<PlayerClasses, int>();
-            for (var i = 104; i < 104 + (int)PlayerClasses.Enchanter + 1; i++)
+            return ParseLine(line, 12, 13);
+        }
+
+        private static SpellBase ParseLine(string line, int offset, int spelliconoffset)
+        {
+            try
             {
-                if (int.TryParse(splits[i], out var l))
+                var splits = line.Split('^');
+                var classes = new Dictionary<PlayerClasses, int>();
+                for (var i = 104 - offset; i < 104 - offset + (int)PlayerClasses.Enchanter + 1; i++)
                 {
-                    if (l >= 0 && l < 255)
+                    if (int.TryParse(splits[i], out var l))
                     {
-                        var clas = (PlayerClasses)(i - 104);
-                        classes.Add(clas, l);
+                        if (l >= 0 && l < 255)
+                        {
+                            var clas = (PlayerClasses)(i - 104 - offset);
+                            classes.Add(clas, l);
+                        }
                     }
                 }
-            }
-            var resisttype = (ResistType)Enum.Parse(typeof(ResistType), splits[85]);
-            var descrtype = (DescrNumber)Enum.Parse(typeof(DescrNumber), splits[157]);
-            var spelltype = (SpellType)Enum.Parse(typeof(SpellType), splits[98]);
-            var ret = new SpellBase
-            {
-                id = int.Parse(splits[0]),
-                name = splits[1],
-                buffduration = int.Parse(splits[17]),
-                buffdurationformula = int.Parse(splits[16]),
-                pvp_buffdurationformula = int.Parse(splits[181]),
-                type = int.Parse(splits[83]),
-                cast_on_other = splits[7].Trim(),
-                casttime = int.Parse(splits[13]),
-                cast_on_you = splits[6].Trim(),
-                spell_fades = splits[8].Trim(),
-                Classes = classes,
-                spell_icon = int.Parse(splits[144]),
-                resisttype = resisttype,
-                ResistCheck = int.Parse(splits[147]),
-                DescrNumber = descrtype,
-                SpellType = spelltype
-            };
+                var resisttype = (ResistType)Enum.Parse(typeof(ResistType), splits[85 - offset]);
+                var descrtype = splits.Length >= 157 ? (DescrNumber)Enum.Parse(typeof(DescrNumber), splits[157 - offset]) : 0;
+                var spelltype = (SpellType)Enum.Parse(typeof(SpellType), splits[98 - offset]);
 
-            if (EpicSpells.TryGetValue(ret.name, out var foundepic))
-            {
-                ret.Classes[foundepic] = 46;
-            }
 
-            return ret;
+                var id = int.Parse(splits[0]);
+                var buffduration = int.Parse(splits[17]);
+                var buffdurationformula = int.Parse(splits[16]);
+                var pvp_buffdurationformula = (splits.Length >= 181) ? int.Parse(splits[181 - offset]) : 0;
+                var type = int.Parse(splits[83 - offset]);
+                var casttime = int.Parse(splits[13]);
+                var cast_on_other = splits[7].Trim();
+                var cast_on_you = splits[6].Trim();
+                var spell_fades = splits[8].Trim();
+                var spell_icon = int.Parse(splits[144 - spelliconoffset]);
+                var ResistCheck = int.Parse(splits[147 - offset]);
+
+                var ret = new SpellBase
+                {
+                    id = id,
+                    name = splits[1],
+                    buffduration = buffduration,
+                    buffdurationformula = buffdurationformula,
+                    pvp_buffdurationformula = pvp_buffdurationformula,
+                    type = type,
+                    cast_on_other = cast_on_other,
+                    casttime = casttime,
+                    cast_on_you = cast_on_you,
+                    spell_fades = spell_fades,
+                    Classes = classes,
+                    spell_icon = spell_icon,
+                    resisttype = resisttype,
+                    ResistCheck = ResistCheck,
+                    DescrNumber = descrtype,
+                    SpellType = spelltype
+                };
+
+                if (EpicSpells.TryGetValue(ret.name, out var foundepic))
+                {
+                    ret.Classes[foundepic] = 46;
+                }
+
+                return ret;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+            }
+            return null;
+        }
+
+        public static SpellBase ParseP99Line(string line)
+        {
+            return ParseLine(line, 0, 0);
         }
     }
 }

@@ -136,6 +136,11 @@ namespace EQTool
                     item.IsChecked = false;
                 }
             }
+            var hasvalideqdir = FindEq.IsValidEqFolder(settings.DefaultEqDirectory);
+            if (hasvalideqdir && FindEq.TryCheckLoggingEnabled(settings.DefaultEqDirectory) == true)
+            {
+                ((App)System.Windows.Application.Current).ToggleMenuButtons(true);
+            }
         }
 
         private bool IsEqRunning()
@@ -155,12 +160,17 @@ namespace EQTool
 
         private void EqFolderButtonClicked(object sender, RoutedEventArgs e)
         {
-            using (var fbd = new FolderBrowserDialog() { RootFolder = Environment.SpecialFolder.MyComputer, Description = "Select Project 1999 EQ Directory", ShowNewFolderButton = false })
+            var descriptiontext = "Select Project 1999 EQ Directory";
+#if QUARM
+            descriptiontext = "Select Quarm EQ Directory";
+#endif
+
+            using (var fbd = new FolderBrowserDialog() { RootFolder = Environment.SpecialFolder.MyComputer, Description = descriptiontext, ShowNewFolderButton = false })
             {
                 var result = fbd.ShowDialog();
                 if (result == System.Windows.Forms.DialogResult.OK && !string.IsNullOrWhiteSpace(fbd.SelectedPath))
                 {
-                    if (FindEq.IsProject1999Folder(fbd.SelectedPath))
+                    if (FindEq.IsValidEqFolder(fbd.SelectedPath))
                     {
                         SettingsWindowData.EqPath = settings.DefaultEqDirectory = fbd.SelectedPath;
                         TryUpdateSettings();
@@ -168,7 +178,7 @@ namespace EQTool
                     }
                     else
                     {
-                        _ = System.Windows.Forms.MessageBox.Show("eqgame.exe was not found in this folder. Make sure this is your project 1999 Folder!", "Message");
+                        _ = System.Windows.Forms.MessageBox.Show("eqgame.exe was not found in this folder. Make sure this is a valid Folder!", "Message");
                     }
                 }
             }

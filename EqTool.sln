@@ -20,6 +20,8 @@ Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Beta|Any CPU = Beta|Any CPU
 		Beta|x86 = Beta|x86
+		Debug_Quarm|Any CPU = Debug_Quarm|Any CPU
+		Debug_Quarm|x86 = Debug_Quarm|x86
 		Debug|Any CPU = Debug|Any CPU
 		Debug|x86 = Debug|x86
 		Quarm|Any CPU = Quarm|Any CPU
@@ -34,6 +36,10 @@ Global
 		{10E99313-7361-4503-A314-14BC052A6CAC}.Beta|Any CPU.Build.0 = Beta|Any CPU
 		{10E99313-7361-4503-A314-14BC052A6CAC}.Beta|x86.ActiveCfg = Beta|x86
 		{10E99313-7361-4503-A314-14BC052A6CAC}.Beta|x86.Build.0 = Beta|x86
+		{10E99313-7361-4503-A314-14BC052A6CAC}.Debug_Quarm|Any CPU.ActiveCfg = Debug_Quarm|Any CPU
+		{10E99313-7361-4503-A314-14BC052A6CAC}.Debug_Quarm|Any CPU.Build.0 = Debug_Quarm|Any CPU
+		{10E99313-7361-4503-A314-14BC052A6CAC}.Debug_Quarm|x86.ActiveCfg = Debug_Quarm|x86
+		{10E99313-7361-4503-A314-14BC052A6CAC}.Debug_Quarm|x86.Build.0 = Debug_Quarm|x86
 		{10E99313-7361-4503-A314-14BC052A6CAC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{10E99313-7361-4503-A314-14BC052A6CAC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{10E99313-7361-4503-A314-14BC052A6CAC}.Debug|x86.ActiveCfg = Debug|x86
@@ -54,6 +60,10 @@ Global
 		{F3D5067B-258B-4AAB-963A-7CDA4D077D6F}.Beta|Any CPU.Build.0 = Beta|Any CPU
 		{F3D5067B-258B-4AAB-963A-7CDA4D077D6F}.Beta|x86.ActiveCfg = Beta|x86
 		{F3D5067B-258B-4AAB-963A-7CDA4D077D6F}.Beta|x86.Build.0 = Beta|x86
+		{F3D5067B-258B-4AAB-963A-7CDA4D077D6F}.Debug_Quarm|Any CPU.ActiveCfg = Debug_Quarm|Any CPU
+		{F3D5067B-258B-4AAB-963A-7CDA4D077D6F}.Debug_Quarm|Any CPU.Build.0 = Debug_Quarm|Any CPU
+		{F3D5067B-258B-4AAB-963A-7CDA4D077D6F}.Debug_Quarm|x86.ActiveCfg = Debug_Quarm|x86
+		{F3D5067B-258B-4AAB-963A-7CDA4D077D6F}.Debug_Quarm|x86.Build.0 = Debug_Quarm|x86
 		{F3D5067B-258B-4AAB-963A-7CDA4D077D6F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{F3D5067B-258B-4AAB-963A-7CDA4D077D6F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F3D5067B-258B-4AAB-963A-7CDA4D077D6F}.Debug|x86.ActiveCfg = Debug|x86
@@ -74,6 +84,10 @@ Global
 		{486655A9-521F-4E61-A989-A8AEAFD7553C}.Beta|Any CPU.Build.0 = Debug|Any CPU
 		{486655A9-521F-4E61-A989-A8AEAFD7553C}.Beta|x86.ActiveCfg = Debug|Any CPU
 		{486655A9-521F-4E61-A989-A8AEAFD7553C}.Beta|x86.Build.0 = Debug|Any CPU
+		{486655A9-521F-4E61-A989-A8AEAFD7553C}.Debug_Quarm|Any CPU.ActiveCfg = Debug_Quarm|Any CPU
+		{486655A9-521F-4E61-A989-A8AEAFD7553C}.Debug_Quarm|Any CPU.Build.0 = Debug_Quarm|Any CPU
+		{486655A9-521F-4E61-A989-A8AEAFD7553C}.Debug_Quarm|x86.ActiveCfg = Debug_Quarm|Any CPU
+		{486655A9-521F-4E61-A989-A8AEAFD7553C}.Debug_Quarm|x86.Build.0 = Debug_Quarm|Any CPU
 		{486655A9-521F-4E61-A989-A8AEAFD7553C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{486655A9-521F-4E61-A989-A8AEAFD7553C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{486655A9-521F-4E61-A989-A8AEAFD7553C}.Debug|x86.ActiveCfg = Debug|Any CPU
@@ -93,6 +107,10 @@ Global
 		{DEBDC0EE-39F6-413D-80D7-955CA98A85CC}.Beta|Any CPU.Build.0 = Debug|Any CPU
 		{DEBDC0EE-39F6-413D-80D7-955CA98A85CC}.Beta|x86.ActiveCfg = Debug|Any CPU
 		{DEBDC0EE-39F6-413D-80D7-955CA98A85CC}.Beta|x86.Build.0 = Debug|Any CPU
+		{DEBDC0EE-39F6-413D-80D7-955CA98A85CC}.Debug_Quarm|Any CPU.ActiveCfg = Debug_Quarm|Any CPU
+		{DEBDC0EE-39F6-413D-80D7-955CA98A85CC}.Debug_Quarm|Any CPU.Build.0 = Debug_Quarm|Any CPU
+		{DEBDC0EE-39F6-413D-80D7-955CA98A85CC}.Debug_Quarm|x86.ActiveCfg = Debug_Quarm|Any CPU
+		{DEBDC0EE-39F6-413D-80D7-955CA98A85CC}.Debug_Quarm|x86.Build.0 = Debug_Quarm|Any CPU
 		{DEBDC0EE-39F6-413D-80D7-955CA98A85CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{DEBDC0EE-39F6-413D-80D7-955CA98A85CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{DEBDC0EE-39F6-413D-80D7-955CA98A85CC}.Debug|x86.ActiveCfg = Debug|Any CPU

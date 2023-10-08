@@ -119,12 +119,52 @@ namespace EQToolTests
         }
 
         [TestMethod]
-        public void TestParseGrimAura()
+        public void TestParseP99GrimAura()
         {
             _ = container.Resolve<EQSpells>();
             var line = "8639^Grim Aura^PLAYER_1^^^^A dull aura covers your hand.^'s hand is covered with a dull aura.^The grim aura fades.^0^0^0^0^3000^2250^2250^3^270^0^25^3^0^0^0^0^0^0^0^0^0^0^0^0^0^0^0^0^0^0^0^0^0^0^0^10^0^0^0^0^0^0^0^0^0^0^0^2503^2108^-1^-1^-1^-1^1^1^1^1^-1^-1^-1^-1^102^100^100^100^100^100^100^100^100^100^100^100^0^1^0^0^2^254^254^254^254^254^254^254^254^254^254^254^6^25^5^-1^0^0^255^255^255^255^22^255^255^255^255^255^4^255^255^255^255^255^43^0^0^8^0^0^0^0^0^0^0^0^0^0^0^0^0^0^0^0^0^0^100^0^37^94^0^0^0^0^0^0^0^0^0^0^0^7^0^0^0^0^0^0^0^0^0^0^0^0^0^0^0^0^0^0^0^5^101^12^92^3^270^0^0^0^0^3^105^0^0^0^0^0^0^0^0^0^0^1^1^0^0^0^0^0^-1^0^0^0^1^0^0^1^1^^0";
-            var grimaura = ParseSpells_spells_us.ParseLine(line);
+            var grimaura = ParseSpells_spells_us.ParseP99Line(line);
             Assert.IsNotNull(grimaura);
+        }
+
+        [TestMethod]
+        public void TestParseQuarmSkinLikeWood()
+        {
+            _ = container.Resolve<EQSpells>();
+            var line = "2110^Skin like Wood^PLAYER_1^^^^Your skin turns hard as wood.^'s skin turns hard as wood.^Your skin returns to normal.^100^^0^0^3000^2250^6000^11^270^0^10^10^10^0^0^0^0^0^0^0^0^0^0^15^20^0^0^0^0^0^0^0^0^0^0^2511^2056^-1^-1^-1^-1^1^1^1^1^-1^-1^-1^-1^101^102^100^100^100^100^100^100^100^100^100^100^0^1^0^0^1^69^254^254^254^254^254^254^254^254^254^254^5^25^4^-1^0^0^255^255^255^9^255^1^255^255^255^255^255^255^255^255^255^42^^0^2^0^0^0^0^0^0^0^0^0^0^0^0^0^0^0^0^0^0^100^0^131^86^0^0^0^0^0^0^0^0^0^42110^39009^39139^^0";
+            var grimaura = ParseSpells_spells_us.ParseQuarmLine(line);
+            Assert.IsNotNull(grimaura);
+        }
+
+        [TestMethod]
+        public void TestParseQuarmSkinLikeWoodCompare()
+        {
+            _ = container.Resolve<EQSpells>();
+            var line = "341^Lifetap^PLAYER_1^^^^You feel your lifeforce drain away.^ staggers.^^200^0^0^0^1500^2500^2250^0^0^0^9^-3^0^0^0^0^0^0^0^0^0^0^0^0^0^0^0^0^0^0^0^0^0^0^0^5^0^0^0^0^0^0^0^0^0^0^0^2507^2116^-1^-1^-1^-1^1^1^1^1^-1^-1^-1^-1^101^100^100^100^100^100^100^100^100^100^100^100^0^0^0^1^0^254^254^254^254^254^254^254^254^254^254^254^13^20^5^-1^0^0^255^255^255^255^9^255^255^255^255^255^1^255^255^255^255^255^44^13^0^20^0^0^0^0^0^0^0^0^0^0^0^0^0^0^0^0^0^0^100^0^139^89^0^-200^0^0^0^0^0^0^0^0^0^43^0^0^-1^-1^0^0^0^0^0^0^0^0^0^0^0^0^0^0^0^-195^1^-210^4^0^0^0^0^0^0^2^9^0^0^0^0^0^0^0^0^0^0^0^0^0^0^0^0^0^-1^0^0^0^1^0^0^1^1^^0";
+            var spellp99 = ParseSpells_spells_us.ParseP99Line(line);
+            line = "341^Lifetap^PLAYER_1^^^^You feel your life force drain away.^ staggers.^^200^^0^0^1500^2500^2250^0^0^0^9^-3^0^0^0^0^0^0^0^0^0^0^0^5^0^0^0^0^0^0^0^0^0^0^0^2507^2116^-1^-1^-1^-1^1^1^1^1^-1^-1^-1^-1^101^100^100^100^100^100^100^100^100^100^100^100^0^0^0^1^0^254^254^254^254^254^254^254^254^254^254^254^13^20^5^-1^0^0^255^255^255^255^9^255^255^255^255^255^1^255^255^255^255^44^13^0^20^0^0^0^0^0^0^0^0^0^0^0^0^0^0^0^0^0^0^100^0^47^89^0^-200^0^1^0^0^0^0^0^40341^39011^39148^^0";
+            var spellpq = ParseSpells_spells_us.ParseQuarmLine(line);
+            Assert.AreEqual(spellpq.DescrNumber, spellp99.DescrNumber);
+        }
+
+        [TestMethod]
+        public void TestParseQuarmLifetapCompare()
+        {
+            _ = container.Resolve<EQSpells>();
+            var line = "2110^Skin like Wood^PLAYER_1^^^^Your skin turns hard as wood.^'s skin turns hard as wood.^Your skin returns to normal.^100^0^0^0^3000^2250^6000^11^270^0^10^10^10^0^0^0^0^0^0^0^0^0^0^0^0^0^0^0^0^0^0^0^0^0^0^15^20^0^0^0^0^0^0^0^0^0^0^2511^2056^-1^-1^-1^-1^1^1^1^1^-1^-1^-1^-1^101^102^100^100^100^100^100^100^100^100^100^100^0^1^0^0^1^69^254^254^254^254^254^254^254^254^254^254^5^25^4^-1^0^0^255^255^255^9^255^1^255^255^255^255^255^255^255^255^255^255^42^0^0^2^0^0^0^0^0^0^0^0^0^0^0^0^0^0^0^0^0^0^100^0^134^86^0^0^0^0^0^0^0^0^0^0^0^46^0^0^0^0^0^0^0^0^0^0^0^0^0^0^0^0^0^0^0^5^101^10^30^11^270^0^0^0^0^3^81^0^0^0^0^0^0^0^0^0^0^1^1^0^0^0^0^0^-1^0^0^0^1^0^0^1^1^^0";
+            var spellp99 = ParseSpells_spells_us.ParseP99Line(line);
+            line = "2110^Skin like Wood^PLAYER_1^^^^Your skin turns hard as wood.^'s skin turns hard as wood.^Your skin returns to normal.^100^^0^0^3000^2250^6000^11^270^0^10^10^10^0^0^0^0^0^0^0^0^0^0^15^20^0^0^0^0^0^0^0^0^0^0^2511^2056^-1^-1^-1^-1^1^1^1^1^-1^-1^-1^-1^101^102^100^100^100^100^100^100^100^100^100^100^0^1^0^0^1^69^254^254^254^254^254^254^254^254^254^254^5^25^4^-1^0^0^255^255^255^9^255^1^255^255^255^255^255^255^255^255^255^42^^0^2^0^0^0^0^0^0^0^0^0^0^0^0^0^0^0^0^0^0^100^0^131^86^0^0^0^0^0^0^0^0^0^42110^39009^39139^^0";
+            var spellpq = ParseSpells_spells_us.ParseQuarmLine(line);
+            Assert.AreEqual(spellpq.name, spellp99.name);
+            Assert.AreEqual(spellpq.cast_on_you, spellp99.cast_on_you);
+            Assert.AreEqual(spellpq.cast_on_other, spellp99.cast_on_other);
+            Assert.AreEqual(spellpq.type, spellp99.type);
+            Assert.AreEqual(spellpq.casttime, spellp99.casttime);
+            Assert.AreEqual(spellpq.spell_fades, spellp99.spell_fades);
+            Assert.AreEqual(spellpq.buffdurationformula, spellp99.buffdurationformula);
+            Assert.AreEqual(spellpq.spell_icon, spellp99.spell_icon);
+            Assert.AreEqual(spellpq.buffduration, spellp99.buffduration);
+            Assert.AreEqual(spellpq.SpellType, spellp99.SpellType);
         }
 
         [TestMethod]
@@ -431,15 +471,15 @@ namespace EQToolTests
             var spelllogparse = container.Resolve<SpellLogParse>();
             var spellname = "Burnout";
             var shissarspell = spells.AllSpells.FirstOrDefault(a => a.name == spellname);
-            var line = "You begin casting Burnout." ; 
+            var line = "You begin casting Burnout.";
             var player = container.Resolve<ActivePlayer>();
             player.Player = new PlayerInfo
             {
                 Level = 21,
                 PlayerClass = PlayerClasses.Magician
-            }; 
-            var guess = spelllogparse.MatchSpell(line); 
-            Assert.AreEqual(shissarspell, player.UserCastingSpell); 
+            };
+            var guess = spelllogparse.MatchSpell(line);
+            Assert.AreEqual(shissarspell, player.UserCastingSpell);
         }
 
         [TestMethod]
