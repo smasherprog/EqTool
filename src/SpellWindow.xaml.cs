@@ -22,8 +22,10 @@ namespace EQTool
         private readonly EQToolSettingsLoad toolSettingsLoad;
         private readonly ActivePlayer activePlayer;
         private readonly TimersService timersService;
+        private readonly PlayerTrackerService playerTrackerService;
 
         public SpellWindow(
+            PlayerTrackerService playerTrackerService,
             TimersService timersService,
             EQToolSettings settings,
             SpellWindowViewModel spellWindowViewModel,
@@ -33,6 +35,7 @@ namespace EQTool
             LoggingService loggingService)
         {
             loggingService.Log(string.Empty, App.EventType.OpenMap);
+            this.playerTrackerService = playerTrackerService;
             this.timersService = timersService;
             this.settings = settings;
             this.logParser = logParser;
@@ -107,6 +110,10 @@ namespace EQTool
         private int deathcounter = 1;
         private void LogParser_DeadEvent(object sender, LogParser.DeadEventArgs e)
         {
+            if (playerTrackerService.IsPlayer(e.Name))
+            {
+                return;
+            }
             var zonetimer = ZoneSpawnTimes.GetSpawnTime(e.Name, activePlayer?.Player?.Zone);
             var add = new CustomerTimer
             {

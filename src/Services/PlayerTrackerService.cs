@@ -39,7 +39,12 @@ namespace EQTool.Services
 
         public bool IsPlayer(string name)
         {
-            lock(ContainerLock)
+            if (name == "You")
+            {
+                return true;
+            }
+
+            lock (ContainerLock)
             {
                 return Player.ContainsKey(name);
             }

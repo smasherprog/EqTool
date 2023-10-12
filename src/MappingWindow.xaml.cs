@@ -107,6 +107,10 @@ namespace EQTool
 
         private void LogParser_DeadEvent(object sender, LogParser.DeadEventArgs e)
         {
+            if (playerTrackerService.IsPlayer(e.Name))
+            {
+                return;
+            }
             var zonetimer = ZoneSpawnTimes.GetSpawnTime(e.Name, mapViewModel.ZoneName);
             var mw = mapViewModel.AddTimer(zonetimer, e.Name, true);
             mapViewModel.MoveToPlayerLocation(mw);
