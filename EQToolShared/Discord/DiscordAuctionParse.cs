@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace EQToolShared.Discord
 {
@@ -56,7 +57,7 @@ namespace EQToolShared.Discord
                     pricestartindex = i;
                 }
 
-                if (!(input[i] == ' ' || char.IsLetterOrDigit(input[i]) || input[i] == '`' || input[i] == ':' || input[i] == '\''))
+                if (!(input[i] == ' ' || char.IsLetterOrDigit(input[i]) || input[i] == '`' || input[i] == '.' || input[i] == '\''))
                 {
                     itembreakindex = i;
                     break;
@@ -81,6 +82,10 @@ namespace EQToolShared.Discord
             {
                 return null;
             }
+            if (itemname.EndsWith(" x"))
+            {
+                itemname = itemname.Substring(0, itemname.Length - 2);
+            }
             var price = (int?)null;
             if (pricestartindex != itembreakindex)
             {
@@ -92,6 +97,20 @@ namespace EQToolShared.Discord
                     {
                         pricemultiple = 1000;
                     }
+                    var startnumber = -1;
+                    var endnumber = -1;
+                    for (var i = 0; i < pricestring.Length; i++)
+                    {
+                        if (char.IsDigit(pricestring[i]) && startnumber == -1)
+                        {
+                            startnumber = i;
+                        }
+                        if (char.IsDigit(pricestring[i]) && startnumber != -1)
+                        {
+                            startnumber = i;
+                        }
+                    }
+
                     pricestring = new string(pricestring.Where(a => char.IsDigit(a)).ToArray());
                     if (int.TryParse(pricestring, out var possibleprice))
                     {
@@ -122,6 +141,23 @@ namespace EQToolShared.Discord
             }
             ret.Player = input.Substring(0, searchstringindex).Trim();
             input = input.Substring(searchstringindex + searchstring.Length);
+            //replace all instances of x15   or    x4 
+            string pattern = @"x\d+";
+            input = Regex.Replace(input, pattern, string.Empty);
+            //replace all instances of (got 2)    or    (got a few) 
+            pattern = @"\([^)]*\)";
+            input = Regex.Replace(input, pattern, "/");
+
+            var removetext = "/stack";
+            var stackindex = input.IndexOf(removetext, StringComparison.OrdinalIgnoreCase);
+            while (stackindex != -1)
+            {
+                input = input.Replace(input.Substring(stackindex, removetext.Length), string.Empty);
+                stackindex = input.IndexOf(removetext, StringComparison.OrdinalIgnoreCase);
+            }
+
+
+
             var auctiontype = GetAuctionType(null, input);
             if (!auctiontype.auctiontype.HasValue)
             {
@@ -142,7 +178,7 @@ namespace EQToolShared.Discord
                     {
                         AuctionType = auctiontype.auctiontype.Value,
                         Name = item.Name,
-                        Price = null
+                        Price = item.Price
                     });
                 }
             } while (item != null && counter++ < 15);
