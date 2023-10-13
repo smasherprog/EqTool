@@ -104,7 +104,7 @@ namespace EQTool.Services
         };
 
 
-        public List<SpellBase> GetSpells()
+        public List<SpellBase> GetSpells(Servers servers)
         {
             if (_Spells.Any())
             {
@@ -115,13 +115,15 @@ namespace EQTool.Services
             stopwatch.Start();
             var spells = new Dictionary<string, SpellBase>();
             var spellfile = "/spells_us.txt";
-#if QUARM
-            spellfile = "/spells_en.txt";
-#endif
+            if (servers == Servers.Quarm)
+            {
+                spellfile = "/spells_en.txt";
+            }
+
             var spellsfile = new FileInfo(settings.DefaultEqDirectory + spellfile);
             if (spellsfile.Exists)
             {
-                var spellfilename = $"SpellCache{App.Version}{spellsfile.LastWriteTimeUtc}";
+                var spellfilename = $"SpellCache{servers}{App.Version}{spellsfile.LastWriteTimeUtc}";
                 spellfilename = new string(spellfilename.Where(a => char.IsLetterOrDigit(a)).ToArray()) + ".bin";
                 if (File.Exists(spellfilename))
                 {

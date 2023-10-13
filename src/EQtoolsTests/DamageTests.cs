@@ -32,6 +32,19 @@ namespace EQToolTests
         }
 
         [TestMethod]
+        public void DPSLogParse_DOTParseTest()
+        {
+            var dpslogparse = container.Resolve<DPSLogParse>();
+            var message = "a goblin warrior has taken 12 damage from your Choke.";
+            var match = dpslogparse.Match(message, DateTime.Now);
+
+            Assert.IsNotNull(match);
+            Assert.AreEqual(match.SourceName, "You");
+            Assert.AreEqual(match.TargetName, "a goblin warrior");
+            Assert.AreEqual(match.DamageDone, 12);
+        }
+
+        [TestMethod]
         public void DPSLogParse_NonMelleTest()
         {
             var dpslogparse = container.Resolve<DPSLogParse>();

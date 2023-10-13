@@ -1,4 +1,5 @@
 ﻿using EQTool.Services;
+using EQToolShared.Enums;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -90,13 +91,21 @@ namespace EQTool.Models
         {
             this.parseSpells = parseSpells;
             this.spellIcons = spellIcons;
-            BuildSpellInfo();
         }
 
         private void BuildSpellInfo()
         {
-            var spellicons = spellIcons.GetSpellIcons();
-            var spells = parseSpells.GetSpells();
+#if QUARM
+            BuildSpellInfo(Servers.Quarm);
+#else
+            BuildSpellInfo(Servers.Green);
+#endif
+        }
+
+        public void BuildSpellInfo(Servers servers)
+        {
+            var spellicons = spellIcons.GetSpellIcons(servers);
+            var spells = parseSpells.GetSpells(servers);
             foreach (var item in spells)
             {
                 var mappedspell = item.Map(spellicons);

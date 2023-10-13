@@ -3,6 +3,7 @@ using EQTool.ViewModels;
 using EQToolShared.Enums;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace EQTool.Services.Spells.Log
 {
@@ -10,6 +11,8 @@ namespace EQTool.Services.Spells.Log
     {
         private readonly string PointsOfDamage = " points of damage.";
         private readonly string PointOfDamage = " point of damage.";
+        private readonly string DOTDamage = " has taken ";
+        private readonly string DOTDamage1 = " damage from your ";
         private readonly string WasHitByNonMelee = "was hit by non-melee for";
 
         private readonly ActivePlayer activePlayer;
@@ -64,6 +67,23 @@ namespace EQTool.Services.Spells.Log
                 var nameoftarget = message.Substring(0, nonmelleindex).Trim();
                 message = message.Replace(nameoftarget, string.Empty);
                 var damagedone = message.Replace(WasHitByNonMelee, string.Empty).Trim();
+                return new DPSParseMatch
+                {
+                    SourceName = "You",
+                    DamageDone = int.Parse(damagedone),
+                    TimeStamp = date,
+                    TargetName = nameoftarget
+                };
+            }
+            var dotdmgindex = message.IndexOf(DOTDamage);
+            var dotdmgindex1 = message.IndexOf(DOTDamage1);
+            if (dotdmgindex != -1 && dotdmgindex1 != -1)
+            {
+                message = message.Substring(0, dotdmgindex1);
+                var nameoftarget = message.Substring(0, dotdmgindex).Trim();
+                message = message.Replace(DOTDamage, string.Empty);
+                message = message.Replace(nameoftarget, string.Empty);
+                var damagedone = new string(message.Where(a => char.IsDigit(a)).ToArray());
                 return new DPSParseMatch
                 {
                     SourceName = "You",

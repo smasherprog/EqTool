@@ -182,6 +182,21 @@ namespace EQToolTests
         }
 
         [TestMethod]
+        public void QuarmTestSpellMatchCorrectlyQuickness()
+        {
+            var spells = container.Resolve<EQSpells>();
+            spells.BuildSpellInfo(Servers.Quarm);
+            var spellname = "Quickness";
+            var spell = spells.AllSpells.FirstOrDefault(a => a.name == spellname);
+            var ret = EQTool.Services.SpellDurations.MatchClosestLevelToSpell(spell, new PlayerInfo
+            {
+                Level = 30,
+                PlayerClass = PlayerClasses.Enchanter
+            });
+            Assert.AreEqual(ret, 30);
+        }
+
+        [TestMethod]
         public void TestSpellMatchCorrectlySk30_Journeymansboots()
         {
             var spells = container.Resolve<EQSpells>();

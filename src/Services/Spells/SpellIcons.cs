@@ -1,4 +1,5 @@
 ﻿using EQTool.Models;
+using EQToolShared.Enums;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Imaging;
@@ -19,7 +20,7 @@ namespace EQTool.Services
             this.settings = settings;
         }
 
-        public List<SpellIcon> GetSpellIcons()
+        public List<SpellIcon> GetSpellIcons(Servers servers)
         {
             if (_SpellIcons.Any())
             {
@@ -28,11 +29,16 @@ namespace EQTool.Services
 
             var ret = new List<SpellIcon>();
             var list = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceNames();
-#if QUARM
-            var resourcenames = list.Where(a => a.ToLower().StartsWith("eqtool.quarmspells.")).ToList();
-#else
-            var resourcenames = list.Where(a => a.ToLower().StartsWith("eqtool.spells.")).ToList();
-#endif
+            var resourcenames = new List<string>();
+            if (servers == Servers.Quarm)
+            {
+                resourcenames = list.Where(a => a.ToLower().StartsWith("eqtool.quarmspells.")).ToList();
+            }
+            else
+            {
+                resourcenames = list.Where(a => a.ToLower().StartsWith("eqtool.spells.")).ToList();
+            }
+
             foreach (var item in resourcenames)
             {
                 using (var stream = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream(item))
