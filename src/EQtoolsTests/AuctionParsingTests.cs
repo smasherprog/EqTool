@@ -155,5 +155,40 @@ namespace EQtoolsTests
             Assert.AreEqual("Velium Fire Wedding Ring", result.Items[2].Name);
             Assert.AreEqual(425, result.Items[2].Price);
         }
+
+
+        [TestMethod]
+        public void Parse11()
+        {
+            var result = discordAuctionParse.Parse("Legdays auctions, 'WTS Velium Crystal Staff 16k Flawless Diamond 2.5k/ea Coldain Skin Boots 1.8k Earring of Essence 1.5k Tolapumj's Robe 1.5k Black Ice Boots 400p Iksar Hide Boots 400p'");
+            Assert.AreEqual("Legdays", result.Player);
+            Assert.AreEqual(AuctionType.WTS, result.Items[0].AuctionType);
+            Assert.AreEqual("Velium Crystal Staff", result.Items[0].Name);
+            Assert.AreEqual(16000, result.Items[0].Price);
+
+            Assert.AreEqual(AuctionType.WTS, result.Items[1].AuctionType);
+            Assert.AreEqual("Flawless Diamond", result.Items[1].Name);
+            Assert.AreEqual(2500, result.Items[1].Price);
+
+            Assert.AreEqual(AuctionType.WTS, result.Items[2].AuctionType);
+            Assert.AreEqual("Coldain Skin Boots", result.Items[2].Name);
+            Assert.AreEqual(1800, result.Items[2].Price);
+
+            Assert.AreEqual(AuctionType.WTS, result.Items[3].AuctionType);
+            Assert.AreEqual("Earring of Essence", result.Items[3].Name);
+            Assert.AreEqual(1500, result.Items[3].Price);
+
+            Assert.AreEqual(AuctionType.WTS, result.Items[4].AuctionType);
+            Assert.AreEqual("Tolapumj's Robe", result.Items[4].Name);
+            Assert.AreEqual(1500, result.Items[4].Price);
+
+            Assert.AreEqual(AuctionType.WTS, result.Items[5].AuctionType);
+            Assert.AreEqual("Black Ice Boots", result.Items[5].Name);
+            Assert.AreEqual(400, result.Items[5].Price);
+
+            Assert.AreEqual(AuctionType.WTS, result.Items[6].AuctionType);
+            Assert.AreEqual("Iksar Hide Boots", result.Items[6].Name);
+            Assert.AreEqual(400, result.Items[6].Price);
+        }
     }
 }

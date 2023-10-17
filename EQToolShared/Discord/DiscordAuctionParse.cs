@@ -45,19 +45,52 @@ namespace EQToolShared.Discord
             public string Name { get; set; }
             public int? Price { get; set; }
         }
+        private const string SpellText = "Spell:";
 
+        private bool isSpell(string input, int i)
+        {
+            return i >= SpellText.Length - 1 && input[i] == ':' && input[i - 1] == 'l' && input[i - 2] == 'l' && input[i - 3] == 'e' && input[i - 4] == 'p' && input[i - 5] == 'S');
+        }
+        private bool isBeginPricing(string input, int i, int pricestartindex)
+        {
+            return char.IsDigit(input[i]) && pricestartindex == -1;
+        }
+        private bool isPricing(string input, int i, int pricestartindex)
+        {
+            return pricestartindex != -1 && (input[i] == '.' || char.ToLower(input[i]) == 'k' || char.ToLower(input[i]) == 'p');
+        }
+        private bool isEndPricing(string input, int i, int pricestartindex)
+        {
+            return pricestartindex != -1 && input[i] == ' ';
+        }
+        private bool isItemName(string input, int i)
+        {
+            return (input[i] == ' ' || char.IsLetterOrDigit(input[i]) || input[i] == '`' || input[i] == '.' || input[i] == '\'');
+        }
         private NextItem GetNextItem(string input)
         {
             var itembreakindex = -1;
             var pricestartindex = -1;
             for (var i = 0; i < input.Length; i++)
             {
-                if (char.IsDigit(input[i]) && pricestartindex == -1)
+                if (isBeginPricing(input, i, pricestartindex))
                 {
                     pricestartindex = i;
                 }
-
-                if (!(input[i] == ' ' || char.IsLetterOrDigit(input[i]) || input[i] == '`' || input[i] == '.' || input[i] == '\''))
+                if (isPricing(input, i, pricestartindex))
+                {
+                    continue;
+                }
+                else if (isEndPricing(input, i, pricestartindex))
+                {
+                    itembreakindex = i;
+                    break;
+                }
+                else if (isSpell(input, i))
+                {
+                    continue;
+                }
+                else if (!isItemName(input, i))
                 {
                     itembreakindex = i;
                     break;
@@ -97,24 +130,11 @@ namespace EQToolShared.Discord
                     {
                         pricemultiple = 1000;
                     }
-                    var startnumber = -1;
-                    var endnumber = -1;
-                    for (var i = 0; i < pricestring.Length; i++)
-                    {
-                        if (char.IsDigit(pricestring[i]) && startnumber == -1)
-                        {
-                            startnumber = i;
-                        }
-                        if (char.IsDigit(pricestring[i]) && startnumber != -1)
-                        {
-                            startnumber = i;
-                        }
-                    }
 
-                    pricestring = new string(pricestring.Where(a => char.IsDigit(a)).ToArray());
-                    if (int.TryParse(pricestring, out var possibleprice))
+                    pricestring = new string(pricestring.Where(a => char.IsDigit(a) || a == '.').ToArray());
+                    if (float.TryParse(pricestring, out var possibleprice))
                     {
-                        price = possibleprice * pricemultiple;
+                        price = (int)(possibleprice * pricemultiple);
                     }
                 }
 
@@ -128,6 +148,26 @@ namespace EQToolShared.Discord
             };
         }
 
+        private string Trim(string input)
+        {
+            var begintrim = -1;
+            for (var i = 0; i < input.Length; i++)
+            {
+                if (!char.IsLetter(input[i]))
+                {
+                    begintrim = i;
+                }
+                else
+                {
+                    break;
+                }
+            }
+            if (begintrim == -1)
+            {
+                return input;
+            }
+            return input.Substring(begintrim);
+        }
 
         public Auction Parse(string input)
         {
@@ -156,7 +196,13 @@ namespace EQToolShared.Discord
                 stackindex = input.IndexOf(removetext, StringComparison.OrdinalIgnoreCase);
             }
 
-
+            removetext = "/ea";
+            stackindex = input.IndexOf(removetext, StringComparison.OrdinalIgnoreCase);
+            while (stackindex != -1)
+            {
+                input = input.Replace(input.Substring(stackindex, removetext.Length), string.Empty);
+                stackindex = input.IndexOf(removetext, StringComparison.OrdinalIgnoreCase);
+            }
 
             var auctiontype = GetAuctionType(null, input);
             if (!auctiontype.auctiontype.HasValue)
@@ -164,6 +210,7 @@ namespace EQToolShared.Discord
                 return null;
             }
             input = auctiontype.input.Trim('\'');
+            input = Trim(input);
             NextItem item = null;
             var counter = 0;
             do
@@ -174,6 +221,7 @@ namespace EQToolShared.Discord
                 if (item != null)
                 {
                     input = item.Input;
+                    input = Trim(input);
                     ret.Items.Add(new Auctionitem
                     {
                         AuctionType = auctiontype.auctiontype.Value,
@@ -181,7 +229,7 @@ namespace EQToolShared.Discord
                         Price = item.Price
                     });
                 }
-            } while (item != null && counter++ < 15);
+            } while (item != null && input.Length > 0 && counter++ < 15);
 
             return ret;
         }
