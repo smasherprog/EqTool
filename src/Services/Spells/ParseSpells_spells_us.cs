@@ -279,7 +279,7 @@ namespace EQTool.Services
                     {
                         if (l >= 0 && l < 255)
                         {
-                            var clas = (PlayerClasses)(i - 104 - offset);
+                            var clas = (PlayerClasses)(i - 104 + offset);
                             classes.Add(clas, l);
                         }
                     }

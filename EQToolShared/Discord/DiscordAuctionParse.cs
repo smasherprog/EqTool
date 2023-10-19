@@ -49,7 +49,7 @@ namespace EQToolShared.Discord
 
         private bool isSpell(string input, int i)
         {
-            return i >= SpellText.Length - 1 && input[i] == ':' && input[i - 1] == 'l' && input[i - 2] == 'l' && input[i - 3] == 'e' && input[i - 4] == 'p' && input[i - 5] == 'S');
+            return i >= SpellText.Length - 1 && input[i] == ':' && input[i - 1] == 'l' && input[i - 2] == 'l' && input[i - 3] == 'e' && input[i - 4] == 'p' && input[i - 5] == 'S';
         }
         private bool isBeginPricing(string input, int i, int pricestartindex)
         {
