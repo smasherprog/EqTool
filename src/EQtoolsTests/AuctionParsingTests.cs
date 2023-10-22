@@ -117,11 +117,7 @@ namespace EQtoolsTests
         public void Parse8()
         {
             var result = discordAuctionParse.Parse("Naskuu auctions, 'WTS lots of stacks of Bone Chips 8pp/stack'");
-            Assert.AreEqual("Naskuu", result.Player);
-            Assert.AreEqual(AuctionType.WTS, result.Items[0].AuctionType);
-            Assert.AreEqual("lots of stacks of Bone Chips", result.Items[0].Name);
-            Assert.AreEqual(8, result.Items[0].Price);
-            Assert.AreEqual(1, result.Items.Count);
+            Assert.IsNull(result);
         }
 
         [TestMethod]
@@ -156,7 +152,6 @@ namespace EQtoolsTests
             Assert.AreEqual(425, result.Items[2].Price);
         }
 
-
         [TestMethod]
         public void Parse11()
         {
@@ -190,5 +185,61 @@ namespace EQtoolsTests
             Assert.AreEqual("Iksar Hide Boots", result.Items[6].Name);
             Assert.AreEqual(400, result.Items[6].Price);
         }
+
+        [TestMethod]
+        public void Parse12()
+        {
+            var result = discordAuctionParse.Parse("Archives auctions, 'WTS Giant Warrior Helmet x 4 - 100p ea'");
+            Assert.AreEqual("Archives", result.Player);
+            Assert.AreEqual(AuctionType.WTS, result.Items[0].AuctionType);
+            Assert.AreEqual("Giant Warrior Helmet", result.Items[0].Name);
+            Assert.IsNull(result.Items[0].Price);
+            Assert.AreEqual(1, result.Items.Count);
+        }
+
+        [TestMethod]
+        public void Parse13()
+        {
+            var result = discordAuctionParse.Parse("Rickjaames auctions, 'WTB shield of the stalwart seas 1500 '");
+            Assert.AreEqual("Rickjaames", result.Player);
+            Assert.AreEqual(AuctionType.WTB, result.Items[0].AuctionType);
+            Assert.AreEqual("shield of the stalwart seas", result.Items[0].Name);
+            Assert.AreEqual(1500, result.Items[0].Price);
+            Assert.AreEqual(1, result.Items.Count);
+        }
+
+        //[TestMethod]
+        //public void Parse14()
+        //{
+        //    var result = discordAuctionParse.Parse("Jalc auctions, 'WTS Platinum Fire Wedding Ring, Loam Encrusted Lined Shoes, Spell: Eye of Tallon, Shark Skin, Rune of Velious, Nilitim's Grimoire Pg. 115, Nilitim's Grimoire Pg. 400 Nilitim's Grimoire Pg. 378, Words of Acquisition (Beza), Rune of Ap`Sagor, Opal, Spell: Color Skew, Spell: Pillage Enchantment, Spell: Recant Magic, Spell: Boon of the Clear Mind, Breath of Ro, Essence of Rathe, Rune of the Cyclone, Rune of Rathe, Words of Haunting, Spell: Recant Magic, Words of Haunting, Tears of Prexus by T1'");
+        //    Assert.AreEqual("Jalc", result.Player);
+        //    Assert.AreEqual(AuctionType.WTS, result.Items[0].AuctionType);
+        //    Assert.AreEqual("Platinum Fire Wedding Ring", result.Items[0].Name);
+        //    Assert.IsNull(result.Items[0].Price);
+
+        //    Assert.AreEqual(AuctionType.WTS, result.Items[1].AuctionType);
+        //    Assert.AreEqual("Loam Encrusted Lined Shoes", result.Items[1].Name);
+        //    Assert.IsNull(result.Items[0].Price);
+
+        //    Assert.AreEqual(AuctionType.WTS, result.Items[2].AuctionType);
+        //    Assert.AreEqual("Spell: Eye of Tallon", result.Items[2].Name);
+        //    Assert.IsNull(result.Items[0].Price);
+
+        //    Assert.AreEqual(AuctionType.WTS, result.Items[3].AuctionType);
+        //    Assert.AreEqual("Shark Skin", result.Items[3].Name);
+        //    Assert.IsNull(result.Items[0].Price);
+
+        //    Assert.AreEqual(AuctionType.WTS, result.Items[4].AuctionType);
+        //    Assert.AreEqual("Rune of Velious", result.Items[4].Name);
+        //    Assert.IsNull(result.Items[0].Price);
+
+        //    Assert.AreEqual(AuctionType.WTS, result.Items[5].AuctionType);
+        //    Assert.AreEqual("Nilitim's Grimoire Pg. 115", result.Items[5].Name);
+        //    Assert.IsNull(result.Items[0].Price);
+
+        //    Assert.AreEqual(AuctionType.WTS, result.Items[6].AuctionType);
+        //    Assert.AreEqual("Nilitim's Grimoire Pg. 400", result.Items[6].Name);
+        //    Assert.IsNull(result.Items[0].Price);
+        //}
     }
 }

@@ -878,6 +878,35 @@ namespace EQToolShared.Map
                 ShowAllMapLevels = true,
                 ZoneLevelHeight = 10,
                 NotableNPCs = new List<string>() { "", },
+                NpcSpawnTimes = new List<NpcSpawnTime>()
+                 {
+                      new NpcSpawnTime
+                      {
+                            Name = "Jacker",
+                            RespawnTime =  new TimeSpan(0, 8, 0)
+                      },
+                     new NpcSpawnTime
+                      {
+                            Name = "Karnan",
+                            RespawnTime =  new TimeSpan(0, 8, 0)
+                      },
+                                new NpcSpawnTime
+                      {
+                            Name = "Uglan",
+                            RespawnTime =  new TimeSpan(0, 8, 0)
+                      },
+                    new NpcSpawnTime
+                      {
+                            Name = "Mrak",
+                            RespawnTime =  new TimeSpan(0, 8, 0)
+                      },
+                    new NpcSpawnTime
+                      {
+                            Name = "Capee",
+                            RespawnTime =  new TimeSpan(0, 8, 0)
+                      }
+
+                 },
                 RespawnTime = new TimeSpan(0, 24, 0)
             });
             ZoneInfoMap.Add("neriakb", new ZoneInfo

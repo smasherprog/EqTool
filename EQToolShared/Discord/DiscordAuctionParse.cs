@@ -188,6 +188,11 @@ namespace EQToolShared.Discord
             pattern = @"\([^)]*\)";
             input = Regex.Replace(input, pattern, "/");
 
+            //replace all instances of x 4     or   x 7
+            pattern = @"x \d+";
+            input = Regex.Replace(input, pattern, string.Empty);
+
+
             var removetext = "/stack";
             var stackindex = input.IndexOf(removetext, StringComparison.OrdinalIgnoreCase);
             while (stackindex != -1)
@@ -222,16 +227,24 @@ namespace EQToolShared.Discord
                 {
                     input = item.Input;
                     input = Trim(input);
-                    ret.Items.Add(new Auctionitem
+                    if (MasterItemList.PQItems.Contains(item.Name) || MasterItemList.P99Items.Contains(item.Name))
                     {
-                        AuctionType = auctiontype.auctiontype.Value,
-                        Name = item.Name,
-                        Price = item.Price
-                    });
+                        ret.Items.Add(new Auctionitem
+                        {
+                            AuctionType = auctiontype.auctiontype.Value,
+                            Name = item.Name,
+                            Price = item.Price
+                        });
+                    }
                 }
             } while (item != null && input.Length > 0 && counter++ < 15);
 
-            return ret;
+            if (ret.Items.Any())
+            {
+                return ret;
+            }
+
+            return null;
         }
     }
 }
