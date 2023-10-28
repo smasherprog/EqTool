@@ -208,38 +208,121 @@ namespace EQtoolsTests
             Assert.AreEqual(1, result.Items.Count);
         }
 
-        //[TestMethod]
-        //public void Parse14()
-        //{
-        //    var result = discordAuctionParse.Parse("Jalc auctions, 'WTS Platinum Fire Wedding Ring, Loam Encrusted Lined Shoes, Spell: Eye of Tallon, Shark Skin, Rune of Velious, Nilitim's Grimoire Pg. 115, Nilitim's Grimoire Pg. 400 Nilitim's Grimoire Pg. 378, Words of Acquisition (Beza), Rune of Ap`Sagor, Opal, Spell: Color Skew, Spell: Pillage Enchantment, Spell: Recant Magic, Spell: Boon of the Clear Mind, Breath of Ro, Essence of Rathe, Rune of the Cyclone, Rune of Rathe, Words of Haunting, Spell: Recant Magic, Words of Haunting, Tears of Prexus by T1'");
-        //    Assert.AreEqual("Jalc", result.Player);
-        //    Assert.AreEqual(AuctionType.WTS, result.Items[0].AuctionType);
-        //    Assert.AreEqual("Platinum Fire Wedding Ring", result.Items[0].Name);
-        //    Assert.IsNull(result.Items[0].Price);
+        [TestMethod]
+        public void Parse14()
+        {
+            var result = discordAuctionParse.Parse("Jalc auctions, 'WTS Platinum Fire Wedding Ring, Loam Encrusted Lined Shoes, Spell: Eye of Tallon, Shark Skin, Rune of Velious, Nilitim's Grimoire Pg. 115, Nilitim's Grimoire Pg. 400 Nilitim's Grimoire Pg. 378, Words of Acquisition (Beza), Rune of Ap`Sagor, Opal, Spell: Color Skew, Spell: Pillage Enchantment, Spell: Recant Magic, Spell: Boon of the Clear Mind, Breath of Ro, Essence of Rathe, Rune of the Cyclone, Rune of Rathe, Words of Haunting, Spell: Recant Magic, Words of Haunting, Tears of Prexus by T1'");
+            Assert.AreEqual("Jalc", result.Player);
+            Assert.AreEqual(AuctionType.WTS, result.Items[0].AuctionType);
+            Assert.AreEqual("Platinum Fire Wedding Ring", result.Items[0].Name);
+            Assert.IsNull(result.Items[0].Price);
 
-        //    Assert.AreEqual(AuctionType.WTS, result.Items[1].AuctionType);
-        //    Assert.AreEqual("Loam Encrusted Lined Shoes", result.Items[1].Name);
-        //    Assert.IsNull(result.Items[0].Price);
+            Assert.AreEqual(AuctionType.WTS, result.Items[1].AuctionType);
+            Assert.AreEqual("Loam Encrusted Lined Shoes", result.Items[1].Name);
+            Assert.IsNull(result.Items[0].Price);
 
-        //    Assert.AreEqual(AuctionType.WTS, result.Items[2].AuctionType);
-        //    Assert.AreEqual("Spell: Eye of Tallon", result.Items[2].Name);
-        //    Assert.IsNull(result.Items[0].Price);
+            Assert.AreEqual(AuctionType.WTS, result.Items[2].AuctionType);
+            Assert.AreEqual("Spell: Eye of Tallon", result.Items[2].Name);
+            Assert.IsNull(result.Items[0].Price);
 
-        //    Assert.AreEqual(AuctionType.WTS, result.Items[3].AuctionType);
-        //    Assert.AreEqual("Shark Skin", result.Items[3].Name);
-        //    Assert.IsNull(result.Items[0].Price);
+            Assert.AreEqual(AuctionType.WTS, result.Items[3].AuctionType);
+            Assert.AreEqual("Shark Skin", result.Items[3].Name);
+            Assert.IsNull(result.Items[0].Price);
 
-        //    Assert.AreEqual(AuctionType.WTS, result.Items[4].AuctionType);
-        //    Assert.AreEqual("Rune of Velious", result.Items[4].Name);
-        //    Assert.IsNull(result.Items[0].Price);
+            Assert.AreEqual(AuctionType.WTS, result.Items[4].AuctionType);
+            Assert.AreEqual("Rune of Velious", result.Items[4].Name);
+            Assert.IsNull(result.Items[0].Price);
 
-        //    Assert.AreEqual(AuctionType.WTS, result.Items[5].AuctionType);
-        //    Assert.AreEqual("Nilitim's Grimoire Pg. 115", result.Items[5].Name);
-        //    Assert.IsNull(result.Items[0].Price);
+            Assert.AreEqual(AuctionType.WTS, result.Items[5].AuctionType);
+            Assert.AreEqual("Nilitim's Grimoire Pg. 115", result.Items[5].Name);
+            Assert.IsNull(result.Items[0].Price);
 
-        //    Assert.AreEqual(AuctionType.WTS, result.Items[6].AuctionType);
-        //    Assert.AreEqual("Nilitim's Grimoire Pg. 400", result.Items[6].Name);
-        //    Assert.IsNull(result.Items[0].Price);
-        //}
+            Assert.AreEqual(AuctionType.WTS, result.Items[6].AuctionType);
+            Assert.AreEqual("Rune of Ap`Sagor", result.Items[6].Name);
+            Assert.IsNull(result.Items[0].Price);
+        }
+
+        [TestMethod]
+        public void Parse15()
+        {
+            var result = discordAuctionParse.Parse("Zteck auctions, 'WTS 3x Words of Haunting | 2x Salil's Writ Pg. 90 | 1x Words of Absorption | 1x Words of Dark Paths | 1x Words of Refuge | 1x Rune of Arrest - PST'");
+            Assert.AreEqual("Zteck", result.Player);
+            Assert.AreEqual(AuctionType.WTS, result.Items[0].AuctionType);
+            Assert.AreEqual("Words of Haunting", result.Items[0].Name);
+            Assert.IsNull(result.Items[0].Price);
+
+            Assert.AreEqual(AuctionType.WTS, result.Items[1].AuctionType);
+            Assert.AreEqual("Salil's Writ Pg. 90", result.Items[1].Name);
+            Assert.IsNull(result.Items[0].Price);
+
+            Assert.AreEqual(AuctionType.WTS, result.Items[2].AuctionType);
+            Assert.AreEqual("Words of Absorption", result.Items[2].Name);
+            Assert.IsNull(result.Items[0].Price);
+
+            Assert.AreEqual(AuctionType.WTS, result.Items[3].AuctionType);
+            Assert.AreEqual("Words of Dark Paths", result.Items[3].Name);
+            Assert.IsNull(result.Items[0].Price);
+
+            Assert.AreEqual(AuctionType.WTS, result.Items[4].AuctionType);
+            Assert.AreEqual("Words of Refuge", result.Items[4].Name);
+            Assert.IsNull(result.Items[0].Price);
+        }
+
+        [TestMethod]
+        public void Parse16()
+        {
+            var result = discordAuctionParse.Parse("Donkeee auctions, 'WTS Idol of Woven Grass 20p Iron Bound Tome 50p'");
+            Assert.AreEqual("Donkeee", result.Player);
+            Assert.AreEqual(AuctionType.WTS, result.Items[0].AuctionType);
+            Assert.AreEqual("Idol of Woven Grass", result.Items[0].Name);
+            Assert.AreEqual(20, result.Items[0].Price);
+
+            Assert.AreEqual(AuctionType.WTS, result.Items[1].AuctionType);
+            Assert.AreEqual("Iron Bound Tome", result.Items[1].Name);
+            Assert.AreEqual(50, result.Items[1].Price);
+        }
+
+        [TestMethod]
+        public void Parse17()
+        {
+            var result = discordAuctionParse.Parse("Fuxi auctions, 'WTS Words of Burnishing / Nilitim's Grimoire Pg. 300 x3 / Nilitim's Grimoire Pg. 116 / Nilitim's Grimoire Pg. 115 / Nilitim's Grimoire Pg. 35 / Salil's Writ Pg. 174 L 5pp ea last call pst'");
+            Assert.AreEqual("Fuxi", result.Player);
+            Assert.AreEqual(AuctionType.WTS, result.Items[0].AuctionType);
+            Assert.AreEqual("Words of Burnishing", result.Items[0].Name);
+            Assert.IsNull(result.Items[0].Price);
+
+            Assert.AreEqual(AuctionType.WTS, result.Items[1].AuctionType);
+            Assert.AreEqual("Nilitim's Grimoire Pg. 300", result.Items[1].Name);
+            Assert.IsNull(result.Items[1].Price);
+
+            Assert.AreEqual(AuctionType.WTS, result.Items[2].AuctionType);
+            Assert.AreEqual("Nilitim's Grimoire Pg. 116", result.Items[2].Name);
+            Assert.IsNull(result.Items[2].Price);
+
+            Assert.AreEqual(AuctionType.WTS, result.Items[3].AuctionType);
+            Assert.AreEqual("Nilitim's Grimoire Pg. 115", result.Items[3].Name);
+            Assert.IsNull(result.Items[3].Price);
+
+            Assert.AreEqual(AuctionType.WTS, result.Items[4].AuctionType);
+            Assert.AreEqual("Nilitim's Grimoire Pg. 35", result.Items[4].Name);
+            Assert.IsNull(result.Items[4].Price);
+        }
+
+        [TestMethod]
+        public void Parse18()
+        {
+            var result = discordAuctionParse.Parse("Cynnen auctions, 'WTS Spell: Pillar of Lightning 50p l Sarnak-Hide Mask 50p l Arctic Wyvern Hide 300p/stack l Cobalt Drake Hide 100p'");
+            Assert.AreEqual("Cynnen", result.Player);
+            Assert.AreEqual(AuctionType.WTS, result.Items[0].AuctionType);
+            Assert.AreEqual("Spell: Pillar of Lightning", result.Items[0].Name);
+            Assert.AreEqual(50, result.Items[0].Price);
+        }
+
+        [TestMethod]
+        public void Parse19()
+        {
+            var result = discordAuctionParse.Parse("Dulcea auctions, 'WTS Leather Padding stacksx 2-175p each'");
+            Assert.IsNull(result);
+        }
     }
 }

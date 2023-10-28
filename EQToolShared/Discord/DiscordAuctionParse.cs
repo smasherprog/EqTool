@@ -53,6 +53,19 @@ namespace EQToolShared.Discord
         }
         private bool isBeginPricing(string input, int i, int pricestartindex)
         {
+            if (char.IsDigit(input[i]))
+            {
+                var index = input.IndexOf("Pg. ");
+                if (index != -1)
+                {
+                    var diffindex = i - index;
+                    if (diffindex <= 6)
+                    {
+                        return false;
+                    }
+                }
+            }
+
             return char.IsDigit(input[i]) && pricestartindex == -1;
         }
         private bool isPricing(string input, int i, int pricestartindex)
@@ -184,6 +197,11 @@ namespace EQToolShared.Discord
             //replace all instances of x15   or    x4 
             string pattern = @"x\d+";
             input = Regex.Replace(input, pattern, string.Empty);
+
+            //replace all instances of 15x   or    4x
+            pattern = @"\d+x";
+            input = Regex.Replace(input, pattern, string.Empty);
+
             //replace all instances of (got 2)    or    (got a few) 
             pattern = @"\([^)]*\)";
             input = Regex.Replace(input, pattern, "/");
