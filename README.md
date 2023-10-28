@@ -1,5 +1,6 @@
 # PigParse
-![image](https://github.com/smasherprog/EqTool/assets/3393733/228140b7-e3ad-4e3b-b0fb-528b7f9b4415)
+<img width="1892" alt="image" src="https://github.com/smasherprog/EqTool/assets/3393733/ce79e4b6-50c2-4965-bb91-3c2d50299d3e">
+
 <h2>THIS PROGRAM WORKS SOLELY BY READING YOUR LOG FILE.</h2>
  
 Instructions:
@@ -49,7 +50,6 @@ Features:
 
 <h4>TO DO List EQTool</h4>
 <ul>  
- <li>Show Tracking cicle around the player to show what is in range of track.</li>   
  <li>Add code to show MOB hits per second.</li>   
  <li>Port application to be cross platform(mac, win, linux).</li>   
  <li>Add Ability to bind a hotkey to toggle a window open/close.</li>   
