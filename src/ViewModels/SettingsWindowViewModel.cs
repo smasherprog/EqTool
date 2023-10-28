@@ -1,5 +1,5 @@
-﻿using EQTool.Models;
-using EQToolShared.Enums;
+﻿using EQToolShared.Enums;
+using EQToolShared.Map;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -12,7 +12,7 @@ namespace EQTool.ViewModels
 {
     public class SettingsWindowViewModel : INotifyPropertyChanged
     {
-        public SettingsWindowViewModel(ActivePlayer activePlayer, EQToolSettings settings)
+        public SettingsWindowViewModel(ActivePlayer activePlayer)
         {
             ActivePlayer = activePlayer;
             for (var i = 12; i < 72; i++)
@@ -106,6 +106,7 @@ namespace EQTool.ViewModels
         public Visibility HasNoCharName => string.IsNullOrWhiteSpace(ActivePlayer?.Player?.Name) ? Visibility.Visible : Visibility.Collapsed;
 
         public ObservableCollection<BoolStringClass> SelectedPlayerClasses { get; set; } = new ObservableCollection<BoolStringClass>();
+        public List<MapLocationSharing> LocationShareOptions => Enum.GetValues(typeof(MapLocationSharing)).Cast<MapLocationSharing>().ToList();
         public List<PlayerClasses> PlayerClasses => Enum.GetValues(typeof(PlayerClasses)).Cast<PlayerClasses>().ToList();
 
         public bool EqRunning
@@ -139,7 +140,7 @@ namespace EQTool.ViewModels
         public ObservableCollection<string> Zones { get; set; } = new ObservableCollection<string>();
         public ObservableCollection<int> FontSizes { get; set; } = new ObservableCollection<int>();
         public ObservableCollection<int> Levels { get; set; } = new ObservableCollection<int>();
-        public ObservableCollection<int> TrackSkills { get; set; } = new ObservableCollection<int>();
+        public ObservableCollection<int?> TrackSkills { get; set; } = new ObservableCollection<int?>();
 
         public void Update()
         {

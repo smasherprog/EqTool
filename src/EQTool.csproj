@@ -366,6 +366,7 @@
       <DependentUpon>MobInfo.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\EQMapColor.cs" />
+    <Compile Include="Services\SignalrPlayerHub.cs" />
     <Compile Include="Models\PlayerRequest.cs" />
     <Compile Include="PanAndZoomCanvas.xaml.cs">
       <DependentUpon>PanAndZoomCanvas.xaml</DependentUpon>

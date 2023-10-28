@@ -34,6 +34,7 @@ namespace EQTool
         private System.Timers.Timer UITimer;
         private PlayerTrackerService PlayerTrackerService;
         private ZoneActivityTrackingService ZoneActivityTrackingService;
+        private ISignalrPlayerHub signalrPlayerHub;
 
         private EQToolSettings EQToolSettings => container.Resolve<EQToolSettings>();
         public static List<Window> WindowList = new List<Window>();
@@ -296,6 +297,7 @@ namespace EQTool
                     OpenMobInfoWindow();
                 }
             }
+            signalrPlayerHub = container.Resolve<ISignalrPlayerHub>();
 #if RELEASE
             PlayerTrackerService = container.Resolve<PlayerTrackerService>();
             ZoneActivityTrackingService = container.Resolve<ZoneActivityTrackingService>();

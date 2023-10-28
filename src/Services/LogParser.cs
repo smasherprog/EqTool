@@ -132,7 +132,6 @@ namespace EQTool.Services
         public class WhoEventArgs : EventArgs { }
         public class CampEventArgs : EventArgs { }
         public class EnteredWorldArgs : EventArgs { }
-
         public class QuakeArgs : EventArgs { }
 
         public event EventHandler<WhoEventArgs> WhoEvent;

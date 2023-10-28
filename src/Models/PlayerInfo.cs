@@ -1,4 +1,5 @@
 ﻿using EQToolShared.Enums;
+using EQToolShared.Map;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -182,6 +183,17 @@ namespace EQTool.Models
             set
             {
                 _Zone = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private MapLocationSharing _MapLocationSharing = EQToolShared.Map.MapLocationSharing.DoNotShare;
+        public MapLocationSharing? MapLocationSharing
+        {
+            get => _MapLocationSharing;
+            set
+            {
+                _MapLocationSharing = value ?? EQToolShared.Map.MapLocationSharing.DoNotShare;
                 OnPropertyChanged();
             }
         }
