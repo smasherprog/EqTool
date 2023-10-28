@@ -24,6 +24,11 @@ namespace EQTool.ViewModels
                 Levels.Add(i);
             }
 
+            for (var i = 1; i < 201; i++)
+            {
+                TrackSkills.Add(i);
+            }
+
             foreach (var item in EQToolShared.Map.ZoneParser.Zones.OrderBy(a => a))
             {
                 Zones.Add(item);
@@ -97,7 +102,6 @@ namespace EQTool.ViewModels
 
         public bool MissingConfiguration => DoesNotHaveEqPath || IsLoggingDisabled;
         public bool NotMissingConfiguration => HasEqPath && IsLoggingEnabled;
-
         public bool HasCharName => !string.IsNullOrWhiteSpace(ActivePlayer?.Player?.Name);
         public Visibility HasNoCharName => string.IsNullOrWhiteSpace(ActivePlayer?.Player?.Name) ? Visibility.Visible : Visibility.Collapsed;
 
@@ -135,6 +139,7 @@ namespace EQTool.ViewModels
         public ObservableCollection<string> Zones { get; set; } = new ObservableCollection<string>();
         public ObservableCollection<int> FontSizes { get; set; } = new ObservableCollection<int>();
         public ObservableCollection<int> Levels { get; set; } = new ObservableCollection<int>();
+        public ObservableCollection<int> TrackSkills { get; set; } = new ObservableCollection<int>();
 
         public void Update()
         {

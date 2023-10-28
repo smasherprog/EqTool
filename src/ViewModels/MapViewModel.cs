@@ -118,30 +118,6 @@ namespace EQTool.ViewModels
             Canvas?.Children?.Clear();
         }
 
-        private double? TrackingDistance
-        {
-            get
-            {
-                var pclass = this.activePlayer?.Player?.PlayerClass;
-                if (pclass.HasValue)
-                {
-                    if (pclass == EQToolShared.Enums.PlayerClasses.Ranger)
-                    {
-                        return 2325 * 2;
-                    }
-                    else if (pclass == EQToolShared.Enums.PlayerClasses.Druid)
-                    {
-                        return 1250 * 2;
-                    }
-                    else if (pclass == EQToolShared.Enums.PlayerClasses.Bard)
-                    {
-                        return 700 * 2;
-                    }
-                }
-                return null;
-            }
-        }
-
         public bool LoadMap(string zone, Canvas canvas)
         {
             if (MapLoading)
@@ -223,7 +199,7 @@ namespace EQTool.ViewModels
 
                     var playerlocsize = MathHelper.ChangeRange(Math.Max(map.AABB.MaxWidth, map.AABB.MaxHeight), 500, 35000, 40, 1750);
                     var playerstrokthickness = MathHelper.ChangeRange(Math.Max(map.AABB.MaxWidth, map.AABB.MaxHeight), 500, 35000, 3, 40);
-
+                    var trackingdistance = this.activePlayer?.Player?.TrackingDistance;
                     PlayerLocation = new PlayerLocationCircle
                     {
                         Ellipse = new Ellipse()
@@ -248,8 +224,8 @@ namespace EQTool.ViewModels
                         },
                         TrackingEllipse = new Ellipse()
                         {
-                            Height = TrackingDistance ?? 100,
-                            Width = TrackingDistance ?? 100,
+                            Height = trackingdistance ?? 100,
+                            Width = trackingdistance ?? 100,
                             Stroke = new SolidColorBrush(System.Windows.Media.Color.FromRgb(61, 235, 52)),
                             StrokeThickness = playerstrokthickness,
                             RenderTransform = new RotateTransform(),
@@ -264,7 +240,7 @@ namespace EQTool.ViewModels
                     _ = canvas.Children.Add(PlayerLocation.ArrowLine);
                     Canvas.SetLeft(PlayerLocation.ArrowLine, AABB.Center.X + (playerlocsize / 2));
                     Canvas.SetTop(PlayerLocation.ArrowLine, AABB.Center.Y + (playerlocsize / 2));
-                    if (!TrackingDistance.HasValue)
+                    if (!trackingdistance.HasValue)
                     {
                         PlayerLocation.TrackingEllipse.Visibility = Visibility.Hidden;
                     }
@@ -347,16 +323,16 @@ namespace EQTool.ViewModels
             var heighdiv2 = PlayerLocation.Ellipse.Height / 2 / CurrentScaling;
             Canvas.SetLeft(PlayerLocation.Ellipse, -(value1.Y + MapOffset.X + heighdiv2) * CurrentScaling);
             Canvas.SetTop(PlayerLocation.Ellipse, -(value1.X + MapOffset.Y + heighdiv2) * CurrentScaling);
-
-            if (!TrackingDistance.HasValue)
+            var trackingdistance = this.activePlayer?.Player?.TrackingDistance;
+            if (!trackingdistance.HasValue)
             {
                 PlayerLocation.TrackingEllipse.Visibility = Visibility.Hidden;
             }
             else
             {
                 PlayerLocation.TrackingEllipse.Visibility = Visibility.Visible;
-                PlayerLocation.TrackingEllipse.Height = TrackingDistance.Value;
-                PlayerLocation.TrackingEllipse.Width = TrackingDistance.Value;
+                PlayerLocation.TrackingEllipse.Height = trackingdistance.Value;
+                PlayerLocation.TrackingEllipse.Width = trackingdistance.Value;
             }
             heighdiv2 = PlayerLocation.TrackingEllipse.Height / 2;
             Canvas.SetLeft(PlayerLocation.TrackingEllipse, -(value1.Y + MapOffset.X + heighdiv2) * CurrentScaling);

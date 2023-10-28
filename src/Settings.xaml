@@ -58,7 +58,10 @@
                     <TextBlock Text="Class" VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
                     <ComboBox IsEnabled="{Binding HasCharName}" SelectedItem="{Binding ActivePlayer.Player.PlayerClass}" ItemsSource="{Binding PlayerClasses}" MinWidth="150"></ComboBox>
                 </StackPanel>
-
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Track Skill" VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
+                    <ComboBox IsEnabled="{Binding ActivePlayer.Player.IsTrackableClass}" SelectedItem="{Binding ActivePlayer.Player.TrackingSkill}" ItemsSource="{Binding TrackSkills}" MinWidth="150"></ComboBox>
+                </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Zone" FontWeight="Bold" VerticalAlignment="Center" MinWidth="100"/>
                     <ComboBox IsEnabled="{Binding HasCharName}" SelectedItem="{Binding ActivePlayer.Player.Zone}" ItemsSource="{Binding Zones}"  SelectionChanged="zoneselectionchanged" MinWidth="150"/>
