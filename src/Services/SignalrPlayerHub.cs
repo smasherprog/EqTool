@@ -25,7 +25,7 @@ namespace EQTool.Models
             this.logParser = logParser;
             var url = "https://localhost:7056/EqToolMap";
 #if !DEBUG
-            url ="https://www.pogparse.org/EqToolMap";
+            url ="https://www.pigparse.org/EqToolMap";
  
 #endif
             connection = new HubConnectionBuilder()
