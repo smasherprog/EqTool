@@ -1,11 +1,10 @@
 ﻿using EQTool.Models;
 using EQTool.Services;
 using EQTool.ViewModels;
-using EQToolShared.Map;
 using System;
 using System.ComponentModel;
 using System.Windows;
-using System.Windows.Input;
+using System.Windows.Forms;
 
 namespace EQTool
 {
