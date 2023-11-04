@@ -44,11 +44,13 @@ namespace EQTool
         private readonly EQSpells spells;
         private readonly DPSLogParse dPSLogParse;
         private readonly IAppDispatcher appDispatcher;
+        private readonly ISignalrPlayerHub signalrPlayerHub;
         private readonly LogParser logParser;
 
         public Settings(
             LogParser logParser,
             IAppDispatcher appDispatcher,
+            ISignalrPlayerHub signalrPlayerHub,
             DPSLogParse dPSLogParse,
             EQSpells spells,
             EQToolSettings settings,
@@ -56,6 +58,7 @@ namespace EQTool
             SettingsWindowViewModel settingsWindowData,
             SpellWindowViewModel spellWindowViewModel)
         {
+            this.signalrPlayerHub = signalrPlayerHub;
             this.logParser = logParser;
             this.appDispatcher = appDispatcher;
             this.dPSLogParse = dPSLogParse;
@@ -437,6 +440,94 @@ namespace EQTool
                                 var format = "ddd MMM dd HH:mm:ss yyyy";
                                 msgwithout = "[" + t.ToString(format) + msgwithout;
                                 logParser.Push(msgwithout);
+                            }
+                        }
+                        Thread.Sleep(100);
+                    } while (index < lines.Count);
+
+                    appDispatcher.DispatchUI(() => { testmap.IsEnabled = true; });
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex.ToString());
+                    appDispatcher.DispatchUI(() => { testmap.IsEnabled = true; });
+                }
+            });
+        }
+
+        private void testsignalrlocations(object sender, RoutedEventArgs e)
+        {
+            var testmap = sender as System.Windows.Controls.Button;
+            if (!testmap.IsEnabled)
+            {
+                return;
+            }
+            testmap.IsEnabled = false;
+            _ = Task.Factory.StartNew(() =>
+            {
+                var fightlines = Properties.Resources.testmap.Split(new string[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
+                var lines = new List<KeyValuePair<DateTime, string>>();
+                foreach (var item in fightlines)
+                {
+                    if (item == null || item.Length < 27)
+                    {
+                        continue;
+                    }
+
+                    var date = item.Substring(1, 24);
+                    var message = item.Substring(27).Trim();
+                    var format = "ddd MMM dd HH:mm:ss yyyy";
+                    var timestamp = DateTime.Now;
+                    try
+                    {
+                        timestamp = DateTime.ParseExact(date, format, CultureInfo.InvariantCulture);
+                        lines.Add(new KeyValuePair<DateTime, string>(timestamp, item));
+                    }
+                    catch (FormatException)
+                    {
+                    }
+                }
+                var starttime = lines.FirstOrDefault().Key;
+                try
+                {
+
+                    var starttimediff = DateTime.Now - starttime;
+                    var index = 0;
+                    do
+                    {
+                        for (; index < lines.Count; index++)
+                        {
+                            var t = lines[index].Key + starttimediff;
+                            if (t > DateTime.Now)
+                            {
+                                break;
+                            }
+                            else
+                            {
+                                var line = lines[index].Value;
+                                var search = "Your Location is ";
+                                var indexsearch = line.IndexOf(search);
+                                if (indexsearch != -1)
+                                {
+                                    var loc = line.Substring(indexsearch + search.Length)
+                                        .Split(',')
+                                        .Select(a => a.Trim())
+                                        .Where(a => !string.IsNullOrWhiteSpace(a))
+                                        .Select(a => double.Parse(a))
+                                        .ToList();
+                                    signalrPlayerHub.PushPlayerLocationEvent(new EQToolShared.Map.SignalrPlayer
+                                    {
+                                        GuildName = "The Drift",
+                                        MapLocationSharing = EQToolShared.Map.MapLocationSharing.Everyone,
+                                        Name = "Vasanle",
+                                        PlayerClass = PlayerClasses.Necromancer,
+                                        Server = Servers.Green,
+                                        Zone = "mischiefplane",
+                                        X = loc[0],
+                                        Y = loc[1],
+                                        Z = loc[2]
+                                    });
+                                }
                             }
                         }
                         Thread.Sleep(100);

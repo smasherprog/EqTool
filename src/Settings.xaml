@@ -152,6 +152,10 @@
                         <Button Click="textmapclicked" MinWidth="100">Test Locations</Button>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Map"  VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
+                        <Button Click="testsignalrlocations" MinWidth="100">Test Signalr Locations</Button>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Log Push"  VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
                         <TextBox x:Name="LogPushText" MinWidth="100"></TextBox>
                         <Button Click="logpush">Push</Button>
