@@ -1,6 +1,4 @@
-﻿using EQToolShared.Enums;
-
-namespace EQToolShared.Map
+﻿namespace EQToolShared.Map
 {
     public enum MapLocationSharing
     {
