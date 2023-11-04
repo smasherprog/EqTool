@@ -392,6 +392,7 @@
     <Compile Include="Services\Parsing\LogFileDateTimeParse.cs" />
     <Compile Include="Services\Parsing\EnterWorldParser.cs" />
     <Compile Include="Services\PlayerGroupService.cs" />
+    <Compile Include="Services\SignalrPlayerHub.cs" />
     <Compile Include="Services\ZoneActivityTrackingService.cs" />
     <Compile Include="Services\PlayerTrackerService.cs" />
     <Compile Include="Services\Spells\Log\PlayerWhoLogParse.cs" />

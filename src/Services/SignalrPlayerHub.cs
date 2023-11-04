@@ -11,6 +11,10 @@ namespace EQTool.Models
 
     public interface ISignalrPlayerHub
     {
+        event EventHandler<SignalrPlayer> PlayerLocationEvent;
+        event EventHandler<SignalrPlayer> PlayerDisconnected;
+        void PushPlayerLocationEvent(SignalrPlayer player);
+        void PushPlayerDisconnected(SignalrPlayer player);
     }
 
     public class SignalrPlayerHub : ISignalrPlayerHub
@@ -18,9 +22,11 @@ namespace EQTool.Models
         private readonly HubConnection connection;
         private readonly ActivePlayer activePlayer;
         private readonly LogParser logParser;
+        private readonly IAppDispatcher appDispatcher;
 
-        public SignalrPlayerHub(ActivePlayer activePlayer, LogParser logParser)
+        public SignalrPlayerHub(ActivePlayer activePlayer, LogParser logParser, IAppDispatcher appDispatcher)
         {
+            this.appDispatcher = appDispatcher;
             this.activePlayer = activePlayer;
             this.logParser = logParser;
             var url = "https://localhost:7056/EqToolMap";
@@ -28,17 +34,18 @@ namespace EQTool.Models
             url ="https://www.pigparse.org/EqToolMap";
  
 #endif
+            url = "https://www.pigparse.org/EqToolMap";
             connection = new HubConnectionBuilder()
               .WithUrl(url)
               .WithAutomaticReconnect()
               .Build();
             connection.On("PlayerLocationEvent", (SignalrPlayer p) =>
             {
-                Debug.WriteLine("PlayerLocationEvent Receivec");
+                this.PushPlayerLocationEvent(p);
             });
             connection.On("PlayerDisconnected", (SignalrPlayer p) =>
             {
-                Debug.WriteLine("PlayerDisconnected Receivec");
+                this.PushPlayerDisconnected(p);
             });
 
             connection.Closed += async (error) =>
@@ -61,6 +68,9 @@ namespace EQTool.Models
             this.logParser.PlayerLocationEvent += LogParser_PlayerLocationEvent;
         }
 
+        public event EventHandler<SignalrPlayer> PlayerLocationEvent;
+        public event EventHandler<SignalrPlayer> PlayerDisconnected;
+
         private static async Task<bool> ConnectWithRetryAsync(HubConnection connection)
         {
             while (true)
@@ -77,6 +87,30 @@ namespace EQTool.Models
                     Debug.WriteLine("Failed StartAsync");
                     await Task.Delay(5000);
                 }
+            }
+        }
+
+        public void PushPlayerDisconnected(SignalrPlayer p)
+        {
+            if (!(p.Server == this.activePlayer?.Player?.Server && p.Name == this.activePlayer?.Player?.Name))
+            {
+                Debug.WriteLine($"PlayerDisconnected {p.Name}");
+                this.appDispatcher.DispatchUI(() =>
+                {
+                    PlayerDisconnected?.Invoke(this, p);
+                });
+            }
+        }
+
+        public void PushPlayerLocationEvent(SignalrPlayer p)
+        {
+            if (!(p.Server == this.activePlayer?.Player?.Server && p.Name == this.activePlayer?.Player?.Name))
+            {
+                Debug.WriteLine($"PlayerLocationEvent {p.Name}");
+                this.appDispatcher.DispatchUI(() =>
+                {
+                    PlayerLocationEvent?.Invoke(this, p);
+                });
             }
         }
 

@@ -20,9 +20,11 @@ namespace EQTool
         private readonly EQToolSettingsLoad toolSettingsLoad;
         private readonly PlayerTrackerService playerTrackerService;
         private readonly IAppDispatcher appDispatcher;
+        private readonly ISignalrPlayerHub signalrPlayerHub;
         private readonly System.Timers.Timer UITimer;
 
         public MappingWindow(
+            ISignalrPlayerHub signalrPlayerHub,
             MapViewModel mapViewModel,
             LogParser logParser,
             EQToolSettings settings,
@@ -33,6 +35,7 @@ namespace EQTool
         {
             loggingService.Log(string.Empty, App.EventType.OpenMap);
             this.settings = settings;
+            this.signalrPlayerHub = signalrPlayerHub;
             this.playerTrackerService = playerTrackerService;
             this.toolSettingsLoad = toolSettingsLoad;
             this.appDispatcher = appDispatcher;
@@ -60,11 +63,23 @@ namespace EQTool
             Map.TimerMenu_ClosedEvent += Map_TimerMenu_ClosedEvent;
             Map.TimerMenu_OpenedEvent += Map_TimerMenu_OpenedEvent;
             Map.PanAndZoomCanvas_MouseDownEvent += Map_PanAndZoomCanvas_MouseDownEvent;
+            this.signalrPlayerHub.PlayerLocationEvent += SignalrPlayerHub_PlayerLocationEvent;
+            this.signalrPlayerHub.PlayerDisconnected += SignalrPlayerHub_PlayerDisconnected;
             settings.MapWindowState.Closed = false;
             SaveState();
             UITimer = new System.Timers.Timer(1000);
             UITimer.Elapsed += UITimer_Elapsed;
             UITimer.Enabled = true;
+        }
+
+        private void SignalrPlayerHub_PlayerDisconnected(object sender, SignalrPlayer e)
+        {
+            mapViewModel.PlayerDisconnected(e);
+        }
+
+        private void SignalrPlayerHub_PlayerLocationEvent(object sender, SignalrPlayer e)
+        {
+            mapViewModel.PlayerLocationEvent(e);
         }
 
         private void Map_PanAndZoomCanvas_MouseDownEvent(object sender, MouseButtonEventArgs e)
@@ -192,7 +207,9 @@ namespace EQTool
             Map.TimerMenu_ClosedEvent -= Map_TimerMenu_ClosedEvent;
             Map.TimerMenu_OpenedEvent -= Map_TimerMenu_OpenedEvent;
             Map.PanAndZoomCanvas_MouseDownEvent -= Map_PanAndZoomCanvas_MouseDownEvent;
-            // signalRMapService.PlayerLocationReceived -= SignalRMapService_PlayerLocationReceived;
+
+            this.signalrPlayerHub.PlayerLocationEvent -= SignalrPlayerHub_PlayerLocationEvent;
+            this.signalrPlayerHub.PlayerDisconnected -= SignalrPlayerHub_PlayerDisconnected;
             SaveState();
             base.OnClosing(e);
         }
