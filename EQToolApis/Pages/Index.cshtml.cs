@@ -31,9 +31,9 @@ namespace EQToolApis.Pages
             {
                 lock (PigParseStats)
                 {
-                    LastPigParseStat = DateTime.UtcNow;
                     if ((DateTime.UtcNow - LastPigParseStat).TotalSeconds > 20)
                     {
+                        LastPigParseStat = DateTime.UtcNow;
                         var list = MapHub.connections.ToArray();
                         foreach (var server in Enum.GetValues<Servers>())
                         {
