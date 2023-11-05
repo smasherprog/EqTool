@@ -7,7 +7,7 @@ namespace EQToolApis.Hubs
 {
     public class MapHub : Hub
     {
-        private static readonly ConcurrentDictionary<string, SignalrPlayer> connections = new ConcurrentDictionary<string, SignalrPlayer>();
+        public static readonly ConcurrentDictionary<string, SignalrPlayer> connections = new ConcurrentDictionary<string, SignalrPlayer>();
 
         public async Task PlayerLocationEvent(SignalrPlayer playerLocation)
         {

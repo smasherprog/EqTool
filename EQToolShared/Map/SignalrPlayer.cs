@@ -1,4 +1,5 @@
 ﻿using EQToolShared.Enums;
+using System;
 
 namespace EQToolShared.Map
 {
@@ -13,6 +14,7 @@ namespace EQToolShared.Map
     {
         public string Name { get; set; }
         public string GuildName { get; set; }
+        public DateTime TimeStamp { get; set; } = DateTime.UtcNow;
         public PlayerClasses? PlayerClass { get; set; }
         public MapLocationSharing MapLocationSharing { get; set; }
         public Servers Server { get; set; }

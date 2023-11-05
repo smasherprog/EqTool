@@ -31,6 +31,7 @@
                 <hr class="my-4">
                 <p>For API documentation, please refer to <a href="/swagger">Swagger</a> </p>
                 <p>If you discover prices discrepancies, please open an issue on <a href="https://github.com/smasherprog/EqTool" target="_blank">Github</a> </p>
+
                 <table>
                     <tbody>
                         <tr>
@@ -44,6 +45,26 @@
                     </tbody>
                 </table>
 
+                @foreach (var item in Model.PigParseStats)
+                {
+                    <table>
+                        <tbody>
+                            <tr>
+                                <th>Server</th>
+                                <td>@item.Server</td>
+                            </tr>
+                            <tr>
+                                <th>Top Zones</th>
+                                <td>
+                                    @foreach (var z in item.zoneStats.OrderByDescending(a => a.Count).Where(a => a.Count > 0).Take(3))
+                                    {
+                                        <text>( @z.Zone // @z.Count )</text>
+                                    }
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                }
             </div>
         </div>
     </div>
