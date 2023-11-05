@@ -15,14 +15,14 @@ namespace EQToolApis.Pages
         public List<TODModel> GreenNoteableNPCs = new List<TODModel>();
         public ServerMessage ServerMessage { get; set; } = new ServerMessage();
         public List<DateTimeOffset> Quakes = new List<DateTimeOffset>();
-        public PigParseStats[] PigParseStats = new PigParseStats[(int)Servers.MaxServers]
+        public static PigParseStats[] PigParseStats = new PigParseStats[(int)Servers.MaxServers]
         {
             new PigParseStats(){ Server = Servers.Green },
             new PigParseStats(){ Server = Servers.Blue },
             new PigParseStats(){ Server = Servers.Red },
             new PigParseStats(){ Server = Servers.Quarm },
         };
-        public DateTime LastPigParseStat = DateTime.UtcNow;
+        private static DateTime LastPigParseStat = DateTime.UtcNow;
 
         public NoteableNPCZone[] ServerData { get; set; } = new NoteableNPCZone[(int)Servers.MaxServers];
         public IndexModel(DBData allData, EQToolContext eQToolContext, NoteableNPCCache noteableNPCCache)

@@ -28,11 +28,7 @@ namespace EQTool.Models
             this.appDispatcher = appDispatcher;
             this.activePlayer = activePlayer;
             this.logParser = logParser;
-            var url = "https://localhost:7056/EqToolMap";
-#if !DEBUG
-            url ="https://www.pigparse.org/EqToolMap";
-
-#endif
+            var url = "https://www.pigparse.org/EqToolMap";
             connection = new HubConnectionBuilder()
               .WithUrl(url)
               .WithAutomaticReconnect()
