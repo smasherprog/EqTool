@@ -52,7 +52,7 @@
                             <tr>
                                 <th>@item.Server</th>
                                 <td>
-                                    @foreach (var z in item.zoneStats.OrderByDescending(a => a.Count).Where(a => a.Count > 0).Take(3))
+                                    @foreach (var z in item.zoneStats.OrderByDescending(a => a.Count).Where(a => a.Count > 0).Take(5))
                                     {
                                         <text>( @z.Zone // @z.Count )</text>
                                     }

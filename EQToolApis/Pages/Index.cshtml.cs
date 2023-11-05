@@ -43,6 +43,7 @@ namespace EQToolApis.Pages
                                 .Where(a => a.Server == server)
                                 .GroupBy(a => a.Zone)
                                 .Select(a => new PigParseZoneStat { Zone = a.Key, Count = a.Count() })
+                                .Where(a => a.Zone != "fearplane" && a.Zone != "hateplane")
                                 .ToList();
                         }
                     }
