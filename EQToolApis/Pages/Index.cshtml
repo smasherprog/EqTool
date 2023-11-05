@@ -50,7 +50,7 @@
                     <table>
                         <tbody>
                             <tr>
-                                <th>@item.Server</th>
+                                <th>@item.Server: @item.PigParsePlayerCount</th>
                                 <td>
                                     @foreach (var z in item.zoneStats.OrderByDescending(a => a.Count).Where(a => a.Count > 0).Take(5))
                                     {
