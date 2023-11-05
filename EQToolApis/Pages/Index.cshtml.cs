@@ -35,7 +35,7 @@ namespace EQToolApis.Pages
                     {
                         LastPigParseStat = DateTime.UtcNow;
                         var list = MapHub.connections.ToArray();
-                        foreach (var server in Enum.GetValues<Servers>())
+                        foreach (var server in Enum.GetValues<Servers>().Where(a => a != Servers.MaxServers))
                         {
                             PigParseStats[(int)server].PigParsePlayerCount = list.Count(a => a.Value.Server == server);
                             PigParseStats[(int)server].zoneStats = list
