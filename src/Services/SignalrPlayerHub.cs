@@ -33,16 +33,17 @@ namespace EQTool.Models
             url ="https://www.pigparse.org/EqToolMap";
 
 #endif
-            url = "https://www.pigparse.org/EqToolMap";
             connection = new HubConnectionBuilder()
               .WithUrl(url)
               .WithAutomaticReconnect()
               .Build();
             connection.On("PlayerLocationEvent", (SignalrPlayer p) =>
                 {
+                    this.PushPlayerLocationEvent(p);
                 });
             connection.On("PlayerDisconnected", (SignalrPlayer p) =>
             {
+                this.PushPlayerDisconnected(p);
             });
 
             connection.Closed += async (error) =>
