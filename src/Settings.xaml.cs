@@ -168,7 +168,7 @@ namespace EQTool
             descriptiontext = "Select Quarm EQ Directory";
 #endif
 
-            using (var fbd = new FolderBrowserDialog() { RootFolder = Environment.SpecialFolder.MyComputer, Description = descriptiontext, ShowNewFolderButton = false })
+            using (var fbd = new FolderBrowserDialog() { Description = descriptiontext, ShowNewFolderButton = false })
             {
                 var result = fbd.ShowDialog();
                 if (result == System.Windows.Forms.DialogResult.OK && !string.IsNullOrWhiteSpace(fbd.SelectedPath))
