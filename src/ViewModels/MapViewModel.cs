@@ -426,6 +426,7 @@ namespace EQTool.ViewModels
             }
             foreach (var item in playerstoremove)
             {
+                Players.Remove(item);
                 Canvas.Children.Remove(item.Ellipse);
             }
         }
