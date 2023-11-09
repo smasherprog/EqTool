@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.SignalR.Client;
 using System;
 using System.Diagnostics;
 using System.Threading.Tasks;
+using System.Timers;
 
 namespace EQTool.Models
 {
@@ -23,6 +24,9 @@ namespace EQTool.Models
         private readonly ActivePlayer activePlayer;
         private readonly LogParser logParser;
         private readonly IAppDispatcher appDispatcher;
+        private readonly Timer timer;
+        private SignalrPlayer LastPlayer;
+
         public SignalrPlayerHub(IAppDispatcher appDispatcher, LogParser logParser, ActivePlayer activePlayer)
         {
             this.appDispatcher = appDispatcher;
@@ -60,6 +64,38 @@ namespace EQTool.Models
             }
 
             this.logParser.PlayerLocationEvent += LogParser_PlayerLocationEvent;
+            this.logParser.CampEvent += LogParser_CampEvent;
+            timer = new Timer();
+            timer.Elapsed += Timer_Elapsed;
+            timer.Interval = 1000 * 15;
+            timer.Start();
+        }
+
+        private void LogParser_CampEvent(object sender, LogParser.CampEventArgs e)
+        {
+            this.LastPlayer = null;
+        }
+
+        private void Timer_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            if (this.LastPlayer != null)
+            {
+                if ((DateTime.UtcNow - this.LastPlayer.TimeStamp).TotalMinutes > 5)
+                {
+                    this.LastPlayer = null;
+                    if (this.activePlayer?.Player?.Server != null)
+                    {
+                        connection.InvokeAsync("PlayerLeft");
+                    }
+                }
+                else
+                {
+                    if (this.activePlayer?.Player?.Server != null)
+                    {
+                        connection.InvokeAsync("PlayerLocationEvent", this.LastPlayer);
+                    }
+                }
+            }
         }
 
         public event EventHandler<SignalrPlayer> PlayerLocationEvent;
@@ -112,7 +148,7 @@ namespace EQTool.Models
         {
             if (this.activePlayer?.Player?.Server != null)
             {
-                connection.InvokeAsync("PlayerLocationEvent", new SignalrPlayer
+                this.LastPlayer = new SignalrPlayer
                 {
                     Zone = this.activePlayer.Player.Zone,
                     GuildName = this.activePlayer.Player.GuildName,
@@ -123,7 +159,9 @@ namespace EQTool.Models
                     X = e.Location.X,
                     Y = e.Location.Y,
                     Z = e.Location.Z
-                });
+                };
+
+                connection.InvokeAsync("PlayerLocationEvent", this.LastPlayer);
             }
         }
     }

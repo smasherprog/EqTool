@@ -415,7 +415,21 @@ namespace EQTool.ViewModels
                 timersService.RemoveTimer(item.TimerInfo);
                 Canvas.Children.Remove(item);
             }
+
+            var playerstoremove = new List<PlayerLocation>();
+            foreach (var item in Players)
+            {
+                if ((DateTime.UtcNow - item.Player.TimeStamp).TotalMinutes > 4)
+                {
+                    playerstoremove.Add(item);
+                }
+            }
+            foreach (var item in playerstoremove)
+            {
+                Canvas.Children.Remove(item.Ellipse);
+            }
         }
+
         public void MoveToPlayerLocation(MapWidget mw)
         {
             if (PlayerLocation == null)
