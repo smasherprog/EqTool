@@ -78,7 +78,7 @@ namespace EQTool.Models
 
         private void Timer_Elapsed(object sender, ElapsedEventArgs e)
         {
-            if (this.LastPlayer != null)
+            if (this.LastPlayer != null && connection?.State == HubConnectionState.Connected)
             {
                 if ((DateTime.UtcNow - this.LastPlayer.TimeStamp).TotalMinutes > 5)
                 {
