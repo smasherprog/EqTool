@@ -196,6 +196,19 @@ namespace EQToolShared.Map
                 {
                     "",
                 },
+                NpcSpawnTimes = new List<NpcSpawnTime>()
+                 {
+                      new NpcSpawnTime
+                      {
+                           Name = "Kennel Master Al`ele",
+                            RespawnTime = new TimeSpan(0, 20, 0)
+                      },
+                      new NpcSpawnTime
+                      {
+                          Name = "An apprentice kennelmaster",
+                        RespawnTime = new TimeSpan(0, 20, 0)
+                      }
+                 },
                 RespawnTime = new TimeSpan(0, 18, 00)
             });
             ZoneInfoMap.Add("citymist", new ZoneInfo
