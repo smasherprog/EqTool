@@ -20,7 +20,7 @@ namespace EQTool.ViewModels
 {
     public class PlayerLocationCircle
     {
-        public TextBlock PlayerName;
+        public Ellipse Ellipse;
         public ArrowLine ArrowLine;
         public Ellipse TrackingEllipse;
     }
