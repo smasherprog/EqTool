@@ -842,7 +842,7 @@ namespace EQToolShared.Map
                 },
                 RespawnTime = new TimeSpan(1, 10, 10)
             });
-            ZoneInfoMap.Add("mistmoore", new ZoneInfo
+            zone = new ZoneInfo
             {
                 Name = "mistmoore",
                 ShowAllMapLevels = false,
@@ -853,13 +853,11 @@ namespace EQToolShared.Map
                 },
                 RespawnTime = new TimeSpan(0, 22, 00)
             };
-                if (isProjectQ)
-                {
+            if (isProjectQ)
+            {
                 zone.RespawnTime = new TimeSpan(0, 8, 0);
-                }    
-
-                ZoneInfoMap.Add("mistmoore", zone);
-                            
+            }    
+            ZoneInfoMap.Add("mistmoore", zone); 
             ZoneInfoMap.Add("misty", new ZoneInfo
             {
                 Name = "misty",
