@@ -33,6 +33,12 @@ namespace EQToolShared.Map
         public static readonly Dictionary<string, string> ZoneNameMapper = new Dictionary<string, string>();
         public static readonly Dictionary<string, string> ZoneWhoMapper = new Dictionary<string, string>();
         public static readonly Dictionary<string, ZoneInfo> ZoneInfoMap = new Dictionary<string, ZoneInfo>();
+#if QUARM
+        private static bool isProjectQ = true;
+#else
+        private static bool isProjectQ = false;
+#endif
+
 
         static ZoneParser()
         {
@@ -1278,14 +1284,21 @@ namespace EQToolShared.Map
                 NotableNPCs = new List<string>() { "", },
                 RespawnTime = new TimeSpan(0, 6, 40)
             });
-            ZoneInfoMap.Add("unrest", new ZoneInfo
+            var zone = new ZoneInfo
             {
                 Name = "unrest",
                 ShowAllMapLevels = false,
                 ZoneLevelHeight = 10,
                 NotableNPCs = new List<string>() { "Garanel Rucksif", "a priest of najena", "Khrix Fritchoff", "Khrix's Abomination", "Torklar Battlemaster", "Shadowpincer", "reclusive ghoul magus", },
                 RespawnTime = new TimeSpan(0, 22, 0)
-            });
+            };
+            if (isProjectQ)
+            {
+                zone.RespawnTime = new TimeSpan(0, 7, 0);
+            }
+
+            ZoneInfoMap.Add("unrest", zone);
+
             ZoneInfoMap.Add("veeshan", new ZoneInfo
             {
                 Name = "veeshan",
