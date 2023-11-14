@@ -852,7 +852,14 @@ namespace EQToolShared.Map
                     "an advisor","an avenging caitiff","Black Dire","Butler Syncall","a cloaked dhampyre","a deathly usher","Enynti","Garton Viswin","a glyphed ghoul","an imp familiar","Lasna Cheroon","Maid Issis","Mayong Mistmoore","Mynthi Davissi","Princess Cherista","Ssynthi","Xicotl",
                 },
                 RespawnTime = new TimeSpan(0, 22, 00)
-            });
+            };
+                if (isProjectQ)
+                {
+                zone.RespawnTime = new TimeSpan(0, 8, 0);
+                }    
+
+                ZoneInfoMap.Add("mistmoore", zone);
+                            
             ZoneInfoMap.Add("misty", new ZoneInfo
             {
                 Name = "misty",
@@ -1294,7 +1301,7 @@ namespace EQToolShared.Map
             };
             if (isProjectQ)
             {
-                zone.RespawnTime = new TimeSpan(0, 7, 0);
+                zone.RespawnTime = new TimeSpan(0, 8, 0);
             }
 
             ZoneInfoMap.Add("unrest", zone);
