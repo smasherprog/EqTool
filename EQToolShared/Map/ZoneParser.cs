@@ -876,7 +876,7 @@ namespace EQToolShared.Map
                 ZoneLevelHeight = 10,
                 NotableNPCs = new List<string>()
                 {
-                    "Akksstaff","BoneCracker","Drelzna","Ekeros","Linara Parlone","Moosh","Najena (NPC)","Officer Grush","Rathyl","Rathyl reincarnate","Trazdon","a visiting priestess","The Widowmistress",
+                    "Akksstaff","BoneCracker","Drelzna","Ekeros","Linara Parlone","Moosh","Najena","Officer Grush","Rathyl","Rathyl reincarnate","Trazdon","a visiting priestess","The Widowmistress",
                 },
                 RespawnTime = new TimeSpan(0, 18, 30)
             });

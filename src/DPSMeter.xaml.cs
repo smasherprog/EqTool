@@ -1,6 +1,7 @@
 ﻿using EQTool.Models;
 using EQTool.Services;
 using EQTool.ViewModels;
+using EQToolShared.Map;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -22,9 +23,11 @@ namespace EQTool
         private readonly DPSWindowViewModel dPSWindowViewModel;
         private readonly EQToolSettings settings;
         private readonly EQToolSettingsLoad toolSettingsLoad;
+        private readonly ActivePlayer activePlayer;
 
-        public DPSMeter(LogParser logParser, DPSWindowViewModel dPSWindowViewModel, EQToolSettings settings, EQToolSettingsLoad toolSettingsLoad, LoggingService loggingService)
+        public DPSMeter(LogParser logParser, DPSWindowViewModel dPSWindowViewModel, EQToolSettings settings, EQToolSettingsLoad toolSettingsLoad, LoggingService loggingService, ActivePlayer activePlayer)
         {
+            this.activePlayer = activePlayer;
             loggingService.Log(string.Empty, App.EventType.OpenDPS);
             this.settings = settings;
             this.logParser = logParser;
@@ -63,6 +66,15 @@ namespace EQTool
 
         private void LogParser_DeadEvent(object sender, LogParser.DeadEventArgs e)
         {
+            var zone = this.activePlayer?.Player?.Zone;
+            if (!string.IsNullOrWhiteSpace(zone) && ZoneParser.ZoneInfoMap.TryGetValue(zone, out var fzone))
+            {
+                if (fzone.NotableNPCs.Any(a => a == e.Name))
+                {
+                    this.copytoclipboard(e.Name);
+                }
+            }
+
             dPSWindowViewModel.TargetDied(e.Name);
         }
 
@@ -155,15 +167,20 @@ namespace EQTool
         private void copytoclipboard(object sender, RoutedEventArgs e)
         {
             var name = ((sender as Button).DataContext as dynamic)?.Name as string;
+            copytoclipboard(name);
+        }
 
+        private void copytoclipboard(string name)
+        {
             var items = dPSWindowViewModel.EntityList.Where(a => a.TargetName == name);
             var fights = new List<string>();
-            foreach (var item in items.OrderByDescending(a => a.PercentOfTotalDamage))
+            foreach (var item in items.OrderByDescending(a => a.TotalDamage))
             {
                 fights.Add($"{item.SourceName} {item.PercentOfTotalDamage}% DPS:{item.TotalDPS} DMG:{item.TotalDamage}");
             }
             var fightdetails = "Fight Details: " + name + " Dmg: " + (items.FirstOrDefault()?.TargetTotalDamage ?? 0) + "    " + string.Join(" / ", fights);
             System.Windows.Forms.Clipboard.SetText(fightdetails);
+            (App.Current as App).ShowBalloonTip(4000, "DPS Copied", $"DPS for the fight with {name} has been copied to clipboard", System.Windows.Forms.ToolTipIcon.Info);
         }
 
         private void MoveCurrentToLastSession(object sender, RoutedEventArgs e)

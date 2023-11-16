@@ -542,6 +542,11 @@ namespace EQTool
             OpenWindow<Settings>(SettingsMenuItem);
         }
 
+        public void ShowBalloonTip(int timeout, string tipTitle, string tipText, System.Windows.Forms.ToolTipIcon tipIcon)
+        {
+            this.SystemTrayIcon.ShowBalloonTip(timeout, tipTitle, tipText, tipIcon);
+        }
+
         public void OpenSpellsWindow()
         {
             OpenWindow<SpellWindow>(SpellsMenuItem);
