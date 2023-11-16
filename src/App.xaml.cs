@@ -557,7 +557,7 @@ namespace EQTool
             System.Windows.Application.Current.Shutdown();
         }
 
-        internal static void ApplyAlwaysOnTop()
+        public static void ApplyAlwaysOnTop()
         {
             foreach (var item in WindowList)
             {
