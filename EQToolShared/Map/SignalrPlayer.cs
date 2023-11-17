@@ -15,6 +15,7 @@ namespace EQToolShared.Map
         public string Name { get; set; }
         public string GuildName { get; set; }
         public DateTime TimeStamp { get; set; } = DateTime.UtcNow;
+        public double? TrackingDistance { get; set; }
         public PlayerClasses? PlayerClass { get; set; }
         public MapLocationSharing MapLocationSharing { get; set; }
         public Servers Server { get; set; }

@@ -156,6 +156,7 @@ namespace EQTool.Models
                     Server = this.activePlayer.Player.Server.Value,
                     MapLocationSharing = this.activePlayer.Player.MapLocationSharing.Value,
                     Name = this.activePlayer.Player.Name,
+                    TrackingDistance = this.activePlayer.Player.TrackingDistance,
                     X = e.Location.X,
                     Y = e.Location.Y,
                     Z = e.Location.Z

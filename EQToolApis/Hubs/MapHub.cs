@@ -23,6 +23,7 @@ namespace EQToolApis.Hubs
                     player.MapLocationSharing = playerLocation.MapLocationSharing;
                     player.Server = playerLocation.Server;
                     player.Zone = playerLocation.Zone;
+                    player.TrackingDistance = playerLocation.TrackingDistance;
                 }
             }
             else if (connections.TryAdd(Context.ConnectionId, playerLocation))

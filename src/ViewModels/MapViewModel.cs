@@ -20,10 +20,12 @@ namespace EQTool.ViewModels
 {
     public class PlayerLocationCircle
     {
+        public TextBlock PlayerName;
         public Ellipse Ellipse;
         public ArrowLine ArrowLine;
         public Ellipse TrackingEllipse;
     }
+
     public class PlayerLocation : PlayerLocationCircle
     {
         public SignalrPlayer Player;
@@ -51,9 +53,6 @@ namespace EQTool.ViewModels
         private readonly TimersService timersService;
 
         public string MouseLocation => $"   {LastMouselocation.Y:0.##}, {LastMouselocation.X:0.##}";
-        public double ZoneLabelFontSize => MathHelper.ChangeRange(Math.Max(AABB.MaxWidth, AABB.MaxHeight), 500, 35000, 14, 170);
-        public double OtherLabelFontSize => MathHelper.ChangeRange(Math.Max(AABB.MaxWidth, AABB.MaxHeight), 500, 35000, 6, 110);
-        public double SmallFontSize => MathHelper.ChangeRange(Math.Max(AABB.MaxWidth, AABB.MaxHeight), 500, 35000, 7, 50);
 
         public AABB AABB = new AABB();
 
@@ -153,7 +152,7 @@ namespace EQTool.ViewModels
                     ZoneName = zone;
                     Debug.WriteLine($"Loading: {zone}");
                     MapOffset = map.Offset;
-                    var linethickness = MathHelper.ChangeRange(Math.Max(AABB.MaxWidth, AABB.MaxHeight), 800, 35000, 2, 40);
+                    var linethickness = MapViewModelService.MapLinethickness(this.AABB);
 
                     foreach (var group in map.Lines)
                     {
@@ -175,15 +174,17 @@ namespace EQTool.ViewModels
                     }
 
                     Debug.WriteLine($"Labels: {map.Labels.Count}");
-                    var locationdotsize = MathHelper.ChangeRange(Math.Max(AABB.MaxWidth, AABB.MaxHeight), 500, 35000, 20, 150);
-                    var locationthickness = MathHelper.ChangeRange(Math.Max(AABB.MaxWidth, AABB.MaxHeight), 500, 35000, 5, 20);
+                    var locationdotsize = MapViewModelService.PlayerEllipsesSize(this.AABB);
+                    var locationthickness = MapViewModelService.PlayerEllipsesThickness(this.AABB);
+                    var zoneLabelFontSize = MapViewModelService.ZoneLabelFontSize(this.AABB);
+                    var otherLabelFontSize = MapViewModelService.OtherLabelFontSize(this.AABB);
                     foreach (var item in map.Labels)
                     {
                         var text = new TextBlock
                         {
                             Tag = item,
                             Text = item.label.Replace('_', ' '),
-                            FontSize = item.LabelSize == LabelSize.Large ? ZoneLabelFontSize : OtherLabelFontSize,
+                            FontSize = item.LabelSize == LabelSize.Large ? zoneLabelFontSize : otherLabelFontSize,
                             Foreground = new SolidColorBrush(System.Windows.Media.Color.FromRgb(255, 255, 255)),
                             RenderTransform = Transform
                         };
@@ -203,56 +204,14 @@ namespace EQTool.ViewModels
                         Canvas.SetTop(circle, item.Point.Y);
                     }
 
-                    var playerlocsize = MathHelper.ChangeRange(Math.Max(AABB.MaxWidth, AABB.MaxHeight), 500, 35000, 40, 1750);
-                    var playerstrokthickness = MathHelper.ChangeRange(Math.Max(AABB.MaxWidth, AABB.MaxHeight), 500, 35000, 3, 40);
-                    var trackingdistance = this.activePlayer?.Player?.TrackingDistance;
-                    PlayerLocation = new PlayerLocationCircle
+                    PlayerLocation = MapViewModelService.AddPlayerToCanvas(new AddPlayerToCanvasData
                     {
-                        Ellipse = new Ellipse()
-                        {
-                            Height = playerlocsize / 4,
-                            Width = playerlocsize / 4,
-                            Stroke = new SolidColorBrush(System.Windows.Media.Color.FromRgb(61, 235, 52)),
-                            StrokeThickness = playerstrokthickness,
-                            RenderTransform = new RotateTransform()
-                        },
-                        ArrowLine = new ArrowLine()
-                        {
-                            Stroke = new SolidColorBrush(System.Windows.Media.Color.FromRgb(61, 235, 52)),
-                            StrokeThickness = playerstrokthickness,
-                            X1 = 0,
-                            Y1 = 0,
-                            X2 = 0,
-                            Y2 = playerlocsize,
-                            ArrowLength = playerlocsize / 4,
-                            ArrowEnds = ArrowEnds.End,
-                            RotateTransform = new RotateTransform()
-                        },
-                        TrackingEllipse = new Ellipse()
-                        {
-                            Height = trackingdistance ?? 100,
-                            Width = trackingdistance ?? 100,
-                            Stroke = new SolidColorBrush(System.Windows.Media.Color.FromRgb(61, 235, 52)),
-                            StrokeThickness = playerstrokthickness,
-                            RenderTransform = new RotateTransform(),
-                            Fill = new SolidColorBrush(System.Windows.Media.Color.FromArgb(5, 61, 235, 52)),
-                        }
-                    };
-
-                    _ = canvas.Children.Add(PlayerLocation.Ellipse);
-                    Canvas.SetLeft(PlayerLocation.Ellipse, AABB.Center.X + PlayerLocation.Ellipse.Height + (PlayerLocation.Ellipse.Height / 2));
-                    Canvas.SetTop(PlayerLocation.Ellipse, AABB.Center.Y + PlayerLocation.Ellipse.Height + (PlayerLocation.Ellipse.Height / 2));
-
-                    _ = canvas.Children.Add(PlayerLocation.ArrowLine);
-                    Canvas.SetLeft(PlayerLocation.ArrowLine, AABB.Center.X + (playerlocsize / 2));
-                    Canvas.SetTop(PlayerLocation.ArrowLine, AABB.Center.Y + (playerlocsize / 2));
-                    if (!trackingdistance.HasValue)
-                    {
-                        PlayerLocation.TrackingEllipse.Visibility = Visibility.Hidden;
-                    }
-                    _ = canvas.Children.Add(PlayerLocation.TrackingEllipse);
-                    Canvas.SetLeft(PlayerLocation.TrackingEllipse, AABB.Center.X + PlayerLocation.TrackingEllipse.Height + (PlayerLocation.TrackingEllipse.Height / 2));
-                    Canvas.SetTop(PlayerLocation.TrackingEllipse, AABB.Center.Y + PlayerLocation.TrackingEllipse.Height + (PlayerLocation.TrackingEllipse.Height / 2));
+                        Name = "You",
+                        Canvas = Canvas,
+                        Trackingdistance = this.activePlayer?.Player?.TrackingDistance,
+                        AABB = this.AABB,
+                        Transform = Transform
+                    });
 
                     var widgets = timersService.LoadTimersForZone(ZoneName);
                     foreach (var mw in widgets)
@@ -274,6 +233,46 @@ namespace EQTool.ViewModels
                 MapLoading = false;
             }
         }
+        private PlayerLocation AddPlayerToCanvas(SignalrPlayer signalrPlayer)
+        {
+            var player = MapViewModelService.AddPlayerToCanvas(new AddPlayerToCanvasData
+            {
+                Name = signalrPlayer.Name,
+                Canvas = Canvas,
+                Trackingdistance = null,
+                AABB = this.AABB,
+                Transform = Transform
+            });
+            return new PlayerLocation
+            {
+                ArrowLine = player.ArrowLine,
+                Ellipse = player.Ellipse,
+                Player = signalrPlayer,
+                PlayerName = player.PlayerName,
+                TrackingEllipse = player.TrackingEllipse
+            };
+        }
+
+
+        private void RemoveFromCanvas(PlayerLocationCircle playerLocationCircle)
+        {
+            if (playerLocationCircle.Ellipse != null)
+            {
+                this.Canvas.Children.Remove(playerLocationCircle.Ellipse);
+            }
+            if (playerLocationCircle.PlayerName != null)
+            {
+                this.Canvas.Children.Remove(playerLocationCircle.PlayerName);
+            }
+            if (playerLocationCircle.ArrowLine != null)
+            {
+                this.Canvas.Children.Remove(playerLocationCircle.ArrowLine);
+            }
+            if (playerLocationCircle.TrackingEllipse != null)
+            {
+                this.Canvas.Children.Remove(playerLocationCircle.TrackingEllipse);
+            }
+        }
 
         public bool LoadDefaultMap(Canvas canvas)
         {
@@ -286,15 +285,6 @@ namespace EQTool.ViewModels
             return LoadMap(z, canvas);
         }
 
-        private static double GetAngleBetweenPoints(Point3D pt1, Point3D pt2)
-        {
-            var dx = pt2.X - pt1.X;
-            var dy = pt2.Y - pt1.Y;
-            var deg = Math.Atan2(dy, dx) * (180 / Math.PI);
-            if (deg < 0) { deg += 360; }
-
-            return deg;
-        }
 
         private static T Clamp<T>(T val, T min, T max) where T : IComparable<T>
         {
@@ -317,42 +307,19 @@ namespace EQTool.ViewModels
                     loggingService.Log($"Zone {ZoneName} Not found.", App.EventType.Error);
                 }
             }
+            MapViewModelService.UpdateLocation(new UpdateLocationData
+            {
+                Trackingdistance = this.activePlayer?.Player?.TrackingDistance,
+                CurrentScaling = CurrentScaling,
+                MapOffset = MapOffset,
+                Oldlocation = Lastlocation,
+                Newlocation = value1,
+                PlayerLocationCircle = PlayerLocation,
+                Transform = Transform
+            });
 
-            OnPropertyChanged(nameof(Title));
-            var newdir = new Point3D(value1.X, value1.Y, 0) - new Point3D(Lastlocation.X, Lastlocation.Y, 0);
-            newdir.Normalize();
-            var angle = GetAngleBetweenPoints(new Point3D(value1.X, value1.Y, 0), new Point3D(Lastlocation.X, Lastlocation.Y, 0)) * -1;
             Lastlocation = value1;
-            PlayerLocation.ArrowLine.RotateTransform = new RotateTransform(angle);
-            Canvas.SetLeft(PlayerLocation.ArrowLine, -(value1.Y + MapOffset.X) * CurrentScaling);
-            Canvas.SetTop(PlayerLocation.ArrowLine, -(value1.X + MapOffset.Y) * CurrentScaling);
-            var heighdiv2 = PlayerLocation.Ellipse.Height / 2 / CurrentScaling;
-            Canvas.SetLeft(PlayerLocation.Ellipse, -(value1.Y + MapOffset.X + heighdiv2) * CurrentScaling);
-            Canvas.SetTop(PlayerLocation.Ellipse, -(value1.X + MapOffset.Y + heighdiv2) * CurrentScaling);
-            var trackingdistance = this.activePlayer?.Player?.TrackingDistance;
-            if (!trackingdistance.HasValue)
-            {
-                PlayerLocation.TrackingEllipse.Visibility = Visibility.Hidden;
-            }
-            else
-            {
-                PlayerLocation.TrackingEllipse.Visibility = Visibility.Visible;
-                PlayerLocation.TrackingEllipse.Height = trackingdistance.Value;
-                PlayerLocation.TrackingEllipse.Width = trackingdistance.Value;
-            }
-            heighdiv2 = PlayerLocation.TrackingEllipse.Height / 2;
-            Canvas.SetLeft(PlayerLocation.TrackingEllipse, -(value1.Y + MapOffset.X + heighdiv2) * CurrentScaling);
-            Canvas.SetTop(PlayerLocation.TrackingEllipse, -(value1.X + MapOffset.Y + heighdiv2) * CurrentScaling);
-
-            var transform = new MatrixTransform();
-            var translation = new TranslateTransform(Transform.Value.OffsetX, Transform.Value.OffsetY);
-            transform.Matrix = PlayerLocation.ArrowLine.RotateTransform.Value * translation.Value;
-            PlayerLocation.ArrowLine.RenderTransform = transform;
-            var transform2 = new MatrixTransform();
-            _ = new TranslateTransform(Transform.Value.OffsetX, Transform.Value.OffsetY);
-            transform2.Matrix = translation.Value;
-            PlayerLocation.Ellipse.RenderTransform = transform2;
-
+            OnPropertyChanged(nameof(Title));
             if (!zoneinfo.ShowAllMapLevels && Canvas.Children.Count > 0)
             {
                 var lastloc = new Point3D(-(value1.Y + MapOffset.X), -(value1.X + MapOffset.Y), Lastlocation.Z);
@@ -461,7 +428,7 @@ namespace EQTool.ViewModels
                 Duration = timer,
                 Name = title,
                 ZoneName = ZoneName,
-                Fontsize = SmallFontSize,
+                Fontsize = MapViewModelService.SmallFontSize(this.AABB),
                 StartTime = DateTime.Now,
                 Location = mousePosition
             });
@@ -652,6 +619,8 @@ namespace EQTool.ViewModels
             Transform.Matrix = scaleMatrix;
             CurrentScaling *= scaleFactor;
             var currentlabelscaling = (CurrentScaling / 40 * -1) + 1;
+            var zoneLabelFontSize = MapViewModelService.ZoneLabelFontSize(this.AABB);
+            var otherLabelFontSize = MapViewModelService.OtherLabelFontSize(this.AABB);
             foreach (UIElement child in Canvas.Children)
             {
                 var x = Canvas.GetLeft(child);
@@ -702,9 +671,9 @@ namespace EQTool.ViewModels
                     Canvas.SetLeft(child, sx);
                     Canvas.SetTop(child, sy);
                     var textdata = t.Tag as MapLabel;
-                    if (textdata.LabelSize == LabelSize.Large)
+                    if (textdata?.LabelSize == LabelSize.Large)
                     {
-                        var largescaling = ZoneLabelFontSize;
+                        var largescaling = zoneLabelFontSize;
                         largescaling *= currentlabelscaling;
                         largescaling = (int)Clamp(largescaling, 5, 200);
                         if (t.FontSize != largescaling)
@@ -714,7 +683,7 @@ namespace EQTool.ViewModels
                     }
                     else
                     {
-                        var smallscaling = OtherLabelFontSize;
+                        var smallscaling = otherLabelFontSize;
                         smallscaling *= currentlabelscaling;
                         smallscaling = (int)Clamp(smallscaling, 5, 100);
                         if (t.FontSize != smallscaling)
@@ -753,64 +722,22 @@ namespace EQTool.ViewModels
             var p = this.Players.FirstOrDefault(a => a.Player.Name == e.Name);
             if (p == null)
             {
-                var playerlocsize = MathHelper.ChangeRange(Math.Max(AABB.MaxWidth, AABB.MaxHeight), 500, 35000, 40, 1750);
-                var playerstrokthickness = MathHelper.ChangeRange(Math.Max(AABB.MaxWidth, AABB.MaxHeight), 500, 35000, 3, 40);
-                var trackingdistance = this.activePlayer?.Player?.TrackingDistance;
-                var player = new PlayerLocation
-                {
-                    Ellipse = new Ellipse()
-                    {
-                        Height = playerlocsize / 4,
-                        Width = playerlocsize / 4,
-                        Stroke = new SolidColorBrush(System.Windows.Media.Color.FromRgb(61, 235, 52)),
-                        StrokeThickness = playerstrokthickness,
-                        RenderTransform = new RotateTransform()
-                    },
-                    ArrowLine = new ArrowLine()
-                    {
-                        Stroke = new SolidColorBrush(System.Windows.Media.Color.FromRgb(61, 235, 52)),
-                        StrokeThickness = playerstrokthickness,
-                        X1 = 0,
-                        Y1 = 0,
-                        X2 = 0,
-                        Y2 = playerlocsize,
-                        ArrowLength = playerlocsize / 4,
-                        ArrowEnds = ArrowEnds.End,
-                        RotateTransform = new RotateTransform()
-                    },
-                    TrackingEllipse = new Ellipse()
-                    {
-                        Height = trackingdistance ?? 100,
-                        Width = trackingdistance ?? 100,
-                        Stroke = new SolidColorBrush(System.Windows.Media.Color.FromRgb(61, 235, 52)),
-                        StrokeThickness = playerstrokthickness,
-                        RenderTransform = new RotateTransform(),
-                        Fill = new SolidColorBrush(System.Windows.Media.Color.FromArgb(5, 61, 235, 52)),
-                        Visibility = Visibility.Hidden
-                    },
-                    Player = e
-                };
-
-                _ = Canvas.Children.Add(player.Ellipse);
-                Canvas.SetLeft(player.Ellipse, AABB.Center.X + player.Ellipse.Height + (player.Ellipse.Height / 2));
-                Canvas.SetTop(player.Ellipse, AABB.Center.Y + player.Ellipse.Height + (player.Ellipse.Height / 2));
-                this.Players.Add(player);
+                var playerloc = AddPlayerToCanvas(e);
+                this.Players.Add(playerloc);
             }
             else
             {
-                var newdir = new Point3D(e.X, e.Y, 0) - new Point3D(p.Player.X, p.Player.Y, 0);
-                newdir.Normalize();
-                var angle = GetAngleBetweenPoints(new Point3D(e.X, e.Y, 0), new Point3D(p.Player.X, p.Player.Y, 0)) * -1;
+                MapViewModelService.UpdateLocation(new UpdateLocationData
+                {
+                    Trackingdistance = e.TrackingDistance,
+                    CurrentScaling = CurrentScaling,
+                    MapOffset = MapOffset,
+                    Oldlocation = new Point3D(p.Player.X, p.Player.Y, p.Player.Z),
+                    Newlocation = new Point3D(e.X, e.Y, e.Z),
+                    PlayerLocationCircle = p,
+                    Transform = Transform
+                });
                 p.Player = e;
-                var heighdiv2 = p.Ellipse.Height / 2 / CurrentScaling;
-                Canvas.SetLeft(p.Ellipse, -(e.Y + MapOffset.X + heighdiv2) * CurrentScaling);
-                Canvas.SetTop(p.Ellipse, -(e.X + MapOffset.Y + heighdiv2) * CurrentScaling);
-
-                var translation = new TranslateTransform(Transform.Value.OffsetX, Transform.Value.OffsetY);
-                var transform2 = new MatrixTransform();
-                _ = new TranslateTransform(Transform.Value.OffsetX, Transform.Value.OffsetY);
-                transform2.Matrix = translation.Value;
-                p.Ellipse.RenderTransform = transform2;
             }
         }
 
@@ -819,7 +746,7 @@ namespace EQTool.ViewModels
             var p = this.Players.FirstOrDefault(a => a.Player.Name == e.Name);
             if (p != null)
             {
-                Canvas.Children.Remove(p.Ellipse);
+                RemoveFromCanvas(p);
             }
         }
     }
