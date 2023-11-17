@@ -1,5 +1,5 @@
 ﻿using EQToolShared.Map;
-using System; 
+using System;
 using System.Windows.Controls;
 using System.Windows.Media.Media3D;
 using System.Windows.Shapes;
@@ -57,6 +57,10 @@ namespace EQTool.Services
         {
             var twiceheight = zoneinfo.ZoneLevelHeight * 2;
             var m = t.Tag as MapLoad.MapLabel;
+            if (m == null)
+            {
+                return;
+            }
             var shortestdistance = Math.Abs(m.Point.Z - lastloc.Z);
 
             if (shortestdistance < zoneinfo.ZoneLevelHeight)

@@ -33,8 +33,8 @@ namespace EQTool.Services
         public static double ZoneLabelFontSize(MapLoad.AABB aabb) { return MathHelper.ChangeRange(Math.Max(aabb.MaxWidth, aabb.MaxHeight), 500, 35000, 14, 170); }
         public static double OtherLabelFontSize(MapLoad.AABB aabb) { return MathHelper.ChangeRange(Math.Max(aabb.MaxWidth, aabb.MaxHeight), 500, 35000, 6, 110); }
         public static double SmallFontSize(MapLoad.AABB aabb) { return MathHelper.ChangeRange(Math.Max(aabb.MaxWidth, aabb.MaxHeight), 500, 35000, 7, 50); }
-        public static double PlayerEllipsesSize(MapLoad.AABB aabb) { return MathHelper.ChangeRange(Math.Max(aabb.MaxWidth, aabb.MaxHeight), 500, 35000, 15, 170); }
-        public static double PlayerEllipsesThickness(MapLoad.AABB aabb) { return MathHelper.ChangeRange(Math.Max(aabb.MaxWidth, aabb.MaxHeight), 500, 35000, 4, 24); }
+        public static double PlayerEllipsesSize(MapLoad.AABB aabb) { return MathHelper.ChangeRange(Math.Max(aabb.MaxWidth, aabb.MaxHeight), 500, 35000, 10, 170); }
+        public static double PlayerEllipsesThickness(MapLoad.AABB aabb) { return MathHelper.ChangeRange(Math.Max(aabb.MaxWidth, aabb.MaxHeight), 500, 35000, 3, 24); }
         public static double MapLinethickness(MapLoad.AABB aabb) { return MathHelper.ChangeRange(Math.Max(aabb.MaxWidth, aabb.MaxHeight), 800, 35000, 2, 40); }
         private static double GetAngleBetweenPoints(Point3D pt1, Point3D pt2)
         {
