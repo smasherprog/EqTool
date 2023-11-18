@@ -4,6 +4,7 @@ using EQTool.Shapes;
 using EQToolShared.Map;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
@@ -18,12 +19,31 @@ using static EQTool.Services.MapLoad;
 
 namespace EQTool.ViewModels
 {
-    public class PlayerLocationCircle
+    public class PlayerLocationCircle : INotifyPropertyChanged
     {
         public TextBlock PlayerName;
         public Ellipse Ellipse;
         public ArrowLine ArrowLine;
         public Ellipse TrackingEllipse;
+
+        private string _Name = string.Empty;
+
+        public string Name
+        {
+            get => _Name;
+            set
+            {
+                _Name = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected void OnPropertyChanged([CallerMemberName] string name = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
+
     }
 
     public class PlayerLocation : PlayerLocationCircle
@@ -42,7 +62,7 @@ namespace EQTool.ViewModels
         private Point3D MapOffset = new Point3D(0, 0, 0);
         private bool MapLoading = false;
         private PlayerLocationCircle PlayerLocation;
-        private List<PlayerLocation> Players = new List<PlayerLocation>();
+        public ObservableCollection<PlayerLocation> Players { get; set; }
         private Canvas Canvas;
         private float CurrentScaling = 1.0f;
         private readonly float Zoomfactor = 1.1f;
@@ -58,6 +78,7 @@ namespace EQTool.ViewModels
 
         public MapViewModel(MapLoad mapLoad, ActivePlayer activePlayer, LoggingService loggingService, TimersService timersService)
         {
+            this.Players = new ObservableCollection<PlayerLocation>();
             this.timersService = timersService;
             this.mapLoad = mapLoad;
             this.activePlayer = activePlayer;
@@ -120,7 +141,7 @@ namespace EQTool.ViewModels
             Transform = new MatrixTransform();
             CurrentScaling = 1.0f;
             Canvas?.Children?.Clear();
-            Players = new List<PlayerLocation>();
+            Players.Clear();
         }
 
         public bool LoadMap(string zone, Canvas canvas)
@@ -241,7 +262,7 @@ namespace EQTool.ViewModels
                 Canvas = Canvas,
                 Trackingdistance = null,
                 AABB = this.AABB,
-                Transform = Transform
+                Transform = Transform,
             });
             return new PlayerLocation
             {
@@ -249,7 +270,8 @@ namespace EQTool.ViewModels
                 Ellipse = player.Ellipse,
                 Player = signalrPlayer,
                 PlayerName = player.PlayerName,
-                TrackingEllipse = player.TrackingEllipse
+                TrackingEllipse = player.TrackingEllipse,
+                Name = signalrPlayer.Name
             };
         }
 
@@ -351,16 +373,6 @@ namespace EQTool.ViewModels
                     }
                 }
             }
-        }
-
-        public void MouseMove(Point mousePosition)
-        {
-            mousePosition = Transform.Inverse.Transform(mousePosition);
-            mousePosition.X += MapOffset.X;
-            mousePosition.Y += MapOffset.Y;
-            mousePosition.X *= -1;
-            mousePosition.Y *= -1;
-            LastMouselocation = mousePosition;
         }
 
         public void UpdateTimerWidgest()
@@ -534,7 +546,7 @@ namespace EQTool.ViewModels
             }
         }
 
-        public void PanAndZoomCanvas_MouseMove(Point mousePostion, MouseEventArgs e)
+        public void PanAndZoomCanvas_MouseMove(Point mousePosition, MouseEventArgs e)
         {
             if (TimerOpen)
             {
@@ -543,8 +555,8 @@ namespace EQTool.ViewModels
 
             if (!_dragging && e.LeftButton == MouseButtonState.Pressed)
             {
-                var mousePosition = Transform.Inverse.Transform(mousePostion);
-                var delta = Point.Subtract(mousePosition, _initialMousePosition);
+                var mousePosition1 = Transform.Inverse.Transform(mousePosition);
+                var delta = Point.Subtract(mousePosition1, _initialMousePosition);
                 var translate = new TranslateTransform(delta.X, delta.Y);
                 Transform.Matrix = translate.Value * Transform.Matrix;
                 foreach (UIElement child in Canvas.Children)
@@ -574,8 +586,8 @@ namespace EQTool.ViewModels
             {
                 if (_selectedElement != null)
                 {
-                    Canvas.SetLeft(_selectedElement, mousePostion.X + _draggingDelta.X);
-                    Canvas.SetTop(_selectedElement, mousePostion.Y + _draggingDelta.Y);
+                    Canvas.SetLeft(_selectedElement, mousePosition.X + _draggingDelta.X);
+                    Canvas.SetTop(_selectedElement, mousePosition.Y + _draggingDelta.Y);
                     if (_selectedElement is MapWidget m)
                     {
                         var point = new Point(Canvas.GetLeft(_selectedElement), Canvas.GetTop(_selectedElement));
@@ -586,6 +598,12 @@ namespace EQTool.ViewModels
                     }
                 }
             }
+            mousePosition = Transform.Inverse.Transform(mousePosition);
+            mousePosition.X += MapOffset.X;
+            mousePosition.Y += MapOffset.Y;
+            mousePosition.X *= -1;
+            mousePosition.Y *= -1;
+            LastMouselocation = mousePosition;
         }
 
         public void PanAndZoomCanvas_MouseWheel(Point mousePostion, int delta)

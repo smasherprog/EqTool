@@ -46,7 +46,6 @@ namespace EQTool
             CancelTimerEvent?.Invoke(this, new EventArgs());
         }
 
-        public event EventHandler<MouseButtonEventArgs> PanAndZoomCanvas_MouseDownEvent;
         private void PanAndZoomCanvas_MouseDown(object sender, MouseButtonEventArgs e)
         {
             if (e.ChangedButton == MouseButton.Right)
@@ -62,7 +61,6 @@ namespace EQTool
                     DeleteTimerMenuItem.Visibility = Visibility.Collapsed;
                 }
             }
-            PanAndZoomCanvas_MouseDownEvent?.Invoke(this, e);
         }
 
         public event EventHandler<RoutedEventArgs> TimerMenu_ClosedEvent;

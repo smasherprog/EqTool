@@ -62,7 +62,6 @@ namespace EQTool
             Map.CancelTimerEvent += Map_CancelTimerEvent;
             Map.TimerMenu_ClosedEvent += Map_TimerMenu_ClosedEvent;
             Map.TimerMenu_OpenedEvent += Map_TimerMenu_OpenedEvent;
-            Map.PanAndZoomCanvas_MouseDownEvent += Map_PanAndZoomCanvas_MouseDownEvent;
             this.signalrPlayerHub.PlayerLocationEvent += SignalrPlayerHub_PlayerLocationEvent;
             this.signalrPlayerHub.PlayerDisconnected += SignalrPlayerHub_PlayerDisconnected;
             settings.MapWindowState.Closed = false;
@@ -206,7 +205,6 @@ namespace EQTool
             Map.CancelTimerEvent -= Map_CancelTimerEvent;
             Map.TimerMenu_ClosedEvent -= Map_TimerMenu_ClosedEvent;
             Map.TimerMenu_OpenedEvent -= Map_TimerMenu_OpenedEvent;
-            Map.PanAndZoomCanvas_MouseDownEvent -= Map_PanAndZoomCanvas_MouseDownEvent;
 
             this.signalrPlayerHub.PlayerLocationEvent -= SignalrPlayerHub_PlayerLocationEvent;
             this.signalrPlayerHub.PlayerDisconnected -= SignalrPlayerHub_PlayerDisconnected;
@@ -278,11 +276,6 @@ namespace EQTool
         private void openspells(object sender, RoutedEventArgs e)
         {
             (App.Current as App).OpenSpellsWindow();
-        }
-
-        private void Map_MouseMove(object sender, MouseEventArgs e)
-        {
-            mapViewModel.MouseMove(e.GetPosition(Map));
         }
 
         private void PanAndZoomCanvas_MouseUp(object sender, MouseButtonEventArgs e)
