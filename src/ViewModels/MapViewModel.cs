@@ -407,7 +407,7 @@ namespace EQTool.ViewModels
             var playerstoremove = new List<PlayerLocation>();
             foreach (var item in Players)
             {
-                if ((DateTime.UtcNow - item.Player.TimeStamp).TotalMinutes > 4)
+                if ((DateTime.UtcNow - item.Player.TimeStamp).TotalMinutes > 1)
                 {
                     playerstoremove.Add(item);
                 }
@@ -415,7 +415,7 @@ namespace EQTool.ViewModels
             foreach (var item in playerstoremove)
             {
                 Players.Remove(item);
-                Canvas.Children.Remove(item.Ellipse);
+                RemoveFromCanvas(item);
             }
         }
 
@@ -655,7 +655,6 @@ namespace EQTool.ViewModels
 
                 var sx = x * scaleFactor;
                 var sy = y * scaleFactor;
-
 
                 if (child is ArrowLine c)
                 {
