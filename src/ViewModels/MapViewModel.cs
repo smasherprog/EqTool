@@ -567,7 +567,7 @@ namespace EQTool.ViewModels
                 var mousePosition1 = Transform.Inverse.Transform(mousePosition);
                 var delta = Point.Subtract(mousePosition1, _initialMousePosition);
                 var translate = new TranslateTransform(delta.X, delta.Y);
-                Transform.Matrix = translate.Value * Transform.Matrix;
+                Transform.Matrix = Transform.Matrix * translate.Value;
                 foreach (UIElement child in Canvas.Children)
                 {
                     if (child is ArrowLine c)
@@ -577,7 +577,7 @@ namespace EQTool.ViewModels
                         transform.Matrix = c.RotateTransform.Value * translation.Value;
                         c.RenderTransform = transform;
                     }
-                    else if (child is Ellipse el && PlayerLocation.Ellipse == el)
+                    else if (child is Ellipse el)
                     {
                         var transform = new MatrixTransform();
                         var translation = new TranslateTransform(Transform.Value.OffsetX, Transform.Value.OffsetY);
