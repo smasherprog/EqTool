@@ -233,7 +233,16 @@ namespace EQTool.ViewModels
                         AABB = this.AABB,
                         Transform = Transform
                     });
-
+                    MapViewModelService.UpdateLocation(new UpdateLocationData
+                    {
+                        Trackingdistance = this.activePlayer?.Player?.TrackingDistance,
+                        CurrentScaling = CurrentScaling,
+                        MapOffset = MapOffset,
+                        Oldlocation = Lastlocation,
+                        Newlocation = Lastlocation,
+                        PlayerLocationCircle = PlayerLocation,
+                        Transform = Transform
+                    });
                     var widgets = timersService.LoadTimersForZone(ZoneName);
                     foreach (var mw in widgets)
                     {
@@ -670,8 +679,6 @@ namespace EQTool.ViewModels
                         var heighdiv2 = el.Height / 2;
                         Canvas.SetLeft(el, -(Lastlocation.Y + MapOffset.X + heighdiv2) * CurrentScaling);
                         Canvas.SetTop(el, -(Lastlocation.X + MapOffset.Y + heighdiv2) * CurrentScaling);
-                        child.RenderTransform = Transform;
-                        continue;
                     }
                     else
                     {
