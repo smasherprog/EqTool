@@ -162,7 +162,7 @@ namespace EQToolShared.Map
                             RespawnTime = new TimeSpan(0,6, 40)
                       }
                  },
-                RespawnTime = new TimeSpan(0, 10, 0)
+                RespawnTime = new TimeSpan(0, 15, 0)
             });
             ZoneInfoMap.Add("cabeast", new ZoneInfo
             {
