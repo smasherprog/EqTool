@@ -136,6 +136,32 @@ namespace EQToolShared.Map
                 {
                     "",
                 },
+                NpcContainsSpawnTimes = new List<NpcSpawnTime>()
+                 {
+                     new NpcSpawnTime
+                     {
+                          Name = "Guard",
+                           RespawnTime = new TimeSpan(0, 24, 0)
+                     }
+                 },
+                NpcSpawnTimes = new List<NpcSpawnTime>()
+                 {
+                      new NpcSpawnTime
+                      {
+                            Name ="Nyzil Bloodforge",
+                            RespawnTime = new TimeSpan(0,6, 40)
+                      },
+                         new NpcSpawnTime
+                      {
+                            Name ="Durkis Battlemore",
+                            RespawnTime = new TimeSpan(0,6, 40)
+                      },
+                         new NpcSpawnTime
+                      {
+                            Name ="Walnan",
+                            RespawnTime = new TimeSpan(0,6, 40)
+                      }
+                 },
                 RespawnTime = new TimeSpan(0, 10, 0)
             });
             ZoneInfoMap.Add("cabeast", new ZoneInfo
