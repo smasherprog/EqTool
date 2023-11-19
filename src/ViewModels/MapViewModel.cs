@@ -71,6 +71,7 @@ namespace EQTool.ViewModels
         private Vector _draggingDelta;
         private bool TimerOpen = false;
         private readonly TimersService timersService;
+        private bool CenterOnPlayer = false;
 
         public string MouseLocation => $"   {LastMouselocation.Y:0.##}, {LastMouselocation.X:0.##}";
 
@@ -382,8 +383,53 @@ namespace EQTool.ViewModels
                     }
                 }
             }
+            //var translate = new TranslateTransform(x, y);
+            //Transform.Matrix = translate.Value * Transform.Matrix;
+            //foreach (UIElement child in Canvas.Children)
+            //{
+            //    if (child is ArrowLine c)
+            //    {
+            //        var transform = new MatrixTransform();
+            //        var translation = new TranslateTransform(Transform.Value.OffsetX, Transform.Value.OffsetY);
+            //        transform.Matrix = c.RotateTransform.Value * translation.Value;
+            //        c.RenderTransform = transform;
+            //    }
+            //    else
+            //    {
+            //        child.RenderTransform = Transform;
+            //    }
+            //}
+            CenterMapOnPlayer();
         }
 
+        public void CenterMapOnPlayer()
+        {
+            if (CenterOnPlayer)
+            {
+                double left = (Canvas.ActualWidth);
+                // Canvas.SetLeft(element, left);
+
+                //  double top = (Canvas.ActualHeight - element.ActualHeight) / 2;
+                //Canvas.SetTop(element, top);
+
+                //var translate = new TranslateTransform(x, y);
+                //Transform.Matrix = translate.Value * Transform.Matrix;
+                //foreach (UIElement child in Canvas.Children)
+                //{
+                //    if (child is ArrowLine c)
+                //    {
+                //        var transform = new MatrixTransform();
+                //        var translation = new TranslateTransform(Transform.Value.OffsetX, Transform.Value.OffsetY);
+                //        transform.Matrix = c.RotateTransform.Value * translation.Value;
+                //        c.RenderTransform = transform;
+                //    }
+                //    else
+                //    {
+                //        child.RenderTransform = Transform;
+                //    }
+                //}
+            }
+        }
         public void UpdateTimerWidgest()
         {
             var removewidgets = new List<MapWidget>();
@@ -678,6 +724,8 @@ namespace EQTool.ViewModels
                         var heighdiv2 = el.Height / 2;
                         Canvas.SetLeft(el, -(Lastlocation.Y + MapOffset.X + heighdiv2) * CurrentScaling);
                         Canvas.SetTop(el, -(Lastlocation.X + MapOffset.Y + heighdiv2) * CurrentScaling);
+                        child.RenderTransform = Transform;
+                        continue;
                     }
                     else
                     {
