@@ -6,10 +6,10 @@
 Instructions:
 <ul>
 <li>
-<h2>Project 1999: Download <a href="https://github.com/smasherprog/EqTool/releases/download/3.23.1028.1/EQTool_Project19993.23.1028.1.zip">EQTool_Project1999.zip</a>, Unzip it and run EQTool.exe</h2>
+<h2>Project 1999: Download <a href="https://github.com/smasherprog/EqTool/releases/download/3.23.1121.1/EQTool_Project19993.23.1121.1.zip">EQTool_Project1999.zip</a>, Unzip it and run EQTool.exe</h2>
 </li>
 <li>
-<h2>Project Quarm: Download <a href="https://github.com/smasherprog/EqTool/releases/download/4.23.1028.1/EQTool_Quarm4.23.1028.1.zip">EQTool_Quarm.zip</a>, Unzip it and run PQTool.exe</h2>
+<h2>Project Quarm: Download <a href="https://github.com/smasherprog/EqTool/releases/download/4.23.1121.1/EQTool_Quarm4.23.1121.1.zip">EQTool_Quarm.zip</a>, Unzip it and run PQTool.exe</h2>
 </li>
 <li>The program runs in the system tray. Look there to reopen spells window or settings! Program will check for updates on startup and self update if required, but if you want to check for a new Update, use the menu in the system tray!</li>
 </ul>
