@@ -340,7 +340,7 @@ namespace EQToolShared.Map
                 {
                     "",
                 },
-                RespawnTime = new TimeSpan(0, 6, 40)
+                RespawnTime = new TimeSpan(0, 6, 0)
             });
             ZoneInfoMap.Add("eastwastes", new ZoneInfo
             {
@@ -981,7 +981,7 @@ namespace EQToolShared.Map
                 ShowAllMapLevels = true,
                 ZoneLevelHeight = 10,
                 NotableNPCs = new List<string>() { "Xanuusus", "Ashenpaw", "Zahal the Vile", "GrimFeather", "Swiftclaw", "Lieutenant Midraim", "The Silver Griffon", "Timbur the Tiny", "Korvik the Cursed", },
-                RespawnTime = new TimeSpan(0, 6, 40)
+                RespawnTime = new TimeSpan(0, 6, 0)
             });
             ZoneInfoMap.Add("nro", new ZoneInfo
             {
@@ -1205,7 +1205,7 @@ namespace EQToolShared.Map
                           RespawnTime = new TimeSpan(0, 22, 0)
                      }
                  },
-                RespawnTime = new TimeSpan(0, 6, 40)
+                RespawnTime = new TimeSpan(0, 6, 0)
             });
             ZoneInfoMap.Add("sro", new ZoneInfo
             {
