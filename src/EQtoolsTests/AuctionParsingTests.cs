@@ -190,5 +190,32 @@ namespace EQtoolsTests
             Assert.AreEqual("Iksar Hide Boots", result.Items[6].Name);
             Assert.AreEqual(400, result.Items[6].Price);
         }
+
+
+        [TestMethod]
+        public void Parse12()
+        {
+            var result = discordAuctionParse.Parse("Stockroom auctions, 'WTS Spell: Minor Conjuration: Air 100 | Spell: Reckoning 50.'");
+            Assert.AreEqual("Stockroom", result.Player);
+            Assert.AreEqual(AuctionType.WTS, result.Items[0].AuctionType);
+            Assert.AreEqual("Velium Crystal Staff", result.Items[0].Name);
+            Assert.AreEqual(16000, result.Items[0].Price);
+
+            Assert.AreEqual(AuctionType.WTS, result.Items[1].AuctionType);
+            Assert.AreEqual("Flawless Diamond", result.Items[1].Name);
+            Assert.AreEqual(2500, result.Items[1].Price);
+
+        }
+
+
+
+
+
+
+
+
+
+
+
     }
 }
