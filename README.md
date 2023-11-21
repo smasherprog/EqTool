@@ -65,11 +65,9 @@ Features:
  <li>Add code to detect pet and always show buffs for your pet.</li> 
 <li>Tab under Mob info window for last few minutes of Random rolls ordered by highest to lowest. </li>   
 <li>Add visual cue that buff is under 1 minute left. </li> 
-<li>Add option to enable OTHERS hits for DPS meter. </li> 
-<li>Show others on map</li>   
+<li>Add option to enable OTHERS hits for DPS meter. </li>  
 <li>Add Waypoint Command to add loc to map</li>    
-<li>Map window add toggle to follow location</li>    
-<li>Release to single exe, not a zip</li>  
+<li>Map window add toggle to follow location</li>     
 <li>Determine pet level based on the maxhit and add to the DPS window</li> 
 <li>Add option to auto prune eq log file. EQ logfiles can cause issues with EQ itself if they get too large!</li>
 <li>Respawn Time in Mob Info window</li>
