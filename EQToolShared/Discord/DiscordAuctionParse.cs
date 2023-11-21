@@ -49,10 +49,23 @@ namespace EQToolShared.Discord
 
         private bool isSpell(string input, int i)
         {
-            return i >= SpellText.Length - 1 && input[i] == ':' && input[i - 1] == 'l' && input[i - 2] == 'l' && input[i - 3] == 'e' && input[i - 4] == 'p' && input[i - 5] == 'S');
+            return i >= SpellText.Length - 1 && input[i] == ':' && input[i - 1] == 'l' && input[i - 2] == 'l' && input[i - 3] == 'e' && input[i - 4] == 'p' && input[i - 5] == 'S';
         }
         private bool isBeginPricing(string input, int i, int pricestartindex)
         {
+            if (char.IsDigit(input[i]))
+            {
+                var index = input.IndexOf("Pg. ");
+                if (index != -1)
+                {
+                    var diffindex = i - index;
+                    if (diffindex <= 6)
+                    {
+                        return false;
+                    }
+                }
+            }
+
             return char.IsDigit(input[i]) && pricestartindex == -1;
         }
         private bool isPricing(string input, int i, int pricestartindex)
@@ -183,9 +196,19 @@ namespace EQToolShared.Discord
             //replace all instances of x15   or    x4 
             string pattern = @"x\d+";
             input = Regex.Replace(input, pattern, string.Empty);
+
+            //replace all instances of 15x   or    4x
+            pattern = @"\d+x";
+            input = Regex.Replace(input, pattern, string.Empty);
+
             //replace all instances of (got 2)    or    (got a few) 
             pattern = @"\([^)]*\)";
             input = Regex.Replace(input, pattern, "/");
+
+            //replace all instances of x 4     or   x 7
+            pattern = @"x \d+";
+            input = Regex.Replace(input, pattern, string.Empty);
+
 
             var removetext = "/stack";
             var stackindex = input.IndexOf(removetext, StringComparison.OrdinalIgnoreCase);
@@ -221,16 +244,24 @@ namespace EQToolShared.Discord
                 {
                     input = item.Input;
                     input = Trim(input);
-                    ret.Items.Add(new Auctionitem
+                    if (MasterItemList.PQItems.Contains(item.Name) || MasterItemList.P99Items.Contains(item.Name))
                     {
-                        AuctionType = auctiontype.auctiontype.Value,
-                        Name = item.Name,
-                        Price = item.Price
-                    });
+                        ret.Items.Add(new Auctionitem
+                        {
+                            AuctionType = auctiontype.auctiontype.Value,
+                            Name = item.Name,
+                            Price = item.Price
+                        });
+                    }
                 }
             } while (item != null && input.Length > 0 && counter++ < 15);
 
-            return ret;
+            if (ret.Items.Any())
+            {
+                return ret;
+            }
+
+            return null;
         }
     }
 }

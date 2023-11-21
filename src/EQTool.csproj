@@ -387,10 +387,12 @@
     <Compile Include="Services\BinarySerializer.cs" />
     <Compile Include="Services\LoggingService.cs" />
     <Compile Include="Services\MapOpacityHelper.cs" />
+    <Compile Include="Services\MapViewModelService.cs" />
     <Compile Include="Services\Parsing\QuakeParser.cs" />
     <Compile Include="Services\Parsing\LogFileDateTimeParse.cs" />
     <Compile Include="Services\Parsing\EnterWorldParser.cs" />
     <Compile Include="Services\PlayerGroupService.cs" />
+    <Compile Include="Services\SignalrPlayerHub.cs" />
     <Compile Include="Services\ZoneActivityTrackingService.cs" />
     <Compile Include="Services\PlayerTrackerService.cs" />
     <Compile Include="Services\Spells\Log\PlayerWhoLogParse.cs" />

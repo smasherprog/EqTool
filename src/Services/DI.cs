@@ -31,7 +31,8 @@ namespace EQTool.Services
             _ = builder.RegisterType<PlayerTrackerService>().AsSelf().SingleInstance();
             _ = builder.RegisterType<ZoneActivityTrackingService>().AsSelf().SingleInstance();
             _ = builder.RegisterType<TimersService>().AsSelf().SingleInstance();
-            
+            _ = builder.RegisterType<SignalrPlayerHub>().As<ISignalrPlayerHub>().SingleInstance();
+
             return builder.Build();
         }
     }

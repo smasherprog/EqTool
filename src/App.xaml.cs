@@ -34,6 +34,7 @@ namespace EQTool
         private System.Timers.Timer UITimer;
         private PlayerTrackerService PlayerTrackerService;
         private ZoneActivityTrackingService ZoneActivityTrackingService;
+        private ISignalrPlayerHub signalrPlayerHub;
 
         private EQToolSettings EQToolSettings => container.Resolve<EQToolSettings>();
         public static List<Window> WindowList = new List<Window>();
@@ -296,6 +297,7 @@ namespace EQTool
                     OpenMobInfoWindow();
                 }
             }
+            signalrPlayerHub = container.Resolve<ISignalrPlayerHub>();
 #if RELEASE
             PlayerTrackerService = container.Resolve<PlayerTrackerService>();
             ZoneActivityTrackingService = container.Resolve<ZoneActivityTrackingService>();
@@ -540,6 +542,11 @@ namespace EQTool
             OpenWindow<Settings>(SettingsMenuItem);
         }
 
+        public void ShowBalloonTip(int timeout, string tipTitle, string tipText, System.Windows.Forms.ToolTipIcon tipIcon)
+        {
+            this.SystemTrayIcon.ShowBalloonTip(timeout, tipTitle, tipText, tipIcon);
+        }
+
         public void OpenSpellsWindow()
         {
             OpenWindow<SpellWindow>(SpellsMenuItem);
@@ -550,7 +557,7 @@ namespace EQTool
             System.Windows.Application.Current.Shutdown();
         }
 
-        internal static void ApplyAlwaysOnTop()
+        public static void ApplyAlwaysOnTop()
         {
             foreach (var item in WindowList)
             {

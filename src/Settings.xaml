@@ -58,7 +58,10 @@
                     <TextBlock Text="Class" VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
                     <ComboBox IsEnabled="{Binding HasCharName}" SelectedItem="{Binding ActivePlayer.Player.PlayerClass}" ItemsSource="{Binding PlayerClasses}" MinWidth="150"></ComboBox>
                 </StackPanel>
-
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Track Skill" VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
+                    <ComboBox IsEnabled="{Binding ActivePlayer.Player.IsTrackableClass}" SelectedItem="{Binding ActivePlayer.Player.TrackingSkill}" ItemsSource="{Binding TrackSkills}" MinWidth="150"></ComboBox>
+                </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Zone" FontWeight="Bold" VerticalAlignment="Center" MinWidth="100"/>
                     <ComboBox IsEnabled="{Binding HasCharName}" SelectedItem="{Binding ActivePlayer.Player.Zone}" ItemsSource="{Binding Zones}"  SelectionChanged="zoneselectionchanged" MinWidth="150"/>
@@ -71,9 +74,9 @@
                     <TextBlock Text="Font Size"  FontWeight="Bold"  VerticalAlignment="Center" MinWidth="100"/>
                     <ComboBox  SelectedItem="{Binding Source={x:Static properties:Settings.Default}, Path=GlobalFontSize}" ItemsSource="{Binding FontSizes}" SelectionChanged="fontsizescombobox_SelectionChanged" MinWidth="150"/>
                 </StackPanel>
-
+              
                 <TextBlock Text="Damage Window" HorizontalAlignment="Center" FontWeight="Bold" Margin="5,5,0,0"/>
-                <StackPanel Orientation="Vertical">
+                <StackPanel Orientation="Vertical" Margin="0, 0, 0, 8">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Always on top" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
                         <CheckBox IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=GlobalDpsWindowAlwaysOnTop}" Click="SaveAlwaysOntopCheckBoxSettings" ></CheckBox>
@@ -83,9 +86,9 @@
                         <Slider Value="{Binding Source={x:Static properties:Settings.Default}, Path=GlobalDPSWindowOpacity}" Minimum=".01" Maximum="1" SmallChange=".1" TickFrequency=".1" ValueChanged="SaveSettings" MinWidth="150"/>
                     </StackPanel>
                 </StackPanel>
-
+                <Separator/>
                 <TextBlock Text="Mob Window" HorizontalAlignment="Center" FontWeight="Bold" Margin="5,5,0,0"/>
-                <StackPanel Orientation="Vertical">
+                <StackPanel Orientation="Vertical" Margin="0, 0, 0, 8">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Always on top" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
                         <CheckBox IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=GlobalMobWindowAlwaysOnTop}" Click="SaveAlwaysOntopCheckBoxSettings" ></CheckBox>
@@ -95,8 +98,9 @@
                         <Slider Value="{Binding Source={x:Static properties:Settings.Default}, Path=GlobalMobWindowOpacity}" Minimum=".01" Maximum="1" SmallChange=".1" TickFrequency=".1" ValueChanged="SaveSettings" MinWidth="150"/>
                     </StackPanel>-->
                 </StackPanel>
+                <Separator/>
                 <TextBlock Text="Map Window" HorizontalAlignment="Center" FontWeight="Bold" Margin="5,5,0,0"/>
-                <StackPanel Orientation="Vertical">
+                <StackPanel Orientation="Vertical" Margin="0, 0, 0, 8">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Always on top" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
                         <CheckBox IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=GlobalMapWindowAlwaysOnTop}" Click="SaveAlwaysOntopCheckBoxSettings" ></CheckBox>
@@ -105,9 +109,14 @@
                         <TextBlock Text="Window Opacity" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
                         <Slider Value="{Binding Source={x:Static properties:Settings.Default}, Path=GlobalMapWindowOpacity}" Minimum=".01" Maximum="1" SmallChange=".1" TickFrequency=".1" ValueChanged="SaveSettings" MinWidth="150"/>
                     </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Location Share" VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
+                        <ComboBox SelectedItem="{Binding ActivePlayer.Player.MapLocationSharing}" ItemsSource="{Binding LocationShareOptions}" MinWidth="150"></ComboBox>
+                    </StackPanel>
                 </StackPanel>
-                <TextBlock Text="Triggers Window" HorizontalAlignment="Center" FontWeight="Bold" Margin="5,5,0,0"/>
-                <StackPanel Orientation="Vertical">
+                <Separator/>
+                <TextBlock Text="Trigger/Spells Window" HorizontalAlignment="Center" FontWeight="Bold" Margin="5,5,0,0"/>
+                <StackPanel Orientation="Vertical"  Margin="0, 0, 0, 8">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Always on top" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
                         <CheckBox IsChecked="{Binding Source={x:Static properties:Settings.Default}, Path=GlobalTriggerWindowAlwaysOnTop}" Click="SaveAlwaysOntopCheckBoxSettings" ></CheckBox>
@@ -117,14 +126,15 @@
                         <Slider Value="{Binding Source={x:Static properties:Settings.Default}, Path=GlobalTriggerWindowOpacity}" Minimum=".01" Maximum="1" SmallChange=".1" TickFrequency=".1" ValueChanged="SaveSettings" MinWidth="150"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Best Guess"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
+                        <TextBlock Text="Guess Spells"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
                         <CheckBox x:Name="BestGuessSpells" Click="GuessSpells_Click" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Effect Me only"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
+                        <TextBlock Text="Spells Me only"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
                         <CheckBox x:Name="YouSpellsOnly" Click="YouSpells_Click" />
                     </StackPanel>
                 </StackPanel>
+        
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Spell Filters"  FontWeight="Bold" MinWidth="100" ToolTip="This will filter what shows up on other players."/>
                     <StackPanel Orientation="Vertical">
@@ -137,7 +147,7 @@
                         </ListBox>
                     </StackPanel>
                 </StackPanel>
-
+                <Separator/>
                 <StackPanel Orientation="Vertical" Name="DebuggingStack">
                     <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                         <TextBlock Text="Debugging" FontWeight="Bold" />
@@ -153,6 +163,10 @@
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Map"  VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
                         <Button Click="textmapclicked" MinWidth="100">Test Locations</Button>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Map"  VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
+                        <Button Click="testsignalrlocations" MinWidth="100">Test Signalr Locations</Button>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Log Push"  VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>

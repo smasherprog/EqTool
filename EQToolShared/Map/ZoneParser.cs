@@ -33,6 +33,12 @@ namespace EQToolShared.Map
         public static readonly Dictionary<string, string> ZoneNameMapper = new Dictionary<string, string>();
         public static readonly Dictionary<string, string> ZoneWhoMapper = new Dictionary<string, string>();
         public static readonly Dictionary<string, ZoneInfo> ZoneInfoMap = new Dictionary<string, ZoneInfo>();
+#if QUARM
+        private static bool isProjectQ = true;
+#else
+        private static bool isProjectQ = false;
+#endif
+
 
         static ZoneParser()
         {
@@ -130,7 +136,33 @@ namespace EQToolShared.Map
                 {
                     "",
                 },
-                RespawnTime = new TimeSpan(0, 10, 0)
+                NpcContainsSpawnTimes = new List<NpcSpawnTime>()
+                 {
+                     new NpcSpawnTime
+                     {
+                          Name = "Guard",
+                           RespawnTime = new TimeSpan(0, 24, 0)
+                     }
+                 },
+                NpcSpawnTimes = new List<NpcSpawnTime>()
+                 {
+                      new NpcSpawnTime
+                      {
+                            Name ="Nyzil Bloodforge",
+                            RespawnTime = new TimeSpan(0,6, 40)
+                      },
+                         new NpcSpawnTime
+                      {
+                            Name ="Durkis Battlemore",
+                            RespawnTime = new TimeSpan(0,6, 40)
+                      },
+                         new NpcSpawnTime
+                      {
+                            Name ="Walnan",
+                            RespawnTime = new TimeSpan(0,6, 40)
+                      }
+                 },
+                RespawnTime = new TimeSpan(0, 15, 0)
             });
             ZoneInfoMap.Add("cabeast", new ZoneInfo
             {
@@ -196,6 +228,19 @@ namespace EQToolShared.Map
                 {
                     "",
                 },
+                NpcSpawnTimes = new List<NpcSpawnTime>()
+                 {
+                      new NpcSpawnTime
+                      {
+                           Name = "Kennel Master Al`ele",
+                            RespawnTime = new TimeSpan(0, 20, 0)
+                      },
+                      new NpcSpawnTime
+                      {
+                          Name = "An apprentice kennelmaster",
+                        RespawnTime = new TimeSpan(0, 20, 0)
+                      }
+                 },
                 RespawnTime = new TimeSpan(0, 18, 00)
             });
             ZoneInfoMap.Add("citymist", new ZoneInfo
@@ -823,7 +868,7 @@ namespace EQToolShared.Map
                 },
                 RespawnTime = new TimeSpan(1, 10, 10)
             });
-            ZoneInfoMap.Add("mistmoore", new ZoneInfo
+            var zone = new ZoneInfo
             {
                 Name = "mistmoore",
                 ShowAllMapLevels = false,
@@ -833,7 +878,12 @@ namespace EQToolShared.Map
                     "an advisor","an avenging caitiff","Black Dire","Butler Syncall","a cloaked dhampyre","a deathly usher","Enynti","Garton Viswin","a glyphed ghoul","an imp familiar","Lasna Cheroon","Maid Issis","Mayong Mistmoore","Mynthi Davissi","Princess Cherista","Ssynthi","Xicotl",
                 },
                 RespawnTime = new TimeSpan(0, 22, 00)
-            });
+            };
+            if (isProjectQ)
+            {
+                zone.RespawnTime = new TimeSpan(0, 8, 0);
+            }
+            ZoneInfoMap.Add("mistmoore", zone);
             ZoneInfoMap.Add("misty", new ZoneInfo
             {
                 Name = "misty",
@@ -852,7 +902,7 @@ namespace EQToolShared.Map
                 ZoneLevelHeight = 10,
                 NotableNPCs = new List<string>()
                 {
-                    "Akksstaff","BoneCracker","Drelzna","Ekeros","Linara Parlone","Moosh","Najena (NPC)","Officer Grush","Rathyl","Rathyl reincarnate","Trazdon","a visiting priestess","The Widowmistress",
+                    "Akksstaff","BoneCracker","Drelzna","Ekeros","Linara Parlone","Moosh","Najena","Officer Grush","Rathyl","Rathyl reincarnate","Trazdon","a visiting priestess","The Widowmistress",
                 },
                 RespawnTime = new TimeSpan(0, 18, 30)
             });
@@ -878,6 +928,35 @@ namespace EQToolShared.Map
                 ShowAllMapLevels = true,
                 ZoneLevelHeight = 10,
                 NotableNPCs = new List<string>() { "", },
+                NpcSpawnTimes = new List<NpcSpawnTime>()
+                 {
+                      new NpcSpawnTime
+                      {
+                            Name = "Jacker",
+                            RespawnTime =  new TimeSpan(0, 8, 0)
+                      },
+                     new NpcSpawnTime
+                      {
+                            Name = "Karnan",
+                            RespawnTime =  new TimeSpan(0, 8, 0)
+                      },
+                                new NpcSpawnTime
+                      {
+                            Name = "Uglan",
+                            RespawnTime =  new TimeSpan(0, 8, 0)
+                      },
+                    new NpcSpawnTime
+                      {
+                            Name = "Mrak",
+                            RespawnTime =  new TimeSpan(0, 8, 0)
+                      },
+                    new NpcSpawnTime
+                      {
+                            Name = "Capee",
+                            RespawnTime =  new TimeSpan(0, 8, 0)
+                      }
+
+                 },
                 RespawnTime = new TimeSpan(0, 24, 0)
             });
             ZoneInfoMap.Add("neriakb", new ZoneInfo
@@ -1236,14 +1315,21 @@ namespace EQToolShared.Map
                 NotableNPCs = new List<string>() { "", },
                 RespawnTime = new TimeSpan(0, 6, 40)
             });
-            ZoneInfoMap.Add("unrest", new ZoneInfo
+            zone = new ZoneInfo
             {
                 Name = "unrest",
                 ShowAllMapLevels = false,
                 ZoneLevelHeight = 10,
                 NotableNPCs = new List<string>() { "Garanel Rucksif", "a priest of najena", "Khrix Fritchoff", "Khrix's Abomination", "Torklar Battlemaster", "Shadowpincer", "reclusive ghoul magus", },
                 RespawnTime = new TimeSpan(0, 22, 0)
-            });
+            };
+            if (isProjectQ)
+            {
+                zone.RespawnTime = new TimeSpan(0, 8, 0);
+            }
+
+            ZoneInfoMap.Add("unrest", zone);
+
             ZoneInfoMap.Add("veeshan", new ZoneInfo
             {
                 Name = "veeshan",

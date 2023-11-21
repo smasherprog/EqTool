@@ -82,8 +82,10 @@
     <Compile Include="Enums\PlayerClasses.cs" />
     <Compile Include="Enums\Servers.cs" />
     <Compile Include="HubModels\PlayerLocation.cs" />
+    <Compile Include="Map\SignalrPlayer.cs" />
     <Compile Include="Map\ZoneParser.cs" />
     <Compile Include="Map\ZoneSpawnTimes.cs" />
+    <Compile Include="MasterItemList.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

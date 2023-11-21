@@ -1,4 +1,5 @@
 ﻿using EQToolShared.Enums;
+using EQToolShared.Map;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -153,6 +154,17 @@ namespace EQTool.Models
             }
         }
 
+        private int? _TrackingSkill;
+        public int? TrackingSkill
+        {
+            get => _TrackingSkill;
+            set
+            {
+                _TrackingSkill = value;
+                OnPropertyChanged();
+            }
+        }
+
         private string _GuildName;
         public string GuildName
         {
@@ -163,7 +175,6 @@ namespace EQTool.Models
                 OnPropertyChanged();
             }
         }
-
 
         private string _Zone;
         public string Zone
@@ -176,16 +187,59 @@ namespace EQTool.Models
             }
         }
 
+        private MapLocationSharing _MapLocationSharing = EQToolShared.Map.MapLocationSharing.DoNotShare;
+        public MapLocationSharing? MapLocationSharing
+        {
+            get => _MapLocationSharing;
+            set
+            {
+                _MapLocationSharing = value ?? EQToolShared.Map.MapLocationSharing.DoNotShare;
+                OnPropertyChanged();
+            }
+        }
+
         private PlayerClasses? _PlayerClass;
         public PlayerClasses? PlayerClass
         {
             get => _PlayerClass;
             set
             {
+                var istrackabkebefore = IsTrackableClass;
                 _PlayerClass = value;
                 OnPropertyChanged();
+                OnPropertyChanged(nameof(IsTrackableClass));
+                if (istrackabkebefore && !IsTrackableClass)
+                {
+                    TrackingSkill = null;
+                }
             }
         }
+        public double? TrackingDistance
+        {
+            get
+            {
+                var pclass = PlayerClass;
+                if (pclass.HasValue)
+                {
+                    var trackskill = this.TrackingSkill ?? 10;
+                    if (pclass == EQToolShared.Enums.PlayerClasses.Ranger)
+                    {
+                        return (trackskill * 12) * 2;
+                    }
+                    else if (pclass == EQToolShared.Enums.PlayerClasses.Druid)
+                    {
+                        return (trackskill * 10) * 2;
+                    }
+                    else if (pclass == EQToolShared.Enums.PlayerClasses.Bard)
+                    {
+                        return (trackskill * 7) * 2;
+                    }
+                }
+                return null;
+            }
+        }
+
+        public bool IsTrackableClass => PlayerClass == EQToolShared.Enums.PlayerClasses.Druid || PlayerClass == EQToolShared.Enums.PlayerClasses.Ranger || PlayerClass == EQToolShared.Enums.PlayerClasses.Bard;
 
         private Servers? _Server;
         public Servers? Server
@@ -217,7 +271,7 @@ namespace EQTool.Models
             }
         }
 
-        public List<PlayerClasses> ShowSpellsForClasses { get; set; } 
+        public List<PlayerClasses> ShowSpellsForClasses { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
