@@ -50,6 +50,7 @@ Features:
 
 <h4>TO DO List EQTool</h4>
 <ul> 
+ <li>Add barebones audio triggers.</li>    
  <li>Remove timers from map when timers removed from list and visa versa.</li>   
  <li>Add code to show MOB hits per second.</li>   
  <li>Port application to be cross platform(mac, win, linux).</li>   
