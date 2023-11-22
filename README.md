@@ -6,10 +6,10 @@
 Instructions:
 <ul>
 <li>
-<h2>Project 1999: Download <a href="https://github.com/smasherprog/EqTool/releases/download/3.23.1028.1/EQTool_Project19993.23.1028.1.zip">EQTool_Project1999.zip</a>, Unzip it and run EQTool.exe</h2>
+<h2>Project 1999: Download <a href="https://github.com/smasherprog/EqTool/releases/download/3.23.1121.1/EQTool_Project19993.23.1121.1.zip">EQTool_Project1999.zip</a>, Unzip it and run EQTool.exe</h2>
 </li>
 <li>
-<h2>Project Quarm: Download <a href="https://github.com/smasherprog/EqTool/releases/download/4.23.1028.1/EQTool_Quarm4.23.1028.1.zip">EQTool_Quarm.zip</a>, Unzip it and run PQTool.exe</h2>
+<h2>Project Quarm: Download <a href="https://github.com/smasherprog/EqTool/releases/download/4.23.1121.1/EQTool_Quarm4.23.1121.1.zip">EQTool_Quarm.zip</a>, Unzip it and run PQTool.exe</h2>
 </li>
 <li>The program runs in the system tray. Look there to reopen spells window or settings! Program will check for updates on startup and self update if required, but if you want to check for a new Update, use the menu in the system tray!</li>
 </ul>
@@ -49,7 +49,9 @@ Features:
 <img width="152" alt="image" src="https://user-images.githubusercontent.com/3393733/212717141-6e26b9af-660a-493d-9f73-2c3464b7c224.png">
 
 <h4>TO DO List EQTool</h4>
-<ul>  
+<ul> 
+ <li>Add barebones audio triggers.</li>    
+ <li>Remove timers from map when timers removed from list and visa versa.</li>   
  <li>Add code to show MOB hits per second.</li>   
  <li>Port application to be cross platform(mac, win, linux).</li>   
  <li>Add Ability to bind a hotkey to toggle a window open/close.</li>   
@@ -64,11 +66,9 @@ Features:
  <li>Add code to detect pet and always show buffs for your pet.</li> 
 <li>Tab under Mob info window for last few minutes of Random rolls ordered by highest to lowest. </li>   
 <li>Add visual cue that buff is under 1 minute left. </li> 
-<li>Add option to enable OTHERS hits for DPS meter. </li> 
-<li>Show others on map</li>   
+<li>Add option to enable OTHERS hits for DPS meter. </li>  
 <li>Add Waypoint Command to add loc to map</li>    
-<li>Map window add toggle to follow location</li>    
-<li>Release to single exe, not a zip</li>  
+<li>Map window add toggle to follow location</li>     
 <li>Determine pet level based on the maxhit and add to the DPS window</li> 
 <li>Add option to auto prune eq log file. EQ logfiles can cause issues with EQ itself if they get too large!</li>
 <li>Respawn Time in Mob Info window</li>

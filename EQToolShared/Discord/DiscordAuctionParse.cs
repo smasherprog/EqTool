@@ -150,7 +150,6 @@ namespace EQToolShared.Discord
                         price = (int)(possibleprice * pricemultiple);
                     }
                 }
-
             }
             itembreakindex = itembreakindex + 1 <= input.Length ? itembreakindex + 1 : itembreakindex;
             return new NextItem
