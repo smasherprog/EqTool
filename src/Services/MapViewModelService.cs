@@ -92,6 +92,17 @@ namespace EQTool.Services
         {
             var playerlocsize = MathHelper.ChangeRange(Math.Max(toCanvasData.AABB.MaxWidth, toCanvasData.AABB.MaxHeight), 500, 35000, 40, 1750);
             var playerstrokthickness = MathHelper.ChangeRange(Math.Max(toCanvasData.AABB.MaxWidth, toCanvasData.AABB.MaxHeight), 500, 35000, 3, 40);
+            var color = System.Windows.Media.Color.FromRgb(61, 235, 52);
+            if (toCanvasData.Name != "You")
+            {
+                var minrange = 40;
+                var random = new Random(DateTime.Now.Millisecond);
+                color = System.Windows.Media.Color.FromRgb(
+                (byte)random.Next(minrange, 235),
+                (byte)random.Next(minrange, 235),
+                (byte)random.Next(minrange, 235));
+            }
+
             var playerloc = new PlayerLocationCircle
             {
                 PlayerName = new TextBlock
@@ -105,13 +116,13 @@ namespace EQTool.Services
                 {
                     Height = playerlocsize / 4,
                     Width = playerlocsize / 4,
-                    Stroke = new SolidColorBrush(System.Windows.Media.Color.FromRgb(61, 235, 52)),
+                    Stroke = new SolidColorBrush(color),
                     StrokeThickness = playerstrokthickness,
                     RenderTransform = new RotateTransform()
                 },
                 ArrowLine = new ArrowLine()
                 {
-                    Stroke = new SolidColorBrush(System.Windows.Media.Color.FromRgb(61, 235, 52)),
+                    Stroke = new SolidColorBrush(color),
                     StrokeThickness = playerstrokthickness,
                     X1 = 0,
                     Y1 = 0,
@@ -125,10 +136,10 @@ namespace EQTool.Services
                 {
                     Height = toCanvasData.Trackingdistance ?? 100,
                     Width = toCanvasData.Trackingdistance ?? 100,
-                    Stroke = new SolidColorBrush(System.Windows.Media.Color.FromRgb(61, 235, 52)),
+                    Stroke = new SolidColorBrush(color),
                     StrokeThickness = playerstrokthickness,
                     RenderTransform = new RotateTransform(),
-                    Fill = new SolidColorBrush(System.Windows.Media.Color.FromArgb(5, 61, 235, 52)),
+                    Fill = new SolidColorBrush(System.Windows.Media.Color.FromArgb(5, color.R, color.G, color.B)),
                     Visibility = toCanvasData.Trackingdistance == null ? Visibility.Hidden : Visibility.Visible
                 }
             };
