@@ -237,7 +237,7 @@ namespace EQToolShared.Map
                       },
                       new NpcSpawnTime
                       {
-                          Name = "An apprentice kennelmaster",
+                          Name = "an apprentice kennelmaster",
                         RespawnTime = new TimeSpan(0, 20, 0)
                       }
                  },
