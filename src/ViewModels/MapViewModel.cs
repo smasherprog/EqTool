@@ -791,6 +791,7 @@ namespace EQTool.ViewModels
 
         public void PlayerLocationEvent(SignalrPlayer e)
         {
+            e.TimeStamp = DateTime.UtcNow;
             var p = this.Players.FirstOrDefault(a => a.Player.Name == e.Name);
             if (p == null)
             {
