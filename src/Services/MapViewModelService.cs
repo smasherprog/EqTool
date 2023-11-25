@@ -82,10 +82,13 @@ namespace EQTool.Services
             var translation = new TranslateTransform(locationData.Transform.Value.OffsetX, locationData.Transform.Value.OffsetY);
             transform.Matrix = locationData.PlayerLocationCircle.ArrowLine.RotateTransform.Value * translation.Value;
             locationData.PlayerLocationCircle.ArrowLine.RenderTransform = transform;
+
             var transform2 = new MatrixTransform();
-            _ = new TranslateTransform(locationData.Transform.Value.OffsetX, locationData.Transform.Value.OffsetY);
-            transform2.Matrix = translation.Value;
+            var translation2 = new TranslateTransform(locationData.Transform.Value.OffsetX, locationData.Transform.Value.OffsetY);
+            transform2.Matrix = translation2.Value;
             locationData.PlayerLocationCircle.Ellipse.RenderTransform = transform2;
+
+            locationData.PlayerLocationCircle.TrackingEllipse.RenderTransform = locationData.Transform;
         }
 
         static public PlayerLocationCircle AddPlayerToCanvas(AddPlayerToCanvasData toCanvasData)
