@@ -117,6 +117,10 @@ namespace EQTool
                     EventType = EventType.Error,
                     BuildType = build
                 };
+                if (msg.Message.Contains("Server timeout (30000.00ms) elapsed without receiving a message from the server."))
+                {
+                    return;
+                }
                 var msagasjson = Newtonsoft.Json.JsonConvert.SerializeObject(msg);
                 var content = new StringContent(msagasjson, Encoding.UTF8, "application/json");
                 var result = httpclient.PostAsync("https://pigparse.azurewebsites.net/api/eqtool/exception", content).Result;
