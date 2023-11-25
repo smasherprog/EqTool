@@ -240,6 +240,13 @@ namespace EQTool
         {
             (App.Current as App).OpenMobInfoWindow();
         }
+
+        private void RemoveSingleItem(object sender, RoutedEventArgs e)
+        {
+            var name = (sender as Button).DataContext;
+            spellWindowViewModel.SpellList.Remove(name as UISpell);
+        }
+
         private void RemoveFromSpells(object sender, RoutedEventArgs e)
         {
             var name = ((sender as Button).DataContext as dynamic)?.Name as string;

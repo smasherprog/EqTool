@@ -67,6 +67,9 @@
                                 </Image>
                                 <TextBlock HorizontalAlignment="Left" FontWeight="Bold" Text="{Binding SpellName}"/>
                                 <TextBlock HorizontalAlignment="Left" FontWeight="Bold" Text="{Binding SpellExtraData}"/>
+                                <Button Margin="5, 0, 0, 0" Width="14" Height="14" Click="RemoveSingleItem" ToolTip="Remove from list">
+                                    <Image Source="pack://application:,,,/Trash.png"/>
+                                </Button>
                             </StackPanel>
                             <TextBlock Visibility="{Binding ColumnVisibility}" FontWeight="Bold" Grid.Column="1" HorizontalAlignment="Right" Text="{Binding SecondsLeftOnSpellPretty}"/>
                         </Grid>
