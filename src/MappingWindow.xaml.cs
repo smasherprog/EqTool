@@ -69,6 +69,7 @@ namespace EQTool
             UITimer = new System.Timers.Timer(1000);
             UITimer.Elapsed += UITimer_Elapsed;
             UITimer.Enabled = true;
+            //   this.SetCenerMap();
         }
 
         private void SignalrPlayerHub_PlayerDisconnected(object sender, SignalrPlayer e)
@@ -236,9 +237,17 @@ namespace EQTool
 
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
+            this.SetCenerMap();
             SaveState();
         }
 
+        private void SetCenerMap()
+        {
+            var loc = new Point(MapWrapper.ActualWidth / 2, MapWrapper.ActualHeight / 2);
+            loc = this.MapWrapper.PointToScreen(loc);
+            loc = this.Map.PointFromScreen(loc);
+            this.mapViewModel.CenterRelativeToCanvas = loc;
+        }
         public void DragWindow(object sender, MouseButtonEventArgs args)
         {
             DragMove();
@@ -257,6 +266,11 @@ namespace EQTool
         private void openmobinfo(object sender, RoutedEventArgs e)
         {
             (App.Current as App).OpenMobInfoWindow();
+        }
+
+        private void toggleCenterOnyou(object sender, RoutedEventArgs e)
+        {
+            this.mapViewModel.ToggleCenter();
         }
 
         private void opendps(object sender, RoutedEventArgs e)
@@ -285,11 +299,13 @@ namespace EQTool
 
         private void PanAndZoomCanvas_MouseMove(object sender, MouseEventArgs e)
         {
-            this.mapViewModel.PanAndZoomCanvas_MouseMove(e.GetPosition(Map), e);
+            this.SetCenerMap();
+            this.mapViewModel.PanAndZoomCanvas_MouseMove(e.GetPosition(Map), e.LeftButton);
         }
 
         private void PanAndZoomCanvas_MouseWheel(object sender, MouseWheelEventArgs e)
         {
+            this.SetCenerMap();
             this.mapViewModel.PanAndZoomCanvas_MouseWheel(e.GetPosition(Map), e.Delta);
         }
     }

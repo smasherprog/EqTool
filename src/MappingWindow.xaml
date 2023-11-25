@@ -28,7 +28,7 @@
                 <RowDefinition Height="20" />
                 <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
-            <Grid Grid.Row="1" MouseMove="PanAndZoomCanvas_MouseMove" MouseDown="Map_PanAndZoomCanvas_MouseDownEvent" MouseUp="PanAndZoomCanvas_MouseUp" MouseWheel="PanAndZoomCanvas_MouseWheel" Background="Transparent"> 
+            <Grid Grid.Row="1" Name="MapWrapper" MouseMove="PanAndZoomCanvas_MouseMove" MouseDown="Map_PanAndZoomCanvas_MouseDownEvent" MouseUp="PanAndZoomCanvas_MouseUp" MouseWheel="PanAndZoomCanvas_MouseWheel" Background="Transparent"> 
                 <Viewbox Stretch="Uniform">
                     <local:PanAndZoomCanvas x:Name="Map" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
                 </Viewbox>
@@ -45,6 +45,9 @@
                 <Grid>
                     <TextBlock Foreground="White" FontWeight="Bold" VerticalAlignment="Center" Margin="10,1,10,1" Text="{Binding Title}"/>
                     <StackPanel Orientation="Horizontal"  HorizontalAlignment="Center">
+                        <Button Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="toggleCenterOnyou" ToolTip="Open Mob Info Window">
+                            <Image Source="pack://application:,,,/toolbox.png"/>
+                        </Button>
                         <Button Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="openmobinfo" ToolTip="Open Mob Info Window">
                             <Image Source="pack://application:,,,/toolbox.png"/>
                         </Button>
