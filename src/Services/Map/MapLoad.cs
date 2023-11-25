@@ -213,18 +213,25 @@ namespace EQTool.Services
                        .Select(s => s.Trim())
                        .Where(a => !string.IsNullOrWhiteSpace(a))
                        .ToList();
-                    ret.Labels.Add(new MapLabel
+                    try
                     {
-                        Point = new Point3D
+                        ret.Labels.Add(new MapLabel
                         {
-                            X = float.Parse(splits[0], CultureInfo.InvariantCulture),
-                            Y = float.Parse(splits[1], CultureInfo.InvariantCulture),
-                            Z = float.Parse(splits[2], CultureInfo.InvariantCulture)
-                        },
-                        Color = System.Windows.Media.Color.FromRgb(byte.Parse(splits[3], CultureInfo.InvariantCulture), byte.Parse(splits[4], CultureInfo.InvariantCulture), byte.Parse(splits[5], CultureInfo.InvariantCulture)),
-                        LabelSize = splits[7].StartsWith("to_", StringComparison.OrdinalIgnoreCase) ? LabelSize.Large : LabelSize.Small,
-                        label = splits[7]
-                    });
+                            Point = new Point3D
+                            {
+                                X = float.Parse(splits[0], CultureInfo.InvariantCulture),
+                                Y = float.Parse(splits[1], CultureInfo.InvariantCulture),
+                                Z = float.Parse(splits[2], CultureInfo.InvariantCulture)
+                            },
+                            Color = System.Windows.Media.Color.FromRgb(byte.Parse(splits[3], CultureInfo.InvariantCulture), byte.Parse(splits[4], CultureInfo.InvariantCulture), byte.Parse(splits[5], CultureInfo.InvariantCulture)),
+                            LabelSize = splits[7].StartsWith("to_", StringComparison.OrdinalIgnoreCase) ? LabelSize.Large : LabelSize.Small,
+                            label = splits[7]
+                        });
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new Exception(item + "    " + ex.ToString());
+                    }
                 }
             }
 
