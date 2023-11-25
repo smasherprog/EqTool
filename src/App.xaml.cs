@@ -329,12 +329,17 @@ namespace EQTool
                 try
                 {
                     var spellstuff = container.Resolve<SpellWindowViewModel>();
+                    var logParser = container.Resolve<LogParser>();
                     if (spellstuff != null)
                     {
-                        if (spellstuff.SpellList.GroupBy(a => a.TargetName).Count() < 4)
+                        if (spellstuff.SpellList.GroupBy(a => a.TargetName).Count() < 4 && (DateTime.UtcNow - logParser.LastYouActivity).TotalMinutes > 2)
                         {
                             new UpdateService().CheckForUpdates(Version);
                         }
+                    }
+                    else if ((DateTime.UtcNow - logParser.LastYouActivity).TotalMinutes > 2)
+                    {
+                        new UpdateService().CheckForUpdates(Version);
                     }
                 }
                 finally
