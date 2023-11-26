@@ -791,7 +791,6 @@ namespace EQTool.ViewModels
                     Transform = Transform
                 });
             }
-
             MapViewModelService.UpdateLocation(new UpdateLocationData
             {
                 Trackingdistance = this.activePlayer?.Player?.TrackingDistance,

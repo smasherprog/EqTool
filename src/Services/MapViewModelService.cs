@@ -48,6 +48,10 @@ namespace EQTool.Services
 
         public static void UpdateLocation(UpdateLocationData locationData)
         {
+            if (locationData.PlayerLocationCircle == null)
+            {
+                return;
+            }
             var newdir = new Point3D(locationData.Newlocation.X, locationData.Newlocation.Y, 0) - new Point3D(locationData.Oldlocation.X, locationData.Oldlocation.Y, 0);
             newdir.Normalize();
             var angle = GetAngleBetweenPoints(new Point3D(locationData.Newlocation.X, locationData.Newlocation.Y, 0), new Point3D(locationData.Oldlocation.X, locationData.Oldlocation.Y, 0)) * -1;

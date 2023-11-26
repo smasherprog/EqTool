@@ -59,6 +59,16 @@ namespace EQTool
             UpdateMessages.Add(new UpdateMessageData
             {
                 DateTime = new DateTime(2023, 11, 26),
+                Message = "Various bug fixes. Your settings probably were cleared in the last update, sorry about that!"
+            });
+            UpdateMessages.Add(new UpdateMessageData
+            {
+                DateTime = new DateTime(2023, 11, 26),
+                Message = "Library updates, various underlying code refactorings, removed dead code to support light theme (Yuck)."
+            });
+            UpdateMessages.Add(new UpdateMessageData
+            {
+                DateTime = new DateTime(2023, 11, 26),
                 Message = "Library updates, various underlying code refactorings, removed dead code to support light theme (Yuck)."
             });
             UpdateMessages.Add(new UpdateMessageData

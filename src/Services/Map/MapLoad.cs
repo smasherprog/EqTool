@@ -27,7 +27,11 @@ namespace EQTool.Services
             }
             var lines = new List<string>();
             var checkformanualmaps = System.IO.Directory.GetCurrentDirectory() + "/maps";
-            if (System.IO.Directory.Exists(checkformanualmaps))
+            var isdebug = false;
+#if DEBUG
+            isdebug = true;
+#endif
+            if (isdebug && System.IO.Directory.Exists(checkformanualmaps))
             {
                 var resourcenames = Directory.GetFiles(checkformanualmaps, zone + "*.txt").ToList();
                 foreach (var item in resourcenames)
@@ -172,6 +176,22 @@ namespace EQTool.Services
             public Point3D Offset { get; set; }
         }
 
+        public static MapLabel CreateFromString(string[] splits)
+        {
+            return new MapLabel
+            {
+                Point = new Point3D
+                {
+                    X = float.Parse(splits[0], CultureInfo.InvariantCulture),
+                    Y = float.Parse(splits[1], CultureInfo.InvariantCulture),
+                    Z = float.Parse(splits[2], CultureInfo.InvariantCulture)
+                },
+                Color = System.Windows.Media.Color.FromRgb(byte.Parse(splits[3], CultureInfo.InvariantCulture), byte.Parse(splits[4], CultureInfo.InvariantCulture), byte.Parse(splits[5], CultureInfo.InvariantCulture)),
+                LabelSize = splits[7].StartsWith("to_", StringComparison.OrdinalIgnoreCase) ? LabelSize.Large : LabelSize.Small,
+                label = splits[7]
+            };
+        }
+
         private ParsedData Parse(List<string> lines)
         {
             var ret = new ParsedData();
@@ -207,26 +227,18 @@ namespace EQTool.Services
                 }
                 else if (item.StartsWith("P "))
                 {
-                    //P -803.2998, 1038.5802, -15.833, 0, 0, 127, 2, Gellrazz_Scalerunner
                     var splits = item.Substring(2)
-                       .Split(',')
-                       .Select(s => s.Trim())
-                       .Where(a => !string.IsNullOrWhiteSpace(a))
-                       .ToList();
+                      .Split(',')
+                      .Select(s => s.Trim())
+                      .Where(a => !string.IsNullOrWhiteSpace(a))
+                      .ToArray();
+                    if (splits.Length <= 7)
+                    {
+                        continue;
+                    }
                     try
                     {
-                        ret.Labels.Add(new MapLabel
-                        {
-                            Point = new Point3D
-                            {
-                                X = float.Parse(splits[0], CultureInfo.InvariantCulture),
-                                Y = float.Parse(splits[1], CultureInfo.InvariantCulture),
-                                Z = float.Parse(splits[2], CultureInfo.InvariantCulture)
-                            },
-                            Color = System.Windows.Media.Color.FromRgb(byte.Parse(splits[3], CultureInfo.InvariantCulture), byte.Parse(splits[4], CultureInfo.InvariantCulture), byte.Parse(splits[5], CultureInfo.InvariantCulture)),
-                            LabelSize = splits[7].StartsWith("to_", StringComparison.OrdinalIgnoreCase) ? LabelSize.Large : LabelSize.Small,
-                            label = splits[7]
-                        });
+                        ret.Labels.Add(CreateFromString(splits));
                     }
                     catch (Exception ex)
                     {

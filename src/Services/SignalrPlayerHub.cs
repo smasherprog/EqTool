@@ -85,14 +85,29 @@ namespace EQTool.Models
         {
             if (LastServer.HasValue && this.activePlayer?.Player?.Server != null && LastServer != this.activePlayer?.Player?.Server)
             {
-                connection.InvokeAsync("PlayerLeftServer", new SignalRServer { Server = this.activePlayer.Player.Server.Value });
+                InvokeAsync("PlayerLeftServer", new SignalRServer { Server = this.activePlayer.Player.Server.Value });
                 LastServer = null;
             }
 
             if (!LastServer.HasValue && this.activePlayer?.Player?.Server != null)
             {
                 LastServer = this.activePlayer?.Player?.Server;
-                connection.InvokeAsync("PlayerJoinServer", new SignalRServer { Server = this.activePlayer.Player.Server.Value });
+                InvokeAsync("PlayerJoinServer", new SignalRServer { Server = this.activePlayer.Player.Server.Value });
+            }
+        }
+
+        private void InvokeAsync<T>(string name, T obj)
+        {
+            if (connection.State == HubConnectionState.Connected)
+            {
+                connection.InvokeAsync(name, obj);
+            }
+        }
+        private void InvokeAsync(string name)
+        {
+            if (connection.State == HubConnectionState.Connected)
+            {
+                connection.InvokeAsync(name);
             }
         }
 
@@ -110,14 +125,14 @@ namespace EQTool.Models
                     this.LastPlayer = null;
                     if (this.activePlayer?.Player?.Server != null)
                     {
-                        connection.InvokeAsync("PlayerLeft");
+                        InvokeAsync("PlayerLeft");
                     }
                 }
                 else
                 {
                     if (this.activePlayer?.Player?.Server != null)
                     {
-                        connection.InvokeAsync("PlayerLocationEvent", this.LastPlayer);
+                        InvokeAsync("PlayerLocationEvent", this.LastPlayer);
                     }
                 }
             }
@@ -199,7 +214,7 @@ namespace EQTool.Models
                     Z = e.Location.Z
                 };
 
-                connection.InvokeAsync("PlayerLocationEvent", this.LastPlayer);
+                InvokeAsync("PlayerLocationEvent", this.LastPlayer);
             }
         }
     }
