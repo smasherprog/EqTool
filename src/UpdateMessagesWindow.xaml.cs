@@ -56,6 +56,16 @@ namespace EQTool
                 DateTime = new DateTime(2023, 11, 25),
                 Message = "Change Auto Update to only occur if you have been idle for 2 or more minutes!"
             });
+            UpdateMessages.Add(new UpdateMessageData
+            {
+                DateTime = new DateTime(2023, 11, 26),
+                Message = "Aligned delete buttons in triggers window for easier mass deletes!"
+            });
+            UpdateMessages.Add(new UpdateMessageData
+            {
+                DateTime = new DateTime(2023, 11, 26),
+                Message = "Added Minwidth to the mob info loot window as sometimes it would be too small."
+            });
         }
     }
 }

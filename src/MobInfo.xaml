@@ -222,7 +222,7 @@
                                 <GridViewColumn Header="Name">
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
-                                            <StackPanel Orientation="Horizontal">
+                                            <StackPanel Orientation="Horizontal" MinWidth="100">
                                                 <TextBlock Visibility="{Binding HaseUrl}">
                                                     <Hyperlink NavigateUri="{Binding Url}" RequestNavigate="Hyperlink_RequestNavigate">
                                                         <TextBlock Text="{Binding Name}" Style="{StaticResource MyMobUrlSyle}"></TextBlock>     
@@ -236,7 +236,7 @@
                                 <GridViewColumn Header="Price">
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
-                                            <StackPanel Orientation="Horizontal">
+                                            <StackPanel Orientation="Horizontal" MinWidth="40">
                                                 <TextBlock Visibility="{Binding HasePriceUrl}">
                                                     <Hyperlink NavigateUri="{Binding PriceUrl}" RequestNavigate="Hyperlink_RequestNavigate">
                                                         <TextBlock Text="{Binding Price}" Style="{StaticResource MyMobUrlSyle}"></TextBlock>     
