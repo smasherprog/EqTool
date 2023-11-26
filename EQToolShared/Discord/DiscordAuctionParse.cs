@@ -138,16 +138,16 @@ namespace EQToolShared.Discord
                 var pricestring = input.Substring(pricestartindex, itembreakindex - pricestartindex).Trim();
                 if (!string.IsNullOrWhiteSpace(pricestring) && pricestring.IndexOf("x", StringComparison.OrdinalIgnoreCase) == -1)
                 {
-                    var pricemultiple = 1;
+                    var pricemultiple = 1.0;
                     if (pricestring.IndexOf("k", StringComparison.OrdinalIgnoreCase) != -1)
                     {
-                        pricemultiple = 1000;
+                        pricemultiple = 1000.0;
                     }
 
                     pricestring = new string(pricestring.Where(a => char.IsDigit(a) || a == '.').ToArray());
-                    if (float.TryParse(pricestring, out var possibleprice))
+                    if (double.TryParse(pricestring, out var possibleprice))
                     {
-                        price = (int)Math.Ceiling(possibleprice * pricemultiple);
+                        price = (int)(possibleprice * pricemultiple);
                     }
                 }
             }
