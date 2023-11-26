@@ -198,9 +198,15 @@ namespace EQTool
                 updateservice.CheckForUpdates(Version);
 #endif
             }
+
             try
             {
                 InitStuff();
+                if (did_update == UpdateService.UpdateStatus.OldFilesDeleted)
+                {
+                    var updatemessagewindow = this.container.Resolve<UpdateMessagesWindow>();
+                    updatemessagewindow.Show();
+                }
             }
             catch (Exception ex)
             {

@@ -472,6 +472,9 @@
     <Compile Include="SpellWindow.xaml.cs">
       <DependentUpon>SpellWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UpdateMessagesWindow.xaml.cs">
+      <DependentUpon>UpdateMessagesWindow.xaml</DependentUpon>
+    </Compile>
     <Page Include="DPSMeter.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -501,6 +504,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="SpellWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UpdateMessagesWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
