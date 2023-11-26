@@ -147,7 +147,7 @@ namespace EQToolShared.Discord
                     pricestring = new string(pricestring.Where(a => char.IsDigit(a) || a == '.').ToArray());
                     if (float.TryParse(pricestring, out var possibleprice))
                     {
-                        price = (int)(possibleprice * pricemultiple);
+                        price = (int)Math.Ceiling(possibleprice * pricemultiple);
                     }
                 }
             }
