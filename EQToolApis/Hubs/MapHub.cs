@@ -8,6 +8,15 @@ namespace EQToolApis.Hubs
     public class MapHub : Hub
     {
         public static readonly ConcurrentDictionary<string, SignalrPlayer> connections = new ConcurrentDictionary<string, SignalrPlayer>();
+        public async Task PlayerJoinServer(SignalRServer server)
+        {
+            await Groups.AddToGroupAsync(Context.ConnectionId, server.Server.ToString());
+        }
+
+        public async Task PlayerLeftServer(SignalRServer server)
+        {
+            await Groups.RemoveFromGroupAsync(Context.ConnectionId, server.Server.ToString());
+        }
 
         public async Task PlayerLocationEvent(SignalrPlayer playerLocation)
         {

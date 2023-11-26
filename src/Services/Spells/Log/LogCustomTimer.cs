@@ -1,4 +1,4 @@
-﻿using System;
+﻿using EQToolShared.HubModels;
 using System.Linq;
 
 namespace EQTool.Services.Spells.Log
@@ -14,14 +14,9 @@ namespace EQTool.Services.Spells.Log
         {
         }
 
-        public class CustomerTimer
-        {
-            public string Name { get; set; }
-            public int DurationInSeconds { get; set; }
-        }
 
-        public CustomerTimer GetStartTimer(string message)
-        {  
+        public CustomTimer GetStartTimer(string message)
+        {
             var timer = GetStartTimer(message, StartTimer);
             if (timer != null)
             {
@@ -35,7 +30,7 @@ namespace EQTool.Services.Spells.Log
             return timer;
         }
 
-        private static CustomerTimer GetStartTimer(string message, string messagetolookfor)
+        private static CustomTimer GetStartTimer(string message, string messagetolookfor)
         {
             if (message.ToLower().StartsWith(messagetolookfor))
             {
@@ -45,7 +40,7 @@ namespace EQTool.Services.Spells.Log
                 {
                     var nameasstring = minutesint.ToString();
                     var name = removedstartimer.Replace(nameasstring, string.Empty).Trim('\'').Trim();
-                    return new CustomerTimer
+                    return new CustomTimer
                     {
                         Name = name,
                         DurationInSeconds = minutesint * 60

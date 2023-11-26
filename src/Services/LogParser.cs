@@ -3,6 +3,7 @@ using EQTool.Services.Map;
 using EQTool.Services.Parsing;
 using EQTool.Services.Spells.Log;
 using EQTool.ViewModels;
+using EQToolShared.HubModels;
 using EQToolShared.Map;
 using System;
 using System.Collections.Generic;
@@ -105,7 +106,7 @@ namespace EQTool.Services
 
         public class StartTimerEventArgs : EventArgs
         {
-            public LogCustomTimer.CustomerTimer CustomerTimer { get; set; }
+            public CustomTimer CustomTimer { get; set; }
         }
 
         public class CancelTimerEventArgs : EventArgs
@@ -275,7 +276,7 @@ namespace EQTool.Services
                 var customtimer = logCustomTimer.GetStartTimer(message);
                 if (customtimer != null)
                 {
-                    StartTimerEvent?.Invoke(this, new StartTimerEventArgs { CustomerTimer = customtimer });
+                    StartTimerEvent?.Invoke(this, new StartTimerEventArgs { CustomTimer = customtimer });
                     return;
                 }
 

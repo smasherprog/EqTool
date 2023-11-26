@@ -39,6 +39,11 @@ namespace EQTool
             UpdateMessages.Add(new UpdateMessageData
             {
                 DateTime = new DateTime(2023, 11, 25),
+                Message = "If kael faction pulls are happening, a timer will be added to let you know when the next will be regardless of whether you are in the zone"
+            });
+            UpdateMessages.Add(new UpdateMessageData
+            {
+                DateTime = new DateTime(2023, 11, 25),
                 Message = "Fixed various map issues"
             });
             UpdateMessages.Add(new UpdateMessageData

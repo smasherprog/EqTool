@@ -3,6 +3,7 @@ using EQTool.Services;
 using EQTool.Services.Spells.Log;
 using EQTool.ViewModels;
 using EQToolShared.Enums;
+using EQToolShared.HubModels;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -276,8 +277,8 @@ namespace EQTool
                 spellWindowViewModel.TryAdd(item);
             }
 
-            spellWindowViewModel.TryAddCustom(new LogCustomTimer.CustomerTimer { DurationInSeconds = 60 * 27, Name = "King" });
-            spellWindowViewModel.TryAddCustom(new LogCustomTimer.CustomerTimer { DurationInSeconds = 60 * 18, Name = "hall Wanderer 1" });
+            spellWindowViewModel.TryAddCustom(new CustomTimer { DurationInSeconds = 60 * 27, Name = "King" });
+            spellWindowViewModel.TryAddCustom(new CustomTimer { DurationInSeconds = 60 * 18, Name = "hall Wanderer 1" });
         }
 
         private void CheckBoxZone_Checked(object sender, RoutedEventArgs e)

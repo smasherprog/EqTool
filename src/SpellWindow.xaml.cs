@@ -1,6 +1,7 @@
 ﻿using EQTool.Models;
 using EQTool.Services;
 using EQTool.ViewModels;
+using EQToolShared.HubModels;
 using EQToolShared.Map;
 using System;
 using System.ComponentModel;
@@ -9,7 +10,6 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
-using static EQTool.Services.Spells.Log.LogCustomTimer;
 
 namespace EQTool
 {
@@ -115,7 +115,7 @@ namespace EQTool
                 return;
             }
             var zonetimer = ZoneSpawnTimes.GetSpawnTime(e.Name, activePlayer?.Player?.Zone);
-            var add = new CustomerTimer
+            var add = new CustomTimer
             {
                 Name = e.Name,
                 DurationInSeconds = (int)zonetimer.TotalSeconds
@@ -139,7 +139,7 @@ namespace EQTool
 
         private void LogParser_StartTimerEvent(object sender, LogParser.StartTimerEventArgs e)
         {
-            spellWindowViewModel.TryAddCustom(e.CustomerTimer);
+            spellWindowViewModel.TryAddCustom(e.CustomTimer);
         }
 
         protected override void OnClosing(CancelEventArgs e)

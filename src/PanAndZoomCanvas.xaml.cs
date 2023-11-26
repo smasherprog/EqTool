@@ -1,4 +1,5 @@
-﻿using EQToolShared.Map;
+﻿using EQToolShared.HubModels;
+using EQToolShared.Map;
 using System;
 using System.Windows;
 using System.Windows.Controls;
@@ -31,7 +32,7 @@ namespace EQTool
                 StartTimerEvent?.Invoke(this,
                     new Services.LogParser.StartTimerEventArgs
                     {
-                        CustomerTimer = new Services.Spells.Log.LogCustomTimer.CustomerTimer
+                        CustomTimer = new CustomTimer
                         {
                             Name = timername,
                             DurationInSeconds = (int)TimeSpanControl.Value.Value.TotalSeconds

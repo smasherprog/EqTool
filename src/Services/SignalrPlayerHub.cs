@@ -1,5 +1,7 @@
 ﻿using EQTool.Services;
 using EQTool.ViewModels;
+using EQToolShared.Enums;
+using EQToolShared.HubModels;
 using EQToolShared.Map;
 using Microsoft.AspNetCore.SignalR.Client;
 using System;
@@ -26,12 +28,14 @@ namespace EQTool.Models
         private readonly IAppDispatcher appDispatcher;
         private readonly Timer timer;
         private SignalrPlayer LastPlayer;
-
-        public SignalrPlayerHub(IAppDispatcher appDispatcher, LogParser logParser, ActivePlayer activePlayer)
+        private readonly SpellWindowViewModel spellWindowViewModel;
+        private Servers? LastServer;
+        public SignalrPlayerHub(IAppDispatcher appDispatcher, LogParser logParser, ActivePlayer activePlayer, SpellWindowViewModel spellWindowViewModel)
         {
             this.appDispatcher = appDispatcher;
             this.activePlayer = activePlayer;
             this.logParser = logParser;
+            this.spellWindowViewModel = spellWindowViewModel;
             var url = "https://www.pigparse.org/EqToolMap";
             connection = new HubConnectionBuilder()
               .WithUrl(url)
@@ -45,12 +49,17 @@ namespace EQTool.Models
             {
                 this.PushPlayerDisconnected(p);
             });
-
+            connection.On("AddCustomTrigger", (SignalrCustomTimer p) =>
+            {
+                this.AddCustomTrigger(p);
+            });
             connection.Closed += async (error) =>
               {
                   await Task.Delay(new Random().Next(0, 5) * 1000);
-                  ConnectWithRetryAsync(connection).Wait();
+                  ConnectWithRetryAsync(connection)
+                  .Wait();
               };
+
             try
             {
                 Task.Factory.StartNew(() =>
@@ -65,10 +74,26 @@ namespace EQTool.Models
 
             this.logParser.PlayerLocationEvent += LogParser_PlayerLocationEvent;
             this.logParser.CampEvent += LogParser_CampEvent;
+            this.logParser.EnteredWorldEvent += LogParser_EnteredWorldEvent;
             timer = new Timer();
             timer.Elapsed += Timer_Elapsed;
             timer.Interval = 1000 * 15;
             timer.Start();
+        }
+
+        private void LogParser_EnteredWorldEvent(object sender, LogParser.EnteredWorldArgs e)
+        {
+            if (LastServer.HasValue && this.activePlayer?.Player?.Server != null && LastServer != this.activePlayer?.Player?.Server)
+            {
+                connection.InvokeAsync("PlayerLeftServer", new SignalRServer { Server = this.activePlayer.Player.Server.Value });
+                LastServer = null;
+            }
+
+            if (LastServer.HasValue && this.activePlayer?.Player?.Server != null)
+            {
+                LastServer = this.activePlayer?.Player?.Server;
+                connection.InvokeAsync("PlayerJoinServer", new SignalRServer { Server = this.activePlayer.Player.Server.Value });
+            }
         }
 
         private void LogParser_CampEvent(object sender, LogParser.CampEventArgs e)
@@ -128,6 +153,18 @@ namespace EQTool.Models
                 this.appDispatcher.DispatchUI(() =>
                 {
                     PlayerDisconnected?.Invoke(this, p);
+                });
+            }
+        }
+
+        public void AddCustomTrigger(SignalrCustomTimer p)
+        {
+            if (p.Server == this.activePlayer?.Player?.Server)
+            {
+                Debug.WriteLine($"AddCustomTrigger {p.Name}");
+                this.appDispatcher.DispatchUI(() =>
+                {
+                    this.spellWindowViewModel.TryAddCustom(p);
                 });
             }
         }

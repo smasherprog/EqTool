@@ -2,6 +2,7 @@
 using EQTool.Services;
 using EQTool.Services.Spells;
 using EQToolShared.Enums;
+using EQToolShared.HubModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -207,7 +208,7 @@ namespace EQTool.ViewModels
             });
         }
 
-        public void TryAddCustom(CustomerTimer match)
+        public void TryAddCustom(CustomTimer match)
         {
             if (match?.Name == null)
             {

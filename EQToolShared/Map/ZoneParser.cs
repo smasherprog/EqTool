@@ -29,7 +29,21 @@ namespace EQToolShared.Map
         private const string Thereis = "There is ";
         private const string Youhaveenteredareapvp = "You have entered an Arena (PvP) area.";
         private const string spaceinspace = " in ";
-
+        public static readonly List<string> KaelFactionMobs = new List<string>() {
+            "Bygloirn Omorden",
+            "Dagron Stonecutter",
+            "Barlek Stonefist",
+            "Gragek Mjlorkigar",
+            "Kelenek Bluadfeth",
+            "Veldern Blackhammer",
+            "Kragek Thunderforge",
+            "Stoem Lekbar",
+            "Bjarorm Mjlorn",
+            "Ulkar Jollkarek",
+            "Vylleam Vyaeltor",
+            "Jaglorm Ygorr",
+            "Yeeldan Spiritcaller"
+        };
         public static readonly Dictionary<string, string> ZoneNameMapper = new Dictionary<string, string>();
         public static readonly Dictionary<string, string> ZoneWhoMapper = new Dictionary<string, string>();
         public static readonly Dictionary<string, ZoneInfo> ZoneInfoMap = new Dictionary<string, ZoneInfo>();

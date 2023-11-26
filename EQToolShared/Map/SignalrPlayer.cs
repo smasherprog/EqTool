@@ -9,6 +9,10 @@ namespace EQToolShared.Map
         GuildOnly,
         Everyone
     }
+    public class SignalRServer
+    {
+        public Servers Server { get; set; }
+    }
 
     public class SignalrPlayer
     {
