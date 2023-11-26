@@ -4,7 +4,7 @@
     {
         public bool IsQuake(string line)
         {
-            return line == "The gods have awoken to unleash their wrath across Norrath.";
+            return line.Contains("You feel you should get somewhere safe as soon as possible");
         }
     }
 }

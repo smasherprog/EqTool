@@ -89,7 +89,7 @@ namespace EQTool.Models
                 LastServer = null;
             }
 
-            if (LastServer.HasValue && this.activePlayer?.Player?.Server != null)
+            if (!LastServer.HasValue && this.activePlayer?.Player?.Server != null)
             {
                 LastServer = this.activePlayer?.Player?.Server;
                 connection.InvokeAsync("PlayerJoinServer", new SignalRServer { Server = this.activePlayer.Player.Server.Value });
