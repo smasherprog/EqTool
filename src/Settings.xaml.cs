@@ -228,7 +228,7 @@ namespace EQTool
         private void SaveAlwaysOntopCheckBoxSettings(object sender, RoutedEventArgs e)
         {
             SaveConfig();
-            App.ApplyAlwaysOnTop();
+            ((App)System.Windows.Application.Current).ApplyAlwaysOnTop();
         }
 
         private void SaveSettings(object sender, RoutedPropertyChangedEventArgs<double> e)

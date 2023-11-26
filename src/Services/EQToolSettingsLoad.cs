@@ -47,7 +47,7 @@ namespace EQTool.Services
                 }
                 catch (Exception e)
                 {
-                    if (counter++ < 1)
+                    if (counter++ < 3)
                     {
                         Thread.Sleep(1000);
                         return Load(counter);

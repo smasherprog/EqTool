@@ -6,6 +6,7 @@ namespace EQTool.Services
     {
         public static void AdjustWindow(EQTool.Models.WindowState windowState, Window w)
         {
+            w.Topmost = windowState.AlwaysOnTop;
             if (WindowBounds.isPointVisibleOnAScreen(windowState.WindowRect))
             {
                 w.Left = windowState.WindowRect.Value.Left;
@@ -26,6 +27,7 @@ namespace EQTool.Services
                 Width = w.Width
             };
             windowState.State = w.WindowState;
+            windowState.AlwaysOnTop = w.Topmost;
         }
     }
 }

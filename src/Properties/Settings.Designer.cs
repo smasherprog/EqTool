@@ -12,7 +12,7 @@ namespace EQTool.Properties {
     
     
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.7.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("Microsoft.VisualStudio.Editors.SettingsDesigner.SettingsSingleFileGenerator", "17.8.0.0")]
     internal sealed partial class Settings : global::System.Configuration.ApplicationSettingsBase {
         
         private static Settings defaultInstance = ((Settings)(global::System.Configuration.ApplicationSettingsBase.Synchronized(new Settings())));
@@ -20,18 +20,6 @@ namespace EQTool.Properties {
         public static Settings Default {
             get {
                 return defaultInstance;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("Dark")]
-        public string ColorMode {
-            get {
-                return ((string)(this["ColorMode"]));
-            }
-            set {
-                this["ColorMode"] = value;
             }
         }
         
@@ -92,54 +80,6 @@ namespace EQTool.Properties {
             }
             set {
                 this["GlobalMobWindowOpacity"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool GlobalTriggerWindowAlwaysOnTop {
-            get {
-                return ((bool)(this["GlobalTriggerWindowAlwaysOnTop"]));
-            }
-            set {
-                this["GlobalTriggerWindowAlwaysOnTop"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool GlobalDpsWindowAlwaysOnTop {
-            get {
-                return ((bool)(this["GlobalDpsWindowAlwaysOnTop"]));
-            }
-            set {
-                this["GlobalDpsWindowAlwaysOnTop"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool GlobalMapWindowAlwaysOnTop {
-            get {
-                return ((bool)(this["GlobalMapWindowAlwaysOnTop"]));
-            }
-            set {
-                this["GlobalMapWindowAlwaysOnTop"] = value;
-            }
-        }
-        
-        [global::System.Configuration.UserScopedSettingAttribute()]
-        [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
-        [global::System.Configuration.DefaultSettingValueAttribute("True")]
-        public bool GlobalMobWindowAlwaysOnTop {
-            get {
-                return ((bool)(this["GlobalMobWindowAlwaysOnTop"]));
-            }
-            set {
-                this["GlobalMobWindowAlwaysOnTop"] = value;
             }
         }
     }

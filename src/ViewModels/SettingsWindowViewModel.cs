@@ -1,4 +1,5 @@
-﻿using EQToolShared.Enums;
+﻿using EQTool.Models;
+using EQToolShared.Enums;
 using EQToolShared.Map;
 using System;
 using System.Collections.Generic;
@@ -12,8 +13,11 @@ namespace EQTool.ViewModels
 {
     public class SettingsWindowViewModel : INotifyPropertyChanged
     {
-        public SettingsWindowViewModel(ActivePlayer activePlayer)
+        private readonly EQToolSettings toolSettings;
+
+        public SettingsWindowViewModel(ActivePlayer activePlayer, EQToolSettings toolSettings)
         {
+            this.toolSettings = toolSettings;
             ActivePlayer = activePlayer;
             for (var i = 12; i < 72; i++)
             {
@@ -38,6 +42,58 @@ namespace EQTool.ViewModels
             {
                 var listitem = new BoolStringClass { TheText = item.ToString(), TheValue = item, IsChecked = false };
                 this.SelectedPlayerClasses.Add(listitem);
+            }
+        }
+
+
+        public bool DpsAlwaysOnTop
+        {
+            get
+            {
+                return this.toolSettings.DpsWindowState.AlwaysOnTop;
+            }
+            set
+            {
+                this.toolSettings.DpsWindowState.AlwaysOnTop = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool MapAlwaysOnTop
+        {
+            get
+            {
+                return this.toolSettings.MapWindowState.AlwaysOnTop;
+            }
+            set
+            {
+                this.toolSettings.MapWindowState.AlwaysOnTop = value;
+                OnPropertyChanged();
+            }
+        }
+        public bool MobAlwaysOnTop
+        {
+            get
+            {
+                return this.toolSettings.MobWindowState.AlwaysOnTop;
+            }
+            set
+            {
+                this.toolSettings.MobWindowState.AlwaysOnTop = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool SpellAlwaysOnTop
+        {
+            get
+            {
+                return this.toolSettings.SpellWindowState.AlwaysOnTop;
+            }
+            set
+            {
+                this.toolSettings.SpellWindowState.AlwaysOnTop = value;
+                OnPropertyChanged();
             }
         }
 

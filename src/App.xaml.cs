@@ -36,7 +36,20 @@ namespace EQTool
         private ZoneActivityTrackingService ZoneActivityTrackingService;
         private ISignalrPlayerHub signalrPlayerHub;
 
-        private EQToolSettings EQToolSettings => container.Resolve<EQToolSettings>();
+        private EQToolSettings _EQToolSettings;
+
+        private EQToolSettings EQToolSettings
+        {
+            get
+            {
+                if (_EQToolSettings == null)
+                {
+                    _EQToolSettings = container.Resolve<EQToolSettings>();
+                }
+                return _EQToolSettings;
+            }
+        }
+
         public static List<Window> WindowList = new List<Window>();
 #if QUARM
         private const string programName = "pqtool";
@@ -58,7 +71,7 @@ namespace EQTool
                     return false;
                 }
                 Debug.WriteLine($"Waiting for {programName} {count} on counter {counter}");
-                Thread.Sleep(1000);
+                Thread.Sleep(3000);
             }
             while (count != 1);
             return true;
@@ -217,7 +230,6 @@ namespace EQTool
 
         private void InitStuff()
         {
-            EQTool.Properties.Settings.Default.ColorMode = "Dark";
             container = DI.Init();
             UITimer = new System.Timers.Timer(1000 * 60);
 #if !DEBUG
@@ -572,25 +584,25 @@ namespace EQTool
             System.Windows.Application.Current.Shutdown();
         }
 
-        public static void ApplyAlwaysOnTop()
+        public void ApplyAlwaysOnTop()
         {
             foreach (var item in WindowList)
             {
                 if (item is DPSMeter w)
                 {
-                    w.Topmost = EQTool.Properties.Settings.Default.GlobalDpsWindowAlwaysOnTop;
+                    w.Topmost = EQToolSettings.DpsWindowState.AlwaysOnTop;
                 }
                 else if (item is MappingWindow w1)
                 {
-                    w1.Topmost = EQTool.Properties.Settings.Default.GlobalMapWindowAlwaysOnTop;
+                    w1.Topmost = EQToolSettings.MapWindowState.AlwaysOnTop;
                 }
                 else if (item is MobInfo w2)
                 {
-                    w2.Topmost = EQTool.Properties.Settings.Default.GlobalMobWindowAlwaysOnTop;
+                    w2.Topmost = EQToolSettings.MobWindowState.AlwaysOnTop;
                 }
                 else if (item is SpellWindow w3)
                 {
-                    w3.Topmost = EQTool.Properties.Settings.Default.GlobalTriggerWindowAlwaysOnTop;
+                    w3.Topmost = EQToolSettings.SpellWindowState.AlwaysOnTop;
                 }
             }
         }

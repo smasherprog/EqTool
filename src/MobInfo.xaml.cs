@@ -37,7 +37,6 @@ namespace EQTool
             DataContext = mobInfoViewModel = new ViewModels.MobInfoViewModel();
             InitializeComponent();
             WindowExtensions.AdjustWindow(settings.MobWindowState, this);
-            Topmost = Properties.Settings.Default.GlobalMobWindowAlwaysOnTop;
             SizeChanged += DPSMeter_SizeChanged;
             StateChanged += SpellWindow_StateChanged;
             LocationChanged += DPSMeter_LocationChanged;

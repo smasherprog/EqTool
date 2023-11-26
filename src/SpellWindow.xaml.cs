@@ -56,7 +56,6 @@ namespace EQTool
             }
             InitializeComponent();
             WindowExtensions.AdjustWindow(settings.SpellWindowState, this);
-            Topmost = Properties.Settings.Default.GlobalTriggerWindowAlwaysOnTop;
             UITimer = new System.Timers.Timer(1000);
             UITimer.Elapsed += PollUI;
             UITimer.Enabled = true;

@@ -42,7 +42,6 @@ namespace EQTool
             this.logParser = logParser;
             DataContext = this.mapViewModel = mapViewModel;
             InitializeComponent();
-            Topmost = Properties.Settings.Default.GlobalMapWindowAlwaysOnTop;
             _ = mapViewModel.LoadDefaultMap(Map);
             Map.ZoneName = mapViewModel.ZoneName;
             Map.Height = Math.Abs(mapViewModel.AABB.MaxHeight);

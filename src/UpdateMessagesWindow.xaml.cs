@@ -59,6 +59,16 @@ namespace EQTool
             UpdateMessages.Add(new UpdateMessageData
             {
                 DateTime = new DateTime(2023, 11, 26),
+                Message = "Library updates, various underlying code refactorings, removed dead code to support light theme (Yuck)."
+            });
+            UpdateMessages.Add(new UpdateMessageData
+            {
+                DateTime = new DateTime(2023, 11, 26),
+                Message = "Fixed map zoom and drag bug where tracking radius size changed incorrectly."
+            });
+            UpdateMessages.Add(new UpdateMessageData
+            {
+                DateTime = new DateTime(2023, 11, 26),
                 Message = "Aligned delete buttons in triggers window for easier mass deletes!"
             });
             UpdateMessages.Add(new UpdateMessageData
@@ -66,11 +76,7 @@ namespace EQTool
                 DateTime = new DateTime(2023, 11, 26),
                 Message = "Added Minwidth to the mob info loot window as sometimes it would be too small."
             });
-            UpdateMessages.Add(new UpdateMessageData
-            {
-                DateTime = new DateTime(2023, 11, 26),
-                Message = "Fixed map zoom and drag bug where tracking radius size changed incorrectly."
-            });
+
         }
     }
 }
