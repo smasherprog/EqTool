@@ -34,7 +34,7 @@ namespace EQTool
             view.GroupDescriptions.Add(new PropertyGroupDescription(nameof(UpdateMessageData.Date)));
             view.LiveGroupingProperties.Add(nameof(UpdateMessageData.Message));
             view.IsLiveGrouping = true;
-            view.SortDescriptions.Add(new SortDescription(nameof(UpdateMessageData.DateTime), ListSortDirection.Ascending));
+            view.SortDescriptions.Add(new SortDescription(nameof(UpdateMessageData.DateTime), ListSortDirection.Descending));
             view.IsLiveSorting = true;
             UpdateMessages.Add(new UpdateMessageData
             {
@@ -65,6 +65,11 @@ namespace EQTool
             {
                 DateTime = new DateTime(2023, 11, 26),
                 Message = "Added Minwidth to the mob info loot window as sometimes it would be too small."
+            });
+            UpdateMessages.Add(new UpdateMessageData
+            {
+                DateTime = new DateTime(2023, 11, 26),
+                Message = "Fixed map zoom and drag bug where tracking radius size changed incorrectly."
             });
         }
     }

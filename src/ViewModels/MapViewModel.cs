@@ -635,8 +635,13 @@ namespace EQTool.ViewModels
                 var delta = Point.Subtract(mousePosition1, _initialMousePosition);
                 var translate = new TranslateTransform(delta.X, delta.Y);
                 Transform.Matrix = Transform.Matrix * translate.Value;
-                foreach (UIElement child in Canvas.Children)
+                foreach (FrameworkElement child in Canvas.Children)
                 {
+                    if (child.Tag == null)
+                    {
+                        continue;
+                    }
+
                     if (child is ArrowLine c)
                     {
                         var transform = new MatrixTransform();
@@ -656,6 +661,7 @@ namespace EQTool.ViewModels
                         child.RenderTransform = Transform;
                     }
                 }
+                UpdateAllPLayers();
             }
 
             if (_dragging && LeftButtonState == MouseButtonState.Pressed)
