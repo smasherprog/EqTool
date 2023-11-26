@@ -72,7 +72,7 @@
                                 <Button Margin="5, 0, 0, 0" Width="14" Height="14" Click="RemoveSingleItem" ToolTip="Remove from list">
                                     <Image Source="pack://application:,,,/Trash.png"/>
                                 </Button>
-                                <TextBlock MinWidth="64" TextAlignment="Right" Visibility="{Binding ColumnVisibility}" FontWeight="Bold" Text="{Binding SecondsLeftOnSpellPretty}"/>
+                                <TextBlock MinWidth="74" TextAlignment="Right" Visibility="{Binding ColumnVisibility}" FontWeight="Bold" Text="{Binding SecondsLeftOnSpellPretty}"/>
                             </StackPanel>
                         </Grid>
                     </DataTemplate>

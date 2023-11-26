@@ -59,6 +59,11 @@ namespace EQTool
             UpdateMessages.Add(new UpdateMessageData
             {
                 DateTime = new DateTime(2023, 11, 26),
+                Message = "Adjusted Trashcan timer alignment again. It was off when timer was over 1 hour."
+            });
+            UpdateMessages.Add(new UpdateMessageData
+            {
+                DateTime = new DateTime(2023, 11, 26),
                 Message = "Various bug fixes. Your settings probably were cleared in the last update, sorry about that!"
             });
             UpdateMessages.Add(new UpdateMessageData
