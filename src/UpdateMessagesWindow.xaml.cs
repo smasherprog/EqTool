@@ -91,7 +91,11 @@ namespace EQTool
                 DateTime = new DateTime(2023, 11, 26),
                 Message = "Added Minwidth to the mob info loot window as sometimes it would be too small."
             });
-
+            UpdateMessages.Add(new UpdateMessageData
+            {
+                DateTime = new DateTime(2023, 11, 27),
+                Message = "Fixed issue where empty spells were showing up in the list."
+            });
         }
     }
 }
