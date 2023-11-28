@@ -96,6 +96,11 @@ namespace EQTool
                 DateTime = new DateTime(2023, 11, 27),
                 Message = "Fixed issue where empty spells were showing up in the list."
             });
+            UpdateMessages.Add(new UpdateMessageData
+            {
+                DateTime = new DateTime(2023, 11, 27),
+                Message = "Fixed Death messages for faction mobs."
+            });
         }
     }
 }

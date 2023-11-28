@@ -320,11 +320,10 @@ namespace EQTool
                 }
             }
             signalrPlayerHub = container.Resolve<ISignalrPlayerHub>();
-#if RELEASE
+
             PlayerTrackerService = container.Resolve<PlayerTrackerService>();
             ZoneActivityTrackingService = container.Resolve<ZoneActivityTrackingService>();
             logParser.QuakeEvent += LogParser_QuakeEvent;
-#endif
 
         }
 

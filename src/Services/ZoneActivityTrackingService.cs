@@ -80,7 +80,7 @@ namespace EQTool.Services
                         Name = e.Name
                     },
                     Server = activePlayer.Player.Server.Value,
-                    IsDeath = false
+                    IsDeath = true
                 });
             }
             catch (Exception ex)
