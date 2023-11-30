@@ -143,27 +143,33 @@ namespace EQTool
 
         protected override void OnClosing(CancelEventArgs e)
         {
-            UITimer.Stop();
-            UITimer.Dispose();
+            UITimer?.Stop();
+            UITimer?.Dispose();
             SizeChanged -= DPSMeter_SizeChanged;
             StateChanged -= SpellWindow_StateChanged;
             LocationChanged -= DPSMeter_LocationChanged;
-            logParser.SpellWornOtherOffEvent -= LogParser_SpellWornOtherOffEvent;
-            logParser.CampEvent -= LogParser_CampEvent;
-            logParser.EnteredWorldEvent -= LogParser_EnteredWorldEvent;
-            logParser.SpellWornOffSelfEvent -= LogParser_SpellWornOffSelfEvent;
-            logParser.StartCastingEvent -= LogParser_StartCastingEvent;
-            logParser.DeadEvent -= LogParser_DeadEvent;
-            logParser.StartTimerEvent -= LogParser_StartTimerEvent;
-            logParser.CancelTimerEvent -= LogParser_CancelTimerEvent;
+            if (logParser != null)
+            {
+                logParser.SpellWornOtherOffEvent -= LogParser_SpellWornOtherOffEvent;
+                logParser.CampEvent -= LogParser_CampEvent;
+                logParser.EnteredWorldEvent -= LogParser_EnteredWorldEvent;
+                logParser.SpellWornOffSelfEvent -= LogParser_SpellWornOffSelfEvent;
+                logParser.StartCastingEvent -= LogParser_StartCastingEvent;
+                logParser.DeadEvent -= LogParser_DeadEvent;
+                logParser.StartTimerEvent -= LogParser_StartTimerEvent;
+                logParser.CancelTimerEvent -= LogParser_CancelTimerEvent;
+            }
             SaveState();
-            spellWindowViewModel.SpellList = new System.Collections.ObjectModel.ObservableCollection<UISpell>();
+            if (spellWindowViewModel != null)
+            {
+                spellWindowViewModel.SpellList = new System.Collections.ObjectModel.ObservableCollection<UISpell>();
+            }
             base.OnClosing(e);
         }
 
         private void TrySaveYouSpellData()
         {
-            if (activePlayer.Player != null)
+            if (activePlayer?.Player != null)
             {
                 var before = activePlayer.Player.YouSpells ?? new System.Collections.Generic.List<YouSpells>();
                 activePlayer.Player.YouSpells = spellWindowViewModel.SpellList.Where(a => a.TargetName == EQSpells.SpaceYou).Select(a => new YouSpells
@@ -176,9 +182,12 @@ namespace EQTool
 
         private void SaveState()
         {
-            TrySaveYouSpellData();
-            WindowExtensions.SaveWindowState(settings.SpellWindowState, this);
-            toolSettingsLoad.Save(settings);
+            if (settings != null)
+            {
+                TrySaveYouSpellData();
+                WindowExtensions.SaveWindowState(settings.SpellWindowState, this);
+                toolSettingsLoad.Save(settings);
+            }
         }
 
         private void CloseWindow(object sender, RoutedEventArgs e)

@@ -101,6 +101,11 @@ namespace EQTool
                 DateTime = new DateTime(2023, 11, 27),
                 Message = "Fixed Death messages for faction mobs."
             });
+            UpdateMessages.Add(new UpdateMessageData
+            {
+                DateTime = new DateTime(2023, 11, 27),
+                Message = "Added some null checks to spell window onclose method."
+            });
         }
     }
 }

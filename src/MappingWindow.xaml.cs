@@ -242,6 +242,7 @@ namespace EQTool
 
         private void SetCenerMap()
         {
+            return;
             var loc = new Point(MapWrapper.ActualWidth / 2, MapWrapper.ActualHeight / 2);
             loc = this.MapWrapper.PointToScreen(loc);
             loc = this.Map.PointFromScreen(loc);
