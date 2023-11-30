@@ -98,27 +98,32 @@ namespace EQTool
             });
             UpdateMessages.Add(new UpdateMessageData
             {
-                DateTime = new DateTime(2023, 11, 27),
+                DateTime = new DateTime(2023, 11, 29),
                 Message = "Fixed Death messages for faction mobs."
             });
             UpdateMessages.Add(new UpdateMessageData
             {
-                DateTime = new DateTime(2023, 11, 27),
+                DateTime = new DateTime(2023, 11, 30),
+                Message = "Fixed issue where your location would show at 0,0 when entering a zone. Will only start displaying your location after the first /loc is received."
+            });
+            UpdateMessages.Add(new UpdateMessageData
+            {
+                DateTime = new DateTime(2023, 11, 30),
                 Message = "Added some null checks to spell window onclose method."
             });
             UpdateMessages.Add(new UpdateMessageData
             {
-                DateTime = new DateTime(2023, 11, 27),
+                DateTime = new DateTime(2023, 11, 30),
                 Message = "Map work is almost done! Removed the option for DoNotShare. Valid options are Guild Only and Everyone. "
             });
             UpdateMessages.Add(new UpdateMessageData
             {
-                DateTime = new DateTime(2023, 11, 27),
+                DateTime = new DateTime(2023, 11, 30),
                 Message = "Since I am still working on mapping issues, the share setting is still set to Everyone even if the setting shows differently."
             });
             UpdateMessages.Add(new UpdateMessageData
             {
-                DateTime = new DateTime(2023, 11, 27),
+                DateTime = new DateTime(2023, 11, 30),
                 Message = "Once map work is done, the setting will be respected! Location sharing only occurs to others in the same zone as you."
             });
         }

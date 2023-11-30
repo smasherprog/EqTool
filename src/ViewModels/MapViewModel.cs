@@ -251,6 +251,10 @@ namespace EQTool.ViewModels
                         PlayerLocationCircle = PlayerLocation,
                         Transform = Transform
                     });
+                    PlayerLocation.ArrowLine.Visibility = Visibility.Hidden;
+                    PlayerLocation.Ellipse.Visibility = Visibility.Hidden;
+                    PlayerLocation.PlayerName.Visibility = Visibility.Hidden;
+                    PlayerLocation.TrackingEllipse.Visibility = Visibility.Hidden;
                     var widgets = timersService.LoadTimersForZone(ZoneName);
                     foreach (var mw in widgets)
                     {
@@ -346,6 +350,10 @@ namespace EQTool.ViewModels
                     loggingService.Log($"Zone {ZoneName} Not found.", App.EventType.Error);
                 }
             }
+            PlayerLocation.ArrowLine.Visibility = Visibility.Visible;
+            PlayerLocation.Ellipse.Visibility = Visibility.Visible;
+            PlayerLocation.PlayerName.Visibility = Visibility.Visible;
+            PlayerLocation.TrackingEllipse.Visibility = Visibility.Visible;
             MapViewModelService.UpdateLocation(new UpdateLocationData
             {
                 Trackingdistance = this.activePlayer?.Player?.TrackingDistance,
