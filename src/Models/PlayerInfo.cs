@@ -187,13 +187,13 @@ namespace EQTool.Models
             }
         }
 
-        private MapLocationSharing _MapLocationSharing = EQToolShared.Map.MapLocationSharing.DoNotShare;
+        private MapLocationSharing _MapLocationSharing = EQToolShared.Map.MapLocationSharing.Everyone;
         public MapLocationSharing? MapLocationSharing
         {
             get => _MapLocationSharing;
             set
             {
-                _MapLocationSharing = value ?? EQToolShared.Map.MapLocationSharing.DoNotShare;
+                _MapLocationSharing = value ?? EQToolShared.Map.MapLocationSharing.Everyone;
                 OnPropertyChanged();
             }
         }

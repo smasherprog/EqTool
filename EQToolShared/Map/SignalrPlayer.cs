@@ -5,9 +5,8 @@ namespace EQToolShared.Map
 {
     public enum MapLocationSharing
     {
-        DoNotShare,
-        GuildOnly,
-        Everyone
+        Everyone,
+        GuildOnly
     }
     public class SignalRServer
     {

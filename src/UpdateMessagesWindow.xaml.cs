@@ -106,6 +106,21 @@ namespace EQTool
                 DateTime = new DateTime(2023, 11, 27),
                 Message = "Added some null checks to spell window onclose method."
             });
+            UpdateMessages.Add(new UpdateMessageData
+            {
+                DateTime = new DateTime(2023, 11, 27),
+                Message = "Map work is almost done! Removed the option for DoNotShare. Valid options are Guild Only and Everyone. "
+            });
+            UpdateMessages.Add(new UpdateMessageData
+            {
+                DateTime = new DateTime(2023, 11, 27),
+                Message = "Since I am still working on mapping issues, the share setting is still set to Everyone even if the setting shows differently."
+            });
+            UpdateMessages.Add(new UpdateMessageData
+            {
+                DateTime = new DateTime(2023, 11, 27),
+                Message = "Once map work is done, the setting will be respected! Location sharing only occurs to others in the same zone as you."
+            });
         }
     }
 }
