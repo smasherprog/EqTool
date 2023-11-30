@@ -18,6 +18,8 @@ Instructions:
 Features:
 <br/>
 <ul>
+<li>Kael faction pull timer Automatically added for everyone regardless of what zone you are in. </li> 
+<li>Automatically add timers on death of npc so you dont have to!</li> 
 <li>Detect EQ directory location instead of user required to enter it.</li> 
 <li>Detect Spells cast on others (this is a best guess as I am reading the log file so chloroplast and Regrowth of the growth have the same message)</li>
 <li>Filter spells show by class</li> 
