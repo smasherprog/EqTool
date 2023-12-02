@@ -139,7 +139,7 @@ namespace EQTool
             UpdateMessages.Add(new UpdateMessageData
             {
                 DateTime = new DateTime(2023, 12, 2),
-                Message = "Revized wording for clarity: If you select guild only, you will ONLY see others in YOUR guild visa versa. Those with the everyone will ONLY see others with the everyone setting."
+                Message = "Revised wording for clarity: If you select guild only, you will ONLY see others in YOUR guild visa versa. Those with the everyone will ONLY see others with the everyone setting."
             });
         }
     }
