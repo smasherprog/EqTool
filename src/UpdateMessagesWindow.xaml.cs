@@ -126,6 +126,16 @@ namespace EQTool
                 DateTime = new DateTime(2023, 11, 30),
                 Message = "Once map work is done, the setting will be respected! Location sharing only occurs to others in the same zone as you."
             });
+            UpdateMessages.Add(new UpdateMessageData
+            {
+                DateTime = new DateTime(2023, 12, 2),
+                Message = "Map settings will now be respeected. If you select guild only, you will only see other guild members."
+            });
+            UpdateMessages.Add(new UpdateMessageData
+            {
+                DateTime = new DateTime(2023, 12, 2),
+                Message = "Turned down opacity on OTHERS tracking radius to put them more in the background."
+            });
         }
     }
 }

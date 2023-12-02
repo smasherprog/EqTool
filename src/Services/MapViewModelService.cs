@@ -100,6 +100,7 @@ namespace EQTool.Services
             var playerlocsize = MathHelper.ChangeRange(Math.Max(toCanvasData.AABB.MaxWidth, toCanvasData.AABB.MaxHeight), 500, 35000, 40, 1750);
             var playerstrokthickness = MathHelper.ChangeRange(Math.Max(toCanvasData.AABB.MaxWidth, toCanvasData.AABB.MaxHeight), 500, 35000, 3, 40);
             var color = System.Windows.Media.Color.FromRgb(61, 235, 52);
+            byte trackingepilopacity = 5;
             if (toCanvasData.Name != "You")
             {
                 var minrange = 40;
@@ -108,6 +109,7 @@ namespace EQTool.Services
                 (byte)random.Next(minrange, 235),
                 (byte)random.Next(minrange, 235),
                 (byte)random.Next(minrange, 235));
+                trackingepilopacity = 3;
             }
 
             var playerloc = new PlayerLocationCircle
@@ -146,7 +148,7 @@ namespace EQTool.Services
                     Stroke = new SolidColorBrush(color),
                     StrokeThickness = playerstrokthickness,
                     RenderTransform = new RotateTransform(),
-                    Fill = new SolidColorBrush(System.Windows.Media.Color.FromArgb(5, color.R, color.G, color.B)),
+                    Fill = new SolidColorBrush(System.Windows.Media.Color.FromArgb(trackingepilopacity, color.R, color.G, color.B)),
                     Visibility = toCanvasData.Trackingdistance == null ? Visibility.Hidden : Visibility.Visible
                 }
             };

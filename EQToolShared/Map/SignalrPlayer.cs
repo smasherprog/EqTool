@@ -26,6 +26,16 @@ namespace EQToolShared.Map
         public double X { get; set; }
         public double Y { get; set; }
         public double Z { get; set; }
-        public string GroupName => $"{Server}_{Zone}";
+        public string GroupName
+        {
+            get
+            {
+                if (this.MapLocationSharing == MapLocationSharing.GuildOnly)
+                {
+                    return $"{Server}_{Zone}_{this.GuildName}";
+                }
+                return $"{Server}_{Zone}";
+            }
+        }
     }
 }

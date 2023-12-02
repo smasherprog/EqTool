@@ -22,7 +22,7 @@ namespace EQToolApis.Hubs
         {
             if (connections.TryGetValue(Context.ConnectionId, out var player))
             {
-                if (player.Zone != playerLocation.Zone)
+                if (player.Zone != playerLocation.Zone || player.MapLocationSharing != playerLocation.MapLocationSharing)
                 {
                     await Groups.RemoveFromGroupAsync(Context.ConnectionId, player.GroupName);
                     await Groups.AddToGroupAsync(Context.ConnectionId, playerLocation.GroupName);
