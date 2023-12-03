@@ -129,6 +129,11 @@ namespace EQTool
             UpdateMessages.Add(new UpdateMessageData
             {
                 DateTime = new DateTime(2023, 12, 2),
+                Message = "Revised wording for clarity: If you select guild only, you will ONLY see others in YOUR guild visa versa. Those with the everyone will ONLY see others with the everyone setting."
+            });
+            UpdateMessages.Add(new UpdateMessageData
+            {
+                DateTime = new DateTime(2023, 12, 2),
                 Message = "Map settings will now be respeected. If you select guild only, you will only see other guild members."
             });
             UpdateMessages.Add(new UpdateMessageData
@@ -136,11 +141,7 @@ namespace EQTool
                 DateTime = new DateTime(2023, 12, 2),
                 Message = "Turned down opacity on OTHERS tracking radius to put them more in the background."
             });
-            UpdateMessages.Add(new UpdateMessageData
-            {
-                DateTime = new DateTime(2023, 12, 2),
-                Message = "Revised wording for clarity: If you select guild only, you will ONLY see others in YOUR guild visa versa. Those with the everyone will ONLY see others with the everyone setting."
-            });
+
         }
     }
 }
