@@ -144,6 +144,46 @@ namespace EQTool.ViewModels
             CurrentScaling = 1.0f;
             Canvas?.Children?.Clear();
             Players.Clear();
+            Players.Add(new ViewModels.PlayerLocation
+            {
+                Name = "testing1"
+            });
+            Players.Add(new ViewModels.PlayerLocation
+            {
+                Name = "testing2"
+            });
+            Players.Add(new ViewModels.PlayerLocation
+            {
+                Name = "testing3"
+            });
+            Players.Add(new ViewModels.PlayerLocation
+            {
+                Name = "testing4"
+            });
+            Players.Add(new ViewModels.PlayerLocation
+            {
+                Name = "testing5"
+            });
+            Players.Add(new ViewModels.PlayerLocation
+            {
+                Name = "testing6"
+            });
+            Players.Add(new ViewModels.PlayerLocation
+            {
+                Name = "testing7"
+            });
+            Players.Add(new ViewModels.PlayerLocation
+            {
+                Name = "testing8"
+            });
+            Players.Add(new ViewModels.PlayerLocation
+            {
+                Name = "testing9"
+            });
+            Players.Add(new ViewModels.PlayerLocation
+            {
+                Name = "testing10"
+            });
         }
 
         public void ToggleCenter()
@@ -478,7 +518,7 @@ namespace EQTool.ViewModels
             }
 
             var playerstoremove = new List<PlayerLocation>();
-            foreach (var item in Players)
+            foreach (var item in Players.Where(a => a.Player != null))
             {
                 if ((DateTime.UtcNow - item.Player.TimeStamp).TotalMinutes > 1)
                 {
@@ -786,7 +826,7 @@ namespace EQTool.ViewModels
 
         private void UpdateAllPLayers()
         {
-            foreach (var item in Players)
+            foreach (var item in Players.Where(a => a.Player != null))
             {
                 MapViewModelService.UpdateLocation(new UpdateLocationData
                 {
