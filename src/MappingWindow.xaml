@@ -32,7 +32,7 @@
                 <Viewbox Stretch="Uniform">
                     <local:PanAndZoomCanvas x:Name="Map" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
                 </Viewbox>
-                <ListView HorizontalAlignment="Left" VerticalAlignment="Top" ItemsSource="{Binding Players}" MaxHeight="100">
+                <ListView HorizontalAlignment="Left" VerticalAlignment="Top" ItemsSource="{Binding Players}">
                     <ListView.ItemTemplate>
                         <DataTemplate>
                             <TextBlock Text="{Binding Name}" />
