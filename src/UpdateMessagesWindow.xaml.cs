@@ -141,7 +141,11 @@ namespace EQTool
                 DateTime = new DateTime(2023, 12, 2),
                 Message = "Turned down opacity on OTHERS tracking radius to put them more in the background."
             });
-
+            UpdateMessages.Add(new UpdateMessageData
+            {
+                DateTime = new DateTime(2023, 12, 3),
+                Message = "PQ updated Cazic-Thule to load map correctly."
+            });
         }
     }
 }

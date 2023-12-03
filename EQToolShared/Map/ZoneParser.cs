@@ -1546,6 +1546,7 @@ namespace EQToolShared.Map
             ZoneNameMapper.Add("howling stones", "charasis");
             ZoneNameMapper.Add("kerra isle", "kerraridge");
             ZoneNameMapper.Add("lost temple of cazic-thule", "cazicthule");
+            ZoneNameMapper.Add("lost temple of cazicthule", "cazicthule");
             ZoneNameMapper.Add("neriak commons", "neriakb");
             ZoneNameMapper.Add("karnor's castle", "karnor");
             ZoneNameMapper.Add("crystal caverns", "crystal");
