@@ -18,6 +18,7 @@ namespace EQTool
         private readonly MapViewModel mapViewModel;
         private readonly EQToolSettings settings;
         private readonly EQToolSettingsLoad toolSettingsLoad;
+        private readonly ActivePlayer activePlayer;
         private readonly PlayerTrackerService playerTrackerService;
         private readonly IAppDispatcher appDispatcher;
         private readonly ISignalrPlayerHub signalrPlayerHub;
@@ -26,6 +27,7 @@ namespace EQTool
         public MappingWindow(
             ISignalrPlayerHub signalrPlayerHub,
             MapViewModel mapViewModel,
+            ActivePlayer activePlayer,
             LogParser logParser,
             EQToolSettings settings,
             PlayerTrackerService playerTrackerService,
@@ -35,6 +37,7 @@ namespace EQTool
         {
             loggingService.Log(string.Empty, App.EventType.OpenMap);
             this.settings = settings;
+            this.activePlayer = activePlayer;
             this.signalrPlayerHub = signalrPlayerHub;
             this.playerTrackerService = playerTrackerService;
             this.toolSettingsLoad = toolSettingsLoad;
@@ -125,9 +128,13 @@ namespace EQTool
             {
                 return;
             }
-            var zonetimer = ZoneSpawnTimes.GetSpawnTime(e.Name, mapViewModel.ZoneName);
-            var mw = mapViewModel.AddTimer(zonetimer, e.Name, true);
-            mapViewModel.MoveToPlayerLocation(mw);
+
+            if (activePlayer.Player?.MapKillTimers == true)
+            {
+                var zonetimer = ZoneSpawnTimes.GetSpawnTime(e.Name, mapViewModel.ZoneName);
+                var mw = mapViewModel.AddTimer(zonetimer, e.Name, true);
+                mapViewModel.MoveToPlayerLocation(mw);
+            }
         }
 
         private void UITimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)

@@ -198,6 +198,17 @@ namespace EQTool.Models
             }
         }
 
+        private bool _MapKillTimers = true;
+        public bool? MapKillTimers
+        {
+            get => _MapKillTimers;
+            set
+            {
+                _MapKillTimers = value ?? true;
+                OnPropertyChanged();
+            }
+        }
+
         private PlayerClasses? _PlayerClass;
         public PlayerClasses? PlayerClass
         {
