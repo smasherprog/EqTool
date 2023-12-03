@@ -9,12 +9,38 @@ namespace EQTool.Models
         public System.Windows.WindowState State { get; set; }
         public bool Closed { get; set; }
         public bool AlwaysOnTop { get; set; }
+        private double _Opacity = 1.0;
+        public double? Opacity
+        {
+            get
+            {
+                return _Opacity;
+            }
+            set
+            {
+                _Opacity = value ?? 1.0;
+            }
+        }
     }
 
     public class EQToolSettings
     {
         public string DefaultEqDirectory { get; set; }
         public string EqLogDirectory { get; set; }
+
+        private int _FontSize = 12;
+        public int? FontSize
+        {
+            get
+            {
+                return _FontSize;
+            }
+            set
+            {
+                _FontSize = value ?? 12;
+                _FontSize = _FontSize < 12 ? 12 : _FontSize;
+            }
+        }
 
         private WindowState _SpellWindowState;
         public WindowState SpellWindowState

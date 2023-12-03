@@ -144,6 +144,11 @@ namespace EQTool
             UpdateMessages.Add(new UpdateMessageData
             {
                 DateTime = new DateTime(2023, 12, 3),
+                Message = "Updated where settings are saved. This MIGHT cause all of your current settings to be cleared.. .  . . "
+            });
+            UpdateMessages.Add(new UpdateMessageData
+            {
+                DateTime = new DateTime(2023, 12, 3),
                 Message = "Added setting to toggle kill timers that show up on the map, this is a PER character setting."
             });
             UpdateMessages.Add(new UpdateMessageData

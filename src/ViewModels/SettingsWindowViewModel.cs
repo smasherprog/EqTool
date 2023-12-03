@@ -45,6 +45,23 @@ namespace EQTool.ViewModels
             }
         }
 
+        public int GlobalFontSize
+        {
+            get
+            {
+                return this.toolSettings.FontSize.Value;
+            }
+            set
+            {
+                this.toolSettings.FontSize = value;
+                App.Current.Resources["GlobalFontSize"] = (double)value;
+                ((App)System.Windows.Application.Current).UpdateBackgroundOpacity("MyWindowStyleDPS", this.toolSettings.DpsWindowState.Opacity.Value);
+                ((App)System.Windows.Application.Current).UpdateBackgroundOpacity("MyWindowStyleMap", this.toolSettings.MapWindowState.Opacity.Value);
+                ((App)System.Windows.Application.Current).UpdateBackgroundOpacity("MyWindowStyleTrigger", this.toolSettings.SpellWindowState.Opacity.Value);
+                OnPropertyChanged();
+            }
+        }
+
 
         public bool DpsAlwaysOnTop
         {
@@ -55,6 +72,20 @@ namespace EQTool.ViewModels
             set
             {
                 this.toolSettings.DpsWindowState.AlwaysOnTop = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public double DPSWindowOpacity
+        {
+            get
+            {
+                return this.toolSettings.DpsWindowState.Opacity ?? 1.0;
+            }
+            set
+            {
+                this.toolSettings.DpsWindowState.Opacity = value;
+                ((App)System.Windows.Application.Current).UpdateBackgroundOpacity("MyWindowStyleDPS", value);
                 OnPropertyChanged();
             }
         }
@@ -71,6 +102,23 @@ namespace EQTool.ViewModels
                 OnPropertyChanged();
             }
         }
+
+        public double MapWindowOpacity
+        {
+            get
+            {
+                return this.toolSettings.MapWindowState.Opacity ?? 1.0;
+            }
+
+            set
+            {
+                this.toolSettings.MapWindowState.Opacity = value;
+                ((App)System.Windows.Application.Current).UpdateBackgroundOpacity("MyWindowStyleMap", value);
+                OnPropertyChanged();
+            }
+        }
+
+
         public bool MobAlwaysOnTop
         {
             get
@@ -93,6 +141,20 @@ namespace EQTool.ViewModels
             set
             {
                 this.toolSettings.SpellWindowState.AlwaysOnTop = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public double TriggerWindowOpacity
+        {
+            get
+            {
+                return this.toolSettings.SpellWindowState.Opacity ?? 1.0;
+            }
+            set
+            {
+                this.toolSettings.SpellWindowState.Opacity = value;
+                ((App)System.Windows.Application.Current).UpdateBackgroundOpacity("MyWindowStyleTrigger", value);
                 OnPropertyChanged();
             }
         }

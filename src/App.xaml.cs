@@ -14,6 +14,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Media;
 
 namespace EQTool
 {
@@ -324,7 +325,20 @@ namespace EQTool
             PlayerTrackerService = container.Resolve<PlayerTrackerService>();
             ZoneActivityTrackingService = container.Resolve<ZoneActivityTrackingService>();
             logParser.QuakeEvent += LogParser_QuakeEvent;
+            App.Current.Resources["GlobalFontSize"] = (double)this.EQToolSettings.FontSize.Value;
+            ((App)System.Windows.Application.Current).UpdateBackgroundOpacity("MyWindowStyleDPS", this.EQToolSettings.DpsWindowState.Opacity.Value);
+            ((App)System.Windows.Application.Current).UpdateBackgroundOpacity("MyWindowStyleMap", this.EQToolSettings.MapWindowState.Opacity.Value);
+            ((App)System.Windows.Application.Current).UpdateBackgroundOpacity("MyWindowStyleTrigger", this.EQToolSettings.SpellWindowState.Opacity.Value);
+        }
 
+        public void UpdateBackgroundOpacity(string name, double opacity)
+        {
+            var newcolor = (SolidColorBrush)new BrushConverter().ConvertFrom("#1a1919");
+            newcolor.Opacity = opacity;
+            var style = new System.Windows.Style { TargetType = typeof(Window) };
+            style.Setters.Add(new Setter(Window.BackgroundProperty, newcolor));
+            style.Setters.Add(new Setter(Window.FontSizeProperty, (double)this.EQToolSettings.FontSize.Value));
+            App.Current.Resources[name] = style;
         }
 
         private void LogParser_QuakeEvent(object sender, LogParser.QuakeArgs e)
