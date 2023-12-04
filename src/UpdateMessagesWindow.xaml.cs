@@ -144,6 +144,11 @@ namespace EQTool
             UpdateMessages.Add(new UpdateMessageData
             {
                 DateTime = new DateTime(2023, 12, 3),
+                Message = "Fixed Map bug that caused maps to not load!"
+            });
+            UpdateMessages.Add(new UpdateMessageData
+            {
+                DateTime = new DateTime(2023, 12, 3),
                 Message = "Added Colors to the player list in the zone."
             });
             UpdateMessages.Add(new UpdateMessageData

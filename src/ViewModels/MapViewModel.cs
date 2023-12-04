@@ -261,7 +261,7 @@ namespace EQTool.ViewModels
                         Oldlocation = Lastlocation,
                         Newlocation = Lastlocation,
                         PlayerLocationCircle = PlayerLocation,
-                        Transform = Transform
+                        Transform = Transform,
                     });
                     PlayerLocation.ArrowLine.Visibility = Visibility.Hidden;
                     PlayerLocation.Ellipse.Visibility = Visibility.Hidden;
@@ -287,6 +287,7 @@ namespace EQTool.ViewModels
                 MapLoading = false;
             }
         }
+
         private PlayerLocation AddPlayerToCanvas(SignalrPlayer signalrPlayer)
         {
             var player = MapViewModelService.AddPlayerToCanvas(new AddPlayerToCanvasData

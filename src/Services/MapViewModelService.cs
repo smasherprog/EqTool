@@ -150,7 +150,9 @@ namespace EQTool.Services
                     RenderTransform = new RotateTransform(),
                     Fill = new SolidColorBrush(System.Windows.Media.Color.FromArgb(trackingepilopacity, color.R, color.G, color.B)),
                     Visibility = toCanvasData.Trackingdistance == null ? Visibility.Hidden : Visibility.Visible
-                }
+                },
+                Color = new SolidColorBrush(color),
+                Name = toCanvasData.Name
             };
             MapViewModelService.AddToCanvas(playerloc, toCanvasData.Canvas, toCanvasData.AABB);
             return playerloc;

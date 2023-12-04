@@ -50,7 +50,7 @@
                     <StackPanel Orientation="Horizontal"  HorizontalAlignment="Center">
                         <!--<Button Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="toggleCenterOnyou" ToolTip="Open Mob Info Window">
                             <Image Source="pack://application:,,,/toolbox.png"/>
-                        </Button>-->2
+                        </Button>-->
                         <Button Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="openmobinfo" ToolTip="Open Mob Info Window">
                             <Image Source="pack://application:,,,/toolbox.png"/>
                         </Button>
