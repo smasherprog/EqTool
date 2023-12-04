@@ -501,23 +501,55 @@ namespace EQTool
             testmap.IsEnabled = false;
             _ = Task.Factory.StartNew(() =>
             {
+                var names = new List<string>() { "faiil", "irishfaf", "chuunt", "jakab", "nima", "healmin" };
+                var pnames = new List<EQToolShared.Map.SignalrPlayer>();
+
+                var movementoffset = (int)(map.AABB.MaxWidth / 10);
+                var r = new Random();
+                var offset = r.Next(-movementoffset, movementoffset);
+                foreach (var item in names)
+                {
+                    offset = r.Next(-movementoffset, movementoffset);
+                    var p = new EQToolShared.Map.SignalrPlayer
+                    {
+                        GuildName = "The Drift",
+                        MapLocationSharing = EQToolShared.Map.MapLocationSharing.Everyone,
+                        Name = item,
+                        PlayerClass = PlayerClasses.Necromancer,
+                        Server = Servers.Green,
+                        Zone = player.Zone,
+                        X = map.AABB.Center.X + map.Offset.X + r.Next(-movementoffset, movementoffset),
+                        Y = map.AABB.Center.Y + map.Offset.Y + r.Next(-movementoffset, movementoffset),
+                        Z = map.AABB.Center.Z + map.Offset.Z + r.Next(-movementoffset, movementoffset)
+                    };
+
+                    pnames.Add(p);
+                    signalrPlayerHub.PushPlayerLocationEvent(p);
+                }
+                movementoffset = (int)(map.AABB.MaxWidth / 50);
                 try
                 {
                     var starttime = DateTime.UtcNow;
                     while ((starttime - DateTime.UtcNow).TotalMinutes < 3)
                     {
-                        signalrPlayerHub.PushPlayerLocationEvent(new EQToolShared.Map.SignalrPlayer
+                        foreach (var item in pnames)
                         {
-                            GuildName = "The Drift",
-                            MapLocationSharing = EQToolShared.Map.MapLocationSharing.Everyone,
-                            Name = "Vasanle",
-                            PlayerClass = PlayerClasses.Necromancer,
-                            Server = Servers.Green,
-                            Zone = "mischiefplane",
-                            X = loc[0],
-                            Y = loc[1],
-                            Z = loc[2]
-                        });
+                            var p = new EQToolShared.Map.SignalrPlayer
+                            {
+                                GuildName = "The Drift",
+                                MapLocationSharing = EQToolShared.Map.MapLocationSharing.Everyone,
+                                Name = item.Name,
+                                PlayerClass = PlayerClasses.Necromancer,
+                                Server = Servers.Green,
+                                Zone = player.Zone,
+                                X = item.X + r.Next(-movementoffset, movementoffset),
+                                Y = item.Y + r.Next(-movementoffset, movementoffset),
+                                Z = item.Z + r.Next(-movementoffset, movementoffset)
+                            };
+
+                            signalrPlayerHub.PushPlayerLocationEvent(p);
+                        }
+                        Thread.Sleep(1000);
                     }
 
                     appDispatcher.DispatchUI(() => { testmap.IsEnabled = true; });

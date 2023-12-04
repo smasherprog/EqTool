@@ -144,6 +144,11 @@ namespace EQTool
             UpdateMessages.Add(new UpdateMessageData
             {
                 DateTime = new DateTime(2023, 12, 3),
+                Message = "Added Colors to the player list in the zone."
+            });
+            UpdateMessages.Add(new UpdateMessageData
+            {
+                DateTime = new DateTime(2023, 12, 3),
                 Message = "Updated where settings are saved. This MIGHT cause all of your current settings to be cleared.. .  . . "
             });
             UpdateMessages.Add(new UpdateMessageData

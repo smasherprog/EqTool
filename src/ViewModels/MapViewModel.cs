@@ -25,6 +25,17 @@ namespace EQTool.ViewModels
         public Ellipse Ellipse;
         public ArrowLine ArrowLine;
         public Ellipse TrackingEllipse;
+        private Brush _Color;
+
+        public Brush Color
+        {
+            get => _Color;
+            set
+            {
+                _Color = value;
+                OnPropertyChanged();
+            }
+        }
 
         private string _Name = string.Empty;
 
@@ -49,6 +60,7 @@ namespace EQTool.ViewModels
     public class PlayerLocation : PlayerLocationCircle
     {
         public SignalrPlayer Player;
+
     }
 
     public class MapViewModel : INotifyPropertyChanged
@@ -144,46 +156,6 @@ namespace EQTool.ViewModels
             CurrentScaling = 1.0f;
             Canvas?.Children?.Clear();
             Players.Clear();
-            Players.Add(new ViewModels.PlayerLocation
-            {
-                Name = "testing1"
-            });
-            Players.Add(new ViewModels.PlayerLocation
-            {
-                Name = "testing2"
-            });
-            Players.Add(new ViewModels.PlayerLocation
-            {
-                Name = "testing3"
-            });
-            Players.Add(new ViewModels.PlayerLocation
-            {
-                Name = "testing4"
-            });
-            Players.Add(new ViewModels.PlayerLocation
-            {
-                Name = "testing5"
-            });
-            Players.Add(new ViewModels.PlayerLocation
-            {
-                Name = "testing6"
-            });
-            Players.Add(new ViewModels.PlayerLocation
-            {
-                Name = "testing7"
-            });
-            Players.Add(new ViewModels.PlayerLocation
-            {
-                Name = "testing8"
-            });
-            Players.Add(new ViewModels.PlayerLocation
-            {
-                Name = "testing9"
-            });
-            Players.Add(new ViewModels.PlayerLocation
-            {
-                Name = "testing10"
-            });
         }
 
         public void ToggleCenter()
@@ -332,6 +304,7 @@ namespace EQTool.ViewModels
                 Player = signalrPlayer,
                 PlayerName = player.PlayerName,
                 TrackingEllipse = player.TrackingEllipse,
+                Color = player.Ellipse.Stroke,
                 Name = signalrPlayer.Name
             };
         }
@@ -870,7 +843,7 @@ namespace EQTool.ViewModels
         public void PlayerLocationEvent(SignalrPlayer e)
         {
             e.TimeStamp = DateTime.UtcNow;
-            var p = this.Players.FirstOrDefault(a => a.Player.Name == e.Name);
+            var p = this.Players.FirstOrDefault(a => a.Player?.Name == e.Name);
             if (p == null)
             {
                 var playerloc = AddPlayerToCanvas(e);

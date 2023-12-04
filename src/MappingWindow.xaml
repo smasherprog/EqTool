@@ -32,10 +32,13 @@
                 <Viewbox Stretch="Uniform">
                     <local:PanAndZoomCanvas x:Name="Map" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" />
                 </Viewbox>
-                <ListView HorizontalAlignment="Left" VerticalAlignment="Top" ItemsSource="{Binding Players}">
+                <ListView HorizontalAlignment="Left" VerticalAlignment="Top" ItemsSource="{Binding Players}" Background="Transparent">
                     <ListView.ItemTemplate>
                         <DataTemplate>
-                            <TextBlock Text="{Binding Name}" />
+                            <StackPanel HorizontalAlignment="Stretch" Orientation="Horizontal">
+                                <StackPanel MinWidth="20" MinHeight="20" Background="{Binding Color}" Margin="0, 0, 4, 0"></StackPanel>
+                                <TextBlock Text="{Binding Name}" Foreground="White" /> 
+                            </StackPanel>
                         </DataTemplate>
                     </ListView.ItemTemplate>
                 </ListView>
@@ -47,7 +50,7 @@
                     <StackPanel Orientation="Horizontal"  HorizontalAlignment="Center">
                         <!--<Button Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="toggleCenterOnyou" ToolTip="Open Mob Info Window">
                             <Image Source="pack://application:,,,/toolbox.png"/>
-                        </Button>-->
+                        </Button>-->2
                         <Button Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="openmobinfo" ToolTip="Open Mob Info Window">
                             <Image Source="pack://application:,,,/toolbox.png"/>
                         </Button>
