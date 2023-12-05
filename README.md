@@ -22,18 +22,17 @@ Features:
 <li>Detect Spells cast on others (this is a best guess as I am reading the log file so chloroplast and Regrowth of the growth have the same message)</li>
 <li>Filter spells show by class</li> 
 <li>Remove Spells from List if "Worn off message occurs"</li> 
-<li>Mob Info Window gives details about mobs tht you con in game.</li>
+<li>Mob Info Window gives details about mobs that you con in game.</li>
 <li>Automatically remove dead npc/player from the spell list.</li> 
 <li>Auto detect level and class!</li>
 <li>DPS is trailing 12 second average.</li>
 <li>Show fight Session data for comparisons.</li>
-<li>Sieve Counter</li>
-<li>Mob info shows pricing data for each item!</li>
+<li>Sieve Counter</li> 
 <li>Timers on map for easy TOD tracking!</li>
 <li>Pricing information in Mob info window.</li>
 <li>Save spells cast on you when you log out so when you log back in they resume counter!</li>
 <li>Maps</li>
- <li>Automatic self update.</li>
+<li>Automatic self update.</li>
 <li>Timers (Only Minutes are supported)</li>
 </ul>
 <h5>Timers (Only Minutes are supported) -- All below commands work in regular say!</h5>
