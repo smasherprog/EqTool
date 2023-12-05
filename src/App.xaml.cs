@@ -248,7 +248,6 @@ namespace EQTool
             DpsMeterMenuItem = new System.Windows.Forms.MenuItem("Dps", ToggleDPSWindow);
             MobInfoMenuItem = new System.Windows.Forms.MenuItem("Mob Info", ToggleMobInfoWindow);
             var gitHubMenuItem = new System.Windows.Forms.MenuItem("Suggestions", Suggestions);
-            var whythepig = new System.Windows.Forms.MenuItem("Why the Pig?", WhyThePig);
             var updates = new System.Windows.Forms.MenuItem("Check for Update", CheckForUpdates);
             var versionstring = Assembly.GetExecutingAssembly().GetName().Version.ToString();
             var beta = false;
@@ -278,7 +277,6 @@ namespace EQTool
                 Visible = true,
                 ContextMenu = new System.Windows.Forms.ContextMenu(new System.Windows.Forms.MenuItem[]
                 {
-                     whythepig,
                      GroupSuggestionsMenuItem,
                     DpsMeterMenuItem,
                     MapMenuItem,
@@ -459,15 +457,6 @@ namespace EQTool
             {
                 System.Windows.Forms.Clipboard.SetText("You must /who in the zone before group suggestions can be made!");
             }
-        }
-
-        private void WhyThePig(object sender, EventArgs e)
-        {
-            _ = System.Diagnostics.Process.Start(new ProcessStartInfo
-            {
-                FileName = "https://discord.gg/nSrz8hAwxM",
-                UseShellExecute = true
-            });
         }
 
         private void Suggestions(object sender, EventArgs e)
