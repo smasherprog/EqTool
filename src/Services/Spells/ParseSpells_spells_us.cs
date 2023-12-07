@@ -165,7 +165,10 @@ namespace EQTool.Services
 
                     if (spell.name.StartsWith("Primal Essence"))
                     {
-                        spell.Classes.Add(PlayerClasses.Shaman, 35);
+                        if (!spell.Classes.ContainsKey(PlayerClasses.Shaman))
+                        {
+                            spell.Classes.Add(PlayerClasses.Shaman, 35);
+                        }
                     }
 
                     if (spell.Classes.Any() && spell.Classes.All(a => a.Value > 60 && a.Value <= 255))

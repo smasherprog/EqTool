@@ -36,96 +36,7 @@ namespace EQTool
             view.IsLiveGrouping = true;
             view.SortDescriptions.Add(new SortDescription(nameof(UpdateMessageData.DateTime), ListSortDirection.Descending));
             view.IsLiveSorting = true;
-            UpdateMessages.Add(new UpdateMessageData
-            {
-                DateTime = new DateTime(2023, 11, 25),
-                Message = "If kael faction pulls are happening, a timer will be added to let you know when the next will be regardless of whether you are in the zone"
-            });
-            UpdateMessages.Add(new UpdateMessageData
-            {
-                DateTime = new DateTime(2023, 11, 25),
-                Message = "Fixed various map issues"
-            });
-            UpdateMessages.Add(new UpdateMessageData
-            {
-                DateTime = new DateTime(2023, 11, 25),
-                Message = "Added ability to remove individual items from the Triggers window"
-            });
-            UpdateMessages.Add(new UpdateMessageData
-            {
-                DateTime = new DateTime(2023, 11, 25),
-                Message = "Change Auto Update to only occur if you have been idle for 2 or more minutes!"
-            });
-            UpdateMessages.Add(new UpdateMessageData
-            {
-                DateTime = new DateTime(2023, 11, 26),
-                Message = "Adjusted Trashcan timer alignment again. It was off when timer was over 1 hour."
-            });
-            UpdateMessages.Add(new UpdateMessageData
-            {
-                DateTime = new DateTime(2023, 11, 26),
-                Message = "Various bug fixes. Your settings probably were cleared in the last update, sorry about that!"
-            });
-            UpdateMessages.Add(new UpdateMessageData
-            {
-                DateTime = new DateTime(2023, 11, 26),
-                Message = "Library updates, various underlying code refactorings, removed dead code to support light theme (Yuck)."
-            });
-            UpdateMessages.Add(new UpdateMessageData
-            {
-                DateTime = new DateTime(2023, 11, 26),
-                Message = "Library updates, various underlying code refactorings, removed dead code to support light theme (Yuck)."
-            });
-            UpdateMessages.Add(new UpdateMessageData
-            {
-                DateTime = new DateTime(2023, 11, 26),
-                Message = "Fixed map zoom and drag bug where tracking radius size changed incorrectly."
-            });
-            UpdateMessages.Add(new UpdateMessageData
-            {
-                DateTime = new DateTime(2023, 11, 26),
-                Message = "Aligned delete buttons in triggers window for easier mass deletes!"
-            });
-            UpdateMessages.Add(new UpdateMessageData
-            {
-                DateTime = new DateTime(2023, 11, 26),
-                Message = "Added Minwidth to the mob info loot window as sometimes it would be too small."
-            });
-            UpdateMessages.Add(new UpdateMessageData
-            {
-                DateTime = new DateTime(2023, 11, 27),
-                Message = "Fixed issue where empty spells were showing up in the list."
-            });
-            UpdateMessages.Add(new UpdateMessageData
-            {
-                DateTime = new DateTime(2023, 11, 29),
-                Message = "Fixed Death messages for faction mobs."
-            });
-            UpdateMessages.Add(new UpdateMessageData
-            {
-                DateTime = new DateTime(2023, 11, 30),
-                Message = "Fixed issue where your location would show at 0,0 when entering a zone. Will only start displaying your location after the first /loc is received."
-            });
-            UpdateMessages.Add(new UpdateMessageData
-            {
-                DateTime = new DateTime(2023, 11, 30),
-                Message = "Added some null checks to spell window onclose method."
-            });
-            UpdateMessages.Add(new UpdateMessageData
-            {
-                DateTime = new DateTime(2023, 11, 30),
-                Message = "Map work is almost done! Removed the option for DoNotShare. Valid options are Guild Only and Everyone. "
-            });
-            UpdateMessages.Add(new UpdateMessageData
-            {
-                DateTime = new DateTime(2023, 11, 30),
-                Message = "Since I am still working on mapping issues, the share setting is still set to Everyone even if the setting shows differently."
-            });
-            UpdateMessages.Add(new UpdateMessageData
-            {
-                DateTime = new DateTime(2023, 11, 30),
-                Message = "Once map work is done, the setting will be respected! Location sharing only occurs to others in the same zone as you."
-            });
+
             UpdateMessages.Add(new UpdateMessageData
             {
                 DateTime = new DateTime(2023, 12, 2),
@@ -165,6 +76,11 @@ namespace EQTool
             {
                 DateTime = new DateTime(2023, 12, 3),
                 Message = "PQ updated Cazic-Thule to load map correctly."
+            });
+            UpdateMessages.Add(new UpdateMessageData
+            {
+                DateTime = new DateTime(2023, 12, 7),
+                Message = "Fixed PQ bug that prevent program from loading. Next time post an issue on Github and it will be fixed in minutes!"
             });
             UpdateMessages.Add(new UpdateMessageData
             {
