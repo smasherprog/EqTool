@@ -503,6 +503,23 @@ namespace EQToolTests
         }
 
         [TestMethod]
+        public void TestPrimalEssence()
+        {
+            var spells = container.Resolve<EQSpells>();
+            var spelllogparse = container.Resolve<SpellLogParse>();
+            var spellname = "Burnout";
+            var shissarspell = spells.AllSpells.FirstOrDefault(a => a.name == spellname);
+            var line = "You begin casting Primal Essence.";
+            var player = container.Resolve<ActivePlayer>();
+            player.Player = new PlayerInfo
+            {
+                Level = 55,
+                PlayerClass = PlayerClasses.Shaman
+            };
+            var guess = spelllogparse.MatchSpell(line);
+        }
+
+        [TestMethod]
         public void TestSlowForMagePetHaste1()
         {
             var spells = container.Resolve<EQSpells>();

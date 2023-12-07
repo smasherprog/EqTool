@@ -166,6 +166,11 @@ namespace EQTool
                 DateTime = new DateTime(2023, 12, 3),
                 Message = "PQ updated Cazic-Thule to load map correctly."
             });
+            UpdateMessages.Add(new UpdateMessageData
+            {
+                DateTime = new DateTime(2023, 12, 7),
+                Message = "Fixed Hammer of the Dragonborn clicky Primal Essence will now show up when used!"
+            });
         }
     }
 }

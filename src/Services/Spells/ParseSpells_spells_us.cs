@@ -162,6 +162,12 @@ namespace EQTool.Services
                     {
                         continue;
                     }
+
+                    if (spell.name.StartsWith("Primal Essence"))
+                    {
+                        spell.Classes.Add(PlayerClasses.Shaman, 35);
+                    }
+
                     if (spell.Classes.Any() && spell.Classes.All(a => a.Value > 60 && a.Value <= 255))
                     {
                         //Debug.WriteLine($"Skipping {spell.name} Class Level Out of range");
@@ -192,7 +198,7 @@ namespace EQTool.Services
                         continue;
                     }
 
-                    if (!spell.name.StartsWith("Alter Plane") && (desctypes.Contains(spell.DescrNumber) || spell.DescrNumber >= DescrNumber.Traps2))
+                    if (!spell.name.StartsWith("Alter Plane") && !spell.name.StartsWith("Primal Essence") && (desctypes.Contains(spell.DescrNumber) || spell.DescrNumber >= DescrNumber.Traps2))
                     {
                         //Debug.WriteLine($"Skipping {spell.name} DescrNumber");
                         continue;
