@@ -87,6 +87,11 @@ namespace EQTool
                 DateTime = new DateTime(2023, 12, 7),
                 Message = "Fixed Hammer of the Dragonborn clicky Primal Essence will now show up when used!"
             });
+            UpdateMessages.Add(new UpdateMessageData
+            {
+                DateTime = new DateTime(2023, 12, 9),
+                Message = "Adjusted crystal caverns map opacity levels."
+            });
         }
     }
 }

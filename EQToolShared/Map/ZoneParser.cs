@@ -304,8 +304,7 @@ namespace EQToolShared.Map
             ZoneInfoMap.Add("crystal", new ZoneInfo
             {
                 Name = "crystal",
-                ShowAllMapLevels = true,
-                ZoneLevelHeight = 10,
+                ZoneLevelHeight = 20,
                 NotableNPCs = new List<string>()
                 {
                     "",
