@@ -90,6 +90,11 @@ namespace EQTool
             UpdateMessages.Add(new UpdateMessageData
             {
                 DateTime = new DateTime(2023, 12, 9),
+                Message = "poh zone timers updated."
+            });
+            UpdateMessages.Add(new UpdateMessageData
+            {
+                DateTime = new DateTime(2023, 12, 9),
                 Message = "a protector of growth spawn timers added to pog."
             });
             UpdateMessages.Add(new UpdateMessageData

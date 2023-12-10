@@ -647,7 +647,7 @@ namespace EQToolShared.Map
                 {
                     "Ashenbone Broodmaster", "Avatar of Abhorrence", "Coercer T`vala", "Grandmaster R`Tal", "High Priest M`kari", "Lord of Ire", "Lord of Loathing", "Magi P`Tasa", "Master of Spite", "Mistress of Scorn", "Maestro of Rancor", "Innoruuk"
                 },
-                RespawnTime = new TimeSpan(0, 6, 40)
+                RespawnTime = new TimeSpan(8, 0, 0)
             });
             ZoneInfoMap.Add("highkeep", new ZoneInfo
             {
