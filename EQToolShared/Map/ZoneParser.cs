@@ -595,6 +595,14 @@ namespace EQToolShared.Map
                 {
                     "",
                 },
+                NpcSpawnTimes = new List<NpcSpawnTime>()
+                 {
+                      new NpcSpawnTime
+                      {
+                           Name = "a protector of growth",
+                            RespawnTime = new TimeSpan(0, 24, 0)
+                      }
+                 },
                 RespawnTime = new TimeSpan(12, 0, 0)
             });
             ZoneInfoMap.Add("gukbottom", new ZoneInfo
