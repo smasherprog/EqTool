@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Policy;
 
 namespace EQToolShared.Map
 {
@@ -889,7 +890,7 @@ namespace EQToolShared.Map
                 },
                 RespawnTime = new TimeSpan(1, 10, 10)
             });
-            var zone = new ZoneInfo
+            ZoneInfoMap.Add("mistmoore", new ZoneInfo
             {
                 Name = "mistmoore",
                 ShowAllMapLevels = false,
@@ -899,12 +900,7 @@ namespace EQToolShared.Map
                     "an advisor","an avenging caitiff","Black Dire","Butler Syncall","a cloaked dhampyre","a deathly usher","Enynti","Garton Viswin","a glyphed ghoul","an imp familiar","Lasna Cheroon","Maid Issis","Mayong Mistmoore","Mynthi Davissi","Princess Cherista","Ssynthi","Xicotl",
                 },
                 RespawnTime = new TimeSpan(0, 22, 00)
-            };
-            if (isProjectQ)
-            {
-                zone.RespawnTime = new TimeSpan(0, 8, 0);
-            }
-            ZoneInfoMap.Add("mistmoore", zone);
+            });
             ZoneInfoMap.Add("misty", new ZoneInfo
             {
                 Name = "misty",
@@ -1336,20 +1332,14 @@ namespace EQToolShared.Map
                 NotableNPCs = new List<string>() { "", },
                 RespawnTime = new TimeSpan(0, 6, 40)
             });
-            zone = new ZoneInfo
+            ZoneInfoMap.Add("unrest", new ZoneInfo
             {
                 Name = "unrest",
                 ShowAllMapLevels = false,
                 ZoneLevelHeight = 10,
                 NotableNPCs = new List<string>() { "Garanel Rucksif", "a priest of najena", "Khrix Fritchoff", "Khrix's Abomination", "Torklar Battlemaster", "Shadowpincer", "reclusive ghoul magus", },
                 RespawnTime = new TimeSpan(0, 22, 0)
-            };
-            if (isProjectQ)
-            {
-                zone.RespawnTime = new TimeSpan(0, 8, 0);
-            }
-
-            ZoneInfoMap.Add("unrest", zone);
+            });
 
             ZoneInfoMap.Add("veeshan", new ZoneInfo
             {
@@ -1407,7 +1397,12 @@ namespace EQToolShared.Map
                  },
                 RespawnTime = new TimeSpan(0, 6, 40)
             });
-
+            // add customer timers here for PQ
+            if (isProjectQ)
+            {
+                ZoneInfoMap["unrest"].RespawnTime = new TimeSpan(0, 8, 0);
+                ZoneInfoMap["mistmoore"].RespawnTime = new TimeSpan(0, 8, 0);
+            }
 
             ZoneWhoMapper.Add("kael drakkal", "kael drakkel");
             ZoneWhoMapper.Add("eastern wastes", "eastern wastelands");
