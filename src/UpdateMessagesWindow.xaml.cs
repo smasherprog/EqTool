@@ -37,32 +37,6 @@ namespace EQTool
             view.SortDescriptions.Add(new SortDescription(nameof(UpdateMessageData.DateTime), ListSortDirection.Descending));
             view.IsLiveSorting = true;
 
-           
-            UpdateMessages.Add(new UpdateMessageData
-            {
-                DateTime = new DateTime(2023, 12, 3),
-                Message = "Fixed Map bug that caused maps to not load!"
-            });
-            UpdateMessages.Add(new UpdateMessageData
-            {
-                DateTime = new DateTime(2023, 12, 3),
-                Message = "Added Colors to the player list in the zone."
-            });
-            UpdateMessages.Add(new UpdateMessageData
-            {
-                DateTime = new DateTime(2023, 12, 3),
-                Message = "Updated where settings are saved. This MIGHT cause all of your current settings to be cleared.. .  . . "
-            });
-            UpdateMessages.Add(new UpdateMessageData
-            {
-                DateTime = new DateTime(2023, 12, 3),
-                Message = "Added setting to toggle kill timers that show up on the map, this is a PER character setting."
-            });
-            UpdateMessages.Add(new UpdateMessageData
-            {
-                DateTime = new DateTime(2023, 12, 3),
-                Message = "PQ updated Cazic-Thule to load map correctly."
-            });
             UpdateMessages.Add(new UpdateMessageData
             {
                 DateTime = new DateTime(2023, 12, 7),
@@ -92,6 +66,11 @@ namespace EQTool
             {
                 DateTime = new DateTime(2023, 12, 11),
                 Message = "Updated code so that PQ zone timers can be added by those without coding ability. Check out github!"
+            }); 
+            UpdateMessages.Add(new UpdateMessageData
+            {
+                DateTime = new DateTime(2023, 12, 13),
+                Message = "Updated various zone timers!"
             });
         }
     }

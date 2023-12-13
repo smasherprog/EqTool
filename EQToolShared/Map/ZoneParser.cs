@@ -1220,6 +1220,11 @@ namespace EQToolShared.Map
                      {
                           Name = "High Shaman Phido",
                           RespawnTime = new TimeSpan(0, 22, 0)
+                     },
+                         new NpcSpawnTime
+                     {
+                          Name = "a treant",
+                          RespawnTime = new TimeSpan(0, 4, 0)
                      }
                  },
                 RespawnTime = new TimeSpan(0, 6, 0)
@@ -1402,6 +1407,7 @@ namespace EQToolShared.Map
             {
                 ZoneInfoMap["unrest"].RespawnTime = new TimeSpan(0, 8, 0);
                 ZoneInfoMap["mistmoore"].RespawnTime = new TimeSpan(0, 8, 0);
+                ZoneInfoMap["najena"].RespawnTime = new TimeSpan(0, 19, 0);
             }
 
             ZoneWhoMapper.Add("kael drakkal", "kael drakkel");
