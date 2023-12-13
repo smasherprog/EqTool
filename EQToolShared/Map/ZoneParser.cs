@@ -626,7 +626,7 @@ namespace EQToolShared.Map
                 {
                     "a froglok gaz squire","a froglok idealist","a froglok realist","a froglok necromancer","a froglok scryer","a froglok summoner","a froglok nokta shaman","a froglok shin knight","the froglok shin lord","Tempus","a giant heart spider",
                 },
-                RespawnTime = new TimeSpan(0, 28, 0)
+                RespawnTime = new TimeSpan(0, 16, 30)
             });
             ZoneInfoMap.Add("halas", new ZoneInfo
             {
