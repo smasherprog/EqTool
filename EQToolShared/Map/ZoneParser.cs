@@ -921,7 +921,7 @@ namespace EQToolShared.Map
                 {
                     "Akksstaff","BoneCracker","Drelzna","Ekeros","Linara Parlone","Moosh","Najena","Officer Grush","Rathyl","Rathyl reincarnate","Trazdon","a visiting priestess","The Widowmistress",
                 },
-                RespawnTime = new TimeSpan(0, 18, 30)
+                RespawnTime = new TimeSpan(0, 19, 0)
             });
             ZoneInfoMap.Add("necropolis", new ZoneInfo
             {
