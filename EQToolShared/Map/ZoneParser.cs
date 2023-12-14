@@ -174,6 +174,26 @@ namespace EQToolShared.Map
                       {
                             Name ="Walnan",
                             RespawnTime = new TimeSpan(0,6, 40)
+                      },
+                         new NpcSpawnTime
+                      {
+                            Name ="Happ Findlefinn",
+                            RespawnTime = new TimeSpan(0,6, 40)
+                      },
+                         new NpcSpawnTime
+                      {
+                            Name ="Atwin Keladryn",
+                            RespawnTime = new TimeSpan(0,6, 40)
+                      },
+                         new NpcSpawnTime
+                      {
+                            Name ="Balen Kalgunn",
+                            RespawnTime = new TimeSpan(0,6, 40)
+                      },
+                         new NpcSpawnTime
+                      {
+                            Name ="Thar Kelgand",
+                            RespawnTime = new TimeSpan(0,6, 40)
                       }
                  },
                 RespawnTime = new TimeSpan(0, 15, 0)
