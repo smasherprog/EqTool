@@ -39,46 +39,6 @@ namespace EQTool
 
             UpdateMessages.Add(new UpdateMessageData
             {
-                DateTime = new DateTime(2023, 12, 2),
-                Message = "Revised wording for clarity: If you select guild only, you will ONLY see others in YOUR guild visa versa. Those with the everyone will ONLY see others with the everyone setting."
-            });
-            UpdateMessages.Add(new UpdateMessageData
-            {
-                DateTime = new DateTime(2023, 12, 2),
-                Message = "Map settings will now be respeected. If you select guild only, you will only see other guild members."
-            });
-            UpdateMessages.Add(new UpdateMessageData
-            {
-                DateTime = new DateTime(2023, 12, 2),
-                Message = "Turned down opacity on OTHERS tracking radius to put them more in the background."
-            });
-            UpdateMessages.Add(new UpdateMessageData
-            {
-                DateTime = new DateTime(2023, 12, 3),
-                Message = "Fixed Map bug that caused maps to not load!"
-            });
-            UpdateMessages.Add(new UpdateMessageData
-            {
-                DateTime = new DateTime(2023, 12, 3),
-                Message = "Added Colors to the player list in the zone."
-            });
-            UpdateMessages.Add(new UpdateMessageData
-            {
-                DateTime = new DateTime(2023, 12, 3),
-                Message = "Updated where settings are saved. This MIGHT cause all of your current settings to be cleared.. .  . . "
-            });
-            UpdateMessages.Add(new UpdateMessageData
-            {
-                DateTime = new DateTime(2023, 12, 3),
-                Message = "Added setting to toggle kill timers that show up on the map, this is a PER character setting."
-            });
-            UpdateMessages.Add(new UpdateMessageData
-            {
-                DateTime = new DateTime(2023, 12, 3),
-                Message = "PQ updated Cazic-Thule to load map correctly."
-            });
-            UpdateMessages.Add(new UpdateMessageData
-            {
                 DateTime = new DateTime(2023, 12, 7),
                 Message = "Fixed PQ bug that prevent program from loading. Next time post an issue on Github and it will be fixed in minutes!"
             });
@@ -102,7 +62,16 @@ namespace EQTool
                 DateTime = new DateTime(2023, 12, 9),
                 Message = "Adjusted crystal caverns map opacity levels."
             });
-
+            UpdateMessages.Add(new UpdateMessageData
+            {
+                DateTime = new DateTime(2023, 12, 11),
+                Message = "Updated code so that PQ zone timers can be added by those without coding ability. Check out github!"
+            }); 
+            UpdateMessages.Add(new UpdateMessageData
+            {
+                DateTime = new DateTime(2023, 12, 13),
+                Message = "Updated various zone timers!"
+            });
         }
     }
 }

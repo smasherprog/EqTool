@@ -11,7 +11,7 @@ namespace EQToolShared.Map
             {
                 if (!string.IsNullOrWhiteSpace(npcName))
                 {
-                    var foundnpc = zoneInfo.NpcSpawnTimes.FirstOrDefault(a => a.Name == npcName);
+                    var foundnpc = zoneInfo.NpcSpawnTimes.FirstOrDefault(a => string.Equals(a.Name, npcName, StringComparison.OrdinalIgnoreCase));
                     if (foundnpc != null)
                     {
                         return foundnpc.RespawnTime;
