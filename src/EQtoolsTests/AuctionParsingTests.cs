@@ -3,6 +3,10 @@ using EQToolShared.Discord;
 using EQToolShared.Enums;
 using EQToolTests;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 
 namespace EQtoolsTests
 {
@@ -16,6 +20,19 @@ namespace EQtoolsTests
             container = DI.Init();
             discordAuctionParse = container.Resolve<DiscordAuctionParse>();
         }
+
+
+
+        [TestMethod]
+        public void ParseDiscordMessage()
+        {
+            var filepath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "DiscordResponse.json");
+            var resultstring = File.ReadAllText(filepath);
+            var outs = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Message>>(resultstring);
+            var Emissaryofthule = outs.Where(a => a.embeds.Any(b => b.fields.Any(c => c.Price.HasValue))).Take(4).ToList();
+            Assert.IsNotNull(Emissaryofthule);
+        }
+
 
         [TestMethod]
         public void Parse1()
@@ -338,6 +355,6 @@ namespace EQtoolsTests
             //Assert.AreEqual(AuctionType.WTS, result.Items[1].AuctionType);
             //Assert.AreEqual("Flawless Diamond", result.Items[1].Name);
             //Assert.AreEqual(2500, result.Items[1].Price); 
-        }  
+        }
     }
 }

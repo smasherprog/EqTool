@@ -71,12 +71,16 @@ namespace EQToolShared.Discord
         public string name { get; set; }
         public string value { get; set; }
     }
+    public class AuthorMessage
+    {
+        public string name { get; set; }
+    }
 
     public class MessageEmbed
     {
-        public string title { get; set; }
-        public AuctionType AuctionType => title.StartsWith("**[ WTB ]**") ? AuctionType.WTB : (title.StartsWith("**[ WTS ]**") ? AuctionType.WTS : AuctionType.BOTH);
-        public string AuctionPerson => title.Substring(title.LastIndexOf("**") + 2).Trim();
+        public AuctionType AuctionType => author.name.StartsWith("[ WTB ]") ? AuctionType.WTB : (author.name.StartsWith("[ WTS ]") ? AuctionType.WTS : AuctionType.BOTH);
+        public string AuctionPerson => author.name.Substring(author.name.LastIndexOf("   ") + 3).Trim();
+        public AuthorMessage author { get; set; }
         public DateTimeOffset timestamp { get; set; }
         public List<embedFields> fields { get; set; }
     }
