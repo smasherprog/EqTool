@@ -1477,6 +1477,7 @@ namespace EQToolShared.Map
             ZoneNameMapper.Add("ak'anon", "akanon");
             ZoneNameMapper.Add("warsliks woods", "warslikswood");
             ZoneNameMapper.Add("castle mistmoore", "mistmoore");
+            ZoneNameMapper.Add("castle of mistmoore", "mistmoore");
             ZoneNameMapper.Add("high keep", "highkeep");
             ZoneNameMapper.Add("highpass hold", "highpass");
             ZoneNameMapper.Add("qeynos aqueduct system", "qcat");
@@ -1520,7 +1521,9 @@ namespace EQToolShared.Map
             ZoneNameMapper.Add("city of thurgadin", "thurgadina");
             ZoneNameMapper.Add("northern desert of ro", "nro");
             ZoneNameMapper.Add("neriak foreign quarter", "neriaka");
+            ZoneNameMapper.Add("neriak - foreign quarter", "neriaka");
             ZoneNameMapper.Add("infected paw", "paw");
+            ZoneNameMapper.Add("lair of the splitpaw", "paw");
             ZoneNameMapper.Add("plane of air", "airplane");
             ZoneNameMapper.Add("southern felwithe", "felwitheb");
             ZoneNameMapper.Add("velketor's labyrinth", "velketor");
@@ -1549,6 +1552,7 @@ namespace EQToolShared.Map
             ZoneNameMapper.Add("eastern wastelands", "eastwastes");
             ZoneNameMapper.Add("field of bone", "fieldofbone");
             ZoneNameMapper.Add("neriak third gate", "neriakc");
+            ZoneNameMapper.Add("neriak - 3rd gate", "neriakc");
             ZoneNameMapper.Add("erud's crossing", "erudsxing");
             ZoneNameMapper.Add("northern felwithe", "felwithea");
             ZoneNameMapper.Add("firiona vie", "firiona");
@@ -1575,6 +1579,7 @@ namespace EQToolShared.Map
             ZoneNameMapper.Add("kerra isle", "kerraridge");
             ZoneNameMapper.Add("lost temple of cazic-thule", "cazicthule");
             ZoneNameMapper.Add("lost temple of cazicthule", "cazicthule");
+            ZoneNameMapper.Add("neriak - commons", "neriakb");
             ZoneNameMapper.Add("neriak commons", "neriakb");
             ZoneNameMapper.Add("karnor's castle", "karnor");
             ZoneNameMapper.Add("crystal caverns", "crystal");
