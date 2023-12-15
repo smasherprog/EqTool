@@ -1476,6 +1476,7 @@ namespace EQToolShared.Map
             ZoneNameMapper.Add("kedge keep", "kedge");
             ZoneNameMapper.Add("ak'anon", "akanon");
             ZoneNameMapper.Add("warsliks woods", "warslikswood");
+            ZoneNameMapper.Add("castle mistmoore", "mistmoore");
             ZoneNameMapper.Add("castle of mistmoore", "mistmoore");
             ZoneNameMapper.Add("high keep", "highkeep");
             ZoneNameMapper.Add("highpass hold", "highpass");
@@ -1519,6 +1520,7 @@ namespace EQToolShared.Map
             ZoneNameMapper.Add("misty thicket", "misty");
             ZoneNameMapper.Add("city of thurgadin", "thurgadina");
             ZoneNameMapper.Add("northern desert of ro", "nro");
+            ZoneNameMapper.Add("neriak foreign quarter", "neriaka");
             ZoneNameMapper.Add("neriak - foreign quarter", "neriaka");
             ZoneNameMapper.Add("infected paw", "paw");
             ZoneNameMapper.Add("lair of the splitpaw", "paw");
@@ -1549,6 +1551,7 @@ namespace EQToolShared.Map
             ZoneNameMapper.Add("the overthere", "overthere");
             ZoneNameMapper.Add("eastern wastelands", "eastwastes");
             ZoneNameMapper.Add("field of bone", "fieldofbone");
+            ZoneNameMapper.Add("neriak third gate", "neriakc");
             ZoneNameMapper.Add("neriak - 3rd gate", "neriakc");
             ZoneNameMapper.Add("erud's crossing", "erudsxing");
             ZoneNameMapper.Add("northern felwithe", "felwithea");
@@ -1577,6 +1580,7 @@ namespace EQToolShared.Map
             ZoneNameMapper.Add("lost temple of cazic-thule", "cazicthule");
             ZoneNameMapper.Add("lost temple of cazicthule", "cazicthule");
             ZoneNameMapper.Add("neriak - commons", "neriakb");
+            ZoneNameMapper.Add("neriak commons", "neriakb");
             ZoneNameMapper.Add("karnor's castle", "karnor");
             ZoneNameMapper.Add("crystal caverns", "crystal");
             ZoneNameMapper.Add("iceclad ocean", "iceclad");
