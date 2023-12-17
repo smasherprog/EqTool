@@ -20,4 +20,22 @@ namespace EQToolApis.DB.Models
 
         public EQTunnelMessage EQTunnelMessage { get; set; }
     }
+
+    [PrimaryKey(nameof(EQTunnelAuctionItemId))]
+    public class EQTunnelAuctionItemV2
+    {
+        public long EQTunnelAuctionItemId { get; set; }
+
+        public int EQitemId { get; set; }
+
+        public EQitemV2 EQitem { get; set; }
+
+        public Servers Server { get; set; }
+
+        public int? AuctionPrice { get; set; }
+
+        public long EQTunnelMessageId { get; set; }
+
+        public EQTunnelMessageV2 EQTunnelMessage { get; set; }
+    }
 }

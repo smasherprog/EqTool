@@ -1105,30 +1105,18 @@ namespace EQToolTests
         //    var splits = data.Split(new string[] { "),(" }, StringSplitOptions.None);
         //    splits[0] = splits[0].Trim('(');
         //    splits[splits.Length - 1] = splits[splits.Length - 1].Trim(')');
-        //    var outputstringp99 = "{";
-        //    var outputstringppq = "{";
+
+        //    var outputstring = "{";
         //    foreach (var item in splits)
         //    {
         //        var innersplits = item.Split(',');
-        //        if (float.TryParse(innersplits[154], out var exp) && exp <= 3.0)
-        //        {
-        //            var name = innersplits[2].Replace("\\", string.Empty).Trim('\'');
-        //            outputstringp99 += "\"" + name + "\",";
-        //        }
-        //        else
-        //        {
-        //            var name = innersplits[2].Replace("\\", string.Empty).Trim('\'');
-        //            outputstringppq += "\"" + name + "\",";
-        //        }
+        //        var name = innersplits[2].Replace("\\", string.Empty).Trim('\'');
+        //        outputstring += "\"" + name + "\",";
         //    }
-        //    outputstringp99.TrimEnd(',');
-        //    outputstringp99 += "}";
-        //    Debug.WriteLine(outputstringp99);
-
-        //    outputstringppq.TrimEnd(',');
-        //    outputstringppq += "}";
-        //    Debug.WriteLine(outputstringppq);
-
+        //    outputstring.TrimEnd(',');
+        //    outputstring += "}";
+        //    //Debug.WriteLine(outputstring);
+        //    File.WriteAllText("C:\\Users\\smash\\Downloads\\itemslist1.txt", outputstring);
         //    Assert.IsTrue(splits.Any());
         //}
     }

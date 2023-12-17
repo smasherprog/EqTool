@@ -14,4 +14,15 @@ namespace EQToolApis.DB.Models
 
         public Servers Server { get; set; }
     }
+
+    [PrimaryKey(nameof(EQAuctionPlayerId)), Index(nameof(Server))]
+    public class EQAuctionPlayerV2
+    {
+        public int EQAuctionPlayerId { get; set; }
+
+        [MaxLength(64)]
+        public string Name { get; set; } = string.Empty;
+
+        public Servers Server { get; set; }
+    }
 }
