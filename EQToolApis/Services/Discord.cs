@@ -58,10 +58,10 @@ namespace EQToolApis.Services
 
         public List<Message> ReadMessages(long? lastid, Servers server)
         {
-            var url = $"https://discord.com/api/v9/channels/{ChannelIds[(int)server]}/messages?limit=50";
+            var url = $"https://discord.com/api/v9/channels/{ChannelIds[(int)server]}/messages?limit=200";
             if (lastid.HasValue)
             {
-                url = $"https://discord.com/api/v9/channels/{ChannelIds[(int)server]}/messages?after={lastid.Value}&limit=50";
+                url = $"https://discord.com/api/v9/channels/{ChannelIds[(int)server]}/messages?after={lastid.Value}&limit=200";
             }
             using (var msg = new HttpRequestMessage())
             {
@@ -78,10 +78,10 @@ namespace EQToolApis.Services
 
         public List<Message> ReadMessageHistory(long? lastid, Servers server)
         {
-            var url = $"https://discord.com/api/v9/channels/{ChannelIds[(int)server]}/messages?limit=50";
+            var url = $"https://discord.com/api/v9/channels/{ChannelIds[(int)server]}/messages?limit=200";
             if (lastid.HasValue)
             {
-                url = $"https://discord.com/api/v9/channels/{ChannelIds[(int)server]}/messages?before={lastid.Value}&limit=50";
+                url = $"https://discord.com/api/v9/channels/{ChannelIds[(int)server]}/messages?before={lastid.Value}&limit=200";
             }
             using (var msg = new HttpRequestMessage())
             {
