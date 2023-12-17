@@ -58,10 +58,10 @@ namespace EQToolApis.Services
 
         public List<Message> ReadMessages(long? lastid, Servers server)
         {
-            var url = $"https://discord.com/api/v9/channels/{ChannelIds[(int)server]}/messages?limit=200";
+            var url = $"https://discord.com/api/v9/channels/{ChannelIds[(int)server]}/messages?limit=50";
             if (lastid.HasValue)
             {
-                url = $"https://discord.com/api/v9/channels/{ChannelIds[(int)server]}/messages?after={lastid.Value}&limit=200";
+                url = $"https://discord.com/api/v9/channels/{ChannelIds[(int)server]}/messages?after={lastid.Value}&limit=50";
             }
             using (var msg = new HttpRequestMessage())
             {
@@ -70,19 +70,27 @@ namespace EQToolApis.Services
                 msg.Method = HttpMethod.Get;
                 var result = _client.SendAsync(msg).Result;
                 var resultstring = result.Content.ReadAsStringAsync().Result;
-                return result.StatusCode == System.Net.HttpStatusCode.Unauthorized
-                    ? new List<Message>()
-                    : Newtonsoft.Json.JsonConvert.DeserializeObject<List<Message>>(resultstring);
+                try
+                {
+                    return result.StatusCode == System.Net.HttpStatusCode.Unauthorized
+                ? new List<Message>()
+                : Newtonsoft.Json.JsonConvert.DeserializeObject<List<Message>>(resultstring);
+                }
+                catch (Exception e)
+                {
+                    throw new Exception(e.Message + " --- " + resultstring);
+                }
             }
         }
 
         public List<Message> ReadMessageHistory(long? lastid, Servers server)
         {
-            var url = $"https://discord.com/api/v9/channels/{ChannelIds[(int)server]}/messages?limit=200";
+            var url = $"https://discord.com/api/v9/channels/{ChannelIds[(int)server]}/messages?limit=50";
             if (lastid.HasValue)
             {
-                url = $"https://discord.com/api/v9/channels/{ChannelIds[(int)server]}/messages?before={lastid.Value}&limit=200";
+                url = $"https://discord.com/api/v9/channels/{ChannelIds[(int)server]}/messages?before={lastid.Value}&limit=50";
             }
+
             using (var msg = new HttpRequestMessage())
             {
                 msg.Headers.Add("authorization", token);
@@ -90,9 +98,16 @@ namespace EQToolApis.Services
                 msg.Method = HttpMethod.Get;
                 var result = _client.SendAsync(msg).Result;
                 var resultstring = result.Content.ReadAsStringAsync().Result;
-                return result.StatusCode == System.Net.HttpStatusCode.Unauthorized
-                    ? new List<Message>()
-                    : Newtonsoft.Json.JsonConvert.DeserializeObject<List<Message>>(resultstring);
+                try
+                {
+                    return result.StatusCode == System.Net.HttpStatusCode.Unauthorized
+                ? new List<Message>()
+                : Newtonsoft.Json.JsonConvert.DeserializeObject<List<Message>>(resultstring);
+                }
+                catch (Exception e)
+                {
+                    throw new Exception(e.Message + " --- " + resultstring);
+                }
             }
         }
         public class ThrottledItem
