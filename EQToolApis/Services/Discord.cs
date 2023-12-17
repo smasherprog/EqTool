@@ -147,7 +147,7 @@ namespace EQToolApis.Services
                             playerCache.PlayersLock.EnterWriteLock();
                             try
                             {
-                                playerCache.Players.Add(eqplayer.EQAuctionPlayerId, new AuctionPlayer { EQAuctionPlayerId = eqplayer.EQAuctionPlayerId, Name = eqplayer.Name });
+                                playerCache.Players.TryAdd(eqplayer.EQAuctionPlayerId, new AuctionPlayer { EQAuctionPlayerId = eqplayer.EQAuctionPlayerId, Name = eqplayer.Name });
                             }
                             finally
                             {
