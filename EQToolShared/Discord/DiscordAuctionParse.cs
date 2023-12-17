@@ -70,8 +70,13 @@ namespace EQToolShared.Discord
         }
         private bool isPricing(string input, int i, int pricestartindex)
         {
-            return pricestartindex != -1 && (input[i] == '.' || char.ToLower(input[i]) == 'k' || char.ToLower(input[i]) == 'p');
+            return pricestartindex != -1 && (input[i] == '.' || char.ToLower(input[i]) == 'k' || char.ToLower(input[i]) == 'p' || char.ToLower(input[i]) == ' ');
         }
+        private bool isPricing(string input, int i)
+        {
+            return (input[i] == '.' || char.ToLower(input[i]) == 'k' || char.ToLower(input[i]) == 'p' || char.ToLower(input[i]) == ' ' || char.IsDigit(input[i]));
+        }
+
         private bool isEndPricing(string input, int i, int pricestartindex)
         {
             return pricestartindex != -1 && input[i] == ' ';
@@ -80,6 +85,91 @@ namespace EQToolShared.Discord
         {
             return (input[i] == ' ' || char.IsLetterOrDigit(input[i]) || input[i] == '`' || input[i] == '.' || input[i] == '\'');
         }
+
+        private NextItem GetItem(string input)
+        {
+            var itembreakindex = -1;
+            var pricestartindex = -1;
+            var itemstartindex = -1;
+            var itemname = string.Empty;
+            foreach (var item in MasterItemList.Items)
+            {
+                itembreakindex = input.IndexOf(item, StringComparison.OrdinalIgnoreCase);
+                if (itembreakindex != -1)
+                {
+                    itemname = item;
+                    itemstartindex = itembreakindex;
+                    pricestartindex = itembreakindex + item.Length;
+                    break;
+                }
+            }
+            if (pricestartindex != -1)
+            {
+                var pricingstart = pricestartindex + 1;
+                pricestartindex = -1;
+                for (var i = pricingstart; i < input.Length; i++)
+                {
+                    var item = input[i];
+                    if (char.IsDigit(input[i]) && pricestartindex == -1)
+                    {
+                        pricestartindex = i;
+                    }
+                    if (item == ' ' && pricestartindex != -1)
+                    {
+                        itembreakindex = i;
+                        break;
+                    }
+                    else if (isPricing(input, i))
+                    {
+                        itembreakindex = i;
+                        continue;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+            }
+            else
+            {
+                itembreakindex = input.Length;
+                return null;
+            }
+
+            if (pricestartindex == -1)
+            {
+                pricestartindex = itembreakindex;
+            }
+
+            var price = (int?)null;
+            if (pricestartindex != itembreakindex)
+            {
+                var pricestring = input.Substring(pricestartindex, itembreakindex - pricestartindex).Trim();
+                if (!string.IsNullOrWhiteSpace(pricestring) && pricestring.IndexOf("x", StringComparison.OrdinalIgnoreCase) == -1)
+                {
+                    var pricemultiple = 1.0;
+                    if (pricestring.IndexOf("k", StringComparison.OrdinalIgnoreCase) != -1)
+                    {
+                        pricemultiple = 1000.0;
+                    }
+
+                    pricestring = new string(pricestring.Where(a => char.IsDigit(a) || a == '.').ToArray());
+                    if (double.TryParse(pricestring, out var possibleprice))
+                    {
+                        price = (int)(possibleprice * pricemultiple);
+                    }
+                }
+            }
+            itembreakindex = itembreakindex + 1 <= input.Length ? itembreakindex + 1 : itembreakindex;
+            return new NextItem
+            {
+                Input = input.Substring(0, itemstartindex) + input.Substring(itembreakindex),
+                Name = itemname,
+                Price = price
+            };
+        }
+
+
         private NextItem GetNextItem(string input)
         {
             var itembreakindex = -1;
@@ -202,8 +292,8 @@ namespace EQToolShared.Discord
             input = Regex.Replace(input, pattern, string.Empty);
 
             //replace all instances of (got 2)    or    (got a few) 
-            pattern = @"\([^)]*\)";
-            input = Regex.Replace(input, pattern, "/");
+            pattern = @"\((?!Azia|Beza)[^\)]*\)";
+            string result = Regex.Replace(input, pattern, string.Empty);
 
             //replace all instances of x 4     or   x 7
             pattern = @"x \d+";
@@ -225,6 +315,20 @@ namespace EQToolShared.Discord
                 input = input.Replace(input.Substring(stackindex, removetext.Length), string.Empty);
                 stackindex = input.IndexOf(removetext, StringComparison.OrdinalIgnoreCase);
             }
+            var tempstring = string.Empty;
+            for (var i = 0; i < input.Length; i++)
+            {
+                if (MasterItemList.ValidChars.Contains(input[i]) || char.IsDigit(input[i]) || input[i] == ' ')
+                {
+                    tempstring += input[i];
+                }
+                else
+                {
+                    tempstring += ' ';
+                }
+            }
+
+            input = tempstring.Replace(" - ", " ");
 
             var auctiontype = GetAuctionType(null, input);
             if (!auctiontype.auctiontype.HasValue)
@@ -232,19 +336,19 @@ namespace EQToolShared.Discord
                 return null;
             }
             input = auctiontype.input.Trim('\'');
-            input = Trim(input);
+
             NextItem item = null;
             var counter = 0;
             do
             {
-                item = GetNextItem(input);
+                item = GetItem(input);
                 auctiontype = GetAuctionType(auctiontype.auctiontype, input);
                 input = auctiontype.input;
                 if (item != null)
                 {
                     input = item.Input;
                     input = Trim(input);
-                    if (MasterItemList.PQItems.Contains(item.Name) || MasterItemList.P99Items.Contains(item.Name))
+                    if (MasterItemList.Items.Contains(item.Name))
                     {
                         ret.Items.Add(new Auctionitem
                         {

@@ -24,7 +24,11 @@ namespace EQToolApis.DB
 
         public DbSet<EQAuctionPlayer> EQAuctionPlayers { get; set; }
 
+        public DbSet<EQAuctionPlayerV2> EQAuctionPlayersV2 { get; set; }
+
         public DbSet<EQitem> EQitems { get; set; }
+
+        public DbSet<EQitemV2> EQitemsV2 { get; set; }
 
         public DbSet<EQNotableNPC> EQNotableNPCs { get; set; }
 
@@ -32,7 +36,11 @@ namespace EQToolApis.DB
 
         public DbSet<EQTunnelAuctionItem> EQTunnelAuctionItems { get; set; }
 
+        public DbSet<EQTunnelAuctionItemV2> EQTunnelAuctionItemsV2 { get; set; }
+
         public DbSet<EQTunnelMessage> EQTunnelMessages { get; set; }
+
+        public DbSet<EQTunnelMessageV2> EQTunnelMessagesV2 { get; set; }
 
         public DbSet<Player> Players { get; set; }
 
