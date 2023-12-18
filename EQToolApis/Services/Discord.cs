@@ -58,10 +58,10 @@ namespace EQToolApis.Services
 
         public List<Message> ReadMessages(long? lastid, Servers server)
         {
-            var url = $"https://discord.com/api/v9/channels/{ChannelIds[(int)server]}/messages?limit=50";
+            var url = $"https://discord.com/api/v9/channels/{ChannelIds[(int)server]}/messages?limit=100";
             if (lastid.HasValue)
             {
-                url = $"https://discord.com/api/v9/channels/{ChannelIds[(int)server]}/messages?after={lastid.Value}&limit=50";
+                url = $"https://discord.com/api/v9/channels/{ChannelIds[(int)server]}/messages?after={lastid.Value}&limit=100";
             }
             using (var msg = new HttpRequestMessage())
             {
@@ -85,10 +85,10 @@ namespace EQToolApis.Services
 
         public List<Message> ReadMessageHistory(long? lastid, Servers server)
         {
-            var url = $"https://discord.com/api/v9/channels/{ChannelIds[(int)server]}/messages?limit=50";
+            var url = $"https://discord.com/api/v9/channels/{ChannelIds[(int)server]}/messages?limit=100";
             if (lastid.HasValue)
             {
-                url = $"https://discord.com/api/v9/channels/{ChannelIds[(int)server]}/messages?before={lastid.Value}&limit=50";
+                url = $"https://discord.com/api/v9/channels/{ChannelIds[(int)server]}/messages?before={lastid.Value}&limit=100";
             }
 
             using (var msg = new HttpRequestMessage())
@@ -181,10 +181,7 @@ namespace EQToolApis.Services
                             TunnelTimestamp = item.timestamp,
                             EQTunnelAuctionItems = new List<EQTunnelAuctionItemV2>()
                         };
-                        if (dbcontext.EQTunnelMessagesV2.Any(a => a.DiscordMessageId == item.id))
-                        {
-                            continue;
-                        }
+
                         foreach (var it in discordpricingdata.Items)
                         {
                             var eqitem = dbcontext.EQitemsV2.FirstOrDefault(a => a.ItemName == it.Name && a.Server == server);
@@ -286,7 +283,7 @@ namespace EQToolApis.Services
                 var lastidread = dBData.ServerData[(int)server].OrderByDiscordMessageId ?? (server == Servers.Green ? 1186054170009145345 : 1186055073739055265);
                 var possiblemessages = discordService.ReadMessages(lastidread, server);
                 var messages = AddMessages(possiblemessages, server);
-                if (possiblemessages.Any())
+                if (messages.Any())
                 {
                     var id = messages.Select(a => a.DiscordMessageId).OrderBy(a => a).FirstOrDefault();
                     lock (dBData)
