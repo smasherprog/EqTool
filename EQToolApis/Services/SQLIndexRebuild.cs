@@ -16,7 +16,7 @@ namespace EQToolApis.Services
         public void RebuildEQAuctionPlayers()
         {
             dbcontext.Database.SetCommandTimeout(TimeSpan.FromMinutes(20));
-            _ = dbcontext.Database.ExecuteSqlRaw("ALTER INDEX ALL ON [EQAuctionPlayers] REBUILD WITH (FILLFACTOR = 80, SORT_IN_TEMPDB = ON, STATISTICS_NORECOMPUTE = ON)");
+            _ = dbcontext.Database.ExecuteSqlRaw("ALTER INDEX ALL ON [EQAuctionPlayersV2] REBUILD WITH (FILLFACTOR = 80, SORT_IN_TEMPDB = ON, STATISTICS_NORECOMPUTE = ON)");
         }
 
         [AutomaticRetry(Attempts = 0)]
@@ -24,21 +24,21 @@ namespace EQToolApis.Services
         {
             dbcontext.Database.SetCommandTimeout(TimeSpan.FromMinutes(20));
             _ = dbcontext.Database.ExecuteSqlRaw("ALTER INDEX ALL ON [EqToolExceptions] REBUILD WITH (FILLFACTOR = 80, SORT_IN_TEMPDB = ON, STATISTICS_NORECOMPUTE = ON)");
-            _ = dbcontext.Database.ExecuteSqlRaw("ALTER INDEX ALL ON [EQitems] REBUILD WITH (FILLFACTOR = 80, SORT_IN_TEMPDB = ON, STATISTICS_NORECOMPUTE = ON)");
+            _ = dbcontext.Database.ExecuteSqlRaw("ALTER INDEX ALL ON [EQitemsV2] REBUILD WITH (FILLFACTOR = 80, SORT_IN_TEMPDB = ON, STATISTICS_NORECOMPUTE = ON)");
         }
 
         [AutomaticRetry(Attempts = 0)]
         public void RebuildEQTunnelAuctionItems()
         {
             dbcontext.Database.SetCommandTimeout(TimeSpan.FromMinutes(10));
-            _ = dbcontext.Database.ExecuteSqlRaw("ALTER INDEX ALL ON [EQTunnelAuctionItems] REBUILD WITH (FILLFACTOR = 80, SORT_IN_TEMPDB = ON, STATISTICS_NORECOMPUTE = ON)");
+            _ = dbcontext.Database.ExecuteSqlRaw("ALTER INDEX ALL ON [EQTunnelAuctionItemsV2] REBUILD WITH (FILLFACTOR = 80, SORT_IN_TEMPDB = ON, STATISTICS_NORECOMPUTE = ON)");
         }
 
         [AutomaticRetry(Attempts = 0)]
         public void RebuildEQTunnelAuctionEQTunnelMessages()
         {
             dbcontext.Database.SetCommandTimeout(TimeSpan.FromMinutes(20));
-            _ = dbcontext.Database.ExecuteSqlRaw("ALTER INDEX ALL ON [EQTunnelMessages] REBUILD WITH (FILLFACTOR = 80, SORT_IN_TEMPDB = ON, STATISTICS_NORECOMPUTE = ON)");
+            _ = dbcontext.Database.ExecuteSqlRaw("ALTER INDEX ALL ON [EQTunnelMessagesV2] REBUILD WITH (FILLFACTOR = 80, SORT_IN_TEMPDB = ON, STATISTICS_NORECOMPUTE = ON)");
             _ = dbcontext.Database.ExecuteSqlRaw("ALTER INDEX ALL ON [Players] REBUILD WITH (FILLFACTOR = 80, SORT_IN_TEMPDB = ON, STATISTICS_NORECOMPUTE = ON)");
         }
 
