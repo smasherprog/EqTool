@@ -65,7 +65,10 @@ builder.Services.AddHangfireServer(a =>
     a.WorkerCount = 2;
 });
 #endif 
-
+//builder.Services.AddHangfireServer(a =>
+//{
+//    a.WorkerCount = 2;
+//});
 builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("HangfireAccess", cfgPolicy =>

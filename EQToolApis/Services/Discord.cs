@@ -281,7 +281,7 @@ namespace EQToolApis.Services
             {
                 discordService.Login();
                 var lastidread = dBData.ServerData[(int)server].OrderByDiscordMessageId ?? (server == Servers.Green ? 1186054170009145345 : 1186055073739055265);
-                var possiblemessages = discordService.ReadMessages(lastidread, server);
+                var possiblemessages = discordService.ReadMessageHistory(lastidread, server);
                 var messages = AddMessages(possiblemessages, server);
                 if (messages.Any())
                 {
