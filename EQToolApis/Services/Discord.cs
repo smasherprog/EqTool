@@ -248,7 +248,7 @@ namespace EQToolApis.Services
             public string ReadFutureMessages(Servers server)
             {
                 discordService.Login();
-                var lastidread = dBData.ServerData[(int)server].OrderByDescendingDiscordMessageId;
+                var lastidread = dBData.ServerData[(int)server].OrderByDescendingDiscordMessageId ?? (server == Servers.Green ? 1186054170009145345 : 1186055073739055265);
                 var possiblemessages2 = discordService.ReadMessages(lastidread, server);
                 var messages2 = AddMessages(possiblemessages2, server);
                 if (messages2.Any())
@@ -283,7 +283,7 @@ namespace EQToolApis.Services
             public string ReadPastMessages(Servers server)
             {
                 discordService.Login();
-                var lastidread = dBData.ServerData[(int)server].OrderByDiscordMessageId;
+                var lastidread = dBData.ServerData[(int)server].OrderByDiscordMessageId ?? (server == Servers.Green ? 1186054170009145345 : 1186055073739055265);
                 var possiblemessages = discordService.ReadMessages(lastidread, server);
                 var messages = AddMessages(possiblemessages, server);
                 if (possiblemessages.Any())
