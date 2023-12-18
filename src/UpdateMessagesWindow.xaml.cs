@@ -36,17 +36,7 @@ namespace EQTool
             view.IsLiveGrouping = true;
             view.SortDescriptions.Add(new SortDescription(nameof(UpdateMessageData.DateTime), ListSortDirection.Descending));
             view.IsLiveSorting = true;
-
-            UpdateMessages.Add(new UpdateMessageData
-            {
-                DateTime = new DateTime(2023, 12, 7),
-                Message = "Fixed PQ bug that prevent program from loading. Next time post an issue on Github and it will be fixed in minutes!"
-            });
-            UpdateMessages.Add(new UpdateMessageData
-            {
-                DateTime = new DateTime(2023, 12, 7),
-                Message = "Fixed Hammer of the Dragonborn clicky Primal Essence will now show up when used!"
-            });
+ 
             UpdateMessages.Add(new UpdateMessageData
             {
                 DateTime = new DateTime(2023, 12, 9),
@@ -71,6 +61,11 @@ namespace EQTool
             {
                 DateTime = new DateTime(2023, 12, 13),
                 Message = "Updated various zone timers!"
+            }); 
+            UpdateMessages.Add(new UpdateMessageData
+            {
+                DateTime = new DateTime(2023, 12, 18),
+                Message = "Fixed Cobalt Scar zone timer"
             });
         }
     }

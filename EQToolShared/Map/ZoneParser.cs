@@ -298,7 +298,7 @@ namespace EQToolShared.Map
                 {
                     "",
                 },
-                RespawnTime = new TimeSpan(0, 22, 00)
+                RespawnTime = new TimeSpan(0, 20, 00)
             });
             ZoneInfoMap.Add("commons", new ZoneInfo
             {
