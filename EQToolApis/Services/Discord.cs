@@ -181,6 +181,10 @@ namespace EQToolApis.Services
                             TunnelTimestamp = item.timestamp,
                             EQTunnelAuctionItems = new List<EQTunnelAuctionItemV2>()
                         };
+                        if (dbcontext.EQTunnelMessagesV2.Any(a => a.DiscordMessageId == item.id))
+                        {
+                            continue;
+                        }
                         foreach (var it in discordpricingdata.Items)
                         {
                             var eqitem = dbcontext.EQitemsV2.FirstOrDefault(a => a.ItemName == it.Name && a.Server == server);
