@@ -21,11 +21,13 @@ namespace EQToolApis.Services
         public void BuildDataGreen()
         {
             BuildData(Servers.Green);
+            BuildDataV2(Servers.Green);
         }
 
         public void BuildDataBlue()
         {
             BuildData(Servers.Blue);
+            BuildDataV2(Servers.Blue);
         }
 
         public void BuildDataV2(Servers server)
