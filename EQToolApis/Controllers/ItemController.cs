@@ -14,11 +14,13 @@ namespace EQToolApis.Controllers
         private readonly UIDataBuild uIDataBuild;
         private readonly EQToolContext context;
         private readonly PlayerCache playerCache;
-        public ItemController(UIDataBuild uIDataBuild, EQToolContext context, PlayerCache playerCache)
+        private readonly PlayerCacheV2 playerCachev2;
+        public ItemController(UIDataBuild uIDataBuild, EQToolContext context, PlayerCache playerCache, PlayerCacheV2 playerCachev2)
         {
             this.uIDataBuild = uIDataBuild;
             this.context = context;
             this.playerCache = playerCache;
+            this.playerCachev2 = playerCachev2;
         }
         /// <summary>
         /// Will get all items for server and the averages. This data is rebuild every 10 minutes.
@@ -41,6 +43,31 @@ namespace EQToolApis.Controllers
 
 #else
             ret = UIDataBuild.ItemCache[(int)server];
+#endif
+            return ret;
+        }
+
+        /// <summary>
+        /// Will get all items for server and the averages. This data is rebuild every 10 minutes.
+        /// </summary>
+        /// <param name="server"></param>
+        /// <returns></returns>
+        [Route("api/item/getallV2/{server}/")]
+        [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Any, VaryByQueryKeys = new[] { "*" })]
+        public List<AuctionItem> GetV2([DefaultValue(Servers.Green)] Servers server)
+        {
+            List<AuctionItem> ret;
+#if DEBUG
+            if (UIDataBuild.ItemCacheV2[(int)server] == null)
+            {
+                uIDataBuild.BuildDataV2(server);
+            }
+            ret = UIDataBuild.ItemCacheV2[(int)server];
+
+#else
+            ret = UIDataBuild.ItemCacheV2[(int)server];
 #endif
             return ret;
         }
@@ -293,6 +320,58 @@ namespace EQToolApis.Controllers
             finally
             {
                 playerCache.PlayersLock.ExitReadLock();
+            }
+            Item.Items = Item.Items.OrderByDescending(a => a.t).ToList();
+            return Item;
+        }
+
+        /// <summary>
+        /// Will get an item and all of its details. This can include alot of data!
+        /// </summary>
+        /// <param name="itemid"></param>
+        /// <returns></returns>
+        [Route("api/item/getdetailsV2/{itemid}")]
+        [HttpGet]
+        [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Any, VaryByQueryKeys = new[] { "*" })]
+        public ItemDetail GetItemDetailV2([DefaultValue(1981)] int itemid)
+        {
+            var items = context.EQTunnelAuctionItemsV2
+                .Where(a => a.EQitemId == itemid)
+                .Select(a => new
+                {
+                    a.EQTunnelMessage.AuctionType,
+                    a.AuctionPrice,
+                    a.EQTunnelMessage.EQAuctionPlayerId,
+                    a.EQTunnelMessage.TunnelTimestamp
+                }).ToList();
+
+            ItemDetail Item = new()
+            {
+                ItemName = context.EQitemsV2
+                    .Where(a => a.EQitemId == itemid)
+                    .Select(a => a.ItemName)
+                    .FirstOrDefault(),
+                Items = new List<ItemAuctionDetail>(),
+                Players = new Dictionary<int, string>()
+            };
+            this.playerCachev2.PlayersLock.EnterReadLock();
+            try
+            {
+                foreach (var i in items)
+                {
+                    Item.Items.Add(new ItemAuctionDetail
+                    {
+                        u = i.AuctionType,
+                        i = i.EQAuctionPlayerId,
+                        p = i.AuctionPrice,
+                        t = i.TunnelTimestamp
+                    });
+                    _ = Item.Players.TryAdd(i.EQAuctionPlayerId, playerCachev2.Players[i.EQAuctionPlayerId].Name);
+                }
+            }
+            finally
+            {
+                this.playerCachev2.PlayersLock.ExitReadLock();
             }
             Item.Items = Item.Items.OrderByDescending(a => a.t).ToList();
             return Item;

@@ -138,6 +138,18 @@ builder.Services.Configure<DiscordServiceOptions>(options =>
     }
     return d;
 })
+.AddSingleton(a =>
+{
+    var d = new PlayerCacheV2();
+    using (var scope = a.CreateScope())
+    {
+        var dbcontext = scope.ServiceProvider.GetRequiredService<EQToolContext>();
+        dbcontext.Database.SetCommandTimeout(TimeSpan.FromMinutes(10));
+        var allplayers = dbcontext.EQAuctionPlayersV2.AsNoTracking().ToList();
+        d.Players = allplayers.Select(a => new AuctionPlayer { EQAuctionPlayerId = a.EQAuctionPlayerId, Name = a.Name }).ToDictionary(a => a.EQAuctionPlayerId);
+    }
+    return d;
+})
 .AddSingleton<NoteableNPCCache>()
 .AddScoped<UIDataBuild>()
 .AddScoped<NotableNpcCacheService>()

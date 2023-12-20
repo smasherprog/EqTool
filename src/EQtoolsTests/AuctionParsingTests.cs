@@ -556,5 +556,21 @@ namespace EQtoolsTests
             Assert.AreEqual(AuctionType.WTS, item.AuctionType);
             Assert.AreEqual(15, item.Price);
         }
+
+        [TestMethod]
+        public void Parse31()
+        {
+            var result = discordAuctionParse.Parse("Happendy auctions, 'Wts Sea Dragon Meat | Fishbone Earring | 10 Dose Potion of Antiweight | 10 Dose Blood of the Wolf | 10 Dose Potion of Stinging Wort | 00387800000000000000000000000000000007A3FFC64Potion of the Swamp '");
+            Assert.AreEqual("Telson", result.Player);
+
+            var item = result.Items.FirstOrDefault(a => a.Name == "Sea Dragon Meat");
+            Assert.AreEqual(AuctionType.WTS, item.AuctionType);
+            Assert.IsNull(item.Price);
+
+            item = result.Items.FirstOrDefault(a => a.Name == "10 Dose Potion of Stinging Wort");
+            Assert.AreEqual(AuctionType.WTS, item.AuctionType);
+            Assert.IsNull(item.Price);
+        }
+
     }
 }

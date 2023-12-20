@@ -144,19 +144,23 @@ namespace EQToolShared.Discord
             var price = (int?)null;
             if (pricestartindex != itembreakindex)
             {
+                var toolongprice = "10000000";
                 var pricestring = input.Substring(pricestartindex, itembreakindex - pricestartindex).Trim();
-                if (!string.IsNullOrWhiteSpace(pricestring) && pricestring.IndexOf("x", StringComparison.OrdinalIgnoreCase) == -1)
+                if (pricestring.Length < toolongprice.Length)
                 {
-                    var pricemultiple = 1.0;
-                    if (pricestring.IndexOf("k", StringComparison.OrdinalIgnoreCase) != -1)
+                    if (!string.IsNullOrWhiteSpace(pricestring) && pricestring.IndexOf("x", StringComparison.OrdinalIgnoreCase) == -1)
                     {
-                        pricemultiple = 1000.0;
-                    }
+                        var pricemultiple = 1.0;
+                        if (pricestring.IndexOf("k", StringComparison.OrdinalIgnoreCase) != -1)
+                        {
+                            pricemultiple = 1000.0;
+                        }
 
-                    pricestring = new string(pricestring.Where(a => char.IsDigit(a) || a == '.').ToArray());
-                    if (double.TryParse(pricestring, out var possibleprice))
-                    {
-                        price = (int)(possibleprice * pricemultiple);
+                        pricestring = new string(pricestring.Where(a => char.IsDigit(a) || a == '.').ToArray());
+                        if (double.TryParse(pricestring, out var possibleprice))
+                        {
+                            price = (int)(possibleprice * pricemultiple);
+                        }
                     }
                 }
             }
@@ -165,88 +169,7 @@ namespace EQToolShared.Discord
             {
                 Input = input.Substring(0, itemstartindex) + input.Substring(itembreakindex),
                 Name = itemname,
-                Price = price
-            };
-        }
-
-
-        private NextItem GetNextItem(string input)
-        {
-            var itembreakindex = -1;
-            var pricestartindex = -1;
-            for (var i = 0; i < input.Length; i++)
-            {
-                if (isBeginPricing(input, i, pricestartindex))
-                {
-                    pricestartindex = i;
-                }
-                if (isPricing(input, i, pricestartindex))
-                {
-                    continue;
-                }
-                else if (isEndPricing(input, i, pricestartindex))
-                {
-                    itembreakindex = i;
-                    break;
-                }
-                else if (isSpell(input, i))
-                {
-                    continue;
-                }
-                else if (!isItemName(input, i))
-                {
-                    itembreakindex = i;
-                    break;
-                }
-            }
-
-            if (itembreakindex == -1)
-            {
-                itembreakindex = input.Length;
-                if (input.Length == 0 || string.IsNullOrWhiteSpace(input))
-                {
-                    return null;
-                }
-            }
-            if (pricestartindex == -1)
-            {
-                pricestartindex = itembreakindex;
-            }
-
-            var itemname = input.Substring(0, pricestartindex).Trim();
-            if (string.IsNullOrWhiteSpace(itemname))
-            {
-                return null;
-            }
-            if (itemname.EndsWith(" x"))
-            {
-                itemname = itemname.Substring(0, itemname.Length - 2);
-            }
-            var price = (int?)null;
-            if (pricestartindex != itembreakindex)
-            {
-                var pricestring = input.Substring(pricestartindex, itembreakindex - pricestartindex).Trim();
-                if (!string.IsNullOrWhiteSpace(pricestring) && pricestring.IndexOf("x", StringComparison.OrdinalIgnoreCase) == -1)
-                {
-                    var pricemultiple = 1.0;
-                    if (pricestring.IndexOf("k", StringComparison.OrdinalIgnoreCase) != -1)
-                    {
-                        pricemultiple = 1000.0;
-                    }
-
-                    pricestring = new string(pricestring.Where(a => char.IsDigit(a) || a == '.').ToArray());
-                    if (double.TryParse(pricestring, out var possibleprice))
-                    {
-                        price = (int)(possibleprice * pricemultiple);
-                    }
-                }
-            }
-            itembreakindex = itembreakindex + 1 <= input.Length ? itembreakindex + 1 : itembreakindex;
-            return new NextItem
-            {
-                Input = input.Substring(itembreakindex).Trim(),
-                Name = itemname,
-                Price = price
+                Price = price > 0 ? price : null
             };
         }
 

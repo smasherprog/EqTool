@@ -39,6 +39,12 @@ namespace EQToolApis.Models
         public Dictionary<int, AuctionPlayer> Players = new();
     }
 
+    public class PlayerCacheV2
+    {
+        public ReaderWriterLockSlim PlayersLock = new();
+        public Dictionary<int, AuctionPlayer> Players = new();
+    }
+
     public class NoteableNPC
     {
         public DateTimeOffset? LastSeen { get; set; }
