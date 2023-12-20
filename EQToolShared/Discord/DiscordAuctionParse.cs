@@ -145,7 +145,7 @@ namespace EQToolShared.Discord
             if (pricestartindex != itembreakindex)
             {
                 var toolongprice = "10000000";
-                var pricestring = input.Substring(pricestartindex, itembreakindex - pricestartindex).Trim();
+                var pricestring = input.Substring(pricestartindex, itembreakindex - pricestartindex + 1).Trim();
                 if (pricestring.Length < toolongprice.Length)
                 {
                     if (!string.IsNullOrWhiteSpace(pricestring) && pricestring.IndexOf("x", StringComparison.OrdinalIgnoreCase) == -1)
