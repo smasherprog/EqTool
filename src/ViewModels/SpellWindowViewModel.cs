@@ -10,7 +10,6 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using static EQTool.Services.Spells.Log.LogCustomTimer;
 
 namespace EQTool.ViewModels
 {
@@ -30,12 +29,9 @@ namespace EQTool.ViewModels
             this.appDispatcher = appDispatcher;
             this.settings = settings;
             Title = "Triggers v" + App.Version;
-            FeignDeath = spells.AllSpells.FirstOrDefault(a => a.name == "Feign Death");
             this.spells = spells;
         }
 
-
-        private Spell FeignDeath { get; set; }
 
         public ObservableCollection<UISpell> _SpellList = new ObservableCollection<UISpell>();
         public ObservableCollection<UISpell> SpellList
@@ -168,7 +164,17 @@ namespace EQTool.ViewModels
                 {
                     spellname = "??? " + spellname;
                 }
-
+                var isharvest = spellname == "Harvest";
+                if (isharvest && match.TargetName == EQSpells.SpaceYou)
+                {
+                    TryAddCustom(new CustomTimer
+                    {
+                        DurationInSeconds = 600,
+                        Name = spellname,
+                        SpellNameIcon = spellname
+                    });
+                    return;
+                }
                 var ismanasieve = spellname == "Mana Sieve";
                 var ispersistent = ismanasieve;
                 var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(match.Spell, activePlayer.Player));
@@ -224,6 +230,7 @@ namespace EQTool.ViewModels
                 }
 
                 var spellduration = match.DurationInSeconds;
+                var spellicon = spells.AllSpells.FirstOrDefault(a => a.name == match.SpellNameIcon);
                 SpellList.Add(new UISpell(DateTime.Now.AddSeconds(spellduration))
                 {
                     UpdatedDateTime = DateTime.Now,
@@ -231,8 +238,8 @@ namespace EQTool.ViewModels
                     SpellType = -1,
                     TargetName = CustomerTime,
                     SpellName = match.Name,
-                    Rect = FeignDeath.Rect,
-                    SpellIcon = FeignDeath.SpellIcon,
+                    Rect = spellicon.Rect,
+                    SpellIcon = spellicon.SpellIcon,
                     Classes = CustomTimerClasses,
                     GuessedSpell = false
                 });

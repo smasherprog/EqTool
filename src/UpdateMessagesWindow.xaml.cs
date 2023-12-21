@@ -36,36 +36,26 @@ namespace EQTool
             view.IsLiveGrouping = true;
             view.SortDescriptions.Add(new SortDescription(nameof(UpdateMessageData.DateTime), ListSortDirection.Descending));
             view.IsLiveSorting = true;
- 
-            UpdateMessages.Add(new UpdateMessageData
-            {
-                DateTime = new DateTime(2023, 12, 9),
-                Message = "poh zone timers updated."
-            });
-            UpdateMessages.Add(new UpdateMessageData
-            {
-                DateTime = new DateTime(2023, 12, 9),
-                Message = "a protector of growth spawn timers added to pog."
-            });
-            UpdateMessages.Add(new UpdateMessageData
-            {
-                DateTime = new DateTime(2023, 12, 9),
-                Message = "Adjusted crystal caverns map opacity levels."
-            });
+
             UpdateMessages.Add(new UpdateMessageData
             {
                 DateTime = new DateTime(2023, 12, 11),
                 Message = "Updated code so that PQ zone timers can be added by those without coding ability. Check out github!"
-            }); 
+            });
             UpdateMessages.Add(new UpdateMessageData
             {
                 DateTime = new DateTime(2023, 12, 13),
                 Message = "Updated various zone timers!"
-            }); 
+            });
             UpdateMessages.Add(new UpdateMessageData
             {
                 DateTime = new DateTime(2023, 12, 18),
                 Message = "Fixed Cobalt Scar zone timer"
+            });
+            UpdateMessages.Add(new UpdateMessageData
+            {
+                DateTime = new DateTime(2023, 12, 21),
+                Message = "Harvest cooldown will show in custom timers section."
             });
         }
     }

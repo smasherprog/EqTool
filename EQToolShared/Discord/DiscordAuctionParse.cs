@@ -45,45 +45,10 @@ namespace EQToolShared.Discord
             public string Name { get; set; }
             public int? Price { get; set; }
         }
-        private const string SpellText = "Spell:";
 
-        private bool isSpell(string input, int i)
-        {
-            return i >= SpellText.Length - 1 && input[i] == ':' && input[i - 1] == 'l' && input[i - 2] == 'l' && input[i - 3] == 'e' && input[i - 4] == 'p' && input[i - 5] == 'S';
-        }
-        private bool isBeginPricing(string input, int i, int pricestartindex)
-        {
-            if (char.IsDigit(input[i]))
-            {
-                var index = input.IndexOf("Pg. ");
-                if (index != -1)
-                {
-                    var diffindex = i - index;
-                    if (diffindex <= 6)
-                    {
-                        return false;
-                    }
-                }
-            }
-
-            return char.IsDigit(input[i]) && pricestartindex == -1;
-        }
-        private bool isPricing(string input, int i, int pricestartindex)
-        {
-            return pricestartindex != -1 && (input[i] == '.' || char.ToLower(input[i]) == 'k' || char.ToLower(input[i]) == 'p' || char.ToLower(input[i]) == ' ');
-        }
         private bool isPricing(string input, int i)
         {
             return (input[i] == '.' || char.ToLower(input[i]) == 'k' || char.ToLower(input[i]) == 'p' || char.ToLower(input[i]) == ' ' || char.IsDigit(input[i]));
-        }
-
-        private bool isEndPricing(string input, int i, int pricestartindex)
-        {
-            return pricestartindex != -1 && input[i] == ' ';
-        }
-        private bool isItemName(string input, int i)
-        {
-            return (input[i] == ' ' || char.IsLetterOrDigit(input[i]) || input[i] == '`' || input[i] == '.' || input[i] == '\'');
         }
 
         private NextItem GetItem(string input)
