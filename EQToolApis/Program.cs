@@ -156,7 +156,7 @@ builder.Services.Configure<DiscordServiceOptions>(options =>
 .AddScoped<NpcTrackingService>();
 
 builder.Services.AddMvc();
-builder.Services.AddApplicationInsightsTelemetry(builder.Configuration["APPLICATIONINSIGHTS_CONNECTION_STRING"]);
+builder.Services.AddApplicationInsightsTelemetry();
 var app = builder.Build();
 using (var scope = app.Services.CreateScope())
 {
