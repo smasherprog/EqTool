@@ -561,7 +561,7 @@ namespace EQtoolsTests
         public void Parse31()
         {
             var result = discordAuctionParse.Parse("Happendy auctions, 'Wts Sea Dragon Meat | Fishbone Earring | 10 Dose Potion of Antiweight | 10 Dose Blood of the Wolf | 10 Dose Potion of Stinging Wort | 00387800000000000000000000000000000007A3FFC64Potion of the Swamp '");
-            Assert.AreEqual("Telson", result.Player);
+            Assert.AreEqual("Happendy", result.Player);
 
             var item = result.Items.FirstOrDefault(a => a.Name == "Sea Dragon Meat");
             Assert.AreEqual(AuctionType.WTS, item.AuctionType);
@@ -572,5 +572,30 @@ namespace EQtoolsTests
             Assert.IsNull(item.Price);
         }
 
+        [TestMethod]
+        public void Parse32()
+        {
+            var result = discordAuctionParse.Parse("Atofe auctions, 'WTS Amulet of Necropotence 225k'");
+            Assert.AreEqual("Atofe", result.Player);
+
+            var item = result.Items.FirstOrDefault(a => a.Name == "Amulet of Necropotence");
+            Assert.AreEqual(AuctionType.WTS, item.AuctionType);
+            Assert.AreEqual(225000, item.Price); 
+        }
+
+        [TestMethod]
+        public void Parse33()
+        {
+            var result = discordAuctionParse.Parse("Atofe auctions, 'WTS Amulet of Necropotence 225p Sea Dragon Meat 224pp'");
+            Assert.AreEqual("Atofe", result.Player);
+
+            var item = result.Items.FirstOrDefault(a => a.Name == "Amulet of Necropotence");
+            Assert.AreEqual(AuctionType.WTS, item.AuctionType);
+            Assert.AreEqual(225, item.Price);
+
+            item = result.Items.FirstOrDefault(a => a.Name == "Sea Dragon Meat");
+            Assert.AreEqual(AuctionType.WTS, item.AuctionType);
+            Assert.AreEqual(224, item.Price);
+        }
     }
 }
