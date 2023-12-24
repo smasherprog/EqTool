@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Security.Policy;
 
 namespace EQToolShared.Map
 {
@@ -1388,7 +1387,25 @@ namespace EQToolShared.Map
                 ShowAllMapLevels = true,
                 ZoneLevelHeight = 10,
                 NotableNPCs = new List<string>() { "", },
-                RespawnTime = new TimeSpan(0, 6, 40)
+                RespawnTime = new TimeSpan(0, 6, 40),
+                NpcSpawnTimes = new List<NpcSpawnTime>()
+                 {
+                      new NpcSpawnTime
+                      {
+                          Name = "A storm giant surveyor",
+                           RespawnTime = new TimeSpan(0, 7, 0)
+                      },
+                       new NpcSpawnTime
+                      {
+                          Name = "A tar goo",
+                           RespawnTime = new TimeSpan(0, 14, 30)
+                      },
+                       new NpcSpawnTime
+                      {
+                          Name = "A suit of sentient armor",
+                            RespawnTime = new TimeSpan(0, 14, 30)
+                      }
+                 }
             });
             ZoneInfoMap.Add("warrens", new ZoneInfo
             {

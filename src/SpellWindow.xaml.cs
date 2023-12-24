@@ -48,6 +48,7 @@ namespace EQTool
             this.logParser.DeadEvent += LogParser_DeadEvent;
             this.logParser.StartTimerEvent += LogParser_StartTimerEvent;
             this.logParser.CancelTimerEvent += LogParser_CancelTimerEvent;
+            this.logParser.POFDTEvent += LogParser_POFDTEvent;
             spellWindowViewModel.SpellList = new System.Collections.ObjectModel.ObservableCollection<UISpell>();
             DataContext = this.spellWindowViewModel = spellWindowViewModel;
             if (this.activePlayer.Player != null)
@@ -73,6 +74,17 @@ namespace EQTool
             LocationChanged += DPSMeter_LocationChanged;
             settings.SpellWindowState.Closed = false;
             SaveState();
+        }
+
+        private void LogParser_POFDTEvent(object sender, POFDTParser.POF_DT_Event e)
+        {
+            this.spellWindowViewModel.TryAddCustom(new CustomTimer
+            {
+                DurationInSeconds = 45,
+                Name = $"--DT-- '{e.DTReceiver}'",
+                SpellNameIcon = "Disease Cloud",
+                SpellType = EQToolShared.Enums.SpellTypes.BadGuyCoolDown
+            });
         }
 
         private void LogParser_CampEvent(object sender, LogParser.CampEventArgs e)
@@ -116,8 +128,10 @@ namespace EQTool
             var zonetimer = ZoneSpawnTimes.GetSpawnTime(e.Name, activePlayer?.Player?.Zone);
             var add = new CustomTimer
             {
-                Name = e.Name,
-                DurationInSeconds = (int)zonetimer.TotalSeconds
+                Name = "--Dead-- " + e.Name,
+                DurationInSeconds = (int)zonetimer.TotalSeconds,
+                SpellNameIcon = "Disease Cloud",
+                SpellType = EQToolShared.Enums.SpellTypes.RespawnTimer
             };
 
             var exisitngdeathentry = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellName == add.Name && spellWindowViewModel.CustomerTime == a.TargetName);

@@ -110,7 +110,10 @@ namespace EQTool.Services
             {
                 return _Spells;
             }
-
+            var isdebug = false;
+#if DEBUG
+            isdebug = true;
+#endif
             var stopwatch = new Stopwatch();
             stopwatch.Start();
             var spells = new Dictionary<string, SpellBase>();
@@ -124,21 +127,25 @@ namespace EQTool.Services
             if (spellsfile.Exists)
             {
                 var spellfilename = $"SpellCache{servers}{App.Version}{spellsfile.LastWriteTimeUtc}";
-                spellfilename = new string(spellfilename.Where(a => char.IsLetterOrDigit(a)).ToArray()) + ".bin";
-                if (File.Exists(spellfilename))
+                if (!isdebug)
                 {
-                    try
+                    spellfilename = new string(spellfilename.Where(a => char.IsLetterOrDigit(a)).ToArray()) + ".bin";
+                    if (File.Exists(spellfilename))
                     {
-                        _Spells = BinarySerializer.ReadFromBinaryFile<List<SpellBase>>(spellfilename);
-                        stopwatch.Stop();
-                        Debug.Write($"Took {stopwatch.ElapsedMilliseconds}ms to build spells");
-                        return _Spells;
-                    }
-                    catch (Exception ex)
-                    {
-                        loggingService.Log(ex.ToString(), App.EventType.Error);
+                        try
+                        {
+                            _Spells = BinarySerializer.ReadFromBinaryFile<List<SpellBase>>(spellfilename);
+                            stopwatch.Stop();
+                            Debug.Write($"Took {stopwatch.ElapsedMilliseconds}ms to build spells");
+                            return _Spells;
+                        }
+                        catch (Exception ex)
+                        {
+                            loggingService.Log(ex.ToString(), App.EventType.Error);
+                        }
                     }
                 }
+
                 var spellastext = File.ReadAllLines(settings.DefaultEqDirectory + spellfile);
                 var desctypes = new List<DescrNumber>() {
                  DescrNumber.ThePlanes,
@@ -317,7 +324,7 @@ namespace EQTool.Services
                     buffduration = buffduration,
                     buffdurationformula = buffdurationformula,
                     pvp_buffdurationformula = pvp_buffdurationformula,
-                    type = type,
+                    type = (SpellTypes)type,
                     cast_on_other = cast_on_other,
                     casttime = casttime,
                     cast_on_you = cast_on_you,

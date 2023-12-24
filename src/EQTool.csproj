@@ -391,6 +391,7 @@
     <Compile Include="Services\LoggingService.cs" />
     <Compile Include="Services\MapOpacityHelper.cs" />
     <Compile Include="Services\MapViewModelService.cs" />
+    <Compile Include="Services\Parsing\POFDTParser.cs" />
     <Compile Include="Services\Parsing\QuakeParser.cs" />
     <Compile Include="Services\Parsing\LogFileDateTimeParse.cs" />
     <Compile Include="Services\Parsing\EnterWorldParser.cs" />
@@ -1066,6 +1067,12 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="clipboard.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="update1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="UpdateImages\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="AfterResolveReferences">

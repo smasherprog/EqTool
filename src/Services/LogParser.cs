@@ -11,6 +11,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows.Media.Media3D;
+using static EQTool.Services.POFDTParser;
 
 namespace EQTool.Services
 {
@@ -33,6 +34,8 @@ namespace EQTool.Services
         private readonly PlayerWhoLogParse playerWhoLogParse;
         private readonly EnterWorldParser enterWorldParser;
         private readonly QuakeParser quakeParser;
+        private readonly POFDTParser pOFDTParser;
+
 
         private bool StartingWhoOfZone = false;
         private bool Processing = false;
@@ -53,9 +56,11 @@ namespace EQTool.Services
             ActivePlayer activePlayer,
             IAppDispatcher appDispatcher,
             EQToolSettings settings,
+            POFDTParser pOFDTParser,
             LevelLogParse levelLogParse,
             PlayerWhoLogParse playerWhoLogParse)
         {
+            this.pOFDTParser = pOFDTParser;
             this.quakeParser = quakeParser;
             this.enterWorldParser = enterWorldParser;
             this.spellWornOffLogParse = spellWornOffLogParse;
@@ -145,6 +150,8 @@ namespace EQTool.Services
         public event EventHandler<SpellWornOffSelfEventArgs> SpellWornOffSelfEvent;
 
         public event EventHandler<QuakeArgs> QuakeEvent;
+
+        public event EventHandler<POF_DT_Event> POFDTEvent;
 
         public event EventHandler<SpellWornOffOtherEventArgs> SpellWornOtherOffEvent;
 
@@ -312,6 +319,13 @@ namespace EQTool.Services
                 if (quaked)
                 {
                     QuakeEvent?.Invoke(this, new QuakeArgs());
+                    return;
+                }
+
+                var dt = this.pOFDTParser.DtCheck(message);
+                if (dt != null)
+                {
+                    POFDTEvent?.Invoke(this, dt);
                     return;
                 }
 

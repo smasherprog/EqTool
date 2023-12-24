@@ -164,16 +164,27 @@ namespace EQTool.ViewModels
                 {
                     spellname = "??? " + spellname;
                 }
-                var isharvest = spellname == "Harvest";
-                if (isharvest && match.TargetName == EQSpells.SpaceYou)
+
+                if (string.Equals(match.Spell.name, "Harvest", StringComparison.OrdinalIgnoreCase) && match.TargetName == EQSpells.SpaceYou)
                 {
                     TryAddCustom(new CustomTimer
                     {
                         DurationInSeconds = 600,
-                        Name = spellname,
-                        SpellNameIcon = spellname
+                        Name = "--CoolDown-- " + spellname,
+                        SpellNameIcon = spellname,
+                        SpellType = SpellTypes.HarvestCooldown
                     });
                     return;
+                }
+                if (string.Equals(match.Spell.name, "Mind Cloud", StringComparison.OrdinalIgnoreCase) || string.Equals(match.Spell.name, "Ice Breath", StringComparison.OrdinalIgnoreCase))
+                {
+                    TryAddCustom(new CustomTimer
+                    {
+                        DurationInSeconds = 120,
+                        Name = "--CoolDown-- " + spellname,
+                        SpellNameIcon = spellname,
+                        SpellType = SpellTypes.BadGuyCoolDown
+                    });
                 }
                 var ismanasieve = spellname == "Mana Sieve";
                 var ispersistent = ismanasieve;
@@ -235,7 +246,7 @@ namespace EQTool.ViewModels
                 {
                     UpdatedDateTime = DateTime.Now,
                     PercentLeftOnSpell = 100,
-                    SpellType = -1,
+                    SpellType = match.SpellType,
                     TargetName = CustomerTime,
                     SpellName = match.Name,
                     Rect = spellicon.Rect,

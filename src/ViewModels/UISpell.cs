@@ -193,14 +193,42 @@ namespace EQTool.ViewModels
 
         public string TargetName { get; set; }
 
-        private int _SpellType = 0;
-        public int SpellType
+        private SpellTypes _SpellType = 0;
+
+        public SpellTypes SpellType
         {
             get => _SpellType;
             set
             {
                 _SpellType = value;
-                ProgressBarColor = _SpellType == -1 ? Brushes.LightBlue : (_SpellType > 0 ? Brushes.DarkSeaGreen : Brushes.OrangeRed);
+                if (_SpellType == SpellTypes.Beneficial)
+                {
+                    ProgressBarColor = Brushes.MediumAquamarine;
+                }
+                else if (_SpellType == SpellTypes.Detrimental)
+                {
+                    ProgressBarColor = Brushes.OrangeRed;
+                }
+                else if (_SpellType == SpellTypes.BadGuyCoolDown)
+                {
+                    ProgressBarColor = Brushes.DarkOrange;
+                }
+                else if (_SpellType == SpellTypes.HarvestCooldown)
+                {
+                    ProgressBarColor = Brushes.SkyBlue;
+                }
+                else if (_SpellType >= SpellTypes.Other)
+                {
+                    ProgressBarColor = Brushes.DarkSeaGreen;
+                }
+                else if (_SpellType >= SpellTypes.RespawnTimer)
+                {
+                    ProgressBarColor = Brushes.LightSalmon;
+                }
+                else
+                {
+                    ProgressBarColor = Brushes.DarkSeaGreen;
+                }
             }
         }
 

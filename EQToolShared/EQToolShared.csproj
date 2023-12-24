@@ -79,6 +79,7 @@
     <Compile Include="Discord\Models.cs" />
     <Compile Include="Enums\AuctionType.cs" />
     <Compile Include="Enums\EventType.cs" />
+    <Compile Include="Enums\SpellTypes.cs" />
     <Compile Include="Enums\PlayerClasses.cs" />
     <Compile Include="Enums\Servers.cs" />
     <Compile Include="HubModels\CustomTimer.cs" />
