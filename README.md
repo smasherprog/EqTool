@@ -1,5 +1,5 @@
 # PigParse
-<img width="1892" alt="image" src="https://github.com/smasherprog/EqTool/assets/3393733/ce79e4b6-50c2-4965-bb91-3c2d50299d3e">
+<img width="1892" alt="image" src="https://github.com/smasherprog/EqTool/blob/main/Example.png?raw=true">
 
 <h2>THIS PROGRAM WORKS SOLELY BY READING YOUR LOG FILE.</h2>
  
