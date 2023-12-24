@@ -19,7 +19,7 @@
                     } else if (data[i].t == 2) {
                         data[i].t = 'BOTH';
                     }
-                    let l = data[i].l; 
+                    let l = data[i].l;
                     data[i].l = new Date(l);
                 }
             }
@@ -41,8 +41,8 @@
                                 //dir - the direction of the sort ("asc" or "desc")
                                 //sorterParams - sorterParams object from column definition array
                                 return a.getTime() - b.getTime();
-                            }, 
-                            formatter: function (cell, formatterParams) { 
+                            },
+                            formatter: function (cell, formatterParams) {
                                 return cell.getRow().getData().l.toLocaleString();
                             }
                         },
@@ -116,7 +116,7 @@
 </script>
 
 <div class="w-100 vh-100">
-    <h3>@Model.Server Data </h3>
+    <h3>@Model.Server Data <small class="text-muted">Get <a href="https://github.com/smasherprog/EqTool" target="_blank">PigParse</a> to enhance your gameplay! Map, DPS, Spell Timer, Mob Info and more!</small></h3>
     <input id="filter-value" type="text" placeholder="Filter by Item" autofocus>
     <button id="filter-clear">Clear Filter</button>
     <div id="example-table"></div>
