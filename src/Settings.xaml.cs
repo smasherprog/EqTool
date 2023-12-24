@@ -274,6 +274,7 @@ namespace EQTool
                 new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Mana Sieve"), TargetName = "a bad guy", MultipleMatchesFound = false },
                 new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Mana Sieve"), TargetName = "a bad guy", MultipleMatchesFound = false },
                 new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Harvest"), TargetName = EQSpells.SpaceYou, MultipleMatchesFound = false },
+                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Mind Cloud"), TargetName = EQSpells.SpaceYou, MultipleMatchesFound = false }
             };
 
             foreach (var item in listofspells)
