@@ -116,7 +116,7 @@ namespace EQToolShared.Discord
                     if (!string.IsNullOrWhiteSpace(pricestring) && pricestring.IndexOf("x", StringComparison.OrdinalIgnoreCase) == -1)
                     {
                         var pricemultiple = 1.0;
-                        if (pricestring.IndexOf("k", StringComparison.OrdinalIgnoreCase) != -1)
+                        if (pricestring.IndexOf("k", StringComparison.OrdinalIgnoreCase) != -1 || pricestring.Contains('.'))
                         {
                             pricemultiple = 1000.0;
                         }

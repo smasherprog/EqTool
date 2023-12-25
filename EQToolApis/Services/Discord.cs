@@ -123,11 +123,11 @@ namespace EQToolApis.Services
             private readonly IDiscordService discordService;
             private readonly EQToolContext dbcontext;
             private readonly DBData dBData;
-            private readonly PlayerCache playerCache;
+            private readonly PlayerCacheV2 playerCache;
             private readonly List<ThrottledItem>[] ThrottleList = new List<ThrottledItem>[(int)(Servers.Blue + 1)];
             private readonly EQToolShared.Discord.DiscordAuctionParse discordAuctionParse;
 
-            public DiscordJob(PlayerCache playerCache, DBData dBData, IDiscordService discordService, EQToolContext dbcontext, IBackgroundJobClient backgroundJobClient, EQToolShared.Discord.DiscordAuctionParse discordAuctionParse)
+            public DiscordJob(PlayerCacheV2 playerCache, DBData dBData, IDiscordService discordService, EQToolContext dbcontext, IBackgroundJobClient backgroundJobClient, EQToolShared.Discord.DiscordAuctionParse discordAuctionParse)
             {
                 this.discordAuctionParse = discordAuctionParse;
                 this.playerCache = playerCache;

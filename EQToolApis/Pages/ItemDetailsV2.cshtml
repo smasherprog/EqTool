@@ -203,8 +203,16 @@
             }
 
             $.get("/api/item/getdetailsV2/@Model.ItemId", function (data, status) {
-                originaldata = data;
-                document.getElementById('ItemName').innerHTML = `<a href="https://wiki.project1999.com/${data.itemName.replace(' ', '_')}" target = "_blank"> ${data.itemName} <i class="fa fa-external-link"></i></a >`;
+                originaldata = data; 
+                let name = data.itemName.replaceAll(' ', '_');
+                let imgurl = 'https://p99-item-thumbnails.s3.amazonaws.com/' + name + '.png';
+                if (name.indexOf('Spell:_') !== -1) {
+                    imgurl = 'https://p99-item-thumbnails.s3.amazonaws.com/Spell:_Aegolism.png';
+                }
+                let p99name = data.itemName.replaceAll(' ', '_').replaceAll('Spell:_', '');
+                let p99url = 'https://wiki.project1999.com/' + p99name;
+             
+                document.getElementById('ItemName').innerHTML = `<a href="${p99url}" target = "_blank"> <img src="${imgurl}"/> ${data.itemName} <i class="fa fa-external-link"></i></a >`;
                 document.title = data.itemName;
                 let pl = [];
                 for (let key in data.players) {

@@ -337,13 +337,14 @@ namespace EQToolApis.Controllers
         {
             var items = context.EQTunnelAuctionItemsV2
                 .Where(a => a.EQitemId == itemid)
+                .OrderBy(a => a.EQTunnelAuctionItemId)
                 .Select(a => new
                 {
                     a.EQTunnelMessage.AuctionType,
                     a.AuctionPrice,
                     a.EQTunnelMessage.EQAuctionPlayerId,
                     a.EQTunnelMessage.TunnelTimestamp
-                }).ToList();
+                }).Take(5000).ToList();
 
             ItemDetail Item = new()
             {

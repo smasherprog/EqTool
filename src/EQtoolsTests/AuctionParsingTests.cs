@@ -580,7 +580,7 @@ namespace EQtoolsTests
 
             var item = result.Items.FirstOrDefault(a => a.Name == "Amulet of Necropotence");
             Assert.AreEqual(AuctionType.WTS, item.AuctionType);
-            Assert.AreEqual(225000, item.Price); 
+            Assert.AreEqual(225000, item.Price);
         }
 
         [TestMethod]
@@ -596,6 +596,25 @@ namespace EQtoolsTests
             item = result.Items.FirstOrDefault(a => a.Name == "Sea Dragon Meat");
             Assert.AreEqual(AuctionType.WTS, item.AuctionType);
             Assert.AreEqual(224, item.Price);
+        }
+
+        [TestMethod]
+        public void Parse34()
+        {
+            var result = discordAuctionParse.Parse("Bendoverrover auctions, 'WTS Boneshear 8k Silver Chitin Wristband 4k Earring of Purity 1.5k Fancy Velvet Mantle 2k Silver Chitin Hand Wraps 1.3 '");
+            Assert.AreEqual("Bendoverrover", result.Player);
+
+            var item = result.Items.FirstOrDefault(a => a.Name == "Boneshear");
+            Assert.AreEqual(AuctionType.WTS, item.AuctionType);
+            Assert.AreEqual(8000, item.Price);
+
+            item = result.Items.FirstOrDefault(a => a.Name == "Silver Chitin Hand Wraps");
+            Assert.AreEqual(AuctionType.WTS, item.AuctionType);
+            Assert.AreEqual(1300, item.Price);
+
+            item = result.Items.FirstOrDefault(a => a.Name == "Earring of Purity");
+            Assert.AreEqual(AuctionType.WTS, item.AuctionType);
+            Assert.AreEqual(1500, item.Price);
         }
     }
 }
