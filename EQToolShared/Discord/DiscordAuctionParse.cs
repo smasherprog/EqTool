@@ -22,21 +22,21 @@ namespace EQToolShared.Discord
 
     public class DiscordAuctionParse
     {
-        private (AuctionType? auctiontype, string input) GetAuctionType(AuctionType? currenttype, string input)
+        private bool IsAuctionTyoe(string input)
         {
             var searchstring = "wts";
             var searchstringindex = input.IndexOf(searchstring, StringComparison.OrdinalIgnoreCase);
-            if (searchstringindex != 0)
+            if (searchstringindex != -1)
             {
-                searchstring = "wtb";
-                searchstringindex = input.IndexOf(searchstring, StringComparison.OrdinalIgnoreCase);
-                if (searchstringindex != 0)
-                {
-                    return (currenttype, input);
-                }
-                return (AuctionType.WTB, input.Substring(searchstringindex + searchstring.Length).Trim());
+                return true;
             }
-            return (AuctionType.WTS, input.Substring(searchstringindex + searchstring.Length).Trim());
+            searchstring = "wtb";
+            searchstringindex = input.IndexOf(searchstring, StringComparison.OrdinalIgnoreCase);
+            if (searchstringindex != -1)
+            {
+                return true;
+            }
+            return false;
         }
 
         public class NextItem
@@ -44,6 +44,7 @@ namespace EQToolShared.Discord
             public string Input { get; set; }
             public string Name { get; set; }
             public int? Price { get; set; }
+            public AuctionType AuctionType { get; set; } = Enums.AuctionType.WTS;
         }
 
         private bool isPricing(string input, int i)
@@ -105,6 +106,16 @@ namespace EQToolShared.Discord
             {
                 pricestartindex = itembreakindex;
             }
+            var auctiontype = AuctionType.WTS;
+            var srchstring = input.Substring(0, itemstartindex);
+            if (srchstring.LastIndexOf("wts", StringComparison.OrdinalIgnoreCase) != -1)
+            {
+                auctiontype = AuctionType.WTS;
+            }
+            if (srchstring.LastIndexOf("wtb", StringComparison.OrdinalIgnoreCase) != -1)
+            {
+                auctiontype = AuctionType.WTB;
+            }
 
             var price = (int?)null;
             if (pricestartindex != itembreakindex)
@@ -116,9 +127,17 @@ namespace EQToolShared.Discord
                     if (!string.IsNullOrWhiteSpace(pricestring) && pricestring.IndexOf("x", StringComparison.OrdinalIgnoreCase) == -1)
                     {
                         var pricemultiple = 1.0;
-                        if (pricestring.IndexOf("k", StringComparison.OrdinalIgnoreCase) != -1 || pricestring.Contains('.'))
+                        var periodindex = pricestring.IndexOf('.');
+                        if (pricestring.IndexOf("k", StringComparison.OrdinalIgnoreCase) != -1)
                         {
                             pricemultiple = 1000.0;
+                        }
+                        if (periodindex != -1 && periodindex != 0 && periodindex + 1 < pricestring.Length)
+                        {
+                            if (char.IsDigit(pricestring[periodindex - 1]) && char.IsDigit(pricestring[periodindex + 1]))
+                            {
+                                pricemultiple = 1000.0;
+                            }
                         }
 
                         pricestring = new string(pricestring.Where(a => char.IsDigit(a) || a == '.').ToArray());
@@ -134,7 +153,8 @@ namespace EQToolShared.Discord
             {
                 Input = input.Substring(0, itemstartindex) + input.Substring(itembreakindex),
                 Name = itemname,
-                Price = price > 0 ? price : null
+                Price = price > 0 ? price : null,
+                AuctionType = auctiontype
             };
         }
 
@@ -187,22 +207,17 @@ namespace EQToolShared.Discord
             pattern = @"x \d+";
             input = Regex.Replace(input, pattern, string.Empty);
 
-
-            var removetext = "/stack";
-            var stackindex = input.IndexOf(removetext, StringComparison.OrdinalIgnoreCase);
-            while (stackindex != -1)
+            var removestrings = new List<string>() { "/stack", "/ea", "price", "paying" };
+            foreach (var removetext in removestrings)
             {
-                input = input.Replace(input.Substring(stackindex, removetext.Length), string.Empty);
-                stackindex = input.IndexOf(removetext, StringComparison.OrdinalIgnoreCase);
+                var stackindex = input.IndexOf(removetext, StringComparison.OrdinalIgnoreCase);
+                while (stackindex != -1)
+                {
+                    input = input.Replace(input.Substring(stackindex, removetext.Length), string.Empty);
+                    stackindex = input.IndexOf(removetext, StringComparison.OrdinalIgnoreCase);
+                }
             }
 
-            removetext = "/ea";
-            stackindex = input.IndexOf(removetext, StringComparison.OrdinalIgnoreCase);
-            while (stackindex != -1)
-            {
-                input = input.Replace(input.Substring(stackindex, removetext.Length), string.Empty);
-                stackindex = input.IndexOf(removetext, StringComparison.OrdinalIgnoreCase);
-            }
             var tempstring = string.Empty;
             for (var i = 0; i < input.Length; i++)
             {
@@ -218,20 +233,18 @@ namespace EQToolShared.Discord
 
             input = tempstring.Replace(" - ", " ");
 
-            var auctiontype = GetAuctionType(null, input);
-            if (!auctiontype.auctiontype.HasValue)
+            var auctiontype = IsAuctionTyoe(input);
+            if (!auctiontype)
             {
                 return null;
             }
-            input = auctiontype.input.Trim('\'');
+            input = input.Trim('\'');
 
             NextItem item = null;
             var counter = 0;
             do
             {
                 item = GetItem(input);
-                auctiontype = GetAuctionType(auctiontype.auctiontype, input);
-                input = auctiontype.input;
                 if (item != null)
                 {
                     input = item.Input;
@@ -240,7 +253,7 @@ namespace EQToolShared.Discord
                     {
                         ret.Items.Add(new Auctionitem
                         {
-                            AuctionType = auctiontype.auctiontype.Value,
+                            AuctionType = item.AuctionType,
                             Name = item.Name,
                             Price = item.Price
                         });

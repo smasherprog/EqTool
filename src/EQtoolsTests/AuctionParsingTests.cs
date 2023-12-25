@@ -616,5 +616,39 @@ namespace EQtoolsTests
             Assert.AreEqual(AuctionType.WTS, item.AuctionType);
             Assert.AreEqual(1500, item.Price);
         }
+
+        [TestMethod]
+        public void Parse35()
+        {
+            var result = discordAuctionParse.Parse("Commongrounds auctions, 'WTS Ring of stealthy travel 14k WTS Bag of the Tinkerers 5300pp.  5250ea for qty 2+.  5200 for qty 4+.  (price firm) pst ////  //// WTB Scepter of the Forlorn paying 5k WTB'");
+            Assert.AreEqual("Commongrounds", result.Player);
+
+            var item = result.Items.FirstOrDefault(a => a.Name == "Ring of Stealthy Travel");
+            Assert.AreEqual(AuctionType.WTS, item.AuctionType);
+            Assert.AreEqual(14000, item.Price);
+
+            item = result.Items.FirstOrDefault(a => a.Name == "Bag of the Tinkerers");
+            Assert.AreEqual(AuctionType.WTS, item.AuctionType);
+            Assert.AreEqual(5300, item.Price);
+
+            item = result.Items.FirstOrDefault(a => a.Name == "Scepter of the Forlorn");
+            Assert.AreEqual(AuctionType.WTB, item.AuctionType);
+            Assert.AreEqual(5000, item.Price);
+        }
+
+        [TestMethod]
+        public void Parse36()
+        {
+            var result = discordAuctionParse.Parse("Commongrounds auctions, 'WTS Ring of stealthy travel 14k WTS Bag of the Tinkerers 5300pp.'");
+            Assert.AreEqual("Commongrounds", result.Player);
+
+            var item = result.Items.FirstOrDefault(a => a.Name == "Ring of Stealthy Travel");
+            Assert.AreEqual(AuctionType.WTS, item.AuctionType);
+            Assert.AreEqual(14000, item.Price);
+
+            item = result.Items.FirstOrDefault(a => a.Name == "Bag of the Tinkerers");
+            Assert.AreEqual(AuctionType.WTS, item.AuctionType);
+            Assert.AreEqual(5300, item.Price);
+        }
     }
 }
