@@ -126,6 +126,7 @@
                     scales: {
                         x: {
                             type: 'time',
+                            max: (new Date().setDate(new Date().getDate() + 1).valueOf())
                         }
                     },
                     plugins: {
@@ -202,7 +203,7 @@
             }
 
             $.get("/api/item/getdetailsV2/@Model.ItemId", function (data, status) {
-                originaldata = data; 
+                originaldata = data;
                 document.getElementById('ItemName').innerHTML = `<a href="https://wiki.project1999.com/${data.itemName.replace(' ', '_')}" target = "_blank"> ${data.itemName} <i class="fa fa-external-link"></i></a >`;
                 document.title = data.itemName;
                 let pl = [];

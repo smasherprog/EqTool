@@ -45,13 +45,19 @@
                             formatter: function (cell, formatterParams) { 
                                 return cell.getRow().getData().l.toLocaleString();
                             }
+                        }, 
+                        {
+                            title: "img", field: "t", formatter: function (cell, formatterParams) {
+                                let row = cell.getRow().getData();
+                                return `<img style='max-height:20px;' src="https://p99-item-thumbnails.s3.amazonaws.com/${row.n.replaceAll(' ', '_')}.png"/>`;
+                            }
                         },
                         {
                             title: "Item",
                             field: "n",
                             formatter: function (cell, formatterParams) {
                                 let row = cell.getRow().getData();
-                                return `<div><a href="/ItemDetailsV2/${row.i}">${row.n} </a>  <a class="float-right" href="https://wiki.project1999.com/${row.n.replace(' ', '_')}" target="_blank"><i class="fa fa-external-link"></i></a></div>`;
+                                return `<div><a href="/ItemDetailsV2/${row.i}">${row.n} </a>  <a class="float-right" href="https://wiki.project1999.com/${row.n.replaceAll(' ', '_').replaceAll('Spell: ', '')}" target="_blank"><i class="fa fa-external-link"></i></a></div>`;
                             }
                         },
                         { title: "30d Count", field: "t30" },
