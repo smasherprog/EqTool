@@ -20,6 +20,7 @@
     <script>
         let originaldata = [];
         Chart.register('chartjs-plugin-annotation');
+        var bottomdev = 0;
         $(document).ready(function () {
             $('#nodmfforyou').hide();
             function averageFromData(data) {
@@ -62,7 +63,7 @@
                 let values = [];
                 ctx.chart.data.datasets.forEach(a => {
                     a.data.forEach(a => {
-                        if (a.y > 1 && a.hasPricing) {
+                        if (a.y > 1 && a.extradata.hasPricing) {
                             values.push(a.y);
                         }
                     });
@@ -83,7 +84,7 @@
                 let values = [];
                 ctx.chart.data.datasets.forEach(a => {
                     a.data.forEach(a => {
-                        if (a.y > 1 && a.hasPricing) {
+                        if (a.y > 1 && a.extradata.hasPricing) {
                             values.push(a.y);
                         }
                     });
@@ -170,7 +171,7 @@
                             },
                             callbacks: {
                                 label: function (TooltipItem) {
-                                    if (TooltipItem.raw.hasPricing) {
+                                    if (TooltipItem.raw.extradata.hasPricing) {
                                         return TooltipItem.dataset.label + ' ' + TooltipItem.raw.extradata.u + ' ' + TooltipItem.parsed.y + 'pp' + ' ' + TooltipItem.raw.extradata.t.toLocaleString();
                                     }
                                     return TooltipItem.dataset.label + ' ' + TooltipItem.raw.extradata.u + ' ' + TooltipItem.raw.extradata.t.toLocaleString();
@@ -203,7 +204,7 @@
                     itemName: originaldata.itemName
                 }
                 let chartdata = [];
-                var bottomdev = averageFromData(data.items) - standardDeviationFromData(data.items);
+
                 if (data.items) {
                     let itemsbyplayer = data.items.reduce(function (r, a) {
                         r[a.i] = r[a.i] || [];
@@ -212,7 +213,7 @@
                     }, Object.create(null));
                     Object.entries(itemsbyplayer).forEach(itemsplayer => {
                         let id = itemsplayer[0];
-                        let itemsbyplayer =
+                        let databyplayer =
                         {
                             label: data.players[id],
                             data: []
@@ -224,13 +225,13 @@
                             let haspricing = true;
                             if (!itemarray[j].p) {
                                 itemarray[j].p = bottomdev;
-                                haspricing = false;
+                                itemarray[j].haspricing = false;
                             }
-                            itemsbyplayer.data.push({ x: itemarray[j].t, y: itemarray[j].p, extradata: itemarray[j], hasPricing: haspricing });
+                            databyplayer.data.push({ x: itemarray[j].t, y: itemarray[j].p, extradata: itemarray[j]});
 
                         }
                         if (shouldadd) {
-                            chartdata.push(itemsbyplayer);
+                            chartdata.push(databyplayer);
                         }
                     });
                 }
@@ -239,7 +240,7 @@
             }
 
             $.get("/api/item/getdetailsV2/@Model.ItemId", function (data, status) {
-                originaldata = data;
+                originaldata = data; 
                 let name = data.itemName.replaceAll(' ', '_');
                 let imgurl = 'https://p99-item-thumbnails.s3.amazonaws.com/' + name + '.png';
                 if (name.indexOf('Spell:_') !== -1) {
@@ -283,6 +284,7 @@
 
                 });
                 if (data.items) {
+                    bottomdev = averageFromData(data.items) - standardDeviationFromData(data.items);
                     for (let i = 0; i < data.items.length; i++) {
                         if (data.items[i].u == 0) {
                             data.items[i].u = 'WTS';
@@ -294,9 +296,13 @@
                         data.items[i].t = d;
                         data.items[i].n = data.players[data.items[i].i];
                         if (!data.items[i].p) {
-                            data.items[i].p = 0;
+                            data.items[i].p = bottomdev;
+                            data.items[i].hasPricing = false;
+                        } else {
+                            data.items[i].hasPricing = true;
                         }
                     }
+
                 }
                 let ele = document.getElementById('TableData');
                 table = new Tabulator(ele,
@@ -310,7 +316,7 @@
                             {
                                 title: "Auction Price", field: "p",
                                 formatter: function (cell, formatterParams) {
-                                    let celldata = cell.getRow().getData();
+                                    let celldata = cell.getRow().getData(); 
                                     if (celldata.hasPricing) {
                                         let price = celldata.p;
                                         return price ? price + "pp" : '';
