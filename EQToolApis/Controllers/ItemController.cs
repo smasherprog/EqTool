@@ -53,6 +53,7 @@ namespace EQToolApis.Controllers
 
         /// <summary>
         /// Will get all items for server and the averages. This data is rebuild every 10 minutes.
+        /// DO NOT USE THIS. They will replace the regular version once data import is done!
         /// </summary>
         /// <param name="server"></param>
         /// <returns></returns>
@@ -331,6 +332,7 @@ namespace EQToolApis.Controllers
 
         /// <summary>
         /// Will get an item and all of its details. This can include alot of data!
+        /// DO NOT USE THIS. They will replace the regular version once data import is done!
         /// </summary>
         /// <param name="itemid"></param>
         /// <returns></returns>
