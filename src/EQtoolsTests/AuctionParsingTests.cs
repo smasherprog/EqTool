@@ -294,7 +294,7 @@ namespace EQtoolsTests
         [TestMethod]
         public void Parse17()
         {
-            var result = discordAuctionParse.Parse("Fuxi auctions, 'WTS Words of Burnishing / Nilitim's Grimoire Pg. 300 x3 / Nilitim's Grimoire Pg. 116 / Nilitim's Grimoire Pg. 115 / Nilitim's Grimoire Pg. 35 / Salil's Writ Pg. 174 L 5pp ea last call pst'");
+            var result = discordAuctionParse.Parse("Fuxi auctions, 'WTS Words of Burnishing / Nilitim's Grimoire Pg. 300 x3 / Nilitim's Grimoire Pg. 116 / Nilitim's Grimoire Pg. 115 / Nilitim's Grimoire Pg. 35 / Salil's Writ Pg. 174 L 5pp ea last call pst WTB Spell: Pillar of Lightning 50p l Sarnak-Hide Mask 50p l Arctic Wyvern Hide 300p/stack l'");
             Assert.AreEqual("Fuxi", result.Player);
 
             var item = result.Items.FirstOrDefault(a => a.Name == "Words of Burnishing");
@@ -641,6 +641,21 @@ namespace EQtoolsTests
         {
             var result = discordAuctionParse.Parse("Commongrounds auctions, 'WTS Ring of stealthy travel 14k WTS Bag of the Tinkerers 5300pp.'");
             Assert.AreEqual("Commongrounds", result.Player);
+
+            var item = result.Items.FirstOrDefault(a => a.Name == "Ring of Stealthy Travel");
+            Assert.AreEqual(AuctionType.WTS, item.AuctionType);
+            Assert.AreEqual(14000, item.Price);
+
+            item = result.Items.FirstOrDefault(a => a.Name == "Bag of the Tinkerers");
+            Assert.AreEqual(AuctionType.WTS, item.AuctionType);
+            Assert.AreEqual(5300, item.Price);
+        }
+
+        [TestMethod]
+        public void Parse37()
+        {
+            var result = discordAuctionParse.Parse("Fuxi auctions, 'WTS Silver Chitin Hand Wraps 1.3 / Nilitim's Grimoire Pg. 300 x3 / Nilitim's Grimoire Pg. 116 / Nilitim's Grimoire Pg. 115 / Nilitim's Grimoire Pg. 35 / Salil's Writ Pg. 174 L 5pp ea last call pst WTB Spell: Pillar of Lightning 50p l Sarnak-Hide Mask 50p l Arctic Wyvern Hide 300p/stack l WTS Ring of stealthy travel 14k WTS Bag of the Tinkerers 5300pp.  5250ea for qty 2+.  5200 for qty 4+.  (price firm) pst WTB Scepter of the Forlorn paying 5k WTB'");
+            Assert.AreEqual("Fuxi", result.Player);
 
             var item = result.Items.FirstOrDefault(a => a.Name == "Ring of Stealthy Travel");
             Assert.AreEqual(AuctionType.WTS, item.AuctionType);

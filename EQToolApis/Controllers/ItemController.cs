@@ -2,6 +2,7 @@
 using EQToolApis.Models;
 using EQToolApis.Services;
 using EQToolShared.APIModels.ItemControllerModels;
+using EQToolShared.Discord;
 using EQToolShared.Enums;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel;
@@ -15,12 +16,15 @@ namespace EQToolApis.Controllers
         private readonly EQToolContext context;
         private readonly PlayerCache playerCache;
         private readonly PlayerCacheV2 playerCachev2;
-        public ItemController(UIDataBuild uIDataBuild, EQToolContext context, PlayerCache playerCache, PlayerCacheV2 playerCachev2)
+        private readonly DiscordAuctionParse discordAuctionParse;
+
+        public ItemController(UIDataBuild uIDataBuild, EQToolContext context, PlayerCache playerCache, PlayerCacheV2 playerCachev2, DiscordAuctionParse discordAuctionParse)
         {
             this.uIDataBuild = uIDataBuild;
             this.context = context;
             this.playerCache = playerCache;
             this.playerCachev2 = playerCachev2;
+            this.discordAuctionParse = discordAuctionParse;
         }
         /// <summary>
         /// Will get all items for server and the averages. This data is rebuild every 10 minutes.
@@ -376,6 +380,18 @@ namespace EQToolApis.Controllers
             }
             Item.Items = Item.Items.OrderByDescending(a => a.t).ToList();
             return Item;
+        }
+
+        /// <summary>
+        /// Will parse in game message and return auction data
+        /// </summary>
+        /// <param name="message"></param>
+        /// <returns></returns>
+        [Route("api/item/auctionParse")]
+        [HttpPost]
+        public Auction AuctionParse([FromBody, DefaultValue("Fuxi auctions, 'WTS Silver Chitin Hand Wraps 1.3 / Nilitim's Grimoire Pg. 300 x3 / Nilitim's Grimoire Pg. 116 / Nilitim's Grimoire Pg. 115 / Nilitim's Grimoire Pg. 35 / Salil's Writ Pg. 174 L 5pp ea last call pst WTB Spell: Pillar of Lightning 50p l Sarnak-Hide Mask 50p l Arctic Wyvern Hide 300p/stack l WTS Ring of stealthy travel 14k WTS Bag of the Tinkerers 5300pp.  5250ea for qty 2+.  5200 for qty 4+.  (price firm) pst WTB Scepter of the Forlorn paying 5k WTB'")] string message)
+        {
+            return this.discordAuctionParse.Parse(message);
         }
     }
 }

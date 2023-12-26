@@ -108,11 +108,13 @@ namespace EQToolShared.Discord
             }
             var auctiontype = AuctionType.WTS;
             var srchstring = input.Substring(0, itemstartindex);
-            if (srchstring.LastIndexOf("wts", StringComparison.OrdinalIgnoreCase) != -1)
+            var wtsindex = srchstring.LastIndexOf("wts", StringComparison.OrdinalIgnoreCase);
+            var wtbindex = srchstring.LastIndexOf("wtb", StringComparison.OrdinalIgnoreCase);
+            if (wtsindex != -1 && wtsindex > wtbindex)
             {
                 auctiontype = AuctionType.WTS;
             }
-            if (srchstring.LastIndexOf("wtb", StringComparison.OrdinalIgnoreCase) != -1)
+            if (wtbindex != -1 && wtbindex > wtsindex)
             {
                 auctiontype = AuctionType.WTB;
             }
@@ -181,7 +183,7 @@ namespace EQToolShared.Discord
 
         public Auction Parse(string input)
         {
-            if (string.IsNullOrWhiteSpace(input)) return null;
+            if (string.IsNullOrWhiteSpace(input) || input.Length > 1000) return null;
             var ret = new Auction();
             var searchstring = " auctions, '";
             var searchstringindex = input.IndexOf(searchstring, StringComparison.OrdinalIgnoreCase);
