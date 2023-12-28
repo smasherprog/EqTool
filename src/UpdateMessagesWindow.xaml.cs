@@ -13,7 +13,7 @@ namespace EQTool
         public DateTime DateTime { get; set; }
         public string Message { get; set; }
         public string Image { get; set; }
-        public Visibility ImageVisibility { get; set; }
+        public Visibility ImageVisibility { get; set; } = Visibility.Collapsed;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -49,6 +49,12 @@ namespace EQTool
                 Image = "pack://application:,,,/update1.png",
                 ImageVisibility = Visibility.Visible
             });
+            UpdateMessages.Add(new UpdateMessageData
+            {
+                DateTime = new DateTime(2023, 12, 27),
+                Message = $"a bloodgill goblin timer update for Lake of Ill Omen."
+            });
+
         }
     }
 }

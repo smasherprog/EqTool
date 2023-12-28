@@ -863,7 +863,15 @@ namespace EQToolShared.Map
                 {
                     "a sarnak courier","Professor Akabao","Chancellor of Di`Zok","Lord Gorelik","Advisor Sh'Orok",
                 },
-                RespawnTime = new TimeSpan(0, 6, 40)
+                RespawnTime = new TimeSpan(0, 6, 40),
+                NpcSpawnTimes = new List<NpcSpawnTime>()
+                 {
+                      new NpcSpawnTime
+                      {
+                           Name = "a bloodgill goblin",
+                            RespawnTime = new TimeSpan(0, 13, 0)
+                      }
+                 }
             });
             ZoneInfoMap.Add("lakerathe", new ZoneInfo
             {
