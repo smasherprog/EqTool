@@ -49,7 +49,8 @@ Features:
 
 <h4>TO DO List EQTool</h4>
 <ul> 
- <li>Add barebones audio triggers.</li>    
+  <li>Add CH visualization!</li>    
+ <li>Add barebones audio/visual triggers starting with Enrage.</li>    
  <li>Remove timers from map when timers removed from list and visa versa.</li>   
  <li>Add code to show MOB hits per second.</li>   
  <li>Port application to be cross platform(mac, win, linux).</li>   
@@ -81,11 +82,7 @@ Features:
 
 <h4>TO DO List PigParse Pricing</h4>
 <ul>
-<li>Parse Raw tunnel Data instead of relying on TunnelQuest </li> 
-<li>Add Median pricing to chart </li>  
-<li>Add Person search. </li> 
-<li>Trim table history for common items like bonechips. More data doesnt improve price data. </li> 
-<li>Add table with item names to rebuild pricing for specific items. </li> 
+<li>N/A </li> 
 </ul>
 
 <h3>FAQS</h3>
