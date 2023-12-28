@@ -29,7 +29,7 @@ namespace EQTool.Services
             var checkformanualmaps = System.IO.Directory.GetCurrentDirectory() + "/maps";
             var isdebug = false;
 #if DEBUG
-            isdebug = true;
+            //isdebug = true;
 #endif
             if (isdebug && System.IO.Directory.Exists(checkformanualmaps))
             {

@@ -10,6 +10,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -322,13 +323,45 @@ namespace EQTool
             }
             signalrPlayerHub = container.Resolve<ISignalrPlayerHub>();
 
+            //var ptr = FindWindow("eqgame.exe", null);
+            //if (ptr != IntPtr.Zero)
+            //{
+            //    var NotepadRect = new Rect();
+            //    if (GetWindowRect(ptr, ref NotepadRect))
+            //    {
+            //        int h = 6;
+            //    }
+            //    else
+            //    {
+            //        int k = 6;
+            //    }
+            //}
+
             PlayerTrackerService = container.Resolve<PlayerTrackerService>();
             ZoneActivityTrackingService = container.Resolve<ZoneActivityTrackingService>();
             logParser.QuakeEvent += LogParser_QuakeEvent;
+            logParser.EnrageEvent += LogParser_EnrageEvent;
             App.Current.Resources["GlobalFontSize"] = (double)this.EQToolSettings.FontSize.Value;
             ((App)System.Windows.Application.Current).UpdateBackgroundOpacity("MyWindowStyleDPS", this.EQToolSettings.DpsWindowState.Opacity.Value);
             ((App)System.Windows.Application.Current).UpdateBackgroundOpacity("MyWindowStyleMap", this.EQToolSettings.MapWindowState.Opacity.Value);
             ((App)System.Windows.Application.Current).UpdateBackgroundOpacity("MyWindowStyleTrigger", this.EQToolSettings.SpellWindowState.Opacity.Value);
+        }
+        [DllImport("user32.dll")]
+        public static extern bool GetWindowRect(IntPtr hwnd, ref Rect rectangle);
+        [DllImport("user32.dll")]
+        static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
+        private void LogParser_EnrageEvent(object sender, EnrageParser.EnrageEvent e)
+        {
+            var w = new EventOverlay();
+            w.CenterText.Text = e.NpcName + " ENRAGED";
+            var p = Process.GetProcesses();
+            foreach (Process pList in p)
+            {
+                if (pList.MainWindowTitle.Contains("Everquest"))
+                {
+
+                }
+            }
         }
 
         public void UpdateBackgroundOpacity(string name, double opacity)

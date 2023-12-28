@@ -359,6 +359,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="CustomTimeSpanUpDown.cs" />
+    <Compile Include="EventOverlay.xaml.cs">
+      <DependentUpon>EventOverlay.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MappingWindow.xaml.cs">
       <DependentUpon>MappingWindow.xaml</DependentUpon>
     </Compile>
@@ -391,6 +394,7 @@
     <Compile Include="Services\LoggingService.cs" />
     <Compile Include="Services\MapOpacityHelper.cs" />
     <Compile Include="Services\MapViewModelService.cs" />
+    <Compile Include="Services\Parsing\EnrageParser.cs" />
     <Compile Include="Services\Parsing\POFDTParser.cs" />
     <Compile Include="Services\Parsing\QuakeParser.cs" />
     <Compile Include="Services\Parsing\LogFileDateTimeParse.cs" />
@@ -487,6 +491,10 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="EventOverlay.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MappingWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
