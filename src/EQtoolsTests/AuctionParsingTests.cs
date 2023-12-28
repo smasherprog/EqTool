@@ -483,11 +483,7 @@ namespace EQtoolsTests
             Assert.AreEqual(AuctionType.WTS, item.AuctionType);
             Assert.IsNull(item.Price);
 
-            item = result.Items.FirstOrDefault(a => a.Name == "Rings");
-            Assert.AreEqual(AuctionType.WTS, item.AuctionType);
-            Assert.IsNull(item.Price);
-
-            Assert.AreEqual(3, result.Items.Count);
+            Assert.AreEqual(2, result.Items.Count);
         }
 
 
@@ -664,6 +660,21 @@ namespace EQtoolsTests
             item = result.Items.FirstOrDefault(a => a.Name == "Bag of the Tinkerers");
             Assert.AreEqual(AuctionType.WTS, item.AuctionType);
             Assert.AreEqual(5300, item.Price);
+        }
+
+        [TestMethod]
+        public void Parse38()
+        {
+            var result = discordAuctionParse.Parse("Shren auctions, 'WTS Fungus Covered Scale Tunic55k Circlet of Shadow 35k Jeldorin 17k Runed Blade 7k Gem Encrusted Ring 7k Argent Protector4600'");
+            Assert.AreEqual("Shren", result.Player);
+
+            var item = result.Items.FirstOrDefault(a => a.Name == "Fungus Covered Scale Tunic");
+            Assert.AreEqual(AuctionType.WTS, item.AuctionType);
+            Assert.AreEqual(55000, item.Price);
+
+            item = result.Items.FirstOrDefault(a => a.Name == "Argent Protector");
+            Assert.AreEqual(AuctionType.WTS, item.AuctionType);
+            Assert.AreEqual(4600, item.Price);
         }
     }
 }

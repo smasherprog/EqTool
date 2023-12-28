@@ -71,7 +71,7 @@ namespace EQToolShared.Discord
             }
             if (pricestartindex != -1)
             {
-                var pricingstart = pricestartindex + 1;
+                var pricingstart = pricestartindex;
                 pricestartindex = -1;
                 for (var i = pricingstart; i < input.Length; i++)
                 {
