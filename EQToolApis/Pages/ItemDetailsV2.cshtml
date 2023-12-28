@@ -197,7 +197,10 @@
                     playerkeywordstofilter.push(value.text);
                 });
                 let playerstoshow = playerkeywordstofilter.join(' ');
-                table.setFilter("n", "keywords", playerstoshow, { matchAll: false });
+                table.on("tableBuilt", function () {
+                    table.setFilter("n", "keywords", playerstoshow, { matchAll: false });
+                });
+              
                 let data = {
                     items: originaldata.items.filter(a => playeridstoshow.includes(a.i)),
                     players: originaldata.players,
@@ -223,12 +226,11 @@
                         for (let j = 0; j < itemarray.length; j++) {
                             shouldadd = true;
                             let haspricing = true;
-                            if (!itemarray[j].p) {
+                            if (itemarray[j].p === null || itemarray[j].p === undefined) {
                                 itemarray[j].p = bottomdev;
                                 itemarray[j].haspricing = false;
                             }
-                            databyplayer.data.push({ x: itemarray[j].t, y: itemarray[j].p, extradata: itemarray[j]});
-
+                            databyplayer.data.push({ x: itemarray[j].t, y: itemarray[j].p, extradata: itemarray[j]}); 
                         }
                         if (shouldadd) {
                             chartdata.push(databyplayer);
@@ -256,7 +258,7 @@
                     let value = data.players[key];
                     let count = 0;
                     for (let i = 0; i < data.items.length; i++) {
-                        if (data.items[i].p && key == data.items[i].i) {
+                        if (key == data.items[i].i) {
                             count += 1;
                         }
                     }
@@ -295,7 +297,7 @@
                         let d = new Date(tunnelTimestamp);
                         data.items[i].t = d;
                         data.items[i].n = data.players[data.items[i].i];
-                        if (!data.items[i].p) {
+                        if (data.items[i].p === null || data.items[i].p === undefined ){
                             data.items[i].p = bottomdev;
                             data.items[i].hasPricing = false;
                         } else {
