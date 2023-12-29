@@ -676,5 +676,84 @@ namespace EQtoolsTests
             Assert.AreEqual(AuctionType.WTS, item.AuctionType);
             Assert.AreEqual(4600, item.Price);
         }
+
+        [TestMethod]
+        public void Parse39()
+        {
+            var result = discordAuctionParse.Parse("Shren auctions, 'WTS Fungus Covered Scale Tunic 52k Ceremonial Iksar Chestplate 10k Tolan's Darkwood Bracer10500 Gem Encrusted Ring 9k Spell: Gift of Pure Thought 10300'");
+            Assert.AreEqual("Shren", result.Player);
+
+            var item = result.Items.FirstOrDefault(a => a.Name == "Tolan's Darkwood Bracer");
+            Assert.AreEqual(AuctionType.WTS, item.AuctionType);
+            Assert.AreEqual(10500, item.Price);
+        }
+
+        [TestMethod]
+        public void Parse40()
+        {
+            var result = discordAuctionParse.Parse("Phillycheese auctions, 'WTS Crystal Covered Shroud 90p, Ry`Gorr Chain Collar 50p, Gnoll Scalp x14 5p ea, Left Goblin Ear x5 5p ea, Leather Padding x20 10p ea, Fish Eggs 200p'");
+            Assert.AreEqual("Phillycheese", result.Player);
+
+            var item = result.Items.FirstOrDefault(a => a.Name == "Leather Padding");
+            Assert.AreEqual(AuctionType.WTS, item.AuctionType);
+            Assert.AreEqual(10, item.Price);
+
+            item = result.Items.FirstOrDefault(a => a.Name == "Crystal Covered Shroud");
+            Assert.AreEqual(AuctionType.WTS, item.AuctionType);
+            Assert.AreEqual(90, item.Price);
+
+            item = result.Items.FirstOrDefault(a => a.Name == "Gnoll Scalp");
+            Assert.AreEqual(AuctionType.WTS, item.AuctionType);
+            Assert.AreEqual(5, item.Price);
+        }
+
+        [TestMethod]
+        public void Parse41()
+        {
+            var result = discordAuctionParse.Parse("Snedget auctions, 'wts Shrunken Goblin Skull Earring, 10 Dose Blood of the Wolf 100 p stack'");
+            Assert.AreEqual("Snedget", result.Player);
+
+            var item = result.Items.FirstOrDefault(a => a.Name == "Shrunken Goblin Skull Earring");
+            Assert.AreEqual(AuctionType.WTS, item.AuctionType);
+            Assert.IsNull(item.Price);
+
+            item = result.Items.FirstOrDefault(a => a.Name == "10 Dose Blood of the Wolf");
+            Assert.AreEqual(AuctionType.WTS, item.AuctionType);
+            Assert.AreEqual(100, item.Price);
+        }
+
+        [TestMethod]
+        public void Parse42()
+        {
+            var result = discordAuctionParse.Parse("Jokrella auctions, 'WTS Earring of Blazing Energy1.2 | Shai`din Revenant Bauble 1.5 | Sarnak Battle Shield 600'");
+            Assert.AreEqual("Jokrella", result.Player);
+
+            var item = result.Items.FirstOrDefault(a => a.Name == "Earring of Blazing Energy");
+            Assert.AreEqual(AuctionType.WTS, item.AuctionType);
+            Assert.AreEqual(1200, item.Price);
+
+            item = result.Items.FirstOrDefault(a => a.Name == "Shai`din Revenant Bauble");
+            Assert.AreEqual(AuctionType.WTS, item.AuctionType);
+            Assert.AreEqual(1500, item.Price);
+        }
+
+        [TestMethod]
+        public void Parse44()
+        {
+            var result = discordAuctionParse.Parse("Blarpfat auctions, 'WTS Black Pantherskin Cloak900 / Black Pantherskin Shoulderpads900 / Black Pantherskin Wristbands500 / Black Pantherskin Gloves900 / Black Pantherskin Tunic1100 / '");
+            Assert.AreEqual("Blarpfat", result.Player);
+
+            var item = result.Items.FirstOrDefault(a => a.Name == "Black Pantherskin Cloak");
+            Assert.AreEqual(AuctionType.WTS, item.AuctionType);
+            Assert.AreEqual(900, item.Price);
+
+            item = result.Items.FirstOrDefault(a => a.Name == "Black Pantherskin Shoulderpads");
+            Assert.AreEqual(AuctionType.WTS, item.AuctionType);
+            Assert.AreEqual(900, item.Price);
+
+            item = result.Items.FirstOrDefault(a => a.Name == "Black Pantherskin Tunic");
+            Assert.AreEqual(AuctionType.WTS, item.AuctionType);
+            Assert.AreEqual(1100, item.Price);
+        }
     }
 }

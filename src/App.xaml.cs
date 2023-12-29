@@ -325,7 +325,7 @@ namespace EQTool
             PlayerTrackerService = container.Resolve<PlayerTrackerService>();
             ZoneActivityTrackingService = container.Resolve<ZoneActivityTrackingService>();
             logParser.QuakeEvent += LogParser_QuakeEvent;
-            App.Current.Resources["GlobalFontSize"] = (double)this.EQToolSettings.FontSize.Value;
+            App.Current.Resources["GlobalFontSize"] = (double)(this.EQToolSettings?.FontSize ?? 12);
             ((App)System.Windows.Application.Current).UpdateBackgroundOpacity("MyWindowStyleDPS", this.EQToolSettings.DpsWindowState.Opacity.Value);
             ((App)System.Windows.Application.Current).UpdateBackgroundOpacity("MyWindowStyleMap", this.EQToolSettings.MapWindowState.Opacity.Value);
             ((App)System.Windows.Application.Current).UpdateBackgroundOpacity("MyWindowStyleTrigger", this.EQToolSettings.SpellWindowState.Opacity.Value);

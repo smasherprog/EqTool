@@ -9,7 +9,7 @@ namespace EQToolShared
         public static List<char> ValidChars = new List<char>();
         static MasterItemList()
         {
-            Items = Items.Distinct().OrderByDescending(a => a.Length).ToArray();
+            Items = Items.Distinct().OrderBy(s => !char.IsDigit(s.FirstOrDefault())).ThenByDescending(a => a.Length).ToArray();
             for (var i = 0; i < Items.Length; i++)
             {
                 foreach (var c in Items[i])
