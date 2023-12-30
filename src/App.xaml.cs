@@ -10,7 +10,6 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Reflection;
-using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -29,6 +28,7 @@ namespace EQTool
         private System.Windows.Forms.MenuItem MapMenuItem;
         private System.Windows.Forms.MenuItem SpellsMenuItem;
         private System.Windows.Forms.MenuItem DpsMeterMenuItem;
+        private System.Windows.Forms.MenuItem OverlayMenuItem;
         private System.Windows.Forms.MenuItem SettingsMenuItem;
         private System.Windows.Forms.MenuItem GroupSuggestionsMenuItem;
         private System.Windows.Forms.MenuItem MobInfoMenuItem;
@@ -249,6 +249,7 @@ namespace EQTool
             SpellsMenuItem = new System.Windows.Forms.MenuItem("Spells", ToggleSpellsWindow);
             MapMenuItem = new System.Windows.Forms.MenuItem("Map", ToggleMapWindow);
             DpsMeterMenuItem = new System.Windows.Forms.MenuItem("Dps", ToggleDPSWindow);
+            OverlayMenuItem = new System.Windows.Forms.MenuItem("Overlay", ToggleOverlayWindow);
             MobInfoMenuItem = new System.Windows.Forms.MenuItem("Mob Info", ToggleMobInfoWindow);
             var gitHubMenuItem = new System.Windows.Forms.MenuItem("Suggestions", Suggestions);
             var updates = new System.Windows.Forms.MenuItem("Check for Update", CheckForUpdates);
@@ -280,7 +281,8 @@ namespace EQTool
                 Visible = true,
                 ContextMenu = new System.Windows.Forms.ContextMenu(new System.Windows.Forms.MenuItem[]
                 {
-                     GroupSuggestionsMenuItem,
+                    GroupSuggestionsMenuItem,
+                    OverlayMenuItem,
                     DpsMeterMenuItem,
                     MapMenuItem,
                     SpellsMenuItem,
@@ -320,50 +322,22 @@ namespace EQTool
                 {
                     OpenMobInfoWindow();
                 }
+                if (!EQToolSettings.OverlayWindowState.Closed)
+                {
+                    OpenOverLayWindow();
+                }
             }
             signalrPlayerHub = container.Resolve<ISignalrPlayerHub>();
-
-            //var ptr = FindWindow("eqgame.exe", null);
-            //if (ptr != IntPtr.Zero)
-            //{
-            //    var NotepadRect = new Rect();
-            //    if (GetWindowRect(ptr, ref NotepadRect))
-            //    {
-            //        int h = 6;
-            //    }
-            //    else
-            //    {
-            //        int k = 6;
-            //    }
-            //}
 
             PlayerTrackerService = container.Resolve<PlayerTrackerService>();
             ZoneActivityTrackingService = container.Resolve<ZoneActivityTrackingService>();
             logParser.QuakeEvent += LogParser_QuakeEvent;
-            logParser.EnrageEvent += LogParser_EnrageEvent;
+
             App.Current.Resources["GlobalFontSize"] = (double)this.EQToolSettings.FontSize.Value;
             ((App)System.Windows.Application.Current).UpdateBackgroundOpacity("MyWindowStyleDPS", this.EQToolSettings.DpsWindowState.Opacity.Value);
             ((App)System.Windows.Application.Current).UpdateBackgroundOpacity("MyWindowStyleMap", this.EQToolSettings.MapWindowState.Opacity.Value);
             ((App)System.Windows.Application.Current).UpdateBackgroundOpacity("MyWindowStyleTrigger", this.EQToolSettings.SpellWindowState.Opacity.Value);
         }
-        [DllImport("user32.dll")]
-        public static extern bool GetWindowRect(IntPtr hwnd, ref Rect rectangle);
-        [DllImport("user32.dll")]
-        static extern IntPtr FindWindow(string lpClassName, string lpWindowName);
-        private void LogParser_EnrageEvent(object sender, EnrageParser.EnrageEvent e)
-        {
-            var w = new EventOverlay();
-            w.CenterText.Text = e.NpcName + " ENRAGED";
-            var p = Process.GetProcesses();
-            foreach (Process pList in p)
-            {
-                if (pList.MainWindowTitle.Contains("Everquest"))
-                {
-
-                }
-            }
-        }
-
         public void UpdateBackgroundOpacity(string name, double opacity)
         {
             var newcolor = (SolidColorBrush)new BrushConverter().ConvertFrom("#1a1919");
@@ -567,6 +541,12 @@ namespace EQTool
             ToggleWindow<DPSMeter>(s);
         }
 
+        public void ToggleOverlayWindow(object sender, EventArgs e)
+        {
+            var s = (System.Windows.Forms.MenuItem)sender;
+            ToggleWindow<EventOverlay>(s);
+        }
+
         public void ToggleMobInfoWindow(object sender, EventArgs e)
         {
             var s = (System.Windows.Forms.MenuItem)sender;
@@ -599,6 +579,11 @@ namespace EQTool
         public void OpenMobInfoWindow()
         {
             OpenWindow<MobInfo>(MobInfoMenuItem);
+        }
+
+        public void OpenOverLayWindow()
+        {
+            OpenWindow<EventOverlay>(OverlayMenuItem);
         }
 
         public void OpenSettingsWindow()

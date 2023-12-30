@@ -44,6 +44,20 @@ namespace EQTool.Models
             }
         }
 
+        private WindowState _OverlayWindowState;
+        public WindowState OverlayWindowState
+        {
+            get
+            {
+                if (_OverlayWindowState == null)
+                {
+                    _OverlayWindowState = new WindowState();
+                }
+                return _OverlayWindowState;
+            }
+            set => _OverlayWindowState = value ?? new WindowState();
+        }
+
         private WindowState _SpellWindowState;
         public WindowState SpellWindowState
         {
@@ -114,6 +128,7 @@ namespace EQTool.Models
                 OnPropertyChanged();
             }
         }
+
         public bool YouOnlySpells { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
