@@ -28,6 +28,7 @@ namespace EQTool
         private System.Windows.Forms.MenuItem MapMenuItem;
         private System.Windows.Forms.MenuItem SpellsMenuItem;
         private System.Windows.Forms.MenuItem DpsMeterMenuItem;
+        private System.Windows.Forms.MenuItem OverlayMenuItem;
         private System.Windows.Forms.MenuItem SettingsMenuItem;
         private System.Windows.Forms.MenuItem GroupSuggestionsMenuItem;
         private System.Windows.Forms.MenuItem MobInfoMenuItem;
@@ -248,6 +249,7 @@ namespace EQTool
             SpellsMenuItem = new System.Windows.Forms.MenuItem("Spells", ToggleSpellsWindow);
             MapMenuItem = new System.Windows.Forms.MenuItem("Map", ToggleMapWindow);
             DpsMeterMenuItem = new System.Windows.Forms.MenuItem("Dps", ToggleDPSWindow);
+            OverlayMenuItem = new System.Windows.Forms.MenuItem("Overlay", ToggleOverlayWindow);
             MobInfoMenuItem = new System.Windows.Forms.MenuItem("Mob Info", ToggleMobInfoWindow);
             var gitHubMenuItem = new System.Windows.Forms.MenuItem("Suggestions", Suggestions);
             var updates = new System.Windows.Forms.MenuItem("Check for Update", CheckForUpdates);
@@ -279,7 +281,8 @@ namespace EQTool
                 Visible = true,
                 ContextMenu = new System.Windows.Forms.ContextMenu(new System.Windows.Forms.MenuItem[]
                 {
-                     GroupSuggestionsMenuItem,
+                    GroupSuggestionsMenuItem,
+                    OverlayMenuItem,
                     DpsMeterMenuItem,
                     MapMenuItem,
                     SpellsMenuItem,
@@ -319,6 +322,10 @@ namespace EQTool
                 {
                     OpenMobInfoWindow();
                 }
+                if (!EQToolSettings.OverlayWindowState.Closed)
+                {
+                    OpenOverLayWindow();
+                }
             }
             signalrPlayerHub = container.Resolve<ISignalrPlayerHub>();
 
@@ -330,7 +337,6 @@ namespace EQTool
             ((App)System.Windows.Application.Current).UpdateBackgroundOpacity("MyWindowStyleMap", this.EQToolSettings.MapWindowState.Opacity.Value);
             ((App)System.Windows.Application.Current).UpdateBackgroundOpacity("MyWindowStyleTrigger", this.EQToolSettings.SpellWindowState.Opacity.Value);
         }
-
         public void UpdateBackgroundOpacity(string name, double opacity)
         {
             var newcolor = (SolidColorBrush)new BrushConverter().ConvertFrom("#1a1919");
@@ -534,6 +540,12 @@ namespace EQTool
             ToggleWindow<DPSMeter>(s);
         }
 
+        public void ToggleOverlayWindow(object sender, EventArgs e)
+        {
+            var s = (System.Windows.Forms.MenuItem)sender;
+            ToggleWindow<EventOverlay>(s);
+        }
+
         public void ToggleMobInfoWindow(object sender, EventArgs e)
         {
             var s = (System.Windows.Forms.MenuItem)sender;
@@ -566,6 +578,11 @@ namespace EQTool
         public void OpenMobInfoWindow()
         {
             OpenWindow<MobInfo>(MobInfoMenuItem);
+        }
+
+        public void OpenOverLayWindow()
+        {
+            OpenWindow<EventOverlay>(OverlayMenuItem);
         }
 
         public void OpenSettingsWindow()

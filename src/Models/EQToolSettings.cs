@@ -1,4 +1,6 @@
 ﻿using System.Collections.Generic;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 using System.Windows;
 
 namespace EQTool.Models
@@ -23,7 +25,7 @@ namespace EQTool.Models
         }
     }
 
-    public class EQToolSettings
+    public class EQToolSettings : INotifyPropertyChanged
     {
         public string DefaultEqDirectory { get; set; }
         public string EqLogDirectory { get; set; }
@@ -40,6 +42,20 @@ namespace EQTool.Models
                 _FontSize = value ?? 12;
                 _FontSize = _FontSize < 12 ? 12 : _FontSize;
             }
+        }
+
+        private WindowState _OverlayWindowState;
+        public WindowState OverlayWindowState
+        {
+            get
+            {
+                if (_OverlayWindowState == null)
+                {
+                    _OverlayWindowState = new WindowState();
+                }
+                return _OverlayWindowState;
+            }
+            set => _OverlayWindowState = value ?? new WindowState();
         }
 
         private WindowState _SpellWindowState;
@@ -102,6 +118,24 @@ namespace EQTool.Models
 
         public bool BestGuessSpells { get; set; }
 
+        private bool _EnrageOverlay;
+        public bool EnrageOverlay
+        {
+            get => _EnrageOverlay;
+            set
+            {
+                _EnrageOverlay = value;
+                OnPropertyChanged();
+            }
+        }
+
         public bool YouOnlySpells { get; set; }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void OnPropertyChanged([CallerMemberName] string name = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
     }
 }

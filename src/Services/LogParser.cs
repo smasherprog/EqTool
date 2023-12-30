@@ -11,6 +11,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows.Media.Media3D;
+using static EQTool.Services.EnrageParser;
 using static EQTool.Services.POFDTParser;
 
 namespace EQTool.Services
@@ -35,7 +36,7 @@ namespace EQTool.Services
         private readonly EnterWorldParser enterWorldParser;
         private readonly QuakeParser quakeParser;
         private readonly POFDTParser pOFDTParser;
-
+        private readonly EnrageParser enrageParser;
 
         private bool StartingWhoOfZone = false;
         private bool Processing = false;
@@ -57,9 +58,11 @@ namespace EQTool.Services
             IAppDispatcher appDispatcher,
             EQToolSettings settings,
             POFDTParser pOFDTParser,
+            EnrageParser enrageParser,
             LevelLogParse levelLogParse,
             PlayerWhoLogParse playerWhoLogParse)
         {
+            this.enrageParser = enrageParser;
             this.pOFDTParser = pOFDTParser;
             this.quakeParser = quakeParser;
             this.enterWorldParser = enterWorldParser;
@@ -152,6 +155,8 @@ namespace EQTool.Services
         public event EventHandler<QuakeArgs> QuakeEvent;
 
         public event EventHandler<POF_DT_Event> POFDTEvent;
+
+        public event EventHandler<EnrageEvent> EnrageEvent;
 
         public event EventHandler<SpellWornOffOtherEventArgs> SpellWornOtherOffEvent;
 
@@ -326,6 +331,13 @@ namespace EQTool.Services
                 if (dt != null)
                 {
                     POFDTEvent?.Invoke(this, dt);
+                    return;
+                }
+
+                var enragecheck = this.enrageParser.EnrageCheck(message);
+                if (enragecheck != null)
+                {
+                    EnrageEvent?.Invoke(this, enragecheck);
                     return;
                 }
 

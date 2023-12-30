@@ -84,16 +84,6 @@ namespace EQTool
             Topmost = true;
             InitializeComponent();
             TryCheckLoggingEnabled();
-            var releasemode = false;
-
-#if RELEASE
-            releasemode = true;
-#endif
-            if (releasemode)
-            {
-                DebuggingStack.Visibility = Visibility.Collapsed;
-            }
-
             try
             {
                 TryUpdateSettings();
@@ -107,7 +97,6 @@ namespace EQTool
         private void SaveConfig()
         {
             toolSettingsLoad.Save(settings);
-            Properties.Settings.Default.Save();
         }
 
         protected override void OnClosing(CancelEventArgs e)
@@ -232,6 +221,10 @@ namespace EQTool
         {
             SaveConfig();
             ((App)System.Windows.Application.Current).ApplyAlwaysOnTop();
+        }
+        private void Savesettings(object sender, RoutedEventArgs e)
+        {
+            SaveConfig();
         }
 
         private void SaveSettings(object sender, RoutedPropertyChangedEventArgs<double> e)
