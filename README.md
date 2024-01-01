@@ -27,7 +27,8 @@ Features:
 <li>Auto detect level and class!</li>
 <li>DPS is trailing 12 second average.</li>
 <li>Show fight Session data for comparisons.</li>
-<li>Sieve Counter</li> 
+<li>The following spells have counters that are automatically tracked:Mana Seive, LowerElement (Flux Staff Effect), Concussion, Flame Lick, Cinder Jolt, Jolt.</li> 
+<li>The following Overlays are available: Enrage; Ch Chain (COMING SOON)</li>
 <li>Timers on map for easy TOD tracking!</li>
 <li>Pricing information in Mob info window.</li>
 <li>Save spells cast on you when you log out so when you log back in they resume counter!</li>
@@ -49,9 +50,7 @@ Features:
 
 <h4>TO DO List EQTool</h4>
 <ul>  
- <li>Add fluxstaff counter!</li>    
   <li>Add CH visualization!</li>    
- <li>Add barebones audio/visual triggers starting with Enrage.</li>    
  <li>Remove timers from map when timers removed from list and visa versa.</li>   
  <li>Add code to show MOB hits per second.</li>   
  <li>Port application to be cross platform(mac, win, linux).</li>   
