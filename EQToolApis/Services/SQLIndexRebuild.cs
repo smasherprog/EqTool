@@ -93,7 +93,7 @@ where eqpi.AuctionPrice is not null and (eqpi.AuctionPrice > eqitem.TotalWTSLast
 set eqpi.AuctionPrice = null 
 from EQTunnelAuctionItems eqpi
 join EQitems eqitem on eqitem.EQitemId = eqpi.EQitemId
-where eqpi.AuctionPrice is not null and eqpi.AuctionPrice < eqitem.TotalWTSLast6MonthsAverage * .1 AND eqitem.TotalWTSLast6MonthsAverage >50");
+where eqpi.AuctionPrice is not null and eqpi.AuctionPrice < eqitem.TotalWTSLast6MonthsAverage * .1 AND eqitem.TotalWTSLast6MonthsAverage >40");
         }
 
         public void DeleteApiLogs()

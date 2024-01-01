@@ -62,7 +62,7 @@ builder.Services.AddHangfire(configuration => configuration
 #if !DEBUG
 builder.Services.AddHangfireServer(a =>
 {
-    a.WorkerCount = 2;
+    a.WorkerCount = 1;
 });
 #endif 
 //builder.Services.AddHangfireServer(a =>
@@ -90,9 +90,10 @@ builder.Services.Configure<DiscordServiceOptions>(options =>
     {
         var dbcontext = scope.ServiceProvider.GetRequiredService<EQToolContext>();
         dbcontext.Database.SetCommandTimeout(TimeSpan.FromMinutes(10));
+        d.TotalEQAuctionPlayers = dbcontext.EQAuctionPlayersV2.Count();
+        d.TotalUniqueItems = dbcontext.EQitemsV2.Count();
 #if DEBUG
-        d.TotalEQAuctionPlayers = 0;
-        d.TotalUniqueItems = 0;
+
         d.ServerData[(int)Servers.Green] = new ServerDBData
         {
         };
@@ -101,8 +102,7 @@ builder.Services.Configure<DiscordServiceOptions>(options =>
         {
         };
 #else
-        d.TotalEQAuctionPlayers = dbcontext.EQAuctionPlayers.Count();
-        d.TotalUniqueItems = dbcontext.EQitems.Count();
+  
         d.ServerData[(int)Servers.Green] = new ServerDBData
         {
             OrderByDescendingDiscordMessageId = dbcontext.EQTunnelMessagesV2.Where(a => a.Server == Servers.Green).Select(a => (long?)a.DiscordMessageId).OrderByDescending(a => a).FirstOrDefault(),
@@ -127,18 +127,6 @@ builder.Services.Configure<DiscordServiceOptions>(options =>
     }
     return d;
 }).AddSingleton(a =>
-{
-    var d = new PlayerCache();
-    using (var scope = a.CreateScope())
-    {
-        var dbcontext = scope.ServiceProvider.GetRequiredService<EQToolContext>();
-        dbcontext.Database.SetCommandTimeout(TimeSpan.FromMinutes(10));
-        var allplayers = dbcontext.EQAuctionPlayers.AsNoTracking().ToList();
-        d.Players = allplayers.Select(a => new AuctionPlayer { EQAuctionPlayerId = a.EQAuctionPlayerId, Name = a.Name }).ToDictionary(a => a.EQAuctionPlayerId);
-    }
-    return d;
-})
-.AddSingleton(a =>
 {
     var d = new PlayerCacheV2();
     using (var scope = a.CreateScope())
@@ -228,7 +216,7 @@ if (isrelease)
     {
         var backgroundclient = scope.ServiceProvider.GetRequiredService<IRecurringJobManager>();
         backgroundclient.AddOrUpdate<DiscordService.DiscordJob>(nameof(DiscordService.DiscordJob.ReadFutureMessages) + Servers.Blue, (a) => a.ReadFutureMessages(Servers.Blue), "*/1 * * * *");
-        backgroundclient.AddOrUpdate<DiscordService.DiscordJob>(nameof(DiscordService.DiscordJob.ReadPastMessages) + Servers.Blue, (a) => a.ReadPastMessages(Servers.Blue), "*/1 * * * *");
+        backgroundclient.AddOrUpdate<DiscordService.DiscordJob>(nameof(DiscordService.DiscordJob.ReadPastMessages) + Servers.Blue, (a) => a.ReadPastMessages(Servers.Blue), "*/2 * * * *");
 
         backgroundclient.AddOrUpdate<DiscordService.DiscordJob>(nameof(DiscordService.DiscordJob.StartItemPricing) + Servers.Blue + DiscordService.DiscordJob.PricingDate.ThirtyDays.ToString(), (a) => a.StartItemPricing(Servers.Blue, DiscordService.DiscordJob.PricingDate.ThirtyDays), "0 */1 * * *");
         backgroundclient.AddOrUpdate<DiscordService.DiscordJob>(nameof(DiscordService.DiscordJob.StartItemPricing) + Servers.Blue + DiscordService.DiscordJob.PricingDate.SixtyDays.ToString(), (a) => a.StartItemPricing(Servers.Blue, DiscordService.DiscordJob.PricingDate.SixtyDays), "0 8 * * *");
@@ -238,7 +226,7 @@ if (isrelease)
         backgroundclient.AddOrUpdate<DiscordService.DiscordJob>(nameof(DiscordService.DiscordJob.StartItemPricing) + Servers.Blue + DiscordService.DiscordJob.PricingDate.AllTime.ToString(), (a) => a.StartItemPricing(Servers.Blue, DiscordService.DiscordJob.PricingDate.AllTime), Cron.Never);
 
         backgroundclient.AddOrUpdate<DiscordService.DiscordJob>(nameof(DiscordService.DiscordJob.ReadFutureMessages) + Servers.Green, (a) => a.ReadFutureMessages(Servers.Green), "*/1 * * * *");
-        backgroundclient.AddOrUpdate<DiscordService.DiscordJob>(nameof(DiscordService.DiscordJob.ReadPastMessages) + Servers.Green, (a) => a.ReadPastMessages(Servers.Green), "*/1 * * * *");
+        backgroundclient.AddOrUpdate<DiscordService.DiscordJob>(nameof(DiscordService.DiscordJob.ReadPastMessages) + Servers.Green, (a) => a.ReadPastMessages(Servers.Green), "*/2 * * * *");
 
         backgroundclient.AddOrUpdate<DiscordService.DiscordJob>(nameof(DiscordService.DiscordJob.StartItemPricing) + Servers.Green + DiscordService.DiscordJob.PricingDate.ThirtyDays.ToString(), (a) => a.StartItemPricing(Servers.Green, DiscordService.DiscordJob.PricingDate.ThirtyDays), "30 */1 * * *");
         backgroundclient.AddOrUpdate<DiscordService.DiscordJob>(nameof(DiscordService.DiscordJob.StartItemPricing) + Servers.Green + DiscordService.DiscordJob.PricingDate.SixtyDays.ToString(), (a) => a.StartItemPricing(Servers.Green, DiscordService.DiscordJob.PricingDate.SixtyDays), "15 8 * * *");
@@ -253,8 +241,8 @@ if (isrelease)
         backgroundclient.AddOrUpdate<SQLIndexRebuild>(nameof(SQLIndexRebuild.RebuildEQitems), (a) => a.RebuildEQitems(), Cron.Never);
 
         backgroundclient.AddOrUpdate<NotableNpcCacheService>(nameof(NotableNpcCacheService.BuildCache) + Servers.Green, (a) => a.BuildCache(), "*/20 * * * *");
-        backgroundclient.AddOrUpdate<UIDataBuild>(nameof(UIDataBuild.BuildData) + Servers.Green, (a) => a.BuildDataGreen(), "*/7 * * * *");
-        backgroundclient.AddOrUpdate<UIDataBuild>(nameof(UIDataBuild.BuildData) + Servers.Blue, (a) => a.BuildDataBlue(), "*/30 * * * *");
+        backgroundclient.AddOrUpdate<UIDataBuild>(nameof(UIDataBuild.BuildDataGreen), (a) => a.BuildDataGreen(), "*/7 * * * *");
+        backgroundclient.AddOrUpdate<UIDataBuild>(nameof(UIDataBuild.BuildDataBlue), (a) => a.BuildDataBlue(), "*/30 * * * *");
         backgroundclient.AddOrUpdate<SQLIndexRebuild>(nameof(SQLIndexRebuild.MessageDupFix), (a) => a.MessageDupFix(), Cron.Daily);
         backgroundclient.AddOrUpdate<SQLIndexRebuild>(nameof(SQLIndexRebuild.ItemDupFix), (a) => a.ItemDupFix(), Cron.Never);
         backgroundclient.AddOrUpdate<SQLIndexRebuild>(nameof(SQLIndexRebuild.FixOutlierDataMaxCleanup), (a) => a.FixOutlierDataMaxCleanup(), Cron.Never);
@@ -298,8 +286,8 @@ else
         backgroundclient.AddOrUpdate<SQLIndexRebuild>(nameof(SQLIndexRebuild.RebuildEQitems), (a) => a.RebuildEQitems(), Cron.Never);
 
         backgroundclient.AddOrUpdate<NotableNpcCacheService>(nameof(NotableNpcCacheService.BuildCache) + Servers.Green, (a) => a.BuildCache(), Cron.Never);
-        backgroundclient.AddOrUpdate<UIDataBuild>(nameof(UIDataBuild.BuildData) + Servers.Green, (a) => a.BuildData(Servers.Green), Cron.Never);
-        backgroundclient.AddOrUpdate<UIDataBuild>(nameof(UIDataBuild.BuildData) + Servers.Blue, (a) => a.BuildData(Servers.Blue), Cron.Never);
+        backgroundclient.AddOrUpdate<UIDataBuild>(nameof(UIDataBuild.BuildDataGreen), (a) => a.BuildDataGreen(), Cron.Never);
+        backgroundclient.AddOrUpdate<UIDataBuild>(nameof(UIDataBuild.BuildDataBlue), (a) => a.BuildDataBlue(), Cron.Never);
         backgroundclient.AddOrUpdate<SQLIndexRebuild>(nameof(SQLIndexRebuild.MessageDupFix), (a) => a.MessageDupFix(), Cron.Daily);
         backgroundclient.AddOrUpdate<SQLIndexRebuild>(nameof(SQLIndexRebuild.ItemDupFix), (a) => a.ItemDupFix(), Cron.Never);
         backgroundclient.AddOrUpdate<SQLIndexRebuild>(nameof(SQLIndexRebuild.FixOutlierDataMaxCleanup), (a) => a.FixOutlierDataMaxCleanup(), Cron.Never);

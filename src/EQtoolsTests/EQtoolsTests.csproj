@@ -169,6 +169,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EnrageTests.cs" />
     <Compile Include="DI.cs" />
     <Compile Include="FindEqTests.cs" />
     <Compile Include="DiscordTests.cs" />

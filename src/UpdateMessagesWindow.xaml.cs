@@ -41,20 +41,20 @@ namespace EQTool
 
             UpdateMessages.Add(new UpdateMessageData
             {
-                DateTime = new DateTime(2023, 12, 24),
-                Message = $"Updated colors of the triggers window to try and add a little variety! {Environment.NewLine}" +
-                $"Added Lord Yelinak's 'Mind Cloud' and 'Ice Breath' effects so they show the cooldown time in triggers window {Environment.NewLine}" +
-                $"Fixed Wakening land timers for Geos, Goos, and suits. Note: roamers are on a slightly different spawn time, so those will always be wrong! {Environment.NewLine}" +
-                $"Added death touch events in plane of fear for Dread and Fright so they show the cooldown time in triggers window {Environment.NewLine}",
+                DateTime = new DateTime(2024, 1, 1),
+                Message = $"*Butcher block npc timers updated.{Environment.NewLine}" +
+                $"*Work on an overlay started. Currently, just enrage works, but there will be a CH chain visualization, charm break, fte, etc.{Environment.NewLine}" +
+                $"*Settings window is changing so the sections are better organized. There will be more options in the future!{Environment.NewLine}" +
+                $"*If you have any issues or suggestions, please goto https://github.com/smasherprog/EqTool and post in the issues section!{Environment.NewLine}" +
+                $"*The following counters have been added:{Environment.NewLine}" +
+                $"     -LowerElement (Flux Staff Effect) {Environment.NewLine}" +
+                $"     -Concussion {Environment.NewLine}" +
+                $"     -Flame Lick {Environment.NewLine}" +
+                $"     -Cinder Jolt {Environment.NewLine}" +
+                $"     -Jolt {Environment.NewLine}",
                 Image = "pack://application:,,,/update1.png",
                 ImageVisibility = Visibility.Visible
             });
-            UpdateMessages.Add(new UpdateMessageData
-            {
-                DateTime = new DateTime(2023, 12, 27),
-                Message = $"a bloodgill goblin timer update for Lake of Ill Omen."
-            });
-
         }
     }
 }

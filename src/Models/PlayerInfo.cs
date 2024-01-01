@@ -284,6 +284,28 @@ namespace EQTool.Models
 
         public List<PlayerClasses> ShowSpellsForClasses { get; set; }
 
+        private bool _EnrageOverlay;
+        public bool EnrageOverlay
+        {
+            get => _EnrageOverlay;
+            set
+            {
+                _EnrageOverlay = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _ChChainOverlay;
+        public bool ChChainOverlay
+        {
+            get => _ChChainOverlay;
+            set
+            {
+                _ChChainOverlay = value;
+                OnPropertyChanged();
+            }
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected void OnPropertyChanged([CallerMemberName] string name = null)

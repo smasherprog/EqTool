@@ -58,16 +58,16 @@ namespace EQTool.ViewModels
             }
         }
 
-        public string SpellExtraData => _SieveCounter.HasValue ? " --> Sieves: " + _SieveCounter.Value : string.Empty;
+        public string SpellExtraData => _Counter.HasValue ? " Count --> " + _Counter.Value : string.Empty;
 
-        private int? _SieveCounter = null;
+        private int? _Counter = null;
 
-        public int? SieveCounter
+        public int? Counter
         {
-            get => _SieveCounter;
+            get => _Counter;
             set
             {
-                _SieveCounter = value;
+                _Counter = value;
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(SpellExtraData));
             }

@@ -19,7 +19,7 @@
                     } else if (data[i].t == 2) {
                         data[i].t = 'BOTH';
                     }
-                    let l = data[i].l;
+                    let l = data[i].l; 
                     data[i].l = new Date(l);
                 }
             }
@@ -41,17 +41,24 @@
                                 //dir - the direction of the sort ("asc" or "desc")
                                 //sorterParams - sorterParams object from column definition array
                                 return a.getTime() - b.getTime();
-                            },
-                            formatter: function (cell, formatterParams) {
+                            }, 
+                            formatter: function (cell, formatterParams) { 
                                 return cell.getRow().getData().l.toLocaleString();
                             }
-                        },
+                        },  
                         {
                             title: "Item",
                             field: "n",
                             formatter: function (cell, formatterParams) {
                                 let row = cell.getRow().getData();
-                                return `<div><a href="/ItemDetails/${row.i}">${row.n} </a>  <a class="float-right" href="https://wiki.project1999.com/${row.n.replace(' ', '_')}" target="_blank"><i class="fa fa-external-link"></i></a></div>`;
+                                let name = row.n.replaceAll(' ', '_');
+                                let p99name = row.n.replaceAll(' ', '_').replaceAll('Spell:_', '');
+                                let imgurl = 'https://p99-item-thumbnails.s3.amazonaws.com/' + name + '.png'
+                                if (name.indexOf('Spell:_') !== -1) {
+                                    imgurl = 'https://p99-item-thumbnails.s3.amazonaws.com/Spell:_Aegolism.png';
+                                }
+                                let p99url = 'https://wiki.project1999.com/' + p99name;
+                                return `<div style="min-width:300px;"><img style="max-height:20px;" src="${imgurl}"/><a href="/ItemDetails/${row.i}">${row.n} </a>  <a href="${p99url}" target="_blank"><i class="fa fa-external-link"></i></a></div>`;
                             }
                         },
                         { title: "30d Count", field: "t30" },
@@ -116,7 +123,7 @@
 </script>
 
 <div class="w-100 vh-100">
-    <h3>@Model.Server Data <small class="text-muted">Get <a href="https://github.com/smasherprog/EqTool" target="_blank">PigParse</a> to enhance your gameplay! Map, DPS, Spell Timer, Mob Info and more!</small></h3>
+    <h3>@Model.Server Data  <small class="text-muted">Get <a href="https://github.com/smasherprog/EqTool" target="_blank">PigParse</a> to enhance your gameplay! Map, DPS, Spell Timer, Mob Info and more!</small></h3>
     <input id="filter-value" type="text" placeholder="Filter by Item" autofocus>
     <button id="filter-clear">Clear Filter</button>
     <div id="example-table"></div>

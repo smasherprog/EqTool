@@ -95,7 +95,7 @@ namespace EQTool.ViewModels
                     {
                         itemstoremove.Add(item);
                     }
-                    else if (item.PersistentSpell && (d - item.UpdatedDateTime).TotalMinutes > 5)
+                    else if (item.PersistentSpell && (d - item.UpdatedDateTime).TotalMinutes > 30)
                     {
                         itemstoremove.Add(item);
                     }
@@ -150,6 +150,16 @@ namespace EQTool.ViewModels
             });
         }
 
+        private readonly List<string> SpellsThatNeedCounts = new List<string>()
+        {
+            "Mana Sieve",
+            "LowerElement",
+            "Concussion",
+            "Flame Lick",
+            "Jolt",
+            "Cinder Jolt",
+        };
+
         public void TryAdd(SpellParsingMatch match)
         {
             if (match?.Spell == null)
@@ -186,11 +196,10 @@ namespace EQTool.ViewModels
                         SpellType = SpellTypes.BadGuyCoolDown
                     });
                 }
-                var ismanasieve = spellname == "Mana Sieve";
-                var ispersistent = ismanasieve;
+                var needscount = SpellsThatNeedCounts.Contains(spellname);
                 var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(match.Spell, activePlayer.Player));
-                var duraction = match.TotalSecondsOverride ?? spellduration.TotalSeconds;
-                var uispell = new UISpell(DateTime.Now.AddSeconds((int)duraction))
+                var duration = needscount ? 0 : match.TotalSecondsOverride ?? spellduration.TotalSeconds;
+                var uispell = new UISpell(DateTime.Now.AddSeconds((int)duration))
                 {
                     UpdatedDateTime = DateTime.Now,
                     PercentLeftOnSpell = 100,
@@ -198,8 +207,8 @@ namespace EQTool.ViewModels
                     TargetName = match.TargetName,
                     SpellName = spellname,
                     Rect = match.Spell.Rect,
-                    PersistentSpell = ispersistent,
-                    SieveCounter = ismanasieve ? 1 : (int?)null,
+                    PersistentSpell = needscount,
+                    Counter = needscount ? 1 : (int?)null,
                     SpellIcon = match.Spell.SpellIcon,
                     Classes = match.Spell.Classes,
                     GuessedSpell = match.MultipleMatchesFound
@@ -207,9 +216,9 @@ namespace EQTool.ViewModels
                 var s = SpellList.FirstOrDefault(a => a.SpellName == spellname && match.TargetName == a.TargetName);
                 if (s != null)
                 {
-                    if (ismanasieve)
+                    if (needscount)
                     {
-                        s.SieveCounter += 1;
+                        s.Counter += 1;
                         s.UpdatedDateTime = DateTime.Now;
                     }
                     else
@@ -282,7 +291,7 @@ namespace EQTool.ViewModels
                             SpellName = match.name,
                             Rect = match.Rect,
                             PersistentSpell = false,
-                            SieveCounter = null,
+                            Counter = null,
                             SpellIcon = match.SpellIcon,
                             Classes = match.Classes,
                             GuessedSpell = false

@@ -43,6 +43,12 @@ namespace EQTool
 
         private void LogParser_EnrageEvent(object sender, EnrageParser.EnrageEvent e)
         {
+            var overlay = this.activePlayer?.Player?.EnrageOverlay ?? false;
+            if (!overlay)
+            {
+                return;
+            }
+
             CenterText.Text = e.NpcName + " ENRAGED";
             System.Threading.Tasks.Task.Factory.StartNew(() =>
             {

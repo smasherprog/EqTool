@@ -21,7 +21,7 @@
             </Grid.RowDefinitions> 
             <Grid Grid.Row="0" HorizontalAlignment="Left" MouseLeftButtonDown="DragWindow" Background="Red" Width="10" Height="10" MouseEnter="Grid_MouseEnter" MouseLeave="Grid_MouseLeave" />
             <StackPanel Grid.Row="1" VerticalAlignment="Stretch" IsHitTestVisible="False">
-                <TextBlock x:Name="CenterText" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="30" Foreground="Red" IsHitTestVisible="False"></TextBlock>
+                <TextBlock x:Name="CenterText" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Medium" FontSize="44" Foreground="Red" IsHitTestVisible="False"></TextBlock>
             </StackPanel>
 
         </Grid>

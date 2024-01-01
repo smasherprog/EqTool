@@ -178,6 +178,14 @@ namespace EQTool.Services
                         }
                     }
 
+                    if (spell.name == "LowerElement")
+                    {
+                        if (!spell.Classes.ContainsKey(PlayerClasses.Wizard))
+                        {
+                            spell.Classes.Add(PlayerClasses.Wizard, 51);
+                        }
+                    }
+
                     if (spell.Classes.Any() && spell.Classes.All(a => a.Value > 60 && a.Value <= 255))
                     {
                         //Debug.WriteLine($"Skipping {spell.name} Class Level Out of range");

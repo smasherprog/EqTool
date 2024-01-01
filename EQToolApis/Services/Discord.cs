@@ -217,18 +217,18 @@ namespace EQToolApis.Services
                                 AuctionPrice = it.Price,
                                 EQitemId = eqitem.EQitemId
                             };
-                            //ignore bogus prices
-                            //if (eqitem.TotalWTSLast6MonthsCount > 100 && eqitem.TotalWTSLast6MonthsAverage > 0)
-                            //{
-                            //    if (it.Price > eqitem.TotalWTSLast6MonthsAverage * 7)
-                            //    {
-                            //        auctionitem.AuctionPrice = null;
-                            //    }
-                            //    else if (it.Price < eqitem.TotalWTSLast6MonthsAverage * .1)
-                            //    {
-                            //        auctionitem.AuctionPrice = null;
-                            //    }
-                            //}
+                            //  ignore bogus prices
+                            if (eqitem.TotalWTSLast6MonthsCount > 100 && eqitem.TotalWTSLast6MonthsAverage > 0)
+                            {
+                                if (it.Price > eqitem.TotalWTSLast6MonthsAverage * 7)
+                                {
+                                    auctionitem.AuctionPrice = null;
+                                }
+                                else if (it.Price < eqitem.TotalWTSLast6MonthsAverage * .1)
+                                {
+                                    auctionitem.AuctionPrice = null;
+                                }
+                            }
                             m.EQTunnelAuctionItems.Add(auctionitem);
                             _ = Interlocked.Add(ref dBData.ServerData[(int)server].TotalEQTunnelAuctionItems, 1);
                         }

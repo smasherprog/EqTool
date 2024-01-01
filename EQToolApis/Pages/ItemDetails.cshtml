@@ -20,8 +20,42 @@
     <script>
         let originaldata = [];
         Chart.register('chartjs-plugin-annotation');
+        var bottomdev = 0;
         $(document).ready(function () {
             $('#nodmfforyou').hide();
+            function averageFromData(data) {
+                if (data.length == 0) {
+                    return 0;
+                }
+                let values = [];
+                data.forEach(a => {
+                    if (a.p > 1) {
+                        values.push(a.p);
+                    }
+                });
+                var m = values.reduce((a, b) => {
+                    let k = a + b;
+                    return k;
+                }
+                    , 0);
+                let v = m / values.length;
+                return v;
+            }
+            function standardDeviationFromData(data) {
+                if (data.length == 0) {
+                    return 0;
+                }
+                let values = [];
+                data.forEach(a => {
+                    if (a.p > 1) {
+                        values.push(a.p);
+                    }
+                });
+                const n = values.length;
+                const mean = averageFromData(data);
+                let v = Math.sqrt(values.map(x => Math.pow(x - mean, 2)).reduce((a, b) => (a + b)) / n) * 3;
+                return v;
+            }
             function average(ctx) {
                 if (ctx.chart.data.datasets.length == 0) {
                     return 0;
@@ -29,7 +63,7 @@
                 let values = [];
                 ctx.chart.data.datasets.forEach(a => {
                     a.data.forEach(a => {
-                        if (a.y > 1) {
+                        if (a.y > 1 && a.extradata.hasPricing) {
                             values.push(a.y);
                         }
                     });
@@ -50,7 +84,7 @@
                 let values = [];
                 ctx.chart.data.datasets.forEach(a => {
                     a.data.forEach(a => {
-                        if (a.y > 1) {
+                        if (a.y > 1 && a.extradata.hasPricing) {
                             values.push(a.y);
                         }
                     });
@@ -126,6 +160,7 @@
                     scales: {
                         x: {
                             type: 'time',
+                            max: (new Date().setDate(new Date().getDate() + 1).valueOf())
                         }
                     },
                     plugins: {
@@ -136,7 +171,10 @@
                             },
                             callbacks: {
                                 label: function (TooltipItem) {
-                                    return TooltipItem.dataset.label + ' ' + TooltipItem.raw.extradata.u + ' ' + TooltipItem.parsed.y + 'pp';
+                                    if (TooltipItem.raw.extradata.hasPricing) {
+                                        return TooltipItem.dataset.label + ' ' + TooltipItem.raw.extradata.u + ' ' + TooltipItem.parsed.y + 'pp' + ' ' + TooltipItem.raw.extradata.t.toLocaleString();
+                                    }
+                                    return TooltipItem.dataset.label + ' ' + TooltipItem.raw.extradata.u + ' ' + TooltipItem.raw.extradata.t.toLocaleString();
                                 }
                             }
                         },
@@ -159,27 +197,26 @@
                     playerkeywordstofilter.push(value.text);
                 });
                 let playerstoshow = playerkeywordstofilter.join(' ');
-                table.setFilter("n", "keywords", playerstoshow, { matchAll: false });
+                table.on("tableBuilt", function () {
+                    table.setFilter("n", "keywords", playerstoshow, { matchAll: false });
+                });
+              
                 let data = {
                     items: originaldata.items.filter(a => playeridstoshow.includes(a.i)),
                     players: originaldata.players,
                     itemName: originaldata.itemName
                 }
                 let chartdata = [];
+
                 if (data.items) {
                     let itemsbyplayer = data.items.reduce(function (r, a) {
                         r[a.i] = r[a.i] || [];
                         r[a.i].push(a);
                         return r;
                     }, Object.create(null));
-                    let everyoneelselist =
-                    {
-                        label: 'Others',
-                        data: []
-                    };
                     Object.entries(itemsbyplayer).forEach(itemsplayer => {
                         let id = itemsplayer[0];
-                        let itemsbyplayer =
+                        let databyplayer =
                         {
                             label: data.players[id],
                             data: []
@@ -187,13 +224,16 @@
                         let shouldadd = false;
                         let itemarray = itemsplayer[1];
                         for (let j = 0; j < itemarray.length; j++) {
-                            if (itemarray[j].p) {
-                                shouldadd = true;
-                                itemsbyplayer.data.push({ x: itemarray[j].t, y: itemarray[j].p, extradata: itemarray[j] });
+                            shouldadd = true;
+                            let haspricing = true;
+                            if (itemarray[j].p === null || itemarray[j].p === undefined) {
+                                itemarray[j].p = bottomdev;
+                                itemarray[j].haspricing = false;
                             }
+                            databyplayer.data.push({ x: itemarray[j].t, y: itemarray[j].p, extradata: itemarray[j]}); 
                         }
                         if (shouldadd) {
-                            chartdata.push(itemsbyplayer);
+                            chartdata.push(databyplayer);
                         }
                     });
                 }
@@ -203,14 +243,22 @@
 
             $.get("/api/item/getdetails/@Model.ItemId", function (data, status) {
                 originaldata = data; 
-                document.getElementById('ItemName').innerHTML = `<a href="https://wiki.project1999.com/${data.itemName.replace(' ', '_')}" target = "_blank"> ${data.itemName} <i class="fa fa-external-link"></i></a >`;
+                let name = data.itemName.replaceAll(' ', '_');
+                let imgurl = 'https://p99-item-thumbnails.s3.amazonaws.com/' + name + '.png';
+                if (name.indexOf('Spell:_') !== -1) {
+                    imgurl = 'https://p99-item-thumbnails.s3.amazonaws.com/Spell:_Aegolism.png';
+                }
+                let p99name = data.itemName.replaceAll(' ', '_').replaceAll('Spell:_', '');
+                let p99url = 'https://wiki.project1999.com/' + p99name;
+
+                document.getElementById('ItemName').innerHTML = `<a href="${p99url}" target = "_blank"> <img src="${imgurl}"/> ${data.itemName} <i class="fa fa-external-link"></i></a >`;
                 document.title = data.itemName;
                 let pl = [];
                 for (let key in data.players) {
                     let value = data.players[key];
                     let count = 0;
                     for (let i = 0; i < data.items.length; i++) {
-                        if (data.items[i].p && key == data.items[i].i) {
+                        if (key == data.items[i].i) {
                             count += 1;
                         }
                     }
@@ -238,19 +286,25 @@
 
                 });
                 if (data.items) {
+                    bottomdev = averageFromData(data.items) - standardDeviationFromData(data.items);
                     for (let i = 0; i < data.items.length; i++) {
                         if (data.items[i].u == 0) {
                             data.items[i].u = 'WTS';
                         } else if (data.items[i].u == 1) {
                             data.items[i].u = 'WTB';
-                        } else if (data.items[i].u == 2) {
-                            data.items[i].u = 'BOTH';
                         }
                         let tunnelTimestamp = data.items[i].t;
                         let d = new Date(tunnelTimestamp);
                         data.items[i].t = d;
                         data.items[i].n = data.players[data.items[i].i];
+                        if (data.items[i].p === null || data.items[i].p === undefined ){
+                            data.items[i].p = bottomdev;
+                            data.items[i].hasPricing = false;
+                        } else {
+                            data.items[i].hasPricing = true;
+                        }
                     }
+
                 }
                 let ele = document.getElementById('TableData');
                 table = new Tabulator(ele,
@@ -264,8 +318,12 @@
                             {
                                 title: "Auction Price", field: "p",
                                 formatter: function (cell, formatterParams) {
-                                    let price = cell.getRow().getData().p;
-                                    return price ? price + "pp" : '';
+                                    let celldata = cell.getRow().getData(); 
+                                    if (celldata.hasPricing) {
+                                        let price = celldata.p;
+                                        return price ? price + "pp" : '';
+                                    }
+                                    return '';
                                 }
                             },
                             {
@@ -302,7 +360,6 @@
             <small>Center Line is the mean, top and bottom lines are 3 standard deviations from the mean!</small>
         </div>
     </div>
-
     <div class="w-100" style="height: 30vh!important;">
         <canvas id="myChart" class="h-100"></canvas>
     </div>

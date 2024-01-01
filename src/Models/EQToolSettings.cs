@@ -117,18 +117,6 @@ namespace EQTool.Models
         public List<PlayerInfo> Players { get; set; } = new List<PlayerInfo>();
 
         public bool BestGuessSpells { get; set; }
-
-        private bool _EnrageOverlay;
-        public bool EnrageOverlay
-        {
-            get => _EnrageOverlay;
-            set
-            {
-                _EnrageOverlay = value;
-                OnPropertyChanged();
-            }
-        }
-
         public bool YouOnlySpells { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;

@@ -52,6 +52,18 @@ namespace EQToolShared.Discord
             return (input[i] == '.' || char.ToLower(input[i]) == 'k' || char.ToLower(input[i]) == 'p' || char.ToLower(input[i]) == ' ' || char.IsDigit(input[i]));
         }
 
+        private readonly List<string> IgnoreItemsList = new List<string>(){
+            "Spear",
+            "Axe",
+            "Rings",
+            "Gear",
+            "Dagger",
+            "Sword",
+             "Pot",
+             "Staff",
+             "Bones",
+             "Pot"
+            };
         private NextItem GetItem(string input)
         {
             var itembreakindex = -1;
@@ -151,6 +163,14 @@ namespace EQToolShared.Discord
                 }
             }
             itembreakindex = itembreakindex + 1 <= input.Length ? itembreakindex + 1 : itembreakindex;
+            foreach (var item in IgnoreItemsList)
+            {
+                if (string.Equals(item, itemname, StringComparison.OrdinalIgnoreCase))
+                {
+                    return null;
+                }
+            }
+
             return new NextItem
             {
                 Input = input.Substring(0, itemstartindex) + input.Substring(itembreakindex),

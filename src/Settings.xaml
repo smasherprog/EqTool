@@ -98,6 +98,18 @@
                 </StackPanel>
             </StackPanel>
         </TabItem>
+        <TabItem Header="Overlay">
+            <StackPanel Orientation="Vertical" Margin="5, 5, 5, 5"> 
+                <!--<StackPanel Orientation="Horizontal">
+                    <TextBlock Text="CH Chain" ToolTip="Complete Heal Overlay" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
+                    <CheckBox IsChecked="{Binding ActivePlayer.Player.ChChainOverlay}" Click="Savesettings"></CheckBox>
+                </StackPanel>-->
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Enraged" ToolTip="Enraged Overlap" VerticalAlignment="Center" FontWeight="Bold"  MinWidth="100"/>
+                    <CheckBox IsChecked="{Binding ActivePlayer.Player.EnrageOverlay}" Click="Savesettings"></CheckBox>
+                </StackPanel>
+            </StackPanel>
+        </TabItem>
         <TabItem Header="Triggers">
             <StackPanel Orientation="Vertical" Margin="5, 5, 5, 5"> 
                 <StackPanel Orientation="Vertical"  Margin="0, 0, 0, 8">
@@ -151,16 +163,8 @@
                     <ComboBox SelectedItem="{Binding ActivePlayer.Player.MapLocationSharing}" ItemsSource="{Binding LocationShareOptions}" MinWidth="150"></ComboBox>
                 </StackPanel> 
             </StackPanel>
-        </TabItem>
-        <TabItem Header="Events">
-            <StackPanel Orientation="Vertical" Margin="5, 5, 5, 5">
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Enrage Overlay" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
-                    <CheckBox IsChecked="{Binding EnrageOverlay}" Click="SaveAlwaysOntopCheckBoxSettings"></CheckBox>
-                </StackPanel>
-            </StackPanel>
-        </TabItem>
-        <TabItem Header="Debug">
+        </TabItem> 
+        <TabItem Header="Debug" Name="DebugTab">
             <StackPanel Orientation="Vertical" Margin="5, 5, 5, 5">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="DPS"  VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>

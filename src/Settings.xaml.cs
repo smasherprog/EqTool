@@ -92,6 +92,10 @@ namespace EQTool
             {
 
             }
+            this.DebugTab.Visibility = Visibility.Collapsed;
+#if DEBUG
+            this.DebugTab.Visibility = Visibility.Visible;
+#endif
         }
 
         private void SaveConfig()
@@ -267,7 +271,24 @@ namespace EQTool
                 new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Mana Sieve"), TargetName = "a bad guy", MultipleMatchesFound = false },
                 new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Mana Sieve"), TargetName = "a bad guy", MultipleMatchesFound = false },
                 new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Harvest"), TargetName = EQSpells.SpaceYou, MultipleMatchesFound = false },
-                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Mind Cloud"), TargetName = EQSpells.SpaceYou, MultipleMatchesFound = false }
+                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "LowerElement"), TargetName = "Tunare", MultipleMatchesFound = false },
+                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "LowerElement"), TargetName = "Tunare", MultipleMatchesFound = false },
+                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "LowerElement"), TargetName = "Tunare", MultipleMatchesFound = false },
+                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "LowerElement"), TargetName = "Tunare", MultipleMatchesFound = false },
+                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "LowerElement"), TargetName = "Tunare", MultipleMatchesFound = false },
+                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "LowerElement"), TargetName = "Tunare", MultipleMatchesFound = false },
+
+                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Concussion"), TargetName = "Tunare", MultipleMatchesFound = false },
+                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Concussion"), TargetName = "Tunare", MultipleMatchesFound = false },
+
+                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Flame Lick"), TargetName = "Tunare", MultipleMatchesFound = false },
+                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Flame Lick"), TargetName = "Tunare", MultipleMatchesFound = false },
+
+                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Jolt"), TargetName = "Tunare", MultipleMatchesFound = false },
+                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Jolt"), TargetName = "Tunare", MultipleMatchesFound = false },
+
+                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Cinder Jolt"), TargetName = "Tunare", MultipleMatchesFound = false },
+                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Cinder Jolt"), TargetName = "Tunare", MultipleMatchesFound = false }
             };
 
             foreach (var item in listofspells)

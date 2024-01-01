@@ -14,18 +14,17 @@ namespace EQToolApis.Controllers
     {
         private readonly UIDataBuild uIDataBuild;
         private readonly EQToolContext context;
-        private readonly PlayerCache playerCache;
         private readonly PlayerCacheV2 playerCachev2;
         private readonly DiscordAuctionParse discordAuctionParse;
 
-        public ItemController(UIDataBuild uIDataBuild, EQToolContext context, PlayerCache playerCache, PlayerCacheV2 playerCachev2, DiscordAuctionParse discordAuctionParse)
+        public ItemController(UIDataBuild uIDataBuild, EQToolContext context, PlayerCacheV2 playerCachev2, DiscordAuctionParse discordAuctionParse)
         {
             this.uIDataBuild = uIDataBuild;
             this.context = context;
-            this.playerCache = playerCache;
             this.playerCachev2 = playerCachev2;
             this.discordAuctionParse = discordAuctionParse;
         }
+
         /// <summary>
         /// Will get all items for server and the averages. This data is rebuild every 10 minutes.
         /// </summary>
@@ -36,32 +35,6 @@ namespace EQToolApis.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Any, VaryByQueryKeys = new[] { "*" })]
         public List<AuctionItem> Get([DefaultValue(Servers.Green)] Servers server)
-        {
-            List<AuctionItem> ret;
-#if DEBUG
-            if (UIDataBuild.ItemCache[(int)server] == null)
-            {
-                uIDataBuild.BuildData(server);
-            }
-            ret = UIDataBuild.ItemCache[(int)server];
-
-#else
-            ret = UIDataBuild.ItemCache[(int)server];
-#endif
-            return ret;
-        }
-
-        /// <summary>
-        /// Will get all items for server and the averages. This data is rebuild every 10 minutes.
-        /// DO NOT USE THIS. They will replace the regular version once data import is done!
-        /// </summary>
-        /// <param name="server"></param>
-        /// <returns></returns>
-        [Route("api/item/getallV2/{server}/")]
-        [HttpGet]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Any, VaryByQueryKeys = new[] { "*" })]
-        public List<AuctionItem> GetV2([DefaultValue(Servers.Green)] Servers server)
         {
             List<AuctionItem> ret;
 #if DEBUG
@@ -89,7 +62,7 @@ namespace EQToolApis.Controllers
         [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Any, VaryByQueryKeys = new[] { "*" })]
         public Item GetItem([DefaultValue(Servers.Green)] Servers server, [DefaultValue("10 Dose Greater Potion of Purity")] string itemname)
         {
-            var item = context.EQitems
+            var item = context.EQitemsV2
                         .Where(a => a.Server == server && a.ItemName == itemname)
                         .Select(a => new Item
                         {
@@ -139,7 +112,7 @@ namespace EQToolApis.Controllers
         {
             itemnames ??= new List<string>();
             itemnames = itemnames.Where(a => !string.IsNullOrWhiteSpace(a)).Distinct().ToList();
-            var items = context.EQitems
+            var items = context.EQitemsV2
                         .Where(a => a.Server == server && itemnames.Contains(a.ItemName))
                         .Select(a => new Item
                         {
@@ -187,7 +160,7 @@ namespace EQToolApis.Controllers
         public List<Item> PostMultipleItem([FromBody] ItemsLookups itemsLookups)
         {
             var itemnames = itemsLookups.Itemnames.Where(a => !string.IsNullOrWhiteSpace(a)).Distinct().ToList();
-            var items = context.EQitems
+            var items = context.EQitemsV2
                         .Where(a => a.Server == itemsLookups.Server && itemnames.Contains(a.ItemName))
                         .Select(a => new Item
                         {
@@ -236,7 +209,7 @@ namespace EQToolApis.Controllers
         [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Any, VaryByQueryKeys = new[] { "*" })]
         public ItemDetail GetItemDetail([DefaultValue(Servers.Green)] Servers server, [DefaultValue("10 Dose Greater Potion of Purity"), Required] string itemname)
         {
-            var items = context.EQTunnelAuctionItems
+            var items = context.EQTunnelAuctionItemsV2
                 .Where(a => a.EQitem.ItemName == itemname && a.EQitem.Server == server)
                 .Select(a => new
                 {
@@ -248,14 +221,14 @@ namespace EQToolApis.Controllers
 
             ItemDetail Item = new()
             {
-                ItemName = context.EQitems
+                ItemName = context.EQitemsV2
                     .Where(a => a.ItemName == itemname && a.Server == server)
                     .Select(a => a.ItemName)
                     .FirstOrDefault(),
                 Items = new List<ItemAuctionDetail>(),
                 Players = new Dictionary<int, string>()
             };
-            playerCache.PlayersLock.EnterReadLock();
+            playerCachev2.PlayersLock.EnterReadLock();
             try
             {
                 foreach (var i in items)
@@ -267,64 +240,12 @@ namespace EQToolApis.Controllers
                         p = i.AuctionPrice,
                         t = i.TunnelTimestamp
                     });
-                    _ = Item.Players.TryAdd(i.EQAuctionPlayerId, playerCache.Players[i.EQAuctionPlayerId].Name);
+                    _ = Item.Players.TryAdd(i.EQAuctionPlayerId, playerCachev2.Players[i.EQAuctionPlayerId].Name);
                 }
             }
             finally
             {
-                playerCache.PlayersLock.ExitReadLock();
-            }
-            Item.Items = Item.Items.OrderByDescending(a => a.t).ToList();
-            return Item;
-        }
-
-        /// <summary>
-        /// Will get an item and all of its details. This can include alot of data!
-        /// </summary>
-        /// <param name="itemid"></param>
-        /// <returns></returns>
-        [Route("api/item/getdetails/{itemid}")]
-        [HttpGet]
-        [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Any, VaryByQueryKeys = new[] { "*" })]
-        public ItemDetail GetItemDetail([DefaultValue(1981)] int itemid)
-        {
-            var items = context.EQTunnelAuctionItems
-                .Where(a => a.EQitemId == itemid)
-                .Select(a => new
-                {
-                    a.EQTunnelMessage.AuctionType,
-                    a.AuctionPrice,
-                    a.EQTunnelMessage.EQAuctionPlayerId,
-                    a.EQTunnelMessage.TunnelTimestamp
-                }).ToList();
-
-            ItemDetail Item = new()
-            {
-                ItemName = context.EQitems
-                    .Where(a => a.EQitemId == itemid)
-                    .Select(a => a.ItemName)
-                    .FirstOrDefault(),
-                Items = new List<ItemAuctionDetail>(),
-                Players = new Dictionary<int, string>()
-            };
-            playerCache.PlayersLock.EnterReadLock();
-            try
-            {
-                foreach (var i in items)
-                {
-                    Item.Items.Add(new ItemAuctionDetail
-                    {
-                        u = i.AuctionType,
-                        i = i.EQAuctionPlayerId,
-                        p = i.AuctionPrice,
-                        t = i.TunnelTimestamp
-                    });
-                    _ = Item.Players.TryAdd(i.EQAuctionPlayerId, playerCache.Players[i.EQAuctionPlayerId].Name);
-                }
-            }
-            finally
-            {
-                playerCache.PlayersLock.ExitReadLock();
+                playerCachev2.PlayersLock.ExitReadLock();
             }
             Item.Items = Item.Items.OrderByDescending(a => a.t).ToList();
             return Item;
@@ -336,10 +257,10 @@ namespace EQToolApis.Controllers
         /// </summary>
         /// <param name="itemid"></param>
         /// <returns></returns>
-        [Route("api/item/getdetailsV2/{itemid}")]
+        [Route("api/item/getdetails/{itemid}")]
         [HttpGet]
         [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Any, VaryByQueryKeys = new[] { "*" })]
-        public ItemDetail GetItemDetailV2([DefaultValue(1981)] int itemid)
+        public ItemDetail GetItemDetail([DefaultValue(22741)] int itemid)
         {
             var items = context.EQTunnelAuctionItemsV2
                 .Where(a => a.EQitemId == itemid)
