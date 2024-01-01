@@ -153,10 +153,110 @@ namespace EQToolShared.Map
                 NpcContainsSpawnTimes = new List<NpcSpawnTime>()
                  {
                      new NpcSpawnTime
-                     {
-                          Name = "Guard",
-                           RespawnTime = new TimeSpan(0, 24, 0)
-                     }
+                    {
+                        Name = "Guard Armandin",
+                        RespawnTime = new TimeSpan(0, 24, 0)
+                    },
+                    new NpcSpawnTime
+                    {
+                        Name = "Guard Belg",
+                        RespawnTime = new TimeSpan(0, 24, 0)
+                    },
+                    new NpcSpawnTime
+                    {
+                        Name = "Guard Burr",
+                        RespawnTime = new TimeSpan(0, 24, 0)
+                    },
+                    new NpcSpawnTime
+                    {
+                        Name = "Guard Clendin",
+                        RespawnTime = new TimeSpan(0, 24, 0)
+                    },
+                    new NpcSpawnTime
+                    {
+                        Name = "Guard Dunil",
+                        RespawnTime = new TimeSpan(0, 24, 0)
+                    },
+                    new NpcSpawnTime
+                    {
+                        Name = "Guard Dunn",
+                        RespawnTime = new TimeSpan(0, 24, 0)
+                    },
+                    new NpcSpawnTime
+                    {
+                        Name = "Guard Gabel",
+                        RespawnTime = new TimeSpan(0, 24, 0)
+                    },
+                    new NpcSpawnTime
+                    {
+                        Name = "Guard Gonin",
+                        RespawnTime = new TimeSpan(0, 24, 0)
+                    },
+                    new NpcSpawnTime
+                    {
+                        Name = "Guard Grae",
+                        RespawnTime = new TimeSpan(0, 24, 0)
+                    },
+                    new NpcSpawnTime
+                    {
+                        Name = "Guard Haendar",
+                        RespawnTime = new TimeSpan(0, 24, 0)
+                    },
+                    new NpcSpawnTime
+                    {
+                        Name = "Guard Haldin",
+                        RespawnTime = new TimeSpan(0, 24, 0)
+                    },
+                    new NpcSpawnTime
+                    {
+                        Name = "Guard Hartt",
+                        RespawnTime = new TimeSpan(0, 24, 0)
+                    },
+                    new NpcSpawnTime
+                    {
+                        Name = "Guard Kizzburr",
+                        RespawnTime = new TimeSpan(0, 24, 0)
+                    },
+                    new NpcSpawnTime
+                    {
+                        Name = "Guard Kyte",
+                        RespawnTime = new TimeSpan(0, 24, 0)
+                    },
+                    new NpcSpawnTime
+                    {
+                        Name = "Guard Mandin",
+                        RespawnTime = new TimeSpan(0, 24, 0)
+                    },
+                    new NpcSpawnTime
+                    {
+                        Name = "Guard Norin",
+                        RespawnTime = new TimeSpan(0, 24, 0)
+                    },
+                    new NpcSpawnTime
+                    {
+                        Name = "Guard Rundul",
+                        RespawnTime = new TimeSpan(0, 24, 0)
+                    },
+                    new NpcSpawnTime
+                    {
+                        Name = "Guard Rylin",
+                        RespawnTime = new TimeSpan(0, 24, 0)
+                    },
+                    new NpcSpawnTime
+                    {
+                        Name = "Guard Sornn",
+                        RespawnTime = new TimeSpan(0, 24, 0)
+                    },
+                    new NpcSpawnTime
+                    {
+                        Name = "Guard Srinn",
+                        RespawnTime = new TimeSpan(0, 24, 0)
+                    },
+                    new NpcSpawnTime
+                    {
+                        Name = "Guard Zyburr",
+                        RespawnTime = new TimeSpan(0, 24, 0)
+                    }
                  },
                 NpcSpawnTimes = new List<NpcSpawnTime>()
                  {
@@ -1081,6 +1181,101 @@ namespace EQToolShared.Map
                 ShowAllMapLevels = true,
                 ZoneLevelHeight = 10,
                 NotableNPCs = new List<string>() { "", },
+                NpcSpawnTimes = new List<NpcSpawnTime>()
+                 {
+                    new NpcSpawnTime
+                     {
+                          Name = "Guard Ackin",
+                          RespawnTime = new TimeSpan(0, 25, 0)
+                     },
+                    new NpcSpawnTime
+                     {
+                          Name = "Guard Captain Latorl",
+                          RespawnTime = new TimeSpan(0, 24, 0)
+                     },
+                    new NpcSpawnTime
+                     {
+                          Name = "Guard Hetorzuz",
+                          RespawnTime = new TimeSpan(0, 25, 0)
+                     },
+                    new NpcSpawnTime
+                     {
+                          Name = "Guard Ishvlor",
+                          RespawnTime = new TimeSpan(0, 25, 0)
+                     },
+                    new NpcSpawnTime
+                     {
+                          Name = "Guard Korlack",
+                          RespawnTime = new TimeSpan(0, 25, 0)
+                     },
+                    new NpcSpawnTime
+                     {
+                          Name = "Guard Lehlufa",
+                          RespawnTime = new TimeSpan(0, 6, 0)
+                     },
+                    new NpcSpawnTime
+                     {
+                          Name = "Guard Lecknar",
+                          RespawnTime = new TimeSpan(0, 25, 0)
+                     },
+                    new NpcSpawnTime
+                     {
+                          Name = "Guard Mertanor",
+                          RespawnTime = new TimeSpan(0, 25, 0)
+                     },
+                    new NpcSpawnTime
+                     {
+                          Name = "Guard Lesunra",
+                          RespawnTime = new TimeSpan(0, 6, 0)
+                     },
+                    new NpcSpawnTime
+                     {
+                          Name = "Guard Pendleir",
+                          RespawnTime = new TimeSpan(0, 6, 0)
+                     },
+                    new NpcSpawnTime
+                     {
+                          Name = "Guard Perelin",
+                          RespawnTime = new TimeSpan(0, 6, 0)
+                     },
+                    new NpcSpawnTime
+                     {
+                          Name = "Guard Yerlash",
+                          RespawnTime = new TimeSpan(0, 6, 0)
+                     },
+                    new NpcSpawnTime
+                     {
+                          Name = "Guard Polzdurn",
+                          RespawnTime = new TimeSpan(0, 25, 0)
+                     },
+                    new NpcSpawnTime
+                     {
+                          Name = "Guard Pomnares",
+                          RespawnTime = new TimeSpan(0, 6, 0)
+                     },
+                    new NpcSpawnTime
+                     {
+                          Name = "Guard Potren",
+                          RespawnTime = new TimeSpan(0, 25, 0)
+                     },
+                    new NpcSpawnTime
+                     {
+                          Name = "Guard Sheltuin",
+                          RespawnTime = new TimeSpan(0, 25, 0)
+                     },
+                    new NpcSpawnTime 
+                     {
+                          Name = "Guard Tynaryn",
+                          RespawnTime = new TimeSpan(0, 25, 0)
+                     },
+                    new NpcSpawnTime
+                     {
+                          Name = "Guard Yerlash",
+                          RespawnTime = new TimeSpan(0, 25, 0)
+                     },
+                    
+
+                 },
                 RespawnTime = new TimeSpan(0, 10, 30)
             });
             ZoneInfoMap.Add("paw", new ZoneInfo
