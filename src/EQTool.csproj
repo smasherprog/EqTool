@@ -395,6 +395,7 @@
     <Compile Include="Services\MapOpacityHelper.cs" />
     <Compile Include="Services\MapViewModelService.cs" />
     <Compile Include="Services\Parsing\EnrageParser.cs" />
+    <Compile Include="Services\Parsing\ChParser.cs" />
     <Compile Include="Services\Parsing\POFDTParser.cs" />
     <Compile Include="Services\Parsing\QuakeParser.cs" />
     <Compile Include="Services\Parsing\LogFileDateTimeParse.cs" />

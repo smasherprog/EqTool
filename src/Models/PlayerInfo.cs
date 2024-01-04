@@ -306,6 +306,17 @@ namespace EQTool.Models
             }
         }
 
+        private string _ChChainTagOverlay;
+        public string ChChainTagOverlay
+        {
+            get => _ChChainTagOverlay;
+            set
+            {
+                _ChChainTagOverlay = value;
+                OnPropertyChanged();
+            }
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected void OnPropertyChanged([CallerMemberName] string name = null)

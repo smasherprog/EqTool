@@ -132,7 +132,10 @@ namespace EQTool
                     EventType = EventType.Error,
                     BuildType = build
                 };
-                if (msg.Message.Contains("Server timeout (30000.00ms) elapsed without receiving a message from the server."))
+                if (msg.Message.Contains("Server timeout (30000.00ms) elapsed without receiving a message from the server.") ||
+                    msg.Message.Contains("The 'InvokeCoreAsync' method cannot be called") ||
+                     msg.Message.Contains("The remote party closed the WebSocket connection")
+                    )
                 {
                     return;
                 }
@@ -603,29 +606,6 @@ namespace EQTool
         private void OnExit(object sender, EventArgs e)
         {
             System.Windows.Application.Current.Shutdown();
-        }
-
-        public void ApplyAlwaysOnTop()
-        {
-            foreach (var item in WindowList)
-            {
-                if (item is DPSMeter w)
-                {
-                    w.Topmost = EQToolSettings.DpsWindowState.AlwaysOnTop;
-                }
-                else if (item is MappingWindow w1)
-                {
-                    w1.Topmost = EQToolSettings.MapWindowState.AlwaysOnTop;
-                }
-                else if (item is MobInfo w2)
-                {
-                    w2.Topmost = EQToolSettings.MobWindowState.AlwaysOnTop;
-                }
-                else if (item is SpellWindow w3)
-                {
-                    w3.Topmost = EQToolSettings.SpellWindowState.AlwaysOnTop;
-                }
-            }
         }
     }
 }

@@ -2,15 +2,26 @@
 using EQTool.Services;
 using EQTool.ViewModels;
 using System;
+using System.Collections.Generic;
 using System.ComponentModel;
+using System.Linq;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Animation;
+using System.Windows.Shapes;
 
 namespace EQTool
 {
-    /// <summary>
-    /// Interaction logic for EventOverlay.xaml
-    /// </summary>
+    public class ChainData
+    {
+        public Canvas Canvas { get; set; }
+        public Grid Grid { get; set; }
+        public string Destination { get; set; }
+        public int ActiveAnimations { get; set; } = 0;
+    }
+
     public partial class EventOverlay : Window
     {
         private readonly System.Timers.Timer UITimer;
@@ -20,6 +31,8 @@ namespace EQTool
         private readonly ActivePlayer activePlayer;
         private readonly IAppDispatcher appDispatcher;
         private DateTime LastWindowInteraction = DateTime.UtcNow;
+        private readonly List<ChainData> chainDatas = new List<ChainData>();
+
         public EventOverlay(LogParser logParser, EQToolSettings settings, EQToolSettingsLoad toolSettingsLoad, LoggingService loggingService, ActivePlayer activePlayer, IAppDispatcher appDispatcher)
         {
             this.appDispatcher = appDispatcher;
@@ -37,8 +50,80 @@ namespace EQTool
             StateChanged += SpellWindow_StateChanged;
             LocationChanged += Window_LocationChanged;
             logParser.EnrageEvent += LogParser_EnrageEvent;
+            logParser.CHEvent += LogParser_CHEvent;
             settings.OverlayWindowState.Closed = false;
             SaveState();
+        }
+
+        private void LogParser_CHEvent(object sender, ChParser.ChParseData e)
+        {
+            var overlay = this.activePlayer?.Player?.ChChainOverlay ?? false;
+            if (!overlay)
+            {
+                return;
+            }
+            appDispatcher.DispatchUI(() =>
+            {
+                var chaindata = this.GetOrCreateChain(e.Recipient);
+                var rect = new Rectangle();
+                rect.Height = 20;
+                rect.Width = chaindata.Canvas.ActualWidth / 10;
+                rect.Fill = Brushes.Red;
+                DoubleAnimation animation = new DoubleAnimation();
+                animation.From = -rect.Width;
+                animation.To = chaindata.Canvas.ActualWidth;
+                animation.Duration = TimeSpan.FromSeconds(10); // Adjust duration as needed
+
+                Storyboard.SetTarget(animation, rect);
+                Storyboard.SetTargetProperty(animation, new PropertyPath(Canvas.RightProperty));
+
+                Storyboard storyboard = new Storyboard();
+                storyboard.Children.Add(animation);
+                chaindata.Canvas.Children.Add(rect);
+                storyboard.Completed += (s, ev) =>
+                {
+                    chaindata.ActiveAnimations--;
+                    if (chaindata.ActiveAnimations <= 0)
+                    {
+                        this.chainDatas.Remove(chaindata);
+                        this.ChainStackPanel.Children.Remove(chaindata.Grid);
+                    }
+                };
+                storyboard.Begin();
+            });
+        }
+
+        private ChainData GetOrCreateChain(string destination)
+        {
+            var chaindata = this.chainDatas.FirstOrDefault(a => a.Destination == destination);
+            if (chaindata != null)
+            {
+                chaindata.ActiveAnimations += 1;
+                return chaindata;
+            }
+            chaindata = new ChainData
+            {
+                Canvas = new Canvas(),
+                Grid = new Grid(),
+                Destination = destination,
+                ActiveAnimations = 1
+            };
+            chaindata.Canvas.IsHitTestVisible = false;
+            chaindata.Canvas.Background = Brushes.Transparent;
+            chaindata.Grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(30) });
+            chaindata.Grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(50) });
+            chaindata.Grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+            var target = new TextBlock { Text = destination, Background = Brushes.Blue, Foreground = Brushes.White, Width = 40 };
+            Grid.SetRow(target, 0);
+            Grid.SetColumn(target, 0);
+            Grid.SetRow(chaindata.Canvas, 0);
+            Grid.SetColumn(chaindata.Canvas, 1);
+            chaindata.Grid.Children.Add(target);
+            chaindata.Grid.Children.Add(chaindata.Canvas);
+            this.chainDatas.Add(chaindata);
+            this.ChainStackPanel.Children.Add(chaindata.Grid);
+            chaindata.Canvas.UpdateLayout();
+            return chaindata;
         }
 
         private void LogParser_EnrageEvent(object sender, EnrageParser.EnrageEvent e)
@@ -48,8 +133,11 @@ namespace EQTool
             {
                 return;
             }
+            appDispatcher.DispatchUI(() =>
+            {
+                CenterText.Text = e.NpcName + " ENRAGED";
+            });
 
-            CenterText.Text = e.NpcName + " ENRAGED";
             System.Threading.Tasks.Task.Factory.StartNew(() =>
             {
                 System.Threading.Thread.Sleep(1000 * 10);
@@ -108,6 +196,7 @@ namespace EQTool
             StateChanged -= SpellWindow_StateChanged;
             LocationChanged -= Window_LocationChanged;
             logParser.EnrageEvent -= LogParser_EnrageEvent;
+            logParser.CHEvent -= LogParser_CHEvent;
             SaveState();
             base.OnClosing(e);
         }

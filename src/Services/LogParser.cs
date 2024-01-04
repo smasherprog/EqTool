@@ -11,6 +11,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows.Media.Media3D;
+using static EQTool.Services.ChParser;
 using static EQTool.Services.EnrageParser;
 using static EQTool.Services.POFDTParser;
 
@@ -37,6 +38,7 @@ namespace EQTool.Services
         private readonly QuakeParser quakeParser;
         private readonly POFDTParser pOFDTParser;
         private readonly EnrageParser enrageParser;
+        private readonly ChParser chParser;
 
         private bool StartingWhoOfZone = false;
         private bool Processing = false;
@@ -44,6 +46,7 @@ namespace EQTool.Services
         private bool HasUsedStartupEnterWorld = false;
 
         public LogParser(
+            ChParser chParser,
             QuakeParser quakeParser,
             EnterWorldParser enterWorldParser,
             SpellWornOffLogParse spellWornOffLogParse,
@@ -62,6 +65,7 @@ namespace EQTool.Services
             LevelLogParse levelLogParse,
             PlayerWhoLogParse playerWhoLogParse)
         {
+            this.chParser = chParser;
             this.enrageParser = enrageParser;
             this.pOFDTParser = pOFDTParser;
             this.quakeParser = quakeParser;
@@ -157,6 +161,8 @@ namespace EQTool.Services
         public event EventHandler<POF_DT_Event> POFDTEvent;
 
         public event EventHandler<EnrageEvent> EnrageEvent;
+
+        public event EventHandler<ChParseData> CHEvent;
 
         public event EventHandler<SpellWornOffOtherEventArgs> SpellWornOtherOffEvent;
 
@@ -341,11 +347,19 @@ namespace EQTool.Services
                     return;
                 }
 
+                var chdata = this.chParser.ChCheck(message);
+                if (chdata != null)
+                {
+                    CHEvent?.Invoke(this, chdata);
+                    return;
+                }
+
                 levelLogParse.MatchLevel(message);
                 var matchedzone = ZoneParser.Match(message);
                 if (!string.IsNullOrWhiteSpace(matchedzone))
                 {
                     var b4matchedzone = matchedzone;
+
                     matchedzone = ZoneParser.TranslateToMapName(matchedzone);
                     Debug.WriteLine($"Zone Change Detected {matchedzone}--{b4matchedzone}");
                     var p = activePlayer.Player;

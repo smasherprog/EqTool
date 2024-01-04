@@ -17,13 +17,19 @@
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="10"></RowDefinition>
+                <RowDefinition Height="Auto"></RowDefinition>
                 <RowDefinition Height="*"></RowDefinition>
-            </Grid.RowDefinitions> 
-            <Grid Grid.Row="0" HorizontalAlignment="Left" MouseLeftButtonDown="DragWindow" Background="Red" Width="10" Height="10" MouseEnter="Grid_MouseEnter" MouseLeave="Grid_MouseLeave" />
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0" HorizontalAlignment="Left" MouseLeftButtonDown="DragWindow" Width="16" Height="16">
+                <StackPanel Background="Red" Margin="4, 4, 4, 4" MouseEnter="Grid_MouseEnter" MouseLeave="Grid_MouseLeave"></StackPanel>
+            </Grid>
             <StackPanel Grid.Row="1" VerticalAlignment="Stretch" IsHitTestVisible="False">
                 <TextBlock x:Name="CenterText" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Medium" FontSize="44" Foreground="Red" IsHitTestVisible="False"></TextBlock>
             </StackPanel>
+            <StackPanel Grid.Row="2" Name="ChainStackPanel" VerticalAlignment="Stretch" Orientation="Vertical" IsHitTestVisible="False">
 
+           
+            </StackPanel>
         </Grid>
     </Border>
 </Window>

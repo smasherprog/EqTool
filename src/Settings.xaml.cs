@@ -221,11 +221,6 @@ namespace EQTool
             TryCheckLoggingEnabled();
         }
 
-        private void SaveAlwaysOntopCheckBoxSettings(object sender, RoutedEventArgs e)
-        {
-            SaveConfig();
-            ((App)System.Windows.Application.Current).ApplyAlwaysOnTop();
-        }
         private void Savesettings(object sender, RoutedEventArgs e)
         {
             SaveConfig();
@@ -576,6 +571,11 @@ namespace EQTool
                     appDispatcher.DispatchUI(() => { testmap.IsEnabled = true; });
                 }
             });
+        }
+
+        private void CHTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            this.SaveConfig();
         }
     }
 }
