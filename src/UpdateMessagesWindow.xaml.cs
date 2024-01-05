@@ -57,7 +57,7 @@ namespace EQTool
             });
             UpdateMessages.Add(new UpdateMessageData
             {
-                DateTime = new DateTime(2024, 1, 4),
+                DateTime = new DateTime(2024, 1, 5),
                 Message = $"* Fixed CH time animcation on the overlay. It should be 10 seconds from right to left."
             });
         }
