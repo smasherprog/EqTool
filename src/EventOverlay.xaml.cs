@@ -10,7 +10,6 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
-using System.Windows.Shapes;
 
 namespace EQTool
 {
@@ -65,21 +64,28 @@ namespace EQTool
             appDispatcher.DispatchUI(() =>
             {
                 var chaindata = this.GetOrCreateChain(e.Recipient);
-                var rect = new Rectangle();
-                rect.Height = 20;
-                rect.Width = chaindata.Canvas.ActualWidth / 10;
-                rect.Fill = Brushes.Red;
+                var target = new TextBlock
+                {
+                    Height = 30,
+                    FontSize = settings.FontSize.Value * 2,
+                    Width = chaindata.Canvas.ActualWidth / 10,
+                    Text = e.Position.ToString(),
+                    Background = Brushes.Red,
+                    Foreground = Brushes.White,
+                    TextAlignment = TextAlignment.Center
+                };
+
                 DoubleAnimation animation = new DoubleAnimation();
-                animation.From = -rect.Width;
+                animation.From = -target.Width;
                 animation.To = chaindata.Canvas.ActualWidth;
                 animation.Duration = TimeSpan.FromSeconds(10); // Adjust duration as needed
 
-                Storyboard.SetTarget(animation, rect);
+                Storyboard.SetTarget(animation, target);
                 Storyboard.SetTargetProperty(animation, new PropertyPath(Canvas.RightProperty));
 
                 Storyboard storyboard = new Storyboard();
                 storyboard.Children.Add(animation);
-                chaindata.Canvas.Children.Add(rect);
+                chaindata.Canvas.Children.Add(target);
                 storyboard.Completed += (s, ev) =>
                 {
                     chaindata.ActiveAnimations--;
@@ -111,13 +117,23 @@ namespace EQTool
             chaindata.Canvas.IsHitTestVisible = false;
             chaindata.Canvas.Background = Brushes.Transparent;
             chaindata.Grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(30) });
-            chaindata.Grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(50) });
+            chaindata.Grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
             chaindata.Grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
-            var target = new TextBlock { Text = destination, Background = Brushes.Blue, Foreground = Brushes.White, Width = 40 };
+            var target = new TextBlock
+            {
+                Height = 30,
+                FontSize = settings.FontSize.Value * 1.5,
+                Text = destination,
+                Background = Brushes.Blue,
+                Foreground = Brushes.White,
+                TextAlignment = TextAlignment.Center
+            };
             Grid.SetRow(target, 0);
+            Grid.SetZIndex(target, 1);
             Grid.SetColumn(target, 0);
             Grid.SetRow(chaindata.Canvas, 0);
             Grid.SetColumn(chaindata.Canvas, 1);
+            Grid.SetZIndex(chaindata.Canvas, 0);
             chaindata.Grid.Children.Add(target);
             chaindata.Grid.Children.Add(chaindata.Canvas);
             this.chainDatas.Add(chaindata);

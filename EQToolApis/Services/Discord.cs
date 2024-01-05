@@ -296,6 +296,18 @@ namespace EQToolApis.Services
                         return messages.Count + $" messages added. {oldid} -> {dBData.ServerData[(int)server].OrderByDiscordMessageId}";
                     }
                 }
+                //else if (possiblemessages.Any())
+                //{
+                //    var id = possiblemessages.Select(a => a.id).OrderBy(a => a).FirstOrDefault();
+                //    var oldid = dBData.ServerData[(int)server].OrderByDiscordMessageId;
+                //    lock (dBData)
+                //    {
+                //        dBData.ServerData[(int)server].OrderByDiscordMessageId = dBData.ServerData[(int)server].OrderByDiscordMessageId.HasValue
+                //            ? Math.Min(dBData.ServerData[(int)server].OrderByDiscordMessageId.Value, id)
+                //            : id;
+                //        return $"0 messages added. {oldid} -> {dBData.ServerData[(int)server].OrderByDiscordMessageId}";
+                //    }
+                //}
 
                 return messages.Count + " messages added";
             }
