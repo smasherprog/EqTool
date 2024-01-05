@@ -78,7 +78,7 @@ namespace EQTool
                 DoubleAnimation animation = new DoubleAnimation();
                 animation.From = -target.Width;
                 animation.To = chaindata.Canvas.ActualWidth;
-                animation.Duration = TimeSpan.FromSeconds(10); // Adjust duration as needed
+                animation.Duration = TimeSpan.FromSeconds(11); // Adjust duration as needed
 
                 Storyboard.SetTarget(animation, target);
                 Storyboard.SetTargetProperty(animation, new PropertyPath(Canvas.RightProperty));

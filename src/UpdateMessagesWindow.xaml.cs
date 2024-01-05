@@ -41,22 +41,6 @@ namespace EQTool
 
             UpdateMessages.Add(new UpdateMessageData
             {
-                DateTime = new DateTime(2024, 1, 1),
-                Message = $"*Butcher block npc timers updated.{Environment.NewLine}" +
-                $"*Work on an overlay started. Currently, just enrage works, but there will be a CH chain visualization, charm break, fte, etc.{Environment.NewLine}" +
-                $"*Settings window is changing so the sections are better organized. There will be more options in the future!{Environment.NewLine}" +
-                $"*If you have any issues or suggestions, please goto https://github.com/smasherprog/EqTool and post in the issues section!{Environment.NewLine}" +
-                $"*The following counters have been added:{Environment.NewLine}" +
-                $"     -LowerElement (Flux Staff Effect) {Environment.NewLine}" +
-                $"     -Concussion {Environment.NewLine}" +
-                $"     -Flame Lick {Environment.NewLine}" +
-                $"     -Cinder Jolt {Environment.NewLine}" +
-                $"     -Jolt {Environment.NewLine}",
-                Image = "pack://application:,,,/update1.png",
-                ImageVisibility = Visibility.Visible
-            });
-            UpdateMessages.Add(new UpdateMessageData
-            {
                 DateTime = new DateTime(2024, 1, 4),
                 Message = $"*Updating CH overlay to pick up guild and some UI improvements.{Environment.NewLine}" +
                 $"*CH overlay picks up OOC, Shout and Guild. If you want to change the TAG used to pickup on the chain goto settings and add a tag there!{Environment.NewLine}" +
@@ -71,7 +55,11 @@ namespace EQTool
                 $"*CH Chain overlay work is NOT DONE!!!{Environment.NewLine}" +
                 $"*Work on the CH Chain overlay continues, you can see how it works THUS far. Colors and behaviors are still being worked on and it currently looks like shit!.{Environment.NewLine}"
             });
-
+            UpdateMessages.Add(new UpdateMessageData
+            {
+                DateTime = new DateTime(2024, 1, 4),
+                Message = $"* Fixed CH time animcation on the overlay. It should be 10 seconds from right to left."
+            });
         }
     }
 }
