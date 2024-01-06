@@ -4,6 +4,7 @@ using EQTool.Services.Spells.Log;
 using EQTool.ViewModels;
 using EQToolShared.Enums;
 using EQToolShared.HubModels;
+using EQToolShared.Map;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -405,6 +406,12 @@ namespace EQTool
         private void logpush(object sender, RoutedEventArgs e)
         {
             var logtext = LogPushText.Text?.Trim();
+            this.PushLog(logtext);
+        }
+
+        private void PushLog(string message)
+        {
+            var logtext = message?.Trim();
             if (string.IsNullOrWhiteSpace(logtext))
             {
                 return;
@@ -658,6 +665,30 @@ namespace EQTool
         {
             SaveConfig();
             ((App)System.Windows.Application.Current).ApplyAlwaysOnTop();
+        }
+        private void testenrage(object sender, RoutedEventArgs e)
+        {
+            var z = SettingsWindowData.ActivePlayer?.Player?.Zone;
+            if (string.IsNullOrWhiteSpace(z))
+            {
+                return;
+            }
+            if (ZoneParser.ZoneInfoMap.TryGetValue(z, out var zone))
+            {
+                if (zone.NotableNPCs.Any())
+                {
+                    this.PushLog(zone.NotableNPCs.FirstOrDefault() + " has become ENRAGED.");
+                }
+            }
+
+        }
+        private void testlevfading(object sender, RoutedEventArgs e)
+        {
+            this.PushLog("You feel as if you are about to fall.");
+        }
+        private void testinvisfading(object sender, RoutedEventArgs e)
+        {
+            this.PushLog("You feel yourself starting to appear.");
         }
     }
 }

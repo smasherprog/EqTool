@@ -38,7 +38,11 @@ namespace EQTool
             view.IsLiveGrouping = true;
             view.SortDescriptions.Add(new SortDescription(nameof(UpdateMessageData.DateTime), ListSortDirection.Descending));
             view.IsLiveSorting = true;
-
+            UpdateMessages.Add(new UpdateMessageData
+            {
+                DateTime = new DateTime(2024, 1, 5),
+                Message = $"* Added test buttons next to the new overlay options. You must have the option enabled when you test otherwise, nothing will happen."
+            });
             UpdateMessages.Add(new UpdateMessageData
             {
                 DateTime = new DateTime(2024, 1, 5),
@@ -48,14 +52,14 @@ namespace EQTool
             {
                 DateTime = new DateTime(2024, 1, 5),
                 Message = $"* Added overlay option for Levitate fading!{Environment.NewLine}" +
-                $"* Added overlay option for Invis fading!{Environment.NewLine}"
+                $"* Added overlay option for Invis fading!"
             });
             UpdateMessages.Add(new UpdateMessageData
             {
                 DateTime = new DateTime(2024, 1, 5),
                 Message = $"* PQ Instance Zones added to the map. Let me know if I missed any!{Environment.NewLine}" +
                 $"* Always on top options added back.{Environment.NewLine}" +
-                $"* Fixed bug reported where Druid epic was not showing up correctly. This also was effecting other epics in some scenarios so those are fixed as well.{Environment.NewLine}"
+                $"* Fixed bug reported where Druid epic was not showing up correctly. This also was effecting other epics in some scenarios so those are fixed as well."
             });
             UpdateMessages.Add(new UpdateMessageData
             {
