@@ -419,6 +419,83 @@ namespace EQTool
             logParser.Push(logtext);
         }
 
+        private void selectLogFile(object sender, RoutedEventArgs e)
+        {
+            var button = sender as System.Windows.Controls.Button;
+            if (!button.IsEnabled)
+            {
+                return;
+            }
+            var dialog = new Microsoft.Win32.OpenFileDialog();
+            bool? result = dialog.ShowDialog();
+            if (result == true)
+            {
+
+                var filename = dialog.FileName;
+                button.IsEnabled = false;
+                _ = Task.Factory.StartNew(() =>
+                {
+                    var fightlines = File.ReadAllLines(filename);
+                    var lines = new List<KeyValuePair<DateTime, string>>();
+                    foreach (var item in fightlines)
+                    {
+                        if (item == null || item.Length < 27)
+                        {
+                            continue;
+                        }
+
+                        var date = item.Substring(1, 24);
+                        var message = item.Substring(27).Trim();
+                        var format = "ddd MMM dd HH:mm:ss yyyy";
+                        var timestamp = DateTime.Now;
+                        try
+                        {
+                            timestamp = DateTime.ParseExact(date, format, CultureInfo.InvariantCulture);
+                            lines.Add(new KeyValuePair<DateTime, string>(timestamp, item));
+                        }
+                        catch (FormatException)
+                        {
+                        }
+                    }
+                    var starttime = lines.FirstOrDefault().Key;
+                    try
+                    {
+
+                        var starttimediff = DateTime.Now - starttime;
+                        var index = 0;
+                        do
+                        {
+                            for (; index < lines.Count; index++)
+                            {
+                                var t = lines[index].Key + starttimediff;
+                                if (t > DateTime.Now)
+                                {
+                                    break;
+                                }
+                                else
+                                {
+                                    var line = lines[index].Value;
+                                    var indexline = line.IndexOf("]");
+                                    var msgwithout = line.Substring(indexline);
+                                    var format = "ddd MMM dd HH:mm:ss yyyy";
+                                    msgwithout = "[" + t.ToString(format) + msgwithout;
+                                    logParser.Push(msgwithout);
+                                }
+                            }
+                            Thread.Sleep(100);
+                        } while (index < lines.Count);
+
+                        appDispatcher.DispatchUI(() => { button.IsEnabled = true; });
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.WriteLine(ex.ToString());
+                        appDispatcher.DispatchUI(() => { button.IsEnabled = true; });
+                    }
+                });
+            }
+        }
+
         private void textmapclicked(object sender, RoutedEventArgs e)
         {
             var testmap = sender as System.Windows.Controls.Button;
@@ -576,6 +653,11 @@ namespace EQTool
         private void CHTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
             this.SaveConfig();
+        }
+        private void SaveAlwaysOntopCheckBoxSettings(object sender, RoutedEventArgs e)
+        {
+            SaveConfig();
+            ((App)System.Windows.Application.Current).ApplyAlwaysOnTop();
         }
     }
 }

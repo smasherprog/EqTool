@@ -1263,7 +1263,7 @@ namespace EQToolShared.Map
                           Name = "Guard Sheltuin",
                           RespawnTime = new TimeSpan(0, 25, 0)
                      },
-                    new NpcSpawnTime 
+                    new NpcSpawnTime
                      {
                           Name = "Guard Tynaryn",
                           RespawnTime = new TimeSpan(0, 25, 0)
@@ -1273,7 +1273,7 @@ namespace EQToolShared.Map
                           Name = "Guard Yerlash",
                           RespawnTime = new TimeSpan(0, 25, 0)
                      },
-                    
+
 
                  },
                 RespawnTime = new TimeSpan(0, 10, 30)
@@ -1719,6 +1719,7 @@ namespace EQToolShared.Map
             ZoneNameMapper.Add("blackburrow", "blackburrow");
             ZoneNameMapper.Add("gorge of king xorbb", "beholder");
             ZoneNameMapper.Add("plane of hate", "hateplane");
+            ZoneNameMapper.Add("plane of hate (Instance)", "hateplane");
             ZoneNameMapper.Add("west commonlands", "commons");
             ZoneNameMapper.Add("north qeynos", "qeynos2");
             ZoneNameMapper.Add("cobalt scar", "cobaltscar");
@@ -1726,12 +1727,14 @@ namespace EQToolShared.Map
             ZoneNameMapper.Add("paineel", "paineel");
             ZoneNameMapper.Add("north freeport", "freportn");
             ZoneNameMapper.Add("nagafen's lair", "soldungb");
+            ZoneNameMapper.Add("nagafen's lair (Instance)", "soldungb");
             ZoneNameMapper.Add("runnyeye citadel", "runnyeye");
             ZoneNameMapper.Add("frontier mountains", "frontiermtns");
             ZoneNameMapper.Add("the city of mist", "citymist");
             ZoneNameMapper.Add("west freeport", "freportw");
             ZoneNameMapper.Add("butcherblock mountains", "butcher");
             ZoneNameMapper.Add("permafrost caverns", "permafrost");
+            ZoneNameMapper.Add("permafrost caverns (Instance)", "permafrost");
             ZoneNameMapper.Add("the hole", "hole");
             ZoneNameMapper.Add("qeynos hills", "qeytoqrg");
             ZoneNameMapper.Add("arena", "arena");
@@ -1745,6 +1748,7 @@ namespace EQToolShared.Map
             ZoneNameMapper.Add("infected paw", "paw");
             ZoneNameMapper.Add("lair of the splitpaw", "paw");
             ZoneNameMapper.Add("plane of air", "airplane");
+            ZoneNameMapper.Add("plane of air (Instance)", "airplane");
             ZoneNameMapper.Add("southern felwithe", "felwitheb");
             ZoneNameMapper.Add("velketor's labyrinth", "velketor");
             ZoneNameMapper.Add("cabilis west", "cabwest");
@@ -1761,6 +1765,7 @@ namespace EQToolShared.Map
             ZoneNameMapper.Add("dreadlands", "dreadlands");
             ZoneNameMapper.Add("south qeynos", "qeynos");
             ZoneNameMapper.Add("plane of fear", "fearplane");
+            ZoneNameMapper.Add("plane of fear (Instance)", "fearplane");
             ZoneNameMapper.Add("rathe mountains", "rathemtn");
             ZoneNameMapper.Add("the wakening lands", "wakening");
             ZoneNameMapper.Add("southern desert of ro", "sro");

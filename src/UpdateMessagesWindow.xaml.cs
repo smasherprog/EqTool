@@ -58,6 +58,13 @@ namespace EQTool
             UpdateMessages.Add(new UpdateMessageData
             {
                 DateTime = new DateTime(2024, 1, 5),
+                Message = $"* PQ Instance Zones added to the map. Let me know if I missed any!{Environment.NewLine}" +
+                $"* Always on top options added back.{Environment.NewLine}" +
+                $"* Fixed bug reported where Druid epic was not showing up correctly. This also was effecting other epics in some scenarios so those are fixed as well.{Environment.NewLine}"
+            });
+            UpdateMessages.Add(new UpdateMessageData
+            {
+                DateTime = new DateTime(2024, 1, 5),
                 Message = $"* Fixed CH time animcation on the overlay. It should be 10 seconds from right to left."
             });
         }

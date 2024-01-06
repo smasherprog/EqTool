@@ -78,11 +78,22 @@
                     <TextBlock Text="Damage Window" HorizontalAlignment="Center" FontWeight="Bold" Margin="5,5,0,0"/>
                     <StackPanel Orientation="Vertical" Margin="0, 0, 0, 8">
                         <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Always on top" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
+                            <CheckBox IsChecked="{Binding DpsAlwaysOnTop}" Click="SaveAlwaysOntopCheckBoxSettings" ></CheckBox>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
                             <TextBlock Text="Window Opacity"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
                             <Slider Value="{Binding DPSWindowOpacity}" Minimum=".01" Maximum="1" SmallChange=".1" TickFrequency=".1" ValueChanged="SaveSettings" MinWidth="150"/>
                         </StackPanel>
                     </StackPanel>
                     <Separator/>
+                    <TextBlock Text="Mob Window" HorizontalAlignment="Center" FontWeight="Bold" Margin="5,5,0,0"/>
+                    <StackPanel Orientation="Vertical" Margin="0, 0, 0, 8">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Always on top" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
+                            <CheckBox IsChecked="{Binding MobAlwaysOnTop}" Click="SaveAlwaysOntopCheckBoxSettings" ></CheckBox>
+                        </StackPanel>
+                    </StackPanel>
                 </StackPanel>
             </StackPanel>
         </TabItem>
@@ -116,6 +127,10 @@
             <StackPanel Orientation="Vertical" Margin="5, 5, 5, 5">
                 <StackPanel Orientation="Vertical"  Margin="0, 0, 0, 8">
                     <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Always on top" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
+                        <CheckBox IsChecked="{Binding SpellAlwaysOnTop}" Click="SaveAlwaysOntopCheckBoxSettings" ></CheckBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Window Opacity"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
                         <Slider Value="{Binding TriggerWindowOpacity}" Minimum=".01" Maximum="1" SmallChange=".1" TickFrequency=".1" ValueChanged="SaveSettings" MinWidth="150"/>
                     </StackPanel>
@@ -144,6 +159,10 @@
         </TabItem>
         <TabItem Header="Map">
             <StackPanel Orientation="Vertical" Margin="5, 5, 5, 5">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Always on top" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
+                    <CheckBox IsChecked="{Binding MapAlwaysOnTop}" Click="SaveAlwaysOntopCheckBoxSettings" ></CheckBox>
+                </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Map Kill timers" ToolTip="Automatically add kill timers to the map. This is a per character setting" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
                     <CheckBox IsChecked="{Binding ActivePlayer.Player.MapKillTimers}"></CheckBox>
@@ -175,6 +194,10 @@
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Map"  VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
                     <Button Click="testsignalrlocations" MinWidth="100">Test Signalr Locations</Button>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Run Log File"  VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/> 
+                    <Button Click="selectLogFile">Select File</Button>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Log Push"  VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>

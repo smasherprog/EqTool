@@ -264,7 +264,7 @@ namespace EQToolApis.Controllers
         {
             var items = context.EQTunnelAuctionItemsV2
                 .Where(a => a.EQitemId == itemid)
-                .OrderBy(a => a.EQTunnelAuctionItemId)
+                .OrderByDescending(a => a.EQTunnelAuctionItemId)
                 .Select(a => new
                 {
                     a.EQTunnelMessage.AuctionType,

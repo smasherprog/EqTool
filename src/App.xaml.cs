@@ -607,5 +607,28 @@ namespace EQTool
         {
             System.Windows.Application.Current.Shutdown();
         }
+
+        public void ApplyAlwaysOnTop()
+        {
+            foreach (var item in WindowList)
+            {
+                if (item is DPSMeter w)
+                {
+                    w.Topmost = EQToolSettings.DpsWindowState.AlwaysOnTop;
+                }
+                else if (item is MappingWindow w1)
+                {
+                    w1.Topmost = EQToolSettings.MapWindowState.AlwaysOnTop;
+                }
+                else if (item is MobInfo w2)
+                {
+                    w2.Topmost = EQToolSettings.MobWindowState.AlwaysOnTop;
+                }
+                else if (item is SpellWindow w3)
+                {
+                    w3.Topmost = EQToolSettings.SpellWindowState.AlwaysOnTop;
+                }
+            }
+        }
     }
 }

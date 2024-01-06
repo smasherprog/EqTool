@@ -85,18 +85,24 @@ namespace EQTool.Services
             "Feeble Mind"
         };
 
-        public static readonly Dictionary<string, PlayerClasses> EpicSpells = new Dictionary<string, PlayerClasses>
+        public class EpicSpellTime
         {
-            { "Wrath of Nature", PlayerClasses.Druid },
-            { "Speed of the Shissar", PlayerClasses.Enchanter },
-            { "Torment of Shadows", PlayerClasses.Necromancer },
-            { "Earthcall", PlayerClasses.Ranger },
-            { "Soul Consumption", PlayerClasses.ShadowKnight },
-            { "Curse of the Spirits", PlayerClasses.Shaman },
-            { "Barrier of Force", PlayerClasses.Wizard },
-            { "Dance of the Blade", PlayerClasses.Bard },
-            { "Celestial Tranquility", PlayerClasses.Monk },
-            { "Seething Fury", PlayerClasses.Rogue }
+            public PlayerClasses PlayerClass { get; set; }
+            public int CastTime { get; set; }
+        }
+
+        public static readonly Dictionary<string, EpicSpellTime> EpicSpells = new Dictionary<string, EpicSpellTime>
+        {
+            { "Wrath of Nature", new EpicSpellTime{ CastTime = 9000, PlayerClass= PlayerClasses.Druid } },
+            { "Speed of the Shissar", new EpicSpellTime{ CastTime = 6000, PlayerClass= PlayerClasses.Enchanter } },
+            { "Torment of Shadows",new EpicSpellTime{ CastTime = 9000, PlayerClass=  PlayerClasses.Necromancer } },
+            { "Earthcall", new EpicSpellTime{ CastTime = 0, PlayerClass= PlayerClasses.Ranger } },
+            { "Soul Consumption",new EpicSpellTime{ CastTime = 0, PlayerClass=  PlayerClasses.ShadowKnight } },
+            { "Curse of the Spirits", new EpicSpellTime{ CastTime = 9000, PlayerClass= PlayerClasses.Shaman } },
+            { "Barrier of Force", new EpicSpellTime{ CastTime = 15000, PlayerClass= PlayerClasses.Wizard } },
+            { "Dance of the Blade", new EpicSpellTime{ CastTime = 0, PlayerClass= PlayerClasses.Bard } },
+            { "Celestial Tranquility", new EpicSpellTime{ CastTime = 0, PlayerClass= PlayerClasses.Monk } },
+            { "Seething Fury", new EpicSpellTime{ CastTime = 0, PlayerClass= PlayerClasses.Rogue } }
         };
         private readonly List<SpellType> IgnoreSpellTypes = new List<SpellType>()
         {
@@ -347,7 +353,8 @@ namespace EQTool.Services
 
                 if (EpicSpells.TryGetValue(ret.name, out var foundepic))
                 {
-                    ret.Classes[foundepic] = 46;
+                    ret.casttime = foundepic.CastTime;
+                    ret.Classes[foundepic.PlayerClass] = 46;
                 }
 
                 return ret;

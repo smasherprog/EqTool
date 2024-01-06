@@ -61,6 +61,18 @@ namespace EQTool.ViewModels
                 OnPropertyChanged();
             }
         }
+        public bool DpsAlwaysOnTop
+        {
+            get
+            {
+                return this.toolSettings.DpsWindowState.AlwaysOnTop;
+            }
+            set
+            {
+                this.toolSettings.DpsWindowState.AlwaysOnTop = value;
+                OnPropertyChanged();
+            }
+        }
 
         public double DPSWindowOpacity
         {
@@ -76,6 +88,19 @@ namespace EQTool.ViewModels
             }
         }
 
+        public bool MapAlwaysOnTop
+        {
+            get
+            {
+                return this.toolSettings.MapWindowState.AlwaysOnTop;
+            }
+            set
+            {
+                this.toolSettings.MapWindowState.AlwaysOnTop = value;
+                OnPropertyChanged();
+            }
+        }
+
         public double MapWindowOpacity
         {
             get
@@ -87,6 +112,31 @@ namespace EQTool.ViewModels
             {
                 this.toolSettings.MapWindowState.Opacity = value;
                 ((App)System.Windows.Application.Current).UpdateBackgroundOpacity("MyWindowStyleMap", value);
+                OnPropertyChanged();
+            }
+        }
+        public bool MobAlwaysOnTop
+        {
+            get
+            {
+                return this.toolSettings.MobWindowState.AlwaysOnTop;
+            }
+            set
+            {
+                this.toolSettings.MobWindowState.AlwaysOnTop = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool SpellAlwaysOnTop
+        {
+            get
+            {
+                return this.toolSettings.SpellWindowState.AlwaysOnTop;
+            }
+            set
+            {
+                this.toolSettings.SpellWindowState.AlwaysOnTop = value;
                 OnPropertyChanged();
             }
         }
