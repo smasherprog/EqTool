@@ -105,28 +105,34 @@
                     <TextBlock Text="Audio Alert" VerticalAlignment="Center" FontWeight="Bold"  />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Enraged" ToolTip="Enraged Overlap" VerticalAlignment="Center" FontWeight="Bold"  MinWidth="100"/>
+                    <TextBlock Text="Enraged" ToolTip="Enraged overlay" VerticalAlignment="Center" FontWeight="Bold"  MinWidth="100"/>
                     <CheckBox IsChecked="{Binding ActivePlayer.Player.EnrageOverlay}" Click="Savesettings" MinWidth="75"></CheckBox>
                     <CheckBox IsChecked="{Binding ActivePlayer.Player.EnrageAudio}" Click="Savesettings" MinWidth="30"></CheckBox>
                     <Button Content="▶" Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="testenrage" ToolTip="Test Enrage" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Levitate Fading" ToolTip="Enraged Overlap" VerticalAlignment="Center" FontWeight="Bold"  MinWidth="100"/>
+                    <TextBlock Text="Levitate Fading" ToolTip="Enraged overlay" VerticalAlignment="Center" FontWeight="Bold"  MinWidth="100"/>
                     <CheckBox IsChecked="{Binding ActivePlayer.Player.LevFadingOverlay}" Click="Savesettings" MinWidth="75"></CheckBox>
                     <CheckBox IsChecked="{Binding ActivePlayer.Player.LevFadingAudio}" Click="Savesettings" MinWidth="30"></CheckBox>
                     <Button Content="▶" Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="testlevfading" ToolTip="Test Levitate fading" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Invis Fading" ToolTip="Enraged Overlap" VerticalAlignment="Center" FontWeight="Bold"  MinWidth="100"/>
+                    <TextBlock Text="Invis Fading" ToolTip="Enraged overlay" VerticalAlignment="Center" FontWeight="Bold"  MinWidth="100"/>
                     <CheckBox IsChecked="{Binding ActivePlayer.Player.InvisFadingOverlay}" Click="Savesettings" MinWidth="75"></CheckBox>
                     <CheckBox IsChecked="{Binding ActivePlayer.Player.InvisFadingAudio}" Click="Savesettings" MinWidth="30"></CheckBox>
                     <Button Content="▶" Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="testinvisfading" ToolTip="Test Invis Fading" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="FTE" ToolTip="FTE Overlap" VerticalAlignment="Center" FontWeight="Bold"  MinWidth="100"/>
+                    <TextBlock Text="FTE" ToolTip="FTE overlay" VerticalAlignment="Center" FontWeight="Bold"  MinWidth="100"/>
                     <CheckBox IsChecked="{Binding ActivePlayer.Player.FTEOverlay}" Click="Savesettings" MinWidth="75"></CheckBox>
                     <CheckBox IsChecked="{Binding ActivePlayer.Player.FTEAudio}" Click="Savesettings" MinWidth="30"></CheckBox>
                     <Button Content="▶" Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="testFTE" ToolTip="Test FTE" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Charm Break" ToolTip="Charm Break Overlay" VerticalAlignment="Center" FontWeight="Bold"  MinWidth="100"/>
+                    <CheckBox IsChecked="{Binding ActivePlayer.Player.CharmBreakAudioOverlay}" Click="Savesettings" MinWidth="75"></CheckBox>
+                    <CheckBox IsChecked="{Binding ActivePlayer.Player.CharmBreakAudio}" Click="Savesettings" MinWidth="30"></CheckBox>
+                    <Button Content="▶" Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="testCharmBreak" ToolTip="Test Charm Break" />
                 </StackPanel>
                 <Separator/>
                 <StackPanel Orientation="Horizontal">

@@ -96,7 +96,14 @@ namespace EQTool.Models
         {
             if (this.LastPlayer != null && connection?.State == HubConnectionState.Connected && this.activePlayer?.Player?.Server != null)
             {
-                InvokeAsync("PlayerLocationEvent", this.LastPlayer);
+                if ((DateTime.UtcNow - this.logParser.LastYouActivity).TotalMinutes > 5)
+                {
+                    this.LastPlayer = null;
+                }
+                else
+                {
+                    InvokeAsync("PlayerLocationEvent", this.LastPlayer);
+                }
             }
         }
 

@@ -63,7 +63,32 @@ namespace EQTool
             logParser.LevEvent += LogParser_LevEvent;
             logParser.InvisEvent += LogParser_InvisEvent;
             logParser.FTEEvent += LogParser_FTEEvent;
+            logParser.CharmBreakEvent += LogParser_CharmBreakEvent;
             settings.OverlayWindowState.Closed = false;
+        }
+
+        private void LogParser_CharmBreakEvent(object sender, LogParser.CharmBreakArgs e)
+        {
+            var overlay = this.activePlayer?.Player?.CharmBreakAudioOverlay ?? false;
+            if (!overlay)
+            {
+                return;
+            }
+
+            System.Threading.Tasks.Task.Factory.StartNew(() =>
+            {
+                this.appDispatcher.DispatchUI(() =>
+                {
+                    CenterText.Text = "Charm Break";
+                    CenterText.Foreground = Brushes.Red;
+                });
+                System.Threading.Thread.Sleep(1000 * 5);
+                this.appDispatcher.DispatchUI(() =>
+                {
+                    CenterText.Text = string.Empty;
+                    CenterText.Foreground = Brushes.Red;
+                });
+            });
         }
 
         private void LogParser_FTEEvent(object sender, FTEParser.FTEParserData e)

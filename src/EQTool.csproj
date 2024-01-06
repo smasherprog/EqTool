@@ -397,6 +397,7 @@
     <Compile Include="Services\MapOpacityHelper.cs" />
     <Compile Include="Services\MapViewModelService.cs" />
     <Compile Include="Services\Parsing\FTEParser.cs" />
+    <Compile Include="Services\Parsing\CharmBreakParser.cs" />
     <Compile Include="Services\Parsing\LevParser.cs" />
     <Compile Include="Services\Parsing\InvisParser.cs" />
     <Compile Include="Services\Parsing\EnrageParser.cs" />

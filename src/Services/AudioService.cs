@@ -15,7 +15,16 @@ namespace EQTool.Services
             this.logParser.InvisEvent += LogParser_InvisEvent;
             this.logParser.EnrageEvent += LogParser_EnrageEvent;
             this.logParser.LevEvent += LogParser_LevEvent;
-            this.logParser.FTEEvent += LogParser_FTEEvent; ;
+            this.logParser.FTEEvent += LogParser_FTEEvent;
+            this.logParser.CharmBreakEvent += LogParser_CharmBreakEvent;
+        }
+
+        private void LogParser_CharmBreakEvent(object sender, LogParser.CharmBreakArgs e)
+        {
+            if (this.activePlayer?.Player?.CharmBreakAudio == true)
+            {
+                this.PlayResource($"Charm Break");
+            }
         }
 
         private void LogParser_FTEEvent(object sender, FTEParser.FTEParserData e)

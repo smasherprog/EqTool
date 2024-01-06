@@ -45,6 +45,7 @@ namespace EQTool.Services
         private readonly InvisParser invisParser;
         private readonly LevParser levParser;
         private readonly FTEParser fTEParser;
+        private readonly CharmBreakParser charmBreakParser;
 
         private bool StartingWhoOfZone = false;
         private bool Processing = false;
@@ -52,6 +53,7 @@ namespace EQTool.Services
         private bool HasUsedStartupEnterWorld = false;
 
         public LogParser(
+            CharmBreakParser charmBreakParser,
             FTEParser fTEParser,
             ChParser chParser,
             QuakeParser quakeParser,
@@ -75,6 +77,7 @@ namespace EQTool.Services
             LevParser levParser
             )
         {
+            this.charmBreakParser = charmBreakParser;
             this.fTEParser = fTEParser;
             this.invisParser = invisParser;
             this.levParser = levParser;
@@ -162,6 +165,7 @@ namespace EQTool.Services
         public class CampEventArgs : EventArgs { }
         public class EnteredWorldArgs : EventArgs { }
         public class QuakeArgs : EventArgs { }
+        public class CharmBreakArgs : EventArgs { }
 
         public event EventHandler<WhoEventArgs> WhoEvent;
 
@@ -179,7 +183,7 @@ namespace EQTool.Services
         public event EventHandler<LevStatus> LevEvent;
         public event EventHandler<InvisStatus> InvisEvent;
         public event EventHandler<FTEParserData> FTEEvent;
-
+        public event EventHandler<CharmBreakArgs> CharmBreakEvent;
 
         public event EventHandler<SpellWornOffOtherEventArgs> SpellWornOtherOffEvent;
 
@@ -319,6 +323,13 @@ namespace EQTool.Services
                 if (!string.IsNullOrWhiteSpace(name))
                 {
                     CancelTimerEvent?.Invoke(this, new CancelTimerEventArgs { Name = name });
+                    return;
+                }
+
+                var didcharmbreak = this.charmBreakParser.DidCharmBreak(message);
+                if (didcharmbreak)
+                {
+                    CharmBreakEvent?.Invoke(this, new CharmBreakArgs());
                     return;
                 }
 

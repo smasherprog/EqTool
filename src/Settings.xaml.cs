@@ -691,6 +691,11 @@ namespace EQTool
             this.PushLog("You feel yourself starting to appear.");
         }
 
+        private void testCharmBreak(object sender, RoutedEventArgs e)
+        {
+            this.PushLog("Your charm spell has worn off.");
+        }
+
         private void testFTE(object sender, RoutedEventArgs e)
         {
             var z = SettingsWindowData.ActivePlayer?.Player?.Zone;

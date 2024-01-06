@@ -66,19 +66,20 @@ namespace EQTool
                 DateTime = new DateTime(2024, 1, 5),
                 Message = $"* Fixed CH time animation on the overlay. It should be 10 seconds from right to left."
             });
-            UpdateMessages.Add(new UpdateMessageData
-            {
-                DateTime = new DateTime(2024, 1, 5),
-                Message = $"* FTE audio and visual triggers added. Visual Trigger will show the guild of tagger!"
-            });
 
             UpdateMessages.Add(new UpdateMessageData
             {
                 DateTime = new DateTime(2024, 1, 6),
-                Message = $"* Updated save settings code to be smarter!{Environment.NewLine}" +
+                Message = $"* Try out the new overlay and audio triggers. Try out the CH Chain overlay as well. {Environment.NewLine}{Environment.NewLine}{Environment.NewLine}" +
+                          $"* FTE audio and visual triggers added. Visual Trigger will show the guild of tagger!{Environment.NewLine}" +
+                          $"* Remove ghost players from map.{Environment.NewLine}" +
+                          $"* Charm Break Audio and visual triggers added.{Environment.NewLine}" +
+                          $"* Updated save settings code to be smarter!{Environment.NewLine}" +
                           $"* Changed Audio triggers to use Crappy Built in speech to text -- this is easier than generating MP3 for everything.{Environment.NewLine}" +
-                          $"* Added code to try and improve the map locations by simplifying it.{Environment.NewLine}" +
-                          $"* Code to check for updates is will only update if there are less than 2 TOTAL items in the triggers window to make less aggressive."
+                          $"* Added code to try and improve the map locations by simplifying code.{Environment.NewLine}" +
+                          $"* Changed code to check for updates. Now it will only update if there are less than 2 TOTAL items in the triggers window to make less aggressive.",
+                Image = "pack://application:,,,/update1.png",
+                ImageVisibility = Visibility.Visible
             });
         }
     }

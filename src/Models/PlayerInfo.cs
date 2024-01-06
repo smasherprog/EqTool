@@ -327,6 +327,28 @@ namespace EQTool.Models
             }
         }
 
+        private bool _CharmBreakAudio;
+        public bool CharmBreakAudio
+        {
+            get => _CharmBreakAudio;
+            set
+            {
+                _CharmBreakAudio = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _CharmBreakAudioOverlay;
+        public bool CharmBreakAudioOverlay
+        {
+            get => _CharmBreakAudioOverlay;
+            set
+            {
+                _CharmBreakAudioOverlay = value;
+                OnPropertyChanged();
+            }
+        }
+
         private bool _FTEAudio;
         public bool FTEAudio
         {
