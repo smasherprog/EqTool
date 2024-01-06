@@ -37,6 +37,7 @@ namespace EQTool
         private PlayerTrackerService PlayerTrackerService;
         private ZoneActivityTrackingService ZoneActivityTrackingService;
         private ISignalrPlayerHub signalrPlayerHub;
+        private AudioService audioService;
 
         private EQToolSettings _EQToolSettings;
 
@@ -334,6 +335,7 @@ namespace EQTool
 
             PlayerTrackerService = container.Resolve<PlayerTrackerService>();
             ZoneActivityTrackingService = container.Resolve<ZoneActivityTrackingService>();
+            audioService = container.Resolve<AudioService>();
             logParser.QuakeEvent += LogParser_QuakeEvent;
             App.Current.Resources["GlobalFontSize"] = (double)(this.EQToolSettings?.FontSize ?? 12);
             ((App)System.Windows.Application.Current).UpdateBackgroundOpacity("MyWindowStyleDPS", this.EQToolSettings.DpsWindowState.Opacity.Value);

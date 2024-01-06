@@ -8,6 +8,10 @@
             Faded,
             Applied
         }
+        public InvisParser()
+        {
+
+        }
 
         public InvisStatus? Parse(string line)
         {

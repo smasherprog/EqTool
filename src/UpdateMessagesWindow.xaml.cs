@@ -42,6 +42,11 @@ namespace EQTool
             UpdateMessages.Add(new UpdateMessageData
             {
                 DateTime = new DateTime(2024, 1, 5),
+                Message = $"* Added audio alerts for Enrage, Levitate fading and Invis Fading!"
+            });
+            UpdateMessages.Add(new UpdateMessageData
+            {
+                DateTime = new DateTime(2024, 1, 5),
                 Message = $"* Added overlay option for Levitate fading!{Environment.NewLine}" +
                 $"* Added overlay option for Invis fading!{Environment.NewLine}"
             });

@@ -390,6 +390,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="Services\AppDispatcher.cs" />
+    <Compile Include="Services\AudioService.cs" />
     <Compile Include="Services\BinarySerializer.cs" />
     <Compile Include="Services\LoggingService.cs" />
     <Compile Include="Services\MapOpacityHelper.cs" />
@@ -1084,6 +1085,11 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="UpdateImages\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="audio\enraged.mp3" />
+    <EmbeddedResource Include="audio\invisfading.mp3" />
+    <EmbeddedResource Include="audio\levfading.mp3" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="AfterResolveReferences">

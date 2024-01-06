@@ -294,6 +294,27 @@ namespace EQTool.Models
                 OnPropertyChanged();
             }
         }
+        private bool _EnrageAudio;
+        public bool EnrageAudio
+        {
+            get => _EnrageAudio;
+            set
+            {
+                _EnrageAudio = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _LevFadingAudio;
+        public bool LevFadingAudio
+        {
+            get => _LevFadingAudio;
+            set
+            {
+                _LevFadingAudio = value;
+                OnPropertyChanged();
+            }
+        }
 
         private bool _LevFadingOverlay;
         public bool LevFadingOverlay
@@ -302,6 +323,17 @@ namespace EQTool.Models
             set
             {
                 _LevFadingOverlay = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _InvisFadingAudio;
+        public bool InvisFadingAudio
+        {
+            get => _InvisFadingAudio;
+            set
+            {
+                _InvisFadingAudio = value;
                 OnPropertyChanged();
             }
         }

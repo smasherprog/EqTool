@@ -100,16 +100,24 @@
         <TabItem Header="Overlay">
             <StackPanel Orientation="Vertical" Margin="5, 5, 5, 5">
                 <StackPanel Orientation="Horizontal">
+                    <TextBlock VerticalAlignment="Center" FontWeight="Bold"  MinWidth="75"/>
+                    <TextBlock Text="Visual Alert" VerticalAlignment="Center" FontWeight="Bold"  MinWidth="75"/>
+                    <TextBlock Text="Audio Alert" VerticalAlignment="Center" FontWeight="Bold"  />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Enraged" ToolTip="Enraged Overlap" VerticalAlignment="Center" FontWeight="Bold"  MinWidth="100"/>
-                    <CheckBox IsChecked="{Binding ActivePlayer.Player.EnrageOverlay}" Click="Savesettings"></CheckBox>
+                    <CheckBox IsChecked="{Binding ActivePlayer.Player.EnrageOverlay}" Click="Savesettings" MinWidth="75"></CheckBox>
+                    <CheckBox IsChecked="{Binding ActivePlayer.Player.EnrageAudio}" Click="Savesettings"></CheckBox>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Levitate Fading" ToolTip="Enraged Overlap" VerticalAlignment="Center" FontWeight="Bold"  MinWidth="100"/>
-                    <CheckBox IsChecked="{Binding ActivePlayer.Player.LevFadingOverlay}" Click="Savesettings"></CheckBox>
+                    <CheckBox IsChecked="{Binding ActivePlayer.Player.LevFadingOverlay}" Click="Savesettings" MinWidth="75"></CheckBox>
+                    <CheckBox IsChecked="{Binding ActivePlayer.Player.LevFadingAudio}" Click="Savesettings"></CheckBox>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Invis Fading" ToolTip="Enraged Overlap" VerticalAlignment="Center" FontWeight="Bold"  MinWidth="100"/>
-                    <CheckBox IsChecked="{Binding ActivePlayer.Player.InvisFadingOverlay}" Click="Savesettings"></CheckBox>
+                    <CheckBox IsChecked="{Binding ActivePlayer.Player.InvisFadingOverlay}" Click="Savesettings" MinWidth="75"></CheckBox>
+                    <CheckBox IsChecked="{Binding ActivePlayer.Player.InvisFadingAudio}" Click="Savesettings"></CheckBox>
                 </StackPanel>
                 <Separator/>
                 <StackPanel Orientation="Horizontal">
