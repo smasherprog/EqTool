@@ -29,7 +29,7 @@ Features:
 <li>Show fight Session data for comparisons.</li>
 <li>The following spells have counters that are automatically tracked:Mana Seive, LowerElement (Flux Staff Effect), Concussion, Flame Lick, Cinder Jolt, Jolt.</li> 
 <li>The following Overlays are available: Enrage; Levitate fading; invis fading; and Ch Chain (COMING SOON)</li>
-<li>The following Audio alerts are available: Enrage; Levitate fading; invis fading; and Ch Chain (COMING SOON)</li>
+<li>The following Audio alerts are available: Enrage; Levitate fading; and invis fading</li>
 <li>Timers on map for easy TOD tracking!</li>
 <li>Pricing information in Mob info window.</li>
 <li>Save spells cast on you when you log out so when you log back in they resume counter!</li>
