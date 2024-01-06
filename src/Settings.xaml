@@ -122,6 +122,12 @@
                     <CheckBox IsChecked="{Binding ActivePlayer.Player.InvisFadingAudio}" Click="Savesettings" MinWidth="30"></CheckBox>
                     <Button Content="▶" Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="testinvisfading" ToolTip="Test Invis Fading" />
                 </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="FTE" ToolTip="FTE Overlap" VerticalAlignment="Center" FontWeight="Bold"  MinWidth="100"/>
+                    <CheckBox IsChecked="{Binding ActivePlayer.Player.FTEOverlay}" Click="Savesettings" MinWidth="75"></CheckBox>
+                    <CheckBox IsChecked="{Binding ActivePlayer.Player.FTEAudio}" Click="Savesettings" MinWidth="30"></CheckBox>
+                    <Button Content="▶" Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="testFTE" ToolTip="Test FTE" />
+                </StackPanel>
                 <Separator/>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Chain Format" VerticalAlignment="Center" FontWeight="Bold" MinWidth="100"/>

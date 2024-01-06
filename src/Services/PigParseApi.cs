@@ -3,6 +3,7 @@ using EQToolShared.APIModels.PlayerControllerModels;
 using EQToolShared.APIModels.ZoneControllerModels;
 using EQToolShared.Enums;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -123,24 +124,30 @@ namespace EQTool.Services
                 }
                 Debug.WriteLine($"Sending {players.Count} Players");
                 var url = $"https://pigparse.azurewebsites.net/api/player/getbynames";
-                var json = JsonConvert.SerializeObject(new
+                var json = JsonConvert.SerializeObject(new PlayerRequest
                 {
                     Server = server,
                     Players = players
                 });
                 var data = new StringContent(json, Encoding.UTF8, "application/json");
                 var res = App.httpclient.PostAsync(url, data).Result;
+                var response = res.Content.ReadAsStringAsync().Result;
                 if (res.StatusCode == System.Net.HttpStatusCode.OK)
                 {
-                    var response = res.Content.ReadAsStringAsync().Result;
                     return Newtonsoft.Json.JsonConvert.DeserializeObject<List<Player>>(response);
                 }
             }
-            catch
+            catch (Exception e)
             {
+                return new List<Player>();
             }
 
             return new List<Player>();
+        }
+
+        public Player GetPlayerData(string players, Servers server)
+        {
+            return this.GetPlayerData(new List<string>() { players }, server).FirstOrDefault();
         }
     }
 }

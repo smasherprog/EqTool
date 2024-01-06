@@ -680,8 +680,8 @@ namespace EQTool
                     this.PushLog(zone.NotableNPCs.FirstOrDefault() + " has become ENRAGED.");
                 }
             }
-
         }
+
         private void testlevfading(object sender, RoutedEventArgs e)
         {
             this.PushLog("You feel as if you are about to fall.");
@@ -689,6 +689,22 @@ namespace EQTool
         private void testinvisfading(object sender, RoutedEventArgs e)
         {
             this.PushLog("You feel yourself starting to appear.");
+        }
+
+        private void testFTE(object sender, RoutedEventArgs e)
+        {
+            var z = SettingsWindowData.ActivePlayer?.Player?.Zone;
+            if (string.IsNullOrWhiteSpace(z))
+            {
+                return;
+            }
+            if (ZoneParser.ZoneInfoMap.TryGetValue(z, out var zone))
+            {
+                if (zone.NotableNPCs.Any())
+                {
+                    this.PushLog(zone.NotableNPCs.FirstOrDefault() + " engages Tzvia!");
+                }
+            }
         }
     }
 }

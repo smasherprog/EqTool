@@ -286,7 +286,7 @@ namespace EQTool
                 Visible = true,
                 ContextMenu = new System.Windows.Forms.ContextMenu(new System.Windows.Forms.MenuItem[]
                 {
-                    GroupSuggestionsMenuItem,
+                    //GroupSuggestionsMenuItem,
                     OverlayMenuItem,
                     DpsMeterMenuItem,
                     MapMenuItem,

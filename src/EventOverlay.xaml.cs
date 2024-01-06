@@ -33,14 +33,16 @@ namespace EQTool
         private readonly IAppDispatcher appDispatcher;
         private DateTime LastWindowInteraction = DateTime.UtcNow;
         private readonly List<ChainData> chainDatas = new List<ChainData>();
+        private readonly PigParseApi pigParseApi;
         private readonly DispatcherTimer timer = new DispatcherTimer
         {
             Interval = new TimeSpan(0, 0, 0, 0, 500),
             IsEnabled = false
         };
 
-        public EventOverlay(LogParser logParser, EQToolSettings settings, EQToolSettingsLoad toolSettingsLoad, ActivePlayer activePlayer, IAppDispatcher appDispatcher)
+        public EventOverlay(LogParser logParser, EQToolSettings settings, PigParseApi pigParseApi, EQToolSettingsLoad toolSettingsLoad, ActivePlayer activePlayer, IAppDispatcher appDispatcher)
         {
+            this.pigParseApi = pigParseApi;
             this.appDispatcher = appDispatcher;
             this.activePlayer = activePlayer;
             this.settings = settings;
@@ -60,7 +62,41 @@ namespace EQTool
             logParser.CHEvent += LogParser_CHEvent;
             logParser.LevEvent += LogParser_LevEvent;
             logParser.InvisEvent += LogParser_InvisEvent;
+            logParser.FTEEvent += LogParser_FTEEvent;
             settings.OverlayWindowState.Closed = false;
+        }
+
+        private void LogParser_FTEEvent(object sender, FTEParser.FTEParserData e)
+        {
+            var overlay = this.activePlayer?.Player?.FTEOverlay ?? false;
+            if (!overlay)
+            {
+                return;
+            }
+
+            System.Threading.Tasks.Task.Factory.StartNew(() =>
+            {
+                var fteperson = this.pigParseApi.GetPlayerData(e.FTEPerson, this.activePlayer.Player.Server.Value);
+                this.appDispatcher.DispatchUI(() =>
+                {
+                    if (fteperson == null)
+                    {
+                        CenterText.Text = $"{e.FTEPerson} FTE {e.NPCName}";
+                        CenterText.Foreground = Brushes.Yellow;
+                    }
+                    else
+                    {
+                        CenterText.Text = $"{fteperson.Name} <{fteperson.GuildName}> FTE {e.NPCName}";
+                        CenterText.Foreground = Brushes.Yellow;
+                    }
+                });
+                System.Threading.Thread.Sleep(1000 * 5);
+                this.appDispatcher.DispatchUI(() =>
+                {
+                    CenterText.Text = string.Empty;
+                    CenterText.Foreground = Brushes.Yellow;
+                });
+            });
         }
 
         private void LogParser_InvisEvent(object sender, InvisParser.InvisStatus e)
@@ -76,11 +112,13 @@ namespace EQTool
                 this.appDispatcher.DispatchUI(() =>
                 {
                     CenterText.Text = "Invis Fading";
+                    CenterText.Foreground = Brushes.Red;
                 });
                 System.Threading.Thread.Sleep(1000 * 5);
                 this.appDispatcher.DispatchUI(() =>
                 {
                     CenterText.Text = string.Empty;
+                    CenterText.Foreground = Brushes.Red;
                 });
             });
         }
@@ -98,11 +136,13 @@ namespace EQTool
                 this.appDispatcher.DispatchUI(() =>
                 {
                     CenterText.Text = "Levitate Fading";
+                    CenterText.Foreground = Brushes.Red;
                 });
                 System.Threading.Thread.Sleep(1000 * 5);
                 this.appDispatcher.DispatchUI(() =>
                 {
                     CenterText.Text = string.Empty;
+                    CenterText.Foreground = Brushes.Red;
                 });
             });
         }
@@ -205,6 +245,7 @@ namespace EQTool
             appDispatcher.DispatchUI(() =>
             {
                 CenterText.Text = e.NpcName + " ENRAGED";
+                CenterText.Foreground = Brushes.Red;
             });
 
             System.Threading.Tasks.Task.Factory.StartNew(() =>
@@ -213,11 +254,13 @@ namespace EQTool
                 this.appDispatcher.DispatchUI(() =>
                 {
                     CenterText.Text = "ENGRAGE OFF";
+                    CenterText.Foreground = Brushes.Red;
                 });
                 System.Threading.Thread.Sleep(1000 * 3);
                 this.appDispatcher.DispatchUI(() =>
                 {
                     CenterText.Text = string.Empty;
+                    CenterText.Foreground = Brushes.Red;
                 });
             });
         }
@@ -278,8 +321,11 @@ namespace EQTool
             SizeChanged -= Window_SizeChanged;
             StateChanged -= SpellWindow_StateChanged;
             LocationChanged -= Window_LocationChanged;
-            logParser.EnrageEvent -= LogParser_EnrageEvent;
-            logParser.CHEvent -= LogParser_CHEvent;
+            if (logParser != null)
+            {
+                logParser.EnrageEvent -= LogParser_EnrageEvent;
+                logParser.CHEvent -= LogParser_CHEvent;
+            }
             base.OnClosing(e);
         }
 

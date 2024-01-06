@@ -217,12 +217,16 @@ namespace EQTool
         {
             UITimer?.Stop();
             UITimer?.Dispose();
-            logParser.PlayerLocationEvent -= LogParser_PlayerLocationEvent;
-            logParser.PlayerZonedEvent -= LogParser_PlayerZonedEvent;
-            logParser.EnteredWorldEvent -= LogParser_EnteredWorldEvent;
-            logParser.DeadEvent -= LogParser_DeadEvent;
-            logParser.StartTimerEvent -= LogParser_StartTimerEvent;
-            logParser.CancelTimerEvent -= LogParser_CancelTimerEvent;
+            if (logParser != null)
+            {
+                logParser.PlayerLocationEvent -= LogParser_PlayerLocationEvent;
+                logParser.PlayerZonedEvent -= LogParser_PlayerZonedEvent;
+                logParser.EnteredWorldEvent -= LogParser_EnteredWorldEvent;
+                logParser.DeadEvent -= LogParser_DeadEvent;
+                logParser.StartTimerEvent -= LogParser_StartTimerEvent;
+                logParser.CancelTimerEvent -= LogParser_CancelTimerEvent;
+            }
+
             SizeChanged -= Window_SizeChanged;
             StateChanged -= Window_StateChanged;
             LocationChanged -= Window_LocationChanged;
@@ -231,8 +235,11 @@ namespace EQTool
             Map.CancelTimerEvent -= Map_CancelTimerEvent;
             Map.TimerMenu_ClosedEvent -= Map_TimerMenu_ClosedEvent;
             Map.TimerMenu_OpenedEvent -= Map_TimerMenu_OpenedEvent;
-            this.signalrPlayerHub.PlayerLocationEvent -= SignalrPlayerHub_PlayerLocationEvent;
-            this.signalrPlayerHub.PlayerDisconnected -= SignalrPlayerHub_PlayerDisconnected;
+            if (signalrPlayerHub != null)
+            {
+                signalrPlayerHub.PlayerLocationEvent -= SignalrPlayerHub_PlayerLocationEvent;
+                signalrPlayerHub.PlayerDisconnected -= SignalrPlayerHub_PlayerDisconnected;
+            }
             base.OnClosing(e);
         }
 

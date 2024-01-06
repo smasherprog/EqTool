@@ -15,6 +15,15 @@ namespace EQTool.Services
             this.logParser.InvisEvent += LogParser_InvisEvent;
             this.logParser.EnrageEvent += LogParser_EnrageEvent;
             this.logParser.LevEvent += LogParser_LevEvent;
+            this.logParser.FTEEvent += LogParser_FTEEvent; ;
+        }
+
+        private void LogParser_FTEEvent(object sender, FTEParser.FTEParserData e)
+        {
+            if (this.activePlayer?.Player?.FTEAudio == true)
+            {
+                this.PlayResource($"{e.FTEPerson} F T E {e.NPCName}");
+            }
         }
 
         private void LogParser_LevEvent(object sender, LevParser.LevStatus e)

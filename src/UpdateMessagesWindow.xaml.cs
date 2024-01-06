@@ -68,6 +68,12 @@ namespace EQTool
             });
             UpdateMessages.Add(new UpdateMessageData
             {
+                DateTime = new DateTime(2024, 1, 5),
+                Message = $"* FTE audio and visual triggers added. Visual Trigger will show the guild of tagger!"
+            });
+
+            UpdateMessages.Add(new UpdateMessageData
+            {
                 DateTime = new DateTime(2024, 1, 6),
                 Message = $"* Updated save settings code to be smarter!{Environment.NewLine}" +
                           $"* Changed Audio triggers to use Crappy Built in speech to text -- this is easier than generating MP3 for everything.{Environment.NewLine}" +

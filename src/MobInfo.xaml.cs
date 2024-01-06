@@ -97,7 +97,10 @@ namespace EQTool
 
         protected override void OnClosing(CancelEventArgs e)
         {
-            logParser.ConEvent -= LogParser_ConEvent;
+            if (logParser != null)
+            {
+                logParser.ConEvent -= LogParser_ConEvent;
+            }
             LocationChanged -= Window_LocationChanged;
             base.OnClosing(e);
         }

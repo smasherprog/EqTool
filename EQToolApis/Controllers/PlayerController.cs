@@ -29,9 +29,9 @@ namespace EQToolApis.Controllers
         }
 
         [Route("getbynames"), HttpPost]
-        public List<EQToolShared.APIModels.PlayerControllerModels.Player> GetByNames([FromBody] PlayerUpdateRequest playerRequest)
+        public List<EQToolShared.APIModels.PlayerControllerModels.Player> GetByNames([FromBody] PlayerRequest playerRequest)
         {
-            var names = playerRequest.Players.Select(a => a.Name).Distinct().ToList();
+            var names = playerRequest.Players.Select(a => a.Trim()).Where(a => !string.IsNullOrWhiteSpace(a)).Distinct().ToList();
             return dbcontext.Players.Where(a => names.Contains(a.Name) && a.Server == playerRequest.Server).ToList().Map();
         }
 
@@ -80,7 +80,7 @@ namespace EQToolApis.Controllers
                         p.Level = (byte?)item.Level;
                     }
 
-                    if (p.GuildName != item.GuildName && string.IsNullOrWhiteSpace(item.GuildName))
+                    if (p.GuildName != item.GuildName && !string.IsNullOrWhiteSpace(item.GuildName))
                     {
                         apilog.LogMessage += $"{item.GuildName}-{p.GuildName},";
                         p.GuildName = item.GuildName;

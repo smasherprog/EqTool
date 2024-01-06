@@ -13,6 +13,7 @@ using System.Linq;
 using System.Windows.Media.Media3D;
 using static EQTool.Services.ChParser;
 using static EQTool.Services.EnrageParser;
+using static EQTool.Services.FTEParser;
 using static EQTool.Services.InvisParser;
 using static EQTool.Services.LevParser;
 using static EQTool.Services.POFDTParser;
@@ -43,6 +44,7 @@ namespace EQTool.Services
         private readonly ChParser chParser;
         private readonly InvisParser invisParser;
         private readonly LevParser levParser;
+        private readonly FTEParser fTEParser;
 
         private bool StartingWhoOfZone = false;
         private bool Processing = false;
@@ -50,6 +52,7 @@ namespace EQTool.Services
         private bool HasUsedStartupEnterWorld = false;
 
         public LogParser(
+            FTEParser fTEParser,
             ChParser chParser,
             QuakeParser quakeParser,
             EnterWorldParser enterWorldParser,
@@ -72,6 +75,7 @@ namespace EQTool.Services
             LevParser levParser
             )
         {
+            this.fTEParser = fTEParser;
             this.invisParser = invisParser;
             this.levParser = levParser;
             this.chParser = chParser;
@@ -174,6 +178,8 @@ namespace EQTool.Services
         public event EventHandler<ChParseData> CHEvent;
         public event EventHandler<LevStatus> LevEvent;
         public event EventHandler<InvisStatus> InvisEvent;
+        public event EventHandler<FTEParserData> FTEEvent;
+
 
         public event EventHandler<SpellWornOffOtherEventArgs> SpellWornOtherOffEvent;
 
@@ -376,6 +382,13 @@ namespace EQTool.Services
                 if (invi.HasValue)
                 {
                     InvisEvent?.Invoke(this, invi.Value);
+                    return;
+                }
+
+                var fte = this.fTEParser.Parse(message);
+                if (fte != null)
+                {
+                    FTEEvent?.Invoke(this, fte);
                     return;
                 }
 
