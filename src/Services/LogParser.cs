@@ -13,6 +13,8 @@ using System.Linq;
 using System.Windows.Media.Media3D;
 using static EQTool.Services.ChParser;
 using static EQTool.Services.EnrageParser;
+using static EQTool.Services.InvisParser;
+using static EQTool.Services.LevParser;
 using static EQTool.Services.POFDTParser;
 
 namespace EQTool.Services
@@ -39,6 +41,8 @@ namespace EQTool.Services
         private readonly POFDTParser pOFDTParser;
         private readonly EnrageParser enrageParser;
         private readonly ChParser chParser;
+        private readonly InvisParser invisParser;
+        private readonly LevParser levParser;
 
         private bool StartingWhoOfZone = false;
         private bool Processing = false;
@@ -63,8 +67,13 @@ namespace EQTool.Services
             POFDTParser pOFDTParser,
             EnrageParser enrageParser,
             LevelLogParse levelLogParse,
-            PlayerWhoLogParse playerWhoLogParse)
+            PlayerWhoLogParse playerWhoLogParse,
+            InvisParser invisParser,
+            LevParser levParser
+            )
         {
+            this.invisParser = invisParser;
+            this.levParser = levParser;
             this.chParser = chParser;
             this.enrageParser = enrageParser;
             this.pOFDTParser = pOFDTParser;
@@ -163,6 +172,8 @@ namespace EQTool.Services
         public event EventHandler<EnrageEvent> EnrageEvent;
 
         public event EventHandler<ChParseData> CHEvent;
+        public event EventHandler<LevStatus> LevEvent;
+        public event EventHandler<InvisStatus> InvisEvent;
 
         public event EventHandler<SpellWornOffOtherEventArgs> SpellWornOtherOffEvent;
 
@@ -351,6 +362,20 @@ namespace EQTool.Services
                 if (chdata != null)
                 {
                     CHEvent?.Invoke(this, chdata);
+                    return;
+                }
+
+                var lev = this.levParser.Parse(message);
+                if (lev.HasValue)
+                {
+                    LevEvent?.Invoke(this, lev.Value);
+                    return;
+                }
+
+                var invi = this.invisParser.Parse(message);
+                if (invi.HasValue)
+                {
+                    InvisEvent?.Invoke(this, invi.Value);
                     return;
                 }
 

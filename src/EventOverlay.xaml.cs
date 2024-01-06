@@ -50,8 +50,54 @@ namespace EQTool
             LocationChanged += Window_LocationChanged;
             logParser.EnrageEvent += LogParser_EnrageEvent;
             logParser.CHEvent += LogParser_CHEvent;
+            logParser.LevEvent += LogParser_LevEvent;
+            logParser.InvisEvent += LogParser_InvisEvent;
             settings.OverlayWindowState.Closed = false;
             SaveState();
+        }
+
+        private void LogParser_InvisEvent(object sender, InvisParser.InvisStatus e)
+        {
+            var overlay = this.activePlayer?.Player?.InvisFadingOverlay ?? false;
+            if (!overlay)
+            {
+                return;
+            }
+
+            System.Threading.Tasks.Task.Factory.StartNew(() =>
+            {
+                this.appDispatcher.DispatchUI(() =>
+                {
+                    CenterText.Text = "Invis Fading";
+                });
+                System.Threading.Thread.Sleep(1000 * 5);
+                this.appDispatcher.DispatchUI(() =>
+                {
+                    CenterText.Text = string.Empty;
+                });
+            });
+        }
+
+        private void LogParser_LevEvent(object sender, LevParser.LevStatus e)
+        {
+            var overlay = this.activePlayer?.Player?.InvisFadingOverlay ?? false;
+            if (!overlay)
+            {
+                return;
+            }
+
+            System.Threading.Tasks.Task.Factory.StartNew(() =>
+            {
+                this.appDispatcher.DispatchUI(() =>
+                {
+                    CenterText.Text = "Levitate Fading";
+                });
+                System.Threading.Thread.Sleep(1000 * 5);
+                this.appDispatcher.DispatchUI(() =>
+                {
+                    CenterText.Text = string.Empty;
+                });
+            });
         }
 
         private void LogParser_CHEvent(object sender, ChParser.ChParseData e)

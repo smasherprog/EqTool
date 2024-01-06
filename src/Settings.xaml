@@ -103,6 +103,14 @@
                     <TextBlock Text="Enraged" ToolTip="Enraged Overlap" VerticalAlignment="Center" FontWeight="Bold"  MinWidth="100"/>
                     <CheckBox IsChecked="{Binding ActivePlayer.Player.EnrageOverlay}" Click="Savesettings"></CheckBox>
                 </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Levitate Fading" ToolTip="Enraged Overlap" VerticalAlignment="Center" FontWeight="Bold"  MinWidth="100"/>
+                    <CheckBox IsChecked="{Binding ActivePlayer.Player.LevFadingOverlay}" Click="Savesettings"></CheckBox>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Invis Fading" ToolTip="Enraged Overlap" VerticalAlignment="Center" FontWeight="Bold"  MinWidth="100"/>
+                    <CheckBox IsChecked="{Binding ActivePlayer.Player.InvisFadingOverlay}" Click="Savesettings"></CheckBox>
+                </StackPanel>
                 <Separator/>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Chain Format" VerticalAlignment="Center" FontWeight="Bold" MinWidth="100"/>

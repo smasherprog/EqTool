@@ -295,6 +295,28 @@ namespace EQTool.Models
             }
         }
 
+        private bool _LevFadingOverlay;
+        public bool LevFadingOverlay
+        {
+            get => _LevFadingOverlay;
+            set
+            {
+                _LevFadingOverlay = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _InvisFadingOverlay;
+        public bool InvisFadingOverlay
+        {
+            get => _InvisFadingOverlay;
+            set
+            {
+                _InvisFadingOverlay = value;
+                OnPropertyChanged();
+            }
+        }
+
         private bool _ChChainOverlay;
         public bool ChChainOverlay
         {
