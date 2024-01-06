@@ -8,6 +8,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Navigation;
+using System.Windows.Threading;
 
 namespace EQTool
 {
@@ -23,6 +24,11 @@ namespace EQTool
         private readonly WikiApi wikiApi;
         private readonly PigParseApi pigParseApi;
         private readonly ActivePlayer activePlayer;
+        private readonly DispatcherTimer timer = new DispatcherTimer
+        {
+            Interval = new TimeSpan(0, 0, 0, 0, 500),
+            IsEnabled = false
+        };
 
         public MobInfo(ActivePlayer activePlayer, PigParseApi pigParseApi, WikiApi wikiApi, LogParser logParser, EQToolSettings settings, EQToolSettingsLoad toolSettingsLoad, LoggingService loggingService)
         {
@@ -37,11 +43,9 @@ namespace EQTool
             DataContext = mobInfoViewModel = new ViewModels.MobInfoViewModel();
             InitializeComponent();
             WindowExtensions.AdjustWindow(settings.MobWindowState, this);
-            SizeChanged += DPSMeter_SizeChanged;
-            StateChanged += SpellWindow_StateChanged;
-            LocationChanged += DPSMeter_LocationChanged;
+            timer.Tick += timer_Tick;
+            LocationChanged += Window_LocationChanged;
             settings.MobWindowState.Closed = false;
-            SaveState();
         }
 
         private void LogParser_ConEvent(object sender, LogParser.ConEventArgs e)
@@ -78,18 +82,28 @@ namespace EQTool
                 }
             }
         }
+        void timer_Tick(object sender, EventArgs e)
+        {
+            timer.IsEnabled = false;
+            SaveState();
+        }
+
+        private void DebounceSave()
+        {
+            timer.IsEnabled = true;
+            timer.Stop();
+            timer.Start();
+        }
 
         protected override void OnClosing(CancelEventArgs e)
         {
             logParser.ConEvent -= LogParser_ConEvent;
-            SizeChanged -= DPSMeter_SizeChanged;
-            StateChanged -= SpellWindow_StateChanged;
-            LocationChanged -= DPSMeter_LocationChanged;
-            SaveState();
+            LocationChanged -= Window_LocationChanged;
             base.OnClosing(e);
         }
         private void SaveState()
         {
+            Debug.WriteLine("Saving MobInfo window State");
             WindowExtensions.SaveWindowState(settings.MobWindowState, this);
             toolSettingsLoad.Save(settings);
         }
@@ -97,23 +111,13 @@ namespace EQTool
         private void CloseWindow(object sender, RoutedEventArgs e)
         {
             settings.MobWindowState.Closed = true;
-
+            SaveState();
             Close();
         }
 
-        private void SpellWindow_StateChanged(object sender, EventArgs e)
+        private void Window_LocationChanged(object sender, EventArgs e)
         {
-            SaveState();
-        }
-
-        private void DPSMeter_LocationChanged(object sender, EventArgs e)
-        {
-            SaveState();
-        }
-
-        private void DPSMeter_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            SaveState();
+            DebounceSave();
         }
 
         private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
@@ -141,7 +145,6 @@ namespace EQTool
         {
             WindowState = WindowState == System.Windows.WindowState.Maximized ? System.Windows.WindowState.Normal : System.Windows.WindowState.Maximized;
         }
-
 
         private void opendps(object sender, RoutedEventArgs e)
         {

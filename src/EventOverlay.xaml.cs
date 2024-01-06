@@ -4,12 +4,14 @@ using EQTool.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
+using System.Windows.Threading;
 
 namespace EQTool
 {
@@ -31,8 +33,13 @@ namespace EQTool
         private readonly IAppDispatcher appDispatcher;
         private DateTime LastWindowInteraction = DateTime.UtcNow;
         private readonly List<ChainData> chainDatas = new List<ChainData>();
+        private readonly DispatcherTimer timer = new DispatcherTimer
+        {
+            Interval = new TimeSpan(0, 0, 0, 0, 500),
+            IsEnabled = false
+        };
 
-        public EventOverlay(LogParser logParser, EQToolSettings settings, EQToolSettingsLoad toolSettingsLoad, LoggingService loggingService, ActivePlayer activePlayer, IAppDispatcher appDispatcher)
+        public EventOverlay(LogParser logParser, EQToolSettings settings, EQToolSettingsLoad toolSettingsLoad, ActivePlayer activePlayer, IAppDispatcher appDispatcher)
         {
             this.appDispatcher = appDispatcher;
             this.activePlayer = activePlayer;
@@ -45,6 +52,7 @@ namespace EQTool
             UITimer.Elapsed += PollUI;
             UITimer.Enabled = true;
             this.toolSettingsLoad = toolSettingsLoad;
+            timer.Tick += timer_Tick;
             SizeChanged += Window_SizeChanged;
             StateChanged += SpellWindow_StateChanged;
             LocationChanged += Window_LocationChanged;
@@ -53,7 +61,6 @@ namespace EQTool
             logParser.LevEvent += LogParser_LevEvent;
             logParser.InvisEvent += LogParser_InvisEvent;
             settings.OverlayWindowState.Closed = false;
-            SaveState();
         }
 
         private void LogParser_InvisEvent(object sender, InvisParser.InvisStatus e)
@@ -215,8 +222,22 @@ namespace EQTool
             });
         }
 
+        void timer_Tick(object sender, EventArgs e)
+        {
+            timer.IsEnabled = false;
+            SaveState();
+        }
+
+        private void DebounceSave()
+        {
+            timer.IsEnabled = true;
+            timer.Stop();
+            timer.Start();
+        }
+
         private void SaveState()
         {
+            Debug.WriteLine("Saving Overlay window State");
             WindowExtensions.SaveWindowState(settings.OverlayWindowState, this);
             toolSettingsLoad.Save(settings);
         }
@@ -224,19 +245,19 @@ namespace EQTool
         private void SpellWindow_StateChanged(object sender, EventArgs e)
         {
             LastWindowInteraction = DateTime.UtcNow;
-            SaveState();
+            DebounceSave();
         }
 
         private void Window_LocationChanged(object sender, EventArgs e)
         {
             LastWindowInteraction = DateTime.UtcNow;
-            SaveState();
+            DebounceSave();
         }
 
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             LastWindowInteraction = DateTime.UtcNow;
-            SaveState();
+            DebounceSave();
         }
 
         public void DragWindow(object sender, MouseButtonEventArgs args)
@@ -259,7 +280,6 @@ namespace EQTool
             LocationChanged -= Window_LocationChanged;
             logParser.EnrageEvent -= LogParser_EnrageEvent;
             logParser.CHEvent -= LogParser_CHEvent;
-            SaveState();
             base.OnClosing(e);
         }
 

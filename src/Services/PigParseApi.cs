@@ -75,7 +75,7 @@ namespace EQTool.Services
 
         public void SendNPCActivity(NPCActivityRequest activity)
         {
-            if (this.IsQuarm)
+            if (this.IsQuarm || (activity.NPCData?.Name != "Scout Charisa" && activity.NPCData?.Name != "a Kromzek Captain"))
             {
                 return;
             }

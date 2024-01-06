@@ -64,7 +64,15 @@ namespace EQTool
             UpdateMessages.Add(new UpdateMessageData
             {
                 DateTime = new DateTime(2024, 1, 5),
-                Message = $"* Fixed CH time animcation on the overlay. It should be 10 seconds from right to left."
+                Message = $"* Fixed CH time animation on the overlay. It should be 10 seconds from right to left."
+            });
+            UpdateMessages.Add(new UpdateMessageData
+            {
+                DateTime = new DateTime(2024, 1, 6),
+                Message = $"* Updated save settings code to be smarter!{Environment.NewLine}" +
+                          $"* Changed Audio triggers to use Crappy Built in speech to text -- this is easier than generating MP3 for everything.{Environment.NewLine}" +
+                          $"* Added code to try and improve the map locations by simplifying it.{Environment.NewLine}" +
+                          $"* Code to check for updates is will only update if there are less than 2 TOTAL items in the triggers window to make less aggressive."
             });
         }
     }

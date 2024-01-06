@@ -5,11 +5,13 @@ using EQToolShared.Map;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
+using System.Windows.Threading;
 
 namespace EQTool
 {
@@ -24,6 +26,11 @@ namespace EQTool
         private readonly EQToolSettings settings;
         private readonly EQToolSettingsLoad toolSettingsLoad;
         private readonly ActivePlayer activePlayer;
+        private readonly DispatcherTimer timer = new DispatcherTimer
+        {
+            Interval = new TimeSpan(0, 0, 0, 0, 500),
+            IsEnabled = false
+        };
 
         public DPSMeter(LogParser logParser, DPSWindowViewModel dPSWindowViewModel, EQToolSettings settings, EQToolSettingsLoad toolSettingsLoad, LoggingService loggingService, ActivePlayer activePlayer)
         {
@@ -51,11 +58,11 @@ namespace EQTool
             view.IsLiveSorting = true;
             view.LiveSortingProperties.Add(nameof(EntittyDPS.TotalDamage));
             this.toolSettingsLoad = toolSettingsLoad;
+            timer.Tick += timer_Tick;
             SizeChanged += DPSMeter_SizeChanged;
             StateChanged += SpellWindow_StateChanged;
             LocationChanged += DPSMeter_LocationChanged;
             settings.DpsWindowState.Closed = false;
-            SaveState();
         }
 
         private void LogParser_FightHitEvent(object sender, LogParser.FightHitEventArgs e)
@@ -79,44 +86,59 @@ namespace EQTool
 
         protected override void OnClosing(CancelEventArgs e)
         {
-            UITimer.Stop();
-            UITimer.Dispose();
+            UITimer?.Stop();
+            UITimer?.Dispose();
             SizeChanged -= DPSMeter_SizeChanged;
             StateChanged -= SpellWindow_StateChanged;
             LocationChanged -= DPSMeter_LocationChanged;
-            logParser.DeadEvent -= LogParser_DeadEvent;
-            logParser.FightHitEvent -= LogParser_FightHitEvent;
-            SaveState();
+            if (this.logParser != null)
+            {
+                logParser.DeadEvent -= LogParser_DeadEvent;
+                logParser.FightHitEvent -= LogParser_FightHitEvent;
+            }
             base.OnClosing(e);
+        }
+        void timer_Tick(object sender, EventArgs e)
+        {
+            timer.IsEnabled = false;
+            SaveState();
+        }
+
+        private void DebounceSave()
+        {
+            timer.IsEnabled = true;
+            timer.Stop();
+            timer.Start();
         }
 
         private void CloseWindow(object sender, RoutedEventArgs e)
         {
             settings.DpsWindowState.Closed = true;
+            SaveState();
             Close();
         }
 
         private void SaveState()
         {
+            Debug.WriteLine("Saving DPS window State");
             WindowExtensions.SaveWindowState(settings.DpsWindowState, this);
             toolSettingsLoad.Save(settings);
         }
 
         private void SpellWindow_StateChanged(object sender, EventArgs e)
         {
-            SaveState();
+            DebounceSave();
         }
 
         private void DPSMeter_LocationChanged(object sender, EventArgs e)
         {
-            SaveState();
+            DebounceSave();
         }
 
         private void DPSMeter_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            SaveState();
+            DebounceSave();
         }
-
 
         private void PollUI(object sender, EventArgs e)
         {

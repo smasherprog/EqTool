@@ -56,15 +56,14 @@ namespace EQTool.Models
             connection.Closed += async (error) =>
               {
                   await Task.Delay(new Random().Next(0, 5) * 1000);
-                  ConnectWithRetryAsync(connection)
-                  .Wait();
+                  await ConnectWithRetryAsync(connection);
               };
 
             try
             {
-                Task.Factory.StartNew(() =>
+                Task.Factory.StartNew(async () =>
                 {
-                    ConnectWithRetryAsync(connection).Wait();
+                    await ConnectWithRetryAsync(connection);
                 });
             }
             catch (Exception ex)
@@ -74,26 +73,10 @@ namespace EQTool.Models
 
             this.logParser.PlayerLocationEvent += LogParser_PlayerLocationEvent;
             this.logParser.CampEvent += LogParser_CampEvent;
-            this.logParser.EnteredWorldEvent += LogParser_EnteredWorldEvent;
             timer = new Timer();
             timer.Elapsed += Timer_Elapsed;
-            timer.Interval = 1000 * 15;
+            timer.Interval = 1000 * 10;
             timer.Start();
-        }
-
-        private void LogParser_EnteredWorldEvent(object sender, LogParser.EnteredWorldArgs e)
-        {
-            if (LastServer.HasValue && this.activePlayer?.Player?.Server != null && LastServer != this.activePlayer?.Player?.Server)
-            {
-                InvokeAsync("PlayerLeftServer", new SignalRServer { Server = this.activePlayer.Player.Server.Value });
-                LastServer = null;
-            }
-
-            if (!LastServer.HasValue && this.activePlayer?.Player?.Server != null)
-            {
-                LastServer = this.activePlayer?.Player?.Server;
-                InvokeAsync("PlayerJoinServer", new SignalRServer { Server = this.activePlayer.Player.Server.Value });
-            }
         }
 
         private void InvokeAsync<T>(string name, T obj)
@@ -101,13 +84,6 @@ namespace EQTool.Models
             if (connection.State == HubConnectionState.Connected)
             {
                 connection.InvokeAsync(name, obj);
-            }
-        }
-        private void InvokeAsync(string name)
-        {
-            if (connection.State == HubConnectionState.Connected)
-            {
-                connection.InvokeAsync(name);
             }
         }
 
@@ -118,23 +94,9 @@ namespace EQTool.Models
 
         private void Timer_Elapsed(object sender, ElapsedEventArgs e)
         {
-            if (this.LastPlayer != null && connection?.State == HubConnectionState.Connected)
+            if (this.LastPlayer != null && connection?.State == HubConnectionState.Connected && this.activePlayer?.Player?.Server != null)
             {
-                if ((DateTime.UtcNow - this.LastPlayer.TimeStamp).TotalMinutes > 5)
-                {
-                    this.LastPlayer = null;
-                    if (this.activePlayer?.Player?.Server != null)
-                    {
-                        InvokeAsync("PlayerLeft");
-                    }
-                }
-                else
-                {
-                    if (this.activePlayer?.Player?.Server != null)
-                    {
-                        InvokeAsync("PlayerLocationEvent", this.LastPlayer);
-                    }
-                }
+                InvokeAsync("PlayerLocationEvent", this.LastPlayer);
             }
         }
 

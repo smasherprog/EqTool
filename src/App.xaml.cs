@@ -135,7 +135,8 @@ namespace EQTool
                 };
                 if (msg.Message.Contains("Server timeout (30000.00ms) elapsed without receiving a message from the server.") ||
                     msg.Message.Contains("The 'InvokeCoreAsync' method cannot be called") ||
-                     msg.Message.Contains("The remote party closed the WebSocket connection")
+                     msg.Message.Contains("The remote party closed the WebSocket connection") ||
+                     msg.Message.Contains("An internal WebSocket error occurred.")
                     )
                 {
                     return;
@@ -374,12 +375,12 @@ namespace EQTool
                     var logParser = container.Resolve<LogParser>();
                     if (spellstuff != null)
                     {
-                        if (spellstuff.SpellList.GroupBy(a => a.TargetName).Count() < 4 && (DateTime.UtcNow - logParser.LastYouActivity).TotalMinutes > 2)
+                        if (spellstuff.SpellList.Count() < 2)
                         {
                             new UpdateService().CheckForUpdates(Version);
                         }
                     }
-                    else if ((DateTime.UtcNow - logParser.LastYouActivity).TotalMinutes > 2)
+                    else
                     {
                         new UpdateService().CheckForUpdates(Version);
                     }

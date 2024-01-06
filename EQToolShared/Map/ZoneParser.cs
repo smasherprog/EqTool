@@ -1556,7 +1556,7 @@ namespace EQToolShared.Map
                 Name = "trakanon",
                 ShowAllMapLevels = true,
                 ZoneLevelHeight = 10,
-                NotableNPCs = new List<string>() { "", },
+                NotableNPCs = new List<string>() { "Bloodeye", "Champion Arlek", "Champion Thenrin", "Commander Sils", "Crusader Zoglic", "Doom", "Dragontail", "Dreadlord Fanrik", "Ebon Lotus", "Emperor Ganak", "Fallen Iksar", "Ffroaak", "froglok forager", "froglok hunter", "Hangman", "Harbinger Dronik", "Harbinger Josk", "A human skeleton", "Klok Denris", "Knight Dragol", "Pained Soul", "Sigra", "Silvermane", "Squire Glik", "Stonebeak", "Throkkok", "Thruke", "Titail Sinok", "Trakanasaurus Rex", "Vessel Fryn" },
                 RespawnTime = new TimeSpan(0, 6, 40)
             });
             ZoneInfoMap.Add("unrest", new ZoneInfo

@@ -4,8 +4,10 @@ using EQTool.ViewModels;
 using EQToolShared.Map;
 using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Threading;
 
 namespace EQTool
 {
@@ -23,6 +25,11 @@ namespace EQTool
         private readonly IAppDispatcher appDispatcher;
         private readonly ISignalrPlayerHub signalrPlayerHub;
         private readonly System.Timers.Timer UITimer;
+        private readonly DispatcherTimer timer = new DispatcherTimer
+        {
+            Interval = new TimeSpan(0, 0, 0, 0, 500),
+            IsEnabled = false
+        };
 
         public MappingWindow(
             ISignalrPlayerHub signalrPlayerHub,
@@ -50,6 +57,7 @@ namespace EQTool
             Map.Height = Math.Abs(mapViewModel.AABB.MaxHeight);
             Map.Width = Math.Abs(mapViewModel.AABB.MaxWidth);
             WindowExtensions.AdjustWindow(settings.MapWindowState, this);
+            timer.Tick += timer_Tick;
             this.logParser.PlayerLocationEvent += LogParser_PlayerLocationEvent;
             this.logParser.PlayerZonedEvent += LogParser_PlayerZonedEvent;
             this.logParser.EnteredWorldEvent += LogParser_EnteredWorldEvent;
@@ -193,7 +201,18 @@ namespace EQTool
         {
             mapViewModel.UpdateLocation(e.Location);
         }
+        void timer_Tick(object sender, EventArgs e)
+        {
+            timer.IsEnabled = false;
+            SaveState();
+        }
 
+        private void DebounceSave()
+        {
+            timer.IsEnabled = true;
+            timer.Stop();
+            timer.Start();
+        }
         protected override void OnClosing(CancelEventArgs e)
         {
             UITimer?.Stop();
@@ -212,15 +231,14 @@ namespace EQTool
             Map.CancelTimerEvent -= Map_CancelTimerEvent;
             Map.TimerMenu_ClosedEvent -= Map_TimerMenu_ClosedEvent;
             Map.TimerMenu_OpenedEvent -= Map_TimerMenu_OpenedEvent;
-
             this.signalrPlayerHub.PlayerLocationEvent -= SignalrPlayerHub_PlayerLocationEvent;
             this.signalrPlayerHub.PlayerDisconnected -= SignalrPlayerHub_PlayerDisconnected;
-            SaveState();
             base.OnClosing(e);
         }
 
         private void SaveState()
         {
+            Debug.WriteLine("Saving Map window State");
             WindowExtensions.SaveWindowState(settings.MapWindowState, this);
             toolSettingsLoad.Save(settings);
         }
@@ -228,23 +246,24 @@ namespace EQTool
         private void CloseWindow(object sender, RoutedEventArgs e)
         {
             settings.MapWindowState.Closed = true;
+            SaveState();
             Close();
         }
 
         private void Window_StateChanged(object sender, EventArgs e)
         {
-            SaveState();
+            DebounceSave();
         }
 
         private void Window_LocationChanged(object sender, EventArgs e)
         {
-            SaveState();
+            DebounceSave();
         }
 
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             this.SetCenerMap();
-            SaveState();
+            DebounceSave();
         }
 
         private void SetCenerMap()

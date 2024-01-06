@@ -67,15 +67,6 @@ group by item.Server, item.ItemName
 having count(*)>1)");
         }
 
-        [AutomaticRetry(Attempts = 0)]
-        public void MessageDupFix()
-        {
-            dbcontext.Database.SetCommandTimeout(TimeSpan.FromMinutes(10));
-            _ = dbcontext.Database.ExecuteSqlRaw(@"delete eqit 
-from EQTunnelMessages eqit where DiscordMessageId IN (select top 2000 DiscordMessageId from EQTunnelMessages
-group by DiscordMessageId
-having count(*) >1)");
-        }
         public void FixOutlierDataMaxCleanup()
         {
             dbcontext.Database.SetCommandTimeout(TimeSpan.FromMinutes(10));

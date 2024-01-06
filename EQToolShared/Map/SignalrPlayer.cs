@@ -8,10 +8,6 @@ namespace EQToolShared.Map
         Everyone,
         GuildOnly
     }
-    public class SignalRServer
-    {
-        public Servers Server { get; set; }
-    }
 
     public class SignalrPlayer
     {
@@ -32,6 +28,10 @@ namespace EQToolShared.Map
             {
                 if (this.MapLocationSharing == MapLocationSharing.GuildOnly)
                 {
+                    if (string.IsNullOrWhiteSpace(this.GuildName))
+                    {
+                        return $"{Server}_{Zone}_{this.Name}";
+                    }
                     return $"{Server}_{Zone}_{this.GuildName}";
                 }
                 return $"{Server}_{Zone}";

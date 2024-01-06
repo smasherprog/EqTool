@@ -65,10 +65,10 @@ builder.Services.AddHangfireServer(a =>
     a.WorkerCount = 1;
 });
 #endif 
-//builder.Services.AddHangfireServer(a =>
-//{
-//    a.WorkerCount = 2;
-//});
+builder.Services.AddHangfireServer(a =>
+{
+    a.WorkerCount = 1;
+});
 builder.Services.AddAuthorization(options =>
 {
     options.AddPolicy("HangfireAccess", cfgPolicy =>
@@ -96,10 +96,14 @@ builder.Services.Configure<DiscordServiceOptions>(options =>
 
         d.ServerData[(int)Servers.Green] = new ServerDBData
         {
+            OrderByDescendingDiscordMessageId = dbcontext.EQTunnelMessagesV2.Where(a => a.Server == Servers.Green).Select(a => (long?)a.DiscordMessageId).OrderByDescending(a => a).FirstOrDefault(),
+            OrderByDiscordMessageId = dbcontext.EQTunnelMessagesV2.Where(a => a.Server == Servers.Green).Select(a => (long?)a.DiscordMessageId).OrderBy(a => a).FirstOrDefault(),
         };
 
         d.ServerData[(int)Servers.Blue] = new ServerDBData
         {
+            OrderByDescendingDiscordMessageId = dbcontext.EQTunnelMessagesV2.Where(a => a.Server == Servers.Blue).Select(a => (long?)a.DiscordMessageId).OrderByDescending(a => a).FirstOrDefault(),
+            OrderByDiscordMessageId = dbcontext.EQTunnelMessagesV2.Where(a => a.Server == Servers.Blue).Select(a => (long?)a.DiscordMessageId).OrderBy(a => a).FirstOrDefault(),
         };
 #else
   
@@ -216,7 +220,7 @@ if (isrelease)
     {
         var backgroundclient = scope.ServiceProvider.GetRequiredService<IRecurringJobManager>();
         backgroundclient.AddOrUpdate<DiscordService.DiscordJob>(nameof(DiscordService.DiscordJob.ReadFutureMessages) + Servers.Blue, (a) => a.ReadFutureMessages(Servers.Blue), "*/1 * * * *");
-        backgroundclient.AddOrUpdate<DiscordService.DiscordJob>(nameof(DiscordService.DiscordJob.ReadPastMessages) + Servers.Blue, (a) => a.ReadPastMessages(Servers.Blue), "*/2 * * * *");
+        backgroundclient.AddOrUpdate<DiscordService.DiscordJob>(nameof(DiscordService.DiscordJob.ReadPastMessages) + Servers.Blue, (a) => a.ReadPastMessages(Servers.Blue), Cron.Never);
 
         backgroundclient.AddOrUpdate<DiscordService.DiscordJob>(nameof(DiscordService.DiscordJob.StartItemPricing) + Servers.Blue + DiscordService.DiscordJob.PricingDate.ThirtyDays.ToString(), (a) => a.StartItemPricing(Servers.Blue, DiscordService.DiscordJob.PricingDate.ThirtyDays), "0 */1 * * *");
         backgroundclient.AddOrUpdate<DiscordService.DiscordJob>(nameof(DiscordService.DiscordJob.StartItemPricing) + Servers.Blue + DiscordService.DiscordJob.PricingDate.SixtyDays.ToString(), (a) => a.StartItemPricing(Servers.Blue, DiscordService.DiscordJob.PricingDate.SixtyDays), "0 8 * * *");
@@ -243,7 +247,6 @@ if (isrelease)
         backgroundclient.AddOrUpdate<NotableNpcCacheService>(nameof(NotableNpcCacheService.BuildCache) + Servers.Green, (a) => a.BuildCache(), "*/20 * * * *");
         backgroundclient.AddOrUpdate<UIDataBuild>(nameof(UIDataBuild.BuildDataGreen), (a) => a.BuildDataGreen(), "*/7 * * * *");
         backgroundclient.AddOrUpdate<UIDataBuild>(nameof(UIDataBuild.BuildDataBlue), (a) => a.BuildDataBlue(), "*/30 * * * *");
-        backgroundclient.AddOrUpdate<SQLIndexRebuild>(nameof(SQLIndexRebuild.MessageDupFix), (a) => a.MessageDupFix(), Cron.Daily);
         backgroundclient.AddOrUpdate<SQLIndexRebuild>(nameof(SQLIndexRebuild.ItemDupFix), (a) => a.ItemDupFix(), Cron.Never);
         backgroundclient.AddOrUpdate<SQLIndexRebuild>(nameof(SQLIndexRebuild.FixOutlierDataMaxCleanup), (a) => a.FixOutlierDataMaxCleanup(), Cron.Never);
         backgroundclient.AddOrUpdate<SQLIndexRebuild>(nameof(SQLIndexRebuild.FixOutlierDataAfterMaxCleanup), (a) => a.FixOutlierDataAfterMaxCleanup(), Cron.Never);
@@ -288,7 +291,6 @@ else
         backgroundclient.AddOrUpdate<NotableNpcCacheService>(nameof(NotableNpcCacheService.BuildCache) + Servers.Green, (a) => a.BuildCache(), Cron.Never);
         backgroundclient.AddOrUpdate<UIDataBuild>(nameof(UIDataBuild.BuildDataGreen), (a) => a.BuildDataGreen(), Cron.Never);
         backgroundclient.AddOrUpdate<UIDataBuild>(nameof(UIDataBuild.BuildDataBlue), (a) => a.BuildDataBlue(), Cron.Never);
-        backgroundclient.AddOrUpdate<SQLIndexRebuild>(nameof(SQLIndexRebuild.MessageDupFix), (a) => a.MessageDupFix(), Cron.Daily);
         backgroundclient.AddOrUpdate<SQLIndexRebuild>(nameof(SQLIndexRebuild.ItemDupFix), (a) => a.ItemDupFix(), Cron.Never);
         backgroundclient.AddOrUpdate<SQLIndexRebuild>(nameof(SQLIndexRebuild.FixOutlierDataMaxCleanup), (a) => a.FixOutlierDataMaxCleanup(), Cron.Never);
         backgroundclient.AddOrUpdate<SQLIndexRebuild>(nameof(SQLIndexRebuild.FixOutlierDataAfterMaxCleanup), (a) => a.FixOutlierDataAfterMaxCleanup(), Cron.Never);

@@ -5,11 +5,13 @@ using EQToolShared.HubModels;
 using EQToolShared.Map;
 using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
+using System.Windows.Threading;
 
 namespace EQTool
 {
@@ -23,6 +25,11 @@ namespace EQTool
         private readonly ActivePlayer activePlayer;
         private readonly TimersService timersService;
         private readonly PlayerTrackerService playerTrackerService;
+        private readonly DispatcherTimer timer = new DispatcherTimer
+        {
+            Interval = new TimeSpan(0, 0, 0, 0, 500),
+            IsEnabled = false
+        };
 
         public SpellWindow(
             PlayerTrackerService playerTrackerService,
@@ -69,11 +76,11 @@ namespace EQTool
             view.IsLiveSorting = true;
             view.LiveSortingProperties.Add(nameof(UISpell.SecondsLeftOnSpell));
             this.toolSettingsLoad = toolSettingsLoad;
+            timer.Tick += timer_Tick;
             SizeChanged += DPSMeter_SizeChanged;
             StateChanged += SpellWindow_StateChanged;
             LocationChanged += DPSMeter_LocationChanged;
             settings.SpellWindowState.Closed = false;
-            SaveState();
         }
 
         private void LogParser_POFDTEvent(object sender, POFDTParser.POF_DT_Event e)
@@ -155,6 +162,19 @@ namespace EQTool
             spellWindowViewModel.TryAddCustom(e.CustomTimer);
         }
 
+        void timer_Tick(object sender, EventArgs e)
+        {
+            timer.IsEnabled = false;
+            SaveState();
+        }
+
+        private void DebounceSave()
+        {
+            timer.IsEnabled = true;
+            timer.Stop();
+            timer.Start();
+        }
+
         protected override void OnClosing(CancelEventArgs e)
         {
             UITimer?.Stop();
@@ -173,7 +193,6 @@ namespace EQTool
                 logParser.StartTimerEvent -= LogParser_StartTimerEvent;
                 logParser.CancelTimerEvent -= LogParser_CancelTimerEvent;
             }
-            SaveState();
             if (spellWindowViewModel != null)
             {
                 spellWindowViewModel.SpellList = new System.Collections.ObjectModel.ObservableCollection<UISpell>();
@@ -198,6 +217,7 @@ namespace EQTool
         {
             if (settings != null)
             {
+                Debug.WriteLine("Saving Triggers window State");
                 TrySaveYouSpellData();
                 WindowExtensions.SaveWindowState(settings.SpellWindowState, this);
                 toolSettingsLoad.Save(settings);
@@ -207,22 +227,23 @@ namespace EQTool
         private void CloseWindow(object sender, RoutedEventArgs e)
         {
             settings.SpellWindowState.Closed = true;
+            SaveState();
             Close();
         }
 
         private void SpellWindow_StateChanged(object sender, EventArgs e)
         {
-            SaveState();
+            DebounceSave();
         }
 
         private void DPSMeter_LocationChanged(object sender, EventArgs e)
         {
-            SaveState();
+            DebounceSave();
         }
 
         private void DPSMeter_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            SaveState();
+            DebounceSave();
         }
 
         private void PollUI(object sender, EventArgs e)

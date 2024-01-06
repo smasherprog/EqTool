@@ -36,16 +36,6 @@ namespace EQToolApis.Hubs
             Debug.WriteLine($"{playerLocation.GroupName}, {playerLocation.Name}, {playerLocation.Zone}, {playerLocation.X}, {playerLocation.Y}, {playerLocation.Z}");
         }
 
-        public async Task PlayerLeft()
-        {
-            if (connections.TryRemove(Context.ConnectionId, out var player))
-            {
-                await Groups.RemoveFromGroupAsync(Context.ConnectionId, player.GroupName);
-                await Clients.Group(player.GroupName).SendAsync("PlayerDisconnected", player);
-                Debug.WriteLine($"{player.GroupName}, ReceivePlayerLeftZone {player.Name}, {player.Zone}");
-            }
-        }
-
         public override async Task OnDisconnectedAsync(Exception? exception)
         {
             if (connections.TryRemove(Context.ConnectionId, out var player))

@@ -1,8 +1,5 @@
 ﻿using EQTool.ViewModels;
-using System;
-using System.IO;
-using System.Linq;
-using System.Windows.Media;
+using System.Speech.Synthesis;
 
 namespace EQTool.Services
 {
@@ -24,52 +21,17 @@ namespace EQTool.Services
         {
             if (this.activePlayer?.Player?.LevFadingAudio == true)
             {
-                this.PlayResource("levfading");
+                this.PlayResource("Levitate Fading");
             }
         }
 
-        private void PlayResource(string resourcename)
+        private void PlayResource(string text)
         {
-            var audiodir = System.IO.Directory.GetCurrentDirectory() + "/audio";
-            if (!System.IO.Directory.Exists(audiodir))
-            {
-                try
-                {
-                    _ = Directory.CreateDirectory(audiodir);
-                }
-                catch { }
-            }
-            var version = App.Version.Replace(".", string.Empty).Trim();
-            if (!File.Exists($"{audiodir}/{resourcename}{version}.mp3"))
-            {
-                try
-                {
-                    var filetodelete = Directory.GetFiles(audiodir, $"{resourcename}*", SearchOption.TopDirectoryOnly).FirstOrDefault();
-                    File.Delete(filetodelete);
-                }
-                catch (Exception)
-                {
-
-                }
-                audiodir = $"{audiodir}/{resourcename}{version}.mp3";
-                using (var stream = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("EQTool.audio." + resourcename + ".mp3"))
-                {
-                    using (var fileStream = new FileStream(audiodir, FileMode.Create, FileAccess.Write))
-                    {
-                        stream.CopyTo(fileStream);
-                    }
-                }
-            }
-            else
-            {
-                audiodir = $"{audiodir}/{resourcename}{version}.mp3";
-            }
-
             System.Threading.Tasks.Task.Factory.StartNew(() =>
             {
-                var player = new MediaPlayer();
-                player.Open(new Uri(audiodir));
-                player.Play();
+                var synth = new SpeechSynthesizer();
+                synth.SetOutputToDefaultAudioDevice();
+                synth.Speak(text);
             });
         }
 
@@ -77,7 +39,7 @@ namespace EQTool.Services
         {
             if (this.activePlayer?.Player?.EnrageAudio == true)
             {
-                this.PlayResource("enraged");
+                this.PlayResource($"{e.NpcName} is enraged.");
             }
         }
 
@@ -85,7 +47,7 @@ namespace EQTool.Services
         {
             if (this.activePlayer?.Player?.InvisFadingAudio == true)
             {
-                this.PlayResource("invisfading");
+                this.PlayResource($"Invisability Fading.");
             }
         }
     }
