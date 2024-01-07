@@ -55,7 +55,6 @@ Features:
 
 <h4>TO DO List EQTool</h4>
 <ul>  
-  <li>Add CH visualization!</li>    
  <li>Remove timers from map when timers removed from list and visa versa.</li>   
  <li>Add code to show MOB hits per second.</li>   
  <li>Port application to be cross platform(mac, win, linux).</li>   
@@ -65,7 +64,7 @@ Features:
  <li>Fix discipline timers.</li>   
  <li>Make timers resetable.</li>   
  <li>Fix buff timers when updating, when update occurs buffs dissapear.</li> 
-  <li>Add zone dump of names.</li> 
+ <li>Add zone dump of names.</li> 
  <li>Add context menu to toggle pather vs static.</li> 
  <li>Add timers for cooldowns on abilities, like mend, defensive, etc.</li> 
  <li>Add code to detect pet and always show buffs for your pet.</li> 
@@ -76,13 +75,8 @@ Features:
 <li>Map window add toggle to follow location</li>     
 <li>Determine pet level based on the maxhit and add to the DPS window</li> 
 <li>Add option to auto prune eq log file. EQ logfiles can cause issues with EQ itself if they get too large!</li>
-<li>Respawn Time in Mob Info window</li>
 <li>Ability Hide/show mob info data</li>
-<li>Automatically add timer when named npc dies. Use Wiki for notable npc names</li>
 <li>Add donals BP to timers list</li> 
-<li>Rename Application to Pig Parse</li>
-<li>Enrage / Charm Break alerts.</li>
-<li>charm spell effect removal</li> 
 </ul>
 
 <h4>TO DO List PigParse Pricing</h4>
