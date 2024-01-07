@@ -182,35 +182,50 @@ namespace EQTool
             appDispatcher.DispatchUI(() =>
             {
                 var chaindata = this.GetOrCreateChain(e.Recipient);
+                var random = new Random(DateTime.Now.Millisecond);
+                var color = System.Windows.Media.Color.FromRgb(
+                    (byte)random.Next(0, 40),
+                    (byte)random.Next(0, 40),
+                    (byte)random.Next(0, 40));
                 var target = new TextBlock
                 {
                     Height = 30,
                     FontSize = settings.FontSize.Value * 2,
                     Width = chaindata.Canvas.ActualWidth / 10,
                     Text = e.Position.ToString(),
-                    Background = Brushes.Red,
-                    Foreground = Brushes.White,
+                    Foreground = Brushes.WhiteSmoke,
                     TextAlignment = TextAlignment.Center
                 };
-
+                var textborder = new Border { CornerRadius = new CornerRadius(3), Background = new SolidColorBrush(color), BorderBrush = Brushes.GhostWhite, BorderThickness = new Thickness(1) };
+                textborder.Child = target;
                 DoubleAnimation animation = new DoubleAnimation();
                 animation.From = -target.Width;
                 animation.To = chaindata.Canvas.ActualWidth;
                 animation.Duration = TimeSpan.FromSeconds(11); // Adjust duration as needed
 
-                Storyboard.SetTarget(animation, target);
+                Storyboard.SetTarget(animation, textborder);
                 Storyboard.SetTargetProperty(animation, new PropertyPath(Canvas.RightProperty));
 
                 Storyboard storyboard = new Storyboard();
                 storyboard.Children.Add(animation);
-                chaindata.Canvas.Children.Add(target);
+                chaindata.Canvas.Children.Add(textborder);
                 storyboard.Completed += (s, ev) =>
                 {
                     chaindata.ActiveAnimations--;
                     if (chaindata.ActiveAnimations <= 0)
                     {
-                        this.chainDatas.Remove(chaindata);
-                        this.ChainStackPanel.Children.Remove(chaindata.Grid);
+                        System.Threading.Tasks.Task.Factory.StartNew(() =>
+                        {
+                            System.Threading.Thread.Sleep(10000);
+                            appDispatcher.DispatchUI(() =>
+                            {
+                                if (chaindata.ActiveAnimations <= 0)
+                                {
+                                    this.chainDatas.Remove(chaindata);
+                                    this.ChainStackPanel.Children.Remove(chaindata.Grid);
+                                }
+                            });
+                        });
                     }
                 };
                 storyboard.Begin();
@@ -242,21 +257,32 @@ namespace EQTool
                 Height = 30,
                 FontSize = settings.FontSize.Value * 1.5,
                 Text = destination,
-                Background = Brushes.Blue,
-                Foreground = Brushes.White,
-                TextAlignment = TextAlignment.Center
+                Padding = new Thickness(4),
+                Foreground = Brushes.Black,
+                TextAlignment = TextAlignment.Center,
+                VerticalAlignment = VerticalAlignment.Center
             };
-            Grid.SetRow(target, 0);
-            Grid.SetZIndex(target, 1);
-            Grid.SetColumn(target, 0);
+            var textborder = new Border { CornerRadius = new CornerRadius(3), Background = Brushes.WhiteSmoke, BorderThickness = new Thickness(2), BorderBrush = Brushes.Black };
+            textborder.Child = target;
+            Grid.SetRow(textborder, 0);
+            Grid.SetZIndex(textborder, 1);
+            Grid.SetColumn(textborder, 0);
             Grid.SetRow(chaindata.Canvas, 0);
             Grid.SetColumn(chaindata.Canvas, 1);
             Grid.SetZIndex(chaindata.Canvas, 0);
-            chaindata.Grid.Children.Add(target);
+            var stackpanel = new StackPanel { Background = new SolidColorBrush(System.Windows.Media.Color.FromArgb(200, 10, 10, 10)), Orientation = Orientation.Horizontal, HorizontalAlignment = HorizontalAlignment.Stretch, Height = 8 };
+            Grid.SetRow(stackpanel, 0);
+            Grid.SetColumn(stackpanel, 1);
+            chaindata.Grid.Children.Add(textborder);
+            chaindata.Grid.Children.Add(stackpanel);
             chaindata.Grid.Children.Add(chaindata.Canvas);
             this.chainDatas.Add(chaindata);
             this.ChainStackPanel.Children.Add(chaindata.Grid);
             chaindata.Canvas.UpdateLayout();
+            for (var i = 0; i < 10; i++)
+            {
+                stackpanel.Children.Add(new Border { Height = 8, Width = chaindata.Canvas.ActualWidth / 10, HorizontalAlignment = HorizontalAlignment.Stretch, BorderBrush = Brushes.WhiteSmoke, BorderThickness = new Thickness(1, 0, 1, 2) });
+            }
             return chaindata;
         }
 

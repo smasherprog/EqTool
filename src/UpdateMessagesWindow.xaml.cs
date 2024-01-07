@@ -38,34 +38,6 @@ namespace EQTool
             view.IsLiveGrouping = true;
             view.SortDescriptions.Add(new SortDescription(nameof(UpdateMessageData.DateTime), ListSortDirection.Descending));
             view.IsLiveSorting = true;
-            UpdateMessages.Add(new UpdateMessageData
-            {
-                DateTime = new DateTime(2024, 1, 5),
-                Message = $"* Added test buttons next to the new overlay options. You must have the option enabled when you test otherwise, nothing will happen."
-            });
-            UpdateMessages.Add(new UpdateMessageData
-            {
-                DateTime = new DateTime(2024, 1, 5),
-                Message = $"* Added audio alerts for Enrage, Levitate fading and Invis Fading!"
-            });
-            UpdateMessages.Add(new UpdateMessageData
-            {
-                DateTime = new DateTime(2024, 1, 5),
-                Message = $"* Added overlay option for Levitate fading!{Environment.NewLine}" +
-                $"* Added overlay option for Invis fading!"
-            });
-            UpdateMessages.Add(new UpdateMessageData
-            {
-                DateTime = new DateTime(2024, 1, 5),
-                Message = $"* PQ Instance Zones added to the map. Let me know if I missed any!{Environment.NewLine}" +
-                $"* Always on top options added back.{Environment.NewLine}" +
-                $"* Fixed bug reported where Druid epic was not showing up correctly. This also was effecting other epics in some scenarios so those are fixed as well."
-            });
-            UpdateMessages.Add(new UpdateMessageData
-            {
-                DateTime = new DateTime(2024, 1, 5),
-                Message = $"* Fixed CH time animation on the overlay. It should be 10 seconds from right to left."
-            });
 
             UpdateMessages.Add(new UpdateMessageData
             {
@@ -78,6 +50,12 @@ namespace EQTool
                           $"* Changed Audio triggers to use Crappy Built in speech to text -- this is easier than generating MP3 for everything.{Environment.NewLine}" +
                           $"* Added code to try and improve the map locations by simplifying code.{Environment.NewLine}" +
                           $"* Changed code to check for updates. Now it will only update if there are less than 2 TOTAL items in the triggers window to make less aggressive.",
+            });
+            UpdateMessages.Add(new UpdateMessageData
+            {
+                DateTime = new DateTime(2024, 1, 7),
+                Message = $"* CH Overlay complete!. Try it out by checking the box in settings overlay and make sure the CH macro follows the format.{Environment.NewLine}" +
+                 $"* Below is an example, of the look of the chain!{Environment.NewLine}",
                 Image = "pack://application:,,,/update1.png",
                 ImageVisibility = Visibility.Visible
             });

@@ -139,10 +139,6 @@
                     <TextBlock Text="Chain Format" VerticalAlignment="Center" FontWeight="Bold" MinWidth="100"/>
                     <TextBlock Text="'CA 001 CH -- TARGET'" ToolTip="Chain text format" />
                 </StackPanel>
-                <StackPanel Orientation="Vertical">
-                    <TextBlock Text="CH Chain Overlay is NOT COMPLETE" Foreground="Red"/>
-                    <TextBlock Text="Turn on only if you want to see progress!" />
-                </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="CH Chain" ToolTip="Complete Heal Overlay" VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
                     <CheckBox IsChecked="{Binding ActivePlayer.Player.ChChainOverlay}" Click="Savesettings"></CheckBox>
