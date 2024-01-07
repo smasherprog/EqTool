@@ -9,10 +9,12 @@ using System.Windows.Media;
 
 namespace EQTool.ViewModels
 {
+
     public class UISpell : INotifyPropertyChanged
     {
-        public UISpell(DateTime endtime)
+        public UISpell(DateTime endtime, bool isNPC)
         {
+            this.IsNPC = isNPC;
             _TimerEndDateTime = endtime;
             TotalSecondsOnSpell = (int)(_TimerEndDateTime - DateTime.Now).TotalSeconds;
             UpdateTimeLeft();
@@ -190,8 +192,23 @@ namespace EQTool.ViewModels
         }
 
         public bool PersistentSpell { get; set; }
-
+        public string Sorting
+        {
+            get
+            {
+                if (TargetName.StartsWith(" "))
+                {
+                    return TargetName;
+                }
+                if (this.IsNPC)
+                {
+                    return " z";
+                }
+                return TargetName;
+            }
+        }
         public string TargetName { get; set; }
+        public bool IsNPC { get; set; }
 
         private SpellTypes _SpellType = 0;
 

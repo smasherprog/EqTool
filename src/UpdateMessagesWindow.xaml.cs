@@ -42,7 +42,7 @@ namespace EQTool
             UpdateMessages.Add(new UpdateMessageData
             {
                 DateTime = new DateTime(2024, 1, 6),
-                Message = $"* Try out the new overlay and audio triggers. Try out the CH Chain overlay as well. {Environment.NewLine}{Environment.NewLine}{Environment.NewLine}" +
+                Message = $"* Try out the new overlay and audio triggers. Try out the CH Chain overlay as well. {Environment.NewLine}" +
                           $"* FTE audio and visual triggers added. Visual Trigger will show the guild of tagger!{Environment.NewLine}" +
                           $"* Remove ghost players from map.{Environment.NewLine}" +
                           $"* Charm Break Audio and visual triggers added.{Environment.NewLine}" +
@@ -50,6 +50,15 @@ namespace EQTool
                           $"* Changed Audio triggers to use Crappy Built in speech to text -- this is easier than generating MP3 for everything.{Environment.NewLine}" +
                           $"* Added code to try and improve the map locations by simplifying code.{Environment.NewLine}" +
                           $"* Changed code to check for updates. Now it will only update if there are less than 2 TOTAL items in the triggers window to make less aggressive.",
+            });
+            UpdateMessages.Add(new UpdateMessageData
+            {
+                DateTime = new DateTime(2024, 1, 7),
+                Message = $"* When a player dies, their spell effects will be removed from the Triggers window.{Environment.NewLine}" +
+                          $"* When a player dies, they will no longer show up as death timer. Only NPC's will show in there now! {Environment.NewLine}" +
+                          $"* Sort order of triggers window is now: Custom timers; You; NPC's, then players! {Environment.NewLine}" +
+                          $"      This should help on raids because the previous sort order was: Custom Timers; You; then everything else alphabetically. {Environment.NewLine}" +
+                          $"      So, raid targets would get lost in a massive list. Now they will appear near the top always!"
             });
             UpdateMessages.Add(new UpdateMessageData
             {

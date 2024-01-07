@@ -1,6 +1,7 @@
 ﻿using EQTool.Models;
 using EQTool.Services;
 using EQTool.ViewModels;
+using EQToolShared;
 using EQToolShared.HubModels;
 using EQToolShared.Map;
 using System;
@@ -71,7 +72,7 @@ namespace EQTool
             view.GroupDescriptions.Add(new PropertyGroupDescription(nameof(UISpell.TargetName)));
             view.LiveGroupingProperties.Add(nameof(UISpell.TargetName));
             view.IsLiveGrouping = true;
-            view.SortDescriptions.Add(new SortDescription(nameof(UISpell.TargetName), ListSortDirection.Ascending));
+            view.SortDescriptions.Add(new SortDescription(nameof(UISpell.Sorting), ListSortDirection.Ascending));
             view.SortDescriptions.Add(new SortDescription(nameof(UISpell.SecondsLeftOnSpell), ListSortDirection.Descending));
             view.IsLiveSorting = true;
             view.LiveSortingProperties.Add(nameof(UISpell.SecondsLeftOnSpell));
@@ -128,7 +129,8 @@ namespace EQTool
         private int deathcounter = 1;
         private void LogParser_DeadEvent(object sender, LogParser.DeadEventArgs e)
         {
-            if (playerTrackerService.IsPlayer(e.Name))
+            spellWindowViewModel.TryRemoveTarget(e.Name);
+            if (playerTrackerService.IsPlayer(e.Name) || !MasterNPCList.NPCs.Contains(e.Name))
             {
                 return;
             }
@@ -149,7 +151,6 @@ namespace EQTool
             }
 
             spellWindowViewModel.TryAddCustom(add);
-            spellWindowViewModel.TryRemoveTarget(e.Name);
         }
 
         private void LogParser_CancelTimerEvent(object sender, LogParser.CancelTimerEventArgs e)

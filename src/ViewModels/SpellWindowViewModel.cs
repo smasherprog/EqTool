@@ -1,6 +1,7 @@
 ﻿using EQTool.Models;
 using EQTool.Services;
 using EQTool.Services.Spells;
+using EQToolShared;
 using EQToolShared.Enums;
 using EQToolShared.HubModels;
 using System;
@@ -199,7 +200,8 @@ namespace EQTool.ViewModels
                 var needscount = SpellsThatNeedCounts.Contains(spellname);
                 var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(match.Spell, activePlayer.Player));
                 var duration = needscount ? 0 : match.TotalSecondsOverride ?? spellduration.TotalSeconds;
-                var uispell = new UISpell(DateTime.Now.AddSeconds((int)duration))
+                var isnpc = MasterNPCList.NPCs.Contains(match.TargetName);
+                var uispell = new UISpell(DateTime.Now.AddSeconds((int)duration), isnpc)
                 {
                     UpdatedDateTime = DateTime.Now,
                     PercentLeftOnSpell = 100,
@@ -251,7 +253,7 @@ namespace EQTool.ViewModels
 
                 var spellduration = match.DurationInSeconds;
                 var spellicon = spells.AllSpells.FirstOrDefault(a => a.name == match.SpellNameIcon);
-                SpellList.Add(new UISpell(DateTime.Now.AddSeconds(spellduration))
+                SpellList.Add(new UISpell(DateTime.Now.AddSeconds(spellduration), false)
                 {
                     UpdatedDateTime = DateTime.Now,
                     PercentLeftOnSpell = 100,
@@ -282,7 +284,7 @@ namespace EQTool.ViewModels
                     {
                         var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(match, activePlayer.Player));
                         var savedspellduration = item.TotalSecondsLeft;
-                        var uispell = new UISpell(DateTime.Now.AddSeconds(savedspellduration))
+                        var uispell = new UISpell(DateTime.Now.AddSeconds(savedspellduration), false)
                         {
                             UpdatedDateTime = DateTime.Now,
                             PercentLeftOnSpell = 100,
