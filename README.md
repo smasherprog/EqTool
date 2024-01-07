@@ -28,8 +28,8 @@ Features:
 <li>DPS is trailing 12 second average.</li>
 <li>Show fight Session data for comparisons.</li>
 <li>The following spells have counters that are automatically tracked:Mana Seive, LowerElement (Flux Staff Effect), Concussion, Flame Lick, Cinder Jolt, Jolt.</li> 
-<li>The following Overlays are available: Enrage; Levitate fading; invis fading; and Ch Chain (COMING SOON)</li>
-<li>The following Audio alerts are available: Enrage; Levitate fading; and invis fading</li>
+<li>The following Overlays are available: Enrage; Levitate fading; invis fading; Charm Break; and Ch Chain</li>
+<li>The following Audio alerts are available: Enrage; Levitate fading; Charm Break; and invis fading</li>
 <li>Timers on map for easy TOD tracking!</li>
 <li>Pricing information in Mob info window.</li>
 <li>Save spells cast on you when you log out so when you log back in they resume counter!</li>
@@ -45,13 +45,16 @@ Features:
 <li>Cancel Timer Crypt Camp</li>
 </ul>
 <img width="1624" alt="image" src="https://github.com/smasherprog/EqTool/assets/3393733/3c53a1d8-44c4-499b-9e92-ea5d5f38275e">
- 
+<h4>CH Chain overlay Below</h4>
+ <img width="1174" alt="update1" src="https://github.com/smasherprog/EqTool/assets/3393733/86c08360-48d9-42c4-9a86-7fea652d8133">
+ <h4>FTE Overlay (includes Guild)</h4>
+<img width="1548" alt="image" src="https://github.com/smasherprog/EqTool/assets/3393733/92446f74-3f7b-4957-a712-43fe9d6a3191">
+
 <h4>System Tray Icon</h4>
 <img width="152" alt="image" src="https://user-images.githubusercontent.com/3393733/212717141-6e26b9af-660a-493d-9f73-2c3464b7c224.png">
 
 <h4>TO DO List EQTool</h4>
 <ul>  
-  <li>Add CH visualization!</li>    
  <li>Remove timers from map when timers removed from list and visa versa.</li>   
  <li>Add code to show MOB hits per second.</li>   
  <li>Port application to be cross platform(mac, win, linux).</li>   
@@ -61,7 +64,7 @@ Features:
  <li>Fix discipline timers.</li>   
  <li>Make timers resetable.</li>   
  <li>Fix buff timers when updating, when update occurs buffs dissapear.</li> 
-  <li>Add zone dump of names.</li> 
+ <li>Add zone dump of names.</li> 
  <li>Add context menu to toggle pather vs static.</li> 
  <li>Add timers for cooldowns on abilities, like mend, defensive, etc.</li> 
  <li>Add code to detect pet and always show buffs for your pet.</li> 
@@ -72,13 +75,8 @@ Features:
 <li>Map window add toggle to follow location</li>     
 <li>Determine pet level based on the maxhit and add to the DPS window</li> 
 <li>Add option to auto prune eq log file. EQ logfiles can cause issues with EQ itself if they get too large!</li>
-<li>Respawn Time in Mob Info window</li>
 <li>Ability Hide/show mob info data</li>
-<li>Automatically add timer when named npc dies. Use Wiki for notable npc names</li>
 <li>Add donals BP to timers list</li> 
-<li>Rename Application to Pig Parse</li>
-<li>Enrage / Charm Break alerts.</li>
-<li>charm spell effect removal</li> 
 </ul>
 
 <h4>TO DO List PigParse Pricing</h4>
