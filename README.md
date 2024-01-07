@@ -58,10 +58,8 @@ Features:
  <li>Remove timers from map when timers removed from list and visa versa.</li>   
  <li>Add code to show MOB hits per second.</li>   
  <li>Port application to be cross platform(mac, win, linux).</li>   
- <li>Add Ability to bind a hotkey to toggle a window open/close.</li>   
- <li>Add cooldowntimer for discs.</li>   
- <li>Add group suggestions for each raid mob in game.</li>    
- <li>Fix discipline timers.</li>   
+ <li>Add Ability to bind a hotkey to toggle a window open/close.</li>    
+ <li>Add group suggestions for each raid mob in game.</li>     
  <li>Make timers resetable.</li>   
  <li>Fix buff timers when updating, when update occurs buffs dissapear.</li> 
  <li>Add zone dump of names.</li> 
