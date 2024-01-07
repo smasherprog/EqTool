@@ -28,7 +28,7 @@ Features:
 <li>DPS is trailing 12 second average.</li>
 <li>Show fight Session data for comparisons.</li>
 <li>The following spells have counters that are automatically tracked:Mana Seive, LowerElement (Flux Staff Effect), Concussion, Flame Lick, Cinder Jolt, Jolt.</li> 
-<li>The following Overlays are available: Enrage; Levitate fading; invis fading; and Ch Chain (COMING SOON)</li>
+<li>The following Overlays are available: Enrage; Levitate fading; invis fading; and Ch Chain</li>
 <li>The following Audio alerts are available: Enrage; Levitate fading; and invis fading</li>
 <li>Timers on map for easy TOD tracking!</li>
 <li>Pricing information in Mob info window.</li>
@@ -45,7 +45,11 @@ Features:
 <li>Cancel Timer Crypt Camp</li>
 </ul>
 <img width="1624" alt="image" src="https://github.com/smasherprog/EqTool/assets/3393733/3c53a1d8-44c4-499b-9e92-ea5d5f38275e">
- 
+<h4>CH Chain overlay Below</h4>
+ <img width="1174" alt="update1" src="https://github.com/smasherprog/EqTool/assets/3393733/86c08360-48d9-42c4-9a86-7fea652d8133">
+ <h4>FTE Overlay (includes Guild)</h4>
+<img width="1548" alt="image" src="https://github.com/smasherprog/EqTool/assets/3393733/92446f74-3f7b-4957-a712-43fe9d6a3191">
+
 <h4>System Tray Icon</h4>
 <img width="152" alt="image" src="https://user-images.githubusercontent.com/3393733/212717141-6e26b9af-660a-493d-9f73-2c3464b7c224.png">
 
