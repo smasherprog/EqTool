@@ -64,8 +64,7 @@ Features:
  <li>Make timers resetable.</li>   
  <li>Fix buff timers when updating, when update occurs buffs dissapear.</li> 
  <li>Add zone dump of names.</li> 
- <li>Add context menu to toggle pather vs static.</li> 
- <li>Add timers for cooldowns on abilities, like mend, defensive, etc.</li> 
+ <li>Add context menu to toggle pather vs static.</li>  
  <li>Add code to detect pet and always show buffs for your pet.</li> 
 <li>Tab under Mob info window for last few minutes of Random rolls ordered by highest to lowest. </li>   
 <li>Add visual cue that buff is under 1 minute left. </li> 
