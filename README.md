@@ -31,6 +31,7 @@ Features:
 <li>The following Overlays are available: Enrage; Levitate fading; invis fading; Charm Break; and Ch Chain</li>
 <li>The following Audio alerts are available: Enrage; Levitate fading; Charm Break; and invis fading</li>
 <li>Timers on map for easy TOD tracking!</li>
+<li>All Melee disciplines show in the cooldown section of the timers window.</li>
 <li>Pricing information in Mob info window.</li>
 <li>Save spells cast on you when you log out so when you log back in they resume counter!</li>
 <li>Maps</li>
