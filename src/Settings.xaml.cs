@@ -422,7 +422,6 @@ namespace EQTool
                 var d = DateTime.Now;
                 logtext = "[" + d.ToString(format) + "] " + logtext;
             }
-            LogPushText.Text = string.Empty;
             logParser.Push(logtext);
         }
 
@@ -673,6 +672,13 @@ namespace EQTool
             {
                 return;
             }
+            if (SettingsWindowData.ActivePlayer?.Player == null)
+            {
+                return;
+            }
+            SettingsWindowData.ActivePlayer.Player.EnrageAudio = true;
+            SettingsWindowData.ActivePlayer.Player.EnrageOverlay = true;
+            ((App)System.Windows.Application.Current).OpenOverLayWindow();
             if (ZoneParser.ZoneInfoMap.TryGetValue(z, out var zone))
             {
                 if (zone.NotableNPCs.Any())
@@ -684,15 +690,36 @@ namespace EQTool
 
         private void testlevfading(object sender, RoutedEventArgs e)
         {
+            if (SettingsWindowData.ActivePlayer?.Player == null)
+            {
+                return;
+            }
+            SettingsWindowData.ActivePlayer.Player.LevFadingAudio = true;
+            SettingsWindowData.ActivePlayer.Player.LevFadingOverlay = true;
+            ((App)System.Windows.Application.Current).OpenOverLayWindow();
             this.PushLog("You feel as if you are about to fall.");
         }
         private void testinvisfading(object sender, RoutedEventArgs e)
         {
+            if (SettingsWindowData.ActivePlayer?.Player == null)
+            {
+                return;
+            }
+            SettingsWindowData.ActivePlayer.Player.InvisFadingAudio = true;
+            SettingsWindowData.ActivePlayer.Player.InvisFadingOverlay = true;
+            ((App)System.Windows.Application.Current).OpenOverLayWindow();
             this.PushLog("You feel yourself starting to appear.");
         }
 
         private void testCharmBreak(object sender, RoutedEventArgs e)
         {
+            if (SettingsWindowData.ActivePlayer?.Player == null)
+            {
+                return;
+            }
+            SettingsWindowData.ActivePlayer.Player.CharmBreakAudio = true;
+            SettingsWindowData.ActivePlayer.Player.CharmBreakAudioOverlay = true;
+            ((App)System.Windows.Application.Current).OpenOverLayWindow();
             this.PushLog("Your charm spell has worn off.");
         }
 
@@ -703,6 +730,13 @@ namespace EQTool
             {
                 return;
             }
+            if (SettingsWindowData.ActivePlayer?.Player == null)
+            {
+                return;
+            }
+            SettingsWindowData.ActivePlayer.Player.FTEOverlay = true;
+            SettingsWindowData.ActivePlayer.Player.FTEAudio = true;
+            ((App)System.Windows.Application.Current).OpenOverLayWindow();
             if (ZoneParser.ZoneInfoMap.TryGetValue(z, out var zone))
             {
                 if (zone.NotableNPCs.Any())
@@ -710,6 +744,51 @@ namespace EQTool
                     this.PushLog(zone.NotableNPCs.FirstOrDefault() + " engages Tzvia!");
                 }
             }
+        }
+
+        private void testChChain(object sender, RoutedEventArgs e)
+        {
+            var button = sender as System.Windows.Controls.Button;
+            if (!button.IsEnabled)
+            {
+                return;
+            }
+            if (SettingsWindowData.ActivePlayer?.Player == null)
+            {
+                return;
+            }
+            SettingsWindowData.ActivePlayer.Player.ChChainOverlay = true;
+            ((App)System.Windows.Application.Current).OpenOverLayWindow();
+            button.IsEnabled = false;
+            _ = Task.Factory.StartNew(() =>
+            {
+                try
+                {
+                    var msg = "Hanbox shouts, 'CA 001 CH -- Beefwich'";
+                    PushLog(msg);
+                    Thread.Sleep(2000);
+                    msg = "Hanbox shouts, 'CA 001 CH -- Huntor'";
+                    PushLog(msg);
+                    Thread.Sleep(1000);
+                    msg = "Hanbox shouts, 'CA 002 CH -- Beefwich'";
+                    PushLog(msg);
+                    Thread.Sleep(400);
+                    msg = "Hanbox shouts, 'CA 003 CH -- Beefwich'";
+                    PushLog(msg);
+                    Thread.Sleep(1400);
+                    msg = "Hanbox shouts, 'CA 002 CH -- Huntor'";
+                    PushLog(msg);
+                    Thread.Sleep(1500);
+                    msg = "Hanbox shouts, 'CA 004 CH -- Beefwich'";
+                    PushLog(msg);
+                    appDispatcher.DispatchUI(() => { button.IsEnabled = true; });
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex.ToString());
+                    appDispatcher.DispatchUI(() => { button.IsEnabled = true; });
+                }
+            });
         }
     }
 }

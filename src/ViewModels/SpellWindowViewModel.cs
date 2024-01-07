@@ -197,6 +197,45 @@ namespace EQTool.ViewModels
                         SpellType = SpellTypes.BadGuyCoolDown
                     });
                 }
+                if (match.Spell.name.EndsWith("Discipline"))
+                {
+                    var basetime = (int)(match.Spell.recastTime / 1000.0);
+                    var playerlevel = this.activePlayer.Player.Level;
+                    if (match.Spell.name == "Evasive Discipline")
+                    {
+                        float baseseconds = 15 * 60;
+                        float levelrange = 60 - 51;
+                        float secondsrange = (15 - 7) * 60;
+                        float secondsperlevelrange = (secondsrange / levelrange);
+                        float playerleveltick = playerlevel - 52;
+                        basetime = (int)(baseseconds - (playerleveltick * secondsperlevelrange));
+                    }
+                    else if (match.Spell.name == "Defensive Discipline")
+                    {
+                        float baseseconds = 15 * 60;
+                        float levelrange = 60 - 54;
+                        float secondsrange = (15 - 10) * 60;
+                        float secondsperlevelrange = secondsrange / levelrange;
+                        float playerleveltick = playerlevel - 55;
+                        basetime = (int)(baseseconds - (playerleveltick * secondsperlevelrange));
+                    }
+                    else if (match.Spell.name == "Precision Discipline")
+                    {
+                        float baseseconds = 30 * 60;
+                        float levelrange = 60 - 56;
+                        float secondsrange = (30 - 27) * 60;
+                        float secondsperlevelrange = secondsrange / levelrange;
+                        float playerleveltick = playerlevel - 57;
+                        basetime = (int)(baseseconds - (playerleveltick * secondsperlevelrange));
+                    }
+                    TryAddCustom(new CustomTimer
+                    {
+                        DurationInSeconds = basetime,
+                        Name = "--Discipline-- " + spellname,
+                        SpellNameIcon = "Strengthen",
+                        SpellType = SpellTypes.DisciplineCoolDown
+                    });
+                }
                 var needscount = SpellsThatNeedCounts.Contains(spellname);
                 var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(match.Spell, activePlayer.Player));
                 var duration = needscount ? 0 : match.TotalSecondsOverride ?? spellduration.TotalSeconds;

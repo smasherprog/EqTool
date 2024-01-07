@@ -187,21 +187,22 @@ namespace EQTool
                     (byte)random.Next(0, 40),
                     (byte)random.Next(0, 40),
                     (byte)random.Next(0, 40));
+                var colorA = System.Windows.Media.Color.FromArgb(140, color.R, color.G, color.B);
+                var targetwidth = chaindata.Canvas.ActualWidth / 10.0;
                 var target = new TextBlock
                 {
                     Height = 30,
                     FontSize = settings.FontSize.Value * 2,
-                    Width = chaindata.Canvas.ActualWidth / 10,
                     Text = e.Position.ToString(),
-                    Foreground = Brushes.WhiteSmoke,
+                    Foreground = Brushes.White,
                     TextAlignment = TextAlignment.Center
                 };
-                var textborder = new Border { CornerRadius = new CornerRadius(3), Background = new SolidColorBrush(color), BorderBrush = Brushes.GhostWhite, BorderThickness = new Thickness(1) };
+                var textborder = new Border { CornerRadius = new CornerRadius(3), Width = targetwidth, Background = new SolidColorBrush(colorA), BorderBrush = Brushes.GhostWhite, BorderThickness = new Thickness(1) };
                 textborder.Child = target;
                 DoubleAnimation animation = new DoubleAnimation();
-                animation.From = -target.Width;
+                animation.From = -targetwidth;
                 animation.To = chaindata.Canvas.ActualWidth;
-                animation.Duration = TimeSpan.FromSeconds(11); // Adjust duration as needed
+                animation.Duration = TimeSpan.FromSeconds(11);
 
                 Storyboard.SetTarget(animation, textborder);
                 Storyboard.SetTargetProperty(animation, new PropertyPath(Canvas.RightProperty));
@@ -212,6 +213,10 @@ namespace EQTool
                 storyboard.Completed += (s, ev) =>
                 {
                     chaindata.ActiveAnimations--;
+                    appDispatcher.DispatchUI(() =>
+                    {
+                        chaindata.Canvas.Children.Remove(textborder);
+                    });
                     if (chaindata.ActiveAnimations <= 0)
                     {
                         System.Threading.Tasks.Task.Factory.StartNew(() =>
@@ -250,7 +255,7 @@ namespace EQTool
             chaindata.Canvas.IsHitTestVisible = false;
             chaindata.Canvas.Background = Brushes.Transparent;
             chaindata.Grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(30) });
-            chaindata.Grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto });
+            chaindata.Grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto, MinWidth = 100 });
             chaindata.Grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
             var target = new TextBlock
             {
@@ -281,7 +286,14 @@ namespace EQTool
             chaindata.Canvas.UpdateLayout();
             for (var i = 0; i < 10; i++)
             {
-                stackpanel.Children.Add(new Border { Height = 8, Width = chaindata.Canvas.ActualWidth / 10, HorizontalAlignment = HorizontalAlignment.Stretch, BorderBrush = Brushes.WhiteSmoke, BorderThickness = new Thickness(1, 0, 1, 2) });
+                stackpanel.Children.Add(new Border
+                {
+                    Height = 8,
+                    Width = chaindata.Canvas.ActualWidth / 10,
+                    HorizontalAlignment = HorizontalAlignment.Stretch,
+                    BorderBrush = Brushes.WhiteSmoke,
+                    BorderThickness = new Thickness(1, 0, 1, 2)
+                });
             }
             return chaindata;
         }

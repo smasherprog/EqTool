@@ -2,6 +2,7 @@
 {
     public enum SpellTypes : int
     {
+        DisciplineCoolDown = -5,
         RespawnTimer = -4,
         HarvestCooldown = -3,
         BadGuyCoolDown = -2,

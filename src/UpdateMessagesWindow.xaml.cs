@@ -54,6 +54,12 @@ namespace EQTool
             UpdateMessages.Add(new UpdateMessageData
             {
                 DateTime = new DateTime(2024, 1, 7),
+                Message = $"* Added a CH test button so you can try it out in the settings window, just press the play button to see how a sumulated CH chain would look!{Environment.NewLine}" +
+                         $"* All melee discipline cooldown timers will show in the cooldown section. No need to press a discipline button to see when you can use defensive!"
+            });
+            UpdateMessages.Add(new UpdateMessageData
+            {
+                DateTime = new DateTime(2024, 1, 7),
                 Message = $"* When a player dies, their spell effects will be removed from the Triggers window.{Environment.NewLine}" +
                           $"* When a player dies, they will no longer show up as death timer. Only NPC's will show in there now! {Environment.NewLine}" +
                           $"* Sort order of triggers window is now: Custom timers; You; NPC's, then players! {Environment.NewLine}" +

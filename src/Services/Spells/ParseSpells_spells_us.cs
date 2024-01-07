@@ -120,6 +120,7 @@ namespace EQTool.Services
 #if DEBUG
             isdebug = true;
 #endif
+
             var stopwatch = new Stopwatch();
             stopwatch.Start();
             var spells = new Dictionary<string, SpellBase>();
@@ -174,6 +175,14 @@ namespace EQTool.Services
                         ))
                     {
                         continue;
+                    }
+
+                    if (spell.name == "Defensive Discipline")
+                    {
+                        if (spell.cast_on_you.EndsWith(".."))
+                        {
+                            spell.cast_on_you = spell.cast_on_you.Replace("..", ".");
+                        }
                     }
 
                     if (spell.name.StartsWith("Primal Essence"))
@@ -330,7 +339,7 @@ namespace EQTool.Services
                 var spell_fades = splits[8].Trim();
                 var spell_icon = int.Parse(splits[144 - spelliconoffset]);
                 var ResistCheck = int.Parse(splits[147 - offset]);
-
+                var recasttime = int.Parse(splits[15]);
                 var ret = new SpellBase
                 {
                     id = id,
@@ -348,7 +357,8 @@ namespace EQTool.Services
                     resisttype = resisttype,
                     ResistCheck = ResistCheck,
                     DescrNumber = descrtype,
-                    SpellType = spelltype
+                    SpellType = spelltype,
+                    recastTime = recasttime
                 };
 
                 if (EpicSpells.TryGetValue(ret.name, out var foundepic))

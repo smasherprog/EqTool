@@ -242,6 +242,10 @@ namespace EQTool.ViewModels
                 {
                     ProgressBarColor = Brushes.LightSalmon;
                 }
+                else if (_SpellType >= SpellTypes.DisciplineCoolDown)
+                {
+                    ProgressBarColor = Brushes.Gold;
+                }
                 else
                 {
                     ProgressBarColor = Brushes.DarkSeaGreen;
