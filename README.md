@@ -75,8 +75,6 @@ Features:
 <li>Map window add toggle to follow location</li>     
 <li>Determine pet level based on the maxhit and add to the DPS window</li> 
 <li>Add option to auto prune eq log file. EQ logfiles can cause issues with EQ itself if they get too large!</li>
-<li>Ability Hide/show mob info data</li>
-<li>Add donals BP to timers list</li> 
 </ul>
 
 <h4>TO DO List PigParse Pricing</h4>
