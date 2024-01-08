@@ -122,5 +122,24 @@ namespace EQToolTests
             var d = service.ChCheck("Hanbox tells the guild, 'CA 001 CH --Beefwich'");
             Assert.IsNull(d);
         }
+
+        [TestMethod]
+        public void Parse9()
+        {
+            var service = container.Resolve<ChParser>();
+            var player = container.Resolve<ActivePlayer>();
+            player.Player = new PlayerInfo
+            {
+                Level = 54,
+                PlayerClass = PlayerClasses.Cleric,
+                ChChainTagOverlay = "GGG"
+            };
+            var d = service.ChCheck("Hanbox tells the raid, 'GGG 001 CH --Beefwich'");
+
+            Assert.AreEqual(d.Recipient, "Beefwich");
+            Assert.AreEqual(d.Caster, "Hanbox");
+            Assert.AreEqual(d.Position, 1);
+            Assert.AreEqual(d.RecipientGuild, "GGG");
+        }
     }
 }

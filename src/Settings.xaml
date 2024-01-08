@@ -136,14 +136,24 @@
                 </StackPanel>
                 <Separator/>
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Chain Formats" VerticalAlignment="Center" FontWeight="Bold" MinWidth="100"/> 
+                    <TextBlock Text="Chain Formats" VerticalAlignment="Center" FontWeight="Bold" MinWidth="100"/>
+                    <TextBlock Text="TAG NUMBERINCHAIN CH -- TARGET" ToolTip="Chain text format" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock VerticalAlignment="Center" FontWeight="Bold" MinWidth="100"/>
-                    <StackPanel Orientation="Vertical">
-                        <TextBlock Text="'CA 001 CH -- TARGET'" ToolTip="Chain text format" />
-                        <TextBlock Text="'001 CH - TARGET'" ToolTip="Chain text format" /> 
-                    </StackPanel>
+                    <TextBlock Text="TAG is optional." />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock  VerticalAlignment="Center" FontWeight="Bold" MinWidth="100"/>
+                    <TextBlock Text="Should be at least 1 Dash" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Example:" TextAlignment="Right" FontWeight="Bold" MinWidth="100" /> 
+                    <TextBlock Text="'CA 001 CH -- Huntor'" ToolTip="Chain text format" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Example:" TextAlignment="Right" FontWeight="Bold" MinWidth="100" />
+                    <TextBlock Text="'001 CH - Huntor'" ToolTip="Chain text format" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="CH Chain" ToolTip="Complete Heal Overlay" VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
@@ -152,9 +162,9 @@
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="CH Chain Tag" ToolTip="Example: GG or CA. Other tags will be ignored" VerticalAlignment="Center" FontWeight="Bold"  MinWidth="100"/>
-                    <TextBox MaxLength="2" Text="{Binding Path=ActivePlayer.Player.ChChainTagOverlay, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MinWidth="40" TextChanged="CHTextBox_TextChanged"></TextBox>
+                    <TextBox Text="{Binding Path=ActivePlayer.Player.ChChainTagOverlay, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MinWidth="40" TextChanged="CHTextBox_TextChanged"></TextBox>
                 </StackPanel>
-           
+
             </StackPanel>
         </TabItem>
         <TabItem Header="Triggers">
@@ -230,7 +240,7 @@
                     <Button Click="testsignalrlocations" MinWidth="100">Test Signalr Locations</Button>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Run Log File"  VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/> 
+                    <TextBlock Text="Run Log File"  VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
                     <Button Click="selectLogFile">Select File</Button>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">

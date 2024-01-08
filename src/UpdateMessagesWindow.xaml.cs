@@ -45,6 +45,7 @@ namespace EQTool
                 DateTime = new DateTime(2024, 1, 7),
                 Message = $"* Added a CH test button so you can try it out in the settings window, just press the play button to see how a sumulated CH chain would look!{Environment.NewLine}" +
                          $"* All melee discipline cooldown timers will show in the cooldown section. No need to press a discipline button to see when you can use defensive!{Environment.NewLine}" +
+                         $"* Raid channel will pick up CH Chain messages. Added Examples to the settings window CH Chain format. {Environment.NewLine}" +
                          $"* Added another CH Chain format support for those who don't want to use the TAG to differentiate their chain. Be aware, if you aren't using the TAG filter, you will see everyone's chain!!"
             });
             UpdateMessages.Add(new UpdateMessageData
