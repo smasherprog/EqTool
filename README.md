@@ -31,6 +31,7 @@ Features:
 <li>The following Overlays are available: Enrage; Levitate fading; invis fading; Charm Break; and Ch Chain</li>
 <li>The following Audio alerts are available: Enrage; Levitate fading; Charm Break; and invis fading</li>
 <li>Timers on map for easy TOD tracking!</li>
+<li>All Melee disciplines show in the cooldown section of the timers window.</li>
 <li>Pricing information in Mob info window.</li>
 <li>Save spells cast on you when you log out so when you log back in they resume counter!</li>
 <li>Maps</li>
@@ -58,15 +59,12 @@ Features:
  <li>Remove timers from map when timers removed from list and visa versa.</li>   
  <li>Add code to show MOB hits per second.</li>   
  <li>Port application to be cross platform(mac, win, linux).</li>   
- <li>Add Ability to bind a hotkey to toggle a window open/close.</li>   
- <li>Add cooldowntimer for discs.</li>   
- <li>Add group suggestions for each raid mob in game.</li>    
- <li>Fix discipline timers.</li>   
+ <li>Add Ability to bind a hotkey to toggle a window open/close.</li>    
+ <li>Add group suggestions for each raid mob in game.</li>     
  <li>Make timers resetable.</li>   
  <li>Fix buff timers when updating, when update occurs buffs dissapear.</li> 
  <li>Add zone dump of names.</li> 
- <li>Add context menu to toggle pather vs static.</li> 
- <li>Add timers for cooldowns on abilities, like mend, defensive, etc.</li> 
+ <li>Add context menu to toggle pather vs static.</li>  
  <li>Add code to detect pet and always show buffs for your pet.</li> 
 <li>Tab under Mob info window for last few minutes of Random rolls ordered by highest to lowest. </li>   
 <li>Add visual cue that buff is under 1 minute left. </li> 
