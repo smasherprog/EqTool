@@ -141,5 +141,35 @@ namespace EQToolTests
             Assert.AreEqual(d.Position, 1);
             Assert.AreEqual(d.RecipientGuild, "GGG");
         }
+
+        [TestMethod]
+        public void Parse10()
+        {
+            var service = container.Resolve<ChParser>();
+            var player = container.Resolve<ActivePlayer>();
+            player.Player = new PlayerInfo
+            {
+                Level = 54,
+                PlayerClass = PlayerClasses.Cleric,
+                ChChainTagOverlay = "GGG"
+            };
+            var d = service.ChCheck("Amberel tells the raid,  'GGG CH - Asirk - 10 s'");
+            Assert.IsNull(d);
+        }
+
+        [TestMethod]
+        public void Parse11()
+        {
+            var service = container.Resolve<ChParser>();
+            var player = container.Resolve<ActivePlayer>();
+            player.Player = new PlayerInfo
+            {
+                Level = 54,
+                PlayerClass = PlayerClasses.Cleric,
+                ChChainTagOverlay = "GGG"
+            };
+            var d = service.ChCheck("Windarie tells the group, 'Bufzyn 111 --- CH on << Tinialita  >> --- 111'");
+            Assert.IsNull(d);
+        }
     }
 }
