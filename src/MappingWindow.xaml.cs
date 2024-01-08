@@ -231,10 +231,13 @@ namespace EQTool
             StateChanged -= Window_StateChanged;
             LocationChanged -= Window_LocationChanged;
             KeyDown -= PanAndZoomCanvas_KeyDown;
-            Map.StartTimerEvent -= Map_StartTimerEvent;
-            Map.CancelTimerEvent -= Map_CancelTimerEvent;
-            Map.TimerMenu_ClosedEvent -= Map_TimerMenu_ClosedEvent;
-            Map.TimerMenu_OpenedEvent -= Map_TimerMenu_OpenedEvent;
+            if (Map != null)
+            {
+                Map.StartTimerEvent -= Map_StartTimerEvent;
+                Map.CancelTimerEvent -= Map_CancelTimerEvent;
+                Map.TimerMenu_ClosedEvent -= Map_TimerMenu_ClosedEvent;
+                Map.TimerMenu_OpenedEvent -= Map_TimerMenu_OpenedEvent;
+            }
             if (signalrPlayerHub != null)
             {
                 signalrPlayerHub.PlayerLocationEvent -= SignalrPlayerHub_PlayerLocationEvent;

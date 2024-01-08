@@ -424,7 +424,7 @@ namespace EQTool.Services
             }
             catch (Exception e)
             {
-                App.LogUnhandledException(e, $"LogParser '{line1}'");
+                App.LogUnhandledException(e, $"LogParser Filename: '{activePlayer.LogFileName}' '{line1}'");
             }
         }
 

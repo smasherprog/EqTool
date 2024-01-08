@@ -39,23 +39,13 @@ namespace EQTool
             view.SortDescriptions.Add(new SortDescription(nameof(UpdateMessageData.DateTime), ListSortDirection.Descending));
             view.IsLiveSorting = true;
 
-            UpdateMessages.Add(new UpdateMessageData
-            {
-                DateTime = new DateTime(2024, 1, 6),
-                Message = $"* Try out the new overlay and audio triggers. Try out the CH Chain overlay as well. {Environment.NewLine}" +
-                          $"* FTE audio and visual triggers added. Visual Trigger will show the guild of tagger!{Environment.NewLine}" +
-                          $"* Remove ghost players from map.{Environment.NewLine}" +
-                          $"* Charm Break Audio and visual triggers added.{Environment.NewLine}" +
-                          $"* Updated save settings code to be smarter!{Environment.NewLine}" +
-                          $"* Changed Audio triggers to use Crappy Built in speech to text -- this is easier than generating MP3 for everything.{Environment.NewLine}" +
-                          $"* Added code to try and improve the map locations by simplifying code.{Environment.NewLine}" +
-                          $"* Changed code to check for updates. Now it will only update if there are less than 2 TOTAL items in the triggers window to make less aggressive.",
-            });
+
             UpdateMessages.Add(new UpdateMessageData
             {
                 DateTime = new DateTime(2024, 1, 7),
                 Message = $"* Added a CH test button so you can try it out in the settings window, just press the play button to see how a sumulated CH chain would look!{Environment.NewLine}" +
-                         $"* All melee discipline cooldown timers will show in the cooldown section. No need to press a discipline button to see when you can use defensive!"
+                         $"* All melee discipline cooldown timers will show in the cooldown section. No need to press a discipline button to see when you can use defensive!{Environment.NewLine}" +
+                         $"* Added another CH Chain format support for those who don't want to use the TAG to differentiate their chain. Be aware, if you aren't using the TAG filter, you will see everyone's chain!!"
             });
             UpdateMessages.Add(new UpdateMessageData
             {

@@ -61,11 +61,21 @@ namespace EQToolTests
         public void Parse5()
         {
             var service = container.Resolve<ChParser>();
-            var d = service.ChCheck("Wartburg says out of character, 'CA 004 CH -- Wartburg'");
-            Assert.AreEqual(d.Recipient, "Wartburg");
+            var d = service.ChCheck("Wartburg says out of character, 'CA 004 CH -- Sam'");
+            Assert.AreEqual(d.Recipient, "Sam");
             Assert.AreEqual(d.Caster, "Wartburg");
             Assert.AreEqual(d.Position, 4);
             Assert.AreEqual(d.RecipientGuild, "CA");
+        }
+
+        [TestMethod]
+        public void Parse51()
+        {
+            var service = container.Resolve<ChParser>();
+            var d = service.ChCheck("Wartburg says out of character, '004 CH - Sam'");
+            Assert.AreEqual(d.Recipient, "Sam");
+            Assert.AreEqual(d.Caster, "Wartburg");
+            Assert.AreEqual(d.Position, 4);
         }
 
         [TestMethod]

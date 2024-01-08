@@ -136,8 +136,14 @@
                 </StackPanel>
                 <Separator/>
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Chain Format" VerticalAlignment="Center" FontWeight="Bold" MinWidth="100"/>
-                    <TextBlock Text="'CA 001 CH -- TARGET'" ToolTip="Chain text format" />
+                    <TextBlock Text="Chain Formats" VerticalAlignment="Center" FontWeight="Bold" MinWidth="100"/> 
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock VerticalAlignment="Center" FontWeight="Bold" MinWidth="100"/>
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock Text="'CA 001 CH -- TARGET'" ToolTip="Chain text format" />
+                        <TextBlock Text="'001 CH - TARGET'" ToolTip="Chain text format" /> 
+                    </StackPanel>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="CH Chain" ToolTip="Complete Heal Overlay" VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>

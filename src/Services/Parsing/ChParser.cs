@@ -24,56 +24,96 @@ namespace EQTool.Services
         {
             var chindex = line.IndexOf(" ch ", System.StringComparison.OrdinalIgnoreCase);
             var dashes = line.LastIndexOf("-", System.StringComparison.OrdinalIgnoreCase);
-            var shout = line.IndexOf("shouts, '", System.StringComparison.OrdinalIgnoreCase);
-            var outofchar = line.IndexOf(" says out of character, '", System.StringComparison.OrdinalIgnoreCase);
-            var guild = line.IndexOf(" tells the guild, '", System.StringComparison.OrdinalIgnoreCase);
+            var shoutindex = line.IndexOf("shouts, '", System.StringComparison.OrdinalIgnoreCase);
+            var outofcharindex = line.IndexOf(" says out of character, '", System.StringComparison.OrdinalIgnoreCase);
+            var guildindex = line.IndexOf(" tells the guild, '", System.StringComparison.OrdinalIgnoreCase);
             if (chindex != -1 && dashes != -1)
             {
-                var numbers = new string(line.Where(a => char.IsDigit(a)).ToArray());
+                var endoftext = line.LastIndexOf("'");
+                var startindex = shoutindex;
+                if (startindex == -1)
+                {
+                    startindex = outofcharindex;
+                }
+                if (startindex == -1)
+                {
+                    startindex = guildindex;
+                }
+                var startsearch = line.IndexOf("'", startindex);
+                if (startindex == -1)
+                {
+                    return null;
+                }
+
+                var possiblenumbers = line.Substring(startsearch, endoftext - startsearch);
+
+                var numbers = new string(possiblenumbers.Where(a => char.IsDigit(a)).ToArray());
                 if (numbers.Length == 0)
                 {
                     return null;
                 }
 
-                var position = int.Parse(numbers);
+                if (!int.TryParse(numbers, out var position))
+                {
+                    return null;
+                }
                 var recipientguild = line.Substring(line.IndexOf('\'') + 1, 2);
                 var chtag = this.activePlayer?.Player?.ChChainTagOverlay;
+
                 if (!string.IsNullOrWhiteSpace(chtag) && !string.Equals(chtag, recipientguild, System.StringComparison.OrdinalIgnoreCase))
                 {
                     return null;
                 }
 
-                if (shout != -1)
+                if (shoutindex != -1)
                 {
-                    return new ChParseData
+                    var ret = new ChParseData
                     {
-                        Caster = line.Substring(0, shout).Trim('\'').Trim(),
+                        Caster = line.Substring(0, shoutindex).Trim('\'').Trim(),
                         Position = position,
-                        Recipient = line.Substring(dashes + 1).Trim('\'').Trim(),
+                        Recipient = line.Substring(dashes + 1, endoftext - (dashes + 1)).Trim('\'').Trim(),
                         RecipientGuild = recipientguild
                     };
+                    if (ret.Caster.Contains(" "))
+                    {
+                        var lastspace = ret.Caster.LastIndexOf(" ");
+                        ret.Caster = ret.Caster.Substring(lastspace + 1).Trim();
+                    }
+                    return ret;
                 }
 
-                if (guild != -1)
+                if (guildindex != -1)
                 {
-                    return new ChParseData
+                    var ret = new ChParseData
                     {
-                        Caster = line.Substring(0, guild).Trim('\'').Trim(),
+                        Caster = line.Substring(0, guildindex).Trim('\'').Trim(),
                         Position = position,
-                        Recipient = line.Substring(dashes + 1).Trim('\'').Trim(),
+                        Recipient = line.Substring(dashes + 1, endoftext - (dashes + 1)).Trim('\'').Trim(),
                         RecipientGuild = recipientguild
                     };
+                    if (ret.Caster.Contains(" "))
+                    {
+                        var lastspace = ret.Caster.LastIndexOf(" ");
+                        ret.Caster = ret.Caster.Substring(lastspace + 1).Trim();
+                    }
+                    return ret;
                 }
 
-                if (outofchar != -1)
+                if (outofcharindex != -1)
                 {
-                    return new ChParseData
+                    var ret = new ChParseData
                     {
-                        Caster = line.Substring(0, outofchar).Trim('\'').Trim(),
+                        Caster = line.Substring(0, outofcharindex).Trim('\'').Trim(),
                         Position = position,
-                        Recipient = line.Substring(dashes + 1).Trim('\'').Trim(),
+                        Recipient = line.Substring(dashes + 1, endoftext - (dashes + 1)).Trim('\'').Trim(),
                         RecipientGuild = recipientguild
                     };
+                    if (ret.Caster.Contains(" "))
+                    {
+                        var lastspace = ret.Caster.LastIndexOf(" ");
+                        ret.Caster = ret.Caster.Substring(lastspace + 1).Trim();
+                    }
+                    return ret;
                 }
             }
 
