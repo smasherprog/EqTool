@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -200,8 +201,22 @@ namespace EQTool
                 fights.Add($"{item.SourceName} {item.PercentOfTotalDamage}% DPS:{item.TotalDPS} DMG:{item.TotalDamage}");
             }
             var fightdetails = "Fight Details: " + name + " Dmg: " + (items.FirstOrDefault()?.TargetTotalDamage ?? 0) + "    " + string.Join(" / ", fights);
-            System.Windows.Forms.Clipboard.SetText(fightdetails);
-            (App.Current as App).ShowBalloonTip(4000, "DPS Copied", $"DPS for the fight with {name} has been copied to clipboard", System.Windows.Forms.ToolTipIcon.Info);
+            for (var i = 0; i < 2; i++)
+            {
+                try
+                {
+                    System.Windows.Forms.Clipboard.SetText(fightdetails, System.Windows.Forms.TextDataFormat.Text);
+                    (App.Current as App).ShowBalloonTip(4000, "DPS Copied", $"DPS for the fight with {name} has been copied to clipboard", System.Windows.Forms.ToolTipIcon.Info);
+                    Thread.Sleep(10);
+                }
+                catch (Exception e)
+                {
+                    if (i == 1)
+                    {
+                        throw;
+                    }
+                }
+            }
         }
 
         private void MoveCurrentToLastSession(object sender, RoutedEventArgs e)

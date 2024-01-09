@@ -33,6 +33,10 @@ namespace EQTool.Services
             if (chindex != -1 && dashes != -1)
             {
                 var endoftext = line.LastIndexOf("'");
+                if(endoftext == -1)
+                {
+                    return null;
+                }
                 var possiblenumbers = line.Substring(startindexofmessage + 3, endoftext - startindexofmessage - 3);
                 var numbers = new string(possiblenumbers.Where(a => char.IsDigit(a)).ToArray());
                 if (numbers.Length == 0)
@@ -56,6 +60,10 @@ namespace EQTool.Services
                 else
                 {
                     var possibletagindex = possiblenumbers.IndexOf(numbers);
+                    if(possibletagindex == -1)
+                    {
+                        return null;
+                    }
                     tag = possiblenumbers.Substring(0, possibletagindex).Trim();
                 }
                 var firstspace = line.IndexOf(" ");
