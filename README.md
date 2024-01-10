@@ -56,7 +56,8 @@ Features:
 
 <h4>TO DO List EQTool</h4>
 <ul>  
-  <li>Add FD audio and visual triggers.</li>   
+  <li>Map center on you.</li>  
+   <li>Add Window Snapping code so windows can be grouped and all moved together.</li>   
  <li>Remove timers from map when timers removed from list and visa versa.</li>   
  <li>Add code to show MOB hits per second.</li>   
  <li>Port application to be cross platform(mac, win, linux).</li>   
