@@ -39,6 +39,12 @@ namespace EQTool
             view.SortDescriptions.Add(new SortDescription(nameof(UpdateMessageData.DateTime), ListSortDirection.Descending));
             view.IsLiveSorting = true;
 
+            UpdateMessages.Add(new UpdateMessageData
+            {
+                DateTime = new DateTime(2024, 1, 8),
+                Message = $"* Fixed an issue when parsing the log filename.{Environment.NewLine}" +
+                 $"* Added more CH chain scenarios. Going to add many different formats so by the end most ch formats will just work."
+             });
 
             UpdateMessages.Add(new UpdateMessageData
             {

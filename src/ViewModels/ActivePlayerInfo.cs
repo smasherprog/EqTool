@@ -39,8 +39,19 @@ namespace EQTool.ViewModels
                 server = server.Substring(0, ext);
                 if (ext != -1)
                 {
-                    _ = Enum.TryParse<Servers>(server, true, out var server_type);
-                    p.Server = server_type;
+                    if (server == "PVP")
+                    {
+                        p.Server = Servers.Red;
+                    }
+                    else if (server == "Green")
+                    {
+                        p.Server = Servers.Green;
+                    }
+                    else
+                    {
+                        p.Server = Servers.Blue;
+                    }
+
                 }
             }
             else if (logfilenbame.IndexOf("pq.proj.txt") != -1)

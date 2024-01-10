@@ -1,9 +1,12 @@
 ﻿using Autofac;
+using Autofac.Core;
 using EQTool.Models;
 using EQTool.Services;
 using EQTool.ViewModels;
 using EQToolShared.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System.Windows.Shapes;
+using System;
 
 namespace EQToolTests
 {
@@ -171,5 +174,65 @@ namespace EQToolTests
             var d = service.ChCheck("Windarie tells the group, 'Bufzyn 111 --- CH on << Tinialita  >> --- 111'");
             Assert.IsNull(d);
         }
+
+        [TestMethod]
+        public void Parse12()
+        {
+            var service = container.Resolve<ChParser>();
+            var player = container.Resolve<ActivePlayer>();
+            player.Player = new PlayerInfo
+            {
+                Level = 54,
+                PlayerClass = PlayerClasses.Cleric,
+                ChChainTagOverlay = "CA"
+            };
+            var d = service.ChCheck("You say out of character, 'CA 002 CH -- Aaryk'");
+            Assert.AreEqual(d.Recipient, "Aaryk");
+            Assert.AreEqual(d.Caster, "You");
+            Assert.AreEqual(d.Position, 2);
+            Assert.AreEqual(d.RecipientGuild, "CA");
+        }
+
+        [TestMethod]
+        public void Parse13()
+        {
+            var service = container.Resolve<ChParser>();
+            var player = container.Resolve<ActivePlayer>();
+            player.Player = new PlayerInfo
+            {
+                Level = 54,
+                PlayerClass = PlayerClasses.Cleric
+            };
+            var d = service.ChCheck("Kaboomslang -> Distributin: ch plz");
+            Assert.IsNull(d);
+        }
+
+        [TestMethod]
+        public void Parse14()
+        {
+            var service = container.Resolve<ChParser>();
+            var player = container.Resolve<ActivePlayer>();
+            player.Player = new PlayerInfo
+            {
+                Level = 54,
+                PlayerClass = PlayerClasses.Cleric
+            };
+            var d = service.ChCheck("You told someone, 'when CH chains are e a 1-2 full rounds of max dmg hits though if u can'");
+            Assert.IsNull(d);
+        }
+
+        [TestMethod]
+        public void Parse15()
+        {
+            var service = container.Resolve<ChParser>();
+            var player = container.Resolve<ActivePlayer>();
+            player.Player = new PlayerInfo
+            {
+                Level = 54,
+                PlayerClass = PlayerClasses.Cleric
+            };
+            var d = service.ChCheck("somecleric tells the guild, '003 - CH 5T'");
+            Assert.IsNull(d);
+        } 
     }
 }
