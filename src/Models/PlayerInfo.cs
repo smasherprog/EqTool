@@ -284,6 +284,28 @@ namespace EQTool.Models
 
         public List<PlayerClasses> ShowSpellsForClasses { get; set; }
 
+        private bool _FailedFeignOverlay;
+        public bool FailedFeignOverlay
+        {
+            get => _FailedFeignOverlay;
+            set
+            {
+                _FailedFeignOverlay = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _FailedFeignAudio;
+        public bool FailedFeignAudio
+        {
+            get => _FailedFeignAudio;
+            set
+            {
+                _FailedFeignAudio = value;
+                OnPropertyChanged();
+            }
+        }
+
         private bool _EnrageOverlay;
         public bool EnrageOverlay
         {
@@ -294,6 +316,7 @@ namespace EQTool.Models
                 OnPropertyChanged();
             }
         }
+
         private bool _EnrageAudio;
         public bool EnrageAudio
         {
@@ -338,13 +361,13 @@ namespace EQTool.Models
             }
         }
 
-        private bool _CharmBreakAudioOverlay;
-        public bool CharmBreakAudioOverlay
+        private bool _CharmBreakOverlay;
+        public bool CharmBreakOverlay
         {
-            get => _CharmBreakAudioOverlay;
+            get => _CharmBreakOverlay;
             set
             {
-                _CharmBreakAudioOverlay = value;
+                _CharmBreakOverlay = value;
                 OnPropertyChanged();
             }
         }

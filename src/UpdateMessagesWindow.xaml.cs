@@ -43,8 +43,11 @@ namespace EQTool
             {
                 DateTime = new DateTime(2024, 1, 8),
                 Message = $"* Fixed an issue when parsing the log filename.{Environment.NewLine}" +
-                 $"* Added more CH chain scenarios. Going to add many different formats so by the end most ch formats will just work."
-             });
+                 $"* Added more CH chain scenarios. Going to add many different formats so by the end most ch formats will just work.{Environment.NewLine}" +
+                 $"* A little bit of perf improvement to maps.{Environment.NewLine}" +
+                 $"* Added Feign Audio/Visual alerts.{Environment.NewLine}" +
+                 $"* Fixed some bugs where the wrong checks were in place for several overlays.{Environment.NewLine}"
+            });
 
             UpdateMessages.Add(new UpdateMessageData
             {

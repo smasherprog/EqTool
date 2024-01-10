@@ -46,6 +46,7 @@ namespace EQTool.Services
         private readonly LevParser levParser;
         private readonly FTEParser fTEParser;
         private readonly CharmBreakParser charmBreakParser;
+        private readonly FailedFeignParser failedFeignParser;
 
         private bool StartingWhoOfZone = false;
         private bool Processing = false;
@@ -74,9 +75,11 @@ namespace EQTool.Services
             LevelLogParse levelLogParse,
             PlayerWhoLogParse playerWhoLogParse,
             InvisParser invisParser,
-            LevParser levParser
+            LevParser levParser,
+            FailedFeignParser failedFeignParser
             )
         {
+            this.failedFeignParser = failedFeignParser;
             this.charmBreakParser = charmBreakParser;
             this.fTEParser = fTEParser;
             this.invisParser = invisParser;
@@ -184,7 +187,7 @@ namespace EQTool.Services
         public event EventHandler<InvisStatus> InvisEvent;
         public event EventHandler<FTEParserData> FTEEvent;
         public event EventHandler<CharmBreakArgs> CharmBreakEvent;
-
+        public event EventHandler<string> FailedFeignEvent;
         public event EventHandler<SpellWornOffOtherEventArgs> SpellWornOtherOffEvent;
 
         public event EventHandler<SpellEventArgs> StartCastingEvent;
@@ -400,6 +403,13 @@ namespace EQTool.Services
                 if (fte != null)
                 {
                     FTEEvent?.Invoke(this, fte);
+                    return;
+                }
+
+                var feignmsg = this.failedFeignParser.FailedFaignCheck(message);
+                if (!string.IsNullOrWhiteSpace(feignmsg))
+                {
+                    FailedFeignEvent?.Invoke(this, feignmsg);
                     return;
                 }
 

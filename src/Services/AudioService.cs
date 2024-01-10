@@ -17,6 +17,15 @@ namespace EQTool.Services
             this.logParser.LevEvent += LogParser_LevEvent;
             this.logParser.FTEEvent += LogParser_FTEEvent;
             this.logParser.CharmBreakEvent += LogParser_CharmBreakEvent;
+            this.logParser.FailedFeignEvent += LogParser_FailedFeignEvent;
+        }
+
+        private void LogParser_FailedFeignEvent(object sender, string e)
+        {
+            if (this.activePlayer?.Player?.FailedFeignAudio == true)
+            {
+                this.PlayResource($"Failed Feign Death");
+            }
         }
 
         private void LogParser_CharmBreakEvent(object sender, LogParser.CharmBreakArgs e)

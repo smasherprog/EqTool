@@ -718,11 +718,22 @@ namespace EQTool
                 return;
             }
             SettingsWindowData.ActivePlayer.Player.CharmBreakAudio = true;
-            SettingsWindowData.ActivePlayer.Player.CharmBreakAudioOverlay = true;
+            SettingsWindowData.ActivePlayer.Player.CharmBreakOverlay = true;
             ((App)System.Windows.Application.Current).OpenOverLayWindow();
             this.PushLog("Your charm spell has worn off.");
         }
 
+        private void testFailedFeign(object sender, RoutedEventArgs e)
+        {
+            if (SettingsWindowData.ActivePlayer?.Player == null)
+            {
+                return;
+            }
+            SettingsWindowData.ActivePlayer.Player.FailedFeignAudio = true;
+            SettingsWindowData.ActivePlayer.Player.FailedFeignOverlay = true;
+            ((App)System.Windows.Application.Current).OpenOverLayWindow();
+            this.PushLog($"{SettingsWindowData.ActivePlayer?.Player?.Name} has fallen to the ground.");
+        }
         private void testFTE(object sender, RoutedEventArgs e)
         {
             var z = SettingsWindowData.ActivePlayer?.Player?.Zone;

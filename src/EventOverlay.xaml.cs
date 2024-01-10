@@ -64,12 +64,37 @@ namespace EQTool
             logParser.InvisEvent += LogParser_InvisEvent;
             logParser.FTEEvent += LogParser_FTEEvent;
             logParser.CharmBreakEvent += LogParser_CharmBreakEvent;
+            logParser.FailedFeignEvent += LogParser_FailedFeignEvent; ;
             settings.OverlayWindowState.Closed = false;
+        }
+
+        private void LogParser_FailedFeignEvent(object sender, string e)
+        {
+            var overlay = this.activePlayer?.Player?.FailedFeignOverlay ?? false;
+            if (!overlay)
+            {
+                return;
+            }
+
+            System.Threading.Tasks.Task.Factory.StartNew(() =>
+            {
+                this.appDispatcher.DispatchUI(() =>
+                {
+                    CenterText.Text = "Feign Failed Death!";
+                    CenterText.Foreground = Brushes.Red;
+                });
+                System.Threading.Thread.Sleep(1000 * 5);
+                this.appDispatcher.DispatchUI(() =>
+                {
+                    CenterText.Text = string.Empty;
+                    CenterText.Foreground = Brushes.Red;
+                });
+            });
         }
 
         private void LogParser_CharmBreakEvent(object sender, LogParser.CharmBreakArgs e)
         {
-            var overlay = this.activePlayer?.Player?.CharmBreakAudioOverlay ?? false;
+            var overlay = this.activePlayer?.Player?.CharmBreakOverlay ?? false;
             if (!overlay)
             {
                 return;
@@ -150,7 +175,7 @@ namespace EQTool
 
         private void LogParser_LevEvent(object sender, LevParser.LevStatus e)
         {
-            var overlay = this.activePlayer?.Player?.InvisFadingOverlay ?? false;
+            var overlay = this.activePlayer?.Player?.LevFadingOverlay ?? false;
             if (!overlay)
             {
                 return;
