@@ -2,6 +2,7 @@
 using EQTool.Services;
 using EQTool.ViewModels;
 using EQToolShared;
+using EQToolShared.Enums;
 using EQToolShared.HubModels;
 using EQToolShared.Map;
 using System;
@@ -42,7 +43,7 @@ namespace EQTool
             ActivePlayer activePlayer,
             LoggingService loggingService)
         {
-            loggingService.Log(string.Empty, App.EventType.OpenMap);
+            loggingService.Log(string.Empty, EventType.OpenMap, activePlayer?.Player?.Server);
             this.playerTrackerService = playerTrackerService;
             this.timersService = timersService;
             this.settings = settings;

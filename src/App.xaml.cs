@@ -2,6 +2,7 @@
 using EQTool.Models;
 using EQTool.Services;
 using EQTool.ViewModels;
+using EQToolShared.Enums;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -84,25 +85,6 @@ namespace EQTool
         {
             new UpdateService().CheckForUpdates(Version);
         }
-        public enum BuildType
-        {
-            Release,
-            Debug,
-            Test,
-            Beta,
-            Quarm
-        }
-
-        public enum EventType
-        {
-            Error,
-            StartUp,
-            Update,
-            OpenMap,
-            OpenMobInfo,
-            OpenDPS,
-            OpenTriggers
-        }
 
         public class ExceptionRequest
         {
@@ -110,9 +92,10 @@ namespace EQTool
             public string Message { get; set; }
             public EventType EventType { get; set; }
             public BuildType BuildType { get; set; }
+            public Servers? Server { get; set; }
         }
 
-        public static void LogUnhandledException(Exception exception, string source)
+        public static void LogUnhandledException(Exception exception, string source, Servers? server)
         {
             var build = BuildType.Release;
 #if TEST
@@ -131,7 +114,8 @@ namespace EQTool
                     Version = Version,
                     Message = $"Unhandled exception ({source}) {exception}",
                     EventType = EventType.Error,
-                    BuildType = build
+                    BuildType = build,
+                    Server = server
                 };
                 if (msg.Message.Contains("Server timeout (30000.00ms) elapsed without receiving a message from the server.") ||
                     msg.Message.Contains("The 'InvokeCoreAsync' method cannot be called") ||
@@ -150,17 +134,23 @@ namespace EQTool
 
         private void SetupExceptionHandling()
         {
+
             AppDomain.CurrentDomain.UnhandledException += (s, e) =>
-                LogUnhandledException((Exception)e.ExceptionObject, "AppDomain.CurrentDomain.UnhandledException");
+            {
+                var server = this.container?.Resolve<ActivePlayer>()?.Player?.Server;
+                LogUnhandledException((Exception)e.ExceptionObject, "AppDomain.CurrentDomain.UnhandledException", server);
+            };
 
             DispatcherUnhandledException += (s, e) =>
             {
-                LogUnhandledException(e.Exception, "Application.Current.DispatcherUnhandledException");
+                var server = this.container?.Resolve<ActivePlayer>()?.Player?.Server;
+                LogUnhandledException(e.Exception, "Application.Current.DispatcherUnhandledException", server);
             };
 
             TaskScheduler.UnobservedTaskException += (s, e) =>
             {
-                LogUnhandledException(e.Exception, "TaskScheduler.UnobservedTaskException");
+                var server = this.container?.Resolve<ActivePlayer>()?.Player?.Server;
+                LogUnhandledException(e.Exception, "TaskScheduler.UnobservedTaskException", server);
             };
         }
 
@@ -232,7 +222,7 @@ namespace EQTool
             }
             catch (Exception ex)
             {
-                LogUnhandledException(ex, "InitStuff");
+                LogUnhandledException(ex, "InitStuff", null);
                 Thread.Sleep(1000 * 20);/// Sleep for 20 seconds here this will hopfully allow the update to occur and fix any problems
             }
         }
@@ -245,7 +235,7 @@ namespace EQTool
             UITimer.Elapsed += UITimer_Elapsed;
             UITimer.Enabled = true;
 #endif
-            container.Resolve<LoggingService>().Log(string.Empty, EventType.StartUp);
+            container.Resolve<LoggingService>().Log(string.Empty, EventType.StartUp, null);
             SettingsMenuItem = new System.Windows.Forms.MenuItem("Settings", ToggleSettingsWindow);
             var standardgroup = new System.Windows.Forms.MenuItem("Standard Groups", CreateStandardGroup);
             var hotclericsamegroup = new System.Windows.Forms.MenuItem("HOT Clerics Same Group", CreateHOTClericsSameGroup);

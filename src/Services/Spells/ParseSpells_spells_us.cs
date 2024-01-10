@@ -1,4 +1,5 @@
 ﻿using EQTool.Models;
+using EQTool.ViewModels;
 using EQToolShared.Enums;
 using System;
 using System.Collections.Generic;
@@ -13,11 +14,13 @@ namespace EQTool.Services
         private List<SpellBase> _Spells = new List<SpellBase>();
         private readonly EQToolSettings settings;
         private readonly LoggingService loggingService;
+        private readonly ActivePlayer activePlayer;
 
-        public ParseSpells_spells_us(EQToolSettings settings, LoggingService loggingService)
+        public ParseSpells_spells_us(EQToolSettings settings, LoggingService loggingService, ActivePlayer activePlayer)
         {
             this.settings = settings;
             this.loggingService = loggingService;
+            this.activePlayer = activePlayer;
         }
 
         private readonly HashSet<string> IgnoreSpells = new HashSet<string>()
@@ -148,7 +151,7 @@ namespace EQTool.Services
                         }
                         catch (Exception ex)
                         {
-                            loggingService.Log(ex.ToString(), App.EventType.Error);
+                            loggingService.Log(ex.ToString(), EventType.Error, activePlayer?.Player?.Server);
                         }
                     }
                 }
@@ -293,7 +296,7 @@ namespace EQTool.Services
                 }
                 catch (Exception ex)
                 {
-                    loggingService.Log(ex.ToString(), App.EventType.Error);
+                    loggingService.Log(ex.ToString(), EventType.Error, activePlayer?.Player?.Server);
                 }
             }
 

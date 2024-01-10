@@ -1,4 +1,6 @@
 ﻿using EQTool.Models;
+using EQTool.ViewModels;
+using EQToolShared.Enums;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -13,9 +15,12 @@ namespace EQTool.Services
     public class MapLoad
     {
         private readonly LoggingService loggingService;
-        public MapLoad(LoggingService loggingService)
+        private readonly ActivePlayer activePlayer;
+
+        public MapLoad(LoggingService loggingService, ActivePlayer activePlayer)
         {
             this.loggingService = loggingService;
+            this.activePlayer = activePlayer;
         }
         public ParsedData Load(string zone)
         {
@@ -74,7 +79,7 @@ namespace EQTool.Services
                 }
                 catch (Exception ex)
                 {
-                    loggingService.Log(ex.ToString(), App.EventType.Error);
+                    loggingService.Log(ex.ToString(), EventType.Error, activePlayer?.Player?.Server);
                 }
             }
             try
@@ -109,7 +114,7 @@ namespace EQTool.Services
             }
             catch (Exception ex)
             {
-                loggingService.Log(ex.ToString(), App.EventType.Error);
+                loggingService.Log(ex.ToString(), EventType.Error, activePlayer?.Player?.Server);
             }
             return d;
         }

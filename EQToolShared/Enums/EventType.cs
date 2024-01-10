@@ -5,7 +5,8 @@
         Release,
         Debug,
         Test,
-        Beta
+        Beta,
+        Quarm
     }
     public enum EventType
     {

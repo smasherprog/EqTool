@@ -1,4 +1,5 @@
 ﻿using EQTool.ViewModels;
+using EQToolShared.Enums;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -69,7 +70,7 @@ namespace EQTool.Services
             }
             catch (Exception ex)
             {
-                loggingService.Log(ex.ToString(), App.EventType.Error);
+                loggingService.Log(ex.ToString(), EventType.Error, activePlayer?.Player?.Server);
             }
         }
 

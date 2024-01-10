@@ -1,6 +1,7 @@
 ﻿using EQTool.Models;
 using EQTool.Services;
 using EQTool.ViewModels;
+using EQToolShared.Enums;
 using EQToolShared.Map;
 using System;
 using System.ComponentModel;
@@ -42,7 +43,7 @@ namespace EQTool
             IAppDispatcher appDispatcher,
             LoggingService loggingService)
         {
-            loggingService.Log(string.Empty, App.EventType.OpenMap);
+            loggingService.Log(string.Empty, EventType.OpenMap, activePlayer?.Player?.Server);
             this.settings = settings;
             this.activePlayer = activePlayer;
             this.signalrPlayerHub = signalrPlayerHub;

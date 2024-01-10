@@ -420,11 +420,10 @@ namespace EQTool.Services
                     PlayerZonedEvent?.Invoke(this, new PlayerZonedEventArgs { Zone = matchedzone });
                     return;
                 }
-
             }
             catch (Exception e)
             {
-                App.LogUnhandledException(e, $"LogParser Filename: '{activePlayer.LogFileName}' '{line1}'");
+                App.LogUnhandledException(e, $"LogParser Filename: '{activePlayer.LogFileName}' '{line1}'", this.activePlayer?.Player?.Server);
             }
         }
 
@@ -519,7 +518,7 @@ namespace EQTool.Services
                 }
                 catch (Exception ex) when (!(ex is System.IO.IOException))
                 {
-                    App.LogUnhandledException(ex, "LogParser DispatchUI");
+                    App.LogUnhandledException(ex, "LogParser DispatchUI", activePlayer?.Player?.Server);
                 }
                 finally
                 {

@@ -1,6 +1,7 @@
 ﻿using EQTool.Models;
 using EQTool.Services;
 using EQTool.ViewModels;
+using EQToolShared.Enums;
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -32,7 +33,7 @@ namespace EQTool
 
         public MobInfo(ActivePlayer activePlayer, PigParseApi pigParseApi, WikiApi wikiApi, LogParser logParser, EQToolSettings settings, EQToolSettingsLoad toolSettingsLoad, LoggingService loggingService)
         {
-            loggingService.Log(string.Empty, App.EventType.OpenMobInfo);
+            loggingService.Log(string.Empty, EventType.OpenMobInfo, activePlayer?.Player?.Server);
             this.activePlayer = activePlayer;
             this.pigParseApi = pigParseApi;
             this.wikiApi = wikiApi;
@@ -78,7 +79,7 @@ namespace EQTool
                 if (!mobInfoViewModel.ErrorResults.Contains("The underlying connection was closed:"))
                 {
                     mobInfoViewModel.ErrorResults = "The server is down. Try again";
-                    App.LogUnhandledException(ex, $"LogParser_ConEvent {e.Name}");
+                    App.LogUnhandledException(ex, $"LogParser_ConEvent {e.Name}", activePlayer?.Player?.Server);
                 }
             }
         }

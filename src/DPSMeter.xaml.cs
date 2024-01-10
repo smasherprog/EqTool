@@ -1,6 +1,7 @@
 ﻿using EQTool.Models;
 using EQTool.Services;
 using EQTool.ViewModels;
+using EQToolShared.Enums;
 using EQToolShared.Map;
 using System;
 using System.Collections.Generic;
@@ -35,7 +36,7 @@ namespace EQTool
         public DPSMeter(LogParser logParser, DPSWindowViewModel dPSWindowViewModel, EQToolSettings settings, EQToolSettingsLoad toolSettingsLoad, LoggingService loggingService, ActivePlayer activePlayer)
         {
             this.activePlayer = activePlayer;
-            loggingService.Log(string.Empty, App.EventType.OpenDPS);
+            loggingService.Log(string.Empty, EventType.OpenDPS, activePlayer?.Player?.Server);
             this.settings = settings;
             this.logParser = logParser;
             this.logParser.FightHitEvent += LogParser_FightHitEvent;
