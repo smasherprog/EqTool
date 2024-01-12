@@ -16,6 +16,7 @@ Instructions:
 Features:
 <br/>
 <ul>
+<li>Add root break Visual/Audio trigger. </li> 
 <li>Kael faction pull timer Automatically added for everyone regardless of what zone you are in. </li> 
 <li>Automatically add timers on death of npc so you dont have to!</li> 
 <li>Detect EQ directory location instead of user required to enter it.</li> 
@@ -56,7 +57,8 @@ Features:
 
 <h4>TO DO List EQTool</h4>
 <ul>  
-  <li>Add FD audio and visual triggers.</li>   
+  <li>Map center on you.</li>  
+   <li>Add Window Snapping code so windows can be grouped and all moved together.</li>   
  <li>Remove timers from map when timers removed from list and visa versa.</li>   
  <li>Add code to show MOB hits per second.</li>   
  <li>Port application to be cross platform(mac, win, linux).</li>   
