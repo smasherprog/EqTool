@@ -779,10 +779,10 @@ namespace EQTool.ViewModels
                         }
                     }
                 }
-                else
+                else if (child is MapWidget)
                 {
-                    //Canvas.SetLeft(child, sx);
-                    // Canvas.SetTop(child, sy);
+                    Canvas.SetLeft(child, sx);
+                    Canvas.SetTop(child, sy);
                     // child.RenderTransform = Transform;
                 }
             }
