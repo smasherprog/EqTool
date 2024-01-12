@@ -1086,6 +1086,11 @@ namespace EQToolShared.Map
                       {
                             Name = "Capee",
                             RespawnTime =  new TimeSpan(0, 8, 0)
+                      },
+                    new NpcSpawnTime
+                      {
+                            Name = "Svunsa",
+                            RespawnTime =  new TimeSpan(0, 8, 0)
                       }
 
                  },
