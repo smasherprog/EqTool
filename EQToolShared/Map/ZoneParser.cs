@@ -1075,7 +1075,7 @@ namespace EQToolShared.Map
                                 new NpcSpawnTime
                       {
                             Name = "Uglan",
-                            RespawnTime =  new TimeSpan(0, 8, 0)
+                            RespawnTime =  new TimeSpan(0, 6, 40)
                       },
                     new NpcSpawnTime
                       {
@@ -1085,12 +1085,12 @@ namespace EQToolShared.Map
                     new NpcSpawnTime
                       {
                             Name = "Capee",
-                            RespawnTime =  new TimeSpan(0, 8, 0)
+                            RespawnTime =  new TimeSpan(0, 6, 40)
                       },
                     new NpcSpawnTime
                       {
                             Name = "Svunsa",
-                            RespawnTime =  new TimeSpan(0, 8, 0)
+                            RespawnTime =  new TimeSpan(0, 6, 40)
                       }
 
                  },
