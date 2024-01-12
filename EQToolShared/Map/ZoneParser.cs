@@ -784,6 +784,11 @@ namespace EQToolShared.Map
                 {
                     new NpcSpawnTime
                     {
+                        Name = "Guard Chopin",
+                        RespawnTime = new TimeSpan(0, 3, 0)
+                    },
+                    new NpcSpawnTime
+                    {
                         Name = "Guard Blayle",
                         RespawnTime = new TimeSpan(0, 3, 0)
                     },
