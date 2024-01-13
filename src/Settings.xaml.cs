@@ -736,11 +736,6 @@ namespace EQTool
         }
         private void testFTE(object sender, RoutedEventArgs e)
         {
-            var z = SettingsWindowData.ActivePlayer?.Player?.Zone;
-            if (string.IsNullOrWhiteSpace(z))
-            {
-                return;
-            }
             if (SettingsWindowData.ActivePlayer?.Player == null)
             {
                 return;
@@ -748,13 +743,7 @@ namespace EQTool
             SettingsWindowData.ActivePlayer.Player.FTEOverlay = true;
             SettingsWindowData.ActivePlayer.Player.FTEAudio = true;
             ((App)System.Windows.Application.Current).OpenOverLayWindow();
-            if (ZoneParser.ZoneInfoMap.TryGetValue(z, out var zone))
-            {
-                if (zone.NotableNPCs.Any())
-                {
-                    this.PushLog(zone.NotableNPCs.FirstOrDefault() + " engages Tzvia!");
-                }
-            }
+            this.PushLog("Dagarn the Destroyer engages Tzvia!");
         }
         private void testGroupInvite(object sender, RoutedEventArgs e)
         {

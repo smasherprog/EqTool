@@ -50,7 +50,8 @@ namespace EQTool
             UpdateMessages.Add(new UpdateMessageData
             {
                 DateTime = new DateTime(2024, 1, 13),
-                Message = $"* Group invite Audio/Visual Triggers.{Environment.NewLine}"
+                Message = $"* Group invite Audio/Visual Triggers.{Environment.NewLine}" +
+                     $"* Fixed FTE test button so it works in all zones now!"
             });
         }
     }
