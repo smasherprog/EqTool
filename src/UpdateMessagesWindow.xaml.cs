@@ -50,14 +50,8 @@ namespace EQTool
             UpdateMessages.Add(new UpdateMessageData
             {
                 DateTime = new DateTime(2024, 1, 13),
-                Message = $"* Group invite Audo/Visual Triggers.{Environment.NewLine}" +
-                 $"* Added more CH chain scenarios. Going to add many different formats so by the end most ch formats will just work.{Environment.NewLine}" +
-                 $"* A little bit of perf improvement to maps.{Environment.NewLine}" +
-                 $"* Added Feign Audio/Visual alerts.{Environment.NewLine}" +
-                 $"* Fixed some bugs where the wrong checks were in place for several overlays.{Environment.NewLine}"
+                Message = $"* Group invite Audio/Visual Triggers.{Environment.NewLine}"
             });
-
-
         }
     }
 }

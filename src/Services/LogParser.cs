@@ -537,7 +537,7 @@ namespace EQTool.Services
                         MainRun(line);
                     }
                 }
-                catch (Exception ex) when (!(ex is System.IO.IOException))
+                catch (Exception ex) when (!(ex is System.IO.IOException) && !(ex is UnauthorizedAccessException))
                 {
                     App.LogUnhandledException(ex, "LogParser DispatchUI", activePlayer?.Player?.Server);
                 }
