@@ -55,7 +55,9 @@ Features:
 <img width="152" alt="image" src="https://user-images.githubusercontent.com/3393733/212717141-6e26b9af-660a-493d-9f73-2c3464b7c224.png">
 
 <h4>TO DO List EQTool</h4>
-<ul>  <li>Add root break Visual/Audio trigger. </li> 
+<ul> 
+  <li>Add ring war triggers. </li> 
+ <li>Add root break Visual/Audio trigger. </li> 
   <li>Map center on you.</li>  
    <li>Add Window Snapping code so windows can be grouped and all moved together.</li>   
  <li>Remove timers from map when timers removed from list and visa versa.</li>   
