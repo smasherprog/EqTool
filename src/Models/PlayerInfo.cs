@@ -284,6 +284,28 @@ namespace EQTool.Models
 
         public List<PlayerClasses> ShowSpellsForClasses { get; set; }
 
+        private bool _GroupInviteOverlay;
+        public bool GroupInviteOverlay
+        {
+            get => _GroupInviteOverlay;
+            set
+            {
+                _GroupInviteOverlay = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _GroupInviteAudio;
+        public bool GroupInviteAudio
+        {
+            get => _GroupInviteAudio;
+            set
+            {
+                _GroupInviteAudio = value;
+                OnPropertyChanged();
+            }
+        }
+
         private bool _FailedFeignOverlay;
         public bool FailedFeignOverlay
         {

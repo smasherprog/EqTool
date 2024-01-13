@@ -18,6 +18,15 @@ namespace EQTool.Services
             this.logParser.FTEEvent += LogParser_FTEEvent;
             this.logParser.CharmBreakEvent += LogParser_CharmBreakEvent;
             this.logParser.FailedFeignEvent += LogParser_FailedFeignEvent;
+            this.logParser.GroupInviteEvent += LogParser_GroupInviteEvent; ;
+        }
+
+        private void LogParser_GroupInviteEvent(object sender, string e)
+        {
+            if (this.activePlayer?.Player?.GroupInviteAudio == true)
+            {
+                this.PlayResource(e);
+            }
         }
 
         private void LogParser_FailedFeignEvent(object sender, string e)

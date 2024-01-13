@@ -47,6 +47,7 @@ namespace EQTool.Services
         private readonly FTEParser fTEParser;
         private readonly CharmBreakParser charmBreakParser;
         private readonly FailedFeignParser failedFeignParser;
+        private readonly GroupInviteParser groupInviteParser;
 
         private bool StartingWhoOfZone = false;
         private bool Processing = false;
@@ -54,6 +55,7 @@ namespace EQTool.Services
         private bool HasUsedStartupEnterWorld = false;
 
         public LogParser(
+            GroupInviteParser groupInviteParser,
             CharmBreakParser charmBreakParser,
             FTEParser fTEParser,
             ChParser chParser,
@@ -79,6 +81,7 @@ namespace EQTool.Services
             FailedFeignParser failedFeignParser
             )
         {
+            this.groupInviteParser = groupInviteParser;
             this.failedFeignParser = failedFeignParser;
             this.charmBreakParser = charmBreakParser;
             this.fTEParser = fTEParser;
@@ -188,6 +191,7 @@ namespace EQTool.Services
         public event EventHandler<FTEParserData> FTEEvent;
         public event EventHandler<CharmBreakArgs> CharmBreakEvent;
         public event EventHandler<string> FailedFeignEvent;
+        public event EventHandler<string> GroupInviteEvent;
         public event EventHandler<SpellWornOffOtherEventArgs> SpellWornOtherOffEvent;
 
         public event EventHandler<SpellEventArgs> StartCastingEvent;
@@ -406,10 +410,17 @@ namespace EQTool.Services
                     return;
                 }
 
-                var feignmsg = this.failedFeignParser.FailedFaignCheck(message);
-                if (!string.IsNullOrWhiteSpace(feignmsg))
+                var stringmsg = this.failedFeignParser.FailedFaignCheck(message);
+                if (!string.IsNullOrWhiteSpace(stringmsg))
                 {
-                    FailedFeignEvent?.Invoke(this, feignmsg);
+                    FailedFeignEvent?.Invoke(this, stringmsg);
+                    return;
+                }
+
+                stringmsg = this.groupInviteParser.Parse(message);
+                if (!string.IsNullOrWhiteSpace(stringmsg))
+                {
+                    GroupInviteEvent?.Invoke(this, stringmsg);
                     return;
                 }
 

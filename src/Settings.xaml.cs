@@ -756,6 +756,17 @@ namespace EQTool
                 }
             }
         }
+        private void testGroupInvite(object sender, RoutedEventArgs e)
+        {
+            if (SettingsWindowData.ActivePlayer?.Player == null)
+            {
+                return;
+            }
+            SettingsWindowData.ActivePlayer.Player.GroupInviteOverlay = true;
+            SettingsWindowData.ActivePlayer.Player.GroupInviteAudio = true;
+            ((App)System.Windows.Application.Current).OpenOverLayWindow();
+            this.PushLog($"Tzvia invites you to join a group.");
+        }
 
         private void testChChain(object sender, RoutedEventArgs e)
         {
