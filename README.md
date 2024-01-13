@@ -56,6 +56,7 @@ Features:
 
 <h4>TO DO List EQTool</h4>
 <ul> 
+  <li>Add group invite Audio/Visual triggers. </li> 
   <li>Add ring war triggers. </li> 
  <li>Add root break Visual/Audio trigger. </li> 
   <li>Map center on you.</li>  
