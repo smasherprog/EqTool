@@ -56,6 +56,7 @@ Features:
 
 <h4>TO DO List EQTool</h4>
 <ul>  
+   <li>Sharing of triggers for those nearby. </li>  
   <li>Add ring war triggers. </li>  
   <li>Map center on you.</li>  
    <li>Add Window Snapping code so windows can be grouped and all moved together.</li>   
