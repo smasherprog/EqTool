@@ -161,6 +161,17 @@ namespace EQTool.ViewModels
             "Cinder Jolt",
         };
 
+        private readonly List<string> SpellsThatDragonsDo = new List<string>()
+        {
+            "Dragon Roar",
+            "Silver Breath",
+            "Ice Breath",
+            "Mind Cloud",
+            "Rotting Flesh",
+            "Putrefy Flesh",
+            "Stun Breath"
+        };
+
         public void TryAdd(SpellParsingMatch match)
         {
             if (match?.Spell == null)
@@ -171,11 +182,6 @@ namespace EQTool.ViewModels
             appDispatcher.DispatchUI(() =>
             {
                 var spellname = match.Spell.name;
-                if (match.MultipleMatchesFound)
-                {
-                    spellname = "??? " + spellname;
-                }
-
                 if (string.Equals(match.Spell.name, "Harvest", StringComparison.OrdinalIgnoreCase) && match.TargetName == EQSpells.SpaceYou)
                 {
                     TryAddCustom(new CustomTimer
@@ -187,18 +193,24 @@ namespace EQTool.ViewModels
                     });
                     return;
                 }
-                if (string.Equals(match.Spell.name, "Mind Cloud", StringComparison.OrdinalIgnoreCase) || string.Equals(match.Spell.name, "Ice Breath", StringComparison.OrdinalIgnoreCase))
+                if (SpellsThatDragonsDo.Contains(match.Spell.name))
                 {
                     TryAddCustom(new CustomTimer
                     {
-                        DurationInSeconds = 120,
+                        DurationInSeconds = (int)(match.Spell.recastTime / 1000.0),
                         Name = "--CoolDown-- " + spellname,
                         SpellNameIcon = spellname,
                         SpellType = SpellTypes.BadGuyCoolDown
                     });
+                    return;
                 }
+
                 if (match.Spell.name.EndsWith("Discipline"))
                 {
+                    if (match.TargetName != EQSpells.SpaceYou)
+                    {
+                        return;
+                    }
                     var basetime = (int)(match.Spell.recastTime / 1000.0);
                     var playerlevel = this.activePlayer.Player.Level;
                     if (match.Spell.name == "Evasive Discipline")

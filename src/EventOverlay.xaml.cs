@@ -66,7 +66,63 @@ namespace EQTool
             logParser.CharmBreakEvent += LogParser_CharmBreakEvent;
             logParser.FailedFeignEvent += LogParser_FailedFeignEvent;
             logParser.GroupInviteEvent += LogParser_GroupInviteEvent;
+            logParser.StartCastingEvent += LogParser_StartCastingEvent;
             settings.OverlayWindowState.Closed = false;
+        }
+
+        private void LogParser_StartCastingEvent(object sender, LogParser.SpellEventArgs e)
+        {
+            var overlay = this.activePlayer?.Player?.DragonRoarOverlay ?? false;
+            if (!overlay || e.Spell.Spell.name != "Dragon Roar")
+            {
+                return;
+            }
+
+            System.Threading.Tasks.Task.Factory.StartNew(() =>
+            {
+                System.Threading.Thread.Sleep(1000 * 30);
+                this.appDispatcher.DispatchUI(() =>
+                {
+                    CenterText.Text = "Dragon Roar in 6 Seconds!";
+                    CenterText.Foreground = Brushes.Red;
+                });
+                System.Threading.Thread.Sleep(1000);
+                this.appDispatcher.DispatchUI(() =>
+                {
+                    CenterText.Text = "Dragon Roar in 5 Seconds!";
+                    CenterText.Foreground = Brushes.Red;
+                });
+                System.Threading.Thread.Sleep(1000);
+                this.appDispatcher.DispatchUI(() =>
+                {
+                    CenterText.Text = "Dragon Roar in 4 Seconds!";
+                    CenterText.Foreground = Brushes.Red;
+                });
+                System.Threading.Thread.Sleep(1000);
+                this.appDispatcher.DispatchUI(() =>
+                {
+                    CenterText.Text = "Dragon Roar in 3 Seconds!";
+                    CenterText.Foreground = Brushes.Red;
+                });
+                System.Threading.Thread.Sleep(1000);
+                this.appDispatcher.DispatchUI(() =>
+                {
+                    CenterText.Text = "Dragon Roar in 2 Seconds!";
+                    CenterText.Foreground = Brushes.Red;
+                });
+                System.Threading.Thread.Sleep(1000);
+                this.appDispatcher.DispatchUI(() =>
+                {
+                    CenterText.Text = "Dragon Roar in 1 Seconds!";
+                    CenterText.Foreground = Brushes.Red;
+                });
+                System.Threading.Thread.Sleep(1000);
+                this.appDispatcher.DispatchUI(() =>
+                {
+                    CenterText.Text = string.Empty;
+                    CenterText.Foreground = Brushes.Red;
+                });
+            });
         }
 
         private void LogParser_GroupInviteEvent(object sender, string e)

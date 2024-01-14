@@ -396,6 +396,7 @@
     <Compile Include="Services\LoggingService.cs" />
     <Compile Include="Services\MapOpacityHelper.cs" />
     <Compile Include="Services\MapViewModelService.cs" />
+    <Compile Include="Services\Parsing\NPCSpellParser.cs" />
     <Compile Include="Services\Parsing\GroupInviteParser.cs" />
     <Compile Include="Services\Parsing\FailedFeignParser.cs" />
     <Compile Include="Services\Parsing\FTEParser.cs" />

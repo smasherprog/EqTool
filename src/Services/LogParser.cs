@@ -191,7 +191,7 @@ namespace EQTool.Services
         public event EventHandler<FTEParserData> FTEEvent;
         public event EventHandler<CharmBreakArgs> CharmBreakEvent;
         public event EventHandler<string> FailedFeignEvent;
-        public event EventHandler<string> GroupInviteEvent;
+        public event EventHandler<string> GroupInviteEvent; 
         public event EventHandler<SpellWornOffOtherEventArgs> SpellWornOtherOffEvent;
 
         public event EventHandler<SpellEventArgs> StartCastingEvent;

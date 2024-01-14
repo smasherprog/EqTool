@@ -173,6 +173,114 @@ namespace EQToolTests
         }
 
         [TestMethod]
+        public void TestNPCSpellKlandicar1()
+        {
+            var service = container.Resolve<NPCSpellParser>();
+            var message = "You feel your skin freeze.";
+            var spell = service.ParseNPCSpell(message);
+            Assert.AreEqual(spell.name, "Silver Breath");
+        }
+
+        [TestMethod]
+        public void TestNPCSpellKlandicar2()
+        {
+            var service = container.Resolve<NPCSpellParser>();
+            var message = "Someone's skin freezes.";
+            var spell = service.ParseNPCSpell(message);
+            Assert.AreEqual(spell.name, "Silver Breath");
+        }
+
+        [TestMethod]
+        public void TestDragonRoar()
+        {
+            var service = container.Resolve<NPCSpellParser>();
+            var message = "You flee in terror.";
+            var spell = service.ParseNPCSpell(message);
+            Assert.AreEqual(spell.name, "Dragon Roar");
+        }
+
+        [TestMethod]
+        public void TestDragonRoarResist()
+        {
+            var service = container.Resolve<NPCSpellParser>();
+            var message = "You resist the Dragon Roar spell!";
+            var spell = service.ParseNPCSpell(message);
+            Assert.AreEqual(spell.name, "Dragon Roar");
+        }
+
+        [TestMethod]
+        public void TestStunBreath1()
+        {
+            var service = container.Resolve<NPCSpellParser>();
+            var message = "Your eardrums rupture.";
+            var spell = service.ParseNPCSpell(message);
+            Assert.AreEqual(spell.name, "Stun Breath");
+        }
+
+        [TestMethod]
+        public void TestStunBreath2()
+        {
+            var service = container.Resolve<NPCSpellParser>();
+            var message = "Someone staggers with intense pain.";
+            var spell = service.ParseNPCSpell(message);
+            Assert.AreEqual(spell.name, "Stun Breath");
+        }
+
+        [TestMethod]
+        public void TestRottingFlesh()
+        {
+            var service = container.Resolve<NPCSpellParser>();
+            var message = "Your flesh begins to rot.";
+            var spell = service.ParseNPCSpell(message);
+            Assert.AreEqual(spell.name, "Rotting Flesh");
+        }
+
+        [TestMethod]
+        public void TestRottingFlesh2()
+        {
+            var service = container.Resolve<NPCSpellParser>();
+            var message = "Someone's flesh begins to rot.";
+            var spell = service.ParseNPCSpell(message);
+            Assert.AreEqual(spell.name, "Rotting Flesh");
+        }
+
+        [TestMethod]
+        public void TestPutrefyFlesh()
+        {
+            var service = container.Resolve<NPCSpellParser>();
+            var message = "Your flesh begins to liquefy.";
+            var spell = service.ParseNPCSpell(message);
+            Assert.AreEqual(spell.name, "Putrefy Flesh");
+        }
+
+        [TestMethod]
+        public void TestPutrefyFlesh2()
+        {
+            var service = container.Resolve<NPCSpellParser>();
+            var message = "Someone's flesh begins to liquefy.";
+            var spell = service.ParseNPCSpell(message);
+            Assert.AreEqual(spell.name, "Putrefy Flesh");
+        }
+
+        [TestMethod]
+        public void TestImmolatingBreath()
+        {
+            var service = container.Resolve<NPCSpellParser>();
+            var message = "Your flesh is seared from your bones.";
+            var spell = service.ParseNPCSpell(message);
+            Assert.AreEqual(spell.name, "Immolating Breath");
+        }
+
+        [TestMethod]
+        public void TestImmolatingBreath2()
+        {
+            var service = container.Resolve<NPCSpellParser>();
+            var message = "Someone's flesh is seared.";
+            var spell = service.ParseNPCSpell(message);
+            Assert.AreEqual(spell.name, "Immolating Breath");
+        }
+
+        [TestMethod]
         public void TestSpellMatchCorrectlySk30_GrimAura()
         {
             var spells = container.Resolve<EQSpells>();

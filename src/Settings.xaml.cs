@@ -756,6 +756,17 @@ namespace EQTool
             ((App)System.Windows.Application.Current).OpenOverLayWindow();
             this.PushLog($"Tzvia invites you to join a group.");
         }
+        private void testDragonRoar(object sender, RoutedEventArgs e)
+        {
+            if (SettingsWindowData.ActivePlayer?.Player == null)
+            {
+                return;
+            }
+            SettingsWindowData.ActivePlayer.Player.DragonRoarAudio = true;
+            SettingsWindowData.ActivePlayer.Player.DragonRoarOverlay = true;
+            ((App)System.Windows.Application.Current).OpenOverLayWindow();
+            this.PushLog($"You resist the Dragon Roar spell!");
+        }
 
         private void testChChain(object sender, RoutedEventArgs e)
         {

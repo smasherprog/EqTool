@@ -18,7 +18,32 @@ namespace EQTool.Services
             this.logParser.FTEEvent += LogParser_FTEEvent;
             this.logParser.CharmBreakEvent += LogParser_CharmBreakEvent;
             this.logParser.FailedFeignEvent += LogParser_FailedFeignEvent;
-            this.logParser.GroupInviteEvent += LogParser_GroupInviteEvent; ;
+            this.logParser.GroupInviteEvent += LogParser_GroupInviteEvent;
+            this.logParser.StartCastingEvent += LogParser_StartCastingEvent;
+        }
+
+        private void LogParser_StartCastingEvent(object sender, LogParser.SpellEventArgs e)
+        {
+            var overlay = this.activePlayer?.Player?.DragonRoarAudio ?? false;
+            if (!overlay || e.Spell.Spell.name != "Dragon Roar")
+            {
+                return;
+            }
+
+            System.Threading.Tasks.Task.Factory.StartNew(() =>
+            {
+                System.Threading.Thread.Sleep(1000 * 30);
+                this.PlayResource($"Dragon Roar in 6 Seconds!");
+                System.Threading.Thread.Sleep(1000);
+                System.Threading.Thread.Sleep(1000);
+                this.PlayResource($"4 Seconds!");
+                System.Threading.Thread.Sleep(1000);
+                System.Threading.Thread.Sleep(1000);
+                this.PlayResource($"2");
+                System.Threading.Thread.Sleep(1000);
+                this.PlayResource($"1");
+                System.Threading.Thread.Sleep(1000);
+            });
         }
 
         private void LogParser_GroupInviteEvent(object sender, string e)
