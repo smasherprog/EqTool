@@ -718,6 +718,11 @@ namespace EQToolShared.Map
                       {
                            Name = "a protector of growth",
                             RespawnTime = new TimeSpan(0, 24, 0)
+                      },
+                    new NpcSpawnTime
+                      {
+                           Name = "Tunare",
+                            RespawnTime = new TimeSpan(0, 0, 1)
                       }
                  },
                 RespawnTime = new TimeSpan(12, 0, 0)
@@ -1019,7 +1024,15 @@ namespace EQToolShared.Map
                 {
                     "an advisor","an avenging caitiff","Black Dire","Butler Syncall","a cloaked dhampyre","a deathly usher","Enynti","Garton Viswin","a glyphed ghoul","an imp familiar","Lasna Cheroon","Maid Issis","Mayong Mistmoore","Mynthi Davissi","Princess Cherista","Ssynthi","Xicotl",
                 },
-                RespawnTime = new TimeSpan(0, 22, 00)
+                RespawnTime = new TimeSpan(0, 22, 00),
+                NpcSpawnTimes = new List<NpcSpawnTime>()
+                {
+                    new NpcSpawnTime
+                    {
+                         Name = "an Advisor",
+                         RespawnTime = new TimeSpan(4, 0, 0)
+                    }
+                }
             });
             ZoneInfoMap.Add("misty", new ZoneInfo
             {
@@ -1147,7 +1160,15 @@ namespace EQToolShared.Map
                 ShowAllMapLevels = true,
                 ZoneLevelHeight = 10,
                 NotableNPCs = new List<string>() { "Cazel", "Hatar", "Lockjaw", "Young Ronin", },
-                RespawnTime = new TimeSpan(0, 16, 30)
+                RespawnTime = new TimeSpan(0, 6, 40),
+                NpcSpawnTimes = new List<NpcSpawnTime>()
+                 {
+                     new NpcSpawnTime
+                     {
+                         Name = "A Spectre",
+                          RespawnTime = new TimeSpan(0, 16, 30)
+                     }
+                 }
             });
             ZoneInfoMap.Add("oggok", new ZoneInfo
             {
@@ -1370,7 +1391,20 @@ namespace EQToolShared.Map
                 ShowAllMapLevels = false,
                 ZoneLevelHeight = 10,
                 NotableNPCs = new List<string>() { "Arch Duke Iatol", "Baron Yosig", "blood of chottal", "Brogg", "crypt caretaker", "Emperor Chottal", "frenzied pox scarab", "Froggy", "froglok armorer", "froglok armsman", "froglok chef", "froglok commander", "froglok ostiary", "froglok pickler", "froglok repairer", "Gangrenous scarab", "Gruplinort", "Harbinger Freglor", "Hierophant Prime Grekal", "myconid spore king", "a necrosis scarab", "sebilite protector", "Tolapumj", "Trakanon", },
-                RespawnTime = new TimeSpan(0, 27, 0)
+                RespawnTime = new TimeSpan(0, 27, 0),
+                NpcSpawnTimes = new List<NpcSpawnTime>()
+                 {
+                      new NpcSpawnTime
+                      {
+                           Name = "Tolapumj",
+                            RespawnTime = new TimeSpan(2, 45, 0)
+                      },
+                       new NpcSpawnTime
+                      {
+                           Name = "Sebilite protector",
+                           RespawnTime = new TimeSpan(2, 45, 0)
+                      }
+                 }
             });
             ZoneInfoMap.Add("sirens", new ZoneInfo
             {

@@ -51,7 +51,12 @@ namespace EQTool
             {
                 DateTime = new DateTime(2024, 1, 13),
                 Message = $"* Group invite Audio/Visual Triggers.{Environment.NewLine}" +
-                     $"* Fixed FTE test button so it works in all zones now!"
+                     $"* Fixed FTE test button so it works in all zones now!{Environment.NewLine}" +
+                     $"* Fixed following timers: {Environment.NewLine}" +
+                     $"*     an advisor -> 4 hours {Environment.NewLine}" +
+                     $"*     oasis zone -> 6:40  {Environment.NewLine}" +
+                     $"*     Tolapumj -> 2:45 {Environment.NewLine}" +
+                     $"*     Sebilite protector -> 2:45"
             });
         }
     }
