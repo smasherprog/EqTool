@@ -187,6 +187,13 @@ namespace EQTool.Services
                             spell.cast_on_you = spell.cast_on_you.Replace("..", ".");
                         }
                     }
+                    if (spell.cast_on_you.Contains("You feel your skin freeze."))
+                    {
+                        if (spell.name != "Silver Breath")
+                        {
+                            continue;
+                        }
+                    }
 
                     if (spell.name.StartsWith("Primal Essence"))
                     {

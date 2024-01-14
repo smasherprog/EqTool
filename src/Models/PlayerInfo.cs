@@ -284,6 +284,28 @@ namespace EQTool.Models
 
         public List<PlayerClasses> ShowSpellsForClasses { get; set; }
 
+        private bool _DragonRoarOverlay;
+        public bool DragonRoarOverlay
+        {
+            get => _DragonRoarOverlay;
+            set
+            {
+                _DragonRoarOverlay = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _DragonRoarAudio;
+        public bool DragonRoarAudio
+        {
+            get => _DragonRoarAudio;
+            set
+            {
+                _DragonRoarAudio = value;
+                OnPropertyChanged();
+            }
+        }
+
         private bool _GroupInviteOverlay;
         public bool GroupInviteOverlay
         {

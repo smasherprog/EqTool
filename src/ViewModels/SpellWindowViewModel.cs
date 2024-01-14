@@ -161,6 +161,12 @@ namespace EQTool.ViewModels
             "Cinder Jolt",
         };
 
+        private readonly List<string> SpellsThatDragonsDo = new List<string>()
+        {
+            "Dragon Roar",
+            "Silver Breath"
+        };
+
         public void TryAdd(SpellParsingMatch match)
         {
             if (match?.Spell == null)
@@ -197,6 +203,18 @@ namespace EQTool.ViewModels
                         SpellType = SpellTypes.BadGuyCoolDown
                     });
                 }
+                if (SpellsThatDragonsDo.Contains(match.Spell.name))
+                {
+                    TryAddCustom(new CustomTimer
+                    {
+                        DurationInSeconds = (int)(match.Spell.recastTime / 1000.0),
+                        Name = "--CoolDown-- " + spellname,
+                        SpellNameIcon = spellname,
+                        SpellType = SpellTypes.BadGuyCoolDown
+                    });
+                    return;
+                }
+
                 if (match.Spell.name.EndsWith("Discipline"))
                 {
                     var basetime = (int)(match.Spell.recastTime / 1000.0);
