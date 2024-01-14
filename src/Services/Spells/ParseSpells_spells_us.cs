@@ -48,7 +48,25 @@ namespace EQTool.Services
             "Bond of Sathir",
             "Soul Consumption R.",
             "Soul Claw Strike",
-            "Malevolent Vex"
+            "Malevolent Vex",
+            "Caustic Mist",
+            "Ojun Roar",
+            "Dragon Bellow",
+            "Ice Comet",
+            "IceBoneFrostBurst",
+            "FrostAOE",
+            "Ring of Winter",
+            "Cloud of Disempowerment",
+            "Wave of Cold",
+            "Frost Shards",
+            "Umbral Rot",
+            "Grimling Rot",
+            "Crystal Roar",
+            "Rimebone Frost Burst",
+            "Trushar's Frost",
+            "Icicle Shock",
+            "Shock of Frost",
+            "Talendor's Immolating Breath"
         };
 
         private readonly List<string> IgnoreRomanNumerals = new List<string>()
@@ -86,6 +104,7 @@ namespace EQTool.Services
             "Berserker Madness",
             "Blinding Poison",
             "Feeble Mind"
+
         };
 
         public class EpicSpellTime
@@ -187,13 +206,6 @@ namespace EQTool.Services
                             spell.cast_on_you = spell.cast_on_you.Replace("..", ".");
                         }
                     }
-                    if (spell.cast_on_you.Contains("You feel your skin freeze."))
-                    {
-                        if (spell.name != "Silver Breath")
-                        {
-                            continue;
-                        }
-                    }
 
                     if (spell.name.StartsWith("Primal Essence"))
                     {
@@ -263,6 +275,15 @@ namespace EQTool.Services
                     {
                         //Debug.WriteLine($"Skipping {spell.SpellType} {spell.name} IgnoreSpellTypes");
                         continue;
+                    }
+
+                    if (spell.cast_on_you.Contains("Your flesh is seared from your bones."))
+                    {
+                        int k = 6;
+                    }
+                    if (spell.name.Contains("Immolating Breath"))
+                    {
+                        int k = 6;
                     }
 
                     if (spells.TryGetValue(spell.name, out var spellinlist))
