@@ -165,14 +165,15 @@ namespace EQTool.ViewModels
         {
             "Dragon Roar",
             "Silver Breath",
-            "Ice Breath",
+            "Ice breath",
             "Mind Cloud",
             "Rotting Flesh",
             "Putrefy Flesh",
-            "Stun Breath"
+            "Stun Breath",
+            "Immolating Breath"
         };
 
-        public void TryAdd(SpellParsingMatch match)
+        public void TryAdd(SpellParsingMatch match, bool resisted)
         {
             if (match?.Spell == null)
             {
@@ -247,6 +248,10 @@ namespace EQTool.ViewModels
                         SpellNameIcon = "Strengthen",
                         SpellType = SpellTypes.DisciplineCoolDown
                     });
+                }
+                if (resisted)
+                {
+                    return;
                 }
                 var needscount = SpellsThatNeedCounts.Contains(spellname);
                 var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(match.Spell, activePlayer.Player));

@@ -48,6 +48,7 @@ namespace EQTool.Services
         private readonly CharmBreakParser charmBreakParser;
         private readonly FailedFeignParser failedFeignParser;
         private readonly GroupInviteParser groupInviteParser;
+        private readonly ResistSpellParser resistSpellParser;
 
         private bool StartingWhoOfZone = false;
         private bool Processing = false;
@@ -55,6 +56,7 @@ namespace EQTool.Services
         private bool HasUsedStartupEnterWorld = false;
 
         public LogParser(
+            ResistSpellParser resistSpellParser,
             GroupInviteParser groupInviteParser,
             CharmBreakParser charmBreakParser,
             FTEParser fTEParser,
@@ -81,6 +83,7 @@ namespace EQTool.Services
             FailedFeignParser failedFeignParser
             )
         {
+            this.resistSpellParser = resistSpellParser;
             this.groupInviteParser = groupInviteParser;
             this.failedFeignParser = failedFeignParser;
             this.charmBreakParser = charmBreakParser;
@@ -191,9 +194,9 @@ namespace EQTool.Services
         public event EventHandler<FTEParserData> FTEEvent;
         public event EventHandler<CharmBreakArgs> CharmBreakEvent;
         public event EventHandler<string> FailedFeignEvent;
-        public event EventHandler<string> GroupInviteEvent; 
+        public event EventHandler<string> GroupInviteEvent;
         public event EventHandler<SpellWornOffOtherEventArgs> SpellWornOtherOffEvent;
-
+        public event EventHandler<SpellParsingMatch> ResistSpellEvent;
         public event EventHandler<SpellEventArgs> StartCastingEvent;
 
         public event EventHandler<CancelTimerEventArgs> CancelTimerEvent;
@@ -344,6 +347,13 @@ namespace EQTool.Services
                 if (matchedspell != null)
                 {
                     StartCastingEvent?.Invoke(this, new SpellEventArgs { Spell = matchedspell });
+                    return;
+                }
+
+                var resistspell = this.resistSpellParser.ParseNPCSpell(message);
+                if (resistspell != null)
+                {
+                    ResistSpellEvent?.Invoke(this, new SpellParsingMatch { Spell = resistspell, TargetName = EQSpells.SpaceYou, MultipleMatchesFound = false, TotalSecondsOverride = null });
                     return;
                 }
 

@@ -58,6 +58,7 @@ namespace EQTool
             this.logParser.StartTimerEvent += LogParser_StartTimerEvent;
             this.logParser.CancelTimerEvent += LogParser_CancelTimerEvent;
             this.logParser.POFDTEvent += LogParser_POFDTEvent;
+            this.logParser.ResistSpellEvent += LogParser_ResistSpellEvent;
             spellWindowViewModel.SpellList = new System.Collections.ObjectModel.ObservableCollection<UISpell>();
             DataContext = this.spellWindowViewModel = spellWindowViewModel;
             if (this.activePlayer.Player != null)
@@ -83,6 +84,11 @@ namespace EQTool
             StateChanged += SpellWindow_StateChanged;
             LocationChanged += DPSMeter_LocationChanged;
             settings.SpellWindowState.Closed = false;
+        }
+
+        private void LogParser_ResistSpellEvent(object sender, SpellParsingMatch e)
+        {
+            spellWindowViewModel.TryAdd(e, true);
         }
 
         private void LogParser_POFDTEvent(object sender, POFDTParser.POF_DT_Event e)
@@ -124,7 +130,7 @@ namespace EQTool
 
         private void LogParser_StartCastingEvent(object sender, LogParser.SpellEventArgs e)
         {
-            spellWindowViewModel.TryAdd(e.Spell);
+            spellWindowViewModel.TryAdd(e.Spell, false);
         }
 
         private int deathcounter = 1;

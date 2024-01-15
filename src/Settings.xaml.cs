@@ -289,7 +289,7 @@ namespace EQTool
 
             foreach (var item in listofspells)
             {
-                spellWindowViewModel.TryAdd(item);
+                spellWindowViewModel.TryAdd(item, false);
             }
             spellWindowViewModel.TryAddCustom(new CustomTimer { DurationInSeconds = 45, Name = "--DT-- Luetin", SpellType = SpellTypes.BadGuyCoolDown, SpellNameIcon = "Disease Cloud" });
             spellWindowViewModel.TryAddCustom(new CustomTimer { DurationInSeconds = 60 * 27, Name = "King" });

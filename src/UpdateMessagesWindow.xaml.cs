@@ -61,8 +61,13 @@ namespace EQTool
             UpdateMessages.Add(new UpdateMessageData
             {
                 DateTime = new DateTime(2024, 1, 13),
-                Message = $"* Group invite Audio/Visual Triggers.{Environment.NewLine}" +
-              $"* Fixed FTE test button so it works in all zones now!"
+                Message = $"* Others discipline cooldowns wont show any more, only your own! {Environment.NewLine}" +
+                  $"* Added timers for AOE's for the following mobs: {Environment.NewLine}" +
+                  $"*     Talendor {Environment.NewLine}" +
+                  $"*     Klandicar {Environment.NewLine}" +
+                  $"*     Zlandicar {Environment.NewLine}" +
+                  $"*     All Dragon Roars {Environment.NewLine}" +
+                  $"*     Lord Yelinak {Environment.NewLine}"
             });
         }
     }
