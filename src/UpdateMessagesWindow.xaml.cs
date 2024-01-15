@@ -67,7 +67,15 @@ namespace EQTool
                   $"*     Klandicar {Environment.NewLine}" +
                   $"*     Zlandicar {Environment.NewLine}" +
                   $"*     All Dragon Roars {Environment.NewLine}" +
-                  $"*     Lord Yelinak {Environment.NewLine}"
+                  $"*     Lord Yelinak {Environment.NewLine}" +
+                  $"*     Eashen of the Sky {Environment.NewLine}" +
+                  $"*     Telkorenar {Environment.NewLine}" +
+                  $"*     Gozzrem {Environment.NewLine}" +
+                  $"*     Lendiniara the Keeper {Environment.NewLine}" +
+                  $"*     Lady Mirenilla {Environment.NewLine}" +
+                  $"*     Lord Koi'Doken {Environment.NewLine}" +
+                  $"*     Zlexak {Environment.NewLine}" +
+                  $"*     Hoshkar {Environment.NewLine}"
             });
         }
     }

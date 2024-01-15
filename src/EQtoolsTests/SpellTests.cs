@@ -281,6 +281,114 @@ namespace EQToolTests
         }
 
         [TestMethod]
+        public void TestWaveofCold()
+        {
+            var service = container.Resolve<SpellLogParse>();
+            var message = "A blast of cold freezes your skin.";
+            var spell = service.MatchSpell(message);
+            Assert.AreEqual(spell.Spell.name, "Wave of Cold");
+        }
+
+        [TestMethod]
+        public void TestWaveofCold2()
+        {
+            var service = container.Resolve<SpellLogParse>();
+            var message = "Someone's skin freezes.";
+            var spell = service.MatchSpell(message);
+            Assert.AreEqual(spell.Spell.name, "Silver Breath");
+        }
+
+        [TestMethod]
+        public void TestRaidofMoltenLava()
+        {
+            var service = container.Resolve<SpellLogParse>();
+            var message = "Lava sears your skin.";
+            var spell = service.MatchSpell(message);
+            Assert.AreEqual(spell.Spell.name, "Rain of Molten Lava");
+        }
+
+        [TestMethod]
+        public void TestLavaBreath()
+        {
+            var service = container.Resolve<SpellLogParse>();
+            var message = "Your body combusts as the lava hits you.";
+            var spell = service.MatchSpell(message);
+            Assert.AreEqual(spell.Spell.name, "Lava Breath");
+        }
+
+        [TestMethod]
+        public void TestFrostBreath()
+        {
+            var service = container.Resolve<SpellLogParse>();
+            var message = "Your body freezes as the frost hits you.";
+            var spell = service.MatchSpell(message);
+            Assert.AreEqual(spell.Spell.name, "Frost Breath");
+        }
+
+        [TestMethod]
+        public void TestTsunami()
+        {
+            var service = container.Resolve<SpellLogParse>();
+            var message = "A tsunami crushes you.";
+            var spell = service.MatchSpell(message);
+            Assert.AreEqual(spell.Spell.name, "Tsunami");
+        }
+
+        [TestMethod]
+        public void TestCloudofFear()
+        {
+            var service = container.Resolve<SpellLogParse>();
+            var message = "Your mind is wracked by fear.";
+            var spell = service.MatchSpell(message);
+            Assert.AreEqual(spell.Spell.name, "Cloud of Fear");
+        }
+
+        [TestMethod]
+        public void TestDiseasedCloud()
+        {
+            var service = container.Resolve<SpellLogParse>();
+            var message = "Your body begins to rot.";
+            var spell = service.MatchSpell(message);
+            Assert.AreEqual(spell.Spell.name, "Diseased Cloud");
+        }
+
+        [TestMethod]
+        public void TestFrostBreathResist()
+        {
+            var service = container.Resolve<ResistSpellParser>();
+            var message = "You resist the Frost Breath spell!";
+            var spell = service.ParseNPCSpell(message);
+            Assert.AreEqual(spell.name, "Frost Breath");
+        }
+
+        [TestMethod]
+        public void TestLavaBreathResist()
+        {
+            var service = container.Resolve<ResistSpellParser>();
+            var message = "You resist the Lava Breath spell!";
+            var spell = service.ParseNPCSpell(message);
+            Assert.AreEqual(spell.name, "Lava Breath");
+        }
+
+        [TestMethod]
+        public void TestMoltenBreathResist()
+        {
+            var service = container.Resolve<ResistSpellParser>();
+            var message = "You resist the Molten Breath spell!";
+            var spell = service.ParseNPCSpell(message);
+            Assert.AreEqual(spell.name, "Molten Breath");
+        }
+
+        //[TestMethod]
+        //public void TestCloudofDisempowerment()
+        //{
+        //    var service = container.Resolve<SpellLogParse>();
+        //    var message = "You feel your skin freeze.";
+        //    var spell = service.MatchSpell(message);
+        //    Assert.AreEqual(spell.Spell.name, "Cloud of Disempowerment");
+        //}
+
+        [TestMethod]
         public void TestSpellMatchCorrectlySk30_GrimAura()
         {
             var spells = container.Resolve<EQSpells>();

@@ -9,7 +9,7 @@ namespace EQTool.Services.Spells.Log
         private readonly ActivePlayer activePlayer;
         private readonly ParseHandleYouCasting parseHandleYouCasting;
         private readonly ParseSpellGuess parseSpellGuess;
-        private readonly EQToolSettings settings; 
+        private readonly EQToolSettings settings;
         private readonly Spell HealSpell;
 
         public SpellLogParse(ParseSpellGuess parseSpellGuess, ParseHandleYouCasting parseHandleYouCasting, ActivePlayer activePlayer, EQToolSettings settings, EQSpells spells)
@@ -94,7 +94,13 @@ namespace EQTool.Services.Spells.Log
                     }
                 }
 
-                return parseHandleYouCasting.HandleYourSpell(message);
+                var spell = parseHandleYouCasting.HandleYourSpell(message);
+                if (spell != null)
+                {
+                    return spell;
+                }
+
+                return settings.BestGuessSpells ? parseSpellGuess.HandleBestGuessSpell(message) : null;
             }
 
             if (activePlayer?.UserCastingSpell != null)

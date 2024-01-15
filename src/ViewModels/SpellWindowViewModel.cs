@@ -170,7 +170,13 @@ namespace EQTool.ViewModels
             "Rotting Flesh",
             "Putrefy Flesh",
             "Stun Breath",
-            "Immolating Breath"
+            "Immolating Breath",
+            "Rain of Molten Lava",
+            "Frost Breath",
+            "Lava Breath",
+            "Cloud of Fear",
+            "Diseased Cloud",
+            "Tsunami"
         };
 
         public void TryAdd(SpellParsingMatch match, bool resisted)

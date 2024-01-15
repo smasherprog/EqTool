@@ -56,8 +56,6 @@ namespace EQTool.Services
             "IceBoneFrostBurst",
             "FrostAOE",
             "Ring of Winter",
-            "Cloud of Disempowerment",
-            "Wave of Cold",
             "Frost Shards",
             "Umbral Rot",
             "Grimling Rot",
@@ -66,7 +64,13 @@ namespace EQTool.Services
             "Trushar's Frost",
             "Icicle Shock",
             "Shock of Frost",
-            "Talendor's Immolating Breath"
+            "Talendor's Immolating Breath",
+            "Lava Breath - Test",
+            "Vengeance of the Undying"
+        };
+        private readonly List<int> IgnoreIds = new List<int>()
+        {
+            6615
         };
 
         private readonly List<string> IgnoreRomanNumerals = new List<string>()
@@ -199,6 +203,11 @@ namespace EQTool.Services
                         continue;
                     }
 
+                    if (IgnoreIds.Contains(spell.id))
+                    {
+                        continue;
+                    }
+
                     if (spell.name == "Defensive Discipline")
                     {
                         if (spell.cast_on_you.EndsWith(".."))
@@ -277,14 +286,6 @@ namespace EQTool.Services
                         continue;
                     }
 
-                    if (spell.cast_on_you.Contains("Your flesh is seared from your bones."))
-                    {
-                        int k = 6;
-                    }
-                    if (spell.name.Contains("Immolating Breath"))
-                    {
-                        int k = 6;
-                    }
 
                     if (spells.TryGetValue(spell.name, out var spellinlist))
                     {
