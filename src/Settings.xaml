@@ -155,7 +155,7 @@
                 <Separator/>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Chain Formats" VerticalAlignment="Center" FontWeight="Bold" MinWidth="100"/>
-                    <TextBlock Text="TAG NUMBERINCHAIN CH -- TARGET" ToolTip="Chain text format" />
+                    <TextBlock Text="TAG CHAINMESSAGE" ToolTip="Chain text format" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock VerticalAlignment="Center" FontWeight="Bold" MinWidth="100"/>
@@ -163,15 +163,19 @@
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock  VerticalAlignment="Center" FontWeight="Bold" MinWidth="100"/>
-                    <TextBlock Text="Should be at least 1 Dash" />
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Example:" TextAlignment="Right" FontWeight="Bold" MinWidth="100" /> 
-                    <TextBlock Text="'CA 001 CH -- Huntor'" ToolTip="Chain text format" />
+                    <TextBlock Text="Below are real examples!" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Example:" TextAlignment="Right" FontWeight="Bold" MinWidth="100" />
-                    <TextBlock Text="'001 CH - Huntor'" ToolTip="Chain text format" />
+                    <TextBlock Text="'CA 001 CH -- Huntor'" ToolTip="Chain text format" Margin="10, 0,0,0" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Example:" TextAlignment="Right" FontWeight="Bold" MinWidth="100" />
+                    <TextBlock Text="'001 CH - Huntor'" ToolTip="Chain text format" Margin="10, 0,0,0" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Example:" TextAlignment="Right" FontWeight="Bold" MinWidth="100" />
+                    <TextBlock Text="'555 CH &lt;&lt;Testflight &lt;&lt;&gt; 555'" ToolTip="Chain text format" Margin="10, 0,0,0" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="CH Chain" ToolTip="Complete Heal Overlay" VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
