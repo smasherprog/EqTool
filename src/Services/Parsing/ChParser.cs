@@ -23,22 +23,31 @@ namespace EQTool.Services
         public ChParseData ChCheck(string line)
         {
             var chindex = line.IndexOf(" ch ", System.StringComparison.OrdinalIgnoreCase);
-            var dashes = line.LastIndexOf("-");
             var startindexofmessage = line.IndexOf(", '");
             if (startindexofmessage == -1)
             {
                 startindexofmessage = line.IndexOf(",  '");
             }
 
-            if (chindex != -1 && dashes != -1)
+            if (chindex != -1)
             {
                 var endoftext = line.LastIndexOf("'");
-                if(endoftext == -1)
+                if (endoftext == -1)
                 {
                     return null;
                 }
+
                 var possiblenumbers = line.Substring(startindexofmessage + 3, endoftext - startindexofmessage - 3);
-                var numbers = new string(possiblenumbers.Where(a => char.IsDigit(a)).ToArray());
+                var possiblenumbersplits = possiblenumbers.Split(' ');
+                var numbers = string.Empty;
+                foreach (var item in possiblenumbersplits)
+                {
+                    numbers = new string(item.Where(a => char.IsDigit(a)).ToArray());
+                    if (numbers.Length != 0)
+                    {
+                        break;
+                    }
+                }
                 if (numbers.Length == 0)
                 {
                     return null;
@@ -60,18 +69,29 @@ namespace EQTool.Services
                 else
                 {
                     var possibletagindex = possiblenumbers.IndexOf(numbers);
-                    if(possibletagindex == -1)
+                    if (possibletagindex == -1)
                     {
                         return null;
                     }
                     tag = possiblenumbers.Substring(0, possibletagindex).Trim();
                 }
                 var firstspace = line.IndexOf(" ");
+                var recipient = new string(line.Substring(chindex + 3).Where(a => char.IsLetter(a)).ToArray());
+                if (string.IsNullOrWhiteSpace(recipient) || recipient.Length < 3)
+                {
+                    return null;
+                }
+
+                if (!string.IsNullOrWhiteSpace(tag) && tag.Contains(" "))
+                {
+                    return null;
+                }
+
                 var ret = new ChParseData
                 {
                     Caster = line.Substring(0, firstspace).Trim('\'').Trim(),
                     Position = position,
-                    Recipient = line.Substring(dashes + 1, endoftext - (dashes + 1)).Trim('\'').Trim(),
+                    Recipient = recipient,
                     RecipientGuild = tag
                 };
                 if (ret.Caster.Contains(" "))

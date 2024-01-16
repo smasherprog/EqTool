@@ -1638,7 +1638,7 @@ namespace EQToolShared.Map
                        new NpcSpawnTime
                       {
                           Name = "A suit of sentient armor",
-                            RespawnTime = new TimeSpan(0, 14, 30)
+                          RespawnTime = new TimeSpan(0, 14, 30)
                       }
                  }
             });

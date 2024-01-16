@@ -90,6 +90,7 @@ namespace EQTool
         {
             UITimer?.Stop();
             UITimer?.Dispose();
+            timer?.Stop();
             SizeChanged -= DPSMeter_SizeChanged;
             StateChanged -= SpellWindow_StateChanged;
             LocationChanged -= DPSMeter_LocationChanged;

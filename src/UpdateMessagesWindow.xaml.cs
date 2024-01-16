@@ -41,41 +41,27 @@ namespace EQTool
 
             UpdateMessages.Add(new UpdateMessageData
             {
-                DateTime = new DateTime(2024, 1, 7),
-                Message = $"* Added a CH test button so you can try it out in the settings window, just press the play button to see how a sumulated CH chain would look!{Environment.NewLine}" +
-               $"* All melee discipline cooldown timers will show in the cooldown section. No need to press a discipline button to see when you can use defensive!{Environment.NewLine}" +
-               $"* Raid channel will pick up CH Chain messages. Added Examples to the settings window CH Chain format. {Environment.NewLine}" +
-               $"* Added another CH Chain format support for those who don't want to use the TAG to differentiate their chain. Be aware, if you aren't using the TAG filter, you will see everyone's chain!!"
+                DateTime = new DateTime(2024, 1, 14),
+                Message =
+                      $"* Added timers for AOE's for the following mobs: {Environment.NewLine}" +
+                      $"*     Telkorenar {Environment.NewLine}" +
+                      $"*     Gozzrem {Environment.NewLine}" +
+                      $"*     Lendiniara the Keeper {Environment.NewLine}" +
+                      $"*     Lady Mirenilla {Environment.NewLine}" +
+                      $"*     Lord Koi'Doken {Environment.NewLine}" +
+                      $"*     Zlexak {Environment.NewLine}" +
+                      $"*     Hoshkar {Environment.NewLine}"
             });
             UpdateMessages.Add(new UpdateMessageData
             {
-                DateTime = new DateTime(2024, 1, 13),
-                Message = $"* Group invite Audio/Visual Triggers.{Environment.NewLine}" +
-                     $"* Fixed FTE test button so it works in all zones now!{Environment.NewLine}" +
-                     $"* Fixed following timers: {Environment.NewLine}" +
-                     $"*     an advisor -> 4 hours {Environment.NewLine}" +
-                     $"*     oasis zone -> 6:40  {Environment.NewLine}" +
-                     $"*     Tolapumj -> 2:45 {Environment.NewLine}" +
-                     $"*     Sebilite protector -> 2:45"
-            });
-            UpdateMessages.Add(new UpdateMessageData
-            {
-                DateTime = new DateTime(2024, 1, 13),
-                Message = $"* Others discipline cooldowns wont show any more, only your own! {Environment.NewLine}" +
-                  $"* Added timers for AOE's for the following mobs: {Environment.NewLine}" +
-                  $"*     Talendor {Environment.NewLine}" +
-                  $"*     Klandicar {Environment.NewLine}" +
-                  $"*     Zlandicar {Environment.NewLine}" +
-                  $"*     All Dragon Roars {Environment.NewLine}" +
-                  $"*     Lord Yelinak {Environment.NewLine}" +
-                  $"*     Eashen of the Sky {Environment.NewLine}" +
-                  $"*     Telkorenar {Environment.NewLine}" +
-                  $"*     Gozzrem {Environment.NewLine}" +
-                  $"*     Lendiniara the Keeper {Environment.NewLine}" +
-                  $"*     Lady Mirenilla {Environment.NewLine}" +
-                  $"*     Lord Koi'Doken {Environment.NewLine}" +
-                  $"*     Zlexak {Environment.NewLine}" +
-                  $"*     Hoshkar {Environment.NewLine}"
+                DateTime = new DateTime(2024, 1, 15),
+                Message = $"* Added an error when PigParse is ran from the Everquest folder. Running from the everquest folder is not supprted! {Environment.NewLine}" +
+                  $"* Various bug fixes. {Environment.NewLine}" +
+                  $"* Expanded CH chain formats. Now, the CH Chain is much more flexible and works with almost any format thrown at it. {Environment.NewLine}" +
+                  $"* For example, the following are examples now supported: {Environment.NewLine}" +
+                  $"*     Windarie auctions, '111 --- CH << Mandair  >> --- 111' {Environment.NewLine}" +
+                  $"*     Kaijai auctions, '888 CH <<< Mandair >>> 888' {Environment.NewLine}" +
+                  $"*     Mutao auctions, '777 CH <>> Mandair <<> 777' {Environment.NewLine}"
             });
         }
     }

@@ -98,6 +98,7 @@ namespace EQTool
 
         protected override void OnClosing(CancelEventArgs e)
         {
+            timer?.Stop();
             if (logParser != null)
             {
                 logParser.ConEvent -= LogParser_ConEvent;

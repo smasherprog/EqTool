@@ -200,6 +200,8 @@ namespace EQTool
                 logParser.DeadEvent -= LogParser_DeadEvent;
                 logParser.StartTimerEvent -= LogParser_StartTimerEvent;
                 logParser.CancelTimerEvent -= LogParser_CancelTimerEvent;
+                logParser.POFDTEvent -= LogParser_POFDTEvent;
+                logParser.ResistSpellEvent -= LogParser_ResistSpellEvent;
             }
             if (spellWindowViewModel != null)
             {

@@ -13,6 +13,7 @@ using System.Linq;
 using System.Windows.Media.Media3D;
 using static EQTool.Services.ChParser;
 using static EQTool.Services.EnrageParser;
+using static EQTool.Services.FindEq;
 using static EQTool.Services.FTEParser;
 using static EQTool.Services.InvisParser;
 using static EQTool.Services.LevParser;
@@ -464,19 +465,21 @@ namespace EQTool.Services
             {
                 return;
             }
-            var logfounddata = FindEq.GetLogFileLocation(new FindEq.FindEQData { EqBaseLocation = settings.DefaultEqDirectory, EQlogLocation = settings.EqLogDirectory });
+            Processing = true;
+            LogFileInfo logfounddata = null;
+            try
+            {
+                logfounddata = FindEq.GetLogFileLocation(new FindEq.FindEQData { EqBaseLocation = settings.DefaultEqDirectory, EQlogLocation = settings.EqLogDirectory });
+            }
+            catch { }
             if (logfounddata == null || !logfounddata.Found)
             {
+                Processing = false;
                 return;
             }
             settings.EqLogDirectory = logfounddata.Location;
             appDispatcher.DispatchUI(() =>
             {
-                if (Processing)
-                {
-                    return;
-                }
-                Processing = true;
                 try
                 {
                     var playerchanged = activePlayer.Update();

@@ -1,12 +1,9 @@
 ﻿using Autofac;
-using Autofac.Core;
 using EQTool.Models;
 using EQTool.Services;
 using EQTool.ViewModels;
 using EQToolShared.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.Windows.Shapes;
-using System;
 
 namespace EQToolTests
 {
@@ -233,6 +230,38 @@ namespace EQToolTests
             };
             var d = service.ChCheck("somecleric tells the guild, '003 - CH 5T'");
             Assert.IsNull(d);
-        } 
+        }
+
+        [TestMethod]
+        public void Parse16()
+        {
+            var service = container.Resolve<ChParser>();
+            var player = container.Resolve<ActivePlayer>();
+            player.Player = new PlayerInfo
+            {
+                Level = 54,
+                PlayerClass = PlayerClasses.Cleric
+            };
+            var d = service.ChCheck("Windarie auctions, '111 --- CH << Mandair  >> --- 111'");
+            Assert.AreEqual(d.Recipient, "Mandair");
+            Assert.AreEqual(d.Caster, "Windarie");
+            Assert.AreEqual(d.Position, 111);
+        }
+
+        [TestMethod]
+        public void Parse17()
+        {
+            var service = container.Resolve<ChParser>();
+            var player = container.Resolve<ActivePlayer>();
+            player.Player = new PlayerInfo
+            {
+                Level = 54,
+                PlayerClass = PlayerClasses.Cleric
+            };
+            var d = service.ChCheck("Mutao auctions, '777 CH <>> Mandair <<> 777'");
+            Assert.AreEqual(d.Recipient, "Mandair");
+            Assert.AreEqual(d.Caster, "Mutao");
+            Assert.AreEqual(d.Position, 777);
+        }
     }
 }

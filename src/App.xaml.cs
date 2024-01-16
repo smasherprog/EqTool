@@ -194,7 +194,18 @@ namespace EQTool
                 App.Current.Shutdown();
                 return;
             }
-
+            try
+            {
+                var curr = Directory.GetCurrentDirectory();
+                var path = Path.Combine(curr, "eqgame.exe");
+                if (File.Exists(path))
+                {
+                    MessageBox.Show("Pigparse does not support running from in the EQ directory. Please move the pigparse and try again", "Pigparse Invalid Folder!", MessageBoxButton.OK, MessageBoxImage.Error);
+                    App.Current.Shutdown();
+                    return;
+                }
+            }
+            catch { }
             httpclient.DefaultRequestHeaders.Add("User-Agent", "request");
             var updateservice = new UpdateService();
             var did_update = updateservice.ApplyUpdate(e.Args.FirstOrDefault());

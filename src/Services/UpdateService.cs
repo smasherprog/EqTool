@@ -43,7 +43,7 @@ namespace EQTool.Services
         {
             if (!string.IsNullOrWhiteSpace(parameter))
             {
-                Thread.Sleep(1000);
+                Thread.Sleep(3000);
                 if (parameter.Contains("ping"))
                 {
                     _ = System.IO.Directory.GetFiles(System.IO.Directory.GetCurrentDirectory());

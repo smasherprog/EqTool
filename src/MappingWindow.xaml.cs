@@ -218,6 +218,7 @@ namespace EQTool
         {
             UITimer?.Stop();
             UITimer?.Dispose();
+            timer?.Stop();
             if (logParser != null)
             {
                 logParser.PlayerLocationEvent -= LogParser_PlayerLocationEvent;

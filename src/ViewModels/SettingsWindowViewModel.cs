@@ -262,10 +262,7 @@ namespace EQTool.ViewModels
             OnPropertyChanged(nameof(ActivePlayer));
             OnPropertyChanged(nameof(HasCharName));
             OnPropertyChanged(nameof(HasNoCharName));
-
         }
-
-
 
         public event PropertyChangedEventHandler PropertyChanged;
 
