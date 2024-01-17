@@ -38,6 +38,32 @@ Features:
 <li>Automatic self update.</li>
 <li>Timers (Only Minutes are supported)</li>
 </ul>
+<h5>Ch format is loosely: TAG CH POSITION TARGET</h5>
+<ul>
+ <li>
+  TAG must be 3 in length, and follow a format of: 001-999; or AAA-ZZZ
+ </li>
+ <li>The characters " ch " must be present in the line, capitalization doesnt matter.</li>
+ <li>All instances of TAG are stripped out of text. The characters " ch " are stripped out. The first group of 3 characters that are either all the same letter or a number are assigned as the position. </li>
+ <li>All instances of Position are stripped out of the text. All non alphanumeric are stripped out of the text. What remains is the target.</li>
+</ul>
+<p>Tag MUST BE 3 in length! The following are included in tests that are supported, This is not all the possible ways, but to show examples of what i have support for!</p></p>
+
+<ul>
+<li>Curaja shouts, 'GG 014 CH -- Wreckognize'</li>
+<li>Hanbox shouts, 'GG 001 CH -- Beefwich'</li>
+<li>Hanbox shouts, 'GG 001 CH --Beefwich'</li>
+<li>Wartburg says out of character, 'CA 004 CH -- Sam'</li>
+ <li>Wartburg says out of character, '004 CH - Sam'</li>
+  <li>Hanbox tells the guild, 'GG 001 CH --Beefwich'</li>
+  <li>You say out of character, 'CA 002 CH -- Aaryk'</li>
+  <li>Windarie auctions, '111 --- CH << Mandair  >> --- 111'</li>
+  <li>Mutao auctions, '777 CH <>> Mandair <<> 777'</li>
+  <li>Mutao auctions, 'AAA CH <>> Mandair <<> AAA'</li>
+  <li>Mutao auctions, 'GGG AAA CH <>> Mandair <<> AAA'</li>
+  <li>Mutao auctions, 'BBB CH <>> Mandair <<> BB'</li>
+  <li>Mutao auctions, 'AAA CH <>> Mandair <<>'</li>
+</ul>
 <h5>Timers (Only Minutes are supported) -- All below commands work in regular say!</h5>
 <ul>
 <li>Timer Start Crypt Camp 35</li>
