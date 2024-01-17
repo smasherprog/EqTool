@@ -38,10 +38,13 @@ Features:
 <li>Automatic self update.</li>
 <li>Timers (Only Minutes are supported)</li>
 </ul>
-<h5>Ch format is loosely: TAG CH POSITION TARGET</h5>
-<ul>
+<h5>Ch format is loosely: TAG POSITION CH TARGET</h5>
+<ul> 
  <li>
-  TAG must be 3 in length, and follow a format of: 001-999; or AAA-ZZZ
+  TAG is optional and can be used to filter out other chains that are going on. For example, if you TAG is CA, it will only show chains that have that TAG in it.
+ </li>
+ <li>
+  POSITION must be 3 in length, and follow a format of: 001-999; or AAA-ZZZ
  </li>
  <li>The characters " ch " must be present in the line, capitalization doesnt matter.</li>
  <li>All instances of TAG are stripped out of text. The characters " ch " are stripped out. The first group of 3 characters that are either all the same letter or a number are assigned as the position. </li>
