@@ -179,8 +179,11 @@ namespace EQTool
                     if (FindEq.IsValidEqFolder(fbd.SelectedPath))
                     {
                         SettingsWindowData.EqPath = settings.DefaultEqDirectory = fbd.SelectedPath;
-                        TryUpdateSettings();
-                        TryCheckLoggingEnabled();
+                        this.appDispatcher.DispatchUI(() =>
+                        {
+                            TryUpdateSettings();
+                            TryCheckLoggingEnabled();
+                        });
                     }
                     else
                     {

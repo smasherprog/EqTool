@@ -18,9 +18,10 @@ namespace EQTool
     public class ChainData
     {
         public Canvas Canvas { get; set; }
-        public Grid Grid { get; set; }
+        public List<FrameworkElement> ChildrenInRow { get; set; }
         public string Destination { get; set; }
         public int ActiveAnimations { get; set; } = 0;
+        public RowDefinition RowDefinition { get; set; }
     }
 
     public partial class EventOverlay : Window
@@ -297,13 +298,14 @@ namespace EQTool
                 var targetwidth = chaindata.Canvas.ActualWidth / 10.0;
                 var target = new TextBlock
                 {
-                    Height = 30,
                     FontSize = settings.FontSize.Value * 2,
                     Text = e.Position.ToString(),
                     Foreground = Brushes.White,
-                    TextAlignment = TextAlignment.Center
+                    TextAlignment = TextAlignment.Center,
+                    VerticalAlignment = VerticalAlignment.Center,
+                    HorizontalAlignment = HorizontalAlignment.Stretch
                 };
-                var textborder = new Border { CornerRadius = new CornerRadius(3), Width = targetwidth, Background = new SolidColorBrush(colorA), BorderBrush = Brushes.GhostWhite, BorderThickness = new Thickness(1) };
+                var textborder = new Border { Height = 28, Width = targetwidth, Background = Brushes.ForestGreen, BorderBrush = Brushes.Black, BorderThickness = new Thickness(1) };
                 textborder.Child = target;
                 DoubleAnimation animation = new DoubleAnimation();
                 animation.From = -targetwidth;
@@ -333,7 +335,11 @@ namespace EQTool
                                 if (chaindata.ActiveAnimations <= 0)
                                 {
                                     this.chainDatas.Remove(chaindata);
-                                    this.ChainStackPanel.Children.Remove(chaindata.Grid);
+                                    foreach (var item in chaindata.ChildrenInRow)
+                                    {
+                                        this.ChainStackPanel.Children.Remove(item);
+                                    }
+                                    this.ChainStackPanel.RowDefinitions.Remove(chaindata.RowDefinition);
                                 }
                             });
                         });
@@ -354,15 +360,13 @@ namespace EQTool
             chaindata = new ChainData
             {
                 Canvas = new Canvas(),
-                Grid = new Grid(),
+                ChildrenInRow = new List<FrameworkElement>(),
                 Destination = destination,
-                ActiveAnimations = 1
+                ActiveAnimations = 1,
+                RowDefinition = new RowDefinition { MaxHeight = 30 }
             };
             chaindata.Canvas.IsHitTestVisible = false;
             chaindata.Canvas.Background = Brushes.Transparent;
-            chaindata.Grid.RowDefinitions.Add(new RowDefinition { Height = new GridLength(30) });
-            chaindata.Grid.ColumnDefinitions.Add(new ColumnDefinition { Width = GridLength.Auto, MinWidth = 100 });
-            chaindata.Grid.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
             var target = new TextBlock
             {
                 Height = 30,
@@ -373,33 +377,48 @@ namespace EQTool
                 TextAlignment = TextAlignment.Center,
                 VerticalAlignment = VerticalAlignment.Center
             };
-            var textborder = new Border { CornerRadius = new CornerRadius(3), Background = Brushes.WhiteSmoke, BorderThickness = new Thickness(2), BorderBrush = Brushes.Black };
+            var textborder = new Border { CornerRadius = new CornerRadius(3), Background = Brushes.Chocolate, BorderThickness = new Thickness(2), BorderBrush = Brushes.Black };
             textborder.Child = target;
-            Grid.SetRow(textborder, 0);
+            var getrow = this.ChainStackPanel.RowDefinitions.Count;
+            Grid.SetRow(textborder, getrow);
             Grid.SetZIndex(textborder, 1);
             Grid.SetColumn(textborder, 0);
-            Grid.SetRow(chaindata.Canvas, 0);
+            Grid.SetRow(chaindata.Canvas, getrow);
             Grid.SetColumn(chaindata.Canvas, 1);
             Grid.SetZIndex(chaindata.Canvas, 0);
-            var stackpanel = new StackPanel { Background = new SolidColorBrush(System.Windows.Media.Color.FromArgb(200, 10, 10, 10)), Orientation = Orientation.Horizontal, HorizontalAlignment = HorizontalAlignment.Stretch, Height = 8 };
-            Grid.SetRow(stackpanel, 0);
+            var stackpanel = new StackPanel { Background = new SolidColorBrush(System.Windows.Media.Color.FromArgb(200, 10, 10, 10)), Orientation = Orientation.Horizontal, HorizontalAlignment = HorizontalAlignment.Stretch, Height = 30 };
+            Grid.SetRow(stackpanel, getrow);
             Grid.SetColumn(stackpanel, 1);
-            chaindata.Grid.Children.Add(textborder);
-            chaindata.Grid.Children.Add(stackpanel);
-            chaindata.Grid.Children.Add(chaindata.Canvas);
+            this.ChainStackPanel.RowDefinitions.Add(chaindata.RowDefinition);
+            this.ChainStackPanel.Children.Add(textborder);
+            this.ChainStackPanel.Children.Add(stackpanel);
+            this.ChainStackPanel.Children.Add(chaindata.Canvas);
+            chaindata.ChildrenInRow.Add(textborder);
+            chaindata.ChildrenInRow.Add(stackpanel);
+            chaindata.ChildrenInRow.Add(chaindata.Canvas);
             this.chainDatas.Add(chaindata);
-            this.ChainStackPanel.Children.Add(chaindata.Grid);
             chaindata.Canvas.UpdateLayout();
             for (var i = 0; i < 10; i++)
             {
                 stackpanel.Children.Add(new Border
                 {
-                    Height = 8,
+                    VerticalAlignment = VerticalAlignment.Bottom,
+                    Height = 30,
                     Width = chaindata.Canvas.ActualWidth / 10,
                     HorizontalAlignment = HorizontalAlignment.Stretch,
                     BorderBrush = Brushes.WhiteSmoke,
-                    BorderThickness = new Thickness(1, 0, 1, 2)
+                    BorderThickness = new Thickness(1, 0, 1, 2),
+                    Child = new TextBlock
+                    {
+                        Text = (i + 1).ToString(),
+                        Foreground = Brushes.Red,
+                        VerticalAlignment = VerticalAlignment.Center,
+                        TextAlignment = TextAlignment.Center,
+                        Width = chaindata.Canvas.ActualWidth / 10,
+                        HorizontalAlignment = HorizontalAlignment.Stretch
+                    }
                 });
+
             }
             return chaindata;
         }

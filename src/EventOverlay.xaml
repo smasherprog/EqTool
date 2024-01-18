@@ -25,18 +25,13 @@
             </Grid>
             <StackPanel Grid.Row="1" VerticalAlignment="Stretch" IsHitTestVisible="False">
                 <TextBlock x:Name="CenterText" HorizontalAlignment="Center" VerticalAlignment="Center" FontWeight="Medium" FontSize="44" Foreground="Red" IsHitTestVisible="False"></TextBlock>
-            </StackPanel>
-            <StackPanel Grid.Row="2" Name="ChainStackPanel" VerticalAlignment="Stretch" Orientation="Vertical" IsHitTestVisible="False">
-                <!--<Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition  Width="50"/>
-                        <ColumnDefinition  Width="1*"/>
-                    </Grid.ColumnDefinitions>
-                    <TextBlock Grid.Column="0" Text="sdfsdfsdf"></TextBlock>
-                    <Canvas  Grid.Column="1" Background="Green" ></Canvas>
-                </Grid>-->
-           
-            </StackPanel>
+            </StackPanel> 
+            <Grid Grid.Row="2"  Name="ChainStackPanel" IsHitTestVisible="False">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition  Width="*"/>
+                </Grid.ColumnDefinitions>  
+            </Grid> 
         </Grid>
     </Border>
 </Window>

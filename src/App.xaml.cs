@@ -376,12 +376,12 @@ namespace EQTool
                     var logParser = container.Resolve<LogParser>();
                     if (spellstuff != null)
                     {
-                        if (spellstuff.SpellList.Count() < 2)
+                        if (spellstuff.SpellList.Count() < 2 && (DateTime.UtcNow - logParser.LastYouActivity).TotalMinutes > 10)
                         {
                             new UpdateService().CheckForUpdates(Version);
                         }
                     }
-                    else
+                    else if ((DateTime.UtcNow - logParser.LastYouActivity).TotalMinutes > 10)
                     {
                         new UpdateService().CheckForUpdates(Version);
                     }
