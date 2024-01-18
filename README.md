@@ -56,6 +56,7 @@ Features:
 <li>Curaja shouts, 'GG 014 CH -- Wreckognize'</li>
 <li>Hanbox shouts, 'GG 001 CH -- Beefwich'</li>
 <li>Hanbox shouts, 'GG 001 CH --Beefwich'</li>
+ <li>Hanbox shouts, 'GG 001 CH --Beefwich 001'</li>
 <li>Wartburg says out of character, 'CA 004 CH -- Sam'</li>
  <li>Wartburg says out of character, '004 CH - Sam'</li>
   <li>Hanbox tells the guild, 'GG 001 CH --Beefwich'</li>
