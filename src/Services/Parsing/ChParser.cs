@@ -9,7 +9,7 @@ namespace EQTool.Services
         {
             public string Recipient { get; set; }
             public string RecipientGuild { get; set; }
-            public int Position { get; set; }
+            public string Position { get; set; }
             public string Caster { get; set; }
         }
 
@@ -37,23 +37,28 @@ namespace EQTool.Services
                     return null;
                 }
 
+
                 var possiblenumbers = line.Substring(startindexofmessage + 3, endoftext - startindexofmessage - 3);
-                var possiblenumbersplits = possiblenumbers.Split(' ');
-                var numbers = string.Empty;
-                foreach (var item in possiblenumbersplits)
+                var position = string.Empty;
+                var possiblepositionstosearch = possiblenumbers.Split(' ').Where(a => a.Length == 3).ToList();
+                possiblepositionstosearch.Reverse();
+                foreach (var item in possiblepositionstosearch)
                 {
-                    numbers = new string(item.Where(a => char.IsDigit(a)).ToArray());
-                    if (numbers.Length != 0)
+                    var n = new string(item.Where(a => char.IsDigit(a)).ToArray());
+                    if (n.Length == 3)
                     {
+                        position = n;
+                        break;
+                    }
+
+                    if (item.Distinct().Count() == 1 && char.IsLetter(item[0]))
+                    {
+                        position = item;
                         break;
                     }
                 }
-                if (numbers.Length == 0)
-                {
-                    return null;
-                }
 
-                if (!int.TryParse(numbers, out var position))
+                if (string.IsNullOrWhiteSpace(position))
                 {
                     return null;
                 }
@@ -68,15 +73,28 @@ namespace EQTool.Services
                 }
                 else
                 {
-                    var possibletagindex = possiblenumbers.IndexOf(numbers);
+                    var possibletagindex = possiblenumbers.IndexOf(position);
                     if (possibletagindex == -1)
                     {
                         return null;
                     }
                     tag = possiblenumbers.Substring(0, possibletagindex).Trim();
                 }
-                var firstspace = line.IndexOf(" ");
-                var recipient = new string(line.Substring(chindex + 3).Where(a => char.IsLetter(a)).ToArray());
+                chindex = possiblenumbers.IndexOf(" ch ", System.StringComparison.OrdinalIgnoreCase);
+                possiblenumbers = possiblenumbers.Substring(chindex + 3);
+                var possiblerecipt = new string(possiblenumbers.Replace(position, string.Empty).Where(a => a == ' ' || char.IsLetter(a)).ToArray());
+                var splits = possiblerecipt.Split(' ');
+                splits.Reverse();
+                var recipient = string.Empty;
+                foreach (var item in splits)
+                {
+                    if (!string.IsNullOrWhiteSpace(item))
+                    {
+                        recipient = item;
+                        break;
+                    }
+                }
+
                 if (string.IsNullOrWhiteSpace(recipient) || recipient.Length < 3)
                 {
                     return null;
@@ -87,9 +105,10 @@ namespace EQTool.Services
                     return null;
                 }
 
+                var caster = line.Substring(0, line.IndexOf(" ")).Trim('\'').Trim();
                 var ret = new ChParseData
                 {
-                    Caster = line.Substring(0, firstspace).Trim('\'').Trim(),
+                    Caster = caster,
                     Position = position,
                     Recipient = recipient,
                     RecipientGuild = tag

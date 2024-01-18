@@ -16,7 +16,7 @@ namespace EQToolShared.Map
                     {
                         return foundnpc.RespawnTime;
                     }
-                    foundnpc = zoneInfo.NpcContainsSpawnTimes.FirstOrDefault(a => npcName.Contains(a.Name));
+                    foundnpc = zoneInfo.NpcContainsSpawnTimes.FirstOrDefault(a => npcName.IndexOf(a.Name, StringComparison.OrdinalIgnoreCase) != -1);
                     if (foundnpc != null)
                     {
                         return foundnpc.RespawnTime;

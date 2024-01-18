@@ -18,6 +18,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
+using System.Windows.Navigation;
 
 namespace EQTool
 {
@@ -143,7 +144,11 @@ namespace EQTool
                 ((App)System.Windows.Application.Current).ToggleMenuButtons(true);
             }
         }
-
+        private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
+        {
+            _ = Process.Start(new ProcessStartInfo(e.Uri.AbsoluteUri));
+            e.Handled = true;
+        }
         private bool IsEqRunning()
         {
             return Process.GetProcessesByName("eqgame").Length > 0;

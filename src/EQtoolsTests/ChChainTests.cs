@@ -23,7 +23,7 @@ namespace EQToolTests
             var d = service.ChCheck("Curaja shouts, 'GG 014 CH -- Wreckognize'");
             Assert.AreEqual(d.Recipient, "Wreckognize");
             Assert.AreEqual(d.Caster, "Curaja");
-            Assert.AreEqual(d.Position, 14);
+            Assert.AreEqual(d.Position, "014");
             Assert.AreEqual(d.RecipientGuild, "GG");
         }
 
@@ -34,7 +34,7 @@ namespace EQToolTests
             var d = service.ChCheck("Hanbox shouts, 'GG 001 CH -- Beefwich'");
             Assert.AreEqual(d.Recipient, "Beefwich");
             Assert.AreEqual(d.Caster, "Hanbox");
-            Assert.AreEqual(d.Position, 1);
+            Assert.AreEqual(d.Position, "001");
             Assert.AreEqual(d.RecipientGuild, "GG");
         }
 
@@ -45,7 +45,18 @@ namespace EQToolTests
             var d = service.ChCheck("Hanbox shouts, 'GG 001 CH --Beefwich'");
             Assert.AreEqual(d.Recipient, "Beefwich");
             Assert.AreEqual(d.Caster, "Hanbox");
-            Assert.AreEqual(d.Position, 1);
+            Assert.AreEqual(d.Position, "001");
+            Assert.AreEqual(d.RecipientGuild, "GG");
+        }
+
+        [TestMethod]
+        public void Parse41()
+        {
+            var service = container.Resolve<ChParser>();
+            var d = service.ChCheck("Hanbox shouts, 'GG 001 CH --Beefwich' 001");
+            Assert.AreEqual(d.Recipient, "Beefwich");
+            Assert.AreEqual(d.Caster, "Hanbox");
+            Assert.AreEqual(d.Position, "001");
             Assert.AreEqual(d.RecipientGuild, "GG");
         }
 
@@ -64,7 +75,7 @@ namespace EQToolTests
             var d = service.ChCheck("Wartburg says out of character, 'CA 004 CH -- Sam'");
             Assert.AreEqual(d.Recipient, "Sam");
             Assert.AreEqual(d.Caster, "Wartburg");
-            Assert.AreEqual(d.Position, 4);
+            Assert.AreEqual(d.Position, "004");
             Assert.AreEqual(d.RecipientGuild, "CA");
         }
 
@@ -75,7 +86,7 @@ namespace EQToolTests
             var d = service.ChCheck("Wartburg says out of character, '004 CH - Sam'");
             Assert.AreEqual(d.Recipient, "Sam");
             Assert.AreEqual(d.Caster, "Wartburg");
-            Assert.AreEqual(d.Position, 4);
+            Assert.AreEqual(d.Position, "004");
         }
 
         [TestMethod]
@@ -85,7 +96,7 @@ namespace EQToolTests
             var d = service.ChCheck("Hanbox tells the guild, 'GG 001 CH --Beefwich'");
             Assert.AreEqual(d.Recipient, "Beefwich");
             Assert.AreEqual(d.Caster, "Hanbox");
-            Assert.AreEqual(d.Position, 1);
+            Assert.AreEqual(d.Position, "001");
             Assert.AreEqual(d.RecipientGuild, "GG");
         }
 
@@ -104,7 +115,7 @@ namespace EQToolTests
 
             Assert.AreEqual(d.Recipient, "Beefwich");
             Assert.AreEqual(d.Caster, "Hanbox");
-            Assert.AreEqual(d.Position, 1);
+            Assert.AreEqual(d.Position, "001");
             Assert.AreEqual(d.RecipientGuild, "GG");
         }
 
@@ -138,7 +149,7 @@ namespace EQToolTests
 
             Assert.AreEqual(d.Recipient, "Beefwich");
             Assert.AreEqual(d.Caster, "Hanbox");
-            Assert.AreEqual(d.Position, 1);
+            Assert.AreEqual(d.Position, "001");
             Assert.AreEqual(d.RecipientGuild, "GGG");
         }
 
@@ -186,7 +197,7 @@ namespace EQToolTests
             var d = service.ChCheck("You say out of character, 'CA 002 CH -- Aaryk'");
             Assert.AreEqual(d.Recipient, "Aaryk");
             Assert.AreEqual(d.Caster, "You");
-            Assert.AreEqual(d.Position, 2);
+            Assert.AreEqual(d.Position, "002");
             Assert.AreEqual(d.RecipientGuild, "CA");
         }
 
@@ -245,7 +256,7 @@ namespace EQToolTests
             var d = service.ChCheck("Windarie auctions, '111 --- CH << Mandair  >> --- 111'");
             Assert.AreEqual(d.Recipient, "Mandair");
             Assert.AreEqual(d.Caster, "Windarie");
-            Assert.AreEqual(d.Position, 111);
+            Assert.AreEqual(d.Position, "111");
         }
 
         [TestMethod]
@@ -261,7 +272,74 @@ namespace EQToolTests
             var d = service.ChCheck("Mutao auctions, '777 CH <>> Mandair <<> 777'");
             Assert.AreEqual(d.Recipient, "Mandair");
             Assert.AreEqual(d.Caster, "Mutao");
-            Assert.AreEqual(d.Position, 777);
+            Assert.AreEqual(d.Position, "777");
+        }
+
+        [TestMethod]
+        public void Parse18()
+        {
+            var service = container.Resolve<ChParser>();
+            var player = container.Resolve<ActivePlayer>();
+            player.Player = new PlayerInfo
+            {
+                Level = 54,
+                PlayerClass = PlayerClasses.Cleric
+            };
+            var d = service.ChCheck("Mutao auctions, 'AAA CH <>> Mandair <<> AAA'");
+            Assert.AreEqual(d.Recipient, "Mandair");
+            Assert.AreEqual(d.Caster, "Mutao");
+            Assert.AreEqual(d.Position, "AAA");
+        }
+
+        [TestMethod]
+        public void Parse19()
+        {
+            var service = container.Resolve<ChParser>();
+            var player = container.Resolve<ActivePlayer>();
+            player.Player = new PlayerInfo
+            {
+                Level = 54,
+                PlayerClass = PlayerClasses.Cleric
+            };
+            var d = service.ChCheck("Mutao auctions, 'GGG AAA CH <>> Mandair <<> AAA'");
+            Assert.AreEqual(d.Recipient, "Mandair");
+            Assert.AreEqual(d.Caster, "Mutao");
+            Assert.AreEqual(d.Position, "AAA");
+            Assert.AreEqual(d.RecipientGuild, "GGG");
+        }
+
+        [TestMethod]
+        public void Parse20()
+        {
+            var service = container.Resolve<ChParser>();
+            var player = container.Resolve<ActivePlayer>();
+            player.Player = new PlayerInfo
+            {
+                Level = 54,
+                PlayerClass = PlayerClasses.Cleric
+            };
+            var d = service.ChCheck("Mutao auctions, 'AAA CH <>> Mandair <<> AAA'");
+            Assert.AreEqual(d.Recipient, "Mandair");
+            Assert.AreEqual(d.Caster, "Mutao");
+            Assert.AreEqual(d.Position, "AAA");
+            Assert.AreEqual(d.RecipientGuild, string.Empty);
+        }
+
+        [TestMethod]
+        public void Parse21()
+        {
+            var service = container.Resolve<ChParser>();
+            var player = container.Resolve<ActivePlayer>();
+            player.Player = new PlayerInfo
+            {
+                Level = 54,
+                PlayerClass = PlayerClasses.Cleric
+            };
+            var d = service.ChCheck("Mutao auctions, 'AAA CH <>> Mandair <<>'");
+            Assert.AreEqual(d.Recipient, "Mandair");
+            Assert.AreEqual(d.Caster, "Mutao");
+            Assert.AreEqual(d.Position, "AAA");
+            Assert.AreEqual(d.RecipientGuild, string.Empty);
         }
     }
 }

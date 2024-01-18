@@ -351,7 +351,15 @@ namespace EQToolShared.Map
                 {
                     "Sentient Bile","The Crypt Excavator","The Crypt Feaster","The Crypt Keeper","Drusella Sathir","Embalming Fluid","The Golem Master","Reanimated Plaguebone","Skeletal Procurator","The Skeleton Sepulcher","The Spectre Spiritualist","The Undertaker Lord",
                 },
-                RespawnTime = new TimeSpan(0, 20, 30)
+                RespawnTime = new TimeSpan(0, 20, 30),
+                NpcSpawnTimes = new List<NpcSpawnTime>
+                 {
+                     new NpcSpawnTime
+                     {
+                          Name = "Drusella Sathir",
+                          RespawnTime = new TimeSpan(24, 0, 0)
+                     }
+                 }
             });
             ZoneInfoMap.Add("chardok", new ZoneInfo
             {
@@ -824,7 +832,35 @@ namespace EQToolShared.Map
                 {
                     "Cyrla Shadowstepper","Dyllin Starsine","Hagnis Shralok","Recfek Shralok","Vopuk Shralok","Vexven Mucktail","Grenix Mucktail","Barn Bloodstone",
                 },
-                RespawnTime = new TimeSpan(0, 5, 0)
+                RespawnTime = new TimeSpan(0, 5, 0),
+                NpcSpawnTimes = new List<NpcSpawnTime>()
+                 {
+                     new NpcSpawnTime
+                     {
+                         Name = "Hagnis Shralok",
+                         RespawnTime = new TimeSpan(0, 22, 0)
+                     },
+                      new NpcSpawnTime
+                     {
+                         Name = "Recfek Shralok",
+                         RespawnTime = new TimeSpan(0, 22, 0)
+                     },
+                      new NpcSpawnTime
+                     {
+                         Name = "Vopuk Shralok",
+                         RespawnTime = new TimeSpan(0, 22, 0)
+                     },
+                      new NpcSpawnTime
+                     {
+                         Name = "Vexven Mucktail",
+                         RespawnTime = new TimeSpan(0, 22, 0)
+                     },
+                      new NpcSpawnTime
+                     {
+                         Name = "Grenix Mucktail",
+                         RespawnTime = new TimeSpan(0, 22, 0)
+                     }
+                 }
             });
             ZoneInfoMap.Add("hole", new ZoneInfo
             {
@@ -868,7 +904,20 @@ namespace EQToolShared.Map
                 {
                     "The Avatar of War","The Statue of Rallos Zek","Derakor the Vindicator","King Tormax","Bjrakor the Cold","Captain Bvellos","Gkrean Prophet of Tallon","Semkak Prophet of Vallon","Gorul Longshanks","Keldor Dek`Torek","Noble Helssen","Slaggak the Trainer","Staff Sergeant Drioc","Vkjor","Wenglawks Kkeak",
                 },
-                RespawnTime = new TimeSpan(0, 28, 0)
+                RespawnTime = new TimeSpan(0, 28, 0),
+                NpcSpawnTimes = new List<NpcSpawnTime>
+                 {
+                     new NpcSpawnTime
+                     {
+                        Name = "Keldor Dek`Torek",
+                        RespawnTime = new TimeSpan(18, 0, 0)
+                     },
+                      new NpcSpawnTime
+                     {
+                        Name = "Derakor the Vindicator",
+                        RespawnTime = new TimeSpan(7, 0, 0)
+                     }
+                 }
             });
             ZoneInfoMap.Add("kaesora", new ZoneInfo
             {
@@ -968,6 +1017,11 @@ namespace EQToolShared.Map
                       {
                            Name = "a bloodgill goblin",
                             RespawnTime = new TimeSpan(0, 13, 0)
+                      },
+                       new NpcSpawnTime
+                      {
+                           Name = "Chancellor of Di`Zok",
+                            RespawnTime = new TimeSpan(2, 0, 0)
                       }
                  }
             });
@@ -1184,7 +1238,20 @@ namespace EQToolShared.Map
                 ShowAllMapLevels = true,
                 ZoneLevelHeight = 10,
                 NotableNPCs = new List<string>() { "Capt Surestout", "Nerbilik", "Oracle of K`Arnon", "Boog Mudtoe", "Gornit", "Sentry Xyrin", "Gull Skytalon", "Allizewsaur", "Ancient Cyclops", "Brawn", "Quag Maelstrom", "Seplawishinl Bladeblight", "Soarin Brightfeather", "tainted seafury cyclops", "corrupted seafury cyclops", "Wiltin Windwalker", "A Goblin", },
-                RespawnTime = new TimeSpan(0, 6, 0)
+                RespawnTime = new TimeSpan(0, 6, 0),
+                NpcSpawnTimes = new List<NpcSpawnTime>()
+                 {
+                     new NpcSpawnTime
+                     {
+                          Name = "Guardian of K`Arnon",
+                           RespawnTime = new TimeSpan(0, 22, 0)
+                     },
+                       new NpcSpawnTime
+                     {
+                          Name = "Gull Skytalon",
+                           RespawnTime = new TimeSpan(8, 0, 0)
+                     }
+                 }
             });
             ZoneInfoMap.Add("overthere", new ZoneInfo
             {
@@ -1292,8 +1359,6 @@ namespace EQToolShared.Map
                           Name = "Guard Yerlash",
                           RespawnTime = new TimeSpan(0, 25, 0)
                      },
-
-
                  },
                 RespawnTime = new TimeSpan(0, 10, 30)
             });
@@ -1303,7 +1368,20 @@ namespace EQToolShared.Map
                 ShowAllMapLevels = false,
                 ZoneLevelHeight = 10,
                 NotableNPCs = new List<string>() { "Brother Hayle", "The Ishva Mal", "Kurrpok Splitpaw", "Tesch Val Kadvem", "Tesch Val Deval`Nmak", "Nisch Val Torash Mashk", "Rosch Val L'Vlor" },
-                RespawnTime = new TimeSpan(0, 22, 0)
+                RespawnTime = new TimeSpan(0, 22, 0),
+                NpcSpawnTimes = new List<NpcSpawnTime>()
+                 {
+                     new NpcSpawnTime
+                     {
+                           Name = "The Ishva Mal",
+                            RespawnTime = new TimeSpan(0, 28, 0)
+                     },
+                      new NpcSpawnTime
+                     {
+                           Name = "An Ishva Lteth gnoll",
+                            RespawnTime = new TimeSpan(0, 28, 0)
+                     }
+                 }
             });
             ZoneInfoMap.Add("permafrost", new ZoneInfo
             {
@@ -1319,7 +1397,15 @@ namespace EQToolShared.Map
                 ShowAllMapLevels = false,
                 ZoneLevelHeight = 10,
                 NotableNPCs = new List<string>() { "", },
-                RespawnTime = new TimeSpan(0, 12, 0)
+                RespawnTime = new TimeSpan(0, 12, 0),
+                NpcSpawnTimes = new List<NpcSpawnTime>()
+                {
+                    new NpcSpawnTime
+                    {
+                        Name = "A Spectre",
+                         RespawnTime = new TimeSpan(0, 24, 0)
+                    }
+                }
             });
             ZoneInfoMap.Add("qey2hh1", new ZoneInfo
             {
@@ -1648,7 +1734,70 @@ namespace EQToolShared.Map
                 ShowAllMapLevels = true,
                 ZoneLevelHeight = 10,
                 NotableNPCs = new List<string>() { "Cave Bat Lord", "Foodmaster Rargnar", "Grodl Ripclaw", "High Shaman Drogik", "Huntmaster Furgrl", "Jailer Mkrarrg", "King Gragnar", "a kobold fisherman", "Krode the Diviner", "Lorekeeper Roggik", "The Mighty Bear Paw", "Muglwump", "Packmaster Dledsh", "Prince Bragnar", "Smithy Rrarrgin", "Trainer Daxgrr", "Warlord Drrig", "Grodl Ripclaw" },
-                RespawnTime = new TimeSpan(0, 6, 40)
+                RespawnTime = new TimeSpan(0, 6, 40),
+                NpcSpawnTimes = new List<NpcSpawnTime>()
+                 {
+                     new NpcSpawnTime
+                     {
+                         Name = "King Gragnar",
+                         RespawnTime = new TimeSpan(0, 48, 0)
+                     },
+                      new NpcSpawnTime
+                     {
+                         Name = "High Shaman Drogik",
+                         RespawnTime = new TimeSpan(0, 48, 0)
+                     },
+                       new NpcSpawnTime
+                     {
+                         Name = "Lorekeeper Roggik",
+                         RespawnTime = new TimeSpan(0, 48, 0)
+                     },
+                        new NpcSpawnTime
+                     {
+                         Name = "Trainer Daxgrr",
+                         RespawnTime = new TimeSpan(0, 20, 0)
+                     },
+                         new NpcSpawnTime
+                     {
+                         Name = "Cave Bat Lord",
+                         RespawnTime = new TimeSpan(0, 48, 0)
+                     },
+                          new NpcSpawnTime
+                     {
+                         Name = "Foodmaster Rargnar",
+                         RespawnTime = new TimeSpan(0, 20, 0)
+                     },
+                    new NpcSpawnTime
+                     {
+                         Name = "Huntmaster Furgrl",
+                         RespawnTime = new TimeSpan(0, 48, 0)
+                     },
+                    new NpcSpawnTime
+                     {
+                         Name = "The Muglwump",
+                         RespawnTime = new TimeSpan(0, 35, 0)
+                     },
+                      new NpcSpawnTime
+                     {
+                         Name = "Packmaster Dledsh",
+                         RespawnTime = new TimeSpan(0, 16, 0)
+                     },
+                        new NpcSpawnTime
+                     {
+                         Name = "Prince Bragnar",
+                         RespawnTime = new TimeSpan(0, 57, 0)
+                     },
+                          new NpcSpawnTime
+                     {
+                         Name = "Smithy Rrarrgin",
+                         RespawnTime = new TimeSpan(0, 20, 0)
+                     },
+                            new NpcSpawnTime
+                     {
+                         Name = "Warlord Drrig",
+                         RespawnTime = new TimeSpan(0, 13, 0)
+                     },
+                 }
             });
             ZoneInfoMap.Add("warslikswood", new ZoneInfo
             {
@@ -1670,6 +1819,126 @@ namespace EQToolShared.Map
                      {
                         Name = "An elder wyvern",
                         RespawnTime = new TimeSpan(0, 30, 0)
+                     },
+                      new NpcSpawnTime
+                     {
+                        Name = "Amcilla",
+                        RespawnTime = new TimeSpan(8, 30, 0)
+                     },
+                      new NpcSpawnTime
+                     {
+                        Name = "Atpaev",
+                        RespawnTime = new TimeSpan(8, 30, 0)
+                     },
+                      new NpcSpawnTime
+                     {
+                        Name = "Bufa",
+                        RespawnTime = new TimeSpan(8, 30, 0)
+                     },
+                      new NpcSpawnTime
+                     {
+                        Name = "Crial",
+                        RespawnTime = new TimeSpan(8, 30, 0)
+                     },
+                      new NpcSpawnTime
+                     {
+                        Name = "Gangel",
+                        RespawnTime = new TimeSpan(8, 30, 0)
+                     },
+                      new NpcSpawnTime
+                     {
+                        Name = "Honvar",
+                        RespawnTime = new TimeSpan(8, 30, 0)
+                     },
+                      new NpcSpawnTime
+                     {
+                        Name = "Linbrak",
+                        RespawnTime = new TimeSpan(8, 30, 0)
+                     },
+                      new NpcSpawnTime
+                     {
+                        Name = "Makala",
+                        RespawnTime = new TimeSpan(8, 30, 0)
+                     },
+                      new NpcSpawnTime
+                     {
+                        Name = "Onava",
+                        RespawnTime = new TimeSpan(8, 30, 0)
+                     },
+                      new NpcSpawnTime
+                     {
+                        Name = "Quoza",
+                        RespawnTime = new TimeSpan(8, 30, 0)
+                     },
+                      new NpcSpawnTime
+                     {
+                        Name = "Sivar",
+                        RespawnTime = new TimeSpan(8, 30, 0)
+                     },
+                      new NpcSpawnTime
+                     {
+                        Name = "Uiliak",
+                        RespawnTime = new TimeSpan(8, 30, 0)
+                     },
+                      new NpcSpawnTime
+                     {
+                        Name = "Yal",
+                        RespawnTime = new TimeSpan(8, 30, 0)
+                     },
+                      new NpcSpawnTime
+                     {
+                        Name = "Ayillish",
+                        RespawnTime = new TimeSpan(8, 0, 0)
+                     },
+                      new NpcSpawnTime
+                     {
+                        Name = "Derasinel",
+                        RespawnTime = new TimeSpan(8, 0, 0)
+                     },
+                      new NpcSpawnTime
+                     {
+                        Name = "Draazak",
+                        RespawnTime = new TimeSpan(8, 00, 0)
+                     },
+                      new NpcSpawnTime
+                     {
+                        Name = "Entariz",
+                        RespawnTime = new TimeSpan(8, 0, 0)
+                     },
+                      new NpcSpawnTime
+                     {
+                        Name = "Harla Dar",
+                        RespawnTime = new TimeSpan(3, 0, 0)
+                     },
+                      new NpcSpawnTime
+                     {
+                        Name = "Ionat",
+                        RespawnTime = new TimeSpan(8, 0, 0)
+                     },
+                      new NpcSpawnTime
+                     {
+                        Name = "Jen Sapara",
+                        RespawnTime = new TimeSpan(8, 0, 0)
+                     },
+                      new NpcSpawnTime
+                     {
+                        Name = "Kar Sapara",
+                        RespawnTime = new TimeSpan(8, 0, 0)
+                     },
+                      new NpcSpawnTime
+                     {
+                        Name = "Karkona",
+                        RespawnTime = new TimeSpan(8, 0, 0)
+                     },
+                      new NpcSpawnTime
+                     {
+                        Name = "Lord Gossimerwind",
+                        RespawnTime = new TimeSpan(0, 6, 40)
+                     },
+                      new NpcSpawnTime
+                     {
+                        Name = "A Faerie Dragon",
+                        RespawnTime = new TimeSpan(0, 6, 40)
                      }
                  },
                 RespawnTime = new TimeSpan(0, 6, 40)

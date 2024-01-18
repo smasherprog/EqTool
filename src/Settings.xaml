@@ -155,28 +155,10 @@
                 <Separator/>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Chain Formats" VerticalAlignment="Center" FontWeight="Bold" MinWidth="100"/>
-                    <TextBlock Text="TAG CHAINMESSAGE" ToolTip="Chain text format" />
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock VerticalAlignment="Center" FontWeight="Bold" MinWidth="100"/>
-                    <TextBlock Text="TAG is optional." />
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock  VerticalAlignment="Center" FontWeight="Bold" MinWidth="100"/>
-                    <TextBlock Text="Below are real examples!" />
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Example:" TextAlignment="Right" FontWeight="Bold" MinWidth="100" />
-                    <TextBlock Text="'CA 001 CH -- Huntor'" ToolTip="Chain text format" Margin="10, 0,0,0" />
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Example:" TextAlignment="Right" FontWeight="Bold" MinWidth="100" />
-                    <TextBlock Text="'001 CH - Huntor'" ToolTip="Chain text format" Margin="10, 0,0,0" />
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Example:" TextAlignment="Right" FontWeight="Bold" MinWidth="100" />
-                    <TextBlock Text="'555 CH &lt;&lt;Testflight &lt;&lt;&gt; 555'" ToolTip="Chain text format" Margin="10, 0,0,0" />
-                </StackPanel>
+                    <TextBlock>
+                        <Hyperlink NavigateUri="https://github.com/smasherprog/EqTool/blob/main/README.md#ch-format-is-loosely-tag-position-ch-target" RequestNavigate="Hyperlink_RequestNavigate">Chain Help</Hyperlink>
+                    </TextBlock>
+                </StackPanel> 
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="CH Chain" ToolTip="Complete Heal Overlay" VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
                     <CheckBox IsChecked="{Binding ActivePlayer.Player.ChChainOverlay}" Click="Savesettings" MinWidth="105"></CheckBox>
@@ -185,8 +167,7 @@
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="CH Chain Tag" ToolTip="Example: GG or CA. Other tags will be ignored" VerticalAlignment="Center" FontWeight="Bold"  MinWidth="100"/>
                     <TextBox Text="{Binding Path=ActivePlayer.Player.ChChainTagOverlay, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MinWidth="40" TextChanged="CHTextBox_TextChanged"></TextBox>
-                </StackPanel>
-
+                </StackPanel> 
             </StackPanel>
         </TabItem>
         <TabItem Header="Triggers">

@@ -41,19 +41,6 @@ namespace EQTool
 
             UpdateMessages.Add(new UpdateMessageData
             {
-                DateTime = new DateTime(2024, 1, 14),
-                Message =
-                      $"* Added timers for AOE's for the following mobs: {Environment.NewLine}" +
-                      $"*     Telkorenar {Environment.NewLine}" +
-                      $"*     Gozzrem {Environment.NewLine}" +
-                      $"*     Lendiniara the Keeper {Environment.NewLine}" +
-                      $"*     Lady Mirenilla {Environment.NewLine}" +
-                      $"*     Lord Koi'Doken {Environment.NewLine}" +
-                      $"*     Zlexak {Environment.NewLine}" +
-                      $"*     Hoshkar {Environment.NewLine}"
-            });
-            UpdateMessages.Add(new UpdateMessageData
-            {
                 DateTime = new DateTime(2024, 1, 15),
                 Message = $"* Added an error when PigParse is ran from the Everquest folder. Running from the everquest folder is not supprted! {Environment.NewLine}" +
                   $"* Various bug fixes. {Environment.NewLine}" +
@@ -62,6 +49,16 @@ namespace EQTool
                   $"*     Windarie auctions, '111 --- CH << Mandair  >> --- 111' {Environment.NewLine}" +
                   $"*     Kaijai auctions, '888 CH <<< Mandair >>> 888' {Environment.NewLine}" +
                   $"*     Mutao auctions, '777 CH <>> Mandair <<> 777' {Environment.NewLine}"
+            });
+
+            UpdateMessages.Add(new UpdateMessageData
+            {
+                DateTime = new DateTime(2024, 1, 15),
+                Message = $"* Added more mob zone respawn times to various zones. {Environment.NewLine}" +
+                   $"* Expanded CH chain formats. {Environment.NewLine}" +
+                  $"* For example, the following are examples now supported: {Environment.NewLine}" +
+                  $"*     Windarie auctions, 'AAA --- CH << Mandair  >> --- AAA' {Environment.NewLine}" +
+                  $"*     Kaijai auctions, 'BBB CH <<< Mandair >>> BBB' {Environment.NewLine}"
             });
         }
     }
