@@ -393,6 +393,7 @@
     <Compile Include="Services\AppDispatcher.cs" />
     <Compile Include="Services\AudioService.cs" />
     <Compile Include="Services\BinarySerializer.cs" />
+    <Compile Include="Services\CHService.cs" />
     <Compile Include="Services\LoggingService.cs" />
     <Compile Include="Services\MapOpacityHelper.cs" />
     <Compile Include="Services\MapViewModelService.cs" />

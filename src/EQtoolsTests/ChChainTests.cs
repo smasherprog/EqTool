@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using EQTool;
 using EQTool.Models;
 using EQTool.Services;
 using EQTool.ViewModels;
@@ -340,6 +341,73 @@ namespace EQToolTests
             Assert.AreEqual(d.Caster, "Mutao");
             Assert.AreEqual(d.Position, "AAA");
             Assert.AreEqual(d.RecipientGuild, string.Empty);
+        }
+
+        [TestMethod]
+        public void Parse22()
+        {
+            var chaindata = new ChainData();
+            var chain = new ChParser.ChParseData();
+            chaindata.YourChainOrder = "bbb";
+            chaindata.HighestOrder = "zzz";
+            chain.Position = "aaa";
+            Assert.IsTrue(CHService.ShouldWarnOfChain(chaindata, chain));
+            chaindata.HighestOrder = "bbb";
+            chain.Position = "aaa";
+            chaindata.YourChainOrder = "bbb";
+            Assert.IsTrue(CHService.ShouldWarnOfChain(chaindata, chain));
+            chaindata.HighestOrder = "ccc";
+            chain.Position = "aaa";
+            chaindata.YourChainOrder = "bbb";
+            Assert.IsTrue(CHService.ShouldWarnOfChain(chaindata, chain));
+            chaindata.HighestOrder = "ccc";
+            chain.Position = "ccc";
+            chaindata.YourChainOrder = "bbb";
+            Assert.IsFalse(CHService.ShouldWarnOfChain(chaindata, chain));
+            chaindata.HighestOrder = "aaa";
+            chain.Position = "zzz";
+            chaindata.YourChainOrder = "bbb";
+            Assert.IsFalse(CHService.ShouldWarnOfChain(chaindata, chain));
+            chaindata.HighestOrder = "bbb";
+            chain.Position = "bbb";
+            chaindata.YourChainOrder = "aaa";
+            Assert.IsFalse(CHService.ShouldWarnOfChain(chaindata, chain));
+
+            chaindata.HighestOrder = "004";
+            chain.Position = "003";
+            chaindata.YourChainOrder = "004";
+            Assert.IsTrue(CHService.ShouldWarnOfChain(chaindata, chain));
+
+            chaindata.HighestOrder = "004";
+            chain.Position = "004";
+            chaindata.YourChainOrder = "002";
+            Assert.IsFalse(CHService.ShouldWarnOfChain(chaindata, chain));
+
+            chaindata.HighestOrder = "004";
+            chain.Position = "004";
+            chaindata.YourChainOrder = "002";
+            Assert.IsFalse(CHService.ShouldWarnOfChain(chaindata, chain));
+
+            chaindata.HighestOrder = "004";
+            chain.Position = "001";
+            chaindata.YourChainOrder = "002";
+            Assert.IsTrue(CHService.ShouldWarnOfChain(chaindata, chain));
+
+            chaindata.HighestOrder = "004";
+            chain.Position = "001";
+            chaindata.YourChainOrder = "003";
+            Assert.IsFalse(CHService.ShouldWarnOfChain(chaindata, chain));
+
+            chaindata.HighestOrder = "004";
+            chain.Position = "001";
+            chaindata.YourChainOrder = "001";
+            Assert.IsFalse(CHService.ShouldWarnOfChain(chaindata, chain));
+
+            chaindata.HighestOrder = "004";
+            chain.Position = "004";
+            chaindata.YourChainOrder = "001";
+            Assert.IsTrue(CHService.ShouldWarnOfChain(chaindata, chain));
+
         }
     }
 }

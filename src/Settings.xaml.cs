@@ -788,29 +788,65 @@ namespace EQTool
                 return;
             }
             SettingsWindowData.ActivePlayer.Player.ChChainOverlay = true;
+            SettingsWindowData.ActivePlayer.Player.ChChainWarningOverlay = true;
+            SettingsWindowData.ActivePlayer.Player.ChChainWarningAudio = true;
             ((App)System.Windows.Application.Current).OpenOverLayWindow();
             button.IsEnabled = false;
             _ = Task.Factory.StartNew(() =>
             {
                 try
                 {
-                    var msg = "Hanbox shouts, 'CA 001 CH -- Beefwich'";
+                    var msg = "You shout, 'CA 001 CH -- Beefwich'";
                     PushLog(msg);
                     Thread.Sleep(2000);
-                    msg = "Hanbox shouts, 'CA 001 CH -- Huntor'";
+
+                    msg = "Mycro shouts, 'CA 002 CH -- Huntor'";
                     PushLog(msg);
                     Thread.Sleep(1000);
-                    msg = "Hanbox shouts, 'CA 002 CH -- Beefwich'";
+
+                    msg = "Sleeper shouts, 'CA 003 CH -- Beefwich'";
                     PushLog(msg);
-                    Thread.Sleep(400);
-                    msg = "Hanbox shouts, 'CA 003 CH -- Beefwich'";
+                    Thread.Sleep(2000);
+
+                    msg = "Sleeper shouts, 'CA 004 CH -- Beefwich'";
                     PushLog(msg);
-                    Thread.Sleep(1400);
+                    Thread.Sleep(1800);
+
+                    msg = "You shout, 'CA 001 CH -- Beefwich'";
+                    PushLog(msg);
+                    Thread.Sleep(2000);
+
+                    msg = "Mycro shouts, 'CA 002 CH -- Huntor'";
+                    PushLog(msg);
+                    Thread.Sleep(1500);
+
+                    msg = "Sleeper shouts, 'CA 003 CH -- Beefwich'";
+                    PushLog(msg);
+                    Thread.Sleep(2000);
+
+                    msg = "Sleeper shouts, 'CA 004 CH -- Beefwich'";
+                    PushLog(msg);
+                    Thread.Sleep(1700);
+
                     msg = "Hanbox shouts, 'CA 002 CH -- Huntor'";
                     PushLog(msg);
                     Thread.Sleep(1500);
-                    msg = "Hanbox shouts, 'CA 004 CH -- Beefwich'";
+
+                    msg = "Hanbox shouts, 'CA 001 CH -- Beefwich'";
                     PushLog(msg);
+                    Thread.Sleep(1700);
+
+                    msg = "Sleeper shouts, 'CA 003 CH -- Beefwich'";
+                    PushLog(msg);
+                    Thread.Sleep(2000);
+
+                    msg = "Sleeper shouts, 'CA 004 CH -- Beefwich'";
+                    PushLog(msg);
+                    Thread.Sleep(1800);
+
+                    msg = "Mycro shouts, 'CA 002 CH -- Huntor'";
+                    PushLog(msg);
+                    Thread.Sleep(1500);
                     appDispatcher.DispatchUI(() => { button.IsEnabled = true; });
                 }
                 catch (Exception ex)

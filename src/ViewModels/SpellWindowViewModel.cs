@@ -20,12 +20,10 @@ namespace EQTool.ViewModels
         private readonly IAppDispatcher appDispatcher;
         private readonly EQToolSettings settings;
         private readonly EQSpells spells;
-        public readonly string CustomerTime = " Custom Timer";
-        private readonly Dictionary<PlayerClasses, int> CustomTimerClasses;
 
         public SpellWindowViewModel(ActivePlayer activePlayer, IAppDispatcher appDispatcher, EQToolSettings settings, EQSpells spells)
         {
-            CustomTimerClasses = Enum.GetValues(typeof(PlayerClasses)).Cast<PlayerClasses>().Select(a => new { key = a, level = 1 }).ToDictionary(a => a.key, a => a.level);
+
             this.activePlayer = activePlayer;
             this.appDispatcher = appDispatcher;
             this.settings = settings;
@@ -214,10 +212,6 @@ namespace EQTool.ViewModels
 
                 if (match.Spell.name.EndsWith("Discipline"))
                 {
-                    if (match.TargetName != EQSpells.SpaceYou)
-                    {
-                        return;
-                    }
                     var basetime = (int)(match.Spell.recastTime / 1000.0);
                     var playerlevel = this.activePlayer.Player.Level;
                     if (match.Spell.name == "Evasive Discipline")
@@ -252,7 +246,10 @@ namespace EQTool.ViewModels
                         DurationInSeconds = basetime,
                         Name = "--Discipline-- " + spellname,
                         SpellNameIcon = "Strengthen",
-                        SpellType = SpellTypes.DisciplineCoolDown
+                        SpellType = SpellTypes.DisciplineCoolDown,
+                        TargetName = match.TargetName,
+                        Classes = match.Spell.Classes
+
                     });
                 }
                 if (resisted)
@@ -307,7 +304,7 @@ namespace EQTool.ViewModels
 
             appDispatcher.DispatchUI(() =>
             {
-                var s = SpellList.FirstOrDefault(a => a.SpellName == match.Name && CustomerTime == a.TargetName);
+                var s = SpellList.FirstOrDefault(a => a.SpellName == match.Name && match.TargetName == a.TargetName);
                 if (s != null)
                 {
                     _ = SpellList.Remove(s);
@@ -320,11 +317,11 @@ namespace EQTool.ViewModels
                     UpdatedDateTime = DateTime.Now,
                     PercentLeftOnSpell = 100,
                     SpellType = match.SpellType,
-                    TargetName = CustomerTime,
+                    TargetName = match.TargetName,
                     SpellName = match.Name,
                     Rect = spellicon.Rect,
                     SpellIcon = spellicon.SpellIcon,
-                    Classes = CustomTimerClasses,
+                    Classes = match.Classes,
                     GuessedSpell = false
                 });
             });
@@ -409,7 +406,7 @@ namespace EQTool.ViewModels
 
             appDispatcher.DispatchUI(() =>
             {
-                var s = SpellList.FirstOrDefault(a => a.SpellName == name && CustomerTime == a.TargetName);
+                var s = SpellList.FirstOrDefault(a => a.SpellName == name && CustomTimer.CustomerTime == a.TargetName);
                 if (s != null)
                 {
                     _ = SpellList.Remove(s);

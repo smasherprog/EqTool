@@ -38,19 +38,13 @@ namespace EQTool
             view.IsLiveGrouping = true;
             view.SortDescriptions.Add(new SortDescription(nameof(UpdateMessageData.DateTime), ListSortDirection.Descending));
             view.IsLiveSorting = true;
-
             UpdateMessages.Add(new UpdateMessageData
             {
-                DateTime = new DateTime(2024, 1, 15),
-                Message = $"* Added an error when PigParse is ran from the Everquest folder. Running from the everquest folder is not supprted! {Environment.NewLine}" +
-                  $"* Various bug fixes. {Environment.NewLine}" +
-                  $"* Expanded CH chain formats. Now, the CH Chain is much more flexible and works with almost any format thrown at it. {Environment.NewLine}" +
-                  $"* For example, the following are examples now supported: {Environment.NewLine}" +
-                  $"*     Windarie auctions, '111 --- CH << Mandair  >> --- 111' {Environment.NewLine}" +
-                  $"*     Kaijai auctions, '888 CH <<< Mandair >>> 888' {Environment.NewLine}" +
-                  $"*     Mutao auctions, '777 CH <>> Mandair <<> 777' {Environment.NewLine}"
+                DateTime = new DateTime(2024, 1, 17),
+                Message = $"* Added a CH visual/Audio warning. This will alert you when the PERSON IN FRONT OF YOU goes first! {Environment.NewLine}" +
+                      $"* Fixed issue where some enraged mobs didnt trigger overlay/audio alerts. {Environment.NewLine}" +
+                      $"* Discipline cooldown timers now show under the person, just as spells do. You can filter these in the same way. {Environment.NewLine}"
             });
-
             UpdateMessages.Add(new UpdateMessageData
             {
                 DateTime = new DateTime(2024, 1, 16),

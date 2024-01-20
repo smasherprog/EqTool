@@ -150,7 +150,7 @@ namespace EQTool
                 SpellType = EQToolShared.Enums.SpellTypes.RespawnTimer
             };
 
-            var exisitngdeathentry = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellName == add.Name && spellWindowViewModel.CustomerTime == a.TargetName);
+            var exisitngdeathentry = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellName == add.Name && CustomTimer.CustomerTime == a.TargetName);
             if (exisitngdeathentry != null)
             {
                 deathcounter = ++deathcounter > 999 ? 1 : deathcounter;

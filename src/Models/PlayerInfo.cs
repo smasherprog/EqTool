@@ -460,6 +460,38 @@ namespace EQTool.Models
             }
         }
 
+        private bool _ChChainWarningOverlay;
+        public bool ChChainWarningOverlay
+        {
+            get => _ChChainWarningOverlay;
+            set
+            {
+                _ChChainWarningOverlay = value;
+                if (_ChChainWarningOverlay)
+                {
+                    _ChChainOverlay = true;
+                    OnPropertyChanged(nameof(ChChainOverlay));
+                }
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _ChChainWarningAudio;
+        public bool ChChainWarningAudio
+        {
+            get => _ChChainWarningAudio;
+            set
+            {
+                _ChChainWarningAudio = value;
+                if (_ChChainWarningAudio)
+                {
+                    _ChChainOverlay = true;
+                    OnPropertyChanged(nameof(ChChainOverlay));
+                }
+                OnPropertyChanged();
+            }
+        }
+
         private bool _ChChainOverlay;
         public bool ChChainOverlay
         {
@@ -467,6 +499,13 @@ namespace EQTool.Models
             set
             {
                 _ChChainOverlay = value;
+                if (!_ChChainOverlay)
+                {
+                    _ChChainWarningAudio = false;
+                    OnPropertyChanged(nameof(ChChainWarningAudio));
+                    _ChChainWarningOverlay = false;
+                    OnPropertyChanged(nameof(ChChainWarningOverlay));
+                }
                 OnPropertyChanged();
             }
         }

@@ -15,11 +15,11 @@ using System.Windows.Threading;
 
 namespace EQTool
 {
-    public class ChainData
+    public class ChainOverlayData : ChainData
     {
         public Canvas Canvas { get; set; }
         public List<FrameworkElement> ChildrenInRow { get; set; }
-        public string Destination { get; set; }
+        public string TargetName { get; set; }
         public int ActiveAnimations { get; set; } = 0;
         public RowDefinition RowDefinition { get; set; }
     }
@@ -33,7 +33,7 @@ namespace EQTool
         private readonly ActivePlayer activePlayer;
         private readonly IAppDispatcher appDispatcher;
         private DateTime LastWindowInteraction = DateTime.UtcNow;
-        private readonly List<ChainData> chainDatas = new List<ChainData>();
+        private readonly List<ChainOverlayData> chainDatas = new List<ChainOverlayData>();
         private readonly PigParseApi pigParseApi;
         private readonly DispatcherTimer timer = new DispatcherTimer
         {
@@ -282,13 +282,37 @@ namespace EQTool
         private void LogParser_CHEvent(object sender, ChParser.ChParseData e)
         {
             var overlay = this.activePlayer?.Player?.ChChainOverlay ?? false;
-            if (!overlay)
+            var warningoverlay = this.activePlayer?.Player?.ChChainWarningOverlay ?? false;
+            if (!overlay && !warningoverlay)
             {
                 return;
             }
+
             appDispatcher.DispatchUI(() =>
             {
                 var chaindata = this.GetOrCreateChain(e.Recipient);
+                if (warningoverlay)
+                {
+                    var shouldwarn = CHService.ShouldWarnOfChain(chaindata, e);
+                    if (shouldwarn)
+                    {
+                        System.Threading.Tasks.Task.Factory.StartNew(() =>
+                        {
+                            this.appDispatcher.DispatchUI(() =>
+                            {
+                                CenterText.Text = "CH Chain Warning";
+                                CenterText.Foreground = Brushes.Red;
+                            });
+                            System.Threading.Thread.Sleep(1000 * 2);
+                            this.appDispatcher.DispatchUI(() =>
+                            {
+                                CenterText.Text = string.Empty;
+                                CenterText.Foreground = Brushes.Red;
+                            });
+                        });
+                    }
+                }
+
                 var random = new Random(DateTime.Now.Millisecond);
                 var color = System.Windows.Media.Color.FromRgb(
                     (byte)random.Next(0, 40),
@@ -318,6 +342,7 @@ namespace EQTool
                 Storyboard storyboard = new Storyboard();
                 storyboard.Children.Add(animation);
                 chaindata.Canvas.Children.Add(textborder);
+
                 storyboard.Completed += (s, ev) =>
                 {
                     chaindata.ActiveAnimations--;
@@ -329,7 +354,7 @@ namespace EQTool
                     {
                         System.Threading.Tasks.Task.Factory.StartNew(() =>
                         {
-                            System.Threading.Thread.Sleep(10000);
+                            System.Threading.Thread.Sleep(5000);
                             appDispatcher.DispatchUI(() =>
                             {
                                 if (chaindata.ActiveAnimations <= 0)
@@ -349,19 +374,19 @@ namespace EQTool
             });
         }
 
-        private ChainData GetOrCreateChain(string destination)
+        private ChainOverlayData GetOrCreateChain(string targetname)
         {
-            var chaindata = this.chainDatas.FirstOrDefault(a => a.Destination == destination);
+            var chaindata = this.chainDatas.FirstOrDefault(a => a.TargetName == targetname);
             if (chaindata != null)
             {
                 chaindata.ActiveAnimations += 1;
                 return chaindata;
             }
-            chaindata = new ChainData
+            chaindata = new ChainOverlayData
             {
                 Canvas = new Canvas(),
                 ChildrenInRow = new List<FrameworkElement>(),
-                Destination = destination,
+                TargetName = targetname,
                 ActiveAnimations = 1,
                 RowDefinition = new RowDefinition { MaxHeight = 30 }
             };
@@ -371,7 +396,7 @@ namespace EQTool
             {
                 Height = 30,
                 FontSize = settings.FontSize.Value * 1.5,
-                Text = destination,
+                Text = targetname,
                 Padding = new Thickness(4),
                 Foreground = Brushes.Black,
                 TextAlignment = TextAlignment.Center,

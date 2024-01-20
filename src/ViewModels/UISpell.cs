@@ -148,11 +148,7 @@ namespace EQTool.ViewModels
         {
             get
             {
-                if (_SpellType <= 0 || TargetName == EQSpells.SpaceYou)
-                {
-                    return Visibility.Visible;
-                }
-                else if (_HideGuesses && GuessedSpell)
+                if (_HideGuesses && GuessedSpell)
                 {
                     return Visibility.Collapsed;
                 }
@@ -163,6 +159,10 @@ namespace EQTool.ViewModels
                 else if (_ShowOnlyYou && TargetName != EQSpells.SpaceYou)
                 {
                     return Visibility.Collapsed;
+                }
+                else if (_SpellType <= 0 || TargetName == EQSpells.SpaceYou)
+                {
+                    return Visibility.Visible;
                 }
 
                 return Visibility.Visible;
