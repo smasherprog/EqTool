@@ -40,7 +40,7 @@ namespace EQTool
             view.IsLiveSorting = true;
             UpdateMessages.Add(new UpdateMessageData
             {
-                DateTime = new DateTime(2024, 1, 17),
+                DateTime = new DateTime(2024, 1, 20),
                 Message = $"* Added a CH visual/Audio warning. This will alert you when the PERSON IN FRONT OF YOU goes first! {Environment.NewLine}" +
                       $"* Fixed issue where some enraged mobs didnt trigger overlay/audio alerts. {Environment.NewLine}" +
                       $"* Discipline cooldown timers now show under the person, just as spells do. You can filter these in the same way. {Environment.NewLine}"
