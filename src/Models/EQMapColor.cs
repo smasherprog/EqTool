@@ -37,24 +37,17 @@ namespace EQTool.Models
     public class EQMapColor
     {
         public Colour DarkColor { get; set; }
-        public Colour LightColor { get; set; }
         public Colour OriginalColor { get; set; }
         public static EQMapColor GetThemedColors(System.Windows.Media.Color color)
         {
             System.Windows.Media.Color GetDarkThemeTransformedColor(System.Windows.Media.Color c)
             {
                 var ctrrt = new HslColor(c);
-                return ctrrt.l < 0.1 ? System.Windows.Media.Color.FromRgb(255, 255, 255) : ctrrt.Lighten(1).ToRgb();
-            }
-            System.Windows.Media.Color GetLightThemeTransformedColor(System.Windows.Media.Color c)
-            {
-                var ctrrt = new HslColor(c);
-                return ctrrt.l > 0.9 ? System.Windows.Media.Color.FromRgb(0, 0, 0) : c;
+                return ctrrt.l < 0.1 ? System.Windows.Media.Color.FromRgb(255, 255, 255) : ctrrt.Lighten(1.7).ToRgb();
             }
             return new EQMapColor
             {
                 DarkColor = GetDarkThemeTransformedColor(color),
-                LightColor = GetLightThemeTransformedColor(color),
                 OriginalColor = color
             };
         }

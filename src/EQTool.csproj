@@ -461,7 +461,6 @@
     </Compile>
     <Compile Include="Services\EQToolSettingsLoad.cs" />
     <Compile Include="Services\DI.cs" />
-    <Compile Include="Services\Map\MapLoader.cs" />
     <Compile Include="Services\FindEq.cs" />
     <Compile Include="Services\Spells\ParseSpells_spells_us.cs" />
     <Compile Include="Services\S3dReader.cs" />
