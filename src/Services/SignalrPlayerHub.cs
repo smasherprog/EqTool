@@ -201,7 +201,7 @@ namespace EQTool.Models
                                 {
                                     foreach (var player in item.Value)
                                     {
-                                        if (player.Key != playername)
+                                        if (player.Key != playername && !player.Key.EndsWith(" (PP)"))
                                         {
                                             PushPlayerLocationEvent(new SignalrPlayer
                                             {
@@ -322,7 +322,7 @@ namespace EQTool.Models
                             y = Math.Round(LastPlayer.Y, 2),
                             z = Math.Round(LastPlayer.Z, 2),
                             zone = LastPlayer.Zone,
-                            player = LastPlayer.Name,
+                            player = LastPlayer.Name + " (PP)",
                         }
                     });
                     var sendBuffer = new ArraySegment<byte>(Encoding.UTF8.GetBytes(sendMessage));
