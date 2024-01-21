@@ -161,13 +161,13 @@ namespace EQTool.ViewModels
                 {
                     return Visibility.Collapsed;
                 }
-                else if (_ShowOnlyYou && TargetName != EQSpells.SpaceYou)
-                {
-                    return Visibility.Collapsed;
-                }
                 else if (_SpellType <= 0 || TargetName == EQSpells.SpaceYou)
                 {
                     return Visibility.Visible;
+                }
+                else if (_ShowOnlyYou && TargetName != EQSpells.SpaceYou)
+                {
+                    return Visibility.Collapsed;
                 }
 
                 return Visibility.Visible;
