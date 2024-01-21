@@ -249,7 +249,6 @@ namespace EQTool.ViewModels
                         SpellType = SpellTypes.DisciplineCoolDown,
                         TargetName = match.TargetName,
                         Classes = match.Spell.Classes
-
                     });
                 }
                 if (resisted)

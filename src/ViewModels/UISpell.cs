@@ -1,5 +1,6 @@
 ﻿using EQTool.Models;
 using EQToolShared.Enums;
+using EQToolShared.HubModels;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -148,7 +149,11 @@ namespace EQTool.ViewModels
         {
             get
             {
-                if (_HideGuesses && GuessedSpell)
+                if (TargetName == CustomTimer.CustomerTime)
+                {
+                    return Visibility.Visible;
+                }
+                else if (_HideGuesses && GuessedSpell)
                 {
                     return Visibility.Collapsed;
                 }

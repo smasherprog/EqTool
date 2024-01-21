@@ -41,7 +41,8 @@ namespace EQTool
             UpdateMessages.Add(new UpdateMessageData
             {
                 DateTime = new DateTime(2024, 1, 21),
-                Message = $"* Fixed names in maps from doubling up in listing.! {Environment.NewLine}"
+                Message = $"* Fixed names in maps from doubling up in listing.! {Environment.NewLine}" +
+                $"* Fixed slain timers from not showing up correctly! {Environment.NewLine}"
             });
             UpdateMessages.Add(new UpdateMessageData
             {
