@@ -41,6 +41,11 @@ namespace EQTool
             UpdateMessages.Add(new UpdateMessageData
             {
                 DateTime = new DateTime(2024, 1, 21),
+                Message = $"* Fixed names in maps from doubling up in listing.! {Environment.NewLine}"
+            });
+            UpdateMessages.Add(new UpdateMessageData
+            {
+                DateTime = new DateTime(2024, 1, 21),
                 Message = $"* Brightened up the map lines. They were too dark before, now they should pop more! {Environment.NewLine}" +
                   $"* Added support for NParse map BI-Directional location sharing. Users of NParse will show in the list with (NP) next to their names. In NParse, PigParse users will have (PP) after their names. {Environment.NewLine}" +
                   $"* If your setting in PigParse is set to GuildOnly on location sharing, your setting will be respected and not be sent to NParse. If set to everyone, it will be shared! {Environment.NewLine}" +

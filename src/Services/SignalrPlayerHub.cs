@@ -201,7 +201,7 @@ namespace EQTool.Models
                                 {
                                     foreach (var player in item.Value)
                                     {
-                                        if (player.Key != playername && !player.Key.EndsWith(" (PP)"))
+                                        if (player.Key != playername && player.Key.IndexOf(" (PP)", StringComparison.OrdinalIgnoreCase) == -1)
                                         {
                                             PushPlayerLocationEvent(new SignalrPlayer
                                             {
