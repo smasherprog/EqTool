@@ -16,6 +16,7 @@ Instructions:
 Features:
 <br/>
 <ul>
+ <li>See others on the map in real time. Also support for NParse map location sharing automatically if location sharing is set to everyone. </li> 
 <li>Kael faction pull timer Automatically added for everyone regardless of what zone you are in. </li> 
 <li>Automatically add timers on death of npc so you dont have to!</li> 
 <li>Detect EQ directory location instead of user required to enter it.</li> 
