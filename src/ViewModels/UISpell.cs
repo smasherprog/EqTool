@@ -149,7 +149,7 @@ namespace EQTool.ViewModels
         {
             get
             {
-                if (TargetName == CustomTimer.CustomerTime)
+                if (TargetName == CustomTimer.CustomerTime || _SpellType == SpellTypes.Detrimental)
                 {
                     return Visibility.Visible;
                 }
