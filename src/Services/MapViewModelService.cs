@@ -35,7 +35,7 @@ namespace EQTool.Services
         public static double SmallFontSize(MapLoad.AABB aabb) { return MathHelper.ChangeRange(Math.Max(aabb.MaxWidth, aabb.MaxHeight), 500, 35000, 7, 50); }
         public static double PlayerEllipsesSize(MapLoad.AABB aabb) { return MathHelper.ChangeRange(Math.Max(aabb.MaxWidth, aabb.MaxHeight), 500, 35000, 10, 170); }
         public static double PlayerEllipsesThickness(MapLoad.AABB aabb) { return MathHelper.ChangeRange(Math.Max(aabb.MaxWidth, aabb.MaxHeight), 500, 35000, 3, 24); }
-        public static double MapLinethickness(MapLoad.AABB aabb) { return MathHelper.ChangeRange(Math.Max(aabb.MaxWidth, aabb.MaxHeight), 800, 35000, 2, 40); }
+        public static double MapLinethickness(MapLoad.AABB aabb) { return MathHelper.ChangeRange(Math.Max(aabb.MaxWidth, aabb.MaxHeight), 800, 35000, 2, 16); }
         private static double GetAngleBetweenPoints(Point3D pt1, Point3D pt2)
         {
             var dx = pt2.X - pt1.X;

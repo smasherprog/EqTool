@@ -41,7 +41,9 @@ namespace EQTool
             UpdateMessages.Add(new UpdateMessageData
             {
                 DateTime = new DateTime(2024, 1, 21),
-                Message = $"* Fixed names in maps from doubling up in listing! {Environment.NewLine}" +
+                Message = $"* Fixed CH chain overlay where multiple chains overlapped each other. {Environment.NewLine}" +
+                $"* Sharpened map lines. {Environment.NewLine}" +
+                $"* Fixed names in maps from doubling up in listing! {Environment.NewLine}" +
                 $"* Fixed slain timers from not showing up correctly! {Environment.NewLine}" +
                 $"* Fixed Detrimental spell effects that were not showing up correctly when ShowOnlyYou setting enabled! {Environment.NewLine}"
             });

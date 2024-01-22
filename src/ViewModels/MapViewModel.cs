@@ -657,17 +657,11 @@ namespace EQTool.ViewModels
                 var delta = Point.Subtract(mousePosition1, _initialMousePosition);
                 var translate = new TranslateTransform(delta.X, delta.Y);
                 Transform.Matrix = Transform.Matrix * translate.Value;
-                var elilipsetransform = new MatrixTransform();
                 var translation = new TranslateTransform(Transform.Value.OffsetX, Transform.Value.OffsetY);
                 EllipseTransform.Matrix = translation.Value;
 
                 foreach (FrameworkElement child in Canvas.Children)
                 {
-                    if (child.Tag == null)
-                    {
-                        continue;
-                    }
-
                     if (child is ArrowLine c)
                     {
                         var transform = new MatrixTransform();

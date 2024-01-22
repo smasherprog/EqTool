@@ -188,6 +188,10 @@ namespace EQTool.Models
                         }
                         while (!result.EndOfMessage);
                         Console.WriteLine("Received message: " + msg);
+                        if (string.IsNullOrWhiteSpace(msg))
+                        {
+                            continue;
+                        }
 
                         var test = Newtonsoft.Json.JsonConvert.DeserializeObject<NParseStateData>(msg);
                         var playername = this.activePlayer?.Player?.Name;

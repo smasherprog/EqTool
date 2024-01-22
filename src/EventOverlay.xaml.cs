@@ -359,12 +359,26 @@ namespace EQTool
                             {
                                 if (chaindata.ActiveAnimations <= 0)
                                 {
+                                    var rowremoved = Grid.GetRow(chaindata.ChildrenInRow.FirstOrDefault());
+                                    Debug.WriteLine($"Removing Row {rowremoved}");
                                     this.chainDatas.Remove(chaindata);
                                     foreach (var item in chaindata.ChildrenInRow)
                                     {
                                         this.ChainStackPanel.Children.Remove(item);
                                     }
                                     this.ChainStackPanel.RowDefinitions.Remove(chaindata.RowDefinition);
+                                    foreach (var item in this.chainDatas)
+                                    {
+                                        foreach (var cell in item.ChildrenInRow)
+                                        {
+                                            var itemrow = Grid.GetRow(cell);
+                                            if (itemrow > rowremoved)
+                                            {
+                                                Debug.WriteLine($"Updating Row {itemrow} to {itemrow - 1}");
+                                                Grid.SetRow(cell, itemrow - 1);
+                                            }
+                                        }
+                                    }
                                 }
                             });
                         });
@@ -405,6 +419,7 @@ namespace EQTool
             var textborder = new Border { CornerRadius = new CornerRadius(3), Background = Brushes.Chocolate, BorderThickness = new Thickness(2), BorderBrush = Brushes.Black };
             textborder.Child = target;
             var getrow = this.ChainStackPanel.RowDefinitions.Count;
+            Debug.WriteLine($"Adding row {getrow}");
             Grid.SetRow(textborder, getrow);
             Grid.SetZIndex(textborder, 1);
             Grid.SetColumn(textborder, 0);
