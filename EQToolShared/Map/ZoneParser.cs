@@ -459,7 +459,20 @@ namespace EQToolShared.Map
                 {
                     "Gorenaire","A dread widow","a mountain giant patriarch","a wulfare lonewolf","wraithbone champion",
                 },
-                RespawnTime = new TimeSpan(0, 6, 40)
+                RespawnTime = new TimeSpan(0, 6, 40),
+                NpcSpawnTimes = new List<NpcSpawnTime>()
+                 {
+                     new NpcSpawnTime
+                     {
+                          Name="A Tundra Yeti",
+                          RespawnTime = new TimeSpan(0, 16, 0)
+                     },
+                     new NpcSpawnTime
+                     {
+                          Name="A Glacier Yeti",
+                          RespawnTime = new TimeSpan(0, 16, 0)
+                     }
+                 }
             });
             ZoneInfoMap.Add("droga", new ZoneInfo
             {

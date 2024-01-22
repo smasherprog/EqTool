@@ -38,6 +38,13 @@ namespace EQTool
             view.IsLiveGrouping = true;
             view.SortDescriptions.Add(new SortDescription(nameof(UpdateMessageData.DateTime), ListSortDirection.Descending));
             view.IsLiveSorting = true;
+
+            UpdateMessages.Add(new UpdateMessageData
+            {
+                DateTime = new DateTime(2024, 1, 22),
+                Message = $"* DL spawn timers for 'A Tundra Yeti' and 'A Glacier Yeti' updated to 16 minutes."
+            });
+
             UpdateMessages.Add(new UpdateMessageData
             {
                 DateTime = new DateTime(2024, 1, 21),
@@ -47,23 +54,7 @@ namespace EQTool
                 $"* Fixed slain timers from not showing up correctly! {Environment.NewLine}" +
                 $"* Fixed Detrimental spell effects that were not showing up correctly when ShowOnlyYou setting enabled! {Environment.NewLine}"
             });
-            UpdateMessages.Add(new UpdateMessageData
-            {
-                DateTime = new DateTime(2024, 1, 21),
-                Message = $"* Brightened up the map lines. They were too dark before, now they should pop more! {Environment.NewLine}" +
-                  $"* Added support for NParse map BI-Directional location sharing. Users of NParse will show in the list with (NP) next to their names. In NParse, PigParse users will have (PP) after their names. {Environment.NewLine}" +
-                  $"* If your setting in PigParse is set to GuildOnly on location sharing, your setting will be respected and not be sent to NParse. If set to everyone, it will be shared! {Environment.NewLine}" +
-                  $"* If you find any issues with the CH warning or the NParse map location sharing, please post on github! {Environment.NewLine}",
-                Image = "pack://application:,,,/update1.png",
-                ImageVisibility = Visibility.Visible
-            });
-            UpdateMessages.Add(new UpdateMessageData
-            {
-                DateTime = new DateTime(2024, 1, 20),
-                Message = $"* Added a CH Visual/Audio warning. This will alert you when the PERSON IN FRONT OF YOU goes so you can be ready! {Environment.NewLine}" +
-                      $"* Fixed issue where some enraged mobs didnt trigger overlay/audio alerts. {Environment.NewLine}" +
-                      $"* Discipline cooldown timers now show under the person, just as spells do. You can filter these in the same way. {Environment.NewLine}"
-            });
+
         }
     }
 }
