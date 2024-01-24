@@ -286,6 +286,10 @@ namespace EQTool.Services
                         continue;
                     }
 
+                    if (spell.name == "Maniacal Strength")
+                    {
+                        spell.name = "Manicial Strength";
+                    }
 
                     if (spells.TryGetValue(spell.name, out var spellinlist))
                     {
