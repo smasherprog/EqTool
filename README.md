@@ -68,6 +68,8 @@ Features:
   <li>Mutao auctions, 'GGG AAA CH <>> Mandair <<> AAA'</li>
   <li>Mutao auctions, 'BBB CH <>> Mandair <<> BB'</li>
   <li>Mutao auctions, 'AAA CH <>> Mandair <<>'</li>
+  <li>Hanbox shouts, 'CA RAMP1 CH --Beefwich'</li>
+  <li>Hanbox shouts, 'RAMP2 CH --Beefwich'</li>
 </ul>
 <h5>Timers (Only Minutes are supported) -- All below commands work in regular say!</h5>
 <ul>
