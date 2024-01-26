@@ -38,7 +38,20 @@ namespace EQTool
             view.IsLiveGrouping = true;
             view.SortDescriptions.Add(new SortDescription(nameof(UpdateMessageData.DateTime), ListSortDirection.Descending));
             view.IsLiveSorting = true;
+            UpdateMessages.Add(new UpdateMessageData
+            {
+                DateTime = new DateTime(2024, 1, 25),
+                Message = $"* Fixed high cpu usage that was introduced a few days ago.{Environment.NewLine}" +
+                         $"* Added support for the CH Chain RAMP formats: {Environment.NewLine}" +
+                         $"*      Hanbox shouts, 'CA RAMP1 CH --Beefwich'. {Environment.NewLine}" +
+                         $"*      Hanbox shouts, 'RAMP2 CH --Beefwich'. "
 
+            });
+            UpdateMessages.Add(new UpdateMessageData
+            {
+                DateTime = new DateTime(2024, 1, 23),
+                Message = $"* Fixed spell duration for Maniacal Strength to 2hrs and 24 minutes."
+            });
             UpdateMessages.Add(new UpdateMessageData
             {
                 DateTime = new DateTime(2024, 1, 22),

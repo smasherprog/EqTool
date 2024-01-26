@@ -1,5 +1,4 @@
 ﻿using Autofac;
-using EQTool;
 using EQTool.Models;
 using EQTool.Services;
 using EQTool.ViewModels;
@@ -48,6 +47,39 @@ namespace EQToolTests
             Assert.AreEqual(d.Caster, "Hanbox");
             Assert.AreEqual(d.Position, "001");
             Assert.AreEqual(d.RecipientGuild, "GG");
+        }
+
+        [TestMethod]
+        public void ParseRamp1()
+        {
+            var service = container.Resolve<ChParser>();
+            var d = service.ChCheck("Hanbox shouts, 'CA RAMP1 CH --Beefwich'");
+            Assert.AreEqual(d.Recipient, "Beefwich");
+            Assert.AreEqual(d.Caster, "Hanbox");
+            Assert.AreEqual(d.Position, "RAMP1");
+            Assert.AreEqual(d.RecipientGuild, "CA");
+        }
+
+        [TestMethod]
+        public void ParseRamp2()
+        {
+            var service = container.Resolve<ChParser>();
+            var d = service.ChCheck("Hanbox shouts, 'CA RAMP2 CH --Beefwich'");
+            Assert.AreEqual(d.Recipient, "Beefwich");
+            Assert.AreEqual(d.Caster, "Hanbox");
+            Assert.AreEqual(d.Position, "RAMP2");
+            Assert.AreEqual(d.RecipientGuild, "CA");
+        }
+
+        [TestMethod]
+        public void ParseRamp3()
+        {
+            var service = container.Resolve<ChParser>();
+            var d = service.ChCheck("Hanbox shouts, 'RAMP2 CH --Beefwich'");
+            Assert.AreEqual(d.Recipient, "Beefwich");
+            Assert.AreEqual(d.Caster, "Hanbox");
+            Assert.AreEqual(d.Position, "RAMP2");
+            Assert.IsTrue(string.IsNullOrWhiteSpace(d.RecipientGuild));
         }
 
         [TestMethod]

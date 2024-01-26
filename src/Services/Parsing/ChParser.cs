@@ -42,7 +42,6 @@ namespace EQTool.Services
                     return null;
                 }
 
-
                 var possiblenumbers = line.Substring(startindexofmessage + 3, endoftext - startindexofmessage - 3);
                 var position = string.Empty;
                 var possiblepositionstosearch = possiblenumbers.Split(' ').Where(a => a.Length == 3).ToList();
@@ -60,6 +59,20 @@ namespace EQTool.Services
                     {
                         position = item;
                         break;
+                    }
+                }
+
+                if (string.IsNullOrWhiteSpace(position))
+                {
+                    possiblepositionstosearch = possiblenumbers.Split(' ').Where(a => a.StartsWith("ramp", System.StringComparison.OrdinalIgnoreCase)).ToList();
+                    possiblepositionstosearch.Reverse();
+                    foreach (var item in possiblepositionstosearch)
+                    {
+                        var rampindex = item.IndexOf("ramp", System.StringComparison.OrdinalIgnoreCase);
+                        if (rampindex != -1 && item.Length == 5)
+                        {
+                            position = item;
+                        }
                     }
                 }
 

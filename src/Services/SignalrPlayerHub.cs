@@ -174,6 +174,7 @@ namespace EQTool.Models
         {
             while (!cancellationTokenSource.IsCancellationRequested)
             {
+                Thread.Sleep(100);
                 if (NParseWebsocketConnection.State == WebSocketState.Open)
                 {
                     try
@@ -226,8 +227,9 @@ namespace EQTool.Models
                     }
                     catch { }
                 }
-                else if (NParseWebsocketConnection.State == WebSocketState.Closed)
+                else if (NParseWebsocketConnection.State != WebSocketState.Connecting)
                 {
+                    Debug.WriteLine($"WebSocket {NParseWebsocketConnection.State} Reconnecting");
                     throw new Exception();
                 }
             }
