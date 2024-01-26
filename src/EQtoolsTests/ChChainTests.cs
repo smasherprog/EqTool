@@ -62,10 +62,29 @@ namespace EQToolTests
         }
 
         [TestMethod]
+        public void Parse42()
+        {
+            var service = container.Resolve<ChParser>();
+            var d = service.ChCheck("Hanbox shouts, 'CH - name - 001'");
+            Assert.AreEqual(d.Recipient, "name");
+            Assert.AreEqual(d.Caster, "Hanbox");
+            Assert.AreEqual(d.Position, "001");
+            Assert.AreEqual(d.RecipientGuild, string.Empty);
+        }
+
+        [TestMethod]
         public void Parse3()
         {
             var service = container.Resolve<ChParser>();
             var d = service.ChCheck("Vaeric tells the guild, 'Currently signed up as 001 in CH chain'");
+            Assert.IsNotNull(d);
+        }
+
+        [TestMethod]
+        public void Parse31()
+        {
+            var service = container.Resolve<ChParser>();
+            var d = service.ChCheck("Vaeric tells the guild, 'Currently signed up as in CH chain'");
             Assert.IsNull(d);
         }
 

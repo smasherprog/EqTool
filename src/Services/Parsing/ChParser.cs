@@ -29,6 +29,11 @@ namespace EQTool.Services
                 startindexofmessage = line.IndexOf(",  '");
             }
 
+            if (chindex == -1)
+            {
+                chindex = line.IndexOf("'ch ", System.StringComparison.OrdinalIgnoreCase);
+            }
+
             if (chindex != -1)
             {
                 var endoftext = line.LastIndexOf("'");
@@ -81,6 +86,10 @@ namespace EQTool.Services
                     tag = possiblenumbers.Substring(0, possibletagindex).Trim();
                 }
                 chindex = possiblenumbers.IndexOf(" ch ", System.StringComparison.OrdinalIgnoreCase);
+                if (chindex == -1)
+                {
+                    chindex = possiblenumbers.IndexOf("ch ", System.StringComparison.OrdinalIgnoreCase);
+                }
                 possiblenumbers = possiblenumbers.Substring(chindex + 3);
                 var possiblerecipt = new string(possiblenumbers.Replace(position, string.Empty).Where(a => a == ' ' || char.IsLetter(a)).ToArray());
                 var splits = possiblerecipt.Split(' ');
@@ -102,7 +111,11 @@ namespace EQTool.Services
 
                 if (!string.IsNullOrWhiteSpace(tag) && tag.Contains(" "))
                 {
-                    return null;
+                    tag = string.Empty;
+                    if (!string.IsNullOrWhiteSpace(this.activePlayer?.Player?.ChChainTagOverlay))
+                    { 
+                        return null;
+                    }
                 }
 
                 var caster = line.Substring(0, line.IndexOf(" ")).Trim('\'').Trim();

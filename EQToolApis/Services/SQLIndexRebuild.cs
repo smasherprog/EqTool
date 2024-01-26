@@ -72,9 +72,9 @@ having count(*)>1)");
             dbcontext.Database.SetCommandTimeout(TimeSpan.FromMinutes(10));
             _ = dbcontext.Database.ExecuteSqlRaw(@"update eqpi
 set eqpi.AuctionPrice = null 
-from EQTunnelAuctionItems eqpi
-join EQitems eqitem on eqitem.EQitemId = eqpi.EQitemId
-where eqpi.AuctionPrice is not null and (eqpi.AuctionPrice > eqitem.TotalWTSLast6MonthsAverage * 7 ) AND eqitem.TotalWTSLast6MonthsAverage > 40");
+from EQTunnelAuctionItemsV2 eqpi
+join EQitemsV2 eqitem on eqitem.EQitemId = eqpi.EQitemId
+where eqpi.AuctionPrice is not null and (eqpi.AuctionPrice > eqitem.TotalWTSLast6MonthsAverage * 5 ) AND eqitem.TotalWTSLast6MonthsAverage > 40");
         }
 
         public void FixOutlierDataAfterMaxCleanup()
@@ -82,8 +82,8 @@ where eqpi.AuctionPrice is not null and (eqpi.AuctionPrice > eqitem.TotalWTSLast
             dbcontext.Database.SetCommandTimeout(TimeSpan.FromMinutes(10));
             _ = dbcontext.Database.ExecuteSqlRaw(@"update eqpi
 set eqpi.AuctionPrice = null 
-from EQTunnelAuctionItems eqpi
-join EQitems eqitem on eqitem.EQitemId = eqpi.EQitemId
+from EQTunnelAuctionItemsV2 eqpi
+join EQitemsV3 eqitem on eqitem.EQitemId = eqpi.EQitemId
 where eqpi.AuctionPrice is not null and eqpi.AuctionPrice < eqitem.TotalWTSLast6MonthsAverage * .1 AND eqitem.TotalWTSLast6MonthsAverage >40");
         }
 
