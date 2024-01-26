@@ -51,7 +51,7 @@ Features:
  <li>All instances of TAG are stripped out of text. The characters " ch " are stripped out. The first group of 3 characters that are either all the same letter or a number are assigned as the position. </li>
  <li>All instances of Position are stripped out of the text. All non alphanumeric are stripped out of the text. What remains is the target.</li>
 </ul>
-<p>Tag MUST BE 3 in length! The following are included in tests that are supported, This is not all the possible ways, but to show examples of what i have support for!</p></p>
+<p>Chain position MUST BE 3 in length and letters must all be the same, for example: 001; or 013; or aaa; or QQQ. <br/> Ramp chain format is special and RAMP1 through RAMP999 are allowed. The following are included in tests that are supported, This is not all the possible ways, but to show examples of what i have support for!</p></p>
 
 <ul>
 <li>Curaja shouts, 'GG 014 CH -- Wreckognize'</li>
