@@ -70,6 +70,7 @@ Features:
   <li>Mutao auctions, 'AAA CH <>> Mandair <<>'</li>
   <li>Hanbox shouts, 'CA RAMP1 CH --Beefwich'</li>
   <li>Hanbox shouts, 'RAMP2 CH --Beefwich'</li>
+  <li>Hanbox shouts, 'CH - name - 001'</li> 
 </ul>
 <h5>Timers (Only Minutes are supported) -- All below commands work in regular say!</h5>
 <ul>
