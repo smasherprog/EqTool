@@ -90,7 +90,7 @@ Features:
 
 <h4>TO DO List EQTool</h4>
 <ul>   
- <li>Sow random rolls highest to lowest, top 5 only. </li>  
+ <li>Show random rolls highest to lowest, top 5 only. </li>  
    <li>Sharing of triggers for those nearby. </li>  
   <li>Add ring war triggers. </li>  
   <li>Map center on you.</li>  
