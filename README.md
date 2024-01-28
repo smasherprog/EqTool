@@ -6,10 +6,10 @@
 Instructions:
 <ul>
 <li>
-<h2>Project 1999: Download <a href="https://github.com/smasherprog/EqTool/releases/download/3.24.115.2/EQTool_Project19993.24.115.2.zip">EQTool_Project1999.zip</a>, Unzip it and run EQTool.exe</h2>
+<h2>Project 1999: Download <a href="https://github.com/smasherprog/EqTool/releases/download/3.24.126.1/EQTool_Project19993.24.126.1.zip">EQTool_Project1999.zip</a>, Unzip it and run EQTool.exe</h2>
 </li>
 <li>
-<h2>Project Quarm: Download <a href="https://github.com/smasherprog/EqTool/releases/download/4.24.115.2/EQTool_Quarm4.24.115.2.zip">EQTool_Quarm.zip</a>, Unzip it and run PQTool.exe</h2>
+<h2>Project Quarm: Download <a href="https://github.com/smasherprog/EqTool/releases/download/4.24.126.1/EQTool_Quarm4.24.126.1.zip">EQTool_Quarm.zip</a>, Unzip it and run PQTool.exe</h2>
 </li>
 <li>The program runs in the system tray. Look there to reopen spells window or settings! Program will check for updates on startup and self update if required, but if you want to check for a new Update, use the menu in the system tray!</li>
 </ul>
@@ -51,7 +51,7 @@ Features:
  <li>All instances of TAG are stripped out of text. The characters " ch " are stripped out. The first group of 3 characters that are either all the same letter or a number are assigned as the position. </li>
  <li>All instances of Position are stripped out of the text. All non alphanumeric are stripped out of the text. What remains is the target.</li>
 </ul>
-<p>Tag MUST BE 3 in length! The following are included in tests that are supported, This is not all the possible ways, but to show examples of what i have support for!</p></p>
+<p>Chain position MUST BE 3 in length and letters must all be the same, for example: 001; or 013; or aaa; or QQQ. <br/> Ramp chain format is special and RAMP1 through RAMP999 are allowed. The following are included in tests that are supported, This is not all the possible ways, but to show examples of what i have support for!</p></p>
 
 <ul>
 <li>Curaja shouts, 'GG 014 CH -- Wreckognize'</li>
@@ -70,6 +70,7 @@ Features:
   <li>Mutao auctions, 'AAA CH <>> Mandair <<>'</li>
   <li>Hanbox shouts, 'CA RAMP1 CH --Beefwich'</li>
   <li>Hanbox shouts, 'RAMP2 CH --Beefwich'</li>
+  <li>Hanbox shouts, 'CH - name - 001'</li> 
 </ul>
 <h5>Timers (Only Minutes are supported) -- All below commands work in regular say!</h5>
 <ul>
@@ -88,7 +89,8 @@ Features:
 <img width="152" alt="image" src="https://user-images.githubusercontent.com/3393733/212717141-6e26b9af-660a-493d-9f73-2c3464b7c224.png">
 
 <h4>TO DO List EQTool</h4>
-<ul>  
+<ul>   
+ <li>Show random rolls highest to lowest, top 5 only. </li>  
    <li>Sharing of triggers for those nearby. </li>  
   <li>Add ring war triggers. </li>  
   <li>Map center on you.</li>  
