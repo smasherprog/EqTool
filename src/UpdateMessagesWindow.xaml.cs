@@ -41,6 +41,13 @@ namespace EQTool
             UpdateMessages.Add(new UpdateMessageData
             {
                 DateTime = new DateTime(2024, 1, 25),
+                Message =
+                     $"* Fixed reconnect issue for NParse location sharing: {Environment.NewLine}"
+
+            });
+            UpdateMessages.Add(new UpdateMessageData
+            {
+                DateTime = new DateTime(2024, 1, 25),
                 Message = 
                     $"* Added support for the CH Chain format: {Environment.NewLine}" +
                     $"*      Hanbox shouts, 'CH - name - 001' "
@@ -54,11 +61,6 @@ namespace EQTool
                          $"*      Hanbox shouts, 'CA RAMP1 CH --Beefwich'. {Environment.NewLine}" +
                          $"*      Hanbox shouts, 'RAMP2 CH --Beefwich'. "
 
-            });
-            UpdateMessages.Add(new UpdateMessageData
-            {
-                DateTime = new DateTime(2024, 1, 23),
-                Message = $"* Fixed spell duration for Maniacal Strength to 2hrs and 24 minutes."
             }); 
         }
     }
