@@ -40,9 +40,9 @@ namespace EQTool
             view.IsLiveSorting = true;
             UpdateMessages.Add(new UpdateMessageData
             {
-                DateTime = new DateTime(2024, 1, 25),
+                DateTime = new DateTime(2024, 1, 28),
                 Message =
-                     $"* Fixed reconnect issue for NParse location sharing: {Environment.NewLine}"
+                     $"* Fixed reconnect issue for NParse location sharing."
 
             });
             UpdateMessages.Add(new UpdateMessageData
