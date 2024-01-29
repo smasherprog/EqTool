@@ -151,7 +151,9 @@ namespace EQTool.Models
             {
                 try
                 {
-                    if (NParseWebsocketConnection.State == WebSocketState.Closed || NParseWebsocketConnection.State == WebSocketState.None)
+                    if (NParseWebsocketConnection.State == WebSocketState.Closed || 
+                        NParseWebsocketConnection.State == WebSocketState.CloseReceived || 
+                        NParseWebsocketConnection.State == WebSocketState.None)
                     {
                         Debug.WriteLine("Beg Nparse StartAsync");
                         await this.NParseWebsocketConnection.ConnectAsync(new Uri("ws://sheeplauncher.net:8424"), cancellationTokenSource.Token);

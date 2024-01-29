@@ -40,34 +40,28 @@ namespace EQTool
             view.IsLiveSorting = true;
             UpdateMessages.Add(new UpdateMessageData
             {
+                DateTime = new DateTime(2024, 1, 28),
+                Message =
+                     $"* Fixed reconnect issue for NParse location sharing."
+
+            });
+            UpdateMessages.Add(new UpdateMessageData
+            {
+                DateTime = new DateTime(2024, 1, 25),
+                Message = 
+                    $"* Added support for the CH Chain format: {Environment.NewLine}" +
+                    $"*      Hanbox shouts, 'CH - name - 001' "
+
+            });
+            UpdateMessages.Add(new UpdateMessageData
+            {
                 DateTime = new DateTime(2024, 1, 25),
                 Message = $"* Fixed high cpu usage that was introduced a few days ago.{Environment.NewLine}" +
                          $"* Added support for the CH Chain RAMP formats: {Environment.NewLine}" +
                          $"*      Hanbox shouts, 'CA RAMP1 CH --Beefwich'. {Environment.NewLine}" +
                          $"*      Hanbox shouts, 'RAMP2 CH --Beefwich'. "
 
-            });
-            UpdateMessages.Add(new UpdateMessageData
-            {
-                DateTime = new DateTime(2024, 1, 23),
-                Message = $"* Fixed spell duration for Maniacal Strength to 2hrs and 24 minutes."
-            });
-            UpdateMessages.Add(new UpdateMessageData
-            {
-                DateTime = new DateTime(2024, 1, 22),
-                Message = $"* DL spawn timers for 'A Tundra Yeti' and 'A Glacier Yeti' updated to 16 minutes."
-            });
-
-            UpdateMessages.Add(new UpdateMessageData
-            {
-                DateTime = new DateTime(2024, 1, 21),
-                Message = $"* Fixed CH chain overlay where multiple chains overlapped each other. {Environment.NewLine}" +
-                $"* Sharpened map lines. {Environment.NewLine}" +
-                $"* Fixed names in maps from doubling up in listing! {Environment.NewLine}" +
-                $"* Fixed slain timers from not showing up correctly! {Environment.NewLine}" +
-                $"* Fixed Detrimental spell effects that were not showing up correctly when ShowOnlyYou setting enabled! {Environment.NewLine}"
-            });
-
+            }); 
         }
     }
 }

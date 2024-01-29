@@ -62,7 +62,8 @@ namespace EQToolShared.Discord
              "Pot",
              "Staff",
              "Bones",
-             "Pot"
+             "Pot",
+             "King"
             };
         private NextItem GetItem(string input)
         {
