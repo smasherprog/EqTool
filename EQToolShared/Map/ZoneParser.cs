@@ -117,7 +117,7 @@ namespace EQToolShared.Map
                 {
                     "King Xorbb","Lord Syrkl","Lord Sviir","Lord Soptyvr","SpinFlint","Brahhm","Yymp the Infernal","Qlei","Goblin Alchect"
                 },
-                RespawnTime = new TimeSpan(0, 6, 0)
+                RespawnTime = new TimeSpan(0, 6, 40)
             });
             ZoneInfoMap.Add("blackburrow", new ZoneInfo
             {
@@ -255,7 +255,7 @@ namespace EQToolShared.Map
                     new NpcSpawnTime
                     {
                         Name = "Guard Zyburr",
-                        RespawnTime = new TimeSpan(0, 24, 0)
+                        RespawnTime = new TimeSpan(0, 18, 40)
                     }
                  },
                 NpcSpawnTimes = new List<NpcSpawnTime>()

@@ -40,28 +40,16 @@ namespace EQTool
             view.IsLiveSorting = true;
             UpdateMessages.Add(new UpdateMessageData
             {
+                DateTime = new DateTime(2024, 2, 1),
+                Message =
+                     $"* Spawn timer fixes for BB and Xorbb zones."
+            });
+            UpdateMessages.Add(new UpdateMessageData
+            {
                 DateTime = new DateTime(2024, 1, 28),
                 Message =
                      $"* Fixed reconnect issue for NParse location sharing."
-
             });
-            UpdateMessages.Add(new UpdateMessageData
-            {
-                DateTime = new DateTime(2024, 1, 25),
-                Message = 
-                    $"* Added support for the CH Chain format: {Environment.NewLine}" +
-                    $"*      Hanbox shouts, 'CH - name - 001' "
-
-            });
-            UpdateMessages.Add(new UpdateMessageData
-            {
-                DateTime = new DateTime(2024, 1, 25),
-                Message = $"* Fixed high cpu usage that was introduced a few days ago.{Environment.NewLine}" +
-                         $"* Added support for the CH Chain RAMP formats: {Environment.NewLine}" +
-                         $"*      Hanbox shouts, 'CA RAMP1 CH --Beefwich'. {Environment.NewLine}" +
-                         $"*      Hanbox shouts, 'RAMP2 CH --Beefwich'. "
-
-            }); 
         }
     }
 }

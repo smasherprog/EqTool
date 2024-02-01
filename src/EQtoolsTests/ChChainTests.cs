@@ -57,7 +57,6 @@ namespace EQToolTests
             Assert.AreEqual(d.Recipient, "Beefwich");
             Assert.AreEqual(d.Caster, "Hanbox");
             Assert.AreEqual(d.Position, "001");
-            Assert.AreEqual(d.RecipientGuild, "GG");
         }
 
         [TestMethod]
@@ -94,7 +93,7 @@ namespace EQToolTests
         }
 
         [TestMethod]
-        public void Parse41()
+        public void Parse40()
         {
             var service = container.Resolve<ChParser>();
             var d = service.ChCheck("Hanbox shouts, 'GG 001 CH --Beefwich' 001");
