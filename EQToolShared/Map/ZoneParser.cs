@@ -1976,8 +1976,9 @@ namespace EQToolShared.Map
                 ZoneInfoMap["permafrost"].RespawnTime = new TimeSpan(0, 8, 0);
                 ZoneInfoMap["soldunga"].RespawnTime = new TimeSpan(0, 8, 0);
                 ZoneInfoMap["soldungb"].RespawnTime = new TimeSpan(0, 8, 0);
-                ZoneInfoMap["southkarana"].RespawnTime = new TimeSpan(0, 5, 0);
+                ZoneInfoMap["southkarana"].RespawnTime = new TimeSpan(0, 6, 0);
                 ZoneInfoMap["runnyeye"].RespawnTime = new TimeSpan(0, 8, 0);
+                ZoneInfoMap["cazicthule"].RespawnTime = new TimeSpan(0, 8, 0);
             }
 
             ZoneWhoMapper.Add("kael drakkal", "kael drakkel");
