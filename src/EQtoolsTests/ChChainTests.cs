@@ -50,6 +50,16 @@ namespace EQToolTests
         }
 
         [TestMethod]
+        public void Parse41()
+        {
+            var service = container.Resolve<ChParser>();
+            var d = service.ChCheck("Hanbox shouts, 'CH - Beefwich - 001'");
+            Assert.AreEqual(d.Recipient, "Beefwich");
+            Assert.AreEqual(d.Caster, "Hanbox");
+            Assert.AreEqual(d.Position, "001");
+        }
+
+        [TestMethod]
         public void ParseRamp1()
         {
             var service = container.Resolve<ChParser>();
@@ -83,7 +93,7 @@ namespace EQToolTests
         }
 
         [TestMethod]
-        public void Parse41()
+        public void Parse40()
         {
             var service = container.Resolve<ChParser>();
             var d = service.ChCheck("Hanbox shouts, 'GG 001 CH --Beefwich' 001");
