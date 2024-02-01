@@ -2013,6 +2013,7 @@ namespace EQToolShared.Map
             ZoneNameMapper.Add("sleepers tomb", "sleeper");
             ZoneNameMapper.Add("erudin", "erudnext");
             ZoneNameMapper.Add("kedge keep", "kedge");
+            ZoneNameMapper.Add("kedge keep (Instance)", "kedge");
             ZoneNameMapper.Add("ak'anon", "akanon");
             ZoneNameMapper.Add("warsliks woods", "warslikswood");
             ZoneNameMapper.Add("castle mistmoore", "mistmoore");
@@ -2046,14 +2047,14 @@ namespace EQToolShared.Map
             ZoneNameMapper.Add("paineel", "paineel");
             ZoneNameMapper.Add("north freeport", "freportn");
             ZoneNameMapper.Add("nagafen's lair", "soldungb");
-            ZoneNameMapper.Add("nagafen's lair (Instanced)", "soldungb");
+            ZoneNameMapper.Add("nagafen's lair (Instance)", "soldungb");
             ZoneNameMapper.Add("runnyeye citadel", "runnyeye");
             ZoneNameMapper.Add("frontier mountains", "frontiermtns");
             ZoneNameMapper.Add("the city of mist", "citymist");
             ZoneNameMapper.Add("west freeport", "freportw");
             ZoneNameMapper.Add("butcherblock mountains", "butcher");
             ZoneNameMapper.Add("permafrost caverns", "permafrost");
-            ZoneNameMapper.Add("permafrost caverns (Instanced)", "permafrost");
+            ZoneNameMapper.Add("permafrost caverns (Instance)", "permafrost");
             ZoneNameMapper.Add("the hole", "hole");
             ZoneNameMapper.Add("qeynos hills", "qeytoqrg");
             ZoneNameMapper.Add("arena", "arena");
