@@ -47,9 +47,9 @@ namespace EQTool.ViewModels
                 {
                     p.Server = Servers.Blue;
                 }
-
             }
-            else if (logfilenbame.IndexOf("pq.proj.txt") != -1)
+
+            if (logfilenbame.IndexOf("pq.proj.txt") != -1)
             {
                 p.Server = Servers.Quarm;
             }

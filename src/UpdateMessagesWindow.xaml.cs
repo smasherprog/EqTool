@@ -43,7 +43,8 @@ namespace EQTool
             {
                 DateTime = new DateTime(2024, 2, 4),
                 Message =
-                    $"* Fixed Enraged Overlay Trigger{Environment.NewLine}" +
+                    $"* Fixed Enraged Overlay Trigger. {Environment.NewLine}" +
+                    $"* Fixed PQ detection code. {Environment.NewLine}" +
                     $"* Working on support for sharing of detrimental spell. This will make seeing whether tash/malo/slow are on much easier, and eventually add counters for things like mana sieves, buffs, etc."
             });
             UpdateMessages.Add(new UpdateMessageData
