@@ -115,37 +115,6 @@ namespace EQTool.Models
             this.LastPlayer = null;
         }
 
-        private void LogParser_StartCastingEvent(object sender, LogParser.SpellEventArgs e)
-        {
-            if (e.Spell.IsYou && activePlayer.Player.Server.HasValue && !string.IsNullOrWhiteSpace(activePlayer?.Player?.Name) && !string.IsNullOrWhiteSpace(activePlayer?.Player?.Zone) && (e.Spell.Spell.type == SpellTypes.Detrimental || e.Spell.Spell.type == SpellTypes.Other))
-            {
-                var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(e.Spell.Spell, activePlayer.Player));
-                var isnpc = MasterNPCList.NPCs.Contains(e.Spell.TargetName);
-                if (isnpc)
-                {
-                    var s = new TriggerEvent
-                    {
-                        Classes = e.Spell.Spell.Classes,
-                        DurationInSeconds = (int)spellduration.TotalSeconds,
-                        Zone = activePlayer.Player?.Zone,
-                        GuildName = activePlayer.Player.GuildName,
-                        MapLocationSharing = activePlayer.Player.MapLocationSharing,
-                        Name = activePlayer.Player.Name,
-                        Server = activePlayer.Player.Server.Value,
-                        SpellNameIcon = e.Spell.Spell.name,
-                        SpellType = e.Spell.Spell.type,
-                        TargetName = e.Spell.TargetName,
-                        X = this.LastPlayer.X,
-                        Y = this.LastPlayer.Y,
-                        Z = this.LastPlayer.Z
-                    };
-
-                    InvokeAsync("TriggerEvent", s);
-                }
-            }
-        }
-
-
         private void Timer_Elapsed(object sender, ElapsedEventArgs e)
         {
             if (this.LastPlayer != null && this.activePlayer?.Player?.Server != null)
@@ -285,6 +254,41 @@ namespace EQTool.Models
                 });
             }
         }
+        private void LogParser_StartCastingEvent(object sender, LogParser.SpellEventArgs e)
+        {
+            if (e.Spell.IsYou &&
+                this.LastPlayer != null &&
+                !string.IsNullOrWhiteSpace(activePlayer?.Player?.Zone) &&
+                !string.IsNullOrWhiteSpace(activePlayer?.Player?.Name) &&
+                activePlayer.Player.Server.HasValue &&
+                (e.Spell.Spell.type == SpellTypes.Detrimental || e.Spell.Spell.type == SpellTypes.Other)
+             )
+            {
+                var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(e.Spell.Spell, activePlayer.Player));
+                var isnpc = MasterNPCList.NPCs.Contains(e.Spell.TargetName);
+                if (isnpc)
+                {
+                    var s = new TriggerEvent
+                    {
+                        Classes = e.Spell.Spell.Classes,
+                        DurationInSeconds = (int)spellduration.TotalSeconds,
+                        Zone = activePlayer.Player?.Zone,
+                        GuildName = activePlayer.Player.GuildName,
+                        MapLocationSharing = activePlayer.Player.MapLocationSharing,
+                        Name = e.Spell.Spell.name,
+                        Server = activePlayer.Player.Server.Value,
+                        SpellNameIcon = e.Spell.Spell.name,
+                        SpellType = e.Spell.Spell.type,
+                        TargetName = e.Spell.TargetName,
+                        X = this.LastPlayer.X,
+                        Y = this.LastPlayer.Y,
+                        Z = this.LastPlayer.Z
+                    };
+
+                    InvokeAsync("TriggerEvent", s);
+                }
+            }
+        }
 
         public void AddCustomTrigger(SignalrCustomTimer p)
         {
@@ -297,6 +301,7 @@ namespace EQTool.Models
                 });
             }
         }
+
         public void AddCustomTrigger(TriggerEvent p)
         {
             if (this.LastPlayer == null || this.activePlayer?.Player == null || p.Server != this.activePlayer.Player.Server || p.Zone != this.activePlayer.Player.Zone || !this.activePlayer.Player.SpellDebuffShare)
