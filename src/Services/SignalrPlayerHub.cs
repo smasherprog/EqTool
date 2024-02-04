@@ -117,7 +117,7 @@ namespace EQTool.Models
 
         private void LogParser_StartCastingEvent(object sender, LogParser.SpellEventArgs e)
         {
-            if (e.Spell.IsYou && activePlayer.Player.Server.HasValue && string.IsNullOrWhiteSpace(activePlayer?.Player?.Name) && string.IsNullOrWhiteSpace(activePlayer?.Player?.Zone) && e.Spell.Spell.type == SpellTypes.Detrimental)
+            if (e.Spell.IsYou && activePlayer.Player.Server.HasValue && !string.IsNullOrWhiteSpace(activePlayer?.Player?.Name) && !string.IsNullOrWhiteSpace(activePlayer?.Player?.Zone) && (e.Spell.Spell.type == SpellTypes.Detrimental || e.Spell.Spell.type == SpellTypes.Other))
             {
                 var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(e.Spell.Spell, activePlayer.Player));
                 var isnpc = MasterNPCList.NPCs.Contains(e.Spell.TargetName);
@@ -228,7 +228,7 @@ namespace EQTool.Models
                             msg += Encoding.UTF8.GetString(buffer.Array, 0, result.Count);
                         }
                         while (!result.EndOfMessage);
-                        Console.WriteLine("Received message: " + msg);
+                        //Console.WriteLine("Received message: " + msg);
                         if (string.IsNullOrWhiteSpace(msg))
                         {
                             continue;
