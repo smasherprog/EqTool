@@ -158,7 +158,7 @@
                     <TextBlock>
                         <Hyperlink NavigateUri="https://github.com/smasherprog/EqTool/blob/main/README.md#ch-format-is-loosely-tag-position-ch-target" RequestNavigate="Hyperlink_RequestNavigate">Chain Help</Hyperlink>
                     </TextBlock>
-                </StackPanel> 
+                </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="CH Chain" ToolTip="Complete Heal Overlay" VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
                     <CheckBox IsChecked="{Binding ActivePlayer.Player.ChChainOverlay}" Click="Savesettings" MinWidth="105"></CheckBox>
@@ -175,7 +175,7 @@
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Ch Warning" ToolTip="Ch Warning" VerticalAlignment="Center" FontWeight="Bold"  MinWidth="100"/>
                     <CheckBox IsChecked="{Binding ActivePlayer.Player.ChChainWarningOverlay}" Click="Savesettings" MinWidth="75"></CheckBox>
-                    <CheckBox IsChecked="{Binding ActivePlayer.Player.ChChainWarningAudio}" Click="Savesettings" MinWidth="30"></CheckBox> 
+                    <CheckBox IsChecked="{Binding ActivePlayer.Player.ChChainWarningAudio}" Click="Savesettings" MinWidth="30"></CheckBox>
                 </StackPanel>
             </StackPanel>
         </TabItem>
@@ -235,6 +235,10 @@
         </TabItem>
         <TabItem Header="Debug" Name="DebugTab">
             <StackPanel Orientation="Vertical" Margin="5, 5, 5, 5">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Debuff Sharing"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
+                    <CheckBox IsChecked="{Binding ActivePlayer.Player.SpellDebuffShare}" Click="Savesettings" MinWidth="75"></CheckBox>
+                </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="DPS"  VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
                     <Button Click="testDPS" MinWidth="100">Add Test DPS</Button>

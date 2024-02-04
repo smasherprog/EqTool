@@ -1,5 +1,6 @@
 ﻿using EQTool.Services;
 using EQTool.ViewModels;
+using EQToolShared;
 using EQToolShared.Enums;
 using EQToolShared.HubModels;
 using EQToolShared.Map;
@@ -11,6 +12,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
+using System.Windows.Media.Media3D;
 
 namespace EQTool.Models
 {
@@ -58,6 +60,10 @@ namespace EQTool.Models
             {
                 this.AddCustomTrigger(p);
             });
+            connection.On("TriggerEvent", (TriggerEvent p) =>
+            {
+                this.AddCustomTrigger(p);
+            });
             connection.Closed += async (error) =>
               {
                   await Task.Delay(new Random().Next(0, 5) * 1000);
@@ -89,6 +95,7 @@ namespace EQTool.Models
 
             this.logParser.PlayerLocationEvent += LogParser_PlayerLocationEvent;
             this.logParser.CampEvent += LogParser_CampEvent;
+            this.logParser.StartCastingEvent += LogParser_StartCastingEvent;
             timer = new System.Timers.Timer();
             timer.Elapsed += Timer_Elapsed;
             timer.Interval = 1000 * 10;
@@ -108,9 +115,40 @@ namespace EQTool.Models
             this.LastPlayer = null;
         }
 
+        private void LogParser_StartCastingEvent(object sender, LogParser.SpellEventArgs e)
+        {
+            if (e.Spell.IsYou && activePlayer.Player.Server.HasValue && string.IsNullOrWhiteSpace(activePlayer?.Player?.Name) && string.IsNullOrWhiteSpace(activePlayer?.Player?.Zone) && e.Spell.Spell.type == SpellTypes.Detrimental)
+            {
+                var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(e.Spell.Spell, activePlayer.Player));
+                var isnpc = MasterNPCList.NPCs.Contains(e.Spell.TargetName);
+                if (isnpc)
+                {
+                    var s = new TriggerEvent
+                    {
+                        Classes = e.Spell.Spell.Classes,
+                        DurationInSeconds = (int)spellduration.TotalSeconds,
+                        Zone = activePlayer.Player?.Zone,
+                        GuildName = activePlayer.Player.GuildName,
+                        MapLocationSharing = activePlayer.Player.MapLocationSharing,
+                        Name = activePlayer.Player.Name,
+                        Server = activePlayer.Player.Server.Value,
+                        SpellNameIcon = e.Spell.Spell.name,
+                        SpellType = e.Spell.Spell.type,
+                        TargetName = e.Spell.TargetName,
+                        X = this.LastPlayer.X,
+                        Y = this.LastPlayer.Y,
+                        Z = this.LastPlayer.Z
+                    };
+
+                    InvokeAsync("TriggerEvent", s);
+                }
+            }
+        }
+
+
         private void Timer_Elapsed(object sender, ElapsedEventArgs e)
         {
-            if (this.LastPlayer != null && connection?.State == HubConnectionState.Connected && this.activePlayer?.Player?.Server != null)
+            if (this.LastPlayer != null && this.activePlayer?.Player?.Server != null)
             {
                 if ((DateTime.UtcNow - this.logParser.LastYouActivity).TotalMinutes > 5)
                 {
@@ -151,8 +189,8 @@ namespace EQTool.Models
             {
                 try
                 {
-                    if (NParseWebsocketConnection.State == WebSocketState.Closed || 
-                        NParseWebsocketConnection.State == WebSocketState.CloseReceived || 
+                    if (NParseWebsocketConnection.State == WebSocketState.Closed ||
+                        NParseWebsocketConnection.State == WebSocketState.CloseReceived ||
                         NParseWebsocketConnection.State == WebSocketState.None)
                     {
                         Debug.WriteLine("Beg Nparse StartAsync");
@@ -259,6 +297,24 @@ namespace EQTool.Models
                 });
             }
         }
+        public void AddCustomTrigger(TriggerEvent p)
+        {
+            if (this.LastPlayer == null || this.activePlayer?.Player == null || p.Server != this.activePlayer.Player.Server || p.Zone != this.activePlayer.Player.Zone || !this.activePlayer.Player.SpellDebuffShare)
+            {
+                return;
+            }
+            var loc1 = new Point3D(this.LastPlayer.X, this.LastPlayer.Y, this.LastPlayer.Z);
+            var loc2 = new Point3D(p.X, p.Y, p.Z);
+            var distanceSquared = (loc1 - loc2).LengthSquared;
+            if (distanceSquared <= 500)
+            {
+                Debug.WriteLine($"AddCustomTrigger {p.TargetName}");
+                this.appDispatcher.DispatchUI(() =>
+                {
+                    this.spellWindowViewModel.TryAddCustom(p);
+                });
+            }
+        }
 
         public void PushPlayerLocationEvent(SignalrPlayer p)
         {
@@ -307,7 +363,7 @@ namespace EQTool.Models
                     GuildName = this.activePlayer.Player.GuildName,
                     PlayerClass = this.activePlayer.Player.PlayerClass,
                     Server = this.activePlayer.Player.Server.Value,
-                    MapLocationSharing = this.activePlayer.Player.MapLocationSharing.Value,
+                    MapLocationSharing = this.activePlayer.Player.MapLocationSharing,
                     Name = this.activePlayer.Player.Name,
                     TrackingDistance = this.activePlayer.Player.TrackingDistance,
                     X = e.Location.X,

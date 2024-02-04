@@ -187,13 +187,24 @@ namespace EQTool.Models
             }
         }
 
+        private bool _SpellDebuffShare;
+        public bool SpellDebuffShare
+        {
+            get => _SpellDebuffShare;
+            set
+            {
+                SpellDebuffShare = value;
+                OnPropertyChanged();
+            }
+        }
+
         private MapLocationSharing _MapLocationSharing = EQToolShared.Map.MapLocationSharing.Everyone;
-        public MapLocationSharing? MapLocationSharing
+        public MapLocationSharing MapLocationSharing
         {
             get => _MapLocationSharing;
             set
             {
-                _MapLocationSharing = value ?? EQToolShared.Map.MapLocationSharing.Everyone;
+                _MapLocationSharing = value;
                 OnPropertyChanged();
             }
         }

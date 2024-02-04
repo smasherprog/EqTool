@@ -719,6 +719,27 @@ namespace EQToolTests
         }
 
         [TestMethod]
+        public void TestUserBeginsToCastUserCastingSpell()
+        {
+            var spells = container.Resolve<EQSpells>();
+            var spelllogparse = container.Resolve<SpellLogParse>();
+            var spellname = "Burnout";
+            var shissarspell = spells.AllSpells.FirstOrDefault(a => a.name == spellname);
+            var line = $"You begin casting {spellname}.";
+            var player = container.Resolve<ActivePlayer>();
+            player.Player = new PlayerInfo
+            {
+                Level = 21,
+                PlayerClass = PlayerClasses.Magician
+            };
+            var guess = spelllogparse.MatchSpell(line);
+            Assert.AreEqual(shissarspell, player.UserCastingSpell);
+            line = "Jobober " + shissarspell.cast_on_other;
+            guess = spelllogparse.MatchSpell(line);
+            Assert.IsTrue(guess.IsYou);
+        }
+
+        [TestMethod]
         public void TestPrimalEssence()
         {
             var spells = container.Resolve<EQSpells>();
@@ -1317,6 +1338,7 @@ namespace EQToolTests
             service.HandleYouBeginCastingSpellStart(line);
             Assert.AreEqual(player.Player.Level, 60);
         }
+
 
         [TestMethod]
         public void DateParseTest()

@@ -38,17 +38,19 @@ namespace EQTool
             view.IsLiveGrouping = true;
             view.SortDescriptions.Add(new SortDescription(nameof(UpdateMessageData.DateTime), ListSortDirection.Descending));
             view.IsLiveSorting = true;
+
+            UpdateMessages.Add(new UpdateMessageData
+            {
+                DateTime = new DateTime(2024, 2, 4),
+                Message =
+                    $"* Fixed Enraged Overlay Trigger" +
+                    $"* Working on support for sharing of detrimental spell. This will make seeing whether tash/malo/slow are on much easier, and eventually add counters for things like mana sieves, buffs, etc."
+            });
             UpdateMessages.Add(new UpdateMessageData
             {
                 DateTime = new DateTime(2024, 2, 1),
                 Message =
                      $"* Spawn timer fixes for BB and Xorbb zones."
-            });
-            UpdateMessages.Add(new UpdateMessageData
-            {
-                DateTime = new DateTime(2024, 1, 28),
-                Message =
-                     $"* Fixed reconnect issue for NParse location sharing."
             });
         }
     }
