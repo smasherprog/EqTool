@@ -193,7 +193,7 @@ namespace EQTool.Models
             get => _SpellDebuffShare;
             set
             {
-                SpellDebuffShare = value;
+                _SpellDebuffShare = value;
                 OnPropertyChanged();
             }
         }
