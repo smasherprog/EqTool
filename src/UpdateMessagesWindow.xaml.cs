@@ -38,7 +38,12 @@ namespace EQTool
             view.IsLiveGrouping = true;
             view.SortDescriptions.Add(new SortDescription(nameof(UpdateMessageData.DateTime), ListSortDirection.Descending));
             view.IsLiveSorting = true;
-
+            UpdateMessages.Add(new UpdateMessageData
+            {
+                DateTime = new DateTime(2024, 2, 5),
+                Message =
+              $"* Added code to log reader to fix corner case. {Environment.NewLine}"
+            });
             UpdateMessages.Add(new UpdateMessageData
             {
                 DateTime = new DateTime(2024, 2, 4),

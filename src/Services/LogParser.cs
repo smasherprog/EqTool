@@ -506,7 +506,7 @@ namespace EQTool.Services
                         newplayerdetected = true;
                     }
                     var linelist = new List<string>();
-                    using (var stream = new FileStream(filepath, FileMode.Open, FileAccess.Read))
+                    using (var stream = new FileStream(filepath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
                     using (var reader = new StreamReader(stream))
                     {
                         var lookbacksize = 4000;
