@@ -13,6 +13,7 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Speech.Synthesis;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -774,6 +775,20 @@ namespace EQTool
             SettingsWindowData.ActivePlayer.Player.DragonRoarOverlay = true;
             ((App)System.Windows.Application.Current).OpenOverLayWindow();
             this.PushLog($"You resist the Dragon Roar spell!");
+        }
+        private void textvoice(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(this.SettingsWindowData.SelectedVoice))
+            {
+                return;
+            }
+
+            System.Threading.Tasks.Task.Factory.StartNew(() =>
+            {
+                var synth = new SpeechSynthesizer();
+                synth.SelectVoice(this.SettingsWindowData.SelectedVoice);
+                synth.Speak($"You resist the Dragon Roar spell!");
+            });
         }
 
         private void testChChain(object sender, RoutedEventArgs e)

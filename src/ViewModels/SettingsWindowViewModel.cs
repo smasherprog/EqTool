@@ -5,9 +5,9 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Speech.Synthesis;
 using System.Windows;
 
 namespace EQTool.ViewModels
@@ -43,6 +43,13 @@ namespace EQTool.ViewModels
             {
                 var listitem = new BoolStringClass { TheText = item.ToString(), TheValue = item, IsChecked = false };
                 this.SelectedPlayerClasses.Add(listitem);
+            }
+
+            this.InstalledVoices = new ObservableCollection<string>(new SpeechSynthesizer().GetInstalledVoices().Select(a => a.VoiceInfo.Name).ToList());
+            this.SelectedVoice = this.toolSettings.SelectedVoice;
+            if (string.IsNullOrWhiteSpace(this.SelectedVoice))
+            {
+                this.SelectedVoice = this.InstalledVoices.FirstOrDefault();
             }
         }
 
@@ -169,6 +176,18 @@ namespace EQTool.ViewModels
             }
         }
 
+        private string _SelectedVoice = string.Empty;
+        public string SelectedVoice
+        {
+            get => _SelectedVoice;
+            set
+            {
+                _SelectedVoice = value;
+                this.toolSettings.SelectedVoice = value;
+                OnPropertyChanged();
+            }
+        }
+
         private string _EqLogPath = string.Empty;
         public string EqLogPath
         {
@@ -219,7 +238,7 @@ namespace EQTool.ViewModels
         public bool NotMissingConfiguration => HasEqPath && IsLoggingEnabled;
         public bool HasCharName => !string.IsNullOrWhiteSpace(ActivePlayer?.Player?.Name);
         public Visibility HasNoCharName => string.IsNullOrWhiteSpace(ActivePlayer?.Player?.Name) ? Visibility.Visible : Visibility.Collapsed;
-
+        public ObservableCollection<string> InstalledVoices { get; set; } = new ObservableCollection<string>();
         public ObservableCollection<BoolStringClass> SelectedPlayerClasses { get; set; } = new ObservableCollection<BoolStringClass>();
         public List<MapLocationSharing> LocationShareOptions => Enum.GetValues(typeof(MapLocationSharing)).Cast<MapLocationSharing>().ToList();
         public List<PlayerClasses> PlayerClasses => Enum.GetValues(typeof(PlayerClasses)).Cast<PlayerClasses>().ToList();
@@ -261,8 +280,8 @@ namespace EQTool.ViewModels
         {
             _ = ActivePlayer.Update();
             OnPropertyChanged(nameof(ActivePlayer));
-            OnPropertyChanged(nameof(HasCharName)); 
-            OnPropertyChanged(nameof(HasNoCharName)); 
+            OnPropertyChanged(nameof(HasCharName));
+            OnPropertyChanged(nameof(HasNoCharName));
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

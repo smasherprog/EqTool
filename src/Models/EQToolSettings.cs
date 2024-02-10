@@ -30,7 +30,7 @@ namespace EQTool.Models
     {
         public string DefaultEqDirectory { get; set; }
         public string EqLogDirectory { get; set; }
-
+        public string SelectedVoice { get; set; }
         private int _FontSize = 12;
         public int? FontSize
         {

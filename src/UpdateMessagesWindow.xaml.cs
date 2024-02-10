@@ -40,23 +40,15 @@ namespace EQTool
             view.IsLiveSorting = true;
             UpdateMessages.Add(new UpdateMessageData
             {
+                DateTime = new DateTime(2024, 2, 10),
+                Message =
+                $"* Added support to select the audio voice in settings. "
+            });
+            UpdateMessages.Add(new UpdateMessageData
+            {
                 DateTime = new DateTime(2024, 2, 5),
                 Message =
-              $"* Added code to log reader to fix corner case. {Environment.NewLine}"
-            });
-            UpdateMessages.Add(new UpdateMessageData
-            {
-                DateTime = new DateTime(2024, 2, 4),
-                Message =
-                    $"* Fixed Enraged Overlay Trigger. {Environment.NewLine}" +
-                    $"* Fixed PQ detection code. {Environment.NewLine}" +
-                    $"* Working on support for sharing of detrimental spell. This will make seeing whether tash/malo/slow are on much easier, and eventually add counters for things like mana sieves, buffs, etc."
-            });
-            UpdateMessages.Add(new UpdateMessageData
-            {
-                DateTime = new DateTime(2024, 2, 1),
-                Message =
-                     $"* Spawn timer fixes for BB and Xorbb zones."
+              $"* Added code to log reader to fix corner case."
             });
         }
     }
