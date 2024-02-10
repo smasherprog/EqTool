@@ -89,8 +89,7 @@ Features:
 <img width="152" alt="image" src="https://user-images.githubusercontent.com/3393733/212717141-6e26b9af-660a-493d-9f73-2c3464b7c224.png">
 
 <h4>TO DO List EQTool</h4>
-<ul>    
- <li>Add drop down list of installed voices. </li>  
+<ul>     
  <li>Centralized friends list. </li>  
  <li>Add text message sending when npc is seen in game. </li>  
  <li>Show random rolls highest to lowest, top 5 only. </li>  
