@@ -1,4 +1,5 @@
-﻿using EQTool.ViewModels;
+﻿using EQTool.Models;
+using EQTool.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,12 +17,14 @@ namespace EQTool.Services
     {
         private readonly LogParser logParser;
         private readonly ActivePlayer activePlayer;
+        private readonly EQToolSettings eQToolSettings;
         private readonly List<ChainAudioData> chainDatas = new List<ChainAudioData>();
 
-        public AudioService(LogParser logParser, ActivePlayer activePlayer)
+        public AudioService(LogParser logParser, ActivePlayer activePlayer, EQToolSettings eQToolSettings)
         {
             this.logParser = logParser;
             this.activePlayer = activePlayer;
+            this.eQToolSettings = eQToolSettings;
             this.logParser.InvisEvent += LogParser_InvisEvent;
             this.logParser.EnrageEvent += LogParser_EnrageEvent;
             this.logParser.LevEvent += LogParser_LevEvent;
@@ -141,7 +144,15 @@ namespace EQTool.Services
             System.Threading.Tasks.Task.Factory.StartNew(() =>
             {
                 var synth = new SpeechSynthesizer();
-                synth.SetOutputToDefaultAudioDevice();
+                if (string.IsNullOrWhiteSpace(this.eQToolSettings.SelectedVoice))
+                {
+                    synth.SetOutputToDefaultAudioDevice();
+                }
+                else
+                {
+                    synth.SelectVoice(this.eQToolSettings.SelectedVoice);
+                }
+
                 synth.Speak(text);
             });
         }
