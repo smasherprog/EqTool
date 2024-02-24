@@ -1204,9 +1204,17 @@ namespace EQToolTests
         {
             var service = container.Resolve<LogDeathParse>();
             var line = "an ire Ghast has been slain by an ire ghast!";
-            var targettoremove = service.GetDeadTarget(line);
+            var deadtarget = service.GetDeadTarget(line);
+            Assert.AreEqual("an ire Ghast", deadtarget);
+        }
 
-            Assert.IsNotNull(targettoremove);
+        [TestMethod]
+        public void TestDeathByDot()
+        {
+            var service = container.Resolve<LogDeathParse>();
+            var line = "an ire Ghast died.";
+            var deadtarget = service.GetDeadTarget(line);
+            Assert.AreEqual("an ire Ghast", deadtarget);
         }
 
         [TestMethod]

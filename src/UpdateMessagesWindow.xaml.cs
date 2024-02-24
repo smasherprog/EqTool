@@ -40,15 +40,9 @@ namespace EQTool
             view.IsLiveSorting = true;
             UpdateMessages.Add(new UpdateMessageData
             {
-                DateTime = new DateTime(2024, 2, 10),
+                DateTime = new DateTime(2024, 2, 24),
                 Message =
-                $"* Added support to select the audio voice in settings. "
-            });
-            UpdateMessages.Add(new UpdateMessageData
-            {
-                DateTime = new DateTime(2024, 2, 5),
-                Message =
-              $"* Added code to log reader to fix corner case."
+                $"* Added support for 'King Tormax died.' to supported death triggers"
             });
         }
     }
