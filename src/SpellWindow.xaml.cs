@@ -59,6 +59,7 @@ namespace EQTool
             this.logParser.CancelTimerEvent += LogParser_CancelTimerEvent;
             this.logParser.POFDTEvent += LogParser_POFDTEvent;
             this.logParser.ResistSpellEvent += LogParser_ResistSpellEvent;
+            this.logParser.RandomRollEvent += LogParser_RandomRollEvent;
             spellWindowViewModel.SpellList = new System.Collections.ObjectModel.ObservableCollection<UISpell>();
             DataContext = this.spellWindowViewModel = spellWindowViewModel;
             if (this.activePlayer.Player != null)
@@ -84,6 +85,23 @@ namespace EQTool
             StateChanged += SpellWindow_StateChanged;
             LocationChanged += DPSMeter_LocationChanged;
             settings.SpellWindowState.Closed = false;
+        }
+
+        private void LogParser_RandomRollEvent(object sender, LogParser.RandomRollEventArgs e)
+        {
+            var name = $"{e.RandomRollData.PlayerName} Rolled: ";
+            if (name.Length < 35)
+            {
+                name.PadRight(35, ' ');
+            }
+
+            //this.spellWindowViewModel.TryAddCustom(new CustomTimer
+            //{
+            //    TargetName = $"Random -- {e.RandomRollData.MaxRoll}",
+            //    Name = name + $" '{e.RandomRollData.Roll}'",
+            //    SpellNameIcon = "Invisibility",
+            //    SpellType = EQToolShared.Enums.SpellTypes.RandomRoll
+            //});
         }
 
         private void LogParser_ResistSpellEvent(object sender, SpellParsingMatch e)
@@ -202,6 +220,7 @@ namespace EQTool
                 logParser.CancelTimerEvent -= LogParser_CancelTimerEvent;
                 logParser.POFDTEvent -= LogParser_POFDTEvent;
                 logParser.ResistSpellEvent -= LogParser_ResistSpellEvent;
+                logParser.RandomRollEvent -= LogParser_RandomRollEvent;
             }
             if (spellWindowViewModel != null)
             {

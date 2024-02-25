@@ -245,6 +245,10 @@
                     <CheckBox IsChecked="{Binding ActivePlayer.Player.SpellDebuffShare}" Click="Savesettings" MinWidth="75"></CheckBox>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Random Roll"  VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
+                    <Button Click="testRandomRolls" MinWidth="100">Test Random Rolls</Button>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
                     <TextBlock Text="DPS"  VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
                     <Button Click="testDPS" MinWidth="100">Add Test DPS</Button>
                 </StackPanel>

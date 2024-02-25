@@ -18,6 +18,7 @@ using static EQTool.Services.FTEParser;
 using static EQTool.Services.InvisParser;
 using static EQTool.Services.LevParser;
 using static EQTool.Services.POFDTParser;
+using static EQTool.Services.RandomParser;
 
 namespace EQTool.Services
 {
@@ -50,6 +51,7 @@ namespace EQTool.Services
         private readonly FailedFeignParser failedFeignParser;
         private readonly GroupInviteParser groupInviteParser;
         private readonly ResistSpellParser resistSpellParser;
+        private readonly RandomParser randomParser;
 
         private bool StartingWhoOfZone = false;
         private bool Processing = false;
@@ -57,6 +59,7 @@ namespace EQTool.Services
         private bool HasUsedStartupEnterWorld = false;
 
         public LogParser(
+            RandomParser randomParser,
             ResistSpellParser resistSpellParser,
             GroupInviteParser groupInviteParser,
             CharmBreakParser charmBreakParser,
@@ -84,6 +87,7 @@ namespace EQTool.Services
             FailedFeignParser failedFeignParser
             )
         {
+            this.randomParser = randomParser;
             this.resistSpellParser = resistSpellParser;
             this.groupInviteParser = groupInviteParser;
             this.failedFeignParser = failedFeignParser;
@@ -171,24 +175,24 @@ namespace EQTool.Services
         {
             public EQToolShared.APIModels.PlayerControllerModels.Player PlayerInfo { get; set; }
         }
+        public class RandomRollEventArgs : EventArgs
+        {
+            public RandomRollData RandomRollData { get; set; }
+        }
+
         public class WhoEventArgs : EventArgs { }
         public class CampEventArgs : EventArgs { }
         public class EnteredWorldArgs : EventArgs { }
         public class QuakeArgs : EventArgs { }
         public class CharmBreakArgs : EventArgs { }
 
+        public event EventHandler<RandomRollEventArgs> RandomRollEvent;
         public event EventHandler<WhoEventArgs> WhoEvent;
-
         public event EventHandler<WhoPlayerEventArgs> WhoPlayerEvent;
-
         public event EventHandler<SpellWornOffSelfEventArgs> SpellWornOffSelfEvent;
-
         public event EventHandler<QuakeArgs> QuakeEvent;
-
         public event EventHandler<POF_DT_Event> POFDTEvent;
-
         public event EventHandler<EnrageEvent> EnrageEvent;
-
         public event EventHandler<ChParseData> CHEvent;
         public event EventHandler<LevStatus> LevEvent;
         public event EventHandler<InvisStatus> InvisEvent;
@@ -376,6 +380,13 @@ namespace EQTool.Services
                 if (quaked)
                 {
                     QuakeEvent?.Invoke(this, new QuakeArgs());
+                    return;
+                }
+
+                var randomdata = randomParser.Parse(message);
+                if (randomdata != null)
+                {
+                    RandomRollEvent?.Invoke(this, new RandomRollEventArgs { RandomRollData = randomdata });
                     return;
                 }
 

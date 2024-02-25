@@ -321,7 +321,8 @@ namespace EQTool.ViewModels
                     Rect = spellicon.Rect,
                     SpellIcon = spellicon.SpellIcon,
                     Classes = match.Classes,
-                    GuessedSpell = false
+                    GuessedSpell = false,
+                    PersistentSpell = match.SpellType == SpellTypes.RandomRoll ? true : false
                 });
             });
         }

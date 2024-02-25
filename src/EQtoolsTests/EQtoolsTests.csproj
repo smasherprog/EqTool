@@ -170,6 +170,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ChChainTests.cs" />
+    <Compile Include="RandomRollTests.cs" />
     <Compile Include="FTETests.cs" />
     <Compile Include="EnrageTests.cs" />
     <Compile Include="DI.cs" />

@@ -38,6 +38,14 @@ namespace EQTool
             view.IsLiveGrouping = true;
             view.SortDescriptions.Add(new SortDescription(nameof(UpdateMessageData.DateTime), ListSortDirection.Descending));
             view.IsLiveSorting = true;
+
+            UpdateMessages.Add(new UpdateMessageData
+            {
+                DateTime = new DateTime(2024, 2, 25),
+                Message =
+                    $"* Fixed slain targets not showing up in timers."
+            });
+
             UpdateMessages.Add(new UpdateMessageData
             {
                 DateTime = new DateTime(2024, 2, 24),

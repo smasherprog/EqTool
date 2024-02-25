@@ -23,17 +23,20 @@ namespace EQTool.Services.Spells.Log
                     return string.Empty;
                 }
 
-                if (!message.Contains(", '") && message.EndsWith(Died))
+                if (nameofthingindex != -1)
+                {
+                    return message.Substring(0, nameofthingindex).Trim();
+                }
+                else if (!message.Contains(", '") && message.EndsWith(Died))
                 {
                     nameofthingindex = message.IndexOf(Died);
+                    return message.Substring(0, nameofthingindex).Trim();
                 }
                 else
                 {
                     return string.Empty;
                 }
 
-                var target = message.Substring(0, nameofthingindex).Trim();
-                return target;
             }
             else if (message.StartsWith(YouHaveSlain))
             {

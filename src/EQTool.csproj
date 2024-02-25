@@ -397,6 +397,7 @@
     <Compile Include="Services\LoggingService.cs" />
     <Compile Include="Services\MapOpacityHelper.cs" />
     <Compile Include="Services\MapViewModelService.cs" />
+    <Compile Include="Services\Parsing\RandomParser.cs" />
     <Compile Include="Services\Parsing\ResistSpellParser.cs" />
     <Compile Include="Services\Parsing\GroupInviteParser.cs" />
     <Compile Include="Services\Parsing\FailedFeignParser.cs" />
@@ -468,22 +469,6 @@
     <Compile Include="Services\Spells\SpellIcons.cs" />
     <Compile Include="Services\StringHash.cs" />
     <Compile Include="Services\TGASharpLib.cs" />
-    <Compile Include="Services\WLD\FragmentNameCleaner.cs" />
-    <Compile Include="Services\WLD\Fragments\BitmapInfo.cs" />
-    <Compile Include="Services\WLD\Fragments\BitmapInfoReference.cs" />
-    <Compile Include="Services\WLD\Fragments\BitmapName.cs" />
-    <Compile Include="Services\WLD\BitAnalyzer.cs" />
-    <Compile Include="Services\WLD\Fragments\LegacyMesh.cs" />
-    <Compile Include="Services\WLD\Fragments\Material.cs" />
-    <Compile Include="Services\WLD\Fragments\MaterialList.cs" />
-    <Compile Include="Services\WLD\Fragments\Mesh.cs" />
-    <Compile Include="Services\WLD\Fragments\UnusedWldFragment.cs" />
-    <Compile Include="Services\WLD\WldFragmentBuilder.cs" />
-    <Compile Include="Services\WLD\Fragments\WldFragment.cs" />
-    <Compile Include="Services\WLD\Fragments\UnknownWldFragment.cs" />
-    <Compile Include="Services\WLD\WldType.cs" />
-    <Compile Include="Services\WLD\WldStringDecoder.cs" />
-    <Compile Include="Services\WLD\WLDReader.cs" />
     <Compile Include="Settings.xaml.cs">
       <DependentUpon>Settings.xaml</DependentUpon>
     </Compile>

@@ -338,6 +338,40 @@ namespace EQTool
             }
         }
 
+        private void testRandomRolls(object sender, RoutedEventArgs e)
+        {
+            var testbutton = sender as System.Windows.Controls.Button;
+            if (!testbutton.IsEnabled)
+            {
+                return;
+            }
+            testbutton.IsEnabled = false;
+            _ = Task.Factory.StartNew(() =>
+            {
+                try
+                {
+                    PushLog("**A Magic Die is rolled by Whitewitch.");
+                    PushLog("**It could have been any number from 0 to 333, but this time it turned up a 99.");
+
+                    PushLog("**A Magic Die is rolled by Huntor.");
+                    PushLog("**It could have been any number from 0 to 333, but this time it turned up a 105.");
+
+                    PushLog("**A Magic Die is rolled by Vasanle.");
+                    PushLog("**It could have been any number from 0 to 333, but this time it turned up a 100.");
+
+                    PushLog("**A Magic Die is rolled by Sanare.");
+                    PushLog("**It could have been any number from 0 to 333, but this time it turned up a 50.");
+
+                    appDispatcher.DispatchUI(() => { testbutton.IsEnabled = true; });
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex.ToString());
+                    appDispatcher.DispatchUI(() => { testbutton.IsEnabled = true; });
+                }
+            });
+        }
+
         private void testDPS(object sender, RoutedEventArgs e)
         {
             var testdpsbutton = sender as System.Windows.Controls.Button;

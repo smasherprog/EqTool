@@ -1209,6 +1209,24 @@ namespace EQToolTests
         }
 
         [TestMethod]
+        public void TestDeath1()
+        {
+            var service = container.Resolve<LogDeathParse>();
+            var line = "Harbinger Freglor has been slain by skeletal champion!";
+            var deadtarget = service.GetDeadTarget(line);
+            Assert.AreEqual("Harbinger Freglor", deadtarget);
+        }
+
+        [TestMethod]
+        public void TestDeath2()
+        {
+            var service = container.Resolve<LogDeathParse>();
+            var line = "You have slain Arch Duke Iatol!";
+            var deadtarget = service.GetDeadTarget(line);
+            Assert.AreEqual("Arch Duke Iatol", deadtarget);
+        }
+
+        [TestMethod]
         public void TestDeathByDot()
         {
             var service = container.Resolve<LogDeathParse>();
