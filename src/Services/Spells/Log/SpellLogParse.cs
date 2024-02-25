@@ -18,7 +18,7 @@ namespace EQTool.Services.Spells.Log
             this.settings = settings;
             this.parseHandleYouCasting = parseHandleYouCasting;
             this.activePlayer = activePlayer;
-            HealSpell = spells.AllSpells.FirstOrDefault(a => a.name == "Chloroplast");
+            HealSpell = spells.AllSpells.FirstOrDefault(a => a.name == "Chloroplast") ?? spells.AllSpells.FirstOrDefault(a => a.name == "Regeneration");
         }
 
         public SpellParsingMatch MatchSpell(string message)
