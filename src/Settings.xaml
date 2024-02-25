@@ -172,11 +172,7 @@
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="CH Chain Tag" ToolTip="Example: GG or CA. Other tags will be ignored" VerticalAlignment="Center" FontWeight="Bold"  MinWidth="100"/>
                     <TextBox Text="{Binding Path=ActivePlayer.Player.ChChainTagOverlay, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MinWidth="40" TextChanged="CHTextBox_TextChanged"></TextBox>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="" VerticalAlignment="Center" FontWeight="Bold"  MinWidth="100"/>
-                    <TextBlock Text="Ch warning Experimental" Foreground="Red" VerticalAlignment="Center" />
-                </StackPanel>
+                </StackPanel> 
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Ch Warning" ToolTip="Ch Warning" VerticalAlignment="Center" FontWeight="Bold"  MinWidth="100"/>
                     <CheckBox IsChecked="{Binding ActivePlayer.Player.ChChainWarningOverlay}" Click="Savesettings" MinWidth="75"></CheckBox>

@@ -306,11 +306,33 @@ namespace EQTool.ViewModels
                 var s = SpellList.FirstOrDefault(a => a.SpellName == match.Name && match.TargetName == a.TargetName);
                 if (s != null)
                 {
-                    _ = SpellList.Remove(s);
+                    if (match.SpellType != SpellTypes.RandomRoll)
+                    {
+                        _ = SpellList.Remove(s);
+                    }
+                    else
+                    {
+                        return;
+                    }
                 }
+
 
                 var spellduration = match.DurationInSeconds;
                 var spellicon = spells.AllSpells.FirstOrDefault(a => a.name == match.SpellNameIcon);
+                if (match.SpellType == SpellTypes.RandomRoll)
+                {
+                    var rollsingroup = SpellList.Where(a => a.TargetName == match.TargetName).OrderByDescending(a => a.Roll).ToList();
+                    if (rollsingroup.Count >= 5)
+                    {
+                        _ = SpellList.Remove(rollsingroup.LastOrDefault());
+                        rollsingroup = SpellList.Where(a => a.TargetName == match.TargetName).ToList();
+                    }
+                    foreach (var item in rollsingroup)
+                    {
+                        item.TimerEndDateTime = DateTime.Now.AddSeconds(spellduration);
+                    }
+                }
+
                 SpellList.Add(new UISpell(DateTime.Now.AddSeconds(spellduration), false)
                 {
                     UpdatedDateTime = DateTime.Now,
@@ -322,7 +344,8 @@ namespace EQTool.ViewModels
                     SpellIcon = spellicon.SpellIcon,
                     Classes = match.Classes,
                     GuessedSpell = false,
-                    PersistentSpell = match.SpellType == SpellTypes.RandomRoll ? true : false
+                    PersistentSpell = false,
+                    Roll = match.Roll
                 });
             });
         }

@@ -76,6 +76,7 @@ namespace EQTool
             view.LiveGroupingProperties.Add(nameof(UISpell.TargetName));
             view.IsLiveGrouping = true;
             view.SortDescriptions.Add(new SortDescription(nameof(UISpell.Sorting), ListSortDirection.Ascending));
+            view.SortDescriptions.Add(new SortDescription(nameof(UISpell.Roll), ListSortDirection.Descending));
             view.SortDescriptions.Add(new SortDescription(nameof(UISpell.SecondsLeftOnSpell), ListSortDirection.Descending));
             view.IsLiveSorting = true;
             view.LiveSortingProperties.Add(nameof(UISpell.SecondsLeftOnSpell));
@@ -89,19 +90,15 @@ namespace EQTool
 
         private void LogParser_RandomRollEvent(object sender, LogParser.RandomRollEventArgs e)
         {
-            var name = $"{e.RandomRollData.PlayerName} Rolled: ";
-            if (name.Length < 35)
+            this.spellWindowViewModel.TryAddCustom(new CustomTimer
             {
-                name.PadRight(35, ' ');
-            }
-
-            //this.spellWindowViewModel.TryAddCustom(new CustomTimer
-            //{
-            //    TargetName = $"Random -- {e.RandomRollData.MaxRoll}",
-            //    Name = name + $" '{e.RandomRollData.Roll}'",
-            //    SpellNameIcon = "Invisibility",
-            //    SpellType = EQToolShared.Enums.SpellTypes.RandomRoll
-            //});
+                TargetName = $"Random -- {e.RandomRollData.MaxRoll}",
+                Name = e.RandomRollData.PlayerName,
+                SpellNameIcon = "Invisibility",
+                SpellType = EQToolShared.Enums.SpellTypes.RandomRoll,
+                Roll = e.RandomRollData.Roll,
+                DurationInSeconds = 60 * 3
+            });
         }
 
         private void LogParser_ResistSpellEvent(object sender, SpellParsingMatch e)

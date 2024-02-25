@@ -16,8 +16,8 @@ namespace EQTool.ViewModels
         public UISpell(DateTime endtime, bool isNPC)
         {
             this.IsNPC = isNPC;
-            _TimerEndDateTime = endtime;
-            TotalSecondsOnSpell = (int)(_TimerEndDateTime - DateTime.Now).TotalSeconds;
+            TimerEndDateTime = endtime;
+            TotalSecondsOnSpell = (int)(TimerEndDateTime - DateTime.Now).TotalSeconds;
             UpdateTimeLeft();
         }
 
@@ -31,11 +31,21 @@ namespace EQTool.ViewModels
 
         public TimeSpan SecondsLeftOnSpell => _SecondsLeftOnSpell;
 
-        private readonly DateTime _TimerEndDateTime;
+        private DateTime _TimerEndDateTime = DateTime.Now;
+        public DateTime TimerEndDateTime
+        {
+            get { return _TimerEndDateTime; }
+            set
+            {
+                _TimerEndDateTime = value;
+                TotalSecondsOnSpell = (int)(_TimerEndDateTime - DateTime.Now).TotalSeconds;
+                UpdateTimeLeft();
+            }
+        }
 
         public void UpdateTimeLeft()
         {
-            _SecondsLeftOnSpell = _TimerEndDateTime - DateTime.Now;
+            _SecondsLeftOnSpell = TimerEndDateTime - DateTime.Now;
             if (TotalSecondsOnSpell > 0)
             {
                 PercentLeftOnSpell = (int)(_SecondsLeftOnSpell.TotalSeconds / TotalSecondsOnSpell * 100);
@@ -61,7 +71,21 @@ namespace EQTool.ViewModels
             }
         }
 
-        public string SpellExtraData => _Counter.HasValue ? " Count --> " + _Counter.Value : string.Empty;
+        public string SpellExtraData
+        {
+            get
+            {
+                if (_Counter.HasValue)
+                {
+                    return " Count --> " + _Counter.Value;
+                }
+                else if (Roll >= 0)
+                {
+                    return " Roll --> " + Roll.ToString();
+                }
+                return string.Empty;
+            }
+        }
 
         private int? _Counter = null;
 
@@ -205,6 +229,10 @@ namespace EQTool.ViewModels
                 {
                     return TargetName;
                 }
+                if (this.Roll >= 0)
+                {
+                    return " y";
+                }
                 if (this.IsNPC)
                 {
                     return " z";
@@ -213,6 +241,7 @@ namespace EQTool.ViewModels
             }
         }
         public string TargetName { get; set; }
+        public int Roll { get; set; } = -1;
         public bool IsNPC { get; set; }
 
         private SpellTypes _SpellType = 0;

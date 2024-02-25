@@ -16,6 +16,7 @@ namespace EQToolApis.Hubs
                 if (connections.TryRemove(Context.ConnectionId, out var p))
                 {
                     await Groups.RemoveFromGroupAsync(Context.ConnectionId, p.GroupName);
+                    await Groups.RemoveFromGroupAsync(Context.ConnectionId, p.Server.ToString());
                     await Clients.Group(p.GroupName).SendAsync("PlayerDisconnected", p);
                     Debug.WriteLine($"{p.GroupName}, ReceivePlayerLeftZone {p.Name}, {p.Zone}");
                 }
@@ -23,6 +24,12 @@ namespace EQToolApis.Hubs
             }
             if (connections.TryGetValue(Context.ConnectionId, out var player))
             {
+                if (player.Server != playerLocation.Server)
+                {
+                    await Groups.RemoveFromGroupAsync(Context.ConnectionId, player.Server.ToString());
+                    await Groups.AddToGroupAsync(Context.ConnectionId, playerLocation.Server.ToString());
+                }
+
                 if (player.Zone != playerLocation.Zone || player.MapLocationSharing != playerLocation.MapLocationSharing)
                 {
                     await Groups.RemoveFromGroupAsync(Context.ConnectionId, player.GroupName);
@@ -39,6 +46,7 @@ namespace EQToolApis.Hubs
             else if (connections.TryAdd(Context.ConnectionId, playerLocation))
             {
                 await Groups.AddToGroupAsync(Context.ConnectionId, playerLocation.GroupName);
+                await Groups.AddToGroupAsync(Context.ConnectionId, playerLocation.Server.ToString());
                 Debug.WriteLine($"{playerLocation.GroupName}, TryAdd {playerLocation.Name}, {playerLocation.Zone}");
             }
 
@@ -55,6 +63,7 @@ namespace EQToolApis.Hubs
         {
             if (connections.TryRemove(Context.ConnectionId, out var player))
             {
+                await Groups.RemoveFromGroupAsync(Context.ConnectionId, player.Server.ToString());
                 await Groups.RemoveFromGroupAsync(Context.ConnectionId, player.GroupName);
                 await Clients.Group(player.GroupName).SendAsync("PlayerDisconnected", player);
                 Debug.WriteLine($"{player.GroupName}, ReceivePlayerLeftZone {player.Name}, {player.Zone}");

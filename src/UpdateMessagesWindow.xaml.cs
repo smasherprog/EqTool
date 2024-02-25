@@ -43,7 +43,11 @@ namespace EQTool
             {
                 DateTime = new DateTime(2024, 2, 25),
                 Message =
-                    $"* Fixed slain targets not showing up in timers."
+                    $"* Fixed slain targets not showing up in timers.{Environment.NewLine}" +
+                    $"* Fixed Faction pull server notice.{Environment.NewLine}" +
+                    $"* Added Random tracker which will show the TOP 5 rolls automatically. Check out the image below for an example.",
+                Image = "pack://application:,,,/update1.png",
+                ImageVisibility = Visibility.Visible
             });
 
             UpdateMessages.Add(new UpdateMessageData
