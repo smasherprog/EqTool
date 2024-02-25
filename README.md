@@ -16,6 +16,7 @@ Instructions:
 Features:
 <br/>
 <ul>
+ <li>The TOP 5 Random rolls show up in the triggers window. </li> 
  <li>See others on the map in real time. Also support for NParse map location sharing automatically if location sharing is set to everyone. </li> 
 <li>Kael faction pull timer Automatically added for everyone regardless of what zone you are in. </li> 
 <li>Automatically add timers on death of npc so you dont have to!</li> 
@@ -93,7 +94,6 @@ Features:
  <li>Add updating notice when its happening. It can be confusing when updates occur because it takes about 5 seconds. </li>  
  <li>Centralized friends list. </li>  
  <li>Add text message sending when npc is seen in game. </li>  
- <li>Show random rolls highest to lowest, top 5 only. </li>  
    <li>Sharing of triggers for those nearby. </li>  
   <li>Add ring war triggers. </li>  
   <li>Map center on you.</li>  
