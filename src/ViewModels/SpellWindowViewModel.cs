@@ -1,6 +1,7 @@
 ﻿using EQTool.Models;
 using EQTool.Services;
 using EQTool.Services.Spells;
+using EQToolShared;
 using EQToolShared.Enums;
 using EQToolShared.HubModels;
 using System;
@@ -10,7 +11,6 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using static EQTool.Services.Spells.Log.LogCustomTimer;
 
 namespace EQTool.ViewModels
 {
@@ -20,22 +20,17 @@ namespace EQTool.ViewModels
         private readonly IAppDispatcher appDispatcher;
         private readonly EQToolSettings settings;
         private readonly EQSpells spells;
-        public readonly string CustomerTime = " Custom Timer";
-        private readonly Dictionary<PlayerClasses, int> CustomTimerClasses;
 
         public SpellWindowViewModel(ActivePlayer activePlayer, IAppDispatcher appDispatcher, EQToolSettings settings, EQSpells spells)
         {
-            CustomTimerClasses = Enum.GetValues(typeof(PlayerClasses)).Cast<PlayerClasses>().Select(a => new { key = a, level = 1 }).ToDictionary(a => a.key, a => a.level);
+
             this.activePlayer = activePlayer;
             this.appDispatcher = appDispatcher;
             this.settings = settings;
             Title = "Triggers v" + App.Version;
-            FeignDeath = spells.AllSpells.FirstOrDefault(a => a.name == "Feign Death");
             this.spells = spells;
         }
 
-
-        private Spell FeignDeath { get; set; }
 
         public ObservableCollection<UISpell> _SpellList = new ObservableCollection<UISpell>();
         public ObservableCollection<UISpell> SpellList
@@ -99,7 +94,7 @@ namespace EQTool.ViewModels
                     {
                         itemstoremove.Add(item);
                     }
-                    else if (item.PersistentSpell && (d - item.UpdatedDateTime).TotalMinutes > 5)
+                    else if (item.PersistentSpell && (d - item.UpdatedDateTime).TotalMinutes > 30)
                     {
                         itemstoremove.Add(item);
                     }
@@ -154,7 +149,37 @@ namespace EQTool.ViewModels
             });
         }
 
-        public void TryAdd(SpellParsingMatch match)
+        private readonly List<string> SpellsThatNeedCounts = new List<string>()
+        {
+            "Mana Sieve",
+            "LowerElement",
+            "Concussion",
+            "Flame Lick",
+            "Jolt",
+            "Cinder Jolt",
+        };
+
+        private readonly List<string> SpellsThatDragonsDo = new List<string>()
+        {
+            "Dragon Roar",
+            "Silver Breath",
+            "Ice breath",
+            "Mind Cloud",
+            "Rotting Flesh",
+            "Putrefy Flesh",
+            "Stun Breath",
+            "Immolating Breath",
+            "Rain of Molten Lava",
+            "Frost Breath",
+            "Lava Breath",
+            "Cloud of Fear",
+            "Diseased Cloud",
+            "Tsunami",
+            "Ancient Breath",
+            "Gift of Aerr"
+        };
+
+        public void TryAdd(SpellParsingMatch match, bool resisted)
         {
             if (match?.Spell == null)
             {
@@ -164,16 +189,79 @@ namespace EQTool.ViewModels
             appDispatcher.DispatchUI(() =>
             {
                 var spellname = match.Spell.name;
-                if (match.MultipleMatchesFound)
+                if (string.Equals(match.Spell.name, "Harvest", StringComparison.OrdinalIgnoreCase) && match.TargetName == EQSpells.SpaceYou)
                 {
-                    spellname = "??? " + spellname;
+                    TryAddCustom(new CustomTimer
+                    {
+                        DurationInSeconds = 600,
+                        Name = "--CoolDown-- " + spellname,
+                        SpellNameIcon = spellname,
+                        SpellType = SpellTypes.HarvestCooldown
+                    });
+                    return;
+                }
+                if (SpellsThatDragonsDo.Contains(match.Spell.name))
+                {
+                    TryAddCustom(new CustomTimer
+                    {
+                        DurationInSeconds = (int)(match.Spell.recastTime / 1000.0),
+                        Name = "--CoolDown-- " + spellname,
+                        SpellNameIcon = spellname,
+                        SpellType = SpellTypes.BadGuyCoolDown
+                    });
+                    return;
                 }
 
-                var ismanasieve = spellname == "Mana Sieve";
-                var ispersistent = ismanasieve;
+                if (match.Spell.name.EndsWith("Discipline"))
+                {
+                    var basetime = (int)(match.Spell.recastTime / 1000.0);
+                    var playerlevel = this.activePlayer.Player.Level;
+                    if (match.Spell.name == "Evasive Discipline")
+                    {
+                        float baseseconds = 15 * 60;
+                        float levelrange = 60 - 51;
+                        float secondsrange = (15 - 7) * 60;
+                        float secondsperlevelrange = (secondsrange / levelrange);
+                        float playerleveltick = playerlevel - 52;
+                        basetime = (int)(baseseconds - (playerleveltick * secondsperlevelrange));
+                    }
+                    else if (match.Spell.name == "Defensive Discipline")
+                    {
+                        float baseseconds = 15 * 60;
+                        float levelrange = 60 - 54;
+                        float secondsrange = (15 - 10) * 60;
+                        float secondsperlevelrange = secondsrange / levelrange;
+                        float playerleveltick = playerlevel - 55;
+                        basetime = (int)(baseseconds - (playerleveltick * secondsperlevelrange));
+                    }
+                    else if (match.Spell.name == "Precision Discipline")
+                    {
+                        float baseseconds = 30 * 60;
+                        float levelrange = 60 - 56;
+                        float secondsrange = (30 - 27) * 60;
+                        float secondsperlevelrange = secondsrange / levelrange;
+                        float playerleveltick = playerlevel - 57;
+                        basetime = (int)(baseseconds - (playerleveltick * secondsperlevelrange));
+                    }
+                    TryAddCustom(new CustomTimer
+                    {
+                        DurationInSeconds = basetime,
+                        Name = "--Discipline-- " + spellname,
+                        SpellNameIcon = "Strengthen",
+                        SpellType = SpellTypes.DisciplineCoolDown,
+                        TargetName = match.TargetName,
+                        Classes = match.Spell.Classes
+                    });
+                }
+                if (resisted)
+                {
+                    return;
+                }
+                var needscount = SpellsThatNeedCounts.Contains(spellname);
                 var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(match.Spell, activePlayer.Player));
-                var duraction = match.TotalSecondsOverride ?? spellduration.TotalSeconds;
-                var uispell = new UISpell(DateTime.Now.AddSeconds((int)duraction))
+                var duration = needscount ? 0 : match.TotalSecondsOverride ?? spellduration.TotalSeconds;
+                var isnpc = MasterNPCList.NPCs.Contains(match.TargetName);
+                var uispell = new UISpell(DateTime.Now.AddSeconds((int)duration), isnpc)
                 {
                     UpdatedDateTime = DateTime.Now,
                     PercentLeftOnSpell = 100,
@@ -181,8 +269,8 @@ namespace EQTool.ViewModels
                     TargetName = match.TargetName,
                     SpellName = spellname,
                     Rect = match.Spell.Rect,
-                    PersistentSpell = ispersistent,
-                    SieveCounter = ismanasieve ? 1 : (int?)null,
+                    PersistentSpell = needscount,
+                    Counter = needscount ? 1 : (int?)null,
                     SpellIcon = match.Spell.SpellIcon,
                     Classes = match.Spell.Classes,
                     GuessedSpell = match.MultipleMatchesFound
@@ -190,9 +278,9 @@ namespace EQTool.ViewModels
                 var s = SpellList.FirstOrDefault(a => a.SpellName == spellname && match.TargetName == a.TargetName);
                 if (s != null)
                 {
-                    if (ismanasieve)
+                    if (needscount)
                     {
-                        s.SieveCounter += 1;
+                        s.Counter += 1;
                         s.UpdatedDateTime = DateTime.Now;
                     }
                     else
@@ -217,24 +305,49 @@ namespace EQTool.ViewModels
 
             appDispatcher.DispatchUI(() =>
             {
-                var s = SpellList.FirstOrDefault(a => a.SpellName == match.Name && CustomerTime == a.TargetName);
+                var s = SpellList.FirstOrDefault(a => a.SpellName == match.Name && match.TargetName == a.TargetName);
                 if (s != null)
                 {
-                    _ = SpellList.Remove(s);
+                    if (match.SpellType != SpellTypes.RandomRoll)
+                    {
+                        _ = SpellList.Remove(s);
+                    }
+                    else
+                    {
+                        return;
+                    }
                 }
 
+
                 var spellduration = match.DurationInSeconds;
-                SpellList.Add(new UISpell(DateTime.Now.AddSeconds(spellduration))
+                var spellicon = spells.AllSpells.FirstOrDefault(a => a.name == match.SpellNameIcon);
+                if (match.SpellType == SpellTypes.RandomRoll)
+                {
+                    var rollsingroup = SpellList.Where(a => a.TargetName == match.TargetName).OrderByDescending(a => a.Roll).ToList();
+                    if (rollsingroup.Count >= 5)
+                    {
+                        _ = SpellList.Remove(rollsingroup.LastOrDefault());
+                        rollsingroup = SpellList.Where(a => a.TargetName == match.TargetName).ToList();
+                    }
+                    foreach (var item in rollsingroup)
+                    {
+                        item.TimerEndDateTime = DateTime.Now.AddSeconds(spellduration);
+                    }
+                }
+
+                SpellList.Add(new UISpell(DateTime.Now.AddSeconds(spellduration), false)
                 {
                     UpdatedDateTime = DateTime.Now,
                     PercentLeftOnSpell = 100,
-                    SpellType = -1,
-                    TargetName = CustomerTime,
+                    SpellType = match.SpellType,
+                    TargetName = match.TargetName,
                     SpellName = match.Name,
-                    Rect = FeignDeath.Rect,
-                    SpellIcon = FeignDeath.SpellIcon,
-                    Classes = CustomTimerClasses,
-                    GuessedSpell = false
+                    Rect = spellicon.Rect,
+                    SpellIcon = spellicon.SpellIcon,
+                    Classes = match.Classes,
+                    GuessedSpell = false,
+                    PersistentSpell = false,
+                    Roll = match.Roll
                 });
             });
         }
@@ -255,7 +368,7 @@ namespace EQTool.ViewModels
                     {
                         var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(match, activePlayer.Player));
                         var savedspellduration = item.TotalSecondsLeft;
-                        var uispell = new UISpell(DateTime.Now.AddSeconds(savedspellduration))
+                        var uispell = new UISpell(DateTime.Now.AddSeconds(savedspellduration), false)
                         {
                             UpdatedDateTime = DateTime.Now,
                             PercentLeftOnSpell = 100,
@@ -264,7 +377,7 @@ namespace EQTool.ViewModels
                             SpellName = match.name,
                             Rect = match.Rect,
                             PersistentSpell = false,
-                            SieveCounter = null,
+                            Counter = null,
                             SpellIcon = match.SpellIcon,
                             Classes = match.Classes,
                             GuessedSpell = false
@@ -318,7 +431,7 @@ namespace EQTool.ViewModels
 
             appDispatcher.DispatchUI(() =>
             {
-                var s = SpellList.FirstOrDefault(a => a.SpellName == name && CustomerTime == a.TargetName);
+                var s = SpellList.FirstOrDefault(a => a.SpellName == name && CustomTimer.CustomerTime == a.TargetName);
                 if (s != null)
                 {
                     _ = SpellList.Remove(s);

@@ -173,6 +173,240 @@ namespace EQToolTests
         }
 
         [TestMethod]
+        public void TestNPCSpellKlandicar1()
+        {
+            var service = container.Resolve<SpellLogParse>();
+            var message = "You feel your skin freeze.";
+            var spell = service.MatchSpell(message);
+            Assert.AreEqual(spell.Spell.name, "Silver Breath");
+        }
+
+        [TestMethod]
+        public void TestNPCSpellKlandicar2()
+        {
+            var service = container.Resolve<SpellLogParse>();
+            var message = "Someone's skin freezes.";
+            var spell = service.MatchSpell(message);
+            Assert.AreEqual(spell.Spell.name, "Silver Breath");
+        }
+
+        [TestMethod]
+        public void TestDragonRoar()
+        {
+            var service = container.Resolve<SpellLogParse>();
+            var message = "You flee in terror.";
+            var spell = service.MatchSpell(message);
+            Assert.AreEqual(spell.Spell.name, "Dragon Roar");
+        }
+
+        [TestMethod]
+        public void TestDragonRoarResist()
+        {
+            var service = container.Resolve<ResistSpellParser>();
+            var message = "You resist the Dragon Roar spell!";
+            var spell = service.ParseNPCSpell(message);
+            Assert.AreEqual(spell.name, "Dragon Roar");
+        }
+
+        [TestMethod]
+        public void TestStunBreath1()
+        {
+            var service = container.Resolve<SpellLogParse>();
+            var message = "Your eardrums rupture.";
+            var spell = service.MatchSpell(message);
+            Assert.AreEqual(spell.Spell.name, "Stun Breath");
+        }
+
+        [TestMethod]
+        public void TestStunBreath2()
+        {
+            var service = container.Resolve<SpellLogParse>();
+            var message = "Someone staggers with intense pain.";
+            var spell = service.MatchSpell(message);
+            Assert.AreEqual(spell.Spell.name, "Stun Breath");
+        }
+
+        [TestMethod]
+        public void TestRottingFlesh()
+        {
+            var service = container.Resolve<SpellLogParse>();
+            var message = "Your flesh begins to rot.";
+            var spell = service.MatchSpell(message);
+            Assert.AreEqual(spell.Spell.name, "Rotting Flesh");
+        }
+
+        [TestMethod]
+        public void TestRottingFlesh2()
+        {
+            var service = container.Resolve<SpellLogParse>();
+            var message = "Someone's flesh begins to rot.";
+            var spell = service.MatchSpell(message);
+            Assert.AreEqual(spell.Spell.name, "Rotting Flesh");
+        }
+
+        [TestMethod]
+        public void TestPutrefyFlesh()
+        {
+            var service = container.Resolve<SpellLogParse>();
+            var message = "Your flesh begins to liquefy.";
+            var spell = service.MatchSpell(message);
+            Assert.AreEqual(spell.Spell.name, "Putrefy Flesh");
+        }
+
+        [TestMethod]
+        public void TestPutrefyFlesh2()
+        {
+            var service = container.Resolve<SpellLogParse>();
+            var message = "Someone's flesh begins to liquefy.";
+            var spell = service.MatchSpell(message);
+            Assert.AreEqual(spell.Spell.name, "Putrefy Flesh");
+        }
+
+        [TestMethod]
+        public void TestImmolatingBreath()
+        {
+            var service = container.Resolve<SpellLogParse>();
+            var message = "Your flesh is seared from your bones.";
+            var spell = service.MatchSpell(message);
+            Assert.AreEqual(spell.Spell.name, "Immolating Breath");
+        }
+
+        [TestMethod]
+        public void TestImmolatingBreath2()
+        {
+            var service = container.Resolve<SpellLogParse>();
+            var message = "Someone's flesh is seared.";
+            var spell = service.MatchSpell(message);
+            Assert.AreEqual(spell.Spell.name, "Immolating Breath");
+        }
+
+        [TestMethod]
+        public void TestWaveofCold()
+        {
+            var service = container.Resolve<SpellLogParse>();
+            var message = "A blast of cold freezes your skin.";
+            var spell = service.MatchSpell(message);
+            Assert.AreEqual(spell.Spell.name, "Wave of Cold");
+        }
+
+        [TestMethod]
+        public void TestWaveofCold2()
+        {
+            var service = container.Resolve<SpellLogParse>();
+            var message = "Someone's skin freezes.";
+            var spell = service.MatchSpell(message);
+            Assert.AreEqual(spell.Spell.name, "Silver Breath");
+        }
+
+        [TestMethod]
+        public void TestRaidofMoltenLava()
+        {
+            var service = container.Resolve<SpellLogParse>();
+            var message = "Lava sears your skin.";
+            var spell = service.MatchSpell(message);
+            Assert.AreEqual(spell.Spell.name, "Rain of Molten Lava");
+        }
+
+        [TestMethod]
+        public void TestLavaBreath()
+        {
+            var service = container.Resolve<SpellLogParse>();
+            var message = "Your body combusts as the lava hits you.";
+            var spell = service.MatchSpell(message);
+            Assert.AreEqual(spell.Spell.name, "Lava Breath");
+        }
+
+        [TestMethod]
+        public void TestFrostBreath()
+        {
+            var service = container.Resolve<SpellLogParse>();
+            var message = "Your body freezes as the frost hits you.";
+            var spell = service.MatchSpell(message);
+            Assert.AreEqual(spell.Spell.name, "Frost Breath");
+        }
+
+        [TestMethod]
+        public void TestTsunami()
+        {
+            var service = container.Resolve<SpellLogParse>();
+            var message = "A tsunami crushes you.";
+            var spell = service.MatchSpell(message);
+            Assert.AreEqual(spell.Spell.name, "Tsunami");
+        }
+
+        [TestMethod]
+        public void TestAncientBreath()
+        {
+            var service = container.Resolve<SpellLogParse>();
+            var message = "Huntor screams in horror and pain.";
+            var spell = service.MatchSpell(message);
+            Assert.AreEqual(spell.Spell.name, "Ancient Breath");
+        }
+
+        [TestMethod]
+        public void TestGiftofAerr()
+        {
+            var service = container.Resolve<SpellLogParse>();
+            var message = "A small piece of your soul is sucked out of you.";
+            var spell = service.MatchSpell(message);
+            Assert.AreEqual(spell.Spell.name, "Gift of Aerr");
+        }
+
+        [TestMethod]
+        public void TestCloudofFear()
+        {
+            var service = container.Resolve<SpellLogParse>();
+            var message = "Your mind is wracked by fear.";
+            var spell = service.MatchSpell(message);
+            Assert.AreEqual(spell.Spell.name, "Cloud of Fear");
+        }
+
+        [TestMethod]
+        public void TestDiseasedCloud()
+        {
+            var service = container.Resolve<SpellLogParse>();
+            var message = "Your body begins to rot.";
+            var spell = service.MatchSpell(message);
+            Assert.AreEqual(spell.Spell.name, "Diseased Cloud");
+        }
+
+        [TestMethod]
+        public void TestFrostBreathResist()
+        {
+            var service = container.Resolve<ResistSpellParser>();
+            var message = "You resist the Frost Breath spell!";
+            var spell = service.ParseNPCSpell(message);
+            Assert.AreEqual(spell.name, "Frost Breath");
+        }
+
+        [TestMethod]
+        public void TestLavaBreathResist()
+        {
+            var service = container.Resolve<ResistSpellParser>();
+            var message = "You resist the Lava Breath spell!";
+            var spell = service.ParseNPCSpell(message);
+            Assert.AreEqual(spell.name, "Lava Breath");
+        }
+
+        [TestMethod]
+        public void TestMoltenBreathResist()
+        {
+            var service = container.Resolve<ResistSpellParser>();
+            var message = "You resist the Molten Breath spell!";
+            var spell = service.ParseNPCSpell(message);
+            Assert.AreEqual(spell.name, "Molten Breath");
+        }
+
+        //[TestMethod]
+        //public void TestCloudofDisempowerment()
+        //{
+        //    var service = container.Resolve<SpellLogParse>();
+        //    var message = "You feel your skin freeze.";
+        //    var spell = service.MatchSpell(message);
+        //    Assert.AreEqual(spell.Spell.name, "Cloud of Disempowerment");
+        //}
+
+        [TestMethod]
         public void TestSpellMatchCorrectlySk30_GrimAura()
         {
             var spells = container.Resolve<EQSpells>();
@@ -503,6 +737,44 @@ namespace EQToolTests
         }
 
         [TestMethod]
+        public void TestUserBeginsToCastUserCastingSpell()
+        {
+            var spells = container.Resolve<EQSpells>();
+            var spelllogparse = container.Resolve<SpellLogParse>();
+            var spellname = "Burnout";
+            var shissarspell = spells.AllSpells.FirstOrDefault(a => a.name == spellname);
+            var line = $"You begin casting {spellname}.";
+            var player = container.Resolve<ActivePlayer>();
+            player.Player = new PlayerInfo
+            {
+                Level = 21,
+                PlayerClass = PlayerClasses.Magician
+            };
+            var guess = spelllogparse.MatchSpell(line);
+            Assert.AreEqual(shissarspell, player.UserCastingSpell);
+            line = "Jobober " + shissarspell.cast_on_other;
+            guess = spelllogparse.MatchSpell(line);
+            Assert.IsTrue(guess.IsYou);
+        }
+
+        [TestMethod]
+        public void TestPrimalEssence()
+        {
+            var spells = container.Resolve<EQSpells>();
+            var spelllogparse = container.Resolve<SpellLogParse>();
+            var spellname = "Burnout";
+            var shissarspell = spells.AllSpells.FirstOrDefault(a => a.name == spellname);
+            var line = "You begin casting Primal Essence.";
+            var player = container.Resolve<ActivePlayer>();
+            player.Player = new PlayerInfo
+            {
+                Level = 55,
+                PlayerClass = PlayerClasses.Shaman
+            };
+            var guess = spelllogparse.MatchSpell(line);
+        }
+
+        [TestMethod]
         public void TestSlowForMagePetHaste1()
         {
             var spells = container.Resolve<EQSpells>();
@@ -550,6 +822,29 @@ namespace EQToolTests
         }
 
         [TestMethod]
+        public void TestFluxStaff()
+        {
+            var spells = container.Resolve<EQSpells>();
+            var spelllogparse = container.Resolve<SpellLogParse>();
+            var spellname = "LowerElement";
+            var spell = spells.AllSpells.FirstOrDefault(a => a.name == spellname);
+            var line = "Jobober " + spell.cast_on_other;
+            var service = container.Resolve<ParseSpellGuess>();
+            var player = container.Resolve<ActivePlayer>();
+            player.Player = new PlayerInfo
+            {
+                Level = 52,
+                PlayerClass = PlayerClasses.Warrior
+            };
+            var guess = spelllogparse.MatchSpell(line);
+            var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(guess.Spell, player.Player));
+            Assert.AreEqual(5, spellduration.TotalMinutes);
+            Assert.IsNotNull(guess);
+            Assert.AreEqual(guess.Spell.name, spellname);
+            Assert.IsFalse(guess.MultipleMatchesFound);
+        }
+
+        [TestMethod]
         public void TestSlowForNecro_Multiname_onespace()
         {
             var spells = container.Resolve<EQSpells>();
@@ -567,6 +862,30 @@ namespace EQToolTests
             var guess = spelllogparse.MatchSpell(line);
             var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(guess.Spell, player.Player));
             Assert.AreEqual(6, spellduration.TotalMinutes);
+            Assert.IsNotNull(guess);
+            Assert.AreEqual(guess.Spell.name, spellname);
+            Assert.AreEqual(guess.TargetName, "an Jobober");
+            Assert.IsFalse(guess.MultipleMatchesFound);
+        }
+
+        [TestMethod]
+        public void TestManicalStrength()
+        {
+            var spells = container.Resolve<EQSpells>();
+            var spelllogparse = container.Resolve<SpellLogParse>();
+            var spellname = "Manicial Strength";
+            var shissarspell = spells.AllSpells.FirstOrDefault(a => a.name == spellname);
+            var line = "an Jobober " + shissarspell.cast_on_other;
+            var service = container.Resolve<ParseSpellGuess>();
+            var player = container.Resolve<ActivePlayer>();
+            player.Player = new PlayerInfo
+            {
+                Level = 60,
+                PlayerClass = PlayerClasses.Shaman
+            };
+            var guess = spelllogparse.MatchSpell(line);
+            var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(guess.Spell, player.Player));
+            Assert.AreEqual(144, spellduration.TotalMinutes);
             Assert.IsNotNull(guess);
             Assert.AreEqual(guess.Spell.name, spellname);
             Assert.AreEqual(guess.TargetName, "an Jobober");
@@ -903,9 +1222,35 @@ namespace EQToolTests
         {
             var service = container.Resolve<LogDeathParse>();
             var line = "an ire Ghast has been slain by an ire ghast!";
-            var targettoremove = service.GetDeadTarget(line);
+            var deadtarget = service.GetDeadTarget(line);
+            Assert.AreEqual("an ire Ghast", deadtarget);
+        }
 
-            Assert.IsNotNull(targettoremove);
+        [TestMethod]
+        public void TestDeath1()
+        {
+            var service = container.Resolve<LogDeathParse>();
+            var line = "Harbinger Freglor has been slain by skeletal champion!";
+            var deadtarget = service.GetDeadTarget(line);
+            Assert.AreEqual("Harbinger Freglor", deadtarget);
+        }
+
+        [TestMethod]
+        public void TestDeath2()
+        {
+            var service = container.Resolve<LogDeathParse>();
+            var line = "You have slain Arch Duke Iatol!";
+            var deadtarget = service.GetDeadTarget(line);
+            Assert.AreEqual("Arch Duke Iatol", deadtarget);
+        }
+
+        [TestMethod]
+        public void TestDeathByDot()
+        {
+            var service = container.Resolve<LogDeathParse>();
+            var line = "an ire Ghast died.";
+            var deadtarget = service.GetDeadTarget(line);
+            Assert.AreEqual("an ire Ghast", deadtarget);
         }
 
         [TestMethod]
@@ -1038,6 +1383,7 @@ namespace EQToolTests
             Assert.AreEqual(player.Player.Level, 60);
         }
 
+
         [TestMethod]
         public void DateParseTest()
         {
@@ -1088,31 +1434,46 @@ namespace EQToolTests
         //    var splits = data.Split(new string[] { "),(" }, StringSplitOptions.None);
         //    splits[0] = splits[0].Trim('(');
         //    splits[splits.Length - 1] = splits[splits.Length - 1].Trim(')');
-        //    var outputstringp99 = "{";
-        //    var outputstringppq = "{";
+
+        //    var outputstring = "{";
         //    foreach (var item in splits)
         //    {
         //        var innersplits = item.Split(',');
-        //        if (float.TryParse(innersplits[154], out var exp) && exp <= 3.0)
-        //        {
-        //            var name = innersplits[2].Replace("\\", string.Empty).Trim('\'');
-        //            outputstringp99 += "\"" + name + "\",";
-        //        }
-        //        else
-        //        {
-        //            var name = innersplits[2].Replace("\\", string.Empty).Trim('\'');
-        //            outputstringppq += "\"" + name + "\",";
-        //        }
+        //        var name = innersplits[2].Replace("\\", string.Empty).Trim('\'');
+        //        outputstring += "\"" + name + "\",";
         //    }
-        //    outputstringp99.TrimEnd(',');
-        //    outputstringp99 += "}";
-        //    Debug.WriteLine(outputstringp99);
-
-        //    outputstringppq.TrimEnd(',');
-        //    outputstringppq += "}";
-        //    Debug.WriteLine(outputstringppq);
-
+        //    outputstring.TrimEnd(',');
+        //    outputstring += "}";
+        //    //Debug.WriteLine(outputstring);
+        //    File.WriteAllText("C:\\Users\\smash\\Downloads\\itemslist1.txt", outputstring);
         //    Assert.IsTrue(splits.Any());
         //}
+
+        [TestMethod]
+        public void ParseItemNPCFromQuarm()
+        {
+            var data = System.IO.File.ReadAllText("C:\\Users\\smash\\Downloads\\quarm_2023-12-13-19_15\\quarm_2023-12-13-19_15.sql");
+            var splits = data.Split(new string[] { "),(" }, StringSplitOptions.None);
+            splits[0] = splits[0].Trim('(');
+            splits[splits.Length - 1] = splits[splits.Length - 1].Trim(')');
+
+            var outputstring = string.Empty;
+            foreach (var item in splits)
+            {
+                var innersplits = item.Split(',');
+                var name = innersplits[1].Replace("\\", string.Empty).Trim('\'');
+                if (name.StartsWith("_"))
+                {
+                    continue;
+                }
+                name = name.Trim('#');
+                name = name.Replace("_", " ");
+                outputstring += "\"" + name + "\",";
+            }
+            outputstring.TrimEnd(',');
+            //Debug.WriteLine(outputstring);
+            System.IO.File.WriteAllText("C:\\Users\\smash\\Downloads\\npclist.txt", outputstring);
+            Assert.IsTrue(splits.Any());
+        }
     }
 }

@@ -15,16 +15,9 @@ namespace EQTool.Services
     {
         private static void CopyFilesRecursively(string sourcePath, string targetPath)
         {
-            //Now Create all of the directories
-            foreach (var dirPath in Directory.GetDirectories(sourcePath, "*", SearchOption.AllDirectories))
+            foreach (var file in Directory.GetFiles(sourcePath))
             {
-                _ = Directory.CreateDirectory(dirPath.Replace(sourcePath, targetPath));
-            }
-
-            //Copy all the files & Replaces any files with the same name
-            foreach (var newPath in Directory.GetFiles(sourcePath, "*.*", SearchOption.AllDirectories))
-            {
-                File.Copy(newPath, newPath.Replace(sourcePath, targetPath), true);
+                File.Copy(file, Path.Combine(targetPath, Path.GetFileName(file)));
             }
         }
 
@@ -122,17 +115,16 @@ namespace EQTool.Services
             {
                 if (parameter.Contains("ping"))
                 {
-                    DeleteOldFiles();
-                    _ = System.IO.Directory.GetFiles(System.IO.Directory.GetCurrentDirectory());
-                    CopyFilesRecursively(System.IO.Directory.GetCurrentDirectory(), System.IO.Directory.GetCurrentDirectory() + "/../");
-
-                    var path = System.IO.Directory.GetCurrentDirectory() + $"/../{programName}";
+                    var sourcedirectory = System.IO.Directory.GetCurrentDirectory();
+                    var parentidirectory = Directory.GetParent(sourcedirectory).FullName;
+                    CopyFilesRecursively(sourcedirectory, parentidirectory);
+                    var path = Path.Combine(parentidirectory, programName);
                     _ = System.Diagnostics.Process.Start(new ProcessStartInfo
                     {
                         FileName = path,
                         Arguments = "pong",
                         UseShellExecute = true,
-                        WorkingDirectory = System.IO.Directory.GetCurrentDirectory() + "/../"
+                        WorkingDirectory = parentidirectory
                     });
                     App.Current.Shutdown();
                     return UpdateStatus.UpdatesApplied;

@@ -12,6 +12,8 @@ namespace EQTool
         public string Date { get { return DateTime.ToShortDateString(); } }
         public DateTime DateTime { get; set; }
         public string Message { get; set; }
+        public string Image { get; set; }
+        public Visibility ImageVisibility { get; set; } = Visibility.Collapsed;
 
         public event PropertyChangedEventHandler PropertyChanged;
 
@@ -38,45 +40,27 @@ namespace EQTool
             view.IsLiveSorting = true;
             UpdateMessages.Add(new UpdateMessageData
             {
-                DateTime = new DateTime(2023, 11, 25),
-                Message = "If kael faction pulls are happening, a timer will be added to let you know when the next will be regardless of whether you are in the zone"
+                DateTime = new DateTime(2024, 2, 26),
+                Message =
+                $"* Added Vulak AOE timers"
             });
             UpdateMessages.Add(new UpdateMessageData
             {
-                DateTime = new DateTime(2023, 11, 25),
-                Message = "Fixed various map issues"
-            });
-            UpdateMessages.Add(new UpdateMessageData
-            {
-                DateTime = new DateTime(2023, 11, 25),
-                Message = "Added ability to remove individual items from the Triggers window"
-            });
-            UpdateMessages.Add(new UpdateMessageData
-            {
-                DateTime = new DateTime(2023, 11, 25),
-                Message = "Change Auto Update to only occur if you have been idle for 2 or more minutes!"
-            });
-            UpdateMessages.Add(new UpdateMessageData
-            {
-                DateTime = new DateTime(2023, 11, 26),
-                Message = "Library updates, various underlying code refactorings, removed dead code to support light theme (Yuck)."
-            });
-            UpdateMessages.Add(new UpdateMessageData
-            {
-                DateTime = new DateTime(2023, 11, 26),
-                Message = "Fixed map zoom and drag bug where tracking radius size changed incorrectly."
-            });
-            UpdateMessages.Add(new UpdateMessageData
-            {
-                DateTime = new DateTime(2023, 11, 26),
-                Message = "Aligned delete buttons in triggers window for easier mass deletes!"
-            });
-            UpdateMessages.Add(new UpdateMessageData
-            {
-                DateTime = new DateTime(2023, 11, 26),
-                Message = "Added Minwidth to the mob info loot window as sometimes it would be too small."
+                DateTime = new DateTime(2024, 2, 25),
+                Message =
+                    $"* Fixed slain targets not showing up in timers.{Environment.NewLine}" +
+                    $"* Fixed Faction pull server notice.{Environment.NewLine}" +
+                    $"* Added Random tracker which will show the TOP 5 rolls automatically. Check out the image below for an example.",
+                Image = "pack://application:,,,/update1.png",
+                ImageVisibility = Visibility.Visible
             });
 
+            UpdateMessages.Add(new UpdateMessageData
+            {
+                DateTime = new DateTime(2024, 2, 24),
+                Message =
+                $"* Added support for 'King Tormax died.' to supported death triggers"
+            });
         }
     }
 }
