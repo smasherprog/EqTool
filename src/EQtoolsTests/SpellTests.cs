@@ -272,6 +272,15 @@ namespace EQToolTests
         }
 
         [TestMethod]
+        public void TestAncientBreath()
+        {
+            var service = container.Resolve<SpellLogParse>();
+            var message = "Your life force drains away.";
+            var spell = service.MatchSpell(message);
+            Assert.AreEqual(spell.Spell.name, "Ancient Breath");
+        }
+
+        [TestMethod]
         public void TestImmolatingBreath2()
         {
             var service = container.Resolve<SpellLogParse>();
@@ -1431,31 +1440,31 @@ namespace EQToolTests
         //    Assert.IsTrue(splits.Any());
         //}
 
-        [TestMethod]
-        public void ParseItemNPCFromQuarm()
-        {
-            var data = System.IO.File.ReadAllText("C:\\Users\\smash\\Downloads\\quarm_2023-12-13-19_15\\quarm_2023-12-13-19_15.sql");
-            var splits = data.Split(new string[] { "),(" }, StringSplitOptions.None);
-            splits[0] = splits[0].Trim('(');
-            splits[splits.Length - 1] = splits[splits.Length - 1].Trim(')');
+        //[TestMethod]
+        //public void ParseItemNPCFromQuarm()
+        //{
+        //    var data = System.IO.File.ReadAllText("C:\\Users\\smash\\Downloads\\quarm_2023-12-13-19_15\\quarm_2023-12-13-19_15.sql");
+        //    var splits = data.Split(new string[] { "),(" }, StringSplitOptions.None);
+        //    splits[0] = splits[0].Trim('(');
+        //    splits[splits.Length - 1] = splits[splits.Length - 1].Trim(')');
 
-            var outputstring = string.Empty;
-            foreach (var item in splits)
-            {
-                var innersplits = item.Split(',');
-                var name = innersplits[1].Replace("\\", string.Empty).Trim('\'');
-                if (name.StartsWith("_"))
-                {
-                    continue;
-                }
-                name = name.Trim('#');
-                name = name.Replace("_", " ");
-                outputstring += "\"" + name + "\",";
-            }
-            outputstring.TrimEnd(',');
-            //Debug.WriteLine(outputstring);
-            System.IO.File.WriteAllText("C:\\Users\\smash\\Downloads\\npclist.txt", outputstring);
-            Assert.IsTrue(splits.Any());
-        }
+        //    var outputstring = string.Empty;
+        //    foreach (var item in splits)
+        //    {
+        //        var innersplits = item.Split(',');
+        //        var name = innersplits[1].Replace("\\", string.Empty).Trim('\'');
+        //        if (name.StartsWith("_"))
+        //        {
+        //            continue;
+        //        }
+        //        name = name.Trim('#');
+        //        name = name.Replace("_", " ");
+        //        outputstring += "\"" + name + "\",";
+        //    }
+        //    outputstring.TrimEnd(',');
+        //    //Debug.WriteLine(outputstring);
+        //    System.IO.File.WriteAllText("C:\\Users\\smash\\Downloads\\npclist.txt", outputstring);
+        //    Assert.IsTrue(splits.Any());
+        //}
     }
 }

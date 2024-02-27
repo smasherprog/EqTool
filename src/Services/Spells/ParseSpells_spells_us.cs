@@ -66,7 +66,8 @@ namespace EQTool.Services
             "Shock of Frost",
             "Talendor's Immolating Breath",
             "Lava Breath - Test",
-            "Vengeance of the Undying"
+            "Vengeance of the Undying",
+            "Gift of A'err"
         };
         private readonly List<int> IgnoreIds = new List<int>()
         {
@@ -108,7 +109,6 @@ namespace EQTool.Services
             "Berserker Madness",
             "Blinding Poison",
             "Feeble Mind"
-
         };
 
         public class EpicSpellTime
