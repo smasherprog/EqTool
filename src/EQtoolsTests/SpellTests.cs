@@ -335,24 +335,6 @@ namespace EQToolTests
         }
 
         [TestMethod]
-        public void TestAncientBreath()
-        {
-            var service = container.Resolve<SpellLogParse>();
-            var message = "Huntor screams in horror and pain.";
-            var spell = service.MatchSpell(message);
-            Assert.AreEqual(spell.Spell.name, "Ancient Breath");
-        }
-
-        [TestMethod]
-        public void TestGiftofAerr()
-        {
-            var service = container.Resolve<SpellLogParse>();
-            var message = "A small piece of your soul is sucked out of you.";
-            var spell = service.MatchSpell(message);
-            Assert.AreEqual(spell.Spell.name, "Gift of Aerr");
-        }
-
-        [TestMethod]
         public void TestCloudofFear()
         {
             var service = container.Resolve<SpellLogParse>();

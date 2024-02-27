@@ -1,40 +1,77 @@
 # PigParse
-<img width="1892" alt="image" src="https://github.com/smasherprog/EqTool/assets/3393733/ce79e4b6-50c2-4965-bb91-3c2d50299d3e">
+<img width="1892" alt="image" src="https://github.com/smasherprog/EqTool/blob/main/Example.png?raw=true">
 
 <h2>THIS PROGRAM WORKS SOLELY BY READING YOUR LOG FILE.</h2>
  
 Instructions:
 <ul>
 <li>
-<h2>Project 1999: Download <a href="https://github.com/smasherprog/EqTool/releases/download/3.23.1121.1/EQTool_Project19993.23.1121.1.zip">EQTool_Project1999.zip</a>, Unzip it and run EQTool.exe</h2>
+<h2>Project 1999: Download <a href="https://github.com/smasherprog/EqTool/releases/download/3.24.225.2/EQTool_Project19993.24.225.2.zip">EQTool_Project1999.zip</a>, Unzip it and run EQTool.exe</h2>
 </li>
 <li>
-<h2>Project Quarm: Download <a href="https://github.com/smasherprog/EqTool/releases/download/4.23.1121.1/EQTool_Quarm4.23.1121.1.zip">EQTool_Quarm.zip</a>, Unzip it and run PQTool.exe</h2>
+<h2>Project Quarm: Download <a href="https://github.com/smasherprog/EqTool/releases/download/4.24.225.2/EQTool_Quarm4.24.225.2.zip">EQTool_Quarm.zip</a>, Unzip it and run PQTool.exe</h2>
 </li>
 <li>The program runs in the system tray. Look there to reopen spells window or settings! Program will check for updates on startup and self update if required, but if you want to check for a new Update, use the menu in the system tray!</li>
 </ul>
-<h5>Why the pig?</h5>
-<p>https://discord.gg/nSrz8hAwxM</p>
 Features:
 <br/>
 <ul>
+ <li>The TOP 5 Random rolls show up in the triggers window. </li> 
+ <li>See others on the map in real time. Also support for NParse map location sharing automatically if location sharing is set to everyone. </li> 
+<li>Kael faction pull timer Automatically added for everyone regardless of what zone you are in. </li> 
+<li>Automatically add timers on death of npc so you dont have to!</li> 
 <li>Detect EQ directory location instead of user required to enter it.</li> 
 <li>Detect Spells cast on others (this is a best guess as I am reading the log file so chloroplast and Regrowth of the growth have the same message)</li>
 <li>Filter spells show by class</li> 
 <li>Remove Spells from List if "Worn off message occurs"</li> 
-<li>Mob Info Window gives details about mobs tht you con in game.</li>
+<li>Mob Info Window gives details about mobs that you con in game.</li>
 <li>Automatically remove dead npc/player from the spell list.</li> 
 <li>Auto detect level and class!</li>
 <li>DPS is trailing 12 second average.</li>
 <li>Show fight Session data for comparisons.</li>
-<li>Sieve Counter</li>
-<li>Mob info shows pricing data for each item!</li>
+<li>The following spells have counters that are automatically tracked:Mana Seive, LowerElement (Flux Staff Effect), Concussion, Flame Lick, Cinder Jolt, Jolt.</li> 
+<li>The following Overlays are available: Enrage; Levitate fading; invis fading; Charm Break; and Ch Chain</li>
+<li>The following Audio alerts are available: Ch warning; Enrage; Levitate fading; Charm Break; and invis fading</li>
 <li>Timers on map for easy TOD tracking!</li>
+<li>All Melee disciplines show in the cooldown section of the timers window.</li>
 <li>Pricing information in Mob info window.</li>
 <li>Save spells cast on you when you log out so when you log back in they resume counter!</li>
 <li>Maps</li>
- <li>Automatic self update.</li>
+<li>Automatic self update.</li>
 <li>Timers (Only Minutes are supported)</li>
+</ul>
+<h5>Ch format is loosely: TAG POSITION CH TARGET</h5>
+<ul> 
+ <li>
+  TAG is optional and can be used to filter out other chains that are going on. For example, if you TAG is CA, it will only show chains that have that TAG in it.
+ </li>
+ <li>
+  POSITION must be 3 in length (Unless Ramp chain, in which case code looks for RAMP[NUMBER]), and follow a format of: 001-999; or AAA-ZZZ
+ </li>
+ <li>The characters " ch " must be present in the line, capitalization doesnt matter.</li>
+ <li>All instances of TAG are stripped out of text. The characters " ch " are stripped out. The first group of 3 characters that are either all the same letter or a number are assigned as the position. </li>
+ <li>All instances of Position are stripped out of the text. All non alphanumeric are stripped out of the text. What remains is the target.</li>
+</ul>
+<p>Chain position MUST BE 3 in length and letters must all be the same, for example: 001; or 013; or aaa; or QQQ. <br/> Ramp chain format is special and RAMP1 through RAMP999 are allowed. The following are included in tests that are supported, This is not all the possible ways, but to show examples of what i have support for!</p></p>
+
+<ul>
+<li>Curaja shouts, 'GG 014 CH -- Wreckognize'</li>
+<li>Hanbox shouts, 'GG 001 CH -- Beefwich'</li>
+<li>Hanbox shouts, 'GG 001 CH --Beefwich'</li>
+ <li>Hanbox shouts, 'GG 001 CH --Beefwich 001'</li>
+<li>Wartburg says out of character, 'CA 004 CH -- Sam'</li>
+ <li>Wartburg says out of character, '004 CH - Sam'</li>
+  <li>Hanbox tells the guild, 'GG 001 CH --Beefwich'</li>
+  <li>You say out of character, 'CA 002 CH -- Aaryk'</li>
+  <li>Windarie auctions, '111 --- CH << Mandair  >> --- 111'</li>
+  <li>Mutao auctions, '777 CH <>> Mandair <<> 777'</li>
+  <li>Mutao auctions, 'AAA CH <>> Mandair <<> AAA'</li>
+  <li>Mutao auctions, 'GGG AAA CH <>> Mandair <<> AAA'</li>
+  <li>Mutao auctions, 'BBB CH <>> Mandair <<> BB'</li>
+  <li>Mutao auctions, 'AAA CH <>> Mandair <<>'</li>
+  <li>Hanbox shouts, 'CA RAMP1 CH --Beefwich'</li>
+  <li>Hanbox shouts, 'RAMP2 CH --Beefwich'</li>
+  <li>Hanbox shouts, 'CH - name - 001'</li> 
 </ul>
 <h5>Timers (Only Minutes are supported) -- All below commands work in regular say!</h5>
 <ul>
@@ -44,25 +81,32 @@ Features:
 <li>Cancel Timer Crypt Camp</li>
 </ul>
 <img width="1624" alt="image" src="https://github.com/smasherprog/EqTool/assets/3393733/3c53a1d8-44c4-499b-9e92-ea5d5f38275e">
- 
+<h4>CH Chain overlay Below</h4>
+ <img width="1174" alt="update1" src="https://github.com/smasherprog/EqTool/assets/3393733/86c08360-48d9-42c4-9a86-7fea652d8133">
+ <h4>FTE Overlay (includes Guild)</h4>
+<img width="1548" alt="image" src="https://github.com/smasherprog/EqTool/assets/3393733/92446f74-3f7b-4957-a712-43fe9d6a3191">
+
 <h4>System Tray Icon</h4>
 <img width="152" alt="image" src="https://user-images.githubusercontent.com/3393733/212717141-6e26b9af-660a-493d-9f73-2c3464b7c224.png">
 
 <h4>TO DO List EQTool</h4>
-<ul> 
- <li>Add barebones audio triggers.</li>    
+<ul>     
+ <li>Add updating notice when its happening. It can be confusing when updates occur because it takes about 5 seconds. </li>  
+ <li>Centralized friends list. </li>  
+ <li>Add text message sending when npc is seen in game. </li>  
+   <li>Sharing of triggers for those nearby. </li>  
+  <li>Add ring war triggers. </li>  
+  <li>Map center on you.</li>  
+   <li>Add Window Snapping code so windows can be grouped and all moved together.</li>   
  <li>Remove timers from map when timers removed from list and visa versa.</li>   
  <li>Add code to show MOB hits per second.</li>   
  <li>Port application to be cross platform(mac, win, linux).</li>   
- <li>Add Ability to bind a hotkey to toggle a window open/close.</li>   
- <li>Add cooldowntimer for discs.</li>   
- <li>Add group suggestions for each raid mob in game.</li>    
- <li>Fix discipline timers.</li>   
+ <li>Add Ability to bind a hotkey to toggle a window open/close.</li>    
+ <li>Add group suggestions for each raid mob in game.</li>     
  <li>Make timers resetable.</li>   
  <li>Fix buff timers when updating, when update occurs buffs dissapear.</li> 
-  <li>Add zone dump of names.</li> 
- <li>Add context menu to toggle pather vs static.</li> 
- <li>Add timers for cooldowns on abilities, like mend, defensive, etc.</li> 
+ <li>Add zone dump of names.</li> 
+ <li>Add context menu to toggle pather vs static.</li>  
  <li>Add code to detect pet and always show buffs for your pet.</li> 
 <li>Tab under Mob info window for last few minutes of Random rolls ordered by highest to lowest. </li>   
 <li>Add visual cue that buff is under 1 minute left. </li> 
@@ -71,23 +115,11 @@ Features:
 <li>Map window add toggle to follow location</li>     
 <li>Determine pet level based on the maxhit and add to the DPS window</li> 
 <li>Add option to auto prune eq log file. EQ logfiles can cause issues with EQ itself if they get too large!</li>
-<li>Respawn Time in Mob Info window</li>
-<li>Ability Hide/show mob info data</li>
-<li>Automatically add timer when named npc dies. Use Wiki for notable npc names</li>
-<li>Add donals BP to timers list</li> 
-<li>Rename Application to Pig Parse</li>
-<li>Enrage / Charm Break alerts.</li>
-<li>charm spell effect removal</li> 
 </ul>
 
 <h4>TO DO List PigParse Pricing</h4>
 <ul>
-<li>Parse Raw tunnel Data instead of relying on TunnelQuest </li> 
-<li>Add Median pricing to chart </li>  
-<li>Add Person search. </li> 
- <li>Trim table history for common items like bonechips. More data doesnt improve price data. </li> 
-<li>Add table with item names to rebuild pricing for specific items. </li> 
-<li>Add loot TAB to Mob Window. This tab will show item name, looted from, player name who looted, and unix geek price data, running total looted.</li>
+<li>N/A </li> 
 </ul>
 
 <h3>FAQS</h3>

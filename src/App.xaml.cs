@@ -2,6 +2,7 @@
 using EQTool.Models;
 using EQTool.Services;
 using EQTool.ViewModels;
+using EQToolShared.Enums;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -14,6 +15,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Media;
 
 namespace EQTool
 {
@@ -27,6 +29,7 @@ namespace EQTool
         private System.Windows.Forms.MenuItem MapMenuItem;
         private System.Windows.Forms.MenuItem SpellsMenuItem;
         private System.Windows.Forms.MenuItem DpsMeterMenuItem;
+        private System.Windows.Forms.MenuItem OverlayMenuItem;
         private System.Windows.Forms.MenuItem SettingsMenuItem;
         private System.Windows.Forms.MenuItem GroupSuggestionsMenuItem;
         private System.Windows.Forms.MenuItem MobInfoMenuItem;
@@ -35,6 +38,7 @@ namespace EQTool
         private PlayerTrackerService PlayerTrackerService;
         private ZoneActivityTrackingService ZoneActivityTrackingService;
         private ISignalrPlayerHub signalrPlayerHub;
+        private AudioService audioService;
 
         private EQToolSettings _EQToolSettings;
 
@@ -81,25 +85,6 @@ namespace EQTool
         {
             new UpdateService().CheckForUpdates(Version);
         }
-        public enum BuildType
-        {
-            Release,
-            Debug,
-            Test,
-            Beta,
-            Quarm
-        }
-
-        public enum EventType
-        {
-            Error,
-            StartUp,
-            Update,
-            OpenMap,
-            OpenMobInfo,
-            OpenDPS,
-            OpenTriggers
-        }
 
         public class ExceptionRequest
         {
@@ -107,9 +92,10 @@ namespace EQTool
             public string Message { get; set; }
             public EventType EventType { get; set; }
             public BuildType BuildType { get; set; }
+            public Servers? Server { get; set; }
         }
 
-        public static void LogUnhandledException(Exception exception, string source)
+        public static void LogUnhandledException(Exception exception, string source, Servers? server)
         {
             var build = BuildType.Release;
 #if TEST
@@ -128,9 +114,14 @@ namespace EQTool
                     Version = Version,
                     Message = $"Unhandled exception ({source}) {exception}",
                     EventType = EventType.Error,
-                    BuildType = build
+                    BuildType = build,
+                    Server = server
                 };
-                if (msg.Message.Contains("Server timeout (30000.00ms) elapsed without receiving a message from the server."))
+                if (msg.Message.Contains("Server timeout (30000.00ms) elapsed without receiving a message from the server.") ||
+                    msg.Message.Contains("The 'InvokeCoreAsync' method cannot be called") ||
+                     msg.Message.Contains("The remote party closed the WebSocket connection") ||
+                     msg.Message.Contains("An internal WebSocket error occurred.")
+                    )
                 {
                     return;
                 }
@@ -143,17 +134,23 @@ namespace EQTool
 
         private void SetupExceptionHandling()
         {
+
             AppDomain.CurrentDomain.UnhandledException += (s, e) =>
-                LogUnhandledException((Exception)e.ExceptionObject, "AppDomain.CurrentDomain.UnhandledException");
+            {
+                var server = this.container?.Resolve<ActivePlayer>()?.Player?.Server;
+                LogUnhandledException((Exception)e.ExceptionObject, "AppDomain.CurrentDomain.UnhandledException", server);
+            };
 
             DispatcherUnhandledException += (s, e) =>
             {
-                LogUnhandledException(e.Exception, "Application.Current.DispatcherUnhandledException");
+                var server = this.container?.Resolve<ActivePlayer>()?.Player?.Server;
+                LogUnhandledException(e.Exception, "Application.Current.DispatcherUnhandledException", server);
             };
 
             TaskScheduler.UnobservedTaskException += (s, e) =>
             {
-                LogUnhandledException(e.Exception, "TaskScheduler.UnobservedTaskException");
+                var server = this.container?.Resolve<ActivePlayer>()?.Player?.Server;
+                LogUnhandledException(e.Exception, "TaskScheduler.UnobservedTaskException", server);
             };
         }
 
@@ -197,7 +194,18 @@ namespace EQTool
                 App.Current.Shutdown();
                 return;
             }
-
+            try
+            {
+                var curr = Directory.GetCurrentDirectory();
+                var path = Path.Combine(curr, "eqgame.exe");
+                if (File.Exists(path))
+                {
+                    MessageBox.Show("Pigparse does not support running from in the EQ directory. Please move the pigparse and try again", "Pigparse Invalid Folder!", MessageBoxButton.OK, MessageBoxImage.Error);
+                    App.Current.Shutdown();
+                    return;
+                }
+            }
+            catch { }
             httpclient.DefaultRequestHeaders.Add("User-Agent", "request");
             var updateservice = new UpdateService();
             var did_update = updateservice.ApplyUpdate(e.Args.FirstOrDefault());
@@ -215,6 +223,8 @@ namespace EQTool
             try
             {
                 InitStuff();
+                //var updatemessagewindow = this.container.Resolve<UpdateMessagesWindow>();
+                //updatemessagewindow.Show();
                 if (did_update == UpdateService.UpdateStatus.OldFilesDeleted)
                 {
                     var updatemessagewindow = this.container.Resolve<UpdateMessagesWindow>();
@@ -223,7 +233,7 @@ namespace EQTool
             }
             catch (Exception ex)
             {
-                LogUnhandledException(ex, "InitStuff");
+                LogUnhandledException(ex, "InitStuff", null);
                 Thread.Sleep(1000 * 20);/// Sleep for 20 seconds here this will hopfully allow the update to occur and fix any problems
             }
         }
@@ -236,7 +246,7 @@ namespace EQTool
             UITimer.Elapsed += UITimer_Elapsed;
             UITimer.Enabled = true;
 #endif
-            container.Resolve<LoggingService>().Log(string.Empty, EventType.StartUp);
+            container.Resolve<LoggingService>().Log(string.Empty, EventType.StartUp, null);
             SettingsMenuItem = new System.Windows.Forms.MenuItem("Settings", ToggleSettingsWindow);
             var standardgroup = new System.Windows.Forms.MenuItem("Standard Groups", CreateStandardGroup);
             var hotclericsamegroup = new System.Windows.Forms.MenuItem("HOT Clerics Same Group", CreateHOTClericsSameGroup);
@@ -245,9 +255,9 @@ namespace EQTool
             SpellsMenuItem = new System.Windows.Forms.MenuItem("Spells", ToggleSpellsWindow);
             MapMenuItem = new System.Windows.Forms.MenuItem("Map", ToggleMapWindow);
             DpsMeterMenuItem = new System.Windows.Forms.MenuItem("Dps", ToggleDPSWindow);
+            OverlayMenuItem = new System.Windows.Forms.MenuItem("Overlay", ToggleOverlayWindow);
             MobInfoMenuItem = new System.Windows.Forms.MenuItem("Mob Info", ToggleMobInfoWindow);
             var gitHubMenuItem = new System.Windows.Forms.MenuItem("Suggestions", Suggestions);
-            var whythepig = new System.Windows.Forms.MenuItem("Why the Pig?", WhyThePig);
             var updates = new System.Windows.Forms.MenuItem("Check for Update", CheckForUpdates);
             var versionstring = Assembly.GetExecutingAssembly().GetName().Version.ToString();
             var beta = false;
@@ -277,8 +287,8 @@ namespace EQTool
                 Visible = true,
                 ContextMenu = new System.Windows.Forms.ContextMenu(new System.Windows.Forms.MenuItem[]
                 {
-                     whythepig,
-                     GroupSuggestionsMenuItem,
+                    //GroupSuggestionsMenuItem,
+                    OverlayMenuItem,
                     DpsMeterMenuItem,
                     MapMenuItem,
                     SpellsMenuItem,
@@ -318,14 +328,30 @@ namespace EQTool
                 {
                     OpenMobInfoWindow();
                 }
+                if (!EQToolSettings.OverlayWindowState.Closed)
+                {
+                    OpenOverLayWindow();
+                }
             }
             signalrPlayerHub = container.Resolve<ISignalrPlayerHub>();
-#if RELEASE
+
             PlayerTrackerService = container.Resolve<PlayerTrackerService>();
             ZoneActivityTrackingService = container.Resolve<ZoneActivityTrackingService>();
+            audioService = container.Resolve<AudioService>();
             logParser.QuakeEvent += LogParser_QuakeEvent;
-#endif
-
+            App.Current.Resources["GlobalFontSize"] = (double)(this.EQToolSettings?.FontSize ?? 12);
+            ((App)System.Windows.Application.Current).UpdateBackgroundOpacity("MyWindowStyleDPS", this.EQToolSettings.DpsWindowState.Opacity.Value);
+            ((App)System.Windows.Application.Current).UpdateBackgroundOpacity("MyWindowStyleMap", this.EQToolSettings.MapWindowState.Opacity.Value);
+            ((App)System.Windows.Application.Current).UpdateBackgroundOpacity("MyWindowStyleTrigger", this.EQToolSettings.SpellWindowState.Opacity.Value);
+        }
+        public void UpdateBackgroundOpacity(string name, double opacity)
+        {
+            var newcolor = (SolidColorBrush)new BrushConverter().ConvertFrom("#1a1919");
+            newcolor.Opacity = opacity;
+            var style = new System.Windows.Style { TargetType = typeof(Window) };
+            style.Setters.Add(new Setter(Window.BackgroundProperty, newcolor));
+            style.Setters.Add(new Setter(Window.FontSizeProperty, (double)this.EQToolSettings.FontSize.Value));
+            App.Current.Resources[name] = style;
         }
 
         private void LogParser_QuakeEvent(object sender, LogParser.QuakeArgs e)
@@ -350,12 +376,12 @@ namespace EQTool
                     var logParser = container.Resolve<LogParser>();
                     if (spellstuff != null)
                     {
-                        if (spellstuff.SpellList.GroupBy(a => a.TargetName).Count() < 4 && (DateTime.UtcNow - logParser.LastYouActivity).TotalMinutes > 2)
+                        if (spellstuff.SpellList.Count() < 2 && (DateTime.UtcNow - logParser.LastYouActivity).TotalMinutes > 10)
                         {
                             new UpdateService().CheckForUpdates(Version);
                         }
                     }
-                    else if ((DateTime.UtcNow - logParser.LastYouActivity).TotalMinutes > 2)
+                    else if ((DateTime.UtcNow - logParser.LastYouActivity).TotalMinutes > 10)
                     {
                         new UpdateService().CheckForUpdates(Version);
                     }
@@ -448,15 +474,6 @@ namespace EQTool
             }
         }
 
-        private void WhyThePig(object sender, EventArgs e)
-        {
-            _ = System.Diagnostics.Process.Start(new ProcessStartInfo
-            {
-                FileName = "https://discord.gg/nSrz8hAwxM",
-                UseShellExecute = true
-            });
-        }
-
         private void Suggestions(object sender, EventArgs e)
         {
             _ = System.Diagnostics.Process.Start(new ProcessStartInfo
@@ -530,6 +547,12 @@ namespace EQTool
             ToggleWindow<DPSMeter>(s);
         }
 
+        public void ToggleOverlayWindow(object sender, EventArgs e)
+        {
+            var s = (System.Windows.Forms.MenuItem)sender;
+            ToggleWindow<EventOverlay>(s);
+        }
+
         public void ToggleMobInfoWindow(object sender, EventArgs e)
         {
             var s = (System.Windows.Forms.MenuItem)sender;
@@ -562,6 +585,11 @@ namespace EQTool
         public void OpenMobInfoWindow()
         {
             OpenWindow<MobInfo>(MobInfoMenuItem);
+        }
+
+        public void OpenOverLayWindow()
+        {
+            OpenWindow<EventOverlay>(OverlayMenuItem);
         }
 
         public void OpenSettingsWindow()

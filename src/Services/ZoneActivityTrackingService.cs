@@ -1,5 +1,6 @@
 ﻿using EQTool.ViewModels;
 using EQToolShared.APIModels.ZoneControllerModels;
+using EQToolShared.Enums;
 using System;
 using System.Diagnostics;
 using System.Windows.Media.Media3D;
@@ -51,7 +52,7 @@ namespace EQTool.Services
             }
             catch (Exception ex)
             {
-                loggingService.Log(ex.ToString(), App.EventType.Error);
+                loggingService.Log(ex.ToString(), EventType.Error, activePlayer?.Player?.Server);
             }
         }
 
@@ -80,12 +81,12 @@ namespace EQTool.Services
                         Name = e.Name
                     },
                     Server = activePlayer.Player.Server.Value,
-                    IsDeath = false
+                    IsDeath = true
                 });
             }
             catch (Exception ex)
             {
-                loggingService.Log(ex.ToString(), App.EventType.Error);
+                loggingService.Log(ex.ToString(), EventType.Error, activePlayer?.Player?.Server);
             }
         }
     }

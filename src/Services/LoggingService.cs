@@ -1,6 +1,6 @@
-﻿using System.Net.Http;
+﻿using EQToolShared.Enums;
+using System.Net.Http;
 using System.Text;
-using static EQTool.App;
 
 namespace EQTool.Services
 {
@@ -8,7 +8,7 @@ namespace EQTool.Services
     {
         private readonly HttpClient httpclient = new HttpClient();
 
-        public void Log(string message, EventType eventType)
+        public void Log(string message, EventType eventType, Servers? server)
         {
             var build = BuildType.Release;
 #if TEST
@@ -22,12 +22,13 @@ namespace EQTool.Services
 #endif
             try
             {
-                var msg = new ExceptionRequest
+                var msg = new App.ExceptionRequest
                 {
                     Version = App.Version,
                     Message = message,
                     EventType = eventType,
-                    BuildType = build
+                    BuildType = build,
+                    Server = server
                 };
                 var msagasjson = Newtonsoft.Json.JsonConvert.SerializeObject(msg);
                 var content = new StringContent(msagasjson, Encoding.UTF8, "application/json");

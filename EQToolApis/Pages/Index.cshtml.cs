@@ -43,7 +43,7 @@ namespace EQToolApis.Pages
                                 .Where(a => a.Server == server)
                                 .GroupBy(a => a.Zone)
                                 .Select(a => new PigParseZoneStat { Zone = a.Key, Count = a.Count() })
-                                .Where(a => a.Zone != "fearplane" && a.Zone != "hateplane")
+                                .Where(a => a.Zone != "fearplane" && a.Zone != "hateplane" && a.Zone != "sleeper")
                                 .ToList();
                         }
                     }
@@ -55,11 +55,7 @@ namespace EQToolApis.Pages
             var keyname = new List<KeyValuePair<string, string>>()
             {
                 new KeyValuePair<string, string>("westwastes", "Scout Charisa"),
-                new KeyValuePair<string, string>("westwastes", "a Kromzek Captain"),
-                new KeyValuePair<string, string>("droga", "An angry goblin"),
-                new KeyValuePair<string, string>("droga", "Warlord Skargus"),
-                new KeyValuePair<string, string>("warslikswood", "A shady goblin")
-
+                new KeyValuePair<string, string>("westwastes", "a Kromzek Captain")
             };
             Quakes = eQToolContext.QuakeTimes.OrderByDescending(a => a.DateTime).Take(3).Select(a => a.DateTime).ToList();
             foreach (var item in keyname)
@@ -89,29 +85,6 @@ namespace EQToolApis.Pages
                             for (var i = 1; i <= 5; i++)
                             {
                                 def.FixedTimeNPCDateTimes.Add(def.EventTime.Value.AddHours(10 * i));
-                            }
-                        }
-                        else if (n.Name == "An angry goblin" && def.EventTime.HasValue)
-                        {
-                            def.RangeTimeNPCDateTime.Add(new RangeTimeNPCDateTime
-                            {
-                                BegWindow = def.EventTime.Value.AddDays(3),
-                                EndWindow = def.EventTime.Value.AddDays(3).AddMinutes(432)
-                            });
-                        }
-                        else if (n.Name == "Warlord Skargus" && def.EventTime.HasValue)
-                        {
-                            def.RangeTimeNPCDateTime.Add(new RangeTimeNPCDateTime
-                            {
-                                BegWindow = def.EventTime.Value.AddDays(3),
-                                EndWindow = def.EventTime.Value.AddDays(3).AddMinutes(432)
-                            });
-                        }
-                        else if (n.Name == "A shady goblin" && def.EventTime.HasValue)
-                        {
-                            for (var i = 1; i <= 5; i++)
-                            {
-                                def.FixedTimeNPCDateTimes.Add(def.EventTime.Value.AddHours(24 * i));
                             }
                         }
                     }

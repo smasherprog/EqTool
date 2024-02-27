@@ -174,9 +174,7 @@ namespace EQTool.ViewModels
             "Lava Breath",
             "Cloud of Fear",
             "Diseased Cloud",
-            "Tsunami",
-            "Ancient Breath",
-            "Gift of Aerr"
+            "Tsunami"
         };
 
         public void TryAdd(SpellParsingMatch match, bool resisted)

@@ -11,6 +11,7 @@ namespace EQToolApis.Services
         private readonly EQToolContext dbcontext;
 
         public static List<AuctionItem>[] ItemCache = new List<AuctionItem>[(int)(Servers.Blue + 1)];
+        public static List<AuctionItem>[] ItemCacheV2 = new List<AuctionItem>[(int)(Servers.Blue + 1)];
 
         public UIDataBuild(EQToolContext dbcontext)
         {
@@ -19,20 +20,20 @@ namespace EQToolApis.Services
 
         public void BuildDataGreen()
         {
-            BuildData(Servers.Green);
+            BuildDataV2(Servers.Green);
         }
 
         public void BuildDataBlue()
         {
-            BuildData(Servers.Blue);
+            BuildDataV2(Servers.Blue);
         }
 
-        public void BuildData(Servers server)
+        public void BuildDataV2(Servers server)
         {
             dbcontext.Database.SetCommandTimeout(TimeSpan.FromMinutes(10));
             var items = new List<AuctionItem>();
 
-            var wts = dbcontext.EQitems
+            var wts = dbcontext.EQitemsV2
                     .Where(a => a.Server == server && a.LastWTSSeen.HasValue)
                     .Select(a => new AuctionItem
                     {
@@ -54,7 +55,7 @@ namespace EQToolApis.Services
                         t = AuctionType.WTS
                     }).ToList();
 
-            var wtb = dbcontext.EQitems
+            var wtb = dbcontext.EQitemsV2
                 .Where(a => a.Server == server && a.LastWTBSeen.HasValue)
                 .Select(a => new AuctionItem
                 {
@@ -76,7 +77,7 @@ namespace EQToolApis.Services
                     t = AuctionType.WTB
                 }).ToList();
 
-            ItemCache[(int)server] = wts.Concat(wtb)
+            ItemCacheV2[(int)server] = wts.Concat(wtb)
             .OrderBy(a => a.n)
             .ThenBy(a => a.t)
             .ToList();

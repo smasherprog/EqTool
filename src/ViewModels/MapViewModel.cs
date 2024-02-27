@@ -1,6 +1,7 @@
 ﻿using EQTool.Models;
 using EQTool.Services;
 using EQTool.Shapes;
+using EQToolShared.Enums;
 using EQToolShared.Map;
 using System;
 using System.Collections.Generic;
@@ -25,6 +26,17 @@ namespace EQTool.ViewModels
         public Ellipse Ellipse;
         public ArrowLine ArrowLine;
         public Ellipse TrackingEllipse;
+        private Brush _Color;
+
+        public Brush Color
+        {
+            get => _Color;
+            set
+            {
+                _Color = value;
+                OnPropertyChanged();
+            }
+        }
 
         private string _Name = string.Empty;
 
@@ -49,6 +61,7 @@ namespace EQTool.ViewModels
     public class PlayerLocation : PlayerLocationCircle
     {
         public SignalrPlayer Player;
+
     }
 
     public class MapViewModel : INotifyPropertyChanged
@@ -57,6 +70,7 @@ namespace EQTool.ViewModels
         private readonly ActivePlayer activePlayer;
         private readonly LoggingService loggingService;
         private MatrixTransform Transform = new MatrixTransform();
+        private MatrixTransform EllipseTransform = new MatrixTransform();
         private Point _initialMousePosition;
         private Point _mouseuppoint;
         private Point3D MapOffset = new Point3D(0, 0, 0);
@@ -141,6 +155,7 @@ namespace EQTool.ViewModels
         private void Reset()
         {
             Transform = new MatrixTransform();
+            EllipseTransform = new MatrixTransform();
             CurrentScaling = 1.0f;
             Canvas?.Children?.Clear();
             Players.Clear();
@@ -223,7 +238,8 @@ namespace EQTool.ViewModels
                             Width = locationdotsize,
                             Height = locationdotsize,
                             Stroke = Brushes.Red,
-                            StrokeThickness = locationthickness
+                            StrokeThickness = locationthickness,
+                            RenderTransform = EllipseTransform
                         };
                         _ = canvas.Children.Add(circle);
                         _ = canvas.Children.Add(text);
@@ -249,8 +265,12 @@ namespace EQTool.ViewModels
                         Oldlocation = Lastlocation,
                         Newlocation = Lastlocation,
                         PlayerLocationCircle = PlayerLocation,
-                        Transform = Transform
+                        Transform = Transform,
                     });
+                    PlayerLocation.ArrowLine.Visibility = Visibility.Hidden;
+                    PlayerLocation.Ellipse.Visibility = Visibility.Hidden;
+                    PlayerLocation.PlayerName.Visibility = Visibility.Hidden;
+                    PlayerLocation.TrackingEllipse.Visibility = Visibility.Hidden;
                     var widgets = timersService.LoadTimersForZone(ZoneName);
                     foreach (var mw in widgets)
                     {
@@ -271,6 +291,7 @@ namespace EQTool.ViewModels
                 MapLoading = false;
             }
         }
+
         private PlayerLocation AddPlayerToCanvas(SignalrPlayer signalrPlayer)
         {
             var player = MapViewModelService.AddPlayerToCanvas(new AddPlayerToCanvasData
@@ -288,6 +309,7 @@ namespace EQTool.ViewModels
                 Player = signalrPlayer,
                 PlayerName = player.PlayerName,
                 TrackingEllipse = player.TrackingEllipse,
+                Color = player.Ellipse.Stroke,
                 Name = signalrPlayer.Name
             };
         }
@@ -343,9 +365,13 @@ namespace EQTool.ViewModels
             {
                 if (failedzonelogcounter == 0 || failedzonelogcounter++ % 20 == 0)
                 {
-                    loggingService.Log($"Zone {ZoneName} Not found.", App.EventType.Error);
+                    loggingService.Log($"Zone {ZoneName} Not found.", EventType.Error, activePlayer?.Player?.Server);
                 }
             }
+            PlayerLocation.ArrowLine.Visibility = Visibility.Visible;
+            PlayerLocation.Ellipse.Visibility = Visibility.Visible;
+            PlayerLocation.PlayerName.Visibility = Visibility.Visible;
+            PlayerLocation.TrackingEllipse.Visibility = Visibility.Visible;
             MapViewModelService.UpdateLocation(new UpdateLocationData
             {
                 Trackingdistance = this.activePlayer?.Player?.TrackingDistance,
@@ -470,7 +496,7 @@ namespace EQTool.ViewModels
             }
 
             var playerstoremove = new List<PlayerLocation>();
-            foreach (var item in Players)
+            foreach (var item in Players.Where(a => a.Player != null))
             {
                 if ((DateTime.UtcNow - item.Player.TimeStamp).TotalMinutes > 1)
                 {
@@ -614,10 +640,6 @@ namespace EQTool.ViewModels
                     transform.Matrix = c.RotateTransform.Value * translation.Value;
                     c.RenderTransform = transform;
                 }
-                else
-                {
-                    child.RenderTransform = Transform;
-                }
             }
         }
 
@@ -635,30 +657,17 @@ namespace EQTool.ViewModels
                 var delta = Point.Subtract(mousePosition1, _initialMousePosition);
                 var translate = new TranslateTransform(delta.X, delta.Y);
                 Transform.Matrix = Transform.Matrix * translate.Value;
+                var translation = new TranslateTransform(Transform.Value.OffsetX, Transform.Value.OffsetY);
+                EllipseTransform.Matrix = translation.Value;
+
                 foreach (FrameworkElement child in Canvas.Children)
                 {
-                    if (child.Tag == null)
-                    {
-                        continue;
-                    }
-
                     if (child is ArrowLine c)
                     {
                         var transform = new MatrixTransform();
-                        var translation = new TranslateTransform(Transform.Value.OffsetX, Transform.Value.OffsetY);
-                        transform.Matrix = c.RotateTransform.Value * translation.Value;
+                        var arrowtranslation = new TranslateTransform(Transform.Value.OffsetX, Transform.Value.OffsetY);
+                        transform.Matrix = c.RotateTransform.Value * arrowtranslation.Value;
                         c.RenderTransform = transform;
-                    }
-                    else if (child is Ellipse el)
-                    {
-                        var transform = new MatrixTransform();
-                        var translation = new TranslateTransform(Transform.Value.OffsetX, Transform.Value.OffsetY);
-                        transform.Matrix = translation.Value;
-                        el.RenderTransform = transform;
-                    }
-                    else
-                    {
-                        child.RenderTransform = Transform;
                     }
                 }
                 UpdateAllPLayers();
@@ -719,6 +728,8 @@ namespace EQTool.ViewModels
             var currentlabelscaling = (CurrentScaling / 40 * -1) + 1;
             var zoneLabelFontSize = MapViewModelService.ZoneLabelFontSize(this.AABB);
             var otherLabelFontSize = MapViewModelService.OtherLabelFontSize(this.AABB);
+            var translation = new TranslateTransform(Transform.Value.OffsetX, Transform.Value.OffsetY);
+            EllipseTransform.Matrix = translation.Value;
             foreach (FrameworkElement child in Canvas.Children)
             {
                 if (child.Tag == null)
@@ -735,10 +746,6 @@ namespace EQTool.ViewModels
                 {
                     Canvas.SetLeft(child, sx);
                     Canvas.SetTop(child, sy);
-                    var transform = new MatrixTransform();
-                    var translation = new TranslateTransform(Transform.Value.OffsetX, Transform.Value.OffsetY);
-                    transform.Matrix = translation.Value;
-                    el.RenderTransform = transform;
                 }
                 else if (child is TextBlock t)
                 {
@@ -766,11 +773,11 @@ namespace EQTool.ViewModels
                         }
                     }
                 }
-                else
+                else if (child is MapWidget)
                 {
                     Canvas.SetLeft(child, sx);
                     Canvas.SetTop(child, sy);
-                    child.RenderTransform = Transform;
+                    // child.RenderTransform = Transform;
                 }
             }
             UpdateAllPLayers();
@@ -778,7 +785,7 @@ namespace EQTool.ViewModels
 
         private void UpdateAllPLayers()
         {
-            foreach (var item in Players)
+            foreach (var item in Players.Where(a => a.Player != null))
             {
                 MapViewModelService.UpdateLocation(new UpdateLocationData
                 {
@@ -791,7 +798,6 @@ namespace EQTool.ViewModels
                     Transform = Transform
                 });
             }
-
             MapViewModelService.UpdateLocation(new UpdateLocationData
             {
                 Trackingdistance = this.activePlayer?.Player?.TrackingDistance,
@@ -823,7 +829,7 @@ namespace EQTool.ViewModels
         public void PlayerLocationEvent(SignalrPlayer e)
         {
             e.TimeStamp = DateTime.UtcNow;
-            var p = this.Players.FirstOrDefault(a => a.Player.Name == e.Name);
+            var p = this.Players.FirstOrDefault(a => a.Player?.Name == e.Name);
             if (p == null)
             {
                 var playerloc = AddPlayerToCanvas(e);

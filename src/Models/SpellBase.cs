@@ -273,12 +273,15 @@ namespace EQTool.Models
     [Serializable]
     public class SpellBase
     {
+       
+
         public int id { get; set; } // not used 
         public string name { get; set; } // Name of the spell  
         public string cast_on_you { get; set; }
         public string cast_on_other { get; set; }
-        public int type { get; set; }
+        public SpellTypes type { get; set; }
         public int casttime { get; set; }
+        public int recastTime { get; set; }
         public Dictionary<PlayerClasses, int> Classes { get; set; }
         public string spell_fades { get; set; }
         public int buffdurationformula { get; set; }

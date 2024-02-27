@@ -29,7 +29,8 @@ namespace EQTool.Services
                 SpellType = spell.SpellType,
                 DescrNumber = spell.DescrNumber,
                 ResistCheck = spell.ResistCheck,
-                resisttype = spell.resisttype
+                resisttype = spell.resisttype,
+                recastTime = spell.recastTime
             };
 
             if (spellfilenumber > 0 && spellfilenumber <= 7)

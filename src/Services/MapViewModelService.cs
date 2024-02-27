@@ -35,7 +35,7 @@ namespace EQTool.Services
         public static double SmallFontSize(MapLoad.AABB aabb) { return MathHelper.ChangeRange(Math.Max(aabb.MaxWidth, aabb.MaxHeight), 500, 35000, 7, 50); }
         public static double PlayerEllipsesSize(MapLoad.AABB aabb) { return MathHelper.ChangeRange(Math.Max(aabb.MaxWidth, aabb.MaxHeight), 500, 35000, 10, 170); }
         public static double PlayerEllipsesThickness(MapLoad.AABB aabb) { return MathHelper.ChangeRange(Math.Max(aabb.MaxWidth, aabb.MaxHeight), 500, 35000, 3, 24); }
-        public static double MapLinethickness(MapLoad.AABB aabb) { return MathHelper.ChangeRange(Math.Max(aabb.MaxWidth, aabb.MaxHeight), 800, 35000, 2, 40); }
+        public static double MapLinethickness(MapLoad.AABB aabb) { return MathHelper.ChangeRange(Math.Max(aabb.MaxWidth, aabb.MaxHeight), 800, 35000, 2, 16); }
         private static double GetAngleBetweenPoints(Point3D pt1, Point3D pt2)
         {
             var dx = pt2.X - pt1.X;
@@ -48,6 +48,10 @@ namespace EQTool.Services
 
         public static void UpdateLocation(UpdateLocationData locationData)
         {
+            if (locationData.PlayerLocationCircle == null)
+            {
+                return;
+            }
             var newdir = new Point3D(locationData.Newlocation.X, locationData.Newlocation.Y, 0) - new Point3D(locationData.Oldlocation.X, locationData.Oldlocation.Y, 0);
             newdir.Normalize();
             var angle = GetAngleBetweenPoints(new Point3D(locationData.Newlocation.X, locationData.Newlocation.Y, 0), new Point3D(locationData.Oldlocation.X, locationData.Oldlocation.Y, 0)) * -1;
@@ -96,6 +100,7 @@ namespace EQTool.Services
             var playerlocsize = MathHelper.ChangeRange(Math.Max(toCanvasData.AABB.MaxWidth, toCanvasData.AABB.MaxHeight), 500, 35000, 40, 1750);
             var playerstrokthickness = MathHelper.ChangeRange(Math.Max(toCanvasData.AABB.MaxWidth, toCanvasData.AABB.MaxHeight), 500, 35000, 3, 40);
             var color = System.Windows.Media.Color.FromRgb(61, 235, 52);
+            byte trackingepilopacity = 5;
             if (toCanvasData.Name != "You")
             {
                 var minrange = 40;
@@ -104,6 +109,7 @@ namespace EQTool.Services
                 (byte)random.Next(minrange, 235),
                 (byte)random.Next(minrange, 235),
                 (byte)random.Next(minrange, 235));
+                trackingepilopacity = 3;
             }
 
             var playerloc = new PlayerLocationCircle
@@ -142,9 +148,11 @@ namespace EQTool.Services
                     Stroke = new SolidColorBrush(color),
                     StrokeThickness = playerstrokthickness,
                     RenderTransform = new RotateTransform(),
-                    Fill = new SolidColorBrush(System.Windows.Media.Color.FromArgb(5, color.R, color.G, color.B)),
+                    Fill = new SolidColorBrush(System.Windows.Media.Color.FromArgb(trackingepilopacity, color.R, color.G, color.B)),
                     Visibility = toCanvasData.Trackingdistance == null ? Visibility.Hidden : Visibility.Visible
-                }
+                },
+                Color = new SolidColorBrush(color),
+                Name = toCanvasData.Name
             };
             MapViewModelService.AddToCanvas(playerloc, toCanvasData.Canvas, toCanvasData.AABB);
             return playerloc;

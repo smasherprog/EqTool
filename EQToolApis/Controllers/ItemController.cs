@@ -2,6 +2,7 @@
 using EQToolApis.Models;
 using EQToolApis.Services;
 using EQToolShared.APIModels.ItemControllerModels;
+using EQToolShared.Discord;
 using EQToolShared.Enums;
 using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel;
@@ -13,13 +14,17 @@ namespace EQToolApis.Controllers
     {
         private readonly UIDataBuild uIDataBuild;
         private readonly EQToolContext context;
-        private readonly PlayerCache playerCache;
-        public ItemController(UIDataBuild uIDataBuild, EQToolContext context, PlayerCache playerCache)
+        private readonly PlayerCacheV2 playerCachev2;
+        private readonly DiscordAuctionParse discordAuctionParse;
+
+        public ItemController(UIDataBuild uIDataBuild, EQToolContext context, PlayerCacheV2 playerCachev2, DiscordAuctionParse discordAuctionParse)
         {
             this.uIDataBuild = uIDataBuild;
             this.context = context;
-            this.playerCache = playerCache;
+            this.playerCachev2 = playerCachev2;
+            this.discordAuctionParse = discordAuctionParse;
         }
+
         /// <summary>
         /// Will get all items for server and the averages. This data is rebuild every 10 minutes.
         /// </summary>
@@ -33,14 +38,14 @@ namespace EQToolApis.Controllers
         {
             List<AuctionItem> ret;
 #if DEBUG
-            if (UIDataBuild.ItemCache[(int)server] == null)
+            if (UIDataBuild.ItemCacheV2[(int)server] == null)
             {
-                uIDataBuild.BuildData(server);
+                uIDataBuild.BuildDataV2(server);
             }
-            ret = UIDataBuild.ItemCache[(int)server];
+            ret = UIDataBuild.ItemCacheV2[(int)server];
 
 #else
-            ret = UIDataBuild.ItemCache[(int)server];
+            ret = UIDataBuild.ItemCacheV2[(int)server];
 #endif
             return ret;
         }
@@ -57,7 +62,7 @@ namespace EQToolApis.Controllers
         [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Any, VaryByQueryKeys = new[] { "*" })]
         public Item GetItem([DefaultValue(Servers.Green)] Servers server, [DefaultValue("10 Dose Greater Potion of Purity")] string itemname)
         {
-            var item = context.EQitems
+            var item = context.EQitemsV2
                         .Where(a => a.Server == server && a.ItemName == itemname)
                         .Select(a => new Item
                         {
@@ -107,7 +112,7 @@ namespace EQToolApis.Controllers
         {
             itemnames ??= new List<string>();
             itemnames = itemnames.Where(a => !string.IsNullOrWhiteSpace(a)).Distinct().ToList();
-            var items = context.EQitems
+            var items = context.EQitemsV2
                         .Where(a => a.Server == server && itemnames.Contains(a.ItemName))
                         .Select(a => new Item
                         {
@@ -155,7 +160,7 @@ namespace EQToolApis.Controllers
         public List<Item> PostMultipleItem([FromBody] ItemsLookups itemsLookups)
         {
             var itemnames = itemsLookups.Itemnames.Where(a => !string.IsNullOrWhiteSpace(a)).Distinct().ToList();
-            var items = context.EQitems
+            var items = context.EQitemsV2
                         .Where(a => a.Server == itemsLookups.Server && itemnames.Contains(a.ItemName))
                         .Select(a => new Item
                         {
@@ -204,7 +209,7 @@ namespace EQToolApis.Controllers
         [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Any, VaryByQueryKeys = new[] { "*" })]
         public ItemDetail GetItemDetail([DefaultValue(Servers.Green)] Servers server, [DefaultValue("10 Dose Greater Potion of Purity"), Required] string itemname)
         {
-            var items = context.EQTunnelAuctionItems
+            var items = context.EQTunnelAuctionItemsV2
                 .Where(a => a.EQitem.ItemName == itemname && a.EQitem.Server == server)
                 .Select(a => new
                 {
@@ -216,14 +221,14 @@ namespace EQToolApis.Controllers
 
             ItemDetail Item = new()
             {
-                ItemName = context.EQitems
+                ItemName = context.EQitemsV2
                     .Where(a => a.ItemName == itemname && a.Server == server)
                     .Select(a => a.ItemName)
                     .FirstOrDefault(),
                 Items = new List<ItemAuctionDetail>(),
                 Players = new Dictionary<int, string>()
             };
-            playerCache.PlayersLock.EnterReadLock();
+            playerCachev2.PlayersLock.EnterReadLock();
             try
             {
                 foreach (var i in items)
@@ -235,12 +240,12 @@ namespace EQToolApis.Controllers
                         p = i.AuctionPrice,
                         t = i.TunnelTimestamp
                     });
-                    _ = Item.Players.TryAdd(i.EQAuctionPlayerId, playerCache.Players[i.EQAuctionPlayerId].Name);
+                    _ = Item.Players.TryAdd(i.EQAuctionPlayerId, playerCachev2.Players[i.EQAuctionPlayerId].Name);
                 }
             }
             finally
             {
-                playerCache.PlayersLock.ExitReadLock();
+                playerCachev2.PlayersLock.ExitReadLock();
             }
             Item.Items = Item.Items.OrderByDescending(a => a.t).ToList();
             return Item;
@@ -248,15 +253,16 @@ namespace EQToolApis.Controllers
 
         /// <summary>
         /// Will get an item and all of its details. This can include alot of data!
+        /// DO NOT USE THIS. They will replace the regular version once data import is done!
         /// </summary>
         /// <param name="itemid"></param>
         /// <returns></returns>
         [Route("api/item/getdetails/{itemid}")]
         [HttpGet]
         [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Any, VaryByQueryKeys = new[] { "*" })]
-        public ItemDetail GetItemDetail([DefaultValue(1981)] int itemid)
+        public ItemDetail GetItemDetail([DefaultValue(22741)] int itemid)
         {
-            var items = context.EQTunnelAuctionItems
+            var items = context.EQTunnelAuctionItemsV2
                 .Where(a => a.EQitemId == itemid)
                 .Select(a => new
                 {
@@ -268,14 +274,14 @@ namespace EQToolApis.Controllers
 
             ItemDetail Item = new()
             {
-                ItemName = context.EQitems
+                ItemName = context.EQitemsV2
                     .Where(a => a.EQitemId == itemid)
                     .Select(a => a.ItemName)
                     .FirstOrDefault(),
                 Items = new List<ItemAuctionDetail>(),
                 Players = new Dictionary<int, string>()
             };
-            playerCache.PlayersLock.EnterReadLock();
+            this.playerCachev2.PlayersLock.EnterReadLock();
             try
             {
                 foreach (var i in items)
@@ -287,15 +293,27 @@ namespace EQToolApis.Controllers
                         p = i.AuctionPrice,
                         t = i.TunnelTimestamp
                     });
-                    _ = Item.Players.TryAdd(i.EQAuctionPlayerId, playerCache.Players[i.EQAuctionPlayerId].Name);
+                    _ = Item.Players.TryAdd(i.EQAuctionPlayerId, playerCachev2.Players[i.EQAuctionPlayerId].Name);
                 }
             }
             finally
             {
-                playerCache.PlayersLock.ExitReadLock();
+                this.playerCachev2.PlayersLock.ExitReadLock();
             }
             Item.Items = Item.Items.OrderByDescending(a => a.t).ToList();
             return Item;
+        }
+
+        /// <summary>
+        /// Will parse in game message and return auction data
+        /// </summary>
+        /// <param name="message"></param>
+        /// <returns></returns>
+        [Route("api/item/auctionParse")]
+        [HttpPost]
+        public Auction AuctionParse([FromBody, DefaultValue("Fuxi auctions, 'WTS Silver Chitin Hand Wraps 1.3 / Nilitim's Grimoire Pg. 300 x3 / Nilitim's Grimoire Pg. 116 / Nilitim's Grimoire Pg. 115 / Nilitim's Grimoire Pg. 35 / Salil's Writ Pg. 174 L 5pp ea last call pst WTB Spell: Pillar of Lightning 50p l Sarnak-Hide Mask 50p l Arctic Wyvern Hide 300p/stack l WTS Ring of stealthy travel 14k WTS Bag of the Tinkerers 5300pp.  5250ea for qty 2+.  5200 for qty 4+.  (price firm) pst WTB Scepter of the Forlorn paying 5k WTB'")] string message)
+        {
+            return this.discordAuctionParse.Parse(message);
         }
     }
 }

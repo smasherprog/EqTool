@@ -12,7 +12,7 @@ namespace EQToolApis.Controllers
         public string? Message { get; set; }
         public EventType? EventType { get; set; }
         public BuildType? BuildType { get; set; }
-
+        public Servers? Server { get; set; }
     }
 
     [ApiExplorerSettings(IgnoreApi = true)]
@@ -35,7 +35,8 @@ namespace EQToolApis.Controllers
                 DateCreated = DateTime.UtcNow,
                 EventType = model.EventType,
                 IpAddress = ip,
-                BuildType = model.BuildType
+                BuildType = model.BuildType,
+                Server = model.Server
             });
 
             _ = dbcontext.SaveChanges();

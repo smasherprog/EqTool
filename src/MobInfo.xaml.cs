@@ -1,6 +1,7 @@
 ﻿using EQTool.Models;
 using EQTool.Services;
 using EQTool.ViewModels;
+using EQToolShared.Enums;
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -8,6 +9,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Navigation;
+using System.Windows.Threading;
 
 namespace EQTool
 {
@@ -23,10 +25,15 @@ namespace EQTool
         private readonly WikiApi wikiApi;
         private readonly PigParseApi pigParseApi;
         private readonly ActivePlayer activePlayer;
+        private readonly DispatcherTimer timer = new DispatcherTimer
+        {
+            Interval = new TimeSpan(0, 0, 0, 0, 500),
+            IsEnabled = false
+        };
 
         public MobInfo(ActivePlayer activePlayer, PigParseApi pigParseApi, WikiApi wikiApi, LogParser logParser, EQToolSettings settings, EQToolSettingsLoad toolSettingsLoad, LoggingService loggingService)
         {
-            loggingService.Log(string.Empty, App.EventType.OpenMobInfo);
+            loggingService.Log(string.Empty, EventType.OpenMobInfo, activePlayer?.Player?.Server);
             this.activePlayer = activePlayer;
             this.pigParseApi = pigParseApi;
             this.wikiApi = wikiApi;
@@ -37,11 +44,9 @@ namespace EQTool
             DataContext = mobInfoViewModel = new ViewModels.MobInfoViewModel();
             InitializeComponent();
             WindowExtensions.AdjustWindow(settings.MobWindowState, this);
-            SizeChanged += DPSMeter_SizeChanged;
-            StateChanged += SpellWindow_StateChanged;
-            LocationChanged += DPSMeter_LocationChanged;
+            timer.Tick += timer_Tick;
+            LocationChanged += Window_LocationChanged;
             settings.MobWindowState.Closed = false;
-            SaveState();
         }
 
         private void LogParser_ConEvent(object sender, LogParser.ConEventArgs e)
@@ -74,22 +79,36 @@ namespace EQTool
                 if (!mobInfoViewModel.ErrorResults.Contains("The underlying connection was closed:"))
                 {
                     mobInfoViewModel.ErrorResults = "The server is down. Try again";
-                    App.LogUnhandledException(ex, $"LogParser_ConEvent {e.Name}");
+                    App.LogUnhandledException(ex, $"LogParser_ConEvent {e.Name}", activePlayer?.Player?.Server);
                 }
             }
+        }
+        void timer_Tick(object sender, EventArgs e)
+        {
+            timer.IsEnabled = false;
+            SaveState();
+        }
+
+        private void DebounceSave()
+        {
+            timer.IsEnabled = true;
+            timer.Stop();
+            timer.Start();
         }
 
         protected override void OnClosing(CancelEventArgs e)
         {
-            logParser.ConEvent -= LogParser_ConEvent;
-            SizeChanged -= DPSMeter_SizeChanged;
-            StateChanged -= SpellWindow_StateChanged;
-            LocationChanged -= DPSMeter_LocationChanged;
-            SaveState();
+            timer?.Stop();
+            if (logParser != null)
+            {
+                logParser.ConEvent -= LogParser_ConEvent;
+            }
+            LocationChanged -= Window_LocationChanged;
             base.OnClosing(e);
         }
         private void SaveState()
         {
+            Debug.WriteLine("Saving MobInfo window State");
             WindowExtensions.SaveWindowState(settings.MobWindowState, this);
             toolSettingsLoad.Save(settings);
         }
@@ -97,23 +116,13 @@ namespace EQTool
         private void CloseWindow(object sender, RoutedEventArgs e)
         {
             settings.MobWindowState.Closed = true;
-
+            SaveState();
             Close();
         }
 
-        private void SpellWindow_StateChanged(object sender, EventArgs e)
+        private void Window_LocationChanged(object sender, EventArgs e)
         {
-            SaveState();
-        }
-
-        private void DPSMeter_LocationChanged(object sender, EventArgs e)
-        {
-            SaveState();
-        }
-
-        private void DPSMeter_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            SaveState();
+            DebounceSave();
         }
 
         private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
@@ -141,7 +150,6 @@ namespace EQTool
         {
             WindowState = WindowState == System.Windows.WindowState.Maximized ? System.Windows.WindowState.Normal : System.Windows.WindowState.Maximized;
         }
-
 
         private void opendps(object sender, RoutedEventArgs e)
         {

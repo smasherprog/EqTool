@@ -7,14 +7,18 @@
         mc:Ignorable="d"
         SizeToContent="WidthAndHeight"
         Title="Update Messages">
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    </Window.Resources>
     <Grid>
 
         <ListView Name="Messages" ItemsSource="{Binding UpdateMessages}" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling" Grid.Row="1">
             <ListView.ItemTemplate>
                 <DataTemplate>
-                    <Grid>
+                    <StackPanel Orientation="Vertical">
                         <TextBlock FontWeight="Bold" Text="{Binding Message}"/>
-                    </Grid>
+                        <Image Source="{Binding Image}" Visibility="{Binding ImageVisibility}" MaxHeight="400" />
+                    </StackPanel>
                 </DataTemplate>
             </ListView.ItemTemplate>
             <ListView.GroupStyle>

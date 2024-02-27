@@ -31,19 +31,25 @@ namespace EQTool.ViewModels
                 ShowSpellsForClasses = Enum.GetValues(typeof(PlayerClasses)).Cast<PlayerClasses>().ToList()
             };
 
-            indexpart = charname_withext.IndexOf("P1999");
+            indexpart = charname_withext.LastIndexOf("_");
             if (indexpart != -1)
             {
-                var server = charname_withext.Substring(indexpart + "P1999".Length);
-                var ext = _ = server.IndexOf(".");
-                server = server.Substring(0, ext);
-                if (ext != -1)
+                var server = charname_withext.Substring(indexpart + 1).Replace(".txt", string.Empty);
+                if (server == "P1999PVP")
                 {
-                    _ = Enum.TryParse<Servers>(server, true, out var server_type);
-                    p.Server = server_type;
+                    p.Server = Servers.Red;
+                }
+                else if (server == "P1999Green")
+                {
+                    p.Server = Servers.Green;
+                }
+                else
+                {
+                    p.Server = Servers.Blue;
                 }
             }
-            else if (logfilenbame.IndexOf("pq.proj.txt") != -1)
+
+            if (logfilenbame.IndexOf("pq.proj.txt") != -1)
             {
                 p.Server = Servers.Quarm;
             }

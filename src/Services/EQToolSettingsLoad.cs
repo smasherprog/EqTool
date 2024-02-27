@@ -53,7 +53,7 @@ namespace EQTool.Services
                         return Load(counter);
                     }
 
-                    loggingService.Log(e.ToString(), App.EventType.Error);
+                    loggingService.Log(e.ToString(), EventType.Error, null);
 
                 }
             }

@@ -169,10 +169,15 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ChChainTests.cs" />
+    <Compile Include="RandomRollTests.cs" />
+    <Compile Include="FTETests.cs" />
+    <Compile Include="EnrageTests.cs" />
     <Compile Include="DI.cs" />
     <Compile Include="FindEqTests.cs" />
     <Compile Include="DiscordTests.cs" />
     <Compile Include="AuctionParsingTests.cs" />
+    <Compile Include="DTparsingTests.cs" />
     <Compile Include="ParsingTests.cs" />
     <Compile Include="MobInfoTests.cs" />
     <Compile Include="DamageTests.cs" />
@@ -191,6 +196,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
     <None Include="app.config" />
+    <Content Include="DiscordResponse.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <None Include="packages.config" />
     <Content Include="uifiles\default\spells01.tga">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

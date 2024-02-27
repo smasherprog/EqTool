@@ -4,6 +4,8 @@
     {
         public string TargetName { get; set; }
 
+        public bool IsYou { get; set; }
+
         public Spell Spell { get; set; }
 
         public bool MultipleMatchesFound { get; set; }

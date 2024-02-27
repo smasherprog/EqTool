@@ -11,12 +11,12 @@ namespace EQToolShared.Map
             {
                 if (!string.IsNullOrWhiteSpace(npcName))
                 {
-                    var foundnpc = zoneInfo.NpcSpawnTimes.FirstOrDefault(a => a.Name == npcName);
+                    var foundnpc = zoneInfo.NpcSpawnTimes.FirstOrDefault(a => string.Equals(a.Name, npcName, StringComparison.OrdinalIgnoreCase));
                     if (foundnpc != null)
                     {
                         return foundnpc.RespawnTime;
                     }
-                    foundnpc = zoneInfo.NpcContainsSpawnTimes.FirstOrDefault(a => npcName.Contains(a.Name));
+                    foundnpc = zoneInfo.NpcContainsSpawnTimes.FirstOrDefault(a => npcName.IndexOf(a.Name, StringComparison.OrdinalIgnoreCase) != -1);
                     if (foundnpc != null)
                     {
                         return foundnpc.RespawnTime;

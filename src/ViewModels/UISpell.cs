@@ -1,5 +1,6 @@
 ﻿using EQTool.Models;
 using EQToolShared.Enums;
+using EQToolShared.HubModels;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -9,12 +10,14 @@ using System.Windows.Media;
 
 namespace EQTool.ViewModels
 {
+
     public class UISpell : INotifyPropertyChanged
     {
-        public UISpell(DateTime endtime)
+        public UISpell(DateTime endtime, bool isNPC)
         {
-            _TimerEndDateTime = endtime;
-            TotalSecondsOnSpell = (int)(_TimerEndDateTime - DateTime.Now).TotalSeconds;
+            this.IsNPC = isNPC;
+            TimerEndDateTime = endtime;
+            TotalSecondsOnSpell = (int)(TimerEndDateTime - DateTime.Now).TotalSeconds;
             UpdateTimeLeft();
         }
 
@@ -28,11 +31,21 @@ namespace EQTool.ViewModels
 
         public TimeSpan SecondsLeftOnSpell => _SecondsLeftOnSpell;
 
-        private readonly DateTime _TimerEndDateTime;
+        private DateTime _TimerEndDateTime = DateTime.Now;
+        public DateTime TimerEndDateTime
+        {
+            get { return _TimerEndDateTime; }
+            set
+            {
+                _TimerEndDateTime = value;
+                TotalSecondsOnSpell = (int)(_TimerEndDateTime - DateTime.Now).TotalSeconds;
+                UpdateTimeLeft();
+            }
+        }
 
         public void UpdateTimeLeft()
         {
-            _SecondsLeftOnSpell = _TimerEndDateTime - DateTime.Now;
+            _SecondsLeftOnSpell = TimerEndDateTime - DateTime.Now;
             if (TotalSecondsOnSpell > 0)
             {
                 PercentLeftOnSpell = (int)(_SecondsLeftOnSpell.TotalSeconds / TotalSecondsOnSpell * 100);
@@ -58,16 +71,30 @@ namespace EQTool.ViewModels
             }
         }
 
-        public string SpellExtraData => _SieveCounter.HasValue ? " --> Sieves: " + _SieveCounter.Value : string.Empty;
-
-        private int? _SieveCounter = null;
-
-        public int? SieveCounter
+        public string SpellExtraData
         {
-            get => _SieveCounter;
+            get
+            {
+                if (_Counter.HasValue)
+                {
+                    return " Count --> " + _Counter.Value;
+                }
+                else if (Roll >= 0)
+                {
+                    return " Roll --> " + Roll.ToString();
+                }
+                return string.Empty;
+            }
+        }
+
+        private int? _Counter = null;
+
+        public int? Counter
+        {
+            get => _Counter;
             set
             {
-                _SieveCounter = value;
+                _Counter = value;
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(SpellExtraData));
             }
@@ -146,7 +173,7 @@ namespace EQTool.ViewModels
         {
             get
             {
-                if (_SpellType <= 0 || TargetName == EQSpells.SpaceYou)
+                if (TargetName == CustomTimer.CustomerTime || _SpellType == SpellTypes.Detrimental)
                 {
                     return Visibility.Visible;
                 }
@@ -157,6 +184,10 @@ namespace EQTool.ViewModels
                 else if (_HideClasses)
                 {
                     return Visibility.Collapsed;
+                }
+                else if (_SpellType <= 0 || TargetName == EQSpells.SpaceYou)
+                {
+                    return Visibility.Visible;
                 }
                 else if (_ShowOnlyYou && TargetName != EQSpells.SpaceYou)
                 {
@@ -190,17 +221,69 @@ namespace EQTool.ViewModels
         }
 
         public bool PersistentSpell { get; set; }
-
+        public string Sorting
+        {
+            get
+            {
+                if (TargetName.StartsWith(" "))
+                {
+                    return TargetName;
+                }
+                if (this.Roll >= 0)
+                {
+                    return " y";
+                }
+                if (this.IsNPC)
+                {
+                    return " z";
+                }
+                return TargetName;
+            }
+        }
         public string TargetName { get; set; }
+        public int Roll { get; set; } = -1;
+        public bool IsNPC { get; set; }
 
-        private int _SpellType = 0;
-        public int SpellType
+        private SpellTypes _SpellType = 0;
+
+        public SpellTypes SpellType
         {
             get => _SpellType;
             set
             {
                 _SpellType = value;
-                ProgressBarColor = _SpellType == -1 ? Brushes.LightBlue : (_SpellType > 0 ? Brushes.DarkSeaGreen : Brushes.OrangeRed);
+                if (_SpellType == SpellTypes.Beneficial)
+                {
+                    ProgressBarColor = Brushes.MediumAquamarine;
+                }
+                else if (_SpellType == SpellTypes.Detrimental)
+                {
+                    ProgressBarColor = Brushes.OrangeRed;
+                }
+                else if (_SpellType == SpellTypes.BadGuyCoolDown)
+                {
+                    ProgressBarColor = Brushes.DarkOrange;
+                }
+                else if (_SpellType == SpellTypes.HarvestCooldown)
+                {
+                    ProgressBarColor = Brushes.SkyBlue;
+                }
+                else if (_SpellType >= SpellTypes.Other)
+                {
+                    ProgressBarColor = Brushes.DarkSeaGreen;
+                }
+                else if (_SpellType >= SpellTypes.RespawnTimer)
+                {
+                    ProgressBarColor = Brushes.LightSalmon;
+                }
+                else if (_SpellType >= SpellTypes.DisciplineCoolDown)
+                {
+                    ProgressBarColor = Brushes.Gold;
+                }
+                else
+                {
+                    ProgressBarColor = Brushes.DarkSeaGreen;
+                }
             }
         }
 

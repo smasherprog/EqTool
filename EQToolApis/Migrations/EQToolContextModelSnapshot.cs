@@ -50,7 +50,7 @@ namespace EQToolApis.Migrations
                     b.ToTable("APILogs");
                 });
 
-            modelBuilder.Entity("EQToolApis.DB.Models.EQAuctionPlayer", b =>
+            modelBuilder.Entity("EQToolApis.DB.Models.EQAuctionPlayerV2", b =>
                 {
                     b.Property<int>("EQAuctionPlayerId")
                         .ValueGeneratedOnAdd()
@@ -70,7 +70,7 @@ namespace EQToolApis.Migrations
 
                     b.HasIndex("Server");
 
-                    b.ToTable("EQAuctionPlayers");
+                    b.ToTable("EQAuctionPlayersV2");
                 });
 
             modelBuilder.Entity("EQToolApis.DB.Models.EQDeath", b =>
@@ -164,7 +164,7 @@ namespace EQToolApis.Migrations
                     b.ToTable("EQNotableNPCs");
                 });
 
-            modelBuilder.Entity("EQToolApis.DB.Models.EQTunnelAuctionItem", b =>
+            modelBuilder.Entity("EQToolApis.DB.Models.EQTunnelAuctionItemV2", b =>
                 {
                     b.Property<long>("EQTunnelAuctionItemId")
                         .ValueGeneratedOnAdd()
@@ -190,10 +190,10 @@ namespace EQToolApis.Migrations
 
                     b.HasIndex("EQitemId");
 
-                    b.ToTable("EQTunnelAuctionItems");
+                    b.ToTable("EQTunnelAuctionItemsV2");
                 });
 
-            modelBuilder.Entity("EQToolApis.DB.Models.EQTunnelMessage", b =>
+            modelBuilder.Entity("EQToolApis.DB.Models.EQTunnelMessageV2", b =>
                 {
                     b.Property<long>("EQTunnelMessageId")
                         .ValueGeneratedOnAdd()
@@ -232,7 +232,7 @@ namespace EQToolApis.Migrations
 
                     b.HasIndex("TunnelTimestamp", "AuctionType");
 
-                    b.ToTable("EQTunnelMessages");
+                    b.ToTable("EQTunnelMessagesV2");
                 });
 
             modelBuilder.Entity("EQToolApis.DB.Models.EQZone", b =>
@@ -253,7 +253,7 @@ namespace EQToolApis.Migrations
                     b.ToTable("EQZones");
                 });
 
-            modelBuilder.Entity("EQToolApis.DB.Models.EQitem", b =>
+            modelBuilder.Entity("EQToolApis.DB.Models.EQitemV2", b =>
                 {
                     b.Property<int>("EQitemId")
                         .ValueGeneratedOnAdd()
@@ -353,7 +353,7 @@ namespace EQToolApis.Migrations
 
                     b.HasIndex("ItemName", "Server");
 
-                    b.ToTable("EQitems");
+                    b.ToTable("EQitemsV2");
                 });
 
             modelBuilder.Entity("EQToolApis.DB.Models.EqToolException", b =>
@@ -379,6 +379,9 @@ namespace EQToolApis.Migrations
                     b.Property<string>("IpAddress")
                         .HasMaxLength(24)
                         .HasColumnType("nvarchar(24)");
+
+                    b.Property<byte?>("Server")
+                        .HasColumnType("tinyint");
 
                     b.Property<string>("Version")
                         .HasMaxLength(24)
@@ -492,15 +495,15 @@ namespace EQToolApis.Migrations
                     b.Navigation("EQZone");
                 });
 
-            modelBuilder.Entity("EQToolApis.DB.Models.EQTunnelAuctionItem", b =>
+            modelBuilder.Entity("EQToolApis.DB.Models.EQTunnelAuctionItemV2", b =>
                 {
-                    b.HasOne("EQToolApis.DB.Models.EQTunnelMessage", "EQTunnelMessage")
+                    b.HasOne("EQToolApis.DB.Models.EQTunnelMessageV2", "EQTunnelMessage")
                         .WithMany("EQTunnelAuctionItems")
                         .HasForeignKey("EQTunnelMessageId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("EQToolApis.DB.Models.EQitem", "EQitem")
+                    b.HasOne("EQToolApis.DB.Models.EQitemV2", "EQitem")
                         .WithMany("EQTunnelAuctionItems")
                         .HasForeignKey("EQitemId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -511,9 +514,9 @@ namespace EQToolApis.Migrations
                     b.Navigation("EQitem");
                 });
 
-            modelBuilder.Entity("EQToolApis.DB.Models.EQTunnelMessage", b =>
+            modelBuilder.Entity("EQToolApis.DB.Models.EQTunnelMessageV2", b =>
                 {
-                    b.HasOne("EQToolApis.DB.Models.EQAuctionPlayer", "EQAuctionPlayer")
+                    b.HasOne("EQToolApis.DB.Models.EQAuctionPlayerV2", "EQAuctionPlayer")
                         .WithMany()
                         .HasForeignKey("EQAuctionPlayerId")
                         .OnDelete(DeleteBehavior.Cascade)
@@ -527,7 +530,7 @@ namespace EQToolApis.Migrations
                     b.Navigation("EQNotableActivities");
                 });
 
-            modelBuilder.Entity("EQToolApis.DB.Models.EQTunnelMessage", b =>
+            modelBuilder.Entity("EQToolApis.DB.Models.EQTunnelMessageV2", b =>
                 {
                     b.Navigation("EQTunnelAuctionItems");
                 });
@@ -537,7 +540,7 @@ namespace EQToolApis.Migrations
                     b.Navigation("EQDeaths");
                 });
 
-            modelBuilder.Entity("EQToolApis.DB.Models.EQitem", b =>
+            modelBuilder.Entity("EQToolApis.DB.Models.EQitemV2", b =>
                 {
                     b.Navigation("EQTunnelAuctionItems");
                 });

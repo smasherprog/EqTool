@@ -9,17 +9,23 @@
 
 
         <Style x:Key="MyMobUrlSyle" TargetType="{x:Type TextBlock}">
-            <Setter Property="FontSize" Value="{Binding Source={x:Static properties:Settings.Default}, Path=GlobalFontSize}" />
+            <Setter Property="FontSize" Value="{DynamicResource GlobalFontSize}" />
             <Setter Property="Foreground" Value="#86C1F5" />
         </Style>
 
-
+        <Style x:Key="MyEventWindowStyle" TargetType="{x:Type Window}"> 
+            <Setter Property="Background">
+                <Setter.Value>
+                    <SolidColorBrush Color="#1a1919" Opacity="0" />
+                </Setter.Value>
+            </Setter>
+        </Style>
         <Style x:Key="MySettingsWindowSyle" TargetType="{x:Type Window}">
-            <Setter Property="FontSize" Value="{Binding Source={x:Static properties:Settings.Default}, Path=GlobalFontSize}" />
+            <Setter Property="FontSize"  Value="{DynamicResource GlobalFontSize}" />
             <Setter Property="Background" Value="#E1D9D1" />
         </Style>
         <Style x:Key="MyListViewStyle" TargetType="{x:Type ListView}">
-            <Setter Property="FontSize" Value="{Binding Source={x:Static properties:Settings.Default}, Path=GlobalFontSize}" />
+            <Setter Property="FontSize"  Value="{DynamicResource GlobalFontSize}" />
             <Setter Property="Background">
                 <Setter.Value>
                     <SolidColorBrush Color="#1a1919" Opacity=".95"  />
@@ -33,51 +39,35 @@
         </Style>
 
         <Style x:Key="MyWindowStyleDPS" TargetType="{x:Type Window}">
-            <Setter Property="FontSize" Value="{Binding Source={x:Static properties:Settings.Default}, Path=GlobalFontSize}" />
+            <Setter Property="FontSize"  Value="{DynamicResource GlobalFontSize}" />
             <Setter Property="Background">
                 <Setter.Value>
-                    <SolidColorBrush Color="#1a1919" Opacity="{Binding Source={x:Static properties:Settings.Default}, Path=GlobalDPSWindowOpacity}" />
-                </Setter.Value>
-            </Setter>
-            <Setter Property="Background">
-                <Setter.Value>
-                    <SolidColorBrush Color="#1a1919" Opacity="{Binding Source={x:Static properties:Settings.Default}, Path=GlobalDPSWindowOpacity}" />
+                    <SolidColorBrush Color="#1a1919" Opacity="1.0" />
                 </Setter.Value>
             </Setter>
         </Style>
         <Style x:Key="MyWindowStyleTrigger" TargetType="{x:Type Window}">
-            <Setter Property="FontSize" Value="{Binding Source={x:Static properties:Settings.Default}, Path=GlobalFontSize}" />
+            <Setter Property="FontSize"  Value="{DynamicResource GlobalFontSize}" />
             <Setter Property="Background">
                 <Setter.Value>
-                    <SolidColorBrush Color="#1a1919" Opacity="{Binding Source={x:Static properties:Settings.Default}, Path=GlobalTriggerWindowOpacity}" />
-                </Setter.Value>
-            </Setter>
-            <Setter Property="Background">
-                <Setter.Value>
-                    <SolidColorBrush Color="#1a1919" Opacity="{Binding Source={x:Static properties:Settings.Default}, Path=GlobalTriggerWindowOpacity}" />
+                    <SolidColorBrush Color="#1a1919" Opacity="1.0" />
                 </Setter.Value>
             </Setter>
         </Style>
         <Style x:Key="MyWindowStyleMap" TargetType="{x:Type Window}">
-            <Setter Property="FontSize" Value="{Binding Source={x:Static properties:Settings.Default}, Path=GlobalFontSize}" />
+            <Setter Property="FontSize" Value="{DynamicResource GlobalFontSize}" />
             <Setter Property="Background">
                 <Setter.Value>
-                    <SolidColorBrush Color="#1a1919" Opacity="{Binding Source={x:Static properties:Settings.Default}, Path=GlobalMapWindowOpacity}" />
-                </Setter.Value>
-            </Setter>
-
-            <Setter Property="Background">
-                <Setter.Value>
-                    <SolidColorBrush Color="#1a1919" Opacity="{Binding Source={x:Static properties:Settings.Default}, Path=GlobalMapWindowOpacity}" />
+                    <SolidColorBrush Color="#1a1919" Opacity="1.0" />
                 </Setter.Value>
             </Setter>
         </Style>
         <Style x:Key="MyMobWindowSyle" TargetType="{x:Type Window}">
-            <Setter Property="FontSize" Value="{Binding Source={x:Static properties:Settings.Default}, Path=GlobalFontSize}" />
+            <Setter Property="FontSize"  Value="{DynamicResource GlobalFontSize}" />
             <Setter Property="Background" Value="#1a1919" />
         </Style>
         <Style x:Key="MyMobTextBoxWindowSyle" TargetType="{x:Type TextBlock}">
-            <Setter Property="FontSize" Value="{Binding Source={x:Static properties:Settings.Default}, Path=GlobalFontSize}" />
+            <Setter Property="FontSize"  Value="{DynamicResource GlobalFontSize}" />
             <Setter Property="Foreground" Value="WhiteSmoke" />
         </Style>
     </Application.Resources>

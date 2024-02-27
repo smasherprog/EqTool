@@ -27,6 +27,7 @@ namespace EQTool.Services.Spells.Log
             {
                 foundspells = foundspells.Where(a => !IgnoreSpellsForGuesses.Contains(a.name)).ToList();
                 var foundspell = SpellDurations.MatchClosestLevelToSpell(foundspells, activePlayer.Player);
+
                 Debug.WriteLine($"Cast On you Spell: {foundspell.name} Message: {message}");
                 var multiplematches = foundspell.Classes.All(a => a.Value == 255) && foundspells.Count > 1;
                 return new SpellParsingMatch

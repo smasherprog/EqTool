@@ -187,13 +187,35 @@ namespace EQTool.Models
             }
         }
 
-        private MapLocationSharing _MapLocationSharing = EQToolShared.Map.MapLocationSharing.DoNotShare;
-        public MapLocationSharing? MapLocationSharing
+        private bool _SpellDebuffShare;
+        public bool SpellDebuffShare
+        {
+            get => _SpellDebuffShare;
+            set
+            {
+                _SpellDebuffShare = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private MapLocationSharing _MapLocationSharing = EQToolShared.Map.MapLocationSharing.Everyone;
+        public MapLocationSharing MapLocationSharing
         {
             get => _MapLocationSharing;
             set
             {
-                _MapLocationSharing = value ?? EQToolShared.Map.MapLocationSharing.DoNotShare;
+                _MapLocationSharing = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _MapKillTimers = true;
+        public bool? MapKillTimers
+        {
+            get => _MapKillTimers;
+            set
+            {
+                _MapKillTimers = value ?? true;
                 OnPropertyChanged();
             }
         }
@@ -272,6 +294,243 @@ namespace EQTool.Models
         }
 
         public List<PlayerClasses> ShowSpellsForClasses { get; set; }
+
+        private bool _DragonRoarOverlay;
+        public bool DragonRoarOverlay
+        {
+            get => _DragonRoarOverlay;
+            set
+            {
+                _DragonRoarOverlay = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _DragonRoarAudio;
+        public bool DragonRoarAudio
+        {
+            get => _DragonRoarAudio;
+            set
+            {
+                _DragonRoarAudio = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _GroupInviteOverlay;
+        public bool GroupInviteOverlay
+        {
+            get => _GroupInviteOverlay;
+            set
+            {
+                _GroupInviteOverlay = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _GroupInviteAudio;
+        public bool GroupInviteAudio
+        {
+            get => _GroupInviteAudio;
+            set
+            {
+                _GroupInviteAudio = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _FailedFeignOverlay;
+        public bool FailedFeignOverlay
+        {
+            get => _FailedFeignOverlay;
+            set
+            {
+                _FailedFeignOverlay = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _FailedFeignAudio;
+        public bool FailedFeignAudio
+        {
+            get => _FailedFeignAudio;
+            set
+            {
+                _FailedFeignAudio = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _EnrageOverlay;
+        public bool EnrageOverlay
+        {
+            get => _EnrageOverlay;
+            set
+            {
+                _EnrageOverlay = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _EnrageAudio;
+        public bool EnrageAudio
+        {
+            get => _EnrageAudio;
+            set
+            {
+                _EnrageAudio = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _LevFadingAudio;
+        public bool LevFadingAudio
+        {
+            get => _LevFadingAudio;
+            set
+            {
+                _LevFadingAudio = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _LevFadingOverlay;
+        public bool LevFadingOverlay
+        {
+            get => _LevFadingOverlay;
+            set
+            {
+                _LevFadingOverlay = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _CharmBreakAudio;
+        public bool CharmBreakAudio
+        {
+            get => _CharmBreakAudio;
+            set
+            {
+                _CharmBreakAudio = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _CharmBreakOverlay;
+        public bool CharmBreakOverlay
+        {
+            get => _CharmBreakOverlay;
+            set
+            {
+                _CharmBreakOverlay = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _FTEAudio;
+        public bool FTEAudio
+        {
+            get => _FTEAudio;
+            set
+            {
+                _FTEAudio = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _FTEOverlay;
+        public bool FTEOverlay
+        {
+            get => _FTEOverlay;
+            set
+            {
+                _FTEOverlay = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _InvisFadingAudio;
+        public bool InvisFadingAudio
+        {
+            get => _InvisFadingAudio;
+            set
+            {
+                _InvisFadingAudio = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _InvisFadingOverlay;
+        public bool InvisFadingOverlay
+        {
+            get => _InvisFadingOverlay;
+            set
+            {
+                _InvisFadingOverlay = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _ChChainWarningOverlay;
+        public bool ChChainWarningOverlay
+        {
+            get => _ChChainWarningOverlay;
+            set
+            {
+                _ChChainWarningOverlay = value;
+                if (_ChChainWarningOverlay)
+                {
+                    _ChChainOverlay = true;
+                    OnPropertyChanged(nameof(ChChainOverlay));
+                }
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _ChChainWarningAudio;
+        public bool ChChainWarningAudio
+        {
+            get => _ChChainWarningAudio;
+            set
+            {
+                _ChChainWarningAudio = value;
+                if (_ChChainWarningAudio)
+                {
+                    _ChChainOverlay = true;
+                    OnPropertyChanged(nameof(ChChainOverlay));
+                }
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _ChChainOverlay;
+        public bool ChChainOverlay
+        {
+            get => _ChChainOverlay;
+            set
+            {
+                _ChChainOverlay = value;
+                if (!_ChChainOverlay)
+                {
+                    _ChChainWarningAudio = false;
+                    OnPropertyChanged(nameof(ChChainWarningAudio));
+                    _ChChainWarningOverlay = false;
+                    OnPropertyChanged(nameof(ChChainWarningOverlay));
+                }
+                OnPropertyChanged();
+            }
+        }
+
+        private string _ChChainTagOverlay;
+        public string ChChainTagOverlay
+        {
+            get => _ChChainTagOverlay;
+            set
+            {
+                _ChChainTagOverlay = value;
+                OnPropertyChanged();
+            }
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
 

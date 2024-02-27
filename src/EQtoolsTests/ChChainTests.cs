@@ -4,7 +4,6 @@ using EQTool.Services;
 using EQTool.ViewModels;
 using EQToolShared.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System.IO;
 
 namespace EQToolTests
 {
@@ -20,8 +19,6 @@ namespace EQToolTests
         [TestMethod]
         public void Parse1()
         {
-            var parentidirectory = Directory.GetParent(Directory.GetCurrentDirectory()).FullName;
-            var prog = Path.Combine(parentidirectory, "program.exe");
             var service = container.Resolve<ChParser>();
             var d = service.ChCheck("Curaja shouts, 'GG 014 CH -- Wreckognize'");
             Assert.AreEqual(d.Recipient, "Wreckognize");

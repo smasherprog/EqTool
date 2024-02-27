@@ -1,15 +1,19 @@
 ﻿using EQTool.Models;
 using EQTool.Services;
 using EQTool.ViewModels;
+using EQToolShared;
+using EQToolShared.Enums;
 using EQToolShared.HubModels;
 using EQToolShared.Map;
 using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
+using System.Windows.Threading;
 
 namespace EQTool
 {
@@ -23,6 +27,11 @@ namespace EQTool
         private readonly ActivePlayer activePlayer;
         private readonly TimersService timersService;
         private readonly PlayerTrackerService playerTrackerService;
+        private readonly DispatcherTimer timer = new DispatcherTimer
+        {
+            Interval = new TimeSpan(0, 0, 0, 0, 500),
+            IsEnabled = false
+        };
 
         public SpellWindow(
             PlayerTrackerService playerTrackerService,
@@ -34,7 +43,7 @@ namespace EQTool
             ActivePlayer activePlayer,
             LoggingService loggingService)
         {
-            loggingService.Log(string.Empty, App.EventType.OpenMap);
+            loggingService.Log(string.Empty, EventType.OpenMap, activePlayer?.Player?.Server);
             this.playerTrackerService = playerTrackerService;
             this.timersService = timersService;
             this.settings = settings;
@@ -48,6 +57,9 @@ namespace EQTool
             this.logParser.DeadEvent += LogParser_DeadEvent;
             this.logParser.StartTimerEvent += LogParser_StartTimerEvent;
             this.logParser.CancelTimerEvent += LogParser_CancelTimerEvent;
+            this.logParser.POFDTEvent += LogParser_POFDTEvent;
+            this.logParser.ResistSpellEvent += LogParser_ResistSpellEvent;
+            this.logParser.RandomRollEvent += LogParser_RandomRollEvent;
             spellWindowViewModel.SpellList = new System.Collections.ObjectModel.ObservableCollection<UISpell>();
             DataContext = this.spellWindowViewModel = spellWindowViewModel;
             if (this.activePlayer.Player != null)
@@ -63,16 +75,46 @@ namespace EQTool
             view.GroupDescriptions.Add(new PropertyGroupDescription(nameof(UISpell.TargetName)));
             view.LiveGroupingProperties.Add(nameof(UISpell.TargetName));
             view.IsLiveGrouping = true;
-            view.SortDescriptions.Add(new SortDescription(nameof(UISpell.TargetName), ListSortDirection.Ascending));
+            view.SortDescriptions.Add(new SortDescription(nameof(UISpell.Sorting), ListSortDirection.Ascending));
+            view.SortDescriptions.Add(new SortDescription(nameof(UISpell.Roll), ListSortDirection.Descending));
             view.SortDescriptions.Add(new SortDescription(nameof(UISpell.SecondsLeftOnSpell), ListSortDirection.Descending));
             view.IsLiveSorting = true;
             view.LiveSortingProperties.Add(nameof(UISpell.SecondsLeftOnSpell));
             this.toolSettingsLoad = toolSettingsLoad;
+            timer.Tick += timer_Tick;
             SizeChanged += DPSMeter_SizeChanged;
             StateChanged += SpellWindow_StateChanged;
             LocationChanged += DPSMeter_LocationChanged;
             settings.SpellWindowState.Closed = false;
-            SaveState();
+        }
+
+        private void LogParser_RandomRollEvent(object sender, LogParser.RandomRollEventArgs e)
+        {
+            this.spellWindowViewModel.TryAddCustom(new CustomTimer
+            {
+                TargetName = $"Random -- {e.RandomRollData.MaxRoll}",
+                Name = e.RandomRollData.PlayerName,
+                SpellNameIcon = "Invisibility",
+                SpellType = EQToolShared.Enums.SpellTypes.RandomRoll,
+                Roll = e.RandomRollData.Roll,
+                DurationInSeconds = 60 * 3
+            });
+        }
+
+        private void LogParser_ResistSpellEvent(object sender, SpellParsingMatch e)
+        {
+            spellWindowViewModel.TryAdd(e, true);
+        }
+
+        private void LogParser_POFDTEvent(object sender, POFDTParser.POF_DT_Event e)
+        {
+            this.spellWindowViewModel.TryAddCustom(new CustomTimer
+            {
+                DurationInSeconds = 45,
+                Name = $"--DT-- '{e.DTReceiver}'",
+                SpellNameIcon = "Disease Cloud",
+                SpellType = EQToolShared.Enums.SpellTypes.BadGuyCoolDown
+            });
         }
 
         private void LogParser_CampEvent(object sender, LogParser.CampEventArgs e)
@@ -103,24 +145,27 @@ namespace EQTool
 
         private void LogParser_StartCastingEvent(object sender, LogParser.SpellEventArgs e)
         {
-            spellWindowViewModel.TryAdd(e.Spell);
+            spellWindowViewModel.TryAdd(e.Spell, false);
         }
 
         private int deathcounter = 1;
         private void LogParser_DeadEvent(object sender, LogParser.DeadEventArgs e)
         {
-            if (playerTrackerService.IsPlayer(e.Name))
+            spellWindowViewModel.TryRemoveTarget(e.Name);
+            if (playerTrackerService.IsPlayer(e.Name) || !MasterNPCList.NPCs.Contains(e.Name))
             {
                 return;
             }
             var zonetimer = ZoneSpawnTimes.GetSpawnTime(e.Name, activePlayer?.Player?.Zone);
             var add = new CustomTimer
             {
-                Name = e.Name,
-                DurationInSeconds = (int)zonetimer.TotalSeconds
+                Name = "--Dead-- " + e.Name,
+                DurationInSeconds = (int)zonetimer.TotalSeconds,
+                SpellNameIcon = "Disease Cloud",
+                SpellType = EQToolShared.Enums.SpellTypes.RespawnTimer
             };
 
-            var exisitngdeathentry = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellName == add.Name && spellWindowViewModel.CustomerTime == a.TargetName);
+            var exisitngdeathentry = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellName == add.Name && CustomTimer.CustomerTime == a.TargetName);
             if (exisitngdeathentry != null)
             {
                 deathcounter = ++deathcounter > 999 ? 1 : deathcounter;
@@ -128,7 +173,6 @@ namespace EQTool
             }
 
             spellWindowViewModel.TryAddCustom(add);
-            spellWindowViewModel.TryRemoveTarget(e.Name);
         }
 
         private void LogParser_CancelTimerEvent(object sender, LogParser.CancelTimerEventArgs e)
@@ -141,29 +185,50 @@ namespace EQTool
             spellWindowViewModel.TryAddCustom(e.CustomTimer);
         }
 
+        void timer_Tick(object sender, EventArgs e)
+        {
+            timer.IsEnabled = false;
+            SaveState();
+        }
+
+        private void DebounceSave()
+        {
+            timer.IsEnabled = true;
+            timer.Stop();
+            timer.Start();
+        }
+
         protected override void OnClosing(CancelEventArgs e)
         {
-            UITimer.Stop();
-            UITimer.Dispose();
+            UITimer?.Stop();
+            UITimer?.Dispose();
             SizeChanged -= DPSMeter_SizeChanged;
             StateChanged -= SpellWindow_StateChanged;
             LocationChanged -= DPSMeter_LocationChanged;
-            logParser.SpellWornOtherOffEvent -= LogParser_SpellWornOtherOffEvent;
-            logParser.CampEvent -= LogParser_CampEvent;
-            logParser.EnteredWorldEvent -= LogParser_EnteredWorldEvent;
-            logParser.SpellWornOffSelfEvent -= LogParser_SpellWornOffSelfEvent;
-            logParser.StartCastingEvent -= LogParser_StartCastingEvent;
-            logParser.DeadEvent -= LogParser_DeadEvent;
-            logParser.StartTimerEvent -= LogParser_StartTimerEvent;
-            logParser.CancelTimerEvent -= LogParser_CancelTimerEvent;
-            SaveState();
-            spellWindowViewModel.SpellList = new System.Collections.ObjectModel.ObservableCollection<UISpell>();
+            if (logParser != null)
+            {
+                logParser.SpellWornOtherOffEvent -= LogParser_SpellWornOtherOffEvent;
+                logParser.CampEvent -= LogParser_CampEvent;
+                logParser.EnteredWorldEvent -= LogParser_EnteredWorldEvent;
+                logParser.SpellWornOffSelfEvent -= LogParser_SpellWornOffSelfEvent;
+                logParser.StartCastingEvent -= LogParser_StartCastingEvent;
+                logParser.DeadEvent -= LogParser_DeadEvent;
+                logParser.StartTimerEvent -= LogParser_StartTimerEvent;
+                logParser.CancelTimerEvent -= LogParser_CancelTimerEvent;
+                logParser.POFDTEvent -= LogParser_POFDTEvent;
+                logParser.ResistSpellEvent -= LogParser_ResistSpellEvent;
+                logParser.RandomRollEvent -= LogParser_RandomRollEvent;
+            }
+            if (spellWindowViewModel != null)
+            {
+                spellWindowViewModel.SpellList = new System.Collections.ObjectModel.ObservableCollection<UISpell>();
+            }
             base.OnClosing(e);
         }
 
         private void TrySaveYouSpellData()
         {
-            if (activePlayer.Player != null)
+            if (activePlayer?.Player != null)
             {
                 var before = activePlayer.Player.YouSpells ?? new System.Collections.Generic.List<YouSpells>();
                 activePlayer.Player.YouSpells = spellWindowViewModel.SpellList.Where(a => a.TargetName == EQSpells.SpaceYou).Select(a => new YouSpells
@@ -176,30 +241,35 @@ namespace EQTool
 
         private void SaveState()
         {
-            TrySaveYouSpellData();
-            WindowExtensions.SaveWindowState(settings.SpellWindowState, this);
-            toolSettingsLoad.Save(settings);
+            if (settings != null)
+            {
+                Debug.WriteLine("Saving Triggers window State");
+                TrySaveYouSpellData();
+                WindowExtensions.SaveWindowState(settings.SpellWindowState, this);
+                toolSettingsLoad.Save(settings);
+            }
         }
 
         private void CloseWindow(object sender, RoutedEventArgs e)
         {
             settings.SpellWindowState.Closed = true;
+            SaveState();
             Close();
         }
 
         private void SpellWindow_StateChanged(object sender, EventArgs e)
         {
-            SaveState();
+            DebounceSave();
         }
 
         private void DPSMeter_LocationChanged(object sender, EventArgs e)
         {
-            SaveState();
+            DebounceSave();
         }
 
         private void DPSMeter_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            SaveState();
+            DebounceSave();
         }
 
         private void PollUI(object sender, EventArgs e)

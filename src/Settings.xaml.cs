@@ -4,6 +4,7 @@ using EQTool.Services.Spells.Log;
 using EQTool.ViewModels;
 using EQToolShared.Enums;
 using EQToolShared.HubModels;
+using EQToolShared.Map;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -12,11 +13,13 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Speech.Synthesis;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Forms;
+using System.Windows.Navigation;
 
 namespace EQTool
 {
@@ -56,9 +59,11 @@ namespace EQTool
         private readonly IAppDispatcher appDispatcher;
         private readonly ISignalrPlayerHub signalrPlayerHub;
         private readonly LogParser logParser;
+        private readonly MapLoad mapLoad;
 
         public Settings(
             LogParser logParser,
+            MapLoad mapLoad,
             IAppDispatcher appDispatcher,
             ISignalrPlayerHub signalrPlayerHub,
             DPSLogParse dPSLogParse,
@@ -70,6 +75,7 @@ namespace EQTool
         {
             this.signalrPlayerHub = signalrPlayerHub;
             this.logParser = logParser;
+            this.mapLoad = mapLoad;
             this.appDispatcher = appDispatcher;
             this.dPSLogParse = dPSLogParse;
             this.spells = spells;
@@ -81,16 +87,6 @@ namespace EQTool
             Topmost = true;
             InitializeComponent();
             TryCheckLoggingEnabled();
-            var releasemode = false;
-
-#if RELEASE
-            releasemode = true;
-#endif
-            if (releasemode)
-            {
-                DebuggingStack.Visibility = Visibility.Collapsed;
-            }
-
             try
             {
                 TryUpdateSettings();
@@ -99,12 +95,15 @@ namespace EQTool
             {
 
             }
+            this.DebugTab.Visibility = Visibility.Collapsed;
+#if DEBUG
+            this.DebugTab.Visibility = Visibility.Visible;
+#endif
         }
 
         private void SaveConfig()
         {
             toolSettingsLoad.Save(settings);
-            Properties.Settings.Default.Save();
         }
 
         protected override void OnClosing(CancelEventArgs e)
@@ -146,7 +145,11 @@ namespace EQTool
                 ((App)System.Windows.Application.Current).ToggleMenuButtons(true);
             }
         }
-
+        private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
+        {
+            _ = Process.Start(new ProcessStartInfo(e.Uri.AbsoluteUri));
+            e.Handled = true;
+        }
         private bool IsEqRunning()
         {
             return Process.GetProcessesByName("eqgame").Length > 0;
@@ -177,8 +180,11 @@ namespace EQTool
                     if (FindEq.IsValidEqFolder(fbd.SelectedPath))
                     {
                         SettingsWindowData.EqPath = settings.DefaultEqDirectory = fbd.SelectedPath;
-                        TryUpdateSettings();
-                        TryCheckLoggingEnabled();
+                        this.appDispatcher.DispatchUI(() =>
+                        {
+                            TryUpdateSettings();
+                            TryCheckLoggingEnabled();
+                        });
                     }
                     else
                     {
@@ -225,10 +231,9 @@ namespace EQTool
             TryCheckLoggingEnabled();
         }
 
-        private void SaveAlwaysOntopCheckBoxSettings(object sender, RoutedEventArgs e)
+        private void Savesettings(object sender, RoutedEventArgs e)
         {
             SaveConfig();
-            ((App)System.Windows.Application.Current).ApplyAlwaysOnTop();
         }
 
         private void SaveSettings(object sender, RoutedPropertyChangedEventArgs<double> e)
@@ -263,20 +268,39 @@ namespace EQTool
 
                 new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Heroic Bond"), TargetName = EQSpells.SpaceYou, MultipleMatchesFound = false },
 
-                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Heroic Bond"), TargetName = "bob", MultipleMatchesFound = false },
-                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Chloroplast"), TargetName = "bob", MultipleMatchesFound = true },
-                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Shield of Words"), TargetName = "bob", MultipleMatchesFound = false },
-                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Boon of the Clear Mind"), TargetName = "bob", MultipleMatchesFound = false },
-                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Gift of Brilliance"), TargetName = "bob", MultipleMatchesFound = false },
+                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Heroic Bond"), TargetName = "Aasgard", MultipleMatchesFound = false },
+                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Chloroplast"), TargetName = "Aasgard", MultipleMatchesFound = true },
+                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Shield of Words"), TargetName = "Aasgard", MultipleMatchesFound = false },
+                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Boon of the Clear Mind"), TargetName = "Aasgard", MultipleMatchesFound = false },
+                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Gift of Brilliance"), TargetName = "Aasgard", MultipleMatchesFound = false },
                 new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Mana Sieve"), TargetName = "a bad guy", MultipleMatchesFound = false },
                 new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Mana Sieve"), TargetName = "a bad guy", MultipleMatchesFound = false },
+                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Harvest"), TargetName = EQSpells.SpaceYou, MultipleMatchesFound = false },
+                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "LowerElement"), TargetName = "Tunare", MultipleMatchesFound = false },
+                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "LowerElement"), TargetName = "Tunare", MultipleMatchesFound = false },
+                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "LowerElement"), TargetName = "Tunare", MultipleMatchesFound = false },
+                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "LowerElement"), TargetName = "Tunare", MultipleMatchesFound = false },
+                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "LowerElement"), TargetName = "Tunare", MultipleMatchesFound = false },
+                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "LowerElement"), TargetName = "Tunare", MultipleMatchesFound = false },
+
+                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Concussion"), TargetName = "Tunare", MultipleMatchesFound = false },
+                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Concussion"), TargetName = "Tunare", MultipleMatchesFound = false },
+
+                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Flame Lick"), TargetName = "Tunare", MultipleMatchesFound = false },
+                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Flame Lick"), TargetName = "Tunare", MultipleMatchesFound = false },
+
+                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Jolt"), TargetName = "Tunare", MultipleMatchesFound = false },
+                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Jolt"), TargetName = "Tunare", MultipleMatchesFound = false },
+
+                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Cinder Jolt"), TargetName = "Tunare", MultipleMatchesFound = false },
+                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Cinder Jolt"), TargetName = "Tunare", MultipleMatchesFound = false }
             };
 
             foreach (var item in listofspells)
             {
-                spellWindowViewModel.TryAdd(item);
+                spellWindowViewModel.TryAdd(item, false);
             }
-
+            spellWindowViewModel.TryAddCustom(new CustomTimer { DurationInSeconds = 45, Name = "--DT-- Luetin", SpellType = SpellTypes.BadGuyCoolDown, SpellNameIcon = "Disease Cloud" });
             spellWindowViewModel.TryAddCustom(new CustomTimer { DurationInSeconds = 60 * 27, Name = "King" });
             spellWindowViewModel.TryAddCustom(new CustomTimer { DurationInSeconds = 60 * 18, Name = "hall Wanderer 1" });
         }
@@ -312,6 +336,40 @@ namespace EQTool
                 logParser.Push(msg);
                 SaveConfig();
             }
+        }
+
+        private void testRandomRolls(object sender, RoutedEventArgs e)
+        {
+            var testbutton = sender as System.Windows.Controls.Button;
+            if (!testbutton.IsEnabled)
+            {
+                return;
+            }
+            testbutton.IsEnabled = false;
+            _ = Task.Factory.StartNew(() =>
+            {
+                try
+                {
+                    PushLog("**A Magic Die is rolled by Whitewitch.");
+                    PushLog("**It could have been any number from 0 to 333, but this time it turned up a 99.");
+
+                    PushLog("**A Magic Die is rolled by Huntor.");
+                    PushLog("**It could have been any number from 0 to 333, but this time it turned up a 105.");
+
+                    PushLog("**A Magic Die is rolled by Vasanle.");
+                    PushLog("**It could have been any number from 0 to 333, but this time it turned up a 100.");
+
+                    PushLog("**A Magic Die is rolled by Sanare.");
+                    PushLog("**It could have been any number from 0 to 333, but this time it turned up a 50.");
+
+                    appDispatcher.DispatchUI(() => { testbutton.IsEnabled = true; });
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex.ToString());
+                    appDispatcher.DispatchUI(() => { testbutton.IsEnabled = true; });
+                }
+            });
         }
 
         private void testDPS(object sender, RoutedEventArgs e)
@@ -391,6 +449,12 @@ namespace EQTool
         private void logpush(object sender, RoutedEventArgs e)
         {
             var logtext = LogPushText.Text?.Trim();
+            this.PushLog(logtext);
+        }
+
+        private void PushLog(string message)
+        {
+            var logtext = message?.Trim();
             if (string.IsNullOrWhiteSpace(logtext))
             {
                 return;
@@ -401,8 +465,84 @@ namespace EQTool
                 var d = DateTime.Now;
                 logtext = "[" + d.ToString(format) + "] " + logtext;
             }
-            LogPushText.Text = string.Empty;
             logParser.Push(logtext);
+        }
+
+        private void selectLogFile(object sender, RoutedEventArgs e)
+        {
+            var button = sender as System.Windows.Controls.Button;
+            if (!button.IsEnabled)
+            {
+                return;
+            }
+            var dialog = new Microsoft.Win32.OpenFileDialog();
+            bool? result = dialog.ShowDialog();
+            if (result == true)
+            {
+
+                var filename = dialog.FileName;
+                button.IsEnabled = false;
+                _ = Task.Factory.StartNew(() =>
+                {
+                    var fightlines = File.ReadAllLines(filename);
+                    var lines = new List<KeyValuePair<DateTime, string>>();
+                    foreach (var item in fightlines)
+                    {
+                        if (item == null || item.Length < 27)
+                        {
+                            continue;
+                        }
+
+                        var date = item.Substring(1, 24);
+                        var message = item.Substring(27).Trim();
+                        var format = "ddd MMM dd HH:mm:ss yyyy";
+                        var timestamp = DateTime.Now;
+                        try
+                        {
+                            timestamp = DateTime.ParseExact(date, format, CultureInfo.InvariantCulture);
+                            lines.Add(new KeyValuePair<DateTime, string>(timestamp, item));
+                        }
+                        catch (FormatException)
+                        {
+                        }
+                    }
+                    var starttime = lines.FirstOrDefault().Key;
+                    try
+                    {
+
+                        var starttimediff = DateTime.Now - starttime;
+                        var index = 0;
+                        do
+                        {
+                            for (; index < lines.Count; index++)
+                            {
+                                var t = lines[index].Key + starttimediff;
+                                if (t > DateTime.Now)
+                                {
+                                    break;
+                                }
+                                else
+                                {
+                                    var line = lines[index].Value;
+                                    var indexline = line.IndexOf("]");
+                                    var msgwithout = line.Substring(indexline);
+                                    var format = "ddd MMM dd HH:mm:ss yyyy";
+                                    msgwithout = "[" + t.ToString(format) + msgwithout;
+                                    logParser.Push(msgwithout);
+                                }
+                            }
+                            Thread.Sleep(100);
+                        } while (index < lines.Count);
+
+                        appDispatcher.DispatchUI(() => { button.IsEnabled = true; });
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.WriteLine(ex.ToString());
+                        appDispatcher.DispatchUI(() => { button.IsEnabled = true; });
+                    }
+                });
+            }
         }
 
         private void textmapclicked(object sender, RoutedEventArgs e)
@@ -482,76 +622,72 @@ namespace EQTool
             {
                 return;
             }
+
+            var player = SettingsWindowData.ActivePlayer?.Player;
+            if (player == null)
+            {
+                return;
+            }
+
+            var map = mapLoad.Load(player.Zone);
+            if (map == null)
+            {
+                return;
+            }
+
             testmap.IsEnabled = false;
             _ = Task.Factory.StartNew(() =>
             {
-                var fightlines = Properties.Resources.testmap.Split(new string[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
-                var lines = new List<KeyValuePair<DateTime, string>>();
-                foreach (var item in fightlines)
-                {
-                    if (item == null || item.Length < 27)
-                    {
-                        continue;
-                    }
+                var names = new List<string>() { "faiil", "irishfaf", "chuunt", "jakab", "nima", "healmin" };
+                var pnames = new List<EQToolShared.Map.SignalrPlayer>();
 
-                    var date = item.Substring(1, 24);
-                    var message = item.Substring(27).Trim();
-                    var format = "ddd MMM dd HH:mm:ss yyyy";
-                    var timestamp = DateTime.Now;
-                    try
+                var movementoffset = (int)(map.AABB.MaxWidth / 10);
+                var r = new Random();
+                var offset = r.Next(-movementoffset, movementoffset);
+                foreach (var item in names)
+                {
+                    offset = r.Next(-movementoffset, movementoffset);
+                    var p = new EQToolShared.Map.SignalrPlayer
                     {
-                        timestamp = DateTime.ParseExact(date, format, CultureInfo.InvariantCulture);
-                        lines.Add(new KeyValuePair<DateTime, string>(timestamp, item));
-                    }
-                    catch (FormatException)
-                    {
-                    }
+                        GuildName = "The Drift",
+                        MapLocationSharing = EQToolShared.Map.MapLocationSharing.Everyone,
+                        Name = item,
+                        PlayerClass = PlayerClasses.Necromancer,
+                        Server = Servers.Green,
+                        Zone = player.Zone,
+                        X = map.AABB.Center.X + map.Offset.X + r.Next(-movementoffset, movementoffset),
+                        Y = map.AABB.Center.Y + map.Offset.Y + r.Next(-movementoffset, movementoffset),
+                        Z = map.AABB.Center.Z + map.Offset.Z + r.Next(-movementoffset, movementoffset)
+                    };
+
+                    pnames.Add(p);
+                    signalrPlayerHub.PushPlayerLocationEvent(p);
                 }
-                var starttime = lines.FirstOrDefault().Key;
+                movementoffset = (int)(map.AABB.MaxWidth / 50);
                 try
                 {
-
-                    var starttimediff = DateTime.Now - starttime;
-                    var index = 0;
-                    do
+                    var starttime = DateTime.UtcNow;
+                    while ((starttime - DateTime.UtcNow).TotalMinutes < 3)
                     {
-                        for (; index < lines.Count; index++)
+                        foreach (var item in pnames)
                         {
-                            var t = lines[index].Key + starttimediff;
-                            if (t > DateTime.Now)
+                            var p = new EQToolShared.Map.SignalrPlayer
                             {
-                                break;
-                            }
-                            else
-                            {
-                                var line = lines[index].Value;
-                                var search = "Your Location is ";
-                                var indexsearch = line.IndexOf(search);
-                                if (indexsearch != -1)
-                                {
-                                    var loc = line.Substring(indexsearch + search.Length)
-                                        .Split(',')
-                                        .Select(a => a.Trim())
-                                        .Where(a => !string.IsNullOrWhiteSpace(a))
-                                        .Select(a => double.Parse(a))
-                                        .ToList();
-                                    signalrPlayerHub.PushPlayerLocationEvent(new EQToolShared.Map.SignalrPlayer
-                                    {
-                                        GuildName = "The Drift",
-                                        MapLocationSharing = EQToolShared.Map.MapLocationSharing.Everyone,
-                                        Name = "Vasanle",
-                                        PlayerClass = PlayerClasses.Necromancer,
-                                        Server = Servers.Green,
-                                        Zone = "mischiefplane",
-                                        X = loc[0],
-                                        Y = loc[1],
-                                        Z = loc[2]
-                                    });
-                                }
-                            }
+                                GuildName = "The Drift",
+                                MapLocationSharing = EQToolShared.Map.MapLocationSharing.Everyone,
+                                Name = item.Name,
+                                PlayerClass = PlayerClasses.Necromancer,
+                                Server = Servers.Green,
+                                Zone = player.Zone,
+                                X = item.X + r.Next(-movementoffset, movementoffset),
+                                Y = item.Y + r.Next(-movementoffset, movementoffset),
+                                Z = item.Z + r.Next(-movementoffset, movementoffset)
+                            };
+
+                            signalrPlayerHub.PushPlayerLocationEvent(p);
                         }
-                        Thread.Sleep(100);
-                    } while (index < lines.Count);
+                        Thread.Sleep(1000);
+                    }
 
                     appDispatcher.DispatchUI(() => { testmap.IsEnabled = true; });
                 }
@@ -559,6 +695,213 @@ namespace EQTool
                 {
                     Debug.WriteLine(ex.ToString());
                     appDispatcher.DispatchUI(() => { testmap.IsEnabled = true; });
+                }
+            });
+        }
+
+        private void CHTextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            this.SaveConfig();
+        }
+        private void SaveAlwaysOntopCheckBoxSettings(object sender, RoutedEventArgs e)
+        {
+            SaveConfig();
+            ((App)System.Windows.Application.Current).ApplyAlwaysOnTop();
+        }
+        private void testenrage(object sender, RoutedEventArgs e)
+        {
+            var z = SettingsWindowData.ActivePlayer?.Player?.Zone;
+            if (string.IsNullOrWhiteSpace(z))
+            {
+                return;
+            }
+            if (SettingsWindowData.ActivePlayer?.Player == null)
+            {
+                return;
+            }
+            SettingsWindowData.ActivePlayer.Player.EnrageAudio = true;
+            SettingsWindowData.ActivePlayer.Player.EnrageOverlay = true;
+            ((App)System.Windows.Application.Current).OpenOverLayWindow();
+            if (ZoneParser.ZoneInfoMap.TryGetValue(z, out var zone))
+            {
+                if (zone.NotableNPCs.Any())
+                {
+                    this.PushLog(zone.NotableNPCs.FirstOrDefault() + " has become ENRAGED.");
+                }
+            }
+        }
+
+        private void testlevfading(object sender, RoutedEventArgs e)
+        {
+            if (SettingsWindowData.ActivePlayer?.Player == null)
+            {
+                return;
+            }
+            SettingsWindowData.ActivePlayer.Player.LevFadingAudio = true;
+            SettingsWindowData.ActivePlayer.Player.LevFadingOverlay = true;
+            ((App)System.Windows.Application.Current).OpenOverLayWindow();
+            this.PushLog("You feel as if you are about to fall.");
+        }
+        private void testinvisfading(object sender, RoutedEventArgs e)
+        {
+            if (SettingsWindowData.ActivePlayer?.Player == null)
+            {
+                return;
+            }
+            SettingsWindowData.ActivePlayer.Player.InvisFadingAudio = true;
+            SettingsWindowData.ActivePlayer.Player.InvisFadingOverlay = true;
+            ((App)System.Windows.Application.Current).OpenOverLayWindow();
+            this.PushLog("You feel yourself starting to appear.");
+        }
+
+        private void testCharmBreak(object sender, RoutedEventArgs e)
+        {
+            if (SettingsWindowData.ActivePlayer?.Player == null)
+            {
+                return;
+            }
+            SettingsWindowData.ActivePlayer.Player.CharmBreakAudio = true;
+            SettingsWindowData.ActivePlayer.Player.CharmBreakOverlay = true;
+            ((App)System.Windows.Application.Current).OpenOverLayWindow();
+            this.PushLog("Your charm spell has worn off.");
+        }
+
+        private void testFailedFeign(object sender, RoutedEventArgs e)
+        {
+            if (SettingsWindowData.ActivePlayer?.Player == null)
+            {
+                return;
+            }
+            SettingsWindowData.ActivePlayer.Player.FailedFeignAudio = true;
+            SettingsWindowData.ActivePlayer.Player.FailedFeignOverlay = true;
+            ((App)System.Windows.Application.Current).OpenOverLayWindow();
+            this.PushLog($"{SettingsWindowData.ActivePlayer?.Player?.Name} has fallen to the ground.");
+        }
+        private void testFTE(object sender, RoutedEventArgs e)
+        {
+            if (SettingsWindowData.ActivePlayer?.Player == null)
+            {
+                return;
+            }
+            SettingsWindowData.ActivePlayer.Player.FTEOverlay = true;
+            SettingsWindowData.ActivePlayer.Player.FTEAudio = true;
+            ((App)System.Windows.Application.Current).OpenOverLayWindow();
+            this.PushLog("Dagarn the Destroyer engages Tzvia!");
+        }
+        private void testGroupInvite(object sender, RoutedEventArgs e)
+        {
+            if (SettingsWindowData.ActivePlayer?.Player == null)
+            {
+                return;
+            }
+            SettingsWindowData.ActivePlayer.Player.GroupInviteOverlay = true;
+            SettingsWindowData.ActivePlayer.Player.GroupInviteAudio = true;
+            ((App)System.Windows.Application.Current).OpenOverLayWindow();
+            this.PushLog($"Tzvia invites you to join a group.");
+        }
+        private void testDragonRoar(object sender, RoutedEventArgs e)
+        {
+            if (SettingsWindowData.ActivePlayer?.Player == null)
+            {
+                return;
+            }
+            SettingsWindowData.ActivePlayer.Player.DragonRoarAudio = true;
+            SettingsWindowData.ActivePlayer.Player.DragonRoarOverlay = true;
+            ((App)System.Windows.Application.Current).OpenOverLayWindow();
+            this.PushLog($"You resist the Dragon Roar spell!");
+        }
+        private void textvoice(object sender, RoutedEventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(this.SettingsWindowData.SelectedVoice))
+            {
+                return;
+            }
+
+            System.Threading.Tasks.Task.Factory.StartNew(() =>
+            {
+                var synth = new SpeechSynthesizer();
+                synth.SelectVoice(this.SettingsWindowData.SelectedVoice);
+                synth.Speak($"You resist the Dragon Roar spell!");
+            });
+        }
+
+        private void testChChain(object sender, RoutedEventArgs e)
+        {
+            var button = sender as System.Windows.Controls.Button;
+            if (!button.IsEnabled)
+            {
+                return;
+            }
+            if (SettingsWindowData.ActivePlayer?.Player == null)
+            {
+                return;
+            }
+            SettingsWindowData.ActivePlayer.Player.ChChainOverlay = true;
+            SettingsWindowData.ActivePlayer.Player.ChChainWarningOverlay = true;
+            SettingsWindowData.ActivePlayer.Player.ChChainWarningAudio = true;
+            ((App)System.Windows.Application.Current).OpenOverLayWindow();
+            button.IsEnabled = false;
+            _ = Task.Factory.StartNew(() =>
+            {
+                try
+                {
+                    var msg = "You shout, 'CA 001 CH -- Beefwich'";
+                    PushLog(msg);
+                    Thread.Sleep(2000);
+
+                    msg = "Mycro shouts, 'CA 002 CH -- Huntor'";
+                    PushLog(msg);
+                    Thread.Sleep(1000);
+
+                    msg = "Sleeper shouts, 'CA 003 CH -- Beefwich'";
+                    PushLog(msg);
+                    Thread.Sleep(2000);
+
+                    msg = "Sleeper shouts, 'CA 004 CH -- Beefwich'";
+                    PushLog(msg);
+                    Thread.Sleep(1800);
+
+                    msg = "You shout, 'CA 001 CH -- Beefwich'";
+                    PushLog(msg);
+                    Thread.Sleep(2000);
+
+                    msg = "Mycro shouts, 'CA 002 CH -- Huntor'";
+                    PushLog(msg);
+                    Thread.Sleep(1500);
+
+                    msg = "Sleeper shouts, 'CA 003 CH -- Beefwich'";
+                    PushLog(msg);
+                    Thread.Sleep(2000);
+
+                    msg = "Sleeper shouts, 'CA 004 CH -- Beefwich'";
+                    PushLog(msg);
+                    Thread.Sleep(1700);
+
+                    msg = "Hanbox shouts, 'CA 002 CH -- Huntor'";
+                    PushLog(msg);
+                    Thread.Sleep(1500);
+
+                    msg = "Hanbox shouts, 'CA 001 CH -- Beefwich'";
+                    PushLog(msg);
+                    Thread.Sleep(1700);
+
+                    msg = "Sleeper shouts, 'CA 003 CH -- Beefwich'";
+                    PushLog(msg);
+                    Thread.Sleep(2000);
+
+                    msg = "Sleeper shouts, 'CA 004 CH -- Beefwich'";
+                    PushLog(msg);
+                    Thread.Sleep(1800);
+
+                    msg = "Mycro shouts, 'CA 002 CH -- Huntor'";
+                    PushLog(msg);
+                    Thread.Sleep(1500);
+                    appDispatcher.DispatchUI(() => { button.IsEnabled = true; });
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex.ToString());
+                    appDispatcher.DispatchUI(() => { button.IsEnabled = true; });
                 }
             });
         }

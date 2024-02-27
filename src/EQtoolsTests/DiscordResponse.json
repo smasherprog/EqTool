@@ -1,0 +1,3692 @@
+[
+  {
+    "id": "1184887905173377107",
+    "type": 0,
+    "content": "",
+    "channel_id": "720860598362963998",
+    "author": {
+      "id": "643497793834582017",
+      "username": "TunnelQuestBot",
+      "avatar": "7b75b3efdc8ffc02c0157aa1c525e829",
+      "discriminator": "2692",
+      "public_flags": 0,
+      "premium_type": 0,
+      "flags": 0,
+      "bot": true,
+      "banner": null,
+      "accent_color": null,
+      "global_name": null,
+      "avatar_decoration_data": null,
+      "banner_color": null
+    },
+    "attachments": [],
+    "embeds": [
+      {
+        "type": "rich",
+        "title": "```WTS Mrylokar's Helm, Mrylokar's Greaves, Lodizal Shell Shield, Elder Spiritist's Breastplate, Tolapumj's Robe```",
+        "color": 1857720,
+        "timestamp": "2023-12-14T16:01:32.162000+00:00",
+        "fields": [
+          {
+            "name": "No Price Listed",
+            "value": "[Mrylokar's Helm](https://wiki.project1999.com/Mrylokar%27s_Helm \"30 Day Avg: 1k (of 41)\n 60 Day Avg: 879pp (of 309)\n 90 Day Avg: 915pp (of 549)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Mrylokar's Greaves](https://wiki.project1999.com/Mrylokar%27s_Greaves \"30 Day Avg: - (of 31)\n 60 Day Avg: - (of 106)\n 90 Day Avg: - (of 189)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Lodizal Shell Shield](https://wiki.project1999.com/Lodizal_Shell_Shield \"30 Day Avg: 17,862pp (of 711)\n 60 Day Avg: 17,509pp (of 1372)\n 90 Day Avg: 17,819pp (of 2106)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Elder Spiritist's Breastplate](https://wiki.project1999.com/Elder_Spiritist%27s_Breastplate \"30 Day Avg: 14,032pp (of 144)\n 60 Day Avg: 14,491pp (of 469)\n 90 Day Avg: 14,715pp (of 1196)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Tolapumj's Robe](https://wiki.project1999.com/Tolapumj%27s_Robe \"30 Day Avg: 970pp (of 341)\n 60 Day Avg: 959pp (of 589)\n 90 Day Avg: 956pp (of 853)\")",
+            "inline": true
+          }
+        ],
+        "author": {
+          "name": "[ WTS ]   Adrenalized"
+        },
+        "footer": {
+          "text": "Project 1999 Blue"
+        },
+        "content_scan_version": 0
+      }
+    ],
+    "mentions": [],
+    "mention_roles": [],
+    "pinned": false,
+    "mention_everyone": false,
+    "tts": false,
+    "timestamp": "2023-12-14T16:01:30.746000+00:00",
+    "edited_timestamp": null,
+    "flags": 0,
+    "components": []
+  },
+  {
+    "id": "1184887653137645652",
+    "type": 0,
+    "content": "",
+    "channel_id": "720860598362963998",
+    "author": {
+      "id": "643497793834582017",
+      "username": "TunnelQuestBot",
+      "avatar": "7b75b3efdc8ffc02c0157aa1c525e829",
+      "discriminator": "2692",
+      "public_flags": 0,
+      "premium_type": 0,
+      "flags": 0,
+      "bot": true,
+      "banner": null,
+      "accent_color": null,
+      "global_name": null,
+      "avatar_decoration_data": null,
+      "banner_color": null
+    },
+    "attachments": [],
+    "embeds": [
+      {
+        "type": "rich",
+        "title": "```WTS Golden Bracer | Teacher's Syllabus```",
+        "color": 1857720,
+        "timestamp": "2023-12-14T16:00:32.051000+00:00",
+        "fields": [
+          {
+            "name": "No Price Listed",
+            "value": "[Golden Bracer](https://wiki.project1999.com/Golden_Bracer \"30 Day Avg: 635pp (of 63)\n 60 Day Avg: 636pp (of 73)\n 90 Day Avg: 625pp (of 95)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Teacher's Syllabus](https://wiki.project1999.com/Teacher%27s_Syllabus \"30 Day Avg: 200pp (of 17)\n 60 Day Avg: 223pp (of 20)\n 90 Day Avg: 223pp (of 20)\")",
+            "inline": true
+          }
+        ],
+        "author": {
+          "name": "[ WTS ]   Loambag"
+        },
+        "footer": {
+          "text": "Project 1999 Blue"
+        },
+        "content_scan_version": 0
+      }
+    ],
+    "mentions": [],
+    "mention_roles": [],
+    "pinned": false,
+    "mention_everyone": false,
+    "tts": false,
+    "timestamp": "2023-12-14T16:00:30.656000+00:00",
+    "edited_timestamp": null,
+    "flags": 0,
+    "components": []
+  },
+  {
+    "id": "1184887275746766858",
+    "type": 0,
+    "content": "",
+    "channel_id": "720860598362963998",
+    "author": {
+      "id": "643497793834582017",
+      "username": "TunnelQuestBot",
+      "avatar": "7b75b3efdc8ffc02c0157aa1c525e829",
+      "discriminator": "2692",
+      "public_flags": 0,
+      "premium_type": 0,
+      "flags": 0,
+      "bot": true,
+      "banner": null,
+      "accent_color": null,
+      "global_name": null,
+      "avatar_decoration_data": null,
+      "banner_color": null
+    },
+    "attachments": [],
+    "embeds": [
+      {
+        "type": "rich",
+        "title": "```WTS Flawless Diamond x3 - Black Marble x3 - Crystal Chitin Gauntlets - Earring of Woven Bark```",
+        "color": 1857720,
+        "timestamp": "2023-12-14T15:59:01.863000+00:00",
+        "fields": [
+          {
+            "name": "3pp",
+            "value": "[Flawless Diamond](https://wiki.project1999.com/Flawless_Diamond \"30 Day Avg: 2,999pp (of 624)\n 60 Day Avg: 2,997pp (of 983)\n 90 Day Avg: 2,977pp (of 2342)\")",
+            "inline": true
+          },
+          {
+            "name": "3pp",
+            "value": "[Black Marble](https://wiki.project1999.com/Black_Marble \"30 Day Avg: 1,004pp (of 536)\n 60 Day Avg: 1,002pp (of 772)\n 90 Day Avg: 996pp (of 1815)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Crystal Chitin Gauntlets](https://wiki.project1999.com/Crystal_Chitin_Gauntlets \"30 Day Avg: 231pp (of 995)\n 60 Day Avg: 238pp (of 1860)\n 90 Day Avg: 235pp (of 3268)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Earring of Woven Bark](https://wiki.project1999.com/Earring_of_Woven_Bark \"30 Day Avg: 366pp (of 892)\n 60 Day Avg: 368pp (of 1805)\n 90 Day Avg: 358pp (of 3337)\")",
+            "inline": true
+          }
+        ],
+        "author": {
+          "name": "[ WTS ]   Quexle"
+        },
+        "footer": {
+          "text": "Project 1999 Blue"
+        },
+        "content_scan_version": 0
+      }
+    ],
+    "mentions": [],
+    "mention_roles": [],
+    "pinned": false,
+    "mention_everyone": false,
+    "tts": false,
+    "timestamp": "2023-12-14T15:59:00.679000+00:00",
+    "edited_timestamp": null,
+    "flags": 0,
+    "components": []
+  },
+  {
+    "id": "1184887211829776467",
+    "type": 0,
+    "content": "",
+    "channel_id": "720860598362963998",
+    "author": {
+      "id": "643497793834582017",
+      "username": "TunnelQuestBot",
+      "avatar": "7b75b3efdc8ffc02c0157aa1c525e829",
+      "discriminator": "2692",
+      "public_flags": 0,
+      "premium_type": 0,
+      "flags": 0,
+      "bot": true,
+      "banner": null,
+      "accent_color": null,
+      "global_name": null,
+      "avatar_decoration_data": null,
+      "banner_color": null
+    },
+    "attachments": [],
+    "embeds": [
+      {
+        "type": "rich",
+        "title": "```WTS Earring of Twisted Leaves - Girdle of Flayed Iksar - Nathsar Leggings - Mask of Swirling Water - Earring of Everfount - Sarnak Prayer Beads - Rabid Chokidai Fang pst```",
+        "color": 1857720,
+        "timestamp": "2023-12-14T15:58:46.833000+00:00",
+        "fields": [
+          {
+            "name": "No Price Listed",
+            "value": "[Earring of Twisted Leaves](https://wiki.project1999.com/Earring_of_Twisted_Leaves \"30 Day Avg: 2,996pp (of 114)\n 60 Day Avg: 3,113pp (of 211)\n 90 Day Avg: 3,113pp (of 215)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Girdle of Flayed Iksar](https://wiki.project1999.com/Girdle_of_Flayed_Iksar \"30 Day Avg: 3,968pp (of 746)\n 60 Day Avg: 3,974pp (of 1210)\n 90 Day Avg: 3,944pp (of 1737)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Nathsar Leggings](https://wiki.project1999.com/Nathsar_Leggings \"30 Day Avg: 693pp (of 550)\n 60 Day Avg: 700pp (of 1083)\n 90 Day Avg: 831pp (of 1361)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Mask of Swirling Water](https://wiki.project1999.com/Mask_of_Swirling_Water \"30 Day Avg: - (of 92)\n 60 Day Avg: - (of 98)\n 90 Day Avg: - (of 154)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Earring of Everfount](https://wiki.project1999.com/Earring_of_Everfount \"30 Day Avg: 305pp (of 33)\n 60 Day Avg: 335pp (of 104)\n 90 Day Avg: 354pp (of 142)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Sarnak Prayer Beads](https://wiki.project1999.com/Sarnak_Prayer_Beads \"30 Day Avg: 1,147pp (of 186)\n 60 Day Avg: 1,148pp (of 272)\n 90 Day Avg: 1,192pp (of 385)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Rabid Chokidai Fang](https://wiki.project1999.com/Rabid_Chokidai_Fang \"30 Day Avg: 1,319pp (of 821)\n 60 Day Avg: 1,401pp (of 1655)\n 90 Day Avg: 1,409pp (of 2783)\")",
+            "inline": true
+          }
+        ],
+        "author": {
+          "name": "[ WTS ]   Quexle"
+        },
+        "footer": {
+          "text": "Project 1999 Blue"
+        },
+        "content_scan_version": 0
+      }
+    ],
+    "mentions": [],
+    "mention_roles": [],
+    "pinned": false,
+    "mention_everyone": false,
+    "tts": false,
+    "timestamp": "2023-12-14T15:58:45.440000+00:00",
+    "edited_timestamp": null,
+    "flags": 0,
+    "components": []
+  },
+  {
+    "id": "1184887107064451114",
+    "type": 0,
+    "content": "",
+    "channel_id": "720860598362963998",
+    "author": {
+      "id": "643497793834582017",
+      "username": "TunnelQuestBot",
+      "avatar": "7b75b3efdc8ffc02c0157aa1c525e829",
+      "discriminator": "2692",
+      "public_flags": 0,
+      "premium_type": 0,
+      "flags": 0,
+      "bot": true,
+      "banner": null,
+      "accent_color": null,
+      "global_name": null,
+      "avatar_decoration_data": null,
+      "banner_color": null
+    },
+    "attachments": [],
+    "embeds": [
+      {
+        "type": "rich",
+        "title": "```WTS Spiked Seahorse Hide Belt - Tattered Flesh Veil - Chokidai Hide Pauldrons - Iksar Hide Manual - Crystalline Silk Belt - Spider Fur Belt pst```",
+        "color": 1857720,
+        "timestamp": "2023-12-14T15:58:21.792000+00:00",
+        "fields": [
+          {
+            "name": "No Price Listed",
+            "value": "[Spiked Seahorse Hide Belt](https://wiki.project1999.com/Spiked_Seahorse_Hide_Belt \"30 Day Avg: 17,476pp (of 195)\n 60 Day Avg: 17,439pp (of 400)\n 90 Day Avg: 17,706pp (of 906)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Tattered Flesh Veil](https://wiki.project1999.com/Tattered_Flesh_Veil \"30 Day Avg: 5,896pp (of 609)\n 60 Day Avg: 5,928pp (of 825)\n 90 Day Avg: 5,927pp (of 1163)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Chokidai Hide Pauldrons](https://wiki.project1999.com/Chokidai_Hide_Pauldrons \"30 Day Avg: 10,458pp (of 360)\n 60 Day Avg: 10,667pp (of 703)\n 90 Day Avg: 10,515pp (of 1699)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Iksar Hide Manual](https://wiki.project1999.com/Iksar_Hide_Manual \"30 Day Avg: 529pp (of 396)\n 60 Day Avg: 554pp (of 1039)\n 90 Day Avg: 557pp (of 1798)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Crystalline Silk Belt](https://wiki.project1999.com/Crystalline_Silk_Belt \"30 Day Avg: 2k (of 153)\n 60 Day Avg: 1,923pp (of 401)\n 90 Day Avg: 1.97k (of 568)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Spider Fur Belt](https://wiki.project1999.com/Spider_Fur_Belt \"30 Day Avg: 1,666pp (of 598)\n 60 Day Avg: 1,764pp (of 1089)\n 90 Day Avg: 1,839pp (of 1538)\")",
+            "inline": true
+          }
+        ],
+        "author": {
+          "name": "[ WTS ]   Quexle"
+        },
+        "footer": {
+          "text": "Project 1999 Blue"
+        },
+        "content_scan_version": 0
+      }
+    ],
+    "mentions": [],
+    "mention_roles": [],
+    "pinned": false,
+    "mention_everyone": false,
+    "tts": false,
+    "timestamp": "2023-12-14T15:58:20.462000+00:00",
+    "edited_timestamp": null,
+    "flags": 0,
+    "components": []
+  },
+  {
+    "id": "1184886645909094431",
+    "type": 0,
+    "content": "",
+    "channel_id": "720860598362963998",
+    "author": {
+      "id": "643497793834582017",
+      "username": "TunnelQuestBot",
+      "avatar": "7b75b3efdc8ffc02c0157aa1c525e829",
+      "discriminator": "2692",
+      "public_flags": 0,
+      "premium_type": 0,
+      "flags": 0,
+      "bot": true,
+      "banner": null,
+      "accent_color": null,
+      "global_name": null,
+      "avatar_decoration_data": null,
+      "banner_color": null
+    },
+    "attachments": [],
+    "embeds": [
+      {
+        "type": "rich",
+        "title": "```WTS Mrylokar's Helm, Mrylokar's Greaves, Lodizal Shell Shield, Elder Spiritist's Breastplate, Tolapumj's Robe```",
+        "color": 1857720,
+        "timestamp": "2023-12-14T15:56:31.562000+00:00",
+        "fields": [
+          {
+            "name": "No Price Listed",
+            "value": "[Mrylokar's Helm](https://wiki.project1999.com/Mrylokar%27s_Helm \"30 Day Avg: 1k (of 41)\n 60 Day Avg: 879pp (of 309)\n 90 Day Avg: 915pp (of 549)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Mrylokar's Greaves](https://wiki.project1999.com/Mrylokar%27s_Greaves \"30 Day Avg: - (of 31)\n 60 Day Avg: - (of 106)\n 90 Day Avg: - (of 189)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Lodizal Shell Shield](https://wiki.project1999.com/Lodizal_Shell_Shield \"30 Day Avg: 17,862pp (of 711)\n 60 Day Avg: 17,509pp (of 1372)\n 90 Day Avg: 17,819pp (of 2106)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Elder Spiritist's Breastplate](https://wiki.project1999.com/Elder_Spiritist%27s_Breastplate \"30 Day Avg: 14,032pp (of 144)\n 60 Day Avg: 14,491pp (of 469)\n 90 Day Avg: 14,715pp (of 1196)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Tolapumj's Robe](https://wiki.project1999.com/Tolapumj%27s_Robe \"30 Day Avg: 970pp (of 341)\n 60 Day Avg: 959pp (of 589)\n 90 Day Avg: 956pp (of 853)\")",
+            "inline": true
+          }
+        ],
+        "author": {
+          "name": "[ WTS ]   Adrenalized"
+        },
+        "footer": {
+          "text": "Project 1999 Blue"
+        },
+        "content_scan_version": 0
+      }
+    ],
+    "mentions": [],
+    "mention_roles": [],
+    "pinned": false,
+    "mention_everyone": false,
+    "tts": false,
+    "timestamp": "2023-12-14T15:56:30.514000+00:00",
+    "edited_timestamp": null,
+    "flags": 0,
+    "components": []
+  },
+  {
+    "id": "1184886433673126081",
+    "type": 0,
+    "content": "",
+    "channel_id": "720860598362963998",
+    "author": {
+      "id": "643497793834582017",
+      "username": "TunnelQuestBot",
+      "avatar": "7b75b3efdc8ffc02c0157aa1c525e829",
+      "discriminator": "2692",
+      "public_flags": 0,
+      "premium_type": 0,
+      "flags": 0,
+      "bot": true,
+      "banner": null,
+      "accent_color": null,
+      "global_name": null,
+      "avatar_decoration_data": null,
+      "banner_color": null
+    },
+    "attachments": [],
+    "embeds": [
+      {
+        "type": "rich",
+        "title": "```WTS Dark Scale Sleeves, Feathered Leggings, Giant Scalemail Tunic, Totem of the Warrior Spirit, Karana's Tear, Choker of Majdd, Platinum Tiara```",
+        "color": 1857720,
+        "timestamp": "2023-12-14T15:55:41.456000+00:00",
+        "fields": [
+          {
+            "name": "No Price Listed",
+            "value": "[Dark Scale Sleeves](https://wiki.project1999.com/Dark_Scale_Sleeves \"30 Day Avg: 570pp (of 1178)\n 60 Day Avg: 583pp (of 1940)\n 90 Day Avg: 580pp (of 2481)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Feathered Leggings](https://wiki.project1999.com/Feathered_Leggings \"30 Day Avg: 44pp (of 145)\n 60 Day Avg: 59pp (of 221)\n 90 Day Avg: 53pp (of 376)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Giant Scalemail Tunic](https://wiki.project1999.com/Giant_Scalemail_Tunic \"30 Day Avg: 75pp (of 20)\n 60 Day Avg: 73pp (of 55)\n 90 Day Avg: 72pp (of 176)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Totem of the Warrior Spirit](https://wiki.project1999.com/Totem_of_the_Warrior_Spirit \"30 Day Avg: 110pp (of 389)\n 60 Day Avg: 117pp (of 417)\n 90 Day Avg: 139pp (of 592)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Karana's Tear](https://wiki.project1999.com/Karana%27s_Tear \"30 Day Avg: - (of 8)\n 60 Day Avg: - (of 16)\n 90 Day Avg: - (of 24)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Choker of Majdd](https://wiki.project1999.com/Choker_of_Majdd \"30 Day Avg: 116pp (of 109)\n 60 Day Avg: 136pp (of 161)\n 90 Day Avg: 147pp (of 252)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Platinum Tiara](https://wiki.project1999.com/Platinum_Tiara \"30 Day Avg: - (of 1)\n 60 Day Avg: 1,253pp (of 75)\n 90 Day Avg: 1,253pp (of 212)\")",
+            "inline": true
+          }
+        ],
+        "author": {
+          "name": "[ WTS ]   Myoull"
+        },
+        "footer": {
+          "text": "Project 1999 Blue"
+        },
+        "content_scan_version": 0
+      }
+    ],
+    "mentions": [],
+    "mention_roles": [],
+    "pinned": false,
+    "mention_everyone": false,
+    "tts": false,
+    "timestamp": "2023-12-14T15:55:39.913000+00:00",
+    "edited_timestamp": null,
+    "flags": 0,
+    "components": []
+  },
+  {
+    "id": "1184886415692144770",
+    "type": 0,
+    "content": "",
+    "channel_id": "720860598362963998",
+    "author": {
+      "id": "643497793834582017",
+      "username": "TunnelQuestBot",
+      "avatar": "7b75b3efdc8ffc02c0157aa1c525e829",
+      "discriminator": "2692",
+      "public_flags": 0,
+      "premium_type": 0,
+      "flags": 0,
+      "bot": true,
+      "banner": null,
+      "accent_color": null,
+      "global_name": null,
+      "avatar_decoration_data": null,
+      "banner_color": null
+    },
+    "attachments": [],
+    "embeds": [
+      {
+        "type": "rich",
+        "title": "```WTS Iksar Scaled Gloves, Firerune Brand, Brell's Keg Popper, Club of the Ice Ocean, Springwood Club, Inlaid Jade Hoop```",
+        "color": 1857720,
+        "timestamp": "2023-12-14T15:55:36.451000+00:00",
+        "fields": [
+          {
+            "name": "No Price Listed",
+            "value": "[Iksar Scaled Gloves](https://wiki.project1999.com/Iksar_Scaled_Gloves \"30 Day Avg: 35pp (of 202)\n 60 Day Avg: 29pp (of 948)\n 90 Day Avg: 27pp (of 1171)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Firerune Brand](https://wiki.project1999.com/Firerune_Brand \"30 Day Avg: 97pp (of 47)\n 60 Day Avg: 98pp (of 419)\n 90 Day Avg: 98pp (of 531)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Brell's Keg Popper](https://wiki.project1999.com/Brell%27s_Keg_Popper \"30 Day Avg: - (of 9)\n 60 Day Avg: 43pp (of 19)\n 90 Day Avg: 55pp (of 54)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Club of the Ice Ocean](https://wiki.project1999.com/Club_of_the_Ice_Ocean \"30 Day Avg: 200pp (of 75)\n 60 Day Avg: 190pp (of 168)\n 90 Day Avg: 157pp (of 204)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Springwood Club](https://wiki.project1999.com/Springwood_Club \"30 Day Avg: - (of 31)\n 60 Day Avg: 50pp (of 161)\n 90 Day Avg: 67pp (of 212)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Inlaid Jade Hoop](https://wiki.project1999.com/Inlaid_Jade_Hoop \"30 Day Avg: 1,127pp (of 467)\n 60 Day Avg: 1,167pp (of 931)\n 90 Day Avg: 1,154pp (of 1181)\")",
+            "inline": true
+          }
+        ],
+        "author": {
+          "name": "[ WTS ]   Myoull"
+        },
+        "footer": {
+          "text": "Project 1999 Blue"
+        },
+        "content_scan_version": 0
+      }
+    ],
+    "mentions": [],
+    "mention_roles": [],
+    "pinned": false,
+    "mention_everyone": false,
+    "tts": false,
+    "timestamp": "2023-12-14T15:55:35.626000+00:00",
+    "edited_timestamp": null,
+    "flags": 0,
+    "components": []
+  },
+  {
+    "id": "1184885826694434827",
+    "type": 0,
+    "content": "",
+    "channel_id": "720860598362963998",
+    "author": {
+      "id": "643497793834582017",
+      "username": "TunnelQuestBot",
+      "avatar": "7b75b3efdc8ffc02c0157aa1c525e829",
+      "discriminator": "2692",
+      "public_flags": 0,
+      "premium_type": 0,
+      "flags": 0,
+      "bot": true,
+      "banner": null,
+      "accent_color": null,
+      "global_name": null,
+      "avatar_decoration_data": null,
+      "banner_color": null
+    },
+    "attachments": [],
+    "embeds": [
+      {
+        "type": "rich",
+        "title": "```WTS Goblin Gazughi Ring , Elder Spiritist's Boots , Luminary Two Handed Sword , Spine Chill Spear , Cane of Harmony , Serpentskin Eyepatch```",
+        "color": 1857720,
+        "timestamp": "2023-12-14T15:53:16.171000+00:00",
+        "fields": [
+          {
+            "name": "No Price Listed",
+            "value": "[Goblin Gazughi Ring](https://wiki.project1999.com/Goblin_Gazughi_Ring \"30 Day Avg: 6,364pp (of 198)\n 60 Day Avg: 6,394pp (of 483)\n 90 Day Avg: 6,465pp (of 682)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Elder Spiritist's Boots](https://wiki.project1999.com/Elder_Spiritist%27s_Boots \"30 Day Avg: 500pp (of 44)\n 60 Day Avg: 488pp (of 118)\n 90 Day Avg: 492pp (of 168)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Luminary Two Handed Sword](https://wiki.project1999.com/Luminary_Two_Handed_Sword \"30 Day Avg: - (of 8)\n 60 Day Avg: 250pp (of 29)\n 90 Day Avg: 250pp (of 46)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Spine Chill Spear](https://wiki.project1999.com/Spine_Chill_Spear \"30 Day Avg: 49pp (of 142)\n 60 Day Avg: 51pp (of 284)\n 90 Day Avg: 56pp (of 396)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Cane of Harmony](https://wiki.project1999.com/Cane_of_Harmony \"30 Day Avg: 100pp (of 79)\n 60 Day Avg: 95pp (of 253)\n 90 Day Avg: 96pp (of 405)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Serpentskin Eyepatch](https://wiki.project1999.com/Serpentskin_Eyepatch \"30 Day Avg: - (of 0)\n 60 Day Avg: - (of 0)\n 90 Day Avg: - (of 0)\")",
+            "inline": true
+          }
+        ],
+        "author": {
+          "name": "[ WTS ]   Emissaryofthule"
+        },
+        "footer": {
+          "text": "Project 1999 Blue"
+        },
+        "content_scan_version": 0
+      }
+    ],
+    "mentions": [],
+    "mention_roles": [],
+    "pinned": false,
+    "mention_everyone": false,
+    "tts": false,
+    "timestamp": "2023-12-14T15:53:15.198000+00:00",
+    "edited_timestamp": null,
+    "flags": 0,
+    "components": []
+  },
+  {
+    "id": "1184885825067040809",
+    "type": 0,
+    "content": "",
+    "channel_id": "720860598362963998",
+    "author": {
+      "id": "643497793834582017",
+      "username": "TunnelQuestBot",
+      "avatar": "7b75b3efdc8ffc02c0157aa1c525e829",
+      "discriminator": "2692",
+      "public_flags": 0,
+      "premium_type": 0,
+      "flags": 0,
+      "bot": true,
+      "banner": null,
+      "accent_color": null,
+      "global_name": null,
+      "avatar_decoration_data": null,
+      "banner_color": null
+    },
+    "attachments": [],
+    "embeds": [
+      {
+        "type": "rich",
+        "title": "```All my prices are below market rate, priced to sell! I don't want to waste more time in here than I already do. Come one come all!```",
+        "color": 1857720,
+        "timestamp": "2023-12-14T15:53:16.171000+00:00",
+        "fields": [
+          {
+            "name": "No Price Listed",
+            "value": "[Rice](https://wiki.project1999.com/Rice \"30 Day Avg: - (of 28)\n 60 Day Avg: - (of 56)\n 90 Day Avg: - (of 183)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Rice](https://wiki.project1999.com/Rice \"30 Day Avg: - (of 28)\n 60 Day Avg: - (of 56)\n 90 Day Avg: - (of 183)\")",
+            "inline": true
+          }
+        ],
+        "author": {
+          "name": "[ WTS ]   Emissaryofthule"
+        },
+        "footer": {
+          "text": "Project 1999 Blue"
+        },
+        "content_scan_version": 0
+      }
+    ],
+    "mentions": [],
+    "mention_roles": [],
+    "pinned": false,
+    "mention_everyone": false,
+    "tts": false,
+    "timestamp": "2023-12-14T15:53:14.810000+00:00",
+    "edited_timestamp": null,
+    "flags": 0,
+    "components": []
+  },
+  {
+    "id": "1184885810911268875",
+    "type": 0,
+    "content": "",
+    "channel_id": "720860598362963998",
+    "author": {
+      "id": "643497793834582017",
+      "username": "TunnelQuestBot",
+      "avatar": "7b75b3efdc8ffc02c0157aa1c525e829",
+      "discriminator": "2692",
+      "public_flags": 0,
+      "premium_type": 0,
+      "flags": 0,
+      "bot": true,
+      "banner": null,
+      "accent_color": null,
+      "global_name": null,
+      "avatar_decoration_data": null,
+      "banner_color": null
+    },
+    "attachments": [],
+    "embeds": [
+      {
+        "type": "rich",
+        "title": "```WTS Spell: Form of the Howler , Spell: Scars of Sigil , Spell: Blizzard , Spell: Yaulp IV , Spell: Atol`s Spectral Shackles , Spell: Protection of the Glades```",
+        "color": 1857720,
+        "timestamp": "2023-12-14T15:53:11.298000+00:00",
+        "fields": [
+          {
+            "name": "No Price Listed",
+            "value": "[Form of the Howler](https://wiki.project1999.com/Form_of_the_Howler \"30 Day Avg: 414pp (of 246)\n 60 Day Avg: 429pp (of 624)\n 90 Day Avg: 418pp (of 1026)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Scars of Sigil](https://wiki.project1999.com/Scars_of_Sigil \"30 Day Avg: 100pp (of 687)\n 60 Day Avg: 97pp (of 2214)\n 90 Day Avg: 97pp (of 2905)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Blizzard](https://wiki.project1999.com/Blizzard \"30 Day Avg: 52pp (of 386)\n 60 Day Avg: 64pp (of 1567)\n 90 Day Avg: 66pp (of 2153)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Yaulp Iv](https://wiki.project1999.com/Yaulp_IV \"30 Day Avg: 50pp (of 252)\n 60 Day Avg: 56pp (of 550)\n 90 Day Avg: 56pp (of 784)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Atol`s Spectral Shackles](https://wiki.project1999.com/Atol%27s_Spectral_Shackles \"Could not find historical pricing for item ATOL`S SPECTRAL SHACKLES\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Protection of the Glades](https://wiki.project1999.com/Protection_of_the_Glades \"30 Day Avg: 481pp (of 280)\n 60 Day Avg: 490pp (of 665)\n 90 Day Avg: 490pp (of 909)\")",
+            "inline": true
+          }
+        ],
+        "author": {
+          "name": "[ WTS ]   Emissaryofthule"
+        },
+        "footer": {
+          "text": "Project 1999 Blue"
+        },
+        "content_scan_version": 0
+      }
+    ],
+    "mentions": [],
+    "mention_roles": [],
+    "pinned": false,
+    "mention_everyone": false,
+    "tts": false,
+    "timestamp": "2023-12-14T15:53:11.435000+00:00",
+    "edited_timestamp": null,
+    "flags": 0,
+    "components": []
+  },
+  {
+    "id": "1184885805223792712",
+    "type": 0,
+    "content": "",
+    "channel_id": "720860598362963998",
+    "author": {
+      "id": "643497793834582017",
+      "username": "TunnelQuestBot",
+      "avatar": "7b75b3efdc8ffc02c0157aa1c525e829",
+      "discriminator": "2692",
+      "public_flags": 0,
+      "premium_type": 0,
+      "flags": 0,
+      "bot": true,
+      "banner": null,
+      "accent_color": null,
+      "global_name": null,
+      "avatar_decoration_data": null,
+      "banner_color": null
+    },
+    "attachments": [],
+    "embeds": [
+      {
+        "type": "rich",
+        "title": "```WTS Velium Blue Diamond Bracelet x2, Velium Jacinth Wedding Ring x2, Crushed Sea Sapphire , Jacinth x3, Blue Diamond x3```",
+        "color": 1857720,
+        "timestamp": "2023-12-14T15:53:11.298000+00:00",
+        "fields": [
+          {
+            "name": "2pp",
+            "value": "[Velium Blue Diamond Bracelet](https://wiki.project1999.com/Velium_Blue_Diamond_Bracelet \"30 Day Avg: 991pp (of 471)\n 60 Day Avg: 926pp (of 1052)\n 90 Day Avg: 939pp (of 1566)\")",
+            "inline": true
+          },
+          {
+            "name": "2pp",
+            "value": "[Velium Jacinth Wedding Ring](https://wiki.project1999.com/Velium_Jacinth_Wedding_Ring \"30 Day Avg: 600pp (of 429)\n 60 Day Avg: 593pp (of 776)\n 90 Day Avg: 595pp (of 1160)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Crushed Sea Sapphire](https://wiki.project1999.com/Crushed_Sea_Sapphire \"30 Day Avg: - (of 44)\n 60 Day Avg: 100pp (of 130)\n 90 Day Avg: 100pp (of 230)\")",
+            "inline": true
+          },
+          {
+            "name": "3pp",
+            "value": "[Jacinth](https://wiki.project1999.com/Jacinth \"30 Day Avg: 187pp (of 82)\n 60 Day Avg: 198pp (of 196)\n 90 Day Avg: 214pp (of 315)\")",
+            "inline": true
+          },
+          {
+            "name": "3pp",
+            "value": "[Blue Diamond](https://wiki.project1999.com/Blue_Diamond \"30 Day Avg: 309pp (of 403)\n 60 Day Avg: 299pp (of 1179)\n 90 Day Avg: 308pp (of 1684)\")",
+            "inline": true
+          }
+        ],
+        "author": {
+          "name": "[ WTS ]   Emissaryofthule"
+        },
+        "footer": {
+          "text": "Project 1999 Blue"
+        },
+        "content_scan_version": 0
+      }
+    ],
+    "mentions": [],
+    "mention_roles": [],
+    "pinned": false,
+    "mention_everyone": false,
+    "tts": false,
+    "timestamp": "2023-12-14T15:53:10.079000+00:00",
+    "edited_timestamp": null,
+    "flags": 0,
+    "components": []
+  },
+  {
+    "id": "1184885782851375240",
+    "type": 0,
+    "content": "",
+    "channel_id": "720860598362963998",
+    "author": {
+      "id": "643497793834582017",
+      "username": "TunnelQuestBot",
+      "avatar": "7b75b3efdc8ffc02c0157aa1c525e829",
+      "discriminator": "2692",
+      "public_flags": 0,
+      "premium_type": 0,
+      "flags": 0,
+      "bot": true,
+      "banner": null,
+      "accent_color": null,
+      "global_name": null,
+      "avatar_decoration_data": null,
+      "banner_color": null
+    },
+    "attachments": [],
+    "embeds": [
+      {
+        "type": "rich",
+        "title": "```WTS Spell: Ice Spear of Solist , Spell: Focus of Spirit , Spell: Theft of Thought , Spell: Aegolism , Spell: Gift of Xev , Spell: Cannibalize III```",
+        "color": 1857720,
+        "timestamp": "2023-12-14T15:53:06.159000+00:00",
+        "fields": [
+          {
+            "name": "No Price Listed",
+            "value": "[Ice Spear of Solist](https://wiki.project1999.com/Ice_Spear_of_Solist \"30 Day Avg: 75pp (of 168)\n 60 Day Avg: 75pp (of 367)\n 90 Day Avg: 75pp (of 681)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Focus of Spirit](https://wiki.project1999.com/Focus_of_Spirit \"30 Day Avg: - (of 0)\n 60 Day Avg: - (of 0)\n 90 Day Avg: - (of 0)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Theft of Thought](https://wiki.project1999.com/Theft_of_Thought \"30 Day Avg: 331pp (of 214)\n 60 Day Avg: 295pp (of 436)\n 90 Day Avg: 297pp (of 721)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Aegolism](https://wiki.project1999.com/Aegolism \"30 Day Avg: - (of 0)\n 60 Day Avg: - (of 0)\n 90 Day Avg: - (of 0)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Gift of Xev](https://wiki.project1999.com/Gift_of_Xev \"30 Day Avg: 100pp (of 115)\n 60 Day Avg: 57pp (of 207)\n 90 Day Avg: 56pp (of 343)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Cannibalize Iii](https://wiki.project1999.com/Cannibalize_III \"30 Day Avg: - (of 0)\n 60 Day Avg: - (of 0)\n 90 Day Avg: - (of 0)\")",
+            "inline": true
+          }
+        ],
+        "author": {
+          "name": "[ WTS ]   Emissaryofthule"
+        },
+        "footer": {
+          "text": "Project 1999 Blue"
+        },
+        "content_scan_version": 0
+      }
+    ],
+    "mentions": [],
+    "mention_roles": [],
+    "pinned": false,
+    "mention_everyone": false,
+    "tts": false,
+    "timestamp": "2023-12-14T15:53:04.745000+00:00",
+    "edited_timestamp": null,
+    "flags": 0,
+    "components": []
+  },
+  {
+    "id": "1184884143964831824",
+    "type": 0,
+    "content": "",
+    "channel_id": "720860598362963998",
+    "author": {
+      "id": "643497793834582017",
+      "username": "TunnelQuestBot",
+      "avatar": "7b75b3efdc8ffc02c0157aa1c525e829",
+      "discriminator": "2692",
+      "public_flags": 0,
+      "premium_type": 0,
+      "flags": 0,
+      "bot": true,
+      "banner": null,
+      "accent_color": null,
+      "global_name": null,
+      "avatar_decoration_data": null,
+      "banner_color": null
+    },
+    "attachments": [],
+    "embeds": [
+      {
+        "type": "rich",
+        "title": "```WTS Sacrifices, pst```",
+        "color": 1857720,
+        "timestamp": "2023-12-14T15:46:35.384000+00:00",
+        "fields": [
+          {
+            "name": "No Price Listed",
+            "value": "[Ice](https://wiki.project1999.com/Ice \"30 Day Avg: 166pp (of 441)\n 60 Day Avg: 176pp (of 797)\n 90 Day Avg: 179pp (of 1090)\")",
+            "inline": true
+          }
+        ],
+        "author": {
+          "name": "[ WTS ]   Vaprack"
+        },
+        "footer": {
+          "text": "Project 1999 Blue"
+        },
+        "content_scan_version": 0
+      }
+    ],
+    "mentions": [],
+    "mention_roles": [],
+    "pinned": false,
+    "mention_everyone": false,
+    "tts": false,
+    "timestamp": "2023-12-14T15:46:34.004000+00:00",
+    "edited_timestamp": null,
+    "flags": 0,
+    "components": []
+  },
+  {
+    "id": "1184884124595527831",
+    "type": 0,
+    "content": "",
+    "channel_id": "720860598362963998",
+    "author": {
+      "id": "643497793834582017",
+      "username": "TunnelQuestBot",
+      "avatar": "7b75b3efdc8ffc02c0157aa1c525e829",
+      "discriminator": "2692",
+      "public_flags": 0,
+      "premium_type": 0,
+      "flags": 0,
+      "bot": true,
+      "banner": null,
+      "accent_color": null,
+      "global_name": null,
+      "avatar_decoration_data": null,
+      "banner_color": null
+    },
+    "attachments": [],
+    "embeds": [
+      {
+        "type": "rich",
+        "title": "```WTS Spell: Pillar of Lightning / Spell: Form of the Howler / Velium Diamond Wedding Ring / Velium Blue Diamond Bracelet / Blue Diamond Electrum Earring / Wu's Quivering Staff```",
+        "color": 1857720,
+        "timestamp": "2023-12-14T15:46:30.378000+00:00",
+        "fields": [
+          {
+            "name": "No Price Listed",
+            "value": "[Pillar of Lightning](https://wiki.project1999.com/Pillar_of_Lightning \"30 Day Avg: 89pp (of 675)\n 60 Day Avg: 83pp (of 1896)\n 90 Day Avg: 79pp (of 2648)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Form of the Howler](https://wiki.project1999.com/Form_of_the_Howler \"30 Day Avg: 414pp (of 246)\n 60 Day Avg: 429pp (of 624)\n 90 Day Avg: 418pp (of 1026)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Velium Diamond Wedding Ring](https://wiki.project1999.com/Velium_Diamond_Wedding_Ring \"30 Day Avg: 600pp (of 399)\n 60 Day Avg: 598pp (of 859)\n 90 Day Avg: 595pp (of 1430)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Velium Blue Diamond Bracelet](https://wiki.project1999.com/Velium_Blue_Diamond_Bracelet \"30 Day Avg: 991pp (of 471)\n 60 Day Avg: 926pp (of 1052)\n 90 Day Avg: 939pp (of 1566)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Blue Diamond Electrum Earring](https://wiki.project1999.com/Blue_Diamond_Electrum_Earring \"30 Day Avg: 495pp (of 466)\n 60 Day Avg: 491pp (of 922)\n 90 Day Avg: 494pp (of 1424)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Wu's Quivering Staff](https://wiki.project1999.com/Wu%27s_Quivering_Staff \"30 Day Avg: 90pp (of 248)\n 60 Day Avg: 91pp (of 357)\n 90 Day Avg: 90pp (of 690)\")",
+            "inline": true
+          }
+        ],
+        "author": {
+          "name": "[ WTS ]   Vaprack"
+        },
+        "footer": {
+          "text": "Project 1999 Blue"
+        },
+        "content_scan_version": 0
+      }
+    ],
+    "mentions": [],
+    "mention_roles": [],
+    "pinned": false,
+    "mention_everyone": false,
+    "tts": false,
+    "timestamp": "2023-12-14T15:46:29.386000+00:00",
+    "edited_timestamp": null,
+    "flags": 0,
+    "components": []
+  },
+  {
+    "id": "1184884123161067571",
+    "type": 0,
+    "content": "",
+    "channel_id": "720860598362963998",
+    "author": {
+      "id": "643497793834582017",
+      "username": "TunnelQuestBot",
+      "avatar": "7b75b3efdc8ffc02c0157aa1c525e829",
+      "discriminator": "2692",
+      "public_flags": 0,
+      "premium_type": 0,
+      "flags": 0,
+      "bot": true,
+      "banner": null,
+      "accent_color": null,
+      "global_name": null,
+      "avatar_decoration_data": null,
+      "banner_color": null
+    },
+    "attachments": [],
+    "embeds": [
+      {
+        "type": "rich",
+        "title": "```WTS Barbed Dragonscale Pauldrons / Rokyls Channelling Crystal / Ceremonial Iksar Chestplate / Wooly Spider Silk Net / Crushed Black Marble x2```",
+        "color": 1857720,
+        "timestamp": "2023-12-14T15:46:30.379000+00:00",
+        "fields": [
+          {
+            "name": "No Price Listed",
+            "value": "[Barbed Dragonscale Pauldrons](https://wiki.project1999.com/Barbed_Dragonscale_Pauldrons \"30 Day Avg: 1.53k (of 399)\n 60 Day Avg: 1,565pp (of 630)\n 90 Day Avg: 1.56k (of 922)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Rokyls Channelling Crystal](https://wiki.project1999.com/Rokyls_Channelling_Crystal \"30 Day Avg: 509pp (of 141)\n 60 Day Avg: 477pp (of 588)\n 90 Day Avg: 482pp (of 851)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Ceremonial Iksar Chestplate](https://wiki.project1999.com/Ceremonial_Iksar_Chestplate \"30 Day Avg: 6k (of 55)\n 60 Day Avg: 5,727pp (of 225)\n 90 Day Avg: 7,139pp (of 604)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Wooly Spider Silk Net](https://wiki.project1999.com/Wooly_Spider_Silk_Net \"30 Day Avg: - (of 0)\n 60 Day Avg: 25pp (of 1)\n 90 Day Avg: 25pp (of 1)\")",
+            "inline": true
+          },
+          {
+            "name": "2pp",
+            "value": "[Crushed Black Marble](https://wiki.project1999.com/Crushed_Black_Marble \"30 Day Avg: 95pp (of 431)\n 60 Day Avg: 98pp (of 999)\n 90 Day Avg: 99pp (of 1889)\")",
+            "inline": true
+          }
+        ],
+        "author": {
+          "name": "[ WTS ]   Vaprack"
+        },
+        "footer": {
+          "text": "Project 1999 Blue"
+        },
+        "content_scan_version": 0
+      }
+    ],
+    "mentions": [],
+    "mention_roles": [],
+    "pinned": false,
+    "mention_everyone": false,
+    "tts": false,
+    "timestamp": "2023-12-14T15:46:29.044000+00:00",
+    "edited_timestamp": null,
+    "flags": 0,
+    "components": []
+  },
+  {
+    "id": "1184882716261490738",
+    "type": 0,
+    "content": "",
+    "channel_id": "720860598362963998",
+    "author": {
+      "id": "643497793834582017",
+      "username": "TunnelQuestBot",
+      "avatar": "7b75b3efdc8ffc02c0157aa1c525e829",
+      "discriminator": "2692",
+      "public_flags": 0,
+      "premium_type": 0,
+      "flags": 0,
+      "bot": true,
+      "banner": null,
+      "accent_color": null,
+      "global_name": null,
+      "avatar_decoration_data": null,
+      "banner_color": null
+    },
+    "attachments": [],
+    "embeds": [
+      {
+        "type": "rich",
+        "title": "```WTS Spell: Focus of Spirit / Spell: Ice Spear of the Solist / Spell: Manastorm / Spell: Tears of Druzzil / Spell: Tears of Prexus / Spell: Vengeance of Al`Kabor / Crystalline Silk 100```",
+        "color": 1857720,
+        "timestamp": "2023-12-14T15:40:54.676000+00:00",
+        "fields": [
+          {
+            "name": "No Price Listed",
+            "value": "[Focus of Spirit](https://wiki.project1999.com/Focus_of_Spirit \"30 Day Avg: - (of 0)\n 60 Day Avg: - (of 0)\n 90 Day Avg: - (of 0)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Ice](https://wiki.project1999.com/Ice \"30 Day Avg: 166pp (of 441)\n 60 Day Avg: 176pp (of 797)\n 90 Day Avg: 179pp (of 1090)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Spear](https://wiki.project1999.com/Spear \"30 Day Avg: - (of 181)\n 60 Day Avg: - (of 203)\n 90 Day Avg: - (of 209)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Manastorm](https://wiki.project1999.com/Manastorm \"30 Day Avg: 59pp (of 572)\n 60 Day Avg: 56pp (of 1076)\n 90 Day Avg: 57pp (of 1410)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Tears of Druzzil](https://wiki.project1999.com/Tears_of_Druzzil \"30 Day Avg: 8pp (of 402)\n 60 Day Avg: 37pp (of 808)\n 90 Day Avg: 24pp (of 1575)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Tears of Prexus](https://wiki.project1999.com/Tears_of_Prexus \"30 Day Avg: - (of 202)\n 60 Day Avg: 50pp (of 580)\n 90 Day Avg: 57pp (of 729)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Vengeance of Al`kabor](https://wiki.project1999.com/Vengeance_of_Al%27Kabor \"Could not find historical pricing for item VENGEANCE OF AL`KABOR\")",
+            "inline": true
+          },
+          {
+            "name": "100pp",
+            "value": "[Crystalline Silk](https://wiki.project1999.com/Crystalline_Silk \"30 Day Avg: 125pp (of 362)\n 60 Day Avg: 124pp (of 941)\n 90 Day Avg: 128pp (of 1079)\")",
+            "inline": true
+          }
+        ],
+        "author": {
+          "name": "[ WTS ]   Bookman"
+        },
+        "footer": {
+          "text": "Project 1999 Blue"
+        },
+        "content_scan_version": 0
+      }
+    ],
+    "mentions": [],
+    "mention_roles": [],
+    "pinned": false,
+    "mention_everyone": false,
+    "tts": false,
+    "timestamp": "2023-12-14T15:40:53.613000+00:00",
+    "edited_timestamp": null,
+    "flags": 0,
+    "components": []
+  },
+  {
+    "id": "1184882714961268856",
+    "type": 0,
+    "content": "",
+    "channel_id": "720860598362963998",
+    "author": {
+      "id": "643497793834582017",
+      "username": "TunnelQuestBot",
+      "avatar": "7b75b3efdc8ffc02c0157aa1c525e829",
+      "discriminator": "2692",
+      "public_flags": 0,
+      "premium_type": 0,
+      "flags": 0,
+      "bot": true,
+      "banner": null,
+      "accent_color": null,
+      "global_name": null,
+      "avatar_decoration_data": null,
+      "banner_color": null
+    },
+    "attachments": [],
+    "embeds": [
+      {
+        "type": "rich",
+        "title": "```WTS Spell: Aegolism / Spell: Blizzard / Spell: Call of the Predator / Spell: Cannibalize IV / Spell: Circle of Cobalt Scar / Spell: Dead Men Floating 2100 / Spell: Divine Strength```",
+        "color": 1857720,
+        "timestamp": "2023-12-14T15:40:54.676000+00:00",
+        "fields": [
+          {
+            "name": "No Price Listed",
+            "value": "[Aegolism](https://wiki.project1999.com/Aegolism \"30 Day Avg: - (of 0)\n 60 Day Avg: - (of 0)\n 90 Day Avg: - (of 0)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Blizzard](https://wiki.project1999.com/Blizzard \"30 Day Avg: 52pp (of 386)\n 60 Day Avg: 64pp (of 1567)\n 90 Day Avg: 66pp (of 2153)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Call of the Predator](https://wiki.project1999.com/Call_of_the_Predator \"30 Day Avg: 98pp (of 825)\n 60 Day Avg: 98pp (of 2013)\n 90 Day Avg: 120pp (of 2897)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Cannibalize Iv](https://wiki.project1999.com/Cannibalize_IV \"30 Day Avg: - (of 0)\n 60 Day Avg: - (of 0)\n 90 Day Avg: - (of 0)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Circle of Cobalt Scar](https://wiki.project1999.com/Circle_of_Cobalt_Scar \"30 Day Avg: - (of 73)\n 60 Day Avg: 50pp (of 88)\n 90 Day Avg: 50pp (of 105)\")",
+            "inline": true
+          },
+          {
+            "name": "2.1k",
+            "value": "[Dead Men Floating](https://wiki.project1999.com/Dead_Men_Floating \"30 Day Avg: 1,837pp (of 290)\n 60 Day Avg: 1,832pp (of 645)\n 90 Day Avg: 1,838pp (of 1286)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Divine Strength](https://wiki.project1999.com/Divine_Strength \"30 Day Avg: 95pp (of 705)\n 60 Day Avg: 96pp (of 1557)\n 90 Day Avg: 97pp (of 2128)\")",
+            "inline": true
+          }
+        ],
+        "author": {
+          "name": "[ WTS ]   Bookman"
+        },
+        "footer": {
+          "text": "Project 1999 Blue"
+        },
+        "content_scan_version": 0
+      }
+    ],
+    "mentions": [],
+    "mention_roles": [],
+    "pinned": false,
+    "mention_everyone": false,
+    "tts": false,
+    "timestamp": "2023-12-14T15:40:53.303000+00:00",
+    "edited_timestamp": null,
+    "flags": 0,
+    "components": []
+  },
+  {
+    "id": "1184882693616439387",
+    "type": 0,
+    "content": "",
+    "channel_id": "720860598362963998",
+    "author": {
+      "id": "643497793834582017",
+      "username": "TunnelQuestBot",
+      "avatar": "7b75b3efdc8ffc02c0157aa1c525e829",
+      "discriminator": "2692",
+      "public_flags": 0,
+      "premium_type": 0,
+      "flags": 0,
+      "bot": true,
+      "banner": null,
+      "accent_color": null,
+      "global_name": null,
+      "avatar_decoration_data": null,
+      "banner_color": null
+    },
+    "attachments": [],
+    "embeds": [
+      {
+        "type": "rich",
+        "title": "```WTS Beetle stinger 60 / Crushed Diamonds 50```",
+        "color": 1857720,
+        "timestamp": "2023-12-14T15:40:49.663000+00:00",
+        "fields": [
+          {
+            "name": "60pp",
+            "value": "[Beetle Stinger](https://wiki.project1999.com/Beetle_Stinger \"30 Day Avg: 60pp (of 62)\n 60 Day Avg: 60pp (of 387)\n 90 Day Avg: 58pp (of 466)\")",
+            "inline": true
+          },
+          {
+            "name": "50pp",
+            "value": "[Crushed Diamonds](https://wiki.project1999.com/Crushed_Diamonds \"30 Day Avg: 50pp (of 179)\n 60 Day Avg: 50pp (of 398)\n 90 Day Avg: 50pp (of 495)\")",
+            "inline": true
+          }
+        ],
+        "author": {
+          "name": "[ WTS ]   Bookman"
+        },
+        "footer": {
+          "text": "Project 1999 Blue"
+        },
+        "content_scan_version": 0
+      }
+    ],
+    "mentions": [],
+    "mention_roles": [],
+    "pinned": false,
+    "mention_everyone": false,
+    "tts": false,
+    "timestamp": "2023-12-14T15:40:48.214000+00:00",
+    "edited_timestamp": null,
+    "flags": 0,
+    "components": []
+  },
+  {
+    "id": "1184882672623951913",
+    "type": 0,
+    "content": "",
+    "channel_id": "720860598362963998",
+    "author": {
+      "id": "643497793834582017",
+      "username": "TunnelQuestBot",
+      "avatar": "7b75b3efdc8ffc02c0157aa1c525e829",
+      "discriminator": "2692",
+      "public_flags": 0,
+      "premium_type": 0,
+      "flags": 0,
+      "bot": true,
+      "banner": null,
+      "accent_color": null,
+      "global_name": null,
+      "avatar_decoration_data": null,
+      "banner_color": null
+    },
+    "attachments": [],
+    "embeds": [
+      {
+        "type": "rich",
+        "title": "```WTS Silver Jacinth Wedding Ring 255 / Strathbone Shell Shield 200 / Spider Fur-Lined Boots 125 / Nathsar Greatsword 100 / Wand of Darkness 95```",
+        "color": 1857720,
+        "timestamp": "2023-12-14T15:40:44.654000+00:00",
+        "fields": [
+          {
+            "name": "255pp",
+            "value": "[Silver Jacinth Wedding Ring](https://wiki.project1999.com/Silver_Jacinth_Wedding_Ring \"30 Day Avg: 255pp (of 116)\n 60 Day Avg: 255pp (of 116)\n 90 Day Avg: 255pp (of 116)\")",
+            "inline": true
+          },
+          {
+            "name": "200pp",
+            "value": "[Strathbone Shell Shield](https://wiki.project1999.com/Strathbone_Shell_Shield \"30 Day Avg: 200pp (of 250)\n 60 Day Avg: 199pp (of 473)\n 90 Day Avg: 199pp (of 478)\")",
+            "inline": true
+          },
+          {
+            "name": "125pp",
+            "value": "[Spider Fur Lined Boots](https://wiki.project1999.com/Spider_Fur-Lined_Boots \"30 Day Avg: 117pp (of 454)\n 60 Day Avg: 101pp (of 746)\n 90 Day Avg: 107pp (of 1215)\")",
+            "inline": true
+          },
+          {
+            "name": "100pp",
+            "value": "[Nathsar Greatsword](https://wiki.project1999.com/Nathsar_Greatsword \"30 Day Avg: 100pp (of 94)\n 60 Day Avg: 90pp (of 158)\n 90 Day Avg: 91pp (of 244)\")",
+            "inline": true
+          },
+          {
+            "name": "95pp",
+            "value": "[Wand of Darkness](https://wiki.project1999.com/Wand_of_Darkness \"30 Day Avg: 94pp (of 194)\n 60 Day Avg: 97pp (of 359)\n 90 Day Avg: 97pp (of 391)\")",
+            "inline": true
+          }
+        ],
+        "author": {
+          "name": "[ WTS ]   Bookman"
+        },
+        "footer": {
+          "text": "Project 1999 Blue"
+        },
+        "content_scan_version": 0
+      }
+    ],
+    "mentions": [],
+    "mention_roles": [],
+    "pinned": false,
+    "mention_everyone": false,
+    "tts": false,
+    "timestamp": "2023-12-14T15:40:43.209000+00:00",
+    "edited_timestamp": null,
+    "flags": 0,
+    "components": []
+  },
+  {
+    "id": "1184882652067663873",
+    "type": 0,
+    "content": "",
+    "channel_id": "720860598362963998",
+    "author": {
+      "id": "643497793834582017",
+      "username": "TunnelQuestBot",
+      "avatar": "7b75b3efdc8ffc02c0157aa1c525e829",
+      "discriminator": "2692",
+      "public_flags": 0,
+      "premium_type": 0,
+      "flags": 0,
+      "bot": true,
+      "banner": null,
+      "accent_color": null,
+      "global_name": null,
+      "avatar_decoration_data": null,
+      "banner_color": null
+    },
+    "attachments": [],
+    "embeds": [
+      {
+        "type": "rich",
+        "title": "```WTS Worker Sledgemallet 3500 / Stave of Shielding 2200 / Reinforced Dragonhorn Bracers 1150 / Staff of the Earthcrafter 1000 / Crystal Chitin Shield 989```",
+        "color": 1857720,
+        "timestamp": "2023-12-14T15:40:39.655000+00:00",
+        "fields": [
+          {
+            "name": "3.5k",
+            "value": "[Worker Sledgemallet](https://wiki.project1999.com/Worker_Sledgemallet \"30 Day Avg: 3.5k (of 180)\n 60 Day Avg: 3.5k (of 400)\n 90 Day Avg: 3.5k (of 497)\")",
+            "inline": true
+          },
+          {
+            "name": "2.2k",
+            "value": "[Stave of Shielding](https://wiki.project1999.com/Stave_of_Shielding \"30 Day Avg: 2,027pp (of 1175)\n 60 Day Avg: 2,010pp (of 2912)\n 90 Day Avg: 2,001pp (of 4316)\")",
+            "inline": true
+          },
+          {
+            "name": "1.15k",
+            "value": "[Reinforced Dragonhorn Bracers](https://wiki.project1999.com/Reinforced_Dragonhorn_Bracers \"30 Day Avg: 1,014pp (of 73)\n 60 Day Avg: 1,013pp (of 112)\n 90 Day Avg: 1,003pp (of 179)\")",
+            "inline": true
+          },
+          {
+            "name": "1k",
+            "value": "[Staff of the Earthcrafter](https://wiki.project1999.com/Staff_of_the_Earthcrafter \"30 Day Avg: 943pp (of 525)\n 60 Day Avg: 950pp (of 832)\n 90 Day Avg: 948pp (of 1155)\")",
+            "inline": true
+          },
+          {
+            "name": "989pp",
+            "value": "[Crystal Chitin Shield](https://wiki.project1999.com/Crystal_Chitin_Shield \"30 Day Avg: 796pp (of 585)\n 60 Day Avg: 786pp (of 903)\n 90 Day Avg: 791pp (of 1854)\")",
+            "inline": true
+          }
+        ],
+        "author": {
+          "name": "[ WTS ]   Bookman"
+        },
+        "footer": {
+          "text": "Project 1999 Blue"
+        },
+        "content_scan_version": 0
+      }
+    ],
+    "mentions": [],
+    "mention_roles": [],
+    "pinned": false,
+    "mention_everyone": false,
+    "tts": false,
+    "timestamp": "2023-12-14T15:40:38.308000+00:00",
+    "edited_timestamp": null,
+    "flags": 0,
+    "components": []
+  },
+  {
+    "id": "1184882484442308639",
+    "type": 0,
+    "content": "",
+    "channel_id": "720860598362963998",
+    "author": {
+      "id": "643497793834582017",
+      "username": "TunnelQuestBot",
+      "avatar": "7b75b3efdc8ffc02c0157aa1c525e829",
+      "discriminator": "2692",
+      "public_flags": 0,
+      "premium_type": 0,
+      "flags": 0,
+      "bot": true,
+      "banner": null,
+      "accent_color": null,
+      "global_name": null,
+      "avatar_decoration_data": null,
+      "banner_color": null
+    },
+    "attachments": [],
+    "embeds": [
+      {
+        "type": "rich",
+        "title": "```WTS Sebilite Scale Mask, Savant's Cap, Runed Mithril Bracer, Jaundiced Bone Boots, Deepwater Boots, Mrylokar's Boots, Elder Spiritist's Gauntlets```",
+        "color": 1857720,
+        "timestamp": "2023-12-14T15:39:59.565000+00:00",
+        "fields": [
+          {
+            "name": "No Price Listed",
+            "value": "[Sebilite Scale Mask](https://wiki.project1999.com/Sebilite_Scale_Mask \"30 Day Avg: 88pp (of 384)\n 60 Day Avg: 83pp (of 698)\n 90 Day Avg: 82pp (of 731)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Savant's Cap](https://wiki.project1999.com/Savant%27s_Cap \"30 Day Avg: 33pp (of 151)\n 60 Day Avg: 24pp (of 319)\n 90 Day Avg: 22pp (of 484)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Runed Mithril Bracer](https://wiki.project1999.com/Runed_Mithril_Bracer \"30 Day Avg: 277pp (of 118)\n 60 Day Avg: 263pp (of 221)\n 90 Day Avg: 265pp (of 273)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Jaundiced Bone Boots](https://wiki.project1999.com/Jaundiced_Bone_Boots \"30 Day Avg: 438pp (of 56)\n 60 Day Avg: 461pp (of 98)\n 90 Day Avg: 484pp (of 254)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Deepwater Boots](https://wiki.project1999.com/Deepwater_Boots \"30 Day Avg: 500pp (of 141)\n 60 Day Avg: 499pp (of 551)\n 90 Day Avg: 499pp (of 787)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Mrylokar's Boots](https://wiki.project1999.com/Mrylokar%27s_Boots \"30 Day Avg: 500pp (of 42)\n 60 Day Avg: 500pp (of 179)\n 90 Day Avg: 500pp (of 195)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Elder Spiritist's Gauntlets](https://wiki.project1999.com/Elder_Spiritist%27s_Gauntlets \"30 Day Avg: 475pp (of 307)\n 60 Day Avg: 486pp (of 785)\n 90 Day Avg: 488pp (of 1350)\")",
+            "inline": true
+          }
+        ],
+        "author": {
+          "name": "[ WTS ]   Myoull"
+        },
+        "footer": {
+          "text": "Project 1999 Blue"
+        },
+        "content_scan_version": 0
+      }
+    ],
+    "mentions": [],
+    "mention_roles": [],
+    "pinned": false,
+    "mention_everyone": false,
+    "tts": false,
+    "timestamp": "2023-12-14T15:39:58.343000+00:00",
+    "edited_timestamp": null,
+    "flags": 0,
+    "components": []
+  },
+  {
+    "id": "1184882483892858970",
+    "type": 0,
+    "content": "",
+    "channel_id": "720860598362963998",
+    "author": {
+      "id": "643497793834582017",
+      "username": "TunnelQuestBot",
+      "avatar": "7b75b3efdc8ffc02c0157aa1c525e829",
+      "discriminator": "2692",
+      "public_flags": 0,
+      "premium_type": 0,
+      "flags": 0,
+      "bot": true,
+      "banner": null,
+      "accent_color": null,
+      "global_name": null,
+      "avatar_decoration_data": null,
+      "banner_color": null
+    },
+    "attachments": [],
+    "embeds": [
+      {
+        "type": "rich",
+        "title": "```WTS Runed Bolster Belt, Orb of the Infinite Void, Ornate Rune Shield, Shrunken Goblin Skull Earring, Spider Fur Belt, Black Pantherskin Leggings, Tolapumj's Robe```",
+        "color": 1857720,
+        "timestamp": "2023-12-14T15:39:59.565000+00:00",
+        "fields": [
+          {
+            "name": "No Price Listed",
+            "value": "[Runed Bolster Belt](https://wiki.project1999.com/Runed_Bolster_Belt \"30 Day Avg: 14,321pp (of 154)\n 60 Day Avg: 14,312pp (of 246)\n 90 Day Avg: 14,927pp (of 314)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Orb of the Infinite Void](https://wiki.project1999.com/Orb_of_the_Infinite_Void \"30 Day Avg: 14,496pp (of 235)\n 60 Day Avg: 14,663pp (of 636)\n 90 Day Avg: 14,476pp (of 1392)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Ornate Rune Shield](https://wiki.project1999.com/Ornate_Rune_Shield \"30 Day Avg: 1,095pp (of 78)\n 60 Day Avg: 1.08k (of 405)\n 90 Day Avg: 1,061pp (of 622)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Shrunken Goblin Skull Earring](https://wiki.project1999.com/Shrunken_Goblin_Skull_Earring \"30 Day Avg: 1,437pp (of 467)\n 60 Day Avg: 1,448pp (of 1110)\n 90 Day Avg: 1,475pp (of 1740)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Spider Fur Belt](https://wiki.project1999.com/Spider_Fur_Belt \"30 Day Avg: 1,666pp (of 598)\n 60 Day Avg: 1,764pp (of 1089)\n 90 Day Avg: 1,839pp (of 1538)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Black Pantherskin Leggings](https://wiki.project1999.com/Black_Pantherskin_Leggings \"30 Day Avg: 763pp (of 387)\n 60 Day Avg: 779pp (of 1016)\n 90 Day Avg: 794pp (of 1550)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Tolapumj's Robe](https://wiki.project1999.com/Tolapumj%27s_Robe \"30 Day Avg: 970pp (of 341)\n 60 Day Avg: 959pp (of 589)\n 90 Day Avg: 956pp (of 853)\")",
+            "inline": true
+          }
+        ],
+        "author": {
+          "name": "[ WTS ]   Myoull"
+        },
+        "footer": {
+          "text": "Project 1999 Blue"
+        },
+        "content_scan_version": 0
+      }
+    ],
+    "mentions": [],
+    "mention_roles": [],
+    "pinned": false,
+    "mention_everyone": false,
+    "tts": false,
+    "timestamp": "2023-12-14T15:39:58.212000+00:00",
+    "edited_timestamp": null,
+    "flags": 0,
+    "components": []
+  },
+  {
+    "id": "1184881728788123750",
+    "type": 0,
+    "content": "",
+    "channel_id": "720860598362963998",
+    "author": {
+      "id": "643497793834582017",
+      "username": "TunnelQuestBot",
+      "avatar": "7b75b3efdc8ffc02c0157aa1c525e829",
+      "discriminator": "2692",
+      "public_flags": 0,
+      "premium_type": 0,
+      "flags": 0,
+      "bot": true,
+      "banner": null,
+      "accent_color": null,
+      "global_name": null,
+      "avatar_decoration_data": null,
+      "banner_color": null
+    },
+    "attachments": [],
+    "embeds": [
+      {
+        "type": "rich",
+        "title": "```WTS Stave of Shielding Sarnak Skullsplitter Jagged Chokidai SpineSpell: Theft of Thought Di`zok Begirding sarnak battle shield```",
+        "color": 1857720,
+        "timestamp": "2023-12-14T15:36:59.189000+00:00",
+        "fields": [
+          {
+            "name": "No Price Listed",
+            "value": "[Stave of Shielding](https://wiki.project1999.com/Stave_of_Shielding \"30 Day Avg: 2,027pp (of 1175)\n 60 Day Avg: 2,010pp (of 2912)\n 90 Day Avg: 2,001pp (of 4316)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Sarnak Skullsplitter](https://wiki.project1999.com/Sarnak_Skullsplitter \"30 Day Avg: 50pp (of 188)\n 60 Day Avg: 52pp (of 388)\n 90 Day Avg: 54pp (of 700)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Jagged Chokidai Spine](https://wiki.project1999.com/Jagged_Chokidai_Spine \"30 Day Avg: 48pp (of 243)\n 60 Day Avg: 48pp (of 528)\n 90 Day Avg: 48pp (of 842)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Theft of Thought](https://wiki.project1999.com/Theft_of_Thought \"30 Day Avg: 331pp (of 214)\n 60 Day Avg: 295pp (of 436)\n 90 Day Avg: 297pp (of 721)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Di`zok Begirding](https://wiki.project1999.com/Di%60zok_Begirding \"Could not find historical pricing for item DI`ZOK BEGIRDING\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Sarnak Battle Shield](https://wiki.project1999.com/Sarnak_Battle_Shield \"30 Day Avg: 563pp (of 950)\n 60 Day Avg: 560pp (of 1675)\n 90 Day Avg: 557pp (of 3043)\")",
+            "inline": true
+          }
+        ],
+        "author": {
+          "name": "[ WTS ]   Mordek"
+        },
+        "footer": {
+          "text": "Project 1999 Blue"
+        },
+        "content_scan_version": 0
+      }
+    ],
+    "mentions": [],
+    "mention_roles": [],
+    "pinned": false,
+    "mention_everyone": false,
+    "tts": false,
+    "timestamp": "2023-12-14T15:36:58.181000+00:00",
+    "edited_timestamp": null,
+    "flags": 0,
+    "components": []
+  },
+  {
+    "id": "1184881519232299069",
+    "type": 0,
+    "content": "",
+    "channel_id": "720860598362963998",
+    "author": {
+      "id": "643497793834582017",
+      "username": "TunnelQuestBot",
+      "avatar": "7b75b3efdc8ffc02c0157aa1c525e829",
+      "discriminator": "2692",
+      "public_flags": 0,
+      "premium_type": 0,
+      "flags": 0,
+      "bot": true,
+      "banner": null,
+      "accent_color": null,
+      "global_name": null,
+      "avatar_decoration_data": null,
+      "banner_color": null
+    },
+    "attachments": [],
+    "embeds": [
+      {
+        "type": "rich",
+        "title": "```WTS Jade Chokidai Prod and Howling Harpoon```",
+        "color": 1857720,
+        "timestamp": "2023-12-14T15:36:09.088000+00:00",
+        "fields": [
+          {
+            "name": "No Price Listed",
+            "value": "[Jade Chokidai Prod](https://wiki.project1999.com \"Could not find historical pricing for item JADE CHOKIDAI PROD\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Howling Harpoon](https://wiki.project1999.com/Howling_Harpoon \"30 Day Avg: 361pp (of 208)\n 60 Day Avg: 362pp (of 336)\n 90 Day Avg: 370pp (of 490)\")",
+            "inline": true
+          }
+        ],
+        "author": {
+          "name": "[ WTS ]   Wrso"
+        },
+        "footer": {
+          "text": "Project 1999 Blue"
+        },
+        "content_scan_version": 0
+      }
+    ],
+    "mentions": [],
+    "mention_roles": [],
+    "pinned": false,
+    "mention_everyone": false,
+    "tts": false,
+    "timestamp": "2023-12-14T15:36:08.219000+00:00",
+    "edited_timestamp": null,
+    "flags": 0,
+    "components": []
+  },
+  {
+    "id": "1184881264818409523",
+    "type": 0,
+    "content": "",
+    "channel_id": "720860598362963998",
+    "author": {
+      "id": "643497793834582017",
+      "username": "TunnelQuestBot",
+      "avatar": "7b75b3efdc8ffc02c0157aa1c525e829",
+      "discriminator": "2692",
+      "public_flags": 0,
+      "premium_type": 0,
+      "flags": 0,
+      "bot": true,
+      "banner": null,
+      "accent_color": null,
+      "global_name": null,
+      "avatar_decoration_data": null,
+      "banner_color": null
+    },
+    "attachments": [],
+    "embeds": [
+      {
+        "type": "rich",
+        "title": "```WTS Spell: Pillar of Lightning / Spell: Form of the Howler / Velium Diamond Wedding Ring / Velium Blue Diamond Bracelet / Blue Diamond Electrum Earring / Wu's Quivering Staff```",
+        "color": 1857720,
+        "timestamp": "2023-12-14T15:35:08.969000+00:00",
+        "fields": [
+          {
+            "name": "No Price Listed",
+            "value": "[Pillar of Lightning](https://wiki.project1999.com/Pillar_of_Lightning \"30 Day Avg: 89pp (of 675)\n 60 Day Avg: 83pp (of 1896)\n 90 Day Avg: 79pp (of 2648)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Form of the Howler](https://wiki.project1999.com/Form_of_the_Howler \"30 Day Avg: 414pp (of 246)\n 60 Day Avg: 429pp (of 624)\n 90 Day Avg: 418pp (of 1026)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Velium Diamond Wedding Ring](https://wiki.project1999.com/Velium_Diamond_Wedding_Ring \"30 Day Avg: 600pp (of 399)\n 60 Day Avg: 598pp (of 859)\n 90 Day Avg: 595pp (of 1430)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Velium Blue Diamond Bracelet](https://wiki.project1999.com/Velium_Blue_Diamond_Bracelet \"30 Day Avg: 991pp (of 471)\n 60 Day Avg: 926pp (of 1052)\n 90 Day Avg: 939pp (of 1566)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Blue Diamond Electrum Earring](https://wiki.project1999.com/Blue_Diamond_Electrum_Earring \"30 Day Avg: 495pp (of 466)\n 60 Day Avg: 491pp (of 922)\n 90 Day Avg: 494pp (of 1424)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Wu's Quivering Staff](https://wiki.project1999.com/Wu%27s_Quivering_Staff \"30 Day Avg: 90pp (of 248)\n 60 Day Avg: 91pp (of 357)\n 90 Day Avg: 90pp (of 690)\")",
+            "inline": true
+          }
+        ],
+        "author": {
+          "name": "[ WTS ]   Vaprack"
+        },
+        "footer": {
+          "text": "Project 1999 Blue"
+        },
+        "content_scan_version": 0
+      }
+    ],
+    "mentions": [],
+    "mention_roles": [],
+    "pinned": false,
+    "mention_everyone": false,
+    "tts": false,
+    "timestamp": "2023-12-14T15:35:07.562000+00:00",
+    "edited_timestamp": null,
+    "flags": 0,
+    "components": []
+  },
+  {
+    "id": "1184881245352624209",
+    "type": 0,
+    "content": "",
+    "channel_id": "720860598362963998",
+    "author": {
+      "id": "643497793834582017",
+      "username": "TunnelQuestBot",
+      "avatar": "7b75b3efdc8ffc02c0157aa1c525e829",
+      "discriminator": "2692",
+      "public_flags": 0,
+      "premium_type": 0,
+      "flags": 0,
+      "bot": true,
+      "banner": null,
+      "accent_color": null,
+      "global_name": null,
+      "avatar_decoration_data": null,
+      "banner_color": null
+    },
+    "attachments": [],
+    "embeds": [
+      {
+        "type": "rich",
+        "title": "```WTS Barbed Dragonscale Pauldrons / Rokyls Channelling Crystal / Ceremonial Iksar Chestplate / Wooly Spider Silk Net / Crushed Black Marble x2```",
+        "color": 1857720,
+        "timestamp": "2023-12-14T15:35:03.961000+00:00",
+        "fields": [
+          {
+            "name": "No Price Listed",
+            "value": "[Barbed Dragonscale Pauldrons](https://wiki.project1999.com/Barbed_Dragonscale_Pauldrons \"30 Day Avg: 1.53k (of 399)\n 60 Day Avg: 1,565pp (of 630)\n 90 Day Avg: 1.56k (of 922)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Rokyls Channelling Crystal](https://wiki.project1999.com/Rokyls_Channelling_Crystal \"30 Day Avg: 509pp (of 141)\n 60 Day Avg: 477pp (of 588)\n 90 Day Avg: 482pp (of 851)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Ceremonial Iksar Chestplate](https://wiki.project1999.com/Ceremonial_Iksar_Chestplate \"30 Day Avg: 6k (of 55)\n 60 Day Avg: 5,727pp (of 225)\n 90 Day Avg: 7,139pp (of 604)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Wooly Spider Silk Net](https://wiki.project1999.com/Wooly_Spider_Silk_Net \"30 Day Avg: - (of 0)\n 60 Day Avg: 25pp (of 1)\n 90 Day Avg: 25pp (of 1)\")",
+            "inline": true
+          },
+          {
+            "name": "2pp",
+            "value": "[Crushed Black Marble](https://wiki.project1999.com/Crushed_Black_Marble \"30 Day Avg: 95pp (of 431)\n 60 Day Avg: 98pp (of 999)\n 90 Day Avg: 99pp (of 1889)\")",
+            "inline": true
+          }
+        ],
+        "author": {
+          "name": "[ WTS ]   Vaprack"
+        },
+        "footer": {
+          "text": "Project 1999 Blue"
+        },
+        "content_scan_version": 0
+      }
+    ],
+    "mentions": [],
+    "mention_roles": [],
+    "pinned": false,
+    "mention_everyone": false,
+    "tts": false,
+    "timestamp": "2023-12-14T15:35:02.921000+00:00",
+    "edited_timestamp": null,
+    "flags": 0,
+    "components": []
+  },
+  {
+    "id": "1184881244387934308",
+    "type": 0,
+    "content": "",
+    "channel_id": "720860598362963998",
+    "author": {
+      "id": "643497793834582017",
+      "username": "TunnelQuestBot",
+      "avatar": "7b75b3efdc8ffc02c0157aa1c525e829",
+      "discriminator": "2692",
+      "public_flags": 0,
+      "premium_type": 0,
+      "flags": 0,
+      "bot": true,
+      "banner": null,
+      "accent_color": null,
+      "global_name": null,
+      "avatar_decoration_data": null,
+      "banner_color": null
+    },
+    "attachments": [],
+    "embeds": [
+      {
+        "type": "rich",
+        "title": "```WTS Sacrifices, pst```",
+        "color": 1857720,
+        "timestamp": "2023-12-14T15:35:03.961000+00:00",
+        "fields": [
+          {
+            "name": "No Price Listed",
+            "value": "[Ice](https://wiki.project1999.com/Ice \"30 Day Avg: 166pp (of 441)\n 60 Day Avg: 176pp (of 797)\n 90 Day Avg: 179pp (of 1090)\")",
+            "inline": true
+          }
+        ],
+        "author": {
+          "name": "[ WTS ]   Vaprack"
+        },
+        "footer": {
+          "text": "Project 1999 Blue"
+        },
+        "content_scan_version": 0
+      }
+    ],
+    "mentions": [],
+    "mention_roles": [],
+    "pinned": false,
+    "mention_everyone": false,
+    "tts": false,
+    "timestamp": "2023-12-14T15:35:02.691000+00:00",
+    "edited_timestamp": null,
+    "flags": 0,
+    "components": []
+  },
+  {
+    "id": "1184880446954274887",
+    "type": 0,
+    "content": "",
+    "channel_id": "720860598362963998",
+    "author": {
+      "id": "643497793834582017",
+      "username": "TunnelQuestBot",
+      "avatar": "7b75b3efdc8ffc02c0157aa1c525e829",
+      "discriminator": "2692",
+      "public_flags": 0,
+      "premium_type": 0,
+      "flags": 0,
+      "bot": true,
+      "banner": null,
+      "accent_color": null,
+      "global_name": null,
+      "avatar_decoration_data": null,
+      "banner_color": null
+    },
+    "attachments": [],
+    "embeds": [
+      {
+        "type": "rich",
+        "title": "```WTS Stave of Shielding Sarnak Skullsplitter Jagged Chokidai SpineSpell: Theft of Thought Di`zok Begirding sarnak battle shield```",
+        "color": 1857720,
+        "timestamp": "2023-12-14T15:31:53.495000+00:00",
+        "fields": [
+          {
+            "name": "No Price Listed",
+            "value": "[Stave of Shielding](https://wiki.project1999.com/Stave_of_Shielding \"30 Day Avg: 2,027pp (of 1175)\n 60 Day Avg: 2,010pp (of 2912)\n 90 Day Avg: 2,001pp (of 4316)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Sarnak Skullsplitter](https://wiki.project1999.com/Sarnak_Skullsplitter \"30 Day Avg: 50pp (of 188)\n 60 Day Avg: 52pp (of 388)\n 90 Day Avg: 54pp (of 700)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Jagged Chokidai Spine](https://wiki.project1999.com/Jagged_Chokidai_Spine \"30 Day Avg: 48pp (of 243)\n 60 Day Avg: 48pp (of 528)\n 90 Day Avg: 48pp (of 842)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Theft of Thought](https://wiki.project1999.com/Theft_of_Thought \"30 Day Avg: 331pp (of 214)\n 60 Day Avg: 295pp (of 436)\n 90 Day Avg: 297pp (of 721)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Di`zok Begirding](https://wiki.project1999.com/Di%60zok_Begirding \"Could not find historical pricing for item DI`ZOK BEGIRDING\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Sarnak Battle Shield](https://wiki.project1999.com/Sarnak_Battle_Shield \"30 Day Avg: 563pp (of 950)\n 60 Day Avg: 560pp (of 1675)\n 90 Day Avg: 557pp (of 3043)\")",
+            "inline": true
+          }
+        ],
+        "author": {
+          "name": "[ WTS ]   Mordek"
+        },
+        "footer": {
+          "text": "Project 1999 Blue"
+        },
+        "content_scan_version": 0
+      }
+    ],
+    "mentions": [],
+    "mention_roles": [],
+    "pinned": false,
+    "mention_everyone": false,
+    "tts": false,
+    "timestamp": "2023-12-14T15:31:52.568000+00:00",
+    "edited_timestamp": null,
+    "flags": 0,
+    "components": []
+  },
+  {
+    "id": "1184880068833591406",
+    "type": 0,
+    "content": "",
+    "channel_id": "720860598362963998",
+    "author": {
+      "id": "643497793834582017",
+      "username": "TunnelQuestBot",
+      "avatar": "7b75b3efdc8ffc02c0157aa1c525e829",
+      "discriminator": "2692",
+      "public_flags": 0,
+      "premium_type": 0,
+      "flags": 0,
+      "bot": true,
+      "banner": null,
+      "accent_color": null,
+      "global_name": null,
+      "avatar_decoration_data": null,
+      "banner_color": null
+    },
+    "attachments": [],
+    "embeds": [
+      {
+        "type": "rich",
+        "title": "```WTS Spell: Sacrifice 150 / Spell: Vengeance of Al`Kabor 50 / Shield of the Slain Unicorn 25 / Spell: Death Peace 100 / Block of Permafrost 3k / Spell: Vocarate: Fire 100 /```",
+        "color": 1857720,
+        "timestamp": "2023-12-14T15:30:23.319000+00:00",
+        "fields": [
+          {
+            "name": "150pp",
+            "value": "[Ice](https://wiki.project1999.com/Ice \"30 Day Avg: 166pp (of 441)\n 60 Day Avg: 176pp (of 797)\n 90 Day Avg: 179pp (of 1090)\")",
+            "inline": true
+          },
+          {
+            "name": "50pp",
+            "value": "[Vengeance of Al`kabor](https://wiki.project1999.com/Vengeance_of_Al%27Kabor \"Could not find historical pricing for item VENGEANCE OF AL`KABOR\")",
+            "inline": true
+          },
+          {
+            "name": "25pp",
+            "value": "[Shield of the Slain Unicorn](https://wiki.project1999.com/Shield_of_the_Slain_Unicorn \"30 Day Avg: 25pp (of 128)\n 60 Day Avg: 25pp (of 128)\n 90 Day Avg: 25pp (of 128)\")",
+            "inline": true
+          },
+          {
+            "name": "100pp",
+            "value": "[Death Peace](https://wiki.project1999.com/Death_Peace \"30 Day Avg: - (of 0)\n 60 Day Avg: - (of 0)\n 90 Day Avg: - (of 0)\")",
+            "inline": true
+          },
+          {
+            "name": "3k",
+            "value": "[Block of Permafrost](https://wiki.project1999.com/Block_of_Permafrost \"30 Day Avg: 3k (of 303)\n 60 Day Avg: 2,997pp (of 660)\n 90 Day Avg: 2,998pp (of 887)\")",
+            "inline": true
+          },
+          {
+            "name": "100pp",
+            "value": "[Vocarate: Fire](https://wiki.project1999.com/Vocarate:_Fire \"30 Day Avg: - (of 0)\n 60 Day Avg: - (of 0)\n 90 Day Avg: - (of 0)\")",
+            "inline": true
+          }
+        ],
+        "author": {
+          "name": "[ WTS ]   Moneytalks"
+        },
+        "footer": {
+          "text": "Project 1999 Blue"
+        },
+        "content_scan_version": 0
+      }
+    ],
+    "mentions": [],
+    "mention_roles": [],
+    "pinned": false,
+    "mention_everyone": false,
+    "tts": false,
+    "timestamp": "2023-12-14T15:30:22.417000+00:00",
+    "edited_timestamp": null,
+    "flags": 0,
+    "components": []
+  },
+  {
+    "id": "1184880067956965496",
+    "type": 0,
+    "content": "",
+    "channel_id": "720860598362963998",
+    "author": {
+      "id": "643497793834582017",
+      "username": "TunnelQuestBot",
+      "avatar": "7b75b3efdc8ffc02c0157aa1c525e829",
+      "discriminator": "2692",
+      "public_flags": 0,
+      "premium_type": 0,
+      "flags": 0,
+      "bot": true,
+      "banner": null,
+      "accent_color": null,
+      "global_name": null,
+      "avatar_decoration_data": null,
+      "banner_color": null
+    },
+    "attachments": [],
+    "embeds": [
+      {
+        "type": "rich",
+        "title": "```WTS Dark Scale Sleeves 600 / Spell: Wind of Tishanian 250 / Spell: Vocarate: Water 100 / Iron Bound Tome 50 / Cane of the Tranquil 100 / Spell: Evacuate 200 /```",
+        "color": 1857720,
+        "timestamp": "2023-12-14T15:30:23.319000+00:00",
+        "fields": [
+          {
+            "name": "600pp",
+            "value": "[Dark Scale Sleeves](https://wiki.project1999.com/Dark_Scale_Sleeves \"30 Day Avg: 570pp (of 1178)\n 60 Day Avg: 583pp (of 1940)\n 90 Day Avg: 580pp (of 2481)\")",
+            "inline": true
+          },
+          {
+            "name": "250pp",
+            "value": "[Wind of Tishanian](https://wiki.project1999.com/Wind_of_Tishanian \"30 Day Avg: 237pp (of 412)\n 60 Day Avg: 243pp (of 1422)\n 90 Day Avg: 244pp (of 1655)\")",
+            "inline": true
+          },
+          {
+            "name": "100pp",
+            "value": "[Vocarate: Water](https://wiki.project1999.com/Vocarate:_Water \"30 Day Avg: 99pp (of 637)\n 60 Day Avg: 98pp (of 2109)\n 90 Day Avg: 97pp (of 2905)\")",
+            "inline": true
+          },
+          {
+            "name": "50pp",
+            "value": "[Iron Bound Tome](https://wiki.project1999.com/Iron_Bound_Tome \"30 Day Avg: 50pp (of 230)\n 60 Day Avg: 49pp (of 247)\n 90 Day Avg: 49pp (of 255)\")",
+            "inline": true
+          },
+          {
+            "name": "100pp",
+            "value": "[Cane of the Tranquil](https://wiki.project1999.com/Cane_of_the_Tranquil \"30 Day Avg: 96pp (of 112)\n 60 Day Avg: 97pp (of 124)\n 90 Day Avg: 97pp (of 136)\")",
+            "inline": true
+          },
+          {
+            "name": "200pp",
+            "value": "[Evacuate](https://wiki.project1999.com/Evacuate \"30 Day Avg: 197pp (of 567)\n 60 Day Avg: 175pp (of 868)\n 90 Day Avg: 181pp (of 1297)\")",
+            "inline": true
+          }
+        ],
+        "author": {
+          "name": "[ WTS ]   Moneytalks"
+        },
+        "footer": {
+          "text": "Project 1999 Blue"
+        },
+        "content_scan_version": 0
+      }
+    ],
+    "mentions": [],
+    "mention_roles": [],
+    "pinned": false,
+    "mention_everyone": false,
+    "tts": false,
+    "timestamp": "2023-12-14T15:30:22.208000+00:00",
+    "edited_timestamp": null,
+    "flags": 0,
+    "components": []
+  },
+  {
+    "id": "1184880066891616437",
+    "type": 0,
+    "content": "",
+    "channel_id": "720860598362963998",
+    "author": {
+      "id": "643497793834582017",
+      "username": "TunnelQuestBot",
+      "avatar": "7b75b3efdc8ffc02c0157aa1c525e829",
+      "discriminator": "2692",
+      "public_flags": 0,
+      "premium_type": 0,
+      "flags": 0,
+      "bot": true,
+      "banner": null,
+      "accent_color": null,
+      "global_name": null,
+      "avatar_decoration_data": null,
+      "banner_color": null
+    },
+    "attachments": [],
+    "embeds": [
+      {
+        "type": "rich",
+        "title": "```WTS Spell: Call of the Predator 100 / Strathbone Shell Shield 200 / Spell: Malo 8k / Crown of King Tranix 5k / Song: Composition of Ervaj 100 / Green Jade Halberd 400 / ```",
+        "color": 1857720,
+        "timestamp": "2023-12-14T15:30:23.319000+00:00",
+        "fields": [
+          {
+            "name": "100pp",
+            "value": "[Call of the Predator](https://wiki.project1999.com/Call_of_the_Predator \"30 Day Avg: 98pp (of 825)\n 60 Day Avg: 98pp (of 2013)\n 90 Day Avg: 120pp (of 2897)\")",
+            "inline": true
+          },
+          {
+            "name": "200pp",
+            "value": "[Strathbone Shell Shield](https://wiki.project1999.com/Strathbone_Shell_Shield \"30 Day Avg: 200pp (of 250)\n 60 Day Avg: 199pp (of 473)\n 90 Day Avg: 199pp (of 478)\")",
+            "inline": true
+          },
+          {
+            "name": "8k",
+            "value": "[Malo](https://wiki.project1999.com/Malo \"30 Day Avg: 8,026pp (of 244)\n 60 Day Avg: 8.42k (of 386)\n 90 Day Avg: 8,075pp (of 568)\")",
+            "inline": true
+          },
+          {
+            "name": "5k",
+            "value": "[Crown of King Tranix](https://wiki.project1999.com/Crown_of_King_Tranix \"30 Day Avg: 4,987pp (of 1433)\n 60 Day Avg: 5,109pp (of 2103)\n 90 Day Avg: 5,102pp (of 2522)\")",
+            "inline": true
+          },
+          {
+            "name": "100pp",
+            "value": "[Composition of Ervaj](https://wiki.project1999.com/Composition_of_Ervaj \"30 Day Avg: 98pp (of 508)\n 60 Day Avg: 98pp (of 1003)\n 90 Day Avg: 98pp (of 1222)\")",
+            "inline": true
+          },
+          {
+            "name": "400pp",
+            "value": "[Green Jade Halberd](https://wiki.project1999.com/Green_Jade_Halberd \"30 Day Avg: 400pp (of 442)\n 60 Day Avg: 400pp (of 586)\n 90 Day Avg: 399pp (of 597)\")",
+            "inline": true
+          }
+        ],
+        "author": {
+          "name": "[ WTS ]   Moneytalks"
+        },
+        "footer": {
+          "text": "Project 1999 Blue"
+        },
+        "content_scan_version": 0
+      }
+    ],
+    "mentions": [],
+    "mention_roles": [],
+    "pinned": false,
+    "mention_everyone": false,
+    "tts": false,
+    "timestamp": "2023-12-14T15:30:21.954000+00:00",
+    "edited_timestamp": null,
+    "flags": 0,
+    "components": []
+  },
+  {
+    "id": "1184880046486343751",
+    "type": 0,
+    "content": "",
+    "channel_id": "720860598362963998",
+    "author": {
+      "id": "643497793834582017",
+      "username": "TunnelQuestBot",
+      "avatar": "7b75b3efdc8ffc02c0157aa1c525e829",
+      "discriminator": "2692",
+      "public_flags": 0,
+      "premium_type": 0,
+      "flags": 0,
+      "bot": true,
+      "banner": null,
+      "accent_color": null,
+      "global_name": null,
+      "avatar_decoration_data": null,
+      "banner_color": null
+    },
+    "attachments": [],
+    "embeds": [
+      {
+        "type": "rich",
+        "title": "```WTS Frost Giant Toes 50 / Kromrif Head 10 / Spell: Flaming Sword of Xuzl 50 / Spell: Manastorm 50 / Spell: Aegis of Ro 100 / Spell: Invoke Shadow 150 / Rune of the Astral 50 /```",
+        "color": 1857720,
+        "timestamp": "2023-12-14T15:30:18.313000+00:00",
+        "fields": [
+          {
+            "name": "50pp",
+            "value": "[Frost Giant Toes](https://wiki.project1999.com/Frost_Giant_Toes \"30 Day Avg: 50pp (of 150)\n 60 Day Avg: 50pp (of 458)\n 90 Day Avg: 49pp (of 594)\")",
+            "inline": true
+          },
+          {
+            "name": "10pp",
+            "value": "[Kromrif Head](https://wiki.project1999.com/Kromrif_Head \"30 Day Avg: 10pp (of 75)\n 60 Day Avg: 10pp (of 176)\n 90 Day Avg: 10pp (of 302)\")",
+            "inline": true
+          },
+          {
+            "name": "50pp",
+            "value": "[Flaming Sword of Xuzl](https://wiki.project1999.com/Flaming_Sword_of_Xuzl \"30 Day Avg: 51pp (of 451)\n 60 Day Avg: 53pp (of 545)\n 90 Day Avg: 60pp (of 833)\")",
+            "inline": true
+          },
+          {
+            "name": "50pp",
+            "value": "[Manastorm](https://wiki.project1999.com/Manastorm \"30 Day Avg: 59pp (of 572)\n 60 Day Avg: 56pp (of 1076)\n 90 Day Avg: 57pp (of 1410)\")",
+            "inline": true
+          },
+          {
+            "name": "100pp",
+            "value": "[Aegis of Ro](https://wiki.project1999.com/Aegis_of_Ro \"30 Day Avg: 100pp (of 412)\n 60 Day Avg: 99pp (of 877)\n 90 Day Avg: 99pp (of 1333)\")",
+            "inline": true
+          },
+          {
+            "name": "150pp",
+            "value": "[Invoke Shadow](https://wiki.project1999.com/Invoke_Shadow \"30 Day Avg: 143pp (of 384)\n 60 Day Avg: 142pp (of 734)\n 90 Day Avg: 142pp (of 1083)\")",
+            "inline": true
+          },
+          {
+            "name": "50pp",
+            "value": "[Rune of the Astral](https://wiki.project1999.com/Rune_of_The_Astral \"30 Day Avg: 50pp (of 114)\n 60 Day Avg: 49pp (of 214)\n 90 Day Avg: 49pp (of 266)\")",
+            "inline": true
+          }
+        ],
+        "author": {
+          "name": "[ WTS ]   Moneytalks"
+        },
+        "footer": {
+          "text": "Project 1999 Blue"
+        },
+        "content_scan_version": 0
+      }
+    ],
+    "mentions": [],
+    "mention_roles": [],
+    "pinned": false,
+    "mention_everyone": false,
+    "tts": false,
+    "timestamp": "2023-12-14T15:30:17.089000+00:00",
+    "edited_timestamp": null,
+    "flags": 0,
+    "components": []
+  },
+  {
+    "id": "1184879941003788418",
+    "type": 0,
+    "content": "",
+    "channel_id": "720860598362963998",
+    "author": {
+      "id": "643497793834582017",
+      "username": "TunnelQuestBot",
+      "avatar": "7b75b3efdc8ffc02c0157aa1c525e829",
+      "discriminator": "2692",
+      "public_flags": 0,
+      "premium_type": 0,
+      "flags": 0,
+      "bot": true,
+      "banner": null,
+      "accent_color": null,
+      "global_name": null,
+      "avatar_decoration_data": null,
+      "banner_color": null
+    },
+    "attachments": [],
+    "embeds": [
+      {
+        "type": "rich",
+        "title": "```All my prices are below market rate, priced to sell! I don't want to waste more time in here than I already do. Come one come all!```",
+        "color": 1857720,
+        "timestamp": "2023-12-14T15:29:53.268000+00:00",
+        "fields": [
+          {
+            "name": "No Price Listed",
+            "value": "[Rice](https://wiki.project1999.com/Rice \"30 Day Avg: - (of 28)\n 60 Day Avg: - (of 56)\n 90 Day Avg: - (of 183)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Rice](https://wiki.project1999.com/Rice \"30 Day Avg: - (of 28)\n 60 Day Avg: - (of 56)\n 90 Day Avg: - (of 183)\")",
+            "inline": true
+          }
+        ],
+        "author": {
+          "name": "[ WTS ]   Emissaryofthule"
+        },
+        "footer": {
+          "text": "Project 1999 Blue"
+        },
+        "content_scan_version": 0
+      }
+    ],
+    "mentions": [],
+    "mention_roles": [],
+    "pinned": false,
+    "mention_everyone": false,
+    "tts": false,
+    "timestamp": "2023-12-14T15:29:51.940000+00:00",
+    "edited_timestamp": null,
+    "flags": 0,
+    "components": []
+  },
+  {
+    "id": "1184879919424077867",
+    "type": 0,
+    "content": "",
+    "channel_id": "720860598362963998",
+    "author": {
+      "id": "643497793834582017",
+      "username": "TunnelQuestBot",
+      "avatar": "7b75b3efdc8ffc02c0157aa1c525e829",
+      "discriminator": "2692",
+      "public_flags": 0,
+      "premium_type": 0,
+      "flags": 0,
+      "bot": true,
+      "banner": null,
+      "accent_color": null,
+      "global_name": null,
+      "avatar_decoration_data": null,
+      "banner_color": null
+    },
+    "attachments": [],
+    "embeds": [
+      {
+        "type": "rich",
+        "title": "```WTS Spell: Ice Spear of Solist , Spell: Focus of Spirit , Spell: Theft of Thought , Spell: Aegolism , Spell: Gift of Xev , Spell: Cannibalize III```",
+        "color": 1857720,
+        "timestamp": "2023-12-14T15:29:48.264000+00:00",
+        "fields": [
+          {
+            "name": "No Price Listed",
+            "value": "[Ice Spear of Solist](https://wiki.project1999.com/Ice_Spear_of_Solist \"30 Day Avg: 75pp (of 168)\n 60 Day Avg: 75pp (of 367)\n 90 Day Avg: 75pp (of 681)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Focus of Spirit](https://wiki.project1999.com/Focus_of_Spirit \"30 Day Avg: - (of 0)\n 60 Day Avg: - (of 0)\n 90 Day Avg: - (of 0)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Theft of Thought](https://wiki.project1999.com/Theft_of_Thought \"30 Day Avg: 331pp (of 214)\n 60 Day Avg: 295pp (of 436)\n 90 Day Avg: 297pp (of 721)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Aegolism](https://wiki.project1999.com/Aegolism \"30 Day Avg: - (of 0)\n 60 Day Avg: - (of 0)\n 90 Day Avg: - (of 0)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Gift of Xev](https://wiki.project1999.com/Gift_of_Xev \"30 Day Avg: 100pp (of 115)\n 60 Day Avg: 57pp (of 207)\n 90 Day Avg: 56pp (of 343)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Cannibalize Iii](https://wiki.project1999.com/Cannibalize_III \"30 Day Avg: - (of 0)\n 60 Day Avg: - (of 0)\n 90 Day Avg: - (of 0)\")",
+            "inline": true
+          }
+        ],
+        "author": {
+          "name": "[ WTS ]   Emissaryofthule"
+        },
+        "footer": {
+          "text": "Project 1999 Blue"
+        },
+        "content_scan_version": 0
+      }
+    ],
+    "mentions": [],
+    "mention_roles": [],
+    "pinned": false,
+    "mention_everyone": false,
+    "tts": false,
+    "timestamp": "2023-12-14T15:29:46.795000+00:00",
+    "edited_timestamp": null,
+    "flags": 0,
+    "components": []
+  },
+  {
+    "id": "1184879900071559199",
+    "type": 0,
+    "content": "",
+    "channel_id": "720860598362963998",
+    "author": {
+      "id": "643497793834582017",
+      "username": "TunnelQuestBot",
+      "avatar": "7b75b3efdc8ffc02c0157aa1c525e829",
+      "discriminator": "2692",
+      "public_flags": 0,
+      "premium_type": 0,
+      "flags": 0,
+      "bot": true,
+      "banner": null,
+      "accent_color": null,
+      "global_name": null,
+      "avatar_decoration_data": null,
+      "banner_color": null
+    },
+    "attachments": [],
+    "embeds": [
+      {
+        "type": "rich",
+        "title": "```WTS Spell: Form of the Howler , Spell: Scars of Sigil , Spell: Blizzard , Spell: Yaulp IV , Spell: Atol`s Spectral Shackles , Spell: Protection of the Glades```",
+        "color": 1857720,
+        "timestamp": "2023-12-14T15:29:43.251000+00:00",
+        "fields": [
+          {
+            "name": "No Price Listed",
+            "value": "[Form of the Howler](https://wiki.project1999.com/Form_of_the_Howler \"30 Day Avg: 414pp (of 246)\n 60 Day Avg: 429pp (of 624)\n 90 Day Avg: 418pp (of 1026)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Scars of Sigil](https://wiki.project1999.com/Scars_of_Sigil \"30 Day Avg: 100pp (of 687)\n 60 Day Avg: 97pp (of 2214)\n 90 Day Avg: 97pp (of 2905)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Blizzard](https://wiki.project1999.com/Blizzard \"30 Day Avg: 52pp (of 386)\n 60 Day Avg: 64pp (of 1567)\n 90 Day Avg: 66pp (of 2153)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Yaulp Iv](https://wiki.project1999.com/Yaulp_IV \"30 Day Avg: 50pp (of 252)\n 60 Day Avg: 56pp (of 550)\n 90 Day Avg: 56pp (of 784)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Atol`s Spectral Shackles](https://wiki.project1999.com/Atol%27s_Spectral_Shackles \"Could not find historical pricing for item ATOL`S SPECTRAL SHACKLES\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Protection of the Glades](https://wiki.project1999.com/Protection_of_the_Glades \"30 Day Avg: 481pp (of 280)\n 60 Day Avg: 490pp (of 665)\n 90 Day Avg: 490pp (of 909)\")",
+            "inline": true
+          }
+        ],
+        "author": {
+          "name": "[ WTS ]   Emissaryofthule"
+        },
+        "footer": {
+          "text": "Project 1999 Blue"
+        },
+        "content_scan_version": 0
+      }
+    ],
+    "mentions": [],
+    "mention_roles": [],
+    "pinned": false,
+    "mention_everyone": false,
+    "tts": false,
+    "timestamp": "2023-12-14T15:29:42.181000+00:00",
+    "edited_timestamp": null,
+    "flags": 0,
+    "components": []
+  },
+  {
+    "id": "1184879878676430920",
+    "type": 0,
+    "content": "",
+    "channel_id": "720860598362963998",
+    "author": {
+      "id": "643497793834582017",
+      "username": "TunnelQuestBot",
+      "avatar": "7b75b3efdc8ffc02c0157aa1c525e829",
+      "discriminator": "2692",
+      "public_flags": 0,
+      "premium_type": 0,
+      "flags": 0,
+      "bot": true,
+      "banner": null,
+      "accent_color": null,
+      "global_name": null,
+      "avatar_decoration_data": null,
+      "banner_color": null
+    },
+    "attachments": [],
+    "embeds": [
+      {
+        "type": "rich",
+        "title": "```WTS Goblin Gazughi Ring , Elder Spiritist's Boots , Luminary Two Handed Sword , Spine Chill Spear , Cane of Harmony , Serpentskin Eyepatch```",
+        "color": 1857720,
+        "timestamp": "2023-12-14T15:29:38.255000+00:00",
+        "fields": [
+          {
+            "name": "No Price Listed",
+            "value": "[Goblin Gazughi Ring](https://wiki.project1999.com/Goblin_Gazughi_Ring \"30 Day Avg: 6,364pp (of 198)\n 60 Day Avg: 6,394pp (of 483)\n 90 Day Avg: 6,465pp (of 682)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Elder Spiritist's Boots](https://wiki.project1999.com/Elder_Spiritist%27s_Boots \"30 Day Avg: 500pp (of 44)\n 60 Day Avg: 488pp (of 118)\n 90 Day Avg: 492pp (of 168)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Luminary Two Handed Sword](https://wiki.project1999.com/Luminary_Two_Handed_Sword \"30 Day Avg: - (of 8)\n 60 Day Avg: 250pp (of 29)\n 90 Day Avg: 250pp (of 46)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Spine Chill Spear](https://wiki.project1999.com/Spine_Chill_Spear \"30 Day Avg: 49pp (of 142)\n 60 Day Avg: 51pp (of 284)\n 90 Day Avg: 56pp (of 396)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Cane of Harmony](https://wiki.project1999.com/Cane_of_Harmony \"30 Day Avg: 100pp (of 79)\n 60 Day Avg: 95pp (of 253)\n 90 Day Avg: 96pp (of 405)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Serpentskin Eyepatch](https://wiki.project1999.com/Serpentskin_Eyepatch \"30 Day Avg: - (of 0)\n 60 Day Avg: - (of 0)\n 90 Day Avg: - (of 0)\")",
+            "inline": true
+          }
+        ],
+        "author": {
+          "name": "[ WTS ]   Emissaryofthule"
+        },
+        "footer": {
+          "text": "Project 1999 Blue"
+        },
+        "content_scan_version": 0
+      }
+    ],
+    "mentions": [],
+    "mention_roles": [],
+    "pinned": false,
+    "mention_everyone": false,
+    "tts": false,
+    "timestamp": "2023-12-14T15:29:37.080000+00:00",
+    "edited_timestamp": null,
+    "flags": 0,
+    "components": []
+  },
+  {
+    "id": "1184879877883707402",
+    "type": 0,
+    "content": "",
+    "channel_id": "720860598362963998",
+    "author": {
+      "id": "643497793834582017",
+      "username": "TunnelQuestBot",
+      "avatar": "7b75b3efdc8ffc02c0157aa1c525e829",
+      "discriminator": "2692",
+      "public_flags": 0,
+      "premium_type": 0,
+      "flags": 0,
+      "bot": true,
+      "banner": null,
+      "accent_color": null,
+      "global_name": null,
+      "avatar_decoration_data": null,
+      "banner_color": null
+    },
+    "attachments": [],
+    "embeds": [
+      {
+        "type": "rich",
+        "title": "```WTS Velium Blue Diamond Bracelet x2, Velium Jacinth Wedding Ring x2, Crushed Sea Sapphire , Jacinth x3, Blue Diamond x3```",
+        "color": 1857720,
+        "timestamp": "2023-12-14T15:29:38.256000+00:00",
+        "fields": [
+          {
+            "name": "2pp",
+            "value": "[Velium Blue Diamond Bracelet](https://wiki.project1999.com/Velium_Blue_Diamond_Bracelet \"30 Day Avg: 991pp (of 471)\n 60 Day Avg: 926pp (of 1052)\n 90 Day Avg: 939pp (of 1566)\")",
+            "inline": true
+          },
+          {
+            "name": "2pp",
+            "value": "[Velium Jacinth Wedding Ring](https://wiki.project1999.com/Velium_Jacinth_Wedding_Ring \"30 Day Avg: 600pp (of 429)\n 60 Day Avg: 593pp (of 776)\n 90 Day Avg: 595pp (of 1160)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Crushed Sea Sapphire](https://wiki.project1999.com/Crushed_Sea_Sapphire \"30 Day Avg: - (of 44)\n 60 Day Avg: 100pp (of 130)\n 90 Day Avg: 100pp (of 230)\")",
+            "inline": true
+          },
+          {
+            "name": "3pp",
+            "value": "[Jacinth](https://wiki.project1999.com/Jacinth \"30 Day Avg: 187pp (of 82)\n 60 Day Avg: 198pp (of 196)\n 90 Day Avg: 214pp (of 315)\")",
+            "inline": true
+          },
+          {
+            "name": "3pp",
+            "value": "[Blue Diamond](https://wiki.project1999.com/Blue_Diamond \"30 Day Avg: 309pp (of 403)\n 60 Day Avg: 299pp (of 1179)\n 90 Day Avg: 308pp (of 1684)\")",
+            "inline": true
+          }
+        ],
+        "author": {
+          "name": "[ WTS ]   Emissaryofthule"
+        },
+        "footer": {
+          "text": "Project 1999 Blue"
+        },
+        "content_scan_version": 0
+      }
+    ],
+    "mentions": [],
+    "mention_roles": [],
+    "pinned": false,
+    "mention_everyone": false,
+    "tts": false,
+    "timestamp": "2023-12-14T15:29:36.891000+00:00",
+    "edited_timestamp": null,
+    "flags": 0,
+    "components": []
+  },
+  {
+    "id": "1184879016419807313",
+    "type": 0,
+    "content": "",
+    "channel_id": "720860598362963998",
+    "author": {
+      "id": "643497793834582017",
+      "username": "TunnelQuestBot",
+      "avatar": "7b75b3efdc8ffc02c0157aa1c525e829",
+      "discriminator": "2692",
+      "public_flags": 0,
+      "premium_type": 0,
+      "flags": 0,
+      "bot": true,
+      "banner": null,
+      "accent_color": null,
+      "global_name": null,
+      "avatar_decoration_data": null,
+      "banner_color": null
+    },
+    "attachments": [],
+    "embeds": [
+      {
+        "type": "rich",
+        "title": "```All my prices are below market rate, priced to sell! I don't want to waste more time in here than I already do. Come one come all!```",
+        "color": 1857720,
+        "timestamp": "2023-12-14T15:26:12.846000+00:00",
+        "fields": [
+          {
+            "name": "No Price Listed",
+            "value": "[Rice](https://wiki.project1999.com/Rice \"30 Day Avg: - (of 28)\n 60 Day Avg: - (of 56)\n 90 Day Avg: - (of 183)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Rice](https://wiki.project1999.com/Rice \"30 Day Avg: - (of 28)\n 60 Day Avg: - (of 56)\n 90 Day Avg: - (of 183)\")",
+            "inline": true
+          }
+        ],
+        "author": {
+          "name": "[ WTS ]   Emissaryofthule"
+        },
+        "footer": {
+          "text": "Project 1999 Blue"
+        },
+        "content_scan_version": 0
+      }
+    ],
+    "mentions": [],
+    "mention_roles": [],
+    "pinned": false,
+    "mention_everyone": false,
+    "tts": false,
+    "timestamp": "2023-12-14T15:26:11.502000+00:00",
+    "edited_timestamp": null,
+    "flags": 0,
+    "components": []
+  },
+  {
+    "id": "1184878534209052713",
+    "type": 0,
+    "content": "",
+    "channel_id": "720860598362963998",
+    "author": {
+      "id": "643497793834582017",
+      "username": "TunnelQuestBot",
+      "avatar": "7b75b3efdc8ffc02c0157aa1c525e829",
+      "discriminator": "2692",
+      "public_flags": 0,
+      "premium_type": 0,
+      "flags": 0,
+      "bot": true,
+      "banner": null,
+      "accent_color": null,
+      "global_name": null,
+      "avatar_decoration_data": null,
+      "banner_color": null
+    },
+    "attachments": [],
+    "embeds": [
+      {
+        "type": "rich",
+        "title": "```WTS Stave of Shielding Sarnak Skullsplitter Jagged Chokidai SpineSpell: Theft of Thought Di`zok Begirding sarnak battle shield```",
+        "color": 1857720,
+        "timestamp": "2023-12-14T15:24:17.619000+00:00",
+        "fields": [
+          {
+            "name": "No Price Listed",
+            "value": "[Stave of Shielding](https://wiki.project1999.com/Stave_of_Shielding \"30 Day Avg: 2,027pp (of 1175)\n 60 Day Avg: 2,010pp (of 2912)\n 90 Day Avg: 2,001pp (of 4316)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Sarnak Skullsplitter](https://wiki.project1999.com/Sarnak_Skullsplitter \"30 Day Avg: 50pp (of 188)\n 60 Day Avg: 52pp (of 388)\n 90 Day Avg: 54pp (of 700)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Jagged Chokidai Spine](https://wiki.project1999.com/Jagged_Chokidai_Spine \"30 Day Avg: 48pp (of 243)\n 60 Day Avg: 48pp (of 528)\n 90 Day Avg: 48pp (of 842)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Theft of Thought](https://wiki.project1999.com/Theft_of_Thought \"30 Day Avg: 331pp (of 214)\n 60 Day Avg: 295pp (of 436)\n 90 Day Avg: 297pp (of 721)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Di`zok Begirding](https://wiki.project1999.com/Di%60zok_Begirding \"Could not find historical pricing for item DI`ZOK BEGIRDING\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Sarnak Battle Shield](https://wiki.project1999.com/Sarnak_Battle_Shield \"30 Day Avg: 563pp (of 950)\n 60 Day Avg: 560pp (of 1675)\n 90 Day Avg: 557pp (of 3043)\")",
+            "inline": true
+          }
+        ],
+        "author": {
+          "name": "[ WTS ]   Mordek"
+        },
+        "footer": {
+          "text": "Project 1999 Blue"
+        },
+        "content_scan_version": 0
+      }
+    ],
+    "mentions": [],
+    "mention_roles": [],
+    "pinned": false,
+    "mention_everyone": false,
+    "tts": false,
+    "timestamp": "2023-12-14T15:24:16.534000+00:00",
+    "edited_timestamp": null,
+    "flags": 0,
+    "components": []
+  },
+  {
+    "id": "1184878218067591238",
+    "type": 0,
+    "content": "",
+    "channel_id": "720860598362963998",
+    "author": {
+      "id": "643497793834582017",
+      "username": "TunnelQuestBot",
+      "avatar": "7b75b3efdc8ffc02c0157aa1c525e829",
+      "discriminator": "2692",
+      "public_flags": 0,
+      "premium_type": 0,
+      "flags": 0,
+      "bot": true,
+      "banner": null,
+      "accent_color": null,
+      "global_name": null,
+      "avatar_decoration_data": null,
+      "banner_color": null
+    },
+    "attachments": [],
+    "embeds": [
+      {
+        "type": "rich",
+        "title": "```WTS Goblin Gazughi Ring , Elder Spiritist's Boots , Luminary Two Handed Sword , Spine Chill Spear , Cane of Harmony , Serpentskin Eyepatch```",
+        "color": 1857720,
+        "timestamp": "2023-12-14T15:23:02.483000+00:00",
+        "fields": [
+          {
+            "name": "No Price Listed",
+            "value": "[Goblin Gazughi Ring](https://wiki.project1999.com/Goblin_Gazughi_Ring \"30 Day Avg: 6,364pp (of 198)\n 60 Day Avg: 6,394pp (of 483)\n 90 Day Avg: 6,465pp (of 682)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Elder Spiritist's Boots](https://wiki.project1999.com/Elder_Spiritist%27s_Boots \"30 Day Avg: 500pp (of 44)\n 60 Day Avg: 488pp (of 118)\n 90 Day Avg: 492pp (of 168)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Luminary Two Handed Sword](https://wiki.project1999.com/Luminary_Two_Handed_Sword \"30 Day Avg: - (of 8)\n 60 Day Avg: 250pp (of 29)\n 90 Day Avg: 250pp (of 46)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Spine Chill Spear](https://wiki.project1999.com/Spine_Chill_Spear \"30 Day Avg: 49pp (of 142)\n 60 Day Avg: 51pp (of 284)\n 90 Day Avg: 56pp (of 396)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Cane of Harmony](https://wiki.project1999.com/Cane_of_Harmony \"30 Day Avg: 100pp (of 79)\n 60 Day Avg: 95pp (of 253)\n 90 Day Avg: 96pp (of 405)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Serpentskin Eyepatch](https://wiki.project1999.com/Serpentskin_Eyepatch \"30 Day Avg: - (of 0)\n 60 Day Avg: - (of 0)\n 90 Day Avg: - (of 0)\")",
+            "inline": true
+          }
+        ],
+        "author": {
+          "name": "[ WTS ]   Emissaryofthule"
+        },
+        "footer": {
+          "text": "Project 1999 Blue"
+        },
+        "content_scan_version": 0
+      }
+    ],
+    "mentions": [],
+    "mention_roles": [],
+    "pinned": false,
+    "mention_everyone": false,
+    "tts": false,
+    "timestamp": "2023-12-14T15:23:01.160000+00:00",
+    "edited_timestamp": null,
+    "flags": 0,
+    "components": []
+  },
+  {
+    "id": "1184878198283042837",
+    "type": 0,
+    "content": "",
+    "channel_id": "720860598362963998",
+    "author": {
+      "id": "643497793834582017",
+      "username": "TunnelQuestBot",
+      "avatar": "7b75b3efdc8ffc02c0157aa1c525e829",
+      "discriminator": "2692",
+      "public_flags": 0,
+      "premium_type": 0,
+      "flags": 0,
+      "bot": true,
+      "banner": null,
+      "accent_color": null,
+      "global_name": null,
+      "avatar_decoration_data": null,
+      "banner_color": null
+    },
+    "attachments": [],
+    "embeds": [
+      {
+        "type": "rich",
+        "title": "```WTS Spell: Form of the Howler , Spell: Scars of Sigil , Spell: Blizzard , Spell: Yaulp IV , Spell: Atol`s Spectral Shackles , Spell: Protection of the Glades```",
+        "color": 1857720,
+        "timestamp": "2023-12-14T15:22:57.477000+00:00",
+        "fields": [
+          {
+            "name": "No Price Listed",
+            "value": "[Form of the Howler](https://wiki.project1999.com/Form_of_the_Howler \"30 Day Avg: 414pp (of 246)\n 60 Day Avg: 429pp (of 624)\n 90 Day Avg: 418pp (of 1026)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Scars of Sigil](https://wiki.project1999.com/Scars_of_Sigil \"30 Day Avg: 100pp (of 687)\n 60 Day Avg: 97pp (of 2214)\n 90 Day Avg: 97pp (of 2905)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Blizzard](https://wiki.project1999.com/Blizzard \"30 Day Avg: 52pp (of 386)\n 60 Day Avg: 64pp (of 1567)\n 90 Day Avg: 66pp (of 2153)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Yaulp Iv](https://wiki.project1999.com/Yaulp_IV \"30 Day Avg: 50pp (of 252)\n 60 Day Avg: 56pp (of 550)\n 90 Day Avg: 56pp (of 784)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Atol`s Spectral Shackles](https://wiki.project1999.com/Atol%27s_Spectral_Shackles \"Could not find historical pricing for item ATOL`S SPECTRAL SHACKLES\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Protection of the Glades](https://wiki.project1999.com/Protection_of_the_Glades \"30 Day Avg: 481pp (of 280)\n 60 Day Avg: 490pp (of 665)\n 90 Day Avg: 490pp (of 909)\")",
+            "inline": true
+          }
+        ],
+        "author": {
+          "name": "[ WTS ]   Emissaryofthule"
+        },
+        "footer": {
+          "text": "Project 1999 Blue"
+        },
+        "content_scan_version": 0
+      }
+    ],
+    "mentions": [],
+    "mention_roles": [],
+    "pinned": false,
+    "mention_everyone": false,
+    "tts": false,
+    "timestamp": "2023-12-14T15:22:56.443000+00:00",
+    "edited_timestamp": null,
+    "flags": 0,
+    "components": []
+  },
+  {
+    "id": "1184878197045731388",
+    "type": 0,
+    "content": "",
+    "channel_id": "720860598362963998",
+    "author": {
+      "id": "643497793834582017",
+      "username": "TunnelQuestBot",
+      "avatar": "7b75b3efdc8ffc02c0157aa1c525e829",
+      "discriminator": "2692",
+      "public_flags": 0,
+      "premium_type": 0,
+      "flags": 0,
+      "bot": true,
+      "banner": null,
+      "accent_color": null,
+      "global_name": null,
+      "avatar_decoration_data": null,
+      "banner_color": null
+    },
+    "attachments": [],
+    "embeds": [
+      {
+        "type": "rich",
+        "title": "```WTS Velium Blue Diamond Bracelet x2, Velium Jacinth Wedding Ring x2, Crushed Sea Sapphire , Jacinth x3, Blue Diamond x3```",
+        "color": 1857720,
+        "timestamp": "2023-12-14T15:22:57.477000+00:00",
+        "fields": [
+          {
+            "name": "2pp",
+            "value": "[Velium Blue Diamond Bracelet](https://wiki.project1999.com/Velium_Blue_Diamond_Bracelet \"30 Day Avg: 991pp (of 471)\n 60 Day Avg: 926pp (of 1052)\n 90 Day Avg: 939pp (of 1566)\")",
+            "inline": true
+          },
+          {
+            "name": "2pp",
+            "value": "[Velium Jacinth Wedding Ring](https://wiki.project1999.com/Velium_Jacinth_Wedding_Ring \"30 Day Avg: 600pp (of 429)\n 60 Day Avg: 593pp (of 776)\n 90 Day Avg: 595pp (of 1160)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Crushed Sea Sapphire](https://wiki.project1999.com/Crushed_Sea_Sapphire \"30 Day Avg: - (of 44)\n 60 Day Avg: 100pp (of 130)\n 90 Day Avg: 100pp (of 230)\")",
+            "inline": true
+          },
+          {
+            "name": "3pp",
+            "value": "[Jacinth](https://wiki.project1999.com/Jacinth \"30 Day Avg: 187pp (of 82)\n 60 Day Avg: 198pp (of 196)\n 90 Day Avg: 214pp (of 315)\")",
+            "inline": true
+          },
+          {
+            "name": "3pp",
+            "value": "[Blue Diamond](https://wiki.project1999.com/Blue_Diamond \"30 Day Avg: 309pp (of 403)\n 60 Day Avg: 299pp (of 1179)\n 90 Day Avg: 308pp (of 1684)\")",
+            "inline": true
+          }
+        ],
+        "author": {
+          "name": "[ WTS ]   Emissaryofthule"
+        },
+        "footer": {
+          "text": "Project 1999 Blue"
+        },
+        "content_scan_version": 0
+      }
+    ],
+    "mentions": [],
+    "mention_roles": [],
+    "pinned": false,
+    "mention_everyone": false,
+    "tts": false,
+    "timestamp": "2023-12-14T15:22:56.148000+00:00",
+    "edited_timestamp": null,
+    "flags": 0,
+    "components": []
+  },
+  {
+    "id": "1184878176158097498",
+    "type": 0,
+    "content": "",
+    "channel_id": "720860598362963998",
+    "author": {
+      "id": "643497793834582017",
+      "username": "TunnelQuestBot",
+      "avatar": "7b75b3efdc8ffc02c0157aa1c525e829",
+      "discriminator": "2692",
+      "public_flags": 0,
+      "premium_type": 0,
+      "flags": 0,
+      "bot": true,
+      "banner": null,
+      "accent_color": null,
+      "global_name": null,
+      "avatar_decoration_data": null,
+      "banner_color": null
+    },
+    "attachments": [],
+    "embeds": [
+      {
+        "type": "rich",
+        "title": "```WTS Spell: Ice Spear of Solist , Spell: Focus of Spirit , Spell: Theft of Thought , Spell: Aegolism , Spell: Gift of Xev , Spell: Cannibalize III```",
+        "color": 1857720,
+        "timestamp": "2023-12-14T15:22:52.470000+00:00",
+        "fields": [
+          {
+            "name": "No Price Listed",
+            "value": "[Ice Spear of Solist](https://wiki.project1999.com/Ice_Spear_of_Solist \"30 Day Avg: 75pp (of 168)\n 60 Day Avg: 75pp (of 367)\n 90 Day Avg: 75pp (of 681)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Focus of Spirit](https://wiki.project1999.com/Focus_of_Spirit \"30 Day Avg: - (of 0)\n 60 Day Avg: - (of 0)\n 90 Day Avg: - (of 0)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Theft of Thought](https://wiki.project1999.com/Theft_of_Thought \"30 Day Avg: 331pp (of 214)\n 60 Day Avg: 295pp (of 436)\n 90 Day Avg: 297pp (of 721)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Aegolism](https://wiki.project1999.com/Aegolism \"30 Day Avg: - (of 0)\n 60 Day Avg: - (of 0)\n 90 Day Avg: - (of 0)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Gift of Xev](https://wiki.project1999.com/Gift_of_Xev \"30 Day Avg: 100pp (of 115)\n 60 Day Avg: 57pp (of 207)\n 90 Day Avg: 56pp (of 343)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Cannibalize Iii](https://wiki.project1999.com/Cannibalize_III \"30 Day Avg: - (of 0)\n 60 Day Avg: - (of 0)\n 90 Day Avg: - (of 0)\")",
+            "inline": true
+          }
+        ],
+        "author": {
+          "name": "[ WTS ]   Emissaryofthule"
+        },
+        "footer": {
+          "text": "Project 1999 Blue"
+        },
+        "content_scan_version": 0
+      }
+    ],
+    "mentions": [],
+    "mention_roles": [],
+    "pinned": false,
+    "mention_everyone": false,
+    "tts": false,
+    "timestamp": "2023-12-14T15:22:51.168000+00:00",
+    "edited_timestamp": null,
+    "flags": 0,
+    "components": []
+  },
+  {
+    "id": "1184878050144428125",
+    "type": 0,
+    "content": "",
+    "channel_id": "720860598362963998",
+    "author": {
+      "id": "643497793834582017",
+      "username": "TunnelQuestBot",
+      "avatar": "7b75b3efdc8ffc02c0157aa1c525e829",
+      "discriminator": "2692",
+      "public_flags": 0,
+      "premium_type": 0,
+      "flags": 0,
+      "bot": true,
+      "banner": null,
+      "accent_color": null,
+      "global_name": null,
+      "avatar_decoration_data": null,
+      "banner_color": null
+    },
+    "attachments": [],
+    "embeds": [
+      {
+        "type": "rich",
+        "title": "```WTS Stave of Shielding Sarnak Skullsplitter Jagged Chokidai SpineSpell: Theft of Thought Di`zok Begirding```",
+        "color": 1857720,
+        "timestamp": "2023-12-14T15:22:22.196000+00:00",
+        "fields": [
+          {
+            "name": "No Price Listed",
+            "value": "[Stave of Shielding](https://wiki.project1999.com/Stave_of_Shielding \"30 Day Avg: 2,027pp (of 1175)\n 60 Day Avg: 2,010pp (of 2912)\n 90 Day Avg: 2,001pp (of 4316)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Sarnak Skullsplitter](https://wiki.project1999.com/Sarnak_Skullsplitter \"30 Day Avg: 50pp (of 188)\n 60 Day Avg: 52pp (of 388)\n 90 Day Avg: 54pp (of 700)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Jagged Chokidai Spine](https://wiki.project1999.com/Jagged_Chokidai_Spine \"30 Day Avg: 48pp (of 243)\n 60 Day Avg: 48pp (of 528)\n 90 Day Avg: 48pp (of 842)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Theft of Thought](https://wiki.project1999.com/Theft_of_Thought \"30 Day Avg: 331pp (of 214)\n 60 Day Avg: 295pp (of 436)\n 90 Day Avg: 297pp (of 721)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Di`zok Begirding](https://wiki.project1999.com/Di%60zok_Begirding \"Could not find historical pricing for item DI`ZOK BEGIRDING\")",
+            "inline": true
+          }
+        ],
+        "author": {
+          "name": "[ WTS ]   Mordek"
+        },
+        "footer": {
+          "text": "Project 1999 Blue"
+        },
+        "content_scan_version": 0
+      }
+    ],
+    "mentions": [],
+    "mention_roles": [],
+    "pinned": false,
+    "mention_everyone": false,
+    "tts": false,
+    "timestamp": "2023-12-14T15:22:21.124000+00:00",
+    "edited_timestamp": null,
+    "flags": 0,
+    "components": []
+  },
+  {
+    "id": "1184877124776108112",
+    "type": 0,
+    "content": "",
+    "channel_id": "720860598362963998",
+    "author": {
+      "id": "643497793834582017",
+      "username": "TunnelQuestBot",
+      "avatar": "7b75b3efdc8ffc02c0157aa1c525e829",
+      "discriminator": "2692",
+      "public_flags": 0,
+      "premium_type": 0,
+      "flags": 0,
+      "bot": true,
+      "banner": null,
+      "accent_color": null,
+      "global_name": null,
+      "avatar_decoration_data": null,
+      "banner_color": null
+    },
+    "attachments": [],
+    "embeds": [
+      {
+        "type": "rich",
+        "title": "```WTS Spell: Extinguish Fatigue, Spell: Call of the Predator, Spell: Atol`s Spectral Shackles, Flawed Topaz, Chipped Onyx Sapphire, Nephrite, Jaundice Gem```",
+        "color": 1857720,
+        "timestamp": "2023-12-14T15:18:41.771000+00:00",
+        "fields": [
+          {
+            "name": "No Price Listed",
+            "value": "[Extinguish Fatigue](https://wiki.project1999.com/Extinguish_Fatigue \"30 Day Avg: - (of 2)\n 60 Day Avg: - (of 2)\n 90 Day Avg: - (of 5)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Call of the Predator](https://wiki.project1999.com/Call_of_the_Predator \"30 Day Avg: 98pp (of 825)\n 60 Day Avg: 98pp (of 2013)\n 90 Day Avg: 120pp (of 2897)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Atol`s Spectral Shackles](https://wiki.project1999.com/Atol%27s_Spectral_Shackles \"Could not find historical pricing for item ATOL`S SPECTRAL SHACKLES\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Flawed Topaz](https://wiki.project1999.com/Flawed_Topaz \"30 Day Avg: 99pp (of 533)\n 60 Day Avg: 87pp (of 1525)\n 90 Day Avg: 91pp (of 2228)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Chipped Onyx Sapphire](https://wiki.project1999.com/Chipped_Onyx_Sapphire \"30 Day Avg: 100pp (of 515)\n 60 Day Avg: 99pp (of 938)\n 90 Day Avg: 95pp (of 1640)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Nephrite](https://wiki.project1999.com/Nephrite \"30 Day Avg: 83pp (of 503)\n 60 Day Avg: 86pp (of 1398)\n 90 Day Avg: 88pp (of 2003)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Jaundice Gem](https://wiki.project1999.com/Jaundice_Gem \"30 Day Avg: 96pp (of 450)\n 60 Day Avg: 97pp (of 742)\n 90 Day Avg: 98pp (of 1346)\")",
+            "inline": true
+          }
+        ],
+        "author": {
+          "name": "[ WTS ]   Myoull"
+        },
+        "footer": {
+          "text": "Project 1999 Blue"
+        },
+        "content_scan_version": 0
+      }
+    ],
+    "mentions": [],
+    "mention_roles": [],
+    "pinned": false,
+    "mention_everyone": false,
+    "tts": false,
+    "timestamp": "2023-12-14T15:18:40.499000+00:00",
+    "edited_timestamp": null,
+    "flags": 0,
+    "components": []
+  },
+  {
+    "id": "1184877104723152946",
+    "type": 0,
+    "content": "",
+    "channel_id": "720860598362963998",
+    "author": {
+      "id": "643497793834582017",
+      "username": "TunnelQuestBot",
+      "avatar": "7b75b3efdc8ffc02c0157aa1c525e829",
+      "discriminator": "2692",
+      "public_flags": 0,
+      "premium_type": 0,
+      "flags": 0,
+      "bot": true,
+      "banner": null,
+      "accent_color": null,
+      "global_name": null,
+      "avatar_decoration_data": null,
+      "banner_color": null
+    },
+    "attachments": [],
+    "embeds": [
+      {
+        "type": "rich",
+        "title": "```WTS Spell: Eye of Tallon, Spell: Divine Purpose, Spell: Tears of Druzzil, Spell: Blizzard, Spell: Enlightenment, Spell: Ice Spear of Solist, Spell: Bristlebane`s Bundle```",
+        "color": 1857720,
+        "timestamp": "2023-12-14T15:18:36.759000+00:00",
+        "fields": [
+          {
+            "name": "No Price Listed",
+            "value": "[Eye of Tallon](https://wiki.project1999.com/Eye_of_Tallon \"30 Day Avg: 98pp (of 111)\n 60 Day Avg: 99pp (of 205)\n 90 Day Avg: 106pp (of 319)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Divine Purpose](https://wiki.project1999.com/Divine_Purpose \"30 Day Avg: - (of 20)\n 60 Day Avg: - (of 44)\n 90 Day Avg: - (of 66)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Tears of Druzzil](https://wiki.project1999.com/Tears_of_Druzzil \"30 Day Avg: 8pp (of 402)\n 60 Day Avg: 37pp (of 808)\n 90 Day Avg: 24pp (of 1575)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Blizzard](https://wiki.project1999.com/Blizzard \"30 Day Avg: 52pp (of 386)\n 60 Day Avg: 64pp (of 1567)\n 90 Day Avg: 66pp (of 2153)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Enlightenment](https://wiki.project1999.com/Enlightenment \"30 Day Avg: 267pp (of 307)\n 60 Day Avg: 260pp (of 653)\n 90 Day Avg: 263pp (of 1434)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Ice Spear of Solist](https://wiki.project1999.com/Ice_Spear_of_Solist \"30 Day Avg: 75pp (of 168)\n 60 Day Avg: 75pp (of 367)\n 90 Day Avg: 75pp (of 681)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Bristlebane`s Bundle](https://wiki.project1999.com/Bristlebane%27s_Bundle \"Could not find historical pricing for item BRISTLEBANE`S BUNDLE\")",
+            "inline": true
+          }
+        ],
+        "author": {
+          "name": "[ WTS ]   Myoull"
+        },
+        "footer": {
+          "text": "Project 1999 Blue"
+        },
+        "content_scan_version": 0
+      }
+    ],
+    "mentions": [],
+    "mention_roles": [],
+    "pinned": false,
+    "mention_everyone": false,
+    "tts": false,
+    "timestamp": "2023-12-14T15:18:35.718000+00:00",
+    "edited_timestamp": null,
+    "flags": 0,
+    "components": []
+  },
+  {
+    "id": "1184877042676793384",
+    "type": 0,
+    "content": "",
+    "channel_id": "720860598362963998",
+    "author": {
+      "id": "643497793834582017",
+      "username": "TunnelQuestBot",
+      "avatar": "7b75b3efdc8ffc02c0157aa1c525e829",
+      "discriminator": "2692",
+      "public_flags": 0,
+      "premium_type": 0,
+      "flags": 0,
+      "bot": true,
+      "banner": null,
+      "accent_color": null,
+      "global_name": null,
+      "avatar_decoration_data": null,
+      "banner_color": null
+    },
+    "attachments": [],
+    "embeds": [
+      {
+        "type": "rich",
+        "title": "```WTS Spell: Pillar of Lightning / Spell: Form of the Howler / Velium Diamond Wedding Ring / Velium Blue Diamond Bracelet / Blue Diamond Electrum Earring / Wu's Quivering Staff```",
+        "color": 1857720,
+        "timestamp": "2023-12-14T15:18:21.728000+00:00",
+        "fields": [
+          {
+            "name": "No Price Listed",
+            "value": "[Pillar of Lightning](https://wiki.project1999.com/Pillar_of_Lightning \"30 Day Avg: 89pp (of 675)\n 60 Day Avg: 83pp (of 1896)\n 90 Day Avg: 79pp (of 2648)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Form of the Howler](https://wiki.project1999.com/Form_of_the_Howler \"30 Day Avg: 414pp (of 246)\n 60 Day Avg: 429pp (of 624)\n 90 Day Avg: 418pp (of 1026)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Velium Diamond Wedding Ring](https://wiki.project1999.com/Velium_Diamond_Wedding_Ring \"30 Day Avg: 600pp (of 399)\n 60 Day Avg: 598pp (of 859)\n 90 Day Avg: 595pp (of 1430)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Velium Blue Diamond Bracelet](https://wiki.project1999.com/Velium_Blue_Diamond_Bracelet \"30 Day Avg: 991pp (of 471)\n 60 Day Avg: 926pp (of 1052)\n 90 Day Avg: 939pp (of 1566)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Blue Diamond Electrum Earring](https://wiki.project1999.com/Blue_Diamond_Electrum_Earring \"30 Day Avg: 495pp (of 466)\n 60 Day Avg: 491pp (of 922)\n 90 Day Avg: 494pp (of 1424)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Wu's Quivering Staff](https://wiki.project1999.com/Wu%27s_Quivering_Staff \"30 Day Avg: 90pp (of 248)\n 60 Day Avg: 91pp (of 357)\n 90 Day Avg: 90pp (of 690)\")",
+            "inline": true
+          }
+        ],
+        "author": {
+          "name": "[ WTS ]   Vaprack"
+        },
+        "footer": {
+          "text": "Project 1999 Blue"
+        },
+        "content_scan_version": 0
+      }
+    ],
+    "mentions": [],
+    "mention_roles": [],
+    "pinned": false,
+    "mention_everyone": false,
+    "tts": false,
+    "timestamp": "2023-12-14T15:18:20.925000+00:00",
+    "edited_timestamp": null,
+    "flags": 0,
+    "components": []
+  },
+  {
+    "id": "1184877041779220590",
+    "type": 0,
+    "content": "",
+    "channel_id": "720860598362963998",
+    "author": {
+      "id": "643497793834582017",
+      "username": "TunnelQuestBot",
+      "avatar": "7b75b3efdc8ffc02c0157aa1c525e829",
+      "discriminator": "2692",
+      "public_flags": 0,
+      "premium_type": 0,
+      "flags": 0,
+      "bot": true,
+      "banner": null,
+      "accent_color": null,
+      "global_name": null,
+      "avatar_decoration_data": null,
+      "banner_color": null
+    },
+    "attachments": [],
+    "embeds": [
+      {
+        "type": "rich",
+        "title": "```WTS Barbed Dragonscale Pauldrons / Rokyls Channelling Crystal / Ceremonial Iksar Chestplate / Wooly Spider Silk Net / Crushed Black Marble x2```",
+        "color": 1857720,
+        "timestamp": "2023-12-14T15:18:21.729000+00:00",
+        "fields": [
+          {
+            "name": "No Price Listed",
+            "value": "[Barbed Dragonscale Pauldrons](https://wiki.project1999.com/Barbed_Dragonscale_Pauldrons \"30 Day Avg: 1.53k (of 399)\n 60 Day Avg: 1,565pp (of 630)\n 90 Day Avg: 1.56k (of 922)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Rokyls Channelling Crystal](https://wiki.project1999.com/Rokyls_Channelling_Crystal \"30 Day Avg: 509pp (of 141)\n 60 Day Avg: 477pp (of 588)\n 90 Day Avg: 482pp (of 851)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Ceremonial Iksar Chestplate](https://wiki.project1999.com/Ceremonial_Iksar_Chestplate \"30 Day Avg: 6k (of 55)\n 60 Day Avg: 5,727pp (of 225)\n 90 Day Avg: 7,139pp (of 604)\")",
+            "inline": true
+          },
+          {
+            "name": "No Price Listed",
+            "value": "[Wooly Spider Silk Net](https://wiki.project1999.com/Wooly_Spider_Silk_Net \"30 Day Avg: - (of 0)\n 60 Day Avg: 25pp (of 1)\n 90 Day Avg: 25pp (of 1)\")",
+            "inline": true
+          },
+          {
+            "name": "2pp",
+            "value": "[Crushed Black Marble](https://wiki.project1999.com/Crushed_Black_Marble \"30 Day Avg: 95pp (of 431)\n 60 Day Avg: 98pp (of 999)\n 90 Day Avg: 99pp (of 1889)\")",
+            "inline": true
+          }
+        ],
+        "author": {
+          "name": "[ WTS ]   Vaprack"
+        },
+        "footer": {
+          "text": "Project 1999 Blue"
+        },
+        "content_scan_version": 0
+      }
+    ],
+    "mentions": [],
+    "mention_roles": [],
+    "pinned": false,
+    "mention_everyone": false,
+    "tts": false,
+    "timestamp": "2023-12-14T15:18:20.711000+00:00",
+    "edited_timestamp": null,
+    "flags": 0,
+    "components": []
+  },
+  {
+    "id": "1184877040890032269",
+    "type": 0,
+    "content": "",
+    "channel_id": "720860598362963998",
+    "author": {
+      "id": "643497793834582017",
+      "username": "TunnelQuestBot",
+      "avatar": "7b75b3efdc8ffc02c0157aa1c525e829",
+      "discriminator": "2692",
+      "public_flags": 0,
+      "premium_type": 0,
+      "flags": 0,
+      "bot": true,
+      "banner": null,
+      "accent_color": null,
+      "global_name": null,
+      "avatar_decoration_data": null,
+      "banner_color": null
+    },
+    "attachments": [],
+    "embeds": [
+      {
+        "type": "rich",
+        "title": "```WTS Sacrifices, pst```",
+        "color": 1857720,
+        "timestamp": "2023-12-14T15:18:21.729000+00:00",
+        "fields": [
+          {
+            "name": "No Price Listed",
+            "value": "[Ice](https://wiki.project1999.com/Ice \"30 Day Avg: 166pp (of 441)\n 60 Day Avg: 176pp (of 797)\n 90 Day Avg: 179pp (of 1090)\")",
+            "inline": true
+          }
+        ],
+        "author": {
+          "name": "[ WTS ]   Vaprack"
+        },
+        "footer": {
+          "text": "Project 1999 Blue"
+        },
+        "content_scan_version": 0
+      }
+    ],
+    "mentions": [],
+    "mention_roles": [],
+    "pinned": false,
+    "mention_everyone": false,
+    "tts": false,
+    "timestamp": "2023-12-14T15:18:20.499000+00:00",
+    "edited_timestamp": null,
+    "flags": 0,
+    "components": []
+  }
+]

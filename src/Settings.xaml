@@ -11,111 +11,177 @@
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
     </Window.Resources>
-    <ScrollViewer HorizontalScrollBarVisibility="Auto" Padding="7">
+    <TabControl>
+        <TabItem Header="General">
+            <StackPanel Orientation="Vertical" Margin="5, 5, 5, 5">
+                <StackPanel Orientation="Vertical" Visibility="{Binding MissingConfiguration, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}">
+                    <TextBlock Text="Configuration missing!" FontWeight="Bold" FontSize="20" Foreground="Red"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Eq Path"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100" Foreground="Red" Visibility="{Binding DoesNotHaveEqPath, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}"/>
+                    <TextBlock Text="Eq Path"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100" Foreground="Green" Visibility="{Binding HasEqPath, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Visible}"/>
+                    <StackPanel Orientation="Horizontal" >
+                        <TextBlock Text="{Binding EqPath}" HorizontalAlignment="Left"/>
+                        <Button Margin="5,0,0,0" HorizontalAlignment="Right" Click="EqFolderButtonClicked">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock>Browse</TextBlock>
+                                <Image Source="pack://application:,,,/open-folder.png" Height="{DynamicResource GlobalFontSize}" Margin="5,0,0,0" ></Image>
+                            </StackPanel>
+                        </Button>
+                    </StackPanel>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Eq Log Path"  VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100" Foreground="Red" Visibility="{Binding DoesNotHaveEqPath, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}"/>
+                    <TextBlock Text="Eq Log Path"   VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100" Foreground="Green" Visibility="{Binding HasEqPath, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Visible}"/>
+                    <TextBlock Text="{Binding EqLogPath}" HorizontalAlignment="Left" MinWidth="150"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal"  Visibility="{Binding HasEqPath, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Visible}" >
+                    <TextBlock Text="Logging"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100" Visibility="{Binding IsLoggingEnabled, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}"/>
+                    <TextBlock Text="Logging"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100" Foreground="Red"  Visibility="{Binding IsLoggingDisabled, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Visible}"/>
+                    <TextBlock Visibility="{Binding IsLoggingEnabled, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}" Text="Logging Enabled!" Margin="5,5,0,0" HorizontalAlignment="Left" Foreground="Green"/>
+                    <Button Visibility="{Binding IsLoggingDisabled, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}" Name="enableLogging" Margin="5,5,0,0" Click="enableLogging_Click">Enable Logging</Button>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Visibility="{Binding IsLoggingDisabled, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}"  >
+                    <TextBlock HorizontalAlignment="Center" Text="You must enable loogging!"  FontWeight="Bold" Foreground="Red"/>
+                </StackPanel>
+                <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" Visibility="{Binding NotMissingConfiguration, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Visible}">
+                    <TextBlock Visibility="{Binding HasNoCharName}" HorizontalAlignment="Center" Text="Functionality disabled until you log in!"  FontWeight="Bold" Foreground="Red"/>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Character" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
+                        <TextBlock Text="{Binding ActivePlayer.Player.Name}" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Guild" VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
+                        <TextBlock Text="{Binding ActivePlayer.Player.GuildName}" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Class" VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
+                        <ComboBox IsEnabled="{Binding HasCharName}" SelectedItem="{Binding ActivePlayer.Player.PlayerClass}" ItemsSource="{Binding PlayerClasses}" MinWidth="150"></ComboBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Track Skill" VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
+                        <ComboBox IsEnabled="{Binding ActivePlayer.Player.IsTrackableClass}" SelectedItem="{Binding ActivePlayer.Player.TrackingSkill}" ItemsSource="{Binding TrackSkills}" MinWidth="150"></ComboBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Zone" FontWeight="Bold" VerticalAlignment="Center" MinWidth="100"/>
+                        <ComboBox IsEnabled="{Binding HasCharName}" SelectedItem="{Binding ActivePlayer.Player.Zone}" ItemsSource="{Binding Zones}"  SelectionChanged="zoneselectionchanged" MinWidth="150"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Your Level"  FontWeight="Bold" VerticalAlignment="Center" MinWidth="100"/>
+                        <ComboBox  IsEnabled="{Binding HasCharName}" SelectedItem="{Binding ActivePlayer.Player.Level}" ItemsSource="{Binding Levels}" MinWidth="150"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Font Size"  FontWeight="Bold"  VerticalAlignment="Center" MinWidth="100"/>
+                        <ComboBox  SelectedItem="{Binding GlobalFontSize}" ItemsSource="{Binding FontSizes}" SelectionChanged="fontsizescombobox_SelectionChanged" MinWidth="150"/>
+                    </StackPanel>
 
-        <StackPanel Orientation="Vertical">
-            <StackPanel Orientation="Vertical" Visibility="{Binding MissingConfiguration, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}">
-                <TextBlock Text="Configuration missing!" FontWeight="Bold" FontSize="20" Foreground="Red"/>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Eq Path"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100" Foreground="Red" Visibility="{Binding DoesNotHaveEqPath, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}"/>
-                <TextBlock Text="Eq Path"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100" Foreground="Green" Visibility="{Binding HasEqPath, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Visible}"/>
-                <StackPanel Orientation="Horizontal" >
-                    <TextBlock Text="{Binding EqPath}" HorizontalAlignment="Left"/>
-                    <Button Margin="5,0,0,0" HorizontalAlignment="Right" Click="EqFolderButtonClicked">
+                    <TextBlock Text="Damage Window" HorizontalAlignment="Center" FontWeight="Bold" Margin="5,5,0,0"/>
+                    <StackPanel Orientation="Vertical" Margin="0, 0, 0, 8">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock>Browse</TextBlock>
-                            <Image Source="pack://application:,,,/open-folder.png" Height="{DynamicResource GlobalFontSize}" Margin="5,0,0,0" ></Image>
+                            <TextBlock Text="Always on top" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
+                            <CheckBox IsChecked="{Binding DpsAlwaysOnTop}" Click="SaveAlwaysOntopCheckBoxSettings" ></CheckBox>
                         </StackPanel>
-                    </Button>
-                </StackPanel>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Eq Log Path"  VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100" Foreground="Red" Visibility="{Binding DoesNotHaveEqPath, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}"/>
-                <TextBlock Text="Eq Log Path"   VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100" Foreground="Green" Visibility="{Binding HasEqPath, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Visible}"/>
-                <TextBlock Text="{Binding EqLogPath}" HorizontalAlignment="Left" MinWidth="150"/>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal"  Visibility="{Binding HasEqPath, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Visible}" >
-                <TextBlock Text="Logging"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100" Visibility="{Binding IsLoggingEnabled, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}"/>
-                <TextBlock Text="Logging"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100" Foreground="Red"  Visibility="{Binding IsLoggingDisabled, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Visible}"/>
-                <TextBlock Visibility="{Binding IsLoggingEnabled, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}" Text="Logging Enabled!" Margin="5,5,0,0" HorizontalAlignment="Left" Foreground="Green"/>
-                <Button Visibility="{Binding IsLoggingDisabled, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}" Name="enableLogging" Margin="5,5,0,0" Click="enableLogging_Click">Enable Logging</Button>
-            </StackPanel>
-            <StackPanel Orientation="Horizontal" Visibility="{Binding IsLoggingDisabled, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}"  >
-                <TextBlock HorizontalAlignment="Center" Text="You must enable loogging!"  FontWeight="Bold" Foreground="Red"/>
-            </StackPanel>
-            <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" Visibility="{Binding NotMissingConfiguration, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Visible}">
-                <TextBlock Visibility="{Binding HasNoCharName}" HorizontalAlignment="Center" Text="Functionality disabled until you log in!"  FontWeight="Bold" Foreground="Red"/>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Character" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
-                    <TextBlock Text="{Binding ActivePlayer.Player.Name}" />
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Guild" VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
-                    <TextBlock Text="{Binding ActivePlayer.Player.GuildName}" />
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Class" VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
-                    <ComboBox IsEnabled="{Binding HasCharName}" SelectedItem="{Binding ActivePlayer.Player.PlayerClass}" ItemsSource="{Binding PlayerClasses}" MinWidth="150"></ComboBox>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Track Skill" VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
-                    <ComboBox IsEnabled="{Binding ActivePlayer.Player.IsTrackableClass}" SelectedItem="{Binding ActivePlayer.Player.TrackingSkill}" ItemsSource="{Binding TrackSkills}" MinWidth="150"></ComboBox>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Zone" FontWeight="Bold" VerticalAlignment="Center" MinWidth="100"/>
-                    <ComboBox IsEnabled="{Binding HasCharName}" SelectedItem="{Binding ActivePlayer.Player.Zone}" ItemsSource="{Binding Zones}"  SelectionChanged="zoneselectionchanged" MinWidth="150"/>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Your Level"  FontWeight="Bold" VerticalAlignment="Center" MinWidth="100"/>
-                    <ComboBox  IsEnabled="{Binding HasCharName}" SelectedItem="{Binding ActivePlayer.Player.Level}" ItemsSource="{Binding Levels}" MinWidth="150"/>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Font Size"  FontWeight="Bold"  VerticalAlignment="Center" MinWidth="100"/>
-                    <ComboBox  SelectedItem="{Binding Source={x:Static properties:Settings.Default}, Path=GlobalFontSize}" ItemsSource="{Binding FontSizes}" SelectionChanged="fontsizescombobox_SelectionChanged" MinWidth="150"/>
-                </StackPanel>
-              
-                <TextBlock Text="Damage Window" HorizontalAlignment="Center" FontWeight="Bold" Margin="5,5,0,0"/>
-                <StackPanel Orientation="Vertical" Margin="0, 0, 0, 8">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Always on top" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
-                        <CheckBox IsChecked="{Binding DpsAlwaysOnTop}" Click="SaveAlwaysOntopCheckBoxSettings" ></CheckBox>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Window Opacity"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
+                            <Slider Value="{Binding DPSWindowOpacity}" Minimum=".01" Maximum="1" SmallChange=".1" TickFrequency=".1" ValueChanged="SaveSettings" MinWidth="150"/>
+                        </StackPanel>
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Window Opacity"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
-                        <Slider Value="{Binding Source={x:Static properties:Settings.Default}, Path=GlobalDPSWindowOpacity}" Minimum=".01" Maximum="1" SmallChange=".1" TickFrequency=".1" ValueChanged="SaveSettings" MinWidth="150"/>
+                    <Separator/>
+                    <TextBlock Text="Mob Window" HorizontalAlignment="Center" FontWeight="Bold" Margin="5,5,0,0"/>
+                    <StackPanel Orientation="Vertical" Margin="0, 0, 0, 8">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Always on top" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
+                            <CheckBox IsChecked="{Binding MobAlwaysOnTop}" Click="SaveAlwaysOntopCheckBoxSettings" ></CheckBox>
+                        </StackPanel>
                     </StackPanel>
+                </StackPanel>
+            </StackPanel>
+        </TabItem>
+        <TabItem Header="Overlay">
+            <StackPanel Orientation="Vertical" Margin="5, 5, 5, 5">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Installed Voices" VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
+                    <ComboBox SelectedItem="{Binding SelectedVoice}" ItemsSource="{Binding InstalledVoices}" MinWidth="105"></ComboBox>
+                    <Button Content="▶" Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="textvoice" ToolTip="Test Voice" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock VerticalAlignment="Center" FontWeight="Bold"  MinWidth="75"/>
+                    <TextBlock Text="Visual Alert" VerticalAlignment="Center" FontWeight="Bold"  MinWidth="75"/>
+                    <TextBlock Text="Audio Alert" VerticalAlignment="Center" FontWeight="Bold"  />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Enraged"  VerticalAlignment="Center" FontWeight="Bold"  MinWidth="100"/>
+                    <CheckBox IsChecked="{Binding ActivePlayer.Player.EnrageOverlay}" Click="Savesettings" MinWidth="75"></CheckBox>
+                    <CheckBox IsChecked="{Binding ActivePlayer.Player.EnrageAudio}" Click="Savesettings" MinWidth="30"></CheckBox>
+                    <Button Content="▶" Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="testenrage" ToolTip="Test Enrage" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Levitate Fading" VerticalAlignment="Center" FontWeight="Bold"  MinWidth="100"/>
+                    <CheckBox IsChecked="{Binding ActivePlayer.Player.LevFadingOverlay}" Click="Savesettings" MinWidth="75"></CheckBox>
+                    <CheckBox IsChecked="{Binding ActivePlayer.Player.LevFadingAudio}" Click="Savesettings" MinWidth="30"></CheckBox>
+                    <Button Content="▶" Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="testlevfading" ToolTip="Test Levitate fading" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Invis Fading" VerticalAlignment="Center" FontWeight="Bold"  MinWidth="100"/>
+                    <CheckBox IsChecked="{Binding ActivePlayer.Player.InvisFadingOverlay}" Click="Savesettings" MinWidth="75"></CheckBox>
+                    <CheckBox IsChecked="{Binding ActivePlayer.Player.InvisFadingAudio}" Click="Savesettings" MinWidth="30"></CheckBox>
+                    <Button Content="▶" Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="testinvisfading" ToolTip="Test Invis Fading" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="FTE" VerticalAlignment="Center" FontWeight="Bold"  MinWidth="100"/>
+                    <CheckBox IsChecked="{Binding ActivePlayer.Player.FTEOverlay}" Click="Savesettings" MinWidth="75"></CheckBox>
+                    <CheckBox IsChecked="{Binding ActivePlayer.Player.FTEAudio}" Click="Savesettings" MinWidth="30"></CheckBox>
+                    <Button Content="▶" Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="testFTE" ToolTip="Test FTE" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Charm Break" VerticalAlignment="Center" FontWeight="Bold"  MinWidth="100"/>
+                    <CheckBox IsChecked="{Binding ActivePlayer.Player.CharmBreakOverlay}" Click="Savesettings" MinWidth="75"></CheckBox>
+                    <CheckBox IsChecked="{Binding ActivePlayer.Player.CharmBreakAudio}" Click="Savesettings" MinWidth="30"></CheckBox>
+                    <Button Content="▶" Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="testCharmBreak" ToolTip="Test Charm Break" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Failed Feign" VerticalAlignment="Center" FontWeight="Bold"  MinWidth="100"/>
+                    <CheckBox IsChecked="{Binding ActivePlayer.Player.FailedFeignOverlay}" Click="Savesettings" MinWidth="75"></CheckBox>
+                    <CheckBox IsChecked="{Binding ActivePlayer.Player.FailedFeignAudio}" Click="Savesettings" MinWidth="30"></CheckBox>
+                    <Button Content="▶" Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="testFailedFeign" ToolTip="Test Failed Feign" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Group Invite" VerticalAlignment="Center" FontWeight="Bold"  MinWidth="100"/>
+                    <CheckBox IsChecked="{Binding ActivePlayer.Player.GroupInviteOverlay}" Click="Savesettings" MinWidth="75"></CheckBox>
+                    <CheckBox IsChecked="{Binding ActivePlayer.Player.GroupInviteAudio}" Click="Savesettings" MinWidth="30"></CheckBox>
+                    <Button Content="▶" Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="testGroupInvite" ToolTip="Test Group Invite" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Dragon Roar" VerticalAlignment="Center" FontWeight="Bold"  MinWidth="100"/>
+                    <CheckBox IsChecked="{Binding ActivePlayer.Player.DragonRoarOverlay}" Click="Savesettings" MinWidth="75"></CheckBox>
+                    <CheckBox IsChecked="{Binding ActivePlayer.Player.DragonRoarAudio}" Click="Savesettings" MinWidth="30"></CheckBox>
+                    <Button Content="▶" Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="testDragonRoar" ToolTip="Test Dragon Roar" />
                 </StackPanel>
                 <Separator/>
-                <TextBlock Text="Mob Window" HorizontalAlignment="Center" FontWeight="Bold" Margin="5,5,0,0"/>
-                <StackPanel Orientation="Vertical" Margin="0, 0, 0, 8">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Always on top" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
-                        <CheckBox IsChecked="{Binding MobAlwaysOnTop}" Click="SaveAlwaysOntopCheckBoxSettings" ></CheckBox>
-                    </StackPanel>
-                    <!--<StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Window Opacity" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
-                        <Slider Value="{Binding Source={x:Static properties:Settings.Default}, Path=GlobalMobWindowOpacity}" Minimum=".01" Maximum="1" SmallChange=".1" TickFrequency=".1" ValueChanged="SaveSettings" MinWidth="150"/>
-                    </StackPanel>-->
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Chain Formats" VerticalAlignment="Center" FontWeight="Bold" MinWidth="100"/>
+                    <TextBlock>
+                        <Hyperlink NavigateUri="https://github.com/smasherprog/EqTool/blob/main/README.md#ch-format-is-loosely-tag-position-ch-target" RequestNavigate="Hyperlink_RequestNavigate">Chain Help</Hyperlink>
+                    </TextBlock>
                 </StackPanel>
-                <Separator/>
-                <TextBlock Text="Map Window" HorizontalAlignment="Center" FontWeight="Bold" Margin="5,5,0,0"/>
-                <StackPanel Orientation="Vertical" Margin="0, 0, 0, 8">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Always on top" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
-                        <CheckBox IsChecked="{Binding MapAlwaysOnTop}" Click="SaveAlwaysOntopCheckBoxSettings" ></CheckBox>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Window Opacity" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
-                        <Slider Value="{Binding Source={x:Static properties:Settings.Default}, Path=GlobalMapWindowOpacity}" Minimum=".01" Maximum="1" SmallChange=".1" TickFrequency=".1" ValueChanged="SaveSettings" MinWidth="150"/>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Location Share" VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
-                        <ComboBox SelectedItem="{Binding ActivePlayer.Player.MapLocationSharing}" ItemsSource="{Binding LocationShareOptions}" MinWidth="150"></ComboBox>
-                    </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="CH Chain" ToolTip="Complete Heal Overlay" VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
+                    <CheckBox IsChecked="{Binding ActivePlayer.Player.ChChainOverlay}" Click="Savesettings" MinWidth="105"></CheckBox>
+                    <Button Content="▶" Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="testChChain" ToolTip="Test CH Chain" />
                 </StackPanel>
-                <Separator/>
-                <TextBlock Text="Trigger/Spells Window" HorizontalAlignment="Center" FontWeight="Bold" Margin="5,5,0,0"/>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="CH Chain Tag" ToolTip="Example: GG or CA. Other tags will be ignored" VerticalAlignment="Center" FontWeight="Bold"  MinWidth="100"/>
+                    <TextBox Text="{Binding Path=ActivePlayer.Player.ChChainTagOverlay, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" MinWidth="40" TextChanged="CHTextBox_TextChanged"></TextBox>
+                </StackPanel> 
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Ch Warning" ToolTip="Ch Warning" VerticalAlignment="Center" FontWeight="Bold"  MinWidth="100"/>
+                    <CheckBox IsChecked="{Binding ActivePlayer.Player.ChChainWarningOverlay}" Click="Savesettings" MinWidth="75"></CheckBox>
+                    <CheckBox IsChecked="{Binding ActivePlayer.Player.ChChainWarningAudio}" Click="Savesettings" MinWidth="30"></CheckBox>
+                </StackPanel>
+            </StackPanel>
+        </TabItem>
+        <TabItem Header="Triggers">
+            <StackPanel Orientation="Vertical" Margin="5, 5, 5, 5">
                 <StackPanel Orientation="Vertical"  Margin="0, 0, 0, 8">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Always on top" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
@@ -123,7 +189,7 @@
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Window Opacity"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
-                        <Slider Value="{Binding Source={x:Static properties:Settings.Default}, Path=GlobalTriggerWindowOpacity}" Minimum=".01" Maximum="1" SmallChange=".1" TickFrequency=".1" ValueChanged="SaveSettings" MinWidth="150"/>
+                        <Slider Value="{Binding TriggerWindowOpacity}" Minimum=".01" Maximum="1" SmallChange=".1" TickFrequency=".1" ValueChanged="SaveSettings" MinWidth="150"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Guess Spells"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
@@ -134,7 +200,6 @@
                         <CheckBox x:Name="YouSpellsOnly" Click="YouSpells_Click" />
                     </StackPanel>
                 </StackPanel>
-        
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Spell Filters"  FontWeight="Bold" MinWidth="100" ToolTip="This will filter what shows up on other players."/>
                     <StackPanel Orientation="Vertical">
@@ -147,34 +212,64 @@
                         </ListBox>
                     </StackPanel>
                 </StackPanel>
-                <Separator/>
-                <StackPanel Orientation="Vertical" Name="DebuggingStack">
-                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
-                        <TextBlock Text="Debugging" FontWeight="Bold" />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="DPS"  VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
-                        <Button Click="testDPS" MinWidth="100">Add Test DPS</Button>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Spells"  VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
-                        <Button Click="testspellsclicked"  MinWidth="100">Add Test Spells</Button>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Map"  VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
-                        <Button Click="textmapclicked" MinWidth="100">Test Locations</Button>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Map"  VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
-                        <Button Click="testsignalrlocations" MinWidth="100">Test Signalr Locations</Button>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Log Push"  VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
-                        <TextBox x:Name="LogPushText" MinWidth="100"></TextBox>
-                        <Button Click="logpush">Push</Button>
-                    </StackPanel>
+            </StackPanel>
+        </TabItem>
+        <TabItem Header="Map">
+            <StackPanel Orientation="Vertical" Margin="5, 5, 5, 5">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Always on top" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
+                    <CheckBox IsChecked="{Binding MapAlwaysOnTop}" Click="SaveAlwaysOntopCheckBoxSettings" ></CheckBox>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Map Kill timers" ToolTip="Automatically add kill timers to the map. This is a per character setting" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
+                    <CheckBox IsChecked="{Binding ActivePlayer.Player.MapKillTimers}"></CheckBox>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Window Opacity" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
+                    <Slider Value="{Binding MapWindowOpacity}" Minimum=".01" Maximum="1" SmallChange=".1" TickFrequency=".1" ValueChanged="SaveSettings" MinWidth="150"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Location Share" VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
+                    <ComboBox SelectedItem="{Binding ActivePlayer.Player.MapLocationSharing}" ItemsSource="{Binding LocationShareOptions}" MinWidth="150"></ComboBox>
                 </StackPanel>
             </StackPanel>
-        </StackPanel>
-    </ScrollViewer>
+        </TabItem>
+        <TabItem Header="Debug" Name="DebugTab">
+            <StackPanel Orientation="Vertical" Margin="5, 5, 5, 5">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Debuff Sharing"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
+                    <CheckBox IsChecked="{Binding ActivePlayer.Player.SpellDebuffShare}" Click="Savesettings" MinWidth="75"></CheckBox>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Random Roll"  VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
+                    <Button Click="testRandomRolls" MinWidth="100">Test Random Rolls</Button>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="DPS"  VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
+                    <Button Click="testDPS" MinWidth="100">Add Test DPS</Button>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Spells"  VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
+                    <Button Click="testspellsclicked"  MinWidth="100">Add Test Spells</Button>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Map"  VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
+                    <Button Click="textmapclicked" MinWidth="100">Test Locations</Button>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Map"  VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
+                    <Button Click="testsignalrlocations" MinWidth="100">Test Signalr Locations</Button>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Run Log File"  VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
+                    <Button Click="selectLogFile">Select File</Button>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Log Push"  VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
+                    <TextBox x:Name="LogPushText" MinWidth="100"></TextBox>
+                    <Button Click="logpush">Push</Button>
+                </StackPanel>
+            </StackPanel>
+        </TabItem>
+    </TabControl>
 </Window>

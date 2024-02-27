@@ -53,13 +53,13 @@
             <ListView ItemsSource="{Binding SpellList}" Name="spelllistview" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling" Grid.Row="1" Background="Transparent">
                 <ListView.ItemTemplate>
                     <DataTemplate>
-                        <Grid>
+                        <Grid Visibility="{Binding ColumnVisibility}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
-                            <ProgressBar Visibility="{Binding ColumnVisibility}" Grid.Column="0" Grid.ColumnSpan="2" Value="{Binding PercentLeftOnSpell}"  Maximum="100"  Foreground="{Binding ProgressBarColor}"  />
-                            <StackPanel Visibility="{Binding ColumnVisibility}" Orientation="Horizontal" Grid.Column="0" >
+                            <ProgressBar Grid.Column="0" Grid.ColumnSpan="2" Value="{Binding PercentLeftOnSpell}"  Maximum="100"  Foreground="{Binding ProgressBarColor}"  />
+                            <StackPanel Orientation="Horizontal" Grid.Column="0" >
                                 <Image Height="{DynamicResource GlobalFontSize}" Width="{DynamicResource GlobalFontSize}" IsEnabled="{Binding HasSpellIcon}">
                                     <Image.Source>
                                         <CroppedBitmap Source="{Binding SpellIcon.Icon}" SourceRect="{Binding Rect}" />
@@ -72,7 +72,7 @@
                                 <Button Margin="5, 0, 0, 0" Width="14" Height="14" Click="RemoveSingleItem" ToolTip="Remove from list">
                                     <Image Source="pack://application:,,,/Trash.png"/>
                                 </Button>
-                                <TextBlock MinWidth="64" TextAlignment="Right" Visibility="{Binding ColumnVisibility}" FontWeight="Bold" Text="{Binding SecondsLeftOnSpellPretty}"/>
+                                <TextBlock MinWidth="74" TextAlignment="Right" FontWeight="Bold" Text="{Binding SecondsLeftOnSpellPretty}"/>
                             </StackPanel>
                         </Grid>
                     </DataTemplate>

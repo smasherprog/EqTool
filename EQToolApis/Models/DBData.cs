@@ -33,7 +33,7 @@ namespace EQToolApis.Models
         public string Name { get; set; } = string.Empty;
     }
 
-    public class PlayerCache
+    public class PlayerCacheV2
     {
         public ReaderWriterLockSlim PlayersLock = new();
         public Dictionary<int, AuctionPlayer> Players = new();

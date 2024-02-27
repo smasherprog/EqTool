@@ -17,6 +17,8 @@ namespace EQToolApis.DB.Models
         [MaxLength(24)]
         public string? IpAddress { get; set; }
 
+        public Servers? Server { get; set; }
+
         public DateTime DateCreated { get; set; }
 
         public EventType? EventType { get; set; }
