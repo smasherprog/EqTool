@@ -22,7 +22,7 @@ namespace EQTool.Services
         }
         private static void CopyFilesRecursively(string sourcePath, string targetPath)
         {
-            for (var i = 0; i <= 3; i++)
+            for (var i = 0; i <= 6; i++)
             {
                 try
                 {
@@ -31,6 +31,10 @@ namespace EQTool.Services
                 }
                 catch
                 {
+                    if (i == 6)
+                    {
+                        throw;
+                    }
                     Thread.Sleep(1000);
                 }
             }
