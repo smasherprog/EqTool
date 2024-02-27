@@ -9,7 +9,7 @@ namespace EQToolShared.HubModels
     {
         public const string CustomerTime = " Custom Timer";
         public string Name { get; set; }
-        public int Roll { get; set; }
+        public int Roll { get; set; } = -1;
         public int DurationInSeconds { get; set; }
         public string SpellNameIcon { get; set; } = "Feign Death";
         public SpellTypes SpellType { get; set; } = SpellTypes.Beneficial;
