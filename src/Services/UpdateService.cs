@@ -17,7 +17,7 @@ namespace EQTool.Services
         {
             foreach (var file in Directory.GetFiles(sourcePath))
             {
-                File.Copy(file, Path.Combine(targetPath, Path.GetFileName(file)));
+                File.Copy(file, Path.Combine(targetPath, Path.GetFileName(file)), true);
             }
         }
 

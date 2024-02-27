@@ -272,6 +272,15 @@ namespace EQToolTests
         }
 
         [TestMethod]
+        public void TestAncientBreath()
+        {
+            var service = container.Resolve<SpellLogParse>();
+            var message = "Your life force drains away.";
+            var spell = service.MatchSpell(message);
+            Assert.AreEqual(spell.Spell.name, "Ancient Breath");
+        }
+
+        [TestMethod]
         public void TestImmolatingBreath2()
         {
             var service = container.Resolve<SpellLogParse>();
