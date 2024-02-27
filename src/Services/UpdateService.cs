@@ -13,11 +13,26 @@ namespace EQTool.Services
 {
     public class UpdateService
     {
-        private static void CopyFilesRecursively(string sourcePath, string targetPath)
+        private static void _CopyFilesRecursively(string sourcePath, string targetPath)
         {
             foreach (var file in Directory.GetFiles(sourcePath))
             {
                 File.Copy(file, Path.Combine(targetPath, Path.GetFileName(file)), true);
+            }
+        }
+        private static void CopyFilesRecursively(string sourcePath, string targetPath)
+        {
+            for (var i = 0; i <= 3; i++)
+            {
+                try
+                {
+                    _CopyFilesRecursively(sourcePath, targetPath);
+                    return;
+                }
+                catch
+                {
+                    Thread.Sleep(1000);
+                }
             }
         }
 
@@ -36,7 +51,6 @@ namespace EQTool.Services
         {
             if (!string.IsNullOrWhiteSpace(parameter))
             {
-                Thread.Sleep(3000);
                 if (parameter.Contains("ping"))
                 {
                     var sourcedirectory = System.IO.Directory.GetCurrentDirectory();
