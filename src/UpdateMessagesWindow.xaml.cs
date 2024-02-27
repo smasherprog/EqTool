@@ -42,8 +42,9 @@ namespace EQTool
             {
                 DateTime = new DateTime(2024, 2, 26),
                 Message =
-                $"* Added Vulak AOE timers{Environment.NewLine}" +
-                $"* Improved update performance."
+                $"* Added Vulak AOE timers.{Environment.NewLine}" +
+                $"* Improved update performance.{Environment.NewLine}" +
+                $"* Added Discord link to System Tray so those who dont like to use github can report issues through discord instead."
             });
             UpdateMessages.Add(new UpdateMessageData
             {

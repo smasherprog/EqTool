@@ -258,6 +258,7 @@ namespace EQTool
             OverlayMenuItem = new System.Windows.Forms.MenuItem("Overlay", ToggleOverlayWindow);
             MobInfoMenuItem = new System.Windows.Forms.MenuItem("Mob Info", ToggleMobInfoWindow);
             var gitHubMenuItem = new System.Windows.Forms.MenuItem("Suggestions", Suggestions);
+            var whythepig = new System.Windows.Forms.MenuItem("Pigparse Discord", WhyThePig);
             var updates = new System.Windows.Forms.MenuItem("Check for Update", CheckForUpdates);
             var versionstring = Assembly.GetExecutingAssembly().GetName().Version.ToString();
             var beta = false;
@@ -288,6 +289,7 @@ namespace EQTool
                 ContextMenu = new System.Windows.Forms.ContextMenu(new System.Windows.Forms.MenuItem[]
                 {
                     //GroupSuggestionsMenuItem,
+                    whythepig,
                     OverlayMenuItem,
                     DpsMeterMenuItem,
                     MapMenuItem,
@@ -474,6 +476,14 @@ namespace EQTool
             }
         }
 
+        private void WhyThePig(object sender, EventArgs e)
+        {
+            _ = System.Diagnostics.Process.Start(new ProcessStartInfo
+            {
+                FileName = "https://discord.gg/rkU8ewzWWk",
+                UseShellExecute = true
+            });
+        }
         private void Suggestions(object sender, EventArgs e)
         {
             _ = System.Diagnostics.Process.Start(new ProcessStartInfo
