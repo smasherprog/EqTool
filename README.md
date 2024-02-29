@@ -11,7 +11,7 @@ Instructions:
 <li>
 <h2>Project Quarm: Download <a href="https://github.com/smasherprog/EqTool/releases/download/4.24.225.2/EQTool_Quarm4.24.225.2.zip">EQTool_Quarm.zip</a>, Unzip it and run PQTool.exe</h2>
 </li>
- <li><a href="https://discord.gg/R7vJrNtB">Discord</a></li>
+ <li><h3><a href="https://discord.gg/R7vJrNtB">Discord</a></h3></li>
 <li>The program runs in the system tray. Look there to reopen spells window or settings! Program will check for updates on startup and self update if required, but if you want to check for a new Update, use the menu in the system tray!</li>
 </ul>
 Features:
@@ -94,27 +94,19 @@ Features:
 <ul>     
  <li>Add updating notice when its happening. It can be confusing when updates occur because it takes about 5 seconds. </li>  
  <li>Centralized friends list. </li>  
- <li>Add text message sending when npc is seen in game. </li>  
-   <li>Sharing of triggers for those nearby. </li>  
-  <li>Add ring war triggers. </li>  
-  <li>Map center on you.</li>  
-   <li>Add Window Snapping code so windows can be grouped and all moved together.</li>   
+ <li>Add text message sending when npc is seen in game. (You can go FD and received a Text message on your phone that VD has spawned for example) </li>  
+ <li>Sharing of triggers for those nearby. </li>  
+ <li>Add ring war triggers. </li>  
+ <li>Map center on you.</li>  
+ <li>Add Window Snapping code so windows can be grouped and all moved together.</li>   
  <li>Remove timers from map when timers removed from list and visa versa.</li>   
  <li>Add code to show MOB hits per second.</li>   
  <li>Port application to be cross platform(mac, win, linux).</li>   
  <li>Add Ability to bind a hotkey to toggle a window open/close.</li>    
  <li>Add group suggestions for each raid mob in game.</li>     
- <li>Make timers resetable.</li>   
  <li>Fix buff timers when updating, when update occurs buffs dissapear.</li> 
  <li>Add zone dump of names.</li> 
- <li>Add context menu to toggle pather vs static.</li>  
- <li>Add code to detect pet and always show buffs for your pet.</li> 
-<li>Tab under Mob info window for last few minutes of Random rolls ordered by highest to lowest. </li>   
-<li>Add visual cue that buff is under 1 minute left. </li> 
 <li>Add option to enable OTHERS hits for DPS meter. </li>  
-<li>Add Waypoint Command to add loc to map</li>    
-<li>Map window add toggle to follow location</li>     
-<li>Determine pet level based on the maxhit and add to the DPS window</li> 
 <li>Add option to auto prune eq log file. EQ logfiles can cause issues with EQ itself if they get too large!</li>
 </ul>
 
