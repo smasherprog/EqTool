@@ -2,6 +2,7 @@
 using EQToolShared.APIModels.PlayerControllerModels;
 using EQToolShared.APIModels.ZoneControllerModels;
 using EQToolShared.Enums;
+using EQToolShared.Map;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -76,18 +77,25 @@ namespace EQTool.Services
 
         public void SendNPCActivity(NPCActivityRequest activity)
         {
-            if (this.IsQuarm || (activity.NPCData?.Name != "Scout Charisa" && activity.NPCData?.Name != "a Kromzek Captain"))
+            if (string.IsNullOrWhiteSpace(activity.NPCData?.Name) || this.IsQuarm)
             {
                 return;
             }
-            var url = $"https://pigparse.azurewebsites.net/api/zone/npcactivity";
-            var json = JsonConvert.SerializeObject(activity);
-            var data = new StringContent(json, Encoding.UTF8, "application/json");
-            var res = App.httpclient.PostAsync(url, data).Result;
-            if (res.StatusCode == System.Net.HttpStatusCode.OK)
+            if (activity.NPCData.Name == "Scout Charisa" ||
+                activity.NPCData.Name == "a Kromzek Captain" ||
+                ZoneParser.KaelFactionMobs.Contains(activity.NPCData.Name)
+                )
             {
-                _ = res.Content.ReadAsStringAsync().Result;
+                var url = $"https://pigparse.azurewebsites.net/api/zone/npcactivity";
+                var json = JsonConvert.SerializeObject(activity);
+                var data = new StringContent(json, Encoding.UTF8, "application/json");
+                var res = App.httpclient.PostAsync(url, data).Result;
+                if (res.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    _ = res.Content.ReadAsStringAsync().Result;
+                }
             }
+
         }
 
         public void SendQuake()

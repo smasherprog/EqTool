@@ -44,6 +44,7 @@ namespace EQTool
                 Message =
                 $"* Added Vulak AOE timers.{Environment.NewLine}" +
                 $"* Improved update performance.{Environment.NewLine}" +
+                $"* Fixed Roll message showing up in the death triggers.{Environment.NewLine}" +
                 $"* Added Discord link to System Tray so those who dont like to use github can report issues through discord instead."
             });
             UpdateMessages.Add(new UpdateMessageData
