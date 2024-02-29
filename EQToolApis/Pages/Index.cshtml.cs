@@ -45,6 +45,8 @@ namespace EQToolApis.Pages
                                 .Select(a => new PigParseZoneStat { Zone = a.Key, Count = a.Count() })
                                 .Where(a => a.Zone != "fearplane" && a.Zone != "hateplane" && a.Zone != "sleeper")
                                 .ToList();
+                            var lasthour = DateTime.UtcNow.AddHours(-1);
+                            PigParseStats[(int)server].PigParseUniquePlayerCount = eQToolContext.EqToolExceptions.Where(a => a.Server == server && a.DateCreated > lasthour).Select(a => a.IpAddress).Distinct().Count();
                         }
                     }
                 }

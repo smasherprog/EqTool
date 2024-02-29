@@ -123,13 +123,16 @@
                                         <table>
                                             <tbody>
                                                 <tr>
-                                                    <th>@item.Server: @item.PigParsePlayerCount</th>
+                                                    <th>@item.Server Map users: @item.PigParsePlayerCount</th>
                                                     <td>
                                                         @foreach (var z in item.zoneStats.OrderByDescending(a => a.Count).Where(a => a.Count > 0).Take(5))
                                                         {
                                                             <text>@z.Zone:@z.Count/</text>
                                                         }
                                                     </td>
+                                                </tr>
+                                                <tr>
+                                                    <th>@item.Server Unique Users over last 1 hour: @item.PigParseUniquePlayerCount</th>
                                                 </tr>
                                             </tbody>
                                         </table>
