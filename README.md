@@ -92,6 +92,7 @@ Features:
 
 <h4>TO DO List EQTool</h4>
 <ul>     
+  <li>Add option to ONLY show spells YOU have cast on yourself and others. </li>  
  <li>Add updating notice when its happening. It can be confusing when updates occur because it takes about 5 seconds. </li>  
  <li>Centralized friends list. </li>  
  <li>Add text message sending when npc is seen in game. (You can go FD and received a Text message on your phone that VD has spawned for example) </li>  
