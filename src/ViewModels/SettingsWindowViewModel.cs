@@ -69,6 +69,7 @@ namespace EQTool.ViewModels
                 OnPropertyChanged();
             }
         }
+
         public bool DpsAlwaysOnTop
         {
             get
@@ -145,6 +146,19 @@ namespace EQTool.ViewModels
             set
             {
                 this.toolSettings.SpellWindowState.AlwaysOnTop = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool ShowRandomRolls
+        {
+            get
+            {
+                return this.toolSettings.ShowRandomRolls;
+            }
+            set
+            {
+                this.toolSettings.ShowRandomRolls = value;
                 OnPropertyChanged();
             }
         }

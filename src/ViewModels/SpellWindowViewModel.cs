@@ -101,6 +101,10 @@ namespace EQTool.ViewModels
                     item.HideGuesses = !settings.BestGuessSpells;
                     item.ShowOnlyYou = settings.YouOnlySpells;
                     item.HideClasses = player != null && SpellUIExtensions.HideSpell(player.ShowSpellsForClasses, item.Classes) && item.TargetName != EQSpells.SpaceYou;
+                    if (item.SpellType == SpellTypes.RandomRoll)
+                    {
+                        item.HideClasses = !this.settings.ShowRandomRolls;
+                    }
                 }
 
                 var groupedspells = SpellList.GroupBy(a => a.TargetName).ToList();

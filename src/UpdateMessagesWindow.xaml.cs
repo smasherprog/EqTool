@@ -38,6 +38,15 @@ namespace EQTool
             view.IsLiveGrouping = true;
             view.SortDescriptions.Add(new SortDescription(nameof(UpdateMessageData.DateTime), ListSortDirection.Descending));
             view.IsLiveSorting = true;
+
+
+            UpdateMessages.Add(new UpdateMessageData
+            {
+                DateTime = new DateTime(2024, 3, 2),
+                Message =
+                $"* Added support to toggle whether random rolls show up in the triggers window."
+            });
+
             UpdateMessages.Add(new UpdateMessageData
             {
                 DateTime = new DateTime(2024, 2, 26),
@@ -46,23 +55,6 @@ namespace EQTool
                 $"* Improved update performance.{Environment.NewLine}" +
                 $"* Fixed Roll message showing up in the death triggers.{Environment.NewLine}" +
                 $"* Added Discord link to System Tray so those who dont like to use github can report issues through discord instead."
-            });
-            UpdateMessages.Add(new UpdateMessageData
-            {
-                DateTime = new DateTime(2024, 2, 25),
-                Message =
-                    $"* Fixed slain targets not showing up in timers.{Environment.NewLine}" +
-                    $"* Fixed Faction pull server notice.{Environment.NewLine}" +
-                    $"* Added Random tracker which will show the TOP 5 rolls automatically. Check out the image below for an example.",
-                Image = "pack://application:,,,/update1.png",
-                ImageVisibility = Visibility.Visible
-            });
-
-            UpdateMessages.Add(new UpdateMessageData
-            {
-                DateTime = new DateTime(2024, 2, 24),
-                Message =
-                $"* Added support for 'King Tormax died.' to supported death triggers"
             });
         }
     }
