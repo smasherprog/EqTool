@@ -441,6 +441,9 @@
     <Compile Include="Shapes\ArrowEnds.cs" />
     <Compile Include="Shapes\ArrowLine.cs" />
     <Compile Include="Shapes\ArrowLineBase.cs" />
+    <Compile Include="UpdatingWindow.xaml.cs">
+      <DependentUpon>UpdatingWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\ActivePlayerInfo.cs" />
     <Compile Include="Services\TimersService.cs" />
     <Compile Include="ViewModels\ZoneViewModel.cs" />
@@ -515,6 +518,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UpdateMessagesWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UpdatingWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

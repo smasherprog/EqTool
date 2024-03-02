@@ -40,6 +40,7 @@ namespace EQTool.Services
             }
         }
 
+        private AppDispatcher appDispatcher = new AppDispatcher();
         public enum UpdateStatus
         {
             UpdatesApplied,
@@ -57,6 +58,13 @@ namespace EQTool.Services
             {
                 if (parameter.Contains("ping"))
                 {
+                    this.appDispatcher.DispatchUI(() =>
+                    {
+                        (App.Current as App).ShowBalloonTip(3000, "Applying PigParse Update", "Extracting Files . . .", System.Windows.Forms.ToolTipIcon.Info);
+                        var updatingwindow = new UpdatingWindow();
+                        updatingwindow.Title = "Applying PigParse Update";
+                        updatingwindow.Show();
+                    });
                     var sourcedirectory = System.IO.Directory.GetCurrentDirectory();
                     var parentidirectory = Directory.GetParent(sourcedirectory).FullName;
                     CopyFilesRecursively(sourcedirectory, parentidirectory);
@@ -73,6 +81,10 @@ namespace EQTool.Services
                 }
                 else if (parameter.Contains("pong"))
                 {
+                    this.appDispatcher.DispatchUI(() =>
+                    {
+                        (App.Current as App).ShowBalloonTip(3000, "PigParse Update Complete", "Cleaning up files . . .", System.Windows.Forms.ToolTipIcon.Info);
+                    });
                     try
                     {
                         System.IO.Directory.Delete("NewVersion", true);
@@ -107,6 +119,13 @@ namespace EQTool.Services
 
                     if (currentversion != release.tag_name)
                     {
+                        this.appDispatcher.DispatchUI(() =>
+                        {
+                            (App.Current as App).ShowBalloonTip(3000, "Downloading PigParse Update", "This might take a few seconds . . .", System.Windows.Forms.ToolTipIcon.Info);
+                            var updatingwindow = new UpdatingWindow();
+                            updatingwindow.Title = "Downloading PigParse Update";
+                            updatingwindow.Show();
+                        });
                         if (System.IO.Directory.Exists("NewVersion"))
                         {
                             System.IO.Directory.Delete("NewVersion", true);

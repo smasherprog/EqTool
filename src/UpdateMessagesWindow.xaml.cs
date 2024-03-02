@@ -44,7 +44,8 @@ namespace EQTool
             {
                 DateTime = new DateTime(2024, 3, 2),
                 Message =
-                $"* Added support to toggle whether random rolls show up in the triggers window."
+                $"* Added support to toggle whether random rolls show up in the triggers window.{Environment.NewLine}" +
+                $"* Added Update messages when update is running."
             });
 
             UpdateMessages.Add(new UpdateMessageData
