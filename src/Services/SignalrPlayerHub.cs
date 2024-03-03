@@ -363,6 +363,7 @@ namespace EQTool.Models
             }
             return zoneName;
         }
+
         private void LogParser_PlayerLocationEvent(object sender, LogParser.PlayerLocationEventArgs e)
         {
             if (this.activePlayer?.Player?.Server != null)
@@ -402,7 +403,11 @@ namespace EQTool.Models
                     var sendBuffer = new ArraySegment<byte>(Encoding.UTF8.GetBytes(sendMessage));
                     Task.Factory.StartNew(async () =>
                     {
-                        await this.NParseWebsocketConnection.SendAsync(sendBuffer, WebSocketMessageType.Text, true, CancellationToken.None);
+                        try
+                        {
+                            await this.NParseWebsocketConnection.SendAsync(sendBuffer, WebSocketMessageType.Text, true, CancellationToken.None);
+                        }
+                        catch { }
                     });
                 }
             }

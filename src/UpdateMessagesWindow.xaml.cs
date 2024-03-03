@@ -42,6 +42,7 @@ namespace EQTool
             {
                 DateTime = new DateTime(2024, 3, 3),
                 Message =
+                $"* Fixed various errors which were occurring in the background.{Environment.NewLine}" +
                 $"* Fixed CH CHain test button when TAG filter is present.{Environment.NewLine}" +
                 $"* Fixed issue where you needed to use /loc to enable server-wide faction pull notices."
             });
