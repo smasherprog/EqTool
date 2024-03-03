@@ -845,55 +845,56 @@ namespace EQTool
             {
                 try
                 {
-                    var msg = "You shout, 'CA 001 CH -- Beefwich'";
+                    var tag = SettingsWindowData.ActivePlayer.Player.ChChainTagOverlay;
+                    var msg = $"You shout, '{tag} 001 CH -- Beefwich'";
                     PushLog(msg);
                     Thread.Sleep(2000);
 
-                    msg = "Mycro shouts, 'CA 002 CH -- Huntor'";
+                    msg = $"Mycro shouts, '{tag}  002 CH -- Huntor'";
                     PushLog(msg);
                     Thread.Sleep(1000);
 
-                    msg = "Sleeper shouts, 'CA 003 CH -- Beefwich'";
+                    msg = $"Sleeper shouts, '{tag}  003 CH -- Beefwich'";
                     PushLog(msg);
                     Thread.Sleep(2000);
 
-                    msg = "Sleeper shouts, 'CA 004 CH -- Beefwich'";
+                    msg = $"Sleeper shouts, '{tag}  004 CH -- Beefwich'";
                     PushLog(msg);
                     Thread.Sleep(1800);
 
-                    msg = "You shout, 'CA 001 CH -- Beefwich'";
+                    msg = $"You shout, '{tag}  001 CH -- Beefwich'";
                     PushLog(msg);
                     Thread.Sleep(2000);
 
-                    msg = "Mycro shouts, 'CA 002 CH -- Huntor'";
+                    msg = $"Mycro shouts, '{tag}  002 CH -- Huntor'";
                     PushLog(msg);
                     Thread.Sleep(1500);
 
-                    msg = "Sleeper shouts, 'CA 003 CH -- Beefwich'";
+                    msg = $"Sleeper shouts, '{tag}  003 CH -- Beefwich'";
                     PushLog(msg);
                     Thread.Sleep(2000);
 
-                    msg = "Sleeper shouts, 'CA 004 CH -- Beefwich'";
+                    msg = $"Sleeper shouts, '{tag}  004 CH -- Beefwich'";
                     PushLog(msg);
                     Thread.Sleep(1700);
 
-                    msg = "Hanbox shouts, 'CA 002 CH -- Huntor'";
+                    msg = $"Hanbox shouts, '{tag}  002 CH -- Huntor'";
                     PushLog(msg);
                     Thread.Sleep(1500);
 
-                    msg = "Hanbox shouts, 'CA 001 CH -- Beefwich'";
+                    msg = $"Hanbox shouts, '{tag}  001 CH -- Beefwich'";
                     PushLog(msg);
                     Thread.Sleep(1700);
 
-                    msg = "Sleeper shouts, 'CA 003 CH -- Beefwich'";
+                    msg = $"Sleeper shouts, '{tag}  003 CH -- Beefwich'";
                     PushLog(msg);
                     Thread.Sleep(2000);
 
-                    msg = "Sleeper shouts, 'CA 004 CH -- Beefwich'";
+                    msg = $"Sleeper shouts, '{tag}  004 CH -- Beefwich'";
                     PushLog(msg);
                     Thread.Sleep(1800);
 
-                    msg = "Mycro shouts, 'CA 002 CH -- Huntor'";
+                    msg = $"Mycro shouts, '{tag}  002 CH -- Huntor'";
                     PushLog(msg);
                     Thread.Sleep(1500);
                     appDispatcher.DispatchUI(() => { button.IsEnabled = true; });

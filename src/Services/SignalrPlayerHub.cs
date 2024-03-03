@@ -104,7 +104,7 @@ namespace EQTool.Models
 
         private void InvokeAsync<T>(string name, T obj)
         {
-            if (connection.State == HubConnectionState.Connected)
+            if (connection.State == HubConnectionState.Connected && obj != null)
             {
                 connection.InvokeAsync(name, obj);
             }
@@ -141,6 +141,11 @@ namespace EQTool.Models
                 {
                     Debug.WriteLine("Beg StartAsync");
                     await connection.StartAsync();
+                    try
+                    {
+                        InvokeAsync("JoinServerGroup", this.activePlayer?.Player?.Server);
+                    }
+                    catch { }
                     Debug.WriteLine("Connected StartAsync");
                     return;
                 }

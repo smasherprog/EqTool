@@ -38,7 +38,13 @@ namespace EQTool
             view.IsLiveGrouping = true;
             view.SortDescriptions.Add(new SortDescription(nameof(UpdateMessageData.DateTime), ListSortDirection.Descending));
             view.IsLiveSorting = true;
-
+            UpdateMessages.Add(new UpdateMessageData
+            {
+                DateTime = new DateTime(2024, 3, 3),
+                Message =
+                $"* Fixed CH CHain test button when TAG filter is present.{Environment.NewLine}" +
+                $"* Fixed issue where you needed to use /loc to enable server-wide faction pull notices."
+            });
             UpdateMessages.Add(new UpdateMessageData
             {
                 DateTime = new DateTime(2024, 3, 2),
@@ -47,15 +53,6 @@ namespace EQTool
                 $"* Added Update messages when update is running."
             });
 
-            UpdateMessages.Add(new UpdateMessageData
-            {
-                DateTime = new DateTime(2024, 2, 26),
-                Message =
-                $"* Added Vulak AOE timers.{Environment.NewLine}" +
-                $"* Improved update performance.{Environment.NewLine}" +
-                $"* Fixed Roll message showing up in the death triggers.{Environment.NewLine}" +
-                $"* Added Discord link to System Tray so those who dont like to use github can report issues through discord instead."
-            });
         }
     }
 }

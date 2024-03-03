@@ -1,4 +1,5 @@
-﻿using EQToolShared.Map;
+﻿using EQToolShared.Enums;
+using EQToolShared.Map;
 using Microsoft.AspNetCore.SignalR;
 using System.Collections.Concurrent;
 using System.Diagnostics;
@@ -16,7 +17,6 @@ namespace EQToolApis.Hubs
                 if (connections.TryRemove(Context.ConnectionId, out var p))
                 {
                     await Groups.RemoveFromGroupAsync(Context.ConnectionId, p.GroupName);
-                    await Groups.RemoveFromGroupAsync(Context.ConnectionId, p.Server.ToString());
                     await Clients.Group(p.GroupName).SendAsync("PlayerDisconnected", p);
                     Debug.WriteLine($"{p.GroupName}, ReceivePlayerLeftZone {p.Name}, {p.Zone}");
                 }
@@ -24,12 +24,6 @@ namespace EQToolApis.Hubs
             }
             if (connections.TryGetValue(Context.ConnectionId, out var player))
             {
-                if (player.Server != playerLocation.Server)
-                {
-                    await Groups.RemoveFromGroupAsync(Context.ConnectionId, player.Server.ToString());
-                    await Groups.AddToGroupAsync(Context.ConnectionId, playerLocation.Server.ToString());
-                }
-
                 if (player.Zone != playerLocation.Zone || player.MapLocationSharing != playerLocation.MapLocationSharing)
                 {
                     await Groups.RemoveFromGroupAsync(Context.ConnectionId, player.GroupName);
@@ -46,7 +40,6 @@ namespace EQToolApis.Hubs
             else if (connections.TryAdd(Context.ConnectionId, playerLocation))
             {
                 await Groups.AddToGroupAsync(Context.ConnectionId, playerLocation.GroupName);
-                await Groups.AddToGroupAsync(Context.ConnectionId, playerLocation.Server.ToString());
                 Debug.WriteLine($"{playerLocation.GroupName}, TryAdd {playerLocation.Name}, {playerLocation.Zone}");
             }
 
@@ -57,6 +50,11 @@ namespace EQToolApis.Hubs
         public async Task TriggerEvent(TriggerEvent playerLocation)
         {
             await Clients.Group(playerLocation.GroupName).SendAsync("TriggerEvent", playerLocation);
+        }
+
+        public async Task JoinServerGroup(Servers servers)
+        {
+            await Groups.AddToGroupAsync(Context.ConnectionId, servers.ToString());
         }
 
         public override async Task OnDisconnectedAsync(Exception? exception)
