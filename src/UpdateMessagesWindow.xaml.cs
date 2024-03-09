@@ -40,18 +40,18 @@ namespace EQTool
             view.IsLiveSorting = true;
             UpdateMessages.Add(new UpdateMessageData
             {
+                DateTime = new DateTime(2024, 3, 9),
+                Message =
+                $"* Added support to show allow multiple rolls to show up.{Environment.NewLine}" +
+                $"*   When this is set, the max number of rolls that will show up is 10"
+            });
+            UpdateMessages.Add(new UpdateMessageData
+            {
                 DateTime = new DateTime(2024, 3, 3),
                 Message =
                 $"* Fixed various errors which were occurring in the background.{Environment.NewLine}" +
                 $"* Fixed CH CHain test button when TAG filter is present.{Environment.NewLine}" +
                 $"* Fixed issue where you needed to use /loc to enable server-wide faction pull notices."
-            });
-            UpdateMessages.Add(new UpdateMessageData
-            {
-                DateTime = new DateTime(2024, 3, 2),
-                Message =
-                $"* Added support to toggle whether random rolls show up in the triggers window.{Environment.NewLine}" +
-                $"* Added Update messages when update is running."
             });
 
         }

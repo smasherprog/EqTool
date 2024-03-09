@@ -315,19 +315,23 @@ namespace EQTool.ViewModels
                     {
                         _ = SpellList.Remove(s);
                     }
-                    else
+                    else if (!this.settings.ShowMultipleRandomRolls)
                     {
                         return;
                     }
                 }
-
 
                 var spellduration = match.DurationInSeconds;
                 var spellicon = spells.AllSpells.FirstOrDefault(a => a.name == match.SpellNameIcon);
                 if (match.SpellType == SpellTypes.RandomRoll)
                 {
                     var rollsingroup = SpellList.Where(a => a.TargetName == match.TargetName).OrderByDescending(a => a.Roll).ToList();
-                    if (rollsingroup.Count >= 5)
+                    var maxrolls = 5;
+                    if (this.settings.ShowMultipleRandomRolls)
+                    {
+                        maxrolls = 10;
+                    }
+                    if (rollsingroup.Count >= maxrolls)
                     {
                         _ = SpellList.Remove(rollsingroup.LastOrDefault());
                         rollsingroup = SpellList.Where(a => a.TargetName == match.TargetName).ToList();

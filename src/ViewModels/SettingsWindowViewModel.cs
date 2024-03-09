@@ -163,6 +163,19 @@ namespace EQTool.ViewModels
             }
         }
 
+        public bool ShowMultipleRandomRolls
+        {
+            get
+            {
+                return this.toolSettings.ShowMultipleRandomRolls;
+            }
+            set
+            {
+                this.toolSettings.ShowMultipleRandomRolls = value;
+                OnPropertyChanged();
+            }
+        }
+
         public double TriggerWindowOpacity
         {
             get

@@ -192,8 +192,12 @@
                         <Slider Value="{Binding TriggerWindowOpacity}" Minimum=".01" Maximum="1" SmallChange=".1" TickFrequency=".1" ValueChanged="SaveSettings" MinWidth="150"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Random Rolls" ToolTip="SHow Random rolls in Triggers window" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
+                        <TextBlock Text="Random Rolls" ToolTip="Show Random rolls in Triggers window" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
                         <CheckBox IsChecked="{Binding ShowRandomRolls}" Click="SaveAlwaysOntopCheckBoxSettings" ></CheckBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Multiple Rolls" ToolTip="Show Multiple Random rolls in Triggers window" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
+                        <CheckBox IsChecked="{Binding ShowMultipleRandomRolls}" Click="SaveAlwaysOntopCheckBoxSettings" ></CheckBox>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Guess Spells"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
