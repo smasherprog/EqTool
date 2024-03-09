@@ -68,7 +68,75 @@ namespace EQTool
             logParser.FailedFeignEvent += LogParser_FailedFeignEvent;
             logParser.GroupInviteEvent += LogParser_GroupInviteEvent;
             logParser.StartCastingEvent += LogParser_StartCastingEvent;
+            logParser.SpellWornOtherOffEvent += LogParser_SpellWornOtherOffEvent;
+            logParser.ResistSpellEvent += LogParser_ResistSpellEvent;
             settings.OverlayWindowState.Closed = false;
+        }
+
+        private void LogParser_ResistSpellEvent(object sender, ResistSpellParser.ResistSpellData e)
+        {
+            var overlay = this.activePlayer?.Player?.ResistWarningOverlay ?? false;
+            if (!overlay)
+            {
+                return;
+            }
+
+            System.Threading.Tasks.Task.Factory.StartNew(() =>
+            {
+                var target = e.isYou ? "You " : "Your target ";
+                this.appDispatcher.DispatchUI(() =>
+                {
+                    CenterText.Text = $"{target} resisted the {e.Spell.name} spell";
+                    CenterText.Foreground = Brushes.Red;
+                });
+                System.Threading.Thread.Sleep(3000);
+                this.appDispatcher.DispatchUI(() =>
+                {
+                    CenterText.Text = string.Empty;
+                    CenterText.Foreground = Brushes.Red;
+                });
+            });
+        }
+
+        private List<string> RootSpells = new List<string>()
+        {
+            "Root",
+            "Fetter",
+            "Enstill",
+            "Immobalize",
+            "Paralyzing Earth",
+            "Grasping Roots",
+            "Ensnaring Roots",
+            "Enveloping Roots",
+            "Engulfing Roots",
+            "Engorging Roots",
+            "Entrapping Roots"
+        };
+        private void LogParser_SpellWornOtherOffEvent(object sender, LogParser.SpellWornOffOtherEventArgs e)
+        {
+            var overlay = this.activePlayer?.Player?.RootWarningOverlay ?? false;
+            if (!overlay)
+            {
+                return;
+            }
+
+            if (RootSpells.Any(a => string.Equals(a, e.SpellName, StringComparison.OrdinalIgnoreCase)))
+            {
+                System.Threading.Tasks.Task.Factory.StartNew(() =>
+                {
+                    this.appDispatcher.DispatchUI(() =>
+                    {
+                        CenterText.Text = $"{e.SpellName} has worn off!";
+                        CenterText.Foreground = Brushes.Red;
+                    });
+                    System.Threading.Thread.Sleep(3000);
+                    this.appDispatcher.DispatchUI(() =>
+                    {
+                        CenterText.Text = string.Empty;
+                        CenterText.Foreground = Brushes.Red;
+                    });
+                });
+            }
         }
 
         private void LogParser_StartCastingEvent(object sender, LogParser.SpellEventArgs e)
@@ -553,7 +621,17 @@ namespace EQTool
             {
                 logParser.EnrageEvent -= LogParser_EnrageEvent;
                 logParser.CHEvent -= LogParser_CHEvent;
+                logParser.LevEvent -= LogParser_LevEvent;
+                logParser.InvisEvent -= LogParser_InvisEvent;
+                logParser.FTEEvent -= LogParser_FTEEvent;
+                logParser.CharmBreakEvent -= LogParser_CharmBreakEvent;
+                logParser.FailedFeignEvent -= LogParser_FailedFeignEvent;
+                logParser.GroupInviteEvent -= LogParser_GroupInviteEvent;
+                logParser.StartCastingEvent -= LogParser_StartCastingEvent;
+                logParser.SpellWornOtherOffEvent -= LogParser_SpellWornOtherOffEvent;
+                logParser.ResistSpellEvent -= LogParser_ResistSpellEvent;
             }
+
             base.OnClosing(e);
         }
 

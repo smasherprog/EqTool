@@ -532,6 +532,51 @@ namespace EQTool.Models
             }
         }
 
+        private bool _RootWarningOverlay;
+        public bool RootWarningOverlay
+
+        {
+            get => _RootWarningOverlay;
+            set
+            {
+                _RootWarningOverlay = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _RootWarningAudio;
+        public bool RootWarningAudio
+        {
+            get => _RootWarningAudio;
+            set
+            {
+                _RootWarningAudio = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _ResistWarningOverlay;
+        public bool ResistWarningOverlay
+        {
+            get => _ResistWarningOverlay;
+            set
+            {
+                _ResistWarningOverlay = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _ResistWarningAudio;
+        public bool ResistWarningAudio
+        {
+            get => _ResistWarningAudio;
+            set
+            {
+                _ResistWarningAudio = value;
+                OnPropertyChanged();
+            }
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected void OnPropertyChanged([CallerMemberName] string name = null)

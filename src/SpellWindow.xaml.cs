@@ -101,9 +101,18 @@ namespace EQTool
             });
         }
 
-        private void LogParser_ResistSpellEvent(object sender, SpellParsingMatch e)
+        private void LogParser_ResistSpellEvent(object sender, ResistSpellParser.ResistSpellData e)
         {
-            spellWindowViewModel.TryAdd(e, true);
+            if (e.isYou)
+            {
+                spellWindowViewModel.TryAdd(new SpellParsingMatch
+                {
+                    IsYou = e.isYou,
+                    Spell = e.Spell,
+                    MultipleMatchesFound = false,
+                    TargetName = EQSpells.SpaceYou,
+                }, true);
+            }
         }
 
         private void LogParser_POFDTEvent(object sender, POFDTParser.POF_DT_Event e)

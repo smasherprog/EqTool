@@ -42,8 +42,8 @@ namespace EQTool
             {
                 DateTime = new DateTime(2024, 3, 9),
                 Message =
-                $"* Added support to show allow multiple rolls to show up.{Environment.NewLine}" +
-                $"*   When this is set, the max number of rolls that will show up is 10"
+                $"* Added support to show allow multiple rolls to show up. When this is set, the max number of rolls that will show up is 10. {Environment.NewLine}" +
+                $"* Added support for Audio/Visual alerts for Root breaks and spell resists!"
             });
             UpdateMessages.Add(new UpdateMessageData
             {

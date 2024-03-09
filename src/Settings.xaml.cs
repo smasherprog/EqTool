@@ -906,5 +906,67 @@ namespace EQTool
                 }
             });
         }
+
+        private void testRootBreak(object sender, RoutedEventArgs e)
+        {
+            var button = sender as System.Windows.Controls.Button;
+            if (!button.IsEnabled)
+            {
+                return;
+            }
+            if (SettingsWindowData.ActivePlayer?.Player == null)
+            {
+                return;
+            }
+            SettingsWindowData.ActivePlayer.Player.RootWarningAudio = true;
+            SettingsWindowData.ActivePlayer.Player.RootWarningOverlay = true;
+            ((App)System.Windows.Application.Current).OpenOverLayWindow();
+            button.IsEnabled = false;
+            _ = Task.Factory.StartNew(() =>
+            {
+                try
+                {
+
+                    PushLog("Your Paralyzing Earth spell has worn off.");
+                    appDispatcher.DispatchUI(() => { button.IsEnabled = true; });
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex.ToString());
+                    appDispatcher.DispatchUI(() => { button.IsEnabled = true; });
+                }
+            });
+        }
+
+        private void testResists(object sender, RoutedEventArgs e)
+        {
+            var button = sender as System.Windows.Controls.Button;
+            if (!button.IsEnabled)
+            {
+                return;
+            }
+            if (SettingsWindowData.ActivePlayer?.Player == null)
+            {
+                return;
+            }
+            SettingsWindowData.ActivePlayer.Player.ResistWarningAudio = true;
+            SettingsWindowData.ActivePlayer.Player.ResistWarningOverlay = true;
+            ((App)System.Windows.Application.Current).OpenOverLayWindow();
+            button.IsEnabled = false;
+            _ = Task.Factory.StartNew(() =>
+            {
+                try
+                {
+
+                    PushLog("Your target resisted the Rest the Dead spell.");
+                    appDispatcher.DispatchUI(() => { button.IsEnabled = true; });
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine(ex.ToString());
+                    appDispatcher.DispatchUI(() => { button.IsEnabled = true; });
+                }
+            });
+        }
     }
 }

@@ -19,6 +19,7 @@ using static EQTool.Services.InvisParser;
 using static EQTool.Services.LevParser;
 using static EQTool.Services.POFDTParser;
 using static EQTool.Services.RandomParser;
+using static EQTool.Services.ResistSpellParser;
 
 namespace EQTool.Services
 {
@@ -201,7 +202,7 @@ namespace EQTool.Services
         public event EventHandler<string> FailedFeignEvent;
         public event EventHandler<string> GroupInviteEvent;
         public event EventHandler<SpellWornOffOtherEventArgs> SpellWornOtherOffEvent;
-        public event EventHandler<SpellParsingMatch> ResistSpellEvent;
+        public event EventHandler<ResistSpellData> ResistSpellEvent;
         public event EventHandler<SpellEventArgs> StartCastingEvent;
 
         public event EventHandler<CancelTimerEventArgs> CancelTimerEvent;
@@ -362,7 +363,7 @@ namespace EQTool.Services
                 var resistspell = this.resistSpellParser.ParseNPCSpell(message);
                 if (resistspell != null)
                 {
-                    ResistSpellEvent?.Invoke(this, new SpellParsingMatch { Spell = resistspell, TargetName = EQSpells.SpaceYou, MultipleMatchesFound = false, TotalSecondsOverride = null });
+                    ResistSpellEvent?.Invoke(this, resistspell);
                     return;
                 }
 

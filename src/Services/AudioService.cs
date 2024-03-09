@@ -34,6 +34,48 @@ namespace EQTool.Services
             this.logParser.GroupInviteEvent += LogParser_GroupInviteEvent;
             this.logParser.StartCastingEvent += LogParser_StartCastingEvent;
             this.logParser.CHEvent += LogParser_CHEvent;
+            this.logParser.SpellWornOtherOffEvent += LogParser_SpellWornOtherOffEvent1;
+            this.logParser.ResistSpellEvent += LogParser_ResistSpellEvent;
+        }
+
+        private void LogParser_ResistSpellEvent(object sender, ResistSpellParser.ResistSpellData e)
+        {
+            var overlay = this.activePlayer?.Player?.ResistWarningAudio ?? false;
+            if (!overlay)
+            {
+                return;
+            }
+            var target = e.isYou ? "You " : "Your target ";
+            this.PlayResource($"{target} resisted the {e.Spell.name} spell");
+        }
+
+        private List<string> RootSpells = new List<string>()
+        {
+            "Root",
+            "Fetter",
+            "Enstill",
+            "Immobalize",
+            "Paralyzing Earth",
+            "Grasping Roots",
+            "Ensnaring Roots",
+            "Enveloping Roots",
+            "Engulfing Roots",
+            "Engorging Roots",
+            "Entrapping Roots"
+        };
+
+        private void LogParser_SpellWornOtherOffEvent1(object sender, LogParser.SpellWornOffOtherEventArgs e)
+        {
+            var overlay = this.activePlayer?.Player?.RootWarningAudio ?? false;
+            if (!overlay)
+            {
+                return;
+            }
+
+            if (RootSpells.Any(a => string.Equals(a, e.SpellName, StringComparison.OrdinalIgnoreCase)))
+            {
+                this.PlayResource($"{e.SpellName} has worn off!");
+            }
         }
 
         private void LogParser_CHEvent(object sender, ChParser.ChParseData e)
