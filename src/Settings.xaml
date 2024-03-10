@@ -190,6 +190,9 @@
                     <CheckBox IsChecked="{Binding ActivePlayer.Player.ChChainWarningOverlay}" Click="Savesettings" MinWidth="75"></CheckBox>
                     <CheckBox IsChecked="{Binding ActivePlayer.Player.ChChainWarningAudio}" Click="Savesettings" MinWidth="30"></CheckBox>
                 </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Above will warn you when its your turn to cast CH" Foreground="Red"/> 
+                </StackPanel>
             </StackPanel>
         </TabItem>
         <TabItem Header="Triggers">

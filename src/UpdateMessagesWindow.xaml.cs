@@ -40,6 +40,12 @@ namespace EQTool
             view.IsLiveSorting = true;
             UpdateMessages.Add(new UpdateMessageData
             {
+                DateTime = new DateTime(2024, 3, 10),
+                Message =
+                $"* Decreased the time taken to apply subsequent updates!. This update will take the normal amount of time, but the next should be much faster!"
+            });
+            UpdateMessages.Add(new UpdateMessageData
+            {
                 DateTime = new DateTime(2024, 3, 9),
                 Message =
                 $"* Added support to show allow multiple rolls to show up. When this is set, the max number of rolls that will show up is 10. {Environment.NewLine}" +

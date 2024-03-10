@@ -22,11 +22,11 @@ namespace EQTool
         public string TargetName { get; set; }
         public int ActiveAnimations { get; set; } = 0;
         public RowDefinition RowDefinition { get; set; }
+        public System.Timers.Timer CHTimer { get; set; }
     }
 
     public partial class EventOverlay : Window
     {
-        private readonly System.Timers.Timer UITimer;
         private readonly LogParser logParser;
         private readonly EQToolSettings settings;
         private readonly EQToolSettingsLoad toolSettingsLoad;
@@ -51,9 +51,6 @@ namespace EQTool
             InitializeComponent();
             WindowExtensions.AdjustWindow(settings.OverlayWindowState, this);
             this.Topmost = true;
-            UITimer = new System.Timers.Timer(1000);
-            UITimer.Elapsed += PollUI;
-            UITimer.Enabled = true;
             this.toolSettingsLoad = toolSettingsLoad;
             timer.Tick += timer_Tick;
             SizeChanged += Window_SizeChanged;
@@ -470,8 +467,15 @@ namespace EQTool
                 ChildrenInRow = new List<FrameworkElement>(),
                 TargetName = targetname,
                 ActiveAnimations = 1,
-                RowDefinition = new RowDefinition { MaxHeight = 30 }
+                RowDefinition = new RowDefinition { MaxHeight = 30 },
+                CHTimer = new System.Timers.Timer(1000)
             };
+
+            chaindata.CHTimer.Elapsed += (a, b) =>
+            {
+
+            };
+            chaindata.CHTimer.Enabled = true;
             chaindata.Canvas.IsHitTestVisible = false;
             chaindata.Canvas.Background = Brushes.Transparent;
             var target = new TextBlock
@@ -605,15 +609,8 @@ namespace EQTool
             DragMove();
         }
 
-        private void PollUI(object sender, EventArgs e)
-        {
-
-        }
-
         protected override void OnClosing(CancelEventArgs e)
         {
-            UITimer?.Stop();
-            UITimer?.Dispose();
             SizeChanged -= Window_SizeChanged;
             StateChanged -= SpellWindow_StateChanged;
             LocationChanged -= Window_LocationChanged;
