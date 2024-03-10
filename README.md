@@ -31,8 +31,7 @@ Features:
 <li>DPS is trailing 12 second average.</li>
 <li>Show fight Session data for comparisons.</li>
 <li>The following spells have counters that are automatically tracked:Mana Seive, LowerElement (Flux Staff Effect), Concussion, Flame Lick, Cinder Jolt, Jolt.</li> 
-<li>The following Overlays are available: Enrage; Levitate fading; invis fading; Charm Break; and Ch Chain</li>
-<li>The following Audio alerts are available: Ch warning; Enrage; Levitate fading; Charm Break; and invis fading</li>
+<li>The following Audio/Visual alerts are available: <br/>Enrage<br/> Levitate fading<br/> invis fading<br/> FTE<br/> Charm Break<br/> Failed Feign<br/> Group Invite<br/> Dragon Roar<br/> Root Break<br/> Resists<br/> and <b>CH CHain</b></li>
 <li>Timers on map for easy TOD tracking!</li>
 <li>All Melee disciplines show in the cooldown section of the timers window.</li>
 <li>Pricing information in Mob info window.</li>
