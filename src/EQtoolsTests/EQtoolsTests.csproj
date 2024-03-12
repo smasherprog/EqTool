@@ -169,6 +169,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ZoneSpawnTimeTests.cs" />
     <Compile Include="ChChainTests.cs" />
     <Compile Include="RandomRollTests.cs" />
     <Compile Include="FTETests.cs" />

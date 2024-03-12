@@ -7,9 +7,9 @@ namespace EQToolShared.Map
     public static class ZoneSpawnTimes
     {
 #if QUARM
-        private static bool isProjectQ = true;
+        public static bool isProjectQ = true;
 #else
-        private static bool isProjectQ = false;
+        public static bool isProjectQ = false;
 #endif
 
         private static List<string> Dungeons = new List<string>()
@@ -29,6 +29,24 @@ namespace EQToolShared.Map
             ,"cazicthule"
         };
 
+        private const double RespawnReductionDungeonLowerBoundMin = 300;
+        private const double RespawnReductionDungeonHigherBoundMin = 900;
+
+        private const double RespawnReductionDungeonLowerBoundMax = 899;
+        private const double RespawnReductionDungeonHigherBoundMax = 2400;
+
+        private const double RespawnReductionLowerBoundMin = 60;
+        private const double RespawnReductionHigherBoundMin = 100;
+
+        private const double RespawnReductionDungeonLowerBound = 300;
+        private const double RespawnReductionDungeonHigherBound = 500;
+
+        private const double RespawnReductionHigherBoundMax = 60;
+        private const double RespawnReductionHigherBound = 60;
+
+        private const double RespawnReductionLowerBoundMax = 400;
+        private const double RespawnReductionLowerBound = 12;
+
         public static TimeSpan GetSpawnTime(string npcName, string zone)
         {
             var ret = _GetSpawnTime(npcName, zone);
@@ -36,25 +54,26 @@ namespace EQToolShared.Map
             {
                 if (Dungeons.Contains(zone))
                 {
-                    if (ret.TotalSeconds >= 900 && ret.TotalSeconds <= 2400)
+                    if (ret.TotalSeconds >= RespawnReductionDungeonHigherBoundMin && ret.TotalSeconds <= RespawnReductionDungeonHigherBoundMax)
                     {
-                        return TimeSpan.FromSeconds(400);
+                        return TimeSpan.FromSeconds(RespawnReductionDungeonHigherBound);
                     }
-                    else if (ret.TotalSeconds >= 300 && ret.TotalSeconds <= 899)
+                    else if (ret.TotalSeconds >= RespawnReductionDungeonLowerBoundMin && ret.TotalSeconds <= RespawnReductionDungeonLowerBoundMax)
                     {
-                        return TimeSpan.FromSeconds(360);
+                        return TimeSpan.FromSeconds(RespawnReductionDungeonLowerBound);
                     }
                 }
                 else
                 {
-                    if (ret.TotalSeconds >= 60 && ret.TotalSeconds <= 300)
-                    {
-                        return TimeSpan.FromSeconds(60);
-                    }
-                    else if (ret.TotalSeconds >= 12 && ret.TotalSeconds <= 60)
-                    {
-                        return TimeSpan.FromSeconds(12);
-                    }
+                    //ignore low levels now
+                    //if (ret.TotalSeconds >= RespawnReductionHigherBoundMin && ret.TotalSeconds <= RespawnReductionHigherBoundMax)
+                    //{
+                    //    return TimeSpan.FromSeconds(RespawnReductionHigherBound);
+                    //}
+                    //else if (ret.TotalSeconds >= RespawnReductionLowerBoundMin && ret.TotalSeconds <= RespawnReductionLowerBoundMax)
+                    //{
+                    //    return TimeSpan.FromSeconds(RespawnReductionLowerBound);
+                    //}
                 }
             }
             return ret;
