@@ -755,5 +755,16 @@ namespace EQtoolsTests
             Assert.AreEqual(AuctionType.WTS, item.AuctionType);
             Assert.AreEqual(1100, item.Price);
         }
+
+        [TestMethod]
+        public void Parse45()
+        {
+            var result = discordAuctionParse.Parse("Papabore auctions, 'WTS Cloak of Flames, Spiked Seahorse Hide Belt, Herbalist's Spade, Eyepatch of the Shadows, Tattered Flesh Veil, Stave of Shielding, Silver Chitin Wristband'");
+            Assert.AreEqual("Papabore", result.Player);
+
+            var item = result.Items.FirstOrDefault(a => a.Name == "Herbalist's Spade");
+            Assert.AreEqual(AuctionType.WTS, item.AuctionType);
+            Assert.IsNull(item.Price);
+        }
     }
 }

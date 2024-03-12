@@ -89,6 +89,25 @@ builder.Services.Configure<DiscordServiceOptions>(options =>
     using (var scope = a.CreateScope())
     {
         var dbcontext = scope.ServiceProvider.GetRequiredService<EQToolContext>();
+        var rename = dbcontext.EQitemsV2.FirstOrDefault(a => a.ItemName == "Herbalists Spade");
+        if (rename != null)
+        {
+            rename.ItemName = "Herbalist's Spade";
+            dbcontext.SaveChanges();
+        }
+        rename = dbcontext.EQitemsV2.FirstOrDefault(a => a.ItemName == "Dizok Imperial Katana");
+        if (rename != null)
+        {
+            rename.ItemName = "Di'zok Imperial Katana";
+            dbcontext.SaveChanges();
+        }
+        rename = dbcontext.EQitemsV2.FirstOrDefault(a => a.ItemName == "Dizok Wristsnapper");
+        if (rename != null)
+        {
+            rename.ItemName = "Di'zok Wristsnapper";
+            dbcontext.SaveChanges();
+        }
+
         dbcontext.Database.SetCommandTimeout(TimeSpan.FromMinutes(10));
         d.TotalEQAuctionPlayers = dbcontext.EQAuctionPlayersV2.Count();
         d.TotalUniqueItems = dbcontext.EQitemsV2.Count();
