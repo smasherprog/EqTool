@@ -26,6 +26,7 @@ namespace EQToolShared.Map
             ,"permafrost"
             ,"soldunga"
             ,"soldungb"
+            ,"runnyeye"
             ,"cazicthule"
         };
 
