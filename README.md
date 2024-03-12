@@ -6,10 +6,10 @@
 Instructions:
 <ul>
 <li>
-<h2>Project 1999: Download <a href="https://github.com/smasherprog/EqTool/releases/download/3.24.225.2/EQTool_Project19993.24.225.2.zip">EQTool_Project1999.zip</a>, Unzip it and run EQTool.exe</h2>
+<h2>Project 1999: Download <a href="https://github.com/smasherprog/EqTool/releases/download/3.24.310.2/EQTool_Project19993.24.310.2.zip">EQTool_Project1999.zip</a>, Unzip it and run EQTool.exe</h2>
 </li>
 <li>
-<h2>Project Quarm: Download <a href="https://github.com/smasherprog/EqTool/releases/download/4.24.225.2/EQTool_Quarm4.24.225.2.zip">EQTool_Quarm.zip</a>, Unzip it and run PQTool.exe</h2>
+<h2>Project Quarm: Download <a href="https://github.com/smasherprog/EqTool/releases/download/4.24.310.2/EQTool_Quarm4.24.310.2.zip">EQTool_Quarm.zip</a>, Unzip it and run PQTool.exe</h2>
 </li>
  <li><h3><a href="https://discord.gg/R7vJrNtB">Discord</a></h3></li>
 <li>The program runs in the system tray. Look there to reopen spells window or settings! Program will check for updates on startup and self update if required, but if you want to check for a new Update, use the menu in the system tray!</li>
@@ -30,9 +30,8 @@ Features:
 <li>Auto detect level and class!</li>
 <li>DPS is trailing 12 second average.</li>
 <li>Show fight Session data for comparisons.</li>
-<li>The following spells have counters that are automatically tracked:Mana Seive, LowerElement (Flux Staff Effect), Concussion, Flame Lick, Cinder Jolt, Jolt.</li> 
-<li>The following Overlays are available: Enrage; Levitate fading; invis fading; Charm Break; and Ch Chain</li>
-<li>The following Audio alerts are available: Ch warning; Enrage; Levitate fading; Charm Break; and invis fading</li>
+<li>The following spells have counters that are automatically tracked: <br/>Mana Seive<br/> LowerElement (Flux Staff Effect)<br/> Concussion<br/> Flame Lick<br/> Cinder Jolt<br/> Jolt.</li> 
+<li>The following Audio/Visual alerts are available: <br/>Enrage<br/> Levitate fading<br/> invis fading<br/> FTE<br/> Charm Break<br/> Failed Feign<br/> Group Invite<br/> Dragon Roar<br/> Root Break<br/> Resists<br/> and <b>CH CHain</b></li>
 <li>Timers on map for easy TOD tracking!</li>
 <li>All Melee disciplines show in the cooldown section of the timers window.</li>
 <li>Pricing information in Mob info window.</li>

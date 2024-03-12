@@ -205,7 +205,7 @@ namespace EQToolTests
             var service = container.Resolve<ResistSpellParser>();
             var message = "You resist the Dragon Roar spell!";
             var spell = service.ParseNPCSpell(message);
-            Assert.AreEqual(spell.name, "Dragon Roar");
+            Assert.AreEqual(spell.Spell.name, "Dragon Roar");
         }
 
         [TestMethod]
@@ -367,7 +367,7 @@ namespace EQToolTests
             var service = container.Resolve<ResistSpellParser>();
             var message = "You resist the Frost Breath spell!";
             var spell = service.ParseNPCSpell(message);
-            Assert.AreEqual(spell.name, "Frost Breath");
+            Assert.AreEqual(spell.Spell.name, "Frost Breath");
         }
 
         [TestMethod]
@@ -376,7 +376,7 @@ namespace EQToolTests
             var service = container.Resolve<ResistSpellParser>();
             var message = "You resist the Lava Breath spell!";
             var spell = service.ParseNPCSpell(message);
-            Assert.AreEqual(spell.name, "Lava Breath");
+            Assert.AreEqual(spell.Spell.name, "Lava Breath");
         }
 
         [TestMethod]
@@ -385,7 +385,7 @@ namespace EQToolTests
             var service = container.Resolve<ResistSpellParser>();
             var message = "You resist the Molten Breath spell!";
             var spell = service.ParseNPCSpell(message);
-            Assert.AreEqual(spell.name, "Molten Breath");
+            Assert.AreEqual(spell.Spell.name, "Molten Breath");
         }
 
         //[TestMethod]

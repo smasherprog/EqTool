@@ -38,6 +38,20 @@ namespace EQTool
             view.IsLiveGrouping = true;
             view.SortDescriptions.Add(new SortDescription(nameof(UpdateMessageData.DateTime), ListSortDirection.Descending));
             view.IsLiveSorting = true;
+
+            UpdateMessages.Add(new UpdateMessageData
+            {
+                DateTime = new DateTime(2024, 3, 10),
+                Message =
+                $"* Decreased the time taken to apply subsequent updates!. This update will take the normal amount of time, but the next should be much faster!"
+            });
+            UpdateMessages.Add(new UpdateMessageData
+            {
+                DateTime = new DateTime(2024, 3, 9),
+                Message =
+                $"* Added support to show allow multiple rolls to show up. When this is set, the max number of rolls that will show up is 10. {Environment.NewLine}" +
+                $"* Added support for Audio/Visual alerts for Root breaks and spell resists!"
+            });
             UpdateMessages.Add(new UpdateMessageData
             {
                 DateTime = new DateTime(2024, 3, 3),
@@ -45,13 +59,6 @@ namespace EQTool
                 $"* Fixed various errors which were occurring in the background.{Environment.NewLine}" +
                 $"* Fixed CH CHain test button when TAG filter is present.{Environment.NewLine}" +
                 $"* Fixed issue where you needed to use /loc to enable server-wide faction pull notices."
-            });
-            UpdateMessages.Add(new UpdateMessageData
-            {
-                DateTime = new DateTime(2024, 3, 2),
-                Message =
-                $"* Added support to toggle whether random rolls show up in the triggers window.{Environment.NewLine}" +
-                $"* Added Update messages when update is running."
             });
 
         }

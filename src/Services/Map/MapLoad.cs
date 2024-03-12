@@ -51,7 +51,7 @@ namespace EQTool.Services
                 }
             }
             var oldcachedmaps = Directory.GetDirectories(System.IO.Directory.GetCurrentDirectory(), "cachedmaps*");
-            var version = "cachedmaps" + App.Version.Replace(".", string.Empty).Trim();
+            var version = "cachedmaps_1";
             foreach (var item in oldcachedmaps)
             {
                 if (!item.Contains(version))

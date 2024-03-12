@@ -120,6 +120,7 @@ namespace EQTool.Models
         public bool BestGuessSpells { get; set; }
         public bool YouOnlySpells { get; set; }
         public bool ShowRandomRolls { get; set; }
+        public bool ShowMultipleRandomRolls { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 

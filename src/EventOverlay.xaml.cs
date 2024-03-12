@@ -22,11 +22,11 @@ namespace EQTool
         public string TargetName { get; set; }
         public int ActiveAnimations { get; set; } = 0;
         public RowDefinition RowDefinition { get; set; }
+        public System.Timers.Timer CHTimer { get; set; }
     }
 
     public partial class EventOverlay : Window
     {
-        private readonly System.Timers.Timer UITimer;
         private readonly LogParser logParser;
         private readonly EQToolSettings settings;
         private readonly EQToolSettingsLoad toolSettingsLoad;
@@ -51,9 +51,6 @@ namespace EQTool
             InitializeComponent();
             WindowExtensions.AdjustWindow(settings.OverlayWindowState, this);
             this.Topmost = true;
-            UITimer = new System.Timers.Timer(1000);
-            UITimer.Elapsed += PollUI;
-            UITimer.Enabled = true;
             this.toolSettingsLoad = toolSettingsLoad;
             timer.Tick += timer_Tick;
             SizeChanged += Window_SizeChanged;
@@ -68,7 +65,75 @@ namespace EQTool
             logParser.FailedFeignEvent += LogParser_FailedFeignEvent;
             logParser.GroupInviteEvent += LogParser_GroupInviteEvent;
             logParser.StartCastingEvent += LogParser_StartCastingEvent;
+            logParser.SpellWornOtherOffEvent += LogParser_SpellWornOtherOffEvent;
+            logParser.ResistSpellEvent += LogParser_ResistSpellEvent;
             settings.OverlayWindowState.Closed = false;
+        }
+
+        private void LogParser_ResistSpellEvent(object sender, ResistSpellParser.ResistSpellData e)
+        {
+            var overlay = this.activePlayer?.Player?.ResistWarningOverlay ?? false;
+            if (!overlay)
+            {
+                return;
+            }
+
+            System.Threading.Tasks.Task.Factory.StartNew(() =>
+            {
+                var target = e.isYou ? "You " : "Your target ";
+                this.appDispatcher.DispatchUI(() =>
+                {
+                    CenterText.Text = $"{target} resisted the {e.Spell.name} spell";
+                    CenterText.Foreground = Brushes.Red;
+                });
+                System.Threading.Thread.Sleep(3000);
+                this.appDispatcher.DispatchUI(() =>
+                {
+                    CenterText.Text = string.Empty;
+                    CenterText.Foreground = Brushes.Red;
+                });
+            });
+        }
+
+        private List<string> RootSpells = new List<string>()
+        {
+            "Root",
+            "Fetter",
+            "Enstill",
+            "Immobalize",
+            "Paralyzing Earth",
+            "Grasping Roots",
+            "Ensnaring Roots",
+            "Enveloping Roots",
+            "Engulfing Roots",
+            "Engorging Roots",
+            "Entrapping Roots"
+        };
+        private void LogParser_SpellWornOtherOffEvent(object sender, LogParser.SpellWornOffOtherEventArgs e)
+        {
+            var overlay = this.activePlayer?.Player?.RootWarningOverlay ?? false;
+            if (!overlay)
+            {
+                return;
+            }
+
+            if (RootSpells.Any(a => string.Equals(a, e.SpellName, StringComparison.OrdinalIgnoreCase)))
+            {
+                System.Threading.Tasks.Task.Factory.StartNew(() =>
+                {
+                    this.appDispatcher.DispatchUI(() =>
+                    {
+                        CenterText.Text = $"{e.SpellName} has worn off!";
+                        CenterText.Foreground = Brushes.Red;
+                    });
+                    System.Threading.Thread.Sleep(3000);
+                    this.appDispatcher.DispatchUI(() =>
+                    {
+                        CenterText.Text = string.Empty;
+                        CenterText.Foreground = Brushes.Red;
+                    });
+                });
+            }
         }
 
         private void LogParser_StartCastingEvent(object sender, LogParser.SpellEventArgs e)
@@ -403,7 +468,14 @@ namespace EQTool
                 TargetName = targetname,
                 ActiveAnimations = 1,
                 RowDefinition = new RowDefinition { MaxHeight = 30 }
+                //CHTimer = new System.Timers.Timer(1000)
             };
+
+            //chaindata.CHTimer.Elapsed += (a, b) =>
+            //{
+
+            //};
+            //chaindata.CHTimer.Enabled = true;
             chaindata.Canvas.IsHitTestVisible = false;
             chaindata.Canvas.Background = Brushes.Transparent;
             var target = new TextBlock
@@ -537,15 +609,8 @@ namespace EQTool
             DragMove();
         }
 
-        private void PollUI(object sender, EventArgs e)
-        {
-
-        }
-
         protected override void OnClosing(CancelEventArgs e)
         {
-            UITimer?.Stop();
-            UITimer?.Dispose();
             SizeChanged -= Window_SizeChanged;
             StateChanged -= SpellWindow_StateChanged;
             LocationChanged -= Window_LocationChanged;
@@ -553,7 +618,17 @@ namespace EQTool
             {
                 logParser.EnrageEvent -= LogParser_EnrageEvent;
                 logParser.CHEvent -= LogParser_CHEvent;
+                logParser.LevEvent -= LogParser_LevEvent;
+                logParser.InvisEvent -= LogParser_InvisEvent;
+                logParser.FTEEvent -= LogParser_FTEEvent;
+                logParser.CharmBreakEvent -= LogParser_CharmBreakEvent;
+                logParser.FailedFeignEvent -= LogParser_FailedFeignEvent;
+                logParser.GroupInviteEvent -= LogParser_GroupInviteEvent;
+                logParser.StartCastingEvent -= LogParser_StartCastingEvent;
+                logParser.SpellWornOtherOffEvent -= LogParser_SpellWornOtherOffEvent;
+                logParser.ResistSpellEvent -= LogParser_ResistSpellEvent;
             }
+
             base.OnClosing(e);
         }
 
