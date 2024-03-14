@@ -1964,21 +1964,21 @@ namespace EQToolShared.Map
             // add customer timers here for PQ
             if (isProjectQ)
             {
-                //ZoneInfoMap["unrest"].RespawnTime = new TimeSpan(0, 8, 0);
-                //ZoneInfoMap["mistmoore"].RespawnTime = new TimeSpan(0, 8, 0);
-                //ZoneInfoMap["najena"].RespawnTime = new TimeSpan(0, 8, 0);
-                //ZoneInfoMap["blackburrow"].RespawnTime = new TimeSpan(0, 8, 0);
-                //ZoneInfoMap["gukbottom"].RespawnTime = new TimeSpan(0, 8, 0);
-                //ZoneInfoMap["guktop"].RespawnTime = new TimeSpan(0, 8, 0);
-                //ZoneInfoMap["highkeep"].RespawnTime = new TimeSpan(0, 8, 0);
-                //ZoneInfoMap["kedge"].RespawnTime = new TimeSpan(0, 8, 0);
-                //ZoneInfoMap["paw"].RespawnTime = new TimeSpan(0, 8, 0);
-                //ZoneInfoMap["permafrost"].RespawnTime = new TimeSpan(0, 8, 0);
-                //ZoneInfoMap["soldunga"].RespawnTime = new TimeSpan(0, 8, 0);
-                //ZoneInfoMap["soldungb"].RespawnTime = new TimeSpan(0, 8, 0);
-                //ZoneInfoMap["southkarana"].RespawnTime = new TimeSpan(0, 6, 0);
-                //ZoneInfoMap["runnyeye"].RespawnTime = new TimeSpan(0, 8, 0);
-                //ZoneInfoMap["cazicthule"].RespawnTime = new TimeSpan(0, 8, 0);
+                ZoneInfoMap["unrest"].RespawnTime = new TimeSpan(0, 8, 0);
+                ZoneInfoMap["mistmoore"].RespawnTime = new TimeSpan(0, 8, 0);
+                ZoneInfoMap["najena"].RespawnTime = new TimeSpan(0, 8, 0);
+                ZoneInfoMap["blackburrow"].RespawnTime = new TimeSpan(0, 8, 0);
+                ZoneInfoMap["gukbottom"].RespawnTime = new TimeSpan(0, 8, 0);
+                ZoneInfoMap["guktop"].RespawnTime = new TimeSpan(0, 8, 0);
+                ZoneInfoMap["highkeep"].RespawnTime = new TimeSpan(0, 8, 0);
+                ZoneInfoMap["kedge"].RespawnTime = new TimeSpan(0, 8, 0);
+                ZoneInfoMap["paw"].RespawnTime = new TimeSpan(0, 8, 0);
+                ZoneInfoMap["permafrost"].RespawnTime = new TimeSpan(0, 8, 0);
+                ZoneInfoMap["soldunga"].RespawnTime = new TimeSpan(0, 8, 0);
+                ZoneInfoMap["soldungb"].RespawnTime = new TimeSpan(0, 8, 0);
+                ZoneInfoMap["southkarana"].RespawnTime = new TimeSpan(0, 6, 0);
+                ZoneInfoMap["runnyeye"].RespawnTime = new TimeSpan(0, 8, 0);
+                ZoneInfoMap["cazicthule"].RespawnTime = new TimeSpan(0, 8, 0);
             }
 
             ZoneWhoMapper.Add("kael drakkal", "kael drakkel");

@@ -55,14 +55,14 @@ namespace EQToolShared.Map
             {
                 if (Dungeons.Contains(zone))
                 {
-                    if (ret.TotalSeconds >= RespawnReductionDungeonHigherBoundMin && ret.TotalSeconds <= RespawnReductionDungeonHigherBoundMax)
-                    {
-                        return TimeSpan.FromSeconds(RespawnReductionDungeonHigherBound);
-                    }
-                    else if (ret.TotalSeconds >= RespawnReductionDungeonLowerBoundMin && ret.TotalSeconds <= RespawnReductionDungeonLowerBoundMax)
-                    {
-                        return TimeSpan.FromSeconds(RespawnReductionDungeonLowerBound);
-                    }
+                    //if (ret.TotalSeconds >= RespawnReductionDungeonHigherBoundMin && ret.TotalSeconds <= RespawnReductionDungeonHigherBoundMax)
+                    //{
+                    //    return TimeSpan.FromSeconds(RespawnReductionDungeonHigherBound);
+                    //}
+                    //else if (ret.TotalSeconds >= RespawnReductionDungeonLowerBoundMin && ret.TotalSeconds <= RespawnReductionDungeonLowerBoundMax)
+                    //{
+                    //    return TimeSpan.FromSeconds(RespawnReductionDungeonLowerBound);
+                    //}
                 }
                 else
                 {
