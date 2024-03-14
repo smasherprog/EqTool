@@ -89,22 +89,10 @@ builder.Services.Configure<DiscordServiceOptions>(options =>
     using (var scope = a.CreateScope())
     {
         var dbcontext = scope.ServiceProvider.GetRequiredService<EQToolContext>();
-        var rename = dbcontext.EQitemsV2.FirstOrDefault(a => a.ItemName == "Herbalists Spade");
+        var rename = dbcontext.EQitemsV2.FirstOrDefault(a => a.ItemName == "Mana Robe");
         if (rename != null)
         {
-            rename.ItemName = "Herbalist's Spade";
-            dbcontext.SaveChanges();
-        }
-        rename = dbcontext.EQitemsV2.FirstOrDefault(a => a.ItemName == "Dizok Imperial Katana");
-        if (rename != null)
-        {
-            rename.ItemName = "Di'zok Imperial Katana";
-            dbcontext.SaveChanges();
-        }
-        rename = dbcontext.EQitemsV2.FirstOrDefault(a => a.ItemName == "Dizok Wristsnapper");
-        if (rename != null)
-        {
-            rename.ItemName = "Di'zok Wristsnapper";
+            rename.ItemName = "Manna Robe";
             dbcontext.SaveChanges();
         }
 
