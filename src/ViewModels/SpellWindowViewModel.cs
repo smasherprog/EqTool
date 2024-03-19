@@ -315,27 +315,21 @@ namespace EQTool.ViewModels
                     {
                         _ = SpellList.Remove(s);
                     }
-                    else if (!this.settings.ShowMultipleRandomRolls)
-                    {
-                        return;
-                    }
                 }
 
                 var spellduration = match.DurationInSeconds;
                 var spellicon = spells.AllSpells.FirstOrDefault(a => a.name == match.SpellNameIcon);
+                var rollorder = 0;
                 if (match.SpellType == SpellTypes.RandomRoll)
                 {
                     var rollsingroup = SpellList.Where(a => a.TargetName == match.TargetName).OrderByDescending(a => a.Roll).ToList();
-                    var maxrolls = 5;
-                    if (this.settings.ShowMultipleRandomRolls)
-                    {
-                        maxrolls = 10;
-                    }
-                    if (rollsingroup.Count >= maxrolls)
-                    {
-                        _ = SpellList.Remove(rollsingroup.LastOrDefault());
-                        rollsingroup = SpellList.Where(a => a.TargetName == match.TargetName).ToList();
-                    }
+                    rollorder = rollsingroup.Where(a => a.SpellName == match.Name).Select(a => (int?)a.RollOrder).Max() ?? 0;
+                    //var maxrolls = 10;
+                    //if (rollsingroup.Count >= maxrolls)
+                    //{
+                    //    _ = SpellList.Remove(rollsingroup.LastOrDefault());
+                    //    rollsingroup = SpellList.Where(a => a.TargetName == match.TargetName).ToList();
+                    //}
                     foreach (var item in rollsingroup)
                     {
                         item.TimerEndDateTime = DateTime.Now.AddSeconds(spellduration);
@@ -354,7 +348,8 @@ namespace EQTool.ViewModels
                     Classes = match.Classes,
                     GuessedSpell = false,
                     PersistentSpell = false,
-                    Roll = match.Roll
+                    Roll = match.Roll,
+                    RollOrder = rollorder + 1
                 });
             });
         }

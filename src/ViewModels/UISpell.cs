@@ -77,11 +77,27 @@ namespace EQTool.ViewModels
             {
                 if (_Counter.HasValue)
                 {
-                    return " Count --> " + _Counter.Value;
+                    return " Count --> ";
                 }
                 else if (Roll >= 0)
                 {
-                    return " Roll --> " + Roll.ToString();
+                    return $" (#{RollOrder}) Roll --> ";
+                }
+                return string.Empty;
+            }
+        }
+
+        public string SpellExtraData2
+        {
+            get
+            {
+                if (_Counter.HasValue)
+                {
+                    return _Counter.Value.ToString();
+                }
+                else if (Roll >= 0)
+                {
+                    return Roll.ToString();
                 }
                 return string.Empty;
             }
@@ -205,15 +221,15 @@ namespace EQTool.ViewModels
                 var st = "";
                 if (_SecondsLeftOnSpell.Hours > 0)
                 {
-                    st += _SecondsLeftOnSpell.Hours + " hr ";
+                    st += _SecondsLeftOnSpell.Hours + "h ";
                 }
                 if (_SecondsLeftOnSpell.Minutes > 0)
                 {
-                    st += _SecondsLeftOnSpell.Minutes + " m ";
+                    st += _SecondsLeftOnSpell.Minutes + "m ";
                 }
                 if (_SecondsLeftOnSpell.Seconds > 0)
                 {
-                    st += _SecondsLeftOnSpell.Seconds + " s";
+                    st += _SecondsLeftOnSpell.Seconds + "s";
                 }
                 return st;
 
@@ -242,6 +258,7 @@ namespace EQTool.ViewModels
         }
         public string TargetName { get; set; }
         public int Roll { get; set; } = -1;
+        public int RollOrder { get; set; } = 0;
         public bool IsNPC { get; set; }
 
         private SpellTypes _SpellType = 0;

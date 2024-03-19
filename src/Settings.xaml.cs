@@ -350,17 +350,19 @@ namespace EQTool
             {
                 try
                 {
+                    var random = new Random();
+                    var r = random.Next(0, 333);
                     PushLog("**A Magic Die is rolled by Whitewitch.");
-                    PushLog("**It could have been any number from 0 to 333, but this time it turned up a 99.");
-
+                    PushLog($"**It could have been any number from 0 to 333, but this time it turned up a {r}.");
+                    r = random.Next(0, 333);
                     PushLog("**A Magic Die is rolled by Huntor.");
-                    PushLog("**It could have been any number from 0 to 333, but this time it turned up a 105.");
-
+                    PushLog($"**It could have been any number from 0 to 333, but this time it turned up a {r}.");
+                    r = random.Next(0, 333);
                     PushLog("**A Magic Die is rolled by Vasanle.");
-                    PushLog("**It could have been any number from 0 to 333, but this time it turned up a 100.");
-
+                    PushLog($"**It could have been any number from 0 to 333, but this time it turned up a {r}.");
+                    r = random.Next(0, 333);
                     PushLog("**A Magic Die is rolled by Sanare.");
-                    PushLog("**It could have been any number from 0 to 333, but this time it turned up a 50.");
+                    PushLog($"**It could have been any number from 0 to 333, but this time it turned up a {r}.");
 
                     appDispatcher.DispatchUI(() => { testbutton.IsEnabled = true; });
                 }

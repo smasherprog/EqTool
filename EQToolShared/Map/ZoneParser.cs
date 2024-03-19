@@ -1694,7 +1694,7 @@ namespace EQToolShared.Map
             {
                 Name = "unrest",
                 ShowAllMapLevels = false,
-                ZoneLevelHeight = 10,
+                ZoneLevelHeight = 4,
                 NotableNPCs = new List<string>() { "Garanel Rucksif", "a priest of najena", "Khrix Fritchoff", "Khrix's Abomination", "Torklar Battlemaster", "Shadowpincer", "reclusive ghoul magus", },
                 RespawnTime = new TimeSpan(0, 22, 0)
             });

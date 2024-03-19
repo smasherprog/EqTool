@@ -41,26 +41,24 @@ namespace EQTool
 
             UpdateMessages.Add(new UpdateMessageData
             {
-                DateTime = new DateTime(2024, 3, 10),
+                DateTime = new DateTime(2024, 3, 17),
                 Message =
-                $"* Decreased the time taken to apply subsequent updates!. This update will take the normal amount of time, but the next should be much faster!"
-            });
-            UpdateMessages.Add(new UpdateMessageData
-            {
-                DateTime = new DateTime(2024, 3, 9),
-                Message =
-                $"* Added support to show allow multiple rolls to show up. When this is set, the max number of rolls that will show up is 10. {Environment.NewLine}" +
-                $"* Added support for Audio/Visual alerts for Root breaks and spell resists!"
-            });
-            UpdateMessages.Add(new UpdateMessageData
-            {
-                DateTime = new DateTime(2024, 3, 3),
-                Message =
-                $"* Fixed various errors which were occurring in the background.{Environment.NewLine}" +
-                $"* Fixed CH CHain test button when TAG filter is present.{Environment.NewLine}" +
-                $"* Fixed issue where you needed to use /loc to enable server-wide faction pull notices."
+                $"* Updated random rolls to always show duplicate rolls, but include the ROLL ORDER.{Environment.NewLine}" +
+                $"* Below is what is going to go out soon. In below example the winner is Vasanle with a 292. The (#NUMBER) next to the name is the ORDER of that persons roll.{Environment.NewLine}  So, Sanare is number 1 on the FOURTH roll, so it shouldnt count. Whitewhich is in second place, but its the 5th roll so, it shouldnt count.",
+                Image = "pack://application:,,,/update1.png",
+                ImageVisibility = Visibility.Visible
             });
 
+            //UpdateMessages.Add(new UpdateMessageData
+            //{
+            //    DateTime = new DateTime(2024, 2, 25),
+            //    Message =
+            //    $"* Fixed slain targets not showing up in timers.{Environment.NewLine}" +
+            //    $"* Fixed Faction pull server notice.{Environment.NewLine}" +
+            //    $"* Added Random tracker which will show the TOP 5 rolls automatically. Check out the image below for an example.",
+            //    Image = "pack://application:,,,/update1.png",
+            //    ImageVisibility = Visibility.Visible
+            //});
         }
     }
 }
