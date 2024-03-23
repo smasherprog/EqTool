@@ -353,6 +353,12 @@ namespace EQTool.Services
                     return;
                 }
 
+                if (message == "The screams fade away.")
+                {
+                    SpellWornOtherOffEvent?.Invoke(this, new SpellWornOffOtherEventArgs { SpellName = "Soul Consumption" });
+                    return;
+                }
+
                 var matchedspell = spellLogParse.MatchSpell(message);
                 if (matchedspell != null)
                 {

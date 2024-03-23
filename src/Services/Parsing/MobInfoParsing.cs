@@ -9,11 +9,47 @@ namespace EQTool.Services.Parsing
     {
         public static List<PricingUriViewModel> ParseKnownLoot(List<string> splits)
         {
-            return Parse("known_loot", splits).Select(x => new PricingUriViewModel
+            return ParseLoot("known_loot", splits).Select(x => new PricingUriViewModel
             {
                 Name = x.Name,
                 Url = x.Url,
             }).ToList();
+        }
+
+        private static List<TestUriViewModel> ParseLoot(string name, List<string> splits)
+        {
+            var ret = new List<TestUriViewModel>();
+            var specials = StripHTML(GetValue(name, splits)).Split(new[] { '\n' }, System.StringSplitOptions.RemoveEmptyEntries).ToList();
+            foreach (var item in specials.Where(a => !string.IsNullOrWhiteSpace(a)))
+            {
+                if (item.ToLower().Trim().Contains("casts:"))
+                {
+                    continue;
+                }
+                var indexof = item.IndexOf("{{");
+                if (indexof != -1)
+                {
+                    var indexofend = item.IndexOf("}}");
+                    if (indexofend != -1)
+                    {
+                        var model = new TestUriViewModel();
+                        var diff = indexofend - (indexof + 3);
+                        model.Name = item.Substring(indexof + 3, diff).Trim();
+                        model.Url = $"https://wiki.project1999.com/" + model.Name.Replace(' ', '_');
+                        ret.Add(model);
+                    }
+                }
+                else
+                {
+                    ret.Add(new TestUriViewModel
+                    {
+                        Url = string.Empty,
+                        Name = item
+                    });
+                }
+            }
+
+            return ret;
         }
 
         private static List<TestUriViewModel> Parse(string name, List<string> splits)

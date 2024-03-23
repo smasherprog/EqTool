@@ -43,6 +43,14 @@ namespace EQTool
             {
                 DateTime = new DateTime(2024, 3, 17),
                 Message =
+             $"* Fixed SK epic from adding wrong message in triggers window.{Environment.NewLine}" +
+             $"* Fixed loot parsing from showing up in window broken for items with commas in their name.",
+
+            });
+            UpdateMessages.Add(new UpdateMessageData
+            {
+                DateTime = new DateTime(2024, 3, 17),
+                Message =
                 $"* Updated random rolls to always show duplicate rolls, but include the ROLL ORDER.{Environment.NewLine}" +
                 $"* Below is what is going to go out soon. In below example the winner is Vasanle with a 292. The (#NUMBER) next to the name is the ORDER of that persons roll.{Environment.NewLine}  So, Sanare is number 1 on the FOURTH roll, so it shouldnt count. Whitewhich is in second place, but its the 5th roll so, it shouldnt count.",
                 Image = "pack://application:,,,/update1.png",

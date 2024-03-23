@@ -53,6 +53,7 @@ namespace EQTool.Services.Spells.Log
                     TotalSecondsOverride = 6 * 60
                 };
             }
+
             if (message.StartsWith(EQSpells.YouSpellisInterupted))
             {
                 activePlayer.UserCastingSpell = null;
