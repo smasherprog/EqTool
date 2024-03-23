@@ -41,7 +41,7 @@ namespace EQTool
 
             UpdateMessages.Add(new UpdateMessageData
             {
-                DateTime = new DateTime(2024, 3, 17),
+                DateTime = new DateTime(2024, 3, 23),
                 Message =
              $"* Fixed SK epic from adding wrong message in triggers window.{Environment.NewLine}" +
              $"* Fixed loot parsing from showing up in window broken for items with commas in their name.",
