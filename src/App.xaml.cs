@@ -11,6 +11,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -361,6 +362,26 @@ namespace EQTool
             container.Resolve<PigParseApi>().SendQuake();
         }
 
+        [DllImport("user32.dll")]
+        static extern bool GetLastInputInfo(ref LASTINPUTINFO plii);
+
+        [StructLayout(LayoutKind.Sequential)]
+        struct LASTINPUTINFO
+        {
+            public uint cbSize;
+            public int dwTime;
+        }
+        public static TimeSpan GetIdleTime()
+        {
+            LASTINPUTINFO lastInPut = new LASTINPUTINFO();
+            lastInPut.cbSize = (uint)System.Runtime.InteropServices.Marshal.SizeOf(lastInPut);
+            if (GetLastInputInfo(ref lastInPut))
+            {
+                return TimeSpan.FromMilliseconds(Environment.TickCount - lastInPut.dwTime);
+            }
+            return TimeSpan.FromMinutes(20);
+        }
+
         private bool updatecalled = false;
         private void UITimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
@@ -374,16 +395,17 @@ namespace EQTool
                 updatecalled = true;
                 try
                 {
+                    var idletime = GetIdleTime();
                     var spellstuff = container.Resolve<SpellWindowViewModel>();
                     var logParser = container.Resolve<LogParser>();
                     if (spellstuff != null)
                     {
-                        if (spellstuff.SpellList.Count() < 2 && (DateTime.UtcNow - logParser.LastYouActivity).TotalMinutes > 10)
+                        if (spellstuff.SpellList.Count() < 2 && (DateTime.UtcNow - logParser.LastYouActivity).TotalMinutes > 10 && idletime.TotalMinutes > 10)
                         {
                             new UpdateService().CheckForUpdates(Version);
                         }
                     }
-                    else if ((DateTime.UtcNow - logParser.LastYouActivity).TotalMinutes > 10)
+                    else if ((DateTime.UtcNow - logParser.LastYouActivity).TotalMinutes > 10 && idletime.TotalMinutes > 10)
                     {
                         new UpdateService().CheckForUpdates(Version);
                     }
