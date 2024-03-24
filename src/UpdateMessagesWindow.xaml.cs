@@ -21,7 +21,6 @@ namespace EQTool
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
-
     }
 
     public partial class UpdateMessagesWindow : Window
