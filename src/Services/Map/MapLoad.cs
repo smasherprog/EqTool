@@ -51,7 +51,7 @@ namespace EQTool.Services
                 }
             }
             var oldcachedmaps = Directory.GetDirectories(System.IO.Directory.GetCurrentDirectory(), "cachedmaps*");
-            var version = "cachedmaps_1";
+            var version = "cachedmaps_2";
             foreach (var item in oldcachedmaps)
             {
                 if (!item.Contains(version))
@@ -125,8 +125,6 @@ namespace EQTool.Services
             public Point3D[] Points { get; set; }
 
             public Colour Color { get; set; }
-
-            public EQMapColor ThemeColors { get; set; }
         }
 
         public enum LabelSize

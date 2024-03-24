@@ -197,24 +197,26 @@ namespace EQTool.ViewModels
                     Debug.WriteLine($"Loading: {zone}");
                     MapOffset = map.Offset;
                     var linethickness = MapViewModelService.MapLinethickness(this.AABB);
-
-                    foreach (var group in map.Lines)
+                    var linegroups = map.Lines.GroupBy(a => a.Color);
+                    foreach (var group in linegroups)
                     {
-                        var c = EQMapColor.GetThemedColors(group.Color);
-                        group.ThemeColors = c;
+                        var c = EQMapColor.GetThemedColors(group.Key);
                         var colorstuff = new SolidColorBrush(c.DarkColor);
-                        var l = new Line
+                        foreach (var item in group)
                         {
-                            Tag = group,
-                            X1 = group.Points[0].X,
-                            Y1 = group.Points[0].Y,
-                            X2 = group.Points[1].X,
-                            Y2 = group.Points[1].Y,
-                            StrokeThickness = linethickness,
-                            Stroke = colorstuff,
-                            RenderTransform = Transform
-                        };
-                        _ = canvas.Children.Add(l);
+                            var l = new Line
+                            {
+                                Tag = item,
+                                X1 = item.Points[0].X,
+                                Y1 = item.Points[0].Y,
+                                X2 = item.Points[1].X,
+                                Y2 = item.Points[1].Y,
+                                StrokeThickness = linethickness,
+                                Stroke = colorstuff,
+                                RenderTransform = Transform
+                            };
+                            _ = canvas.Children.Add(l);
+                        }
                     }
 
                     Debug.WriteLine($"Labels: {map.Labels.Count}");

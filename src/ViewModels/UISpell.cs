@@ -113,6 +113,7 @@ namespace EQTool.ViewModels
                 _Counter = value;
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(SpellExtraData));
+                OnPropertyChanged(nameof(SpellExtraData2));
             }
         }
 
