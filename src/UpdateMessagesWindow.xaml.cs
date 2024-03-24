@@ -43,7 +43,7 @@ namespace EQTool
             {
                 DateTime = new DateTime(2024, 3, 24),
                 Message = $"* Refactored window code. {Environment.NewLine}" +
-                    $"* Fixed overlay window so it is closed, the setting will be saved."
+                    $"* Fixed overlay window so if is closed, the setting will be saved."
             });
 
             UpdateMessages.Add(new UpdateMessageData
