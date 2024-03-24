@@ -41,11 +41,40 @@ namespace EQTool.Services.Parsing
                 }
                 else
                 {
-                    ret.Add(new TestUriViewModel
+                    indexof = item.IndexOf("[[");
+                    if (indexof != -1)
                     {
-                        Url = string.Empty,
-                        Name = item
-                    });
+                        var indexofend = item.IndexOf("|");
+                        if (indexofend != -1)
+                        {
+                            var model = new TestUriViewModel();
+                            var diff = indexofend - (indexof + 2);
+                            model.Name = item.Substring(indexof + 2, diff).Trim();
+                            model.Url = $"https://wiki.project1999.com/" + model.Name.Replace(' ', '_');
+                            ret.Add(model);
+                        }
+                        else
+                        {
+                            indexofend = item.IndexOf("]]");
+                            if (indexofend != -1)
+                            {
+                                var model = new TestUriViewModel();
+                                var diff = indexofend - (indexof + 2);
+                                model.Name = item.Substring(indexof + 2, diff).Trim();
+                                model.Url = $"https://wiki.project1999.com/" + model.Name.Replace(' ', '_');
+                                model.Name += " " + item.Substring(indexofend + 2);
+                                ret.Add(model);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        ret.Add(new TestUriViewModel
+                        {
+                            Url = string.Empty,
+                            Name = item
+                        });
+                    }
                 }
             }
 
