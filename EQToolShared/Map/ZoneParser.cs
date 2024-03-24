@@ -1195,7 +1195,16 @@ namespace EQToolShared.Map
                 ShowAllMapLevels = true,
                 ZoneLevelHeight = 10,
                 NotableNPCs = new List<string>() { "", },
-                RespawnTime = new TimeSpan(0, 24, 0)
+                RespawnTime = new TimeSpan(0, 24, 0),
+                NpcSpawnTimes = new List<NpcSpawnTime>()
+                 {
+                      new NpcSpawnTime
+                      {
+                            Name = "Nallar Q`Tentu",
+                            RespawnTime =  new TimeSpan(0, 6, 40)
+                      }
+                 },
+
             });
             ZoneInfoMap.Add("northkarana", new ZoneInfo
             {
