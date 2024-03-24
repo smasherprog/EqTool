@@ -1,4 +1,4 @@
-﻿<Window x:Class="EQTool.SpellWindow"
+﻿<local:BaseSaveStateWindow x:Class="EQTool.SpellWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
@@ -119,4 +119,4 @@
             </ListView>
         </Grid>
     </Border>
-</Window>
+</local:BaseSaveStateWindow>

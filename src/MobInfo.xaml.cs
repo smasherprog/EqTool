@@ -7,46 +7,32 @@ using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Windows;
-using System.Windows.Input;
 using System.Windows.Navigation;
-using System.Windows.Threading;
 
 namespace EQTool
 {
     /// <summary>
     /// Interaction logic for MobInfo.xaml
     /// </summary>
-    public partial class MobInfo : Window
+    public partial class MobInfo : BaseSaveStateWindow
     {
         private readonly LogParser logParser;
         private readonly ViewModels.MobInfoViewModel mobInfoViewModel;
-        private readonly EQToolSettings settings;
-        private readonly EQToolSettingsLoad toolSettingsLoad;
         private readonly WikiApi wikiApi;
         private readonly PigParseApi pigParseApi;
         private readonly ActivePlayer activePlayer;
-        private readonly DispatcherTimer timer = new DispatcherTimer
-        {
-            Interval = new TimeSpan(0, 0, 0, 0, 500),
-            IsEnabled = false
-        };
-
         public MobInfo(ActivePlayer activePlayer, PigParseApi pigParseApi, WikiApi wikiApi, LogParser logParser, EQToolSettings settings, EQToolSettingsLoad toolSettingsLoad, LoggingService loggingService)
+            : base(settings.MobWindowState, toolSettingsLoad, settings)
         {
             loggingService.Log(string.Empty, EventType.OpenMobInfo, activePlayer?.Player?.Server);
             this.activePlayer = activePlayer;
             this.pigParseApi = pigParseApi;
             this.wikiApi = wikiApi;
-            this.settings = settings;
-            this.toolSettingsLoad = toolSettingsLoad;
             this.logParser = logParser;
-            this.logParser.ConEvent += LogParser_ConEvent;
             DataContext = mobInfoViewModel = new ViewModels.MobInfoViewModel();
             InitializeComponent();
-            WindowExtensions.AdjustWindow(settings.MobWindowState, this);
-            timer.Tick += timer_Tick;
-            LocationChanged += Window_LocationChanged;
-            settings.MobWindowState.Closed = false;
+            base.Init();
+            this.logParser.ConEvent += LogParser_ConEvent;
         }
 
         private void LogParser_ConEvent(object sender, LogParser.ConEventArgs e)
@@ -83,46 +69,14 @@ namespace EQTool
                 }
             }
         }
-        void timer_Tick(object sender, EventArgs e)
-        {
-            timer.IsEnabled = false;
-            SaveState();
-        }
-
-        private void DebounceSave()
-        {
-            timer.IsEnabled = true;
-            timer.Stop();
-            timer.Start();
-        }
 
         protected override void OnClosing(CancelEventArgs e)
         {
-            timer?.Stop();
             if (logParser != null)
             {
                 logParser.ConEvent -= LogParser_ConEvent;
             }
-            LocationChanged -= Window_LocationChanged;
             base.OnClosing(e);
-        }
-        private void SaveState()
-        {
-            Debug.WriteLine("Saving MobInfo window State");
-            WindowExtensions.SaveWindowState(settings.MobWindowState, this);
-            toolSettingsLoad.Save(settings);
-        }
-
-        private void CloseWindow(object sender, RoutedEventArgs e)
-        {
-            settings.MobWindowState.Closed = true;
-            SaveState();
-            Close();
-        }
-
-        private void Window_LocationChanged(object sender, EventArgs e)
-        {
-            DebounceSave();
         }
 
         private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
@@ -134,41 +88,6 @@ namespace EQTool
         private void Hyperlink_RequestNavigatebutton(object sender, RoutedEventArgs args)
         {
             _ = Process.Start(new ProcessStartInfo(mobInfoViewModel.Url));
-        }
-
-        public void DragWindow(object sender, MouseButtonEventArgs args)
-        {
-            DragMove();
-        }
-
-        private void MinimizeWindow(object sender, RoutedEventArgs e)
-        {
-            WindowState = System.Windows.WindowState.Minimized;
-        }
-
-        private void MaximizeWindow(object sender, RoutedEventArgs e)
-        {
-            WindowState = WindowState == System.Windows.WindowState.Maximized ? System.Windows.WindowState.Normal : System.Windows.WindowState.Maximized;
-        }
-
-        private void opendps(object sender, RoutedEventArgs e)
-        {
-            (App.Current as App).OpenDPSWindow();
-        }
-
-        private void opensettings(object sender, RoutedEventArgs e)
-        {
-            (App.Current as App).OpenSettingsWindow();
-        }
-
-        private void openmap(object sender, RoutedEventArgs e)
-        {
-            (App.Current as App).OpenMapWindow();
-        }
-
-        private void openspells(object sender, RoutedEventArgs e)
-        {
-            (App.Current as App).OpenSpellsWindow();
         }
     }
 }

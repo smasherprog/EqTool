@@ -41,11 +41,17 @@ namespace EQTool
 
             UpdateMessages.Add(new UpdateMessageData
             {
+                DateTime = new DateTime(2024, 3, 24),
+                Message = $"* Refactored window code. {Environment.NewLine}" +
+                    $"* Fixed overlay window so it is closed, the setting will be saved."
+            });
+
+            UpdateMessages.Add(new UpdateMessageData
+            {
                 DateTime = new DateTime(2024, 3, 23),
                 Message = $"* Fixed counters which stopped working a few days ago. {Environment.NewLine}" +
                 $"* Fixed SK epic from adding wrong message in triggers window.{Environment.NewLine}" +
-             $"* Fixed loot parsing from showing up in window broken for items with commas in their name.",
-
+                $"* Fixed loot parsing from showing up in window broken for items with commas in their name."
             });
             UpdateMessages.Add(new UpdateMessageData
             {

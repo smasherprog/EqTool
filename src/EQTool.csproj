@@ -428,7 +428,6 @@
     <Compile Include="Services\Spells\SpellUIExtentions.cs" />
     <Compile Include="Services\PigParseApi.cs" />
     <Compile Include="Services\WikiApi.cs" />
-    <Compile Include="Services\WindowExtensions.cs" />
     <Compile Include="Services\WindowBounds.cs" />
     <Compile Include="Services\LogParser.cs" />
     <Compile Include="Services\Spells\Log\LogCustomTimer.cs" />
@@ -481,6 +480,7 @@
     <Compile Include="UpdateMessagesWindow.xaml.cs">
       <DependentUpon>UpdateMessagesWindow.xaml</DependentUpon>
     </Compile>
+    <Compile Include="BaseSaveStateWindow.cs" />
     <Page Include="DPSMeter.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -1083,6 +1083,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="UpdateImages\" />
+    <Folder Include="Windows\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="AfterResolveReferences">

@@ -115,6 +115,20 @@ namespace EQTool.Models
             set => _MobWindowState = value ?? new WindowState();
         }
 
+        private WindowState _SettingsWindowState;
+        public WindowState SettingsWindowState
+        {
+            get
+            {
+                if (_SettingsWindowState == null)
+                {
+                    _SettingsWindowState = new WindowState();
+                }
+                return _SettingsWindowState;
+            }
+            set => _SettingsWindowState = value ?? new WindowState();
+        }
+
         public List<PlayerInfo> Players { get; set; } = new List<PlayerInfo>();
 
         public bool BestGuessSpells { get; set; }

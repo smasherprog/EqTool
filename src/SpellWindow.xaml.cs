@@ -7,31 +7,21 @@ using EQToolShared.HubModels;
 using EQToolShared.Map;
 using System;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
-using System.Windows.Input;
-using System.Windows.Threading;
 
 namespace EQTool
 {
-    public partial class SpellWindow : Window
+    public partial class SpellWindow : BaseSaveStateWindow
     {
         private readonly System.Timers.Timer UITimer;
         private readonly SpellWindowViewModel spellWindowViewModel;
         private readonly LogParser logParser;
-        private readonly EQToolSettings settings;
-        private readonly EQToolSettingsLoad toolSettingsLoad;
         private readonly ActivePlayer activePlayer;
         private readonly TimersService timersService;
         private readonly PlayerTrackerService playerTrackerService;
-        private readonly DispatcherTimer timer = new DispatcherTimer
-        {
-            Interval = new TimeSpan(0, 0, 0, 0, 500),
-            IsEnabled = false
-        };
 
         public SpellWindow(
             PlayerTrackerService playerTrackerService,
@@ -41,14 +31,21 @@ namespace EQTool
             LogParser logParser,
             EQToolSettingsLoad toolSettingsLoad,
             ActivePlayer activePlayer,
-            LoggingService loggingService)
+            LoggingService loggingService) : base(settings.SpellWindowState, toolSettingsLoad, settings)
         {
             loggingService.Log(string.Empty, EventType.OpenMap, activePlayer?.Player?.Server);
             this.playerTrackerService = playerTrackerService;
             this.timersService = timersService;
-            this.settings = settings;
             this.logParser = logParser;
             this.activePlayer = activePlayer;
+            spellWindowViewModel.SpellList = new System.Collections.ObjectModel.ObservableCollection<UISpell>();
+            DataContext = this.spellWindowViewModel = spellWindowViewModel;
+            if (this.activePlayer.Player != null)
+            {
+                spellWindowViewModel.AddSavedYouSpells(this.activePlayer.Player.YouSpells);
+            }
+            InitializeComponent();
+            base.Init();
             this.logParser.SpellWornOtherOffEvent += LogParser_SpellWornOtherOffEvent;
             this.logParser.CampEvent += LogParser_CampEvent;
             this.logParser.EnteredWorldEvent += LogParser_EnteredWorldEvent;
@@ -60,14 +57,6 @@ namespace EQTool
             this.logParser.POFDTEvent += LogParser_POFDTEvent;
             this.logParser.ResistSpellEvent += LogParser_ResistSpellEvent;
             this.logParser.RandomRollEvent += LogParser_RandomRollEvent;
-            spellWindowViewModel.SpellList = new System.Collections.ObjectModel.ObservableCollection<UISpell>();
-            DataContext = this.spellWindowViewModel = spellWindowViewModel;
-            if (this.activePlayer.Player != null)
-            {
-                spellWindowViewModel.AddSavedYouSpells(this.activePlayer.Player.YouSpells);
-            }
-            InitializeComponent();
-            WindowExtensions.AdjustWindow(settings.SpellWindowState, this);
             UITimer = new System.Timers.Timer(1000);
             UITimer.Elapsed += PollUI;
             UITimer.Enabled = true;
@@ -80,12 +69,6 @@ namespace EQTool
             view.SortDescriptions.Add(new SortDescription(nameof(UISpell.SecondsLeftOnSpell), ListSortDirection.Descending));
             view.IsLiveSorting = true;
             view.LiveSortingProperties.Add(nameof(UISpell.SecondsLeftOnSpell));
-            this.toolSettingsLoad = toolSettingsLoad;
-            timer.Tick += timer_Tick;
-            SizeChanged += DPSMeter_SizeChanged;
-            StateChanged += SpellWindow_StateChanged;
-            LocationChanged += DPSMeter_LocationChanged;
-            settings.SpellWindowState.Closed = false;
         }
 
         private void LogParser_RandomRollEvent(object sender, LogParser.RandomRollEventArgs e)
@@ -129,7 +112,7 @@ namespace EQTool
         private void LogParser_CampEvent(object sender, LogParser.CampEventArgs e)
         {
             TrySaveYouSpellData();
-            toolSettingsLoad.Save(settings);
+            base.SaveState();
             spellWindowViewModel.ClearYouSpells();
         }
 
@@ -194,26 +177,10 @@ namespace EQTool
             spellWindowViewModel.TryAddCustom(e.CustomTimer);
         }
 
-        void timer_Tick(object sender, EventArgs e)
-        {
-            timer.IsEnabled = false;
-            SaveState();
-        }
-
-        private void DebounceSave()
-        {
-            timer.IsEnabled = true;
-            timer.Stop();
-            timer.Start();
-        }
-
         protected override void OnClosing(CancelEventArgs e)
         {
             UITimer?.Stop();
             UITimer?.Dispose();
-            SizeChanged -= DPSMeter_SizeChanged;
-            StateChanged -= SpellWindow_StateChanged;
-            LocationChanged -= DPSMeter_LocationChanged;
             if (logParser != null)
             {
                 logParser.SpellWornOtherOffEvent -= LogParser_SpellWornOtherOffEvent;
@@ -248,75 +215,9 @@ namespace EQTool
             }
         }
 
-        private void SaveState()
-        {
-            if (settings != null)
-            {
-                Debug.WriteLine("Saving Triggers window State");
-                TrySaveYouSpellData();
-                WindowExtensions.SaveWindowState(settings.SpellWindowState, this);
-                toolSettingsLoad.Save(settings);
-            }
-        }
-
-        private void CloseWindow(object sender, RoutedEventArgs e)
-        {
-            settings.SpellWindowState.Closed = true;
-            SaveState();
-            Close();
-        }
-
-        private void SpellWindow_StateChanged(object sender, EventArgs e)
-        {
-            DebounceSave();
-        }
-
-        private void DPSMeter_LocationChanged(object sender, EventArgs e)
-        {
-            DebounceSave();
-        }
-
-        private void DPSMeter_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            DebounceSave();
-        }
-
         private void PollUI(object sender, EventArgs e)
         {
             spellWindowViewModel.UpdateSpells();
-        }
-
-        public void DragWindow(object sender, MouseButtonEventArgs args)
-        {
-            DragMove();
-        }
-
-        private void MinimizeWindow(object sender, RoutedEventArgs e)
-        {
-            WindowState = System.Windows.WindowState.Minimized;
-        }
-
-        private void MaximizeWindow(object sender, RoutedEventArgs e)
-        {
-            WindowState = WindowState == System.Windows.WindowState.Maximized ? System.Windows.WindowState.Normal : System.Windows.WindowState.Maximized;
-        }
-
-        private void opendps(object sender, RoutedEventArgs e)
-        {
-            (App.Current as App).OpenDPSWindow();
-        }
-
-        private void opensettings(object sender, RoutedEventArgs e)
-        {
-            (App.Current as App).OpenSettingsWindow();
-        }
-        private void openmap(object sender, RoutedEventArgs e)
-        {
-            (App.Current as App).OpenMapWindow();
-        }
-        private void openmobinfo(object sender, RoutedEventArgs e)
-        {
-            (App.Current as App).OpenMobInfoWindow();
         }
 
         private void RemoveSingleItem(object sender, RoutedEventArgs e)

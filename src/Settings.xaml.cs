@@ -48,7 +48,7 @@ namespace EQTool
         }
     }
 
-    public partial class Settings : Window
+    public partial class Settings : BaseSaveStateWindow
     {
         private readonly SettingsWindowViewModel SettingsWindowData;
         private readonly EQToolSettings settings;
@@ -71,7 +71,7 @@ namespace EQTool
             EQToolSettings settings,
             EQToolSettingsLoad toolSettingsLoad,
             SettingsWindowViewModel settingsWindowData,
-            SpellWindowViewModel spellWindowViewModel)
+            SpellWindowViewModel spellWindowViewModel) : base(settings.SettingsWindowState, toolSettingsLoad, settings)
         {
             this.signalrPlayerHub = signalrPlayerHub;
             this.logParser = logParser;
@@ -84,8 +84,8 @@ namespace EQTool
             this.toolSettingsLoad = toolSettingsLoad;
             DataContext = SettingsWindowData = settingsWindowData;
             SettingsWindowData.EqPath = this.settings.DefaultEqDirectory;
-            Topmost = true;
             InitializeComponent();
+            base.Init();
             TryCheckLoggingEnabled();
             try
             {
@@ -99,17 +99,12 @@ namespace EQTool
 #if DEBUG
             this.DebugTab.Visibility = Visibility.Visible;
 #endif
+
         }
 
         private void SaveConfig()
         {
             toolSettingsLoad.Save(settings);
-        }
-
-        protected override void OnClosing(CancelEventArgs e)
-        {
-            SaveConfig();
-            base.OnClosing(e);
         }
 
         private void TryUpdateSettings()

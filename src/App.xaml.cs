@@ -54,7 +54,7 @@ namespace EQTool
             }
         }
 
-        public static List<Window> WindowList = new List<Window>();
+        public static List<BaseSaveStateWindow> WindowList = new List<BaseSaveStateWindow>();
 #if QUARM
         private const string programName = "pqtool";
 #else
@@ -493,7 +493,7 @@ namespace EQTool
             });
         }
 
-        private void ToggleWindow<T>(System.Windows.Forms.MenuItem m) where T : Window
+        private void ToggleWindow<T>(System.Windows.Forms.MenuItem m) where T : BaseSaveStateWindow
         {
             var w = WindowList.FirstOrDefault(a => a.GetType() == typeof(T));
             m.Checked = !m.Checked;
@@ -518,12 +518,12 @@ namespace EQTool
             }
             else
             {
-                w?.Close();
+                w?.CloseWindow();
                 _ = WindowList.Remove(w);
             }
         }
 
-        private void OpenWindow<T>(System.Windows.Forms.MenuItem m) where T : Window
+        private void OpenWindow<T>(System.Windows.Forms.MenuItem m) where T : BaseSaveStateWindow
         {
             var w = WindowList.FirstOrDefault(a => a.GetType() == typeof(T));
             if (w != null)

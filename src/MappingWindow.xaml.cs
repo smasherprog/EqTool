@@ -5,32 +5,20 @@ using EQToolShared.Enums;
 using EQToolShared.Map;
 using System;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Threading;
 
 namespace EQTool
 {
-    /// <summary>
-    /// Interaction logic for MappingWindow.xaml
-    /// </summary>
-    public partial class MappingWindow : Window
+    public partial class MappingWindow : BaseSaveStateWindow
     {
         private readonly LogParser logParser;
         private readonly MapViewModel mapViewModel;
-        private readonly EQToolSettings settings;
-        private readonly EQToolSettingsLoad toolSettingsLoad;
         private readonly ActivePlayer activePlayer;
         private readonly PlayerTrackerService playerTrackerService;
         private readonly IAppDispatcher appDispatcher;
         private readonly ISignalrPlayerHub signalrPlayerHub;
         private readonly System.Timers.Timer UITimer;
-        private readonly DispatcherTimer timer = new DispatcherTimer
-        {
-            Interval = new TimeSpan(0, 0, 0, 0, 500),
-            IsEnabled = false
-        };
 
         public MappingWindow(
             ISignalrPlayerHub signalrPlayerHub,
@@ -41,33 +29,27 @@ namespace EQTool
             PlayerTrackerService playerTrackerService,
             EQToolSettingsLoad toolSettingsLoad,
             IAppDispatcher appDispatcher,
-            LoggingService loggingService)
+            LoggingService loggingService) : base(settings.MapWindowState, toolSettingsLoad, settings)
         {
             loggingService.Log(string.Empty, EventType.OpenMap, activePlayer?.Player?.Server);
-            this.settings = settings;
             this.activePlayer = activePlayer;
             this.signalrPlayerHub = signalrPlayerHub;
             this.playerTrackerService = playerTrackerService;
-            this.toolSettingsLoad = toolSettingsLoad;
             this.appDispatcher = appDispatcher;
             this.logParser = logParser;
             DataContext = this.mapViewModel = mapViewModel;
             InitializeComponent();
+            base.Init();
             _ = mapViewModel.LoadDefaultMap(Map);
             Map.ZoneName = mapViewModel.ZoneName;
             Map.Height = Math.Abs(mapViewModel.AABB.MaxHeight);
             Map.Width = Math.Abs(mapViewModel.AABB.MaxWidth);
-            WindowExtensions.AdjustWindow(settings.MapWindowState, this);
-            timer.Tick += timer_Tick;
             this.logParser.PlayerLocationEvent += LogParser_PlayerLocationEvent;
             this.logParser.PlayerZonedEvent += LogParser_PlayerZonedEvent;
             this.logParser.EnteredWorldEvent += LogParser_EnteredWorldEvent;
             this.logParser.DeadEvent += LogParser_DeadEvent;
             this.logParser.StartTimerEvent += LogParser_StartTimerEvent;
             this.logParser.CancelTimerEvent += LogParser_CancelTimerEvent;
-            SizeChanged += Window_SizeChanged;
-            StateChanged += Window_StateChanged;
-            LocationChanged += Window_LocationChanged;
             KeyDown += PanAndZoomCanvas_KeyDown;
             Map.StartTimerEvent += Map_StartTimerEvent;
             Map.CancelTimerEvent += Map_CancelTimerEvent;
@@ -75,8 +57,6 @@ namespace EQTool
             Map.TimerMenu_OpenedEvent += Map_TimerMenu_OpenedEvent;
             this.signalrPlayerHub.PlayerLocationEvent += SignalrPlayerHub_PlayerLocationEvent;
             this.signalrPlayerHub.PlayerDisconnected += SignalrPlayerHub_PlayerDisconnected;
-            settings.MapWindowState.Closed = false;
-            SaveState();
             UITimer = new System.Timers.Timer(1000);
             UITimer.Elapsed += UITimer_Elapsed;
             UITimer.Enabled = true;
@@ -202,23 +182,11 @@ namespace EQTool
         {
             mapViewModel.UpdateLocation(e.Location);
         }
-        void timer_Tick(object sender, EventArgs e)
-        {
-            timer.IsEnabled = false;
-            SaveState();
-        }
 
-        private void DebounceSave()
-        {
-            timer.IsEnabled = true;
-            timer.Stop();
-            timer.Start();
-        }
         protected override void OnClosing(CancelEventArgs e)
         {
             UITimer?.Stop();
             UITimer?.Dispose();
-            timer?.Stop();
             if (logParser != null)
             {
                 logParser.PlayerLocationEvent -= LogParser_PlayerLocationEvent;
@@ -229,9 +197,6 @@ namespace EQTool
                 logParser.CancelTimerEvent -= LogParser_CancelTimerEvent;
             }
 
-            SizeChanged -= Window_SizeChanged;
-            StateChanged -= Window_StateChanged;
-            LocationChanged -= Window_LocationChanged;
             KeyDown -= PanAndZoomCanvas_KeyDown;
             if (Map != null)
             {
@@ -248,36 +213,6 @@ namespace EQTool
             base.OnClosing(e);
         }
 
-        private void SaveState()
-        {
-            Debug.WriteLine("Saving Map window State");
-            WindowExtensions.SaveWindowState(settings.MapWindowState, this);
-            toolSettingsLoad.Save(settings);
-        }
-
-        private void CloseWindow(object sender, RoutedEventArgs e)
-        {
-            settings.MapWindowState.Closed = true;
-            SaveState();
-            Close();
-        }
-
-        private void Window_StateChanged(object sender, EventArgs e)
-        {
-            DebounceSave();
-        }
-
-        private void Window_LocationChanged(object sender, EventArgs e)
-        {
-            DebounceSave();
-        }
-
-        private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            this.SetCenerMap();
-            DebounceSave();
-        }
-
         private void SetCenerMap()
         {
             return;
@@ -286,49 +221,7 @@ namespace EQTool
             loc = this.Map.PointFromScreen(loc);
             this.mapViewModel.CenterRelativeToCanvas = loc;
         }
-        public void DragWindow(object sender, MouseButtonEventArgs args)
-        {
-            DragMove();
-        }
 
-        private void MinimizeWindow(object sender, RoutedEventArgs e)
-        {
-            WindowState = System.Windows.WindowState.Minimized;
-        }
-
-        private void MaximizeWindow(object sender, RoutedEventArgs e)
-        {
-            WindowState = WindowState == System.Windows.WindowState.Maximized ? System.Windows.WindowState.Normal : System.Windows.WindowState.Maximized;
-        }
-
-        private void openmobinfo(object sender, RoutedEventArgs e)
-        {
-            (App.Current as App).OpenMobInfoWindow();
-        }
-
-        private void toggleCenterOnyou(object sender, RoutedEventArgs e)
-        {
-            this.mapViewModel.ToggleCenter();
-        }
-
-        private void opendps(object sender, RoutedEventArgs e)
-        {
-            (App.Current as App).OpenDPSWindow();
-        }
-
-        private void opensettings(object sender, RoutedEventArgs e)
-        {
-            (App.Current as App).OpenSettingsWindow();
-        }
-        private void openmap(object sender, RoutedEventArgs e)
-        {
-            (App.Current as App).OpenMapWindow();
-        }
-
-        private void openspells(object sender, RoutedEventArgs e)
-        {
-            (App.Current as App).OpenSpellsWindow();
-        }
 
         private void PanAndZoomCanvas_MouseUp(object sender, MouseButtonEventArgs e)
         {
@@ -345,6 +238,11 @@ namespace EQTool
         {
             this.SetCenerMap();
             this.mapViewModel.PanAndZoomCanvas_MouseWheel(e.GetPosition(Map), e.Delta);
+        }
+
+        protected void toggleCenterOnyou(object sender, RoutedEventArgs e)
+        {
+            this.mapViewModel.ToggleCenter();
         }
     }
 }

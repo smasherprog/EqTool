@@ -11,7 +11,6 @@ using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
-using System.Windows.Threading;
 
 namespace EQTool
 {
@@ -25,23 +24,18 @@ namespace EQTool
         public System.Timers.Timer CHTimer { get; set; }
     }
 
-    public partial class EventOverlay : Window
+    public partial class EventOverlay : BaseSaveStateWindow
     {
         private readonly LogParser logParser;
         private readonly EQToolSettings settings;
-        private readonly EQToolSettingsLoad toolSettingsLoad;
         private readonly ActivePlayer activePlayer;
-        private readonly IAppDispatcher appDispatcher;
-        private DateTime LastWindowInteraction = DateTime.UtcNow;
         private readonly List<ChainOverlayData> chainDatas = new List<ChainOverlayData>();
         private readonly PigParseApi pigParseApi;
-        private readonly DispatcherTimer timer = new DispatcherTimer
-        {
-            Interval = new TimeSpan(0, 0, 0, 0, 500),
-            IsEnabled = false
-        };
+        private readonly IAppDispatcher appDispatcher;
+
 
         public EventOverlay(LogParser logParser, EQToolSettings settings, PigParseApi pigParseApi, EQToolSettingsLoad toolSettingsLoad, ActivePlayer activePlayer, IAppDispatcher appDispatcher)
+            : base(settings.OverlayWindowState, toolSettingsLoad, settings)
         {
             this.pigParseApi = pigParseApi;
             this.appDispatcher = appDispatcher;
@@ -49,13 +43,7 @@ namespace EQTool
             this.settings = settings;
             this.logParser = logParser;
             InitializeComponent();
-            WindowExtensions.AdjustWindow(settings.OverlayWindowState, this);
-            this.Topmost = true;
-            this.toolSettingsLoad = toolSettingsLoad;
-            timer.Tick += timer_Tick;
-            SizeChanged += Window_SizeChanged;
-            StateChanged += SpellWindow_StateChanged;
-            LocationChanged += Window_LocationChanged;
+            base.Init();
             logParser.EnrageEvent += LogParser_EnrageEvent;
             logParser.CHEvent += LogParser_CHEvent;
             logParser.LevEvent += LogParser_LevEvent;
@@ -67,7 +55,6 @@ namespace EQTool
             logParser.StartCastingEvent += LogParser_StartCastingEvent;
             logParser.SpellWornOtherOffEvent += LogParser_SpellWornOtherOffEvent;
             logParser.ResistSpellEvent += LogParser_ResistSpellEvent;
-            settings.OverlayWindowState.Closed = false;
         }
 
         private void LogParser_ResistSpellEvent(object sender, ResistSpellParser.ResistSpellData e)
@@ -109,6 +96,7 @@ namespace EQTool
             "Engorging Roots",
             "Entrapping Roots"
         };
+
         private void LogParser_SpellWornOtherOffEvent(object sender, LogParser.SpellWornOffOtherEventArgs e)
         {
             var overlay = this.activePlayer?.Player?.RootWarningOverlay ?? false;
@@ -550,7 +538,7 @@ namespace EQTool
 
             System.Threading.Tasks.Task.Factory.StartNew(() =>
             {
-                System.Threading.Thread.Sleep(1000 * 10);
+                System.Threading.Thread.Sleep(1000 * 12);
                 this.appDispatcher.DispatchUI(() =>
                 {
                     CenterText.Text = "ENGRAGE OFF";
@@ -565,55 +553,8 @@ namespace EQTool
             });
         }
 
-        void timer_Tick(object sender, EventArgs e)
-        {
-            timer.IsEnabled = false;
-            SaveState();
-        }
-
-        private void DebounceSave()
-        {
-            timer.IsEnabled = true;
-            timer.Stop();
-            timer.Start();
-        }
-
-        private void SaveState()
-        {
-            Debug.WriteLine("Saving Overlay window State");
-            WindowExtensions.SaveWindowState(settings.OverlayWindowState, this);
-            toolSettingsLoad.Save(settings);
-        }
-
-        private void SpellWindow_StateChanged(object sender, EventArgs e)
-        {
-            LastWindowInteraction = DateTime.UtcNow;
-            DebounceSave();
-        }
-
-        private void Window_LocationChanged(object sender, EventArgs e)
-        {
-            LastWindowInteraction = DateTime.UtcNow;
-            DebounceSave();
-        }
-
-        private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
-        {
-            LastWindowInteraction = DateTime.UtcNow;
-            DebounceSave();
-        }
-
-        public void DragWindow(object sender, MouseButtonEventArgs args)
-        {
-            LastWindowInteraction = DateTime.UtcNow;
-            DragMove();
-        }
-
         protected override void OnClosing(CancelEventArgs e)
         {
-            SizeChanged -= Window_SizeChanged;
-            StateChanged -= SpellWindow_StateChanged;
-            LocationChanged -= Window_LocationChanged;
             if (logParser != null)
             {
                 logParser.EnrageEvent -= LogParser_EnrageEvent;
