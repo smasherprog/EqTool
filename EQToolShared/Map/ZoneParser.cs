@@ -256,6 +256,41 @@ namespace EQToolShared.Map
                     {
                         Name = "Guard Zyburr",
                         RespawnTime = new TimeSpan(0, 18, 40)
+                    },
+                      new NpcSpawnTime
+                    {
+                        Name = "Guard Zyburr",
+                        RespawnTime = new TimeSpan(0, 18, 40)
+                    },
+                        new NpcSpawnTime
+                    {
+                        Name = "Peg Leg",
+                        RespawnTime = new TimeSpan(0, 6, 40)
+                    },
+                    new NpcSpawnTime
+                    {
+                        Name = "Keldyn Dunfire",
+                        RespawnTime = new TimeSpan(0,6, 40)
+                    },
+                    new NpcSpawnTime
+                    {
+                        Name = "Margyl Darklin",
+                        RespawnTime = new TimeSpan(0, 6, 40)
+                    },
+                    new NpcSpawnTime
+                    {
+                        Name = "Crytil Dunfire",
+                        RespawnTime = new TimeSpan(0, 6, 40)
+                    },
+                                new NpcSpawnTime
+                    {
+                        Name = "Qued",
+                        RespawnTime = new TimeSpan(0, 6, 40)
+                    },
+                    new NpcSpawnTime
+                    {
+                        Name = "Barma Dunfire",
+                        RespawnTime = new TimeSpan(0,6, 40)
                     }
                  },
                 NpcSpawnTimes = new List<NpcSpawnTime>()

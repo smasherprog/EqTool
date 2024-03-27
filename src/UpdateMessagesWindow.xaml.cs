@@ -40,6 +40,12 @@ namespace EQTool
 
             UpdateMessages.Add(new UpdateMessageData
             {
+                DateTime = new DateTime(2024, 3, 26),
+                Message = $"* Updated spawn time for mobs in BB."
+            });
+
+            UpdateMessages.Add(new UpdateMessageData
+            {
                 DateTime = new DateTime(2024, 3, 24),
                 Message = $"* Updated the auto update code so that updates will ONLY occur when the computer is idle for at least 10 minutes.{Environment.NewLine}" +
                     $"* Refactored window code. {Environment.NewLine}" +
