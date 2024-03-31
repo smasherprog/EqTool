@@ -282,7 +282,7 @@ namespace EQToolShared.Map
                         Name = "Crytil Dunfire",
                         RespawnTime = new TimeSpan(0, 6, 40)
                     },
-                                new NpcSpawnTime
+                    new NpcSpawnTime
                     {
                         Name = "Qued",
                         RespawnTime = new TimeSpan(0, 6, 40)
@@ -429,7 +429,15 @@ namespace EQToolShared.Map
                 {
                     "a black reaver","an army behemoth","Captain of the Guard","a human skeleton","Lhranc","Lord Ghiosk","Lord Rak`Ashiir","Neh`Ashiir","spectral courier","Wraith of Jaxion",
                 },
-                RespawnTime = new TimeSpan(0, 22, 00)
+                RespawnTime = new TimeSpan(0, 22, 00),
+                NpcSpawnTimes = new List<NpcSpawnTime>()
+                 {
+                      new NpcSpawnTime
+                      {
+                           Name = "a black reaver",
+                            RespawnTime = new TimeSpan(2, 0, 0)
+                      }
+                 },
             });
             ZoneInfoMap.Add("cobaltscar", new ZoneInfo
             {

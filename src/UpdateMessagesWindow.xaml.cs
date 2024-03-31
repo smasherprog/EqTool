@@ -41,6 +41,14 @@ namespace EQTool
             UpdateMessages.Add(new UpdateMessageData
             {
                 DateTime = new DateTime(2024, 3, 26),
+                Message = $"* This will be the last time this update window is used. All future updates will be listed in the discord channel." +
+                 $"* City of mist reaver spawn times addded. {Environment.NewLine}" +
+                  $"* Timers are now sorted to be shortest to longest."
+            });
+
+            UpdateMessages.Add(new UpdateMessageData
+            {
+                DateTime = new DateTime(2024, 3, 26),
                 Message = $"* Updated spawn time for mobs in BB."
             });
 
