@@ -61,9 +61,6 @@ namespace EQTool.Services
                     this.appDispatcher.DispatchUI(() =>
                     {
                         (App.Current as App).ShowBalloonTip(3000, "Applying PigParse Update", "Extracting Files . . .", System.Windows.Forms.ToolTipIcon.Info);
-                        var updatingwindow = new UpdatingWindow();
-                        updatingwindow.Title = "Applying PigParse Update";
-                        updatingwindow.Show();
                     });
                     var sourcedirectory = System.IO.Directory.GetCurrentDirectory();
                     var parentidirectory = Directory.GetParent(sourcedirectory).FullName;
@@ -122,9 +119,6 @@ namespace EQTool.Services
                         this.appDispatcher.DispatchUI(() =>
                         {
                             (App.Current as App).ShowBalloonTip(3000, "Downloading PigParse Update", "This might take a few seconds . . .", System.Windows.Forms.ToolTipIcon.Info);
-                            var updatingwindow = new UpdatingWindow();
-                            updatingwindow.Title = "Downloading PigParse Update";
-                            updatingwindow.Show();
                         });
                         if (System.IO.Directory.Exists("NewVersion"))
                         {

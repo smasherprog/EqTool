@@ -13,7 +13,7 @@ namespace EQToolShared.Map
     public class ZoneInfo
     {
         public bool ShowAllMapLevels { get; set; }
-        public int ZoneLevelHeight { get; set; }
+        public double ZoneLevelHeight { get; set; }
         public string Name { get; set; }
         public TimeSpan RespawnTime { get; set; }
         public List<NpcSpawnTime> NpcSpawnTimes { get; set; } = new List<NpcSpawnTime>();

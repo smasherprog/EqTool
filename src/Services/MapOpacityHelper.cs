@@ -33,7 +33,7 @@ namespace EQTool.Services
             l.Foreground.Opacity = v;
         }
 
-        public static void AdjustOpacity(double shortestdistance, Shape shape, ZoneInfo zoneinfo, Point3D lastloc)
+        public static void AdjustOpacity(double shortestdistance, Shape shape, ZoneInfo zoneinfo)
         {
             var twiceheight = zoneinfo.ZoneLevelHeight * 2;
             if (shortestdistance < zoneinfo.ZoneLevelHeight)

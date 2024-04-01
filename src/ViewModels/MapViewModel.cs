@@ -197,26 +197,22 @@ namespace EQTool.ViewModels
                     Debug.WriteLine($"Loading: {zone}");
                     MapOffset = map.Offset;
                     var linethickness = MapViewModelService.MapLinethickness(this.AABB);
-                    var linegroups = map.Lines.GroupBy(a => a.Color);
-                    foreach (var group in linegroups)
+                    foreach (var item in map.Lines)
                     {
-                        var c = EQMapColor.GetThemedColors(group.Key);
+                        var c = EQMapColor.GetThemedColors(item.Color);
                         var colorstuff = new SolidColorBrush(c.DarkColor);
-                        foreach (var item in group)
+                        var l = new Line
                         {
-                            var l = new Line
-                            {
-                                Tag = item,
-                                X1 = item.Points[0].X,
-                                Y1 = item.Points[0].Y,
-                                X2 = item.Points[1].X,
-                                Y2 = item.Points[1].Y,
-                                StrokeThickness = linethickness,
-                                Stroke = colorstuff,
-                                RenderTransform = Transform
-                            };
-                            _ = canvas.Children.Add(l);
-                        }
+                            Tag = item,
+                            X1 = item.Points[0].X,
+                            Y1 = item.Points[0].Y,
+                            X2 = item.Points[1].X,
+                            Y2 = item.Points[1].Y,
+                            StrokeThickness = linethickness,
+                            Stroke = colorstuff,
+                            RenderTransform = Transform
+                        };
+                        _ = canvas.Children.Add(l);
                     }
 
                     Debug.WriteLine($"Labels: {map.Labels.Count}");
@@ -390,15 +386,17 @@ namespace EQTool.ViewModels
             if (!zoneinfo.ShowAllMapLevels && Canvas.Children.Count > 0)
             {
                 var lastloc = new Point3D(-(value1.Y + MapOffset.X), -(value1.X + MapOffset.Y), Lastlocation.Z);
-                _ = zoneinfo.ZoneLevelHeight * 2;
                 foreach (var child in Canvas.Children)
                 {
                     if (child is Line a)
                     {
                         var m = a.Tag as MapLine;
+                        //Debug.WriteLine($"{m.Points[0].Z}");
+                        //Debug.WriteLine($"{m.Points[1].Z}");
+                        //Debug.WriteLine($"{lastloc.Z}");
                         var shortestdistance = Math.Abs(m.Points[0].Z - lastloc.Z);
                         shortestdistance = Math.Min(Math.Abs(m.Points[1].Z - lastloc.Z), shortestdistance);
-                        MapOpacityHelper.AdjustOpacity(shortestdistance, a, zoneinfo, lastloc);
+                        MapOpacityHelper.AdjustOpacity(shortestdistance, a, zoneinfo);
                     }
                     else if (child is TextBlock t)
                     {
@@ -412,7 +410,7 @@ namespace EQTool.ViewModels
                             if (m != null)
                             {
                                 var shortestdistance = Math.Abs(m.Point.Z - lastloc.Z);
-                                MapOpacityHelper.AdjustOpacity(shortestdistance, e, zoneinfo, lastloc);
+                                MapOpacityHelper.AdjustOpacity(shortestdistance, e, zoneinfo);
                             }
                         }
                     }
