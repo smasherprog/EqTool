@@ -11,7 +11,7 @@ Instructions:
 <li>
 <h2>Project Quarm: Download <a href="https://github.com/smasherprog/EqTool/releases/download/4.24.310.2/EQTool_Quarm4.24.310.2.zip">EQTool_Quarm.zip</a>, Unzip it and run PQTool.exe</h2>
 </li>
- <li><h3><a href="https://discord.gg/pugDrjenGV">Discord</a></h3></li>
+ <li><h3><a href="https://discord.gg/pp3sM4wFEE">Discord</a></h3></li>
 <li>The program runs in the system tray. Look there to reopen spells window or settings! Program will check for updates on startup and self update if required, but if you want to check for a new Update, use the menu in the system tray!</li>
 </ul>
 Features:
