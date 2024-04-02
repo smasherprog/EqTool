@@ -44,6 +44,8 @@ namespace EQTool
             this.logParser = logParser;
             InitializeComponent();
             base.Init();
+            this.Topmost = true;
+            this.SaveState();
             logParser.EnrageEvent += LogParser_EnrageEvent;
             logParser.CHEvent += LogParser_CHEvent;
             logParser.LevEvent += LogParser_LevEvent;
