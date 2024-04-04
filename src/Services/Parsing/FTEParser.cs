@@ -1,46 +1,54 @@
-﻿namespace EQTool.Services
+﻿using EQTool.Services.Parsing;
+
+namespace EQTool.Services
 {
-    public class FTEParser
+    public class FTEParser : ILogParser
     {
         public class FTEParserData
         {
             public string NPCName { get; set; }
             public string FTEPerson { get; set; }
         }
-
-        public FTEParserData Parse(string line)
+        private readonly EventsList eventsList;
+        public FTEParser(EventsList eventsList)
         {
-            var endwithexclimation = line.EndsWith("!");
+            this.eventsList = eventsList;
+        }
+
+        public bool Evaluate(string message, string previousline)
+        {
+            var endwithexclimation = message.EndsWith("!");
             if (!endwithexclimation)
             {
-                return null;
+                return false;
             }
 
-            var lastspaceindex = line.LastIndexOf(" ");
+            var lastspaceindex = message.LastIndexOf(" ");
             if (lastspaceindex == -1)
             {
-                return null;
+                return false;
             }
 
             var engagesstring = " engages ";
-            var engagesindex = line.LastIndexOf(engagesstring);
+            var engagesindex = message.LastIndexOf(engagesstring);
             if (engagesindex == -1)
             {
-                return null;
+                return false;
             }
 
             if (lastspaceindex != (engagesindex + engagesstring.Length - 1))
             {
-                return null;
+                return false;
             }
 
-            var playername = line.Substring(engagesindex + engagesstring.Length).TrimEnd('!').Trim();
-            var npcname = line.Substring(0, engagesindex).Trim();
-            return new FTEParserData
+            var playername = message.Substring(engagesindex + engagesstring.Length).TrimEnd('!').Trim();
+            var npcname = message.Substring(0, engagesindex).Trim();
+            this.eventsList.Handle(new FTEParserData
             {
                 FTEPerson = playername,
                 NPCName = npcname
-            };
+            });
+            return true;
         }
     }
 }

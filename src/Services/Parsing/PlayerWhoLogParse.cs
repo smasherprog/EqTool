@@ -1,13 +1,19 @@
-﻿using EQToolShared.Enums;
+﻿using EQTool.Services.Parsing;
+using EQToolShared.Enums;
 using System.Collections.Generic;
+using static EQTool.Services.EventsList;
 
 namespace EQTool.Services.Spells.Log
 {
-    public class PlayerWhoLogParse
+    public class PlayerWhoLogParse : ILogParser
     {
         private readonly Dictionary<PlayerClasses, List<string>> ClassMapping;
-        public PlayerWhoLogParse()
+        private bool StartingWhoOfZone = false;
+        private readonly EventsList eventsList;
+
+        public PlayerWhoLogParse(EventsList eventsList)
         {
+            this.eventsList = eventsList;
             ClassMapping = new Dictionary<PlayerClasses, List<string>>()
             {
                 { PlayerClasses.Bard, new List<string>{ "Bard", "Minstrel","Troubadour","Virtuoso" } },
@@ -27,36 +33,46 @@ namespace EQTool.Services.Spells.Log
             };
         }
 
-        public bool IsZoneWhoLine(string message)
+        private bool IsZoneWhoLine(string message)
         {
             return message == "Players on EverQuest:";
         }
 
-        public EQToolShared.APIModels.PlayerControllerModels.Player ParsePlayerInfo(string message)
+        public bool Evaluate(string message, string previousline)
         {
+            if (IsZoneWhoLine(message))
+            {
+                StartingWhoOfZone = true;
+                this.eventsList.Handle(new WhoEventArgs());
+                return true;
+            }
+            else
+            {
+                StartingWhoOfZone = message == "---------------------------" && StartingWhoOfZone;
+            }
+
             if (!message.StartsWith("AFK") && !message.StartsWith("["))
             {
-                return null;
+                return false;
             }
 
             var begindex = message.IndexOf('[');
             if (begindex == -1)
             {
-                return null;
+                return false;
             }
             message = message.Substring(begindex);
             var endindex = message.IndexOf("]");
             if (endindex == -1)
             {
-                return null;
+                return false;
             }
 
             var spaceindex = message.IndexOf(" ");
             if (spaceindex == -1)
             {
-                return null;
+                return false;
             }
-
 
             var guess = new EQToolShared.APIModels.PlayerControllerModels.Player();
             if (spaceindex < endindex)
@@ -88,8 +104,8 @@ namespace EQTool.Services.Spells.Log
                 endindex = message.IndexOf('>');
                 guess.GuildName = message.Substring(carrotindex, endindex - carrotindex).Trim('<', '>', ' ');
             }
-
-            return guess;
+            eventsList.Handle(new WhoPlayerEventArgs { PlayerInfo = guess });
+            return true;
         }
     }
 }

@@ -1,9 +1,9 @@
 ﻿using EQTool.ViewModels;
 using System.Linq;
 
-namespace EQTool.Services
+namespace EQTool.Services.Parsing
 {
-    public class ChParser
+    public class ChParser : ILogParser
     {
         public class ChParseData
         {
@@ -14,13 +14,15 @@ namespace EQTool.Services
         }
 
         private readonly ActivePlayer activePlayer;
+        private readonly EventsList eventsList;
 
-        public ChParser(ActivePlayer activePlayer)
+        public ChParser(ActivePlayer activePlayer, EventsList eventsList)
         {
             this.activePlayer = activePlayer;
+            this.eventsList = eventsList;
         }
 
-        public ChParseData ChCheck(string line)
+        public bool Evaluate(string line, string previousline)
         {
             var chindex = line.IndexOf(" ch ", System.StringComparison.OrdinalIgnoreCase);
             var startindexofmessage = line.IndexOf(", '");
@@ -39,7 +41,7 @@ namespace EQTool.Services
                 var endoftext = line.LastIndexOf("'");
                 if (endoftext == -1)
                 {
-                    return null;
+                    return false;
                 }
 
                 var possiblenumbers = line.Substring(startindexofmessage + 3, endoftext - startindexofmessage - 3);
@@ -78,7 +80,7 @@ namespace EQTool.Services
 
                 if (string.IsNullOrWhiteSpace(position))
                 {
-                    return null;
+                    return false;
                 }
 
                 var tag = this.activePlayer?.Player?.ChChainTagOverlay;
@@ -86,7 +88,7 @@ namespace EQTool.Services
                 {
                     if (!possiblenumbers.StartsWith(tag))
                     {
-                        return null;
+                        return false;
                     }
                 }
                 else
@@ -94,7 +96,7 @@ namespace EQTool.Services
                     var possibletagindex = possiblenumbers.IndexOf(position);
                     if (possibletagindex == -1)
                     {
-                        return null;
+                        return false;
                     }
                     tag = possiblenumbers.Substring(0, possibletagindex).Trim();
                 }
@@ -119,15 +121,15 @@ namespace EQTool.Services
 
                 if (string.IsNullOrWhiteSpace(recipient) || recipient.Length < 3)
                 {
-                    return null;
+                    return false;
                 }
 
                 if (!string.IsNullOrWhiteSpace(tag) && tag.Contains(" "))
                 {
                     tag = string.Empty;
                     if (!string.IsNullOrWhiteSpace(this.activePlayer?.Player?.ChChainTagOverlay))
-                    { 
-                        return null;
+                    {
+                        return false;
                     }
                 }
 
@@ -144,10 +146,10 @@ namespace EQTool.Services
                     var lastspace = ret.Caster.LastIndexOf(" ");
                     ret.Caster = ret.Caster.Substring(lastspace + 1).Trim();
                 }
-                return ret;
+                this.eventsList.Handle(ret);
+                return true;
             }
-
-            return null;
+            return false;
         }
     }
 }

@@ -1,10 +1,25 @@
-﻿namespace EQTool.Services
+﻿using EQTool.Services.Parsing;
+using static EQTool.Services.EventsList;
+
+namespace EQTool.Services
 {
-    public class CharmBreakParser
+    public class CharmBreakParser : ILogParser
     {
-        public bool DidCharmBreak(string line)
+        private readonly EventsList eventsList;
+
+        public CharmBreakParser(EventsList eventsList)
         {
-            return line == "Your charm spell has worn off.";
+            this.eventsList = eventsList;
+        }
+
+        public bool Evaluate(string line, string previousline)
+        {
+            if (line == "Your charm spell has worn off.")
+            {
+                this.eventsList.Handle(new CharmBreakArgs());
+                return true;
+            }
+            return false;
         }
     }
 }

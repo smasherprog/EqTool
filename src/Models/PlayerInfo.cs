@@ -577,6 +577,28 @@ namespace EQTool.Models
             }
         }
 
+        private bool _MobGatingOverlay;
+        public bool MobGatingOverlay
+        {
+            get => _MobGatingOverlay;
+            set
+            {
+                _MobGatingOverlay = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _MobGatingAudio;
+        public bool MobGatingAudio
+        {
+            get => _MobGatingAudio;
+            set
+            {
+                _MobGatingAudio = value;
+                OnPropertyChanged();
+            }
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected void OnPropertyChanged([CallerMemberName] string name = null)

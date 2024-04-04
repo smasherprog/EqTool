@@ -1,8 +1,8 @@
 ﻿using System.Collections.Generic;
 
-namespace EQTool.Services.Spells.Log
+namespace EQTool.Services.Parsing
 {
-    public class ConLogParse
+    public class ConLogParse : ILogParser
     {
         private readonly List<string> ConMessages = new List<string>()
         {
@@ -17,23 +17,27 @@ namespace EQTool.Services.Spells.Log
             "scowls at you, ready to attack"
         };
 
-        public ConLogParse()
-        {
+        private readonly EventsList eventsList;
 
+        public ConLogParse(EventsList eventsList)
+        {
+            this.eventsList = eventsList;
         }
 
-        public string ConMatch(string message)
+        public bool Evaluate(string line, string previousline)
         {
             foreach (var item in ConMessages)
             {
-                var indexof = message.IndexOf(item);
+                var indexof = line.IndexOf(item);
                 if (indexof != -1)
                 {
-                    var nameofthis = message.Substring(0, indexof);
-                    return nameofthis?.Trim();
+                    var nameofthis = line.Substring(0, indexof);
+                    this.eventsList.Handle(new EventsList.ConEventArgs { Name = nameofthis?.Trim() });
+                    return true;
                 }
             }
-            return string.Empty;
+
+            return false;
         }
     }
 }

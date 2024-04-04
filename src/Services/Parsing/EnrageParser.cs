@@ -1,30 +1,31 @@
-﻿using EQTool.ViewModels;
+﻿using EQTool.Services.Parsing;
 
 namespace EQTool.Services
 {
-    public class EnrageParser
+    public class EnrageParser : ILogParser
     {
         public class EnrageEvent
         {
             public string NpcName { get; set; }
         }
 
-        private readonly ActivePlayer activePlayer;
+        private readonly EventsList eventsList;
 
-        public EnrageParser(ActivePlayer activePlayer)
+        public EnrageParser(EventsList eventsList)
         {
-            this.activePlayer = activePlayer;
+            this.eventsList = eventsList;
         }
 
-        public EnrageEvent EnrageCheck(string line)
+        public bool Evaluate(string line, string previousline)
         {
             if (line.EndsWith(" has become ENRAGED.", System.StringComparison.OrdinalIgnoreCase))
             {
                 var npcname = line.Replace(" has become ENRAGED.", string.Empty).Trim();
-                return new EnrageEvent { NpcName = npcname };
+                eventsList.Handle(new EnrageEvent { NpcName = npcname });
+                return true;
             }
 
-            return null;
+            return false;
         }
     }
 }

@@ -1,23 +1,32 @@
-﻿using System.Linq;
+﻿using EQTool.Services.Parsing;
+using System.Linq;
 
 namespace EQTool.Services
 {
-    public class GroupInviteParser
+    public class GroupInviteParser : ILogParser
     {
-        public string Parse(string line)
+        private readonly EventsList eventsList;
+
+        public GroupInviteParser(EventsList eventsList)
         {
-            if (line.EndsWith(" invites you to join a group."))
+            this.eventsList = eventsList;
+        }
+
+        public bool Evaluate(string message, string previousline)
+        {
+            if (message.EndsWith(" invites you to join a group."))
             {
-                var remainder = line.Replace(" invites you to join a group.", string.Empty);
+                var remainder = message.Replace(" invites you to join a group.", string.Empty);
                 var name = remainder.Trim();
                 if (name.Contains(' '))
                 {
-                    return string.Empty;
+                    return false;
                 }
-                return line;
+                this.eventsList.HandleGroupInvite(message);
+                return true;
             }
 
-            return null;
+            return false;
         }
     }
 }
