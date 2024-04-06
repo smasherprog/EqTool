@@ -1,6 +1,8 @@
-﻿namespace EQTool.Services
+﻿using EQTool.Services.Parsing;
+
+namespace EQTool.Services
 {
-    public class POFDTParser
+    public class POFDTParser : ILogParser
     {
         public class POF_DT_Event
         {
@@ -8,7 +10,14 @@
             public string DTReceiver { get; set; }
         }
 
-        public POF_DT_Event DtCheck(string line)
+        private readonly EventsList eventsList;
+
+        public POFDTParser(EventsList eventsList)
+        {
+            this.eventsList = eventsList;
+        }
+
+        public bool Evaluate(string line)
         {
             if (line.StartsWith("Fright says '"))
             {
@@ -17,7 +26,8 @@
                 var possiblename = line.Substring(firsttick, lasttick);
                 if (!possiblename.Contains(" "))
                 {
-                    return new POF_DT_Event { NpcName = "Fright", DTReceiver = possiblename };
+                    this.eventsList.Handle(new POF_DT_Event { NpcName = "Fright", DTReceiver = possiblename });
+                    return true;
                 }
             }
 
@@ -28,10 +38,11 @@
                 var possiblename = line.Substring(firsttick, lasttick);
                 if (!possiblename.Contains(" "))
                 {
-                    return new POF_DT_Event { NpcName = "Dread", DTReceiver = possiblename };
+                    this.eventsList.Handle(new POF_DT_Event { NpcName = "Dread", DTReceiver = possiblename });
+                    return true;
                 }
             }
-            return null;
+            return false;
         }
     }
 }

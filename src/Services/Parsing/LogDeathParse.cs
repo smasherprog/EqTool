@@ -1,53 +1,61 @@
 ﻿using EQTool.Models;
+using EQTool.Services.Parsing;
+using static EQTool.Services.EventsList;
 
 namespace EQTool.Services.Spells.Log
 {
-    public class LogDeathParse
+    public class LogDeathParse : ILogParser
     {
         private readonly string HasBeenSlainBy = "has been slain by";
         private readonly string Died = "died.";
         private readonly string YouHaveSlain = "You have slain";
         private readonly string YouHaveBeenSlain = "You have been slain";
 
-        public LogDeathParse()
+        private readonly EventsList eventsList;
+
+        public LogDeathParse(EventsList eventsList)
         {
+            this.eventsList = eventsList;
         }
 
-        public string GetDeadTarget(string message)
+        public bool Evaluate(string line)
         {
-            var nameofthingindex = message.IndexOf(HasBeenSlainBy);
-            if (nameofthingindex != -1 || message.EndsWith(Died))
+            var nameofthingindex = line.IndexOf(HasBeenSlainBy);
+            if (nameofthingindex != -1 || line.EndsWith(Died))
             {
-                if (message.StartsWith("Eye of "))
+                if (line.StartsWith("Eye of "))
                 {
-                    return string.Empty;
+                    return true;
                 }
 
                 if (nameofthingindex != -1)
                 {
-                    return message.Substring(0, nameofthingindex).Trim();
+                    var n = line.Substring(0, nameofthingindex).Trim();
+                    this.eventsList.Handle(new DeadEventArgs { Name = n });
+                    return true;
                 }
-                else if (!message.Contains(", '") && message.EndsWith(Died))
+                else if (!line.Contains(", '") && line.EndsWith(Died))
                 {
-                    nameofthingindex = message.IndexOf(Died);
-                    return message.Substring(0, nameofthingindex).Trim();
+                    nameofthingindex = line.IndexOf(Died);
+                    var n = line.Substring(0, nameofthingindex).Trim();
+                    this.eventsList.Handle(new DeadEventArgs { Name = n });
+                    return true;
                 }
-                else
-                {
-                    return string.Empty;
-                }
+            }
+            else if (line.StartsWith(YouHaveSlain))
+            {
+                var nameofthing = line.Replace(YouHaveSlain, string.Empty).TrimEnd('!').Trim();
+                this.eventsList.Handle(new DeadEventArgs { Name = nameofthing });
+                return true;
+            }
+            else if (line.StartsWith(YouHaveBeenSlain))
+            {
+                this.eventsList.Handle(new DeadEventArgs { Name = EQSpells.SpaceYou });
+                return true;
 
             }
-            else if (message.StartsWith(YouHaveSlain))
-            {
-                var nameofthing = message.Replace(YouHaveSlain, string.Empty).TrimEnd('!').Trim();
-                return nameofthing;
-            }
-            else if (message.StartsWith(YouHaveBeenSlain))
-            {
-                return EQSpells.SpaceYou;
-            }
-            return null;
+
+            return false;
         }
     }
 }

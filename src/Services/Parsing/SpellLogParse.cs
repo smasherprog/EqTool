@@ -1,24 +1,39 @@
 ﻿using EQTool.Models;
+using EQTool.Services.Parsing;
 using EQTool.ViewModels;
 using System.Linq;
+using static EQTool.Services.EventsList;
 
 namespace EQTool.Services.Spells.Log
 {
-    public class SpellLogParse
+    public class SpellLogParse : ILogParser
     {
         private readonly ActivePlayer activePlayer;
         private readonly ParseHandleYouCasting parseHandleYouCasting;
         private readonly ParseSpellGuess parseSpellGuess;
         private readonly EQToolSettings settings;
         private readonly Spell HealSpell;
+        private readonly EventsList eventsList;
 
-        public SpellLogParse(ParseSpellGuess parseSpellGuess, ParseHandleYouCasting parseHandleYouCasting, ActivePlayer activePlayer, EQToolSettings settings, EQSpells spells)
+        public SpellLogParse(ParseSpellGuess parseSpellGuess, EventsList eventsList, ParseHandleYouCasting parseHandleYouCasting, ActivePlayer activePlayer, EQToolSettings settings, EQSpells spells)
         {
             this.parseSpellGuess = parseSpellGuess;
             this.settings = settings;
             this.parseHandleYouCasting = parseHandleYouCasting;
             this.activePlayer = activePlayer;
+            this.eventsList = eventsList;
             HealSpell = spells.AllSpells.FirstOrDefault(a => a.name == "Chloroplast") ?? spells.AllSpells.FirstOrDefault(a => a.name == "Regeneration");
+        }
+
+        public bool Evaluate(string line)
+        {
+            var spell = this.MatchSpell(line);
+            if (spell != null)
+            {
+                this.eventsList.Handle(new SpellEventArgs { Spell = spell });
+                return true;
+            }
+            return false;
         }
 
         public SpellParsingMatch MatchSpell(string message)

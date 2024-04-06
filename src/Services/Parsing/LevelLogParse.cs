@@ -1,8 +1,9 @@
-﻿using EQTool.ViewModels;
+﻿using EQTool.Services.Parsing;
+using EQTool.ViewModels;
 
 namespace EQTool.Services.Spells.Log
 {
-    public class LevelLogParse
+    public class LevelLogParse : ILogParser
     {
         private readonly ActivePlayer activePlayer;
         private readonly string YouHaveGainedALevel = "You have gained a level! Welcome to level";
@@ -12,11 +13,11 @@ namespace EQTool.Services.Spells.Log
             this.activePlayer = activePlayer;
         }
 
-        public void MatchLevel(string message)
+        public bool Evaluate(string line)
         {
-            if (message.StartsWith(YouHaveGainedALevel))
+            if (line.StartsWith(YouHaveGainedALevel))
             {
-                var levelstring = message.Replace(YouHaveGainedALevel, string.Empty).Trim().TrimEnd('!');
+                var levelstring = line.Replace(YouHaveGainedALevel, string.Empty).Trim().TrimEnd('!');
                 if (int.TryParse(levelstring, out var level))
                 {
                     var player = activePlayer.Player;
@@ -25,7 +26,9 @@ namespace EQTool.Services.Spells.Log
                         player.Level = level;
                     }
                 }
+                return true;
             }
+            return false;
         }
     }
 }

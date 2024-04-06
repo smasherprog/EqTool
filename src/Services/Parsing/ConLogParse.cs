@@ -24,7 +24,7 @@ namespace EQTool.Services.Parsing
             this.eventsList = eventsList;
         }
 
-        public bool Evaluate(string line, string previousline)
+        public bool Evaluate(string line)
         {
             foreach (var item in ConMessages)
             {

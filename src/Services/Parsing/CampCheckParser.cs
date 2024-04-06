@@ -17,7 +17,7 @@ namespace EQTool.Services.Parsing
             this.appDispatcher = appDispatcher;
         }
 
-        public bool Evaluate(string line, string previousline)
+        public bool Evaluate(string line)
         {
             if (line == "It will take about 5 more seconds to prepare your camp.")
             {

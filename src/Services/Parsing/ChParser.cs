@@ -22,7 +22,7 @@ namespace EQTool.Services.Parsing
             this.eventsList = eventsList;
         }
 
-        public bool Evaluate(string line, string previousline)
+        public bool Evaluate(string line)
         {
             var chindex = line.IndexOf(" ch ", System.StringComparison.OrdinalIgnoreCase);
             var startindexofmessage = line.IndexOf(", '");

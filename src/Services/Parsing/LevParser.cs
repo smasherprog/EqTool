@@ -1,6 +1,8 @@
-﻿namespace EQTool.Services
+﻿using EQTool.Services.Parsing;
+
+namespace EQTool.Services
 {
-    public class LevParser
+    public class LevParser : ILogParser
     {
         public enum LevStatus
         {
@@ -9,14 +11,23 @@
             Applied
         }
 
-        public LevStatus? Parse(string line)
+        private readonly EventsList eventsList;
+
+        public LevParser(EventsList eventsList)
+        {
+            this.eventsList = eventsList;
+        }
+
+        public bool Evaluate(string line)
         {
             if (line == "You feel as if you are about to fall.")
             {
-                return LevStatus.Fading;
+                this.eventsList.Handle(LevStatus.Fading);
+                return true;
+
             }
 
-            return null;
+            return false;
         }
     }
 }

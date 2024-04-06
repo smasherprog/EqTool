@@ -38,7 +38,7 @@ namespace EQTool.Services.Spells.Log
             return message == "Players on EverQuest:";
         }
 
-        public bool Evaluate(string message, string previousline)
+        public bool Evaluate(string message)
         {
             if (IsZoneWhoLine(message))
             {

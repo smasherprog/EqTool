@@ -2,6 +2,6 @@
 {
     public interface ILogParser
     {
-        bool Evaluate(string line, string previousline);
+        bool Evaluate(string line);
     }
 }

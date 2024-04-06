@@ -1,19 +1,43 @@
-﻿using EQToolShared.HubModels;
+﻿using EQTool.Services.Parsing;
+using EQToolShared.HubModels;
 using System.Linq;
+using static EQTool.Services.EventsList;
 
 namespace EQTool.Services.Spells.Log
 {
-    public class LogCustomTimer
+    public class LogCustomTimer : ILogParser
     {
         private readonly string StartTimer = "you say, 'timer start";
         private readonly string StartTimer1 = "you say, 'start timer";
         private readonly string CancelTimer = "you say, 'timer cancel";
         private readonly string CancelTimer1 = "you say, 'cancel timer";
+        private readonly EventsList eventsList;
 
-        public LogCustomTimer()
+        public LogCustomTimer(EventsList eventsList)
         {
+            this.eventsList = eventsList;
         }
 
+        public bool Evaluate(string line)
+        {
+            var timer = GetStartTimer(line);
+            if (timer == null)
+            {
+                var timername = GetCancelTimer(line);
+                if (!string.IsNullOrWhiteSpace(timername))
+                {
+                    this.eventsList.Handle(new CancelTimerEventArgs { Name = timername });
+                    return true;
+                }
+            }
+            else
+            {
+                this.eventsList.Handle(new StartTimerEventArgs { CustomTimer = timer });
+                return true;
+            }
+
+            return false;
+        }
 
         public CustomTimer GetStartTimer(string message)
         {

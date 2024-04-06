@@ -12,7 +12,7 @@ namespace EQTool.Services
             this.eventsList = eventsList;
         }
 
-        public bool Evaluate(string message, string previousline)
+        public bool Evaluate(string message)
         {
             if (message.EndsWith(" invites you to join a group."))
             {

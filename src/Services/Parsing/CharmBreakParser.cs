@@ -12,7 +12,7 @@ namespace EQTool.Services
             this.eventsList = eventsList;
         }
 
-        public bool Evaluate(string line, string previousline)
+        public bool Evaluate(string line)
         {
             if (line == "Your charm spell has worn off.")
             {

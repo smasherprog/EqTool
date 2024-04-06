@@ -14,7 +14,7 @@ namespace EQTool.Services
             this.eventsList = eventsList;
         }
 
-        public bool Evaluate(string message, string previousline)
+        public bool Evaluate(string message)
         {
             if (message == $"{activePlayer?.Player?.Name} has fallen to the ground.")
             {

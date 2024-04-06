@@ -15,7 +15,7 @@ namespace EQTool.Services
             this.eventsList = eventsList;
         }
 
-        public bool Evaluate(string message, string previousline)
+        public bool Evaluate(string message)
         {
             var endwithexclimation = message.EndsWith("!");
             if (!endwithexclimation)

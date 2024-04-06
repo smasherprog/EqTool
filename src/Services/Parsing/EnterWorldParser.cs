@@ -5,12 +5,6 @@ namespace EQTool.Services
 {
     public class EnterWorldParser
     {
-
-        public EnterWorldParser()
-        {
-
-        }
-
         public bool HasEnteredWorld(string line)
         {
             if (string.IsNullOrWhiteSpace(line))
