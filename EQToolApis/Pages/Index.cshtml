@@ -31,7 +31,41 @@
             </div>
         </div>
     </div>
-
+    <div class="row">
+        <div class="col-lg-8 offset-lg-2 col-12">
+            <div class="card-deck">
+                <div class="card border-success mb-3">
+                    <div class="card-body">
+                        <p class="card-text">
+                            <div class="row">
+                                <div class=col-6>
+                                    <p>For API documentation, please refer to <a href="/swagger">Swagger</a> </p>
+                                    <p>If you discover prices discrepancies, please open an issue on <a href="https://github.com/smasherprog/EqTool" target="_blank">Github</a> </p>
+                                    <table>
+                                        <tbody>
+                                            <tr>
+                                                <th>Total Players</th>
+                                                <td>@Model.AllData.TotalEQAuctionPlayers.ToString("n0")</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Total Items</th>
+                                                <td>@Model.AllData.TotalUniqueItems.ToString("n0")</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class=col-6>
+                                    <p>
+                                        <strong>Get Pigarse to enhance your gameplay!</strong> Map, DPS, Spell Timer, Mob Info and more!
+                                    </p>
+                                    <a href="https://github.com/smasherprog/EqTool" target="_blank"><img class="img-fluid" src="https://raw.githubusercontent.com/smasherprog/EqTool/main/Example.png" height="400" /></a>
+                                </div>
+                            </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="row">
         <div class="col-lg-8 offset-lg-2 col-12">
             <div class="card-deck">
@@ -56,6 +90,23 @@
                                     <tr>
                                         <th>Oldest Import</th>
                                         <td class="mytime" utc="@Model.AllData.ServerData[(int)Servers.Green].OldestImportTimeStamp.ToString("o")"></td>
+                                    </tr>
+                                    <tr>
+                                        <th>Map Users</th>
+                                        <td>@EQToolApis.Pages.IndexModel.PigParseStats[(int)Servers.Green].PigParsePlayerCount</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Unique Users</th>
+                                        <td>@EQToolApis.Pages.IndexModel.PigParseStats[(int)Servers.Green].PigParseUniquePlayerCount</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Top Zones</th>
+                                        <td>
+                                            @foreach (var z in EQToolApis.Pages.IndexModel.PigParseStats[(int)Servers.Green].zoneStats.OrderByDescending(a => a.Count).Where(a => a.Count > 0).Take(5))
+                                            {
+                                                <text>@z.Zone:@z.Count/</text>
+                                            }
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -85,6 +136,23 @@
                                         <th>Oldest Import</th>
                                         <td class="mytime" utc="@Model.AllData.ServerData[(int)Servers.Blue].OldestImportTimeStamp.ToString("o")"></td>
                                     </tr>
+                                    <tr>
+                                        <th>Map Users</th>
+                                        <td>@EQToolApis.Pages.IndexModel.PigParseStats[(int)Servers.Blue].PigParsePlayerCount</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Unique Users</th>
+                                        <td>@EQToolApis.Pages.IndexModel.PigParseStats[(int)Servers.Blue].PigParseUniquePlayerCount</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Top Zones</th>
+                                        <td>
+                                            @foreach (var z in EQToolApis.Pages.IndexModel.PigParseStats[(int)Servers.Blue].zoneStats.OrderByDescending(a => a.Count).Where(a => a.Count > 0).Take(5))
+                                            {
+                                                <text>@z.Zone:@z.Count/</text>
+                                            }
+                                        </td>
+                                    </tr>
                                 </tbody>
                             </table>
                         </p>
@@ -97,63 +165,92 @@
     <div class="row">
         <div class="col-lg-8 offset-lg-2 col-12">
             <div class="card-deck">
-                <div class="card border-success mb-3">
+                <div class="card border-danger mb-3">
                     <div class="card-body">
+                        <h5 class="card-title text-danger">Red Server</h5>
                         <p class="card-text">
-                            <div class="row">
-                                <div class=col-6>
-                                    <p>For API documentation, please refer to <a href="/swagger">Swagger</a> </p>
-                                    <p>If you discover prices discrepancies, please open an issue on <a href="https://github.com/smasherprog/EqTool" target="_blank">Github</a> </p>
-
-                                    <table>
-                                        <tbody>
-                                            <tr>
-                                                <th>Total Players</th>
-                                                <td>@Model.AllData.TotalEQAuctionPlayers.ToString("n0")</td>
-                                            </tr>
-                                            <tr>
-                                                <th>Total Items</th>
-                                                <td>@Model.AllData.TotalUniqueItems.ToString("n0")</td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-
-                                    @foreach (var item in EQToolApis.Pages.IndexModel.PigParseStats)
-                                    {
-                                        <table>
-                                            <tbody>
-                                                <tr>
-                                                    <th>@item.Server Map Count:</th>
-                                                    <td>
-                                                        @item.PigParsePlayerCount
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <th>@item.Server Maps</th>
-                                                    <td>
-                                                        @foreach (var z in item.zoneStats.OrderByDescending(a => a.Count).Where(a => a.Count > 0).Take(5))
-                                                        {
-                                                            <text>@z.Zone:@z.Count/</text>
-                                                        }
-                                                    </td>
-                                                </tr>
-                                                <tr>
-                                                    <th>@item.Server Unique Count:</th>
-                                                    <td>
-                                                        @item.PigParseUniquePlayerCount
-                                                    </td>
-                                                </tr> 
-                                            </tbody>
-                                        </table>
-                                    }
-                                </div>
-                                <div class=col-6>
-                                    <p>
-                                        <strong>Get Pigarse to enhance your gameplay!</strong> Map, DPS, Spell Timer, Mob Info and more!
-                                    </p>
-                                    <a href="https://github.com/smasherprog/EqTool" target="_blank"><img class="img-fluid" src="https://raw.githubusercontent.com/smasherprog/EqTool/main/Example.png" height="400" /></a>
-                                </div>
-                            </div>
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <th>Total Actioned Items</th>
+                                        <td>N/A</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Total Actions</th>
+                                        <td>N/A</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Last Updated</th>
+                                        <td>N/A</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Oldest Import</th>
+                                        <td>N/A</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Map Users</th>
+                                        <td>@EQToolApis.Pages.IndexModel.PigParseStats[(int)Servers.Red].PigParsePlayerCount</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Unique Users</th>
+                                        <td>@EQToolApis.Pages.IndexModel.PigParseStats[(int)Servers.Red].PigParseUniquePlayerCount</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Top Zones</th>
+                                        <td>
+                                            @foreach (var z in EQToolApis.Pages.IndexModel.PigParseStats[(int)Servers.Red].zoneStats.OrderByDescending(a => a.Count).Where(a => a.Count > 0).Take(5))
+                                            {
+                                                <text>@z.Zone:@z.Count/</text>
+                                            }
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </p>
+                    </div>
+                </div>
+                <div class="card border-warning mb-3">
+                    <div class="card-body">
+                        <h5 class="card-title text-warning">Quarm Server</h5>
+                        <p class="card-text">
+                            <table>
+                                <tbody>
+                                    <tr>
+                                        <th>Total Actioned Items</th>
+                                        <td>N/A</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Total Actions</th>
+                                        <td>N/A</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Last Updated</th>
+                                        <td>N/A</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Oldest Import</th>
+                                        <td>N/A</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Map Users</th>
+                                        <td>@EQToolApis.Pages.IndexModel.PigParseStats[(int)Servers.Quarm].PigParsePlayerCount</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Unique Users</th>
+                                        <td>@EQToolApis.Pages.IndexModel.PigParseStats[(int)Servers.Quarm].PigParseUniquePlayerCount</td>
+                                    </tr>
+                                    <tr>
+                                        <th>Top Zones</th>
+                                        <td>
+                                            @foreach (var z in EQToolApis.Pages.IndexModel.PigParseStats[(int)Servers.Quarm].zoneStats.OrderByDescending(a => a.Count).Where(a => a.Count > 0).Take(5))
+                                            {
+                                                <text>@z.Zone:@z.Count/</text>
+                                            }
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </p>
                     </div>
                 </div>
             </div>
@@ -217,4 +314,4 @@
             </div>
         </div>
     </div>
-</div>
+</div> 
