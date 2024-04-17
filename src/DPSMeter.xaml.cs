@@ -17,23 +17,23 @@ namespace EQTool
     public partial class DPSMeter : BaseSaveStateWindow
     {
         private readonly System.Timers.Timer UITimer;
-        private readonly LogParser logParser;
+        private readonly EventsList eventsList;
         private readonly DPSWindowViewModel dPSWindowViewModel;
         private readonly ActivePlayer activePlayer;
 
-        public DPSMeter(LogParser logParser, DPSWindowViewModel dPSWindowViewModel, EQToolSettings settings, EQToolSettingsLoad toolSettingsLoad, LoggingService loggingService, ActivePlayer activePlayer)
+        public DPSMeter(EventsList eventsList, DPSWindowViewModel dPSWindowViewModel, EQToolSettings settings, EQToolSettingsLoad toolSettingsLoad, LoggingService loggingService, ActivePlayer activePlayer)
              : base(settings.DpsWindowState, toolSettingsLoad, settings)
         {
             this.activePlayer = activePlayer;
             loggingService.Log(string.Empty, EventType.OpenDPS, activePlayer?.Player?.Server);
-            this.logParser = logParser;
+            this.eventsList = eventsList;
             this.dPSWindowViewModel = dPSWindowViewModel;
             this.dPSWindowViewModel.EntityList = new System.Collections.ObjectModel.ObservableCollection<EntittyDPS>();
             DataContext = dPSWindowViewModel;
             InitializeComponent();
             base.Init();
-            this.logParser.FightHitEvent += LogParser_FightHitEvent;
-            this.logParser.DeadEvent += LogParser_DeadEvent;
+            this.eventsList.FightHitEvent += LogParser_FightHitEvent;
+            this.eventsList.DeadEvent += LogParser_DeadEvent;
             UITimer = new System.Timers.Timer(1000);
             UITimer.Elapsed += PollUI;
             UITimer.Enabled = true;
@@ -48,12 +48,12 @@ namespace EQTool
             view.LiveSortingProperties.Add(nameof(EntittyDPS.TotalDamage));
         }
 
-        private void LogParser_FightHitEvent(object sender, LogParser.FightHitEventArgs e)
+        private void LogParser_FightHitEvent(object sender, EventsList.FightHitEventArgs e)
         {
             dPSWindowViewModel.TryAdd(e.HitInformation);
         }
 
-        private void LogParser_DeadEvent(object sender, LogParser.DeadEventArgs e)
+        private void LogParser_DeadEvent(object sender, EventsList.DeadEventArgs e)
         {
             var zone = this.activePlayer?.Player?.Zone;
             if (!string.IsNullOrWhiteSpace(zone) && ZoneParser.ZoneInfoMap.TryGetValue(zone, out var fzone))
@@ -71,10 +71,10 @@ namespace EQTool
         {
             UITimer?.Stop();
             UITimer?.Dispose();
-            if (this.logParser != null)
+            if (this.eventsList != null)
             {
-                logParser.DeadEvent -= LogParser_DeadEvent;
-                logParser.FightHitEvent -= LogParser_FightHitEvent;
+                eventsList.DeadEvent -= LogParser_DeadEvent;
+                eventsList.FightHitEvent -= LogParser_FightHitEvent;
             }
             base.OnClosing(e);
         }

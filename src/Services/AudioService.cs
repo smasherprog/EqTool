@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Speech.Synthesis;
+using static EQTool.Services.EventsList;
 
 namespace EQTool.Services
 {
@@ -15,27 +16,27 @@ namespace EQTool.Services
 
     public class AudioService
     {
-        private readonly LogParser logParser;
+        private readonly EventsList eventsList;
         private readonly ActivePlayer activePlayer;
         private readonly EQToolSettings eQToolSettings;
         private readonly List<ChainAudioData> chainDatas = new List<ChainAudioData>();
 
-        public AudioService(LogParser logParser, ActivePlayer activePlayer, EQToolSettings eQToolSettings)
+        public AudioService(EventsList eventsList, ActivePlayer activePlayer, EQToolSettings eQToolSettings)
         {
-            this.logParser = logParser;
+            this.eventsList = eventsList;
             this.activePlayer = activePlayer;
             this.eQToolSettings = eQToolSettings;
-            this.logParser.InvisEvent += LogParser_InvisEvent;
-            this.logParser.EnrageEvent += LogParser_EnrageEvent;
-            this.logParser.LevEvent += LogParser_LevEvent;
-            this.logParser.FTEEvent += LogParser_FTEEvent;
-            this.logParser.CharmBreakEvent += LogParser_CharmBreakEvent;
-            this.logParser.FailedFeignEvent += LogParser_FailedFeignEvent;
-            this.logParser.GroupInviteEvent += LogParser_GroupInviteEvent;
-            this.logParser.StartCastingEvent += LogParser_StartCastingEvent;
-            this.logParser.CHEvent += LogParser_CHEvent;
-            this.logParser.SpellWornOtherOffEvent += LogParser_SpellWornOtherOffEvent1;
-            this.logParser.ResistSpellEvent += LogParser_ResistSpellEvent;
+            this.eventsList.InvisEvent += LogParser_InvisEvent;
+            this.eventsList.EnrageEvent += LogParser_EnrageEvent;
+            this.eventsList.LevEvent += LogParser_LevEvent;
+            this.eventsList.FTEEvent += LogParser_FTEEvent;
+            this.eventsList.CharmBreakEvent += LogParser_CharmBreakEvent;
+            this.eventsList.FailedFeignEvent += LogParser_FailedFeignEvent;
+            this.eventsList.GroupInviteEvent += LogParser_GroupInviteEvent;
+            this.eventsList.StartCastingEvent += LogParser_StartCastingEvent;
+            this.eventsList.CHEvent += LogParser_CHEvent;
+            this.eventsList.SpellWornOtherOffEvent += LogParser_SpellWornOtherOffEvent1;
+            this.eventsList.ResistSpellEvent += LogParser_ResistSpellEvent;
         }
 
         private void LogParser_ResistSpellEvent(object sender, ResistSpellParser.ResistSpellData e)
@@ -64,7 +65,7 @@ namespace EQTool.Services
             "Entrapping Roots"
         };
 
-        private void LogParser_SpellWornOtherOffEvent1(object sender, LogParser.SpellWornOffOtherEventArgs e)
+        private void LogParser_SpellWornOtherOffEvent1(object sender, SpellWornOffOtherEventArgs e)
         {
             var overlay = this.activePlayer?.Player?.RootWarningAudio ?? false;
             if (!overlay)
@@ -78,7 +79,7 @@ namespace EQTool.Services
             }
         }
 
-        private void LogParser_CHEvent(object sender, ChParser.ChParseData e)
+        private void LogParser_CHEvent(object sender, Parsing.ChParser.ChParseData e)
         {
             var overlay = this.activePlayer?.Player?.ChChainWarningAudio ?? false;
             if (!overlay)
@@ -94,7 +95,7 @@ namespace EQTool.Services
             }
         }
 
-        private ChainAudioData GetOrCreateChain(ChParser.ChParseData e)
+        private ChainAudioData GetOrCreateChain(Parsing.ChParser.ChParseData e)
         {
             var d = DateTime.UtcNow;
             var toremove = this.chainDatas.Where(a => (d - a.UpdatedTime).TotalSeconds > 20).ToList();
@@ -117,7 +118,7 @@ namespace EQTool.Services
             return f;
         }
 
-        private void LogParser_StartCastingEvent(object sender, LogParser.SpellEventArgs e)
+        private void LogParser_StartCastingEvent(object sender, SpellEventArgs e)
         {
             var overlay = this.activePlayer?.Player?.DragonRoarAudio ?? false;
             if (!overlay || e.Spell.Spell.name != "Dragon Roar")
@@ -157,7 +158,7 @@ namespace EQTool.Services
             }
         }
 
-        private void LogParser_CharmBreakEvent(object sender, LogParser.CharmBreakArgs e)
+        private void LogParser_CharmBreakEvent(object sender, CharmBreakArgs e)
         {
             if (this.activePlayer?.Player?.CharmBreakAudio == true)
             {

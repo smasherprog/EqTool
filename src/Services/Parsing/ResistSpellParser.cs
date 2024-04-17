@@ -1,15 +1,17 @@
 ﻿using EQTool.Models;
+using EQTool.Services.Parsing;
 using System.Linq;
 
 namespace EQTool.Services
 {
-    public class ResistSpellParser
+    public class ResistSpellParser : ILogParser
     {
         private readonly EQSpells spells;
-
-        public ResistSpellParser(EQSpells spells)
+        private readonly EventsList eventsList;
+        public ResistSpellParser(EQSpells spells, EventsList eventsList)
         {
             this.spells = spells;
+            this.eventsList = eventsList;
         }
         public class ResistSpellData
         {
@@ -17,7 +19,7 @@ namespace EQTool.Services
             public bool isYou { get; set; }
         }
 
-        public ResistSpellData ParseNPCSpell(string line)
+        public bool Evaluate(string line)
         {
             var resistmessage = line.StartsWith("You resist the ");
             if (resistmessage)
@@ -26,7 +28,8 @@ namespace EQTool.Services
                 var spell = this.spells.AllSpells.FirstOrDefault(a => a.name == spellname);
                 if (spell != null)
                 {
-                    return new ResistSpellData { Spell = spell, isYou = true };
+                    this.eventsList.Handle(new ResistSpellData { Spell = spell, isYou = true });
+                    return true;
                 }
             }
 
@@ -37,11 +40,12 @@ namespace EQTool.Services
                 var spell = this.spells.AllSpells.FirstOrDefault(a => a.name == spellname);
                 if (spell != null)
                 {
-                    return new ResistSpellData { Spell = spell, isYou = false };
+                    this.eventsList.Handle(new ResistSpellData { Spell = spell, isYou = false });
+                    return true;
                 }
             }
 
-            return null;
+            return false;
         }
     }
 }

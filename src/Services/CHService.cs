@@ -8,7 +8,7 @@
 
     public static class CHService
     {
-        public static bool ShouldWarnOfChain(ChainData chaindata, ChParser.ChParseData e)
+        public static bool ShouldWarnOfChain(ChainData chaindata, Parsing.ChParser.ChParseData e)
         {
             if (string.IsNullOrWhiteSpace(e.Position))
             {

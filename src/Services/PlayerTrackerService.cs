@@ -9,7 +9,7 @@ namespace EQTool.Services
 {
     public class PlayerTrackerService
     {
-        private readonly LogParser logParser;
+        private readonly EventsList eventsList;
         private readonly PigParseApi pigParseApi;
         internal readonly ActivePlayer activePlayer;
         private readonly LoggingService loggingService;
@@ -21,15 +21,15 @@ namespace EQTool.Services
         private readonly System.Timers.Timer UITimer;
         private readonly object ContainerLock = new object();
 
-        public PlayerTrackerService(LogParser logParser, ActivePlayer activePlayer, PigParseApi pigParseApi, LoggingService loggingService, PlayerGroupService playerGroupService)
+        public PlayerTrackerService(EventsList eventsList, ActivePlayer activePlayer, PigParseApi pigParseApi, LoggingService loggingService, PlayerGroupService playerGroupService)
         {
             _ = activePlayer.Update();
             CurrentZone = activePlayer.Player?.Zone;
-            this.logParser = logParser;
+            this.eventsList = eventsList;
             this.playerGroupService = playerGroupService;
-            this.logParser.PlayerZonedEvent += LogParser_PlayerZonedEvent;
-            this.logParser.WhoEvent += LogParser_WhoEvent;
-            this.logParser.WhoPlayerEvent += LogParser_WhoPlayerEvent;
+            this.eventsList.PlayerZonedEvent += LogParser_PlayerZonedEvent;
+            this.eventsList.WhoEvent += LogParser_WhoEvent;
+            this.eventsList.WhoPlayerEvent += LogParser_WhoPlayerEvent;
             UITimer = new System.Timers.Timer(1000);
             UITimer.Elapsed += UITimer_Elapsed; ;
             UITimer.Enabled = true;
@@ -74,7 +74,7 @@ namespace EQTool.Services
             }
         }
 
-        private void LogParser_WhoEvent(object sender, LogParser.WhoEventArgs e)
+        private void LogParser_WhoEvent(object sender, EventsList.WhoEventArgs e)
         {
             lock (ContainerLock)
             {
@@ -91,7 +91,7 @@ namespace EQTool.Services
             }
         }
 
-        private void LogParser_WhoPlayerEvent(object sender, LogParser.WhoPlayerEventArgs e)
+        private void LogParser_WhoPlayerEvent(object sender, EventsList.WhoPlayerEventArgs e)
         {
             if (activePlayer.Player != null && e.PlayerInfo.Name == activePlayer.Player.Name && !string.IsNullOrWhiteSpace(e.PlayerInfo.GuildName))
             {
@@ -138,7 +138,7 @@ namespace EQTool.Services
 
         }
 
-        private void LogParser_PlayerZonedEvent(object sender, LogParser.PlayerZonedEventArgs e)
+        private void LogParser_PlayerZonedEvent(object sender, EventsList.PlayerZonedEventArgs e)
         {
             lock (ContainerLock)
             {

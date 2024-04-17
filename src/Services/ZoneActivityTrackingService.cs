@@ -9,25 +9,25 @@ namespace EQTool.Services
 {
     public class ZoneActivityTrackingService
     {
-        private readonly LogParser logParser;
+        private readonly EventsList eventsList;
         private readonly PigParseApi pigParseApi;
         private readonly ActivePlayer activePlayer;
         private readonly LoggingService loggingService;
         private Point3D? LastLocation = null;
 
-        public ZoneActivityTrackingService(LogParser logParser, ActivePlayer activePlayer, PigParseApi pigParseApi, LoggingService loggingService)
+        public ZoneActivityTrackingService(EventsList eventsList, ActivePlayer activePlayer, PigParseApi pigParseApi, LoggingService loggingService)
         {
             _ = activePlayer.Update();
-            this.logParser = logParser;
-            this.logParser.DeadEvent += LogParser_DeadEvent;
-            this.logParser.ConEvent += LogParser_ConEvent; ;
-            this.logParser.PlayerLocationEvent += LogParser_PlayerLocationEvent;
+            this.eventsList = eventsList;
+            this.eventsList.DeadEvent += LogParser_DeadEvent;
+            this.eventsList.ConEvent += LogParser_ConEvent; ;
+            this.eventsList.PlayerLocationEvent += LogParser_PlayerLocationEvent;
             this.pigParseApi = pigParseApi;
             this.activePlayer = activePlayer;
             this.loggingService = loggingService;
         }
 
-        private void LogParser_ConEvent(object sender, LogParser.ConEventArgs e)
+        private void LogParser_ConEvent(object sender, EventsList.ConEventArgs e)
         {
             if (activePlayer.Player?.Server == null)
             {
@@ -56,12 +56,12 @@ namespace EQTool.Services
             }
         }
 
-        private void LogParser_PlayerLocationEvent(object sender, LogParser.PlayerLocationEventArgs e)
+        private void LogParser_PlayerLocationEvent(object sender, EventsList.PlayerLocationEventArgs e)
         {
             LastLocation = e.Location;
         }
 
-        private void LogParser_DeadEvent(object sender, LogParser.DeadEventArgs e)
+        private void LogParser_DeadEvent(object sender, EventsList.DeadEventArgs e)
         {
             if (activePlayer.Player?.Server == null)
             {

@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using EQTool.Models;
 using EQTool.Services;
+using EQTool.Services.Parsing;
 using EQTool.ViewModels;
 using EQToolShared.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -347,7 +348,7 @@ namespace EQToolTests
                 Level = 54,
                 PlayerClass = PlayerClasses.Cleric
             };
-            var d = service.ChCheck("Mutao auctions, 'AAA CH <>> Mandair <<> AAA'");
+            var d = service.Evaluate("Mutao auctions, 'AAA CH <>> Mandair <<> AAA'");
             Assert.AreEqual(d.Recipient, "Mandair");
             Assert.AreEqual(d.Caster, "Mutao");
             Assert.AreEqual(d.Position, "AAA");
@@ -363,7 +364,7 @@ namespace EQToolTests
                 Level = 54,
                 PlayerClass = PlayerClasses.Cleric
             };
-            var d = service.ChCheck("Mutao auctions, 'GGG AAA CH <>> Mandair <<> AAA'");
+            var d = service.Evaluate("Mutao auctions, 'GGG AAA CH <>> Mandair <<> AAA'");
             Assert.AreEqual(d.Recipient, "Mandair");
             Assert.AreEqual(d.Caster, "Mutao");
             Assert.AreEqual(d.Position, "AAA");
@@ -397,7 +398,7 @@ namespace EQToolTests
                 Level = 54,
                 PlayerClass = PlayerClasses.Cleric
             };
-            var d = service.ChCheck("Mutao auctions, 'AAA CH <>> Mandair <<>'");
+            var d = service.Evaluate("Mutao auctions, 'AAA CH <>> Mandair <<>'");
             Assert.AreEqual(d.Recipient, "Mandair");
             Assert.AreEqual(d.Caster, "Mutao");
             Assert.AreEqual(d.Position, "AAA");

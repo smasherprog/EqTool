@@ -29,18 +29,19 @@ namespace EQTool.Models
     {
         private readonly HubConnection connection;
         private readonly ActivePlayer activePlayer;
+        private readonly EventsList eventsList;
         private readonly LogParser logParser;
         private readonly IAppDispatcher appDispatcher;
         private readonly System.Timers.Timer timer;
         private SignalrPlayer LastPlayer;
         private readonly SpellWindowViewModel spellWindowViewModel;
-        private Servers? LastServer;
         private ClientWebSocket NParseWebsocketConnection;
         private CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
-        public SignalrPlayerHub(IAppDispatcher appDispatcher, LogParser logParser, ActivePlayer activePlayer, SpellWindowViewModel spellWindowViewModel)
+        public SignalrPlayerHub(IAppDispatcher appDispatcher, EventsList eventsList, ActivePlayer activePlayer, SpellWindowViewModel spellWindowViewModel, LogParser logParser)
         {
             this.appDispatcher = appDispatcher;
             this.activePlayer = activePlayer;
+            this.eventsList = eventsList;
             this.logParser = logParser;
             this.spellWindowViewModel = spellWindowViewModel;
             var url = "https://www.pigparse.org/EqToolMap";
@@ -93,9 +94,9 @@ namespace EQTool.Models
                 Debug.WriteLine(ex.ToString());
             }
 
-            this.logParser.PlayerLocationEvent += LogParser_PlayerLocationEvent;
-            this.logParser.CampEvent += LogParser_CampEvent;
-            this.logParser.StartCastingEvent += LogParser_StartCastingEvent;
+            this.eventsList.PlayerLocationEvent += LogParser_PlayerLocationEvent;
+            this.eventsList.CampEvent += LogParser_CampEvent;
+            this.eventsList.StartCastingEvent += LogParser_StartCastingEvent;
             timer = new System.Timers.Timer();
             timer.Elapsed += Timer_Elapsed;
             timer.Interval = 1000 * 10;
@@ -110,7 +111,7 @@ namespace EQTool.Models
             }
         }
 
-        private void LogParser_CampEvent(object sender, LogParser.CampEventArgs e)
+        private void LogParser_CampEvent(object sender, EventsList.CampEventArgs e)
         {
             this.LastPlayer = null;
         }
@@ -259,7 +260,7 @@ namespace EQTool.Models
                 });
             }
         }
-        private void LogParser_StartCastingEvent(object sender, LogParser.SpellEventArgs e)
+        private void LogParser_StartCastingEvent(object sender, EventsList.SpellEventArgs e)
         {
             if (e.Spell.IsYou &&
                 this.LastPlayer != null &&
@@ -364,7 +365,7 @@ namespace EQTool.Models
             return zoneName;
         }
 
-        private void LogParser_PlayerLocationEvent(object sender, LogParser.PlayerLocationEventArgs e)
+        private void LogParser_PlayerLocationEvent(object sender, EventsList.PlayerLocationEventArgs e)
         {
             if (this.activePlayer?.Player?.Server != null)
             {

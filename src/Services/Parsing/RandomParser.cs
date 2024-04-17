@@ -1,8 +1,9 @@
-﻿using System;
+﻿using EQTool.Services.Parsing;
+using System;
 
 namespace EQTool.Services
 {
-    public class RandomParser
+    public class RandomParser : ILogParser
     {
         public class RandomRollData
         {
@@ -18,13 +19,20 @@ namespace EQTool.Services
         private string RollMessage3nd = "but this time it turned up a ";
         private string PlayerRollName = string.Empty;
         private DateTime RollTime = DateTime.MinValue;
+        private readonly EventsList eventsList;
 
-        public RandomRollData Parse(string line)
+        public RandomParser(EventsList eventsList)
+        {
+            this.eventsList = eventsList;
+        }
+
+        public bool Evaluate(string line)
         {
             if (line.StartsWith(RollMessage))
             {
                 PlayerRollName = line.Substring(RollMessage.Length).TrimEnd('.');
                 RollTime = DateTime.UtcNow;
+                return true;
             }
             else if (line.StartsWith(RollMessage2nd))
             {
@@ -32,7 +40,7 @@ namespace EQTool.Services
                 {
                     PlayerRollName = string.Empty;
                     RollTime = DateTime.MinValue;
-                    return null;
+                    return true;
                 }
                 var maxroll = line.Substring(RollMessage2nd.Length);
                 var commaindex = maxroll.IndexOf(',');
@@ -46,17 +54,21 @@ namespace EQTool.Services
                     var roll = line.Substring(commaindex + RollMessage3nd.Length).TrimEnd('.');
                     if (int.TryParse(roll, out var rollint) && int.TryParse(maxroll, out var maxrollint))
                     {
-                        return new RandomRollData
+                        this.eventsList.Handle(new EventsList.RandomRollEventArgs
                         {
-                            PlayerName = PlayerRollName,
-                            MaxRoll = maxrollint,
-                            Roll = rollint
-                        };
+                            RandomRollData = new RandomRollData
+                            {
+                                PlayerName = PlayerRollName,
+                                MaxRoll = maxrollint,
+                                Roll = rollint
+                            }
+                        });
+                        return true;
                     }
                 }
             }
 
-            return null;
+            return false;
         }
     }
 }

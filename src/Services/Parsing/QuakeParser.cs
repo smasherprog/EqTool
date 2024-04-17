@@ -1,4 +1,5 @@
 ﻿using EQTool.Services.Parsing;
+using static EQTool.Services.EventsList;
 
 namespace EQTool.Services
 {
@@ -11,10 +12,14 @@ namespace EQTool.Services
             this.eventsList = eventsList;
         }
 
-
-        public bool IsQuake(string line)
+        public bool Evaluate(string line)
         {
-            return line.Contains("You feel you should get somewhere safe as soon as possible");
+            if (line.Contains("You feel you should get somewhere safe as soon as possible"))
+            {
+                this.eventsList.Handle(new QuakeArgs());
+                return true;
+            }
+            return false;
         }
     }
 }

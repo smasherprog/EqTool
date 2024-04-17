@@ -16,26 +16,26 @@ namespace EQTool
     /// </summary>
     public partial class MobInfo : BaseSaveStateWindow
     {
-        private readonly LogParser logParser;
+        private readonly EventsList eventsList;
         private readonly ViewModels.MobInfoViewModel mobInfoViewModel;
         private readonly WikiApi wikiApi;
         private readonly PigParseApi pigParseApi;
         private readonly ActivePlayer activePlayer;
-        public MobInfo(ActivePlayer activePlayer, PigParseApi pigParseApi, WikiApi wikiApi, LogParser logParser, EQToolSettings settings, EQToolSettingsLoad toolSettingsLoad, LoggingService loggingService)
+        public MobInfo(ActivePlayer activePlayer, PigParseApi pigParseApi, WikiApi wikiApi, EventsList eventsList, EQToolSettings settings, EQToolSettingsLoad toolSettingsLoad, LoggingService loggingService)
             : base(settings.MobWindowState, toolSettingsLoad, settings)
         {
             loggingService.Log(string.Empty, EventType.OpenMobInfo, activePlayer?.Player?.Server);
             this.activePlayer = activePlayer;
             this.pigParseApi = pigParseApi;
             this.wikiApi = wikiApi;
-            this.logParser = logParser;
+            this.eventsList = eventsList;
             DataContext = mobInfoViewModel = new ViewModels.MobInfoViewModel();
             InitializeComponent();
             base.Init();
-            this.logParser.ConEvent += LogParser_ConEvent;
+            this.eventsList.ConEvent += LogParser_ConEvent;
         }
 
-        private void LogParser_ConEvent(object sender, LogParser.ConEventArgs e)
+        private void LogParser_ConEvent(object sender, EventsList.ConEventArgs e)
         {
             try
             {
@@ -72,9 +72,9 @@ namespace EQTool
 
         protected override void OnClosing(CancelEventArgs e)
         {
-            if (logParser != null)
+            if (eventsList != null)
             {
-                logParser.ConEvent -= LogParser_ConEvent;
+                eventsList.ConEvent -= LogParser_ConEvent;
             }
             base.OnClosing(e);
         }
