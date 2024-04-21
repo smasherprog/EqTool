@@ -65,7 +65,7 @@
                         <TextBlock>
                              <Hyperlink NavigateUri="{Binding Url}" RequestNavigate="Hyperlink_RequestNavigate">
                                  <TextBlock Text="{Binding Name}"></TextBlock>     
-                                 <Button Visibility="{Binding HaseUrl}" Margin="1" FontSize="7" Width="14" Height="14" Padding="0" ToolTip="Open in Web Browser" Click="Hyperlink_RequestNavigatebutton">
+                                 <Button Visibility="{Binding HasUrl}" Margin="1" FontSize="7" Width="14" Height="14" Padding="0" ToolTip="Open in Web Browser" Click="Hyperlink_RequestNavigatebutton">
                                     <Image Source="pack://application:,,,/HyperlinkForward.png"/>
                                 </Button>
                              </Hyperlink> 
@@ -125,10 +125,10 @@
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel>
-                                    <TextBlock Visibility="{Binding HaseUrl}">
+                                    <TextBlock Visibility="{Binding HasUrl}">
                                          <Hyperlink NavigateUri="{Binding Url}" RequestNavigate="Hyperlink_RequestNavigate">
                                           <TextBlock Text="{Binding Name}" Style="{StaticResource MyMobUrlSyle}"></TextBlock>     
-                                             <Button Visibility="{Binding HaseUrl}" Margin="1" FontSize="7" Width="14" Height="14" Padding="0" ToolTip="Open in Web Browser" Click="Hyperlink_RequestNavigatebutton">
+                                             <Button Visibility="{Binding HasUrl}" Margin="1" FontSize="7" Width="14" Height="14" Padding="0" ToolTip="Open in Web Browser" Click="Hyperlink_RequestNavigatebutton">
                                                 <Image Source="pack://application:,,,/HyperlinkForward.png"/>
                                             </Button>
                                          </Hyperlink> 
@@ -156,10 +156,10 @@
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel>
-                                    <TextBlock Visibility="{Binding HaseUrl}">
+                                    <TextBlock Visibility="{Binding HasUrl}">
                                          <Hyperlink NavigateUri="{Binding Url}" RequestNavigate="Hyperlink_RequestNavigate">
                                           <TextBlock Text="{Binding Name}" Style="{StaticResource MyMobUrlSyle}"></TextBlock>     
-                                             <Button Visibility="{Binding HaseUrl}" Margin="1" FontSize="7" Width="14" Height="14" Padding="0" ToolTip="Open in Web Browser" Click="Hyperlink_RequestNavigatebutton">
+                                             <Button Visibility="{Binding HasUrl}" Margin="1" FontSize="7" Width="14" Height="14" Padding="0" ToolTip="Open in Web Browser" Click="Hyperlink_RequestNavigatebutton">
                                                 <Image Source="pack://application:,,,/HyperlinkForward.png"/>
                                             </Button>
                                          </Hyperlink> 
@@ -187,10 +187,10 @@
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel>
-                                    <TextBlock Visibility="{Binding HaseUrl}">
+                                    <TextBlock Visibility="{Binding HasUrl}">
                                          <Hyperlink NavigateUri="{Binding Url}" RequestNavigate="Hyperlink_RequestNavigate">
                                           <TextBlock Text="{Binding Name}" Style="{StaticResource MyMobUrlSyle}"></TextBlock>     
-                                             <Button Visibility="{Binding HaseUrl}" Margin="1" FontSize="7" Width="14" Height="14" Padding="0" ToolTip="Open in Web Browser" Click="Hyperlink_RequestNavigatebutton">
+                                             <Button Visibility="{Binding HasUrl}" Margin="1" FontSize="7" Width="14" Height="14" Padding="0" ToolTip="Open in Web Browser" Click="Hyperlink_RequestNavigatebutton">
                                                 <Image Source="pack://application:,,,/HyperlinkForward.png"/>
                                             </Button>
                                          </Hyperlink> 
@@ -223,7 +223,7 @@
                                     <GridViewColumn.CellTemplate>
                                         <DataTemplate>
                                             <StackPanel Orientation="Horizontal" MinWidth="100">
-                                                <TextBlock Visibility="{Binding HaseUrl}">
+                                                <TextBlock Visibility="{Binding HasUrl}">
                                                     <Hyperlink NavigateUri="{Binding Url}" RequestNavigate="Hyperlink_RequestNavigate">
                                                         <TextBlock Text="{Binding Name}" Style="{StaticResource MyMobUrlSyle}"></TextBlock>     
                                                     </Hyperlink> 
@@ -269,10 +269,10 @@
                         <ListView.ItemTemplate>
                             <DataTemplate>
                                 <StackPanel>
-                                    <TextBlock Visibility="{Binding HaseUrl}">
+                                    <TextBlock Visibility="{Binding HasUrl}">
                                          <Hyperlink NavigateUri="{Binding Url}" RequestNavigate="Hyperlink_RequestNavigate">
                                           <TextBlock Text="{Binding Name}" Style="{StaticResource MyMobUrlSyle}"></TextBlock>     
-                                             <Button Visibility="{Binding HaseUrl}" Margin="1" FontSize="7" Width="14" Height="14" Padding="0" ToolTip="Open in Web Browser" Click="Hyperlink_RequestNavigatebutton">
+                                             <Button Visibility="{Binding HasUrl}" Margin="1" FontSize="7" Width="14" Height="14" Padding="0" ToolTip="Open in Web Browser" Click="Hyperlink_RequestNavigatebutton">
                                                 <Image Source="pack://application:,,,/HyperlinkForward.png"/>
                                             </Button>
                                          </Hyperlink> 

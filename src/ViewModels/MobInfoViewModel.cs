@@ -33,14 +33,14 @@ namespace EQTool.ViewModels
             {
                 _Url = value;
                 OnPropertyChanged();
-                OnPropertyChanged(nameof(HaseUrl));
+                OnPropertyChanged(nameof(HasUrl));
                 OnPropertyChanged(nameof(HaseNoUrl));
             }
         }
 
         public Visibility HaseNoUrl => string.IsNullOrWhiteSpace(Url) ? Visibility.Visible : Visibility.Collapsed;
 
-        public Visibility HaseUrl => string.IsNullOrWhiteSpace(Url) ? Visibility.Collapsed : Visibility.Visible;
+        public Visibility HasUrl => string.IsNullOrWhiteSpace(Url) ? Visibility.Collapsed : Visibility.Visible;
 
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName] string name = null)
@@ -127,11 +127,11 @@ namespace EQTool.ViewModels
             {
                 _Url = value;
                 OnPropertyChanged();
-                OnPropertyChanged(nameof(HaseUrl));
+                OnPropertyChanged(nameof(HasUrl));
             }
         }
 
-        public Visibility HaseUrl => string.IsNullOrWhiteSpace(Url) ? Visibility.Collapsed : Visibility.Visible;
+        public Visibility HasUrl => string.IsNullOrWhiteSpace(Url) ? Visibility.Collapsed : Visibility.Visible;
 
         private string _ImageUrl = string.Empty;
 

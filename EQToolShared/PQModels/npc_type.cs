@@ -1,0 +1,106 @@
+﻿using System;
+
+namespace EQToolShared.PQModels
+{
+    [Serializable]
+    public class npc_type
+    {
+        public int id { get; set; }
+        public string name { get; set; }
+        public string lastname { get; set; }
+        public int level { get; set; }
+        public int race { get; set; }
+        public int Class { get; set; }
+        public int bodytype { get; set; }
+        public int hp { get; set; }
+        public int mana { get; set; }
+        public int gender { get; set; }
+        public int texture { get; set; }
+        public int helmtexture { get; set; }
+        public float size { get; set; }
+        public int hp_regen_rate { get; set; }
+        public int mana_regen_rate { get; set; }
+        public int loottable_id { get; set; }
+        public int merchant_id { get; set; }
+        public int npc_spells_id { get; set; }
+        public int npc_spells_effects_id { get; set; }
+        public int npc_faction_id { get; set; }
+        public int mindmg { get; set; }
+        public int maxdmg { get; set; }
+        public int attack_count { get; set; }
+        public string special_abilities { get; set; }
+        public int aggroradius { get; set; }
+        public int assistradius { get; set; }
+        public int face { get; set; }
+        public int luclin_hairstyle { get; set; }
+        public int luclin_haircolor { get; set; }
+        public int luclin_eyecolor { get; set; }
+        public int luclin_eyecolor2 { get; set; }
+        public int luclin_beardcolor { get; set; }
+        public int luclin_beard { get; set; }
+        public int armortint_id { get; set; }
+        public int armortint_red { get; set; }
+        public int armortint_green { get; set; }
+        public int armortint_blue { get; set; }
+        public int d_melee_texture1 { get; set; }
+        public int d_melee_texture2 { get; set; }
+        public int prim_melee_type { get; set; }
+        public int sec_melee_type { get; set; }
+        public int ranged_type { get; set; }
+        public float runspeed { get; set; }
+        public int MR { get; set; }
+        public int CR { get; set; }
+        public int DR { get; set; }
+        public int FR { get; set; }
+        public int PR { get; set; }
+        public int see_invis { get; set; }
+        public int see_invis_undead { get; set; }
+        public int qglobal { get; set; }
+        public int AC { get; set; }
+        public int npc_aggro { get; set; }
+        public int spawn_limit { get; set; }
+        public int attack_delay { get; set; }
+        public int STR { get; set; }
+        public int STA { get; set; }
+        public int DEX { get; set; }
+        public int AGI { get; set; }
+        public int _INT { get; set; }
+        public int WIS { get; set; }
+        public int CHA { get; set; }
+        public int see_sneak { get; set; }
+        public int see_improved_hide { get; set; }
+        public int ATK { get; set; }
+        public int Accuracy { get; set; }
+        public int slow_mitigation { get; set; }
+        public int maxlevel { get; set; }
+        public int scalerate { get; set; }
+        public int private_corpse { get; set; }
+        public int unique_spawn_by_name { get; set; }
+        public int underwater { get; set; }
+        public int isques { get; set; }
+        public int emoteid { get; set; }
+        public float spellscale { get; set; }
+        public float healscale { get; set; }
+        public int raid_target { get; set; }
+        public int chesttexture { get; set; }
+        public int armtexture { get; set; }
+        public int bracertexture { get; set; }
+        public int handtexture { get; set; }
+        public int legtexture { get; set; }
+        public int feettexture { get; set; }
+        public int light { get; set; }
+        public float walkspeed { get; set; }
+        public int combat_hp_regen { get; set; }
+        public int combat_mana_regen { get; set; }
+        public int aggro_pc { get; set; }
+        public float ignore_distance { get; set; }
+        public int encounter { get; set; }
+        public int ignore_despawn { get; set; }
+        public int avoidance { get; set; }
+        public int exp_pct { get; set; }
+        public int greed { get; set; }
+        public int engage_notice { get; set; }
+        public int stuck_behavior { get; set; }
+        public int flymode { get; set; }
+    }
+}

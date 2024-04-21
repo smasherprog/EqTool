@@ -1,6 +1,7 @@
 ﻿using EQTool.Models;
 using EQTool.ViewModels;
 using EQToolShared.Enums;
+using EQToolShared.Services;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;

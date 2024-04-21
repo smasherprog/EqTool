@@ -89,12 +89,18 @@
     <Compile Include="Map\ZoneSpawnTimes.cs" />
     <Compile Include="MasterNPCList.cs" />
     <Compile Include="MasterItemList.cs" />
+    <Compile Include="PQModels\PQData.cs" />
+    <Compile Include="PQModels\item.cs" />
+    <Compile Include="PQModels\loottable_entry.cs" />
+    <Compile Include="PQModels\lootdrop_entry.cs" />
+    <Compile Include="PQModels\npc_type.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
+    <Compile Include="Services\BinarySerializer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\.editorconfig">
