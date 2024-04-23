@@ -2,7 +2,7 @@
 
 namespace EQToolShared.PQModels
 {
-    [Serializable]
+
     public class item
     {
         public int id { get; set; }
