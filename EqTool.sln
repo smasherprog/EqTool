@@ -16,6 +16,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.editorconfig = .editorconfig
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PQDBParser", "PQDBParser\PQDBParser.csproj", "{A1591C23-D80B-42B5-A952-6D24503ADF03}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Beta|Any CPU = Beta|Any CPU
@@ -127,6 +129,30 @@ Global
 		{DEBDC0EE-39F6-413D-80D7-955CA98A85CC}.Test|Any CPU.Build.0 = Test|Any CPU
 		{DEBDC0EE-39F6-413D-80D7-955CA98A85CC}.Test|x86.ActiveCfg = Test|Any CPU
 		{DEBDC0EE-39F6-413D-80D7-955CA98A85CC}.Test|x86.Build.0 = Test|Any CPU
+		{A1591C23-D80B-42B5-A952-6D24503ADF03}.Beta|Any CPU.ActiveCfg = Debug|Any CPU
+		{A1591C23-D80B-42B5-A952-6D24503ADF03}.Beta|Any CPU.Build.0 = Debug|Any CPU
+		{A1591C23-D80B-42B5-A952-6D24503ADF03}.Beta|x86.ActiveCfg = Debug|Any CPU
+		{A1591C23-D80B-42B5-A952-6D24503ADF03}.Beta|x86.Build.0 = Debug|Any CPU
+		{A1591C23-D80B-42B5-A952-6D24503ADF03}.Debug_Quarm|Any CPU.ActiveCfg = Debug|Any CPU
+		{A1591C23-D80B-42B5-A952-6D24503ADF03}.Debug_Quarm|Any CPU.Build.0 = Debug|Any CPU
+		{A1591C23-D80B-42B5-A952-6D24503ADF03}.Debug_Quarm|x86.ActiveCfg = Debug|Any CPU
+		{A1591C23-D80B-42B5-A952-6D24503ADF03}.Debug_Quarm|x86.Build.0 = Debug|Any CPU
+		{A1591C23-D80B-42B5-A952-6D24503ADF03}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A1591C23-D80B-42B5-A952-6D24503ADF03}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A1591C23-D80B-42B5-A952-6D24503ADF03}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{A1591C23-D80B-42B5-A952-6D24503ADF03}.Debug|x86.Build.0 = Debug|Any CPU
+		{A1591C23-D80B-42B5-A952-6D24503ADF03}.Quarm|Any CPU.ActiveCfg = Debug|Any CPU
+		{A1591C23-D80B-42B5-A952-6D24503ADF03}.Quarm|Any CPU.Build.0 = Debug|Any CPU
+		{A1591C23-D80B-42B5-A952-6D24503ADF03}.Quarm|x86.ActiveCfg = Debug|Any CPU
+		{A1591C23-D80B-42B5-A952-6D24503ADF03}.Quarm|x86.Build.0 = Debug|Any CPU
+		{A1591C23-D80B-42B5-A952-6D24503ADF03}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A1591C23-D80B-42B5-A952-6D24503ADF03}.Release|Any CPU.Build.0 = Release|Any CPU
+		{A1591C23-D80B-42B5-A952-6D24503ADF03}.Release|x86.ActiveCfg = Release|Any CPU
+		{A1591C23-D80B-42B5-A952-6D24503ADF03}.Release|x86.Build.0 = Release|Any CPU
+		{A1591C23-D80B-42B5-A952-6D24503ADF03}.Test|Any CPU.ActiveCfg = Debug|Any CPU
+		{A1591C23-D80B-42B5-A952-6D24503ADF03}.Test|Any CPU.Build.0 = Debug|Any CPU
+		{A1591C23-D80B-42B5-A952-6D24503ADF03}.Test|x86.ActiveCfg = Debug|Any CPU
+		{A1591C23-D80B-42B5-A952-6D24503ADF03}.Test|x86.Build.0 = Debug|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

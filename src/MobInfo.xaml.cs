@@ -42,7 +42,7 @@ namespace EQTool
                 if (e.Name != mobInfoViewModel.Name)
                 {
                     mobInfoViewModel.Results = wikiApi.GetData(e.Name);
-                    var items = mobInfoViewModel.KnownLoot.Where(a => a.HaseUrl == Visibility.Visible).Select(a => a.Name?.Trim()).Where(a => !string.IsNullOrWhiteSpace(a)).ToList();
+                    var items = mobInfoViewModel.KnownLoot.Where(a => a.HasUrl == Visibility.Visible).Select(a => a.Name?.Trim()).Where(a => !string.IsNullOrWhiteSpace(a)).ToList();
                     if (activePlayer?.Player?.Server != null && items.Any())
                     {
                         var itemprices = pigParseApi.GetData(items, activePlayer.Player.Server.Value);

@@ -1057,7 +1057,7 @@ namespace EQToolShared.Map
             ZoneInfoMap.Add("kurn", new ZoneInfo
             {
                 Name = "kurn",
-                ShowAllMapLevels = true,
+                ShowAllMapLevels = false,
                 ZoneLevelHeight = 10,
                 NotableNPCs = new List<string>()
                 {
@@ -2024,6 +2024,26 @@ namespace EQToolShared.Map
             // add customer timers here for PQ
             if (isProjectQ)
             {
+                ZoneInfoMap.Add("towerfrost", new ZoneInfo
+                {
+                    Name = "towerfrost",
+                    ShowAllMapLevels = false,
+                    ZoneLevelHeight = 10,
+                    NotableNPCs = new List<string>()
+                {
+                    "Fragment of Bargynn","Avatar of Finance", "Arch Icebone Skeleton"
+                },
+                    RespawnTime = new TimeSpan(0, 4, 0)
+                });
+                ZoneInfoMap.Add("myriah", new ZoneInfo
+                {
+                    Name = "myriah",
+                    ShowAllMapLevels = true,
+                    ZoneLevelHeight = 10,
+                    NotableNPCs = new List<string>(),
+                    RespawnTime = new TimeSpan(0, 4, 0)
+                });
+
                 ZoneInfoMap["unrest"].RespawnTime = new TimeSpan(0, 8, 0);
                 ZoneInfoMap["mistmoore"].RespawnTime = new TimeSpan(0, 8, 0);
                 ZoneInfoMap["najena"].RespawnTime = new TimeSpan(0, 8, 0);
@@ -2106,6 +2126,7 @@ namespace EQToolShared.Map
             ZoneNameMapper.Add("surefall glade", "qrg");
             ZoneNameMapper.Add("innothule swamp", "innothule");
             ZoneNameMapper.Add("halas", "halas");
+            ZoneNameMapper.Add("domain of frost", "myriah");
             ZoneNameMapper.Add("solusek's eye", "soldunga");
             ZoneNameMapper.Add("estate of unrest", "unrest");
             ZoneNameMapper.Add("blackburrow", "blackburrow");
@@ -2146,6 +2167,7 @@ namespace EQToolShared.Map
             ZoneNameMapper.Add("cabilis west", "cabwest");
             ZoneNameMapper.Add("lake rathetear", "lakerathe");
             ZoneNameMapper.Add("kurn's tower", "kurn");
+            ZoneNameMapper.Add("oops, all icebones!", "towerfrost"); 
             ZoneNameMapper.Add("dagnor's cauldron", "cauldron");
             ZoneNameMapper.Add("western wastes", "westwastes");
             ZoneNameMapper.Add("temple of veeshan", "templeveeshan");

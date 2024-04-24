@@ -104,6 +104,7 @@ namespace EQTool.Services
                     var prerelease = false;
 #if BETA
                     prerelease = true;
+                    currentversion = currentversion.Replace("Beta-", string.Empty);
 #endif
                     var json = httpclient.GetAsync(new Uri("https://api.github.com/repos/smasherprog/EqTool/releases")).Result.Content.ReadAsStringAsync().Result;
                     var githubdata = JsonConvert.DeserializeObject<List<GithubVersionInfo>>(json);

@@ -1,6 +1,7 @@
 ﻿using EQTool.Models;
 using EQTool.ViewModels;
 using EQToolShared.Enums;
+using EQToolShared.Services;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -109,7 +110,6 @@ namespace EQTool.Services
             Debug.WriteLine($"Time to load map {zone} {stop.ElapsedMilliseconds}");
             try
             {
-
                 BinarySerializer.WriteToBinaryFile(checkformanualmaps + "/" + zone + ".bin", d);
             }
             catch (Exception ex)
