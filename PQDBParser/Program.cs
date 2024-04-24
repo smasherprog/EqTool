@@ -24,8 +24,15 @@ namespace PQDBParser
                 lootdrop_Entries = GetAll<lootdrop_entry>(data, "INSERT INTO `lootdrop_entries` VALUES ")
             };
             var checkformanualmaps = System.IO.Directory.GetCurrentDirectory();
-            BinarySerializer.WriteToBinaryFile(checkformanualmaps + "/outdata.bin", r);
-
+            BinarySerializer.WriteToBinaryFile(checkformanualmaps + "/../../../src/pqnpcdata.bin", r);
+            r = new PQData
+            {
+                Items = new List<item>(),
+                npc_Types = new List<npc_type>(),
+                loottable_Entries = new List<loottable_entry>(),
+                lootdrop_Entries = new List<lootdrop_entry>()
+            };
+            BinarySerializer.WriteToBinaryFile(checkformanualmaps + "/../../../src/emptypqnpcdata.bin", r);
         }
         static object ChangeType(object value, Type conversion)
         {
