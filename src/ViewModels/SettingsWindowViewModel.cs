@@ -44,8 +44,12 @@ namespace EQTool.ViewModels
                 var listitem = new BoolStringClass { TheText = item.ToString(), TheValue = item, IsChecked = false };
                 this.SelectedPlayerClasses.Add(listitem);
             }
+            this.InstalledVoices = new ObservableCollection<string>();
+            if (Environment.OSVersion.Platform == PlatformID.Win32NT)
+            {
+                this.InstalledVoices = new ObservableCollection<string>(new SpeechSynthesizer().GetInstalledVoices().Select(a => a.VoiceInfo.Name).ToList());
+            }
 
-            this.InstalledVoices = new ObservableCollection<string>(new SpeechSynthesizer().GetInstalledVoices().Select(a => a.VoiceInfo.Name).ToList());
             this.SelectedVoice = this.toolSettings.SelectedVoice;
             if (string.IsNullOrWhiteSpace(this.SelectedVoice))
             {

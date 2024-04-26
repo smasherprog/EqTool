@@ -13,7 +13,6 @@ using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Speech.Synthesis;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -816,9 +815,12 @@ namespace EQTool
 
             System.Threading.Tasks.Task.Factory.StartNew(() =>
             {
-                var synth = new SpeechSynthesizer();
-                synth.SelectVoice(this.SettingsWindowData.SelectedVoice);
-                synth.Speak($"You resist the Dragon Roar spell!");
+                if (Environment.OSVersion.Platform == PlatformID.Win32NT)
+                {
+                    var synth = new System.Speech.Synthesis.SpeechSynthesizer();
+                    synth.SelectVoice(this.SettingsWindowData.SelectedVoice);
+                    synth.Speak($"You resist the Dragon Roar spell!");
+                }
             });
         }
 

@@ -3,7 +3,6 @@ using EQTool.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Speech.Synthesis;
 
 namespace EQTool.Services
 {
@@ -185,17 +184,20 @@ namespace EQTool.Services
         {
             System.Threading.Tasks.Task.Factory.StartNew(() =>
             {
-                var synth = new SpeechSynthesizer();
-                if (string.IsNullOrWhiteSpace(this.eQToolSettings.SelectedVoice))
+                if (Environment.OSVersion.Platform == PlatformID.Win32NT)
                 {
-                    synth.SetOutputToDefaultAudioDevice();
-                }
-                else
-                {
-                    synth.SelectVoice(this.eQToolSettings.SelectedVoice);
-                }
+                    var synth = new System.Speech.Synthesis.SpeechSynthesizer();
+                    if (string.IsNullOrWhiteSpace(this.eQToolSettings.SelectedVoice))
+                    {
+                        synth.SetOutputToDefaultAudioDevice();
+                    }
+                    else
+                    {
+                        synth.SelectVoice(this.eQToolSettings.SelectedVoice);
+                    }
 
-                synth.Speak(text);
+                    synth.Speak(text);
+                }
             });
         }
 
