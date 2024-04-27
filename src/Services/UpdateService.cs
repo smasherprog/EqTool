@@ -111,7 +111,13 @@ namespace EQTool.Services
                     var json = httpclient.GetAsync(new Uri("https://api.github.com/repos/smasherprog/EqTool/releases")).Result.Content.ReadAsStringAsync().Result;
                     var githubdata = JsonConvert.DeserializeObject<List<GithubVersionInfo>>(json);
                     var releases = githubdata.OrderByDescending(a => a.published_at).Where(a => a.name != null).ToList();
-                    var release = releases.FirstOrDefault(a => a.prerelease == prerelease && !a.name.Contains("Quarm"));
+                    GithubVersionInfo release;
+#if RELEASE
+                    release = releases.FirstOrDefault(a => a.prerelease == prerelease && !a.name.Contains("Quarm") && !a.name.Contains("Beta") && !a.name.Contains("Linux"));
+#endif
+#if BETA
+                    release = releases.FirstOrDefault(a => a.name.Contains("Beta"));
+#endif
 #if QUARM
                     release = releases.FirstOrDefault(a => a.name.Contains("Quarm"));
 #endif
