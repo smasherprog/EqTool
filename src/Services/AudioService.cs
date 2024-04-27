@@ -182,23 +182,22 @@ namespace EQTool.Services
 
         private void PlayResource(string text)
         {
+#if !LINUX
             System.Threading.Tasks.Task.Factory.StartNew(() =>
             {
-                if (Environment.OSVersion.Platform == PlatformID.Win32NT)
+                var synth = new System.Speech.Synthesis.SpeechSynthesizer();
+                if (string.IsNullOrWhiteSpace(this.eQToolSettings.SelectedVoice))
                 {
-                    var synth = new System.Speech.Synthesis.SpeechSynthesizer();
-                    if (string.IsNullOrWhiteSpace(this.eQToolSettings.SelectedVoice))
-                    {
-                        synth.SetOutputToDefaultAudioDevice();
-                    }
-                    else
-                    {
-                        synth.SelectVoice(this.eQToolSettings.SelectedVoice);
-                    }
-
-                    synth.Speak(text);
+                    synth.SetOutputToDefaultAudioDevice();
                 }
+                else
+                {
+                    synth.SelectVoice(this.eQToolSettings.SelectedVoice);
+                }
+
+                synth.Speak(text);
             });
+#endif
         }
 
         private void LogParser_EnrageEvent(object sender, EnrageParser.EnrageEvent e)

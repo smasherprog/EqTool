@@ -256,11 +256,13 @@ namespace EQTool
             var updates = new System.Windows.Forms.MenuItem("Check for Update", CheckForUpdates);
             var versionstring = Assembly.GetExecutingAssembly().GetName().Version.ToString();
             var beta = false;
-
+            var linux = false;
 #if BETA || DEBUG
             beta = true;
 #endif
-
+#if LINUX
+            linux = true;
+#endif
             var logo = EQTool.Properties.Resources.pig;
 #if QUARM
             logo = EQTool.Properties.Resources.Quarm;
@@ -269,6 +271,10 @@ namespace EQTool
             {
                 versionstring = "Beta-" + versionstring;
                 logo = EQTool.Properties.Resources.sickpic;
+            }
+            else if (linux)
+            {
+                versionstring = "Linux-" + versionstring;
             }
 
             var version = new System.Windows.Forms.MenuItem(versionstring)

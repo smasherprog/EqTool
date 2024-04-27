@@ -812,16 +812,14 @@ namespace EQTool
             {
                 return;
             }
-
+#if !LINUX
             System.Threading.Tasks.Task.Factory.StartNew(() =>
             {
-                if (Environment.OSVersion.Platform == PlatformID.Win32NT)
-                {
-                    var synth = new System.Speech.Synthesis.SpeechSynthesizer();
-                    synth.SelectVoice(this.SettingsWindowData.SelectedVoice);
-                    synth.Speak($"You resist the Dragon Roar spell!");
-                }
+                var synth = new System.Speech.Synthesis.SpeechSynthesizer();
+                synth.SelectVoice(this.SettingsWindowData.SelectedVoice);
+                synth.Speak($"You resist the Dragon Roar spell!");
             });
+#endif
         }
 
         private void testChChain(object sender, RoutedEventArgs e)

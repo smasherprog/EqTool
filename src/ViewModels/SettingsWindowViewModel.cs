@@ -7,7 +7,6 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Speech.Synthesis;
 using System.Windows;
 
 namespace EQTool.ViewModels
@@ -45,10 +44,9 @@ namespace EQTool.ViewModels
                 this.SelectedPlayerClasses.Add(listitem);
             }
             this.InstalledVoices = new ObservableCollection<string>();
-            if (Environment.OSVersion.Platform == PlatformID.Win32NT)
-            {
-                this.InstalledVoices = new ObservableCollection<string>(new SpeechSynthesizer().GetInstalledVoices().Select(a => a.VoiceInfo.Name).ToList());
-            }
+#if !LINUX
+            this.InstalledVoices = new ObservableCollection<string>(new System.Speech.Synthesis.SpeechSynthesizer().GetInstalledVoices().Select(a => a.VoiceInfo.Name).ToList());
+#endif
 
             this.SelectedVoice = this.toolSettings.SelectedVoice;
             if (string.IsNullOrWhiteSpace(this.SelectedVoice))

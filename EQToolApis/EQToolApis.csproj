@@ -8,7 +8,7 @@
     <ImplicitUsings>enable</ImplicitUsings>
     <ApplicationInsightsResourceId>/subscriptions/fc1796be-a6b4-4ed9-99dd-5287fc0c4375/resourceGroups/EQTool/providers/microsoft.insights/components/PigParse</ApplicationInsightsResourceId>
     <UserSecretsId>62ce98aa-651d-4005-b774-d9d1dd57e122</UserSecretsId>
-    <Configurations>Debug;Release;Test;Debug_Quarm</Configurations>
+    <Configurations>Debug;Release;Test;Debug_Quarm;Linux</Configurations>
   </PropertyGroup> 
   <ItemGroup>
     <PackageReference Include="Azure.Identity" Version="1.11.2" />
