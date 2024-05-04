@@ -95,38 +95,21 @@ namespace EQTool.Services
             return UpdateStatus.NoUpdateApplied;
         }
 
-        public void CheckForUpdates(string currentversion)
+        public void CheckForUpdates(string currentversion1, string versiontype)
         {
             _ = Task.Factory.StartNew(() =>
             {
                 try
                 {
                     var prerelease = false;
-#if BETA
-                    prerelease = true;
-                    currentversion = currentversion.Replace("Beta-", string.Empty);
-#elif LINUX
-                    currentversion = currentversion.Replace("Linux-", string.Empty);
-#endif
+                    var version = new string(currentversion1.Where(a => char.IsDigit(a) || a == '.').ToArray());
                     var json = httpclient.GetAsync(new Uri("https://api.github.com/repos/smasherprog/EqTool/releases")).Result.Content.ReadAsStringAsync().Result;
                     var githubdata = JsonConvert.DeserializeObject<List<GithubVersionInfo>>(json);
-                    var releases = githubdata.OrderByDescending(a => a.published_at).Where(a => a.name != null).ToList();
-                    GithubVersionInfo release;
-#if RELEASE
-                    release = releases.FirstOrDefault(a => a.prerelease == prerelease && !a.name.Contains("Quarm") && !a.name.Contains("Beta") && !a.name.Contains("Linux"));
-#endif
-#if BETA
-                    release = releases.FirstOrDefault(a => a.name.Contains("Beta"));
-#endif
-#if QUARM
-                    release = releases.FirstOrDefault(a => a.name.Contains("Quarm"));
-#endif
-#if LINUX
-                    release = releases.FirstOrDefault(a => a.name.Contains("Linux"));
-#endif
-                    var downloadurl = release.assets.FirstOrDefault(a => !string.IsNullOrWhiteSpace(a.browser_download_url))?.browser_download_url;
+                    var releases = githubdata.OrderByDescending(a => a.published_at).Where(a => a.name != null && a.prerelease && a.assets != null && a.assets.Any()).ToList();
+                    var release = releases.FirstOrDefault();
+                    var downloadurl = release.assets.FirstOrDefault(a => !string.IsNullOrWhiteSpace(a.browser_download_url) && a.browser_download_url.ToLower().Contains(versiontype.ToLower()))?.browser_download_url;
 
-                    if (currentversion != release.tag_name)
+                    if (version != release.tag_name)
                     {
                         this.appDispatcher.DispatchUI(() =>
                         {

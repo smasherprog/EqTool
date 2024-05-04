@@ -84,7 +84,7 @@ namespace EQTool
 
         public void CheckForUpdates(object sender, EventArgs e)
         {
-            new UpdateService().CheckForUpdates(Version);
+            new UpdateService().CheckForUpdates(Version, VersionType);
         }
 
         public class ExceptionRequest
@@ -217,7 +217,7 @@ namespace EQTool
             else if (did_update == UpdateService.UpdateStatus.NoUpdateApplied)
             {
 #if !DEBUG
-                updateservice.CheckForUpdates(Version);
+                updateservice.CheckForUpdates(Version, VersionType);
 #endif
             }
 
@@ -256,7 +256,7 @@ namespace EQTool
             var updates = new System.Windows.Forms.MenuItem("Check for Update", CheckForUpdates);
             var versionstring = Assembly.GetExecutingAssembly().GetName().Version.ToString();
             var beta = false;
-            var linux = false;
+
 #if BETA || DEBUG
             beta = true;
 #endif
@@ -269,15 +269,10 @@ namespace EQTool
 #endif
             if (beta)
             {
-                versionstring = "Beta-" + versionstring;
                 logo = EQTool.Properties.Resources.sickpic;
             }
-            else if (linux)
-            {
-                versionstring = "Linux-" + versionstring;
-            }
 
-            var version = new System.Windows.Forms.MenuItem(versionstring)
+            var version = new System.Windows.Forms.MenuItem(Version)
             {
                 Enabled = false
             };
@@ -401,12 +396,12 @@ namespace EQTool
                     {
                         if (spellstuff.SpellList.Count() < 2 && (DateTime.UtcNow - logParser.LastYouActivity).TotalMinutes > 10 && idletime.TotalMinutes > 10)
                         {
-                            new UpdateService().CheckForUpdates(Version);
+                            new UpdateService().CheckForUpdates(Version, VersionType);
                         }
                     }
                     else if ((DateTime.UtcNow - logParser.LastYouActivity).TotalMinutes > 10 && idletime.TotalMinutes > 10)
                     {
-                        new UpdateService().CheckForUpdates(Version);
+                        new UpdateService().CheckForUpdates(Version, VersionType);
                     }
                 }
                 finally
@@ -440,15 +435,27 @@ namespace EQTool
                 {
                     return _Version;
                 }
-                var v = Assembly.GetExecutingAssembly().GetName().Version.ToString();
-#if BETA
-                v = "Beta-" + v;
-#endif
+                var v = VersionType + Assembly.GetExecutingAssembly().GetName().Version.ToString();
                 _Version = v;
                 return _Version;
             }
         }
 
+        public static string VersionType
+        {
+            get
+            {
+#if BETA
+                return "Beta";
+#elif LINUX
+                return "Linux";
+#elif QUARM
+                return "Quarm";
+#else
+                return "P99";
+#endif
+            }
+        }
         public void ToggleMenuButtons(bool value)
         {
             MapMenuItem.Enabled = value;
