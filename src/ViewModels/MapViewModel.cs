@@ -178,7 +178,7 @@ namespace EQTool.ViewModels
             {
                 var xScale = Lastlocation.X - value1.X;
                 var yScale = Lastlocation.Y - value1.Y;
-                MoveMap((int)(yScale * -1), (int)(xScale * -1));
+                MoveMap(yScale * -1, xScale * -1);
             }
         }
 
@@ -586,10 +586,12 @@ namespace EQTool.ViewModels
             _dragging = false;
         }
 
-        public void MoveMap(int x, int y)
+        public void MoveMap(double x, double y)
         {
             var translate = new TranslateTransform(x, y);
             Transform.Matrix = translate.Value * Transform.Matrix;
+            var etranslation = new TranslateTransform(Transform.Value.OffsetX, Transform.Value.OffsetY);
+            EllipseTransform.Matrix = etranslation.Value;
             foreach (UIElement child in Canvas.Children)
             {
                 if (child is ArrowLine c)
@@ -599,6 +601,16 @@ namespace EQTool.ViewModels
                     transform.Matrix = c.RotateTransform.Value * translation.Value;
                     c.RenderTransform = transform;
                 }
+                //if (child is Ellipse e)
+                //{
+                //    if (e.Tag is MapLabel)
+                //    {
+                //        var transform = new MatrixTransform();
+                //        var translation = new TranslateTransform(Transform.Value.OffsetX, Transform.Value.OffsetY);
+                //        transform.Matrix = e.LayoutTransform.Value * translation.Value;
+                //        e.RenderTransform = transform;
+                //    }
+                //}
             }
         }
 

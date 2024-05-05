@@ -133,7 +133,7 @@ namespace EQTool
 
         private void PanAndZoomCanvas_KeyDown(object sender, KeyEventArgs e)
         {
-            var scale = (int)MathHelper.ChangeRange(Math.Max(mapViewModel.AABB.MaxWidth, mapViewModel.AABB.MaxHeight), 500, 35000, 60, 300);
+            var scale = MathHelper.ChangeRange(Math.Max(mapViewModel.AABB.MaxWidth, mapViewModel.AABB.MaxHeight), 500, 35000, 60, 300);
             switch (e.Key)
             {
                 case Key.Left:
