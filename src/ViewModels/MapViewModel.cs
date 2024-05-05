@@ -164,8 +164,14 @@ namespace EQTool.ViewModels
         public void ToggleCenter()
         {
             this.CenterOnPlayer = !this.CenterOnPlayer;
-            CenterMapOnPlayer(Lastlocation);
+            CenterMapOnPlayer();
         }
+
+        public void CenterMapOnPlayer()
+        {
+            this.CenterMapOnPlayer(this.Lastlocation);
+        }
+
         private void CenterMapOnPlayer(Point3D value1)
         {
             if (CenterOnPlayer && CurrentScaling != 1.0f)
@@ -390,6 +396,7 @@ namespace EQTool.ViewModels
                 Transform = Transform
             });
 
+            CenterMapOnPlayer(value1);
             Lastlocation = value1;
             OnPropertyChanged(nameof(Title));
             if (!zoneinfo.ShowAllMapLevels && Canvas.Children.Count > 0)
@@ -425,65 +432,8 @@ namespace EQTool.ViewModels
                     }
                 }
             }
-            //var translate = new TranslateTransform(x, y);
-            //Transform.Matrix = translate.Value * Transform.Matrix;
-            //foreach (UIElement child in Canvas.Children)
-            //{
-            //    if (child is ArrowLine c)
-            //    {
-            //        var transform = new MatrixTransform();
-            //        var translation = new TranslateTransform(Transform.Value.OffsetX, Transform.Value.OffsetY);
-            //        transform.Matrix = c.RotateTransform.Value * translation.Value;
-            //        c.RenderTransform = transform;
-            //    }
-            //    else
-            //    {
-            //        child.RenderTransform = Transform;
-            //    }
-            //}
-            CenterMapOnPlayer();
         }
 
-        private void CenterMapOnPlayer()
-        {
-            if (CenterOnPlayer)
-            {
-                Debug.WriteLine("C " + CenterRelativeToCanvas.ToString());
-                var centerinworldspace = Transform.Inverse.Transform(CenterRelativeToCanvas);
-                centerinworldspace.X += MapOffset.X;
-                centerinworldspace.Y += MapOffset.Y;
-                centerinworldspace.X *= -1;
-                centerinworldspace.Y *= -1;
-                // centerinworldspace = new Point(centerinworldspace.Y, centerinworldspace.X);
-                Debug.WriteLine("C1 " + centerinworldspace.ToString());
-                var loc = new Point(Lastlocation.X, Lastlocation.Y);
-                var delta = Point.Subtract(loc, centerinworldspace);
-                Debug.WriteLine("CD " + delta.ToString());
-                var translate = new TranslateTransform(delta.X, delta.Y);
-                Transform.Matrix = Transform.Matrix * translate.Value;
-                foreach (UIElement child in Canvas.Children)
-                {
-                    if (child is ArrowLine c)
-                    {
-                        var transform = new MatrixTransform();
-                        var translation = new TranslateTransform(Transform.Value.OffsetX, Transform.Value.OffsetY);
-                        transform.Matrix = c.RotateTransform.Value * translation.Value;
-                        c.RenderTransform = transform;
-                    }
-                    else if (child is Ellipse el)
-                    {
-                        var transform = new MatrixTransform();
-                        var translation = new TranslateTransform(Transform.Value.OffsetX, Transform.Value.OffsetY);
-                        transform.Matrix = translation.Value;
-                        el.RenderTransform = transform;
-                    }
-                    else
-                    {
-                        child.RenderTransform = Transform;
-                    }
-                }
-            }
-        }
         public void UpdateTimerWidgest()
         {
             var removewidgets = new List<MapWidget>();

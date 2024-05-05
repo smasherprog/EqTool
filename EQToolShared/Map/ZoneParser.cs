@@ -1098,7 +1098,7 @@ namespace EQToolShared.Map
                 {
                     "",
                 },
-                RespawnTime = new TimeSpan(0, 6, 0)
+                RespawnTime = new TimeSpan(0, 6, 40)
             });
             ZoneInfoMap.Add("lavastorm", new ZoneInfo
             {
@@ -2167,7 +2167,7 @@ namespace EQToolShared.Map
             ZoneNameMapper.Add("cabilis west", "cabwest");
             ZoneNameMapper.Add("lake rathetear", "lakerathe");
             ZoneNameMapper.Add("kurn's tower", "kurn");
-            ZoneNameMapper.Add("oops, all icebones!", "towerfrost"); 
+            ZoneNameMapper.Add("oops, all icebones!", "towerfrost");
             ZoneNameMapper.Add("dagnor's cauldron", "cauldron");
             ZoneNameMapper.Add("western wastes", "westwastes");
             ZoneNameMapper.Add("temple of veeshan", "templeveeshan");

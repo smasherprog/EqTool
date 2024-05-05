@@ -101,8 +101,8 @@ namespace EQTool.Services
             {
                 try
                 {
-                    var prerelease = false;
                     var version = new string(currentversion1.Where(a => char.IsDigit(a) || a == '.').ToArray());
+                    version = version.Trim('.');
                     var json = httpclient.GetAsync(new Uri("https://api.github.com/repos/smasherprog/EqTool/releases")).Result.Content.ReadAsStringAsync().Result;
                     var githubdata = JsonConvert.DeserializeObject<List<GithubVersionInfo>>(json);
                     var releases = githubdata.OrderByDescending(a => a.published_at).Where(a => a.name != null && a.prerelease && a.assets != null && a.assets.Any()).ToList();

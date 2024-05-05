@@ -48,9 +48,7 @@
                 <Grid>
                     <TextBlock Foreground="White" FontWeight="Bold" VerticalAlignment="Center" Margin="10,1,10,1" Text="{Binding Title}"/>
                     <StackPanel Orientation="Horizontal"  HorizontalAlignment="Center">
-                        <!--<Button Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="toggleCenterOnyou" ToolTip="Open Mob Info Window">
-                            <Image Source="pack://application:,,,/toolbox.png"/>
-                        </Button>-->
+                        <Button Content="⌖" Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="toggleCenterOnyou" ToolTip="Center on player"/>
                         <Button Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="openmobinfo" ToolTip="Open Mob Info Window">
                             <Image Source="pack://application:,,,/toolbox.png"/>
                         </Button>
