@@ -255,22 +255,14 @@ namespace EQTool
             var whythepig = new System.Windows.Forms.MenuItem("Pigparse Discord", WhyThePig);
             var updates = new System.Windows.Forms.MenuItem("Check for Update", CheckForUpdates);
             var versionstring = Assembly.GetExecutingAssembly().GetName().Version.ToString();
-            var beta = false;
+            var logo = EQTool.Properties.Resources.pig;
 
 #if BETA || DEBUG
-            beta = true;
+             logo = EQTool.Properties.Resources.sickpic;
 #endif
-#if LINUX
-            linux = true;
-#endif
-            var logo = EQTool.Properties.Resources.pig;
 #if QUARM
             logo = EQTool.Properties.Resources.Quarm;
 #endif
-            if (beta)
-            {
-                logo = EQTool.Properties.Resources.sickpic;
-            }
 
             var version = new System.Windows.Forms.MenuItem(Version)
             {

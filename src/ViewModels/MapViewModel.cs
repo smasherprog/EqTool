@@ -164,7 +164,16 @@ namespace EQTool.ViewModels
         public void ToggleCenter()
         {
             this.CenterOnPlayer = !this.CenterOnPlayer;
-            CenterMapOnPlayer();
+            CenterMapOnPlayer(Lastlocation);
+        }
+        private void CenterMapOnPlayer(Point3D value1)
+        {
+            if (CenterOnPlayer && CurrentScaling != 1.0f)
+            {
+                var xScale = Lastlocation.X - value1.X;
+                var yScale = Lastlocation.Y - value1.Y;
+                MoveMap((int)(yScale * -1), (int)(xScale * -1));
+            }
         }
 
         public bool LoadMap(string zone, Canvas canvas)
