@@ -6,13 +6,13 @@
 Instructions:
 <ul>
 <li>
-<h2>Project 1999: Download <a href="https://github.com/smasherprog/EqTool/releases/download/3.24.55.4/EQTool_P993.24.55.4.zip">Windows P99</a>, Unzip it and run EQTool.exe</h2>
+<h2>Project 1999: Download <a href="https://github.com/smasherprog/EqTool/releases/download/3.24.56.1/EQTool_P993.24.56.1.zip">Windows P99</a>, Unzip it and run EQTool.exe</h2>
 </li> 
  <li>
-<h2>Linux Project 1999 Download <a href="https://github.com/smasherprog/EqTool/releases/download/3.24.55.4/EQTool_Linux3.24.55.4.zip">Linux P99</a>, Unzip it and run PQTool.exe</h2>
+<h2>Linux Project 1999 Download <a href="https://github.com/smasherprog/EqTool/releases/download/3.24.56.1/EQTool_Linux3.24.56.1.zip">Linux P99</a>, Unzip it and run PQTool.exe</h2>
 </li>
 <li>
-<h2>Project Quarm: Download <a href="https://github.com/smasherprog/EqTool/releases/download/3.24.55.4/EQTool_Quarm3.24.55.4.zip">Quarm Pigparse</a>, Unzip it and run PQTool.exe</h2>
+<h2>Project Quarm: Download <a href="https://github.com/smasherprog/EqTool/releases/download/3.24.56.1/EQTool_Quarm3.24.56.1.zip">Quarm Pigparse</a>, Unzip it and run PQTool.exe</h2>
 </li>
  <li><h3><a href="https://discord.gg/pp3sM4wFEE">Discord</a></h3></li>
 <li>The program runs in the system tray. Look there to reopen spells window or settings! Program will check for updates on startup and self update if required, but if you want to check for a new Update, use the menu in the system tray!</li>
