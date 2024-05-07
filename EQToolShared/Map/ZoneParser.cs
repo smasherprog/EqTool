@@ -1109,7 +1109,15 @@ namespace EQToolShared.Map
                 {
                     "Deep Lava Basilisk","Eejag","Hykallen","A lesser nightmare","Sir Lindeal","a warbone monk","a warbone spearman",
                 },
-                RespawnTime = new TimeSpan(0, 6, 40)
+                RespawnTime = new TimeSpan(0, 6, 40),
+                NpcSpawnTimes = new List<NpcSpawnTime>()
+                 {
+                     new NpcSpawnTime
+                     {
+                          Name = "a shadowed man",
+                          RespawnTime = new TimeSpan(0,6,0)
+                     }
+                 }
             });
             ZoneInfoMap.Add("lfaydark", new ZoneInfo
             {
