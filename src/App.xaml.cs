@@ -216,7 +216,6 @@ namespace EQTool
             }
             else if (did_update == UpdateService.UpdateStatus.NoUpdateApplied)
             {
-                updateservice.CheckForUpdates(Version, VersionType);
 #if !DEBUG
                 updateservice.CheckForUpdates(Version, VersionType);
 #endif
@@ -432,16 +431,24 @@ namespace EQTool
             }
         }
 
-        public static string VersionType =>
+        public static string VersionType
+        {
+            get
+            {
+                var v = string.Empty;
 #if BETA
-                return "Beta";
+                v= "Beta";
 #elif LINUX
-                return "Linux";
+                v= "Linux";
 #elif QUARM
-                return "Quarm";
+                v= "Quarm";
 #else
-                "P99";
+                v = "P99";
 #endif
+                return v;
+            }
+        }
+
 
         public void ToggleMenuButtons(bool value)
         {
