@@ -40,7 +40,7 @@ namespace EQTool.Services
             }
         }
 
-        private AppDispatcher appDispatcher = new AppDispatcher();
+        private readonly AppDispatcher appDispatcher = new AppDispatcher();
         public enum UpdateStatus
         {
             UpdatesApplied,
@@ -58,7 +58,7 @@ namespace EQTool.Services
             {
                 if (parameter.Contains("ping"))
                 {
-                    this.appDispatcher.DispatchUI(() =>
+                    appDispatcher.DispatchUI(() =>
                     {
                         (App.Current as App).ShowBalloonTip(3000, "Applying PigParse Update", "Extracting Files . . .", System.Windows.Forms.ToolTipIcon.Info);
                     });
@@ -78,7 +78,7 @@ namespace EQTool.Services
                 }
                 else if (parameter.Contains("pong"))
                 {
-                    this.appDispatcher.DispatchUI(() =>
+                    appDispatcher.DispatchUI(() =>
                     {
                         (App.Current as App).ShowBalloonTip(3000, "PigParse Update Complete", "Cleaning up files . . .", System.Windows.Forms.ToolTipIcon.Info);
                     });
@@ -101,8 +101,9 @@ namespace EQTool.Services
             {
                 try
                 {
+                    currentversion1 = currentversion1.Replace(versiontype, string.Empty);
                     var version = new string(currentversion1.Where(a => char.IsDigit(a) || a == '.').ToArray());
-                    version = version.Trim('.').Replace(versiontype, string.Empty);
+                    version = version.Trim('.');
                     var json = httpclient.GetAsync(new Uri("https://api.github.com/repos/smasherprog/EqTool/releases")).Result.Content.ReadAsStringAsync().Result;
                     var githubdata = JsonConvert.DeserializeObject<List<GithubVersionInfo>>(json);
                     var releases = githubdata.OrderByDescending(a => a.published_at).Where(a => a.name != null && a.prerelease && a.assets != null && a.assets.Any()).ToList();
@@ -111,7 +112,7 @@ namespace EQTool.Services
 
                     if (version != release.tag_name)
                     {
-                        this.appDispatcher.DispatchUI(() =>
+                        appDispatcher.DispatchUI(() =>
                         {
                             (App.Current as App).ShowBalloonTip(3000, "Downloading PigParse Update", "This might take a few seconds . . .", System.Windows.Forms.ToolTipIcon.Info);
                         });

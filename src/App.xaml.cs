@@ -138,19 +138,19 @@ namespace EQTool
 
             AppDomain.CurrentDomain.UnhandledException += (s, e) =>
             {
-                var server = this.container?.Resolve<ActivePlayer>()?.Player?.Server;
+                var server = container?.Resolve<ActivePlayer>()?.Player?.Server;
                 LogUnhandledException((Exception)e.ExceptionObject, "AppDomain.CurrentDomain.UnhandledException", server);
             };
 
             DispatcherUnhandledException += (s, e) =>
             {
-                var server = this.container?.Resolve<ActivePlayer>()?.Player?.Server;
+                var server = container?.Resolve<ActivePlayer>()?.Player?.Server;
                 LogUnhandledException(e.Exception, "Application.Current.DispatcherUnhandledException", server);
             };
 
             TaskScheduler.UnobservedTaskException += (s, e) =>
             {
-                var server = this.container?.Resolve<ActivePlayer>()?.Player?.Server;
+                var server = container?.Resolve<ActivePlayer>()?.Player?.Server;
                 LogUnhandledException(e.Exception, "TaskScheduler.UnobservedTaskException", server);
             };
         }
@@ -216,6 +216,7 @@ namespace EQTool
             }
             else if (did_update == UpdateService.UpdateStatus.NoUpdateApplied)
             {
+                updateservice.CheckForUpdates(Version, VersionType);
 #if !DEBUG
                 updateservice.CheckForUpdates(Version, VersionType);
 #endif
@@ -258,7 +259,7 @@ namespace EQTool
             var logo = EQTool.Properties.Resources.pig;
 
 #if BETA || DEBUG
-             logo = EQTool.Properties.Resources.sickpic;
+            logo = EQTool.Properties.Resources.sickpic;
 #endif
 #if QUARM
             logo = EQTool.Properties.Resources.Quarm;
@@ -328,10 +329,10 @@ namespace EQTool
             ZoneActivityTrackingService = container.Resolve<ZoneActivityTrackingService>();
             audioService = container.Resolve<AudioService>();
             logParser.QuakeEvent += LogParser_QuakeEvent;
-            App.Current.Resources["GlobalFontSize"] = (double)(this.EQToolSettings?.FontSize ?? 12);
-            ((App)System.Windows.Application.Current).UpdateBackgroundOpacity("MyWindowStyleDPS", this.EQToolSettings.DpsWindowState.Opacity.Value);
-            ((App)System.Windows.Application.Current).UpdateBackgroundOpacity("MyWindowStyleMap", this.EQToolSettings.MapWindowState.Opacity.Value);
-            ((App)System.Windows.Application.Current).UpdateBackgroundOpacity("MyWindowStyleTrigger", this.EQToolSettings.SpellWindowState.Opacity.Value);
+            App.Current.Resources["GlobalFontSize"] = (double)(EQToolSettings?.FontSize ?? 12);
+            ((App)System.Windows.Application.Current).UpdateBackgroundOpacity("MyWindowStyleDPS", EQToolSettings.DpsWindowState.Opacity.Value);
+            ((App)System.Windows.Application.Current).UpdateBackgroundOpacity("MyWindowStyleMap", EQToolSettings.MapWindowState.Opacity.Value);
+            ((App)System.Windows.Application.Current).UpdateBackgroundOpacity("MyWindowStyleTrigger", EQToolSettings.SpellWindowState.Opacity.Value);
         }
         public void UpdateBackgroundOpacity(string name, double opacity)
         {
@@ -339,7 +340,7 @@ namespace EQTool
             newcolor.Opacity = opacity;
             var style = new System.Windows.Style { TargetType = typeof(Window) };
             style.Setters.Add(new Setter(Window.BackgroundProperty, newcolor));
-            style.Setters.Add(new Setter(Window.FontSizeProperty, (double)this.EQToolSettings.FontSize.Value));
+            style.Setters.Add(new Setter(Window.FontSizeProperty, (double)EQToolSettings.FontSize.Value));
             App.Current.Resources[name] = style;
         }
 
@@ -349,23 +350,21 @@ namespace EQTool
         }
 
         [DllImport("user32.dll")]
-        static extern bool GetLastInputInfo(ref LASTINPUTINFO plii);
+        private static extern bool GetLastInputInfo(ref LASTINPUTINFO plii);
 
         [StructLayout(LayoutKind.Sequential)]
-        struct LASTINPUTINFO
+        private struct LASTINPUTINFO
         {
             public uint cbSize;
             public int dwTime;
         }
         public static TimeSpan GetIdleTime()
         {
-            LASTINPUTINFO lastInPut = new LASTINPUTINFO();
+            var lastInPut = new LASTINPUTINFO();
             lastInPut.cbSize = (uint)System.Runtime.InteropServices.Marshal.SizeOf(lastInPut);
-            if (GetLastInputInfo(ref lastInPut))
-            {
-                return TimeSpan.FromMilliseconds(Environment.TickCount - lastInPut.dwTime);
-            }
-            return TimeSpan.FromMinutes(20);
+            return GetLastInputInfo(ref lastInPut)
+                ? TimeSpan.FromMilliseconds(Environment.TickCount - lastInPut.dwTime)
+                : TimeSpan.FromMinutes(20);
         }
 
         private bool updatecalled = false;
@@ -433,10 +432,7 @@ namespace EQTool
             }
         }
 
-        public static string VersionType
-        {
-            get
-            {
+        public static string VersionType =>
 #if BETA
                 return "Beta";
 #elif LINUX
@@ -444,10 +440,9 @@ namespace EQTool
 #elif QUARM
                 return "Quarm";
 #else
-                return "P99";
+                "P99";
 #endif
-            }
-        }
+
         public void ToggleMenuButtons(bool value)
         {
             MapMenuItem.Enabled = value;
@@ -629,7 +624,7 @@ namespace EQTool
 
         public void ShowBalloonTip(int timeout, string tipTitle, string tipText, System.Windows.Forms.ToolTipIcon tipIcon)
         {
-            this.SystemTrayIcon.ShowBalloonTip(timeout, tipTitle, tipText, tipIcon);
+            SystemTrayIcon.ShowBalloonTip(timeout, tipTitle, tipText, tipIcon);
         }
 
         public void OpenSpellsWindow()
