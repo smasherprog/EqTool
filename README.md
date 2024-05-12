@@ -9,7 +9,7 @@ Instructions:
 <h2>Project 1999: Download <a href="https://github.com/smasherprog/EqTool/releases/download/3.24.56.1/EQTool_P993.24.56.1.zip">Windows P99</a>, Unzip it and run EQTool.exe</h2>
 </li> 
  <li>
-<h2>Linux Project 1999 Download <a href="https://github.com/smasherprog/EqTool/releases/download/3.24.56.1/EQTool_Linux3.24.56.1.zip">Linux P99</a>, Unzip it and run PQTool.exe</h2>
+<h2>Linux Project 1999 Download <a href="https://github.com/smasherprog/EqTool/releases/download/3.24.56.1/EQTool_Linux3.24.56.1.zip">Linux P99</a>, Unzip it and run EQTool.exe</h2>
 </li>
 <li>
 <h2>Project Quarm: Download <a href="https://github.com/smasherprog/EqTool/releases/download/3.24.56.1/EQTool_Quarm3.24.56.1.zip">Quarm Pigparse</a>, Unzip it and run PQTool.exe</h2>
