@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using EQTool.Models;
 using EQTool.Services;
+using EQTool.Services.Parsing;
 using EQTool.ViewModels;
 using EQToolShared.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;

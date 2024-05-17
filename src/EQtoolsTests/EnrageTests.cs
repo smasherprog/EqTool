@@ -1,5 +1,5 @@
 ﻿using Autofac;
-using EQTool.Services;
+using EQTool.Services.Parsing;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace EQToolTests

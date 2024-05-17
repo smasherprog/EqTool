@@ -420,6 +420,7 @@
     <Compile Include="Services\MapOpacityHelper.cs" />
     <Compile Include="Services\MapViewModelService.cs" />
     <Compile Include="Services\Parsing\CampParser.cs" />
+    <Compile Include="Services\Parsing\LogStartCustomTimer.cs" />
     <Compile Include="Services\Parsing\RandomParser.cs" />
     <Compile Include="Services\Parsing\ResistSpellParser.cs" />
     <Compile Include="Services\Parsing\GroupInviteParser.cs" />
@@ -453,7 +454,7 @@
     <Compile Include="Services\WikiApi.cs" />
     <Compile Include="Services\WindowBounds.cs" />
     <Compile Include="Services\LogParser.cs" />
-    <Compile Include="Services\Spells\Log\LogCustomTimer.cs" />
+    <Compile Include="Services\Parsing\LogCancelCustomTimer.cs" />
     <Compile Include="Services\Spells\Log\LogDeathParse.cs" />
     <Compile Include="Services\Parsing\DPSLogParse.cs" />
     <Compile Include="Services\Spells\Log\ParseSpellGuess.cs" />

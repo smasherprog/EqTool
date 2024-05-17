@@ -31,7 +31,7 @@ namespace EQTool.Services
             this.logParser.EnrageEvent += LogParser_EnrageEvent;
             this.logParser.LevEvent += LogParser_LevEvent;
             this.logEvents.FTEEvent += LogParser_FTEEvent;
-            this.logParser.CharmBreakEvent += LogParser_CharmBreakEvent;
+            this.logEvents.CharmBreakEvent += LogParser_CharmBreakEvent;
             this.logParser.FailedFeignEvent += LogParser_FailedFeignEvent;
             this.logParser.GroupInviteEvent += LogParser_GroupInviteEvent;
             this.logParser.StartCastingEvent += LogParser_StartCastingEvent;

@@ -1,4 +1,4 @@
-﻿namespace EQTool.Services
+﻿namespace EQTool.Services.Parsing
 {
     public class QuakeParser
     {

@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using static EQTool.Services.LogParser;
 
-namespace EQTool.Services.Spells.Log
+namespace EQTool.Services.Parsing
 {
     public class ConLogParse : IEqLogParseHandler
     {

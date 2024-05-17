@@ -1,6 +1,6 @@
 ﻿using EQTool.ViewModels;
 
-namespace EQTool.Services
+namespace EQTool.Services.Parsing
 {
     public class FailedFeignParser
     {
@@ -13,12 +13,7 @@ namespace EQTool.Services
 
         public string FailedFaignCheck(string line)
         {
-            if (line == $"{activePlayer?.Player?.Name} has fallen to the ground.")
-            {
-                return activePlayer?.Player?.Name;
-            }
-
-            return string.Empty;
+            return line == $"{activePlayer?.Player?.Name} has fallen to the ground." ? (activePlayer?.Player?.Name) : string.Empty;
         }
     }
 }

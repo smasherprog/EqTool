@@ -1247,7 +1247,7 @@ namespace EQToolTests
         [TestMethod]
         public void GetCustomTimerStart()
         {
-            var service = container.Resolve<LogCustomTimer>();
+            var service = container.Resolve<LogStartCustomTimer>();
             var line = "You say, 'Timer Start StupidGoblin 30'";
             var targettoremove = service.GetStartTimer(line);
 
@@ -1259,7 +1259,7 @@ namespace EQToolTests
         [TestMethod]
         public void GetCustomTimerStart1()
         {
-            var service = container.Resolve<LogCustomTimer>();
+            var service = container.Resolve<LogStartCustomTimer>();
             var line = "You say, 'Start Timer StupidGoblin 30'";
             var targettoremove = service.GetStartTimer(line);
 
@@ -1271,7 +1271,7 @@ namespace EQToolTests
         [TestMethod]
         public void GetCustomTimerStart_TestSpaces()
         {
-            var service = container.Resolve<LogCustomTimer>();
+            var service = container.Resolve<LogStartCustomTimer>();
             var line = "You say, 'Start Timer StupidGoblin with club near me 30'";
             var targettoremove = service.GetStartTimer(line);
 
@@ -1283,7 +1283,7 @@ namespace EQToolTests
         [TestMethod]
         public void GetCustomTimerCancel()
         {
-            var service = container.Resolve<LogCustomTimer>();
+            var service = container.Resolve<LogCancelCustomTimer>();
             var line = "You say, 'Timer Cancel StupidGoblin'";
             var targettoremove = service.GetCancelTimer(line);
 
@@ -1294,7 +1294,7 @@ namespace EQToolTests
         [TestMethod]
         public void GetCustomTimerCancel1()
         {
-            var service = container.Resolve<LogCustomTimer>();
+            var service = container.Resolve<LogCancelCustomTimer>();
             var line = "You say, 'Cancel Timer StupidGoblin'";
             var targettoremove = service.GetCancelTimer(line);
 
@@ -1305,7 +1305,7 @@ namespace EQToolTests
         [TestMethod]
         public void GetCustomTimerCancel_TestSpaces()
         {
-            var service = container.Resolve<LogCustomTimer>();
+            var service = container.Resolve<LogCancelCustomTimer>();
             var line = "You say, 'Cancel Timer StupidGoblin with club near me'";
             var targettoremove = service.GetCancelTimer(line);
 
@@ -1408,8 +1408,8 @@ namespace EQToolTests
             {
                 spellnamefound = b.Spell.Spell.name;
             };
-            logparser.CancelTimerEvent += (a, b) => Assert.Fail("DontHit");
-            logparser.StartTimerEvent += (a, b) => Assert.Fail("DontHit");
+            logevents.CancelTimerEvent += (a, b) => Assert.Fail("DontHit");
+            logevents.StartTimerEvent += (a, b) => Assert.Fail("DontHit");
             logevents.ConEvent += (a, b) => Assert.Fail("DontHit");
             logevents.DeadEvent += (a, b) => Assert.Fail("DontHit");
             logevents.FightHitEvent += (a, b) => Assert.Fail("DontHit");

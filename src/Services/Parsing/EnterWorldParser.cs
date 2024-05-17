@@ -1,7 +1,6 @@
-﻿using EQTool.Services.Parsing;
-using System;
+﻿using System;
 
-namespace EQTool.Services
+namespace EQTool.Services.Parsing
 {
     public class EnterWorldParser
     {

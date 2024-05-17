@@ -8,7 +8,7 @@
 
     public static class CHService
     {
-        public static bool ShouldWarnOfChain(ChainData chaindata, ChParser.ChParseData e)
+        public static bool ShouldWarnOfChain(ChainData chaindata, Parsing.ChParser.ChParseData e)
         {
             if (string.IsNullOrWhiteSpace(e.Position))
             {
@@ -43,29 +43,21 @@
                 {
                     return false;
                 }
-                if (highest == 'z' && my == 'a' && current == 'z' && !increasedorder)
-                {
-                    return true;
-                }
-                return dif == 1;
+                return highest == 'z' && my == 'a' && current == 'z' && !increasedorder || dif == 1;
             }
 
             if (char.IsDigit(chaindata.HighestOrder[0]) && char.IsDigit(e.Position[0]) && char.IsDigit(chaindata.YourChainOrder[0]))
             {
-                int.TryParse(chaindata.HighestOrder, out var highest);
-                int.TryParse(chaindata.YourChainOrder, out var my);
-                int.TryParse(e.Position, out var current);
+                _ = int.TryParse(chaindata.HighestOrder, out var highest);
+                _ = int.TryParse(chaindata.YourChainOrder, out var my);
+                _ = int.TryParse(e.Position, out var current);
                 var dif = my - current;
                 if (my == 1 && increasedorder && dif == 1)
                 {
                     return false;
                 }
 
-                if (current == highest && my == 1 && !increasedorder)
-                {
-                    return true;
-                }
-                return dif == 1;
+                return current == highest && my == 1 && !increasedorder || dif == 1;
             }
 
             return false;

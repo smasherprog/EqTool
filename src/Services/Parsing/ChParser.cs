@@ -1,7 +1,7 @@
 ﻿using EQTool.ViewModels;
 using System.Linq;
 
-namespace EQTool.Services
+namespace EQTool.Services.Parsing
 {
     public class ChParser
     {
@@ -81,7 +81,7 @@ namespace EQTool.Services
                     return null;
                 }
 
-                var tag = this.activePlayer?.Player?.ChChainTagOverlay;
+                var tag = activePlayer?.Player?.ChChainTagOverlay;
                 if (!string.IsNullOrWhiteSpace(tag))
                 {
                     if (!possiblenumbers.StartsWith(tag))
@@ -106,7 +106,7 @@ namespace EQTool.Services
                 possiblenumbers = possiblenumbers.Substring(chindex + 3);
                 var possiblerecipt = new string(possiblenumbers.Replace(position, string.Empty).Where(a => a == ' ' || char.IsLetter(a)).ToArray());
                 var splits = possiblerecipt.Split(' ');
-                splits.Reverse();
+                _ = splits.Reverse();
                 var recipient = string.Empty;
                 foreach (var item in splits)
                 {
@@ -125,8 +125,8 @@ namespace EQTool.Services
                 if (!string.IsNullOrWhiteSpace(tag) && tag.Contains(" "))
                 {
                     tag = string.Empty;
-                    if (!string.IsNullOrWhiteSpace(this.activePlayer?.Player?.ChChainTagOverlay))
-                    { 
+                    if (!string.IsNullOrWhiteSpace(activePlayer?.Player?.ChChainTagOverlay))
+                    {
                         return null;
                     }
                 }

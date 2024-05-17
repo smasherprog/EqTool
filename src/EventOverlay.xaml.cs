@@ -53,7 +53,7 @@ namespace EQTool
             logParser.LevEvent += LogParser_LevEvent;
             logParser.InvisEvent += LogParser_InvisEvent;
             logEvents.FTEEvent += LogParser_FTEEvent;
-            logParser.CharmBreakEvent += LogParser_CharmBreakEvent;
+            logEvents.CharmBreakEvent += LogParser_CharmBreakEvent;
             logParser.FailedFeignEvent += LogParser_FailedFeignEvent;
             logParser.GroupInviteEvent += LogParser_GroupInviteEvent;
             logParser.StartCastingEvent += LogParser_StartCastingEvent;
@@ -581,7 +581,7 @@ namespace EQTool
                 logParser.LevEvent -= LogParser_LevEvent;
                 logParser.InvisEvent -= LogParser_InvisEvent;
                 logEvents.FTEEvent -= LogParser_FTEEvent;
-                logParser.CharmBreakEvent -= LogParser_CharmBreakEvent;
+                logEvents.CharmBreakEvent -= LogParser_CharmBreakEvent;
                 logParser.FailedFeignEvent -= LogParser_FailedFeignEvent;
                 logParser.GroupInviteEvent -= LogParser_GroupInviteEvent;
                 logParser.StartCastingEvent -= LogParser_StartCastingEvent;

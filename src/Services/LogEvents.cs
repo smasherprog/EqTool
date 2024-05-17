@@ -41,5 +41,23 @@ namespace EQTool.Services
         {
             DeadEvent?.Invoke(this, e);
         }
+
+        public event EventHandler<StartTimerEventArgs> StartTimerEvent;
+        public void Handle(StartTimerEventArgs e)
+        {
+            StartTimerEvent?.Invoke(this, e);
+        }
+
+        public event EventHandler<CancelTimerEventArgs> CancelTimerEvent;
+        public void Handle(CancelTimerEventArgs e)
+        {
+            CancelTimerEvent?.Invoke(this, e);
+        }
+
+        public event EventHandler<CharmBreakArgs> CharmBreakEvent;
+        public void Handle(CharmBreakArgs e)
+        {
+            CharmBreakEvent?.Invoke(this, e);
+        }
     }
 }

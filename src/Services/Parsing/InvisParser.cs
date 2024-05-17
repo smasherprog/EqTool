@@ -1,4 +1,4 @@
-﻿namespace EQTool.Services
+﻿namespace EQTool.Services.Parsing
 {
     public class InvisParser
     {
@@ -15,11 +15,7 @@
 
         public InvisStatus? Parse(string line)
         {
-            if (line == "You feel yourself starting to appear.")
-            {
-                return InvisStatus.Fading;
-            }
-            return null;
+            return line == "You feel yourself starting to appear." ? InvisStatus.Fading : (InvisStatus?)null;
         }
     }
 }

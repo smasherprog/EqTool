@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace EQTool.Services
+namespace EQTool.Services.Parsing
 {
     public class RandomParser
     {
@@ -13,9 +13,9 @@ namespace EQTool.Services
             public int Roll { get; set; }
         }
 
-        private string RollMessage = "**A Magic Die is rolled by ";
-        private string RollMessage2nd = "**It could have been any number from 0 to ";
-        private string RollMessage3nd = "but this time it turned up a ";
+        private readonly string RollMessage = "**A Magic Die is rolled by ";
+        private readonly string RollMessage2nd = "**It could have been any number from 0 to ";
+        private readonly string RollMessage3nd = "but this time it turned up a ";
         private string PlayerRollName = string.Empty;
         private DateTime RollTime = DateTime.MinValue;
 

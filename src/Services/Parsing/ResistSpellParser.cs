@@ -1,7 +1,7 @@
 ﻿using EQTool.Models;
 using System.Linq;
 
-namespace EQTool.Services
+namespace EQTool.Services.Parsing
 {
     public class ResistSpellParser
     {
@@ -23,7 +23,7 @@ namespace EQTool.Services
             if (resistmessage)
             {
                 var spellname = line.Replace("You resist the ", string.Empty).Replace(" spell!", string.Empty).Trim();
-                var spell = this.spells.AllSpells.FirstOrDefault(a => a.name == spellname);
+                var spell = spells.AllSpells.FirstOrDefault(a => a.name == spellname);
                 if (spell != null)
                 {
                     return new ResistSpellData { Spell = spell, isYou = true };
@@ -34,7 +34,7 @@ namespace EQTool.Services
             if (resistmessage)
             {
                 var spellname = line.Replace("Your target resisted the ", string.Empty).Replace(" spell.", string.Empty).Trim();
-                var spell = this.spells.AllSpells.FirstOrDefault(a => a.name == spellname);
+                var spell = spells.AllSpells.FirstOrDefault(a => a.name == spellname);
                 if (spell != null)
                 {
                     return new ResistSpellData { Spell = spell, isYou = false };

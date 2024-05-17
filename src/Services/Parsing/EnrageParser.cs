@@ -1,6 +1,6 @@
 ﻿using EQTool.ViewModels;
 
-namespace EQTool.Services
+namespace EQTool.Services.Parsing
 {
     public class EnrageParser
     {

@@ -23,6 +23,8 @@ namespace EQTool.Services
             _ = builder.RegisterType<ConLogParse>().As<IEqLogParseHandler>().SingleInstance();
             _ = builder.RegisterType<LogDeathParse>().As<IEqLogParseHandler>().SingleInstance();
 
+            _ = builder.RegisterType<LogCancelCustomTimer>().As<IEqLogParseHandler>().SingleInstance();
+            _ = builder.RegisterType<LogStartCustomTimer>().As<IEqLogParseHandler>().SingleInstance();
 
             _ = builder.RegisterType<EQToolSettingsLoad>().AsSelf().SingleInstance();
             _ = builder.Register(a =>

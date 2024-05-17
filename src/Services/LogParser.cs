@@ -10,14 +10,6 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Windows.Media.Media3D;
-using static EQTool.Services.ChParser;
-using static EQTool.Services.EnrageParser;
-using static EQTool.Services.FindEq;
-using static EQTool.Services.InvisParser;
-using static EQTool.Services.LevParser;
-using static EQTool.Services.POFDTParser;
-using static EQTool.Services.RandomParser;
-using static EQTool.Services.ResistSpellParser;
 
 namespace EQTool.Services
 {
@@ -30,7 +22,6 @@ namespace EQTool.Services
         private readonly EQToolSettings settings;
         private readonly LevelLogParse levelLogParse;
         private readonly EQToolSettingsLoad toolSettingsLoad;
-        private readonly LogCustomTimer logCustomTimer;
         private readonly SpellLogParse spellLogParse;
         private readonly SpellWornOffLogParse spellWornOffLogParse;
         private readonly PlayerWhoLogParse playerWhoLogParse;
@@ -41,7 +32,6 @@ namespace EQTool.Services
         private readonly ChParser chParser;
         private readonly InvisParser invisParser;
         private readonly LevParser levParser;
-        private readonly CharmBreakParser charmBreakParser;
         private readonly FailedFeignParser failedFeignParser;
         private readonly GroupInviteParser groupInviteParser;
         private readonly ResistSpellParser resistSpellParser;
@@ -56,13 +46,11 @@ namespace EQTool.Services
             RandomParser randomParser,
             ResistSpellParser resistSpellParser,
             GroupInviteParser groupInviteParser,
-            CharmBreakParser charmBreakParser,
             ChParser chParser,
             QuakeParser quakeParser,
             EnterWorldParser enterWorldParser,
             SpellWornOffLogParse spellWornOffLogParse,
             SpellLogParse spellLogParse,
-            LogCustomTimer logCustomTimer,
             EQToolSettingsLoad toolSettingsLoad,
             ActivePlayer activePlayer,
             IAppDispatcher appDispatcher,
@@ -81,7 +69,6 @@ namespace EQTool.Services
             this.resistSpellParser = resistSpellParser;
             this.groupInviteParser = groupInviteParser;
             this.failedFeignParser = failedFeignParser;
-            this.charmBreakParser = charmBreakParser;
             this.invisParser = invisParser;
             this.levParser = levParser;
             this.chParser = chParser;
@@ -91,7 +78,6 @@ namespace EQTool.Services
             this.enterWorldParser = enterWorldParser;
             this.spellWornOffLogParse = spellWornOffLogParse;
             this.spellLogParse = spellLogParse;
-            this.logCustomTimer = logCustomTimer;
             this.toolSettingsLoad = toolSettingsLoad;
             this.activePlayer = activePlayer;
             this.appDispatcher = appDispatcher;
@@ -162,7 +148,7 @@ namespace EQTool.Services
         }
         public class RandomRollEventArgs : EventArgs
         {
-            public RandomRollData RandomRollData { get; set; }
+            public RandomParser.RandomRollData RandomRollData { get; set; }
         }
 
         public class WhoEventArgs : EventArgs { }
@@ -176,22 +162,17 @@ namespace EQTool.Services
         public event EventHandler<WhoPlayerEventArgs> WhoPlayerEvent;
         public event EventHandler<SpellWornOffSelfEventArgs> SpellWornOffSelfEvent;
         public event EventHandler<QuakeArgs> QuakeEvent;
-        public event EventHandler<POF_DT_Event> POFDTEvent;
-        public event EventHandler<EnrageEvent> EnrageEvent;
-        public event EventHandler<ChParseData> CHEvent;
-        public event EventHandler<LevStatus> LevEvent;
-        public event EventHandler<InvisStatus> InvisEvent;
+        public event EventHandler<POFDTParser.POF_DT_Event> POFDTEvent;
+        public event EventHandler<EnrageParser.EnrageEvent> EnrageEvent;
+        public event EventHandler<ChParser.ChParseData> CHEvent;
+        public event EventHandler<LevParser.LevStatus> LevEvent;
+        public event EventHandler<InvisParser.InvisStatus> InvisEvent;
 
-        public event EventHandler<CharmBreakArgs> CharmBreakEvent;
         public event EventHandler<string> FailedFeignEvent;
         public event EventHandler<string> GroupInviteEvent;
         public event EventHandler<SpellWornOffOtherEventArgs> SpellWornOtherOffEvent;
-        public event EventHandler<ResistSpellData> ResistSpellEvent;
+        public event EventHandler<ResistSpellParser.ResistSpellData> ResistSpellEvent;
         public event EventHandler<SpellEventArgs> StartCastingEvent;
-
-        public event EventHandler<CancelTimerEventArgs> CancelTimerEvent;
-
-        public event EventHandler<StartTimerEventArgs> StartTimerEvent;
 
         public event EventHandler<PlayerZonedEventArgs> PlayerZonedEvent;
 
@@ -263,27 +244,6 @@ namespace EQTool.Services
                     StartingWhoOfZone = message == "---------------------------" && StartingWhoOfZone;
                 }
 
-                var customtimer = logCustomTimer.GetStartTimer(message);
-                if (customtimer != null)
-                {
-                    StartTimerEvent?.Invoke(this, new StartTimerEventArgs { CustomTimer = customtimer });
-                    return;
-                }
-
-                var name = logCustomTimer.GetCancelTimer(message);
-                if (!string.IsNullOrWhiteSpace(name))
-                {
-                    CancelTimerEvent?.Invoke(this, new CancelTimerEventArgs { Name = name });
-                    return;
-                }
-
-                var didcharmbreak = charmBreakParser.DidCharmBreak(message);
-                if (didcharmbreak)
-                {
-                    CharmBreakEvent?.Invoke(this, new CharmBreakArgs());
-                    return;
-                }
-
                 if (message == "The screams fade away.")
                 {
                     SpellWornOtherOffEvent?.Invoke(this, new SpellWornOffOtherEventArgs { SpellName = "Soul Consumption" });
@@ -304,7 +264,7 @@ namespace EQTool.Services
                     return;
                 }
 
-                name = spellWornOffLogParse.MatchWornOffOtherSpell(message);
+                var name = spellWornOffLogParse.MatchWornOffOtherSpell(message);
                 if (!string.IsNullOrWhiteSpace(name))
                 {
                     SpellWornOtherOffEvent?.Invoke(this, new SpellWornOffOtherEventArgs { SpellName = name });
@@ -412,7 +372,7 @@ namespace EQTool.Services
                 return;
             }
             Processing = true;
-            LogFileInfo logfounddata = null;
+            FindEq.LogFileInfo logfounddata = null;
             try
             {
                 logfounddata = FindEq.GetLogFileLocation(new FindEq.FindEQData { EqBaseLocation = settings.DefaultEqDirectory, EQlogLocation = settings.EqLogDirectory });

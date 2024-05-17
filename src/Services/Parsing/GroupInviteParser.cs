@@ -1,6 +1,6 @@
 ﻿using System.Linq;
 
-namespace EQTool.Services
+namespace EQTool.Services.Parsing
 {
     public class GroupInviteParser
     {
@@ -10,11 +10,7 @@ namespace EQTool.Services
             {
                 var remainder = line.Replace(" invites you to join a group.", string.Empty);
                 var name = remainder.Trim();
-                if (name.Contains(' '))
-                {
-                    return string.Empty;
-                }
-                return line;
+                return name.Contains(' ') ? string.Empty : line;
             }
 
             return null;

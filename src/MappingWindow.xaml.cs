@@ -51,8 +51,8 @@ namespace EQTool
             this.logParser.PlayerZonedEvent += LogParser_PlayerZonedEvent;
             this.logParser.EnteredWorldEvent += LogParser_EnteredWorldEvent;
             this.logEvents.DeadEvent += LogParser_DeadEvent;
-            this.logParser.StartTimerEvent += LogParser_StartTimerEvent;
-            this.logParser.CancelTimerEvent += LogParser_CancelTimerEvent;
+            this.logEvents.StartTimerEvent += LogParser_StartTimerEvent;
+            this.logEvents.CancelTimerEvent += LogParser_CancelTimerEvent;
             KeyDown += PanAndZoomCanvas_KeyDown;
             Map.StartTimerEvent += Map_StartTimerEvent;
             Map.CancelTimerEvent += Map_CancelTimerEvent;
@@ -196,8 +196,8 @@ namespace EQTool
                 logParser.PlayerZonedEvent -= LogParser_PlayerZonedEvent;
                 logParser.EnteredWorldEvent -= LogParser_EnteredWorldEvent;
                 logEvents.DeadEvent -= LogParser_DeadEvent;
-                logParser.StartTimerEvent -= LogParser_StartTimerEvent;
-                logParser.CancelTimerEvent -= LogParser_CancelTimerEvent;
+                logEvents.StartTimerEvent -= LogParser_StartTimerEvent;
+                logEvents.CancelTimerEvent -= LogParser_CancelTimerEvent;
             }
 
             KeyDown -= PanAndZoomCanvas_KeyDown;

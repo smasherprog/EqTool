@@ -1,4 +1,4 @@
-﻿namespace EQTool.Services
+﻿namespace EQTool.Services.Parsing
 {
     public class LevParser
     {
@@ -11,12 +11,7 @@
 
         public LevStatus? Parse(string line)
         {
-            if (line == "You feel as if you are about to fall.")
-            {
-                return LevStatus.Fading;
-            }
-
-            return null;
+            return line == "You feel as if you are about to fall." ? LevStatus.Fading : (LevStatus?)null;
         }
     }
 }

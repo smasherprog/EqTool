@@ -55,8 +55,8 @@ namespace EQTool
             this.logParser.SpellWornOffSelfEvent += LogParser_SpellWornOffSelfEvent;
             this.logParser.StartCastingEvent += LogParser_StartCastingEvent;
             this.logEvents.DeadEvent += LogParser_DeadEvent;
-            this.logParser.StartTimerEvent += LogParser_StartTimerEvent;
-            this.logParser.CancelTimerEvent += LogParser_CancelTimerEvent;
+            this.logEvents.StartTimerEvent += LogParser_StartTimerEvent;
+            this.logEvents.CancelTimerEvent += LogParser_CancelTimerEvent;
             this.logParser.POFDTEvent += LogParser_POFDTEvent;
             this.logParser.ResistSpellEvent += LogParser_ResistSpellEvent;
             this.logParser.RandomRollEvent += LogParser_RandomRollEvent;
@@ -87,7 +87,7 @@ namespace EQTool
             });
         }
 
-        private void LogParser_ResistSpellEvent(object sender, ResistSpellParser.ResistSpellData e)
+        private void LogParser_ResistSpellEvent(object sender, Services.Parsing.ResistSpellParser.ResistSpellData e)
         {
             if (e.isYou)
             {
@@ -101,7 +101,7 @@ namespace EQTool
             }
         }
 
-        private void LogParser_POFDTEvent(object sender, POFDTParser.POF_DT_Event e)
+        private void LogParser_POFDTEvent(object sender, Services.Parsing.POFDTParser.POF_DT_Event e)
         {
             spellWindowViewModel.TryAddCustom(new CustomTimer
             {
@@ -192,8 +192,8 @@ namespace EQTool
                 logParser.SpellWornOffSelfEvent -= LogParser_SpellWornOffSelfEvent;
                 logParser.StartCastingEvent -= LogParser_StartCastingEvent;
                 logEvents.DeadEvent -= LogParser_DeadEvent;
-                logParser.StartTimerEvent -= LogParser_StartTimerEvent;
-                logParser.CancelTimerEvent -= LogParser_CancelTimerEvent;
+                logEvents.StartTimerEvent -= LogParser_StartTimerEvent;
+                logEvents.CancelTimerEvent -= LogParser_CancelTimerEvent;
                 logParser.POFDTEvent -= LogParser_POFDTEvent;
                 logParser.ResistSpellEvent -= LogParser_ResistSpellEvent;
                 logParser.RandomRollEvent -= LogParser_RandomRollEvent;
