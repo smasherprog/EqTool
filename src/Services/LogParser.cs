@@ -1,5 +1,4 @@
 ﻿using EQTool.Models;
-using EQTool.Services.Map;
 using EQTool.Services.Parsing;
 using EQTool.Services.Spells.Log;
 using EQTool.ViewModels;
@@ -14,7 +13,6 @@ using System.Windows.Media.Media3D;
 using static EQTool.Services.ChParser;
 using static EQTool.Services.EnrageParser;
 using static EQTool.Services.FindEq;
-using static EQTool.Services.FTEParser;
 using static EQTool.Services.InvisParser;
 using static EQTool.Services.LevParser;
 using static EQTool.Services.POFDTParser;
@@ -32,10 +30,6 @@ namespace EQTool.Services
         private readonly EQToolSettings settings;
         private readonly LevelLogParse levelLogParse;
         private readonly EQToolSettingsLoad toolSettingsLoad;
-        private readonly LocationParser locationParser;
-        private readonly DPSLogParse dPSLogParse;
-        private readonly LogDeathParse logDeathParse;
-        private readonly ConLogParse conLogParse;
         private readonly LogCustomTimer logCustomTimer;
         private readonly SpellLogParse spellLogParse;
         private readonly SpellWornOffLogParse spellWornOffLogParse;
@@ -47,34 +41,28 @@ namespace EQTool.Services
         private readonly ChParser chParser;
         private readonly InvisParser invisParser;
         private readonly LevParser levParser;
-        private readonly FTEParser fTEParser;
         private readonly CharmBreakParser charmBreakParser;
         private readonly FailedFeignParser failedFeignParser;
         private readonly GroupInviteParser groupInviteParser;
         private readonly ResistSpellParser resistSpellParser;
         private readonly RandomParser randomParser;
-
+        private readonly List<IEqLogParseHandler> eqLogParseHandlers;
         private bool StartingWhoOfZone = false;
         private bool Processing = false;
-        private bool StillCamping = false;
         private bool HasUsedStartupEnterWorld = false;
 
         public LogParser(
+            IEnumerable<IEqLogParseHandler> eqLogParseHandlers,
             RandomParser randomParser,
             ResistSpellParser resistSpellParser,
             GroupInviteParser groupInviteParser,
             CharmBreakParser charmBreakParser,
-            FTEParser fTEParser,
             ChParser chParser,
             QuakeParser quakeParser,
             EnterWorldParser enterWorldParser,
             SpellWornOffLogParse spellWornOffLogParse,
             SpellLogParse spellLogParse,
             LogCustomTimer logCustomTimer,
-            ConLogParse conLogParse,
-            LogDeathParse logDeathParse,
-            DPSLogParse dPSLogParse,
-            LocationParser locationParser,
             EQToolSettingsLoad toolSettingsLoad,
             ActivePlayer activePlayer,
             IAppDispatcher appDispatcher,
@@ -88,12 +76,12 @@ namespace EQTool.Services
             FailedFeignParser failedFeignParser
             )
         {
+            this.eqLogParseHandlers = eqLogParseHandlers.ToList();
             this.randomParser = randomParser;
             this.resistSpellParser = resistSpellParser;
             this.groupInviteParser = groupInviteParser;
             this.failedFeignParser = failedFeignParser;
             this.charmBreakParser = charmBreakParser;
-            this.fTEParser = fTEParser;
             this.invisParser = invisParser;
             this.levParser = levParser;
             this.chParser = chParser;
@@ -104,10 +92,6 @@ namespace EQTool.Services
             this.spellWornOffLogParse = spellWornOffLogParse;
             this.spellLogParse = spellLogParse;
             this.logCustomTimer = logCustomTimer;
-            this.conLogParse = conLogParse;
-            this.logDeathParse = logDeathParse;
-            this.dPSLogParse = dPSLogParse;
-            this.locationParser = locationParser;
             this.toolSettingsLoad = toolSettingsLoad;
             this.activePlayer = activePlayer;
             this.appDispatcher = appDispatcher;
@@ -197,7 +181,7 @@ namespace EQTool.Services
         public event EventHandler<ChParseData> CHEvent;
         public event EventHandler<LevStatus> LevEvent;
         public event EventHandler<InvisStatus> InvisEvent;
-        public event EventHandler<FTEParserData> FTEEvent;
+
         public event EventHandler<CharmBreakArgs> CharmBreakEvent;
         public event EventHandler<string> FailedFeignEvent;
         public event EventHandler<string> GroupInviteEvent;
@@ -209,17 +193,7 @@ namespace EQTool.Services
 
         public event EventHandler<StartTimerEventArgs> StartTimerEvent;
 
-        public event EventHandler<ConEventArgs> ConEvent;
-
-        public event EventHandler<DeadEventArgs> DeadEvent;
-
-        public event EventHandler<FightHitEventArgs> FightHitEvent;
-
         public event EventHandler<PlayerZonedEventArgs> PlayerZonedEvent;
-
-        public event EventHandler<PlayerLocationEventArgs> PlayerLocationEvent;
-
-        public event EventHandler<CampEventArgs> CampEvent;
 
         public event EventHandler<EnteredWorldArgs> EnteredWorldEvent;
 
@@ -256,36 +230,14 @@ namespace EQTool.Services
                 }
 
                 var timestamp = LogFileDateTimeParse.ParseDateTime(date);
-                var pos = locationParser.Match(message);
-                if (pos.HasValue)
+                foreach (var handler in eqLogParseHandlers)
                 {
-                    PlayerLocationEvent?.Invoke(this, new PlayerLocationEventArgs { Location = pos.Value, PlayerInfo = activePlayer.Player });
-                    return;
-                }
-
-                if (message == "It will take about 5 more seconds to prepare your camp.")
-                {
-                    StillCamping = true;
-                    _ = System.Threading.Tasks.Task.Factory.StartNew(() =>
+                    if (handler.Handle(message, timestamp))
                     {
-                        System.Threading.Thread.Sleep(1000 * 6);
-                        if (StillCamping)
-                        {
-                            appDispatcher.DispatchUI(() =>
-                            {
-                                Debug.WriteLine("CampEvent");
-                                CampEvent?.Invoke(this, new CampEventArgs());
-                            });
-                        }
-                    });
-                    return;
+                        return;
+                    }
                 }
-                else if (message == "You abandon your preparations to camp.")
-                {
-                    StillCamping = false;
-                    return;
-                }
-                else if (message == "Welcome to EverQuest!")
+                if (message == "Welcome to EverQuest!")
                 {
                     HasUsedStartupEnterWorld = true;
                     Debug.WriteLine("EnteredWorldEvent In Game");
@@ -311,27 +263,6 @@ namespace EQTool.Services
                     StartingWhoOfZone = message == "---------------------------" && StartingWhoOfZone;
                 }
 
-                var matched = dPSLogParse.Match(message, timestamp);
-                if (matched != null)
-                {
-                    FightHitEvent?.Invoke(this, new FightHitEventArgs { HitInformation = matched });
-                    return;
-                }
-
-                var name = logDeathParse.GetDeadTarget(message);
-                if (!string.IsNullOrWhiteSpace(name))
-                {
-                    DeadEvent?.Invoke(this, new DeadEventArgs { Name = name });
-                    return;
-                }
-
-                name = conLogParse.ConMatch(message);
-                if (!string.IsNullOrWhiteSpace(name))
-                {
-                    ConEvent?.Invoke(this, new ConEventArgs { Name = name });
-                    return;
-                }
-
                 var customtimer = logCustomTimer.GetStartTimer(message);
                 if (customtimer != null)
                 {
@@ -339,14 +270,14 @@ namespace EQTool.Services
                     return;
                 }
 
-                name = logCustomTimer.GetCancelTimer(message);
+                var name = logCustomTimer.GetCancelTimer(message);
                 if (!string.IsNullOrWhiteSpace(name))
                 {
                     CancelTimerEvent?.Invoke(this, new CancelTimerEventArgs { Name = name });
                     return;
                 }
 
-                var didcharmbreak = this.charmBreakParser.DidCharmBreak(message);
+                var didcharmbreak = charmBreakParser.DidCharmBreak(message);
                 if (didcharmbreak)
                 {
                     CharmBreakEvent?.Invoke(this, new CharmBreakArgs());
@@ -366,7 +297,7 @@ namespace EQTool.Services
                     return;
                 }
 
-                var resistspell = this.resistSpellParser.ParseNPCSpell(message);
+                var resistspell = resistSpellParser.ParseNPCSpell(message);
                 if (resistspell != null)
                 {
                     ResistSpellEvent?.Invoke(this, resistspell);
@@ -401,56 +332,49 @@ namespace EQTool.Services
                     return;
                 }
 
-                var dt = this.pOFDTParser.DtCheck(message);
+                var dt = pOFDTParser.DtCheck(message);
                 if (dt != null)
                 {
                     POFDTEvent?.Invoke(this, dt);
                     return;
                 }
 
-                var enragecheck = this.enrageParser.EnrageCheck(message);
+                var enragecheck = enrageParser.EnrageCheck(message);
                 if (enragecheck != null)
                 {
                     EnrageEvent?.Invoke(this, enragecheck);
                     return;
                 }
 
-                var chdata = this.chParser.ChCheck(message);
+                var chdata = chParser.ChCheck(message);
                 if (chdata != null)
                 {
                     CHEvent?.Invoke(this, chdata);
                     return;
                 }
 
-                var lev = this.levParser.Parse(message);
+                var lev = levParser.Parse(message);
                 if (lev.HasValue)
                 {
                     LevEvent?.Invoke(this, lev.Value);
                     return;
                 }
 
-                var invi = this.invisParser.Parse(message);
+                var invi = invisParser.Parse(message);
                 if (invi.HasValue)
                 {
                     InvisEvent?.Invoke(this, invi.Value);
                     return;
                 }
 
-                var fte = this.fTEParser.Parse(message);
-                if (fte != null)
-                {
-                    FTEEvent?.Invoke(this, fte);
-                    return;
-                }
-
-                var stringmsg = this.failedFeignParser.FailedFaignCheck(message);
+                var stringmsg = failedFeignParser.FailedFaignCheck(message);
                 if (!string.IsNullOrWhiteSpace(stringmsg))
                 {
                     FailedFeignEvent?.Invoke(this, stringmsg);
                     return;
                 }
 
-                stringmsg = this.groupInviteParser.Parse(message);
+                stringmsg = groupInviteParser.Parse(message);
                 if (!string.IsNullOrWhiteSpace(stringmsg))
                 {
                     GroupInviteEvent?.Invoke(this, stringmsg);
@@ -477,7 +401,7 @@ namespace EQTool.Services
             }
             catch (Exception e)
             {
-                App.LogUnhandledException(e, $"LogParser Filename: '{activePlayer.LogFileName}' '{line1}'", this.activePlayer?.Player?.Server);
+                App.LogUnhandledException(e, $"LogParser Filename: '{activePlayer.LogFileName}' '{line1}'", activePlayer?.Player?.Server);
             }
         }
 
@@ -524,7 +448,6 @@ namespace EQTool.Services
                     {
                         Debug.WriteLine($"Player Switched or new Player detected {filepath} {fileinfo.Length}");
                         LastLogReadOffset = fileinfo.Length;
-                        StillCamping = false;
                         newplayerdetected = true;
                     }
                     var linelist = new List<string>();

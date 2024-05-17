@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using EQTool.Models;
+using EQTool.Services.Parsing;
 using EQTool.Services.Spells.Log;
 using EQTool.ViewModels;
 using EQToolShared.Enums;

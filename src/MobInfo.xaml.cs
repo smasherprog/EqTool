@@ -16,23 +16,23 @@ namespace EQTool
     /// </summary>
     public partial class MobInfo : BaseSaveStateWindow
     {
-        private readonly LogParser logParser;
         private readonly ViewModels.MobInfoViewModel mobInfoViewModel;
         private readonly WikiApi wikiApi;
         private readonly PigParseApi pigParseApi;
         private readonly ActivePlayer activePlayer;
-        public MobInfo(ActivePlayer activePlayer, PigParseApi pigParseApi, WikiApi wikiApi, LogParser logParser, EQToolSettings settings, EQToolSettingsLoad toolSettingsLoad, LoggingService loggingService)
+        private readonly LogEvents logEvents;
+        public MobInfo(ActivePlayer activePlayer, PigParseApi pigParseApi, WikiApi wikiApi, EQToolSettings settings, EQToolSettingsLoad toolSettingsLoad, LoggingService loggingService, LogEvents logEvents)
             : base(settings.MobWindowState, toolSettingsLoad, settings)
         {
             loggingService.Log(string.Empty, EventType.OpenMobInfo, activePlayer?.Player?.Server);
             this.activePlayer = activePlayer;
             this.pigParseApi = pigParseApi;
             this.wikiApi = wikiApi;
-            this.logParser = logParser;
+            this.logEvents = logEvents;
             DataContext = mobInfoViewModel = new ViewModels.MobInfoViewModel();
             InitializeComponent();
             base.Init();
-            this.logParser.ConEvent += LogParser_ConEvent;
+            this.logEvents.ConEvent += LogParser_ConEvent;
         }
 
         private void LogParser_ConEvent(object sender, LogParser.ConEventArgs e)
@@ -72,9 +72,9 @@ namespace EQTool
 
         protected override void OnClosing(CancelEventArgs e)
         {
-            if (logParser != null)
+            if (logEvents != null)
             {
-                logParser.ConEvent -= LogParser_ConEvent;
+                logEvents.ConEvent -= LogParser_ConEvent;
             }
             base.OnClosing(e);
         }

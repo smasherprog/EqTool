@@ -1,5 +1,6 @@
 ﻿using EQTool.Models;
 using EQTool.Services;
+using EQTool.Services.Parsing;
 using EQTool.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -32,11 +33,12 @@ namespace EQTool
         private readonly List<ChainOverlayData> chainDatas = new List<ChainOverlayData>();
         private readonly PigParseApi pigParseApi;
         private readonly IAppDispatcher appDispatcher;
+        private readonly LogEvents logEvents;
 
-
-        public EventOverlay(LogParser logParser, EQToolSettings settings, PigParseApi pigParseApi, EQToolSettingsLoad toolSettingsLoad, ActivePlayer activePlayer, IAppDispatcher appDispatcher)
+        public EventOverlay(LogEvents logEvents, LogParser logParser, EQToolSettings settings, PigParseApi pigParseApi, EQToolSettingsLoad toolSettingsLoad, ActivePlayer activePlayer, IAppDispatcher appDispatcher)
             : base(settings.OverlayWindowState, toolSettingsLoad, settings)
         {
+            this.logEvents = logEvents;
             this.pigParseApi = pigParseApi;
             this.appDispatcher = appDispatcher;
             this.activePlayer = activePlayer;
@@ -44,13 +46,13 @@ namespace EQTool
             this.logParser = logParser;
             InitializeComponent();
             base.Init();
-            this.Topmost = true;
-            this.SaveState();
+            Topmost = true;
+            SaveState();
             logParser.EnrageEvent += LogParser_EnrageEvent;
             logParser.CHEvent += LogParser_CHEvent;
             logParser.LevEvent += LogParser_LevEvent;
             logParser.InvisEvent += LogParser_InvisEvent;
-            logParser.FTEEvent += LogParser_FTEEvent;
+            logEvents.FTEEvent += LogParser_FTEEvent;
             logParser.CharmBreakEvent += LogParser_CharmBreakEvent;
             logParser.FailedFeignEvent += LogParser_FailedFeignEvent;
             logParser.GroupInviteEvent += LogParser_GroupInviteEvent;
@@ -61,22 +63,22 @@ namespace EQTool
 
         private void LogParser_ResistSpellEvent(object sender, ResistSpellParser.ResistSpellData e)
         {
-            var overlay = this.activePlayer?.Player?.ResistWarningOverlay ?? false;
+            var overlay = activePlayer?.Player?.ResistWarningOverlay ?? false;
             if (!overlay)
             {
                 return;
             }
 
-            System.Threading.Tasks.Task.Factory.StartNew(() =>
+            _ = System.Threading.Tasks.Task.Factory.StartNew(() =>
             {
                 var target = e.isYou ? "You " : "Your target ";
-                this.appDispatcher.DispatchUI(() =>
+                appDispatcher.DispatchUI(() =>
                 {
                     CenterText.Text = $"{target} resisted the {e.Spell.name} spell";
                     CenterText.Foreground = Brushes.Red;
                 });
                 System.Threading.Thread.Sleep(3000);
-                this.appDispatcher.DispatchUI(() =>
+                appDispatcher.DispatchUI(() =>
                 {
                     CenterText.Text = string.Empty;
                     CenterText.Foreground = Brushes.Red;
@@ -84,7 +86,7 @@ namespace EQTool
             });
         }
 
-        private List<string> RootSpells = new List<string>()
+        private readonly List<string> RootSpells = new List<string>()
         {
             "Root",
             "Fetter",
@@ -101,7 +103,7 @@ namespace EQTool
 
         private void LogParser_SpellWornOtherOffEvent(object sender, LogParser.SpellWornOffOtherEventArgs e)
         {
-            var overlay = this.activePlayer?.Player?.RootWarningOverlay ?? false;
+            var overlay = activePlayer?.Player?.RootWarningOverlay ?? false;
             if (!overlay)
             {
                 return;
@@ -109,15 +111,15 @@ namespace EQTool
 
             if (RootSpells.Any(a => string.Equals(a, e.SpellName, StringComparison.OrdinalIgnoreCase)))
             {
-                System.Threading.Tasks.Task.Factory.StartNew(() =>
+                _ = System.Threading.Tasks.Task.Factory.StartNew(() =>
                 {
-                    this.appDispatcher.DispatchUI(() =>
+                    appDispatcher.DispatchUI(() =>
                     {
                         CenterText.Text = $"{e.SpellName} has worn off!";
                         CenterText.Foreground = Brushes.Red;
                     });
                     System.Threading.Thread.Sleep(3000);
-                    this.appDispatcher.DispatchUI(() =>
+                    appDispatcher.DispatchUI(() =>
                     {
                         CenterText.Text = string.Empty;
                         CenterText.Foreground = Brushes.Red;
@@ -128,52 +130,52 @@ namespace EQTool
 
         private void LogParser_StartCastingEvent(object sender, LogParser.SpellEventArgs e)
         {
-            var overlay = this.activePlayer?.Player?.DragonRoarOverlay ?? false;
+            var overlay = activePlayer?.Player?.DragonRoarOverlay ?? false;
             if (!overlay || e.Spell.Spell.name != "Dragon Roar")
             {
                 return;
             }
 
-            System.Threading.Tasks.Task.Factory.StartNew(() =>
+            _ = System.Threading.Tasks.Task.Factory.StartNew(() =>
             {
                 System.Threading.Thread.Sleep(1000 * 30);
-                this.appDispatcher.DispatchUI(() =>
+                appDispatcher.DispatchUI(() =>
                 {
                     CenterText.Text = "Dragon Roar in 6 Seconds!";
                     CenterText.Foreground = Brushes.Red;
                 });
                 System.Threading.Thread.Sleep(1000);
-                this.appDispatcher.DispatchUI(() =>
+                appDispatcher.DispatchUI(() =>
                 {
                     CenterText.Text = "Dragon Roar in 5 Seconds!";
                     CenterText.Foreground = Brushes.Red;
                 });
                 System.Threading.Thread.Sleep(1000);
-                this.appDispatcher.DispatchUI(() =>
+                appDispatcher.DispatchUI(() =>
                 {
                     CenterText.Text = "Dragon Roar in 4 Seconds!";
                     CenterText.Foreground = Brushes.Red;
                 });
                 System.Threading.Thread.Sleep(1000);
-                this.appDispatcher.DispatchUI(() =>
+                appDispatcher.DispatchUI(() =>
                 {
                     CenterText.Text = "Dragon Roar in 3 Seconds!";
                     CenterText.Foreground = Brushes.Red;
                 });
                 System.Threading.Thread.Sleep(1000);
-                this.appDispatcher.DispatchUI(() =>
+                appDispatcher.DispatchUI(() =>
                 {
                     CenterText.Text = "Dragon Roar in 2 Seconds!";
                     CenterText.Foreground = Brushes.Red;
                 });
                 System.Threading.Thread.Sleep(1000);
-                this.appDispatcher.DispatchUI(() =>
+                appDispatcher.DispatchUI(() =>
                 {
                     CenterText.Text = "Dragon Roar in 1 Seconds!";
                     CenterText.Foreground = Brushes.Red;
                 });
                 System.Threading.Thread.Sleep(1000);
-                this.appDispatcher.DispatchUI(() =>
+                appDispatcher.DispatchUI(() =>
                 {
                     CenterText.Text = string.Empty;
                     CenterText.Foreground = Brushes.Red;
@@ -183,21 +185,21 @@ namespace EQTool
 
         private void LogParser_GroupInviteEvent(object sender, string e)
         {
-            var overlay = this.activePlayer?.Player?.GroupInviteOverlay ?? false;
+            var overlay = activePlayer?.Player?.GroupInviteOverlay ?? false;
             if (!overlay)
             {
                 return;
             }
 
-            System.Threading.Tasks.Task.Factory.StartNew(() =>
+            _ = System.Threading.Tasks.Task.Factory.StartNew(() =>
             {
-                this.appDispatcher.DispatchUI(() =>
+                appDispatcher.DispatchUI(() =>
                 {
                     CenterText.Text = e;
                     CenterText.Foreground = Brushes.Red;
                 });
                 System.Threading.Thread.Sleep(1000 * 5);
-                this.appDispatcher.DispatchUI(() =>
+                appDispatcher.DispatchUI(() =>
                 {
                     CenterText.Text = string.Empty;
                     CenterText.Foreground = Brushes.Red;
@@ -207,21 +209,21 @@ namespace EQTool
 
         private void LogParser_FailedFeignEvent(object sender, string e)
         {
-            var overlay = this.activePlayer?.Player?.FailedFeignOverlay ?? false;
+            var overlay = activePlayer?.Player?.FailedFeignOverlay ?? false;
             if (!overlay)
             {
                 return;
             }
 
-            System.Threading.Tasks.Task.Factory.StartNew(() =>
+            _ = System.Threading.Tasks.Task.Factory.StartNew(() =>
             {
-                this.appDispatcher.DispatchUI(() =>
+                appDispatcher.DispatchUI(() =>
                 {
                     CenterText.Text = "Feign Failed Death!";
                     CenterText.Foreground = Brushes.Red;
                 });
                 System.Threading.Thread.Sleep(1000 * 5);
-                this.appDispatcher.DispatchUI(() =>
+                appDispatcher.DispatchUI(() =>
                 {
                     CenterText.Text = string.Empty;
                     CenterText.Foreground = Brushes.Red;
@@ -231,21 +233,21 @@ namespace EQTool
 
         private void LogParser_CharmBreakEvent(object sender, LogParser.CharmBreakArgs e)
         {
-            var overlay = this.activePlayer?.Player?.CharmBreakOverlay ?? false;
+            var overlay = activePlayer?.Player?.CharmBreakOverlay ?? false;
             if (!overlay)
             {
                 return;
             }
 
-            System.Threading.Tasks.Task.Factory.StartNew(() =>
+            _ = System.Threading.Tasks.Task.Factory.StartNew(() =>
             {
-                this.appDispatcher.DispatchUI(() =>
+                appDispatcher.DispatchUI(() =>
                 {
                     CenterText.Text = "Charm Break";
                     CenterText.Foreground = Brushes.Red;
                 });
                 System.Threading.Thread.Sleep(1000 * 5);
-                this.appDispatcher.DispatchUI(() =>
+                appDispatcher.DispatchUI(() =>
                 {
                     CenterText.Text = string.Empty;
                     CenterText.Foreground = Brushes.Red;
@@ -253,18 +255,18 @@ namespace EQTool
             });
         }
 
-        private void LogParser_FTEEvent(object sender, FTEParser.FTEParserData e)
+        private void LogParser_FTEEvent(object sender, FTEParserData e)
         {
-            var overlay = this.activePlayer?.Player?.FTEOverlay ?? false;
+            var overlay = activePlayer?.Player?.FTEOverlay ?? false;
             if (!overlay)
             {
                 return;
             }
 
-            System.Threading.Tasks.Task.Factory.StartNew(() =>
+            _ = System.Threading.Tasks.Task.Factory.StartNew(() =>
             {
-                var fteperson = this.pigParseApi.GetPlayerData(e.FTEPerson, this.activePlayer.Player.Server.Value);
-                this.appDispatcher.DispatchUI(() =>
+                var fteperson = pigParseApi.GetPlayerData(e.FTEPerson, activePlayer.Player.Server.Value);
+                appDispatcher.DispatchUI(() =>
                 {
                     if (fteperson == null)
                     {
@@ -278,7 +280,7 @@ namespace EQTool
                     }
                 });
                 System.Threading.Thread.Sleep(1000 * 5);
-                this.appDispatcher.DispatchUI(() =>
+                appDispatcher.DispatchUI(() =>
                 {
                     CenterText.Text = string.Empty;
                     CenterText.Foreground = Brushes.Yellow;
@@ -288,21 +290,21 @@ namespace EQTool
 
         private void LogParser_InvisEvent(object sender, InvisParser.InvisStatus e)
         {
-            var overlay = this.activePlayer?.Player?.InvisFadingOverlay ?? false;
+            var overlay = activePlayer?.Player?.InvisFadingOverlay ?? false;
             if (!overlay)
             {
                 return;
             }
 
-            System.Threading.Tasks.Task.Factory.StartNew(() =>
+            _ = System.Threading.Tasks.Task.Factory.StartNew(() =>
             {
-                this.appDispatcher.DispatchUI(() =>
+                appDispatcher.DispatchUI(() =>
                 {
                     CenterText.Text = "Invis Fading";
                     CenterText.Foreground = Brushes.Red;
                 });
                 System.Threading.Thread.Sleep(1000 * 5);
-                this.appDispatcher.DispatchUI(() =>
+                appDispatcher.DispatchUI(() =>
                 {
                     CenterText.Text = string.Empty;
                     CenterText.Foreground = Brushes.Red;
@@ -312,21 +314,21 @@ namespace EQTool
 
         private void LogParser_LevEvent(object sender, LevParser.LevStatus e)
         {
-            var overlay = this.activePlayer?.Player?.LevFadingOverlay ?? false;
+            var overlay = activePlayer?.Player?.LevFadingOverlay ?? false;
             if (!overlay)
             {
                 return;
             }
 
-            System.Threading.Tasks.Task.Factory.StartNew(() =>
+            _ = System.Threading.Tasks.Task.Factory.StartNew(() =>
             {
-                this.appDispatcher.DispatchUI(() =>
+                appDispatcher.DispatchUI(() =>
                 {
                     CenterText.Text = "Levitate Fading";
                     CenterText.Foreground = Brushes.Red;
                 });
                 System.Threading.Thread.Sleep(1000 * 5);
-                this.appDispatcher.DispatchUI(() =>
+                appDispatcher.DispatchUI(() =>
                 {
                     CenterText.Text = string.Empty;
                     CenterText.Foreground = Brushes.Red;
@@ -336,8 +338,8 @@ namespace EQTool
 
         private void LogParser_CHEvent(object sender, ChParser.ChParseData e)
         {
-            var overlay = this.activePlayer?.Player?.ChChainOverlay ?? false;
-            var warningoverlay = this.activePlayer?.Player?.ChChainWarningOverlay ?? false;
+            var overlay = activePlayer?.Player?.ChChainOverlay ?? false;
+            var warningoverlay = activePlayer?.Player?.ChChainWarningOverlay ?? false;
             if (!overlay && !warningoverlay)
             {
                 return;
@@ -345,21 +347,21 @@ namespace EQTool
 
             appDispatcher.DispatchUI(() =>
             {
-                var chaindata = this.GetOrCreateChain(e.Recipient);
+                var chaindata = GetOrCreateChain(e.Recipient);
                 if (warningoverlay)
                 {
                     var shouldwarn = CHService.ShouldWarnOfChain(chaindata, e);
                     if (shouldwarn)
                     {
-                        System.Threading.Tasks.Task.Factory.StartNew(() =>
+                        _ = System.Threading.Tasks.Task.Factory.StartNew(() =>
                         {
-                            this.appDispatcher.DispatchUI(() =>
+                            appDispatcher.DispatchUI(() =>
                             {
                                 CenterText.Text = "CH Chain Warning";
                                 CenterText.Foreground = Brushes.Red;
                             });
                             System.Threading.Thread.Sleep(1000 * 2);
-                            this.appDispatcher.DispatchUI(() =>
+                            appDispatcher.DispatchUI(() =>
                             {
                                 CenterText.Text = string.Empty;
                                 CenterText.Foreground = Brushes.Red;
@@ -384,19 +386,28 @@ namespace EQTool
                     VerticalAlignment = VerticalAlignment.Center,
                     HorizontalAlignment = HorizontalAlignment.Stretch
                 };
-                var textborder = new Border { Height = 28, Width = targetwidth, Background = Brushes.ForestGreen, BorderBrush = Brushes.Black, BorderThickness = new Thickness(1) };
-                textborder.Child = target;
-                DoubleAnimation animation = new DoubleAnimation();
-                animation.From = -targetwidth;
-                animation.To = chaindata.Canvas.ActualWidth;
-                animation.Duration = TimeSpan.FromSeconds(11);
+                var textborder = new Border
+                {
+                    Height = 28,
+                    Width = targetwidth,
+                    Background = Brushes.ForestGreen,
+                    BorderBrush = Brushes.Black,
+                    BorderThickness = new Thickness(1),
+                    Child = target
+                };
+                var animation = new DoubleAnimation
+                {
+                    From = -targetwidth,
+                    To = chaindata.Canvas.ActualWidth,
+                    Duration = TimeSpan.FromSeconds(11)
+                };
 
                 Storyboard.SetTarget(animation, textborder);
                 Storyboard.SetTargetProperty(animation, new PropertyPath(Canvas.RightProperty));
 
-                Storyboard storyboard = new Storyboard();
+                var storyboard = new Storyboard();
                 storyboard.Children.Add(animation);
-                chaindata.Canvas.Children.Add(textborder);
+                _ = chaindata.Canvas.Children.Add(textborder);
 
                 storyboard.Completed += (s, ev) =>
                 {
@@ -407,7 +418,7 @@ namespace EQTool
                     });
                     if (chaindata.ActiveAnimations <= 0)
                     {
-                        System.Threading.Tasks.Task.Factory.StartNew(() =>
+                        _ = System.Threading.Tasks.Task.Factory.StartNew(() =>
                         {
                             System.Threading.Thread.Sleep(5000);
                             appDispatcher.DispatchUI(() =>
@@ -416,13 +427,13 @@ namespace EQTool
                                 {
                                     var rowremoved = Grid.GetRow(chaindata.ChildrenInRow.FirstOrDefault());
                                     Debug.WriteLine($"Removing Row {rowremoved}");
-                                    this.chainDatas.Remove(chaindata);
+                                    _ = chainDatas.Remove(chaindata);
                                     foreach (var item in chaindata.ChildrenInRow)
                                     {
-                                        this.ChainStackPanel.Children.Remove(item);
+                                        ChainStackPanel.Children.Remove(item);
                                     }
-                                    this.ChainStackPanel.RowDefinitions.Remove(chaindata.RowDefinition);
-                                    foreach (var item in this.chainDatas)
+                                    _ = ChainStackPanel.RowDefinitions.Remove(chaindata.RowDefinition);
+                                    foreach (var item in chainDatas)
                                     {
                                         foreach (var cell in item.ChildrenInRow)
                                         {
@@ -445,7 +456,7 @@ namespace EQTool
 
         private ChainOverlayData GetOrCreateChain(string targetname)
         {
-            var chaindata = this.chainDatas.FirstOrDefault(a => a.TargetName == targetname);
+            var chaindata = chainDatas.FirstOrDefault(a => a.TargetName == targetname);
             if (chaindata != null)
             {
                 chaindata.ActiveAnimations += 1;
@@ -478,9 +489,15 @@ namespace EQTool
                 TextAlignment = TextAlignment.Center,
                 VerticalAlignment = VerticalAlignment.Center
             };
-            var textborder = new Border { CornerRadius = new CornerRadius(3), Background = Brushes.Chocolate, BorderThickness = new Thickness(2), BorderBrush = Brushes.Black };
-            textborder.Child = target;
-            var getrow = this.ChainStackPanel.RowDefinitions.Count;
+            var textborder = new Border
+            {
+                CornerRadius = new CornerRadius(3),
+                Background = Brushes.Chocolate,
+                BorderThickness = new Thickness(2),
+                BorderBrush = Brushes.Black,
+                Child = target
+            };
+            var getrow = ChainStackPanel.RowDefinitions.Count;
             Debug.WriteLine($"Adding row {getrow}");
             Grid.SetRow(textborder, getrow);
             Grid.SetZIndex(textborder, 1);
@@ -491,18 +508,18 @@ namespace EQTool
             var stackpanel = new StackPanel { Background = new SolidColorBrush(System.Windows.Media.Color.FromArgb(200, 10, 10, 10)), Orientation = Orientation.Horizontal, HorizontalAlignment = HorizontalAlignment.Stretch, Height = 30 };
             Grid.SetRow(stackpanel, getrow);
             Grid.SetColumn(stackpanel, 1);
-            this.ChainStackPanel.RowDefinitions.Add(chaindata.RowDefinition);
-            this.ChainStackPanel.Children.Add(textborder);
-            this.ChainStackPanel.Children.Add(stackpanel);
-            this.ChainStackPanel.Children.Add(chaindata.Canvas);
+            ChainStackPanel.RowDefinitions.Add(chaindata.RowDefinition);
+            _ = ChainStackPanel.Children.Add(textborder);
+            _ = ChainStackPanel.Children.Add(stackpanel);
+            _ = ChainStackPanel.Children.Add(chaindata.Canvas);
             chaindata.ChildrenInRow.Add(textborder);
             chaindata.ChildrenInRow.Add(stackpanel);
             chaindata.ChildrenInRow.Add(chaindata.Canvas);
-            this.chainDatas.Add(chaindata);
+            chainDatas.Add(chaindata);
             chaindata.Canvas.UpdateLayout();
             for (var i = 0; i < 10; i++)
             {
-                stackpanel.Children.Add(new Border
+                _ = stackpanel.Children.Add(new Border
                 {
                     VerticalAlignment = VerticalAlignment.Bottom,
                     Height = 30,
@@ -527,7 +544,7 @@ namespace EQTool
 
         private void LogParser_EnrageEvent(object sender, EnrageParser.EnrageEvent e)
         {
-            var overlay = this.activePlayer?.Player?.EnrageOverlay ?? false;
+            var overlay = activePlayer?.Player?.EnrageOverlay ?? false;
             if (!overlay)
             {
                 return;
@@ -538,16 +555,16 @@ namespace EQTool
                 CenterText.Foreground = Brushes.Red;
             });
 
-            System.Threading.Tasks.Task.Factory.StartNew(() =>
+            _ = System.Threading.Tasks.Task.Factory.StartNew(() =>
             {
                 System.Threading.Thread.Sleep(1000 * 12);
-                this.appDispatcher.DispatchUI(() =>
+                appDispatcher.DispatchUI(() =>
                 {
                     CenterText.Text = "ENGRAGE OFF";
                     CenterText.Foreground = Brushes.Red;
                 });
                 System.Threading.Thread.Sleep(1000 * 3);
-                this.appDispatcher.DispatchUI(() =>
+                appDispatcher.DispatchUI(() =>
                 {
                     CenterText.Text = string.Empty;
                     CenterText.Foreground = Brushes.Red;
@@ -563,7 +580,7 @@ namespace EQTool
                 logParser.CHEvent -= LogParser_CHEvent;
                 logParser.LevEvent -= LogParser_LevEvent;
                 logParser.InvisEvent -= LogParser_InvisEvent;
-                logParser.FTEEvent -= LogParser_FTEEvent;
+                logEvents.FTEEvent -= LogParser_FTEEvent;
                 logParser.CharmBreakEvent -= LogParser_CharmBreakEvent;
                 logParser.FailedFeignEvent -= LogParser_FailedFeignEvent;
                 logParser.GroupInviteEvent -= LogParser_GroupInviteEvent;
@@ -584,13 +601,13 @@ namespace EQTool
 
         private void Grid_MouseLeave(object sender, MouseEventArgs e)
         {
-            System.Threading.Tasks.Task.Factory.StartNew(() =>
+            _ = System.Threading.Tasks.Task.Factory.StartNew(() =>
             {
                 while (Math.Abs((DateTime.UtcNow - LastWindowInteraction).TotalSeconds) < 10)
                 {
                     System.Threading.Thread.Sleep(1000 * 1);
                 }
-                this.appDispatcher.DispatchUI(() =>
+                appDispatcher.DispatchUI(() =>
                 {
                     WindowResizeChrome.ResizeBorderThickness = new Thickness(0);
                     WindowBorder.BorderThickness = new Thickness(0, 0, 0, 0);

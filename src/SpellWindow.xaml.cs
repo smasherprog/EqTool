@@ -19,6 +19,7 @@ namespace EQTool
         private readonly System.Timers.Timer UITimer;
         private readonly SpellWindowViewModel spellWindowViewModel;
         private readonly LogParser logParser;
+        private readonly LogEvents logEvents;
         private readonly ActivePlayer activePlayer;
         private readonly TimersService timersService;
         private readonly PlayerTrackerService playerTrackerService;
@@ -29,6 +30,7 @@ namespace EQTool
             EQToolSettings settings,
             SpellWindowViewModel spellWindowViewModel,
             LogParser logParser,
+            LogEvents logEvents,
             EQToolSettingsLoad toolSettingsLoad,
             ActivePlayer activePlayer,
             LoggingService loggingService) : base(settings.SpellWindowState, toolSettingsLoad, settings)
@@ -37,6 +39,7 @@ namespace EQTool
             this.playerTrackerService = playerTrackerService;
             this.timersService = timersService;
             this.logParser = logParser;
+            this.logEvents = logEvents;
             this.activePlayer = activePlayer;
             spellWindowViewModel.SpellList = new System.Collections.ObjectModel.ObservableCollection<UISpell>();
             DataContext = this.spellWindowViewModel = spellWindowViewModel;
@@ -47,11 +50,11 @@ namespace EQTool
             InitializeComponent();
             base.Init();
             this.logParser.SpellWornOtherOffEvent += LogParser_SpellWornOtherOffEvent;
-            this.logParser.CampEvent += LogParser_CampEvent;
+            this.logEvents.CampEvent += LogParser_CampEvent;
             this.logParser.EnteredWorldEvent += LogParser_EnteredWorldEvent;
             this.logParser.SpellWornOffSelfEvent += LogParser_SpellWornOffSelfEvent;
             this.logParser.StartCastingEvent += LogParser_StartCastingEvent;
-            this.logParser.DeadEvent += LogParser_DeadEvent;
+            this.logEvents.DeadEvent += LogParser_DeadEvent;
             this.logParser.StartTimerEvent += LogParser_StartTimerEvent;
             this.logParser.CancelTimerEvent += LogParser_CancelTimerEvent;
             this.logParser.POFDTEvent += LogParser_POFDTEvent;
@@ -73,7 +76,7 @@ namespace EQTool
 
         private void LogParser_RandomRollEvent(object sender, LogParser.RandomRollEventArgs e)
         {
-            this.spellWindowViewModel.TryAddCustom(new CustomTimer
+            spellWindowViewModel.TryAddCustom(new CustomTimer
             {
                 TargetName = $"Random -- {e.RandomRollData.MaxRoll}",
                 Name = e.RandomRollData.PlayerName,
@@ -100,7 +103,7 @@ namespace EQTool
 
         private void LogParser_POFDTEvent(object sender, POFDTParser.POF_DT_Event e)
         {
-            this.spellWindowViewModel.TryAddCustom(new CustomTimer
+            spellWindowViewModel.TryAddCustom(new CustomTimer
             {
                 DurationInSeconds = 45,
                 Name = $"--DT-- '{e.DTReceiver}'",
@@ -184,11 +187,11 @@ namespace EQTool
             if (logParser != null)
             {
                 logParser.SpellWornOtherOffEvent -= LogParser_SpellWornOtherOffEvent;
-                logParser.CampEvent -= LogParser_CampEvent;
+                logEvents.CampEvent -= LogParser_CampEvent;
                 logParser.EnteredWorldEvent -= LogParser_EnteredWorldEvent;
                 logParser.SpellWornOffSelfEvent -= LogParser_SpellWornOffSelfEvent;
                 logParser.StartCastingEvent -= LogParser_StartCastingEvent;
-                logParser.DeadEvent -= LogParser_DeadEvent;
+                logEvents.DeadEvent -= LogParser_DeadEvent;
                 logParser.StartTimerEvent -= LogParser_StartTimerEvent;
                 logParser.CancelTimerEvent -= LogParser_CancelTimerEvent;
                 logParser.POFDTEvent -= LogParser_POFDTEvent;
@@ -223,7 +226,7 @@ namespace EQTool
         private void RemoveSingleItem(object sender, RoutedEventArgs e)
         {
             var name = (sender as Button).DataContext;
-            spellWindowViewModel.SpellList.Remove(name as UISpell);
+            _ = spellWindowViewModel.SpellList.Remove(name as UISpell);
         }
 
         private void RemoveFromSpells(object sender, RoutedEventArgs e)

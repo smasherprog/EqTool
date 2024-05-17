@@ -13,6 +13,7 @@ namespace EQTool
     public partial class MappingWindow : BaseSaveStateWindow
     {
         private readonly LogParser logParser;
+        private readonly LogEvents logEvents;
         private readonly MapViewModel mapViewModel;
         private readonly ActivePlayer activePlayer;
         private readonly PlayerTrackerService playerTrackerService;
@@ -25,6 +26,7 @@ namespace EQTool
             MapViewModel mapViewModel,
             ActivePlayer activePlayer,
             LogParser logParser,
+            LogEvents logEvents,
             EQToolSettings settings,
             PlayerTrackerService playerTrackerService,
             EQToolSettingsLoad toolSettingsLoad,
@@ -33,6 +35,7 @@ namespace EQTool
         {
             loggingService.Log(string.Empty, EventType.OpenMap, activePlayer?.Player?.Server);
             this.activePlayer = activePlayer;
+            this.logEvents = logEvents;
             this.signalrPlayerHub = signalrPlayerHub;
             this.playerTrackerService = playerTrackerService;
             this.appDispatcher = appDispatcher;
@@ -44,10 +47,10 @@ namespace EQTool
             Map.ZoneName = mapViewModel.ZoneName;
             Map.Height = Math.Abs(mapViewModel.AABB.MaxHeight);
             Map.Width = Math.Abs(mapViewModel.AABB.MaxWidth);
-            this.logParser.PlayerLocationEvent += LogParser_PlayerLocationEvent;
+            this.logEvents.PlayerLocationEvent += LogParser_PlayerLocationEvent;
             this.logParser.PlayerZonedEvent += LogParser_PlayerZonedEvent;
             this.logParser.EnteredWorldEvent += LogParser_EnteredWorldEvent;
-            this.logParser.DeadEvent += LogParser_DeadEvent;
+            this.logEvents.DeadEvent += LogParser_DeadEvent;
             this.logParser.StartTimerEvent += LogParser_StartTimerEvent;
             this.logParser.CancelTimerEvent += LogParser_CancelTimerEvent;
             KeyDown += PanAndZoomCanvas_KeyDown;
@@ -103,12 +106,12 @@ namespace EQTool
         private void Map_StartTimerEvent(object sender, LogParser.StartTimerEventArgs e)
         {
             mapViewModel.TimerMenu_Closed();
-            var mw = mapViewModel.AddTimer(TimeSpan.FromSeconds(e.CustomTimer.DurationInSeconds), e.CustomTimer.Name, true);
+            _ = mapViewModel.AddTimer(TimeSpan.FromSeconds(e.CustomTimer.DurationInSeconds), e.CustomTimer.Name, true);
         }
 
         private void Map_CancelTimerEvent(object sender, EventArgs e)
         {
-            mapViewModel.DeleteSelectedTimer();
+            _ = mapViewModel.DeleteSelectedTimer();
         }
 
         private void LogParser_DeadEvent(object sender, LogParser.DeadEventArgs e)
@@ -189,10 +192,10 @@ namespace EQTool
             UITimer?.Dispose();
             if (logParser != null)
             {
-                logParser.PlayerLocationEvent -= LogParser_PlayerLocationEvent;
+                logEvents.PlayerLocationEvent -= LogParser_PlayerLocationEvent;
                 logParser.PlayerZonedEvent -= LogParser_PlayerZonedEvent;
                 logParser.EnteredWorldEvent -= LogParser_EnteredWorldEvent;
-                logParser.DeadEvent -= LogParser_DeadEvent;
+                logEvents.DeadEvent -= LogParser_DeadEvent;
                 logParser.StartTimerEvent -= LogParser_StartTimerEvent;
                 logParser.CancelTimerEvent -= LogParser_CancelTimerEvent;
             }
@@ -215,23 +218,23 @@ namespace EQTool
 
         private void PanAndZoomCanvas_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            this.mapViewModel.PanAndZoomCanvas_MouseUp(e.GetPosition(Map));
+            mapViewModel.PanAndZoomCanvas_MouseUp(e.GetPosition(Map));
         }
 
         private void PanAndZoomCanvas_MouseMove(object sender, MouseEventArgs e)
         {
-            this.mapViewModel.PanAndZoomCanvas_MouseMove(e.GetPosition(Map), e.LeftButton);
+            mapViewModel.PanAndZoomCanvas_MouseMove(e.GetPosition(Map), e.LeftButton);
         }
 
         private void PanAndZoomCanvas_MouseWheel(object sender, MouseWheelEventArgs e)
         {
-            this.mapViewModel.PanAndZoomCanvas_MouseWheel(e.GetPosition(Map), e.Delta);
-            this.mapViewModel.CenterMapOnPlayer();
+            mapViewModel.PanAndZoomCanvas_MouseWheel(e.GetPosition(Map), e.Delta);
+            mapViewModel.CenterMapOnPlayer();
         }
 
         protected void toggleCenterOnyou(object sender, RoutedEventArgs e)
         {
-            this.mapViewModel.ToggleCenter();
+            mapViewModel.ToggleCenter();
         }
     }
 }

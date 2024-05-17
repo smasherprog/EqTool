@@ -1,6 +1,8 @@
 ﻿using Autofac;
 using Autofac.Features.ResolveAnything;
 using EQTool.Models;
+using EQTool.Services.Parsing;
+using EQTool.Services.Spells.Log;
 using EQTool.ViewModels;
 
 namespace EQTool.Services
@@ -11,6 +13,17 @@ namespace EQTool.Services
         {
             var builder = new ContainerBuilder();
             _ = builder.RegisterSource(new AnyConcreteTypeNotAlreadyRegisteredSource());
+
+
+            _ = builder.RegisterType<LogEvents>().AsSelf().SingleInstance();
+            _ = builder.RegisterType<LocationParser>().As<IEqLogParseHandler>().SingleInstance();
+            _ = builder.RegisterType<CampParser>().As<IEqLogParseHandler>().SingleInstance();
+            _ = builder.RegisterType<DPSLogParse>().As<IEqLogParseHandler>().SingleInstance();
+            _ = builder.RegisterType<FTEParser>().As<IEqLogParseHandler>().SingleInstance();
+            _ = builder.RegisterType<ConLogParse>().As<IEqLogParseHandler>().SingleInstance();
+            _ = builder.RegisterType<LogDeathParse>().As<IEqLogParseHandler>().SingleInstance();
+
+
             _ = builder.RegisterType<EQToolSettingsLoad>().AsSelf().SingleInstance();
             _ = builder.Register(a =>
             {

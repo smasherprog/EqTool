@@ -141,9 +141,9 @@ namespace EQToolTests
         {
             _ = container.Resolve<EQSpells>();
             var line = "341^Lifetap^PLAYER_1^^^^You feel your lifeforce drain away.^ staggers.^^200^0^0^0^1500^2500^2250^0^0^0^9^-3^0^0^0^0^0^0^0^0^0^0^0^0^0^0^0^0^0^0^0^0^0^0^0^5^0^0^0^0^0^0^0^0^0^0^0^2507^2116^-1^-1^-1^-1^1^1^1^1^-1^-1^-1^-1^101^100^100^100^100^100^100^100^100^100^100^100^0^0^0^1^0^254^254^254^254^254^254^254^254^254^254^254^13^20^5^-1^0^0^255^255^255^255^9^255^255^255^255^255^1^255^255^255^255^255^44^13^0^20^0^0^0^0^0^0^0^0^0^0^0^0^0^0^0^0^0^0^100^0^139^89^0^-200^0^0^0^0^0^0^0^0^0^43^0^0^-1^-1^0^0^0^0^0^0^0^0^0^0^0^0^0^0^0^-195^1^-210^4^0^0^0^0^0^0^2^9^0^0^0^0^0^0^0^0^0^0^0^0^0^0^0^0^0^-1^0^0^0^1^0^0^1^1^^0";
-            var spellp99 = ParseSpells_spells_us.ParseP99Line(line);
+            _ = ParseSpells_spells_us.ParseP99Line(line);
             line = "341^Lifetap^PLAYER_1^^^^You feel your life force drain away.^ staggers.^^200^^0^0^1500^2500^2250^0^0^0^9^-3^0^0^0^0^0^0^0^0^0^0^0^5^0^0^0^0^0^0^0^0^0^0^0^2507^2116^-1^-1^-1^-1^1^1^1^1^-1^-1^-1^-1^101^100^100^100^100^100^100^100^100^100^100^100^0^0^0^1^0^254^254^254^254^254^254^254^254^254^254^254^13^20^5^-1^0^0^255^255^255^255^9^255^255^255^255^255^1^255^255^255^255^44^13^0^20^0^0^0^0^0^0^0^0^0^0^0^0^0^0^0^0^0^0^100^0^47^89^0^-200^0^1^0^0^0^0^0^40341^39011^39148^^0";
-            var spellpq = ParseSpells_spells_us.ParseQuarmLine(line);
+            _ = ParseSpells_spells_us.ParseQuarmLine(line);
             // Assert.AreEqual(spellpq.DescrNumber, spellp99.DescrNumber);
         }
 
@@ -1387,6 +1387,7 @@ namespace EQToolTests
         public void TashStickTest()
         {
             var logparser = container.Resolve<LogParser>();
+            var logevents = container.Resolve<LogEvents>();
             var spells = container.Resolve<EQSpells>();
             var player = container.Resolve<ActivePlayer>();
             player.Player = new PlayerInfo
@@ -1409,11 +1410,11 @@ namespace EQToolTests
             };
             logparser.CancelTimerEvent += (a, b) => Assert.Fail("DontHit");
             logparser.StartTimerEvent += (a, b) => Assert.Fail("DontHit");
-            logparser.ConEvent += (a, b) => Assert.Fail("DontHit");
-            logparser.DeadEvent += (a, b) => Assert.Fail("DontHit");
-            logparser.FightHitEvent += (a, b) => Assert.Fail("DontHit");
+            logevents.ConEvent += (a, b) => Assert.Fail("DontHit");
+            logevents.DeadEvent += (a, b) => Assert.Fail("DontHit");
+            logevents.FightHitEvent += (a, b) => Assert.Fail("DontHit");
             logparser.PlayerZonedEvent += (a, b) => Assert.Fail("DontHit");
-            logparser.PlayerLocationEvent += (a, b) => Assert.Fail("DontHit");
+            logevents.PlayerLocationEvent += (a, b) => Assert.Fail("DontHit");
             logparser.Push(line);
             Assert.AreEqual(spellnamefound, "Tashanian");
         }

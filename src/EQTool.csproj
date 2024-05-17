@@ -330,7 +330,7 @@
       <Private>True</Private>
       <Private>True</Private>
     </Reference>
-    <Reference Include="System.Speech" Condition="'$(Configuration)'!='Linux'"/>
+    <Reference Include="System.Speech" Condition="'$(Configuration)'!='Linux'" />
     <Reference Include="System.Text.Encodings.Web, Version=8.0.0.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
       <HintPath>..\packages\System.Text.Encodings.Web.8.0.0\lib\net462\System.Text.Encodings.Web.dll</HintPath>
     </Reference>
@@ -394,6 +394,7 @@
       <DependentUpon>MobInfo.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\EQMapColor.cs" />
+    <Compile Include="Models\IEqLogParseHandler.cs" />
     <Compile Include="Models\PlayerRequest.cs" />
     <Compile Include="PanAndZoomCanvas.xaml.cs">
       <DependentUpon>PanAndZoomCanvas.xaml</DependentUpon>
@@ -414,9 +415,11 @@
     <Compile Include="Services\AppDispatcher.cs" />
     <Compile Include="Services\AudioService.cs" />
     <Compile Include="Services\CHService.cs" />
+    <Compile Include="Services\LogEvents.cs" />
     <Compile Include="Services\LoggingService.cs" />
     <Compile Include="Services\MapOpacityHelper.cs" />
     <Compile Include="Services\MapViewModelService.cs" />
+    <Compile Include="Services\Parsing\CampParser.cs" />
     <Compile Include="Services\Parsing\RandomParser.cs" />
     <Compile Include="Services\Parsing\ResistSpellParser.cs" />
     <Compile Include="Services\Parsing\GroupInviteParser.cs" />
@@ -439,10 +442,10 @@
     <Compile Include="Services\UpdateService.cs" />
     <Compile Include="Services\HSLColor.cs" />
     <Compile Include="Services\Fight\FightLogService.cs" />
-    <Compile Include="Services\Map\LocationParser.cs" />
+    <Compile Include="Services\Parsing\LocationParser.cs" />
     <Compile Include="Services\Map\MapLoad.cs" />
     <Compile Include="Services\Parsing\MobInfoParsing.cs" />
-    <Compile Include="Services\Spells\Log\ConLogParse.cs" />
+    <Compile Include="Services\Parsing\ConLogParse.cs" />
     <Compile Include="Services\Spells\Log\LevelLogParse.cs" />
     <Compile Include="Services\Spells\Log\SpellWornOffLogParse.cs" />
     <Compile Include="Services\Spells\SpellUIExtentions.cs" />
@@ -452,7 +455,7 @@
     <Compile Include="Services\LogParser.cs" />
     <Compile Include="Services\Spells\Log\LogCustomTimer.cs" />
     <Compile Include="Services\Spells\Log\LogDeathParse.cs" />
-    <Compile Include="Services\Spells\Log\DPSLogParse.cs" />
+    <Compile Include="Services\Parsing\DPSLogParse.cs" />
     <Compile Include="Services\Spells\Log\ParseSpellGuess.cs" />
     <Compile Include="Services\Spells\SpellDurations.cs" />
     <Compile Include="Services\Spells\Log\ParseHandleYou.cs" />

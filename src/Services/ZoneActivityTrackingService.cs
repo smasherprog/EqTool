@@ -9,13 +9,13 @@ namespace EQTool.Services
 {
     public class ZoneActivityTrackingService
     {
-        private readonly LogParser logParser;
+        private readonly LogEvents logParser;
         private readonly PigParseApi pigParseApi;
         private readonly ActivePlayer activePlayer;
         private readonly LoggingService loggingService;
         private Point3D? LastLocation = null;
 
-        public ZoneActivityTrackingService(LogParser logParser, ActivePlayer activePlayer, PigParseApi pigParseApi, LoggingService loggingService)
+        public ZoneActivityTrackingService(LogEvents logParser, ActivePlayer activePlayer, PigParseApi pigParseApi, LoggingService loggingService)
         {
             _ = activePlayer.Update();
             this.logParser = logParser;

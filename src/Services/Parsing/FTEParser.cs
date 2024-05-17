@@ -1,11 +1,32 @@
-﻿namespace EQTool.Services
+﻿using EQTool.Models;
+using System;
+
+namespace EQTool.Services.Parsing
 {
-    public class FTEParser
+    public class FTEParserData
     {
-        public class FTEParserData
+        public string NPCName { get; set; }
+        public string FTEPerson { get; set; }
+    }
+
+    public class FTEParser : IEqLogParseHandler
+    {
+        private readonly LogEvents logEvents;
+
+        public FTEParser(LogEvents logEvents)
         {
-            public string NPCName { get; set; }
-            public string FTEPerson { get; set; }
+            this.logEvents = logEvents;
+        }
+
+        public bool Handle(string line, DateTime timestamp)
+        {
+            var m = Parse(line);
+            if (m != null)
+            {
+                logEvents.Handle(m);
+                return true;
+            }
+            return false;
         }
 
         public FTEParserData Parse(string line)

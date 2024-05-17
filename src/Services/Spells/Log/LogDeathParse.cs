@@ -1,16 +1,32 @@
 ﻿using EQTool.Models;
+using System;
+using static EQTool.Services.LogParser;
 
 namespace EQTool.Services.Spells.Log
 {
-    public class LogDeathParse
+    public class LogDeathParse : IEqLogParseHandler
     {
         private readonly string HasBeenSlainBy = "has been slain by";
         private readonly string Died = "died.";
         private readonly string YouHaveSlain = "You have slain";
         private readonly string YouHaveBeenSlain = "You have been slain";
 
-        public LogDeathParse()
+        private readonly LogEvents logEvents;
+
+        public LogDeathParse(LogEvents logEvents)
         {
+            this.logEvents = logEvents;
+        }
+
+        public bool Handle(string line, DateTime timestamp)
+        {
+            var m = GetDeadTarget(line);
+            if (!string.IsNullOrEmpty(m))
+            {
+                logEvents.Handle(new DeadEventArgs { Name = m });
+                return true;
+            }
+            return false;
         }
 
         public string GetDeadTarget(string message)

@@ -17,23 +17,23 @@ namespace EQTool
     public partial class DPSMeter : BaseSaveStateWindow
     {
         private readonly System.Timers.Timer UITimer;
-        private readonly LogParser logParser;
+        private readonly LogEvents logEvents;
         private readonly DPSWindowViewModel dPSWindowViewModel;
         private readonly ActivePlayer activePlayer;
 
-        public DPSMeter(LogParser logParser, DPSWindowViewModel dPSWindowViewModel, EQToolSettings settings, EQToolSettingsLoad toolSettingsLoad, LoggingService loggingService, ActivePlayer activePlayer)
+        public DPSMeter(LogEvents logEvents, DPSWindowViewModel dPSWindowViewModel, EQToolSettings settings, EQToolSettingsLoad toolSettingsLoad, LoggingService loggingService, ActivePlayer activePlayer)
              : base(settings.DpsWindowState, toolSettingsLoad, settings)
         {
             this.activePlayer = activePlayer;
             loggingService.Log(string.Empty, EventType.OpenDPS, activePlayer?.Player?.Server);
-            this.logParser = logParser;
+            this.logEvents = logEvents;
             this.dPSWindowViewModel = dPSWindowViewModel;
             this.dPSWindowViewModel.EntityList = new System.Collections.ObjectModel.ObservableCollection<EntittyDPS>();
             DataContext = dPSWindowViewModel;
             InitializeComponent();
             base.Init();
-            this.logParser.FightHitEvent += LogParser_FightHitEvent;
-            this.logParser.DeadEvent += LogParser_DeadEvent;
+            this.logEvents.FightHitEvent += LogParser_FightHitEvent;
+            this.logEvents.DeadEvent += LogParser_DeadEvent;
             UITimer = new System.Timers.Timer(1000);
             UITimer.Elapsed += PollUI;
             UITimer.Enabled = true;
@@ -55,12 +55,12 @@ namespace EQTool
 
         private void LogParser_DeadEvent(object sender, LogParser.DeadEventArgs e)
         {
-            var zone = this.activePlayer?.Player?.Zone;
+            var zone = activePlayer?.Player?.Zone;
             if (!string.IsNullOrWhiteSpace(zone) && ZoneParser.ZoneInfoMap.TryGetValue(zone, out var fzone))
             {
                 if (fzone.NotableNPCs.Any(a => a == e.Name))
                 {
-                    this.copytoclipboard(e.Name);
+                    copytoclipboard(e.Name);
                 }
             }
 
@@ -71,10 +71,10 @@ namespace EQTool
         {
             UITimer?.Stop();
             UITimer?.Dispose();
-            if (this.logParser != null)
+            if (logEvents != null)
             {
-                logParser.DeadEvent -= LogParser_DeadEvent;
-                logParser.FightHitEvent -= LogParser_FightHitEvent;
+                logEvents.DeadEvent -= LogParser_DeadEvent;
+                logEvents.FightHitEvent -= LogParser_FightHitEvent;
             }
             base.OnClosing(e);
         }
@@ -107,7 +107,7 @@ namespace EQTool
                     (App.Current as App).ShowBalloonTip(4000, "DPS Copied", $"DPS for the fight with {name} has been copied to clipboard", System.Windows.Forms.ToolTipIcon.Info);
                     Thread.Sleep(10);
                 }
-                catch (Exception e)
+                catch (Exception)
                 {
                     if (i == 1)
                     {

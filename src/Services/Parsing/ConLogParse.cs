@@ -1,8 +1,11 @@
-﻿using System.Collections.Generic;
+﻿using EQTool.Models;
+using System;
+using System.Collections.Generic;
+using static EQTool.Services.LogParser;
 
 namespace EQTool.Services.Spells.Log
 {
-    public class ConLogParse
+    public class ConLogParse : IEqLogParseHandler
     {
         private readonly List<string> ConMessages = new List<string>()
         {
@@ -16,10 +19,22 @@ namespace EQTool.Services.Spells.Log
             "glares at you threateningly",
             "scowls at you, ready to attack"
         };
+        private readonly LogEvents logEvents;
 
-        public ConLogParse()
+        public ConLogParse(LogEvents logEvents)
         {
+            this.logEvents = logEvents;
+        }
 
+        public bool Handle(string line, DateTime timestamp)
+        {
+            var m = ConMatch(line);
+            if (!string.IsNullOrWhiteSpace(m))
+            {
+                logEvents.Handle(new ConEventArgs { Name = m });
+                return true;
+            }
+            return false;
         }
 
         public string ConMatch(string message)

@@ -1,6 +1,6 @@
 ﻿using EQTool.Models;
 using EQTool.Services;
-using EQTool.Services.Spells.Log;
+using EQTool.Services.Parsing;
 using EQTool.ViewModels;
 using EQToolShared.Enums;
 using EQToolShared.HubModels;
@@ -94,9 +94,9 @@ namespace EQTool
             {
 
             }
-            this.DebugTab.Visibility = Visibility.Collapsed;
+            DebugTab.Visibility = Visibility.Collapsed;
 #if DEBUG
-            this.DebugTab.Visibility = Visibility.Visible;
+            DebugTab.Visibility = Visibility.Visible;
 #endif
 
         }
@@ -174,7 +174,7 @@ namespace EQTool
                     if (FindEq.IsValidEqFolder(fbd.SelectedPath))
                     {
                         SettingsWindowData.EqPath = settings.DefaultEqDirectory = fbd.SelectedPath;
-                        this.appDispatcher.DispatchUI(() =>
+                        appDispatcher.DispatchUI(() =>
                         {
                             TryUpdateSettings();
                             TryCheckLoggingEnabled();
@@ -313,7 +313,7 @@ namespace EQTool
                 }
                 else if (chkZone.IsChecked == false && player.ShowSpellsForClasses.Any(a => a == item))
                 {
-                    player.ShowSpellsForClasses.Remove(item);
+                    _ = player.ShowSpellsForClasses.Remove(item);
                     SaveConfig();
                 }
             }
@@ -445,7 +445,7 @@ namespace EQTool
         private void logpush(object sender, RoutedEventArgs e)
         {
             var logtext = LogPushText.Text?.Trim();
-            this.PushLog(logtext);
+            PushLog(logtext);
         }
 
         private void PushLog(string message)
@@ -472,7 +472,7 @@ namespace EQTool
                 return;
             }
             var dialog = new Microsoft.Win32.OpenFileDialog();
-            bool? result = dialog.ShowDialog();
+            var result = dialog.ShowDialog();
             if (result == true)
             {
 
@@ -697,7 +697,7 @@ namespace EQTool
 
         private void CHTextBox_TextChanged(object sender, TextChangedEventArgs e)
         {
-            this.SaveConfig();
+            SaveConfig();
         }
         private void SaveAlwaysOntopCheckBoxSettings(object sender, RoutedEventArgs e)
         {
@@ -722,7 +722,7 @@ namespace EQTool
             {
                 if (zone.NotableNPCs.Any())
                 {
-                    this.PushLog(zone.NotableNPCs.FirstOrDefault() + " has become ENRAGED.");
+                    PushLog(zone.NotableNPCs.FirstOrDefault() + " has become ENRAGED.");
                 }
             }
         }
@@ -736,7 +736,7 @@ namespace EQTool
             SettingsWindowData.ActivePlayer.Player.LevFadingAudio = true;
             SettingsWindowData.ActivePlayer.Player.LevFadingOverlay = true;
             ((App)System.Windows.Application.Current).OpenOverLayWindow();
-            this.PushLog("You feel as if you are about to fall.");
+            PushLog("You feel as if you are about to fall.");
         }
         private void testinvisfading(object sender, RoutedEventArgs e)
         {
@@ -747,7 +747,7 @@ namespace EQTool
             SettingsWindowData.ActivePlayer.Player.InvisFadingAudio = true;
             SettingsWindowData.ActivePlayer.Player.InvisFadingOverlay = true;
             ((App)System.Windows.Application.Current).OpenOverLayWindow();
-            this.PushLog("You feel yourself starting to appear.");
+            PushLog("You feel yourself starting to appear.");
         }
 
         private void testCharmBreak(object sender, RoutedEventArgs e)
@@ -759,7 +759,7 @@ namespace EQTool
             SettingsWindowData.ActivePlayer.Player.CharmBreakAudio = true;
             SettingsWindowData.ActivePlayer.Player.CharmBreakOverlay = true;
             ((App)System.Windows.Application.Current).OpenOverLayWindow();
-            this.PushLog("Your charm spell has worn off.");
+            PushLog("Your charm spell has worn off.");
         }
 
         private void testFailedFeign(object sender, RoutedEventArgs e)
@@ -771,7 +771,7 @@ namespace EQTool
             SettingsWindowData.ActivePlayer.Player.FailedFeignAudio = true;
             SettingsWindowData.ActivePlayer.Player.FailedFeignOverlay = true;
             ((App)System.Windows.Application.Current).OpenOverLayWindow();
-            this.PushLog($"{SettingsWindowData.ActivePlayer?.Player?.Name} has fallen to the ground.");
+            PushLog($"{SettingsWindowData.ActivePlayer?.Player?.Name} has fallen to the ground.");
         }
         private void testFTE(object sender, RoutedEventArgs e)
         {
@@ -782,7 +782,7 @@ namespace EQTool
             SettingsWindowData.ActivePlayer.Player.FTEOverlay = true;
             SettingsWindowData.ActivePlayer.Player.FTEAudio = true;
             ((App)System.Windows.Application.Current).OpenOverLayWindow();
-            this.PushLog("Dagarn the Destroyer engages Tzvia!");
+            PushLog("Dagarn the Destroyer engages Tzvia!");
         }
         private void testGroupInvite(object sender, RoutedEventArgs e)
         {
@@ -793,7 +793,7 @@ namespace EQTool
             SettingsWindowData.ActivePlayer.Player.GroupInviteOverlay = true;
             SettingsWindowData.ActivePlayer.Player.GroupInviteAudio = true;
             ((App)System.Windows.Application.Current).OpenOverLayWindow();
-            this.PushLog($"Tzvia invites you to join a group.");
+            PushLog($"Tzvia invites you to join a group.");
         }
         private void testDragonRoar(object sender, RoutedEventArgs e)
         {
@@ -804,11 +804,11 @@ namespace EQTool
             SettingsWindowData.ActivePlayer.Player.DragonRoarAudio = true;
             SettingsWindowData.ActivePlayer.Player.DragonRoarOverlay = true;
             ((App)System.Windows.Application.Current).OpenOverLayWindow();
-            this.PushLog($"You resist the Dragon Roar spell!");
+            PushLog($"You resist the Dragon Roar spell!");
         }
         private void textvoice(object sender, RoutedEventArgs e)
         {
-            if (string.IsNullOrWhiteSpace(this.SettingsWindowData.SelectedVoice))
+            if (string.IsNullOrWhiteSpace(SettingsWindowData.SelectedVoice))
             {
                 return;
             }
@@ -816,7 +816,7 @@ namespace EQTool
             System.Threading.Tasks.Task.Factory.StartNew(() =>
             {
                 var synth = new System.Speech.Synthesis.SpeechSynthesizer();
-                synth.SelectVoice(this.SettingsWindowData.SelectedVoice);
+                synth.SelectVoice(SettingsWindowData.SelectedVoice);
                 synth.Speak($"You resist the Dragon Roar spell!");
             });
 #endif

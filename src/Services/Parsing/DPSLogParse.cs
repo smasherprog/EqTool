@@ -4,10 +4,11 @@ using EQToolShared.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using static EQTool.Services.LogParser;
 
-namespace EQTool.Services.Spells.Log
+namespace EQTool.Services.Parsing
 {
-    public class DPSLogParse
+    public class DPSLogParse : IEqLogParseHandler
     {
         private readonly string PointsOfDamage = " points of damage.";
         private readonly string PointOfDamage = " point of damage.";
@@ -16,7 +17,7 @@ namespace EQTool.Services.Spells.Log
         private readonly string WasHitByNonMelee = "was hit by non-melee for";
 
         private readonly ActivePlayer activePlayer;
-
+        private readonly LogEvents logEvents;
         private readonly List<string> HitTypes = new List<string>()
         {
             " maul ",
@@ -48,9 +49,21 @@ namespace EQTool.Services.Spells.Log
             " gores "
         };
 
-        public DPSLogParse(ActivePlayer activePlayer)
+        public DPSLogParse(ActivePlayer activePlayer, LogEvents logEvents)
         {
             this.activePlayer = activePlayer;
+            this.logEvents = logEvents;
+        }
+
+        public bool Handle(string line, DateTime timestamp)
+        {
+            var m = Match(line, timestamp);
+            if (m != null)
+            {
+                logEvents.Handle(new FightHitEventArgs { HitInformation = m });
+                return true;
+            }
+            return false;
         }
 
         public DPSParseMatch Match(string message, DateTime date)
