@@ -1,26 +1,33 @@
-﻿using EQTool.ViewModels;
+﻿using EQTool.Models;
+using EQTool.ViewModels;
+using System;
 using System.Linq;
 
 namespace EQTool.Services.Parsing
 {
-    public class ChParser
+    public class CompleteHealParser : IEqLogParseHandler
     {
-        public class ChParseData
-        {
-            public string Recipient { get; set; }
-            public string RecipientGuild { get; set; }
-            public string Position { get; set; }
-            public string Caster { get; set; }
-        }
-
+        private readonly LogEvents logEvents;
         private readonly ActivePlayer activePlayer;
 
-        public ChParser(ActivePlayer activePlayer)
+        public CompleteHealParser(ActivePlayer activePlayer, LogEvents logEvents)
         {
             this.activePlayer = activePlayer;
+            this.logEvents = logEvents;
         }
 
-        public ChParseData ChCheck(string line)
+        public bool Handle(string line, DateTime timestamp)
+        {
+            var m = ChCheck(line);
+            if (m != null)
+            {
+                logEvents.Handle(m);
+                return true;
+            }
+            return false;
+        }
+
+        public CompleteHealEvent ChCheck(string line)
         {
             var chindex = line.IndexOf(" ch ", System.StringComparison.OrdinalIgnoreCase);
             var startindexofmessage = line.IndexOf(", '");
@@ -69,7 +76,7 @@ namespace EQTool.Services.Parsing
                     foreach (var item in possiblepositionstosearch)
                     {
                         var rampindex = item.IndexOf("ramp", System.StringComparison.OrdinalIgnoreCase);
-                        if (rampindex != -1 && item.Length == 5)
+                        if (rampindex != -1 && (item.Length == 5 || item.Length == 6))
                         {
                             position = item;
                         }
@@ -132,7 +139,7 @@ namespace EQTool.Services.Parsing
                 }
 
                 var caster = line.Substring(0, line.IndexOf(" ")).Trim('\'').Trim();
-                var ret = new ChParseData
+                var ret = new CompleteHealEvent
                 {
                     Caster = caster,
                     Position = position,

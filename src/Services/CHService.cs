@@ -1,4 +1,6 @@
-﻿namespace EQTool.Services
+﻿using EQTool.Models;
+
+namespace EQTool.Services
 {
     public class ChainData
     {
@@ -8,7 +10,7 @@
 
     public static class CHService
     {
-        public static bool ShouldWarnOfChain(ChainData chaindata, Parsing.ChParser.ChParseData e)
+        public static bool ShouldWarnOfChain(ChainData chaindata, CompleteHealEvent e)
         {
             if (string.IsNullOrWhiteSpace(e.Position))
             {
@@ -39,11 +41,7 @@
                 int my = char.ToLower(chaindata.YourChainOrder[0]);
                 int current = char.ToLower(e.Position[0]);
                 var dif = my - current;
-                if (my == 'a' && increasedorder && dif == 1)
-                {
-                    return false;
-                }
-                return highest == 'z' && my == 'a' && current == 'z' && !increasedorder || dif == 1;
+                return (my != 'a' || !increasedorder || dif != 1) && ((highest == 'z' && my == 'a' && current == 'z' && !increasedorder) || dif == 1);
             }
 
             if (char.IsDigit(chaindata.HighestOrder[0]) && char.IsDigit(e.Position[0]) && char.IsDigit(chaindata.YourChainOrder[0]))
@@ -52,12 +50,7 @@
                 _ = int.TryParse(chaindata.YourChainOrder, out var my);
                 _ = int.TryParse(e.Position, out var current);
                 var dif = my - current;
-                if (my == 1 && increasedorder && dif == 1)
-                {
-                    return false;
-                }
-
-                return current == highest && my == 1 && !increasedorder || dif == 1;
+                return (my != 1 || !increasedorder || dif != 1) && ((current == highest && my == 1 && !increasedorder) || dif == 1);
             }
 
             return false;

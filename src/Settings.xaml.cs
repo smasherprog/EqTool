@@ -4,7 +4,6 @@ using EQTool.Services.Parsing;
 using EQTool.ViewModels;
 using EQToolShared.Enums;
 using EQToolShared.HubModels;
-using EQToolShared.Map;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -59,6 +58,7 @@ namespace EQTool
         private readonly ISignalrPlayerHub signalrPlayerHub;
         private readonly LogParser logParser;
         private readonly MapLoad mapLoad;
+        private readonly SettingsTestRunOverlay settingsTestRunOverlay;
 
         public Settings(
             LogParser logParser,
@@ -70,7 +70,8 @@ namespace EQTool
             EQToolSettings settings,
             EQToolSettingsLoad toolSettingsLoad,
             SettingsWindowViewModel settingsWindowData,
-            SpellWindowViewModel spellWindowViewModel) : base(settings.SettingsWindowState, toolSettingsLoad, settings)
+            SpellWindowViewModel spellWindowViewModel,
+            SettingsTestRunOverlay settingsTestRunOverlay) : base(settings.SettingsWindowState, toolSettingsLoad, settings)
         {
             this.signalrPlayerHub = signalrPlayerHub;
             this.logParser = logParser;
@@ -97,6 +98,7 @@ namespace EQTool
             DebugTab.Visibility = Visibility.Collapsed;
 #if DEBUG
             DebugTab.Visibility = Visibility.Visible;
+            this.settingsTestRunOverlay = settingsTestRunOverlay;
 #endif
 
         }
@@ -138,7 +140,9 @@ namespace EQTool
             {
                 ((App)System.Windows.Application.Current).ToggleMenuButtons(true);
             }
+
         }
+
         private void Hyperlink_RequestNavigate(object sender, RequestNavigateEventArgs e)
         {
             _ = Process.Start(new ProcessStartInfo(e.Uri.AbsoluteUri));
@@ -251,43 +255,43 @@ namespace EQTool
 
         private void testspellsclicked(object sender, RoutedEventArgs e)
         {
-            var listofspells = new List<SpellParsingMatch>
+            var listofspells = new List<SpellCastEvent>
             {
-                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Disease Cloud"), TargetName = "Joe", MultipleMatchesFound = false },
-                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Lesser Shielding"), TargetName = "Joe", MultipleMatchesFound = false },
-                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Shadow Compact"), TargetName = "Joe", MultipleMatchesFound = false },
-                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Heroic Bond"), TargetName = "Joe", MultipleMatchesFound = false },
-                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Improved Invis to Undead"), TargetName = "Joe", MultipleMatchesFound = false },
-                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Grim Aura"), TargetName = "Joe", MultipleMatchesFound = false },
+                new SpellCastEvent { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Disease Cloud"), TargetName = "Joe", MultipleMatchesFound = false },
+                new SpellCastEvent { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Lesser Shielding"), TargetName = "Joe", MultipleMatchesFound = false },
+                new SpellCastEvent { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Shadow Compact"), TargetName = "Joe", MultipleMatchesFound = false },
+                new SpellCastEvent { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Heroic Bond"), TargetName = "Joe", MultipleMatchesFound = false },
+                new SpellCastEvent { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Improved Invis to Undead"), TargetName = "Joe", MultipleMatchesFound = false },
+                new SpellCastEvent { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Grim Aura"), TargetName = "Joe", MultipleMatchesFound = false },
 
-                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Heroic Bond"), TargetName = EQSpells.SpaceYou, MultipleMatchesFound = false },
+                new SpellCastEvent { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Heroic Bond"), TargetName = EQSpells.SpaceYou, MultipleMatchesFound = false },
 
-                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Heroic Bond"), TargetName = "Aasgard", MultipleMatchesFound = false },
-                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Chloroplast"), TargetName = "Aasgard", MultipleMatchesFound = true },
-                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Shield of Words"), TargetName = "Aasgard", MultipleMatchesFound = false },
-                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Boon of the Clear Mind"), TargetName = "Aasgard", MultipleMatchesFound = false },
-                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Gift of Brilliance"), TargetName = "Aasgard", MultipleMatchesFound = false },
-                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Mana Sieve"), TargetName = "a bad guy", MultipleMatchesFound = false },
-                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Mana Sieve"), TargetName = "a bad guy", MultipleMatchesFound = false },
-                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Harvest"), TargetName = EQSpells.SpaceYou, MultipleMatchesFound = false },
-                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "LowerElement"), TargetName = "Tunare", MultipleMatchesFound = false },
-                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "LowerElement"), TargetName = "Tunare", MultipleMatchesFound = false },
-                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "LowerElement"), TargetName = "Tunare", MultipleMatchesFound = false },
-                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "LowerElement"), TargetName = "Tunare", MultipleMatchesFound = false },
-                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "LowerElement"), TargetName = "Tunare", MultipleMatchesFound = false },
-                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "LowerElement"), TargetName = "Tunare", MultipleMatchesFound = false },
+                new SpellCastEvent { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Heroic Bond"), TargetName = "Aasgard", MultipleMatchesFound = false },
+                new SpellCastEvent { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Chloroplast"), TargetName = "Aasgard", MultipleMatchesFound = true },
+                new SpellCastEvent { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Shield of Words"), TargetName = "Aasgard", MultipleMatchesFound = false },
+                new SpellCastEvent { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Boon of the Clear Mind"), TargetName = "Aasgard", MultipleMatchesFound = false },
+                new SpellCastEvent { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Gift of Brilliance"), TargetName = "Aasgard", MultipleMatchesFound = false },
+                new SpellCastEvent { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Mana Sieve"), TargetName = "a bad guy", MultipleMatchesFound = false },
+                new SpellCastEvent { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Mana Sieve"), TargetName = "a bad guy", MultipleMatchesFound = false },
+                new SpellCastEvent { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Harvest"), TargetName = EQSpells.SpaceYou, MultipleMatchesFound = false },
+                new SpellCastEvent { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "LowerElement"), TargetName = "Tunare", MultipleMatchesFound = false },
+                new SpellCastEvent { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "LowerElement"), TargetName = "Tunare", MultipleMatchesFound = false },
+                new SpellCastEvent { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "LowerElement"), TargetName = "Tunare", MultipleMatchesFound = false },
+                new SpellCastEvent { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "LowerElement"), TargetName = "Tunare", MultipleMatchesFound = false },
+                new SpellCastEvent { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "LowerElement"), TargetName = "Tunare", MultipleMatchesFound = false },
+                new SpellCastEvent { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "LowerElement"), TargetName = "Tunare", MultipleMatchesFound = false },
 
-                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Concussion"), TargetName = "Tunare", MultipleMatchesFound = false },
-                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Concussion"), TargetName = "Tunare", MultipleMatchesFound = false },
+                new SpellCastEvent { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Concussion"), TargetName = "Tunare", MultipleMatchesFound = false },
+                new SpellCastEvent { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Concussion"), TargetName = "Tunare", MultipleMatchesFound = false },
 
-                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Flame Lick"), TargetName = "Tunare", MultipleMatchesFound = false },
-                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Flame Lick"), TargetName = "Tunare", MultipleMatchesFound = false },
+                new SpellCastEvent { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Flame Lick"), TargetName = "Tunare", MultipleMatchesFound = false },
+                new SpellCastEvent { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Flame Lick"), TargetName = "Tunare", MultipleMatchesFound = false },
 
-                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Jolt"), TargetName = "Tunare", MultipleMatchesFound = false },
-                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Jolt"), TargetName = "Tunare", MultipleMatchesFound = false },
+                new SpellCastEvent { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Jolt"), TargetName = "Tunare", MultipleMatchesFound = false },
+                new SpellCastEvent { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Jolt"), TargetName = "Tunare", MultipleMatchesFound = false },
 
-                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Cinder Jolt"), TargetName = "Tunare", MultipleMatchesFound = false },
-                new SpellParsingMatch { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Cinder Jolt"), TargetName = "Tunare", MultipleMatchesFound = false }
+                new SpellCastEvent { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Cinder Jolt"), TargetName = "Tunare", MultipleMatchesFound = false },
+                new SpellCastEvent { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Cinder Jolt"), TargetName = "Tunare", MultipleMatchesFound = false }
             };
 
             foreach (var item in listofspells)
@@ -334,38 +338,7 @@ namespace EQTool
 
         private void testRandomRolls(object sender, RoutedEventArgs e)
         {
-            var testbutton = sender as System.Windows.Controls.Button;
-            if (!testbutton.IsEnabled)
-            {
-                return;
-            }
-            testbutton.IsEnabled = false;
-            _ = Task.Factory.StartNew(() =>
-            {
-                try
-                {
-                    var random = new Random();
-                    var r = random.Next(0, 333);
-                    PushLog("**A Magic Die is rolled by Whitewitch.");
-                    PushLog($"**It could have been any number from 0 to 333, but this time it turned up a {r}.");
-                    r = random.Next(0, 333);
-                    PushLog("**A Magic Die is rolled by Huntor.");
-                    PushLog($"**It could have been any number from 0 to 333, but this time it turned up a {r}.");
-                    r = random.Next(0, 333);
-                    PushLog("**A Magic Die is rolled by Vasanle.");
-                    PushLog($"**It could have been any number from 0 to 333, but this time it turned up a {r}.");
-                    r = random.Next(0, 333);
-                    PushLog("**A Magic Die is rolled by Sanare.");
-                    PushLog($"**It could have been any number from 0 to 333, but this time it turned up a {r}.");
-
-                    appDispatcher.DispatchUI(() => { testbutton.IsEnabled = true; });
-                }
-                catch (Exception ex)
-                {
-                    Debug.WriteLine(ex.ToString());
-                    appDispatcher.DispatchUI(() => { testbutton.IsEnabled = true; });
-                }
-            });
+            settingsTestRunOverlay.RunTest(OverlayTypes.RandomRollEvent);
         }
 
         private void testDPS(object sender, RoutedEventArgs e)
@@ -704,107 +677,44 @@ namespace EQTool
             SaveConfig();
             ((App)System.Windows.Application.Current).ApplyAlwaysOnTop();
         }
+
         private void testenrage(object sender, RoutedEventArgs e)
         {
-            var z = SettingsWindowData.ActivePlayer?.Player?.Zone;
-            if (string.IsNullOrWhiteSpace(z))
-            {
-                return;
-            }
-            if (SettingsWindowData.ActivePlayer?.Player == null)
-            {
-                return;
-            }
-            SettingsWindowData.ActivePlayer.Player.EnrageAudio = true;
-            SettingsWindowData.ActivePlayer.Player.EnrageOverlay = true;
-            ((App)System.Windows.Application.Current).OpenOverLayWindow();
-            if (ZoneParser.ZoneInfoMap.TryGetValue(z, out var zone))
-            {
-                if (zone.NotableNPCs.Any())
-                {
-                    PushLog(zone.NotableNPCs.FirstOrDefault() + " has become ENRAGED.");
-                }
-            }
+            settingsTestRunOverlay.RunTest(OverlayTypes.EnrageEvent);
         }
 
         private void testlevfading(object sender, RoutedEventArgs e)
         {
-            if (SettingsWindowData.ActivePlayer?.Player == null)
-            {
-                return;
-            }
-            SettingsWindowData.ActivePlayer.Player.LevFadingAudio = true;
-            SettingsWindowData.ActivePlayer.Player.LevFadingOverlay = true;
-            ((App)System.Windows.Application.Current).OpenOverLayWindow();
-            PushLog("You feel as if you are about to fall.");
+            settingsTestRunOverlay.RunTest(OverlayTypes.LevitateEvent);
         }
         private void testinvisfading(object sender, RoutedEventArgs e)
         {
-            if (SettingsWindowData.ActivePlayer?.Player == null)
-            {
-                return;
-            }
-            SettingsWindowData.ActivePlayer.Player.InvisFadingAudio = true;
-            SettingsWindowData.ActivePlayer.Player.InvisFadingOverlay = true;
-            ((App)System.Windows.Application.Current).OpenOverLayWindow();
-            PushLog("You feel yourself starting to appear.");
+            settingsTestRunOverlay.RunTest(OverlayTypes.InvisEvent);
         }
 
         private void testCharmBreak(object sender, RoutedEventArgs e)
         {
-            if (SettingsWindowData.ActivePlayer?.Player == null)
-            {
-                return;
-            }
-            SettingsWindowData.ActivePlayer.Player.CharmBreakAudio = true;
-            SettingsWindowData.ActivePlayer.Player.CharmBreakOverlay = true;
-            ((App)System.Windows.Application.Current).OpenOverLayWindow();
-            PushLog("Your charm spell has worn off.");
+            settingsTestRunOverlay.RunTest(OverlayTypes.CharmBreakEvent);
         }
 
         private void testFailedFeign(object sender, RoutedEventArgs e)
         {
-            if (SettingsWindowData.ActivePlayer?.Player == null)
-            {
-                return;
-            }
-            SettingsWindowData.ActivePlayer.Player.FailedFeignAudio = true;
-            SettingsWindowData.ActivePlayer.Player.FailedFeignOverlay = true;
-            ((App)System.Windows.Application.Current).OpenOverLayWindow();
-            PushLog($"{SettingsWindowData.ActivePlayer?.Player?.Name} has fallen to the ground.");
+            settingsTestRunOverlay.RunTest(OverlayTypes.FailedFeignEvent);
         }
+
         private void testFTE(object sender, RoutedEventArgs e)
         {
-            if (SettingsWindowData.ActivePlayer?.Player == null)
-            {
-                return;
-            }
-            SettingsWindowData.ActivePlayer.Player.FTEOverlay = true;
-            SettingsWindowData.ActivePlayer.Player.FTEAudio = true;
-            ((App)System.Windows.Application.Current).OpenOverLayWindow();
-            PushLog("Dagarn the Destroyer engages Tzvia!");
+            settingsTestRunOverlay.RunTest(OverlayTypes.FTEEvent);
         }
+
         private void testGroupInvite(object sender, RoutedEventArgs e)
         {
-            if (SettingsWindowData.ActivePlayer?.Player == null)
-            {
-                return;
-            }
-            SettingsWindowData.ActivePlayer.Player.GroupInviteOverlay = true;
-            SettingsWindowData.ActivePlayer.Player.GroupInviteAudio = true;
-            ((App)System.Windows.Application.Current).OpenOverLayWindow();
-            PushLog($"Tzvia invites you to join a group.");
+            settingsTestRunOverlay.RunTest(OverlayTypes.GroupInviteEvent);
         }
+
         private void testDragonRoar(object sender, RoutedEventArgs e)
         {
-            if (SettingsWindowData.ActivePlayer?.Player == null)
-            {
-                return;
-            }
-            SettingsWindowData.ActivePlayer.Player.DragonRoarAudio = true;
-            SettingsWindowData.ActivePlayer.Player.DragonRoarOverlay = true;
-            ((App)System.Windows.Application.Current).OpenOverLayWindow();
-            PushLog($"You resist the Dragon Roar spell!");
+            settingsTestRunOverlay.RunTest(OverlayTypes.DragonFearEvent);
         }
         private void textvoice(object sender, RoutedEventArgs e)
         {
@@ -906,64 +816,12 @@ namespace EQTool
 
         private void testRootBreak(object sender, RoutedEventArgs e)
         {
-            var button = sender as System.Windows.Controls.Button;
-            if (!button.IsEnabled)
-            {
-                return;
-            }
-            if (SettingsWindowData.ActivePlayer?.Player == null)
-            {
-                return;
-            }
-            SettingsWindowData.ActivePlayer.Player.RootWarningAudio = true;
-            SettingsWindowData.ActivePlayer.Player.RootWarningOverlay = true;
-            ((App)System.Windows.Application.Current).OpenOverLayWindow();
-            button.IsEnabled = false;
-            _ = Task.Factory.StartNew(() =>
-            {
-                try
-                {
-
-                    PushLog("Your Paralyzing Earth spell has worn off.");
-                    appDispatcher.DispatchUI(() => { button.IsEnabled = true; });
-                }
-                catch (Exception ex)
-                {
-                    Debug.WriteLine(ex.ToString());
-                    appDispatcher.DispatchUI(() => { button.IsEnabled = true; });
-                }
-            });
+            settingsTestRunOverlay.RunTest(OverlayTypes.RootBreakEvent);
         }
 
         private void testResists(object sender, RoutedEventArgs e)
         {
-            var button = sender as System.Windows.Controls.Button;
-            if (!button.IsEnabled)
-            {
-                return;
-            }
-            if (SettingsWindowData.ActivePlayer?.Player == null)
-            {
-                return;
-            }
-            SettingsWindowData.ActivePlayer.Player.ResistWarningAudio = true;
-            SettingsWindowData.ActivePlayer.Player.ResistWarningOverlay = true;
-            ((App)System.Windows.Application.Current).OpenOverLayWindow();
-            button.IsEnabled = false;
-            _ = Task.Factory.StartNew(() =>
-            {
-                try
-                {
-
-                    PushLog("Your target resisted the Rest the Dead spell.");
-                    appDispatcher.DispatchUI(() => { button.IsEnabled = true; });
-                }
-                catch (Exception ex)
-                {
-                    Debug.WriteLine(ex.ToString());
-                    appDispatcher.DispatchUI(() => { button.IsEnabled = true; });
-                }
-            });
+            settingsTestRunOverlay.RunTest(OverlayTypes.ResistSpellEvent);
         }
     }
 }

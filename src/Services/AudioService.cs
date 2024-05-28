@@ -15,32 +15,30 @@ namespace EQTool.Services
 
     public class AudioService
     {
-        private readonly LogParser logParser;
         private readonly LogEvents logEvents;
         private readonly ActivePlayer activePlayer;
         private readonly EQToolSettings eQToolSettings;
         private readonly List<ChainAudioData> chainDatas = new List<ChainAudioData>();
 
-        public AudioService(LogEvents logEvents, LogParser logParser, ActivePlayer activePlayer, EQToolSettings eQToolSettings)
+        public AudioService(LogEvents logEvents, ActivePlayer activePlayer, EQToolSettings eQToolSettings)
         {
             this.logEvents = logEvents;
-            this.logParser = logParser;
             this.activePlayer = activePlayer;
             this.eQToolSettings = eQToolSettings;
-            this.logParser.InvisEvent += LogParser_InvisEvent;
-            this.logParser.EnrageEvent += LogParser_EnrageEvent;
-            this.logParser.LevEvent += LogParser_LevEvent;
+            this.logEvents.InvisEvent += LogParser_InvisEvent;
+            this.logEvents.EnrageEvent += LogParser_EnrageEvent;
+            this.logEvents.LevitateEvent += LogParser_LevEvent;
             this.logEvents.FTEEvent += LogParser_FTEEvent;
             this.logEvents.CharmBreakEvent += LogParser_CharmBreakEvent;
-            this.logParser.FailedFeignEvent += LogParser_FailedFeignEvent;
-            this.logParser.GroupInviteEvent += LogParser_GroupInviteEvent;
-            this.logParser.StartCastingEvent += LogParser_StartCastingEvent;
-            this.logParser.CHEvent += LogParser_CHEvent;
-            this.logParser.SpellWornOtherOffEvent += LogParser_SpellWornOtherOffEvent1;
-            this.logParser.ResistSpellEvent += LogParser_ResistSpellEvent;
+            this.logEvents.FailedFeignEvent += LogParser_FailedFeignEvent;
+            this.logEvents.GroupInviteEvent += LogParser_GroupInviteEvent;
+            this.logEvents.SpellCastEvent += LogParser_StartCastingEvent;
+            this.logEvents.CompleteHealEvent += LogParser_CHEvent;
+            this.logEvents.SpellWornOffOtherEvent += LogParser_SpellWornOtherOffEvent1;
+            this.logEvents.ResistSpellEvent += LogParser_ResistSpellEvent;
         }
 
-        private void LogParser_ResistSpellEvent(object sender, ResistSpellParser.ResistSpellData e)
+        private void LogParser_ResistSpellEvent(object sender, ResistSpellEvent e)
         {
             var overlay = activePlayer?.Player?.ResistWarningAudio ?? false;
             if (!overlay)
@@ -66,7 +64,7 @@ namespace EQTool.Services
             "Entrapping Roots"
         };
 
-        private void LogParser_SpellWornOtherOffEvent1(object sender, LogParser.SpellWornOffOtherEventArgs e)
+        private void LogParser_SpellWornOtherOffEvent1(object sender, SpellWornOffOtherEvent e)
         {
             var overlay = activePlayer?.Player?.RootWarningAudio ?? false;
             if (!overlay)
@@ -80,7 +78,7 @@ namespace EQTool.Services
             }
         }
 
-        private void LogParser_CHEvent(object sender, ChParser.ChParseData e)
+        private void LogParser_CHEvent(object sender, CompleteHealEvent e)
         {
             var overlay = activePlayer?.Player?.ChChainWarningAudio ?? false;
             if (!overlay)
@@ -96,7 +94,7 @@ namespace EQTool.Services
             }
         }
 
-        private ChainAudioData GetOrCreateChain(ChParser.ChParseData e)
+        private ChainAudioData GetOrCreateChain(CompleteHealEvent e)
         {
             var d = DateTime.UtcNow;
             var toremove = chainDatas.Where(a => (d - a.UpdatedTime).TotalSeconds > 20).ToList();
@@ -119,16 +117,17 @@ namespace EQTool.Services
             return f;
         }
 
-        private void LogParser_StartCastingEvent(object sender, LogParser.SpellEventArgs e)
+        private void LogParser_StartCastingEvent(object sender, SpellCastEvent e)
         {
             var overlay = activePlayer?.Player?.DragonRoarAudio ?? false;
-            if (!overlay || e.Spell.Spell.name != "Dragon Roar")
+            if (!overlay || e.Spell.name != "Dragon Roar")
             {
                 return;
             }
 
             _ = System.Threading.Tasks.Task.Factory.StartNew(() =>
             {
+                PlayResource($"Dragon Roar out");
                 System.Threading.Thread.Sleep(1000 * 30);
                 PlayResource($"Dragon Roar in 6 Seconds!");
                 System.Threading.Thread.Sleep(1000);
@@ -143,23 +142,23 @@ namespace EQTool.Services
             });
         }
 
-        private void LogParser_GroupInviteEvent(object sender, string e)
+        private void LogParser_GroupInviteEvent(object sender, GroupInviteEvent e)
         {
             if (activePlayer?.Player?.GroupInviteAudio == true)
             {
-                PlayResource(e);
+                PlayResource($"{e.Inviter} Invites you to a group");
             }
         }
 
-        private void LogParser_FailedFeignEvent(object sender, string e)
+        private void LogParser_FailedFeignEvent(object sender, FailedFeignEvent e)
         {
             if (activePlayer?.Player?.FailedFeignAudio == true)
             {
-                PlayResource($"Failed Feign Death");
+                PlayResource($"{e.PersonWhoFailedFeign} Failed Feign Death");
             }
         }
 
-        private void LogParser_CharmBreakEvent(object sender, LogParser.CharmBreakArgs e)
+        private void LogParser_CharmBreakEvent(object sender, CharmBreakEvent e)
         {
             if (activePlayer?.Player?.CharmBreakAudio == true)
             {
@@ -167,7 +166,7 @@ namespace EQTool.Services
             }
         }
 
-        private void LogParser_FTEEvent(object sender, FTEParserData e)
+        private void LogParser_FTEEvent(object sender, FTEEvent e)
         {
             if (activePlayer?.Player?.FTEAudio == true)
             {
@@ -175,9 +174,9 @@ namespace EQTool.Services
             }
         }
 
-        private void LogParser_LevEvent(object sender, LevParser.LevStatus e)
+        private void LogParser_LevEvent(object sender, LevitateEvent e)
         {
-            if (activePlayer?.Player?.LevFadingAudio == true)
+            if (activePlayer?.Player?.LevFadingAudio == true && e.LevitateStatus == LevParser.LevStatus.Fading)
             {
                 PlayResource("Levitate Fading");
             }
@@ -203,7 +202,7 @@ namespace EQTool.Services
 #endif
         }
 
-        private void LogParser_EnrageEvent(object sender, EnrageParser.EnrageEvent e)
+        private void LogParser_EnrageEvent(object sender, EnrageEvent e)
         {
             if (activePlayer?.Player?.EnrageAudio == true)
             {
@@ -211,9 +210,9 @@ namespace EQTool.Services
             }
         }
 
-        private void LogParser_InvisEvent(object sender, InvisParser.InvisStatus e)
+        private void LogParser_InvisEvent(object sender, InvisEvent e)
         {
-            if (activePlayer?.Player?.InvisFadingAudio == true)
+            if (activePlayer?.Player?.InvisFadingAudio == true && e.InvisStatus == InvisParser.InvisStatus.Fading)
             {
                 PlayResource($"Invisability Fading.");
             }

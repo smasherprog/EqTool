@@ -35,6 +35,7 @@ namespace EQTool
         private System.Windows.Forms.MenuItem GroupSuggestionsMenuItem;
         private System.Windows.Forms.MenuItem MobInfoMenuItem;
         private LogParser logParser => container.Resolve<LogParser>();
+        private LogEvents logEvents => container.Resolve<LogEvents>();
         private System.Timers.Timer UITimer;
         private PlayerTrackerService PlayerTrackerService;
         private ZoneActivityTrackingService ZoneActivityTrackingService;
@@ -327,7 +328,7 @@ namespace EQTool
             PlayerTrackerService = container.Resolve<PlayerTrackerService>();
             ZoneActivityTrackingService = container.Resolve<ZoneActivityTrackingService>();
             audioService = container.Resolve<AudioService>();
-            logParser.QuakeEvent += LogParser_QuakeEvent;
+            logEvents.QuakeEvent += LogParser_QuakeEvent;
             App.Current.Resources["GlobalFontSize"] = (double)(EQToolSettings?.FontSize ?? 12);
             ((App)System.Windows.Application.Current).UpdateBackgroundOpacity("MyWindowStyleDPS", EQToolSettings.DpsWindowState.Opacity.Value);
             ((App)System.Windows.Application.Current).UpdateBackgroundOpacity("MyWindowStyleMap", EQToolSettings.MapWindowState.Opacity.Value);
@@ -343,7 +344,7 @@ namespace EQTool
             App.Current.Resources[name] = style;
         }
 
-        private void LogParser_QuakeEvent(object sender, LogParser.QuakeArgs e)
+        private void LogParser_QuakeEvent(object sender, QuakeEvent e)
         {
             container.Resolve<PigParseApi>().SendQuake();
         }

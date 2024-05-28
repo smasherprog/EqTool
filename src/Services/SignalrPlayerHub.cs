@@ -96,7 +96,7 @@ namespace EQTool.Models
 
             this.logEvents.PlayerLocationEvent += LogParser_PlayerLocationEvent;
             this.logEvents.CampEvent += LogParser_CampEvent;
-            this.logParser.StartCastingEvent += LogParser_StartCastingEvent;
+            this.logEvents.SpellCastEvent += LogParser_StartCastingEvent;
             timer = new System.Timers.Timer();
             timer.Elapsed += Timer_Elapsed;
             timer.Interval = 1000 * 10;
@@ -111,7 +111,7 @@ namespace EQTool.Models
             }
         }
 
-        private void LogParser_CampEvent(object sender, LogParser.CampEventArgs e)
+        private void LogParser_CampEvent(object sender, CampEvent e)
         {
             LastPlayer = null;
         }
@@ -260,32 +260,32 @@ namespace EQTool.Models
                 });
             }
         }
-        private void LogParser_StartCastingEvent(object sender, LogParser.SpellEventArgs e)
+        private void LogParser_StartCastingEvent(object sender, SpellCastEvent e)
         {
-            if (e.Spell.IsYou &&
+            if (e.IsYou &&
                 LastPlayer != null &&
                 !string.IsNullOrWhiteSpace(activePlayer?.Player?.Zone) &&
                 !string.IsNullOrWhiteSpace(activePlayer?.Player?.Name) &&
                 activePlayer.Player.Server.HasValue &&
-                (e.Spell.Spell.type == SpellTypes.Detrimental || e.Spell.Spell.type == SpellTypes.Other)
+                (e.Spell.type == SpellTypes.Detrimental || e.Spell.type == SpellTypes.Other)
              )
             {
-                var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(e.Spell.Spell, activePlayer.Player));
-                var isnpc = MasterNPCList.NPCs.Contains(e.Spell.TargetName);
+                var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(e.Spell, activePlayer.Player));
+                var isnpc = MasterNPCList.NPCs.Contains(e.TargetName);
                 if (isnpc)
                 {
                     var s = new TriggerEvent
                     {
-                        Classes = e.Spell.Spell.Classes,
+                        Classes = e.Spell.Classes,
                         DurationInSeconds = (int)spellduration.TotalSeconds,
                         Zone = activePlayer.Player?.Zone,
                         GuildName = activePlayer.Player.GuildName,
                         MapLocationSharing = activePlayer.Player.MapLocationSharing,
-                        Name = e.Spell.Spell.name,
+                        Name = e.Spell.name,
                         Server = activePlayer.Player.Server.Value,
-                        SpellNameIcon = e.Spell.Spell.name,
-                        SpellType = e.Spell.Spell.type,
-                        TargetName = e.Spell.TargetName,
+                        SpellNameIcon = e.Spell.name,
+                        SpellType = e.Spell.type,
+                        TargetName = e.TargetName,
                         X = LastPlayer.X,
                         Y = LastPlayer.Y,
                         Z = LastPlayer.Z
@@ -365,7 +365,7 @@ namespace EQTool.Models
             return zoneName;
         }
 
-        private void LogParser_PlayerLocationEvent(object sender, LogParser.PlayerLocationEventArgs e)
+        private void LogParser_PlayerLocationEvent(object sender, PlayerLocationEvent e)
         {
             if (activePlayer?.Player?.Server != null)
             {

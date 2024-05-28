@@ -1,19 +1,22 @@
 ﻿using EQTool.Models;
 using EQTool.ViewModels;
+using System;
 using System.Linq;
 
-namespace EQTool.Services.Spells.Log
+namespace EQTool.Services.Parsing
 {
-    public class SpellLogParse
+    public class SpellCastParser : IEqLogParseHandler
     {
+        private readonly LogEvents logEvents;
         private readonly ActivePlayer activePlayer;
         private readonly ParseHandleYouCasting parseHandleYouCasting;
         private readonly ParseSpellGuess parseSpellGuess;
         private readonly EQToolSettings settings;
         private readonly Spell HealSpell;
 
-        public SpellLogParse(ParseSpellGuess parseSpellGuess, ParseHandleYouCasting parseHandleYouCasting, ActivePlayer activePlayer, EQToolSettings settings, EQSpells spells)
+        public SpellCastParser(LogEvents logEvents, ParseSpellGuess parseSpellGuess, ParseHandleYouCasting parseHandleYouCasting, ActivePlayer activePlayer, EQToolSettings settings, EQSpells spells)
         {
+            this.logEvents = logEvents;
             this.parseSpellGuess = parseSpellGuess;
             this.settings = settings;
             this.parseHandleYouCasting = parseHandleYouCasting;
@@ -21,11 +24,23 @@ namespace EQTool.Services.Spells.Log
             HealSpell = spells.AllSpells.FirstOrDefault(a => a.name == "Chloroplast") ?? spells.AllSpells.FirstOrDefault(a => a.name == "Regeneration");
         }
 
-        public SpellParsingMatch MatchSpell(string message)
+        public bool Handle(string line, DateTime timestamp)
+        {
+            var m = MatchSpell(line);
+            if (m != null)
+            {
+                logEvents.Handle(m);
+                return true;
+            }
+            return false;
+        }
+
+
+        public SpellCastEvent MatchSpell(string message)
         {
             if (message == "You mend your wounds and heal some damage." || message == "You have failed to mend your wounds.")
             {
-                return new SpellParsingMatch
+                return new SpellCastEvent
                 {
                     MultipleMatchesFound = false,
                     Spell = new Spell
@@ -96,12 +111,7 @@ namespace EQTool.Services.Spells.Log
                 }
 
                 var spell = parseHandleYouCasting.HandleYourSpell(message);
-                if (spell != null)
-                {
-                    return spell;
-                }
-
-                return settings.BestGuessSpells ? parseSpellGuess.HandleBestGuessSpell(message) : null;
+                return spell ?? (settings.BestGuessSpells ? parseSpellGuess.HandleBestGuessSpell(message) : null);
             }
 
             if (activePlayer?.UserCastingSpell != null)

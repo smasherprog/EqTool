@@ -3,26 +3,20 @@ using System;
 
 namespace EQTool.Services.Parsing
 {
-    public class CharmBreakParser : IEqLogParseHandler
+    public class OutlierSpellEffectParser : IEqLogParseHandler
     {
         private readonly LogEvents logEvents;
 
-        public CharmBreakParser(LogEvents logEvents)
+        public OutlierSpellEffectParser(LogEvents logEvents)
         {
             this.logEvents = logEvents;
         }
 
-        public bool DidCharmBreak(string line)
-        {
-            return line == "Your charm spell has worn off.";
-        }
-
         public bool Handle(string line, DateTime timestamp)
         {
-            var m = DidCharmBreak(line);
-            if (m)
+            if (line == "The screams fade away.")
             {
-                logEvents.Handle(new CharmBreakEvent());
+                logEvents.Handle(new SpellWornOffEvent { SpellName = "Soul Consumption" });
                 return true;
             }
             return false;

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 
-namespace EQTool.Services.Spells.Log
+namespace EQTool.Services.Parsing
 {
     public class ParseSpellGuess
     {
@@ -21,7 +21,7 @@ namespace EQTool.Services.Spells.Log
             HealSpell = spells.AllSpells.FirstOrDefault(a => a.name == "Chloroblast");
         }
 
-        public SpellParsingMatch HandleBestGuessSpell(string message)
+        public SpellCastEvent HandleBestGuessSpell(string message)
         {
             if (spells.CastOnYouSpells.TryGetValue(message, out var foundspells))
             {
@@ -30,7 +30,7 @@ namespace EQTool.Services.Spells.Log
 
                 Debug.WriteLine($"Cast On you Spell: {foundspell.name} Message: {message}");
                 var multiplematches = foundspell.Classes.All(a => a.Value == 255) && foundspells.Count > 1;
-                return new SpellParsingMatch
+                return new SpellCastEvent
                 {
                     Spell = foundspell,
                     TargetName = EQSpells.SpaceYou,
@@ -49,7 +49,7 @@ namespace EQTool.Services.Spells.Log
                     var targetname = message.Replace(foundspell.cast_on_other, string.Empty).Trim();
                     Debug.WriteLine($"Other Spell: {foundspell.name} Message: {spellmessage}");
                     var multiplematches = foundspell.Classes.All(a => a.Value == 255) && foundspells.Count > 1;
-                    return new SpellParsingMatch
+                    return new SpellCastEvent
                     {
                         Spell = foundspell,
                         TargetName = targetname,
@@ -83,7 +83,7 @@ namespace EQTool.Services.Spells.Log
             return null;
         }
 
-        private SpellParsingMatch Match(string spellmessage, string targetname)
+        private SpellCastEvent Match(string spellmessage, string targetname)
         {
 
             var foundspells = new List<Spell>();
@@ -110,7 +110,7 @@ namespace EQTool.Services.Spells.Log
                 var foundspell = SpellDurations.MatchClosestLevelToSpell(foundspells, activePlayer.Player);
                 Debug.WriteLine($"Other Spell: {foundspell.name} Message: {spellmessage}");
                 var multiplematches = foundspell.Classes.All(a => a.Value == 255) && foundspells.Count > 1;
-                return new SpellParsingMatch
+                return new SpellCastEvent
                 {
                     Spell = foundspell,
                     TargetName = targetname,

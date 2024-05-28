@@ -42,6 +42,7 @@ namespace EQTool.Services
                                 item.ShowSpellsForClasses = Enum.GetValues(typeof(PlayerClasses)).Cast<PlayerClasses>().ToList();
                             }
                         }
+                        AddMissingEnums(ret1);
                         return ret1;
                     }
                 }
@@ -84,15 +85,43 @@ namespace EQTool.Services
                 {
                     Closed = false,
                     State = System.Windows.WindowState.Normal
-                }
+                },
+                OverlayWindowState = new WindowState
+                {
+                    AlwaysOnTop = true,
+                    Closed = false,
+                    State = System.Windows.WindowState.Normal
+                },
+                FontSize = 12,
+                ShowRandomRolls = true
             };
+            AddMissingEnums(ret);
             return ret;
+        }
+
+        private void AddMissingEnums(EQToolSettings settings)
+        {
+            foreach (var player in settings.Players)
+            {
+                var enumsinlist = player.OverlaySettings.Select(a => a.OverlayType).ToList();
+                var allenums = Enum.GetValues(typeof(OverlayTypes)).Cast<OverlayTypes>().ToList().Where(a => !enumsinlist.Contains(a));
+                foreach (var item in allenums)
+                {
+                    player.OverlaySettings.Add(new OverLaySetting
+                    {
+                        OverlayType = item,
+                        WarningAudio = true,
+                        WarningOverlay = true,
+                    });
+                }
+            }
         }
 
         public void Save(EQToolSettings model)
         {
             try
             {
+                AddMissingEnums(model);
                 var txt = JsonConvert.SerializeObject(model, Formatting.Indented);
                 lock (filelock)
                 {

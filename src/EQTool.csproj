@@ -393,8 +393,10 @@
     <Compile Include="MobInfo.xaml.cs">
       <DependentUpon>MobInfo.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Models\EventModels.cs" />
     <Compile Include="Models\EQMapColor.cs" />
     <Compile Include="Models\IEqLogParseHandler.cs" />
+    <Compile Include="Models\OverlayTypes.cs" />
     <Compile Include="Models\PlayerRequest.cs" />
     <Compile Include="PanAndZoomCanvas.xaml.cs">
       <DependentUpon>PanAndZoomCanvas.xaml</DependentUpon>
@@ -404,7 +406,6 @@
       <DependentUpon>DPSMeter.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\DPSParseMatch.cs" />
-    <Compile Include="Models\SpellParsingMatch.cs" />
     <Compile Include="Models\EQSpells.cs" />
     <Compile Include="Models\EQToolSettings.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
@@ -420,6 +421,7 @@
     <Compile Include="Services\MapOpacityHelper.cs" />
     <Compile Include="Services\MapViewModelService.cs" />
     <Compile Include="Services\Parsing\CampParser.cs" />
+    <Compile Include="Services\Parsing\OutlierSpellEffectParser.cs" />
     <Compile Include="Services\Parsing\LogStartCustomTimer.cs" />
     <Compile Include="Services\Parsing\RandomParser.cs" />
     <Compile Include="Services\Parsing\ResistSpellParser.cs" />
@@ -430,16 +432,18 @@
     <Compile Include="Services\Parsing\LevParser.cs" />
     <Compile Include="Services\Parsing\InvisParser.cs" />
     <Compile Include="Services\Parsing\EnrageParser.cs" />
-    <Compile Include="Services\Parsing\ChParser.cs" />
-    <Compile Include="Services\Parsing\POFDTParser.cs" />
+    <Compile Include="Services\Parsing\CompleteHealParser.cs" />
+    <Compile Include="Services\Parsing\DeathTouchParser.cs" />
     <Compile Include="Services\Parsing\QuakeParser.cs" />
     <Compile Include="Services\Parsing\LogFileDateTimeParse.cs" />
     <Compile Include="Services\Parsing\EnterWorldParser.cs" />
     <Compile Include="Services\PlayerGroupService.cs" />
+    <Compile Include="Services\SettingsTestRunOverlay.cs" />
     <Compile Include="Services\SignalrPlayerHub.cs" />
+    <Compile Include="Services\Parsing\SpellWornOffSelfParser.cs" />
     <Compile Include="Services\ZoneActivityTrackingService.cs" />
     <Compile Include="Services\PlayerTrackerService.cs" />
-    <Compile Include="Services\Spells\Log\PlayerWhoLogParse.cs" />
+    <Compile Include="Services\Parsing\PlayerWhoLogParse.cs" />
     <Compile Include="Services\UpdateService.cs" />
     <Compile Include="Services\HSLColor.cs" />
     <Compile Include="Services\Fight\FightLogService.cs" />
@@ -447,20 +451,20 @@
     <Compile Include="Services\Map\MapLoad.cs" />
     <Compile Include="Services\Parsing\MobInfoParsing.cs" />
     <Compile Include="Services\Parsing\ConLogParse.cs" />
-    <Compile Include="Services\Spells\Log\LevelLogParse.cs" />
-    <Compile Include="Services\Spells\Log\SpellWornOffLogParse.cs" />
+    <Compile Include="Services\Parsing\LevelLogParse.cs" />
+    <Compile Include="Services\Parsing\SpellWornOffOtherParser.cs" />
     <Compile Include="Services\Spells\SpellUIExtentions.cs" />
     <Compile Include="Services\PigParseApi.cs" />
     <Compile Include="Services\WikiApi.cs" />
     <Compile Include="Services\WindowBounds.cs" />
     <Compile Include="Services\LogParser.cs" />
     <Compile Include="Services\Parsing\LogCancelCustomTimer.cs" />
-    <Compile Include="Services\Spells\Log\LogDeathParse.cs" />
+    <Compile Include="Services\Parsing\LogDeathParse.cs" />
     <Compile Include="Services\Parsing\DPSLogParse.cs" />
-    <Compile Include="Services\Spells\Log\ParseSpellGuess.cs" />
+    <Compile Include="Services\Parsing\Helpers\ParseSpellGuess.cs" />
     <Compile Include="Services\Spells\SpellDurations.cs" />
-    <Compile Include="Services\Spells\Log\ParseHandleYou.cs" />
-    <Compile Include="Services\Spells\Log\SpellLogParse.cs" />
+    <Compile Include="Services\Parsing\Helpers\ParseHandleYou.cs" />
+    <Compile Include="Services\Parsing\SpellCastParser.cs" />
     <Compile Include="Shapes\ArrowEnds.cs" />
     <Compile Include="Shapes\ArrowLine.cs" />
     <Compile Include="Shapes\ArrowLineBase.cs" />
@@ -484,7 +488,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="Services\EQToolSettingsLoad.cs" />
-    <Compile Include="Services\DI.cs" />
+    <Compile Include="DI.cs" />
     <Compile Include="Services\FindEq.cs" />
     <Compile Include="Services\Spells\ParseSpells_spells_us.cs" />
     <Compile Include="Services\S3dReader.cs" />

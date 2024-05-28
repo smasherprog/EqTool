@@ -18,7 +18,6 @@ namespace EQTool
     {
         private readonly System.Timers.Timer UITimer;
         private readonly SpellWindowViewModel spellWindowViewModel;
-        private readonly LogParser logParser;
         private readonly LogEvents logEvents;
         private readonly ActivePlayer activePlayer;
         private readonly TimersService timersService;
@@ -29,7 +28,6 @@ namespace EQTool
             TimersService timersService,
             EQToolSettings settings,
             SpellWindowViewModel spellWindowViewModel,
-            LogParser logParser,
             LogEvents logEvents,
             EQToolSettingsLoad toolSettingsLoad,
             ActivePlayer activePlayer,
@@ -38,7 +36,6 @@ namespace EQTool
             loggingService.Log(string.Empty, EventType.OpenMap, activePlayer?.Player?.Server);
             this.playerTrackerService = playerTrackerService;
             this.timersService = timersService;
-            this.logParser = logParser;
             this.logEvents = logEvents;
             this.activePlayer = activePlayer;
             spellWindowViewModel.SpellList = new System.Collections.ObjectModel.ObservableCollection<UISpell>();
@@ -49,17 +46,17 @@ namespace EQTool
             }
             InitializeComponent();
             base.Init();
-            this.logParser.SpellWornOtherOffEvent += LogParser_SpellWornOtherOffEvent;
+            this.logEvents.SpellWornOffOtherEvent += LogParser_SpellWornOtherOffEvent;
             this.logEvents.CampEvent += LogParser_CampEvent;
-            this.logParser.EnteredWorldEvent += LogParser_EnteredWorldEvent;
-            this.logParser.SpellWornOffSelfEvent += LogParser_SpellWornOffSelfEvent;
-            this.logParser.StartCastingEvent += LogParser_StartCastingEvent;
+            this.logEvents.EnteredWorldEvent += LogParser_EnteredWorldEvent;
+            this.logEvents.SpellWornOffSelfEvent += LogParser_SpellWornOffSelfEvent;
+            this.logEvents.SpellCastEvent += LogParser_StartCastingEvent;
             this.logEvents.DeadEvent += LogParser_DeadEvent;
             this.logEvents.StartTimerEvent += LogParser_StartTimerEvent;
             this.logEvents.CancelTimerEvent += LogParser_CancelTimerEvent;
-            this.logParser.POFDTEvent += LogParser_POFDTEvent;
-            this.logParser.ResistSpellEvent += LogParser_ResistSpellEvent;
-            this.logParser.RandomRollEvent += LogParser_RandomRollEvent;
+            this.logEvents.DeathTouchEvent += LogParser_POFDTEvent;
+            this.logEvents.ResistSpellEvent += LogParser_ResistSpellEvent;
+            this.logEvents.RandomRollEvent += LogParser_RandomRollEvent;
             UITimer = new System.Timers.Timer(1000);
             UITimer.Elapsed += PollUI;
             UITimer.Enabled = true;
@@ -74,24 +71,24 @@ namespace EQTool
             view.LiveSortingProperties.Add(nameof(UISpell.SecondsLeftOnSpell));
         }
 
-        private void LogParser_RandomRollEvent(object sender, LogParser.RandomRollEventArgs e)
+        private void LogParser_RandomRollEvent(object sender, RandomRollEvent e)
         {
             spellWindowViewModel.TryAddCustom(new CustomTimer
             {
-                TargetName = $"Random -- {e.RandomRollData.MaxRoll}",
-                Name = e.RandomRollData.PlayerName,
+                TargetName = $"Random -- {e.MaxRoll}",
+                Name = e.PlayerName,
                 SpellNameIcon = "Invisibility",
                 SpellType = EQToolShared.Enums.SpellTypes.RandomRoll,
-                Roll = e.RandomRollData.Roll,
+                Roll = e.Roll,
                 DurationInSeconds = 60 * 3
             });
         }
 
-        private void LogParser_ResistSpellEvent(object sender, Services.Parsing.ResistSpellParser.ResistSpellData e)
+        private void LogParser_ResistSpellEvent(object sender, ResistSpellEvent e)
         {
             if (e.isYou)
             {
-                spellWindowViewModel.TryAdd(new SpellParsingMatch
+                spellWindowViewModel.TryAdd(new SpellCastEvent
                 {
                     IsYou = e.isYou,
                     Spell = e.Spell,
@@ -101,7 +98,7 @@ namespace EQTool
             }
         }
 
-        private void LogParser_POFDTEvent(object sender, Services.Parsing.POFDTParser.POF_DT_Event e)
+        private void LogParser_POFDTEvent(object sender, DeathTouchEvent e)
         {
             spellWindowViewModel.TryAddCustom(new CustomTimer
             {
@@ -112,14 +109,14 @@ namespace EQTool
             });
         }
 
-        private void LogParser_CampEvent(object sender, LogParser.CampEventArgs e)
+        private void LogParser_CampEvent(object sender, CampEvent e)
         {
             TrySaveYouSpellData();
             base.SaveState();
             spellWindowViewModel.ClearYouSpells();
         }
 
-        private void LogParser_EnteredWorldEvent(object sender, LogParser.EnteredWorldArgs e)
+        private void LogParser_EnteredWorldEvent(object sender, EnteredWorldEvent e)
         {
             spellWindowViewModel.ClearYouSpells();
             if (activePlayer.Player != null)
@@ -128,23 +125,23 @@ namespace EQTool
             }
         }
 
-        private void LogParser_SpellWornOffSelfEvent(object sender, LogParser.SpellWornOffSelfEventArgs e)
+        private void LogParser_SpellWornOffSelfEvent(object sender, SpellWornOffSelfEvent e)
         {
             spellWindowViewModel.TryRemoveUnambiguousSpellSelf(e.SpellNames);
         }
 
-        private void LogParser_SpellWornOtherOffEvent(object sender, LogParser.SpellWornOffOtherEventArgs e)
+        private void LogParser_SpellWornOtherOffEvent(object sender, SpellWornOffOtherEvent e)
         {
             spellWindowViewModel.TryRemoveUnambiguousSpellOther(e.SpellName);
         }
 
-        private void LogParser_StartCastingEvent(object sender, LogParser.SpellEventArgs e)
+        private void LogParser_StartCastingEvent(object sender, SpellCastEvent e)
         {
-            spellWindowViewModel.TryAdd(e.Spell, false);
+            spellWindowViewModel.TryAdd(e, false);
         }
 
         private int deathcounter = 1;
-        private void LogParser_DeadEvent(object sender, LogParser.DeadEventArgs e)
+        private void LogParser_DeadEvent(object sender, DeadEvent e)
         {
             spellWindowViewModel.TryRemoveTarget(e.Name);
             if (playerTrackerService.IsPlayer(e.Name) || !MasterNPCList.NPCs.Contains(e.Name))
@@ -170,12 +167,12 @@ namespace EQTool
             spellWindowViewModel.TryAddCustom(add);
         }
 
-        private void LogParser_CancelTimerEvent(object sender, LogParser.CancelTimerEventArgs e)
+        private void LogParser_CancelTimerEvent(object sender, CancelTimerEvent e)
         {
             spellWindowViewModel.TryRemoveCustom(e.Name);
         }
 
-        private void LogParser_StartTimerEvent(object sender, LogParser.StartTimerEventArgs e)
+        private void LogParser_StartTimerEvent(object sender, StartTimerEvent e)
         {
             spellWindowViewModel.TryAddCustom(e.CustomTimer);
         }
@@ -184,19 +181,19 @@ namespace EQTool
         {
             UITimer?.Stop();
             UITimer?.Dispose();
-            if (logParser != null)
+            if (logEvents != null)
             {
-                logParser.SpellWornOtherOffEvent -= LogParser_SpellWornOtherOffEvent;
+                logEvents.SpellWornOffOtherEvent -= LogParser_SpellWornOtherOffEvent;
                 logEvents.CampEvent -= LogParser_CampEvent;
-                logParser.EnteredWorldEvent -= LogParser_EnteredWorldEvent;
-                logParser.SpellWornOffSelfEvent -= LogParser_SpellWornOffSelfEvent;
-                logParser.StartCastingEvent -= LogParser_StartCastingEvent;
+                logEvents.EnteredWorldEvent -= LogParser_EnteredWorldEvent;
+                logEvents.SpellWornOffSelfEvent -= LogParser_SpellWornOffSelfEvent;
+                logEvents.SpellCastEvent -= LogParser_StartCastingEvent;
                 logEvents.DeadEvent -= LogParser_DeadEvent;
                 logEvents.StartTimerEvent -= LogParser_StartTimerEvent;
                 logEvents.CancelTimerEvent -= LogParser_CancelTimerEvent;
-                logParser.POFDTEvent -= LogParser_POFDTEvent;
-                logParser.ResistSpellEvent -= LogParser_ResistSpellEvent;
-                logParser.RandomRollEvent -= LogParser_RandomRollEvent;
+                logEvents.DeathTouchEvent -= LogParser_POFDTEvent;
+                logEvents.ResistSpellEvent -= LogParser_ResistSpellEvent;
+                logEvents.RandomRollEvent -= LogParser_RandomRollEvent;
             }
             if (spellWindowViewModel != null)
             {

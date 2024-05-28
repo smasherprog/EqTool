@@ -2,7 +2,6 @@
 using EQTool.Models;
 using EQTool.Services;
 using EQTool.Services.Parsing;
-using EQTool.Services.Spells.Log;
 using EQTool.ViewModels;
 using EQToolShared.Enums;
 using EQToolShared.Map;
@@ -175,7 +174,7 @@ namespace EQToolTests
         [TestMethod]
         public void TestNPCSpellKlandicar1()
         {
-            var service = container.Resolve<SpellLogParse>();
+            var service = container.Resolve<SpellCastParser>();
             var message = "You feel your skin freeze.";
             var spell = service.MatchSpell(message);
             Assert.AreEqual(spell.Spell.name, "Silver Breath");
@@ -184,7 +183,7 @@ namespace EQToolTests
         [TestMethod]
         public void TestNPCSpellKlandicar2()
         {
-            var service = container.Resolve<SpellLogParse>();
+            var service = container.Resolve<SpellCastParser>();
             var message = "Someone's skin freezes.";
             var spell = service.MatchSpell(message);
             Assert.AreEqual(spell.Spell.name, "Silver Breath");
@@ -193,7 +192,7 @@ namespace EQToolTests
         [TestMethod]
         public void TestDragonRoar()
         {
-            var service = container.Resolve<SpellLogParse>();
+            var service = container.Resolve<SpellCastParser>();
             var message = "You flee in terror.";
             var spell = service.MatchSpell(message);
             Assert.AreEqual(spell.Spell.name, "Dragon Roar");
@@ -211,7 +210,7 @@ namespace EQToolTests
         [TestMethod]
         public void TestStunBreath1()
         {
-            var service = container.Resolve<SpellLogParse>();
+            var service = container.Resolve<SpellCastParser>();
             var message = "Your eardrums rupture.";
             var spell = service.MatchSpell(message);
             Assert.AreEqual(spell.Spell.name, "Stun Breath");
@@ -220,7 +219,7 @@ namespace EQToolTests
         [TestMethod]
         public void TestStunBreath2()
         {
-            var service = container.Resolve<SpellLogParse>();
+            var service = container.Resolve<SpellCastParser>();
             var message = "Someone staggers with intense pain.";
             var spell = service.MatchSpell(message);
             Assert.AreEqual(spell.Spell.name, "Stun Breath");
@@ -229,7 +228,7 @@ namespace EQToolTests
         [TestMethod]
         public void TestRottingFlesh()
         {
-            var service = container.Resolve<SpellLogParse>();
+            var service = container.Resolve<SpellCastParser>();
             var message = "Your flesh begins to rot.";
             var spell = service.MatchSpell(message);
             Assert.AreEqual(spell.Spell.name, "Rotting Flesh");
@@ -238,7 +237,7 @@ namespace EQToolTests
         [TestMethod]
         public void TestRottingFlesh2()
         {
-            var service = container.Resolve<SpellLogParse>();
+            var service = container.Resolve<SpellCastParser>();
             var message = "Someone's flesh begins to rot.";
             var spell = service.MatchSpell(message);
             Assert.AreEqual(spell.Spell.name, "Rotting Flesh");
@@ -247,7 +246,7 @@ namespace EQToolTests
         [TestMethod]
         public void TestPutrefyFlesh()
         {
-            var service = container.Resolve<SpellLogParse>();
+            var service = container.Resolve<SpellCastParser>();
             var message = "Your flesh begins to liquefy.";
             var spell = service.MatchSpell(message);
             Assert.AreEqual(spell.Spell.name, "Putrefy Flesh");
@@ -256,7 +255,7 @@ namespace EQToolTests
         [TestMethod]
         public void TestPutrefyFlesh2()
         {
-            var service = container.Resolve<SpellLogParse>();
+            var service = container.Resolve<SpellCastParser>();
             var message = "Someone's flesh begins to liquefy.";
             var spell = service.MatchSpell(message);
             Assert.AreEqual(spell.Spell.name, "Putrefy Flesh");
@@ -265,7 +264,7 @@ namespace EQToolTests
         [TestMethod]
         public void TestImmolatingBreath()
         {
-            var service = container.Resolve<SpellLogParse>();
+            var service = container.Resolve<SpellCastParser>();
             var message = "Your flesh is seared from your bones.";
             var spell = service.MatchSpell(message);
             Assert.AreEqual(spell.Spell.name, "Immolating Breath");
@@ -274,7 +273,7 @@ namespace EQToolTests
         [TestMethod]
         public void TestAncientBreath()
         {
-            var service = container.Resolve<SpellLogParse>();
+            var service = container.Resolve<SpellCastParser>();
             var message = "Your life force drains away.";
             var spell = service.MatchSpell(message);
             Assert.AreEqual(spell.Spell.name, "Ancient Breath");
@@ -283,7 +282,7 @@ namespace EQToolTests
         [TestMethod]
         public void TestImmolatingBreath2()
         {
-            var service = container.Resolve<SpellLogParse>();
+            var service = container.Resolve<SpellCastParser>();
             var message = "Someone's flesh is seared.";
             var spell = service.MatchSpell(message);
             Assert.AreEqual(spell.Spell.name, "Immolating Breath");
@@ -292,7 +291,7 @@ namespace EQToolTests
         [TestMethod]
         public void TestWaveofCold()
         {
-            var service = container.Resolve<SpellLogParse>();
+            var service = container.Resolve<SpellCastParser>();
             var message = "A blast of cold freezes your skin.";
             var spell = service.MatchSpell(message);
             Assert.AreEqual(spell.Spell.name, "Wave of Cold");
@@ -301,7 +300,7 @@ namespace EQToolTests
         [TestMethod]
         public void TestWaveofCold2()
         {
-            var service = container.Resolve<SpellLogParse>();
+            var service = container.Resolve<SpellCastParser>();
             var message = "Someone's skin freezes.";
             var spell = service.MatchSpell(message);
             Assert.AreEqual(spell.Spell.name, "Silver Breath");
@@ -310,7 +309,7 @@ namespace EQToolTests
         [TestMethod]
         public void TestRaidofMoltenLava()
         {
-            var service = container.Resolve<SpellLogParse>();
+            var service = container.Resolve<SpellCastParser>();
             var message = "Lava sears your skin.";
             var spell = service.MatchSpell(message);
             Assert.AreEqual(spell.Spell.name, "Rain of Molten Lava");
@@ -319,7 +318,7 @@ namespace EQToolTests
         [TestMethod]
         public void TestLavaBreath()
         {
-            var service = container.Resolve<SpellLogParse>();
+            var service = container.Resolve<SpellCastParser>();
             var message = "Your body combusts as the lava hits you.";
             var spell = service.MatchSpell(message);
             Assert.AreEqual(spell.Spell.name, "Lava Breath");
@@ -328,7 +327,7 @@ namespace EQToolTests
         [TestMethod]
         public void TestFrostBreath()
         {
-            var service = container.Resolve<SpellLogParse>();
+            var service = container.Resolve<SpellCastParser>();
             var message = "Your body freezes as the frost hits you.";
             var spell = service.MatchSpell(message);
             Assert.AreEqual(spell.Spell.name, "Frost Breath");
@@ -337,7 +336,7 @@ namespace EQToolTests
         [TestMethod]
         public void TestTsunami()
         {
-            var service = container.Resolve<SpellLogParse>();
+            var service = container.Resolve<SpellCastParser>();
             var message = "A tsunami crushes you.";
             var spell = service.MatchSpell(message);
             Assert.AreEqual(spell.Spell.name, "Tsunami");
@@ -346,7 +345,7 @@ namespace EQToolTests
         [TestMethod]
         public void TestCloudofFear()
         {
-            var service = container.Resolve<SpellLogParse>();
+            var service = container.Resolve<SpellCastParser>();
             var message = "Your mind is wracked by fear.";
             var spell = service.MatchSpell(message);
             Assert.AreEqual(spell.Spell.name, "Cloud of Fear");
@@ -355,7 +354,7 @@ namespace EQToolTests
         [TestMethod]
         public void TestDiseasedCloud()
         {
-            var service = container.Resolve<SpellLogParse>();
+            var service = container.Resolve<SpellCastParser>();
             var message = "Your body begins to rot.";
             var spell = service.MatchSpell(message);
             Assert.AreEqual(spell.Spell.name, "Diseased Cloud");
@@ -670,7 +669,7 @@ namespace EQToolTests
         public void TestSpeedOfShissar1()
         {
             var spells = container.Resolve<EQSpells>();
-            var spelllogparse = container.Resolve<SpellLogParse>();
+            var spelllogparse = container.Resolve<SpellCastParser>();
             var shissar = "Speed of the Shissar";
             var shissarspell = spells.AllSpells.FirstOrDefault(a => a.name == shissar);
             var line = "Jobober " + shissarspell.cast_on_other;
@@ -691,7 +690,7 @@ namespace EQToolTests
         public void TestSlowForShadowKnight()
         {
             var spells = container.Resolve<EQSpells>();
-            var spelllogparse = container.Resolve<SpellLogParse>();
+            var spelllogparse = container.Resolve<SpellCastParser>();
             var shissar = "Turgur's Insects";
             var shissarspell = spells.AllSpells.FirstOrDefault(a => a.name == shissar);
             var line = "Jobober " + shissarspell.cast_on_other;
@@ -713,7 +712,7 @@ namespace EQToolTests
         public void TestSlowForMagePetHaste()
         {
             var spells = container.Resolve<EQSpells>();
-            var spelllogparse = container.Resolve<SpellLogParse>();
+            var spelllogparse = container.Resolve<SpellCastParser>();
             var spellname = "Burnout";
             var shissarspell = spells.AllSpells.FirstOrDefault(a => a.name == spellname);
             var line = "You begin casting Burnout.";
@@ -731,7 +730,7 @@ namespace EQToolTests
         public void TestUserBeginsToCastUserCastingSpell()
         {
             var spells = container.Resolve<EQSpells>();
-            var spelllogparse = container.Resolve<SpellLogParse>();
+            var spelllogparse = container.Resolve<SpellCastParser>();
             var spellname = "Burnout";
             var shissarspell = spells.AllSpells.FirstOrDefault(a => a.name == spellname);
             var line = $"You begin casting {spellname}.";
@@ -752,7 +751,7 @@ namespace EQToolTests
         public void TestPrimalEssence()
         {
             var spells = container.Resolve<EQSpells>();
-            var spelllogparse = container.Resolve<SpellLogParse>();
+            var spelllogparse = container.Resolve<SpellCastParser>();
             var spellname = "Burnout";
             var shissarspell = spells.AllSpells.FirstOrDefault(a => a.name == spellname);
             var line = "You begin casting Primal Essence.";
@@ -769,7 +768,7 @@ namespace EQToolTests
         public void TestSlowForMagePetHaste1()
         {
             var spells = container.Resolve<EQSpells>();
-            var spelllogparse = container.Resolve<SpellLogParse>();
+            var spelllogparse = container.Resolve<SpellCastParser>();
             var spellname = "Burnout";
             var shissarspell = spells.AllSpells.FirstOrDefault(a => a.name == spellname);
             var line = "Jobober " + shissarspell.cast_on_other;
@@ -793,7 +792,7 @@ namespace EQToolTests
         public void TestSlowForNecro()
         {
             var spells = container.Resolve<EQSpells>();
-            var spelllogparse = container.Resolve<SpellLogParse>();
+            var spelllogparse = container.Resolve<SpellCastParser>();
             var spellname = "Turgur's Insects";
             var shissarspell = spells.AllSpells.FirstOrDefault(a => a.name == spellname);
             var line = "Jobober " + shissarspell.cast_on_other;
@@ -816,7 +815,7 @@ namespace EQToolTests
         public void TestFluxStaff()
         {
             var spells = container.Resolve<EQSpells>();
-            var spelllogparse = container.Resolve<SpellLogParse>();
+            var spelllogparse = container.Resolve<SpellCastParser>();
             var spellname = "LowerElement";
             var spell = spells.AllSpells.FirstOrDefault(a => a.name == spellname);
             var line = "Jobober " + spell.cast_on_other;
@@ -839,7 +838,7 @@ namespace EQToolTests
         public void TestSlowForNecro_Multiname_onespace()
         {
             var spells = container.Resolve<EQSpells>();
-            var spelllogparse = container.Resolve<SpellLogParse>();
+            var spelllogparse = container.Resolve<SpellCastParser>();
             var spellname = "Turgur's Insects";
             var shissarspell = spells.AllSpells.FirstOrDefault(a => a.name == spellname);
             var line = "an Jobober " + shissarspell.cast_on_other;
@@ -863,7 +862,7 @@ namespace EQToolTests
         public void TestManicalStrength()
         {
             var spells = container.Resolve<EQSpells>();
-            var spelllogparse = container.Resolve<SpellLogParse>();
+            var spelllogparse = container.Resolve<SpellCastParser>();
             var spellname = "Manicial Strength";
             var shissarspell = spells.AllSpells.FirstOrDefault(a => a.name == spellname);
             var line = "an Jobober " + shissarspell.cast_on_other;
@@ -887,7 +886,7 @@ namespace EQToolTests
         public void TestSlowForNecro_Multiname_twospace()
         {
             var spells = container.Resolve<EQSpells>();
-            var spelllogparse = container.Resolve<SpellLogParse>();
+            var spelllogparse = container.Resolve<SpellCastParser>();
             var spellname = "Turgur's Insects";
             var shissarspell = spells.AllSpells.FirstOrDefault(a => a.name == spellname);
             var line = "an Jobober rager " + shissarspell.cast_on_other;
@@ -911,7 +910,7 @@ namespace EQToolTests
         public void TestSlowForNecro_Multiname_threespace()
         {
             var spells = container.Resolve<EQSpells>();
-            var spelllogparse = container.Resolve<SpellLogParse>();
+            var spelllogparse = container.Resolve<SpellCastParser>();
             var spellname = "Cripple";
             var shissarspell = spells.AllSpells.FirstOrDefault(a => a.name == spellname);
             var line = "an Jobober rager " + shissarspell.cast_on_other;
@@ -935,7 +934,7 @@ namespace EQToolTests
         public void TestSpeedOfShissar2()
         {
             var spells = container.Resolve<EQSpells>();
-            var spelllogparse = container.Resolve<SpellLogParse>();
+            var spelllogparse = container.Resolve<SpellCastParser>();
             var shissar = "Speed of the Shissar";
             var shissarspell = spells.AllSpells.FirstOrDefault(a => a.name == shissar);
             var line = "A bottomless feaster's body pulses with the spirit of the Shissar.";
@@ -956,7 +955,7 @@ namespace EQToolTests
         public void TestShamanEpic()
         {
             var spells = container.Resolve<EQSpells>();
-            var spelllogparse = container.Resolve<SpellLogParse>();
+            var spelllogparse = container.Resolve<SpellCastParser>();
             var shissar = "Curse of the Spirits";
             var shissarspell = spells.AllSpells.FirstOrDefault(a => a.name == shissar);
             var line = "A Ratling is consumed by the raging spirits of the land.";
@@ -977,7 +976,7 @@ namespace EQToolTests
         public void TestShamanEpic2()
         {
             var spells = container.Resolve<EQSpells>();
-            var spelllogparse = container.Resolve<SpellLogParse>();
+            var spelllogparse = container.Resolve<SpellCastParser>();
             var shissar = "Curse of the Spirits";
             var shissarspell = spells.AllSpells.FirstOrDefault(a => a.name == shissar);
             var line = "Gkrean Prophet of Tallon is consumed by the raging spirits of the land.";
@@ -999,7 +998,7 @@ namespace EQToolTests
         public void TestShamanEpic1()
         {
             var spells = container.Resolve<EQSpells>();
-            var spelllogparse = container.Resolve<SpellLogParse>();
+            var spelllogparse = container.Resolve<SpellCastParser>();
             var shissar = "Curse of the Spirits";
             var shissarspell = spells.AllSpells.FirstOrDefault(a => a.name == shissar);
             var line = "A rat Ratling is consumed by the raging spirits of the land.";
@@ -1020,7 +1019,7 @@ namespace EQToolTests
         public void TestShamanAcumen()
         {
             var spells = container.Resolve<EQSpells>();
-            var spelllogparse = container.Resolve<SpellLogParse>();
+            var spelllogparse = container.Resolve<SpellCastParser>();
             var spellname = "Acumen";
             var spellclass = spells.AllSpells.FirstOrDefault(a => a.name == spellname);
             var line = EQSpells.YouBeginCasting + " " + spellname;
@@ -1040,7 +1039,7 @@ namespace EQToolTests
         public void TestShamanUsingTashStick()
         {
             var spells = container.Resolve<EQSpells>();
-            var spelllogparse = container.Resolve<SpellLogParse>();
+            var spelllogparse = container.Resolve<SpellCastParser>();
             var shissar = "Tashan";
             var shissarspell = spells.AllSpells.FirstOrDefault(a => a.name == shissar);
             var line = "A rat glances nervously about.";
@@ -1125,7 +1124,7 @@ namespace EQToolTests
         [TestMethod]
         public void TestClairityDurationGuess1()
         {
-            var spelllogparse = container.Resolve<SpellLogParse>();
+            var spelllogparse = container.Resolve<SpellCastParser>();
             var line = "A soft breeze slips through your mind.";
             var player = container.Resolve<ActivePlayer>();
             player.Player = new PlayerInfo
@@ -1141,7 +1140,7 @@ namespace EQToolTests
         [TestMethod]
         public void TestHealForDamage()
         {
-            var spelllogparse = container.Resolve<SpellLogParse>();
+            var spelllogparse = container.Resolve<SpellCastParser>();
             var line = "You mend your wounds and heal some damage.";
             var player = container.Resolve<ActivePlayer>();
             player.Player = new PlayerInfo
@@ -1317,17 +1316,11 @@ namespace EQToolTests
         public void TestLevelUpMatch()
         {
             var loger = container.Resolve<LevelLogParse>();
-            var player = container.Resolve<ActivePlayer>();
-            player.Player = new PlayerInfo
-            {
-                Level = 54,
-                PlayerClass = PlayerClasses.Cleric
-            };
-            loger.MatchLevel("You have gained a level! Welcome to level 2!");
-            Assert.AreEqual(2, player.Player.Level);
+            var level = loger.MatchLevel("You have gained a level! Welcome to level 2!");
+            Assert.AreEqual(2, level);
 
-            loger.MatchLevel("You have gained a level! Welcome to level 60!");
-            Assert.AreEqual(60, player.Player.Level);
+            level = loger.MatchLevel("You have gained a level! Welcome to level 60!");
+            Assert.AreEqual(60, level);
         }
 
         [TestMethod]
@@ -1335,8 +1328,8 @@ namespace EQToolTests
         {
             var loger = container.Resolve<LevelLogParse>();
             _ = container.Resolve<ActivePlayer>();
-            loger.MatchLevel("You have gained a level! Welcome to level 2!");
-            loger.MatchLevel("You have gained a level! Welcome to level 60!");
+            _ = loger.MatchLevel("You have gained a level! Welcome to level 2!");
+            _ = loger.MatchLevel("You have gained a level! Welcome to level 60!");
         }
 
         [TestMethod]
@@ -1400,20 +1393,20 @@ namespace EQToolTests
             player.UserCastingSpell = spells.AllSpells.FirstOrDefault(a => a.name == spellname);
             var spellnamefound = string.Empty;
             var line = "[Mon Jul 03 23:00:25 2023] TwentyTwo glances nervously about.";
-            logparser.WhoEvent += (a, b) => Assert.Fail("DontHit");
-            logparser.WhoPlayerEvent += (a, b) => Assert.Fail("DontHit");
-            logparser.SpellWornOffSelfEvent += (a, b) => Assert.Fail("DontHit");
-            logparser.SpellWornOtherOffEvent += (a, b) => Assert.Fail("DontHit");
-            logparser.StartCastingEvent += (a, b) =>
+            logevents.WhoEvent += (a, b) => Assert.Fail("DontHit");
+            logevents.WhoPlayerEvent += (a, b) => Assert.Fail("DontHit");
+            logevents.SpellWornOffSelfEvent += (a, b) => Assert.Fail("DontHit");
+            logevents.SpellWornOffOtherEvent += (a, b) => Assert.Fail("DontHit");
+            logevents.SpellCastEvent += (a, b) =>
             {
-                spellnamefound = b.Spell.Spell.name;
+                spellnamefound = b.Spell.name;
             };
             logevents.CancelTimerEvent += (a, b) => Assert.Fail("DontHit");
             logevents.StartTimerEvent += (a, b) => Assert.Fail("DontHit");
             logevents.ConEvent += (a, b) => Assert.Fail("DontHit");
             logevents.DeadEvent += (a, b) => Assert.Fail("DontHit");
             logevents.FightHitEvent += (a, b) => Assert.Fail("DontHit");
-            logparser.PlayerZonedEvent += (a, b) => Assert.Fail("DontHit");
+            logevents.YouZonedEvent += (a, b) => Assert.Fail("DontHit");
             logevents.PlayerLocationEvent += (a, b) => Assert.Fail("DontHit");
             logparser.Push(line);
             Assert.AreEqual(spellnamefound, "Tashanian");

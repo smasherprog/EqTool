@@ -4,7 +4,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace EQTool.Services.Spells.Log
+namespace EQTool.Services.Parsing
 {
     public class ParseHandleYouCasting
     {
@@ -65,13 +65,13 @@ namespace EQTool.Services.Spells.Log
             }
         }
 
-        public SpellParsingMatch HandleYouSpell(string message)
+        public SpellCastEvent HandleYouSpell(string message)
         {
             if (spells.CastOnYouSpells.TryGetValue(message, out var foundspells))
             {
                 var foundspell = SpellDurations.MatchClosestLevelToSpell(foundspells, activePlayer.Player);
                 Debug.WriteLine($"You Casting Spell: {message} Delay: {foundspell.casttime}");
-                return new SpellParsingMatch
+                return new SpellCastEvent
                 {
                     Spell = foundspell,
                     TargetName = EQSpells.SpaceYou
@@ -81,13 +81,13 @@ namespace EQTool.Services.Spells.Log
             return null;
         }
 
-        public SpellParsingMatch HandleYourSpell(string message)
+        public SpellCastEvent HandleYourSpell(string message)
         {
             if (spells.CastOnYouSpells.TryGetValue(message, out var foundspells))
             {
                 var foundspell = SpellDurations.MatchClosestLevelToSpell(foundspells, activePlayer.Player);
                 Debug.WriteLine($"Your Casting Spell: {message} Delay: {foundspell.casttime}");
-                return new SpellParsingMatch
+                return new SpellCastEvent
                 {
                     Spell = foundspell,
                     TargetName = EQSpells.SpaceYou
@@ -97,7 +97,7 @@ namespace EQTool.Services.Spells.Log
             return null;
         }
 
-        public SpellParsingMatch HandleYouBeginCastingSpellEnd(string message)
+        public SpellCastEvent HandleYouBeginCastingSpellEnd(string message)
         {
             Debug.WriteLine($"Self Finished Spell: {message}");
             var spell = activePlayer.UserCastingSpell;
@@ -105,7 +105,7 @@ namespace EQTool.Services.Spells.Log
             {
                 activePlayer.UserCastingSpell = null;
             });
-            return new SpellParsingMatch
+            return new SpellCastEvent
             {
                 Spell = spell,
                 TargetName = EQSpells.SpaceYou,
@@ -113,12 +113,12 @@ namespace EQTool.Services.Spells.Log
             };
         }
 
-        public SpellParsingMatch HandleYouBeginCastingSpellOtherEnd(string message)
+        public SpellCastEvent HandleYouBeginCastingSpellOtherEnd(string message)
         {
             var targetname = message.Replace(activePlayer.UserCastingSpell.cast_on_other, string.Empty).Trim();
             Debug.WriteLine($"Self Finished Spell: {message}");
             var spell = activePlayer.UserCastingSpell;
-            return new SpellParsingMatch
+            return new SpellCastEvent
             {
                 Spell = spell,
                 TargetName = targetname,

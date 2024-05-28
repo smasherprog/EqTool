@@ -182,7 +182,7 @@ namespace EQTool.ViewModels
             "Ancient Breath"
         };
 
-        public void TryAdd(SpellParsingMatch match, bool resisted)
+        public void TryAdd(SpellCastEvent match, bool resisted)
         {
             if (match?.Spell == null)
             {

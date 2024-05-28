@@ -1,14 +1,29 @@
-﻿namespace EQTool.Services.Parsing
+﻿using EQTool.Models;
+using System;
+
+namespace EQTool.Services.Parsing
 {
-    public class POFDTParser
+    public class DeathTouchParser : IEqLogParseHandler
     {
-        public class POF_DT_Event
+        private readonly LogEvents logEvents;
+
+        public DeathTouchParser(LogEvents logEvents)
         {
-            public string NpcName { get; set; }
-            public string DTReceiver { get; set; }
+            this.logEvents = logEvents;
         }
 
-        public POF_DT_Event DtCheck(string line)
+        public bool Handle(string line, DateTime timestamp)
+        {
+            var m = DtCheck(line);
+            if (m != null)
+            {
+                logEvents.Handle(m);
+                return true;
+            }
+            return false;
+        }
+
+        public DeathTouchEvent DtCheck(string line)
         {
             if (line.StartsWith("Fright says '"))
             {
@@ -17,7 +32,7 @@
                 var possiblename = line.Substring(firsttick, lasttick);
                 if (!possiblename.Contains(" "))
                 {
-                    return new POF_DT_Event { NpcName = "Fright", DTReceiver = possiblename };
+                    return new DeathTouchEvent { NpcName = "Fright", DTReceiver = possiblename };
                 }
             }
 
@@ -28,7 +43,7 @@
                 var possiblename = line.Substring(firsttick, lasttick);
                 if (!possiblename.Contains(" "))
                 {
-                    return new POF_DT_Event { NpcName = "Dread", DTReceiver = possiblename };
+                    return new DeathTouchEvent { NpcName = "Dread", DTReceiver = possiblename };
                 }
             }
             return null;

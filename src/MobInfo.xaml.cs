@@ -35,7 +35,7 @@ namespace EQTool
             this.logEvents.ConEvent += LogParser_ConEvent;
         }
 
-        private void LogParser_ConEvent(object sender, LogParser.ConEventArgs e)
+        private void LogParser_ConEvent(object sender, ConEvent e)
         {
             try
             {

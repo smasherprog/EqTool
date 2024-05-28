@@ -51,6 +51,51 @@ namespace EQTool.Models
     }
 
     [Serializable]
+    public class OverLaySetting : INotifyPropertyChanged
+    {
+        private OverlayTypes _OverlayType;
+        public OverlayTypes OverlayType
+        {
+            get => _OverlayType;
+            set
+            {
+                _OverlayType = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _WarningOverlay;
+        public bool WarningOverlay
+
+        {
+            get => _WarningOverlay;
+            set
+            {
+                _WarningOverlay = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _WarningAudio;
+        public bool WarningAudio
+        {
+            get => _WarningAudio;
+            set
+            {
+                _WarningAudio = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void OnPropertyChanged([CallerMemberName] string name = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
+    }
+
+
     public class PlayerDamage : INotifyPropertyChanged
     {
         private int _TargetTotalDamage;
@@ -243,18 +288,18 @@ namespace EQTool.Models
                 var pclass = PlayerClass;
                 if (pclass.HasValue)
                 {
-                    var trackskill = this.TrackingSkill ?? 10;
+                    var trackskill = TrackingSkill ?? 10;
                     if (pclass == EQToolShared.Enums.PlayerClasses.Ranger)
                     {
-                        return (trackskill * 12) * 2;
+                        return trackskill * 12 * 2;
                     }
                     else if (pclass == EQToolShared.Enums.PlayerClasses.Druid)
                     {
-                        return (trackskill * 10) * 2;
+                        return trackskill * 10 * 2;
                     }
                     else if (pclass == EQToolShared.Enums.PlayerClasses.Bard)
                     {
-                        return (trackskill * 7) * 2;
+                        return trackskill * 7 * 2;
                     }
                 }
                 return null;
@@ -270,6 +315,25 @@ namespace EQTool.Models
             set
             {
                 _Server = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private List<OverLaySetting> _OverlaySettings;
+
+        public List<OverLaySetting> OverlaySettings
+        {
+            get
+            {
+                if (_OverlaySettings == null)
+                {
+                    _OverlaySettings = new List<OverLaySetting>();
+                }
+                return _OverlaySettings;
+            }
+            set
+            {
+                _OverlaySettings = value ?? new List<OverLaySetting>();
                 OnPropertyChanged();
             }
         }

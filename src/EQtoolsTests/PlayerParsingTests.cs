@@ -1,5 +1,5 @@
 ﻿using Autofac;
-using EQTool.Services.Spells.Log;
+using EQTool.Services.Parsing;
 using EQToolShared.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 

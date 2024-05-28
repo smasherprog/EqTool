@@ -4,7 +4,6 @@ using EQToolShared.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using static EQTool.Services.LogParser;
 
 namespace EQTool.Services.Parsing
 {
@@ -60,7 +59,7 @@ namespace EQTool.Services.Parsing
             var m = Match(line, timestamp);
             if (m != null)
             {
-                logEvents.Handle(new FightHitEventArgs { HitInformation = m });
+                logEvents.Handle(new FightHitEvent { HitInformation = m });
                 return true;
             }
             return false;

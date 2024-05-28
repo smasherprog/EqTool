@@ -1,7 +1,6 @@
 ﻿using Autofac;
 using EQTool.Models;
 using EQTool.Services.Parsing;
-using EQTool.Services.Spells.Log;
 using EQTool.ViewModels;
 using EQToolShared.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -200,17 +199,11 @@ namespace EQToolTests
         public void TestLevelUpMatch()
         {
             var loger = container.Resolve<LevelLogParse>();
-            var player = container.Resolve<ActivePlayer>();
-            player.Player = new PlayerInfo
-            {
-                Level = 54,
-                PlayerClass = PlayerClasses.Cleric
-            };
-            loger.MatchLevel("You have gained a level! Welcome to level 2!");
-            Assert.AreEqual(2, player.Player.Level);
+            var level = loger.MatchLevel("You have gained a level! Welcome to level 2!");
+            Assert.AreEqual(2, level);
 
-            loger.MatchLevel("You have gained a level! Welcome to level 60!");
-            Assert.AreEqual(60, player.Player.Level);
+            level = loger.MatchLevel("You have gained a level! Welcome to level 60!");
+            Assert.AreEqual(60, level);
         }
 
         [TestMethod]
@@ -218,8 +211,8 @@ namespace EQToolTests
         {
             var loger = container.Resolve<LevelLogParse>();
             _ = container.Resolve<ActivePlayer>();
-            loger.MatchLevel("You have gained a level! Welcome to level 2!");
-            loger.MatchLevel("You have gained a level! Welcome to level 60!");
+            _ = loger.MatchLevel("You have gained a level! Welcome to level 2!");
+            _ = loger.MatchLevel("You have gained a level! Welcome to level 60!");
         }
 
         [TestMethod]

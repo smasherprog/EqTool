@@ -12,7 +12,6 @@ namespace EQTool
 {
     public partial class MappingWindow : BaseSaveStateWindow
     {
-        private readonly LogParser logParser;
         private readonly LogEvents logEvents;
         private readonly MapViewModel mapViewModel;
         private readonly ActivePlayer activePlayer;
@@ -25,7 +24,6 @@ namespace EQTool
             ISignalrPlayerHub signalrPlayerHub,
             MapViewModel mapViewModel,
             ActivePlayer activePlayer,
-            LogParser logParser,
             LogEvents logEvents,
             EQToolSettings settings,
             PlayerTrackerService playerTrackerService,
@@ -39,7 +37,6 @@ namespace EQTool
             this.signalrPlayerHub = signalrPlayerHub;
             this.playerTrackerService = playerTrackerService;
             this.appDispatcher = appDispatcher;
-            this.logParser = logParser;
             DataContext = this.mapViewModel = mapViewModel;
             InitializeComponent();
             base.Init();
@@ -48,8 +45,8 @@ namespace EQTool
             Map.Height = Math.Abs(mapViewModel.AABB.MaxHeight);
             Map.Width = Math.Abs(mapViewModel.AABB.MaxWidth);
             this.logEvents.PlayerLocationEvent += LogParser_PlayerLocationEvent;
-            this.logParser.PlayerZonedEvent += LogParser_PlayerZonedEvent;
-            this.logParser.EnteredWorldEvent += LogParser_EnteredWorldEvent;
+            this.logEvents.YouZonedEvent += LogParser_PlayerZonedEvent;
+            this.logEvents.EnteredWorldEvent += LogParser_EnteredWorldEvent;
             this.logEvents.DeadEvent += LogParser_DeadEvent;
             this.logEvents.StartTimerEvent += LogParser_StartTimerEvent;
             this.logEvents.CancelTimerEvent += LogParser_CancelTimerEvent;
@@ -92,18 +89,18 @@ namespace EQTool
             mapViewModel.TimerMenu_Closed();
         }
 
-        private void LogParser_StartTimerEvent(object sender, LogParser.StartTimerEventArgs e)
+        private void LogParser_StartTimerEvent(object sender, StartTimerEvent e)
         {
             var mw = mapViewModel.AddTimer(TimeSpan.FromSeconds(e.CustomTimer.DurationInSeconds), e.CustomTimer.Name, false);
             mapViewModel.MoveToPlayerLocation(mw);
         }
 
-        private void LogParser_CancelTimerEvent(object sender, LogParser.CancelTimerEventArgs e)
+        private void LogParser_CancelTimerEvent(object sender, CancelTimerEvent e)
         {
             mapViewModel.DeleteSelectedTimerByName(e.Name);
         }
 
-        private void Map_StartTimerEvent(object sender, LogParser.StartTimerEventArgs e)
+        private void Map_StartTimerEvent(object sender, StartTimerEvent e)
         {
             mapViewModel.TimerMenu_Closed();
             _ = mapViewModel.AddTimer(TimeSpan.FromSeconds(e.CustomTimer.DurationInSeconds), e.CustomTimer.Name, true);
@@ -114,7 +111,7 @@ namespace EQTool
             _ = mapViewModel.DeleteSelectedTimer();
         }
 
-        private void LogParser_DeadEvent(object sender, LogParser.DeadEventArgs e)
+        private void LogParser_DeadEvent(object sender, DeadEvent e)
         {
             if (playerTrackerService.IsPlayer(e.Name))
             {
@@ -161,7 +158,7 @@ namespace EQTool
             }
         }
 
-        private void LogParser_EnteredWorldEvent(object sender, LogParser.EnteredWorldArgs e)
+        private void LogParser_EnteredWorldEvent(object sender, EnteredWorldEvent e)
         {
             if (mapViewModel.LoadDefaultMap(Map))
             {
@@ -171,9 +168,9 @@ namespace EQTool
             }
         }
 
-        private void LogParser_PlayerZonedEvent(object sender, LogParser.PlayerZonedEventArgs e)
+        private void LogParser_PlayerZonedEvent(object sender, YouZonedEvent e)
         {
-            if (mapViewModel.LoadMap(e.Zone, Map))
+            if (mapViewModel.LoadMap(e.ZoneName, Map))
             {
                 Map.ZoneName = mapViewModel.ZoneName;
                 Map.Height = Math.Abs(mapViewModel.AABB.MaxHeight);
@@ -181,7 +178,7 @@ namespace EQTool
             }
         }
 
-        private void LogParser_PlayerLocationEvent(object sender, LogParser.PlayerLocationEventArgs e)
+        private void LogParser_PlayerLocationEvent(object sender, PlayerLocationEvent e)
         {
             mapViewModel.UpdateLocation(e.Location);
         }
@@ -190,11 +187,11 @@ namespace EQTool
         {
             UITimer?.Stop();
             UITimer?.Dispose();
-            if (logParser != null)
+            if (logEvents != null)
             {
                 logEvents.PlayerLocationEvent -= LogParser_PlayerLocationEvent;
-                logParser.PlayerZonedEvent -= LogParser_PlayerZonedEvent;
-                logParser.EnteredWorldEvent -= LogParser_EnteredWorldEvent;
+                logEvents.YouZonedEvent -= LogParser_PlayerZonedEvent;
+                logEvents.EnteredWorldEvent -= LogParser_EnteredWorldEvent;
                 logEvents.DeadEvent -= LogParser_DeadEvent;
                 logEvents.StartTimerEvent -= LogParser_StartTimerEvent;
                 logEvents.CancelTimerEvent -= LogParser_CancelTimerEvent;

@@ -1,19 +1,32 @@
-﻿using EQTool.ViewModels;
+﻿using EQTool.Models;
+using System;
 
 namespace EQTool.Services.Parsing
 {
-    public class FailedFeignParser
+    public class FailedFeignParser : IEqLogParseHandler
     {
-        private readonly ActivePlayer activePlayer;
+        private readonly LogEvents logEvents;
 
-        public FailedFeignParser(ActivePlayer activePlayer)
+        public FailedFeignParser(LogEvents logEvents)
         {
-            this.activePlayer = activePlayer;
+            this.logEvents = logEvents;
+        }
+
+        public bool Handle(string line, DateTime timestamp)
+        {
+            var m = FailedFaignCheck(line);
+            if (!string.IsNullOrWhiteSpace(m))
+            {
+                logEvents.Handle(new FailedFeignEvent { PersonWhoFailedFeign = m });
+                return true;
+            }
+            return false;
         }
 
         public string FailedFaignCheck(string line)
         {
-            return line == $"{activePlayer?.Player?.Name} has fallen to the ground." ? (activePlayer?.Player?.Name) : string.Empty;
+            var indexof = line.IndexOf(" has fallen to the ground.");
+            return indexof != -1 ? line.Substring(0, indexof) : string.Empty;
         }
     }
 }

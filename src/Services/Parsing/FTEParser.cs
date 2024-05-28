@@ -3,11 +3,7 @@ using System;
 
 namespace EQTool.Services.Parsing
 {
-    public class FTEParserData
-    {
-        public string NPCName { get; set; }
-        public string FTEPerson { get; set; }
-    }
+
 
     public class FTEParser : IEqLogParseHandler
     {
@@ -29,7 +25,7 @@ namespace EQTool.Services.Parsing
             return false;
         }
 
-        public FTEParserData Parse(string line)
+        public FTEEvent Parse(string line)
         {
             var endwithexclimation = line.EndsWith("!");
             if (!endwithexclimation)
@@ -57,7 +53,7 @@ namespace EQTool.Services.Parsing
 
             var playername = line.Substring(engagesindex + engagesstring.Length).TrimEnd('!').Trim();
             var npcname = line.Substring(0, engagesindex).Trim();
-            return new FTEParserData
+            return new FTEEvent
             {
                 FTEPerson = playername,
                 NPCName = npcname

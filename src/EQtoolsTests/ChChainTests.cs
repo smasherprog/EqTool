@@ -20,7 +20,7 @@ namespace EQToolTests
         [TestMethod]
         public void Parse1()
         {
-            var service = container.Resolve<ChParser>();
+            var service = container.Resolve<CompleteHealParser>();
             var d = service.ChCheck("Curaja shouts, 'GG 014 CH -- Wreckognize'");
             Assert.AreEqual(d.Recipient, "Wreckognize");
             Assert.AreEqual(d.Caster, "Curaja");
@@ -31,7 +31,7 @@ namespace EQToolTests
         [TestMethod]
         public void Parse2()
         {
-            var service = container.Resolve<ChParser>();
+            var service = container.Resolve<CompleteHealParser>();
             var d = service.ChCheck("Hanbox shouts, 'GG 001 CH -- Beefwich'");
             Assert.AreEqual(d.Recipient, "Beefwich");
             Assert.AreEqual(d.Caster, "Hanbox");
@@ -42,7 +42,7 @@ namespace EQToolTests
         [TestMethod]
         public void Parse4()
         {
-            var service = container.Resolve<ChParser>();
+            var service = container.Resolve<CompleteHealParser>();
             var d = service.ChCheck("Hanbox shouts, 'GG 001 CH --Beefwich'");
             Assert.AreEqual(d.Recipient, "Beefwich");
             Assert.AreEqual(d.Caster, "Hanbox");
@@ -53,7 +53,7 @@ namespace EQToolTests
         [TestMethod]
         public void Parse41()
         {
-            var service = container.Resolve<ChParser>();
+            var service = container.Resolve<CompleteHealParser>();
             var d = service.ChCheck("Hanbox shouts, 'CH - Beefwich - 001'");
             Assert.AreEqual(d.Recipient, "Beefwich");
             Assert.AreEqual(d.Caster, "Hanbox");
@@ -63,7 +63,7 @@ namespace EQToolTests
         [TestMethod]
         public void ParseRamp1()
         {
-            var service = container.Resolve<ChParser>();
+            var service = container.Resolve<CompleteHealParser>();
             var d = service.ChCheck("Hanbox shouts, 'CA RAMP1 CH --Beefwich'");
             Assert.AreEqual(d.Recipient, "Beefwich");
             Assert.AreEqual(d.Caster, "Hanbox");
@@ -74,7 +74,7 @@ namespace EQToolTests
         [TestMethod]
         public void ParseRamp2()
         {
-            var service = container.Resolve<ChParser>();
+            var service = container.Resolve<CompleteHealParser>();
             var d = service.ChCheck("Hanbox shouts, 'CA RAMP2 CH --Beefwich'");
             Assert.AreEqual(d.Recipient, "Beefwich");
             Assert.AreEqual(d.Caster, "Hanbox");
@@ -85,7 +85,7 @@ namespace EQToolTests
         [TestMethod]
         public void ParseRamp3()
         {
-            var service = container.Resolve<ChParser>();
+            var service = container.Resolve<CompleteHealParser>();
             var d = service.ChCheck("Hanbox shouts, 'RAMP2 CH --Beefwich'");
             Assert.AreEqual(d.Recipient, "Beefwich");
             Assert.AreEqual(d.Caster, "Hanbox");
@@ -94,9 +94,20 @@ namespace EQToolTests
         }
 
         [TestMethod]
+        public void ParseRamp4()
+        {
+            var service = container.Resolve<CompleteHealParser>();
+            var d = service.ChCheck("Hanbox shouts, 'RAMP01 CH --Beefwich'");
+            Assert.AreEqual(d.Recipient, "Beefwich");
+            Assert.AreEqual(d.Caster, "Hanbox");
+            Assert.AreEqual(d.Position, "RAMP01");
+            Assert.IsTrue(string.IsNullOrWhiteSpace(d.RecipientGuild));
+        }
+
+        [TestMethod]
         public void Parse40()
         {
-            var service = container.Resolve<ChParser>();
+            var service = container.Resolve<CompleteHealParser>();
             var d = service.ChCheck("Hanbox shouts, 'GG 001 CH --Beefwich' 001");
             Assert.AreEqual(d.Recipient, "Beefwich");
             Assert.AreEqual(d.Caster, "Hanbox");
@@ -107,7 +118,7 @@ namespace EQToolTests
         [TestMethod]
         public void Parse42()
         {
-            var service = container.Resolve<ChParser>();
+            var service = container.Resolve<CompleteHealParser>();
             var d = service.ChCheck("Hanbox shouts, 'CH - name - 001'");
             Assert.AreEqual(d.Recipient, "name");
             Assert.AreEqual(d.Caster, "Hanbox");
@@ -118,7 +129,7 @@ namespace EQToolTests
         [TestMethod]
         public void Parse3()
         {
-            var service = container.Resolve<ChParser>();
+            var service = container.Resolve<CompleteHealParser>();
             var d = service.ChCheck("Vaeric tells the guild, 'Currently signed up as 001 in CH chain'");
             Assert.IsNotNull(d);
         }
@@ -126,7 +137,7 @@ namespace EQToolTests
         [TestMethod]
         public void Parse31()
         {
-            var service = container.Resolve<ChParser>();
+            var service = container.Resolve<CompleteHealParser>();
             var d = service.ChCheck("Vaeric tells the guild, 'Currently signed up as in CH chain'");
             Assert.IsNull(d);
         }
@@ -134,7 +145,7 @@ namespace EQToolTests
         [TestMethod]
         public void Parse5()
         {
-            var service = container.Resolve<ChParser>();
+            var service = container.Resolve<CompleteHealParser>();
             var d = service.ChCheck("Wartburg says out of character, 'CA 004 CH -- Sam'");
             Assert.AreEqual(d.Recipient, "Sam");
             Assert.AreEqual(d.Caster, "Wartburg");
@@ -145,7 +156,7 @@ namespace EQToolTests
         [TestMethod]
         public void Parse51()
         {
-            var service = container.Resolve<ChParser>();
+            var service = container.Resolve<CompleteHealParser>();
             var d = service.ChCheck("Wartburg says out of character, '004 CH - Sam'");
             Assert.AreEqual(d.Recipient, "Sam");
             Assert.AreEqual(d.Caster, "Wartburg");
@@ -155,7 +166,7 @@ namespace EQToolTests
         [TestMethod]
         public void Parse6()
         {
-            var service = container.Resolve<ChParser>();
+            var service = container.Resolve<CompleteHealParser>();
             var d = service.ChCheck("Hanbox tells the guild, 'GG 001 CH --Beefwich'");
             Assert.AreEqual(d.Recipient, "Beefwich");
             Assert.AreEqual(d.Caster, "Hanbox");
@@ -166,7 +177,7 @@ namespace EQToolTests
         [TestMethod]
         public void Parse7()
         {
-            var service = container.Resolve<ChParser>();
+            var service = container.Resolve<CompleteHealParser>();
             var player = container.Resolve<ActivePlayer>();
             player.Player = new PlayerInfo
             {
@@ -185,7 +196,7 @@ namespace EQToolTests
         [TestMethod]
         public void Parse8()
         {
-            var service = container.Resolve<ChParser>();
+            var service = container.Resolve<CompleteHealParser>();
             var player = container.Resolve<ActivePlayer>();
             player.Player = new PlayerInfo
             {
@@ -200,7 +211,7 @@ namespace EQToolTests
         [TestMethod]
         public void Parse9()
         {
-            var service = container.Resolve<ChParser>();
+            var service = container.Resolve<CompleteHealParser>();
             var player = container.Resolve<ActivePlayer>();
             player.Player = new PlayerInfo
             {
@@ -219,7 +230,7 @@ namespace EQToolTests
         [TestMethod]
         public void Parse10()
         {
-            var service = container.Resolve<ChParser>();
+            var service = container.Resolve<CompleteHealParser>();
             var player = container.Resolve<ActivePlayer>();
             player.Player = new PlayerInfo
             {
@@ -234,7 +245,7 @@ namespace EQToolTests
         [TestMethod]
         public void Parse11()
         {
-            var service = container.Resolve<ChParser>();
+            var service = container.Resolve<CompleteHealParser>();
             var player = container.Resolve<ActivePlayer>();
             player.Player = new PlayerInfo
             {
@@ -249,7 +260,7 @@ namespace EQToolTests
         [TestMethod]
         public void Parse12()
         {
-            var service = container.Resolve<ChParser>();
+            var service = container.Resolve<CompleteHealParser>();
             var player = container.Resolve<ActivePlayer>();
             player.Player = new PlayerInfo
             {
@@ -267,7 +278,7 @@ namespace EQToolTests
         [TestMethod]
         public void Parse13()
         {
-            var service = container.Resolve<ChParser>();
+            var service = container.Resolve<CompleteHealParser>();
             var player = container.Resolve<ActivePlayer>();
             player.Player = new PlayerInfo
             {
@@ -281,7 +292,7 @@ namespace EQToolTests
         [TestMethod]
         public void Parse14()
         {
-            var service = container.Resolve<ChParser>();
+            var service = container.Resolve<CompleteHealParser>();
             var player = container.Resolve<ActivePlayer>();
             player.Player = new PlayerInfo
             {
@@ -295,7 +306,7 @@ namespace EQToolTests
         [TestMethod]
         public void Parse15()
         {
-            var service = container.Resolve<ChParser>();
+            var service = container.Resolve<CompleteHealParser>();
             var player = container.Resolve<ActivePlayer>();
             player.Player = new PlayerInfo
             {
@@ -309,7 +320,7 @@ namespace EQToolTests
         [TestMethod]
         public void Parse16()
         {
-            var service = container.Resolve<ChParser>();
+            var service = container.Resolve<CompleteHealParser>();
             var player = container.Resolve<ActivePlayer>();
             player.Player = new PlayerInfo
             {
@@ -325,7 +336,7 @@ namespace EQToolTests
         [TestMethod]
         public void Parse17()
         {
-            var service = container.Resolve<ChParser>();
+            var service = container.Resolve<CompleteHealParser>();
             var player = container.Resolve<ActivePlayer>();
             player.Player = new PlayerInfo
             {
@@ -341,7 +352,7 @@ namespace EQToolTests
         [TestMethod]
         public void Parse18()
         {
-            var service = container.Resolve<ChParser>();
+            var service = container.Resolve<CompleteHealParser>();
             var player = container.Resolve<ActivePlayer>();
             player.Player = new PlayerInfo
             {
@@ -357,7 +368,7 @@ namespace EQToolTests
         [TestMethod]
         public void Parse19()
         {
-            var service = container.Resolve<ChParser>();
+            var service = container.Resolve<CompleteHealParser>();
             var player = container.Resolve<ActivePlayer>();
             player.Player = new PlayerInfo
             {
@@ -374,7 +385,7 @@ namespace EQToolTests
         [TestMethod]
         public void Parse20()
         {
-            var service = container.Resolve<ChParser>();
+            var service = container.Resolve<CompleteHealParser>();
             var player = container.Resolve<ActivePlayer>();
             player.Player = new PlayerInfo
             {
@@ -391,7 +402,7 @@ namespace EQToolTests
         [TestMethod]
         public void Parse21()
         {
-            var service = container.Resolve<ChParser>();
+            var service = container.Resolve<CompleteHealParser>();
             var player = container.Resolve<ActivePlayer>();
             player.Player = new PlayerInfo
             {
@@ -409,7 +420,7 @@ namespace EQToolTests
         public void Parse22()
         {
             var chaindata = new ChainData();
-            var chain = new ChParser.ChParseData();
+            var chain = new CompleteHealEvent();
             chaindata.YourChainOrder = "bbb";
             chaindata.HighestOrder = "zzz";
             chain.Position = "aaa";

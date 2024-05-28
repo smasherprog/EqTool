@@ -1,8 +1,7 @@
 ﻿using EQTool.Models;
 using System;
-using static EQTool.Services.LogParser;
 
-namespace EQTool.Services.Spells.Log
+namespace EQTool.Services.Parsing
 {
     public class LogDeathParse : IEqLogParseHandler
     {
@@ -23,7 +22,7 @@ namespace EQTool.Services.Spells.Log
             var m = GetDeadTarget(line);
             if (!string.IsNullOrEmpty(m))
             {
-                logEvents.Handle(new DeadEventArgs { Name = m });
+                logEvents.Handle(new DeadEvent { Name = m });
                 return true;
             }
             return false;

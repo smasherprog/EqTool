@@ -48,12 +48,12 @@ namespace EQTool
             view.LiveSortingProperties.Add(nameof(EntittyDPS.TotalDamage));
         }
 
-        private void LogParser_FightHitEvent(object sender, LogParser.FightHitEventArgs e)
+        private void LogParser_FightHitEvent(object sender, FightHitEvent e)
         {
             dPSWindowViewModel.TryAdd(e.HitInformation);
         }
 
-        private void LogParser_DeadEvent(object sender, LogParser.DeadEventArgs e)
+        private void LogParser_DeadEvent(object sender, DeadEvent e)
         {
             var zone = activePlayer?.Player?.Zone;
             if (!string.IsNullOrWhiteSpace(zone) && ZoneParser.ZoneInfoMap.TryGetValue(zone, out var fzone))

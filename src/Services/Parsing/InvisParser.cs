@@ -1,6 +1,9 @@
-﻿namespace EQTool.Services.Parsing
+﻿using EQTool.Models;
+using System;
+
+namespace EQTool.Services.Parsing
 {
-    public class InvisParser
+    public class InvisParser : IEqLogParseHandler
     {
         public enum InvisStatus
         {
@@ -8,9 +11,21 @@
             Faded,
             Applied
         }
-        public InvisParser()
-        {
+        private readonly LogEvents logEvents;
 
+        public InvisParser(LogEvents logEvents)
+        {
+            this.logEvents = logEvents;
+        }
+        public bool Handle(string line, DateTime timestamp)
+        {
+            var m = Parse(line);
+            if (m != null)
+            {
+                logEvents.Handle(new InvisEvent { InvisStatus = m.Value });
+                return true;
+            }
+            return false;
         }
 
         public InvisStatus? Parse(string line)

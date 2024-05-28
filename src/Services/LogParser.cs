@@ -1,15 +1,11 @@
 ﻿using EQTool.Models;
 using EQTool.Services.Parsing;
-using EQTool.Services.Spells.Log;
 using EQTool.ViewModels;
-using EQToolShared.HubModels;
-using EQToolShared.Map;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Windows.Media.Media3D;
 
 namespace EQTool.Services
 {
@@ -20,163 +16,54 @@ namespace EQTool.Services
         private readonly IAppDispatcher appDispatcher;
         private string LastLogFilename = string.Empty;
         private readonly EQToolSettings settings;
-        private readonly LevelLogParse levelLogParse;
         private readonly EQToolSettingsLoad toolSettingsLoad;
-        private readonly SpellLogParse spellLogParse;
-        private readonly SpellWornOffLogParse spellWornOffLogParse;
-        private readonly PlayerWhoLogParse playerWhoLogParse;
-        private readonly EnterWorldParser enterWorldParser;
-        private readonly QuakeParser quakeParser;
-        private readonly POFDTParser pOFDTParser;
-        private readonly EnrageParser enrageParser;
-        private readonly ChParser chParser;
-        private readonly InvisParser invisParser;
-        private readonly LevParser levParser;
-        private readonly FailedFeignParser failedFeignParser;
-        private readonly GroupInviteParser groupInviteParser;
-        private readonly ResistSpellParser resistSpellParser;
-        private readonly RandomParser randomParser;
         private readonly List<IEqLogParseHandler> eqLogParseHandlers;
-        private bool StartingWhoOfZone = false;
+        private readonly LogEvents logEvents;
         private bool Processing = false;
-        private bool HasUsedStartupEnterWorld = false;
+        public DateTime LastYouActivity { get; private set; }
+        private long? LastLogReadOffset { get; set; } = null;
 
         public LogParser(
             IEnumerable<IEqLogParseHandler> eqLogParseHandlers,
-            RandomParser randomParser,
-            ResistSpellParser resistSpellParser,
-            GroupInviteParser groupInviteParser,
-            ChParser chParser,
-            QuakeParser quakeParser,
-            EnterWorldParser enterWorldParser,
-            SpellWornOffLogParse spellWornOffLogParse,
-            SpellLogParse spellLogParse,
             EQToolSettingsLoad toolSettingsLoad,
             ActivePlayer activePlayer,
             IAppDispatcher appDispatcher,
             EQToolSettings settings,
-            POFDTParser pOFDTParser,
-            EnrageParser enrageParser,
-            LevelLogParse levelLogParse,
-            PlayerWhoLogParse playerWhoLogParse,
-            InvisParser invisParser,
-            LevParser levParser,
-            FailedFeignParser failedFeignParser
+             LogEvents logEvents
             )
         {
             this.eqLogParseHandlers = eqLogParseHandlers.ToList();
-            this.randomParser = randomParser;
-            this.resistSpellParser = resistSpellParser;
-            this.groupInviteParser = groupInviteParser;
-            this.failedFeignParser = failedFeignParser;
-            this.invisParser = invisParser;
-            this.levParser = levParser;
-            this.chParser = chParser;
-            this.enrageParser = enrageParser;
-            this.pOFDTParser = pOFDTParser;
-            this.quakeParser = quakeParser;
-            this.enterWorldParser = enterWorldParser;
-            this.spellWornOffLogParse = spellWornOffLogParse;
-            this.spellLogParse = spellLogParse;
+            this.logEvents = logEvents;
             this.toolSettingsLoad = toolSettingsLoad;
             this.activePlayer = activePlayer;
             this.appDispatcher = appDispatcher;
-            this.levelLogParse = levelLogParse;
             this.settings = settings;
-            this.playerWhoLogParse = playerWhoLogParse;
             UITimer = new System.Timers.Timer(100);
             UITimer.Elapsed += Poll;
             UITimer.Enabled = true;
             LastYouActivity = DateTime.UtcNow.AddMonths(-1);
+            this.logEvents.LevelEvent += LogEvents_LevelEvent;
+            this.logEvents.YouZonedEvent += LogEvents_YouZonedEvent;
         }
 
-        public DateTime LastYouActivity { get; private set; }
-
-        private long? LastLogReadOffset { get; set; } = null;
-
-        public class PlayerZonedEventArgs : EventArgs
+        private void LogEvents_YouZonedEvent(object sender, YouZonedEvent e)
         {
-            public string Zone { get; set; }
+            var p = activePlayer.Player;
+            if (p != null)
+            {
+                p.Zone = e.ZoneName;
+                toolSettingsLoad.Save(settings);
+            }
         }
-        public class PlayerLocationEventArgs : EventArgs
+
+        private void LogEvents_LevelEvent(object sender, LevelEvent e)
         {
-            public Point3D Location { get; set; }
-            public PlayerInfo PlayerInfo { get; set; }
+            var player = activePlayer.Player;
+            if (player != null)
+            {
+                player.Level = e.NewLevel;
+            }
         }
-        public class FightHitEventArgs : EventArgs
-        {
-            public DPSParseMatch HitInformation { get; set; }
-        }
-        public class DeadEventArgs : EventArgs
-        {
-            public string Name { get; set; }
-        }
-
-        public class ConEventArgs : EventArgs
-        {
-            public string Name { get; set; }
-        }
-
-        public class StartTimerEventArgs : EventArgs
-        {
-            public CustomTimer CustomTimer { get; set; }
-        }
-
-        public class CancelTimerEventArgs : EventArgs
-        {
-            public string Name { get; set; }
-        }
-
-        public class SpellEventArgs : EventArgs
-        {
-            public SpellParsingMatch Spell { get; set; }
-        }
-
-        public class SpellWornOffOtherEventArgs : EventArgs
-        {
-            public string SpellName { get; set; }
-        }
-
-        public class SpellWornOffSelfEventArgs : EventArgs
-        {
-            public List<string> SpellNames { get; set; }
-        }
-
-        public class WhoPlayerEventArgs : EventArgs
-        {
-            public EQToolShared.APIModels.PlayerControllerModels.Player PlayerInfo { get; set; }
-        }
-        public class RandomRollEventArgs : EventArgs
-        {
-            public RandomParser.RandomRollData RandomRollData { get; set; }
-        }
-
-        public class WhoEventArgs : EventArgs { }
-        public class CampEventArgs : EventArgs { }
-        public class EnteredWorldArgs : EventArgs { }
-        public class QuakeArgs : EventArgs { }
-        public class CharmBreakArgs : EventArgs { }
-
-        public event EventHandler<RandomRollEventArgs> RandomRollEvent;
-        public event EventHandler<WhoEventArgs> WhoEvent;
-        public event EventHandler<WhoPlayerEventArgs> WhoPlayerEvent;
-        public event EventHandler<SpellWornOffSelfEventArgs> SpellWornOffSelfEvent;
-        public event EventHandler<QuakeArgs> QuakeEvent;
-        public event EventHandler<POFDTParser.POF_DT_Event> POFDTEvent;
-        public event EventHandler<EnrageParser.EnrageEvent> EnrageEvent;
-        public event EventHandler<ChParser.ChParseData> CHEvent;
-        public event EventHandler<LevParser.LevStatus> LevEvent;
-        public event EventHandler<InvisParser.InvisStatus> InvisEvent;
-
-        public event EventHandler<string> FailedFeignEvent;
-        public event EventHandler<string> GroupInviteEvent;
-        public event EventHandler<SpellWornOffOtherEventArgs> SpellWornOtherOffEvent;
-        public event EventHandler<ResistSpellParser.ResistSpellData> ResistSpellEvent;
-        public event EventHandler<SpellEventArgs> StartCastingEvent;
-
-        public event EventHandler<PlayerZonedEventArgs> PlayerZonedEvent;
-
-        public event EventHandler<EnteredWorldArgs> EnteredWorldEvent;
 
         public void Push(string log)
         {
@@ -205,158 +92,15 @@ namespace EQTool.Services
                 {
                     LastYouActivity = DateTime.UtcNow;
                 }
-                if (message.StartsWith("["))
-                {
-                    return;
-                }
 
                 var timestamp = LogFileDateTimeParse.ParseDateTime(date);
                 foreach (var handler in eqLogParseHandlers)
                 {
                     if (handler.Handle(message, timestamp))
                     {
+                        Debug.WriteLine($"--Handled by {handler.GetType().Name}: {message}");
                         return;
                     }
-                }
-                if (message == "Welcome to EverQuest!")
-                {
-                    HasUsedStartupEnterWorld = true;
-                    Debug.WriteLine("EnteredWorldEvent In Game");
-                    EnteredWorldEvent?.Invoke(this, new EnteredWorldArgs());
-                    return;
-                }
-
-                var playerwho = playerWhoLogParse.ParsePlayerInfo(message);
-                if (playerwho != null && StartingWhoOfZone)
-                {
-                    WhoPlayerEvent?.Invoke(this, new WhoPlayerEventArgs { PlayerInfo = playerwho });
-                    return;
-                }
-
-                if (playerWhoLogParse.IsZoneWhoLine(message))
-                {
-                    StartingWhoOfZone = true;
-                    WhoEvent?.Invoke(this, new WhoEventArgs());
-                    return;
-                }
-                else
-                {
-                    StartingWhoOfZone = message == "---------------------------" && StartingWhoOfZone;
-                }
-
-                if (message == "The screams fade away.")
-                {
-                    SpellWornOtherOffEvent?.Invoke(this, new SpellWornOffOtherEventArgs { SpellName = "Soul Consumption" });
-                    return;
-                }
-
-                var matchedspell = spellLogParse.MatchSpell(message);
-                if (matchedspell != null)
-                {
-                    StartCastingEvent?.Invoke(this, new SpellEventArgs { Spell = matchedspell });
-                    return;
-                }
-
-                var resistspell = resistSpellParser.ParseNPCSpell(message);
-                if (resistspell != null)
-                {
-                    ResistSpellEvent?.Invoke(this, resistspell);
-                    return;
-                }
-
-                var name = spellWornOffLogParse.MatchWornOffOtherSpell(message);
-                if (!string.IsNullOrWhiteSpace(name))
-                {
-                    SpellWornOtherOffEvent?.Invoke(this, new SpellWornOffOtherEventArgs { SpellName = name });
-                    return;
-                }
-
-                var spells = spellWornOffLogParse.MatchWornOffSelfSpell(message);
-                if (spells.Any())
-                {
-                    SpellWornOffSelfEvent?.Invoke(this, new SpellWornOffSelfEventArgs { SpellNames = spells });
-                    return;
-                }
-
-                var quaked = quakeParser.IsQuake(message);
-                if (quaked)
-                {
-                    QuakeEvent?.Invoke(this, new QuakeArgs());
-                    return;
-                }
-
-                var randomdata = randomParser.Parse(message);
-                if (randomdata != null)
-                {
-                    RandomRollEvent?.Invoke(this, new RandomRollEventArgs { RandomRollData = randomdata });
-                    return;
-                }
-
-                var dt = pOFDTParser.DtCheck(message);
-                if (dt != null)
-                {
-                    POFDTEvent?.Invoke(this, dt);
-                    return;
-                }
-
-                var enragecheck = enrageParser.EnrageCheck(message);
-                if (enragecheck != null)
-                {
-                    EnrageEvent?.Invoke(this, enragecheck);
-                    return;
-                }
-
-                var chdata = chParser.ChCheck(message);
-                if (chdata != null)
-                {
-                    CHEvent?.Invoke(this, chdata);
-                    return;
-                }
-
-                var lev = levParser.Parse(message);
-                if (lev.HasValue)
-                {
-                    LevEvent?.Invoke(this, lev.Value);
-                    return;
-                }
-
-                var invi = invisParser.Parse(message);
-                if (invi.HasValue)
-                {
-                    InvisEvent?.Invoke(this, invi.Value);
-                    return;
-                }
-
-                var stringmsg = failedFeignParser.FailedFaignCheck(message);
-                if (!string.IsNullOrWhiteSpace(stringmsg))
-                {
-                    FailedFeignEvent?.Invoke(this, stringmsg);
-                    return;
-                }
-
-                stringmsg = groupInviteParser.Parse(message);
-                if (!string.IsNullOrWhiteSpace(stringmsg))
-                {
-                    GroupInviteEvent?.Invoke(this, stringmsg);
-                    return;
-                }
-
-                levelLogParse.MatchLevel(message);
-                var matchedzone = ZoneParser.Match(message);
-                if (!string.IsNullOrWhiteSpace(matchedzone))
-                {
-                    var b4matchedzone = matchedzone;
-
-                    matchedzone = ZoneParser.TranslateToMapName(matchedzone);
-                    Debug.WriteLine($"Zone Change Detected {matchedzone}--{b4matchedzone}");
-                    var p = activePlayer.Player;
-                    if (p != null)
-                    {
-                        p.Zone = matchedzone;
-                        toolSettingsLoad.Save(settings);
-                    }
-                    PlayerZonedEvent?.Invoke(this, new PlayerZonedEventArgs { Zone = matchedzone });
-                    return;
                 }
             }
             catch (Exception e)
@@ -403,38 +147,15 @@ namespace EQTool.Services
                     }
 
                     var fileinfo = new FileInfo(filepath);
-                    var newplayerdetected = false;
                     if (!LastLogReadOffset.HasValue || (LastLogReadOffset > fileinfo.Length && fileinfo.Length > 0))
                     {
                         Debug.WriteLine($"Player Switched or new Player detected {filepath} {fileinfo.Length}");
                         LastLogReadOffset = fileinfo.Length;
-                        newplayerdetected = true;
                     }
                     var linelist = new List<string>();
                     using (var stream = new FileStream(filepath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
                     using (var reader = new StreamReader(stream))
                     {
-                        var lookbacksize = 4000;
-                        if (newplayerdetected && LastLogReadOffset.Value > lookbacksize)
-                        {
-                            _ = stream.Seek(LastLogReadOffset.Value - lookbacksize, SeekOrigin.Begin);
-                            var buffer = new byte[lookbacksize];
-                            _ = stream.Read(buffer, 0, lookbacksize);
-                            using (var ms = new MemoryStream(buffer))
-                            using (var innerstream = new StreamReader(ms))
-                            {
-                                while (!innerstream.EndOfStream)
-                                {
-                                    if (enterWorldParser.HasEnteredWorld(innerstream.ReadLine()))
-                                    {
-                                        HasUsedStartupEnterWorld = true;
-                                        Debug.WriteLine("EnteredWorldEvent Player Changed");
-                                        EnteredWorldEvent?.Invoke(this, new EnteredWorldArgs());
-                                        break;
-                                    }
-                                }
-                            }
-                        }
                         _ = stream.Seek(LastLogReadOffset.Value, SeekOrigin.Begin);
                         while (!reader.EndOfStream)
                         {
@@ -442,13 +163,6 @@ namespace EQTool.Services
                             linelist.Add(line);
                             LastLogReadOffset = stream.Position;
                         }
-                    }
-
-                    if (!HasUsedStartupEnterWorld && linelist.Any())
-                    {
-                        HasUsedStartupEnterWorld = true;
-                        Debug.WriteLine("EnteredWorldEvent First Time");
-                        EnteredWorldEvent?.Invoke(this, new EnteredWorldArgs());
                     }
                     foreach (var line in linelist)
                     {

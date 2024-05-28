@@ -1,7 +1,6 @@
 ﻿using EQTool.Models;
 using System;
 using System.Collections.Generic;
-using static EQTool.Services.LogParser;
 
 namespace EQTool.Services.Parsing
 {
@@ -31,7 +30,7 @@ namespace EQTool.Services.Parsing
             var m = ConMatch(line);
             if (!string.IsNullOrWhiteSpace(m))
             {
-                logEvents.Handle(new ConEventArgs { Name = m });
+                logEvents.Handle(new ConEvent { Name = m });
                 return true;
             }
             return false;

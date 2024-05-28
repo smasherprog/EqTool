@@ -27,7 +27,6 @@ namespace EQTool
 
     public partial class EventOverlay : BaseSaveStateWindow
     {
-        private readonly LogParser logParser;
         private readonly EQToolSettings settings;
         private readonly ActivePlayer activePlayer;
         private readonly List<ChainOverlayData> chainDatas = new List<ChainOverlayData>();
@@ -35,7 +34,7 @@ namespace EQTool
         private readonly IAppDispatcher appDispatcher;
         private readonly LogEvents logEvents;
 
-        public EventOverlay(LogEvents logEvents, LogParser logParser, EQToolSettings settings, PigParseApi pigParseApi, EQToolSettingsLoad toolSettingsLoad, ActivePlayer activePlayer, IAppDispatcher appDispatcher)
+        public EventOverlay(LogEvents logEvents, EQToolSettings settings, PigParseApi pigParseApi, EQToolSettingsLoad toolSettingsLoad, ActivePlayer activePlayer, IAppDispatcher appDispatcher)
             : base(settings.OverlayWindowState, toolSettingsLoad, settings)
         {
             this.logEvents = logEvents;
@@ -43,25 +42,24 @@ namespace EQTool
             this.appDispatcher = appDispatcher;
             this.activePlayer = activePlayer;
             this.settings = settings;
-            this.logParser = logParser;
             InitializeComponent();
             base.Init();
             Topmost = true;
             SaveState();
-            logParser.EnrageEvent += LogParser_EnrageEvent;
-            logParser.CHEvent += LogParser_CHEvent;
-            logParser.LevEvent += LogParser_LevEvent;
-            logParser.InvisEvent += LogParser_InvisEvent;
+            logEvents.EnrageEvent += LogParser_EnrageEvent;
+            logEvents.CompleteHealEvent += LogParser_CHEvent;
+            logEvents.LevitateEvent += LogParser_LevEvent;
+            logEvents.InvisEvent += LogParser_InvisEvent;
             logEvents.FTEEvent += LogParser_FTEEvent;
             logEvents.CharmBreakEvent += LogParser_CharmBreakEvent;
-            logParser.FailedFeignEvent += LogParser_FailedFeignEvent;
-            logParser.GroupInviteEvent += LogParser_GroupInviteEvent;
-            logParser.StartCastingEvent += LogParser_StartCastingEvent;
-            logParser.SpellWornOtherOffEvent += LogParser_SpellWornOtherOffEvent;
-            logParser.ResistSpellEvent += LogParser_ResistSpellEvent;
+            logEvents.FailedFeignEvent += LogParser_FailedFeignEvent;
+            logEvents.GroupInviteEvent += LogParser_GroupInviteEvent;
+            logEvents.SpellCastEvent += LogParser_StartCastingEvent;
+            logEvents.SpellWornOffOtherEvent += LogParser_SpellWornOtherOffEvent;
+            logEvents.ResistSpellEvent += LogParser_ResistSpellEvent;
         }
 
-        private void LogParser_ResistSpellEvent(object sender, ResistSpellParser.ResistSpellData e)
+        private void LogParser_ResistSpellEvent(object sender, ResistSpellEvent e)
         {
             var overlay = activePlayer?.Player?.ResistWarningOverlay ?? false;
             if (!overlay)
@@ -101,7 +99,7 @@ namespace EQTool
             "Entrapping Roots"
         };
 
-        private void LogParser_SpellWornOtherOffEvent(object sender, LogParser.SpellWornOffOtherEventArgs e)
+        private void LogParser_SpellWornOtherOffEvent(object sender, SpellWornOffOtherEvent e)
         {
             var overlay = activePlayer?.Player?.RootWarningOverlay ?? false;
             if (!overlay)
@@ -128,10 +126,10 @@ namespace EQTool
             }
         }
 
-        private void LogParser_StartCastingEvent(object sender, LogParser.SpellEventArgs e)
+        private void LogParser_StartCastingEvent(object sender, SpellCastEvent e)
         {
             var overlay = activePlayer?.Player?.DragonRoarOverlay ?? false;
-            if (!overlay || e.Spell.Spell.name != "Dragon Roar")
+            if (!overlay || e.Spell.name != "Dragon Roar")
             {
                 return;
             }
@@ -183,7 +181,7 @@ namespace EQTool
             });
         }
 
-        private void LogParser_GroupInviteEvent(object sender, string e)
+        private void LogParser_GroupInviteEvent(object sender, GroupInviteEvent e)
         {
             var overlay = activePlayer?.Player?.GroupInviteOverlay ?? false;
             if (!overlay)
@@ -195,7 +193,7 @@ namespace EQTool
             {
                 appDispatcher.DispatchUI(() =>
                 {
-                    CenterText.Text = e;
+                    CenterText.Text = e.Inviter;
                     CenterText.Foreground = Brushes.Red;
                 });
                 System.Threading.Thread.Sleep(1000 * 5);
@@ -207,7 +205,7 @@ namespace EQTool
             });
         }
 
-        private void LogParser_FailedFeignEvent(object sender, string e)
+        private void LogParser_FailedFeignEvent(object sender, FailedFeignEvent e)
         {
             var overlay = activePlayer?.Player?.FailedFeignOverlay ?? false;
             if (!overlay)
@@ -219,7 +217,7 @@ namespace EQTool
             {
                 appDispatcher.DispatchUI(() =>
                 {
-                    CenterText.Text = "Feign Failed Death!";
+                    CenterText.Text = $"{e.PersonWhoFailedFeign} Feign Failed Death!";
                     CenterText.Foreground = Brushes.Red;
                 });
                 System.Threading.Thread.Sleep(1000 * 5);
@@ -231,7 +229,7 @@ namespace EQTool
             });
         }
 
-        private void LogParser_CharmBreakEvent(object sender, LogParser.CharmBreakArgs e)
+        private void LogParser_CharmBreakEvent(object sender, CharmBreakEvent e)
         {
             var overlay = activePlayer?.Player?.CharmBreakOverlay ?? false;
             if (!overlay)
@@ -255,7 +253,7 @@ namespace EQTool
             });
         }
 
-        private void LogParser_FTEEvent(object sender, FTEParserData e)
+        private void LogParser_FTEEvent(object sender, FTEEvent e)
         {
             var overlay = activePlayer?.Player?.FTEOverlay ?? false;
             if (!overlay)
@@ -288,10 +286,10 @@ namespace EQTool
             });
         }
 
-        private void LogParser_InvisEvent(object sender, InvisParser.InvisStatus e)
+        private void LogParser_InvisEvent(object sender, InvisEvent e)
         {
             var overlay = activePlayer?.Player?.InvisFadingOverlay ?? false;
-            if (!overlay)
+            if (!overlay || e.InvisStatus != InvisParser.InvisStatus.Fading)
             {
                 return;
             }
@@ -312,10 +310,10 @@ namespace EQTool
             });
         }
 
-        private void LogParser_LevEvent(object sender, LevParser.LevStatus e)
+        private void LogParser_LevEvent(object sender, LevitateEvent e)
         {
             var overlay = activePlayer?.Player?.LevFadingOverlay ?? false;
-            if (!overlay)
+            if (!overlay || e.LevitateStatus != LevParser.LevStatus.Fading)
             {
                 return;
             }
@@ -336,7 +334,7 @@ namespace EQTool
             });
         }
 
-        private void LogParser_CHEvent(object sender, ChParser.ChParseData e)
+        private void LogParser_CHEvent(object sender, CompleteHealEvent e)
         {
             var overlay = activePlayer?.Player?.ChChainOverlay ?? false;
             var warningoverlay = activePlayer?.Player?.ChChainWarningOverlay ?? false;
@@ -542,7 +540,7 @@ namespace EQTool
             return chaindata;
         }
 
-        private void LogParser_EnrageEvent(object sender, EnrageParser.EnrageEvent e)
+        private void LogParser_EnrageEvent(object sender, EnrageEvent e)
         {
             var overlay = activePlayer?.Player?.EnrageOverlay ?? false;
             if (!overlay)
@@ -574,19 +572,19 @@ namespace EQTool
 
         protected override void OnClosing(CancelEventArgs e)
         {
-            if (logParser != null)
+            if (logEvents != null)
             {
-                logParser.EnrageEvent -= LogParser_EnrageEvent;
-                logParser.CHEvent -= LogParser_CHEvent;
-                logParser.LevEvent -= LogParser_LevEvent;
-                logParser.InvisEvent -= LogParser_InvisEvent;
+                logEvents.EnrageEvent -= LogParser_EnrageEvent;
+                logEvents.CompleteHealEvent -= LogParser_CHEvent;
+                logEvents.LevitateEvent -= LogParser_LevEvent;
+                logEvents.InvisEvent -= LogParser_InvisEvent;
                 logEvents.FTEEvent -= LogParser_FTEEvent;
                 logEvents.CharmBreakEvent -= LogParser_CharmBreakEvent;
-                logParser.FailedFeignEvent -= LogParser_FailedFeignEvent;
-                logParser.GroupInviteEvent -= LogParser_GroupInviteEvent;
-                logParser.StartCastingEvent -= LogParser_StartCastingEvent;
-                logParser.SpellWornOtherOffEvent -= LogParser_SpellWornOtherOffEvent;
-                logParser.ResistSpellEvent -= LogParser_ResistSpellEvent;
+                logEvents.FailedFeignEvent -= LogParser_FailedFeignEvent;
+                logEvents.GroupInviteEvent -= LogParser_GroupInviteEvent;
+                logEvents.SpellCastEvent -= LogParser_StartCastingEvent;
+                logEvents.SpellWornOffOtherEvent -= LogParser_SpellWornOtherOffEvent;
+                logEvents.ResistSpellEvent -= LogParser_ResistSpellEvent;
             }
 
             base.OnClosing(e);

@@ -25,7 +25,7 @@ namespace EQTool.Services.Parsing
             var m = Match(line);
             if (m != null)
             {
-                logEvents.Handle(new LogParser.PlayerLocationEventArgs
+                logEvents.Handle(new PlayerLocationEvent
                 {
                     Location = m.Value,
                     PlayerInfo = activePlayer.Player

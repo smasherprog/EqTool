@@ -1,6 +1,5 @@
 ﻿using EQTool.Models;
 using System;
-using static EQTool.Services.LogParser;
 
 namespace EQTool.Services.Parsing
 {
@@ -20,7 +19,7 @@ namespace EQTool.Services.Parsing
             var m = GetCancelTimer(line);
             if (!string.IsNullOrWhiteSpace(m))
             {
-                logEvents.Handle(new CancelTimerEventArgs { Name = m });
+                logEvents.Handle(new CancelTimerEvent { Name = m });
                 return true;
             }
             return false;

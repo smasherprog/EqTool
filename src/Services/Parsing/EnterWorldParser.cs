@@ -1,40 +1,32 @@
-﻿using System;
+﻿using EQTool.Models;
+using System;
 
 namespace EQTool.Services.Parsing
 {
-    public class EnterWorldParser
+    public class EnterWorldParser : IEqLogParseHandler
     {
 
-        public EnterWorldParser()
-        {
+        private readonly LogEvents logEvents;
 
+        public EnterWorldParser(LogEvents logEvents)
+        {
+            this.logEvents = logEvents;
+        }
+
+        public bool Handle(string line, DateTime timestamp)
+        {
+            var m = HasEnteredWorld(line);
+            if (m)
+            {
+                logEvents.Handle(new EnteredWorldEvent());
+                return true;
+            }
+            return false;
         }
 
         public bool HasEnteredWorld(string line)
         {
-            if (string.IsNullOrWhiteSpace(line))
-            {
-                return false;
-            }
-            if (!line.StartsWith("["))
-            {
-                return false;
-            }
-            if (line.Length <= 28)
-            {
-                return false;
-            }
-
-            var date = line.Substring(1, 24);
-            var message = line.Substring(27).Trim();
-            if (string.IsNullOrWhiteSpace(message))
-            {
-                return false;
-            }
-
-            var timestamp = LogFileDateTimeParse.ParseDateTime(date);
-            var delta = (DateTime.Now - timestamp).TotalSeconds;
-            return delta <= 4 && delta >= 0 && message == "Welcome to EverQuest!";
+            return line == "Welcome to EverQuest!";
         }
     }
 }

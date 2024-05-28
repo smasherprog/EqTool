@@ -35,7 +35,7 @@ namespace EQTool.Services.Parsing
                         appDispatcher.DispatchUI(() =>
                         {
                             Debug.WriteLine("CampEvent");
-                            logEvents.Handle(new LogParser.CampEventArgs());
+                            logEvents.Handle(new CampEvent());
                         });
                     }
                 });

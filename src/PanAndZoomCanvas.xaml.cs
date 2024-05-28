@@ -1,4 +1,5 @@
-﻿using EQToolShared.HubModels;
+﻿using EQTool.Models;
+using EQToolShared.HubModels;
 using EQToolShared.Map;
 using System;
 using System.Windows;
@@ -11,7 +12,7 @@ namespace EQTool
     {
         public event EventHandler<EventArgs> CancelTimerEvent;
 
-        public event EventHandler<Services.LogParser.StartTimerEventArgs> StartTimerEvent;
+        public event EventHandler<StartTimerEvent> StartTimerEvent;
         public string ZoneName = "freportw";
 
         public PanAndZoomCanvas()
@@ -30,7 +31,7 @@ namespace EQTool
             {
                 var timername = $"Timer {TimerCounter++}";
                 StartTimerEvent?.Invoke(this,
-                    new Services.LogParser.StartTimerEventArgs
+                    new StartTimerEvent
                     {
                         CustomTimer = new CustomTimer
                         {

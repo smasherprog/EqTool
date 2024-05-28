@@ -1,13 +1,21 @@
-﻿using EQToolShared.Enums;
+﻿using EQTool.Models;
+using EQToolShared.Enums;
+using EQToolShared.Map;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
-namespace EQTool.Services.Spells.Log
+namespace EQTool.Services.Parsing
 {
-    public class PlayerWhoLogParse
+    public class PlayerWhoLogParse : IEqLogParseHandler
     {
         private readonly Dictionary<PlayerClasses, List<string>> ClassMapping;
-        public PlayerWhoLogParse()
+        private readonly LogEvents logEvents;
+        private bool StartingWhoOfZone = false;
+
+        public PlayerWhoLogParse(LogEvents logEvents)
         {
+            this.logEvents = logEvents;
             ClassMapping = new Dictionary<PlayerClasses, List<string>>()
             {
                 { PlayerClasses.Bard, new List<string>{ "Bard", "Minstrel","Troubadour","Virtuoso" } },
@@ -27,7 +35,49 @@ namespace EQTool.Services.Spells.Log
             };
         }
 
-        public bool IsZoneWhoLine(string message)
+        public bool Handle(string line, DateTime timestamp)
+        {
+            var m = ParsePlayerInfo(line);
+            if (m != null && StartingWhoOfZone)
+            {
+                logEvents.Handle(new WhoPlayerEvent { PlayerInfo = m });
+                return true;
+            }
+
+            if (IsZoneWhoLine(line))
+            {
+                StartingWhoOfZone = true;
+                logEvents.Handle(new WhoEvent());
+                return true;
+            }
+            else
+            {
+                StartingWhoOfZone = line == "---------------------------" && StartingWhoOfZone;
+            }
+
+            var newzone = ZoneChanged(line);
+            if (!string.IsNullOrWhiteSpace(newzone))
+            {
+                logEvents.Handle(new YouZonedEvent { ZoneName = newzone });
+                return true;
+            }
+
+            return false;
+        }
+
+        public string ZoneChanged(string message)
+        {
+            var matchedzone = ZoneParser.Match(message);
+            if (!string.IsNullOrWhiteSpace(matchedzone))
+            {
+                matchedzone = ZoneParser.TranslateToMapName(matchedzone);
+                Debug.WriteLine($"Zone Detected {matchedzone}");
+                return matchedzone;
+            }
+            return string.Empty;
+        }
+
+        private bool IsZoneWhoLine(string message)
         {
             return message == "Players on EverQuest:";
         }

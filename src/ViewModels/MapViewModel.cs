@@ -94,7 +94,7 @@ namespace EQTool.ViewModels
 
         public MapViewModel(MapLoad mapLoad, ActivePlayer activePlayer, LoggingService loggingService, TimersService timersService)
         {
-            this.Players = new ObservableCollection<PlayerLocation>();
+            Players = new ObservableCollection<PlayerLocation>();
             this.timersService = timersService;
             this.mapLoad = mapLoad;
             this.activePlayer = activePlayer;
@@ -163,13 +163,13 @@ namespace EQTool.ViewModels
 
         public void ToggleCenter()
         {
-            this.CenterOnPlayer = !this.CenterOnPlayer;
+            CenterOnPlayer = !CenterOnPlayer;
             CenterMapOnPlayer();
         }
 
         public void CenterMapOnPlayer()
         {
-            this.CenterMapOnPlayer(this.Lastlocation);
+            CenterMapOnPlayer(Lastlocation);
         }
 
         private void CenterMapOnPlayer(Point3D value1)
@@ -197,6 +197,7 @@ namespace EQTool.ViewModels
             {
                 return false;
             }
+            Debug.WriteLine($"Loading Map {zone}");
             Canvas = canvas;
             MapLoading = true;
             var stop = new Stopwatch();
@@ -211,7 +212,7 @@ namespace EQTool.ViewModels
                     ZoneName = zone;
                     Debug.WriteLine($"Loading: {zone}");
                     MapOffset = map.Offset;
-                    var linethickness = MapViewModelService.MapLinethickness(this.AABB);
+                    var linethickness = MapViewModelService.MapLinethickness(AABB);
                     foreach (var item in map.Lines)
                     {
                         var c = EQMapColor.GetThemedColors(item.Color);
@@ -231,10 +232,10 @@ namespace EQTool.ViewModels
                     }
 
                     Debug.WriteLine($"Labels: {map.Labels.Count}");
-                    var locationdotsize = MapViewModelService.PlayerEllipsesSize(this.AABB);
-                    var locationthickness = MapViewModelService.PlayerEllipsesThickness(this.AABB);
-                    var zoneLabelFontSize = MapViewModelService.ZoneLabelFontSize(this.AABB);
-                    var otherLabelFontSize = MapViewModelService.OtherLabelFontSize(this.AABB);
+                    var locationdotsize = MapViewModelService.PlayerEllipsesSize(AABB);
+                    var locationthickness = MapViewModelService.PlayerEllipsesThickness(AABB);
+                    var zoneLabelFontSize = MapViewModelService.ZoneLabelFontSize(AABB);
+                    var otherLabelFontSize = MapViewModelService.OtherLabelFontSize(AABB);
                     foreach (var item in map.Labels)
                     {
                         var text = new TextBlock
@@ -266,13 +267,13 @@ namespace EQTool.ViewModels
                     {
                         Name = "You",
                         Canvas = Canvas,
-                        Trackingdistance = this.activePlayer?.Player?.TrackingDistance,
-                        AABB = this.AABB,
+                        Trackingdistance = activePlayer?.Player?.TrackingDistance,
+                        AABB = AABB,
                         Transform = Transform
                     });
                     MapViewModelService.UpdateLocation(new UpdateLocationData
                     {
-                        Trackingdistance = this.activePlayer?.Player?.TrackingDistance,
+                        Trackingdistance = activePlayer?.Player?.TrackingDistance,
                         CurrentScaling = CurrentScaling,
                         MapOffset = MapOffset,
                         Oldlocation = Lastlocation,
@@ -312,7 +313,7 @@ namespace EQTool.ViewModels
                 Name = signalrPlayer.Name,
                 Canvas = Canvas,
                 Trackingdistance = signalrPlayer.TrackingDistance,
-                AABB = this.AABB,
+                AABB = AABB,
                 Transform = Transform,
             });
             return new PlayerLocation
@@ -332,19 +333,19 @@ namespace EQTool.ViewModels
         {
             if (playerLocationCircle.Ellipse != null)
             {
-                this.Canvas.Children.Remove(playerLocationCircle.Ellipse);
+                Canvas.Children.Remove(playerLocationCircle.Ellipse);
             }
             if (playerLocationCircle.PlayerName != null)
             {
-                this.Canvas.Children.Remove(playerLocationCircle.PlayerName);
+                Canvas.Children.Remove(playerLocationCircle.PlayerName);
             }
             if (playerLocationCircle.ArrowLine != null)
             {
-                this.Canvas.Children.Remove(playerLocationCircle.ArrowLine);
+                Canvas.Children.Remove(playerLocationCircle.ArrowLine);
             }
             if (playerLocationCircle.TrackingEllipse != null)
             {
-                this.Canvas.Children.Remove(playerLocationCircle.TrackingEllipse);
+                Canvas.Children.Remove(playerLocationCircle.TrackingEllipse);
             }
         }
 
@@ -387,7 +388,7 @@ namespace EQTool.ViewModels
             PlayerLocation.TrackingEllipse.Visibility = Visibility.Visible;
             MapViewModelService.UpdateLocation(new UpdateLocationData
             {
-                Trackingdistance = this.activePlayer?.Player?.TrackingDistance,
+                Trackingdistance = activePlayer?.Player?.TrackingDistance,
                 CurrentScaling = CurrentScaling,
                 MapOffset = MapOffset,
                 Oldlocation = Lastlocation,
@@ -422,8 +423,7 @@ namespace EQTool.ViewModels
                     {
                         if (e != PlayerLocation.Ellipse && PlayerLocation.TrackingEllipse != e)
                         {
-                            var m = e.Tag as MapLabel;
-                            if (m != null)
+                            if (e.Tag is MapLabel m)
                             {
                                 var shortestdistance = Math.Abs(m.Point.Z - lastloc.Z);
                                 MapOpacityHelper.AdjustOpacity(shortestdistance, e, zoneinfo);
@@ -464,7 +464,7 @@ namespace EQTool.ViewModels
             }
             foreach (var item in playerstoremove)
             {
-                Players.Remove(item);
+                _ = Players.Remove(item);
                 RemoveFromCanvas(item);
             }
         }
@@ -499,7 +499,7 @@ namespace EQTool.ViewModels
                 Duration = timer,
                 Name = title,
                 ZoneName = ZoneName,
-                Fontsize = MapViewModelService.SmallFontSize(this.AABB),
+                Fontsize = MapViewModelService.SmallFontSize(AABB),
                 StartTime = DateTime.Now,
                 Location = mousePosition
             });
@@ -627,7 +627,7 @@ namespace EQTool.ViewModels
                 var mousePosition1 = Transform.Inverse.Transform(mousePosition);
                 var delta = Point.Subtract(mousePosition1, _initialMousePosition);
                 var translate = new TranslateTransform(delta.X, delta.Y);
-                Transform.Matrix = Transform.Matrix * translate.Value;
+                Transform.Matrix *= translate.Value;
                 var translation = new TranslateTransform(Transform.Value.OffsetX, Transform.Value.OffsetY);
                 EllipseTransform.Matrix = translation.Value;
 
@@ -697,8 +697,8 @@ namespace EQTool.ViewModels
             Transform.Matrix = scaleMatrix;
             CurrentScaling *= scaleFactor;
             var currentlabelscaling = (CurrentScaling / 40 * -1) + 1;
-            var zoneLabelFontSize = MapViewModelService.ZoneLabelFontSize(this.AABB);
-            var otherLabelFontSize = MapViewModelService.OtherLabelFontSize(this.AABB);
+            var zoneLabelFontSize = MapViewModelService.ZoneLabelFontSize(AABB);
+            var otherLabelFontSize = MapViewModelService.OtherLabelFontSize(AABB);
             var translation = new TranslateTransform(Transform.Value.OffsetX, Transform.Value.OffsetY);
             EllipseTransform.Matrix = translation.Value;
             foreach (FrameworkElement child in Canvas.Children)
@@ -712,8 +712,7 @@ namespace EQTool.ViewModels
 
                 var sx = x * scaleFactor;
                 var sy = y * scaleFactor;
-
-                if (child is Ellipse el)
+                if (child is Ellipse)
                 {
                     Canvas.SetLeft(child, sx);
                     Canvas.SetTop(child, sy);
@@ -771,7 +770,7 @@ namespace EQTool.ViewModels
             }
             MapViewModelService.UpdateLocation(new UpdateLocationData
             {
-                Trackingdistance = this.activePlayer?.Player?.TrackingDistance,
+                Trackingdistance = activePlayer?.Player?.TrackingDistance,
                 CurrentScaling = CurrentScaling,
                 MapOffset = MapOffset,
                 Oldlocation = Lastlocation,
@@ -800,11 +799,11 @@ namespace EQTool.ViewModels
         public void PlayerLocationEvent(SignalrPlayer e)
         {
             e.TimeStamp = DateTime.UtcNow;
-            var p = this.Players.FirstOrDefault(a => a.Player?.Name == e.Name);
+            var p = Players.FirstOrDefault(a => a.Player?.Name == e.Name);
             if (p == null)
             {
                 var playerloc = AddPlayerToCanvas(e);
-                this.Players.Add(playerloc);
+                Players.Add(playerloc);
             }
             else
             {
@@ -824,7 +823,7 @@ namespace EQTool.ViewModels
 
         public void PlayerDisconnected(SignalrPlayer e)
         {
-            var p = this.Players.FirstOrDefault(a => a.Player.Name == e.Name);
+            var p = Players.FirstOrDefault(a => a.Player.Name == e.Name);
             if (p != null)
             {
                 RemoveFromCanvas(p);

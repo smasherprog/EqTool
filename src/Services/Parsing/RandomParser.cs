@@ -1,25 +1,35 @@
-﻿using System;
+﻿using EQTool.Models;
+using System;
 
 namespace EQTool.Services.Parsing
 {
-    public class RandomParser
+    public class RandomParser : IEqLogParseHandler
     {
-        public class RandomRollData
-        {
-            public string PlayerName { get; set; }
-
-            public int MaxRoll { get; set; }
-
-            public int Roll { get; set; }
-        }
-
         private readonly string RollMessage = "**A Magic Die is rolled by ";
         private readonly string RollMessage2nd = "**It could have been any number from 0 to ";
         private readonly string RollMessage3nd = "but this time it turned up a ";
         private string PlayerRollName = string.Empty;
         private DateTime RollTime = DateTime.MinValue;
 
-        public RandomRollData Parse(string line)
+        private readonly LogEvents logEvents;
+
+        public RandomParser(LogEvents logEvents)
+        {
+            this.logEvents = logEvents;
+        }
+
+        public bool Handle(string line, DateTime timestamp)
+        {
+            var m = Parse(line);
+            if (m != null)
+            {
+                logEvents.Handle(m);
+                return true;
+            }
+            return false;
+        }
+
+        public RandomRollEvent Parse(string line)
         {
             if (line.StartsWith(RollMessage))
             {
@@ -46,7 +56,7 @@ namespace EQTool.Services.Parsing
                     var roll = line.Substring(commaindex + RollMessage3nd.Length).TrimEnd('.');
                     if (int.TryParse(roll, out var rollint) && int.TryParse(maxroll, out var maxrollint))
                     {
-                        return new RandomRollData
+                        return new RandomRollEvent
                         {
                             PlayerName = PlayerRollName,
                             MaxRoll = maxrollint,

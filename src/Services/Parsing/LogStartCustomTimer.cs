@@ -2,7 +2,6 @@
 using EQToolShared.HubModels;
 using System;
 using System.Linq;
-using static EQTool.Services.LogParser;
 
 namespace EQTool.Services.Parsing
 {
@@ -22,7 +21,7 @@ namespace EQTool.Services.Parsing
             var m = GetStartTimer(line);
             if (m != null)
             {
-                logEvents.Handle(new StartTimerEventArgs { CustomTimer = m });
+                logEvents.Handle(new StartTimerEvent { CustomTimer = m });
                 return true;
             }
             return false;

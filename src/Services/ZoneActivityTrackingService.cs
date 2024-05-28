@@ -1,4 +1,5 @@
-﻿using EQTool.ViewModels;
+﻿using EQTool.Models;
+using EQTool.ViewModels;
 using EQToolShared.APIModels.ZoneControllerModels;
 using EQToolShared.Enums;
 using System;
@@ -27,7 +28,7 @@ namespace EQTool.Services
             this.loggingService = loggingService;
         }
 
-        private void LogParser_ConEvent(object sender, LogParser.ConEventArgs e)
+        private void LogParser_ConEvent(object sender, ConEvent e)
         {
             if (activePlayer.Player?.Server == null)
             {
@@ -56,12 +57,12 @@ namespace EQTool.Services
             }
         }
 
-        private void LogParser_PlayerLocationEvent(object sender, LogParser.PlayerLocationEventArgs e)
+        private void LogParser_PlayerLocationEvent(object sender, PlayerLocationEvent e)
         {
             LastLocation = e.Location;
         }
 
-        private void LogParser_DeadEvent(object sender, LogParser.DeadEventArgs e)
+        private void LogParser_DeadEvent(object sender, DeadEvent e)
         {
             if (activePlayer.Player?.Server == null)
             {
