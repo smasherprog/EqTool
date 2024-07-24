@@ -1128,7 +1128,15 @@ namespace EQToolShared.Map
                 {
                     "",
                 },
-                RespawnTime = new TimeSpan(0, 6, 40)
+                RespawnTime = new TimeSpan(0, 6, 40),
+                NpcSpawnTimes = new List<NpcSpawnTime>()
+                 {
+                     new NpcSpawnTime
+                     {
+                          Name = "a brownie guard",
+                          RespawnTime = new TimeSpan(0,16,0)
+                     }
+                 }
             });
             ZoneInfoMap.Add("mischiefplane", new ZoneInfo
             {

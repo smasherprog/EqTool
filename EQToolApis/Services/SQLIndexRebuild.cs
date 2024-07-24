@@ -83,7 +83,7 @@ where eqpi.AuctionPrice is not null and (eqpi.AuctionPrice > eqitem.TotalWTSLast
             _ = dbcontext.Database.ExecuteSqlRaw(@"update eqpi
 set eqpi.AuctionPrice = null 
 from EQTunnelAuctionItemsV2 eqpi
-join EQitemsV3 eqitem on eqitem.EQitemId = eqpi.EQitemId
+join EQitemsV2 eqitem on eqitem.EQitemId = eqpi.EQitemId
 where eqpi.AuctionPrice is not null and eqpi.AuctionPrice < eqitem.TotalWTSLast6MonthsAverage * .1 AND eqitem.TotalWTSLast6MonthsAverage >40");
         }
 
