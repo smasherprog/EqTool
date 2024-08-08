@@ -96,9 +96,9 @@ namespace EQTool
 
             }
             DebugTab.Visibility = Visibility.Collapsed;
+            this.settingsTestRunOverlay = settingsTestRunOverlay;
 #if DEBUG
             DebugTab.Visibility = Visibility.Visible;
-            this.settingsTestRunOverlay = settingsTestRunOverlay;
 #endif
 
         }
