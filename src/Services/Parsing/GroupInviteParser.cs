@@ -30,7 +30,7 @@ namespace EQTool.Services.Parsing
             {
                 var remainder = line.Replace(" invites you to join a group.", string.Empty);
                 var name = remainder.Trim();
-                return name.Contains(' ') ? string.Empty : line;
+                return name.Contains(' ') ? string.Empty : name;
             }
 
             return null;
