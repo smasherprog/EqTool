@@ -146,7 +146,7 @@ namespace EQToolApis.Services
                 var messagesinserted = new List<EQTunnelMessageV2>();
                 foreach (var item in messages)
                 {
-                    var discordpricingdata = this.discordAuctionParse.Parse(item.Text);
+                    var discordpricingdata = discordAuctionParse.Parse(item.Text);
                     if (discordpricingdata?.Items?.Any() == true)
                     {
                         var eqplayer = dbcontext.EQAuctionPlayersV2.FirstOrDefault(a => a.Name == discordpricingdata.Player && a.Server == server);
@@ -162,7 +162,7 @@ namespace EQToolApis.Services
                             playerCache.PlayersLock.EnterWriteLock();
                             try
                             {
-                                playerCache.Players.TryAdd(eqplayer.EQAuctionPlayerId, new AuctionPlayer { EQAuctionPlayerId = eqplayer.EQAuctionPlayerId, Name = eqplayer.Name });
+                                _ = playerCache.Players.TryAdd(eqplayer.EQAuctionPlayerId, new AuctionPlayer { EQAuctionPlayerId = eqplayer.EQAuctionPlayerId, Name = eqplayer.Name });
                             }
                             finally
                             {
@@ -342,42 +342,71 @@ namespace EQToolApis.Services
                 discordService.Login();
                 var itemids = DequeueChunk(ids, 50).ToList();
                 var items = dbcontext.EQitemsV2.Where(a => itemids.Contains(a.EQitemId)).ToList();
+
+                DateTimeOffset? d = null;
+                if (pricingDate == PricingDate.ThirtyDays)
+                {
+                    d = DateTimeOffset.UtcNow.AddMonths(-1);
+                }
+                else if (pricingDate == PricingDate.SixtyDays)
+                {
+                    d = DateTimeOffset.UtcNow.AddMonths(-2);
+                }
+                else if (pricingDate == PricingDate.NinetyDays)
+                {
+                    d = DateTimeOffset.UtcNow.AddMonths(-3);
+                }
+                else if (pricingDate == PricingDate.SixMonths)
+                {
+                    d = DateTimeOffset.UtcNow.AddMonths(-6);
+                }
+                else if (pricingDate == PricingDate.Year)
+                {
+                    d = DateTimeOffset.UtcNow.AddYears(-1);
+                }
+
+                long eqtunnelidwts = 0;
+                if (d.HasValue)
+                {
+                    eqtunnelidwts = dbcontext.EQTunnelMessagesV2.Where(a => a.TunnelTimestamp >= d.Value && a.AuctionType == AuctionType.WTS).Select(a => a.EQTunnelMessageId).OrderBy(a => a).FirstOrDefault();
+                }
+                long eqtunnelidwtb = 0;
+                if (d.HasValue)
+                {
+                    eqtunnelidwtb = dbcontext.EQTunnelMessagesV2.Where(a => a.TunnelTimestamp >= d.Value && a.AuctionType == AuctionType.WTB).Select(a => a.EQTunnelMessageId).OrderBy(a => a).FirstOrDefault();
+                }
+
                 foreach (var item in items)
                 {
-                    var d = DateTimeOffset.UtcNow.AddMonths(-1);
                     var id = item.EQitemId;
                     if (pricingDate == PricingDate.ThirtyDays)
                     {
-                        item.TotalWTSLast30DaysCount = dbcontext.EQTunnelAuctionItemsV2.Count(a => a.EQitemId == id && a.EQTunnelMessage.TunnelTimestamp >= d && a.EQTunnelMessage.AuctionType == AuctionType.WTS);
-                        item.TotalWTSLast30DaysAverage = (int)(dbcontext.EQTunnelAuctionItemsV2.Where(a => a.EQitemId == id && a.EQTunnelMessage.TunnelTimestamp >= d && a.EQTunnelMessage.AuctionType == AuctionType.WTS && a.AuctionPrice.HasValue).Average(a => a.AuctionPrice) ?? 0);
+                        item.TotalWTSLast30DaysCount = dbcontext.EQTunnelAuctionItemsV2.Count(a => a.EQitemId == id && a.EQTunnelMessageId > eqtunnelidwts && a.EQTunnelMessage.AuctionType == AuctionType.WTS);
+                        item.TotalWTSLast30DaysAverage = (int)(dbcontext.EQTunnelAuctionItemsV2.Where(a => a.EQitemId == id && a.EQTunnelMessageId > eqtunnelidwts && a.EQTunnelMessage.AuctionType == AuctionType.WTS && a.AuctionPrice.HasValue).Average(a => a.AuctionPrice) ?? 0);
                     }
 
-                    d = DateTimeOffset.UtcNow.AddMonths(-2);
                     if (pricingDate == PricingDate.SixtyDays)
                     {
-                        item.TotalWTSLast60DaysCount = dbcontext.EQTunnelAuctionItemsV2.Count(a => a.EQitemId == id && a.EQTunnelMessage.TunnelTimestamp >= d && a.EQTunnelMessage.AuctionType == AuctionType.WTS);
-                        item.TotalWTSLast60DaysAverage = (int)(dbcontext.EQTunnelAuctionItemsV2.Where(a => a.EQitemId == id && a.EQTunnelMessage.TunnelTimestamp >= d && a.EQTunnelMessage.AuctionType == AuctionType.WTS && a.AuctionPrice.HasValue).Average(a => a.AuctionPrice) ?? 0);
+                        item.TotalWTSLast60DaysCount = dbcontext.EQTunnelAuctionItemsV2.Count(a => a.EQitemId == id && a.EQTunnelMessageId > eqtunnelidwts && a.EQTunnelMessage.AuctionType == AuctionType.WTS);
+                        item.TotalWTSLast60DaysAverage = (int)(dbcontext.EQTunnelAuctionItemsV2.Where(a => a.EQitemId == id && a.EQTunnelMessageId > eqtunnelidwts && a.EQTunnelMessage.AuctionType == AuctionType.WTS && a.AuctionPrice.HasValue).Average(a => a.AuctionPrice) ?? 0);
                     }
 
-                    d = DateTimeOffset.UtcNow.AddMonths(-3);
                     if (pricingDate == PricingDate.NinetyDays)
                     {
-                        item.TotalWTSLast90DaysCount = dbcontext.EQTunnelAuctionItemsV2.Count(a => a.EQitemId == id && a.EQTunnelMessage.TunnelTimestamp >= d && a.EQTunnelMessage.AuctionType == AuctionType.WTS);
-                        item.TotalWTSLast90DaysAverage = (int)(dbcontext.EQTunnelAuctionItemsV2.Where(a => a.EQitemId == id && a.EQTunnelMessage.TunnelTimestamp >= d && a.EQTunnelMessage.AuctionType == AuctionType.WTS && a.AuctionPrice.HasValue).Average(a => a.AuctionPrice) ?? 0);
+                        item.TotalWTSLast90DaysCount = dbcontext.EQTunnelAuctionItemsV2.Count(a => a.EQitemId == id && a.EQTunnelMessageId > eqtunnelidwts && a.EQTunnelMessage.AuctionType == AuctionType.WTS);
+                        item.TotalWTSLast90DaysAverage = (int)(dbcontext.EQTunnelAuctionItemsV2.Where(a => a.EQitemId == id && a.EQTunnelMessageId > eqtunnelidwts && a.EQTunnelMessage.AuctionType == AuctionType.WTS && a.AuctionPrice.HasValue).Average(a => a.AuctionPrice) ?? 0);
                     }
 
-                    d = DateTimeOffset.UtcNow.AddMonths(-6);
                     if (pricingDate == PricingDate.SixMonths)
                     {
-                        item.TotalWTSLast6MonthsCount = dbcontext.EQTunnelAuctionItemsV2.Count(a => a.EQitemId == id && a.EQTunnelMessage.TunnelTimestamp >= d && a.EQTunnelMessage.AuctionType == AuctionType.WTS);
-                        item.TotalWTSLast6MonthsAverage = (int)(dbcontext.EQTunnelAuctionItemsV2.Where(a => a.EQitemId == id && a.EQTunnelMessage.TunnelTimestamp >= d && a.EQTunnelMessage.AuctionType == AuctionType.WTS && a.AuctionPrice.HasValue).Average(a => a.AuctionPrice) ?? 0);
+                        item.TotalWTSLast6MonthsCount = dbcontext.EQTunnelAuctionItemsV2.Count(a => a.EQitemId == id && a.EQTunnelMessageId > eqtunnelidwts && a.EQTunnelMessage.AuctionType == AuctionType.WTS);
+                        item.TotalWTSLast6MonthsAverage = (int)(dbcontext.EQTunnelAuctionItemsV2.Where(a => a.EQitemId == id && a.EQTunnelMessageId > eqtunnelidwts && a.EQTunnelMessage.AuctionType == AuctionType.WTS && a.AuctionPrice.HasValue).Average(a => a.AuctionPrice) ?? 0);
                     }
 
-                    d = DateTimeOffset.UtcNow.AddYears(-1);
                     if (pricingDate == PricingDate.Year)
                     {
-                        item.TotalWTSLastYearCount = dbcontext.EQTunnelAuctionItemsV2.Count(a => a.EQitemId == id && a.EQTunnelMessage.TunnelTimestamp >= d && a.EQTunnelMessage.AuctionType == AuctionType.WTS);
-                        item.TotalWTSLastYearAverage = (int)(dbcontext.EQTunnelAuctionItemsV2.Where(a => a.EQitemId == id && a.EQTunnelMessage.TunnelTimestamp >= d && a.EQTunnelMessage.AuctionType == AuctionType.WTS && a.AuctionPrice.HasValue).Average(a => a.AuctionPrice) ?? 0);
+                        item.TotalWTSLastYearCount = dbcontext.EQTunnelAuctionItemsV2.Count(a => a.EQitemId == id && a.EQTunnelMessageId > eqtunnelidwts && a.EQTunnelMessage.AuctionType == AuctionType.WTS);
+                        item.TotalWTSLastYearAverage = (int)(dbcontext.EQTunnelAuctionItemsV2.Where(a => a.EQitemId == id && a.EQTunnelMessageId > eqtunnelidwts && a.EQTunnelMessage.AuctionType == AuctionType.WTS && a.AuctionPrice.HasValue).Average(a => a.AuctionPrice) ?? 0);
                     }
 
                     if (pricingDate == PricingDate.AllTime)
@@ -386,41 +415,36 @@ namespace EQToolApis.Services
                         item.TotalWTSAuctionAverage = (int)(dbcontext.EQTunnelAuctionItemsV2.Where(a => a.EQitemId == id && a.EQTunnelMessage.AuctionType == AuctionType.WTS).Average(a => a.AuctionPrice) ?? 0);
                     }
 
-                    item.LastWTSSeen = dbcontext.EQTunnelAuctionItemsV2.Where(a => a.EQitemId == id && a.EQTunnelMessage.AuctionType == AuctionType.WTS).Select(b => (DateTimeOffset?)b.EQTunnelMessage.TunnelTimestamp).OrderByDescending(b => b).FirstOrDefault();
+                    item.LastWTSSeen = dbcontext.EQTunnelAuctionItemsV2.Where(a => a.EQitemId == id && a.EQTunnelMessage.AuctionType == AuctionType.WTS).OrderByDescending(b => b.EQTunnelAuctionItemId).Select(b => (DateTimeOffset?)b.EQTunnelMessage.TunnelTimestamp).FirstOrDefault();
 
-                    d = DateTimeOffset.UtcNow.AddMonths(-1);
                     if (pricingDate == PricingDate.ThirtyDays)
                     {
-                        item.TotalWTBLast30DaysCount = dbcontext.EQTunnelAuctionItemsV2.Count(a => a.EQitemId == id && a.EQTunnelMessage.TunnelTimestamp >= d && a.EQTunnelMessage.AuctionType == AuctionType.WTB);
-                        item.TotalWTBLast30DaysAverage = (int)(dbcontext.EQTunnelAuctionItemsV2.Where(a => a.EQitemId == id && a.EQTunnelMessage.Server == server && a.EQTunnelMessage.TunnelTimestamp >= d && a.EQTunnelMessage.AuctionType == AuctionType.WTB && a.AuctionPrice.HasValue).Average(a => a.AuctionPrice) ?? 0);
+                        item.TotalWTBLast30DaysCount = dbcontext.EQTunnelAuctionItemsV2.Count(a => a.EQitemId == id && a.EQTunnelMessageId > eqtunnelidwtb && a.EQTunnelMessage.AuctionType == AuctionType.WTB);
+                        item.TotalWTBLast30DaysAverage = (int)(dbcontext.EQTunnelAuctionItemsV2.Where(a => a.EQitemId == id && a.EQTunnelMessageId > eqtunnelidwtb && a.EQTunnelMessage.AuctionType == AuctionType.WTB && a.AuctionPrice.HasValue).Average(a => a.AuctionPrice) ?? 0);
                     }
 
-                    d = DateTimeOffset.UtcNow.AddMonths(-2);
                     if (pricingDate == PricingDate.SixtyDays)
                     {
-                        item.TotalWTBLast60DaysCount = dbcontext.EQTunnelAuctionItemsV2.Count(a => a.EQitemId == id && a.EQTunnelMessage.TunnelTimestamp >= d && a.EQTunnelMessage.AuctionType == AuctionType.WTB);
-                        item.TotalWTBLast60DaysAverage = (int)(dbcontext.EQTunnelAuctionItemsV2.Where(a => a.EQitemId == id && a.EQTunnelMessage.TunnelTimestamp >= d && a.EQTunnelMessage.AuctionType == AuctionType.WTB && a.AuctionPrice.HasValue).Average(a => a.AuctionPrice) ?? 0);
+                        item.TotalWTBLast60DaysCount = dbcontext.EQTunnelAuctionItemsV2.Count(a => a.EQitemId == id && a.EQTunnelMessageId > eqtunnelidwtb && a.EQTunnelMessage.AuctionType == AuctionType.WTB);
+                        item.TotalWTBLast60DaysAverage = (int)(dbcontext.EQTunnelAuctionItemsV2.Where(a => a.EQitemId == id && a.EQTunnelMessageId > eqtunnelidwtb && a.EQTunnelMessage.AuctionType == AuctionType.WTB && a.AuctionPrice.HasValue).Average(a => a.AuctionPrice) ?? 0);
                     }
 
-                    d = DateTimeOffset.UtcNow.AddMonths(-3);
                     if (pricingDate == PricingDate.NinetyDays)
                     {
-                        item.TotalWTBLast90DaysCount = dbcontext.EQTunnelAuctionItemsV2.Count(a => a.EQitemId == id && a.EQTunnelMessage.TunnelTimestamp >= d && a.EQTunnelMessage.AuctionType == AuctionType.WTB);
-                        item.TotalWTBLast90DaysAverage = (int)(dbcontext.EQTunnelAuctionItemsV2.Where(a => a.EQitemId == id && a.EQTunnelMessage.TunnelTimestamp >= d && a.EQTunnelMessage.AuctionType == AuctionType.WTB && a.AuctionPrice.HasValue).Average(a => a.AuctionPrice) ?? 0);
+                        item.TotalWTBLast90DaysCount = dbcontext.EQTunnelAuctionItemsV2.Count(a => a.EQitemId == id && a.EQTunnelMessageId > eqtunnelidwtb && a.EQTunnelMessage.AuctionType == AuctionType.WTB);
+                        item.TotalWTBLast90DaysAverage = (int)(dbcontext.EQTunnelAuctionItemsV2.Where(a => a.EQitemId == id && a.EQTunnelMessageId > eqtunnelidwtb && a.EQTunnelMessage.AuctionType == AuctionType.WTB && a.AuctionPrice.HasValue).Average(a => a.AuctionPrice) ?? 0);
                     }
 
-                    d = DateTimeOffset.UtcNow.AddMonths(-6);
                     if (pricingDate == PricingDate.SixMonths)
                     {
-                        item.TotalWTBLast6MonthsCount = dbcontext.EQTunnelAuctionItemsV2.Count(a => a.EQitemId == id && a.EQTunnelMessage.TunnelTimestamp >= d && a.EQTunnelMessage.AuctionType == AuctionType.WTB);
-                        item.TotalWTBLast6MonthsAverage = (int)(dbcontext.EQTunnelAuctionItemsV2.Where(a => a.EQitemId == id && a.EQTunnelMessage.TunnelTimestamp >= d && a.EQTunnelMessage.AuctionType == AuctionType.WTB && a.AuctionPrice.HasValue).Average(a => a.AuctionPrice) ?? 0);
+                        item.TotalWTBLast6MonthsCount = dbcontext.EQTunnelAuctionItemsV2.Count(a => a.EQitemId == id && a.EQTunnelMessageId > eqtunnelidwtb && a.EQTunnelMessage.AuctionType == AuctionType.WTB);
+                        item.TotalWTBLast6MonthsAverage = (int)(dbcontext.EQTunnelAuctionItemsV2.Where(a => a.EQitemId == id && a.EQTunnelMessageId > eqtunnelidwtb && a.EQTunnelMessage.AuctionType == AuctionType.WTB && a.AuctionPrice.HasValue).Average(a => a.AuctionPrice) ?? 0);
                     }
 
-                    d = DateTimeOffset.UtcNow.AddYears(-1);
                     if (pricingDate == PricingDate.Year)
                     {
-                        item.TotalWTBLastYearCount = dbcontext.EQTunnelAuctionItemsV2.Count(a => a.EQitemId == id && a.EQTunnelMessage.TunnelTimestamp >= d && a.EQTunnelMessage.AuctionType == AuctionType.WTB);
-                        item.TotalWTBLastYearAverage = (int)(dbcontext.EQTunnelAuctionItemsV2.Where(a => a.EQitemId == id && a.EQTunnelMessage.TunnelTimestamp >= d && a.EQTunnelMessage.AuctionType == AuctionType.WTB && a.AuctionPrice.HasValue).Average(a => a.AuctionPrice) ?? 0);
+                        item.TotalWTBLastYearCount = dbcontext.EQTunnelAuctionItemsV2.Count(a => a.EQitemId == id && a.EQTunnelMessageId > eqtunnelidwtb && a.EQTunnelMessage.AuctionType == AuctionType.WTB);
+                        item.TotalWTBLastYearAverage = (int)(dbcontext.EQTunnelAuctionItemsV2.Where(a => a.EQitemId == id && a.EQTunnelMessageId > eqtunnelidwtb && a.EQTunnelMessage.AuctionType == AuctionType.WTB && a.AuctionPrice.HasValue).Average(a => a.AuctionPrice) ?? 0);
                     }
 
                     if (pricingDate == PricingDate.AllTime)
@@ -429,7 +453,7 @@ namespace EQToolApis.Services
                         item.TotalWTBAuctionAverage = (int)(dbcontext.EQTunnelAuctionItemsV2.Where(a => a.EQitemId == id && a.EQTunnelMessage.AuctionType == AuctionType.WTB).Average(a => a.AuctionPrice) ?? 0);
                     }
 
-                    item.LastWTBSeen = dbcontext.EQTunnelAuctionItemsV2.Where(a => a.EQitemId == id && a.EQTunnelMessage.AuctionType == AuctionType.WTB).Select(b => (DateTimeOffset?)b.EQTunnelMessage.TunnelTimestamp).OrderByDescending(b => b).FirstOrDefault();
+                    item.LastWTBSeen = dbcontext.EQTunnelAuctionItemsV2.Where(a => a.EQitemId == id && a.EQTunnelMessage.AuctionType == AuctionType.WTB).OrderByDescending(b => b.EQTunnelAuctionItemId).Select(b => (DateTimeOffset?)b.EQTunnelMessage.TunnelTimestamp).FirstOrDefault();
                     _ = dbcontext.SaveChanges();
                 }
 
