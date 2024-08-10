@@ -16,9 +16,7 @@ namespace EQTool.Services
 #elif DEBUG
             build = BuildType.Debug;
 #elif BETA
-            build = BuildType.Beta;
-#elif QUARM
-            build = BuildType.Quarm;
+            build = BuildType.Beta; 
 #endif
             try
             {

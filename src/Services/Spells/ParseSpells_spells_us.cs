@@ -152,11 +152,6 @@ namespace EQTool.Services
             stopwatch.Start();
             var spells = new Dictionary<string, SpellBase>();
             var spellfile = "/spells_us.txt";
-            if (servers == Servers.Quarm)
-            {
-                spellfile = "/spells_en.txt";
-            }
-
             var spellsfile = new FileInfo(settings.DefaultEqDirectory + spellfile);
             if (spellsfile.Exists)
             {
@@ -189,12 +184,7 @@ namespace EQTool.Services
                 };
                 foreach (var item in spellastext)
                 {
-                    SpellBase spell = null;
-#if QUARM
-                    spell = ParseQuarmLine(item);
-#else
-                    spell = ParseP99Line(item);
-#endif 
+                    var spell = ParseP99Line(item);
                     if (spell == null || (string.IsNullOrWhiteSpace(spell.name) &&
                         string.IsNullOrWhiteSpace(spell.cast_on_you) &&
                         spell.buffduration <= 0 &&
@@ -335,12 +325,6 @@ namespace EQTool.Services
             }
 
             return _Spells;
-        }
-
-
-        public static SpellBase ParseQuarmLine(string line)
-        {
-            return ParseLine(line, 12, 13);
         }
 
         private static SpellBase ParseLine(string line, int offset, int spelliconoffset)

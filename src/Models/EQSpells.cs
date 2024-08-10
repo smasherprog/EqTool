@@ -95,11 +95,7 @@ namespace EQTool.Models
 
         private void BuildSpellInfo()
         {
-#if QUARM
-            BuildSpellInfo(Servers.Quarm);
-#else
             BuildSpellInfo(Servers.Green);
-#endif
         }
 
         public void BuildSpellInfo(Servers servers)

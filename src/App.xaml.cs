@@ -57,11 +57,7 @@ namespace EQTool
         }
 
         public static List<BaseSaveStateWindow> WindowList = new List<BaseSaveStateWindow>();
-#if QUARM
-        private const string programName = "pqtool";
-#else
         private const string programName = "eqtool";
-#endif
         private bool WaitForEQToolToStop()
         {
 #if DEBUG
@@ -260,9 +256,6 @@ namespace EQTool
 
 #if BETA || DEBUG
             logo = EQTool.Properties.Resources.sickpic;
-#endif
-#if QUARM
-            logo = EQTool.Properties.Resources.Quarm;
 #endif
 
             var version = new System.Windows.Forms.MenuItem(Version)

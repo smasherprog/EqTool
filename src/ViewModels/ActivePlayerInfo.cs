@@ -35,27 +35,12 @@ namespace EQTool.ViewModels
             if (indexpart != -1)
             {
                 var server = charname_withext.Substring(indexpart + 1).Replace(".txt", string.Empty);
-                if (server == "P1999PVP")
-                {
-                    p.Server = Servers.Red;
-                }
-                else if (server == "P1999Green")
-                {
-                    p.Server = Servers.Green;
-                }
-                else
-                {
-                    p.Server = Servers.Blue;
-                }
-            }
-
-            if (logfilenbame.IndexOf("pq.proj.txt") != -1)
-            {
-                p.Server = Servers.Quarm;
+                p.Server = server == "P1999PVP" ? Servers.Red : server == "P1999Green" ? Servers.Green : Servers.Blue;
             }
 
             return p;
         }
+
         public bool Update()
         {
             var playerchanged = false;

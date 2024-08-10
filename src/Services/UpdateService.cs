@@ -47,11 +47,9 @@ namespace EQTool.Services
             OldFilesDeleted,
             NoUpdateApplied
         }
-#if QUARM
-        private const string programName = "PQTool.exe";
-#else
+
         private const string programName = "EQTool.exe";
-#endif
+
         public UpdateStatus ApplyUpdate(string parameter)
         {
             if (!string.IsNullOrWhiteSpace(parameter))

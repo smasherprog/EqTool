@@ -16,17 +16,8 @@ namespace EQTool.Services
     public class PigParseApi
     {
 
-#if QUARM
-        private bool IsQuarm = true;
-#else
-        private bool IsQuarm = false;
-#endif
         public List<Item> GetData(List<string> names, Servers server)
         {
-            if (this.IsQuarm)
-            {
-                return new List<Item>();
-            }
             try
             {
                 var url = $"https://pigparse.azurewebsites.net/api/item/postmultiple";
@@ -52,10 +43,6 @@ namespace EQTool.Services
 
         public void SendPlayerData(List<Player> players, Servers server)
         {
-            if (this.IsQuarm)
-            {
-                return;
-            }
             if (!players.Any())
             {
                 return;
@@ -77,10 +64,6 @@ namespace EQTool.Services
 
         public void SendNPCActivity(NPCActivityRequest activity)
         {
-            if (string.IsNullOrWhiteSpace(activity.NPCData?.Name) || this.IsQuarm)
-            {
-                return;
-            }
             if (activity.NPCData.Name == "Scout Charisa" ||
                 activity.NPCData.Name == "a Kromzek Captain" ||
                 ZoneParser.KaelFactionMobs.Contains(activity.NPCData.Name)
@@ -100,10 +83,6 @@ namespace EQTool.Services
 
         public void SendQuake()
         {
-            if (this.IsQuarm)
-            {
-                return;
-            }
             try
             {
                 var url = $"https://pigparse.azurewebsites.net/api/zone/quake";
@@ -120,10 +99,6 @@ namespace EQTool.Services
 
         public List<Player> GetPlayerData(List<string> players, Servers server)
         {
-            if (this.IsQuarm)
-            {
-                return new List<Player>();
-            }
             try
             {
                 if (!players.Any())
@@ -145,7 +120,7 @@ namespace EQTool.Services
                     return Newtonsoft.Json.JsonConvert.DeserializeObject<List<Player>>(response);
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 return new List<Player>();
             }
@@ -155,7 +130,7 @@ namespace EQTool.Services
 
         public Player GetPlayerData(string players, Servers server)
         {
-            return this.GetPlayerData(new List<string>() { players }, server).FirstOrDefault();
+            return GetPlayerData(new List<string>() { players }, server).FirstOrDefault();
         }
     }
 }

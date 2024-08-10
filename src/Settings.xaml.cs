@@ -166,10 +166,6 @@ namespace EQTool
         private void EqFolderButtonClicked(object sender, RoutedEventArgs e)
         {
             var descriptiontext = "Select Project 1999 EQ Directory";
-#if QUARM
-            descriptiontext = "Select Quarm EQ Directory";
-#endif
-
             using (var fbd = new FolderBrowserDialog() { Description = descriptiontext, ShowNewFolderButton = false })
             {
                 var result = fbd.ShowDialog();

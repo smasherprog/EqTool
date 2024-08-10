@@ -29,15 +29,7 @@ namespace EQTool.Services
 
             var ret = new List<SpellIcon>();
             var list = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceNames();
-            var resourcenames = new List<string>();
-            if (servers == Servers.Quarm)
-            {
-                resourcenames = list.Where(a => a.ToLower().StartsWith("eqtool.quarmspells.")).ToList();
-            }
-            else
-            {
-                resourcenames = list.Where(a => a.ToLower().StartsWith("eqtool.spells.")).ToList();
-            }
+            var resourcenames = list.Where(a => a.ToLower().StartsWith("eqtool.spells.")).ToList();
 
             foreach (var item in resourcenames)
             {

@@ -57,7 +57,7 @@
     <AssemblyName>EQTool</AssemblyName>
   </PropertyGroup>
   <PropertyGroup>
-    <StartupObject>EQTool.Program</StartupObject>
+    <StartupObject>EQTool.App</StartupObject>
   </PropertyGroup>
   <PropertyGroup />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Beta|AnyCPU'">
@@ -108,31 +108,6 @@
     <ApplicationIcon>logo.ico</ApplicationIcon>
     <AssemblyName>EQTool</AssemblyName>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Quarm|AnyCPU'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\Quarm\</OutputPath>
-    <DefineConstants>TRACE;RELEASE;QUARM</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>embedded</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <LangVersion>7.3</LangVersion>
-    <ErrorReport>prompt</ErrorReport>
-    <Prefer32Bit>true</Prefer32Bit>
-    <ApplicationIcon>clipboard.ico</ApplicationIcon>
-    <AssemblyName>PQTool</AssemblyName>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Quarm|x86'">
-    <OutputPath>bin\x86\Quarm\</OutputPath>
-    <DefineConstants>TRACE;Release</DefineConstants>
-    <Optimize>true</Optimize>
-    <DebugType>pdbonly</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <LangVersion>7.3</LangVersion>
-    <ErrorReport>prompt</ErrorReport>
-    <Prefer32Bit>true</Prefer32Bit>
-    <ApplicationIcon>clipboard.ico</ApplicationIcon>
-    <AssemblyName>PQTool</AssemblyName>
-  </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Test|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
     <OutputPath>bin\Test\</OutputPath>
@@ -155,28 +130,6 @@
     <ErrorReport>prompt</ErrorReport>
     <Prefer32Bit>true</Prefer32Bit>
     <AssemblyName>EQTool</AssemblyName>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug_Quarm|AnyCPU'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\Debug_Quarm\</OutputPath>
-    <DefineConstants>TRACE;DEBUG;QUARM</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>AnyCPU</PlatformTarget>
-    <LangVersion>7.3</LangVersion>
-    <ErrorReport>prompt</ErrorReport>
-    <Prefer32Bit>true</Prefer32Bit>
-    <AssemblyName>PQTool</AssemblyName>
-  </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug_Quarm|x86'">
-    <DebugSymbols>true</DebugSymbols>
-    <OutputPath>bin\x86\Debug_Quarm\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
-    <DebugType>full</DebugType>
-    <PlatformTarget>x86</PlatformTarget>
-    <LangVersion>7.3</LangVersion>
-    <ErrorReport>prompt</ErrorReport>
-    <Prefer32Bit>true</Prefer32Bit>
-    <AssemblyName>PQTool</AssemblyName>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Linux|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
@@ -401,7 +354,6 @@
     <Compile Include="PanAndZoomCanvas.xaml.cs">
       <DependentUpon>PanAndZoomCanvas.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Program.cs" />
     <Compile Include="DPSMeter.xaml.cs">
       <DependentUpon>DPSMeter.xaml</DependentUpon>
     </Compile>
@@ -1072,25 +1024,6 @@
       <Project>{DEBDC0EE-39F6-413D-80D7-955CA98A85CC}</Project>
       <Name>EQToolShared</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="QuarmSpells\spells01.tga" />
-    <EmbeddedResource Include="QuarmSpells\spells02.tga" />
-    <EmbeddedResource Include="QuarmSpells\spells03.tga" />
-    <EmbeddedResource Include="QuarmSpells\spells04.tga" />
-    <EmbeddedResource Include="QuarmSpells\spells05.tga" />
-    <EmbeddedResource Include="QuarmSpells\spells06.tga" />
-    <EmbeddedResource Include="QuarmSpells\spells07.tga" />
-    <None Include="Resources\Quarm.bmp" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\Quarm.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="Resources\clipboard.ico" />
-  </ItemGroup>
-  <ItemGroup>
-    <Resource Include="clipboard.ico" />
   </ItemGroup>
   <ItemGroup>
     <Resource Include="update1.png" />
