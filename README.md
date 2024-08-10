@@ -89,31 +89,6 @@ Features:
 <h4>System Tray Icon</h4>
 <img width="152" alt="image" src="https://user-images.githubusercontent.com/3393733/212717141-6e26b9af-660a-493d-9f73-2c3464b7c224.png">
 
-<h4>TO DO List EQTool</h4>
-<ul>     
-  <li>Add option to ONLY show spells YOU have cast on yourself and others. </li>   
- <li>Centralized friends list. </li>  
- <li>Add text message sending when npc is seen in game. (You can go FD and received a Text message on your phone that VD has spawned for example) </li>  
- <li>Sharing of triggers for those nearby. </li>  
- <li>Add ring war triggers. </li>  
- <li>Map center on you.</li>  
- <li>Add Window Snapping code so windows can be grouped and all moved together.</li>   
- <li>Remove timers from map when timers removed from list and visa versa.</li>   
- <li>Add code to show MOB hits per second.</li>   
- <li>Port application to be cross platform(mac, win, linux).</li>   
- <li>Add Ability to bind a hotkey to toggle a window open/close.</li>    
- <li>Add group suggestions for each raid mob in game.</li>     
- <li>Fix buff timers when updating, when update occurs buffs dissapear.</li> 
- <li>Add zone dump of names.</li> 
-<li>Add option to enable OTHERS hits for DPS meter. </li>  
-<li>Add option to auto prune eq log file. EQ logfiles can cause issues with EQ itself if they get too large!</li>
-</ul>
-
-<h4>TO DO List PigParse Pricing</h4>
-<ul>
-<li>N/A </li> 
-</ul>
-
 <h3>FAQS</h3>
 <h4>Why does chrome warn me?</h4> 
 <img alt="image" src="https://user-images.githubusercontent.com/3393733/223326270-a079946d-57dc-41dd-a58e-f46a0c776b54.png">
