@@ -19,7 +19,7 @@ using System.Windows.Controls;
 using System.Windows.Forms;
 using System.Windows.Navigation;
 
-namespace EQTool
+namespace EQTool.UI
 {
     public class BoolStringClass : INotifyPropertyChanged
     {
@@ -349,7 +349,6 @@ namespace EQTool
             {
                 try
                 {
-
                     var fightlines = Properties.Resources.TestFight2.Split(new string[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
                     var fightlist = new List<KeyValuePair<string, DPSParseMatch>>();
                     foreach (var item in fightlines)

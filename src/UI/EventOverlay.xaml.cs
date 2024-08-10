@@ -13,7 +13,7 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 
-namespace EQTool
+namespace EQTool.UI
 {
     public class ChainOverlayData : ChainData
     {

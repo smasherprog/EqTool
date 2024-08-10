@@ -6,7 +6,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
 
-namespace EQTool
+namespace EQTool.UI
 {
     public partial class PanAndZoomCanvas : Canvas
     {

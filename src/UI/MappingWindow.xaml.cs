@@ -8,7 +8,7 @@ using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
 
-namespace EQTool
+namespace EQTool.UI
 {
     public partial class MappingWindow : BaseSaveStateWindow
     {

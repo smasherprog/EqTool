@@ -6,7 +6,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
 
-namespace EQTool
+namespace EQTool.UI
 {
     public partial class BaseSaveStateWindow : Window
     {
@@ -31,7 +31,11 @@ namespace EQTool
 
         protected void Init()
         {
-            if (InitCalled) return;
+            if (InitCalled)
+            {
+                return;
+            }
+
             InitCalled = true;
             AdjustWindow();
             timer.Tick += timer_Tick;
@@ -39,7 +43,7 @@ namespace EQTool
             StateChanged += SpellWindow_StateChanged;
             LocationChanged += Window_LocationChanged;
             windowState.Closed = false;
-            this.SaveState();
+            SaveState();
         }
 
         private void timer_Tick(object sender, EventArgs e)
@@ -94,14 +98,14 @@ namespace EQTool
 
         private void AdjustWindow()
         {
-            this.Topmost = windowState.AlwaysOnTop;
+            Topmost = windowState.AlwaysOnTop;
             if (WindowBounds.isPointVisibleOnAScreen(windowState.WindowRect))
             {
-                this.Left = windowState.WindowRect.Value.Left;
-                this.Top = windowState.WindowRect.Value.Top;
-                this.Height = windowState.WindowRect.Value.Height;
-                this.Width = windowState.WindowRect.Value.Width;
-                this.WindowState = windowState.State;
+                Left = windowState.WindowRect.Value.Left;
+                Top = windowState.WindowRect.Value.Top;
+                Height = windowState.WindowRect.Value.Height;
+                Width = windowState.WindowRect.Value.Width;
+                WindowState = windowState.State;
             }
         }
 
@@ -109,13 +113,13 @@ namespace EQTool
         {
             windowState.WindowRect = new Rect
             {
-                X = this.Left,
-                Y = this.Top,
-                Height = this.Height,
-                Width = this.Width
+                X = Left,
+                Y = Top,
+                Height = Height,
+                Width = Width
             };
-            windowState.State = this.WindowState;
-            windowState.AlwaysOnTop = this.Topmost;
+            windowState.State = WindowState;
+            windowState.AlwaysOnTop = Topmost;
         }
 
         protected override void OnClosing(CancelEventArgs e)
@@ -156,7 +160,7 @@ namespace EQTool
 
         protected void CloseWindow(object sender, RoutedEventArgs e)
         {
-            this.CloseWindow();
+            CloseWindow();
         }
 
         protected void MinimizeWindow(object sender, RoutedEventArgs e)

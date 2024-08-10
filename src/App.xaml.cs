@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using EQTool.Models;
 using EQTool.Services;
+using EQTool.UI;
 using EQTool.ViewModels;
 using EQToolShared.Enums;
 using System;

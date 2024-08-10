@@ -1,4 +1,5 @@
 ﻿using EQTool.Models;
+using EQTool.UI;
 using EQToolShared.Enums;
 using EQToolShared.Map;
 using System;
@@ -41,59 +42,50 @@ namespace EQTool.ViewModels
             foreach (var item in Enum.GetValues(typeof(PlayerClasses)).Cast<PlayerClasses>())
             {
                 var listitem = new BoolStringClass { TheText = item.ToString(), TheValue = item, IsChecked = false };
-                this.SelectedPlayerClasses.Add(listitem);
+                SelectedPlayerClasses.Add(listitem);
             }
-            this.InstalledVoices = new ObservableCollection<string>();
+            InstalledVoices = new ObservableCollection<string>();
 #if !LINUX
-            this.InstalledVoices = new ObservableCollection<string>(new System.Speech.Synthesis.SpeechSynthesizer().GetInstalledVoices().Select(a => a.VoiceInfo.Name).ToList());
+            InstalledVoices = new ObservableCollection<string>(new System.Speech.Synthesis.SpeechSynthesizer().GetInstalledVoices().Select(a => a.VoiceInfo.Name).ToList());
 #endif
 
-            this.SelectedVoice = this.toolSettings.SelectedVoice;
-            if (string.IsNullOrWhiteSpace(this.SelectedVoice))
+            SelectedVoice = this.toolSettings.SelectedVoice;
+            if (string.IsNullOrWhiteSpace(SelectedVoice))
             {
-                this.SelectedVoice = this.InstalledVoices.FirstOrDefault();
+                SelectedVoice = InstalledVoices.FirstOrDefault();
             }
         }
 
         public int GlobalFontSize
         {
-            get
-            {
-                return this.toolSettings.FontSize.Value;
-            }
+            get => toolSettings.FontSize.Value;
             set
             {
-                this.toolSettings.FontSize = value;
+                toolSettings.FontSize = value;
                 App.Current.Resources["GlobalFontSize"] = (double)value;
-                ((App)System.Windows.Application.Current).UpdateBackgroundOpacity("MyWindowStyleDPS", this.toolSettings.DpsWindowState.Opacity.Value);
-                ((App)System.Windows.Application.Current).UpdateBackgroundOpacity("MyWindowStyleMap", this.toolSettings.MapWindowState.Opacity.Value);
-                ((App)System.Windows.Application.Current).UpdateBackgroundOpacity("MyWindowStyleTrigger", this.toolSettings.SpellWindowState.Opacity.Value);
+                ((App)System.Windows.Application.Current).UpdateBackgroundOpacity("MyWindowStyleDPS", toolSettings.DpsWindowState.Opacity.Value);
+                ((App)System.Windows.Application.Current).UpdateBackgroundOpacity("MyWindowStyleMap", toolSettings.MapWindowState.Opacity.Value);
+                ((App)System.Windows.Application.Current).UpdateBackgroundOpacity("MyWindowStyleTrigger", toolSettings.SpellWindowState.Opacity.Value);
                 OnPropertyChanged();
             }
         }
 
         public bool DpsAlwaysOnTop
         {
-            get
-            {
-                return this.toolSettings.DpsWindowState.AlwaysOnTop;
-            }
+            get => toolSettings.DpsWindowState.AlwaysOnTop;
             set
             {
-                this.toolSettings.DpsWindowState.AlwaysOnTop = value;
+                toolSettings.DpsWindowState.AlwaysOnTop = value;
                 OnPropertyChanged();
             }
         }
 
         public double DPSWindowOpacity
         {
-            get
-            {
-                return this.toolSettings.DpsWindowState.Opacity ?? 1.0;
-            }
+            get => toolSettings.DpsWindowState.Opacity ?? 1.0;
             set
             {
-                this.toolSettings.DpsWindowState.Opacity = value;
+                toolSettings.DpsWindowState.Opacity = value;
                 ((App)System.Windows.Application.Current).UpdateBackgroundOpacity("MyWindowStyleDPS", value);
                 OnPropertyChanged();
             }
@@ -101,79 +93,61 @@ namespace EQTool.ViewModels
 
         public bool MapAlwaysOnTop
         {
-            get
-            {
-                return this.toolSettings.MapWindowState.AlwaysOnTop;
-            }
+            get => toolSettings.MapWindowState.AlwaysOnTop;
             set
             {
-                this.toolSettings.MapWindowState.AlwaysOnTop = value;
+                toolSettings.MapWindowState.AlwaysOnTop = value;
                 OnPropertyChanged();
             }
         }
 
         public double MapWindowOpacity
         {
-            get
-            {
-                return this.toolSettings.MapWindowState.Opacity ?? 1.0;
-            }
+            get => toolSettings.MapWindowState.Opacity ?? 1.0;
 
             set
             {
-                this.toolSettings.MapWindowState.Opacity = value;
+                toolSettings.MapWindowState.Opacity = value;
                 ((App)System.Windows.Application.Current).UpdateBackgroundOpacity("MyWindowStyleMap", value);
                 OnPropertyChanged();
             }
         }
         public bool MobAlwaysOnTop
         {
-            get
-            {
-                return this.toolSettings.MobWindowState.AlwaysOnTop;
-            }
+            get => toolSettings.MobWindowState.AlwaysOnTop;
             set
             {
-                this.toolSettings.MobWindowState.AlwaysOnTop = value;
+                toolSettings.MobWindowState.AlwaysOnTop = value;
                 OnPropertyChanged();
             }
         }
 
         public bool SpellAlwaysOnTop
         {
-            get
-            {
-                return this.toolSettings.SpellWindowState.AlwaysOnTop;
-            }
+            get => toolSettings.SpellWindowState.AlwaysOnTop;
             set
             {
-                this.toolSettings.SpellWindowState.AlwaysOnTop = value;
+                toolSettings.SpellWindowState.AlwaysOnTop = value;
                 OnPropertyChanged();
             }
         }
 
         public bool ShowRandomRolls
         {
-            get
-            {
-                return this.toolSettings.ShowRandomRolls;
-            }
+            get => toolSettings.ShowRandomRolls;
             set
             {
-                this.toolSettings.ShowRandomRolls = value;
+                toolSettings.ShowRandomRolls = value;
                 OnPropertyChanged();
             }
         }
 
         public double TriggerWindowOpacity
         {
-            get
-            {
-                return this.toolSettings.SpellWindowState.Opacity ?? 1.0;
-            }
+            get => toolSettings.SpellWindowState.Opacity ?? 1.0;
             set
             {
-                this.toolSettings.SpellWindowState.Opacity = value;
+                toolSettings.SpellWindowState.Opacity = value;
                 ((App)System.Windows.Application.Current).UpdateBackgroundOpacity("MyWindowStyleTrigger", value);
                 OnPropertyChanged();
             }
@@ -199,7 +173,7 @@ namespace EQTool.ViewModels
             set
             {
                 _SelectedVoice = value;
-                this.toolSettings.SelectedVoice = value;
+                toolSettings.SelectedVoice = value;
                 OnPropertyChanged();
             }
         }

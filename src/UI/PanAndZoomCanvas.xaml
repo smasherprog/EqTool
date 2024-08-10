@@ -1,10 +1,10 @@
-﻿<Canvas x:Class="EQTool.PanAndZoomCanvas"
+﻿<Canvas x:Class="EQTool.UI.PanAndZoomCanvas"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:ui="using:Microsoft.Toolkit.Uwp.UI"
-        xmlns:local="clr-namespace:EQTool" 
+       xmlns:local="clr-namespace:EQTool.UI"
         mc:Ignorable="d"
         Background="Transparent"
        >

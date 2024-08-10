@@ -1,6 +1,6 @@
-﻿using System;
+﻿using EQTool.UI;
+using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Windows;
 using System.Windows.Media;
@@ -18,20 +18,14 @@ namespace EQTool.Services
         private Point _Location = new Point();
         public Point Location
         {
-            get
-            {
-                return _Location;
-            }
-            set
-            {
-                _Location = value;
-            }
+            get => _Location;
+            set => _Location = value;
         }
     }
 
     public class TimersService
     {
-        private Dictionary<string, List<TimerInfo>> ZoneTimers = new Dictionary<string, List<TimerInfo>>();
+        private readonly Dictionary<string, List<TimerInfo>> ZoneTimers = new Dictionary<string, List<TimerInfo>>();
         public List<MapWidget> LoadTimersForZone(string zonename)
         {
             var ret = new List<MapWidget>();
@@ -56,7 +50,7 @@ namespace EQTool.Services
                 }
                 foreach (var item in expired)
                 {
-                    timerInfos.Remove(item);
+                    _ = timerInfos.Remove(item);
                 }
             }
 
@@ -65,18 +59,14 @@ namespace EQTool.Services
 
         public bool TimerExists(string zonename, string name)
         {
-            if (ZoneTimers.TryGetValue(zonename, out var zone))
-            {
-                return zone.Any(a => a.Name == name);
-            }
-            return false;
+            return ZoneTimers.TryGetValue(zonename, out var zone) && zone.Any(a => a.Name == name);
         }
 
         public void RemoveTimer(TimerInfo removeTimerInfo)
         {
             if (ZoneTimers.TryGetValue(removeTimerInfo.ZoneName, out var zone))
             {
-                zone.RemoveAll(a => a == removeTimerInfo);
+                _ = zone.RemoveAll(a => a == removeTimerInfo);
             }
         }
 
@@ -87,7 +77,7 @@ namespace EQTool.Services
                 var t = item.FirstOrDefault(a => a.Name == name);
                 if (t != null)
                 {
-                    item.Remove(t);
+                    _ = item.Remove(t);
                     return t;
                 }
             }

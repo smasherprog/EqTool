@@ -1,6 +1,7 @@
 ﻿using EQTool.Models;
 using EQTool.Services;
 using EQTool.Shapes;
+using EQTool.UI;
 using EQToolShared.Enums;
 using EQToolShared.Map;
 using System;

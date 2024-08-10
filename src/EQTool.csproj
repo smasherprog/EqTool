@@ -152,6 +152,9 @@
     <ErrorReport>prompt</ErrorReport>
     <Prefer32Bit>true</Prefer32Bit>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Images\logo.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Autofac, Version=8.0.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
       <HintPath>..\packages\Autofac.8.0.0\lib\netstandard2.0\Autofac.dll</HintPath>
@@ -333,17 +336,17 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
-    <Compile Include="CustomTimeSpanUpDown.cs" />
-    <Compile Include="EventOverlay.xaml.cs">
+    <Compile Include="UI\CustomTimeSpanUpDown.cs" />
+    <Compile Include="UI\EventOverlay.xaml.cs">
       <DependentUpon>EventOverlay.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MappingWindow.xaml.cs">
+    <Compile Include="UI\MappingWindow.xaml.cs">
       <DependentUpon>MappingWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MapWidget.xaml.cs">
+    <Compile Include="UI\MapWidget.xaml.cs">
       <DependentUpon>MapWidget.xaml</DependentUpon>
     </Compile>
-    <Compile Include="MobInfo.xaml.cs">
+    <Compile Include="UI\MobInfo.xaml.cs">
       <DependentUpon>MobInfo.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\EventModels.cs" />
@@ -351,10 +354,10 @@
     <Compile Include="Models\IEqLogParseHandler.cs" />
     <Compile Include="Models\OverlayTypes.cs" />
     <Compile Include="Models\PlayerRequest.cs" />
-    <Compile Include="PanAndZoomCanvas.xaml.cs">
+    <Compile Include="UI\PanAndZoomCanvas.xaml.cs">
       <DependentUpon>PanAndZoomCanvas.xaml</DependentUpon>
     </Compile>
-    <Compile Include="DPSMeter.xaml.cs">
+    <Compile Include="UI\DPSMeter.xaml.cs">
       <DependentUpon>DPSMeter.xaml</DependentUpon>
     </Compile>
     <Compile Include="Models\DPSParseMatch.cs" />
@@ -434,11 +437,6 @@
     <Compile Include="ViewModels\UISpell.cs" />
     <Compile Include="Models\vecs.cs" />
     <Compile Include="Models\S3dReader.cs" />
-    <Compile Include="Properties\Resources.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>Resources.resx</DependentUpon>
-    </Compile>
     <Compile Include="Services\EQToolSettingsLoad.cs" />
     <Compile Include="DI.cs" />
     <Compile Include="Services\FindEq.cs" />
@@ -448,14 +446,19 @@
     <Compile Include="Services\Spells\SpellIcons.cs" />
     <Compile Include="Services\StringHash.cs" />
     <Compile Include="Services\TGASharpLib.cs" />
-    <Compile Include="Settings.xaml.cs">
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="UI\Settings.xaml.cs">
       <DependentUpon>Settings.xaml</DependentUpon>
     </Compile>
-    <Compile Include="SpellWindow.xaml.cs">
+    <Compile Include="UI\SpellWindow.xaml.cs">
       <DependentUpon>SpellWindow.xaml</DependentUpon>
     </Compile>
-    <Compile Include="BaseSaveStateWindow.cs" />
-    <Page Include="DPSMeter.xaml">
+    <Compile Include="UI\BaseSaveStateWindow.cs" />
+    <Page Include="UI\DPSMeter.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -463,31 +466,31 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="EventOverlay.xaml">
+    <Page Include="UI\EventOverlay.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MappingWindow.xaml">
+    <Page Include="UI\MappingWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MapWidget.xaml">
+    <Page Include="UI\MapWidget.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="MobInfo.xaml">
+    <Page Include="UI\MobInfo.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="PanAndZoomCanvas.xaml">
+    <Page Include="UI\PanAndZoomCanvas.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="Settings.xaml">
+    <Page Include="UI\Settings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="SpellWindow.xaml">
+    <Page Include="UI\SpellWindow.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -501,24 +504,24 @@
     </Compile>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
-      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
       <SubType>Designer</SubType>
+      <LastGenOutput>Resources1.Designer.cs</LastGenOutput>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Copy.png" />
-    <Resource Include="open-folder.png" />
+    <Resource Include="Images\Copy.png" />
+    <Resource Include="Images\open-folder.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="dps.png" />
-    <Resource Include="map.png" />
-    <Resource Include="wizard.png" />
-    <Resource Include="TestFight2.txt" />
-    <Resource Include="testmap.txt" />
-    <Resource Include="TestFight.txt" />
+    <Resource Include="Images\dps.png" />
+    <Resource Include="Images\map.png" />
+    <Resource Include="Images\wizard.png" />
+    <Resource Include="Files\TestFight2.txt" />
+    <Resource Include="Files\testmap.txt" />
+    <Resource Include="Files\TestFight.txt" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.7.2">
@@ -533,10 +536,10 @@
     </BootstrapperPackage>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="logo.ico" />
+    <EmbeddedResource Include="Images\logo.ico" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="sickpic.ico" />
+    <Resource Include="Images\sickpic.ico" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
@@ -553,10 +556,10 @@
     <EmbeddedResource Include="Spells\spells07.tga" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="HyperlinkForward.png" />
+    <Resource Include="Images\HyperlinkForward.png" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="toolbox.png" />
+    <Resource Include="Images\toolbox.png" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="map_files\airplane.txt" />
@@ -1017,7 +1020,7 @@
     <EmbeddedResource Include="map_files\westwastes_3.txt" />
   </ItemGroup>
   <ItemGroup>
-    <Resource Include="Trash.png" />
+    <Resource Include="Images\Trash.png" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EQToolShared\EQToolShared.csproj">
@@ -1025,12 +1028,6 @@
       <Name>EQToolShared</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Resource Include="update1.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="UpdateImages\" />
-    <Folder Include="Windows\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

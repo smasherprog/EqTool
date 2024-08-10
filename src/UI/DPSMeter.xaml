@@ -1,9 +1,9 @@
-﻿<local:BaseSaveStateWindow x:Class="EQTool.DPSMeter"
+﻿<local:BaseSaveStateWindow x:Class="EQTool.UI.DPSMeter"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:EQTool"
+        xmlns:local="clr-namespace:EQTool.UI"
          mc:Ignorable="d"  Style="{DynamicResource MyWindowStyleDPS}"
          Title="{Binding Title}" 
         Height="450" 
@@ -34,13 +34,13 @@
                     <TextBlock Foreground="White" FontWeight="Bold" VerticalAlignment="Center" Margin="10,1,10,1" Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}, Path=Title}"/>
                     <StackPanel Orientation="Horizontal"  HorizontalAlignment="Center">
                         <Button Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="openmobinfo" ToolTip="Open Mob Info Window">
-                            <Image Source="pack://application:,,,/toolbox.png"/>
+                            <Image Source="pack://application:,,,/Images/toolbox.png"/>
                         </Button>
                         <Button Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="openspells" ToolTip="Open Spells/Trigger Window">
-                            <Image Source="pack://application:,,,/wizard.png"/>
+                            <Image Source="pack://application:,,,/Images/wizard.png"/>
                         </Button>
                         <Button Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="openmap" ToolTip="Open Map Window">
-                            <Image Source="pack://application:,,,/map.png"/>
+                            <Image Source="pack://application:,,,/Images/map.png"/>
                         </Button>
                         <Button Content="O" Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="opensettings" ToolTip="Open Settings Window" />
                     </StackPanel>
@@ -86,7 +86,7 @@
                 </Grid.ColumnDefinitions>
                 <TextBlock HorizontalAlignment="Left" Grid.Column="0" FontWeight="Bold" Text="Last Session" ToolTip="Last Session" />
                 <Button Grid.Column="1" Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="RemoveLastSession" ToolTip="Remove Last session" >
-                    <Image Source="pack://application:,,,/trash.png"/>
+                    <Image Source="pack://application:,,,/Images/trash.png"/>
                 </Button>
                 <TextBlock HorizontalAlignment="Left" Grid.Column="2" FontWeight="Bold" Text="{Binding SessionPlayerDamage.LastSessionPlayerDamage.HighestDPS}" ToolTip="Total DPS!" />
                 <TextBlock HorizontalAlignment="Left" Grid.Column="3" FontWeight="Bold" Text="{Binding SessionPlayerDamage.LastSessionPlayerDamage.HighestHit}" ToolTip="Biggest single hit!" />
@@ -102,7 +102,7 @@
                 </Grid.ColumnDefinitions>
                 <TextBlock HorizontalAlignment="Left" Grid.Column="0" FontWeight="Bold" Text="Current Session" ToolTip="Your All time Best" />
                 <Button Grid.Column="1" Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="MoveCurrentToLastSession" ToolTip="Move current session data to Last" >
-                    <Image Source="pack://application:,,,/trash.png"/>
+                    <Image Source="pack://application:,,,/Images/trash.png"/>
                 </Button>
                 <TextBlock HorizontalAlignment="Left" Grid.Column="2" FontWeight="Bold" Text="{Binding SessionPlayerDamage.CurrentSessionPlayerDamage.HighestDPS}" ToolTip="Total DPS!" />
                 <TextBlock HorizontalAlignment="Left" Grid.Column="3" FontWeight="Bold" Text="{Binding SessionPlayerDamage.CurrentSessionPlayerDamage.HighestHit}" ToolTip="Biggest single hit!" />
@@ -144,7 +144,7 @@
                                                         </Grid.ColumnDefinitions>
                                                         <TextBlock Grid.Column="0" Text="{Binding Items[0].TargetName_and_Info}" FontWeight="Bold" FontSize="{DynamicResource GlobalFontSize}" />
                                                         <Button Grid.Column="1" Width="14" Height="14" Click="copytoclipboard" ToolTip="Copy Details to clipboard">
-                                                            <Image Source="pack://application:,,,/Copy.png"/>
+                                                            <Image Source="pack://application:,,,/Images/Copy.png"/>
                                                         </Button>
                                                         <TextBlock  HorizontalAlignment="Left" Grid.Column="3" FontWeight="Bold" Text="{Binding Items[0].TargetTotalDamage}" />
                                                     </Grid>

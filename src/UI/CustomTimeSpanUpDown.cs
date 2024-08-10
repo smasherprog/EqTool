@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace EQTool
+namespace EQTool.UI
 {
 
     public class CustomTimeSpanUpDown : Xceed.Wpf.Toolkit.TimeSpanUpDown

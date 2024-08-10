@@ -9,7 +9,7 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Navigation;
 
-namespace EQTool
+namespace EQTool.UI
 {
     /// <summary>
     /// Interaction logic for MobInfo.xaml

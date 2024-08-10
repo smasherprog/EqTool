@@ -12,7 +12,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 
-namespace EQTool
+namespace EQTool.UI
 {
     public partial class DPSMeter : BaseSaveStateWindow
     {
