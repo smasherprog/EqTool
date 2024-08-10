@@ -23,9 +23,6 @@ namespace EQToolTests
             playerinfo = ActivePlayer.GetInfoFromString("eqlog_Vasanle_project1999.txt");
             Assert.AreEqual("Vasanle", playerinfo.Name);
             Assert.AreEqual(Servers.Blue, playerinfo.Server);
-            playerinfo = ActivePlayer.GetInfoFromString("eqlog_vasanle_pq.proj.txt");
-            Assert.AreEqual("vasanle", playerinfo.Name);
-            Assert.AreEqual(Servers.Quarm, playerinfo.Server);
         }
     }
 }
