@@ -35,7 +35,7 @@ namespace EQTool.UI
         private readonly LogEvents logEvents;
 
         public EventOverlay(LogEvents logEvents, EQToolSettings settings, PigParseApi pigParseApi, EQToolSettingsLoad toolSettingsLoad, ActivePlayer activePlayer, IAppDispatcher appDispatcher)
-            : base(settings.OverlayWindowState, toolSettingsLoad, settings)
+            : base(settings.GetWindow(WindowsEnum.OverlayWindow), toolSettingsLoad, settings)
         {
             this.logEvents = logEvents;
             this.pigParseApi = pigParseApi;

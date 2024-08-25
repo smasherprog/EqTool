@@ -296,23 +296,23 @@ namespace EQTool
             else
             {
                 ToggleMenuButtons(true);
-                if (!EQToolSettings.SpellWindowState.Closed)
+                if (!EQToolSettings.GetWindow(WindowsEnum.SpellsWindow).Closed)
                 {
                     OpenSpellsWindow();
                 }
-                if (!EQToolSettings.DpsWindowState.Closed)
+                if (!EQToolSettings.GetWindow(WindowsEnum.DpsWindow).Closed)
                 {
                     OpenDPSWindow();
                 }
-                if (!EQToolSettings.MapWindowState.Closed)
+                if (!EQToolSettings.GetWindow(WindowsEnum.MapWindow).Closed)
                 {
                     OpenMapWindow();
                 }
-                if (!EQToolSettings.MobWindowState.Closed)
+                if (!EQToolSettings.GetWindow(WindowsEnum.MobWindow).Closed)
                 {
                     OpenMobInfoWindow();
                 }
-                if (!EQToolSettings.OverlayWindowState.Closed)
+                if (!EQToolSettings.GetWindow(WindowsEnum.OverlayWindow).Closed)
                 {
                     OpenOverLayWindow();
                 }
@@ -324,9 +324,9 @@ namespace EQTool
             audioService = container.Resolve<AudioService>();
             logEvents.QuakeEvent += LogParser_QuakeEvent;
             App.Current.Resources["GlobalFontSize"] = (double)(EQToolSettings?.FontSize ?? 12);
-            ((App)System.Windows.Application.Current).UpdateBackgroundOpacity("MyWindowStyleDPS", EQToolSettings.DpsWindowState.Opacity.Value);
-            ((App)System.Windows.Application.Current).UpdateBackgroundOpacity("MyWindowStyleMap", EQToolSettings.MapWindowState.Opacity.Value);
-            ((App)System.Windows.Application.Current).UpdateBackgroundOpacity("MyWindowStyleTrigger", EQToolSettings.SpellWindowState.Opacity.Value);
+            ((App)System.Windows.Application.Current).UpdateBackgroundOpacity("MyWindowStyleDPS", EQToolSettings.GetWindow(WindowsEnum.DpsWindow).Opacity.Value);
+            ((App)System.Windows.Application.Current).UpdateBackgroundOpacity("MyWindowStyleMap", EQToolSettings.GetWindow(WindowsEnum.MapWindow).Opacity.Value);
+            ((App)System.Windows.Application.Current).UpdateBackgroundOpacity("MyWindowStyleTrigger", EQToolSettings.GetWindow(WindowsEnum.SpellsWindow).Opacity.Value);
         }
         public void UpdateBackgroundOpacity(string name, double opacity)
         {
@@ -645,19 +645,19 @@ namespace EQTool
             {
                 if (item is DPSMeter w)
                 {
-                    w.Topmost = EQToolSettings.DpsWindowState.AlwaysOnTop;
+                    w.Topmost = EQToolSettings.GetWindow(WindowsEnum.DpsWindow).AlwaysOnTop;
                 }
                 else if (item is MappingWindow w1)
                 {
-                    w1.Topmost = EQToolSettings.MapWindowState.AlwaysOnTop;
+                    w1.Topmost = EQToolSettings.GetWindow(WindowsEnum.MapWindow).AlwaysOnTop;
                 }
                 else if (item is MobInfo w2)
                 {
-                    w2.Topmost = EQToolSettings.MobWindowState.AlwaysOnTop;
+                    w2.Topmost = EQToolSettings.GetWindow(WindowsEnum.MobWindow).AlwaysOnTop;
                 }
                 else if (item is SpellWindow w3)
                 {
-                    w3.Topmost = EQToolSettings.SpellWindowState.AlwaysOnTop;
+                    w3.Topmost = EQToolSettings.GetWindow(WindowsEnum.SpellsWindow).AlwaysOnTop;
                 }
             }
         }

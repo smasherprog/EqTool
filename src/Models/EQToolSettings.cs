@@ -5,24 +5,27 @@ using System.Windows;
 
 namespace EQTool.Models
 {
+    public enum WindowsEnum
+    {
+        OverlayWindow,
+        SpellsWindow,
+        DpsWindow,
+        MapWindow,
+        MobWindow,
+        SettingsWindow
+    }
+
     public class WindowState
     {
         public Rect? WindowRect { get; set; }
         public System.Windows.WindowState State { get; set; }
         public bool Closed { get; set; }
         public bool AlwaysOnTop { get; set; }
-
         private double _Opacity = 1.0;
         public double? Opacity
         {
-            get
-            {
-                return _Opacity;
-            }
-            set
-            {
-                _Opacity = value ?? 1.0;
-            }
+            get => _Opacity;
+            set => _Opacity = value ?? 1.0;
         }
     }
 
@@ -34,10 +37,7 @@ namespace EQTool.Models
         private int _FontSize = 12;
         public int? FontSize
         {
-            get
-            {
-                return _FontSize;
-            }
+            get => _FontSize;
             set
             {
                 _FontSize = value ?? 12;
@@ -134,6 +134,15 @@ namespace EQTool.Models
         public bool BestGuessSpells { get; set; }
         public bool YouOnlySpells { get; set; }
         public bool ShowRandomRolls { get; set; }
+
+        public Dictionary<WindowsEnum, WindowState> Windows { get; set; }
+
+        public WindowState GetWindow(WindowsEnum windowsEnum)
+        {
+            _ = Windows.TryGetValue(windowsEnum, out var w);
+            return w;
+        }
+
 
         public event PropertyChangedEventHandler PropertyChanged;
 

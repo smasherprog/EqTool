@@ -63,29 +63,29 @@ namespace EQTool.ViewModels
             {
                 toolSettings.FontSize = value;
                 App.Current.Resources["GlobalFontSize"] = (double)value;
-                ((App)System.Windows.Application.Current).UpdateBackgroundOpacity("MyWindowStyleDPS", toolSettings.DpsWindowState.Opacity.Value);
-                ((App)System.Windows.Application.Current).UpdateBackgroundOpacity("MyWindowStyleMap", toolSettings.MapWindowState.Opacity.Value);
-                ((App)System.Windows.Application.Current).UpdateBackgroundOpacity("MyWindowStyleTrigger", toolSettings.SpellWindowState.Opacity.Value);
+                ((App)System.Windows.Application.Current).UpdateBackgroundOpacity("MyWindowStyleDPS", toolSettings.GetWindow(WindowsEnum.DpsWindow).Opacity.Value);
+                ((App)System.Windows.Application.Current).UpdateBackgroundOpacity("MyWindowStyleMap", toolSettings.GetWindow(WindowsEnum.MapWindow).Opacity.Value);
+                ((App)System.Windows.Application.Current).UpdateBackgroundOpacity("MyWindowStyleTrigger", toolSettings.GetWindow(WindowsEnum.SpellsWindow).Opacity.Value);
                 OnPropertyChanged();
             }
         }
 
         public bool DpsAlwaysOnTop
         {
-            get => toolSettings.DpsWindowState.AlwaysOnTop;
+            get => toolSettings.GetWindow(WindowsEnum.DpsWindow).AlwaysOnTop;
             set
             {
-                toolSettings.DpsWindowState.AlwaysOnTop = value;
+                toolSettings.GetWindow(WindowsEnum.DpsWindow).AlwaysOnTop = value;
                 OnPropertyChanged();
             }
         }
 
         public double DPSWindowOpacity
         {
-            get => toolSettings.DpsWindowState.Opacity ?? 1.0;
+            get => toolSettings.GetWindow(WindowsEnum.DpsWindow).Opacity ?? 1.0;
             set
             {
-                toolSettings.DpsWindowState.Opacity = value;
+                toolSettings.GetWindow(WindowsEnum.DpsWindow).Opacity = value;
                 ((App)System.Windows.Application.Current).UpdateBackgroundOpacity("MyWindowStyleDPS", value);
                 OnPropertyChanged();
             }
@@ -93,41 +93,41 @@ namespace EQTool.ViewModels
 
         public bool MapAlwaysOnTop
         {
-            get => toolSettings.MapWindowState.AlwaysOnTop;
+            get => toolSettings.GetWindow(WindowsEnum.MapWindow).AlwaysOnTop;
             set
             {
-                toolSettings.MapWindowState.AlwaysOnTop = value;
+                toolSettings.GetWindow(WindowsEnum.MapWindow).AlwaysOnTop = value;
                 OnPropertyChanged();
             }
         }
 
         public double MapWindowOpacity
         {
-            get => toolSettings.MapWindowState.Opacity ?? 1.0;
+            get => toolSettings.GetWindow(WindowsEnum.MapWindow).Opacity ?? 1.0;
 
             set
             {
-                toolSettings.MapWindowState.Opacity = value;
+                toolSettings.GetWindow(WindowsEnum.MapWindow).Opacity = value;
                 ((App)System.Windows.Application.Current).UpdateBackgroundOpacity("MyWindowStyleMap", value);
                 OnPropertyChanged();
             }
         }
         public bool MobAlwaysOnTop
         {
-            get => toolSettings.MobWindowState.AlwaysOnTop;
+            get => toolSettings.GetWindow(WindowsEnum.MobWindow).AlwaysOnTop;
             set
             {
-                toolSettings.MobWindowState.AlwaysOnTop = value;
+                toolSettings.GetWindow(WindowsEnum.MobWindow).AlwaysOnTop = value;
                 OnPropertyChanged();
             }
         }
 
         public bool SpellAlwaysOnTop
         {
-            get => toolSettings.SpellWindowState.AlwaysOnTop;
+            get => toolSettings.GetWindow(WindowsEnum.SpellsWindow).AlwaysOnTop;
             set
             {
-                toolSettings.SpellWindowState.AlwaysOnTop = value;
+                toolSettings.GetWindow(WindowsEnum.SpellsWindow).AlwaysOnTop = value;
                 OnPropertyChanged();
             }
         }
@@ -144,10 +144,10 @@ namespace EQTool.ViewModels
 
         public double TriggerWindowOpacity
         {
-            get => toolSettings.SpellWindowState.Opacity ?? 1.0;
+            get => toolSettings.GetWindow(WindowsEnum.SpellsWindow).Opacity ?? 1.0;
             set
             {
-                toolSettings.SpellWindowState.Opacity = value;
+                toolSettings.GetWindow(WindowsEnum.SpellsWindow).Opacity = value;
                 ((App)System.Windows.Application.Current).UpdateBackgroundOpacity("MyWindowStyleTrigger", value);
                 OnPropertyChanged();
             }

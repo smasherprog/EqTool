@@ -71,7 +71,7 @@ namespace EQTool.UI
             EQToolSettingsLoad toolSettingsLoad,
             SettingsWindowViewModel settingsWindowData,
             SpellWindowViewModel spellWindowViewModel,
-            SettingsTestRunOverlay settingsTestRunOverlay) : base(settings.SettingsWindowState, toolSettingsLoad, settings)
+            SettingsTestRunOverlay settingsTestRunOverlay) : base(settings.GetWindow(WindowsEnum.SettingsWindow), toolSettingsLoad, settings)
         {
             this.signalrPlayerHub = signalrPlayerHub;
             this.logParser = logParser;

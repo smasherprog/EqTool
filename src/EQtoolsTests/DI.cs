@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using Autofac.Features.ResolveAnything;
+using EQTool.Models;
 using System.IO;
 
 namespace EQToolTests
@@ -12,7 +13,7 @@ namespace EQToolTests
             _ = builder.RegisterSource(new AnyConcreteTypeNotAlreadyRegisteredSource());
             _ = builder.Register(a =>
             {
-                return new EQTool.Models.EQToolSettings
+                var s = new EQTool.Models.EQToolSettings
                 {
                     DefaultEqDirectory = string.Empty,
                     EqLogDirectory = string.Empty,
@@ -40,6 +41,13 @@ namespace EQToolTests
                         State = System.Windows.WindowState.Normal
                     }
                 };
+                s.Windows.Add(WindowsEnum.SettingsWindow, s.SettingsWindowState);
+                s.Windows.Add(WindowsEnum.MapWindow, s.MapWindowState);
+                s.Windows.Add(WindowsEnum.DpsWindow, s.DpsWindowState);
+                s.Windows.Add(WindowsEnum.OverlayWindow, s.OverlayWindowState);
+                s.Windows.Add(WindowsEnum.MobWindow, s.MobWindowState);
+                s.Windows.Add(WindowsEnum.SpellsWindow, s.SpellWindowState);
+                return s;
             }).AsSelf().SingleInstance();
 
             _ = builder.RegisterType<EQTool.Services.LogEvents>().AsSelf().SingleInstance();

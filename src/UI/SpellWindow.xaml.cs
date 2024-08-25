@@ -31,7 +31,7 @@ namespace EQTool.UI
             LogEvents logEvents,
             EQToolSettingsLoad toolSettingsLoad,
             ActivePlayer activePlayer,
-            LoggingService loggingService) : base(settings.SpellWindowState, toolSettingsLoad, settings)
+            LoggingService loggingService) : base(settings.GetWindow(WindowsEnum.SpellsWindow), toolSettingsLoad, settings)
         {
             loggingService.Log(string.Empty, EventType.OpenMap, activePlayer?.Player?.Server);
             this.playerTrackerService = playerTrackerService;

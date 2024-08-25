@@ -22,7 +22,7 @@ namespace EQTool.UI
         private readonly ActivePlayer activePlayer;
         private readonly LogEvents logEvents;
         public MobInfo(ActivePlayer activePlayer, PigParseApi pigParseApi, WikiApi wikiApi, EQToolSettings settings, EQToolSettingsLoad toolSettingsLoad, LoggingService loggingService, LogEvents logEvents)
-            : base(settings.MobWindowState, toolSettingsLoad, settings)
+            : base(settings.GetWindow(WindowsEnum.MobWindow), toolSettingsLoad, settings)
         {
             loggingService.Log(string.Empty, EventType.OpenMobInfo, activePlayer?.Player?.Server);
             this.activePlayer = activePlayer;

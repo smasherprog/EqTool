@@ -35,6 +35,10 @@ namespace EQTool.Services
                             ret1.Players = new System.Collections.Generic.List<PlayerInfo>();
                         }
 
+                        if (ret1.Windows == null)
+                        {
+                            ret1.Windows = new System.Collections.Generic.Dictionary<WindowsEnum, WindowState>();
+                        }
                         foreach (var item in ret1.Players)
                         {
                             if (item.ShowSpellsForClasses == null)
@@ -92,6 +96,12 @@ namespace EQTool.Services
                     Closed = false,
                     State = System.Windows.WindowState.Normal
                 },
+                SettingsWindowState = new WindowState
+                {
+                    Closed = true,
+                    State = System.Windows.WindowState.Normal
+                },
+                Windows = new System.Collections.Generic.Dictionary<WindowsEnum, WindowState>(),
                 FontSize = 12,
                 ShowRandomRolls = true
             };
@@ -101,6 +111,30 @@ namespace EQTool.Services
 
         private void AddMissingEnums(EQToolSettings settings)
         {
+            if (!settings.Windows.ContainsKey(WindowsEnum.SettingsWindow))
+            {
+                settings.Windows.Add(WindowsEnum.SettingsWindow, settings.SettingsWindowState);
+            }
+            if (!settings.Windows.ContainsKey(WindowsEnum.MapWindow))
+            {
+                settings.Windows.Add(WindowsEnum.MapWindow, settings.MapWindowState);
+            }
+            if (!settings.Windows.ContainsKey(WindowsEnum.DpsWindow))
+            {
+                settings.Windows.Add(WindowsEnum.DpsWindow, settings.DpsWindowState);
+            }
+            if (!settings.Windows.ContainsKey(WindowsEnum.OverlayWindow))
+            {
+                settings.Windows.Add(WindowsEnum.OverlayWindow, settings.OverlayWindowState);
+            }
+            if (!settings.Windows.ContainsKey(WindowsEnum.MobWindow))
+            {
+                settings.Windows.Add(WindowsEnum.MobWindow, settings.MobWindowState);
+            }
+            if (!settings.Windows.ContainsKey(WindowsEnum.SpellsWindow))
+            {
+                settings.Windows.Add(WindowsEnum.SpellsWindow, settings.SpellWindowState);
+            }
             foreach (var player in settings.Players)
             {
                 var enumsinlist = player.OverlaySettings.Select(a => a.OverlayType).ToList();
