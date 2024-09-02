@@ -2,6 +2,7 @@
 using EQTool.ViewModels;
 using System;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace EQTool.Services.Parsing
 {
@@ -41,6 +42,12 @@ namespace EQTool.Services.Parsing
                 chindex = line.IndexOf("'ch ", System.StringComparison.OrdinalIgnoreCase);
             }
 
+            if (chindex == -1)
+            {
+                chindex = line.IndexOf(" rch ", System.StringComparison.OrdinalIgnoreCase);
+            }
+
+            line = Regex.Replace(line, " rch", string.Empty, RegexOptions.IgnoreCase);
             if (chindex != -1)
             {
                 var endoftext = line.LastIndexOf("'");
