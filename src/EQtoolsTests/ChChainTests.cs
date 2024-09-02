@@ -419,6 +419,23 @@ namespace EQToolTests
         [TestMethod]
         public void Parse22()
         {
+            var service = container.Resolve<CompleteHealParser>();
+            var player = container.Resolve<ActivePlayer>();
+            player.Player = new PlayerInfo
+            {
+                Level = 54,
+                PlayerClass = PlayerClasses.Cleric
+            };
+            var d = service.ChCheck("Mutao auctions, 'GG RCH AAA -- TARGET'");
+            Assert.AreEqual(d.Recipient, "TARGET");
+            Assert.AreEqual(d.Caster, "Mutao");
+            Assert.AreEqual(d.Position, "AAA");
+            Assert.AreEqual(d.RecipientGuild, "GG");
+        }
+
+        [TestMethod]
+        public void Parse23()
+        {
             var chaindata = new ChainData();
             var chain = new CompleteHealEvent();
             chaindata.YourChainOrder = "bbb";

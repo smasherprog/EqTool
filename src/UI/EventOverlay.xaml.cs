@@ -193,7 +193,7 @@ namespace EQTool.UI
             {
                 appDispatcher.DispatchUI(() =>
                 {
-                    CenterText.Text = e.Inviter;
+                    CenterText.Text = e.Inviter + " Invites you to a group";
                     CenterText.Foreground = Brushes.Red;
                 });
                 System.Threading.Thread.Sleep(1000 * 5);
