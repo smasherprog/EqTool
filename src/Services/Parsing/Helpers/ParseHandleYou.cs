@@ -48,7 +48,7 @@ namespace EQTool.Services.Parsing
                     if (activePlayer.UserCastingSpell.casttime > 0)
                     {
                         activePlayer.UserCastingSpellCounter++;
-                        _ = Task.Delay(activePlayer.UserCastingSpell.casttime * 4).ContinueWith(a =>
+                        _ = Task.Delay(activePlayer.UserCastingSpell.casttime * 2).ContinueWith(a =>
                         {
                             Debug.WriteLine($"Cleaning Spell");
                             appDispatcher.DispatchUI(() =>
@@ -83,6 +83,28 @@ namespace EQTool.Services.Parsing
 
         public SpellCastEvent HandleYourSpell(string message)
         {
+            if (message == "Your Pegasus Feather Cloak begins to glow.")
+            {
+                appDispatcher.DispatchUI(() =>
+                {
+                    var peggyspell = spells.AllSpells.FirstOrDefault(a => a.name == "Peggy Levitate");
+                    activePlayer.UserCastingSpell = peggyspell;
+                    activePlayer.UserCastingSpellCounter++;
+                    _ = Task.Delay(activePlayer.UserCastingSpell.casttime * 2).ContinueWith(a =>
+                    {
+                        Debug.WriteLine($"Cleaning Spell");
+                        appDispatcher.DispatchUI(() =>
+                        {
+                            if (--activePlayer.UserCastingSpellCounter <= 0)
+                            {
+                                activePlayer.UserCastingSpellCounter = 0;
+                                activePlayer.UserCastingSpell = null;
+                            }
+                        });
+                    });
+                });
+                return null;
+            }
             if (spells.CastOnYouSpells.TryGetValue(message, out var foundspells))
             {
                 var foundspell = SpellDurations.MatchClosestLevelToSpell(foundspells, activePlayer.Player);

@@ -155,7 +155,7 @@ namespace EQTool.Services
             var spellsfile = new FileInfo(settings.DefaultEqDirectory + spellfile);
             if (spellsfile.Exists)
             {
-                var spellfilename = $"SpellCache{servers}_1";
+                var spellfilename = $"SpellCache{servers}_4";
                 if (!isdebug)
                 {
                     spellfilename = new string(spellfilename.Where(a => char.IsLetterOrDigit(a)).ToArray()) + ".bin";
@@ -277,6 +277,20 @@ namespace EQTool.Services
                         continue;
                     }
 
+                    if (spell.name == "Levitate")
+                    {
+                        var peggylev = ParseP99Line(item);
+                        peggylev.name = "Peggy Levitate";
+                        peggylev.buffduration = 120;
+                        peggylev.buffdurationformula = 12;
+                        peggylev.casttime = 6000;
+                        if (!spells.ContainsKey(peggylev.name))
+                        {
+                            spells.Add(peggylev.name, peggylev);
+                        }
+                    }
+
+
                     if (spell.name == "Maniacal Strength")
                     {
                         spell.name = "Manicial Strength";
@@ -301,6 +315,7 @@ namespace EQTool.Services
                     }
                 }
                 // Debug.WriteLine($"Skipped {skippedcounter}");
+
 
                 _Spells = spells.Values.ToList();
                 stopwatch.Stop();

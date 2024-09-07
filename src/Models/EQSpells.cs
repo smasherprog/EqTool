@@ -7,6 +7,13 @@ using System.Linq;
 
 namespace EQTool.Models
 {
+    public class ItemSpell
+    {
+        public string Message { get; set; }
+        public string SpellName { get; set; }
+        public int TimeInSeconds { get; set; }
+    }
+
     public class EQSpells
     {
         private readonly List<Spell> _AllSpells = new List<Spell>();
@@ -86,6 +93,15 @@ namespace EQTool.Models
         private const string InvisMessage = " fades away";
         private readonly ParseSpells_spells_us parseSpells;
         private readonly SpellIcons spellIcons;
+        public readonly List<ItemSpell> ItemSpells = new List<ItemSpell>()
+        {
+            new ItemSpell
+            {
+                Message = "Your Pegasus Feather Cloak begins to glow.",
+                SpellName = "Levitate",
+                TimeInSeconds = 60*12
+            }
+        };
 
         public EQSpells(ParseSpells_spells_us parseSpells, SpellIcons spellIcons)
         {
