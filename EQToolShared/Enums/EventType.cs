@@ -16,6 +16,7 @@
         OpenMap,
         OpenMobInfo,
         OpenDPS,
-        OpenTriggers
+        OpenTriggers,
+        LoginMiddleMand
     }
 }

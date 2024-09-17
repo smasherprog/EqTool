@@ -1,5 +1,6 @@
 ﻿using EQTool.Models;
 using EQTool.Services;
+using EQTool.Services.P99LoginMiddlemand;
 using EQTool.Services.Parsing;
 using EQTool.ViewModels;
 using EQToolShared.Enums;
@@ -58,6 +59,7 @@ namespace EQTool.UI
         private readonly ISignalrPlayerHub signalrPlayerHub;
         private readonly LogParser logParser;
         private readonly MapLoad mapLoad;
+        private readonly LoginMiddlemand loginMiddlemand;
         private readonly SettingsTestRunOverlay settingsTestRunOverlay;
 
         public Settings(
@@ -67,12 +69,14 @@ namespace EQTool.UI
             ISignalrPlayerHub signalrPlayerHub,
             DPSLogParse dPSLogParse,
             EQSpells spells,
+            LoginMiddlemand loginMiddlemand,
             EQToolSettings settings,
             EQToolSettingsLoad toolSettingsLoad,
             SettingsWindowViewModel settingsWindowData,
             SpellWindowViewModel spellWindowViewModel,
             SettingsTestRunOverlay settingsTestRunOverlay) : base(settings.SettingsWindowState, toolSettingsLoad, settings)
         {
+            this.loginMiddlemand = loginMiddlemand;
             this.signalrPlayerHub = signalrPlayerHub;
             this.logParser = logParser;
             this.mapLoad = mapLoad;
@@ -117,6 +121,10 @@ namespace EQTool.UI
                 SettingsWindowData.EqLogPath = logfounddata.Location;
             }
             SettingsWindowData.Update();
+            if (loginMiddlemand.Running)
+            {
+                LoginMiddleMandCheckBox.IsChecked = true;
+            }
             BestGuessSpells.IsChecked = settings.BestGuessSpells;
             YouSpellsOnly.IsChecked = settings.YouOnlySpells;
             var player = SettingsWindowData.ActivePlayer.Player;
@@ -817,6 +825,55 @@ namespace EQTool.UI
         private void testResists(object sender, RoutedEventArgs e)
         {
             settingsTestRunOverlay.RunTest(OverlayTypes.ResistSpellEvent);
+        }
+
+        private void LoginMiddleMandToggle(object sender, RoutedEventArgs e)
+        {
+            var s = sender as System.Windows.Controls.CheckBox;
+            if (s.IsChecked == true)
+            {
+                if (loginMiddlemand.IsConfiguredCorrectly())
+                {
+                    loginMiddlemand.StartListening();
+                    settings.LoginMiddleMand = true;
+                    SaveConfig();
+                }
+                else
+                {
+                    var result = System.Windows.MessageBox.Show("Your eqhost.txt file is not setup correctly to use LoginMiddlemand. Would you like to use default settings?", "LoginMiddlemand Configuration", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                    if (result == MessageBoxResult.Yes)
+                    {
+                        loginMiddlemand.ApplyDefaultConfiguration();
+                        settings.LoginMiddleMand = true;
+                        SaveConfig();
+
+                        if (IsEqRunning())
+                        {
+                            _ = System.Windows.MessageBox.Show("You must exit EQ before you can start using LoginMiddlemand! Please close Everquest and restart it!", "Configuration", MessageBoxButton.OK, MessageBoxImage.Warning);
+                        }
+                        loginMiddlemand.StartListening();
+                    }
+                    else
+                    {
+                        s.IsChecked = false;
+                    }
+                }
+            }
+            else
+            {
+                settings.LoginMiddleMand = false;
+                SaveConfig();
+                var result = System.Windows.MessageBox.Show("Would you like your eqhosts.txt file to be reverted to use eqemulator default login server?", "Revert LoginMiddlemand Configuration", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                if (result == MessageBoxResult.Yes)
+                {
+                    loginMiddlemand.RevertDefaultConfiguration();
+                    if (IsEqRunning())
+                    {
+                        _ = System.Windows.MessageBox.Show("You must exit EQ before Everquest will use these settings! Please close Everquest and restart it!", "Configuration", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    }
+                }
+                loginMiddlemand.StopListening();
+            }
         }
     }
 }

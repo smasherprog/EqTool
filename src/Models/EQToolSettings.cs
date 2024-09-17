@@ -15,14 +15,8 @@ namespace EQTool.Models
         private double _Opacity = 1.0;
         public double? Opacity
         {
-            get
-            {
-                return _Opacity;
-            }
-            set
-            {
-                _Opacity = value ?? 1.0;
-            }
+            get => _Opacity;
+            set => _Opacity = value ?? 1.0;
         }
     }
 
@@ -34,10 +28,7 @@ namespace EQTool.Models
         private int _FontSize = 12;
         public int? FontSize
         {
-            get
-            {
-                return _FontSize;
-            }
+            get => _FontSize;
             set
             {
                 _FontSize = value ?? 12;
@@ -134,6 +125,8 @@ namespace EQTool.Models
         public bool BestGuessSpells { get; set; }
         public bool YouOnlySpells { get; set; }
         public bool ShowRandomRolls { get; set; }
+
+        public bool LoginMiddleMand { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 

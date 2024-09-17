@@ -1,4 +1,5 @@
 ﻿using EQTool.Models;
+using EQTool.Services.P99LoginMiddlemand;
 using EQTool.UI;
 using EQToolShared.Enums;
 using EQToolShared.Map;
@@ -17,7 +18,7 @@ namespace EQTool.ViewModels
         private readonly EQToolSettings toolSettings;
 
         public SettingsWindowViewModel(ActivePlayer activePlayer, EQToolSettings toolSettings)
-        {
+        { 
             this.toolSettings = toolSettings;
             ActivePlayer = activePlayer;
             for (var i = 12; i < 72; i++)
@@ -242,7 +243,7 @@ namespace EQTool.ViewModels
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(IsEqNotRunning));
             }
-        }
+        } 
 
         public bool TestingMode
         {

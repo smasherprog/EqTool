@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using Autofac.Features.ResolveAnything;
+using EQTool.Services.P99LoginMiddlemand;
 
 namespace EQTool
 {
@@ -45,6 +46,8 @@ namespace EQTool
 
 
             _ = builder.RegisterType<Services.EQToolSettingsLoad>().AsSelf().SingleInstance();
+            _ = builder.RegisterType<LoginMiddlemand>().AsSelf().SingleInstance();
+
             _ = builder.Register(a =>
             {
                 return a.Resolve<Services.EQToolSettingsLoad>().Load();

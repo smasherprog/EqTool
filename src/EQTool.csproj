@@ -336,6 +336,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Services\P99LoginMiddlemand\LoginMiddlemand.cs" />
     <Compile Include="UI\CustomTimeSpanUpDown.cs" />
     <Compile Include="UI\EventOverlay.xaml.cs">
       <DependentUpon>EventOverlay.xaml</DependentUpon>

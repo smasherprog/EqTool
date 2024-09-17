@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using EQTool.Models;
 using EQTool.Services;
+using EQTool.Services.P99LoginMiddlemand;
 using EQTool.UI;
 using EQTool.ViewModels;
 using EQToolShared.Enums;
@@ -327,7 +328,20 @@ namespace EQTool
             ((App)System.Windows.Application.Current).UpdateBackgroundOpacity("MyWindowStyleDPS", EQToolSettings.DpsWindowState.Opacity.Value);
             ((App)System.Windows.Application.Current).UpdateBackgroundOpacity("MyWindowStyleMap", EQToolSettings.MapWindowState.Opacity.Value);
             ((App)System.Windows.Application.Current).UpdateBackgroundOpacity("MyWindowStyleTrigger", EQToolSettings.SpellWindowState.Opacity.Value);
+            if (EQToolSettings.LoginMiddleMand)
+            {
+                var loginmiddlemand = container.Resolve<LoginMiddlemand>();
+                if (loginmiddlemand.IsConfiguredCorrectly())
+                {
+                    loginmiddlemand.StartListening();
+                }
+                else
+                {
+                    EQToolSettings.LoginMiddleMand = false;
+                }
+            }
         }
+
         public void UpdateBackgroundOpacity(string name, double opacity)
         {
             var newcolor = (SolidColorBrush)new BrushConverter().ConvertFrom("#1a1919");
