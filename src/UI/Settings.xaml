@@ -79,11 +79,11 @@
                     <TextBlock Text="Damage Window" HorizontalAlignment="Center" FontWeight="Bold" Margin="5,5,0,0"/>
                     <StackPanel Orientation="Vertical" Margin="0, 0, 0, 8">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="Always on top" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
+                            <TextBlock Text="Always on top" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="120"/>
                             <CheckBox IsChecked="{Binding DpsAlwaysOnTop}" Click="SaveAlwaysOntopCheckBoxSettings" ></CheckBox>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="Window Opacity"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
+                            <TextBlock Text="Window Opacity"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="120"/>
                             <Slider Value="{Binding DPSWindowOpacity}" Minimum=".01" Maximum="1" SmallChange=".1" TickFrequency=".1" ValueChanged="SaveSettings" MinWidth="150"/>
                         </StackPanel>
                     </StackPanel>
@@ -91,10 +91,19 @@
                     <TextBlock Text="Mob Window" HorizontalAlignment="Center" FontWeight="Bold" Margin="5,5,0,0"/>
                     <StackPanel Orientation="Vertical" Margin="0, 0, 0, 8">
                         <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="Always on top" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
+                            <TextBlock Text="Always on top" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="120"/>
                             <CheckBox IsChecked="{Binding MobAlwaysOnTop}" Click="SaveAlwaysOntopCheckBoxSettings" ></CheckBox>
                         </StackPanel>
                     </StackPanel>
+                    <TextBlock Text="Experimental" Foreground="Red" HorizontalAlignment="Center" FontWeight="Bold" Margin="5,5,0,0"/>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Login middlemand" VerticalAlignment="Center"  FontWeight="Bold" MinWidth="120"/>
+                        <CheckBox  Name="LoginMiddleMandCheckBox"  Click="LoginMiddleMandToggle" MinWidth="75"></CheckBox>
+
+                    </StackPanel>
+                    <TextBlock Text="Login Middlemand is a copy of the code from:"></TextBlock>
+                    <TextBlock Text="https://github.com/Zaela/p99-login-middlemand"></TextBlock>
+                    <TextBlock Text="Please, report any issues on discord!"></TextBlock>
                 </StackPanel>
             </StackPanel>
         </TabItem>
@@ -259,10 +268,6 @@
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Debuff Sharing"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
                     <CheckBox IsChecked="{Binding ActivePlayer.Player.SpellDebuffShare}" Click="Savesettings" MinWidth="75"></CheckBox>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Login middlemand" VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
-                    <CheckBox  Name="LoginMiddleMandCheckBox"  Click="LoginMiddleMandToggle" MinWidth="75"></CheckBox>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Random Roll"  VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
