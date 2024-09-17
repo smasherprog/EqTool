@@ -311,7 +311,7 @@ namespace EQTool.Services.P99LoginMiddlemand
 
             p.IsFragment = true;
             copy_fragment(p, data, startIndex, len);
-
+            Debug.WriteLine($"sequence_recv_fragment get_sequence {val}  {Sequence.SeqFromRemote}");
             if (val == Sequence.SeqFromRemote)
             {
                 _ = process_first_fragment(data);
@@ -451,7 +451,7 @@ namespace EQTool.Services.P99LoginMiddlemand
 
             /* Correct the sequence for the client */
             BitConverter.GetBytes(IPAddress.HostToNetworkOrder(Sequence.SeqToLocal++)).CopyTo(buffer, 2 + startIndex);
-
+            Debug.WriteLine($"sequence_recv_packet get_sequence {val}  {Sequence.SeqFromRemote}");
             if (val != Sequence.SeqFromRemote)
             {
                 return;
