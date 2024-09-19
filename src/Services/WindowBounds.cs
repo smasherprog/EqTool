@@ -12,19 +12,14 @@ namespace EQTool.Services
                 return false;
             }
 
-            if (!isPointVisibleOnAScreen(p.Value.TopLeft))
-            {
-                return false;
-            }
-
-            return isPointVisibleOnAScreen(p.Value.BottomRight);
+            return isPointVisibleOnAScreen(p.Value.TopLeft) && isPointVisibleOnAScreen(p.Value.BottomRight);
         }
 
         public static bool isPointVisibleOnAScreen(Point p)
         {
             foreach (var s in Screen.AllScreens)
             {
-                if (p.X < s.Bounds.Right && p.X > s.Bounds.Left && p.Y > s.Bounds.Top && p.Y < s.Bounds.Bottom)
+                if (p.X <= s.Bounds.Right && p.X >= s.Bounds.Left && p.Y >= s.Bounds.Top && p.Y <= s.Bounds.Bottom)
                 {
                     return true;
                 }
