@@ -47,16 +47,37 @@ namespace EQTool.Services.Parsing
             if (message.ToLower().StartsWith(messagetolookfor))
             {
                 var removedstartimer = message.ToLower().Replace(messagetolookfor, string.Empty).Trim();
-                var numbersonly = new string(removedstartimer.Where(a => char.IsDigit(a)).ToArray());
-                if (int.TryParse(numbersonly, out var minutesint))
+                if (removedstartimer.Contains(":"))
                 {
-                    var nameasstring = minutesint.ToString();
-                    var name = removedstartimer.Replace(nameasstring, string.Empty).Trim('\'').Trim();
-                    return new CustomTimer
+                    var numbersonly = new string(removedstartimer.Where(a => char.IsDigit(a) || a == ':').ToArray());
+                    if (int.TryParse(numbersonly.Split(':')[0], out var minutes) && int.TryParse(numbersonly.Split(':')[1], out var seconds))
                     {
-                        Name = name,
-                        DurationInSeconds = minutesint * 60
-                    };
+                        var firstnumber = removedstartimer.IndexOfAny(new char[] { '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' });
+                        if (firstnumber != -1)
+                        {
+                            var nameasstring = removedstartimer.Substring(0, firstnumber).Trim();
+                            var ts = new TimeSpan(0, minutes, seconds);
+                            return new CustomTimer
+                            {
+                                Name = nameasstring,
+                                DurationInSeconds = (int)ts.TotalSeconds
+                            };
+                        }
+                    }
+                }
+                else
+                {
+                    var numbersonly = new string(removedstartimer.Where(a => char.IsDigit(a)).ToArray());
+                    if (int.TryParse(numbersonly, out var minutesint))
+                    {
+                        var nameasstring = minutesint.ToString();
+                        var name = removedstartimer.Replace(nameasstring, string.Empty).Trim('\'').Trim();
+                        return new CustomTimer
+                        {
+                            Name = name,
+                            DurationInSeconds = minutesint * 60
+                        };
+                    }
                 }
             }
 

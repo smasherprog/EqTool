@@ -1197,6 +1197,30 @@ namespace EQToolTests
         }
 
         [TestMethod]
+        public void GetCustomTimerStart_WithSeconds()
+        {
+            var service = container.Resolve<LogStartCustomTimer>();
+            var line = "You say, 'Timer Start StupidGoblin 30:20'";
+            var targettoremove = service.GetStartTimer(line);
+
+            Assert.IsNotNull(targettoremove);
+            Assert.AreEqual((30 * 60) + 20, targettoremove.DurationInSeconds);
+            Assert.AreEqual("stupidgoblin", targettoremove.Name);
+        }
+
+        [TestMethod]
+        public void GetCustomTimerStart_WithSeconds_andmorethan60minutes()
+        {
+            var service = container.Resolve<LogStartCustomTimer>();
+            var line = "You say, 'Timer Start StupidGoblin 90:20'";
+            var targettoremove = service.GetStartTimer(line);
+
+            Assert.IsNotNull(targettoremove);
+            Assert.AreEqual((90 * 60) + 20, targettoremove.DurationInSeconds);
+            Assert.AreEqual("stupidgoblin", targettoremove.Name);
+        }
+
+        [TestMethod]
         public void GetCustomTimerStart1()
         {
             var service = container.Resolve<LogStartCustomTimer>();
