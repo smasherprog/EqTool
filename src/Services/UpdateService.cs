@@ -1,4 +1,6 @@
-﻿using Newtonsoft.Json;
+﻿using Autofac;
+using EQTool.Services.P99LoginMiddlemand;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -93,7 +95,7 @@ namespace EQTool.Services
             return UpdateStatus.NoUpdateApplied;
         }
 
-        public void CheckForUpdates(string currentversion1, string versiontype)
+        public void CheckForUpdates(string currentversion1, string versiontype, Autofac.IContainer container)
         {
             _ = Task.Factory.StartNew(() =>
             {
@@ -130,7 +132,8 @@ namespace EQTool.Services
                             _ = System.IO.Directory.CreateDirectory(System.IO.Directory.GetCurrentDirectory() + "/NewVersion");
                             File.WriteAllBytes(System.IO.Directory.GetCurrentDirectory() + "/NewVersion/" + filename, fileBytes);
                         }
-
+                        var logingmiddlemand = container.Resolve<LoginMiddlemand>();
+                        logingmiddlemand.StopListening();
                         if (Thread.CurrentThread == App.Current.Dispatcher.Thread)
                         {
                             System.Windows.Application.Current.Shutdown();

@@ -627,7 +627,7 @@ namespace EQTool.Services.P99LoginMiddlemand
             try
             {
                 Running = false;
-                connection?.Dispose();
+                connection?.Dispose(); 
                 thread?.Join();
                 thread = null;
                 connection = null;

@@ -83,7 +83,7 @@ namespace EQTool
 
         public void CheckForUpdates(object sender, EventArgs e)
         {
-            new UpdateService().CheckForUpdates(Version, VersionType);
+            new UpdateService().CheckForUpdates(Version, VersionType, container);
         }
 
         public class ExceptionRequest
@@ -651,6 +651,8 @@ namespace EQTool
 
         private void OnExit(object sender, EventArgs e)
         {
+            var loginmiddlemand = container.Resolve<LoginMiddlemand>();
+            loginmiddlemand.StopListening();
             System.Windows.Application.Current.Shutdown();
         }
 
