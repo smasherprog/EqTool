@@ -1,5 +1,6 @@
 ﻿using EQToolShared.Enums;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace EQTool.Services.Spells
 {
@@ -7,7 +8,7 @@ namespace EQTool.Services.Spells
     {
         public static bool HideSpell(List<PlayerClasses> showSpellsForClasses, Dictionary<PlayerClasses, int> spellclasses)
         {
-            if (showSpellsForClasses == null || spellclasses == null)
+            if (showSpellsForClasses == null || spellclasses == null || !spellclasses.Any())
             {
                 return false;
             }

@@ -512,6 +512,23 @@ namespace EQToolTests
         }
 
         [TestMethod]
+        public void TestBlackPomFlower()
+        {
+            _ = container.Resolve<EQSpells>();
+            var line = "Someone is covered by an aura of black petals.";
+            var service = container.Resolve<ParseSpellGuess>();
+            var player = container.Resolve<ActivePlayer>();
+            player.Player = new PlayerInfo
+            {
+                Level = 54,
+                PlayerClass = PlayerClasses.Enchanter
+            };
+            var guess = service.HandleBestGuessSpell(line);
+
+            Assert.IsNotNull(guess);
+        }
+
+        [TestMethod]
         public void TestClericAego()
         {
             var spells = container.Resolve<EQSpells>();
