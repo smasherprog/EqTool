@@ -396,12 +396,12 @@ namespace EQTool
                     {
                         if (spellstuff.SpellList.Count() < 2 && (DateTime.UtcNow - logParser.LastYouActivity).TotalMinutes > 10 && idletime.TotalMinutes > 10)
                         {
-                            new UpdateService().CheckForUpdates(Version, VersionType);
+                            new UpdateService().CheckForUpdates(Version, VersionType, container);
                         }
                     }
                     else if ((DateTime.UtcNow - logParser.LastYouActivity).TotalMinutes > 10 && idletime.TotalMinutes > 10)
                     {
-                        new UpdateService().CheckForUpdates(Version, VersionType);
+                        new UpdateService().CheckForUpdates(Version, VersionType, container);
                     }
                 }
                 finally
