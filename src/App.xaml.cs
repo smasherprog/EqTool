@@ -219,7 +219,6 @@ namespace EQTool
                 updateservice.CheckForUpdates(Version, VersionType, container);
 #endif
             }
-
             try
             {
                 InitStuff();
