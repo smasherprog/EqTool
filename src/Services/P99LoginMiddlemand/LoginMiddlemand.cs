@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Net;
 using System.Net.Sockets;
+using System.Text;
 using System.Threading;
 
 namespace EQTool.Services.P99LoginMiddlemand
@@ -25,6 +26,8 @@ namespace EQTool.Services.P99LoginMiddlemand
         public int FragCount;
         public short SeqToLocal;    // What the client thinks the next sequence from the login server should be
         public short SeqFromRemote; // The next "real" sequence we expect from the login server
+        public short SeqFromRemoteOffset;
+
     }
     public struct FirstFrag
     {
@@ -48,7 +51,6 @@ namespace EQTool.Services.P99LoginMiddlemand
         public IPEndPoint RemoteAddr;
         public byte[] Buffer = new byte[2048];
         public Sequence Sequence;
-        private const string SERVER_NAME_PREFIX = "Project 1999";
         private const int SizeOfFirstFrag = 10;
         private const int SizeOfFrag = 4;
 
@@ -80,7 +82,8 @@ namespace EQTool.Services.P99LoginMiddlemand
                 FragStart = 0,
                 FragCount = 0,
                 SeqToLocal = 0,
-                SeqFromRemote = 0
+                SeqFromRemote = 0,
+                SeqFromRemoteOffset = 0
             };
         }
 
@@ -294,7 +297,9 @@ namespace EQTool.Services.P99LoginMiddlemand
 
         private short get_sequence(byte[] data, int startIndex)
         {
-            return IPAddress.NetworkToHostOrder(BitConverter.ToInt16(data, startIndex + 2));
+            var seq = IPAddress.NetworkToHostOrder(BitConverter.ToInt16(data, startIndex + 2));
+            Debug.WriteLine($"{seq}");
+            return seq;
         }
 
         private void copy_fragment(Packet p, byte[] data, int startIndex, int len)
@@ -311,7 +316,7 @@ namespace EQTool.Services.P99LoginMiddlemand
 
             p.IsFragment = true;
             copy_fragment(p, data, startIndex, len);
-            Debug.WriteLine($"sequence_recv_fragment get_sequence {val}  {Sequence.SeqFromRemote}");
+
             if (val == Sequence.SeqFromRemote)
             {
                 _ = process_first_fragment(data);
@@ -366,7 +371,7 @@ namespace EQTool.Services.P99LoginMiddlemand
             {
                 Array.Copy(seq.Packets, array, seq.Capacity);
             }
-
+            Debug.WriteLine($"grow ----- {cap}");
             seq.Capacity = cap;
             seq.Packets = array;
         }
@@ -374,6 +379,7 @@ namespace EQTool.Services.P99LoginMiddlemand
         public Packet get_packet_space(short sequence, int len)
         {
             var seq = Sequence;
+            sequence -= seq.SeqFromRemoteOffset;
             if (sequence >= seq.Count)
             {
                 seq.Count = sequence + 1;
@@ -387,7 +393,6 @@ namespace EQTool.Services.P99LoginMiddlemand
             var p = seq.Packets[sequence];
             p.Length = len;
             p.Data = null;
-
             return p;
         }
 
@@ -414,7 +419,7 @@ namespace EQTool.Services.P99LoginMiddlemand
         private void check_fragment_finished()
         {
             var seq = Sequence;
-            var index = seq.FragStart;
+            var index = seq.FragStart - seq.SeqFromRemoteOffset;
             var n = seq.FragCount;
             var count = 1;
 
@@ -439,7 +444,7 @@ namespace EQTool.Services.P99LoginMiddlemand
                 count++;
             }
 
-            filter_server_list();
+            filter_server_list(got - 2);
         }
 
         private void sequence_recv_packet(byte[] buffer, int startIndex, int len)
@@ -451,12 +456,12 @@ namespace EQTool.Services.P99LoginMiddlemand
 
             /* Correct the sequence for the client */
             BitConverter.GetBytes(IPAddress.HostToNetworkOrder(Sequence.SeqToLocal++)).CopyTo(buffer, 2 + startIndex);
-            Debug.WriteLine($"sequence_recv_packet get_sequence {val}  {Sequence.SeqFromRemote}");
+
             if (val != Sequence.SeqFromRemote)
             {
                 return;
             }
-
+            val -= Sequence.SeqFromRemoteOffset;
             for (var i = val; i < Sequence.Count; i++)
             {
                 if (Sequence.Packets[i].Length > 0)
@@ -488,29 +493,83 @@ namespace EQTool.Services.P99LoginMiddlemand
             return offset - startoffset;
         }
 
-        private void filter_server_list()
+        private void filter_server_list(int totalLen)
         {
-            var index = Sequence.FragStart;
+            var outBuffer = new byte[512]; /* Should not need nearly this much space just for P99 server listings */
+            var index = Sequence.FragStart - Sequence.SeqFromRemoteOffset;
+            var newindex = Sequence.FragStart;
             var p = Sequence.Packets[index];
             if (p.Length == 0)
             {
                 return;
             }
 
-            var packetstosend = Sequence.Packets.Skip(index)
-                .Take(Sequence.FragCount)
-                .OrderBy(a => IPAddress.NetworkToHostOrder(BitConverter.ToInt16(a.Data, 2)))
-                .ToList();
+            var serverList = new byte[totalLen];
 
-            foreach (var packet in packetstosend)
+            Array.Copy(p.Data, SizeOfFirstFrag, serverList, 0, p.Length - SizeOfFirstFrag);
+            var pos = p.Length - SizeOfFirstFrag; /* Not counting AppOpcode */
+
+            while (pos < totalLen)
             {
-                Sequence.SeqToLocal++;
-                connection_send(packet.Data, 0, packet.Length, false);
+                index++;
+                newindex++;
+                p = Sequence.Packets[index];
+                Array.Copy(p.Data, SizeOfFrag, serverList, pos, p.Length - SizeOfFrag);
+                pos += p.Length - SizeOfFrag;
             }
 
-            Sequence.SeqFromRemote = (short)(Sequence.FragStart + Sequence.FragCount + 1);
+            /* We now have the whole server list in one piece */
+            /* Write our output packet header */
+            outBuffer[0] = 0;
+            outBuffer[1] = 0x09; /* OP_Packet */
+            BitConverter.GetBytes(IPAddress.HostToNetworkOrder(Sequence.SeqToLocal++)).CopyTo(outBuffer, 2);
+            outBuffer[4] = 0x18; /* OP_ServerListResponse */
+            outBuffer[5] = 0;
+
+            /* First 16 bytes of the server list packet is some kind of header, copy it over */
+            Array.Copy(serverList, 0, outBuffer, 6, 16);
+
+            /* outBuffer[22] is a 4-byte count of the number of servers on the list -- we don't know the value yet, probably 2 */
+            var outLen = 16 + 6 + 4;
+            var outCount = 0;
+
+            /* List of servers starts at serverList[20] */
+            pos = 20;
+            while (pos < totalLen)
+            {
+                /* Server listings are variable-size */
+                var i = pos;
+                pos += strlen(serverList, pos) + 1; /* IP address */
+                pos += sizeof(int) * 2; /* ListId, runtimeId */
+                var namesize = strlen(serverList, pos) + 1;
+                var name = Encoding.ASCII.GetString(serverList, pos, namesize);
+                pos += name.Length + 1;
+                pos += strlen(serverList, pos) + 1; /* language */
+                pos += strlen(serverList, pos) + 1; /* region */
+                pos += sizeof(int) * 2; /* Status, player count */
+
+                /* Time to check the name! */
+                if (name.StartsWith("Project 1999", StringComparison.OrdinalIgnoreCase) || name.StartsWith("An Interesting", StringComparison.OrdinalIgnoreCase))
+                {
+                    outCount++;
+                    Array.Copy(serverList, i, outBuffer, outLen, pos - i);
+                    outLen += pos - i;
+                }
+            }
+
+            /* Write our outgoing server count */
+            BitConverter.GetBytes(outCount).CopyTo(outBuffer, 22);
+
+            Sequence.SeqFromRemote = (short)(newindex + 1);
+            Sequence.SeqFromRemoteOffset = Sequence.SeqFromRemote;
             Sequence.FragCount = 0;
             Sequence.FragStart = 0;
+            foreach (var pack in Sequence.Packets)
+            {
+                pack.Data = null;
+                pack.Length = 0;
+            }
+            connection_send(outBuffer, 0, outLen, false);
         }
 
         private void sequence_recv_combined(byte[] buffer, int startIndex, int len)

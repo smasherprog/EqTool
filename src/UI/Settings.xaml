@@ -98,7 +98,7 @@
                     <TextBlock Text="Experimental" Foreground="Red" HorizontalAlignment="Center" FontWeight="Bold" Margin="5,5,0,0"/>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Login middlemand" VerticalAlignment="Center"  FontWeight="Bold" MinWidth="120"/>
-                        <CheckBox  Name="LoginMiddleMandCheckBox" IsEnabled="False"  Click="LoginMiddleMandToggle" MinWidth="75"></CheckBox>
+                        <CheckBox  Name="LoginMiddleMandCheckBox" Click="LoginMiddleMandToggle" MinWidth="75"></CheckBox>
 
                     </StackPanel>
                     <TextBlock Text="Login Middlemand is a copy of the code from:"></TextBlock>

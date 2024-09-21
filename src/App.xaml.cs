@@ -328,9 +328,7 @@ namespace EQTool
             ((App)System.Windows.Application.Current).UpdateBackgroundOpacity("MyWindowStyleDPS", EQToolSettings.DpsWindowState.Opacity.Value);
             ((App)System.Windows.Application.Current).UpdateBackgroundOpacity("MyWindowStyleMap", EQToolSettings.MapWindowState.Opacity.Value);
             ((App)System.Windows.Application.Current).UpdateBackgroundOpacity("MyWindowStyleTrigger", EQToolSettings.SpellWindowState.Opacity.Value);
-#if !DEBUG
-            EQToolSettings.LoginMiddleMand = false;
-#endif
+
             if (EQToolSettings.LoginMiddleMand)
             {
                 var loginmiddlemand = container.Resolve<LoginMiddlemand>();
