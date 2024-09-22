@@ -121,12 +121,12 @@ namespace EQTool.Services.Parsing
                 }
 
                 chindex = possiblenumbers.IndexOf(chwordfound, System.StringComparison.OrdinalIgnoreCase);
-                var beforestring = possiblenumbers.Substring(0, chindex).Split(new char[] { ' ' });
+                var beforestring = possiblenumbers.Substring(0, chindex).Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
                 if (beforestring.Length > 2)
                 {
                     return null;
                 }
-                possiblenumbers = possiblenumbers.Substring(chindex + 3);
+                possiblenumbers = possiblenumbers.Substring(chindex + chwordfound.Length);
                 var possiblerecipt = new string(possiblenumbers.Replace(position, string.Empty).Where(a => a == ' ' || char.IsLetter(a) || a == '\'' || a == '`').ToArray()).Trim();
                 var recipient = string.Empty;
                 if (MasterNPCList.NPCs.Contains(possiblerecipt))
@@ -135,7 +135,7 @@ namespace EQTool.Services.Parsing
                 }
                 else
                 {
-                    var splits = possiblerecipt.Split(' ');
+                    var splits = possiblerecipt.Split(new char[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
                     if (splits.Length > 2)
                     {
                         return null;
