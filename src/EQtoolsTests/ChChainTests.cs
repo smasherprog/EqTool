@@ -499,5 +499,22 @@ namespace EQToolTests
             Assert.IsTrue(CHService.ShouldWarnOfChain(chaindata, chain));
 
         }
+
+        [TestMethod]
+        public void Parse24()
+        {
+            var service = container.Resolve<CompleteHealParser>();
+            var player = container.Resolve<ActivePlayer>();
+            player.Player = new PlayerInfo
+            {
+                Level = 54,
+                PlayerClass = PlayerClasses.Cleric
+            };
+            var d = service.ChCheck("Mutao auctions, '007 CH --  a shiverback'");
+            Assert.AreEqual(d.Recipient, "a shiverback");
+            Assert.AreEqual(d.Caster, "Mutao");
+            Assert.AreEqual(d.Position, "007");
+            Assert.AreEqual(d.RecipientGuild, "");
+        }
     }
 }

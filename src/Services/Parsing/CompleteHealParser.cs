@@ -1,5 +1,6 @@
 ﻿using EQTool.Models;
 using EQTool.ViewModels;
+using EQToolShared;
 using System;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -118,16 +119,23 @@ namespace EQTool.Services.Parsing
                     chindex = possiblenumbers.IndexOf("ch ", System.StringComparison.OrdinalIgnoreCase);
                 }
                 possiblenumbers = possiblenumbers.Substring(chindex + 3);
-                var possiblerecipt = new string(possiblenumbers.Replace(position, string.Empty).Where(a => a == ' ' || char.IsLetter(a)).ToArray());
-                var splits = possiblerecipt.Split(' ');
-                _ = splits.Reverse();
+                var possiblerecipt = new string(possiblenumbers.Replace(position, string.Empty).Where(a => a == ' ' || char.IsLetter(a) || a == '\'' || a == '`').ToArray()).Trim();
                 var recipient = string.Empty;
-                foreach (var item in splits)
+                if (MasterNPCList.NPCs.Contains(possiblerecipt))
                 {
-                    if (!string.IsNullOrWhiteSpace(item))
+                    recipient = possiblerecipt;
+                }
+                else
+                {
+                    var splits = possiblerecipt.Split(' ');
+                    _ = splits.Reverse();
+                    foreach (var item in splits)
                     {
-                        recipient = item;
-                        break;
+                        if (item?.Length >= 3)
+                        {
+                            recipient = item;
+                            break;
+                        }
                     }
                 }
 
