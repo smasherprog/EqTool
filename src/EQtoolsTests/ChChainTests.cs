@@ -25,7 +25,7 @@ namespace EQToolTests
             Assert.AreEqual(d.Recipient, "Wreckognize");
             Assert.AreEqual(d.Caster, "Curaja");
             Assert.AreEqual(d.Position, "014");
-            Assert.AreEqual(d.RecipientGuild, "GG");
+            Assert.AreEqual(d.RecipientGuild, string.Empty);
         }
 
         [TestMethod]
@@ -36,7 +36,7 @@ namespace EQToolTests
             Assert.AreEqual(d.Recipient, "Beefwich");
             Assert.AreEqual(d.Caster, "Hanbox");
             Assert.AreEqual(d.Position, "001");
-            Assert.AreEqual(d.RecipientGuild, "GG");
+            Assert.AreEqual(d.RecipientGuild, string.Empty);
         }
 
         [TestMethod]
@@ -47,7 +47,7 @@ namespace EQToolTests
             Assert.AreEqual(d.Recipient, "Beefwich");
             Assert.AreEqual(d.Caster, "Hanbox");
             Assert.AreEqual(d.Position, "001");
-            Assert.AreEqual(d.RecipientGuild, "GG");
+            Assert.AreEqual(d.RecipientGuild, string.Empty);
         }
 
         [TestMethod]
@@ -68,7 +68,7 @@ namespace EQToolTests
             Assert.AreEqual(d.Recipient, "Beefwich");
             Assert.AreEqual(d.Caster, "Hanbox");
             Assert.AreEqual(d.Position, "RAMP1");
-            Assert.AreEqual(d.RecipientGuild, "CA");
+            Assert.AreEqual(d.RecipientGuild, string.Empty);
         }
 
         [TestMethod]
@@ -79,7 +79,7 @@ namespace EQToolTests
             Assert.AreEqual(d.Recipient, "Beefwich");
             Assert.AreEqual(d.Caster, "Hanbox");
             Assert.AreEqual(d.Position, "RAMP2");
-            Assert.AreEqual(d.RecipientGuild, "CA");
+            Assert.AreEqual(d.RecipientGuild, string.Empty);
         }
 
         [TestMethod]
@@ -90,7 +90,7 @@ namespace EQToolTests
             Assert.AreEqual(d.Recipient, "Beefwich");
             Assert.AreEqual(d.Caster, "Hanbox");
             Assert.AreEqual(d.Position, "RAMP2");
-            Assert.IsTrue(string.IsNullOrWhiteSpace(d.RecipientGuild));
+            Assert.AreEqual(d.RecipientGuild, string.Empty);
         }
 
         [TestMethod]
@@ -101,7 +101,7 @@ namespace EQToolTests
             Assert.AreEqual(d.Recipient, "Beefwich");
             Assert.AreEqual(d.Caster, "Hanbox");
             Assert.AreEqual(d.Position, "RAMP01");
-            Assert.IsTrue(string.IsNullOrWhiteSpace(d.RecipientGuild));
+            Assert.AreEqual(d.RecipientGuild, string.Empty);
         }
 
         [TestMethod]
@@ -112,7 +112,7 @@ namespace EQToolTests
             Assert.AreEqual(d.Recipient, "Beefwich");
             Assert.AreEqual(d.Caster, "Hanbox");
             Assert.AreEqual(d.Position, "001");
-            Assert.AreEqual(d.RecipientGuild, "GG");
+            Assert.AreEqual(d.RecipientGuild, string.Empty);
         }
 
         [TestMethod]
@@ -131,7 +131,7 @@ namespace EQToolTests
         {
             var service = container.Resolve<CompleteHealParser>();
             var d = service.ChCheck("Vaeric tells the guild, 'Currently signed up as 001 in CH chain'");
-            Assert.IsNotNull(d);
+            Assert.IsNull(d);
         }
 
         [TestMethod]
@@ -150,7 +150,7 @@ namespace EQToolTests
             Assert.AreEqual(d.Recipient, "Sam");
             Assert.AreEqual(d.Caster, "Wartburg");
             Assert.AreEqual(d.Position, "004");
-            Assert.AreEqual(d.RecipientGuild, "CA");
+            Assert.AreEqual(d.RecipientGuild, string.Empty);
         }
 
         [TestMethod]
@@ -171,7 +171,7 @@ namespace EQToolTests
             Assert.AreEqual(d.Recipient, "Beefwich");
             Assert.AreEqual(d.Caster, "Hanbox");
             Assert.AreEqual(d.Position, "001");
-            Assert.AreEqual(d.RecipientGuild, "GG");
+            Assert.AreEqual(d.RecipientGuild, string.Empty);
         }
 
         [TestMethod]
@@ -239,7 +239,10 @@ namespace EQToolTests
                 ChChainTagOverlay = "GGG"
             };
             var d = service.ChCheck("Amberel tells the raid,  'GGG CH - Asirk - 10 s'");
-            Assert.IsNull(d);
+            Assert.AreEqual(d.Recipient, "Asirk");
+            Assert.AreEqual(d.Caster, "Amberel");
+            Assert.AreEqual(d.Position, "000");
+            Assert.AreEqual(d.RecipientGuild, "GGG");
         }
 
         [TestMethod]
@@ -379,7 +382,7 @@ namespace EQToolTests
             Assert.AreEqual(d.Recipient, "Mandair");
             Assert.AreEqual(d.Caster, "Mutao");
             Assert.AreEqual(d.Position, "AAA");
-            Assert.AreEqual(d.RecipientGuild, "GGG");
+            Assert.AreEqual(d.RecipientGuild, string.Empty);
         }
 
         [TestMethod]
@@ -424,7 +427,8 @@ namespace EQToolTests
             player.Player = new PlayerInfo
             {
                 Level = 54,
-                PlayerClass = PlayerClasses.Cleric
+                PlayerClass = PlayerClasses.Cleric,
+                ChChainTagOverlay = "GG"
             };
             var d = service.ChCheck("Mutao auctions, 'GG RCH AAA -- TARGET'");
             Assert.AreEqual(d.Recipient, "TARGET");
@@ -511,6 +515,23 @@ namespace EQToolTests
                 PlayerClass = PlayerClasses.Cleric
             };
             var d = service.ChCheck("Mutao auctions, '007 CH --  a shiverback'");
+            Assert.AreEqual(d.Recipient, "a shiverback");
+            Assert.AreEqual(d.Caster, "Mutao");
+            Assert.AreEqual(d.Position, "007");
+            Assert.AreEqual(d.RecipientGuild, "");
+        }
+
+        [TestMethod]
+        public void Parse25()
+        {
+            var service = container.Resolve<CompleteHealParser>();
+            var player = container.Resolve<ActivePlayer>();
+            player.Player = new PlayerInfo
+            {
+                Level = 54,
+                PlayerClass = PlayerClasses.Cleric
+            };
+            var d = service.ChCheck("Mutao auctions,  '007 CH --  a shiverback'");
             Assert.AreEqual(d.Recipient, "a shiverback");
             Assert.AreEqual(d.Caster, "Mutao");
             Assert.AreEqual(d.Position, "007");

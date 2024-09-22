@@ -3,7 +3,6 @@ using EQTool.ViewModels;
 using EQToolShared;
 using System;
 using System.Linq;
-using System.Text.RegularExpressions;
 
 namespace EQTool.Services.Parsing
 {
@@ -31,25 +30,29 @@ namespace EQTool.Services.Parsing
 
         public CompleteHealEvent ChCheck(string line)
         {
-            var chindex = line.IndexOf(" ch ", System.StringComparison.OrdinalIgnoreCase);
             var startindexofmessage = line.IndexOf(", '");
+            var startindexsize = 3;
             if (startindexofmessage == -1)
             {
                 startindexofmessage = line.IndexOf(",  '");
+                startindexsize = 4;
             }
 
+            var chwordfound = " ch ";
+            var chindex = line.IndexOf(chwordfound, System.StringComparison.OrdinalIgnoreCase);
             if (chindex == -1)
             {
+                chwordfound = "ch ";
                 chindex = line.IndexOf("'ch ", System.StringComparison.OrdinalIgnoreCase);
             }
 
             if (chindex == -1)
             {
+                chwordfound = " rch ";
                 chindex = line.IndexOf(" rch ", System.StringComparison.OrdinalIgnoreCase);
             }
 
-            line = Regex.Replace(line, " rch", string.Empty, RegexOptions.IgnoreCase);
-            if (chindex != -1)
+            if (chindex != -1 && startindexofmessage != -1)
             {
                 var endoftext = line.LastIndexOf("'");
                 if (endoftext == -1)
@@ -57,8 +60,29 @@ namespace EQTool.Services.Parsing
                     return null;
                 }
 
-                var possiblenumbers = line.Substring(startindexofmessage + 3, endoftext - startindexofmessage - 3);
+                var possiblenumbers = line.Substring(startindexofmessage + startindexsize, endoftext - startindexofmessage - startindexsize);
                 var position = string.Empty;
+                var tag = activePlayer?.Player?.ChChainTagOverlay;
+                if (!string.IsNullOrWhiteSpace(tag))
+                {
+                    if (!possiblenumbers.StartsWith(tag))
+                    {
+                        return null;
+                    }
+                }
+                else
+                {
+                    var possibletagindex = possiblenumbers.IndexOf(position);
+                    if (possibletagindex == -1)
+                    {
+                        return null;
+                    }
+                    tag = possiblenumbers.Substring(0, possibletagindex).Trim();
+                }
+                if (!string.IsNullOrWhiteSpace(tag))
+                {
+                    possiblenumbers = possiblenumbers.Substring(tag.Length);
+                }
                 var possiblepositionstosearch = possiblenumbers.Split(' ').Where(a => a.Length == 3).ToList();
                 possiblepositionstosearch.Reverse();
                 foreach (var item in possiblepositionstosearch)
@@ -93,30 +117,14 @@ namespace EQTool.Services.Parsing
 
                 if (string.IsNullOrWhiteSpace(position))
                 {
-                    return null;
+                    position = "000";
                 }
 
-                var tag = activePlayer?.Player?.ChChainTagOverlay;
-                if (!string.IsNullOrWhiteSpace(tag))
+                chindex = possiblenumbers.IndexOf(chwordfound, System.StringComparison.OrdinalIgnoreCase);
+                var beforestring = possiblenumbers.Substring(0, chindex).Split(new char[] { ' ' });
+                if (beforestring.Length > 2)
                 {
-                    if (!possiblenumbers.StartsWith(tag))
-                    {
-                        return null;
-                    }
-                }
-                else
-                {
-                    var possibletagindex = possiblenumbers.IndexOf(position);
-                    if (possibletagindex == -1)
-                    {
-                        return null;
-                    }
-                    tag = possiblenumbers.Substring(0, possibletagindex).Trim();
-                }
-                chindex = possiblenumbers.IndexOf(" ch ", System.StringComparison.OrdinalIgnoreCase);
-                if (chindex == -1)
-                {
-                    chindex = possiblenumbers.IndexOf("ch ", System.StringComparison.OrdinalIgnoreCase);
+                    return null;
                 }
                 possiblenumbers = possiblenumbers.Substring(chindex + 3);
                 var possiblerecipt = new string(possiblenumbers.Replace(position, string.Empty).Where(a => a == ' ' || char.IsLetter(a) || a == '\'' || a == '`').ToArray()).Trim();
@@ -128,6 +136,10 @@ namespace EQTool.Services.Parsing
                 else
                 {
                     var splits = possiblerecipt.Split(' ');
+                    if (splits.Length > 2)
+                    {
+                        return null;
+                    }
                     _ = splits.Reverse();
                     foreach (var item in splits)
                     {
