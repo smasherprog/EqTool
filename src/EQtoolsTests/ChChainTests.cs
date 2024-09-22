@@ -537,5 +537,22 @@ namespace EQToolTests
             Assert.AreEqual(d.Position, "007");
             Assert.AreEqual(d.RecipientGuild, "");
         }
+
+        [TestMethod]
+        public void Parse26()
+        {
+            var service = container.Resolve<CompleteHealParser>();
+            var player = container.Resolve<ActivePlayer>();
+            player.Player = new PlayerInfo
+            {
+                Level = 54,
+                PlayerClass = PlayerClasses.Cleric
+            };
+            var d = service.ChCheck("Mutao tells the group, 'CH >      johny  '");
+            Assert.AreEqual(d.Recipient, "johny");
+            Assert.AreEqual(d.Caster, "Mutao");
+            Assert.AreEqual(d.Position, "000");
+            Assert.AreEqual(d.RecipientGuild, string.Empty);
+        }
     }
 }
