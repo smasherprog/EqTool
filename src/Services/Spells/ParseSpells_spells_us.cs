@@ -68,7 +68,7 @@ namespace EQTool.Services
             "Talendor's Immolating Breath",
             "Lava Breath - Test",
             "Vengeance of the Undying",
-            "Gift of A'err"
+            "Gift of A'err",
         };
         private readonly List<int> IgnoreIds = new List<int>()
         {
@@ -155,7 +155,7 @@ namespace EQTool.Services
             var spellsfile = new FileInfo(settings.DefaultEqDirectory + spellfile);
             if (spellsfile.Exists)
             {
-                var spellfilename = $"SpellCache{servers}_4";
+                var spellfilename = $"SpellCache{servers}_5";
                 if (!isdebug)
                 {
                     spellfilename = new string(spellfilename.Where(a => char.IsLetterOrDigit(a)).ToArray()) + ".bin";
@@ -242,6 +242,12 @@ namespace EQTool.Services
                     }
 
                     if (spell.name.StartsWith("NPC"))
+                    {
+                        //Debug.WriteLine($"Skipping {spell.name} NPC");
+                        continue;
+                    }
+
+                    if (spell.name.IndexOf("test", StringComparison.OrdinalIgnoreCase) != -1)
                     {
                         //Debug.WriteLine($"Skipping {spell.name} NPC");
                         continue;
