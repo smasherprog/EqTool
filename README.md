@@ -17,6 +17,7 @@ Instructions:
 Features:
 <br/>
 <ul>
+ <li><b>p99 middlemand</b> ported from https://github.com/Zaela/p99-login-middlemand is now supported!</li>
  <li>The TOP 5 Random rolls show up in the triggers window. </li> 
  <li>See others on the map in real time. Also support for NParse map location sharing automatically if location sharing is set to everyone. </li> 
 <li>Kael faction pull timer Automatically added for everyone regardless of what zone you are in. </li> 
