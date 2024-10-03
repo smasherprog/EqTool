@@ -1,5 +1,7 @@
 ﻿using EQTool.Models;
 using System;
+using System.Media;
+
 
 namespace EQTool.Services.Parsing
 {
@@ -23,6 +25,10 @@ namespace EQTool.Services.Parsing
             if (m != null)
             {
                 logEvents.Handle(new InvisEvent { InvisStatus = m.Value });
+
+                //System.Media.SoundPlayer player = new System.Media.SoundPlayer(@"c:\Windows\Media\chimes.wav");
+                //player.Play();
+                -
                 return true;
             }
             return false;
@@ -30,7 +36,8 @@ namespace EQTool.Services.Parsing
 
         public InvisStatus? Parse(string line)
         {
-            return line == "You feel yourself starting to appear." ? InvisStatus.Fading : (InvisStatus?)null;
+            // return line == "You feel yourself starting to appear." ? InvisStatus.Fading : (InvisStatus?)null;
+            return line == ".testing" ? InvisStatus.Fading : (InvisStatus?)null;
         }
     }
 }
