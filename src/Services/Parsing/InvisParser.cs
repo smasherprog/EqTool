@@ -37,7 +37,7 @@ namespace EQTool.Services.Parsing
         public InvisStatus? Parse(string line)
         {
             // return line == "You feel yourself starting to appear." ? InvisStatus.Fading : (InvisStatus?)null;
-            return line == ".testing" ? InvisStatus.Fading : (InvisStatus?)null;
+            return line == ".testing is not online at this time." ? InvisStatus.Fading : (InvisStatus?)null;
         }
     }
 }
