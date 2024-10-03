@@ -26,9 +26,9 @@ namespace EQTool.Services.Parsing
             {
                 logEvents.Handle(new InvisEvent { InvisStatus = m.Value });
 
-                //System.Media.SoundPlayer player = new System.Media.SoundPlayer(@"c:\Windows\Media\chimes.wav");
-                //player.Play();
-                -
+                System.Media.SoundPlayer player = new System.Media.SoundPlayer(@"c:\Windows\Media\chimes.wav");
+                player.Play();
+
                 return true;
             }
             return false;
