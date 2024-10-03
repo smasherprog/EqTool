@@ -31,6 +31,7 @@ namespace EQTool
 
             _ = builder.RegisterType<Services.Parsing.QuakeParser>().As<Models.IEqLogParseHandler>().SingleInstance();
             _ = builder.RegisterType<Services.Parsing.RandomParser>().As<Models.IEqLogParseHandler>().SingleInstance();
+            _ = builder.RegisterType<Services.Parsing.DeathParser>().As<Models.IEqLogParseHandler>().SingleInstance();
             _ = builder.RegisterType<Services.Parsing.DeathTouchParser>().As<Models.IEqLogParseHandler>().SingleInstance();
             _ = builder.RegisterType<Services.Parsing.EnrageParser>().As<Models.IEqLogParseHandler>().SingleInstance();
 

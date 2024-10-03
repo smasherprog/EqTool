@@ -1,52 +1,46 @@
 ﻿using EQTool.Models;
 using System;
+using static EQTool.Services.Parsing.InvisParser;
+using System.Text.RegularExpressions;
 
 namespace EQTool.Services.Parsing
 {
-    public class DeathTouchParser : IEqLogParseHandler
+    public class DeathParser : IEqLogParseHandler
     {
         private readonly LogEvents logEvents;
 
-        public DeathTouchParser(LogEvents logEvents)
+        public DeathParser(LogEvents logEvents)
         {
             this.logEvents = logEvents;
         }
 
         public bool Handle(string line, DateTime timestamp)
         {
-            var m = DtCheck(line);
-            if (m != null)
+            // this regex allows the parser to watch for the real phrase, but also to be tested by
+            // sending a tell while in-game to the non-existent user ".death
+            string pattern = @"(^\.death )|(^You have been slain)";
+            Regex regex = new Regex(pattern, RegexOptions.Compiled);
+            var match = regex.Match(line);
+
+            if (match.Success)
             {
-                logEvents.Handle(m);
+                // handle the event
+                logEvents.Handle(new DeathEvent());
+
+                // just a little audible marker to help us debug and test
+                System.Media.SoundPlayer player = new System.Media.SoundPlayer(@"c:\Windows\Media\chimes.wav");
+                player.Play();
+
+                // we have died, so strip away all buff timers
+                // todo
+
+                // check for deathloop conditions
+                // todo
+
                 return true;
             }
             return false;
         }
 
-        public DeathTouchEvent DtCheck(string line)
-        {
-            if (line.StartsWith("Fright says '"))
-            {
-                var firsttick = line.IndexOf("'") + 1;
-                var lasttick = line.LastIndexOf("'") - firsttick;
-                var possiblename = line.Substring(firsttick, lasttick);
-                if (!possiblename.Contains(" "))
-                {
-                    return new DeathTouchEvent { NpcName = "Fright", DTReceiver = possiblename };
-                }
-            }
-
-            if (line.StartsWith("Dread says '"))
-            {
-                var firsttick = line.IndexOf("'") + 1;
-                var lasttick = line.LastIndexOf("'") - firsttick;
-                var possiblename = line.Substring(firsttick, lasttick);
-                if (!possiblename.Contains(" "))
-                {
-                    return new DeathTouchEvent { NpcName = "Dread", DTReceiver = possiblename };
-                }
-            }
-            return null;
-        }
     }
 }
