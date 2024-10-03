@@ -1,6 +1,7 @@
 ﻿using EQTool.Models;
 using System;
 using System.Media;
+using System.Text.RegularExpressions;
 
 
 namespace EQTool.Services.Parsing
@@ -26,6 +27,7 @@ namespace EQTool.Services.Parsing
             {
                 logEvents.Handle(new InvisEvent { InvisStatus = m.Value });
 
+                // just a little audible marker to help us debug and test
                 System.Media.SoundPlayer player = new System.Media.SoundPlayer(@"c:\Windows\Media\chimes.wav");
                 player.Play();
 
@@ -36,8 +38,12 @@ namespace EQTool.Services.Parsing
 
         public InvisStatus? Parse(string line)
         {
-            // return line == "You feel yourself starting to appear." ? InvisStatus.Fading : (InvisStatus?)null;
-            return line == ".testing is not online at this time." ? InvisStatus.Fading : (InvisStatus?)null;
+            // this regex allows the parser to watch for the real phrase, but also to be tested by
+            // sending a tell while in-game to the non-existent user ".inv"
+            string pattern = @"(^\.inv )|(^You feel yourself starting to appear.)";
+            Regex regex = new Regex(pattern, RegexOptions.Compiled);
+            var match = regex.Match(line);
+            return match.Success ? InvisStatus.Fading : (InvisStatus?)null;
         }
     }
 }
