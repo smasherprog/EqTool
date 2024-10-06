@@ -94,13 +94,11 @@
                             <TextBlock Text="Always on top" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="120"/>
                             <CheckBox IsChecked="{Binding MobAlwaysOnTop}" Click="SaveAlwaysOntopCheckBoxSettings" ></CheckBox>
                         </StackPanel>
-                    </StackPanel>
-                    <TextBlock Text="Experimental" Foreground="Red" HorizontalAlignment="Center" FontWeight="Bold" Margin="5,5,0,0"/>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Login middlemand" VerticalAlignment="Center"  FontWeight="Bold" MinWidth="120"/>
-                        <CheckBox  Name="LoginMiddleMandCheckBox" Click="LoginMiddleMandToggle" MinWidth="75"></CheckBox>
-
-                    </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Login middlemand" VerticalAlignment="Center"  FontWeight="Bold" MinWidth="120"/>
+                            <CheckBox  Name="LoginMiddleMandCheckBox" Click="LoginMiddleMandToggle" MinWidth="75"></CheckBox> 
+                        </StackPanel>
+                    </StackPanel> 
                     <TextBlock Text="Login Middlemand is a copy of the code from:"></TextBlock>
                     <TextBlock Text="https://github.com/Zaela/p99-login-middlemand"></TextBlock>
                     <TextBlock Text="Please, report any issues on discord!"></TextBlock>

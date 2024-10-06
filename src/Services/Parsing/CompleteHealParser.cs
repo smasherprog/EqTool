@@ -60,6 +60,11 @@ namespace EQTool.Services.Parsing
                     return null;
                 }
 
+                if (endoftext - startindexofmessage - startindexsize <= 0)
+                {
+                    return null;
+                }
+
                 var possiblenumbers = line.Substring(startindexofmessage + startindexsize, endoftext - startindexofmessage - startindexsize);
                 var position = string.Empty;
                 var tag = activePlayer?.Player?.ChChainTagOverlay;
