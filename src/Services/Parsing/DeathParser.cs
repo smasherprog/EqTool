@@ -1,6 +1,5 @@
 ﻿using EQTool.Models;
 using System;
-using static EQTool.Services.Parsing.InvisParser;
 using System.Text.RegularExpressions;
 
 namespace EQTool.Services.Parsing
@@ -17,7 +16,7 @@ namespace EQTool.Services.Parsing
         public bool Handle(string line, DateTime timestamp)
         {
             // this regex allows the parser to watch for the real phrase, but also to be tested by
-            // sending a tell while in-game to the non-existent user ".death
+            // sending a tell while in-game to the non-existent user ".death"
             string pattern = @"(^\.death )|(^You have been slain)";
             Regex regex = new Regex(pattern, RegexOptions.Compiled);
             var match = regex.Match(line);
