@@ -39,7 +39,7 @@ namespace EQTool.Services.Parsing
         public InvisStatus? Parse(string line)
         {
             // this regex allows the parser to watch for the real phrase, but also to be tested by
-            // sending a tell while in-game to the non-existent user ".inv"
+            // sending a tell while in-game to the non-existent user ".inv "
             string pattern = @"(^\.inv )|(^You feel yourself starting to appear.)";
             Regex regex = new Regex(pattern, RegexOptions.Compiled);
             var match = regex.Match(line);
