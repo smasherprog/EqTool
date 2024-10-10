@@ -22,7 +22,7 @@ namespace EQToolTests
 
             var service = container.Resolve<DeathParser>();
             var rv = service.ParseDeath("Just some random line", timestamp);
-            Assert.AreEqual(rv, false);
+            Assert.AreEqual(false, rv);
         }
 
         [TestMethod]
@@ -33,7 +33,7 @@ namespace EQToolTests
 
             var service = container.Resolve<DeathParser>();
             var rv = service.ParseDeath("You have been slain", timestamp);
-            Assert.AreEqual(rv, true);
+            Assert.AreEqual(true, rv);
         }
 
         [TestMethod]
@@ -46,9 +46,10 @@ namespace EQToolTests
             service.ParseDeath("You have been slain", timestamp);
             service.ParseDeath("You have been slain", timestamp.AddSeconds(40.0));
             service.ParseDeath("You have been slain", timestamp.AddSeconds(80.0));
+            service.ParseDeath("You have been slain", timestamp.AddSeconds(80.0));
 
             var count = service.DeathLoopResponse();
-            Assert.AreEqual(count, 3);
+            Assert.AreEqual(4, count);
         }
 
         [TestMethod]
@@ -63,7 +64,7 @@ namespace EQToolTests
             service.ParseDeath("You have been slain", timestamp.AddSeconds(130.0));
 
             var count = service.DeathLoopResponse();
-            Assert.AreEqual(count, 2);
+            Assert.AreEqual(2, count);
         }
 
 
@@ -81,7 +82,7 @@ namespace EQToolTests
 
             service.ParseSignOfLife("You slice Soandso for 100 points of damage");
             var count = service.DeathLoopResponse();
-            Assert.AreEqual(count, 0);
+            Assert.AreEqual(0, count);
         }
 
         [TestMethod]
@@ -98,7 +99,7 @@ namespace EQToolTests
 
             service.ParseSignOfLife("You begin casting");
             var count = service.DeathLoopResponse();
-            Assert.AreEqual(count, 0);
+            Assert.AreEqual(0, count);
         }
 
         [TestMethod]
@@ -115,7 +116,7 @@ namespace EQToolTests
 
             service.ParseSignOfLife("You shout, something something");
             var count = service.DeathLoopResponse();
-            Assert.AreEqual(count, 0);
+            Assert.AreEqual(0, count);
         }
 
     }
