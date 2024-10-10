@@ -1,21 +1,25 @@
-﻿using EQTool.Models;
+﻿using Autofac;
+using EQTool.Models;
+using EQTool.ViewModels;
 using System;
 using System.Linq;
 using System.Speech.Synthesis;
 using System.Text.RegularExpressions;
 using System.Windows.Documents;
-using static EQTool.Services.Parsing.InvisParser;
 
 namespace EQTool.Services.Parsing
 {
+    //
+    // this parser will watch for deaths, and also for deathloop conditions
+    //
+    // we will generally define a deathloop condition as
+    //      1. At least {deathloop_deaths} experienced,
+    //      2. in less than {deathloop_seconds} time,
+    //      3. while the player is apparently AFK (no signs of life from casting, meleeing, or communicating)
+    //
     public class DeathParser : IEqLogParseHandler
     {
         private readonly LogEvents logEvents;
-
-        // we will generally define a deathloop condition as
-        // - At least 'deathloop_deaths' experienced,
-        // - In 'deathloop_seconds' time,
-        // - while the player is apparently AFK (i.e. no signs of life, such as casting, meleeing, or communicating)
 
         // todo - make these values configurable
         private readonly int deathloop_deaths = 4;
@@ -44,49 +48,33 @@ namespace EQTool.Services.Parsing
         //
         public bool Handle(string line, DateTime timestamp)
         {
-            // have we died?
-            check_for_death(line, timestamp);
+            // are any of the existing death timestamps too old?
+            // if so, remove them from the tracking list
+            purge_old_deaths(timestamp);
 
             // are we apparently AFK?
-            check_not_afk(line, timestamp);
+            // if we are not AFK, then we aren't deathlooping, so purge the entire death tracking list
+            check_not_afk(line);
+
+            // have we died?
+            // if so, add the death timestamp to the tracking list, and return true
+            bool rv = check_for_death(line, timestamp);
 
             // perform deathloop response
-            deathloop_response();
+            // if the quantity of deaths in the tracking list exceeds the threshold, then respond appropriately
+            if (rv)
+            {
+                deathloop_response();
+            }
 
-            // todo - what is a sensible return value
-            return false;
+            return rv;
         }
 
         //
-        // check to see if the current line indicates the player has died
+        // purge old death timestamps
         //
-        public void check_for_death(string line, DateTime timestamp)
+        private void purge_old_deaths(DateTime timestamp)
         {
-
-            // this regex allows the parser to watch for the real phrase, but also to be tested by
-            // sending a tell while in-game to the non-existent user ".death "
-            string death_pattern = @"(^\.death )|(^You have been slain)";
-            Regex death_regex = new Regex(death_pattern, RegexOptions.Compiled);
-            var match = death_regex.Match(line);
-
-            // if we have died
-            if (match.Success)
-            {
-                // handle the event
-                logEvents.Handle(new DeathEvent());
-
-                //// just a little audible marker to help us debug and test
-                //System.Media.SoundPlayer player = new System.Media.SoundPlayer(@"c:\Windows\Media\chimes.wav");
-                //player.Play();
-
-                // we have died, so strip away all buff timers
-                // todo
-
-                // add this timestamp to the end of the tracking list, and print a debug message
-                deathloop_timestamps.Add(timestamp);
-                write_death_times();
-            }
-
             // purge the list of old datetime stamps
             if (deathloop_timestamps.Count > 0)
             {
@@ -123,7 +111,7 @@ namespace EQTool.Services.Parsing
         //
         // check for signs of player life, i.e. casting, or meleeing, or communicating
         //
-        public void check_not_afk(string line, DateTime timestamp)
+        private void check_not_afk(string line)
         {
             // only do the proof of life checks if there are already some death timestamps in the list, else skip this
             if (deathloop_timestamps.Count > 0)
@@ -144,8 +132,23 @@ namespace EQTool.Services.Parsing
                 }
 
                 // does this line contain a proof of life - communications
-                // todo - need player name here
-                string playername = "ToBeDetermined";
+                //
+                // todo - need player name here for that very infrequent use case where tells show up as {playername} ->
+                //
+                // get player name via dependency injection pattern for ActivePlayer
+                // currently failing, throwing exception on null reference?
+
+                //var active_player = container.Resolve<ActivePlayer>();
+                //Console.WriteLine($"active_player [{active_player}]");
+
+                //var player = active_player.Player;
+                //Console.WriteLine($"player [{player}]");
+
+                //var playername = player.Name;
+                //Console.WriteLine($"playername [{playername}]");
+
+                string playername = "Unknown";
+
                 string comm_pattern = $"^(You told|You say|You tell|You auction|You shout|{playername} ->)";
                 Regex comm_regex = new Regex(comm_pattern, RegexOptions.Compiled);
                 match = comm_regex.Match(line);
@@ -177,11 +180,44 @@ namespace EQTool.Services.Parsing
         }
 
         //
+        // check to see if the current line indicates the player has died
+        //
+        private bool check_for_death(string line, DateTime timestamp)
+        {
+            // return value
+            bool rv = false;
+
+            // this regex allows the parser to watch for the real phrase, but also to be tested by
+            // sending a tell while in-game to the non-existent user ".death"
+            string death_pattern = @"(^\.death )|(^You have been slain)";
+            Regex death_regex = new Regex(death_pattern, RegexOptions.Compiled);
+            var match = death_regex.Match(line);
+
+            // if we have died
+            if (match.Success)
+            {
+                // handle the event
+                logEvents.Handle(new DeathEvent());
+
+                // todo - we have died, so strip away all buff timers
+
+                // add this timestamp to the end of the tracking list, and print a debug message
+                deathloop_timestamps.Add(timestamp);
+                write_death_times();
+
+                rv = true;
+            }
+
+            return rv;
+        }
+
+
+        //
         // response if a deathloop condition is detected
         // an ideal solution would be to kill the eqgame.exe process, however
         // that is currently ruled out of bounds, so we will have to do something more benign for now
         //
-        public void deathloop_response()
+        private void deathloop_response()
         {
             // deathloop response
             if (deathloop_timestamps.Count >= deathloop_deaths)
@@ -190,7 +226,14 @@ namespace EQTool.Services.Parsing
                 System.Media.SoundPlayer player = new System.Media.SoundPlayer(@"c:\Windows\Media\chimes.wav");
                 player.Play();
 
-                // todo - how to alert player 
+                // since we can't kill eqgame.exe, try to alert the user by yelling at him
+                SpeechSynthesizer synth = new SpeechSynthesizer();
+                synth.SetOutputToDefaultAudioDevice();
+                synth.Rate = 2;
+                synth.Volume = 100; // 0-100, as loud as we can
+                synth.Speak("death loop, death loop, death loop");
+
+                // write some debug lines
                 Console.WriteLine("------------------------------------Deathloop condition detected!-----------------------------------------");
                 Console.WriteLine($"{deathloop_deaths} or more deaths in less than {deathloop_seconds} seconds, with no player activity");
                 write_death_times();
@@ -205,17 +248,13 @@ namespace EQTool.Services.Parsing
         //
         private void write_death_times()
         {
-            // any timestamps in list?
-            if (deathloop_timestamps.Count > 0)
+            // print a list of timestamps
+            Console.Write($"Death timestamps: count = {deathloop_timestamps.Count}, times = ");
+            for (int i = 0; i < deathloop_timestamps.Count; i++)
             {
-                // print a list of timestamps
-                Console.Write($"Death timestamps: count = {deathloop_timestamps.Count}, times = ");
-                for (int i = 0; i < deathloop_timestamps.Count; i++)
-                {
-                    Console.Write($"[{deathloop_timestamps[i]}] ");
-                }
-                Console.WriteLine();
+                Console.Write($"[{deathloop_timestamps[i]}] ");
             }
+            Console.WriteLine();
         }
 
     }
