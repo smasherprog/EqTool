@@ -161,6 +161,12 @@ namespace EQTool.Services
             CompleteHealEvent?.Invoke(this, e);
         }
 
+        public event EventHandler<DeathEvent> DeathEvent;
+        public void Handle(DeathEvent e)
+        {
+            DeathEvent?.Invoke(this, e);
+        }
+
         public event EventHandler<DeathTouchEvent> DeathTouchEvent;
         public void Handle(DeathTouchEvent e)
         {
