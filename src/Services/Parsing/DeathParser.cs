@@ -48,10 +48,6 @@ namespace EQTool.Services.Parsing
         //
         public bool Handle(string line, DateTime timestamp)
         {
-            // are any of the existing death timestamps too old?
-            // if so, remove them from the tracking list
-            purge_old_deaths(timestamp);
-
             // are we apparently AFK?
             // if we are not AFK, then we aren't deathlooping, so purge the entire death tracking list
             check_not_afk(line);
@@ -111,7 +107,7 @@ namespace EQTool.Services.Parsing
         //
         // check for signs of player life, i.e. casting, or meleeing, or communicating
         //
-        private void check_not_afk(string line)
+        public void check_not_afk(string line)
         {
             // only do the proof of life checks if there are already some death timestamps in the list, else skip this
             if (deathloop_timestamps.Count > 0)
@@ -160,7 +156,9 @@ namespace EQTool.Services.Parsing
                 }
 
                 // does this line contain a proof of life - melee
-                string melee_pattern = "^You( try to)? (hit|slash|pierce|crush|claw|bite|sting|maul|gore|punch|kick|backstab|bash)";
+                string melee_pattern = "^You( try to)? (hit|slash|pierce|crush|claw|bite|sting|maul|gore|punch|kick|backstab|bash|slice)";
+
+
                 Regex melee_regex = new Regex(melee_pattern, RegexOptions.Compiled);
                 match = melee_regex.Match(line);
                 if (match.Success)
@@ -182,8 +180,12 @@ namespace EQTool.Services.Parsing
         //
         // check to see if the current line indicates the player has died
         //
-        private bool check_for_death(string line, DateTime timestamp)
+        public bool check_for_death(string line, DateTime timestamp)
         {
+            // are any of the existing death timestamps too old?
+            // if so, remove them from the tracking list
+            purge_old_deaths(timestamp);
+
             // return value
             bool rv = false;
 
@@ -217,7 +219,9 @@ namespace EQTool.Services.Parsing
         // an ideal solution would be to kill the eqgame.exe process, however
         // that is currently ruled out of bounds, so we will have to do something more benign for now
         //
-        private void deathloop_response()
+        // returns the number of death timestamps currently in the tracking list
+        //
+        public int deathloop_response()
         {
             // deathloop response
             if (deathloop_timestamps.Count >= deathloop_deaths)
@@ -241,6 +245,7 @@ namespace EQTool.Services.Parsing
                 Console.WriteLine("------------------------------------Deathloop condition detected!-----------------------------------------");
             }
 
+            return deathloop_timestamps.Count;
         }
 
         //
