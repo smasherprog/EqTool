@@ -1,11 +1,7 @@
-﻿using Autofac;
-using EQTool.Models;
-using EQTool.ViewModels;
+﻿using EQTool.Models;
 using System;
-using System.Linq;
 using System.Speech.Synthesis;
 using System.Text.RegularExpressions;
-using System.Windows.Documents;
 
 namespace EQTool.Services.Parsing
 {
@@ -13,8 +9,8 @@ namespace EQTool.Services.Parsing
     // this parser will watch for deaths, and also for deathloop conditions
     //
     // we will generally define a deathloop condition as
-    //      1. At least {deathloop_deaths} experienced,
-    //      2. in less than {deathloop_seconds} time,
+    //      1. At least {_deathLoopDeaths} experienced,
+    //      2. in less than {_deathLoopSeconds} time,
     //      3. while the player is apparently AFK (no signs of life from casting, meleeing, or communicating)
     //
     public class DeathParser : IEqLogParseHandler
@@ -22,18 +18,18 @@ namespace EQTool.Services.Parsing
         private readonly LogEvents logEvents;
 
         // todo - make these values configurable
-        private readonly int deathloop_deaths = 4;
-        private readonly int deathloop_seconds = 120;
+        private readonly int _deathLoopDeaths = 4;
+        private readonly int _deathLoopSeconds = 120;
 
         // list of death messages
         // this will function as a scrolling queue, with the oldest message at position 0,
         // newest appended to the other end.  Older messages scroll off the list when more
-        // than deathloop_seconds have elapsed.  The list is also flushed any time
+        // than _deathLoopSeconds have elapsed.  The list is also flushed any time
         // player activity is detected (i.e. player is not AFK).
         //
-        // if/when the length of this list meets or exceeds deathloop_deaths, then
+        // if/when the length of this list meets or exceeds _deathLoopDeaths, then
         // the deathloop response is triggered
-        private System.Collections.Generic.List<DateTime> deathloop_timestamps = new System.Collections.Generic.List<DateTime>();
+        private System.Collections.Generic.List<DateTime> _deathLoopTimestamps = new System.Collections.Generic.List<DateTime>();
 
         //
         // ctor
@@ -50,150 +46,114 @@ namespace EQTool.Services.Parsing
         {
             // are we apparently AFK?
             // if we are not AFK, then we aren't deathlooping, so purge the entire death tracking list
-            check_not_afk(line);
+            ParseSignOfLife(line);
 
             // have we died?
             // if so, add the death timestamp to the tracking list, and return true
-            bool rv = check_for_death(line, timestamp);
+            bool rv = ParseDeath(line, timestamp);
 
             // perform deathloop response
             // if the quantity of deaths in the tracking list exceeds the threshold, then respond appropriately
             if (rv)
             {
-                deathloop_response();
+                DeathLoopResponse();
             }
 
             return rv;
         }
 
         //
-        // purge old death timestamps
+        // check if a player is showing "signs of life" and is therefore not AFK
         //
-        private void purge_old_deaths(DateTime timestamp)
+        // return:
+        //      true    there is already at least 1 death being tracked in the tracking list, AND
+        //              line contains evidence of signs of life.  Player is casting, communicating, or meleeing.
+        //      false   otherwise
+        //
+        public bool ParseSignOfLife(string line)
         {
-            // purge the list of old datetime stamps
-            if (deathloop_timestamps.Count > 0)
-            {
-                bool done = false;
-                while (!done)
-                {
-                    if (deathloop_timestamps.Count == 0)
-                    {
-                        done = true;
-                    }
-                    else
-                    {
-                        // the list of death timestamps has the oldest at position 0
-                        DateTime oldest_timestamp = deathloop_timestamps[0];
-                        var elapsed_seconds = (timestamp - oldest_timestamp).TotalSeconds;
+            // check for proof of life, things that indicate the player is not actually AFK
+            // begin by assuming the player is AFK
+            bool signOfLife = false;
 
-                        // too much time?
-                        if (elapsed_seconds > deathloop_seconds)
-                        {
-                            // that death is too old, purge it
-                            deathloop_timestamps.RemoveAt(0);
-                            write_death_times();
-                        }
-                        else
-                        {
-                            // the oldest death time is inside the window, so we're done purging
-                            done = true;
-                        }
-                    }
-                }
-            }
-        }
-
-        //
-        // check for signs of player life, i.e. casting, or meleeing, or communicating
-        //
-        public void check_not_afk(string line)
-        {
             // only do the proof of life checks if there are already some death timestamps in the list, else skip this
-            if (deathloop_timestamps.Count > 0)
+            if (_deathLoopTimestamps.Count > 0)
             {
-                // check for proof of life, things that indicate the player is not actually AFK
-                // begin by assuming the player is AFK
-                bool afk = true;
-
                 // does this line contain a proof of life - casting
-                string casting_pattern = "^You begin casting";
-                Regex casting_regex = new Regex(casting_pattern, RegexOptions.Compiled);
-                var match = casting_regex.Match(line);
+                string castingPattern = "^You begin casting";
+                Regex castingRegex = new Regex(castingPattern, RegexOptions.Compiled);
+                var match = castingRegex.Match(line);
                 if (match.Success)
                 {
                     // player is not AFK
-                    afk = false;
+                    signOfLife = true;
                     Console.WriteLine($"Player not AFK: [{line}]");
                 }
 
                 // does this line contain a proof of life - communications
                 //
-                // todo - need player name here for that very infrequent use case where tells show up as {playername} ->
+                // todo - need player name here for that very infrequent use case where tells show up as {playerName} ->
                 //
                 // get player name via dependency injection pattern for ActivePlayer
-                // currently failing, throwing exception on null reference?
+                //
+                // where does container live?
+                //var activePlayer = container.Resolve<ActivePlayer>();
+                //string playerName = activePlayer.Player.Name;
+                string playerName = "Unknown";
 
-                //var active_player = container.Resolve<ActivePlayer>();
-                //Console.WriteLine($"active_player [{active_player}]");
-
-                //var player = active_player.Player;
-                //Console.WriteLine($"player [{player}]");
-
-                //var playername = player.Name;
-                //Console.WriteLine($"playername [{playername}]");
-
-                string playername = "Unknown";
-
-                string comm_pattern = $"^(You told|You say|You tell|You auction|You shout|{playername} ->)";
-                Regex comm_regex = new Regex(comm_pattern, RegexOptions.Compiled);
-                match = comm_regex.Match(line);
+                string commsPattern = $"^(You told|You say|You tell|You auction|You shout|{playerName} ->)";
+                Regex commsRegex = new Regex(commsPattern, RegexOptions.Compiled);
+                match = commsRegex.Match(line);
                 if (match.Success)
                 {
                     // player is not AFK
-                    afk = false;
+                    signOfLife = true;
                     Console.WriteLine($"Player not AFK: [{line}]");
                 }
 
                 // does this line contain a proof of life - melee
-                string melee_pattern = "^You( try to)? (hit|slash|pierce|crush|claw|bite|sting|maul|gore|punch|kick|backstab|bash|slice)";
-
-
-                Regex melee_regex = new Regex(melee_pattern, RegexOptions.Compiled);
-                match = melee_regex.Match(line);
+                string meleePattern = "^You( try to)? (hit|slash|pierce|crush|claw|bite|sting|maul|gore|punch|kick|backstab|bash|slice)";
+                Regex meleeRegex = new Regex(meleePattern, RegexOptions.Compiled);
+                match = meleeRegex.Match(line);
                 if (match.Success)
                 {
                     // player is not AFK
-                    afk = false;
+                    signOfLife = true;
                     Console.WriteLine($"Player not AFK: [{line}]");
                 }
 
                 // if player is not AFK, then purge the death list
-                if (!afk)
+                if (signOfLife)
                 {
-                    deathloop_timestamps.Clear();
-                    write_death_times();
+                    _deathLoopTimestamps.Clear();
+                    writeDeathTimes();
                 }
             }
+
+            return signOfLife;
         }
 
         //
         // check to see if the current line indicates the player has died
         //
-        public bool check_for_death(string line, DateTime timestamp)
+        // return:
+        //      true    line indicates that player has died
+        //      false   otherwise
+        //
+        public bool ParseDeath(string line, DateTime timestamp)
         {
             // are any of the existing death timestamps too old?
             // if so, remove them from the tracking list
-            purge_old_deaths(timestamp);
+            purgeOldDeaths(timestamp);
 
             // return value
             bool rv = false;
 
             // this regex allows the parser to watch for the real phrase, but also to be tested by
             // sending a tell while in-game to the non-existent user ".death"
-            string death_pattern = @"(^\.death )|(^You have been slain)";
-            Regex death_regex = new Regex(death_pattern, RegexOptions.Compiled);
-            var match = death_regex.Match(line);
+            string deathPattern = @"(^\.death )|(^You have been slain)";
+            Regex deathRegex = new Regex(deathPattern, RegexOptions.Compiled);
+            var match = deathRegex.Match(line);
 
             // if we have died
             if (match.Success)
@@ -204,15 +164,14 @@ namespace EQTool.Services.Parsing
                 // todo - we have died, so strip away all buff timers
 
                 // add this timestamp to the end of the tracking list, and print a debug message
-                deathloop_timestamps.Add(timestamp);
-                write_death_times();
+                _deathLoopTimestamps.Add(timestamp);
+                writeDeathTimes();
 
                 rv = true;
             }
 
             return rv;
         }
-
 
         //
         // response if a deathloop condition is detected
@@ -221,12 +180,12 @@ namespace EQTool.Services.Parsing
         //
         // returns the number of death timestamps currently in the tracking list
         //
-        public int deathloop_response()
+        public int DeathLoopResponse()
         {
             // deathloop response
-            if (deathloop_timestamps.Count >= deathloop_deaths)
+            if (_deathLoopTimestamps.Count >= _deathLoopDeaths)
             {
-                // just a little audible marker to help us debug and test
+                // just a little audible marker
                 System.Media.SoundPlayer player = new System.Media.SoundPlayer(@"c:\Windows\Media\chimes.wav");
                 player.Play();
 
@@ -239,25 +198,63 @@ namespace EQTool.Services.Parsing
 
                 // write some debug lines
                 Console.WriteLine("------------------------------------Deathloop condition detected!-----------------------------------------");
-                Console.WriteLine($"{deathloop_deaths} or more deaths in less than {deathloop_seconds} seconds, with no player activity");
-                write_death_times();
+                Console.WriteLine($"{_deathLoopDeaths} or more deaths in less than {_deathLoopSeconds} seconds, with no player activity");
+                writeDeathTimes();
                 Console.WriteLine("We really should be killing the eqgame.exe process right now");
                 Console.WriteLine("------------------------------------Deathloop condition detected!-----------------------------------------");
             }
 
-            return deathloop_timestamps.Count;
+            return _deathLoopTimestamps.Count;
+        }
+
+        //
+        // purge old death timestamps
+        //
+        private void purgeOldDeaths(DateTime timestamp)
+        {
+            // walk the list and purge the old datetime stamps
+            if (_deathLoopTimestamps.Count > 0)
+            {
+                bool done = false;
+                while (!done)
+                {
+                    if (_deathLoopTimestamps.Count == 0)
+                    {
+                        done = true;
+                    }
+                    else
+                    {
+                        // the list of death timestamps has the oldest at position 0
+                        DateTime oldestTimestamp = _deathLoopTimestamps[0];
+                        var elapsedSeconds = (timestamp - oldestTimestamp).TotalSeconds;
+
+                        // too much time?
+                        if (elapsedSeconds > _deathLoopSeconds)
+                        {
+                            // that death is too old, purge it
+                            _deathLoopTimestamps.RemoveAt(0);
+                            writeDeathTimes();
+                        }
+                        else
+                        {
+                            // the oldest death time is inside the window, so we're done purging
+                            done = true;
+                        }
+                    }
+                }
+            }
         }
 
         //
         // utility function to print the contents of the death timestamp list
         //
-        private void write_death_times()
+        private void writeDeathTimes()
         {
             // print a list of timestamps
-            Console.Write($"Death timestamps: count = {deathloop_timestamps.Count}, times = ");
-            for (int i = 0; i < deathloop_timestamps.Count; i++)
+            Console.Write($"Death timestamps: count = {_deathLoopTimestamps.Count}, times = ");
+            for (int i = 0; i < _deathLoopTimestamps.Count; i++)
             {
-                Console.Write($"[{deathloop_timestamps[i]}] ");
+                Console.Write($"[{_deathLoopTimestamps[i]}] ");
             }
             Console.WriteLine();
         }

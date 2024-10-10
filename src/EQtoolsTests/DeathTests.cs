@@ -15,96 +15,106 @@ namespace EQToolTests
         }
 
         [TestMethod]
+        // has the player died
         public void TestMethod1()
         {
             DateTime timestamp = new DateTime();
 
             var service = container.Resolve<DeathParser>();
-            var rv = service.check_for_death("Just some random line", timestamp);
+            var rv = service.ParseDeath("Just some random line", timestamp);
             Assert.AreEqual(rv, false);
         }
 
         [TestMethod]
+        // has the player died
         public void TestMethod2()
         {
             DateTime timestamp = new DateTime();
 
             var service = container.Resolve<DeathParser>();
-            var rv = service.check_for_death("You have been slain", timestamp);
+            var rv = service.ParseDeath("You have been slain", timestamp);
             Assert.AreEqual(rv, true);
         }
 
         [TestMethod]
+        // player has died multiple times
         public void TestMethod3()
         {
             DateTime timestamp = new DateTime();
 
             var service = container.Resolve<DeathParser>();
-            service.check_for_death("You have been slain", timestamp);
-            service.check_for_death("You have been slain", timestamp.AddSeconds(40.0));
-            service.check_for_death("You have been slain", timestamp.AddSeconds(80.0));
+            service.ParseDeath("You have been slain", timestamp);
+            service.ParseDeath("You have been slain", timestamp.AddSeconds(40.0));
+            service.ParseDeath("You have been slain", timestamp.AddSeconds(80.0));
 
-            var count = service.deathloop_response();
+            var count = service.DeathLoopResponse();
             Assert.AreEqual(count, 3);
         }
 
         [TestMethod]
+        // player has died multiple times, but by the time the last death occurs, the first death has scrolled off the tracking list
         public void TestMethod4()
         {
             DateTime timestamp = new DateTime();
 
             var service = container.Resolve<DeathParser>();
-            service.check_for_death("You have been slain", timestamp);
-            service.check_for_death("You have been slain", timestamp.AddSeconds(40.0));
-            service.check_for_death("You have been slain", timestamp.AddSeconds(130.0));
+            service.ParseDeath("You have been slain", timestamp);
+            service.ParseDeath("You have been slain", timestamp.AddSeconds(40.0));
+            service.ParseDeath("You have been slain", timestamp.AddSeconds(130.0));
 
-            var count = service.deathloop_response();
+            var count = service.DeathLoopResponse();
             Assert.AreEqual(count, 2);
         }
 
 
         [TestMethod]
+        // player has died multiple times, but then shows sign of life, so the death tracking list is purged
+        // melee
         public void TestMethod5()
         {
             DateTime timestamp = new DateTime();
 
             var service = container.Resolve<DeathParser>();
-            service.check_for_death("You have been slain", timestamp);
-            service.check_for_death("You have been slain", timestamp);
-            service.check_for_death("You have been slain", timestamp);
+            service.ParseDeath("You have been slain", timestamp);
+            service.ParseDeath("You have been slain", timestamp);
+            service.ParseDeath("You have been slain", timestamp);
 
-            service.check_not_afk("You slice Soandso for 100 points of damage");
-            var count = service.deathloop_response();
+            service.ParseSignOfLife("You slice Soandso for 100 points of damage");
+            var count = service.DeathLoopResponse();
             Assert.AreEqual(count, 0);
         }
 
         [TestMethod]
+        // player has died multiple times, but then shows sign of life, so the death tracking list is purged
+        // casting
         public void TestMethod6()
         {
             DateTime timestamp = new DateTime();
 
             var service = container.Resolve<DeathParser>();
-            service.check_for_death("You have been slain", timestamp);
-            service.check_for_death("You have been slain", timestamp);
-            service.check_for_death("You have been slain", timestamp);
+            service.ParseDeath("You have been slain", timestamp);
+            service.ParseDeath("You have been slain", timestamp);
+            service.ParseDeath("You have been slain", timestamp);
 
-            service.check_not_afk("You begin casting");
-            var count = service.deathloop_response();
+            service.ParseSignOfLife("You begin casting");
+            var count = service.DeathLoopResponse();
             Assert.AreEqual(count, 0);
         }
 
         [TestMethod]
+        // player has died multiple times, but then shows sign of life, so the death tracking list is purged
+        // communicating
         public void TestMethod7()
         {
             DateTime timestamp = new DateTime();
 
             var service = container.Resolve<DeathParser>();
-            service.check_for_death("You have been slain", timestamp);
-            service.check_for_death("You have been slain", timestamp);
-            service.check_for_death("You have been slain", timestamp);
+            service.ParseDeath("You have been slain", timestamp);
+            service.ParseDeath("You have been slain", timestamp);
+            service.ParseDeath("You have been slain", timestamp);
 
-            service.check_not_afk("You shout, something something");
-            var count = service.deathloop_response();
+            service.ParseSignOfLife("You shout, something something");
+            var count = service.DeathLoopResponse();
             Assert.AreEqual(count, 0);
         }
 
