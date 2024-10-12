@@ -70,7 +70,7 @@ namespace EQToolShared.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to a pit trap,a grimling skullcracker,AntiSpawnMan,a grimling high priest,a summoned hatchling,the grimling archmage,a wormbait minnow,a grimling warder,a furious apprentice,a fallen Vah Shir hero,a diseased grimling,EvInvis,A growl,Gatturg Deadface,Gruj Warfist,a skeletal enforcer,WDTrpMn,a grimling apprentice,Foreman Gworknop,a grimling deathguard,a grimling elite guard,Invis,a grimling herbalist,a possessed priest,Trondol Shir,Shackle,a smudged grimling,AnimMan,As,Tashakhi,a grimling manaseeker,a grimling d [rest of string was truncated]&quot;;.
+        ///   Looks up a localized string similar to a pit trap,a grimling skullcracker,AntiSpawnMan,a grimling high priest,a summoned hatchling,the grimling archmage,a pulsating bile,a wormbait minnow,a grimling warder,a furious apprentice,a fallen Vah Shir hero,a diseased grimling,EvInvis,A growl,Gatturg Deadface,Gruj Warfist,a skeletal enforcer,WDTrpMn,a grimling apprentice,Foreman Gworknop,a grimling deathguard,a grimling elite guard,Invis,a grimling herbalist,a possessed priest,Trondol Shir,Shackle,a smudged grimling,AnimMan,As,Tashakhi,a grimling manase [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string MasterNPCList {
             get {
