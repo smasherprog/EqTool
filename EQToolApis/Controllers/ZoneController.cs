@@ -1,9 +1,9 @@
 ﻿using EQToolApis.DB;
 using EQToolApis.Hubs;
 using EQToolApis.Services;
+using EQToolShared;
 using EQToolShared.APIModels.ZoneControllerModels;
 using EQToolShared.HubModels;
-using EQToolShared.Map;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
 
@@ -33,10 +33,10 @@ namespace EQToolApis.Controllers
             {
                 return;
             }
-            if (ZoneParser.KaelFactionMobs.Contains(model.NPCData.Name) && model.IsDeath && (DateTime.UtcNow - LastKaelFactionSend).TotalSeconds > 10)
+            if (Zones.KaelFactionMobs.Contains(model.NPCData.Name) && model.IsDeath && (DateTime.UtcNow - LastKaelFactionSend).TotalSeconds > 10)
             {
-                this.LastKaelFactionSend = DateTime.UtcNow;
-                await this.hubContext.Clients.Group(model.Server.ToString()).SendAsync("AddCustomTrigger", new SignalrCustomTimer
+                LastKaelFactionSend = DateTime.UtcNow;
+                await hubContext.Clients.Group(model.Server.ToString()).SendAsync("AddCustomTrigger", new SignalrCustomTimer
                 {
                     Server = model.Server,
                     DurationInSeconds = 28 * 60,

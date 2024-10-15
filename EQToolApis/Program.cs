@@ -3,8 +3,8 @@ using EQToolApis.DB.Models;
 using EQToolApis.Hubs;
 using EQToolApis.Models;
 using EQToolApis.Services;
+using EQToolShared;
 using EQToolShared.Enums;
-using EQToolShared.Map;
 using Hangfire;
 using Hangfire.Dashboard;
 using Hangfire.SqlServer;
@@ -161,10 +161,10 @@ using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<EQToolContext>();
     db.Database.Migrate();
-    var Zones = ZoneParser.ZoneInfoMap;
+    var zones = Zones.ZoneInfoMap;
     var dbzones = db.EQZones.ToList();
     var notablenpcs = db.EQNotableNPCs.ToList();
-    foreach (var zone in Zones)
+    foreach (var zone in zones)
     {
         if (!dbzones.Any(a => a.Name == zone.Value.Name))
         {
@@ -175,7 +175,7 @@ using (var scope = app.Services.CreateScope())
         }
     }
     dbzones = db.EQZones.ToList();
-    foreach (var zone in Zones)
+    foreach (var zone in zones)
     {
         var dbzone = dbzones.FirstOrDefault(a => a.Name == zone.Value.Name);
         if (dbzone != null)

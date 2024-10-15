@@ -1,7 +1,7 @@
 ﻿using EQToolApis.DB;
 using EQToolApis.Models;
+using EQToolShared;
 using EQToolShared.Enums;
-using EQToolShared.Map;
 
 namespace EQToolApis.Services
 {
@@ -18,7 +18,7 @@ namespace EQToolApis.Services
         public void BuildCache()
         {
             var newnoteableNPCCache = new NoteableNPCCache();
-            var zones = ZoneParser.ZoneInfoMap;
+            var zones = Zones.ZoneInfoMap;
             var dbzones = toolContext.EQZones.ToList();
             var notablenpcs = toolContext.EQNotableNPCs.ToList();
             foreach (Servers server in Enum.GetValues(typeof(Servers)))

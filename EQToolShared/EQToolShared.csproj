@@ -76,17 +76,15 @@
     <Compile Include="HubModels\CustomTimer.cs" />
     <Compile Include="HubModels\PlayerLocation.cs" />
     <Compile Include="Map\SignalrPlayer.cs" />
-    <Compile Include="Map\ZoneParser.cs" />
-    <Compile Include="Map\ZoneSpawnTimes.cs" />
-    <Compile Include="MasterNPCList.cs" />
     <Compile Include="MasterItemList.cs" />
+    <Compile Include="MasterNPCList.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="Services\BinarySerializer.cs" />
+    <Compile Include="Zones.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\.editorconfig">
@@ -101,8 +99,10 @@
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="MasterItemList.txt" />
-    <Content Include="MasterNPCList.txt" />
+    <Resource Include="MasterItemList.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="MasterNPCList.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32825.248
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EQTool", "src\EQTool.csproj", "{10E99313-7361-4503-A314-14BC052A6CAC}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EQTool", "EQTool\EQTool.csproj", "{10E99313-7361-4503-A314-14BC052A6CAC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EQtoolsTests", "src\EQtoolsTests\EQtoolsTests.csproj", "{F3D5067B-258B-4AAB-963A-7CDA4D077D6F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EQtoolsTests", "EQtoolsTests\EQtoolsTests.csproj", "{F3D5067B-258B-4AAB-963A-7CDA4D077D6F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "EQToolApis", "EQToolApis\EQToolApis.csproj", "{486655A9-521F-4E61-A989-A8AEAFD7553C}"
 EndProject
