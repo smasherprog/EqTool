@@ -34,7 +34,7 @@ namespace EQTool.ViewModels
                 TrackSkills.Add(i);
             }
 
-            foreach (var item in Zones.OrderBy(a => a))
+            foreach (var item in EQToolShared.Zones.ZoneNames.OrderBy(a => a))
             {
                 Zones.Add(item);
             }
