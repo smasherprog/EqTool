@@ -72,6 +72,8 @@ namespace EQTool.Models
     {
         public int NewLevel { get; set; }
     }
+    public class DeathEvent { }
+
     public class DeathTouchEvent
     {
         public string NpcName { get; set; }

@@ -196,6 +196,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DeathTests.cs" />
     <Compile Include="ZoneSpawnTimeTests.cs" />
     <Compile Include="ChChainTests.cs" />
     <Compile Include="RandomRollTests.cs" />

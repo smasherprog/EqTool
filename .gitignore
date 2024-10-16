@@ -36,3 +36,6 @@ packages/
 
 # VS Code
 *.vscode
+
+# working directory
+working/
