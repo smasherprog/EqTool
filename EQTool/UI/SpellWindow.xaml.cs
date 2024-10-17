@@ -90,7 +90,7 @@ namespace EQTool.UI
             {
                 spellWindowViewModel.TryAdd(new SpellCastEvent
                 {
-                    IsYou = e.isYou,
+                    CastByYou = e.isYou,
                     Spell = e.Spell,
                     MultipleMatchesFound = false,
                     TargetName = EQSpells.SpaceYou,

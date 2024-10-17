@@ -30,7 +30,7 @@ namespace EQTool.Services.Parsing
             var m = ConMatch(line);
             if (!string.IsNullOrWhiteSpace(m))
             {
-                logEvents.Handle(new ConEvent { Name = m });
+                logEvents.Handle(new ConEvent { Name = m, TimeStamp = timestamp });
                 return true;
             }
             return false;

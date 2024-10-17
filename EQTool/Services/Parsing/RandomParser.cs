@@ -20,7 +20,7 @@ namespace EQTool.Services.Parsing
 
         public bool Handle(string line, DateTime timestamp)
         {
-            var m = Parse(line);
+            var m = Parse(line, timestamp);
             if (m != null)
             {
                 logEvents.Handle(m);
@@ -29,7 +29,7 @@ namespace EQTool.Services.Parsing
             return false;
         }
 
-        public RandomRollEvent Parse(string line)
+        public RandomRollEvent Parse(string line, DateTime timestamp)
         {
             if (line.StartsWith(RollMessage))
             {
@@ -60,7 +60,8 @@ namespace EQTool.Services.Parsing
                         {
                             PlayerName = PlayerRollName,
                             MaxRoll = maxrollint,
-                            Roll = rollint
+                            Roll = rollint,
+                            TimeStamp = timestamp
                         };
                     }
                 }

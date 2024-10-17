@@ -19,7 +19,7 @@ namespace EQTool.Services.Parsing
             var m = GetCancelTimer(line);
             if (!string.IsNullOrWhiteSpace(m))
             {
-                logEvents.Handle(new CancelTimerEvent { Name = m });
+                logEvents.Handle(new CancelTimerEvent { Name = m, TimeStamp = timestamp });
                 return true;
             }
             return false;

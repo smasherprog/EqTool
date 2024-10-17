@@ -17,7 +17,7 @@ namespace EQTool.Services.Parsing
             var m = IsQuake(line);
             if (m)
             {
-                logEvents.Handle(new QuakeEvent());
+                logEvents.Handle(new QuakeEvent { TimeStamp = timestamp });
                 return true;
             }
             return false;

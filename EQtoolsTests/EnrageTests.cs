@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using EQTool.Services.Parsing;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 
 namespace EQToolTests
 {
@@ -17,7 +18,7 @@ namespace EQToolTests
         public void Parse1()
         {
             var service = container.Resolve<EnrageParser>();
-            var d = service.EnrageCheck("Cekenar has become ENRAGED.");
+            var d = service.EnrageCheck("Cekenar has become ENRAGED.", DateTime.Now);
             Assert.AreEqual(d.NpcName, "Cekenar");
         }
     }

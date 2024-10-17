@@ -28,7 +28,8 @@ namespace EQTool.Services.Parsing
                 logEvents.Handle(new PlayerLocationEvent
                 {
                     Location = m.Value,
-                    PlayerInfo = activePlayer.Player
+                    PlayerInfo = activePlayer.Player,
+                    TimeStamp = timestamp
                 });
                 return true;
             }

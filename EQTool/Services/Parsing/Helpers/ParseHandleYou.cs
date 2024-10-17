@@ -1,5 +1,6 @@
 ﻿using EQTool.Models;
 using EQTool.ViewModels;
+using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
@@ -65,7 +66,7 @@ namespace EQTool.Services.Parsing
             }
         }
 
-        public SpellCastEvent HandleYouSpell(string message)
+        public SpellCastEvent HandleYouSpell(string message, DateTime timestamp)
         {
             if (spells.CastOnYouSpells.TryGetValue(message, out var foundspells))
             {
@@ -74,14 +75,15 @@ namespace EQTool.Services.Parsing
                 return new SpellCastEvent
                 {
                     Spell = foundspell,
-                    TargetName = EQSpells.SpaceYou
+                    TargetName = EQSpells.SpaceYou,
+                    TimeStamp = timestamp
                 };
             }
 
             return null;
         }
 
-        public SpellCastEvent HandleYourSpell(string message)
+        public SpellCastEvent HandleYourSpell(string message, DateTime timestamp)
         {
             if (message == "Your Pegasus Feather Cloak begins to glow.")
             {
@@ -112,14 +114,15 @@ namespace EQTool.Services.Parsing
                 return new SpellCastEvent
                 {
                     Spell = foundspell,
-                    TargetName = EQSpells.SpaceYou
+                    TargetName = EQSpells.SpaceYou,
+                    TimeStamp = timestamp
                 };
             }
 
             return null;
         }
 
-        public SpellCastEvent HandleYouBeginCastingSpellEnd(string message)
+        public SpellCastEvent HandleYouBeginCastingSpellEnd(string message, DateTime timestamp)
         {
             Debug.WriteLine($"Self Finished Spell: {message}");
             var spell = activePlayer.UserCastingSpell;
@@ -131,11 +134,12 @@ namespace EQTool.Services.Parsing
             {
                 Spell = spell,
                 TargetName = EQSpells.SpaceYou,
-                IsYou = true
+                CastByYou = true,
+                TimeStamp = timestamp
             };
         }
 
-        public SpellCastEvent HandleYouBeginCastingSpellOtherEnd(string message)
+        public SpellCastEvent HandleYouBeginCastingSpellOtherEnd(string message, DateTime timestamp)
         {
             var targetname = message.Replace(activePlayer.UserCastingSpell.cast_on_other, string.Empty).Trim();
             Debug.WriteLine($"Self Finished Spell: {message}");
@@ -144,7 +148,8 @@ namespace EQTool.Services.Parsing
             {
                 Spell = spell,
                 TargetName = targetname,
-                IsYou = true
+                CastByYou = true,
+                TimeStamp = timestamp
             };
         }
     }

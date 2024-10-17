@@ -17,7 +17,7 @@ namespace EQTool.Services.Parsing
             var m = FailedFaignCheck(line);
             if (!string.IsNullOrWhiteSpace(m))
             {
-                logEvents.Handle(new FailedFeignEvent { PersonWhoFailedFeign = m });
+                logEvents.Handle(new FailedFeignEvent { PersonWhoFailedFeign = m, TimeStamp = timestamp });
                 return true;
             }
             return false;

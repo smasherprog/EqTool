@@ -26,7 +26,7 @@ namespace EQTool.Services.Parsing
 
         public bool Handle(string line, DateTime timestamp)
         {
-            var m = MatchSpell(line);
+            var m = MatchSpell(line, timestamp);
             if (m != null)
             {
                 logEvents.Handle(m);
@@ -36,7 +36,7 @@ namespace EQTool.Services.Parsing
         }
 
 
-        public SpellCastEvent MatchSpell(string message)
+        public SpellCastEvent MatchSpell(string message, DateTime timestamp)
         {
             if (message == "You mend your wounds and heal some damage." || message == "You have failed to mend your wounds.")
             {
@@ -65,7 +65,8 @@ namespace EQTool.Services.Parsing
                         type = HealSpell.type
                     },
                     TargetName = EQSpells.SpaceYou,
-                    TotalSecondsOverride = 6 * 60
+                    TotalSecondsOverride = 6 * 60,
+                    TimeStamp = timestamp
                 };
             }
 
@@ -85,15 +86,15 @@ namespace EQTool.Services.Parsing
                 {
                     if (message == activePlayer.UserCastingSpell.cast_on_you)
                     {
-                        return parseHandleYouCasting.HandleYouBeginCastingSpellEnd(message);
+                        return parseHandleYouCasting.HandleYouBeginCastingSpellEnd(message, timestamp);
                     }
                     else if (!string.IsNullOrWhiteSpace(activePlayer.UserCastingSpell.cast_on_other) && message.EndsWith(activePlayer.UserCastingSpell.cast_on_other))
                     {
-                        return parseHandleYouCasting.HandleYouBeginCastingSpellOtherEnd(message);
+                        return parseHandleYouCasting.HandleYouBeginCastingSpellOtherEnd(message, timestamp);
                     }
                 }
 
-                return parseHandleYouCasting.HandleYouSpell(message);
+                return parseHandleYouCasting.HandleYouSpell(message, timestamp);
             }
 
             if (message.StartsWith(EQSpells.Your))
@@ -102,31 +103,31 @@ namespace EQTool.Services.Parsing
                 {
                     if (message == activePlayer.UserCastingSpell.cast_on_you)
                     {
-                        return parseHandleYouCasting.HandleYouBeginCastingSpellEnd(message);
+                        return parseHandleYouCasting.HandleYouBeginCastingSpellEnd(message, timestamp);
                     }
                     else if (!string.IsNullOrWhiteSpace(activePlayer.UserCastingSpell.cast_on_other) && message.EndsWith(activePlayer.UserCastingSpell.cast_on_other))
                     {
-                        return parseHandleYouCasting.HandleYouBeginCastingSpellOtherEnd(message);
+                        return parseHandleYouCasting.HandleYouBeginCastingSpellOtherEnd(message, timestamp);
                     }
                 }
 
-                var spell = parseHandleYouCasting.HandleYourSpell(message);
-                return spell ?? (settings.BestGuessSpells ? parseSpellGuess.HandleBestGuessSpell(message) : null);
+                var spell = parseHandleYouCasting.HandleYourSpell(message, timestamp);
+                return spell ?? (settings.BestGuessSpells ? parseSpellGuess.HandleBestGuessSpell(message, timestamp) : null);
             }
 
             if (activePlayer?.UserCastingSpell != null)
             {
                 if (message == activePlayer.UserCastingSpell.cast_on_you)
                 {
-                    return parseHandleYouCasting.HandleYouBeginCastingSpellEnd(message);
+                    return parseHandleYouCasting.HandleYouBeginCastingSpellEnd(message, timestamp);
                 }
                 else if (!string.IsNullOrWhiteSpace(activePlayer.UserCastingSpell.cast_on_other) && message.EndsWith(activePlayer.UserCastingSpell.cast_on_other))
                 {
-                    return parseHandleYouCasting.HandleYouBeginCastingSpellOtherEnd(message);
+                    return parseHandleYouCasting.HandleYouBeginCastingSpellOtherEnd(message, timestamp);
                 }
             }
 
-            return settings.BestGuessSpells ? parseSpellGuess.HandleBestGuessSpell(message) : null;
+            return settings.BestGuessSpells ? parseSpellGuess.HandleBestGuessSpell(message, timestamp) : null;
         }
     }
 }

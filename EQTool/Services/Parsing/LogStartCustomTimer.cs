@@ -21,7 +21,7 @@ namespace EQTool.Services.Parsing
             var m = GetStartTimer(line);
             if (m != null)
             {
-                logEvents.Handle(new StartTimerEvent { CustomTimer = m });
+                logEvents.Handle(new StartTimerEvent { CustomTimer = m, TimeStamp = timestamp });
                 return true;
             }
             return false;

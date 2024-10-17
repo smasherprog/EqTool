@@ -16,7 +16,7 @@ namespace EQTool.Services.Parsing
 
         public bool Handle(string line, DateTime timestamp)
         {
-            var m = Parse(line);
+            var m = Parse(line, timestamp);
             if (m != null)
             {
                 logEvents.Handle(m);
@@ -25,7 +25,7 @@ namespace EQTool.Services.Parsing
             return false;
         }
 
-        public FTEEvent Parse(string line)
+        public FTEEvent Parse(string line, DateTime timestamp)
         {
             var endwithexclimation = line.EndsWith("!");
             if (!endwithexclimation)
@@ -56,7 +56,8 @@ namespace EQTool.Services.Parsing
             return new FTEEvent
             {
                 FTEPerson = playername,
-                NPCName = npcname
+                NPCName = npcname,
+                TimeStamp = timestamp
             };
         }
     }

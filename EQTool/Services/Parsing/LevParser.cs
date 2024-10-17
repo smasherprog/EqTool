@@ -23,7 +23,7 @@ namespace EQTool.Services.Parsing
             var m = Parse(line);
             if (m != null)
             {
-                logEvents.Handle(new LevitateEvent { LevitateStatus = m.Value });
+                logEvents.Handle(new LevitateEvent { LevitateStatus = m.Value, TimeStamp = timestamp });
                 return true;
             }
             return false;

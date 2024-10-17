@@ -22,7 +22,7 @@ namespace EQTool.Services.Parsing
             var m = GetDeadTarget(line);
             if (!string.IsNullOrEmpty(m))
             {
-                logEvents.Handle(new DeadEvent { Name = m });
+                logEvents.Handle(new DeadEvent { Name = m, TimeStamp = timestamp });
                 return true;
             }
             return false;

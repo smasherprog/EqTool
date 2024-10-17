@@ -37,7 +37,8 @@ namespace EQTool.UI
                         {
                             Name = timername,
                             DurationInSeconds = (int)TimeSpanControl.Value.Value.TotalSeconds
-                        }
+                        },
+                        TimeStamp = DateTime.Now
                     });
                 TimerMenu.IsOpen = false;
             }

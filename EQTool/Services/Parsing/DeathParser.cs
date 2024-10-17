@@ -1,5 +1,5 @@
-﻿using EQTool.Models;
-using System;
+﻿using System;
+using System.Diagnostics;
 using System.Speech.Synthesis;
 using System.Text.RegularExpressions;
 
@@ -13,7 +13,7 @@ namespace EQTool.Services.Parsing
     //      2. in less than {_deathLoopSeconds} time,
     //      3. while the player is apparently AFK (no signs of life from casting, meleeing, or communicating)
     //
-    public class DeathParser : IEqLogParseHandler
+    public class DeathParser
     {
         private readonly LogEvents logEvents;
 
@@ -29,7 +29,7 @@ namespace EQTool.Services.Parsing
         //
         // if/when the length of this list meets or exceeds _deathLoopDeaths, then
         // the deathloop response is triggered
-        private System.Collections.Generic.List<DateTime> _deathLoopTimestamps = new System.Collections.Generic.List<DateTime>();
+        private readonly System.Collections.Generic.List<DateTime> _deathLoopTimestamps = new System.Collections.Generic.List<DateTime>();
 
         //
         // ctor
@@ -46,17 +46,17 @@ namespace EQTool.Services.Parsing
         {
             // are we apparently AFK?
             // if we are not AFK, then we aren't deathlooping, so purge the entire death tracking list
-            ParseSignOfLife(line);
+            _ = ParseSignOfLife(line);
 
             // have we died?
             // if so, add the death timestamp to the tracking list, and return true
-            bool rv = ParseDeath(line, timestamp);
+            var rv = ParseDeath(line, timestamp);
 
             // perform deathloop response
             // if the quantity of deaths in the tracking list exceeds the threshold, then respond appropriately
             if (rv)
             {
-                DeathLoopResponse();
+                _ = DeathLoopResponse();
             }
 
             return rv;
@@ -74,14 +74,14 @@ namespace EQTool.Services.Parsing
         {
             // check for proof of life, things that indicate the player is not actually AFK
             // begin by assuming the player is AFK
-            bool signOfLife = false;
+            var signOfLife = false;
 
             // only do the proof of life checks if there are already some death timestamps in the list, else skip this
             if (_deathLoopTimestamps.Count > 0)
             {
                 // does this line contain a proof of life - casting
-                string castingPattern = "^You begin casting";
-                Regex castingRegex = new Regex(castingPattern, RegexOptions.Compiled);
+                var castingPattern = "^You begin casting";
+                var castingRegex = new Regex(castingPattern, RegexOptions.Compiled);
                 var match = castingRegex.Match(line);
                 if (match.Success)
                 {
@@ -99,10 +99,10 @@ namespace EQTool.Services.Parsing
                 // where does container live?
                 //var activePlayer = container.Resolve<ActivePlayer>();
                 //string playerName = activePlayer.Player.Name;
-                string playerName = "Unknown";
+                var playerName = "Unknown";
 
-                string commsPattern = $"^(You told|You say|You tell|You auction|You shout|{playerName} ->)";
-                Regex commsRegex = new Regex(commsPattern, RegexOptions.Compiled);
+                var commsPattern = $"^(You told|You say|You tell|You auction|You shout|{playerName} ->)";
+                var commsRegex = new Regex(commsPattern, RegexOptions.Compiled);
                 match = commsRegex.Match(line);
                 if (match.Success)
                 {
@@ -112,8 +112,8 @@ namespace EQTool.Services.Parsing
                 }
 
                 // does this line contain a proof of life - melee
-                string meleePattern = "^You( try to)? (hit|slash|pierce|crush|claw|bite|sting|maul|gore|punch|kick|backstab|bash|slice)";
-                Regex meleeRegex = new Regex(meleePattern, RegexOptions.Compiled);
+                var meleePattern = "^You( try to)? (hit|slash|pierce|crush|claw|bite|sting|maul|gore|punch|kick|backstab|bash|slice)";
+                var meleeRegex = new Regex(meleePattern, RegexOptions.Compiled);
                 match = meleeRegex.Match(line);
                 if (match.Success)
                 {
@@ -147,19 +147,19 @@ namespace EQTool.Services.Parsing
             purgeOldDeaths(timestamp);
 
             // return value
-            bool rv = false;
+            var rv = false;
 
             // this regex allows the parser to watch for the real phrase, but also to be tested by
             // sending a tell while in-game to the non-existent user ".death"
-            string deathPattern = @"(^\.death )|(^You have been slain)";
-            Regex deathRegex = new Regex(deathPattern, RegexOptions.Compiled);
+            var deathPattern = @"(^\.death )|(^You have been slain)";
+            var deathRegex = new Regex(deathPattern, RegexOptions.Compiled);
             var match = deathRegex.Match(line);
 
             // if we have died
             if (match.Success)
             {
                 // handle the event
-                logEvents.Handle(new DeathEvent());
+                // logEvents.Handle(new DeathEvent());
 
                 // todo - we have died, so strip away all buff timers
 
@@ -186,11 +186,11 @@ namespace EQTool.Services.Parsing
             if (_deathLoopTimestamps.Count >= _deathLoopDeaths)
             {
                 // just a little audible marker
-                System.Media.SoundPlayer player = new System.Media.SoundPlayer(@"c:\Windows\Media\chimes.wav");
+                var player = new System.Media.SoundPlayer(@"c:\Windows\Media\chimes.wav");
                 player.Play();
 
                 // since we can't kill eqgame.exe, try to alert the user by yelling at him
-                SpeechSynthesizer synth = new SpeechSynthesizer();
+                var synth = new SpeechSynthesizer();
                 synth.SetOutputToDefaultAudioDevice();
                 synth.Rate = 2;
                 synth.Volume = 100; // 0-100, as loud as we can
@@ -215,7 +215,7 @@ namespace EQTool.Services.Parsing
             // walk the list and purge the old datetime stamps
             if (_deathLoopTimestamps.Count > 0)
             {
-                bool done = false;
+                var done = false;
                 while (!done)
                 {
                     if (_deathLoopTimestamps.Count == 0)
@@ -225,7 +225,7 @@ namespace EQTool.Services.Parsing
                     else
                     {
                         // the list of death timestamps has the oldest at position 0
-                        DateTime oldestTimestamp = _deathLoopTimestamps[0];
+                        var oldestTimestamp = _deathLoopTimestamps[0];
                         var elapsedSeconds = (timestamp - oldestTimestamp).TotalSeconds;
 
                         // too much time?
@@ -251,12 +251,12 @@ namespace EQTool.Services.Parsing
         private void writeDeathTimes()
         {
             // print a list of timestamps
-            Console.Write($"Death timestamps: count = {_deathLoopTimestamps.Count}, times = ");
-            for (int i = 0; i < _deathLoopTimestamps.Count; i++)
+            Debug.WriteLine($"Death timestamps: count = {_deathLoopTimestamps.Count}, times = ");
+            for (var i = 0; i < _deathLoopTimestamps.Count; i++)
             {
-                Console.Write($"[{_deathLoopTimestamps[i]}] ");
+                Debug.Write($"[{_deathLoopTimestamps[i]}] ");
             }
-            Console.WriteLine();
+            Debug.WriteLine(string.Empty);
         }
 
     }

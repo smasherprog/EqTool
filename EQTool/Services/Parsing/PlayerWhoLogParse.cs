@@ -40,14 +40,14 @@ namespace EQTool.Services.Parsing
             var m = ParsePlayerInfo(line);
             if (m != null && StartingWhoOfZone)
             {
-                logEvents.Handle(new WhoPlayerEvent { PlayerInfo = m });
+                logEvents.Handle(new WhoPlayerEvent { PlayerInfo = m, TimeStamp = timestamp });
                 return true;
             }
 
             if (IsZoneWhoLine(line))
             {
                 StartingWhoOfZone = true;
-                logEvents.Handle(new WhoEvent());
+                logEvents.Handle(new WhoEvent { TimeStamp = timestamp });
                 return true;
             }
             else
@@ -58,7 +58,7 @@ namespace EQTool.Services.Parsing
             var newzone = ZoneChanged(line);
             if (!string.IsNullOrWhiteSpace(newzone))
             {
-                logEvents.Handle(new YouZonedEvent { ZoneName = newzone });
+                logEvents.Handle(new YouZonedEvent { ZoneName = newzone, TimeStamp = timestamp });
                 return true;
             }
 

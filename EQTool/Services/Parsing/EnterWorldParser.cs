@@ -18,7 +18,7 @@ namespace EQTool.Services.Parsing
             var m = HasEnteredWorld(line);
             if (m)
             {
-                logEvents.Handle(new EnteredWorldEvent());
+                logEvents.Handle(new EnteredWorldEvent { TimeStamp = timestamp });
                 return true;
             }
             return false;
