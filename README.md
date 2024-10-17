@@ -78,35 +78,35 @@ Features:
 <ul>
 All below commands work in tells (keep them private!) or regular say (share with your friends!)
 
-      /t .ct-duration
-      /t .ct-duration-label
+      /t PigTimer-duration
+      /t PigTimer-duration-label
  or 
 
-      /say .ct-duration
-      /say .ct-duration-label
+      /say PigTimer-duration
+      /say PigTimer-duration-label
  where
  
-      ".ct" (short for Custom Timer) is the identifying marker
+      "PigTimer" is the identifying marker
       "duration" can be in time formats:
            hh:mm:ss
            mm:ss
            seconds
       "label" can contain any character, number, or underscore, but cannot have blank spaces
 
-      ".ct", "duration", and "label" should be separated by a - dash
+      "PigTimer", "duration", and "label" should be separated by a - dash
 
   This can be in a tell (that only you will see), or in any visible channel (which others see).
 
 
 Examples:
 
-      .ct-30                      30 second timer, with no label
-      .ct-10-TenSeconds           10 second timer, with label
-      .ct-10:00-TenMinutes        10 minute timer, with label
-      .ct-10:00:00-TenHours       10 hour timer, with label
-      .ct-120-description         120 second timer, with label 'description'
-      .ct-6:40-Guard_George       6 minutes 40 second timer, with label 'Guard_George'
-      .ct-1:02:00-LongTimer       1 hour, 2 minute timer, with label 'LongTimer'
+      PigTimer-30                      30 second timer, with no label
+      PigTimer-10-TenSeconds           10 second timer, with label
+      PigTimer-10:00-TenMinutes        10 minute timer, with label
+      PigTimer-10:00:00-TenHours       10 hour timer, with label
+      PigTimer-120-description         120 second timer, with label 'description'
+      PigTimer-6:40-Guard_George       6 minutes 40 second timer, with label 'Guard_George'
+      PigTimer-1:02:00-LongTimer       1 hour, 2 minute timer, with label 'LongTimer'
 
 </ul>
 <img width="1624" alt="image" src="https://github.com/smasherprog/EqTool/assets/3393733/3c53a1d8-44c4-499b-9e92-ea5d5f38275e">
