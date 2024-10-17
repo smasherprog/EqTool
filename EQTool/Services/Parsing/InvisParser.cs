@@ -1,6 +1,5 @@
 ﻿using EQTool.Models;
 using System;
-using System.Media;
 using System.Text.RegularExpressions;
 
 
@@ -26,11 +25,6 @@ namespace EQTool.Services.Parsing
             if (m != null)
             {
                 logEvents.Handle(new InvisEvent { InvisStatus = m.Value });
-
-                //// just a little audible marker to help us debug and test
-                //System.Media.SoundPlayer player = new System.Media.SoundPlayer(@"c:\Windows\Media\chimes.wav");
-                //player.Play();
-
                 return true;
             }
             return false;

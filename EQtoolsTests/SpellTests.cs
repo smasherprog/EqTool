@@ -1205,60 +1205,132 @@ namespace EQToolTests
         public void GetCustomTimerStart()
         {
             var service = container.Resolve<LogStartCustomTimer>();
-            var line = "You say, 'Timer Start StupidGoblin 30'";
-            var targettoremove = service.GetStartTimer(line);
+            var line = "You say, 'PigTimer-30:00-StupidGoblin'";
+            var targettoremove = service.ParseStartTimer(line);
 
             Assert.IsNotNull(targettoremove);
             Assert.AreEqual(30 * 60, targettoremove.DurationInSeconds);
-            Assert.AreEqual("stupidgoblin", targettoremove.Name);
+            Assert.AreEqual("StupidGoblin", targettoremove.Name);
         }
 
         [TestMethod]
         public void GetCustomTimerStart_WithSeconds()
         {
             var service = container.Resolve<LogStartCustomTimer>();
-            var line = "You say, 'Timer Start StupidGoblin 30:20'";
-            var targettoremove = service.GetStartTimer(line);
+            var line = "You say, 'PigTimer-30:20-StupidGoblin'";
+            var targettoremove = service.ParseStartTimer(line);
 
             Assert.IsNotNull(targettoremove);
             Assert.AreEqual((30 * 60) + 20, targettoremove.DurationInSeconds);
-            Assert.AreEqual("stupidgoblin", targettoremove.Name);
+            Assert.AreEqual("StupidGoblin", targettoremove.Name);
         }
 
         [TestMethod]
         public void GetCustomTimerStart_WithSeconds_andmorethan60minutes()
         {
             var service = container.Resolve<LogStartCustomTimer>();
-            var line = "You say, 'Timer Start StupidGoblin 90:20'";
-            var targettoremove = service.GetStartTimer(line);
+            var line = "You say, 'PigTimer-90:20-StupidGoblin'";
+            var targettoremove = service.ParseStartTimer(line);
 
             Assert.IsNotNull(targettoremove);
             Assert.AreEqual((90 * 60) + 20, targettoremove.DurationInSeconds);
-            Assert.AreEqual("stupidgoblin", targettoremove.Name);
+            Assert.AreEqual("StupidGoblin", targettoremove.Name);
         }
 
         [TestMethod]
         public void GetCustomTimerStart1()
         {
             var service = container.Resolve<LogStartCustomTimer>();
-            var line = "You say, 'Start Timer StupidGoblin 30'";
-            var targettoremove = service.GetStartTimer(line);
+            var line = "You say, 'PigTimer-30:00-StupidGoblin'";
+            var targettoremove = service.ParseStartTimer(line);
 
             Assert.IsNotNull(targettoremove);
             Assert.AreEqual(30 * 60, targettoremove.DurationInSeconds);
-            Assert.AreEqual("stupidgoblin", targettoremove.Name);
+            Assert.AreEqual("StupidGoblin", targettoremove.Name);
         }
 
         [TestMethod]
         public void GetCustomTimerStart_TestSpaces()
         {
             var service = container.Resolve<LogStartCustomTimer>();
-            var line = "You say, 'Start Timer StupidGoblin with club near me 30'";
-            var targettoremove = service.GetStartTimer(line);
+            var line = "You say, 'PigTimer-30:00-StupidGoblin_with_club_near_me'";
+            var targettoremove = service.ParseStartTimer(line);
 
             Assert.IsNotNull(targettoremove);
             Assert.AreEqual(30 * 60, targettoremove.DurationInSeconds);
-            Assert.AreEqual("stupidgoblin with club near me", targettoremove.Name);
+            Assert.AreEqual("StupidGoblin_with_club_near_me", targettoremove.Name);
+        }
+
+        [TestMethod]
+        public void GetCustomTimerStart_Test1()
+        {
+            var service = container.Resolve<LogStartCustomTimer>();
+            var line = "PigTimer-02";
+            var targettoremove = service.ParseStartTimer(line);
+
+            Assert.IsNotNull(targettoremove);
+            Assert.AreEqual(2, targettoremove.DurationInSeconds);
+            Assert.AreEqual(line, targettoremove.Name);
+        }
+
+        [TestMethod]
+        public void GetCustomTimerStart_Test2()
+        {
+            var service = container.Resolve<LogStartCustomTimer>();
+            var line = "PigTimer-02:03";
+            var targettoremove = service.ParseStartTimer(line);
+
+            Assert.IsNotNull(targettoremove);
+            Assert.AreEqual(2*60+3, targettoremove.DurationInSeconds);
+            Assert.AreEqual(line, targettoremove.Name);
+        }
+
+        [TestMethod]
+        public void GetCustomTimerStart_Test3()
+        {
+            var service = container.Resolve<LogStartCustomTimer>();
+            var line = "PigTimer-02:03:04";
+            var targettoremove = service.ParseStartTimer(line);
+
+            Assert.IsNotNull(targettoremove);
+            Assert.AreEqual(2 * 3600 + 3*60 + 4, targettoremove.DurationInSeconds);
+            Assert.AreEqual(line, targettoremove.Name);
+        }
+
+        [TestMethod]
+        public void GetCustomTimerStart_Test1a()
+        {
+            var service = container.Resolve<LogStartCustomTimer>();
+            var line = "PigTimer-02-xyzzy";
+            var targettoremove = service.ParseStartTimer(line);
+
+            Assert.IsNotNull(targettoremove);
+            Assert.AreEqual(2, targettoremove.DurationInSeconds);
+            Assert.AreEqual("xyzzy", targettoremove.Name);
+        }
+
+        [TestMethod]
+        public void GetCustomTimerStart_Test2a()
+        {
+            var service = container.Resolve<LogStartCustomTimer>();
+            var line = "PigTimer-02:03-xyzzy";
+            var targettoremove = service.ParseStartTimer(line);
+
+            Assert.IsNotNull(targettoremove);
+            Assert.AreEqual(2 * 60 + 3, targettoremove.DurationInSeconds);
+            Assert.AreEqual("xyzzy", targettoremove.Name);
+        }
+
+        [TestMethod]
+        public void GetCustomTimerStart_Test3a()
+        {
+            var service = container.Resolve<LogStartCustomTimer>();
+            var line = "PigTimer-02:03:04-xyzzy";
+            var targettoremove = service.ParseStartTimer(line);
+
+            Assert.IsNotNull(targettoremove);
+            Assert.AreEqual(2 * 3600 + 3 * 60 + 4, targettoremove.DurationInSeconds);
+            Assert.AreEqual("xyzzy", targettoremove.Name);
         }
 
         [TestMethod]
@@ -1355,7 +1427,7 @@ namespace EQToolTests
         {
             var line = "Sat Oct 08 11:31:38 2022";
             var d = LogFileDateTimeParse.ParseDateTime(line);
-            Assert.AreEqual(d.ToString(), "10/8/2022 11:31:38 AM");
+            Assert.AreEqual(d.ToString("M'/'d'/'yyyy hh:mm:ss tt"), "10/8/2022 11:31:38 AM");
         }
 
         [TestMethod]
