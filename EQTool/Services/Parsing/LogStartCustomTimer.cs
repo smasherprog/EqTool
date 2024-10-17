@@ -47,7 +47,7 @@ namespace EQTool.Services.Parsing
         //
         public bool Handle(string line, DateTime timestamp)
         {
-            var m = ParseStartTimer(line, timestamp);
+            var m = ParseStartTimer(line);
             if (m != null)
             {
                 logEvents.Handle(new StartTimerEvent { CustomTimer = m });
@@ -59,7 +59,7 @@ namespace EQTool.Services.Parsing
         //
         // parse the passed line to see if user has requested a custom timer to started
         //
-        public CustomTimer ParseStartTimer(string line, DateTime timestamp)
+        public CustomTimer ParseStartTimer(string line)
         {
             // return value
             CustomTimer rv = null;
@@ -113,11 +113,11 @@ namespace EQTool.Services.Parsing
                 // return value
                 rv = new CustomTimer();
                 rv.DurationInSeconds = timerSeconds;
-                // if the user didn't specify a label, we'll give it the timestamp of this line
+                // if the user didn't specify a label, we'll give it the match string
                 if (label != "")
                     rv.Name = label;
                 else
-                    rv.Name = timestamp.ToString();
+                    rv.Name = $"{match}";
             }
             return rv;
         }

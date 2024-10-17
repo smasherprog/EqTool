@@ -74,8 +74,9 @@ Features:
   <li>Hanbox shouts, 'RAMP2 CH --Beefwich'</li>
   <li>Hanbox shouts, 'CH - name - 001'</li> 
 </ul>
-<h4>Timers -- All below commands work in tells (keep them private!) or regular say (share with your friends!)</h4>
+<h3>Timers</h3>
 <ul>
+All below commands work in tells (keep them private!) or regular say (share with your friends!)
 
       /t .ct-duration
       /t .ct-duration-label
@@ -85,23 +86,24 @@ Features:
       /say .ct-duration-label
  where
  
-      .ct (short for Custom Timer) is the identifying marker
-      .ct, duration, and label should be separated by a - dash
-      duration can be in various formats, e.g.:
+      ".ct" (short for Custom Timer) is the identifying marker
+      "duration" can be in time formats:
            hh:mm:ss
            mm:ss
            seconds
+      "label" can contain any character, number, or underscore, but cannot have blank spaces
 
-      The timer start phrase can be in a tell (that only you will see), or in any visible channel (which others see)
-      Note: there cannot be any blank spaces!!
+      ".ct", "duration", and "label" should be separated by a - dash
+
+  This can be in a tell (that only you will see), or in any visible channel (which others see).
 
 
 Examples:
 
       .ct-30                      30 second timer, with no label
-      .ct-10-Ten_Seconds          10 second timer, with label
-      .ct-10:00-Ten_Minutes       10 minute timer, with label
-      .ct-10:00:00-Ten_Hours      10 hour timer, with label
+      .ct-10-TenSeconds           10 second timer, with label
+      .ct-10:00-TenMinutes        10 minute timer, with label
+      .ct-10:00:00-TenHours       10 hour timer, with label
       .ct-120-description         120 second timer, with label 'description'
       .ct-6:40-Guard_George       6 minutes 40 second timer, with label 'Guard_George'
       .ct-1:02:00-LongTimer       1 hour, 2 minute timer, with label 'LongTimer'
