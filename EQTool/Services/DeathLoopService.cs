@@ -21,6 +21,7 @@ namespace EQTool.Services
             this.logEvents.PayerChangedEvent += LogEvents_PayerChangedEvent; ;
         }
 
+        public bool IsDeathLooping { get; private set; } = false;
         private void LogEvents_PayerChangedEvent(object sender, PayerChangedEvent e)
         {
             lastHitTime = lastActionTime = null;
@@ -55,6 +56,7 @@ namespace EQTool.Services
         private void LogEvents_DeadEvent(object sender, DeadEvent e)
         {
             lastDeathTimes.Add(DateTime.Now);
+            IsDeathLooping = true; // Need logic to determine if deathloop is occuring here
         }
     }
 }

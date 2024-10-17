@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using EQTool.Services;
 using EQTool.Services.Parsing;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
@@ -9,9 +10,14 @@ namespace EQToolTests
     public class DeathTests
     {
         private readonly IContainer container;
+        private readonly DeathLoopService deathLoopService;
+        private readonly LogEvents logEvents;
+
         public DeathTests()
         {
             container = DI.Init();
+            deathLoopService = container.Resolve<DeathLoopService>();
+            logEvents = container.Resolve<LogEvents>();
         }
 
         [TestMethod]
@@ -23,6 +29,30 @@ namespace EQToolTests
             var service = container.Resolve<DeathParser>();
             var rv = service.ParseDeath("Just some random line", timestamp);
             Assert.AreEqual(false, rv);
+        }
+
+
+        [TestMethod]
+        // has the player died
+        public void ExampleTest()
+        {
+            var timestamp = DateTime.Now;
+            var hit = new EQTool.Models.DPSParseMatch
+            {
+                DamageDone = 1,
+                SourceName = "A",
+                TargetName = "B",
+                TimeStamp = timestamp,
+            };
+
+            logEvents.Handle(new EQTool.Models.DeadEvent { Name = "YOU", TimeStamp = timestamp });
+            timestamp = timestamp.AddSeconds(1);
+            logEvents.Handle(new EQTool.Models.FightHitEvent { HitInformation = hit, TimeStamp = timestamp });
+            timestamp = timestamp.AddSeconds(1);
+            logEvents.Handle(new EQTool.Models.YouZonedEvent { ZoneName = "somezonedoesntmatter", TimeStamp = timestamp });
+            _ = timestamp.AddSeconds(1);
+            //add a bunch of other things to make sure all works well
+            Assert.AreEqual(false, deathLoopService.IsDeathLooping);
         }
 
         [TestMethod]
