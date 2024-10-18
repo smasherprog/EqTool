@@ -1,15 +1,14 @@
 ﻿using EQTool.Models;
 using System;
+using System.Security.Policy;
+using System.Text.RegularExpressions;
+using System.Windows.Input;
+using System.Windows.Shapes;
 
 namespace EQTool.Services.Parsing
 {
     public class LogDeathParse : IEqLogParseHandler
     {
-        private readonly string HasBeenSlainBy = "has been slain by";
-        private readonly string Died = "died.";
-        private readonly string YouHaveSlain = "You have slain";
-        private readonly string YouHaveBeenSlain = "You have been slain";
-
         private readonly LogEvents logEvents;
 
         public LogDeathParse(LogEvents logEvents)
@@ -20,7 +19,7 @@ namespace EQTool.Services.Parsing
         public bool Handle(string line, DateTime timestamp)
         {
             var m = GetDeadTarget(line);
-            if (!string.IsNullOrEmpty(m))
+            if (m != "")
             {
                 logEvents.Handle(new DeadEvent { Name = m, TimeStamp = timestamp });
                 return true;
@@ -28,41 +27,51 @@ namespace EQTool.Services.Parsing
             return false;
         }
 
-        public string GetDeadTarget(string message)
+        public string GetDeadTarget(string line)
         {
-            var nameofthingindex = message.IndexOf(HasBeenSlainBy);
-            if (nameofthingindex != -1 || message.EndsWith(Died))
-            {
-                if (message.StartsWith("Eye of "))
-                {
-                    return string.Empty;
-                }
+            // return value
+            string rv = "";
 
-                if (nameofthingindex != -1)
-                {
-                    return message.Substring(0, nameofthingindex).Trim();
-                }
-                else if (!message.Contains(", '") && message.EndsWith(Died))
-                {
-                    nameofthingindex = message.IndexOf(Died);
-                    return message.Substring(0, nameofthingindex).Trim();
-                }
-                else
-                {
-                    return string.Empty;
-                }
+            //[Mon Sep 16 14:32:02 2024] a Tesch Mas Gnoll has been slain by Genartik!
+            string slainByPattern = @"^(?<target>[\w ]+) has been slain by";
+            var slainByRegex = new Regex(slainByPattern, RegexOptions.Compiled);
+            var match = slainByRegex.Match(line);
+            if (match.Success)
+            {
+                rv = match.Groups["target"].Value;
+            }
 
-            }
-            else if (message.StartsWith(YouHaveSlain))
+            //[Mon Sep 16 14:21:24 2024] You have slain a Tesch Mas Gnoll!
+            string slainPattern = @"^You have slain (?<target>[\w ]+)";
+            var slainRegex = new Regex(slainPattern, RegexOptions.Compiled);
+            match = slainRegex.Match(line);
+            if (match.Success)
             {
-                var nameofthing = message.Replace(YouHaveSlain, string.Empty).TrimEnd('!').Trim();
-                return nameofthing;
+                rv = match.Groups["target"].Value;
             }
-            else if (message.StartsWith(YouHaveBeenSlain))
+
+            //[Sat Apr 30 09:35:27 2022] Megachad died.
+            string diedPattern = @"^(?<target>[\w ]+) died\.$";
+            var diedRegex = new Regex(diedPattern, RegexOptions.Compiled);
+            match = diedRegex.Match(line);
+            if (match.Success)
             {
-                return EQSpells.SpaceYou;
+                rv = match.Groups["target"].Value;
             }
-            return null;
+
+            //[Mon Sep 16 14:21:24 2024] You have been slain
+            // this regex allows the parser to watch for the real phrase, but also to be tested by
+            // sending a tell while in-game to the non-existent user ".death"
+            string playerDeathPattern = @"(^\.death )|(^You have been slain)";
+            var playerDeathRegex = new Regex(playerDeathPattern, RegexOptions.Compiled);
+            match = playerDeathRegex.Match(line);
+            if (match.Success)
+            {
+                rv = "You";
+            }
+
+            // return 
+            return rv;
         }
     }
 }
