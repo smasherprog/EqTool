@@ -163,7 +163,7 @@ namespace EQTool.ViewModels
             });
         }
 
-        public void TryAdd(DPSParseMatch entity)
+        public void TryAdd(DamageEvent entity)
         {
             //when charmed pet and nps have the same name, everything is messed up
             if (entity == null || entity.SourceName == entity.TargetName)

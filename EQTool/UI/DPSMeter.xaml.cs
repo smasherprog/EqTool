@@ -32,7 +32,7 @@ namespace EQTool.UI
             DataContext = dPSWindowViewModel;
             InitializeComponent();
             base.Init();
-            this.logEvents.FightHitEvent += LogParser_FightHitEvent;
+            this.logEvents.DamageEvent += LogParser_DamageEvent;
             this.logEvents.DeadEvent += LogParser_DeadEvent;
             UITimer = new System.Timers.Timer(1000);
             UITimer.Elapsed += PollUI;
@@ -48,9 +48,9 @@ namespace EQTool.UI
             view.LiveSortingProperties.Add(nameof(EntittyDPS.TotalDamage));
         }
 
-        private void LogParser_FightHitEvent(object sender, DamageEvent e)
+        private void LogParser_DamageEvent(object sender, DamageEvent e)
         {
-            dPSWindowViewModel.TryAdd(e.HitInformation);
+            dPSWindowViewModel.TryAdd(e);
         }
 
         private void LogParser_DeadEvent(object sender, DeadEvent e)
@@ -74,7 +74,7 @@ namespace EQTool.UI
             if (logEvents != null)
             {
                 logEvents.DeadEvent -= LogParser_DeadEvent;
-                logEvents.FightHitEvent -= LogParser_FightHitEvent;
+                logEvents.DamageEvent -= LogParser_DamageEvent;
             }
             base.OnClosing(e);
         }

@@ -19,11 +19,11 @@ namespace EQToolTests
         }
 
         [TestMethod]
-        public void DPSLogParse_EatingDpsParseTest()
+        public void DamageLogParser_EatingDpsParseTest()
         {
-            var dpslogparse = container.Resolve<DamageLogParser>();
+            var damageLogParser = container.Resolve<DamageLogParser>();
             var message = "Vebanab slices a willowisp for 56 points of damage.";
-            var match = dpslogparse.Match(message, DateTime.Now);
+            var match = damageLogParser.Match(message, DateTime.Now);
 
             Assert.IsNotNull(match);
             Assert.AreEqual(match.SourceName, "Vebanab");
@@ -31,21 +31,22 @@ namespace EQToolTests
             Assert.AreEqual(match.DamageDone, 56);
         }
 
-        [TestMethod]
-        public void DPSLogParse_DOTParseTest()
-        {
-            var dpslogparse = container.Resolve<DamageLogParser>();
-            var message = "a goblin warrior has taken 12 damage from your Choke.";
-            var match = dpslogparse.Match(message, DateTime.Now);
+        // this style of damage message is not present in P99
+        //[TestMethod]
+        //public void DamageLogParser_DOTParseTest()
+        //{
+        //    var dpslogparse = container.Resolve<DamageLogParser>();
+        //    var message = "a goblin warrior has taken 12 damage from your Choke.";
+        //    var match = dpslogparse.Match(message, DateTime.Now);
 
-            Assert.IsNotNull(match);
-            Assert.AreEqual(match.SourceName, "You");
-            Assert.AreEqual(match.TargetName, "a goblin warrior");
-            Assert.AreEqual(match.DamageDone, 12);
-        }
+        //    Assert.IsNotNull(match);
+        //    Assert.AreEqual(match.SourceName, "You");
+        //    Assert.AreEqual(match.TargetName, "a goblin warrior");
+        //    Assert.AreEqual(match.DamageDone, 12);
+        //}
 
         [TestMethod]
-        public void DPSLogParse_NonMelleTest()
+        public void DamageLogParser_NonMelleTest()
         {
             var dpslogparse = container.Resolve<DamageLogParser>();
             var message = "Ratman Rager was hit by non-melee for 45 points of damage.";
@@ -58,7 +59,7 @@ namespace EQToolTests
         }
 
         [TestMethod]
-        public void DPSLogParse_EatingDpsParseTest1()
+        public void DamageLogParser_EatingDpsParseTest1()
         {
             var dpslogparse = container.Resolve<DamageLogParser>();
             var message = "a willowisp slices Vebanab for 56 points of damage.";
@@ -71,7 +72,7 @@ namespace EQToolTests
         }
 
         [TestMethod]
-        public void DPSLogParse_EatingDpsParseTestYou()
+        public void DamageLogParser_EatingDpsParseTestYou()
         {
             var dpslogparse = container.Resolve<DamageLogParser>();
             var message = "You crush a shadowed man for 1 point of damage.";
@@ -84,7 +85,7 @@ namespace EQToolTests
         }
 
         [TestMethod]
-        public void DPSLogParse_EatingDpsParseTestYouGetHit()
+        public void DamageLogParser_EatingDpsParseTestYouGetHit()
         {
             var dpslogparse = container.Resolve<DamageLogParser>();
             var message = "Guard Valon bashes YOU for 12 points of damage.";
@@ -168,7 +169,7 @@ namespace EQToolTests
         {
             var vm = container.Resolve<DPSWindowViewModel>();
 
-            vm.TryAdd(new DPSParseMatch
+            vm.TryAdd(new DamageEvent
             {
                 DamageDone = 44,
                 SourceName = "Test",

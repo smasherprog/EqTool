@@ -1355,7 +1355,7 @@ namespace EQToolTests
         {
             var line = "Sat Oct 08 11:31:38 2022";
             var d = LogFileDateTimeParse.ParseDateTime(line);
-            Assert.AreEqual(d.ToString(), "10/8/2022 11:31:38 AM");
+            Assert.AreEqual(d.ToString("M'/'d'/'yyyy hh:mm:ss tt"), "10/8/2022 11:31:38 AM");
         }
 
         [TestMethod]
@@ -1387,7 +1387,7 @@ namespace EQToolTests
             logevents.StartTimerEvent += (a, b) => Assert.Fail("DontHit");
             logevents.ConEvent += (a, b) => Assert.Fail("DontHit");
             logevents.DeadEvent += (a, b) => Assert.Fail("DontHit");
-            logevents.FightHitEvent += (a, b) => Assert.Fail("DontHit");
+            logevents.DamageEvent += (a, b) => Assert.Fail("DontHit");
             logevents.YouZonedEvent += (a, b) => Assert.Fail("DontHit");
             logevents.PlayerLocationEvent += (a, b) => Assert.Fail("DontHit");
             logparser.Push(line);

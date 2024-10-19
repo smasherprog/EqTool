@@ -77,7 +77,7 @@ namespace EQTool.Services.Parsing
             {
                 rv = new DamageEvent();
                 rv.SourceName   = "You";
-                rv.DamageType   = match.Groups["dmg_type"].Value;
+                rv.DamageType   = "non-melee";
                 rv.DamageDone   = int.Parse(match.Groups["damage"].Value);
                 rv.TargetName   = match.Groups["target_name"].Value;
                 rv.TimeStamp    = timestamp;

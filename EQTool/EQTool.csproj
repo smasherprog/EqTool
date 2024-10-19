@@ -366,7 +366,6 @@
     <Compile Include="UI\DPSMeter.xaml.cs">
       <DependentUpon>DPSMeter.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Models\DPSParseMatch.cs" />
     <Compile Include="Models\EQSpells.cs" />
     <Compile Include="Models\EQToolSettings.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
@@ -421,7 +420,7 @@
     <Compile Include="Services\LogParser.cs" />
     <Compile Include="Services\Parsing\LogCancelCustomTimer.cs" />
     <Compile Include="Services\Parsing\LogDeathParse.cs" />
-    <Compile Include="Services\Parsing\DPSLogParse.cs" />
+    <Compile Include="Services\Parsing\DamageLogParser.cs" />
     <Compile Include="Services\Parsing\Helpers\ParseSpellGuess.cs" />
     <Compile Include="Services\Spells\SpellDurations.cs" />
     <Compile Include="Services\Parsing\Helpers\ParseHandleYou.cs" />

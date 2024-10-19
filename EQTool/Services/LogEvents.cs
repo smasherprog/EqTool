@@ -23,10 +23,10 @@ namespace EQTool.Services
             FTEEvent?.Invoke(this, e);
         }
 
-        public event EventHandler<DamageEvent> FightHitEvent;
+        public event EventHandler<DamageEvent> DamageEvent;
         public void Handle(DamageEvent e)
         {
-            FightHitEvent?.Invoke(this, e);
+            DamageEvent?.Invoke(this, e);
         }
 
         public event EventHandler<ConEvent> ConEvent;

@@ -55,7 +55,7 @@ namespace EQTool.UI
         private readonly EQToolSettingsLoad toolSettingsLoad;
         private readonly SpellWindowViewModel spellWindowViewModel;
         private readonly EQSpells spells;
-        private readonly DamageLogParser dPSLogParse;
+        private readonly DamageLogParser damageLogParser;
         private readonly IAppDispatcher appDispatcher;
         private readonly ISignalrPlayerHub signalrPlayerHub;
         private readonly LogParser logParser;
@@ -68,7 +68,7 @@ namespace EQTool.UI
             MapLoad mapLoad,
             IAppDispatcher appDispatcher,
             ISignalrPlayerHub signalrPlayerHub,
-            DamageLogParser dPSLogParse,
+            DamageLogParser damageLogParse,
             EQSpells spells,
             LoginMiddlemand loginMiddlemand,
             EQToolSettings settings,
@@ -82,7 +82,7 @@ namespace EQTool.UI
             this.logParser = logParser;
             this.mapLoad = mapLoad;
             this.appDispatcher = appDispatcher;
-            this.dPSLogParse = dPSLogParse;
+            this.damageLogParser = damageLogParse;
             this.spells = spells;
             this.settings = settings;
             this.spellWindowViewModel = spellWindowViewModel;
@@ -378,10 +378,9 @@ namespace EQTool.UI
                         catch (FormatException)
                         {
                         }
-                        var match = dPSLogParse.Match(message, timestamp);
+                        var match = damageLogParser.Match(message, timestamp);
                         if (match != null)
                         {
-                            //fightlist.Add(new KeyValuePair<string, DPSParseMatch>(item, match));
                             fightlist.Add(new KeyValuePair<string, DamageEvent>(item, match));
                         }
                     }
