@@ -179,6 +179,7 @@ namespace EQTool.Services.Parsing
         //
         // returns the number of death timestamps currently in the tracking list
 
+
         public int DeathLoopResponse()
         {
             // deathloop response
