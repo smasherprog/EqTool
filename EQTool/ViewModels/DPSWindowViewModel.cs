@@ -166,19 +166,19 @@ namespace EQTool.ViewModels
         public void TryAdd(DamageEvent entity)
         {
             //when charmed pet and nps have the same name, everything is messed up
-            if (entity == null || entity.SourceName == entity.TargetName)
+            if (entity == null || entity.AttackerName == entity.TargetName)
             {
                 return;
             }
 
             appDispatcher.DispatchUI(() =>
             {
-                var item = EntityList.FirstOrDefault(a => a.SourceName == entity.SourceName && a.TargetName == entity.TargetName && !a.DeathTime.HasValue);
+                var item = EntityList.FirstOrDefault(a => a.SourceName == entity.AttackerName && a.TargetName == entity.TargetName && !a.DeathTime.HasValue);
                 if (item == null)
                 {
                     item = new EntittyDPS
                     {
-                        SourceName = entity.SourceName,
+                        SourceName = entity.AttackerName,
                         TargetName = entity.TargetName,
                         StartTime = entity.TimeStamp,
                         TotalDamage = entity.DamageDone,

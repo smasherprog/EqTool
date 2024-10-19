@@ -50,7 +50,7 @@ namespace EQTool.Models
     public class DamageEvent : BaseLogParseEvent
     {
         public string TargetName { get; set; }
-        public string SourceName { get; set; }
+        public string AttackerName { get; set; }
         public int DamageDone { get; set; }
         public string DamageType { get; set; }
     }

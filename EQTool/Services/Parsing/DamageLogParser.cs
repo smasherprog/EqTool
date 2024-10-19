@@ -49,19 +49,19 @@ namespace EQTool.Services.Parsing
             DamageEvent rv = null;
 
             // melee attack, hit or miss
-            // https://regex101.com/r/6T6yZ7/1
-            var meleePattern = @"^(?<attacker_name>[\w` ]+) (try to )?(?<dmg_type>(hit(s)?|slash(es)?|pierce(s)?|crush(es)?|claw(s)?|bite(s)?|sting(s)?|maul(s)?|gore(s)?|punch(es)?|kick(s)?|backstab(s)?|bash(es)?|slice(s)?|strike(s)?)) (?<target_name>[\w` ]+)(( for (?<damage>[\d]+) point(s)? of damage)|(, but miss))";
+            // https://regex101.com/r/77YkpV/1
+            var meleePattern = @"^(?<attacker_name>[\w` ]+?) (try to )?(?<dmg_type>(hit(s)?|slash(es)?|pierce(s)?|crush(es)?|claw(s)?|bite(s)?|sting(s)?|maul(s)?|gore(s)?|punch(es)?|kick(s)?|backstab(s)?|bash(es)?|slice(s)?|strike(s)?)) (?<target_name>[\w` ]+)(( for (?<damage>[\d]+) point(s)? of damage)|(, but miss))";
             var meleeRegex = new Regex(meleePattern, RegexOptions.Compiled);
             var match = meleeRegex.Match(line);
             if (match.Success)
             {
-                // the damage part will be missing if this was a miss
+                // the damage capture group will be an empty string if this was a miss
                 var dmg = 0;
                 if (match.Groups["damage"].Value != "")
                     dmg = int.Parse(match.Groups["damage"].Value);
 
                 rv = new DamageEvent();
-                rv.SourceName   = match.Groups["attacker_name"].Value;
+                rv.AttackerName   = match.Groups["attacker_name"].Value;
                 rv.DamageType   = match.Groups["dmg_type"].Value;
                 rv.DamageDone   = dmg;
                 rv.TargetName   = match.Groups["target_name"].Value;
@@ -76,7 +76,7 @@ namespace EQTool.Services.Parsing
             if (match.Success)
             {
                 rv = new DamageEvent();
-                rv.SourceName   = "You";
+                rv.AttackerName   = "You";
                 rv.DamageType   = "non-melee";
                 rv.DamageDone   = int.Parse(match.Groups["damage"].Value);
                 rv.TargetName   = match.Groups["target_name"].Value;
@@ -85,7 +85,7 @@ namespace EQTool.Services.Parsing
             }
 
             // if we see a backstab from current player, set current player class to rogue
-            if (rv != null && rv.SourceName == "You" && activePlayer.Player != null && activePlayer.Player.PlayerClass == null)
+            if (rv != null && rv.AttackerName == "You" && activePlayer.Player != null && activePlayer.Player.PlayerClass == null)
             {
                 if (rv.DamageType.Contains("backstab"))
                     activePlayer.Player.PlayerClass = PlayerClasses.Rogue;

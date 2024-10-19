@@ -20,6 +20,7 @@ namespace EQTool.Services
         {
             this.logEvents = logEvents;
             this.logEvents.DeadEvent += LogEvents_DeadEvent;
+            this.logEvents.DamageEvent += LogEvents_DamageEvent;
 
             //this.logEvents.DamageEvent += LogEvents_FightHitEvent;
             //this.logEvents.SpellCastEvent += LogEvents_SpellCastEvent;
@@ -29,16 +30,30 @@ namespace EQTool.Services
 
         public bool IsDeathLooping { get; private set; } = false;
 
+        //
+        // function that gets called with a DeadEvent is received
+        //
         private void LogEvents_DeadEvent(object sender, DeadEvent e)
         {
-            //lastDeathTimes.Add(e.TimeStamp);
-
             // just a little audible marker
             System.Media.SoundPlayer player = new System.Media.SoundPlayer(@"c:\Windows\Media\chimes.wav");
             player.Play();
-
-            IsDeathLooping = true; // Need logic to determine if deathloop is occuring here
         }
+
+        //
+        // function that gets called with a DeadEvent is received
+        //
+        private void LogEvents_DamageEvent(object sender, DamageEvent e)
+        {
+            // if the player is meleeing, then flush to death list
+            if (e.AttackerName == "You")
+            {
+                // just a little audible marker
+                System.Media.SoundPlayer player = new System.Media.SoundPlayer(@"c:\Windows\Media\chimes.wav");
+                player.Play();
+            }
+        }
+
 
         //private void LogEvents_PayerChangedEvent(object sender, PayerChangedEvent e)
         //{
@@ -61,11 +76,11 @@ namespace EQTool.Services
 
         //private void LogEvents_FightHitEvent(object sender, DamageEvent e)
         //{
-        //    if (string.Equals(e.HitInformation.SourceName, "You", StringComparison.OrdinalIgnoreCase))
+        //    if (string.Equals(e.HitInformation.AttackerName, "You", StringComparison.OrdinalIgnoreCase))
         //    {
         //        lastActionTime = e.HitInformation.TimeStamp;
         //    }
-        //    else if (string.Equals(e.HitInformation.SourceName, "You", StringComparison.OrdinalIgnoreCase))
+        //    else if (string.Equals(e.HitInformation.AttackerName, "You", StringComparison.OrdinalIgnoreCase))
         //    {
         //        lastHitTime = e.HitInformation.TimeStamp;
         //    }
