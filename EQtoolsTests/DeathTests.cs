@@ -37,17 +37,10 @@ namespace EQToolTests
         public void ExampleTest()
         {
             var timestamp = DateTime.Now;
-            var hit = new EQTool.Models.DPSParseMatch
-            {
-                DamageDone = 1,
-                SourceName = "A",
-                TargetName = "B",
-                TimeStamp = timestamp,
-            };
 
             logEvents.Handle(new EQTool.Models.DeadEvent { Name = "YOU", TimeStamp = timestamp });
             timestamp = timestamp.AddSeconds(1);
-            logEvents.Handle(new EQTool.Models.FightHitEvent { HitInformation = hit, TimeStamp = timestamp });
+            logEvents.Handle(new EQTool.Models.DamageEvent { DamageDone = 1, SourceName = "A", TargetName = "B", TimeStamp = timestamp });
             timestamp = timestamp.AddSeconds(1);
             logEvents.Handle(new EQTool.Models.YouZonedEvent { ZoneName = "somezonedoesntmatter", TimeStamp = timestamp });
             _ = timestamp.AddSeconds(1);

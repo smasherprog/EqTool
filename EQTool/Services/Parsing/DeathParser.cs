@@ -112,7 +112,7 @@ namespace EQTool.Services.Parsing
                 }
 
                 // does this line contain a proof of life - melee
-                var meleePattern = "^You( try to)? (hit|slash|pierce|crush|claw|bite|sting|maul|gore|punch|kick|backstab|bash|slice)";
+                var meleePattern = "^You( try to)? (hit|slash|pierce|crush|claw|bite|sting|maul|gore|punch|kick|backstab|bash|slice|strike)";
                 var meleeRegex = new Regex(meleePattern, RegexOptions.Compiled);
                 match = meleeRegex.Match(line);
                 if (match.Success)

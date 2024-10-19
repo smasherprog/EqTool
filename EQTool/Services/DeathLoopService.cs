@@ -11,12 +11,17 @@ namespace EQTool.Services
         //private readonly List<DateTime> lastDeathTimes = new List<DateTime>();
         //private DateTime? lastHitTime;
 
+        //
+        // ctor
+        //
+        // register this service as a listener for the Events it cares about
+        //
         public DeathLoopService(LogEvents logEvents, EQToolSettings eQToolSettings)
         {
             this.logEvents = logEvents;
             this.logEvents.DeadEvent += LogEvents_DeadEvent;
 
-            //this.logEvents.FightHitEvent += LogEvents_FightHitEvent;
+            //this.logEvents.DamageEvent += LogEvents_FightHitEvent;
             //this.logEvents.SpellCastEvent += LogEvents_SpellCastEvent;
             //this.logEvents.YouZonedEvent += LogEvents_YouZonedEvent;
             //this.logEvents.PayerChangedEvent += LogEvents_PayerChangedEvent;
@@ -54,7 +59,7 @@ namespace EQTool.Services
         //    }
         //}
 
-        //private void LogEvents_FightHitEvent(object sender, FightHitEvent e)
+        //private void LogEvents_FightHitEvent(object sender, DamageEvent e)
         //{
         //    if (string.Equals(e.HitInformation.SourceName, "You", StringComparison.OrdinalIgnoreCase))
         //    {

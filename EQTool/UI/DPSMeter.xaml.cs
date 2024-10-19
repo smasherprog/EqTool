@@ -48,7 +48,7 @@ namespace EQTool.UI
             view.LiveSortingProperties.Add(nameof(EntittyDPS.TotalDamage));
         }
 
-        private void LogParser_FightHitEvent(object sender, FightHitEvent e)
+        private void LogParser_FightHitEvent(object sender, DamageEvent e)
         {
             dPSWindowViewModel.TryAdd(e.HitInformation);
         }

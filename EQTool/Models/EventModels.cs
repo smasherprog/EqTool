@@ -5,9 +5,15 @@ using System.Windows.Media.Media3D;
 
 namespace EQTool.Models
 {
+    //
+    // base class
+    // all Events know at least about the timestamp and the line from the logfile
+    // child Event class can add any specific fields needed to carry additional info
+    //
     public class BaseLogParseEvent
     {
         public DateTime TimeStamp { get; set; }
+        public string Line { get; set; }
     }
 
     public class PlayerLocationEvent : BaseLogParseEvent
@@ -38,9 +44,15 @@ namespace EQTool.Models
         public string NpcName { get; set; }
     }
 
-    public class FightHitEvent : BaseLogParseEvent
+    //
+    // Event class to carry all info from DamageLogParser to interested listeners
+    //
+    public class DamageEvent : BaseLogParseEvent
     {
-        public DPSParseMatch HitInformation { get; set; }
+        public string TargetName { get; set; }
+        public string SourceName { get; set; }
+        public int DamageDone { get; set; }
+        public string DamageType { get; set; }
     }
 
     public class ConEvent : BaseLogParseEvent
