@@ -101,12 +101,16 @@ namespace EQTool.Services
             {
                 try
                 {
+                    var prerelease = false;
+#if BETA
+                    prerelease = true;
+#endif
                     currentversion1 = currentversion1.Replace(versiontype, string.Empty);
                     var version = new string(currentversion1.Where(a => char.IsDigit(a) || a == '.').ToArray());
                     version = version.Trim('.');
                     var json = httpclient.GetAsync(new Uri("https://api.github.com/repos/smasherprog/EqTool/releases")).Result.Content.ReadAsStringAsync().Result;
                     var githubdata = JsonConvert.DeserializeObject<List<GithubVersionInfo>>(json);
-                    var releases = githubdata.OrderByDescending(a => a.published_at).Where(a => a.name != null && a.prerelease && a.assets != null && a.assets.Any()).ToList();
+                    var releases = githubdata.OrderByDescending(a => a.published_at).Where(a => a.name != null && a.prerelease == prerelease && a.assets != null && a.assets.Any()).ToList();
                     var release = releases.FirstOrDefault();
                     var downloadurl = release.assets.FirstOrDefault(a => !string.IsNullOrWhiteSpace(a.browser_download_url) && a.browser_download_url.ToLower().Contains(versiontype.ToLower()))?.browser_download_url;
 
