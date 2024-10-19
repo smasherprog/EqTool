@@ -178,7 +178,7 @@ namespace EQTool.Services.Parsing
         // that is currently ruled out of bounds, so we will have to do something more benign for now
         //
         // returns the number of death timestamps currently in the tracking list
-        //
+
         public int DeathLoopResponse()
         {
             // deathloop response
