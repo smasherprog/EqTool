@@ -107,6 +107,10 @@ namespace EQTool.Services.Parsing
                 return null;
             }
 
+            if (message.StartsWith("[MQ2]"))
+            {
+                return null;
+            }
 
             var guess = new EQToolShared.APIModels.PlayerControllerModels.Player();
             if (spaceindex < endindex)
