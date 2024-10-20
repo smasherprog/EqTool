@@ -90,6 +90,25 @@ namespace EQTool.Models
     }
     public class DeathEvent : BaseLogParseEvent { }
 
+    public class PlayerCommsEvent : BaseLogParseEvent
+    {
+        public enum Channel
+        {
+            NONE        = 0b_0000_0000,
+            TELL        = 0b_0000_0001,
+            SAY         = 0b_0000_0010,
+            GROUP       = 0b_0000_0100,
+            GUILD       = 0b_0000_1000,
+            AUCTION     = 0b_0001_0000,
+            OOC         = 0b_0010_0000,
+            SHOUT       = 0b_0100_0000,
+            ANY         = TELL|SAY|GROUP|GUILD|AUCTION|OOC|SHOUT
+        }
+
+        public PlayerCommsEvent.Channel theChannel { get; set; }
+    }
+
+
     public class DeathTouchEvent : BaseLogParseEvent
     {
         public string NpcName { get; set; }

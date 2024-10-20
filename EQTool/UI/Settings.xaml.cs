@@ -56,6 +56,7 @@ namespace EQTool.UI
         private readonly SpellWindowViewModel spellWindowViewModel;
         private readonly EQSpells spells;
         private readonly DamageLogParser damageLogParser;
+        private readonly PlayerCommsParser playerCommsParser;
         private readonly IAppDispatcher appDispatcher;
         private readonly ISignalrPlayerHub signalrPlayerHub;
         private readonly LogParser logParser;
@@ -69,6 +70,7 @@ namespace EQTool.UI
             IAppDispatcher appDispatcher,
             ISignalrPlayerHub signalrPlayerHub,
             DamageLogParser damageLogParse,
+            PlayerCommsParser playerCommsParser,
             EQSpells spells,
             LoginMiddlemand loginMiddlemand,
             EQToolSettings settings,
@@ -83,6 +85,7 @@ namespace EQTool.UI
             this.mapLoad = mapLoad;
             this.appDispatcher = appDispatcher;
             this.damageLogParser = damageLogParse;
+            this.playerCommsParser = playerCommsParser;
             this.spells = spells;
             this.settings = settings;
             this.spellWindowViewModel = spellWindowViewModel;

@@ -342,6 +342,7 @@
     <Compile Include="Services\Map\ZoneSpawnTimes.cs" />
     <Compile Include="Services\P99LoginMiddlemand\LoginMiddlemand.cs" />
     <Compile Include="Services\Parsing\DeathParser.cs" />
+    <Compile Include="Services\Parsing\PlayerCommsParser.cs" />
     <Compile Include="UI\CustomTimeSpanUpDown.cs" />
     <Compile Include="UI\EventOverlay.xaml.cs">
       <DependentUpon>EventOverlay.xaml</DependentUpon>
