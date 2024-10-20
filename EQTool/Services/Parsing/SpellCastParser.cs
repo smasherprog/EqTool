@@ -79,6 +79,16 @@ namespace EQTool.Services.Parsing
             if (line.StartsWith(EQSpells.YouBeginCasting))
             {
                 parseHandleYouCasting.HandleYouBeginCastingSpellStart(line);
+
+
+                // fire off an event indicating spell casting has started
+                //YouBeginCastingEvent ev = new YouBeginCastingEvent();
+                //logEvents.Handle(ev);
+                logEvents.Handle(new YouBeginCastingEvent());
+
+                // should probably return true?  I am hesitant to change, not sure what else might break if I do
+                //return true;
+
                 return null;
             }
             else if (line.StartsWith(EQSpells.You))

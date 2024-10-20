@@ -21,7 +21,7 @@ namespace EQTool.Services
             this.logEvents = logEvents;
             this.logEvents.DeadEvent += LogEvents_DeadEvent;
             this.logEvents.DamageEvent += LogEvents_DamageEvent;
-            this.logEvents.SpellCastEvent += LogEvents_SpellCastEvent;
+            this.logEvents.YouBeginCastingEvent += LogEvents_YouBeginCastingEvent;
             this.logEvents.PlayerCommsEvent += LogEvents_PlayerCommsEvent;
         }
 
@@ -56,15 +56,12 @@ namespace EQTool.Services
         //
         // function that gets called for this particular Event type
         //
-        private void LogEvents_SpellCastEvent(object sender, SpellCastEvent e)
+        private void LogEvents_YouBeginCastingEvent(object sender, YouBeginCastingEvent e)
         {
-            if (e.CastByYou)
-            {
-                // todo - remove for final
-                // just a little audible marker
-                System.Media.SoundPlayer player = new System.Media.SoundPlayer(@"c:\Windows\Media\chimes.wav");
-                player.Play();
-            }
+            // todo - remove for final
+            // just a little audible marker
+            System.Media.SoundPlayer player = new System.Media.SoundPlayer(@"c:\Windows\Media\chimes.wav");
+            player.Play();
         }
 
 

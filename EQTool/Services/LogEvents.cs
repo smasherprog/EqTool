@@ -29,6 +29,12 @@ namespace EQTool.Services
             DamageEvent?.Invoke(this, e);
         }
 
+        public event EventHandler<YouBeginCastingEvent> YouBeginCastingEvent;
+        public void Handle(YouBeginCastingEvent e)
+        {
+            YouBeginCastingEvent?.Invoke(this, e);
+        }
+
         public event EventHandler<ConEvent> ConEvent;
         public void Handle(ConEvent e)
         {

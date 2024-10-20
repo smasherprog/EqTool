@@ -166,6 +166,10 @@ namespace EQTool.Models
         public int? TotalSecondsOverride { get; set; }
     }
 
+    public class YouBeginCastingEvent : BaseLogParseEvent
+    {
+    }
+
     public class YouZonedEvent : BaseLogParseEvent
     {
         public string ZoneName { get; set; }
