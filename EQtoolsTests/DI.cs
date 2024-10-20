@@ -46,7 +46,7 @@ namespace EQToolTests
             _ = builder.RegisterType<EQTool.Services.Parsing.LocationParser>().As<EQTool.Models.IEqLogParseHandler>().SingleInstance();
             _ = builder.RegisterType<EQTool.Services.Parsing.CampParser>().As<EQTool.Models.IEqLogParseHandler>().SingleInstance();
             _ = builder.RegisterType<EQTool.Services.Parsing.PlayerWhoLogParse>().As<EQTool.Models.IEqLogParseHandler>().SingleInstance();
-            _ = builder.RegisterType<EQTool.Services.Parsing.DamageLogParser>().As<EQTool.Models.IEqLogParseHandler>().SingleInstance();
+            _ = builder.RegisterType<EQTool.Services.Parsing.DamageParser>().As<EQTool.Models.IEqLogParseHandler>().SingleInstance();
             _ = builder.RegisterType<EQTool.Services.Parsing.LogDeathParse>().As<EQTool.Models.IEqLogParseHandler>().SingleInstance();
             _ = builder.RegisterType<EQTool.Services.Parsing.ConLogParse>().As<EQTool.Models.IEqLogParseHandler>().SingleInstance();
             _ = builder.RegisterType<EQTool.Services.Parsing.LogCancelCustomTimer>().As<EQTool.Models.IEqLogParseHandler>().SingleInstance();
@@ -62,7 +62,7 @@ namespace EQToolTests
 
             _ = builder.RegisterType<EQTool.Services.Parsing.QuakeParser>().As<EQTool.Models.IEqLogParseHandler>().SingleInstance();
             _ = builder.RegisterType<EQTool.Services.Parsing.RandomParser>().As<EQTool.Models.IEqLogParseHandler>().SingleInstance();
-            // _ = builder.RegisterType<EQTool.Services.Parsing.DeathParser>().As<EQTool.Models.IEqLogParseHandler>().SingleInstance();
+            _ = builder.RegisterType<EQTool.Services.Parsing.PlayerCommsParser>().As<EQTool.Models.IEqLogParseHandler>().SingleInstance();
             _ = builder.RegisterType<EQTool.Services.Parsing.DeathTouchParser>().As<EQTool.Models.IEqLogParseHandler>().SingleInstance();
             _ = builder.RegisterType<EQTool.Services.Parsing.EnrageParser>().As<EQTool.Models.IEqLogParseHandler>().SingleInstance();
 

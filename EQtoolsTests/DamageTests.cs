@@ -13,18 +13,19 @@ namespace EQToolTests
     public class DamageTests
     {
         private readonly IContainer container;
+        private readonly DamageParser parser;
         public DamageTests()
         {
             container = DI.Init();
+            parser = container.Resolve<DamageParser>();
         }
 
         [TestMethod]
         public void DamageLogParser_EatingDpsParseTest()
         {
-            var dpslogparse = container.Resolve<DamageLogParser>();
             DateTime now = DateTime.Now;
             var message = "Vebanab slices a willowisp for 56 points of damage.";
-            var match = dpslogparse.Match(message, now);
+            var match = parser.Match(message, now);
 
             Assert.IsNotNull(match);
             Assert.AreEqual("Vebanab", match.AttackerName);
@@ -38,10 +39,9 @@ namespace EQToolTests
         [TestMethod]
         public void DamageLogParser_NonMelleTest()
         {
-            var dpslogparse = container.Resolve<DamageLogParser>();
             DateTime now = DateTime.Now;
             var message = "Ratman Rager was hit by non-melee for 45 points of damage.";
-            var match = dpslogparse.Match(message, now);
+            var match = parser.Match(message, now);
 
             Assert.IsNotNull(match);
             Assert.AreEqual("You", match.AttackerName);
@@ -55,10 +55,9 @@ namespace EQToolTests
         [TestMethod]
         public void DamageLogParser_EatingDpsParseTest1()
         {
-            var dpslogparse = container.Resolve<DamageLogParser>();
             DateTime now = DateTime.Now;
             var message = "a willowisp slices Vebanab for 56 points of damage.";
-            var match = dpslogparse.Match(message, now);
+            var match = parser.Match(message, now);
 
             Assert.IsNotNull(match);
             Assert.AreEqual("a willowisp", match.AttackerName);
@@ -72,10 +71,9 @@ namespace EQToolTests
         [TestMethod]
         public void DamageLogParser_EatingDpsParseTestYou()
         {
-            var dpslogparse = container.Resolve<DamageLogParser>();
             DateTime now = DateTime.Now;
             var message = "You crush a shadowed man for 1 point of damage.";
-            var match = dpslogparse.Match(message, now);
+            var match = parser.Match(message, now);
 
             Assert.IsNotNull(match);
             Assert.AreEqual("You", match.AttackerName);
@@ -89,10 +87,9 @@ namespace EQToolTests
         [TestMethod]
         public void DamageLogParser_EatingDpsParseTestYouGetHit()
         {
-            var dpslogparse = container.Resolve<DamageLogParser>();
             DateTime now = DateTime.Now;
             var message = "Guard Valon bashes YOU for 12 points of damage.";
-            var match = dpslogparse.Match(message, now);
+            var match = parser.Match(message, now);
 
             Assert.IsNotNull(match);
             Assert.AreEqual("Guard Valon", match.AttackerName);
@@ -106,10 +103,9 @@ namespace EQToolTests
         [TestMethod]
         public void DamageLogParser_EatingDpsParseTestMiss()
         {
-            var dpslogparse = container.Resolve<DamageLogParser>();
             DateTime now = DateTime.Now;
             var message = "You try to pierce an Iksar outcast, but miss!";
-            var match = dpslogparse.Match(message, now);
+            var match = parser.Match(message, now);
 
             Assert.IsNotNull(match);
             Assert.AreEqual("You", match.AttackerName);
@@ -193,14 +189,10 @@ namespace EQToolTests
         public void TestDPS3()
         {
             var vm = container.Resolve<DPSWindowViewModel>();
+            DateTime now = DateTime.Now.AddSeconds(-1);
+            string line = "some line";
 
-            vm.TryAdd(new DamageEvent
-            {
-                DamageDone = 44,
-                AttackerName = "Test",
-                TargetName = "test1",
-                TimeStamp = DateTime.Now.AddSeconds(-1)
-            });
+            vm.TryAdd(new DamageEvent(now, line, "test1", "Test", 44, ""));
 
             var entity = vm.EntityList.FirstOrDefault();
             Assert.AreEqual(44, entity.TrailingDamage);
@@ -244,38 +236,34 @@ namespace EQToolTests
         [TestMethod]
         public void TestLevelDetectionThroughBackstab()
         {
-            var dpslogparse = container.Resolve<DamageLogParser>();
             var message = "You backstab a willowisp for 56 points of damage.";
 
             var player = container.Resolve<ActivePlayer>();
             player.Player = new PlayerInfo { };
-            _ = dpslogparse.Match(message, DateTime.Now);
+            _ = parser.Match(message, DateTime.Now);
             Assert.AreEqual(player.Player.PlayerClass, PlayerClasses.Rogue);
         }
 
         [TestMethod]
         public void TestLevelDetectionThroughBackstabNullCheck()
         {
-            var dpslogparse = container.Resolve<DamageLogParser>();
             var message = "You backstab a willowisp for 56 points of damage.";
-            _ = dpslogparse.Match(message, DateTime.Now);
+            _ = parser.Match(message, DateTime.Now);
         }
 
         [TestMethod]
         public void TestGuildChatCopyAndPaste()
         {
-            var dpslogparse = container.Resolve<DamageLogParser>();
             var message = "vasanle tells the guild, '[Sun Jul 10 21:05:30 2022] pigy was hit by non-melee for 1500 points of damage.  [Sun Jul 10 21:05:30 2022] pigy staggers.'";
-            var match = dpslogparse.Match(message, DateTime.Now);
+            var match = parser.Match(message, DateTime.Now);
             Assert.IsNull(match);
         }
 
         [TestMethod]
         public void TestLevelDetectionThroughKick()
         {
-            var dpslogparse = container.Resolve<DamageLogParser>();
             var message = "You backstab a kick for 56 points of damage.";
-            _ = dpslogparse.Match(message, DateTime.Now);
+            _ = parser.Match(message, DateTime.Now);
             var player = container.Resolve<ActivePlayer>();
             player.Player = new PlayerInfo { };
 

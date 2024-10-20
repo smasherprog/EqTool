@@ -2,10 +2,8 @@
 using EQTool.Models;
 using EQTool.Services.Parsing;
 using EQTool.ViewModels;
-using EQToolShared.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using System.Linq;
 
 namespace EQToolTests
 {
@@ -13,21 +11,30 @@ namespace EQToolTests
     public class PlayerCommsTests
     {
         private readonly IContainer container;
+        private readonly PlayerCommsParser parser;
+        private readonly ActivePlayer activePlayer;
 
-        PlayerCommsTests()
+        public PlayerCommsTests()
         {
             container = DI.Init();
-        }
+            parser = container.Resolve<PlayerCommsParser>();
 
+            // fake in an ActivePlayer for the parser to be happy
+            activePlayer = container.Resolve<ActivePlayer>();
+            activePlayer.Player = new PlayerInfo();
+            activePlayer.Player.Name = "Azleep";
+            activePlayer.Player.Level = 60;
+            activePlayer.Player.PlayerClass = EQToolShared.Enums.PlayerClasses.Enchanter;
+            activePlayer.Player.Zone = "templeveeshan";
+        }
 
         [TestMethod]
         public void TestTell1()
         {
             //You told Qdyil, 'not even sure'
-            var commsParser = container.Resolve<PlayerCommsParser>();
             DateTime now = DateTime.Now;
             var message = "You told Qdyil, 'not even sure'";
-            var match = commsParser.Match(message, now);
+            var match = parser.Match(message, now);
 
             Assert.IsNotNull(match);
             Assert.AreEqual("Qdyil", match.Receiver);
@@ -41,10 +48,9 @@ namespace EQToolTests
         public void TestTell2()
         {
             //Azleep -> Jamori: ok
-            var commsParser = container.Resolve<PlayerCommsParser>();
             DateTime now = DateTime.Now;
             var message = "Azleep -> Jamori: ok";
-            var match = commsParser.Match(message, now);
+            var match = parser.Match(message, now);
 
             Assert.IsNotNull(match);
             Assert.AreEqual("Jamori", match.Receiver);
@@ -58,10 +64,9 @@ namespace EQToolTests
         public void TestSay()
         {
             //You say, 'Hail, Wenglawks Kkeak'
-            var commsParser = container.Resolve<PlayerCommsParser>();
             DateTime now = DateTime.Now;
             var message = "You say, 'Hail, Wenglawks Kkeak'";
-            var match = commsParser.Match(message, now);
+            var match = parser.Match(message, now);
 
             Assert.IsNotNull(match);
             Assert.AreEqual("", match.Receiver);
@@ -75,10 +80,9 @@ namespace EQToolTests
         public void TestGroup()
         {
             //You tell your party, 'oh interesting'
-            var commsParser = container.Resolve<PlayerCommsParser>();
             DateTime now = DateTime.Now;
             var message = "You tell your party, 'oh interesting'";
-            var match = commsParser.Match(message, now);
+            var match = parser.Match(message, now);
 
             Assert.IsNotNull(match);
             Assert.AreEqual("", match.Receiver);
@@ -92,10 +96,9 @@ namespace EQToolTests
         public void TestGuild()
         {
             //You say to your guild, 'nice'
-            var commsParser = container.Resolve<PlayerCommsParser>();
             DateTime now = DateTime.Now;
             var message = "You say to your guild, 'nice'";
-            var match = commsParser.Match(message, now);
+            var match = parser.Match(message, now);
 
             Assert.IsNotNull(match);
             Assert.AreEqual("", match.Receiver);
@@ -109,10 +112,9 @@ namespace EQToolTests
         public void TestAuction()
         {
             //You auction, 'wtb diamond'
-            var commsParser = container.Resolve<PlayerCommsParser>();
             DateTime now = DateTime.Now;
             var message = "You auction, 'wtb diamond'";
-            var match = commsParser.Match(message, now);
+            var match = parser.Match(message, now);
 
             Assert.IsNotNull(match);
             Assert.AreEqual("", match.Receiver);
@@ -126,10 +128,9 @@ namespace EQToolTests
         public void TestOOC()
         {
             //You say out of character, 'train to west'
-            var commsParser = container.Resolve<PlayerCommsParser>();
             DateTime now = DateTime.Now;
             var message = "You say out of character, 'train to west'";
-            var match = commsParser.Match(message, now);
+            var match = parser.Match(message, now);
 
             Assert.IsNotNull(match);
             Assert.AreEqual("", match.Receiver);
@@ -143,10 +144,9 @@ namespace EQToolTests
         public void TestShout()
         {
             //You shout, 'When it is time - Horse Charmers will be Leffingwell and Ceous'
-            var commsParser = container.Resolve<PlayerCommsParser>();
             DateTime now = DateTime.Now;
             var message = "You shout, 'When it is time - Horse Charmers will be Leffingwell and Ceous'";
-            var match = commsParser.Match(message, now);
+            var match = parser.Match(message, now);
 
             Assert.IsNotNull(match);
             Assert.AreEqual("", match.Receiver);

@@ -9,7 +9,7 @@ using System.Text.RegularExpressions;
 namespace EQTool.Services.Parsing
 {
     //
-    // DamageLogParser
+    // DamageParser
     //
     // Parse line for
     //      melee attacks from this player that land
@@ -17,7 +17,7 @@ namespace EQTool.Services.Parsing
     //      melee attacks from other entities that land
     //      non-melee damage events
     //
-    public class DamageLogParser : IEqLogParseHandler
+    public class DamageParser : IEqLogParseHandler
     {
         private readonly ActivePlayer activePlayer;
         private readonly LogEvents logEvents;
@@ -25,7 +25,7 @@ namespace EQTool.Services.Parsing
         //
         // ctor
         //
-        public DamageLogParser(ActivePlayer activePlayer, LogEvents logEvents)
+        public DamageParser(ActivePlayer activePlayer, LogEvents logEvents)
         {
             this.activePlayer = activePlayer;
             this.logEvents = logEvents;
@@ -60,13 +60,7 @@ namespace EQTool.Services.Parsing
                 if (match.Groups["damage"].Value != "")
                     dmg = int.Parse(match.Groups["damage"].Value);
 
-                rv = new DamageEvent();
-                rv.AttackerName = match.Groups["attacker_name"].Value;
-                rv.DamageType   = match.Groups["dmg_type"].Value;
-                rv.DamageDone   = dmg;
-                rv.TargetName   = match.Groups["target_name"].Value;
-                rv.TimeStamp    = timestamp;
-                rv.Line         = line;
+                rv = new DamageEvent(timestamp, line, match.Groups["target_name"].Value, match.Groups["attacker_name"].Value, dmg, match.Groups["dmg_type"].Value);
             }
 
             // non-melee damage (direct damage spell, or dmg shield, or weapon proc)
@@ -75,13 +69,7 @@ namespace EQTool.Services.Parsing
             match = nonMeleeRegex.Match(line);
             if (match.Success)
             {
-                rv = new DamageEvent();
-                rv.AttackerName = "You";
-                rv.DamageType   = "non-melee";
-                rv.DamageDone   = int.Parse(match.Groups["damage"].Value);
-                rv.TargetName   = match.Groups["target_name"].Value;
-                rv.TimeStamp    = timestamp;
-                rv.Line         = line; 
+                rv = new DamageEvent(timestamp, line, match.Groups["target_name"].Value, "You", int.Parse(match.Groups["damage"].Value), "non-melee");
             }
 
             // if we see a backstab from current player, set current player class to rogue

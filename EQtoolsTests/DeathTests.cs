@@ -40,7 +40,7 @@ namespace EQToolTests
 
             logEvents.Handle(new EQTool.Models.DeadEvent { Name = "YOU", TimeStamp = timestamp });
             timestamp = timestamp.AddSeconds(1);
-            logEvents.Handle(new EQTool.Models.DamageEvent { DamageDone = 1, AttackerName = "A", TargetName = "B", TimeStamp = timestamp });
+            logEvents.Handle(new EQTool.Models.DamageEvent(timestamp, "some line", "B", "A", 1, ""));
             timestamp = timestamp.AddSeconds(1);
             logEvents.Handle(new EQTool.Models.YouZonedEvent { ZoneName = "somezonedoesntmatter", TimeStamp = timestamp });
             _ = timestamp.AddSeconds(1);

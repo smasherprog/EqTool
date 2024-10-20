@@ -46,7 +46,7 @@ namespace EQTool.Models
     }
 
     //
-    // Event class to carry all info from DamageLogParser to interested listeners
+    // Event class to carry all info from DamageParser to interested listeners
     //
     public class DamageEvent : BaseLogParseEvent
     {
@@ -54,6 +54,16 @@ namespace EQTool.Models
         public string AttackerName { get; set; }
         public int DamageDone { get; set; }
         public string DamageType { get; set; }
+
+        public DamageEvent(DateTime dateTime, string line, string targetName, string attackerName, int damageDone, string damageType)
+        {
+            TimeStamp = dateTime;
+            Line = line;
+            TargetName = targetName;
+            AttackerName = attackerName;
+            DamageDone = damageDone;
+            DamageType = damageType;
+        }
     }
 
     public class ConEvent : BaseLogParseEvent
@@ -91,6 +101,9 @@ namespace EQTool.Models
     }
     public class DeathEvent : BaseLogParseEvent { }
 
+    //
+    // event class to carry all relevant communications events to interested listeners
+    //
     public class PlayerCommsEvent : BaseLogParseEvent
     {
         public enum Channel
@@ -109,8 +122,25 @@ namespace EQTool.Models
         public PlayerCommsEvent.Channel TheChannel { get; set; }
         public string Content { get; set; }
         public string Receiver { get; set; }
+
+        public PlayerCommsEvent(DateTime dateTime, string line, PlayerCommsEvent.Channel channel = Channel.NONE, string content = "", string receiver = "")
+        {
+            TimeStamp = dateTime;
+            Line = line;
+            TheChannel = channel;
+            Content = content;
+            Receiver = receiver;
+        }
     }
 
+    public class YouBeginCastingEvent : BaseLogParseEvent
+    {
+        public YouBeginCastingEvent(DateTime dateTime, string line)
+        {
+            TimeStamp = dateTime;
+            Line = line;
+        }
+    }
 
     public class DeathTouchEvent : BaseLogParseEvent
     {
@@ -167,10 +197,6 @@ namespace EQTool.Models
         public bool MultipleMatchesFound { get; set; }
 
         public int? TotalSecondsOverride { get; set; }
-    }
-
-    public class YouBeginCastingEvent : BaseLogParseEvent
-    {
     }
 
     public class YouZonedEvent : BaseLogParseEvent
