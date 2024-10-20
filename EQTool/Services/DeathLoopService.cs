@@ -21,30 +21,29 @@ namespace EQTool.Services
             this.logEvents = logEvents;
             this.logEvents.DeadEvent += LogEvents_DeadEvent;
             this.logEvents.DamageEvent += LogEvents_DamageEvent;
+            this.logEvents.SpellCastEvent += LogEvents_SpellCastEvent;
 
-            //this.logEvents.DamageEvent += LogEvents_FightHitEvent;
-            //this.logEvents.SpellCastEvent += LogEvents_SpellCastEvent;
-            //this.logEvents.YouZonedEvent += LogEvents_YouZonedEvent;
-            //this.logEvents.PayerChangedEvent += LogEvents_PayerChangedEvent;
         }
 
         public bool IsDeathLooping { get; private set; } = false;
 
         //
-        // function that gets called with a DeadEvent is received
+        // function that gets called for this particular Event type
         //
         private void LogEvents_DeadEvent(object sender, DeadEvent e)
         {
+            // todo - remove for final
             // just a little audible marker
             System.Media.SoundPlayer player = new System.Media.SoundPlayer(@"c:\Windows\Media\chimes.wav");
             player.Play();
         }
 
         //
-        // function that gets called with a DeadEvent is received
+        // function that gets called for this particular Event type
         //
         private void LogEvents_DamageEvent(object sender, DamageEvent e)
         {
+            // todo - remove for final
             // if the player is meleeing, then flush to death list
             if (e.AttackerName == "You")
             {
@@ -54,37 +53,18 @@ namespace EQTool.Services
             }
         }
 
-
-        //private void LogEvents_PayerChangedEvent(object sender, PayerChangedEvent e)
-        //{
-        //    lastHitTime = lastActionTime = null;
-        //    lastDeathTimes.Clear();
-        //}
-
-        //private void LogEvents_YouZonedEvent(object sender, YouZonedEvent e)
-        //{
-        //    lastActionTime = null;
-        //}
-
-        //private void LogEvents_SpellCastEvent(object sender, SpellCastEvent e)
-        //{
-        //    if (e.CastByYou)
-        //    {
-        //        lastActionTime = DateTime.Now;
-        //    }
-        //}
-
-        //private void LogEvents_FightHitEvent(object sender, DamageEvent e)
-        //{
-        //    if (string.Equals(e.HitInformation.AttackerName, "You", StringComparison.OrdinalIgnoreCase))
-        //    {
-        //        lastActionTime = e.HitInformation.TimeStamp;
-        //    }
-        //    else if (string.Equals(e.HitInformation.AttackerName, "You", StringComparison.OrdinalIgnoreCase))
-        //    {
-        //        lastHitTime = e.HitInformation.TimeStamp;
-        //    }
-        //}
-
+        //
+        // function that gets called for this particular Event type
+        //
+        private void LogEvents_SpellCastEvent(object sender, SpellCastEvent e)
+        {
+            if (e.CastByYou)
+            {
+                // todo - remove for final
+                // just a little audible marker
+                System.Media.SoundPlayer player = new System.Media.SoundPlayer(@"c:\Windows\Media\chimes.wav");
+                player.Play();
+            }
+        }
     }
 }
