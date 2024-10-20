@@ -18,7 +18,7 @@ namespace EQTool.Services.Parsing
             var m = MatchLevel(line);
             if (m.HasValue)
             {
-                logEvents.Handle(new LevelEvent { NewLevel = m.Value });
+                logEvents.Handle(new LevelEvent { NewLevel = m.Value, TimeStamp = timestamp });
                 return true;
             }
             return false;

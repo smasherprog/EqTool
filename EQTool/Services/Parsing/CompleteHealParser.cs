@@ -19,7 +19,7 @@ namespace EQTool.Services.Parsing
 
         public bool Handle(string line, DateTime timestamp)
         {
-            var m = ChCheck(line);
+            var m = ChCheck(line, timestamp);
             if (m != null)
             {
                 logEvents.Handle(m);
@@ -28,7 +28,7 @@ namespace EQTool.Services.Parsing
             return false;
         }
 
-        public CompleteHealEvent ChCheck(string line)
+        public CompleteHealEvent ChCheck(string line, DateTime timestamp)
         {
             var startindexofmessage = line.IndexOf(", '");
             var startindexsize = 3;
@@ -176,7 +176,8 @@ namespace EQTool.Services.Parsing
                     Caster = caster,
                     Position = position,
                     Recipient = recipient,
-                    RecipientGuild = tag
+                    RecipientGuild = tag,
+                    TimeStamp = timestamp
                 };
                 if (ret.Caster.Contains(" "))
                 {

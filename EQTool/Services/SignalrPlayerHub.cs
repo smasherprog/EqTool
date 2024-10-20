@@ -262,7 +262,7 @@ namespace EQTool.Models
         }
         private void LogParser_StartCastingEvent(object sender, SpellCastEvent e)
         {
-            if (e.IsYou &&
+            if (e.CastByYou &&
                 LastPlayer != null &&
                 !string.IsNullOrWhiteSpace(activePlayer?.Player?.Zone) &&
                 !string.IsNullOrWhiteSpace(activePlayer?.Player?.Name) &&

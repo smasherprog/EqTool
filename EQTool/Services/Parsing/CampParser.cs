@@ -18,10 +18,10 @@ namespace EQTool.Services.Parsing
 
         public bool Handle(string line, DateTime timestamp)
         {
-            return Camping(line);
+            return Camping(line, timestamp);
         }
 
-        public bool Camping(string message)
+        public bool Camping(string message, DateTime timestamp)
         {
             if (message == "It will take about 5 more seconds to prepare your camp.")
             {
@@ -35,7 +35,7 @@ namespace EQTool.Services.Parsing
                         appDispatcher.DispatchUI(() =>
                         {
                             Debug.WriteLine("CampEvent");
-                            logEvents.Handle(new CampEvent());
+                            logEvents.Handle(new CampEvent { TimeStamp = timestamp });
                         });
                     }
                 });

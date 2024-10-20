@@ -161,12 +161,6 @@ namespace EQTool.Services
             CompleteHealEvent?.Invoke(this, e);
         }
 
-        public event EventHandler<DeathEvent> DeathEvent;
-        public void Handle(DeathEvent e)
-        {
-            DeathEvent?.Invoke(this, e);
-        }
-
         public event EventHandler<DeathTouchEvent> DeathTouchEvent;
         public void Handle(DeathTouchEvent e)
         {
@@ -177,6 +171,12 @@ namespace EQTool.Services
         public void Handle(RandomRollEvent e)
         {
             RandomRollEvent?.Invoke(this, e);
+        }
+
+        public event EventHandler<PayerChangedEvent> PayerChangedEvent;
+        public void Handle(PayerChangedEvent e)
+        {
+            PayerChangedEvent?.Invoke(this, e);
         }
     }
 }

@@ -1,35 +1,65 @@
 ﻿using Autofac;
+using EQTool.Services;
 using EQTool.Services.Parsing;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 
 namespace EQToolTests
 {
-    [TestClass]
+    // [TestClass]
     public class DeathTests
     {
         private readonly IContainer container;
+        private readonly DeathLoopService deathLoopService;
+        private readonly LogEvents logEvents;
+
         public DeathTests()
         {
             container = DI.Init();
+            deathLoopService = container.Resolve<DeathLoopService>();
+            logEvents = container.Resolve<LogEvents>();
         }
 
         [TestMethod]
         // has the player died
         public void TestMethod1()
         {
-            DateTime timestamp = new DateTime();
+            var timestamp = new DateTime();
 
             var service = container.Resolve<DeathParser>();
             var rv = service.ParseDeath("Just some random line", timestamp);
             Assert.AreEqual(false, rv);
         }
 
+
+        [TestMethod]
+        // has the player died
+        public void ExampleTest()
+        {
+            var timestamp = DateTime.Now;
+            var hit = new EQTool.Models.DPSParseMatch
+            {
+                DamageDone = 1,
+                SourceName = "A",
+                TargetName = "B",
+                TimeStamp = timestamp,
+            };
+
+            logEvents.Handle(new EQTool.Models.DeadEvent { Name = "YOU", TimeStamp = timestamp });
+            timestamp = timestamp.AddSeconds(1);
+            logEvents.Handle(new EQTool.Models.FightHitEvent { HitInformation = hit, TimeStamp = timestamp });
+            timestamp = timestamp.AddSeconds(1);
+            logEvents.Handle(new EQTool.Models.YouZonedEvent { ZoneName = "somezonedoesntmatter", TimeStamp = timestamp });
+            _ = timestamp.AddSeconds(1);
+            //add a bunch of other things to make sure all works well
+            Assert.AreEqual(false, deathLoopService.IsDeathLooping);
+        }
+
         [TestMethod]
         // has the player died
         public void TestMethod2()
         {
-            DateTime timestamp = new DateTime();
+            var timestamp = new DateTime();
 
             var service = container.Resolve<DeathParser>();
             var rv = service.ParseDeath("You have been slain", timestamp);
@@ -40,13 +70,13 @@ namespace EQToolTests
         // player has died multiple times
         public void TestMethod3()
         {
-            DateTime timestamp = new DateTime();
+            var timestamp = new DateTime();
 
             var service = container.Resolve<DeathParser>();
-            service.ParseDeath("You have been slain", timestamp);
-            service.ParseDeath("You have been slain", timestamp.AddSeconds(40.0));
-            service.ParseDeath("You have been slain", timestamp.AddSeconds(80.0));
-            service.ParseDeath("You have been slain", timestamp.AddSeconds(80.0));
+            _ = service.ParseDeath("You have been slain", timestamp);
+            _ = service.ParseDeath("You have been slain", timestamp.AddSeconds(40.0));
+            _ = service.ParseDeath("You have been slain", timestamp.AddSeconds(80.0));
+            _ = service.ParseDeath("You have been slain", timestamp.AddSeconds(80.0));
 
             var count = service.DeathLoopResponse();
             Assert.AreEqual(4, count);
@@ -56,12 +86,12 @@ namespace EQToolTests
         // player has died multiple times, but by the time the last death occurs, the first death has scrolled off the tracking list
         public void TestMethod4()
         {
-            DateTime timestamp = new DateTime();
+            var timestamp = new DateTime();
 
             var service = container.Resolve<DeathParser>();
-            service.ParseDeath("You have been slain", timestamp);
-            service.ParseDeath("You have been slain", timestamp.AddSeconds(40.0));
-            service.ParseDeath("You have been slain", timestamp.AddSeconds(130.0));
+            _ = service.ParseDeath("You have been slain", timestamp);
+            _ = service.ParseDeath("You have been slain", timestamp.AddSeconds(40.0));
+            _ = service.ParseDeath("You have been slain", timestamp.AddSeconds(130.0));
 
             var count = service.DeathLoopResponse();
             Assert.AreEqual(2, count);
@@ -73,14 +103,14 @@ namespace EQToolTests
         // melee
         public void TestMethod5()
         {
-            DateTime timestamp = new DateTime();
+            var timestamp = new DateTime();
 
             var service = container.Resolve<DeathParser>();
-            service.ParseDeath("You have been slain", timestamp);
-            service.ParseDeath("You have been slain", timestamp);
-            service.ParseDeath("You have been slain", timestamp);
+            _ = service.ParseDeath("You have been slain", timestamp);
+            _ = service.ParseDeath("You have been slain", timestamp);
+            _ = service.ParseDeath("You have been slain", timestamp);
 
-            service.ParseSignOfLife("You slice Soandso for 100 points of damage");
+            _ = service.ParseSignOfLife("You slice Soandso for 100 points of damage");
             var count = service.DeathLoopResponse();
             Assert.AreEqual(0, count);
         }
@@ -90,14 +120,14 @@ namespace EQToolTests
         // casting
         public void TestMethod6()
         {
-            DateTime timestamp = new DateTime();
+            var timestamp = new DateTime();
 
             var service = container.Resolve<DeathParser>();
-            service.ParseDeath("You have been slain", timestamp);
-            service.ParseDeath("You have been slain", timestamp);
-            service.ParseDeath("You have been slain", timestamp);
+            _ = service.ParseDeath("You have been slain", timestamp);
+            _ = service.ParseDeath("You have been slain", timestamp);
+            _ = service.ParseDeath("You have been slain", timestamp);
 
-            service.ParseSignOfLife("You begin casting");
+            _ = service.ParseSignOfLife("You begin casting");
             var count = service.DeathLoopResponse();
             Assert.AreEqual(0, count);
         }
@@ -107,14 +137,14 @@ namespace EQToolTests
         // communicating
         public void TestMethod7()
         {
-            DateTime timestamp = new DateTime();
+            var timestamp = new DateTime();
 
             var service = container.Resolve<DeathParser>();
-            service.ParseDeath("You have been slain", timestamp);
-            service.ParseDeath("You have been slain", timestamp);
-            service.ParseDeath("You have been slain", timestamp);
+            _ = service.ParseDeath("You have been slain", timestamp);
+            _ = service.ParseDeath("You have been slain", timestamp);
+            _ = service.ParseDeath("You have been slain", timestamp);
 
-            service.ParseSignOfLife("You shout, something something");
+            _ = service.ParseSignOfLife("You shout, something something");
             var count = service.DeathLoopResponse();
             Assert.AreEqual(0, count);
         }

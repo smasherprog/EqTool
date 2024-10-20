@@ -151,6 +151,7 @@ namespace EQTool.Services
                     {
                         Debug.WriteLine($"Player Switched or new Player detected {filepath} {fileinfo.Length}");
                         LastLogReadOffset = fileinfo.Length;
+                        logEvents.Handle(new PayerChangedEvent { TimeStamp = DateTime.Now });
                     }
                     var linelist = new List<string>();
                     using (var stream = new FileStream(filepath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))

@@ -4,6 +4,7 @@ using EQTool.Services.Parsing;
 using EQTool.ViewModels;
 using EQToolShared.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 
 namespace EQToolTests
 {
@@ -28,7 +29,7 @@ namespace EQToolTests
                 Zone = "templeveeshan"
             };
 
-            var d = service.Parse("Cekenar engages Tzvia!");
+            var d = service.Parse("Cekenar engages Tzvia!", DateTime.Now);
             Assert.AreEqual(d.FTEPerson, "Tzvia");
             Assert.AreEqual(d.NPCName, "Cekenar");
         }
@@ -45,7 +46,7 @@ namespace EQToolTests
                 Zone = "templeveeshan"
             };
 
-            var d = service.Parse("Dagarn the Destroyer engages Tzvia!");
+            var d = service.Parse("Dagarn the Destroyer engages Tzvia!", DateTime.Now);
             Assert.AreEqual(d.FTEPerson, "Tzvia");
             Assert.AreEqual(d.NPCName, "Dagarn the Destroyer");
         }

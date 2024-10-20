@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using EQTool.Services.Parsing;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 
 namespace EQtoolsTests
 {
@@ -16,7 +17,7 @@ namespace EQtoolsTests
         [TestMethod]
         public void Test1()
         {
-            var result = container.Resolve<DeathTouchParser>().DtCheck("Dread says 'TINIALITA'");
+            var result = container.Resolve<DeathTouchParser>().DtCheck("Dread says 'TINIALITA'", DateTime.Now);
             Assert.AreEqual("Dread", result.NpcName);
             Assert.AreEqual("TINIALITA", result.DTReceiver);
         }
@@ -24,14 +25,14 @@ namespace EQtoolsTests
         [TestMethod]
         public void Test2()
         {
-            var result = container.Resolve<DeathTouchParser>().DtCheck("Dread says 'You will not evade me Silvose!'");
+            var result = container.Resolve<DeathTouchParser>().DtCheck("Dread says 'You will not evade me Silvose!'", DateTime.Now);
             Assert.IsNull(result);
         }
 
         [TestMethod]
         public void Test3()
         {
-            var result = container.Resolve<DeathTouchParser>().DtCheck("Fright says 'TINIALITA'");
+            var result = container.Resolve<DeathTouchParser>().DtCheck("Fright says 'TINIALITA'", DateTime.Now);
             Assert.AreEqual("Fright", result.NpcName);
             Assert.AreEqual("TINIALITA", result.DTReceiver);
         }

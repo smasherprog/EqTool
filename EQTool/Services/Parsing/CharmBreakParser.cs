@@ -22,7 +22,7 @@ namespace EQTool.Services.Parsing
             var m = DidCharmBreak(line);
             if (m)
             {
-                logEvents.Handle(new CharmBreakEvent());
+                logEvents.Handle(new CharmBreakEvent { TimeStamp = timestamp });
                 return true;
             }
             return false;

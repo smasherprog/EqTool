@@ -18,7 +18,7 @@ namespace EQTool.Services.Parsing
             var m = Parse(line);
             if (!string.IsNullOrWhiteSpace(m))
             {
-                logEvents.Handle(new GroupInviteEvent { Inviter = m });
+                logEvents.Handle(new GroupInviteEvent { Inviter = m, TimeStamp = timestamp });
                 return true;
             }
             return false;

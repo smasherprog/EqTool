@@ -14,7 +14,7 @@ namespace EQTool.Services.Parsing
 
         public bool Handle(string line, DateTime timestamp)
         {
-            var m = EnrageCheck(line);
+            var m = EnrageCheck(line, timestamp);
             if (m != null)
             {
                 logEvents.Handle(m);
@@ -22,12 +22,13 @@ namespace EQTool.Services.Parsing
             }
             return false;
         }
-        public EnrageEvent EnrageCheck(string line)
+
+        public EnrageEvent EnrageCheck(string line, DateTime timestamp)
         {
             if (line.EndsWith(" has become ENRAGED.", System.StringComparison.OrdinalIgnoreCase))
             {
                 var npcname = line.Replace(" has become ENRAGED.", string.Empty).Trim();
-                return new EnrageEvent { NpcName = npcname };
+                return new EnrageEvent { NpcName = npcname, TimeStamp = timestamp };
             }
 
             return null;

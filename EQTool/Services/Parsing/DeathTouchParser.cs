@@ -14,7 +14,7 @@ namespace EQTool.Services.Parsing
 
         public bool Handle(string line, DateTime timestamp)
         {
-            var m = DtCheck(line);
+            var m = DtCheck(line, timestamp);
             if (m != null)
             {
                 logEvents.Handle(m);
@@ -23,7 +23,7 @@ namespace EQTool.Services.Parsing
             return false;
         }
 
-        public DeathTouchEvent DtCheck(string line)
+        public DeathTouchEvent DtCheck(string line, DateTime timestamp)
         {
             if (line.StartsWith("Fright says '"))
             {
@@ -32,7 +32,7 @@ namespace EQTool.Services.Parsing
                 var possiblename = line.Substring(firsttick, lasttick);
                 if (!possiblename.Contains(" "))
                 {
-                    return new DeathTouchEvent { NpcName = "Fright", DTReceiver = possiblename };
+                    return new DeathTouchEvent { NpcName = "Fright", DTReceiver = possiblename, TimeStamp = timestamp };
                 }
             }
 
@@ -43,7 +43,7 @@ namespace EQTool.Services.Parsing
                 var possiblename = line.Substring(firsttick, lasttick);
                 if (!possiblename.Contains(" "))
                 {
-                    return new DeathTouchEvent { NpcName = "Dread", DTReceiver = possiblename };
+                    return new DeathTouchEvent { NpcName = "Dread", DTReceiver = possiblename, TimeStamp = timestamp };
                 }
             }
             return null;

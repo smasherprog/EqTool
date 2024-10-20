@@ -18,7 +18,7 @@ namespace EQTool.Services.Parsing
             var m = MatchWornOffOtherSpell(line);
             if (!string.IsNullOrWhiteSpace(m))
             {
-                logEvents.Handle(new SpellWornOffOtherEvent { SpellName = m });
+                logEvents.Handle(new SpellWornOffOtherEvent { SpellName = m, TimeStamp = timestamp });
                 return true;
             }
             return false;

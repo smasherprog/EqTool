@@ -16,7 +16,7 @@ namespace EQTool.Services.Parsing
         {
             if (line == "The screams fade away.")
             {
-                logEvents.Handle(new SpellWornOffEvent { SpellName = "Soul Consumption" });
+                logEvents.Handle(new SpellWornOffEvent { SpellName = "Soul Consumption", TimeStamp = timestamp });
                 return true;
             }
             return false;

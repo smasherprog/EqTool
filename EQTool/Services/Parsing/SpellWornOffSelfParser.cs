@@ -20,7 +20,7 @@ namespace EQTool.Services.Parsing
             var m = MatchWornOffSelfSpell(line);
             if (m.Any())
             {
-                logEvents.Handle(new SpellWornOffSelfEvent { SpellNames = m });
+                logEvents.Handle(new SpellWornOffSelfEvent { SpellNames = m, TimeStamp = timestamp });
                 return true;
             }
             return false;

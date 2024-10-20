@@ -1,5 +1,6 @@
 ﻿using EQTool.Models;
 using EQTool.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -21,7 +22,7 @@ namespace EQTool.Services.Parsing
             HealSpell = spells.AllSpells.FirstOrDefault(a => a.name == "Chloroblast");
         }
 
-        public SpellCastEvent HandleBestGuessSpell(string message)
+        public SpellCastEvent HandleBestGuessSpell(string message, DateTime timestamp)
         {
             if (spells.CastOnYouSpells.TryGetValue(message, out var foundspells))
             {
@@ -34,7 +35,8 @@ namespace EQTool.Services.Parsing
                 {
                     Spell = foundspell,
                     TargetName = EQSpells.SpaceYou,
-                    MultipleMatchesFound = multiplematches
+                    MultipleMatchesFound = multiplematches,
+                    TimeStamp = timestamp
                 };
             }
 
@@ -53,7 +55,8 @@ namespace EQTool.Services.Parsing
                     {
                         Spell = foundspell,
                         TargetName = targetname,
-                        MultipleMatchesFound = multiplematches
+                        MultipleMatchesFound = multiplematches,
+                        TimeStamp = timestamp
                     };
                 }
             }
@@ -72,7 +75,7 @@ namespace EQTool.Services.Parsing
                     {
                         var firstpart = message.Substring(0, removename + 1).Trim();
                         var spellmessage = message.Substring(removename).Trim();
-                        var match = Match(spellmessage, firstpart);
+                        var match = Match(spellmessage, firstpart, timestamp);
                         if (match != null)
                         {
                             return match;
@@ -83,7 +86,7 @@ namespace EQTool.Services.Parsing
             return null;
         }
 
-        private SpellCastEvent Match(string spellmessage, string targetname)
+        private SpellCastEvent Match(string spellmessage, string targetname, DateTime timestamp)
         {
 
             var foundspells = new List<Spell>();
@@ -114,7 +117,8 @@ namespace EQTool.Services.Parsing
                 {
                     Spell = foundspell,
                     TargetName = targetname,
-                    MultipleMatchesFound = multiplematches
+                    MultipleMatchesFound = multiplematches,
+                    TimeStamp = timestamp
                 };
             }
 

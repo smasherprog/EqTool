@@ -65,7 +65,7 @@ namespace EQTool.Services.Parsing
             return false;
         }
 
-        public DPSParseMatch Match(string message, DateTime date)
+        public DPSParseMatch Match(string message, DateTime timestamp)
         {
             if (message.Contains("tells"))
             {
@@ -83,7 +83,7 @@ namespace EQTool.Services.Parsing
                 {
                     SourceName = "You",
                     DamageDone = int.Parse(damagedone),
-                    TimeStamp = date,
+                    TimeStamp = timestamp,
                     TargetName = nameoftarget
                 };
             }
@@ -100,7 +100,7 @@ namespace EQTool.Services.Parsing
                 {
                     SourceName = "You",
                     DamageDone = int.Parse(damagedone),
-                    TimeStamp = date,
+                    TimeStamp = timestamp,
                     TargetName = nameoftarget
                 };
             }
@@ -141,7 +141,7 @@ namespace EQTool.Services.Parsing
                         {
                             SourceName = nameofattacker,
                             DamageDone = (int)bignumber,
-                            TimeStamp = date,
+                            TimeStamp = timestamp,
                             TargetName = nameoftarget
                         };
                     }

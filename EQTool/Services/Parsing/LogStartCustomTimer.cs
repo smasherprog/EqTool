@@ -50,7 +50,7 @@ namespace EQTool.Services.Parsing
             var m = ParseStartTimer(line);
             if (m != null)
             {
-                logEvents.Handle(new StartTimerEvent { CustomTimer = m });
+                logEvents.Handle(new StartTimerEvent { CustomTimer = m, TimeStamp = timestamp });
                 return true;
             }
             return false;
