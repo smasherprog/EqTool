@@ -1,6 +1,5 @@
 ﻿using EQTool.Models;
-using System;
-
+using System; 
 
 namespace EQTool.Services.Parsing
 {
@@ -22,7 +21,7 @@ namespace EQTool.Services.Parsing
         {
             var m = Parse(line);
             if (m != null)
-            {
+            { 
                 logEvents.Handle(new InvisEvent { InvisStatus = m.Value, TimeStamp = timestamp });
                 return true;
             }
