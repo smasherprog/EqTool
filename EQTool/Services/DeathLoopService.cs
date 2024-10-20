@@ -71,7 +71,7 @@ namespace EQTool.Services
         private void LogEvents_PlayerCommsEvent(object sender, PlayerCommsEvent e)
         {
             // a comms event in any channel indicates the player is active
-            if (e.theChannel != PlayerCommsEvent.Channel.NONE)
+            if (e.TheChannel != PlayerCommsEvent.Channel.NONE)
             {
                 // todo - remove for final
                 // just a little audible marker

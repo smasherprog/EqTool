@@ -1,6 +1,7 @@
 ﻿using EQToolShared.HubModels;
 using System;
 using System.Collections.Generic;
+using System.Security.RightsManagement;
 using System.Windows.Media.Media3D;
 
 namespace EQTool.Models
@@ -105,7 +106,9 @@ namespace EQTool.Models
             ANY         = TELL|SAY|GROUP|GUILD|AUCTION|OOC|SHOUT
         }
 
-        public PlayerCommsEvent.Channel theChannel { get; set; }
+        public PlayerCommsEvent.Channel TheChannel { get; set; }
+        public string Content { get; set; }
+        public string Receiver { get; set; }
     }
 
 

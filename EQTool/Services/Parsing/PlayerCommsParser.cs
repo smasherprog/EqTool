@@ -52,42 +52,120 @@ namespace EQTool.Services.Parsing
             if (activePlayer != null)
                 playerName = activePlayer.Player.Name;
 
-            // examples
+            //
+            // begin checking for the various channels
+            //
+
             //You told Qdyil, 'not even sure'
-            //You say, 'Hail, Wenglawks Kkeak'
-            //You tell your party, 'oh interesting'
-            //You say to your guild, 'nice'
-            //You auction, 'wtb diamond'
-            //You say out of character, 'train to west'
-            //You shout, 'When it is time - Horse Charmers will be Leffingwell and Ceous'
-            //Azleep -> Jamori: ok
-
-            // does this line contain a communication?
-            PlayerCommsEvent.Channel channel = PlayerCommsEvent.Channel.NONE;
-            if (line.StartsWith("You told"))
-                channel = PlayerCommsEvent.Channel.TELL;
-            else if (line.StartsWith("You say, "))
-                channel = PlayerCommsEvent.Channel.SAY;
-            else if (line.StartsWith("You tell your party, "))
-                channel = PlayerCommsEvent.Channel.GROUP;
-            else if (line.StartsWith("You say to your guild, "))
-                channel = PlayerCommsEvent.Channel.GUILD;
-            else if (line.StartsWith("You auction, "))
-                channel = PlayerCommsEvent.Channel.AUCTION;
-            else if (line.StartsWith("You say out of character, "))
-                channel = PlayerCommsEvent.Channel.OOC;
-            else if (line.StartsWith("You shout, "))
-                channel = PlayerCommsEvent.Channel.SHOUT;
-            else if (line.StartsWith($"{playerName} ->"))
-                channel = PlayerCommsEvent.Channel.TELL;
-
-            // did we find a comms event in any channel?
-            if (channel != PlayerCommsEvent.Channel.NONE)
+            var pattern = @"^You told (?<receiver>.+), '(?<content>.+)'";
+            var regex = new Regex(pattern, RegexOptions.Compiled);
+            var match = regex.Match(line);
+            if (match.Success)
             {
                 rv = new PlayerCommsEvent();
+                rv.Receiver = match.Groups["receiver"].Value;
+                rv.Content = match.Groups["content"].Value;
+                rv.TheChannel = PlayerCommsEvent.Channel.TELL;
                 rv.TimeStamp = timestamp;
                 rv.Line = line;
-                rv.theChannel = channel;
+            }
+
+            //You say, 'Hail, Wenglawks Kkeak'
+            pattern = @"^You say, '(?<content>.+)'";
+            regex = new Regex(pattern, RegexOptions.Compiled);
+            match = regex.Match(line);
+            if (match.Success)
+            {
+                rv = new PlayerCommsEvent();
+                rv.Receiver = "";
+                rv.Content = match.Groups["content"].Value;
+                rv.TheChannel = PlayerCommsEvent.Channel.SAY;
+                rv.TimeStamp = timestamp;
+                rv.Line = line;
+            }
+
+            //You tell your party, 'oh interesting'
+            pattern = @"^You tell your party, '(?<content>.+)'";
+            regex = new Regex(pattern, RegexOptions.Compiled);
+            match = regex.Match(line);
+            if (match.Success)
+            {
+                rv = new PlayerCommsEvent();
+                rv.Receiver = "";
+                rv.Content = match.Groups["content"].Value;
+                rv.TheChannel = PlayerCommsEvent.Channel.GROUP;
+                rv.TimeStamp = timestamp;
+                rv.Line = line;
+            }
+
+            //You say to your guild, 'nice'
+            pattern = @"^You say to your guild, '(?<content>.+)'";
+            regex = new Regex(pattern, RegexOptions.Compiled);
+            match = regex.Match(line);
+            if (match.Success)
+            {
+                rv = new PlayerCommsEvent();
+                rv.Receiver = "";
+                rv.Content = match.Groups["content"].Value;
+                rv.TheChannel = PlayerCommsEvent.Channel.GUILD;
+                rv.TimeStamp = timestamp;
+                rv.Line = line;
+            }
+
+            //You auction, 'wtb diamond'
+            pattern = @"^You auction, '(?<content>.+)'";
+            regex = new Regex(pattern, RegexOptions.Compiled);
+            match = regex.Match(line);
+            if (match.Success)
+            {
+                rv = new PlayerCommsEvent();
+                rv.Receiver = "";
+                rv.Content = match.Groups["content"].Value;
+                rv.TheChannel = PlayerCommsEvent.Channel.AUCTION;
+                rv.TimeStamp = timestamp;
+                rv.Line = line;
+            }
+
+            //You say out of character, 'train to west'
+            pattern = @"^You say out of character, '(?<content>.+)'";
+            regex = new Regex(pattern, RegexOptions.Compiled);
+            match = regex.Match(line);
+            if (match.Success)
+            {
+                rv = new PlayerCommsEvent();
+                rv.Receiver = "";
+                rv.Content = match.Groups["content"].Value;
+                rv.TheChannel = PlayerCommsEvent.Channel.OOC;
+                rv.TimeStamp = timestamp;
+                rv.Line = line;
+            }
+
+            //You shout, 'When it is time - Horse Charmers will be Leffingwell and Ceous'
+            pattern = @"^You shout, '(?<content>.+)'";
+            regex = new Regex(pattern, RegexOptions.Compiled);
+            match = regex.Match(line);
+            if (match.Success)
+            {
+                rv = new PlayerCommsEvent();
+                rv.Receiver = "";
+                rv.Content = match.Groups["content"].Value;
+                rv.TheChannel = PlayerCommsEvent.Channel.SHOUT;
+                rv.TimeStamp = timestamp;
+                rv.Line = line;
+            }
+
+            //Azleep -> Jamori: ok
+            pattern = @"^.+ -> (?<receiver>.+): (?<content>.+)";
+            regex = new Regex(pattern, RegexOptions.Compiled);
+            match = regex.Match(line);
+            if (match.Success)
+            {
+                rv = new PlayerCommsEvent();
+                rv.Receiver = match.Groups["receiver"].Value;
+                rv.Content = match.Groups["content"].Value;
+                rv.TheChannel = PlayerCommsEvent.Channel.TELL;
+                rv.TimeStamp = timestamp;
+                rv.Line = line;
             }
 
             return rv;

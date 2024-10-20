@@ -1,10 +1,11 @@
 ﻿using Autofac;
-using EQTool.Services;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
-using EQTool.Services.Parsing;
-using System;
 using EQTool.Models;
-
+using EQTool.Services.Parsing;
+using EQTool.ViewModels;
+using EQToolShared.Enums;
+using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
+using System.Linq;
 
 namespace EQToolTests
 {
@@ -12,12 +13,10 @@ namespace EQToolTests
     public class PlayerCommsTests
     {
         private readonly IContainer container;
-        private readonly LogEvents logEvents;
 
         PlayerCommsTests()
         {
             container = DI.Init();
-            logEvents = container.Resolve<LogEvents>();
         }
 
 
@@ -31,7 +30,11 @@ namespace EQToolTests
             var match = commsParser.Match(message, now);
 
             Assert.IsNotNull(match);
-            Assert.AreEqual(PlayerCommsEvent.Channel.TELL, match.theChannel);
+            Assert.AreEqual("Qdyil", match.Receiver);
+            Assert.AreEqual("not even sure", match.Content);
+            Assert.AreEqual(PlayerCommsEvent.Channel.TELL, match.TheChannel);
+            Assert.AreEqual(now, match.TimeStamp);
+            Assert.AreEqual(message, match.Line);
         }
 
         [TestMethod]
@@ -44,7 +47,11 @@ namespace EQToolTests
             var match = commsParser.Match(message, now);
 
             Assert.IsNotNull(match);
-            Assert.AreEqual(PlayerCommsEvent.Channel.TELL, match.theChannel);
+            Assert.AreEqual("Jamori", match.Receiver);
+            Assert.AreEqual("ok", match.Content);
+            Assert.AreEqual(PlayerCommsEvent.Channel.TELL, match.TheChannel);
+            Assert.AreEqual(now, match.TimeStamp);
+            Assert.AreEqual(message, match.Line);
         }
 
         [TestMethod]
@@ -57,7 +64,11 @@ namespace EQToolTests
             var match = commsParser.Match(message, now);
 
             Assert.IsNotNull(match);
-            Assert.AreEqual(PlayerCommsEvent.Channel.SAY, match.theChannel);
+            Assert.AreEqual("", match.Receiver);
+            Assert.AreEqual("Hail, Wenglawks Kkeak", match.Content);
+            Assert.AreEqual(PlayerCommsEvent.Channel.SAY, match.TheChannel);
+            Assert.AreEqual(now, match.TimeStamp);
+            Assert.AreEqual(message, match.Line);
         }
 
         [TestMethod]
@@ -70,7 +81,11 @@ namespace EQToolTests
             var match = commsParser.Match(message, now);
 
             Assert.IsNotNull(match);
-            Assert.AreEqual(PlayerCommsEvent.Channel.GROUP, match.theChannel);
+            Assert.AreEqual("", match.Receiver);
+            Assert.AreEqual("oh interesting", match.Content);
+            Assert.AreEqual(PlayerCommsEvent.Channel.GROUP, match.TheChannel);
+            Assert.AreEqual(now, match.TimeStamp);
+            Assert.AreEqual(message, match.Line);
         }
 
         [TestMethod]
@@ -83,7 +98,11 @@ namespace EQToolTests
             var match = commsParser.Match(message, now);
 
             Assert.IsNotNull(match);
-            Assert.AreEqual(PlayerCommsEvent.Channel.GUILD, match.theChannel);
+            Assert.AreEqual("", match.Receiver);
+            Assert.AreEqual("nice", match.Content);
+            Assert.AreEqual(PlayerCommsEvent.Channel.GUILD, match.TheChannel);
+            Assert.AreEqual(now, match.TimeStamp);
+            Assert.AreEqual(message, match.Line);
         }
 
         [TestMethod]
@@ -96,7 +115,11 @@ namespace EQToolTests
             var match = commsParser.Match(message, now);
 
             Assert.IsNotNull(match);
-            Assert.AreEqual(PlayerCommsEvent.Channel.AUCTION, match.theChannel);
+            Assert.AreEqual("", match.Receiver);
+            Assert.AreEqual("wtb diamond", match.Content);
+            Assert.AreEqual(PlayerCommsEvent.Channel.AUCTION, match.TheChannel);
+            Assert.AreEqual(now, match.TimeStamp);
+            Assert.AreEqual(message, match.Line);
         }
 
         [TestMethod]
@@ -109,7 +132,11 @@ namespace EQToolTests
             var match = commsParser.Match(message, now);
 
             Assert.IsNotNull(match);
-            Assert.AreEqual(PlayerCommsEvent.Channel.OOC, match.theChannel);
+            Assert.AreEqual("", match.Receiver);
+            Assert.AreEqual("train to west", match.Content);
+            Assert.AreEqual(PlayerCommsEvent.Channel.OOC, match.TheChannel);
+            Assert.AreEqual(now, match.TimeStamp);
+            Assert.AreEqual(message, match.Line);
         }
 
         [TestMethod]
@@ -122,7 +149,11 @@ namespace EQToolTests
             var match = commsParser.Match(message, now);
 
             Assert.IsNotNull(match);
-            Assert.AreEqual(PlayerCommsEvent.Channel.SHOUT, match.theChannel);
+            Assert.AreEqual("", match.Receiver);
+            Assert.AreEqual("When it is time - Horse Charmers will be Leffingwell and Ceous", match.Content);
+            Assert.AreEqual(PlayerCommsEvent.Channel.SHOUT, match.TheChannel);
+            Assert.AreEqual(now, match.TimeStamp);
+            Assert.AreEqual(message, match.Line);
         }
     }
 }

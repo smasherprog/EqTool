@@ -61,7 +61,7 @@ namespace EQTool.Services.Parsing
                     dmg = int.Parse(match.Groups["damage"].Value);
 
                 rv = new DamageEvent();
-                rv.AttackerName   = match.Groups["attacker_name"].Value;
+                rv.AttackerName = match.Groups["attacker_name"].Value;
                 rv.DamageType   = match.Groups["dmg_type"].Value;
                 rv.DamageDone   = dmg;
                 rv.TargetName   = match.Groups["target_name"].Value;
@@ -76,7 +76,7 @@ namespace EQTool.Services.Parsing
             if (match.Success)
             {
                 rv = new DamageEvent();
-                rv.AttackerName   = "You";
+                rv.AttackerName = "You";
                 rv.DamageType   = "non-melee";
                 rv.DamageDone   = int.Parse(match.Groups["damage"].Value);
                 rv.TargetName   = match.Groups["target_name"].Value;

@@ -3022,7 +3022,7 @@ namespace TGASharpLib
         /// contains 24, then each color specification is 8 bits in length; if Field 4.3 contains 32,
         /// then each color specification is also 8 bits (32/3 gives 10, but 8 is smaller).
         /// Unused bit(s) in the multi-byte entries are assumed to specify attribute bits. The
-        /// attribute bit field is often called the Alpha Channel, Overlay Bit(s) or Interrupt Bit(s).</para>
+        /// attribute bit field is often called the Alpha TheChannel, Overlay Bit(s) or Interrupt Bit(s).</para>
         /// For the TARGA M-8, ATVista and NuVista, the number of bits in a color map specification is
         /// 24 (or 32). The red, green, and blue components are each represented by one byte.
         /// </summary>
