@@ -1,10 +1,7 @@
 ﻿using EQTool.Models;
 using EQToolShared.HubModels;
 using System;
-using System.Diagnostics.Eventing.Reader;
-using System.Linq;
 using System.Text.RegularExpressions;
-using System.Windows.Shapes;
 
 namespace EQTool.Services.Parsing
 {
@@ -70,7 +67,7 @@ namespace EQTool.Services.Parsing
             //      PigTimer-6:40-Guard          6 minutes 40 second timer, with name 'Guard'
             //      PigTimer-10:00               10 minute timer, with no name
             //      PigTimer-1:02:00-LongTimer   1 hour, 2 minute timer, with description 'LongTimer'
-            string customTimerPattern = @"PigTimer-(((?<hh>[0-9]+):)?((?<mm>[0-9]+):))?(?<ss>[0-9]+)(-(?<label>\w+))*";
+            var customTimerPattern = @"PigTimer-(((?<hh>[0-9]+):)?((?<mm>[0-9]+):))?(?<ss>[0-9]+)(-(?<label>\w+))*";
             //                            PigTimer-                                                                         must start with PigTimer-
             //                                      ((?<hh>[0-9]+):)?                                                       Group "hh"      0 or more (sets of numbers, followed by a colon)
             //                                                       ((?<mm>[0-9]+):)                                       Group "mm"      1 set of numbers followed by a colon
@@ -80,14 +77,10 @@ namespace EQTool.Services.Parsing
             //
             // This website is absolutely needed when creating this kind of crazy regex!
             //      https://regex101.com/r/RWA9Oy/1
-            Regex regex = new Regex(customTimerPattern, RegexOptions.Compiled);
+            var regex = new Regex(customTimerPattern, RegexOptions.Compiled);
             var match = regex.Match(line);
             if (match.Success)
             {
-                // just a little audible marker
-                System.Media.SoundPlayer player = new System.Media.SoundPlayer(@"c:\Windows\Media\chimes.wav");
-                player.Play();
-
                 // get results from the rexex scan
                 var hh = match.Groups["hh"].Value;
                 var mm = match.Groups["mm"].Value;
@@ -95,7 +88,7 @@ namespace EQTool.Services.Parsing
                 var label = match.Groups["label"].Value;
 
                 // count up the seconds
-                int timerSeconds = 0;
+                var timerSeconds = 0;
                 if (ss != "")
                 {
                     timerSeconds += int.Parse(ss);
@@ -111,13 +104,12 @@ namespace EQTool.Services.Parsing
                 Console.WriteLine($"match found [{match}], [{hh}], [{mm}], [{ss}], [{label}], [{timerSeconds}]");
 
                 // return value
-                rv = new CustomTimer();
-                rv.DurationInSeconds = timerSeconds;
+                rv = new CustomTimer
+                {
+                    DurationInSeconds = timerSeconds
+                };
                 // if the user didn't specify a label, we'll give it the match string
-                if (label != "")
-                    rv.Name = label;
-                else
-                    rv.Name = $"{match}";
+                rv.Name = label != "" ? label : $"{match}";
             }
             return rv;
         }
