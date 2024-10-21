@@ -420,7 +420,7 @@
     <Compile Include="Services\WindowBounds.cs" />
     <Compile Include="Services\LogParser.cs" />
     <Compile Include="Services\Parsing\LogCancelCustomTimer.cs" />
-    <Compile Include="Services\Parsing\LogDeathParse.cs" />
+    <Compile Include="Services\Parsing\DeathParser.cs" />
     <Compile Include="Services\Parsing\DamageParser.cs" />
     <Compile Include="Services\Parsing\Helpers\ParseSpellGuess.cs" />
     <Compile Include="Services\Spells\SpellDurations.cs" />

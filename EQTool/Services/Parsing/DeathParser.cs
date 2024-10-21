@@ -10,11 +10,11 @@ using static System.Windows.Forms.VisualStyles.VisualStyleElement.TaskbarClock;
 
 namespace EQTool.Services.Parsing
 {
-    public class LogDeathParse : IEqLogParseHandler
+    public class DeathParser : IEqLogParseHandler
     {
         private readonly LogEvents logEvents;
 
-        public LogDeathParse(LogEvents logEvents)
+        public DeathParser(LogEvents logEvents)
         {
             this.logEvents = logEvents;
         }
