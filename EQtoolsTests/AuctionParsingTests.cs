@@ -1,7 +1,6 @@
 ﻿using Autofac;
 using EQToolShared.Discord;
 using EQToolShared.Enums;
-using EQtoolsTests;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
 

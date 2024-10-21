@@ -2,8 +2,6 @@
 using EQTool.ViewModels;
 using EQToolShared.Enums;
 using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace EQTool.Services.Parsing
@@ -34,7 +32,7 @@ namespace EQTool.Services.Parsing
         // handle a line from the log file
         public bool Handle(string line, DateTime timestamp)
         {
-            DamageEvent de = Match(line, timestamp);
+            var de = Match(line, timestamp);
             if (de != null)
             {
                 logEvents.Handle(de);
@@ -58,7 +56,9 @@ namespace EQTool.Services.Parsing
                 // the damage capture group will be an empty string if this was a miss
                 var dmg = 0;
                 if (match.Groups["damage"].Value != "")
+                {
                     dmg = int.Parse(match.Groups["damage"].Value);
+                }
 
                 rv = new DamageEvent(timestamp, line, match.Groups["target_name"].Value, match.Groups["attacker_name"].Value, dmg, match.Groups["dmg_type"].Value);
             }
@@ -76,7 +76,9 @@ namespace EQTool.Services.Parsing
             if (rv != null && rv.AttackerName == "You" && activePlayer.Player != null && activePlayer.Player.PlayerClass == null)
             {
                 if (rv.DamageType.Contains("backstab"))
+                {
                     activePlayer.Player.PlayerClass = PlayerClasses.Rogue;
+                }
             }
 
             return rv;

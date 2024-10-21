@@ -26,6 +26,7 @@ namespace EQTool.Services
             actions[(int)OverlayTypes.RootBreakEvent] = RootBreakEvent;
             actions[(int)OverlayTypes.ResistSpellEvent] = ResistSpellEvent;
             actions[(int)OverlayTypes.RandomRollEvent] = RandomRollEvent;
+            actions[(int)OverlayTypes.DeathLoopEvent] = DeathLoopEvent;
         }
 
         public void RunTest(OverlayTypes overlayType)
@@ -73,6 +74,15 @@ namespace EQTool.Services
             r = random.Next(0, 333);
             PushLog("**A Magic Die is rolled by Sanare.");
             PushLog($"**It could have been any number from 0 to 333, but this time it turned up a {r}.");
+        }
+        private void DeathLoopEvent()
+        {
+            activePlayer.Player.DeathLoopOverlay = true;
+            activePlayer.Player.DeathLoopAudio = true;
+            PushLog("You have been slain by a brigand!");
+            PushLog("You have been slain by a brigand!");
+            PushLog("You have been slain by a brigand!");
+            PushLog("You have been slain by a brigand!");
         }
 
         private void ResistSpellEvent()

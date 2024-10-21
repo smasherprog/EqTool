@@ -1,4 +1,5 @@
 ﻿using EQTool.Models;
+using EQTool.ViewModels;
 using System;
 using System.Diagnostics;
 
@@ -19,9 +20,8 @@ namespace EQTool.Services.Handlers
     //      YouBeginCastingEvent
     //      CommsEvent
     //
-    public class DeathLoopHandler
+    public class DeathLoopHandler : BaseHandler
     {
-        private readonly LogEvents logEvents;
         // todo - make these values configurable
         private readonly int _deathLoopDeaths = 4;
         private readonly int _deathLoopSeconds = 120;
@@ -41,9 +41,8 @@ namespace EQTool.Services.Handlers
         //
         // register this service as a listener for the Events it cares about
         //
-        public DeathLoopHandler(LogEvents logEvents, EQToolSettings eQToolSettings)
+        public DeathLoopHandler(LogEvents logEvents, ActivePlayer activePlayer, EQToolSettings eQToolSettings, ITextToSpeach textToSpeach) : base(logEvents, activePlayer, eQToolSettings, textToSpeach)
         {
-            this.logEvents = logEvents;
             this.logEvents.DeathEvent += LogEvents_DeathEvent;
             this.logEvents.DamageEvent += LogEvents_DamageEvent;
             this.logEvents.YouBeginCastingEvent += LogEvents_YouBeginCastingEvent;
@@ -141,9 +140,11 @@ namespace EQTool.Services.Handlers
         public void DeathLoopResponse(DateTime timestamp, string line)
         {
             // since we can't kill eqgame.exe, try to alert the user by yelling at him/her
-            // fire an event to the AudioService for it to respond to
-            var textToSpeechEvent = new TextToSpeechEvent(timestamp, line, "death loop death loop death loop. death loop!");
-            logEvents.Handle(textToSpeechEvent);
+            // fire an event to the AudioService for it to respond to 
+            if (activePlayer?.Player?.DeathLoopAudio == true)
+            {
+                textToSpeach.Say("death loop death loop death loop. death loop!");
+            }
 
             //var synth = new SpeechSynthesizer();
             //synth.SetOutputToDefaultAudioDevice();

@@ -1,5 +1,4 @@
-﻿using System.Drawing;
-using System.Windows.Media.Imaging;
+﻿using System.Windows.Media.Imaging;
 
 namespace EQTool.Models
 {

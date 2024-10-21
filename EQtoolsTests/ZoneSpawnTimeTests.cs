@@ -1,5 +1,4 @@
-﻿using Autofac;
-using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace EQtoolsTests
 {

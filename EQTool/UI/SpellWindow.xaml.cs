@@ -4,7 +4,6 @@ using EQTool.ViewModels;
 using EQToolShared;
 using EQToolShared.Enums;
 using EQToolShared.HubModels;
-using EQToolShared.Map;
 using System;
 using System.ComponentModel;
 using System.Linq;
