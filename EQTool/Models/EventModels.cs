@@ -137,7 +137,7 @@ namespace EQTool.Models
     //
     // event class to carry all relevant communications events to interested listeners
     //
-    public class PlayerCommsEvent : BaseLogParseEvent
+    public class CommsEvent : BaseLogParseEvent
     {
         public enum Channel
         {
@@ -152,13 +152,13 @@ namespace EQTool.Models
             ANY         = TELL|SAY|GROUP|GUILD|AUCTION|OOC|SHOUT
         }
 
-        public PlayerCommsEvent.Channel TheChannel { get; set; }
+        public CommsEvent.Channel TheChannel { get; set; }
         public string Content { get; set; }
         public string Receiver { get; set; }
         public string Sender { get; set; }
 
         // todo - make parser smarter to handle comms from other players
-        public PlayerCommsEvent(DateTime dateTime, string line, PlayerCommsEvent.Channel channel = Channel.NONE, string content = "", string sender = "", string receiver = "")
+        public CommsEvent(DateTime dateTime, string line, CommsEvent.Channel channel = Channel.NONE, string content = "", string sender = "", string receiver = "")
         {
             TimeStamp = dateTime;
             Line = line;

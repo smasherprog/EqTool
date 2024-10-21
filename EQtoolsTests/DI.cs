@@ -62,7 +62,7 @@ namespace EQToolTests
 
             _ = builder.RegisterType<EQTool.Services.Parsing.QuakeParser>().As<EQTool.Models.IEqLogParseHandler>().SingleInstance();
             _ = builder.RegisterType<EQTool.Services.Parsing.RandomParser>().As<EQTool.Models.IEqLogParseHandler>().SingleInstance();
-            _ = builder.RegisterType<EQTool.Services.Parsing.PlayerCommsParser>().As<EQTool.Models.IEqLogParseHandler>().SingleInstance();
+            _ = builder.RegisterType<EQTool.Services.Parsing.CommsParser>().As<EQTool.Models.IEqLogParseHandler>().SingleInstance();
             _ = builder.RegisterType<EQTool.Services.Parsing.DeathTouchParser>().As<EQTool.Models.IEqLogParseHandler>().SingleInstance();
             _ = builder.RegisterType<EQTool.Services.Parsing.EnrageParser>().As<EQTool.Models.IEqLogParseHandler>().SingleInstance();
 

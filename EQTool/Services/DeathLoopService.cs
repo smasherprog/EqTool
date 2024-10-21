@@ -19,7 +19,7 @@ namespace EQTool.Services
     //      DeathEvent
     //      DamageEvent
     //      YouBeginCastingEvent
-    //      PlayerCommsEvent
+    //      CommsEvent
     //
     public class DeathLoopService
     {
@@ -49,7 +49,7 @@ namespace EQTool.Services
             this.logEvents.DeathEvent += LogEvents_DeathEvent;
             this.logEvents.DamageEvent += LogEvents_DamageEvent;
             this.logEvents.YouBeginCastingEvent += LogEvents_YouBeginCastingEvent;
-            this.logEvents.PlayerCommsEvent += LogEvents_PlayerCommsEvent;
+            this.logEvents.CommsEvent += LogEvents_CommsEvent;
         }
 
         public bool IsDeathLooping()
@@ -142,7 +142,6 @@ namespace EQTool.Services
             TextToSpeechEvent textToSpeechEvent = new TextToSpeechEvent(timestamp, line, "death loop death loop death loop. death loop!");
             logEvents.Handle(textToSpeechEvent);
 
-            //// todo - change this to emit an Audio Event, and let the Audio service handle it
             //var synth = new SpeechSynthesizer();
             //synth.SetOutputToDefaultAudioDevice();
             //synth.Rate = 2;
@@ -184,15 +183,15 @@ namespace EQTool.Services
 
 
         //
-        // function that gets called for a PlayerCommsEvent
+        // function that gets called for a CommsEvent
         //
-        private void LogEvents_PlayerCommsEvent(object sender, PlayerCommsEvent playerCommsEvent)
+        private void LogEvents_CommsEvent(object sender, CommsEvent commsEvent)
         {
             // use current time to see if any death time stamps in the list need to roll off
-            UpdateDeathList(playerCommsEvent.TimeStamp);
+            UpdateDeathList(commsEvent.TimeStamp);
 
             // a comms event in any channel from the player indicates the player is active
-            if ((playerCommsEvent.TheChannel != PlayerCommsEvent.Channel.NONE) && (playerCommsEvent.Sender == "You"))
+            if ((commsEvent.TheChannel != CommsEvent.Channel.NONE) && (commsEvent.Sender == "You"))
             {
                 // player is communicating, i.deathEvent. not AFK, so clear death list
                 _deathLoopTimeStamps.Clear();

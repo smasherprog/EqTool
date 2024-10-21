@@ -53,10 +53,10 @@ namespace EQTool.Services
             DeathEvent?.Invoke(this, e);
         }
 
-        public event EventHandler<PlayerCommsEvent> PlayerCommsEvent;
-        public void Handle(PlayerCommsEvent e)
+        public event EventHandler<CommsEvent> CommsEvent;
+        public void Handle(CommsEvent e)
         {
-            PlayerCommsEvent?.Invoke(this, e);
+            CommsEvent?.Invoke(this, e);
         }
 
         public event EventHandler<StartTimerEvent> StartTimerEvent;

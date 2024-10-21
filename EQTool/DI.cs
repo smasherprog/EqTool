@@ -32,7 +32,7 @@ namespace EQTool
             _ = builder.RegisterType<Services.Parsing.QuakeParser>().As<Models.IEqLogParseHandler>().SingleInstance();
             _ = builder.RegisterType<Services.Parsing.RandomParser>().As<Models.IEqLogParseHandler>().SingleInstance();
             //  _ = builder.RegisterType<Services.Parsing.OldDeathParser>().As<Models.IEqLogParseHandler>().SingleInstance();
-            _ = builder.RegisterType<Services.Parsing.PlayerCommsParser>().As<Models.IEqLogParseHandler>().SingleInstance();
+            _ = builder.RegisterType<Services.Parsing.CommsParser>().As<Models.IEqLogParseHandler>().SingleInstance();
             _ = builder.RegisterType<Services.Parsing.DeathTouchParser>().As<Models.IEqLogParseHandler>().SingleInstance();
             _ = builder.RegisterType<Services.Parsing.EnrageParser>().As<Models.IEqLogParseHandler>().SingleInstance();
 
