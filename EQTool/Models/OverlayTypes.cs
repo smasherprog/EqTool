@@ -14,6 +14,7 @@
         RootBreakEvent,
         ResistSpellEvent,
         RandomRollEvent,
+        DeathLoopEvent,
         MaxTypes
     }
 }

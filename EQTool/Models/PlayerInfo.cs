@@ -381,6 +381,28 @@ namespace EQTool.Models
             }
         }
 
+        private bool _DeathLoopOverlay;
+        public bool DeathLoopOverlay
+        {
+            get => _DeathLoopOverlay;
+            set
+            {
+                _DeathLoopOverlay = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _DeathLoopAudio;
+        public bool DeathLoopAudio
+        {
+            get => _DeathLoopAudio;
+            set
+            {
+                _DeathLoopAudio = value;
+                OnPropertyChanged();
+            }
+        }
+
         private bool _GroupInviteOverlay;
         public bool GroupInviteOverlay
         {

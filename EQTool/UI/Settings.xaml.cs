@@ -84,7 +84,7 @@ namespace EQTool.UI
             this.logParser = logParser;
             this.mapLoad = mapLoad;
             this.appDispatcher = appDispatcher;
-            this.damageLogParser = damageLogParse;
+            damageLogParser = damageLogParse;
             this.playerCommsParser = playerCommsParser;
             this.spells = spells;
             this.settings = settings;
@@ -878,6 +878,11 @@ namespace EQTool.UI
                 }
                 loginMiddlemand.StopListening();
             }
+        }
+
+        private void testDeathLoop(object sender, RoutedEventArgs e)
+        {
+            settingsTestRunOverlay.RunTest(OverlayTypes.DeathLoopEvent);
         }
     }
 }

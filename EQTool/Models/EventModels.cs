@@ -1,7 +1,6 @@
 ﻿using EQToolShared.HubModels;
 using System;
 using System.Collections.Generic;
-using System.Security.RightsManagement;
 using System.Windows.Media.Media3D;
 
 namespace EQTool.Models
@@ -20,7 +19,7 @@ namespace EQTool.Models
     public class TextToSpeechEvent : BaseLogParseEvent
     {
         public string Text { get; set; }
-        
+
         // in case the spoken version of 'text' is too crazy, we can use this to feed the TTS with a phonetic version
         public string Text_phonetic { get; set; }
 
@@ -30,13 +29,14 @@ namespace EQTool.Models
             Line = line;
             Text = text;
             if (text_phonetic == "")
+            {
                 Text_phonetic = text;
+            }
             else
+            {
                 Text_phonetic += text_phonetic;
+            }
         }
-
-
-    
     }
 
     public class PlayerLocationEvent : BaseLogParseEvent
@@ -141,15 +141,15 @@ namespace EQTool.Models
     {
         public enum Channel
         {
-            NONE        = 0b_0000_0000,
-            TELL        = 0b_0000_0001,
-            SAY         = 0b_0000_0010,
-            GROUP       = 0b_0000_0100,
-            GUILD       = 0b_0000_1000,
-            AUCTION     = 0b_0001_0000,
-            OOC         = 0b_0010_0000,
-            SHOUT       = 0b_0100_0000,
-            ANY         = TELL|SAY|GROUP|GUILD|AUCTION|OOC|SHOUT
+            NONE = 0b_0000_0000,
+            TELL = 0b_0000_0001,
+            SAY = 0b_0000_0010,
+            GROUP = 0b_0000_0100,
+            GUILD = 0b_0000_1000,
+            AUCTION = 0b_0001_0000,
+            OOC = 0b_0010_0000,
+            SHOUT = 0b_0100_0000,
+            ANY = TELL | SAY | GROUP | GUILD | AUCTION | OOC | SHOUT
         }
 
         public CommsEvent.Channel TheChannel { get; set; }
