@@ -16,8 +16,8 @@ namespace EQtoolsTests
                 Level = 54,
                 PlayerClass = PlayerClasses.Cleric,
                 Zone = "templeveeshan",
-                Name = "pigy" 
+                Name = "pigy"
             };
-        } 
+        }
     }
 }

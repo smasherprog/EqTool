@@ -6,7 +6,7 @@ namespace EQTool.Services
     {
         void Say(string text);
     }
-    public class TextToSpeach
+    public class TextToSpeach: ITextToSpeach
     {
         private readonly EQToolSettings eQToolSettings;
 

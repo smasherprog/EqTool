@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using EQTool.Models;
 using EQTool.Services;
+using EQTool.Services.Handlers;
 using EQTool.Services.P99LoginMiddlemand;
 using EQTool.UI;
 using EQTool.ViewModels;
@@ -316,6 +317,8 @@ namespace EQTool
 
             container.Resolve<PlayerTrackerService>();
             container.Resolve<ZoneActivityTrackingService>();
+            container.Resolve<IEnumerable<BaseHandler>>();
+
             logEvents.QuakeEvent += LogParser_QuakeEvent;
             App.Current.Resources["GlobalFontSize"] = (double)(EQToolSettings?.FontSize ?? 12);
             ((App)System.Windows.Application.Current).UpdateBackgroundOpacity("MyWindowStyleDPS", EQToolSettings.DpsWindowState.Opacity.Value);

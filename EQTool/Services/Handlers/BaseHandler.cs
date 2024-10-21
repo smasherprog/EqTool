@@ -3,7 +3,7 @@ using EQTool.ViewModels;
 
 namespace EQTool.Services.Handlers
 {
-    public class BaseHandler
+    public abstract class BaseHandler
     {
         protected readonly LogEvents logEvents;
         protected readonly ActivePlayer activePlayer;

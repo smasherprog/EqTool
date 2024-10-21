@@ -17,18 +17,20 @@ namespace EQTool
             _ = builder.RegisterType<Services.LogEvents>().AsSelf().SingleInstance();
             _ = builder.RegisterType<Services.EQToolSettingsLoad>().AsSelf().SingleInstance();
             _ = builder.RegisterType<LoginMiddlemand>().AsSelf().SingleInstance();
-            foreach (var type in AppDomain.CurrentDomain.GetAssemblies().SelectMany(x => x.GetTypes()).Where(x => x.IsClass && !x.IsAbstract))
+            var types = AppDomain.CurrentDomain.GetAssemblies().SelectMany(x => x.GetTypes()).Where(x => x.IsClass && !x.IsAbstract && x.Namespace?.StartsWith("EQTool") == true).ToList();
+            foreach (var type in types)
             {
                 if (type.GetInterfaces().Contains(typeof(Models.IEqLogParseHandler)))
                 {
                     _ = builder.RegisterType(type).As<Models.IEqLogParseHandler>().SingleInstance();
                 }
             }
-            foreach (var type in AppDomain.CurrentDomain.GetAssemblies().SelectMany(x => x.GetTypes()).Where(x => x.IsClass && !x.IsAbstract))
+            types = AppDomain.CurrentDomain.GetAssemblies().SelectMany(x => x.GetTypes()).Where(x => !x.IsAbstract && x.Namespace?.StartsWith("EQTool") == true).ToList();
+            foreach (var type in types)
             {
                 if (type.IsSubclassOf(typeof(BaseHandler)))
                 {
-                    _ = builder.RegisterType(type).AsSelf().SingleInstance();
+                    _ = builder.RegisterType(type).As<BaseHandler>().SingleInstance();
                 }
             }
 

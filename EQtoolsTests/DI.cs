@@ -1,6 +1,8 @@
 ﻿using Autofac;
 using Autofac.Features.ResolveAnything;
+using EQTool.Services;
 using EQTool.Services.Handlers;
+using EQtoolsTests.Fakes;
 using System;
 using System.IO;
 using System.Linq;
@@ -48,20 +50,23 @@ namespace EQtoolsTests
             _ = builder.RegisterType<EQTool.Services.LogEvents>().AsSelf().SingleInstance();
 
 
-            foreach (var type in AppDomain.CurrentDomain.GetAssemblies().SelectMany(x => x.GetTypes()).Where(x => x.IsClass && !x.IsAbstract))
+            var types = AppDomain.CurrentDomain.GetAssemblies().SelectMany(x => x.GetTypes()).Where(x => x.IsClass && !x.IsAbstract && x.Namespace?.StartsWith("EQTool") == true).ToList();
+            foreach (var type in types)
             {
                 if (type.GetInterfaces().Contains(typeof(EQTool.Models.IEqLogParseHandler)))
                 {
                     _ = builder.RegisterType(type).As<EQTool.Models.IEqLogParseHandler>().SingleInstance();
                 }
             }
-            foreach (var type in AppDomain.CurrentDomain.GetAssemblies().SelectMany(x => x.GetTypes()).Where(x => x.IsClass && !x.IsAbstract))
+            types = AppDomain.CurrentDomain.GetAssemblies().SelectMany(x => x.GetTypes()).Where(x => !x.IsAbstract && x.Namespace?.StartsWith("EQTool") == true).ToList();
+            foreach (var type in types)
             {
                 if (type.IsSubclassOf(typeof(BaseHandler)))
                 {
-                    _ = builder.RegisterType(type).AsSelf().SingleInstance();
+                    _ = builder.RegisterType(type).As<BaseHandler>().SingleInstance();
                 }
             }
+
             _ = builder.RegisterType<EQTool.Services.FakeAppDispatcher>().As<EQTool.Services.IAppDispatcher>().SingleInstance();
             _ = builder.RegisterType<EQTool.Services.SpellIcons>().AsSelf().SingleInstance();
             _ = builder.RegisterType<EQTool.Services.ParseSpells_spells_us>().AsSelf().SingleInstance();
@@ -72,6 +77,7 @@ namespace EQtoolsTests
             _ = builder.RegisterType<EQTool.Services.LogParser>().AsSelf().SingleInstance();
             _ = builder.RegisterType<EQTool.ViewModels.DPSWindowViewModel>().AsSelf().SingleInstance();
             _ = builder.RegisterType<EQToolShared.Discord.DiscordAuctionParse>().AsSelf().SingleInstance();
+            _ = builder.RegisterType<TextToSpeachFake>().As<ITextToSpeach>().SingleInstance();
 
             var b = builder.Build();
             var settings = b.Resolve<EQTool.Models.EQToolSettings>();
