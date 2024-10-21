@@ -32,11 +32,8 @@ namespace EQTool.Models
             if (text_phonetic == "")
                 Text_phonetic = text;
             else
-                Text_phonetic += text_phonetic;
+                Text_phonetic = text_phonetic;
         }
-
-
-    
     }
 
     public class PlayerLocationEvent : BaseLogParseEvent
@@ -157,7 +154,6 @@ namespace EQTool.Models
         public string Receiver { get; set; }
         public string Sender { get; set; }
 
-        // todo - make parser smarter to handle comms from other players
         public CommsEvent(DateTime dateTime, string line, CommsEvent.Channel channel = Channel.NONE, string content = "", string sender = "", string receiver = "")
         {
             TimeStamp = dateTime;

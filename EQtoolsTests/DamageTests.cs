@@ -10,13 +10,11 @@ using System.Linq;
 namespace EQtoolsTests
 {
     [TestClass]
-    public class DamageTests
+    public class DamageTests : BaseTestClass
     {
-        private readonly IContainer container;
         private readonly DamageParser parser;
         public DamageTests()
         {
-            container = DI.Init();
             parser = container.Resolve<DamageParser>();
         }
 

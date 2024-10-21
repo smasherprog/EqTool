@@ -28,13 +28,6 @@ namespace EQtoolsTests
 
             deathLoopHandler = container.Resolve<DeathLoopHandler>();
             logEvents = container.Resolve<LogEvents>();
-
-
-            var activePlayer = container.Resolve<ActivePlayer>();
-            activePlayer.Player.Name = "Azleep";
-            activePlayer.Player.Level = 60;
-            activePlayer.Player.PlayerClass = EQToolShared.Enums.PlayerClasses.Enchanter;
-            activePlayer.Player.Zone = "templeveeshan";
         }
 
         [TestMethod]
