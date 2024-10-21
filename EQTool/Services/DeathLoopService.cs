@@ -57,6 +57,12 @@ namespace EQTool.Services
             return (_deathLoopTimeStamps.Count >= _deathLoopDeaths);
         }
 
+        public int DeathCount()
+        {
+            return _deathLoopTimeStamps.Count;
+        }
+
+
         //
         // utility function to print the contents of the death timestamp list
         //
@@ -75,24 +81,20 @@ namespace EQTool.Services
         //
         private void LogEvents_DeathEvent(object sender, DeathEvent deathEvent)
         {
+            // use current time to see if any death time stamps in the list need to roll off
+            UpdateDeathList(deathEvent.TimeStamp);
+
             // did player just die?
             if (deathEvent.Victim == "You")
             {
-                // todo - strip me out
-                // just a little audible marker
-                System.Media.SoundPlayer player = new System.Media.SoundPlayer(@"c:\Windows\Media\chimes.wav");
-                player.Play();
-
-                // use current time to see if any death time stamps in the list need to roll off
-                UpdateDeathList(deathEvent.TimeStamp);
-
                 // add this timestamp to the end of the tracking list, and print a debug message
                 _deathLoopTimeStamps.Add(deathEvent.TimeStamp);
                 WriteDeathTimes();
 
                 // if the quantity of deaths in the tracking list exceeds the threshold, then respond appropriately
                 if (_deathLoopTimeStamps.Count >= _deathLoopDeaths)
-                    DeathLoopResponse();
+                    DeathLoopResponse(deathEvent.TimeStamp, deathEvent.Line);
+
             }
         }
 
@@ -133,15 +135,19 @@ namespace EQTool.Services
         //
         // response for when a death loop condition is detected
         //
-        public void DeathLoopResponse()
+        public void DeathLoopResponse(DateTime timestamp, string line)
         {
             // since we can't kill eqgame.exe, try to alert the user by yelling at him/her
-            // todo - change this to emit an Audio Event, and let the Audio service handle it
-            var synth = new SpeechSynthesizer();
-            synth.SetOutputToDefaultAudioDevice();
-            synth.Rate = 2;
-            synth.Volume = 100; // 0-100, as loud as we can
-            synth.Speak("death loop, death loop, death loop");
+            // fire an event to the AudioService for it to respond to
+            TextToSpeechEvent textToSpeechEvent = new TextToSpeechEvent(timestamp, line, "death loop death loop death loop. death loop!");
+            logEvents.Handle(textToSpeechEvent);
+
+            //// todo - change this to emit an Audio Event, and let the Audio service handle it
+            //var synth = new SpeechSynthesizer();
+            //synth.SetOutputToDefaultAudioDevice();
+            //synth.Rate = 2;
+            //synth.Volume = 100; // 0-100, as loud as we can
+            //synth.Speak("death loop, death loop, death loop");
 
             // write some debug lines
             Console.WriteLine("------------------------------------Deathloop condition detected!-----------------------------------------");

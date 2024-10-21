@@ -31,10 +31,10 @@ namespace EQTool.Services.Parsing
         // If we find what we are seeking, fire off our event
         public bool Handle(string line, DateTime timestamp)
         {
-            PlayerCommsEvent e = Match(line, timestamp);
-            if (e != null)
+            PlayerCommsEvent playerCommsEvent = Match(line, timestamp);
+            if (playerCommsEvent != null)
             {
-                logEvents.Handle(e);
+                logEvents.Handle(playerCommsEvent);
                 return true;
             }
             return false;

@@ -21,10 +21,10 @@ namespace EQTool.Services.Parsing
 
         public bool Handle(string line, DateTime timestamp)
         {
-            DeathEvent deadEvent = Match(line, timestamp);
-            if (deadEvent != null)
+            DeathEvent deathEvent = Match(line, timestamp);
+            if (deathEvent != null)
             {
-                logEvents.Handle(deadEvent);
+                logEvents.Handle(deathEvent);
                 return true;
             }
             return false;

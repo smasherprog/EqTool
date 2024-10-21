@@ -36,6 +36,18 @@ namespace EQTool.Services
             this.logEvents.CompleteHealEvent += LogParser_CHEvent;
             this.logEvents.SpellWornOffOtherEvent += LogParser_SpellWornOtherOffEvent1;
             this.logEvents.ResistSpellEvent += LogParser_ResistSpellEvent;
+            this.logEvents.TextToSpeechEvent += LogParser_TextToSpeechEvent;
+        }
+
+        private void LogParser_TextToSpeechEvent(object sender, TextToSpeechEvent textToSpeechEvent)
+        {
+            //var overlay = activePlayer?.Player?.ResistWarningAudio ?? false;
+            //if (!overlay)
+            //{
+            //    return;
+            //}
+            //var target = e.isYou ? "You " : "Your target ";
+            PlayResource(textToSpeechEvent.Text_phonetic);
         }
 
         private void LogParser_ResistSpellEvent(object sender, ResistSpellEvent e)
