@@ -1336,7 +1336,7 @@ namespace EQtoolsTests
 
             player.UserCastingSpell = spells.AllSpells.FirstOrDefault(a => a.name == spellname);
             var spellnamefound = string.Empty;
-            var line = "[Mon Jul 03 23:00:25 2023] TwentyTwo glances nervously about.";
+            var line = "TwentyTwo glances nervously about.";
             logevents.WhoEvent += (a, b) => Assert.Fail("DontHit");
             logevents.WhoPlayerEvent += (a, b) => Assert.Fail("DontHit");
             logevents.SpellWornOffSelfEvent += (a, b) => Assert.Fail("DontHit");
@@ -1352,7 +1352,7 @@ namespace EQtoolsTests
             logevents.DamageEvent += (a, b) => Assert.Fail("DontHit");
             logevents.YouZonedEvent += (a, b) => Assert.Fail("DontHit");
             logevents.PlayerLocationEvent += (a, b) => Assert.Fail("DontHit");
-            logparser.Push(line);
+            logparser.Push(line, DateTime.Now);
             Assert.AreEqual(spellnamefound, "Tashanian");
         }
 

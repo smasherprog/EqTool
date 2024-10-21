@@ -5,12 +5,6 @@ namespace EQTool.Services
 {
     public class LogEvents
     {
-        public event EventHandler<TextToSpeechEvent> TextToSpeechEvent;
-        public void Handle(TextToSpeechEvent e)
-        {
-            TextToSpeechEvent?.Invoke(this, e);
-        }
-
         public event EventHandler<PlayerLocationEvent> PlayerLocationEvent;
         public void Handle(PlayerLocationEvent e)
         {

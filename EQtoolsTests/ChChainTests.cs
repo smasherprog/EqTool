@@ -11,429 +11,429 @@ namespace EQtoolsTests
 {
     [TestClass]
     public class ChChainTests : BaseTestClass
-    { 
+    {
+        private readonly CompleteHealCommsHandler completeHealCommsHandler;
+        private readonly LogParser logParser;
+        private readonly LogEvents logEvents;
+        private readonly ActivePlayer activePlayer;
+
         public ChChainTests()
-        { 
+        {
+            logParser = container.Resolve<LogParser>();
+            completeHealCommsHandler = container.Resolve<CompleteHealCommsHandler>();
+            logEvents = container.Resolve<LogEvents>();
+            activePlayer = container.Resolve<ActivePlayer>();
+            activePlayer.Player.Level = 54;
+            activePlayer.Player.PlayerClass = PlayerClasses.Cleric;
         }
 
         [TestMethod]
         public void Parse1()
         {
-            var service = container.Resolve<CompleteHealParser>();
-            var d = service.ChCheck("Curaja shouts, 'GG 014 CH -- Wreckognize'", DateTime.Now);
-            Assert.AreEqual(d.Recipient, "Wreckognize");
-            Assert.AreEqual(d.Caster, "Curaja");
-            Assert.AreEqual(d.Position, "014");
-            Assert.AreEqual(d.RecipientGuild, string.Empty);
+            logEvents.CompleteHealEvent += (s, d) =>
+            {
+                Assert.AreEqual(d.Recipient, "Wreckognize");
+                Assert.AreEqual(d.Caster, "Curaja");
+                Assert.AreEqual(d.Position, "014");
+                Assert.AreEqual(d.RecipientGuild, string.Empty);
+            };
+            logParser.Push("Curaja shouts, 'GG 014 CH -- Wreckognize'", DateTime.Now);
         }
 
         [TestMethod]
         public void Parse2()
         {
-            var service = container.Resolve<CompleteHealParser>();
-            var d = service.ChCheck("Hanbox shouts, 'GG 001 CH -- Beefwich'", DateTime.Now);
-            Assert.AreEqual(d.Recipient, "Beefwich");
-            Assert.AreEqual(d.Caster, "Hanbox");
-            Assert.AreEqual(d.Position, "001");
-            Assert.AreEqual(d.RecipientGuild, string.Empty);
+            logEvents.CompleteHealEvent += (s, d) =>
+            {
+                Assert.AreEqual(d.Recipient, "Beefwich");
+                Assert.AreEqual(d.Caster, "Hanbox");
+                Assert.AreEqual(d.Position, "001");
+                Assert.AreEqual(d.RecipientGuild, string.Empty);
+            };
+            logParser.Push("Hanbox shouts, 'GG 001 CH -- Beefwich'", DateTime.Now);
         }
 
         [TestMethod]
         public void Parse4()
         {
-            var service = container.Resolve<CompleteHealParser>();
-            var d = service.ChCheck("Hanbox shouts, 'GG 001 CH --Beefwich'", DateTime.Now);
-            Assert.AreEqual(d.Recipient, "Beefwich");
-            Assert.AreEqual(d.Caster, "Hanbox");
-            Assert.AreEqual(d.Position, "001");
-            Assert.AreEqual(d.RecipientGuild, string.Empty);
+            logEvents.CompleteHealEvent += (s, d) =>
+            {
+                Assert.AreEqual(d.Recipient, "Beefwich");
+                Assert.AreEqual(d.Caster, "Hanbox");
+                Assert.AreEqual(d.Position, "001");
+                Assert.AreEqual(d.RecipientGuild, string.Empty);
+            };
+            logParser.Push("Hanbox shouts, 'GG 001 CH --Beefwich'", DateTime.Now);
         }
 
         [TestMethod]
         public void Parse41()
         {
-            var service = container.Resolve<CompleteHealParser>();
-            var d = service.ChCheck("Hanbox shouts, 'CH - Beefwich - 001'", DateTime.Now);
-            Assert.AreEqual(d.Recipient, "Beefwich");
-            Assert.AreEqual(d.Caster, "Hanbox");
-            Assert.AreEqual(d.Position, "001");
+            logEvents.CompleteHealEvent += (s, d) =>
+            {
+                Assert.AreEqual(d.Recipient, "Beefwich");
+                Assert.AreEqual(d.Caster, "Hanbox");
+                Assert.AreEqual(d.Position, "001");
+            };
+            logParser.Push("Hanbox shouts, 'CH - Beefwich - 001'", DateTime.Now);
+
         }
 
         [TestMethod]
         public void ParseRamp1()
         {
-            var service = container.Resolve<CompleteHealParser>();
-            var d = service.ChCheck("Hanbox shouts, 'CA RAMP1 CH --Beefwich'", DateTime.Now);
-            Assert.AreEqual(d.Recipient, "Beefwich");
-            Assert.AreEqual(d.Caster, "Hanbox");
-            Assert.AreEqual(d.Position, "RAMP1");
-            Assert.AreEqual(d.RecipientGuild, string.Empty);
+            logEvents.CompleteHealEvent += (s, d) =>
+            {
+                Assert.AreEqual(d.Recipient, "Beefwich");
+                Assert.AreEqual(d.Caster, "Hanbox");
+                Assert.AreEqual(d.Position, "RAMP1");
+                Assert.AreEqual(d.RecipientGuild, string.Empty);
+            };
+            logParser.Push("Hanbox shouts, 'CA RAMP1 CH --Beefwich'", DateTime.Now);
+
         }
 
         [TestMethod]
         public void ParseRamp2()
         {
-            var service = container.Resolve<CompleteHealParser>();
-            var d = service.ChCheck("Hanbox shouts, 'CA RAMP2 CH --Beefwich'", DateTime.Now);
-            Assert.AreEqual(d.Recipient, "Beefwich");
-            Assert.AreEqual(d.Caster, "Hanbox");
-            Assert.AreEqual(d.Position, "RAMP2");
-            Assert.AreEqual(d.RecipientGuild, string.Empty);
+            logEvents.CompleteHealEvent += (s, d) =>
+            {
+                Assert.AreEqual(d.Recipient, "Beefwich");
+                Assert.AreEqual(d.Caster, "Hanbox");
+                Assert.AreEqual(d.Position, "RAMP2");
+                Assert.AreEqual(d.RecipientGuild, string.Empty);
+            };
+            logParser.Push("Hanbox shouts, 'CA RAMP2 CH --Beefwich'", DateTime.Now);
+
         }
 
         [TestMethod]
         public void ParseRamp3()
         {
-            var service = container.Resolve<CompleteHealParser>();
-            var d = service.ChCheck("Hanbox shouts, 'RAMP2 CH --Beefwich'", DateTime.Now);
-            Assert.AreEqual(d.Recipient, "Beefwich");
-            Assert.AreEqual(d.Caster, "Hanbox");
-            Assert.AreEqual(d.Position, "RAMP2");
-            Assert.AreEqual(d.RecipientGuild, string.Empty);
+            logEvents.CompleteHealEvent += (s, d) =>
+            {
+                Assert.AreEqual(d.Recipient, "Beefwich");
+                Assert.AreEqual(d.Caster, "Hanbox");
+                Assert.AreEqual(d.Position, "RAMP2");
+                Assert.AreEqual(d.RecipientGuild, string.Empty);
+            };
+            logParser.Push("Hanbox shouts, 'RAMP2 CH --Beefwich'", DateTime.Now);
         }
 
         [TestMethod]
         public void ParseRamp4()
         {
-            var service = container.Resolve<CompleteHealParser>();
-            var d = service.ChCheck("Hanbox shouts, 'RAMP01 CH --Beefwich'", DateTime.Now);
-            Assert.AreEqual(d.Recipient, "Beefwich");
-            Assert.AreEqual(d.Caster, "Hanbox");
-            Assert.AreEqual(d.Position, "RAMP01");
-            Assert.AreEqual(d.RecipientGuild, string.Empty);
+            logEvents.CompleteHealEvent += (s, d) =>
+            {
+                Assert.AreEqual(d.Recipient, "Beefwich");
+                Assert.AreEqual(d.Caster, "Hanbox");
+                Assert.AreEqual(d.Position, "RAMP01");
+                Assert.AreEqual(d.RecipientGuild, string.Empty);
+            };
+            logParser.Push("Hanbox shouts, 'RAMP01 CH --Beefwich'", DateTime.Now);
         }
 
         [TestMethod]
         public void Parse40()
         {
-            var service = container.Resolve<CompleteHealParser>();
-            var d = service.ChCheck("Hanbox shouts, 'GG 001 CH --Beefwich' 001", DateTime.Now);
-            Assert.AreEqual(d.Recipient, "Beefwich");
-            Assert.AreEqual(d.Caster, "Hanbox");
-            Assert.AreEqual(d.Position, "001");
-            Assert.AreEqual(d.RecipientGuild, string.Empty);
+            logEvents.CompleteHealEvent += (s, d) =>
+            {
+                Assert.AreEqual(d.Recipient, "Beefwich");
+                Assert.AreEqual(d.Caster, "Hanbox");
+                Assert.AreEqual(d.Position, "001");
+                Assert.AreEqual(d.RecipientGuild, string.Empty);
+            };
+            logParser.Push("Hanbox shouts, 'GG 001 CH --Beefwich' 001", DateTime.Now);
+
         }
 
         [TestMethod]
         public void Parse42()
         {
-            var service = container.Resolve<CompleteHealParser>();
-            var d = service.ChCheck("Hanbox shouts, 'CH - name - 001'", DateTime.Now);
-            Assert.AreEqual(d.Recipient, "name");
-            Assert.AreEqual(d.Caster, "Hanbox");
-            Assert.AreEqual(d.Position, "001");
-            Assert.AreEqual(d.RecipientGuild, string.Empty);
+            logEvents.CompleteHealEvent += (s, d) =>
+            {
+                Assert.AreEqual(d.Recipient, "name");
+                Assert.AreEqual(d.Caster, "Hanbox");
+                Assert.AreEqual(d.Position, "001");
+                Assert.AreEqual(d.RecipientGuild, string.Empty);
+            };
+            logParser.Push("Hanbox shouts, 'CH - name - 001'", DateTime.Now);
+
         }
 
         [TestMethod]
         public void Parse3()
         {
-            var service = container.Resolve<CompleteHealParser>();
-            var d = service.ChCheck("Vaeric tells the guild, 'Currently signed up as 001 in CH chain'", DateTime.Now);
-            Assert.IsNull(d);
+            logEvents.CompleteHealEvent += (s, d) =>
+            {
+                Assert.Fail("Should not be called.");
+            };
+            logParser.Push("Vaeric tells the guild, 'Currently signed up as 001 in CH chain'", DateTime.Now);
         }
 
         [TestMethod]
         public void Parse31()
         {
-            var service = container.Resolve<CompleteHealParser>();
-            var d = service.ChCheck("Vaeric tells the guild, 'Currently signed up as in CH chain'", DateTime.Now);
-            Assert.IsNull(d);
+            logEvents.CompleteHealEvent += (s, d) =>
+            {
+                Assert.Fail("Should not be called.");
+            };
+            logParser.Push("Vaeric tells the guild, 'Currently signed up as in CH chain'", DateTime.Now);
+
         }
 
         [TestMethod]
         public void Parse5()
         {
-            var service = container.Resolve<CompleteHealParser>();
-            var d = service.ChCheck("Wartburg says out of character, 'CA 004 CH -- Sam'", DateTime.Now);
-            Assert.AreEqual(d.Recipient, "Sam");
-            Assert.AreEqual(d.Caster, "Wartburg");
-            Assert.AreEqual(d.Position, "004");
-            Assert.AreEqual(d.RecipientGuild, string.Empty);
+            logEvents.CompleteHealEvent += (s, d) =>
+            {
+                Assert.AreEqual(d.Recipient, "Sam");
+                Assert.AreEqual(d.Caster, "Wartburg");
+                Assert.AreEqual(d.Position, "004");
+                Assert.AreEqual(d.RecipientGuild, string.Empty);
+            };
+            logParser.Push("Wartburg says out of character, 'CA 004 CH -- Sam'", DateTime.Now);
+
         }
 
         [TestMethod]
         public void Parse51()
         {
-            var service = container.Resolve<CompleteHealParser>();
-            var d = service.ChCheck("Wartburg says out of character, '004 CH - Sam'", DateTime.Now);
-            Assert.AreEqual(d.Recipient, "Sam");
-            Assert.AreEqual(d.Caster, "Wartburg");
-            Assert.AreEqual(d.Position, "004");
+            logEvents.CompleteHealEvent += (s, d) =>
+            {
+                Assert.AreEqual(d.Recipient, "Sam");
+                Assert.AreEqual(d.Caster, "Wartburg");
+                Assert.AreEqual(d.Position, "004");
+            };
+            logParser.Push("Wartburg says out of character, '004 CH - Sam'", DateTime.Now);
         }
 
         [TestMethod]
         public void Parse6()
         {
-            var service = container.Resolve<CompleteHealParser>();
-            var d = service.ChCheck("Hanbox tells the guild, 'GG 001 CH --Beefwich'", DateTime.Now);
-            Assert.AreEqual(d.Recipient, "Beefwich");
-            Assert.AreEqual(d.Caster, "Hanbox");
-            Assert.AreEqual(d.Position, "001");
-            Assert.AreEqual(d.RecipientGuild, string.Empty);
+            logEvents.CompleteHealEvent += (s, d) =>
+            {
+                Assert.AreEqual(d.Recipient, "Beefwich");
+                Assert.AreEqual(d.Caster, "Hanbox");
+                Assert.AreEqual(d.Position, "001");
+                Assert.AreEqual(d.RecipientGuild, string.Empty);
+            };
+            logParser.Push("Hanbox tells the guild, 'GG 001 CH --Beefwich'", DateTime.Now);
+
         }
 
         [TestMethod]
         public void Parse7()
         {
-            var service = container.Resolve<CompleteHealParser>();
-            var player = container.Resolve<ActivePlayer>();
-            player.Player = new PlayerInfo
+            logEvents.CompleteHealEvent += (s, d) =>
             {
-                Level = 54,
-                PlayerClass = PlayerClasses.Cleric,
-                ChChainTagOverlay = "GG"
-            };
-            var d = service.ChCheck("Hanbox tells the guild, 'GG 001 CH --Beefwich'", DateTime.Now);
 
-            Assert.AreEqual(d.Recipient, "Beefwich");
-            Assert.AreEqual(d.Caster, "Hanbox");
-            Assert.AreEqual(d.Position, "001");
-            Assert.AreEqual(d.RecipientGuild, "GG");
+                Assert.AreEqual(d.Recipient, "Beefwich");
+                Assert.AreEqual(d.Caster, "Hanbox");
+                Assert.AreEqual(d.Position, "001");
+                Assert.AreEqual(d.RecipientGuild, "GG");
+            };
+            activePlayer.Player.ChChainTagOverlay = "GG";
+            logParser.Push("Hanbox tells the guild, 'GG 001 CH --Beefwich'", DateTime.Now);
+
         }
 
         [TestMethod]
         public void Parse8()
         {
-            var service = container.Resolve<CompleteHealParser>();
-            var player = container.Resolve<ActivePlayer>();
-            player.Player = new PlayerInfo
+            logEvents.CompleteHealEvent += (s, d) =>
             {
-                Level = 54,
-                PlayerClass = PlayerClasses.Cleric,
-                ChChainTagOverlay = "GG"
+                Assert.AreEqual(d.Recipient, "Beefwich");
+                Assert.AreEqual(d.Caster, "Hanbox");
+                Assert.AreEqual(d.Position, "001");
+                Assert.AreEqual(d.RecipientGuild, "GG");
             };
-            var d = service.ChCheck("Hanbox tells the guild, 'CA 001 CH --Beefwich'", DateTime.Now);
-            Assert.IsNull(d);
+
+            activePlayer.Player.ChChainTagOverlay = "GG";
+            logParser.Push("Hanbox tells the guild, 'CA 001 CH --Beefwich'", DateTime.Now);
         }
 
         [TestMethod]
         public void Parse9()
         {
-            var service = container.Resolve<CompleteHealParser>();
-            var player = container.Resolve<ActivePlayer>();
-            player.Player = new PlayerInfo
+            logEvents.CompleteHealEvent += (s, d) =>
             {
-                Level = 54,
-                PlayerClass = PlayerClasses.Cleric,
-                ChChainTagOverlay = "GGG"
+                Assert.AreEqual(d.Recipient, "Beefwich");
+                Assert.AreEqual(d.Caster, "Hanbox");
+                Assert.AreEqual(d.Position, "001");
+                Assert.AreEqual(d.RecipientGuild, "GGG");
             };
-            var d = service.ChCheck("Hanbox tells the raid, 'GGG 001 CH --Beefwich'", DateTime.Now);
-
-            Assert.AreEqual(d.Recipient, "Beefwich");
-            Assert.AreEqual(d.Caster, "Hanbox");
-            Assert.AreEqual(d.Position, "001");
-            Assert.AreEqual(d.RecipientGuild, "GGG");
+            var player = container.Resolve<ActivePlayer>();
+            activePlayer.Player.ChChainTagOverlay = "GGG";
+            logParser.Push("Hanbox tells the raid, 'GGG 001 CH --Beefwich'", DateTime.Now);
         }
 
         [TestMethod]
         public void Parse10()
         {
-            var service = container.Resolve<CompleteHealParser>();
-            var player = container.Resolve<ActivePlayer>();
-            player.Player = new PlayerInfo
+            logEvents.CompleteHealEvent += (s, d) =>
             {
-                Level = 54,
-                PlayerClass = PlayerClasses.Cleric,
-                ChChainTagOverlay = "GGG"
+                Assert.AreEqual(d.Recipient, "Asirk");
+                Assert.AreEqual(d.Caster, "Amberel");
+                Assert.AreEqual(d.Position, "000");
+                Assert.AreEqual(d.RecipientGuild, "GGG");
             };
-            var d = service.ChCheck("Amberel tells the raid,  'GGG CH - Asirk - 10 s'", DateTime.Now);
-            Assert.AreEqual(d.Recipient, "Asirk");
-            Assert.AreEqual(d.Caster, "Amberel");
-            Assert.AreEqual(d.Position, "000");
-            Assert.AreEqual(d.RecipientGuild, "GGG");
+
+            activePlayer.Player.ChChainTagOverlay = "GGG";
+            logParser.Push("Amberel tells the raid,  'GGG CH - Asirk - 10 s'", DateTime.Now);
         }
 
         [TestMethod]
         public void Parse11()
         {
-            var service = container.Resolve<CompleteHealParser>();
-            var player = container.Resolve<ActivePlayer>();
-            player.Player = new PlayerInfo
+            logEvents.CompleteHealEvent += (s, d) =>
             {
-                Level = 54,
-                PlayerClass = PlayerClasses.Cleric,
-                ChChainTagOverlay = "GGG"
+                Assert.AreEqual(d.Recipient, "Asirk");
+                Assert.AreEqual(d.Caster, "Amberel");
+                Assert.AreEqual(d.Position, "000");
+                Assert.AreEqual(d.RecipientGuild, "GGG");
             };
-            var d = service.ChCheck("Windarie tells the group, 'Bufzyn 111 --- CH on << Tinialita  >> --- 111'", DateTime.Now);
-            Assert.IsNull(d);
+
+            activePlayer.Player.ChChainTagOverlay = "GGG";
+            logParser.Push("Windarie tells the group, 'Bufzyn 111 --- CH on << Tinialita  >> --- 111'", DateTime.Now);
         }
 
         [TestMethod]
         public void Parse12()
         {
-            var service = container.Resolve<CompleteHealParser>();
-            var player = container.Resolve<ActivePlayer>();
-            player.Player = new PlayerInfo
+            logEvents.CompleteHealEvent += (s, d) =>
             {
-                Level = 54,
-                PlayerClass = PlayerClasses.Cleric,
-                ChChainTagOverlay = "CA"
+                Assert.AreEqual(d.Recipient, "Aaryk");
+                Assert.AreEqual(d.Caster, "You");
+                Assert.AreEqual(d.Position, "002");
+                Assert.AreEqual(d.RecipientGuild, "CA");
             };
-            var d = service.ChCheck("You say out of character, 'CA 002 CH -- Aaryk'", DateTime.Now);
-            Assert.AreEqual(d.Recipient, "Aaryk");
-            Assert.AreEqual(d.Caster, "You");
-            Assert.AreEqual(d.Position, "002");
-            Assert.AreEqual(d.RecipientGuild, "CA");
+
+            activePlayer.Player.ChChainTagOverlay = "CA";
+            logParser.Push("You say out of character, 'CA 002 CH -- Aaryk'", DateTime.Now);
         }
 
         [TestMethod]
         public void Parse13()
         {
-            var service = container.Resolve<CompleteHealParser>();
-            var player = container.Resolve<ActivePlayer>();
-            player.Player = new PlayerInfo
+            logEvents.CompleteHealEvent += (s, d) =>
             {
-                Level = 54,
-                PlayerClass = PlayerClasses.Cleric
+                Assert.Fail("Should not be called");
             };
-            var d = service.ChCheck("Kaboomslang -> Distributin: ch plz", DateTime.Now);
-            Assert.IsNull(d);
+            logParser.Push("Kaboomslang -> Distributin: ch plz", DateTime.Now);
         }
 
         [TestMethod]
         public void Parse14()
         {
-            var service = container.Resolve<CompleteHealParser>();
-            var player = container.Resolve<ActivePlayer>();
-            player.Player = new PlayerInfo
+            logEvents.CompleteHealEvent += (s, d) =>
             {
-                Level = 54,
-                PlayerClass = PlayerClasses.Cleric
+                Assert.Fail("Should not be called");
             };
-            var d = service.ChCheck("You told someone, 'when CH chains are e a 1-2 full rounds of max dmg hits though if u can'", DateTime.Now);
-            Assert.IsNull(d);
+            logParser.Push("You told someone, 'when CH chains are e a 1-2 full rounds of max dmg hits though if u can'", DateTime.Now);
         }
 
         [TestMethod]
         public void Parse15()
         {
-            var service = container.Resolve<CompleteHealParser>();
-            var player = container.Resolve<ActivePlayer>();
-            player.Player = new PlayerInfo
+            logEvents.CompleteHealEvent += (s, d) =>
             {
-                Level = 54,
-                PlayerClass = PlayerClasses.Cleric
+                Assert.Fail("Should not be called");
             };
-            var d = service.ChCheck("somecleric tells the guild, '003 - CH 5T'", DateTime.Now);
-            Assert.IsNull(d);
+            logParser.Push("somecleric tells the guild, '003 - CH 5T'", DateTime.Now);
         }
 
         [TestMethod]
         public void Parse16()
         {
-            var service = container.Resolve<CompleteHealParser>();
-            var player = container.Resolve<ActivePlayer>();
-            player.Player = new PlayerInfo
+            logEvents.CompleteHealEvent += (s, d) =>
             {
-                Level = 54,
-                PlayerClass = PlayerClasses.Cleric
+                Assert.AreEqual(d.Recipient, "Mandair");
+                Assert.AreEqual(d.Caster, "Windarie");
+                Assert.AreEqual(d.Position, "111");
             };
-            var d = service.ChCheck("Windarie auctions, '111 --- CH << Mandair  >> --- 111'", DateTime.Now);
-            Assert.AreEqual(d.Recipient, "Mandair");
-            Assert.AreEqual(d.Caster, "Windarie");
-            Assert.AreEqual(d.Position, "111");
+            logParser.Push("Windarie auctions, '111 --- CH << Mandair  >> --- 111'", DateTime.Now);
         }
 
         [TestMethod]
         public void Parse17()
         {
-            var service = container.Resolve<CompleteHealParser>();
-            var player = container.Resolve<ActivePlayer>();
-            player.Player = new PlayerInfo
+            logEvents.CompleteHealEvent += (s, d) =>
             {
-                Level = 54,
-                PlayerClass = PlayerClasses.Cleric
+                Assert.AreEqual(d.Recipient, "Mandair");
+                Assert.AreEqual(d.Caster, "Mutao");
+                Assert.AreEqual(d.Position, "777");
             };
-            var d = service.ChCheck("Mutao auctions, '777 CH <>> Mandair <<> 777'", DateTime.Now);
-            Assert.AreEqual(d.Recipient, "Mandair");
-            Assert.AreEqual(d.Caster, "Mutao");
-            Assert.AreEqual(d.Position, "777");
+            logParser.Push("Mutao auctions, '777 CH <>> Mandair <<> 777'", DateTime.Now);
+
         }
 
         [TestMethod]
         public void Parse18()
         {
-            var service = container.Resolve<CompleteHealParser>();
-            var player = container.Resolve<ActivePlayer>();
-            player.Player = new PlayerInfo
+            logEvents.CompleteHealEvent += (s, d) =>
             {
-                Level = 54,
-                PlayerClass = PlayerClasses.Cleric
+                Assert.AreEqual(d.Recipient, "Mandair");
+                Assert.AreEqual(d.Caster, "Mutao");
+                Assert.AreEqual(d.Position, "AAA");
             };
-            var d = service.ChCheck("Mutao auctions, 'AAA CH <>> Mandair <<> AAA'", DateTime.Now);
-            Assert.AreEqual(d.Recipient, "Mandair");
-            Assert.AreEqual(d.Caster, "Mutao");
-            Assert.AreEqual(d.Position, "AAA");
+            logParser.Push("Mutao auctions, 'AAA CH <>> Mandair <<> AAA'", DateTime.Now);
+
         }
 
         [TestMethod]
         public void Parse19()
         {
-            var service = container.Resolve<CompleteHealParser>();
-            var player = container.Resolve<ActivePlayer>();
-            player.Player = new PlayerInfo
+            logEvents.CompleteHealEvent += (s, d) =>
             {
-                Level = 54,
-                PlayerClass = PlayerClasses.Cleric
+                Assert.AreEqual(d.Recipient, "Mandair");
+                Assert.AreEqual(d.Caster, "Mutao");
+                Assert.AreEqual(d.Position, "AAA");
+                Assert.AreEqual(d.RecipientGuild, string.Empty);
             };
-            var d = service.ChCheck("Mutao auctions, 'GGG AAA CH <>> Mandair <<> AAA'", DateTime.Now);
-            Assert.AreEqual(d.Recipient, "Mandair");
-            Assert.AreEqual(d.Caster, "Mutao");
-            Assert.AreEqual(d.Position, "AAA");
-            Assert.AreEqual(d.RecipientGuild, string.Empty);
+            logParser.Push("Mutao auctions, 'GGG AAA CH <>> Mandair <<> AAA'", DateTime.Now);
         }
 
         [TestMethod]
         public void Parse20()
         {
-            var service = container.Resolve<CompleteHealParser>();
-            var player = container.Resolve<ActivePlayer>();
-            player.Player = new PlayerInfo
+            logEvents.CompleteHealEvent += (s, d) =>
             {
-                Level = 54,
-                PlayerClass = PlayerClasses.Cleric
+                Assert.AreEqual(d.Recipient, "Mandair");
+                Assert.AreEqual(d.Caster, "Mutao");
+                Assert.AreEqual(d.Position, "AAA");
+                Assert.AreEqual(d.RecipientGuild, string.Empty);
             };
-            var d = service.ChCheck("Mutao auctions, 'AAA CH <>> Mandair <<> AAA'", DateTime.Now);
-            Assert.AreEqual(d.Recipient, "Mandair");
-            Assert.AreEqual(d.Caster, "Mutao");
-            Assert.AreEqual(d.Position, "AAA");
-            Assert.AreEqual(d.RecipientGuild, string.Empty);
+            logParser.Push("Mutao auctions, 'AAA CH <>> Mandair <<> AAA'", DateTime.Now);
+
         }
 
         [TestMethod]
         public void Parse21()
         {
-            var service = container.Resolve<CompleteHealParser>();
-            var player = container.Resolve<ActivePlayer>();
-            player.Player = new PlayerInfo
+            logEvents.CompleteHealEvent += (s, d) =>
             {
-                Level = 54,
-                PlayerClass = PlayerClasses.Cleric
+                Assert.AreEqual(d.Recipient, "Mandair");
+                Assert.AreEqual(d.Caster, "Mutao");
+                Assert.AreEqual(d.Position, "AAA");
+                Assert.AreEqual(d.RecipientGuild, string.Empty);
             };
-            var d = service.ChCheck("Mutao auctions, 'AAA CH <>> Mandair <<>'", DateTime.Now);
-            Assert.AreEqual(d.Recipient, "Mandair");
-            Assert.AreEqual(d.Caster, "Mutao");
-            Assert.AreEqual(d.Position, "AAA");
-            Assert.AreEqual(d.RecipientGuild, string.Empty);
+            logParser.Push("Mutao auctions, 'AAA CH <>> Mandair <<>'", DateTime.Now);
+
         }
 
         [TestMethod]
         public void Parse22()
         {
-            var service = container.Resolve<CompleteHealParser>();
-            var player = container.Resolve<ActivePlayer>();
-            player.Player = new PlayerInfo
+            logEvents.CompleteHealEvent += (s, d) =>
             {
-                Level = 54,
-                PlayerClass = PlayerClasses.Cleric,
-                ChChainTagOverlay = "GG"
+                Assert.AreEqual(d.Recipient, "TARGET");
+                Assert.AreEqual(d.Caster, "Mutao");
+                Assert.AreEqual(d.Position, "AAA");
+                Assert.AreEqual(d.RecipientGuild, "GG");
             };
-            var d = service.ChCheck("Mutao auctions, 'GG RCH AAA -- TARGET'", DateTime.Now);
-            Assert.AreEqual(d.Recipient, "TARGET");
-            Assert.AreEqual(d.Caster, "Mutao");
-            Assert.AreEqual(d.Position, "AAA");
-            Assert.AreEqual(d.RecipientGuild, "GG");
+            activePlayer.Player.ChChainTagOverlay = "GG";
+            logParser.Push("Mutao auctions, 'GG RCH AAA -- TARGET'", DateTime.Now);
         }
 
         [TestMethod]
@@ -506,52 +506,43 @@ namespace EQtoolsTests
         [TestMethod]
         public void Parse24()
         {
-            var service = container.Resolve<CompleteHealParser>();
-            var player = container.Resolve<ActivePlayer>();
-            player.Player = new PlayerInfo
+            logEvents.CompleteHealEvent += (s, d) =>
             {
-                Level = 54,
-                PlayerClass = PlayerClasses.Cleric
+                Assert.AreEqual(d.Recipient, "a shiverback");
+                Assert.AreEqual(d.Caster, "Mutao");
+                Assert.AreEqual(d.Position, "007");
+                Assert.AreEqual(d.RecipientGuild, "");
             };
-            var d = service.ChCheck("Mutao auctions, '007 CH --  a shiverback'", DateTime.Now);
-            Assert.AreEqual(d.Recipient, "a shiverback");
-            Assert.AreEqual(d.Caster, "Mutao");
-            Assert.AreEqual(d.Position, "007");
-            Assert.AreEqual(d.RecipientGuild, "");
+            logParser.Push("Mutao auctions, '007 CH --  a shiverback'", DateTime.Now);
+
         }
 
         [TestMethod]
         public void Parse25()
         {
-            var service = container.Resolve<CompleteHealParser>();
-            var player = container.Resolve<ActivePlayer>();
-            player.Player = new PlayerInfo
+            logEvents.CompleteHealEvent += (s, d) =>
             {
-                Level = 54,
-                PlayerClass = PlayerClasses.Cleric
+                Assert.AreEqual(d.Recipient, "a shiverback");
+                Assert.AreEqual(d.Caster, "Mutao");
+                Assert.AreEqual(d.Position, "007");
+                Assert.AreEqual(d.RecipientGuild, "");
             };
-            var d = service.ChCheck("Mutao auctions,  '007 CH --  a shiverback'", DateTime.Now);
-            Assert.AreEqual(d.Recipient, "a shiverback");
-            Assert.AreEqual(d.Caster, "Mutao");
-            Assert.AreEqual(d.Position, "007");
-            Assert.AreEqual(d.RecipientGuild, "");
+            logParser.Push("Mutao auctions,  '007 CH --  a shiverback'", DateTime.Now);
+
         }
 
         [TestMethod]
         public void Parse26()
         {
-            var service = container.Resolve<CompleteHealParser>();
-            var player = container.Resolve<ActivePlayer>();
-            player.Player = new PlayerInfo
+            logEvents.CompleteHealEvent += (s, d) =>
             {
-                Level = 54,
-                PlayerClass = PlayerClasses.Cleric
+                Assert.AreEqual(d.Recipient, "johny");
+                Assert.AreEqual(d.Caster, "Mutao");
+                Assert.AreEqual(d.Position, "000");
+                Assert.AreEqual(d.RecipientGuild, string.Empty);
             };
-            var d = service.ChCheck("Mutao tells the group, 'CH >      johny  '", DateTime.Now);
-            Assert.AreEqual(d.Recipient, "johny");
-            Assert.AreEqual(d.Caster, "Mutao");
-            Assert.AreEqual(d.Position, "000");
-            Assert.AreEqual(d.RecipientGuild, string.Empty);
+            var player = container.Resolve<ActivePlayer>();
+            logParser.Push("Mutao tells the group, 'CH >      johny  '", DateTime.Now);
         }
     }
 }
