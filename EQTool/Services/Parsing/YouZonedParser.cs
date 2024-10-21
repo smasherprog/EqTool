@@ -38,9 +38,13 @@ namespace EQTool.Services.Parsing
             if (!string.IsNullOrWhiteSpace(longName))
             {
                 var shortName = Zones.TranslateToMapName(longName);
-                Debug.WriteLine($"Zone Detected {longName}");
-                return new YouZonedEvent { LongName = longName, ShortName = shortName, TimeStamp = timestamp };
+                if (!string.IsNullOrWhiteSpace(shortName))
+                {
+                    Debug.WriteLine($"Zone Detected {longName}");
+                    return new YouZonedEvent { LongName = longName, ShortName = shortName, TimeStamp = timestamp };
+                }
             }
+
             return null;
         }
 
