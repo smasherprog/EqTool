@@ -197,7 +197,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="DeathTests.cs" />
-    <Compile Include="PlayerCommsTests.cs" />
+    <Compile Include="CommsTests.cs" />
     <Compile Include="ZoneSpawnTimeTests.cs" />
     <Compile Include="ChChainTests.cs" />
     <Compile Include="RandomRollTests.cs" />

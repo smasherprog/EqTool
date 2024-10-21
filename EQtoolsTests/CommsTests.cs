@@ -8,13 +8,13 @@ using System;
 namespace EQToolTests
 {
     [TestClass]
-    public class PlayerCommsTests
+    public class CommsTests
     {
         private readonly IContainer container;
         private readonly CommsParser parser;
         private readonly ActivePlayer activePlayer;
 
-        public PlayerCommsTests()
+        public CommsTests()
         {
             container = DI.Init();
             parser = container.Resolve<CommsParser>();
