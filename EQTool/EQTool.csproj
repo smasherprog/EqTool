@@ -405,7 +405,7 @@
     <Compile Include="Services\Parsing\LevParser.cs" />
     <Compile Include="Services\Parsing\InvisParser.cs" />
     <Compile Include="Services\Parsing\EnrageParser.cs" />
-    <Compile Include="Services\Parsing\CompleteHealParser.cs" />
+    <Compile Include="Services\Handlers\CompleteHealParser.cs" />
     <Compile Include="Services\Parsing\DeathTouchParser.cs" />
     <Compile Include="Services\Parsing\QuakeParser.cs" />
     <Compile Include="Services\Parsing\Helpers\LogFileDateTimeParse.cs" />

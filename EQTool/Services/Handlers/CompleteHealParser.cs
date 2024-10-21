@@ -1,4 +1,5 @@
 ﻿using EQTool.Models;
+using EQTool.Services.Handlers;
 using EQTool.ViewModels;
 using EQToolShared;
 using System;
@@ -6,26 +7,20 @@ using System.Linq;
 
 namespace EQTool.Services.Parsing
 {
-    public class CompleteHealParser : IEqLogParseHandler
+    public class CompleteHealCommsHandler : BaseHandler
     {
-        private readonly LogEvents logEvents;
-        private readonly ActivePlayer activePlayer;
-
-        public CompleteHealParser(ActivePlayer activePlayer, LogEvents logEvents)
+        public CompleteHealCommsHandler(LogEvents logEvents, ActivePlayer activePlayer, EQToolSettings eQToolSettings, ITextToSpeach textToSpeach) : base(logEvents, activePlayer, eQToolSettings, textToSpeach)
         {
-            this.activePlayer = activePlayer;
-            this.logEvents = logEvents;
+            this.logEvents.CommsEvent += LogEvents_CommsEvent;
         }
 
-        public bool Handle(string line, DateTime timestamp)
+        private void LogEvents_CommsEvent(object sender, CommsEvent e)
         {
-            var m = ChCheck(line, timestamp);
+            var m = ChCheck(e.Line, e.TimeStamp);
             if (m != null)
             {
                 logEvents.Handle(m);
-                return true;
             }
-            return false;
         }
 
         public CompleteHealEvent ChCheck(string line, DateTime timestamp)
