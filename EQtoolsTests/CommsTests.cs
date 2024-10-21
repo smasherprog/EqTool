@@ -5,7 +5,8 @@ using EQTool.ViewModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 
-namespace EQToolTests
+
+namespace EQtoolsTests
 {
     [TestClass]
     public class CommsTests
