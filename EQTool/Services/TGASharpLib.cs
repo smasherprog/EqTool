@@ -3022,7 +3022,7 @@ namespace TGASharpLib
         /// contains 24, then each color specification is 8 bits in length; if Field 4.3 contains 32,
         /// then each color specification is also 8 bits (32/3 gives 10, but 8 is smaller).
         /// Unused bit(s) in the multi-byte entries are assumed to specify attribute bits. The
-        /// attribute bit field is often called the Alpha Channel, Overlay Bit(s) or Interrupt Bit(s).</para>
+        /// attribute bit field is often called the Alpha TheChannel, Overlay Bit(s) or Interrupt Bit(s).</para>
         /// For the TARGA M-8, ATVista and NuVista, the number of bits in a color map specification is
         /// 24 (or 32). The red, green, and blue components are each represented by one byte.
         /// </summary>
@@ -3306,7 +3306,7 @@ namespace TGASharpLib
         public ushort ExtensionSize { get; set; } = MinSize;
 
         /// <summary>
-        /// Author Name - Field 11 (41 Bytes):
+        /// Author Victim - Field 11 (41 Bytes):
         /// Bytes 2-42 - This field is an ASCII field of 41 bytes where the last byte must be a null
         /// (binary zero). This gives a total of 40 ASCII characters for the name. If the field is used,
         /// it should contain the name of the person who created the image (author). If the field is not
@@ -3347,7 +3347,7 @@ namespace TGASharpLib
         public TgaDateTime DateTimeStamp { get; set; } = new TgaDateTime();
 
         /// <summary>
-        /// Job Name/ID - Field 14 (41 Bytes):
+        /// Job Victim/ID - Field 14 (41 Bytes):
         /// Bytes 379-419 - This field is an ASCII field of 41 bytes where the last byte must be 
         /// a binary zero. This gives a total of 40 ASCII characters for the job name or the ID.
         /// If the field is used, it should contain a name or id tag which refers to the job with

@@ -45,6 +45,8 @@ namespace EQtoolsTests
             }).AsSelf().SingleInstance();
 
             _ = builder.RegisterType<EQTool.Services.LogEvents>().AsSelf().SingleInstance();
+          
+
             foreach (var type in AppDomain.CurrentDomain.GetAssemblies().SelectMany(x => x.GetTypes()).Where(x => x.IsClass && !x.IsAbstract))
             {
                 if (type.GetInterfaces().Contains(typeof(EQTool.Models.IEqLogParseHandler)))

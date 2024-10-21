@@ -36,7 +36,8 @@ namespace EQTool.Services.Parsing
                     Spell = foundspell,
                     TargetName = EQSpells.SpaceYou,
                     MultipleMatchesFound = multiplematches,
-                    TimeStamp = timestamp
+                    TimeStamp = timestamp,
+                    Line = message
                 };
             }
 
@@ -56,7 +57,8 @@ namespace EQTool.Services.Parsing
                         Spell = foundspell,
                         TargetName = targetname,
                         MultipleMatchesFound = multiplematches,
-                        TimeStamp = timestamp
+                        TimeStamp = timestamp,
+                        Line = message
                     };
                 }
             }
@@ -118,7 +120,8 @@ namespace EQTool.Services.Parsing
                     Spell = foundspell,
                     TargetName = targetname,
                     MultipleMatchesFound = multiplematches,
-                    TimeStamp = timestamp
+                    TimeStamp = timestamp,
+                    Line = spellmessage
                 };
             }
 

@@ -341,7 +341,8 @@
     <Compile Include="Services\Map\MapData.cs" />
     <Compile Include="Services\Map\ZoneSpawnTimes.cs" />
     <Compile Include="Services\P99LoginMiddlemand\LoginMiddlemand.cs" />
-    <Compile Include="Services\Parsing\DeathParser.cs" />
+    <Compile Include="Services\Parsing\OldDeathParser.cs" />
+    <Compile Include="Services\Parsing\CommsParser.cs" />
     <Compile Include="Services\Parsing\YouZonedParser.cs" />
     <Compile Include="UI\CustomTimeSpanUpDown.cs" />
     <Compile Include="UI\EventOverlay.xaml.cs">
@@ -367,7 +368,6 @@
     <Compile Include="UI\DPSMeter.xaml.cs">
       <DependentUpon>DPSMeter.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Models\DPSParseMatch.cs" />
     <Compile Include="Models\EQSpells.cs" />
     <Compile Include="Models\EQToolSettings.cs" />
     <Compile Include="Properties\Settings.Designer.cs">
@@ -421,8 +421,8 @@
     <Compile Include="Services\WindowBounds.cs" />
     <Compile Include="Services\LogParser.cs" />
     <Compile Include="Services\Parsing\LogCancelCustomTimer.cs" />
-    <Compile Include="Services\Parsing\LogDeathParse.cs" />
-    <Compile Include="Services\Parsing\HitParser.cs" />
+    <Compile Include="Services\Parsing\DeathParserNew.cs" />
+    <Compile Include="Services\Parsing\DamageParser.cs" />
     <Compile Include="Services\Parsing\Helpers\ParseSpellGuess.cs" />
     <Compile Include="Services\Spells\SpellDurations.cs" />
     <Compile Include="Services\Parsing\Helpers\ParseHandleYou.cs" />

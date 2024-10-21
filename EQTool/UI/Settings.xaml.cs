@@ -55,7 +55,8 @@ namespace EQTool.UI
         private readonly EQToolSettingsLoad toolSettingsLoad;
         private readonly SpellWindowViewModel spellWindowViewModel;
         private readonly EQSpells spells;
-        private readonly HitParser dPSLogParse;
+        private readonly DamageParser damageLogParser;
+        private readonly CommsParser playerCommsParser;
         private readonly IAppDispatcher appDispatcher;
         private readonly ISignalrPlayerHub signalrPlayerHub;
         private readonly LogParser logParser;
@@ -68,7 +69,8 @@ namespace EQTool.UI
             MapLoad mapLoad,
             IAppDispatcher appDispatcher,
             ISignalrPlayerHub signalrPlayerHub,
-            HitParser dPSLogParse,
+            DamageParser damageLogParse,
+            CommsParser playerCommsParser,
             EQSpells spells,
             LoginMiddlemand loginMiddlemand,
             EQToolSettings settings,
@@ -82,7 +84,8 @@ namespace EQTool.UI
             this.logParser = logParser;
             this.mapLoad = mapLoad;
             this.appDispatcher = appDispatcher;
-            this.dPSLogParse = dPSLogParse;
+            this.damageLogParser = damageLogParse;
+            this.playerCommsParser = playerCommsParser;
             this.spells = spells;
             this.settings = settings;
             this.spellWindowViewModel = spellWindowViewModel;
@@ -359,7 +362,7 @@ namespace EQTool.UI
                 try
                 {
                     var fightlines = Properties.Resources.TestFight2.Split(new string[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
-                    var fightlist = new List<KeyValuePair<string, DPSParseMatch>>();
+                    var fightlist = new List<KeyValuePair<string, DamageEvent>>();
                     foreach (var item in fightlines)
                     {
                         if (item == null || item.Length < 27)
@@ -378,10 +381,10 @@ namespace EQTool.UI
                         catch (FormatException)
                         {
                         }
-                        var match = dPSLogParse.Match(message, timestamp);
+                        var match = damageLogParser.Match(message, timestamp);
                         if (match != null)
                         {
-                            fightlist.Add(new KeyValuePair<string, DPSParseMatch>(item, match));
+                            fightlist.Add(new KeyValuePair<string, DamageEvent>(item, match));
                         }
                     }
 

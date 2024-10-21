@@ -76,7 +76,8 @@ namespace EQTool.Services.Parsing
                 {
                     Spell = foundspell,
                     TargetName = EQSpells.SpaceYou,
-                    TimeStamp = timestamp
+                    TimeStamp = timestamp,
+                    Line = message
                 };
             }
 
@@ -115,7 +116,8 @@ namespace EQTool.Services.Parsing
                 {
                     Spell = foundspell,
                     TargetName = EQSpells.SpaceYou,
-                    TimeStamp = timestamp
+                    TimeStamp = timestamp,
+                    Line = message
                 };
             }
 
@@ -135,7 +137,8 @@ namespace EQTool.Services.Parsing
                 Spell = spell,
                 TargetName = EQSpells.SpaceYou,
                 CastByYou = true,
-                TimeStamp = timestamp
+                TimeStamp = timestamp,
+                Line = message
             };
         }
 
@@ -149,7 +152,8 @@ namespace EQTool.Services.Parsing
                 Spell = spell,
                 TargetName = targetname,
                 CastByYou = true,
-                TimeStamp = timestamp
+                TimeStamp = timestamp,
+                Line = message
             };
         }
     }

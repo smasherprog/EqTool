@@ -32,8 +32,8 @@ namespace EQTool.UI
             DataContext = dPSWindowViewModel;
             InitializeComponent();
             base.Init();
-            this.logEvents.FightHitEvent += LogParser_FightHitEvent;
-            this.logEvents.DeadEvent += LogParser_DeadEvent;
+            this.logEvents.DamageEvent += LogParser_DamageEvent;
+            this.logEvents.DeathEvent += LogParser_DeathEvent;
             UITimer = new System.Timers.Timer(1000);
             UITimer.Elapsed += PollUI;
             UITimer.Enabled = true;
@@ -48,23 +48,23 @@ namespace EQTool.UI
             view.LiveSortingProperties.Add(nameof(EntittyDPS.TotalDamage));
         }
 
-        private void LogParser_FightHitEvent(object sender, FightHitEvent e)
+        private void LogParser_DamageEvent(object sender, DamageEvent e)
         {
-            dPSWindowViewModel.TryAdd(e.HitInformation);
+            dPSWindowViewModel.TryAdd(e);
         }
 
-        private void LogParser_DeadEvent(object sender, DeadEvent e)
+        private void LogParser_DeathEvent(object sender, DeathEvent e)
         {
             var zone = activePlayer?.Player?.Zone;
             if (!string.IsNullOrWhiteSpace(zone) && Zones.ZoneInfoMap.TryGetValue(zone, out var fzone))
             {
-                if (fzone.NotableNPCs.Any(a => a == e.Name))
+                if (fzone.NotableNPCs.Any(a => a == e.Victim))
                 {
-                    copytoclipboard(e.Name);
+                    copytoclipboard(e.Victim);
                 }
             }
 
-            dPSWindowViewModel.TargetDied(e.Name);
+            dPSWindowViewModel.TargetDied(e.Victim);
         }
 
         protected override void OnClosing(CancelEventArgs e)
@@ -73,8 +73,8 @@ namespace EQTool.UI
             UITimer?.Dispose();
             if (logEvents != null)
             {
-                logEvents.DeadEvent -= LogParser_DeadEvent;
-                logEvents.FightHitEvent -= LogParser_FightHitEvent;
+                logEvents.DeathEvent -= LogParser_DeathEvent;
+                logEvents.DamageEvent -= LogParser_DamageEvent;
             }
             base.OnClosing(e);
         }

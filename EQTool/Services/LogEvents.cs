@@ -5,6 +5,12 @@ namespace EQTool.Services
 {
     public class LogEvents
     {
+        public event EventHandler<TextToSpeechEvent> TextToSpeechEvent;
+        public void Handle(TextToSpeechEvent e)
+        {
+            TextToSpeechEvent?.Invoke(this, e);
+        }
+
         public event EventHandler<PlayerLocationEvent> PlayerLocationEvent;
         public void Handle(PlayerLocationEvent e)
         {
@@ -23,10 +29,16 @@ namespace EQTool.Services
             FTEEvent?.Invoke(this, e);
         }
 
-        public event EventHandler<FightHitEvent> FightHitEvent;
-        public void Handle(FightHitEvent e)
+        public event EventHandler<DamageEvent> DamageEvent;
+        public void Handle(DamageEvent e)
         {
-            FightHitEvent?.Invoke(this, e);
+            DamageEvent?.Invoke(this, e);
+        }
+
+        public event EventHandler<YouBeginCastingEvent> YouBeginCastingEvent;
+        public void Handle(YouBeginCastingEvent e)
+        {
+            YouBeginCastingEvent?.Invoke(this, e);
         }
 
         public event EventHandler<ConEvent> ConEvent;
@@ -35,10 +47,16 @@ namespace EQTool.Services
             ConEvent?.Invoke(this, e);
         }
 
-        public event EventHandler<DeadEvent> DeadEvent;
-        public void Handle(DeadEvent e)
+        public event EventHandler<DeathEvent> DeathEvent;
+        public void Handle(DeathEvent e)
         {
-            DeadEvent?.Invoke(this, e);
+            DeathEvent?.Invoke(this, e);
+        }
+
+        public event EventHandler<CommsEvent> CommsEvent;
+        public void Handle(CommsEvent e)
+        {
+            CommsEvent?.Invoke(this, e);
         }
 
         public event EventHandler<StartTimerEvent> StartTimerEvent;

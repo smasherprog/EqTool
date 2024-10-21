@@ -28,7 +28,7 @@ namespace EQTool.Services.Fight
             //    foreach (var item in entities)
             //    {
             //        var endtime = item.LastDamageDone ?? (item.DeathTime.HasValue ? item.DeathTime.Value : DateTime.Now);
-            //        datatoadd.Add($"{item.StartTime:MM/dd/yyyy hh:mm tt},{endtime:MM/dd/yyyy hh:mm tt},{item.TargetName},{item.SourceName},{item.TotalDamage},{item.TotalDPS},{item.TotalTwelveSecondDamage},{item.HighestHit}");
+            //        datatoadd.Add($"{item.StartTime:MM/dd/yyyy hh:mm tt},{endtime:MM/dd/yyyy hh:mm tt},{item.TargetName},{item.AttackerName},{item.TotalDamage},{item.TotalDPS},{item.TotalTwelveSecondDamage},{item.HighestHit}");
             //    }
             //    File.AppendAllLines("FightLog.csv", datatoadd);
             //}

@@ -10,89 +10,113 @@ using System.Linq;
 namespace EQtoolsTests
 {
     [TestClass]
-    public class DamageTests : BaseTestClass
-    { 
+    public class DamageTests
+    {
+        private readonly IContainer container;
+        private readonly DamageParser parser;
         public DamageTests()
-        { 
+        {
+            container = DI.Init();
+            parser = container.Resolve<DamageParser>();
         }
 
         [TestMethod]
-        public void DPSLogParse_EatingDpsParseTest()
+        public void DamageLogParser_EatingDpsParseTest()
         {
-            var dpslogparse = container.Resolve<HitParser>();
+            DateTime now = DateTime.Now;
             var message = "Vebanab slices a willowisp for 56 points of damage.";
-            var match = dpslogparse.Match(message, DateTime.Now);
+            var match = parser.Match(message, now);
 
             Assert.IsNotNull(match);
-            Assert.AreEqual(match.SourceName, "Vebanab");
-            Assert.AreEqual(match.TargetName, "a willowisp");
-            Assert.AreEqual(match.DamageDone, 56);
+            Assert.AreEqual("Vebanab", match.AttackerName);
+            Assert.AreEqual("slices", match.DamageType);
+            Assert.AreEqual("a willowisp", match.TargetName);
+            Assert.AreEqual(56, match.DamageDone);
+            Assert.AreEqual(now, match.TimeStamp);
+            Assert.AreEqual(message, match.Line);
         }
 
         [TestMethod]
-        public void DPSLogParse_DOTParseTest()
+        public void DamageLogParser_NonMelleTest()
         {
-            var dpslogparse = container.Resolve<HitParser>();
-            var message = "a goblin warrior has taken 12 damage from your Choke.";
-            var match = dpslogparse.Match(message, DateTime.Now);
-
-            Assert.IsNotNull(match);
-            Assert.AreEqual(match.SourceName, "You");
-            Assert.AreEqual(match.TargetName, "a goblin warrior");
-            Assert.AreEqual(match.DamageDone, 12);
-        }
-
-        [TestMethod]
-        public void DPSLogParse_NonMelleTest()
-        {
-            var dpslogparse = container.Resolve<HitParser>();
+            DateTime now = DateTime.Now;
             var message = "Ratman Rager was hit by non-melee for 45 points of damage.";
-            var match = dpslogparse.Match(message, DateTime.Now);
+            var match = parser.Match(message, now);
 
             Assert.IsNotNull(match);
-            Assert.AreEqual(match.SourceName, "You");
-            Assert.AreEqual(match.TargetName, "Ratman Rager");
-            Assert.AreEqual(match.DamageDone, 45);
+            Assert.AreEqual("You", match.AttackerName);
+            Assert.AreEqual("non-melee", match.DamageType);
+            Assert.AreEqual("Ratman Rager", match.TargetName);
+            Assert.AreEqual(45, match.DamageDone);
+            Assert.AreEqual(now, match.TimeStamp);
+            Assert.AreEqual(message, match.Line);
         }
 
         [TestMethod]
-        public void DPSLogParse_EatingDpsParseTest1()
+        public void DamageLogParser_EatingDpsParseTest1()
         {
-            var dpslogparse = container.Resolve<HitParser>();
+            DateTime now = DateTime.Now;
             var message = "a willowisp slices Vebanab for 56 points of damage.";
-            var match = dpslogparse.Match(message, DateTime.Now);
+            var match = parser.Match(message, now);
 
             Assert.IsNotNull(match);
-            Assert.AreEqual(match.SourceName, "a willowisp");
-            Assert.AreEqual(match.TargetName, "Vebanab");
-            Assert.AreEqual(match.DamageDone, 56);
+            Assert.AreEqual("a willowisp", match.AttackerName);
+            Assert.AreEqual("slices", match.DamageType);
+            Assert.AreEqual("Vebanab", match.TargetName);
+            Assert.AreEqual(56, match.DamageDone);
+            Assert.AreEqual(now, match.TimeStamp);
+            Assert.AreEqual(message, match.Line);
         }
 
         [TestMethod]
-        public void DPSLogParse_EatingDpsParseTestYou()
+        public void DamageLogParser_EatingDpsParseTestYou()
         {
-            var dpslogparse = container.Resolve<HitParser>();
+            DateTime now = DateTime.Now;
             var message = "You crush a shadowed man for 1 point of damage.";
-            var match = dpslogparse.Match(message, DateTime.Now);
+            var match = parser.Match(message, now);
 
             Assert.IsNotNull(match);
-            Assert.AreEqual(match.SourceName, "You");
-            Assert.AreEqual(match.TargetName, "a shadowed man");
-            Assert.AreEqual(match.DamageDone, 1);
+            Assert.AreEqual("You", match.AttackerName);
+            Assert.AreEqual("crush", match.DamageType);
+            Assert.AreEqual("a shadowed man", match.TargetName);
+            Assert.AreEqual(1, match.DamageDone);
+            Assert.AreEqual(now, match.TimeStamp);
+            Assert.AreEqual(message, match.Line);
         }
 
         [TestMethod]
-        public void DPSLogParse_EatingDpsParseTestYouGetHit()
+        public void DamageLogParser_EatingDpsParseTestYouGetHit()
         {
-            var dpslogparse = container.Resolve<HitParser>();
+            DateTime now = DateTime.Now;
             var message = "Guard Valon bashes YOU for 12 points of damage.";
-            var match = dpslogparse.Match(message, DateTime.Now);
+            var match = parser.Match(message, now);
 
             Assert.IsNotNull(match);
-            Assert.AreEqual(match.SourceName, "Guard Valon");
-            Assert.AreEqual(match.TargetName, "YOU");
-            Assert.AreEqual(match.DamageDone, 12);
+            Assert.AreEqual("Guard Valon", match.AttackerName);
+            Assert.AreEqual("bashes", match.DamageType);
+            Assert.AreEqual("YOU", match.TargetName);
+            Assert.AreEqual(12, match.DamageDone);
+            Assert.AreEqual(now, match.TimeStamp);
+            Assert.AreEqual(message, match.Line);
         }
+
+        [TestMethod]
+        public void DamageLogParser_EatingDpsParseTestMiss()
+        {
+            DateTime now = DateTime.Now;
+            var message = "You try to pierce an Iksar outcast, but miss!";
+            var match = parser.Match(message, now);
+
+            Assert.IsNotNull(match);
+            Assert.AreEqual("You", match.AttackerName);
+            Assert.AreEqual("pierce", match.DamageType);
+            Assert.AreEqual("an Iksar outcast", match.TargetName);
+            Assert.AreEqual(0, match.DamageDone);
+            Assert.AreEqual(now, match.TimeStamp);
+            Assert.AreEqual(message, match.Line);
+        }
+
+
 
         [TestMethod]
         public void TestDPS()
@@ -165,14 +189,10 @@ namespace EQtoolsTests
         public void TestDPS3()
         {
             var vm = container.Resolve<DPSWindowViewModel>();
+            DateTime now = DateTime.Now.AddSeconds(-1);
+            string line = "some line";
 
-            vm.TryAdd(new DPSParseMatch
-            {
-                DamageDone = 44,
-                SourceName = "Test",
-                TargetName = "test1",
-                TimeStamp = DateTime.Now.AddSeconds(-1)
-            });
+            vm.TryAdd(new DamageEvent(now, line, "test1", "Test", 44, ""));
 
             var entity = vm.EntityList.FirstOrDefault();
             Assert.AreEqual(44, entity.TrailingDamage);
@@ -216,38 +236,34 @@ namespace EQtoolsTests
         [TestMethod]
         public void TestLevelDetectionThroughBackstab()
         {
-            var dpslogparse = container.Resolve<HitParser>();
             var message = "You backstab a willowisp for 56 points of damage.";
 
             var player = container.Resolve<ActivePlayer>();
             player.Player = new PlayerInfo { };
-            _ = dpslogparse.Match(message, DateTime.Now);
+            _ = parser.Match(message, DateTime.Now);
             Assert.AreEqual(player.Player.PlayerClass, PlayerClasses.Rogue);
         }
 
         [TestMethod]
         public void TestLevelDetectionThroughBackstabNullCheck()
         {
-            var dpslogparse = container.Resolve<HitParser>();
             var message = "You backstab a willowisp for 56 points of damage.";
-            _ = dpslogparse.Match(message, DateTime.Now);
+            _ = parser.Match(message, DateTime.Now);
         }
 
         [TestMethod]
         public void TestGuildChatCopyAndPaste()
         {
-            var dpslogparse = container.Resolve<HitParser>();
             var message = "vasanle tells the guild, '[Sun Jul 10 21:05:30 2022] pigy was hit by non-melee for 1500 points of damage.  [Sun Jul 10 21:05:30 2022] pigy staggers.'";
-            var match = dpslogparse.Match(message, DateTime.Now);
+            var match = parser.Match(message, DateTime.Now);
             Assert.IsNull(match);
         }
 
         [TestMethod]
         public void TestLevelDetectionThroughKick()
         {
-            var dpslogparse = container.Resolve<HitParser>();
             var message = "You backstab a kick for 56 points of damage.";
-            _ = dpslogparse.Match(message, DateTime.Now);
+            _ = parser.Match(message, DateTime.Now);
             var player = container.Resolve<ActivePlayer>();
             player.Player = new PlayerInfo { };
 

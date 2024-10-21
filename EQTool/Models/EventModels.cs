@@ -1,13 +1,42 @@
 ﻿using EQToolShared.HubModels;
 using System;
 using System.Collections.Generic;
+using System.Security.RightsManagement;
 using System.Windows.Media.Media3D;
 
 namespace EQTool.Models
 {
+    //
+    // base class
+    // all Events know at least about the timestamp and the line from the logfile
+    // child Event class can add any specific fields needed to carry additional info
+    //
     public class BaseLogParseEvent
     {
         public DateTime TimeStamp { get; set; }
+        public string Line { get; set; }
+    }
+
+    public class TextToSpeechEvent : BaseLogParseEvent
+    {
+        public string Text { get; set; }
+        
+        // in case the spoken version of 'text' is too crazy, we can use this to feed the TTS with a phonetic version
+        public string Text_phonetic { get; set; }
+
+        public TextToSpeechEvent(DateTime timestamp, string line, string text, string text_phonetic = "")
+        {
+            TimeStamp = timestamp;
+            Line = line;
+            Text = text;
+            if (text_phonetic == "")
+                Text_phonetic = text;
+            else
+                Text_phonetic += text_phonetic;
+        }
+
+
+    
     }
 
     public class PlayerLocationEvent : BaseLogParseEvent
@@ -38,19 +67,47 @@ namespace EQTool.Models
         public string NpcName { get; set; }
     }
 
-    public class FightHitEvent : BaseLogParseEvent
+    //
+    // Event class to carry all info from DamageParser to interested listeners
+    //
+    public class DamageEvent : BaseLogParseEvent
     {
-        public DPSParseMatch HitInformation { get; set; }
+        public string TargetName { get; set; }
+        public string AttackerName { get; set; }
+        public int DamageDone { get; set; }
+        public string DamageType { get; set; }
+
+        public DamageEvent(DateTime dateTime, string line, string targetName, string attackerName, int damageDone, string damageType)
+        {
+            TimeStamp = dateTime;
+            Line = line;
+            TargetName = targetName;
+            AttackerName = attackerName;
+            DamageDone = damageDone;
+            DamageType = damageType;
+        }
     }
 
     public class ConEvent : BaseLogParseEvent
     {
         public string Name { get; set; }
     }
-    public class DeadEvent : BaseLogParseEvent
+
+    public class DeathEvent : BaseLogParseEvent
     {
-        public string Name { get; set; }
+        public string Victim { get; set; }
+
+        public string Killer { get; set; }
+
+        public DeathEvent(DateTime dateTime, string line, string victim, string killer = "Unknown")
+        {
+            TimeStamp = dateTime;
+            Line = line;
+            Victim = victim;
+            Killer = killer;
+        }
     }
+
     public class StartTimerEvent : BaseLogParseEvent
     {
         public CustomTimer CustomTimer { get; set; }
@@ -76,7 +133,50 @@ namespace EQTool.Models
     {
         public int NewLevel { get; set; }
     }
-    public class DeathEvent : BaseLogParseEvent { }
+
+    //
+    // event class to carry all relevant communications events to interested listeners
+    //
+    public class CommsEvent : BaseLogParseEvent
+    {
+        public enum Channel
+        {
+            NONE        = 0b_0000_0000,
+            TELL        = 0b_0000_0001,
+            SAY         = 0b_0000_0010,
+            GROUP       = 0b_0000_0100,
+            GUILD       = 0b_0000_1000,
+            AUCTION     = 0b_0001_0000,
+            OOC         = 0b_0010_0000,
+            SHOUT       = 0b_0100_0000,
+            ANY         = TELL|SAY|GROUP|GUILD|AUCTION|OOC|SHOUT
+        }
+
+        public CommsEvent.Channel TheChannel { get; set; }
+        public string Content { get; set; }
+        public string Receiver { get; set; }
+        public string Sender { get; set; }
+
+        // todo - make parser smarter to handle comms from other players
+        public CommsEvent(DateTime dateTime, string line, CommsEvent.Channel channel = Channel.NONE, string content = "", string sender = "", string receiver = "")
+        {
+            TimeStamp = dateTime;
+            Line = line;
+            TheChannel = channel;
+            Content = content;
+            Sender = sender;
+            Receiver = receiver;
+        }
+    }
+
+    public class YouBeginCastingEvent : BaseLogParseEvent
+    {
+        public YouBeginCastingEvent(DateTime dateTime, string line)
+        {
+            TimeStamp = dateTime;
+            Line = line;
+        }
+    }
 
     public class DeathTouchEvent : BaseLogParseEvent
     {

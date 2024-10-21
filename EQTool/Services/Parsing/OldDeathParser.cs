@@ -12,7 +12,7 @@ namespace EQTool.Services.Parsing
     //      2. in less than {_deathLoopSeconds} time,
     //      3. while the player is apparently AFK (no signs of life from casting, meleeing, or communicating)
     //
-    public class DeathParser
+    public class OldDeathParser
     {
         private readonly LogEvents logEvents;
 
@@ -33,7 +33,7 @@ namespace EQTool.Services.Parsing
         //
         // ctor
         //
-        public DeathParser(LogEvents logEvents)
+        public OldDeathParser(LogEvents logEvents)
         {
             this.logEvents = logEvents;
         }
@@ -97,7 +97,7 @@ namespace EQTool.Services.Parsing
                 //
                 // where does container live?
                 //var activePlayer = container.Resolve<ActivePlayer>();
-                //string playerName = activePlayer.Player.Name;
+                //string playerName = activePlayer.Player.Victim;
                 var playerName = "Unknown";
 
                 var commsPattern = $"^(You told|You say|You tell|You auction|You shout|{playerName} ->)";
@@ -111,7 +111,7 @@ namespace EQTool.Services.Parsing
                 }
 
                 // does this line contain a proof of life - melee
-                var meleePattern = "^You( try to)? (hit|slash|pierce|crush|claw|bite|sting|maul|gore|punch|kick|backstab|bash|slice)";
+                var meleePattern = "^You( try to)? (hit|slash|pierce|crush|claw|bite|sting|maul|gore|punch|kick|backstab|bash|slice|strike)";
                 var meleeRegex = new Regex(meleePattern, RegexOptions.Compiled);
                 match = meleeRegex.Match(line);
                 if (match.Success)
