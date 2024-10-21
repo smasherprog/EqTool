@@ -1171,7 +1171,7 @@ namespace EQToolTests
         public void TestDeath()
         {
             DateTime now = DateTime.Now;
-            var service = container.Resolve<DeathParser>();
+            var service = container.Resolve<DeathParserNew>();
             var line = "an ire Ghast has been slain by a different ire ghast!";
             DeathEvent de = service.Match(line, now);
 
@@ -1186,7 +1186,7 @@ namespace EQToolTests
         public void TestDeath1()
         {
             DateTime now = DateTime.Now;
-            var service = container.Resolve<DeathParser>();
+            var service = container.Resolve<DeathParserNew>();
             var line = "Harbinger Freglor has been slain by skeletal champion!";
             DeathEvent de = service.Match(line, now);
 
@@ -1201,7 +1201,7 @@ namespace EQToolTests
         public void TestDeath2()
         {
             DateTime now = DateTime.Now;
-            var service = container.Resolve<DeathParser>();
+            var service = container.Resolve<DeathParserNew>();
             var line = "You have slain Arch Duke Iatol!";
             DeathEvent de = service.Match(line, now);
 
@@ -1216,7 +1216,7 @@ namespace EQToolTests
         public void TestDeathByDot()
         {
             DateTime now = DateTime.Now;
-            var service = container.Resolve<DeathParser>();
+            var service = container.Resolve<DeathParserNew>();
             var line = "an ire Ghast died.";
             DeathEvent de = service.Match(line, now);
 

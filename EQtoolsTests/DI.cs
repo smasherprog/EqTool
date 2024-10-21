@@ -47,7 +47,7 @@ namespace EQToolTests
             _ = builder.RegisterType<EQTool.Services.Parsing.CampParser>().As<EQTool.Models.IEqLogParseHandler>().SingleInstance();
             _ = builder.RegisterType<EQTool.Services.Parsing.PlayerWhoLogParse>().As<EQTool.Models.IEqLogParseHandler>().SingleInstance();
             _ = builder.RegisterType<EQTool.Services.Parsing.DamageParser>().As<EQTool.Models.IEqLogParseHandler>().SingleInstance();
-            _ = builder.RegisterType<EQTool.Services.Parsing.DeathParser>().As<EQTool.Models.IEqLogParseHandler>().SingleInstance();
+            _ = builder.RegisterType<EQTool.Services.Parsing.DeathParserNew>().As<EQTool.Models.IEqLogParseHandler>().SingleInstance();
             _ = builder.RegisterType<EQTool.Services.Parsing.ConLogParse>().As<EQTool.Models.IEqLogParseHandler>().SingleInstance();
             _ = builder.RegisterType<EQTool.Services.Parsing.LogCancelCustomTimer>().As<EQTool.Models.IEqLogParseHandler>().SingleInstance();
             _ = builder.RegisterType<EQTool.Services.Parsing.LogStartCustomTimer>().As<EQTool.Models.IEqLogParseHandler>().SingleInstance();

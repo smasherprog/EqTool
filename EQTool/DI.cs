@@ -16,7 +16,7 @@ namespace EQTool
             _ = builder.RegisterType<Services.Parsing.CampParser>().As<Models.IEqLogParseHandler>().SingleInstance();
             _ = builder.RegisterType<Services.Parsing.PlayerWhoLogParse>().As<Models.IEqLogParseHandler>().SingleInstance();
             _ = builder.RegisterType<Services.Parsing.DamageParser>().As<Models.IEqLogParseHandler>().SingleInstance();
-            _ = builder.RegisterType<Services.Parsing.DeathParser>().As<Models.IEqLogParseHandler>().SingleInstance();
+            _ = builder.RegisterType<Services.Parsing.DeathParserNew>().As<Models.IEqLogParseHandler>().SingleInstance();
             _ = builder.RegisterType<Services.Parsing.ConLogParse>().As<Models.IEqLogParseHandler>().SingleInstance();
             _ = builder.RegisterType<Services.Parsing.LogCancelCustomTimer>().As<Models.IEqLogParseHandler>().SingleInstance();
             _ = builder.RegisterType<Services.Parsing.LogStartCustomTimer>().As<Models.IEqLogParseHandler>().SingleInstance();

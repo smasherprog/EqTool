@@ -13,7 +13,7 @@ namespace EQToolTests
     public class DeathTests
     {
         private readonly IContainer container;
-        private readonly DeathParser deathParser;
+        private readonly DeathParserNew deathParser;
         private readonly CommsParser playerCommsParser;
         private readonly DamageParser damageParser;
         private readonly SpellCastParser spellCastParser;
@@ -25,7 +25,7 @@ namespace EQToolTests
         public DeathTests()
         {
             container = DI.Init();
-            deathParser = container.Resolve<DeathParser>();
+            deathParser = container.Resolve<DeathParserNew>();
             playerCommsParser = container.Resolve<CommsParser>();
             damageParser = container.Resolve<DamageParser>();
             spellCastParser = container.Resolve<SpellCastParser>();
