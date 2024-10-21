@@ -105,8 +105,6 @@ namespace EQTool
             build = BuildType.Debug;
 #elif BETA
             build = BuildType.Beta;
-#elif QUARM
-            build = BuildType.Quarm;
 #endif
             try
             {
@@ -451,8 +449,6 @@ namespace EQTool
                 v= "Beta";
 #elif LINUX
                 v= "Linux";
-#elif QUARM
-                v= "Quarm";
 #else
                 v = "P99";
 #endif

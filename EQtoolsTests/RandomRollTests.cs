@@ -3,15 +3,13 @@ using EQTool.Services.Parsing;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 
-namespace EQToolTests
+namespace EQtoolsTests
 {
     [TestClass]
-    public class RandomRollTests
-    {
-        private readonly IContainer container;
+    public class RandomRollTests : BaseTestClass
+    { 
         public RandomRollTests()
-        {
-            container = DI.Init();
+        { 
         }
 
         [TestMethod]

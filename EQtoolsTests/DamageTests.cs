@@ -7,7 +7,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Linq;
 
-namespace EQToolTests
+namespace EQtoolsTests
 {
     [TestClass]
     public class DamageTests

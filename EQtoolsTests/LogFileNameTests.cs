@@ -2,7 +2,7 @@
 using EQToolShared.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace EQToolTests
+namespace EQtoolsTests
 {
     [TestClass]
     public class LogFileNameTests

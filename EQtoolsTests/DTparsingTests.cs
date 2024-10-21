@@ -6,12 +6,10 @@ using System;
 namespace EQtoolsTests
 {
     [TestClass]
-    public class DTparsingTests
-    {
-        private readonly IContainer container;
+    public class DTparsingTests : BaseTestClass
+    { 
         public DTparsingTests()
-        {
-            container = EQToolTests.DI.Init();
+        { 
         }
 
         [TestMethod]

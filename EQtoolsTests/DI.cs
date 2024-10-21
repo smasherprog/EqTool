@@ -2,7 +2,7 @@
 using Autofac.Features.ResolveAnything;
 using System.IO;
 
-namespace EQToolTests
+namespace EQtoolsTests
 {
     public static class DI
     {

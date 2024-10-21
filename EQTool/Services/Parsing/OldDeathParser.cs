@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Speech.Synthesis;
 using System.Text.RegularExpressions;
 
 namespace EQTool.Services.Parsing
@@ -179,23 +178,13 @@ namespace EQTool.Services.Parsing
         // that is currently ruled out of bounds, so we will have to do something more benign for now
         //
         // returns the number of death timestamps currently in the tracking list
-        //
+
+
         public int DeathLoopResponse()
         {
             // deathloop response
             if (_deathLoopTimestamps.Count >= _deathLoopDeaths)
             {
-                // just a little audible marker
-                var player = new System.Media.SoundPlayer(@"c:\Windows\Media\chimes.wav");
-                player.Play();
-
-                // since we can't kill eqgame.exe, try to alert the user by yelling at him
-                var synth = new SpeechSynthesizer();
-                synth.SetOutputToDefaultAudioDevice();
-                synth.Rate = 2;
-                synth.Volume = 100; // 0-100, as loud as we can
-                synth.Speak("death loop, death loop, death loop");
-
                 // write some debug lines
                 Console.WriteLine("------------------------------------Deathloop condition detected!-----------------------------------------");
                 Console.WriteLine($"{_deathLoopDeaths} or more deaths in less than {_deathLoopSeconds} seconds, with no player activity");

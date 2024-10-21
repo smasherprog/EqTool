@@ -343,6 +343,7 @@
     <Compile Include="Services\P99LoginMiddlemand\LoginMiddlemand.cs" />
     <Compile Include="Services\Parsing\OldDeathParser.cs" />
     <Compile Include="Services\Parsing\CommsParser.cs" />
+    <Compile Include="Services\Parsing\YouZonedParser.cs" />
     <Compile Include="UI\CustomTimeSpanUpDown.cs" />
     <Compile Include="UI\EventOverlay.xaml.cs">
       <DependentUpon>EventOverlay.xaml</DependentUpon>

@@ -4,15 +4,13 @@ using EQToolShared.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
 
-namespace EQToolTests
+namespace EQtoolsTests
 {
     [TestClass]
-    public class GroupTests
-    {
-        private readonly IContainer container;
+    public class GroupTests : BaseTestClass
+    { 
         public GroupTests()
-        {
-            container = DI.Init();
+        { 
         }
 
         [TestMethod]

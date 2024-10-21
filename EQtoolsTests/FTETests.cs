@@ -6,15 +6,13 @@ using EQToolShared.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 
-namespace EQToolTests
+namespace EQtoolsTests
 {
     [TestClass]
-    public class FTETests
-    {
-        private readonly IContainer container;
+    public class FTETests : BaseTestClass
+    { 
         public FTETests()
-        {
-            container = DI.Init();
+        { 
         }
 
         [TestMethod]

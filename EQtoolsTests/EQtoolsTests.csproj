@@ -196,6 +196,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="BaseTestClass.cs" />
     <Compile Include="DeathTests.cs" />
     <Compile Include="CommsTests.cs" />
     <Compile Include="ZoneSpawnTimeTests.cs" />
@@ -216,7 +217,7 @@
     <Compile Include="GroupTests.cs" />
     <Compile Include="SpellTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="MapTests.cs" />
+    <Compile Include="ZoneParsingTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="spells_en.txt">

@@ -50,12 +50,6 @@ namespace EQToolShared
 
     public static class Zones
     {
-        private const string Youhaveentered = "You have entered ";
-        private const string Therearenoplayers = "There are no players ";
-        private const string Thereare = "There are ";
-        private const string Thereis = "There is ";
-        private const string Youhaveenteredareapvp = "You have entered an Arena (PvP) area.";
-        private const string spaceinspace = "in ";
         public static readonly List<string> KaelFactionMobs = new List<string>() {
             "Bygloirn Omorden",
             "Dagron Stonecutter",
@@ -2255,48 +2249,6 @@ namespace EQToolShared
             }
 
             return ZoneNames.Any(a => a == name) ? name : string.Empty;
-        }
-
-        public static string Match(string message)
-        {
-            //Debug.WriteLine($"ZoneParse: "+ message);
-            if (message.StartsWith(Therearenoplayers) || message.StartsWith(Youhaveenteredareapvp))
-            {
-                return string.Empty;
-            }
-            else if (message.StartsWith(Youhaveentered))
-            {
-                message = message.Replace(Youhaveentered, string.Empty).Trim().TrimEnd('.').ToLower();
-                return message;
-            }
-            else if (message.StartsWith(Thereare))
-            {
-                message = message.Replace(Thereare, string.Empty).Trim();
-                var inindex = message.IndexOf(spaceinspace);
-                if (inindex != -1)
-                {
-                    message = message.Substring(inindex + spaceinspace.Length).Trim().TrimEnd('.').ToLower();
-                    if (message != "everquest")
-                    {
-                        return message;
-                    }
-                }
-            }
-            else if (message.StartsWith(Thereis))
-            {
-                message = message.Replace(Thereis, string.Empty).Trim();
-                var inindex = message.IndexOf(spaceinspace);
-                if (inindex != -1)
-                {
-                    message = message.Substring(inindex + spaceinspace.Length).Trim().TrimEnd('.').ToLower();
-                    if (message != "everquest")
-                    {
-                        return message;
-                    }
-                }
-            }
-
-            return string.Empty;
-        }
+        } 
     }
 }
