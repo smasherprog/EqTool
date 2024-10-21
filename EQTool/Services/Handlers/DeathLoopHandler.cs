@@ -141,7 +141,10 @@ namespace EQTool.Services.Handlers
         {
             // since we can't kill eqgame.exe, try to alert the user by yelling at him/her
             // fire an event to the AudioService for it to respond to 
-            textToSpeach.Say("death loop death loop death loop. death loop!");
+            if (activePlayer?.Player?.DeathLoopAudio == true)
+            {
+                textToSpeach.Say("death loop death loop death loop. death loop!");
+            }
 
             //var synth = new SpeechSynthesizer();
             //synth.SetOutputToDefaultAudioDevice();
