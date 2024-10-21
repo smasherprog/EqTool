@@ -27,14 +27,15 @@ namespace EQTool.Services.Parsing
     //      PigTimer-6:40-Tim_the_Mighty     6 minutes 40 second timer, with name 'Tim_the_Mighty'
     //      PigTimer-1:02:00-LongTimer       1 hour, 2 minute timer, with description 'LongTimer'
     //
-    public class LogStartCustomTimer : IEqLogParseHandler
+    public class CustomTimerParser
+        : IEqLogParseHandler
     {
         private readonly LogEvents logEvents;
 
         //
         // ctor
         //
-        public LogStartCustomTimer(LogEvents logEvents)
+        public CustomTimerParser(LogEvents logEvents)
         {
             this.logEvents = logEvents;
         }
@@ -106,10 +107,10 @@ namespace EQTool.Services.Parsing
                 // return value
                 rv = new CustomTimer
                 {
-                    DurationInSeconds = timerSeconds
+                    DurationInSeconds = timerSeconds,
+                    // if the user didn't specify a label, we'll give it the match string
+                    Name = label != "" ? label : $"{match}"
                 };
-                // if the user didn't specify a label, we'll give it the match string
-                rv.Name = label != "" ? label : $"{match}";
             }
             return rv;
         }

@@ -1,11 +1,10 @@
-﻿using EQTool.Services.Map;
-using EQToolShared;
+﻿using EQToolShared;
 using System;
 using System.Windows.Controls;
 using System.Windows.Media.Media3D;
 using System.Windows.Shapes;
 
-namespace EQTool.Services
+namespace EQTool.Services.Map
 {
     public static class MapOpacityHelper
     {

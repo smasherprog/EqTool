@@ -2,6 +2,7 @@
 using EQTool.Models;
 using EQTool.Services;
 using EQTool.Services.Parsing;
+using EQTool.Services.Parsing.Helpers;
 using EQTool.ViewModels;
 using EQToolShared;
 using EQToolShared.Enums;
@@ -1068,7 +1069,7 @@ namespace EQtoolsTests
         public void TestDeath()
         {
             var now = DateTime.Now;
-            var service = container.Resolve<DeathParserNew>();
+            var service = container.Resolve<DeathParser>();
             var line = "an ire Ghast has been slain by a different ire ghast!";
             var de = service.Match(line, now);
 
@@ -1083,7 +1084,7 @@ namespace EQtoolsTests
         public void TestDeath1()
         {
             var now = DateTime.Now;
-            var service = container.Resolve<DeathParserNew>();
+            var service = container.Resolve<DeathParser>();
             var line = "Harbinger Freglor has been slain by skeletal champion!";
             var de = service.Match(line, now);
 
@@ -1098,7 +1099,7 @@ namespace EQtoolsTests
         public void TestDeath2()
         {
             var now = DateTime.Now;
-            var service = container.Resolve<DeathParserNew>();
+            var service = container.Resolve<DeathParser>();
             var line = "You have slain Arch Duke Iatol!";
             var de = service.Match(line, now);
 
@@ -1113,7 +1114,7 @@ namespace EQtoolsTests
         public void TestDeathByDot()
         {
             var now = DateTime.Now;
-            var service = container.Resolve<DeathParserNew>();
+            var service = container.Resolve<DeathParser>();
             var line = "an ire Ghast died.";
             var de = service.Match(line, now);
 
@@ -1126,7 +1127,7 @@ namespace EQtoolsTests
         [TestMethod]
         public void GetCustomTimerStart()
         {
-            var service = container.Resolve<LogStartCustomTimer>();
+            var service = container.Resolve<CustomTimerParser>();
             var line = "You say, 'PigTimer-30:00-StupidGoblin'";
             var targettoremove = service.ParseStartTimer(line);
 
@@ -1138,7 +1139,7 @@ namespace EQtoolsTests
         [TestMethod]
         public void GetCustomTimerStart_WithSeconds()
         {
-            var service = container.Resolve<LogStartCustomTimer>();
+            var service = container.Resolve<CustomTimerParser>();
             var line = "You say, 'PigTimer-30:20-StupidGoblin'";
             var targettoremove = service.ParseStartTimer(line);
 
@@ -1150,7 +1151,7 @@ namespace EQtoolsTests
         [TestMethod]
         public void GetCustomTimerStart_WithSeconds_andmorethan60minutes()
         {
-            var service = container.Resolve<LogStartCustomTimer>();
+            var service = container.Resolve<CustomTimerParser>();
             var line = "You say, 'PigTimer-90:20-StupidGoblin'";
             var targettoremove = service.ParseStartTimer(line);
 
@@ -1162,7 +1163,7 @@ namespace EQtoolsTests
         [TestMethod]
         public void GetCustomTimerStart1()
         {
-            var service = container.Resolve<LogStartCustomTimer>();
+            var service = container.Resolve<CustomTimerParser>();
             var line = "You say, 'PigTimer-30:00-StupidGoblin'";
             var targettoremove = service.ParseStartTimer(line);
 
@@ -1174,7 +1175,7 @@ namespace EQtoolsTests
         [TestMethod]
         public void GetCustomTimerStart_TestSpaces()
         {
-            var service = container.Resolve<LogStartCustomTimer>();
+            var service = container.Resolve<CustomTimerParser>();
             var line = "You say, 'PigTimer-30:00-StupidGoblin_with_club_near_me'";
             var targettoremove = service.ParseStartTimer(line);
 
@@ -1186,7 +1187,7 @@ namespace EQtoolsTests
         [TestMethod]
         public void GetCustomTimerStart_Test1()
         {
-            var service = container.Resolve<LogStartCustomTimer>();
+            var service = container.Resolve<CustomTimerParser>();
             var line = "PigTimer-02";
             var targettoremove = service.ParseStartTimer(line);
 
@@ -1198,7 +1199,7 @@ namespace EQtoolsTests
         [TestMethod]
         public void GetCustomTimerStart_Test2()
         {
-            var service = container.Resolve<LogStartCustomTimer>();
+            var service = container.Resolve<CustomTimerParser>();
             var line = "PigTimer-02:03";
             var targettoremove = service.ParseStartTimer(line);
 
@@ -1210,7 +1211,7 @@ namespace EQtoolsTests
         [TestMethod]
         public void GetCustomTimerStart_Test3()
         {
-            var service = container.Resolve<LogStartCustomTimer>();
+            var service = container.Resolve<CustomTimerParser>();
             var line = "PigTimer-02:03:04";
             var targettoremove = service.ParseStartTimer(line);
 
@@ -1222,7 +1223,7 @@ namespace EQtoolsTests
         [TestMethod]
         public void GetCustomTimerStart_Test1a()
         {
-            var service = container.Resolve<LogStartCustomTimer>();
+            var service = container.Resolve<CustomTimerParser>();
             var line = "PigTimer-02-xyzzy";
             var targettoremove = service.ParseStartTimer(line);
 
@@ -1234,7 +1235,7 @@ namespace EQtoolsTests
         [TestMethod]
         public void GetCustomTimerStart_Test2a()
         {
-            var service = container.Resolve<LogStartCustomTimer>();
+            var service = container.Resolve<CustomTimerParser>();
             var line = "PigTimer-02:03-xyzzy";
             var targettoremove = service.ParseStartTimer(line);
 
@@ -1246,46 +1247,13 @@ namespace EQtoolsTests
         [TestMethod]
         public void GetCustomTimerStart_Test3a()
         {
-            var service = container.Resolve<LogStartCustomTimer>();
+            var service = container.Resolve<CustomTimerParser>();
             var line = "PigTimer-02:03:04-xyzzy";
             var targettoremove = service.ParseStartTimer(line);
 
             Assert.IsNotNull(targettoremove);
             Assert.AreEqual((2 * 3600) + (3 * 60) + 4, targettoremove.DurationInSeconds);
             Assert.AreEqual("xyzzy", targettoremove.Name);
-        }
-
-        [TestMethod]
-        public void GetCustomTimerCancel()
-        {
-            var service = container.Resolve<LogCancelCustomTimer>();
-            var line = "You say, 'Timer Cancel StupidGoblin'";
-            var targettoremove = service.GetCancelTimer(line);
-
-            Assert.IsNotNull(targettoremove);
-            Assert.AreEqual("stupidgoblin", targettoremove);
-        }
-
-        [TestMethod]
-        public void GetCustomTimerCancel1()
-        {
-            var service = container.Resolve<LogCancelCustomTimer>();
-            var line = "You say, 'Cancel Timer StupidGoblin'";
-            var targettoremove = service.GetCancelTimer(line);
-
-            Assert.IsNotNull(targettoremove);
-            Assert.AreEqual("stupidgoblin", targettoremove);
-        }
-
-        [TestMethod]
-        public void GetCustomTimerCancel_TestSpaces()
-        {
-            var service = container.Resolve<LogCancelCustomTimer>();
-            var line = "You say, 'Cancel Timer StupidGoblin with club near me'";
-            var targettoremove = service.GetCancelTimer(line);
-
-            Assert.IsNotNull(targettoremove);
-            Assert.AreEqual("stupidgoblin with club near me", targettoremove);
         }
 
         [TestMethod]

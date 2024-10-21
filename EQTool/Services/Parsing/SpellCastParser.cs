@@ -1,4 +1,5 @@
 ﻿using EQTool.Models;
+using EQTool.Services.Parsing.Helpers;
 using EQTool.ViewModels;
 using System;
 using System.Linq;
@@ -26,7 +27,7 @@ namespace EQTool.Services.Parsing
 
         public bool Handle(string line, DateTime timestamp)
         {
-            SpellCastEvent m = MatchSpell(line, timestamp);
+            var m = MatchSpell(line, timestamp);
             if (m != null)
             {
                 logEvents.Handle(m);

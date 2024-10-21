@@ -5,7 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace EQTool.Services.Parsing
+namespace EQTool.Services.Parsing.Helpers
 {
     public class ParseHandleYouCasting
     {

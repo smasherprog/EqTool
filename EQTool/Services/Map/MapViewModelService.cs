@@ -1,5 +1,4 @@
 ﻿using EQTool.Models;
-using EQTool.Services.Map;
 using EQTool.Shapes;
 using EQTool.ViewModels;
 using System;
@@ -9,7 +8,7 @@ using System.Windows.Media;
 using System.Windows.Media.Media3D;
 using System.Windows.Shapes;
 
-namespace EQTool.Services
+namespace EQTool.Services.Map
 {
     public class AddPlayerToCanvasData
     {

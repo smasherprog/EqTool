@@ -39,11 +39,7 @@ namespace EQTool
         private LogParser logParser => container.Resolve<LogParser>();
         private LogEvents logEvents => container.Resolve<LogEvents>();
         private System.Timers.Timer UITimer;
-        private PlayerTrackerService PlayerTrackerService;
-        private ZoneActivityTrackingService ZoneActivityTrackingService;
         private ISignalrPlayerHub signalrPlayerHub;
-        private AudioService audioService;
-        private DeathLoopService deathLoopService;
 
         private EQToolSettings _EQToolSettings;
 
@@ -318,10 +314,8 @@ namespace EQTool
             }
             signalrPlayerHub = container.Resolve<ISignalrPlayerHub>();
 
-            PlayerTrackerService = container.Resolve<PlayerTrackerService>();
-            ZoneActivityTrackingService = container.Resolve<ZoneActivityTrackingService>();
-            audioService = container.Resolve<AudioService>();
-            deathLoopService = container.Resolve<DeathLoopService>();
+            container.Resolve<PlayerTrackerService>();
+            container.Resolve<ZoneActivityTrackingService>();
             logEvents.QuakeEvent += LogParser_QuakeEvent;
             App.Current.Resources["GlobalFontSize"] = (double)(EQToolSettings?.FontSize ?? 12);
             ((App)System.Windows.Application.Current).UpdateBackgroundOpacity("MyWindowStyleDPS", EQToolSettings.DpsWindowState.Opacity.Value);
@@ -483,26 +477,26 @@ namespace EQTool
 
         private void CreateGroup(GroupOptimization grp)
         {
-            var grpstring = new List<string>();
-            var groups = PlayerTrackerService.CreateGroups(grp);
-            var groupindex = 1;
-            foreach (var group in groups)
-            {
-                var str = $"/gu Group {groupindex++} ";
-                foreach (var player in group.Players)
-                {
-                    str += player.Name + ",";
-                }
-                grpstring.Add(str);
-            }
-            if (grpstring.Any())
-            {
-                System.Windows.Forms.Clipboard.SetText(string.Join("\r\n", grpstring));
-            }
-            else
-            {
-                System.Windows.Forms.Clipboard.SetText("You must /who in the zone before group suggestions can be made!");
-            }
+            //var grpstring = new List<string>();
+            //var groups = PlayerTrackerService.CreateGroups(grp);
+            //var groupindex = 1;
+            //foreach (var group in groups)
+            //{
+            //    var str = $"/gu Group {groupindex++} ";
+            //    foreach (var player in group.Players)
+            //    {
+            //        str += player.Name + ",";
+            //    }
+            //    grpstring.Add(str);
+            //}
+            //if (grpstring.Any())
+            //{
+            //    System.Windows.Forms.Clipboard.SetText(string.Join("\r\n", grpstring));
+            //}
+            //else
+            //{
+            //    System.Windows.Forms.Clipboard.SetText("You must /who in the zone before group suggestions can be made!");
+            //}
         }
 
         private void WhyThePig(object sender, EventArgs e)

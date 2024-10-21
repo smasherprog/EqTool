@@ -1,10 +1,8 @@
 ﻿using EQTool.Models;
 using System;
-using System.Collections.Generic;
 using System.Diagnostics;
-using System.Speech.Synthesis;
 
-namespace EQTool.Services
+namespace EQTool.Services.Handlers
 {
 
     //
@@ -21,7 +19,7 @@ namespace EQTool.Services
     //      YouBeginCastingEvent
     //      CommsEvent
     //
-    public class DeathLoopService
+    public class DeathLoopHandler
     {
         private readonly LogEvents logEvents;
         // todo - make these values configurable
@@ -43,7 +41,7 @@ namespace EQTool.Services
         //
         // register this service as a listener for the Events it cares about
         //
-        public DeathLoopService(LogEvents logEvents, EQToolSettings eQToolSettings)
+        public DeathLoopHandler(LogEvents logEvents, EQToolSettings eQToolSettings)
         {
             this.logEvents = logEvents;
             this.logEvents.DeathEvent += LogEvents_DeathEvent;
@@ -54,7 +52,7 @@ namespace EQTool.Services
 
         public bool IsDeathLooping()
         {
-            return (_deathLoopTimeStamps.Count >= _deathLoopDeaths);
+            return _deathLoopTimeStamps.Count >= _deathLoopDeaths;
         }
 
         public int DeathCount()
@@ -71,7 +69,9 @@ namespace EQTool.Services
             // print a list of timestamps
             Debug.WriteLine($"Death timestamps: count = {_deathLoopTimeStamps.Count}, times = ");
             for (var i = 0; i < _deathLoopTimeStamps.Count; i++)
+            {
                 Debug.Write($"[{_deathLoopTimeStamps[i]}] ");
+            }
 
             Debug.WriteLine(string.Empty);
         }
@@ -93,8 +93,9 @@ namespace EQTool.Services
 
                 // if the quantity of deaths in the tracking list exceeds the threshold, then respond appropriately
                 if (_deathLoopTimeStamps.Count >= _deathLoopDeaths)
+                {
                     DeathLoopResponse(deathEvent.TimeStamp, deathEvent.Line);
-
+                }
             }
         }
 
@@ -108,7 +109,9 @@ namespace EQTool.Services
                 while (!done)
                 {
                     if (_deathLoopTimeStamps.Count == 0)
+                    {
                         done = true;
+                    }
                     else
                     {
                         // the list of death timestamps has the oldest at position 0
@@ -139,7 +142,7 @@ namespace EQTool.Services
         {
             // since we can't kill eqgame.exe, try to alert the user by yelling at him/her
             // fire an event to the AudioService for it to respond to
-            TextToSpeechEvent textToSpeechEvent = new TextToSpeechEvent(timestamp, line, "death loop death loop death loop. death loop!");
+            var textToSpeechEvent = new TextToSpeechEvent(timestamp, line, "death loop death loop death loop. death loop!");
             logEvents.Handle(textToSpeechEvent);
 
             //var synth = new SpeechSynthesizer();

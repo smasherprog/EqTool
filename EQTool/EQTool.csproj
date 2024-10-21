@@ -337,7 +337,19 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Services\BinarySerializer.cs" />
-    <Compile Include="Services\DeathLoopService.cs" />
+    <Compile Include="Services\Handlers\RootHasWornOffHandler.cs" />
+    <Compile Include="Services\Handlers\CompleteHealHandler.cs" />
+    <Compile Include="Services\Handlers\DragonRoarHandler.cs" />
+    <Compile Include="Services\Handlers\GroupInviteHandler.cs" />
+    <Compile Include="Services\Handlers\FailedFeignHandler.cs" />
+    <Compile Include="Services\Handlers\CharmBreakHandler.cs" />
+    <Compile Include="Services\Handlers\FTEHandler.cs" />
+    <Compile Include="Services\Handlers\LevitateHandler.cs" />
+    <Compile Include="Services\Handlers\EnrageHandler.cs" />
+    <Compile Include="Services\Handlers\BaseHandler.cs" />
+    <Compile Include="Services\Handlers\InvisHandler.cs" />
+    <Compile Include="Services\Handlers\DeathLoopHandler.cs" />
+    <Compile Include="Services\TextToSpeach.cs" />
     <Compile Include="Services\Map\MapData.cs" />
     <Compile Include="Services\Map\ZoneSpawnTimes.cs" />
     <Compile Include="Services\P99LoginMiddlemand\LoginMiddlemand.cs" />
@@ -375,15 +387,15 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="Services\AppDispatcher.cs" />
-    <Compile Include="Services\AudioService.cs" />
+    <Compile Include="Services\Handlers\AudioService.cs" />
     <Compile Include="Services\CHService.cs" />
     <Compile Include="Services\LogEvents.cs" />
     <Compile Include="Services\LoggingService.cs" />
-    <Compile Include="Services\MapOpacityHelper.cs" />
-    <Compile Include="Services\MapViewModelService.cs" />
+    <Compile Include="Services\Map\MapOpacityHelper.cs" />
+    <Compile Include="Services\Map\MapViewModelService.cs" />
     <Compile Include="Services\Parsing\CampParser.cs" />
     <Compile Include="Services\Parsing\OutlierSpellEffectParser.cs" />
-    <Compile Include="Services\Parsing\LogStartCustomTimer.cs" />
+    <Compile Include="Services\Parsing\CustomTimerParser.cs" />
     <Compile Include="Services\Parsing\RandomParser.cs" />
     <Compile Include="Services\Parsing\ResistSpellParser.cs" />
     <Compile Include="Services\Parsing\GroupInviteParser.cs" />
@@ -396,7 +408,7 @@
     <Compile Include="Services\Parsing\CompleteHealParser.cs" />
     <Compile Include="Services\Parsing\DeathTouchParser.cs" />
     <Compile Include="Services\Parsing\QuakeParser.cs" />
-    <Compile Include="Services\Parsing\LogFileDateTimeParse.cs" />
+    <Compile Include="Services\Parsing\Helpers\LogFileDateTimeParse.cs" />
     <Compile Include="Services\Parsing\EnterWorldParser.cs" />
     <Compile Include="Services\PlayerGroupService.cs" />
     <Compile Include="Services\SettingsTestRunOverlay.cs" />
@@ -419,8 +431,7 @@
     <Compile Include="Services\WikiApi.cs" />
     <Compile Include="Services\WindowBounds.cs" />
     <Compile Include="Services\LogParser.cs" />
-    <Compile Include="Services\Parsing\LogCancelCustomTimer.cs" />
-    <Compile Include="Services\Parsing\DeathParserNew.cs" />
+    <Compile Include="Services\Parsing\DeathParser.cs" />
     <Compile Include="Services\Parsing\DamageParser.cs" />
     <Compile Include="Services\Parsing\Helpers\ParseSpellGuess.cs" />
     <Compile Include="Services\Spells\SpellDurations.cs" />
@@ -447,7 +458,6 @@
     <Compile Include="DI.cs" />
     <Compile Include="Services\FindEq.cs" />
     <Compile Include="Services\Spells\ParseSpells_spells_us.cs" />
-    <Compile Include="Services\S3dReader.cs" />
     <Compile Include="Services\Spells\SpellExtensions.cs" />
     <Compile Include="Services\Spells\SpellIcons.cs" />
     <Compile Include="Services\StringHash.cs" />

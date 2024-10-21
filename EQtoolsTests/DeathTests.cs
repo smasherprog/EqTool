@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using EQTool.Services;
+using EQTool.Services.Handlers;
 using EQTool.Services.Parsing;
 using EQTool.ViewModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -11,21 +12,21 @@ namespace EQtoolsTests
     [TestClass]
     public class DeathTests : BaseTestClass
     {
-        private readonly DeathParserNew deathParser;
+        private readonly DeathParser deathParser;
         private readonly CommsParser playerCommsParser;
         private readonly DamageParser damageParser;
         private readonly SpellCastParser spellCastParser;
-        private readonly DeathLoopService deathLoopService;
+        private readonly DeathLoopHandler deathLoopHandler;
         private readonly LogEvents logEvents;
 
         public DeathTests()
         {
-            deathParser = container.Resolve<DeathParserNew>();
+            deathParser = container.Resolve<DeathParser>();
             playerCommsParser = container.Resolve<CommsParser>();
             damageParser = container.Resolve<DamageParser>();
             spellCastParser = container.Resolve<SpellCastParser>();
 
-            deathLoopService = container.Resolve<DeathLoopService>();
+            deathLoopHandler = container.Resolve<DeathLoopHandler>();
             logEvents = container.Resolve<LogEvents>();
 
 
@@ -118,7 +119,7 @@ namespace EQtoolsTests
             _ = deathParser.Handle(message, now.AddSeconds(150.0));
 
             // oldest should have scrolled off
-            var count = deathLoopService.DeathCount();
+            var count = deathLoopHandler.DeathCount();
             Assert.AreEqual(3, count);
         }
 
@@ -132,7 +133,7 @@ namespace EQtoolsTests
             _ = deathParser.Handle(message, now.AddSeconds(10.0));
             _ = deathParser.Handle(message, now.AddSeconds(20.0));
 
-            var count = deathLoopService.DeathCount();
+            var count = deathLoopHandler.DeathCount();
             Assert.AreEqual(3, count);
         }
 
@@ -148,7 +149,7 @@ namespace EQtoolsTests
             _ = deathParser.Handle(message, now.AddSeconds(30.0));
             _ = deathParser.Handle(message, now.AddSeconds(40.0));
 
-            var count = deathLoopService.DeathCount();
+            var count = deathLoopHandler.DeathCount();
             Assert.AreEqual(5, count);
         }
 
@@ -167,7 +168,7 @@ namespace EQtoolsTests
             // melee
             _ = damageParser.Handle("You slice a moose for 100 points of damage", now);
 
-            var count = deathLoopService.DeathCount();
+            var count = deathLoopHandler.DeathCount();
             Assert.AreEqual(0, count);
         }
 
@@ -185,7 +186,7 @@ namespace EQtoolsTests
             // comms
             _ = playerCommsParser.Handle("You told Mom, 'Look no hands!'", now);
 
-            var count = deathLoopService.DeathCount();
+            var count = deathLoopHandler.DeathCount();
             Assert.AreEqual(0, count);
         }
 
@@ -203,7 +204,7 @@ namespace EQtoolsTests
             // casting
             _ = spellCastParser.Handle("You begin casting Huge_Fireball", now);
 
-            var count = deathLoopService.DeathCount();
+            var count = deathLoopHandler.DeathCount();
             Assert.AreEqual(0, count);
         }
 
