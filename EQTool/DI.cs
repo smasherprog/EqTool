@@ -1,6 +1,8 @@
 ﻿using Autofac;
 using Autofac.Features.ResolveAnything;
 using EQTool.Services.P99LoginMiddlemand;
+using System;
+using System.Linq;
 
 namespace EQTool
 {
@@ -10,46 +12,16 @@ namespace EQTool
         {
             var builder = new ContainerBuilder();
             _ = builder.RegisterSource(new AnyConcreteTypeNotAlreadyRegisteredSource());
-
             _ = builder.RegisterType<Services.LogEvents>().AsSelf().SingleInstance();
-            _ = builder.RegisterType<Services.Parsing.LocationParser>().As<Models.IEqLogParseHandler>().SingleInstance();
-            _ = builder.RegisterType<Services.Parsing.CampParser>().As<Models.IEqLogParseHandler>().SingleInstance();
-            _ = builder.RegisterType<Services.Parsing.PlayerWhoLogParse>().As<Models.IEqLogParseHandler>().SingleInstance();
-            _ = builder.RegisterType<Services.Parsing.DamageParser>().As<Models.IEqLogParseHandler>().SingleInstance();
-            _ = builder.RegisterType<Services.Parsing.DeathParserNew>().As<Models.IEqLogParseHandler>().SingleInstance();
-            _ = builder.RegisterType<Services.Parsing.ConLogParse>().As<Models.IEqLogParseHandler>().SingleInstance();
-            _ = builder.RegisterType<Services.Parsing.LogCancelCustomTimer>().As<Models.IEqLogParseHandler>().SingleInstance();
-            _ = builder.RegisterType<Services.Parsing.LogStartCustomTimer>().As<Models.IEqLogParseHandler>().SingleInstance();
-
-            _ = builder.RegisterType<Services.Parsing.CharmBreakParser>().As<Models.IEqLogParseHandler>().SingleInstance();
-            _ = builder.RegisterType<Services.Parsing.OutlierSpellEffectParser>().As<Models.IEqLogParseHandler>().SingleInstance();
-
-            _ = builder.RegisterType<Services.Parsing.SpellCastParser>().As<Models.IEqLogParseHandler>().SingleInstance();
-            _ = builder.RegisterType<Services.Parsing.ResistSpellParser>().As<Models.IEqLogParseHandler>().SingleInstance();
-            _ = builder.RegisterType<Services.Parsing.SpellWornOffOtherParser>().As<Models.IEqLogParseHandler>().SingleInstance();
-            _ = builder.RegisterType<Services.Parsing.SpellWornOffSelfParser>().As<Models.IEqLogParseHandler>().SingleInstance();
-
-            _ = builder.RegisterType<Services.Parsing.QuakeParser>().As<Models.IEqLogParseHandler>().SingleInstance();
-            _ = builder.RegisterType<Services.Parsing.RandomParser>().As<Models.IEqLogParseHandler>().SingleInstance();
-            //  _ = builder.RegisterType<Services.Parsing.OldDeathParser>().As<Models.IEqLogParseHandler>().SingleInstance();
-            _ = builder.RegisterType<Services.Parsing.CommsParser>().As<Models.IEqLogParseHandler>().SingleInstance();
-            _ = builder.RegisterType<Services.Parsing.DeathTouchParser>().As<Models.IEqLogParseHandler>().SingleInstance();
-            _ = builder.RegisterType<Services.Parsing.EnrageParser>().As<Models.IEqLogParseHandler>().SingleInstance();
-
-            _ = builder.RegisterType<Services.Parsing.CompleteHealParser>().As<Models.IEqLogParseHandler>().SingleInstance();
-            _ = builder.RegisterType<Services.Parsing.LevParser>().As<Models.IEqLogParseHandler>().SingleInstance();
-            _ = builder.RegisterType<Services.Parsing.InvisParser>().As<Models.IEqLogParseHandler>().SingleInstance();
-            _ = builder.RegisterType<Services.Parsing.FTEParser>().As<Models.IEqLogParseHandler>().SingleInstance();
-            _ = builder.RegisterType<Services.Parsing.FailedFeignParser>().As<Models.IEqLogParseHandler>().SingleInstance();
-
-            _ = builder.RegisterType<Services.Parsing.GroupInviteParser>().As<Models.IEqLogParseHandler>().SingleInstance();
-            _ = builder.RegisterType<Services.Parsing.LevelLogParse>().As<Models.IEqLogParseHandler>().SingleInstance();
-            _ = builder.RegisterType<Services.Parsing.EnterWorldParser>().As<Models.IEqLogParseHandler>().SingleInstance();
-
-
             _ = builder.RegisterType<Services.EQToolSettingsLoad>().AsSelf().SingleInstance();
             _ = builder.RegisterType<LoginMiddlemand>().AsSelf().SingleInstance();
-
+            foreach (var type in AppDomain.CurrentDomain.GetAssemblies().SelectMany(x => x.GetTypes()).Where(x => x.IsClass && !x.IsAbstract))
+            {
+                if (type.GetInterfaces().Contains(typeof(Models.IEqLogParseHandler)))
+                {
+                    _ = builder.RegisterType(type).As<Models.IEqLogParseHandler>().SingleInstance();
+                }
+            }
             _ = builder.Register(a =>
             {
                 return a.Resolve<Services.EQToolSettingsLoad>().Load();

@@ -15,9 +15,9 @@ namespace EQtoolsTests
 {
     [TestClass]
     public class SpellTests : BaseTestClass
-    { 
+    {
         public SpellTests()
-        { 
+        {
         }
 
         [TestMethod]
@@ -358,11 +358,7 @@ namespace EQtoolsTests
             var spells = container.Resolve<EQSpells>();
             var grimauraname = "Grim Aura";
             var grimaura = spells.AllSpells.FirstOrDefault(a => a.name == grimauraname);
-            var ret = EQTool.Services.SpellDurations.MatchClosestLevelToSpell(grimaura, new PlayerInfo
-            {
-                Level = 30,
-                PlayerClass = PlayerClasses.ShadowKnight
-            });
+            var ret = EQTool.Services.SpellDurations.MatchClosestLevelToSpell(grimaura, PlayerClasses.ShadowKnight, 30);
             Assert.AreEqual(ret, 30);
         }
 
@@ -372,11 +368,7 @@ namespace EQtoolsTests
             var spells = container.Resolve<EQSpells>();
             var spellname = "JourneymanBoots";
             var spell = spells.AllSpells.FirstOrDefault(a => a.name == spellname);
-            var ret = EQTool.Services.SpellDurations.MatchClosestLevelToSpell(spell, new PlayerInfo
-            {
-                Level = 35,
-                PlayerClass = PlayerClasses.ShadowKnight
-            });
+            var ret = EQTool.Services.SpellDurations.MatchClosestLevelToSpell(spell, PlayerClasses.ShadowKnight, 30);
             Assert.AreEqual(ret, 35);
         }
 
@@ -387,12 +379,7 @@ namespace EQtoolsTests
             var spellname = "Alliance";
             var spell = spells.AllSpells.FirstOrDefault(a => a.name == spellname);
             var spell1 = spells.AllSpells.Where(a => a.cast_on_other == spell.cast_on_other);
-            var player = new PlayerInfo
-            {
-                Level = 35,
-                PlayerClass = PlayerClasses.ShadowKnight
-            };
-            var duration = SpellDurations.GetDuration_inSeconds(spell, player);
+            var duration = SpellDurations.GetDuration_inSeconds(spell, PlayerClasses.ShadowKnight, 35);
             Assert.AreEqual(duration, 0);
         }
 
@@ -412,11 +399,7 @@ namespace EQtoolsTests
             var spells = container.Resolve<EQSpells>();
             var grimauraname = "Grim Aura";
             var grimaura = spells.AllSpells.FirstOrDefault(a => a.name == grimauraname);
-            var ret = EQTool.Services.SpellDurations.MatchClosestLevelToSpell(grimaura, new PlayerInfo
-            {
-                Level = 60,
-                PlayerClass = PlayerClasses.ShadowKnight
-            });
+            var ret = EQTool.Services.SpellDurations.MatchClosestLevelToSpell(grimaura, PlayerClasses.ShadowKnight, 60);
             Assert.AreEqual(ret, 60);
         }
 
@@ -427,11 +410,7 @@ namespace EQtoolsTests
             var spellname = "Naltron's Mark";
             var spell = spells.AllSpells.FirstOrDefault(a => a.name == spellname);
             var spell1 = spells.AllSpells.Where(a => a.cast_on_other == spell.cast_on_other).ToList();
-            var ret = EQTool.Services.SpellDurations.MatchClosestLevelToSpell(spell1, new PlayerInfo
-            {
-                Level = 60,
-                PlayerClass = PlayerClasses.ShadowKnight
-            });
+            var ret = EQTool.Services.SpellDurations.MatchClosestLevelToSpell(spell1, PlayerClasses.ShadowKnight, 60);
             Assert.AreEqual(ret.name, "Symbol of Naltron");
         }
 
@@ -441,11 +420,7 @@ namespace EQtoolsTests
             var spells = container.Resolve<EQSpells>();
             var grimauraname = "Grim Aura";
             var grimaura = spells.AllSpells.FirstOrDefault(a => a.name == grimauraname);
-            var ret = EQTool.Services.SpellDurations.MatchClosestLevelToSpell(grimaura, new PlayerInfo
-            {
-                Level = 1,
-                PlayerClass = PlayerClasses.Necromancer
-            });
+            var ret = EQTool.Services.SpellDurations.MatchClosestLevelToSpell(grimaura, PlayerClasses.Necromancer, 1);
             Assert.AreEqual(ret, 4);
         }
 
@@ -455,11 +430,7 @@ namespace EQtoolsTests
             var spells = container.Resolve<EQSpells>();
             var grimauraname = "Grim Aura";
             var grimaura = spells.AllSpells.FirstOrDefault(a => a.name == grimauraname);
-            var ret = EQTool.Services.SpellDurations.MatchClosestLevelToSpell(grimaura, new PlayerInfo
-            {
-                Level = 60,
-                PlayerClass = PlayerClasses.Necromancer
-            });
+            var ret = EQTool.Services.SpellDurations.MatchClosestLevelToSpell(grimaura, PlayerClasses.Necromancer, 60);
             Assert.AreEqual(ret, 60);
         }
 
@@ -469,11 +440,7 @@ namespace EQtoolsTests
             var spells = container.Resolve<EQSpells>();
             var grimauraname = "Grim Aura";
             var grimaura = spells.AllSpells.FirstOrDefault(a => a.name == grimauraname);
-            var ret = EQTool.Services.SpellDurations.MatchClosestLevelToSpell(grimaura, new PlayerInfo
-            {
-                Level = 60,
-                PlayerClass = null
-            });
+            var ret = EQTool.Services.SpellDurations.MatchClosestLevelToSpell(grimaura, null, 60);
             Assert.AreEqual(ret, 60);
         }
 
@@ -484,11 +451,8 @@ namespace EQtoolsTests
             var line = "jobob assumes an evasive fighting style.";
             var service = container.Resolve<ParseSpellGuess>();
             var player = container.Resolve<ActivePlayer>();
-            player.Player = new PlayerInfo
-            {
-                Level = 54,
-                PlayerClass = PlayerClasses.Cleric
-            };
+            player.Player.Level = 54;
+            player.Player.PlayerClass = PlayerClasses.Cleric;
             var guess = service.HandleBestGuessSpell(line, DateTime.Now);
 
             Assert.IsNotNull(guess);
@@ -653,14 +617,8 @@ namespace EQtoolsTests
             var shissarspell = spells.AllSpells.FirstOrDefault(a => a.name == shissar);
             var line = "Jobober " + shissarspell.cast_on_other;
             var service = container.Resolve<ParseSpellGuess>();
-            var player = container.Resolve<ActivePlayer>();
-            player.Player = new PlayerInfo
-            {
-                Level = 60,
-                PlayerClass = PlayerClasses.Shaman
-            };
             var guess = spelllogparse.MatchSpell(line, DateTime.Now);
-            var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(guess.Spell, player.Player));
+            var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(guess.Spell, PlayerClasses.Shaman, 60));
             Assert.AreEqual(6, spellduration.TotalMinutes);
             Assert.IsNotNull(guess);
             Assert.IsFalse(guess.MultipleMatchesFound);
@@ -732,14 +690,12 @@ namespace EQtoolsTests
             var line = "Jobober " + shissarspell.cast_on_other;
             var service = container.Resolve<ParseSpellGuess>();
             var player = container.Resolve<ActivePlayer>();
-            player.Player = new PlayerInfo
-            {
-                Level = 21,
-                PlayerClass = PlayerClasses.Magician
-            };
+            player.Player.Level = 21;
+            player.Player.PlayerClass = PlayerClasses.Magician;
+
             player.UserCastingSpell = shissarspell;
             var guess = spelllogparse.MatchSpell(line, DateTime.Now);
-            var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(guess.Spell, player.Player));
+            var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(guess.Spell, PlayerClasses.Magician, 21));
             Assert.AreEqual(15, spellduration.TotalMinutes);
             Assert.IsNotNull(guess);
             Assert.AreEqual(guess.Spell.name, spellname);
@@ -756,13 +712,11 @@ namespace EQtoolsTests
             var line = "Jobober " + shissarspell.cast_on_other;
             var service = container.Resolve<ParseSpellGuess>();
             var player = container.Resolve<ActivePlayer>();
-            player.Player = new PlayerInfo
-            {
-                Level = 60,
-                PlayerClass = PlayerClasses.Necromancer
-            };
+            player.Player.Level = 60;
+            player.Player.PlayerClass = PlayerClasses.Necromancer;
+
             var guess = spelllogparse.MatchSpell(line, DateTime.Now);
-            var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(guess.Spell, player.Player));
+            var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(guess.Spell, PlayerClasses.Necromancer, 60));
             Assert.AreEqual(6, spellduration.TotalMinutes);
             Assert.IsNotNull(guess);
             Assert.AreEqual(guess.Spell.name, spellname);
@@ -779,13 +733,11 @@ namespace EQtoolsTests
             var line = "Jobober " + spell.cast_on_other;
             var service = container.Resolve<ParseSpellGuess>();
             var player = container.Resolve<ActivePlayer>();
-            player.Player = new PlayerInfo
-            {
-                Level = 52,
-                PlayerClass = PlayerClasses.Warrior
-            };
+            player.Player.Level = 52;
+            player.Player.PlayerClass = PlayerClasses.Warrior;
+
             var guess = spelllogparse.MatchSpell(line, DateTime.Now);
-            var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(guess.Spell, player.Player));
+            var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(guess.Spell, PlayerClasses.Warrior, 52));
             Assert.AreEqual(5, spellduration.TotalMinutes);
             Assert.IsNotNull(guess);
             Assert.AreEqual(guess.Spell.name, spellname);
@@ -802,13 +754,11 @@ namespace EQtoolsTests
             var line = "an Jobober " + shissarspell.cast_on_other;
             var service = container.Resolve<ParseSpellGuess>();
             var player = container.Resolve<ActivePlayer>();
-            player.Player = new PlayerInfo
-            {
-                Level = 60,
-                PlayerClass = PlayerClasses.Necromancer
-            };
+            player.Player.Level = 60;
+            player.Player.PlayerClass = PlayerClasses.Necromancer;
+
             var guess = spelllogparse.MatchSpell(line, DateTime.Now);
-            var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(guess.Spell, player.Player));
+            var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(guess.Spell, PlayerClasses.Necromancer, 60));
             Assert.AreEqual(6, spellduration.TotalMinutes);
             Assert.IsNotNull(guess);
             Assert.AreEqual(guess.Spell.name, spellname);
@@ -826,13 +776,11 @@ namespace EQtoolsTests
             var line = "an Jobober " + shissarspell.cast_on_other;
             var service = container.Resolve<ParseSpellGuess>();
             var player = container.Resolve<ActivePlayer>();
-            player.Player = new PlayerInfo
-            {
-                Level = 60,
-                PlayerClass = PlayerClasses.Shaman
-            };
+            player.Player.Level = 60;
+            player.Player.PlayerClass = PlayerClasses.Shaman;
+
             var guess = spelllogparse.MatchSpell(line, DateTime.Now);
-            var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(guess.Spell, player.Player));
+            var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(guess.Spell, PlayerClasses.Shaman, 60));
             Assert.AreEqual(144, spellduration.TotalMinutes);
             Assert.IsNotNull(guess);
             Assert.AreEqual(guess.Spell.name, spellname);
@@ -850,13 +798,11 @@ namespace EQtoolsTests
             var line = "an Jobober rager " + shissarspell.cast_on_other;
             var service = container.Resolve<ParseSpellGuess>();
             var player = container.Resolve<ActivePlayer>();
-            player.Player = new PlayerInfo
-            {
-                Level = 60,
-                PlayerClass = PlayerClasses.Necromancer
-            };
+            player.Player.Level = 60;
+            player.Player.PlayerClass = PlayerClasses.Necromancer;
+
             var guess = spelllogparse.MatchSpell(line, DateTime.Now);
-            var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(guess.Spell, player.Player));
+            var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(guess.Spell, PlayerClasses.Necromancer, 60));
             Assert.AreEqual(6, spellduration.TotalMinutes);
             Assert.IsNotNull(guess);
             Assert.AreEqual(guess.Spell.name, spellname);
@@ -874,13 +820,11 @@ namespace EQtoolsTests
             var line = "an Jobober rager " + shissarspell.cast_on_other;
             var service = container.Resolve<ParseSpellGuess>();
             var player = container.Resolve<ActivePlayer>();
-            player.Player = new PlayerInfo
-            {
-                Level = 60,
-                PlayerClass = PlayerClasses.Necromancer
-            };
+            player.Player.Level = 60;
+            player.Player.PlayerClass = PlayerClasses.Necromancer;
+
             var guess = spelllogparse.MatchSpell(line, DateTime.Now);
-            var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(guess.Spell, player.Player));
+            var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(guess.Spell, PlayerClasses.Necromancer, 60));
             Assert.AreEqual(7, spellduration.TotalMinutes);
             Assert.IsNotNull(guess);
             Assert.AreEqual(guess.Spell.name, spellname);
@@ -898,13 +842,11 @@ namespace EQtoolsTests
             var line = "A bottomless feaster's body pulses with the spirit of the Shissar.";
             var service = container.Resolve<ParseSpellGuess>();
             var player = container.Resolve<ActivePlayer>();
-            player.Player = new PlayerInfo
-            {
-                Level = 54,
-                PlayerClass = PlayerClasses.Cleric
-            };
+            player.Player.Level = 54;
+            player.Player.PlayerClass = PlayerClasses.Cleric;
+
             var guess = spelllogparse.MatchSpell(line, DateTime.Now);
-            var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(guess.Spell, player.Player));
+            var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(guess.Spell, PlayerClasses.Cleric, 54));
             Assert.IsNotNull(guess);
             Assert.IsFalse(guess.MultipleMatchesFound);
         }
@@ -919,13 +861,11 @@ namespace EQtoolsTests
             var line = "A Ratling is consumed by the raging spirits of the land.";
             var service = container.Resolve<ParseSpellGuess>();
             var player = container.Resolve<ActivePlayer>();
-            player.Player = new PlayerInfo
-            {
-                Level = 60,
-                PlayerClass = PlayerClasses.Necromancer
-            };
+            player.Player.Level = 60;
+            player.Player.PlayerClass = PlayerClasses.Necromancer;
+
             var guess = spelllogparse.MatchSpell(line, DateTime.Now);
-            var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(guess.Spell, player.Player));
+            var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(guess.Spell, PlayerClasses.Necromancer, 60));
             Assert.IsNotNull(guess);
             Assert.IsFalse(guess.MultipleMatchesFound);
         }
@@ -940,13 +880,11 @@ namespace EQtoolsTests
             var line = "Gkrean Prophet of Tallon is consumed by the raging spirits of the land.";
             var service = container.Resolve<ParseSpellGuess>();
             var player = container.Resolve<ActivePlayer>();
-            player.Player = new PlayerInfo
-            {
-                Level = 60,
-                PlayerClass = PlayerClasses.Necromancer
-            };
+            player.Player.Level = 60;
+            player.Player.PlayerClass = PlayerClasses.Necromancer;
+
             var guess = spelllogparse.MatchSpell(line, DateTime.Now);
-            var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(guess.Spell, player.Player));
+            var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(guess.Spell, PlayerClasses.Necromancer, 60));
             Assert.IsNotNull(guess);
             Assert.AreEqual("Gkrean Prophet of Tallon", guess.TargetName);
             Assert.IsFalse(guess.MultipleMatchesFound);
@@ -962,13 +900,11 @@ namespace EQtoolsTests
             var line = "A rat Ratling is consumed by the raging spirits of the land.";
             var service = container.Resolve<ParseSpellGuess>();
             var player = container.Resolve<ActivePlayer>();
-            player.Player = new PlayerInfo
-            {
-                Level = 60,
-                PlayerClass = PlayerClasses.Necromancer
-            };
+            player.Player.Level = 60;
+            player.Player.PlayerClass = PlayerClasses.Necromancer;
+
             var guess = spelllogparse.MatchSpell(line, DateTime.Now);
-            var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(guess.Spell, player.Player));
+            var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(guess.Spell, PlayerClasses.Necromancer, 60));
             Assert.IsNotNull(guess);
             Assert.IsFalse(guess.MultipleMatchesFound);
         }
@@ -983,11 +919,9 @@ namespace EQtoolsTests
             var line = EQSpells.YouBeginCasting + " " + spellname;
             var service = container.Resolve<ParseSpellGuess>();
             var player = container.Resolve<ActivePlayer>();
-            player.Player = new PlayerInfo
-            {
-                Level = 60,
-                PlayerClass = PlayerClasses.Shaman
-            };
+            player.Player.Level = 60;
+            player.Player.PlayerClass = PlayerClasses.Shaman;
+
             var guess = spelllogparse.MatchSpell(line, DateTime.Now);
             Assert.IsNull(guess);
             Assert.IsNotNull(player.UserCastingSpell);
@@ -1003,13 +937,11 @@ namespace EQtoolsTests
             var line = "A rat glances nervously about.";
             var service = container.Resolve<ParseSpellGuess>();
             var player = container.Resolve<ActivePlayer>();
-            player.Player = new PlayerInfo
-            {
-                Level = 60,
-                PlayerClass = PlayerClasses.Shaman
-            };
+            player.Player.Level = 60;
+            player.Player.PlayerClass = PlayerClasses.Shaman;
+
             var guess = spelllogparse.MatchSpell(line, DateTime.Now);
-            var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(guess.Spell, player.Player));
+            var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(guess.Spell, PlayerClasses.Shaman, 60));
             Assert.IsNotNull(guess);
             Assert.IsFalse(guess.MultipleMatchesFound);
         }
@@ -1020,12 +952,7 @@ namespace EQtoolsTests
             var spells = container.Resolve<EQSpells>();
             var line = "assumes an evasive fighting style.";
             _ = spells.CastOtherSpells.TryGetValue(line, out var spells1);
-            var player = new PlayerInfo
-            {
-                Level = 54,
-                PlayerClass = PlayerClasses.Cleric
-            };
-            var foundspell = SpellDurations.MatchClosestLevelToSpell(spells1, player);
+            var foundspell = SpellDurations.MatchClosestLevelToSpell(spells1, PlayerClasses.Cleric, 54);
 
             Assert.IsNotNull(foundspell);
         }
@@ -1037,12 +964,7 @@ namespace EQtoolsTests
             var aego = "Aegolism";
             var aegospell = spells.AllSpells.FirstOrDefault(a => a.name == aego);
             _ = spells.CastOtherSpells.TryGetValue(aegospell.cast_on_other, out var spells1);
-            var player = new PlayerInfo
-            {
-                Level = 54,
-                PlayerClass = PlayerClasses.Cleric
-            };
-            var foundspell = SpellDurations.MatchClosestLevelToSpell(spells1, player);
+            var foundspell = SpellDurations.MatchClosestLevelToSpell(spells1, PlayerClasses.Cleric, 54);
 
             Assert.IsNotNull(foundspell);
         }
@@ -1053,12 +975,7 @@ namespace EQtoolsTests
             var spells = container.Resolve<EQSpells>();
             var line = "looks very tranquil.";
             _ = spells.CastOtherSpells.TryGetValue(line, out var spells1);
-            var player = new PlayerInfo
-            {
-                Level = 54,
-                PlayerClass = PlayerClasses.Cleric
-            };
-            var foundspell = SpellDurations.MatchClosestLevelToSpell(spells1, player);
+            var foundspell = SpellDurations.MatchClosestLevelToSpell(spells1, PlayerClasses.Cleric, 54);
             Assert.IsNotNull(foundspell);
         }
 
@@ -1068,13 +985,8 @@ namespace EQtoolsTests
             var spells = container.Resolve<EQSpells>();
             var line = "looks very tranquil.";
             _ = spells.CastOtherSpells.TryGetValue(line, out var spells1);
-            var player = new PlayerInfo
-            {
-                Level = 54,
-                PlayerClass = PlayerClasses.Cleric
-            };
-            var foundspell = SpellDurations.MatchClosestLevelToSpell(spells1, player);
-            var duration = SpellDurations.GetDuration_inSeconds(foundspell, player);
+            var foundspell = SpellDurations.MatchClosestLevelToSpell(spells1, PlayerClasses.Cleric, 54);
+            var duration = SpellDurations.GetDuration_inSeconds(foundspell, PlayerClasses.Cleric, 54);
             Assert.IsNotNull(foundspell);
             Assert.IsNotNull(duration);
         }
@@ -1085,11 +997,9 @@ namespace EQtoolsTests
             var spelllogparse = container.Resolve<SpellCastParser>();
             var line = "A soft breeze slips through your mind.";
             var player = container.Resolve<ActivePlayer>();
-            player.Player = new PlayerInfo
-            {
-                Level = 54,
-                PlayerClass = PlayerClasses.Cleric
-            };
+            player.Player.Level = 54;
+            player.Player.PlayerClass = PlayerClasses.Cleric;
+
             var spellmatch = spelllogparse.MatchSpell(line, DateTime.Now);
 
             Assert.IsNotNull(spellmatch);
@@ -1116,14 +1026,9 @@ namespace EQtoolsTests
             var spells = container.Resolve<EQSpells>();
             var line = "looks very tranquil.";
             _ = spells.CastOtherSpells.TryGetValue(line, out var spells1);
-            var player = new PlayerInfo
-            {
-                Level = 54,
-                PlayerClass = PlayerClasses.Cleric
-            };
-            var foundspell = SpellDurations.MatchClosestLevelToSpell(spells1, player);
-            var foundlevel = SpellDurations.MatchClosestLevelToSpell(foundspell, player);
-            var duration = SpellDurations.GetDuration_inSeconds(foundspell, player);
+            var foundspell = SpellDurations.MatchClosestLevelToSpell(spells1, PlayerClasses.Cleric, 54);
+            var foundlevel = SpellDurations.MatchClosestLevelToSpell(foundspell, PlayerClasses.Cleric, 54);
+            var duration = SpellDurations.GetDuration_inSeconds(foundspell, PlayerClasses.Cleric, 54);
             Assert.AreEqual(duration, 2100);
             Assert.AreEqual(foundlevel, 54);
         }
@@ -1134,14 +1039,9 @@ namespace EQtoolsTests
             var spells = container.Resolve<EQSpells>();
             var line = "You begin casting Augment Death.";
             var spellname = line.Substring(EQSpells.YouBeginCasting.Length - 1).Trim().TrimEnd('.');
-            var player = new PlayerInfo
-            {
-                Level = 60,
-                PlayerClass = PlayerClasses.Necromancer
-            };
             if (spells.YouCastSpells.TryGetValue(spellname, out var foundspells))
             {
-                var foundspell = SpellDurations.MatchClosestLevelToSpell(foundspells, player);
+                var foundspell = SpellDurations.MatchClosestLevelToSpell(foundspells, PlayerClasses.Necromancer, 60);
                 Assert.IsNotNull(foundspell);
                 Assert.AreEqual("Augment Death", foundspell.name);
             }
@@ -1158,9 +1058,10 @@ namespace EQtoolsTests
             var line = "You begin casting Shield of Words.";
             var service = container.Resolve<ParseHandleYouCasting>();
             var player = container.Resolve<ActivePlayer>();
-            player.Player = new PlayerInfo { };
+            player.Player.Level = 0;
+            player.Player.PlayerClass = null;
             service.HandleYouBeginCastingSpellStart(line);
-            var duration = SpellDurations.GetDuration_inSeconds(player.UserCastingSpell, player.Player);
+            var duration = SpellDurations.GetDuration_inSeconds(player.UserCastingSpell, null, null);
             Assert.IsNotNull(player);
             Assert.IsNotNull(duration);
         }
@@ -1304,7 +1205,7 @@ namespace EQtoolsTests
             var targettoremove = service.ParseStartTimer(line);
 
             Assert.IsNotNull(targettoremove);
-            Assert.AreEqual(2*60+3, targettoremove.DurationInSeconds);
+            Assert.AreEqual((2 * 60) + 3, targettoremove.DurationInSeconds);
             Assert.AreEqual(line, targettoremove.Name);
         }
 
@@ -1316,7 +1217,7 @@ namespace EQtoolsTests
             var targettoremove = service.ParseStartTimer(line);
 
             Assert.IsNotNull(targettoremove);
-            Assert.AreEqual(2 * 3600 + 3*60 + 4, targettoremove.DurationInSeconds);
+            Assert.AreEqual((2 * 3600) + (3 * 60) + 4, targettoremove.DurationInSeconds);
             Assert.AreEqual(line, targettoremove.Name);
         }
 
@@ -1340,7 +1241,7 @@ namespace EQtoolsTests
             var targettoremove = service.ParseStartTimer(line);
 
             Assert.IsNotNull(targettoremove);
-            Assert.AreEqual(2 * 60 + 3, targettoremove.DurationInSeconds);
+            Assert.AreEqual((2 * 60) + 3, targettoremove.DurationInSeconds);
             Assert.AreEqual("xyzzy", targettoremove.Name);
         }
 
@@ -1352,7 +1253,7 @@ namespace EQtoolsTests
             var targettoremove = service.ParseStartTimer(line);
 
             Assert.IsNotNull(targettoremove);
-            Assert.AreEqual(2 * 3600 + 3 * 60 + 4, targettoremove.DurationInSeconds);
+            Assert.AreEqual((2 * 3600) + (3 * 60) + 4, targettoremove.DurationInSeconds);
             Assert.AreEqual("xyzzy", targettoremove.Name);
         }
 

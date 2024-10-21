@@ -237,6 +237,7 @@ namespace EQTool.Models
 
     public class YouZonedEvent : BaseLogParseEvent
     {
-        public string ZoneName { get; set; }
+        public string LongName { get; set; }
+        public string ShortName { get; set; }
     }
 }

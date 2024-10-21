@@ -1,20 +1,20 @@
 ﻿using Autofac;
-using EQTool;
 using EQTool.Services;
 using EQTool.Services.Parsing;
 using EQToolShared;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 
 namespace EQtoolsTests
 {
     [TestClass]
     public class ZoneParsingTests : BaseTestClass
-    { 
+    {
         private readonly YouZonedParser youZonedParser;
         private readonly LogEvents logEvents;
 
         public ZoneParsingTests()
-        { 
+        {
             youZonedParser = container.Resolve<YouZonedParser>();
             logEvents = container.Resolve<LogEvents>();
         }
@@ -22,67 +22,67 @@ namespace EQtoolsTests
         [TestMethod]
         public void HateZoneTest()
         {
-            var zone = this.youZonedParser.ZoneChanged("You have entered Plane of Hate.");
+            var zone = youZonedParser.ZoneChanged("You have entered Plane of Hate.", DateTime.Now);
             Assert.IsNotNull(zone);
 
-            Assert.AreEqual("plane of hate", zone);
-            var pretyname = Zones.TranslateToMapName(zone);
+            Assert.AreEqual("plane of hate", zone.LongName);
+            var pretyname = Zones.TranslateToMapName(zone.LongName);
             Assert.AreEqual("hateplane", pretyname);
         }
 
         [TestMethod]
         public void KaelZoneTest()
         {
-            var zone = this.youZonedParser.ZoneChanged("There is 1 player in Kael Drakkal.");
+            var zone = youZonedParser.ZoneChanged("There is 1 player in Kael Drakkal.", DateTime.Now);
             Assert.IsNotNull(zone);
 
-            Assert.AreEqual("kael drakkal", zone);
-            var pretyname = Zones.TranslateToMapName(zone);
+            Assert.AreEqual("kael drakkal", zone.LongName);
+            var pretyname = Zones.TranslateToMapName(zone.LongName);
             Assert.AreEqual("kael", pretyname);
         }
 
         [TestMethod]
         public void HateWhoTest()
         {
-            var zone = this.youZonedParser.ZoneChanged("There are 15 players in The Plane of Hate.");
+            var zone = youZonedParser.ZoneChanged("There are 15 players in The Plane of Hate.", DateTime.Now);
             Assert.IsNotNull(zone);
-            Assert.AreEqual("the plane of hate", zone);
-            var pretyname = Zones.TranslateToMapName(zone);
+            Assert.AreEqual("the plane of hate", zone.LongName);
+            var pretyname = Zones.TranslateToMapName(zone.LongName);
             Assert.AreEqual("hateplane", pretyname);
         }
 
         [TestMethod]
         public void POMZoneTest()
         {
-            var zone = this.youZonedParser.ZoneChanged("You have entered Plane of Mischief.");
+            var zone = youZonedParser.ZoneChanged("You have entered Plane of Mischief.", DateTime.Now);
             Assert.IsNotNull(zone);
-            Assert.AreEqual("plane of mischief", zone);
-            var pretyname = Zones.TranslateToMapName(zone);
+            Assert.AreEqual("plane of mischief", zone.LongName);
+            var pretyname = Zones.TranslateToMapName(zone.LongName);
             Assert.AreEqual("mischiefplane", pretyname);
         }
 
         [TestMethod]
         public void POMWhoZoneTest()
         {
-            var zone = this.youZonedParser.ZoneChanged("There are 4 players in Plane of Mischief.");
+            var zone = youZonedParser.ZoneChanged("There are 4 players in Plane of Mischief.", DateTime.Now);
             Assert.IsNotNull(zone);
-            Assert.AreEqual("plane of mischief", zone);
-            var pretyname = Zones.TranslateToMapName(zone);
+            Assert.AreEqual("plane of mischief", zone.LongName);
+            var pretyname = Zones.TranslateToMapName(zone.LongName);
             Assert.AreEqual("mischiefplane", pretyname);
         }
 
         [TestMethod]
         public void NoMatchZones()
         {
-            var zone = this.youZonedParser.ZoneChanged("There are no players in EverQuest that match those who filters.");
-            Assert.AreEqual(string.Empty, zone);
+            var zone = youZonedParser.ZoneChanged("There are no players in EverQuest that match those who filters.", DateTime.Now);
+            Assert.IsNull(zone);
         }
 
         [TestMethod]
         public void MatchZoneWhoFilter()
         {
-            var zone = this.youZonedParser.ZoneChanged("There are no players in East Commonlands that match those who filters.");
-            Assert.AreEqual(string.Empty, zone);
+            var zone = youZonedParser.ZoneChanged("There are no players in East Commonlands that match those who filters.", DateTime.Now);
+            Assert.IsNull(zone);
         }
     }
 }

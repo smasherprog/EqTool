@@ -9,8 +9,9 @@ using System.Text.RegularExpressions;
 
 namespace EQtoolsTests
 {
+
     [TestClass]
-    public class DeathTests
+    public class DeathTests    : BaseTestClass
     {
         private readonly IContainer container;
         private readonly DeathParserNew deathParser;
@@ -18,13 +19,8 @@ namespace EQtoolsTests
         private readonly DamageParser damageParser;
         private readonly SpellCastParser spellCastParser;
 
-        private readonly DeathLoopService deathLoopService;
-        private readonly LogEvents logEvents;
-        private readonly ActivePlayer activePlayer;
-
         public DeathTests()
         {
-            container = DI.Init();
             deathParser = container.Resolve<DeathParserNew>();
             playerCommsParser = container.Resolve<CommsParser>();
             damageParser = container.Resolve<DamageParser>();

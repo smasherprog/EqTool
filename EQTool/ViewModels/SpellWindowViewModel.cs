@@ -103,7 +103,7 @@ namespace EQTool.ViewModels
                     item.HideClasses = player != null && SpellUIExtensions.HideSpell(player.ShowSpellsForClasses, item.Classes) && item.TargetName != EQSpells.SpaceYou;
                     if (item.SpellType == SpellTypes.RandomRoll)
                     {
-                        item.HideClasses = !this.settings.ShowRandomRolls;
+                        item.HideClasses = !settings.ShowRandomRolls;
                     }
                 }
 
@@ -218,13 +218,13 @@ namespace EQTool.ViewModels
                 if (match.Spell.name.EndsWith("Discipline"))
                 {
                     var basetime = (int)(match.Spell.recastTime / 1000.0);
-                    var playerlevel = this.activePlayer.Player.Level;
+                    var playerlevel = activePlayer.Player.Level;
                     if (match.Spell.name == "Evasive Discipline")
                     {
                         float baseseconds = 15 * 60;
                         float levelrange = 60 - 51;
                         float secondsrange = (15 - 7) * 60;
-                        float secondsperlevelrange = (secondsrange / levelrange);
+                        var secondsperlevelrange = secondsrange / levelrange;
                         float playerleveltick = playerlevel - 52;
                         basetime = (int)(baseseconds - (playerleveltick * secondsperlevelrange));
                     }
@@ -233,7 +233,7 @@ namespace EQTool.ViewModels
                         float baseseconds = 15 * 60;
                         float levelrange = 60 - 54;
                         float secondsrange = (15 - 10) * 60;
-                        float secondsperlevelrange = secondsrange / levelrange;
+                        var secondsperlevelrange = secondsrange / levelrange;
                         float playerleveltick = playerlevel - 55;
                         basetime = (int)(baseseconds - (playerleveltick * secondsperlevelrange));
                     }
@@ -242,7 +242,7 @@ namespace EQTool.ViewModels
                         float baseseconds = 30 * 60;
                         float levelrange = 60 - 56;
                         float secondsrange = (30 - 27) * 60;
-                        float secondsperlevelrange = secondsrange / levelrange;
+                        var secondsperlevelrange = secondsrange / levelrange;
                         float playerleveltick = playerlevel - 57;
                         basetime = (int)(baseseconds - (playerleveltick * secondsperlevelrange));
                     }
@@ -261,7 +261,7 @@ namespace EQTool.ViewModels
                     return;
                 }
                 var needscount = SpellsThatNeedCounts.Contains(spellname);
-                var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(match.Spell, activePlayer.Player));
+                var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(match.Spell, activePlayer.Player?.PlayerClass, activePlayer.Player?.Level));
                 var duration = needscount ? 0 : match.TotalSecondsOverride ?? spellduration.TotalSeconds;
                 var isnpc = MasterNPCList.NPCs.Contains(match.TargetName);
                 var uispell = new UISpell(DateTime.Now.AddSeconds((int)duration), isnpc)
@@ -368,7 +368,7 @@ namespace EQTool.ViewModels
                     var match = spells.AllSpells.FirstOrDefault(a => a.name == item.Name);
                     if (match != null)
                     {
-                        var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(match, activePlayer.Player));
+                        var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(match, activePlayer.Player?.PlayerClass, activePlayer.Player?.Level));
                         var savedspellduration = item.TotalSecondsLeft;
                         var uispell = new UISpell(DateTime.Now.AddSeconds(savedspellduration), false)
                         {

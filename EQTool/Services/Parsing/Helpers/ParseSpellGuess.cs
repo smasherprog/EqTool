@@ -27,7 +27,7 @@ namespace EQTool.Services.Parsing
             if (spells.CastOnYouSpells.TryGetValue(message, out var foundspells))
             {
                 foundspells = foundspells.Where(a => !IgnoreSpellsForGuesses.Contains(a.name)).ToList();
-                var foundspell = SpellDurations.MatchClosestLevelToSpell(foundspells, activePlayer.Player);
+                var foundspell = SpellDurations.MatchClosestLevelToSpell(foundspells, activePlayer.Player?.PlayerClass, activePlayer.Player?.Level);
 
                 Debug.WriteLine($"Cast On you Spell: {foundspell.name} Message: {message}");
                 var multiplematches = foundspell.Classes.All(a => a.Value == 255) && foundspells.Count > 1;
@@ -48,7 +48,7 @@ namespace EQTool.Services.Parsing
                 if (spells.CastOtherSpells.TryGetValue(spellmessage, out foundspells))
                 {
                     foundspells = foundspells.Where(a => !IgnoreSpellsForGuesses.Contains(a.name)).ToList();
-                    var foundspell = SpellDurations.MatchClosestLevelToSpell(foundspells, activePlayer.Player);
+                    var foundspell = SpellDurations.MatchClosestLevelToSpell(foundspells, activePlayer.Player?.PlayerClass, activePlayer.Player?.Level);
                     var targetname = message.Replace(foundspell.cast_on_other, string.Empty).Trim();
                     Debug.WriteLine($"Other Spell: {foundspell.name} Message: {spellmessage}");
                     var multiplematches = foundspell.Classes.All(a => a.Value == 255) && foundspells.Count > 1;
@@ -112,7 +112,7 @@ namespace EQTool.Services.Parsing
                     foundspells = filteroutaoespells;
                 }
 
-                var foundspell = SpellDurations.MatchClosestLevelToSpell(foundspells, activePlayer.Player);
+                var foundspell = SpellDurations.MatchClosestLevelToSpell(foundspells, activePlayer.Player?.PlayerClass, activePlayer.Player?.Level);
                 Debug.WriteLine($"Other Spell: {foundspell.name} Message: {spellmessage}");
                 var multiplematches = foundspell.Classes.All(a => a.Value == 255) && foundspells.Count > 1;
                 return new SpellCastEvent
