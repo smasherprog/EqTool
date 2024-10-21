@@ -39,22 +39,6 @@ namespace EQTool.Services
             actions[(int)overlayType]?.Invoke();
         }
 
-        private void PushLog(string message)
-        {
-            var logtext = message?.Trim();
-            if (string.IsNullOrWhiteSpace(logtext))
-            {
-                return;
-            }
-            if (!logtext.StartsWith("["))
-            {
-                var format = "ddd MMM dd HH:mm:ss yyyy";
-                var d = DateTime.Now;
-                logtext = "[" + d.ToString(format) + "] " + logtext;
-            }
-            logParser.Push(logtext);
-        }
-
         private void RunHealedYouTest()
         {
         }
@@ -63,96 +47,96 @@ namespace EQTool.Services
         {
             var random = new Random();
             var r = random.Next(0, 333);
-            PushLog("**A Magic Die is rolled by Whitewitch.");
-            PushLog($"**It could have been any number from 0 to 333, but this time it turned up a {r}.");
+            logParser.Push("**A Magic Die is rolled by Whitewitch.");
+            logParser.Push($"**It could have been any number from 0 to 333, but this time it turned up a {r}.");
             r = random.Next(0, 333);
-            PushLog("**A Magic Die is rolled by Huntor.");
-            PushLog($"**It could have been any number from 0 to 333, but this time it turned up a {r}.");
+            logParser.Push("**A Magic Die is rolled by Huntor.");
+            logParser.Push($"**It could have been any number from 0 to 333, but this time it turned up a {r}.");
             r = random.Next(0, 333);
-            PushLog("**A Magic Die is rolled by Vasanle.");
-            PushLog($"**It could have been any number from 0 to 333, but this time it turned up a {r}.");
+            logParser.Push("**A Magic Die is rolled by Vasanle.");
+            logParser.Push($"**It could have been any number from 0 to 333, but this time it turned up a {r}.");
             r = random.Next(0, 333);
-            PushLog("**A Magic Die is rolled by Sanare.");
-            PushLog($"**It could have been any number from 0 to 333, but this time it turned up a {r}.");
+            logParser.Push("**A Magic Die is rolled by Sanare.");
+            logParser.Push($"**It could have been any number from 0 to 333, but this time it turned up a {r}.");
         }
         private void DeathLoopEvent()
         {
             activePlayer.Player.DeathLoopOverlay = true;
             activePlayer.Player.DeathLoopAudio = true;
-            PushLog("You have been slain by a brigand!");
-            PushLog("You have been slain by a brigand!");
-            PushLog("You have been slain by a brigand!");
-            PushLog("You have been slain by a brigand!");
+            logParser.Push("You have been slain by a brigand!");
+            logParser.Push("You have been slain by a brigand!");
+            logParser.Push("You have been slain by a brigand!");
+            logParser.Push("You have been slain by a brigand!");
         }
 
         private void ResistSpellEvent()
         {
             activePlayer.Player.ResistWarningAudio = true;
             activePlayer.Player.ResistWarningOverlay = true;
-            PushLog("Your target resisted the Rest the Dead spell.");
+            logParser.Push("Your target resisted the Rest the Dead spell.");
         }
 
         private void RootBreakEvent()
         {
             activePlayer.Player.RootWarningAudio = true;
             activePlayer.Player.RootWarningOverlay = true;
-            PushLog("Your Paralyzing Earth spell has worn off.");
+            logParser.Push("Your Paralyzing Earth spell has worn off.");
         }
 
         private void DragonFearEvent()
         {
             activePlayer.Player.DragonRoarAudio = true;
             activePlayer.Player.DragonRoarOverlay = true;
-            PushLog($"You flee in terror.");
+            logParser.Push($"You flee in terror.");
         }
 
         private void GroupInviteEvent()
         {
             activePlayer.Player.GroupInviteAudio = true;
             activePlayer.Player.GroupInviteOverlay = true;
-            PushLog($"Tzvia invites you to join a group.");
+            logParser.Push($"Tzvia invites you to join a group.");
         }
 
         private void InvisEvent()
         {
             activePlayer.Player.InvisFadingAudio = true;
             activePlayer.Player.InvisFadingOverlay = true;
-            PushLog("You feel yourself starting to appear.");
+            logParser.Push("You feel yourself starting to appear.");
         }
 
         private void LevitateEvent()
         {
             activePlayer.Player.LevFadingAudio = true;
             activePlayer.Player.LevFadingOverlay = true;
-            PushLog("You feel as if you are about to fall.");
+            logParser.Push("You feel as if you are about to fall.");
         }
 
         private void CharmBreakEvent()
         {
             activePlayer.Player.CharmBreakAudio = true;
             activePlayer.Player.CharmBreakOverlay = true;
-            PushLog("Your charm spell has worn off.");
+            logParser.Push("Your charm spell has worn off.");
         }
 
         private void FailedFeignEvent()
         {
             activePlayer.Player.FailedFeignAudio = true;
             activePlayer.Player.FailedFeignOverlay = true;
-            PushLog($"{activePlayer.Player.Name} has fallen to the ground.");
+            logParser.Push($"{activePlayer.Player.Name} has fallen to the ground.");
         }
 
         private void FTEEvent()
         {
             activePlayer.Player.FTEAudio = true;
             activePlayer.Player.FTEOverlay = true;
-            PushLog("Dagarn the Destroyer engages Tzvia!");
+            logParser.Push("Dagarn the Destroyer engages Tzvia!");
         }
 
         private void EnrageEvent()
         {
             activePlayer.Player.EnrageAudio = true;
             activePlayer.Player.EnrageOverlay = true;
-            PushLog("Visceryn has become ENRAGED.");
+            logParser.Push("Visceryn has become ENRAGED.");
         }
     }
 }

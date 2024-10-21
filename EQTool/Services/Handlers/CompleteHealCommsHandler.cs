@@ -16,7 +16,7 @@ namespace EQTool.Services.Parsing
 
         private void LogEvents_CommsEvent(object sender, CommsEvent e)
         {
-            var m = ChCheck(e.Line, e.TimeStamp);
+            var m = ChCheck(e.Content, e.TimeStamp);
             if (m != null)
             {
                 logEvents.Handle(m);
@@ -25,14 +25,6 @@ namespace EQTool.Services.Parsing
 
         public CompleteHealEvent ChCheck(string line, DateTime timestamp)
         {
-            var startindexofmessage = line.IndexOf(", '");
-            var startindexsize = 3;
-            if (startindexofmessage == -1)
-            {
-                startindexofmessage = line.IndexOf(",  '");
-                startindexsize = 4;
-            }
-
             var chwordfound = " ch ";
             var chindex = line.IndexOf(chwordfound, System.StringComparison.OrdinalIgnoreCase);
             if (chindex == -1)
@@ -47,20 +39,9 @@ namespace EQTool.Services.Parsing
                 chindex = line.IndexOf(" rch ", System.StringComparison.OrdinalIgnoreCase);
             }
 
-            if (chindex != -1 && startindexofmessage != -1)
+            if (chindex != -1)
             {
-                var endoftext = line.LastIndexOf("'");
-                if (endoftext == -1)
-                {
-                    return null;
-                }
-
-                if (endoftext - startindexofmessage - startindexsize <= 0)
-                {
-                    return null;
-                }
-
-                var possiblenumbers = line.Substring(startindexofmessage + startindexsize, endoftext - startindexofmessage - startindexsize);
+                var possiblenumbers = line;
                 var position = string.Empty;
                 var tag = activePlayer?.Player?.ChChainTagOverlay;
                 if (!string.IsNullOrWhiteSpace(tag))

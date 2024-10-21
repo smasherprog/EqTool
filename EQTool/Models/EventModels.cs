@@ -16,28 +16,6 @@ namespace EQTool.Models
         public string Line { get; set; }
     }
 
-    public class TextToSpeechEvent : BaseLogParseEvent
-    {
-        public string Text { get; set; }
-
-        // in case the spoken version of 'text' is too crazy, we can use this to feed the TTS with a phonetic version
-        public string Text_phonetic { get; set; }
-
-        public TextToSpeechEvent(DateTime timestamp, string line, string text, string text_phonetic = "")
-        {
-            TimeStamp = timestamp;
-            Line = line;
-            Text = text;
-            if (text_phonetic == "")
-            {
-                Text_phonetic = text;
-            }
-            else
-            {
-                Text_phonetic += text_phonetic;
-            }
-        }
-    }
 
     public class PlayerLocationEvent : BaseLogParseEvent
     {

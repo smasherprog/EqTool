@@ -65,12 +65,28 @@ namespace EQTool.Services
             }
         }
 
-        public void Push(string log)
+        public void Push(string line)
         {
             appDispatcher.DispatchUI(() =>
             {
-                MainRun(log);
+                MainRun(line);
             });
+        }
+
+        public void Push(string message, DateTime datetime)
+        {
+            var logtext = message?.Trim();
+            if (string.IsNullOrWhiteSpace(logtext))
+            {
+                return;
+            }
+            if (!logtext.StartsWith("["))
+            {
+                var format = "ddd MMM dd HH:mm:ss yyyy";
+                var d = datetime;
+                logtext = "[" + d.ToString(format) + "] " + logtext;
+            }
+            Push(logtext);
         }
 
         private void MainRun(string line1)
