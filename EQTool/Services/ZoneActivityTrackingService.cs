@@ -20,7 +20,7 @@ namespace EQTool.Services
         {
             _ = activePlayer.Update();
             this.logParser = logParser;
-            this.logParser.DeadEvent += LogParser_DeadEvent;
+            this.logParser.DeathEvent += LogParser_DeathEvent;
             this.logParser.ConEvent += LogParser_ConEvent; ;
             this.logParser.PlayerLocationEvent += LogParser_PlayerLocationEvent;
             this.pigParseApi = pigParseApi;
@@ -62,7 +62,7 @@ namespace EQTool.Services
             LastLocation = e.Location;
         }
 
-        private void LogParser_DeadEvent(object sender, DeadEvent e)
+        private void LogParser_DeathEvent(object sender, DeathEvent e)
         {
             if (activePlayer.Player?.Server == null)
             {
@@ -71,7 +71,7 @@ namespace EQTool.Services
 
             try
             {
-                Debug.WriteLine($"Zone activity death: {e.Name}");
+                Debug.WriteLine($"Zone activity death: {e.Victim}");
                 pigParseApi.SendNPCActivity(new NPCActivityRequest
                 {
                     NPCData = new NPCData
@@ -79,7 +79,7 @@ namespace EQTool.Services
                         LocX = LastLocation.HasValue ? LastLocation.Value.X : (double?)null,
                         LocY = LastLocation.HasValue ? LastLocation.Value.Y : (double?)null,
                         Zone = activePlayer.Player.Zone,
-                        Name = e.Name
+                        Name = e.Victim
                     },
                     Server = activePlayer.Player.Server.Value,
                     IsDeath = true

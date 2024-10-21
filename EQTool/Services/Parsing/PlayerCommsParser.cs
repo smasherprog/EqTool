@@ -61,56 +61,56 @@ namespace EQTool.Services.Parsing
             var regex = new Regex(pattern, RegexOptions.Compiled);
             var match = regex.Match(line);
             if (match.Success)
-                rv = new PlayerCommsEvent(timestamp, line, PlayerCommsEvent.Channel.TELL, match.Groups["content"].Value, match.Groups["receiver"].Value);
+                rv = new PlayerCommsEvent(timestamp, line, PlayerCommsEvent.Channel.TELL, match.Groups["content"].Value, "You", match.Groups["receiver"].Value);
 
             //You say, 'Hail, Wenglawks Kkeak'
             pattern = @"^You say, '(?<content>.+)'";
             regex = new Regex(pattern, RegexOptions.Compiled);
             match = regex.Match(line);
             if (match.Success)
-                rv = new PlayerCommsEvent(timestamp, line, PlayerCommsEvent.Channel.SAY, match.Groups["content"].Value);
+                rv = new PlayerCommsEvent(timestamp, line, PlayerCommsEvent.Channel.SAY, match.Groups["content"].Value, "You");
 
             //You tell your party, 'oh interesting'
             pattern = @"^You tell your party, '(?<content>.+)'";
             regex = new Regex(pattern, RegexOptions.Compiled);
             match = regex.Match(line);
             if (match.Success)
-                rv = new PlayerCommsEvent(timestamp, line, PlayerCommsEvent.Channel.GROUP, match.Groups["content"].Value);
+                rv = new PlayerCommsEvent(timestamp, line, PlayerCommsEvent.Channel.GROUP, match.Groups["content"].Value, "You");
 
             //You say to your guild, 'nice'
             pattern = @"^You say to your guild, '(?<content>.+)'";
             regex = new Regex(pattern, RegexOptions.Compiled);
             match = regex.Match(line);
             if (match.Success)
-                rv = new PlayerCommsEvent(timestamp, line, PlayerCommsEvent.Channel.GUILD, match.Groups["content"].Value);
+                rv = new PlayerCommsEvent(timestamp, line, PlayerCommsEvent.Channel.GUILD, match.Groups["content"].Value, "You");
 
             //You auction, 'wtb diamond'
             pattern = @"^You auction, '(?<content>.+)'";
             regex = new Regex(pattern, RegexOptions.Compiled);
             match = regex.Match(line);
             if (match.Success)
-                rv = new PlayerCommsEvent(timestamp, line, PlayerCommsEvent.Channel.AUCTION, match.Groups["content"].Value);
+                rv = new PlayerCommsEvent(timestamp, line, PlayerCommsEvent.Channel.AUCTION, match.Groups["content"].Value, "You");
 
             //You say out of character, 'train to west'
             pattern = @"^You say out of character, '(?<content>.+)'";
             regex = new Regex(pattern, RegexOptions.Compiled);
             match = regex.Match(line);
             if (match.Success)
-                rv = new PlayerCommsEvent(timestamp, line, PlayerCommsEvent.Channel.OOC, match.Groups["content"].Value);
+                rv = new PlayerCommsEvent(timestamp, line, PlayerCommsEvent.Channel.OOC, match.Groups["content"].Value, "You");
 
             //You shout, 'When it is time - Horse Charmers will be Leffingwell and Ceous'
             pattern = @"^You shout, '(?<content>.+)'";
             regex = new Regex(pattern, RegexOptions.Compiled);
             match = regex.Match(line);
             if (match.Success)
-                rv = new PlayerCommsEvent(timestamp, line, PlayerCommsEvent.Channel.SHOUT, match.Groups["content"].Value);
+                rv = new PlayerCommsEvent(timestamp, line, PlayerCommsEvent.Channel.SHOUT, match.Groups["content"].Value, "You");
 
             //Azleep -> Jamori: ok
             pattern = @"^.+ -> (?<receiver>.+): (?<content>.+)";
             regex = new Regex(pattern, RegexOptions.Compiled);
             match = regex.Match(line);
             if (match.Success)
-                rv = new PlayerCommsEvent(timestamp, line, PlayerCommsEvent.Channel.TELL, match.Groups["content"].Value, match.Groups["receiver"].Value);
+                rv = new PlayerCommsEvent(timestamp, line, PlayerCommsEvent.Channel.TELL, match.Groups["content"].Value, "You", match.Groups["receiver"].Value);
 
             return rv;
         }

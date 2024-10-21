@@ -51,7 +51,7 @@ namespace EQTool.UI
             this.logEvents.EnteredWorldEvent += LogParser_EnteredWorldEvent;
             this.logEvents.SpellWornOffSelfEvent += LogParser_SpellWornOffSelfEvent;
             this.logEvents.SpellCastEvent += LogParser_StartCastingEvent;
-            this.logEvents.DeadEvent += LogParser_DeadEvent;
+            this.logEvents.DeathEvent += LogParser_DeathEvent;
             this.logEvents.StartTimerEvent += LogParser_StartTimerEvent;
             this.logEvents.CancelTimerEvent += LogParser_CancelTimerEvent;
             this.logEvents.DeathTouchEvent += LogParser_POFDTEvent;
@@ -141,17 +141,17 @@ namespace EQTool.UI
         }
 
         private int deathcounter = 1;
-        private void LogParser_DeadEvent(object sender, DeadEvent e)
+        private void LogParser_DeathEvent(object sender, DeathEvent e)
         {
-            spellWindowViewModel.TryRemoveTarget(e.Name);
-            if (playerTrackerService.IsPlayer(e.Name) || !MasterNPCList.NPCs.Contains(e.Name))
+            spellWindowViewModel.TryRemoveTarget(e.Victim);
+            if (playerTrackerService.IsPlayer(e.Victim) || !MasterNPCList.NPCs.Contains(e.Victim))
             {
                 return;
             }
-            var zonetimer = ZoneSpawnTimes.GetSpawnTime(e.Name, activePlayer?.Player?.Zone);
+            var zonetimer = ZoneSpawnTimes.GetSpawnTime(e.Victim, activePlayer?.Player?.Zone);
             var add = new CustomTimer
             {
-                Name = "--Dead-- " + e.Name,
+                Name = "--Dead-- " + e.Victim,
                 DurationInSeconds = (int)zonetimer.TotalSeconds,
                 SpellNameIcon = "Disease Cloud",
                 SpellType = EQToolShared.Enums.SpellTypes.RespawnTimer
@@ -188,7 +188,7 @@ namespace EQTool.UI
                 logEvents.EnteredWorldEvent -= LogParser_EnteredWorldEvent;
                 logEvents.SpellWornOffSelfEvent -= LogParser_SpellWornOffSelfEvent;
                 logEvents.SpellCastEvent -= LogParser_StartCastingEvent;
-                logEvents.DeadEvent -= LogParser_DeadEvent;
+                logEvents.DeathEvent -= LogParser_DeathEvent;
                 logEvents.StartTimerEvent -= LogParser_StartTimerEvent;
                 logEvents.CancelTimerEvent -= LogParser_CancelTimerEvent;
                 logEvents.DeathTouchEvent -= LogParser_POFDTEvent;

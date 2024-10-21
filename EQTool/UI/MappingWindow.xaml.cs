@@ -48,7 +48,7 @@ namespace EQTool.UI
             this.logEvents.PlayerLocationEvent += LogParser_PlayerLocationEvent;
             this.logEvents.YouZonedEvent += LogParser_PlayerZonedEvent;
             this.logEvents.EnteredWorldEvent += LogParser_EnteredWorldEvent;
-            this.logEvents.DeadEvent += LogParser_DeadEvent;
+            this.logEvents.DeathEvent += LogParser_DeathEvent;
             this.logEvents.StartTimerEvent += LogParser_StartTimerEvent;
             this.logEvents.CancelTimerEvent += LogParser_CancelTimerEvent;
             KeyDown += PanAndZoomCanvas_KeyDown;
@@ -112,17 +112,17 @@ namespace EQTool.UI
             _ = mapViewModel.DeleteSelectedTimer();
         }
 
-        private void LogParser_DeadEvent(object sender, DeadEvent e)
+        private void LogParser_DeathEvent(object sender, DeathEvent e)
         {
-            if (playerTrackerService.IsPlayer(e.Name))
+            if (playerTrackerService.IsPlayer(e.Victim))
             {
                 return;
             }
 
             if (activePlayer.Player?.MapKillTimers == true)
             {
-                var zonetimer = ZoneSpawnTimes.GetSpawnTime(e.Name, mapViewModel.ZoneName);
-                var mw = mapViewModel.AddTimer(zonetimer, e.Name, true);
+                var zonetimer = ZoneSpawnTimes.GetSpawnTime(e.Victim, mapViewModel.ZoneName);
+                var mw = mapViewModel.AddTimer(zonetimer, e.Victim, true);
                 mapViewModel.MoveToPlayerLocation(mw);
             }
         }
@@ -193,7 +193,7 @@ namespace EQTool.UI
                 logEvents.PlayerLocationEvent -= LogParser_PlayerLocationEvent;
                 logEvents.YouZonedEvent -= LogParser_PlayerZonedEvent;
                 logEvents.EnteredWorldEvent -= LogParser_EnteredWorldEvent;
-                logEvents.DeadEvent -= LogParser_DeadEvent;
+                logEvents.DeathEvent -= LogParser_DeathEvent;
                 logEvents.StartTimerEvent -= LogParser_StartTimerEvent;
                 logEvents.CancelTimerEvent -= LogParser_CancelTimerEvent;
             }

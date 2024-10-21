@@ -70,10 +70,22 @@ namespace EQTool.Models
     {
         public string Name { get; set; }
     }
-    public class DeadEvent : BaseLogParseEvent
+
+    public class DeathEvent : BaseLogParseEvent
     {
-        public string Name { get; set; }
+        public string Victim { get; set; }
+
+        public string Killer { get; set; }
+
+        public DeathEvent(DateTime dateTime, string line, string victim, string killer = "Unknown")
+        {
+            TimeStamp = dateTime;
+            Line = line;
+            Victim = victim;
+            Killer = killer;
+        }
     }
+
     public class StartTimerEvent : BaseLogParseEvent
     {
         public CustomTimer CustomTimer { get; set; }
@@ -99,7 +111,6 @@ namespace EQTool.Models
     {
         public int NewLevel { get; set; }
     }
-    public class DeathEvent : BaseLogParseEvent { }
 
     //
     // event class to carry all relevant communications events to interested listeners
@@ -122,13 +133,16 @@ namespace EQTool.Models
         public PlayerCommsEvent.Channel TheChannel { get; set; }
         public string Content { get; set; }
         public string Receiver { get; set; }
+        public string Sender { get; set; }
 
-        public PlayerCommsEvent(DateTime dateTime, string line, PlayerCommsEvent.Channel channel = Channel.NONE, string content = "", string receiver = "")
+        // todo - make parser smarter to handle comms from other players
+        public PlayerCommsEvent(DateTime dateTime, string line, PlayerCommsEvent.Channel channel = Channel.NONE, string content = "", string sender = "You", string receiver = "")
         {
             TimeStamp = dateTime;
             Line = line;
             TheChannel = channel;
             Content = content;
+            Sender = sender;
             Receiver = receiver;
         }
     }

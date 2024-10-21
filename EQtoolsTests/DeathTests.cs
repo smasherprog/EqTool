@@ -6,7 +6,7 @@ using System;
 
 namespace EQToolTests
 {
-    // [TestClass]
+    //[TestClass]
     public class DeathTests
     {
         private readonly IContainer container;
@@ -26,7 +26,7 @@ namespace EQToolTests
         {
             var timestamp = new DateTime();
 
-            var service = container.Resolve<DeathParser>();
+            var service = container.Resolve<OldDeathParser>();
             var rv = service.ParseDeath("Just some random line", timestamp);
             Assert.AreEqual(false, rv);
         }
@@ -37,15 +37,12 @@ namespace EQToolTests
         public void ExampleTest()
         {
             var timestamp = DateTime.Now;
-
-            logEvents.Handle(new EQTool.Models.DeadEvent { Name = "YOU", TimeStamp = timestamp });
+            logEvents.Handle(new EQTool.Models.DeathEvent( timestamp, "some line", "YOU"));
             timestamp = timestamp.AddSeconds(1);
             logEvents.Handle(new EQTool.Models.DamageEvent(timestamp, "some line", "B", "A", 1, ""));
             timestamp = timestamp.AddSeconds(1);
             logEvents.Handle(new EQTool.Models.YouZonedEvent { ZoneName = "somezonedoesntmatter", TimeStamp = timestamp });
             _ = timestamp.AddSeconds(1);
-            //add a bunch of other things to make sure all works well
-            Assert.AreEqual(false, deathLoopService.IsDeathLooping);
         }
 
         [TestMethod]
@@ -54,7 +51,7 @@ namespace EQToolTests
         {
             var timestamp = new DateTime();
 
-            var service = container.Resolve<DeathParser>();
+            var service = container.Resolve<OldDeathParser>();
             var rv = service.ParseDeath("You have been slain", timestamp);
             Assert.AreEqual(true, rv);
         }
@@ -65,7 +62,7 @@ namespace EQToolTests
         {
             var timestamp = new DateTime();
 
-            var service = container.Resolve<DeathParser>();
+            var service = container.Resolve<OldDeathParser>();
             _ = service.ParseDeath("You have been slain", timestamp);
             _ = service.ParseDeath("You have been slain", timestamp.AddSeconds(40.0));
             _ = service.ParseDeath("You have been slain", timestamp.AddSeconds(80.0));
@@ -81,7 +78,7 @@ namespace EQToolTests
         {
             var timestamp = new DateTime();
 
-            var service = container.Resolve<DeathParser>();
+            var service = container.Resolve<OldDeathParser>();
             _ = service.ParseDeath("You have been slain", timestamp);
             _ = service.ParseDeath("You have been slain", timestamp.AddSeconds(40.0));
             _ = service.ParseDeath("You have been slain", timestamp.AddSeconds(130.0));
@@ -98,7 +95,7 @@ namespace EQToolTests
         {
             var timestamp = new DateTime();
 
-            var service = container.Resolve<DeathParser>();
+            var service = container.Resolve<OldDeathParser>();
             _ = service.ParseDeath("You have been slain", timestamp);
             _ = service.ParseDeath("You have been slain", timestamp);
             _ = service.ParseDeath("You have been slain", timestamp);
@@ -115,7 +112,7 @@ namespace EQToolTests
         {
             var timestamp = new DateTime();
 
-            var service = container.Resolve<DeathParser>();
+            var service = container.Resolve<OldDeathParser>();
             _ = service.ParseDeath("You have been slain", timestamp);
             _ = service.ParseDeath("You have been slain", timestamp);
             _ = service.ParseDeath("You have been slain", timestamp);
@@ -132,7 +129,7 @@ namespace EQToolTests
         {
             var timestamp = new DateTime();
 
-            var service = container.Resolve<DeathParser>();
+            var service = container.Resolve<OldDeathParser>();
             _ = service.ParseDeath("You have been slain", timestamp);
             _ = service.ParseDeath("You have been slain", timestamp);
             _ = service.ParseDeath("You have been slain", timestamp);

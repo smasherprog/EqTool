@@ -4,10 +4,12 @@ using EQTool.Services;
 using EQTool.Services.Parsing;
 using EQTool.ViewModels;
 using EQToolShared;
+using EQToolShared.Discord;
 using EQToolShared.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace EQToolTests
 {
@@ -71,7 +73,7 @@ namespace EQToolTests
             //{
             //    var zoneinfo = new ZoneInfo
             //    {
-            //        Name = item
+            //        Victim = item
             //    };
             //    if (!System.IO.File.Exists($"c:/test/{item}.txt"))
             //    {
@@ -112,7 +114,7 @@ namespace EQToolTests
 
             //foreach (var item in list)
             //{
-            //    Debug.WriteLine(item.Name);
+            //    Debug.WriteLine(item.Victim);
             //    Debug.WriteLine(string.Join(",", item.NotableNPCs));
             //}
         }
@@ -1168,37 +1170,60 @@ namespace EQToolTests
         [TestMethod]
         public void TestDeath()
         {
+            DateTime now = DateTime.Now;
             var service = container.Resolve<LogDeathParse>();
-            var line = "an ire Ghast has been slain by an ire ghast!";
-            var deadtarget = service.GetDeadTarget(line);
-            Assert.AreEqual("an ire Ghast", deadtarget);
+            var line = "an ire Ghast has been slain by a different ire ghast!";
+            DeathEvent de = service.Match(line, now);
+
+            Assert.IsNotNull(de);
+            Assert.AreEqual(now, de.TimeStamp);
+            Assert.AreEqual(line, de.Line);
+            Assert.AreEqual("an ire Ghast", de.Victim);
+            Assert.AreEqual("a different ire ghast", de.Killer);
         }
 
         [TestMethod]
         public void TestDeath1()
         {
+            DateTime now = DateTime.Now;
             var service = container.Resolve<LogDeathParse>();
             var line = "Harbinger Freglor has been slain by skeletal champion!";
-            var deadtarget = service.GetDeadTarget(line);
-            Assert.AreEqual("Harbinger Freglor", deadtarget);
+            DeathEvent de = service.Match(line, now);
+
+            Assert.IsNotNull(de);
+            Assert.AreEqual(now, de.TimeStamp);
+            Assert.AreEqual(line, de.Line);
+            Assert.AreEqual("Harbinger Freglor", de.Victim);
+            Assert.AreEqual("skeletal champion", de.Killer);
         }
 
         [TestMethod]
         public void TestDeath2()
         {
+            DateTime now = DateTime.Now;
             var service = container.Resolve<LogDeathParse>();
             var line = "You have slain Arch Duke Iatol!";
-            var deadtarget = service.GetDeadTarget(line);
-            Assert.AreEqual("Arch Duke Iatol", deadtarget);
+            DeathEvent de = service.Match(line, now);
+
+            Assert.IsNotNull(de);
+            Assert.AreEqual(now, de.TimeStamp);
+            Assert.AreEqual(line, de.Line);
+            Assert.AreEqual("Arch Duke Iatol", de.Victim);
+            Assert.AreEqual("You", de.Killer);
         }
 
         [TestMethod]
         public void TestDeathByDot()
         {
+            DateTime now = DateTime.Now;
             var service = container.Resolve<LogDeathParse>();
             var line = "an ire Ghast died.";
-            var deadtarget = service.GetDeadTarget(line);
-            Assert.AreEqual("an ire Ghast", deadtarget);
+            DeathEvent de = service.Match(line, now);
+
+            Assert.IsNotNull(de);
+            Assert.AreEqual(now, de.TimeStamp);
+            Assert.AreEqual(line, de.Line);
+            Assert.AreEqual("an ire Ghast", de.Victim);
         }
 
         [TestMethod]
@@ -1386,7 +1411,7 @@ namespace EQToolTests
             logevents.CancelTimerEvent += (a, b) => Assert.Fail("DontHit");
             logevents.StartTimerEvent += (a, b) => Assert.Fail("DontHit");
             logevents.ConEvent += (a, b) => Assert.Fail("DontHit");
-            logevents.DeadEvent += (a, b) => Assert.Fail("DontHit");
+            logevents.DeathEvent += (a, b) => Assert.Fail("DontHit");
             logevents.DamageEvent += (a, b) => Assert.Fail("DontHit");
             logevents.YouZonedEvent += (a, b) => Assert.Fail("DontHit");
             logevents.PlayerLocationEvent += (a, b) => Assert.Fail("DontHit");

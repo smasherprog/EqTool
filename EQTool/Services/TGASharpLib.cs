@@ -3306,7 +3306,7 @@ namespace TGASharpLib
         public ushort ExtensionSize { get; set; } = MinSize;
 
         /// <summary>
-        /// Author Name - Field 11 (41 Bytes):
+        /// Author Victim - Field 11 (41 Bytes):
         /// Bytes 2-42 - This field is an ASCII field of 41 bytes where the last byte must be a null
         /// (binary zero). This gives a total of 40 ASCII characters for the name. If the field is used,
         /// it should contain the name of the person who created the image (author). If the field is not
@@ -3347,7 +3347,7 @@ namespace TGASharpLib
         public TgaDateTime DateTimeStamp { get; set; } = new TgaDateTime();
 
         /// <summary>
-        /// Job Name/ID - Field 14 (41 Bytes):
+        /// Job Victim/ID - Field 14 (41 Bytes):
         /// Bytes 379-419 - This field is an ASCII field of 41 bytes where the last byte must be 
         /// a binary zero. This gives a total of 40 ASCII characters for the job name or the ID.
         /// If the field is used, it should contain a name or id tag which refers to the job with

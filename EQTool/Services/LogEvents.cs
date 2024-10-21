@@ -41,10 +41,10 @@ namespace EQTool.Services
             ConEvent?.Invoke(this, e);
         }
 
-        public event EventHandler<DeadEvent> DeadEvent;
-        public void Handle(DeadEvent e)
+        public event EventHandler<DeathEvent> DeathEvent;
+        public void Handle(DeathEvent e)
         {
-            DeadEvent?.Invoke(this, e);
+            DeathEvent?.Invoke(this, e);
         }
 
         public event EventHandler<PlayerCommsEvent> PlayerCommsEvent;

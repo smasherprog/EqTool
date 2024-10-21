@@ -2,8 +2,11 @@
 using System;
 using System.Security.Policy;
 using System.Text.RegularExpressions;
+using System.Web.Security;
+using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Shapes;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.TaskbarClock;
 
 namespace EQTool.Services.Parsing
 {
@@ -18,57 +21,49 @@ namespace EQTool.Services.Parsing
 
         public bool Handle(string line, DateTime timestamp)
         {
-            var m = GetDeadTarget(line);
-            if (m != "")
+            DeathEvent deadEvent = Match(line, timestamp);
+            if (deadEvent != null)
             {
-                logEvents.Handle(new DeadEvent { Name = m, TimeStamp = timestamp });
+                logEvents.Handle(deadEvent);
                 return true;
             }
             return false;
         }
 
-        public string GetDeadTarget(string line)
+        // function to check for a death event
+        public DeathEvent Match(string line, DateTime timestamp)
         {
             // return value
-            string rv = "";
+            DeathEvent rv = null;
+
+            //[Thu Oct 17 20:03:17 2024].death is not online at this time.
+            // simulate a player death
+            if (line.StartsWith(".death "))
+                rv = new DeathEvent(timestamp, line, "You");
 
             //[Mon Sep 16 14:32:02 2024] a Tesch Mas Gnoll has been slain by Genartik!
-            string slainByPattern = @"^(?<target>[\w ]+) has been slain by";
+            //[Fri Nov 08 19:39:57 2019] You have been slain by a brigand!
+            string slainByPattern = @"^(?<victim>[\w` ]+) (has|have) been slain by (?<killer>[\w` ]+)";
             var slainByRegex = new Regex(slainByPattern, RegexOptions.Compiled);
             var match = slainByRegex.Match(line);
             if (match.Success)
-            {
-                rv = match.Groups["target"].Value;
-            }
+                rv = new DeathEvent(timestamp, line, match.Groups["victim"].Value, match.Groups["killer"].Value);
 
             //[Mon Sep 16 14:21:24 2024] You have slain a Tesch Mas Gnoll!
-            string slainPattern = @"^You have slain (?<target>[\w ]+)";
+            string slainPattern = @"^You have slain (?<victim>[\w` ]+)";
             var slainRegex = new Regex(slainPattern, RegexOptions.Compiled);
             match = slainRegex.Match(line);
             if (match.Success)
-            {
-                rv = match.Groups["target"].Value;
-            }
+                rv = new DeathEvent(timestamp, line, match.Groups["victim"].Value, "You");
 
+            //[Sat Jan 16 20:12:37 2021] a bile golem died.
             //[Sat Apr 30 09:35:27 2022] Megachad died.
-            string diedPattern = @"^(?<target>[\w ]+) died\.$";
+            //[Sat Apr 30 09:35:27 2022] You died.
+            string diedPattern = @"^(?<victim>[\w` ]+) died\.$";
             var diedRegex = new Regex(diedPattern, RegexOptions.Compiled);
             match = diedRegex.Match(line);
             if (match.Success)
-            {
-                rv = match.Groups["target"].Value;
-            }
-
-            //[Mon Sep 16 14:21:24 2024] You have been slain
-            // this regex allows the parser to watch for the real phrase, but also to be tested by
-            // sending a tell while in-game to the non-existent user ".death"
-            string playerDeathPattern = @"(^\.death )|(^You have been slain)";
-            var playerDeathRegex = new Regex(playerDeathPattern, RegexOptions.Compiled);
-            match = playerDeathRegex.Match(line);
-            if (match.Success)
-            {
-                rv = "You";
-            }
+                rv = new DeathEvent(timestamp, line, match.Groups["victim"].Value);
 
             // return 
             return rv;
