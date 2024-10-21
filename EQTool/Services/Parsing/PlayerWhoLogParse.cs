@@ -1,9 +1,7 @@
 ﻿using EQTool.Models;
-using EQToolShared;
 using EQToolShared.Enums;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 
 namespace EQTool.Services.Parsing
 {

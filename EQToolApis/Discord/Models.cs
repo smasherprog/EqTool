@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace EQToolShared.Discord
+﻿namespace EQToolShared.Discord
 {
 
     public class LoginRequest

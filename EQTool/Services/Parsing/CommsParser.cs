@@ -1,14 +1,7 @@
 ﻿using EQTool.Models;
 using EQTool.ViewModels;
 using System;
-using System.Linq;
-using System.Threading.Tasks;
 using System.Text.RegularExpressions;
-using System.Windows.Controls;
-using static System.Windows.Forms.VisualStyles.VisualStyleElement.ToolTip;
-using System.Windows.Documents;
-using System.Diagnostics.Metrics;
-using System.Runtime.Remoting.Channels;
 
 
 namespace EQTool.Services.Parsing
@@ -16,7 +9,7 @@ namespace EQTool.Services.Parsing
     //
     // this parser will watch for Player comms
     //
-    public class CommsParser : IEqLogParseHandler
+    public class CommsParser //: IEqLogParseHandler
     {
         // class data
         private readonly ActivePlayer activePlayer;
@@ -35,7 +28,7 @@ namespace EQTool.Services.Parsing
         // If we find what we are seeking, fire off our event
         public bool Handle(string line, DateTime timestamp)
         {
-            CommsEvent commsEvent = Match(line, timestamp);
+            var commsEvent = Match(line, timestamp);
             if (commsEvent != null)
             {
                 logEvents.Handle(commsEvent);
@@ -50,11 +43,10 @@ namespace EQTool.Services.Parsing
         public CommsEvent Match(string line, DateTime timestamp)
         {
             CommsEvent rv = null;
-
-            // get playername
-            string playerName = "Unknown";
             if (activePlayer != null)
-                playerName = activePlayer.Player.Name;
+            {
+                _ = activePlayer.Player.Name;
+            }
 
             //
             // begin checking for the various channels
@@ -71,7 +63,9 @@ namespace EQTool.Services.Parsing
             var regex = new Regex(pattern, RegexOptions.Compiled);
             var match = regex.Match(line);
             if (match.Success)
+            {
                 rv = new CommsEvent(timestamp, line, CommsEvent.Channel.TELL, match.Groups["content"].Value, match.Groups["sender"].Value, match.Groups["receiver"].Value);
+            }
 
             //Azleep -> Jamori: ok
             //[Thu Aug 18 14:31:48 2022] Berrma -> Azleep: ya just need someone to invite i believe
@@ -80,13 +74,17 @@ namespace EQTool.Services.Parsing
             match = regex.Match(line);
             if (match.Success)
             {
-                string sender = match.Groups["sender"].Value;
+                var sender = match.Groups["sender"].Value;
                 if (sender == activePlayer.Player.Name)
+                {
                     sender = "You";
+                }
 
-                string receiver = match.Groups["receiver"].Value;
+                var receiver = match.Groups["receiver"].Value;
                 if (receiver == activePlayer.Player.Name)
+                {
                     receiver = "You";
+                }
 
                 rv = new CommsEvent(timestamp, line, CommsEvent.Channel.TELL, match.Groups["content"].Value, sender, receiver);
             }
@@ -102,7 +100,9 @@ namespace EQTool.Services.Parsing
             regex = new Regex(pattern, RegexOptions.Compiled);
             match = regex.Match(line);
             if (match.Success)
+            {
                 rv = new CommsEvent(timestamp, line, CommsEvent.Channel.SAY, match.Groups["content"].Value, match.Groups["sender"].Value);
+            }
 
 
             // ------------------------------------------------------------------------------------------------------------------------------------------------
@@ -114,7 +114,9 @@ namespace EQTool.Services.Parsing
             regex = new Regex(pattern, RegexOptions.Compiled);
             match = regex.Match(line);
             if (match.Success)
+            {
                 rv = new CommsEvent(timestamp, line, CommsEvent.Channel.GROUP, match.Groups["content"].Value, match.Groups["sender"].Value);
+            }
 
 
             // ------------------------------------------------------------------------------------------------------------------------------------------------
@@ -126,7 +128,9 @@ namespace EQTool.Services.Parsing
             regex = new Regex(pattern, RegexOptions.Compiled);
             match = regex.Match(line);
             if (match.Success)
+            {
                 rv = new CommsEvent(timestamp, line, CommsEvent.Channel.GUILD, match.Groups["content"].Value, match.Groups["sender"].Value);
+            }
 
 
             // ------------------------------------------------------------------------------------------------------------------------------------------------
@@ -138,7 +142,9 @@ namespace EQTool.Services.Parsing
             regex = new Regex(pattern, RegexOptions.Compiled);
             match = regex.Match(line);
             if (match.Success)
+            {
                 rv = new CommsEvent(timestamp, line, CommsEvent.Channel.AUCTION, match.Groups["content"].Value, match.Groups["sender"].Value);
+            }
 
 
             // ------------------------------------------------------------------------------------------------------------------------------------------------
@@ -150,7 +156,9 @@ namespace EQTool.Services.Parsing
             regex = new Regex(pattern, RegexOptions.Compiled);
             match = regex.Match(line);
             if (match.Success)
+            {
                 rv = new CommsEvent(timestamp, line, CommsEvent.Channel.OOC, match.Groups["content"].Value, match.Groups["sender"].Value);
+            }
 
 
             // ------------------------------------------------------------------------------------------------------------------------------------------------
@@ -162,8 +170,9 @@ namespace EQTool.Services.Parsing
             regex = new Regex(pattern, RegexOptions.Compiled);
             match = regex.Match(line);
             if (match.Success)
+            {
                 rv = new CommsEvent(timestamp, line, CommsEvent.Channel.SHOUT, match.Groups["content"].Value, match.Groups["sender"].Value);
-
+            }
 
             return rv;
         }
