@@ -387,7 +387,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="Services\AppDispatcher.cs" />
-    <Compile Include="Services\Handlers\AudioService.cs" />
+    <Compile Include="Services\Handlers\ResistSpellHandler.cs" />
     <Compile Include="Services\CHService.cs" />
     <Compile Include="Services\LogEvents.cs" />
     <Compile Include="Services\LoggingService.cs" />
