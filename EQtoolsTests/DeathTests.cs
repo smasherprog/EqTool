@@ -4,18 +4,16 @@ using EQTool.Services.Parsing;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 
-namespace EQToolTests
+namespace EQtoolsTests
 {
     // [TestClass]
-    public class DeathTests
-    {
-        private readonly IContainer container;
+    public class DeathTests : BaseTestClass
+    { 
         private readonly DeathLoopService deathLoopService;
         private readonly LogEvents logEvents;
 
         public DeathTests()
-        {
-            container = DI.Init();
+        { 
             deathLoopService = container.Resolve<DeathLoopService>();
             logEvents = container.Resolve<LogEvents>();
         }

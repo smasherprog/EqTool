@@ -3,15 +3,13 @@ using EQTool.Services.Parsing;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 
-namespace EQToolTests
+namespace EQtoolsTests
 {
     [TestClass]
-    public class EnrageTests
-    {
-        private readonly IContainer container;
+    public class EnrageTests : BaseTestClass
+    { 
         public EnrageTests()
-        {
-            container = DI.Init();
+        { 
         }
 
         [TestMethod]

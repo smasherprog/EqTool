@@ -1,15 +1,13 @@
 ﻿using Autofac;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace EQToolTests
+namespace EQtoolsTests
 {
     [TestClass]
-    public class ZoneSpawnTimeTests
-    {
-        private readonly IContainer container;
+    public class ZoneSpawnTimeTests : BaseTestClass
+    { 
         public ZoneSpawnTimeTests()
-        {
-            container = DI.Init();
+        { 
         }
 
         [TestMethod]

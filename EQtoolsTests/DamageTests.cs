@@ -7,21 +7,19 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Linq;
 
-namespace EQToolTests
+namespace EQtoolsTests
 {
     [TestClass]
-    public class DamageTests
-    {
-        private readonly IContainer container;
+    public class DamageTests : BaseTestClass
+    { 
         public DamageTests()
-        {
-            container = DI.Init();
+        { 
         }
 
         [TestMethod]
         public void DPSLogParse_EatingDpsParseTest()
         {
-            var dpslogparse = container.Resolve<DPSLogParse>();
+            var dpslogparse = container.Resolve<HitParser>();
             var message = "Vebanab slices a willowisp for 56 points of damage.";
             var match = dpslogparse.Match(message, DateTime.Now);
 
@@ -34,7 +32,7 @@ namespace EQToolTests
         [TestMethod]
         public void DPSLogParse_DOTParseTest()
         {
-            var dpslogparse = container.Resolve<DPSLogParse>();
+            var dpslogparse = container.Resolve<HitParser>();
             var message = "a goblin warrior has taken 12 damage from your Choke.";
             var match = dpslogparse.Match(message, DateTime.Now);
 
@@ -47,7 +45,7 @@ namespace EQToolTests
         [TestMethod]
         public void DPSLogParse_NonMelleTest()
         {
-            var dpslogparse = container.Resolve<DPSLogParse>();
+            var dpslogparse = container.Resolve<HitParser>();
             var message = "Ratman Rager was hit by non-melee for 45 points of damage.";
             var match = dpslogparse.Match(message, DateTime.Now);
 
@@ -60,7 +58,7 @@ namespace EQToolTests
         [TestMethod]
         public void DPSLogParse_EatingDpsParseTest1()
         {
-            var dpslogparse = container.Resolve<DPSLogParse>();
+            var dpslogparse = container.Resolve<HitParser>();
             var message = "a willowisp slices Vebanab for 56 points of damage.";
             var match = dpslogparse.Match(message, DateTime.Now);
 
@@ -73,7 +71,7 @@ namespace EQToolTests
         [TestMethod]
         public void DPSLogParse_EatingDpsParseTestYou()
         {
-            var dpslogparse = container.Resolve<DPSLogParse>();
+            var dpslogparse = container.Resolve<HitParser>();
             var message = "You crush a shadowed man for 1 point of damage.";
             var match = dpslogparse.Match(message, DateTime.Now);
 
@@ -86,7 +84,7 @@ namespace EQToolTests
         [TestMethod]
         public void DPSLogParse_EatingDpsParseTestYouGetHit()
         {
-            var dpslogparse = container.Resolve<DPSLogParse>();
+            var dpslogparse = container.Resolve<HitParser>();
             var message = "Guard Valon bashes YOU for 12 points of damage.";
             var match = dpslogparse.Match(message, DateTime.Now);
 
@@ -218,7 +216,7 @@ namespace EQToolTests
         [TestMethod]
         public void TestLevelDetectionThroughBackstab()
         {
-            var dpslogparse = container.Resolve<DPSLogParse>();
+            var dpslogparse = container.Resolve<HitParser>();
             var message = "You backstab a willowisp for 56 points of damage.";
 
             var player = container.Resolve<ActivePlayer>();
@@ -230,7 +228,7 @@ namespace EQToolTests
         [TestMethod]
         public void TestLevelDetectionThroughBackstabNullCheck()
         {
-            var dpslogparse = container.Resolve<DPSLogParse>();
+            var dpslogparse = container.Resolve<HitParser>();
             var message = "You backstab a willowisp for 56 points of damage.";
             _ = dpslogparse.Match(message, DateTime.Now);
         }
@@ -238,7 +236,7 @@ namespace EQToolTests
         [TestMethod]
         public void TestGuildChatCopyAndPaste()
         {
-            var dpslogparse = container.Resolve<DPSLogParse>();
+            var dpslogparse = container.Resolve<HitParser>();
             var message = "vasanle tells the guild, '[Sun Jul 10 21:05:30 2022] pigy was hit by non-melee for 1500 points of damage.  [Sun Jul 10 21:05:30 2022] pigy staggers.'";
             var match = dpslogparse.Match(message, DateTime.Now);
             Assert.IsNull(match);
@@ -247,7 +245,7 @@ namespace EQToolTests
         [TestMethod]
         public void TestLevelDetectionThroughKick()
         {
-            var dpslogparse = container.Resolve<DPSLogParse>();
+            var dpslogparse = container.Resolve<HitParser>();
             var message = "You backstab a kick for 56 points of damage.";
             _ = dpslogparse.Match(message, DateTime.Now);
             var player = container.Resolve<ActivePlayer>();

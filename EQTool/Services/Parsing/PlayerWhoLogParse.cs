@@ -55,26 +55,7 @@ namespace EQTool.Services.Parsing
                 StartingWhoOfZone = line == "---------------------------" && StartingWhoOfZone;
             }
 
-            var newzone = ZoneChanged(line);
-            if (!string.IsNullOrWhiteSpace(newzone))
-            {
-                logEvents.Handle(new YouZonedEvent { ZoneName = newzone, TimeStamp = timestamp });
-                return true;
-            }
-
             return false;
-        }
-
-        public string ZoneChanged(string message)
-        {
-            var matchedzone = Zones.Match(message);
-            if (!string.IsNullOrWhiteSpace(matchedzone))
-            {
-                matchedzone = Zones.TranslateToMapName(matchedzone);
-                Debug.WriteLine($"Zone Detected {matchedzone}");
-                return matchedzone;
-            }
-            return string.Empty;
         }
 
         private bool IsZoneWhoLine(string message)

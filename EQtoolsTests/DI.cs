@@ -2,7 +2,7 @@
 using Autofac.Features.ResolveAnything;
 using System.IO;
 
-namespace EQToolTests
+namespace EQtoolsTests
 {
     public static class DI
     {
@@ -46,7 +46,7 @@ namespace EQToolTests
             _ = builder.RegisterType<EQTool.Services.Parsing.LocationParser>().As<EQTool.Models.IEqLogParseHandler>().SingleInstance();
             _ = builder.RegisterType<EQTool.Services.Parsing.CampParser>().As<EQTool.Models.IEqLogParseHandler>().SingleInstance();
             _ = builder.RegisterType<EQTool.Services.Parsing.PlayerWhoLogParse>().As<EQTool.Models.IEqLogParseHandler>().SingleInstance();
-            _ = builder.RegisterType<EQTool.Services.Parsing.DPSLogParse>().As<EQTool.Models.IEqLogParseHandler>().SingleInstance();
+            _ = builder.RegisterType<EQTool.Services.Parsing.HitParser>().As<EQTool.Models.IEqLogParseHandler>().SingleInstance();
             _ = builder.RegisterType<EQTool.Services.Parsing.LogDeathParse>().As<EQTool.Models.IEqLogParseHandler>().SingleInstance();
             _ = builder.RegisterType<EQTool.Services.Parsing.ConLogParse>().As<EQTool.Models.IEqLogParseHandler>().SingleInstance();
             _ = builder.RegisterType<EQTool.Services.Parsing.LogCancelCustomTimer>().As<EQTool.Models.IEqLogParseHandler>().SingleInstance();

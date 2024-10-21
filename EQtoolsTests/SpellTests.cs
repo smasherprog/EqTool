@@ -9,15 +9,13 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Linq;
 
-namespace EQToolTests
+namespace EQtoolsTests
 {
     [TestClass]
-    public class SpellTests
-    {
-        private readonly IContainer container;
+    public class SpellTests : BaseTestClass
+    { 
         public SpellTests()
-        {
-            container = DI.Init();
+        { 
         }
 
         [TestMethod]

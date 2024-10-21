@@ -7,12 +7,10 @@ using System;
 namespace EQtoolsTests
 {
     [TestClass]
-    public class ParsingTests
-    {
-        private readonly IContainer container;
+    public class ParsingTests : BaseTestClass
+    { 
         public ParsingTests()
-        {
-            container = EQToolTests.DI.Init();
+        { 
         }
 
         private string AddDateTime(DateTime d, string msg)

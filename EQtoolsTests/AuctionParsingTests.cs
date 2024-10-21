@@ -1,21 +1,19 @@
 ﻿using Autofac;
 using EQToolShared.Discord;
 using EQToolShared.Enums;
-using EQToolTests;
+using EQtoolsTests;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Linq;
 
 namespace EQtoolsTests
 {
     [TestClass]
-    public class AuctionParsingTests
-    {
-        private readonly IContainer container;
+    public class AuctionParsingTests : BaseTestClass
+    { 
         private readonly DiscordAuctionParse discordAuctionParse;
         public AuctionParsingTests()
-        {
-            container = DI.Init();
-            discordAuctionParse = container.Resolve<DiscordAuctionParse>();
+        { 
+            discordAuctionParse = this.container.Resolve<DiscordAuctionParse>();
         }
 
         //[TestMethod]

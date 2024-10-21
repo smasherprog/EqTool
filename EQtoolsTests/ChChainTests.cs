@@ -7,15 +7,13 @@ using EQToolShared.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 
-namespace EQToolTests
+namespace EQtoolsTests
 {
     [TestClass]
-    public class ChChainTests
-    {
-        private readonly IContainer container;
+    public class ChChainTests : BaseTestClass
+    { 
         public ChChainTests()
-        {
-            container = DI.Init();
+        { 
         }
 
         [TestMethod]

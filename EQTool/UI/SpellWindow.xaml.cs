@@ -22,6 +22,7 @@ namespace EQTool.UI
         private readonly ActivePlayer activePlayer;
         private readonly TimersService timersService;
         private readonly PlayerTrackerService playerTrackerService;
+        private readonly IAppDispatcher appDispatcher;
 
         public SpellWindow(
             PlayerTrackerService playerTrackerService,
@@ -31,12 +32,14 @@ namespace EQTool.UI
             LogEvents logEvents,
             EQToolSettingsLoad toolSettingsLoad,
             ActivePlayer activePlayer,
+            IAppDispatcher appDispatcher,
             LoggingService loggingService) : base(settings.SpellWindowState, toolSettingsLoad, settings)
         {
             loggingService.Log(string.Empty, EventType.OpenMap, activePlayer?.Player?.Server);
             this.playerTrackerService = playerTrackerService;
             this.timersService = timersService;
             this.logEvents = logEvents;
+            this.appDispatcher = appDispatcher;
             this.activePlayer = activePlayer;
             spellWindowViewModel.SpellList = new System.Collections.ObjectModel.ObservableCollection<UISpell>();
             DataContext = this.spellWindowViewModel = spellWindowViewModel;
@@ -111,9 +114,12 @@ namespace EQTool.UI
 
         private void LogParser_CampEvent(object sender, CampEvent e)
         {
-            TrySaveYouSpellData();
-            base.SaveState();
-            spellWindowViewModel.ClearYouSpells();
+            this.appDispatcher.DispatchUI(() =>
+            { 
+                TrySaveYouSpellData();
+                base.SaveState();
+                spellWindowViewModel.ClearYouSpells();
+            });
         }
 
         private void LogParser_EnteredWorldEvent(object sender, EnteredWorldEvent e)

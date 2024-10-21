@@ -342,6 +342,7 @@
     <Compile Include="Services\Map\ZoneSpawnTimes.cs" />
     <Compile Include="Services\P99LoginMiddlemand\LoginMiddlemand.cs" />
     <Compile Include="Services\Parsing\DeathParser.cs" />
+    <Compile Include="Services\Parsing\YouZonedParser.cs" />
     <Compile Include="UI\CustomTimeSpanUpDown.cs" />
     <Compile Include="UI\EventOverlay.xaml.cs">
       <DependentUpon>EventOverlay.xaml</DependentUpon>
@@ -421,7 +422,7 @@
     <Compile Include="Services\LogParser.cs" />
     <Compile Include="Services\Parsing\LogCancelCustomTimer.cs" />
     <Compile Include="Services\Parsing\LogDeathParse.cs" />
-    <Compile Include="Services\Parsing\DPSLogParse.cs" />
+    <Compile Include="Services\Parsing\HitParser.cs" />
     <Compile Include="Services\Parsing\Helpers\ParseSpellGuess.cs" />
     <Compile Include="Services\Spells\SpellDurations.cs" />
     <Compile Include="Services\Parsing\Helpers\ParseHandleYou.cs" />

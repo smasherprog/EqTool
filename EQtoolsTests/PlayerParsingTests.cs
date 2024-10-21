@@ -3,15 +3,13 @@ using EQTool.Services.Parsing;
 using EQToolShared.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
-namespace EQToolTests
+namespace EQtoolsTests
 {
     [TestClass]
-    public class PlayerParsingTests
-    {
-        private readonly IContainer container;
+    public class PlayerParsingTests : BaseTestClass
+    { 
         public PlayerParsingTests()
-        {
-            container = DI.Init();
+        { 
         }
 
         [TestMethod]

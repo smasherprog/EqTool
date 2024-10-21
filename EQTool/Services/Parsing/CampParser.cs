@@ -6,14 +6,12 @@ namespace EQTool.Services.Parsing
 {
     public class CampParser : IEqLogParseHandler
     {
-        private readonly LogEvents logEvents;
-        private readonly IAppDispatcher appDispatcher;
+        private readonly LogEvents logEvents; 
         private bool StillCamping = false;
 
-        public CampParser(LogEvents logEvents, AppDispatcher appDispatcher)
+        public CampParser(LogEvents logEvents)
         {
-            this.logEvents = logEvents;
-            this.appDispatcher = appDispatcher;
+            this.logEvents = logEvents; 
         }
 
         public bool Handle(string line, DateTime timestamp)
@@ -32,11 +30,8 @@ namespace EQTool.Services.Parsing
                     if (StillCamping)
                     {
                         StillCamping = false;
-                        appDispatcher.DispatchUI(() =>
-                        {
-                            Debug.WriteLine("CampEvent");
-                            logEvents.Handle(new CampEvent { TimeStamp = timestamp });
-                        });
+                        Debug.WriteLine("CampEvent");
+                        logEvents.Handle(new CampEvent { TimeStamp = timestamp });
                     }
                 });
                 return true;

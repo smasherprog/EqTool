@@ -7,7 +7,7 @@ using System.Linq;
 
 namespace EQTool.Services.Parsing
 {
-    public class DPSLogParse : IEqLogParseHandler
+    public class HitParser : IEqLogParseHandler
     {
         private readonly string PointsOfDamage = " points of damage.";
         private readonly string PointOfDamage = " point of damage.";
@@ -48,7 +48,7 @@ namespace EQTool.Services.Parsing
             " gores "
         };
 
-        public DPSLogParse(ActivePlayer activePlayer, LogEvents logEvents)
+        public HitParser(ActivePlayer activePlayer, LogEvents logEvents)
         {
             this.activePlayer = activePlayer;
             this.logEvents = logEvents;
