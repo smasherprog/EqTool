@@ -8,12 +8,12 @@ namespace EQtoolsTests
 {
     // [TestClass]
     public class DeathTests : BaseTestClass
-    { 
+    {
         private readonly DeathLoopService deathLoopService;
         private readonly LogEvents logEvents;
 
         public DeathTests()
-        { 
+        {
             deathLoopService = container.Resolve<DeathLoopService>();
             logEvents = container.Resolve<LogEvents>();
         }
@@ -47,7 +47,7 @@ namespace EQtoolsTests
             timestamp = timestamp.AddSeconds(1);
             logEvents.Handle(new EQTool.Models.FightHitEvent { HitInformation = hit, TimeStamp = timestamp });
             timestamp = timestamp.AddSeconds(1);
-            logEvents.Handle(new EQTool.Models.YouZonedEvent { ZoneName = "somezonedoesntmatter", TimeStamp = timestamp });
+            logEvents.Handle(new EQTool.Models.YouZonedEvent { LongName = "somezonedoesntmatter", ShortName = "asdasd", TimeStamp = timestamp });
             _ = timestamp.AddSeconds(1);
             //add a bunch of other things to make sure all works well
             Assert.AreEqual(false, deathLoopService.IsDeathLooping);

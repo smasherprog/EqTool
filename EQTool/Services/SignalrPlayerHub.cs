@@ -270,7 +270,7 @@ namespace EQTool.Models
                 (e.Spell.type == SpellTypes.Detrimental || e.Spell.type == SpellTypes.Other)
              )
             {
-                var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(e.Spell, activePlayer.Player));
+                var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(e.Spell, activePlayer.Player?.PlayerClass, activePlayer.Player?.Level));
                 var isnpc = MasterNPCList.NPCs.Contains(e.TargetName);
                 if (isnpc)
                 {

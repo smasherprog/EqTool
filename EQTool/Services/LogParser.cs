@@ -51,7 +51,7 @@ namespace EQTool.Services
             var p = activePlayer.Player;
             if (p != null)
             {
-                p.Zone = e.ZoneName;
+                p.Zone = e.ShortName;
                 toolSettingsLoad.Save(settings);
             }
         }

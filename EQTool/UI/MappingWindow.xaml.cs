@@ -171,7 +171,7 @@ namespace EQTool.UI
 
         private void LogParser_PlayerZonedEvent(object sender, YouZonedEvent e)
         {
-            if (mapViewModel.LoadMap(e.ZoneName, Map))
+            if (mapViewModel.LoadMap(e.ShortName, Map))
             {
                 Map.ZoneName = mapViewModel.ZoneName;
                 Map.Height = Math.Abs(mapViewModel.AABB.MaxHeight);

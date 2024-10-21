@@ -1,5 +1,4 @@
 ﻿using EQTool.Models;
-using EQTool.ViewModels;
 using EQToolShared;
 using System;
 using System.Diagnostics;
@@ -15,38 +14,34 @@ namespace EQTool.Services.Parsing
         private const string Youhaveenteredareapvp = "You have entered an Arena (PvP) area.";
         private const string spaceinspace = "in ";
         private readonly LogEvents logEvents;
-        private readonly ActivePlayer activePlayer;
 
-        public YouZonedParser(LogEvents logEvents, ActivePlayer activePlayer)
+        public YouZonedParser(LogEvents logEvents)
         {
-            this.logEvents = logEvents; 
-            this.activePlayer = activePlayer;
+            this.logEvents = logEvents;
+
         }
 
         public bool Handle(string line, DateTime timestamp)
         {
-            var m = ZoneChanged(line);
-            if (!string.IsNullOrWhiteSpace(m))
+            var m = ZoneChanged(line, timestamp);
+            if (m != null)
             {
-                logEvents.Handle(new YouZonedEvent { ZoneName = m, TimeStamp = timestamp });
+                logEvents.Handle(m);
                 return true;
             }
             return false;
         }
 
-        public string ZoneChanged(string message)
+        public YouZonedEvent ZoneChanged(string message, DateTime timestamp)
         {
-            var matchedzone = this._ZoneChanged(message);
-            if (!string.IsNullOrWhiteSpace(matchedzone))
+            var longName = _ZoneChanged(message);
+            if (!string.IsNullOrWhiteSpace(longName))
             {
-                matchedzone = Zones.TranslateToMapName(matchedzone);
-                Debug.WriteLine($"Zone Detected {matchedzone}");
-                if(this.activePlayer.Player.Zone != matchedzone)
-                { 
-                    return matchedzone;
-                }
+                var shortName = Zones.TranslateToMapName(longName);
+                Debug.WriteLine($"Zone Detected {longName}");
+                return new YouZonedEvent { LongName = longName, ShortName = shortName, TimeStamp = timestamp };
             }
-            return string.Empty;
+            return null;
         }
 
         private string _ZoneChanged(string message)

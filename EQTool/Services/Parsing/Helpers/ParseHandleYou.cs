@@ -25,7 +25,7 @@ namespace EQTool.Services.Parsing
             var spellname = message.Substring(EQSpells.YouBeginCasting.Length - 1).Trim().TrimEnd('.');
             if (spells.YouCastSpells.TryGetValue(spellname, out var foundspells))
             {
-                var foundspell = SpellDurations.MatchClosestLevelToSpell(foundspells, activePlayer.Player);
+                var foundspell = SpellDurations.MatchClosestLevelToSpell(foundspells, activePlayer.Player?.PlayerClass, activePlayer.Player?.Level);
                 Debug.WriteLine($"Self Casting Spell: {spellname} Delay: {foundspell.casttime}");
                 appDispatcher.DispatchUI(() =>
                 {
@@ -70,7 +70,7 @@ namespace EQTool.Services.Parsing
         {
             if (spells.CastOnYouSpells.TryGetValue(message, out var foundspells))
             {
-                var foundspell = SpellDurations.MatchClosestLevelToSpell(foundspells, activePlayer.Player);
+                var foundspell = SpellDurations.MatchClosestLevelToSpell(foundspells, activePlayer.Player?.PlayerClass, activePlayer.Player?.Level);
                 Debug.WriteLine($"You Casting Spell: {message} Delay: {foundspell.casttime}");
                 return new SpellCastEvent
                 {
@@ -109,7 +109,7 @@ namespace EQTool.Services.Parsing
             }
             if (spells.CastOnYouSpells.TryGetValue(message, out var foundspells))
             {
-                var foundspell = SpellDurations.MatchClosestLevelToSpell(foundspells, activePlayer.Player);
+                var foundspell = SpellDurations.MatchClosestLevelToSpell(foundspells, activePlayer.Player?.PlayerClass, activePlayer.Player?.Level);
                 Debug.WriteLine($"Your Casting Spell: {message} Delay: {foundspell.casttime}");
                 return new SpellCastEvent
                 {
