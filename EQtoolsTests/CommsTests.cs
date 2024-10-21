@@ -9,24 +9,14 @@ using System;
 namespace EQtoolsTests
 {
     [TestClass]
-    public class CommsTests
+    public class CommsTests : BaseTestClass
     {
-        private readonly IContainer container;
         private readonly CommsParser parser;
-        private readonly ActivePlayer activePlayer;
 
         public CommsTests()
         {
-            container = DI.Init();
+            //container = DI.Init();
             parser = container.Resolve<CommsParser>();
-
-            // fake in an ActivePlayer for the parser to be happy
-            activePlayer = container.Resolve<ActivePlayer>();
-            activePlayer.Player = new PlayerInfo();
-            activePlayer.Player.Name = "Azleep";
-            activePlayer.Player.Level = 60;
-            activePlayer.Player.PlayerClass = EQToolShared.Enums.PlayerClasses.Enchanter;
-            activePlayer.Player.Zone = "templeveeshan";
         }
 
         [TestMethod]
@@ -97,6 +87,24 @@ namespace EQtoolsTests
             Assert.AreEqual(now, match.TimeStamp);
             Assert.AreEqual(message, match.Line);
         }
+
+        [TestMethod]
+        public void TestTell_UnknownUser()
+        {
+            //[Mon Oct 21 11:50:55 2024] .PigTimer-30 is not online at this time.
+            DateTime now = DateTime.Now;
+            var message = ".PigTimer-30 is not online at this time.";
+            var match = parser.Match(message, now);
+
+            Assert.IsNotNull(match);
+            Assert.AreEqual("System", match.Sender);
+            Assert.AreEqual("You", match.Receiver);
+            Assert.AreEqual(".PigTimer-30", match.Content);
+            Assert.AreEqual(CommsEvent.Channel.TELL, match.TheChannel);
+            Assert.AreEqual(now, match.TimeStamp);
+            Assert.AreEqual(message, match.Line);
+        }
+
 
         [TestMethod]
         public void TestSay_FromPlayer()

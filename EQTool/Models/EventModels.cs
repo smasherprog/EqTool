@@ -135,7 +135,6 @@ namespace EQTool.Models
         public string Receiver { get; set; }
         public string Sender { get; set; }
 
-        // todo - make parser smarter to handle comms from other players
         public CommsEvent(DateTime dateTime, string line, CommsEvent.Channel channel = Channel.NONE, string content = "", string sender = "", string receiver = "")
         {
             TimeStamp = dateTime;

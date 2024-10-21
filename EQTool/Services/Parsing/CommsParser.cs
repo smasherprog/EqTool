@@ -89,6 +89,14 @@ namespace EQTool.Services.Parsing
                 rv = new CommsEvent(timestamp, line, CommsEvent.Channel.TELL, match.Groups["content"].Value, sender, receiver);
             }
 
+            // this is actually a tell, even though it doesn't look like it.  It doesn't show up for anyone but the recceiver
+            //[Mon Oct 21 11:50:55 2024] .PigTimer-30 is not online at this time.
+            pattern = @"^(?<content>.+) is not online at this time.";
+            regex = new Regex(pattern, RegexOptions.Compiled);
+            match = regex.Match(line);
+            if (match.Success)
+                rv = new CommsEvent(timestamp, line, CommsEvent.Channel.TELL, match.Groups["content"].Value, "System", "You");
+
 
             // ------------------------------------------------------------------------------------------------------------------------------------------------
             // say
