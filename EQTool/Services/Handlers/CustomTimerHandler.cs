@@ -49,15 +49,15 @@ namespace EQTool.Services.Handlers
             //      PigTimer-6:40-Guard          6 minutes 40 second timer, with name 'Guard'
             //      PigTimer-10:00               10 minute timer, with no name
             //      PigTimer-1:02:00-LongTimer   1 hour, 2 minute timer, with description 'LongTimer'
-            var customTimerPattern = @"^PigTimer-(((?<hh>[0-9]+):)?((?<mm>[0-9]+):))?(?<ss>[0-9]+)(-(?<label>\w+))*";
+            var customTimerPattern = @"^PigTimer-(((?<hh>[0-9]+):)?((?<mm>[0-9]+):))?(?<ss>[0-9]+)(-(?<label>.+))*";
             //                         ^PigTimer-                                                                         must start with PigTimer-
             //                                   ((?<hh>[0-9]+):)?                                                        Group "hh"      0 or more (sets of numbers, followed by a colon)
             //                                                    ((?<mm>[0-9]+):)                                        Group "mm"      1 set of numbers followed by a colon
             //                                   (                                 )?                                                     0 or more hh and mm groups
             //                                                                       (?<ss>[0-9]+)                        Group "ss"      1 set of numbers
-            //                                                                                    (-(?<label>\w+))*       Group "label"   0 or more (dash, followed by a set of word characters)
+            //                                                                                    (-(?<label>\.+))*       Group "label"   0 or more (dash, followed by a set of word characters)
             //
-            // https://regex101.com/r/WoqXag/1
+            // https://regex101.com/r/3d1UGb/1
             //
             var regex = new Regex(customTimerPattern, RegexOptions.Compiled);
             var match = regex.Match(commsEvent.Content);

@@ -30,13 +30,6 @@ namespace EQTool.Services.Parsing
             // return value
             DeathEvent rv = null;
 
-            //[Thu Oct 17 20:03:17 2024].death is not online at this time.
-            // simulate a player death
-            if (line.StartsWith(".death "))
-            {
-                rv = new DeathEvent(timestamp, line, "You");
-            }
-
             //[Mon Sep 16 14:32:02 2024] a Tesch Mas Gnoll has been slain by Genartik!
             //[Fri Nov 08 19:39:57 2019] You have been slain by a brigand!
             var slainByPattern = @"^(?<victim>[\w` ]+) (has|have) been slain by (?<killer>[\w` ]+)";
