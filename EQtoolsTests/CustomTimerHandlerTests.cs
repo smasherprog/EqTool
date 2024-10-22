@@ -103,12 +103,12 @@ namespace EQtoolsTests
         [TestMethod]
         public void GetCustomTimerStart_Test1()
         {
-            var line = "PigTimer-02";
+            var line = "You say, 'PigTimer-02'";
             logEvents.StartTimerEvent += (s, targettoremove) =>
             {
                 Assert.IsNotNull(targettoremove);
                 Assert.AreEqual(2, targettoremove.CustomTimer.DurationInSeconds);
-                Assert.AreEqual(line, targettoremove.CustomTimer.Name);
+                Assert.AreEqual("PigTimer-02", targettoremove.CustomTimer.Name);
                 isCalled = true;
             };
 
@@ -119,12 +119,12 @@ namespace EQtoolsTests
         [TestMethod]
         public void GetCustomTimerStart_Test2()
         {
-            var line = "PigTimer-02:03";
+            var line = "You say, 'PigTimer-02:03'";
             logEvents.StartTimerEvent += (s, targettoremove) =>
             {
                 Assert.IsNotNull(targettoremove);
                 Assert.AreEqual((2 * 60) + 3, targettoremove.CustomTimer.DurationInSeconds);
-                Assert.AreEqual(line, targettoremove.CustomTimer.Name);
+                Assert.AreEqual("PigTimer-02:03", targettoremove.CustomTimer.Name);
                 isCalled = true;
             };
             logParser.Push(line, DateTime.Now);
@@ -134,12 +134,12 @@ namespace EQtoolsTests
         [TestMethod]
         public void GetCustomTimerStart_Test3()
         {
-            var line = "PigTimer-02:03:04";
+            var line = "You say, 'PigTimer-02:03:04'";
             logEvents.StartTimerEvent += (s, targettoremove) =>
             {
                 Assert.IsNotNull(targettoremove);
                 Assert.AreEqual((2 * 3600) + (3 * 60) + 4, targettoremove.CustomTimer.DurationInSeconds);
-                Assert.AreEqual(line, targettoremove.CustomTimer.Name);
+                Assert.AreEqual("PigTimer-02:03:04", targettoremove.CustomTimer.Name);
                 isCalled = true;
             };
 
@@ -157,7 +157,7 @@ namespace EQtoolsTests
                 Assert.AreEqual("xyzzy", targettoremove.CustomTimer.Name);
                 isCalled = true;
             };
-            var line = "PigTimer-02-xyzzy";
+            var line = "You say, 'PigTimer-02-xyzzy'";
             logParser.Push(line, DateTime.Now);
             Assert.IsTrue(isCalled);
         }
@@ -172,7 +172,7 @@ namespace EQtoolsTests
                 Assert.AreEqual("xyzzy", targettoremove.CustomTimer.Name);
                 isCalled = true;
             };
-            var line = "PigTimer-02:03-xyzzy";
+            var line = "You say, 'PigTimer-02:03-xyzzy'";
             logParser.Push(line, DateTime.Now);
             Assert.IsTrue(isCalled);
         }
@@ -187,7 +187,7 @@ namespace EQtoolsTests
                 Assert.AreEqual("xyzzy", targettoremove.CustomTimer.Name);
                 isCalled = true;
             };
-            var line = "PigTimer-02:03:04-xyzzy";
+            var line = "You say, 'PigTimer-02:03:04-xyzzy'";
             logParser.Push(line, DateTime.Now);
             Assert.IsTrue(isCalled);
         }
