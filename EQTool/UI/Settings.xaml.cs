@@ -63,8 +63,10 @@ namespace EQTool.UI
         private readonly MapLoad mapLoad;
         private readonly LoginMiddlemand loginMiddlemand;
         private readonly SettingsTestRunOverlay settingsTestRunOverlay;
+        private readonly WindowFactory windowFactory;
 
         public Settings(
+            WindowFactory windowFactory,
             LogParser logParser,
             MapLoad mapLoad,
             IAppDispatcher appDispatcher,
@@ -83,6 +85,7 @@ namespace EQTool.UI
             this.signalrPlayerHub = signalrPlayerHub;
             this.logParser = logParser;
             this.mapLoad = mapLoad;
+            this.windowFactory = windowFactory;
             this.appDispatcher = appDispatcher;
             damageLogParser = damageLogParse;
             this.playerCommsParser = playerCommsParser;
@@ -883,6 +886,11 @@ namespace EQTool.UI
         private void testDeathLoop(object sender, RoutedEventArgs e)
         {
             settingsTestRunOverlay.RunTest(OverlayTypes.DeathLoopEvent);
+        }
+
+        private void openConfigurationWindow(object sender, RoutedEventArgs e)
+        {
+            windowFactory.CreateWindow<ConfigurationWindow>().Show();
         }
     }
 }

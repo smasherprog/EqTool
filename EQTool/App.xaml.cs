@@ -570,7 +570,10 @@ namespace EQTool
                 w.Show();
             }
         }
-
+        public T CreateObject<T>()
+        {
+            return container.Resolve<T>();
+        }
         public void ToggleMapWindow(object sender, EventArgs e)
         {
             var s = (System.Windows.Forms.MenuItem)sender;

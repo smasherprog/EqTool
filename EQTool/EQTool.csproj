@@ -337,6 +337,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Services\BinarySerializer.cs" />
+    <Compile Include="Services\WindowFactory.cs" />
     <Compile Include="Services\Handlers\YouZonedHandler.cs" />
     <Compile Include="Services\Handlers\PlayerLevelDetectionHandler.cs" />
     <Compile Include="Services\Handlers\ClassDetectedHandler.cs" />
@@ -358,6 +359,9 @@
     <Compile Include="Services\P99LoginMiddlemand\LoginMiddlemand.cs" />
     <Compile Include="Services\Parsing\CommsParser.cs" />
     <Compile Include="Services\Parsing\YouZonedParser.cs" />
+    <Compile Include="UI\ConfigurationWindow.xaml.cs">
+      <DependentUpon>ConfigurationWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UI\CustomTimeSpanUpDown.cs" />
     <Compile Include="UI\EventOverlay.xaml.cs">
       <DependentUpon>EventOverlay.xaml</DependentUpon>
@@ -477,6 +481,10 @@
       <DependentUpon>SpellWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\BaseSaveStateWindow.cs" />
+    <Page Include="UI\ConfigurationWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UI\DPSMeter.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
