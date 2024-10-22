@@ -3,6 +3,7 @@ using EQTool.Models;
 using EQTool.Services;
 using EQTool.Services.Handlers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Collections.Generic;
 
 namespace EQtoolsTests
@@ -34,7 +35,7 @@ namespace EQtoolsTests
             };
 
             var line = "You say, 'PigTimer-30:00-StupidGoblin'";
-            logParser.Push(line);
+            logParser.Push(line, DateTime.Now);
             Assert.IsTrue(isCalled);
         }
 
@@ -50,7 +51,7 @@ namespace EQtoolsTests
             };
 
             var line = "You say, 'PigTimer-30:20-StupidGoblin'";
-            logParser.Push(line);
+            logParser.Push(line, DateTime.Now);
             Assert.IsTrue(isCalled);
         }
 
@@ -65,7 +66,7 @@ namespace EQtoolsTests
                 isCalled = true;
             };
             var line = "You say, 'PigTimer-90:20-StupidGoblin'";
-            logParser.Push(line);
+            logParser.Push(line, DateTime.Now);
             Assert.IsTrue(isCalled);
         }
 
@@ -80,7 +81,7 @@ namespace EQtoolsTests
                 isCalled = true;
             };
             var line = "You say, 'PigTimer-30:00-StupidGoblin'";
-            logParser.Push(line);
+            logParser.Push(line, DateTime.Now);
             Assert.IsTrue(isCalled);
         }
 
@@ -95,7 +96,7 @@ namespace EQtoolsTests
                 isCalled = true;
             };
             var line = "You say, 'PigTimer-30:00-StupidGoblin_with_club_near_me'";
-            logParser.Push(line);
+            logParser.Push(line, DateTime.Now);
             Assert.IsTrue(isCalled);
         }
 
@@ -111,7 +112,7 @@ namespace EQtoolsTests
                 isCalled = true;
             };
 
-            logParser.Push(line);
+            logParser.Push(line, DateTime.Now);
             Assert.IsTrue(isCalled);
         }
 
@@ -126,7 +127,7 @@ namespace EQtoolsTests
                 Assert.AreEqual(line, targettoremove.CustomTimer.Name);
                 isCalled = true;
             };
-            logParser.Push(line);
+            logParser.Push(line, DateTime.Now);
             Assert.IsTrue(isCalled);
         }
 
@@ -142,7 +143,7 @@ namespace EQtoolsTests
                 isCalled = true;
             };
 
-            logParser.Push(line);
+            logParser.Push(line, DateTime.Now);
             Assert.IsTrue(isCalled);
         }
 
@@ -157,7 +158,7 @@ namespace EQtoolsTests
                 isCalled = true;
             };
             var line = "PigTimer-02-xyzzy";
-            logParser.Push(line);
+            logParser.Push(line, DateTime.Now);
             Assert.IsTrue(isCalled);
         }
 
@@ -172,7 +173,7 @@ namespace EQtoolsTests
                 isCalled = true;
             };
             var line = "PigTimer-02:03-xyzzy";
-            logParser.Push(line);
+            logParser.Push(line, DateTime.Now);
             Assert.IsTrue(isCalled);
         }
 
@@ -187,7 +188,7 @@ namespace EQtoolsTests
                 isCalled = true;
             };
             var line = "PigTimer-02:03:04-xyzzy";
-            logParser.Push(line);
+            logParser.Push(line, DateTime.Now);
             Assert.IsTrue(isCalled);
         }
     }
