@@ -10,10 +10,10 @@ using System.Linq;
 namespace EQtoolsTests
 {
     [TestClass]
-    public class DamageTests : BaseTestClass
+    public class DamageParserTests : BaseTestClass
     {
         private readonly DamageParser parser;
-        public DamageTests()
+        public DamageParserTests()
         {
             parser = container.Resolve<DamageParser>();
         }
@@ -21,7 +21,7 @@ namespace EQtoolsTests
         [TestMethod]
         public void DamageLogParser_EatingDpsParseTest()
         {
-            DateTime now = DateTime.Now;
+            var now = DateTime.Now;
             var message = "Vebanab slices a willowisp for 56 points of damage.";
             var match = parser.Match(message, now);
 
@@ -37,7 +37,7 @@ namespace EQtoolsTests
         [TestMethod]
         public void DamageLogParser_NonMelleTest()
         {
-            DateTime now = DateTime.Now;
+            var now = DateTime.Now;
             var message = "Ratman Rager was hit by non-melee for 45 points of damage.";
             var match = parser.Match(message, now);
 
@@ -53,7 +53,7 @@ namespace EQtoolsTests
         [TestMethod]
         public void DamageLogParser_EatingDpsParseTest1()
         {
-            DateTime now = DateTime.Now;
+            var now = DateTime.Now;
             var message = "a willowisp slices Vebanab for 56 points of damage.";
             var match = parser.Match(message, now);
 
@@ -69,7 +69,7 @@ namespace EQtoolsTests
         [TestMethod]
         public void DamageLogParser_EatingDpsParseTestYou()
         {
-            DateTime now = DateTime.Now;
+            var now = DateTime.Now;
             var message = "You crush a shadowed man for 1 point of damage.";
             var match = parser.Match(message, now);
 
@@ -85,7 +85,7 @@ namespace EQtoolsTests
         [TestMethod]
         public void DamageLogParser_EatingDpsParseTestYouGetHit()
         {
-            DateTime now = DateTime.Now;
+            var now = DateTime.Now;
             var message = "Guard Valon bashes YOU for 12 points of damage.";
             var match = parser.Match(message, now);
 
@@ -101,7 +101,7 @@ namespace EQtoolsTests
         [TestMethod]
         public void DamageLogParser_EatingDpsParseTestMiss()
         {
-            DateTime now = DateTime.Now;
+            var now = DateTime.Now;
             var message = "You try to pierce an Iksar outcast, but miss!";
             var match = parser.Match(message, now);
 
@@ -187,8 +187,8 @@ namespace EQtoolsTests
         public void TestDPS3()
         {
             var vm = container.Resolve<DPSWindowViewModel>();
-            DateTime now = DateTime.Now.AddSeconds(-1);
-            string line = "some line";
+            var now = DateTime.Now.AddSeconds(-1);
+            var line = "some line";
 
             vm.TryAdd(new DamageEvent(now, line, "test1", "Test", 44, ""));
 

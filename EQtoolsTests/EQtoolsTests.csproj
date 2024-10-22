@@ -213,7 +213,7 @@
     <Compile Include="DTparsingTests.cs" />
     <Compile Include="ParsingTests.cs" />
     <Compile Include="MobInfoTests.cs" />
-    <Compile Include="DamageTests.cs" />
+    <Compile Include="DamageParserTests.cs" />
     <Compile Include="LogFileNameTests.cs" />
     <Compile Include="PlayerParsingTests.cs" />
     <Compile Include="GroupTests.cs" />
