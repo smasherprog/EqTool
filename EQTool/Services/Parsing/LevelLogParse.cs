@@ -3,12 +3,12 @@ using System;
 
 namespace EQTool.Services.Parsing
 {
-    public class LevelLogParse : IEqLogParseHandler
+    public class PlayerLevelDetectionParser : IEqLogParseHandler
     {
         private readonly string YouHaveGainedALevel = "You have gained a level! Welcome to level";
         private readonly LogEvents logEvents;
 
-        public LevelLogParse(LogEvents logEvents)
+        public PlayerLevelDetectionParser(LogEvents logEvents)
         {
             this.logEvents = logEvents;
         }
@@ -18,7 +18,7 @@ namespace EQTool.Services.Parsing
             var m = MatchLevel(line);
             if (m.HasValue)
             {
-                logEvents.Handle(new LevelEvent { NewLevel = m.Value, TimeStamp = timestamp });
+                logEvents.Handle(new PlayerLevelDetectionEvent { PlayerLevel = m.Value, Line = line, TimeStamp = timestamp });
                 return true;
             }
             return false;

@@ -123,6 +123,9 @@ namespace EQTool.Services
             {
                 AddMissingEnums(model);
                 var txt = JsonConvert.SerializeObject(model, Formatting.Indented);
+#if TESTS
+                return;
+#endif
                 lock (filelock)
                 {
                     File.WriteAllText("settings.json", txt);

@@ -73,11 +73,11 @@ namespace EQTool.Services.Parsing
             }
 
             // if we see a backstab from current player, set current player class to rogue
-            if (rv != null && rv.AttackerName == "You" && activePlayer.Player != null && activePlayer.Player.PlayerClass == null)
+            if (rv != null && rv.AttackerName == "You" && activePlayer.Player?.PlayerClass != PlayerClasses.Rogue)
             {
                 if (rv.DamageType.Contains("backstab"))
                 {
-                    activePlayer.Player.PlayerClass = PlayerClasses.Rogue;
+                    logEvents.Handle(new ClassDetectedEvent { TimeStamp = timestamp, Line = line, PlayerClass = PlayerClasses.Rogue });
                 }
             }
 

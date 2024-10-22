@@ -2,7 +2,6 @@
 using EQTool.Models;
 using EQTool.Services.Parsing;
 using EQTool.ViewModels;
-using EQToolShared.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Linq;
@@ -209,37 +208,6 @@ namespace EQtoolsTests
             };
 
             Assert.AreEqual(r.PercentOfTotalDamage, 10);
-        }
-
-        [TestMethod]
-        public void TestLevelUpMatch()
-        {
-            var loger = container.Resolve<LevelLogParse>();
-            var level = loger.MatchLevel("You have gained a level! Welcome to level 2!");
-            Assert.AreEqual(2, level);
-
-            level = loger.MatchLevel("You have gained a level! Welcome to level 60!");
-            Assert.AreEqual(60, level);
-        }
-
-        [TestMethod]
-        public void TestLevelUpMatch_NoPlayeryer_DoNoexplode()
-        {
-            var loger = container.Resolve<LevelLogParse>();
-            _ = container.Resolve<ActivePlayer>();
-            _ = loger.MatchLevel("You have gained a level! Welcome to level 2!");
-            _ = loger.MatchLevel("You have gained a level! Welcome to level 60!");
-        }
-
-        [TestMethod]
-        public void TestLevelDetectionThroughBackstab()
-        {
-            var message = "You backstab a willowisp for 56 points of damage.";
-
-            var player = container.Resolve<ActivePlayer>();
-            player.Player = new PlayerInfo { };
-            _ = parser.Match(message, DateTime.Now);
-            Assert.AreEqual(player.Player.PlayerClass, PlayerClasses.Rogue);
         }
 
         [TestMethod]

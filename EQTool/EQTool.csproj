@@ -337,6 +337,8 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Services\BinarySerializer.cs" />
+    <Compile Include="Services\Handlers\PlayerLevelDetectionHandler.cs" />
+    <Compile Include="Services\Handlers\ClassDetectedHandler.cs" />
     <Compile Include="Services\Handlers\RootHasWornOffHandler.cs" />
     <Compile Include="Services\Handlers\CompleteHealHandler.cs" />
     <Compile Include="Services\Handlers\DragonRoarHandler.cs" />

@@ -95,7 +95,6 @@ namespace EQTool.ViewModels
             }
         }
 
-        public int UserCastingSpellCounter { get; set; }
 
         public string LogFileName;
 

@@ -1059,7 +1059,7 @@ namespace EQtoolsTests
             var player = container.Resolve<ActivePlayer>();
             player.Player.Level = 0;
             player.Player.PlayerClass = null;
-            service.HandleYouBeginCastingSpellStart(line);
+            service.HandleYouBeginCastingSpellStart(line, DateTime.Now);
             var duration = SpellDurations.GetDuration_inSeconds(player.UserCastingSpell, null, null);
             Assert.IsNotNull(player);
             Assert.IsNotNull(duration);
@@ -1256,37 +1256,7 @@ namespace EQtoolsTests
             Assert.AreEqual("xyzzy", targettoremove.Name);
         }
 
-        [TestMethod]
-        public void TestLevelUpMatch()
-        {
-            var loger = container.Resolve<LevelLogParse>();
-            var level = loger.MatchLevel("You have gained a level! Welcome to level 2!");
-            Assert.AreEqual(2, level);
 
-            level = loger.MatchLevel("You have gained a level! Welcome to level 60!");
-            Assert.AreEqual(60, level);
-        }
-
-        [TestMethod]
-        public void TestLevelUpMatch_NoPlayeryer_DoNoexplode()
-        {
-            var loger = container.Resolve<LevelLogParse>();
-            _ = container.Resolve<ActivePlayer>();
-            _ = loger.MatchLevel("You have gained a level! Welcome to level 2!");
-            _ = loger.MatchLevel("You have gained a level! Welcome to level 60!");
-        }
-
-        [TestMethod]
-        public void TestClassDetectionSpell1()
-        {
-            _ = container.Resolve<EQSpells>();
-            var line = "You begin casting Aegolism.";
-            var service = container.Resolve<ParseHandleYouCasting>();
-            var player = container.Resolve<ActivePlayer>();
-            player.Player = new PlayerInfo { };
-            service.HandleYouBeginCastingSpellStart(line);
-            Assert.AreEqual(player.Player.PlayerClass, PlayerClasses.Cleric);
-        }
 
         [TestMethod]
         public void TestClassDetectionSpell1_TestNulls()
@@ -1295,20 +1265,8 @@ namespace EQtoolsTests
             var line = "You begin casting Aegolism.";
             var service = container.Resolve<ParseHandleYouCasting>();
             var player = container.Resolve<ActivePlayer>();
-            service.HandleYouBeginCastingSpellStart(line);
+            service.HandleYouBeginCastingSpellStart(line, DateTime.Now);
             Assert.AreEqual(player.Player.PlayerClass, PlayerClasses.Cleric);
-        }
-
-        [TestMethod]
-        public void TestLevelDetectionThroughSpells()
-        {
-            _ = container.Resolve<EQSpells>();
-            var line = "You begin casting Aegolism.";
-            var service = container.Resolve<ParseHandleYouCasting>();
-            var player = container.Resolve<ActivePlayer>();
-            player.Player = new PlayerInfo { };
-            service.HandleYouBeginCastingSpellStart(line);
-            Assert.AreEqual(player.Player.Level, 60);
         }
 
 

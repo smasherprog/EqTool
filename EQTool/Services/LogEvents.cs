@@ -125,12 +125,6 @@ namespace EQTool.Services
             GroupInviteEvent?.Invoke(this, e);
         }
 
-        public event EventHandler<LevelEvent> LevelEvent;
-        public void Handle(LevelEvent e)
-        {
-            LevelEvent?.Invoke(this, e);
-        }
-
         public event EventHandler<ResistSpellEvent> ResistSpellEvent;
         public void Handle(ResistSpellEvent e)
         {
@@ -189,6 +183,18 @@ namespace EQTool.Services
         public void Handle(PayerChangedEvent e)
         {
             PayerChangedEvent?.Invoke(this, e);
+        }
+
+        public event EventHandler<ClassDetectedEvent> ClassDetectedEvent;
+        public void Handle(ClassDetectedEvent e)
+        {
+            ClassDetectedEvent?.Invoke(this, e);
+        }
+
+        public event EventHandler<PlayerLevelDetectionEvent> PlayerLevelDetectionEvent;
+        public void Handle(PlayerLevelDetectionEvent e)
+        {
+            PlayerLevelDetectionEvent?.Invoke(this, e);
         }
     }
 }
