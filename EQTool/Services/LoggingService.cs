@@ -12,7 +12,7 @@ namespace EQTool.Services
         {
             var build = BuildType.Release;
 #if TEST
-            build =  BuildType.Test;
+            return;
 #elif DEBUG
             build = BuildType.Debug;
 #elif BETA
