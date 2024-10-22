@@ -215,7 +215,7 @@
     <Compile Include="MobInfoTests.cs" />
     <Compile Include="DamageTests.cs" />
     <Compile Include="LogFileNameTests.cs" />
-    <Compile Include="PlayerParsingTests.cs" />
+    <Compile Include="PlayerWhoLogParseTests.cs" />
     <Compile Include="GroupTests.cs" />
     <Compile Include="SpellTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
