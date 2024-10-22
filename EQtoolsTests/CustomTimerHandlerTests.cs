@@ -2,7 +2,6 @@
 using EQTool.Models;
 using EQTool.Services;
 using EQTool.Services.Handlers;
-using EQTool.ViewModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System.Collections.Generic;
 
@@ -13,11 +12,12 @@ namespace EQtoolsTests
     {
         private readonly LogParser logParser;
         private readonly LogEvents logEvents;
-        private readonly ActivePlayer activePlayer;
         private bool isCalled = false;
 
         public CustomTimerHandlerTests()
         {
+            logParser = container.Resolve<LogParser>();
+            logEvents = container.Resolve<LogEvents>();
             _ = container.Resolve<IEnumerable<BaseHandler>>();
             _ = container.Resolve<IEnumerable<IEqLogParseHandler>>();
         }
