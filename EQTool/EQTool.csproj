@@ -395,7 +395,7 @@
     <Compile Include="Services\Map\MapViewModelService.cs" />
     <Compile Include="Services\Parsing\CampParser.cs" />
     <Compile Include="Services\Parsing\OutlierSpellEffectParser.cs" />
-    <Compile Include="Services\Parsing\CustomTimerParser.cs" />
+    <Compile Include="Services\Handlers\CustomTimerHandler.cs" />
     <Compile Include="Services\Parsing\RandomParser.cs" />
     <Compile Include="Services\Parsing\ResistSpellParser.cs" />
     <Compile Include="Services\Parsing\GroupInviteParser.cs" />

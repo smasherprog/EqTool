@@ -1127,7 +1127,7 @@ namespace EQtoolsTests
         [TestMethod]
         public void GetCustomTimerStart()
         {
-            var service = container.Resolve<CustomTimerParser>();
+            var service = container.Resolve<CustomTimerHandler>();
             var line = "You say, 'PigTimer-30:00-StupidGoblin'";
             var targettoremove = service.ParseStartTimer(line);
 
@@ -1139,7 +1139,7 @@ namespace EQtoolsTests
         [TestMethod]
         public void GetCustomTimerStart_WithSeconds()
         {
-            var service = container.Resolve<CustomTimerParser>();
+            var service = container.Resolve<CustomTimerHandler>();
             var line = "You say, 'PigTimer-30:20-StupidGoblin'";
             var targettoremove = service.ParseStartTimer(line);
 
@@ -1151,7 +1151,7 @@ namespace EQtoolsTests
         [TestMethod]
         public void GetCustomTimerStart_WithSeconds_andmorethan60minutes()
         {
-            var service = container.Resolve<CustomTimerParser>();
+            var service = container.Resolve<CustomTimerHandler>();
             var line = "You say, 'PigTimer-90:20-StupidGoblin'";
             var targettoremove = service.ParseStartTimer(line);
 
@@ -1163,7 +1163,7 @@ namespace EQtoolsTests
         [TestMethod]
         public void GetCustomTimerStart1()
         {
-            var service = container.Resolve<CustomTimerParser>();
+            var service = container.Resolve<CustomTimerHandler>();
             var line = "You say, 'PigTimer-30:00-StupidGoblin'";
             var targettoremove = service.ParseStartTimer(line);
 
@@ -1175,7 +1175,7 @@ namespace EQtoolsTests
         [TestMethod]
         public void GetCustomTimerStart_TestSpaces()
         {
-            var service = container.Resolve<CustomTimerParser>();
+            var service = container.Resolve<CustomTimerHandler>();
             var line = "You say, 'PigTimer-30:00-StupidGoblin_with_club_near_me'";
             var targettoremove = service.ParseStartTimer(line);
 
@@ -1187,7 +1187,7 @@ namespace EQtoolsTests
         [TestMethod]
         public void GetCustomTimerStart_Test1()
         {
-            var service = container.Resolve<CustomTimerParser>();
+            var service = container.Resolve<CustomTimerHandler>();
             var line = "PigTimer-02";
             var targettoremove = service.ParseStartTimer(line);
 
@@ -1199,7 +1199,7 @@ namespace EQtoolsTests
         [TestMethod]
         public void GetCustomTimerStart_Test2()
         {
-            var service = container.Resolve<CustomTimerParser>();
+            var service = container.Resolve<CustomTimerHandler>();
             var line = "PigTimer-02:03";
             var targettoremove = service.ParseStartTimer(line);
 
@@ -1211,7 +1211,7 @@ namespace EQtoolsTests
         [TestMethod]
         public void GetCustomTimerStart_Test3()
         {
-            var service = container.Resolve<CustomTimerParser>();
+            var service = container.Resolve<CustomTimerHandler>();
             var line = "PigTimer-02:03:04";
             var targettoremove = service.ParseStartTimer(line);
 
@@ -1223,7 +1223,7 @@ namespace EQtoolsTests
         [TestMethod]
         public void GetCustomTimerStart_Test1a()
         {
-            var service = container.Resolve<CustomTimerParser>();
+            var service = container.Resolve<CustomTimerHandler>();
             var line = "PigTimer-02-xyzzy";
             var targettoremove = service.ParseStartTimer(line);
 
@@ -1235,7 +1235,7 @@ namespace EQtoolsTests
         [TestMethod]
         public void GetCustomTimerStart_Test2a()
         {
-            var service = container.Resolve<CustomTimerParser>();
+            var service = container.Resolve<CustomTimerHandler>();
             var line = "PigTimer-02:03-xyzzy";
             var targettoremove = service.ParseStartTimer(line);
 
@@ -1247,7 +1247,7 @@ namespace EQtoolsTests
         [TestMethod]
         public void GetCustomTimerStart_Test3a()
         {
-            var service = container.Resolve<CustomTimerParser>();
+            var service = container.Resolve<CustomTimerHandler>();
             var line = "PigTimer-02:03:04-xyzzy";
             var targettoremove = service.ParseStartTimer(line);
 
