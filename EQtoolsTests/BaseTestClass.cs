@@ -7,10 +7,11 @@ namespace EQtoolsTests
     public class BaseTestClass
     {
         protected readonly IContainer container;
+        protected readonly ActivePlayer player;
         public BaseTestClass()
         {
             container = DI.Init();
-            var player = container.Resolve<ActivePlayer>();
+            player = container.Resolve<ActivePlayer>();
             player.Player = new PlayerInfo
             {
                 Level = 54,
