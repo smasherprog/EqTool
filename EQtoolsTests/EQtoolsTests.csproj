@@ -202,6 +202,7 @@
     <Compile Include="Fakes\Class1.cs" />
     <Compile Include="Fakes\TextToSpeachFake.cs" />
     <Compile Include="PlayerLevelDetectionParserTests.cs" />
+    <Compile Include="CustomTimerHandlerTests.cs" />
     <Compile Include="ZoneSpawnTimeTests.cs" />
     <Compile Include="CompleteHealCommsHandlerTests.cs" />
     <Compile Include="RandomRollTests.cs" />
