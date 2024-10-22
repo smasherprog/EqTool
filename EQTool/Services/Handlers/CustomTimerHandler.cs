@@ -1,10 +1,8 @@
 ﻿using EQTool.Models;
-using EQTool.Services.Handlers;
 using EQTool.ViewModels;
 using EQToolShared.HubModels;
 using System;
 using System.Text.RegularExpressions;
-using System.Windows.Shapes;
 
 namespace EQTool.Services.Handlers
 {
@@ -32,14 +30,6 @@ namespace EQTool.Services.Handlers
     //
     public class CustomTimerHandler : BaseHandler
     {
-        private readonly LogEvents logEvents;
-
-        //
-        // ctor
-        //
-        // register this handler as a listener for the Events it cares about
-        //
-
         public CustomTimerHandler(LogEvents logEvents, ActivePlayer activePlayer, EQToolSettings eQToolSettings, ITextToSpeach textToSpeach) : base(logEvents, activePlayer, eQToolSettings, textToSpeach)
         {
             this.logEvents.CommsEvent += LogEvents_CommsEvent;
@@ -94,8 +84,7 @@ namespace EQTool.Services.Handlers
                     timerSeconds += 3600 * int.Parse(hh);
                 }
                 Console.WriteLine($"match found [{match}], [{hh}], [{mm}], [{ss}], [{label}], [{timerSeconds}]");
-
-                CustomTimer customTimer = new CustomTimer
+                _ = new CustomTimer
                 {
                     DurationInSeconds = timerSeconds,
                     // if the user didn't specify a label, we'll give it the match string
