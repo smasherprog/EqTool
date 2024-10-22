@@ -42,12 +42,6 @@ namespace EQTool.Services.Parsing
         // returns null
         public CommsEvent Match(string line, DateTime timestamp)
         {
-            CommsEvent rv = null;
-            if (activePlayer != null)
-            {
-                _ = activePlayer.Player.Name;
-            }
-
             //
             // begin checking for the various channels
             //
@@ -64,7 +58,7 @@ namespace EQTool.Services.Parsing
             var match = regex.Match(line);
             if (match.Success)
             {
-                rv = new CommsEvent(timestamp, line, CommsEvent.Channel.TELL, match.Groups["content"].Value, match.Groups["sender"].Value, match.Groups["receiver"].Value);
+                return new CommsEvent(timestamp, line, CommsEvent.Channel.TELL, match.Groups["content"].Value, match.Groups["sender"].Value, match.Groups["receiver"].Value);
             }
 
             //Azleep -> Jamori: ok
@@ -86,7 +80,7 @@ namespace EQTool.Services.Parsing
                     receiver = "You";
                 }
 
-                rv = new CommsEvent(timestamp, line, CommsEvent.Channel.TELL, match.Groups["content"].Value, sender, receiver);
+                return new CommsEvent(timestamp, line, CommsEvent.Channel.TELL, match.Groups["content"].Value, sender, receiver);
             }
 
             // this is actually a tell, even though it doesn't look like it.  It doesn't show up for anyone but the recceiver
@@ -95,7 +89,9 @@ namespace EQTool.Services.Parsing
             regex = new Regex(pattern, RegexOptions.Compiled);
             match = regex.Match(line);
             if (match.Success)
-                rv = new CommsEvent(timestamp, line, CommsEvent.Channel.TELL, match.Groups["content"].Value, "System", "You");
+            {
+                return new CommsEvent(timestamp, line, CommsEvent.Channel.TELL, match.Groups["content"].Value, "System", "You");
+            }
 
 
             // ------------------------------------------------------------------------------------------------------------------------------------------------
@@ -109,9 +105,8 @@ namespace EQTool.Services.Parsing
             match = regex.Match(line);
             if (match.Success)
             {
-                rv = new CommsEvent(timestamp, line, CommsEvent.Channel.SAY, match.Groups["content"].Value, match.Groups["sender"].Value);
+                return new CommsEvent(timestamp, line, CommsEvent.Channel.SAY, match.Groups["content"].Value, match.Groups["sender"].Value);
             }
-
 
             // ------------------------------------------------------------------------------------------------------------------------------------------------
             // group
@@ -123,9 +118,8 @@ namespace EQTool.Services.Parsing
             match = regex.Match(line);
             if (match.Success)
             {
-                rv = new CommsEvent(timestamp, line, CommsEvent.Channel.GROUP, match.Groups["content"].Value, match.Groups["sender"].Value);
+                return new CommsEvent(timestamp, line, CommsEvent.Channel.GROUP, match.Groups["content"].Value, match.Groups["sender"].Value);
             }
-
 
             // ------------------------------------------------------------------------------------------------------------------------------------------------
             // guild
@@ -137,9 +131,8 @@ namespace EQTool.Services.Parsing
             match = regex.Match(line);
             if (match.Success)
             {
-                rv = new CommsEvent(timestamp, line, CommsEvent.Channel.GUILD, match.Groups["content"].Value, match.Groups["sender"].Value);
+                return new CommsEvent(timestamp, line, CommsEvent.Channel.GUILD, match.Groups["content"].Value, match.Groups["sender"].Value);
             }
-
 
             // ------------------------------------------------------------------------------------------------------------------------------------------------
             // auction
@@ -151,9 +144,8 @@ namespace EQTool.Services.Parsing
             match = regex.Match(line);
             if (match.Success)
             {
-                rv = new CommsEvent(timestamp, line, CommsEvent.Channel.AUCTION, match.Groups["content"].Value, match.Groups["sender"].Value);
+                return new CommsEvent(timestamp, line, CommsEvent.Channel.AUCTION, match.Groups["content"].Value, match.Groups["sender"].Value);
             }
-
 
             // ------------------------------------------------------------------------------------------------------------------------------------------------
             // ooc
@@ -165,9 +157,8 @@ namespace EQTool.Services.Parsing
             match = regex.Match(line);
             if (match.Success)
             {
-                rv = new CommsEvent(timestamp, line, CommsEvent.Channel.OOC, match.Groups["content"].Value, match.Groups["sender"].Value);
+                return new CommsEvent(timestamp, line, CommsEvent.Channel.OOC, match.Groups["content"].Value, match.Groups["sender"].Value);
             }
-
 
             // ------------------------------------------------------------------------------------------------------------------------------------------------
             // shout
@@ -177,12 +168,9 @@ namespace EQTool.Services.Parsing
             pattern = @"^(?<sender>.+) shout(s)?, '(?<content>.+)'";
             regex = new Regex(pattern, RegexOptions.Compiled);
             match = regex.Match(line);
-            if (match.Success)
-            {
-                rv = new CommsEvent(timestamp, line, CommsEvent.Channel.SHOUT, match.Groups["content"].Value, match.Groups["sender"].Value);
-            }
-
-            return rv;
+            return match.Success
+                ? new CommsEvent(timestamp, line, CommsEvent.Channel.SHOUT, match.Groups["content"].Value, match.Groups["sender"].Value)
+                : null;
         }
     }
 }

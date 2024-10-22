@@ -16,21 +16,26 @@ namespace EQTool.Services.Parsing
 
         private void LogEvents_CommsEvent(object sender, CommsEvent e)
         {
-            var m = ChCheck(e.Content, e.TimeStamp);
+            if (e.TheChannel == CommsEvent.Channel.TELL)
+            {
+                return;
+            }
+
+            var m = ChCheck(e.Sender, e.Content, e.TimeStamp);
             if (m != null)
             {
                 logEvents.Handle(m);
             }
         }
 
-        public CompleteHealEvent ChCheck(string line, DateTime timestamp)
+        public CompleteHealEvent ChCheck(string sender, string line, DateTime timestamp)
         {
             var chwordfound = " ch ";
             var chindex = line.IndexOf(chwordfound, System.StringComparison.OrdinalIgnoreCase);
             if (chindex == -1)
             {
                 chwordfound = "ch ";
-                chindex = line.IndexOf("'ch ", System.StringComparison.OrdinalIgnoreCase);
+                chindex = line.IndexOf("ch ", System.StringComparison.OrdinalIgnoreCase);
             }
 
             if (chindex == -1)
@@ -146,13 +151,12 @@ namespace EQTool.Services.Parsing
                     }
                 }
 
-                var caster = line.Substring(0, line.IndexOf(" ")).Trim('\'').Trim();
                 var ret = new CompleteHealEvent
                 {
-                    Caster = caster,
+                    Caster = sender,
                     Position = position,
                     Recipient = recipient,
-                    RecipientGuild = tag,
+                    Tag = tag,
                     TimeStamp = timestamp
                 };
                 if (ret.Caster.Contains(" "))

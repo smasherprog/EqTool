@@ -67,7 +67,7 @@ namespace EQtoolsTests
                 }
             }
 
-            _ = builder.RegisterType<EQTool.Services.FakeAppDispatcher>().As<EQTool.Services.IAppDispatcher>().SingleInstance();
+            _ = builder.RegisterType<AppDispatcherFake>().As<EQTool.Services.IAppDispatcher>().SingleInstance();
             _ = builder.RegisterType<EQTool.Services.SpellIcons>().AsSelf().SingleInstance();
             _ = builder.RegisterType<EQTool.Services.ParseSpells_spells_us>().AsSelf().SingleInstance();
             _ = builder.RegisterType<EQTool.ViewModels.SettingsWindowViewModel>().AsSelf().SingleInstance();

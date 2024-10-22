@@ -198,10 +198,11 @@
   <ItemGroup>
     <Compile Include="BaseTestClass.cs" />
     <Compile Include="DeathTests.cs" />
-    <Compile Include="CommsTests.cs" />
+    <Compile Include="CommsParserTests.cs" />
+    <Compile Include="Fakes\Class1.cs" />
     <Compile Include="Fakes\TextToSpeachFake.cs" />
     <Compile Include="ZoneSpawnTimeTests.cs" />
-    <Compile Include="ChChainTests.cs" />
+    <Compile Include="CompleteHealCommsHandlerTests.cs" />
     <Compile Include="RandomRollTests.cs" />
     <Compile Include="FTETests.cs" />
     <Compile Include="EnrageTests.cs" />

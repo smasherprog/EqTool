@@ -8,14 +8,6 @@ namespace EQTool.Services
         void DispatchUI(Action action);
     }
 
-    public class FakeAppDispatcher : IAppDispatcher
-    {
-        public void DispatchUI(Action action)
-        {
-            action();
-        }
-    }
-
     public class AppDispatcher : IAppDispatcher
     {
         public void DispatchUI(Action action)

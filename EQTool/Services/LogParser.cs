@@ -119,9 +119,13 @@ namespace EQTool.Services
                     }
                 }
             }
-            catch (Exception e)
+            catch (Exception)
             {
+#if DEBUG || TEST
+                throw;
+#else
                 App.LogUnhandledException(e, $"LogParser Filename: '{activePlayer.LogFileName}' '{line1}'", activePlayer?.Player?.Server);
+#endif
             }
         }
 

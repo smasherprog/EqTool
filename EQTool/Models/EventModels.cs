@@ -180,7 +180,7 @@ namespace EQTool.Models
     public class CompleteHealEvent : BaseLogParseEvent
     {
         public string Recipient { get; set; }
-        public string RecipientGuild { get; set; }
+        public string Tag { get; set; }
         public string Position { get; set; }
         public string Caster { get; set; }
     }

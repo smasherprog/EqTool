@@ -1,7 +1,6 @@
 ﻿using Autofac;
 using EQTool.Models;
 using EQTool.Services.Parsing;
-using EQTool.ViewModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 
@@ -9,21 +8,21 @@ using System;
 namespace EQtoolsTests
 {
     [TestClass]
-    public class CommsTests : BaseTestClass
+    public class CommsParserTests : BaseTestClass
     {
         private readonly CommsParser parser;
 
-        public CommsTests()
+        public CommsParserTests()
         {
             //container = DI.Init();
             parser = container.Resolve<CommsParser>();
         }
 
         [TestMethod]
-        public void TestTell_FromPlayer ()
+        public void TestTell_FromPlayer()
         {
             //You told Qdyil, 'not even sure'
-            DateTime now = DateTime.Now;
+            var now = DateTime.Now;
             var message = "You told Qdyil, 'not even sure'";
             var match = parser.Match(message, now);
 
@@ -40,7 +39,7 @@ namespace EQtoolsTests
         public void TestTell_FromOthers()
         {
             //[Sat Mar 21 17:55:33 2020] a spectre tells you, 'Attacking a spectre Master.'
-            DateTime now = DateTime.Now;
+            var now = DateTime.Now;
             var message = "a spectre tells you, 'Attacking a spectre Master.'";
             var match = parser.Match(message, now);
 
@@ -58,7 +57,7 @@ namespace EQtoolsTests
         public void TestTell2_FromPlayer()
         {
             //Azleep -> Jamori: ok
-            DateTime now = DateTime.Now;
+            var now = DateTime.Now;
             var message = "Azleep -> Jamori: ok";
             var match = parser.Match(message, now);
 
@@ -75,7 +74,7 @@ namespace EQtoolsTests
         public void TestTell2_FromOthers()
         {
             //[Thu Aug 18 14:31:48 2022] Berrma -> Azleep: ya just need someone to invite i believe
-            DateTime now = DateTime.Now;
+            var now = DateTime.Now;
             var message = "Berrma -> Azleep: ya just need someone to invite i believe";
             var match = parser.Match(message, now);
 
@@ -92,7 +91,7 @@ namespace EQtoolsTests
         public void TestTell_UnknownUser()
         {
             //[Mon Oct 21 11:50:55 2024] .PigTimer-30 is not online at this time.
-            DateTime now = DateTime.Now;
+            var now = DateTime.Now;
             var message = ".PigTimer-30 is not online at this time.";
             var match = parser.Match(message, now);
 
@@ -110,7 +109,7 @@ namespace EQtoolsTests
         public void TestSay_FromPlayer()
         {
             //You say, 'Hail, Wenglawks Kkeak'
-            DateTime now = DateTime.Now;
+            var now = DateTime.Now;
             var message = "You say, 'Hail, Wenglawks Kkeak'";
             var match = parser.Match(message, now);
 
@@ -127,7 +126,7 @@ namespace EQtoolsTests
         public void TestSay_FromOthers()
         {
             //[Wed Nov 20 20:29:06 2019] Jaloy says, 'i am a new warrior'
-            DateTime now = DateTime.Now;
+            var now = DateTime.Now;
             var message = "Jaloy says, 'i am a new warrior'";
             var match = parser.Match(message, now);
 
@@ -144,7 +143,7 @@ namespace EQtoolsTests
         public void TestGroup_FromPlayer()
         {
             //You tell your party, 'oh interesting'
-            DateTime now = DateTime.Now;
+            var now = DateTime.Now;
             var message = "You tell your party, 'oh interesting'";
             var match = parser.Match(message, now);
 
@@ -161,7 +160,7 @@ namespace EQtoolsTests
         public void TestGroup_FromOthers()
         {
             //Jaloy tells the group, 'wiki says he can be in 1 of 2 locations'
-            DateTime now = DateTime.Now;
+            var now = DateTime.Now;
             var message = "Jaloy tells the group, 'wiki says he can be in 1 of 2 locations'";
             var match = parser.Match(message, now);
 
@@ -178,7 +177,7 @@ namespace EQtoolsTests
         public void TestGuild_FromPlayer()
         {
             //You say to your guild, 'nice'
-            DateTime now = DateTime.Now;
+            var now = DateTime.Now;
             var message = "You say to your guild, 'nice'";
             var match = parser.Match(message, now);
 
@@ -195,7 +194,7 @@ namespace EQtoolsTests
         public void TestGuild_FromOthers()
         {
             //[Wed Oct 16 17:17:25 2024] Okeanos tells the guild, 'it literally says speedway but the  products inside the store are 7/11 branded '
-            DateTime now = DateTime.Now;
+            var now = DateTime.Now;
             var message = "Okeanos tells the guild, 'it literally says speedway but the  products inside the store are 7/11 branded '";
             var match = parser.Match(message, now);
 
@@ -212,7 +211,7 @@ namespace EQtoolsTests
         public void TestAuction_FromPlayer()
         {
             //You auction, 'wtb diamond'
-            DateTime now = DateTime.Now;
+            var now = DateTime.Now;
             var message = "You auction, 'wtb diamond'";
             var match = parser.Match(message, now);
 
@@ -229,7 +228,7 @@ namespace EQtoolsTests
         public void TestAuction_FromOthers()
         {
             //[Mon Feb 22 14:40:47 2021] Mezzter auctions, 'WTS bone chips 7p per stack pst'
-            DateTime now = DateTime.Now;
+            var now = DateTime.Now;
             var message = "Mezzter auctions, 'WTS bone chips 7p per stack pst'";
             var match = parser.Match(message, now);
 
@@ -246,7 +245,7 @@ namespace EQtoolsTests
         public void TestOOC_FromPlayer()
         {
             //You say out of character, 'train to west'
-            DateTime now = DateTime.Now;
+            var now = DateTime.Now;
             var message = "You say out of character, 'train to west'";
             var match = parser.Match(message, now);
 
@@ -263,7 +262,7 @@ namespace EQtoolsTests
         public void TestOOC_FromOthers()
         {
             //[Wed Nov 20 20:18:47 2019] Enudara says out of character, 'grats'
-            DateTime now = DateTime.Now;
+            var now = DateTime.Now;
             var message = "Enudara says out of character, 'grats'";
             var match = parser.Match(message, now);
 
@@ -280,7 +279,7 @@ namespace EQtoolsTests
         public void TestShout_FromPlayer()
         {
             //You shout, 'When it is time - Horse Charmers will be Leffingwell and Ceous'
-            DateTime now = DateTime.Now;
+            var now = DateTime.Now;
             var message = "You shout, 'When it is time - Horse Charmers will be Leffingwell and Ceous'";
             var match = parser.Match(message, now);
 
@@ -297,7 +296,7 @@ namespace EQtoolsTests
         public void TestShout_FromOthers()
         {
             //[Sat Aug 22 18:54:17 2020] Fizzix shouts, 'ASSIST Fizzix on --- [ an essence tamer ]'
-            DateTime now = DateTime.Now;
+            var now = DateTime.Now;
             var message = "Fizzix shouts, 'ASSIST Fizzix on --- [ an essence tamer ]'";
             var match = parser.Match(message, now);
 
