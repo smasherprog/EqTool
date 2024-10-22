@@ -202,6 +202,7 @@
     <Compile Include="Fakes\Class1.cs" />
     <Compile Include="Fakes\TextToSpeachFake.cs" />
     <Compile Include="PlayerLevelDetectionParserTests.cs" />
+    <Compile Include="CustomTimerHandlerTests.cs" />
     <Compile Include="ZoneSpawnTimeTests.cs" />
     <Compile Include="CompleteHealCommsHandlerTests.cs" />
     <Compile Include="RandomRollTests.cs" />
@@ -214,7 +215,7 @@
     <Compile Include="DTparsingTests.cs" />
     <Compile Include="ParsingTests.cs" />
     <Compile Include="MobInfoTests.cs" />
-    <Compile Include="DamageTests.cs" />
+    <Compile Include="DamageParserTests.cs" />
     <Compile Include="LogFileNameTests.cs" />
     <Compile Include="PlayerWhoLogParseTests.cs" />
     <Compile Include="GroupTests.cs" />

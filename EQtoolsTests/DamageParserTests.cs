@@ -9,10 +9,10 @@ using System.Linq;
 namespace EQtoolsTests
 {
     [TestClass]
-    public class DamageTests : BaseTestClass
+    public class DamageParserTests : BaseTestClass
     {
         private readonly DamageParser parser;
-        public DamageTests()
+        public DamageParserTests()
         {
             parser = container.Resolve<DamageParser>();
         }
