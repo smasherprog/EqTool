@@ -3,13 +3,13 @@ using EQTool.ViewModels;
 
 namespace EQTool.Services.Handlers
 {
-    public class ClassDetectedHandler : BaseHandler
+    public class YouZonedHandler : BaseHandler
     {
         private readonly EQToolSettings settings;
         private readonly EQToolSettingsLoad toolSettingsLoad;
         private readonly IAppDispatcher appDispatcher;
 
-        public ClassDetectedHandler(
+        public YouZonedHandler(
             IAppDispatcher appDispatcher,
             LogEvents logEvents,
             ActivePlayer activePlayer,
@@ -21,16 +21,16 @@ namespace EQTool.Services.Handlers
             this.appDispatcher = appDispatcher;
             this.settings = eQToolSettings;
             this.toolSettingsLoad = toolSettingsLoad;
-            this.logEvents.ClassDetectedEvent += LogEvents_ClassDetectedEvent;
+            this.logEvents.YouZonedEvent += LogEvents_YouZonedEvent;
         }
 
-        private void LogEvents_ClassDetectedEvent(object sender, ClassDetectedEvent e)
+        private void LogEvents_YouZonedEvent(object sender, YouZonedEvent e)
         {
             if (activePlayer?.Player != null)
             {
                 appDispatcher.DispatchUI(() =>
                 {
-                    activePlayer.Player.PlayerClass = e.PlayerClass;
+                    activePlayer.Player.Zone = e.ShortName;
                 });
 
                 toolSettingsLoad.Save(settings);

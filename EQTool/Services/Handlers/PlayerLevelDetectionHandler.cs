@@ -7,8 +7,10 @@ namespace EQTool.Services.Handlers
     {
         private readonly EQToolSettings settings;
         private readonly EQToolSettingsLoad toolSettingsLoad;
+        private readonly IAppDispatcher appDispatcher;
 
         public PlayerLevelDetectionHandler(
+            IAppDispatcher appDispatcher,
             LogEvents logEvents,
             ActivePlayer activePlayer,
             EQToolSettings eQToolSettings,
@@ -16,6 +18,7 @@ namespace EQTool.Services.Handlers
             EQToolSettings settings,
             EQToolSettingsLoad toolSettingsLoad) : base(logEvents, activePlayer, eQToolSettings, textToSpeach)
         {
+            this.appDispatcher = appDispatcher;
             this.settings = eQToolSettings;
             this.toolSettingsLoad = toolSettingsLoad;
             this.logEvents.PlayerLevelDetectionEvent += LogEvents_LevelDetectedEvent;
@@ -25,7 +28,11 @@ namespace EQTool.Services.Handlers
         {
             if (activePlayer?.Player != null)
             {
-                activePlayer.Player.Level = e.PlayerLevel;
+                appDispatcher.DispatchUI(() =>
+                {
+                    activePlayer.Player.Level = e.PlayerLevel;
+                });
+
                 toolSettingsLoad.Save(settings);
             }
         }

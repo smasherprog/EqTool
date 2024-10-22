@@ -42,18 +42,8 @@ namespace EQTool.Services
             UITimer.Elapsed += Poll;
             UITimer.Enabled = true;
             LastYouActivity = DateTime.UtcNow.AddMonths(-1);
-            this.logEvents.YouZonedEvent += LogEvents_YouZonedEvent;
         }
 
-        private void LogEvents_YouZonedEvent(object sender, YouZonedEvent e)
-        {
-            var p = activePlayer.Player;
-            if (p != null)
-            {
-                p.Zone = e.ShortName;
-                toolSettingsLoad.Save(settings);
-            }
-        }
         public void Push(string line)
         {
             appDispatcher.DispatchUI(() =>
