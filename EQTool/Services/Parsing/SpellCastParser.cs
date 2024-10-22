@@ -79,7 +79,7 @@ namespace EQTool.Services.Parsing
             }
             if (line.StartsWith(EQSpells.YouBeginCasting))
             {
-                parseHandleYouCasting.HandleYouBeginCastingSpellStart(line);
+                parseHandleYouCasting.HandleYouBeginCastingSpellStart(line, timestamp);
 
                 // fire off an event indicating spell casting has started
                 logEvents.Handle(new YouBeginCastingEvent(timestamp, line));

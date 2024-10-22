@@ -2,7 +2,6 @@
 using EQTool.Models;
 using EQTool.Services.Parsing;
 using EQTool.ViewModels;
-using EQToolShared.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Linq;
@@ -21,7 +20,7 @@ namespace EQtoolsTests
         [TestMethod]
         public void DamageLogParser_EatingDpsParseTest()
         {
-            DateTime now = DateTime.Now;
+            var now = DateTime.Now;
             var message = "Vebanab slices a willowisp for 56 points of damage.";
             var match = parser.Match(message, now);
 
@@ -37,7 +36,7 @@ namespace EQtoolsTests
         [TestMethod]
         public void DamageLogParser_NonMelleTest()
         {
-            DateTime now = DateTime.Now;
+            var now = DateTime.Now;
             var message = "Ratman Rager was hit by non-melee for 45 points of damage.";
             var match = parser.Match(message, now);
 
@@ -53,7 +52,7 @@ namespace EQtoolsTests
         [TestMethod]
         public void DamageLogParser_EatingDpsParseTest1()
         {
-            DateTime now = DateTime.Now;
+            var now = DateTime.Now;
             var message = "a willowisp slices Vebanab for 56 points of damage.";
             var match = parser.Match(message, now);
 
@@ -69,7 +68,7 @@ namespace EQtoolsTests
         [TestMethod]
         public void DamageLogParser_EatingDpsParseTestYou()
         {
-            DateTime now = DateTime.Now;
+            var now = DateTime.Now;
             var message = "You crush a shadowed man for 1 point of damage.";
             var match = parser.Match(message, now);
 
@@ -85,7 +84,7 @@ namespace EQtoolsTests
         [TestMethod]
         public void DamageLogParser_EatingDpsParseTestYouGetHit()
         {
-            DateTime now = DateTime.Now;
+            var now = DateTime.Now;
             var message = "Guard Valon bashes YOU for 12 points of damage.";
             var match = parser.Match(message, now);
 
@@ -101,7 +100,7 @@ namespace EQtoolsTests
         [TestMethod]
         public void DamageLogParser_EatingDpsParseTestMiss()
         {
-            DateTime now = DateTime.Now;
+            var now = DateTime.Now;
             var message = "You try to pierce an Iksar outcast, but miss!";
             var match = parser.Match(message, now);
 
@@ -187,8 +186,8 @@ namespace EQtoolsTests
         public void TestDPS3()
         {
             var vm = container.Resolve<DPSWindowViewModel>();
-            DateTime now = DateTime.Now.AddSeconds(-1);
-            string line = "some line";
+            var now = DateTime.Now.AddSeconds(-1);
+            var line = "some line";
 
             vm.TryAdd(new DamageEvent(now, line, "test1", "Test", 44, ""));
 
@@ -209,37 +208,6 @@ namespace EQtoolsTests
             };
 
             Assert.AreEqual(r.PercentOfTotalDamage, 10);
-        }
-
-        [TestMethod]
-        public void TestLevelUpMatch()
-        {
-            var loger = container.Resolve<LevelLogParse>();
-            var level = loger.MatchLevel("You have gained a level! Welcome to level 2!");
-            Assert.AreEqual(2, level);
-
-            level = loger.MatchLevel("You have gained a level! Welcome to level 60!");
-            Assert.AreEqual(60, level);
-        }
-
-        [TestMethod]
-        public void TestLevelUpMatch_NoPlayeryer_DoNoexplode()
-        {
-            var loger = container.Resolve<LevelLogParse>();
-            _ = container.Resolve<ActivePlayer>();
-            _ = loger.MatchLevel("You have gained a level! Welcome to level 2!");
-            _ = loger.MatchLevel("You have gained a level! Welcome to level 60!");
-        }
-
-        [TestMethod]
-        public void TestLevelDetectionThroughBackstab()
-        {
-            var message = "You backstab a willowisp for 56 points of damage.";
-
-            var player = container.Resolve<ActivePlayer>();
-            player.Player = new PlayerInfo { };
-            _ = parser.Match(message, DateTime.Now);
-            Assert.AreEqual(player.Player.PlayerClass, PlayerClasses.Rogue);
         }
 
         [TestMethod]

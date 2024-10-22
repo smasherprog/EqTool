@@ -12,15 +12,18 @@ namespace EQTool.Services.Parsing.Helpers
         private readonly ActivePlayer activePlayer;
         private readonly IAppDispatcher appDispatcher;
         private readonly EQSpells spells;
+        private readonly LogEvents logEvents;
+        private int UserCastingSpellCounter = 0;
 
-        public ParseHandleYouCasting(ActivePlayer activePlayer, IAppDispatcher appDispatcher, EQSpells spells)
+        public ParseHandleYouCasting(ActivePlayer activePlayer, IAppDispatcher appDispatcher, EQSpells spells, LogEvents logEvents)
         {
             this.activePlayer = activePlayer;
             this.appDispatcher = appDispatcher;
             this.spells = spells;
+            this.logEvents = logEvents;
         }
 
-        public void HandleYouBeginCastingSpellStart(string message)
+        public void HandleYouBeginCastingSpellStart(string message, DateTime timestamp)
         {
             var spellname = message.Substring(EQSpells.YouBeginCasting.Length - 1).Trim().TrimEnd('.');
             if (spells.YouCastSpells.TryGetValue(spellname, out var foundspells))
@@ -35,12 +38,12 @@ namespace EQTool.Services.Parsing.Helpers
                         {
                             if (!activePlayer.Player.PlayerClass.HasValue)
                             {
-                                activePlayer.Player.PlayerClass = foundspell.Classes.FirstOrDefault().Key;
+                                logEvents.Handle(new ClassDetectedEvent { TimeStamp = timestamp, Line = message, PlayerClass = foundspell.Classes.FirstOrDefault().Key });
                             }
 
                             if (activePlayer.Player.Level < foundspell.Classes.FirstOrDefault().Value)
                             {
-                                activePlayer.Player.Level = foundspell.Classes.FirstOrDefault().Value;
+                                logEvents.Handle(new PlayerLevelDetectionEvent { TimeStamp = timestamp, Line = message, PlayerLevel = foundspell.Classes.FirstOrDefault().Value });
                             }
                         }
                     }
@@ -48,15 +51,15 @@ namespace EQTool.Services.Parsing.Helpers
                     activePlayer.UserCastingSpell = foundspell;
                     if (activePlayer.UserCastingSpell.casttime > 0)
                     {
-                        activePlayer.UserCastingSpellCounter++;
+                        UserCastingSpellCounter++;
                         _ = Task.Delay(activePlayer.UserCastingSpell.casttime * 2).ContinueWith(a =>
                         {
                             Debug.WriteLine($"Cleaning Spell");
                             appDispatcher.DispatchUI(() =>
                             {
-                                if (--activePlayer.UserCastingSpellCounter <= 0)
+                                if (--UserCastingSpellCounter <= 0)
                                 {
-                                    activePlayer.UserCastingSpellCounter = 0;
+                                    UserCastingSpellCounter = 0;
                                     activePlayer.UserCastingSpell = null;
                                 }
                             });
@@ -92,15 +95,15 @@ namespace EQTool.Services.Parsing.Helpers
                 {
                     var peggyspell = spells.AllSpells.FirstOrDefault(a => a.name == "Peggy Levitate");
                     activePlayer.UserCastingSpell = peggyspell;
-                    activePlayer.UserCastingSpellCounter++;
+                    UserCastingSpellCounter++;
                     _ = Task.Delay(activePlayer.UserCastingSpell.casttime * 2).ContinueWith(a =>
                     {
                         Debug.WriteLine($"Cleaning Spell");
                         appDispatcher.DispatchUI(() =>
                         {
-                            if (--activePlayer.UserCastingSpellCounter <= 0)
+                            if (--UserCastingSpellCounter <= 0)
                             {
-                                activePlayer.UserCastingSpellCounter = 0;
+                                UserCastingSpellCounter = 0;
                                 activePlayer.UserCastingSpell = null;
                             }
                         });

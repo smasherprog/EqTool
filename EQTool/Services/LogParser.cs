@@ -42,7 +42,6 @@ namespace EQTool.Services
             UITimer.Elapsed += Poll;
             UITimer.Enabled = true;
             LastYouActivity = DateTime.UtcNow.AddMonths(-1);
-            this.logEvents.LevelEvent += LogEvents_LevelEvent;
             this.logEvents.YouZonedEvent += LogEvents_YouZonedEvent;
         }
 
@@ -55,16 +54,6 @@ namespace EQTool.Services
                 toolSettingsLoad.Save(settings);
             }
         }
-
-        private void LogEvents_LevelEvent(object sender, LevelEvent e)
-        {
-            var player = activePlayer.Player;
-            if (player != null)
-            {
-                player.Level = e.NewLevel;
-            }
-        }
-
         public void Push(string line)
         {
             appDispatcher.DispatchUI(() =>

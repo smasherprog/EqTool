@@ -1,4 +1,5 @@
-﻿using EQToolShared.HubModels;
+﻿using EQToolShared.Enums;
+using EQToolShared.HubModels;
 using System;
 using System.Collections.Generic;
 using System.Windows.Media.Media3D;
@@ -169,6 +170,15 @@ namespace EQTool.Models
 
     public class PayerChangedEvent : BaseLogParseEvent
     {
+    }
+
+    public class ClassDetectedEvent : BaseLogParseEvent
+    {
+        public PlayerClasses PlayerClass { get; set; }
+    }
+    public class PlayerLevelDetectionEvent : BaseLogParseEvent
+    {
+        public int PlayerLevel { get; set; }
     }
 
     public class RandomRollEvent : BaseLogParseEvent
