@@ -84,12 +84,18 @@ namespace EQTool.Services.Handlers
                     timerSeconds += 3600 * int.Parse(hh);
                 }
                 Console.WriteLine($"match found [{match}], [{hh}], [{mm}], [{ss}], [{label}], [{timerSeconds}]");
-                _ = new CustomTimer
+                var timer = new StartTimerEvent
                 {
-                    DurationInSeconds = timerSeconds,
-                    // if the user didn't specify a label, we'll give it the match string
-                    Name = label != "" ? label : $"{match}"
+                    CustomTimer = new CustomTimer
+                    {
+                        DurationInSeconds = timerSeconds,
+                        // if the user didn't specify a label, we'll give it the match string
+                        Name = label != "" ? label : $"{match}"
+                    },
+                    Line = commsEvent.Line,
+                    TimeStamp = commsEvent.TimeStamp
                 };
+                logEvents.Handle(timer);
             }
         }
     }
