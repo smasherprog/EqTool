@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using EQTool.Models;
 using EQTool.Services.Parsing;
+using EQTool.ViewModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 
@@ -14,7 +15,6 @@ namespace EQtoolsTests
 
         public CommsParserTests()
         {
-            //container = DI.Init();
             parser = container.Resolve<CommsParser>();
         }
 
@@ -56,6 +56,7 @@ namespace EQtoolsTests
         [TestMethod]
         public void TestTell2_FromPlayer()
         {
+            container.Resolve<ActivePlayer>().Player.Name = "Azleep";
             //Azleep -> Jamori: ok
             var now = DateTime.Now;
             var message = "Azleep -> Jamori: ok";
@@ -73,6 +74,7 @@ namespace EQtoolsTests
         [TestMethod]
         public void TestTell2_FromOthers()
         {
+            container.Resolve<ActivePlayer>().Player.Name = "Azleep";
             //[Thu Aug 18 14:31:48 2022] Berrma -> Azleep: ya just need someone to invite i believe
             var now = DateTime.Now;
             var message = "Berrma -> Azleep: ya just need someone to invite i believe";

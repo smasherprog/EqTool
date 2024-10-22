@@ -47,18 +47,30 @@ namespace EQTool.Services.Parsing
             //
 
             // ------------------------------------------------------------------------------------------------------------------------------------------------
-            // tells
+            // group
 
-            //You told Qdyil, 'not even sure'
-            //[Sat Mar 21 17:45:14 2020] Thalistair tells you, 'omw'
-            //[Sat Mar 21 17:55:33 2020] a spectre tells you, 'Attacking a spectre Master.'
-            //[Sat Mar 21 19:21:37 2020] Cleonae Kalen tells you, 'I'll give you 9 gold 8 silver 8 copper per Globe of Fear'
-            var pattern = @"^(?<sender>.+) (told|tells) (?<receiver>.+), '(?<content>.+)'";
+            //You tell your party, 'oh interesting'
+            //Jaloy tells the group, 'wiki says he can be in 1 of 2 locations'
+            var pattern = @"^(?<sender>.+) ((tell your party)|(tells the group)), '(?<content>.+)'";
             var regex = new Regex(pattern, RegexOptions.Compiled);
             var match = regex.Match(line);
             if (match.Success)
             {
-                return new CommsEvent(timestamp, line, CommsEvent.Channel.TELL, match.Groups["content"].Value, match.Groups["sender"].Value, match.Groups["receiver"].Value);
+                return new CommsEvent(timestamp, line, CommsEvent.Channel.GROUP, match.Groups["content"].Value, match.Groups["sender"].Value);
+            }
+
+            //
+            // ------------------------------------------------------------------------------------------------------------------------------------------------
+            // guild
+
+            //You say to your guild, 'nice'
+            //[Wed Oct 16 17:17:25 2024] Okeanos tells the guild, 'it literally says speedway but the  products inside the store are 7/11 branded '
+            pattern = @"^(?<sender>.+) ((say to your)|(tells the)) guild, '(?<content>.+)'";
+            regex = new Regex(pattern, RegexOptions.Compiled);
+            match = regex.Match(line);
+            if (match.Success)
+            {
+                return new CommsEvent(timestamp, line, CommsEvent.Channel.GUILD, match.Groups["content"].Value, match.Groups["sender"].Value);
             }
 
             //Azleep -> Jamori: ok
@@ -109,29 +121,18 @@ namespace EQTool.Services.Parsing
             }
 
             // ------------------------------------------------------------------------------------------------------------------------------------------------
-            // group
+            // tells
 
-            //You tell your party, 'oh interesting'
-            //Jaloy tells the group, 'wiki says he can be in 1 of 2 locations'
-            pattern = @"^(?<sender>.+) ((tell your party)|(tells the group)), '(?<content>.+)'";
+            //You told Qdyil, 'not even sure'
+            //[Sat Mar 21 17:45:14 2020] Thalistair tells you, 'omw'
+            //[Sat Mar 21 17:55:33 2020] a spectre tells you, 'Attacking a spectre Master.'
+            //[Sat Mar 21 19:21:37 2020] Cleonae Kalen tells you, 'I'll give you 9 gold 8 silver 8 copper per Globe of Fear'
+            pattern = @"^(?<sender>.+) (told|tells) (?<receiver>.+), '(?<content>.+)'";
             regex = new Regex(pattern, RegexOptions.Compiled);
             match = regex.Match(line);
             if (match.Success)
             {
-                return new CommsEvent(timestamp, line, CommsEvent.Channel.GROUP, match.Groups["content"].Value, match.Groups["sender"].Value);
-            }
-
-            // ------------------------------------------------------------------------------------------------------------------------------------------------
-            // guild
-
-            //You say to your guild, 'nice'
-            //[Wed Oct 16 17:17:25 2024] Okeanos tells the guild, 'it literally says speedway but the  products inside the store are 7/11 branded '
-            pattern = @"^(?<sender>.+) ((say to your)|(tells the)) guild, '(?<content>.+)'";
-            regex = new Regex(pattern, RegexOptions.Compiled);
-            match = regex.Match(line);
-            if (match.Success)
-            {
-                return new CommsEvent(timestamp, line, CommsEvent.Channel.GUILD, match.Groups["content"].Value, match.Groups["sender"].Value);
+                return new CommsEvent(timestamp, line, CommsEvent.Channel.TELL, match.Groups["content"].Value, match.Groups["sender"].Value, match.Groups["receiver"].Value);
             }
 
             // ------------------------------------------------------------------------------------------------------------------------------------------------
