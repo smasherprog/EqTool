@@ -159,9 +159,10 @@ namespace EQTool.Services
                         });
                     }
                 }
-                catch (Exception)
+                catch (Exception ex)
                 {
-                    //File.AppendAllText("Errors.txt", ex.ToString());
+                    container.Resolve<LoggingService>().Log(ex.ToString(), EQToolShared.Enums.EventType.Update, null);
+                    File.AppendAllText("Errors.txt", ex.ToString());
                 }
             });
         }
