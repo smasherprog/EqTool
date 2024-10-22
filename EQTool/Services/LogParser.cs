@@ -95,38 +95,38 @@ namespace EQTool.Services
             {
                 return;
             }
+#if !(DEBUG || TEST)
             try
             {
-                var date = line1.Substring(1, 24);
-                var message = line1.Substring(27).Trim();
-                if (string.IsNullOrWhiteSpace(message))
+#endif
+            var date = line1.Substring(1, 24);
+            var message = line1.Substring(27).Trim();
+            if (string.IsNullOrWhiteSpace(message))
+            {
+                return;
+            }
+
+            if (message.StartsWith("You"))
+            {
+                LastYouActivity = DateTime.UtcNow;
+            }
+
+            var timestamp = LogFileDateTimeParse.ParseDateTime(date);
+            foreach (var handler in eqLogParseHandlers)
+            {
+                if (handler.Handle(message, timestamp))
                 {
+                    Debug.WriteLine($"--Handled by {handler.GetType().Name}: {message}");
                     return;
                 }
-
-                if (message.StartsWith("You"))
-                {
-                    LastYouActivity = DateTime.UtcNow;
-                }
-
-                var timestamp = LogFileDateTimeParse.ParseDateTime(date);
-                foreach (var handler in eqLogParseHandlers)
-                {
-                    if (handler.Handle(message, timestamp))
-                    {
-                        Debug.WriteLine($"--Handled by {handler.GetType().Name}: {message}");
-                        return;
-                    }
-                }
             }
-            catch (Exception)
-            {
-#if DEBUG || TEST
-                throw;
-#else
+#if !(DEBUG || TEST)
+            }
+            catch (Exception e)
+            { 
                 App.LogUnhandledException(e, $"LogParser Filename: '{activePlayer.LogFileName}' '{line1}'", activePlayer?.Player?.Server);
-#endif
             }
+#endif
         }
 
         private void Poll(object sender, EventArgs e)
