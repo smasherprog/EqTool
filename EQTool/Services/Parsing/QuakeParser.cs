@@ -12,18 +12,18 @@ namespace EQTool.Services.Parsing
             this.logEvents = logEvents;
         }
 
-        public bool Handle(string line, DateTime timestamp)
+        public bool Handle(string line, DateTime timestamp, int lineCounter)
         {
             var m = IsQuake(line);
             if (m)
             {
-                logEvents.Handle(new QuakeEvent { TimeStamp = timestamp });
+                logEvents.Handle(new QuakeEvent { TimeStamp = timestamp, Line = line, LineCounter = lineCounter });
                 return true;
             }
             return false;
         }
 
-        public bool IsQuake(string line)
+        private bool IsQuake(string line)
         {
             return line.Contains("You feel you should get somewhere safe as soon as possible");
         }

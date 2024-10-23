@@ -196,5 +196,17 @@ namespace EQTool.Services
         {
             PlayerLevelDetectionEvent?.Invoke(this, e);
         }
+
+        public event EventHandler<FactionEvent> FactionEvent;
+        public void Handle(FactionEvent e)
+        {
+            FactionEvent?.Invoke(this, e);
+        }
+
+        public event EventHandler<SlainEvent> SlainEvent;
+        public void Handle(SlainEvent e)
+        {
+            SlainEvent?.Invoke(this, e);
+        }
     }
 }

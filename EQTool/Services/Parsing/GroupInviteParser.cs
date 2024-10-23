@@ -13,12 +13,12 @@ namespace EQTool.Services.Parsing
             this.logEvents = logEvents;
         }
 
-        public bool Handle(string line, DateTime timestamp)
+        public bool Handle(string line, DateTime timestamp, int lineCounter)
         {
             var m = Parse(line);
             if (!string.IsNullOrWhiteSpace(m))
             {
-                logEvents.Handle(new GroupInviteEvent { Inviter = m, TimeStamp = timestamp });
+                logEvents.Handle(new GroupInviteEvent { Inviter = m, TimeStamp = timestamp, Line = line, LineCounter = lineCounter });
                 return true;
             }
             return false;

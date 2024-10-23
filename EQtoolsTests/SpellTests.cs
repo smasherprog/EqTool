@@ -131,7 +131,7 @@ namespace EQtoolsTests
         {
             var service = container.Resolve<SpellCastParser>();
             var message = "You feel your skin freeze.";
-            var spell = service.MatchSpell(message, DateTime.Now);
+            var spell = service.MatchSpell(message, DateTime.Now, 0);
             Assert.AreEqual(spell.Spell.name, "Silver Breath");
         }
 
@@ -140,7 +140,7 @@ namespace EQtoolsTests
         {
             var service = container.Resolve<SpellCastParser>();
             var message = "Someone's skin freezes.";
-            var spell = service.MatchSpell(message, DateTime.Now);
+            var spell = service.MatchSpell(message, DateTime.Now, 0);
             Assert.AreEqual(spell.Spell.name, "Silver Breath");
         }
 
@@ -149,7 +149,7 @@ namespace EQtoolsTests
         {
             var service = container.Resolve<SpellCastParser>();
             var message = "You flee in terror.";
-            var spell = service.MatchSpell(message, DateTime.Now);
+            var spell = service.MatchSpell(message, DateTime.Now, 0);
             Assert.AreEqual(spell.Spell.name, "Dragon Roar");
         }
 
@@ -158,7 +158,7 @@ namespace EQtoolsTests
         {
             var service = container.Resolve<ResistSpellParser>();
             var message = "You resist the Dragon Roar spell!";
-            var spell = service.ParseNPCSpell(message, DateTime.Now);
+            var spell = service.ParseNPCSpell(message, DateTime.Now, 0);
             Assert.AreEqual(spell.Spell.name, "Dragon Roar");
         }
 
@@ -167,7 +167,7 @@ namespace EQtoolsTests
         {
             var service = container.Resolve<SpellCastParser>();
             var message = "Your eardrums rupture.";
-            var spell = service.MatchSpell(message, DateTime.Now);
+            var spell = service.MatchSpell(message, DateTime.Now, 0);
             Assert.AreEqual(spell.Spell.name, "Stun Breath");
         }
 
@@ -176,7 +176,7 @@ namespace EQtoolsTests
         {
             var service = container.Resolve<SpellCastParser>();
             var message = "Someone staggers with intense pain.";
-            var spell = service.MatchSpell(message, DateTime.Now);
+            var spell = service.MatchSpell(message, DateTime.Now, 0);
             Assert.AreEqual(spell.Spell.name, "Stun Breath");
         }
 
@@ -185,7 +185,7 @@ namespace EQtoolsTests
         {
             var service = container.Resolve<SpellCastParser>();
             var message = "Your flesh begins to rot.";
-            var spell = service.MatchSpell(message, DateTime.Now);
+            var spell = service.MatchSpell(message, DateTime.Now, 0);
             Assert.AreEqual(spell.Spell.name, "Rotting Flesh");
         }
 
@@ -194,7 +194,7 @@ namespace EQtoolsTests
         {
             var service = container.Resolve<SpellCastParser>();
             var message = "Someone's flesh begins to rot.";
-            var spell = service.MatchSpell(message, DateTime.Now);
+            var spell = service.MatchSpell(message, DateTime.Now, 0);
             Assert.AreEqual(spell.Spell.name, "Rotting Flesh");
         }
 
@@ -203,7 +203,7 @@ namespace EQtoolsTests
         {
             var service = container.Resolve<SpellCastParser>();
             var message = "Your flesh begins to liquefy.";
-            var spell = service.MatchSpell(message, DateTime.Now);
+            var spell = service.MatchSpell(message, DateTime.Now, 0);
             Assert.AreEqual(spell.Spell.name, "Putrefy Flesh");
         }
 
@@ -212,7 +212,7 @@ namespace EQtoolsTests
         {
             var service = container.Resolve<SpellCastParser>();
             var message = "Someone's flesh begins to liquefy.";
-            var spell = service.MatchSpell(message, DateTime.Now);
+            var spell = service.MatchSpell(message, DateTime.Now, 0);
             Assert.AreEqual(spell.Spell.name, "Putrefy Flesh");
         }
 
@@ -221,7 +221,7 @@ namespace EQtoolsTests
         {
             var service = container.Resolve<SpellCastParser>();
             var message = "Your flesh is seared from your bones.";
-            var spell = service.MatchSpell(message, DateTime.Now);
+            var spell = service.MatchSpell(message, DateTime.Now, 0);
             Assert.AreEqual(spell.Spell.name, "Immolating Breath");
         }
 
@@ -230,7 +230,7 @@ namespace EQtoolsTests
         {
             var service = container.Resolve<SpellCastParser>();
             var message = "Your life force drains away.";
-            var spell = service.MatchSpell(message, DateTime.Now);
+            var spell = service.MatchSpell(message, DateTime.Now, 0);
             Assert.AreEqual(spell.Spell.name, "Ancient Breath");
         }
 
@@ -239,7 +239,7 @@ namespace EQtoolsTests
         {
             var service = container.Resolve<SpellCastParser>();
             var message = "Someone's flesh is seared.";
-            var spell = service.MatchSpell(message, DateTime.Now);
+            var spell = service.MatchSpell(message, DateTime.Now, 0);
             Assert.AreEqual(spell.Spell.name, "Immolating Breath");
         }
 
@@ -248,7 +248,7 @@ namespace EQtoolsTests
         {
             var service = container.Resolve<SpellCastParser>();
             var message = "A blast of cold freezes your skin.";
-            var spell = service.MatchSpell(message, DateTime.Now);
+            var spell = service.MatchSpell(message, DateTime.Now, 0);
             Assert.AreEqual(spell.Spell.name, "Wave of Cold");
         }
 
@@ -257,7 +257,7 @@ namespace EQtoolsTests
         {
             var service = container.Resolve<SpellCastParser>();
             var message = "Someone's skin freezes.";
-            var spell = service.MatchSpell(message, DateTime.Now);
+            var spell = service.MatchSpell(message, DateTime.Now, 0);
             Assert.AreEqual(spell.Spell.name, "Silver Breath");
         }
 
@@ -266,7 +266,7 @@ namespace EQtoolsTests
         {
             var service = container.Resolve<SpellCastParser>();
             var message = "Lava sears your skin.";
-            var spell = service.MatchSpell(message, DateTime.Now);
+            var spell = service.MatchSpell(message, DateTime.Now, 0);
             Assert.AreEqual(spell.Spell.name, "Rain of Molten Lava");
         }
 
@@ -275,7 +275,7 @@ namespace EQtoolsTests
         {
             var service = container.Resolve<SpellCastParser>();
             var message = "Your body combusts as the lava hits you.";
-            var spell = service.MatchSpell(message, DateTime.Now);
+            var spell = service.MatchSpell(message, DateTime.Now, 0);
             Assert.AreEqual(spell.Spell.name, "Lava Breath");
         }
 
@@ -284,7 +284,7 @@ namespace EQtoolsTests
         {
             var service = container.Resolve<SpellCastParser>();
             var message = "Your body freezes as the frost hits you.";
-            var spell = service.MatchSpell(message, DateTime.Now);
+            var spell = service.MatchSpell(message, DateTime.Now, 0);
             Assert.AreEqual(spell.Spell.name, "Frost Breath");
         }
 
@@ -293,7 +293,7 @@ namespace EQtoolsTests
         {
             var service = container.Resolve<SpellCastParser>();
             var message = "A tsunami crushes you.";
-            var spell = service.MatchSpell(message, DateTime.Now);
+            var spell = service.MatchSpell(message, DateTime.Now, 0);
             Assert.AreEqual(spell.Spell.name, "Tsunami");
         }
 
@@ -302,7 +302,7 @@ namespace EQtoolsTests
         {
             var service = container.Resolve<SpellCastParser>();
             var message = "Your mind is wracked by fear.";
-            var spell = service.MatchSpell(message, DateTime.Now);
+            var spell = service.MatchSpell(message, DateTime.Now, 0);
             Assert.AreEqual(spell.Spell.name, "Cloud of Fear");
         }
 
@@ -311,7 +311,7 @@ namespace EQtoolsTests
         {
             var service = container.Resolve<SpellCastParser>();
             var message = "Your body begins to rot.";
-            var spell = service.MatchSpell(message, DateTime.Now);
+            var spell = service.MatchSpell(message, DateTime.Now, 0);
             Assert.AreEqual(spell.Spell.name, "Diseased Cloud");
         }
 
@@ -320,7 +320,7 @@ namespace EQtoolsTests
         {
             var service = container.Resolve<ResistSpellParser>();
             var message = "You resist the Frost Breath spell!";
-            var spell = service.ParseNPCSpell(message, DateTime.Now);
+            var spell = service.ParseNPCSpell(message, DateTime.Now, 0);
             Assert.AreEqual(spell.Spell.name, "Frost Breath");
         }
 
@@ -329,7 +329,7 @@ namespace EQtoolsTests
         {
             var service = container.Resolve<ResistSpellParser>();
             var message = "You resist the Lava Breath spell!";
-            var spell = service.ParseNPCSpell(message, DateTime.Now);
+            var spell = service.ParseNPCSpell(message, DateTime.Now, 0);
             Assert.AreEqual(spell.Spell.name, "Lava Breath");
         }
 
@@ -338,7 +338,7 @@ namespace EQtoolsTests
         {
             var service = container.Resolve<ResistSpellParser>();
             var message = "You resist the Molten Breath spell!";
-            var spell = service.ParseNPCSpell(message, DateTime.Now);
+            var spell = service.ParseNPCSpell(message, DateTime.Now, 0);
             Assert.AreEqual(spell.Spell.name, "Molten Breath");
         }
 
@@ -452,7 +452,7 @@ namespace EQtoolsTests
             var player = container.Resolve<ActivePlayer>();
             player.Player.Level = 54;
             player.Player.PlayerClass = PlayerClasses.Cleric;
-            var guess = service.HandleBestGuessSpell(line, DateTime.Now);
+            var guess = service.HandleBestGuessSpell(line, DateTime.Now, 0);
 
             Assert.IsNotNull(guess);
         }
@@ -469,7 +469,7 @@ namespace EQtoolsTests
                 Level = 54,
                 PlayerClass = PlayerClasses.Enchanter
             };
-            var guess = service.HandleBestGuessSpell(line, DateTime.Now);
+            var guess = service.HandleBestGuessSpell(line, DateTime.Now, 0);
 
             Assert.IsNotNull(guess);
         }
@@ -486,7 +486,7 @@ namespace EQtoolsTests
                 Level = 54,
                 PlayerClass = PlayerClasses.Enchanter
             };
-            var guess = service.HandleBestGuessSpell(line, DateTime.Now);
+            var guess = service.HandleBestGuessSpell(line, DateTime.Now, 0);
 
             Assert.IsNotNull(guess);
         }
@@ -504,7 +504,7 @@ namespace EQtoolsTests
                 Level = 54,
                 PlayerClass = PlayerClasses.Cleric
             };
-            var guess = service.HandleBestGuessSpell(aegospell.cast_on_other, DateTime.Now);
+            var guess = service.HandleBestGuessSpell(aegospell.cast_on_other, DateTime.Now, 0);
 
             Assert.IsNotNull(guess);
             Assert.IsFalse(guess.MultipleMatchesFound);
@@ -523,7 +523,7 @@ namespace EQtoolsTests
                 Level = 54,
                 PlayerClass = PlayerClasses.Cleric
             };
-            var guess = service.HandleBestGuessSpell("Jobob " + spell.cast_on_other, DateTime.Now);
+            var guess = service.HandleBestGuessSpell("Jobob " + spell.cast_on_other, DateTime.Now, 0);
 
             Assert.IsNotNull(guess);
             Assert.IsFalse(guess.MultipleMatchesFound);
@@ -542,7 +542,7 @@ namespace EQtoolsTests
                 Level = 54,
                 PlayerClass = PlayerClasses.Cleric
             };
-            var guess = service.HandleBestGuessSpell("Jobob " + spell.cast_on_other, DateTime.Now);
+            var guess = service.HandleBestGuessSpell("Jobob " + spell.cast_on_other, DateTime.Now, 0);
 
             Assert.IsNotNull(guess);
             Assert.IsFalse(guess.MultipleMatchesFound);
@@ -561,7 +561,7 @@ namespace EQtoolsTests
                 Level = 54,
                 PlayerClass = PlayerClasses.Cleric
             };
-            var guess = service.HandleBestGuessSpell("Jobob " + spell.cast_on_other, DateTime.Now);
+            var guess = service.HandleBestGuessSpell("Jobob " + spell.cast_on_other, DateTime.Now, 0);
 
             Assert.IsNotNull(guess);
             Assert.IsFalse(guess.MultipleMatchesFound);
@@ -580,7 +580,7 @@ namespace EQtoolsTests
                 Level = 54,
                 PlayerClass = PlayerClasses.Cleric
             };
-            var guess = service.HandleBestGuessSpell(shissarspell.cast_on_other, DateTime.Now);
+            var guess = service.HandleBestGuessSpell(shissarspell.cast_on_other, DateTime.Now, 0);
 
             Assert.IsNotNull(guess);
             Assert.IsFalse(guess.MultipleMatchesFound);
@@ -601,7 +601,7 @@ namespace EQtoolsTests
                 Level = 54,
                 PlayerClass = PlayerClasses.Cleric
             };
-            var guess = spelllogparse.MatchSpell(line, DateTime.Now);
+            var guess = spelllogparse.MatchSpell(line, DateTime.Now, 0);
 
             Assert.IsNotNull(guess);
             Assert.IsFalse(guess.MultipleMatchesFound);
@@ -616,7 +616,7 @@ namespace EQtoolsTests
             var shissarspell = spells.AllSpells.FirstOrDefault(a => a.name == shissar);
             var line = "Jobober " + shissarspell.cast_on_other;
             var service = container.Resolve<ParseSpellGuess>();
-            var guess = spelllogparse.MatchSpell(line, DateTime.Now);
+            var guess = spelllogparse.MatchSpell(line, DateTime.Now, 0);
             var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(guess.Spell, PlayerClasses.Shaman, 60));
             Assert.AreEqual(6, spellduration.TotalMinutes);
             Assert.IsNotNull(guess);
@@ -637,7 +637,7 @@ namespace EQtoolsTests
                 Level = 21,
                 PlayerClass = PlayerClasses.Magician
             };
-            var guess = spelllogparse.MatchSpell(line, DateTime.Now);
+            var guess = spelllogparse.MatchSpell(line, DateTime.Now, 0);
             Assert.AreEqual(shissarspell, player.UserCastingSpell);
         }
 
@@ -655,10 +655,10 @@ namespace EQtoolsTests
                 Level = 21,
                 PlayerClass = PlayerClasses.Magician
             };
-            var guess = spelllogparse.MatchSpell(line, DateTime.Now);
+            var guess = spelllogparse.MatchSpell(line, DateTime.Now, 0);
             Assert.AreEqual(shissarspell, player.UserCastingSpell);
             line = "Jobober " + shissarspell.cast_on_other;
-            guess = spelllogparse.MatchSpell(line, DateTime.Now);
+            guess = spelllogparse.MatchSpell(line, DateTime.Now, 0);
             Assert.IsTrue(guess.CastByYou);
         }
 
@@ -676,7 +676,7 @@ namespace EQtoolsTests
                 Level = 55,
                 PlayerClass = PlayerClasses.Shaman
             };
-            var guess = spelllogparse.MatchSpell(line, DateTime.Now);
+            var guess = spelllogparse.MatchSpell(line, DateTime.Now, 0);
         }
 
         [TestMethod]
@@ -693,7 +693,7 @@ namespace EQtoolsTests
             player.Player.PlayerClass = PlayerClasses.Magician;
 
             player.UserCastingSpell = shissarspell;
-            var guess = spelllogparse.MatchSpell(line, DateTime.Now);
+            var guess = spelllogparse.MatchSpell(line, DateTime.Now, 0);
             var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(guess.Spell, PlayerClasses.Magician, 21));
             Assert.AreEqual(15, spellduration.TotalMinutes);
             Assert.IsNotNull(guess);
@@ -714,7 +714,7 @@ namespace EQtoolsTests
             player.Player.Level = 60;
             player.Player.PlayerClass = PlayerClasses.Necromancer;
 
-            var guess = spelllogparse.MatchSpell(line, DateTime.Now);
+            var guess = spelllogparse.MatchSpell(line, DateTime.Now, 0);
             var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(guess.Spell, PlayerClasses.Necromancer, 60));
             Assert.AreEqual(6, spellduration.TotalMinutes);
             Assert.IsNotNull(guess);
@@ -735,7 +735,7 @@ namespace EQtoolsTests
             player.Player.Level = 52;
             player.Player.PlayerClass = PlayerClasses.Warrior;
 
-            var guess = spelllogparse.MatchSpell(line, DateTime.Now);
+            var guess = spelllogparse.MatchSpell(line, DateTime.Now, 0);
             var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(guess.Spell, PlayerClasses.Warrior, 52));
             Assert.AreEqual(5, spellduration.TotalMinutes);
             Assert.IsNotNull(guess);
@@ -756,7 +756,7 @@ namespace EQtoolsTests
             player.Player.Level = 60;
             player.Player.PlayerClass = PlayerClasses.Necromancer;
 
-            var guess = spelllogparse.MatchSpell(line, DateTime.Now);
+            var guess = spelllogparse.MatchSpell(line, DateTime.Now, 0);
             var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(guess.Spell, PlayerClasses.Necromancer, 60));
             Assert.AreEqual(6, spellduration.TotalMinutes);
             Assert.IsNotNull(guess);
@@ -778,7 +778,7 @@ namespace EQtoolsTests
             player.Player.Level = 60;
             player.Player.PlayerClass = PlayerClasses.Shaman;
 
-            var guess = spelllogparse.MatchSpell(line, DateTime.Now);
+            var guess = spelllogparse.MatchSpell(line, DateTime.Now, 0);
             var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(guess.Spell, PlayerClasses.Shaman, 60));
             Assert.AreEqual(144, spellduration.TotalMinutes);
             Assert.IsNotNull(guess);
@@ -800,7 +800,7 @@ namespace EQtoolsTests
             player.Player.Level = 60;
             player.Player.PlayerClass = PlayerClasses.Necromancer;
 
-            var guess = spelllogparse.MatchSpell(line, DateTime.Now);
+            var guess = spelllogparse.MatchSpell(line, DateTime.Now, 0);
             var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(guess.Spell, PlayerClasses.Necromancer, 60));
             Assert.AreEqual(6, spellduration.TotalMinutes);
             Assert.IsNotNull(guess);
@@ -822,7 +822,7 @@ namespace EQtoolsTests
             player.Player.Level = 60;
             player.Player.PlayerClass = PlayerClasses.Necromancer;
 
-            var guess = spelllogparse.MatchSpell(line, DateTime.Now);
+            var guess = spelllogparse.MatchSpell(line, DateTime.Now, 0);
             var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(guess.Spell, PlayerClasses.Necromancer, 60));
             Assert.AreEqual(7, spellduration.TotalMinutes);
             Assert.IsNotNull(guess);
@@ -844,7 +844,7 @@ namespace EQtoolsTests
             player.Player.Level = 54;
             player.Player.PlayerClass = PlayerClasses.Cleric;
 
-            var guess = spelllogparse.MatchSpell(line, DateTime.Now);
+            var guess = spelllogparse.MatchSpell(line, DateTime.Now, 0);
             var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(guess.Spell, PlayerClasses.Cleric, 54));
             Assert.IsNotNull(guess);
             Assert.IsFalse(guess.MultipleMatchesFound);
@@ -863,7 +863,7 @@ namespace EQtoolsTests
             player.Player.Level = 60;
             player.Player.PlayerClass = PlayerClasses.Necromancer;
 
-            var guess = spelllogparse.MatchSpell(line, DateTime.Now);
+            var guess = spelllogparse.MatchSpell(line, DateTime.Now, 0);
             var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(guess.Spell, PlayerClasses.Necromancer, 60));
             Assert.IsNotNull(guess);
             Assert.IsFalse(guess.MultipleMatchesFound);
@@ -882,7 +882,7 @@ namespace EQtoolsTests
             player.Player.Level = 60;
             player.Player.PlayerClass = PlayerClasses.Necromancer;
 
-            var guess = spelllogparse.MatchSpell(line, DateTime.Now);
+            var guess = spelllogparse.MatchSpell(line, DateTime.Now, 0);
             var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(guess.Spell, PlayerClasses.Necromancer, 60));
             Assert.IsNotNull(guess);
             Assert.AreEqual("Gkrean Prophet of Tallon", guess.TargetName);
@@ -902,7 +902,7 @@ namespace EQtoolsTests
             player.Player.Level = 60;
             player.Player.PlayerClass = PlayerClasses.Necromancer;
 
-            var guess = spelllogparse.MatchSpell(line, DateTime.Now);
+            var guess = spelllogparse.MatchSpell(line, DateTime.Now, 0);
             var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(guess.Spell, PlayerClasses.Necromancer, 60));
             Assert.IsNotNull(guess);
             Assert.IsFalse(guess.MultipleMatchesFound);
@@ -921,7 +921,7 @@ namespace EQtoolsTests
             player.Player.Level = 60;
             player.Player.PlayerClass = PlayerClasses.Shaman;
 
-            var guess = spelllogparse.MatchSpell(line, DateTime.Now);
+            var guess = spelllogparse.MatchSpell(line, DateTime.Now, 0);
             Assert.IsNull(guess);
             Assert.IsNotNull(player.UserCastingSpell);
         }
@@ -939,7 +939,7 @@ namespace EQtoolsTests
             player.Player.Level = 60;
             player.Player.PlayerClass = PlayerClasses.Shaman;
 
-            var guess = spelllogparse.MatchSpell(line, DateTime.Now);
+            var guess = spelllogparse.MatchSpell(line, DateTime.Now, 0);
             var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(guess.Spell, PlayerClasses.Shaman, 60));
             Assert.IsNotNull(guess);
             Assert.IsFalse(guess.MultipleMatchesFound);
@@ -999,7 +999,7 @@ namespace EQtoolsTests
             player.Player.Level = 54;
             player.Player.PlayerClass = PlayerClasses.Cleric;
 
-            var spellmatch = spelllogparse.MatchSpell(line, DateTime.Now);
+            var spellmatch = spelllogparse.MatchSpell(line, DateTime.Now, 0);
 
             Assert.IsNotNull(spellmatch);
         }
@@ -1015,7 +1015,7 @@ namespace EQtoolsTests
                 Level = 54,
                 PlayerClass = PlayerClasses.Cleric
             };
-            var spellmatch = spelllogparse.MatchSpell(line, DateTime.Now);
+            var spellmatch = spelllogparse.MatchSpell(line, DateTime.Now, 0);
             Assert.IsNotNull(spellmatch);
         }
 
@@ -1059,7 +1059,7 @@ namespace EQtoolsTests
             var player = container.Resolve<ActivePlayer>();
             player.Player.Level = 0;
             player.Player.PlayerClass = null;
-            service.HandleYouBeginCastingSpellStart(line, DateTime.Now);
+            service.HandleYouBeginCastingSpellStart(line, DateTime.Now, 0);
             var duration = SpellDurations.GetDuration_inSeconds(player.UserCastingSpell, null, null);
             Assert.IsNotNull(player);
             Assert.IsNotNull(duration);
@@ -1131,7 +1131,7 @@ namespace EQtoolsTests
             var line = "You begin casting Aegolism.";
             var service = container.Resolve<ParseHandleYouCasting>();
             var player = container.Resolve<ActivePlayer>();
-            service.HandleYouBeginCastingSpellStart(line, DateTime.Now);
+            service.HandleYouBeginCastingSpellStart(line, DateTime.Now, 0);
             Assert.AreEqual(player.Player.PlayerClass, PlayerClasses.Cleric);
         }
 

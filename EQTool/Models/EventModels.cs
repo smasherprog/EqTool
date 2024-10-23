@@ -15,8 +15,22 @@ namespace EQTool.Models
     {
         public DateTime TimeStamp { get; set; }
         public string Line { get; set; }
+        public int LineCounter { get; set; }
     }
 
+    public enum FactionStatus
+    {
+        GotBetter,
+        GotWorse,
+        CouldNotGetBetter,
+        CouldNotGetWorse
+    }
+
+    public class FactionEvent : BaseLogParseEvent
+    {
+        public string Faction { get; set; }
+        public FactionStatus FactionStatus { get; set; }
+    }
 
     public class PlayerLocationEvent : BaseLogParseEvent
     {
@@ -72,12 +86,18 @@ namespace EQTool.Models
         public string Name { get; set; }
     }
 
+    public class SlainEvent : BaseLogParseEvent
+    {
+        public string Victim { get; set; }
+        public string Killer { get; set; }
+        public int UID { get; set; }
+    }
+
     public class DeathEvent : BaseLogParseEvent
     {
         public string Victim { get; set; }
 
         public string Killer { get; set; }
-
         public DeathEvent(DateTime dateTime, string line, string victim, string killer = "Unknown")
         {
             TimeStamp = dateTime;
@@ -149,11 +169,6 @@ namespace EQTool.Models
 
     public class YouBeginCastingEvent : BaseLogParseEvent
     {
-        public YouBeginCastingEvent(DateTime dateTime, string line)
-        {
-            TimeStamp = dateTime;
-            Line = line;
-        }
     }
 
     public class DeathTouchEvent : BaseLogParseEvent

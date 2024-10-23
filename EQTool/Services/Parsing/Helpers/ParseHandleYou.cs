@@ -23,7 +23,7 @@ namespace EQTool.Services.Parsing.Helpers
             this.logEvents = logEvents;
         }
 
-        public void HandleYouBeginCastingSpellStart(string message, DateTime timestamp)
+        public void HandleYouBeginCastingSpellStart(string message, DateTime timestamp, int lineCounter)
         {
             var spellname = message.Substring(EQSpells.YouBeginCasting.Length - 1).Trim().TrimEnd('.');
             if (spells.YouCastSpells.TryGetValue(spellname, out var foundspells))
@@ -38,12 +38,12 @@ namespace EQTool.Services.Parsing.Helpers
                         {
                             if (!activePlayer.Player.PlayerClass.HasValue)
                             {
-                                logEvents.Handle(new ClassDetectedEvent { TimeStamp = timestamp, Line = message, PlayerClass = foundspell.Classes.FirstOrDefault().Key });
+                                logEvents.Handle(new ClassDetectedEvent { TimeStamp = timestamp, LineCounter = lineCounter, Line = message, PlayerClass = foundspell.Classes.FirstOrDefault().Key });
                             }
 
                             if (activePlayer.Player.Level < foundspell.Classes.FirstOrDefault().Value)
                             {
-                                logEvents.Handle(new PlayerLevelDetectionEvent { TimeStamp = timestamp, Line = message, PlayerLevel = foundspell.Classes.FirstOrDefault().Value });
+                                logEvents.Handle(new PlayerLevelDetectionEvent { TimeStamp = timestamp, LineCounter = lineCounter, Line = message, PlayerLevel = foundspell.Classes.FirstOrDefault().Value });
                             }
                         }
                     }
@@ -69,7 +69,7 @@ namespace EQTool.Services.Parsing.Helpers
             }
         }
 
-        public SpellCastEvent HandleYouSpell(string message, DateTime timestamp)
+        public SpellCastEvent HandleYouSpell(string message, DateTime timestamp, int lineCounter)
         {
             if (spells.CastOnYouSpells.TryGetValue(message, out var foundspells))
             {
@@ -80,14 +80,18 @@ namespace EQTool.Services.Parsing.Helpers
                     Spell = foundspell,
                     TargetName = EQSpells.SpaceYou,
                     TimeStamp = timestamp,
-                    Line = message
+                    Line = message,
+                    CastByYou = false,
+                    LineCounter = lineCounter,
+                    MultipleMatchesFound = false,
+                    TotalSecondsOverride = null
                 };
             }
 
             return null;
         }
 
-        public SpellCastEvent HandleYourSpell(string message, DateTime timestamp)
+        public SpellCastEvent HandleYourSpell(string message, DateTime timestamp, int lineCounter)
         {
             if (message == "Your Pegasus Feather Cloak begins to glow.")
             {
@@ -120,14 +124,18 @@ namespace EQTool.Services.Parsing.Helpers
                     Spell = foundspell,
                     TargetName = EQSpells.SpaceYou,
                     TimeStamp = timestamp,
-                    Line = message
+                    Line = message,
+                    CastByYou = false,
+                    LineCounter = lineCounter,
+                    MultipleMatchesFound = false,
+                    TotalSecondsOverride = null
                 };
             }
 
             return null;
         }
 
-        public SpellCastEvent HandleYouBeginCastingSpellEnd(string message, DateTime timestamp)
+        public SpellCastEvent HandleYouBeginCastingSpellEnd(string message, DateTime timestamp, int lineCounter)
         {
             Debug.WriteLine($"Self Finished Spell: {message}");
             var spell = activePlayer.UserCastingSpell;
@@ -141,11 +149,14 @@ namespace EQTool.Services.Parsing.Helpers
                 TargetName = EQSpells.SpaceYou,
                 CastByYou = true,
                 TimeStamp = timestamp,
-                Line = message
+                Line = message,
+                LineCounter = lineCounter,
+                MultipleMatchesFound = false,
+                TotalSecondsOverride = null
             };
         }
 
-        public SpellCastEvent HandleYouBeginCastingSpellOtherEnd(string message, DateTime timestamp)
+        public SpellCastEvent HandleYouBeginCastingSpellOtherEnd(string message, DateTime timestamp, int lineCounter)
         {
             var targetname = message.Replace(activePlayer.UserCastingSpell.cast_on_other, string.Empty).Trim();
             Debug.WriteLine($"Self Finished Spell: {message}");
@@ -156,7 +167,10 @@ namespace EQTool.Services.Parsing.Helpers
                 TargetName = targetname,
                 CastByYou = true,
                 TimeStamp = timestamp,
-                Line = message
+                Line = message,
+                LineCounter = lineCounter,
+                MultipleMatchesFound = false,
+                TotalSecondsOverride = null
             };
         }
     }

@@ -337,6 +337,7 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Services\BinarySerializer.cs" />
+    <Compile Include="Services\Parsing\FactionParser.cs" />
     <Compile Include="Services\WindowFactory.cs" />
     <Compile Include="Services\Handlers\YouZonedHandler.cs" />
     <Compile Include="Services\Handlers\PlayerLevelDetectionHandler.cs" />

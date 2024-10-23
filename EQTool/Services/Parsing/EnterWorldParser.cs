@@ -13,12 +13,12 @@ namespace EQTool.Services.Parsing
             this.logEvents = logEvents;
         }
 
-        public bool Handle(string line, DateTime timestamp)
+        public bool Handle(string line, DateTime timestamp, int lineCounter)
         {
             var m = HasEnteredWorld(line);
             if (m)
             {
-                logEvents.Handle(new EnteredWorldEvent { TimeStamp = timestamp });
+                logEvents.Handle(new EnteredWorldEvent { TimeStamp = timestamp, Line = line, LineCounter = lineCounter });
                 return true;
             }
             return false;

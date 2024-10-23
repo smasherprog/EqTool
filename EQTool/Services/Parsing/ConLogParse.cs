@@ -25,18 +25,18 @@ namespace EQTool.Services.Parsing
             this.logEvents = logEvents;
         }
 
-        public bool Handle(string line, DateTime timestamp)
+        public bool Handle(string line, DateTime timestamp, int lineCounter)
         {
             var m = ConMatch(line);
             if (!string.IsNullOrWhiteSpace(m))
             {
-                logEvents.Handle(new ConEvent { Name = m, TimeStamp = timestamp });
+                logEvents.Handle(new ConEvent { Name = m, TimeStamp = timestamp, Line = line, LineCounter = lineCounter });
                 return true;
             }
             return false;
         }
 
-        public string ConMatch(string message)
+        private string ConMatch(string message)
         {
             foreach (var item in ConMessages)
             {

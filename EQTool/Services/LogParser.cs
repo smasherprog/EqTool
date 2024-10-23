@@ -22,6 +22,7 @@ namespace EQTool.Services
         private bool Processing = false;
         public DateTime LastYouActivity { get; private set; }
         private long? LastLogReadOffset { get; set; } = null;
+        private int LineCounter = 0;
 
         public LogParser(
             IEnumerable<IEqLogParseHandler> eqLogParseHandlers,
@@ -89,11 +90,11 @@ namespace EQTool.Services
             {
                 LastYouActivity = DateTime.UtcNow;
             }
-
+            LineCounter += 1;
             var timestamp = LogFileDateTimeParse.ParseDateTime(date);
             foreach (var handler in eqLogParseHandlers)
             {
-                if (handler.Handle(message, timestamp))
+                if (handler.Handle(message, timestamp, LineCounter))
                 {
                     Debug.WriteLine($"--Handled by {handler.GetType().Name}: {message}");
                     return;

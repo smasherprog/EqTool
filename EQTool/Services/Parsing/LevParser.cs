@@ -18,18 +18,18 @@ namespace EQTool.Services.Parsing
             this.logEvents = logEvents;
         }
 
-        public bool Handle(string line, DateTime timestamp)
+        public bool Handle(string line, DateTime timestamp, int lineCounter)
         {
             var m = Parse(line);
             if (m != null)
             {
-                logEvents.Handle(new LevitateEvent { LevitateStatus = m.Value, TimeStamp = timestamp });
+                logEvents.Handle(new LevitateEvent { LevitateStatus = m.Value, TimeStamp = timestamp, Line = line, LineCounter = lineCounter });
                 return true;
             }
             return false;
         }
 
-        public LevStatus? Parse(string line)
+        private LevStatus? Parse(string line)
         {
             return line == "You feel as if you are about to fall." ? LevStatus.Fading : (LevStatus?)null;
         }

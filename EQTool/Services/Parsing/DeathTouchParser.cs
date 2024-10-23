@@ -12,11 +12,14 @@ namespace EQTool.Services.Parsing
             this.logEvents = logEvents;
         }
 
-        public bool Handle(string line, DateTime timestamp)
+        public bool Handle(string line, DateTime timestamp, int lineCounter)
         {
             var m = DtCheck(line, timestamp);
             if (m != null)
             {
+                m.Line = line;
+                m.TimeStamp = timestamp;
+                m.LineCounter = lineCounter;
                 logEvents.Handle(m);
                 return true;
             }

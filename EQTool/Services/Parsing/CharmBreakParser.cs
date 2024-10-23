@@ -17,12 +17,12 @@ namespace EQTool.Services.Parsing
             return line == "Your charm spell has worn off.";
         }
 
-        public bool Handle(string line, DateTime timestamp)
+        public bool Handle(string line, DateTime timestamp, int lineCounter)
         {
             var m = DidCharmBreak(line);
             if (m)
             {
-                logEvents.Handle(new CharmBreakEvent { TimeStamp = timestamp });
+                logEvents.Handle(new CharmBreakEvent { TimeStamp = timestamp, LineCounter = lineCounter, Line = line });
                 return true;
             }
             return false;

@@ -13,12 +13,12 @@ namespace EQTool.Services.Parsing
             this.logEvents = logEvents;
         }
 
-        public bool Handle(string line, DateTime timestamp)
+        public bool Handle(string line, DateTime timestamp, int lineCounter)
         {
             var m = MatchLevel(line);
             if (m.HasValue)
             {
-                logEvents.Handle(new PlayerLevelDetectionEvent { PlayerLevel = m.Value, Line = line, TimeStamp = timestamp });
+                logEvents.Handle(new PlayerLevelDetectionEvent { PlayerLevel = m.Value, Line = line, TimeStamp = timestamp, LineCounter = lineCounter });
                 return true;
             }
             return false;

@@ -199,6 +199,7 @@
     <Compile Include="BaseTestClass.cs" />
     <Compile Include="DeathTests.cs" />
     <Compile Include="CommsParserTests.cs" />
+    <Compile Include="FactionParserTests.cs" />
     <Compile Include="Fakes\Class1.cs" />
     <Compile Include="Fakes\TextToSpeachFake.cs" />
     <Compile Include="PlayerLevelDetectionParserTests.cs" />

@@ -33,19 +33,19 @@ namespace EQTool.Services.Parsing
             };
         }
 
-        public bool Handle(string line, DateTime timestamp)
+        public bool Handle(string line, DateTime timestamp, int lineCounter)
         {
             var m = ParsePlayerInfo(line);
             if (m != null && StartingWhoOfZone)
             {
-                logEvents.Handle(new WhoPlayerEvent { PlayerInfo = m, TimeStamp = timestamp });
+                logEvents.Handle(new WhoPlayerEvent { PlayerInfo = m, TimeStamp = timestamp, Line = line, LineCounter = lineCounter });
                 return true;
             }
 
             if (IsZoneWhoLine(line))
             {
                 StartingWhoOfZone = true;
-                logEvents.Handle(new WhoEvent { TimeStamp = timestamp });
+                logEvents.Handle(new WhoEvent { TimeStamp = timestamp, Line = line, LineCounter = lineCounter });
                 return true;
             }
             else

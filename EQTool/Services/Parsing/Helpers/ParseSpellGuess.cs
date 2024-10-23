@@ -22,7 +22,7 @@ namespace EQTool.Services.Parsing
             HealSpell = spells.AllSpells.FirstOrDefault(a => a.name == "Chloroblast");
         }
 
-        public SpellCastEvent HandleBestGuessSpell(string message, DateTime timestamp)
+        public SpellCastEvent HandleBestGuessSpell(string message, DateTime timestamp, int lineCounter)
         {
             if (spells.CastOnYouSpells.TryGetValue(message, out var foundspells))
             {
@@ -37,7 +37,10 @@ namespace EQTool.Services.Parsing
                     TargetName = EQSpells.SpaceYou,
                     MultipleMatchesFound = multiplematches,
                     TimeStamp = timestamp,
-                    Line = message
+                    Line = message,
+                    CastByYou = false,
+                    LineCounter = lineCounter,
+                    TotalSecondsOverride = null
                 };
             }
 

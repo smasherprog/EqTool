@@ -10,9 +10,9 @@ namespace EQtoolsTests
 {
     [TestClass]
     public class FTETests : BaseTestClass
-    { 
+    {
         public FTETests()
-        { 
+        {
         }
 
         [TestMethod]
@@ -27,7 +27,7 @@ namespace EQtoolsTests
                 Zone = "templeveeshan"
             };
 
-            var d = service.Parse("Cekenar engages Tzvia!", DateTime.Now);
+            var d = service.Parse("Cekenar engages Tzvia!", DateTime.Now, 0);
             Assert.AreEqual(d.FTEPerson, "Tzvia");
             Assert.AreEqual(d.NPCName, "Cekenar");
         }
@@ -44,7 +44,7 @@ namespace EQtoolsTests
                 Zone = "templeveeshan"
             };
 
-            var d = service.Parse("Dagarn the Destroyer engages Tzvia!", DateTime.Now);
+            var d = service.Parse("Dagarn the Destroyer engages Tzvia!", DateTime.Now, 0);
             Assert.AreEqual(d.FTEPerson, "Tzvia");
             Assert.AreEqual(d.NPCName, "Dagarn the Destroyer");
         }

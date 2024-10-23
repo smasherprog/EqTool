@@ -20,7 +20,7 @@ namespace EQTool.Services.Parsing
             this.activePlayer = activePlayer;
         }
 
-        public bool Handle(string line, DateTime timestamp)
+        public bool Handle(string line, DateTime timestamp, int lineCounter)
         {
             var m = Match(line);
             if (m != null)
@@ -29,14 +29,16 @@ namespace EQTool.Services.Parsing
                 {
                     Location = m.Value,
                     PlayerInfo = activePlayer.Player,
-                    TimeStamp = timestamp
+                    TimeStamp = timestamp,
+                    Line = line,
+                    LineCounter = lineCounter
                 });
                 return true;
             }
             return false;
         }
 
-        public Point3D? Match(string message)
+        private Point3D? Match(string message)
         {
             //Debug.WriteLine($"LocationParser: " + message);
             if (message.StartsWith(YourLocationis))

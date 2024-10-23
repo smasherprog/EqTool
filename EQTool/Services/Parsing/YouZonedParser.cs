@@ -21,9 +21,9 @@ namespace EQTool.Services.Parsing
 
         }
 
-        public bool Handle(string line, DateTime timestamp)
+        public bool Handle(string line, DateTime timestamp, int lineCounter)
         {
-            var m = ZoneChanged(line, timestamp);
+            var m = ZoneChanged(line, timestamp, lineCounter);
             if (m != null)
             {
                 logEvents.Handle(m);
@@ -32,7 +32,7 @@ namespace EQTool.Services.Parsing
             return false;
         }
 
-        public YouZonedEvent ZoneChanged(string message, DateTime timestamp)
+        public YouZonedEvent ZoneChanged(string message, DateTime timestamp, int lineCounter)
         {
             var longName = _ZoneChanged(message);
             if (!string.IsNullOrWhiteSpace(longName))
@@ -41,7 +41,7 @@ namespace EQTool.Services.Parsing
                 if (!string.IsNullOrWhiteSpace(shortName))
                 {
                     Debug.WriteLine($"Zone Detected {longName}");
-                    return new YouZonedEvent { LongName = longName, ShortName = shortName, TimeStamp = timestamp };
+                    return new YouZonedEvent { LongName = longName, ShortName = shortName, TimeStamp = timestamp, Line = message, LineCounter = lineCounter };
                 }
             }
 

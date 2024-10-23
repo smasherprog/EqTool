@@ -1,5 +1,5 @@
 ﻿using EQTool.Models;
-using System; 
+using System;
 
 namespace EQTool.Services.Parsing
 {
@@ -17,18 +17,18 @@ namespace EQTool.Services.Parsing
         {
             this.logEvents = logEvents;
         }
-        public bool Handle(string line, DateTime timestamp)
+        public bool Handle(string line, DateTime timestamp, int lineCounter)
         {
             var m = Parse(line);
             if (m != null)
-            { 
-                logEvents.Handle(new InvisEvent { InvisStatus = m.Value, TimeStamp = timestamp });
+            {
+                logEvents.Handle(new InvisEvent { InvisStatus = m.Value, TimeStamp = timestamp, Line = line, LineCounter = lineCounter });
                 return true;
             }
             return false;
         }
 
-        public InvisStatus? Parse(string line)
+        private InvisStatus? Parse(string line)
         {
             return line == "You feel yourself starting to appear." ? InvisStatus.Fading : (InvisStatus?)null;
         }

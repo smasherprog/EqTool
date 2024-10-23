@@ -13,19 +13,18 @@ namespace EQTool.Services.Parsing
             this.logEvents = logEvents;
         }
 
-        public bool Handle(string line, DateTime timestamp)
+        public bool Handle(string line, DateTime timestamp, int lineCounter)
         {
             var m = MatchWornOffOtherSpell(line);
             if (!string.IsNullOrWhiteSpace(m))
             {
-                logEvents.Handle(new SpellWornOffOtherEvent { SpellName = m, TimeStamp = timestamp });
+                logEvents.Handle(new SpellWornOffOtherEvent { SpellName = m, TimeStamp = timestamp, Line = line, LineCounter = lineCounter });
                 return true;
             }
             return false;
         }
 
-
-        public string MatchWornOffOtherSpell(string message)
+        private string MatchWornOffOtherSpell(string message)
         {
             return message.StartsWith(EQSpells.Your) && message.EndsWith(EQSpells.SpellHasWornoff)
                        ? message.Replace(EQSpells.Your, string.Empty).Replace(EQSpells.SpellHasWornoff, string.Empty).Trim()

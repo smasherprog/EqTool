@@ -4,6 +4,6 @@ namespace EQTool.Models
 {
     public interface IEqLogParseHandler
     {
-        bool Handle(string line, DateTime timestamp);
+        bool Handle(string line, DateTime timestamp, int lineCounter);
     }
 }

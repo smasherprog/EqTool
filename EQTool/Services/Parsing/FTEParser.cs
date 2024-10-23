@@ -14,9 +14,9 @@ namespace EQTool.Services.Parsing
             this.logEvents = logEvents;
         }
 
-        public bool Handle(string line, DateTime timestamp)
+        public bool Handle(string line, DateTime timestamp, int lineCounter)
         {
-            var m = Parse(line, timestamp);
+            var m = Parse(line, timestamp, lineCounter);
             if (m != null)
             {
                 logEvents.Handle(m);
@@ -25,7 +25,7 @@ namespace EQTool.Services.Parsing
             return false;
         }
 
-        public FTEEvent Parse(string line, DateTime timestamp)
+        public FTEEvent Parse(string line, DateTime timestamp, int lineCounter)
         {
             var endwithexclimation = line.EndsWith("!");
             if (!endwithexclimation)
@@ -57,7 +57,9 @@ namespace EQTool.Services.Parsing
             {
                 FTEPerson = playername,
                 NPCName = npcname,
-                TimeStamp = timestamp
+                TimeStamp = timestamp,
+                LineCounter = lineCounter,
+                Line = line
             };
         }
     }

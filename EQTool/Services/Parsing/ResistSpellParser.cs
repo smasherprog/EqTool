@@ -16,9 +16,9 @@ namespace EQTool.Services.Parsing
         }
 
 
-        public bool Handle(string line, DateTime timestamp)
+        public bool Handle(string line, DateTime timestamp, int lineCounter)
         {
-            var m = ParseNPCSpell(line, timestamp);
+            var m = ParseNPCSpell(line, timestamp, lineCounter);
             if (m != null)
             {
                 logEvents.Handle(m);
@@ -27,7 +27,7 @@ namespace EQTool.Services.Parsing
             return false;
         }
 
-        public ResistSpellEvent ParseNPCSpell(string line, DateTime timestamp)
+        public ResistSpellEvent ParseNPCSpell(string line, DateTime timestamp, int lineCounter)
         {
             var resistmessage = line.StartsWith("You resist the ");
             if (resistmessage)
@@ -36,7 +36,7 @@ namespace EQTool.Services.Parsing
                 var spell = spells.AllSpells.FirstOrDefault(a => a.name == spellname);
                 if (spell != null)
                 {
-                    return new ResistSpellEvent { Spell = spell, isYou = true, TimeStamp = timestamp };
+                    return new ResistSpellEvent { Spell = spell, isYou = true, TimeStamp = timestamp, Line = line, LineCounter = lineCounter };
                 }
             }
 
@@ -47,7 +47,7 @@ namespace EQTool.Services.Parsing
                 var spell = spells.AllSpells.FirstOrDefault(a => a.name == spellname);
                 if (spell != null)
                 {
-                    return new ResistSpellEvent { Spell = spell, isYou = false, TimeStamp = timestamp };
+                    return new ResistSpellEvent { Spell = spell, isYou = false, TimeStamp = timestamp, Line = line, LineCounter = lineCounter };
                 }
             }
 

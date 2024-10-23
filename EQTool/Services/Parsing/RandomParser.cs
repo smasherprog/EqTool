@@ -18,9 +18,9 @@ namespace EQTool.Services.Parsing
             this.logEvents = logEvents;
         }
 
-        public bool Handle(string line, DateTime timestamp)
+        public bool Handle(string line, DateTime timestamp, int lineCounter)
         {
-            var m = Parse(line, timestamp);
+            var m = Parse(line, timestamp, lineCounter);
             if (m != null)
             {
                 logEvents.Handle(m);
@@ -29,7 +29,7 @@ namespace EQTool.Services.Parsing
             return false;
         }
 
-        public RandomRollEvent Parse(string line, DateTime timestamp)
+        public RandomRollEvent Parse(string line, DateTime timestamp, int lineCounter)
         {
             if (line.StartsWith(RollMessage))
             {
@@ -61,7 +61,9 @@ namespace EQTool.Services.Parsing
                             PlayerName = PlayerRollName,
                             MaxRoll = maxrollint,
                             Roll = rollint,
-                            TimeStamp = timestamp
+                            TimeStamp = timestamp,
+                            LineCounter = lineCounter,
+                            Line = line
                         };
                     }
                 }

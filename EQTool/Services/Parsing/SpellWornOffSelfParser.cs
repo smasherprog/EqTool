@@ -15,12 +15,12 @@ namespace EQTool.Services.Parsing
             this.logEvents = logEvents;
         }
 
-        public bool Handle(string line, DateTime timestamp)
+        public bool Handle(string line, DateTime timestamp, int lineCounter)
         {
             var m = MatchWornOffSelfSpell(line);
             if (m.Any())
             {
-                logEvents.Handle(new SpellWornOffSelfEvent { SpellNames = m, TimeStamp = timestamp });
+                logEvents.Handle(new SpellWornOffSelfEvent { SpellNames = m, TimeStamp = timestamp, Line = line, LineCounter = lineCounter });
                 return true;
             }
             return false;

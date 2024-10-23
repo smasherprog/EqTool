@@ -46,7 +46,7 @@ namespace EQtoolsTests
             var service = container.Resolve<ParseHandleYouCasting>();
             var player = container.Resolve<ActivePlayer>();
             player.Player = new PlayerInfo { };
-            service.HandleYouBeginCastingSpellStart(line, DateTime.Now);
+            service.HandleYouBeginCastingSpellStart(line, DateTime.Now, 0);
             Assert.AreEqual(player.Player.Level, 60);
         }
 
@@ -58,7 +58,7 @@ namespace EQtoolsTests
             var service = container.Resolve<ParseHandleYouCasting>();
             var player = container.Resolve<ActivePlayer>();
             player.Player = new PlayerInfo { };
-            service.HandleYouBeginCastingSpellStart(line, DateTime.Now);
+            service.HandleYouBeginCastingSpellStart(line, DateTime.Now, 0);
             Assert.AreEqual(player.Player.PlayerClass, PlayerClasses.Cleric);
         }
 

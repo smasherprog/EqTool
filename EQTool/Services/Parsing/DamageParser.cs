@@ -30,11 +30,14 @@ namespace EQTool.Services.Parsing
         }
 
         // handle a line from the log file
-        public bool Handle(string line, DateTime timestamp)
+        public bool Handle(string line, DateTime timestamp, int lineCounter)
         {
             var de = Match(line, timestamp);
             if (de != null)
             {
+                de.LineCounter = lineCounter;
+                de.Line = line;
+                de.TimeStamp = timestamp;
                 logEvents.Handle(de);
                 return true;
             }

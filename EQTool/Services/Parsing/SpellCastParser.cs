@@ -25,9 +25,9 @@ namespace EQTool.Services.Parsing
             HealSpell = spells.AllSpells.FirstOrDefault(a => a.name == "Chloroplast") ?? spells.AllSpells.FirstOrDefault(a => a.name == "Regeneration");
         }
 
-        public bool Handle(string line, DateTime timestamp)
+        public bool Handle(string line, DateTime timestamp, int lineCounter)
         {
-            var m = MatchSpell(line, timestamp);
+            var m = MatchSpell(line, timestamp, lineCounter);
             if (m != null)
             {
                 logEvents.Handle(m);
@@ -37,7 +37,7 @@ namespace EQTool.Services.Parsing
         }
 
 
-        public SpellCastEvent MatchSpell(string line, DateTime timestamp)
+        public SpellCastEvent MatchSpell(string line, DateTime timestamp, int lineCounter)
         {
             if (line == "You mend your wounds and heal some damage." || line == "You have failed to mend your wounds.")
             {
@@ -68,7 +68,9 @@ namespace EQTool.Services.Parsing
                     TargetName = EQSpells.SpaceYou,
                     TotalSecondsOverride = 6 * 60,
                     TimeStamp = timestamp,
-                    Line = line
+                    Line = line,
+                    CastByYou = false,
+                    LineCounter = lineCounter
                 };
             }
 
@@ -79,10 +81,10 @@ namespace EQTool.Services.Parsing
             }
             if (line.StartsWith(EQSpells.YouBeginCasting))
             {
-                parseHandleYouCasting.HandleYouBeginCastingSpellStart(line, timestamp);
+                parseHandleYouCasting.HandleYouBeginCastingSpellStart(line, timestamp, lineCounter);
 
                 // fire off an event indicating spell casting has started
-                logEvents.Handle(new YouBeginCastingEvent(timestamp, line));
+                logEvents.Handle(new YouBeginCastingEvent { Line = line, LineCounter = lineCounter, TimeStamp = timestamp });
                 // should probably return true?  I am hesitant to change, not sure what else might break if I do
                 //return true;
                 return null;
@@ -93,15 +95,15 @@ namespace EQTool.Services.Parsing
                 {
                     if (line == activePlayer.UserCastingSpell.cast_on_you)
                     {
-                        return parseHandleYouCasting.HandleYouBeginCastingSpellEnd(line, timestamp);
+                        return parseHandleYouCasting.HandleYouBeginCastingSpellEnd(line, timestamp, lineCounter);
                     }
                     else if (!string.IsNullOrWhiteSpace(activePlayer.UserCastingSpell.cast_on_other) && line.EndsWith(activePlayer.UserCastingSpell.cast_on_other))
                     {
-                        return parseHandleYouCasting.HandleYouBeginCastingSpellOtherEnd(line, timestamp);
+                        return parseHandleYouCasting.HandleYouBeginCastingSpellOtherEnd(line, timestamp, lineCounter);
                     }
                 }
 
-                return parseHandleYouCasting.HandleYouSpell(line, timestamp);
+                return parseHandleYouCasting.HandleYouSpell(line, timestamp, lineCounter);
             }
 
             if (line.StartsWith(EQSpells.Your))
@@ -110,31 +112,31 @@ namespace EQTool.Services.Parsing
                 {
                     if (line == activePlayer.UserCastingSpell.cast_on_you)
                     {
-                        return parseHandleYouCasting.HandleYouBeginCastingSpellEnd(line, timestamp);
+                        return parseHandleYouCasting.HandleYouBeginCastingSpellEnd(line, timestamp, lineCounter);
                     }
                     else if (!string.IsNullOrWhiteSpace(activePlayer.UserCastingSpell.cast_on_other) && line.EndsWith(activePlayer.UserCastingSpell.cast_on_other))
                     {
-                        return parseHandleYouCasting.HandleYouBeginCastingSpellOtherEnd(line, timestamp);
+                        return parseHandleYouCasting.HandleYouBeginCastingSpellOtherEnd(line, timestamp, lineCounter);
                     }
                 }
 
-                var spell = parseHandleYouCasting.HandleYourSpell(line, timestamp);
-                return spell ?? (settings.BestGuessSpells ? parseSpellGuess.HandleBestGuessSpell(line, timestamp) : null);
+                var spell = parseHandleYouCasting.HandleYourSpell(line, timestamp, lineCounter);
+                return spell ?? (settings.BestGuessSpells ? parseSpellGuess.HandleBestGuessSpell(line, timestamp, lineCounter) : null);
             }
 
             if (activePlayer?.UserCastingSpell != null)
             {
                 if (line == activePlayer.UserCastingSpell.cast_on_you)
                 {
-                    return parseHandleYouCasting.HandleYouBeginCastingSpellEnd(line, timestamp);
+                    return parseHandleYouCasting.HandleYouBeginCastingSpellEnd(line, timestamp, lineCounter);
                 }
                 else if (!string.IsNullOrWhiteSpace(activePlayer.UserCastingSpell.cast_on_other) && line.EndsWith(activePlayer.UserCastingSpell.cast_on_other))
                 {
-                    return parseHandleYouCasting.HandleYouBeginCastingSpellOtherEnd(line, timestamp);
+                    return parseHandleYouCasting.HandleYouBeginCastingSpellOtherEnd(line, timestamp, lineCounter);
                 }
             }
 
-            return settings.BestGuessSpells ? parseSpellGuess.HandleBestGuessSpell(line, timestamp) : null;
+            return settings.BestGuessSpells ? parseSpellGuess.HandleBestGuessSpell(line, timestamp, lineCounter) : null;
         }
     }
 }

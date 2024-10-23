@@ -6,22 +6,17 @@ namespace EQTool.Services.Parsing
 {
     public class CampParser : IEqLogParseHandler
     {
-        private readonly LogEvents logEvents; 
+        private readonly LogEvents logEvents;
         private bool StillCamping = false;
 
         public CampParser(LogEvents logEvents)
         {
-            this.logEvents = logEvents; 
+            this.logEvents = logEvents;
         }
 
-        public bool Handle(string line, DateTime timestamp)
+        public bool Handle(string line, DateTime timestamp, int lineCounter)
         {
-            return Camping(line, timestamp);
-        }
-
-        public bool Camping(string message, DateTime timestamp)
-        {
-            if (message == "It will take about 5 more seconds to prepare your camp.")
+            if (line == "It will take about 5 more seconds to prepare your camp.")
             {
                 StillCamping = true;
                 _ = System.Threading.Tasks.Task.Factory.StartNew(() =>
@@ -31,12 +26,12 @@ namespace EQTool.Services.Parsing
                     {
                         StillCamping = false;
                         Debug.WriteLine("CampEvent");
-                        logEvents.Handle(new CampEvent { TimeStamp = timestamp });
+                        logEvents.Handle(new CampEvent { TimeStamp = timestamp, LineCounter = lineCounter, Line = line });
                     }
                 });
                 return true;
             }
-            else if (message == "You abandon your preparations to camp.")
+            else if (line == "You abandon your preparations to camp.")
             {
                 StillCamping = false;
                 return true;
