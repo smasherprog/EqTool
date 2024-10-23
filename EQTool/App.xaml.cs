@@ -203,6 +203,14 @@ namespace EQTool
             }
             catch { }
             httpclient.DefaultRequestHeaders.Add("User-Agent", "request");
+            try
+            {
+                container = DI.Init();
+            }
+            catch (Exception ex)
+            {
+                LogUnhandledException(ex, "DI.Init", null);
+            }
             var updateservice = new UpdateService();
             var did_update = updateservice.ApplyUpdate(e.Args.FirstOrDefault());
             if (did_update == UpdateService.UpdateStatus.UpdatesApplied)
@@ -228,7 +236,6 @@ namespace EQTool
 
         private void InitStuff()
         {
-            container = DI.Init();
             UITimer = new System.Timers.Timer(1000 * 60);
 #if !DEBUG
             UITimer.Elapsed += UITimer_Elapsed;
