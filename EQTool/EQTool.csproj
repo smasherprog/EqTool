@@ -312,9 +312,11 @@
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
+    <Reference Include="UIAutomationProvider" />
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="WindowsFormsIntegration" />
     <Reference Include="Xceed.Wpf.AvalonDock, Version=4.6.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
       <HintPath>..\packages\Extended.Wpf.Toolkit.4.6.1\lib\net40\Xceed.Wpf.AvalonDock.dll</HintPath>
     </Reference>
@@ -366,6 +368,12 @@
     <Compile Include="UI\CustomTimeSpanUpDown.cs" />
     <Compile Include="UI\EventOverlay.xaml.cs">
       <DependentUpon>EventOverlay.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\SpawnTimerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\SpawnTimerForm.Designer.cs">
+      <DependentUpon>SpawnTimerForm.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\MappingWindow.xaml.cs">
       <DependentUpon>MappingWindow.xaml</DependentUpon>
@@ -534,6 +542,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
       <LastGenOutput>Resources1.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\SpawnTimerForm.resx">
+      <DependentUpon>SpawnTimerForm.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>

@@ -9,6 +9,7 @@ namespace EQTool.UI
     {
         public ConfigurationWindow()
         {
+            //
             InitializeComponent();
         }
     }
