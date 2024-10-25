@@ -5,8 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EQTool.UI"
         mc:Ignorable="d"
-        Title="ConfigurationWindow" Height="450" Width="800">
-    <Grid>
-        
-    </Grid>
+        Title="ConfigurationWindow" Height="625" Width="1035">
+
+
 </Window>
