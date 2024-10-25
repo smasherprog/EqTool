@@ -29,37 +29,35 @@
         private void InitializeComponent()
         {
             this.timerStartGroupBox = new System.Windows.Forms.GroupBox();
+            this.youHaveSlainTextBox = new System.Windows.Forms.TextBox();
+            this.factionMessageTextBox = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.youHaveSlainRadioButton = new System.Windows.Forms.RadioButton();
             this.factionMessageRadioButton = new System.Windows.Forms.RadioButton();
             this.expMessageRadioButton = new System.Windows.Forms.RadioButton();
             this.enableCheckBox = new System.Windows.Forms.CheckBox();
-            this.factionMessageTextBox = new System.Windows.Forms.TextBox();
-            this.youHaveSlainTextBox = new System.Windows.Forms.TextBox();
             this.timerEndGroupBox = new System.Windows.Forms.GroupBox();
-            this.warningTextTextBox = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.warningCheckBox = new System.Windows.Forms.CheckBox();
-            this.warningTimeRemaining = new System.Windows.Forms.TextBox();
-            this.label3 = new System.Windows.Forms.Label();
-            this.warningTextCheckbox = new System.Windows.Forms.CheckBox();
-            this.warningTTSCheckBox = new System.Windows.Forms.CheckBox();
-            this.warningTTSTextBox = new System.Windows.Forms.TextBox();
             this.timerExpiredTTSCheckBox = new System.Windows.Forms.CheckBox();
             this.endingTTSTextBox = new System.Windows.Forms.TextBox();
             this.timerExpiredTextCheckBox = new System.Windows.Forms.CheckBox();
-            this.timerExpiredCheckBox = new System.Windows.Forms.CheckBox();
             this.endingTextTextBox = new System.Windows.Forms.TextBox();
+            this.warningTTSCheckBox = new System.Windows.Forms.CheckBox();
+            this.warningTTSTextBox = new System.Windows.Forms.TextBox();
+            this.warningTextCheckbox = new System.Windows.Forms.CheckBox();
+            this.label3 = new System.Windows.Forms.Label();
+            this.warningTimeRemaining = new System.Windows.Forms.TextBox();
+            this.warningTextTextBox = new System.Windows.Forms.TextBox();
+            this.label2 = new System.Windows.Forms.Label();
             this.timerDurationGroupBox = new System.Windows.Forms.GroupBox();
+            this.label5 = new System.Windows.Forms.Label();
+            this.customDurationTextBox = new System.Windows.Forms.TextBox();
+            this.radioButtonCustom = new System.Windows.Forms.RadioButton();
+            this.radioButton2800 = new System.Windows.Forms.RadioButton();
+            this.radioButton2200 = new System.Windows.Forms.RadioButton();
             this.label4 = new System.Windows.Forms.Label();
             this.radioButton0640 = new System.Windows.Forms.RadioButton();
             this.radioButton1430 = new System.Windows.Forms.RadioButton();
             this.radioButton0600 = new System.Windows.Forms.RadioButton();
-            this.radioButton2200 = new System.Windows.Forms.RadioButton();
-            this.radioButton2800 = new System.Windows.Forms.RadioButton();
-            this.radioButtonCustom = new System.Windows.Forms.RadioButton();
-            this.label5 = new System.Windows.Forms.Label();
-            this.customDurationTextBox = new System.Windows.Forms.TextBox();
             this.okButton = new System.Windows.Forms.Button();
             this.cancelButton = new System.Windows.Forms.Button();
             this.counterResetGroupBox = new System.Windows.Forms.GroupBox();
@@ -67,8 +65,10 @@
             this.counterResetTextBox = new System.Windows.Forms.TextBox();
             this.label7 = new System.Windows.Forms.Label();
             this.commentsGroupBox = new System.Windows.Forms.GroupBox();
-            this.label8 = new System.Windows.Forms.Label();
             this.commentsRichTextBox = new System.Windows.Forms.RichTextBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this.label9 = new System.Windows.Forms.Label();
+            this.label10 = new System.Windows.Forms.Label();
             this.timerStartGroupBox.SuspendLayout();
             this.timerEndGroupBox.SuspendLayout();
             this.timerDurationGroupBox.SuspendLayout();
@@ -92,6 +92,23 @@
             this.timerStartGroupBox.TabIndex = 0;
             this.timerStartGroupBox.TabStop = false;
             this.timerStartGroupBox.Enter += new System.EventHandler(this.groupBox1_Enter);
+            // 
+            // youHaveSlainTextBox
+            // 
+            this.youHaveSlainTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.youHaveSlainTextBox.Location = new System.Drawing.Point(218, 69);
+            this.youHaveSlainTextBox.Name = "youHaveSlainTextBox";
+            this.youHaveSlainTextBox.Size = new System.Drawing.Size(293, 21);
+            this.youHaveSlainTextBox.TabIndex = 5;
+            this.youHaveSlainTextBox.Text = "(a pirate|a cyclops|Boog Mudtoe|an ancient cyclops)";
+            // 
+            // factionMessageTextBox
+            // 
+            this.factionMessageTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.factionMessageTextBox.Location = new System.Drawing.Point(219, 94);
+            this.factionMessageTextBox.Name = "factionMessageTextBox";
+            this.factionMessageTextBox.Size = new System.Drawing.Size(293, 21);
+            this.factionMessageTextBox.TabIndex = 4;
             // 
             // label1
             // 
@@ -157,36 +174,19 @@
             this.enableCheckBox.UseVisualStyleBackColor = true;
             this.enableCheckBox.CheckedChanged += new System.EventHandler(this.checkBox1_CheckedChanged);
             // 
-            // factionMessageTextBox
-            // 
-            this.factionMessageTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.factionMessageTextBox.Location = new System.Drawing.Point(219, 94);
-            this.factionMessageTextBox.Name = "factionMessageTextBox";
-            this.factionMessageTextBox.Size = new System.Drawing.Size(293, 21);
-            this.factionMessageTextBox.TabIndex = 4;
-            // 
-            // youHaveSlainTextBox
-            // 
-            this.youHaveSlainTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.youHaveSlainTextBox.Location = new System.Drawing.Point(218, 69);
-            this.youHaveSlainTextBox.Name = "youHaveSlainTextBox";
-            this.youHaveSlainTextBox.Size = new System.Drawing.Size(293, 21);
-            this.youHaveSlainTextBox.TabIndex = 5;
-            this.youHaveSlainTextBox.Text = "(a pirate|a cyclops|Boog Mudtoe|an ancient cyclops)";
-            // 
             // timerEndGroupBox
             // 
+            this.timerEndGroupBox.Controls.Add(this.label10);
+            this.timerEndGroupBox.Controls.Add(this.label9);
             this.timerEndGroupBox.Controls.Add(this.timerExpiredTTSCheckBox);
             this.timerEndGroupBox.Controls.Add(this.endingTTSTextBox);
             this.timerEndGroupBox.Controls.Add(this.timerExpiredTextCheckBox);
-            this.timerEndGroupBox.Controls.Add(this.timerExpiredCheckBox);
             this.timerEndGroupBox.Controls.Add(this.endingTextTextBox);
             this.timerEndGroupBox.Controls.Add(this.warningTTSCheckBox);
             this.timerEndGroupBox.Controls.Add(this.warningTTSTextBox);
             this.timerEndGroupBox.Controls.Add(this.warningTextCheckbox);
             this.timerEndGroupBox.Controls.Add(this.label3);
             this.timerEndGroupBox.Controls.Add(this.warningTimeRemaining);
-            this.timerEndGroupBox.Controls.Add(this.warningCheckBox);
             this.timerEndGroupBox.Controls.Add(this.warningTextTextBox);
             this.timerEndGroupBox.Controls.Add(this.label2);
             this.timerEndGroupBox.Location = new System.Drawing.Point(7, 168);
@@ -196,93 +196,6 @@
             this.timerEndGroupBox.Size = new System.Drawing.Size(531, 215);
             this.timerEndGroupBox.TabIndex = 6;
             this.timerEndGroupBox.TabStop = false;
-            // 
-            // warningTextTextBox
-            // 
-            this.warningTextTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.warningTextTextBox.Location = new System.Drawing.Point(219, 69);
-            this.warningTextTextBox.Name = "warningTextTextBox";
-            this.warningTextTextBox.Size = new System.Drawing.Size(293, 21);
-            this.warningTextTextBox.TabIndex = 4;
-            this.warningTextTextBox.Text = "30 sec warning";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(6, 10);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(99, 24);
-            this.label2.TabIndex = 3;
-            this.label2.Text = "Timer End";
-            // 
-            // warningCheckBox
-            // 
-            this.warningCheckBox.AutoSize = true;
-            this.warningCheckBox.Checked = true;
-            this.warningCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.warningCheckBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.warningCheckBox.Location = new System.Drawing.Point(48, 43);
-            this.warningCheckBox.Name = "warningCheckBox";
-            this.warningCheckBox.Size = new System.Drawing.Size(167, 19);
-            this.warningCheckBox.TabIndex = 6;
-            this.warningCheckBox.Text = "Remaining Time Warning";
-            this.warningCheckBox.UseVisualStyleBackColor = true;
-            // 
-            // warningTimeRemaining
-            // 
-            this.warningTimeRemaining.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.warningTimeRemaining.Location = new System.Drawing.Point(219, 44);
-            this.warningTimeRemaining.Name = "warningTimeRemaining";
-            this.warningTimeRemaining.Size = new System.Drawing.Size(81, 21);
-            this.warningTimeRemaining.TabIndex = 7;
-            this.warningTimeRemaining.Text = "30";
-            this.warningTimeRemaining.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.Location = new System.Drawing.Point(306, 47);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(61, 15);
-            this.label3.TabIndex = 8;
-            this.label3.Text = "hh:mm:ss";
-            // 
-            // warningTextCheckbox
-            // 
-            this.warningTextCheckbox.AutoSize = true;
-            this.warningTextCheckbox.Checked = true;
-            this.warningTextCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.warningTextCheckbox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.warningTextCheckbox.Location = new System.Drawing.Point(81, 70);
-            this.warningTextCheckbox.Name = "warningTextCheckbox";
-            this.warningTextCheckbox.Size = new System.Drawing.Size(52, 19);
-            this.warningTextCheckbox.TabIndex = 9;
-            this.warningTextCheckbox.Text = "Text:";
-            this.warningTextCheckbox.UseVisualStyleBackColor = true;
-            // 
-            // warningTTSCheckBox
-            // 
-            this.warningTTSCheckBox.AutoSize = true;
-            this.warningTTSCheckBox.Checked = true;
-            this.warningTTSCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.warningTTSCheckBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.warningTTSCheckBox.Location = new System.Drawing.Point(81, 97);
-            this.warningTTSCheckBox.Name = "warningTTSCheckBox";
-            this.warningTTSCheckBox.Size = new System.Drawing.Size(107, 19);
-            this.warningTTSCheckBox.TabIndex = 11;
-            this.warningTTSCheckBox.Text = "Text to Speech";
-            this.warningTTSCheckBox.UseVisualStyleBackColor = true;
-            // 
-            // warningTTSTextBox
-            // 
-            this.warningTTSTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.warningTTSTextBox.Location = new System.Drawing.Point(219, 94);
-            this.warningTTSTextBox.Name = "warningTTSTextBox";
-            this.warningTTSTextBox.Size = new System.Drawing.Size(293, 21);
-            this.warningTTSTextBox.TabIndex = 10;
-            this.warningTTSTextBox.Text = "30 sec warning";
             // 
             // timerExpiredTTSCheckBox
             // 
@@ -322,20 +235,6 @@
             this.timerExpiredTextCheckBox.UseVisualStyleBackColor = true;
             this.timerExpiredTextCheckBox.CheckedChanged += new System.EventHandler(this.checkBox2_CheckedChanged);
             // 
-            // timerExpiredCheckBox
-            // 
-            this.timerExpiredCheckBox.AutoSize = true;
-            this.timerExpiredCheckBox.Checked = true;
-            this.timerExpiredCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.timerExpiredCheckBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.timerExpiredCheckBox.Location = new System.Drawing.Point(47, 131);
-            this.timerExpiredCheckBox.Name = "timerExpiredCheckBox";
-            this.timerExpiredCheckBox.Size = new System.Drawing.Size(167, 19);
-            this.timerExpiredCheckBox.TabIndex = 13;
-            this.timerExpiredCheckBox.Text = "Timer Expired Notification";
-            this.timerExpiredCheckBox.UseVisualStyleBackColor = true;
-            this.timerExpiredCheckBox.CheckedChanged += new System.EventHandler(this.checkBox3_CheckedChanged);
-            // 
             // endingTextTextBox
             // 
             this.endingTextTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -345,6 +244,80 @@
             this.endingTextTextBox.TabIndex = 12;
             this.endingTextTextBox.Text = "Pop";
             this.endingTextTextBox.TextChanged += new System.EventHandler(this.textBox2_TextChanged);
+            // 
+            // warningTTSCheckBox
+            // 
+            this.warningTTSCheckBox.AutoSize = true;
+            this.warningTTSCheckBox.Checked = true;
+            this.warningTTSCheckBox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.warningTTSCheckBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.warningTTSCheckBox.Location = new System.Drawing.Point(81, 97);
+            this.warningTTSCheckBox.Name = "warningTTSCheckBox";
+            this.warningTTSCheckBox.Size = new System.Drawing.Size(107, 19);
+            this.warningTTSCheckBox.TabIndex = 11;
+            this.warningTTSCheckBox.Text = "Text to Speech";
+            this.warningTTSCheckBox.UseVisualStyleBackColor = true;
+            // 
+            // warningTTSTextBox
+            // 
+            this.warningTTSTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.warningTTSTextBox.Location = new System.Drawing.Point(219, 94);
+            this.warningTTSTextBox.Name = "warningTTSTextBox";
+            this.warningTTSTextBox.Size = new System.Drawing.Size(293, 21);
+            this.warningTTSTextBox.TabIndex = 10;
+            this.warningTTSTextBox.Text = "30 sec warning";
+            // 
+            // warningTextCheckbox
+            // 
+            this.warningTextCheckbox.AutoSize = true;
+            this.warningTextCheckbox.Checked = true;
+            this.warningTextCheckbox.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.warningTextCheckbox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.warningTextCheckbox.Location = new System.Drawing.Point(81, 70);
+            this.warningTextCheckbox.Name = "warningTextCheckbox";
+            this.warningTextCheckbox.Size = new System.Drawing.Size(52, 19);
+            this.warningTextCheckbox.TabIndex = 9;
+            this.warningTextCheckbox.Text = "Text:";
+            this.warningTextCheckbox.UseVisualStyleBackColor = true;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.Location = new System.Drawing.Point(306, 47);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(61, 15);
+            this.label3.TabIndex = 8;
+            this.label3.Text = "hh:mm:ss";
+            // 
+            // warningTimeRemaining
+            // 
+            this.warningTimeRemaining.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.warningTimeRemaining.Location = new System.Drawing.Point(219, 44);
+            this.warningTimeRemaining.Name = "warningTimeRemaining";
+            this.warningTimeRemaining.Size = new System.Drawing.Size(81, 21);
+            this.warningTimeRemaining.TabIndex = 7;
+            this.warningTimeRemaining.Text = "30";
+            this.warningTimeRemaining.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // warningTextTextBox
+            // 
+            this.warningTextTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.warningTextTextBox.Location = new System.Drawing.Point(219, 69);
+            this.warningTextTextBox.Name = "warningTextTextBox";
+            this.warningTextTextBox.Size = new System.Drawing.Size(293, 21);
+            this.warningTextTextBox.TabIndex = 4;
+            this.warningTextTextBox.Text = "30 sec warning";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(6, 10);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(99, 24);
+            this.label2.TabIndex = 3;
+            this.label2.Text = "Timer End";
             // 
             // timerDurationGroupBox
             // 
@@ -364,6 +337,64 @@
             this.timerDurationGroupBox.Size = new System.Drawing.Size(322, 194);
             this.timerDurationGroupBox.TabIndex = 6;
             this.timerDurationGroupBox.TabStop = false;
+            // 
+            // label5
+            // 
+            this.label5.AutoSize = true;
+            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label5.Location = new System.Drawing.Point(207, 168);
+            this.label5.Name = "label5";
+            this.label5.Size = new System.Drawing.Size(61, 15);
+            this.label5.TabIndex = 10;
+            this.label5.Text = "hh:mm:ss";
+            // 
+            // customDurationTextBox
+            // 
+            this.customDurationTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.customDurationTextBox.Location = new System.Drawing.Point(120, 162);
+            this.customDurationTextBox.Name = "customDurationTextBox";
+            this.customDurationTextBox.Size = new System.Drawing.Size(81, 21);
+            this.customDurationTextBox.TabIndex = 9;
+            this.customDurationTextBox.Text = "30:00";
+            this.customDurationTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
+            // 
+            // radioButtonCustom
+            // 
+            this.radioButtonCustom.AutoSize = true;
+            this.radioButtonCustom.Checked = true;
+            this.radioButtonCustom.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.radioButtonCustom.Location = new System.Drawing.Point(48, 161);
+            this.radioButtonCustom.Margin = new System.Windows.Forms.Padding(8, 7, 8, 7);
+            this.radioButtonCustom.Name = "radioButtonCustom";
+            this.radioButtonCustom.Size = new System.Drawing.Size(67, 19);
+            this.radioButtonCustom.TabIndex = 6;
+            this.radioButtonCustom.TabStop = true;
+            this.radioButtonCustom.Text = "Custom";
+            this.radioButtonCustom.UseVisualStyleBackColor = true;
+            // 
+            // radioButton2800
+            // 
+            this.radioButton2800.AutoSize = true;
+            this.radioButton2800.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.radioButton2800.Location = new System.Drawing.Point(48, 138);
+            this.radioButton2800.Margin = new System.Windows.Forms.Padding(8, 7, 8, 7);
+            this.radioButton2800.Name = "radioButton2800";
+            this.radioButton2800.Size = new System.Drawing.Size(56, 19);
+            this.radioButton2800.TabIndex = 5;
+            this.radioButton2800.Text = "28:00";
+            this.radioButton2800.UseVisualStyleBackColor = true;
+            // 
+            // radioButton2200
+            // 
+            this.radioButton2200.AutoSize = true;
+            this.radioButton2200.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.radioButton2200.Location = new System.Drawing.Point(48, 115);
+            this.radioButton2200.Margin = new System.Windows.Forms.Padding(8, 7, 8, 7);
+            this.radioButton2200.Name = "radioButton2200";
+            this.radioButton2200.Size = new System.Drawing.Size(56, 19);
+            this.radioButton2200.TabIndex = 4;
+            this.radioButton2200.Text = "22:00";
+            this.radioButton2200.UseVisualStyleBackColor = true;
             // 
             // label4
             // 
@@ -411,64 +442,6 @@
             this.radioButton0600.Text = "06:00";
             this.radioButton0600.UseVisualStyleBackColor = true;
             // 
-            // radioButton2200
-            // 
-            this.radioButton2200.AutoSize = true;
-            this.radioButton2200.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.radioButton2200.Location = new System.Drawing.Point(48, 115);
-            this.radioButton2200.Margin = new System.Windows.Forms.Padding(8, 7, 8, 7);
-            this.radioButton2200.Name = "radioButton2200";
-            this.radioButton2200.Size = new System.Drawing.Size(56, 19);
-            this.radioButton2200.TabIndex = 4;
-            this.radioButton2200.Text = "22:00";
-            this.radioButton2200.UseVisualStyleBackColor = true;
-            // 
-            // radioButton2800
-            // 
-            this.radioButton2800.AutoSize = true;
-            this.radioButton2800.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.radioButton2800.Location = new System.Drawing.Point(48, 138);
-            this.radioButton2800.Margin = new System.Windows.Forms.Padding(8, 7, 8, 7);
-            this.radioButton2800.Name = "radioButton2800";
-            this.radioButton2800.Size = new System.Drawing.Size(56, 19);
-            this.radioButton2800.TabIndex = 5;
-            this.radioButton2800.Text = "28:00";
-            this.radioButton2800.UseVisualStyleBackColor = true;
-            // 
-            // radioButtonCustom
-            // 
-            this.radioButtonCustom.AutoSize = true;
-            this.radioButtonCustom.Checked = true;
-            this.radioButtonCustom.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.radioButtonCustom.Location = new System.Drawing.Point(48, 161);
-            this.radioButtonCustom.Margin = new System.Windows.Forms.Padding(8, 7, 8, 7);
-            this.radioButtonCustom.Name = "radioButtonCustom";
-            this.radioButtonCustom.Size = new System.Drawing.Size(67, 19);
-            this.radioButtonCustom.TabIndex = 6;
-            this.radioButtonCustom.TabStop = true;
-            this.radioButtonCustom.Text = "Custom";
-            this.radioButtonCustom.UseVisualStyleBackColor = true;
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label5.Location = new System.Drawing.Point(207, 168);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(61, 15);
-            this.label5.TabIndex = 10;
-            this.label5.Text = "hh:mm:ss";
-            // 
-            // customDurationTextBox
-            // 
-            this.customDurationTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.customDurationTextBox.Location = new System.Drawing.Point(120, 162);
-            this.customDurationTextBox.Name = "customDurationTextBox";
-            this.customDurationTextBox.Size = new System.Drawing.Size(81, 21);
-            this.customDurationTextBox.TabIndex = 9;
-            this.customDurationTextBox.Text = "30:00";
-            this.customDurationTextBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            // 
             // okButton
             // 
             this.okButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 14.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
@@ -506,7 +479,7 @@
             // 
             this.label6.AutoSize = true;
             this.label6.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label6.Location = new System.Drawing.Point(149, 49);
+            this.label6.Location = new System.Drawing.Point(149, 46);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(61, 15);
             this.label6.TabIndex = 10;
@@ -545,6 +518,16 @@
             this.commentsGroupBox.TabIndex = 12;
             this.commentsGroupBox.TabStop = false;
             // 
+            // commentsRichTextBox
+            // 
+            this.commentsRichTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.commentsRichTextBox.Location = new System.Drawing.Point(8, 44);
+            this.commentsRichTextBox.Name = "commentsRichTextBox";
+            this.commentsRichTextBox.Size = new System.Drawing.Size(314, 206);
+            this.commentsRichTextBox.TabIndex = 5;
+            this.commentsRichTextBox.Text = "OOT sisters/specs = 6:40\nOasis specs = 14:30\nWK guards = 6:00\nOOT AC mobs = (a pi" +
+    "rate|a cyclops|Boog Mudtoe|an ancient cyclops)\n(Drelzna|a necromancer)\n";
+            // 
             // label8
             // 
             this.label8.AutoSize = true;
@@ -555,15 +538,26 @@
             this.label8.TabIndex = 4;
             this.label8.Text = "Comments / Notes";
             // 
-            // commentsRichTextBox
+            // label9
             // 
-            this.commentsRichTextBox.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.commentsRichTextBox.Location = new System.Drawing.Point(8, 44);
-            this.commentsRichTextBox.Name = "commentsRichTextBox";
-            this.commentsRichTextBox.Size = new System.Drawing.Size(314, 206);
-            this.commentsRichTextBox.TabIndex = 5;
-            this.commentsRichTextBox.Text = "OOT sisters/specs = 6:40\nOasis specs = 14:30\nWK guards = 6:00\nOOT AC mobs = (a pi" +
-    "rate|a cyclops|Boog Mudtoe|an ancient cyclops)\n(Drelzna|a necromancer)\n";
+            this.label9.AutoSize = true;
+            this.label9.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label9.Location = new System.Drawing.Point(45, 44);
+            this.label9.Name = "label9";
+            this.label9.Size = new System.Drawing.Size(148, 15);
+            this.label9.TabIndex = 17;
+            this.label9.Text = "Remaining Time Warning";
+            this.label9.Click += new System.EventHandler(this.label9_Click);
+            // 
+            // label10
+            // 
+            this.label10.AutoSize = true;
+            this.label10.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label10.Location = new System.Drawing.Point(45, 130);
+            this.label10.Name = "label10";
+            this.label10.Size = new System.Drawing.Size(148, 15);
+            this.label10.TabIndex = 18;
+            this.label10.Text = "Timer Expired Notification";
             // 
             // SpawnTimerDialog
             // 
@@ -612,14 +606,12 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.TextBox warningTimeRemaining;
-        private System.Windows.Forms.CheckBox warningCheckBox;
         private System.Windows.Forms.CheckBox warningTextCheckbox;
         private System.Windows.Forms.CheckBox warningTTSCheckBox;
         private System.Windows.Forms.TextBox warningTTSTextBox;
         private System.Windows.Forms.CheckBox timerExpiredTTSCheckBox;
         private System.Windows.Forms.TextBox endingTTSTextBox;
         private System.Windows.Forms.CheckBox timerExpiredTextCheckBox;
-        private System.Windows.Forms.CheckBox timerExpiredCheckBox;
         private System.Windows.Forms.TextBox endingTextTextBox;
         private System.Windows.Forms.GroupBox timerDurationGroupBox;
         private System.Windows.Forms.Label label4;
@@ -640,5 +632,7 @@
         private System.Windows.Forms.GroupBox commentsGroupBox;
         private System.Windows.Forms.RichTextBox commentsRichTextBox;
         private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.Label label10;
+        private System.Windows.Forms.Label label9;
     }
 }
