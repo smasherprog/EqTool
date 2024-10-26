@@ -33,6 +33,17 @@ namespace EQtoolsTests
         }
 
         [TestMethod]
+        public void Parse0()
+        {
+            logEvents.CompleteHealEvent += (s, d) =>
+            {
+                isCalled = true;
+            };
+            logParser.Push("Curaja shouts, 'ench lfg'", DateTime.Now);
+            Assert.IsFalse(isCalled);
+        }
+
+        [TestMethod]
         public void Parse1()
         {
             logEvents.CompleteHealEvent += (s, d) =>

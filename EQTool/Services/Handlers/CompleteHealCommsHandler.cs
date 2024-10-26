@@ -36,6 +36,10 @@ namespace EQTool.Services.Parsing
             {
                 chwordfound = "ch ";
                 chindex = line.IndexOf("ch ", System.StringComparison.OrdinalIgnoreCase);
+                if (chindex != 0)
+                {
+                    chindex = -1;
+                }
             }
 
             if (chindex == -1)
