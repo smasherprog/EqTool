@@ -51,19 +51,44 @@ namespace EQTool.Services.Parsing
 
             // melee attack, hit or miss
             // https://regex101.com/r/77YkpV/1
-            var meleePattern = @"^(?<attacker_name>[\w` ]+?) (try to )?(?<dmg_type>(hit(s)?|slash(es)?|pierce(s)?|crush(es)?|claw(s)?|bite(s)?|sting(s)?|maul(s)?|gore(s)?|punch(es)?|kick(s)?|backstab(s)?|bash(es)?|slice(s)?|strike(s)?)) (?<target_name>[\w` ]+)(( for (?<damage>[\d]+) point(s)? of damage)|(, but miss))";
-            var meleeRegex = new Regex(meleePattern, RegexOptions.Compiled);
-            var match = meleeRegex.Match(line);
+            var youHitPattern   = @"^You (?<dmg_type>hit|slash|pierce|crush|claw|bite|sting|maul|gore|punch|kick|backstab|bash|slice|strike) (?<target_name>[\w` ]+) for (?<damage>[\d]+) point(s)? of damage";
+            var youMissPattern  = @"^You try to (?<dmg_type>hit|slash|pierce|crush|claw|bite|sting|maul|gore|punch|kick|backstab|bash|slice|strike) (?<target_name>[\w` ]+), but miss";
+            var otherHitPattern = @"^(?<attacker_name>[\w` ]+?) (?<dmg_type>hits|slashes|pierces|crushes|claws|bites|stings|mauls|gores|punches|kicks|backstabs|bashes|slices|strikes) (?<target_name>[\w` ]+) for (?<damage>[\d]+) point(s)? of damage";
+
+            var youHitRegex = new Regex(youHitPattern, RegexOptions.Compiled);
+            var match = youHitRegex.Match(line);
             if (match.Success)
             {
-                // the damage capture group will be an empty string if this was a miss
-                var dmg = 0;
-                if (match.Groups["damage"].Value != "")
-                {
-                    dmg = int.Parse(match.Groups["damage"].Value);
-                }
+                rv = new DamageEvent(timestamp,
+                                        line,
+                                        match.Groups["target_name"].Value,
+                                        "You",
+                                        int.Parse(match.Groups["damage"].Value),
+                                        match.Groups["dmg_type"].Value);
+            }
 
-                rv = new DamageEvent(timestamp, line, match.Groups["target_name"].Value, match.Groups["attacker_name"].Value, dmg, match.Groups["dmg_type"].Value);
+            var youMissRegex = new Regex(youMissPattern, RegexOptions.Compiled);
+            match = youMissRegex.Match(line);
+            if (match.Success)
+            {
+                rv = new DamageEvent(   timestamp, 
+                                        line, 
+                                        match.Groups["target_name"].Value, 
+                                        "You", 
+                                        0, 
+                                        match.Groups["dmg_type"].Value);
+            }
+
+            var otherHitRegex = new Regex(otherHitPattern, RegexOptions.Compiled);
+            match = otherHitRegex.Match(line);
+            if (match.Success)
+            {
+                rv = new DamageEvent(   timestamp, 
+                                        line, 
+                                        match.Groups["target_name"].Value, 
+                                        match.Groups["attacker_name"].Value, 
+                                        int.Parse(match.Groups["damage"].Value), 
+                                        match.Groups["dmg_type"].Value);
             }
 
             // non-melee damage (direct damage spell, or dmg shield, or weapon proc)
