@@ -6,6 +6,24 @@
         xmlns:local="clr-namespace:EQTool.UI"
         mc:Ignorable="d"
         Title="ConfigurationWindow" Height="625" Width="1035">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="91*"/>
+            <RowDefinition Height="247*"/>
+            <RowDefinition Height="217*"/>
+            <RowDefinition Height="54*"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="182*"/>
+            <ColumnDefinition Width="163*"/>
+        </Grid.ColumnDefinitions>
+        <RadioButton Content="RadioButton" HorizontalAlignment="Left" VerticalAlignment="Top" Height="15" Width="84" RenderTransformOrigin="-2.643,1.672" Margin="132,71,0,0" Grid.Row="1"/>
+        <RadioButton Grid.Column="1" Content="RadioButton" HorizontalAlignment="Left" Margin="162,71,0,0" VerticalAlignment="Top" Height="15" Width="85" RenderTransformOrigin="-0.388,0.105" Grid.Row="1"/>
+        <RadioButton Content="RadioButton" HorizontalAlignment="Left" Grid.Row="1" VerticalAlignment="Top" Margin="132,124,0,0"/>
+        <RadioButton Content="RadioButton" HorizontalAlignment="Left" Margin="393,46,0,0" VerticalAlignment="Top" RenderTransformOrigin="-1.031,0.154"/>
+        <Border BorderBrush="Black" BorderThickness="1" Grid.Row="2"/>
+        <Border BorderBrush="Black" BorderThickness="1" Grid.Row="1"/>
+    </Grid>
 
 
 </Window>
