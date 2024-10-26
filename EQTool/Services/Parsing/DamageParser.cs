@@ -46,48 +46,54 @@ namespace EQTool.Services.Parsing
 
         public DamageEvent Match(string line, DateTime timestamp)
         {
-            // return value
-            DamageEvent rv = null;
-
             // melee attack, hit or miss
             // https://regex101.com/r/77YkpV/1
-            var youHitPattern   = @"^You (?<dmg_type>hit|slash|pierce|crush|claw|bite|sting|maul|gore|punch|kick|backstab|bash|slice|strike) (?<target_name>[\w` ]+) for (?<damage>[\d]+) point(s)? of damage";
-            var youMissPattern  = @"^You try to (?<dmg_type>hit|slash|pierce|crush|claw|bite|sting|maul|gore|punch|kick|backstab|bash|slice|strike) (?<target_name>[\w` ]+), but miss";
+            var youHitPattern = @"^You (?<dmg_type>hit|slash|pierce|crush|claw|bite|sting|maul|gore|punch|kick|backstab|bash|slice|strike) (?<target_name>[\w` ]+) for (?<damage>[\d]+) point(s)? of damage";
+            var youMissPattern = @"^You try to (?<dmg_type>hit|slash|pierce|crush|claw|bite|sting|maul|gore|punch|kick|backstab|bash|slice|strike) (?<target_name>[\w` ]+), but miss";
             var otherHitPattern = @"^(?<attacker_name>[\w` ]+?) (?<dmg_type>hits|slashes|pierces|crushes|claws|bites|stings|mauls|gores|punches|kicks|backstabs|bashes|slices|strikes) (?<target_name>[\w` ]+) for (?<damage>[\d]+) point(s)? of damage";
 
             var youHitRegex = new Regex(youHitPattern, RegexOptions.Compiled);
             var match = youHitRegex.Match(line);
             if (match.Success)
             {
-                rv = new DamageEvent(timestamp,
+                var rv = new DamageEvent(timestamp,
                                         line,
                                         match.Groups["target_name"].Value,
                                         "You",
                                         int.Parse(match.Groups["damage"].Value),
                                         match.Groups["dmg_type"].Value);
+                // if we see a backstab from current player, set current player class to rogue
+                if (rv.AttackerName == "You" && activePlayer.Player?.PlayerClass != PlayerClasses.Rogue)
+                {
+                    if (rv.DamageType.Contains("backstab"))
+                    {
+                        logEvents.Handle(new ClassDetectedEvent { TimeStamp = timestamp, Line = line, PlayerClass = PlayerClasses.Rogue });
+                    }
+                }
+                return rv;
             }
 
             var youMissRegex = new Regex(youMissPattern, RegexOptions.Compiled);
             match = youMissRegex.Match(line);
             if (match.Success)
             {
-                rv = new DamageEvent(   timestamp, 
-                                        line, 
-                                        match.Groups["target_name"].Value, 
-                                        "You", 
-                                        0, 
-                                        match.Groups["dmg_type"].Value);
+                return new DamageEvent(timestamp,
+                                         line,
+                                         match.Groups["target_name"].Value,
+                                         "You",
+                                         0,
+                                         match.Groups["dmg_type"].Value);
             }
 
             var otherHitRegex = new Regex(otherHitPattern, RegexOptions.Compiled);
             match = otherHitRegex.Match(line);
             if (match.Success)
             {
-                rv = new DamageEvent(   timestamp, 
-                                        line, 
-                                        match.Groups["target_name"].Value, 
-                                        match.Groups["attacker_name"].Value, 
-                                        int.Parse(match.Groups["damage"].Value), 
+                return new DamageEvent(timestamp,
+                                        line,
+                                        match.Groups["target_name"].Value,
+                                        match.Groups["attacker_name"].Value,
+                                        int.Parse(match.Groups["damage"].Value),
                                         match.Groups["dmg_type"].Value);
             }
 
@@ -95,21 +101,9 @@ namespace EQTool.Services.Parsing
             var nonMeleePattern = @"^(?<target_name>[\w` ]+) was hit by non-melee for (?<damage>[\d]+) point(s)? of damage";
             var nonMeleeRegex = new Regex(nonMeleePattern, RegexOptions.Compiled);
             match = nonMeleeRegex.Match(line);
-            if (match.Success)
-            {
-                rv = new DamageEvent(timestamp, line, match.Groups["target_name"].Value, "You", int.Parse(match.Groups["damage"].Value), "non-melee");
-            }
-
-            // if we see a backstab from current player, set current player class to rogue
-            if (rv != null && rv.AttackerName == "You" && activePlayer.Player?.PlayerClass != PlayerClasses.Rogue)
-            {
-                if (rv.DamageType.Contains("backstab"))
-                {
-                    logEvents.Handle(new ClassDetectedEvent { TimeStamp = timestamp, Line = line, PlayerClass = PlayerClasses.Rogue });
-                }
-            }
-
-            return rv;
+            return match.Success
+                ? new DamageEvent(timestamp, line, match.Groups["target_name"].Value, "You", int.Parse(match.Groups["damage"].Value), "non-melee")
+                : null;
         }
 
         public enum PetLevel
