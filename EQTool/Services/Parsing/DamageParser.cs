@@ -3,6 +3,11 @@ using EQTool.ViewModels;
 using EQToolShared.Enums;
 using System;
 using System.Text.RegularExpressions;
+using System.Threading;
+using System.Web.Routing;
+using System.Windows.Forms.VisualStyles;
+using static System.Windows.Forms.VisualStyles.VisualStyleElement.ListView;
+using System.Windows.Media.Media3D;
 
 namespace EQTool.Services.Parsing
 {
@@ -46,12 +51,11 @@ namespace EQTool.Services.Parsing
 
         public DamageEvent Match(string line, DateTime timestamp)
         {
-            // melee attack, hit or miss
-            // https://regex101.com/r/77YkpV/1
-            var youHitPattern = @"^You (?<dmg_type>hit|slash|pierce|crush|claw|bite|sting|maul|gore|punch|kick|backstab|bash|slice|strike) (?<target_name>[\w` ]+) for (?<damage>[\d]+) point(s)? of damage";
-            var youMissPattern = @"^You try to (?<dmg_type>hit|slash|pierce|crush|claw|bite|sting|maul|gore|punch|kick|backstab|bash|slice|strike) (?<target_name>[\w` ]+), but miss";
-            var otherHitPattern = @"^(?<attacker_name>[\w` ]+?) (?<dmg_type>hits|slashes|pierces|crushes|claws|bites|stings|mauls|gores|punches|kicks|backstabs|bashes|slices|strikes) (?<target_name>[\w` ]+) for (?<damage>[\d]+) point(s)? of damage";
+            //https://regex101.com/r/vqbFnn/1
 
+            // you hit
+            //You crush a giant wasp drone for 12 points of damage.
+            var youHitPattern = @"^You (?<dmg_type>hit|slash|pierce|crush|claw|bite|sting|maul|gore|punch|kick|backstab|bash|slice|strike) (?<target_name>[\w` ]+) for (?<damage>[\d]+) point(s)? of damage";
             var youHitRegex = new Regex(youHitPattern, RegexOptions.Compiled);
             var match = youHitRegex.Match(line);
             if (match.Success)
@@ -62,6 +66,7 @@ namespace EQTool.Services.Parsing
                                         "You",
                                         int.Parse(match.Groups["damage"].Value),
                                         match.Groups["dmg_type"].Value);
+
                 // if we see a backstab from current player, set current player class to rogue
                 if (rv.AttackerName == "You" && activePlayer.Player?.PlayerClass != PlayerClasses.Rogue)
                 {
@@ -73,6 +78,14 @@ namespace EQTool.Services.Parsing
                 return rv;
             }
 
+            // you miss
+            //You try to pierce a lava basilisk, but miss!
+            //You try to crush spectral keeper, but spectral keeper's magical skin absorbs the blow!
+            //You try to crush a froglok fisherman, but a froglok fisherman dodges!
+            //You try to slash an elephant, but an elephant parries!
+            //You try to pierce a tar goo, but a tar goo ripostes!
+            //You try to pierce an earth elemental, but an earth elemental is INVULNERABLE!
+            var youMissPattern = @"^You try to (?<dmg_type>hit|slash|pierce|crush|claw|bite|sting|maul|gore|punch|kick|backstab|bash|slice|strike) (?<target_name>[\w` ]+), but";
             var youMissRegex = new Regex(youMissPattern, RegexOptions.Compiled);
             match = youMissRegex.Match(line);
             if (match.Success)
@@ -85,6 +98,9 @@ namespace EQTool.Services.Parsing
                                          match.Groups["dmg_type"].Value);
             }
 
+            // others hit
+            //Giber slashes rogue clockwork for 13 points of damage.
+            var otherHitPattern = @"^(?<attacker_name>[\w` ]+?) (?<dmg_type>hits|slashes|pierces|crushes|claws|bites|stings|mauls|gores|punches|kicks|backstabs|bashes|slices|strikes) (?<target_name>[\w` ]+) for (?<damage>[\d]+) point(s)? of damage";
             var otherHitRegex = new Regex(otherHitPattern, RegexOptions.Compiled);
             match = otherHitRegex.Match(line);
             if (match.Success)
@@ -96,6 +112,28 @@ namespace EQTool.Services.Parsing
                                         int.Parse(match.Groups["damage"].Value),
                                         match.Groups["dmg_type"].Value);
             }
+
+            // others miss
+            //A greater dark bone tries to hit Lazyboi, but misses!
+            //Froglok krup knight tries to crush YOU, but YOUR magical skin absorbs the blow!
+            //An undead oblation tries to hit Briton, but Briton's magical skin absorbs the blow!
+            //A carrion ghoul tries to hit Slowmow, but Slowmow dodges!
+            //A skeletal monk tries to hit Rellikcam, but Rellikcam parries!
+            //A dusty werebat tries to hit Aleseeker, but Aleseeker ripostes!
+            //A crimson claw hatchling tries to hit Frigs, but Frigs is INVULNERABLE!
+            var othersMissPattern = @"^(?<attacker_name>[\w` ]+?) tries to (?<dmg_type>hit|slash|pierce|crush|claw|bite|sting|maul|gore|punch|kick|backstab|bash|slice|strike) (?<target_name>[\w` ]+), but";
+            var othersMissRegex = new Regex(othersMissPattern, RegexOptions.Compiled);
+            match = othersMissRegex.Match(line);
+            if (match.Success)
+            {
+                return new DamageEvent(timestamp,
+                                         line,
+                                         match.Groups["target_name"].Value,
+                                         match.Groups["attacker_name"].Value,
+                                         0,
+                                         match.Groups["dmg_type"].Value);
+            }
+
 
             // non-melee damage (direct damage spell, or dmg shield, or weapon proc)
             var nonMeleePattern = @"^(?<target_name>[\w` ]+) was hit by non-melee for (?<damage>[\d]+) point(s)? of damage";

@@ -113,7 +113,86 @@ namespace EQtoolsTests
             Assert.AreEqual(message, match.Line);
         }
 
+        [TestMethod]
+        public void DamageLogParser_YouHit()
+        {
+            //You crush a giant wasp drone for 12 points of damage.
+            var now = DateTime.Now;
+            var message = "You crush a giant wasp drone for 12 points of damage.";
+            var match = parser.Match(message, now);
 
+            Assert.IsNotNull(match);
+            Assert.AreEqual("You", match.AttackerName);
+            Assert.AreEqual("crush", match.DamageType);
+            Assert.AreEqual("a giant wasp drone", match.TargetName);
+            Assert.AreEqual(12, match.DamageDone);
+            Assert.AreEqual(now, match.TimeStamp);
+            Assert.AreEqual(message, match.Line);
+        }
+
+        [TestMethod]
+        public void DamageLogParser_YouMiss()
+        {
+            // you miss
+            //You try to pierce a lava basilisk, but miss!
+            //You try to crush spectral keeper, but spectral keeper's magical skin absorbs the blow!
+            //You try to crush a froglok fisherman, but a froglok fisherman dodges!
+            //You try to slash an elephant, but an elephant parries!
+            //You try to pierce a tar goo, but a tar goo ripostes!
+            //You try to pierce an earth elemental, but an earth elemental is INVULNERABLE!
+            var now = DateTime.Now;
+            var message = "You try to pierce an earth elemental, but an earth elemental is INVULNERABLE!";
+            var match = parser.Match(message, now);
+
+            Assert.IsNotNull(match);
+            Assert.AreEqual("You", match.AttackerName);
+            Assert.AreEqual("pierce", match.DamageType);
+            Assert.AreEqual("an earth elemental", match.TargetName);
+            Assert.AreEqual(0, match.DamageDone);
+            Assert.AreEqual(now, match.TimeStamp);
+            Assert.AreEqual(message, match.Line);
+        }
+
+        [TestMethod]
+        public void DamageLogParser_OthersHit()
+        {
+            // others hit
+            //Giber slashes rogue clockwork for 13 points of damage.
+            var now = DateTime.Now;
+            var message = "Giber slashes rogue clockwork for 13 points of damage.";
+            var match = parser.Match(message, now);
+
+            Assert.IsNotNull(match);
+            Assert.AreEqual("Giber", match.AttackerName);
+            Assert.AreEqual("slashes", match.DamageType);
+            Assert.AreEqual("rogue clockwork", match.TargetName);
+            Assert.AreEqual(13, match.DamageDone);
+            Assert.AreEqual(now, match.TimeStamp);
+            Assert.AreEqual(message, match.Line);
+        }
+
+        [TestMethod]
+        public void DamageLogParser_OthersMiss()
+        {
+            //A greater dark bone tries to hit Lazyboi, but misses!
+            //Froglok krup knight tries to crush YOU, but YOUR magical skin absorbs the blow!
+            //An undead oblation tries to hit Briton, but Briton's magical skin absorbs the blow!
+            //A carrion ghoul tries to hit Slowmow, but Slowmow dodges!
+            //A skeletal monk tries to hit Rellikcam, but Rellikcam parries!
+            //A dusty werebat tries to hit Aleseeker, but Aleseeker ripostes!
+            //A crimson claw hatchling tries to hit Frigs, but Frigs is INVULNERABLE!
+            var now = DateTime.Now;
+            var message = "A greater dark bone tries to hit Lazyboi, but misses!";
+            var match = parser.Match(message, now);
+
+            Assert.IsNotNull(match);
+            Assert.AreEqual("A greater dark bone", match.AttackerName);
+            Assert.AreEqual("hit", match.DamageType);
+            Assert.AreEqual("Lazyboi", match.TargetName);
+            Assert.AreEqual(0, match.DamageDone);
+            Assert.AreEqual(now, match.TimeStamp);
+            Assert.AreEqual(message, match.Line);
+        }
 
         [TestMethod]
         public void TestDPS()
