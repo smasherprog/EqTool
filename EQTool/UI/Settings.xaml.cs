@@ -359,7 +359,7 @@ namespace EQTool.UI
             {
                 return;
             }
-            testdpsbutton.IsEnabled = false;
+            //  testdpsbutton.IsEnabled = false;
             _ = Task.Factory.StartNew(() =>
             {
                 try

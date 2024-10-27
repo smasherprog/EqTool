@@ -19,6 +19,15 @@ namespace EQTool.Services.Parsing
     {
         private readonly ActivePlayer activePlayer;
         private readonly LogEvents logEvents;
+        private const string youHitPattern = @"^You (?<dmg_type>hit|slash|pierce|crush|claw|bite|sting|maul|gore|punch|kick|backstab|bash|slice|strike) (?<target_name>[\w` ]+) for (?<damage>[\d]+) point(s)? of damage";
+        private const string youMissPattern = @"^You try to (?<dmg_type>hit|slash|pierce|crush|claw|bite|sting|maul|gore|punch|kick|backstab|bash|slice|strike) (?<target_name>[\w` ]+), but miss";
+        private const string otherHitPattern = @"^(?<attacker_name>[\w` ]+?) (?<dmg_type>hits|slashes|pierces|crushes|claws|bites|stings|mauls|gores|punches|kicks|backstabs|bashes|slices|strikes) (?<target_name>[\w` ]+) for (?<damage>[\d]+) point(s)? of damage";
+        private const string nonMeleePattern = @"^(?<target_name>[\w` ]+) was hit by non-melee for (?<damage>[\d]+) point(s)? of damage";
+
+        private readonly Regex youHitRegex = new Regex(youHitPattern, RegexOptions.Compiled);
+        private readonly Regex youMissRegex = new Regex(youMissPattern, RegexOptions.Compiled);
+        private readonly Regex otherHitRegex = new Regex(otherHitPattern, RegexOptions.Compiled);
+        private readonly Regex nonMeleeRegex = new Regex(nonMeleePattern, RegexOptions.Compiled);
 
         //
         // ctor
@@ -48,11 +57,7 @@ namespace EQTool.Services.Parsing
         {
             // melee attack, hit or miss
             // https://regex101.com/r/77YkpV/1
-            var youHitPattern = @"^You (?<dmg_type>hit|slash|pierce|crush|claw|bite|sting|maul|gore|punch|kick|backstab|bash|slice|strike) (?<target_name>[\w` ]+) for (?<damage>[\d]+) point(s)? of damage";
-            var youMissPattern = @"^You try to (?<dmg_type>hit|slash|pierce|crush|claw|bite|sting|maul|gore|punch|kick|backstab|bash|slice|strike) (?<target_name>[\w` ]+), but miss";
-            var otherHitPattern = @"^(?<attacker_name>[\w` ]+?) (?<dmg_type>hits|slashes|pierces|crushes|claws|bites|stings|mauls|gores|punches|kicks|backstabs|bashes|slices|strikes) (?<target_name>[\w` ]+) for (?<damage>[\d]+) point(s)? of damage";
 
-            var youHitRegex = new Regex(youHitPattern, RegexOptions.Compiled);
             var match = youHitRegex.Match(line);
             if (match.Success)
             {
@@ -73,7 +78,6 @@ namespace EQTool.Services.Parsing
                 return rv;
             }
 
-            var youMissRegex = new Regex(youMissPattern, RegexOptions.Compiled);
             match = youMissRegex.Match(line);
             if (match.Success)
             {
@@ -85,7 +89,6 @@ namespace EQTool.Services.Parsing
                                          match.Groups["dmg_type"].Value);
             }
 
-            var otherHitRegex = new Regex(otherHitPattern, RegexOptions.Compiled);
             match = otherHitRegex.Match(line);
             if (match.Success)
             {
@@ -98,8 +101,7 @@ namespace EQTool.Services.Parsing
             }
 
             // non-melee damage (direct damage spell, or dmg shield, or weapon proc)
-            var nonMeleePattern = @"^(?<target_name>[\w` ]+) was hit by non-melee for (?<damage>[\d]+) point(s)? of damage";
-            var nonMeleeRegex = new Regex(nonMeleePattern, RegexOptions.Compiled);
+
             match = nonMeleeRegex.Match(line);
             return match.Success
                 ? new DamageEvent(timestamp, line, match.Groups["target_name"].Value, "You", int.Parse(match.Groups["damage"].Value), "non-melee")
