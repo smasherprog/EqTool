@@ -29,12 +29,12 @@ namespace EQTool.Services.Parsing
         private readonly Regex regexParty = new Regex(patternParty, RegexOptions.Compiled);
         private readonly Regex regexTells = new Regex(patternTells, RegexOptions.Compiled);
         private readonly Regex regexInternalTell = new Regex(patternInternalTell, RegexOptions.Compiled);
-        private readonly Regex regexIsNotOnline = new Regex(pattern, RegexOptions.Compiled);
-        private readonly Regex regexSays = new Regex(pattern, RegexOptions.Compiled);
-        private readonly Regex regexTold = new Regex(pattern, RegexOptions.Compiled);
-        private readonly Regex regexAuctions = new Regex(pattern, RegexOptions.Compiled);
-        private readonly Regex regexOutOfCharacter = new Regex(pattern, RegexOptions.Compiled);
-        private readonly Regex regexShouts = new Regex(pattern, RegexOptions.Compiled);
+        private readonly Regex regexIsNotOnline = new Regex(patternIsNotOnline, RegexOptions.Compiled);
+        private readonly Regex regexSays = new Regex(patternSays, RegexOptions.Compiled);
+        private readonly Regex regexTold = new Regex(patternTold, RegexOptions.Compiled);
+        private readonly Regex regexAuctions = new Regex(atternAuctions, RegexOptions.Compiled);
+        private readonly Regex regexOutOfCharacter = new Regex(patternOutOfCharacter, RegexOptions.Compiled);
+        private readonly Regex regexShouts = new Regex(patternShouts, RegexOptions.Compiled);
 
         //
         // ctor
@@ -76,7 +76,7 @@ namespace EQTool.Services.Parsing
             //You tell your party, 'oh interesting'
             //Jaloy tells the group, 'wiki says he can be in 1 of 2 locations'
 
-            var match = regex.Match(line);
+            var match = regexParty.Match(line);
             if (match.Success)
             {
                 return new CommsEvent(timestamp, line, CommsEvent.Channel.GROUP, match.Groups["content"].Value, match.Groups["sender"].Value);
@@ -89,7 +89,7 @@ namespace EQTool.Services.Parsing
             //You say to your guild, 'nice'
             //[Wed Oct 16 17:17:25 2024] Okeanos tells the guild, 'it literally says speedway but the  products inside the store are 7/11 branded '
 
-            match = regex.Match(line);
+            match = regexTells.Match(line);
             if (match.Success)
             {
                 return new CommsEvent(timestamp, line, CommsEvent.Channel.GUILD, match.Groups["content"].Value, match.Groups["sender"].Value);
@@ -98,7 +98,7 @@ namespace EQTool.Services.Parsing
             //Azleep -> Jamori: ok
             //[Thu Aug 18 14:31:48 2022] Berrma -> Azleep: ya just need someone to invite i believe
 
-            match = regex.Match(line);
+            match = regexInternalTell.Match(line);
             if (match.Success)
             {
                 var sender = match.Groups["sender"].Value;
@@ -119,7 +119,7 @@ namespace EQTool.Services.Parsing
             // this is actually a tell, even though it doesn't look like it.  It doesn't show up for anyone but the recceiver
             //[Mon Oct 21 11:50:55 2024] .PigTimer-30 is not online at this time.
 
-            match = regex.Match(line);
+            match = regexIsNotOnline.Match(line);
             if (match.Success)
             {
                 return new CommsEvent(timestamp, line, CommsEvent.Channel.TELL, match.Groups["content"].Value, "System", "You");
@@ -133,7 +133,7 @@ namespace EQTool.Services.Parsing
             //[Wed Nov 20 20:29:06 2019] Jaloy says, 'i am a new warrior'
             //[Wed Nov 20 20:28:44 2019] Manik Compolten says, 'Greetings, young one. I am Manik Compolten, High Watchman. Are you a [new warrior] or an [experienced fighter]?'
 
-            match = regex.Match(line);
+            match = regexSays.Match(line);
             if (match.Success)
             {
                 return new CommsEvent(timestamp, line, CommsEvent.Channel.SAY, match.Groups["content"].Value, match.Groups["sender"].Value);
@@ -147,7 +147,7 @@ namespace EQTool.Services.Parsing
             //[Sat Mar 21 17:55:33 2020] a spectre tells you, 'Attacking a spectre Master.'
             //[Sat Mar 21 19:21:37 2020] Cleonae Kalen tells you, 'I'll give you 9 gold 8 silver 8 copper per Globe of Fear'
 
-            match = regex.Match(line);
+            match = regexTold.Match(line);
             if (match.Success)
             {
                 return new CommsEvent(timestamp, line, CommsEvent.Channel.TELL, match.Groups["content"].Value, match.Groups["sender"].Value, match.Groups["receiver"].Value);
@@ -159,7 +159,7 @@ namespace EQTool.Services.Parsing
             //You auction, 'wtb diamond'
             //[Mon Feb 22 14:40:47 2021] Mezzter auctions, 'WTS bone chips 7p per stack pst'
 
-            match = regex.Match(line);
+            match = regexAuctions.Match(line);
             if (match.Success)
             {
                 return new CommsEvent(timestamp, line, CommsEvent.Channel.AUCTION, match.Groups["content"].Value, match.Groups["sender"].Value);
@@ -171,7 +171,7 @@ namespace EQTool.Services.Parsing
             //You say out of character, 'train to west'
             //[Wed Nov 20 20:18:47 2019] Enudara says out of character, 'grats'
 
-            match = regex.Match(line);
+            match = regexOutOfCharacter.Match(line);
             if (match.Success)
             {
                 return new CommsEvent(timestamp, line, CommsEvent.Channel.OOC, match.Groups["content"].Value, match.Groups["sender"].Value);
@@ -183,7 +183,7 @@ namespace EQTool.Services.Parsing
             //You shout, 'When it is time - Horse Charmers will be Leffingwell and Ceous'
             //[Sat Aug 22 18:54:17 2020] Fizzix shouts, 'ASSIST Fizzix on --- [ an essence tamer ]'
 
-            match = regex.Match(line);
+            match = regexShouts.Match(line);
             return match.Success
                 ? new CommsEvent(timestamp, line, CommsEvent.Channel.SHOUT, match.Groups["content"].Value, match.Groups["sender"].Value)
                 : null;
