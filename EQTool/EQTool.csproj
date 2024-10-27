@@ -339,6 +339,8 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Services\BinarySerializer.cs" />
+    <Compile Include="Services\Handlers\SpawnTimerHandler.cs" />
+    <Compile Include="Services\Parsing\ExpGainedParser.cs" />
     <Compile Include="Services\Parsing\FactionParser.cs" />
     <Compile Include="Services\WindowFactory.cs" />
     <Compile Include="Services\Handlers\YouZonedHandler.cs" />

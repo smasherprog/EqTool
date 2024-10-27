@@ -5,6 +5,12 @@ namespace EQTool.Services
 {
     public class LogEvents
     {
+        public event EventHandler<ExpGainedEvent> ExpGainedEvent;
+        public void Handle(ExpGainedEvent e)
+        {
+            ExpGainedEvent?.Invoke(this, e);
+        }
+
         public event EventHandler<PlayerLocationEvent> PlayerLocationEvent;
         public void Handle(PlayerLocationEvent e)
         {
