@@ -5,9 +5,9 @@ namespace EQTool.UI
     /// <summary>
     /// Interaction logic for SpawnTimerDialogForms.xaml
     /// </summary>
-    public partial class SpawnTimerDialogForms : Window
+    public partial class SpawnTimerDialog : Window
     {
-        public SpawnTimerDialogForms()
+        public SpawnTimerDialog()
         {
             //
             InitializeComponent();
