@@ -1,6 +1,6 @@
 ﻿namespace EQTool.UI
 {
-    partial class SpawnTimerDialog
+    partial class SpawnTimerDialogForms
     {
         /// <summary>
         /// Required designer variable.
@@ -559,7 +559,7 @@
             this.label10.TabIndex = 18;
             this.label10.Text = "Timer Expired Notification";
             // 
-            // SpawnTimerDialog
+            // SpawnTimerDialogForms
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(16F, 31F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;

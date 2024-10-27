@@ -10,9 +10,9 @@ using System.Windows.Forms;
 
 namespace EQTool.UI
 {
-    public partial class SpawnTimerDialog : Form
+    public partial class SpawnTimerDialogForms : Form
     {
-        public SpawnTimerDialog()
+        public SpawnTimerDialogForms()
         {
             InitializeComponent();
         }

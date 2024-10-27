@@ -890,7 +890,7 @@ namespace EQTool.UI
 
         private void openConfigurationWindow(object sender, RoutedEventArgs e)
         {
-            windowFactory.CreateWindow<ConfigurationWindow>().Show();
+            windowFactory.CreateWindow<SpawnTimerDialogForms>().Show();
         }
     }
 }

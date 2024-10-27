@@ -3,11 +3,11 @@
 namespace EQTool.UI
 {
     /// <summary>
-    /// Interaction logic for ConfigurationWindow.xaml
+    /// Interaction logic for SpawnTimerDialogForms.xaml
     /// </summary>
-    public partial class ConfigurationWindow : Window
+    public partial class SpawnTimerDialogForms : Window
     {
-        public ConfigurationWindow()
+        public SpawnTimerDialogForms()
         {
             //
             InitializeComponent();
