@@ -85,9 +85,9 @@
 
         <!-- counter reset panel -->
         <StackPanel Grid.Row="4" Grid.Column="0" Background="#FF7DA08D">
-            <TextBlock TextWrapping="Wrap" Text="Counter Reset Time" Margin="10,5,0,0" FontSize="16"/>
             <StackPanel Orientation="Horizontal">
-                <TextBox x:Name="resetTextBox" MinWidth="100" FontSize="14" Width="100" Margin="230,10,0,0" VerticalAlignment="Center" Text="1:00:00" TextAlignment="Center" />
+                <TextBlock TextWrapping="Wrap" Text="Counter Reset Time" Margin="10,5,0,0" MinWidth="220" FontSize="16" VerticalAlignment="Center"/>
+                <TextBox x:Name="resetTextBox" MinWidth="100" FontSize="14" Width="100" Margin="0,5,0,0" VerticalAlignment="Center" Text="1:00:00" TextAlignment="Center" />
                 <TextBlock Text="hh:mm:ss" Margin="10,10,0,0" VerticalAlignment="Center" />
             </StackPanel>
         </StackPanel>
