@@ -136,8 +136,8 @@ namespace EQTool.Services
                             _ = System.IO.Directory.CreateDirectory(System.IO.Directory.GetCurrentDirectory() + "/NewVersion");
                             File.WriteAllBytes(System.IO.Directory.GetCurrentDirectory() + "/NewVersion/" + filename, fileBytes);
                         }
-                        var logingmiddlemand = container.Resolve<LoginMiddlemand>();
-                        logingmiddlemand.StopListening();
+                        var logingmiddlemand = container?.Resolve<LoginMiddlemand>();
+                        logingmiddlemand?.StopListening();
                         if (Thread.CurrentThread == App.Current.Dispatcher.Thread)
                         {
                             System.Windows.Application.Current.Shutdown();
@@ -161,7 +161,7 @@ namespace EQTool.Services
                 }
                 catch (Exception ex)
                 {
-                    container.Resolve<LoggingService>().Log(ex.ToString(), EQToolShared.Enums.EventType.Update, null);
+                    container?.Resolve<LoggingService>().Log(ex.ToString(), EQToolShared.Enums.EventType.Update, null);
                     File.AppendAllText("Errors.txt", ex.ToString());
                 }
             });
