@@ -79,13 +79,6 @@ namespace EQTool.Models
     public class SlainEvent : BaseLogParseEvent
     {
         public string Victim { get; set; }
-        public string Killer { get; set; }
-        public int UID { get; set; }
-    }
-
-    public class DeathEvent : BaseLogParseEvent
-    {
-        public string Victim { get; set; }
 
         public string Killer { get; set; }
     }

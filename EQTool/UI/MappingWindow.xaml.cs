@@ -48,7 +48,7 @@ namespace EQTool.UI
             this.logEvents.PlayerLocationEvent += LogParser_PlayerLocationEvent;
             this.logEvents.YouZonedEvent += LogParser_PlayerZonedEvent;
             this.logEvents.EnteredWorldEvent += LogParser_EnteredWorldEvent;
-            this.logEvents.DeathEvent += LogParser_DeathEvent;
+            this.logEvents.SlainEvent += LogParser_DeathEvent;
             this.logEvents.StartTimerEvent += LogParser_StartTimerEvent;
             this.logEvents.CancelTimerEvent += LogParser_CancelTimerEvent;
             KeyDown += PanAndZoomCanvas_KeyDown;
@@ -112,7 +112,7 @@ namespace EQTool.UI
             _ = mapViewModel.DeleteSelectedTimer();
         }
 
-        private void LogParser_DeathEvent(object sender, DeathEvent e)
+        private void LogParser_DeathEvent(object sender, SlainEvent e)
         {
             if (playerTrackerService.IsPlayer(e.Victim))
             {
@@ -193,7 +193,7 @@ namespace EQTool.UI
                 logEvents.PlayerLocationEvent -= LogParser_PlayerLocationEvent;
                 logEvents.YouZonedEvent -= LogParser_PlayerZonedEvent;
                 logEvents.EnteredWorldEvent -= LogParser_EnteredWorldEvent;
-                logEvents.DeathEvent -= LogParser_DeathEvent;
+                logEvents.SlainEvent -= LogParser_DeathEvent;
                 logEvents.StartTimerEvent -= LogParser_StartTimerEvent;
                 logEvents.CancelTimerEvent -= LogParser_CancelTimerEvent;
             }

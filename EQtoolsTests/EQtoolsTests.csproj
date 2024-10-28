@@ -197,6 +197,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseTestClass.cs" />
+    <Compile Include="SlainHandlerTests.cs" />
     <Compile Include="DeathTests.cs" />
     <Compile Include="CommsParserTests.cs" />
     <Compile Include="FactionParserTests.cs" />

@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 
 namespace EQTool.Services.Parsing
 {
-    public class DeathParser : IEqLogParseHandler
+    public class SlainParser : IEqLogParseHandler
     {
         private readonly LogEvents logEvents;
         private const string slainByPattern = @"^(?<victim>[\w` ]+) (has|have) been slain by (?<killer>[\w` ]+)";
@@ -15,7 +15,7 @@ namespace EQTool.Services.Parsing
         private readonly Regex slainRegex = new Regex(slainPattern, RegexOptions.Compiled);
         private readonly Regex slainByRegex = new Regex(slainByPattern, RegexOptions.Compiled);
 
-        public DeathParser(LogEvents logEvents)
+        public SlainParser(LogEvents logEvents)
         {
             this.logEvents = logEvents;
         }
@@ -35,14 +35,14 @@ namespace EQTool.Services.Parsing
         }
 
         // function to check for a death event
-        public DeathEvent Match(string line, DateTime timestamp, int lineCounter)
+        public SlainEvent Match(string line, DateTime timestamp, int lineCounter)
         {
             //[Mon Sep 16 14:32:02 2024] a Tesch Mas Gnoll has been slain by Genartik!
             //[Fri Nov 08 19:39:57 2019] You have been slain by a brigand! 
             var match = slainByRegex.Match(line);
             if (match.Success)
             {
-                return new DeathEvent
+                return new SlainEvent
                 {
                     Killer = match.Groups["killer"].Value,
                     TimeStamp = timestamp,
@@ -57,7 +57,7 @@ namespace EQTool.Services.Parsing
             match = slainRegex.Match(line);
             if (match.Success)
             {
-                return new DeathEvent
+                return new SlainEvent
                 {
                     Killer = "You",
                     TimeStamp = timestamp,
@@ -73,7 +73,7 @@ namespace EQTool.Services.Parsing
             match = diedRegex.Match(line);
             if (match.Success)
             {
-                return new DeathEvent
+                return new SlainEvent
                 {
                     Killer = string.Empty,
                     TimeStamp = timestamp,

@@ -41,10 +41,10 @@ namespace EQTool.Services
             ConEvent?.Invoke(this, e);
         }
 
-        public event EventHandler<DeathEvent> DeathEvent;
-        public void Handle(DeathEvent e)
+        public event EventHandler<SlainEvent> SlainEvent;
+        public void Handle(SlainEvent e)
         {
-            DeathEvent?.Invoke(this, e);
+            SlainEvent?.Invoke(this, e);
         }
 
         public event EventHandler<CommsEvent> CommsEvent;
@@ -201,12 +201,6 @@ namespace EQTool.Services
         public void Handle(FactionEvent e)
         {
             FactionEvent?.Invoke(this, e);
-        }
-
-        public event EventHandler<SlainEvent> SlainEvent;
-        public void Handle(SlainEvent e)
-        {
-            SlainEvent?.Invoke(this, e);
         }
     }
 }

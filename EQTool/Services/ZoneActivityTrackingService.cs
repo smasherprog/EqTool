@@ -20,7 +20,7 @@ namespace EQTool.Services
         {
             _ = activePlayer.Update();
             this.logParser = logParser;
-            this.logParser.DeathEvent += LogParser_DeathEvent;
+            this.logParser.SlainEvent += LogParser_DeathEvent;
             this.logParser.ConEvent += LogParser_ConEvent; ;
             this.logParser.PlayerLocationEvent += LogParser_PlayerLocationEvent;
             this.pigParseApi = pigParseApi;
@@ -62,7 +62,7 @@ namespace EQTool.Services
             LastLocation = e.Location;
         }
 
-        private void LogParser_DeathEvent(object sender, DeathEvent e)
+        private void LogParser_DeathEvent(object sender, SlainEvent e)
         {
             if (activePlayer.Player?.Server == null)
             {

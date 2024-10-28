@@ -11,7 +11,7 @@ namespace EQtoolsTests
     [TestClass]
     public class DeathTests : BaseTestClass
     {
-        private readonly DeathParser deathParser;
+        private readonly SlainParser slainParser;
         private readonly CommsParser playerCommsParser;
         private readonly DamageParser damageParser;
         private readonly SpellCastParser spellCastParser;
@@ -20,7 +20,7 @@ namespace EQtoolsTests
 
         public DeathTests()
         {
-            deathParser = container.Resolve<DeathParser>();
+            slainParser = container.Resolve<SlainParser>();
             playerCommsParser = container.Resolve<CommsParser>();
             damageParser = container.Resolve<DamageParser>();
             spellCastParser = container.Resolve<SpellCastParser>();
@@ -35,7 +35,7 @@ namespace EQtoolsTests
             // no match
             var now = DateTime.Now;
             var message = "some bogus line";
-            var match = deathParser.Match(message, now, 0);
+            var match = slainParser.Match(message, now, 0);
 
             Assert.IsNull(match);
         }
@@ -46,7 +46,7 @@ namespace EQtoolsTests
             //[Mon Sep 16 14:32:02 2024] a Tesch Mas Gnoll has been slain by Genartik!
             var now = DateTime.Now;
             var message = "a Tesch Mas Gnoll has been slain by Genartik!";
-            var deathEvent = deathParser.Match(message, now, 0);
+            var deathEvent = slainParser.Match(message, now, 0);
 
             Assert.IsNotNull(deathEvent);
             Assert.AreEqual(now, deathEvent.TimeStamp);
@@ -61,7 +61,7 @@ namespace EQtoolsTests
             //[Fri Nov 08 19:39:57 2019] You have been slain by a brigand!
             var now = DateTime.Now;
             var message = "You have been slain by a brigand!";
-            var deathEvent = deathParser.Match(message, now, 0);
+            var deathEvent = slainParser.Match(message, now, 0);
 
             Assert.IsNotNull(deathEvent);
             Assert.AreEqual(now, deathEvent.TimeStamp);
@@ -76,7 +76,7 @@ namespace EQtoolsTests
             //[Mon Sep 16 14:21:24 2024] You have slain a Tesch Mas Gnoll!
             var now = DateTime.Now;
             var message = "You have slain a Tesch Mas Gnoll!";
-            var deathEvent = deathParser.Match(message, now, 0);
+            var deathEvent = slainParser.Match(message, now, 0);
 
             Assert.IsNotNull(deathEvent);
             Assert.AreEqual(now, deathEvent.TimeStamp);
@@ -91,7 +91,7 @@ namespace EQtoolsTests
             //[Sat Jan 16 20:12:37 2021] a bile golem died.
             var now = DateTime.Now;
             var message = "a bile golem died.";
-            var deathEvent = deathParser.Match(message, now, 0);
+            var deathEvent = slainParser.Match(message, now, 0);
 
             Assert.IsNotNull(deathEvent);
             Assert.AreEqual(now, deathEvent.TimeStamp);
@@ -105,10 +105,10 @@ namespace EQtoolsTests
         {
             var now = DateTime.Now;
             var message = "You have been slain by a brigand!";
-            _ = deathParser.Handle(message, now, 0);
-            _ = deathParser.Handle(message, now.AddSeconds(80.0), 0);
-            _ = deathParser.Handle(message, now.AddSeconds(12.0), 0);
-            _ = deathParser.Handle(message, now.AddSeconds(150.0), 0);
+            _ = slainParser.Handle(message, now, 0);
+            _ = slainParser.Handle(message, now.AddSeconds(80.0), 0);
+            _ = slainParser.Handle(message, now.AddSeconds(12.0), 0);
+            _ = slainParser.Handle(message, now.AddSeconds(150.0), 0);
 
             // oldest should have scrolled off
             var count = deathLoopHandler.DeathCount();
@@ -121,9 +121,9 @@ namespace EQtoolsTests
         {
             var now = DateTime.Now;
             var message = "You have been slain by a brigand!";
-            _ = deathParser.Handle(message, now, 0);
-            _ = deathParser.Handle(message, now.AddSeconds(10.0), 0);
-            _ = deathParser.Handle(message, now.AddSeconds(20.0), 0);
+            _ = slainParser.Handle(message, now, 0);
+            _ = slainParser.Handle(message, now.AddSeconds(10.0), 0);
+            _ = slainParser.Handle(message, now.AddSeconds(20.0), 0);
 
             var count = deathLoopHandler.DeathCount();
             Assert.AreEqual(3, count);
@@ -135,11 +135,11 @@ namespace EQtoolsTests
         {
             var now = DateTime.Now;
             var message = "You have been slain by a brigand!";
-            _ = deathParser.Handle(message, now, 0);
-            _ = deathParser.Handle(message, now.AddSeconds(10.0), 0);
-            _ = deathParser.Handle(message, now.AddSeconds(20.0), 0);
-            _ = deathParser.Handle(message, now.AddSeconds(30.0), 0);
-            _ = deathParser.Handle(message, now.AddSeconds(40.0), 0);
+            _ = slainParser.Handle(message, now, 0);
+            _ = slainParser.Handle(message, now.AddSeconds(10.0), 0);
+            _ = slainParser.Handle(message, now.AddSeconds(20.0), 0);
+            _ = slainParser.Handle(message, now.AddSeconds(30.0), 0);
+            _ = slainParser.Handle(message, now.AddSeconds(40.0), 0);
 
             var count = deathLoopHandler.DeathCount();
             Assert.AreEqual(5, count);
@@ -153,9 +153,9 @@ namespace EQtoolsTests
         {
             var now = DateTime.Now;
             var message = "You have been slain by a brigand!";
-            _ = deathParser.Handle(message, now, 0);
-            _ = deathParser.Handle(message, now, 0);
-            _ = deathParser.Handle(message, now, 0);
+            _ = slainParser.Handle(message, now, 0);
+            _ = slainParser.Handle(message, now, 0);
+            _ = slainParser.Handle(message, now, 0);
 
             // melee
             _ = damageParser.Handle("You slice a moose for 100 points of damage", now, 0);
@@ -171,9 +171,9 @@ namespace EQtoolsTests
         {
             var now = DateTime.Now;
             var message = "You have been slain by a brigand!";
-            _ = deathParser.Handle(message, now, 0);
-            _ = deathParser.Handle(message, now, 0);
-            _ = deathParser.Handle(message, now, 0);
+            _ = slainParser.Handle(message, now, 0);
+            _ = slainParser.Handle(message, now, 0);
+            _ = slainParser.Handle(message, now, 0);
 
             // comms
             _ = playerCommsParser.Handle("You told Mom, 'Look no hands!'", now, 0);
@@ -189,9 +189,9 @@ namespace EQtoolsTests
         {
             var now = DateTime.Now;
             var message = "You have been slain by a brigand!";
-            _ = deathParser.Handle(message, now, 0);
-            _ = deathParser.Handle(message, now, 0);
-            _ = deathParser.Handle(message, now, 0);
+            _ = slainParser.Handle(message, now, 0);
+            _ = slainParser.Handle(message, now, 0);
+            _ = slainParser.Handle(message, now, 0);
 
             // casting
             _ = spellCastParser.Handle("You begin casting Huge_Fireball", now, 0);
