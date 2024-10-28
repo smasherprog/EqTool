@@ -366,6 +366,7 @@ namespace EQTool.UI
                 {
                     var fightlines = Properties.Resources.TestFight2.Split(new string[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
                     var fightlist = new List<KeyValuePair<string, DamageEvent>>();
+                    var linecounter = 0;
                     foreach (var item in fightlines)
                     {
                         if (item == null || item.Length < 27)
@@ -384,7 +385,7 @@ namespace EQTool.UI
                         catch (FormatException)
                         {
                         }
-                        var match = damageLogParser.Match(message, timestamp);
+                        var match = damageLogParser.Match(message, timestamp, linecounter++);
                         if (match != null)
                         {
                             fightlist.Add(new KeyValuePair<string, DamageEvent>(item, match));

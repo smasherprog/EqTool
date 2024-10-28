@@ -69,16 +69,6 @@ namespace EQTool.Models
         public string AttackerName { get; set; }
         public int DamageDone { get; set; }
         public string DamageType { get; set; }
-
-        public DamageEvent(DateTime dateTime, string line, string targetName, string attackerName, int damageDone, string damageType)
-        {
-            TimeStamp = dateTime;
-            Line = line;
-            TargetName = targetName;
-            AttackerName = attackerName;
-            DamageDone = damageDone;
-            DamageType = damageType;
-        }
     }
 
     public class ConEvent : BaseLogParseEvent
@@ -98,13 +88,6 @@ namespace EQTool.Models
         public string Victim { get; set; }
 
         public string Killer { get; set; }
-        public DeathEvent(DateTime dateTime, string line, string victim, string killer = "Unknown")
-        {
-            TimeStamp = dateTime;
-            Line = line;
-            Victim = victim;
-            Killer = killer;
-        }
     }
 
     public class StartTimerEvent : BaseLogParseEvent
@@ -155,16 +138,6 @@ namespace EQTool.Models
         public string Content { get; set; }
         public string Receiver { get; set; }
         public string Sender { get; set; }
-
-        public CommsEvent(DateTime dateTime, string line, CommsEvent.Channel channel = Channel.NONE, string content = "", string sender = "", string receiver = "")
-        {
-            TimeStamp = dateTime;
-            Line = line;
-            TheChannel = channel;
-            Content = content;
-            Sender = sender;
-            Receiver = receiver;
-        }
     }
 
     public class YouBeginCastingEvent : BaseLogParseEvent

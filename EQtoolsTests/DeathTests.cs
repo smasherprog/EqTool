@@ -35,7 +35,7 @@ namespace EQtoolsTests
             // no match
             var now = DateTime.Now;
             var message = "some bogus line";
-            var match = deathParser.Match(message, now);
+            var match = deathParser.Match(message, now, 0);
 
             Assert.IsNull(match);
         }
@@ -46,7 +46,7 @@ namespace EQtoolsTests
             //[Mon Sep 16 14:32:02 2024] a Tesch Mas Gnoll has been slain by Genartik!
             var now = DateTime.Now;
             var message = "a Tesch Mas Gnoll has been slain by Genartik!";
-            var deathEvent = deathParser.Match(message, now);
+            var deathEvent = deathParser.Match(message, now, 0);
 
             Assert.IsNotNull(deathEvent);
             Assert.AreEqual(now, deathEvent.TimeStamp);
@@ -61,7 +61,7 @@ namespace EQtoolsTests
             //[Fri Nov 08 19:39:57 2019] You have been slain by a brigand!
             var now = DateTime.Now;
             var message = "You have been slain by a brigand!";
-            var deathEvent = deathParser.Match(message, now);
+            var deathEvent = deathParser.Match(message, now, 0);
 
             Assert.IsNotNull(deathEvent);
             Assert.AreEqual(now, deathEvent.TimeStamp);
@@ -76,7 +76,7 @@ namespace EQtoolsTests
             //[Mon Sep 16 14:21:24 2024] You have slain a Tesch Mas Gnoll!
             var now = DateTime.Now;
             var message = "You have slain a Tesch Mas Gnoll!";
-            var deathEvent = deathParser.Match(message, now);
+            var deathEvent = deathParser.Match(message, now, 0);
 
             Assert.IsNotNull(deathEvent);
             Assert.AreEqual(now, deathEvent.TimeStamp);
@@ -91,7 +91,7 @@ namespace EQtoolsTests
             //[Sat Jan 16 20:12:37 2021] a bile golem died.
             var now = DateTime.Now;
             var message = "a bile golem died.";
-            var deathEvent = deathParser.Match(message, now);
+            var deathEvent = deathParser.Match(message, now, 0);
 
             Assert.IsNotNull(deathEvent);
             Assert.AreEqual(now, deathEvent.TimeStamp);

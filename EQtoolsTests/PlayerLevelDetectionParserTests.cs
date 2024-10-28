@@ -69,7 +69,7 @@ namespace EQtoolsTests
 
             var player = container.Resolve<ActivePlayer>();
             player.Player = new PlayerInfo { };
-            _ = container.Resolve<DamageParser>().Match(message, DateTime.Now);
+            _ = container.Resolve<DamageParser>().Match(message, DateTime.Now, 0);
             Assert.AreEqual(player.Player.PlayerClass, PlayerClasses.Rogue);
         }
 

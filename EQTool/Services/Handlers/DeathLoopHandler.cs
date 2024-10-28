@@ -194,13 +194,6 @@ namespace EQTool.Services.Handlers
             // use current time to see if any death time stamps in the list need to roll off
             UpdateDeathList(commsEvent.TimeStamp);
 
-            // back door way to simulate a player death, by sending a tell to .death
-            if ((commsEvent.TheChannel == CommsEvent.Channel.TELL) && (commsEvent.Content == ".death"))
-            {
-                DeathEvent deathEvent = new DeathEvent(commsEvent.TimeStamp, commsEvent.Line, "You");
-                LogEvents_DeathEvent(sender, deathEvent);
-            }
-
             // a comms event in any channel from the player indicates the player is active
             if ((commsEvent.TheChannel != CommsEvent.Channel.NONE) && (commsEvent.Sender == "You"))
             {

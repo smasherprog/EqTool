@@ -1071,7 +1071,7 @@ namespace EQtoolsTests
             var now = DateTime.Now;
             var service = container.Resolve<DeathParser>();
             var line = "an ire Ghast has been slain by a different ire ghast!";
-            var de = service.Match(line, now);
+            var de = service.Match(line, now, 0);
 
             Assert.IsNotNull(de);
             Assert.AreEqual(now, de.TimeStamp);
@@ -1086,7 +1086,7 @@ namespace EQtoolsTests
             var now = DateTime.Now;
             var service = container.Resolve<DeathParser>();
             var line = "Harbinger Freglor has been slain by skeletal champion!";
-            var de = service.Match(line, now);
+            var de = service.Match(line, now, 0);
 
             Assert.IsNotNull(de);
             Assert.AreEqual(now, de.TimeStamp);
@@ -1101,7 +1101,7 @@ namespace EQtoolsTests
             var now = DateTime.Now;
             var service = container.Resolve<DeathParser>();
             var line = "You have slain Arch Duke Iatol!";
-            var de = service.Match(line, now);
+            var de = service.Match(line, now, 0);
 
             Assert.IsNotNull(de);
             Assert.AreEqual(now, de.TimeStamp);
@@ -1116,7 +1116,7 @@ namespace EQtoolsTests
             var now = DateTime.Now;
             var service = container.Resolve<DeathParser>();
             var line = "an ire Ghast died.";
-            var de = service.Match(line, now);
+            var de = service.Match(line, now, 0);
 
             Assert.IsNotNull(de);
             Assert.AreEqual(now, de.TimeStamp);

@@ -24,7 +24,7 @@ namespace EQtoolsTests
             //You told Qdyil, 'not even sure'
             var now = DateTime.Now;
             var message = "You told Qdyil, 'not even sure'";
-            var match = parser.Match(message, now);
+            var match = parser.Match(message, now, 0);
 
             Assert.IsNotNull(match);
             Assert.AreEqual("You", match.Sender);
@@ -41,7 +41,7 @@ namespace EQtoolsTests
             //[Sat Mar 21 17:55:33 2020] a spectre tells you, 'Attacking a spectre Master.'
             var now = DateTime.Now;
             var message = "a spectre tells you, 'Attacking a spectre Master.'";
-            var match = parser.Match(message, now);
+            var match = parser.Match(message, now, 0);
 
             Assert.IsNotNull(match);
             Assert.AreEqual("a spectre", match.Sender);
@@ -60,7 +60,7 @@ namespace EQtoolsTests
             //Azleep -> Jamori: ok
             var now = DateTime.Now;
             var message = "Azleep -> Jamori: ok";
-            var match = parser.Match(message, now);
+            var match = parser.Match(message, now, 0);
 
             Assert.IsNotNull(match);
             Assert.AreEqual("You", match.Sender);
@@ -78,7 +78,7 @@ namespace EQtoolsTests
             //[Thu Aug 18 14:31:48 2022] Berrma -> Azleep: ya just need someone to invite i believe
             var now = DateTime.Now;
             var message = "Berrma -> Azleep: ya just need someone to invite i believe";
-            var match = parser.Match(message, now);
+            var match = parser.Match(message, now, 0);
 
             Assert.IsNotNull(match);
             Assert.AreEqual("Berrma", match.Sender);
@@ -95,7 +95,7 @@ namespace EQtoolsTests
             //[Mon Oct 21 11:50:55 2024] .PigTimer-30 is not online at this time.
             var now = DateTime.Now;
             var message = ".PigTimer-30 is not online at this time.";
-            var match = parser.Match(message, now);
+            var match = parser.Match(message, now, 0);
 
             Assert.IsNotNull(match);
             Assert.AreEqual("System", match.Sender);
@@ -113,7 +113,7 @@ namespace EQtoolsTests
             //You say, 'Hail, Wenglawks Kkeak'
             var now = DateTime.Now;
             var message = "You say, 'Hail, Wenglawks Kkeak'";
-            var match = parser.Match(message, now);
+            var match = parser.Match(message, now, 0);
 
             Assert.IsNotNull(match);
             Assert.AreEqual("You", match.Sender);
@@ -130,7 +130,7 @@ namespace EQtoolsTests
             //[Wed Nov 20 20:29:06 2019] Jaloy says, 'i am a new warrior'
             var now = DateTime.Now;
             var message = "Jaloy says, 'i am a new warrior'";
-            var match = parser.Match(message, now);
+            var match = parser.Match(message, now, 0);
 
             Assert.IsNotNull(match);
             Assert.AreEqual("Jaloy", match.Sender);
@@ -147,7 +147,7 @@ namespace EQtoolsTests
             //You tell your party, 'oh interesting'
             var now = DateTime.Now;
             var message = "You tell your party, 'oh interesting'";
-            var match = parser.Match(message, now);
+            var match = parser.Match(message, now, 0);
 
             Assert.IsNotNull(match);
             Assert.AreEqual("You", match.Sender);
@@ -164,7 +164,7 @@ namespace EQtoolsTests
             //Jaloy tells the group, 'wiki says he can be in 1 of 2 locations'
             var now = DateTime.Now;
             var message = "Jaloy tells the group, 'wiki says he can be in 1 of 2 locations'";
-            var match = parser.Match(message, now);
+            var match = parser.Match(message, now, 0);
 
             Assert.IsNotNull(match);
             Assert.AreEqual("Jaloy", match.Sender);
@@ -181,7 +181,7 @@ namespace EQtoolsTests
             //You say to your guild, 'nice'
             var now = DateTime.Now;
             var message = "You say to your guild, 'nice'";
-            var match = parser.Match(message, now);
+            var match = parser.Match(message, now, 0);
 
             Assert.IsNotNull(match);
             Assert.AreEqual("You", match.Sender);
@@ -198,7 +198,7 @@ namespace EQtoolsTests
             //[Wed Oct 16 17:17:25 2024] Okeanos tells the guild, 'it literally says speedway but the  products inside the store are 7/11 branded '
             var now = DateTime.Now;
             var message = "Okeanos tells the guild, 'it literally says speedway but the  products inside the store are 7/11 branded '";
-            var match = parser.Match(message, now);
+            var match = parser.Match(message, now, 0);
 
             Assert.IsNotNull(match);
             Assert.AreEqual("Okeanos", match.Sender);
@@ -215,7 +215,7 @@ namespace EQtoolsTests
             //You auction, 'wtb diamond'
             var now = DateTime.Now;
             var message = "You auction, 'wtb diamond'";
-            var match = parser.Match(message, now);
+            var match = parser.Match(message, now, 0);
 
             Assert.IsNotNull(match);
             Assert.AreEqual("You", match.Sender);
@@ -232,7 +232,7 @@ namespace EQtoolsTests
             //[Mon Feb 22 14:40:47 2021] Mezzter auctions, 'WTS bone chips 7p per stack pst'
             var now = DateTime.Now;
             var message = "Mezzter auctions, 'WTS bone chips 7p per stack pst'";
-            var match = parser.Match(message, now);
+            var match = parser.Match(message, now, 0);
 
             Assert.IsNotNull(match);
             Assert.AreEqual("Mezzter", match.Sender);
@@ -249,7 +249,7 @@ namespace EQtoolsTests
             //You say out of character, 'train to west'
             var now = DateTime.Now;
             var message = "You say out of character, 'train to west'";
-            var match = parser.Match(message, now);
+            var match = parser.Match(message, now, 0);
 
             Assert.IsNotNull(match);
             Assert.AreEqual("You", match.Sender);
@@ -266,7 +266,7 @@ namespace EQtoolsTests
             //[Wed Nov 20 20:18:47 2019] Enudara says out of character, 'grats'
             var now = DateTime.Now;
             var message = "Enudara says out of character, 'grats'";
-            var match = parser.Match(message, now);
+            var match = parser.Match(message, now, 0);
 
             Assert.IsNotNull(match);
             Assert.AreEqual("Enudara", match.Sender);
@@ -283,7 +283,7 @@ namespace EQtoolsTests
             //You shout, 'When it is time - Horse Charmers will be Leffingwell and Ceous'
             var now = DateTime.Now;
             var message = "You shout, 'When it is time - Horse Charmers will be Leffingwell and Ceous'";
-            var match = parser.Match(message, now);
+            var match = parser.Match(message, now, 0);
 
             Assert.IsNotNull(match);
             Assert.AreEqual("You", match.Sender);
@@ -300,7 +300,7 @@ namespace EQtoolsTests
             //[Sat Aug 22 18:54:17 2020] Fizzix shouts, 'ASSIST Fizzix on --- [ an essence tamer ]'
             var now = DateTime.Now;
             var message = "Fizzix shouts, 'ASSIST Fizzix on --- [ an essence tamer ]'";
-            var match = parser.Match(message, now);
+            var match = parser.Match(message, now, 0);
 
             Assert.IsNotNull(match);
             Assert.AreEqual("Fizzix", match.Sender);
