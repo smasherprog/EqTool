@@ -342,7 +342,6 @@
     <Compile Include="Services\Handlers\SpawnTimerHandler.cs" />
     <Compile Include="Services\Parsing\ExpGainedParser.cs" />
     <Compile Include="Services\Handlers\SlainHandler.cs" />
-    <Compile Include="Services\Parsing\ExperienceGainedParser.cs" />
     <Compile Include="Services\Parsing\FactionParser.cs" />
     <Compile Include="Services\WindowFactory.cs" />
     <Compile Include="Services\Handlers\YouZonedHandler.cs" />
@@ -372,12 +371,6 @@
     <Compile Include="UI\CustomTimeSpanUpDown.cs" />
     <Compile Include="UI\EventOverlay.xaml.cs">
       <DependentUpon>EventOverlay.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="UI\SpawnTimerForm.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="UI\SpawnTimerForm.Designer.cs">
-      <DependentUpon>SpawnTimerForm.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\MappingWindow.xaml.cs">
       <DependentUpon>MappingWindow.xaml</DependentUpon>
@@ -546,9 +539,6 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
       <LastGenOutput>Resources1.Designer.cs</LastGenOutput>
-    </EmbeddedResource>
-    <EmbeddedResource Include="UI\SpawnTimerForm.resx">
-      <DependentUpon>SpawnTimerForm.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
