@@ -21,6 +21,8 @@ namespace EQTool.Services.Parsing
         private readonly LogEvents logEvents;
 
         //https://regex101.com/r/JPpEcr/1
+        // these references to the regex101.com website are very helpful, as that hash at the end of the URL reconstructs the entire test, with regex and test lines.  Somehow.  Magic...
+        // So it's worth retaining to be able to go back and test later.
         private const string youHitPattern = @"^You (?<dmg_type>hit|slash|pierce|crush|claw|bite|sting|maul|gore|punch|kick|backstab|bash|slice|strike) (?<target_name>[\w` ]+) for (?<damage>[\d]+) point(s)? of damage";
 
         //https://regex101.com/r/nvSnKN/1        

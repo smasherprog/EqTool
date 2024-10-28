@@ -129,7 +129,7 @@ namespace EQtoolsTests
             Assert.AreEqual(12, match.DamageDone);
             Assert.AreEqual(now, match.TimeStamp);
             Assert.AreEqual(message, match.Line);
-            Assert.AreEqual(lineCount, match.LineCount);
+            Assert.AreEqual(lineCount, match.LineCounter);
 
         }
 
@@ -155,7 +155,7 @@ namespace EQtoolsTests
             Assert.AreEqual(0, match.DamageDone);
             Assert.AreEqual(now, match.TimeStamp);
             Assert.AreEqual(message, match.Line);
-            Assert.AreEqual(lineCount, match.LineCount);
+            Assert.AreEqual(lineCount, match.LineCounter);
         }
 
         [TestMethod]
@@ -175,7 +175,7 @@ namespace EQtoolsTests
             Assert.AreEqual(13, match.DamageDone);
             Assert.AreEqual(now, match.TimeStamp);
             Assert.AreEqual(message, match.Line);
-            Assert.AreEqual(lineCount, match.LineCount);
+            Assert.AreEqual(lineCount, match.LineCounter);
         }
 
         [TestMethod]
@@ -200,7 +200,7 @@ namespace EQtoolsTests
             Assert.AreEqual(0, match.DamageDone);
             Assert.AreEqual(now, match.TimeStamp);
             Assert.AreEqual(message, match.Line);
-            Assert.AreEqual(lineCount, match.LineCount);
+            Assert.AreEqual(lineCount, match.LineCounter);
         }
 
         [TestMethod]

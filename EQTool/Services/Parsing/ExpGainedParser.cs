@@ -53,7 +53,12 @@ namespace EQTool.Services.Parsing
             var match = expRegex.Match(line);
             if (match.Success)
             {
-                rv = new ExpGainedEvent(timestamp, line, lineCounter);
+                rv = new ExpGainedEvent
+                {
+                    TimeStamp = timestamp,
+                    Line = line,
+                    LineCounter = lineCounter
+                };
             }
 
             return rv;

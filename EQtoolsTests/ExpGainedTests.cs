@@ -28,7 +28,7 @@ namespace EQtoolsTests
         }
 
         [TestMethod]
-        public void YouGainedExp()
+        public void YouGainExp()
         {
             //You gain experience!!
             var now = DateTime.Now;
@@ -41,12 +41,12 @@ namespace EQtoolsTests
         }
 
         [TestMethod]
-        public void YouGainedPartExp()
+        public void YouGainPartExp()
         {
             //You gain party experience!!
             var now = DateTime.Now;
             var message = "You gain party experience!!";
-            var match = parser.Match(message, now);
+            var match = parser.Match(message, now, 0);
 
             Assert.IsNotNull(match);
             Assert.AreEqual(now, match.TimeStamp);
