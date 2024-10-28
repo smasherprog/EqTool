@@ -891,7 +891,7 @@ namespace EQTool.UI
 
         private void openConfigurationWindow(object sender, RoutedEventArgs e)
         {
-            windowFactory.CreateWindow<ConfigurationWindow>().Show();
+            windowFactory.CreateWindow<SpawnTimerDialog>().Show();
         }
 
         private void selectallVisual(object sender, RoutedEventArgs e)

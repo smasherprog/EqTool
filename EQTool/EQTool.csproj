@@ -312,9 +312,11 @@
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
+    <Reference Include="UIAutomationProvider" />
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="WindowsFormsIntegration" />
     <Reference Include="Xceed.Wpf.AvalonDock, Version=4.6.0.0, Culture=neutral, PublicKeyToken=3e4669d2f30244f4, processorArchitecture=MSIL">
       <HintPath>..\packages\Extended.Wpf.Toolkit.4.6.1\lib\net40\Xceed.Wpf.AvalonDock.dll</HintPath>
     </Reference>
@@ -337,6 +339,8 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Services\BinarySerializer.cs" />
+    <Compile Include="Services\Handlers\SpawnTimerHandler.cs" />
+    <Compile Include="Services\Parsing\ExpGainedParser.cs" />
     <Compile Include="Services\Handlers\SlainHandler.cs" />
     <Compile Include="Services\Parsing\ExperienceGainedParser.cs" />
     <Compile Include="Services\Parsing\FactionParser.cs" />
@@ -362,12 +366,18 @@
     <Compile Include="Services\P99LoginMiddlemand\LoginMiddlemand.cs" />
     <Compile Include="Services\Parsing\CommsParser.cs" />
     <Compile Include="Services\Parsing\YouZonedParser.cs" />
-    <Compile Include="UI\ConfigurationWindow.xaml.cs">
-      <DependentUpon>ConfigurationWindow.xaml</DependentUpon>
+    <Compile Include="UI\SpawnTimerDialog.xaml.cs">
+      <DependentUpon>SpawnTimerDialog.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\CustomTimeSpanUpDown.cs" />
     <Compile Include="UI\EventOverlay.xaml.cs">
       <DependentUpon>EventOverlay.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\SpawnTimerForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\SpawnTimerForm.Designer.cs">
+      <DependentUpon>SpawnTimerForm.cs</DependentUpon>
     </Compile>
     <Compile Include="UI\MappingWindow.xaml.cs">
       <DependentUpon>MappingWindow.xaml</DependentUpon>
@@ -484,7 +494,7 @@
       <DependentUpon>SpellWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\BaseSaveStateWindow.cs" />
-    <Page Include="UI\ConfigurationWindow.xaml">
+    <Page Include="UI\SpawnTimerDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -536,6 +546,9 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
       <LastGenOutput>Resources1.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\SpawnTimerForm.resx">
+      <DependentUpon>SpawnTimerForm.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <ItemGroup>
