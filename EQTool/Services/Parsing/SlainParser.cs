@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 
 namespace EQTool.Services.Parsing
 {
-    public class DeathParser : IEqLogParseHandler
+    public class SlainParser : IEqLogParseHandler
     {
         private readonly LogEvents logEvents;
         private const string slainByPattern = @"^(?<victim>[\w` ]+) (has|have) been slain by (?<killer>[\w` ]+)";
@@ -15,14 +15,14 @@ namespace EQTool.Services.Parsing
         private readonly Regex slainRegex = new Regex(slainPattern, RegexOptions.Compiled);
         private readonly Regex slainByRegex = new Regex(slainByPattern, RegexOptions.Compiled);
 
-        public DeathParser(LogEvents logEvents)
+        public SlainParser(LogEvents logEvents)
         {
             this.logEvents = logEvents;
         }
 
         public bool Handle(string line, DateTime timestamp, int lineCounter)
         {
-            var deathEvent = Match(line, timestamp);
+            var deathEvent = Match(line, timestamp, lineCounter);
             if (deathEvent != null)
             {
                 deathEvent.Line = line;
@@ -35,21 +35,21 @@ namespace EQTool.Services.Parsing
         }
 
         // function to check for a death event
-        public DeathEvent Match(string line, DateTime timestamp)
+        public SlainEvent Match(string line, DateTime timestamp, int lineCounter)
         {
-            //[Thu Oct 17 20:03:17 2024].death is not online at this time.
-            // simulate a player death
-            if (line.StartsWith(".death "))
-            {
-                return new DeathEvent(timestamp, line, "You");
-            }
-
             //[Mon Sep 16 14:32:02 2024] a Tesch Mas Gnoll has been slain by Genartik!
             //[Fri Nov 08 19:39:57 2019] You have been slain by a brigand! 
             var match = slainByRegex.Match(line);
             if (match.Success)
             {
-                return new DeathEvent(timestamp, line, match.Groups["victim"].Value, match.Groups["killer"].Value);
+                return new SlainEvent
+                {
+                    Killer = match.Groups["killer"].Value,
+                    TimeStamp = timestamp,
+                    LineCounter = lineCounter,
+                    Line = line,
+                    Victim = match.Groups["victim"].Value
+                };
             }
 
             //[Mon Sep 16 14:21:24 2024] You have slain a Tesch Mas Gnoll!
@@ -57,7 +57,14 @@ namespace EQTool.Services.Parsing
             match = slainRegex.Match(line);
             if (match.Success)
             {
-                return new DeathEvent(timestamp, line, match.Groups["victim"].Value, "You");
+                return new SlainEvent
+                {
+                    Killer = "You",
+                    TimeStamp = timestamp,
+                    LineCounter = lineCounter,
+                    Line = line,
+                    Victim = match.Groups["victim"].Value
+                };
             }
 
             //[Sat Jan 16 20:12:37 2021] a bile golem died.
@@ -66,7 +73,14 @@ namespace EQTool.Services.Parsing
             match = diedRegex.Match(line);
             if (match.Success)
             {
-                return new DeathEvent(timestamp, line, match.Groups["victim"].Value);
+                return new SlainEvent
+                {
+                    Killer = string.Empty,
+                    TimeStamp = timestamp,
+                    LineCounter = lineCounter,
+                    Line = line,
+                    Victim = match.Groups["victim"].Value
+                };
             }
 
             // return 

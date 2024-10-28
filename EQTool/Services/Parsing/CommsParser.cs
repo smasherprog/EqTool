@@ -49,7 +49,7 @@ namespace EQTool.Services.Parsing
         // If we find what we are seeking, fire off our event
         public bool Handle(string line, DateTime timestamp, int lineCounter)
         {
-            var commsEvent = Match(line, timestamp);
+            var commsEvent = Match(line, timestamp, lineCounter);
             if (commsEvent != null)
             {
                 commsEvent.Line = line;
@@ -64,7 +64,7 @@ namespace EQTool.Services.Parsing
         // parse this line to see if it contains what we are looking for
         // returns a CommsEvent object if a comms event is detecte, else
         // returns null
-        public CommsEvent Match(string line, DateTime timestamp)
+        public CommsEvent Match(string line, DateTime timestamp, int lineCounter)
         {
             //
             // begin checking for the various channels
@@ -79,7 +79,16 @@ namespace EQTool.Services.Parsing
             var match = regexParty.Match(line);
             if (match.Success)
             {
-                return new CommsEvent(timestamp, line, CommsEvent.Channel.GROUP, match.Groups["content"].Value, match.Groups["sender"].Value);
+                return new CommsEvent
+                {
+                    Content = match.Groups["content"].Value,
+                    Line = line,
+                    LineCounter = lineCounter,
+                    Receiver = string.Empty,
+                    Sender = match.Groups["sender"].Value,
+                    TheChannel = CommsEvent.Channel.GROUP,
+                    TimeStamp = timestamp
+                };
             }
 
             //
@@ -92,7 +101,16 @@ namespace EQTool.Services.Parsing
             match = regexTells.Match(line);
             if (match.Success)
             {
-                return new CommsEvent(timestamp, line, CommsEvent.Channel.GUILD, match.Groups["content"].Value, match.Groups["sender"].Value);
+                return new CommsEvent
+                {
+                    Content = match.Groups["content"].Value,
+                    Line = line,
+                    LineCounter = lineCounter,
+                    Receiver = string.Empty,
+                    Sender = match.Groups["sender"].Value,
+                    TheChannel = CommsEvent.Channel.GUILD,
+                    TimeStamp = timestamp
+                };
             }
 
             //Azleep -> Jamori: ok
@@ -112,8 +130,16 @@ namespace EQTool.Services.Parsing
                 {
                     receiver = "You";
                 }
-
-                return new CommsEvent(timestamp, line, CommsEvent.Channel.TELL, match.Groups["content"].Value, sender, receiver);
+                return new CommsEvent
+                {
+                    Content = match.Groups["content"].Value,
+                    Line = line,
+                    LineCounter = lineCounter,
+                    Receiver = receiver,
+                    Sender = sender,
+                    TheChannel = CommsEvent.Channel.TELL,
+                    TimeStamp = timestamp
+                };
             }
 
             // this is actually a tell, even though it doesn't look like it.  It doesn't show up for anyone but the recceiver
@@ -122,7 +148,16 @@ namespace EQTool.Services.Parsing
             match = regexIsNotOnline.Match(line);
             if (match.Success)
             {
-                return new CommsEvent(timestamp, line, CommsEvent.Channel.TELL, match.Groups["content"].Value, "System", "You");
+                return new CommsEvent
+                {
+                    Content = match.Groups["content"].Value,
+                    Line = line,
+                    LineCounter = lineCounter,
+                    Receiver = "You",
+                    Sender = "System",
+                    TheChannel = CommsEvent.Channel.TELL,
+                    TimeStamp = timestamp
+                };
             }
 
 
@@ -136,7 +171,16 @@ namespace EQTool.Services.Parsing
             match = regexSays.Match(line);
             if (match.Success)
             {
-                return new CommsEvent(timestamp, line, CommsEvent.Channel.SAY, match.Groups["content"].Value, match.Groups["sender"].Value);
+                return new CommsEvent
+                {
+                    Content = match.Groups["content"].Value,
+                    Line = line,
+                    LineCounter = lineCounter,
+                    Receiver = string.Empty,
+                    Sender = match.Groups["sender"].Value,
+                    TheChannel = CommsEvent.Channel.SAY,
+                    TimeStamp = timestamp
+                };
             }
 
             // ------------------------------------------------------------------------------------------------------------------------------------------------
@@ -150,7 +194,16 @@ namespace EQTool.Services.Parsing
             match = regexTold.Match(line);
             if (match.Success)
             {
-                return new CommsEvent(timestamp, line, CommsEvent.Channel.TELL, match.Groups["content"].Value, match.Groups["sender"].Value, match.Groups["receiver"].Value);
+                return new CommsEvent
+                {
+                    Content = match.Groups["content"].Value,
+                    Line = line,
+                    LineCounter = lineCounter,
+                    Receiver = match.Groups["receiver"].Value,
+                    Sender = match.Groups["sender"].Value,
+                    TheChannel = CommsEvent.Channel.TELL,
+                    TimeStamp = timestamp
+                };
             }
 
             // ------------------------------------------------------------------------------------------------------------------------------------------------
@@ -162,7 +215,16 @@ namespace EQTool.Services.Parsing
             match = regexAuctions.Match(line);
             if (match.Success)
             {
-                return new CommsEvent(timestamp, line, CommsEvent.Channel.AUCTION, match.Groups["content"].Value, match.Groups["sender"].Value);
+                return new CommsEvent
+                {
+                    Content = match.Groups["content"].Value,
+                    Line = line,
+                    LineCounter = lineCounter,
+                    Receiver = string.Empty,
+                    Sender = match.Groups["sender"].Value,
+                    TheChannel = CommsEvent.Channel.AUCTION,
+                    TimeStamp = timestamp
+                };
             }
 
             // ------------------------------------------------------------------------------------------------------------------------------------------------
@@ -174,7 +236,16 @@ namespace EQTool.Services.Parsing
             match = regexOutOfCharacter.Match(line);
             if (match.Success)
             {
-                return new CommsEvent(timestamp, line, CommsEvent.Channel.OOC, match.Groups["content"].Value, match.Groups["sender"].Value);
+                return new CommsEvent
+                {
+                    Content = match.Groups["content"].Value,
+                    Line = line,
+                    LineCounter = lineCounter,
+                    Receiver = string.Empty,
+                    Sender = match.Groups["sender"].Value,
+                    TheChannel = CommsEvent.Channel.OOC,
+                    TimeStamp = timestamp
+                };
             }
 
             // ------------------------------------------------------------------------------------------------------------------------------------------------
@@ -185,8 +256,16 @@ namespace EQTool.Services.Parsing
 
             match = regexShouts.Match(line);
             return match.Success
-                ? new CommsEvent(timestamp, line, CommsEvent.Channel.SHOUT, match.Groups["content"].Value, match.Groups["sender"].Value)
-                : null;
+                ? new CommsEvent
+                {
+                    Content = match.Groups["content"].Value,
+                    Line = line,
+                    LineCounter = lineCounter,
+                    Receiver = string.Empty,
+                    Sender = match.Groups["sender"].Value,
+                    TheChannel = CommsEvent.Channel.SHOUT,
+                    TimeStamp = timestamp
+                } : null;
         }
     }
 }

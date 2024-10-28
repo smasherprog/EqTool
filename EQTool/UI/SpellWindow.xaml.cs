@@ -53,7 +53,7 @@ namespace EQTool.UI
             this.logEvents.EnteredWorldEvent += LogParser_EnteredWorldEvent;
             this.logEvents.SpellWornOffSelfEvent += LogParser_SpellWornOffSelfEvent;
             this.logEvents.SpellCastEvent += LogParser_StartCastingEvent;
-            this.logEvents.DeathEvent += LogParser_DeathEvent;
+            this.logEvents.SlainEvent += LogParser_DeathEvent;
             this.logEvents.StartTimerEvent += LogParser_StartTimerEvent;
             this.logEvents.CancelTimerEvent += LogParser_CancelTimerEvent;
             this.logEvents.DeathTouchEvent += LogParser_POFDTEvent;
@@ -146,7 +146,7 @@ namespace EQTool.UI
         }
 
         private int deathcounter = 1;
-        private void LogParser_DeathEvent(object sender, DeathEvent e)
+        private void LogParser_DeathEvent(object sender, SlainEvent e)
         {
             spellWindowViewModel.TryRemoveTarget(e.Victim);
             if (playerTrackerService.IsPlayer(e.Victim) || !MasterNPCList.NPCs.Contains(e.Victim))
@@ -193,7 +193,7 @@ namespace EQTool.UI
                 logEvents.EnteredWorldEvent -= LogParser_EnteredWorldEvent;
                 logEvents.SpellWornOffSelfEvent -= LogParser_SpellWornOffSelfEvent;
                 logEvents.SpellCastEvent -= LogParser_StartCastingEvent;
-                logEvents.DeathEvent -= LogParser_DeathEvent;
+                logEvents.SlainEvent -= LogParser_DeathEvent;
                 logEvents.StartTimerEvent -= LogParser_StartTimerEvent;
                 logEvents.CancelTimerEvent -= LogParser_CancelTimerEvent;
                 logEvents.DeathTouchEvent -= LogParser_POFDTEvent;

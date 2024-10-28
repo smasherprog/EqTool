@@ -15,7 +15,7 @@ namespace EQTool.Services.Handlers
     //      3. while the player is apparently AFK (no signs of life from casting, meleeing, or communicating)
     //
     // it listens for the Events created by other Parser classes.
-    //      DeathEvent
+    //      SlainEvent
     //      DamageEvent
     //      YouBeginCastingEvent
     //      CommsEvent
@@ -43,7 +43,7 @@ namespace EQTool.Services.Handlers
         //
         public DeathLoopHandler(LogEvents logEvents, ActivePlayer activePlayer, EQToolSettings eQToolSettings, ITextToSpeach textToSpeach) : base(logEvents, activePlayer, eQToolSettings, textToSpeach)
         {
-            this.logEvents.DeathEvent += LogEvents_DeathEvent;
+            this.logEvents.SlainEvent += LogEvents_DeathEvent;
             this.logEvents.DamageEvent += LogEvents_DamageEvent;
             this.logEvents.YouBeginCastingEvent += LogEvents_YouBeginCastingEvent;
             this.logEvents.CommsEvent += LogEvents_CommsEvent;
@@ -76,9 +76,9 @@ namespace EQTool.Services.Handlers
         }
 
         //
-        // function that gets called for a DeathEvent
+        // function that gets called for a SlainEvent
         //
-        private void LogEvents_DeathEvent(object sender, DeathEvent deathEvent)
+        private void LogEvents_DeathEvent(object sender, SlainEvent deathEvent)
         {
             // use current time to see if any death time stamps in the list need to roll off
             UpdateDeathList(deathEvent.TimeStamp);
@@ -193,13 +193,6 @@ namespace EQTool.Services.Handlers
         {
             // use current time to see if any death time stamps in the list need to roll off
             UpdateDeathList(commsEvent.TimeStamp);
-
-            // back door way to simulate a player death, by sending a tell to .death
-            if ((commsEvent.TheChannel == CommsEvent.Channel.TELL) && (commsEvent.Content == ".death"))
-            {
-                DeathEvent deathEvent = new DeathEvent(commsEvent.TimeStamp, commsEvent.Line, "You");
-                LogEvents_DeathEvent(sender, deathEvent);
-            }
 
             // a comms event in any channel from the player indicates the player is active
             if ((commsEvent.TheChannel != CommsEvent.Channel.NONE) && (commsEvent.Sender == "You"))

@@ -22,7 +22,7 @@ namespace EQtoolsTests
         {
             var now = DateTime.Now;
             var message = "Vebanab slices a willowisp for 56 points of damage.";
-            var match = parser.Match(message, now);
+            var match = parser.Match(message, now, 0);
 
             Assert.IsNotNull(match);
             Assert.AreEqual("Vebanab", match.AttackerName);
@@ -38,7 +38,7 @@ namespace EQtoolsTests
         {
             var now = DateTime.Now;
             var message = "Ratman Rager was hit by non-melee for 45 points of damage.";
-            var match = parser.Match(message, now);
+            var match = parser.Match(message, now, 0);
 
             Assert.IsNotNull(match);
             Assert.AreEqual("You", match.AttackerName);
@@ -54,7 +54,7 @@ namespace EQtoolsTests
         {
             var now = DateTime.Now;
             var message = "a willowisp slices Vebanab for 56 points of damage.";
-            var match = parser.Match(message, now);
+            var match = parser.Match(message, now, 0);
 
             Assert.IsNotNull(match);
             Assert.AreEqual("a willowisp", match.AttackerName);
@@ -70,7 +70,7 @@ namespace EQtoolsTests
         {
             var now = DateTime.Now;
             var message = "You crush a shadowed man for 1 point of damage.";
-            var match = parser.Match(message, now);
+            var match = parser.Match(message, now, 0);
 
             Assert.IsNotNull(match);
             Assert.AreEqual("You", match.AttackerName);
@@ -86,7 +86,7 @@ namespace EQtoolsTests
         {
             var now = DateTime.Now;
             var message = "Guard Valon bashes YOU for 12 points of damage.";
-            var match = parser.Match(message, now);
+            var match = parser.Match(message, now, 0);
 
             Assert.IsNotNull(match);
             Assert.AreEqual("Guard Valon", match.AttackerName);
@@ -102,7 +102,7 @@ namespace EQtoolsTests
         {
             var now = DateTime.Now;
             var message = "You try to pierce an Iksar outcast, but miss!";
-            var match = parser.Match(message, now);
+            var match = parser.Match(message, now, 0);
 
             Assert.IsNotNull(match);
             Assert.AreEqual("You", match.AttackerName);
@@ -268,7 +268,16 @@ namespace EQtoolsTests
             var now = DateTime.Now.AddSeconds(-1);
             var line = "some line";
 
-            vm.TryAdd(new DamageEvent(now, line, "test1", "Test", 44, ""));
+            vm.TryAdd(new DamageEvent
+            {
+                Line = line,
+                TimeStamp = now,
+                AttackerName = string.Empty,
+                DamageType = "bash",
+                DamageDone = 44,
+                TargetName = "Test",
+                LineCounter = 0
+            });
 
             var entity = vm.EntityList.FirstOrDefault();
             Assert.AreEqual(44, entity.TrailingDamage);
@@ -293,14 +302,14 @@ namespace EQtoolsTests
         public void TestLevelDetectionThroughBackstabNullCheck()
         {
             var message = "You backstab a willowisp for 56 points of damage.";
-            _ = parser.Match(message, DateTime.Now);
+            _ = parser.Match(message, DateTime.Now, 0);
         }
 
         [TestMethod]
         public void TestGuildChatCopyAndPaste()
         {
             var message = "vasanle tells the guild, '[Sun Jul 10 21:05:30 2022] pigy was hit by non-melee for 1500 points of damage.  [Sun Jul 10 21:05:30 2022] pigy staggers.'";
-            var match = parser.Match(message, DateTime.Now);
+            var match = parser.Match(message, DateTime.Now, 0);
             Assert.IsNull(match);
         }
 
@@ -308,7 +317,7 @@ namespace EQtoolsTests
         public void TestLevelDetectionThroughKick()
         {
             var message = "You backstab a kick for 56 points of damage.";
-            _ = parser.Match(message, DateTime.Now);
+            _ = parser.Match(message, DateTime.Now, 0);
             var player = container.Resolve<ActivePlayer>();
             player.Player = new PlayerInfo { };
 

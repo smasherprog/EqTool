@@ -2,7 +2,6 @@
 using EQTool.Models;
 using EQTool.Services;
 using EQTool.Services.Handlers;
-using EQTool.Services.Parsing;
 using EQTool.ViewModels;
 using EQToolShared.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -14,7 +13,6 @@ namespace EQtoolsTests
     [TestClass]
     public class CompleteHealCommsHandlerTests : BaseTestClass
     {
-        private readonly CompleteHealCommsHandler completeHealCommsHandler;
         private readonly LogParser logParser;
         private readonly LogEvents logEvents;
         private readonly ActivePlayer activePlayer;
@@ -23,7 +21,6 @@ namespace EQtoolsTests
         public CompleteHealCommsHandlerTests()
         {
             logParser = container.Resolve<LogParser>();
-            completeHealCommsHandler = container.Resolve<CompleteHealCommsHandler>();
             logEvents = container.Resolve<LogEvents>();
             activePlayer = container.Resolve<ActivePlayer>();
             _ = container.Resolve<IEnumerable<BaseHandler>>();

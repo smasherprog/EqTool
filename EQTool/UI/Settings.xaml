@@ -107,15 +107,22 @@
         </TabItem>
         <TabItem Header="Overlay">
             <StackPanel Orientation="Vertical" Margin="5, 5, 5, 5">
+          
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Installed Voices" VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
                     <ComboBox SelectedItem="{Binding SelectedVoice}" ItemsSource="{Binding InstalledVoices}" MinWidth="105"></ComboBox>
                     <Button Content="▶" Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="textvoice" ToolTip="Test Voice" />
                 </StackPanel>
+    
                 <StackPanel Orientation="Horizontal">
                     <TextBlock VerticalAlignment="Center" FontWeight="Bold"  MinWidth="75"/>
                     <TextBlock Text="Visual Alert" VerticalAlignment="Center" FontWeight="Bold"  MinWidth="75"/>
                     <TextBlock Text="Audio Alert" VerticalAlignment="Center" FontWeight="Bold"  />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Select All Timers"  VerticalAlignment="Center" FontWeight="Bold"  MinWidth="100"/>
+                    <Button Content="▶" Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="selectallVisual" ToolTip="Select All Visual" />
+                    <Button Margin="60,0,0,0" Content="▶" FontSize="7" Width="14" Height="14" Padding="0" Click="selectallAudio" ToolTip="Select All Audio" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Enraged"  VerticalAlignment="Center" FontWeight="Bold"  MinWidth="100"/>

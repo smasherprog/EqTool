@@ -33,7 +33,7 @@ namespace EQTool.UI
             InitializeComponent();
             base.Init();
             this.logEvents.DamageEvent += LogParser_DamageEvent;
-            this.logEvents.DeathEvent += LogParser_DeathEvent;
+            this.logEvents.SlainEvent += LogParser_DeathEvent;
             UITimer = new System.Timers.Timer(1000);
             UITimer.Elapsed += PollUI;
             UITimer.Enabled = true;
@@ -53,7 +53,7 @@ namespace EQTool.UI
             dPSWindowViewModel.TryAdd(e);
         }
 
-        private void LogParser_DeathEvent(object sender, DeathEvent e)
+        private void LogParser_DeathEvent(object sender, SlainEvent e)
         {
             var zone = activePlayer?.Player?.Zone;
             if (!string.IsNullOrWhiteSpace(zone) && Zones.ZoneInfoMap.TryGetValue(zone, out var fzone))
@@ -73,7 +73,7 @@ namespace EQTool.UI
             UITimer?.Dispose();
             if (logEvents != null)
             {
-                logEvents.DeathEvent -= LogParser_DeathEvent;
+                logEvents.SlainEvent -= LogParser_DeathEvent;
                 logEvents.DamageEvent -= LogParser_DamageEvent;
             }
             base.OnClosing(e);

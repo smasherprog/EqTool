@@ -47,10 +47,10 @@ namespace EQTool.Services
             ConEvent?.Invoke(this, e);
         }
 
-        public event EventHandler<DeathEvent> DeathEvent;
-        public void Handle(DeathEvent e)
+        public event EventHandler<SlainEvent> SlainEvent;
+        public void Handle(SlainEvent e)
         {
-            DeathEvent?.Invoke(this, e);
+            SlainEvent?.Invoke(this, e);
         }
 
         public event EventHandler<CommsEvent> CommsEvent;
@@ -209,10 +209,10 @@ namespace EQTool.Services
             FactionEvent?.Invoke(this, e);
         }
 
-        public event EventHandler<SlainEvent> SlainEvent;
-        public void Handle(SlainEvent e)
+        public event EventHandler<ExperienceGainedEvent> ExperienceGainedEvent;
+        public void Handle(ExperienceGainedEvent e)
         {
-            SlainEvent?.Invoke(this, e);
+            ExperienceGainedEvent?.Invoke(this, e);
         }
     }
 }

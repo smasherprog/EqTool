@@ -52,7 +52,7 @@ namespace EQTool.Services.Parsing
         // handle a line from the log file
         public bool Handle(string line, DateTime timestamp, int lineCounter)
         {
-            var de = Match(line, timestamp);
+            var de = Match(line, timestamp, lineCounter);
             if (de != null)
             {
                 de.LineCounter = lineCounter;
@@ -64,18 +64,22 @@ namespace EQTool.Services.Parsing
             return false;
         }
 
-        public DamageEvent Match(string line, DateTime timestamp)
+        public DamageEvent Match(string line, DateTime timestamp, int lineCounter)
         {
             // you hit
             var match = youHitRegex.Match(line);
             if (match.Success)
             {
-                var rv = new DamageEvent(timestamp,
-                                        line,
-                                        match.Groups["target_name"].Value,
-                                        "You",
-                                        int.Parse(match.Groups["damage"].Value),
-                                        match.Groups["dmg_type"].Value);
+                var rv = new DamageEvent
+                {
+                    Line = line,
+                    LineCounter = lineCounter,
+                    TimeStamp = timestamp,
+                    TargetName = match.Groups["target_name"].Value,
+                    AttackerName = "You",
+                    DamageDone = int.Parse(match.Groups["damage"].Value),
+                    DamageType = match.Groups["dmg_type"].Value
+                };
 
                 // if we see a backstab from current player, set current player class to rogue
                 if (rv.AttackerName == "You" && activePlayer.Player?.PlayerClass != PlayerClasses.Rogue)
@@ -93,24 +97,32 @@ namespace EQTool.Services.Parsing
             match = youMissRegex.Match(line);
             if (match.Success)
             {
-                return new DamageEvent(timestamp,
-                                         line,
-                                         match.Groups["target_name"].Value,
-                                         "You",
-                                         0,
-                                        match.Groups["dmg_type"].Value);
+                return new DamageEvent
+                {
+                    Line = line,
+                    LineCounter = lineCounter,
+                    TimeStamp = timestamp,
+                    TargetName = match.Groups["target_name"].Value,
+                    AttackerName = "You",
+                    DamageDone = 0,
+                    DamageType = match.Groups["dmg_type"].Value
+                };
             }
 
             // others hit
             match = otherHitRegex.Match(line);
             if (match.Success)
             {
-                return new DamageEvent(timestamp,
-                                        line,
-                                        match.Groups["target_name"].Value,
-                                        match.Groups["attacker_name"].Value,
-                                        int.Parse(match.Groups["damage"].Value),
-                                        match.Groups["dmg_type"].Value);
+                return new DamageEvent
+                {
+                    Line = line,
+                    LineCounter = lineCounter,
+                    TimeStamp = timestamp,
+                    TargetName = match.Groups["target_name"].Value,
+                    AttackerName = match.Groups["attacker_name"].Value,
+                    DamageDone = int.Parse(match.Groups["damage"].Value),
+                    DamageType = match.Groups["dmg_type"].Value
+                };
             }
 
             // others miss
@@ -128,7 +140,16 @@ namespace EQTool.Services.Parsing
             // non-melee damage (direct damage spell, or dmg shield, or weapon proc)
             match = nonMeleeRegex.Match(line);
             return match.Success
-                ? new DamageEvent(timestamp, line, match.Groups["target_name"].Value, "You", int.Parse(match.Groups["damage"].Value), "non-melee")
+                ? new DamageEvent
+                {
+                    Line = line,
+                    LineCounter = lineCounter,
+                    TimeStamp = timestamp,
+                    TargetName = match.Groups["target_name"].Value,
+                    AttackerName = "You",
+                    DamageDone = int.Parse(match.Groups["damage"].Value),
+                    DamageType = "non-melee"
+                }
                 : null;
         }
 

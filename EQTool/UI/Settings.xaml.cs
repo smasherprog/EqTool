@@ -366,6 +366,7 @@ namespace EQTool.UI
                 {
                     var fightlines = Properties.Resources.TestFight2.Split(new string[] { "\r\n", "\r", "\n" }, StringSplitOptions.None);
                     var fightlist = new List<KeyValuePair<string, DamageEvent>>();
+                    var linecounter = 0;
                     foreach (var item in fightlines)
                     {
                         if (item == null || item.Length < 27)
@@ -384,7 +385,7 @@ namespace EQTool.UI
                         catch (FormatException)
                         {
                         }
-                        var match = damageLogParser.Match(message, timestamp);
+                        var match = damageLogParser.Match(message, timestamp, linecounter++);
                         if (match != null)
                         {
                             fightlist.Add(new KeyValuePair<string, DamageEvent>(item, match));
@@ -891,6 +892,40 @@ namespace EQTool.UI
         private void openConfigurationWindow(object sender, RoutedEventArgs e)
         {
             windowFactory.CreateWindow<SpawnTimerDialog>().Show();
+        }
+
+        private void selectallVisual(object sender, RoutedEventArgs e)
+        {
+            SettingsWindowData.ActivePlayer.Player.EnrageOverlay = true;
+            SettingsWindowData.ActivePlayer.Player.LevFadingOverlay = true;
+            SettingsWindowData.ActivePlayer.Player.InvisFadingOverlay = true;
+            SettingsWindowData.ActivePlayer.Player.FTEOverlay = true;
+            SettingsWindowData.ActivePlayer.Player.CharmBreakOverlay = true;
+            SettingsWindowData.ActivePlayer.Player.FailedFeignOverlay = true;
+            SettingsWindowData.ActivePlayer.Player.GroupInviteOverlay = true;
+            SettingsWindowData.ActivePlayer.Player.DragonRoarOverlay = true;
+            SettingsWindowData.ActivePlayer.Player.RootWarningOverlay = true;
+            SettingsWindowData.ActivePlayer.Player.ResistWarningOverlay = true;
+            SettingsWindowData.ActivePlayer.Player.DeathLoopOverlay = true;
+            SettingsWindowData.ActivePlayer.Player.ChChainOverlay = true;
+            SettingsWindowData.ActivePlayer.Player.ChChainWarningOverlay = true;
+            SaveConfig();
+        }
+        private void selectallAudio(object sender, RoutedEventArgs e)
+        {
+            SettingsWindowData.ActivePlayer.Player.EnrageAudio = true;
+            SettingsWindowData.ActivePlayer.Player.LevFadingAudio = true;
+            SettingsWindowData.ActivePlayer.Player.InvisFadingAudio = true;
+            SettingsWindowData.ActivePlayer.Player.FTEAudio = true;
+            SettingsWindowData.ActivePlayer.Player.CharmBreakAudio = true;
+            SettingsWindowData.ActivePlayer.Player.FailedFeignAudio = true;
+            SettingsWindowData.ActivePlayer.Player.GroupInviteAudio = true;
+            SettingsWindowData.ActivePlayer.Player.DragonRoarAudio = true;
+            SettingsWindowData.ActivePlayer.Player.RootWarningAudio = true;
+            SettingsWindowData.ActivePlayer.Player.ResistWarningAudio = true;
+            SettingsWindowData.ActivePlayer.Player.DeathLoopAudio = true;
+            SettingsWindowData.ActivePlayer.Player.ChChainWarningAudio = true;
+            SaveConfig();
         }
     }
 }

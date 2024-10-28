@@ -1069,9 +1069,9 @@ namespace EQtoolsTests
         public void TestDeath()
         {
             var now = DateTime.Now;
-            var service = container.Resolve<DeathParser>();
+            var service = container.Resolve<SlainParser>();
             var line = "an ire Ghast has been slain by a different ire ghast!";
-            var de = service.Match(line, now);
+            var de = service.Match(line, now, 0);
 
             Assert.IsNotNull(de);
             Assert.AreEqual(now, de.TimeStamp);
@@ -1084,9 +1084,9 @@ namespace EQtoolsTests
         public void TestDeath1()
         {
             var now = DateTime.Now;
-            var service = container.Resolve<DeathParser>();
+            var service = container.Resolve<SlainParser>();
             var line = "Harbinger Freglor has been slain by skeletal champion!";
-            var de = service.Match(line, now);
+            var de = service.Match(line, now, 0);
 
             Assert.IsNotNull(de);
             Assert.AreEqual(now, de.TimeStamp);
@@ -1099,9 +1099,9 @@ namespace EQtoolsTests
         public void TestDeath2()
         {
             var now = DateTime.Now;
-            var service = container.Resolve<DeathParser>();
+            var service = container.Resolve<SlainParser>();
             var line = "You have slain Arch Duke Iatol!";
-            var de = service.Match(line, now);
+            var de = service.Match(line, now, 0);
 
             Assert.IsNotNull(de);
             Assert.AreEqual(now, de.TimeStamp);
@@ -1114,9 +1114,9 @@ namespace EQtoolsTests
         public void TestDeathByDot()
         {
             var now = DateTime.Now;
-            var service = container.Resolve<DeathParser>();
+            var service = container.Resolve<SlainParser>();
             var line = "an ire Ghast died.";
-            var de = service.Match(line, now);
+            var de = service.Match(line, now, 0);
 
             Assert.IsNotNull(de);
             Assert.AreEqual(now, de.TimeStamp);
@@ -1172,7 +1172,7 @@ namespace EQtoolsTests
             logevents.CancelTimerEvent += (a, b) => Assert.Fail("DontHit");
             logevents.StartTimerEvent += (a, b) => Assert.Fail("DontHit");
             logevents.ConEvent += (a, b) => Assert.Fail("DontHit");
-            logevents.DeathEvent += (a, b) => Assert.Fail("DontHit");
+            logevents.SlainEvent += (a, b) => Assert.Fail("DontHit");
             logevents.DamageEvent += (a, b) => Assert.Fail("DontHit");
             logevents.YouZonedEvent += (a, b) => Assert.Fail("DontHit");
             logevents.PlayerLocationEvent += (a, b) => Assert.Fail("DontHit");
