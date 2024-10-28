@@ -119,7 +119,8 @@ namespace EQtoolsTests
             //You crush a giant wasp drone for 12 points of damage.
             var now = DateTime.Now;
             var message = "You crush a giant wasp drone for 12 points of damage.";
-            var match = parser.Match(message, now);
+            var lineCount = 101;
+            var match = parser.Match(message, now, lineCount);
 
             Assert.IsNotNull(match);
             Assert.AreEqual("You", match.AttackerName);
@@ -128,6 +129,8 @@ namespace EQtoolsTests
             Assert.AreEqual(12, match.DamageDone);
             Assert.AreEqual(now, match.TimeStamp);
             Assert.AreEqual(message, match.Line);
+            Assert.AreEqual(lineCount, match.LineCount);
+
         }
 
         [TestMethod]
@@ -142,7 +145,8 @@ namespace EQtoolsTests
             //You try to pierce an earth elemental, but an earth elemental is INVULNERABLE!
             var now = DateTime.Now;
             var message = "You try to pierce an earth elemental, but an earth elemental is INVULNERABLE!";
-            var match = parser.Match(message, now);
+            var lineCount = 101;
+            var match = parser.Match(message, now, lineCount);
 
             Assert.IsNotNull(match);
             Assert.AreEqual("You", match.AttackerName);
@@ -151,6 +155,7 @@ namespace EQtoolsTests
             Assert.AreEqual(0, match.DamageDone);
             Assert.AreEqual(now, match.TimeStamp);
             Assert.AreEqual(message, match.Line);
+            Assert.AreEqual(lineCount, match.LineCount);
         }
 
         [TestMethod]
@@ -160,7 +165,8 @@ namespace EQtoolsTests
             //Giber slashes rogue clockwork for 13 points of damage.
             var now = DateTime.Now;
             var message = "Giber slashes rogue clockwork for 13 points of damage.";
-            var match = parser.Match(message, now);
+            var lineCount = 101;
+            var match = parser.Match(message, now, lineCount);
 
             Assert.IsNotNull(match);
             Assert.AreEqual("Giber", match.AttackerName);
@@ -169,6 +175,7 @@ namespace EQtoolsTests
             Assert.AreEqual(13, match.DamageDone);
             Assert.AreEqual(now, match.TimeStamp);
             Assert.AreEqual(message, match.Line);
+            Assert.AreEqual(lineCount, match.LineCount);
         }
 
         [TestMethod]
@@ -183,7 +190,8 @@ namespace EQtoolsTests
             //A crimson claw hatchling tries to hit Frigs, but Frigs is INVULNERABLE!
             var now = DateTime.Now;
             var message = "A greater dark bone tries to hit Lazyboi, but misses!";
-            var match = parser.Match(message, now);
+            var lineCount = 101;
+            var match = parser.Match(message, now, lineCount);
 
             Assert.IsNotNull(match);
             Assert.AreEqual("A greater dark bone", match.AttackerName);
@@ -192,6 +200,7 @@ namespace EQtoolsTests
             Assert.AreEqual(0, match.DamageDone);
             Assert.AreEqual(now, match.TimeStamp);
             Assert.AreEqual(message, match.Line);
+            Assert.AreEqual(lineCount, match.LineCount);
         }
 
         [TestMethod]

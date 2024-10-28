@@ -129,12 +129,16 @@ namespace EQTool.Services.Parsing
             match = othersMissRegex.Match(line);
             if (match.Success)
             {
-                return new DamageEvent(timestamp,
-                                         line,
-                                         match.Groups["target_name"].Value,
-                                         match.Groups["attacker_name"].Value,
-                                         0,
-                                         match.Groups["dmg_type"].Value);
+                return new DamageEvent
+                {
+                    Line = line,
+                    LineCounter = lineCounter,
+                    TimeStamp = timestamp,
+                    TargetName = match.Groups["target_name"].Value,
+                    AttackerName = match.Groups["attacker_name"].Value,
+                    DamageDone = 0,
+                    DamageType = match.Groups["dmg_type"].Value
+                };
             }
 
             // non-melee damage (direct damage spell, or dmg shield, or weapon proc)

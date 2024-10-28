@@ -33,7 +33,7 @@ namespace EQtoolsTests
             //You gain experience!!
             var now = DateTime.Now;
             var message = "You gain experience!!";
-            var match = parser.Match(message, now);
+            var match = parser.Match(message, now, 0);
 
             Assert.IsNotNull(match);
             Assert.AreEqual(now, match.TimeStamp);

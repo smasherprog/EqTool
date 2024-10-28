@@ -24,7 +24,7 @@ namespace EQTool.Services.Handlers
         public SpawnTimerHandler(LogEvents logEvents, ActivePlayer activePlayer, EQToolSettings eQToolSettings, ITextToSpeach textToSpeach) : base(logEvents, activePlayer, eQToolSettings, textToSpeach)
         {
             this.logEvents.ExpGainedEvent += LogEvents_ExpGainedEvent;
-            this.logEvents.DeathEvent += LogEvents_DeathEvent;
+            this.logEvents.SlainEvent += LogEvents_SlainEvent;
             this.logEvents.FactionEvent += LogEvents_FactionEvent;
         }
 
@@ -43,12 +43,12 @@ namespace EQTool.Services.Handlers
         }
 
         //
-        // function that gets called for a DeathEvent
+        // function that gets called for a SlainhEvent
         //
-        private void LogEvents_DeathEvent(object sender, DeathEvent deathEvent)
+        private void LogEvents_SlainEvent(object sender, SlainEvent slainEvent)
         {
             // debugging message
-            Debug.WriteLine($"DeathEvent: [{deathEvent.TimeStamp}], Killer = [{deathEvent.Killer}], Victim = [{deathEvent.Victim}]");
+            Debug.WriteLine($"SlainEvent: [{slainEvent.TimeStamp}], Killer = [{slainEvent.Killer}], Victim = [{slainEvent.Victim}]");
 
             // if the victim field matches to the SpawnTimer field, then react
 

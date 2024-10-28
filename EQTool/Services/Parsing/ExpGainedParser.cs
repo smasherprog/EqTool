@@ -13,6 +13,11 @@ namespace EQTool.Services.Parsing
     //
     public class ExpGainedParser : IEqLogParseHandler
     {
+        //You gain experience!!
+        //You gain party experience!!
+        // https://regex101.com/r/kH3KND/1
+        private const string expPattern = @"^You gain (party )?experience!!";
+        private readonly Regex expRegex = new Regex(expPattern, RegexOptions.Compiled);
 
         // class data
         private readonly LogEvents logEvents;
@@ -29,11 +34,9 @@ namespace EQTool.Services.Parsing
         // If we find what we are seeking, fire off our event
         public bool Handle(string line, DateTime timestamp, int lineCounter)
         {
-            var expGainedEvent = Match(line, timestamp);
+            var expGainedEvent = Match(line, timestamp, lineCounter);
             if (expGainedEvent != null)
             {
-                expGainedEvent.Line = line;
-                expGainedEvent.TimeStamp = timestamp;
                 logEvents.Handle(expGainedEvent);
                 return true;
             }
@@ -43,19 +46,14 @@ namespace EQTool.Services.Parsing
         // parse this line to see if it contains what we are looking for
         // returns a CommsEvent object if a comms event is detecte, else
         // returns null
-        public ExpGainedEvent Match(string line, DateTime timestamp)
+        public ExpGainedEvent Match(string line, DateTime timestamp, int lineCounter)
         {
             ExpGainedEvent rv = null;
 
-            //You gain experience!!
-            //You gain party experience!!
-            // https://regex101.com/r/kH3KND/1
-            var expPattern = @"^You gain (party )?experience!!";
-            var expRegex = new Regex(expPattern, RegexOptions.Compiled);
             var match = expRegex.Match(line);
             if (match.Success)
             {
-                rv = new ExpGainedEvent(timestamp, line);
+                rv = new ExpGainedEvent(timestamp, line, lineCounter);
             }
 
             return rv;

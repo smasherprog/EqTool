@@ -21,10 +21,11 @@ namespace EQTool.Models
     public class ExpGainedEvent : BaseLogParseEvent
     {
         // ctor
-        public ExpGainedEvent(DateTime timestamp, string line)
+        public ExpGainedEvent(DateTime timestamp, string line, int lineCounter)
         {
             TimeStamp = timestamp;
             Line = line;
+            LineCounter = lineCounter;
         }
     }
 
