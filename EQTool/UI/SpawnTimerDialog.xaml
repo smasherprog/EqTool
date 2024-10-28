@@ -16,16 +16,30 @@
             <RowDefinition Height="10*"/>
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="50*"/>
-            <ColumnDefinition Width="50*"/>
+            <ColumnDefinition Width="626*"/>
+            <ColumnDefinition Width="409*"/>
         </Grid.ColumnDefinitions>
-        <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2"/>
-        <StackPanel Grid.Row="1" Grid.Column="0"/>
-        <StackPanel Grid.Row="2" Grid.Column="0" Grid.RowSpan="2"/>
-        <StackPanel Grid.Row="4" Grid.Column="0"/>
-        <StackPanel Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2"/>
-        <StackPanel Grid.Row="1" Grid.Column="1" Grid.RowSpan="2"/>
-        <StackPanel Grid.Row="3" Grid.Column="1" Grid.RowSpan="2"/>
+        <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Background="#FF8DABE6" Margin="0,0,0,122" Grid.RowSpan="2">
+            <CheckBox x:Name="enableCheckBox" Content="Enable Spawn Timers" FontSize="20" FontStyle="Italic" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10,10,10,10" VerticalContentAlignment="Center" HorizontalContentAlignment="Stretch"/>
+        </StackPanel>
+        <StackPanel Grid.Row="1" Grid.Column="0" Background="#FFE1EADD" Grid.RowSpan="2">
+            <TextBlock TextWrapping="Wrap" Text="Timer Start" Margin="5,5,0,0" FontSize="16"/>
+            <RadioButton x:Name="expMessageRadioButton" GroupName="TimerStart" Content="Exp Message" IsChecked="True" Margin="30,10,0,0" FontSize="14" VerticalContentAlignment="Center"/>
+            <StackPanel Orientation="Horizontal">
+                <RadioButton x:Name="slainRadioButton" GroupName="TimerStart" MinWidth="200" Content="You have slain ..." Margin="30,5,0,0" FontSize="14" VerticalContentAlignment="Center" />
+                <TextBox x:Name="slainTextBox" MinWidth="250" FontSize="14" Width="100" VerticalAlignment="Center" />
+            </StackPanel>
+            <StackPanel Orientation="Horizontal">
+                <RadioButton x:Name="factionRadioButton" GroupName="TimerStart" MinWidth="200" Content="Your faction standing with ..." Margin="30,5,0,0" FontSize="14" VerticalContentAlignment="Center"/>
+                <TextBox x:Name="factionTextBox" MinWidth="250" FontSize="14" VerticalAlignment="Center" />
+            </StackPanel>
+
+        </StackPanel>
+        <StackPanel Grid.Row="2" Grid.Column="0" Grid.RowSpan="2" Background="#FFA05A5A"/>
+        <StackPanel Grid.Row="3" Grid.Column="0" Background="#FF7DA08D" Margin="0,121,0,0" Grid.RowSpan="2"/>
+        <StackPanel Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="2" Background="#FF968555" Margin="0,122,0,0" Grid.RowSpan="2"/>
+        <StackPanel Grid.Row="1" Grid.Column="1" Grid.RowSpan="3" Background="#FFC884B9" Margin="0,0,0,121"/>
+        <StackPanel Grid.Row="3" Grid.Column="1" Grid.RowSpan="2" Background="#FF846F6F"/>
     </Grid>
 
 
