@@ -21,7 +21,7 @@ namespace EQTool.Services.Parsing
         private const string patternIsNotOnline = @"^(?<content>.+) is not online at this time.";
         private const string patternSays = @"^(?<sender>.+) (say|says), '(?<content>.+)'";
         private const string patternTold = @"^(?<sender>.+) (told|tells) (?<receiver>.+), '(?<content>.+)'";
-        private const string atternAuctions = @"^(?<sender>.+) auction(s)?, '(?<content>.+)'";
+        private const string patternAuctions = @"^(?<sender>.+) auction(s)?, '(?<content>.+)'";
         private const string patternOutOfCharacter = @"^(?<sender>.+) say(s)? out of character, '(?<content>.+)'";
         private const string patternShouts = @"^(?<sender>.+) shout(s)?, '(?<content>.+)'";
 
@@ -32,7 +32,7 @@ namespace EQTool.Services.Parsing
         private readonly Regex regexIsNotOnline = new Regex(patternIsNotOnline, RegexOptions.Compiled);
         private readonly Regex regexSays = new Regex(patternSays, RegexOptions.Compiled);
         private readonly Regex regexTold = new Regex(patternTold, RegexOptions.Compiled);
-        private readonly Regex regexAuctions = new Regex(atternAuctions, RegexOptions.Compiled);
+        private readonly Regex regexAuctions = new Regex(patternAuctions, RegexOptions.Compiled);
         private readonly Regex regexOutOfCharacter = new Regex(patternOutOfCharacter, RegexOptions.Compiled);
         private readonly Regex regexShouts = new Regex(patternShouts, RegexOptions.Compiled);
 

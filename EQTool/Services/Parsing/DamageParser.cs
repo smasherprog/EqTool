@@ -19,14 +19,27 @@ namespace EQTool.Services.Parsing
     {
         private readonly ActivePlayer activePlayer;
         private readonly LogEvents logEvents;
+
+        //https://regex101.com/r/JPpEcr/1
+        // these references to the regex101.com website are very helpful, as that hash at the end of the URL reconstructs the entire test, with regex and test lines.  Somehow.  Magic...
+        // So it's worth retaining to be able to go back and test later.
         private const string youHitPattern = @"^You (?<dmg_type>hit|slash|pierce|crush|claw|bite|sting|maul|gore|punch|kick|backstab|bash|slice|strike) (?<target_name>[\w` ]+) for (?<damage>[\d]+) point(s)? of damage";
-        private const string youMissPattern = @"^You try to (?<dmg_type>hit|slash|pierce|crush|claw|bite|sting|maul|gore|punch|kick|backstab|bash|slice|strike) (?<target_name>[\w` ]+), but miss";
+
+        //https://regex101.com/r/nvSnKN/1        
+        private const string youMissPattern = @"^You try to (?<dmg_type>hit|slash|pierce|crush|claw|bite|sting|maul|gore|punch|kick|backstab|bash|slice|strike) (?<target_name>[\w` ]+), but";
+
+        //https://regex101.com/r/PJfNGm/1        
         private const string otherHitPattern = @"^(?<attacker_name>[\w` ]+?) (?<dmg_type>hits|slashes|pierces|crushes|claws|bites|stings|mauls|gores|punches|kicks|backstabs|bashes|slices|strikes) (?<target_name>[\w` ]+) for (?<damage>[\d]+) point(s)? of damage";
+
+        //https://regex101.com/r/5oJEoN/1
+        private const string othersMissPattern = @"^(?<attacker_name>[\w` ]+?) tries to (?<dmg_type>hit|slash|pierce|crush|claw|bite|sting|maul|gore|punch|kick|backstab|bash|slice|strike) (?<target_name>[\w` ]+), but";
+        
         private const string nonMeleePattern = @"^(?<target_name>[\w` ]+) was hit by non-melee for (?<damage>[\d]+) point(s)? of damage";
 
         private readonly Regex youHitRegex = new Regex(youHitPattern, RegexOptions.Compiled);
         private readonly Regex youMissRegex = new Regex(youMissPattern, RegexOptions.Compiled);
         private readonly Regex otherHitRegex = new Regex(otherHitPattern, RegexOptions.Compiled);
+        private readonly Regex othersMissRegex = new Regex(othersMissPattern, RegexOptions.Compiled);
         private readonly Regex nonMeleeRegex = new Regex(nonMeleePattern, RegexOptions.Compiled);
 
         //
@@ -55,9 +68,7 @@ namespace EQTool.Services.Parsing
 
         public DamageEvent Match(string line, DateTime timestamp, int lineCounter)
         {
-            // melee attack, hit or miss
-            // https://regex101.com/r/77YkpV/1
-
+            // you hit
             var match = youHitRegex.Match(line);
             if (match.Success)
             {
@@ -80,9 +91,11 @@ namespace EQTool.Services.Parsing
                         logEvents.Handle(new ClassDetectedEvent { TimeStamp = timestamp, Line = line, PlayerClass = PlayerClasses.Rogue });
                     }
                 }
+
                 return rv;
             }
 
+            // you miss
             match = youMissRegex.Match(line);
             if (match.Success)
             {
@@ -98,6 +111,7 @@ namespace EQTool.Services.Parsing
                 };
             }
 
+            // others hit
             match = otherHitRegex.Match(line);
             if (match.Success)
             {
@@ -113,8 +127,23 @@ namespace EQTool.Services.Parsing
                 };
             }
 
-            // non-melee damage (direct damage spell, or dmg shield, or weapon proc)
+            // others miss
+            match = othersMissRegex.Match(line);
+            if (match.Success)
+            {
+                return new DamageEvent
+                {
+                    Line = line,
+                    LineCounter = lineCounter,
+                    TimeStamp = timestamp,
+                    TargetName = match.Groups["target_name"].Value,
+                    AttackerName = match.Groups["attacker_name"].Value,
+                    DamageDone = 0,
+                    DamageType = match.Groups["dmg_type"].Value
+                };
+            }
 
+            // non-melee damage (direct damage spell, or dmg shield, or weapon proc)
             match = nonMeleeRegex.Match(line);
             return match.Success
                 ? new DamageEvent
