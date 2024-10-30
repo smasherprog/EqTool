@@ -5,106 +5,107 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EQTool.UI"
         mc:Ignorable="d"
-        Title="Spawn Timer Dialog" Height="625" Width="1035">
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="10*"/>
-            <RowDefinition Height="20*"/>
-            <RowDefinition Height="20*"/>
-            <RowDefinition Height="20*"/>
-            <RowDefinition Height="20*"/>
-            <RowDefinition Height="10*"/>
-        </Grid.RowDefinitions>
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="626*"/>
-            <ColumnDefinition Width="409*"/>
-        </Grid.ColumnDefinitions>
-        
-        <!-- top row -->
-        <StackPanel Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Background="#FF8DABE6" >
-            <CheckBox x:Name="enableCheckBox" Content="Enable Spawn Timers" FontSize="20" FontStyle="Italic" FontWeight="Bold" VerticalAlignment="Center" HorizontalAlignment="Center" Margin="10,10,10,10" VerticalContentAlignment="Center" />
+        Title="Spawn Timer Dialog" SizeToContent="WidthAndHeight" ResizeMode="NoResize">
+
+    <StackPanel Background="LightGray">
+
+        <!-- top row with enable checkbox -->
+        <StackPanel  Orientation="Horizontal" Margin="0">
+            <CheckBox x:Name="enableCheckBox" Content="Enable Spawn Timers" FontSize="20" FontStyle="Italic" FontWeight="Bold" VerticalContentAlignment="Center" Margin="50,10,10,10" />
         </StackPanel>
 
-        <!-- timer start panel -->
-        <StackPanel Grid.Row="1" Grid.Column="0" Background="#FFE1EADD" >
-            <TextBlock TextWrapping="Wrap" Text="Timer Start" Margin="10,5,0,0" FontSize="16"/>
-            <RadioButton x:Name="expMessageRadioButton" GroupName="TimerStart" Content="Exp Message" IsChecked="True" Margin="30,10,0,0" FontSize="14" VerticalContentAlignment="Center"/>
-            <StackPanel Orientation="Horizontal">
-                <RadioButton x:Name="slainRadioButton" GroupName="TimerStart" MinWidth="200" Content="You have slain ..." Margin="30,5,0,0" FontSize="14" VerticalContentAlignment="Center" />
-                <TextBox x:Name="slainTextBox" MinWidth="250" FontSize="14" Width="100" VerticalAlignment="Center" />
+        <!-- middle row -->
+        <StackPanel Orientation="Horizontal" Margin="0">
+
+            <!-- first column -->
+            <StackPanel Width="500" Margin="0" >
+
+                <!-- timer start -->
+                <StackPanel Margin="0" Height="140" Width="500">
+                    <TextBlock Text="Timer Start" Margin="10,5,0,0" FontSize="16"/>
+                    <RadioButton x:Name="aiRadioButton" GroupName="TimerStart" Content="PigParse AI" IsChecked="True" Margin="30,5,0,0" FontSize="14" VerticalContentAlignment="Center"/>
+                    <RadioButton x:Name="expMessageRadioButton" GroupName="TimerStart" Content="Exp Message" Margin="30,5,0,0" FontSize="14" VerticalContentAlignment="Center"/>
+                    <StackPanel Orientation="Horizontal">
+                        <RadioButton x:Name="slainRadioButton" GroupName="TimerStart" Width="200" Content="You have slain ..." Margin="30,5,0,0" FontSize="14" VerticalContentAlignment="Center" />
+                        <TextBox x:Name="slainTextBox" Width="250" FontSize="14" VerticalAlignment="Center" Margin="0,5,0,0" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <RadioButton x:Name="factionRadioButton" GroupName="TimerStart" Width="200" Content="Your faction standing with ..." Margin="30,5,0,0" FontSize="14" VerticalContentAlignment="Center"/>
+                        <TextBox x:Name="factionTextBox" Width="250" FontSize="14" VerticalAlignment="Center" Margin="0,5,0,0" />
+                    </StackPanel>
+                </StackPanel>
+
+                <!-- timer end -->
+                <StackPanel Height="208" Margin="0" Width="500">
+                    <TextBlock TextWrapping="Wrap" Text="Timer End" Margin="10,5,0,0" FontSize="16"/>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Remaining Time Warning" Margin="30,5,0,0" Width="200" VerticalAlignment="Center" FontSize="14" />
+                        <TextBox x:Name="warningTimeTextBox" FontSize="14" Width="100" Margin="0,5,0,0" VerticalAlignment="Center" Text="30" TextAlignment="Center" />
+                        <TextBlock Text="hh:mm:ss" Margin="10,5,0,0" VerticalAlignment="Center" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <CheckBox x:Name="textWarningCheckBox" Content="Text" FontSize="14" IsChecked="True" VerticalAlignment="Center" Margin="60,5,0,0" Width="170" VerticalContentAlignment="Center" />
+                        <TextBox x:Name="textWarningTextBox" MinWidth="250" FontSize="14" Width="100" Margin="0,5,0,0" VerticalAlignment="Center" Text="30 second warning" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <CheckBox x:Name="ttsWarningCheckBox" Content="Text to Speech" FontSize="14" IsChecked="True" VerticalAlignment="Center" Margin="60,5,0,0" Width="170" VerticalContentAlignment="Center" />
+                        <TextBox x:Name="ttsWarningTextBox" Width="250" FontSize="14" Margin="0,5,0,0" VerticalAlignment="Center" Text="30 second warning" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Timer Expired Notification" Margin="30,10,0,0" Width="200" VerticalAlignment="Center" FontSize="14" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <CheckBox x:Name="textEndingCheckBox" Content="Text" FontSize="14" IsChecked="True" VerticalAlignment="Center" Margin="60,5,0,0" Width="170" VerticalContentAlignment="Center" />
+                        <TextBox x:Name="textEndingTextBox" Width="250" FontSize="14" Margin="0,5,0,0" VerticalAlignment="Center" Text="Pop" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <CheckBox x:Name="ttsEndingCheckBox" Content="Text to Speech" FontSize="14" IsChecked="True" VerticalAlignment="Center" Margin="60,5,0,0" Width="170" VerticalContentAlignment="Center" />
+                        <TextBox x:Name="ttsEndingTextBox" FontSize="14" Width="250" Margin="0,5,0,0" VerticalAlignment="Center" Text="Pop" />
+                    </StackPanel>
+                </StackPanel>
+
+                <!-- counter reset -->
+                <StackPanel Orientation="Horizontal" Height="48" Margin="0" Width="500">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock TextWrapping="Wrap" Text="Counter Reset Time" Margin="10,5,0,0" Width="220" FontSize="16" VerticalAlignment="Center"/>
+                        <TextBox x:Name="resetTextBox" FontSize="14" Width="100" Margin="0,5,0,0" VerticalAlignment="Center" Text="1:00:00" TextAlignment="Center" />
+                        <TextBlock Text="hh:mm:ss" Margin="10,5,0,0" VerticalAlignment="Center" />
+                    </StackPanel>
+                </StackPanel>
             </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <RadioButton x:Name="factionRadioButton" GroupName="TimerStart" MinWidth="200" Content="Your faction standing with ..." Margin="30,5,0,0" FontSize="14" VerticalContentAlignment="Center"/>
-                <TextBox x:Name="factionTextBox" MinWidth="250" FontSize="14" VerticalAlignment="Center" />
+
+            <!-- second column -->
+            <StackPanel Width="500" Margin="0">
+
+                <!-- timer duration -->
+                <StackPanel  Height="184" Margin="0">
+                    <TextBlock TextWrapping="Wrap" Text="Timer Duration" Margin="10,5,0,0" FontSize="16"/>
+                    <RadioButton x:Name="duration0600RadioButton" GroupName="TimerDuration" Content="06:00" Margin="30,5,0,0" FontSize="14" VerticalContentAlignment="Center"/>
+                    <RadioButton x:Name="duration0640RadioButton" GroupName="TimerDuration" Content="06:40" Margin="30,5,0,0" FontSize="14" VerticalContentAlignment="Center"/>
+                    <RadioButton x:Name="duration1430RadioButton" GroupName="TimerDuration" Content="14:30" Margin="30,5,0,0" FontSize="14" VerticalContentAlignment="Center"/>
+                    <RadioButton x:Name="duration2200RadioButton" GroupName="TimerDuration" Content="22:00" Margin="30,5,0,0" FontSize="14" VerticalContentAlignment="Center"/>
+                    <RadioButton x:Name="duration2800RadioButton" GroupName="TimerDuration" Content="28:00" Margin="30,5,0,0" FontSize="14" VerticalContentAlignment="Center"/>
+                    <StackPanel Orientation="Horizontal">
+                        <RadioButton x:Name="customRadioButton" GroupName="TimerDuration" Width="80" Content="Custom" IsChecked="True" Margin="30,5,0,0" FontSize="14" VerticalContentAlignment="Center"/>
+                        <TextBox x:Name="durationTextBox" Width="100" FontSize="14" Margin="10,5,0,0" VerticalAlignment="Center" Text="30:00" TextAlignment="Center" />
+                        <TextBlock Text="hh:mm:ss" Margin="10,5,0,0" VerticalAlignment="Center" />
+                    </StackPanel>
+                </StackPanel>
+
+                <!-- comments -->
+                <StackPanel Height="233"  Margin="0">
+                    <TextBlock TextWrapping="Wrap" Text="Notes / Comments" Margin="10,5,0,0" FontSize="16"/>
+                    <RichTextBox x:Name="notesRiohTextBox" Margin="30,5,0,0" Width="440" HorizontalAlignment="Left" FontSize="14" Height="175" />
+                </StackPanel>
             </StackPanel>
         </StackPanel>
 
-        <!-- timer end panel -->
-        <StackPanel Grid.Row="2" Grid.Column="0" Grid.RowSpan="2" Background="#FFA05A5A">
-            <TextBlock TextWrapping="Wrap" Text="Timer End" Margin="10,5,0,0" FontSize="16"/>
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Remaining Time Warning" Margin="30,10,0,0" MinWidth="200" VerticalAlignment="Center" FontSize="14" />
-                <TextBox x:Name="warningTimeTextBox" MinWidth="100" FontSize="14" Width="100" Margin="0,10,0,0" VerticalAlignment="Center" Text="30" TextAlignment="Center" />
-                <TextBlock Text="hh:mm:ss" Margin="10,10,0,0" VerticalAlignment="Center" />
-            </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <CheckBox x:Name="textWarningCheckBox" Content="Text" FontSize="14" IsChecked="True" VerticalAlignment="Center" Margin="60,5,0,0" MinWidth="170" VerticalContentAlignment="Center" />
-                <TextBox x:Name="textWarningTextBox" MinWidth="250" FontSize="14" Width="100" Margin="0,5,0,0" VerticalAlignment="Center" Text="30 second warning" />
-            </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <CheckBox x:Name="ttsWarningCheckBox" Content="Text to Speech" FontSize="14" IsChecked="True" VerticalAlignment="Center" Margin="60,5,0,0" MinWidth="170" VerticalContentAlignment="Center" />
-                <TextBox x:Name="ttsWarningTextBox" MinWidth="250" FontSize="14" Width="100" Margin="0,5,0,0" VerticalAlignment="Center" Text="30 second warning" />
-            </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <TextBlock Text="Timer Expired Notification" Margin="30,10,0,0" MinWidth="200" VerticalAlignment="Center" FontSize="14" />
-            </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <CheckBox x:Name="textEndingCheckBox" Content="Text" FontSize="14" IsChecked="True" VerticalAlignment="Center" Margin="60,5,0,0" MinWidth="170" VerticalContentAlignment="Center" />
-                <TextBox x:Name="textEndingTextBox" MinWidth="250" FontSize="14" Width="100" Margin="0,5,0,0" VerticalAlignment="Center" Text="Pop" />
-            </StackPanel>
-            <StackPanel Orientation="Horizontal">
-                <CheckBox x:Name="ttsEndingCheckBox" Content="Text to Speech" FontSize="14" IsChecked="True" VerticalAlignment="Center" Margin="60,5,0,0" MinWidth="170" VerticalContentAlignment="Center" />
-                <TextBox x:Name="ttsEndingTextBox" MinWidth="250" FontSize="14" Width="100" Margin="0,5,0,0" VerticalAlignment="Center" Text="Pop" />
-            </StackPanel>
-        </StackPanel>   
-
-        <!-- timer duration panel -->
-        <StackPanel Grid.Row="1" Grid.Column="1" Grid.RowSpan="2" Background="#FFC884B9" >
-            <TextBlock TextWrapping="Wrap" Text="Timer Duration" Margin="10,5,0,0" FontSize="16"/>
-            <RadioButton x:Name="duration0600RadioButton" GroupName="TimerDuration" Content="06:00" Margin="30,10,0,0" FontSize="14" VerticalContentAlignment="Center"/>
-            <RadioButton x:Name="duration0640RadioButton" GroupName="TimerDuration" Content="06:40" Margin="30,10,0,0" FontSize="14" VerticalContentAlignment="Center"/>
-            <RadioButton x:Name="duration1430RadioButton" GroupName="TimerDuration" Content="14:30" Margin="30,10,0,0" FontSize="14" VerticalContentAlignment="Center"/>
-            <RadioButton x:Name="duration2200RadioButton" GroupName="TimerDuration" Content="22:00" Margin="30,10,0,0" FontSize="14" VerticalContentAlignment="Center"/>
-            <RadioButton x:Name="duration2800RadioButton" GroupName="TimerDuration" Content="28:00" Margin="30,10,0,0" FontSize="14" VerticalContentAlignment="Center"/>
-            <StackPanel Orientation="Horizontal">
-                <RadioButton x:Name="customRadioButton" GroupName="TimerDuration" MinWidth="80" Content="Custom" IsChecked="True" Margin="30,10,0,0" FontSize="14" VerticalContentAlignment="Center"/>
-                <TextBox x:Name="durationTextBox" MinWidth="100" FontSize="14" Width="100" Margin="10,10,0,0" VerticalAlignment="Center" Text="30:00" TextAlignment="Center" />
-                <TextBlock Text="hh:mm:ss" Margin="10,10,0,0" VerticalAlignment="Center" /> 
-            </StackPanel>
+        <!-- bottom row -->
+        <StackPanel Orientation="Horizontal" Height="100" Margin="0">
+            <Button x:Name="okButton" Content="Ok" IsDefault="True" FontSize="16" Width="100" Height="40" Margin="650,0,17,0"/>
+            <Button x:Name="cancelButton" Content="Cancel" FontSize="16" Width="100" Height="40" Margin="40,0,-0.1,0"/>
         </StackPanel>
 
-        <!-- counter reset panel -->
-        <StackPanel Grid.Row="4" Grid.Column="0" Background="#FF7DA08D">
-            <StackPanel Orientation="Horizontal">
-                <TextBlock TextWrapping="Wrap" Text="Counter Reset Time" Margin="10,5,0,0" MinWidth="220" FontSize="16" VerticalAlignment="Center"/>
-                <TextBox x:Name="resetTextBox" MinWidth="100" FontSize="14" Width="100" Margin="0,5,0,0" VerticalAlignment="Center" Text="1:00:00" TextAlignment="Center" />
-                <TextBlock Text="hh:mm:ss" Margin="10,10,0,0" VerticalAlignment="Center" />
-            </StackPanel>
-        </StackPanel>
-
-        <!-- comments and notes panel -->
-        <StackPanel Grid.Row="3" Grid.Column="1" Grid.RowSpan="2" Background="#FF846F6F">
-            <TextBlock TextWrapping="Wrap" Text="Notes / Comments" Margin="10,5,0,0" FontSize="16"/>
-            <RichTextBox x:Name="notesRiohTextBox" Margin="30,5,0,0" Width="350" HorizontalAlignment="Left" FontSize="14" Height="150" />
-        </StackPanel>
-
-        <!-- ok/cancel panel -->
-        <StackPanel Grid.Row="5" Grid.Column="0" Grid.ColumnSpan="2" Background="#FF968555" >
-        </StackPanel>
-
-
-
-    </Grid>
-
+    </StackPanel>
 
 </Window>
