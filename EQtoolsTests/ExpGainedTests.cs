@@ -1,18 +1,7 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-
-using Autofac;
-using EQTool.Models;
+﻿using Autofac;
 using EQTool.Services.Parsing;
-using EQTool.ViewModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using System.Linq;
 
 
 namespace EQtoolsTests

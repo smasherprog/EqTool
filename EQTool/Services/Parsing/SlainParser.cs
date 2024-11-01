@@ -10,6 +10,7 @@ namespace EQTool.Services.Parsing
         private const string slainByPattern = @"^(?<victim>[\w` ]+) (has|have) been slain by (?<killer>[\w` ]+)";
         private const string slainPattern = @"^You have slain (?<victim>[\w` ]+)";
         private const string diedPattern = @"^(?<victim>[\w` ]+) died\.$";
+        private const string eyeOf = "Eye of";
 
         private readonly Regex diedRegex = new Regex(diedPattern, RegexOptions.Compiled);
         private readonly Regex slainRegex = new Regex(slainPattern, RegexOptions.Compiled);
@@ -42,14 +43,17 @@ namespace EQTool.Services.Parsing
             var match = slainByRegex.Match(line);
             if (match.Success)
             {
-                return new SlainEvent
-                {
-                    Killer = match.Groups["killer"].Value,
-                    TimeStamp = timestamp,
-                    LineCounter = lineCounter,
-                    Line = line,
-                    Victim = match.Groups["victim"].Value
-                };
+                var victim = match.Groups["victim"].Value;
+                return victim.StartsWith(eyeOf)
+                    ? null
+                    : new SlainEvent
+                    {
+                        Killer = match.Groups["killer"].Value,
+                        TimeStamp = timestamp,
+                        LineCounter = lineCounter,
+                        Line = line,
+                        Victim = victim
+                    };
             }
 
             //[Mon Sep 16 14:21:24 2024] You have slain a Tesch Mas Gnoll!
@@ -57,14 +61,17 @@ namespace EQTool.Services.Parsing
             match = slainRegex.Match(line);
             if (match.Success)
             {
-                return new SlainEvent
-                {
-                    Killer = "You",
-                    TimeStamp = timestamp,
-                    LineCounter = lineCounter,
-                    Line = line,
-                    Victim = match.Groups["victim"].Value
-                };
+                var victim = match.Groups["victim"].Value;
+                return victim.StartsWith(eyeOf)
+                    ? null
+                    : new SlainEvent
+                    {
+                        Killer = "You",
+                        TimeStamp = timestamp,
+                        LineCounter = lineCounter,
+                        Line = line,
+                        Victim = victim
+                    };
             }
 
             //[Sat Jan 16 20:12:37 2021] a bile golem died.

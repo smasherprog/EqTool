@@ -343,7 +343,6 @@
     <Compile Include="Services\Parsing\ExpGainedParser.cs" />
     <Compile Include="Services\Handlers\SlainHandler.cs" />
     <Compile Include="Services\Parsing\LineParser.cs" />
-    <Compile Include="Services\Parsing\ExperienceGainedParser.cs" />
     <Compile Include="Services\Parsing\FactionParser.cs" />
     <Compile Include="Services\WindowFactory.cs" />
     <Compile Include="Services\Handlers\YouZonedHandler.cs" />
