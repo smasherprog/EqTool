@@ -216,12 +216,6 @@ namespace EQTool.Services
             FactionEvent?.Invoke(this, e);
         }
 
-        public event EventHandler<ExperienceGainedEvent> ExperienceGainedEvent;
-        public void Handle(ExperienceGainedEvent e)
-        {
-            ExperienceGainedEvent?.Invoke(this, e);
-        }
-
         public event EventHandler<LineEvent> LineEvent;
         public void Handle(LineEvent e)
         {

@@ -1,6 +1,7 @@
 ﻿using EQTool.Models;
 using EQTool.ViewModels;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace EQTool.Services.Handlers
 {
@@ -18,7 +19,7 @@ namespace EQTool.Services.Handlers
 #if DEBUG || TEST
             this.logEvents.SlainEvent += LogEvents_SlainEvent;
             this.logEvents.FactionEvent += LogEvents_FactionEvent;
-            this.logEvents.ExperienceGainedEvent += LogEvents_ExperienceGainedEvent;
+            this.logEvents.ExpGainedEvent += LogEvents_ExperienceGainedEvent;
             this.logEvents.PayerChangedEvent += LogEvents_PayerChangedEvent;
             this.logEvents.LineEvent += LogEvents_LineEvent;
 #endif
@@ -42,32 +43,51 @@ namespace EQTool.Services.Handlers
             ExpMessage = AlreadyEmitted = false;
         }
 
-        private void LogEvents_ExperienceGainedEvent(object sender, ExperienceGainedEvent e)
+        private void LogEvents_ExperienceGainedEvent(object sender, ExpGainedEvent e)
         {
+            Victim = "Experience Slain Guess";
+            Killer = "You";
+            if (this.ExpMessage)
+            {
+                logEvents.Handle(new NewSlainEvent
+                {
+                    Killer = Killer,
+                    Victim = Victim,
+                    Line = e.Line,
+                    LineCounter = e.LineCounter,
+                    TimeStamp = e.TimeStamp,
+                });
+                Reset();
+                this.AlreadyEmitted = true;
+            }
+            Victim = "Experience Slain Guess";
+            Killer = "You";
             LineNumber = e.LineCounter;
             ExpMessage = true;
-            if (string.IsNullOrWhiteSpace(Victim))
-            {
-                Victim = "Experience Slain Guess";
-            }
-            if (string.IsNullOrWhiteSpace(Killer))
-            {
-                Killer = "You";
-            }
         }
 
         private void LogEvents_FactionEvent(object sender, FactionEvent e)
         {
             LineNumber = e.LineCounter;
-            if (string.IsNullOrWhiteSpace(Victim))
+            Victim = "Faction Slain Guess";
+            Killer = "You";
+
+            if (FactionMessages.Contains(e.Line))
             {
-                Victim = "Faction Slain Guess";
+                logEvents.Handle(new NewSlainEvent
+                {
+                    Killer = Killer,
+                    Victim = Victim,
+                    Line = e.Line,
+                    LineCounter = e.LineCounter,
+                    TimeStamp = e.TimeStamp,
+                });
+                Reset();
             }
-            if (string.IsNullOrWhiteSpace(Killer))
+            else
             {
-                Killer = "You";
+                FactionMessages.Add(e.Line);
             }
-            FactionMessages.Add(e.Line);
         }
 
         private void EmitSlainEvent(BaseLogParseEvent e)
@@ -82,18 +102,18 @@ namespace EQTool.Services.Handlers
                 {
                     LineNumber = e.LineCounter;
                 }
-            }
-            else if (!AlreadyEmitted && !string.IsNullOrWhiteSpace(Victim))
-            {
-                logEvents.Handle(new NewSlainEvent
+                else if (this.ExpMessage || this.FactionMessages.Any())
                 {
-                    Killer = Killer,
-                    Victim = Victim,
-                    Line = e.Line,
-                    LineCounter = e.LineCounter,
-                    TimeStamp = e.TimeStamp,
-                });
-                Reset();
+                    logEvents.Handle(new NewSlainEvent
+                    {
+                        Killer = Killer,
+                        Victim = Victim,
+                        Line = e.Line,
+                        LineCounter = e.LineCounter,
+                        TimeStamp = e.TimeStamp,
+                    });
+                    Reset();
+                }
             }
         }
 

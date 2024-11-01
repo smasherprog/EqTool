@@ -227,9 +227,6 @@ namespace EQTool.Models
         public string ShortName { get; set; }
     }
 
-    public class ExperienceGainedEvent : BaseLogParseEvent
-    {
-    }
     public class LineEvent : BaseLogParseEvent
     {
     }

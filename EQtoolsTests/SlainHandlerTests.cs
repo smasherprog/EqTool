@@ -98,7 +98,7 @@ namespace EQtoolsTests
             logParser.Push("Your faction standing with Kromrif got worse.", DateTime.Now);
             logParser.Push("Your faction standing with Kromzek got worse.", DateTime.Now);
             logParser.Push("Lilrez begins to cast a spell.", DateTime.Now);
-            //   Assert.AreEqual(CalledCounter, 1);
+            Assert.AreEqual(CalledCounter, 1);
         }
 
         [TestMethod]
@@ -138,27 +138,15 @@ namespace EQtoolsTests
         {
             logEvents.NewSlainEvent += (a, e) =>
             {
+                Assert.AreEqual(e.Victim, "Marantula");
+                Assert.AreEqual(e.Killer, "an ancient wyvern");
                 CalledCounter++;
             };
 
             logParser.Push("An ancient wyvern hits Marantula for 196 points of damage.", DateTime.Now);
             logParser.Push("Marantula has been slain by an ancient wyvern!", DateTime.Now);
             logParser.Push("Your Location is -388.49, -751.23, 43.72", DateTime.Now);
-            //Assert.AreEqual(CalledCounter, 1);
-        }
-
-        [TestMethod]
-        public void Slain4()
-        {
-            logEvents.NewSlainEvent += (a, e) =>
-            {
-                CalledCounter++;
-            };
-
-            logParser.Push("An ancient wyvern hits Marantula for 196 points of damage.", DateTime.Now);
-            logParser.Push("Marantula has been slain by an ancient wyvern!", DateTime.Now);
-            logParser.Push("Your Location is -388.49, -751.23, 43.72", DateTime.Now);
-            //  Assert.AreEqual(CalledCounter, 1);
+            Assert.AreEqual(CalledCounter, 1);
         }
 
         [TestMethod]
@@ -166,21 +154,32 @@ namespace EQtoolsTests
         {
             logEvents.NewSlainEvent += (a, e) =>
             {
+                if (e.Victim == "Marantula")
+                {
+                    Assert.AreEqual(e.Victim, "Marantula");
+                    Assert.AreEqual(e.Killer, "an ancient wyvern");
+                }
+                else
+                {
+                    Assert.AreEqual(e.Victim, "Gluwen");
+                    Assert.AreEqual(e.Killer, "an ancient wyvern");
+                }
                 CalledCounter++;
             };
 
             logParser.Push("An ancient wyvern hits Marantula for 196 points of damage.", DateTime.Now);
             logParser.Push("Marantula has been slain by an ancient wyvern!", DateTime.Now);
             logParser.Push("Gluwen has been slain by an ancient wyvern!", DateTime.Now);
-            //    Assert.AreEqual(CalledCounter, 1);
+            Assert.AreEqual(CalledCounter, 2);
         }
-
 
         [TestMethod]
         public void Slain6()
         {
             logEvents.NewSlainEvent += (a, e) =>
             {
+                Assert.AreEqual(e.Victim, "Faction Slain Guess");
+                Assert.AreEqual(e.Killer, "You");
                 CalledCounter++;
             };
 
@@ -189,7 +188,7 @@ namespace EQtoolsTests
             logParser.Push("Your faction standing with Kromrif got worse.", DateTime.Now);
             logParser.Push("Your faction standing with Kromzek got worse.", DateTime.Now);
             logParser.Push("Lilrez begins to cast a spell.", DateTime.Now);
-            //Assert.AreEqual(CalledCounter, 1);
+            Assert.AreEqual(CalledCounter, 1);
         }
 
         [TestMethod]
@@ -197,6 +196,16 @@ namespace EQtoolsTests
         {
             logEvents.NewSlainEvent += (a, e) =>
             {
+                if (e.Victim == "Marantula")
+                {
+                    Assert.AreEqual(e.Victim, "Marantula");
+                    Assert.AreEqual(e.Killer, "an ancient wyvern");
+                }
+                else
+                {
+                    Assert.AreEqual(e.Victim, "Faction Slain Guess");
+                    Assert.AreEqual(e.Killer, "You");
+                }
                 CalledCounter++;
             };
             logParser.Push("Jaerlin pierces a Drakkel Dire Wolf for 42 points of damage.", DateTime.Now);
@@ -205,7 +214,9 @@ namespace EQtoolsTests
             logParser.Push("Your faction standing with Kromrif got worse.", DateTime.Now);
             logParser.Push("Your faction standing with Kromzek got worse.", DateTime.Now);
             logParser.Push("Lilrez begins to cast a spell.", DateTime.Now);
-            // Assert.AreEqual(CalledCounter, 1);
+            logParser.Push("An ancient wyvern hits Marantula for 196 points of damage.", DateTime.Now);
+            logParser.Push("Marantula has been slain by an ancient wyvern!", DateTime.Now);
+            Assert.AreEqual(CalledCounter, 2);
         }
 
         [TestMethod]
@@ -228,7 +239,8 @@ namespace EQtoolsTests
             logParser.Push("Your faction standing with Coldain got better.", DateTime.Now);
             logParser.Push("Your faction standing with Kromrif got worse.", DateTime.Now);
             logParser.Push("Your faction standing with Kromzek got worse.", DateTime.Now);
-            //Assert.AreEqual(CalledCounter, 3);
+            logParser.Push("Jaerlin pierces a Drakkel Dire Wolf for 42 points of damage.", DateTime.Now);
+            Assert.AreEqual(CalledCounter, 3);
         }
 
         [TestMethod]
@@ -253,7 +265,36 @@ namespace EQtoolsTests
             logParser.Push("Your faction standing with Coldain got better.", DateTime.Now);
             logParser.Push("Your faction standing with Kromrif got worse.", DateTime.Now);
             logParser.Push("Your faction standing with Kromzek got worse.", DateTime.Now);
-            //Assert.AreEqual(CalledCounter, 3);
+            logParser.Push("Jaerlin pierces a Drakkel Dire Wolf for 42 points of damage.", DateTime.Now);
+            Assert.AreEqual(CalledCounter, 5);
         }
+
+        [TestMethod]
+        public void MultipleExpMessages()
+        {
+            var expkillcount = 0;
+            logEvents.NewSlainEvent += (a, e) =>
+            {
+                if (e.Victim == "a frost giant scout")
+                {
+                    CalledCounter++;
+                }
+                else
+                {
+                    Assert.AreEqual(e.Victim, "Experience Slain Guess");
+                    Assert.AreEqual(e.Killer, "You");
+                    expkillcount++;
+                }
+            };
+            logParser.Push("You have slain a frost giant scout!", DateTime.Now);
+            logParser.Push("You gain experience!!", DateTime.Now);
+            logParser.Push("You gain experience!!", DateTime.Now);
+            logParser.Push("You gain experience!!", DateTime.Now);
+            logParser.Push("Jaerlin pierces a Drakkel Dire Wolf for 42 points of damage.", DateTime.Now);
+
+            Assert.AreEqual(expkillcount, 2);
+            Assert.AreEqual(CalledCounter, 1);
+        }
+
     }
 }
