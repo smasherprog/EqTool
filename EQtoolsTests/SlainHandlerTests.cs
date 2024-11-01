@@ -86,6 +86,22 @@ namespace EQtoolsTests
         }
 
         [TestMethod]
+        public void Slain0()
+        {
+            logEvents.NewSlainEvent += (a, e) =>
+            {
+                CalledCounter++;
+            };
+
+            logParser.Push("Your faction standing with ClawsofVeeshan got better.", DateTime.Now);
+            logParser.Push("Your faction standing with Coldain got better.", DateTime.Now);
+            logParser.Push("Your faction standing with Kromrif got worse.", DateTime.Now);
+            logParser.Push("Your faction standing with Kromzek got worse.", DateTime.Now);
+            logParser.Push("Lilrez begins to cast a spell.", DateTime.Now);
+            //   Assert.AreEqual(CalledCounter, 1);
+        }
+
+        [TestMethod]
         public void Slain1()
         {
             logEvents.NewSlainEvent += (a, e) =>
@@ -115,6 +131,129 @@ namespace EQtoolsTests
             logParser.Push("Robobard has been slain by Sontalak!", DateTime.Now);
             logParser.Push("Sontalak says 'Ack!  I must be careful not to step on that body, it tastes much better when it is still crunchy, not pulped!'", DateTime.Now);
             Assert.AreEqual(CalledCounter, 1);
+        }
+
+        [TestMethod]
+        public void Slain3()
+        {
+            logEvents.NewSlainEvent += (a, e) =>
+            {
+                CalledCounter++;
+            };
+
+            logParser.Push("An ancient wyvern hits Marantula for 196 points of damage.", DateTime.Now);
+            logParser.Push("Marantula has been slain by an ancient wyvern!", DateTime.Now);
+            logParser.Push("Your Location is -388.49, -751.23, 43.72", DateTime.Now);
+            //Assert.AreEqual(CalledCounter, 1);
+        }
+
+        [TestMethod]
+        public void Slain4()
+        {
+            logEvents.NewSlainEvent += (a, e) =>
+            {
+                CalledCounter++;
+            };
+
+            logParser.Push("An ancient wyvern hits Marantula for 196 points of damage.", DateTime.Now);
+            logParser.Push("Marantula has been slain by an ancient wyvern!", DateTime.Now);
+            logParser.Push("Your Location is -388.49, -751.23, 43.72", DateTime.Now);
+            //  Assert.AreEqual(CalledCounter, 1);
+        }
+
+        [TestMethod]
+        public void Slain5()
+        {
+            logEvents.NewSlainEvent += (a, e) =>
+            {
+                CalledCounter++;
+            };
+
+            logParser.Push("An ancient wyvern hits Marantula for 196 points of damage.", DateTime.Now);
+            logParser.Push("Marantula has been slain by an ancient wyvern!", DateTime.Now);
+            logParser.Push("Gluwen has been slain by an ancient wyvern!", DateTime.Now);
+            //    Assert.AreEqual(CalledCounter, 1);
+        }
+
+
+        [TestMethod]
+        public void Slain6()
+        {
+            logEvents.NewSlainEvent += (a, e) =>
+            {
+                CalledCounter++;
+            };
+
+            logParser.Push("Your faction standing with ClawsofVeeshan got better.", DateTime.Now);
+            logParser.Push("Your faction standing with Coldain got better.", DateTime.Now);
+            logParser.Push("Your faction standing with Kromrif got worse.", DateTime.Now);
+            logParser.Push("Your faction standing with Kromzek got worse.", DateTime.Now);
+            logParser.Push("Lilrez begins to cast a spell.", DateTime.Now);
+            //Assert.AreEqual(CalledCounter, 1);
+        }
+
+        [TestMethod]
+        public void Slain7()
+        {
+            logEvents.NewSlainEvent += (a, e) =>
+            {
+                CalledCounter++;
+            };
+            logParser.Push("Jaerlin pierces a Drakkel Dire Wolf for 42 points of damage.", DateTime.Now);
+            logParser.Push("Your faction standing with ClawsofVeeshan got better.", DateTime.Now);
+            logParser.Push("Your faction standing with Coldain got better.", DateTime.Now);
+            logParser.Push("Your faction standing with Kromrif got worse.", DateTime.Now);
+            logParser.Push("Your faction standing with Kromzek got worse.", DateTime.Now);
+            logParser.Push("Lilrez begins to cast a spell.", DateTime.Now);
+            // Assert.AreEqual(CalledCounter, 1);
+        }
+
+        [TestMethod]
+        public void Slain8()
+        {
+            logEvents.NewSlainEvent += (a, e) =>
+            {
+                CalledCounter++;
+            };
+            logParser.Push("Jaerlin pierces a Drakkel Dire Wolf for 42 points of damage.", DateTime.Now);
+            logParser.Push("Your faction standing with ClawsofVeeshan got better.", DateTime.Now);
+            logParser.Push("Your faction standing with Coldain got better.", DateTime.Now);
+            logParser.Push("Your faction standing with Kromrif got worse.", DateTime.Now);
+            logParser.Push("Your faction standing with Kromzek got worse.", DateTime.Now);
+            logParser.Push("Your faction standing with ClawsofVeeshan got better.", DateTime.Now);
+            logParser.Push("Your faction standing with Coldain got better.", DateTime.Now);
+            logParser.Push("Your faction standing with Kromrif got worse.", DateTime.Now);
+            logParser.Push("Your faction standing with Kromzek got worse.", DateTime.Now);
+            logParser.Push("Your faction standing with ClawsofVeeshan got better.", DateTime.Now);
+            logParser.Push("Your faction standing with Coldain got better.", DateTime.Now);
+            logParser.Push("Your faction standing with Kromrif got worse.", DateTime.Now);
+            logParser.Push("Your faction standing with Kromzek got worse.", DateTime.Now);
+            //Assert.AreEqual(CalledCounter, 3);
+        }
+
+        [TestMethod]
+        public void Slain9()
+        {
+            logEvents.NewSlainEvent += (a, e) =>
+            {
+                CalledCounter++;
+            };
+            logParser.Push("Jaerlin pierces a Drakkel Dire Wolf for 42 points of damage.", DateTime.Now);
+            logParser.Push("Your faction standing with ClawsofVeeshan got better.", DateTime.Now);
+            logParser.Push("Your faction standing with Coldain got better.", DateTime.Now);
+            logParser.Push("Your faction standing with Kromrif got worse.", DateTime.Now);
+            logParser.Push("Your faction standing with Kromzek got worse.", DateTime.Now);
+            logParser.Push("Your faction standing with ClawsofVeeshan got better.", DateTime.Now);
+            logParser.Push("Your faction standing with Coldain got better.", DateTime.Now);
+            logParser.Push("Your faction standing with Kromrif got worse.", DateTime.Now);
+            logParser.Push("Your faction standing with Kromzek got worse.", DateTime.Now);
+            logParser.Push("Marantula has been slain by an ancient wyvern!", DateTime.Now);
+            logParser.Push("Gluwen has been slain by an ancient wyvern!", DateTime.Now);
+            logParser.Push("Your faction standing with ClawsofVeeshan got better.", DateTime.Now);
+            logParser.Push("Your faction standing with Coldain got better.", DateTime.Now);
+            logParser.Push("Your faction standing with Kromrif got worse.", DateTime.Now);
+            logParser.Push("Your faction standing with Kromzek got worse.", DateTime.Now);
+            //Assert.AreEqual(CalledCounter, 3);
         }
     }
 }

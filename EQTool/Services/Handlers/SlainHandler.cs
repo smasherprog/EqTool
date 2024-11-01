@@ -93,6 +93,7 @@ namespace EQTool.Services.Handlers
                     LineCounter = e.LineCounter,
                     TimeStamp = e.TimeStamp,
                 });
+                Reset();
             }
         }
 
