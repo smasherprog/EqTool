@@ -14,5 +14,10 @@ namespace EQTool.UI
             this.DataContext = ViewModel = viewmodel;
             InitializeComponent();
         }
+         
+        private void DoSomething_DontTryTopassData_ItShouldBeInTheeViewModelAllready(object sender, RoutedEventArgs e)
+        {
+            this.ViewModel.DoSomething_DontTryTopassData_ItShouldBeInTheeViewModelAllready();
+        }
     }
 }

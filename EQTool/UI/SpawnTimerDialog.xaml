@@ -103,7 +103,7 @@
         <!-- bottom row -->
         <StackPanel Orientation="Horizontal" Height="100" Margin="0">
             <Button x:Name="okButton" Content="Ok" IsDefault="True" FontSize="16" Width="100" Height="40" Margin="650,0,17,0"/>
-            <Button x:Name="cancelButton" Content="Cancel" FontSize="16" Width="100" Height="40" Margin="40,0,-0.1,0"/>
+            <Button x:Name="cancelButton" Content="Cancel" FontSize="16" Width="100" Height="40" Margin="40,0,-0.1,0" Click="DoSomething_DontTryTopassData_ItShouldBeInTheeViewModelAllready"/>
         </StackPanel>
 
     </StackPanel>
