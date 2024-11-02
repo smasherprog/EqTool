@@ -220,7 +220,7 @@ namespace EQtoolsTests
         }
 
         [TestMethod]
-        public void Slain8()
+        public void MultipleFactionMessages()
         {
             logEvents.NewSlainEvent += (a, e) =>
             {
@@ -296,5 +296,62 @@ namespace EQtoolsTests
             Assert.AreEqual(CalledCounter, 1);
         }
 
+
+        [TestMethod]
+        public void MultipleSlainMessages()
+        {
+            logEvents.NewSlainEvent += (a, e) =>
+            {
+                CalledCounter++;
+            };
+
+            logParser.Push("You have slain a frost giant scout!", DateTime.Now);
+            logParser.Push("You have slain a frost giant scout!", DateTime.Now);
+            logParser.Push("You have slain a frost giant scout!", DateTime.Now);
+
+            Assert.AreEqual(CalledCounter, 3);
+        }
+
+
+        [TestMethod]
+        public void MultipleFactionMessagesDifferent ()
+        {
+            logEvents.NewSlainEvent += (a, e) =>
+            {
+                CalledCounter++;
+            };
+            logParser.Push("Jaerlin pierces a Drakkel Dire Wolf for 42 points of damage.", DateTime.Now);
+            logParser.Push("Your faction standing with ClawsofVeeshan got better.", DateTime.Now);
+            logParser.Push("Your faction standing with Coldain got better.", DateTime.Now);
+            logParser.Push("Your faction standing with Kromrif got worse.", DateTime.Now);
+            logParser.Push("Your faction standing with Kromzek got worse.", DateTime.Now);
+            logParser.Push("Your faction standing with ClawsofVeeshan got better.", DateTime.Now);
+            logParser.Push("Your faction standing with Coldain got better.", DateTime.Now);
+            logParser.Push("Your faction standing with Kromrif got worse.", DateTime.Now);
+            logParser.Push("Your faction standing with Kromzek got worse.", DateTime.Now);
+            logParser.Push("Your faction standing with Knight got better.", DateTime.Now);
+            logParser.Push("Your faction standing with Doesntmatter got better.", DateTime.Now);
+            logParser.Push("Your faction standing with Kromrif got worse.", DateTime.Now);
+            logParser.Push("Your faction standing with Kromzek got worse.", DateTime.Now);
+            logParser.Push("Jaerlin pierces a Drakkel Dire Wolf for 42 points of damage.", DateTime.Now);
+            Assert.AreEqual(CalledCounter, 3);
+        }
+
+
+        [TestMethod]
+        public void IgnoreQuestTurnins()
+        {
+            logEvents.NewSlainEvent += (a, e) =>
+            {
+                CalledCounter++;
+            };
+            logParser.Push("Jaerlin pierces a Drakkel Dire Wolf for 42 points of damage.", DateTime.Now);
+            logParser.Push("Your faction standing with ClawsofVeeshan got better.", DateTime.Now);
+            logParser.Push("Your faction standing with Coldain got better.", DateTime.Now);
+            logParser.Push("Your faction standing with Kromrif got worse.", DateTime.Now);
+            logParser.Push("You gain experience!!", DateTime.Now);
+            logParser.Push("Captain Ashlan says, 'Great work! Maybe you can help us out again sometime?'", DateTime.Now);
+            Assert.AreEqual(CalledCounter, 0);
+        }
     }
 }

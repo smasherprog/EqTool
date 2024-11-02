@@ -1,5 +1,6 @@
 ﻿using EQTool.Models;
 using EQTool.ViewModels;
+using EQToolShared;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -22,7 +23,16 @@ namespace EQTool.Services.Handlers
             this.logEvents.ExpGainedEvent += LogEvents_ExperienceGainedEvent;
             this.logEvents.PayerChangedEvent += LogEvents_PayerChangedEvent;
             this.logEvents.LineEvent += LogEvents_LineEvent;
+            this.logEvents.CommsEvent += LogEvents_CommsEvent;
 #endif
+        }
+
+        private void LogEvents_CommsEvent(object sender, CommsEvent e)
+        {
+            if(e.TheChannel == CommsEvent.Channel.SAY && MasterNPCList.NPCs.Contains(e.Sender))
+            {
+                Reset();
+            }
         }
 
         private void LogEvents_LineEvent(object sender, LineEvent e)
@@ -72,7 +82,7 @@ namespace EQTool.Services.Handlers
             Victim = "Faction Slain Guess";
             Killer = "You";
 
-            if (FactionMessages.Contains(e.Line))
+            if ((FactionMessages.Any() && FactionMessages[0] == e.Line) || FactionMessages.Count == 5)
             {
                 logEvents.Handle(new NewSlainEvent
                 {
@@ -84,10 +94,11 @@ namespace EQTool.Services.Handlers
                 });
                 Reset();
             }
-            else
-            {
-                FactionMessages.Add(e.Line);
-            }
+            LineNumber = e.LineCounter;
+            Victim = "Faction Slain Guess";
+            Killer = "You";
+            FactionMessages.Add(e.Line);
+
         }
 
         private void EmitSlainEvent(BaseLogParseEvent e)
