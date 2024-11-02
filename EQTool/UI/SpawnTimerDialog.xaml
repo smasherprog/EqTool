@@ -24,10 +24,10 @@
                 <StackPanel Margin="0" Height="140" Width="500">
                     <TextBlock Text="Timer Start" Margin="10,5,0,0" FontSize="16"/>
                     <RadioButton x:Name="aiRadioButton" GroupName="TimerStart" Content="PigParse AI" IsChecked="True" Margin="30,5,0,0" FontSize="14" VerticalContentAlignment="Center"/>
-                    <RadioButton x:Name="expMessageRadioButton" GroupName="TimerStart" Content="Exp Message" Margin="30,5,0,0" FontSize="14" VerticalContentAlignment="Center"/>
+                    <RadioButton x:Name="expMessageRadioButton" IsChecked="{Binding ExpMessageSelected}" GroupName="TimerStart" Content="Exp Message" Margin="30,5,0,0" FontSize="14" VerticalContentAlignment="Center"/>
                     <StackPanel Orientation="Horizontal">
-                        <RadioButton x:Name="slainRadioButton" GroupName="TimerStart" Width="200" Content="You have slain ..." Margin="30,5,0,0" FontSize="14" VerticalContentAlignment="Center" />
-                        <TextBox x:Name="slainTextBox" Width="250" FontSize="14" VerticalAlignment="Center" Margin="0,5,0,0" />
+                        <RadioButton x:Name="slainRadioButton" IsChecked="{Binding SlainMessageSelected}" GroupName="TimerStart" Width="200" Content="You have slain ..." Margin="30,5,0,0" FontSize="14" VerticalContentAlignment="Center" />
+                        <TextBox x:Name="slainTextBox" Width="250" IsEnabled="{Binding SlainMessageSelected}"  Foreground="{Binding SlainMessageColor}" Text="{Binding SlainMessage}" FontSize="14" VerticalAlignment="Center" Margin="0,5,0,0" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <RadioButton x:Name="factionRadioButton" GroupName="TimerStart" Width="200" Content="Your faction standing with ..." Margin="30,5,0,0" FontSize="14" VerticalContentAlignment="Center"/>
