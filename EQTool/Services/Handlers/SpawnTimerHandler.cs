@@ -64,4 +64,66 @@ namespace EQTool.Services.Handlers
         }
 
     }
+
+    //
+    // class to hold spawn trigger info gathered from UI
+    //
+    public class SpawnTimerTrigger
+    {
+        //
+        // top level is-enabled flag
+        //
+        public bool SpawnTimerEnabled { get; set; }
+
+        //
+        // timer start fields
+        //
+        public enum StartTypes
+        {
+            AI,
+            EXP_MESSAGE,
+            SLAIN_MESSAGE,
+            FACTION_MESSAGE
+        }
+        public SpawnTimerTrigger.StartTypes StartType { get; set; }
+
+        //
+        // timer duration fields
+        //
+        public enum Durations
+        {
+            PRESET_0600,
+            PRESET_0640,
+            PRESET_1430,
+            PRESET_2200,
+            PRESET_2800,
+            CUSTOM
+        }
+        public SpawnTimerTrigger.Durations Duration { get; set; }
+        public string CustomDuration { get; set; }
+
+        //
+        // timer end fields
+        //
+
+        // timer expiring soon warnings
+        public string WarningTime { get; set; }
+        public bool ProvideWarningText { get; set; }
+        public bool ProvideWarningTTS { get; set; }
+        public string WarningText { get; set; }
+        public string WarningTTS { get; set; }
+
+        // timer expired notifications
+        public bool ProvideEndText { get; set; }
+        public bool ProvideEndTTS { get; set; }
+        public string EndText { get; set; }
+        public string EndTTS { get; set; }
+
+        //
+        // counter reset field
+        //
+        public string CounterResetTime { get; set; }
+
+    }
+
 }
