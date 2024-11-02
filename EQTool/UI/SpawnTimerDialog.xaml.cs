@@ -8,10 +8,10 @@ namespace EQTool.UI
     /// </summary>
     public partial class SpawnTimerDialog : Window
     {
-        private readonly SpawnTimerDialogViewModel ViewModels = new SpawnTimerDialogViewModel();
-        public SpawnTimerDialog()
-        { 
-            this.DataContext = ViewModels;  
+        private readonly SpawnTimerDialogViewModel ViewModel;
+        public SpawnTimerDialog(SpawnTimerDialogViewModel viewmodel)
+        {
+            this.DataContext = ViewModel = viewmodel;
             InitializeComponent();
         }
     }
