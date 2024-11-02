@@ -71,6 +71,17 @@ namespace EQtoolsTests
         }
 
         [TestMethod]
+        public void EyeSlainWeDontCareAbout()
+        {
+            //[Fri Nov 08 19:39:57 2019] You have been slain by a brigand!
+            var now = DateTime.Now;
+            var message = "Eye of Venpunch has been slain by Venpunch!";
+            var deathEvent = slainParser.Match(message, now, 0);
+
+            Assert.IsNull(deathEvent);
+        }
+
+        [TestMethod]
         public void YouHaveSlain()
         {
             //[Mon Sep 16 14:21:24 2024] You have slain a Tesch Mas Gnoll!

@@ -53,6 +53,13 @@ namespace EQTool.Services
             SlainEvent?.Invoke(this, e);
         }
 
+        //WIP DONT USE THIS YET!
+        public event EventHandler<NewSlainEvent> NewSlainEvent;
+        public void Handle(NewSlainEvent e)
+        {
+            NewSlainEvent?.Invoke(this, e);
+        }
+
         public event EventHandler<CommsEvent> CommsEvent;
         public void Handle(CommsEvent e)
         {
@@ -209,10 +216,10 @@ namespace EQTool.Services
             FactionEvent?.Invoke(this, e);
         }
 
-        public event EventHandler<ExperienceGainedEvent> ExperienceGainedEvent;
-        public void Handle(ExperienceGainedEvent e)
+        public event EventHandler<LineEvent> LineEvent;
+        public void Handle(LineEvent e)
         {
-            ExperienceGainedEvent?.Invoke(this, e);
+            LineEvent?.Invoke(this, e);
         }
     }
 }

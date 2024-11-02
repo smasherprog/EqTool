@@ -19,6 +19,7 @@ namespace EQTool.Services
         private readonly EQToolSettingsLoad toolSettingsLoad;
         private readonly List<IEqLogParseHandler> eqLogParseHandlers;
         private readonly LogEvents logEvents;
+        private readonly LineParser lineParser;
         private bool Processing = false;
         public DateTime LastYouActivity { get; private set; }
         private long? LastLogReadOffset { get; set; } = null;
@@ -30,11 +31,13 @@ namespace EQTool.Services
             ActivePlayer activePlayer,
             IAppDispatcher appDispatcher,
             EQToolSettings settings,
-             LogEvents logEvents
+             LogEvents logEvents,
+             LineParser lineParser
             )
         {
             this.eqLogParseHandlers = eqLogParseHandlers.ToList();
             this.logEvents = logEvents;
+            this.lineParser = lineParser;
             this.toolSettingsLoad = toolSettingsLoad;
             this.activePlayer = activePlayer;
             this.appDispatcher = appDispatcher;
@@ -97,9 +100,12 @@ namespace EQTool.Services
                 if (handler.Handle(message, timestamp, LineCounter))
                 {
                     Debug.WriteLine($"--Handled by {handler.GetType().Name}: {message}");
+                    lineParser.Handle(message, timestamp, LineCounter);
                     return;
                 }
             }
+
+            lineParser.Handle(message, timestamp, LineCounter);
 #if !(DEBUG || TEST)
             }
             catch (Exception e)

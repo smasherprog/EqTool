@@ -94,6 +94,12 @@ namespace EQTool.Models
 
         public string Killer { get; set; }
     }
+    public class NewSlainEvent : BaseLogParseEvent
+    {
+        public string Victim { get; set; }
+
+        public string Killer { get; set; }
+    }
 
     public class StartTimerEvent : BaseLogParseEvent
     {
@@ -221,7 +227,7 @@ namespace EQTool.Models
         public string ShortName { get; set; }
     }
 
-    public class ExperienceGainedEvent : BaseLogParseEvent
+    public class LineEvent : BaseLogParseEvent
     {
     }
 }
