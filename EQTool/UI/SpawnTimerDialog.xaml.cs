@@ -1,4 +1,5 @@
-﻿using EQTool.ViewModels;
+﻿using EQTool.Services.Handlers;
+using EQTool.ViewModels;
 using System.Windows;
 
 namespace EQTool.UI
@@ -8,16 +9,33 @@ namespace EQTool.UI
     /// </summary>
     public partial class SpawnTimerDialog : Window
     {
-        private readonly SpawnTimerDialogViewModel ViewModel;
-        public SpawnTimerDialog(SpawnTimerDialogViewModel viewmodel)
+        private readonly SpawnTimerDialogViewModel viewModel;
+        public SpawnTimerDialogViewModel ViewModel { get { return viewModel; } }
+
+        public SpawnTimerDialog(SpawnTimerDialogViewModel vm)
         {
-            this.DataContext = ViewModel = viewmodel;
+            viewModel = vm;
+            DataContext = viewModel;
             InitializeComponent();
         }
-         
-        private void DoSomething_DontTryTopassData_ItShouldBeInTheeViewModelAllready(object sender, RoutedEventArgs e)
+
+
+        // function called when OK button is clicked         
+        private void okButton_Click(object sender, RoutedEventArgs e)
         {
-            this.ViewModel.DoSomething_DontTryTopassData_ItShouldBeInTheeViewModelAllready();
+            //viewModel.DoSomething_DontTryTopassData_ItShouldBeInTheeViewModelAllready();
+            
+            // capture ViewModel results back into the Model
+            // todo - design question = should this happen here, or at the location that launched this dialog?
+            DialogResult = true;
+
         }
+
+        // function called when Cancel button is clicked         
+        private void cancelButton_Click(object sender, RoutedEventArgs e)
+        {
+            DialogResult = false;
+        }
+
     }
 }

@@ -1,5 +1,7 @@
-﻿using EQTool.Models;
+﻿using Autofac;
+using EQTool.Models;
 using EQTool.Services;
+using EQTool.Services.Handlers;
 using EQTool.Services.Map;
 using EQTool.Services.P99LoginMiddlemand;
 using EQTool.Services.Parsing;
@@ -889,9 +891,30 @@ namespace EQTool.UI
             settingsTestRunOverlay.RunTest(OverlayTypes.DeathLoopEvent);
         }
 
-        private void openConfigurationWindow(object sender, RoutedEventArgs e)
+        private void openSpawnTimerDialog(object sender, RoutedEventArgs e)
         {
-            windowFactory.CreateWindow<SpawnTimerDialog>().Show();
+            // get reference to the VM
+            SpawnTimerDialog spawnTimerDialog = windowFactory.CreateWindow<SpawnTimerDialog>();
+            SpawnTimerDialogViewModel viewModel = spawnTimerDialog.ViewModel;
+
+            // get reference to the M
+            //SpawnTimerTrigger theModel =
+
+            // todo
+            spawnTimerHandler = container.Resolve<SpawnTimerHandler>();
+
+
+
+
+            // initialize the dialog VM with the M
+            //viewModel.SetFrom(theModel);
+
+            bool? dialogResult = spawnTimerDialog.ShowDialog();
+            if (dialogResult == true)
+            {
+                //theModel.SetFrom(viewModel);
+            }
+
         }
 
         private void selectallVisual(object sender, RoutedEventArgs e)

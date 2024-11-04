@@ -1,4 +1,5 @@
 ﻿using EQTool.Models;
+using EQTool.UI;
 using EQTool.ViewModels;
 using System.Diagnostics;
 
@@ -11,6 +12,9 @@ namespace EQTool.Services.Handlers
     //
     internal class SpawnTimerHandler : BaseHandler
     {
+        // Model class to hold the results of the Spawn Timer Dialog
+        private readonly SpawnTimerTrigger _trigger = new SpawnTimerTrigger();
+
         //
         // ctor
         //
@@ -22,6 +26,9 @@ namespace EQTool.Services.Handlers
             this.logEvents.SlainEvent += LogEvents_SlainEvent;
             this.logEvents.FactionEvent += LogEvents_FactionEvent;
         }
+
+        // getter for the spawn timer trigger
+        public SpawnTimerTrigger Trigger { get { return _trigger; } }
 
 
         //
@@ -70,22 +77,125 @@ namespace EQTool.Services.Handlers
     //
     public class SpawnTimerTrigger
     {
+        // utility function to set all fields to the corresponding field in the ViewModel class
+        // todo - instead of laboriously converting between the VM and the M, can we just use same class for both?
+        public void SetFrom(SpawnTimerDialogViewModel vm)
+        {
+            // sweep thru all the fields
+
+            //
+            // overall enable/disable
+            //
+            SpawnTimerEnabled = vm.SpawnTimerEnabled;
+
+            //
+            // timer start
+            //
+
+            // vm doesn't know about enums
+            if (vm.PigParseAI)
+                StartType = StartTypes.PIG_PARSE_AI;
+            else if (vm.ExpMessage)
+                StartType = StartTypes.EXP_MESSAGE;
+            else if (vm.SlainMessage)
+                StartType = StartTypes.SLAIN_MESSAGE;
+            else if (vm.FactionMessage)
+                StartType = StartTypes.FACTION_MESSAGE;
+
+            SlainText = vm.SlainText;
+            FactionText = vm.FactionText;
+
+            //
+            // timer end
+            //
+            WarningTime = vm.WarningTime;
+
+            ProvideWarningText = vm.ProvideWarningText;
+            ProvideWarningTTS = vm.ProvideWarningTTS;
+            WarningText = vm.WarningText;
+            WarningTTS = vm.WarningTTS;
+
+            ProvideEndText = vm.ProvideEndText;
+            ProvideEndTTS = vm.ProvideEndTTS;
+            EndText = vm.EndText;
+            EndTTS = vm.EndTTS;
+
+            //
+            // counter reset field
+            //
+            CounterResetTime = vm.CounterResetTime;
+
+            //
+            // timer duration fields
+            //
+
+            // vm doesn't know about enums
+            if (vm.Preset0600)
+                Duration = Durations.PRESET_0600;
+            else if (vm.Preset0640)
+                Duration = Durations.PRESET_0640;
+            else if (vm.Preset1430)
+                Duration = Durations.PRESET_1430;
+            else if (vm.Preset2200)
+                Duration = Durations.PRESET_2200;
+            else if (vm.Preset2800)
+                Duration = Durations.PRESET_2800;
+            else if (vm.Custom)
+                Duration = Durations.CUSTOM;
+
+            CustomDuration = vm.CustomDuration;
+
+            //
+            // notes and comments field
+            //
+            // todo - add in the proper field for a RichTextBox
+
+
+        }
+
+
+
         //
         // top level is-enabled flag
         //
-        public bool SpawnTimerEnabled { get; set; }
+        public bool SpawnTimerEnabled { get; set; } = false;
 
         //
         // timer start fields
         //
         public enum StartTypes
         {
-            AI,
+            PIG_PARSE_AI,
             EXP_MESSAGE,
             SLAIN_MESSAGE,
             FACTION_MESSAGE
         }
-        public SpawnTimerTrigger.StartTypes StartType { get; set; }
+        public SpawnTimerTrigger.StartTypes StartType { get; set; } = StartTypes.EXP_MESSAGE;
+
+        public string SlainText { get; set; } = "todo - insert AC slain text here";
+        public string FactionText { get; set; } = "todo - put some factions here";
+
+        //
+        // timer end fields
+        //
+
+        // timer expiring soon warnings
+        public string WarningTime { get; set; } = "30";
+        public bool ProvideWarningText { get; set; } = true;
+        public bool ProvideWarningTTS { get; set; } = true;
+        public string WarningText { get; set; } = "30 second warning";
+        public string WarningTTS { get; set; } = "30 second warning";
+
+        // timer expired notifications
+        public bool ProvideEndText { get; set; } = true;
+        public bool ProvideEndTTS { get; set; } = true;
+        public string EndText { get; set; } = "Pop";
+        public string EndTTS { get; set; } = "Pop";
+
+        //
+        // counter reset field
+        //
+        public string CounterResetTime { get; set; } = "1:00:00";
 
         //
         // timer duration fields
@@ -99,30 +209,15 @@ namespace EQTool.Services.Handlers
             PRESET_2800,
             CUSTOM
         }
-        public SpawnTimerTrigger.Durations Duration { get; set; }
-        public string CustomDuration { get; set; }
+        public SpawnTimerTrigger.Durations Duration { get; set; } = Durations.CUSTOM;
+        public string CustomDuration { get; set; } = "30:00";
 
         //
-        // timer end fields
+        // notes and comments field
         //
+        // todo - add in the proper field for a RichTextBox
 
-        // timer expiring soon warnings
-        public string WarningTime { get; set; }
-        public bool ProvideWarningText { get; set; }
-        public bool ProvideWarningTTS { get; set; }
-        public string WarningText { get; set; }
-        public string WarningTTS { get; set; }
 
-        // timer expired notifications
-        public bool ProvideEndText { get; set; }
-        public bool ProvideEndTTS { get; set; }
-        public string EndText { get; set; }
-        public string EndTTS { get; set; }
-
-        //
-        // counter reset field
-        //
-        public string CounterResetTime { get; set; }
 
     }
 

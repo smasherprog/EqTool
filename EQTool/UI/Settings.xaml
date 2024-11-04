@@ -305,8 +305,8 @@
                     <Button Click="selectLogFile">Select File</Button>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Configuration"  VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
-                    <Button Click="openConfigurationWindow">Opwn Window</Button>
+                    <TextBlock Text="Spawn Timer"  VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
+                    <Button Click="openSpawnTimerDialog">Open Window</Button>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Log Push"  VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
