@@ -13,7 +13,7 @@
         <StackPanel  Orientation="Horizontal" Margin="0">
             <CheckBox x:Name="enableCheckBox" 
                       Content="Enable Spawn Timers" 
-                      IsChecked="{Binding EnableSpawnTimers}" 
+                      IsChecked="{Binding SpawnTimerEnabled}" 
                       Margin="50,10,10,10" 
                       FontSize="20" 
                       FontStyle="Italic" 

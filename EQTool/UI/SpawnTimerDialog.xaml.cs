@@ -9,8 +9,8 @@ namespace EQTool.UI
     /// </summary>
     public partial class SpawnTimerDialog : Window
     {
-        private readonly SpawnTimerDialogViewModel viewModel;
-        public SpawnTimerDialogViewModel ViewModel { get { return viewModel; } }
+        private SpawnTimerDialogViewModel viewModel;
+        public SpawnTimerDialogViewModel ViewModel { get { return viewModel; } set { viewModel = value;} }
 
         public SpawnTimerDialog(SpawnTimerDialogViewModel vm)
         {

@@ -892,6 +892,8 @@ namespace EQTool.UI
             settingsTestRunOverlay.RunTest(OverlayTypes.DeathLoopEvent);
         }
 
+        // container.Resolve() seems to return a reference to a new instance of SpawnTimerHandler, not the singleton as expected
+        private static SpawnTimerTrigger theModel = null;
         private void openSpawnTimerDialog(object sender, RoutedEventArgs e)
         {
             // get reference to the ViewModel
@@ -899,11 +901,12 @@ namespace EQTool.UI
             SpawnTimerDialogViewModel theViewModel = spawnTimerDialog.ViewModel;
 
             // get reference to the Model
-            // todo - this is incorrect, as it re-initializes all the objects
-            // todo - need access to container via some other mechanism rather than DI.Init();
-            Autofac.IContainer container = DI.Init();
-            SpawnTimerHandler spawnTimerHandler = container.Resolve<SpawnTimerHandler>();
-            SpawnTimerTrigger theModel = spawnTimerHandler.Trigger;
+            if (theModel == null)
+            {
+                Autofac.IContainer container = DI.Container;
+                SpawnTimerHandler spawnTimerHandler = container.Resolve<SpawnTimerHandler>();
+                theModel = spawnTimerHandler.Trigger;
+            }
 
             // initialize the dialog VM with the M
             theViewModel.SetFrom(theModel);
@@ -914,6 +917,7 @@ namespace EQTool.UI
             // if user hit OK, then copy the data from VM back to M
             if (dialogResult == true)
             {
+                //spawnTimerHandler.Trigger.SetFrom(theViewModel);
                 theModel.SetFrom(theViewModel);
             }
         }
