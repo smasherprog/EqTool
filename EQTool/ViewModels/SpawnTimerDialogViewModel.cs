@@ -13,6 +13,7 @@ namespace EQTool.ViewModels
 {
     public class SpawnTimerDialogViewModel : INotifyPropertyChanged
     {
+
         //
         // the overall enable/disable Spawn Timers checkbox
         //

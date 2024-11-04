@@ -892,34 +892,45 @@ namespace EQTool.UI
             settingsTestRunOverlay.RunTest(OverlayTypes.DeathLoopEvent);
         }
 
-        // container.Resolve() seems to return a reference to a new instance of SpawnTimerHandler, not the singleton as expected
-        private static SpawnTimerTrigger theModel = null;
+        //static private SpawnTimerDialog spawnTimerDialog = null;
         private void openSpawnTimerDialog(object sender, RoutedEventArgs e)
         {
-            // get reference to the ViewModel
-            SpawnTimerDialog spawnTimerDialog = windowFactory.CreateWindow<SpawnTimerDialog>();
-            SpawnTimerDialogViewModel theViewModel = spawnTimerDialog.ViewModel;
+            //SpawnTimerDialog spawnTimerDialog = windowFactory.CreateWindow<SpawnTimerDialog>();
+            SpawnTimerDialog spawnTimerDialog = DI.Container.Resolve<SpawnTimerDialog>();
 
-            // get reference to the Model
-            if (theModel == null)
-            {
-                Autofac.IContainer container = DI.Container;
-                SpawnTimerHandler spawnTimerHandler = container.Resolve<SpawnTimerHandler>();
-                theModel = spawnTimerHandler.Trigger;
-            }
 
-            // initialize the dialog VM with the M
-            theViewModel.SetFrom(theModel);
+            //if (spawnTimerDialog == null)
+            //{
+            //    //spawnTimerDialog = DI.Container.Resolve<SpawnTimerDialog>();
+            //    spawnTimerDialog = windowFactory.CreateWindow<SpawnTimerDialog>();
+            //}
+            spawnTimerDialog.ShowDialog();
 
-            // launch the dialog and get user input
-            bool? dialogResult = spawnTimerDialog.ShowDialog();
 
-            // if user hit OK, then copy the data from VM back to M
-            if (dialogResult == true)
-            {
-                //spawnTimerHandler.Trigger.SetFrom(theViewModel);
-                theModel.SetFrom(theViewModel);
-            }
+            //// get reference to the ViewModel
+            //SpawnTimerDialog spawnTimerDialog = windowFactory.CreateWindow<SpawnTimerDialog>();
+            //SpawnTimerDialogViewModel theViewModel = spawnTimerDialog.ViewModel;
+
+            //// get reference to the Model
+            //if (theModel == null)
+            //{
+            //    Autofac.IContainer container = DI.Container;
+            //    SpawnTimerHandler spawnTimerHandler = container.Resolve<SpawnTimerHandler>();
+            //    theModel = spawnTimerHandler.Trigger;
+            //}
+
+            //// initialize the dialog VM with the M
+            //theViewModel.SetFrom(theModel);
+
+            //// launch the dialog and get user input
+            //bool? dialogResult = spawnTimerDialog.ShowDialog();
+
+            //// if user hit OK, then copy the data from VM back to M
+            //if (dialogResult == true)
+            //{
+            //    //spawnTimerHandler.Trigger.SetFrom(theViewModel);
+            //    theModel.SetFrom(theViewModel);
+            //}
         }
 
         private void selectallVisual(object sender, RoutedEventArgs e)

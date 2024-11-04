@@ -10,7 +10,8 @@ namespace EQTool.Services.Handlers
     //
     // watches for ExpGainedEvent, FactionEvent, and DeathEvent types
     //
-    internal class SpawnTimerHandler : BaseHandler
+    //internal class SpawnTimerHandler : BaseHandler
+    public class SpawnTimerHandler : BaseHandler
     {
         // Model class to hold the results of the Spawn Timer Dialog
         private readonly SpawnTimerTrigger _trigger = new SpawnTimerTrigger();
