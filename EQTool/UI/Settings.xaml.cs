@@ -900,6 +900,7 @@ namespace EQTool.UI
 
             // get reference to the Model
             // todo - this is incorrect, as it re-initializes all the objects
+            // todo - need access to container via some other mechanism rather than DI.Init();
             Autofac.IContainer container = DI.Init();
             SpawnTimerHandler spawnTimerHandler = container.Resolve<SpawnTimerHandler>();
             SpawnTimerTrigger theModel = spawnTimerHandler.Trigger;
