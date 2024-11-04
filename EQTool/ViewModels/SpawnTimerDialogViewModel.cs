@@ -466,13 +466,5 @@ namespace EQTool.ViewModels
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
-
-        // button click handlers
-        internal void DoSomething_DontTryTopassData_ItShouldBeInTheeViewModelAllready()
-        {
-            //do something here with the button click. Maybe get the value of the text box and do an api call?
-            //var slainmessage = this.SlainMessage;
-
-        }
     }
 }

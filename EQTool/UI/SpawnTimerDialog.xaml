@@ -181,27 +181,32 @@
                 <StackPanel  Height="184" Margin="0">
                     <TextBlock TextWrapping="Wrap" Text="Timer Duration" Margin="10,5,0,0" FontSize="16"/>
                     <RadioButton x:Name="preset0600" GroupName="TimerDuration" 
-                                 Content="{Binding Preset0600}" 
+                                 Content="06:00"
+                                 IsChecked="{Binding Preset0600}" 
                                  Margin="30,5,0,0" 
                                  FontSize="14" 
                                  VerticalContentAlignment="Center"/>
                     <RadioButton x:Name="preset0640" GroupName="TimerDuration" 
-                                 Content="{Binding Preset0640}" 
+                                 Content="06:40"
+                                 IsChecked="{Binding Preset0640}" 
                                  Margin="30,5,0,0" 
                                  FontSize="14" 
                                  VerticalContentAlignment="Center"/>
                     <RadioButton x:Name="preset1430" GroupName="TimerDuration" 
-                                 Content="{Binding Preset1430}" 
+                                 Content="14:30"
+                                 IsChecked="{Binding Preset1430}" 
                                  Margin="30,5,0,0" 
                                  FontSize="14" 
                                  VerticalContentAlignment="Center"/>
                     <RadioButton x:Name="preset2200" GroupName="TimerDuration" 
-                                 Content="{Binding Preset2200}" 
+                                 Content="22:00"
+                                 IsChecked="{Binding Preset2200}" 
                                  Margin="30,5,0,0" 
                                  FontSize="14" 
                                  VerticalContentAlignment="Center"/>
                     <RadioButton x:Name="preset2800" GroupName="TimerDuration" 
-                                 Content="{Binding Preset2800}" 
+                                 Content="28:00"
+                                 IsChecked="{Binding Preset2800}" 
                                  Margin="30,5,0,0" 
                                  FontSize="14" 
                                  VerticalContentAlignment="Center"/>

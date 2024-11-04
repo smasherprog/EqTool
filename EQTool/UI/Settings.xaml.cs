@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using Autofac.Core;
 using EQTool.Models;
 using EQTool.Services;
 using EQTool.Services.Handlers;
@@ -893,28 +894,27 @@ namespace EQTool.UI
 
         private void openSpawnTimerDialog(object sender, RoutedEventArgs e)
         {
-            // get reference to the VM
+            // get reference to the ViewModel
             SpawnTimerDialog spawnTimerDialog = windowFactory.CreateWindow<SpawnTimerDialog>();
-            SpawnTimerDialogViewModel viewModel = spawnTimerDialog.ViewModel;
+            SpawnTimerDialogViewModel theViewModel = spawnTimerDialog.ViewModel;
 
-            // get reference to the M
-            //SpawnTimerTrigger theModel =
-
-            // todo
-            spawnTimerHandler = container.Resolve<SpawnTimerHandler>();
-
-
-
+            // get reference to the Model
+            // todo - this is incorrect, as it re-initializes all the objects
+            Autofac.IContainer container = DI.Init();
+            SpawnTimerHandler spawnTimerHandler = container.Resolve<SpawnTimerHandler>();
+            SpawnTimerTrigger theModel = spawnTimerHandler.Trigger;
 
             // initialize the dialog VM with the M
-            //viewModel.SetFrom(theModel);
+            theViewModel.SetFrom(theModel);
 
+            // launch the dialog and get user input
             bool? dialogResult = spawnTimerDialog.ShowDialog();
+
+            // if user hit OK, then copy the data from VM back to M
             if (dialogResult == true)
             {
-                //theModel.SetFrom(viewModel);
+                theModel.SetFrom(theViewModel);
             }
-
         }
 
         private void selectallVisual(object sender, RoutedEventArgs e)
