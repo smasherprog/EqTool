@@ -14,14 +14,16 @@ namespace EQTool.Services.Handlers
     public class SpawnTimerHandler : BaseHandler
     {
         // Model class to hold the results of the Spawn Timer Dialog
-        private readonly SpawnTimerTrigger _trigger = new SpawnTimerTrigger();
+        // make this static, so it only initializes once
+        static private readonly SpawnTimerTrigger _trigger = new SpawnTimerTrigger();
 
         //
         // ctor
         //
         // register this service as a listener for the Events it cares about
         //
-        public SpawnTimerHandler(LogEvents logEvents, ActivePlayer activePlayer, EQToolSettings eQToolSettings, ITextToSpeach textToSpeach) : base(logEvents, activePlayer, eQToolSettings, textToSpeach)
+        public SpawnTimerHandler(LogEvents logEvents, ActivePlayer activePlayer, EQToolSettings eQToolSettings, ITextToSpeach textToSpeach) 
+            : base(logEvents, activePlayer, eQToolSettings, textToSpeach)
         {
             this.logEvents.ExpGainedEvent += LogEvents_ExpGainedEvent;
             this.logEvents.SlainEvent += LogEvents_SlainEvent;
