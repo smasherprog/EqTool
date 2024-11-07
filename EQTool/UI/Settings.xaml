@@ -309,6 +309,10 @@
                     <Button Click="openConfigurationWindow">Opwn Window</Button>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Test Management"  VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
+                    <Button Click="OpenManagementWindow">Opwn Window</Button>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Log Push"  VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
                     <TextBox x:Name="LogPushText" MinWidth="100"></TextBox>
                     <Button Click="logpush">Push</Button>

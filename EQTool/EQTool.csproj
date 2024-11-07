@@ -366,6 +366,9 @@
     <Compile Include="Services\P99LoginMiddlemand\LoginMiddlemand.cs" />
     <Compile Include="Services\Parsing\CommsParser.cs" />
     <Compile Include="Services\Parsing\YouZonedParser.cs" />
+    <Compile Include="UI\SettingManagement.xaml.cs">
+      <DependentUpon>SettingManagement.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UI\SpawnTimerDialog.xaml.cs">
       <DependentUpon>SpawnTimerDialog.xaml</DependentUpon>
     </Compile>
@@ -488,6 +491,10 @@
       <DependentUpon>SpellWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\BaseSaveStateWindow.cs" />
+    <Page Include="UI\SettingManagement.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UI\SpawnTimerDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
