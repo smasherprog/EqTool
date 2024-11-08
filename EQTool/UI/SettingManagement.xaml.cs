@@ -65,30 +65,25 @@ namespace EQTool.UI
 
             trvPersons.ItemsSource = persons;
         }
-
-        private void btnSelectNext_Click(object sender, RoutedEventArgs e)
+          
+        private void TreeView_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            if (trvPersons.SelectedItem != null)
+            TreeViewItem treeViewItem = VisualUpwardSearch(e.OriginalSource as DependencyObject);
+
+            if (treeViewItem != null)
             {
-                var list = (trvPersons.ItemsSource as List<Person>);
-                int curIndex = list.IndexOf(trvPersons.SelectedItem as Person);
-                if (curIndex >= 0)
-                    curIndex++;
-                if (curIndex >= list.Count)
-                    curIndex = 0;
-                if (curIndex >= 0)
-                    list[curIndex].IsSelected = true;
+                treeViewItem.Focus();
+                e.Handled = true;
             }
         }
 
-        private void btnToggleExpansion_Click(object sender, RoutedEventArgs e)
+        static TreeViewItem VisualUpwardSearch(DependencyObject source)
         {
-            if (trvPersons.SelectedItem != null)
-                (trvPersons.SelectedItem as Person).IsExpanded = !(trvPersons.SelectedItem as Person).IsExpanded;
+            while (source != null && !(source is TreeViewItem))
+                source = VisualTreeHelper.GetParent(source);
+
+            return source as TreeViewItem;
         }
-
-
-
     }
 
     public class Person : TreeViewItemBase
