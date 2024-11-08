@@ -175,8 +175,8 @@ namespace EQTool.Services.Handlers
         }
         public SpawnTimerTrigger.StartTypes StartType { get; set; } = StartTypes.EXP_MESSAGE;
 
-        public string SlainText { get; set; } = "todo - insert AC slain text here";
-        public string FactionText { get; set; } = "todo - put some factions here";
+        public string SlainText { get; set; } = "(an ancient cyclops|a pirate|a cyclops|Boog Mudtoe)";
+        public string FactionText { get; set; } = "(Coldain|Rygorr)";
 
         //
         // timer end fields
