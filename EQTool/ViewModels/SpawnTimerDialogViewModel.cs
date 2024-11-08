@@ -7,6 +7,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Media;
+using Xceed.Wpf.Toolkit;
 using static EQTool.Services.Handlers.SpawnTimerTrigger;
 
 namespace EQTool.ViewModels
@@ -308,54 +309,17 @@ namespace EQTool.ViewModels
         //
         // notes and comments
         //
-        // todo - add in the proper VM field for a RichTextBox
+        private string _NotesText = "";
+        public string NotesText
+        {
+            get { return _NotesText; }
+            set
+            {
+                _NotesText = value;
+                OnPropertyChanged();
+            }
+        }
 
-
-
-
-        //private bool _expMessageSelected = false;
-
-        //public bool ExpMessageSelected
-        //{
-        //    get { return _expMessageSelected; }
-        //    set
-        //    {
-        //        this._expMessageSelected = value;
-        //        SlainMessage = "Disabled";
-        //        SlainMessageColor = Brushes.Red; 
-        //        this.OnPropertyChanged(nameof(SlainMessageColor));
-        //        this.OnPropertyChanged(); 
-        //    }
-        //}
-
-        //private string _slainMessage = string.Empty;
-
-        //public string SlainMessage
-        //{
-        //    get { return _slainMessage; }
-        //    set
-        //    {
-        //        this._slainMessage = value;
-        //        this.OnPropertyChanged();
-        //    }
-        //}
-
-        //private bool _slainMessageSelected = false;
-
-        //public bool SlainMessageSelected
-        //{
-        //    get { return _slainMessageSelected; }
-        //    set
-        //    {
-        //        this._slainMessageSelected = value;
-        //        SlainMessageColor = Brushes.Blue;
-        //        this.SlainMessage = "Enter your message here";
-        //        this.OnPropertyChanged();
-        //        this.OnPropertyChanged(nameof(SlainMessageColor));
-        //    }
-        //}
-
-        //public SolidColorBrush SlainMessageColor { get; set; } = Brushes.Black;
 
         // utility function to set all fields to the corresponding field in the Model class
         // todo - instead of laboriously converting between the VM and the M, can we just use same class for both?
@@ -456,11 +420,8 @@ namespace EQTool.ViewModels
             //
             // notes and comments field
             //
-            // todo - add in the proper field for a RichTextBox
-
-
+            NotesText = m.NotesText;
         }
-
 
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName] string name = null)

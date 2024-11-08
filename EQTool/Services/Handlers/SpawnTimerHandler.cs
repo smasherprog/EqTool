@@ -1,7 +1,9 @@
 ﻿using EQTool.Models;
 using EQTool.UI;
 using EQTool.ViewModels;
+using Microsoft.Extensions.Logging;
 using System.Diagnostics;
+using System.Security.Policy;
 
 namespace EQTool.Services.Handlers
 {
@@ -151,9 +153,7 @@ namespace EQTool.Services.Handlers
             //
             // notes and comments field
             //
-            // todo - add in the proper field for a RichTextBox
-
-
+            NotesText = vm.NotesText;
         }
 
 
@@ -218,10 +218,25 @@ namespace EQTool.Services.Handlers
         //
         // notes and comments field
         //
-        // todo - add in the proper field for a RichTextBox
-
-
-
+        public string NotesText { get; set; } = "AC in OOT: 6 min\r\n" +
+            "(an ancient cyclops|a pirate|a cyclops|Boog Mudtoe)\r\n" +
+            "\r\n" +
+            "Drelzna: 19 min\r\n" +
+            "(a necromancer|Drelzna)\r\n" +
+            "\r\n" +
+            "Zone respawns\r\n" +
+            "Najena 19 min, Skyfire 13 min, EW 6:40\r\n" +
+            "Oasis specs = 16:30, OOT specs/sisters = 6:00\r\n" +
+            "lower guk = 28:00, Grobb = 24:00, Kedge = 22:00\r\n" +
+            "WK guards = 6:00, BB fishers 6:40 and 22:00\r\n" +
+            "North Felwithe guards = 24:00, Paw = 22 min\r\n" +
+            "MM = 23 min, Droga = 20:30, HS = 20:30\r\n" +
+            "Perma = 22:00, TT = 6:40, TD = 12:00, Skyshrine = 30:00\r\n" +
+            "Skyfire = 13:00, Seb Lair = 27:00, Hole = 21:30\r\n" +
+            "Wars Woods brutes = 6:40, Skyshrine = 30:00\r\n" +
+            "Chardok = 18:00, Crystal Caverns = 14:45, COM = 22:00\r\n" +
+            "Kael =28:00, WL = 14:30\r\n" +
+            "\r\n";
     }
 
 }

@@ -231,16 +231,21 @@
 
                 <!-- comments -->
                 <StackPanel Height="233"  Margin="0">
-                    <TextBlock TextWrapping="Wrap" Text="Notes / Comments" Margin="10,5,0,0" FontSize="16"/>
-                    <RichTextBox x:Name="notesRiohTextBox" 
-                                 Margin="30,5,0,0" 
-                                 Width="440" 
-                                 FontSize="14" 
-                                 Height="175" 
-                                 HorizontalAlignment="Left" />
-                </StackPanel>
-            </StackPanel>
-        </StackPanel>
+                    <TextBlock Text="Notes / Comments" Margin="10,5,0,0" FontSize="16"/>
+                    <TextBox x:Name="notesTextBox" 
+                               Text="{Binding NotesText}"
+                               TextWrapping="Wrap"
+                               AcceptsReturn="True"
+                               Margin="30,5,0,0" 
+                               Width="440" 
+                               FontSize="14" 
+                               Height="175"
+                               HorizontalAlignment="Left"
+                               VerticalScrollBarVisibility="Auto">
+                    </TextBox> 
+                </StackPanel> <!-- end of comments panel -->
+            </StackPanel> <!-- end of second column -->
+        </StackPanel> <!-- end of middle row -->
 
         <!-- bottom row -->
         <StackPanel Orientation="Horizontal" Height="100" Margin="0">
