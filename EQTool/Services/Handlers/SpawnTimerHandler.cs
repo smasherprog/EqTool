@@ -229,8 +229,8 @@ namespace EQTool.Services.Handlers
             "Oasis specs = 16:30, OOT specs/sisters = 6:00\r\n" +
             "lower guk = 28:00, Grobb = 24:00, Kedge = 22:00\r\n" +
             "WK guards = 6:00, BB fishers 6:40 and 22:00\r\n" +
-            "North Felwithe guards = 24:00, Paw = 22 min\r\n" +
-            "MM = 23 min, Droga = 20:30, HS = 20:30\r\n" +
+            "North Felwithe guards = 24:00, Paw = 22:00\r\n" +
+            "MM = 23:00, Droga = 20:30, HS = 20:30\r\n" +
             "Perma = 22:00, TT = 6:40, TD = 12:00, Skyshrine = 30:00\r\n" +
             "Skyfire = 13:00, Seb Lair = 27:00, Hole = 21:30\r\n" +
             "Wars Woods brutes = 6:40, Skyshrine = 30:00\r\n" +
