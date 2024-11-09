@@ -931,5 +931,10 @@ namespace EQTool.UI
             SettingsWindowData.ActivePlayer.Player.ChChainWarningAudio = true;
             SaveConfig();
         }
+
+        private void OpenManagementWindow(object sender, RoutedEventArgs e)
+        {
+            windowFactory.CreateWindow<SettingManagement>().Show();
+        }
     }
 }
