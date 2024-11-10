@@ -4,6 +4,7 @@ using EQToolShared.Enums;
 using System;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Controls;
@@ -14,12 +15,9 @@ namespace EQTool.ViewModels
     {
         public TreeTrigger()
         {
-            Children = new ObservableCollection<string>();
         }
 
         public string Name { get; set; }
-
-        public ObservableCollection<string> Children { get; set; }// THIS IS A PLACEHOLDER FOR NOW
     }
 
     public class TreePlayer : TreeViewItemBase
@@ -123,6 +121,92 @@ namespace EQTool.ViewModels
                 }
             }
             UserControl = this.userComponentFactory.CreateComponent(UserComponentSettingsManagementTypes.Landing);
+        }
+
+        public ContextMenu GetContextMenu(TreeViewItemBase item)
+        {
+            if (item is TreeServer)
+            {
+                var mnuItem1 = new MenuItem
+                {
+                    Header = "New Package"
+                };
+
+                var mnuItem2 = new MenuItem
+                {
+                    Header = "Show Package Details"
+                };
+                var mnuItem3 = new MenuItem
+                {
+                    Header = "Edit Package"
+                };
+                var mnuItem4 = new MenuItem
+                {
+                    Header = "Delete Package"
+                };
+                var mnuItem5 = new MenuItem
+                {
+                    Header = "Add to Queue"
+                };
+
+                var menu = new ContextMenu() { };
+                _ = menu.Items.Add(mnuItem1);
+                _ = menu.Items.Add(mnuItem2);
+                _ = menu.Items.Add(mnuItem3);
+                _ = menu.Items.Add(mnuItem4);
+                _ = menu.Items.Add(mnuItem5);
+                foreach (MenuItem i in menu.Items)
+                {
+                    i.Tag = item;
+                    i.Click += ServerMenuNewPackageClicked;
+                }
+                return menu;
+            }
+            else if (item is TreePlayer)
+            {
+                var mnuItem1 = new MenuItem
+                {
+                    Header = "Show Batch Details"
+                };
+                var mnuItem2 = new MenuItem
+                {
+                    Header = "Edit Batch"
+                };
+                var mnuItem3 = new MenuItem
+                {
+                    Header = "Delete Batch"
+                };
+
+                var menu = new ContextMenu() { };
+                _ = menu.Items.Add(mnuItem1);
+                _ = menu.Items.Add(mnuItem2);
+                _ = menu.Items.Add(mnuItem3);
+                foreach (MenuItem i in menu.Items)
+                {
+                    i.Tag = item;
+                    i.Click += PlayerMenuNewPackageClicked;
+                }
+                return menu;
+            }
+
+            return new ContextMenu();
+        }
+
+        private void ServerMenuNewPackageClicked(object sender, System.Windows.RoutedEventArgs e)
+        {
+            var s = sender as MenuItem;
+            if (s.Tag is TreeServer t)
+            {
+                Debug.WriteLine($"Server {t.Name} Selected with {s.Header}");
+            }
+        }
+        private void PlayerMenuNewPackageClicked(object sender, System.Windows.RoutedEventArgs e)
+        {
+            var s = sender as MenuItem;
+            if (s.Tag is TreePlayer t)
+            {
+                Debug.WriteLine($"Player {t.Name} Selected with {s.Header}");
+            }
         }
 
         private ObservableCollection<TreeServer> _TreeItems = new ObservableCollection<TreeServer>();
