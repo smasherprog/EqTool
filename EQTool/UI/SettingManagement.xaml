@@ -6,8 +6,12 @@
         xmlns:local="clr-namespace:EQTool.UI"
         mc:Ignorable="d"
         Title="SettingManagement" Height="450" Width="800">
-    <DockPanel Margin="10"> 
-        <TreeView Name="trvPersons"  PreviewMouseRightButtonDown="TreeView_MouseUp">
+    <Grid Margin="10">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="30*"/>
+            <ColumnDefinition Width="70*"/>
+        </Grid.ColumnDefinitions>
+        <TreeView SelectedItemChanged="TreeView_SelectedItemChanged" Grid.Column="0" PreviewMouseRightButtonDown="TreeView_MouseUp" ItemsSource="{Binding TreeItems}">
             <TreeView.ItemTemplate>
                 <HierarchicalDataTemplate ItemsSource="{Binding Children}">
                     <StackPanel Orientation="Horizontal">
@@ -31,5 +35,6 @@
                 </Style>
             </TreeView.ItemContainerStyle>
         </TreeView>
-    </DockPanel>
+        <UserControl Grid.Column="1" Content="{Binding UserControl}"></UserControl>
+    </Grid>
 </Window>

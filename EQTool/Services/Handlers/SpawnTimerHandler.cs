@@ -1,9 +1,6 @@
 ﻿using EQTool.Models;
-using EQTool.UI;
 using EQTool.ViewModels;
-using Microsoft.Extensions.Logging;
 using System.Diagnostics;
-using System.Security.Policy;
 
 namespace EQTool.Services.Handlers
 {

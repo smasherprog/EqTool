@@ -344,6 +344,7 @@
     <Compile Include="Services\Handlers\SlainHandler.cs" />
     <Compile Include="Services\Parsing\LineParser.cs" />
     <Compile Include="Services\Parsing\FactionParser.cs" />
+    <Compile Include="Services\UserComponentSettingsManagementFactory.cs" />
     <Compile Include="Services\WindowFactory.cs" />
     <Compile Include="Services\Handlers\YouZonedHandler.cs" />
     <Compile Include="Services\Handlers\PlayerLevelDetectionHandler.cs" />
@@ -368,6 +369,15 @@
     <Compile Include="Services\Parsing\YouZonedParser.cs" />
     <Compile Include="UI\SettingManagement.xaml.cs">
       <DependentUpon>SettingManagement.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\SettingsComponents\SettingsLanding.xaml.cs">
+      <DependentUpon>SettingsLanding.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\SettingsComponents\SettingsPlayer.xaml.cs">
+      <DependentUpon>SettingsPlayer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\SettingsComponents\SettingsServer.xaml.cs">
+      <DependentUpon>SettingsServer.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\SpawnTimerDialog.xaml.cs">
       <DependentUpon>SpawnTimerDialog.xaml</DependentUpon>
@@ -459,6 +469,9 @@
     <Compile Include="Shapes\ArrowLineBase.cs" />
     <Compile Include="ViewModels\ActivePlayerInfo.cs" />
     <Compile Include="Services\TimersService.cs" />
+    <Compile Include="ViewModels\SettingsComponents\SettingsPlayerViewModel.cs" />
+    <Compile Include="ViewModels\SettingsComponents\SettingsServerViewModel.cs" />
+    <Compile Include="ViewModels\SettingsManagementViewModel.cs" />
     <Compile Include="ViewModels\SpawnTimerDialogViewModel.cs" />
     <Compile Include="ViewModels\ZoneViewModel.cs" />
     <Compile Include="ViewModels\MobInfoViewModel.cs" />
@@ -493,6 +506,18 @@
     </Compile>
     <Compile Include="UI\BaseSaveStateWindow.cs" />
     <Page Include="UI\SettingManagement.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\SettingsComponents\SettingsLanding.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\SettingsComponents\SettingsPlayer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\SettingsComponents\SettingsServer.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
