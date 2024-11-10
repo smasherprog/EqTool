@@ -370,8 +370,8 @@
     <Compile Include="UI\SettingManagement.xaml.cs">
       <DependentUpon>SettingManagement.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UI\SettingsComponents\SettingsLanding.xaml.cs">
-      <DependentUpon>SettingsLanding.xaml</DependentUpon>
+    <Compile Include="UI\SettingsComponents\SettingsGeneral.xaml.cs">
+      <DependentUpon>SettingsGeneral.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\SettingsComponents\SettingsPlayer.xaml.cs">
       <DependentUpon>SettingsPlayer.xaml</DependentUpon>
@@ -469,8 +469,10 @@
     <Compile Include="Shapes\ArrowLineBase.cs" />
     <Compile Include="ViewModels\ActivePlayerInfo.cs" />
     <Compile Include="Services\TimersService.cs" />
+    <Compile Include="ViewModels\SettingsComponents\SettingsGeneralViewModel.cs" />
     <Compile Include="ViewModels\SettingsComponents\SettingsPlayerViewModel.cs" />
     <Compile Include="ViewModels\SettingsComponents\SettingsServerViewModel.cs" />
+    <Compile Include="ViewModels\SettingsComponents\TreeGeneral.cs" />
     <Compile Include="ViewModels\SettingsComponents\TreeServer.cs" />
     <Compile Include="ViewModels\SettingsComponents\TreeTrigger.cs" />
     <Compile Include="ViewModels\SettingsComponents\TreePlayer.cs" />
@@ -513,7 +515,7 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="UI\SettingsComponents\SettingsLanding.xaml">
+    <Page Include="UI\SettingsComponents\SettingsGeneral.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -1,0 +1,48 @@
+﻿<UserControl x:Class="EQTool.UI.SettingsComponents.SettingsGeneral"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:EQTool.UI.SettingsComponents"
+             mc:Ignorable="d" 
+             d:DesignHeight="450" d:DesignWidth="800">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+    </UserControl.Resources>
+    <StackPanel Orientation="Vertical" Margin="5, 5, 5, 5">
+        <StackPanel Orientation="Vertical" Visibility="{Binding MissingConfiguration, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}">
+            <TextBlock Text="Configuration missing!" FontWeight="Bold" FontSize="20" Foreground="Red"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <TextBlock Text="Eq Path"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100" Foreground="Red" Visibility="{Binding DoesNotHaveEqPath, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}"/>
+            <TextBlock Text="Eq Path"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100" Foreground="Green" Visibility="{Binding HasEqPath, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Visible}"/>
+            <StackPanel Orientation="Horizontal" >
+                <TextBlock Text="{Binding EqPath}" HorizontalAlignment="Left"/>
+                <Button Margin="5,0,0,0" HorizontalAlignment="Right" Click="EqFolderButtonClicked">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock>Browse</TextBlock>
+                        <Image Source="pack://application:,,,/Images/open-folder.png" Height="{DynamicResource GlobalFontSize}" Margin="5,0,0,0" ></Image>
+                    </StackPanel>
+                </Button>
+            </StackPanel>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal">
+            <TextBlock Text="Eq Log Path"  VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100" Foreground="Red" Visibility="{Binding DoesNotHaveEqPath, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}"/>
+            <TextBlock Text="Eq Log Path"   VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100" Foreground="Green" Visibility="{Binding HasEqPath, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Visible}"/>
+            <TextBlock Text="{Binding EqLogPath}" HorizontalAlignment="Left" MinWidth="150"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal"  Visibility="{Binding HasEqPath, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Visible}" >
+            <TextBlock Text="Logging"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100" Visibility="{Binding IsLoggingEnabled, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}"/>
+            <TextBlock Text="Logging"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100" Foreground="Red"  Visibility="{Binding IsLoggingDisabled, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Visible}"/>
+            <TextBlock Visibility="{Binding IsLoggingEnabled, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}" Text="Logging Enabled!" Margin="5,5,0,0" HorizontalAlignment="Left" Foreground="Green"/>
+            <Button Visibility="{Binding IsLoggingDisabled, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}" Name="enableLogging" Margin="5,5,0,0" Click="enableLogging_Click">Enable Logging</Button>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Visibility="{Binding IsLoggingDisabled, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}"  >
+            <TextBlock HorizontalAlignment="Center" Text="You must enable loogging!"  FontWeight="Bold" Foreground="Red"/>
+        </StackPanel> 
+        <StackPanel Orientation="Horizontal">
+            <TextBlock Text="Login middlemand" VerticalAlignment="Center"  FontWeight="Bold" MinWidth="120"/>
+            <CheckBox  Name="LoginMiddleMandCheckBox" Click="LoginMiddleMandToggle" MinWidth="75"></CheckBox>
+        </StackPanel>
+    </StackPanel>
+</UserControl>

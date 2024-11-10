@@ -20,6 +20,11 @@ namespace EQTool.ViewModels.SettingsComponents
         {
             this.userComponentFactory = userComponentFactory;
             this.settings = settings;
+            _TreeItems.Add(new TreeGeneral
+            {
+                Name = "General",
+                IsSelected = true
+            });
             foreach (var item in Enum.GetValues(typeof(Servers)).Cast<Servers>().Where(a => a != Servers.MaxServers && a != Servers.Quarm).ToList())
             {
                 var players = settings.Players.Where(a => a.Server == item).ToList();
@@ -48,7 +53,7 @@ namespace EQTool.ViewModels.SettingsComponents
                     });
                 }
             }
-            UserControl = this.userComponentFactory.CreateComponent(UserComponentSettingsManagementTypes.Landing);
+            UserControl = this.userComponentFactory.CreateComponent(TreeViewItemType.General);
         }
 
         public ContextMenu GetContextMenu(TreeViewItemBase item)
@@ -137,8 +142,8 @@ namespace EQTool.ViewModels.SettingsComponents
             }
         }
 
-        private ObservableCollection<TreeServer> _TreeItems = new ObservableCollection<TreeServer>();
-        public ObservableCollection<TreeServer> TreeItems
+        private ObservableCollection<TreeViewItemBase> _TreeItems = new ObservableCollection<TreeViewItemBase>();
+        public ObservableCollection<TreeViewItemBase> TreeItems
         {
             get => _TreeItems;
             set
@@ -165,14 +170,7 @@ namespace EQTool.ViewModels.SettingsComponents
 
         public void TreeSelected(TreeViewItemBase p)
         {
-            if (p is TreeServer)
-            {
-                UserControl = userComponentFactory.CreateComponent(UserComponentSettingsManagementTypes.Server, p);
-            }
-            else if (p is TreePlayer)
-            {
-                UserControl = userComponentFactory.CreateComponent(UserComponentSettingsManagementTypes.Player, p);
-            }
+            UserControl = userComponentFactory.CreateComponent(p.Type, p);
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

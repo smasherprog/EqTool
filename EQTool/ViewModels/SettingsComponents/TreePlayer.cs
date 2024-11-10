@@ -12,5 +12,6 @@ namespace EQTool.ViewModels.SettingsComponents
         public string Name { get; set; }
 
         public ObservableCollection<TreeTrigger> Children { get; set; }
+        public override TreeViewItemType Type => TreeViewItemType.Player;
     }
 }

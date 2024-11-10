@@ -3,8 +3,18 @@ using System.Runtime.CompilerServices;
 
 namespace EQTool.ViewModels.SettingsComponents
 {
-    public class TreeViewItemBase : INotifyPropertyChanged
+    public enum TreeViewItemType
     {
+        General,
+        Player,
+        Server,
+        Trigger
+    }
+
+    public abstract class TreeViewItemBase : INotifyPropertyChanged
+    {
+        public abstract TreeViewItemType Type { get; }
+
         private bool isSelected;
         public bool IsSelected
         {

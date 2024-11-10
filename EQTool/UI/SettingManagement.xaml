@@ -6,14 +6,14 @@
         xmlns:local="clr-namespace:EQTool.UI"
         xmlns:vm="clr-namespace:EQTool.ViewModels.SettingsComponents"
         mc:Ignorable="d"
-        Title="SettingManagement" Height="450" Width="800"> 
+        Title="SettingManagement" Height="450" Width="800">
     <Grid Margin="10">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="30*"/>
             <ColumnDefinition Width="70*"/>
         </Grid.ColumnDefinitions>
-        <TreeView SelectedItemChanged="TreeView_SelectedItemChanged" Grid.Column="0" ItemsSource="{Binding TreeItems}"> 
-            <TreeView.ItemContainerStyle>  
+        <TreeView SelectedItemChanged="TreeView_SelectedItemChanged" Grid.Column="0" ItemsSource="{Binding TreeItems}">
+            <TreeView.ItemContainerStyle>
                 <Style TargetType="TreeViewItem">
                     <Setter Property="IsSelected" Value="{Binding IsSelected}" />
                     <Setter Property="IsExpanded" Value="{Binding IsExpanded}" />
@@ -21,24 +21,30 @@
                 </Style>
             </TreeView.ItemContainerStyle>
             <TreeView.Resources>
+                <HierarchicalDataTemplate DataType="{x:Type vm:TreeGeneral}">
+                    <StackPanel Orientation="Horizontal"  >
+                        <TextBlock Text="⚙" />
+                        <TextBlock Text="{Binding Name}" Margin="0,0,4,0" />
+                    </StackPanel>
+                </HierarchicalDataTemplate>
                 <HierarchicalDataTemplate DataType="{x:Type vm:TreeServer}" ItemsSource="{Binding Children}">
-                    <StackPanel Orientation="Horizontal" Background="{Binding background}" >
+                    <StackPanel Orientation="Horizontal" >
                         <TextBlock Text="🖧" />
-                        <TextBlock Text="{Binding Name}" Margin="0,0,4,0" /> 
+                        <TextBlock Text="{Binding Name}" Margin="0,0,4,0" />
                     </StackPanel>
                 </HierarchicalDataTemplate>
                 <HierarchicalDataTemplate DataType="{x:Type vm:TreePlayer}" ItemsSource="{Binding Children}">
-                    <StackPanel Orientation="Horizontal"> 
+                    <StackPanel Orientation="Horizontal">
                         <TextBlock Text="🐉"/>
                         <TextBlock Text="{Binding Name}" Margin="0,0,4,0" />
                     </StackPanel>
-                </HierarchicalDataTemplate> 
+                </HierarchicalDataTemplate>
                 <HierarchicalDataTemplate DataType="{x:Type vm:TreeTrigger}" ItemsSource="{Binding Children}">
-                      <StackPanel Orientation="Horizontal">
+                    <StackPanel Orientation="Horizontal">
                         <TextBlock Text="🗲"/>
                         <TextBlock Text="{Binding Name}" />
                     </StackPanel>
-                </HierarchicalDataTemplate> 
+                </HierarchicalDataTemplate>
             </TreeView.Resources>
         </TreeView>
         <UserControl Grid.Column="1" Content="{Binding UserControl}"></UserControl>
