@@ -1,4 +1,4 @@
-﻿using EQTool.ViewModels;
+﻿using EQTool.ViewModels.SettingsComponents;
 using System;
 using System.Windows;
 using System.Windows.Controls;

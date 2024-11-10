@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EQTool.UI"
-        xmlns:vm="clr-namespace:EQTool.ViewModels"
+        xmlns:vm="clr-namespace:EQTool.ViewModels.SettingsComponents"
         mc:Ignorable="d"
         Title="SettingManagement" Height="450" Width="800"> 
     <Grid Margin="10">
@@ -22,8 +22,8 @@
             </TreeView.ItemContainerStyle>
             <TreeView.Resources>
                 <HierarchicalDataTemplate DataType="{x:Type vm:TreeServer}" ItemsSource="{Binding Children}">
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="🖧"/>
+                    <StackPanel Orientation="Horizontal" Background="{Binding background}" >
+                        <TextBlock Text="🖧" />
                         <TextBlock Text="{Binding Name}" Margin="0,0,4,0" /> 
                     </StackPanel>
                 </HierarchicalDataTemplate>

@@ -9,80 +9,8 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Controls;
 
-namespace EQTool.ViewModels
+namespace EQTool.ViewModels.SettingsComponents
 {
-    public class TreeTrigger : TreeViewItemBase
-    {
-        public TreeTrigger()
-        {
-        }
-
-        public string Name { get; set; }
-    }
-
-    public class TreePlayer : TreeViewItemBase
-    {
-        public TreePlayer()
-        {
-            Children = new ObservableCollection<TreeTrigger>();
-        }
-
-        public string Name { get; set; }
-
-        public ObservableCollection<TreeTrigger> Children { get; set; }
-    }
-
-    public class TreeServer : TreeViewItemBase
-    {
-        public TreeServer()
-        {
-            Children = new ObservableCollection<TreePlayer>();
-        }
-
-        public string Name { get; set; }
-
-        public Servers Servers { get; set; }
-
-        public ObservableCollection<TreePlayer> Children { get; set; }
-    }
-
-    public class TreeViewItemBase : INotifyPropertyChanged
-    {
-        private bool isSelected;
-        public bool IsSelected
-        {
-            get => isSelected;
-            set
-            {
-                if (value != isSelected)
-                {
-                    isSelected = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
-
-        private bool isExpanded;
-        public bool IsExpanded
-        {
-            get => isExpanded;
-            set
-            {
-                if (value != isExpanded)
-                {
-                    isExpanded = value;
-                    OnPropertyChanged();
-                }
-            }
-        }
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected void OnPropertyChanged([CallerMemberName] string name = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
-        }
-    }
-
     public class SettingsManagementViewModel : INotifyPropertyChanged
     {
         private readonly UserComponentSettingsManagementFactory userComponentFactory;

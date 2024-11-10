@@ -471,7 +471,11 @@
     <Compile Include="Services\TimersService.cs" />
     <Compile Include="ViewModels\SettingsComponents\SettingsPlayerViewModel.cs" />
     <Compile Include="ViewModels\SettingsComponents\SettingsServerViewModel.cs" />
-    <Compile Include="ViewModels\SettingsManagementViewModel.cs" />
+    <Compile Include="ViewModels\SettingsComponents\TreeServer.cs" />
+    <Compile Include="ViewModels\SettingsComponents\TreeTrigger.cs" />
+    <Compile Include="ViewModels\SettingsComponents\TreePlayer.cs" />
+    <Compile Include="ViewModels\SettingsComponents\TreeViewItemBase.cs" />
+    <Compile Include="ViewModels\SettingsComponents\SettingsManagementViewModel.cs" />
     <Compile Include="ViewModels\SpawnTimerDialogViewModel.cs" />
     <Compile Include="ViewModels\ZoneViewModel.cs" />
     <Compile Include="ViewModels\MobInfoViewModel.cs" />
