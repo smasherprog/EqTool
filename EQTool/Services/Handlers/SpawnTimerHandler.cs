@@ -1,7 +1,5 @@
-﻿using EQTool.Models;
-using EQTool.UI;
+using EQTool.Models;
 using EQTool.ViewModels;
-using Microsoft.Extensions.Logging;
 using System.Diagnostics;
 using System.Security.Policy;
 using static EQTool.ViewModels.SpawnTimerDialogViewModel;

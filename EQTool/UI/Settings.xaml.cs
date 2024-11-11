@@ -1,8 +1,6 @@
 ﻿using Autofac;
-using Autofac.Core;
 using EQTool.Models;
 using EQTool.Services;
-using EQTool.Services.Handlers;
 using EQTool.Services.Map;
 using EQTool.Services.P99LoginMiddlemand;
 using EQTool.Services.Parsing;
