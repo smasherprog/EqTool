@@ -1,6 +1,9 @@
-﻿using EQTool.Models;
+using EQTool.Models;
 using EQTool.ViewModels;
 using System.Diagnostics;
+using System.Security.Policy;
+using static EQTool.ViewModels.SpawnTimerDialogViewModel;
+using System.Windows;
 
 namespace EQTool.Services.Handlers
 {
@@ -79,82 +82,6 @@ namespace EQTool.Services.Handlers
     //
     public class SpawnTimerTrigger
     {
-        // utility function to set all fields to the corresponding field in the ViewModel class
-        // todo - instead of laboriously converting between the VM and the M, can we just use same class for both?
-        public void SetFrom(SpawnTimerDialogViewModel vm)
-        {
-            // sweep thru all the fields
-
-            //
-            // overall enable/disable
-            //
-            SpawnTimerEnabled = vm.SpawnTimerEnabled;
-
-            //
-            // timer start
-            //
-
-            // vm doesn't know about enums
-            if (vm.PigParseAI)
-                StartType = StartTypes.PIG_PARSE_AI;
-            else if (vm.ExpMessage)
-                StartType = StartTypes.EXP_MESSAGE;
-            else if (vm.SlainMessage)
-                StartType = StartTypes.SLAIN_MESSAGE;
-            else if (vm.FactionMessage)
-                StartType = StartTypes.FACTION_MESSAGE;
-
-            SlainText = vm.SlainText;
-            FactionText = vm.FactionText;
-
-            //
-            // timer end
-            //
-            WarningTime = vm.WarningTime;
-
-            ProvideWarningText = vm.ProvideWarningText;
-            ProvideWarningTTS = vm.ProvideWarningTTS;
-            WarningText = vm.WarningText;
-            WarningTTS = vm.WarningTTS;
-
-            ProvideEndText = vm.ProvideEndText;
-            ProvideEndTTS = vm.ProvideEndTTS;
-            EndText = vm.EndText;
-            EndTTS = vm.EndTTS;
-
-            //
-            // counter reset field
-            //
-            CounterResetTime = vm.CounterResetTime;
-
-            //
-            // timer duration fields
-            //
-
-            // vm doesn't know about enums
-            if (vm.Preset0600)
-                Duration = Durations.PRESET_0600;
-            else if (vm.Preset0640)
-                Duration = Durations.PRESET_0640;
-            else if (vm.Preset1430)
-                Duration = Durations.PRESET_1430;
-            else if (vm.Preset2200)
-                Duration = Durations.PRESET_2200;
-            else if (vm.Preset2800)
-                Duration = Durations.PRESET_2800;
-            else if (vm.Custom)
-                Duration = Durations.CUSTOM;
-
-            CustomDuration = vm.CustomDuration;
-
-            //
-            // notes and comments field
-            //
-            NotesText = vm.NotesText;
-        }
-
-
-
         //
         // top level is-enabled flag
         //
@@ -163,14 +90,7 @@ namespace EQTool.Services.Handlers
         //
         // timer start fields
         //
-        public enum StartTypes
-        {
-            PIG_PARSE_AI,
-            EXP_MESSAGE,
-            SLAIN_MESSAGE,
-            FACTION_MESSAGE
-        }
-        public SpawnTimerTrigger.StartTypes StartType { get; set; } = StartTypes.EXP_MESSAGE;
+        public SpawnTimerDialogViewModel.StartTypes StartType { get; set; } = SpawnTimerDialogViewModel.StartTypes.EXP_MESSAGE;
 
         public string SlainText { get; set; } = "(an ancient cyclops|a pirate|a cyclops|Boog Mudtoe)";
         public string FactionText { get; set; } = "(Coldain|Rygorr)";
@@ -197,25 +117,14 @@ namespace EQTool.Services.Handlers
         //
         public string CounterResetTime { get; set; } = "1:00:00";
 
-        //
-        // timer duration fields
-        //
-        public enum Durations
-        {
-            PRESET_0600,
-            PRESET_0640,
-            PRESET_1430,
-            PRESET_2200,
-            PRESET_2800,
-            CUSTOM
-        }
-        public SpawnTimerTrigger.Durations Duration { get; set; } = Durations.CUSTOM;
+        public SpawnTimerDialogViewModel.Durations Duration { get; set; } = SpawnTimerDialogViewModel.Durations.CUSTOM;
         public string CustomDuration { get; set; } = "30:00";
 
         //
         // notes and comments field
         //
-        public string NotesText { get; set; } = "AC in OOT: 6 min\r\n" +
+        public string NotesText { get; set; } = 
+            "AC in OOT: 6 min\r\n" +
             "(an ancient cyclops|a pirate|a cyclops|Boog Mudtoe)\r\n" +
             "\r\n" +
             "Drelzna: 19 min\r\n" +
@@ -234,6 +143,79 @@ namespace EQTool.Services.Handlers
             "Chardok = 18:00, Crystal Caverns = 14:45, COM = 22:00\r\n" +
             "Kael =28:00, WL = 14:30\r\n" +
             "\r\n";
-    }
 
+        // utility function to set all fields to the corresponding field in the ViewModel class
+        // todo - instead of laboriously converting between the VM and the M, can we just use same class for both?
+        public void SetFrom(SpawnTimerDialogViewModel vm)
+        {
+            // sweep thru all the fields
+
+            //
+            // overall enable/disable
+            //
+            SpawnTimerEnabled = vm.SpawnTimerEnabled;
+
+            //
+            // timer start
+            //
+            StartType = vm.StartType;
+            SlainText = vm.SlainText;
+            FactionText = vm.FactionText;
+
+            // vm doesn't know about enums
+            if (vm.PigParseAI)
+                StartType = StartTypes.PIG_PARSE_AI;
+            else if (vm.ExpMessage)
+                StartType = StartTypes.EXP_MESSAGE;
+            else if (vm.SlainMessage)
+                StartType = StartTypes.SLAIN_MESSAGE;
+            else if (vm.FactionMessage)
+                StartType = StartTypes.FACTION_MESSAGE;
+
+            //
+            // timer end
+            //
+            WarningTime = vm.WarningTime;
+
+            ProvideWarningText = vm.ProvideWarningText;
+            ProvideWarningTTS = vm.ProvideWarningTTS;
+            WarningText = vm.WarningText;
+            WarningTTS = vm.WarningTTS;
+
+            ProvideEndText = vm.ProvideEndText;
+            ProvideEndTTS = vm.ProvideEndTTS;
+            EndText = vm.EndText;
+            EndTTS = vm.EndTTS;
+
+            //
+            // counter reset field
+            //
+            CounterResetTime = vm.CounterResetTime;
+
+            //
+            // timer duration fields
+            //
+            Duration = vm.Duration;
+            CustomDuration = vm.CustomDuration;
+
+            // vm doesn't know about enums
+            if (vm.Preset0600)
+                Duration = SpawnTimerDialogViewModel.Durations.PRESET_0600;
+            else if (vm.Preset0640)
+                Duration = SpawnTimerDialogViewModel.Durations.PRESET_0640;
+            else if (vm.Preset1430)
+                Duration = SpawnTimerDialogViewModel.Durations.PRESET_1430;
+            else if (vm.Preset2200)
+                Duration = SpawnTimerDialogViewModel.Durations.PRESET_2200;
+            else if (vm.Preset2800)
+                Duration = SpawnTimerDialogViewModel.Durations.PRESET_2800;
+            else if (vm.Custom)
+                Duration = SpawnTimerDialogViewModel.Durations.CUSTOM;
+
+            //
+            // notes and comments field
+            //
+            NotesText = vm.NotesText;
+        }
+    }
 }

@@ -1,13 +1,21 @@
-﻿using EQTool.Services.Handlers;
+using EQTool.UI;
+using EQTool.Models;
+using EQTool.Services.Handlers;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
+using System.Windows;
+using System.Windows.Data;
+using System.Windows.Input;
+using System.Windows.Media;
+using Xceed.Wpf.Toolkit;
 using static EQTool.Services.Handlers.SpawnTimerTrigger;
 
 namespace EQTool.ViewModels
 {
+
     public class SpawnTimerDialogViewModel : INotifyPropertyChanged
     {
-
+        // -----------------------------------------------------------------------
         //
         // the overall enable/disable Spawn Timers checkbox
         //
@@ -22,15 +30,42 @@ namespace EQTool.ViewModels
             }
         }
 
+        // -----------------------------------------------------------------------
         //
         // timer start fields
         //
-        private bool _PigParseAI            = false;
-        private bool _ExpMessage            = false;
-        private bool _SlainMessage          = false;
-        private bool _FactionMessage        = false;
-        private string _SlainText           = "";
-        private string _FactionText         = "";
+
+        //
+        // enum for starttypes
+        //
+        public enum StartTypes
+        {
+            PIG_PARSE_AI,
+            EXP_MESSAGE,
+            SLAIN_MESSAGE,
+            FACTION_MESSAGE
+        }
+
+        private StartTypes _StartType   = StartTypes.EXP_MESSAGE;
+        private bool _PigParseAI        = false;
+        private bool _ExpMessage        = false;
+        private bool _SlainMessage      = false;
+        private bool _FactionMessage    = false;
+        private string _SlainText       = "(an ancient cyclops|a pirate|a cyclops|Boog Mudtoe)";
+        private string _FactionText     = "(Coldain|Rygorr)";
+
+        //
+        // timer start getters and setters
+        //
+        public StartTypes StartType 
+        { 
+            get { return _StartType; }
+            set
+            {
+                _StartType = value;
+                OnPropertyChanged();
+            }
+        }
 
         public bool PigParseAI
         {
@@ -92,23 +127,25 @@ namespace EQTool.ViewModels
             }
         }
 
-
+        // -----------------------------------------------------------------------
         //
         // timer end fields
         //
-        private string _WarningTime         = "";
+        private string _WarningTime         = "30";
         
-        private bool _ProvideWarningText    = false;
-        private bool _ProvideWarningTTS     = false;
-        private string _WarningText         = "";
-        private string _WarningTTS          = "";
+        private bool _ProvideWarningText    = true;
+        private bool _ProvideWarningTTS     = true;
+        private string _WarningText         = "30 second warning";
+        private string _WarningTTS          = "30 second warning";
 
-        private bool _ProvideEndText        = false;
-        private bool _ProvideEndTTS         = false;
-        private string _EndText             = "";
-        private string _EndTTS              = "";
+        private bool _ProvideEndText        = true;
+        private bool _ProvideEndTTS         = true;
+        private string _EndText             = "Pop";
+        private string _EndTTS              = "Pop";
 
-
+        //
+        // timer end getters and setters
+        //
         public string WarningTime
         {
             get { return _WarningTime; }
@@ -200,11 +237,11 @@ namespace EQTool.ViewModels
             }
         }
 
-
+        // -----------------------------------------------------------------------
         //
         // counter reset field
         //
-        private string _CounterResetTime = "";
+        private string _CounterResetTime = "1:00:00";
 
         public string CounterResetTime
         {
@@ -216,17 +253,45 @@ namespace EQTool.ViewModels
             }
         }
 
-
+        // -----------------------------------------------------------------------
         //
         // timer duration fields
         //
+
+        //
+        // enum for durations
+        //
+        public enum Durations
+        {
+            PRESET_0600,
+            PRESET_0640,
+            PRESET_1430,
+            PRESET_2200,
+            PRESET_2800,
+            CUSTOM
+        }
+
         private bool _Preset0600        = false;
         private bool _Preset0640        = false;
         private bool _Preset1430        = false;
         private bool _Preset2200        = false;
         private bool _Preset2800        = false;
         private bool _Custom            = false;
-        private string _CustomDuration  = "";
+        private Durations _Duration     = Durations.CUSTOM;
+        private string _CustomDuration  = "30:00";
+
+        //
+        // timer duration getters and setters
+        //
+        public Durations Duration
+        {
+            get { return _Duration; }
+            set
+            {
+                _Duration = value;
+                OnPropertyChanged();
+            }
+        }
 
         public bool Preset0600
         {
@@ -298,11 +363,31 @@ namespace EQTool.ViewModels
             }
         }
 
-
+        // -----------------------------------------------------------------------
         //
         // notes and comments
         //
-        private string _NotesText = "";
+        private string _NotesText =
+            "AC in OOT: 6 min\r\n" +
+            "(an ancient cyclops|a pirate|a cyclops|Boog Mudtoe)\r\n" +
+            "\r\n" +
+            "Drelzna: 19 min\r\n" +
+            "(a necromancer|Drelzna)\r\n" +
+            "\r\n" +
+            "Zone respawns\r\n" +
+            "Najena 19 min, Skyfire 13 min, EW 6:40\r\n" +
+            "Oasis specs = 16:30, OOT specs/sisters = 6:00\r\n" +
+            "lower guk = 28:00, Grobb = 24:00, Kedge = 22:00\r\n" +
+            "WK guards = 6:00, BB fishers 6:40 and 22:00\r\n" +
+            "North Felwithe guards = 24:00, Paw = 22:00\r\n" +
+            "MM = 23:00, Droga = 20:30, HS = 20:30\r\n" +
+            "Perma = 22:00, TT = 6:40, TD = 12:00, Skyshrine = 30:00\r\n" +
+            "Skyfire = 13:00, Seb Lair = 27:00, Hole = 21:30\r\n" +
+            "Wars Woods brutes = 6:40, Skyshrine = 30:00\r\n" +
+            "Chardok = 18:00, Crystal Caverns = 14:45, COM = 22:00\r\n" +
+            "Kael =28:00, WL = 14:30\r\n" +
+            "\r\n";
+
         public string NotesText
         {
             get { return _NotesText; }
@@ -328,6 +413,10 @@ namespace EQTool.ViewModels
             //
             // timer start
             //
+            StartType = m.StartType;
+            SlainText = m.SlainText;
+            FactionText = m.FactionText;
+            StartType = m.StartType;
 
             // vm doesn't know about enums
             PigParseAI = false;
@@ -347,12 +436,9 @@ namespace EQTool.ViewModels
                     SlainMessage = true;
                     break;
                 case StartTypes.FACTION_MESSAGE:
-                    FactionMessage |= true;
+                    FactionMessage = true;
                     break;
             }
-
-            SlainText = m.SlainText;
-            FactionText = m.FactionText;
 
             //
             // timer end
@@ -377,6 +463,8 @@ namespace EQTool.ViewModels
             //
             // timer duration fields
             //
+            Duration = m.Duration;
+            CustomDuration = m.CustomDuration;
 
             // vm doesn't know about enums
             Preset0600 = false;
@@ -408,8 +496,6 @@ namespace EQTool.ViewModels
                     break;
             }
 
-            CustomDuration = m.CustomDuration;
-
             //
             // notes and comments field
             //
@@ -422,4 +508,20 @@ namespace EQTool.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
     }
+
+    ////
+    //// converter class to allow radiobuttons to bind to enum
+    ////
+    //public class ComparisonConverter : IValueConverter
+    //{
+    //    public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+    //    {
+    //        return value?.Equals(parameter);
+    //    }
+
+    //    public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+    //    {
+    //        return value?.Equals(true) == true ? parameter : Binding.DoNothing;
+    //    }
+    //}
 }
