@@ -162,16 +162,6 @@ namespace EQTool.Services.Handlers
             SlainText = vm.SlainText;
             FactionText = vm.FactionText;
 
-            // vm doesn't know about enums
-            if (vm.PigParseAI)
-                StartType = StartTypes.PIG_PARSE_AI;
-            else if (vm.ExpMessage)
-                StartType = StartTypes.EXP_MESSAGE;
-            else if (vm.SlainMessage)
-                StartType = StartTypes.SLAIN_MESSAGE;
-            else if (vm.FactionMessage)
-                StartType = StartTypes.FACTION_MESSAGE;
-
             //
             // timer end
             //
@@ -197,20 +187,6 @@ namespace EQTool.Services.Handlers
             //
             Duration = vm.Duration;
             CustomDuration = vm.CustomDuration;
-
-            // vm doesn't know about enums
-            if (vm.Preset0600)
-                Duration = SpawnTimerDialogViewModel.Durations.PRESET_0600;
-            else if (vm.Preset0640)
-                Duration = SpawnTimerDialogViewModel.Durations.PRESET_0640;
-            else if (vm.Preset1430)
-                Duration = SpawnTimerDialogViewModel.Durations.PRESET_1430;
-            else if (vm.Preset2200)
-                Duration = SpawnTimerDialogViewModel.Durations.PRESET_2200;
-            else if (vm.Preset2800)
-                Duration = SpawnTimerDialogViewModel.Durations.PRESET_2800;
-            else if (vm.Custom)
-                Duration = SpawnTimerDialogViewModel.Durations.CUSTOM;
 
             //
             // notes and comments field
