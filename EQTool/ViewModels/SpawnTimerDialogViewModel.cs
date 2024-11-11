@@ -9,6 +9,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using Xceed.Wpf.Toolkit;
 using static EQTool.Services.Handlers.SpawnTimerTrigger;
+using System;
+using System.Globalization;
 
 namespace EQTool.ViewModels
 {
@@ -47,10 +49,6 @@ namespace EQTool.ViewModels
         }
 
         private StartTypes _StartType   = StartTypes.EXP_MESSAGE;
-        private bool _PigParseAI        = false;
-        private bool _ExpMessage        = false;
-        private bool _SlainMessage      = false;
-        private bool _FactionMessage    = false;
         private string _SlainText       = "(an ancient cyclops|a pirate|a cyclops|Boog Mudtoe)";
         private string _FactionText     = "(Coldain|Rygorr)";
 
@@ -67,52 +65,12 @@ namespace EQTool.ViewModels
             }
         }
 
-        public bool PigParseAI
-        {
-            get { return _PigParseAI; }
-            set
-            {
-                _PigParseAI = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public bool ExpMessage
-        {
-            get { return _ExpMessage; }
-            set
-            {
-                _ExpMessage = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public bool SlainMessage
-        {
-            get { return _SlainMessage; }
-            set
-            {
-                _SlainMessage = value;
-                OnPropertyChanged();
-            }
-        }
-
         public string SlainText
         {
             get { return _SlainText; }
             set
             {
                 _SlainText = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public bool FactionMessage
-        {
-            get { return _FactionMessage; }
-            set
-            {
-                _FactionMessage = value;
                 OnPropertyChanged();
             }
         }
@@ -185,7 +143,6 @@ namespace EQTool.ViewModels
                 OnPropertyChanged();
             }
         }
-
 
         public string WarningTTS
         {
@@ -271,12 +228,6 @@ namespace EQTool.ViewModels
             CUSTOM
         }
 
-        private bool _Preset0600        = false;
-        private bool _Preset0640        = false;
-        private bool _Preset1430        = false;
-        private bool _Preset2200        = false;
-        private bool _Preset2800        = false;
-        private bool _Custom            = false;
         private Durations _Duration     = Durations.CUSTOM;
         private string _CustomDuration  = "30:00";
 
@@ -289,66 +240,6 @@ namespace EQTool.ViewModels
             set
             {
                 _Duration = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public bool Preset0600
-        {
-            get { return _Preset0600; }
-            set
-            {
-                _Preset0600 = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public bool Preset0640
-        {
-            get { return _Preset0640; }
-            set
-            {
-                _Preset0640 = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public bool Preset1430
-        {
-            get { return _Preset1430; }
-            set
-            {
-                _Preset1430 = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public bool Preset2200
-        {
-            get{ return _Preset2200; }
-            set
-            {
-                _Preset2200 = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public bool Preset2800
-        {
-            get { return _Preset2800; }
-            set
-            {
-                _Preset2800 = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public bool Custom
-        {
-            get { return _Custom; }
-            set
-            {
-                _Custom = value;
                 OnPropertyChanged();
             }
         }
@@ -418,28 +309,6 @@ namespace EQTool.ViewModels
             FactionText = m.FactionText;
             StartType = m.StartType;
 
-            // vm doesn't know about enums
-            PigParseAI = false;
-            ExpMessage = false;
-            SlainMessage = false;
-            FactionMessage = false;
-
-            switch (m.StartType)
-            {
-                case StartTypes.PIG_PARSE_AI:
-                    PigParseAI = true;
-                    break;
-                case StartTypes.EXP_MESSAGE:
-                    ExpMessage = true;
-                    break;
-                case StartTypes.SLAIN_MESSAGE:
-                    SlainMessage = true;
-                    break;
-                case StartTypes.FACTION_MESSAGE:
-                    FactionMessage = true;
-                    break;
-            }
-
             //
             // timer end
             //
@@ -466,36 +335,6 @@ namespace EQTool.ViewModels
             Duration = m.Duration;
             CustomDuration = m.CustomDuration;
 
-            // vm doesn't know about enums
-            Preset0600 = false;
-            Preset0640 = false;
-            Preset1430 = false;
-            Preset2200 = false;
-            Preset2800 = false;
-            Custom = false;
-
-            switch (m.Duration)
-            {
-                case Durations.PRESET_0600:
-                    Preset0600 = true;
-                    break;
-                case Durations.PRESET_0640:
-                    Preset0640 = true;
-                    break;
-                case Durations.PRESET_1430:
-                    Preset1430 = true;
-                    break;
-                case Durations.PRESET_2200:
-                    Preset2200 = true;
-                    break;
-                case Durations.PRESET_2800:
-                    Preset2800 = true;
-                    break;
-                case Durations.CUSTOM:
-                    Custom = true;
-                    break;
-            }
-
             //
             // notes and comments field
             //
@@ -509,19 +348,19 @@ namespace EQTool.ViewModels
         }
     }
 
-    ////
-    //// converter class to allow radiobuttons to bind to enum
-    ////
-    //public class ComparisonConverter : IValueConverter
-    //{
-    //    public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
-    //    {
-    //        return value?.Equals(parameter);
-    //    }
+    //
+    // converter class to allow radiobuttons to bind to enum
+    //
+    public class RadioButtonEnumConverter : IValueConverter
+    {
+        public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return value?.Equals(parameter);
+        }
 
-    //    public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
-    //    {
-    //        return value?.Equals(true) == true ? parameter : Binding.DoNothing;
-    //    }
-    //}
+        public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)
+        {
+            return value?.Equals(true) == true ? parameter : Binding.DoNothing;
+        }
+    }
 }
