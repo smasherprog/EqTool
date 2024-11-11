@@ -17,7 +17,7 @@ namespace EQTool.Services.Handlers
     {
         // Model class to hold the results of the Spawn Timer Dialog
         // make this static, so it only initializes once
-        static private readonly SpawnTimerTrigger _trigger = new SpawnTimerTrigger();
+        static private readonly SpawnTimerDialogViewModel _model = new SpawnTimerDialogViewModel();
 
         //
         // ctor
@@ -32,9 +32,8 @@ namespace EQTool.Services.Handlers
             this.logEvents.FactionEvent += LogEvents_FactionEvent;
         }
 
-        // getter for the spawn timer trigger
-        public SpawnTimerTrigger Trigger { get { return _trigger; } }
-
+        // getter for the spawn timer Model
+        public SpawnTimerDialogViewModel Model { get { return _model; } }
 
         //
         // function that gets called for a ExpGainedEvent
@@ -75,123 +74,5 @@ namespace EQTool.Services.Handlers
 
         }
 
-    }
-
-    //
-    // class to hold spawn trigger info gathered from UI
-    //
-    public class SpawnTimerTrigger
-    {
-        //
-        // top level is-enabled flag
-        //
-        public bool SpawnTimerEnabled { get; set; } = false;
-
-        //
-        // timer start fields
-        //
-        public SpawnTimerDialogViewModel.StartTypes StartType { get; set; } = SpawnTimerDialogViewModel.StartTypes.EXP_MESSAGE;
-
-        public string SlainText { get; set; } = "(an ancient cyclops|a pirate|a cyclops|Boog Mudtoe)";
-        public string FactionText { get; set; } = "(Coldain|Rygorr)";
-
-        //
-        // timer end fields
-        //
-
-        // timer expiring soon warnings
-        public string WarningTime { get; set; } = "30";
-        public bool ProvideWarningText { get; set; } = true;
-        public bool ProvideWarningTTS { get; set; } = true;
-        public string WarningText { get; set; } = "30 second warning";
-        public string WarningTTS { get; set; } = "30 second warning";
-
-        // timer expired notifications
-        public bool ProvideEndText { get; set; } = true;
-        public bool ProvideEndTTS { get; set; } = true;
-        public string EndText { get; set; } = "Pop";
-        public string EndTTS { get; set; } = "Pop";
-
-        //
-        // counter reset field
-        //
-        public string CounterResetTime { get; set; } = "1:00:00";
-
-        public SpawnTimerDialogViewModel.Durations Duration { get; set; } = SpawnTimerDialogViewModel.Durations.CUSTOM;
-        public string CustomDuration { get; set; } = "30:00";
-
-        //
-        // notes and comments field
-        //
-        public string NotesText { get; set; } = 
-            "AC in OOT: 6 min\r\n" +
-            "(an ancient cyclops|a pirate|a cyclops|Boog Mudtoe)\r\n" +
-            "\r\n" +
-            "Drelzna: 19 min\r\n" +
-            "(a necromancer|Drelzna)\r\n" +
-            "\r\n" +
-            "Zone respawns\r\n" +
-            "Najena 19 min, Skyfire 13 min, EW 6:40\r\n" +
-            "Oasis specs = 16:30, OOT specs/sisters = 6:00\r\n" +
-            "lower guk = 28:00, Grobb = 24:00, Kedge = 22:00\r\n" +
-            "WK guards = 6:00, BB fishers 6:40 and 22:00\r\n" +
-            "North Felwithe guards = 24:00, Paw = 22:00\r\n" +
-            "MM = 23:00, Droga = 20:30, HS = 20:30\r\n" +
-            "Perma = 22:00, TT = 6:40, TD = 12:00, Skyshrine = 30:00\r\n" +
-            "Skyfire = 13:00, Seb Lair = 27:00, Hole = 21:30\r\n" +
-            "Wars Woods brutes = 6:40, Skyshrine = 30:00\r\n" +
-            "Chardok = 18:00, Crystal Caverns = 14:45, COM = 22:00\r\n" +
-            "Kael =28:00, WL = 14:30\r\n" +
-            "\r\n";
-
-        // utility function to set all fields to the corresponding field in the ViewModel class
-        // todo - instead of laboriously converting between the VM and the M, can we just use same class for both?
-        public void SetFrom(SpawnTimerDialogViewModel vm)
-        {
-            // sweep thru all the fields
-
-            //
-            // overall enable/disable
-            //
-            SpawnTimerEnabled = vm.SpawnTimerEnabled;
-
-            //
-            // timer start
-            //
-            StartType = vm.StartType;
-            SlainText = vm.SlainText;
-            FactionText = vm.FactionText;
-
-            //
-            // timer end
-            //
-            WarningTime = vm.WarningTime;
-
-            ProvideWarningText = vm.ProvideWarningText;
-            ProvideWarningTTS = vm.ProvideWarningTTS;
-            WarningText = vm.WarningText;
-            WarningTTS = vm.WarningTTS;
-
-            ProvideEndText = vm.ProvideEndText;
-            ProvideEndTTS = vm.ProvideEndTTS;
-            EndText = vm.EndText;
-            EndTTS = vm.EndTTS;
-
-            //
-            // counter reset field
-            //
-            CounterResetTime = vm.CounterResetTime;
-
-            //
-            // timer duration fields
-            //
-            Duration = vm.Duration;
-            CustomDuration = vm.CustomDuration;
-
-            //
-            // notes and comments field
-            //
-            NotesText = vm.NotesText;
-        }
     }
 }

@@ -19,10 +19,10 @@ namespace EQTool.UI
         {
             InitializeComponent();
 
-            spawnTimerHandler = handler;
             viewModel = vm;
+            spawnTimerHandler = handler;
             DataContext = viewModel;
-            viewModel.SetFrom(spawnTimerHandler.Trigger);
+            viewModel.SetFrom(spawnTimerHandler.Model);
         }
 
 
@@ -32,7 +32,7 @@ namespace EQTool.UI
             DialogResult = true;
 
             // capture ViewModel results back into the Model
-            spawnTimerHandler.Trigger.SetFrom(viewModel);
+            spawnTimerHandler.Model.SetFrom(viewModel);
         }
 
         // function called when Cancel button is clicked         

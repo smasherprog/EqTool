@@ -8,7 +8,6 @@ using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Media;
 using Xceed.Wpf.Toolkit;
-using static EQTool.Services.Handlers.SpawnTimerTrigger;
 using System;
 using System.Globalization;
 
@@ -289,10 +288,11 @@ namespace EQTool.ViewModels
             }
         }
 
-
-        // utility function to set all fields to the corresponding field in the Model class
-        // todo - instead of laboriously converting between the VM and the M, can we just use same class for both?
-        public void SetFrom(SpawnTimerTrigger m)
+        //
+        // utility function to set all fields to the same value as the passed object fields
+        // apparently C Sharp does not allow overloading operator= ?
+        //
+        public void SetFrom(SpawnTimerDialogViewModel m)
         {
             // sweep thru all the fields
 
@@ -307,7 +307,6 @@ namespace EQTool.ViewModels
             StartType = m.StartType;
             SlainText = m.SlainText;
             FactionText = m.FactionText;
-            StartType = m.StartType;
 
             //
             // timer end
