@@ -413,6 +413,10 @@ namespace EQTool.ViewModels
             //
             // timer start
             //
+            StartType = m.StartType;
+            SlainText = m.SlainText;
+            FactionText = m.FactionText;
+            StartType = m.StartType;
 
             // vm doesn't know about enums
             PigParseAI = false;
@@ -435,11 +439,6 @@ namespace EQTool.ViewModels
                     FactionMessage = true;
                     break;
             }
-
-            StartType = m.StartType;
-            SlainText = m.SlainText;
-            FactionText = m.FactionText;
-            StartType = m.StartType;
 
             //
             // timer end
@@ -464,6 +463,8 @@ namespace EQTool.ViewModels
             //
             // timer duration fields
             //
+            Duration = m.Duration;
+            CustomDuration = m.CustomDuration;
 
             // vm doesn't know about enums
             Preset0600 = false;
@@ -495,9 +496,6 @@ namespace EQTool.ViewModels
                     break;
             }
 
-            Duration = m.Duration;
-            CustomDuration = m.CustomDuration;
-
             //
             // notes and comments field
             //
@@ -511,19 +509,19 @@ namespace EQTool.ViewModels
         }
     }
 
-    //
-    // converter class to allow radiobuttons to bind to enum
-    //
-    public class ComparisonConverter : IValueConverter
-    {
-        public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
-        {
-            return value?.Equals(parameter);
-        }
+    ////
+    //// converter class to allow radiobuttons to bind to enum
+    ////
+    //public class ComparisonConverter : IValueConverter
+    //{
+    //    public object Convert(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+    //    {
+    //        return value?.Equals(parameter);
+    //    }
 
-        public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
-        {
-            return value?.Equals(true) == true ? parameter : Binding.DoNothing;
-        }
-    }
+    //    public object ConvertBack(object value, Type targetType, object parameter, System.Globalization.CultureInfo culture)
+    //    {
+    //        return value?.Equals(true) == true ? parameter : Binding.DoNothing;
+    //    }
+    //}
 }

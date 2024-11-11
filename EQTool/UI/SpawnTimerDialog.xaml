@@ -4,7 +4,6 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EQTool.UI"
-        xmlns:vm="clr-namespace:EQTool.ViewModels"
         mc:Ignorable="d"
         Title="Spawn Timer Dialog" SizeToContent="WidthAndHeight" ResizeMode="NoResize">
 
@@ -31,13 +30,10 @@
 
                 <!-- timer start -->
                 <StackPanel Margin="0" Height="140" Width="500">
-                    <StackPanel.Resources>
-                        <vm:ComparisonConverter x:Key="vm:ComparisonConverter" />  
-                    </StackPanel.Resources>
                     <TextBlock Text="Timer Start" Margin="10,5,0,0" FontSize="16"/>
                     <RadioButton x:Name="aiRadioButton" GroupName="TimerStart" 
                                  Content="PigParse AI" 
-                                 IsChecked="{Binding Path=StartType, Converter={StaticResource ComparisonConverter}, ConverterParameter={x:Static vm:SpawnTimerDialogViewModel+StartTypes.PIG_PARSE_AI}}" 
+                                 IsChecked="{Binding PigParseAI}" 
                                  Margin="30,5,0,0" 
                                  FontSize="14" 
                                  VerticalContentAlignment="Center"/>

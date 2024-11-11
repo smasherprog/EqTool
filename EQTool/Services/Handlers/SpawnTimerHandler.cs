@@ -90,8 +90,7 @@ namespace EQTool.Services.Handlers
         //
         // timer start fields
         //
-        //public SpawnTimerDialogViewModel.StartTypes StartType { get; set; } = SpawnTimerDialogViewModel.StartTypes.EXP_MESSAGE;
-        public StartTypes StartType { get; set; } = StartTypes.EXP_MESSAGE;
+        public SpawnTimerDialogViewModel.StartTypes StartType { get; set; } = SpawnTimerDialogViewModel.StartTypes.EXP_MESSAGE;
 
         public string SlainText { get; set; } = "(an ancient cyclops|a pirate|a cyclops|Boog Mudtoe)";
         public string FactionText { get; set; } = "(Coldain|Rygorr)";
