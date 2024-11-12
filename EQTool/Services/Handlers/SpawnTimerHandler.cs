@@ -4,6 +4,8 @@ using System.Diagnostics;
 using System.Security.Policy;
 using static EQTool.ViewModels.SpawnTimerDialogViewModel;
 using System.Windows;
+using EQToolShared.HubModels;
+using System.Text.RegularExpressions;
 
 namespace EQTool.Services.Handlers
 {
@@ -43,9 +45,35 @@ namespace EQTool.Services.Handlers
             // debugging message
             Debug.WriteLine($"ExpGainedEvent: [{expGainedEvent.TimeStamp}] [{expGainedEvent.Line}]");
 
-            // react
+            // are spawn timers for exp messages turned on?
+            if ((Model.SpawnTimerEnabled) && (Model.StartType == StartTypes.EXP_MESSAGE))
+            {
+                // fire off a timer event
+                var timer = new StartTimerEvent
+                {
+                    CustomTimer = new CustomTimer
+                    {
+                        DurationInSeconds = Model.DurationSeconds,
+                        Name = $"Exp Timer [{++Model.TimerCounter}]",
+                        WarningTime = Model.WarningSeconds,
+                        ProvideWarningText = Model.ProvideWarningText,
+                        ProvideWarningTTS = Model.ProvideWarningTTS,
+                        WarningText = Model.WarningText,
+                        WarningTTS = Model.WarningTTS,
+                        ProvideEndText = Model.ProvideEndText,
+                        ProvideEndTTS = Model.ProvideEndTTS,
+                        EndText = Model.EndText,
+                        EndTTS = Model.EndTTS,
+                        RestartExisting = false,
+                    },
 
+                    Line = expGainedEvent.Line,
+                    TimeStamp = expGainedEvent.TimeStamp
+                };
 
+                // todo - why are two timers being loaded each time???
+                logEvents.Handle(timer);
+            }
         }
 
         //
