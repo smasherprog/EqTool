@@ -12,8 +12,6 @@ namespace EQTool.UI
         private SpawnTimerHandler           _spawnTimerHandler;
         private SpawnTimerDialogViewModel   _viewModel;
 
-        //public SpawnTimerDialogViewModel ViewModel { get { return _viewModel; } set { _viewModel = value;} }
-
         // ctor
         public SpawnTimerDialog(SpawnTimerDialogViewModel vm, SpawnTimerHandler handler)
         {
