@@ -220,6 +220,10 @@
             <StackPanel Orientation="Vertical" Margin="5, 5, 5, 5">
                 <StackPanel Orientation="Vertical"  Margin="0, 0, 0, 8">
                     <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Spawn Timer"  VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
+                        <Button Click="openSpawnTimerDialog">Spawn Timer Configurator</Button>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Always on top" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
                         <CheckBox IsChecked="{Binding SpellAlwaysOnTop}" Click="SaveAlwaysOntopCheckBoxSettings" ></CheckBox>
                     </StackPanel>

@@ -10,19 +10,21 @@ namespace EQTool.UI
     /// </summary>
     public partial class SpawnTimerDialog : Window
     {
-        private SpawnTimerHandler spawnTimerHandler;
-        private SpawnTimerDialogViewModel viewModel;
-        public SpawnTimerDialogViewModel ViewModel { get { return viewModel; } set { viewModel = value;} }
+        private SpawnTimerHandler           _spawnTimerHandler;
+        private SpawnTimerDialogViewModel   _viewModel;
+
+        //public SpawnTimerDialogViewModel ViewModel { get { return _viewModel; } set { _viewModel = value;} }
 
         // ctor
         public SpawnTimerDialog(SpawnTimerDialogViewModel vm, SpawnTimerHandler handler)
         {
-            InitializeComponent();
+            _viewModel = vm;
+            _spawnTimerHandler = handler;
 
-            viewModel = vm;
-            spawnTimerHandler = handler;
-            DataContext = viewModel;
-            viewModel.SetFrom(spawnTimerHandler.Model);
+            DataContext = _viewModel;
+            _viewModel.SetFrom(_spawnTimerHandler.Model);
+
+            InitializeComponent();
         }
 
 
@@ -32,7 +34,7 @@ namespace EQTool.UI
             DialogResult = true;
 
             // capture ViewModel results back into the Model
-            spawnTimerHandler.Model.SetFrom(viewModel);
+            _spawnTimerHandler.Model.SetFrom(_viewModel);
         }
 
         // function called when Cancel button is clicked         

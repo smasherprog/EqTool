@@ -1,4 +1,4 @@
-﻿using Autofac;
+using Autofac;
 using Autofac.Features.ResolveAnything;
 using EQTool.Services;
 using EQTool.Services.Handlers;
@@ -30,7 +30,7 @@ namespace EQTool
             {
                 if (type.IsSubclassOf(typeof(BaseHandler)))
                 {
-                    _ = builder.RegisterType(type).AsSelf().As<BaseHandler>().SingleInstance();
+                    _ = builder.RegisterType(type).AsSelf().SingleInstance();
                 }
             }
 

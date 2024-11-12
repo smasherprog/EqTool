@@ -309,7 +309,7 @@ namespace EQTool.ViewModels
             appDispatcher.DispatchUI(() =>
             {
                 var s = SpellList.FirstOrDefault(a => a.SpellName == match.Name && match.TargetName == a.TargetName);
-                if (s != null)
+                if ((s != null) && (match.RestartExisting == true))
                 {
                     if (match.SpellType != SpellTypes.RandomRoll)
                     {
