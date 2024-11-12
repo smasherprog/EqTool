@@ -3,6 +3,7 @@ using EQTool.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Media;
 
 namespace EQTool.Services.Handlers
 {
@@ -30,15 +31,25 @@ namespace EQTool.Services.Handlers
 
         private void LogParser_SpellWornOtherOffEvent(object sender, SpellWornOffOtherEvent e)
         {
-            var overlay = activePlayer?.Player?.RootWarningAudio ?? false;
-            if (!overlay)
+            if (!RootSpells.Any(a => string.Equals(a, e.SpellName, StringComparison.OrdinalIgnoreCase)))
             {
                 return;
             }
-
-            if (RootSpells.Any(a => string.Equals(a, e.SpellName, StringComparison.OrdinalIgnoreCase)))
+            var doAlert = activePlayer?.Player?.RootWarningAudio ?? false;
+            var text = $"{e.SpellName} has worn off!";
+            if (doAlert)
             {
-                textToSpeach.Say($"{e.SpellName} has worn off!");
+                textToSpeach.Say(text);
+            }
+            doAlert = activePlayer?.Player?.RootWarningOverlay ?? false;
+            if (doAlert)
+            {
+                _ = System.Threading.Tasks.Task.Factory.StartNew(() =>
+                {
+                    logEvents.Handle(new OverlayEvent { Text = text, ForeGround = Brushes.Red, Reset = false });
+                    System.Threading.Thread.Sleep(3000);
+                    logEvents.Handle(new OverlayEvent { Text = text, ForeGround = Brushes.Red, Reset = true });
+                });
             }
         }
     }

@@ -1,5 +1,6 @@
 ﻿using EQTool.Models;
 using EQTool.ViewModels;
+using System.Windows.Media;
 
 namespace EQTool.Services.Handlers
 {
@@ -12,13 +13,23 @@ namespace EQTool.Services.Handlers
 
         private void LogParser_ResistSpellEvent(object sender, ResistSpellEvent e)
         {
-            var overlay = activePlayer?.Player?.ResistWarningAudio ?? false;
-            if (!overlay)
-            {
-                return;
-            }
+            var doAlert = activePlayer?.Player?.ResistWarningAudio ?? false;
             var target = e.isYou ? "You " : "Your target ";
-            textToSpeach.Say($"{target} resisted the {e.Spell.name} spell");
+            var text = $"{target} resisted the {e.Spell.name} spell";
+            if (doAlert)
+            {
+                textToSpeach.Say(text);
+            }
+            doAlert = activePlayer?.Player?.ResistWarningOverlay ?? false;
+            if (doAlert)
+            {
+                _ = System.Threading.Tasks.Task.Factory.StartNew(() =>
+                {
+                    logEvents.Handle(new OverlayEvent { Text = text, ForeGround = Brushes.Red, Reset = false });
+                    System.Threading.Thread.Sleep(3000);
+                    logEvents.Handle(new OverlayEvent { Text = text, ForeGround = Brushes.Red, Reset = true });
+                });
+            }
         }
     }
 }

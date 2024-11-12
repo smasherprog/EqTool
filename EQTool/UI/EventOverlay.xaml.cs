@@ -1,6 +1,5 @@
 ﻿using EQTool.Models;
 using EQTool.Services;
-using EQTool.Services.Parsing;
 using EQTool.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -46,291 +45,27 @@ namespace EQTool.UI
             base.Init();
             Topmost = true;
             SaveState();
-            logEvents.EnrageEvent += LogParser_EnrageEvent;
+            logEvents.OverlayEvent += LogEvents_OverlayEvent;
             logEvents.CompleteHealEvent += LogParser_CHEvent;
-            logEvents.LevitateEvent += LogParser_LevEvent;
-            logEvents.InvisEvent += LogParser_InvisEvent;
-            logEvents.FTEEvent += LogParser_FTEEvent;
-            logEvents.CharmBreakEvent += LogParser_CharmBreakEvent;
-            logEvents.FailedFeignEvent += LogParser_FailedFeignEvent;
-            logEvents.GroupInviteEvent += LogParser_GroupInviteEvent;
-            logEvents.SpellCastEvent += LogParser_StartCastingEvent;
-            logEvents.SpellWornOffOtherEvent += LogParser_SpellWornOtherOffEvent;
-            logEvents.ResistSpellEvent += LogParser_ResistSpellEvent;
         }
 
-        private void LogParser_ResistSpellEvent(object sender, ResistSpellEvent e)
+        private void LogEvents_OverlayEvent(object sender, OverlayEvent e)
         {
-            var overlay = activePlayer?.Player?.ResistWarningOverlay ?? false;
-            if (!overlay)
+            appDispatcher.DispatchUI(() =>
             {
-                return;
-            }
-
-            _ = System.Threading.Tasks.Task.Factory.StartNew(() =>
-            {
-                var target = e.isYou ? "You " : "Your target ";
-                appDispatcher.DispatchUI(() =>
+                if (e.Reset)
                 {
-                    CenterText.Text = $"{target} resisted the {e.Spell.name} spell";
-                    CenterText.Foreground = Brushes.Red;
-                });
-                System.Threading.Thread.Sleep(3000);
-                appDispatcher.DispatchUI(() =>
-                {
-                    CenterText.Text = string.Empty;
-                    CenterText.Foreground = Brushes.Red;
-                });
-            });
-        }
-
-        private readonly List<string> RootSpells = new List<string>()
-        {
-            "Root",
-            "Fetter",
-            "Enstill",
-            "Immobalize",
-            "Paralyzing Earth",
-            "Grasping Roots",
-            "Ensnaring Roots",
-            "Enveloping Roots",
-            "Engulfing Roots",
-            "Engorging Roots",
-            "Entrapping Roots"
-        };
-
-        private void LogParser_SpellWornOtherOffEvent(object sender, SpellWornOffOtherEvent e)
-        {
-            var overlay = activePlayer?.Player?.RootWarningOverlay ?? false;
-            if (!overlay)
-            {
-                return;
-            }
-
-            if (RootSpells.Any(a => string.Equals(a, e.SpellName, StringComparison.OrdinalIgnoreCase)))
-            {
-                _ = System.Threading.Tasks.Task.Factory.StartNew(() =>
-                {
-                    appDispatcher.DispatchUI(() =>
-                    {
-                        CenterText.Text = $"{e.SpellName} has worn off!";
-                        CenterText.Foreground = Brushes.Red;
-                    });
-                    System.Threading.Thread.Sleep(3000);
-                    appDispatcher.DispatchUI(() =>
+                    if (CenterText.Text == e.Text && CenterText.Foreground == e.ForeGround)
                     {
                         CenterText.Text = string.Empty;
                         CenterText.Foreground = Brushes.Red;
-                    });
-                });
-            }
-        }
-
-        private void LogParser_StartCastingEvent(object sender, SpellCastEvent e)
-        {
-            var overlay = activePlayer?.Player?.DragonRoarOverlay ?? false;
-            if (!overlay || e.Spell.name != "Dragon Roar")
-            {
-                return;
-            }
-
-            _ = System.Threading.Tasks.Task.Factory.StartNew(() =>
-            {
-                System.Threading.Thread.Sleep(1000 * 30);
-                appDispatcher.DispatchUI(() =>
-                {
-                    CenterText.Text = "Dragon Roar in 6 Seconds!";
-                    CenterText.Foreground = Brushes.Red;
-                });
-                System.Threading.Thread.Sleep(1000);
-                appDispatcher.DispatchUI(() =>
-                {
-                    CenterText.Text = "Dragon Roar in 5 Seconds!";
-                    CenterText.Foreground = Brushes.Red;
-                });
-                System.Threading.Thread.Sleep(1000);
-                appDispatcher.DispatchUI(() =>
-                {
-                    CenterText.Text = "Dragon Roar in 4 Seconds!";
-                    CenterText.Foreground = Brushes.Red;
-                });
-                System.Threading.Thread.Sleep(1000);
-                appDispatcher.DispatchUI(() =>
-                {
-                    CenterText.Text = "Dragon Roar in 3 Seconds!";
-                    CenterText.Foreground = Brushes.Red;
-                });
-                System.Threading.Thread.Sleep(1000);
-                appDispatcher.DispatchUI(() =>
-                {
-                    CenterText.Text = "Dragon Roar in 2 Seconds!";
-                    CenterText.Foreground = Brushes.Red;
-                });
-                System.Threading.Thread.Sleep(1000);
-                appDispatcher.DispatchUI(() =>
-                {
-                    CenterText.Text = "Dragon Roar in 1 Seconds!";
-                    CenterText.Foreground = Brushes.Red;
-                });
-                System.Threading.Thread.Sleep(1000);
-                appDispatcher.DispatchUI(() =>
-                {
-                    CenterText.Text = string.Empty;
-                    CenterText.Foreground = Brushes.Red;
-                });
-            });
-        }
-
-        private void LogParser_GroupInviteEvent(object sender, GroupInviteEvent e)
-        {
-            var overlay = activePlayer?.Player?.GroupInviteOverlay ?? false;
-            if (!overlay)
-            {
-                return;
-            }
-
-            _ = System.Threading.Tasks.Task.Factory.StartNew(() =>
-            {
-                appDispatcher.DispatchUI(() =>
-                {
-                    CenterText.Text = e.Inviter + " Invites you to a group";
-                    CenterText.Foreground = Brushes.Red;
-                });
-                System.Threading.Thread.Sleep(1000 * 5);
-                appDispatcher.DispatchUI(() =>
-                {
-                    CenterText.Text = string.Empty;
-                    CenterText.Foreground = Brushes.Red;
-                });
-            });
-        }
-
-        private void LogParser_FailedFeignEvent(object sender, FailedFeignEvent e)
-        {
-            var overlay = activePlayer?.Player?.FailedFeignOverlay ?? false;
-            if (!overlay)
-            {
-                return;
-            }
-
-            _ = System.Threading.Tasks.Task.Factory.StartNew(() =>
-            {
-                appDispatcher.DispatchUI(() =>
-                {
-                    CenterText.Text = $"{e.PersonWhoFailedFeign} Feign Failed Death!";
-                    CenterText.Foreground = Brushes.Red;
-                });
-                System.Threading.Thread.Sleep(1000 * 5);
-                appDispatcher.DispatchUI(() =>
-                {
-                    CenterText.Text = string.Empty;
-                    CenterText.Foreground = Brushes.Red;
-                });
-            });
-        }
-
-        private void LogParser_CharmBreakEvent(object sender, CharmBreakEvent e)
-        {
-            var overlay = activePlayer?.Player?.CharmBreakOverlay ?? false;
-            if (!overlay)
-            {
-                return;
-            }
-
-            _ = System.Threading.Tasks.Task.Factory.StartNew(() =>
-            {
-                appDispatcher.DispatchUI(() =>
-                {
-                    CenterText.Text = "Charm Break";
-                    CenterText.Foreground = Brushes.Red;
-                });
-                System.Threading.Thread.Sleep(1000 * 5);
-                appDispatcher.DispatchUI(() =>
-                {
-                    CenterText.Text = string.Empty;
-                    CenterText.Foreground = Brushes.Red;
-                });
-            });
-        }
-
-        private void LogParser_FTEEvent(object sender, FTEEvent e)
-        {
-            var overlay = activePlayer?.Player?.FTEOverlay ?? false;
-            if (!overlay)
-            {
-                return;
-            }
-
-            _ = System.Threading.Tasks.Task.Factory.StartNew(() =>
-            {
-                var fteperson = pigParseApi.GetPlayerData(e.FTEPerson, activePlayer.Player.Server.Value);
-                appDispatcher.DispatchUI(() =>
-                {
-                    if (fteperson == null)
-                    {
-                        CenterText.Text = $"{e.FTEPerson} FTE {e.NPCName}";
-                        CenterText.Foreground = Brushes.Yellow;
                     }
-                    else
-                    {
-                        CenterText.Text = $"{fteperson.Name} <{fteperson.GuildName}> FTE {e.NPCName}";
-                        CenterText.Foreground = Brushes.Yellow;
-                    }
-                });
-                System.Threading.Thread.Sleep(1000 * 5);
-                appDispatcher.DispatchUI(() =>
+                }
+                else
                 {
-                    CenterText.Text = string.Empty;
-                    CenterText.Foreground = Brushes.Yellow;
-                });
-            });
-        }
-
-        private void LogParser_InvisEvent(object sender, InvisEvent e)
-        {
-            var overlay = activePlayer?.Player?.InvisFadingOverlay ?? false;
-            if (!overlay || e.InvisStatus != InvisParser.InvisStatus.Fading)
-            {
-                return;
-            }
-
-            _ = System.Threading.Tasks.Task.Factory.StartNew(() =>
-            {
-                appDispatcher.DispatchUI(() =>
-                {
-                    CenterText.Text = "Invis Fading";
-                    CenterText.Foreground = Brushes.Red;
-                });
-                System.Threading.Thread.Sleep(1000 * 5);
-                appDispatcher.DispatchUI(() =>
-                {
-                    CenterText.Text = string.Empty;
-                    CenterText.Foreground = Brushes.Red;
-                });
-            });
-        }
-
-        private void LogParser_LevEvent(object sender, LevitateEvent e)
-        {
-            var overlay = activePlayer?.Player?.LevFadingOverlay ?? false;
-            if (!overlay || e.LevitateStatus != LevParser.LevStatus.Fading)
-            {
-                return;
-            }
-
-            _ = System.Threading.Tasks.Task.Factory.StartNew(() =>
-            {
-                appDispatcher.DispatchUI(() =>
-                {
-                    CenterText.Text = "Levitate Fading";
-                    CenterText.Foreground = Brushes.Red;
-                });
-                System.Threading.Thread.Sleep(1000 * 5);
-                appDispatcher.DispatchUI(() =>
-                {
-                    CenterText.Text = string.Empty;
-                    CenterText.Foreground = Brushes.Red;
-                });
+                    CenterText.Text = e.Text;
+                    CenterText.Foreground = e.ForeGround;
+                }
             });
         }
 
@@ -540,51 +275,12 @@ namespace EQTool.UI
             return chaindata;
         }
 
-        private void LogParser_EnrageEvent(object sender, EnrageEvent e)
-        {
-            var overlay = activePlayer?.Player?.EnrageOverlay ?? false;
-            if (!overlay)
-            {
-                return;
-            }
-            appDispatcher.DispatchUI(() =>
-            {
-                CenterText.Text = e.NpcName + " ENRAGED";
-                CenterText.Foreground = Brushes.Red;
-            });
-
-            _ = System.Threading.Tasks.Task.Factory.StartNew(() =>
-            {
-                System.Threading.Thread.Sleep(1000 * 12);
-                appDispatcher.DispatchUI(() =>
-                {
-                    CenterText.Text = "ENRAGE OFF";
-                    CenterText.Foreground = Brushes.Red;
-                });
-                System.Threading.Thread.Sleep(1000 * 3);
-                appDispatcher.DispatchUI(() =>
-                {
-                    CenterText.Text = string.Empty;
-                    CenterText.Foreground = Brushes.Red;
-                });
-            });
-        }
-
         protected override void OnClosing(CancelEventArgs e)
         {
             if (logEvents != null)
             {
-                logEvents.EnrageEvent -= LogParser_EnrageEvent;
+                logEvents.OverlayEvent -= LogEvents_OverlayEvent;
                 logEvents.CompleteHealEvent -= LogParser_CHEvent;
-                logEvents.LevitateEvent -= LogParser_LevEvent;
-                logEvents.InvisEvent -= LogParser_InvisEvent;
-                logEvents.FTEEvent -= LogParser_FTEEvent;
-                logEvents.CharmBreakEvent -= LogParser_CharmBreakEvent;
-                logEvents.FailedFeignEvent -= LogParser_FailedFeignEvent;
-                logEvents.GroupInviteEvent -= LogParser_GroupInviteEvent;
-                logEvents.SpellCastEvent -= LogParser_StartCastingEvent;
-                logEvents.SpellWornOffOtherEvent -= LogParser_SpellWornOtherOffEvent;
-                logEvents.ResistSpellEvent -= LogParser_ResistSpellEvent;
             }
 
             base.OnClosing(e);

@@ -1,6 +1,7 @@
 ﻿using EQTool.Models;
 using EQTool.Services.Parsing;
 using EQTool.ViewModels;
+using System.Windows.Media;
 
 namespace EQTool.Services.Handlers
 {
@@ -14,9 +15,25 @@ namespace EQTool.Services.Handlers
 
         private void LogParser_LevEvent(object sender, LevitateEvent e)
         {
-            if (activePlayer?.Player?.LevFadingAudio == true && e.LevitateStatus == LevParser.LevStatus.Fading)
+            if (e.LevitateStatus != LevParser.LevStatus.Fading)
             {
-                textToSpeach.Say("Levitate Fading");
+                return;
+            }
+
+            var text = "Levitate Fading";
+            if (activePlayer?.Player?.LevFadingAudio == true)
+            {
+                textToSpeach.Say(text);
+            }
+            var doAlert = activePlayer?.Player?.LevFadingOverlay ?? false;
+            if (doAlert)
+            {
+                _ = System.Threading.Tasks.Task.Factory.StartNew(() =>
+                {
+                    logEvents.Handle(new OverlayEvent { Text = text, ForeGround = Brushes.Red, Reset = false });
+                    System.Threading.Thread.Sleep(3000);
+                    logEvents.Handle(new OverlayEvent { Text = text, ForeGround = Brushes.Red, Reset = true });
+                });
             }
         }
     }
