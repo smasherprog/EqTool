@@ -120,6 +120,20 @@ namespace EQTool.Models
             set => _SettingsWindowState = value ?? new WindowState();
         }
 
+        private WindowState _SettingsManagementWindowState;
+        public WindowState SettingsManagementWindowState
+        {
+            get
+            {
+                if (_SettingsManagementWindowState == null)
+                {
+                    _SettingsManagementWindowState = new WindowState();
+                }
+                return _SettingsManagementWindowState;
+            }
+            set => _SettingsManagementWindowState = value ?? new WindowState();
+        }
+
         public List<PlayerInfo> Players { get; set; } = new List<PlayerInfo>();
 
         public bool BestGuessSpells { get; set; }

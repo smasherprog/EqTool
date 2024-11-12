@@ -1,4 +1,6 @@
-﻿using EQTool.ViewModels.SettingsComponents;
+﻿using EQTool.Models;
+using EQTool.Services;
+using EQTool.ViewModels.SettingsComponents;
 using System;
 using System.Windows;
 using System.Windows.Controls;
@@ -7,13 +9,17 @@ using System.Windows.Media;
 
 namespace EQTool.UI
 {
-    public partial class SettingManagement : Window
+    public partial class SettingManagement : BaseSaveStateWindow
     {
         private readonly SettingsManagementViewModel settingsManagementViewModel;
-        public SettingManagement(SettingsManagementViewModel settingsManagementViewModel)
+        public SettingManagement(
+            SettingsManagementViewModel settingsManagementViewModel,
+            EQToolSettingsLoad toolSettingsLoad,
+            EQToolSettings settings) : base(settings.SettingsManagementWindowState, toolSettingsLoad, settings)
         {
             DataContext = this.settingsManagementViewModel = settingsManagementViewModel;
             InitializeComponent();
+            base.Init();
         }
 
         private void TreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)

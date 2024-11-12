@@ -28,10 +28,21 @@ namespace EQTool.UI.SettingsComponents
             this.appDispatcher = appDispatcher;
             this.settings = settings;
             this.toolSettingsLoad = toolSettingsLoad;
-            this.SettingsWindowData = SettingsWindowData;
             this.loginMiddlemand = loginMiddlemand;
+            DataContext = this.SettingsWindowData = SettingsWindowData;
+            SettingsWindowData.EqPath = this.settings.DefaultEqDirectory;
             InitializeComponent();
+            TryCheckLoggingEnabled();
+            try
+            {
+                TryUpdateSettings();
+            }
+            catch
+            {
+
+            }
         }
+
         private void TryUpdateSettings()
         {
             var logfounddata = FindEq.GetLogFileLocation(new FindEq.FindEQData { EqBaseLocation = settings.DefaultEqDirectory, EQlogLocation = string.Empty });
@@ -44,22 +55,6 @@ namespace EQTool.UI.SettingsComponents
 
             LoginMiddleMandCheckBox.IsChecked = loginMiddlemand.Running;
 
-            var player = SettingsWindowData.ActivePlayer.Player;
-
-            if (player?.ShowSpellsForClasses != null)
-            {
-                foreach (var item in SettingsWindowData.SelectedPlayerClasses)
-                {
-                    item.IsChecked = player.ShowSpellsForClasses.Contains(item.TheValue);
-                }
-            }
-            else
-            {
-                foreach (var item in SettingsWindowData.SelectedPlayerClasses)
-                {
-                    item.IsChecked = false;
-                }
-            }
             var hasvalideqdir = FindEq.IsValidEqFolder(settings.DefaultEqDirectory);
             if (hasvalideqdir && FindEq.TryCheckLoggingEnabled(settings.DefaultEqDirectory) == true)
             {
