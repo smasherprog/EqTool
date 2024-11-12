@@ -29,7 +29,6 @@ namespace EQTool.Services.Handlers
             this.logEvents.ExpGainedEvent += LogEvents_ExpGainedEvent;
             this.logEvents.SlainEvent += LogEvents_SlainEvent;
             this.logEvents.FactionEvent += LogEvents_FactionEvent;
-            Debug.WriteLine("CTOR called");
         }
 
         // getter for the spawn timer Model
