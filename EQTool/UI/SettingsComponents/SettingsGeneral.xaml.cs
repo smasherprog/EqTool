@@ -8,47 +8,19 @@ using EQToolShared.Enums;
 using EQToolShared.HubModels;
 using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
-using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Forms;
 using System.Windows.Navigation;
 
-namespace EQTool.UI
+namespace EQTool.UI.SettingsComponents
 {
-    public class BoolStringClass : INotifyPropertyChanged
-    {
-        public string TheText { get; set; }
-
-        public PlayerClasses TheValue { get; set; }
-
-        private bool _IsChecked { get; set; }
-
-        public bool IsChecked
-        {
-            get => _IsChecked; set
-            {
-                _IsChecked = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected void OnPropertyChanged([CallerMemberName] string name = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
-        }
-    }
-
-    public partial class Settings : BaseSaveStateWindow
+    public partial class SettingsGeneral : UserControl
     {
         private readonly SettingsWindowViewModel SettingsWindowData;
         private readonly EQToolSettings settings;
@@ -65,7 +37,7 @@ namespace EQTool.UI
         private readonly SettingsTestRunOverlay settingsTestRunOverlay;
         private readonly WindowFactory windowFactory;
 
-        public Settings(
+        public SettingsGeneral(
             WindowFactory windowFactory,
             LogParser logParser,
             MapLoad mapLoad,
@@ -79,7 +51,7 @@ namespace EQTool.UI
             EQToolSettingsLoad toolSettingsLoad,
             SettingsWindowViewModel settingsWindowData,
             SpellWindowViewModel spellWindowViewModel,
-            SettingsTestRunOverlay settingsTestRunOverlay) : base(settings.SettingsWindowState, toolSettingsLoad, settings)
+            SettingsTestRunOverlay settingsTestRunOverlay)
         {
             this.loginMiddlemand = loginMiddlemand;
             this.signalrPlayerHub = signalrPlayerHub;
@@ -96,7 +68,6 @@ namespace EQTool.UI
             DataContext = SettingsWindowData = settingsWindowData;
             SettingsWindowData.EqPath = this.settings.DefaultEqDirectory;
             InitializeComponent();
-            base.Init();
             TryCheckLoggingEnabled();
             try
             {
@@ -181,7 +152,7 @@ namespace EQTool.UI
         private void EqFolderButtonClicked(object sender, RoutedEventArgs e)
         {
             var descriptiontext = "Select Project 1999 EQ Directory";
-            using (var fbd = new FolderBrowserDialog() { Description = descriptiontext, ShowNewFolderButton = false })
+            using (var fbd = new System.Windows.Forms.FolderBrowserDialog() { Description = descriptiontext, ShowNewFolderButton = false })
             {
                 var result = fbd.ShowDialog();
                 if (result == System.Windows.Forms.DialogResult.OK && !string.IsNullOrWhiteSpace(fbd.SelectedPath))
@@ -889,9 +860,9 @@ namespace EQTool.UI
             settingsTestRunOverlay.RunTest(OverlayTypes.DeathLoopEvent);
         }
 
-        private void openConfigurationWindow(object sender, RoutedEventArgs e)
+        private void openSpawnTimerDialog(object sender, RoutedEventArgs e)
         {
-            windowFactory.CreateWindow<SpawnTimerDialog>().Show();
+            _ = windowFactory.CreateWindow<SpawnTimerDialog>().ShowDialog();
         }
 
         private void selectallVisual(object sender, RoutedEventArgs e)
@@ -926,6 +897,11 @@ namespace EQTool.UI
             SettingsWindowData.ActivePlayer.Player.DeathLoopAudio = true;
             SettingsWindowData.ActivePlayer.Player.ChChainWarningAudio = true;
             SaveConfig();
+        }
+
+        private void OpenManagementWindow(object sender, RoutedEventArgs e)
+        {
+            windowFactory.CreateWindow<SettingManagement>().Show();
         }
     }
 }

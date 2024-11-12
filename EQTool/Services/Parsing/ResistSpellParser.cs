@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace EQTool.Services.Parsing
 {
-    public class ResistSpellParser : IEqLogParseHandler
+    public class ResistSpellParser : IEqLogParser
     {
         private readonly EQSpells spells;
         private readonly LogEvents logEvents;

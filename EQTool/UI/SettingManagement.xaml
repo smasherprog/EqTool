@@ -1,0 +1,56 @@
+﻿<local:BaseSaveStateWindow 
+       x:Class="EQTool.UI.SettingManagement"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:EQTool.UI"
+        xmlns:vm="clr-namespace:EQTool.ViewModels.SettingsComponents"
+        mc:Ignorable="d"
+        Title="SettingManagement" 
+        MinHeight="600" 
+        MinWidth="700"
+      SizeToContent="WidthAndHeight">
+    <Grid Margin="10">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="30*"/>
+            <ColumnDefinition Width="70*"/>
+        </Grid.ColumnDefinitions>
+        <TreeView SelectedItemChanged="TreeView_SelectedItemChanged" Grid.Column="0" ItemsSource="{Binding TreeItems}">
+            <TreeView.ItemContainerStyle>
+                <Style TargetType="TreeViewItem">
+                    <Setter Property="IsSelected" Value="{Binding IsSelected}" />
+                    <Setter Property="IsExpanded" Value="{Binding IsExpanded}" />
+                    <EventSetter Event="PreviewMouseRightButtonDown" Handler="OnPreviewMouseRightButtonDown" />
+                </Style>
+            </TreeView.ItemContainerStyle>
+            <TreeView.Resources>
+                <HierarchicalDataTemplate DataType="{x:Type vm:TreeGeneral}">
+                    <StackPanel Orientation="Horizontal"  >
+                        <TextBlock Text="⚙" />
+                        <TextBlock Text="{Binding Name}" Margin="0,0,4,0" />
+                    </StackPanel>
+                </HierarchicalDataTemplate>
+                <HierarchicalDataTemplate DataType="{x:Type vm:TreeServer}" ItemsSource="{Binding Children}">
+                    <StackPanel Orientation="Horizontal" >
+                        <TextBlock Text="🖧" />
+                        <TextBlock Text="{Binding Name}" Margin="0,0,4,0" />
+                    </StackPanel>
+                </HierarchicalDataTemplate>
+                <HierarchicalDataTemplate DataType="{x:Type vm:TreePlayer}" ItemsSource="{Binding Children}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="🐉"/>
+                        <TextBlock Text="{Binding Name}" Margin="0,0,4,0" />
+                    </StackPanel>
+                </HierarchicalDataTemplate>
+                <HierarchicalDataTemplate DataType="{x:Type vm:TreeTrigger}" ItemsSource="{Binding Children}">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="🗲"/>
+                        <TextBlock Text="{Binding Name}" />
+                    </StackPanel>
+                </HierarchicalDataTemplate>
+            </TreeView.Resources>
+        </TreeView>
+        <UserControl Grid.Column="1" Content="{Binding UserControl}"></UserControl>
+    </Grid>
+</local:BaseSaveStateWindow>

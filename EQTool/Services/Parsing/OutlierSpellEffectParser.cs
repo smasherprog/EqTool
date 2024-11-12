@@ -3,7 +3,7 @@ using System;
 
 namespace EQTool.Services.Parsing
 {
-    public class OutlierSpellEffectParser : IEqLogParseHandler
+    public class OutlierSpellEffectParser : IEqLogParser
     {
         private readonly LogEvents logEvents;
 

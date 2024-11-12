@@ -7,7 +7,7 @@ using System.Windows.Media.Media3D;
 
 namespace EQTool.Services.Parsing
 {
-    public class LocationParser : IEqLogParseHandler
+    public class LocationParser : IEqLogParser
     {
         private readonly string YourLocationis = "Your Location is ";
 

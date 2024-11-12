@@ -3,7 +3,7 @@ using System;
 
 namespace EQTool.Services.Parsing
 {
-    public class FactionParser : IEqLogParseHandler
+    public class FactionParser : IEqLogParser
     {
         private readonly string FactionStartMessage = "Your faction standing with";
         private readonly string FactionGotBetter = "got better.";

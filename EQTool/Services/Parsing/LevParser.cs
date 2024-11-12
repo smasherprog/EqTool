@@ -3,7 +3,7 @@ using System;
 
 namespace EQTool.Services.Parsing
 {
-    public class LevParser : IEqLogParseHandler
+    public class LevParser : IEqLogParser
     {
         public enum LevStatus
         {

@@ -9,7 +9,7 @@ namespace EQTool.Services.Parsing
     //
     // this parser will watch for Player comms
     //
-    public class CommsParser : IEqLogParseHandler
+    public class CommsParser : IEqLogParser
     {
         // class data
         private readonly ActivePlayer activePlayer;

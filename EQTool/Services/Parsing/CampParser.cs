@@ -4,7 +4,7 @@ using System.Diagnostics;
 
 namespace EQTool.Services.Parsing
 {
-    public class CampParser : IEqLogParseHandler
+    public class CampParser : IEqLogParser
     {
         private readonly LogEvents logEvents;
         private bool StillCamping = false;

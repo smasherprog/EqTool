@@ -3,7 +3,7 @@ using System;
 
 namespace EQTool.Services.Parsing
 {
-    public class EnterWorldParser : IEqLogParseHandler
+    public class EnterWorldParser : IEqLogParser
     {
 
         private readonly LogEvents logEvents;

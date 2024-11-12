@@ -344,6 +344,7 @@
     <Compile Include="Services\Handlers\SlainHandler.cs" />
     <Compile Include="Services\Parsing\LineParser.cs" />
     <Compile Include="Services\Parsing\FactionParser.cs" />
+    <Compile Include="Services\UserComponentSettingsManagementFactory.cs" />
     <Compile Include="Services\WindowFactory.cs" />
     <Compile Include="Services\Handlers\YouZonedHandler.cs" />
     <Compile Include="Services\Handlers\PlayerLevelDetectionHandler.cs" />
@@ -366,6 +367,18 @@
     <Compile Include="Services\P99LoginMiddlemand\LoginMiddlemand.cs" />
     <Compile Include="Services\Parsing\CommsParser.cs" />
     <Compile Include="Services\Parsing\YouZonedParser.cs" />
+    <Compile Include="UI\SettingManagement.xaml.cs">
+      <DependentUpon>SettingManagement.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\SettingsComponents\SettingsGeneral.xaml.cs">
+      <DependentUpon>SettingsGeneral.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\SettingsComponents\SettingsPlayer.xaml.cs">
+      <DependentUpon>SettingsPlayer.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\SettingsComponents\SettingsServer.xaml.cs">
+      <DependentUpon>SettingsServer.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UI\SpawnTimerDialog.xaml.cs">
       <DependentUpon>SpawnTimerDialog.xaml</DependentUpon>
     </Compile>
@@ -384,7 +397,7 @@
     </Compile>
     <Compile Include="Models\EventModels.cs" />
     <Compile Include="Models\EQMapColor.cs" />
-    <Compile Include="Models\IEqLogParseHandler.cs" />
+    <Compile Include="Models\IEqLogParser.cs" />
     <Compile Include="Models\OverlayTypes.cs" />
     <Compile Include="Models\PlayerRequest.cs" />
     <Compile Include="UI\PanAndZoomCanvas.xaml.cs">
@@ -456,6 +469,16 @@
     <Compile Include="Shapes\ArrowLineBase.cs" />
     <Compile Include="ViewModels\ActivePlayerInfo.cs" />
     <Compile Include="Services\TimersService.cs" />
+    <Compile Include="ViewModels\SettingsComponents\SettingsGeneralViewModel.cs" />
+    <Compile Include="ViewModels\SettingsComponents\SettingsPlayerViewModel.cs" />
+    <Compile Include="ViewModels\SettingsComponents\SettingsServerViewModel.cs" />
+    <Compile Include="ViewModels\SettingsComponents\TreeGeneral.cs" />
+    <Compile Include="ViewModels\SettingsComponents\TreeServer.cs" />
+    <Compile Include="ViewModels\SettingsComponents\TreeTrigger.cs" />
+    <Compile Include="ViewModels\SettingsComponents\TreePlayer.cs" />
+    <Compile Include="ViewModels\SettingsComponents\TreeViewItemBase.cs" />
+    <Compile Include="ViewModels\SettingsComponents\SettingsManagementViewModel.cs" />
+    <Compile Include="ViewModels\SpawnTimerDialogViewModel.cs" />
     <Compile Include="ViewModels\ZoneViewModel.cs" />
     <Compile Include="ViewModels\MobInfoViewModel.cs" />
     <Compile Include="ViewModels\MapViewModel.cs" />
@@ -481,13 +504,26 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="UI\Settings.xaml.cs">
-      <DependentUpon>Settings.xaml</DependentUpon>
-    </Compile>
     <Compile Include="UI\SpellWindow.xaml.cs">
       <DependentUpon>SpellWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\BaseSaveStateWindow.cs" />
+    <Page Include="UI\SettingManagement.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\SettingsComponents\SettingsGeneral.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\SettingsComponents\SettingsPlayer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\SettingsComponents\SettingsServer.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UI\SpawnTimerDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -517,10 +553,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UI\PanAndZoomCanvas.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="UI\Settings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

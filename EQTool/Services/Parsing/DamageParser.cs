@@ -15,7 +15,7 @@ namespace EQTool.Services.Parsing
     //      melee attacks from other entities that land
     //      non-melee damage events
     //
-    public class DamageParser : IEqLogParseHandler
+    public class DamageParser : IEqLogParser
     {
         private readonly ActivePlayer activePlayer;
         private readonly LogEvents logEvents;
@@ -33,7 +33,7 @@ namespace EQTool.Services.Parsing
 
         //https://regex101.com/r/5oJEoN/1
         private const string othersMissPattern = @"^(?<attacker_name>[\w` ]+?) tries to (?<dmg_type>hit|slash|pierce|crush|claw|bite|sting|maul|gore|punch|kick|backstab|bash|slice|strike) (?<target_name>[\w` ]+), but";
-        
+
         private const string nonMeleePattern = @"^(?<target_name>[\w` ]+) was hit by non-melee for (?<damage>[\d]+) point(s)? of damage";
 
         private readonly Regex youHitRegex = new Regex(youHitPattern, RegexOptions.Compiled);
@@ -86,7 +86,7 @@ namespace EQTool.Services.Parsing
                 // if we see a backstab from current player, set current player class to rogue
                 if (rv.AttackerName == "You" && activePlayer.Player?.PlayerClass != PlayerClasses.Rogue)
                 {
-                    if (rv.DamageType.Contains("backstab"))
+                    if (rv.DamageType == "backstab")
                     {
                         logEvents.Handle(new ClassDetectedEvent { TimeStamp = timestamp, Line = line, PlayerClass = PlayerClasses.Rogue });
                     }

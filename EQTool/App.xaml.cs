@@ -243,6 +243,7 @@ namespace EQTool
 #endif
             container.Resolve<LoggingService>().Log(string.Empty, EventType.StartUp, null);
             SettingsMenuItem = new System.Windows.Forms.MenuItem("Settings", ToggleSettingsWindow);
+
             var standardgroup = new System.Windows.Forms.MenuItem("Standard Groups", CreateStandardGroup);
             var hotclericsamegroup = new System.Windows.Forms.MenuItem("HOT Clerics Same Group", CreateHOTClericsSameGroup);
             var hotclericsparsegroup = new System.Windows.Forms.MenuItem("HOT Clerics Sparse Group", CreateHOTClericsSparseGroup);
@@ -608,9 +609,8 @@ namespace EQTool
         public void ToggleSettingsWindow(object sender, EventArgs e)
         {
             var s = (System.Windows.Forms.MenuItem)sender;
-            ToggleWindow<Settings>(s);
+            ToggleWindow<SettingManagement>(s);
         }
-
 
         public void ToggleSpellsWindow(object sender, EventArgs e)
         {
@@ -640,7 +640,7 @@ namespace EQTool
 
         public void OpenSettingsWindow()
         {
-            OpenWindow<Settings>(SettingsMenuItem);
+            OpenWindow<SettingManagement>(SettingsMenuItem);
         }
 
         public void ShowBalloonTip(int timeout, string tipTitle, string tipText, System.Windows.Forms.ToolTipIcon tipIcon)

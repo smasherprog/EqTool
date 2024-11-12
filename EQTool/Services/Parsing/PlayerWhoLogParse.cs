@@ -5,7 +5,7 @@ using System.Collections.Generic;
 
 namespace EQTool.Services.Parsing
 {
-    public class PlayerWhoLogParse : IEqLogParseHandler
+    public class PlayerWhoLogParse : IEqLogParser
     {
         private readonly Dictionary<PlayerClasses, List<string>> ClassMapping;
         private readonly LogEvents logEvents;

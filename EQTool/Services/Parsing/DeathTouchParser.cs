@@ -3,7 +3,7 @@ using System;
 
 namespace EQTool.Services.Parsing
 {
-    public class DeathTouchParser : IEqLogParseHandler
+    public class DeathTouchParser : IEqLogParser
     {
         private readonly LogEvents logEvents;
 

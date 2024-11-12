@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace EQTool.Services.Parsing
 {
-    public class SpellWornOffSelfParser : IEqLogParseHandler
+    public class SpellWornOffSelfParser : IEqLogParser
     {
         private readonly EQSpells spells;
         private readonly LogEvents logEvents;

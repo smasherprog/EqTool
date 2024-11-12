@@ -20,7 +20,7 @@ namespace EQtoolsTests
             logParser = container.Resolve<LogParser>();
             logEvents = container.Resolve<LogEvents>();
             _ = container.Resolve<IEnumerable<BaseHandler>>();
-            _ = container.Resolve<IEnumerable<IEqLogParseHandler>>();
+            _ = container.Resolve<IEnumerable<IEqLogParser>>();
         }
 
         [TestMethod]

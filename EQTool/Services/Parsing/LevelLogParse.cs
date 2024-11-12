@@ -3,7 +3,7 @@ using System;
 
 namespace EQTool.Services.Parsing
 {
-    public class PlayerLevelDetectionParser : IEqLogParseHandler
+    public class PlayerLevelDetectionParser : IEqLogParser
     {
         private readonly string YouHaveGainedALevel = "You have gained a level! Welcome to level";
         private readonly LogEvents logEvents;

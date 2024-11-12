@@ -20,9 +20,9 @@ namespace EQTool
             var types = AppDomain.CurrentDomain.GetAssemblies().SelectMany(x => x.GetTypes()).Where(x => x.IsClass && !x.IsAbstract && x.Namespace?.StartsWith("EQTool") == true).ToList();
             foreach (var type in types)
             {
-                if (type.GetInterfaces().Contains(typeof(Models.IEqLogParseHandler)))
+                if (type.GetInterfaces().Contains(typeof(Models.IEqLogParser)))
                 {
-                    _ = builder.RegisterType(type).As<Models.IEqLogParseHandler>().SingleInstance();
+                    _ = builder.RegisterType(type).As<Models.IEqLogParser>().SingleInstance();
                 }
             }
             types = AppDomain.CurrentDomain.GetAssemblies().SelectMany(x => x.GetTypes()).Where(x => !x.IsAbstract && x.Namespace?.StartsWith("EQTool") == true).ToList();
@@ -30,7 +30,7 @@ namespace EQTool
             {
                 if (type.IsSubclassOf(typeof(BaseHandler)))
                 {
-                    _ = builder.RegisterType(type).AsSelf().SingleInstance();
+                    _ = builder.RegisterType(type).AsSelf().As<BaseHandler>().SingleInstance();
                 }
             }
 

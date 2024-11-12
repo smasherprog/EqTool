@@ -325,7 +325,7 @@ namespace EQtoolsTests
         [TestMethod]
         public void TestLevelDetectionThroughKick()
         {
-            var message = "You backstab a kick for 56 points of damage.";
+            var message = "You backstab a snow dervish for 56 points of damage.";
             _ = parser.Match(message, DateTime.Now, 0);
             var player = container.Resolve<ActivePlayer>();
             player.Player = new PlayerInfo { };

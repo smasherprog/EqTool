@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace EQTool.Services.Parsing
 {
-    public class SpellCastParser : IEqLogParseHandler
+    public class SpellCastParser : IEqLogParser
     {
         private readonly LogEvents logEvents;
         private readonly ActivePlayer activePlayer;

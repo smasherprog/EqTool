@@ -1,4 +1,5 @@
 ﻿using EQTool.Models;
+using EQTool.Services.Handlers;
 using EQTool.Services.Parsing;
 using EQTool.ViewModels;
 using System;
@@ -17,7 +18,7 @@ namespace EQTool.Services
         private string LastLogFilename = string.Empty;
         private readonly EQToolSettings settings;
         private readonly EQToolSettingsLoad toolSettingsLoad;
-        private readonly List<IEqLogParseHandler> eqLogParseHandlers;
+        private readonly List<IEqLogParser> eqLogParsers;
         private readonly LogEvents logEvents;
         private readonly LineParser lineParser;
         private bool Processing = false;
@@ -26,7 +27,8 @@ namespace EQTool.Services
         private int LineCounter = 0;
 
         public LogParser(
-            IEnumerable<IEqLogParseHandler> eqLogParseHandlers,
+            IEnumerable<BaseHandler> eqLogParseHandlers, //,_ this forces the creation of all handlers
+            IEnumerable<IEqLogParser> eqLogParsers,
             EQToolSettingsLoad toolSettingsLoad,
             ActivePlayer activePlayer,
             IAppDispatcher appDispatcher,
@@ -35,7 +37,7 @@ namespace EQTool.Services
              LineParser lineParser
             )
         {
-            this.eqLogParseHandlers = eqLogParseHandlers.ToList();
+            this.eqLogParsers = eqLogParsers.ToList();
             this.logEvents = logEvents;
             this.lineParser = lineParser;
             this.toolSettingsLoad = toolSettingsLoad;
@@ -95,7 +97,7 @@ namespace EQTool.Services
             }
             LineCounter += 1;
             var timestamp = LogFileDateTimeParse.ParseDateTime(date);
-            foreach (var handler in eqLogParseHandlers)
+            foreach (var handler in eqLogParsers)
             {
                 if (handler.Handle(message, timestamp, LineCounter))
                 {

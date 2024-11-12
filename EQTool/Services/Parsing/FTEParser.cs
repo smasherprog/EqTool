@@ -5,7 +5,7 @@ namespace EQTool.Services.Parsing
 {
 
 
-    public class FTEParser : IEqLogParseHandler
+    public class FTEParser : IEqLogParser
     {
         private readonly LogEvents logEvents;
 

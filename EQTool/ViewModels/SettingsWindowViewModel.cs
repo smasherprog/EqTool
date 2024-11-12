@@ -1,5 +1,4 @@
 ﻿using EQTool.Models;
-using EQTool.UI;
 using EQToolShared.Enums;
 using EQToolShared.Map;
 using System;
@@ -12,6 +11,31 @@ using System.Windows;
 
 namespace EQTool.ViewModels
 {
+    public class BoolStringClass : INotifyPropertyChanged
+    {
+        public string TheText { get; set; }
+
+        public PlayerClasses TheValue { get; set; }
+
+        private bool _IsChecked { get; set; }
+
+        public bool IsChecked
+        {
+            get => _IsChecked; set
+            {
+                _IsChecked = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void OnPropertyChanged([CallerMemberName] string name = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
+    }
+
     public class SettingsWindowViewModel : INotifyPropertyChanged
     {
         private readonly EQToolSettings toolSettings;

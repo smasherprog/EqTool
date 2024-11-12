@@ -3,7 +3,7 @@ using System;
 
 namespace EQTool.Services.Parsing
 {
-    public class QuakeParser : IEqLogParseHandler
+    public class QuakeParser : IEqLogParser
     {
         private readonly LogEvents logEvents;
 

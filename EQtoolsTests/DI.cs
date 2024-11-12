@@ -53,9 +53,9 @@ namespace EQtoolsTests
             var types = AppDomain.CurrentDomain.GetAssemblies().SelectMany(x => x.GetTypes()).Where(x => x.IsClass && !x.IsAbstract && x.Namespace?.StartsWith("EQTool") == true).ToList();
             foreach (var type in types)
             {
-                if (type.GetInterfaces().Contains(typeof(EQTool.Models.IEqLogParseHandler)))
+                if (type.GetInterfaces().Contains(typeof(EQTool.Models.IEqLogParser)))
                 {
-                    _ = builder.RegisterType(type).As<EQTool.Models.IEqLogParseHandler>().SingleInstance();
+                    _ = builder.RegisterType(type).As<EQTool.Models.IEqLogParser>().SingleInstance();
                 }
             }
             types = AppDomain.CurrentDomain.GetAssemblies().SelectMany(x => x.GetTypes()).Where(x => !x.IsAbstract && x.Namespace?.StartsWith("EQTool") == true).ToList();

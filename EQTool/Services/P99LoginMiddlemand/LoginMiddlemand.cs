@@ -627,7 +627,7 @@ namespace EQTool.Services.P99LoginMiddlemand
             try
             {
                 Running = false;
-                connection?.Dispose(); 
+                connection?.Dispose();
                 thread?.Join();
                 thread = null;
                 connection = null;
@@ -735,6 +735,7 @@ namespace EQTool.Services.P99LoginMiddlemand
             {
                 loggingService.Log(e.ToString(), EQToolShared.Enums.EventType.LoginMiddleMand, null);
                 Debug.WriteLine(e.Message);
+                return false;
             }
             return true;
         }

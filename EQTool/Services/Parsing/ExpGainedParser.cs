@@ -7,7 +7,7 @@ namespace EQTool.Services.Parsing
     //
     // this class will watch for Experience gained messages
     //
-    public class ExpGainedParser : IEqLogParseHandler
+    public class ExpGainedParser : IEqLogParser
     {
         //You gain experience!!
         //You gain party experience!!
