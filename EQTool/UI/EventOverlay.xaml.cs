@@ -46,6 +46,7 @@ namespace EQTool.UI
             base.Init();
             Topmost = true;
             SaveState();
+            logEvents.OverlayEvent += LogEvents_OverlayEvent;
             logEvents.EnrageEvent += LogParser_EnrageEvent;
             logEvents.CompleteHealEvent += LogParser_CHEvent;
             logEvents.LevitateEvent += LogParser_LevEvent;
@@ -54,130 +55,25 @@ namespace EQTool.UI
             logEvents.CharmBreakEvent += LogParser_CharmBreakEvent;
             logEvents.FailedFeignEvent += LogParser_FailedFeignEvent;
             logEvents.GroupInviteEvent += LogParser_GroupInviteEvent;
-            logEvents.SpellCastEvent += LogParser_StartCastingEvent;
-            logEvents.SpellWornOffOtherEvent += LogParser_SpellWornOtherOffEvent;
-            logEvents.ResistSpellEvent += LogParser_ResistSpellEvent;
         }
 
-        private void LogParser_ResistSpellEvent(object sender, ResistSpellEvent e)
+        private void LogEvents_OverlayEvent(object sender, OverlayEvent e)
         {
-            var overlay = activePlayer?.Player?.ResistWarningOverlay ?? false;
-            if (!overlay)
+            appDispatcher.DispatchUI(() =>
             {
-                return;
-            }
-
-            _ = System.Threading.Tasks.Task.Factory.StartNew(() =>
-            {
-                var target = e.isYou ? "You " : "Your target ";
-                appDispatcher.DispatchUI(() =>
+                if (e.Reset)
                 {
-                    CenterText.Text = $"{target} resisted the {e.Spell.name} spell";
-                    CenterText.Foreground = Brushes.Red;
-                });
-                System.Threading.Thread.Sleep(3000);
-                appDispatcher.DispatchUI(() =>
-                {
-                    CenterText.Text = string.Empty;
-                    CenterText.Foreground = Brushes.Red;
-                });
-            });
-        }
-
-        private readonly List<string> RootSpells = new List<string>()
-        {
-            "Root",
-            "Fetter",
-            "Enstill",
-            "Immobalize",
-            "Paralyzing Earth",
-            "Grasping Roots",
-            "Ensnaring Roots",
-            "Enveloping Roots",
-            "Engulfing Roots",
-            "Engorging Roots",
-            "Entrapping Roots"
-        };
-
-        private void LogParser_SpellWornOtherOffEvent(object sender, SpellWornOffOtherEvent e)
-        {
-            var overlay = activePlayer?.Player?.RootWarningOverlay ?? false;
-            if (!overlay)
-            {
-                return;
-            }
-
-            if (RootSpells.Any(a => string.Equals(a, e.SpellName, StringComparison.OrdinalIgnoreCase)))
-            {
-                _ = System.Threading.Tasks.Task.Factory.StartNew(() =>
-                {
-                    appDispatcher.DispatchUI(() =>
-                    {
-                        CenterText.Text = $"{e.SpellName} has worn off!";
-                        CenterText.Foreground = Brushes.Red;
-                    });
-                    System.Threading.Thread.Sleep(3000);
-                    appDispatcher.DispatchUI(() =>
+                    if (CenterText.Text == e.Text && CenterText.Foreground == e.ForeGround)
                     {
                         CenterText.Text = string.Empty;
                         CenterText.Foreground = Brushes.Red;
-                    });
-                });
-            }
-        }
-
-        private void LogParser_StartCastingEvent(object sender, SpellCastEvent e)
-        {
-            var overlay = activePlayer?.Player?.DragonRoarOverlay ?? false;
-            if (!overlay || e.Spell.name != "Dragon Roar")
-            {
-                return;
-            }
-
-            _ = System.Threading.Tasks.Task.Factory.StartNew(() =>
-            {
-                System.Threading.Thread.Sleep(1000 * 30);
-                appDispatcher.DispatchUI(() =>
+                    }
+                }
+                else
                 {
-                    CenterText.Text = "Dragon Roar in 6 Seconds!";
-                    CenterText.Foreground = Brushes.Red;
-                });
-                System.Threading.Thread.Sleep(1000);
-                appDispatcher.DispatchUI(() =>
-                {
-                    CenterText.Text = "Dragon Roar in 5 Seconds!";
-                    CenterText.Foreground = Brushes.Red;
-                });
-                System.Threading.Thread.Sleep(1000);
-                appDispatcher.DispatchUI(() =>
-                {
-                    CenterText.Text = "Dragon Roar in 4 Seconds!";
-                    CenterText.Foreground = Brushes.Red;
-                });
-                System.Threading.Thread.Sleep(1000);
-                appDispatcher.DispatchUI(() =>
-                {
-                    CenterText.Text = "Dragon Roar in 3 Seconds!";
-                    CenterText.Foreground = Brushes.Red;
-                });
-                System.Threading.Thread.Sleep(1000);
-                appDispatcher.DispatchUI(() =>
-                {
-                    CenterText.Text = "Dragon Roar in 2 Seconds!";
-                    CenterText.Foreground = Brushes.Red;
-                });
-                System.Threading.Thread.Sleep(1000);
-                appDispatcher.DispatchUI(() =>
-                {
-                    CenterText.Text = "Dragon Roar in 1 Seconds!";
-                    CenterText.Foreground = Brushes.Red;
-                });
-                System.Threading.Thread.Sleep(1000);
-                appDispatcher.DispatchUI(() =>
-                {
-                    CenterText.Text = string.Empty;
-                    CenterText.Foreground = Brushes.Red;
-                });
+                    CenterText.Text = e.Text;
+                    CenterText.Foreground = e.ForeGround;
+                }
             });
         }
 

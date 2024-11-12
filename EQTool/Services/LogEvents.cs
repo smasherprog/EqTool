@@ -221,5 +221,11 @@ namespace EQTool.Services
         {
             LineEvent?.Invoke(this, e);
         }
+
+        public event EventHandler<OverlayEvent> OverlayEvent;
+        public void Handle(OverlayEvent e)
+        {
+            OverlayEvent?.Invoke(this, e);
+        }
     }
 }
