@@ -9,8 +9,7 @@
         mc:Ignorable="d"
         Title="SettingManagement" 
         MinHeight="600" 
-        MinWidth="700"
-      SizeToContent="WidthAndHeight">
+        MinWidth="700">
     <Grid Margin="10">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="30*"/>
