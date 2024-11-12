@@ -2,6 +2,7 @@ using EQTool.Models;
 using EQTool.ViewModels;
 using EQToolShared.HubModels;
 using System.Diagnostics;
+using System.Text.RegularExpressions;
 
 namespace EQTool.Services.Handlers
 {
@@ -65,8 +66,6 @@ namespace EQTool.Services.Handlers
                     Line = expGainedEvent.Line,
                     TimeStamp = expGainedEvent.TimeStamp
                 };
-
-                // todo - why are two timers being loaded each time???
                 logEvents.Handle(timer);
             }
         }
@@ -80,8 +79,41 @@ namespace EQTool.Services.Handlers
             Debug.WriteLine($"SlainEvent: [{slainEvent.TimeStamp}], Killer = [{slainEvent.Killer}], Victim = [{slainEvent.Victim}]");
 
             // if the victim field matches to the SpawnTimer field, then react
+            // are spawn timers for faction messages turned on?
+            if (Model.SpawnTimerEnabled && (Model.StartType == SpawnTimerDialogViewModel.StartTypes.SLAIN_MESSAGE))
+            {
+                // does this faction match the user-specified factions?
+                Regex regex = new Regex(Model.SlainText, RegexOptions.Compiled);
+                var match = regex.Match(slainEvent.Victim);
 
+                if (match.Success)
+                {
+                    // fire off a timer event
+                    var timer = new StartTimerEvent
+                    {
+                        CustomTimer = new CustomTimer
+                        {
+                            DurationInSeconds = Model.DurationSeconds,
+                            Name = $"Slain Timer: [{slainEvent.Victim}] [{++Model.TimerCounter}]",
+                            WarningTime = Model.WarningSeconds,
+                            ProvideWarningText = Model.ProvideWarningText,
+                            ProvideWarningTTS = Model.ProvideWarningTTS,
+                            WarningText = Model.WarningText,
+                            WarningTTS = Model.WarningTTS,
+                            ProvideEndText = Model.ProvideEndText,
+                            ProvideEndTTS = Model.ProvideEndTTS,
+                            EndText = Model.EndText,
+                            EndTTS = Model.EndTTS,
+                            RestartExisting = false,
+                        },
 
+                        Line = slainEvent.Line,
+                        TimeStamp = slainEvent.TimeStamp
+                    };
+
+                    logEvents.Handle(timer);
+                }
+            }
         }
 
         //
@@ -92,10 +124,41 @@ namespace EQTool.Services.Handlers
             // debugging message
             Debug.WriteLine($"FactionEvent: [{factionEvent.TimeStamp}], Faction group = [{factionEvent.Faction}]");
 
-            // if the faction field matches to the SpawnTimer field, then react
+            // are spawn timers for faction messages turned on?
+            if (Model.SpawnTimerEnabled && (Model.StartType == SpawnTimerDialogViewModel.StartTypes.FACTION_MESSAGE))
+            {
+                // does this faction match the user-specified factions?
+                Regex regex = new Regex(Model.FactionText, RegexOptions.Compiled);
+                var match = regex.Match(factionEvent.Faction);
 
+                if (match.Success)
+                {
+                    // fire off a timer event
+                    var timer = new StartTimerEvent
+                    {
+                        CustomTimer = new CustomTimer
+                        {
+                            DurationInSeconds = Model.DurationSeconds,
+                            Name = $"Faction Timer: [{factionEvent.Faction}] [{++Model.TimerCounter}]",
+                            WarningTime = Model.WarningSeconds,
+                            ProvideWarningText = Model.ProvideWarningText,
+                            ProvideWarningTTS = Model.ProvideWarningTTS,
+                            WarningText = Model.WarningText,
+                            WarningTTS = Model.WarningTTS,
+                            ProvideEndText = Model.ProvideEndText,
+                            ProvideEndTTS = Model.ProvideEndTTS,
+                            EndText = Model.EndText,
+                            EndTTS = Model.EndTTS,
+                            RestartExisting = false,
+                        },
 
+                        Line = factionEvent.Line,
+                        TimeStamp = factionEvent.TimeStamp
+                    };
+
+                    logEvents.Handle(timer);
+                }
+            }
         }
-
     }
 }
