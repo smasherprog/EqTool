@@ -15,7 +15,7 @@ namespace EQTool.UI
         public SettingManagement(
             SettingsManagementViewModel settingsManagementViewModel,
             EQToolSettingsLoad toolSettingsLoad,
-            EQToolSettings settings) : base(settings.SettingsManagementWindowState, toolSettingsLoad, settings)
+            EQToolSettings settings) : base(settings.SettingsWindowState, toolSettingsLoad, settings)
         {
             DataContext = this.settingsManagementViewModel = settingsManagementViewModel;
             InitializeComponent();

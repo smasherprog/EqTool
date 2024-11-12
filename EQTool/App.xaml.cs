@@ -35,7 +35,6 @@ namespace EQTool
         private System.Windows.Forms.MenuItem DpsMeterMenuItem;
         private System.Windows.Forms.MenuItem OverlayMenuItem;
         private System.Windows.Forms.MenuItem SettingsMenuItem;
-        private System.Windows.Forms.MenuItem NewSettingsMenuItem;
         private System.Windows.Forms.MenuItem GroupSuggestionsMenuItem;
         private System.Windows.Forms.MenuItem MobInfoMenuItem;
         private LogParser logParser => container.Resolve<LogParser>();
@@ -244,7 +243,6 @@ namespace EQTool
 #endif
             container.Resolve<LoggingService>().Log(string.Empty, EventType.StartUp, null);
             SettingsMenuItem = new System.Windows.Forms.MenuItem("Settings", ToggleSettingsWindow);
-            NewSettingsMenuItem = new System.Windows.Forms.MenuItem("Settings (Experimental)", ToggleNewSettingsWindow);
 
             var standardgroup = new System.Windows.Forms.MenuItem("Standard Groups", CreateStandardGroup);
             var hotclericsamegroup = new System.Windows.Forms.MenuItem("HOT Clerics Same Group", CreateHOTClericsSameGroup);
@@ -284,7 +282,6 @@ namespace EQTool
                     SpellsMenuItem,
                     MobInfoMenuItem,
                     SettingsMenuItem,
-                    NewSettingsMenuItem,
                     gitHubMenuItem,
                     updates,
                     version,
@@ -612,21 +609,7 @@ namespace EQTool
         public void ToggleSettingsWindow(object sender, EventArgs e)
         {
             var s = (System.Windows.Forms.MenuItem)sender;
-            ToggleWindow<Settings>(s);
-        }
-        public void ToggleNewSettingsWindow(object sender, EventArgs e)
-        {
-            var m = (System.Windows.Forms.MenuItem)sender;
-            m.Checked = !m.Checked;
-            if (m.Checked)
-            {
-                var w = container.Resolve<SettingManagement>();
-                w.Closed += (se, ee) =>
-                {
-                    m.Checked = false;
-                };
-                w.Show();
-            }
+            ToggleWindow<SettingManagement>(s);
         }
 
         public void ToggleSpellsWindow(object sender, EventArgs e)
@@ -657,7 +640,7 @@ namespace EQTool
 
         public void OpenSettingsWindow()
         {
-            OpenWindow<Settings>(SettingsMenuItem);
+            OpenWindow<SettingManagement>(SettingsMenuItem);
         }
 
         public void ShowBalloonTip(int timeout, string tipTitle, string tipText, System.Windows.Forms.ToolTipIcon tipIcon)
