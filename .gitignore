@@ -39,3 +39,9 @@ packages/
 
 # working directory
 working/
+
+# Visual SlickEdit projct files
+*.vtg
+*.vpj
+*.vpw
+*.vpwhist

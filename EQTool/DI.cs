@@ -30,7 +30,8 @@ namespace EQTool
             {
                 if (type.IsSubclassOf(typeof(BaseHandler)))
                 {
-                    _ = builder.RegisterType(type).AsSelf().SingleInstance();
+                    _ = builder.RegisterType(type).AsSelf().As<BaseHandler>().SingleInstance();
+
                 }
             }
 
