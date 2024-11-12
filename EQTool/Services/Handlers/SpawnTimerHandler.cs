@@ -14,8 +14,7 @@ namespace EQTool.Services.Handlers
     public class SpawnTimerHandler : BaseHandler
     {
         // Model class to hold the results of the Spawn Timer Dialog
-        // make this static, so it only initializes once
-        private static readonly SpawnTimerDialogViewModel _model = new SpawnTimerDialogViewModel();
+        private readonly SpawnTimerDialogViewModel _model = new SpawnTimerDialogViewModel();
 
         //
         // ctor
