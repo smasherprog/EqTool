@@ -3,7 +3,7 @@ using System;
 
 namespace EQTool.Services.Parsing
 {
-    public class FailedFeignParser : IEqLogParseHandler
+    public class FailedFeignParser : IEqLogParser
     {
         private readonly LogEvents logEvents;
 

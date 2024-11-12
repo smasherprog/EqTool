@@ -2,6 +2,7 @@
 using EQTool.Services;
 using EQTool.Services.P99LoginMiddlemand;
 using EQTool.ViewModels;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -18,13 +19,16 @@ namespace EQTool.UI.SettingsComponents
         private readonly SettingsWindowViewModel SettingsWindowData;
         private readonly LoginMiddlemand loginMiddlemand;
         private readonly IAppDispatcher appDispatcher;
+        private readonly LogParser logParser;
 
         public SettingsGeneral(EQToolSettings settings,
         EQToolSettingsLoad toolSettingsLoad,
+        LogParser logParser,
         SettingsWindowViewModel SettingsWindowData,
           IAppDispatcher appDispatcher,
         LoginMiddlemand loginMiddlemand)
         {
+            this.logParser = logParser;
             this.appDispatcher = appDispatcher;
             this.settings = settings;
             this.toolSettingsLoad = toolSettingsLoad;
@@ -54,7 +58,6 @@ namespace EQTool.UI.SettingsComponents
             SettingsWindowData.Update();
 
             LoginMiddleMandCheckBox.IsChecked = loginMiddlemand.Running;
-
             var hasvalideqdir = FindEq.IsValidEqFolder(settings.DefaultEqDirectory);
             if (hasvalideqdir && FindEq.TryCheckLoggingEnabled(settings.DefaultEqDirectory) == true)
             {
@@ -109,6 +112,20 @@ namespace EQTool.UI.SettingsComponents
                     }
                 }
             }
+        }
+        private void SaveAlwaysOntopCheckBoxSettings(object sender, RoutedEventArgs e)
+        {
+            SaveConfig();
+            ((App)System.Windows.Application.Current).ApplyAlwaysOnTop();
+        }
+        private void Savesettings(object sender, RoutedEventArgs e)
+        {
+            SaveConfig();
+        }
+
+        private void SaveSettings(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            SaveConfig();
         }
 
         private void enableLogging_Click(object sender, RoutedEventArgs e)
@@ -196,10 +213,17 @@ namespace EQTool.UI.SettingsComponents
                 loginMiddlemand.StopListening();
             }
         }
-
-        private void Savesettings(object sender, RoutedEventArgs e)
+        private void zoneselectionchanged(object sender, SelectionChangedEventArgs e)
         {
-            SaveConfig();
+            var player = SettingsWindowData.ActivePlayer.Player;
+            if (player != null)
+            {
+                var t = DateTime.Now;
+                var format = "ddd MMM dd HH:mm:ss yyyy";
+                var msg = "[" + t.ToString(format) + "] You have entered " + player.Zone;
+                logParser.Push(msg);
+                SaveConfig();
+            }
         }
 
     }

@@ -4,7 +4,7 @@ using System.Text.RegularExpressions;
 
 namespace EQTool.Services.Parsing
 {
-    public class SlainParser : IEqLogParseHandler
+    public class SlainParser : IEqLogParser
     {
         private readonly LogEvents logEvents;
         private const string slainByPattern = @"^(?<victim>[\w` ]+) (has|have) been slain by (?<killer>[\w` ]+)";

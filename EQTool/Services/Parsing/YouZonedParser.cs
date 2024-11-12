@@ -5,7 +5,7 @@ using System.Diagnostics;
 
 namespace EQTool.Services.Parsing
 {
-    public class YouZonedParser : IEqLogParseHandler
+    public class YouZonedParser : IEqLogParser
     {
         private const string Youhaveentered = "You have entered ";
         private const string Therearenoplayers = "There are no players ";

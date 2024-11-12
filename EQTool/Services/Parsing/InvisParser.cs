@@ -3,7 +3,7 @@ using System;
 
 namespace EQTool.Services.Parsing
 {
-    public class InvisParser : IEqLogParseHandler
+    public class InvisParser : IEqLogParser
     {
         public enum InvisStatus
         {

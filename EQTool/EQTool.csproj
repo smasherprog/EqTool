@@ -397,7 +397,7 @@
     </Compile>
     <Compile Include="Models\EventModels.cs" />
     <Compile Include="Models\EQMapColor.cs" />
-    <Compile Include="Models\IEqLogParseHandler.cs" />
+    <Compile Include="Models\IEqLogParser.cs" />
     <Compile Include="Models\OverlayTypes.cs" />
     <Compile Include="Models\PlayerRequest.cs" />
     <Compile Include="UI\PanAndZoomCanvas.xaml.cs">

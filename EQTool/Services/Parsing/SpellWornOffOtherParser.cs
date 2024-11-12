@@ -3,7 +3,7 @@ using System;
 
 namespace EQTool.Services.Parsing
 {
-    public class SpellWornOffOtherParser : IEqLogParseHandler
+    public class SpellWornOffOtherParser : IEqLogParser
     {
         private readonly EQSpells spells;
         private readonly LogEvents logEvents;

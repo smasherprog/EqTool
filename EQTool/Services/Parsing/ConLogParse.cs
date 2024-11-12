@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace EQTool.Services.Parsing
 {
-    public class ConLogParse : IEqLogParseHandler
+    public class ConLogParse : IEqLogParser
     {
         private readonly List<string> ConMessages = new List<string>()
         {

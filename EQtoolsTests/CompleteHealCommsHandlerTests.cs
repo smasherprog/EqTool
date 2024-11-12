@@ -24,7 +24,7 @@ namespace EQtoolsTests
             logEvents = container.Resolve<LogEvents>();
             activePlayer = container.Resolve<ActivePlayer>();
             _ = container.Resolve<IEnumerable<BaseHandler>>();
-            _ = container.Resolve<IEnumerable<IEqLogParseHandler>>();
+            _ = container.Resolve<IEnumerable<IEqLogParser>>();
             activePlayer.Player.Level = 54;
             activePlayer.Player.PlayerClass = PlayerClasses.Cleric;
         }

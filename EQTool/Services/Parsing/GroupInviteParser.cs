@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace EQTool.Services.Parsing
 {
-    public class GroupInviteParser : IEqLogParseHandler
+    public class GroupInviteParser : IEqLogParser
     {
         private readonly LogEvents logEvents;
 

@@ -3,7 +3,7 @@ using System;
 
 namespace EQTool.Services.Parsing
 {
-    public class RandomParser : IEqLogParseHandler
+    public class RandomParser : IEqLogParser
     {
         private readonly string RollMessage = "**A Magic Die is rolled by ";
         private readonly string RollMessage2nd = "**It could have been any number from 0 to ";

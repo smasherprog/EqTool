@@ -3,7 +3,7 @@ using System;
 
 namespace EQTool.Services.Parsing
 {
-    public class CharmBreakParser : IEqLogParseHandler
+    public class CharmBreakParser : IEqLogParser
     {
         private readonly LogEvents logEvents;
 

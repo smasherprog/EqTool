@@ -10,9 +10,6 @@ namespace EQTool
 {
     public static class DI
     {
-        private static IContainer _container;
-        public static IContainer Container { get { return _container; } }
-
         public static IContainer Init()
         {
             var builder = new ContainerBuilder();
@@ -23,9 +20,9 @@ namespace EQTool
             var types = AppDomain.CurrentDomain.GetAssemblies().SelectMany(x => x.GetTypes()).Where(x => x.IsClass && !x.IsAbstract && x.Namespace?.StartsWith("EQTool") == true).ToList();
             foreach (var type in types)
             {
-                if (type.GetInterfaces().Contains(typeof(Models.IEqLogParseHandler)))
+                if (type.GetInterfaces().Contains(typeof(Models.IEqLogParser)))
                 {
-                    _ = builder.RegisterType(type).As<Models.IEqLogParseHandler>().SingleInstance();
+                    _ = builder.RegisterType(type).As<Models.IEqLogParser>().SingleInstance();
                 }
             }
             types = AppDomain.CurrentDomain.GetAssemblies().SelectMany(x => x.GetTypes()).Where(x => !x.IsAbstract && x.Namespace?.StartsWith("EQTool") == true).ToList();
@@ -33,7 +30,7 @@ namespace EQTool
             {
                 if (type.IsSubclassOf(typeof(BaseHandler)))
                 {
-                    _ = builder.RegisterType(type).AsSelf().SingleInstance();
+                    _ = builder.RegisterType(type).AsSelf().As<BaseHandler>().SingleInstance();
                 }
             }
 
@@ -60,8 +57,7 @@ namespace EQTool
             _ = builder.RegisterType<Services.SettingsTestRunOverlay>().AsSelf().SingleInstance();
             _ = builder.RegisterType<TextToSpeach>().As<ITextToSpeach>().SingleInstance();
 
-            _container = builder.Build();
-            return _container;
+            return builder.Build();
         }
     }
 }
