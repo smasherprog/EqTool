@@ -4,9 +4,13 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EQTool.UI"
+        xmlns:vm="clr-namespace:EQTool.ViewModels"
         mc:Ignorable="d"
         Title="Spawn Timer Dialog" SizeToContent="WidthAndHeight" ResizeMode="NoResize">
 
+    <Window.Resources>
+        <vm:RadioButtonEnumConverter x:Key="RadioButtonEnumConverter" />
+    </Window.Resources>
     <StackPanel Background="LightGray">
 
         <!-- top row with enable checkbox -->
@@ -33,20 +37,20 @@
                     <TextBlock Text="Timer Start" Margin="10,5,0,0" FontSize="16"/>
                     <RadioButton x:Name="aiRadioButton" GroupName="TimerStart" 
                                  Content="PigParse AI" 
-                                 IsChecked="{Binding PigParseAI}" 
+                                 IsChecked="{Binding StartType, Converter={StaticResource RadioButtonEnumConverter}, ConverterParameter={x:Static vm:SpawnTimerDialogViewModel+StartTypes.PIG_PARSE_AI}}" 
                                  Margin="30,5,0,0" 
                                  FontSize="14" 
                                  VerticalContentAlignment="Center"/>
                     <RadioButton x:Name="expMessageRadioButton" GroupName="TimerStart" 
                                  Content="Exp Message"
-                                 IsChecked="{Binding ExpMessage}"  
+                                 IsChecked="{Binding StartType, Converter={StaticResource RadioButtonEnumConverter}, ConverterParameter={x:Static vm:SpawnTimerDialogViewModel+StartTypes.EXP_MESSAGE}}" 
                                  Margin="30,5,0,0" 
                                  FontSize="14" 
                                  VerticalContentAlignment="Center"/>
                     <StackPanel Orientation="Horizontal">
                         <RadioButton x:Name="slainRadioButton" GroupName="TimerStart" 
                                      Content="You have slain ..." 
-                                     IsChecked="{Binding SlainMessage}" 
+                                     IsChecked="{Binding StartType, Converter={StaticResource RadioButtonEnumConverter}, ConverterParameter={x:Static vm:SpawnTimerDialogViewModel+StartTypes.SLAIN_MESSAGE}}" 
                                      Margin="30,5,0,0" 
                                      Width="200" 
                                      FontSize="14" 
@@ -61,7 +65,7 @@
                     <StackPanel Orientation="Horizontal">
                         <RadioButton x:Name="factionRadioButton" GroupName="TimerStart" 
                                      Content="Your faction standing with ..." 
-                                     IsChecked="{Binding FactionMessage}" 
+                                     IsChecked="{Binding StartType, Converter={StaticResource RadioButtonEnumConverter}, ConverterParameter={x:Static vm:SpawnTimerDialogViewModel+StartTypes.FACTION_MESSAGE}}" 
                                      Margin="30,5,0,0" 
                                      Width="200" 
                                      FontSize="14" 
@@ -182,38 +186,38 @@
                     <TextBlock TextWrapping="Wrap" Text="Timer Duration" Margin="10,5,0,0" FontSize="16"/>
                     <RadioButton x:Name="preset0600" GroupName="TimerDuration" 
                                  Content="06:00"
-                                 IsChecked="{Binding Preset0600}" 
+                                 IsChecked="{Binding Duration, Converter={StaticResource RadioButtonEnumConverter}, ConverterParameter={x:Static vm:SpawnTimerDialogViewModel+Durations.PRESET_0600}}" 
                                  Margin="30,5,0,0" 
                                  FontSize="14" 
                                  VerticalContentAlignment="Center"/>
                     <RadioButton x:Name="preset0640" GroupName="TimerDuration" 
                                  Content="06:40"
-                                 IsChecked="{Binding Preset0640}" 
+                                 IsChecked="{Binding Duration, Converter={StaticResource RadioButtonEnumConverter}, ConverterParameter={x:Static vm:SpawnTimerDialogViewModel+Durations.PRESET_0640}}" 
                                  Margin="30,5,0,0" 
                                  FontSize="14" 
                                  VerticalContentAlignment="Center"/>
                     <RadioButton x:Name="preset1430" GroupName="TimerDuration" 
                                  Content="14:30"
-                                 IsChecked="{Binding Preset1430}" 
+                                 IsChecked="{Binding Duration, Converter={StaticResource RadioButtonEnumConverter}, ConverterParameter={x:Static vm:SpawnTimerDialogViewModel+Durations.PRESET_1430}}" 
                                  Margin="30,5,0,0" 
                                  FontSize="14" 
                                  VerticalContentAlignment="Center"/>
                     <RadioButton x:Name="preset2200" GroupName="TimerDuration" 
                                  Content="22:00"
-                                 IsChecked="{Binding Preset2200}" 
+                                 IsChecked="{Binding Duration, Converter={StaticResource RadioButtonEnumConverter}, ConverterParameter={x:Static vm:SpawnTimerDialogViewModel+Durations.PRESET_2200}}" 
                                  Margin="30,5,0,0" 
                                  FontSize="14" 
                                  VerticalContentAlignment="Center"/>
                     <RadioButton x:Name="preset2800" GroupName="TimerDuration" 
                                  Content="28:00"
-                                 IsChecked="{Binding Preset2800}" 
+                                 IsChecked="{Binding Duration, Converter={StaticResource RadioButtonEnumConverter}, ConverterParameter={x:Static vm:SpawnTimerDialogViewModel+Durations.PRESET_2800}}" 
                                  Margin="30,5,0,0" 
                                  FontSize="14" 
                                  VerticalContentAlignment="Center"/>
                     <StackPanel Orientation="Horizontal">
                         <RadioButton x:Name="custom" GroupName="TimerDuration" 
                                      Content="Custom" 
-                                     IsChecked="{Binding Custom}" 
+                                     IsChecked="{Binding Duration, Converter={StaticResource RadioButtonEnumConverter}, ConverterParameter={x:Static vm:SpawnTimerDialogViewModel+Durations.CUSTOM}}" 
                                      Margin="30,5,0,0" 
                                      Width="80" 
                                      FontSize="14" 
