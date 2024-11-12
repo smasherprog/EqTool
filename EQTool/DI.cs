@@ -10,9 +10,6 @@ namespace EQTool
 {
     public static class DI
     {
-        private static IContainer _container;
-        public static IContainer Container { get { return _container; } }
-
         public static IContainer Init()
         {
             var builder = new ContainerBuilder();
@@ -60,8 +57,7 @@ namespace EQTool
             _ = builder.RegisterType<Services.SettingsTestRunOverlay>().AsSelf().SingleInstance();
             _ = builder.RegisterType<TextToSpeach>().As<ITextToSpeach>().SingleInstance();
 
-            _container = builder.Build();
-            return _container;
+            return builder.Build();
         }
     }
 }

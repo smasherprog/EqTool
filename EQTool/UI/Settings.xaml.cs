@@ -1,5 +1,4 @@
-﻿using Autofac;
-using EQTool.Models;
+﻿using EQTool.Models;
 using EQTool.Services;
 using EQTool.Services.Map;
 using EQTool.Services.P99LoginMiddlemand;
@@ -892,8 +891,7 @@ namespace EQTool.UI
 
         private void openSpawnTimerDialog(object sender, RoutedEventArgs e)
         {
-            SpawnTimerDialog spawnTimerDialog = DI.Container.Resolve<SpawnTimerDialog>();
-            spawnTimerDialog.ShowDialog();
+            _ = windowFactory.CreateWindow<SpawnTimerDialog>().ShowDialog();
         }
 
         private void selectallVisual(object sender, RoutedEventArgs e)
