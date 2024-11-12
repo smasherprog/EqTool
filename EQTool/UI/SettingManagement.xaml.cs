@@ -39,8 +39,9 @@ namespace EQTool.UI
 
             _ = item.Focus();
             e.Handled = true;
-
+#if !RELEASE
             (sender as TreeViewItem).ContextMenu = settingsManagementViewModel.GetContextMenu(p);
+#endif 
         }
 
         private static DependencyObject GetDependencyObjectFromVisualTree(DependencyObject startObject, Type type)
