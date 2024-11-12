@@ -122,7 +122,7 @@ namespace EQTool.ViewModels.SettingsComponents
                 return menu;
             }
 
-            return new ContextMenu();
+            return null;
         }
 
         private void ServerMenuNewPackageClicked(object sender, System.Windows.RoutedEventArgs e)
