@@ -29,7 +29,7 @@ namespace EQtoolsTests
             logEvents.StartTimerEvent += (s, targettoremove) =>
             {
                 Assert.IsNotNull(targettoremove);
-                Assert.AreEqual(30 * 60, targettoremove.CustomTimer.DurationInSeconds);
+                Assert.AreEqual(30 * 60, targettoremove.CustomTimer.DurationSeconds);
                 Assert.AreEqual("StupidGoblin", targettoremove.CustomTimer.Name);
                 isCalled = true;
             };
@@ -45,7 +45,7 @@ namespace EQtoolsTests
             logEvents.StartTimerEvent += (s, targettoremove) =>
             {
                 Assert.IsNotNull(targettoremove);
-                Assert.AreEqual((30 * 60) + 20, targettoremove.CustomTimer.DurationInSeconds);
+                Assert.AreEqual((30 * 60) + 20, targettoremove.CustomTimer.DurationSeconds);
                 Assert.AreEqual("StupidGoblin", targettoremove.CustomTimer.Name);
                 isCalled = true;
             };
@@ -61,7 +61,7 @@ namespace EQtoolsTests
             logEvents.StartTimerEvent += (s, targettoremove) =>
             {
                 Assert.IsNotNull(targettoremove);
-                Assert.AreEqual((90 * 60) + 20, targettoremove.CustomTimer.DurationInSeconds);
+                Assert.AreEqual((90 * 60) + 20, targettoremove.CustomTimer.DurationSeconds);
                 Assert.AreEqual("StupidGoblin", targettoremove.CustomTimer.Name);
                 isCalled = true;
             };
@@ -76,7 +76,7 @@ namespace EQtoolsTests
             logEvents.StartTimerEvent += (s, targettoremove) =>
             {
                 Assert.IsNotNull(targettoremove);
-                Assert.AreEqual(30 * 60, targettoremove.CustomTimer.DurationInSeconds);
+                Assert.AreEqual(30 * 60, targettoremove.CustomTimer.DurationSeconds);
                 Assert.AreEqual("StupidGoblin", targettoremove.CustomTimer.Name);
                 isCalled = true;
             };
@@ -91,7 +91,7 @@ namespace EQtoolsTests
             logEvents.StartTimerEvent += (s, targettoremove) =>
             {
                 Assert.IsNotNull(targettoremove);
-                Assert.AreEqual(30 * 60, targettoremove.CustomTimer.DurationInSeconds);
+                Assert.AreEqual(30 * 60, targettoremove.CustomTimer.DurationSeconds);
                 Assert.AreEqual("StupidGoblin_with_club_near_me", targettoremove.CustomTimer.Name);
                 isCalled = true;
             };
@@ -107,7 +107,7 @@ namespace EQtoolsTests
             logEvents.StartTimerEvent += (s, targettoremove) =>
             {
                 Assert.IsNotNull(targettoremove);
-                Assert.AreEqual(2, targettoremove.CustomTimer.DurationInSeconds);
+                Assert.AreEqual(2, targettoremove.CustomTimer.DurationSeconds);
                 Assert.AreEqual("PigTimer-02", targettoremove.CustomTimer.Name);
                 isCalled = true;
             };
@@ -123,7 +123,7 @@ namespace EQtoolsTests
             logEvents.StartTimerEvent += (s, targettoremove) =>
             {
                 Assert.IsNotNull(targettoremove);
-                Assert.AreEqual((2 * 60) + 3, targettoremove.CustomTimer.DurationInSeconds);
+                Assert.AreEqual((2 * 60) + 3, targettoremove.CustomTimer.DurationSeconds);
                 Assert.AreEqual("PigTimer-02:03", targettoremove.CustomTimer.Name);
                 isCalled = true;
             };
@@ -138,7 +138,7 @@ namespace EQtoolsTests
             logEvents.StartTimerEvent += (s, targettoremove) =>
             {
                 Assert.IsNotNull(targettoremove);
-                Assert.AreEqual((2 * 3600) + (3 * 60) + 4, targettoremove.CustomTimer.DurationInSeconds);
+                Assert.AreEqual((2 * 3600) + (3 * 60) + 4, targettoremove.CustomTimer.DurationSeconds);
                 Assert.AreEqual("PigTimer-02:03:04", targettoremove.CustomTimer.Name);
                 isCalled = true;
             };
@@ -153,7 +153,7 @@ namespace EQtoolsTests
             logEvents.StartTimerEvent += (s, targettoremove) =>
             {
                 Assert.IsNotNull(targettoremove);
-                Assert.AreEqual(2, targettoremove.CustomTimer.DurationInSeconds);
+                Assert.AreEqual(2, targettoremove.CustomTimer.DurationSeconds);
                 Assert.AreEqual("xyzzy", targettoremove.CustomTimer.Name);
                 isCalled = true;
             };
@@ -168,7 +168,7 @@ namespace EQtoolsTests
             logEvents.StartTimerEvent += (s, targettoremove) =>
             {
                 Assert.IsNotNull(targettoremove);
-                Assert.AreEqual((2 * 60) + 3, targettoremove.CustomTimer.DurationInSeconds);
+                Assert.AreEqual((2 * 60) + 3, targettoremove.CustomTimer.DurationSeconds);
                 Assert.AreEqual("xyzzy", targettoremove.CustomTimer.Name);
                 isCalled = true;
             };
@@ -183,7 +183,7 @@ namespace EQtoolsTests
             logEvents.StartTimerEvent += (s, targettoremove) =>
             {
                 Assert.IsNotNull(targettoremove);
-                Assert.AreEqual((2 * 3600) + (3 * 60) + 4, targettoremove.CustomTimer.DurationInSeconds);
+                Assert.AreEqual((2 * 3600) + (3 * 60) + 4, targettoremove.CustomTimer.DurationSeconds);
                 Assert.AreEqual("xyzzy", targettoremove.CustomTimer.Name);
                 isCalled = true;
             };

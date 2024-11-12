@@ -10,7 +10,7 @@ namespace EQToolShared.HubModels
         public const string                     CustomerTime = " Custom Timer";
         public string                           Name { get; set; }
         public int                              Roll { get; set; } = -1;
-        public int                              DurationInSeconds { get; set; }
+        public int                              DurationSeconds { get; set; }
         public string                           SpellNameIcon { get; set; } = "Feign Death";
         public SpellTypes                       SpellType { get; set; } = SpellTypes.Beneficial;
         public string                           TargetName { get; set; } = CustomerTime;
@@ -19,7 +19,7 @@ namespace EQToolShared.HubModels
         // todo - need to teach custom timer how to handle warnings and ending messages
 
         // fields ISO warning messages
-        public int                              WarningTime { get; set; } = -1;
+        public int                              WarningSeconds { get; set; } = -1;
         public bool                             ProvideWarningText { get; set; } = false;
         public bool                             ProvideWarningTTS { get; set; } = false;
         public string                           WarningText { get; set; } = "";
@@ -32,7 +32,7 @@ namespace EQToolShared.HubModels
         public string                           EndTTS { get; set; } = "";
 
         // restart any matching existing timer, or start new
-        public bool                             RestartExisting { get; set; } = false;
+        public bool                             RestartExisting { get; set; } = true;
     }
 
     public class SignalrCustomTimer : CustomTimer

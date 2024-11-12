@@ -36,7 +36,7 @@ namespace EQTool.UI
                         CustomTimer = new CustomTimer
                         {
                             Name = timername,
-                            DurationInSeconds = (int)TimeSpanControl.Value.Value.TotalSeconds
+                            DurationSeconds = (int)TimeSpanControl.Value.Value.TotalSeconds
                         },
                         TimeStamp = DateTime.Now
                     });

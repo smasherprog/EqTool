@@ -94,9 +94,10 @@ namespace EQTool.Services.Handlers
                 {
                     CustomTimer = new CustomTimer
                     {
-                        DurationInSeconds = timerSeconds,
+                        DurationSeconds = timerSeconds,
                         // if the user didn't specify a label, we'll give it the match string
-                        Name = label != "" ? label : $"{match}"
+                        Name = label != "" ? label : $"{match}",
+                        RestartExisting = false
                     },
                     Line = commsEvent.Line,
                     TimeStamp = commsEvent.TimeStamp

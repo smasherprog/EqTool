@@ -49,22 +49,22 @@ namespace EQTool.Services.Handlers
                 {
                     CustomTimer = new CustomTimer
                     {
-                        DurationInSeconds = Model.DurationSeconds,
-                        Name = $"Exp Timer [{++Model.TimerCounter}]",
-                        WarningTime = Model.WarningSeconds,
-                        ProvideWarningText = Model.ProvideWarningText,
-                        ProvideWarningTTS = Model.ProvideWarningTTS,
-                        WarningText = Model.WarningText,
-                        WarningTTS = Model.WarningTTS,
-                        ProvideEndText = Model.ProvideEndText,
-                        ProvideEndTTS = Model.ProvideEndTTS,
-                        EndText = Model.EndText,
-                        EndTTS = Model.EndTTS,
+                        DurationSeconds             = Model.DurationSeconds,
+                        Name                        = $"Exp Timer [{++Model.TimerCounter}]",
+                        WarningSeconds              = Model.WarningSeconds,
+                        ProvideWarningText          = Model.ProvideWarningText,
+                        ProvideWarningTTS           = Model.ProvideWarningTTS,
+                        WarningText                 = Model.WarningText,
+                        WarningTTS                  = Model.WarningTTS,
+                        ProvideEndText              = Model.ProvideEndText,
+                        ProvideEndTTS               = Model.ProvideEndTTS,
+                        EndText                     = Model.EndText,
+                        EndTTS                      = Model.EndTTS,
                         RestartExisting = false,
                     },
 
-                    Line = expGainedEvent.Line,
-                    TimeStamp = expGainedEvent.TimeStamp
+                    Line                            = expGainedEvent.Line,
+                    TimeStamp                       = expGainedEvent.TimeStamp
                 };
                 logEvents.Handle(timer);
             }
@@ -93,22 +93,22 @@ namespace EQTool.Services.Handlers
                     {
                         CustomTimer = new CustomTimer
                         {
-                            DurationInSeconds = Model.DurationSeconds,
-                            Name = $"Slain Timer: [{slainEvent.Victim}] [{++Model.TimerCounter}]",
-                            WarningTime = Model.WarningSeconds,
-                            ProvideWarningText = Model.ProvideWarningText,
-                            ProvideWarningTTS = Model.ProvideWarningTTS,
-                            WarningText = Model.WarningText,
-                            WarningTTS = Model.WarningTTS,
-                            ProvideEndText = Model.ProvideEndText,
-                            ProvideEndTTS = Model.ProvideEndTTS,
-                            EndText = Model.EndText,
-                            EndTTS = Model.EndTTS,
-                            RestartExisting = false,
+                            DurationSeconds         = Model.DurationSeconds,
+                            Name                    = $"Slain Timer: [{slainEvent.Victim}] [{++Model.TimerCounter}]",
+                            WarningSeconds          = Model.WarningSeconds,
+                            ProvideWarningText      = Model.ProvideWarningText,
+                            ProvideWarningTTS       = Model.ProvideWarningTTS,
+                            WarningText             = Model.WarningText,
+                            WarningTTS              = Model.WarningTTS,
+                            ProvideEndText          = Model.ProvideEndText,
+                            ProvideEndTTS           = Model.ProvideEndTTS,
+                            EndText                 = Model.EndText,
+                            EndTTS                  = Model.EndTTS,
+                            RestartExisting         = false,
                         },
 
-                        Line = slainEvent.Line,
-                        TimeStamp = slainEvent.TimeStamp
+                        Line                        = slainEvent.Line,
+                        TimeStamp                   = slainEvent.TimeStamp
                     };
 
                     logEvents.Handle(timer);
@@ -138,22 +138,22 @@ namespace EQTool.Services.Handlers
                     {
                         CustomTimer = new CustomTimer
                         {
-                            DurationInSeconds = Model.DurationSeconds,
-                            Name = $"Faction Timer: [{factionEvent.Faction}] [{++Model.TimerCounter}]",
-                            WarningTime = Model.WarningSeconds,
-                            ProvideWarningText = Model.ProvideWarningText,
-                            ProvideWarningTTS = Model.ProvideWarningTTS,
-                            WarningText = Model.WarningText,
-                            WarningTTS = Model.WarningTTS,
-                            ProvideEndText = Model.ProvideEndText,
-                            ProvideEndTTS = Model.ProvideEndTTS,
-                            EndText = Model.EndText,
-                            EndTTS = Model.EndTTS,
-                            RestartExisting = false,
+                            DurationSeconds         = Model.DurationSeconds,
+                            Name                    = $"Faction Timer: [{factionEvent.Faction}] [{++Model.TimerCounter}]",
+                            WarningSeconds          = Model.WarningSeconds,
+                            ProvideWarningText      = Model.ProvideWarningText,
+                            ProvideWarningTTS       = Model.ProvideWarningTTS,
+                            WarningText             = Model.WarningText,
+                            WarningTTS              = Model.WarningTTS,
+                            ProvideEndText          = Model.ProvideEndText,
+                            ProvideEndTTS           = Model.ProvideEndTTS,
+                            EndText                 = Model.EndText,
+                            EndTTS                  = Model.EndTTS,
+                            RestartExisting         = false,
                         },
 
-                        Line = factionEvent.Line,
-                        TimeStamp = factionEvent.TimeStamp
+                        Line                        = factionEvent.Line,
+                        TimeStamp                   = factionEvent.TimeStamp
                     };
 
                     logEvents.Handle(timer);

@@ -219,7 +219,7 @@ namespace EQTool.ViewModels
                 OnPropertyChanged();
             }
         }
-        public int CounterResetSeconds { get { return _WarningSeconds; } }
+        public int CounterResetSeconds { get { return _CounterResetSeconds; } }
 
 
         // -----------------------------------------------------------------------

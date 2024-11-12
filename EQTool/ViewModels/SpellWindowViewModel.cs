@@ -196,7 +196,7 @@ namespace EQTool.ViewModels
                 {
                     TryAddCustom(new CustomTimer
                     {
-                        DurationInSeconds = 600,
+                        DurationSeconds = 600,
                         Name = "--CoolDown-- " + spellname,
                         SpellNameIcon = spellname,
                         SpellType = SpellTypes.HarvestCooldown
@@ -207,7 +207,7 @@ namespace EQTool.ViewModels
                 {
                     TryAddCustom(new CustomTimer
                     {
-                        DurationInSeconds = (int)(match.Spell.recastTime / 1000.0),
+                        DurationSeconds = (int)(match.Spell.recastTime / 1000.0),
                         Name = "--CoolDown-- " + spellname,
                         SpellNameIcon = spellname,
                         SpellType = SpellTypes.BadGuyCoolDown
@@ -248,7 +248,7 @@ namespace EQTool.ViewModels
                     }
                     TryAddCustom(new CustomTimer
                     {
-                        DurationInSeconds = basetime,
+                        DurationSeconds = basetime,
                         Name = "--Discipline-- " + spellname,
                         SpellNameIcon = "Strengthen",
                         SpellType = SpellTypes.DisciplineCoolDown,
@@ -317,7 +317,7 @@ namespace EQTool.ViewModels
                     }
                 }
 
-                var spellduration = match.DurationInSeconds;
+                var spellduration = match.DurationSeconds;
                 var spellicon = spells.AllSpells.FirstOrDefault(a => a.name == match.SpellNameIcon);
                 var rollorder = 0;
                 if (match.SpellType == SpellTypes.RandomRoll)
