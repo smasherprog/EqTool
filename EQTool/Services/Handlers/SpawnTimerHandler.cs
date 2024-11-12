@@ -2,7 +2,6 @@ using EQTool.Models;
 using EQTool.ViewModels;
 using EQToolShared.HubModels;
 using System.Diagnostics;
-using static EQTool.ViewModels.SpawnTimerDialogViewModel;
 
 namespace EQTool.Services.Handlers
 {
@@ -11,7 +10,6 @@ namespace EQTool.Services.Handlers
     //
     // watches for ExpGainedEvent, FactionEvent, and DeathEvent types
     //
-    //internal class SpawnTimerHandler : BaseHandler
     public class SpawnTimerHandler : BaseHandler
     {
         // Model class to hold the results of the Spawn Timer Dialog
@@ -43,7 +41,7 @@ namespace EQTool.Services.Handlers
             Debug.WriteLine($"ExpGainedEvent: [{expGainedEvent.TimeStamp}] [{expGainedEvent.Line}]");
 
             // are spawn timers for exp messages turned on?
-            if (Model.SpawnTimerEnabled && (Model.StartType == StartTypes.EXP_MESSAGE))
+            if (Model.SpawnTimerEnabled && (Model.StartType == SpawnTimerDialogViewModel.StartTypes.EXP_MESSAGE))
             {
                 // fire off a timer event
                 var timer = new StartTimerEvent
