@@ -1,13 +1,6 @@
-using EQTool.UI;
-using EQTool.Models;
-using EQTool.Services.Handlers;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
-using System.Windows;
 using System.Windows.Data;
-using System.Windows.Input;
-using System.Windows.Media;
-using Xceed.Wpf.Toolkit;
 using System;
 using System.Globalization;
 using System.Text.RegularExpressions;

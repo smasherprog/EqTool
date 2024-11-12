@@ -504,9 +504,6 @@
       <DesignTime>True</DesignTime>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <Compile Include="UI\Settings.xaml.cs">
-      <DependentUpon>Settings.xaml</DependentUpon>
-    </Compile>
     <Compile Include="UI\SpellWindow.xaml.cs">
       <DependentUpon>SpellWindow.xaml</DependentUpon>
     </Compile>
@@ -556,10 +553,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UI\PanAndZoomCanvas.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="UI\Settings.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
