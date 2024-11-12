@@ -1,5 +1,4 @@
-﻿using EQTool.ViewModels;
-using EQTool.ViewModels.SettingsComponents;
+﻿using EQTool.ViewModels.SettingsComponents;
 using System.Windows.Controls;
 
 namespace EQTool.UI.SettingsComponents

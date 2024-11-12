@@ -1,6 +1,5 @@
 ﻿using EQTool.Services.Handlers;
 using EQTool.ViewModels;
-using EQTool.UI;
 using System.Windows;
 
 namespace EQTool.UI
