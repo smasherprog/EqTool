@@ -1,11 +1,8 @@
 using EQTool.Models;
 using EQTool.ViewModels;
-using System.Diagnostics;
-using System.Security.Policy;
-using static EQTool.ViewModels.SpawnTimerDialogViewModel;
-using System.Windows;
 using EQToolShared.HubModels;
-using System.Text.RegularExpressions;
+using System.Diagnostics;
+using static EQTool.ViewModels.SpawnTimerDialogViewModel;
 
 namespace EQTool.Services.Handlers
 {
@@ -19,23 +16,24 @@ namespace EQTool.Services.Handlers
     {
         // Model class to hold the results of the Spawn Timer Dialog
         // make this static, so it only initializes once
-        static private readonly SpawnTimerDialogViewModel _model = new SpawnTimerDialogViewModel();
+        private static readonly SpawnTimerDialogViewModel _model = new SpawnTimerDialogViewModel();
 
         //
         // ctor
         //
         // register this service as a listener for the Events it cares about
         //
-        public SpawnTimerHandler(LogEvents logEvents, ActivePlayer activePlayer, EQToolSettings eQToolSettings, ITextToSpeach textToSpeach) 
+        public SpawnTimerHandler(LogEvents logEvents, ActivePlayer activePlayer, EQToolSettings eQToolSettings, ITextToSpeach textToSpeach)
             : base(logEvents, activePlayer, eQToolSettings, textToSpeach)
         {
             this.logEvents.ExpGainedEvent += LogEvents_ExpGainedEvent;
             this.logEvents.SlainEvent += LogEvents_SlainEvent;
             this.logEvents.FactionEvent += LogEvents_FactionEvent;
+            Debug.WriteLine("CTOR called");
         }
 
         // getter for the spawn timer Model
-        public SpawnTimerDialogViewModel Model { get { return _model; } }
+        public SpawnTimerDialogViewModel Model => _model;
 
         //
         // function that gets called for a ExpGainedEvent
@@ -46,7 +44,7 @@ namespace EQTool.Services.Handlers
             Debug.WriteLine($"ExpGainedEvent: [{expGainedEvent.TimeStamp}] [{expGainedEvent.Line}]");
 
             // are spawn timers for exp messages turned on?
-            if ((Model.SpawnTimerEnabled) && (Model.StartType == StartTypes.EXP_MESSAGE))
+            if (Model.SpawnTimerEnabled && (Model.StartType == StartTypes.EXP_MESSAGE))
             {
                 // fire off a timer event
                 var timer = new StartTimerEvent
