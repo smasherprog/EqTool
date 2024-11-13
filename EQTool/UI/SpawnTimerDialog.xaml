@@ -9,7 +9,18 @@
         Title="Spawn Timer Dialog" SizeToContent="WidthAndHeight" ResizeMode="NoResize">
 
     <Window.Resources>
+        
         <vm:RadioButtonEnumConverter x:Key="RadioButtonEnumConverter" />
+
+        <Style x:Key="TextBoxInError" TargetType="{x:Type TextBox}">
+            <Style.Triggers>
+                <Trigger Property="Validation.HasError" Value="true">
+                    <Setter Property="ToolTip" Value="{Binding RelativeSource={x:Static RelativeSource.Self}, Path=(Validation.Errors)[0].ErrorContent}"/>
+                    <Setter Property="Background" Value="Yellow"/>
+                </Trigger>
+            </Style.Triggers>
+        </Style>
+
     </Window.Resources>
     <StackPanel Background="LightGray">
 
@@ -85,12 +96,20 @@
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Remaining Time Warning" Margin="30,5,0,0" Width="200" VerticalAlignment="Center" FontSize="14" />
                         <TextBox x:Name="warningTime" 
-                                 Text="{Binding WarningTime}" 
-                                 Margin="0,5,0,0" 
+                                 Margin="10,5,0,0" 
                                  Width="100" 
                                  FontSize="14" 
                                  VerticalAlignment="Center" 
-                                 TextAlignment="Center" />
+                                 TextAlignment="Center"
+                                 Style="{StaticResource TextBoxInError}">
+                                <TextBox.Text>
+                                    <Binding Path="WarningTime" UpdateSourceTrigger="PropertyChanged" >
+                                        <Binding.ValidationRules>
+                                            <vm:HourMinutesSecondsValidationRule />
+                                        </Binding.ValidationRules>
+                                    </Binding>
+                                </TextBox.Text>
+                        </TextBox>
                         <TextBlock Text="hh:mm:ss" Margin="10,5,0,0" VerticalAlignment="Center" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
@@ -167,12 +186,20 @@
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Counter Reset Time" Margin="10,5,0,0" Width="220" FontSize="16" VerticalAlignment="Center"/>
                         <TextBox x:Name="counterResetTime" 
-                                 Text="{Binding CounterResetTime}" 
-                                 Margin="0,5,0,0" 
+                                 Margin="10,5,0,0" 
                                  Width="100" 
                                  FontSize="14" 
                                  VerticalAlignment="Center" 
-                                 TextAlignment="Center" />
+                                 TextAlignment="Center"
+                                 Style="{StaticResource TextBoxInError}">
+                                <TextBox.Text>
+                                    <Binding Path="CounterResetTime" UpdateSourceTrigger="PropertyChanged" >
+                                        <Binding.ValidationRules>
+                                            <vm:HourMinutesSecondsValidationRule />
+                                        </Binding.ValidationRules>
+                                    </Binding>
+                                </TextBox.Text>
+                        </TextBox>
                         <TextBlock Text="hh:mm:ss" Margin="10,5,0,0" VerticalAlignment="Center" />
                     </StackPanel>
                 </StackPanel>
@@ -223,12 +250,20 @@
                                      FontSize="14" 
                                      VerticalContentAlignment="Center"/>
                         <TextBox x:Name="customDuration" 
-                                 Text="{Binding CustomDuration}" 
                                  Margin="10,5,0,0" 
                                  Width="100" 
                                  FontSize="14" 
                                  VerticalAlignment="Center" 
-                                 TextAlignment="Center" />
+                                 TextAlignment="Center"
+                                 Style="{StaticResource TextBoxInError}">
+                                <TextBox.Text>
+                                    <Binding Path="CustomDuration" UpdateSourceTrigger="PropertyChanged" >
+                                        <Binding.ValidationRules>
+                                            <vm:HourMinutesSecondsValidationRule />
+                                        </Binding.ValidationRules>
+                                    </Binding>
+                                </TextBox.Text>
+                        </TextBox>
                         <TextBlock Text="hh:mm:ss" Margin="10,5,0,0" VerticalAlignment="Center" />
                     </StackPanel>
                 </StackPanel>

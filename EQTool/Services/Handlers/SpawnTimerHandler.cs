@@ -59,7 +59,7 @@ namespace EQTool.Services.Handlers
                         ProvideEndTTS               = Model.ProvideEndTTS,
                         EndText                     = Model.EndText,
                         EndTTS                      = Model.EndTTS,
-                        RestartExisting = false,
+                        RestartExisting             = false,
                     },
 
                     Line                            = expGainedEvent.Line,
