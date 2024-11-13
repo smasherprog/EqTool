@@ -239,9 +239,10 @@ namespace EQTool.ViewModels
         //
         // counter reset field
         //
-        private string _CounterResetTime = "1:00:00";
-        private int _CounterResetSeconds = 3600;
-        public int TimerCounter { get; set; } = 0;  // todo - need logic to reset this to 0 after reset time is exceeded
+        private string      _CounterResetTime = "1:00:00";
+        private int         _CounterResetSeconds = 3600;
+        public int          TimerCounter { get; set; } = 0;
+        public DateTime     LastUsedTime { get; set; } = DateTime.Now;
 
         // note we will also use the setter to set the related seconds field, to keep them synced
         public string CounterResetTime
@@ -286,6 +287,21 @@ namespace EQTool.ViewModels
 
         // getter for the internally calculated field
         public int CounterResetSeconds { get { return _CounterResetSeconds; } }
+
+
+        // getter for next timer counter.
+        public int GetNextTimerCounter()
+        {
+            // is it time to reset the counter?
+            DateTime now = DateTime.Now;
+            TimeSpan timeSpan = now - LastUsedTime;
+            if (timeSpan.TotalSeconds > CounterResetSeconds)
+                TimerCounter = 0;
+
+            // reset the last used time, and return next value
+            LastUsedTime = now;
+            return ++TimerCounter;
+        }
 
 
         // -----------------------------------------------------------------------
@@ -505,6 +521,8 @@ namespace EQTool.ViewModels
             // counter reset field
             //
             CounterResetTime = m.CounterResetTime;
+            TimerCounter = m.TimerCounter;
+            LastUsedTime = m.LastUsedTime;
 
             //
             // timer duration fields

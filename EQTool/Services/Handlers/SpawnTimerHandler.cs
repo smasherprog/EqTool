@@ -49,7 +49,7 @@ namespace EQTool.Services.Handlers
                     CustomTimer = new CustomTimer
                     {
                         DurationSeconds             = Model.DurationSeconds,
-                        Name                        = $"Exp Timer [{++Model.TimerCounter}]",
+                        Name                        = $"Exp Timer [{Model.GetNextTimerCounter()}]",
                         WarningSeconds              = Model.WarningSeconds,
                         ProvideWarningText          = Model.ProvideWarningText,
                         ProvideWarningTTS           = Model.ProvideWarningTTS,
@@ -93,7 +93,7 @@ namespace EQTool.Services.Handlers
                         CustomTimer = new CustomTimer
                         {
                             DurationSeconds         = Model.DurationSeconds,
-                            Name                    = $"Slain Timer: [{slainEvent.Victim}] [{++Model.TimerCounter}]",
+                            Name                    = $"Slain Timer: [{slainEvent.Victim}] [{Model.GetNextTimerCounter()}]",
                             WarningSeconds          = Model.WarningSeconds,
                             ProvideWarningText      = Model.ProvideWarningText,
                             ProvideWarningTTS       = Model.ProvideWarningTTS,
@@ -138,7 +138,7 @@ namespace EQTool.Services.Handlers
                         CustomTimer = new CustomTimer
                         {
                             DurationSeconds         = Model.DurationSeconds,
-                            Name                    = $"Faction Timer: [{factionEvent.Faction}] [{++Model.TimerCounter}]",
+                            Name                    = $"Faction Timer: [{factionEvent.Faction}] [{Model.GetNextTimerCounter()}]",
                             WarningSeconds          = Model.WarningSeconds,
                             ProvideWarningText      = Model.ProvideWarningText,
                             ProvideWarningTTS       = Model.ProvideWarningTTS,
