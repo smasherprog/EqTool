@@ -92,7 +92,7 @@ namespace EQTool.UI
 
         private void LogParser_StartTimerEvent(object sender, StartTimerEvent e)
         {
-            var mw = mapViewModel.AddTimer(TimeSpan.FromSeconds(e.CustomTimer.DurationInSeconds), e.CustomTimer.Name, false);
+            var mw = mapViewModel.AddTimer(TimeSpan.FromSeconds(e.CustomTimer.DurationSeconds), e.CustomTimer.Name, false);
             mapViewModel.MoveToPlayerLocation(mw);
         }
 
@@ -104,7 +104,7 @@ namespace EQTool.UI
         private void Map_StartTimerEvent(object sender, StartTimerEvent e)
         {
             mapViewModel.TimerMenu_Closed();
-            _ = mapViewModel.AddTimer(TimeSpan.FromSeconds(e.CustomTimer.DurationInSeconds), e.CustomTimer.Name, true);
+            _ = mapViewModel.AddTimer(TimeSpan.FromSeconds(e.CustomTimer.DurationSeconds), e.CustomTimer.Name, true);
         }
 
         private void Map_CancelTimerEvent(object sender, EventArgs e)

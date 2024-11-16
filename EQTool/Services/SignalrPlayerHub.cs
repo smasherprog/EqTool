@@ -277,7 +277,7 @@ namespace EQTool.Models
                     var s = new TriggerEvent
                     {
                         Classes = e.Spell.Classes,
-                        DurationInSeconds = (int)spellduration.TotalSeconds,
+                        DurationSeconds = (int)spellduration.TotalSeconds,
                         Zone = activePlayer.Player?.Zone,
                         GuildName = activePlayer.Player.GuildName,
                         MapLocationSharing = activePlayer.Player.MapLocationSharing,

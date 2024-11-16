@@ -280,9 +280,9 @@ namespace EQTool.UI.SettingsComponents
             {
                 spellWindowViewModel.TryAdd(item, false);
             }
-            spellWindowViewModel.TryAddCustom(new CustomTimer { DurationInSeconds = 45, Name = "--DT-- Luetin", SpellType = SpellTypes.BadGuyCoolDown, SpellNameIcon = "Disease Cloud" });
-            spellWindowViewModel.TryAddCustom(new CustomTimer { DurationInSeconds = 60 * 27, Name = "King" });
-            spellWindowViewModel.TryAddCustom(new CustomTimer { DurationInSeconds = 60 * 18, Name = "hall Wanderer 1" });
+            spellWindowViewModel.TryAddCustom(new CustomTimer { DurationSeconds = 45, Name = "--DT-- Luetin", SpellType = SpellTypes.BadGuyCoolDown, SpellNameIcon = "Disease Cloud" });
+            spellWindowViewModel.TryAddCustom(new CustomTimer { DurationSeconds = 60 * 27, Name = "King" });
+            spellWindowViewModel.TryAddCustom(new CustomTimer { DurationSeconds = 60 * 18, Name = "hall Wanderer 1" });
         }
 
         private void CheckBoxZone_Checked(object sender, RoutedEventArgs e)

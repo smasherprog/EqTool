@@ -83,7 +83,7 @@ namespace EQTool.UI
                 SpellNameIcon = "Invisibility",
                 SpellType = EQToolShared.Enums.SpellTypes.RandomRoll,
                 Roll = e.Roll,
-                DurationInSeconds = 60 * 3
+                DurationSeconds = 60 * 3
             });
         }
 
@@ -105,7 +105,7 @@ namespace EQTool.UI
         {
             spellWindowViewModel.TryAddCustom(new CustomTimer
             {
-                DurationInSeconds = 45,
+                DurationSeconds = 45,
                 Name = $"--DT-- '{e.DTReceiver}'",
                 SpellNameIcon = "Disease Cloud",
                 SpellType = EQToolShared.Enums.SpellTypes.BadGuyCoolDown
@@ -158,7 +158,7 @@ namespace EQTool.UI
             var add = new CustomTimer
             {
                 Name = "--Dead-- " + e.Victim,
-                DurationInSeconds = (int)zonetimer.TotalSeconds,
+                DurationSeconds = (int)zonetimer.TotalSeconds,
                 SpellNameIcon = "Disease Cloud",
                 SpellType = EQToolShared.Enums.SpellTypes.RespawnTimer
             };

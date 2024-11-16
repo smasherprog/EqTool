@@ -39,7 +39,7 @@ namespace EQToolApis.Controllers
                 await hubContext.Clients.Group(model.Server.ToString()).SendAsync("AddCustomTrigger", new SignalrCustomTimer
                 {
                     Server = model.Server,
-                    DurationInSeconds = 28 * 60,
+                    DurationSeconds = 28 * 60,
                     Name = "Next Kael Faction Pull"
                 });
             }

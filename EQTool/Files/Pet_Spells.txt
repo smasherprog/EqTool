@@ -1,0 +1,382 @@
+    def load_pet_dict(self) -> None:
+        """
+        Create the dictionary of pet spells, with all pet spell info for each
+
+        Returns:
+            None: 
+        """
+        #
+        # Necro pets
+        #
+        pet_level_list = list()
+        pet_level_list.append(PetLevel(rank=1, pet_level=1, max_melee=8, max_bashkick=0, max_backstab=0, lt_proc=0))
+        pet_level_list.append(PetLevel(rank=2, pet_level=2, max_melee=10, max_bashkick=0, max_backstab=0, lt_proc=0))
+        pet_spell = PetSpell('Cavorting Bones', 'Necro', caster_level=1, pet_level_list=pet_level_list.copy())
+        self.pet_dict[pet_spell.spell_name] = pet_spell
+
+        pet_level_list.clear()
+        pet_level_list.append(PetLevel(rank=1, pet_level=3, max_melee=8, max_bashkick=0, max_backstab=0, lt_proc=0))
+        pet_level_list.append(PetLevel(rank=2, pet_level=4, max_melee=10, max_bashkick=0, max_backstab=0, lt_proc=0))
+        pet_level_list.append(PetLevel(rank=3, pet_level=5, max_melee=12, max_bashkick=0, max_backstab=0, lt_proc=0, desc='Max'))
+        pet_spell = PetSpell('Leering Corpse', 'Necro', caster_level=4, pet_level_list=pet_level_list.copy())
+        self.pet_dict[pet_spell.spell_name] = pet_spell
+
+        pet_level_list.clear()
+        pet_level_list.append(PetLevel(rank=1, pet_level=6, max_melee=8, max_bashkick=8, max_backstab=0, lt_proc=0))
+        pet_level_list.append(PetLevel(rank=2, pet_level=7, max_melee=10, max_bashkick=10, max_backstab=0, lt_proc=0))
+        pet_level_list.append(PetLevel(rank=3, pet_level=8, max_melee=12, max_bashkick=12, max_backstab=0, lt_proc=0))
+        pet_level_list.append(PetLevel(rank=4, pet_level=9, max_melee=14, max_bashkick=13, max_backstab=0, lt_proc=0, desc='Max'))
+        pet_spell = PetSpell('Bone Walk', 'Necro', caster_level=8, pet_level_list=pet_level_list.copy())
+        self.pet_dict[pet_spell.spell_name] = pet_spell
+
+        pet_level_list.clear()
+        pet_level_list.append(PetLevel(rank=1, pet_level=8, max_melee=10, max_bashkick=10, max_backstab=0, lt_proc=0))
+        pet_level_list.append(PetLevel(rank=2, pet_level=9, max_melee=12, max_bashkick=12, max_backstab=0, lt_proc=0))
+        pet_level_list.append(PetLevel(rank=3, pet_level=10, max_melee=14, max_bashkick=14, max_backstab=0, lt_proc=0))
+        pet_level_list.append(PetLevel(rank=4, pet_level=11, max_melee=16, max_bashkick=16, max_backstab=0, lt_proc=0, desc='Max'))
+        pet_spell = PetSpell('Convoke Shadow', 'Necro', caster_level=12, pet_level_list=pet_level_list.copy())
+        self.pet_dict[pet_spell.spell_name] = pet_spell
+
+        pet_level_list.clear()
+        pet_level_list.append(PetLevel(rank=1, pet_level=12, max_melee=12, max_bashkick=12, max_backstab=0, lt_proc=0))
+        pet_level_list.append(PetLevel(rank=2, pet_level=13, max_melee=14, max_bashkick=14, max_backstab=0, lt_proc=0))
+        pet_level_list.append(PetLevel(rank=3, pet_level=14, max_melee=16, max_bashkick=15, max_backstab=0, lt_proc=0))
+        pet_level_list.append(PetLevel(rank=4, pet_level=15, max_melee=18, max_bashkick=15, max_backstab=0, lt_proc=0))
+        pet_level_list.append(PetLevel(rank=5, pet_level=16, max_melee=20, max_bashkick=16, max_backstab=0, lt_proc=0, desc='Max'))
+        pet_spell = PetSpell('Restless Bones', 'Necro', caster_level=16, pet_level_list=pet_level_list.copy())
+        self.pet_dict[pet_spell.spell_name] = pet_spell
+
+        pet_level_list.clear()
+        pet_level_list.append(PetLevel(rank=1, pet_level=15, max_melee=14, max_bashkick=14, max_backstab=0, lt_proc=0))
+        pet_level_list.append(PetLevel(rank=2, pet_level=16, max_melee=16, max_bashkick=15, max_backstab=0, lt_proc=0))
+        pet_level_list.append(PetLevel(rank=3, pet_level=17, max_melee=18, max_bashkick=15, max_backstab=0, lt_proc=0))
+        pet_level_list.append(PetLevel(rank=4, pet_level=18, max_melee=20, max_bashkick=16, max_backstab=0, lt_proc=0))
+        pet_level_list.append(PetLevel(rank=5, pet_level=19, max_melee=22, max_bashkick=16, max_backstab=0, lt_proc=0, desc='Max'))
+        pet_spell = PetSpell('Animate Dead', 'Necro', caster_level=20, pet_level_list=pet_level_list.copy())
+        self.pet_dict[pet_spell.spell_name] = pet_spell
+
+        pet_level_list.clear()
+        pet_level_list.append(PetLevel(rank=1, pet_level=18, max_melee=18, max_bashkick=15, max_backstab=0, lt_proc=0))
+        pet_level_list.append(PetLevel(rank=2, pet_level=19, max_melee=20, max_bashkick=16, max_backstab=0, lt_proc=0))
+        pet_level_list.append(PetLevel(rank=3, pet_level=20, max_melee=22, max_bashkick=16, max_backstab=0, lt_proc=0))
+        pet_level_list.append(PetLevel(rank=4, pet_level=21, max_melee=23, max_bashkick=17, max_backstab=0, lt_proc=0))
+        pet_level_list.append(PetLevel(rank=5, pet_level=22, max_melee=26, max_bashkick=17, max_backstab=0, lt_proc=0, desc='Max'))
+        pet_spell = PetSpell('Haunting Corpse', 'Necro', caster_level=24, pet_level_list=pet_level_list.copy())
+        self.pet_dict[pet_spell.spell_name] = pet_spell
+
+        pet_level_list.clear()
+        pet_level_list.append(PetLevel(rank=1, pet_level=22, max_melee=20, max_bashkick=16, max_backstab=0, lt_proc=0))
+        pet_level_list.append(PetLevel(rank=2, pet_level=23, max_melee=22, max_bashkick=16, max_backstab=0, lt_proc=0))
+        pet_level_list.append(PetLevel(rank=3, pet_level=24, max_melee=23, max_bashkick=17, max_backstab=0, lt_proc=0))
+        pet_level_list.append(PetLevel(rank=4, pet_level=25, max_melee=26, max_bashkick=17, max_backstab=0, lt_proc=0))
+        pet_level_list.append(PetLevel(rank=5, pet_level=26, max_melee=28, max_bashkick=18, max_backstab=0, lt_proc=0, desc='Max'))
+        pet_spell = PetSpell('Summon Dead', 'Necro', caster_level=29, pet_level_list=pet_level_list.copy())
+        self.pet_dict[pet_spell.spell_name] = pet_spell
+
+        pet_level_list.clear()
+        pet_level_list.append(PetLevel(rank=1, pet_level=25, max_melee=23, max_bashkick=17, max_backstab=0, lt_proc=0))
+        pet_level_list.append(PetLevel(rank=2, pet_level=26, max_melee=26, max_bashkick=17, max_backstab=0, lt_proc=0))
+        pet_level_list.append(PetLevel(rank=3, pet_level=27, max_melee=28, max_bashkick=18, max_backstab=0, lt_proc=0))
+        pet_level_list.append(PetLevel(rank=4, pet_level=28, max_melee=30, max_bashkick=18, max_backstab=0, lt_proc=0))
+        pet_level_list.append(PetLevel(rank=5, pet_level=29, max_melee=32, max_bashkick=19, max_backstab=0, lt_proc=0, desc='Max'))
+        pet_spell = PetSpell('Invoke Shadow', 'Necro', caster_level=34, pet_level_list=pet_level_list.copy())
+        self.pet_dict[pet_spell.spell_name] = pet_spell
+
+        pet_level_list.clear()
+        pet_level_list.append(PetLevel(rank=1, pet_level=29, max_melee=31, max_bashkick=18, max_backstab=0, lt_proc=0))
+        pet_level_list.append(PetLevel(rank=2, pet_level=30, max_melee=33, max_bashkick=19, max_backstab=0, lt_proc=0))
+        pet_level_list.append(PetLevel(rank=3, pet_level=31, max_melee=35, max_bashkick=19, max_backstab=0, lt_proc=0))
+        pet_level_list.append(PetLevel(rank=4, pet_level=32, max_melee=37, max_bashkick=20, max_backstab=0, lt_proc=0))
+        pet_level_list.append(PetLevel(rank=5, pet_level=33, max_melee=39, max_bashkick=20, max_backstab=0, lt_proc=0, desc='Max'))
+        pet_spell = PetSpell('Malignant Dead', 'Necro', caster_level=39, pet_level_list=pet_level_list.copy())
+        self.pet_dict[pet_spell.spell_name] = pet_spell
+
+        pet_level_list.clear()
+        pet_level_list.append(PetLevel(rank=1, pet_level=33, max_melee=39, max_bashkick=20, max_backstab=0, lt_proc=11))
+        pet_level_list.append(PetLevel(rank=2, pet_level=34, max_melee=41, max_bashkick=21, max_backstab=0, lt_proc=11))
+        pet_level_list.append(PetLevel(rank=3, pet_level=35, max_melee=43, max_bashkick=21, max_backstab=0, lt_proc=11))
+        pet_level_list.append(PetLevel(rank=4, pet_level=36, max_melee=45, max_bashkick=22, max_backstab=0, lt_proc=11))
+        pet_level_list.append(PetLevel(rank=5, pet_level=37, max_melee=47, max_bashkick=22, max_backstab=0, lt_proc=11, desc='Max'))
+        pet_spell = PetSpell('Cackling Bones', 'Necro', caster_level=44, pet_level_list=pet_level_list.copy())
+        self.pet_dict[pet_spell.spell_name] = pet_spell
+
+        pet_level_list.clear()
+        pet_level_list.append(PetLevel(rank=1, pet_level=37, max_melee=47, max_bashkick=22, max_backstab=0, lt_proc=38))
+        pet_level_list.append(PetLevel(rank=2, pet_level=38, max_melee=49, max_bashkick=23, max_backstab=0, lt_proc=39))
+        pet_level_list.append(PetLevel(rank=3, pet_level=39, max_melee=51, max_bashkick=23, max_backstab=0, lt_proc=40))
+        pet_level_list.append(PetLevel(rank=4, pet_level=40, max_melee=52, max_bashkick=24, max_backstab=0, lt_proc=41))
+        pet_level_list.append(PetLevel(rank=5, pet_level=41, max_melee=55, max_bashkick=24, max_backstab=0, lt_proc=42, desc='Max'))
+        pet_level_list.append(PetLevel(rank=6, pet_level=42, max_melee=57, max_bashkick=25, max_backstab=0, lt_proc=43, desc='Max+Focus'))
+        pet_spell = PetSpell('Invoke Death', 'Necro', caster_level=49, pet_level_list=pet_level_list.copy())
+        self.pet_dict[pet_spell.spell_name] = pet_spell
+
+        pet_level_list.clear()
+        pet_level_list.append(PetLevel(rank=1, pet_level=40, max_melee=49, max_bashkick=0, max_backstab=147, lt_proc=40))
+        pet_level_list.append(PetLevel(rank=2, pet_level=41, max_melee=51, max_bashkick=0, max_backstab=153, lt_proc=41))
+        pet_level_list.append(PetLevel(rank=3, pet_level=42, max_melee=52, max_bashkick=0, max_backstab=159, lt_proc=42))
+        pet_level_list.append(PetLevel(rank=4, pet_level=43, max_melee=55, max_bashkick=0, max_backstab=165, lt_proc=43))
+        pet_level_list.append(PetLevel(rank=5, pet_level=44, max_melee=56, max_bashkick=0, max_backstab=171, lt_proc=44, desc='Max'))
+        pet_level_list.append(PetLevel(rank=6, pet_level=45, max_melee=59, max_bashkick=0, max_backstab=177, lt_proc=45, desc='Max+Focus'))
+        pet_spell = PetSpell('Minion of Shadows', 'Necro', caster_level=53, pet_level_list=pet_level_list.copy())
+        self.pet_dict[pet_spell.spell_name] = pet_spell
+
+        pet_level_list.clear()
+        pet_level_list.append(PetLevel(rank=1, pet_level=40, max_melee=51, max_bashkick=63, max_backstab=0, lt_proc=41))
+        pet_level_list.append(PetLevel(rank=2, pet_level=41, max_melee=52, max_bashkick=65, max_backstab=0, lt_proc=42))
+        pet_level_list.append(PetLevel(rank=3, pet_level=42, max_melee=55, max_bashkick=66, max_backstab=0, lt_proc=43))
+        pet_level_list.append(PetLevel(rank=4, pet_level=43, max_melee=56, max_bashkick=68, max_backstab=0, lt_proc=44))
+        pet_level_list.append(PetLevel(rank=5, pet_level=44, max_melee=59, max_bashkick=69, max_backstab=0, lt_proc=45, desc='Max'))
+        pet_level_list.append(PetLevel(rank=6, pet_level=45, max_melee=61, max_bashkick=71, max_backstab=0, lt_proc=46, desc='Max+Focus'))
+        pet_spell = PetSpell('Servant of Bones', 'Necro', caster_level=56, pet_level_list=pet_level_list.copy())
+        self.pet_dict[pet_spell.spell_name] = pet_spell
+
+        pet_level_list.clear()
+        pet_level_list.append(PetLevel(rank=1, pet_level=43, max_melee=52, max_bashkick=24, max_backstab=0, lt_proc=44))
+        pet_level_list.append(PetLevel(rank=2, pet_level=44, max_melee=55, max_bashkick=24, max_backstab=0, lt_proc=45))
+        pet_level_list.append(PetLevel(rank=3, pet_level=45, max_melee=56, max_bashkick=25, max_backstab=0, lt_proc=46))
+        pet_level_list.append(PetLevel(rank=4, pet_level=46, max_melee=59, max_bashkick=25, max_backstab=0, lt_proc=47))
+        pet_level_list.append(PetLevel(rank=5, pet_level=47, max_melee=61, max_bashkick=26, max_backstab=0, lt_proc=48, desc='Max'))
+        pet_level_list.append(PetLevel(rank=6, pet_level=48, max_melee=62, max_bashkick=26, max_backstab=0, lt_proc=49, desc='Max+Focus'))
+        pet_spell = PetSpell('Emissary of Thule', 'Necro', caster_level=59, pet_level_list=pet_level_list.copy())
+        self.pet_dict[pet_spell.spell_name] = pet_spell
+
+        #
+        # Enchanter pets
+        #
+        pet_level_list.clear()
+        pet_level_list.append(PetLevel(rank=1, pet_level=1, max_melee=7, max_bashkick=0, max_backstab=0, lt_proc=0))
+        pet_level_list.append(PetLevel(rank=2, pet_level=2, max_melee=9, max_bashkick=0, max_backstab=0, lt_proc=0))
+        pet_spell = PetSpell('Pendril\'s Animation', 'Enchanter', caster_level=1, pet_level_list=pet_level_list.copy())
+        self.pet_dict[pet_spell.spell_name] = pet_spell
+
+        pet_level_list.clear()
+        pet_level_list.append(PetLevel(rank=1, pet_level=3, max_melee=9, max_bashkick=0, max_backstab=0, lt_proc=0))
+        pet_level_list.append(PetLevel(rank=2, pet_level=4, max_melee=10, max_bashkick=0, max_backstab=0, lt_proc=0))
+        pet_level_list.append(PetLevel(rank=3, pet_level=5, max_melee=12, max_bashkick=0, max_backstab=0, lt_proc=0, desc='Max'))
+        pet_spell = PetSpell('Juli`s Animation', 'Enchanter', caster_level=4, pet_level_list=pet_level_list.copy())
+        self.pet_dict[pet_spell.spell_name] = pet_spell
+
+        pet_level_list.clear()
+        pet_level_list.append(PetLevel(rank=1, pet_level=6, max_melee=9, max_bashkick=8, max_backstab=0, lt_proc=0))
+        pet_level_list.append(PetLevel(rank=2, pet_level=7, max_melee=10, max_bashkick=10, max_backstab=0, lt_proc=0))
+        pet_level_list.append(PetLevel(rank=3, pet_level=8, max_melee=12, max_bashkick=12, max_backstab=0, lt_proc=0))
+        pet_level_list.append(PetLevel(rank=4, pet_level=9, max_melee=14, max_bashkick=13, max_backstab=0, lt_proc=0, desc='Max'))
+        pet_spell = PetSpell('Mircyl\'s Animation', 'Enchanter', caster_level=8, pet_level_list=pet_level_list.copy())
+        self.pet_dict[pet_spell.spell_name] = pet_spell
+
+        pet_level_list.clear()
+        pet_level_list.append(PetLevel(rank=1, pet_level=9, max_melee=11, max_bashkick=11, max_backstab=0, lt_proc=0))
+        pet_level_list.append(PetLevel(rank=2, pet_level=10, max_melee=13, max_bashkick=13, max_backstab=0, lt_proc=0))
+        pet_level_list.append(PetLevel(rank=3, pet_level=11, max_melee=15, max_bashkick=14, max_backstab=0, lt_proc=0))
+        pet_level_list.append(PetLevel(rank=4, pet_level=12, max_melee=17, max_bashkick=15, max_backstab=0, lt_proc=0, desc='Max'))
+        pet_spell = PetSpell('Kilan`s Animation', 'Enchanter', caster_level=12, pet_level_list=pet_level_list.copy())
+        self.pet_dict[pet_spell.spell_name] = pet_spell
+
+        pet_level_list.clear()
+        pet_level_list.append(PetLevel(rank=1, pet_level=12, max_melee=12, max_bashkick=12, max_backstab=0, lt_proc=0))
+        pet_level_list.append(PetLevel(rank=2, pet_level=13, max_melee=14, max_bashkick=14, max_backstab=0, lt_proc=0))
+        pet_level_list.append(PetLevel(rank=3, pet_level=14, max_melee=16, max_bashkick=15, max_backstab=0, lt_proc=0))
+        pet_level_list.append(PetLevel(rank=4, pet_level=15, max_melee=18, max_bashkick=15, max_backstab=0, lt_proc=0))
+        pet_level_list.append(PetLevel(rank=5, pet_level=16, max_melee=20, max_bashkick=16, max_backstab=0, lt_proc=0, desc='Max'))
+        pet_spell = PetSpell('Shalee`s Animation', 'Enchanter', caster_level=16, pet_level_list=pet_level_list.copy())
+        self.pet_dict[pet_spell.spell_name] = pet_spell
+
+        pet_level_list.clear()
+        pet_level_list.append(PetLevel(rank=1, pet_level=16, max_melee=14, max_bashkick=14, max_backstab=0, lt_proc=0))
+        pet_level_list.append(PetLevel(rank=2, pet_level=17, max_melee=16, max_bashkick=15, max_backstab=0, lt_proc=0))
+        pet_level_list.append(PetLevel(rank=3, pet_level=18, max_melee=19, max_bashkick=15, max_backstab=0, lt_proc=0))
+        pet_level_list.append(PetLevel(rank=4, pet_level=19, max_melee=20, max_bashkick=16, max_backstab=0, lt_proc=0))
+        pet_level_list.append(PetLevel(rank=5, pet_level=20, max_melee=22, max_bashkick=16, max_backstab=0, lt_proc=0, desc='Max'))
+        pet_spell = PetSpell('Sisna`s Animation', 'Enchanter', caster_level=20, pet_level_list=pet_level_list.copy())
+        self.pet_dict[pet_spell.spell_name] = pet_spell
+
+        pet_level_list.clear()
+        pet_level_list.append(PetLevel(rank=1, pet_level=19, max_melee=18, max_bashkick=15, max_backstab=0, lt_proc=0))
+        pet_level_list.append(PetLevel(rank=2, pet_level=20, max_melee=20, max_bashkick=16, max_backstab=0, lt_proc=0))
+        pet_level_list.append(PetLevel(rank=3, pet_level=21, max_melee=22, max_bashkick=16, max_backstab=0, lt_proc=0))
+        pet_level_list.append(PetLevel(rank=4, pet_level=22, max_melee=23, max_bashkick=17, max_backstab=0, lt_proc=0))
+        pet_level_list.append(PetLevel(rank=5, pet_level=23, max_melee=26, max_bashkick=17, max_backstab=0, lt_proc=0, desc='Max'))
+        pet_spell = PetSpell('Sagar`s Animation', 'Enchanter', caster_level=24, pet_level_list=pet_level_list.copy())
+        self.pet_dict[pet_spell.spell_name] = pet_spell
+
+        pet_level_list.clear()
+        pet_level_list.append(PetLevel(rank=1, pet_level=22, max_melee=20, max_bashkick=16, max_backstab=0, lt_proc=0))
+        pet_level_list.append(PetLevel(rank=2, pet_level=23, max_melee=22, max_bashkick=16, max_backstab=0, lt_proc=0))
+        pet_level_list.append(PetLevel(rank=3, pet_level=24, max_melee=23, max_bashkick=17, max_backstab=0, lt_proc=0))
+        pet_level_list.append(PetLevel(rank=4, pet_level=25, max_melee=26, max_bashkick=17, max_backstab=0, lt_proc=0))
+        pet_level_list.append(PetLevel(rank=5, pet_level=26, max_melee=28, max_bashkick=18, max_backstab=0, lt_proc=0, desc='Max'))
+        pet_spell = PetSpell('Uleen`s Animation', 'Enchanter', caster_level=29, pet_level_list=pet_level_list.copy())
+        self.pet_dict[pet_spell.spell_name] = pet_spell
+
+        pet_level_list.clear()
+        pet_level_list.append(PetLevel(rank=1, pet_level=25, max_melee=26, max_bashkick=17, max_backstab=0, lt_proc=0))
+        pet_level_list.append(PetLevel(rank=2, pet_level=26, max_melee=28, max_bashkick=18, max_backstab=0, lt_proc=0))
+        pet_level_list.append(PetLevel(rank=3, pet_level=27, max_melee=30, max_bashkick=18, max_backstab=0, lt_proc=0))
+        pet_level_list.append(PetLevel(rank=4, pet_level=28, max_melee=32, max_bashkick=19, max_backstab=0, lt_proc=0))
+        pet_level_list.append(PetLevel(rank=5, pet_level=29, max_melee=34, max_bashkick=19, max_backstab=0, lt_proc=0, desc='Max'))
+        pet_spell = PetSpell('Boltran`s Animation', 'Enchanter', caster_level=34, pet_level_list=pet_level_list.copy())
+        self.pet_dict[pet_spell.spell_name] = pet_spell
+
+        pet_level_list.clear()
+        pet_level_list.append(PetLevel(rank=1, pet_level=29, max_melee=32, max_bashkick=19, max_backstab=0, lt_proc=0))
+        pet_level_list.append(PetLevel(rank=2, pet_level=30, max_melee=34, max_bashkick=19, max_backstab=0, lt_proc=0))
+        pet_level_list.append(PetLevel(rank=3, pet_level=31, max_melee=36, max_bashkick=20, max_backstab=0, lt_proc=0))
+        pet_level_list.append(PetLevel(rank=4, pet_level=32, max_melee=38, max_bashkick=20, max_backstab=0, lt_proc=0))
+        pet_level_list.append(PetLevel(rank=5, pet_level=33, max_melee=40, max_bashkick=21, max_backstab=0, lt_proc=0, desc='Max'))
+        pet_spell = PetSpell('Aanya\'s Animation', 'Enchanter', caster_level=39, pet_level_list=pet_level_list.copy())
+        self.pet_dict[pet_spell.spell_name] = pet_spell
+
+        pet_level_list.clear()
+        pet_level_list.append(PetLevel(rank=1, pet_level=33, max_melee=40, max_bashkick=21, max_backstab=0, lt_proc=0))
+        pet_level_list.append(PetLevel(rank=2, pet_level=34, max_melee=42, max_bashkick=21, max_backstab=0, lt_proc=0))
+        pet_level_list.append(PetLevel(rank=3, pet_level=35, max_melee=44, max_bashkick=22, max_backstab=0, lt_proc=0))
+        pet_level_list.append(PetLevel(rank=4, pet_level=36, max_melee=45, max_bashkick=22, max_backstab=0, lt_proc=0))
+        pet_level_list.append(PetLevel(rank=5, pet_level=37, max_melee=48, max_bashkick=23, max_backstab=0, lt_proc=0, desc='Max'))
+        pet_spell = PetSpell('Yegoreff`s Animation', 'Enchanter', caster_level=44, pet_level_list=pet_level_list.copy())
+        self.pet_dict[pet_spell.spell_name] = pet_spell
+
+        pet_level_list.clear()
+        pet_level_list.append(PetLevel(rank=1, pet_level=37, max_melee=45, max_bashkick=22, max_backstab=0, lt_proc=0))
+        pet_level_list.append(PetLevel(rank=2, pet_level=38, max_melee=47, max_bashkick=22, max_backstab=0, lt_proc=0))
+        pet_level_list.append(PetLevel(rank=3, pet_level=39, max_melee=49, max_bashkick=23, max_backstab=0, lt_proc=0))
+        pet_level_list.append(PetLevel(rank=4, pet_level=40, max_melee=51, max_bashkick=23, max_backstab=0, lt_proc=0))
+        pet_level_list.append(PetLevel(rank=5, pet_level=41, max_melee=52, max_bashkick=24, max_backstab=0, lt_proc=0, desc='Max'))
+        pet_spell = PetSpell('Kintaz`s Animation', 'Enchanter', caster_level=49, pet_level_list=pet_level_list.copy())
+        self.pet_dict[pet_spell.spell_name] = pet_spell
+
+        pet_level_list.clear()
+        pet_level_list.append(PetLevel(rank=1, pet_level=44, max_melee=49, max_bashkick=23, max_backstab=0, lt_proc=0))
+        pet_level_list.append(PetLevel(rank=2, pet_level=45, max_melee=51, max_bashkick=23, max_backstab=0, lt_proc=0))
+        pet_level_list.append(PetLevel(rank=3, pet_level=46, max_melee=52, max_bashkick=24, max_backstab=0, lt_proc=0))
+        pet_level_list.append(PetLevel(rank=4, pet_level=47, max_melee=55, max_bashkick=24, max_backstab=0, lt_proc=0))
+        pet_level_list.append(PetLevel(rank=5, pet_level=48, max_melee=56, max_bashkick=25, max_backstab=0, lt_proc=0, desc='Max'))
+        pet_spell = PetSpell('Zumaik`s Animation', 'Enchanter', caster_level=55, pet_level_list=pet_level_list.copy())
+        self.pet_dict[pet_spell.spell_name] = pet_spell
+
+        #
+        # generic charmed pets
+        #
+        pet_level_list.clear()
+        pet_level_list.append(PetLevel(rank=0, pet_level=0, max_melee=0, max_bashkick=0, max_backstab=0, lt_proc=0))
+        pet_spell = PetSpell('CharmPet', 'UnknownClass', caster_level=0, pet_level_list=pet_level_list.copy())
+        self.pet_dict[pet_spell.spell_name] = pet_spell
+
+        #
+        # Shaman pets
+        #
+        pet_level_list.clear()
+        pet_level_list.append(PetLevel(rank=1, pet_level=22, max_melee=22, max_bashkick=16, max_backstab=0, lt_proc=0))
+        pet_level_list.append(PetLevel(rank=2, pet_level=23, max_melee=23, max_bashkick=17, max_backstab=0, lt_proc=0))
+        pet_level_list.append(PetLevel(rank=3, pet_level=24, max_melee=26, max_bashkick=17, max_backstab=0, lt_proc=0))
+        pet_level_list.append(PetLevel(rank=4, pet_level=25, max_melee=28, max_bashkick=18, max_backstab=0, lt_proc=0))
+        pet_level_list.append(PetLevel(rank=5, pet_level=26, max_melee=30, max_bashkick=18, max_backstab=0, lt_proc=0, desc='Max'))
+        pet_spell = PetSpell('Companion Spirit', 'Shaman', caster_level=34, pet_level_list=pet_level_list.copy())
+        self.pet_dict[pet_spell.spell_name] = pet_spell
+
+        pet_level_list.clear()
+        pet_level_list.append(PetLevel(rank=1, pet_level=24, max_melee=27, max_bashkick=17, max_backstab=0, lt_proc=0))
+        pet_level_list.append(PetLevel(rank=2, pet_level=25, max_melee=28, max_bashkick=18, max_backstab=0, lt_proc=0))
+        pet_level_list.append(PetLevel(rank=3, pet_level=26, max_melee=31, max_bashkick=18, max_backstab=0, lt_proc=0))
+        pet_level_list.append(PetLevel(rank=4, pet_level=27, max_melee=33, max_bashkick=19, max_backstab=0, lt_proc=0))
+        pet_level_list.append(PetLevel(rank=5, pet_level=28, max_melee=35, max_bashkick=19, max_backstab=0, lt_proc=0, desc='Max'))
+        pet_spell = PetSpell('Vigilant Spirit', 'Shaman', caster_level=39, pet_level_list=pet_level_list.copy())
+        self.pet_dict[pet_spell.spell_name] = pet_spell
+
+        pet_level_list.clear()
+        pet_level_list.append(PetLevel(rank=1, pet_level=28, max_melee=35, max_bashkick=19, max_backstab=0, lt_proc=0))
+        pet_level_list.append(PetLevel(rank=2, pet_level=29, max_melee=37, max_bashkick=20, max_backstab=0, lt_proc=0))
+        pet_level_list.append(PetLevel(rank=3, pet_level=30, max_melee=39, max_bashkick=20, max_backstab=0, lt_proc=0))
+        pet_level_list.append(PetLevel(rank=4, pet_level=31, max_melee=41, max_bashkick=21, max_backstab=0, lt_proc=0))
+        pet_level_list.append(PetLevel(rank=5, pet_level=32, max_melee=43, max_bashkick=21, max_backstab=0, lt_proc=0, desc='Max'))
+        pet_spell = PetSpell('Guardian Spirit', 'Shaman', caster_level=44, pet_level_list=pet_level_list.copy())
+        self.pet_dict[pet_spell.spell_name] = pet_spell
+
+        pet_level_list.clear()
+        pet_level_list.append(PetLevel(rank=1, pet_level=32, max_melee=43, max_bashkick=21, max_backstab=0, lt_proc=0))
+        pet_level_list.append(PetLevel(rank=2, pet_level=33, max_melee=45, max_bashkick=22, max_backstab=0, lt_proc=0))
+        pet_level_list.append(PetLevel(rank=3, pet_level=34, max_melee=47, max_bashkick=22, max_backstab=0, lt_proc=0))
+        pet_level_list.append(PetLevel(rank=4, pet_level=35, max_melee=49, max_bashkick=23, max_backstab=0, lt_proc=0))
+        pet_level_list.append(PetLevel(rank=5, pet_level=36, max_melee=51, max_bashkick=23, max_backstab=0, lt_proc=0, desc='Max'))
+        pet_spell = PetSpell('Frenzied Spirit', 'Shaman', caster_level=49, pet_level_list=pet_level_list.copy())
+        self.pet_dict[pet_spell.spell_name] = pet_spell
+
+        pet_level_list.clear()
+        pet_level_list.append(PetLevel(rank=1, pet_level=35, max_melee=45, max_bashkick=22, max_backstab=0, lt_proc=0))
+        pet_level_list.append(PetLevel(rank=2, pet_level=36, max_melee=47, max_bashkick=23, max_backstab=0, lt_proc=0))
+        pet_level_list.append(PetLevel(rank=3, pet_level=37, max_melee=49, max_bashkick=23, max_backstab=0, lt_proc=0))
+        pet_level_list.append(PetLevel(rank=4, pet_level=38, max_melee=51, max_bashkick=24, max_backstab=0, lt_proc=0))
+        pet_level_list.append(PetLevel(rank=5, pet_level=39, max_melee=52, max_bashkick=24, max_backstab=0, lt_proc=0, desc='Max'))
+        pet_spell = PetSpell('Spirit of the Howler', 'Shaman', caster_level=55, pet_level_list=pet_level_list.copy())
+        self.pet_dict[pet_spell.spell_name] = pet_spell
+
+        #
+        # Mage pets
+        #
+        pet_level_list.clear()
+        pet_level_list.append(PetLevel(rank=1, pet_level=4, max_melee=8, max_bashkick=0, max_backstab=0, lt_proc=5, ds=6, desc='Min'))
+        pet_level_list.append(PetLevel(rank=2, pet_level=5, max_melee=10, max_bashkick=0, max_backstab=0, lt_proc=6, ds=7))
+        pet_level_list.append(PetLevel(rank=3, pet_level=6, max_melee=12, max_bashkick=0, max_backstab=0, lt_proc=7, ds=8, desc='Max'))
+        pet_spell = PetSpell('Elementalkin', 'Magician', caster_level=4, pet_level_list=pet_level_list.copy())
+        self.pet_dict[pet_spell.spell_name] = pet_spell
+
+        pet_level_list.clear()
+        pet_level_list.append(PetLevel(rank=1, pet_level=6, max_melee=10, max_bashkick=0, max_backstab=0, lt_proc=7, ds=8, desc='Min'))
+        pet_level_list.append(PetLevel(rank=2, pet_level=7, max_melee=12, max_bashkick=0, max_backstab=0, lt_proc=8, ds=9))
+        pet_level_list.append(PetLevel(rank=3, pet_level=8, max_melee=14, max_bashkick=0, max_backstab=0, lt_proc=8, ds=10))
+        pet_level_list.append(PetLevel(rank=4, pet_level=9, max_melee=16, max_bashkick=0, max_backstab=0, lt_proc=10, ds=11, desc='Max'))
+        pet_spell = PetSpell('Elementaling', 'Magician', caster_level=8, pet_level_list=pet_level_list.copy())
+        self.pet_dict[pet_spell.spell_name] = pet_spell
+
+        pet_level_list.clear()
+        pet_level_list.append(PetLevel(rank=1, pet_level=10, max_melee=12, max_bashkick=0, max_backstab=0, lt_proc=11, ds=12, desc='Min'))
+        pet_level_list.append(PetLevel(rank=2, pet_level=11, max_melee=14, max_bashkick=0, max_backstab=0, lt_proc=12, ds=13))
+        pet_level_list.append(PetLevel(rank=3, pet_level=12, max_melee=16, max_bashkick=0, max_backstab=0, lt_proc=13, ds=14))
+        pet_level_list.append(PetLevel(rank=4, pet_level=13, max_melee=18, max_bashkick=0, max_backstab=0, lt_proc=14, ds=15, desc='Max'))
+        pet_spell = PetSpell('Elemental', 'Magician', caster_level=12, pet_level_list=pet_level_list.copy())
+        self.pet_dict[pet_spell.spell_name] = pet_spell
+
+        pet_level_list.clear()
+        pet_level_list.append(PetLevel(rank=1, pet_level=13, max_melee=12, max_bashkick=0, max_backstab=0, lt_proc=14, ds=15, desc='Min'))
+        pet_level_list.append(PetLevel(rank=2, pet_level=14, max_melee=14, max_bashkick=0, max_backstab=0, lt_proc=15, ds=16))
+        pet_level_list.append(PetLevel(rank=3, pet_level=15, max_melee=16, max_bashkick=0, max_backstab=0, lt_proc=16, ds=17))
+        pet_level_list.append(PetLevel(rank=4, pet_level=16, max_melee=18, max_bashkick=0, max_backstab=0, lt_proc=17, ds=18))
+        pet_level_list.append(PetLevel(rank=5, pet_level=17, max_melee=20, max_bashkick=0, max_backstab=0, lt_proc=18, ds=19, desc='Max'))
+        pet_spell = PetSpell('Minor Summoning', 'Magician', caster_level=16, pet_level_list=pet_level_list.copy())
+        self.pet_dict[pet_spell.spell_name] = pet_spell
+
+        pet_level_list.clear()
+        pet_level_list.append(PetLevel(rank=1, pet_level=15, max_melee=14, max_bashkick=14, max_backstab=0, lt_proc=17, ds=18, desc='Min'))
+        pet_level_list.append(PetLevel(rank=2, pet_level=16, max_melee=16, max_bashkick=15, max_backstab=0, lt_proc=18, ds=19))
+        pet_level_list.append(PetLevel(rank=3, pet_level=17, max_melee=18, max_bashkick=15, max_backstab=0, lt_proc=19, ds=20))
+        pet_level_list.append(PetLevel(rank=4, pet_level=18, max_melee=20, max_bashkick=16, max_backstab=0, lt_proc=20, ds=21))
+        pet_level_list.append(PetLevel(rank=5, pet_level=19, max_melee=22, max_bashkick=16, max_backstab=0, lt_proc=21, ds=22, desc='Max'))
+        pet_spell = PetSpell('Lesser Summoning', 'Magician', caster_level=20, pet_level_list=pet_level_list.copy())
+        self.pet_dict[pet_spell.spell_name] = pet_spell
+
+        pet_level_list.clear()
+        pet_level_list.append(PetLevel(rank=1, pet_level=19, max_melee=16, max_bashkick=0, max_backstab=0, lt_proc=20, ds=21, desc='Min'))
+        pet_level_list.append(PetLevel(rank=2, pet_level=20, max_melee=18, max_bashkick=0, max_backstab=0, lt_proc=21, ds=22))
+        pet_level_list.append(PetLevel(rank=3, pet_level=21, max_melee=20, max_bashkick=0, max_backstab=0, lt_proc=22, ds=23))
+        pet_level_list.append(PetLevel(rank=4, pet_level=22, max_melee=22, max_bashkick=0, max_backstab=0, lt_proc=23, ds=24))
+        pet_level_list.append(PetLevel(rank=5, pet_level=23, max_melee=23, max_bashkick=0, max_backstab=0, lt_proc=24, ds=25, desc='Max'))
+        pet_spell = PetSpell('Summoning', 'Magician', caster_level=24, pet_level_list=pet_level_list.copy())
+        self.pet_dict[pet_spell.spell_name] = pet_spell
+
+        pet_level_list.clear()
+        pet_level_list.append(PetLevel(rank=1, pet_level=22, max_melee=20, max_bashkick=0, max_backstab=0, lt_proc=23, ds=24, desc='Min'))
+        pet_level_list.append(PetLevel(rank=2, pet_level=23, max_melee=22, max_bashkick=0, max_backstab=0, lt_proc=24, ds=25))
+        pet_level_list.append(PetLevel(rank=3, pet_level=24, max_melee=23, max_bashkick=0, max_backstab=0, lt_proc=25, ds=26))
+        pet_level_list.append(PetLevel(rank=4, pet_level=25, max_melee=26, max_bashkick=0, max_backstab=0, lt_proc=26, ds=27))
+        pet_level_list.append(PetLevel(rank=5, pet_level=26, max_melee=28, max_bashkick=0, max_backstab=0, lt_proc=27, ds=28, desc='Max'))
+        pet_spell = PetSpell('Greater Summoning', 'Magician', caster_level=29, pet_level_list=pet_level_list.copy())
+        self.pet_dict[pet_spell.spell_name] = pet_spell
+
+        # todo missing mage 34+ pets
+
+        # mage epic pet
+        pet_level_list.clear()
+        pet_level_list.append(PetLevel(rank=1, pet_level=49, max_melee=67, max_bashkick=27, max_backstab=0, lt_proc=143, ds=50))
+        pet_spell = PetSpell('Manifest Elements', 'Magician', caster_level=50, pet_level_list=pet_level_list.copy())
+        self.pet_dict[pet_spell.spell_name] = pet_spell
+
+

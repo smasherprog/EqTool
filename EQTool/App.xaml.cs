@@ -320,6 +320,10 @@ namespace EQTool
                 {
                     OpenOverLayWindow();
                 }
+                if (!EQToolSettings.SettingsWindowState.Closed)
+                {
+                    OpenSettingsWindow();
+                }
             }
             signalrPlayerHub = container.Resolve<ISignalrPlayerHub>();
 
