@@ -1,6 +1,7 @@
 ﻿using EQTool.Models;
 using EQTool.Services;
 using EQTool.ViewModels;
+using EQTool.ViewModels.SpellWindow;
 using EQToolShared;
 using EQToolShared.Enums;
 using EQToolShared.HubModels;
@@ -40,7 +41,7 @@ namespace EQTool.UI
             this.logEvents = logEvents;
             this.appDispatcher = appDispatcher;
             this.activePlayer = activePlayer;
-            spellWindowViewModel.SpellList = new System.Collections.ObjectModel.ObservableCollection<UISpell>();
+            spellWindowViewModel.SpellList = new System.Collections.ObjectModel.ObservableCollection<PersistentViewModel>();
             DataContext = this.spellWindowViewModel = spellWindowViewModel;
             if (this.activePlayer.Player != null)
             {
@@ -63,14 +64,14 @@ namespace EQTool.UI
             UITimer.Elapsed += PollUI;
             UITimer.Enabled = true;
             var view = (ListCollectionView)CollectionViewSource.GetDefaultView(spelllistview.ItemsSource);
-            view.GroupDescriptions.Add(new PropertyGroupDescription(nameof(UISpell.TargetName)));
-            view.LiveGroupingProperties.Add(nameof(UISpell.TargetName));
+            view.GroupDescriptions.Add(new PropertyGroupDescription(nameof(TimerViewModel.GroupName)));
+            view.LiveGroupingProperties.Add(nameof(TimerViewModel.GroupName));
             view.IsLiveGrouping = true;
-            view.SortDescriptions.Add(new SortDescription(nameof(UISpell.Sorting), ListSortDirection.Ascending));
-            view.SortDescriptions.Add(new SortDescription(nameof(UISpell.Roll), ListSortDirection.Descending));
-            view.SortDescriptions.Add(new SortDescription(nameof(UISpell.SecondsLeftOnSpell), ListSortDirection.Ascending));
+            view.SortDescriptions.Add(new SortDescription(nameof(TimerViewModel.Sorting), ListSortDirection.Ascending));
+            view.SortDescriptions.Add(new SortDescription(nameof(RollViewModel.Roll), ListSortDirection.Descending));
+            view.SortDescriptions.Add(new SortDescription(nameof(TimerViewModel.TotalRemainingDuration), ListSortDirection.Ascending));
             view.IsLiveSorting = true;
-            view.LiveSortingProperties.Add(nameof(UISpell.SecondsLeftOnSpell));
+            view.LiveSortingProperties.Add(nameof(TimerViewModel.TotalRemainingDuration));
         }
 
         private void LogParser_RandomRollEvent(object sender, RandomRollEvent e)
@@ -113,8 +114,8 @@ namespace EQTool.UI
 
         private void LogParser_CampEvent(object sender, CampEvent e)
         {
-            this.appDispatcher.DispatchUI(() =>
-            { 
+            appDispatcher.DispatchUI(() =>
+            {
                 TrySaveYouSpellData();
                 base.SaveState();
                 spellWindowViewModel.ClearYouSpells();
@@ -162,7 +163,7 @@ namespace EQTool.UI
                 SpellType = EQToolShared.Enums.SpellTypes.RespawnTimer
             };
 
-            var exisitngdeathentry = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellName == add.Name && CustomTimer.CustomerTime == a.TargetName);
+            var exisitngdeathentry = spellWindowViewModel.SpellList.FirstOrDefault(a => a.Name == add.Name && CustomTimer.CustomerTime == a.GroupName);
             if (exisitngdeathentry != null)
             {
                 deathcounter = ++deathcounter > 999 ? 1 : deathcounter;
@@ -202,7 +203,7 @@ namespace EQTool.UI
             }
             if (spellWindowViewModel != null)
             {
-                spellWindowViewModel.SpellList = new System.Collections.ObjectModel.ObservableCollection<UISpell>();
+                spellWindowViewModel.SpellList = new System.Collections.ObjectModel.ObservableCollection<PersistentViewModel>();
             }
             base.OnClosing(e);
         }
@@ -211,12 +212,12 @@ namespace EQTool.UI
         {
             if (activePlayer?.Player != null)
             {
-                var before = activePlayer.Player.YouSpells ?? new System.Collections.Generic.List<YouSpells>();
-                activePlayer.Player.YouSpells = spellWindowViewModel.SpellList.Where(a => a.TargetName == EQSpells.SpaceYou).Select(a => new YouSpells
-                {
-                    Name = a.SpellName,
-                    TotalSecondsLeft = (int)a.SecondsLeftOnSpell.TotalSeconds,
-                }).ToList();
+                //var before = activePlayer.Player.YouSpells ?? new System.Collections.Generic.List<YouSpells>();
+                //activePlayer.Player.YouSpells = spellWindowViewModel.SpellList.Where(a => a.GroupName == EQSpells.SpaceYou).Select(a => new YouSpells
+                //{
+                //    Name = a.Name,
+                //    TotalSecondsLeft = (int)a.TotalRemainingDuration.TotalSeconds,
+                //}).ToList();
             }
         }
 
@@ -228,13 +229,13 @@ namespace EQTool.UI
         private void RemoveSingleItem(object sender, RoutedEventArgs e)
         {
             var name = (sender as Button).DataContext;
-            _ = spellWindowViewModel.SpellList.Remove(name as UISpell);
+            _ = spellWindowViewModel.SpellList.Remove(name as PersistentViewModel);
         }
 
         private void RemoveFromSpells(object sender, RoutedEventArgs e)
         {
             var name = ((sender as Button).DataContext as dynamic)?.Name as string;
-            var items = spellWindowViewModel.SpellList.Where(a => a.TargetName == name).ToList();
+            var items = spellWindowViewModel.SpellList.Where(a => a.GroupName == name).ToList();
             foreach (var item in items)
             {
                 _ = spellWindowViewModel.SpellList.Remove(item);

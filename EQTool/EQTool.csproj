@@ -479,6 +479,10 @@
     <Compile Include="ViewModels\SettingsComponents\TreeViewItemBase.cs" />
     <Compile Include="ViewModels\SettingsComponents\SettingsManagementViewModel.cs" />
     <Compile Include="ViewModels\SpawnTimerDialogViewModel.cs" />
+    <Compile Include="ViewModels\SpellWindow\RollViewModel.cs" />
+    <Compile Include="ViewModels\SpellWindow\PersistentViewModel.cs" />
+    <Compile Include="ViewModels\SpellWindow\CounterViewModel.cs" />
+    <Compile Include="ViewModels\SpellWindow\TimerViewModel.cs" />
     <Compile Include="ViewModels\ZoneViewModel.cs" />
     <Compile Include="ViewModels\MobInfoViewModel.cs" />
     <Compile Include="ViewModels\MapViewModel.cs" />
@@ -488,7 +492,7 @@
     <Compile Include="ViewModels\SettingsWindowViewModel.cs" />
     <Compile Include="Models\PlayerInfo.cs" />
     <Compile Include="Models\Polygon.cs" />
-    <Compile Include="ViewModels\UISpell.cs" />
+    <Compile Include="ViewModels\SpellWindow\SpellViewModel.cs" />
     <Compile Include="Models\vecs.cs" />
     <Compile Include="Models\S3dReader.cs" />
     <Compile Include="Services\EQToolSettingsLoad.cs" />
