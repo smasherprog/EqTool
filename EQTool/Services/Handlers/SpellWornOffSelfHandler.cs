@@ -1,5 +1,4 @@
 ﻿using EQTool.Models;
-using EQTool.Services.Factories;
 using EQTool.ViewModels;
 
 namespace EQTool.Services.Handlers
@@ -10,7 +9,6 @@ namespace EQTool.Services.Handlers
 
         public SpellWornOffSelfHandler(
             SpellWindowViewModel spellWindowViewModel,
-            SpellWindowViewModelFactory spellWindowViewModelFactory,
             LogEvents logEvents,
             ActivePlayer activePlayer,
             EQToolSettings eQToolSettings,

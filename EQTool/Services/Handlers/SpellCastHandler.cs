@@ -1,5 +1,4 @@
 ﻿using EQTool.Models;
-using EQTool.Services.Factories;
 using EQTool.ViewModels;
 using EQTool.ViewModels.SpellWindow;
 using System;
@@ -45,7 +44,6 @@ namespace EQTool.Services.Handlers
         public SpellCastHandler(
             EQSpells spells,
             SpellWindowViewModel spellWindowViewModel,
-            SpellWindowViewModelFactory spellWindowViewModelFactory,
             LogEvents logEvents,
             ActivePlayer activePlayer,
             EQToolSettings eQToolSettings,

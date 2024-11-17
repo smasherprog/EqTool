@@ -1,6 +1,6 @@
 ﻿using EQTool.Services;
-using EQTool.Services.Factories;
 using EQTool.ViewModels;
+using EQTool.ViewModels.SpellWindow;
 using EQToolShared;
 using EQToolShared.Enums;
 using EQToolShared.HubModels;
@@ -8,6 +8,7 @@ using EQToolShared.Map;
 using Microsoft.AspNetCore.SignalR.Client;
 using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Net.WebSockets;
 using System.Text;
 using System.Threading;
@@ -35,18 +36,18 @@ namespace EQTool.Models
         private readonly IAppDispatcher appDispatcher;
         private readonly System.Timers.Timer timer;
         private SignalrPlayer LastPlayer;
+        private readonly EQSpells spells;
         private readonly SpellWindowViewModel spellWindowViewModel;
         private readonly ClientWebSocket NParseWebsocketConnection;
         private readonly CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
-        private readonly SpellWindowViewModelFactory spellWindowViewModelFactory;
 
-        public SignalrPlayerHub(LogEvents logEvents, SpellWindowViewModelFactory spellWindowViewModelFactory, IAppDispatcher appDispatcher, LogParser logParser, ActivePlayer activePlayer, SpellWindowViewModel spellWindowViewModel)
+        public SignalrPlayerHub(EQSpells spells, LogEvents logEvents, IAppDispatcher appDispatcher, LogParser logParser, ActivePlayer activePlayer, SpellWindowViewModel spellWindowViewModel)
         {
+            this.spells = spells;
             this.logEvents = logEvents;
             this.appDispatcher = appDispatcher;
             this.activePlayer = activePlayer;
             this.logParser = logParser;
-            this.spellWindowViewModelFactory = spellWindowViewModelFactory;
             this.spellWindowViewModel = spellWindowViewModel;
             var url = "https://www.pigparse.org/EqToolMap";
             connection = new HubConnectionBuilder()
@@ -307,9 +308,25 @@ namespace EQTool.Models
                 Debug.WriteLine($"AddCustomTrigger {p.Name}");
                 appDispatcher.DispatchUI(() =>
                 {
-                    spellWindowViewModel.TryAdd(spellWindowViewModelFactory.Create(p));
+                    spellWindowViewModel.TryAdd(Create(p));
                 });
             }
+        }
+
+        private TimerViewModel Create(HubCustomTimer e)
+        {
+            var spellicon = spells.AllSpells.FirstOrDefault(a => a.name == e.SpellNameIcon);
+            return new TimerViewModel
+            {
+                PercentLeft = 100,
+                GroupName = CustomTimer.CustomerTime,
+                Name = e.Name,
+                Rect = spellicon.Rect,
+                Icon = spellicon.SpellIcon,
+                TotalDuration = TimeSpan.FromSeconds(e.DurationInSeconds),
+                TotalRemainingDuration = TimeSpan.FromSeconds(e.DurationInSeconds),
+                UpdatedDateTime = DateTime.Now
+            };
         }
 
         public void AddCustomTrigger(TriggerEvent p)
@@ -326,7 +343,7 @@ namespace EQTool.Models
                 Debug.WriteLine($"AddCustomTrigger {p.TargetName}");
                 appDispatcher.DispatchUI(() =>
                 {
-                    spellWindowViewModel.TryAdd(spellWindowViewModelFactory.Create(p));
+                    spellWindowViewModel.TryAdd(Create(p));
                 });
             }
         }
