@@ -39,8 +39,7 @@ namespace EQTool.Services.Parsing
                     TimeStamp = timestamp,
                     Line = message,
                     CastByYou = false,
-                    LineCounter = lineCounter,
-                    TotalSecondsOverride = null
+                    LineCounter = lineCounter
                 };
             }
 

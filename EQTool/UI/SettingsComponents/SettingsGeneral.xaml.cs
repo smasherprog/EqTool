@@ -5,7 +5,6 @@ using EQTool.Services.P99LoginMiddlemand;
 using EQTool.Services.Parsing;
 using EQTool.ViewModels;
 using EQToolShared.Enums;
-using EQToolShared.HubModels;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -25,7 +24,6 @@ namespace EQTool.UI.SettingsComponents
         private readonly SettingsWindowViewModel SettingsWindowData;
         private readonly EQToolSettings settings;
         private readonly EQToolSettingsLoad toolSettingsLoad;
-        private readonly SpellWindowViewModel spellWindowViewModel;
         private readonly EQSpells spells;
         private readonly DamageParser damageLogParser;
         private readonly CommsParser playerCommsParser;
@@ -36,8 +34,10 @@ namespace EQTool.UI.SettingsComponents
         private readonly LoginMiddlemand loginMiddlemand;
         private readonly SettingsTestRunOverlay settingsTestRunOverlay;
         private readonly WindowFactory windowFactory;
+        private readonly LogEvents logEvents;
 
         public SettingsGeneral(
+            LogEvents logEvents,
             WindowFactory windowFactory,
             LogParser logParser,
             MapLoad mapLoad,
@@ -50,12 +50,12 @@ namespace EQTool.UI.SettingsComponents
             EQToolSettings settings,
             EQToolSettingsLoad toolSettingsLoad,
             SettingsWindowViewModel settingsWindowData,
-            SpellWindowViewModel spellWindowViewModel,
             SettingsTestRunOverlay settingsTestRunOverlay)
         {
             this.loginMiddlemand = loginMiddlemand;
             this.signalrPlayerHub = signalrPlayerHub;
             this.logParser = logParser;
+            this.logEvents = logEvents;
             this.mapLoad = mapLoad;
             this.windowFactory = windowFactory;
             this.appDispatcher = appDispatcher;
@@ -63,7 +63,6 @@ namespace EQTool.UI.SettingsComponents
             this.playerCommsParser = playerCommsParser;
             this.spells = spells;
             this.settings = settings;
-            this.spellWindowViewModel = spellWindowViewModel;
             this.toolSettingsLoad = toolSettingsLoad;
             DataContext = SettingsWindowData = settingsWindowData;
             SettingsWindowData.EqPath = this.settings.DefaultEqDirectory;
@@ -243,7 +242,7 @@ namespace EQTool.UI.SettingsComponents
                 new SpellCastEvent { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Lesser Shielding"), TargetName = "Joe", MultipleMatchesFound = false },
                 new SpellCastEvent { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Shadow Compact"), TargetName = "Joe", MultipleMatchesFound = false },
                 new SpellCastEvent { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Heroic Bond"), TargetName = "Joe", MultipleMatchesFound = false },
-                new SpellCastEvent { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Improved Invis to Undead"), TargetName = "Joe", MultipleMatchesFound = false },
+                new SpellCastEvent { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Improved Invis vs Undead"), TargetName = "Joe", MultipleMatchesFound = false },
                 new SpellCastEvent { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Grim Aura"), TargetName = "Joe", MultipleMatchesFound = false },
 
                 new SpellCastEvent { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Heroic Bond"), TargetName = EQSpells.SpaceYou, MultipleMatchesFound = false },
@@ -278,11 +277,11 @@ namespace EQTool.UI.SettingsComponents
 
             foreach (var item in listofspells)
             {
-                spellWindowViewModel.TryAdd(item, false);
+                logEvents.Handle(item);
             }
-            spellWindowViewModel.TryAddCustom(new CustomTimer { DurationSeconds = 45, Name = "--DT-- Luetin", SpellType = SpellTypes.BadGuyCoolDown, SpellNameIcon = "Disease Cloud" });
-            spellWindowViewModel.TryAddCustom(new CustomTimer { DurationSeconds = 60 * 27, Name = "King" });
-            spellWindowViewModel.TryAddCustom(new CustomTimer { DurationSeconds = 60 * 18, Name = "hall Wanderer 1" });
+            PushLog("Fright says, 'Luetin'");
+            PushLog("You say, 'PigTimer-6:40-Guard_George'");
+            PushLog("You say, 'PigTimer-1:06:40-King_Wanderer'");
         }
 
         private void CheckBoxZone_Checked(object sender, RoutedEventArgs e)

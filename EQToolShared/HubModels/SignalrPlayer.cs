@@ -20,8 +20,8 @@ namespace EQToolShared.Map
         public double x { get; set; }
         public double y { get; set; }
         public double z { get; set; }
-        public string timestamp { get { return _timestamp.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss.fffffff"); } set { } }
-        private DateTime _timestamp = DateTime.Now;
+        public string timestamp { get => _timestamp.ToString("yyyy'-'MM'-'dd'T'HH':'mm':'ss.fffffff"); set { } }
+        private readonly DateTime _timestamp = DateTime.Now;
     }
     public class NParseLocation : NParseBaseLocation
     {
@@ -48,23 +48,11 @@ namespace EQToolShared.Map
         public double X { get; set; }
         public double Y { get; set; }
         public double Z { get; set; }
-        public string GroupName
-        {
-            get
-            {
-                if (this.MapLocationSharing == MapLocationSharing.GuildOnly)
-                {
-                    if (string.IsNullOrWhiteSpace(this.GuildName))
-                    {
-                        return $"{Server}_{Zone}_{this.Name}";
-                    }
-                    return $"{Server}_{Zone}_{this.GuildName}";
-                }
-                return $"{Server}_{Zone}";
-            }
-        }
+        public string GroupName => MapLocationSharing == MapLocationSharing.GuildOnly
+                    ? string.IsNullOrWhiteSpace(GuildName) ? $"{Server}_{Zone}_{Name}" : $"{Server}_{Zone}_{GuildName}"
+                    : $"{Server}_{Zone}";
     }
-    public class TriggerEvent : CustomTimer
+    public class TriggerEvent : HubCustomTimer
     {
         public string GuildName { get; set; }
         public MapLocationSharing MapLocationSharing { get; set; }
@@ -73,20 +61,8 @@ namespace EQToolShared.Map
         public double X { get; set; }
         public double Y { get; set; }
         public double Z { get; set; }
-        public string GroupName
-        {
-            get
-            {
-                if (this.MapLocationSharing == MapLocationSharing.GuildOnly)
-                {
-                    if (string.IsNullOrWhiteSpace(this.GuildName))
-                    {
-                        return $"{Server}_{Zone}";
-                    }
-                    return $"{Server}_{Zone}_{this.GuildName}";
-                }
-                return $"{Server}_{Zone}";
-            }
-        }
+        public string GroupName => MapLocationSharing == MapLocationSharing.GuildOnly
+                    ? string.IsNullOrWhiteSpace(GuildName) ? $"{Server}_{Zone}" : $"{Server}_{Zone}_{GuildName}"
+                    : $"{Server}_{Zone}";
     }
 }

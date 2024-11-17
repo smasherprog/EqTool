@@ -338,7 +338,16 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Models\CustomTimer.cs" />
     <Compile Include="Services\BinarySerializer.cs" />
+    <Compile Include="Services\Factories\SpellWindowViewModelFactory.cs" />
+    <Compile Include="Services\Handlers\SpellCastHandler.cs" />
+    <Compile Include="Services\Handlers\SpellWornOffOtherHandler.cs" />
+    <Compile Include="Services\Handlers\SpellWornOffSelfHandler.cs" />
+    <Compile Include="Services\Handlers\EnterWorldHandler.cs" />
+    <Compile Include="Services\Handlers\CampHandler.cs" />
+    <Compile Include="Services\Handlers\DeathTouchHandler.cs" />
+    <Compile Include="Services\Handlers\RandomRollHandler.cs" />
     <Compile Include="Services\Handlers\SpawnTimerHandler.cs" />
     <Compile Include="Services\Parsing\ExpGainedParser.cs" />
     <Compile Include="Services\Handlers\SlainHandler.cs" />
@@ -433,7 +442,6 @@
     <Compile Include="Services\Parsing\InvisParser.cs" />
     <Compile Include="Services\Parsing\EnrageParser.cs" />
     <Compile Include="Services\Handlers\CompleteHealCommsHandler.cs" />
-    <Compile Include="Services\Parsing\DeathTouchParser.cs" />
     <Compile Include="Services\Parsing\QuakeParser.cs" />
     <Compile Include="Services\Parsing\Helpers\LogFileDateTimeParse.cs" />
     <Compile Include="Services\Parsing\EnterWorldParser.cs" />

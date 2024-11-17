@@ -276,7 +276,7 @@
             </StackPanel>
         </TabItem>
         <TabItem Header="Debug" Name="DebugTab">
-            <StackPanel Orientation="Vertical" Margin="5, 5, 5, 5">
+            <StackPanel Orientation="Vertical" Margin="5, 5, 5, 5" HorizontalAlignment="Stretch">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Debuff Sharing"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
                     <CheckBox IsChecked="{Binding ActivePlayer.Player.SpellDebuffShare}" Click="Savesettings" MinWidth="75"></CheckBox>
@@ -309,9 +309,9 @@
                     <TextBlock Text="Test Management"  VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
                     <Button Click="OpenManagementWindow">Opwn Window</Button>
                 </StackPanel>
-                <StackPanel Orientation="Horizontal">
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
                     <TextBlock Text="Log Push"  VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
-                    <TextBox x:Name="LogPushText" MinWidth="100"></TextBox>
+                    <TextBox x:Name="LogPushText" MinWidth="150"></TextBox>
                     <Button Click="logpush">Push</Button>
                 </StackPanel>
             </StackPanel>

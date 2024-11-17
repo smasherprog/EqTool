@@ -1,12 +1,10 @@
 ﻿using Autofac;
 using EQTool.Models;
 using EQTool.Services;
-using EQTool.Services.Handlers;
 using EQTool.ViewModels;
 using EQToolShared.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using System.Collections.Generic;
 
 namespace EQtoolsTests
 {
@@ -23,8 +21,6 @@ namespace EQtoolsTests
             logParser = container.Resolve<LogParser>();
             logEvents = container.Resolve<LogEvents>();
             activePlayer = container.Resolve<ActivePlayer>();
-            _ = container.Resolve<IEnumerable<BaseHandler>>();
-            _ = container.Resolve<IEnumerable<IEqLogParser>>();
             activePlayer.Player.Level = 54;
             activePlayer.Player.PlayerClass = PlayerClasses.Cleric;
         }

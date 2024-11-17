@@ -1,6 +1,5 @@
 ﻿using EQTool.Models;
 using EQToolShared.Enums;
-using EQToolShared.HubModels;
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Media;
@@ -91,9 +90,8 @@ namespace EQTool.ViewModels.SpellWindow
             }
         }
 
-        public override string Sorting => GroupName.StartsWith(" ") ? GroupName : IsNPC ? " z" : GroupName;
+        public override string Sorting => GroupName;
 
-        public bool IsNPC { get; set; }
         public override SpellViewModelType SpellViewModelType => SpellViewModelType.Spell;
         private SpellTypes _SpellType = 0;
         public SpellTypes SpellType
@@ -102,19 +100,38 @@ namespace EQTool.ViewModels.SpellWindow
             set
             {
                 _SpellType = value;
-                ProgressBarColor = _SpellType == SpellTypes.Beneficial
-                    ? Brushes.MediumAquamarine
-                    : _SpellType == SpellTypes.Detrimental
-                        ? Brushes.OrangeRed
-                        : _SpellType == SpellTypes.BadGuyCoolDown
-                                            ? Brushes.DarkOrange
-                                            : _SpellType == SpellTypes.HarvestCooldown
-                                                                ? Brushes.SkyBlue
-                                                                : _SpellType >= SpellTypes.Other
-                                                                                    ? Brushes.DarkSeaGreen
-                                                                                    : _SpellType >= SpellTypes.RespawnTimer
-                                                                                                        ? Brushes.LightSalmon
-                                                                                                        : _SpellType >= SpellTypes.DisciplineCoolDown ? Brushes.Gold : Brushes.DarkSeaGreen;
+                if (_SpellType == SpellTypes.Beneficial)
+                {
+                    ProgressBarColor = Brushes.MediumAquamarine;
+                }
+                else if (_SpellType == SpellTypes.Detrimental)
+                {
+                    ProgressBarColor = Brushes.OrangeRed;
+                }
+                else if (_SpellType == SpellTypes.BadGuyCoolDown)
+                {
+                    ProgressBarColor = Brushes.DarkOrange;
+                }
+                else if (_SpellType == SpellTypes.HarvestCooldown)
+                {
+                    ProgressBarColor = Brushes.SkyBlue;
+                }
+                else if (_SpellType >= SpellTypes.Other)
+                {
+                    ProgressBarColor = Brushes.DarkSeaGreen;
+                }
+                else if (_SpellType >= SpellTypes.RespawnTimer)
+                {
+                    ProgressBarColor = Brushes.LightSalmon;
+                }
+                else if (_SpellType >= SpellTypes.DisciplineCoolDown)
+                {
+                    ProgressBarColor = Brushes.Gold;
+                }
+                else
+                {
+                    ProgressBarColor = Brushes.DarkSeaGreen;
+                }
             }
         }
     }

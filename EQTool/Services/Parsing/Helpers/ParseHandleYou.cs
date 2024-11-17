@@ -83,8 +83,7 @@ namespace EQTool.Services.Parsing.Helpers
                     Line = message,
                     CastByYou = false,
                     LineCounter = lineCounter,
-                    MultipleMatchesFound = false,
-                    TotalSecondsOverride = null
+                    MultipleMatchesFound = false
                 };
             }
 
@@ -127,8 +126,7 @@ namespace EQTool.Services.Parsing.Helpers
                     Line = message,
                     CastByYou = false,
                     LineCounter = lineCounter,
-                    MultipleMatchesFound = false,
-                    TotalSecondsOverride = null
+                    MultipleMatchesFound = false
                 };
             }
 
@@ -151,8 +149,7 @@ namespace EQTool.Services.Parsing.Helpers
                 TimeStamp = timestamp,
                 Line = message,
                 LineCounter = lineCounter,
-                MultipleMatchesFound = false,
-                TotalSecondsOverride = null
+                MultipleMatchesFound = false
             };
         }
 
@@ -169,8 +166,7 @@ namespace EQTool.Services.Parsing.Helpers
                 TimeStamp = timestamp,
                 Line = message,
                 LineCounter = lineCounter,
-                MultipleMatchesFound = false,
-                TotalSecondsOverride = null
+                MultipleMatchesFound = false
             };
         }
     }

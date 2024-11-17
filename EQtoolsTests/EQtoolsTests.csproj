@@ -215,7 +215,7 @@
     <Compile Include="FindEqTests.cs" />
     <Compile Include="DiscordTests.cs" />
     <Compile Include="AuctionParsingTests.cs" />
-    <Compile Include="DTparsingTests.cs" />
+    <Compile Include="DeathTouchHandlerTests.cs" />
     <Compile Include="ParsingTests.cs" />
     <Compile Include="MobInfoTests.cs" />
     <Compile Include="DamageParserTests.cs" />
@@ -227,9 +227,6 @@
     <Compile Include="ZoneParsingTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="spells_en.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="spells_us.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

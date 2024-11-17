@@ -53,13 +53,11 @@ namespace EQTool.Services
             SlainEvent?.Invoke(this, e);
         }
 
-        //WIP DONT USE THIS YET!
-        public event EventHandler<NewSlainEvent> NewSlainEvent;
-        public void Handle(NewSlainEvent e)
+        public event EventHandler<ConfirmedDeathEvent> ConfirmedDeathEvent;
+        public void Handle(ConfirmedDeathEvent e)
         {
-            NewSlainEvent?.Invoke(this, e);
+            ConfirmedDeathEvent?.Invoke(this, e);
         }
-
         public event EventHandler<CommsEvent> CommsEvent;
         public void Handle(CommsEvent e)
         {
@@ -70,12 +68,6 @@ namespace EQTool.Services
         public void Handle(StartTimerEvent e)
         {
             StartTimerEvent?.Invoke(this, e);
-        }
-
-        public event EventHandler<CancelTimerEvent> CancelTimerEvent;
-        public void Handle(CancelTimerEvent e)
-        {
-            CancelTimerEvent?.Invoke(this, e);
         }
 
         public event EventHandler<CharmBreakEvent> CharmBreakEvent;
@@ -178,12 +170,6 @@ namespace EQTool.Services
         public void Handle(CompleteHealEvent e)
         {
             CompleteHealEvent?.Invoke(this, e);
-        }
-
-        public event EventHandler<DeathTouchEvent> DeathTouchEvent;
-        public void Handle(DeathTouchEvent e)
-        {
-            DeathTouchEvent?.Invoke(this, e);
         }
 
         public event EventHandler<RandomRollEvent> RandomRollEvent;

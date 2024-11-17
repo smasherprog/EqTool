@@ -75,7 +75,7 @@
     <Compile Include="Enums\Servers.cs" />
     <Compile Include="HubModels\CustomTimer.cs" />
     <Compile Include="HubModels\PlayerLocation.cs" />
-    <Compile Include="Map\SignalrPlayer.cs" />
+    <Compile Include="HubModels\SignalrPlayer.cs" />
     <Compile Include="MasterItemList.cs" />
     <Compile Include="MasterNPCList.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

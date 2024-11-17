@@ -50,7 +50,6 @@ namespace EQTool.UI
             this.logEvents.EnteredWorldEvent += LogParser_EnteredWorldEvent;
             this.logEvents.SlainEvent += LogParser_DeathEvent;
             this.logEvents.StartTimerEvent += LogParser_StartTimerEvent;
-            this.logEvents.CancelTimerEvent += LogParser_CancelTimerEvent;
             KeyDown += PanAndZoomCanvas_KeyDown;
             Map.StartTimerEvent += Map_StartTimerEvent;
             Map.CancelTimerEvent += Map_CancelTimerEvent;
@@ -94,11 +93,6 @@ namespace EQTool.UI
         {
             var mw = mapViewModel.AddTimer(TimeSpan.FromSeconds(e.CustomTimer.DurationSeconds), e.CustomTimer.Name, false);
             mapViewModel.MoveToPlayerLocation(mw);
-        }
-
-        private void LogParser_CancelTimerEvent(object sender, CancelTimerEvent e)
-        {
-            mapViewModel.DeleteSelectedTimerByName(e.Name);
         }
 
         private void Map_StartTimerEvent(object sender, StartTimerEvent e)
@@ -195,7 +189,6 @@ namespace EQTool.UI
                 logEvents.EnteredWorldEvent -= LogParser_EnteredWorldEvent;
                 logEvents.SlainEvent -= LogParser_DeathEvent;
                 logEvents.StartTimerEvent -= LogParser_StartTimerEvent;
-                logEvents.CancelTimerEvent -= LogParser_CancelTimerEvent;
             }
 
             KeyDown -= PanAndZoomCanvas_KeyDown;

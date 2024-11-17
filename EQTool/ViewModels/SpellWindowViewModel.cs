@@ -2,9 +2,7 @@
 using EQTool.Services;
 using EQTool.Services.Spells;
 using EQTool.ViewModels.SpellWindow;
-using EQToolShared;
 using EQToolShared.Enums;
-using EQToolShared.HubModels;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -73,11 +71,14 @@ namespace EQTool.ViewModels
 
         public void ClearYouSpells()
         {
-            var itemstoremove = SpellList.Where(a => a.GroupName == EQSpells.SpaceYou).ToList();
-            foreach (var item in itemstoremove)
+            appDispatcher.DispatchUI(() =>
             {
-                _ = SpellList.Remove(item);
-            }
+                var itemstoremove = SpellList.Where(a => a.GroupName == EQSpells.SpaceYou).ToList();
+                foreach (var item in itemstoremove)
+                {
+                    _ = SpellList.Remove(item);
+                }
+            });
         }
 
         public void UpdateSpells()
@@ -160,217 +161,55 @@ namespace EQTool.ViewModels
                 }
             });
         }
-
-        private readonly List<string> SpellsThatNeedCounts = new List<string>()
+        public void TryAdd(SpellViewModel match)
         {
-            "Mana Sieve",
-            "LowerElement",
-            "Concussion",
-            "Flame Lick",
-            "Jolt",
-            "Cinder Jolt",
-        };
-
-        private readonly List<string> SpellsThatDragonsDo = new List<string>()
-        {
-            "Dragon Roar",
-            "Silver Breath",
-            "Ice breath",
-            "Mind Cloud",
-            "Rotting Flesh",
-            "Putrefy Flesh",
-            "Stun Breath",
-            "Immolating Breath",
-            "Rain of Molten Lava",
-            "Frost Breath",
-            "Lava Breath",
-            "Cloud of Fear",
-            "Diseased Cloud",
-            "Tsunami",
-            "Ancient Breath"
-        };
-
-        public void TryAdd(SpellCastEvent match, bool resisted)
-        {
-            if (match?.Spell == null)
-            {
-                return;
-            }
-
             appDispatcher.DispatchUI(() =>
             {
-                var spellname = match.Spell.name;
-                if (string.Equals(match.Spell.name, "Harvest", StringComparison.OrdinalIgnoreCase) && match.TargetName == EQSpells.SpaceYou)
-                {
-                    TryAddCustom(new CustomTimer
-                    {
-                        DurationSeconds = 600,
-                        Name = "--CoolDown-- " + spellname,
-                        SpellNameIcon = spellname,
-                        SpellType = SpellTypes.HarvestCooldown
-                    });
-                    return;
-                }
-                if (SpellsThatDragonsDo.Contains(match.Spell.name))
-                {
-                    TryAddCustom(new CustomTimer
-                    {
-                        DurationSeconds = (int)(match.Spell.recastTime / 1000.0),
-                        Name = "--CoolDown-- " + spellname,
-                        SpellNameIcon = spellname,
-                        SpellType = SpellTypes.BadGuyCoolDown
-                    });
-                    return;
-                }
+                SpellList.Add(match);
+            });
+        }
 
-                if (match.Spell.name.EndsWith("Discipline"))
+        public void TryAdd(CounterViewModel match)
+        {
+            appDispatcher.DispatchUI(() =>
+            {
+                if (SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Counter && a.Name == match.Name && match.GroupName == a.GroupName) is CounterViewModel s)
                 {
-                    var basetime = (int)(match.Spell.recastTime / 1000.0);
-                    var playerlevel = activePlayer.Player.Level;
-                    if (match.Spell.name == "Evasive Discipline")
-                    {
-                        float baseseconds = 15 * 60;
-                        float levelrange = 60 - 51;
-                        float secondsrange = (15 - 7) * 60;
-                        var secondsperlevelrange = secondsrange / levelrange;
-                        float playerleveltick = playerlevel - 52;
-                        basetime = (int)(baseseconds - (playerleveltick * secondsperlevelrange));
-                    }
-                    else if (match.Spell.name == "Defensive Discipline")
-                    {
-                        float baseseconds = 15 * 60;
-                        float levelrange = 60 - 54;
-                        float secondsrange = (15 - 10) * 60;
-                        var secondsperlevelrange = secondsrange / levelrange;
-                        float playerleveltick = playerlevel - 55;
-                        basetime = (int)(baseseconds - (playerleveltick * secondsperlevelrange));
-                    }
-                    else if (match.Spell.name == "Precision Discipline")
-                    {
-                        float baseseconds = 30 * 60;
-                        float levelrange = 60 - 56;
-                        float secondsrange = (30 - 27) * 60;
-                        var secondsperlevelrange = secondsrange / levelrange;
-                        float playerleveltick = playerlevel - 57;
-                        basetime = (int)(baseseconds - (playerleveltick * secondsperlevelrange));
-                    }
-                    TryAddCustom(new CustomTimer
-                    {
-                        DurationSeconds = basetime,
-                        Name = "--Discipline-- " + spellname,
-                        SpellNameIcon = "Strengthen",
-                        SpellType = SpellTypes.DisciplineCoolDown,
-                        TargetName = match.TargetName,
-                        Classes = match.Spell.Classes
-                    });
-                }
-                if (resisted)
-                {
-                    return;
-                }
-                var needscount = SpellsThatNeedCounts.Contains(spellname);
-                if (needscount)
-                {
-                    var countervm = new CounterViewModel
-                    {
-                        Count = 1,
-                        Icon = match.Spell.SpellIcon,
-                        GroupName = match.TargetName,
-                        Name = spellname,
-                        Rect = match.Spell.Rect,
-                        UpdatedDateTime = DateTime.Now
-                    };
-                    if (SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Counter && a.Name == spellname && match.TargetName == a.GroupName) is CounterViewModel s)
-                    {
-                        s.Count += 1;
-                        s.UpdatedDateTime = DateTime.Now;
-                    }
-                    else
-                    {
-                        SpellList.Add(countervm);
-                    }
+                    s.Count += 1;
+                    s.UpdatedDateTime = DateTime.Now;
                 }
                 else
                 {
-                    var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(match.Spell, activePlayer.Player?.PlayerClass, activePlayer.Player?.Level));
-                    var duration = needscount ? 0 : match.TotalSecondsOverride ?? spellduration.TotalSeconds;
-                    var isnpc = MasterNPCList.NPCs.Contains(match.TargetName);
-                    var uispell = new SpellViewModel
-                    {
-                        UpdatedDateTime = DateTime.Now,
-                        PercentLeft = 100,
-                        SpellType = match.Spell.type,
-                        GroupName = match.TargetName,
-                        Name = spellname,
-                        Rect = match.Spell.Rect,
-                        Icon = match.Spell.SpellIcon,
-                        Classes = match.Spell.Classes,
-                        GuessedSpell = match.MultipleMatchesFound,
-                        IsNPC = isnpc,
-                        TotalDuration = spellduration,
-                        TotalRemainingDuration = spellduration
-                    };
-
-                    SpellList.Add(uispell);
+                    SpellList.Add(match);
                 }
             });
         }
 
-        public void TryAddCustom(CustomTimer match)
+        public void TryAdd(RollViewModel match)
         {
-            if (match?.Name == null)
-            {
-                return;
-            }
-
             appDispatcher.DispatchUI(() =>
             {
-                var s = SpellList.FirstOrDefault(a => a.Name == match.Name && match.TargetName == a.GroupName);
+                var rollsingroup = SpellList.Where(a => a.GroupName == match.GroupName && a.SpellViewModelType == SpellViewModelType.Roll).Cast<RollViewModel>().ToList();
+                foreach (var item in rollsingroup)
+                {
+                    //reset the timer on all of the rolls
+                    item.TotalRemainingDuration = TimeSpan.FromTicks(match.TotalDuration.Ticks);
+                }
+                SpellList.Add(match);
+            });
+        }
+
+        public void TryAdd(TimerViewModel match)
+        {
+            appDispatcher.DispatchUI(() =>
+            {
+                var s = SpellList.FirstOrDefault(a => a.Name == match.Name && match.GroupName == a.GroupName && a.SpellViewModelType == SpellViewModelType.Timer);
                 if (s != null)
                 {
-                    if (match.SpellType != SpellTypes.RandomRoll)
-                    {
-                        _ = SpellList.Remove(s);
-                    }
+                    _ = SpellList.Remove(s);
                 }
 
-                var spellduration = match.DurationSeconds;
-                var spellicon = spells.AllSpells.FirstOrDefault(a => a.name == match.SpellNameIcon);
-                if (match.SpellType == SpellTypes.RandomRoll)
-                {
-                    var rollsingroup = SpellList.Where(a => a.Name == match.TargetName && a.SpellViewModelType == SpellViewModelType.Roll).Cast<RollViewModel>().ToList();
-                    foreach (var item in rollsingroup)
-                    {
-                        //reset the timer on all of the rolls
-                        item.TotalRemainingDuration = TimeSpan.FromSeconds(match.DurationInSeconds);
-                    }
-                    SpellList.Add(new RollViewModel
-                    {
-                        PercentLeft = 100,
-                        GroupName = match.TargetName,
-                        Name = match.Name,
-                        Rect = spellicon.Rect,
-                        Icon = spellicon.SpellIcon,
-                        TotalDuration = TimeSpan.FromSeconds(match.DurationInSeconds),
-                        TotalRemainingDuration = TimeSpan.FromSeconds(match.DurationInSeconds),
-                        Roll = match.Roll,
-                        UpdatedDateTime = DateTime.Now
-                    });
-                }
-                else
-                {
-                    SpellList.Add(new TimerViewModel
-                    {
-                        PercentLeft = 100,
-                        GroupName = match.TargetName,
-                        Name = match.Name,
-                        Rect = spellicon.Rect,
-                        Icon = spellicon.SpellIcon,
-                        TotalDuration = TimeSpan.FromSeconds(match.DurationInSeconds),
-                        TotalRemainingDuration = TimeSpan.FromSeconds(match.DurationInSeconds),
-                        UpdatedDateTime = DateTime.Now
-                    });
-                }
+                SpellList.Add(match);
             });
         }
 

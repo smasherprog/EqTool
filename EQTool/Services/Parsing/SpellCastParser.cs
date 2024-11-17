@@ -66,7 +66,6 @@ namespace EQTool.Services.Parsing
                         type = HealSpell.type
                     },
                     TargetName = EQSpells.SpaceYou,
-                    TotalSecondsOverride = 6 * 60,
                     TimeStamp = timestamp,
                     Line = line,
                     CastByYou = false,

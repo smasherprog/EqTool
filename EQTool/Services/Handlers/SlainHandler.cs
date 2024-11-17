@@ -1,6 +1,8 @@
 ﻿using EQTool.Models;
 using EQTool.ViewModels;
+using EQTool.ViewModels.SpellWindow;
 using EQToolShared;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -8,6 +10,11 @@ namespace EQTool.Services.Handlers
 {
     public class SlainHandler : BaseHandler
     {
+        private readonly SpellWindowViewModel spellWindowViewModel;
+        private readonly PlayerTrackerService playerTrackerService;
+        private readonly IAppDispatcher appDispatcher;
+        private readonly EQSpells spells;
+
         private string Victim = string.Empty;
         private string Killer = string.Empty;
         private readonly List<string> FactionMessages = new List<string>();
@@ -15,21 +22,31 @@ namespace EQTool.Services.Handlers
         private int LineNumber = -100;//just some value that can never exist
         private bool AlreadyEmitted = false;
 
-        public SlainHandler(LogEvents logEvents, ActivePlayer activePlayer, EQToolSettings eQToolSettings, ITextToSpeach textToSpeach) : base(logEvents, activePlayer, eQToolSettings, textToSpeach)
+        public SlainHandler(
+            PlayerTrackerService playerTrackerService,
+            IAppDispatcher appDispatcher,
+            LogEvents logEvents,
+            EQSpells spells,
+            ActivePlayer activePlayer,
+            EQToolSettings eQToolSettings,
+            SpellWindowViewModel spellWindowViewModel,
+            ITextToSpeach textToSpeach) : base(logEvents, activePlayer, eQToolSettings, textToSpeach)
         {
-#if DEBUG || TEST
+            this.spells = spells;
+            this.appDispatcher = appDispatcher;
+            this.playerTrackerService = playerTrackerService;
+            this.spellWindowViewModel = spellWindowViewModel;
             this.logEvents.SlainEvent += LogEvents_SlainEvent;
             this.logEvents.FactionEvent += LogEvents_FactionEvent;
             this.logEvents.ExpGainedEvent += LogEvents_ExperienceGainedEvent;
             this.logEvents.PayerChangedEvent += LogEvents_PayerChangedEvent;
             this.logEvents.LineEvent += LogEvents_LineEvent;
             this.logEvents.CommsEvent += LogEvents_CommsEvent;
-#endif
         }
 
         private void LogEvents_CommsEvent(object sender, CommsEvent e)
         {
-            if(e.TheChannel == CommsEvent.Channel.SAY && MasterNPCList.NPCs.Contains(e.Sender))
+            if (e.TheChannel == CommsEvent.Channel.SAY && MasterNPCList.NPCs.Contains(e.Sender))
             {
                 Reset();
             }
@@ -57,9 +74,9 @@ namespace EQTool.Services.Handlers
         {
             Victim = "Experience Slain Guess";
             Killer = "You";
-            if (this.ExpMessage)
+            if (ExpMessage)
             {
-                logEvents.Handle(new NewSlainEvent
+                DoEvent(new ConfirmedDeathEvent
                 {
                     Killer = Killer,
                     Victim = Victim,
@@ -68,7 +85,7 @@ namespace EQTool.Services.Handlers
                     TimeStamp = e.TimeStamp,
                 });
                 Reset();
-                this.AlreadyEmitted = true;
+                AlreadyEmitted = true;
             }
             Victim = "Experience Slain Guess";
             Killer = "You";
@@ -84,7 +101,7 @@ namespace EQTool.Services.Handlers
 
             if ((FactionMessages.Any() && FactionMessages[0] == e.Line) || FactionMessages.Count == 5)
             {
-                logEvents.Handle(new NewSlainEvent
+                DoEvent(new ConfirmedDeathEvent
                 {
                     Killer = Killer,
                     Victim = Victim,
@@ -113,9 +130,9 @@ namespace EQTool.Services.Handlers
                 {
                     LineNumber = e.LineCounter;
                 }
-                else if (this.ExpMessage || this.FactionMessages.Any())
+                else if (ExpMessage || FactionMessages.Any())
                 {
-                    logEvents.Handle(new NewSlainEvent
+                    DoEvent(new ConfirmedDeathEvent
                     {
                         Killer = Killer,
                         Victim = Victim,
@@ -133,7 +150,7 @@ namespace EQTool.Services.Handlers
             Victim = e.Victim;
             Killer = e.Killer;
             LineNumber = e.LineCounter;
-            logEvents.Handle(new NewSlainEvent
+            DoEvent(new ConfirmedDeathEvent
             {
                 Killer = Killer,
                 Victim = Victim,
@@ -142,6 +159,47 @@ namespace EQTool.Services.Handlers
                 TimeStamp = e.TimeStamp,
             });
             AlreadyEmitted = true;
+        }
+
+        private int deathcounter = 1;
+        private void DoEvent(ConfirmedDeathEvent e)
+        {
+            logEvents.Handle(new ConfirmedDeathEvent
+            {
+                Killer = Killer,
+                Victim = Victim,
+                Line = e.Line,
+                LineCounter = e.LineCounter,
+                TimeStamp = e.TimeStamp,
+            });
+
+            if (playerTrackerService.IsPlayer(e.Victim) || !MasterNPCList.NPCs.Contains(e.Victim))
+            {
+                return;
+            }
+            var zonetimer = ZoneSpawnTimes.GetSpawnTime(e.Victim, activePlayer?.Player?.Zone);
+            var spell = spells.AllSpells.FirstOrDefault(a => a.name == "Disease Cloud");
+            var add = new TimerViewModel
+            {
+                Name = "--Dead-- " + e.Victim,
+                TotalDuration = TimeSpan.FromSeconds((int)zonetimer.TotalSeconds),
+                TotalRemainingDuration = TimeSpan.FromSeconds((int)zonetimer.TotalSeconds),
+                Icon = spell.SpellIcon,
+                Rect = spell.Rect,
+                PercentLeft = 100,
+                GroupName = CustomTimer.CustomerTime
+            };
+            appDispatcher.DispatchUI(() =>
+            {
+                var exisitngdeathentry = spellWindowViewModel.SpellList.FirstOrDefault(a => a.Name == add.Name && CustomTimer.CustomerTime == a.GroupName);
+                if (exisitngdeathentry != null)
+                {
+                    deathcounter = ++deathcounter > 999 ? 1 : deathcounter;
+                    add.Name += "_" + deathcounter;
+                }
+
+                spellWindowViewModel.TryAdd(add);
+            });
         }
     }
 }

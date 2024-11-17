@@ -121,9 +121,8 @@
                                 </Image>
                                 <TextBlock HorizontalAlignment="Left" FontWeight="Bold" Text="{Binding Name}"/>
                             </StackPanel>
-                            <StackPanel Orientation="Horizontal" Grid.Column="1" >
-                                <TextBlock HorizontalAlignment="Left" FontWeight="Bold" Text=" Roll --> "/>
-                                <TextBlock HorizontalAlignment="Left" FontWeight="Bold" Text="{Binding Roll}"/>
+                            <StackPanel Orientation="Horizontal" Grid.Column="1" >  
+                                <TextBlock HorizontalAlignment="Left" FontWeight="Bold" Text="{Binding RollText}"/>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Grid.Column="2" HorizontalAlignment="Right">
                                 <Button Margin="5, 0, 0, 0" Width="14" Height="14" Click="RemoveSingleItem" ToolTip="Remove from list">

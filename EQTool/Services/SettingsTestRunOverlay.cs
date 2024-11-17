@@ -46,18 +46,26 @@ namespace EQTool.Services
         private void RandomRollEvent()
         {
             var random = new Random();
-            var r = random.Next(0, 333);
+            var randomgroup = random.Next(100, 1000);
+            var r = random.Next(0, randomgroup);
+
             logParser.Push("**A Magic Die is rolled by Whitewitch.", DateTime.Now);
-            logParser.Push($"**It could have been any number from 0 to 333, but this time it turned up a {r}.", DateTime.Now);
-            r = random.Next(0, 333);
+            logParser.Push($"**It could have been any number from 0 to {randomgroup}, but this time it turned up a {r}.", DateTime.Now);
+            r = random.Next(0, randomgroup);
             logParser.Push("**A Magic Die is rolled by Huntor.", DateTime.Now);
-            logParser.Push($"**It could have been any number from 0 to 333, but this time it turned up a {r}.", DateTime.Now);
-            r = random.Next(0, 333);
+            logParser.Push($"**It could have been any number from 0 to {randomgroup}, but this time it turned up a {r}.", DateTime.Now);
+            r = random.Next(0, randomgroup);
             logParser.Push("**A Magic Die is rolled by Vasanle.", DateTime.Now);
-            logParser.Push($"**It could have been any number from 0 to 333, but this time it turned up a {r}.", DateTime.Now);
-            r = random.Next(0, 333);
+            logParser.Push($"**It could have been any number from 0 to {randomgroup}, but this time it turned up a {r}.", DateTime.Now);
+            r = random.Next(0, randomgroup);
             logParser.Push("**A Magic Die is rolled by Sanare.", DateTime.Now);
-            logParser.Push($"**It could have been any number from 0 to 333, but this time it turned up a {r}.", DateTime.Now);
+            logParser.Push($"**It could have been any number from 0 to {randomgroup}, but this time it turned up a {r}.", DateTime.Now);
+            r = random.Next(0, randomgroup);
+            logParser.Push("**A Magic Die is rolled by Sanare.", DateTime.Now);
+            logParser.Push($"**It could have been any number from 0 to {randomgroup}, but this time it turned up a {r}.", DateTime.Now);
+            r = random.Next(0, randomgroup);
+            logParser.Push("**A Magic Die is rolled by Stigeon.", DateTime.Now);
+            logParser.Push($"**It could have been any number from 0 to {randomgroup}, but this time it turned up a {r}.", DateTime.Now);
         }
         private void DeathLoopEvent()
         {

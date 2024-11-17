@@ -1,5 +1,4 @@
 ﻿using EQToolShared.Enums;
-using EQToolShared.HubModels;
 using System;
 using System.Collections.Generic;
 using System.Windows.Media.Media3D;
@@ -94,7 +93,8 @@ namespace EQTool.Models
 
         public string Killer { get; set; }
     }
-    public class NewSlainEvent : BaseLogParseEvent
+
+    public class ConfirmedDeathEvent : BaseLogParseEvent
     {
         public string Victim { get; set; }
 
@@ -106,10 +106,6 @@ namespace EQTool.Models
         public CustomTimer CustomTimer { get; set; }
     }
 
-    public class CancelTimerEvent : BaseLogParseEvent
-    {
-        public string Name { get; set; }
-    }
     public class WhoPlayerEvent : BaseLogParseEvent
     {
         public EQToolShared.APIModels.PlayerControllerModels.Player PlayerInfo { get; set; }
@@ -153,12 +149,6 @@ namespace EQTool.Models
 
     public class YouBeginCastingEvent : BaseLogParseEvent
     {
-    }
-
-    public class DeathTouchEvent : BaseLogParseEvent
-    {
-        public string NpcName { get; set; }
-        public string DTReceiver { get; set; }
     }
 
     public class ResistSpellEvent : BaseLogParseEvent
@@ -217,8 +207,6 @@ namespace EQTool.Models
         public Spell Spell { get; set; }
 
         public bool MultipleMatchesFound { get; set; }
-
-        public int? TotalSecondsOverride { get; set; }
     }
 
     public class YouZonedEvent : BaseLogParseEvent

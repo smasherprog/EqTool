@@ -22,7 +22,7 @@ namespace EQTool.ViewModels.SpellWindow
                 OnPropertyChanged(nameof(PercentLeft));
             }
         }
-        public int PercentLeft { get; set; }
+        public int PercentLeft { get; set; } = 100;
 
         public string SecondsLeftPretty
         {

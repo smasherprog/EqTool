@@ -1169,7 +1169,6 @@ namespace EQtoolsTests
             {
                 spellnamefound = b.Spell.name;
             };
-            logevents.CancelTimerEvent += (a, b) => Assert.Fail("DontHit");
             logevents.StartTimerEvent += (a, b) => Assert.Fail("DontHit");
             logevents.ConEvent += (a, b) => Assert.Fail("DontHit");
             logevents.SlainEvent += (a, b) => Assert.Fail("DontHit");
