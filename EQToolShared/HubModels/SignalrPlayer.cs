@@ -48,9 +48,21 @@ namespace EQToolShared.Map
         public double X { get; set; }
         public double Y { get; set; }
         public double Z { get; set; }
-        public string GroupName => MapLocationSharing == MapLocationSharing.GuildOnly
-                    ? string.IsNullOrWhiteSpace(GuildName) ? $"{Server}_{Zone}_{Name}" : $"{Server}_{Zone}_{GuildName}"
-                    : $"{Server}_{Zone}";
+        public string GroupName
+        {
+            get
+            {
+                if (MapLocationSharing == MapLocationSharing.GuildOnly)
+                {
+                    if (string.IsNullOrWhiteSpace(GuildName))
+                    {
+                        return $"{Server}_{Zone}_{Name}";
+                    }
+                    return $"{Server}_{Zone}_{GuildName}";
+                }
+                return $"{Server}_{Zone}";
+            }
+        }
     }
     public class TriggerEvent : HubCustomTimer
     {
@@ -61,8 +73,20 @@ namespace EQToolShared.Map
         public double X { get; set; }
         public double Y { get; set; }
         public double Z { get; set; }
-        public string GroupName => MapLocationSharing == MapLocationSharing.GuildOnly
-                    ? string.IsNullOrWhiteSpace(GuildName) ? $"{Server}_{Zone}" : $"{Server}_{Zone}_{GuildName}"
-                    : $"{Server}_{Zone}";
+        public string GroupName
+        {
+            get
+            {
+                if (MapLocationSharing == MapLocationSharing.GuildOnly)
+                {
+                    if (string.IsNullOrWhiteSpace(GuildName))
+                    {
+                        return $"{Server}_{Zone}";
+                    }
+                    return $"{Server}_{Zone}_{GuildName}";
+                }
+                return $"{Server}_{Zone}";
+            }
+        }
     }
 }
