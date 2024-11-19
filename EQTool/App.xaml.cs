@@ -39,6 +39,7 @@ namespace EQTool
         private System.Windows.Forms.MenuItem MobInfoMenuItem;
         private LogParser logParser => container.Resolve<LogParser>();
         private LogEvents logEvents => container.Resolve<LogEvents>();
+        private System.Timers.Timer UpdateTimer;
         private System.Timers.Timer UITimer;
         private ISignalrPlayerHub signalrPlayerHub;
 
@@ -236,11 +237,12 @@ namespace EQTool
 
         private void InitStuff()
         {
-            UITimer = new System.Timers.Timer(1000 * 60);
-#if !DEBUG
+            UpdateTimer = new System.Timers.Timer(1000 * 60);
+            UpdateTimer.Elapsed += UpdateTimer_Elapsed;
+            UpdateTimer.Enabled = true;
+            UITimer = new System.Timers.Timer(1000);
             UITimer.Elapsed += UITimer_Elapsed;
             UITimer.Enabled = true;
-#endif
             container.Resolve<LoggingService>().Log(string.Empty, EventType.StartUp, null);
             SettingsMenuItem = new System.Windows.Forms.MenuItem("Settings", ToggleSettingsWindow);
 
@@ -384,9 +386,18 @@ namespace EQTool
                 : TimeSpan.FromMinutes(20);
         }
 
-        private bool updatecalled = false;
         private void UITimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
+            var vm = container.Resolve<SpellWindowViewModel>();
+            vm.UpdateSpells();
+        }
+
+        private bool updatecalled = false;
+        private void UpdateTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+
+#if DEBUG
+#endif
             var dispatcher = container.Resolve<IAppDispatcher>();
             dispatcher.DispatchUI(() =>
             {

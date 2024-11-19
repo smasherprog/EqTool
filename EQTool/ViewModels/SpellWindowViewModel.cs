@@ -9,6 +9,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Windows.Data;
 
 namespace EQTool.ViewModels
 {
@@ -27,6 +28,15 @@ namespace EQTool.ViewModels
             this.settings = settings;
             Title = "Triggers v" + App.Version;
             this.spells = spells;
+            var view = (ListCollectionView)CollectionViewSource.GetDefaultView(SpellList);
+            view.GroupDescriptions.Add(new PropertyGroupDescription(nameof(TimerViewModel.GroupName)));
+            view.LiveGroupingProperties.Add(nameof(TimerViewModel.GroupName));
+            view.IsLiveGrouping = true;
+            view.SortDescriptions.Add(new SortDescription(nameof(TimerViewModel.Sorting), ListSortDirection.Ascending));
+            view.SortDescriptions.Add(new SortDescription(nameof(RollViewModel.Roll), ListSortDirection.Descending));
+            view.SortDescriptions.Add(new SortDescription(nameof(TimerViewModel.TotalRemainingDuration), ListSortDirection.Ascending));
+            view.IsLiveSorting = true;
+            view.LiveSortingProperties.Add(nameof(TimerViewModel.TotalRemainingDuration));
         }
 
 
