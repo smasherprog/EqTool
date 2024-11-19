@@ -28,12 +28,7 @@ namespace EQTool.UI
             LoggingService loggingService) : base(settings.SpellWindowState, toolSettingsLoad, settings)
         {
             loggingService.Log(string.Empty, EventType.OpenMap, activePlayer?.Player?.Server);
-            spellWindowViewModel.SpellList = new System.Collections.ObjectModel.ObservableCollection<PersistentViewModel>();
             DataContext = this.spellWindowViewModel = spellWindowViewModel;
-            if (activePlayer.Player != null)
-            {
-                spellWindowViewModel.AddSavedYouSpells(activePlayer.Player.YouSpells);
-            }
             InitializeComponent();
             base.Init();
             UITimer = new System.Timers.Timer(1000);
@@ -54,10 +49,6 @@ namespace EQTool.UI
         {
             UITimer?.Stop();
             UITimer?.Dispose();
-            if (spellWindowViewModel != null)
-            {
-                spellWindowViewModel.SpellList = new System.Collections.ObjectModel.ObservableCollection<PersistentViewModel>();
-            }
             base.OnClosing(e);
         }
 

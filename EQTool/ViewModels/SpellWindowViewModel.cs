@@ -7,7 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Diagnostics;
 using System.Linq;
 using System.Runtime.CompilerServices;
 
@@ -161,10 +160,15 @@ namespace EQTool.ViewModels
                 }
             });
         }
+
         public void TryAdd(SpellViewModel match)
         {
             appDispatcher.DispatchUI(() =>
             {
+                if (SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Spell && a.Name == match.Name && match.GroupName == a.GroupName) is SpellViewModel s)
+                {
+                    _ = SpellList.Remove(s);
+                }
                 SpellList.Add(match);
             });
         }
@@ -279,41 +283,6 @@ namespace EQTool.ViewModels
                 if (spells.Count() == 1)
                 {
                     _ = SpellList.Remove(spells.FirstOrDefault());
-                }
-            });
-        }
-
-        public void TryRemoveCustom(string name)
-        {
-            if (string.IsNullOrWhiteSpace(name))
-            {
-                return;
-            }
-
-            appDispatcher.DispatchUI(() =>
-            {
-                var s = SpellList.FirstOrDefault(a => a.Name == name && CustomTimer.CustomerTime == a.GroupName);
-                if (s != null)
-                {
-                    _ = SpellList.Remove(s);
-                }
-            });
-        }
-
-        public void TryRemoveTarget(string target)
-        {
-            if (string.IsNullOrWhiteSpace(target))
-            {
-                return;
-            }
-
-            appDispatcher.DispatchUI(() =>
-            {
-                var spellstormove = SpellList.Where(a => string.Equals(a.Name, target, StringComparison.OrdinalIgnoreCase)).ToList();
-                foreach (var item in spellstormove)
-                {
-                    Debug.WriteLine($"Removing {item.Name}");
-                    _ = SpellList.Remove(item);
                 }
             });
         }
