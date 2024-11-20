@@ -4,6 +4,7 @@ using EQTool.ViewModels.SpellWindow;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Media;
 
 namespace EQTool.Services.Handlers
 {
@@ -68,7 +69,8 @@ namespace EQTool.Services.Handlers
                     Icon = match.Spell.SpellIcon,
                     TotalDuration = TimeSpan.FromSeconds(600),
                     TotalRemainingDuration = TimeSpan.FromSeconds(600),
-                    UpdatedDateTime = DateTime.Now
+                    UpdatedDateTime = DateTime.Now,
+                    ProgressBarColor = Brushes.SkyBlue
                 });
             }
             else if (SpellsThatDragonsDo.Contains(match.Spell.name))
@@ -82,7 +84,8 @@ namespace EQTool.Services.Handlers
                     Icon = match.Spell.SpellIcon,
                     TotalDuration = TimeSpan.FromSeconds((int)(match.Spell.recastTime / 1000.0)),
                     TotalRemainingDuration = TimeSpan.FromSeconds((int)(match.Spell.recastTime / 1000.0)),
-                    UpdatedDateTime = DateTime.Now
+                    UpdatedDateTime = DateTime.Now,
+                    ProgressBarColor = Brushes.DarkOrange
                 });
             }
             else if (match.Spell.name.EndsWith("Discipline"))
@@ -126,7 +129,8 @@ namespace EQTool.Services.Handlers
                     Icon = discspell.SpellIcon,
                     TotalDuration = TimeSpan.FromSeconds(basetime),
                     TotalRemainingDuration = TimeSpan.FromSeconds(basetime),
-                    UpdatedDateTime = DateTime.Now
+                    UpdatedDateTime = DateTime.Now,
+                    ProgressBarColor = Brushes.Gold
                 });
             }
 
@@ -140,7 +144,8 @@ namespace EQTool.Services.Handlers
                     Name = spellname,
                     Rect = match.Spell.Rect,
                     Icon = match.Spell.SpellIcon,
-                    Count = 1
+                    Count = 1,
+                    ProgressBarColor = Brushes.OrangeRed
                 };
                 spellWindowViewModel.TryAdd(vm);
             }

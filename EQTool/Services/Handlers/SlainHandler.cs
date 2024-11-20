@@ -5,6 +5,7 @@ using EQToolShared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Media;
 
 namespace EQTool.Services.Handlers
 {
@@ -187,7 +188,8 @@ namespace EQTool.Services.Handlers
                 Icon = spell.SpellIcon,
                 Rect = spell.Rect,
                 PercentLeft = 100,
-                GroupName = CustomTimer.CustomerTime
+                GroupName = CustomTimer.CustomerTime,
+                ProgressBarColor = Brushes.LightSalmon
             };
             appDispatcher.DispatchUI(() =>
             {

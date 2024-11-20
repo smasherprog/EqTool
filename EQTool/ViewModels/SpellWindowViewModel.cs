@@ -2,7 +2,6 @@
 using EQTool.Services;
 using EQTool.Services.Spells;
 using EQTool.ViewModels.SpellWindow;
-using EQToolShared.Enums;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -62,22 +61,6 @@ namespace EQTool.ViewModels
             }
         }
 
-        public void UpdateStuff()
-        {
-            OnPropertyChanged(nameof(SpellList));
-        }
-
-        private long? _LastReadOffset = null;
-        public long? LastReadOffset
-        {
-            get => _LastReadOffset;
-            set
-            {
-                _LastReadOffset = value;
-                OnPropertyChanged();
-            }
-        }
-
         public void ClearYouSpells()
         {
             appDispatcher.DispatchUI(() =>
@@ -90,7 +73,7 @@ namespace EQTool.ViewModels
             });
         }
 
-        public void UpdateSpells()
+        public void UpdateSpells(double dt_ms)
         {
             appDispatcher.DispatchUI(() =>
             {
@@ -99,7 +82,7 @@ namespace EQTool.ViewModels
                 var timerTypes = new List<SpellViewModelType>() { SpellViewModelType.Roll, SpellViewModelType.Spell, SpellViewModelType.Timer };
                 foreach (var item in SpellList.Where(a => timerTypes.Contains(a.SpellViewModelType)).Cast<TimerViewModel>().ToList())
                 {
-                    item.TotalRemainingDuration = item.TotalRemainingDuration.Subtract(TimeSpan.FromSeconds(1));
+                    item.TotalRemainingDuration = item.TotalRemainingDuration.Subtract(TimeSpan.FromMilliseconds(dt_ms));
                     if (item.TotalRemainingDuration.TotalSeconds <= 0)
                     {
                         itemstoremove.Add(item);
@@ -110,10 +93,6 @@ namespace EQTool.ViewModels
                     item.HideGuesses = !settings.BestGuessSpells;
                     item.ShowOnlyYou = settings.YouOnlySpells;
                     item.HideClasses = player != null && SpellUIExtensions.HideSpell(player.ShowSpellsForClasses, item.Classes) && item.GroupName != EQSpells.SpaceYou;
-                    if (item.SpellType == SpellTypes.RandomRoll)
-                    {
-                        item.HideClasses = !settings.ShowRandomRolls;
-                    }
                 }
                 var d = DateTime.Now;
                 var persistentTypes = new List<SpellViewModelType>() { SpellViewModelType.Persistent, SpellViewModelType.Counter };
@@ -217,12 +196,6 @@ namespace EQTool.ViewModels
         {
             appDispatcher.DispatchUI(() =>
             {
-                var s = SpellList.FirstOrDefault(a => a.Name == match.Name && match.GroupName == a.GroupName && a.SpellViewModelType == SpellViewModelType.Timer);
-                if (s != null)
-                {
-                    _ = SpellList.Remove(s);
-                }
-
                 SpellList.Add(match);
             });
         }
@@ -243,21 +216,21 @@ namespace EQTool.ViewModels
                     {
                         var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(match, activePlayer.Player?.PlayerClass, activePlayer.Player?.Level));
                         var savedspellduration = item.TotalSecondsLeft;
-                        //var uispell = new UISpell(DateTime.Now.AddSeconds(savedspellduration), false)
-                        //{
-                        //    UpdatedDateTime = DateTime.Now,
-                        //    PercentLeftOnSpell = 100,
-                        //    SpellType = match.type,
-                        //    TargetName = EQSpells.SpaceYou,
-                        //    SpellName = match.name,
-                        //    Rect = match.Rect,
-                        //    PersistentSpell = false,
-                        //    Counter = null,
-                        //    SpellIcon = match.SpellIcon,
-                        //    Classes = match.Classes,
-                        //    GuessedSpell = false
-                        //};
-                        //SpellList.Add(uispell);
+                        var uispell = new SpellViewModel
+                        {
+                            UpdatedDateTime = DateTime.Now,
+                            PercentLeft = 100,
+                            SpellType = match.type,
+                            GroupName = EQSpells.SpaceYou,
+                            Name = match.name,
+                            Rect = match.Rect,
+                            Icon = match.SpellIcon,
+                            Classes = match.Classes,
+                            GuessedSpell = false,
+                            TotalDuration = spellduration,
+                            TotalRemainingDuration = TimeSpan.FromSeconds(savedspellduration)
+                        };
+                        SpellList.Add(uispell);
                     }
                 }
             });

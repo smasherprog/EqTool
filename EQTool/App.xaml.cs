@@ -386,10 +386,14 @@ namespace EQTool
                 : TimeSpan.FromMinutes(20);
         }
 
+        private DateTime LastUIRun = DateTime.UtcNow;
         private void UITimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
             var vm = container.Resolve<SpellWindowViewModel>();
-            vm.UpdateSpells();
+            var now = DateTime.Now;
+            var dt_ms = (now - LastUIRun).TotalMilliseconds;
+            LastUIRun = now;
+            vm.UpdateSpells(dt_ms);
         }
 
         private bool updatecalled = false;

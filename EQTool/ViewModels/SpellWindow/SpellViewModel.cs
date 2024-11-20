@@ -108,25 +108,9 @@ namespace EQTool.ViewModels.SpellWindow
                 {
                     ProgressBarColor = Brushes.OrangeRed;
                 }
-                else if (_SpellType == SpellTypes.BadGuyCoolDown)
-                {
-                    ProgressBarColor = Brushes.DarkOrange;
-                }
-                else if (_SpellType == SpellTypes.HarvestCooldown)
-                {
-                    ProgressBarColor = Brushes.SkyBlue;
-                }
                 else if (_SpellType >= SpellTypes.Other)
                 {
                     ProgressBarColor = Brushes.DarkSeaGreen;
-                }
-                else if (_SpellType >= SpellTypes.RespawnTimer)
-                {
-                    ProgressBarColor = Brushes.LightSalmon;
-                }
-                else if (_SpellType >= SpellTypes.DisciplineCoolDown)
-                {
-                    ProgressBarColor = Brushes.Gold;
                 }
                 else
                 {

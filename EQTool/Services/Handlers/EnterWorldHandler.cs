@@ -15,10 +15,10 @@ namespace EQTool.Services.Handlers
             ITextToSpeach textToSpeach) : base(logEvents, activePlayer, eQToolSettings, textToSpeach)
         {
             this.spellWindowViewModel = spellWindowViewModel;
-            this.logEvents.CampEvent += LogEvents_CampEvent;
+            this.logEvents.EnteredWorldEvent += LogEvents_EnteredWorldEvent; ;
         }
 
-        private void LogEvents_CampEvent(object sender, CampEvent e)
+        private void LogEvents_EnteredWorldEvent(object sender, EnteredWorldEvent e)
         {
             spellWindowViewModel.ClearYouSpells();
             if (activePlayer.Player != null)

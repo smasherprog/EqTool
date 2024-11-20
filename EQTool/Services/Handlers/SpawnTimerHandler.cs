@@ -1,6 +1,5 @@
 using EQTool.Models;
 using EQTool.ViewModels;
-using EQToolShared.HubModels;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
 
@@ -13,8 +12,6 @@ namespace EQTool.Services.Handlers
     //
     public class SpawnTimerHandler : BaseHandler
     {
-        // Model class to hold the results of the Spawn Timer Dialog
-        private readonly SpawnTimerDialogViewModel _model = new SpawnTimerDialogViewModel();
 
         //
         // ctor
@@ -30,7 +27,7 @@ namespace EQTool.Services.Handlers
         }
 
         // getter for the spawn timer Model
-        public SpawnTimerDialogViewModel Model => _model;
+        public SpawnTimerDialogViewModel Model { get; } = new SpawnTimerDialogViewModel();
 
         //
         // function that gets called for a ExpGainedEvent
@@ -48,22 +45,22 @@ namespace EQTool.Services.Handlers
                 {
                     CustomTimer = new CustomTimer
                     {
-                        DurationSeconds             = Model.DurationSeconds,
-                        Name                        = $"Exp Timer [{Model.GetNextTimerCounter()}]",
-                        WarningSeconds              = Model.WarningSeconds,
-                        ProvideWarningText          = Model.ProvideWarningText,
-                        ProvideWarningTTS           = Model.ProvideWarningTTS,
-                        WarningText                 = Model.WarningText,
-                        WarningTTS                  = Model.WarningTTS,
-                        ProvideEndText              = Model.ProvideEndText,
-                        ProvideEndTTS               = Model.ProvideEndTTS,
-                        EndText                     = Model.EndText,
-                        EndTTS                      = Model.EndTTS,
-                        RestartExisting             = false,
+                        DurationSeconds = Model.DurationSeconds,
+                        Name = $"Exp Timer [{Model.GetNextTimerCounter()}]",
+                        WarningSeconds = Model.WarningSeconds,
+                        ProvideWarningText = Model.ProvideWarningText,
+                        ProvideWarningTTS = Model.ProvideWarningTTS,
+                        WarningText = Model.WarningText,
+                        WarningTTS = Model.WarningTTS,
+                        ProvideEndText = Model.ProvideEndText,
+                        ProvideEndTTS = Model.ProvideEndTTS,
+                        EndText = Model.EndText,
+                        EndTTS = Model.EndTTS,
+                        RestartExisting = false,
                     },
 
-                    Line                            = expGainedEvent.Line,
-                    TimeStamp                       = expGainedEvent.TimeStamp
+                    Line = expGainedEvent.Line,
+                    TimeStamp = expGainedEvent.TimeStamp
                 };
                 logEvents.Handle(timer);
             }
@@ -82,7 +79,7 @@ namespace EQTool.Services.Handlers
             if (Model.SpawnTimerEnabled && (Model.StartType == SpawnTimerDialogViewModel.StartTypes.SLAIN_MESSAGE))
             {
                 // does this faction match the user-specified factions?
-                Regex regex = new Regex(Model.SlainText, RegexOptions.Compiled);
+                var regex = new Regex(Model.SlainText, RegexOptions.Compiled);
                 var match = regex.Match(slainEvent.Victim);
 
                 if (match.Success)
@@ -92,22 +89,22 @@ namespace EQTool.Services.Handlers
                     {
                         CustomTimer = new CustomTimer
                         {
-                            DurationSeconds         = Model.DurationSeconds,
-                            Name                    = $"Slain Timer: [{slainEvent.Victim}] [{Model.GetNextTimerCounter()}]",
-                            WarningSeconds          = Model.WarningSeconds,
-                            ProvideWarningText      = Model.ProvideWarningText,
-                            ProvideWarningTTS       = Model.ProvideWarningTTS,
-                            WarningText             = Model.WarningText,
-                            WarningTTS              = Model.WarningTTS,
-                            ProvideEndText          = Model.ProvideEndText,
-                            ProvideEndTTS           = Model.ProvideEndTTS,
-                            EndText                 = Model.EndText,
-                            EndTTS                  = Model.EndTTS,
-                            RestartExisting         = false,
+                            DurationSeconds = Model.DurationSeconds,
+                            Name = $"Slain Timer: [{slainEvent.Victim}] [{Model.GetNextTimerCounter()}]",
+                            WarningSeconds = Model.WarningSeconds,
+                            ProvideWarningText = Model.ProvideWarningText,
+                            ProvideWarningTTS = Model.ProvideWarningTTS,
+                            WarningText = Model.WarningText,
+                            WarningTTS = Model.WarningTTS,
+                            ProvideEndText = Model.ProvideEndText,
+                            ProvideEndTTS = Model.ProvideEndTTS,
+                            EndText = Model.EndText,
+                            EndTTS = Model.EndTTS,
+                            RestartExisting = false,
                         },
 
-                        Line                        = slainEvent.Line,
-                        TimeStamp                   = slainEvent.TimeStamp
+                        Line = slainEvent.Line,
+                        TimeStamp = slainEvent.TimeStamp
                     };
 
                     logEvents.Handle(timer);
@@ -127,7 +124,7 @@ namespace EQTool.Services.Handlers
             if (Model.SpawnTimerEnabled && (Model.StartType == SpawnTimerDialogViewModel.StartTypes.FACTION_MESSAGE))
             {
                 // does this faction match the user-specified factions?
-                Regex regex = new Regex(Model.FactionText, RegexOptions.Compiled);
+                var regex = new Regex(Model.FactionText, RegexOptions.Compiled);
                 var match = regex.Match(factionEvent.Faction);
 
                 if (match.Success)
@@ -137,22 +134,22 @@ namespace EQTool.Services.Handlers
                     {
                         CustomTimer = new CustomTimer
                         {
-                            DurationSeconds         = Model.DurationSeconds,
-                            Name                    = $"Faction Timer: [{factionEvent.Faction}] [{Model.GetNextTimerCounter()}]",
-                            WarningSeconds          = Model.WarningSeconds,
-                            ProvideWarningText      = Model.ProvideWarningText,
-                            ProvideWarningTTS       = Model.ProvideWarningTTS,
-                            WarningText             = Model.WarningText,
-                            WarningTTS              = Model.WarningTTS,
-                            ProvideEndText          = Model.ProvideEndText,
-                            ProvideEndTTS           = Model.ProvideEndTTS,
-                            EndText                 = Model.EndText,
-                            EndTTS                  = Model.EndTTS,
-                            RestartExisting         = false,
+                            DurationSeconds = Model.DurationSeconds,
+                            Name = $"Faction Timer: [{factionEvent.Faction}] [{Model.GetNextTimerCounter()}]",
+                            WarningSeconds = Model.WarningSeconds,
+                            ProvideWarningText = Model.ProvideWarningText,
+                            ProvideWarningTTS = Model.ProvideWarningTTS,
+                            WarningText = Model.WarningText,
+                            WarningTTS = Model.WarningTTS,
+                            ProvideEndText = Model.ProvideEndText,
+                            ProvideEndTTS = Model.ProvideEndTTS,
+                            EndText = Model.EndText,
+                            EndTTS = Model.EndTTS,
+                            RestartExisting = false,
                         },
 
-                        Line                        = factionEvent.Line,
-                        TimeStamp                   = factionEvent.TimeStamp
+                        Line = factionEvent.Line,
+                        TimeStamp = factionEvent.TimeStamp
                     };
 
                     logEvents.Handle(timer);
