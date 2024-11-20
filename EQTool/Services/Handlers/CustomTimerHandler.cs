@@ -6,6 +6,7 @@ using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Media;
 
+
 namespace EQTool.Services.Handlers
 {
     //
@@ -64,6 +65,7 @@ namespace EQTool.Services.Handlers
             EQToolSettings eQToolSettings,
             ITextToSpeach textToSpeach) : base(logEvents, activePlayer, eQToolSettings, textToSpeach)
         {
+            this.spellWindowViewModel = spellWindowViewModel;
             this.logEvents.CommsEvent += LogEvents_CommsEvent;
             this.spellWindowViewModel = spellWindowViewModel;
             this.spells = spells;
@@ -98,7 +100,23 @@ namespace EQTool.Services.Handlers
                 {
                     timerSeconds += 3600 * int.Parse(hh);
                 }
-                Console.WriteLine($"match found [{match}], [{hh}], [{mm}], [{ss}], [{label}], [{timerSeconds}]");
+                Console.WriteLine($"match found [{match}], hh = [{hh}], mm = [{mm}], ss = [{ss}], label = [{label}], totalseconds = [{timerSeconds}]");
+
+                //// fire off a timer event
+                //var timer = new StartTimerEvent
+                //{
+                //    CustomTimer = new CustomTimer
+                //    {
+                //        DurationSeconds = timerSeconds,
+                //        // if the user didn't specify a label, we'll give it the match string
+                //        Name = label != "" ? label : $"{match}",
+                //        RestartExisting = false
+                //    },
+                //    Line = commsEvent.Line,
+                //    TimeStamp = commsEvent.TimeStamp
+                //};
+                //logEvents.Handle(timer);
+
 
                 var spellname = "Feign Death";
                 var spell = spells.AllSpells.FirstOrDefault(a => a.name == spellname);
