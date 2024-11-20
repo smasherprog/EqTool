@@ -102,22 +102,6 @@ namespace EQTool.Services.Handlers
                 }
                 Console.WriteLine($"match found [{match}], hh = [{hh}], mm = [{mm}], ss = [{ss}], label = [{label}], totalseconds = [{timerSeconds}]");
 
-                //// fire off a timer event
-                //var timer = new StartTimerEvent
-                //{
-                //    CustomTimer = new CustomTimer
-                //    {
-                //        DurationSeconds = timerSeconds,
-                //        // if the user didn't specify a label, we'll give it the match string
-                //        Name = label != "" ? label : $"{match}",
-                //        RestartExisting = false
-                //    },
-                //    Line = commsEvent.Line,
-                //    TimeStamp = commsEvent.TimeStamp
-                //};
-                //logEvents.Handle(timer);
-
-
                 var spellname = "Feign Death";
                 var spell = spells.AllSpells.FirstOrDefault(a => a.name == spellname);
                 spellWindowViewModel.TryAdd(new TimerViewModel
