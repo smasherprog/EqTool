@@ -47,6 +47,10 @@ namespace EQTool.ViewModels
             try
             {
                 var players = settings.Players ?? new System.Collections.Generic.List<PlayerInfo>();
+                if (!Directory.Exists(settings.EqLogDirectory))
+                {
+                    return playerchanged;
+                }
                 var directory = new DirectoryInfo(settings.EqLogDirectory);
                 var loggedincharlogfile = directory.GetFiles("eqlog*.txt", SearchOption.TopDirectoryOnly)
                     .OrderByDescending(a => a.LastWriteTime)

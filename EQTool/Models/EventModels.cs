@@ -101,11 +101,6 @@ namespace EQTool.Models
         public string Killer { get; set; }
     }
 
-    public class StartTimerEvent : BaseLogParseEvent
-    {
-        public CustomTimer CustomTimer { get; set; }
-    }
-
     public class WhoPlayerEvent : BaseLogParseEvent
     {
         public EQToolShared.APIModels.PlayerControllerModels.Player PlayerInfo { get; set; }
@@ -149,6 +144,7 @@ namespace EQTool.Models
 
     public class YouBeginCastingEvent : BaseLogParseEvent
     {
+        public Spell Spell { get; set; }
     }
 
     public class ResistSpellEvent : BaseLogParseEvent

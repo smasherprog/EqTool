@@ -15,7 +15,7 @@ namespace EQTool.Services.Handlers
             ITextToSpeach textToSpeach) : base(logEvents, activePlayer, eQToolSettings, textToSpeach)
         {
             this.spellWindowViewModel = spellWindowViewModel;
-            this.logEvents.EnteredWorldEvent += LogEvents_EnteredWorldEvent; ;
+            this.logEvents.EnteredWorldEvent += LogEvents_EnteredWorldEvent;
         }
 
         private void LogEvents_EnteredWorldEvent(object sender, EnteredWorldEvent e)

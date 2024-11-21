@@ -340,6 +340,7 @@
     </ApplicationDefinition>
     <Compile Include="Models\CustomTimer.cs" />
     <Compile Include="Services\BinarySerializer.cs" />
+    <Compile Include="Services\Handlers\SpellYouBeginToCastHandler.cs" />
     <Compile Include="Services\Handlers\SpellCastHandler.cs" />
     <Compile Include="Services\Handlers\SpellWornOffOtherHandler.cs" />
     <Compile Include="Services\Handlers\SpellWornOffSelfHandler.cs" />

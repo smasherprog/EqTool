@@ -64,12 +64,6 @@ namespace EQTool.Services
             CommsEvent?.Invoke(this, e);
         }
 
-        public event EventHandler<StartTimerEvent> StartTimerEvent;
-        public void Handle(StartTimerEvent e)
-        {
-            StartTimerEvent?.Invoke(this, e);
-        }
-
         public event EventHandler<CharmBreakEvent> CharmBreakEvent;
         public void Handle(CharmBreakEvent e)
         {

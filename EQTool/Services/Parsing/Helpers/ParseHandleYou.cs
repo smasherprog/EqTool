@@ -29,6 +29,7 @@ namespace EQTool.Services.Parsing.Helpers
             if (spells.YouCastSpells.TryGetValue(spellname, out var foundspells))
             {
                 var foundspell = SpellDurations.MatchClosestLevelToSpell(foundspells, activePlayer.Player?.PlayerClass, activePlayer.Player?.Level);
+                logEvents.Handle(new YouBeginCastingEvent { Line = message, LineCounter = lineCounter, TimeStamp = timestamp, Spell = foundspell });
                 Debug.WriteLine($"Self Casting Spell: {spellname} Delay: {foundspell.casttime}");
                 appDispatcher.DispatchUI(() =>
                 {

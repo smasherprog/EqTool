@@ -20,6 +20,15 @@ namespace EQTool.Services.Handlers
             "Cinder Jolt",
         };
 
+        private readonly List<string> SpellsThatNeedTimers = new List<string>()
+        {
+            "Harvest",
+            "Divine Aura",
+            "Divine Barrier",
+            "Harmshield",
+            "Quivering Veil of Xarn"
+        };
+
         private readonly List<string> SpellsThatDragonsDo = new List<string>()
         {
             "Dragon Roar",
@@ -58,7 +67,7 @@ namespace EQTool.Services.Handlers
         private void LogEvents_SpellCastEvent(object sender, SpellCastEvent match)
         {
             var spellname = match.Spell.name;
-            if (string.Equals(match.Spell.name, "Harvest", StringComparison.OrdinalIgnoreCase) && match.TargetName == EQSpells.SpaceYou)
+            if (SpellsThatNeedTimers.Contains(match.Spell.name) && match.TargetName == EQSpells.SpaceYou)
             {
                 spellWindowViewModel.TryAdd(new TimerViewModel
                 {
@@ -67,8 +76,8 @@ namespace EQTool.Services.Handlers
                     Name = spellname,
                     Rect = match.Spell.Rect,
                     Icon = match.Spell.SpellIcon,
-                    TotalDuration = TimeSpan.FromSeconds(600),
-                    TotalRemainingDuration = TimeSpan.FromSeconds(600),
+                    TotalDuration = TimeSpan.FromSeconds((int)(match.Spell.recastTime / 1000.0)),
+                    TotalRemainingDuration = TimeSpan.FromSeconds((int)(match.Spell.recastTime / 1000.0)),
                     UpdatedDateTime = DateTime.Now,
                     ProgressBarColor = Brushes.SkyBlue
                 });

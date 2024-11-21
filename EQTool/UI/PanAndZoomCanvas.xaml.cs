@@ -1,6 +1,4 @@
-﻿using EQTool.Models;
-using EQToolShared;
-using EQToolShared.HubModels;
+﻿using EQToolShared;
 using System;
 using System.Windows;
 using System.Windows.Controls;
@@ -12,7 +10,7 @@ namespace EQTool.UI
     {
         public event EventHandler<EventArgs> CancelTimerEvent;
 
-        public event EventHandler<StartTimerEvent> StartTimerEvent;
+        //public event EventHandler<StartTimerEvent> StartTimerEvent;
         public string ZoneName = "freportw";
 
         public PanAndZoomCanvas()
@@ -29,17 +27,17 @@ namespace EQTool.UI
         {
             if (TimeSpanControl.Value.HasValue)
             {
-                var timername = $"Timer {TimerCounter++}";
-                StartTimerEvent?.Invoke(this,
-                    new StartTimerEvent
-                    {
-                        CustomTimer = new CustomTimer
-                        {
-                            Name = timername,
-                            DurationSeconds = (int)TimeSpanControl.Value.Value.TotalSeconds
-                        },
-                        TimeStamp = DateTime.Now
-                    });
+                _ = $"Timer {TimerCounter++}";
+                //StartTimerEvent?.Invoke(this,
+                //    new StartTimerEvent
+                //    {
+                //        CustomTimer = new CustomTimer
+                //        {
+                //            Name = timername,
+                //            DurationSeconds = (int)TimeSpanControl.Value.Value.TotalSeconds
+                //        },
+                //        TimeStamp = DateTime.Now
+                //    });
                 TimerMenu.IsOpen = false;
             }
         }
