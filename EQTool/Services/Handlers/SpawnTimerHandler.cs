@@ -1,7 +1,11 @@
 using EQTool.Models;
 using EQTool.ViewModels;
+using EQTool.ViewModels.SpellWindow;
+using System;
+using System.Linq;
 using System.Diagnostics;
 using System.Text.RegularExpressions;
+using System.Windows.Media;
 
 namespace EQTool.Services.Handlers
 {
@@ -12,15 +16,25 @@ namespace EQTool.Services.Handlers
     //
     public class SpawnTimerHandler : BaseHandler
     {
+        private readonly SpellWindowViewModel spellWindowViewModel;
+        private readonly EQSpells spells;
 
         //
         // ctor
         //
         // register this service as a listener for the Events it cares about
         //
-        public SpawnTimerHandler(LogEvents logEvents, ActivePlayer activePlayer, EQToolSettings eQToolSettings, ITextToSpeach textToSpeach)
+        public SpawnTimerHandler(
+            LogEvents logEvents, 
+            SpellWindowViewModel spellWindowViewModel,
+            EQSpells spells,
+            ActivePlayer activePlayer, 
+            EQToolSettings eQToolSettings, 
+            ITextToSpeach textToSpeach)
             : base(logEvents, activePlayer, eQToolSettings, textToSpeach)
         {
+            this.spellWindowViewModel = spellWindowViewModel;
+            this.spells = spells;
             this.logEvents.ExpGainedEvent += LogEvents_ExpGainedEvent;
             this.logEvents.SlainEvent += LogEvents_SlainEvent;
             this.logEvents.FactionEvent += LogEvents_FactionEvent;
@@ -40,29 +54,32 @@ namespace EQTool.Services.Handlers
             // are spawn timers for exp messages turned on?
             if (Model.SpawnTimerEnabled && (Model.StartType == SpawnTimerDialogViewModel.StartTypes.EXP_MESSAGE))
             {
-                // fire off a timer event
-                var timer = new StartTimerEvent
-                {
-                    CustomTimer = new CustomTimer
-                    {
-                        DurationSeconds = Model.DurationSeconds,
-                        Name = $"Exp Timer [{Model.GetNextTimerCounter()}]",
-                        WarningSeconds = Model.WarningSeconds,
-                        ProvideWarningText = Model.ProvideWarningText,
-                        ProvideWarningTTS = Model.ProvideWarningTTS,
-                        WarningText = Model.WarningText,
-                        WarningTTS = Model.WarningTTS,
-                        ProvideEndText = Model.ProvideEndText,
-                        ProvideEndTTS = Model.ProvideEndTTS,
-                        EndText = Model.EndText,
-                        EndTTS = Model.EndTTS,
-                        RestartExisting = false,
-                    },
+                // todo - incorporate all tehse features into the timer objects
+                //
+                //        WarningSeconds = Model.WarningSeconds,
+                //        ProvideWarningText = Model.ProvideWarningText,
+                //        ProvideWarningTTS = Model.ProvideWarningTTS,
+                //        WarningText = Model.WarningText,
+                //        WarningTTS = Model.WarningTTS,
+                //        ProvideEndText = Model.ProvideEndText,
+                //        ProvideEndTTS = Model.ProvideEndTTS,
+                //        EndText = Model.EndText,
+                //        EndTTS = Model.EndTTS,
 
-                    Line = expGainedEvent.Line,
-                    TimeStamp = expGainedEvent.TimeStamp
-                };
-                logEvents.Handle(timer);
+                var spellname = "Feign Death";
+                var spell = spells.AllSpells.FirstOrDefault(a => a.name == spellname);
+                spellWindowViewModel.TryAdd(new TimerViewModel
+                {
+                    PercentLeft = 100,
+                    GroupName = CustomTimer.CustomerTime,
+                    Name = $"Exp Timer [{Model.GetNextTimerCounter()}]",
+                    Rect = spell.Rect,
+                    Icon = spell.SpellIcon,
+                    TotalDuration = TimeSpan.FromSeconds(Model.DurationSeconds),
+                    TotalRemainingDuration = TimeSpan.FromSeconds(Model.DurationSeconds),
+                    UpdatedDateTime = DateTime.Now,
+                    ProgressBarColor = Brushes.DarkSeaGreen
+                });
             }
         }
 
@@ -84,30 +101,32 @@ namespace EQTool.Services.Handlers
 
                 if (match.Success)
                 {
-                    // fire off a timer event
-                    var timer = new StartTimerEvent
+                    // todo - incorporate all tehse features into the timer objects
+                    //
+                    //        WarningSeconds = Model.WarningSeconds,
+                    //        ProvideWarningText = Model.ProvideWarningText,
+                    //        ProvideWarningTTS = Model.ProvideWarningTTS,
+                    //        WarningText = Model.WarningText,
+                    //        WarningTTS = Model.WarningTTS,
+                    //        ProvideEndText = Model.ProvideEndText,
+                    //        ProvideEndTTS = Model.ProvideEndTTS,
+                    //        EndText = Model.EndText,
+                    //        EndTTS = Model.EndTTS,
+
+                    var spellname = "Feign Death";
+                    var spell = spells.AllSpells.FirstOrDefault(a => a.name == spellname);
+                    spellWindowViewModel.TryAdd(new TimerViewModel
                     {
-                        CustomTimer = new CustomTimer
-                        {
-                            DurationSeconds = Model.DurationSeconds,
-                            Name = $"Slain Timer: [{slainEvent.Victim}] [{Model.GetNextTimerCounter()}]",
-                            WarningSeconds = Model.WarningSeconds,
-                            ProvideWarningText = Model.ProvideWarningText,
-                            ProvideWarningTTS = Model.ProvideWarningTTS,
-                            WarningText = Model.WarningText,
-                            WarningTTS = Model.WarningTTS,
-                            ProvideEndText = Model.ProvideEndText,
-                            ProvideEndTTS = Model.ProvideEndTTS,
-                            EndText = Model.EndText,
-                            EndTTS = Model.EndTTS,
-                            RestartExisting = false,
-                        },
-
-                        Line = slainEvent.Line,
-                        TimeStamp = slainEvent.TimeStamp
-                    };
-
-                    logEvents.Handle(timer);
+                        PercentLeft = 100,
+                        GroupName = CustomTimer.CustomerTime,
+                        Name = $"Slain Timer: [{slainEvent.Victim}] [{Model.GetNextTimerCounter()}]",
+                        Rect = spell.Rect,
+                        Icon = spell.SpellIcon,
+                        TotalDuration = TimeSpan.FromSeconds(Model.DurationSeconds),
+                        TotalRemainingDuration = TimeSpan.FromSeconds(Model.DurationSeconds),
+                        UpdatedDateTime = DateTime.Now,
+                        ProgressBarColor = Brushes.DarkSeaGreen
+                    });
                 }
             }
         }
@@ -129,30 +148,32 @@ namespace EQTool.Services.Handlers
 
                 if (match.Success)
                 {
-                    // fire off a timer event
-                    var timer = new StartTimerEvent
+                    // todo - incorporate all tehse features into the timer objects
+                    //
+                    //        WarningSeconds = Model.WarningSeconds,
+                    //        ProvideWarningText = Model.ProvideWarningText,
+                    //        ProvideWarningTTS = Model.ProvideWarningTTS,
+                    //        WarningText = Model.WarningText,
+                    //        WarningTTS = Model.WarningTTS,
+                    //        ProvideEndText = Model.ProvideEndText,
+                    //        ProvideEndTTS = Model.ProvideEndTTS,
+                    //        EndText = Model.EndText,
+                    //        EndTTS = Model.EndTTS,
+
+                    var spellname = "Feign Death";
+                    var spell = spells.AllSpells.FirstOrDefault(a => a.name == spellname);
+                    spellWindowViewModel.TryAdd(new TimerViewModel
                     {
-                        CustomTimer = new CustomTimer
-                        {
-                            DurationSeconds = Model.DurationSeconds,
-                            Name = $"Faction Timer: [{factionEvent.Faction}] [{Model.GetNextTimerCounter()}]",
-                            WarningSeconds = Model.WarningSeconds,
-                            ProvideWarningText = Model.ProvideWarningText,
-                            ProvideWarningTTS = Model.ProvideWarningTTS,
-                            WarningText = Model.WarningText,
-                            WarningTTS = Model.WarningTTS,
-                            ProvideEndText = Model.ProvideEndText,
-                            ProvideEndTTS = Model.ProvideEndTTS,
-                            EndText = Model.EndText,
-                            EndTTS = Model.EndTTS,
-                            RestartExisting = false,
-                        },
-
-                        Line = factionEvent.Line,
-                        TimeStamp = factionEvent.TimeStamp
-                    };
-
-                    logEvents.Handle(timer);
+                        PercentLeft = 100,
+                        GroupName = CustomTimer.CustomerTime,
+                        Name = $"Faction Timer: [{factionEvent.Faction}] [{Model.GetNextTimerCounter()}]",
+                        Rect = spell.Rect,
+                        Icon = spell.SpellIcon,
+                        TotalDuration = TimeSpan.FromSeconds(Model.DurationSeconds),
+                        TotalRemainingDuration = TimeSpan.FromSeconds(Model.DurationSeconds),
+                        UpdatedDateTime = DateTime.Now,
+                        ProgressBarColor = Brushes.DarkSeaGreen
+                    });
                 }
             }
         }
