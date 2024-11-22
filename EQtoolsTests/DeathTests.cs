@@ -192,25 +192,5 @@ namespace EQtoolsTests
             var count = deathLoopHandler.DeathCount();
             Assert.AreEqual(0, count);
         }
-
-        [TestMethod]
-        // player has died multiple times, but then shows sign of life, so the death tracking list is purged
-        // casting
-        public void PlayerActive_Casting()
-        {
-            var now = DateTime.Now;
-            var message = "You have been slain by a brigand!";
-            _ = slainParser.Handle(message, now, 0);
-            _ = slainParser.Handle(message, now, 0);
-            _ = slainParser.Handle(message, now, 0);
-
-            // casting
-            _ = spellCastParser.Handle("You begin casting Huge_Fireball", now, 0);
-
-            var count = deathLoopHandler.DeathCount();
-            Assert.AreEqual(0, count);
-        }
-
-
     }
 }

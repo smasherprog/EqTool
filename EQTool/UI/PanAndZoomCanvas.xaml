@@ -9,18 +9,7 @@
         Background="Transparent"
        >
     <Canvas.ContextMenu>
-        <ContextMenu Width="130" Name="TimerMenu" Closed="TimerMenu_Closed" Opened="TimerMenu_Opened">
-            <MenuItem Name="AddTimerMenuItem"  Click="AddTimer">
-                <MenuItem.Icon>
-                    <TextBlock Foreground="Green">⏲</TextBlock>
-                </MenuItem.Icon>
-                <MenuItem.Header>
-                    <StackPanel Orientation="Horizontal">
-                        <local:CustomTimeSpanUpDown x:Name="TimeSpanControl"/>
-                        <Label VerticalAlignment="Top" VerticalContentAlignment="Top">Add</Label>
-                    </StackPanel>
-                </MenuItem.Header>
-            </MenuItem>
+        <ContextMenu Width="130" Name="TimerMenu" Closed="TimerMenu_Closed" Opened="TimerMenu_Opened"> 
             <MenuItem Name="DeleteTimerMenuItem" Click="DeleteTimer">
                 <MenuItem.Icon>
                     <TextBlock Foreground="Red">ⓧ</TextBlock>

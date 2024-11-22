@@ -87,18 +87,6 @@ namespace EQTool.UI
             mapViewModel.TimerMenu_Closed();
         }
 
-        //private void LogParser_StartTimerEvent(object sender, StartTimerEvent e)
-        //{
-        //    var mw = mapViewModel.AddTimer(TimeSpan.FromSeconds(e.CustomTimer.DurationSeconds), e.CustomTimer.Name, false);
-        //    mapViewModel.MoveToPlayerLocation(mw);
-        //}
-
-        //private void Map_StartTimerEvent(object sender, StartTimerEvent e)
-        //{
-        //    mapViewModel.TimerMenu_Closed();
-        //    _ = mapViewModel.AddTimer(TimeSpan.FromSeconds(e.CustomTimer.DurationSeconds), e.CustomTimer.Name, true);
-        //}
-
         private void Map_CancelTimerEvent(object sender, EventArgs e)
         {
             _ = mapViewModel.DeleteSelectedTimer();
