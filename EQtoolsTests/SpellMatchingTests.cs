@@ -1020,6 +1020,23 @@ namespace EQtoolsTests
         }
 
         [TestMethod]
+        public void TestRing8()
+        {
+            var spelllogparse = container.Resolve<SpellCastParser>();
+            var line = "You are enveloped in a swirling maelstrom.";
+            var player = container.Resolve<ActivePlayer>();
+            player.Player = new PlayerInfo
+            {
+                Level = 54,
+                PlayerClass = PlayerClasses.Cleric
+            };
+            var spellmatch = spelllogparse.MatchSpell(line, DateTime.Now, 0);
+            var spellduration = SpellDurations.GetDuration_inSeconds(spellmatch.Spell, PlayerClasses.Necromancer, 60);
+            Assert.IsNotNull(spellmatch);
+            Assert.AreEqual(spellduration, 3600);
+        }
+
+        [TestMethod]
         public void TestClairityDurationGuess_part1()
         {
             var spells = container.Resolve<EQSpells>();

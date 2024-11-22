@@ -25,6 +25,7 @@ namespace EQTool.Services
 
         private readonly HashSet<string> IgnoreSpells = new HashSet<string>()
         {
+            "Shield of the Ring",
             "FireElementalAttack2",
             "Outbreak",
             "Paroxysm of Zek",
@@ -154,7 +155,7 @@ namespace EQTool.Services
             var spellsfile = new FileInfo(settings.DefaultEqDirectory + spellfile);
             if (spellsfile.Exists)
             {
-                var spellfilename = $"SpellCache{servers}_7";
+                var spellfilename = $"SpellCache{servers}_8";
                 if (!isdebug)
                 {
                     spellfilename = new string(spellfilename.Where(a => char.IsLetterOrDigit(a)).ToArray()) + ".bin";
