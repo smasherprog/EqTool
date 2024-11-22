@@ -98,17 +98,12 @@ namespace EQtoolsTests
         [TestMethod]
         public void Dictate()
         {
-            //var dteffect = spellWindowViewModel.SpellList.FirstOrDefault(a => a.Name == "Dictate") as TimerViewModel;
-            //Assert.IsNull(dteffect);
-            //logParser.Push("You begin casting Dictate.", DateTime.Now);
-            //dteffect = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Timer && a.Name == "Dictate") as TimerViewModel;
-            //Assert.IsNotNull(dteffect);
-            //Assert.IsTrue(dteffect.TotalDuration.TotalSeconds == 300.0);
-            //var spelleffect = spellWindowViewModel.SpellList.FirstOrDefault(a => a.Name == "Dictate") as SpellViewModel;
-            //Assert.IsNull(spelleffect);
-            //spelleffect = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Spell && a.Name == "Dictate") as SpellViewModel;
-            //Assert.IsNotNull(spelleffect);
-            //Assert.IsTrue(spelleffect.TotalDuration.TotalSeconds == 6 * 8);
+            var dteffect = spellWindowViewModel.SpellList.FirstOrDefault(a => a.Name == "Dictate") as TimerViewModel;
+            Assert.IsNull(dteffect);
+            logParser.Push("You begin casting Dictate.", DateTime.Now);
+            dteffect = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Timer && a.Name == "Dictate") as TimerViewModel;
+            Assert.IsNotNull(dteffect);
+            Assert.IsTrue(dteffect.TotalDuration.TotalSeconds == 300.0);
         }
     }
 }
