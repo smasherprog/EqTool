@@ -161,6 +161,13 @@ namespace EQTool.Services
                 }
                 catch (Exception ex)
                 {
+                    if (ex.ToString().Contains("Access to the path 'NewVersion' is denied."))
+                    {
+                        appDispatcher.DispatchUI(() =>
+                        {
+                            (App.Current as App).ShowBalloonTip(3000, "PigParse Update Failed", "There was a permission issue with the currently install location. Please move Pigparse to a different directory!", System.Windows.Forms.ToolTipIcon.Error);
+                        });
+                    }
                     container?.Resolve<LoggingService>().Log(ex.ToString(), EQToolShared.Enums.EventType.Update, null);
                     File.AppendAllText("Errors.txt", ex.ToString());
                 }
