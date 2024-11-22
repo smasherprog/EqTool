@@ -473,8 +473,6 @@ namespace EQTool
                 v= "Beta";
 #elif LINUX
                 v= "Linux";
-#else
-                v = "P99";
 #endif
                 return v;
             }
