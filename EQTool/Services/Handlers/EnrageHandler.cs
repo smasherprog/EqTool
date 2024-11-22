@@ -18,7 +18,7 @@ namespace EQTool.Services.Handlers
             {
                 textToSpeach.Say(text);
             }
-            var doAlert = activePlayer?.Player?.ResistWarningOverlay ?? false;
+            var doAlert = activePlayer?.Player?.EnrageOverlay ?? false;
             if (doAlert)
             {
                 _ = System.Threading.Tasks.Task.Factory.StartNew(() =>
