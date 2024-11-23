@@ -76,7 +76,7 @@ namespace EQTool.Services.Handlers
                 spellWindowViewModel.TryAdd(new TimerViewModel
                 {
                     PercentLeft = 100,
-                    GroupName = CustomTimer.CustomerTime,
+                    GroupName = match.TargetName,
                     Name = spellname,
                     Rect = match.Spell.Rect,
                     Icon = match.Spell.SpellIcon,
@@ -136,7 +136,7 @@ namespace EQTool.Services.Handlers
                 spellWindowViewModel.TryAdd(new TimerViewModel
                 {
                     PercentLeft = 100,
-                    GroupName = CustomTimer.CustomerTime,
+                    GroupName = match.TargetName,
                     Name = "--Discipline-- " + spellname,
                     Rect = discspell.Rect,
                     Icon = discspell.SpellIcon,
