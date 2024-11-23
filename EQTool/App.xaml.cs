@@ -399,8 +399,8 @@ namespace EQTool
         private bool updatecalled = false;
         private void UpdateTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
-
 #if DEBUG
+            return;
 #endif
             var dispatcher = container.Resolve<IAppDispatcher>();
             dispatcher.DispatchUI(() =>
