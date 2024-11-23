@@ -63,7 +63,7 @@ namespace EQTool.ViewModels
                 Zones.Add(item);
             }
 
-            foreach (var item in Enum.GetValues(typeof(PlayerClasses)).Cast<PlayerClasses>())
+            foreach (var item in Enum.GetValues(typeof(PlayerClasses)).Cast<PlayerClasses>().Where(a => a != EQToolShared.Enums.PlayerClasses.Other))
             {
                 var listitem = new BoolStringClass { TheText = item.ToString(), TheValue = item, IsChecked = false };
                 SelectedPlayerClasses.Add(listitem);
@@ -96,10 +96,10 @@ namespace EQTool.ViewModels
 
         public bool RaidModeDetection
         {
-            get => toolSettings.DpsWindowState.AlwaysOnTop;
+            get => toolSettings.RaidModeDetection ?? true;
             set
             {
-                toolSettings.DpsWindowState.AlwaysOnTop = value;
+                toolSettings.RaidModeDetection = value;
                 OnPropertyChanged();
             }
         }

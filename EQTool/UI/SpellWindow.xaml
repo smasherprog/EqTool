@@ -15,20 +15,14 @@
         <WindowChrome 
         CaptionHeight="0"
         ResizeBorderThickness="5" />
-    </WindowChrome.WindowChrome>
-    <Window.Resources>
-        <LinearGradientBrush x:Key="WindowFrameBrush" StartPoint="0,0.5" EndPoint="1,0.5">
-            <GradientStop Color="CadetBlue" Offset="0.4"/>
-            <GradientStop Color="Gray" Offset="1"/>
-        </LinearGradientBrush>
-    </Window.Resources>
-    <Border CornerRadius="5" BorderBrush="{StaticResource WindowFrameBrush}" BorderThickness="1,0,1,1">
+    </WindowChrome.WindowChrome> 
+    <Border CornerRadius="5" BorderBrush="{Binding WindowFrameBrush}" BorderThickness="1,0,1,1">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="20" />
                 <RowDefinition/>
-            </Grid.RowDefinitions> 
-            <Border Background="{StaticResource WindowFrameBrush}" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
+            </Grid.RowDefinitions>
+            <Border Background="{Binding WindowFrameBrush}" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
               CornerRadius="5,5,0,0" Margin="-1,0,-1,0" MouseLeftButtonDown="DragWindow">
                 <Grid>
                     <TextBlock Foreground="White" FontWeight="Bold" VerticalAlignment="Center" Margin="10,1,10,1" Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}, Path=Title}"/>

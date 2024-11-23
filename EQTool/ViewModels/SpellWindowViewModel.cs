@@ -9,6 +9,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows.Data;
+using System.Windows.Media;
 
 namespace EQTool.ViewModels
 {
@@ -36,6 +37,27 @@ namespace EQTool.ViewModels
             view.SortDescriptions.Add(new SortDescription(nameof(TimerViewModel.TotalRemainingDuration), ListSortDirection.Ascending));
             view.IsLiveSorting = true;
             view.LiveSortingProperties.Add(nameof(TimerViewModel.TotalRemainingDuration));
+
+            _WindowFrameBrush = NonRaidModeLinearGradientBrush = new LinearGradientBrush
+            {
+                StartPoint = new System.Windows.Point(0, 0.5),
+                EndPoint = new System.Windows.Point(1, 0.5),
+                GradientStops = new GradientStopCollection()
+            {
+                new GradientStop(System.Windows.Media.Colors.CadetBlue, .4),
+                new GradientStop(System.Windows.Media.Colors.Gray, 1)
+            }
+            };
+            RaidModeLinearGradientBrush = new LinearGradientBrush
+            {
+                StartPoint = new System.Windows.Point(0, 0.5),
+                EndPoint = new System.Windows.Point(1, 0.5),
+                GradientStops = new GradientStopCollection()
+            {
+                new GradientStop(System.Windows.Media.Colors.OrangeRed, .4),
+                new GradientStop(System.Windows.Media.Colors.Gray, 1)
+            }
+            };
         }
 
 
@@ -73,13 +95,47 @@ namespace EQTool.ViewModels
             });
         }
 
+        private readonly LinearGradientBrush NonRaidModeLinearGradientBrush;
+        private readonly LinearGradientBrush RaidModeLinearGradientBrush;
+
+        private LinearGradientBrush _WindowFrameBrush;
+
+        public LinearGradientBrush WindowFrameBrush
+        {
+            get => _WindowFrameBrush;
+            set
+            {
+                _WindowFrameBrush = value;
+                OnPropertyChanged();
+            }
+        }
+        private bool _RaidModeEnabled = false;
+        public bool RaidModeEnabled
+        {
+            get => _RaidModeEnabled;
+            set
+            {
+                _RaidModeEnabled = value;
+                if (_RaidModeEnabled)
+                {
+                    WindowFrameBrush = RaidModeLinearGradientBrush;
+                }
+                else
+                {
+                    WindowFrameBrush = NonRaidModeLinearGradientBrush;
+                }
+                OnPropertyChanged();
+            }
+        }
+
         public void UpdateSpells(double dt_ms)
         {
             appDispatcher.DispatchUI(() =>
             {
                 var player = activePlayer.Player;
-                var raidmodeactive = settings.RaidModeDetection ?? true;
+                var raidmodedetection = settings.RaidModeDetection ?? true;
                 var groupcount = SpellList.Where(a => a.SpellViewModelType == SpellViewModelType.Spell).GroupBy(a => a.GroupName).Count();
+                RaidModeEnabled = raidmodedetection && player?.PlayerClass != null && groupcount > 10;
                 var itemstoremove = new List<PersistentViewModel>();
                 var timerTypes = new List<SpellViewModelType>() { SpellViewModelType.Roll, SpellViewModelType.Spell, SpellViewModelType.Timer };
                 foreach (var item in SpellList.Where(a => timerTypes.Contains(a.SpellViewModelType)).Cast<TimerViewModel>().ToList())
@@ -94,16 +150,13 @@ namespace EQTool.ViewModels
                 {
                     item.HideGuesses = !settings.BestGuessSpells;
                     item.ShowOnlyYou = settings.YouOnlySpells;
-                    if (player != null)
+                    if (RaidModeEnabled && player.PlayerClass.HasValue)
                     {
-                        if (raidmodeactive && player.PlayerClass.HasValue && groupcount > 10)
-                        {
-                            item.HideClasses = SpellUIExtensions.HideSpell(new List<EQToolShared.Enums.PlayerClasses>() { player.PlayerClass.Value }, item.Classes) && item.GroupName != EQSpells.SpaceYou;
-                        }
-                        else
-                        {
-                            item.HideClasses = SpellUIExtensions.HideSpell(player.ShowSpellsForClasses, item.Classes) && item.GroupName != EQSpells.SpaceYou;
-                        }
+                        item.HideClasses = SpellUIExtensions.HideSpell(new List<EQToolShared.Enums.PlayerClasses>() { player.PlayerClass.Value }, item.Classes) && item.GroupName != EQSpells.SpaceYou;
+                    }
+                    else
+                    {
+                        item.HideClasses = player != null && SpellUIExtensions.HideSpell(player.ShowSpellsForClasses, item.Classes) && item.GroupName != EQSpells.SpaceYou;
                     }
                 }
                 var d = DateTime.Now;

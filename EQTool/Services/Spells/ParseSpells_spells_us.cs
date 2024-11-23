@@ -163,7 +163,7 @@ namespace EQTool.Services
             var spellsfile = new FileInfo(settings.DefaultEqDirectory + spellfile);
             if (spellsfile.Exists)
             {
-                var spellfilename = $"SpellCache{servers}_8";
+                var spellfilename = $"SpellCache{servers}_9";
                 if (!isdebug)
                 {
                     spellfilename = new string(spellfilename.Where(a => char.IsLetterOrDigit(a)).ToArray()) + ".bin";
