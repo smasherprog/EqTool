@@ -112,6 +112,14 @@ namespace EQTool.Services
             "Feeble Mind"
         };
 
+        private readonly List<string> POMFlowers = new List<string>()
+        {
+            "Aura of Blue Petals",
+            "Aura of White Petals",
+            "Aura of Red Petals",
+            "Aura of Black Petals"
+        };
+
         public class EpicSpellTime
         {
             public PlayerClasses PlayerClass { get; set; }
@@ -296,6 +304,13 @@ namespace EQTool.Services
                         }
                     }
 
+                    if (POMFlowers.Contains(spell.name))
+                    {
+                        if (!spell.Classes.ContainsKey(PlayerClasses.Other))
+                        {
+                            spell.Classes.Add(PlayerClasses.Other, 46);
+                        }
+                    }
 
                     if (spell.name == "Maniacal Strength")
                     {
