@@ -1,6 +1,7 @@
 ﻿using EQTool.Models;
 using EQTool.ViewModels;
 using EQTool.ViewModels.SpellWindow;
+using EQToolShared;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -170,12 +171,17 @@ namespace EQTool.Services.Handlers
                     spellduration = TimeSpan.FromMinutes(6);
                 }
 
+                var grpname = match.TargetName;
+                if (MasterNPCList.NPCs.Contains(grpname))
+                {
+                    grpname = " " + grpname;
+                }
                 var vm = new SpellViewModel
                 {
                     UpdatedDateTime = DateTime.Now,
                     PercentLeft = 100,
                     SpellType = match.Spell.type,
-                    GroupName = match.TargetName,
+                    GroupName = grpname,
                     Name = spellname,
                     Rect = match.Spell.Rect,
                     Icon = match.Spell.SpellIcon,
