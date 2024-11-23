@@ -94,13 +94,16 @@ namespace EQTool.ViewModels
                 {
                     item.HideGuesses = !settings.BestGuessSpells;
                     item.ShowOnlyYou = settings.YouOnlySpells;
-                    if (raidmodeactive && player?.PlayerClass != null && groupcount > 10)
+                    if (player != null)
                     {
-                        item.HideClasses = SpellUIExtensions.HideSpell(new List<EQToolShared.Enums.PlayerClasses>() { player.PlayerClass.Value }, item.Classes) && item.GroupName != EQSpells.SpaceYou;
-                    }
-                    else
-                    {
-                        item.HideClasses = player != null && SpellUIExtensions.HideSpell(player.ShowSpellsForClasses, item.Classes) && item.GroupName != EQSpells.SpaceYou;
+                        if (raidmodeactive && player.PlayerClass.HasValue && groupcount > 10)
+                        {
+                            item.HideClasses = SpellUIExtensions.HideSpell(new List<EQToolShared.Enums.PlayerClasses>() { player.PlayerClass.Value }, item.Classes) && item.GroupName != EQSpells.SpaceYou;
+                        }
+                        else
+                        {
+                            item.HideClasses = SpellUIExtensions.HideSpell(player.ShowSpellsForClasses, item.Classes) && item.GroupName != EQSpells.SpaceYou;
+                        }
                     }
                 }
                 var d = DateTime.Now;
