@@ -290,6 +290,19 @@ namespace EQTool
                     new System.Windows.Forms.MenuItem("Exit", OnExit)
                 }),
             };
+            if (EQToolSettings.LoginMiddleMand)
+            {
+                var loginmiddlemand = container.Resolve<LoginMiddlemand>();
+                if (loginmiddlemand.IsConfiguredCorrectly())
+                {
+                    loginmiddlemand.StartListening();
+                    Thread.Sleep(50); //give time to start up
+                }
+                else
+                {
+                    EQToolSettings.LoginMiddleMand = false;
+                }
+            }
             var hasvalideqdir = FindEq.IsValidEqFolder(EQToolSettings.DefaultEqDirectory);
             if (!hasvalideqdir || FindEq.TryCheckLoggingEnabled(EQToolSettings.DefaultEqDirectory) == false)
             {
@@ -338,19 +351,6 @@ namespace EQTool
             ((App)System.Windows.Application.Current).UpdateBackgroundOpacity("MyWindowStyleDPS", EQToolSettings.DpsWindowState.Opacity.Value);
             ((App)System.Windows.Application.Current).UpdateBackgroundOpacity("MyWindowStyleMap", EQToolSettings.MapWindowState.Opacity.Value);
             ((App)System.Windows.Application.Current).UpdateBackgroundOpacity("MyWindowStyleTrigger", EQToolSettings.SpellWindowState.Opacity.Value);
-
-            if (EQToolSettings.LoginMiddleMand)
-            {
-                var loginmiddlemand = container.Resolve<LoginMiddlemand>();
-                if (loginmiddlemand.IsConfiguredCorrectly())
-                {
-                    loginmiddlemand.StartListening();
-                }
-                else
-                {
-                    EQToolSettings.LoginMiddleMand = false;
-                }
-            }
         }
 
         public void UpdateBackgroundOpacity(string name, double opacity)

@@ -23,11 +23,7 @@ namespace EQTool.Services.Handlers
 
         private readonly List<string> SpellsThatNeedTimers = new List<string>()
         {
-            "Harvest"
-        };
-
-        private readonly List<string> DASpells = new List<string>()
-        {
+            "Harvest",
             "Divine Aura",
             "Divine Barrier",
             "Harmshield",

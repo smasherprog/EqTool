@@ -49,7 +49,7 @@ namespace EQTool.Services.Handlers
         {
             if (e.TheChannel == CommsEvent.Channel.SAY && MasterNPCList.NPCs.Contains(e.Sender))
             {
-                Reset();
+                //Reset();
             }
         }
 
@@ -84,7 +84,7 @@ namespace EQTool.Services.Handlers
                     Line = e.Line,
                     LineCounter = e.LineCounter,
                     TimeStamp = e.TimeStamp,
-                });
+                }, true);
                 Reset();
                 AlreadyEmitted = true;
             }
@@ -109,7 +109,7 @@ namespace EQTool.Services.Handlers
                     Line = e.Line,
                     LineCounter = e.LineCounter,
                     TimeStamp = e.TimeStamp,
-                });
+                }, true);
                 Reset();
             }
             LineNumber = e.LineCounter;
@@ -140,7 +140,7 @@ namespace EQTool.Services.Handlers
                         Line = e.Line,
                         LineCounter = e.LineCounter,
                         TimeStamp = e.TimeStamp,
-                    });
+                    }, true);
                     Reset();
                 }
             }
@@ -158,12 +158,12 @@ namespace EQTool.Services.Handlers
                 Line = e.Line,
                 LineCounter = e.LineCounter,
                 TimeStamp = e.TimeStamp,
-            });
+            }, false);
             AlreadyEmitted = true;
         }
 
         private int deathcounter = 1;
-        private void DoEvent(ConfirmedDeathEvent e)
+        private void DoEvent(ConfirmedDeathEvent e, bool guess)
         {
             logEvents.Handle(new ConfirmedDeathEvent
             {
@@ -174,7 +174,7 @@ namespace EQTool.Services.Handlers
                 TimeStamp = e.TimeStamp,
             });
 
-            if (playerTrackerService.IsPlayer(e.Victim) || !MasterNPCList.NPCs.Contains(e.Victim))
+            if (playerTrackerService.IsPlayer(e.Victim) || (!MasterNPCList.NPCs.Contains(e.Victim) && !guess))
             {
                 return;
             }

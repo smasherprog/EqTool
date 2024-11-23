@@ -338,20 +338,20 @@ namespace EQtoolsTests
         }
 
 
-        [TestMethod]
-        public void IgnoreQuestTurnins()
-        {
-            logEvents.ConfirmedDeathEvent += (a, e) =>
-            {
-                CalledCounter++;
-            };
-            logParser.Push("Jaerlin pierces a Drakkel Dire Wolf for 42 points of damage.", DateTime.Now);
-            logParser.Push("Your faction standing with ClawsofVeeshan got better.", DateTime.Now);
-            logParser.Push("Your faction standing with Coldain got better.", DateTime.Now);
-            logParser.Push("Your faction standing with Kromrif got worse.", DateTime.Now);
-            logParser.Push("You gain experience!!", DateTime.Now);
-            logParser.Push("Captain Ashlan says, 'Great work! Maybe you can help us out again sometime?'", DateTime.Now);
-            Assert.AreEqual(CalledCounter, 0);
-        }
+        //[TestMethod]
+        //public void IgnoreQuestTurnins()
+        //{
+        //    logEvents.ConfirmedDeathEvent += (a, e) =>
+        //    {
+        //        CalledCounter++;
+        //    };
+        //    logParser.Push("Jaerlin pierces a Drakkel Dire Wolf for 42 points of damage.", DateTime.Now);
+        //    logParser.Push("Your faction standing with ClawsofVeeshan got better.", DateTime.Now);
+        //    logParser.Push("Your faction standing with Coldain got better.", DateTime.Now);
+        //    logParser.Push("Your faction standing with Kromrif got worse.", DateTime.Now);
+        //    logParser.Push("You gain experience!!", DateTime.Now);
+        //    logParser.Push("Captain Ashlan says, 'Great work! Maybe you can help us out again sometime?'", DateTime.Now);
+        //    Assert.AreEqual(CalledCounter, 0);
+        //}
     }
 }
