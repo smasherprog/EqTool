@@ -94,6 +94,16 @@ namespace EQTool.ViewModels
             }
         }
 
+        public bool RaidModeDetection
+        {
+            get => toolSettings.DpsWindowState.AlwaysOnTop;
+            set
+            {
+                toolSettings.DpsWindowState.AlwaysOnTop = value;
+                OnPropertyChanged();
+            }
+        }
+
         public bool DpsAlwaysOnTop
         {
             get => toolSettings.DpsWindowState.AlwaysOnTop;

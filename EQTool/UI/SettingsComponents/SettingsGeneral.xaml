@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:EQTool.UI.SettingsComponents"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="400">
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
     </UserControl.Resources>
@@ -216,6 +216,10 @@
         <TabItem Header="Triggers">
             <StackPanel Orientation="Vertical" Margin="5, 5, 5, 5">
                 <StackPanel Orientation="Vertical"  Margin="0, 0, 0, 8">
+                    <StackPanel Orientation="Horizontal" ToolTip="This setting will switch to show only spells you care about when raid mode is detected.">
+                        <TextBlock Text="Raid Detection" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
+                        <CheckBox IsChecked="{Binding RaidModeDetection}" Click="Savesettings"></CheckBox>
+                    </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Spawn Timer"  VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
                         <Button Click="openSpawnTimerDialog">Spawn Timer Configurator</Button>

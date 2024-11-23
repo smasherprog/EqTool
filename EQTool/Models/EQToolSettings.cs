@@ -125,7 +125,12 @@ namespace EQTool.Models
         public bool BestGuessSpells { get; set; }
         public bool YouOnlySpells { get; set; }
         public bool ShowRandomRolls { get; set; }
-
+        public bool? _RaidModeDetection;
+        public bool? RaidModeDetection
+        {
+            get => _RaidModeDetection ?? true;
+            set { if (value == null) { _RaidModeDetection = true; } else { _RaidModeDetection = value; } }
+        }
         public bool LoginMiddleMand { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
