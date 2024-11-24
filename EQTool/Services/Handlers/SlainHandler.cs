@@ -55,7 +55,29 @@ namespace EQTool.Services.Handlers
 
         private void LogEvents_LineEvent(object sender, LineEvent e)
         {
-            EmitSlainEvent(e);
+            if (e.LineCounter == LineNumber)
+            {
+                return;
+            }
+            else if (e.LineCounter - 1 == LineNumber)
+            {
+                if (AlreadyEmitted)
+                {
+                    Reset();
+                }
+                else if (ExpMessage || FactionMessages.Any())
+                {
+                    DoEvent(new ConfirmedDeathEvent
+                    {
+                        Killer = Killer,
+                        Victim = Victim,
+                        Line = e.Line,
+                        LineCounter = e.LineCounter,
+                        TimeStamp = e.TimeStamp,
+                    }, true);
+                    Reset();
+                }
+            }
         }
 
         private void LogEvents_PayerChangedEvent(object sender, PayerChangedEvent e)
@@ -117,33 +139,6 @@ namespace EQTool.Services.Handlers
             Killer = "You";
             FactionMessages.Add(e.Line);
 
-        }
-
-        private void EmitSlainEvent(BaseLogParseEvent e)
-        {
-            if (e.LineCounter == LineNumber)
-            {
-                return;
-            }
-            else if (e.LineCounter - 1 == LineNumber)
-            {
-                if (AlreadyEmitted)
-                {
-                    LineNumber = e.LineCounter;
-                }
-                else if (ExpMessage || FactionMessages.Any())
-                {
-                    DoEvent(new ConfirmedDeathEvent
-                    {
-                        Killer = Killer,
-                        Victim = Victim,
-                        Line = e.Line,
-                        LineCounter = e.LineCounter,
-                        TimeStamp = e.TimeStamp,
-                    }, true);
-                    Reset();
-                }
-            }
         }
 
         private void LogEvents_SlainEvent(object sender, SlainEvent e)
