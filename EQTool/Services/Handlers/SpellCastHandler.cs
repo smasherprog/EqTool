@@ -4,7 +4,6 @@ using EQTool.ViewModels.SpellWindow;
 using EQToolShared;
 using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Windows.Media;
 
 namespace EQTool.Services.Handlers
@@ -129,19 +128,22 @@ namespace EQTool.Services.Handlers
                     float playerleveltick = playerlevel - 57;
                     basetime = (int)(baseseconds - (playerleveltick * secondsperlevelrange));
                 }
-                var discspell = spells.AllSpells.FirstOrDefault(a => a.name == "Strengthen");
-                spellWindowViewModel.TryAdd(new TimerViewModel
+
+                var vm = new SpellViewModel
                 {
+                    UpdatedDateTime = DateTime.Now,
                     PercentLeft = 100,
+                    Type = match.Spell.type,
+                    SpellType = match.Spell.SpellType,
                     GroupName = match.TargetName,
-                    Name = "--Discipline-- " + spellname,
-                    Rect = discspell.Rect,
-                    Icon = discspell.SpellIcon,
+                    Name = spellname,
+                    Rect = match.Spell.Rect,
+                    Icon = match.Spell.SpellIcon,
+                    Classes = match.Spell.Classes,
                     TotalDuration = TimeSpan.FromSeconds(basetime),
                     TotalRemainingDuration = TimeSpan.FromSeconds(basetime),
-                    UpdatedDateTime = DateTime.Now,
-                    ProgressBarColor = Brushes.Gold
-                });
+                };
+                spellWindowViewModel.TryAdd(vm);
             }
 
             var needscount = SpellsThatNeedCounts.Contains(spellname);
@@ -176,7 +178,8 @@ namespace EQTool.Services.Handlers
                 {
                     UpdatedDateTime = DateTime.Now,
                     PercentLeft = 100,
-                    SpellType = match.Spell.type,
+                    Type = match.Spell.type,
+                    SpellType = match.Spell.SpellType,
                     GroupName = grpname,
                     Name = spellname,
                     Rect = match.Spell.Rect,

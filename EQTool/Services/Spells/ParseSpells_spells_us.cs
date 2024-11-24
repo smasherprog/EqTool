@@ -112,12 +112,14 @@ namespace EQTool.Services
             "Feeble Mind"
         };
 
-        private readonly List<string> POMFlowers = new List<string>()
+        private readonly List<string> SpellCastableByEveryone = new List<string>()
         {
             "Aura of Blue Petals",
             "Aura of White Petals",
             "Aura of Red Petals",
-            "Aura of Black Petals"
+            "Aura of Black Petals",
+            "Shield of the Eighth",
+            "Frostreaver's Blessing",
         };
 
         public class EpicSpellTime
@@ -304,7 +306,7 @@ namespace EQTool.Services
                         }
                     }
 
-                    if (POMFlowers.Contains(spell.name))
+                    if (SpellCastableByEveryone.Contains(spell.name))
                     {
                         if (!spell.Classes.ContainsKey(PlayerClasses.Other))
                         {

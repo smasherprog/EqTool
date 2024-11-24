@@ -46,7 +46,7 @@ namespace EQTool.ViewModels.SpellWindow
         {
             get
             {
-                if (GroupName == CustomTimer.CustomerTime || _SpellType == SpellTypes.Detrimental)
+                if (GroupName == CustomTimer.CustomerTime || _Type == SpellTypes.Detrimental)
                 {
                     return Visibility.Visible;
                 }
@@ -54,7 +54,7 @@ namespace EQTool.ViewModels.SpellWindow
                 {
                     return Visibility.Collapsed;
                 }
-                else if (_SpellType <= 0 || GroupName == EQSpells.SpaceYou)
+                else if (_Type <= 0 || GroupName == EQSpells.SpaceYou)
                 {
                     return Visibility.Visible;
                 }
@@ -70,22 +70,23 @@ namespace EQTool.ViewModels.SpellWindow
         public override string Sorting => GroupName;
 
         public override SpellViewModelType SpellViewModelType => SpellViewModelType.Spell;
-        private SpellTypes _SpellType = 0;
-        public SpellTypes SpellType
+        public SpellType SpellType { get; set; }
+        private SpellTypes _Type = 0;
+        public SpellTypes Type
         {
-            get => _SpellType;
+            get => _Type;
             set
             {
-                _SpellType = value;
-                if (_SpellType == SpellTypes.Beneficial)
+                _Type = value;
+                if (_Type == SpellTypes.Beneficial)
                 {
                     ProgressBarColor = Brushes.MediumAquamarine;
                 }
-                else if (_SpellType == SpellTypes.Detrimental)
+                else if (_Type == SpellTypes.Detrimental)
                 {
                     ProgressBarColor = Brushes.OrangeRed;
                 }
-                else if (_SpellType >= SpellTypes.Other)
+                else if (_Type >= SpellTypes.Other)
                 {
                     ProgressBarColor = Brushes.DarkSeaGreen;
                 }

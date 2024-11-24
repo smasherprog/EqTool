@@ -151,7 +151,14 @@ namespace EQTool.ViewModels
                     item.ShowOnlyYou = settings.YouOnlySpells;
                     if (RaidModeEnabled && player.PlayerClass.HasValue)
                     {
-                        item.HideClasses = SpellUIExtensions.HideSpell(new List<EQToolShared.Enums.PlayerClasses>() { player.PlayerClass.Value }, item.Classes) && item.GroupName != EQSpells.SpaceYou;
+                        if (item.GroupName != EQSpells.SpaceYou)
+                        {
+                            item.HideClasses = SpellUIExtensions.HideSpell(new List<EQToolShared.Enums.PlayerClasses>() { player.PlayerClass.Value }, item.Classes) && item.GroupName != EQSpells.SpaceYou;
+                            if (item.SpellType == SpellType.Self)
+                            {
+                                item.HideClasses = true;
+                            }
+                        }
                     }
                     else
                     {
@@ -284,7 +291,8 @@ namespace EQTool.ViewModels
                         {
                             UpdatedDateTime = DateTime.Now,
                             PercentLeft = 100,
-                            SpellType = match.type,
+                            Type = match.type,
+                            SpellType = match.SpellType,
                             GroupName = EQSpells.SpaceYou,
                             Name = match.name,
                             Rect = match.Rect,
