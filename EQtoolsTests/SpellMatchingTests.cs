@@ -507,7 +507,6 @@ namespace EQtoolsTests
             var guess = service.HandleBestGuessSpell(aegospell.cast_on_other, DateTime.Now, 0);
 
             Assert.IsNotNull(guess);
-            Assert.IsFalse(guess.MultipleMatchesFound);
         }
 
         [TestMethod]
@@ -526,7 +525,6 @@ namespace EQtoolsTests
             var guess = service.HandleBestGuessSpell("Jobob " + spell.cast_on_other, DateTime.Now, 0);
 
             Assert.IsNotNull(guess);
-            Assert.IsFalse(guess.MultipleMatchesFound);
         }
 
         [TestMethod]
@@ -545,7 +543,6 @@ namespace EQtoolsTests
             var guess = service.HandleBestGuessSpell("Jobob " + spell.cast_on_other, DateTime.Now, 0);
 
             Assert.IsNotNull(guess);
-            Assert.IsFalse(guess.MultipleMatchesFound);
         }
 
         [TestMethod]
@@ -564,7 +561,6 @@ namespace EQtoolsTests
             var guess = service.HandleBestGuessSpell("Jobob " + spell.cast_on_other, DateTime.Now, 0);
 
             Assert.IsNotNull(guess);
-            Assert.IsFalse(guess.MultipleMatchesFound);
         }
 
         [TestMethod]
@@ -583,7 +579,6 @@ namespace EQtoolsTests
             var guess = service.HandleBestGuessSpell(shissarspell.cast_on_other, DateTime.Now, 0);
 
             Assert.IsNotNull(guess);
-            Assert.IsFalse(guess.MultipleMatchesFound);
         }
 
         [TestMethod]
@@ -604,7 +599,6 @@ namespace EQtoolsTests
             var guess = spelllogparse.MatchSpell(line, DateTime.Now, 0);
 
             Assert.IsNotNull(guess);
-            Assert.IsFalse(guess.MultipleMatchesFound);
         }
 
         [TestMethod]
@@ -620,7 +614,6 @@ namespace EQtoolsTests
             var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(guess.Spell, PlayerClasses.Shaman, 60));
             Assert.AreEqual(6, spellduration.TotalMinutes);
             Assert.IsNotNull(guess);
-            Assert.IsFalse(guess.MultipleMatchesFound);
         }
 
         [TestMethod]
@@ -698,7 +691,6 @@ namespace EQtoolsTests
             Assert.AreEqual(15, spellduration.TotalMinutes);
             Assert.IsNotNull(guess);
             Assert.AreEqual(guess.Spell.name, spellname);
-            Assert.IsFalse(guess.MultipleMatchesFound);
         }
 
         [TestMethod]
@@ -719,7 +711,6 @@ namespace EQtoolsTests
             Assert.AreEqual(6, spellduration.TotalMinutes);
             Assert.IsNotNull(guess);
             Assert.AreEqual(guess.Spell.name, spellname);
-            Assert.IsFalse(guess.MultipleMatchesFound);
         }
 
         [TestMethod]
@@ -740,7 +731,6 @@ namespace EQtoolsTests
             Assert.AreEqual(5, spellduration.TotalMinutes);
             Assert.IsNotNull(guess);
             Assert.AreEqual(guess.Spell.name, spellname);
-            Assert.IsFalse(guess.MultipleMatchesFound);
         }
 
         [TestMethod]
@@ -762,7 +752,6 @@ namespace EQtoolsTests
             Assert.IsNotNull(guess);
             Assert.AreEqual(guess.Spell.name, spellname);
             Assert.AreEqual(guess.TargetName, "an Jobober");
-            Assert.IsFalse(guess.MultipleMatchesFound);
         }
 
         [TestMethod]
@@ -784,7 +773,6 @@ namespace EQtoolsTests
             Assert.IsNotNull(guess);
             Assert.AreEqual(guess.Spell.name, spellname);
             Assert.AreEqual(guess.TargetName, "an Jobober");
-            Assert.IsFalse(guess.MultipleMatchesFound);
         }
 
         [TestMethod]
@@ -806,7 +794,6 @@ namespace EQtoolsTests
             Assert.IsNotNull(guess);
             Assert.AreEqual(guess.Spell.name, spellname);
             Assert.AreEqual(guess.TargetName, "an Jobober rager");
-            Assert.IsFalse(guess.MultipleMatchesFound);
         }
 
         [TestMethod]
@@ -828,7 +815,6 @@ namespace EQtoolsTests
             Assert.IsNotNull(guess);
             Assert.AreEqual(guess.Spell.name, spellname);
             Assert.AreEqual(guess.TargetName, "an Jobober rager");
-            Assert.IsFalse(guess.MultipleMatchesFound);
         }
 
         [TestMethod]
@@ -847,7 +833,6 @@ namespace EQtoolsTests
             var guess = spelllogparse.MatchSpell(line, DateTime.Now, 0);
             var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(guess.Spell, PlayerClasses.Cleric, 54));
             Assert.IsNotNull(guess);
-            Assert.IsFalse(guess.MultipleMatchesFound);
         }
 
         [TestMethod]
@@ -866,7 +851,6 @@ namespace EQtoolsTests
             var guess = spelllogparse.MatchSpell(line, DateTime.Now, 0);
             var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(guess.Spell, PlayerClasses.Necromancer, 60));
             Assert.IsNotNull(guess);
-            Assert.IsFalse(guess.MultipleMatchesFound);
         }
 
         [TestMethod]
@@ -886,7 +870,6 @@ namespace EQtoolsTests
             var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(guess.Spell, PlayerClasses.Necromancer, 60));
             Assert.IsNotNull(guess);
             Assert.AreEqual("Gkrean Prophet of Tallon", guess.TargetName);
-            Assert.IsFalse(guess.MultipleMatchesFound);
         }
 
         [TestMethod]
@@ -905,7 +888,6 @@ namespace EQtoolsTests
             var guess = spelllogparse.MatchSpell(line, DateTime.Now, 0);
             var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(guess.Spell, PlayerClasses.Necromancer, 60));
             Assert.IsNotNull(guess);
-            Assert.IsFalse(guess.MultipleMatchesFound);
         }
 
         [TestMethod]
@@ -942,7 +924,6 @@ namespace EQtoolsTests
             var guess = spelllogparse.MatchSpell(line, DateTime.Now, 0);
             var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(guess.Spell, PlayerClasses.Shaman, 60));
             Assert.IsNotNull(guess);
-            Assert.IsFalse(guess.MultipleMatchesFound);
         }
 
         [TestMethod]

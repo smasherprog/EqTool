@@ -235,11 +235,7 @@
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Random Rolls" ToolTip="Show Random rolls in Triggers window" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
                         <CheckBox IsChecked="{Binding ShowRandomRolls}" Click="SaveAlwaysOntopCheckBoxSettings" ></CheckBox>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Guess Spells"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
-                        <CheckBox x:Name="BestGuessSpells" Click="GuessSpells_Click" />
-                    </StackPanel>
+                    </StackPanel> 
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Spells Me only"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
                         <CheckBox x:Name="YouSpellsOnly" Click="YouSpells_Click" />

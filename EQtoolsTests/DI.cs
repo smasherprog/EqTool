@@ -21,7 +21,6 @@ namespace EQtoolsTests
                 {
                     DefaultEqDirectory = string.Empty,
                     EqLogDirectory = string.Empty,
-                    BestGuessSpells = true,
                     YouOnlySpells = false,
                     Players = new System.Collections.Generic.List<EQTool.Models.PlayerInfo>(),
                     DpsWindowState = new EQTool.Models.WindowState

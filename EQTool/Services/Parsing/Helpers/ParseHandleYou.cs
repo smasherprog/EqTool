@@ -83,8 +83,7 @@ namespace EQTool.Services.Parsing.Helpers
                     TimeStamp = timestamp,
                     Line = message,
                     CastByYou = false,
-                    LineCounter = lineCounter,
-                    MultipleMatchesFound = false
+                    LineCounter = lineCounter
                 };
             }
 
@@ -126,8 +125,7 @@ namespace EQTool.Services.Parsing.Helpers
                     TimeStamp = timestamp,
                     Line = message,
                     CastByYou = false,
-                    LineCounter = lineCounter,
-                    MultipleMatchesFound = false
+                    LineCounter = lineCounter
                 };
             }
 
@@ -149,8 +147,7 @@ namespace EQTool.Services.Parsing.Helpers
                 CastByYou = true,
                 TimeStamp = timestamp,
                 Line = message,
-                LineCounter = lineCounter,
-                MultipleMatchesFound = false
+                LineCounter = lineCounter
             };
         }
 
@@ -166,8 +163,7 @@ namespace EQTool.Services.Parsing.Helpers
                 CastByYou = true,
                 TimeStamp = timestamp,
                 Line = message,
-                LineCounter = lineCounter,
-                MultipleMatchesFound = false
+                LineCounter = lineCounter
             };
         }
     }

@@ -182,7 +182,6 @@ namespace EQTool.Services.Handlers
                     Rect = match.Spell.Rect,
                     Icon = match.Spell.SpellIcon,
                     Classes = match.Spell.Classes,
-                    GuessedSpell = match.MultipleMatchesFound,
                     TotalDuration = spellduration,
                     TotalRemainingDuration = spellduration
                 };

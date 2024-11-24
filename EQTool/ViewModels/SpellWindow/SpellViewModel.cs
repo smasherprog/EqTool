@@ -8,26 +8,7 @@ namespace EQTool.ViewModels.SpellWindow
 {
     public class SpellViewModel : TimerViewModel
     {
-        public bool GuessedSpell { get; set; }
-
         public Dictionary<PlayerClasses, int> Classes { get; set; } = new Dictionary<PlayerClasses, int>();
-
-        private bool _HideGuesses = true;
-
-        public bool HideGuesses
-        {
-            get => _HideGuesses;
-            set
-            {
-                if (_HideGuesses == value)
-                {
-                    return;
-                }
-                _HideGuesses = value;
-                OnPropertyChanged();
-                OnPropertyChanged(nameof(ColumnVisibility));
-            }
-        }
 
         private bool _ShowOnlyYou = false;
         public bool ShowOnlyYou
@@ -68,10 +49,6 @@ namespace EQTool.ViewModels.SpellWindow
                 if (GroupName == CustomTimer.CustomerTime || _SpellType == SpellTypes.Detrimental)
                 {
                     return Visibility.Visible;
-                }
-                else if (_HideGuesses && GuessedSpell)
-                {
-                    return Visibility.Collapsed;
                 }
                 else if (_HideClasses)
                 {

@@ -43,7 +43,6 @@ namespace EQTool.Services.Parsing
             {
                 return new SpellCastEvent
                 {
-                    MultipleMatchesFound = false,
                     Spell = new Spell
                     {
                         buffduration = HealSpell.buffduration,
@@ -116,7 +115,7 @@ namespace EQTool.Services.Parsing
                 }
 
                 var spell = parseHandleYouCasting.HandleYourSpell(line, timestamp, lineCounter);
-                return spell ?? (settings.BestGuessSpells ? parseSpellGuess.HandleBestGuessSpell(line, timestamp, lineCounter) : null);
+                return spell ?? parseSpellGuess.HandleBestGuessSpell(line, timestamp, lineCounter);
             }
 
             if (activePlayer?.UserCastingSpell != null)
@@ -131,7 +130,7 @@ namespace EQTool.Services.Parsing
                 }
             }
 
-            return settings.BestGuessSpells ? parseSpellGuess.HandleBestGuessSpell(line, timestamp, lineCounter) : null;
+            return parseSpellGuess.HandleBestGuessSpell(line, timestamp, lineCounter);
         }
     }
 }

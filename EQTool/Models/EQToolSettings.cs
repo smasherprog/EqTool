@@ -122,7 +122,6 @@ namespace EQTool.Models
 
         public List<PlayerInfo> Players { get; set; } = new List<PlayerInfo>();
 
-        public bool BestGuessSpells { get; set; }
         public bool YouOnlySpells { get; set; }
         public bool ShowRandomRolls { get; set; }
         public bool? _RaidModeDetection;

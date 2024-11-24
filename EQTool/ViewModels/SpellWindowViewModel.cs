@@ -148,7 +148,6 @@ namespace EQTool.ViewModels
                 }
                 foreach (var item in SpellList.Where(a => a.SpellViewModelType == SpellViewModelType.Spell).Cast<SpellViewModel>().ToList())
                 {
-                    item.HideGuesses = !settings.BestGuessSpells;
                     item.ShowOnlyYou = settings.YouOnlySpells;
                     if (RaidModeEnabled && player.PlayerClass.HasValue)
                     {
@@ -291,7 +290,6 @@ namespace EQTool.ViewModels
                             Rect = match.Rect,
                             Icon = match.SpellIcon,
                             Classes = match.Classes,
-                            GuessedSpell = false,
                             TotalDuration = spellduration,
                             TotalRemainingDuration = TimeSpan.FromSeconds(savedspellduration)
                         };

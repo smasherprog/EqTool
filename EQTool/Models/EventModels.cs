@@ -201,8 +201,6 @@ namespace EQTool.Models
         public bool CastByYou { get; set; }
 
         public Spell Spell { get; set; }
-
-        public bool MultipleMatchesFound { get; set; }
     }
 
     public class YouZonedEvent : BaseLogParseEvent

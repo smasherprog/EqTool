@@ -308,7 +308,13 @@ namespace EQTool.Models
                 Debug.WriteLine($"AddCustomTrigger {p.Name}");
                 appDispatcher.DispatchUI(() =>
                 {
-                    spellWindowViewModel.TryAdd(Create(p));
+                    var s = Create(p);
+                    var existingtimer = spellWindowViewModel.SpellList.FirstOrDefault(x => x.Name == s.Name && x.GroupName == s.GroupName);
+                    if (existingtimer != null)
+                    {
+                        _ = spellWindowViewModel.SpellList.Remove(existingtimer);
+                    }
+                    spellWindowViewModel.TryAdd(s);
                 });
             }
         }
@@ -343,7 +349,12 @@ namespace EQTool.Models
                 Debug.WriteLine($"AddCustomTrigger {p.TargetName}");
                 appDispatcher.DispatchUI(() =>
                 {
-                    spellWindowViewModel.TryAdd(Create(p));
+                    var s = Create(p);
+                    var existingtimer = spellWindowViewModel.SpellList.FirstOrDefault(x => x.Name == s.Name && x.GroupName == s.GroupName);
+                    if (existingtimer != null)
+                    {
+                        _ = spellWindowViewModel.SpellList.Remove(existingtimer);
+                    }
                 });
             }
         }

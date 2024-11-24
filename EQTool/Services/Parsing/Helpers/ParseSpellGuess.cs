@@ -35,7 +35,6 @@ namespace EQTool.Services.Parsing
                 {
                     Spell = foundspell,
                     TargetName = EQSpells.SpaceYou,
-                    MultipleMatchesFound = multiplematches,
                     TimeStamp = timestamp,
                     Line = message,
                     CastByYou = false,
@@ -53,12 +52,10 @@ namespace EQTool.Services.Parsing
                     var foundspell = SpellDurations.MatchClosestLevelToSpell(foundspells, activePlayer.Player?.PlayerClass, activePlayer.Player?.Level);
                     var targetname = message.Replace(foundspell.cast_on_other, string.Empty).Trim();
                     Debug.WriteLine($"Other Spell: {foundspell.name} Message: {spellmessage}");
-                    var multiplematches = foundspell.Classes.All(a => a.Value == 255) && foundspells.Count > 1;
                     return new SpellCastEvent
                     {
                         Spell = foundspell,
                         TargetName = targetname,
-                        MultipleMatchesFound = multiplematches,
                         TimeStamp = timestamp,
                         Line = message
                     };
@@ -121,7 +118,6 @@ namespace EQTool.Services.Parsing
                 {
                     Spell = foundspell,
                     TargetName = targetname,
-                    MultipleMatchesFound = multiplematches,
                     TimeStamp = timestamp,
                     Line = spellmessage
                 };
