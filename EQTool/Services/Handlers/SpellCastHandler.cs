@@ -146,13 +146,18 @@ namespace EQTool.Services.Handlers
                 spellWindowViewModel.TryAdd(vm);
             }
 
+            var grpname = match.TargetName;
+            if (MasterNPCList.NPCs.Contains(grpname))
+            {
+                grpname = " " + grpname;
+            }
             var needscount = SpellsThatNeedCounts.Contains(spellname);
             if (needscount)
             {
                 var vm = new CounterViewModel
                 {
                     UpdatedDateTime = DateTime.Now,
-                    GroupName = match.TargetName,
+                    GroupName = grpname,
                     Name = spellname,
                     Rect = match.Spell.Rect,
                     Icon = match.Spell.SpellIcon,
@@ -169,11 +174,7 @@ namespace EQTool.Services.Handlers
                     spellduration = TimeSpan.FromMinutes(6);
                 }
 
-                var grpname = match.TargetName;
-                if (MasterNPCList.NPCs.Contains(grpname))
-                {
-                    grpname = " " + grpname;
-                }
+
                 var vm = new SpellViewModel
                 {
                     UpdatedDateTime = DateTime.Now,
