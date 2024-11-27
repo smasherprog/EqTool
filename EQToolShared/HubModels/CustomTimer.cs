@@ -7,7 +7,6 @@ namespace EQToolShared.HubModels
         public string Name { get; set; } 
         public int DurationInSeconds { get; set; }
         public string SpellNameIcon { get; set; } 
-        public string TargetName { get; set; }
     }
 
     public class SignalrCustomTimer : HubCustomTimer

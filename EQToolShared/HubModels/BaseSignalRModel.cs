@@ -9,7 +9,7 @@ namespace EQToolShared.HubModels
         public MapLocationSharing MapLocationSharing { get; set; }
         public Servers Server { get; set; } 
         public string Zone { get; set; }
-        public string GroupName
+        public virtual string GroupName
         {
             get
             {
