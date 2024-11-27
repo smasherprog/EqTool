@@ -159,6 +159,42 @@ namespace EQtoolsTests
         }
 
         [TestMethod]
+        public void TestBoonofTheGarouOther()
+        {
+            var spellname = "Boon of the Garou";
+            var spell = spells.AllSpells.FirstOrDefault(a => a.name == spellname);
+            var line = $"jobob {spell.cast_on_other}";
+            player.Player.Level = 54;
+            player.Player.PlayerClass = PlayerClasses.Cleric;
+            logParser.Push(line, DateTime.Now);
+            var spellvm = spellWindowViewModel.SpellList.FirstOrDefault(a=> a.Name == spellname && a.SpellViewModelType == SpellViewModelType.Spell) as SpellViewModel;
+            Assert.IsNotNull(spellvm);
+            Assert.AreEqual(spellvm.Name, spellname); 
+        }
+
+        [TestMethod]
+        public void TestBoonofTheGarouYouCast()
+        {
+            var spellname = "Boon of the Garou";
+            var spell = spells.AllSpells.FirstOrDefault(a => a.name == spellname);
+            var line = $"{YouBeginCasting} {spellname}";
+            player.Player.Level = 54;
+            player.Player.PlayerClass = PlayerClasses.Cleric;
+            logParser.Push(line, DateTime.Now);
+             
+            line = $"jobob {spell.cast_on_other}";
+            logParser.Push(line, DateTime.Now.AddMilliseconds(spell.casttime +200));
+
+            var spelltimer = spellWindowViewModel.SpellList.FirstOrDefault(a => a.Name == spellname && a.SpellViewModelType == SpellViewModelType.Timer) as TimerViewModel;
+            Assert.IsNotNull(spelltimer);
+            Assert.AreEqual(spelltimer.Name, spellname);
+
+            var spellvm = spellWindowViewModel.SpellList.FirstOrDefault(a => a.Name == spellname && a.SpellViewModelType == SpellViewModelType.Spell) as SpellViewModel;
+            Assert.IsNotNull(spellvm);
+            Assert.AreEqual(spellvm.Name, spellname);
+        } 
+
+        [TestMethod]
         public void TestManaSeive()
         {
             var line = "An ancient Frost guardian staggers in pain.";
