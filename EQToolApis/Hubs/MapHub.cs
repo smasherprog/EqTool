@@ -11,17 +11,7 @@ namespace EQToolApis.Hubs
         public static readonly ConcurrentDictionary<string, SignalrPlayer> connections = new ConcurrentDictionary<string, SignalrPlayer>();
 
         public async Task PlayerLocationEvent(SignalrPlayer playerLocation)
-        {
-            if ((DateTime.UtcNow - playerLocation.TimeStamp).TotalMinutes > 1)
-            {
-                if (connections.TryRemove(Context.ConnectionId, out var p))
-                {
-                    await Groups.RemoveFromGroupAsync(Context.ConnectionId, p.GroupName);
-                    await Clients.Group(p.GroupName).SendAsync("PlayerDisconnected", p);
-                    Debug.WriteLine($"{p.GroupName}, ReceivePlayerLeftZone {p.Name}, {p.Zone}");
-                }
-                return;
-            }
+        { 
             if (connections.TryGetValue(Context.ConnectionId, out var player))
             {
                 if (player.Zone != playerLocation.Zone || player.MapLocationSharing != playerLocation.MapLocationSharing)
@@ -29,8 +19,7 @@ namespace EQToolApis.Hubs
                     await Groups.RemoveFromGroupAsync(Context.ConnectionId, player.GroupName);
                     await Groups.AddToGroupAsync(Context.ConnectionId, playerLocation.GroupName);
                     player.Name = playerLocation.Name;
-                    player.GuildName = playerLocation.GuildName;
-                    player.PlayerClass = playerLocation.PlayerClass;
+                    player.GuildName = playerLocation.GuildName; 
                     player.MapLocationSharing = playerLocation.MapLocationSharing;
                     player.Server = playerLocation.Server;
                     player.Zone = playerLocation.Zone;
@@ -45,12 +34,7 @@ namespace EQToolApis.Hubs
 
             await Clients.Group(playerLocation.GroupName).SendAsync("PlayerLocationEvent", playerLocation);
             Debug.WriteLine($"{playerLocation.GroupName}, {playerLocation.Name}, {playerLocation.Zone}, {playerLocation.X}, {playerLocation.Y}, {playerLocation.Z}");
-        }
-
-        public async Task TriggerEvent(TriggerEvent playerLocation)
-        {
-            await Clients.Group(playerLocation.GroupName).SendAsync("TriggerEvent", playerLocation);
-        }
+        } 
 
         public async Task JoinServerGroup(Servers servers)
         {
@@ -68,6 +52,11 @@ namespace EQToolApis.Hubs
             }
 
             _ = base.OnDisconnectedAsync(exception);
+        }
+
+        public override Task OnConnectedAsync()
+        {
+            return base.OnConnectedAsync();
         }
     }
 }

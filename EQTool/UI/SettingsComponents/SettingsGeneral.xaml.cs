@@ -225,47 +225,51 @@ namespace EQTool.UI.SettingsComponents
             settings.YouOnlySpells = s.IsChecked ?? false;
             SaveConfig();
         }
-
+        private class CastTest
+        {
+            public Spell Spell { get; set; }
+            public string TargetName { get; set; }
+        }
         private void testspellsclicked(object sender, RoutedEventArgs e)
         {
-            var listofspells = new List<SpellCastEvent>
+            var listofspells = new List<CastTest>
             {
-                new SpellCastEvent { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Disease Cloud"), TargetName = "Joe"},
-                new SpellCastEvent { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Lesser Shielding"), TargetName = "Joe"},
-                new SpellCastEvent { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Shadow Compact"), TargetName = "Joe"},
-                new SpellCastEvent { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Heroic Bond"), TargetName = "Joe"},
-                new SpellCastEvent { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Improved Invis vs Undead"), TargetName = "Joe"},
-                new SpellCastEvent { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Grim Aura"), TargetName = "Joe"},
+                new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Disease Cloud"), TargetName = "Joe"},
+                new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Lesser Shielding"), TargetName = "Joe"},
+                new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Shadow Compact"), TargetName = "Joe"},
+                new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Heroic Bond"), TargetName = "Joe"},
+                new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Improved Invis vs Undead"), TargetName = "Joe"},
+                new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Grim Aura"), TargetName = "Joe"},
 
-                new SpellCastEvent { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Heroic Bond"), TargetName = EQSpells.SpaceYou},
+                new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Heroic Bond"), TargetName = EQSpells.SpaceYou},
 
-                new SpellCastEvent { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Heroic Bond"), TargetName = "Aasgard"},
-                new SpellCastEvent { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Chloroplast"), TargetName = "Aasgard"},
-                new SpellCastEvent { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Shield of Words"), TargetName = "Aasgard"},
-                new SpellCastEvent { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Boon of the Clear Mind"), TargetName = "Aasgard"},
-                new SpellCastEvent { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Gift of Brilliance"), TargetName = "Aasgard"},
-                new SpellCastEvent { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Mana Sieve"), TargetName = "a bad guy"},
-                new SpellCastEvent { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Mana Sieve"), TargetName = "a bad guy"},
-                new SpellCastEvent { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Harvest"), TargetName = EQSpells.SpaceYou},
-                new SpellCastEvent { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Quivering Veil of Xarn"), TargetName = EQSpells.SpaceYou},
-                new SpellCastEvent { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "LowerElement"), TargetName = "Tunare"},
-                new SpellCastEvent { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "LowerElement"), TargetName = "Tunare"},
-                new SpellCastEvent { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "LowerElement"), TargetName = "Tunare"},
-                new SpellCastEvent { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "LowerElement"), TargetName = "Tunare"},
-                new SpellCastEvent { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "LowerElement"), TargetName = "Tunare"},
-                new SpellCastEvent { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "LowerElement"), TargetName = "Tunare"},
+                new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Heroic Bond"), TargetName = "Aasgard"},
+                new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Chloroplast"), TargetName = "Aasgard"},
+                new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Shield of Words"), TargetName = "Aasgard"},
+                new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Boon of the Clear Mind"), TargetName = "Aasgard"},
+                new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Gift of Brilliance"), TargetName = "Aasgard"},
+                new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Mana Sieve"), TargetName = "a bad guy"},
+                new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Mana Sieve"), TargetName = "a bad guy"},
+                new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Harvest"), TargetName = EQSpells.SpaceYou},
+                new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Quivering Veil of Xarn"), TargetName = EQSpells.SpaceYou},
+                new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "LowerElement"), TargetName = "Tunare"},
+                new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "LowerElement"), TargetName = "Tunare"},
+                new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "LowerElement"), TargetName = "Tunare"},
+                new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "LowerElement"), TargetName = "Tunare"},
+                new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "LowerElement"), TargetName = "Tunare"},
+                new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "LowerElement"), TargetName = "Tunare"},
 
-                new SpellCastEvent { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Concussion"), TargetName = "Tunare"},
-                new SpellCastEvent { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Concussion"), TargetName = "Tunare"},
+                new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Concussion"), TargetName = "Tunare"},
+                new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Concussion"), TargetName = "Tunare"},
 
-                new SpellCastEvent { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Flame Lick"), TargetName = "Tunare"},
-                new SpellCastEvent { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Flame Lick"), TargetName = "Tunare"},
+                new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Flame Lick"), TargetName = "Tunare"},
+                new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Flame Lick"), TargetName = "Tunare"},
 
-                new SpellCastEvent { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Jolt"), TargetName = "Tunare"},
-                new SpellCastEvent { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Jolt"), TargetName = "Tunare"},
+                new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Jolt"), TargetName = "Tunare"},
+                new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Jolt"), TargetName = "Tunare"},
 
-                new SpellCastEvent { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Cinder Jolt"), TargetName = "Tunare"},
-                new SpellCastEvent { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Cinder Jolt"), TargetName = "Tunare"}
+                new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Cinder Jolt"), TargetName = "Tunare"},
+                new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Cinder Jolt"), TargetName = "Tunare"}
             };
 
             foreach (var item in listofspells)
@@ -602,8 +606,7 @@ namespace EQTool.UI.SettingsComponents
                     {
                         GuildName = "The Drift",
                         MapLocationSharing = EQToolShared.Map.MapLocationSharing.Everyone,
-                        Name = item,
-                        PlayerClass = PlayerClasses.Necromancer,
+                        Name = item, 
                         Server = Servers.Green,
                         Zone = player.Zone,
                         X = map.AABB.Center.X + map.Offset.X + r.Next(-movementoffset, movementoffset),
@@ -626,8 +629,7 @@ namespace EQTool.UI.SettingsComponents
                             {
                                 GuildName = "The Drift",
                                 MapLocationSharing = EQToolShared.Map.MapLocationSharing.Everyone,
-                                Name = item.Name,
-                                PlayerClass = PlayerClasses.Necromancer,
+                                Name = item.Name, 
                                 Server = Servers.Green,
                                 Zone = player.Zone,
                                 X = item.X + r.Next(-movementoffset, movementoffset),

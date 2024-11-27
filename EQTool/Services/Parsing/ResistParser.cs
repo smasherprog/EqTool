@@ -1,6 +1,4 @@
 ﻿using EQTool.Models;
-using EQTool.ViewModels.SpellWindow;
-using EQTool.ViewModels;
 using System;
 using System.Linq;
 

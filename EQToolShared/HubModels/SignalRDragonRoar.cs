@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using EQToolShared.Enums;
+using EQToolShared.Map;
 
 namespace EQToolShared.HubModels
 {
-    public class SignalRDragonRoar
+    public class SignalRDragonRoar : BaseSignalRModel
     {
-        public string SpellName { get; set; } 
-        public double X { get; set; }
-        public double Y { get; set; }
-        public double Z { get; set; }
+        public string SpellName { get; set; }  
     }
 }

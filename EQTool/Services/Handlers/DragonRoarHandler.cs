@@ -1,7 +1,6 @@
 ﻿using EQTool.Models;
 using EQTool.ViewModels;
 using EQTool.ViewModels.SpellWindow;
-using EQToolShared;
 using System;
 using System.Windows.Media;
 

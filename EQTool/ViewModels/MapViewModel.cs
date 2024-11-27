@@ -62,8 +62,8 @@ namespace EQTool.ViewModels
 
     public class PlayerLocation : PlayerLocationCircle
     {
-        public SignalrPlayer Player;
-
+        public SignalrPlayer Player { get; set; }
+        public DateTime LastSeen { get; set; }
     }
 
     public class MapViewModel : INotifyPropertyChanged
@@ -459,7 +459,7 @@ namespace EQTool.ViewModels
             var playerstoremove = new List<PlayerLocation>();
             foreach (var item in Players.Where(a => a.Player != null))
             {
-                if ((DateTime.UtcNow - item.Player.TimeStamp).TotalMinutes > 1)
+                if ((DateTime.UtcNow - item.LastSeen).TotalMinutes > 1)
                 {
                     playerstoremove.Add(item);
                 }
@@ -799,12 +799,12 @@ namespace EQTool.ViewModels
         }
 
         public void PlayerLocationEvent(SignalrPlayer e)
-        {
-            e.TimeStamp = DateTime.UtcNow;
+        { 
             var p = Players.FirstOrDefault(a => a.Player?.Name == e.Name);
             if (p == null)
             {
                 var playerloc = AddPlayerToCanvas(e);
+                playerloc.LastSeen = DateTime.Now;
                 Players.Add(playerloc);
             }
             else
@@ -820,6 +820,7 @@ namespace EQTool.ViewModels
                     Transform = Transform
                 });
                 p.Player = e;
+                p.LastSeen = DateTime.Now;
             }
         }
 

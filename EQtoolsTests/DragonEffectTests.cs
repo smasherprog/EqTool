@@ -1,7 +1,6 @@
 ﻿using Autofac;
 using EQTool.Models;
 using EQTool.Services;
-using EQTool.Services.Parsing;
 using EQTool.ViewModels;
 using EQTool.ViewModels.SpellWindow;
 using EQToolShared;

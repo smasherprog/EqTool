@@ -1,8 +1,5 @@
 ﻿using EQTool.Models;
 using EQTool.ViewModels;
-using EQTool.ViewModels.SpellWindow;
-using System;
-using System.Collections.Generic;
 using System.Windows.Media;
 
 namespace EQTool.Services.Handlers

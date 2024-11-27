@@ -65,11 +65,7 @@ namespace EQTool.Models
             _ = connection.On("AddCustomTrigger", (SignalrCustomTimer p) =>
             {
                 AddCustomTrigger(p);
-            });
-            _ = connection.On("TriggerEvent", (TriggerEvent p) =>
-            {
-                AddCustomTrigger(p);
-            });
+            }); 
             connection.Closed += async (error) =>
               {
                   await Task.Delay(new Random().Next(0, 5) * 1000);
@@ -254,6 +250,7 @@ namespace EQTool.Models
                 }
             }
         }
+
         public void PushPlayerDisconnected(SignalrPlayer p)
         {
             if (!(p.Server == activePlayer?.Player?.Server && p.Name == activePlayer?.Player?.Name))
@@ -276,9 +273,7 @@ namespace EQTool.Models
                 InvokeAsync("DragonRoarEvent", new SignalRDragonRoar
                 {
                     SpellName = e.Spell.name,
-                    X = LastPlayer.X,
-                    Y = LastPlayer.Y,
-                    Z = LastPlayer.Z
+                     
                 });
             }
         }
@@ -316,31 +311,7 @@ namespace EQTool.Models
                 UpdatedDateTime = DateTime.Now
             };
         }
-
-        public void AddCustomTrigger(TriggerEvent p)
-        {
-            if (LastPlayer == null || activePlayer?.Player == null || p.Server != activePlayer.Player.Server || p.Zone != activePlayer.Player.Zone || !activePlayer.Player.SpellDebuffShare)
-            {
-                return;
-            }
-            var loc1 = new Point3D(LastPlayer.X, LastPlayer.Y, LastPlayer.Z);
-            var loc2 = new Point3D(p.X, p.Y, p.Z);
-            var distanceSquared = (loc1 - loc2).LengthSquared;
-            if (distanceSquared <= 500)
-            {
-                Debug.WriteLine($"AddCustomTrigger {p.TargetName}");
-                appDispatcher.DispatchUI(() =>
-                {
-                    var s = Create(p);
-                    var existingtimer = spellWindowViewModel.SpellList.FirstOrDefault(x => x.Name == s.Name && x.GroupName == s.GroupName);
-                    if (existingtimer != null)
-                    {
-                        _ = spellWindowViewModel.SpellList.Remove(existingtimer);
-                    }
-                });
-            }
-        }
-
+         
         public void PushPlayerLocationEvent(SignalrPlayer p)
         {
             if (!(p.Server == activePlayer?.Player?.Server && p.Name == activePlayer?.Player?.Name))
@@ -386,8 +357,7 @@ namespace EQTool.Models
                 LastPlayer = new SignalrPlayer
                 {
                     Zone = activePlayer.Player.Zone,
-                    GuildName = activePlayer.Player.GuildName,
-                    PlayerClass = activePlayer.Player.PlayerClass,
+                    GuildName = activePlayer.Player.GuildName, 
                     Server = activePlayer.Player.Server.Value,
                     MapLocationSharing = activePlayer.Player.MapLocationSharing,
                     Name = activePlayer.Player.Name,

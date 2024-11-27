@@ -73,9 +73,10 @@
     <Compile Include="Enums\SpellTypes.cs" />
     <Compile Include="Enums\PlayerClasses.cs" />
     <Compile Include="Enums\Servers.cs" />
+    <Compile Include="HubModels\BaseSignalRModel.cs" />
     <Compile Include="HubModels\CustomTimer.cs" />
-    <Compile Include="HubModels\PlayerLocation.cs" />
     <Compile Include="HubModels\SignalRDragonRoar.cs" />
+    <Compile Include="HubModels\NParseLocation.cs" />
     <Compile Include="HubModels\SignalrPlayer.cs" />
     <Compile Include="MasterItemList.cs" />
     <Compile Include="MasterNPCList.cs" />
