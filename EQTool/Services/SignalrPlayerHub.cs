@@ -101,7 +101,7 @@ namespace EQTool.Models
 
             this.logEvents.PlayerLocationEvent += LogParser_PlayerLocationEvent;
             this.logEvents.CampEvent += LogParser_CampEvent;
-            this.logEvents.SpellCastEvent += LogParser_StartCastingEvent;
+            this.logEvents.DragonRoarEvent += LogEvents_DragonRoarEvent;
             timer = new System.Timers.Timer();
             timer.Elapsed += Timer_Elapsed;
             timer.Interval = 1000 * 10;
@@ -265,39 +265,21 @@ namespace EQTool.Models
                 });
             }
         }
-        private void LogParser_StartCastingEvent(object sender, SpellCastEvent e)
-        {
-            if (e.CastByYou &&
-                LastPlayer != null &&
-                !string.IsNullOrWhiteSpace(activePlayer?.Player?.Zone) &&
-                !string.IsNullOrWhiteSpace(activePlayer?.Player?.Name) &&
-                activePlayer.Player.Server.HasValue &&
-                (e.Spell.type == SpellTypes.Detrimental || e.Spell.type == SpellTypes.Other)
-             )
-            {
-                var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(e.Spell, activePlayer.Player?.PlayerClass, activePlayer.Player?.Level));
-                var isnpc = MasterNPCList.NPCs.Contains(e.TargetName);
-                if (isnpc)
-                {
-                    var s = new TriggerEvent
-                    {
-                        Classes = e.Spell.Classes,
-                        DurationInSeconds = (int)spellduration.TotalSeconds,
-                        Zone = activePlayer.Player?.Zone,
-                        GuildName = activePlayer.Player.GuildName,
-                        MapLocationSharing = activePlayer.Player.MapLocationSharing,
-                        Name = e.Spell.name,
-                        Server = activePlayer.Player.Server.Value,
-                        SpellNameIcon = e.Spell.name,
-                        SpellType = e.Spell.type,
-                        TargetName = e.TargetName,
-                        X = LastPlayer.X,
-                        Y = LastPlayer.Y,
-                        Z = LastPlayer.Z
-                    };
 
-                    InvokeAsync("TriggerEvent", s);
-                }
+        private void LogEvents_DragonRoarEvent(object sender, DragonRoarEvent e)
+        {
+            if (!string.IsNullOrWhiteSpace(activePlayer?.Player?.Zone) &&
+                activePlayer.Player.SpellDebuffShare && 
+                LastPlayer.X != 0 && LastPlayer.Y != 0 && LastPlayer.Z != 0 &&
+                activePlayer.Player.Server.HasValue)
+            {
+                InvokeAsync("DragonRoarEvent", new SignalRDragonRoar
+                {
+                    SpellName = e.Spell.name,
+                    X = LastPlayer.X,
+                    Y = LastPlayer.Y,
+                    Z = LastPlayer.Z
+                });
             }
         }
 

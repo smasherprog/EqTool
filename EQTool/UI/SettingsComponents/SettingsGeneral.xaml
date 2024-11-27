@@ -235,7 +235,7 @@
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Random Rolls" ToolTip="Show Random rolls in Triggers window" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
                         <CheckBox IsChecked="{Binding ShowRandomRolls}" Click="SaveAlwaysOntopCheckBoxSettings" ></CheckBox>
-                    </StackPanel> 
+                    </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Spells Me only"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
                         <CheckBox x:Name="YouSpellsOnly" Click="YouSpells_Click" />
@@ -275,12 +275,19 @@
                 </StackPanel>
             </StackPanel>
         </TabItem>
-        <TabItem Header="Debug" Name="DebugTab">
+        <TabItem Header="Experimental">
             <StackPanel Orientation="Vertical" Margin="5, 5, 5, 5" HorizontalAlignment="Stretch">
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Debuff Sharing"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
+                    <TextBlock Text="Timer Sharing"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
                     <CheckBox IsChecked="{Binding ActivePlayer.Player.SpellDebuffShare}" Click="Savesettings" MinWidth="75"></CheckBox>
                 </StackPanel>
+                <DockPanel>
+                    <TextBlock TextWrapping="Wrap" Text="When this is checked, timers will be shared with those around you for detrimental spells. So, if you slow a mob, anyone within range will also see the slow timer. Same for dragon effects!" />
+                 </DockPanel>
+            </StackPanel>
+        </TabItem>
+        <TabItem Header="Debug">
+            <StackPanel Orientation="Vertical" Margin="5, 5, 5, 5" HorizontalAlignment="Stretch">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Random Roll"  VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
                     <Button Click="testRandomRolls" MinWidth="100">Test Random Rolls</Button>

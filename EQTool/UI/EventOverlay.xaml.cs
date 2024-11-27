@@ -201,15 +201,9 @@ namespace EQTool.UI
                 ChildrenInRow = new List<FrameworkElement>(),
                 TargetName = targetname,
                 ActiveAnimations = 1,
-                RowDefinition = new RowDefinition { MaxHeight = 30 }
-                //CHTimer = new System.Timers.Timer(1000)
+                RowDefinition = new RowDefinition { MaxHeight = 30 } 
             };
-
-            //chaindata.CHTimer.Elapsed += (a, b) =>
-            //{
-
-            //};
-            //chaindata.CHTimer.Enabled = true;
+             
             chaindata.Canvas.IsHitTestVisible = false;
             chaindata.Canvas.Background = Brushes.Transparent;
             var target = new TextBlock
