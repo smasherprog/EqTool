@@ -232,13 +232,13 @@ namespace EQTool.Models
             }
         }
 
-        private bool _SpellDebuffShare;
-        public bool SpellDebuffShare
+        private bool _ShareTimers;
+        public bool ShareTimers
         {
-            get => _SpellDebuffShare;
+            get => _ShareTimers;
             set
             {
-                _SpellDebuffShare = value;
+                _ShareTimers = value;
                 OnPropertyChanged();
             }
         }

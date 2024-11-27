@@ -62,7 +62,7 @@ namespace EQTool.ViewModels
 
     public class PlayerLocation : PlayerLocationCircle
     {
-        public SignalrPlayer Player { get; set; }
+        public SignalrPlayerV2 Player { get; set; }
         public DateTime LastSeen { get; set; }
     }
 
@@ -308,7 +308,7 @@ namespace EQTool.ViewModels
             }
         }
 
-        private PlayerLocation AddPlayerToCanvas(SignalrPlayer signalrPlayer)
+        private PlayerLocation AddPlayerToCanvas(SignalrPlayerV2 signalrPlayer)
         {
             var player = MapViewModelService.AddPlayerToCanvas(new AddPlayerToCanvasData
             {
@@ -798,7 +798,7 @@ namespace EQTool.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
 
-        public void PlayerLocationEvent(SignalrPlayer e)
+        public void PlayerLocationEvent(SignalrPlayerV2 e)
         { 
             var p = Players.FirstOrDefault(a => a.Player?.Name == e.Name);
             if (p == null)
@@ -824,7 +824,7 @@ namespace EQTool.ViewModels
             }
         }
 
-        public void PlayerDisconnected(SignalrPlayer e)
+        public void PlayerDisconnected(SignalrPlayerV2 e)
         {
             var p = Players.FirstOrDefault(a => a.Player.Name == e.Name);
             if (p != null)

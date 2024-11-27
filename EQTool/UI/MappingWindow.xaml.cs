@@ -61,12 +61,12 @@ namespace EQTool.UI
             //   this.SetCenerMap();
         }
 
-        private void SignalrPlayerHub_PlayerDisconnected(object sender, SignalrPlayer e)
+        private void SignalrPlayerHub_PlayerDisconnected(object sender, SignalrPlayerV2 e)
         {
             mapViewModel.PlayerDisconnected(e);
         }
 
-        private void SignalrPlayerHub_PlayerLocationEvent(object sender, SignalrPlayer e)
+        private void SignalrPlayerHub_PlayerLocationEvent(object sender, SignalrPlayerV2 e)
         {
             mapViewModel.PlayerLocationEvent(e);
         }

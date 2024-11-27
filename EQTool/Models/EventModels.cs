@@ -206,8 +206,14 @@ namespace EQTool.Models
     }
     public class DragonRoarEvent : BaseLogParseEvent
     {
-        public Spell Spell { get; set; }
+        public Spell Spell { get; set; } 
     }
+
+    public class DragonRoarRemoteEvent
+    {
+        public string SpellName { get; set; } 
+    }
+
     public class SpellWornOffSelfEvent : BaseLogParseEvent
     {
         public List<string> SpellNames { get; set; }

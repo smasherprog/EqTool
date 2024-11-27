@@ -6,14 +6,14 @@ namespace EQToolShared.HubModels
     public abstract class BaseSignalRModel
     {
         public string GuildName { get; set; } 
-        public MapLocationSharing MapLocationSharing { get; set; }
+        public MapLocationSharing Sharing { get; set; }
         public Servers Server { get; set; } 
         public string Zone { get; set; }
-        public virtual string GroupName
+        public string GroupName
         {
             get
             {
-                if (MapLocationSharing == MapLocationSharing.GuildOnly)
+                if (Sharing == MapLocationSharing.GuildOnly)
                 {
                     if (!string.IsNullOrWhiteSpace(GuildName))
                     { 

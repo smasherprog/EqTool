@@ -236,6 +236,12 @@ namespace EQTool.Services
         public void Handle(DragonRoarEvent e)
         {
             DragonRoarEvent?.Invoke(this, e);
+        }
+
+        public event EventHandler<DragonRoarRemoteEvent> DragonRoarRemoteEvent;
+        public void Handle(DragonRoarRemoteEvent e)
+        {
+            DragonRoarRemoteEvent?.Invoke(this, e);
         } 
     }
 }

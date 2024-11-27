@@ -16,22 +16,7 @@ namespace EQToolShared.Map
         public double? TrackingDistance { get; set; } 
         public double X { get; set; }
         public double Y { get; set; }
-        public double Z { get; set; }
-        public override string GroupName
-        {
-            get
-            {
-                if (this.MapLocationSharing == MapLocationSharing.GuildOnly)
-                {
-                    if (string.IsNullOrWhiteSpace(this.GuildName))
-                    {
-                        return $"{Server}_{Zone}_{this.Name}";
-                    }
-                    return $"{Server}_{Zone}_{this.GuildName}";
-                }
-                return $"{Server}_{Zone}";
-            }
-        }
+        public double Z { get; set; } 
     }
 
 

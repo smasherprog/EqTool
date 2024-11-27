@@ -594,7 +594,7 @@ namespace EQTool.UI.SettingsComponents
             _ = Task.Factory.StartNew(() =>
             {
                 var names = new List<string>() { "faiil", "irishfaf", "chuunt", "jakab", "nima", "healmin" };
-                var pnames = new List<EQToolShared.Map.SignalrPlayer>();
+                var pnames = new List<EQToolShared.Map.SignalrPlayerV2>();
 
                 var movementoffset = (int)(map.AABB.MaxWidth / 10);
                 var r = new Random();
@@ -602,10 +602,10 @@ namespace EQTool.UI.SettingsComponents
                 foreach (var item in names)
                 {
                     offset = r.Next(-movementoffset, movementoffset);
-                    var p = new EQToolShared.Map.SignalrPlayer
+                    var p = new EQToolShared.Map.SignalrPlayerV2
                     {
                         GuildName = "The Drift",
-                        MapLocationSharing = EQToolShared.Map.MapLocationSharing.Everyone,
+                        Sharing = EQToolShared.Map.MapLocationSharing.Everyone,
                         Name = item, 
                         Server = Servers.Green,
                         Zone = player.Zone,
@@ -625,10 +625,10 @@ namespace EQTool.UI.SettingsComponents
                     {
                         foreach (var item in pnames)
                         {
-                            var p = new EQToolShared.Map.SignalrPlayer
+                            var p = new EQToolShared.Map.SignalrPlayerV2
                             {
                                 GuildName = "The Drift",
-                                MapLocationSharing = EQToolShared.Map.MapLocationSharing.Everyone,
+                                Sharing = EQToolShared.Map.MapLocationSharing.Everyone,
                                 Name = item.Name, 
                                 Server = Servers.Green,
                                 Zone = player.Zone,
@@ -899,11 +899,6 @@ namespace EQTool.UI.SettingsComponents
             SettingsWindowData.ActivePlayer.Player.DeathLoopAudio = true;
             SettingsWindowData.ActivePlayer.Player.ChChainWarningAudio = true;
             SaveConfig();
-        }
-
-        private void OpenManagementWindow(object sender, RoutedEventArgs e)
-        {
-            windowFactory.CreateWindow<SettingManagement>().Show();
-        }
+        } 
     }
 }

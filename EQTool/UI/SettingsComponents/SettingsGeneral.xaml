@@ -221,10 +221,6 @@
                         <CheckBox IsChecked="{Binding RaidModeDetection}" Click="Savesettings"></CheckBox>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Spawn Timer"  VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
-                        <Button Click="openSpawnTimerDialog">Spawn Timer Configurator</Button>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Always on top" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
                         <CheckBox IsChecked="{Binding SpellAlwaysOnTop}" Click="SaveAlwaysOntopCheckBoxSettings" ></CheckBox>
                     </StackPanel>
@@ -279,7 +275,7 @@
             <StackPanel Orientation="Vertical" Margin="5, 5, 5, 5" HorizontalAlignment="Stretch">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Timer Sharing"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
-                    <CheckBox IsChecked="{Binding ActivePlayer.Player.SpellDebuffShare}" Click="Savesettings" MinWidth="75"></CheckBox>
+                    <CheckBox IsChecked="{Binding ActivePlayer.Player.ShareTimers}" Click="Savesettings" MinWidth="75"></CheckBox>
                 </StackPanel>
                 <DockPanel>
                     <TextBlock TextWrapping="Wrap" Text="When this is checked, timers will be shared with those around you for detrimental spells. So, if you slow a mob, anyone within range will also see the slow timer. Same for dragon effects!" />
@@ -287,7 +283,11 @@
             </StackPanel>
         </TabItem>
         <TabItem Header="Debug" Name="DebugTab">
-            <StackPanel Orientation="Vertical" Margin="5, 5, 5, 5" HorizontalAlignment="Stretch">
+            <StackPanel Orientation="Vertical" Margin="5, 5, 5, 5" HorizontalAlignment="Stretch"> 
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Spawn Timer"  VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
+                    <Button Click="openSpawnTimerDialog">Spawn Timer Configurator</Button>
+                </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Random Roll"  VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
                     <Button Click="testRandomRolls" MinWidth="100">Test Random Rolls</Button>
@@ -311,11 +311,7 @@
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Run Log File"  VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
                     <Button Click="selectLogFile">Select File</Button>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Test Management"  VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
-                    <Button Click="OpenManagementWindow">Opwn Window</Button>
-                </StackPanel>
+                </StackPanel> 
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
                     <TextBlock Text="Log Push"  VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
                     <TextBox x:Name="LogPushText" MinWidth="150"></TextBox>

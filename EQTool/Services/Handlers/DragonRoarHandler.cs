@@ -2,38 +2,61 @@
 using EQTool.ViewModels;
 using EQTool.ViewModels.SpellWindow;
 using System;
+using System.Linq;
 using System.Windows.Media;
 
 namespace EQTool.Services.Handlers
 {
     public class DragonRoarHandler : BaseHandler
-    { 
+    {
         private readonly SpellWindowViewModel spellWindowViewModel;
+        private readonly EQSpells spells;
+        private readonly IAppDispatcher appDispatcher;
 
-        public DragonRoarHandler(SpellWindowViewModel spellWindowViewModel, LogEvents logEvents, ActivePlayer activePlayer, EQToolSettings eQToolSettings, ITextToSpeach textToSpeach) : base(logEvents, activePlayer, eQToolSettings, textToSpeach)
+        public DragonRoarHandler(IAppDispatcher appDispatcher, EQSpells spells, SpellWindowViewModel spellWindowViewModel, LogEvents logEvents, ActivePlayer activePlayer, EQToolSettings eQToolSettings, ITextToSpeach textToSpeach) : base(logEvents, activePlayer, eQToolSettings, textToSpeach)
         {
+            this.appDispatcher = appDispatcher;
+            this.spells = spells;
             this.spellWindowViewModel = spellWindowViewModel;
             this.logEvents.DragonRoarEvent += LogEvents_DragonRoarEvent;
+            this.logEvents.DragonRoarRemoteEvent += LogEvents_DragonRoarRemoteEvent;
+        }
+
+        private void LogEvents_DragonRoarRemoteEvent(object sender, DragonRoarRemoteEvent e)
+        {
+            this.appDispatcher.DispatchUI(() =>
+            {
+                var exists = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Timer && a.GroupName == CustomTimer.CustomerTime && a.Name == e.SpellName) as TimerViewModel;
+                if (exists != null && exists.TotalRemainingDuration.TotalSeconds > 2)
+                {
+                    return; 
+                }
+                LogEvents_DragonRoarEvent(spells.AllSpells.FirstOrDefault(a => a.name == e.SpellName));
+            });
         }
 
         private void LogEvents_DragonRoarEvent(object sender, DragonRoarEvent e)
-        { 
+        {
+            LogEvents_DragonRoarEvent(e.Spell);
+        }
+
+        private void LogEvents_DragonRoarEvent(Spell spell)
+        {
             spellWindowViewModel.TryAdd(new TimerViewModel
             {
                 PercentLeft = 100,
                 GroupName = CustomTimer.CustomerTime,
-                Name = e.Spell.name,
-                Rect = e.Spell.Rect,
-                Icon = e.Spell.SpellIcon,
-                TotalDuration = TimeSpan.FromSeconds((int)(e.Spell.recastTime  / 1000.0)),
-                TotalRemainingDuration = TimeSpan.FromSeconds((int)(e.Spell.recastTime / 1000.0)),
+                Name = spell.name,
+                Rect = spell.Rect,
+                Icon = spell.SpellIcon,
+                TotalDuration = TimeSpan.FromSeconds((int)(spell.recastTime / 1000.0)),
+                TotalRemainingDuration = TimeSpan.FromSeconds((int)(spell.recastTime / 1000.0)),
                 UpdatedDateTime = DateTime.Now,
                 ProgressBarColor = Brushes.DarkOrange
             });
-             
-            if (e.Spell.name == "Dragon Roar")
-            {
 
+            if (spell.name == "Dragon Roar")
+            {
                 var doAlert = activePlayer?.Player?.DragonRoarAudio ?? false;
                 if (doAlert)
                 {
