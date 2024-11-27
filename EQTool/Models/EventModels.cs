@@ -216,16 +216,7 @@ namespace EQTool.Models
     {
         public string SpellName { get; set; }
     }
-
-    public class SpellCastEvent : BaseLogParseEvent
-    {
-        public string TargetName { get; set; }
-
-        public bool CastByYou { get; set; }
-
-        public Spell Spell { get; set; }
-    }
-
+     
     public class YouZonedEvent : BaseLogParseEvent
     {
         public string LongName { get; set; }

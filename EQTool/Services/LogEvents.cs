@@ -141,13 +141,7 @@ namespace EQTool.Services
         {
             SpellWornOffOtherEvent?.Invoke(this, e);
         }
-
-        public event EventHandler<SpellCastEvent> SpellCastEvent;
-        public void Handle(SpellCastEvent e)
-        {
-            SpellCastEvent?.Invoke(this, e);
-        }
-
+         
         public event EventHandler<YouZonedEvent> YouZonedEvent;
         public void Handle(YouZonedEvent e)
         {
