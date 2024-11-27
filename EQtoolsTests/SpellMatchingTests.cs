@@ -38,6 +38,22 @@ namespace EQtoolsTests
         }
 
         [TestMethod]
+        public void Test1()
+        {
+            var spellname = "Acumen";
+            var spellclass = spells.AllSpells.FirstOrDefault(a => a.name == spellname);
+            var line = YouBeginCasting + " " + spellname;
+            player.Player.Level = 60;
+            player.Player.PlayerClass = PlayerClasses.Shaman;
+            logParser.Push(line, DateTime.Now);
+            line = "Joe " + spellclass.cast_on_other;
+            logParser.Push(line, DateTime.Now);
+
+            var effect = spellWindowViewModel.SpellList.FirstOrDefault();
+            Assert.IsNotNull(effect);
+        }
+
+        [TestMethod]
         public void TestParseP99GrimAura()
         {
             var line = "8639^Grim Aura^PLAYER_1^^^^A dull aura covers your hand.^'s hand is covered with a dull aura.^The grim aura fades.^0^0^0^0^3000^2250^2250^3^270^0^25^3^0^0^0^0^0^0^0^0^0^0^0^0^0^0^0^0^0^0^0^0^0^0^0^10^0^0^0^0^0^0^0^0^0^0^0^2503^2108^-1^-1^-1^-1^1^1^1^1^-1^-1^-1^-1^102^100^100^100^100^100^100^100^100^100^100^100^0^1^0^0^2^254^254^254^254^254^254^254^254^254^254^254^6^25^5^-1^0^0^255^255^255^255^22^255^255^255^255^255^4^255^255^255^255^255^43^0^0^8^0^0^0^0^0^0^0^0^0^0^0^0^0^0^0^0^0^0^100^0^37^94^0^0^0^0^0^0^0^0^0^0^0^7^0^0^0^0^0^0^0^0^0^0^0^0^0^0^0^0^0^0^0^5^101^12^92^3^270^0^0^0^0^3^105^0^0^0^0^0^0^0^0^0^0^1^1^0^0^0^0^0^-1^0^0^0^1^0^0^1^1^^0";

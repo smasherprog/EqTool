@@ -198,7 +198,6 @@
   <ItemGroup>
     <Compile Include="BaseTestClass.cs" />
     <Compile Include="DragonEffectTests.cs" />
-    <Compile Include="YouCastSpellTests.cs" />
     <Compile Include="SpellViewModelTests.cs" />
     <Compile Include="SlainHandlerTests.cs" />
     <Compile Include="DeathTests.cs" />
