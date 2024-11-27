@@ -147,6 +147,23 @@ namespace EQTool.Models
         public Spell Spell { get; set; }
     }
 
+    public class YouFinishCastingEvent : BaseLogParseEvent
+    {
+        public Spell Spell { get; set; }
+        public string TargetName { get; set; }
+    }
+
+    public class SpellCastOnYouEvent : BaseLogParseEvent
+    {  
+        public Spell Spell { get; set; }
+    }
+
+    public class SpellCastOnOtherEvent : BaseLogParseEvent
+    {
+        public Spell Spell { get; set; }
+        public string TargetName { get; set; }
+    }
+
     public class ResistSpellEvent : BaseLogParseEvent
     {
         public Spell Spell { get; set; }
@@ -179,12 +196,18 @@ namespace EQTool.Models
         public string Position { get; set; }
         public string Caster { get; set; }
     }
-
     public class SpellWornOffEvent : BaseLogParseEvent
     {
         public string SpellName { get; set; }
     }
 
+    public class YourSpellInterupptedEvent : BaseLogParseEvent
+    { 
+    }
+    public class DragonRoarEvent : BaseLogParseEvent
+    {
+        public Spell Spell { get; set; }
+    }
     public class SpellWornOffSelfEvent : BaseLogParseEvent
     {
         public List<string> SpellNames { get; set; }
@@ -207,6 +230,9 @@ namespace EQTool.Models
     {
         public string LongName { get; set; }
         public string ShortName { get; set; }
+    }
+    public class MendWoundsEvent : BaseLogParseEvent
+    {
     }
 
     public class LineEvent : BaseLogParseEvent

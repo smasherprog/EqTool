@@ -97,8 +97,19 @@ namespace EQTool.ViewModels
                 _UserCastingSpell = value;
                 OnPropertyChanged();
             }
-        }
+        } 
 
+        private DateTime? _UserCastSpellDateTime;
+
+        public DateTime? UserCastSpellDateTime
+        {
+            get => _UserCastSpellDateTime;
+            set
+            {
+                _UserCastSpellDateTime = value;
+                OnPropertyChanged();
+            }
+        }
 
         public string LogFileName;
 

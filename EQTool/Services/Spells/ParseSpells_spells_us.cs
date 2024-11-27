@@ -154,10 +154,9 @@ namespace EQTool.Services
                 return _Spells;
             }
             var isdebug = false;
-#if DEBUG
+#if DEBUG && !TEST
             isdebug = true;
-#endif
-
+#endif 
             var stopwatch = new Stopwatch();
             stopwatch.Start();
             var spells = new Dictionary<string, SpellBase>();
@@ -299,7 +298,7 @@ namespace EQTool.Services
                         peggylev.name = "Peggy Levitate";
                         peggylev.buffduration = 120;
                         peggylev.buffdurationformula = 12;
-                        peggylev.casttime = 6000;
+                        peggylev.casttime = 6000; 
                         if (!spells.ContainsKey(peggylev.name))
                         {
                             spells.Add(peggylev.name, peggylev);

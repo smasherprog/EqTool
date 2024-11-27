@@ -247,6 +247,7 @@ namespace EQTool.UI.SettingsComponents
                 new SpellCastEvent { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Mana Sieve"), TargetName = "a bad guy"},
                 new SpellCastEvent { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Mana Sieve"), TargetName = "a bad guy"},
                 new SpellCastEvent { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Harvest"), TargetName = EQSpells.SpaceYou},
+                new SpellCastEvent { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Quivering Veil of Xarn"), TargetName = EQSpells.SpaceYou},
                 new SpellCastEvent { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "LowerElement"), TargetName = "Tunare"},
                 new SpellCastEvent { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "LowerElement"), TargetName = "Tunare"},
                 new SpellCastEvent { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "LowerElement"), TargetName = "Tunare"},
@@ -269,7 +270,15 @@ namespace EQTool.UI.SettingsComponents
 
             foreach (var item in listofspells)
             {
-                logEvents.Handle(item);
+                if (item.TargetName == EQSpells.SpaceYou)
+                {
+                    PushLog(item.Spell.cast_on_you);
+                }
+                else
+                {
+                    PushLog(item.TargetName + " " + item.Spell.cast_on_other);
+                }
+               // logEvents.Handle(item);
             }
             PushLog("Fright says, 'Luetin'");
             PushLog("You say, 'PigTimer-6:40-Guard_George'");

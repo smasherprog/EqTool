@@ -30,7 +30,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;TEST</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -197,6 +197,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseTestClass.cs" />
+    <Compile Include="DragonEffectTests.cs" />
+    <Compile Include="YouCastSpellTests.cs" />
     <Compile Include="SpellViewModelTests.cs" />
     <Compile Include="SlainHandlerTests.cs" />
     <Compile Include="DeathTests.cs" />

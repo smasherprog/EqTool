@@ -13,8 +13,7 @@ namespace EQtoolsTests
     {
         private readonly SlainParser slainParser;
         private readonly CommsParser playerCommsParser;
-        private readonly DamageParser damageParser;
-        private readonly SpellCastParser spellCastParser;
+        private readonly DamageParser damageParser; 
         private readonly DeathLoopHandler deathLoopHandler;
         private readonly LogEvents logEvents;
 
@@ -22,8 +21,7 @@ namespace EQtoolsTests
         {
             slainParser = container.Resolve<SlainParser>();
             playerCommsParser = container.Resolve<CommsParser>();
-            damageParser = container.Resolve<DamageParser>();
-            spellCastParser = container.Resolve<SpellCastParser>();
+            damageParser = container.Resolve<DamageParser>(); 
 
             deathLoopHandler = container.Resolve<DeathLoopHandler>();
             logEvents = container.Resolve<LogEvents>();

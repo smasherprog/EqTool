@@ -324,9 +324,16 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="Models\CustomTimer.cs" />
+    <Compile Include="Models\FightHistory.cs" />
     <Compile Include="Services\BinarySerializer.cs" />
-    <Compile Include="Services\Handlers\SpellYouBeginToCastHandler.cs" />
-    <Compile Include="Services\Handlers\SpellCastHandler.cs" />
+    <Compile Include="Services\Handlers\DamageHandler.cs" />
+    <Compile Include="Services\Handlers\MendWoundsHandler.cs" />
+    <Compile Include="Services\Handlers\SpellCastOnYouHandler.cs" />
+    <Compile Include="Services\Handlers\BaseSpellYouCastingService.cs" />
+    <Compile Include="Services\Handlers\YouFinishCastingHandler.cs" />
+    <Compile Include="Services\Handlers\YouBeginCastingHandler.cs" />
+    <Compile Include="Services\Handlers\YourSpellInterupptedHandler.cs" />
+    <Compile Include="Services\Handlers\SpellCastOnItherHandler.cs" />
     <Compile Include="Services\Handlers\SpellWornOffOtherHandler.cs" />
     <Compile Include="Services\Handlers\SpellWornOffSelfHandler.cs" />
     <Compile Include="Services\Handlers\EnterWorldHandler.cs" />
@@ -336,13 +343,19 @@
     <Compile Include="Services\Handlers\SpawnTimerHandler.cs" />
     <Compile Include="Services\Parsing\ExpGainedParser.cs" />
     <Compile Include="Services\Handlers\SlainHandler.cs" />
+    <Compile Include="Services\Parsing\SpellCastOnOtherParser.cs" />
+    <Compile Include="Services\Parsing\SpellCastOnYouParser.cs" />
+    <Compile Include="Services\Parsing\MendWoundsParser.cs" />
+    <Compile Include="Services\Parsing\YouFinishCastingParser.cs" />
+    <Compile Include="Services\Parsing\YouBeginCastingParser.cs" />
+    <Compile Include="Services\Parsing\YourSpellInterupptedParser.cs" />
     <Compile Include="Services\Parsing\LineParser.cs" />
     <Compile Include="Services\Parsing\FactionParser.cs" />
     <Compile Include="Services\UserComponentSettingsManagementFactory.cs" />
     <Compile Include="Services\WindowFactory.cs" />
     <Compile Include="Services\Handlers\YouZonedHandler.cs" />
     <Compile Include="Services\Handlers\PlayerLevelDetectionHandler.cs" />
-    <Compile Include="Services\Handlers\ClassDetectedHandler.cs" />
+    <Compile Include="Services\Handlers\PlayerClassDetectedHandler.cs" />
     <Compile Include="Services\Handlers\RootHasWornOffHandler.cs" />
     <Compile Include="Services\Handlers\CompleteHealHandler.cs" />
     <Compile Include="Services\Handlers\DragonRoarHandler.cs" />
@@ -407,7 +420,7 @@
       <DependentUpon>Settings.settings</DependentUpon>
     </Compile>
     <Compile Include="Services\AppDispatcher.cs" />
-    <Compile Include="Services\Handlers\ResistSpellHandler.cs" />
+    <Compile Include="Services\Handlers\ResistHandler.cs" />
     <Compile Include="Services\CHService.cs" />
     <Compile Include="Services\LogEvents.cs" />
     <Compile Include="Services\LoggingService.cs" />
@@ -417,7 +430,7 @@
     <Compile Include="Services\Parsing\OutlierSpellEffectParser.cs" />
     <Compile Include="Services\Handlers\CustomTimerHandler.cs" />
     <Compile Include="Services\Parsing\RandomParser.cs" />
-    <Compile Include="Services\Parsing\ResistSpellParser.cs" />
+    <Compile Include="Services\Parsing\ResistParser.cs" />
     <Compile Include="Services\Parsing\GroupInviteParser.cs" />
     <Compile Include="Services\Parsing\FailedFeignParser.cs" />
     <Compile Include="Services\Parsing\FTEParser.cs" />
@@ -452,10 +465,7 @@
     <Compile Include="Services\LogParser.cs" />
     <Compile Include="Services\Parsing\SlainParser.cs" />
     <Compile Include="Services\Parsing\DamageParser.cs" />
-    <Compile Include="Services\Parsing\Helpers\ParseSpellGuess.cs" />
     <Compile Include="Services\Spells\SpellDurations.cs" />
-    <Compile Include="Services\Parsing\Helpers\ParseHandleYou.cs" />
-    <Compile Include="Services\Parsing\SpellCastParser.cs" />
     <Compile Include="Shapes\ArrowEnds.cs" />
     <Compile Include="Shapes\ArrowLine.cs" />
     <Compile Include="Shapes\ArrowLineBase.cs" />

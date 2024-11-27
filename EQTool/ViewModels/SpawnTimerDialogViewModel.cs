@@ -4,7 +4,6 @@ using System.Windows.Data;
 using System;
 using System.Globalization;
 using System.Text.RegularExpressions;
-using System.Collections;
 using System.Windows.Controls;
 
 namespace EQTool.ViewModels

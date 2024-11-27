@@ -1,5 +1,6 @@
 using Autofac;
 using Autofac.Features.ResolveAnything;
+using EQTool.Models;
 using EQTool.Services;
 using EQTool.Services.Handlers;
 using EQTool.Services.P99LoginMiddlemand;
@@ -51,6 +52,9 @@ namespace EQTool
             _ = builder.RegisterType<ViewModels.ZoneViewModel>().AsSelf().SingleInstance();
             _ = builder.RegisterType<Models.SessionPlayerDamage>().AsSelf().SingleInstance();
             _ = builder.RegisterType<Services.LoggingService>().AsSelf().SingleInstance();
+            _ = builder.RegisterType<FightHistory>().AsSelf().SingleInstance();
+            _ = builder.RegisterType<SpellDurations>().AsSelf().SingleInstance();
+            
             _ = builder.RegisterType<Services.PlayerTrackerService>().AsSelf().SingleInstance();
             _ = builder.RegisterType<Services.ZoneActivityTrackingService>().AsSelf().SingleInstance();
             _ = builder.RegisterType<Services.TimersService>().AsSelf().SingleInstance();

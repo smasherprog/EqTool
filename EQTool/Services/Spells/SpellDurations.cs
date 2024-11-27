@@ -1,30 +1,81 @@
 ﻿using EQTool.Models;
+using EQTool.ViewModels;
+using EQToolShared;
 using EQToolShared.Enums;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Policy;
 
 namespace EQTool.Services
 {
-    public static class SpellDurations
+    public class SpellDurations
     {
-        public static Spell MatchClosestLevelToSpell(List<Spell> spells, PlayerClasses? playerClass, int? playerLevel)
+        private readonly FightHistory fightHistory;
+        private readonly ActivePlayer activePlayer;
+        public SpellDurations(FightHistory fightHistory, ActivePlayer activePlayer)
         {
-            if (playerClass.HasValue && playerLevel.HasValue)
+            this.fightHistory = fightHistory;
+            this.activePlayer = activePlayer;
+        }
+
+        public Spell MatchDragonRoar(List<Spell> spells, DateTime timestamp)
+        {
+            if (!string.IsNullOrWhiteSpace(this.activePlayer.Player?.Zone))
             {
-                var closestlevel = playerLevel.Value;
+                if (Zones.ZoneInfoMap.TryGetValue(this.activePlayer.Player.Zone, out var zone))
+                {
+                    var matchingnpcs = fightHistory.IsEngaged(zone.NPCThatAOE.Select(a => a.Name).ToList(), timestamp);
+                    foreach (var item in matchingnpcs)
+                    {
+                        var npc = zone.NPCThatAOE.FirstOrDefault(a => a.Name == item);
+                        var matchedspell = spells.FirstOrDefault(a => npc.SpellEffects.Contains(a.name));
+                        if (matchedspell != null)
+                        {
+                            return matchedspell;
+                        }
+                    }
+                }
+            }
+
+            return null;
+        }
+
+        public bool IsDragonRoarSpell(Spell spell)
+        {
+            foreach (var zone in Zones.ZoneInfoMap.Values)
+            {
+                foreach (var npc in zone.NPCThatAOE)
+                {
+                    var matchedspell = npc.SpellEffects.Any(a => a == spell.name);
+                    if (matchedspell)
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+        public Spell MatchClosestLevelToSpell(Spell spell, DateTime timestamp)
+        {
+            return this.MatchClosestLevelToSpell(new List<Spell> { spell }, timestamp);
+        }
+
+        public Spell MatchClosestLevelToSpell(List<Spell> spells, DateTime timestamp)
+        {
+            var playerClass = this.activePlayer.Player.PlayerClass;
+            var playerLevel = this.activePlayer.Player.Level;
+
+            if (playerClass.HasValue)
+            {
+                var closestlevel = playerLevel;
                 var smallestdelta = closestlevel;
                 Spell closestspell = null;
                 foreach (var spell in spells)
                 {
-                    //    if (spell.Classes.TryGetValue(playerclass.Value, out var level))
-                    //    {
-                    //        return spell;
-                    //    }
-
                     foreach (var item in spell.Classes)
                     {
-                        var delta = Math.Abs(item.Value - playerLevel.Value);
+                        var delta = Math.Abs(item.Value - playerLevel);
                         if (delta < smallestdelta)
                         {
                             closestspell = spell;

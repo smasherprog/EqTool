@@ -35,12 +35,6 @@ namespace EQTool.Services
             DamageEvent?.Invoke(this, e);
         }
 
-        public event EventHandler<YouBeginCastingEvent> YouBeginCastingEvent;
-        public void Handle(YouBeginCastingEvent e)
-        {
-            YouBeginCastingEvent?.Invoke(this, e);
-        }
-
         public event EventHandler<ConEvent> ConEvent;
         public void Handle(ConEvent e)
         {
@@ -207,5 +201,47 @@ namespace EQTool.Services
         {
             OverlayEvent?.Invoke(this, e);
         }
+
+        public event EventHandler<YourSpellInterupptedEvent> YourSpellInterupptedEvent;
+        public void Handle(YourSpellInterupptedEvent e)
+        {
+            YourSpellInterupptedEvent?.Invoke(this, e);
+        }
+
+        public event EventHandler<YouBeginCastingEvent> YouBeginCastingEvent;
+        public void Handle(YouBeginCastingEvent e)
+        {
+            YouBeginCastingEvent?.Invoke(this, e);
+        }
+
+        public event EventHandler<YouFinishCastingEvent> YouFinishCastingEvent;
+        public void Handle(YouFinishCastingEvent e)
+        {
+            YouFinishCastingEvent?.Invoke(this, e);
+        }
+
+        public event EventHandler<SpellCastOnYouEvent> SpellCastOnYouEvent;
+        public void Handle(SpellCastOnYouEvent e)
+        {
+            SpellCastOnYouEvent?.Invoke(this, e);
+        }
+
+        public event EventHandler<SpellCastOnOtherEvent> SpellCastOnOtherEvent;
+        public void Handle(SpellCastOnOtherEvent e)
+        {
+            SpellCastOnOtherEvent?.Invoke(this, e);
+        }
+         
+        public event EventHandler<MendWoundsEvent> MendWoundsEvent;
+        public void Handle(MendWoundsEvent e)
+        {
+            MendWoundsEvent?.Invoke(this, e);
+        }
+
+        public event EventHandler<DragonRoarEvent> DragonRoarEvent;
+        public void Handle(DragonRoarEvent e)
+        {
+            DragonRoarEvent?.Invoke(this, e);
+        } 
     }
 }

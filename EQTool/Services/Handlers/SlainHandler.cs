@@ -15,6 +15,7 @@ namespace EQTool.Services.Handlers
         private readonly PlayerTrackerService playerTrackerService;
         private readonly IAppDispatcher appDispatcher;
         private readonly EQSpells spells;
+        private readonly FightHistory fightHistory;
 
         private string Victim = string.Empty;
         private string Killer = string.Empty;
@@ -28,11 +29,13 @@ namespace EQTool.Services.Handlers
             IAppDispatcher appDispatcher,
             LogEvents logEvents,
             EQSpells spells,
+            FightHistory fightHistory,
             ActivePlayer activePlayer,
             EQToolSettings eQToolSettings,
             SpellWindowViewModel spellWindowViewModel,
             ITextToSpeach textToSpeach) : base(logEvents, activePlayer, eQToolSettings, textToSpeach)
         {
+            this.fightHistory = fightHistory;
             this.spells = spells;
             this.appDispatcher = appDispatcher;
             this.playerTrackerService = playerTrackerService;
@@ -160,6 +163,7 @@ namespace EQTool.Services.Handlers
         private int deathcounter = 1;
         private void DoEvent(ConfirmedDeathEvent e, bool guess)
         {
+            fightHistory.Remove(Victim, e.TimeStamp);
             logEvents.Handle(new ConfirmedDeathEvent
             {
                 Killer = Killer,

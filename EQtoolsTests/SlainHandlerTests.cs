@@ -357,6 +357,6 @@ namespace EQtoolsTests
             logParser.Push("Your faction standing with UndeadFrogloksofGuk could not possibly get any worse.", DateTime.Now);
             logParser.Push("Varer judges you amiably -- You would probably win this fight..it's not certain though.", DateTime.Now);
             Assert.AreEqual(CalledCounter, 3);
-        }
+        } 
     }
 }

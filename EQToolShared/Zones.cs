@@ -10,6 +10,12 @@ namespace EQToolShared
         public TimeSpan RespawnTime { get; set; }
     }
 
+    public class NPCThatAOE
+    {
+        public string Name { get; set; }
+        public List<string> SpellEffects = new List<string>();
+    }
+
     public class ZoneInfo
     {
         public bool ShowAllMapLevels { get; set; }
@@ -19,6 +25,7 @@ namespace EQToolShared
         public List<NpcSpawnTime> NpcSpawnTimes { get; set; } = new List<NpcSpawnTime>();
         public List<NpcSpawnTime> NpcContainsSpawnTimes { get; set; } = new List<NpcSpawnTime>();
         public List<string> NotableNPCs { get; set; } = new List<string>();
+        public List<NPCThatAOE> NPCThatAOE = new List<NPCThatAOE>();
     }
 
     public static class ZoneSpawnTimes
@@ -538,6 +545,13 @@ namespace EQToolShared
                           Name="A Glacier Yeti",
                           RespawnTime = new TimeSpan(0, 16, 0)
                      }
+                 },
+                NPCThatAOE = new List<NPCThatAOE> {
+                    new NPCThatAOE
+                    {
+                        Name = "Gorenaire",
+                        SpellEffects = new List<string>() { "Dragon Roar", "Freezing Breath" }
+                    }
                  }
             });
             ZoneInfoMap.Add("droga", new ZoneInfo
@@ -593,7 +607,15 @@ namespace EQToolShared
                 {
                     "Engorged Soulsipper", "Severilous", "Totem Fiendling",
                 },
-                RespawnTime = new TimeSpan(0, 6, 40)
+                RespawnTime = new TimeSpan(0, 6, 40),
+                NPCThatAOE = new List<NPCThatAOE>
+                 {
+                     new NPCThatAOE
+                     {
+                         Name = "Severilous",
+                        SpellEffects = new List<string>(){ "Dragon Roar", "Ceticious Cloud" }
+                     }
+                    }
             });
             ZoneInfoMap.Add("erudnext", new ZoneInfo
             {
@@ -812,7 +834,15 @@ namespace EQToolShared
                             RespawnTime = new TimeSpan(0, 0, 1)
                       }
                  },
-                RespawnTime = new TimeSpan(12, 0, 0)
+                RespawnTime = new TimeSpan(12, 0, 0),
+                NPCThatAOE = new List<NPCThatAOE>
+                 {
+                     new NPCThatAOE
+                     {
+                        Name = "Ail the Elder",
+                        SpellEffects = new List<string>() { "Cloud of Silence", "Silver Breath" }
+                     }
+                 }
             });
             ZoneInfoMap.Add("gukbottom", new ZoneInfo
             {
@@ -1211,7 +1241,15 @@ namespace EQToolShared
                 ShowAllMapLevels = true,
                 ZoneLevelHeight = 10,
                 NotableNPCs = new List<string>() { "Zlandicar", "A Paebala Spirit Talker", "Dominator Yisaki", "Garzicor's Wraith", "Jaled Dar`s Shade", "Neb", "Queen Raltaas", "Seeker Bulava", "Vaniki", "Vilefang", "Warmaster Utvara" },
-                RespawnTime = new TimeSpan(0, 27, 00)
+                RespawnTime = new TimeSpan(0, 27, 00),
+                NPCThatAOE = new List<NPCThatAOE>
+                {
+                    new NPCThatAOE
+                    {
+                        Name = "Zlandicar",
+                        SpellEffects = new List<string>() { "Dragon Roar", "Stun Breath", "Rotting Flesh", "Putrefy Flesh" }
+                    }
+                }
             });
             ZoneInfoMap.Add("nektulos", new ZoneInfo
             {
@@ -1493,7 +1531,14 @@ namespace EQToolShared
                 ShowAllMapLevels = false,
                 ZoneLevelHeight = 10,
                 NotableNPCs = new List<string>() { "Lady Vox", "Priest of Nagafen", "High Priest Zaharn", "A goblin alchemist (Permafrost)", "King Thex'Ka IV", "Goblin Archeologist", "Goblin Patriarch", "Goblin Preacher", "Goblin Jail Master", "Goblin Scryer", "Elite Honor Guard", "Injured Polar Bear", "Ice Goblin Champion", "Ice Giant Diplomat", },
-                RespawnTime = new TimeSpan(0, 22, 0)
+                RespawnTime = new TimeSpan(0, 22, 0),
+                NPCThatAOE = new List<NPCThatAOE> {
+                    new NPCThatAOE
+                    {
+                        Name = "Lady Vox",
+                        SpellEffects = new List<string>() { "Dragon Roar", "Frost Breath" }
+                    }
+                 }
             });
             ZoneInfoMap.Add("qcat", new ZoneInfo
             {
@@ -1594,6 +1639,14 @@ namespace EQToolShared
                            Name = "Sebilite protector",
                            RespawnTime = new TimeSpan(2, 45, 0)
                       }
+                 },
+                NPCThatAOE = new List<NPCThatAOE>
+                 {
+                     new NPCThatAOE
+                     {
+                          Name = "Trakanon",
+                          SpellEffects = new List<string>(){ "Blinding Fear", "Poison Breath" }
+                     }
                  }
             });
             ZoneInfoMap.Add("sirens", new ZoneInfo
@@ -1610,7 +1663,14 @@ namespace EQToolShared
                 ShowAllMapLevels = true,
                 ZoneLevelHeight = 10,
                 NotableNPCs = new List<string>() { "Black Scar", "Eldrig the Old", "Faerie of Dismay", "Felia Goldenwing", "Guardian of Felia", "Jennus Lyklobar", "a lava walker", "a shadow drake", "a soul devourer", "Talendor", "a wandering wurm", "a wurm spirit", },
-                RespawnTime = new TimeSpan(0, 13, 0)
+                RespawnTime = new TimeSpan(0, 13, 0),
+                NPCThatAOE = new List<NPCThatAOE> {
+                    new NPCThatAOE
+                    {
+                        Name = "Talendor",
+                        SpellEffects = new List<string>() { "Dragon Roar", "Immolating Breath" }
+                    }
+                 }
             });
             ZoneInfoMap.Add("skyshrine", new ZoneInfo
             {
@@ -1618,7 +1678,15 @@ namespace EQToolShared
                 ShowAllMapLevels = false,
                 ZoneLevelHeight = 10,
                 NotableNPCs = new List<string>() { "Ziglark Whisperwing", "Lord Yelinak" },
-                RespawnTime = new TimeSpan(0, 30, 0)
+                RespawnTime = new TimeSpan(0, 30, 0),
+                 NPCThatAOE = new List<NPCThatAOE>
+                 {
+                      new NPCThatAOE
+                      {
+                            Name = "Lord Yelinak",
+                            SpellEffects = new List<string>{ "Mind Cloud", "Ice breath" }
+                      }
+                 }
             });
             ZoneInfoMap.Add("sleeper", new ZoneInfo
             {
@@ -1642,7 +1710,15 @@ namespace EQToolShared
                 ShowAllMapLevels = false,
                 ZoneLevelHeight = 10,
                 NotableNPCs = new List<string>() { "death beetle", "Efreeti Lord Djarn", "guano harvester", "King Tranix", "kobold champion", "kobold noble", "kobold priest", "Lord Nagafen", "Midghh the Dark", "Magi Rokyl", "noxious spider", "Solusek kobold king", "stone spider", "Targin the Rock", "Warlord Skarlon", "Zordak Ragefire" },
-                RespawnTime = new TimeSpan(0, 22, 0)
+                RespawnTime = new TimeSpan(0, 22, 0),
+                NPCThatAOE = new List<NPCThatAOE>()
+                 {
+                      new NPCThatAOE
+                      {
+                        Name = "Lord Nagafen",
+                        SpellEffects = new List<string>(){ "Dragon Roar", "Lava Breath" }
+                      }
+                 }
             });
             ZoneInfoMap.Add("soltemple", new ZoneInfo
             {
@@ -1739,7 +1815,100 @@ namespace EQToolShared
                         RespawnTime = new TimeSpan(0, 6, 0)
                      }
                  },
-                RespawnTime = new TimeSpan(1, 12, 00)
+                RespawnTime = new TimeSpan(1, 12, 00),
+                NPCThatAOE = new List<NPCThatAOE>()
+                 {
+                    new NPCThatAOE
+                    {
+                        Name = "Dozekar the Cursed",
+                        SpellEffects = new List<string>(){  "Silver Breath" }
+                    },
+                    new NPCThatAOE
+                    {
+                        Name = "Gozzrem",
+                        SpellEffects = new List<string>(){ "Frost Breath" }
+                    },
+                    new NPCThatAOE
+                    {
+                        Name = "Lendiniara the Keeper",
+                        SpellEffects = new List<string>(){ "Silver Breath" }
+                    },
+                    new NPCThatAOE
+                    {
+                        Name = "Telkorenar",
+                        SpellEffects = new List<string>(){ "Lava Breath" }
+                    },
+                    new NPCThatAOE
+                    {
+                        Name = "Aaryonar",
+                        SpellEffects = new List<string>(){ "Cloud of Disempowerment" }
+                    },
+                    new NPCThatAOE
+                    {
+                        Name = "Cekenar",
+                        SpellEffects = new List<string>(){  "Electric Blast" }
+                    },
+                    new NPCThatAOE
+                    {
+                        Name = "Dagarn the Destroyer",
+                        SpellEffects = new List<string>(){ "Wave of Heat" }
+                    },
+                    new NPCThatAOE
+                    {
+                        Name = "Eashen of the Sky",
+                        SpellEffects = new List<string>(){ "Rain of Molten Lava", "Wave of Cold" }
+                    },
+                    new NPCThatAOE
+                    {
+                        Name = "Jorlleag",
+                        SpellEffects = new List<string>(){  "Frost Breath" }
+                    },
+                    new NPCThatAOE
+                    {
+                        Name =  "Lady Mirenilla",
+                        SpellEffects = new List<string>(){ "Cloud of Fear" }
+                    },
+                    new NPCThatAOE
+                    {
+                        Name =   "Lady Nevederia",
+                        SpellEffects = new List<string>(){ "Bellowing Winds" }
+                    },
+                    new NPCThatAOE
+                    {
+                        Name =   "Lord Feshlak",
+                        SpellEffects = new List<string>(){ "Wave of Cold" }
+                    },
+                    new NPCThatAOE
+                    {
+                        Name =   "Lord Koi'Doken",
+                        SpellEffects = new List<string>(){ "Tsunami" }
+                    },
+                    new NPCThatAOE
+                    {
+                        Name =   "Lord Kreizenn",
+                        SpellEffects = new List<string>(){ "Wave of Flame" }
+                    }
+                    ,new NPCThatAOE
+                    {
+                        Name =   "Lord Vyemm",
+                        SpellEffects = new List<string>(){ "Scream of Chaos" }
+                    } ,
+                    new NPCThatAOE
+                    {
+                        Name =   "Sevalak",
+                        SpellEffects = new List<string>(){ "Chaos Breath" }
+                    } ,
+                    new NPCThatAOE
+                    {
+                        Name =   "Vulak`Aerr",
+                        SpellEffects = new List<string>(){ "Ancient Breath" }
+                    },
+                    new NPCThatAOE
+                    {
+                        Name =   "Zlexak",
+                        SpellEffects = new List<string>(){ "Diseased Cloud" }
+                    }
+                 }
             });
             ZoneInfoMap.Add("thurgadina", new ZoneInfo
             {
@@ -1796,7 +1965,40 @@ namespace EQToolShared
                 ShowAllMapLevels = true,
                 ZoneLevelHeight = 10,
                 NotableNPCs = new List<string>() { "Druushk", "Hoshkar", "Nexona", "Phara Dar", "Silverwing", "Xygoz" },
-                RespawnTime = new TimeSpan(1, 12, 0)
+                RespawnTime = new TimeSpan(1, 12, 0),
+                NPCThatAOE = new List<NPCThatAOE>
+                 {
+                     new NPCThatAOE
+                     {
+                        Name = "Xygoz",
+                        SpellEffects = new List<string>(){ "Mesmerizing Breath" }
+                     },
+                     new NPCThatAOE
+                     {
+                        Name = "Silverwing",
+                        SpellEffects = new List<string>(){ "Chaos Breath" }
+                     },
+                     new NPCThatAOE
+                     {
+                        Name = "Phara Dar",
+                        SpellEffects = new List<string>(){ "Stun Breath" }
+                     },
+                     new NPCThatAOE
+                     {
+                        Name = "Nexona",
+                        SpellEffects = new List<string>(){ "Stream of Acid" }
+                     },
+                     new NPCThatAOE
+                     {
+                        Name = "Hoshkar",
+                        SpellEffects = new List<string>(){ "Diseased Cloud" }
+                     },
+                     new NPCThatAOE
+                     {
+                        Name = "Druushk",
+                        SpellEffects = new List<string>(){ "Lightning Breath" }
+                     }
+                 }
             });
             ZoneInfoMap.Add("velketor", new ZoneInfo
             {
@@ -2050,7 +2252,14 @@ namespace EQToolShared
                         RespawnTime = new TimeSpan(0, 6, 40)
                      }
                  },
-                RespawnTime = new TimeSpan(0, 6, 40)
+                RespawnTime = new TimeSpan(0, 6, 40),
+                NPCThatAOE = new List<NPCThatAOE>
+                {
+                     new NPCThatAOE {
+                        Name = "Klandicar",
+                        SpellEffects = new List<string> { "Silver Breath", "Dragon Roar" }
+                     }
+                }
             });
 
             ZoneWhoMapper.Add("kael drakkal", "kael drakkel");
@@ -2097,7 +2306,6 @@ namespace EQToolShared
             ZoneNameMapper.Add("sleepers tomb", "sleeper");
             ZoneNameMapper.Add("erudin", "erudnext");
             ZoneNameMapper.Add("kedge keep", "kedge");
-            ZoneNameMapper.Add("kedge keep (Instance)", "kedge");
             ZoneNameMapper.Add("ak'anon", "akanon");
             ZoneNameMapper.Add("warsliks woods", "warslikswood");
             ZoneNameMapper.Add("castle mistmoore", "mistmoore");
@@ -2124,7 +2332,6 @@ namespace EQToolShared
             ZoneNameMapper.Add("blackburrow", "blackburrow");
             ZoneNameMapper.Add("gorge of king xorbb", "beholder");
             ZoneNameMapper.Add("plane of hate", "hateplane");
-            ZoneNameMapper.Add("plane of hate (Instanced)", "hateplane");
             ZoneNameMapper.Add("west commonlands", "commons");
             ZoneNameMapper.Add("north qeynos", "qeynos2");
             ZoneNameMapper.Add("cobalt scar", "cobaltscar");
@@ -2132,14 +2339,12 @@ namespace EQToolShared
             ZoneNameMapper.Add("paineel", "paineel");
             ZoneNameMapper.Add("north freeport", "freportn");
             ZoneNameMapper.Add("nagafen's lair", "soldungb");
-            ZoneNameMapper.Add("nagafen's lair (Instance)", "soldungb");
             ZoneNameMapper.Add("runnyeye citadel", "runnyeye");
             ZoneNameMapper.Add("frontier mountains", "frontiermtns");
             ZoneNameMapper.Add("the city of mist", "citymist");
             ZoneNameMapper.Add("west freeport", "freportw");
             ZoneNameMapper.Add("butcherblock mountains", "butcher");
             ZoneNameMapper.Add("permafrost caverns", "permafrost");
-            ZoneNameMapper.Add("permafrost caverns (Instance)", "permafrost");
             ZoneNameMapper.Add("the hole", "hole");
             ZoneNameMapper.Add("qeynos hills", "qeytoqrg");
             ZoneNameMapper.Add("arena", "arena");
@@ -2153,7 +2358,6 @@ namespace EQToolShared
             ZoneNameMapper.Add("infected paw", "paw");
             ZoneNameMapper.Add("lair of the splitpaw", "paw");
             ZoneNameMapper.Add("plane of air", "airplane");
-            ZoneNameMapper.Add("plane of air (Instanced)", "airplane");
             ZoneNameMapper.Add("southern felwithe", "felwitheb");
             ZoneNameMapper.Add("velketor's labyrinth", "velketor");
             ZoneNameMapper.Add("cabilis west", "cabwest");
@@ -2171,7 +2375,6 @@ namespace EQToolShared
             ZoneNameMapper.Add("dreadlands", "dreadlands");
             ZoneNameMapper.Add("south qeynos", "qeynos");
             ZoneNameMapper.Add("plane of fear", "fearplane");
-            ZoneNameMapper.Add("plane of fear (Instanced)", "fearplane");
             ZoneNameMapper.Add("rathe mountains", "rathemtn");
             ZoneNameMapper.Add("the wakening lands", "wakening");
             ZoneNameMapper.Add("southern desert of ro", "sro");
@@ -2249,6 +2452,6 @@ namespace EQToolShared
             }
 
             return ZoneNames.Any(a => a == name) ? name : string.Empty;
-        } 
+        }
     }
 }

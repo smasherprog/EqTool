@@ -25,15 +25,18 @@ namespace EQTool.Services.Handlers
         }
 
         private void LogEvents_LevelDetectedEvent(object sender, PlayerLevelDetectionEvent e)
-        {
-            if (activePlayer?.Player != null)
+        { 
+            if (activePlayer.Player.Level < e.PlayerLevel)
             {
-                appDispatcher.DispatchUI(() =>
+                if (activePlayer?.Player != null)
                 {
-                    activePlayer.Player.Level = e.PlayerLevel;
-                });
+                    appDispatcher.DispatchUI(() =>
+                    {
+                        activePlayer.Player.Level = e.PlayerLevel;
+                    });
 
-                toolSettingsLoad.Save(settings);
+                    toolSettingsLoad.Save(settings);
+                }
             }
         }
     }

@@ -1,16 +1,20 @@
 ﻿using EQTool.Models;
+using EQTool.ViewModels.SpellWindow;
+using EQTool.ViewModels;
 using System;
 using System.Linq;
 
 namespace EQTool.Services.Parsing
 {
-    public class ResistSpellParser : IEqLogParser
+    public class ResistParser : IEqLogParser
     {
         private readonly EQSpells spells;
         private readonly LogEvents logEvents;
+        private readonly SpellDurations spellDurations;
 
-        public ResistSpellParser(EQSpells spells, LogEvents logEvents)
+        public ResistParser(SpellDurations spellDurations, EQSpells spells, LogEvents logEvents)
         {
+            this.spellDurations = spellDurations;
             this.spells = spells;
             this.logEvents = logEvents;
         }
@@ -36,6 +40,17 @@ namespace EQTool.Services.Parsing
                 var spell = spells.AllSpells.FirstOrDefault(a => a.name == spellname);
                 if (spell != null)
                 {
+                    if (spellDurations.IsDragonRoarSpell(spell))
+                    {
+                        logEvents.Handle(new DragonRoarEvent
+                        {
+                            Spell = spell,
+                            TimeStamp = timestamp,
+                            Line = line,
+                            LineCounter = lineCounter
+                        });
+                    }
+
                     return new ResistSpellEvent { Spell = spell, isYou = true, TimeStamp = timestamp, Line = line, LineCounter = lineCounter };
                 }
             }

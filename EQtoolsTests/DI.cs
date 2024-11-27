@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using Autofac.Features.ResolveAnything;
+using EQTool.Models;
 using EQTool.Services;
 using EQTool.Services.Handlers;
 using EQtoolsTests.Fakes;
@@ -76,7 +77,9 @@ namespace EQtoolsTests
             _ = builder.RegisterType<EQTool.Services.LogParser>().AsSelf().SingleInstance();
             _ = builder.RegisterType<EQTool.ViewModels.DPSWindowViewModel>().AsSelf().SingleInstance();
             _ = builder.RegisterType<EQToolShared.Discord.DiscordAuctionParse>().AsSelf().SingleInstance();
-            _ = builder.RegisterType<TextToSpeachFake>().As<ITextToSpeach>().SingleInstance();
+            _ = builder.RegisterType<TextToSpeachFake>().As<ITextToSpeach>().SingleInstance(); 
+            _ = builder.RegisterType<FightHistory>().AsSelf().SingleInstance();
+            _ = builder.RegisterType<SpellDurations>().AsSelf().SingleInstance();
 
             var b = builder.Build();
             var settings = b.Resolve<EQTool.Models.EQToolSettings>();

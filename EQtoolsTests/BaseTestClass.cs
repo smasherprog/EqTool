@@ -14,7 +14,7 @@ namespace EQtoolsTests
             player = container.Resolve<ActivePlayer>();
             player.Player = new PlayerInfo
             {
-                Level = 54,
+                Level = 20,
                 PlayerClass = PlayerClasses.Cleric,
                 Zone = "templeveeshan",
                 Name = "pigy"
