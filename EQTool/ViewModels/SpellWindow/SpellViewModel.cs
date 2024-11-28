@@ -1,7 +1,6 @@
 ﻿using EQTool.Models;
 using EQToolShared.Enums;
 using System.Collections.Generic;
-using System.Windows;
 using System.Windows.Media;
 
 namespace EQTool.ViewModels.SpellWindow

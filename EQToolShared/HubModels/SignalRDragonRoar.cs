@@ -1,7 +1,4 @@
-﻿using EQToolShared.Enums;
-using EQToolShared.Map;
-
-namespace EQToolShared.HubModels
+﻿namespace EQToolShared.HubModels
 {
     public class SignalRDragonRoar : BaseSignalRModel
     {

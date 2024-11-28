@@ -1,11 +1,9 @@
 ﻿using EQTool.Models;
-using EQTool.Properties;
 using EQTool.Services;
 using EQTool.ViewModels;
 using EQTool.ViewModels.SpellWindow;
 using EQToolShared.Enums;
 using System.Linq;
-using System.Runtime;
 using System.Windows;
 using System.Windows.Controls;
 

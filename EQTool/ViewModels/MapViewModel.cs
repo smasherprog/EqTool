@@ -764,8 +764,8 @@ namespace EQTool.ViewModels
                     Trackingdistance = item.Player.TrackingDistance,
                     CurrentScaling = CurrentScaling,
                     MapOffset = MapOffset,
-                    Oldlocation = new Point3D(item.Player.X, item.Player.Y, item.Player.Z),
-                    Newlocation = new Point3D(item.Player.X, item.Player.Y, item.Player.Z),
+                    Oldlocation = new Point3D(item.Player.X.Value, item.Player.Y.Value, item.Player.Z.Value),
+                    Newlocation = new Point3D(item.Player.X.Value, item.Player.Y.Value, item.Player.Z.Value),
                     PlayerLocationCircle = item,
                     Transform = Transform
                 });
@@ -799,7 +799,11 @@ namespace EQTool.ViewModels
         }
 
         public void PlayerLocationEvent(SignalrPlayerV2 e)
-        { 
+        {
+            if (!e.X.HasValue || !e.Y.HasValue || !e.Z.HasValue)
+            {
+                return;
+            }
             var p = Players.FirstOrDefault(a => a.Player?.Name == e.Name);
             if (p == null)
             {
@@ -814,8 +818,8 @@ namespace EQTool.ViewModels
                     Trackingdistance = e.TrackingDistance,
                     CurrentScaling = CurrentScaling,
                     MapOffset = MapOffset,
-                    Oldlocation = new Point3D(p.Player.X, p.Player.Y, p.Player.Z),
-                    Newlocation = new Point3D(e.X, e.Y, e.Z),
+                    Oldlocation = new Point3D(p.Player.X.Value, p.Player.Y.Value, p.Player.Z.Value),
+                    Newlocation = new Point3D(e.X.Value, e.Y.Value, e.Z.Value),
                     PlayerLocationCircle = p,
                     Transform = Transform
                 });

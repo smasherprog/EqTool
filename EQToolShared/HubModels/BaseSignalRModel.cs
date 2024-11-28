@@ -9,6 +9,10 @@ namespace EQToolShared.HubModels
         public MapLocationSharing Sharing { get; set; }
         public Servers Server { get; set; } 
         public string Zone { get; set; }
+        public double? X { get; set; }
+        public double? Y { get; set; }
+        public double? Z { get; set; }
+
         public string GroupName
         {
             get

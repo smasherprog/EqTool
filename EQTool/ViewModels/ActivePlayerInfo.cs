@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Windows.Media.Media3D;
 
 namespace EQTool.ViewModels
 {
@@ -107,6 +108,18 @@ namespace EQTool.ViewModels
             set
             {
                 _UserCastSpellDateTime = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private Point3D? _Location;
+
+        public Point3D? Location
+        {
+            get => _Location;
+            set
+            {
+                _Location = value;
                 OnPropertyChanged();
             }
         }

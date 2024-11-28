@@ -180,9 +180,9 @@ namespace EQTool.Models
 
         private void LogEvents_DragonRoarEvent(object sender, DragonRoarEvent e)
         {
-            if (activePlayer?.Player!= null &&
+            if (activePlayer?.Player != null &&
                 !string.IsNullOrWhiteSpace(activePlayer.Player.Zone) &&
-                activePlayer.Player.ShareTimers && 
+                activePlayer.Player.ShareTimers &&
                 activePlayer.Player.Server.HasValue)
             {
                 InvokeAsync("DragonRoarEvent", new SignalRDragonRoar
@@ -192,20 +192,26 @@ namespace EQTool.Models
                     Zone = activePlayer.Player.Zone,
                     Sharing = activePlayer.Player.MapLocationSharing,
                     GuildName = activePlayer.Player.GuildName,
+                    X = LastPlayer?.X,
+                    Y = LastPlayer?.Y,
+                    Z = LastPlayer?.Z
                 });
             }
         }
 
         private void DragonRoar(SignalRDragonRoar p)
         {
-            if (activePlayer?.Player != null && 
-                p.Server == activePlayer.Player.Server && 
+            if (activePlayer?.Player != null &&
+                p.Server == activePlayer.Player.Server &&
                 activePlayer.Player.ShareTimers)
             {
                 Debug.WriteLine($"SignalRDragonRoar {p.SpellName}");
                 this.logEvents.Handle(new DragonRoarRemoteEvent
-                { 
-                   SpellName = p.SpellName
+                {
+                    SpellName = p.SpellName,
+                    Y = p.Y,
+                    X = p.X,
+                    Z = p.Z
                 });
             }
         }

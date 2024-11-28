@@ -4,6 +4,7 @@ using EQTool.ViewModels.SpellWindow;
 using System;
 using System.Linq;
 using System.Windows.Media;
+using System.Windows.Media.Media3D;
 
 namespace EQTool.Services.Handlers
 {
@@ -24,7 +25,16 @@ namespace EQTool.Services.Handlers
 
         private void LogEvents_DragonRoarRemoteEvent(object sender, DragonRoarRemoteEvent e)
         {
-            LogEvents_DragonRoarEvent(spells.AllSpells.FirstOrDefault(a=> a.name == e.SpellName));
+            var ploc = this.activePlayer.Location;
+            var eventloc = new Point3D(e.X ?? -100000, e.Y ?? -100000, e.Z ?? 100000);
+            if (ploc.HasValue)
+            {
+                if (Point3D.Subtract(eventloc, ploc.Value).Length > 1000)
+                {
+                    return;
+                }
+            }
+            LogEvents_DragonRoarEvent(spells.AllSpells.FirstOrDefault(a => a.name == e.SpellName));
         }
 
         private void LogEvents_DragonRoarEvent(object sender, DragonRoarEvent e)

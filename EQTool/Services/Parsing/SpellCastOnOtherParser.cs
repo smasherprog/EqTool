@@ -1,5 +1,4 @@
 ﻿using EQTool.Models;
-using EQTool.ViewModels;
 using EQToolShared;
 using System;
 using System.Collections.Generic;

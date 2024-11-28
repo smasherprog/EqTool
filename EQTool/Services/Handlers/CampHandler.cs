@@ -27,6 +27,7 @@ namespace EQTool.Services.Handlers
         {
             TrySaveYouSpellData();
             spellWindowViewModel.ClearYouSpells();
+            this.activePlayer.Location = null;
         }
         private void TrySaveYouSpellData()
         {
