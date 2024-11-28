@@ -980,5 +980,22 @@ namespace EQTool.UI.SettingsComponents
             });
         
         }
+
+        private void textenteringZone(object sender, RoutedEventArgs e)
+        {
+            var button = sender as System.Windows.Controls.Button;
+            if (!button.IsEnabled)
+            {
+                return;
+            }
+            if (SettingsWindowData.ActivePlayer?.Player == null)
+            {
+                return;
+            }
+            SettingsWindowData.ActivePlayer.Player.EnteringZoneAudio = true;
+            SettingsWindowData.ActivePlayer.Player.EnteringZoneOverlay = true; 
+            ((App)System.Windows.Application.Current).OpenOverLayWindow(); 
+            this.PushLog("You have entered East Commonlands.");
+        }
     }
 }

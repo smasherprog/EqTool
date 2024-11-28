@@ -392,6 +392,28 @@ namespace EQTool.Models
             }
         }
 
+
+        private bool _EnteringZoneAudio;
+        public bool EnteringZoneAudio
+        {
+            get => _EnteringZoneAudio;
+            set
+            {
+                _EnteringZoneAudio = value;
+                OnPropertyChanged();
+            }
+        }
+        private bool _EnteringZoneOverlay;
+        public bool EnteringZoneOverlay
+        {
+            get => _EnteringZoneOverlay;
+            set
+            {
+                _EnteringZoneOverlay = value;
+                OnPropertyChanged();
+            }
+        }
+
         private bool _DeathLoopAudio;
         public bool DeathLoopAudio
         {

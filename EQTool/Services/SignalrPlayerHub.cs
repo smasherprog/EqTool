@@ -5,11 +5,13 @@ using EQToolShared.HubModels;
 using EQToolShared.Map;
 using Microsoft.AspNetCore.SignalR.Client;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
+using System.Windows.Documents;
 using System.Windows.Media.Media3D;
 
 namespace EQTool.Models
@@ -179,13 +181,19 @@ namespace EQTool.Models
             }
         }
 
+        private List<DragonRoarEvent> LastDragonRoars = new List<DragonRoarEvent>();
+
         private void LogEvents_DragonRoarEvent(object sender, DragonRoarEvent e)
         {
+            var recentlyEmittedSameRoar = LastDragonRoars.Any(a => a.Spell.name == e.Spell.name && (e.TimeStamp - a.TimeStamp).TotalSeconds < 4);
             if (activePlayer?.Player != null &&
                 !string.IsNullOrWhiteSpace(activePlayer.Player.Zone) &&
                 activePlayer.Player.ShareTimers &&
-                activePlayer.Player.Server.HasValue)
+                activePlayer.Player.Server.HasValue &&
+                !recentlyEmittedSameRoar
+               )
             {
+                LastDragonRoars.Add(e);
                 InvokeAsync("DragonRoarEvent", new SignalRDragonRoar
                 {
                     SpellName = e.Spell.name,
@@ -197,6 +205,8 @@ namespace EQTool.Models
                     Y = LastPlayer?.Y,
                     Z = LastPlayer?.Z
                 });
+                var now = DateTime.Now;
+                LastDragonRoars.RemoveAll(a => (now - a.TimeStamp).TotalSeconds > 45);
             }
         }
 
@@ -226,7 +236,7 @@ namespace EQTool.Models
             {
                 Debug.WriteLine($"AddCustomTrigger {p.Name}");
                 appDispatcher.DispatchUI(() =>
-                { 
+                {
                     spellWindowViewModel.TryAdd(Create(p));
                 });
             }
