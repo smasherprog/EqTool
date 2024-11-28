@@ -925,6 +925,7 @@ namespace EQTool.UI.SettingsComponents
             }
 
             player.Zone = "templeveeshan";
+            SettingsWindowData.ActivePlayer.Location = new System.Windows.Media.Media3D.Point3D(0, 0, 0);
             button.IsEnabled = false;
             _ = Task.Factory.StartNew(() =>
             {

@@ -33,8 +33,16 @@ namespace EQTool.Services
                         {
                             return matchedspell;
                         }
-                    }
+                    } 
                 }
+                foreach (var npc in zone.NPCThatAOE)
+                { 
+                    var matchedspell = spells.FirstOrDefault(a => npc.SpellEffects.Contains(a.name));
+                    if (matchedspell != null)
+                    {
+                        return matchedspell;
+                    }
+                } 
             }
 
             return null;

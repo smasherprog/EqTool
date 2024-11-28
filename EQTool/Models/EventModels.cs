@@ -210,9 +210,7 @@ namespace EQTool.Models
     }
     public class BaseRemoteEvent
     { 
-        public double? X { get; set; }
-        public double? Y { get; set; }
-        public double? Z { get; set; } 
+        public Point3D? Location { get; set; } 
     }
 
     public class DragonRoarRemoteEvent: BaseRemoteEvent

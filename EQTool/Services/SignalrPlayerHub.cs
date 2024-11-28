@@ -10,6 +10,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
+using System.Windows.Media.Media3D;
 
 namespace EQTool.Models
 {
@@ -206,12 +207,15 @@ namespace EQTool.Models
                 activePlayer.Player.ShareTimers)
             {
                 Debug.WriteLine($"SignalRDragonRoar {p.SpellName}");
+                Point3D? Location = null;
+                if (p.X.HasValue && p.Y.HasValue && p.Z.HasValue)
+                {
+                    Location = new Point3D(p.X.Value, p.Y.Value, p.Z.Value);
+                }
                 this.logEvents.Handle(new DragonRoarRemoteEvent
                 {
                     SpellName = p.SpellName,
-                    Y = p.Y,
-                    X = p.X,
-                    Z = p.Z
+                    Location = Location
                 });
             }
         }
@@ -222,14 +226,8 @@ namespace EQTool.Models
             {
                 Debug.WriteLine($"AddCustomTrigger {p.Name}");
                 appDispatcher.DispatchUI(() =>
-                {
-                    var s = Create(p);
-                    var existingtimer = spellWindowViewModel.SpellList.FirstOrDefault(x => x.Name == s.Name && x.GroupName == s.GroupName);
-                    if (existingtimer != null)
-                    {
-                        _ = spellWindowViewModel.SpellList.Remove(existingtimer);
-                    }
-                    spellWindowViewModel.TryAdd(s);
+                { 
+                    spellWindowViewModel.TryAdd(Create(p));
                 });
             }
         }

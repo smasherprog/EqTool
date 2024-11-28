@@ -25,11 +25,10 @@ namespace EQTool.Services.Handlers
 
         private void LogEvents_DragonRoarRemoteEvent(object sender, DragonRoarRemoteEvent e)
         {
-            var ploc = this.activePlayer.Location;
-            var eventloc = new Point3D(e.X ?? -100000, e.Y ?? -100000, e.Z ?? 100000);
-            if (ploc.HasValue)
+            var ploc = this.activePlayer.Location; 
+            if (ploc.HasValue && e.Location.HasValue)
             {
-                if (Point3D.Subtract(eventloc, ploc.Value).Length > 1000)
+                if (Point3D.Subtract(e.Location.Value, ploc.Value).Length > 1000)
                 {
                     return;
                 }
