@@ -192,8 +192,8 @@
             </ListView>
             <Grid Grid.Row="1" VerticalAlignment="Bottom">
                 <StackPanel Orientation="Horizontal"  HorizontalAlignment="Center">
-                    <Button Content="R" FontSize="7" Width="14" Height="14"  Visibility="{Binding RaidModeToggleButtonVisibility}" ToolTip="{Binding RaidModeButtonToolTip}" Margin="1"  Click="RaidModleToggle" />
-                    <Button Content="X" Margin="1" FontSize="7" Width="14" Height="14" Click="ClearAllOtherSpells" ToolTip="Clear all spells except yours"/>
+                    <Button Content="R" Padding="0" FontSize="10" Width="14" Height="14" Visibility="{Binding RaidModeToggleButtonVisibility}" ToolTip="{Binding RaidModeButtonToolTip}" Click="RaidModleToggle" />
+                    <Button Content="X" Margin="5, 0, 0, 0" Padding="0" FontSize="10" Width="14" Height="14" Click="ClearAllOtherSpells" ToolTip="Clear all spells except yours"/>
                 </StackPanel>
             </Grid> 
         </Grid>
