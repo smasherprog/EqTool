@@ -125,15 +125,15 @@ namespace EQTool.ViewModels
                 _RaidModeEnabled = value;
                 if (_RaidModeEnabled)
                 {
-                    RaidModeButtonTitle = "Disable Raid Mode";
+                    RaidModeButtonToolTip = "Disable Raid Mode";
                     WindowFrameBrush = RaidModeLinearGradientBrush; 
                 }
                 else
                 {
-                    RaidModeButtonTitle = "Enable Raid Mode";
+                    RaidModeButtonToolTip = "Enable Raid Mode";
                     WindowFrameBrush = NonRaidModeLinearGradientBrush; 
                 } 
-                OnPropertyChanged(nameof(RaidModeButtonTitle));
+                OnPropertyChanged(nameof(RaidModeButtonToolTip));
                 OnPropertyChanged();
             }
         }
@@ -155,7 +155,8 @@ namespace EQTool.ViewModels
                 }
             }
         }
-        public string RaidModeButtonTitle { get; set; } = "Disable Raid Mode";
+
+        public string RaidModeButtonToolTip { get; set; } = "Disable Raid Mode";
 
         private Visibility _RaidModeToggleButtonVisibility = Visibility.Collapsed;
 
