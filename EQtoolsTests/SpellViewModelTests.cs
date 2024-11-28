@@ -39,7 +39,7 @@ namespace EQtoolsTests
         public void NecroDA2()
         {
             logParser.Push(YouBeginCasting + " Harmshield.", DateTime.Now);
-            logParser.Push(DummyEntryToForceEmitEvent, DateTime.Now.AddSeconds(2));
+            logParser.Push(DummyEntryToForceEmitEvent, DateTime.Now.AddSeconds(3));
             var dteffect = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Timer && a.Name == "Harmshield") as TimerViewModel;
             Assert.AreEqual(dteffect.TotalDuration.TotalSeconds, 599.0, 2);
             var spelleffect = spellWindowViewModel.SpellList.FirstOrDefault(a => a.Name == "Harmshield") as SpellViewModel;
@@ -60,7 +60,7 @@ namespace EQtoolsTests
         public void ClericDA1()
         {
             logParser.Push(YouBeginCasting + " Divine Aura.", DateTime.Now);
-            logParser.Push(DummyEntryToForceEmitEvent, DateTime.Now.AddSeconds(2));
+            logParser.Push(DummyEntryToForceEmitEvent, DateTime.Now.AddSeconds(3));
             var dteffect = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Timer && a.Name == "Divine Aura") as TimerViewModel;
             Assert.AreEqual(dteffect.TotalDuration.TotalSeconds, 899.0, 2); 
             var spelleffect = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Spell && a.Name == "Divine Aura") as SpellViewModel;
@@ -81,7 +81,7 @@ namespace EQtoolsTests
         public void Dictate()
         {
             logParser.Push("You begin casting Dictate.", DateTime.Now);
-            logParser.Push(DummyEntryToForceEmitEvent, DateTime.Now.AddSeconds(6));
+            logParser.Push(DummyEntryToForceEmitEvent, DateTime.Now.AddSeconds(7));
             var dteffect = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Timer && a.Name == "Dictate") as TimerViewModel;
             Assert.AreEqual(dteffect.TotalDuration.TotalSeconds, 299.0, 2);
             var spelleffect = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Spell && a.Name == "Dictate") as SpellViewModel;

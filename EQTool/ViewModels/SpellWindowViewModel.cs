@@ -267,6 +267,11 @@ namespace EQTool.ViewModels
         {
             appDispatcher.DispatchUI(() =>
             {
+                var existing = SpellList.FirstOrDefault(a => a.Name == match.Name && a.SpellViewModelType == SpellViewModelType.Timer && a.GroupName == match.GroupName);
+                if(existing != null)
+                {
+                    SpellList.Remove(existing);
+                }
                 SpellList.Add(match);
             });
         }

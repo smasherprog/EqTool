@@ -160,7 +160,7 @@ namespace EQTool.Models
 
     public class SpellCastOnOtherEvent : BaseLogParseEvent
     {
-        public Spell Spell { get; set; }
+        public List<Spell> Spells { get; set; }
         public string TargetName { get; set; }
     }
 

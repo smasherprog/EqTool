@@ -10,19 +10,17 @@ namespace EQTool.Services.Parsing
 {
     public class SpellCastOnOtherParser : IEqLogParser
     {
-        private readonly LogEvents logEvents;
-        private readonly ActivePlayer activePlayer;
+        private readonly LogEvents logEvents; 
         private readonly EQSpells spells;
         private readonly SpellDurations spellDurations;
         private readonly List<string> IgnoreSpellsForGuesses = new List<string>(){
             "Tigir's Insects"
         };
 
-        public SpellCastOnOtherParser(SpellDurations spellDurations, LogEvents logEvents, ActivePlayer activePlayer, EQSpells spells)
+        public SpellCastOnOtherParser(SpellDurations spellDurations, LogEvents logEvents, EQSpells spells)
         {
             this.spellDurations = spellDurations;
-            this.logEvents = logEvents;
-            this.activePlayer = activePlayer;
+            this.logEvents = logEvents; 
             this.spells = spells;
         }
 
@@ -50,22 +48,19 @@ namespace EQTool.Services.Parsing
                         });
                         return true;
                     }
-
-                    foundspell = spellDurations.MatchClosestLevelToSpell(foundspells, timestamp);
-                    if (foundspell != null)
+             
+                    var targetname = message.Replace(foundspells.FirstOrDefault().cast_on_other, string.Empty).Trim();
+                    var spellsfound = string.Join(",", foundspells.Select(a => a.name));
+                    Debug.WriteLine($"Other Spells: {spellsfound} Message: {spellmessage}");
+                    this.logEvents.Handle(new SpellCastOnOtherEvent
                     {
-                        var targetname = message.Replace(foundspell.cast_on_other, string.Empty).Trim();
-                        Debug.WriteLine($"Other Spell: {foundspell.name} Message: {spellmessage}");
-                        this.logEvents.Handle(new SpellCastOnOtherEvent
-                        {
-                            Spell = foundspell,
-                            TargetName = targetname,
-                            TimeStamp = timestamp,
-                            Line = message,
-                            LineCounter = lineCounter
-                        });
-                        return true;
-                    }
+                        Spells = foundspells,
+                        TargetName = targetname,
+                        TimeStamp = timestamp,
+                        Line = message,
+                        LineCounter = lineCounter
+                    });
+                    return true;
                 }
             }
             else
@@ -99,7 +94,7 @@ namespace EQTool.Services.Parsing
             if (spells.CastOtherSpells.TryGetValue(spellmessage, out var foundspells))
             {
                 foundspells = foundspells.Where(a => !IgnoreSpellsForGuesses.Contains(a.name)).ToList();
-                var filteroutaoespells = foundspells.Where(a =>
+                foundspells = foundspells.Where(a =>
                      a.SpellType != SpellType.PointBlankAreaofEffect &&
                      a.SpellType != SpellType.TargetedAreaofEffect &&
                      a.SpellType != SpellType.TargetedAreaofEffectLifeTap &&
@@ -110,40 +105,21 @@ namespace EQTool.Services.Parsing
                      a.SpellType != SpellType.AreaNPCOnly &&
                      a.SpellType != SpellType.AreaofEffectPCV2
                 ).ToList();
-                if (filteroutaoespells.Any())
+                var spellsfound = string.Join(",", foundspells.Select(a => a.name));
+                Debug.WriteLine($"Other Spells: {spellsfound} Message: {spellmessage}");
+                if (MasterNPCList.NPCs.Contains(targetname))
                 {
-                    foundspells = filteroutaoespells;
+                    targetname = " " + targetname;
                 }
-                var foundspell = spellDurations.MatchDragonRoar(foundspells, timestamp);
-                if (foundspell != null)
+                this.logEvents.Handle(new SpellCastOnOtherEvent
                 {
-                    this.logEvents.Handle(new DragonRoarEvent
-                    {
-                        Spell = foundspell,
-                        TimeStamp = timestamp,
-                        Line = message,
-                        LineCounter = lineCounter
-                    });
-                    return true;
-                }
-                foundspell = this.spellDurations.MatchClosestLevelToSpell(foundspells, timestamp);
-                if (foundspell != null)
-                {
-                    Debug.WriteLine($"Other Spell: {foundspell.name} Message: {spellmessage}");
-                    if (MasterNPCList.NPCs.Contains(targetname))
-                    {
-                        targetname = " " + targetname;
-                    }
-                    this.logEvents.Handle(new SpellCastOnOtherEvent
-                    {
-                        Spell = foundspell,
-                        TargetName = targetname,
-                        TimeStamp = timestamp,
-                        Line = message,
-                        LineCounter = lineCounter
-                    });
-                    return true;
-                }
+                    Spells = foundspells,
+                    TargetName = targetname,
+                    TimeStamp = timestamp,
+                    Line = message,
+                    LineCounter = lineCounter
+                });
+                return true;
             }
 
             return false;

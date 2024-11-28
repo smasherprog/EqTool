@@ -269,7 +269,9 @@ namespace EQTool.UI.SettingsComponents
                 new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Jolt"), TargetName = "Tunare"},
 
                 new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Cinder Jolt"), TargetName = "Tunare"},
-                new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Cinder Jolt"), TargetName = "Tunare"}
+                new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Cinder Jolt"), TargetName = "Tunare"},
+
+                new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Defensive Discipline"), TargetName = "Aasgard"}
             };
 
             foreach (var item in listofspells)

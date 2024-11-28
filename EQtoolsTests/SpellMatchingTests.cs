@@ -343,7 +343,7 @@ namespace EQtoolsTests
             var line = $"You begin casting {spellname}.";
             player.Player = new PlayerInfo
             {
-                Level = 21,
+                Level = 24,
                 PlayerClass = PlayerClasses.Magician
             };
 
@@ -570,8 +570,23 @@ namespace EQtoolsTests
             player.Player.Level = 54;
             var foundspell = spellDurations.MatchClosestLevelToSpell(spells1, DateTime.Now);
             Assert.IsNotNull(foundspell);
+            Assert.AreEqual(aego, foundspell.name);
         }
 
+        [TestMethod]
+        public void TestBurnout()
+        {
+            var spells = container.Resolve<EQSpells>();
+            var spellname = "Burnout";
+            var spell = spells.AllSpells.FirstOrDefault(a => a.name == spellname);
+            _ = spells.CastOtherSpells.TryGetValue(spell.cast_on_other, out var spells1);
+            player.Player.PlayerClass = PlayerClasses.Magician;
+            player.Player.Level = 14;
+            var foundspell = spellDurations.MatchClosestLevelToSpell(spells1, DateTime.Now);
+            Assert.IsNotNull(foundspell);
+            Assert.AreEqual(spellname, foundspell.name); 
+        }
+         
         [TestMethod]
         public void TestClairityGuess()
         {
@@ -581,7 +596,8 @@ namespace EQtoolsTests
             player.Player.PlayerClass = PlayerClasses.Cleric;
             player.Player.Level = 54;
             var foundspell = spellDurations.MatchClosestLevelToSpell(spells1, DateTime.Now);
-            Assert.IsNotNull(foundspell);
+            Assert.IsNotNull(foundspell); 
+            Assert.AreEqual("Clarity II", foundspell.name);
         }
 
         [TestMethod]
@@ -596,6 +612,7 @@ namespace EQtoolsTests
             var duration = SpellDurations.GetDuration_inSeconds(foundspell, PlayerClasses.Cleric, 54);
             Assert.IsNotNull(foundspell);
             Assert.IsNotNull(duration);
+            Assert.AreEqual("Clarity II", foundspell.name);
         }
 
         [TestMethod]
@@ -607,7 +624,7 @@ namespace EQtoolsTests
             player.Player.PlayerClass = PlayerClasses.Cleric;
             logParser.Push(line, DateTime.Now);
             var spellvm = spellWindowViewModel.SpellList.FirstOrDefault() as SpellViewModel;
-            Assert.IsNotNull(spellvm);
+            Assert.IsNotNull(spellvm); 
         }
 
         [TestMethod]

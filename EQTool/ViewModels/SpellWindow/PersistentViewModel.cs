@@ -53,7 +53,7 @@ namespace EQTool.ViewModels.SpellWindow
         public virtual SpellViewModelType SpellViewModelType => SpellViewModelType.Persistent;
         public virtual Visibility ColumnVisibility => Visibility.Visible;
 
-        public virtual string Sorting => GroupName.StartsWith(" ") ? GroupName : GroupName;
+        public virtual string Sorting => GroupName;
         public string GroupName { get; set; }
         public SolidColorBrush ProgressBarColor { get; set; } = Brushes.DarkSeaGreen;
         public DateTime UpdatedDateTime { get; set; } = DateTime.Now;

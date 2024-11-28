@@ -333,7 +333,7 @@
     <Compile Include="Services\Handlers\YouFinishCastingHandler.cs" />
     <Compile Include="Services\Handlers\YouBeginCastingHandler.cs" />
     <Compile Include="Services\Handlers\YourSpellInterupptedHandler.cs" />
-    <Compile Include="Services\Handlers\SpellCastOnItherHandler.cs" />
+    <Compile Include="Services\Handlers\SpellCastOnOtherHandler.cs" />
     <Compile Include="Services\Handlers\SpellWornOffOtherHandler.cs" />
     <Compile Include="Services\Handlers\SpellWornOffSelfHandler.cs" />
     <Compile Include="Services\Handlers\EnterWorldHandler.cs" />
