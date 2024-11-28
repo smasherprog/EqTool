@@ -133,21 +133,24 @@ namespace EQTool.Services.Handlers
             {
                 var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(spell, activePlayer.Player?.PlayerClass, activePlayer.Player?.Level));
                 spellduration = spellduration.Add(TimeSpan.FromMilliseconds(delayOffset));
-                var vm = new SpellViewModel
-                {
-                    UpdatedDateTime = DateTime.Now,
-                    PercentLeft = 100,
-                    Type = spell.type,
-                    SpellType = spell.SpellType,
-                    GroupName = grpname,
-                    Name = spellname,
-                    Rect = spell.Rect,
-                    Icon = spell.SpellIcon,
-                    Classes = spell.Classes,
-                    TotalDuration = spellduration,
-                    TotalRemainingDuration = spellduration
-                };
-                spellWindowViewModel.TryAdd(vm);
+                if (spellduration.TotalSeconds >0)
+                { 
+                    var vm = new SpellViewModel
+                    {
+                        UpdatedDateTime = DateTime.Now,
+                        PercentLeft = 100,
+                        Type = spell.type,
+                        SpellType = spell.SpellType,
+                        GroupName = grpname,
+                        Name = spellname,
+                        Rect = spell.Rect,
+                        Icon = spell.SpellIcon,
+                        Classes = spell.Classes,
+                        TotalDuration = spellduration,
+                        TotalRemainingDuration = spellduration
+                    };
+                    spellWindowViewModel.TryAdd(vm);
+                }
             }
         }
     }

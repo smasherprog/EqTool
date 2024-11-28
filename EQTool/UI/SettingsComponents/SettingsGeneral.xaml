@@ -301,6 +301,10 @@
                     <Button Click="testspellsclicked"  MinWidth="100">Add Test Spells</Button>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Share Timers"  VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
+                    <Button Click="testsharetimers"  MinWidth="100">Share Timers Test</Button>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Map"  VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
                     <Button Click="textmapclicked" MinWidth="100">Test Locations</Button>
                 </StackPanel>

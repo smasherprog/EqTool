@@ -11,6 +11,7 @@ using System.Diagnostics;
 using System.Globalization;
 using System.IO;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
@@ -232,9 +233,9 @@ namespace EQTool.UI.SettingsComponents
         }
         private void testspellsclicked(object sender, RoutedEventArgs e)
         {
-            var peoplenames = new List<string>() { "Joe", "Huntor", "Sanare", "Pigy", "Leutin", "Bealls", "Vasanle", "Jenkins", "Charlie"};
+            var peoplenames = new List<string>() { "Joe", "Huntor", "Sanare", "Pigy", "Leutin", "Bealls", "Vasanle", "Jenkins", "Charlie" };
             var listofspells = new List<CastTest>
-            { 
+            {
                 new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Heroic Bond"), TargetName = EQSpells.SpaceYou},
 
                 new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Heroic Bond"), TargetName = "Aasgard"},
@@ -242,7 +243,7 @@ namespace EQTool.UI.SettingsComponents
                 new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Shield of Words"), TargetName = "Aasgard"},
                 new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Boon of the Clear Mind"), TargetName = "Aasgard"},
                 new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Gift of Brilliance"), TargetName = "Aasgard"},
-                new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Defensive Discipline"), TargetName = "Aasgard"}, 
+                new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Defensive Discipline"), TargetName = "Aasgard"},
 
                 new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Mana Sieve"), TargetName = "a bad guy"},
                 new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Mana Sieve"), TargetName = "a bad guy"},
@@ -272,7 +273,7 @@ namespace EQTool.UI.SettingsComponents
 
             };
 
-            foreach(var item in peoplenames)
+            foreach (var item in peoplenames)
             {
                 listofspells.Add(new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Disease Cloud"), TargetName = item });
                 listofspells.Add(new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Lesser Shielding"), TargetName = item });
@@ -291,7 +292,7 @@ namespace EQTool.UI.SettingsComponents
                 {
                     PushLog(item.TargetName + " " + item.Spell.cast_on_other);
                 }
-               // logEvents.Handle(item);
+                // logEvents.Handle(item);
             }
             PushLog("Fright says, 'Luetin'");
             PushLog("You say, 'PigTimer-6:40-Guard_George'");
@@ -615,7 +616,7 @@ namespace EQTool.UI.SettingsComponents
                     {
                         GuildName = "The Drift",
                         Sharing = EQToolShared.Map.MapLocationSharing.Everyone,
-                        Name = item, 
+                        Name = item,
                         Server = Servers.Green,
                         Zone = player.Zone,
                         X = map.AABB.Center.X + map.Offset.X + r.Next(-movementoffset, movementoffset),
@@ -638,7 +639,7 @@ namespace EQTool.UI.SettingsComponents
                             {
                                 GuildName = "The Drift",
                                 Sharing = EQToolShared.Map.MapLocationSharing.Everyone,
-                                Name = item.Name, 
+                                Name = item.Name,
                                 Server = Servers.Green,
                                 Zone = player.Zone,
                                 X = item.X + r.Next(-movementoffset, movementoffset),
@@ -908,6 +909,76 @@ namespace EQTool.UI.SettingsComponents
             SettingsWindowData.ActivePlayer.Player.DeathLoopAudio = true;
             SettingsWindowData.ActivePlayer.Player.ChChainWarningAudio = true;
             SaveConfig();
-        } 
+        }
+
+        private void testsharetimers(object sender, RoutedEventArgs e)
+        {
+            var button = sender as System.Windows.Controls.Button;
+            if (!button.IsEnabled)
+            {
+                return;
+            }
+
+            var player = SettingsWindowData.ActivePlayer?.Player;
+            if (player == null)
+            {
+                return;
+            }
+
+            player.Zone = "templeveeshan";
+            button.IsEnabled = false;
+            _ = Task.Factory.StartNew(() =>
+            {
+                try
+                { 
+                    this.logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rain of Molten Lava" }); 
+                    Thread.Sleep(200);
+                    this.logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rain of Molten Lava" });
+                    this.logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rain of Molten Lava" });
+                    this.logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rain of Molten Lava" });
+                    this.logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rain of Molten Lava" });
+                    this.logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rain of Molten Lava" });
+                    this.logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Wave of Cold" });
+                    this.logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Wave of Cold" });
+                    this.logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Wave of Cold" });
+                    Thread.Sleep(2000);
+                    this.logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rain of Molten Lava" });
+                    this.logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rain of Molten Lava" });
+                    this.logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rain of Molten Lava" });
+                    this.logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rain of Molten Lava" });
+                    this.logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rain of Molten Lava" });
+                    this.logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Wave of Cold" });
+                    this.logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Wave of Cold" });
+                    this.PushLog("A blast of cold freezes your skin.");
+                    this.logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Wave of Cold" });
+                    Thread.Sleep(2000);
+                    appDispatcher.DispatchUI(() =>
+                    { 
+                        player.Zone = "necropolis";
+                    });
+                    this.PushLog("You resist the Dragon Roar spell!"); 
+                    this.logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Dragon Roar" });
+                    Thread.Sleep(2000);
+                    this.logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Stun Breath" });
+                    this.logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rotting Flesh" });
+                    this.logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Putrefy Flesh" });
+                    Thread.Sleep(2000);
+                    this.logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rain of Molten Lava" });
+                    this.logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Wave of Cold" });
+                    Thread.Sleep(2000);
+                    this.logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Stun Breath" });
+                    this.logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rotting Flesh" });
+                    this.logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Putrefy Flesh" });
+                }
+                finally
+                {
+                    appDispatcher.DispatchUI(() =>
+                    {
+                        button.IsEnabled = true;
+                    });
+                }
+            });
+        
+        }
     }
 }

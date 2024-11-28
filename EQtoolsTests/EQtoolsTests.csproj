@@ -204,7 +204,7 @@
     <Compile Include="CommsParserTests.cs" />
     <Compile Include="ExpGainedTests.cs" />
     <Compile Include="FactionParserTests.cs" />
-    <Compile Include="Fakes\Class1.cs" />
+    <Compile Include="Fakes\AppDispatcherFake.cs" />
     <Compile Include="Fakes\TextToSpeachFake.cs" />
     <Compile Include="PlayerLevelDetectionParserTests.cs" />
     <Compile Include="CustomTimerHandlerTests.cs" />
