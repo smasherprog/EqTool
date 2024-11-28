@@ -256,8 +256,7 @@ namespace EQTool.ViewModels
             }
         }
 
-        public bool IsLoggingDisabled => !_IsLoggingEnabled;
-
+        public bool IsLoggingDisabled => !_IsLoggingEnabled; 
         public bool MissingConfiguration => DoesNotHaveEqPath || IsLoggingDisabled;
         public bool NotMissingConfiguration => HasEqPath && IsLoggingEnabled;
         public bool HasCharName => !string.IsNullOrWhiteSpace(ActivePlayer?.Player?.Name);

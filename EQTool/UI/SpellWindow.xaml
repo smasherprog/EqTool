@@ -20,12 +20,14 @@
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="20" />
-                <RowDefinition/>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
             </Grid.RowDefinitions>
             <Border Background="{Binding WindowFrameBrush}" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
               CornerRadius="5,5,0,0" Margin="-1,0,-1,0" MouseLeftButtonDown="DragWindow">
                 <Grid>
-                    <TextBlock Foreground="White" FontWeight="Bold" VerticalAlignment="Center" Margin="10,1,10,1" Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}, Path=Title}"/>
+                    <TextBlock Foreground="White" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,1,10,1" Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}, Path=Title}"/>
+
                     <StackPanel Orientation="Horizontal"  HorizontalAlignment="Center">
                         <Button Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="openmobinfo" ToolTip="Open Mob Info Window">
                             <Image Source="pack://application:,,,/Images/toolbox.png"/>
@@ -47,6 +49,7 @@
             </Border>
             <ListView ItemsSource="{Binding SpellList}" Grid.Column="0" Name="spelllistview" VirtualizingPanel.IsVirtualizing="True" 
                       ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                      BorderThickness="0"
                       VirtualizingPanel.VirtualizationMode="Recycling" Grid.Row="1" Background="Transparent">
                 <ListView.Resources>
                     <DataTemplate DataType="{x:Type vm:TimerViewModel}">
@@ -188,6 +191,10 @@
                     </Style>
                 </ListView.ItemContainerStyle>
             </ListView>
+            <StackPanel VerticalAlignment="Bottom" Orientation="Vertical" Grid.Column="0" Grid.Row="2">
+                <Button Visibility="{Binding RaidModeToggleButtonVisibility}" Content="{Binding RaidModeButtonTitle}" Margin="1"  Click="RaidModleToggle" />
+                <Button Content="Clear Other Spells" Margin="1" Click="ClearAllOtherSpells" />
+            </StackPanel>
         </Grid>
     </Border>
 </local:BaseSaveStateWindow>

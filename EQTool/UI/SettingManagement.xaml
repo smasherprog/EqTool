@@ -45,7 +45,9 @@
                         <Button Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="openmap" ToolTip="Open Map Window">
                             <Image Source="pack://application:,,,/Images/map.png"/>
                         </Button>
-                        <Button Content="O" Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="opensettings" ToolTip="Open Settings Window" />
+                        <Button Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="openmobinfo" ToolTip="Open Mob Info Window">
+                            <Image Source="pack://application:,,,/Images/toolbox.png"/>
+                        </Button>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal"  HorizontalAlignment="Right">
                         <Button Content="_" Margin="1" FontSize="7" Width="10" Height="10" Padding="0" Click="MinimizeWindow"/>

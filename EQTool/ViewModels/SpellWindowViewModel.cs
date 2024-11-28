@@ -2,12 +2,14 @@
 using EQTool.Services;
 using EQTool.Services.Spells;
 using EQTool.ViewModels.SpellWindow;
+using EQToolShared;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
 
@@ -109,21 +111,64 @@ namespace EQTool.ViewModels
                 OnPropertyChanged();
             }
         }
+
         private bool _RaidModeEnabled = false;
         public bool RaidModeEnabled
         {
             get => _RaidModeEnabled;
             set
             {
+                if (_RaidModeEnabled == value)
+                {
+                    return;
+                }
                 _RaidModeEnabled = value;
                 if (_RaidModeEnabled)
                 {
-                    WindowFrameBrush = RaidModeLinearGradientBrush;
+                    RaidModeButtonTitle = "Disable Raid Mode";
+                    WindowFrameBrush = RaidModeLinearGradientBrush; 
                 }
                 else
                 {
-                    WindowFrameBrush = NonRaidModeLinearGradientBrush;
+                    RaidModeButtonTitle = "Enable Raid Mode";
+                    WindowFrameBrush = NonRaidModeLinearGradientBrush; 
+                } 
+                OnPropertyChanged(nameof(RaidModeButtonTitle));
+                OnPropertyChanged();
+            }
+        }
+
+        private int _SpellGroupCount = 0;
+        private int SpellGroupCount
+        {
+            get { return this._SpellGroupCount; }
+            set
+            {
+                _SpellGroupCount = value;
+                if (_SpellGroupCount > 10)
+                {
+                    RaidModeToggleButtonVisibility = Visibility.Visible;
                 }
+                else
+                {
+                    RaidModeToggleButtonVisibility = Visibility.Collapsed;
+                }
+            }
+        }
+        public string RaidModeButtonTitle { get; set; } = "Disable Raid Mode";
+
+        private Visibility _RaidModeToggleButtonVisibility = Visibility.Collapsed;
+
+        public Visibility RaidModeToggleButtonVisibility
+        {
+            get => _RaidModeToggleButtonVisibility;
+            set
+            {
+                if (_RaidModeToggleButtonVisibility == value)
+                {
+                    return;
+                } 
+                _RaidModeToggleButtonVisibility = value;
                 OnPropertyChanged();
             }
         }
@@ -134,8 +179,8 @@ namespace EQTool.ViewModels
             {
                 var player = activePlayer.Player;
                 var raidmodedetection = settings.RaidModeDetection ?? true;
-                var groupcount = SpellList.Where(a => a.SpellViewModelType == SpellViewModelType.Spell).GroupBy(a => a.GroupName).Count();
-                RaidModeEnabled = raidmodedetection && player?.PlayerClass != null && groupcount > 10;
+                SpellGroupCount = SpellList.Where(a => a.SpellViewModelType == SpellViewModelType.Spell).GroupBy(a => a.GroupName).Count();
+                RaidModeEnabled = raidmodedetection && player?.PlayerClass != null && SpellGroupCount > 10;
                 var itemstoremove = new List<PersistentViewModel>();
                 var timerTypes = new List<SpellViewModelType>() { SpellViewModelType.Roll, SpellViewModelType.Spell, SpellViewModelType.Timer };
                 foreach (var item in SpellList.Where(a => timerTypes.Contains(a.SpellViewModelType)).Cast<TimerViewModel>().ToList())
@@ -148,22 +193,23 @@ namespace EQTool.ViewModels
                 }
                 foreach (var item in SpellList.Where(a => a.SpellViewModelType == SpellViewModelType.Spell).Cast<SpellViewModel>().ToList())
                 {
-                    item.ShowOnlyYou = settings.YouOnlySpells;
-                    if (RaidModeEnabled && player.PlayerClass.HasValue)
+                    var hidespell = false;
+                    if (settings.YouOnlySpells)
+                    {
+                        hidespell = item.GroupName != EQSpells.SpaceYou;
+                    }
+                    else if (RaidModeEnabled && player.PlayerClass.HasValue)
                     {
                         if (item.GroupName != EQSpells.SpaceYou)
                         {
-                            item.HideClasses = SpellUIExtensions.HideSpell(new List<EQToolShared.Enums.PlayerClasses>() { player.PlayerClass.Value }, item.Classes) && item.GroupName != EQSpells.SpaceYou;
-                            if (item.SpellType == SpellType.Self)
-                            {
-                                item.HideClasses = true;
-                            }
+                            hidespell = SpellUIExtensions.HideSpell(new List<EQToolShared.Enums.PlayerClasses>() { player.PlayerClass.Value }, item.Classes) || item.SpellType == SpellType.Self;
                         }
                     }
                     else
                     {
-                        item.HideClasses = player != null && SpellUIExtensions.HideSpell(player.ShowSpellsForClasses, item.Classes) && item.GroupName != EQSpells.SpaceYou;
+                        hidespell = SpellUIExtensions.HideSpell(player.ShowSpellsForClasses, item.Classes) && item.GroupName != EQSpells.SpaceYou;
                     }
+                    item.ColumnVisibility = hidespell ? System.Windows.Visibility.Collapsed : System.Windows.Visibility.Visible;
                 }
                 var d = DateTime.Now;
                 var persistentTypes = new List<SpellViewModelType>() { SpellViewModelType.Persistent, SpellViewModelType.Counter };
@@ -210,13 +256,22 @@ namespace EQTool.ViewModels
             });
         }
 
-        public void ClearAllSpells()
+        public void ClearAllOtherSpells()
         {
             appDispatcher.DispatchUI(() =>
             {
-                while (SpellList.Count > 0)
+                var spellstoremove = SpellList
+                .Where(a => a.SpellViewModelType == SpellViewModelType.Spell)
+                .Cast<SpellViewModel>()
+                .Where(a => a.GroupName != EQSpells.SpaceYou)
+                .ToList();
+
+                foreach (var spell in spellstoremove)
                 {
-                    SpellList.RemoveAt(SpellList.Count - 1);
+                    if (!MasterNPCList.NPCs.Contains(spell.GroupName))
+                    {
+                        SpellList.Remove(spell);
+                    }
                 }
             });
         }
@@ -268,7 +323,7 @@ namespace EQTool.ViewModels
             appDispatcher.DispatchUI(() =>
             {
                 var existing = SpellList.FirstOrDefault(a => a.Name == match.Name && a.SpellViewModelType == SpellViewModelType.Timer && a.GroupName == match.GroupName);
-                if(existing != null)
+                if (existing != null)
                 {
                     SpellList.Remove(existing);
                 }

@@ -1,9 +1,11 @@
 ﻿using EQTool.Models;
+using EQTool.Properties;
 using EQTool.Services;
 using EQTool.ViewModels;
 using EQTool.ViewModels.SpellWindow;
 using EQToolShared.Enums;
 using System.Linq;
+using System.Runtime;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -12,17 +14,20 @@ namespace EQTool.UI
     public partial class SpellWindow : BaseSaveStateWindow
     {
         private readonly SpellWindowViewModel spellWindowViewModel;
+        private readonly SettingsWindowViewModel settingsWindowViewModel;
 
         public SpellWindow(
             TimersService timersService,
             EQToolSettings settings,
             SpellWindowViewModel spellWindowViewModel,
+            SettingsWindowViewModel settingsWindowViewModel,
             LogEvents logEvents,
             EQToolSettingsLoad toolSettingsLoad,
             ActivePlayer activePlayer,
             IAppDispatcher appDispatcher,
             LoggingService loggingService) : base(settings.SpellWindowState, toolSettingsLoad, settings)
         {
+            this.settingsWindowViewModel = settingsWindowViewModel;
             loggingService.Log(string.Empty, EventType.OpenMap, activePlayer?.Player?.Server);
             DataContext = this.spellWindowViewModel = spellWindowViewModel;
             InitializeComponent();
@@ -43,6 +48,16 @@ namespace EQTool.UI
             {
                 _ = spellWindowViewModel.SpellList.Remove(item);
             }
+        }
+
+        private void ClearAllOtherSpells(object sender, RoutedEventArgs e)
+        {
+            spellWindowViewModel.ClearAllOtherSpells();
+        }
+
+        private void RaidModleToggle(object sender, RoutedEventArgs e)
+        {
+            this.settingsWindowViewModel.RaidModeDetection = !this.settingsWindowViewModel.RaidModeDetection;
         }
     }
 }

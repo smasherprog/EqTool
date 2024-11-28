@@ -278,7 +278,7 @@
                     <CheckBox IsChecked="{Binding ActivePlayer.Player.ShareTimers}" Click="Savesettings" MinWidth="75"></CheckBox>
                 </StackPanel>
                 <DockPanel>
-                    <TextBlock TextWrapping="Wrap" Text="When this is checked, timers will be shared with those around you for detrimental spells. So, if you slow a mob, anyone within range will also see the slow timer. Same for dragon effects!" />
+                    <TextBlock MaxWidth="400" TextWrapping="Wrap" Text="When this is checked, timers will be shared with those around you for detrimental spells. So, if you slow a mob, anyone within range will also see the slow timer. Same for dragon effects!" />
                  </DockPanel>
             </StackPanel>
         </TabItem>

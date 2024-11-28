@@ -51,7 +51,22 @@ namespace EQTool.ViewModels.SpellWindow
         }
 
         public virtual SpellViewModelType SpellViewModelType => SpellViewModelType.Persistent;
-        public virtual Visibility ColumnVisibility => Visibility.Visible;
+
+        private Visibility _ColumnVisibility = Visibility.Visible;
+
+        public Visibility ColumnVisibility
+        {
+            get => _ColumnVisibility;
+            set
+            {
+                if (_ColumnVisibility == value)
+                {
+                    return;
+                }
+                _ColumnVisibility = value;
+                OnPropertyChanged();
+            }
+        }
 
         public virtual string Sorting => GroupName;
         public string GroupName { get; set; }
