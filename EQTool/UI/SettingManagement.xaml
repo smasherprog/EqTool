@@ -8,8 +8,9 @@
         xmlns:vm="clr-namespace:EQTool.ViewModels.SettingsComponents"
         mc:Ignorable="d"
         Title="SettingManagement" 
-        Height="600" 
-        Width="600"
+        Style="{DynamicResource MyWindowStyleDPS}"
+        MinHeight="600" 
+        MinWidth="600"
        WindowStyle="None" 
    SizeToContent="WidthAndHeight"
    AllowsTransparency="True">
