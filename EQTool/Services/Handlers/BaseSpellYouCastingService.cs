@@ -2,8 +2,10 @@
 using EQTool.ViewModels;
 using EQTool.ViewModels.SpellWindow;
 using EQToolShared;
+using EQToolShared.Enums;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Media;
 
 namespace EQTool.Services.Handlers
@@ -33,18 +35,21 @@ namespace EQTool.Services.Handlers
             "Waves of the Deep Sea",
             "Anarchy"
         };
-         
+
         private readonly SpellWindowViewModel spellWindowViewModel;
         private readonly ActivePlayer activePlayer;
-         
-        public BaseSpellYouCastingHandler(  SpellWindowViewModel spellWindowViewModel, ActivePlayer activePlayer)
-        { 
-            this.spellWindowViewModel = spellWindowViewModel; 
+        private readonly PlayerTrackerService playerTrackerService;
+
+        public BaseSpellYouCastingHandler(PlayerTrackerService playerTrackerService, SpellWindowViewModel spellWindowViewModel, ActivePlayer activePlayer)
+        {
+            this.playerTrackerService = playerTrackerService;
+            this.spellWindowViewModel = spellWindowViewModel;
             this.activePlayer = activePlayer;
         }
 
         public void Handle(Spell spell, string targetName, int delayOffset, DateTime timestamp)
         {
+            var targetclass = playerTrackerService.GetPlayer(targetName)?.PlayerClass;
             var spellname = spell.name;
             if (SpellsThatNeedTimers.Contains(spell.name))
             {
@@ -52,6 +57,7 @@ namespace EQTool.Services.Handlers
                 {
                     PercentLeft = 100,
                     GroupName = targetName,
+                    TargetClass = targetclass,
                     Name = spellname,
                     Rect = spell.Rect,
                     Icon = spell.SpellIcon,
@@ -100,12 +106,13 @@ namespace EQTool.Services.Handlers
                     Type = spell.type,
                     SpellType = spell.SpellType,
                     GroupName = targetName,
+                    TargetClass = targetclass,
                     Name = spellname,
                     Rect = spell.Rect,
                     Icon = spell.SpellIcon,
                     Classes = spell.Classes,
                     TotalDuration = TimeSpan.FromSeconds(basetime),
-                    TotalRemainingDuration = TimeSpan.FromSeconds(basetime),
+                    TotalRemainingDuration = TimeSpan.FromSeconds(basetime)
                 };
                 spellWindowViewModel.TryAdd(vm);
             }
@@ -122,6 +129,7 @@ namespace EQTool.Services.Handlers
                 {
                     UpdatedDateTime = DateTime.Now,
                     GroupName = grpname,
+                    TargetClass = targetclass,
                     Name = spellname,
                     Rect = spell.Rect,
                     Icon = spell.SpellIcon,
@@ -134,7 +142,7 @@ namespace EQTool.Services.Handlers
             {
                 var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(spell, activePlayer.Player?.PlayerClass, activePlayer.Player?.Level));
                 spellduration = spellduration.Add(TimeSpan.FromMilliseconds(delayOffset));
-                if (spellduration.TotalSeconds >0)
+                if (spellduration.TotalSeconds > 0)
                 { 
                     var vm = new SpellViewModel
                     {
@@ -143,6 +151,7 @@ namespace EQTool.Services.Handlers
                         Type = spell.type,
                         SpellType = spell.SpellType,
                         GroupName = grpname,
+                        TargetClass = targetclass,
                         Name = spellname,
                         Rect = spell.Rect,
                         Icon = spell.SpellIcon,

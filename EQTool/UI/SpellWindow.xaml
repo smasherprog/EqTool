@@ -15,12 +15,12 @@
         <WindowChrome 
         CaptionHeight="0"
         ResizeBorderThickness="5" />
-    </WindowChrome.WindowChrome> 
+    </WindowChrome.WindowChrome>
     <Border CornerRadius="5" BorderBrush="{Binding WindowFrameBrush}" BorderThickness="1,0,1,1">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="20" />
-                <RowDefinition Height="*"/> 
+                <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <Border Background="{Binding WindowFrameBrush}" Grid.Column="0" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"
               CornerRadius="5,5,0,0" Margin="-1,0,-1,0" MouseLeftButtonDown="DragWindow">
@@ -54,7 +54,7 @@
                     <DataTemplate DataType="{x:Type vm:TimerViewModel}">
                         <Grid Visibility="{Binding ColumnVisibility}">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/> 
+                                <ColumnDefinition Width="Auto"/>
                                 <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             <ProgressBar Grid.Column="0" Grid.ColumnSpan="2" Value="{Binding PercentLeft}" Maximum="100"  Foreground="{Binding ProgressBarColor}"  />
@@ -64,9 +64,9 @@
                                         <CroppedBitmap Source="{Binding Icon.Icon}" SourceRect="{Binding Rect}" />
                                     </Image.Source>
                                 </Image>
-                                <TextBlock HorizontalAlignment="Left" FontWeight="Bold" Text="{Binding Name}"/> 
+                                <TextBlock HorizontalAlignment="Left" FontWeight="Bold" Text="{Binding Name}"/>
                             </StackPanel>
-                            <StackPanel Orientation="Horizontal" Grid.Column="1" HorizontalAlignment="Right"> 
+                            <StackPanel Orientation="Horizontal" Grid.Column="1" HorizontalAlignment="Right">
                                 <TextBlock TextAlignment="Right" FontWeight="Bold" Text="{Binding SecondsLeftPretty}"/>
                                 <Button Margin="5, 0, 0, 0" Width="14" Height="14" Click="RemoveSingleItem" ToolTip="Remove from list">
                                     <Image Source="pack://application:,,,/Images/Trash.png"/>
@@ -88,16 +88,16 @@
                                         <CroppedBitmap Source="{Binding Icon.Icon}" SourceRect="{Binding Rect}" />
                                     </Image.Source>
                                 </Image>
-                                <TextBlock HorizontalAlignment="Left" FontWeight="Bold" Text="{Binding Name}"/> 
+                                <TextBlock HorizontalAlignment="Left" FontWeight="Bold" Text="{Binding Name}"/>
                             </StackPanel>
-                            <StackPanel Orientation="Horizontal" Grid.Column="1" > 
+                            <StackPanel Orientation="Horizontal" Grid.Column="1" >
                                 <TextBlock HorizontalAlignment="Left" FontWeight="Bold" Text=" Count --> "/>
                                 <TextBlock HorizontalAlignment="Left" FontWeight="Bold" Text="{Binding Count}"/>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Grid.Column="2" HorizontalAlignment="Right">
                                 <Button Margin="5, 0, 0, 0" Width="14" Height="14" Click="RemoveSingleItem" ToolTip="Remove from list">
                                     <Image Source="pack://application:,,,/Images/Trash.png"/>
-                                </Button> 
+                                </Button>
                             </StackPanel>
                         </Grid>
                     </DataTemplate>
@@ -117,7 +117,7 @@
                                 </Image>
                                 <TextBlock HorizontalAlignment="Left" FontWeight="Bold" Text="{Binding Name}"/>
                             </StackPanel>
-                            <StackPanel Orientation="Horizontal" Grid.Column="1" >  
+                            <StackPanel Orientation="Horizontal" Grid.Column="1" >
                                 <TextBlock HorizontalAlignment="Left" FontWeight="Bold" Text="{Binding RollText}"/>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Grid.Column="2" HorizontalAlignment="Right">
@@ -131,7 +131,7 @@
                         <Grid Visibility="{Binding ColumnVisibility}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*"/> 
+                                <ColumnDefinition Width="*"/>
                             </Grid.ColumnDefinitions>
                             <ProgressBar Grid.Column="0" Grid.ColumnSpan="2"  Value="{Binding PercentLeft}"  Maximum="100"  Foreground="{Binding ProgressBarColor}"  />
                             <StackPanel Orientation="Horizontal" Grid.Column="0" >
@@ -141,7 +141,7 @@
                                     </Image.Source>
                                 </Image>
                                 <TextBlock HorizontalAlignment="Left" FontWeight="Bold" Text="{Binding Name}"/>
-                            </StackPanel> 
+                            </StackPanel>
                             <StackPanel Orientation="Horizontal" Grid.Column="2" HorizontalAlignment="Right">
                                 <TextBlock TextAlignment="Right" FontWeight="Bold" Text="{Binding SecondsLeftPretty}"/>
                                 <Button Margin="5, 0, 0, 0" Width="14" Height="14" Click="RemoveSingleItem" ToolTip="Remove from list">
@@ -153,7 +153,7 @@
                 </ListView.Resources>
                 <ListView.GroupStyle>
                     <GroupStyle>
-                        <GroupStyle.ContainerStyle> 
+                        <GroupStyle.ContainerStyle>
                             <Style TargetType="{x:Type GroupItem}">
                                 <Setter Property="Template">
                                     <Setter.Value>
@@ -161,12 +161,22 @@
                                             <Expander IsExpanded="True" Visibility="{Binding Items[0].HeaderVisibility}" Background="LightGray">
                                                 <Expander.Header>
                                                     <DockPanel HorizontalAlignment="{Binding HorizontalAlignment, RelativeSource={RelativeSource AncestorType=ContentPresenter}, Mode=OneWayToSource}">
-                                                        <TextBlock Text="{Binding Name}" FontWeight="Bold" FontSize="{DynamicResource GlobalFontSize}"  />
-                                                        <TextBlock Text="{Binding ItemCount}" FontSize="{DynamicResource GlobalFontSize}" FontWeight="Bold" Margin="10,0,0,0"  />
-                                                        <TextBlock Text=" effect(s)" FontSize="{DynamicResource GlobalFontSize}" />
-                                                        <Button Margin="0, 0, 0, 0" HorizontalAlignment="Right" DockPanel.Dock="Right" Width="14" Height="14" Click="RemoveFromSpells" ToolTip="Remove from list">
-                                                            <Image Source="pack://application:,,,/Images/Trash.png"/>
-                                                        </Button>
+                                                        <Grid>
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="3*"/>
+                                                                <ColumnDefinition Width="3*"/>
+                                                                <ColumnDefinition Width="3*"/>
+                                                            </Grid.ColumnDefinitions>
+                                                            <TextBlock Grid.Column="0" Text="{Binding Name}" FontWeight="Bold" FontSize="{DynamicResource GlobalFontSize}"  />
+                                                            <TextBlock Grid.Column="1" Text="{Binding Items[0].TargetClassString}" FontWeight="Bold" FontSize="{DynamicResource GlobalFontSize}"  />
+                                                            <StackPanel Orientation="Horizontal" Grid.Column="2">
+                                                                <TextBlock Text="{Binding ItemCount}" FontSize="{DynamicResource GlobalFontSize}" FontWeight="Bold" Margin="10,0,0,0"  />
+                                                                <TextBlock Text=" effect(s)" FontSize="{DynamicResource GlobalFontSize}"  />
+                                                                <Button Margin="0, 0, 0, 0" HorizontalAlignment="Right"  Width="14" Height="14" Click="RemoveFromSpells" ToolTip="Remove from list">
+                                                                    <Image Source="pack://application:,,,/Images/Trash.png"/>
+                                                                </Button>
+                                                            </StackPanel>
+                                                        </Grid> 
                                                     </DockPanel>
                                                 </Expander.Header>
                                                 <ItemsPresenter />
@@ -179,7 +189,7 @@
                     </GroupStyle>
                 </ListView.GroupStyle>
                 <ListView.ItemContainerStyle>
-                    <Style TargetType="{x:Type ListViewItem}"> 
+                    <Style TargetType="{x:Type ListViewItem}">
                         <Setter Property="Template">
                             <Setter.Value>
                                 <ControlTemplate TargetType="{x:Type ListViewItem}">
@@ -195,7 +205,7 @@
                     <Button Content="R" Padding="0" FontSize="10" Width="14" Height="14" Visibility="{Binding RaidModeToggleButtonVisibility}" ToolTip="{Binding RaidModeButtonToolTip}" Click="RaidModleToggle" />
                     <Button Content="X" Margin="5, 0, 0, 0" Padding="0" FontSize="10" Width="14" Height="14" Click="ClearAllOtherSpells" ToolTip="Clear all spells except yours"/>
                 </StackPanel>
-            </Grid> 
+            </Grid>
         </Grid>
     </Border>
 </local:BaseSaveStateWindow>

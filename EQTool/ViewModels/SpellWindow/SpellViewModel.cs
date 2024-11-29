@@ -7,9 +7,7 @@ namespace EQTool.ViewModels.SpellWindow
 {
     public class SpellViewModel : TimerViewModel
     {
-        public Dictionary<PlayerClasses, int> Classes { get; set; } = new Dictionary<PlayerClasses, int>(); 
-        public override string Sorting => GroupName;
-
+        public Dictionary<PlayerClasses, int> Classes { get; set; } = new Dictionary<PlayerClasses, int>();
         public override SpellViewModelType SpellViewModelType => SpellViewModelType.Spell;
         public SpellType SpellType { get; set; }
         private SpellTypes _Type = 0;

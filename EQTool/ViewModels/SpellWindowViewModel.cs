@@ -23,8 +23,7 @@ namespace EQTool.ViewModels
         private readonly EQSpells spells;
 
         public SpellWindowViewModel(ActivePlayer activePlayer, IAppDispatcher appDispatcher, EQToolSettings settings, EQSpells spells)
-        {
-
+        { 
             this.activePlayer = activePlayer;
             this.appDispatcher = appDispatcher;
             this.settings = settings;
@@ -38,28 +37,7 @@ namespace EQTool.ViewModels
             view.SortDescriptions.Add(new SortDescription(nameof(RollViewModel.Roll), ListSortDirection.Descending));
             view.SortDescriptions.Add(new SortDescription(nameof(TimerViewModel.TotalRemainingDuration), ListSortDirection.Ascending));
             view.IsLiveSorting = true;
-            view.LiveSortingProperties.Add(nameof(TimerViewModel.TotalRemainingDuration));
-
-            _WindowFrameBrush = NonRaidModeLinearGradientBrush = new LinearGradientBrush
-            {
-                StartPoint = new System.Windows.Point(0, 0.5),
-                EndPoint = new System.Windows.Point(1, 0.5),
-                GradientStops = new GradientStopCollection()
-            {
-                new GradientStop(System.Windows.Media.Colors.CadetBlue, .4),
-                new GradientStop(System.Windows.Media.Colors.Gray, 1)
-            }
-            };
-            RaidModeLinearGradientBrush = new LinearGradientBrush
-            {
-                StartPoint = new System.Windows.Point(0, 0.5),
-                EndPoint = new System.Windows.Point(1, 0.5),
-                GradientStops = new GradientStopCollection()
-            {
-                new GradientStop(System.Windows.Media.Colors.OrangeRed, .4),
-                new GradientStop(System.Windows.Media.Colors.Gray, 1)
-            }
-            };
+            view.LiveSortingProperties.Add(nameof(TimerViewModel.TotalRemainingDuration)); 
         }
 
 
@@ -97,10 +75,37 @@ namespace EQTool.ViewModels
             });
         }
 
-        private readonly LinearGradientBrush NonRaidModeLinearGradientBrush;
-        private readonly LinearGradientBrush RaidModeLinearGradientBrush;
+        private readonly LinearGradientBrush NonRaidModeLinearGradientBrush = new LinearGradientBrush
+        {
+            StartPoint = new System.Windows.Point(0, 0.5),
+            EndPoint = new System.Windows.Point(1, 0.5),
+            GradientStops = new GradientStopCollection()
+                {
+                    new GradientStop(System.Windows.Media.Colors.CadetBlue, .4),
+                    new GradientStop(System.Windows.Media.Colors.Gray, 1)
+                }
+        };
+        private readonly LinearGradientBrush RaidModeLinearGradientBrush = new LinearGradientBrush
+        {
+            StartPoint = new System.Windows.Point(0, 0.5),
+            EndPoint = new System.Windows.Point(1, 0.5),
+            GradientStops = new GradientStopCollection()
+                {
+                    new GradientStop(System.Windows.Media.Colors.OrangeRed, .4),
+                    new GradientStop(System.Windows.Media.Colors.Gray, 1)
+                }
+        };
 
-        private LinearGradientBrush _WindowFrameBrush;
+        private LinearGradientBrush _WindowFrameBrush = new LinearGradientBrush
+        {
+            StartPoint = new System.Windows.Point(0, 0.5),
+            EndPoint = new System.Windows.Point(1, 0.5),
+            GradientStops = new GradientStopCollection()
+                {
+                    new GradientStop(System.Windows.Media.Colors.CadetBlue, .4),
+                    new GradientStop(System.Windows.Media.Colors.Gray, 1)
+                }
+        };
 
         public LinearGradientBrush WindowFrameBrush
         {
@@ -192,7 +197,9 @@ namespace EQTool.ViewModels
                         itemstoremove.Add(item);
                     }
                 }
-                foreach (var item in SpellList.Where(a => a.SpellViewModelType == SpellViewModelType.Spell).Cast<SpellViewModel>().ToList())
+                var spells = SpellList.Where(a => a.SpellViewModelType == SpellViewModelType.Spell).Cast<SpellViewModel>().ToList();
+        
+                foreach (var item in spells)
                 {
                     var hidespell = false;
                     if (settings.YouOnlySpells)
@@ -222,11 +229,11 @@ namespace EQTool.ViewModels
                     }
                 }
 
-                var groupedspells = SpellList.GroupBy(a => a.GroupName).ToList();
-                foreach (var spells in groupedspells)
+                var groupedspellList = SpellList.GroupBy(a => a.GroupName).ToList();
+                foreach (var triggers in groupedspellList)
                 {
-                    var allspellshidden = true;
-                    foreach (var spell in spells)
+                    var allspellshidden = true; 
+                    foreach (var spell in triggers)
                     {
                         if (spell.ColumnVisibility != System.Windows.Visibility.Collapsed)
                         {
@@ -236,14 +243,14 @@ namespace EQTool.ViewModels
 
                     if (allspellshidden)
                     {
-                        foreach (var spell in spells)
+                        foreach (var spell in triggers)
                         {
                             spell.HeaderVisibility = System.Windows.Visibility.Collapsed;
                         }
                     }
                     else
                     {
-                        foreach (var spell in spells)
+                        foreach (var spell in triggers)
                         {
                             spell.HeaderVisibility = System.Windows.Visibility.Visible;
                         }

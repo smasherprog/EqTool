@@ -34,8 +34,7 @@ namespace EQTool
         private System.Windows.Forms.MenuItem SpellsMenuItem;
         private System.Windows.Forms.MenuItem DpsMeterMenuItem;
         private System.Windows.Forms.MenuItem OverlayMenuItem;
-        private System.Windows.Forms.MenuItem SettingsMenuItem;
-        private System.Windows.Forms.MenuItem GroupSuggestionsMenuItem;
+        private System.Windows.Forms.MenuItem SettingsMenuItem; 
         private System.Windows.Forms.MenuItem MobInfoMenuItem;
         private LogParser logParser => container.Resolve<LogParser>();
         private LogEvents logEvents => container.Resolve<LogEvents>();
@@ -245,11 +244,7 @@ namespace EQTool
             UITimer.Enabled = true;
             container.Resolve<LoggingService>().Log(string.Empty, EventType.StartUp, null);
             SettingsMenuItem = new System.Windows.Forms.MenuItem("Settings", ToggleSettingsWindow);
-
-            var standardgroup = new System.Windows.Forms.MenuItem("Standard Groups", CreateStandardGroup);
-            var hotclericsamegroup = new System.Windows.Forms.MenuItem("HOT Clerics Same Group", CreateHOTClericsSameGroup);
-            var hotclericsparsegroup = new System.Windows.Forms.MenuItem("HOT Clerics Sparse Group", CreateHOTClericsSparseGroup);
-            GroupSuggestionsMenuItem = new System.Windows.Forms.MenuItem("Group Suggestions", new System.Windows.Forms.MenuItem[] { standardgroup, hotclericsamegroup, hotclericsparsegroup });
+             
             SpellsMenuItem = new System.Windows.Forms.MenuItem("Triggers", ToggleSpellsWindow);
             MapMenuItem = new System.Windows.Forms.MenuItem("Map", ToggleMapWindow);
             DpsMeterMenuItem = new System.Windows.Forms.MenuItem("Dps", ToggleDPSWindow);
@@ -484,49 +479,9 @@ namespace EQTool
             MapMenuItem.Enabled = value;
             SpellsMenuItem.Enabled = value;
             DpsMeterMenuItem.Enabled = value;
-            MobInfoMenuItem.Enabled = value;
-            GroupSuggestionsMenuItem.Enabled = value;
+            MobInfoMenuItem.Enabled = value; 
         }
-
-        private void CreateStandardGroup(object sender, EventArgs e)
-        {
-            CreateGroup(GroupOptimization.Standard);
-        }
-
-        private void CreateHOTClericsSparseGroup(object sender, EventArgs e)
-        {
-            CreateGroup(GroupOptimization.HOT_Cleric_SparseGroup);
-        }
-
-        private void CreateHOTClericsSameGroup(object sender, EventArgs e)
-        {
-            CreateGroup(GroupOptimization.HOT_Cleric_SameGroup);
-        }
-
-        private void CreateGroup(GroupOptimization grp)
-        {
-            //var grpstring = new List<string>();
-            //var groups = PlayerTrackerService.CreateGroups(grp);
-            //var groupindex = 1;
-            //foreach (var group in groups)
-            //{
-            //    var str = $"/gu Group {groupindex++} ";
-            //    foreach (var player in group.Players)
-            //    {
-            //        str += player.Name + ",";
-            //    }
-            //    grpstring.Add(str);
-            //}
-            //if (grpstring.Any())
-            //{
-            //    System.Windows.Forms.Clipboard.SetText(string.Join("\r\n", grpstring));
-            //}
-            //else
-            //{
-            //    System.Windows.Forms.Clipboard.SetText("You must /who in the zone before group suggestions can be made!");
-            //}
-        }
-
+         
         private void WhyThePig(object sender, EventArgs e)
         {
             _ = System.Diagnostics.Process.Start(new ProcessStartInfo

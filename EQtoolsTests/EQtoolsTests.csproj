@@ -224,7 +224,6 @@
     <Compile Include="DamageParserTests.cs" />
     <Compile Include="LogFileNameTests.cs" />
     <Compile Include="PlayerWhoLogParseTests.cs" />
-    <Compile Include="GroupTests.cs" />
     <Compile Include="SpellMatchingTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ZoneParsingTests.cs" />

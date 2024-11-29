@@ -22,7 +22,7 @@ namespace EQTool.Services.Handlers
 
         private void LogEvents_MendWoundsEvent(object sender, MendWoundsEvent e)
         {
-            var spellduration = TimeSpan.FromMinutes(6); 
+            var spellduration = TimeSpan.FromMinutes(6);
             var vm = new SpellViewModel
             {
                 UpdatedDateTime = DateTime.Now,
@@ -35,9 +35,10 @@ namespace EQTool.Services.Handlers
                 Icon = HealSpell.SpellIcon,
                 Classes = HealSpell.Classes,
                 TotalDuration = spellduration,
-                TotalRemainingDuration = spellduration
+                TotalRemainingDuration = spellduration,
+                TargetClass = EQToolShared.Enums.PlayerClasses.Monk
             };
             spellWindowViewModel.TryAdd(vm);
-        } 
+        }
     }
 }

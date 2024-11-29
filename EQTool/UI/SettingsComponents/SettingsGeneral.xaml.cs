@@ -999,5 +999,10 @@ namespace EQTool.UI.SettingsComponents
             ((App)System.Windows.Application.Current).OpenOverLayWindow();
             this.PushLog("You have entered East Commonlands.");
         }
+
+        private void deleteMapCache(object sender, RoutedEventArgs e)
+        {
+            MapLoad.CleanCachedMaps(true);
+        }
     }
 }

@@ -444,7 +444,6 @@
     <Compile Include="Services\Parsing\QuakeParser.cs" />
     <Compile Include="Services\Parsing\Helpers\LogFileDateTimeParse.cs" />
     <Compile Include="Services\Parsing\EnterWorldParser.cs" />
-    <Compile Include="Services\PlayerGroupService.cs" />
     <Compile Include="Services\SettingsTestRunOverlay.cs" />
     <Compile Include="Services\SignalrPlayerHub.cs" />
     <Compile Include="Services\Parsing\SpellWornOffSelfParser.cs" />

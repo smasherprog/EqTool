@@ -1,4 +1,5 @@
 ﻿using EQTool.Models;
+using EQToolShared.Enums;
 using System;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
@@ -68,8 +69,37 @@ namespace EQTool.ViewModels.SpellWindow
             }
         }
 
-        public virtual string Sorting => GroupName;
-        public string GroupName { get; set; }
+        public virtual string Sorting => _GroupName; 
+        private string _GroupName = string.Empty;
+        public string GroupName
+        {
+            get => _GroupName;
+            set
+            {
+                if (_GroupName == value)
+                {
+                    return;
+                }
+                _GroupName = value;
+                OnPropertyChanged(); 
+            }
+        }
+
+        public string TargetClassString { get; set; }
+        private PlayerClasses? _TargetClass;
+
+        public PlayerClasses? TargetClass
+        {
+            get => _TargetClass;
+            set
+            {
+                _TargetClass = value;
+                TargetClassString = _TargetClass.HasValue ? _TargetClass.Value.ToString() : string.Empty;
+                OnPropertyChanged(nameof(TargetClassString));
+                OnPropertyChanged();
+            }
+        }
+
         public SolidColorBrush ProgressBarColor { get; set; } = Brushes.DarkSeaGreen;
         public DateTime UpdatedDateTime { get; set; } = DateTime.Now;
         public event PropertyChangedEventHandler PropertyChanged;

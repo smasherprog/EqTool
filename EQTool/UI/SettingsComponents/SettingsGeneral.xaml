@@ -264,6 +264,10 @@
                     <CheckBox IsChecked="{Binding MapAlwaysOnTop}" Click="SaveAlwaysOntopCheckBoxSettings" ></CheckBox>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Map Cache" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
+                    <Button Click="deleteMapCache" ToolTip="Do this if you are managing map files and make changes.">Delete Cached Maps</Button>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Map Kill timers" ToolTip="Automatically add kill timers to the map. This is a per character setting" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
                     <CheckBox IsChecked="{Binding ActivePlayer.Player.MapKillTimers}"></CheckBox>
                 </StackPanel>

@@ -1,10 +1,12 @@
 ﻿using EQTool.Models;
 using EQTool.ViewModels;
+using EQTool.ViewModels.SpellWindow;
 using EQToolShared.Enums;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace EQTool.Services
 {
@@ -12,30 +14,33 @@ namespace EQTool.Services
     {
         private readonly LogEvents logEvents;
         private readonly PigParseApi pigParseApi;
-        internal readonly ActivePlayer activePlayer;
+        private readonly ActivePlayer activePlayer;
         private readonly LoggingService loggingService;
-        private readonly PlayerGroupService playerGroupService;
-        private readonly Dictionary<string, EQToolShared.APIModels.PlayerControllerModels.Player> Player = new Dictionary<string, EQToolShared.APIModels.PlayerControllerModels.Player>(StringComparer.InvariantCultureIgnoreCase);
+        private readonly SpellWindowViewModel spellWindowViewModel;
+        private readonly IAppDispatcher appDispatcher;
+
+        private readonly Dictionary<string, EQToolShared.APIModels.PlayerControllerModels.Player> AllPlayers = new Dictionary<string, EQToolShared.APIModels.PlayerControllerModels.Player>(StringComparer.InvariantCultureIgnoreCase);
         private readonly Dictionary<string, EQToolShared.APIModels.PlayerControllerModels.Player> PlayersInZones = new Dictionary<string, EQToolShared.APIModels.PlayerControllerModels.Player>(StringComparer.InvariantCultureIgnoreCase);
         private readonly Dictionary<string, EQToolShared.APIModels.PlayerControllerModels.Player> DirtyPlayers = new Dictionary<string, EQToolShared.APIModels.PlayerControllerModels.Player>(StringComparer.InvariantCultureIgnoreCase);
         private string CurrentZone;
         private readonly System.Timers.Timer UITimer;
         private readonly object ContainerLock = new object();
 
-        public PlayerTrackerService(LogEvents logEvents, ActivePlayer activePlayer, PigParseApi pigParseApi, LoggingService loggingService, PlayerGroupService playerGroupService)
+        public PlayerTrackerService(IAppDispatcher appDispatcher, LogEvents logEvents, ActivePlayer activePlayer, PigParseApi pigParseApi, LoggingService loggingService, SpellWindowViewModel spellWindowViewModel)
         {
             _ = activePlayer.Update();
             CurrentZone = activePlayer.Player?.Zone;
             this.logEvents = logEvents;
-            this.playerGroupService = playerGroupService;
             this.logEvents.YouZonedEvent += LogParser_PlayerZonedEvent;
             this.logEvents.WhoPlayerEvent += LogParser_WhoPlayerEvent;
-            UITimer = new System.Timers.Timer(1000);
+            UITimer = new System.Timers.Timer(20000);// every 20 seconds
             UITimer.Elapsed += UITimer_Elapsed;
             UITimer.Enabled = true;
             this.pigParseApi = pigParseApi;
             this.activePlayer = activePlayer;
             this.loggingService = loggingService;
+            this.spellWindowViewModel = spellWindowViewModel;
+            this.appDispatcher = appDispatcher;
         }
 
         public bool IsPlayer(string name)
@@ -47,7 +52,23 @@ namespace EQTool.Services
 
             lock (ContainerLock)
             {
-                return Player.ContainsKey(name);
+                return AllPlayers.ContainsKey(name);
+            }
+        }
+
+        public EQToolShared.APIModels.PlayerControllerModels.Player GetPlayer(string name)
+        {
+            if (string.IsNullOrWhiteSpace(name) || name.StartsWith(" "))
+            {
+                return null;
+            }
+            lock (ContainerLock)
+            {
+                if (AllPlayers.TryGetValue(name, out var p))
+                {
+                    return p;
+                }
+                return null;
             }
         }
 
@@ -59,10 +80,13 @@ namespace EQTool.Services
                 return;
             }
 
+            var playerswithoutclasses = new List<EQToolShared.APIModels.PlayerControllerModels.Player>();
+
             lock (ContainerLock)
             {
                 playerstosync = DirtyPlayers.Values.ToList();
                 DirtyPlayers.Clear();
+                playerswithoutclasses = this.AllPlayers.Values.Where(a => !a.PlayerClass.HasValue).ToList();
             }
             try
             {
@@ -72,6 +96,72 @@ namespace EQTool.Services
             {
                 loggingService.Log(ex.ToString(), EventType.Error, activePlayer?.Player?.Server);
             }
+            try
+            {
+                var players = pigParseApi.GetPlayerData(playerswithoutclasses.Select(a => a.Name).Distinct().ToList(), activePlayer.Player.Server.Value);
+                lock (ContainerLock)
+                {
+                    foreach (var item in players)
+                    {
+                        if (AllPlayers.TryGetValue(item.Name, out var player))
+                        {
+                            player.PlayerClass = item.PlayerClass;
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                loggingService.Log(ex.ToString(), EventType.Error, activePlayer?.Player?.Server);
+            }
+            this.appDispatcher.DispatchUI(() =>
+            {
+                var spellsmissingclasses = spellWindowViewModel.SpellList
+                .Where(a => !a.GroupName.StartsWith(" ") && a.SpellViewModelType == ViewModels.SpellWindow.SpellViewModelType.Spell)
+                .Cast<SpellViewModel>()
+                .ToList();
+                var missingplayernames = spellsmissingclasses.Select(a => a.GroupName).Distinct().ToList();
+                if (missingplayernames.Any())
+                {
+                    Task.Factory.StartNew(() =>
+                    {
+                        try
+                        {
+                            var playersapi = pigParseApi.GetPlayerData(missingplayernames, activePlayer.Player.Server.Value);
+                            lock (ContainerLock)
+                            {
+                                foreach (var item in playersapi)
+                                {
+                                    if (AllPlayers.TryGetValue(item.Name, out var player))
+                                    {
+                                        player.PlayerClass = item.PlayerClass;
+                                    }
+                                    else
+                                    {
+                                        AllPlayers.Add(item.Name, item);
+                                    }
+                                }
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            loggingService.Log(ex.ToString(), EventType.Error, activePlayer?.Player?.Server);
+                        }
+                    });
+                }
+                var players = new List<EQToolShared.APIModels.PlayerControllerModels.Player>();
+                lock (ContainerLock)
+                {
+                    players = AllPlayers.Values.Where(a => missingplayernames.Contains(a.Name)).ToList();
+                }
+                foreach (var item in players)
+                {
+                    foreach (var missingclass in spellsmissingclasses.Where(a => a.GroupName == item.Name))
+                    {
+                        missingclass.TargetClass = item.PlayerClass;
+                    }
+                }
+            });
         }
 
         private void LogParser_WhoPlayerEvent(object sender, WhoPlayerEvent e)
@@ -83,7 +173,7 @@ namespace EQTool.Services
 
             lock (ContainerLock)
             {
-                if (Player.TryGetValue(e.PlayerInfo.Name, out var playerinfo))
+                if (AllPlayers.TryGetValue(e.PlayerInfo.Name, out var playerinfo))
                 {
                     if (
                         (playerinfo.Level != e.PlayerInfo.Level && e.PlayerInfo.Level.HasValue) ||
@@ -104,7 +194,7 @@ namespace EQTool.Services
                 }
                 else
                 {
-                    Player.Add(e.PlayerInfo.Name, e.PlayerInfo);
+                    AllPlayers.Add(e.PlayerInfo.Name, e.PlayerInfo);
                     if (!DirtyPlayers.ContainsKey(e.PlayerInfo.Name))
                     {
                         DirtyPlayers[e.PlayerInfo.Name] = e.PlayerInfo;
@@ -133,45 +223,5 @@ namespace EQTool.Services
                 }
             }
         }
-
-        public List<Group> CreateGroups(GroupOptimization groupOptimization)
-        {
-            if (string.IsNullOrWhiteSpace(activePlayer.Player?.GuildName) || activePlayer.Player.Server == null)
-            {
-                return new List<Group>();
-            }
-
-            var players = new List<EQToolShared.APIModels.PlayerControllerModels.Player>();
-            lock (ContainerLock)
-            {
-                players = PlayersInZones.Values.ToList();
-            }
-
-            var uknownplayerdata = players.Where(a => !a.PlayerClass.HasValue || !a.Level.HasValue).Select(a => a.Name).ToList();
-            var playerdatafromserver = pigParseApi.GetPlayerData(uknownplayerdata, activePlayer.Player.Server.Value);
-            foreach (var item in playerdatafromserver)
-            {
-                var playerlocally = players.FirstOrDefault(a => a.Name == item.Name);
-                if (playerlocally != null)
-                {
-                    playerlocally.Level = playerlocally.Level ?? item.Level;
-                    playerlocally.PlayerClass = playerlocally.PlayerClass ?? item.PlayerClass;
-                }
-            }
-
-            players = players.Where(a => a.GuildName == activePlayer.Player.GuildName).ToList();
-            switch (groupOptimization)
-            {
-                case GroupOptimization.HOT_Cleric_SparseGroup:
-                    return playerGroupService.CreateHOT_Clerics_SparseGroups(players);
-                case GroupOptimization.HOT_Cleric_SameGroup:
-                    return playerGroupService.CreateHOT_Clerics_SameGroups(players);
-                case GroupOptimization.Standard:
-                    return playerGroupService.CreateStandardGroups(players);
-                default:
-                    return new List<Group>();
-            }
-        }
-
     }
 }
