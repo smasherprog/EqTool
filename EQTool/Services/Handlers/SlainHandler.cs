@@ -192,6 +192,16 @@ namespace EQTool.Services.Handlers
             };
             appDispatcher.DispatchUI(() =>
             {
+                var grpname = e.Victim;
+                if (MasterNPCList.NPCs.Contains(grpname))
+                {
+                    grpname = " " + grpname;
+                }
+                var grp = spellWindowViewModel.SpellList.Where(a => a.GroupName == grpname).ToList();
+                foreach (var item in grp)
+                {
+                    spellWindowViewModel.SpellList.Remove(item);
+                }
                 var exisitngdeathentry = spellWindowViewModel.SpellList.FirstOrDefault(a => a.Name == add.Name && CustomTimer.CustomerTime == a.GroupName);
                 if (exisitngdeathentry != null)
                 {

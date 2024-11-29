@@ -7,18 +7,7 @@ using System.Linq;
 namespace EQTool.Services.Handlers
 {
     public class SpellCastOnOtherHandler : BaseHandler
-    {
-
-        private readonly List<string> SpellsThatNeedCounts = new List<string>()
-        {
-            "Mana Sieve",
-            "LowerElement",
-            "Concussion",
-            "Flame Lick",
-            "Jolt",
-            "Cinder Jolt",
-        };
-         
+    { 
         private readonly IAppDispatcher appDispatcher;
         private readonly BaseSpellYouCastingHandler baseSpellYouCastingHandler;
         private readonly SpellDurations spellDurations;

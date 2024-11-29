@@ -29,16 +29,17 @@ namespace EQTool.Services.Handlers
             "Flame Lick",
             "Jolt",
             "Cinder Jolt",
+            "Rage of Vallon",
+            "Waves of the Deep Sea",
+            "Anarchy"
         };
-
-        private readonly IAppDispatcher appDispatcher;
+         
         private readonly SpellWindowViewModel spellWindowViewModel;
         private readonly ActivePlayer activePlayer;
          
-        public BaseSpellYouCastingHandler(  SpellWindowViewModel spellWindowViewModel, IAppDispatcher appDispatcher, ActivePlayer activePlayer)
+        public BaseSpellYouCastingHandler(  SpellWindowViewModel spellWindowViewModel, ActivePlayer activePlayer)
         { 
-            this.spellWindowViewModel = spellWindowViewModel;
-            this.appDispatcher = appDispatcher;
+            this.spellWindowViewModel = spellWindowViewModel; 
             this.activePlayer = activePlayer;
         }
 

@@ -35,7 +35,7 @@ namespace EQTool.UI.SettingsComponents
         private readonly SettingsTestRunOverlay settingsTestRunOverlay;
         private readonly WindowFactory windowFactory;
         private readonly LogEvents logEvents;
-
+        private bool ComponentInitialized = false;
         public SettingsGeneral(
             LogEvents logEvents,
             WindowFactory windowFactory,
@@ -68,6 +68,7 @@ namespace EQTool.UI.SettingsComponents
             SettingsWindowData.EqPath = this.settings.DefaultEqDirectory;
             InitializeComponent();
             TryCheckLoggingEnabled();
+       
             try
             {
                 TryUpdateSettings();
@@ -81,7 +82,7 @@ namespace EQTool.UI.SettingsComponents
 #if DEBUG
             DebugTab.Visibility = Visibility.Visible;
 #endif
-
+            ComponentInitialized = true;
         }
 
         private void SaveConfig()
@@ -320,6 +321,7 @@ namespace EQTool.UI.SettingsComponents
 
         private void zoneselectionchanged(object sender, SelectionChangedEventArgs e)
         {
+            if (!this.ComponentInitialized) return;
             var player = SettingsWindowData.ActivePlayer.Player;
             if (player != null)
             {
@@ -930,8 +932,8 @@ namespace EQTool.UI.SettingsComponents
             _ = Task.Factory.StartNew(() =>
             {
                 try
-                { 
-                    this.logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rain of Molten Lava" }); 
+                {
+                    this.logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rain of Molten Lava" });
                     Thread.Sleep(200);
                     this.logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rain of Molten Lava" });
                     this.logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rain of Molten Lava" });
@@ -953,10 +955,10 @@ namespace EQTool.UI.SettingsComponents
                     this.logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Wave of Cold" });
                     Thread.Sleep(2000);
                     appDispatcher.DispatchUI(() =>
-                    { 
+                    {
                         player.Zone = "necropolis";
                     });
-                    this.PushLog("You resist the Dragon Roar spell!"); 
+                    this.PushLog("You resist the Dragon Roar spell!");
                     this.logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Dragon Roar" });
                     Thread.Sleep(2000);
                     this.logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Stun Breath" });
@@ -978,7 +980,7 @@ namespace EQTool.UI.SettingsComponents
                     });
                 }
             });
-        
+
         }
 
         private void textenteringZone(object sender, RoutedEventArgs e)
@@ -993,8 +995,8 @@ namespace EQTool.UI.SettingsComponents
                 return;
             }
             SettingsWindowData.ActivePlayer.Player.EnteringZoneAudio = true;
-            SettingsWindowData.ActivePlayer.Player.EnteringZoneOverlay = true; 
-            ((App)System.Windows.Application.Current).OpenOverLayWindow(); 
+            SettingsWindowData.ActivePlayer.Player.EnteringZoneOverlay = true;
+            ((App)System.Windows.Application.Current).OpenOverLayWindow();
             this.PushLog("You have entered East Commonlands.");
         }
     }
