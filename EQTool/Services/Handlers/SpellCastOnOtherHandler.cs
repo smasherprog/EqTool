@@ -1,7 +1,6 @@
 ﻿using EQTool.Models;
 using EQTool.ViewModels;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 
 namespace EQTool.Services.Handlers

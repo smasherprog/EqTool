@@ -11,7 +11,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
-using System.Windows.Documents;
 using System.Windows.Media.Media3D;
 
 namespace EQTool.Models
