@@ -169,7 +169,7 @@
                                                             </Grid.ColumnDefinitions>
                                                             <TextBlock Grid.Column="0" Text="{Binding Name}" FontWeight="Bold" FontSize="{DynamicResource GlobalFontSize}"  />
                                                             <TextBlock Grid.Column="1" Text="{Binding Items[0].TargetClassString}" FontWeight="Bold" FontSize="{DynamicResource GlobalFontSize}"  />
-                                                            <StackPanel Orientation="Horizontal" Grid.Column="2">
+                                                            <StackPanel Orientation="Horizontal" Grid.Column="2" HorizontalAlignment="Right">
                                                                 <TextBlock Text="{Binding ItemCount}" FontSize="{DynamicResource GlobalFontSize}" FontWeight="Bold" Margin="10,0,0,0"  />
                                                                 <TextBlock Text=" effect(s)" FontSize="{DynamicResource GlobalFontSize}"  />
                                                                 <Button Margin="0, 0, 0, 0" HorizontalAlignment="Right"  Width="14" Height="14" Click="RemoveFromSpells" ToolTip="Remove from list">
