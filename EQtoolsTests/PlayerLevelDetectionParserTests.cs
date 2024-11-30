@@ -1,75 +1,49 @@
 ﻿using Autofac;
 using EQTool.Models;
-using EQTool.Services.Handlers;
-using EQTool.Services.Parsing;
-using EQTool.Services.Parsing.Helpers;
-using EQTool.ViewModels;
+using EQTool.Services;
 using EQToolShared.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using System.Collections.Generic;
 
 namespace EQtoolsTests
 {
     [TestClass]
     public class PlayerLevelDetectionParserTests : BaseTestClass
     {
+        private readonly LogParser logParser; 
+
         public PlayerLevelDetectionParserTests()
-        {
-            _ = container.Resolve<IEnumerable<BaseHandler>>();
+        { 
+            logParser = container.Resolve<LogParser>();
+            player.Player = new PlayerInfo { };
         }
 
         [TestMethod]
         public void TestLevelUpMatch()
         {
-            var loger = container.Resolve<PlayerLevelDetectionParser>();
-            var level = loger.MatchLevel("You have gained a level! Welcome to level 2!");
-            Assert.AreEqual(2, level);
-
-            level = loger.MatchLevel("You have gained a level! Welcome to level 60!");
-            Assert.AreEqual(60, level);
-        }
-
-        [TestMethod]
-        public void TestLevelUpMatch_NoPlayeryer_DoNoexplode()
-        {
-            var loger = container.Resolve<PlayerLevelDetectionParser>();
-            _ = loger.MatchLevel("You have gained a level! Welcome to level 2!");
-            _ = loger.MatchLevel("You have gained a level! Welcome to level 60!");
-        }
-
-        [TestMethod]
-        public void TestLevelDetectionThroughSpells()
-        {
-            _ = container.Resolve<EQSpells>();
-            var line = "You begin casting Aegolism.";
-            var service = container.Resolve<ParseHandleYouCasting>();
-            var player = container.Resolve<ActivePlayer>();
-            player.Player = new PlayerInfo { };
-            service.HandleYouBeginCastingSpellStart(line, DateTime.Now, 0);
+            var line = "You have gained a level! Welcome to level 2!";
+            logParser.Push(line, DateTime.Now);
+            Assert.AreEqual(player.Player.Level, 2);
+            line = "You have gained a level! Welcome to level 60!";
+            logParser.Push(line, DateTime.Now);
             Assert.AreEqual(player.Player.Level, 60);
         }
-
+         
         [TestMethod]
-        public void TestClassDetectionSpell()
+        public void TestLevelClassDetectionThroughSpells()
         {
             _ = container.Resolve<EQSpells>();
             var line = "You begin casting Aegolism.";
-            var service = container.Resolve<ParseHandleYouCasting>();
-            var player = container.Resolve<ActivePlayer>();
-            player.Player = new PlayerInfo { };
-            service.HandleYouBeginCastingSpellStart(line, DateTime.Now, 0);
+            logParser.Push(line, DateTime.Now);
+            Assert.AreEqual(player.Player.Level, 60);
             Assert.AreEqual(player.Player.PlayerClass, PlayerClasses.Cleric);
         }
-
+          
         [TestMethod]
         public void TestLevelDetectionThroughBackstab()
         {
             var message = "You backstab a willowisp for 56 points of damage.";
-
-            var player = container.Resolve<ActivePlayer>();
-            player.Player = new PlayerInfo { };
-            _ = container.Resolve<DamageParser>().Match(message, DateTime.Now, 0);
+            logParser.Push(message, DateTime.Now); 
             Assert.AreEqual(player.Player.PlayerClass, PlayerClasses.Rogue);
         }
 

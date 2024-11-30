@@ -32,7 +32,7 @@ namespace EQtoolsTests
         [TestMethod]
         public void HappyPathAllThreeMessages()
         {
-            logEvents.NewSlainEvent += (a, e) =>
+            logEvents.ConfirmedDeathEvent += (a, e) =>
             {
                 Assert.AreEqual(e.Victim, "a frost giant scout");
                 Assert.AreEqual(e.Killer, "You");
@@ -50,7 +50,7 @@ namespace EQtoolsTests
         [TestMethod]
         public void SlainInMiddle()
         {
-            logEvents.NewSlainEvent += (a, e) =>
+            logEvents.ConfirmedDeathEvent += (a, e) =>
             {
                 Assert.AreEqual(e.Victim, "a frost giant scout");
                 Assert.AreEqual(e.Killer, "You");
@@ -69,7 +69,7 @@ namespace EQtoolsTests
         [TestMethod]
         public void SlainAtEnd()
         {
-            logEvents.NewSlainEvent += (a, e) =>
+            logEvents.ConfirmedDeathEvent += (a, e) =>
             {
                 Assert.AreEqual(e.Victim, "a frost giant scout");
                 Assert.AreEqual(e.Killer, "You");
@@ -88,7 +88,7 @@ namespace EQtoolsTests
         [TestMethod]
         public void Slain0()
         {
-            logEvents.NewSlainEvent += (a, e) =>
+            logEvents.ConfirmedDeathEvent += (a, e) =>
             {
                 CalledCounter++;
             };
@@ -104,7 +104,7 @@ namespace EQtoolsTests
         [TestMethod]
         public void Slain1()
         {
-            logEvents.NewSlainEvent += (a, e) =>
+            logEvents.ConfirmedDeathEvent += (a, e) =>
             {
                 Assert.AreEqual(e.Victim, "a skeleton");
                 Assert.AreEqual(e.Killer, "You");
@@ -120,7 +120,7 @@ namespace EQtoolsTests
         [TestMethod]
         public void Slain2()
         {
-            logEvents.NewSlainEvent += (a, e) =>
+            logEvents.ConfirmedDeathEvent += (a, e) =>
             {
                 Assert.AreEqual(e.Victim, "Robobard");
                 Assert.AreEqual(e.Killer, "Sontalak");
@@ -136,7 +136,7 @@ namespace EQtoolsTests
         [TestMethod]
         public void Slain3()
         {
-            logEvents.NewSlainEvent += (a, e) =>
+            logEvents.ConfirmedDeathEvent += (a, e) =>
             {
                 Assert.AreEqual(e.Victim, "Marantula");
                 Assert.AreEqual(e.Killer, "an ancient wyvern");
@@ -152,7 +152,7 @@ namespace EQtoolsTests
         [TestMethod]
         public void Slain5()
         {
-            logEvents.NewSlainEvent += (a, e) =>
+            logEvents.ConfirmedDeathEvent += (a, e) =>
             {
                 if (e.Victim == "Marantula")
                 {
@@ -176,7 +176,7 @@ namespace EQtoolsTests
         [TestMethod]
         public void Slain6()
         {
-            logEvents.NewSlainEvent += (a, e) =>
+            logEvents.ConfirmedDeathEvent += (a, e) =>
             {
                 Assert.AreEqual(e.Victim, "Faction Slain Guess");
                 Assert.AreEqual(e.Killer, "You");
@@ -194,7 +194,7 @@ namespace EQtoolsTests
         [TestMethod]
         public void Slain7()
         {
-            logEvents.NewSlainEvent += (a, e) =>
+            logEvents.ConfirmedDeathEvent += (a, e) =>
             {
                 if (e.Victim == "Marantula")
                 {
@@ -222,7 +222,7 @@ namespace EQtoolsTests
         [TestMethod]
         public void MultipleFactionMessages()
         {
-            logEvents.NewSlainEvent += (a, e) =>
+            logEvents.ConfirmedDeathEvent += (a, e) =>
             {
                 CalledCounter++;
             };
@@ -246,7 +246,7 @@ namespace EQtoolsTests
         [TestMethod]
         public void Slain9()
         {
-            logEvents.NewSlainEvent += (a, e) =>
+            logEvents.ConfirmedDeathEvent += (a, e) =>
             {
                 CalledCounter++;
             };
@@ -273,7 +273,7 @@ namespace EQtoolsTests
         public void MultipleExpMessages()
         {
             var expkillcount = 0;
-            logEvents.NewSlainEvent += (a, e) =>
+            logEvents.ConfirmedDeathEvent += (a, e) =>
             {
                 if (e.Victim == "a frost giant scout")
                 {
@@ -300,7 +300,7 @@ namespace EQtoolsTests
         [TestMethod]
         public void MultipleSlainMessages()
         {
-            logEvents.NewSlainEvent += (a, e) =>
+            logEvents.ConfirmedDeathEvent += (a, e) =>
             {
                 CalledCounter++;
             };
@@ -314,9 +314,9 @@ namespace EQtoolsTests
 
 
         [TestMethod]
-        public void MultipleFactionMessagesDifferent ()
+        public void MultipleFactionMessagesDifferent()
         {
-            logEvents.NewSlainEvent += (a, e) =>
+            logEvents.ConfirmedDeathEvent += (a, e) =>
             {
                 CalledCounter++;
             };
@@ -337,21 +337,26 @@ namespace EQtoolsTests
             Assert.AreEqual(CalledCounter, 3);
         }
 
-
         [TestMethod]
-        public void IgnoreQuestTurnins()
+        public void SlainFactionTest()
         {
-            logEvents.NewSlainEvent += (a, e) =>
+            logEvents.ConfirmedDeathEvent += (a, e) =>
             {
                 CalledCounter++;
             };
-            logParser.Push("Jaerlin pierces a Drakkel Dire Wolf for 42 points of damage.", DateTime.Now);
-            logParser.Push("Your faction standing with ClawsofVeeshan got better.", DateTime.Now);
-            logParser.Push("Your faction standing with Coldain got better.", DateTime.Now);
-            logParser.Push("Your faction standing with Kromrif got worse.", DateTime.Now);
-            logParser.Push("You gain experience!!", DateTime.Now);
-            logParser.Push("Captain Ashlan says, 'Great work! Maybe you can help us out again sometime?'", DateTime.Now);
-            Assert.AreEqual(CalledCounter, 0);
-        }
+            logParser.Push("You have slain a zol ghoul knight!", DateTime.Now);
+            logParser.Push("Your faction standing with FrogloksofGuk got better.", DateTime.Now);
+            logParser.Push("Your faction standing with UndeadFrogloksofGuk could not possibly get any worse.", DateTime.Now);
+            logParser.Push("Varer judges you amiably -- You would probably win this fight..it's not certain though.", DateTime.Now);
+
+            logParser.Push("Varer slices a wan ghoul knight for 24 points of damage.", DateTime.Now);
+            logParser.Push("You have slain a wan ghoul knight!", DateTime.Now);
+            logParser.Push("Varer slices a wan ghoul knight for 24 points of damage.", DateTime.Now);
+            logParser.Push("You have slain a zol ghoul knight!", DateTime.Now);
+            logParser.Push("Your faction standing with FrogloksofGuk got better.", DateTime.Now);
+            logParser.Push("Your faction standing with UndeadFrogloksofGuk could not possibly get any worse.", DateTime.Now);
+            logParser.Push("Varer judges you amiably -- You would probably win this fight..it's not certain though.", DateTime.Now);
+            Assert.AreEqual(CalledCounter, 3);
+        } 
     }
 }

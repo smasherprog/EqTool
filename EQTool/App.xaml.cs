@@ -34,11 +34,11 @@ namespace EQTool
         private System.Windows.Forms.MenuItem SpellsMenuItem;
         private System.Windows.Forms.MenuItem DpsMeterMenuItem;
         private System.Windows.Forms.MenuItem OverlayMenuItem;
-        private System.Windows.Forms.MenuItem SettingsMenuItem;
-        private System.Windows.Forms.MenuItem GroupSuggestionsMenuItem;
+        private System.Windows.Forms.MenuItem SettingsMenuItem; 
         private System.Windows.Forms.MenuItem MobInfoMenuItem;
         private LogParser logParser => container.Resolve<LogParser>();
         private LogEvents logEvents => container.Resolve<LogEvents>();
+        private System.Timers.Timer UpdateTimer;
         private System.Timers.Timer UITimer;
         private ISignalrPlayerHub signalrPlayerHub;
 
@@ -236,18 +236,15 @@ namespace EQTool
 
         private void InitStuff()
         {
-            UITimer = new System.Timers.Timer(1000 * 60);
-#if !DEBUG
+            UpdateTimer = new System.Timers.Timer(1000 * 60);
+            UpdateTimer.Elapsed += UpdateTimer_Elapsed;
+            UpdateTimer.Enabled = true;
+            UITimer = new System.Timers.Timer(1000);
             UITimer.Elapsed += UITimer_Elapsed;
             UITimer.Enabled = true;
-#endif
             container.Resolve<LoggingService>().Log(string.Empty, EventType.StartUp, null);
             SettingsMenuItem = new System.Windows.Forms.MenuItem("Settings", ToggleSettingsWindow);
-
-            var standardgroup = new System.Windows.Forms.MenuItem("Standard Groups", CreateStandardGroup);
-            var hotclericsamegroup = new System.Windows.Forms.MenuItem("HOT Clerics Same Group", CreateHOTClericsSameGroup);
-            var hotclericsparsegroup = new System.Windows.Forms.MenuItem("HOT Clerics Sparse Group", CreateHOTClericsSparseGroup);
-            GroupSuggestionsMenuItem = new System.Windows.Forms.MenuItem("Group Suggestions", new System.Windows.Forms.MenuItem[] { standardgroup, hotclericsamegroup, hotclericsparsegroup });
+             
             SpellsMenuItem = new System.Windows.Forms.MenuItem("Triggers", ToggleSpellsWindow);
             MapMenuItem = new System.Windows.Forms.MenuItem("Map", ToggleMapWindow);
             DpsMeterMenuItem = new System.Windows.Forms.MenuItem("Dps", ToggleDPSWindow);
@@ -288,6 +285,19 @@ namespace EQTool
                     new System.Windows.Forms.MenuItem("Exit", OnExit)
                 }),
             };
+            if (EQToolSettings.LoginMiddleMand)
+            {
+                var loginmiddlemand = container.Resolve<LoginMiddlemand>();
+                if (loginmiddlemand.IsConfiguredCorrectly())
+                {
+                    loginmiddlemand.StartListening();
+                    Thread.Sleep(50); //give time to start up
+                }
+                else
+                {
+                    EQToolSettings.LoginMiddleMand = false;
+                }
+            }
             var hasvalideqdir = FindEq.IsValidEqFolder(EQToolSettings.DefaultEqDirectory);
             if (!hasvalideqdir || FindEq.TryCheckLoggingEnabled(EQToolSettings.DefaultEqDirectory) == false)
             {
@@ -320,6 +330,10 @@ namespace EQTool
                 {
                     OpenOverLayWindow();
                 }
+                if (!EQToolSettings.SettingsWindowState.Closed)
+                {
+                    OpenSettingsWindow();
+                }
             }
             signalrPlayerHub = container.Resolve<ISignalrPlayerHub>();
 
@@ -332,19 +346,6 @@ namespace EQTool
             ((App)System.Windows.Application.Current).UpdateBackgroundOpacity("MyWindowStyleDPS", EQToolSettings.DpsWindowState.Opacity.Value);
             ((App)System.Windows.Application.Current).UpdateBackgroundOpacity("MyWindowStyleMap", EQToolSettings.MapWindowState.Opacity.Value);
             ((App)System.Windows.Application.Current).UpdateBackgroundOpacity("MyWindowStyleTrigger", EQToolSettings.SpellWindowState.Opacity.Value);
-
-            if (EQToolSettings.LoginMiddleMand)
-            {
-                var loginmiddlemand = container.Resolve<LoginMiddlemand>();
-                if (loginmiddlemand.IsConfiguredCorrectly())
-                {
-                    loginmiddlemand.StartListening();
-                }
-                else
-                {
-                    EQToolSettings.LoginMiddleMand = false;
-                }
-            }
         }
 
         public void UpdateBackgroundOpacity(string name, double opacity)
@@ -380,9 +381,22 @@ namespace EQTool
                 : TimeSpan.FromMinutes(20);
         }
 
-        private bool updatecalled = false;
+        private DateTime LastUIRun = DateTime.UtcNow;
         private void UITimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
+            var vm = container.Resolve<SpellWindowViewModel>();
+            var now = DateTime.Now;
+            var dt_ms = (now - LastUIRun).TotalMilliseconds;
+            LastUIRun = now;
+            vm.UpdateSpells(dt_ms);
+        }
+
+        private bool updatecalled = false;
+        private void UpdateTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
+        {
+#if DEBUG
+            return;
+#endif
             var dispatcher = container.Resolve<IAppDispatcher>();
             dispatcher.DispatchUI(() =>
             {
@@ -454,8 +468,6 @@ namespace EQTool
                 v= "Beta";
 #elif LINUX
                 v= "Linux";
-#else
-                v = "P99";
 #endif
                 return v;
             }
@@ -467,49 +479,9 @@ namespace EQTool
             MapMenuItem.Enabled = value;
             SpellsMenuItem.Enabled = value;
             DpsMeterMenuItem.Enabled = value;
-            MobInfoMenuItem.Enabled = value;
-            GroupSuggestionsMenuItem.Enabled = value;
+            MobInfoMenuItem.Enabled = value; 
         }
-
-        private void CreateStandardGroup(object sender, EventArgs e)
-        {
-            CreateGroup(GroupOptimization.Standard);
-        }
-
-        private void CreateHOTClericsSparseGroup(object sender, EventArgs e)
-        {
-            CreateGroup(GroupOptimization.HOT_Cleric_SparseGroup);
-        }
-
-        private void CreateHOTClericsSameGroup(object sender, EventArgs e)
-        {
-            CreateGroup(GroupOptimization.HOT_Cleric_SameGroup);
-        }
-
-        private void CreateGroup(GroupOptimization grp)
-        {
-            //var grpstring = new List<string>();
-            //var groups = PlayerTrackerService.CreateGroups(grp);
-            //var groupindex = 1;
-            //foreach (var group in groups)
-            //{
-            //    var str = $"/gu Group {groupindex++} ";
-            //    foreach (var player in group.Players)
-            //    {
-            //        str += player.Name + ",";
-            //    }
-            //    grpstring.Add(str);
-            //}
-            //if (grpstring.Any())
-            //{
-            //    System.Windows.Forms.Clipboard.SetText(string.Join("\r\n", grpstring));
-            //}
-            //else
-            //{
-            //    System.Windows.Forms.Clipboard.SetText("You must /who in the zone before group suggestions can be made!");
-            //}
-        }
-
+         
         private void WhyThePig(object sender, EventArgs e)
         {
             _ = System.Diagnostics.Process.Start(new ProcessStartInfo

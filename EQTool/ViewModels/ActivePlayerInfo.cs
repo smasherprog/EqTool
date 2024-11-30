@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Windows.Media.Media3D;
 
 namespace EQTool.ViewModels
 {
@@ -47,6 +48,10 @@ namespace EQTool.ViewModels
             try
             {
                 var players = settings.Players ?? new System.Collections.Generic.List<PlayerInfo>();
+                if (!Directory.Exists(settings.EqLogDirectory))
+                {
+                    return playerchanged;
+                }
                 var directory = new DirectoryInfo(settings.EqLogDirectory);
                 var loggedincharlogfile = directory.GetFiles("eqlog*.txt", SearchOption.TopDirectoryOnly)
                     .OrderByDescending(a => a.LastWriteTime)
@@ -93,8 +98,31 @@ namespace EQTool.ViewModels
                 _UserCastingSpell = value;
                 OnPropertyChanged();
             }
+        } 
+
+        private DateTime? _UserCastSpellDateTime;
+
+        public DateTime? UserCastSpellDateTime
+        {
+            get => _UserCastSpellDateTime;
+            set
+            {
+                _UserCastSpellDateTime = value;
+                OnPropertyChanged();
+            }
         }
 
+        private Point3D? _Location;
+
+        public Point3D? Location
+        {
+            get => _Location;
+            set
+            {
+                _Location = value;
+                OnPropertyChanged();
+            }
+        }
 
         public string LogFileName;
 

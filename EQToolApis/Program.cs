@@ -215,6 +215,7 @@ app.UseSwagger();
 app.UseSwaggerUI();
 app.MapRazorPages();
 app.MapHub<MapHub>("/EqToolMap");
+app.MapHub<PPHub>("/PP");
 var isrelease = false;
 
 #if !DEBUG

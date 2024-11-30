@@ -25,6 +25,7 @@ namespace EQTool.Services
 
         private readonly HashSet<string> IgnoreSpells = new HashSet<string>()
         {
+            "Shield of the Ring",
             "FireElementalAttack2",
             "Outbreak",
             "Paroxysm of Zek",
@@ -111,6 +112,16 @@ namespace EQTool.Services
             "Feeble Mind"
         };
 
+        private readonly List<string> SpellCastableByEveryone = new List<string>()
+        {
+            "Aura of Blue Petals",
+            "Aura of White Petals",
+            "Aura of Red Petals",
+            "Aura of Black Petals",
+            "Shield of the Eighth",
+            "Frostreaver's Blessing",
+        };
+
         public class EpicSpellTime
         {
             public PlayerClasses PlayerClass { get; set; }
@@ -143,10 +154,9 @@ namespace EQTool.Services
                 return _Spells;
             }
             var isdebug = false;
-#if DEBUG
+#if DEBUG && !TEST
             isdebug = true;
-#endif
-
+#endif 
             var stopwatch = new Stopwatch();
             stopwatch.Start();
             var spells = new Dictionary<string, SpellBase>();
@@ -154,7 +164,7 @@ namespace EQTool.Services
             var spellsfile = new FileInfo(settings.DefaultEqDirectory + spellfile);
             if (spellsfile.Exists)
             {
-                var spellfilename = $"SpellCache{servers}_6";
+                var spellfilename = $"SpellCache{servers}_9";
                 if (!isdebug)
                 {
                     spellfilename = new string(spellfilename.Where(a => char.IsLetterOrDigit(a)).ToArray()) + ".bin";
@@ -288,13 +298,20 @@ namespace EQTool.Services
                         peggylev.name = "Peggy Levitate";
                         peggylev.buffduration = 120;
                         peggylev.buffdurationformula = 12;
-                        peggylev.casttime = 6000;
+                        peggylev.casttime = 6000; 
                         if (!spells.ContainsKey(peggylev.name))
                         {
                             spells.Add(peggylev.name, peggylev);
                         }
                     }
 
+                    if (SpellCastableByEveryone.Contains(spell.name))
+                    {
+                        if (!spell.Classes.ContainsKey(PlayerClasses.Other))
+                        {
+                            spell.Classes.Add(PlayerClasses.Other, 46);
+                        }
+                    }
 
                     if (spell.name == "Maniacal Strength")
                     {

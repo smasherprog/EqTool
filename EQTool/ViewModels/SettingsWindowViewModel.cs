@@ -94,6 +94,16 @@ namespace EQTool.ViewModels
             }
         }
 
+        public bool RaidModeDetection
+        {
+            get => toolSettings.RaidModeDetection ?? true;
+            set
+            {
+                toolSettings.RaidModeDetection = value;
+                OnPropertyChanged();
+            }
+        }
+
         public bool DpsAlwaysOnTop
         {
             get => toolSettings.DpsWindowState.AlwaysOnTop;
@@ -246,8 +256,7 @@ namespace EQTool.ViewModels
             }
         }
 
-        public bool IsLoggingDisabled => !_IsLoggingEnabled;
-
+        public bool IsLoggingDisabled => !_IsLoggingEnabled; 
         public bool MissingConfiguration => DoesNotHaveEqPath || IsLoggingDisabled;
         public bool NotMissingConfiguration => HasEqPath && IsLoggingEnabled;
         public bool HasCharName => !string.IsNullOrWhiteSpace(ActivePlayer?.Player?.Name);
@@ -255,7 +264,7 @@ namespace EQTool.ViewModels
         public ObservableCollection<string> InstalledVoices { get; set; } = new ObservableCollection<string>();
         public ObservableCollection<BoolStringClass> SelectedPlayerClasses { get; set; } = new ObservableCollection<BoolStringClass>();
         public List<MapLocationSharing> LocationShareOptions => Enum.GetValues(typeof(MapLocationSharing)).Cast<MapLocationSharing>().ToList();
-        public List<PlayerClasses> PlayerClasses => Enum.GetValues(typeof(PlayerClasses)).Cast<PlayerClasses>().ToList();
+        public List<PlayerClasses> PlayerClasses => Enum.GetValues(typeof(PlayerClasses)).Cast<PlayerClasses>().Where(a => a != EQToolShared.Enums.PlayerClasses.Other).ToList();
 
         public bool EqRunning
         {

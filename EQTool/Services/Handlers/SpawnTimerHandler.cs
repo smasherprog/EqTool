@@ -1,6 +1,11 @@
 using EQTool.Models;
 using EQTool.ViewModels;
+using EQTool.ViewModels.SpellWindow;
+using System;
+using System.Linq;
 using System.Diagnostics;
+using System.Text.RegularExpressions;
+using System.Windows.Media;
 
 namespace EQTool.Services.Handlers
 {
@@ -9,28 +14,34 @@ namespace EQTool.Services.Handlers
     //
     // watches for ExpGainedEvent, FactionEvent, and DeathEvent types
     //
-    //internal class SpawnTimerHandler : BaseHandler
     public class SpawnTimerHandler : BaseHandler
     {
-        // Model class to hold the results of the Spawn Timer Dialog
-        // make this static, so it only initializes once
-        private static readonly SpawnTimerDialogViewModel _model = new SpawnTimerDialogViewModel();
+        private readonly SpellWindowViewModel spellWindowViewModel;
+        private readonly EQSpells spells;
 
         //
         // ctor
         //
         // register this service as a listener for the Events it cares about
         //
-        public SpawnTimerHandler(LogEvents logEvents, ActivePlayer activePlayer, EQToolSettings eQToolSettings, ITextToSpeach textToSpeach)
+        public SpawnTimerHandler(
+            LogEvents logEvents, 
+            SpellWindowViewModel spellWindowViewModel,
+            EQSpells spells,
+            ActivePlayer activePlayer, 
+            EQToolSettings eQToolSettings, 
+            ITextToSpeach textToSpeach)
             : base(logEvents, activePlayer, eQToolSettings, textToSpeach)
         {
+            this.spellWindowViewModel = spellWindowViewModel;
+            this.spells = spells;
             this.logEvents.ExpGainedEvent += LogEvents_ExpGainedEvent;
             this.logEvents.SlainEvent += LogEvents_SlainEvent;
             this.logEvents.FactionEvent += LogEvents_FactionEvent;
         }
 
         // getter for the spawn timer Model
-        public SpawnTimerDialogViewModel Model => _model;
+        public SpawnTimerDialogViewModel Model { get; } = new SpawnTimerDialogViewModel();
 
         //
         // function that gets called for a ExpGainedEvent
@@ -40,9 +51,36 @@ namespace EQTool.Services.Handlers
             // debugging message
             Debug.WriteLine($"ExpGainedEvent: [{expGainedEvent.TimeStamp}] [{expGainedEvent.Line}]");
 
-            // react
+            // are spawn timers for exp messages turned on?
+            if (Model.SpawnTimerEnabled && (Model.StartType == SpawnTimerDialogViewModel.StartTypes.EXP_MESSAGE))
+            {
+                // todo - incorporate all tehse features into the timer objects
+                //
+                //        WarningSeconds = Model.WarningSeconds,
+                //        ProvideWarningText = Model.ProvideWarningText,
+                //        ProvideWarningTTS = Model.ProvideWarningTTS,
+                //        WarningText = Model.WarningText,
+                //        WarningTTS = Model.WarningTTS,
+                //        ProvideEndText = Model.ProvideEndText,
+                //        ProvideEndTTS = Model.ProvideEndTTS,
+                //        EndText = Model.EndText,
+                //        EndTTS = Model.EndTTS,
 
-
+                var spellname = "Feign Death";
+                var spell = spells.AllSpells.FirstOrDefault(a => a.name == spellname);
+                spellWindowViewModel.TryAdd(new TimerViewModel
+                {
+                    PercentLeft = 100,
+                    GroupName = CustomTimer.CustomerTime,
+                    Name = $"Exp Timer [{Model.GetNextTimerCounter()}]",
+                    Rect = spell.Rect,
+                    Icon = spell.SpellIcon,
+                    TotalDuration = TimeSpan.FromSeconds(Model.DurationSeconds),
+                    TotalRemainingDuration = TimeSpan.FromSeconds(Model.DurationSeconds),
+                    UpdatedDateTime = DateTime.Now,
+                    ProgressBarColor = Brushes.DarkSeaGreen
+                });
+            }
         }
 
         //
@@ -54,8 +92,43 @@ namespace EQTool.Services.Handlers
             Debug.WriteLine($"SlainEvent: [{slainEvent.TimeStamp}], Killer = [{slainEvent.Killer}], Victim = [{slainEvent.Victim}]");
 
             // if the victim field matches to the SpawnTimer field, then react
+            // are spawn timers for faction messages turned on?
+            if (Model.SpawnTimerEnabled && (Model.StartType == SpawnTimerDialogViewModel.StartTypes.SLAIN_MESSAGE))
+            {
+                // does this faction match the user-specified factions?
+                var regex = new Regex(Model.SlainText, RegexOptions.Compiled);
+                var match = regex.Match(slainEvent.Victim);
 
+                if (match.Success)
+                {
+                    // todo - incorporate all tehse features into the timer objects
+                    //
+                    //        WarningSeconds = Model.WarningSeconds,
+                    //        ProvideWarningText = Model.ProvideWarningText,
+                    //        ProvideWarningTTS = Model.ProvideWarningTTS,
+                    //        WarningText = Model.WarningText,
+                    //        WarningTTS = Model.WarningTTS,
+                    //        ProvideEndText = Model.ProvideEndText,
+                    //        ProvideEndTTS = Model.ProvideEndTTS,
+                    //        EndText = Model.EndText,
+                    //        EndTTS = Model.EndTTS,
 
+                    var spellname = "Feign Death";
+                    var spell = spells.AllSpells.FirstOrDefault(a => a.name == spellname);
+                    spellWindowViewModel.TryAdd(new TimerViewModel
+                    {
+                        PercentLeft = 100,
+                        GroupName = CustomTimer.CustomerTime,
+                        Name = $"Slain Timer: [{slainEvent.Victim}] [{Model.GetNextTimerCounter()}]",
+                        Rect = spell.Rect,
+                        Icon = spell.SpellIcon,
+                        TotalDuration = TimeSpan.FromSeconds(Model.DurationSeconds),
+                        TotalRemainingDuration = TimeSpan.FromSeconds(Model.DurationSeconds),
+                        UpdatedDateTime = DateTime.Now,
+                        ProgressBarColor = Brushes.DarkSeaGreen
+                    });
+                }
+            }
         }
 
         //
@@ -66,10 +139,43 @@ namespace EQTool.Services.Handlers
             // debugging message
             Debug.WriteLine($"FactionEvent: [{factionEvent.TimeStamp}], Faction group = [{factionEvent.Faction}]");
 
-            // if the faction field matches to the SpawnTimer field, then react
+            // are spawn timers for faction messages turned on?
+            if (Model.SpawnTimerEnabled && (Model.StartType == SpawnTimerDialogViewModel.StartTypes.FACTION_MESSAGE))
+            {
+                // does this faction match the user-specified factions?
+                var regex = new Regex(Model.FactionText, RegexOptions.Compiled);
+                var match = regex.Match(factionEvent.Faction);
 
+                if (match.Success)
+                {
+                    // todo - incorporate all tehse features into the timer objects
+                    //
+                    //        WarningSeconds = Model.WarningSeconds,
+                    //        ProvideWarningText = Model.ProvideWarningText,
+                    //        ProvideWarningTTS = Model.ProvideWarningTTS,
+                    //        WarningText = Model.WarningText,
+                    //        WarningTTS = Model.WarningTTS,
+                    //        ProvideEndText = Model.ProvideEndText,
+                    //        ProvideEndTTS = Model.ProvideEndTTS,
+                    //        EndText = Model.EndText,
+                    //        EndTTS = Model.EndTTS,
 
+                    var spellname = "Feign Death";
+                    var spell = spells.AllSpells.FirstOrDefault(a => a.name == spellname);
+                    spellWindowViewModel.TryAdd(new TimerViewModel
+                    {
+                        PercentLeft = 100,
+                        GroupName = CustomTimer.CustomerTime,
+                        Name = $"Faction Timer: [{factionEvent.Faction}] [{Model.GetNextTimerCounter()}]",
+                        Rect = spell.Rect,
+                        Icon = spell.SpellIcon,
+                        TotalDuration = TimeSpan.FromSeconds(Model.DurationSeconds),
+                        TotalRemainingDuration = TimeSpan.FromSeconds(Model.DurationSeconds),
+                        UpdatedDateTime = DateTime.Now,
+                        ProgressBarColor = Brushes.DarkSeaGreen
+                    });
+                }
+            }
         }
-
     }
 }

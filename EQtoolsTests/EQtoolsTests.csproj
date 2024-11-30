@@ -30,7 +30,7 @@
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
     <OutputPath>bin\Debug\</OutputPath>
-    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <DefineConstants>TRACE;DEBUG;TEST</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
@@ -161,6 +161,7 @@
     <Reference Include="NuGet.Frameworks, Version=6.11.1.2, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\NuGet.Frameworks.6.11.1\lib\net472\NuGet.Frameworks.dll</HintPath>
     </Reference>
+    <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
     <Reference Include="System.Buffers, Version=4.0.3.0, Culture=neutral, PublicKeyToken=cc7b13ffcd2ddd51, processorArchitecture=MSIL">
@@ -197,12 +198,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseTestClass.cs" />
+    <Compile Include="DragonEffectTests.cs" />
+    <Compile Include="SpellViewModelTests.cs" />
     <Compile Include="SlainHandlerTests.cs" />
     <Compile Include="DeathTests.cs" />
     <Compile Include="CommsParserTests.cs" />
     <Compile Include="ExpGainedTests.cs" />
     <Compile Include="FactionParserTests.cs" />
-    <Compile Include="Fakes\Class1.cs" />
+    <Compile Include="Fakes\AppDispatcherFake.cs" />
     <Compile Include="Fakes\TextToSpeachFake.cs" />
     <Compile Include="PlayerLevelDetectionParserTests.cs" />
     <Compile Include="CustomTimerHandlerTests.cs" />
@@ -215,21 +218,17 @@
     <Compile Include="FindEqTests.cs" />
     <Compile Include="DiscordTests.cs" />
     <Compile Include="AuctionParsingTests.cs" />
-    <Compile Include="DTparsingTests.cs" />
+    <Compile Include="DeathTouchHandlerTests.cs" />
     <Compile Include="ParsingTests.cs" />
     <Compile Include="MobInfoTests.cs" />
     <Compile Include="DamageParserTests.cs" />
     <Compile Include="LogFileNameTests.cs" />
     <Compile Include="PlayerWhoLogParseTests.cs" />
-    <Compile Include="GroupTests.cs" />
-    <Compile Include="SpellTests.cs" />
+    <Compile Include="SpellMatchingTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ZoneParsingTests.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="spells_en.txt">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
     <Content Include="spells_us.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>

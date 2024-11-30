@@ -273,8 +273,6 @@ namespace EQTool.Models
     [Serializable]
     public class SpellBase
     {
-       
-
         public int id { get; set; } // not used 
         public string name { get; set; } // Victim of the spell  
         public string cast_on_you { get; set; }

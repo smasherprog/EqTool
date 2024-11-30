@@ -8,8 +8,7 @@ using System.Windows.Controls;
 namespace EQTool.Services
 {
     public class UserComponentSettingsManagementFactory
-    {
-        //anti pattern below, but its the only way to do this.
+    { 
         private readonly ILifetimeScope container;
         private readonly Dictionary<TreeViewItemType, Type> userComponentTypes = new Dictionary<TreeViewItemType, Type>();
         public UserComponentSettingsManagementFactory(ILifetimeScope container)

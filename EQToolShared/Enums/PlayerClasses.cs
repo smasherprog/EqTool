@@ -15,6 +15,7 @@
         Necromancer,
         Wizard,
         Magician,
-        Enchanter
+        Enchanter,
+        Other
     }
 }

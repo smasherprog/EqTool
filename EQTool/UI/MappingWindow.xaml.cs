@@ -49,10 +49,7 @@ namespace EQTool.UI
             this.logEvents.YouZonedEvent += LogParser_PlayerZonedEvent;
             this.logEvents.EnteredWorldEvent += LogParser_EnteredWorldEvent;
             this.logEvents.SlainEvent += LogParser_DeathEvent;
-            this.logEvents.StartTimerEvent += LogParser_StartTimerEvent;
-            this.logEvents.CancelTimerEvent += LogParser_CancelTimerEvent;
             KeyDown += PanAndZoomCanvas_KeyDown;
-            Map.StartTimerEvent += Map_StartTimerEvent;
             Map.CancelTimerEvent += Map_CancelTimerEvent;
             Map.TimerMenu_ClosedEvent += Map_TimerMenu_ClosedEvent;
             Map.TimerMenu_OpenedEvent += Map_TimerMenu_OpenedEvent;
@@ -64,12 +61,12 @@ namespace EQTool.UI
             //   this.SetCenerMap();
         }
 
-        private void SignalrPlayerHub_PlayerDisconnected(object sender, SignalrPlayer e)
+        private void SignalrPlayerHub_PlayerDisconnected(object sender, SignalrPlayerV2 e)
         {
             mapViewModel.PlayerDisconnected(e);
         }
 
-        private void SignalrPlayerHub_PlayerLocationEvent(object sender, SignalrPlayer e)
+        private void SignalrPlayerHub_PlayerLocationEvent(object sender, SignalrPlayerV2 e)
         {
             mapViewModel.PlayerLocationEvent(e);
         }
@@ -88,23 +85,6 @@ namespace EQTool.UI
         private void Map_TimerMenu_ClosedEvent(object sender, RoutedEventArgs e)
         {
             mapViewModel.TimerMenu_Closed();
-        }
-
-        private void LogParser_StartTimerEvent(object sender, StartTimerEvent e)
-        {
-            var mw = mapViewModel.AddTimer(TimeSpan.FromSeconds(e.CustomTimer.DurationInSeconds), e.CustomTimer.Name, false);
-            mapViewModel.MoveToPlayerLocation(mw);
-        }
-
-        private void LogParser_CancelTimerEvent(object sender, CancelTimerEvent e)
-        {
-            mapViewModel.DeleteSelectedTimerByName(e.Name);
-        }
-
-        private void Map_StartTimerEvent(object sender, StartTimerEvent e)
-        {
-            mapViewModel.TimerMenu_Closed();
-            _ = mapViewModel.AddTimer(TimeSpan.FromSeconds(e.CustomTimer.DurationInSeconds), e.CustomTimer.Name, true);
         }
 
         private void Map_CancelTimerEvent(object sender, EventArgs e)
@@ -194,14 +174,11 @@ namespace EQTool.UI
                 logEvents.YouZonedEvent -= LogParser_PlayerZonedEvent;
                 logEvents.EnteredWorldEvent -= LogParser_EnteredWorldEvent;
                 logEvents.SlainEvent -= LogParser_DeathEvent;
-                logEvents.StartTimerEvent -= LogParser_StartTimerEvent;
-                logEvents.CancelTimerEvent -= LogParser_CancelTimerEvent;
             }
 
             KeyDown -= PanAndZoomCanvas_KeyDown;
             if (Map != null)
             {
-                Map.StartTimerEvent -= Map_StartTimerEvent;
                 Map.CancelTimerEvent -= Map_CancelTimerEvent;
                 Map.TimerMenu_ClosedEvent -= Map_TimerMenu_ClosedEvent;
                 Map.TimerMenu_OpenedEvent -= Map_TimerMenu_OpenedEvent;

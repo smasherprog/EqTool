@@ -1,14 +1,13 @@
 ﻿using EQTool.Services;
 using EQTool.ViewModels;
-using EQToolShared;
-using EQToolShared.Enums;
+using EQTool.ViewModels.SpellWindow;
 using EQToolShared.HubModels;
 using EQToolShared.Map;
 using Microsoft.AspNetCore.SignalR.Client;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
-using System.Net.WebSockets;
-using System.Text;
+using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
@@ -19,10 +18,10 @@ namespace EQTool.Models
 
     public interface ISignalrPlayerHub : IDisposable
     {
-        event EventHandler<SignalrPlayer> PlayerLocationEvent;
-        event EventHandler<SignalrPlayer> PlayerDisconnected;
-        void PushPlayerLocationEvent(SignalrPlayer player);
-        void PushPlayerDisconnected(SignalrPlayer player);
+        event EventHandler<SignalrPlayerV2> PlayerLocationEvent;
+        event EventHandler<SignalrPlayerV2> PlayerDisconnected;
+        void OtherPlayerLocationReceivedRemotely(SignalrPlayerV2 player);
+        void PlayerDisconnectReceivedRemotely(SignalrPlayerV2 player);
     }
 
     public class SignalrPlayerHub : ISignalrPlayerHub
@@ -33,55 +32,49 @@ namespace EQTool.Models
         private readonly LogEvents logEvents;
         private readonly IAppDispatcher appDispatcher;
         private readonly System.Timers.Timer timer;
-        private SignalrPlayer LastPlayer;
+        private SignalrPlayerV2 LastPlayer;
+        private readonly EQSpells spells;
+        private readonly DebugOutput debugOutput;
+
         private readonly SpellWindowViewModel spellWindowViewModel;
-        private readonly ClientWebSocket NParseWebsocketConnection;
         private readonly CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
-        public SignalrPlayerHub(LogEvents logEvents, IAppDispatcher appDispatcher, LogParser logParser, ActivePlayer activePlayer, SpellWindowViewModel spellWindowViewModel)
+
+        public SignalrPlayerHub(EQSpells spells, LogEvents logEvents, IAppDispatcher appDispatcher, LogParser logParser, ActivePlayer activePlayer, SpellWindowViewModel spellWindowViewModel, DebugOutput debugOutput)
         {
+            this.spells = spells;
             this.logEvents = logEvents;
             this.appDispatcher = appDispatcher;
             this.activePlayer = activePlayer;
             this.logParser = logParser;
+            this.debugOutput = debugOutput;
             this.spellWindowViewModel = spellWindowViewModel;
-            var url = "https://www.pigparse.org/EqToolMap";
+            var url = "https://www.pigparse.org/PP";
             connection = new HubConnectionBuilder()
               .WithUrl(url)
               .WithAutomaticReconnect()
               .Build();
-            _ = connection.On("PlayerLocationEvent", (SignalrPlayer p) =>
+            _ = connection.On("PlayerLocationEvent", (SignalrPlayerV2 p) =>
                 {
-                    PushPlayerLocationEvent(p);
+                    OtherPlayerLocationReceivedRemotely(p);
                 });
-            _ = connection.On("PlayerDisconnected", (SignalrPlayer p) =>
+            _ = connection.On("PlayerDisconnected", (SignalrPlayerV2 p) =>
             {
-                PushPlayerDisconnected(p);
+                PlayerDisconnectReceivedRemotely(p);
             });
             _ = connection.On("AddCustomTrigger", (SignalrCustomTimer p) =>
             {
-                AddCustomTrigger(p);
+                FactionPullReceivedRemotely(p);
             });
-            _ = connection.On("TriggerEvent", (TriggerEvent p) =>
+            _ = connection.On("DragonRoarEvent", (SignalRDragonRoar p) =>
             {
-                AddCustomTrigger(p);
+                DragonRoarReceivedRemotely(p);
             });
             connection.Closed += async (error) =>
-              {
-                  await Task.Delay(new Random().Next(0, 5) * 1000);
-                  await SignalrConnectWithRetry();
-              };
-            NParseWebsocketConnection = new ClientWebSocket();
-            try
             {
-                _ = Task.Factory.StartNew(async () =>
-                {
-                    await NparseConnectWithRetry();
-                });
-            }
-            catch (Exception ex)
-            {
-                Debug.WriteLine(ex.ToString());
-            }
+                this.debugOutput.WriteLine($"SignalR Close '{error?.ToString()}'", OutputType.Map, MessageType.Warning);
+                await Task.Delay(new Random().Next(0, 5) * 1000);
+                await SignalrConnectWithRetry();
+            };
             try
             {
                 _ = Task.Factory.StartNew(async () =>
@@ -94,9 +87,9 @@ namespace EQTool.Models
                 Debug.WriteLine(ex.ToString());
             }
 
-            this.logEvents.PlayerLocationEvent += LogParser_PlayerLocationEvent;
+            this.logEvents.PlayerLocationEvent += SendMyLocationToOthers;
             this.logEvents.CampEvent += LogParser_CampEvent;
-            this.logEvents.SpellCastEvent += LogParser_StartCastingEvent;
+            this.logEvents.DragonRoarEvent += SendDragonRoarToOthers;
             timer = new System.Timers.Timer();
             timer.Elapsed += Timer_Elapsed;
             timer.Interval = 1000 * 10;
@@ -131,8 +124,8 @@ namespace EQTool.Models
             }
         }
 
-        public event EventHandler<SignalrPlayer> PlayerLocationEvent;
-        public event EventHandler<SignalrPlayer> PlayerDisconnected;
+        public event EventHandler<SignalrPlayerV2> PlayerLocationEvent;
+        public event EventHandler<SignalrPlayerV2> PlayerDisconnected;
 
         private async Task SignalrConnectWithRetry()
         {
@@ -140,194 +133,136 @@ namespace EQTool.Models
             {
                 try
                 {
-                    Debug.WriteLine("Beg StartAsync");
+                    debugOutput.WriteLine($"SignalR StartAsync", OutputType.Map);
                     await connection.StartAsync();
                     try
                     {
                         InvokeAsync("JoinServerGroup", activePlayer?.Player?.Server);
                     }
                     catch { }
-                    Debug.WriteLine("Connected StartAsync");
+                    debugOutput.WriteLine($"SignalR Connected", OutputType.Map, MessageType.Success);
                     return;
                 }
-                catch
+                catch (Exception)
                 {
-                    Debug.WriteLine("Failed StartAsync");
+                    debugOutput.WriteLine($"SignalR Connected", OutputType.Map, MessageType.Warning);
                     await Task.Delay(5000);
                 }
             }
         }
 
-        private async Task NparseConnectWithRetry()
-        {
-            while (!cancellationTokenSource.IsCancellationRequested)
-            {
-                try
-                {
-                    if (NParseWebsocketConnection.State == WebSocketState.Closed ||
-                        NParseWebsocketConnection.State == WebSocketState.CloseReceived ||
-                        NParseWebsocketConnection.State == WebSocketState.None)
-                    {
-                        Debug.WriteLine("Beg Nparse StartAsync");
-                        await NParseWebsocketConnection.ConnectAsync(new Uri("ws://sheeplauncher.net:8424"), cancellationTokenSource.Token);
-                        Debug.WriteLine("Connected Nparse StartAsync");
-                    }
-
-                    await NparseStartReceiveLoopAsync();
-                }
-                catch
-                {
-                    Debug.WriteLine("Failed Nparse StartAsync");
-                    if (!cancellationTokenSource.IsCancellationRequested)
-                    {
-                        await Task.Delay(5000);
-                    }
-                }
-            }
-        }
-        private async Task NparseStartReceiveLoopAsync()
-        {
-            while (!cancellationTokenSource.IsCancellationRequested)
-            {
-                Thread.Sleep(100);
-                if (NParseWebsocketConnection.State == WebSocketState.Open)
-                {
-                    try
-                    {
-                        var buffer = new ArraySegment<byte>(new byte[1024]);
-                        var msg = string.Empty;
-                        WebSocketReceiveResult result;
-                        do
-                        {
-                            result = await NParseWebsocketConnection.ReceiveAsync(buffer, cancellationTokenSource.Token);
-                            msg += Encoding.UTF8.GetString(buffer.Array, 0, result.Count);
-                        }
-                        while (!result.EndOfMessage);
-                        //Console.WriteLine("Received message: " + msg);
-                        if (string.IsNullOrWhiteSpace(msg))
-                        {
-                            continue;
-                        }
-
-                        var test = Newtonsoft.Json.JsonConvert.DeserializeObject<NParseStateData>(msg);
-                        var playername = activePlayer?.Player?.Name;
-                        var playerzone = activePlayer?.Player?.Zone;
-                        if (!string.IsNullOrWhiteSpace(playername) && !string.IsNullOrWhiteSpace(playerzone))
-                        {
-                            var nparsezonename = TranslateZoneNameToNParse(playerzone);
-                            foreach (var item in test.locations)
-                            {
-                                if (item.Key.Equals(nparsezonename, StringComparison.OrdinalIgnoreCase))
-                                {
-                                    foreach (var player in item.Value)
-                                    {
-                                        if (player.Key != playername && player.Key.IndexOf(" (PP)", StringComparison.OrdinalIgnoreCase) == -1)
-                                        {
-                                            PushPlayerLocationEvent(new SignalrPlayer
-                                            {
-                                                GuildName = string.Empty,
-                                                MapLocationSharing = MapLocationSharing.Everyone,
-                                                Name = player.Key + " (NP)",
-                                                Server = Servers.Green,
-                                                X = player.Value.x,
-                                                Y = player.Value.y,
-                                                Z = player.Value.z,
-                                                Zone = playerzone
-                                            });
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    catch { }
-                }
-                else if (NParseWebsocketConnection.State != WebSocketState.Connecting)
-                {
-                    Debug.WriteLine($"WebSocket {NParseWebsocketConnection.State} Reconnecting");
-                    throw new Exception();
-                }
-            }
-        }
-        public void PushPlayerDisconnected(SignalrPlayer p)
+        public void PlayerDisconnectReceivedRemotely(SignalrPlayerV2 p)
         {
             if (!(p.Server == activePlayer?.Player?.Server && p.Name == activePlayer?.Player?.Name))
             {
-                Debug.WriteLine($"PlayerDisconnected {p.Name}");
+                debugOutput.WriteLine($"{p.Name}", OutputType.Map, MessageType.RemoteMessageReceived);
                 appDispatcher.DispatchUI(() =>
                 {
                     PlayerDisconnected?.Invoke(this, p);
                 });
             }
         }
-        private void LogParser_StartCastingEvent(object sender, SpellCastEvent e)
-        {
-            if (e.CastByYou &&
-                LastPlayer != null &&
-                !string.IsNullOrWhiteSpace(activePlayer?.Player?.Zone) &&
-                !string.IsNullOrWhiteSpace(activePlayer?.Player?.Name) &&
-                activePlayer.Player.Server.HasValue &&
-                (e.Spell.type == SpellTypes.Detrimental || e.Spell.type == SpellTypes.Other)
-             )
-            {
-                var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(e.Spell, activePlayer.Player?.PlayerClass, activePlayer.Player?.Level));
-                var isnpc = MasterNPCList.NPCs.Contains(e.TargetName);
-                if (isnpc)
-                {
-                    var s = new TriggerEvent
-                    {
-                        Classes = e.Spell.Classes,
-                        DurationInSeconds = (int)spellduration.TotalSeconds,
-                        Zone = activePlayer.Player?.Zone,
-                        GuildName = activePlayer.Player.GuildName,
-                        MapLocationSharing = activePlayer.Player.MapLocationSharing,
-                        Name = e.Spell.name,
-                        Server = activePlayer.Player.Server.Value,
-                        SpellNameIcon = e.Spell.name,
-                        SpellType = e.Spell.type,
-                        TargetName = e.TargetName,
-                        X = LastPlayer.X,
-                        Y = LastPlayer.Y,
-                        Z = LastPlayer.Z
-                    };
 
-                    InvokeAsync("TriggerEvent", s);
-                }
+        private void SendMyLocationToOthers(object sender, PlayerLocationEvent e)
+        {
+            if (activePlayer?.Player?.Server != null)
+            {
+                LastPlayer = new SignalrPlayerV2
+                {
+                    Zone = activePlayer.Player.Zone,
+                    GuildName = activePlayer.Player.GuildName,
+                    Server = activePlayer.Player.Server.Value,
+                    Sharing = activePlayer.Player.MapLocationSharing,
+                    Name = activePlayer.Player.Name,
+                    TrackingDistance = activePlayer.Player.TrackingDistance,
+                    X = e.Location.X,
+                    Y = e.Location.Y,
+                    Z = e.Location.Z
+                };
+                debugOutput.WriteLine($"{LastPlayer.Zone}-{LastPlayer.GuildName}-{LastPlayer.Server}-{LastPlayer.Sharing}-{LastPlayer.Name}-({LastPlayer.X},{LastPlayer.Y},{LastPlayer.Z})", OutputType.Map, MessageType.RemoteMessageSent);
+                InvokeAsync("PlayerLocationEvent", LastPlayer);
             }
         }
 
-        public void AddCustomTrigger(SignalrCustomTimer p)
+        private readonly List<DragonRoarEvent> LastDragonRoars = new List<DragonRoarEvent>();
+
+        private void SendDragonRoarToOthers(object sender, DragonRoarEvent e)
+        {
+            var recentlyEmittedSameRoar = LastDragonRoars.Any(a => a.Spell.name == e.Spell.name && (e.TimeStamp - a.TimeStamp).TotalSeconds < 4);
+            if (activePlayer?.Player != null &&
+                !string.IsNullOrWhiteSpace(activePlayer.Player.Zone) &&
+                activePlayer.Player.ShareTimers &&
+                activePlayer.Player.Server.HasValue &&
+                !recentlyEmittedSameRoar
+               )
+            {
+                LastDragonRoars.Add(e);
+                debugOutput.WriteLine($"{e.Spell.name}-({LastPlayer.X},{LastPlayer.Y},{LastPlayer.Z})", OutputType.Map, MessageType.RemoteMessageSent);
+                InvokeAsync("DragonRoarEvent", new SignalRDragonRoar
+                {
+                    SpellName = e.Spell.name,
+                    Server = activePlayer.Player.Server.Value,
+                    Zone = activePlayer.Player.Zone,
+                    Sharing = activePlayer.Player.MapLocationSharing,
+                    GuildName = activePlayer.Player.GuildName,
+                    X = LastPlayer?.X,
+                    Y = LastPlayer?.Y,
+                    Z = LastPlayer?.Z
+                });
+                var now = DateTime.Now;
+                _ = LastDragonRoars.RemoveAll(a => (now - a.TimeStamp).TotalSeconds > 45);
+            }
+        }
+
+        private void DragonRoarReceivedRemotely(SignalRDragonRoar p)
+        {
+            if (activePlayer?.Player != null &&
+                p.Server == activePlayer.Player.Server &&
+                activePlayer.Player.ShareTimers)
+            {
+                debugOutput.WriteLine($"{p.SpellName}-({p.X},{p.Y},{p.Z})", OutputType.Map, MessageType.RemoteMessageReceived);
+                Point3D? Location = null;
+                if (p.X.HasValue && p.Y.HasValue && p.Z.HasValue)
+                {
+                    Location = new Point3D(p.X.Value, p.Y.Value, p.Z.Value);
+                }
+                logEvents.Handle(new DragonRoarRemoteEvent
+                {
+                    SpellName = p.SpellName,
+                    Location = Location
+                });
+            }
+        }
+
+        public void FactionPullReceivedRemotely(SignalrCustomTimer p)
         {
             if (p.Server == activePlayer?.Player?.Server)
             {
-                Debug.WriteLine($"AddCustomTrigger {p.Name}");
+                debugOutput.WriteLine($"{p.Name}-{p.Server}", OutputType.Map, MessageType.RemoteMessageReceived);
                 appDispatcher.DispatchUI(() =>
                 {
-                    spellWindowViewModel.TryAddCustom(p);
+                    spellWindowViewModel.TryAdd(Create(p));
                 });
             }
         }
 
-        public void AddCustomTrigger(TriggerEvent p)
+        private TimerViewModel Create(HubCustomTimer e)
         {
-            if (LastPlayer == null || activePlayer?.Player == null || p.Server != activePlayer.Player.Server || p.Zone != activePlayer.Player.Zone || !activePlayer.Player.SpellDebuffShare)
+            var spellicon = spells.AllSpells.FirstOrDefault(a => a.name == e.SpellNameIcon);
+            return new TimerViewModel
             {
-                return;
-            }
-            var loc1 = new Point3D(LastPlayer.X, LastPlayer.Y, LastPlayer.Z);
-            var loc2 = new Point3D(p.X, p.Y, p.Z);
-            var distanceSquared = (loc1 - loc2).LengthSquared;
-            if (distanceSquared <= 500)
-            {
-                Debug.WriteLine($"AddCustomTrigger {p.TargetName}");
-                appDispatcher.DispatchUI(() =>
-                {
-                    spellWindowViewModel.TryAddCustom(p);
-                });
-            }
+                PercentLeft = 100,
+                GroupName = CustomTimer.CustomerTime,
+                Name = e.Name,
+                Rect = spellicon.Rect,
+                Icon = spellicon.SpellIcon,
+                TotalDuration = TimeSpan.FromSeconds(e.DurationInSeconds),
+                TotalRemainingDuration = TimeSpan.FromSeconds(e.DurationInSeconds),
+                UpdatedDateTime = DateTime.Now
+            };
         }
 
-        public void PushPlayerLocationEvent(SignalrPlayer p)
+        public void OtherPlayerLocationReceivedRemotely(SignalrPlayerV2 p)
         {
             if (!(p.Server == activePlayer?.Player?.Server && p.Name == activePlayer?.Player?.Name))
             {
@@ -336,81 +271,6 @@ namespace EQTool.Models
                 {
                     PlayerLocationEvent?.Invoke(this, p);
                 });
-            }
-        }
-        private string TranslateZoneNameToNParse(string zoneName)
-        {
-            if (zoneName == "cazicthule")
-            {
-                return "lost temple of cazic-thule";
-            }
-            else if (zoneName == "neriakb")
-            {
-                return "neriak commons";
-            }
-            else
-            {
-                foreach (var item in Zones.ZoneNameMapper)
-                {
-                    if (string.Equals(item.Value, zoneName, StringComparison.OrdinalIgnoreCase))
-                    {
-                        if (item.Value.Contains("("))
-                        {
-                            continue;
-                        }
-                        return item.Key;
-                    }
-                }
-            }
-            return zoneName;
-        }
-
-        private void LogParser_PlayerLocationEvent(object sender, PlayerLocationEvent e)
-        {
-            if (activePlayer?.Player?.Server != null)
-            {
-                LastPlayer = new SignalrPlayer
-                {
-                    Zone = activePlayer.Player.Zone,
-                    GuildName = activePlayer.Player.GuildName,
-                    PlayerClass = activePlayer.Player.PlayerClass,
-                    Server = activePlayer.Player.Server.Value,
-                    MapLocationSharing = activePlayer.Player.MapLocationSharing,
-                    Name = activePlayer.Player.Name,
-                    TrackingDistance = activePlayer.Player.TrackingDistance,
-                    X = e.Location.X,
-                    Y = e.Location.Y,
-                    Z = e.Location.Z
-                };
-
-                InvokeAsync("PlayerLocationEvent", LastPlayer);
-
-                if (NParseWebsocketConnection.State == WebSocketState.Open && activePlayer?.Player?.MapLocationSharing == MapLocationSharing.Everyone)
-                {
-                    var nparsezonename = TranslateZoneNameToNParse(LastPlayer.Zone);
-                    var sendMessage = Newtonsoft.Json.JsonConvert.SerializeObject(new NParseLocationEvent
-                    {
-                        group_key = "public",
-                        type = "location",
-                        location = new NParseLocation
-                        {
-                            x = Math.Round(LastPlayer.X, 2),
-                            y = Math.Round(LastPlayer.Y, 2),
-                            z = Math.Round(LastPlayer.Z, 2),
-                            zone = LastPlayer.Zone,
-                            player = LastPlayer.Name + " (PP)",
-                        }
-                    });
-                    var sendBuffer = new ArraySegment<byte>(Encoding.UTF8.GetBytes(sendMessage));
-                    _ = Task.Factory.StartNew(async () =>
-                    {
-                        try
-                        {
-                            await NParseWebsocketConnection.SendAsync(sendBuffer, WebSocketMessageType.Text, true, CancellationToken.None);
-                        }
-                        catch { }
-                    });
-                }
             }
         }
 

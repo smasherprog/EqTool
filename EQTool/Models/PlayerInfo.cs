@@ -232,13 +232,13 @@ namespace EQTool.Models
             }
         }
 
-        private bool _SpellDebuffShare;
-        public bool SpellDebuffShare
+        private bool _ShareTimers;
+        public bool ShareTimers
         {
-            get => _SpellDebuffShare;
+            get => _ShareTimers;
             set
             {
-                _SpellDebuffShare = value;
+                _ShareTimers = value;
                 OnPropertyChanged();
             }
         }
@@ -388,6 +388,28 @@ namespace EQTool.Models
             set
             {
                 _DeathLoopOverlay = value;
+                OnPropertyChanged();
+            }
+        }
+
+
+        private bool _EnteringZoneAudio;
+        public bool EnteringZoneAudio
+        {
+            get => _EnteringZoneAudio;
+            set
+            {
+                _EnteringZoneAudio = value;
+                OnPropertyChanged();
+            }
+        }
+        private bool _EnteringZoneOverlay;
+        public bool EnteringZoneOverlay
+        {
+            get => _EnteringZoneOverlay;
+            set
+            {
+                _EnteringZoneOverlay = value;
                 OnPropertyChanged();
             }
         }

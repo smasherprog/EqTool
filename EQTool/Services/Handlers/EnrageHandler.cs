@@ -1,5 +1,6 @@
 ﻿using EQTool.Models;
 using EQTool.ViewModels;
+using System.Windows.Media;
 
 namespace EQTool.Services.Handlers
 {
@@ -12,9 +13,24 @@ namespace EQTool.Services.Handlers
 
         private void LogParser_EnrageEvent(object sender, EnrageEvent e)
         {
+            var text = $"{e.NpcName} is enraged.";
             if (activePlayer?.Player?.EnrageAudio == true)
             {
-                textToSpeach.Say($"{e.NpcName} is enraged.");
+                textToSpeach.Say(text);
+            }
+            var doAlert = activePlayer?.Player?.EnrageOverlay ?? false;
+            if (doAlert)
+            {
+                _ = System.Threading.Tasks.Task.Factory.StartNew(() =>
+                {
+                    text = $"{e.NpcName} ENRAGED";
+                    logEvents.Handle(new OverlayEvent { Text = text, ForeGround = Brushes.Red, Reset = false });
+                    System.Threading.Thread.Sleep(1000 * 12);
+                    text = $"{e.NpcName} ENRAGE OFF";
+                    logEvents.Handle(new OverlayEvent { Text = text, ForeGround = Brushes.Red, Reset = false });
+                    System.Threading.Thread.Sleep(3000);
+                    logEvents.Handle(new OverlayEvent { Text = text, ForeGround = Brushes.Red, Reset = true });
+                });
             }
         }
     }

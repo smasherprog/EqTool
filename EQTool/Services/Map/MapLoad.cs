@@ -15,7 +15,7 @@ namespace EQTool.Services.Map
     {
         private readonly LoggingService loggingService;
         private readonly ActivePlayer activePlayer;
-
+        private const string CurrentMapVersion = "cachedmaps_3";
         public MapLoad(LoggingService loggingService, ActivePlayer activePlayer)
         {
             this.loggingService = loggingService;
@@ -31,11 +31,8 @@ namespace EQTool.Services.Map
             }
             var lines = new List<string>();
             var checkformanualmaps = System.IO.Directory.GetCurrentDirectory() + "/maps";
-            var isdebug = false;
-#if DEBUG
-            //isdebug = true;
-#endif
-            if (isdebug && System.IO.Directory.Exists(checkformanualmaps))
+
+            if (System.IO.Directory.Exists(checkformanualmaps))
             {
                 var resourcenames = Directory.GetFiles(checkformanualmaps, zone + "*.txt").ToList();
                 foreach (var item in resourcenames)
@@ -49,24 +46,8 @@ namespace EQTool.Services.Map
                     }
                 }
             }
-            var oldcachedmaps = Directory.GetDirectories(System.IO.Directory.GetCurrentDirectory(), "cachedmaps*");
-            var version = "cachedmaps_3";
-            foreach (var item in oldcachedmaps)
-            {
-                if (!item.Contains(version))
-                {
-                    try
-                    {
-                        Directory.Delete(item, true);
-                    }
-                    catch
-                    {
-                        Thread.Sleep(2000);
-                        Directory.Delete(item, true);
-                    }
-                }
-            }
-            checkformanualmaps = System.IO.Directory.GetCurrentDirectory() + $"/{version}";
+            CleanCachedMaps(false);
+            checkformanualmaps = System.IO.Directory.GetCurrentDirectory() + $"/{CurrentMapVersion}";
             if (System.IO.File.Exists(checkformanualmaps + "/" + zone + ".bin"))
             {
                 try
@@ -115,6 +96,27 @@ namespace EQTool.Services.Map
                 loggingService.Log(ex.ToString(), EventType.Error, activePlayer?.Player?.Server);
             }
             return d;
+        }
+
+        public static void CleanCachedMaps(bool deleteAll)
+        {
+            var oldcachedmaps = Directory.GetDirectories(System.IO.Directory.GetCurrentDirectory(), "cachedmaps*");
+
+            foreach (var item in oldcachedmaps)
+            {
+                if (!item.Contains(CurrentMapVersion) || deleteAll)
+                {
+                    try
+                    {
+                        Directory.Delete(item, true);
+                    }
+                    catch
+                    {
+                        Thread.Sleep(2000);
+                        Directory.Delete(item, true);
+                    }
+                }
+            }
         }
 
         public static MapLabel CreateFromString(string[] splits)

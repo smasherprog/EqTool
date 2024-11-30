@@ -50,6 +50,10 @@ namespace EQTool.Services.Parsing
 
         private string _ZoneChanged(string message)
         {
+            if(message == Youhaveenteredareapvp || message == Therearenoplayers)
+            {
+                return string.Empty;
+            }
             if (message.StartsWith(Youhaveentered))
             {
                 message = message.Replace(Youhaveentered, string.Empty).Trim().TrimEnd('.').ToLower();

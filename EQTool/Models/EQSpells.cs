@@ -76,9 +76,7 @@ namespace EQTool.Models
         }
 
         public const string ZoneLoadingMessage = "LOADING, PLEASE WAIT...";
-        public const string YouBeginCasting = "You begin casting ";
-        public const string YouSpellisInterupted = "Your spell is interrupted.";
-
+     
         public const string Your = "Your ";
         public const string You = "You ";
         public const string SpaceYou = " You ";

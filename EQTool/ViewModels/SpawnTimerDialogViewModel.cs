@@ -3,12 +3,26 @@ using System.Runtime.CompilerServices;
 using System.Windows.Data;
 using System;
 using System.Globalization;
+using System.Text.RegularExpressions;
+using System.Windows.Controls;
 
 namespace EQTool.ViewModels
 {
 
     public class SpawnTimerDialogViewModel : INotifyPropertyChanged
     {
+        private const string hmsPattern =
+            @"^(((?<hh>[0-9]+):)?((?<mm>[0-9]+):))?(?<ss>[0-9]+)$";
+        //    ^ ((?<hh>[0-9]+):)?                                        Group "hh"      0 or more (sets of numbers, followed by a colon)
+        //                       ((?<mm>[0-9]+):)                        Group "mm"      1 set of numbers followed by a colon
+        //     (                                 )?                                      0 or more hh and mm groups
+        //                                         (?<ss>[0-9]+)         Group "ss"      1 set of numbers
+        //
+        // https://regex101.com/r/oBV1NI/1
+        //
+        private readonly Regex regex = new Regex(hmsPattern, RegexOptions.Compiled);
+
+
         // -----------------------------------------------------------------------
         //
         // the overall enable/disable Spawn Timers checkbox
@@ -82,6 +96,7 @@ namespace EQTool.ViewModels
         // timer end fields
         //
         private string _WarningTime         = "30";
+        private int _WarningSeconds         = 30;
         
         private bool _ProvideWarningText    = true;
         private bool _ProvideWarningTTS     = true;
@@ -95,16 +110,49 @@ namespace EQTool.ViewModels
 
         //
         // timer end getters and setters
-        //
+        // note we will also use the setter to set the related seconds field, to keep them synced
         public string WarningTime
         {
             get { return _WarningTime; }
             set
             {
                 _WarningTime = value;
+
+                // calculate the number of seconds in the warning time field
+                var match_warning = regex.Match(_WarningTime);
+                if (match_warning.Success)
+                {
+                    // get results from the rexex scan
+                    var hh = match_warning.Groups["hh"].Value;
+                    var mm = match_warning.Groups["mm"].Value;
+                    var ss = match_warning.Groups["ss"].Value;
+
+                    // count up the seconds
+                    _WarningSeconds = 0;
+                    if (ss != "")
+                    {
+                        _WarningSeconds += int.Parse(ss);
+                    }
+                    if (mm != "")
+                    {
+                        _WarningSeconds += 60 * int.Parse(mm);
+                    }
+                    if (hh != "")
+                    {
+                        _WarningSeconds += 3600 * int.Parse(hh);
+                    }
+                }
+                else
+                {
+                    _WarningSeconds = 0;
+                }
+
                 OnPropertyChanged();
             }
         }
+        // getter for the internally calculated field
+        public int WarningSeconds { get { return _WarningSeconds; } }
+
 
         public bool ProvideWarningText
         {
@@ -190,17 +238,70 @@ namespace EQTool.ViewModels
         //
         // counter reset field
         //
-        private string _CounterResetTime = "1:00:00";
+        private string      _CounterResetTime = "1:00:00";
+        private int         _CounterResetSeconds = 3600;
+        public int          TimerCounter { get; set; } = 0;
+        public DateTime     LastUsedTime { get; set; } = DateTime.Now;
 
+        // note we will also use the setter to set the related seconds field, to keep them synced
         public string CounterResetTime
         {
             get { return _CounterResetTime; }
             set
             {
                 _CounterResetTime = value;
+
+                // convert the hh:mm:ss field to integer seconds
+                var match_counter = regex.Match(_CounterResetTime);
+                if (match_counter.Success)
+                {
+                    // get results from the rexex scan
+                    var hh = match_counter.Groups["hh"].Value;
+                    var mm = match_counter.Groups["mm"].Value;
+                    var ss = match_counter.Groups["ss"].Value;
+
+                    // count up the seconds
+                    _CounterResetSeconds = 0;
+                    if (ss != "")
+                    {
+                        _CounterResetSeconds += int.Parse(ss);
+                    }
+                    if (mm != "")
+                    {
+                        _CounterResetSeconds += 60 * int.Parse(mm);
+                    }
+                    if (hh != "")
+                    {
+                        _CounterResetSeconds += 3600 * int.Parse(hh);
+                    }
+                }
+                else
+                {
+                    _CounterResetSeconds = 0;
+                }
+
                 OnPropertyChanged();
             }
         }
+
+        // getter for the internally calculated field
+        public int CounterResetSeconds { get { return _CounterResetSeconds; } }
+
+
+        // getter for next timer counter.
+        public int GetNextTimerCounter()
+        {
+            // is it time to reset the counter?
+            DateTime now = DateTime.Now;
+            TimeSpan timeSpan = now - LastUsedTime;
+            if (timeSpan.TotalSeconds > CounterResetSeconds)
+                TimerCounter = 0;
+
+            // reset the last used time, and return next value
+            LastUsedTime = now;
+            return ++TimerCounter;
+        }
+
 
         // -----------------------------------------------------------------------
         //
@@ -222,29 +323,127 @@ namespace EQTool.ViewModels
 
         private Durations _Duration     = Durations.CUSTOM;
         private string _CustomDuration  = "30:00";
+        private int _DurationSeconds    = 1800;
 
         //
         // timer duration getters and setters
         //
+
+        // note we will also use the setter to set the related seconds field, to keep them synced
         public Durations Duration
         {
             get { return _Duration; }
             set
             {
                 _Duration = value;
+
+                // calculate the number of seconds for the Duration field
+                switch (_Duration)
+                {
+                    case Durations.PRESET_0600:
+                        _DurationSeconds = 6 * 60;
+                        break;
+
+                    case Durations.PRESET_0640:
+                        _DurationSeconds = 6 * 60 + 40;
+                        break;
+
+                    case Durations.PRESET_1430:
+                        _DurationSeconds = 14 * 60 + 30;
+                        break;
+
+                    case Durations.PRESET_2200:
+                        _DurationSeconds = 22 * 60;
+                        break;
+
+                    case Durations.PRESET_2800:
+                        _DurationSeconds = 28 * 60;
+                        break;
+
+                    case Durations.CUSTOM:
+                        // convert the hh:mm:ss field to integer seconds
+                        var match_duration = regex.Match(CustomDuration);
+                        if (match_duration.Success)
+                        {
+                            // get results from the rexex scan
+                            var hh = match_duration.Groups["hh"].Value;
+                            var mm = match_duration.Groups["mm"].Value;
+                            var ss = match_duration.Groups["ss"].Value;
+
+                            // count up the seconds
+                            _DurationSeconds = 0;
+                            if (ss != "")
+                            {
+                                _DurationSeconds += int.Parse(ss);
+                            }
+                            if (mm != "")
+                            {
+                                _DurationSeconds += 60 * int.Parse(mm);
+                            }
+                            if (hh != "")
+                            {
+                                _DurationSeconds += 3600 * int.Parse(hh);
+                            }
+                        }
+                        else
+                        {
+                            _DurationSeconds = 0;
+                        }
+
+                        break;
+                }
+
                 OnPropertyChanged();
             }
         }
 
+        // note we will also use the setter to set the related seconds field, to keep them synced
         public string CustomDuration
         {
             get { return _CustomDuration; }
             set
             {
                 _CustomDuration = value;
+
+                // only do this if the user also has the Custom radio button selected
+                if (Duration == Durations.CUSTOM)
+                {
+                    // convert the hh:mm:ss field to integer seconds
+                    var match_duration = regex.Match(_CustomDuration);
+                    if (match_duration.Success)
+                    {
+                        // get results from the rexex scan
+                        var hh = match_duration.Groups["hh"].Value;
+                        var mm = match_duration.Groups["mm"].Value;
+                        var ss = match_duration.Groups["ss"].Value;
+
+                        // count up the seconds
+                        _DurationSeconds = 0;
+                        if (ss != "")
+                        {
+                            _DurationSeconds += int.Parse(ss);
+                        }
+                        if (mm != "")
+                        {
+                            _DurationSeconds += 60 * int.Parse(mm);
+                        }
+                        if (hh != "")
+                        {
+                            _DurationSeconds += 3600 * int.Parse(hh);
+                        }
+                    }
+                    else
+                    {
+                        _DurationSeconds = 0;
+                    }
+                }
+
                 OnPropertyChanged();
             }
         }
+        // getter for the internally calculated field
+        public int DurationSeconds { get { return _DurationSeconds; } }
+
 
         // -----------------------------------------------------------------------
         //
@@ -281,9 +480,10 @@ namespace EQTool.ViewModels
             }
         }
 
+
+
         //
         // utility function to set all fields to the same value as the passed object fields
-        // apparently C Sharp does not allow overloading operator= ?
         //
         public void SetFrom(SpawnTimerDialogViewModel m)
         {
@@ -320,6 +520,8 @@ namespace EQTool.ViewModels
             // counter reset field
             //
             CounterResetTime = m.CounterResetTime;
+            TimerCounter = m.TimerCounter;
+            LastUsedTime = m.LastUsedTime;
 
             //
             // timer duration fields
@@ -331,12 +533,32 @@ namespace EQTool.ViewModels
             // notes and comments field
             //
             NotesText = m.NotesText;
+
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName] string name = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
+
+    }
+
+    //
+    // data validation class for hh:mm:ss fields
+    //
+    public class HourMinutesSecondsValidationRule : ValidationRule
+    {
+        private const string hmsPattern = @"^(((?<hh>[0-9]+):)?((?<mm>[0-9]+):))?(?<ss>[0-9]+)$";
+        private readonly Regex regex = new Regex(hmsPattern, RegexOptions.Compiled);
+
+        public override ValidationResult Validate(object value, CultureInfo cultureInfo)
+        {
+            var match = regex.Match(value.ToString());
+            if (match.Success)
+                return ValidationResult.ValidResult;
+            else
+                return new ValidationResult(false, "Invalid time input.  Valid input formats = 'hours:minutes:seconds', or 'minutes:seconds', or 'seconds'");
         }
     }
 

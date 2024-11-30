@@ -35,12 +35,6 @@ namespace EQTool.Services
             DamageEvent?.Invoke(this, e);
         }
 
-        public event EventHandler<YouBeginCastingEvent> YouBeginCastingEvent;
-        public void Handle(YouBeginCastingEvent e)
-        {
-            YouBeginCastingEvent?.Invoke(this, e);
-        }
-
         public event EventHandler<ConEvent> ConEvent;
         public void Handle(ConEvent e)
         {
@@ -53,29 +47,15 @@ namespace EQTool.Services
             SlainEvent?.Invoke(this, e);
         }
 
-        //WIP DONT USE THIS YET!
-        public event EventHandler<NewSlainEvent> NewSlainEvent;
-        public void Handle(NewSlainEvent e)
+        public event EventHandler<ConfirmedDeathEvent> ConfirmedDeathEvent;
+        public void Handle(ConfirmedDeathEvent e)
         {
-            NewSlainEvent?.Invoke(this, e);
+            ConfirmedDeathEvent?.Invoke(this, e);
         }
-
         public event EventHandler<CommsEvent> CommsEvent;
         public void Handle(CommsEvent e)
         {
             CommsEvent?.Invoke(this, e);
-        }
-
-        public event EventHandler<StartTimerEvent> StartTimerEvent;
-        public void Handle(StartTimerEvent e)
-        {
-            StartTimerEvent?.Invoke(this, e);
-        }
-
-        public event EventHandler<CancelTimerEvent> CancelTimerEvent;
-        public void Handle(CancelTimerEvent e)
-        {
-            CancelTimerEvent?.Invoke(this, e);
         }
 
         public event EventHandler<CharmBreakEvent> CharmBreakEvent;
@@ -161,13 +141,7 @@ namespace EQTool.Services
         {
             SpellWornOffOtherEvent?.Invoke(this, e);
         }
-
-        public event EventHandler<SpellCastEvent> SpellCastEvent;
-        public void Handle(SpellCastEvent e)
-        {
-            SpellCastEvent?.Invoke(this, e);
-        }
-
+         
         public event EventHandler<YouZonedEvent> YouZonedEvent;
         public void Handle(YouZonedEvent e)
         {
@@ -178,12 +152,6 @@ namespace EQTool.Services
         public void Handle(CompleteHealEvent e)
         {
             CompleteHealEvent?.Invoke(this, e);
-        }
-
-        public event EventHandler<DeathTouchEvent> DeathTouchEvent;
-        public void Handle(DeathTouchEvent e)
-        {
-            DeathTouchEvent?.Invoke(this, e);
         }
 
         public event EventHandler<RandomRollEvent> RandomRollEvent;
@@ -221,5 +189,59 @@ namespace EQTool.Services
         {
             LineEvent?.Invoke(this, e);
         }
+
+        public event EventHandler<OverlayEvent> OverlayEvent;
+        public void Handle(OverlayEvent e)
+        {
+            OverlayEvent?.Invoke(this, e);
+        }
+
+        public event EventHandler<YourSpellInterupptedEvent> YourSpellInterupptedEvent;
+        public void Handle(YourSpellInterupptedEvent e)
+        {
+            YourSpellInterupptedEvent?.Invoke(this, e);
+        }
+
+        public event EventHandler<YouBeginCastingEvent> YouBeginCastingEvent;
+        public void Handle(YouBeginCastingEvent e)
+        {
+            YouBeginCastingEvent?.Invoke(this, e);
+        }
+
+        public event EventHandler<YouFinishCastingEvent> YouFinishCastingEvent;
+        public void Handle(YouFinishCastingEvent e)
+        {
+            YouFinishCastingEvent?.Invoke(this, e);
+        }
+
+        public event EventHandler<SpellCastOnYouEvent> SpellCastOnYouEvent;
+        public void Handle(SpellCastOnYouEvent e)
+        {
+            SpellCastOnYouEvent?.Invoke(this, e);
+        }
+
+        public event EventHandler<SpellCastOnOtherEvent> SpellCastOnOtherEvent;
+        public void Handle(SpellCastOnOtherEvent e)
+        {
+            SpellCastOnOtherEvent?.Invoke(this, e);
+        }
+         
+        public event EventHandler<MendWoundsEvent> MendWoundsEvent;
+        public void Handle(MendWoundsEvent e)
+        {
+            MendWoundsEvent?.Invoke(this, e);
+        }
+
+        public event EventHandler<DragonRoarEvent> DragonRoarEvent;
+        public void Handle(DragonRoarEvent e)
+        {
+            DragonRoarEvent?.Invoke(this, e);
+        }
+
+        public event EventHandler<DragonRoarRemoteEvent> DragonRoarRemoteEvent;
+        public void Handle(DragonRoarRemoteEvent e)
+        {
+            DragonRoarRemoteEvent?.Invoke(this, e);
+        } 
     }
 }

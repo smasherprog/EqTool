@@ -3,13 +3,13 @@ using EQTool.ViewModels;
 
 namespace EQTool.Services.Handlers
 {
-    public class ClassDetectedHandler : BaseHandler
+    public class PlayerClassDetectedHandler : BaseHandler
     {
         private readonly EQToolSettings settings;
         private readonly EQToolSettingsLoad toolSettingsLoad;
         private readonly IAppDispatcher appDispatcher;
 
-        public ClassDetectedHandler(
+        public PlayerClassDetectedHandler(
             IAppDispatcher appDispatcher,
             LogEvents logEvents,
             ActivePlayer activePlayer,
@@ -26,7 +26,7 @@ namespace EQTool.Services.Handlers
 
         private void LogEvents_ClassDetectedEvent(object sender, ClassDetectedEvent e)
         {
-            if (activePlayer?.Player != null)
+            if (activePlayer?.Player != null && activePlayer.Player.PlayerClass != e.PlayerClass)
             {
                 appDispatcher.DispatchUI(() =>
                 {

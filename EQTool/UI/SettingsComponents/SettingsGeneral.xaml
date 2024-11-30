@@ -5,7 +5,7 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:EQTool.UI.SettingsComponents"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             d:DesignHeight="450" d:DesignWidth="400">
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
     </UserControl.Resources>
@@ -187,6 +187,12 @@
                     <CheckBox IsChecked="{Binding ActivePlayer.Player.DeathLoopAudio}" Click="Savesettings" MinWidth="30"></CheckBox>
                     <Button Content="▶" Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="testDeathLoop" ToolTip="Test Death Loop" />
                 </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Entered Zone" VerticalAlignment="Center" FontWeight="Bold"  MinWidth="100"/>
+                    <CheckBox IsChecked="{Binding ActivePlayer.Player.EnteringZoneOverlay}" Click="Savesettings" MinWidth="75"></CheckBox>
+                    <CheckBox IsChecked="{Binding ActivePlayer.Player.EnteringZoneAudio}" Click="Savesettings" MinWidth="30"></CheckBox>
+                    <Button Content="▶" Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="textenteringZone" ToolTip="Test Entering Zone" />
+                </StackPanel>
                 <Separator/>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Chain Formats" VerticalAlignment="Center" FontWeight="Bold" MinWidth="100"/>
@@ -216,6 +222,10 @@
         <TabItem Header="Triggers">
             <StackPanel Orientation="Vertical" Margin="5, 5, 5, 5">
                 <StackPanel Orientation="Vertical"  Margin="0, 0, 0, 8">
+                    <StackPanel Orientation="Horizontal" ToolTip="This setting will switch to show only spells you care about when raid mode is detected.">
+                        <TextBlock Text="Raid Detection" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
+                        <CheckBox IsChecked="{Binding RaidModeDetection}" Click="Savesettings"></CheckBox>
+                    </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Always on top" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
                         <CheckBox IsChecked="{Binding SpellAlwaysOnTop}" Click="SaveAlwaysOntopCheckBoxSettings" ></CheckBox>
@@ -227,10 +237,6 @@
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Random Rolls" ToolTip="Show Random rolls in Triggers window" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
                         <CheckBox IsChecked="{Binding ShowRandomRolls}" Click="SaveAlwaysOntopCheckBoxSettings" ></CheckBox>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Guess Spells"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
-                        <CheckBox x:Name="BestGuessSpells" Click="GuessSpells_Click" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Spells Me only"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
@@ -258,6 +264,10 @@
                     <CheckBox IsChecked="{Binding MapAlwaysOnTop}" Click="SaveAlwaysOntopCheckBoxSettings" ></CheckBox>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Map Cache" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
+                    <Button Click="deleteMapCache" ToolTip="Do this if you are managing map files and make changes.">Delete Cached Maps</Button>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Map Kill timers" ToolTip="Automatically add kill timers to the map. This is a per character setting" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
                     <CheckBox IsChecked="{Binding ActivePlayer.Player.MapKillTimers}"></CheckBox>
                 </StackPanel>
@@ -271,11 +281,37 @@
                 </StackPanel>
             </StackPanel>
         </TabItem>
-        <TabItem Header="Debug" Name="DebugTab">
-            <StackPanel Orientation="Vertical" Margin="5, 5, 5, 5">
+        <TabItem Header="Experimental">
+            <StackPanel Orientation="Vertical" Margin="5, 5, 5, 5" HorizontalAlignment="Stretch">
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Debuff Sharing"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
-                    <CheckBox IsChecked="{Binding ActivePlayer.Player.SpellDebuffShare}" Click="Savesettings" MinWidth="75"></CheckBox>
+                    <TextBlock Text="Timer Sharing"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
+                    <CheckBox IsChecked="{Binding ActivePlayer.Player.ShareTimers}" Click="Savesettings" MinWidth="75"></CheckBox>
+                </StackPanel>
+                <DockPanel>
+                    <TextBlock MaxWidth="400" TextWrapping="Wrap" Text="When this is checked, timers will be shared with those around you for detrimental spells. So, if you slow a mob, anyone within range will also see the slow timer. Same for dragon effects!" />
+                 </DockPanel> 
+                <TextBlock Text="Console Debugging" HorizontalAlignment="Center" FontWeight="Bold" Margin="5,5,0,0"/>
+                <StackPanel Orientation="Vertical" Margin="0, 0, 0, 8"> 
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Window" VerticalAlignment="Center" FontWeight="Bold" MinWidth="100"/>
+                        <Button Click="openConsoleWindow">Open</Button>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Map Logging" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
+                        <CheckBox x:Name="MapConsoleLog" Click="toggleMapConsoleOutput" MinWidth="75"></CheckBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Spell Logging" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
+                        <CheckBox Name="SpellConsoleLog" Click="toggleSpellConsoleOutput" MinWidth="75"></CheckBox>
+                    </StackPanel>
+                </StackPanel> 
+            </StackPanel>
+        </TabItem>
+        <TabItem Header="Debug" Name="DebugTab">
+            <StackPanel Orientation="Vertical" Margin="5, 5, 5, 5" HorizontalAlignment="Stretch"> 
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Spawn Timer"  VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
+                    <Button Click="openSpawnTimerDialog">Spawn Timer Configurator</Button>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Random Roll"  VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
@@ -290,6 +326,10 @@
                     <Button Click="testspellsclicked"  MinWidth="100">Add Test Spells</Button>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Share Timers"  VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
+                    <Button Click="testsharetimers"  MinWidth="100">Share Timers Test</Button>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Map"  VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
                     <Button Click="textmapclicked" MinWidth="100">Test Locations</Button>
                 </StackPanel>
@@ -300,18 +340,10 @@
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Run Log File"  VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
                     <Button Click="selectLogFile">Select File</Button>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Spawn Timer"  VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
-                    <Button Click="openSpawnTimerDialog">Open Window</Button>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Test Management"  VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
-                    <Button Click="OpenManagementWindow">Opwn Window</Button>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
+                </StackPanel> 
+                <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
                     <TextBlock Text="Log Push"  VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
-                    <TextBox x:Name="LogPushText" MinWidth="100"></TextBox>
+                    <TextBox x:Name="LogPushText" MinWidth="150"></TextBox>
                     <Button Click="logpush">Push</Button>
                 </StackPanel>
             </StackPanel>

@@ -105,17 +105,18 @@ namespace EQTool.Services
 #if BETA
                     prerelease = true;
 #endif
-                    currentversion1 = currentversion1.Replace(versiontype, string.Empty);
-                    var version = new string(currentversion1.Where(a => char.IsDigit(a) || a == '.').ToArray());
+                    var currentversion = currentversion1.Replace(versiontype, string.Empty);
+                    var version = new string(currentversion.Where(a => char.IsDigit(a) || a == '.').ToArray());
                     version = version.Trim('.');
                     var json = httpclient.GetAsync(new Uri("https://api.github.com/repos/smasherprog/EqTool/releases")).Result.Content.ReadAsStringAsync().Result;
                     var githubdata = JsonConvert.DeserializeObject<List<GithubVersionInfo>>(json);
                     var releases = githubdata.OrderByDescending(a => a.published_at).Where(a => a.name != null && a.prerelease == prerelease && a.assets != null && a.assets.Any()).ToList();
                     var release = releases.FirstOrDefault();
                     var downloadurl = release.assets.FirstOrDefault(a => !string.IsNullOrWhiteSpace(a.browser_download_url) && a.browser_download_url.ToLower().Contains(versiontype.ToLower()))?.browser_download_url;
-
-                    if (version != release.tag_name)
+                    var newversion = release.tag_name.Replace(versiontype, string.Empty);
+                    if (version != newversion)
                     {
+                        File.AppendAllText("Errors.txt", $"Updating: {currentversion1}-{versiontype}-{currentversion}-{version}-{newversion}");
                         appDispatcher.DispatchUI(() =>
                         {
                             (App.Current as App).ShowBalloonTip(3000, "Downloading PigParse Update", "This might take a few seconds . . .", System.Windows.Forms.ToolTipIcon.Info);
@@ -161,6 +162,13 @@ namespace EQTool.Services
                 }
                 catch (Exception ex)
                 {
+                    if (ex.ToString().Contains("Access to the path 'NewVersion' is denied."))
+                    {
+                        appDispatcher.DispatchUI(() =>
+                        {
+                            (App.Current as App).ShowBalloonTip(3000, "PigParse Update Failed", "There was a permission issue with the currently install location. Please move Pigparse to a different directory!", System.Windows.Forms.ToolTipIcon.Warning);
+                        });
+                    }
                     container?.Resolve<LoggingService>().Log(ex.ToString(), EQToolShared.Enums.EventType.Update, null);
                     File.AppendAllText("Errors.txt", ex.ToString());
                 }

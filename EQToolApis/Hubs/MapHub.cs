@@ -46,12 +46,7 @@ namespace EQToolApis.Hubs
             await Clients.Group(playerLocation.GroupName).SendAsync("PlayerLocationEvent", playerLocation);
             Debug.WriteLine($"{playerLocation.GroupName}, {playerLocation.Name}, {playerLocation.Zone}, {playerLocation.X}, {playerLocation.Y}, {playerLocation.Z}");
         }
-
-        public async Task TriggerEvent(TriggerEvent playerLocation)
-        {
-            await Clients.Group(playerLocation.GroupName).SendAsync("TriggerEvent", playerLocation);
-        }
-
+         
         public async Task JoinServerGroup(Servers servers)
         {
             await Groups.AddToGroupAsync(Context.ConnectionId, servers.ToString());

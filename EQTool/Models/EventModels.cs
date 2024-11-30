@@ -1,5 +1,4 @@
 ﻿using EQToolShared.Enums;
-using EQToolShared.HubModels;
 using System;
 using System.Collections.Generic;
 using System.Windows.Media.Media3D;
@@ -94,22 +93,14 @@ namespace EQTool.Models
 
         public string Killer { get; set; }
     }
-    public class NewSlainEvent : BaseLogParseEvent
+
+    public class ConfirmedDeathEvent : BaseLogParseEvent
     {
         public string Victim { get; set; }
 
         public string Killer { get; set; }
     }
 
-    public class StartTimerEvent : BaseLogParseEvent
-    {
-        public CustomTimer CustomTimer { get; set; }
-    }
-
-    public class CancelTimerEvent : BaseLogParseEvent
-    {
-        public string Name { get; set; }
-    }
     public class WhoPlayerEvent : BaseLogParseEvent
     {
         public EQToolShared.APIModels.PlayerControllerModels.Player PlayerInfo { get; set; }
@@ -134,15 +125,15 @@ namespace EQTool.Models
     {
         public enum Channel
         {
-            NONE        = 0b_0000_0000,
-            TELL        = 0b_0000_0001,
-            SAY         = 0b_0000_0010,
-            GROUP       = 0b_0000_0100,
-            GUILD       = 0b_0000_1000,
-            AUCTION     = 0b_0001_0000,
-            OOC         = 0b_0010_0000,
-            SHOUT       = 0b_0100_0000,
-            ANY         = TELL | SAY | GROUP | GUILD | AUCTION | OOC | SHOUT
+            NONE = 0b_0000_0000,
+            TELL = 0b_0000_0001,
+            SAY = 0b_0000_0010,
+            GROUP = 0b_0000_0100,
+            GUILD = 0b_0000_1000,
+            AUCTION = 0b_0001_0000,
+            OOC = 0b_0010_0000,
+            SHOUT = 0b_0100_0000,
+            ANY = TELL | SAY | GROUP | GUILD | AUCTION | OOC | SHOUT
         }
 
         public CommsEvent.Channel TheChannel { get; set; }
@@ -153,12 +144,24 @@ namespace EQTool.Models
 
     public class YouBeginCastingEvent : BaseLogParseEvent
     {
+        public Spell Spell { get; set; }
     }
 
-    public class DeathTouchEvent : BaseLogParseEvent
+    public class YouFinishCastingEvent : BaseLogParseEvent
     {
-        public string NpcName { get; set; }
-        public string DTReceiver { get; set; }
+        public Spell Spell { get; set; }
+        public string TargetName { get; set; }
+    }
+
+    public class SpellCastOnYouEvent : BaseLogParseEvent
+    {  
+        public Spell Spell { get; set; }
+    }
+
+    public class SpellCastOnOtherEvent : BaseLogParseEvent
+    {
+        public List<Spell> Spells { get; set; }
+        public string TargetName { get; set; }
     }
 
     public class ResistSpellEvent : BaseLogParseEvent
@@ -193,10 +196,26 @@ namespace EQTool.Models
         public string Position { get; set; }
         public string Caster { get; set; }
     }
-
     public class SpellWornOffEvent : BaseLogParseEvent
     {
         public string SpellName { get; set; }
+    }
+
+    public class YourSpellInterupptedEvent : BaseLogParseEvent
+    { 
+    }
+    public class DragonRoarEvent : BaseLogParseEvent
+    {
+        public Spell Spell { get; set; } 
+    }
+    public class BaseRemoteEvent
+    { 
+        public Point3D? Location { get; set; } 
+    }
+
+    public class DragonRoarRemoteEvent: BaseRemoteEvent
+    {
+        public string SpellName { get; set; } 
     }
 
     public class SpellWornOffSelfEvent : BaseLogParseEvent
@@ -207,27 +226,24 @@ namespace EQTool.Models
     {
         public string SpellName { get; set; }
     }
-
-    public class SpellCastEvent : BaseLogParseEvent
-    {
-        public string TargetName { get; set; }
-
-        public bool CastByYou { get; set; }
-
-        public Spell Spell { get; set; }
-
-        public bool MultipleMatchesFound { get; set; }
-
-        public int? TotalSecondsOverride { get; set; }
-    }
-
+     
     public class YouZonedEvent : BaseLogParseEvent
     {
         public string LongName { get; set; }
         public string ShortName { get; set; }
     }
+    public class MendWoundsEvent : BaseLogParseEvent
+    {
+    }
 
     public class LineEvent : BaseLogParseEvent
     {
+    }
+
+    public class OverlayEvent
+    {
+        public string Text { get; set; }
+        public System.Windows.Media.Brush ForeGround { get; set; }
+        public bool Reset { get; set; }
     }
 }

@@ -13,8 +13,7 @@ namespace EQtoolsTests
     {
         private readonly SlainParser slainParser;
         private readonly CommsParser playerCommsParser;
-        private readonly DamageParser damageParser;
-        private readonly SpellCastParser spellCastParser;
+        private readonly DamageParser damageParser; 
         private readonly DeathLoopHandler deathLoopHandler;
         private readonly LogEvents logEvents;
 
@@ -22,8 +21,7 @@ namespace EQtoolsTests
         {
             slainParser = container.Resolve<SlainParser>();
             playerCommsParser = container.Resolve<CommsParser>();
-            damageParser = container.Resolve<DamageParser>();
-            spellCastParser = container.Resolve<SpellCastParser>();
+            damageParser = container.Resolve<DamageParser>(); 
 
             deathLoopHandler = container.Resolve<DeathLoopHandler>();
             logEvents = container.Resolve<LogEvents>();
@@ -192,25 +190,5 @@ namespace EQtoolsTests
             var count = deathLoopHandler.DeathCount();
             Assert.AreEqual(0, count);
         }
-
-        [TestMethod]
-        // player has died multiple times, but then shows sign of life, so the death tracking list is purged
-        // casting
-        public void PlayerActive_Casting()
-        {
-            var now = DateTime.Now;
-            var message = "You have been slain by a brigand!";
-            _ = slainParser.Handle(message, now, 0);
-            _ = slainParser.Handle(message, now, 0);
-            _ = slainParser.Handle(message, now, 0);
-
-            // casting
-            _ = spellCastParser.Handle("You begin casting Huge_Fireball", now, 0);
-
-            var count = deathLoopHandler.DeathCount();
-            Assert.AreEqual(0, count);
-        }
-
-
     }
 }

@@ -5,7 +5,6 @@ using EQTool.Services.P99LoginMiddlemand;
 using EQTool.Services.Parsing;
 using EQTool.ViewModels;
 using EQToolShared.Enums;
-using EQToolShared.HubModels;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -25,7 +24,6 @@ namespace EQTool.UI.SettingsComponents
         private readonly SettingsWindowViewModel SettingsWindowData;
         private readonly EQToolSettings settings;
         private readonly EQToolSettingsLoad toolSettingsLoad;
-        private readonly SpellWindowViewModel spellWindowViewModel;
         private readonly EQSpells spells;
         private readonly DamageParser damageLogParser;
         private readonly CommsParser playerCommsParser;
@@ -36,8 +34,11 @@ namespace EQTool.UI.SettingsComponents
         private readonly LoginMiddlemand loginMiddlemand;
         private readonly SettingsTestRunOverlay settingsTestRunOverlay;
         private readonly WindowFactory windowFactory;
-
+        private readonly LogEvents logEvents;
+        private readonly DebugOutput debugOutput;
+        private readonly bool ComponentInitialized = false;
         public SettingsGeneral(
+            LogEvents logEvents,
             WindowFactory windowFactory,
             LogParser logParser,
             MapLoad mapLoad,
@@ -48,14 +49,16 @@ namespace EQTool.UI.SettingsComponents
             EQSpells spells,
             LoginMiddlemand loginMiddlemand,
             EQToolSettings settings,
+            DebugOutput debugOutput,
             EQToolSettingsLoad toolSettingsLoad,
             SettingsWindowViewModel settingsWindowData,
-            SpellWindowViewModel spellWindowViewModel,
             SettingsTestRunOverlay settingsTestRunOverlay)
         {
+            this.debugOutput = debugOutput;
             this.loginMiddlemand = loginMiddlemand;
             this.signalrPlayerHub = signalrPlayerHub;
             this.logParser = logParser;
+            this.logEvents = logEvents;
             this.mapLoad = mapLoad;
             this.windowFactory = windowFactory;
             this.appDispatcher = appDispatcher;
@@ -63,12 +66,12 @@ namespace EQTool.UI.SettingsComponents
             this.playerCommsParser = playerCommsParser;
             this.spells = spells;
             this.settings = settings;
-            this.spellWindowViewModel = spellWindowViewModel;
             this.toolSettingsLoad = toolSettingsLoad;
             DataContext = SettingsWindowData = settingsWindowData;
             SettingsWindowData.EqPath = this.settings.DefaultEqDirectory;
             InitializeComponent();
             TryCheckLoggingEnabled();
+
             try
             {
                 TryUpdateSettings();
@@ -82,7 +85,9 @@ namespace EQTool.UI.SettingsComponents
 #if DEBUG
             DebugTab.Visibility = Visibility.Visible;
 #endif
-
+            ComponentInitialized = true;
+            MapConsoleLog.IsChecked = debugOutput.LogMapping;
+            SpellConsoleLog.IsChecked = debugOutput.LogSpells;
         }
 
         private void SaveConfig()
@@ -103,7 +108,6 @@ namespace EQTool.UI.SettingsComponents
             {
                 LoginMiddleMandCheckBox.IsChecked = true;
             }
-            BestGuessSpells.IsChecked = settings.BestGuessSpells;
             YouSpellsOnly.IsChecked = settings.YouOnlySpells;
             var player = SettingsWindowData.ActivePlayer.Player;
 
@@ -227,62 +231,77 @@ namespace EQTool.UI.SettingsComponents
             settings.YouOnlySpells = s.IsChecked ?? false;
             SaveConfig();
         }
-
-        private void GuessSpells_Click(object sender, RoutedEventArgs e)
+        private class CastTest
         {
-            var s = sender as System.Windows.Controls.CheckBox;
-            settings.BestGuessSpells = s.IsChecked ?? false;
-            SaveConfig();
+            public Spell Spell { get; set; }
+            public string TargetName { get; set; }
         }
-
         private void testspellsclicked(object sender, RoutedEventArgs e)
         {
-            var listofspells = new List<SpellCastEvent>
+            var peoplenames = new List<string>() { "Joe", "Huntor", "Sanare", "Pigy", "Leutin", "Bealls", "Vasanle", "Jenkins", "Charlie" };
+            var listofspells = new List<CastTest>
             {
-                new SpellCastEvent { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Disease Cloud"), TargetName = "Joe", MultipleMatchesFound = false },
-                new SpellCastEvent { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Lesser Shielding"), TargetName = "Joe", MultipleMatchesFound = false },
-                new SpellCastEvent { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Shadow Compact"), TargetName = "Joe", MultipleMatchesFound = false },
-                new SpellCastEvent { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Heroic Bond"), TargetName = "Joe", MultipleMatchesFound = false },
-                new SpellCastEvent { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Improved Invis to Undead"), TargetName = "Joe", MultipleMatchesFound = false },
-                new SpellCastEvent { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Grim Aura"), TargetName = "Joe", MultipleMatchesFound = false },
+                new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Heroic Bond"), TargetName = EQSpells.SpaceYou},
 
-                new SpellCastEvent { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Heroic Bond"), TargetName = EQSpells.SpaceYou, MultipleMatchesFound = false },
+                new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Heroic Bond"), TargetName = "Aasgard"},
+                new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Chloroplast"), TargetName = "Aasgard"},
+                new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Shield of Words"), TargetName = "Aasgard"},
+                new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Boon of the Clear Mind"), TargetName = "Aasgard"},
+                new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Gift of Brilliance"), TargetName = "Aasgard"},
+                new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Defensive Discipline"), TargetName = "Aasgard"},
 
-                new SpellCastEvent { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Heroic Bond"), TargetName = "Aasgard", MultipleMatchesFound = false },
-                new SpellCastEvent { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Chloroplast"), TargetName = "Aasgard", MultipleMatchesFound = true },
-                new SpellCastEvent { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Shield of Words"), TargetName = "Aasgard", MultipleMatchesFound = false },
-                new SpellCastEvent { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Boon of the Clear Mind"), TargetName = "Aasgard", MultipleMatchesFound = false },
-                new SpellCastEvent { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Gift of Brilliance"), TargetName = "Aasgard", MultipleMatchesFound = false },
-                new SpellCastEvent { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Mana Sieve"), TargetName = "a bad guy", MultipleMatchesFound = false },
-                new SpellCastEvent { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Mana Sieve"), TargetName = "a bad guy", MultipleMatchesFound = false },
-                new SpellCastEvent { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Harvest"), TargetName = EQSpells.SpaceYou, MultipleMatchesFound = false },
-                new SpellCastEvent { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "LowerElement"), TargetName = "Tunare", MultipleMatchesFound = false },
-                new SpellCastEvent { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "LowerElement"), TargetName = "Tunare", MultipleMatchesFound = false },
-                new SpellCastEvent { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "LowerElement"), TargetName = "Tunare", MultipleMatchesFound = false },
-                new SpellCastEvent { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "LowerElement"), TargetName = "Tunare", MultipleMatchesFound = false },
-                new SpellCastEvent { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "LowerElement"), TargetName = "Tunare", MultipleMatchesFound = false },
-                new SpellCastEvent { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "LowerElement"), TargetName = "Tunare", MultipleMatchesFound = false },
+                new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Mana Sieve"), TargetName = "a bad guy"},
+                new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Mana Sieve"), TargetName = "a bad guy"},
+                new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Harvest"), TargetName = EQSpells.SpaceYou},
+                new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Quivering Veil of Xarn"), TargetName = EQSpells.SpaceYou},
 
-                new SpellCastEvent { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Concussion"), TargetName = "Tunare", MultipleMatchesFound = false },
-                new SpellCastEvent { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Concussion"), TargetName = "Tunare", MultipleMatchesFound = false },
+                new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "LowerElement"), TargetName = "Tunare"},
+                new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "LowerElement"), TargetName = "Tunare"},
+                new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "LowerElement"), TargetName = "Tunare"},
+                new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "LowerElement"), TargetName = "Tunare"},
+                new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "LowerElement"), TargetName = "Tunare"},
+                new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "LowerElement"), TargetName = "Tunare"},
+                new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Malo"), TargetName = "Tunare"},
+                new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Turgur's Insects"), TargetName = "Tunare"},
 
-                new SpellCastEvent { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Flame Lick"), TargetName = "Tunare", MultipleMatchesFound = false },
-                new SpellCastEvent { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Flame Lick"), TargetName = "Tunare", MultipleMatchesFound = false },
+                new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Concussion"), TargetName = "Tunare"},
+                new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Concussion"), TargetName = "Tunare"},
 
-                new SpellCastEvent { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Jolt"), TargetName = "Tunare", MultipleMatchesFound = false },
-                new SpellCastEvent { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Jolt"), TargetName = "Tunare", MultipleMatchesFound = false },
+                new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Flame Lick"), TargetName = "Tunare"},
+                new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Flame Lick"), TargetName = "Tunare"},
 
-                new SpellCastEvent { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Cinder Jolt"), TargetName = "Tunare", MultipleMatchesFound = false },
-                new SpellCastEvent { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Cinder Jolt"), TargetName = "Tunare", MultipleMatchesFound = false }
+                new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Jolt"), TargetName = "Tunare"},
+                new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Jolt"), TargetName = "Tunare"},
+
+                new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Cinder Jolt"), TargetName = "Tunare"},
+                new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Cinder Jolt"), TargetName = "Tunare"},
+
             };
 
+            foreach (var item in peoplenames)
+            {
+                listofspells.Add(new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Disease Cloud"), TargetName = item });
+                listofspells.Add(new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Lesser Shielding"), TargetName = item });
+                listofspells.Add(new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Shadow Compact"), TargetName = item });
+                listofspells.Add(new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Heroic Bond"), TargetName = item });
+                listofspells.Add(new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Improved Invis vs Undead"), TargetName = item });
+                listofspells.Add(new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Grim Aura"), TargetName = item });
+            }
             foreach (var item in listofspells)
             {
-                spellWindowViewModel.TryAdd(item, false);
+                if (item.TargetName == EQSpells.SpaceYou)
+                {
+                    PushLog(item.Spell.cast_on_you);
+                }
+                else
+                {
+                    PushLog(item.TargetName + " " + item.Spell.cast_on_other);
+                }
+                // logEvents.Handle(item);
             }
-            spellWindowViewModel.TryAddCustom(new CustomTimer { DurationInSeconds = 45, Name = "--DT-- Luetin", SpellType = SpellTypes.BadGuyCoolDown, SpellNameIcon = "Disease Cloud" });
-            spellWindowViewModel.TryAddCustom(new CustomTimer { DurationInSeconds = 60 * 27, Name = "King" });
-            spellWindowViewModel.TryAddCustom(new CustomTimer { DurationInSeconds = 60 * 18, Name = "hall Wanderer 1" });
+            PushLog("Fright says, 'Luetin'");
+            PushLog("You say, 'PigTimer-6:40-Guard_George'");
+            PushLog("You say, 'PigTimer-1:06:40-King_Wanderer'");
         }
 
         private void CheckBoxZone_Checked(object sender, RoutedEventArgs e)
@@ -307,6 +326,11 @@ namespace EQTool.UI.SettingsComponents
 
         private void zoneselectionchanged(object sender, SelectionChangedEventArgs e)
         {
+            if (!ComponentInitialized)
+            {
+                return;
+            }
+
             var player = SettingsWindowData.ActivePlayer.Player;
             if (player != null)
             {
@@ -590,7 +614,7 @@ namespace EQTool.UI.SettingsComponents
             _ = Task.Factory.StartNew(() =>
             {
                 var names = new List<string>() { "faiil", "irishfaf", "chuunt", "jakab", "nima", "healmin" };
-                var pnames = new List<EQToolShared.Map.SignalrPlayer>();
+                var pnames = new List<EQToolShared.Map.SignalrPlayerV2>();
 
                 var movementoffset = (int)(map.AABB.MaxWidth / 10);
                 var r = new Random();
@@ -598,12 +622,11 @@ namespace EQTool.UI.SettingsComponents
                 foreach (var item in names)
                 {
                     offset = r.Next(-movementoffset, movementoffset);
-                    var p = new EQToolShared.Map.SignalrPlayer
+                    var p = new EQToolShared.Map.SignalrPlayerV2
                     {
                         GuildName = "The Drift",
-                        MapLocationSharing = EQToolShared.Map.MapLocationSharing.Everyone,
+                        Sharing = EQToolShared.Map.MapLocationSharing.Everyone,
                         Name = item,
-                        PlayerClass = PlayerClasses.Necromancer,
                         Server = Servers.Green,
                         Zone = player.Zone,
                         X = map.AABB.Center.X + map.Offset.X + r.Next(-movementoffset, movementoffset),
@@ -612,7 +635,7 @@ namespace EQTool.UI.SettingsComponents
                     };
 
                     pnames.Add(p);
-                    signalrPlayerHub.PushPlayerLocationEvent(p);
+                    signalrPlayerHub.OtherPlayerLocationReceivedRemotely(p);
                 }
                 movementoffset = (int)(map.AABB.MaxWidth / 50);
                 try
@@ -622,12 +645,11 @@ namespace EQTool.UI.SettingsComponents
                     {
                         foreach (var item in pnames)
                         {
-                            var p = new EQToolShared.Map.SignalrPlayer
+                            var p = new EQToolShared.Map.SignalrPlayerV2
                             {
                                 GuildName = "The Drift",
-                                MapLocationSharing = EQToolShared.Map.MapLocationSharing.Everyone,
+                                Sharing = EQToolShared.Map.MapLocationSharing.Everyone,
                                 Name = item.Name,
-                                PlayerClass = PlayerClasses.Necromancer,
                                 Server = Servers.Green,
                                 Zone = player.Zone,
                                 X = item.X + r.Next(-movementoffset, movementoffset),
@@ -635,7 +657,7 @@ namespace EQTool.UI.SettingsComponents
                                 Z = item.Z + r.Next(-movementoffset, movementoffset)
                             };
 
-                            signalrPlayerHub.PushPlayerLocationEvent(p);
+                            signalrPlayerHub.OtherPlayerLocationReceivedRemotely(p);
                         }
                         Thread.Sleep(1000);
                     }
@@ -899,9 +921,112 @@ namespace EQTool.UI.SettingsComponents
             SaveConfig();
         }
 
-        private void OpenManagementWindow(object sender, RoutedEventArgs e)
+        private void testsharetimers(object sender, RoutedEventArgs e)
         {
-            windowFactory.CreateWindow<SettingManagement>().Show();
+            var button = sender as System.Windows.Controls.Button;
+            if (!button.IsEnabled)
+            {
+                return;
+            }
+
+            var player = SettingsWindowData.ActivePlayer?.Player;
+            if (player == null)
+            {
+                return;
+            }
+
+            player.Zone = "templeveeshan";
+            SettingsWindowData.ActivePlayer.Location = new System.Windows.Media.Media3D.Point3D(0, 0, 0);
+            button.IsEnabled = false;
+            _ = Task.Factory.StartNew(() =>
+            {
+                try
+                {
+                    logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rain of Molten Lava" });
+                    Thread.Sleep(200);
+                    logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rain of Molten Lava" });
+                    logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rain of Molten Lava" });
+                    logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rain of Molten Lava" });
+                    logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rain of Molten Lava" });
+                    logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rain of Molten Lava" });
+                    logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Wave of Cold" });
+                    logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Wave of Cold" });
+                    logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Wave of Cold" });
+                    Thread.Sleep(2000);
+                    logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rain of Molten Lava" });
+                    logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rain of Molten Lava" });
+                    logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rain of Molten Lava" });
+                    logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rain of Molten Lava" });
+                    logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rain of Molten Lava" });
+                    logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Wave of Cold" });
+                    logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Wave of Cold" });
+                    PushLog("A blast of cold freezes your skin.");
+                    logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Wave of Cold" });
+                    Thread.Sleep(2000);
+                    appDispatcher.DispatchUI(() =>
+                    {
+                        player.Zone = "necropolis";
+                    });
+                    PushLog("You resist the Dragon Roar spell!");
+                    logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Dragon Roar" });
+                    Thread.Sleep(2000);
+                    logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Stun Breath" });
+                    logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rotting Flesh" });
+                    logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Putrefy Flesh" });
+                    Thread.Sleep(2000);
+                    logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rain of Molten Lava" });
+                    logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Wave of Cold" });
+                    Thread.Sleep(2000);
+                    logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Stun Breath" });
+                    logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rotting Flesh" });
+                    logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Putrefy Flesh" });
+                }
+                finally
+                {
+                    appDispatcher.DispatchUI(() =>
+                    {
+                        button.IsEnabled = true;
+                    });
+                }
+            });
+
+        }
+
+        private void textenteringZone(object sender, RoutedEventArgs e)
+        {
+            var button = sender as System.Windows.Controls.Button;
+            if (!button.IsEnabled)
+            {
+                return;
+            }
+            if (SettingsWindowData.ActivePlayer?.Player == null)
+            {
+                return;
+            }
+            SettingsWindowData.ActivePlayer.Player.EnteringZoneAudio = true;
+            SettingsWindowData.ActivePlayer.Player.EnteringZoneOverlay = true;
+            ((App)System.Windows.Application.Current).OpenOverLayWindow();
+            PushLog("You have entered East Commonlands.");
+        }
+
+
+        private void deleteMapCache(object sender, RoutedEventArgs e)
+        {
+            MapLoad.CleanCachedMaps(true);
+        }
+
+        private void openConsoleWindow(object sender, RoutedEventArgs e)
+        {
+            debugOutput.OpenConsole();
+        }
+
+        private void toggleMapConsoleOutput(object sender, RoutedEventArgs e)
+        {
+            debugOutput.LogMapping = true;
+        }
+        private void toggleSpellConsoleOutput(object sender, RoutedEventArgs e)
+        {
+            debugOutput.LogSpells = true;
         }
     }
 }

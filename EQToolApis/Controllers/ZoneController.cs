@@ -15,12 +15,14 @@ namespace EQToolApis.Controllers
     {
         private readonly EQToolContext dbcontext;
         private readonly NpcTrackingService notableNpcService;
-        private readonly IHubContext<MapHub> hubContext;
+        private readonly IHubContext<MapHub> mapHubContext;
+        private readonly IHubContext<PPHub> ppHubContext;
         private DateTime LastKaelFactionSend = DateTime.UtcNow.AddMonths(-2);
 
-        public ZoneController(EQToolContext dbcontext, NpcTrackingService notableNpcService, IHubContext<MapHub> hubContext)
+        public ZoneController(EQToolContext dbcontext, NpcTrackingService notableNpcService, IHubContext<MapHub> mapHubContext, IHubContext<PPHub> ppHubContext)
         {
-            this.hubContext = hubContext;
+            this.mapHubContext = mapHubContext;
+            this.ppHubContext = ppHubContext;
             this.dbcontext = dbcontext;
             this.notableNpcService = notableNpcService;
         }
@@ -36,7 +38,13 @@ namespace EQToolApis.Controllers
             if (Zones.KaelFactionMobs.Contains(model.NPCData.Name) && model.IsDeath && (DateTime.UtcNow - LastKaelFactionSend).TotalSeconds > 10)
             {
                 LastKaelFactionSend = DateTime.UtcNow;
-                await hubContext.Clients.Group(model.Server.ToString()).SendAsync("AddCustomTrigger", new SignalrCustomTimer
+                await mapHubContext.Clients.Group(model.Server.ToString()).SendAsync("AddCustomTrigger", new SignalrCustomTimer
+                {
+                    Server = model.Server,
+                    DurationInSeconds = 28 * 60,
+                    Name = "Next Kael Faction Pull"
+                });
+                await ppHubContext.Clients.Group(model.Server.ToString()).SendAsync("AddCustomTrigger", new SignalrCustomTimer
                 {
                     Server = model.Server,
                     DurationInSeconds = 28 * 60,

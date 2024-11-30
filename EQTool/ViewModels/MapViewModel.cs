@@ -62,8 +62,8 @@ namespace EQTool.ViewModels
 
     public class PlayerLocation : PlayerLocationCircle
     {
-        public SignalrPlayer Player;
-
+        public SignalrPlayerV2 Player { get; set; }
+        public DateTime LastSeen { get; set; }
     }
 
     public class MapViewModel : INotifyPropertyChanged
@@ -308,7 +308,7 @@ namespace EQTool.ViewModels
             }
         }
 
-        private PlayerLocation AddPlayerToCanvas(SignalrPlayer signalrPlayer)
+        private PlayerLocation AddPlayerToCanvas(SignalrPlayerV2 signalrPlayer)
         {
             var player = MapViewModelService.AddPlayerToCanvas(new AddPlayerToCanvasData
             {
@@ -459,7 +459,7 @@ namespace EQTool.ViewModels
             var playerstoremove = new List<PlayerLocation>();
             foreach (var item in Players.Where(a => a.Player != null))
             {
-                if ((DateTime.UtcNow - item.Player.TimeStamp).TotalMinutes > 1)
+                if ((DateTime.UtcNow - item.LastSeen).TotalMinutes > 1)
                 {
                     playerstoremove.Add(item);
                 }
@@ -764,8 +764,8 @@ namespace EQTool.ViewModels
                     Trackingdistance = item.Player.TrackingDistance,
                     CurrentScaling = CurrentScaling,
                     MapOffset = MapOffset,
-                    Oldlocation = new Point3D(item.Player.X, item.Player.Y, item.Player.Z),
-                    Newlocation = new Point3D(item.Player.X, item.Player.Y, item.Player.Z),
+                    Oldlocation = new Point3D(item.Player.X.Value, item.Player.Y.Value, item.Player.Z.Value),
+                    Newlocation = new Point3D(item.Player.X.Value, item.Player.Y.Value, item.Player.Z.Value),
                     PlayerLocationCircle = item,
                     Transform = Transform
                 });
@@ -798,13 +798,17 @@ namespace EQTool.ViewModels
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
 
-        public void PlayerLocationEvent(SignalrPlayer e)
+        public void PlayerLocationEvent(SignalrPlayerV2 e)
         {
-            e.TimeStamp = DateTime.UtcNow;
+            if (!e.X.HasValue || !e.Y.HasValue || !e.Z.HasValue)
+            {
+                return;
+            }
             var p = Players.FirstOrDefault(a => a.Player?.Name == e.Name);
             if (p == null)
             {
                 var playerloc = AddPlayerToCanvas(e);
+                playerloc.LastSeen = DateTime.Now;
                 Players.Add(playerloc);
             }
             else
@@ -814,16 +818,17 @@ namespace EQTool.ViewModels
                     Trackingdistance = e.TrackingDistance,
                     CurrentScaling = CurrentScaling,
                     MapOffset = MapOffset,
-                    Oldlocation = new Point3D(p.Player.X, p.Player.Y, p.Player.Z),
-                    Newlocation = new Point3D(e.X, e.Y, e.Z),
+                    Oldlocation = new Point3D(p.Player.X.Value, p.Player.Y.Value, p.Player.Z.Value),
+                    Newlocation = new Point3D(e.X.Value, e.Y.Value, e.Z.Value),
                     PlayerLocationCircle = p,
                     Transform = Transform
                 });
                 p.Player = e;
+                p.LastSeen = DateTime.Now;
             }
         }
 
-        public void PlayerDisconnected(SignalrPlayer e)
+        public void PlayerDisconnected(SignalrPlayerV2 e)
         {
             var p = Players.FirstOrDefault(a => a.Player.Name == e.Name);
             if (p != null)

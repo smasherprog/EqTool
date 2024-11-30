@@ -146,12 +146,6 @@ namespace EQTool.Services.Handlers
                 textToSpeach.Say("death loop death loop death loop. death loop!");
             }
 
-            //var synth = new SpeechSynthesizer();
-            //synth.SetOutputToDefaultAudioDevice();
-            //synth.Rate = 2;
-            //synth.Volume = 100; // 0-100, as loud as we can
-            //synth.Speak("death loop, death loop, death loop");
-
             // write some debug lines
             Console.WriteLine("------------------------------------Deathloop condition detected!-----------------------------------------");
             Console.WriteLine($"{_deathLoopDeaths} or more deaths in less than {_deathLoopSeconds} seconds, with no player activity");

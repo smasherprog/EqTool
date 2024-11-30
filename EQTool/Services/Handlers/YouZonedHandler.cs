@@ -1,5 +1,6 @@
 ﻿using EQTool.Models;
 using EQTool.ViewModels;
+using System.Windows.Media;
 
 namespace EQTool.Services.Handlers
 {
@@ -34,6 +35,22 @@ namespace EQTool.Services.Handlers
                 });
 
                 toolSettingsLoad.Save(settings);
+            }
+            var text = $"You zoned into {e.LongName}";
+            if (activePlayer?.Player?.EnteringZoneAudio == true)
+            {
+                textToSpeach.Say(text);
+            }
+
+            var doAlert = activePlayer?.Player?.EnteringZoneOverlay ?? false;
+            if (doAlert)
+            {
+                _ = System.Threading.Tasks.Task.Factory.StartNew(() =>
+                {
+                    logEvents.Handle(new OverlayEvent { Text = text, ForeGround = Brushes.Red, Reset = false });
+                    System.Threading.Thread.Sleep(3000);
+                    logEvents.Handle(new OverlayEvent { Text = text, ForeGround = Brushes.Red, Reset = true });
+                });
             }
         }
     }
