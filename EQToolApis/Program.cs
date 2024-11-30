@@ -206,7 +206,7 @@ app.UseEndpoints(endpoints =>
     endpoints.MapControllers();
     endpoints.MapHangfireDashboard("/hangfire", new DashboardOptions()
     {
-        Authorization = new List<IDashboardAuthorizationFilter> { }
+        Authorization = new List<IDashboardAuthorizationFilter> { new HangFireAuthorizationFilter() }
     })
     .RequireAuthorization("HangfireAccess");
 });
