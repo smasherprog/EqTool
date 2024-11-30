@@ -113,10 +113,10 @@ namespace EQTool.Services
                     var releases = githubdata.OrderByDescending(a => a.published_at).Where(a => a.name != null && a.prerelease == prerelease && a.assets != null && a.assets.Any()).ToList();
                     var release = releases.FirstOrDefault();
                     var downloadurl = release.assets.FirstOrDefault(a => !string.IsNullOrWhiteSpace(a.browser_download_url) && a.browser_download_url.ToLower().Contains(versiontype.ToLower()))?.browser_download_url;
-
-                    if (version != release.tag_name)
+                    var newversion = release.tag_name.Replace(versiontype, string.Empty);
+                    if (version != newversion)
                     {
-                        File.AppendAllText("Errors.txt", $"Updating: {currentversion1}-{versiontype}-{currentversion}-{version}-{release.tag_name}");
+                        File.AppendAllText("Errors.txt", $"Updating: {currentversion1}-{versiontype}-{currentversion}-{version}-{newversion}");
                         appDispatcher.DispatchUI(() =>
                         {
                             (App.Current as App).ShowBalloonTip(3000, "Downloading PigParse Update", "This might take a few seconds . . .", System.Windows.Forms.ToolTipIcon.Info);
