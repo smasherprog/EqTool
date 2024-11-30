@@ -35,7 +35,7 @@ namespace EQTool.Services.Handlers
             if (userCastingSpell != null && userCastSpellDateTime != null)
             {
                 var dt = e.TimeStamp - userCastSpellDateTime.Value;
-                if (dt.TotalMilliseconds >= userCastingSpell.casttime && e.Spells.Any(a => a.name == userCastingSpell.name))
+                if (dt.TotalMilliseconds >= (userCastingSpell.casttime - 300) && e.Spells.Any(a => a.name == userCastingSpell.name))
                 {
                     debugOutput.WriteLine($"Casting spell guess based on timer for {userCastingSpell.name} on Target: {e.TargetName}", OutputType.Spells);
                     appDispatcher.DispatchUI(() =>

@@ -21,34 +21,40 @@ namespace EQTool.Services.Parsing
 
         public bool Handle(string line, DateTime timestamp, int lineCounter)
         {
-            var spell = activePlayer?.UserCastingSpell;
-            if (spell != null)
+            var userCastingSpell = activePlayer.UserCastingSpell;
+            var userCastSpellDateTime = activePlayer.UserCastSpellDateTime;
+            if (userCastingSpell != null && userCastSpellDateTime != null)
             {
-                if (line == spell.cast_on_you)
+                var dt = timestamp - userCastSpellDateTime.Value;
+                if (dt.TotalMilliseconds >= (userCastingSpell.casttime - 300))
                 {
-                    debugOutput.WriteLine($"{spell.name} Message: {line}", OutputType.Spells);
-                    logEvents.Handle(new YouFinishCastingEvent
+                    if (line == userCastingSpell.cast_on_you)
                     {
-                        Spell = spell,
-                        TargetName = EQSpells.SpaceYou,
-                        TimeStamp = timestamp,
-                        Line = line,
-                        LineCounter = lineCounter
-                    });
-                    return true;
-                }
-                else if (!string.IsNullOrWhiteSpace(spell.cast_on_other) && line.EndsWith(spell.cast_on_other))
-                {
-                    var targetname = line.Replace(spell.cast_on_other, string.Empty).Trim();
-                    debugOutput.WriteLine($"{spell.name} Message: {line}", OutputType.Spells);
-                    logEvents.Handle(new YouFinishCastingEvent
+                        debugOutput.WriteLine($"{userCastingSpell.name} Message: {line}", OutputType.Spells);
+                        logEvents.Handle(new YouFinishCastingEvent
+                        {
+                            Spell = userCastingSpell,
+                            TargetName = EQSpells.SpaceYou,
+                            TimeStamp = timestamp,
+                            Line = line,
+                            LineCounter = lineCounter
+                        });
+                        return true;
+                    }
+                    else if (!string.IsNullOrWhiteSpace(userCastingSpell.cast_on_other) && line.EndsWith(userCastingSpell.cast_on_other))
                     {
-                        Spell = spell,
-                        TargetName = targetname,
-                        TimeStamp = timestamp,
-                        Line = line,
-                        LineCounter = lineCounter
-                    });
+                        var targetname = line.Replace(userCastingSpell.cast_on_other, string.Empty).Trim();
+                        debugOutput.WriteLine($"{userCastingSpell.name} Message: {line}", OutputType.Spells);
+                        logEvents.Handle(new YouFinishCastingEvent
+                        {
+                            Spell = userCastingSpell,
+                            TargetName = targetname,
+                            TimeStamp = timestamp,
+                            Line = line,
+                            LineCounter = lineCounter
+                        });
+                        return true;
+                    }
                 }
             }
 

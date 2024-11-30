@@ -1,4 +1,5 @@
 ﻿using EQTool.Models;
+using EQTool.ViewModels;
 using EQToolShared;
 using System;
 using System.Collections.Generic;
@@ -12,16 +13,18 @@ namespace EQTool.Services.Parsing
         private readonly EQSpells spells;
         private readonly SpellDurations spellDurations;
         private readonly DebugOutput debugOutput;
+        private readonly ActivePlayer activePlayer;
         private readonly List<string> IgnoreSpellsForGuesses = new List<string>(){
             "Tigir's Insects"
         };
 
-        public SpellCastOnOtherParser(SpellDurations spellDurations, LogEvents logEvents, EQSpells spells, DebugOutput debugOutput)
+        public SpellCastOnOtherParser(SpellDurations spellDurations, LogEvents logEvents, EQSpells spells, DebugOutput debugOutput, ActivePlayer activePlayer)
         {
             this.debugOutput = debugOutput;
             this.spellDurations = spellDurations;
             this.logEvents = logEvents;
             this.spells = spells;
+            this.activePlayer = activePlayer;
         }
 
         public bool Handle(string line, DateTime timestamp, int lineCounter)
@@ -66,6 +69,26 @@ namespace EQTool.Services.Parsing
             }
             else
             {
+                var userCastingSpell = activePlayer.UserCastingSpell;
+                var userCastSpellDateTime = activePlayer.UserCastSpellDateTime;
+                if (userCastingSpell != null && userCastSpellDateTime != null)
+                {
+                    var dt = timestamp - userCastSpellDateTime.Value;
+                    if (dt.TotalMilliseconds >= (userCastingSpell.casttime - 300) && message == userCastingSpell.cast_on_you)
+                    {
+                        debugOutput.WriteLine($"Casting on yourself Detected for {userCastingSpell.name}", OutputType.Spells);
+                        logEvents.Handle(new YouFinishCastingEvent
+                        {
+                            Spell = userCastingSpell,
+                            TargetName = EQSpells.SpaceYou,
+                            TimeStamp = timestamp,
+                            Line = message,
+                            LineCounter = lineCounter
+                        });
+                        return true;
+                    }
+                }
+
                 removename = 0;
                 const int maxspaces = 5;
                 for (var i = 0; i < maxspaces; i++)
