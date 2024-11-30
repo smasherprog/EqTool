@@ -1,6 +1,7 @@
 ﻿using EQTool.Models;
 using EQTool.ViewModels;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace EQTool.Services.Handlers
 {
@@ -8,7 +9,9 @@ namespace EQTool.Services.Handlers
     {
         private readonly List<string> SelfSpellsThatDontEmitCompletionLogMesssages = new List<string>()
         {
-            "Harmshield"
+            "Harmshield",
+            "Divine Aura",
+            "Dictate"
         };
         private readonly IAppDispatcher appDispatcher;
         private readonly BaseSpellYouCastingHandler baseSpellYouCastingHandler;
@@ -31,14 +34,11 @@ namespace EQTool.Services.Handlers
                 var dt = e.TimeStamp - userCastSpellDateTime.Value;
                 if (dt.TotalMilliseconds > userCastingSpell.casttime + 1000)
                 {
-                    var deltaOffset = (int)(userCastingSpell.casttime- dt.TotalMilliseconds);
+                    Debug.WriteLine($"Timer has expired on UserCastingSpell {userCastingSpell.name}");
+                    var deltaOffset = (int)(userCastingSpell.casttime - dt.TotalMilliseconds);
                     if (SelfSpellsThatDontEmitCompletionLogMesssages.Contains(userCastingSpell.name))
                     {
-                        this.baseSpellYouCastingHandler.Handle(userCastingSpell, EQSpells.SpaceYou, deltaOffset, e.TimeStamp);
-                    }
-                    else
-                    {
-                        this.baseSpellYouCastingHandler.Handle(userCastingSpell, CustomTimer.CustomerTime, deltaOffset, e.TimeStamp);
+                        baseSpellYouCastingHandler.Handle(userCastingSpell, EQSpells.SpaceYou, deltaOffset, e.TimeStamp);
                     }
                     appDispatcher.DispatchUI(() =>
                     {
@@ -52,7 +52,7 @@ namespace EQTool.Services.Handlers
 
         private void LogEvents_YouFinishCastingEvent(object sender, YouFinishCastingEvent e)
         {
-            this.baseSpellYouCastingHandler.Handle(e.Spell, EQSpells.SpaceYou, 0, e.TimeStamp);
+            baseSpellYouCastingHandler.Handle(e.Spell, EQSpells.SpaceYou, 0, e.TimeStamp);
             appDispatcher.DispatchUI(() =>
             {
                 activePlayer.UserCastingSpell = null;
