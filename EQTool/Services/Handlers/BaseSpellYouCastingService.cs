@@ -149,7 +149,7 @@ namespace EQTool.Services.Handlers
                 var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(spell, activePlayer.Player?.PlayerClass, activePlayer.Player?.Level));
                 spellduration = spellduration.Add(TimeSpan.FromMilliseconds(delayOffset));
                 if (spellduration.TotalSeconds > 0)
-                { 
+                {
                     var vm = new SpellViewModel
                     {
                         UpdatedDateTime = DateTime.Now,

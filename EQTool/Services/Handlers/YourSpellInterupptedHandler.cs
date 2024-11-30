@@ -14,9 +14,10 @@ namespace EQTool.Services.Handlers
 
         private void LogEvents_YourSpellInterupptedEvent(object sender, YourSpellInterupptedEvent e)
         {
-            this.appDispatcher.DispatchUI(() =>
-            { 
+            appDispatcher.DispatchUI(() =>
+            {
                 activePlayer.UserCastingSpell = null;
+                activePlayer.UserCastSpellDateTime = null;
             });
         }
     }

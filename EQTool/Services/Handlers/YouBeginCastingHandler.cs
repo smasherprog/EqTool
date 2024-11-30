@@ -11,20 +11,10 @@ namespace EQTool.Services.Handlers
         {
             this.appDispatcher = appDispatcher;
             this.logEvents.YouBeginCastingEvent += LogEvents_YouBeginCastingEvent;
-            this.logEvents.YourSpellInterupptedEvent += LogEvents_YourSpellInterupptedEvent; 
-        } 
-
-        private void LogEvents_YourSpellInterupptedEvent(object sender, YourSpellInterupptedEvent e)
-        { 
-            appDispatcher.DispatchUI(() =>
-            {
-                activePlayer.UserCastingSpell = null;
-                activePlayer.UserCastSpellDateTime = null;
-            });
         }
 
         private void LogEvents_YouBeginCastingEvent(object sender, YouBeginCastingEvent e)
-        { 
+        {
             appDispatcher.DispatchUI(() =>
             {
                 activePlayer.UserCastingSpell = e.Spell;
