@@ -33,6 +33,11 @@ namespace EQTool.Services.Parsing
         }
         private bool HandleBestGuessSpell(string message, DateTime timestamp, int lineCounter)
         {
+            if (message.StartsWith("Your "))
+            {
+                return false;
+            }
+
             var removename = message.IndexOf("'");
             if (removename != -1)
             {
