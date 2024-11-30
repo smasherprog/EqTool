@@ -58,12 +58,6 @@ namespace EQTool.Services
             CommsEvent?.Invoke(this, e);
         }
 
-        public event EventHandler<CharmBreakEvent> CharmBreakEvent;
-        public void Handle(CharmBreakEvent e)
-        {
-            CharmBreakEvent?.Invoke(this, e);
-        }
-
         public event EventHandler<QuakeEvent> QuakeEvent;
         public void Handle(QuakeEvent e)
         {
@@ -122,12 +116,6 @@ namespace EQTool.Services
         public void Handle(ResistSpellEvent e)
         {
             ResistSpellEvent?.Invoke(this, e);
-        }
-
-        public event EventHandler<SpellWornOffEvent> SpellWornOffEvent;
-        public void Handle(SpellWornOffEvent e)
-        {
-            SpellWornOffEvent?.Invoke(this, e);
         }
 
         public event EventHandler<SpellWornOffSelfEvent> SpellWornOffSelfEvent;

@@ -52,7 +52,6 @@ namespace EQTool.Models
     public class CampEvent : BaseLogParseEvent { }
     public class EnteredWorldEvent : BaseLogParseEvent { }
     public class QuakeEvent : BaseLogParseEvent { }
-    public class CharmBreakEvent : BaseLogParseEvent { }
     public class InvisEvent : BaseLogParseEvent
     {
         public Services.Parsing.InvisParser.InvisStatus InvisStatus { get; set; }
@@ -112,10 +111,6 @@ namespace EQTool.Models
     public class GroupInviteEvent : BaseLogParseEvent
     {
         public string Inviter { get; set; }
-    }
-    public class LevelEvent : BaseLogParseEvent
-    {
-        public int NewLevel { get; set; }
     }
 
     //
@@ -195,10 +190,6 @@ namespace EQTool.Models
         public string Tag { get; set; }
         public string Position { get; set; }
         public string Caster { get; set; }
-    }
-    public class SpellWornOffEvent : BaseLogParseEvent
-    {
-        public string SpellName { get; set; }
     }
     public class YouHaveFinishedMemorizingEvent : BaseLogParseEvent
     {

@@ -15,7 +15,7 @@ namespace EQTool.Services.Handlers
             ITextToSpeach textToSpeach) : base(logEvents, activePlayer, eQToolSettings, textToSpeach)
         {
             this.spellWindowViewModel = spellWindowViewModel;
-            this.logEvents.SpellWornOffSelfEvent += LogEvents_SpellWornOffSelfEvent; ;
+            this.logEvents.SpellWornOffSelfEvent += LogEvents_SpellWornOffSelfEvent;
         }
 
         private void LogEvents_SpellWornOffSelfEvent(object sender, SpellWornOffSelfEvent e)

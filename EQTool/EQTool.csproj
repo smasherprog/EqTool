@@ -366,7 +366,6 @@
     <Compile Include="Services\Handlers\DragonRoarHandler.cs" />
     <Compile Include="Services\Handlers\GroupInviteHandler.cs" />
     <Compile Include="Services\Handlers\FailedFeignHandler.cs" />
-    <Compile Include="Services\Handlers\CharmBreakHandler.cs" />
     <Compile Include="Services\Handlers\FTEHandler.cs" />
     <Compile Include="Services\Handlers\LevitateHandler.cs" />
     <Compile Include="Services\Handlers\EnrageHandler.cs" />
@@ -432,14 +431,12 @@
     <Compile Include="Services\Map\MapOpacityHelper.cs" />
     <Compile Include="Services\Map\MapViewModelService.cs" />
     <Compile Include="Services\Parsing\CampParser.cs" />
-    <Compile Include="Services\Parsing\OutlierSpellEffectParser.cs" />
     <Compile Include="Services\Handlers\CustomTimerHandler.cs" />
     <Compile Include="Services\Parsing\RandomParser.cs" />
     <Compile Include="Services\Parsing\ResistParser.cs" />
     <Compile Include="Services\Parsing\GroupInviteParser.cs" />
     <Compile Include="Services\Parsing\FailedFeignParser.cs" />
     <Compile Include="Services\Parsing\FTEParser.cs" />
-    <Compile Include="Services\Parsing\CharmBreakParser.cs" />
     <Compile Include="Services\Parsing\LevParser.cs" />
     <Compile Include="Services\Parsing\InvisParser.cs" />
     <Compile Include="Services\Parsing\EnrageParser.cs" />

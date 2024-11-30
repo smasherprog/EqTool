@@ -10,7 +10,12 @@ namespace EQTool.Services.Handlers
         {
             "Harmshield",
             "Divine Aura",
-            "Dictate"
+            "Dictate",
+            "Charm",
+            "Beguile",
+            "Cajoling Whispers",
+            "Allure",
+            "Boltran's Agacerie"
         };
         private readonly IAppDispatcher appDispatcher;
         private readonly BaseSpellYouCastingHandler baseSpellYouCastingHandler;
