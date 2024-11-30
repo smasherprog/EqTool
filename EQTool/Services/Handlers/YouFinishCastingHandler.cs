@@ -52,7 +52,7 @@ namespace EQTool.Services.Handlers
 
         private void LogEvents_YouFinishCastingEvent(object sender, YouFinishCastingEvent e)
         {
-            baseSpellYouCastingHandler.Handle(e.Spell, EQSpells.SpaceYou, 0, e.TimeStamp);
+            baseSpellYouCastingHandler.Handle(e.Spell, e.TargetName, 0, e.TimeStamp);
             appDispatcher.DispatchUI(() =>
             {
                 activePlayer.UserCastingSpell = null;
