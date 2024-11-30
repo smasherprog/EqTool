@@ -105,8 +105,8 @@ namespace EQTool.Services
 #if BETA
                     prerelease = true;
 #endif
-                    currentversion1 = currentversion1.Replace(versiontype, string.Empty);
-                    var version = new string(currentversion1.Where(a => char.IsDigit(a) || a == '.').ToArray());
+                    var currentversion = currentversion1.Replace(versiontype, string.Empty);
+                    var version = new string(currentversion.Where(a => char.IsDigit(a) || a == '.').ToArray());
                     version = version.Trim('.');
                     var json = httpclient.GetAsync(new Uri("https://api.github.com/repos/smasherprog/EqTool/releases")).Result.Content.ReadAsStringAsync().Result;
                     var githubdata = JsonConvert.DeserializeObject<List<GithubVersionInfo>>(json);
@@ -116,6 +116,7 @@ namespace EQTool.Services
 
                     if (version != release.tag_name)
                     {
+                        File.AppendAllText("Errors.txt", $"Updating: {currentversion1}-{versiontype}-{currentversion}-{version}-{release.tag_name}");
                         appDispatcher.DispatchUI(() =>
                         {
                             (App.Current as App).ShowBalloonTip(3000, "Downloading PigParse Update", "This might take a few seconds . . .", System.Windows.Forms.ToolTipIcon.Info);
