@@ -10,7 +10,7 @@ namespace EQTool.Services.Handlers
 {
     public class BaseSpellYouCastingHandler
     {
-        private readonly List<string> SpellsThatNeedTimers = new List<string>()
+        public static readonly List<string> SpellsThatNeedTimers = new List<string>()
         {
             "Dictate",
             "Harvest",

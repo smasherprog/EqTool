@@ -141,7 +141,7 @@ namespace EQTool.Services
         {
             SpellWornOffOtherEvent?.Invoke(this, e);
         }
-         
+
         public event EventHandler<YouZonedEvent> YouZonedEvent;
         public void Handle(YouZonedEvent e)
         {
@@ -225,7 +225,7 @@ namespace EQTool.Services
         {
             SpellCastOnOtherEvent?.Invoke(this, e);
         }
-         
+
         public event EventHandler<MendWoundsEvent> MendWoundsEvent;
         public void Handle(MendWoundsEvent e)
         {
@@ -242,6 +242,11 @@ namespace EQTool.Services
         public void Handle(DragonRoarRemoteEvent e)
         {
             DragonRoarRemoteEvent?.Invoke(this, e);
-        } 
+        }
+        public event EventHandler<YouHaveFinishedMemorizingEvent> YouHaveFinishedMemorizingEvent;
+        public void Handle(YouHaveFinishedMemorizingEvent e)
+        {
+            YouHaveFinishedMemorizingEvent?.Invoke(this, e);
+        }
     }
 }

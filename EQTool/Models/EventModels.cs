@@ -154,7 +154,7 @@ namespace EQTool.Models
     }
 
     public class SpellCastOnYouEvent : BaseLogParseEvent
-    {  
+    {
         public Spell Spell { get; set; }
     }
 
@@ -200,22 +200,26 @@ namespace EQTool.Models
     {
         public string SpellName { get; set; }
     }
+    public class YouHaveFinishedMemorizingEvent : BaseLogParseEvent
+    {
+        public string SpellName { get; set; }
+    }
 
     public class YourSpellInterupptedEvent : BaseLogParseEvent
-    { 
+    {
     }
     public class DragonRoarEvent : BaseLogParseEvent
     {
-        public Spell Spell { get; set; } 
+        public Spell Spell { get; set; }
     }
     public class BaseRemoteEvent
-    { 
-        public Point3D? Location { get; set; } 
+    {
+        public Point3D? Location { get; set; }
     }
 
-    public class DragonRoarRemoteEvent: BaseRemoteEvent
+    public class DragonRoarRemoteEvent : BaseRemoteEvent
     {
-        public string SpellName { get; set; } 
+        public string SpellName { get; set; }
     }
 
     public class SpellWornOffSelfEvent : BaseLogParseEvent
@@ -226,7 +230,7 @@ namespace EQTool.Models
     {
         public string SpellName { get; set; }
     }
-     
+
     public class YouZonedEvent : BaseLogParseEvent
     {
         public string LongName { get; set; }
