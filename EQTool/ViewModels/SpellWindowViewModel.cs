@@ -38,6 +38,29 @@ namespace EQTool.ViewModels
             view.SortDescriptions.Add(new SortDescription(nameof(TimerViewModel.TotalRemainingDuration), ListSortDirection.Ascending));
             view.IsLiveSorting = true;
             view.LiveSortingProperties.Add(nameof(TimerViewModel.TotalRemainingDuration));
+            this.appDispatcher.DispatchUI(() =>
+            {
+                _WindowFrameBrush = NonRaidModeLinearGradientBrush = new LinearGradientBrush
+                {
+                    StartPoint = new System.Windows.Point(0, 0.5),
+                    EndPoint = new System.Windows.Point(1, 0.5),
+                    GradientStops = new GradientStopCollection()
+                        {
+                            new GradientStop(System.Windows.Media.Colors.CadetBlue, .4),
+                            new GradientStop(System.Windows.Media.Colors.Gray, 1)
+                        }
+                };
+                RaidModeLinearGradientBrush = new LinearGradientBrush
+                {
+                    StartPoint = new System.Windows.Point(0, 0.5),
+                    EndPoint = new System.Windows.Point(1, 0.5),
+                    GradientStops = new GradientStopCollection()
+                        {
+                            new GradientStop(System.Windows.Media.Colors.OrangeRed, .4),
+                            new GradientStop(System.Windows.Media.Colors.Gray, 1)
+                        }
+                };
+            });
         }
 
 
@@ -75,37 +98,9 @@ namespace EQTool.ViewModels
             });
         }
 
-        private readonly LinearGradientBrush NonRaidModeLinearGradientBrush = new LinearGradientBrush
-        {
-            StartPoint = new System.Windows.Point(0, 0.5),
-            EndPoint = new System.Windows.Point(1, 0.5),
-            GradientStops = new GradientStopCollection()
-                {
-                    new GradientStop(System.Windows.Media.Colors.CadetBlue, .4),
-                    new GradientStop(System.Windows.Media.Colors.Gray, 1)
-                }
-        };
-        private readonly LinearGradientBrush RaidModeLinearGradientBrush = new LinearGradientBrush
-        {
-            StartPoint = new System.Windows.Point(0, 0.5),
-            EndPoint = new System.Windows.Point(1, 0.5),
-            GradientStops = new GradientStopCollection()
-                {
-                    new GradientStop(System.Windows.Media.Colors.OrangeRed, .4),
-                    new GradientStop(System.Windows.Media.Colors.Gray, 1)
-                }
-        };
-
-        private LinearGradientBrush _WindowFrameBrush = new LinearGradientBrush
-        {
-            StartPoint = new System.Windows.Point(0, 0.5),
-            EndPoint = new System.Windows.Point(1, 0.5),
-            GradientStops = new GradientStopCollection()
-                {
-                    new GradientStop(System.Windows.Media.Colors.CadetBlue, .4),
-                    new GradientStop(System.Windows.Media.Colors.Gray, 1)
-                }
-        };
+        private LinearGradientBrush NonRaidModeLinearGradientBrush;
+        private LinearGradientBrush RaidModeLinearGradientBrush;
+        private LinearGradientBrush _WindowFrameBrush;
 
         public LinearGradientBrush WindowFrameBrush
         {
