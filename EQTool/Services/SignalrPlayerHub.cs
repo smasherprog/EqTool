@@ -150,7 +150,6 @@ namespace EQTool.Models
                 }
             }
         }
-
         public void PlayerDisconnectReceivedRemotely(SignalrPlayerV2 p)
         {
             if (!(p.Server == activePlayer?.Player?.Server && p.Name == activePlayer?.Player?.Name))
