@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Runtime.InteropServices;
 
@@ -28,22 +29,22 @@ namespace EQTool.Services
         }
 
         [DllImport("Kernel32")]
-        public static extern void AllocConsole();
+        public static extern bool AllocConsole();
 
         [DllImport("Kernel32", SetLastError = true)]
-        public static extern void FreeConsole();
+        public static extern bool FreeConsole();
 
         [DllImport("kernel32.dll")]
         private static extern bool AttachConsole(uint dwProcessId);
 
         private const uint ATTACH_PARENT_PROCESS = 0x0ffffffff;
-
+        private bool ConsoleCreated = false;
         public bool LogMapping { get; set; }
         public bool LogSpells { get; set; }
         public void OpenConsole()
         {
-            FreeConsole();
-            AllocConsole();
+            _ = FreeConsole();
+            ConsoleCreated = AllocConsole();
             _ = AttachConsole(ATTACH_PARENT_PROCESS);
         }
 
@@ -52,6 +53,12 @@ namespace EQTool.Services
             [System.Runtime.CompilerServices.CallerFilePath] string filePath = "",
             [System.Runtime.CompilerServices.CallerLineNumber] int lineNumber = 0)
         {
+            text = "Line: " + lineNumber + " | " + filePath.Split('\\').Last() + " | " + membName + ":\t" + text;
+            if (!ConsoleCreated)
+            {
+                Debug.WriteLine(text);
+                return;
+            }
             var colorchanged = false;
             if (messageType == MessageType.Warning)
             {
@@ -79,7 +86,7 @@ namespace EQTool.Services
                 Console.ForegroundColor = ConsoleColor.DarkBlue;
             }
 
-            text = "Line: " + lineNumber + " | " + filePath.Split('\\').Last() + " | " + membName + ":\t" + text;
+
             if (outputType == OutputType.Map)
             {
                 Console.WriteLine(text);
