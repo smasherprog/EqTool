@@ -33,12 +33,18 @@ namespace EQTool.Services
         [DllImport("Kernel32", SetLastError = true)]
         public static extern void FreeConsole();
 
+        [DllImport("kernel32.dll")]
+        private static extern bool AttachConsole(uint dwProcessId);
+
+        private const uint ATTACH_PARENT_PROCESS = 0x0ffffffff;
+
         public bool LogMapping { get; set; }
         public bool LogSpells { get; set; }
         public void OpenConsole()
         {
             FreeConsole();
             AllocConsole();
+            _ = AttachConsole(ATTACH_PARENT_PROCESS);
         }
 
         public void WriteLine(string text, OutputType outputType, MessageType messageType = MessageType.Informational,
