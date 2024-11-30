@@ -83,7 +83,7 @@ namespace EQTool.Services
             else if (messageType == MessageType.RemoteMessageSent)
             {
                 colorchanged = true;
-                Console.ForegroundColor = ConsoleColor.DarkBlue;
+                Console.ForegroundColor = ConsoleColor.Cyan;
             }
 
 
