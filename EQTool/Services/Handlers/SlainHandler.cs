@@ -197,12 +197,12 @@ namespace EQTool.Services.Handlers
                 {
                     grpname = " " + grpname;
                 }
-                var grp = spellWindowViewModel.SpellList.Where(a => a.GroupName == grpname).ToList();
+                var grp = spellWindowViewModel.SpellList.Where(a => string.Equals(a.GroupName, grpname, StringComparison.OrdinalIgnoreCase)).ToList();
                 foreach (var item in grp)
                 {
-                    spellWindowViewModel.SpellList.Remove(item);
+                    _ = spellWindowViewModel.SpellList.Remove(item);
                 }
-                var exisitngdeathentry = spellWindowViewModel.SpellList.FirstOrDefault(a => a.Name == add.Name && CustomTimer.CustomerTime == a.GroupName);
+                var exisitngdeathentry = spellWindowViewModel.SpellList.FirstOrDefault(a => string.Equals(a.Name == add.Name, StringComparison.OrdinalIgnoreCase) && CustomTimer.CustomerTime == a.GroupName);
                 if (exisitngdeathentry != null)
                 {
                     deathcounter = ++deathcounter > 999 ? 1 : deathcounter;

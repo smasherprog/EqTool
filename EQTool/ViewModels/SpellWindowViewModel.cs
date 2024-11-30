@@ -23,7 +23,7 @@ namespace EQTool.ViewModels
         private readonly EQSpells spells;
 
         public SpellWindowViewModel(ActivePlayer activePlayer, IAppDispatcher appDispatcher, EQToolSettings settings, EQSpells spells)
-        { 
+        {
             this.activePlayer = activePlayer;
             this.appDispatcher = appDispatcher;
             this.settings = settings;
@@ -37,7 +37,7 @@ namespace EQTool.ViewModels
             view.SortDescriptions.Add(new SortDescription(nameof(RollViewModel.Roll), ListSortDirection.Descending));
             view.SortDescriptions.Add(new SortDescription(nameof(TimerViewModel.TotalRemainingDuration), ListSortDirection.Ascending));
             view.IsLiveSorting = true;
-            view.LiveSortingProperties.Add(nameof(TimerViewModel.TotalRemainingDuration)); 
+            view.LiveSortingProperties.Add(nameof(TimerViewModel.TotalRemainingDuration));
         }
 
 
@@ -131,13 +131,13 @@ namespace EQTool.ViewModels
                 if (_RaidModeEnabled)
                 {
                     RaidModeButtonToolTip = "Disable Raid Mode";
-                    WindowFrameBrush = RaidModeLinearGradientBrush; 
+                    WindowFrameBrush = RaidModeLinearGradientBrush;
                 }
                 else
                 {
                     RaidModeButtonToolTip = "Enable Raid Mode";
-                    WindowFrameBrush = NonRaidModeLinearGradientBrush; 
-                } 
+                    WindowFrameBrush = NonRaidModeLinearGradientBrush;
+                }
                 OnPropertyChanged(nameof(RaidModeButtonToolTip));
                 OnPropertyChanged();
             }
@@ -146,7 +146,7 @@ namespace EQTool.ViewModels
         private int _SpellGroupCount = 0;
         private int SpellGroupCount
         {
-            get { return this._SpellGroupCount; }
+            get => _SpellGroupCount;
             set
             {
                 _SpellGroupCount = value;
@@ -173,7 +173,7 @@ namespace EQTool.ViewModels
                 if (_RaidModeToggleButtonVisibility == value)
                 {
                     return;
-                } 
+                }
                 _RaidModeToggleButtonVisibility = value;
                 OnPropertyChanged();
             }
@@ -198,7 +198,7 @@ namespace EQTool.ViewModels
                     }
                 }
                 var spells = SpellList.Where(a => a.SpellViewModelType == SpellViewModelType.Spell).Cast<SpellViewModel>().ToList();
-        
+
                 foreach (var item in spells)
                 {
                     var hidespell = false;
@@ -232,7 +232,7 @@ namespace EQTool.ViewModels
                 var groupedspellList = SpellList.GroupBy(a => a.GroupName).ToList();
                 foreach (var triggers in groupedspellList)
                 {
-                    var allspellshidden = true; 
+                    var allspellshidden = true;
                     foreach (var spell in triggers)
                     {
                         if (spell.ColumnVisibility != System.Windows.Visibility.Collapsed)
@@ -278,7 +278,7 @@ namespace EQTool.ViewModels
                 {
                     if (!MasterNPCList.NPCs.Contains(spell.GroupName))
                     {
-                        SpellList.Remove(spell);
+                        _ = SpellList.Remove(spell);
                     }
                 }
             });
@@ -288,7 +288,9 @@ namespace EQTool.ViewModels
         {
             appDispatcher.DispatchUI(() =>
             {
-                if (SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Spell && a.Name == match.Name && match.GroupName == a.GroupName) is SpellViewModel s)
+                if (SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Spell &&
+                string.Equals(a.Name, match.Name, StringComparison.OrdinalIgnoreCase) &&
+                string.Equals(match.GroupName, a.GroupName, StringComparison.OrdinalIgnoreCase)) is SpellViewModel s)
                 {
                     _ = SpellList.Remove(s);
                 }
@@ -300,7 +302,9 @@ namespace EQTool.ViewModels
         {
             appDispatcher.DispatchUI(() =>
             {
-                if (SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Counter && a.Name == match.Name && match.GroupName == a.GroupName) is CounterViewModel s)
+                if (SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Counter &&
+                string.Equals(a.Name, match.Name, StringComparison.OrdinalIgnoreCase) &&
+                string.Equals(match.GroupName, a.GroupName, StringComparison.OrdinalIgnoreCase)) is CounterViewModel s)
                 {
                     s.Count += 1;
                     s.UpdatedDateTime = DateTime.Now;
@@ -316,7 +320,7 @@ namespace EQTool.ViewModels
         {
             appDispatcher.DispatchUI(() =>
             {
-                var rollsingroup = SpellList.Where(a => a.GroupName == match.GroupName && a.SpellViewModelType == SpellViewModelType.Roll).Cast<RollViewModel>().ToList();
+                var rollsingroup = SpellList.Where(a => string.Equals(match.GroupName, a.GroupName, StringComparison.OrdinalIgnoreCase) && a.SpellViewModelType == SpellViewModelType.Roll).Cast<RollViewModel>().ToList();
                 foreach (var item in rollsingroup)
                 {
                     //reset the timer on all of the rolls
@@ -330,10 +334,12 @@ namespace EQTool.ViewModels
         {
             appDispatcher.DispatchUI(() =>
             {
-                var existing = SpellList.FirstOrDefault(a => a.Name == match.Name && a.SpellViewModelType == SpellViewModelType.Timer && a.GroupName == match.GroupName);
+                var existing = SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Timer &&
+                string.Equals(a.Name, match.Name, StringComparison.OrdinalIgnoreCase) &&
+                string.Equals(match.GroupName, a.GroupName, StringComparison.OrdinalIgnoreCase));
                 if (existing != null)
                 {
-                    SpellList.Remove(existing);
+                    _ = SpellList.Remove(existing);
                 }
                 SpellList.Add(match);
             });
