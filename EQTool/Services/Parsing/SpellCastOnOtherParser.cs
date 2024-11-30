@@ -129,6 +129,10 @@ namespace EQTool.Services.Parsing
                      a.SpellType != SpellType.AreaNPCOnly &&
                      a.SpellType != SpellType.AreaofEffectPCV2
                 ).ToList();
+                if (!foundspells.Any())
+                {
+                    return false;
+                }
                 var spellsfound = string.Join(",", foundspells.Select(a => a.name));
                 if (MasterNPCList.NPCs.Contains(targetname))
                 {

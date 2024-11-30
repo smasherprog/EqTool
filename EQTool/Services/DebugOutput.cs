@@ -25,7 +25,6 @@ namespace EQTool.Services
     {
         public DebugOutput()
         {
-
         }
 
         [DllImport("Kernel32")]
@@ -59,6 +58,7 @@ namespace EQTool.Services
                 Debug.WriteLine(text);
                 return;
             }
+
             var colorchanged = false;
             if (messageType == MessageType.Warning)
             {
@@ -87,12 +87,12 @@ namespace EQTool.Services
             }
 
 
-            if (outputType == OutputType.Map)
+            if (outputType == OutputType.Map && LogMapping)
             {
                 Console.WriteLine(text);
             }
 
-            if (outputType == OutputType.Spells)
+            if (outputType == OutputType.Spells && LogSpells)
             {
                 Console.WriteLine(text);
             }
