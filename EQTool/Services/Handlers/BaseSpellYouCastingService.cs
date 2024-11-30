@@ -32,7 +32,14 @@ namespace EQTool.Services.Handlers
             "Cinder Jolt",
             "Rage of Vallon",
             "Waves of the Deep Sea",
-            "Anarchy"
+            "Anarchy",
+            "Breath of the Sea",
+            "Frostbite",
+            "Judgment of Ice",
+            "Storm Strike",
+            "Shrieking Howl",
+            "Static Strike",
+            "Rage of Zek"
         };
 
         private readonly SpellWindowViewModel spellWindowViewModel;
