@@ -356,7 +356,7 @@ namespace EQTool.ViewModels
             {
                 foreach (var item in youspells)
                 {
-                    var match = spells.AllSpells.FirstOrDefault(a => a.name == item.Name);
+                    var match = spells.AllSpells.FirstOrDefault(a => string.Equals(a.name, item.Name, StringComparison.OrdinalIgnoreCase));
                     if (match != null)
                     {
                         var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(match, activePlayer.Player?.PlayerClass, activePlayer.Player?.Level));
@@ -390,7 +390,7 @@ namespace EQTool.ViewModels
 
             appDispatcher.DispatchUI(() =>
             {
-                var s = SpellList.Where(a => a.Name == possiblespell && a.GroupName != EQSpells.SpaceYou).ToList();
+                var s = SpellList.Where(a => string.Equals(a.Name, possiblespell, StringComparison.OrdinalIgnoreCase) && a.GroupName != EQSpells.SpaceYou).ToList();
                 if (s.Count() == 1)
                 {
                     _ = SpellList.Remove(s.FirstOrDefault());
@@ -407,7 +407,7 @@ namespace EQTool.ViewModels
 
             appDispatcher.DispatchUI(() =>
             {
-                var spells = SpellList.Where(a => possiblespellnames.Contains(a.Name) && a.GroupName == EQSpells.SpaceYou).ToList();
+                var spells = SpellList.Where(a => possiblespellnames.Any(b => string.Equals(a.Name, b, StringComparison.OrdinalIgnoreCase)) && a.GroupName == EQSpells.SpaceYou).ToList();
                 if (spells.Count() == 1)
                 {
                     _ = SpellList.Remove(spells.FirstOrDefault());

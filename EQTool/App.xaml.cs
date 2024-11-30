@@ -34,7 +34,7 @@ namespace EQTool
         private System.Windows.Forms.MenuItem SpellsMenuItem;
         private System.Windows.Forms.MenuItem DpsMeterMenuItem;
         private System.Windows.Forms.MenuItem OverlayMenuItem;
-        private System.Windows.Forms.MenuItem SettingsMenuItem; 
+        private System.Windows.Forms.MenuItem SettingsMenuItem;
         private System.Windows.Forms.MenuItem MobInfoMenuItem;
         private LogParser logParser => container.Resolve<LogParser>();
         private LogEvents logEvents => container.Resolve<LogEvents>();
@@ -244,7 +244,7 @@ namespace EQTool
             UITimer.Enabled = true;
             container.Resolve<LoggingService>().Log(string.Empty, EventType.StartUp, null);
             SettingsMenuItem = new System.Windows.Forms.MenuItem("Settings", ToggleSettingsWindow);
-             
+
             SpellsMenuItem = new System.Windows.Forms.MenuItem("Triggers", ToggleSpellsWindow);
             MapMenuItem = new System.Windows.Forms.MenuItem("Map", ToggleMapWindow);
             DpsMeterMenuItem = new System.Windows.Forms.MenuItem("Dps", ToggleDPSWindow);
@@ -463,7 +463,7 @@ namespace EQTool
         {
             get
             {
-                var v = string.Empty;
+                var v = "P99";
 #if BETA
                 v= "Beta";
 #elif LINUX
@@ -479,9 +479,9 @@ namespace EQTool
             MapMenuItem.Enabled = value;
             SpellsMenuItem.Enabled = value;
             DpsMeterMenuItem.Enabled = value;
-            MobInfoMenuItem.Enabled = value; 
+            MobInfoMenuItem.Enabled = value;
         }
-         
+
         private void WhyThePig(object sender, EventArgs e)
         {
             _ = System.Diagnostics.Process.Start(new ProcessStartInfo
