@@ -119,11 +119,6 @@ namespace EQTool.Services
                     var release = releases.FirstOrDefault();
                     var downloadurl = release.assets.Where(a => !string.IsNullOrWhiteSpace(a.browser_download_url) && a.browser_download_url.Contains(VersionType)).Select(a => a.browser_download_url).FirstOrDefault();
                     var newversion = release.tag_name;
-                    if (!string.IsNullOrWhiteSpace(newversion) && !string.IsNullOrWhiteSpace(versiontype))
-                    {
-                        newversion = release.tag_name.Replace(versiontype, string.Empty);
-                    }
-
                     if (version != newversion)
                     {
                         File.AppendAllText("Errors.txt", $"Updating: {currentversion1}-{versiontype}-{currentversion}-{version}-{newversion}");
