@@ -21,7 +21,7 @@ Features:
  <li>The TOP 5 Random rolls show up in the triggers window. </li> 
  <li>See others on the map in real time. Also support for NParse map location sharing automatically if location sharing is set to everyone. </li> 
 <li>Kael faction pull timer Automatically added for everyone regardless of what zone you are in. </li> 
-<li>Automatically add timers on death of npc so you dont have to!</li> 
+<li>Kill timer detection: When you kill a mob sometimes you miss the slain message. Now, when you miss the slain message, if you get either an exp message or a faction message a timer will appear correctly. Since it is unknown what the name of the mob is that died when you received a faction message only, the name of the timer is 'Faction Slain Guess'  and 'Experience Slain Guess'.</li> 
 <li>Detect EQ directory location instead of user required to enter it.</li> 
 <li>Detect Spells cast on others (this is a best guess as I am reading the log file so chloroplast and Regrowth of the growth have the same message)</li>
 <li>Filter spells show by class</li> 
@@ -37,9 +37,12 @@ Features:
 <li>All Melee disciplines show in the cooldown section of the timers window.</li>
 <li>Pricing information in Mob info window.</li>
 <li>Save spells cast on you when you log out so when you log back in they resume counter!</li>
+<li>Raid Mod Detection: When the program detects that you are in a raid, the triggers window gets slimmed down. It will switch to show information specific to your class. For example, if you are a cleric, it will only show buffs that clerics can cast on others and your buffs. This makes the window actually useful on raids now. When raid mode is detected, the color of the triggers window switches to red indicated it is on. There is a checkbox in the settings window to disable this functionality.</li>
 <li>Maps</li>
+ <li>Automatic self update.</li>
 <li>Automatic self update.</li>
-<li>Timers (Only Minutes are supported)</li>
+<li>Custom Map loading: If you have a folder called     maps       this will be checked for map files first. If no map files are found, the program will fallback to the built in map files. You can add your overrides for zone files. If you are making changes, you need to clear the cache files. There is a button in the settings -> map tab to clear these. Or you can delete the cachemaps folder.</li>
+<li>Custom TImers</li>
 </ul>
 <h5>Ch format is loosely: TAG POSITION CH TARGET</h5>
 <ul> 
