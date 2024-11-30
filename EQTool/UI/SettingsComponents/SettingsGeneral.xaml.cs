@@ -35,7 +35,8 @@ namespace EQTool.UI.SettingsComponents
         private readonly SettingsTestRunOverlay settingsTestRunOverlay;
         private readonly WindowFactory windowFactory;
         private readonly LogEvents logEvents;
-        private bool ComponentInitialized = false;
+        private readonly DebugOutput debugOutput;
+        private readonly bool ComponentInitialized = false;
         public SettingsGeneral(
             LogEvents logEvents,
             WindowFactory windowFactory,
@@ -48,10 +49,12 @@ namespace EQTool.UI.SettingsComponents
             EQSpells spells,
             LoginMiddlemand loginMiddlemand,
             EQToolSettings settings,
+            DebugOutput debugOutput,
             EQToolSettingsLoad toolSettingsLoad,
             SettingsWindowViewModel settingsWindowData,
             SettingsTestRunOverlay settingsTestRunOverlay)
         {
+            this.debugOutput = debugOutput;
             this.loginMiddlemand = loginMiddlemand;
             this.signalrPlayerHub = signalrPlayerHub;
             this.logParser = logParser;
@@ -68,7 +71,7 @@ namespace EQTool.UI.SettingsComponents
             SettingsWindowData.EqPath = this.settings.DefaultEqDirectory;
             InitializeComponent();
             TryCheckLoggingEnabled();
-       
+
             try
             {
                 TryUpdateSettings();
@@ -83,6 +86,8 @@ namespace EQTool.UI.SettingsComponents
             DebugTab.Visibility = Visibility.Visible;
 #endif
             ComponentInitialized = true;
+            MapConsoleLog.IsChecked = debugOutput.LogMapping;
+            SpellConsoleLog.IsChecked = debugOutput.LogSpells;
         }
 
         private void SaveConfig()
@@ -321,7 +326,11 @@ namespace EQTool.UI.SettingsComponents
 
         private void zoneselectionchanged(object sender, SelectionChangedEventArgs e)
         {
-            if (!this.ComponentInitialized) return;
+            if (!ComponentInitialized)
+            {
+                return;
+            }
+
             var player = SettingsWindowData.ActivePlayer.Player;
             if (player != null)
             {
@@ -626,7 +635,7 @@ namespace EQTool.UI.SettingsComponents
                     };
 
                     pnames.Add(p);
-                    signalrPlayerHub.PushPlayerLocationEvent(p);
+                    signalrPlayerHub.OtherPlayerLocationReceivedRemotely(p);
                 }
                 movementoffset = (int)(map.AABB.MaxWidth / 50);
                 try
@@ -648,7 +657,7 @@ namespace EQTool.UI.SettingsComponents
                                 Z = item.Z + r.Next(-movementoffset, movementoffset)
                             };
 
-                            signalrPlayerHub.PushPlayerLocationEvent(p);
+                            signalrPlayerHub.OtherPlayerLocationReceivedRemotely(p);
                         }
                         Thread.Sleep(1000);
                     }
@@ -933,44 +942,44 @@ namespace EQTool.UI.SettingsComponents
             {
                 try
                 {
-                    this.logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rain of Molten Lava" });
+                    logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rain of Molten Lava" });
                     Thread.Sleep(200);
-                    this.logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rain of Molten Lava" });
-                    this.logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rain of Molten Lava" });
-                    this.logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rain of Molten Lava" });
-                    this.logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rain of Molten Lava" });
-                    this.logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rain of Molten Lava" });
-                    this.logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Wave of Cold" });
-                    this.logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Wave of Cold" });
-                    this.logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Wave of Cold" });
+                    logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rain of Molten Lava" });
+                    logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rain of Molten Lava" });
+                    logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rain of Molten Lava" });
+                    logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rain of Molten Lava" });
+                    logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rain of Molten Lava" });
+                    logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Wave of Cold" });
+                    logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Wave of Cold" });
+                    logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Wave of Cold" });
                     Thread.Sleep(2000);
-                    this.logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rain of Molten Lava" });
-                    this.logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rain of Molten Lava" });
-                    this.logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rain of Molten Lava" });
-                    this.logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rain of Molten Lava" });
-                    this.logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rain of Molten Lava" });
-                    this.logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Wave of Cold" });
-                    this.logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Wave of Cold" });
-                    this.PushLog("A blast of cold freezes your skin.");
-                    this.logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Wave of Cold" });
+                    logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rain of Molten Lava" });
+                    logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rain of Molten Lava" });
+                    logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rain of Molten Lava" });
+                    logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rain of Molten Lava" });
+                    logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rain of Molten Lava" });
+                    logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Wave of Cold" });
+                    logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Wave of Cold" });
+                    PushLog("A blast of cold freezes your skin.");
+                    logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Wave of Cold" });
                     Thread.Sleep(2000);
                     appDispatcher.DispatchUI(() =>
                     {
                         player.Zone = "necropolis";
                     });
-                    this.PushLog("You resist the Dragon Roar spell!");
-                    this.logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Dragon Roar" });
+                    PushLog("You resist the Dragon Roar spell!");
+                    logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Dragon Roar" });
                     Thread.Sleep(2000);
-                    this.logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Stun Breath" });
-                    this.logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rotting Flesh" });
-                    this.logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Putrefy Flesh" });
+                    logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Stun Breath" });
+                    logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rotting Flesh" });
+                    logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Putrefy Flesh" });
                     Thread.Sleep(2000);
-                    this.logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rain of Molten Lava" });
-                    this.logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Wave of Cold" });
+                    logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rain of Molten Lava" });
+                    logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Wave of Cold" });
                     Thread.Sleep(2000);
-                    this.logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Stun Breath" });
-                    this.logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rotting Flesh" });
-                    this.logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Putrefy Flesh" });
+                    logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Stun Breath" });
+                    logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rotting Flesh" });
+                    logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Putrefy Flesh" });
                 }
                 finally
                 {
@@ -997,12 +1006,27 @@ namespace EQTool.UI.SettingsComponents
             SettingsWindowData.ActivePlayer.Player.EnteringZoneAudio = true;
             SettingsWindowData.ActivePlayer.Player.EnteringZoneOverlay = true;
             ((App)System.Windows.Application.Current).OpenOverLayWindow();
-            this.PushLog("You have entered East Commonlands.");
+            PushLog("You have entered East Commonlands.");
         }
+
 
         private void deleteMapCache(object sender, RoutedEventArgs e)
         {
             MapLoad.CleanCachedMaps(true);
+        }
+
+        private void openConsoleWindow(object sender, RoutedEventArgs e)
+        {
+            debugOutput.OpenConsole();
+        }
+
+        private void toggleMapConsoleOutput(object sender, RoutedEventArgs e)
+        {
+            debugOutput.LogMapping = true;
+        }
+        private void toggleSpellConsoleOutput(object sender, RoutedEventArgs e)
+        {
+            debugOutput.LogSpells = true;
         }
     }
 }

@@ -326,6 +326,7 @@
     <Compile Include="Models\CustomTimer.cs" />
     <Compile Include="Models\FightHistory.cs" />
     <Compile Include="Services\BinarySerializer.cs" />
+    <Compile Include="Services\DebugOutput.cs" />
     <Compile Include="Services\Handlers\DamageHandler.cs" />
     <Compile Include="Services\Handlers\PlayerChangeHandler.cs" />
     <Compile Include="Services\Handlers\PlayerLocationHandler.cs" />

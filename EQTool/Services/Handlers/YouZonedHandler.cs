@@ -46,7 +46,7 @@ namespace EQTool.Services.Handlers
             if (doAlert)
             {
                 _ = System.Threading.Tasks.Task.Factory.StartNew(() =>
-                {  
+                {
                     logEvents.Handle(new OverlayEvent { Text = text, ForeGround = Brushes.Red, Reset = false });
                     System.Threading.Thread.Sleep(3000);
                     logEvents.Handle(new OverlayEvent { Text = text, ForeGround = Brushes.Red, Reset = true });

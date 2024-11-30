@@ -12,13 +12,15 @@ namespace EQTool.Services.Parsing
         private readonly ActivePlayer activePlayer;
         private readonly EQSpells spells;
         private readonly SpellDurations spellDurations;
+        private readonly DebugOutput debugOutput;
 
         private readonly List<string> IgnoreSpellsForGuesses = new List<string>(){
             "Tigir's Insects"
         };
 
-        public SpellCastOnYouParser(SpellDurations spellDurations, LogEvents logEvents, ActivePlayer activePlayer, EQSpells spells)
+        public SpellCastOnYouParser(SpellDurations spellDurations, LogEvents logEvents, ActivePlayer activePlayer, EQSpells spells, DebugOutput debugOutput)
         {
+            this.debugOutput = debugOutput;
             this.spellDurations = spellDurations;
             this.logEvents = logEvents;
             this.activePlayer = activePlayer;
@@ -33,7 +35,8 @@ namespace EQTool.Services.Parsing
                 var foundspell = spellDurations.MatchDragonRoar(foundspells, timestamp);
                 if (foundspell != null)
                 {
-                    this.logEvents.Handle(new DragonRoarEvent
+                    debugOutput.WriteLine($"{foundspell.name} Message: {line}", OutputType.Spells);
+                    logEvents.Handle(new DragonRoarEvent
                     {
                         Spell = foundspell,
                         TimeStamp = timestamp,
@@ -45,7 +48,8 @@ namespace EQTool.Services.Parsing
                 foundspell = spellDurations.MatchClosestLevelToSpell(foundspells, timestamp);
                 if (foundspell != null)
                 {
-                    this.logEvents.Handle(new SpellCastOnYouEvent
+                    debugOutput.WriteLine($"{foundspell.name} Message: {line}", OutputType.Spells);
+                    logEvents.Handle(new SpellCastOnYouEvent
                     {
                         Spell = foundspell,
                         TimeStamp = timestamp,

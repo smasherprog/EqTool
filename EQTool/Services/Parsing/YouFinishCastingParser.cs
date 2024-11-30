@@ -1,32 +1,33 @@
 ﻿using EQTool.Models;
 using EQTool.ViewModels;
 using System;
-using System.Diagnostics;
 
 namespace EQTool.Services.Parsing
 {
     public class YouFinishCastingParser : IEqLogParser
-    { 
+    {
         private readonly LogEvents logEvents;
         private readonly ActivePlayer activePlayer;
         private readonly EQSpells spells;
+        private readonly DebugOutput debugOutput;
 
-        public YouFinishCastingParser(LogEvents logEvents, ActivePlayer activePlayer, EQSpells spells)
+        public YouFinishCastingParser(LogEvents logEvents, ActivePlayer activePlayer, EQSpells spells, DebugOutput debugOutput)
         {
             this.logEvents = logEvents;
             this.activePlayer = activePlayer;
             this.spells = spells;
+            this.debugOutput = debugOutput;
         }
 
         public bool Handle(string line, DateTime timestamp, int lineCounter)
         {
-            if (activePlayer.UserCastingSpell != null)
+            var spell = activePlayer?.UserCastingSpell;
+            if (spell != null)
             {
-                if (line == activePlayer.UserCastingSpell.cast_on_you)
+                if (line == spell.cast_on_you)
                 {
-                    Debug.WriteLine($"Self Finished Spell: {line}");
-                    var spell = activePlayer.UserCastingSpell;
-                    this.logEvents.Handle(new YouFinishCastingEvent
+                    debugOutput.WriteLine($"{spell.name} Message: {line}", OutputType.Spells);
+                    logEvents.Handle(new YouFinishCastingEvent
                     {
                         Spell = spell,
                         TargetName = EQSpells.SpaceYou,
@@ -36,12 +37,11 @@ namespace EQTool.Services.Parsing
                     });
                     return true;
                 }
-                else if (!string.IsNullOrWhiteSpace(activePlayer.UserCastingSpell.cast_on_other) && line.EndsWith(activePlayer.UserCastingSpell.cast_on_other))
+                else if (!string.IsNullOrWhiteSpace(spell.cast_on_other) && line.EndsWith(spell.cast_on_other))
                 {
-                    var targetname = line.Replace(activePlayer.UserCastingSpell.cast_on_other, string.Empty).Trim();
-                    Debug.WriteLine($"Self Finished Spell: {line}");
-                    var spell = activePlayer.UserCastingSpell;
-                    this.logEvents.Handle(new YouFinishCastingEvent
+                    var targetname = line.Replace(spell.cast_on_other, string.Empty).Trim();
+                    debugOutput.WriteLine($"{spell.name} Message: {line}", OutputType.Spells);
+                    logEvents.Handle(new YouFinishCastingEvent
                     {
                         Spell = spell,
                         TargetName = targetname,
@@ -51,7 +51,7 @@ namespace EQTool.Services.Parsing
                     });
                 }
             }
-           
+
             return false;
         }
     }

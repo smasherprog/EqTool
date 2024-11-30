@@ -289,7 +289,22 @@
                 </StackPanel>
                 <DockPanel>
                     <TextBlock MaxWidth="400" TextWrapping="Wrap" Text="When this is checked, timers will be shared with those around you for detrimental spells. So, if you slow a mob, anyone within range will also see the slow timer. Same for dragon effects!" />
-                 </DockPanel>
+                 </DockPanel> 
+                <TextBlock Text="Console Debugging" HorizontalAlignment="Center" FontWeight="Bold" Margin="5,5,0,0"/>
+                <StackPanel Orientation="Vertical" Margin="0, 0, 0, 8"> 
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Window" VerticalAlignment="Center" FontWeight="Bold" MinWidth="100"/>
+                        <Button Click="openConsoleWindow">Open</Button>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Map Logging" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
+                        <CheckBox x:Name="MapConsoleLog" Click="toggleMapConsoleOutput" MinWidth="75"></CheckBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Spell Logging" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
+                        <CheckBox Name="SpellConsoleLog" Click="toggleSpellConsoleOutput" MinWidth="75"></CheckBox>
+                    </StackPanel>
+                </StackPanel> 
             </StackPanel>
         </TabItem>
         <TabItem Header="Debug" Name="DebugTab">

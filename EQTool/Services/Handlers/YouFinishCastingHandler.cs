@@ -1,7 +1,6 @@
 ﻿using EQTool.Models;
 using EQTool.ViewModels;
 using System.Collections.Generic;
-using System.Diagnostics;
 
 namespace EQTool.Services.Handlers
 {
@@ -15,12 +14,22 @@ namespace EQTool.Services.Handlers
         };
         private readonly IAppDispatcher appDispatcher;
         private readonly BaseSpellYouCastingHandler baseSpellYouCastingHandler;
-        public YouFinishCastingHandler(BaseSpellYouCastingHandler baseSpellYouCastingHandler, IAppDispatcher appDispatcher, LogEvents logEvents, ActivePlayer activePlayer, EQToolSettings eQToolSettings, ITextToSpeach textToSpeach) : base(logEvents, activePlayer, eQToolSettings, textToSpeach)
+        private readonly DebugOutput debugOutput;
+
+        public YouFinishCastingHandler(
+            BaseSpellYouCastingHandler baseSpellYouCastingHandler,
+            IAppDispatcher appDispatcher,
+            LogEvents logEvents,
+            ActivePlayer activePlayer,
+            EQToolSettings eQToolSettings,
+            ITextToSpeach textToSpeach,
+            DebugOutput debugOutput) : base(logEvents, activePlayer, eQToolSettings, textToSpeach)
         {
             this.baseSpellYouCastingHandler = baseSpellYouCastingHandler;
             this.appDispatcher = appDispatcher;
             this.logEvents.YouFinishCastingEvent += LogEvents_YouFinishCastingEvent;
             this.logEvents.LineEvent += LogEvents_LineEvent;
+            this.debugOutput = debugOutput;
         }
 
         private void LogEvents_LineEvent(object sender, LineEvent e)
@@ -34,10 +43,10 @@ namespace EQTool.Services.Handlers
                 var dt = e.TimeStamp - userCastSpellDateTime.Value;
                 if (dt.TotalMilliseconds > userCastingSpell.casttime + 1000)
                 {
-                    Debug.WriteLine($"Timer has expired on UserCastingSpell {userCastingSpell.name}");
                     var deltaOffset = (int)(userCastingSpell.casttime - dt.TotalMilliseconds);
                     if (SelfSpellsThatDontEmitCompletionLogMesssages.Contains(userCastingSpell.name))
                     {
+                        debugOutput.WriteLine($"Casting spell guess based on timer for {userCastingSpell.name}", OutputType.Spells);
                         baseSpellYouCastingHandler.Handle(userCastingSpell, EQSpells.SpaceYou, deltaOffset, e.TimeStamp);
                     }
                     appDispatcher.DispatchUI(() =>

@@ -2,24 +2,25 @@
 using EQToolShared;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 
 namespace EQTool.Services.Parsing
 {
     public class SpellCastOnOtherParser : IEqLogParser
     {
-        private readonly LogEvents logEvents; 
+        private readonly LogEvents logEvents;
         private readonly EQSpells spells;
         private readonly SpellDurations spellDurations;
+        private readonly DebugOutput debugOutput;
         private readonly List<string> IgnoreSpellsForGuesses = new List<string>(){
             "Tigir's Insects"
         };
 
-        public SpellCastOnOtherParser(SpellDurations spellDurations, LogEvents logEvents, EQSpells spells)
+        public SpellCastOnOtherParser(SpellDurations spellDurations, LogEvents logEvents, EQSpells spells, DebugOutput debugOutput)
         {
+            this.debugOutput = debugOutput;
             this.spellDurations = spellDurations;
-            this.logEvents = logEvents; 
+            this.logEvents = logEvents;
             this.spells = spells;
         }
 
@@ -38,7 +39,8 @@ namespace EQTool.Services.Parsing
                     var foundspell = spellDurations.MatchDragonRoar(foundspells, timestamp);
                     if (foundspell != null)
                     {
-                        this.logEvents.Handle(new DragonRoarEvent
+                        debugOutput.WriteLine($"{foundspell.name} Message: {message}", OutputType.Spells);
+                        logEvents.Handle(new DragonRoarEvent
                         {
                             Spell = foundspell,
                             TimeStamp = timestamp,
@@ -47,11 +49,11 @@ namespace EQTool.Services.Parsing
                         });
                         return true;
                     }
-             
+
                     var targetname = message.Replace(foundspells.FirstOrDefault().cast_on_other, string.Empty).Trim();
                     var spellsfound = string.Join(",", foundspells.Select(a => a.name));
-                    Debug.WriteLine($"Other Spells: {spellsfound} Message: {spellmessage}");
-                    this.logEvents.Handle(new SpellCastOnOtherEvent
+                    debugOutput.WriteLine($"{spellsfound} Message: {message}", OutputType.Spells);
+                    logEvents.Handle(new SpellCastOnOtherEvent
                     {
                         Spells = foundspells,
                         TargetName = targetname,
@@ -105,12 +107,12 @@ namespace EQTool.Services.Parsing
                      a.SpellType != SpellType.AreaofEffectPCV2
                 ).ToList();
                 var spellsfound = string.Join(",", foundspells.Select(a => a.name));
-                Debug.WriteLine($"Other Spells: {spellsfound} Message: {spellmessage}");
                 if (MasterNPCList.NPCs.Contains(targetname))
                 {
                     targetname = " " + targetname;
                 }
-                this.logEvents.Handle(new SpellCastOnOtherEvent
+                debugOutput.WriteLine($"{spellsfound} Message: {spellmessage}", OutputType.Spells);
+                logEvents.Handle(new SpellCastOnOtherEvent
                 {
                     Spells = foundspells,
                     TargetName = targetname,

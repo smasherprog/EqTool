@@ -9,10 +9,13 @@ namespace EQTool.Services.Parsing
     {
         private readonly EQSpells spells;
         private readonly LogEvents logEvents;
-        public SpellWornOffSelfParser(EQSpells spells, LogEvents logEvents)
+        private readonly DebugOutput debugOutput;
+
+        public SpellWornOffSelfParser(EQSpells spells, LogEvents logEvents, DebugOutput debugOutput)
         {
             this.spells = spells;
             this.logEvents = logEvents;
+            this.debugOutput = debugOutput;
         }
 
         public bool Handle(string line, DateTime timestamp, int lineCounter)
@@ -20,6 +23,8 @@ namespace EQTool.Services.Parsing
             var m = MatchWornOffSelfSpell(line);
             if (m.Any())
             {
+                var spellsfound = string.Join(",", m);
+                debugOutput.WriteLine($"{spellsfound} Message: {line}", OutputType.Spells);
                 logEvents.Handle(new SpellWornOffSelfEvent { SpellNames = m, TimeStamp = timestamp, Line = line, LineCounter = lineCounter });
                 return true;
             }

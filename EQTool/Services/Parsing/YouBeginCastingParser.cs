@@ -1,7 +1,6 @@
 ﻿using EQTool.Models;
 using EQTool.ViewModels;
 using System;
-using System.Diagnostics;
 using System.Linq;
 
 namespace EQTool.Services.Parsing
@@ -13,13 +12,15 @@ namespace EQTool.Services.Parsing
         private readonly ActivePlayer activePlayer;
         private readonly EQSpells spells;
         private readonly SpellDurations spellDurations;
+        private readonly DebugOutput debugOutput;
 
-        public YouBeginCastingParser(SpellDurations spellDurations, LogEvents logEvents, ActivePlayer activePlayer, EQSpells spells)
+        public YouBeginCastingParser(SpellDurations spellDurations, LogEvents logEvents, ActivePlayer activePlayer, EQSpells spells, DebugOutput debugOutput)
         {
             this.spellDurations = spellDurations;
             this.logEvents = logEvents;
             this.activePlayer = activePlayer;
             this.spells = spells;
+            this.debugOutput = debugOutput;
         }
 
         public bool Handle(string line, DateTime timestamp, int lineCounter)
@@ -30,14 +31,14 @@ namespace EQTool.Services.Parsing
                 logEvents.Handle(new YouBeginCastingEvent { Line = line, LineCounter = lineCounter, TimeStamp = timestamp, Spell = foundspell });
                 return true;
             }
-             else if (line.StartsWith(YouBeginCasting))
+            else if (line.StartsWith(YouBeginCasting))
             {
                 var spellname = line.Substring(YouBeginCasting.Length - 1).Trim().TrimEnd('.');
                 if (spells.YouCastSpells.TryGetValue(spellname, out var foundspells))
                 {
                     var foundspell = spellDurations.MatchClosestLevelToSpell(foundspells, timestamp);
+                    debugOutput.WriteLine($"{foundspell.name} Message: {line}", OutputType.Spells);
                     logEvents.Handle(new YouBeginCastingEvent { Line = line, LineCounter = lineCounter, TimeStamp = timestamp, Spell = foundspell });
-                    Debug.WriteLine($"Self Casting Spell: {spellname} Delay: {foundspell.casttime}"); 
                     if (foundspell.Classes.Count == 1)
                     {
                         logEvents.Handle(new ClassDetectedEvent { TimeStamp = timestamp, LineCounter = lineCounter, Line = line, PlayerClass = foundspell.Classes.FirstOrDefault().Key });
@@ -46,9 +47,9 @@ namespace EQTool.Services.Parsing
 
                     return true;
                 }
-            } 
+            }
 
             return false;
-        } 
+        }
     }
 }

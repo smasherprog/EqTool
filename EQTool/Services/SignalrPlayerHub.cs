@@ -20,8 +20,8 @@ namespace EQTool.Models
     {
         event EventHandler<SignalrPlayerV2> PlayerLocationEvent;
         event EventHandler<SignalrPlayerV2> PlayerDisconnected;
-        void PushPlayerLocationEvent(SignalrPlayerV2 player);
-        void PushPlayerDisconnected(SignalrPlayerV2 player);
+        void OtherPlayerLocationReceivedRemotely(SignalrPlayerV2 player);
+        void PlayerDisconnectReceivedRemotely(SignalrPlayerV2 player);
     }
 
     public class SignalrPlayerHub : ISignalrPlayerHub
@@ -34,16 +34,19 @@ namespace EQTool.Models
         private readonly System.Timers.Timer timer;
         private SignalrPlayerV2 LastPlayer;
         private readonly EQSpells spells;
+        private readonly DebugOutput debugOutput;
+
         private readonly SpellWindowViewModel spellWindowViewModel;
         private readonly CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
 
-        public SignalrPlayerHub(EQSpells spells, LogEvents logEvents, IAppDispatcher appDispatcher, LogParser logParser, ActivePlayer activePlayer, SpellWindowViewModel spellWindowViewModel)
+        public SignalrPlayerHub(EQSpells spells, LogEvents logEvents, IAppDispatcher appDispatcher, LogParser logParser, ActivePlayer activePlayer, SpellWindowViewModel spellWindowViewModel, DebugOutput debugOutput)
         {
             this.spells = spells;
             this.logEvents = logEvents;
             this.appDispatcher = appDispatcher;
             this.activePlayer = activePlayer;
             this.logParser = logParser;
+            this.debugOutput = debugOutput;
             this.spellWindowViewModel = spellWindowViewModel;
             var url = "https://www.pigparse.org/PP";
             connection = new HubConnectionBuilder()
@@ -52,25 +55,26 @@ namespace EQTool.Models
               .Build();
             _ = connection.On("PlayerLocationEvent", (SignalrPlayerV2 p) =>
                 {
-                    PushPlayerLocationEvent(p);
+                    OtherPlayerLocationReceivedRemotely(p);
                 });
             _ = connection.On("PlayerDisconnected", (SignalrPlayerV2 p) =>
             {
-                PushPlayerDisconnected(p);
+                PlayerDisconnectReceivedRemotely(p);
             });
             _ = connection.On("AddCustomTrigger", (SignalrCustomTimer p) =>
             {
-                AddCustomTrigger(p);
+                FactionPullReceivedRemotely(p);
             });
             _ = connection.On("DragonRoarEvent", (SignalRDragonRoar p) =>
             {
-                DragonRoar(p);
+                DragonRoarReceivedRemotely(p);
             });
             connection.Closed += async (error) =>
-              {
-                  await Task.Delay(new Random().Next(0, 5) * 1000);
-                  await SignalrConnectWithRetry();
-              };
+            {
+                this.debugOutput.WriteLine($"SignalR Close '{error?.ToString()}'", OutputType.Map, MessageType.Warning);
+                await Task.Delay(new Random().Next(0, 5) * 1000);
+                await SignalrConnectWithRetry();
+            };
             try
             {
                 _ = Task.Factory.StartNew(async () =>
@@ -83,9 +87,9 @@ namespace EQTool.Models
                 Debug.WriteLine(ex.ToString());
             }
 
-            this.logEvents.PlayerLocationEvent += LogParser_PlayerLocationEvent;
+            this.logEvents.PlayerLocationEvent += SendMyLocationToOthers;
             this.logEvents.CampEvent += LogParser_CampEvent;
-            this.logEvents.DragonRoarEvent += LogEvents_DragonRoarEvent;
+            this.logEvents.DragonRoarEvent += SendDragonRoarToOthers;
             timer = new System.Timers.Timer();
             timer.Elapsed += Timer_Elapsed;
             timer.Interval = 1000 * 10;
@@ -129,29 +133,29 @@ namespace EQTool.Models
             {
                 try
                 {
-                    Debug.WriteLine("Beg StartAsync");
+                    debugOutput.WriteLine($"SignalR StartAsync", OutputType.Map);
                     await connection.StartAsync();
                     try
                     {
                         InvokeAsync("JoinServerGroup", activePlayer?.Player?.Server);
                     }
                     catch { }
-                    Debug.WriteLine("Connected StartAsync");
+                    debugOutput.WriteLine($"SignalR Connected", OutputType.Map, MessageType.Success);
                     return;
                 }
-                catch
+                catch (Exception)
                 {
-                    Debug.WriteLine("Failed StartAsync");
+                    debugOutput.WriteLine($"SignalR Connected", OutputType.Map, MessageType.Warning);
                     await Task.Delay(5000);
                 }
             }
         }
 
-        public void PushPlayerDisconnected(SignalrPlayerV2 p)
+        public void PlayerDisconnectReceivedRemotely(SignalrPlayerV2 p)
         {
             if (!(p.Server == activePlayer?.Player?.Server && p.Name == activePlayer?.Player?.Name))
             {
-                Debug.WriteLine($"PlayerDisconnected {p.Name}");
+                debugOutput.WriteLine($"{p.Name}", OutputType.Map, MessageType.RemoteMessageReceived);
                 appDispatcher.DispatchUI(() =>
                 {
                     PlayerDisconnected?.Invoke(this, p);
@@ -159,7 +163,7 @@ namespace EQTool.Models
             }
         }
 
-        private void LogParser_PlayerLocationEvent(object sender, PlayerLocationEvent e)
+        private void SendMyLocationToOthers(object sender, PlayerLocationEvent e)
         {
             if (activePlayer?.Player?.Server != null)
             {
@@ -175,14 +179,14 @@ namespace EQTool.Models
                     Y = e.Location.Y,
                     Z = e.Location.Z
                 };
-
+                debugOutput.WriteLine($"{LastPlayer.Zone}-{LastPlayer.GuildName}-{LastPlayer.Server}-{LastPlayer.Sharing}-{LastPlayer.Name}-({LastPlayer.X},{LastPlayer.Y},{LastPlayer.Z})", OutputType.Map, MessageType.RemoteMessageSent);
                 InvokeAsync("PlayerLocationEvent", LastPlayer);
             }
         }
 
-        private List<DragonRoarEvent> LastDragonRoars = new List<DragonRoarEvent>();
+        private readonly List<DragonRoarEvent> LastDragonRoars = new List<DragonRoarEvent>();
 
-        private void LogEvents_DragonRoarEvent(object sender, DragonRoarEvent e)
+        private void SendDragonRoarToOthers(object sender, DragonRoarEvent e)
         {
             var recentlyEmittedSameRoar = LastDragonRoars.Any(a => a.Spell.name == e.Spell.name && (e.TimeStamp - a.TimeStamp).TotalSeconds < 4);
             if (activePlayer?.Player != null &&
@@ -193,6 +197,7 @@ namespace EQTool.Models
                )
             {
                 LastDragonRoars.Add(e);
+                debugOutput.WriteLine($"{e.Spell.name}-({LastPlayer.X},{LastPlayer.Y},{LastPlayer.Z})", OutputType.Map, MessageType.RemoteMessageSent);
                 InvokeAsync("DragonRoarEvent", new SignalRDragonRoar
                 {
                     SpellName = e.Spell.name,
@@ -205,23 +210,23 @@ namespace EQTool.Models
                     Z = LastPlayer?.Z
                 });
                 var now = DateTime.Now;
-                LastDragonRoars.RemoveAll(a => (now - a.TimeStamp).TotalSeconds > 45);
+                _ = LastDragonRoars.RemoveAll(a => (now - a.TimeStamp).TotalSeconds > 45);
             }
         }
 
-        private void DragonRoar(SignalRDragonRoar p)
+        private void DragonRoarReceivedRemotely(SignalRDragonRoar p)
         {
             if (activePlayer?.Player != null &&
                 p.Server == activePlayer.Player.Server &&
                 activePlayer.Player.ShareTimers)
             {
-                Debug.WriteLine($"SignalRDragonRoar {p.SpellName}");
+                debugOutput.WriteLine($"{p.SpellName}-({p.X},{p.Y},{p.Z})", OutputType.Map, MessageType.RemoteMessageReceived);
                 Point3D? Location = null;
                 if (p.X.HasValue && p.Y.HasValue && p.Z.HasValue)
                 {
                     Location = new Point3D(p.X.Value, p.Y.Value, p.Z.Value);
                 }
-                this.logEvents.Handle(new DragonRoarRemoteEvent
+                logEvents.Handle(new DragonRoarRemoteEvent
                 {
                     SpellName = p.SpellName,
                     Location = Location
@@ -229,11 +234,11 @@ namespace EQTool.Models
             }
         }
 
-        public void AddCustomTrigger(SignalrCustomTimer p)
+        public void FactionPullReceivedRemotely(SignalrCustomTimer p)
         {
             if (p.Server == activePlayer?.Player?.Server)
             {
-                Debug.WriteLine($"AddCustomTrigger {p.Name}");
+                debugOutput.WriteLine($"{p.Name}-{p.Server}", OutputType.Map, MessageType.RemoteMessageReceived);
                 appDispatcher.DispatchUI(() =>
                 {
                     spellWindowViewModel.TryAdd(Create(p));
@@ -257,7 +262,7 @@ namespace EQTool.Models
             };
         }
 
-        public void PushPlayerLocationEvent(SignalrPlayerV2 p)
+        public void OtherPlayerLocationReceivedRemotely(SignalrPlayerV2 p)
         {
             if (!(p.Server == activePlayer?.Player?.Server && p.Name == activePlayer?.Player?.Name))
             {
