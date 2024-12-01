@@ -95,7 +95,7 @@ namespace EQTool.Services
             return UpdateStatus.NoUpdateApplied;
         }
 
-        public void CheckForUpdates(string currentversion1, string versiontype, Autofac.IContainer container)
+        public void CheckForUpdates(string currentversion1, string versiontype, Autofac.IContainer container, bool firstRun)
         {
             _ = Task.Factory.StartNew(() =>
             {
@@ -172,6 +172,13 @@ namespace EQTool.Services
                         appDispatcher.DispatchUI(() =>
                         {
                             (App.Current as App).ShowBalloonTip(3000, "PigParse Update Failed", "There was a permission issue with the currently install location. Please move Pigparse to a different directory!", System.Windows.Forms.ToolTipIcon.Warning);
+                        });
+                    }
+                    else if (firstRun)
+                    {
+                        appDispatcher.DispatchUI(() =>
+                        {
+                            (App.Current as App).ShowBalloonTip(3000, "PigParse Update Failed", "There was a problem updating pigparse, please check github for the latest update!", System.Windows.Forms.ToolTipIcon.Warning);
                         });
                     }
                     container?.Resolve<LoggingService>().Log(ex.ToString(), EQToolShared.Enums.EventType.Update, null);

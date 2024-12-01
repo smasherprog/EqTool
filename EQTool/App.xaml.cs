@@ -81,7 +81,7 @@ namespace EQTool
 
         public void CheckForUpdates(object sender, EventArgs e)
         {
-            new UpdateService().CheckForUpdates(Version, VersionType, container);
+            new UpdateService().CheckForUpdates(Version, VersionType, container, false);
         }
 
         public class ExceptionRequest
@@ -220,7 +220,7 @@ namespace EQTool
             else if (did_update == UpdateService.UpdateStatus.NoUpdateApplied)
             {
 #if !DEBUG
-                updateservice.CheckForUpdates(Version, VersionType, container);
+                updateservice.CheckForUpdates(Version, VersionType, container, true);
 #endif
             }
             try
@@ -414,12 +414,12 @@ namespace EQTool
                     {
                         if (spellstuff.SpellList.Count() < 2 && (DateTime.Now - logParser.LastYouActivity).TotalMinutes > 10 && idletime.TotalMinutes > 10)
                         {
-                            new UpdateService().CheckForUpdates(Version, VersionType, container);
+                            new UpdateService().CheckForUpdates(Version, VersionType, container, false);
                         }
                     }
                     else if ((DateTime.Now - logParser.LastYouActivity).TotalMinutes > 10 && idletime.TotalMinutes > 10)
                     {
-                        new UpdateService().CheckForUpdates(Version, VersionType, container);
+                        new UpdateService().CheckForUpdates(Version, VersionType, container, false);
                     }
                 }
                 finally
