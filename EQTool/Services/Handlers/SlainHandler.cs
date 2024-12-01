@@ -202,7 +202,7 @@ namespace EQTool.Services.Handlers
                 {
                     _ = spellWindowViewModel.SpellList.Remove(item);
                 }
-                var exisitngdeathentry = spellWindowViewModel.SpellList.FirstOrDefault(a => string.Equals(a.Name == add.Name, StringComparison.OrdinalIgnoreCase) && CustomTimer.CustomerTime == a.GroupName);
+                var exisitngdeathentry = spellWindowViewModel.SpellList.FirstOrDefault(a => string.Equals(a.Name, add.Name, StringComparison.OrdinalIgnoreCase) && CustomTimer.CustomerTime == a.GroupName);
                 if (exisitngdeathentry != null)
                 {
                     deathcounter = ++deathcounter > 999 ? 1 : deathcounter;
