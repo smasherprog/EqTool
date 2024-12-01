@@ -78,14 +78,25 @@ namespace EQTool.Services.Parsing
                 var userCastSpellDateTime = activePlayer.UserCastSpellDateTime;
                 if (userCastingSpell != null && userCastSpellDateTime != null)
                 {
-                    var dt = timestamp - userCastSpellDateTime.Value;
-                    if (dt.TotalMilliseconds >= (userCastingSpell.casttime - 300) && message == userCastingSpell.cast_on_you)
+                    if (message == userCastingSpell.cast_on_you)
                     {
                         debugOutput.WriteLine($"Casting on yourself Detected for {userCastingSpell.name}", OutputType.Spells);
                         logEvents.Handle(new YouFinishCastingEvent
                         {
                             Spell = userCastingSpell,
                             TargetName = EQSpells.SpaceYou,
+                            TimeStamp = timestamp,
+                            Line = message,
+                            LineCounter = lineCounter
+                        });
+                        return true;
+                    }
+                    else if (message.EndsWith(userCastingSpell.cast_on_other))
+                    {
+                        logEvents.Handle(new SpellCastOnOtherEvent
+                        {
+                            Spells = new List<Spell>() { userCastingSpell },
+                            TargetName = message.Replace(userCastingSpell.cast_on_other, string.Empty).Trim(),
                             TimeStamp = timestamp,
                             Line = message,
                             LineCounter = lineCounter

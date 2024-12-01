@@ -4,6 +4,7 @@ using EQTool.ViewModels.SpellWindow;
 using EQToolShared;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Windows.Media;
 
 namespace EQTool.Services.Handlers
@@ -57,12 +58,12 @@ namespace EQTool.Services.Handlers
         {
             var targetclass = playerTrackerService.GetPlayer(targetName)?.PlayerClass;
             var spellname = spell.name;
-            if (SpellsThatNeedTimers.Contains(spell.name))
+            if (SpellsThatNeedTimers.Any(a => string.Equals(spell.name, a, StringComparison.OrdinalIgnoreCase)))
             {
                 spellWindowViewModel.TryAdd(new TimerViewModel
                 {
                     PercentLeft = 100,
-                    GroupName = targetName,
+                    GroupName = EQSpells.SpaceYou,
                     TargetClass = targetclass,
                     Name = spellname,
                     Rect = spell.Rect,
