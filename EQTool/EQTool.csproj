@@ -494,10 +494,8 @@
     <Compile Include="ViewModels\EntittyDPS.cs" />
     <Compile Include="ViewModels\SettingsWindowViewModel.cs" />
     <Compile Include="Models\PlayerInfo.cs" />
-    <Compile Include="Models\Polygon.cs" />
     <Compile Include="ViewModels\SpellWindow\SpellViewModel.cs" />
     <Compile Include="Models\vecs.cs" />
-    <Compile Include="Models\S3dReader.cs" />
     <Compile Include="Services\EQToolSettingsLoad.cs" />
     <Compile Include="DI.cs" />
     <Compile Include="Services\FindEq.cs" />

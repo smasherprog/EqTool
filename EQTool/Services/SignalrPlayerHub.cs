@@ -265,7 +265,7 @@ namespace EQTool.Models
         {
             if (!(p.Server == activePlayer?.Player?.Server && p.Name == activePlayer?.Player?.Name))
             {
-                Debug.WriteLine($"PlayerLocationEvent {p.Name}");
+                debugOutput.WriteLine($"{p.Zone}-{p.GuildName}-{p.Server}-{p.Sharing}-{p.Name}-({p.X},{p.Y},{p.Z})", OutputType.Map, MessageType.RemoteMessageReceived);
                 appDispatcher.DispatchUI(() =>
                 {
                     PlayerLocationEvent?.Invoke(this, p);
