@@ -34,11 +34,11 @@ namespace EQTool.Services.Parsing
             if (line.StartsWith(RollMessage))
             {
                 PlayerRollName = line.Substring(RollMessage.Length).TrimEnd('.');
-                RollTime = DateTime.UtcNow;
+                RollTime = DateTime.Now;
             }
             else if (line.StartsWith(RollMessage2nd))
             {
-                if ((DateTime.UtcNow - RollTime).TotalSeconds > 2)
+                if ((DateTime.Now - RollTime).TotalSeconds > 2)
                 {
                     PlayerRollName = string.Empty;
                     RollTime = DateTime.MinValue;

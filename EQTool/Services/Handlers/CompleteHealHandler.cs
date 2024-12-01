@@ -10,7 +10,7 @@ namespace EQTool.Services.Handlers
     {
         private class ChainAudioData : ChainData
         {
-            public DateTime UpdatedTime { get; set; } = DateTime.UtcNow;
+            public DateTime UpdatedTime { get; set; } = DateTime.Now;
             public string TargetName { get; set; }
         }
 
@@ -39,7 +39,7 @@ namespace EQTool.Services.Handlers
 
         private ChainAudioData GetOrCreateChain(CompleteHealEvent e)
         {
-            var d = DateTime.UtcNow;
+            var d = DateTime.Now;
             var toremove = chainDatas.Where(a => (d - a.UpdatedTime).TotalSeconds > 20).ToList();
             foreach (var item in toremove)
             {

@@ -30,7 +30,6 @@ namespace EQTool.Models
         private readonly ActivePlayer activePlayer;
         private readonly LogParser logParser;
         private readonly LogEvents logEvents;
-        private readonly IAppDispatcher appDispatcher;
         private readonly System.Timers.Timer timer;
         private SignalrPlayerV2 LastPlayer;
         private readonly EQSpells spells;
@@ -39,11 +38,10 @@ namespace EQTool.Models
         private readonly SpellWindowViewModel spellWindowViewModel;
         private readonly CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
 
-        public SignalrPlayerHub(EQSpells spells, LogEvents logEvents, IAppDispatcher appDispatcher, LogParser logParser, ActivePlayer activePlayer, SpellWindowViewModel spellWindowViewModel, DebugOutput debugOutput)
+        public SignalrPlayerHub(EQSpells spells, LogEvents logEvents, LogParser logParser, ActivePlayer activePlayer, SpellWindowViewModel spellWindowViewModel, DebugOutput debugOutput)
         {
             this.spells = spells;
             this.logEvents = logEvents;
-            this.appDispatcher = appDispatcher;
             this.activePlayer = activePlayer;
             this.logParser = logParser;
             this.debugOutput = debugOutput;
@@ -113,7 +111,7 @@ namespace EQTool.Models
         {
             if (LastPlayer != null && activePlayer?.Player?.Server != null)
             {
-                if ((DateTime.UtcNow - logParser.LastYouActivity).TotalMinutes > 5)
+                if ((DateTime.Now - logParser.LastYouActivity).TotalMinutes > 5)
                 {
                     LastPlayer = null;
                 }
@@ -155,10 +153,7 @@ namespace EQTool.Models
             if (!(p.Server == activePlayer?.Player?.Server && p.Name == activePlayer?.Player?.Name))
             {
                 debugOutput.WriteLine($"{p.Name}", OutputType.Map, MessageType.RemoteMessageReceived);
-                appDispatcher.DispatchUI(() =>
-                {
-                    PlayerDisconnected?.Invoke(this, p);
-                });
+                PlayerDisconnected?.Invoke(this, p);
             }
         }
 
@@ -238,10 +233,7 @@ namespace EQTool.Models
             if (p.Server == activePlayer?.Player?.Server)
             {
                 debugOutput.WriteLine($"{p.Name}-{p.Server}", OutputType.Map, MessageType.RemoteMessageReceived);
-                appDispatcher.DispatchUI(() =>
-                {
-                    spellWindowViewModel.TryAdd(Create(p));
-                });
+                spellWindowViewModel.TryAdd(Create(p));
             }
         }
 
@@ -266,10 +258,7 @@ namespace EQTool.Models
             if (!(p.Server == activePlayer?.Player?.Server && p.Name == activePlayer?.Player?.Name))
             {
                 debugOutput.WriteLine($"{p.Zone}-{p.GuildName}-{p.Server}-{p.Sharing}-{p.Name}-({p.X},{p.Y},{p.Z})", OutputType.Map, MessageType.RemoteMessageReceived);
-                appDispatcher.DispatchUI(() =>
-                {
-                    PlayerLocationEvent?.Invoke(this, p);
-                });
+                PlayerLocationEvent?.Invoke(this, p);
             }
         }
 

@@ -381,7 +381,7 @@ namespace EQTool
                 : TimeSpan.FromMinutes(20);
         }
 
-        private DateTime LastUIRun = DateTime.UtcNow;
+        private DateTime LastUIRun = DateTime.Now;
         private void UITimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
             var vm = container.Resolve<SpellWindowViewModel>();
@@ -412,12 +412,12 @@ namespace EQTool
                     var logParser = container.Resolve<LogParser>();
                     if (spellstuff != null)
                     {
-                        if (spellstuff.SpellList.Count() < 2 && (DateTime.UtcNow - logParser.LastYouActivity).TotalMinutes > 10 && idletime.TotalMinutes > 10)
+                        if (spellstuff.SpellList.Count() < 2 && (DateTime.Now - logParser.LastYouActivity).TotalMinutes > 10 && idletime.TotalMinutes > 10)
                         {
                             new UpdateService().CheckForUpdates(Version, VersionType, container);
                         }
                     }
-                    else if ((DateTime.UtcNow - logParser.LastYouActivity).TotalMinutes > 10 && idletime.TotalMinutes > 10)
+                    else if ((DateTime.Now - logParser.LastYouActivity).TotalMinutes > 10 && idletime.TotalMinutes > 10)
                     {
                         new UpdateService().CheckForUpdates(Version, VersionType, container);
                     }

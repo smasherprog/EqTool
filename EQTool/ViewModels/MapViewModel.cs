@@ -71,6 +71,8 @@ namespace EQTool.ViewModels
         private readonly MapLoad mapLoad;
         private readonly ActivePlayer activePlayer;
         private readonly LoggingService loggingService;
+        private readonly IAppDispatcher appDispatcher;
+
         private MatrixTransform Transform = new MatrixTransform();
         private MatrixTransform EllipseTransform = new MatrixTransform();
         private Point _initialMousePosition;
@@ -94,13 +96,14 @@ namespace EQTool.ViewModels
 
         public AABB AABB = new AABB();
 
-        public MapViewModel(MapLoad mapLoad, ActivePlayer activePlayer, LoggingService loggingService, TimersService timersService)
+        public MapViewModel(MapLoad mapLoad, ActivePlayer activePlayer, LoggingService loggingService, TimersService timersService, IAppDispatcher appDispatcher)
         {
             Players = new ObservableCollection<PlayerLocation>();
             this.timersService = timersService;
             this.mapLoad = mapLoad;
             this.activePlayer = activePlayer;
             this.loggingService = loggingService;
+            this.appDispatcher = appDispatcher;
         }
 
         private TimeSpan _TimerValue = TimeSpan.FromMinutes(72);
@@ -459,7 +462,8 @@ namespace EQTool.ViewModels
             var playerstoremove = new List<PlayerLocation>();
             foreach (var item in Players.Where(a => a.Player != null))
             {
-                if ((DateTime.UtcNow - item.LastSeen).TotalMinutes > 1)
+                var dt = DateTime.Now - item.LastSeen;
+                if (dt.TotalMinutes > 1)
                 {
                     playerstoremove.Add(item);
                 }
@@ -804,37 +808,43 @@ namespace EQTool.ViewModels
             {
                 return;
             }
-            var p = Players.FirstOrDefault(a => a.Player?.Name == e.Name);
-            if (p == null)
+            appDispatcher.DispatchUI(() =>
             {
-                var playerloc = AddPlayerToCanvas(e);
-                playerloc.LastSeen = DateTime.Now;
-                Players.Add(playerloc);
-            }
-            else
-            {
-                MapViewModelService.UpdateLocation(new UpdateLocationData
+                var p = Players.FirstOrDefault(a => a.Player?.Name == e.Name);
+                if (p == null)
                 {
-                    Trackingdistance = e.TrackingDistance,
-                    CurrentScaling = CurrentScaling,
-                    MapOffset = MapOffset,
-                    Oldlocation = new Point3D(p.Player.X.Value, p.Player.Y.Value, p.Player.Z.Value),
-                    Newlocation = new Point3D(e.X.Value, e.Y.Value, e.Z.Value),
-                    PlayerLocationCircle = p,
-                    Transform = Transform
-                });
-                p.Player = e;
-                p.LastSeen = DateTime.Now;
-            }
+                    var playerloc = AddPlayerToCanvas(e);
+                    playerloc.LastSeen = DateTime.Now;
+                    Players.Add(playerloc);
+                }
+                else
+                {
+                    MapViewModelService.UpdateLocation(new UpdateLocationData
+                    {
+                        Trackingdistance = e.TrackingDistance,
+                        CurrentScaling = CurrentScaling,
+                        MapOffset = MapOffset,
+                        Oldlocation = new Point3D(p.Player.X.Value, p.Player.Y.Value, p.Player.Z.Value),
+                        Newlocation = new Point3D(e.X.Value, e.Y.Value, e.Z.Value),
+                        PlayerLocationCircle = p,
+                        Transform = Transform
+                    });
+                    p.Player = e;
+                    p.LastSeen = DateTime.Now;
+                }
+            });
         }
 
         public void PlayerDisconnected(SignalrPlayerV2 e)
         {
-            var p = Players.FirstOrDefault(a => a.Player.Name == e.Name);
-            if (p != null)
+            appDispatcher.DispatchUI(() =>
             {
-                RemoveFromCanvas(p);
-            }
+                var p = Players.FirstOrDefault(a => a.Player.Name == e.Name);
+                if (p != null)
+                {
+                    RemoveFromCanvas(p);
+                }
+            });
         }
     }
 }

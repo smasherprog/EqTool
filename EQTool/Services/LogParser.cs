@@ -47,7 +47,7 @@ namespace EQTool.Services
             UITimer = new System.Timers.Timer(100);
             UITimer.Elapsed += Poll;
             UITimer.Enabled = true;
-            LastYouActivity = DateTime.UtcNow.AddMonths(-1);
+            LastYouActivity = DateTime.Now.AddMonths(-1);
         }
 
         public void Push(string line)
@@ -93,7 +93,7 @@ namespace EQTool.Services
 
             if (message.StartsWith("You"))
             {
-                LastYouActivity = DateTime.UtcNow;
+                LastYouActivity = DateTime.Now;
             }
             LineCounter += 1;
             var timestamp = LogFileDateTimeParse.ParseDateTime(date);

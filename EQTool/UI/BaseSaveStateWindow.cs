@@ -20,7 +20,7 @@ namespace EQTool.UI
         private readonly EQToolSettings settings;
         private readonly Models.WindowState windowState;
         private bool InitCalled = false;
-        protected DateTime LastWindowInteraction = DateTime.UtcNow;
+        protected DateTime LastWindowInteraction = DateTime.Now;
         public BaseSaveStateWindow(Models.WindowState windowState, EQToolSettingsLoad toolSettingsLoad, EQToolSettings settings)
         {
             this.windowState = windowState;
@@ -74,25 +74,25 @@ namespace EQTool.UI
 
         private void SpellWindow_StateChanged(object sender, EventArgs e)
         {
-            LastWindowInteraction = DateTime.UtcNow;
+            LastWindowInteraction = DateTime.Now;
             DebounceSave();
         }
 
         private void Window_LocationChanged(object sender, EventArgs e)
         {
-            LastWindowInteraction = DateTime.UtcNow;
+            LastWindowInteraction = DateTime.Now;
             DebounceSave();
         }
 
         private void Window_SizeChanged(object sender, SizeChangedEventArgs e)
         {
-            LastWindowInteraction = DateTime.UtcNow;
+            LastWindowInteraction = DateTime.Now;
             DebounceSave();
         }
 
         protected void DragWindow(object sender, MouseButtonEventArgs args)
         {
-            LastWindowInteraction = DateTime.UtcNow;
+            LastWindowInteraction = DateTime.Now;
             DragMove();
         }
 

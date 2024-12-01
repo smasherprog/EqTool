@@ -201,9 +201,9 @@ namespace EQTool.UI
                 ChildrenInRow = new List<FrameworkElement>(),
                 TargetName = targetname,
                 ActiveAnimations = 1,
-                RowDefinition = new RowDefinition { MaxHeight = 30 } 
+                RowDefinition = new RowDefinition { MaxHeight = 30 }
             };
-             
+
             chaindata.Canvas.IsHitTestVisible = false;
             chaindata.Canvas.Background = Brushes.Transparent;
             var target = new TextBlock
@@ -284,14 +284,14 @@ namespace EQTool.UI
         {
             WindowResizeChrome.ResizeBorderThickness = new Thickness(8);
             WindowBorder.BorderThickness = new Thickness(1, 1, 1, 1);
-            LastWindowInteraction = DateTime.UtcNow;
+            LastWindowInteraction = DateTime.Now;
         }
 
         private void Grid_MouseLeave(object sender, MouseEventArgs e)
         {
             _ = System.Threading.Tasks.Task.Factory.StartNew(() =>
             {
-                while (Math.Abs((DateTime.UtcNow - LastWindowInteraction).TotalSeconds) < 10)
+                while (Math.Abs((DateTime.Now - LastWindowInteraction).TotalSeconds) < 10)
                 {
                     System.Threading.Thread.Sleep(1000 * 1);
                 }

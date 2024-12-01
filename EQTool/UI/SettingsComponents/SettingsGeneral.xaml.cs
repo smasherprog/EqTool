@@ -640,8 +640,8 @@ namespace EQTool.UI.SettingsComponents
                 movementoffset = (int)(map.AABB.MaxWidth / 50);
                 try
                 {
-                    var starttime = DateTime.UtcNow;
-                    while ((starttime - DateTime.UtcNow).TotalMinutes < 3)
+                    var starttime = DateTime.Now;
+                    while ((starttime - DateTime.Now).TotalMinutes < 3)
                     {
                         foreach (var item in pnames)
                         {
