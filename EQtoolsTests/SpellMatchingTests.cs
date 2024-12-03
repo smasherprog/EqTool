@@ -167,9 +167,9 @@ namespace EQtoolsTests
             player.Player.Level = 54;
             player.Player.PlayerClass = PlayerClasses.Cleric;
             logParser.Push(line, DateTime.Now);
-            var spellvm = spellWindowViewModel.SpellList.FirstOrDefault(a=> a.Name == spellname && a.SpellViewModelType == SpellViewModelType.Spell) as SpellViewModel;
+            var spellvm = spellWindowViewModel.SpellList.FirstOrDefault(a => a.Name == spellname && a.SpellViewModelType == SpellViewModelType.Spell) as SpellViewModel;
             Assert.IsNotNull(spellvm);
-            Assert.AreEqual(spellvm.Name, spellname); 
+            Assert.AreEqual(spellvm.Name, spellname);
         }
 
         [TestMethod]
@@ -181,9 +181,9 @@ namespace EQtoolsTests
             player.Player.Level = 54;
             player.Player.PlayerClass = PlayerClasses.Cleric;
             logParser.Push(line, DateTime.Now);
-             
+
             line = $"jobob {spell.cast_on_other}";
-            logParser.Push(line, DateTime.Now.AddMilliseconds(spell.casttime +200));
+            logParser.Push(line, DateTime.Now.AddMilliseconds(spell.casttime + 200));
 
             var spelltimer = spellWindowViewModel.SpellList.FirstOrDefault(a => a.Name == spellname && a.SpellViewModelType == SpellViewModelType.Timer) as TimerViewModel;
             Assert.IsNotNull(spelltimer);
@@ -192,7 +192,7 @@ namespace EQtoolsTests
             var spellvm = spellWindowViewModel.SpellList.FirstOrDefault(a => a.Name == spellname && a.SpellViewModelType == SpellViewModelType.Spell) as SpellViewModel;
             Assert.IsNotNull(spellvm);
             Assert.AreEqual(spellvm.Name, spellname);
-        } 
+        }
 
         [TestMethod]
         public void TestManaSeive()
@@ -554,7 +554,7 @@ namespace EQtoolsTests
             _ = spells.CastOtherSpells.TryGetValue(line, out var spells1);
 
             logParser.Push(line, DateTime.Now);
-            var spellvm = spellWindowViewModel.SpellList.FirstOrDefault() as SpellViewModel;
+            var spellvm = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Spell) as SpellViewModel;
             Assert.IsNotNull(spellvm);
             Assert.AreEqual(spellvm.GroupName, "joe");
         }
@@ -584,9 +584,9 @@ namespace EQtoolsTests
             player.Player.Level = 14;
             var foundspell = spellDurations.MatchClosestLevelToSpell(spells1, DateTime.Now);
             Assert.IsNotNull(foundspell);
-            Assert.AreEqual(spellname, foundspell.name); 
+            Assert.AreEqual(spellname, foundspell.name);
         }
-         
+
         [TestMethod]
         public void TestClairityGuess()
         {
@@ -596,7 +596,7 @@ namespace EQtoolsTests
             player.Player.PlayerClass = PlayerClasses.Cleric;
             player.Player.Level = 54;
             var foundspell = spellDurations.MatchClosestLevelToSpell(spells1, DateTime.Now);
-            Assert.IsNotNull(foundspell); 
+            Assert.IsNotNull(foundspell);
             Assert.AreEqual("Clarity II", foundspell.name);
         }
 
@@ -608,7 +608,7 @@ namespace EQtoolsTests
             _ = spells.CastOtherSpells.TryGetValue(line, out var spells1);
             player.Player.PlayerClass = PlayerClasses.Cleric;
             player.Player.Level = 54;
-            var foundspell = spellDurations.MatchClosestLevelToSpell(spells1, DateTime.Now); 
+            var foundspell = spellDurations.MatchClosestLevelToSpell(spells1, DateTime.Now);
             var duration = SpellDurations.GetDuration_inSeconds(foundspell, PlayerClasses.Cleric, 54);
             Assert.IsNotNull(foundspell);
             Assert.IsNotNull(duration);
@@ -617,19 +617,19 @@ namespace EQtoolsTests
 
         [TestMethod]
         public void TestClairityDurationGuess1()
-        { 
+        {
             var line = "A soft breeze slips through your mind.";
             var player = container.Resolve<ActivePlayer>();
             player.Player.Level = 54;
             player.Player.PlayerClass = PlayerClasses.Cleric;
             logParser.Push(line, DateTime.Now);
             var spellvm = spellWindowViewModel.SpellList.FirstOrDefault() as SpellViewModel;
-            Assert.IsNotNull(spellvm); 
+            Assert.IsNotNull(spellvm);
         }
 
         [TestMethod]
         public void TestHealForDamage()
-        { 
+        {
             var line = "You mend your wounds and heal some damage.";
             var player = container.Resolve<ActivePlayer>();
             player.Player = new PlayerInfo
@@ -644,7 +644,7 @@ namespace EQtoolsTests
 
         [TestMethod]
         public void TestRing8()
-        { 
+        {
             var line = "You are enveloped in a swirling maelstrom.";
             var player = container.Resolve<ActivePlayer>();
             player.Player = new PlayerInfo
@@ -654,13 +654,13 @@ namespace EQtoolsTests
             };
             logParser.Push(line, DateTime.Now);
             var spellvm = spellWindowViewModel.SpellList.FirstOrDefault() as SpellViewModel;
-            Assert.IsNotNull(spellvm); 
+            Assert.IsNotNull(spellvm);
             Assert.AreEqual(spellvm.TotalDuration.TotalSeconds, 3600);
         }
 
         [TestMethod]
         public void TestClairityDurationGuess_part1()
-        { 
+        {
             var line = "looks very tranquil.";
             _ = spells.CastOtherSpells.TryGetValue(line, out var spells1);
             player.Player = new PlayerInfo
@@ -674,7 +674,7 @@ namespace EQtoolsTests
             Assert.AreEqual(duration, 2100);
             Assert.AreEqual(foundlevel, 54);
         }
-          
+
         [TestMethod]
         public void DateParseTest()
         {
