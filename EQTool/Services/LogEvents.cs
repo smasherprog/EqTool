@@ -236,5 +236,17 @@ namespace EQTool.Services
         {
             YouHaveFinishedMemorizingEvent?.Invoke(this, e);
         }
+
+        public event EventHandler<PlayerDisconnectReceivedRemoteEvent> PlayerDisconnectReceivedRemoteEvent;
+        public void Handle(PlayerDisconnectReceivedRemoteEvent e)
+        {
+            PlayerDisconnectReceivedRemoteEvent?.Invoke(this, e);
+        }
+
+        public event EventHandler<OtherPlayerLocationReceivedRemoteEvent> OtherPlayerLocationReceivedRemoteEvent;
+        public void Handle(OtherPlayerLocationReceivedRemoteEvent e)
+        {
+            OtherPlayerLocationReceivedRemoteEvent?.Invoke(this, e);
+        }
     }
 }

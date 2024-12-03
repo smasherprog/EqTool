@@ -1,4 +1,5 @@
 ﻿using EQToolShared.Enums;
+using EQToolShared.Map;
 using System;
 using System.Collections.Generic;
 using System.Windows.Media.Media3D;
@@ -211,6 +212,15 @@ namespace EQTool.Models
     public class DragonRoarRemoteEvent : BaseRemoteEvent
     {
         public string SpellName { get; set; }
+    }
+
+    public class PlayerDisconnectReceivedRemoteEvent
+    {
+        public SignalrPlayerV2 Player { get; set; }
+    }
+    public class OtherPlayerLocationReceivedRemoteEvent
+    {
+        public SignalrPlayerV2 Player { get; set; }
     }
 
     public class SpellWornOffSelfEvent : BaseLogParseEvent

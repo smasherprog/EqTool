@@ -40,7 +40,7 @@ namespace EQTool
         private LogEvents logEvents => container.Resolve<LogEvents>();
         private System.Timers.Timer UpdateTimer;
         private System.Timers.Timer UITimer;
-        private ISignalrPlayerHub signalrPlayerHub;
+        private SignalrPlayerHub signalrPlayerHub;
 
         private EQToolSettings _EQToolSettings;
 
@@ -335,7 +335,7 @@ namespace EQTool
                     OpenSettingsWindow();
                 }
             }
-            signalrPlayerHub = container.Resolve<ISignalrPlayerHub>();
+            signalrPlayerHub = container.Resolve<SignalrPlayerHub>();
 
             container.Resolve<PlayerTrackerService>();
             container.Resolve<ZoneActivityTrackingService>();

@@ -28,7 +28,6 @@ namespace EQTool.UI.SettingsComponents
         private readonly DamageParser damageLogParser;
         private readonly CommsParser playerCommsParser;
         private readonly IAppDispatcher appDispatcher;
-        private readonly ISignalrPlayerHub signalrPlayerHub;
         private readonly LogParser logParser;
         private readonly MapLoad mapLoad;
         private readonly LoginMiddlemand loginMiddlemand;
@@ -43,7 +42,6 @@ namespace EQTool.UI.SettingsComponents
             LogParser logParser,
             MapLoad mapLoad,
             IAppDispatcher appDispatcher,
-            ISignalrPlayerHub signalrPlayerHub,
             DamageParser damageLogParse,
             CommsParser playerCommsParser,
             EQSpells spells,
@@ -56,7 +54,6 @@ namespace EQTool.UI.SettingsComponents
         {
             this.debugOutput = debugOutput;
             this.loginMiddlemand = loginMiddlemand;
-            this.signalrPlayerHub = signalrPlayerHub;
             this.logParser = logParser;
             this.logEvents = logEvents;
             this.mapLoad = mapLoad;
@@ -635,7 +632,7 @@ namespace EQTool.UI.SettingsComponents
                     };
 
                     pnames.Add(p);
-                    signalrPlayerHub.OtherPlayerLocationReceivedRemotely(p);
+                    logEvents.Handle(new OtherPlayerLocationReceivedRemoteEvent { Player = p });
                 }
                 movementoffset = (int)(map.AABB.MaxWidth / 50);
                 try
@@ -656,8 +653,7 @@ namespace EQTool.UI.SettingsComponents
                                 Y = item.Y + r.Next(-movementoffset, movementoffset),
                                 Z = item.Z + r.Next(-movementoffset, movementoffset)
                             };
-
-                            signalrPlayerHub.OtherPlayerLocationReceivedRemotely(p);
+                            logEvents.Handle(new OtherPlayerLocationReceivedRemoteEvent { Player = p });
                         }
                         Thread.Sleep(1000);
                     }

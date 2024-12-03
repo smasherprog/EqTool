@@ -15,16 +15,7 @@ using System.Windows.Media.Media3D;
 
 namespace EQTool.Models
 {
-
-    public interface ISignalrPlayerHub : IDisposable
-    {
-        event EventHandler<SignalrPlayerV2> PlayerLocationEvent;
-        event EventHandler<SignalrPlayerV2> PlayerDisconnected;
-        void OtherPlayerLocationReceivedRemotely(SignalrPlayerV2 player);
-        void PlayerDisconnectReceivedRemotely(SignalrPlayerV2 player);
-    }
-
-    public class SignalrPlayerHub : ISignalrPlayerHub
+    public class SignalrPlayerHub
     {
         private readonly HubConnection connection;
         private readonly ActivePlayer activePlayer;
@@ -34,7 +25,6 @@ namespace EQTool.Models
         private SignalrPlayerV2 LastPlayer;
         private readonly EQSpells spells;
         private readonly DebugOutput debugOutput;
-
         private readonly SpellWindowViewModel spellWindowViewModel;
         private readonly CancellationTokenSource cancellationTokenSource = new CancellationTokenSource();
 
@@ -53,11 +43,19 @@ namespace EQTool.Models
               .Build();
             _ = connection.On("PlayerLocationEvent", (SignalrPlayerV2 p) =>
                 {
-                    OtherPlayerLocationReceivedRemotely(p);
+                    if (!(p.Server == activePlayer?.Player?.Server && p.Name == activePlayer?.Player?.Name))
+                    {
+                        debugOutput.WriteLine($"{p.Zone}-{p.GuildName}-{p.Server}-{p.Sharing}-{p.Name}-({p.X},{p.Y},{p.Z})", OutputType.Map, MessageType.RemoteMessageReceived);
+                        this.logEvents.Handle(new OtherPlayerLocationReceivedRemoteEvent { Player = p });
+                    }
                 });
             _ = connection.On("PlayerDisconnected", (SignalrPlayerV2 p) =>
             {
-                PlayerDisconnectReceivedRemotely(p);
+                if (!(p.Server == activePlayer?.Player?.Server && p.Name == activePlayer?.Player?.Name))
+                {
+                    debugOutput.WriteLine($"{p.Name}", OutputType.Map, MessageType.RemoteMessageReceived);
+                    this.logEvents.Handle(new PlayerDisconnectReceivedRemoteEvent { Player = p });
+                }
             });
             _ = connection.On("AddCustomTrigger", (SignalrCustomTimer p) =>
             {
@@ -94,6 +92,7 @@ namespace EQTool.Models
             timer.Start();
         }
 
+
         private void InvokeAsync<T>(string name, T obj)
         {
             if (connection.State == HubConnectionState.Connected && obj != null)
@@ -122,9 +121,6 @@ namespace EQTool.Models
             }
         }
 
-        public event EventHandler<SignalrPlayerV2> PlayerLocationEvent;
-        public event EventHandler<SignalrPlayerV2> PlayerDisconnected;
-
         private async Task SignalrConnectWithRetry()
         {
             while (!cancellationTokenSource.IsCancellationRequested)
@@ -146,14 +142,6 @@ namespace EQTool.Models
                     debugOutput.WriteLine($"SignalR Connected", OutputType.Map, MessageType.Warning);
                     await Task.Delay(5000);
                 }
-            }
-        }
-        public void PlayerDisconnectReceivedRemotely(SignalrPlayerV2 p)
-        {
-            if (!(p.Server == activePlayer?.Player?.Server && p.Name == activePlayer?.Player?.Name))
-            {
-                debugOutput.WriteLine($"{p.Name}", OutputType.Map, MessageType.RemoteMessageReceived);
-                PlayerDisconnected?.Invoke(this, p);
             }
         }
 
@@ -251,15 +239,6 @@ namespace EQTool.Models
                 TotalRemainingDuration = TimeSpan.FromSeconds(e.DurationInSeconds),
                 UpdatedDateTime = DateTime.Now
             };
-        }
-
-        public void OtherPlayerLocationReceivedRemotely(SignalrPlayerV2 p)
-        {
-            if (!(p.Server == activePlayer?.Player?.Server && p.Name == activePlayer?.Player?.Name))
-            {
-                debugOutput.WriteLine($"{p.Zone}-{p.GuildName}-{p.Server}-{p.Sharing}-{p.Name}-({p.X},{p.Y},{p.Z})", OutputType.Map, MessageType.RemoteMessageReceived);
-                PlayerLocationEvent?.Invoke(this, p);
-            }
         }
 
         public void Dispose()

@@ -63,7 +63,7 @@ namespace EQTool.Services.Handlers
                 spellWindowViewModel.TryAdd(new TimerViewModel
                 {
                     PercentLeft = 100,
-                    GroupName = EQSpells.SpaceYou,
+                    GroupName = targetName,
                     TargetClass = targetclass,
                     Name = spellname,
                     Rect = spell.Rect,
@@ -122,6 +122,19 @@ namespace EQTool.Services.Handlers
                     TotalRemainingDuration = TimeSpan.FromSeconds(basetime)
                 };
                 spellWindowViewModel.TryAdd(vm);
+                spellWindowViewModel.TryAdd(new TimerViewModel
+                {
+                    PercentLeft = 100,
+                    GroupName = targetName,
+                    TargetClass = targetclass,
+                    Name = spellname,
+                    Rect = spell.Rect,
+                    Icon = spell.SpellIcon,
+                    TotalDuration = TimeSpan.FromSeconds((int)((spell.recastTime + delayOffset) / 1000.0)),
+                    TotalRemainingDuration = TimeSpan.FromSeconds((int)((spell.recastTime + delayOffset) / 1000.0)),
+                    UpdatedDateTime = DateTime.Now,
+                    ProgressBarColor = Brushes.SkyBlue
+                });
             }
 
             var grpname = targetName;

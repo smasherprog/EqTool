@@ -45,7 +45,7 @@ namespace EQTool.Services
 
         public bool IsPlayer(string name)
         {
-            if (name == "You")
+            if (name == EQSpells.You || name == EQSpells.SpaceYou)
             {
                 return true;
             }
@@ -86,7 +86,7 @@ namespace EQTool.Services
             {
                 playerstosync = DirtyPlayers.Values.ToList();
                 DirtyPlayers.Clear();
-                playerswithoutclasses = this.AllPlayers.Values.Where(a => !a.PlayerClass.HasValue).ToList();
+                playerswithoutclasses = AllPlayers.Values.Where(a => !a.PlayerClass.HasValue).ToList();
             }
             try
             {
@@ -114,7 +114,7 @@ namespace EQTool.Services
             {
                 loggingService.Log(ex.ToString(), EventType.Error, activePlayer?.Player?.Server);
             }
-            this.appDispatcher.DispatchUI(() =>
+            appDispatcher.DispatchUI(() =>
             {
                 var spellsmissingclasses = spellWindowViewModel.SpellList
                 .Where(a => !a.GroupName.StartsWith(" ") && a.SpellViewModelType == ViewModels.SpellWindow.SpellViewModelType.Spell)
@@ -123,7 +123,7 @@ namespace EQTool.Services
                 var missingplayernames = spellsmissingclasses.Select(a => a.GroupName).Distinct().ToList();
                 if (missingplayernames.Any())
                 {
-                    Task.Factory.StartNew(() =>
+                    _ = Task.Factory.StartNew(() =>
                     {
                         try
                         {

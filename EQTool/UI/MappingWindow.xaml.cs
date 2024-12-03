@@ -3,7 +3,6 @@ using EQTool.Services;
 using EQTool.ViewModels;
 using EQToolShared;
 using EQToolShared.Enums;
-using EQToolShared.Map;
 using System;
 using System.ComponentModel;
 using System.Windows;
@@ -18,11 +17,9 @@ namespace EQTool.UI
         private readonly ActivePlayer activePlayer;
         private readonly PlayerTrackerService playerTrackerService;
         private readonly IAppDispatcher appDispatcher;
-        private readonly ISignalrPlayerHub signalrPlayerHub;
         private readonly System.Timers.Timer UITimer;
 
         public MappingWindow(
-            ISignalrPlayerHub signalrPlayerHub,
             MapViewModel mapViewModel,
             ActivePlayer activePlayer,
             LogEvents logEvents,
@@ -35,7 +32,6 @@ namespace EQTool.UI
             loggingService.Log(string.Empty, EventType.OpenMap, activePlayer?.Player?.Server);
             this.activePlayer = activePlayer;
             this.logEvents = logEvents;
-            this.signalrPlayerHub = signalrPlayerHub;
             this.playerTrackerService = playerTrackerService;
             this.appDispatcher = appDispatcher;
             DataContext = this.mapViewModel = mapViewModel;
@@ -49,26 +45,36 @@ namespace EQTool.UI
             this.logEvents.YouZonedEvent += LogParser_PlayerZonedEvent;
             this.logEvents.EnteredWorldEvent += LogParser_EnteredWorldEvent;
             this.logEvents.SlainEvent += LogParser_DeathEvent;
+            this.logEvents.PayerChangedEvent += LogEvents_PayerChangedEvent;
+            this.logEvents.OtherPlayerLocationReceivedRemoteEvent += LogEvents_OtherPlayerLocationReceivedRemoteEvent;
+            this.logEvents.PlayerDisconnectReceivedRemoteEvent += LogEvents_PlayerDisconnectReceivedRemoteEvent;
             KeyDown += PanAndZoomCanvas_KeyDown;
             Map.CancelTimerEvent += Map_CancelTimerEvent;
             Map.TimerMenu_ClosedEvent += Map_TimerMenu_ClosedEvent;
             Map.TimerMenu_OpenedEvent += Map_TimerMenu_OpenedEvent;
-            this.signalrPlayerHub.PlayerLocationEvent += SignalrPlayerHub_PlayerLocationEvent;
-            this.signalrPlayerHub.PlayerDisconnected += SignalrPlayerHub_PlayerDisconnected;
             UITimer = new System.Timers.Timer(1000);
             UITimer.Elapsed += UITimer_Elapsed;
             UITimer.Enabled = true;
-            //   this.SetCenerMap();
         }
 
-        private void SignalrPlayerHub_PlayerDisconnected(object sender, SignalrPlayerV2 e)
+        private void LogEvents_PlayerDisconnectReceivedRemoteEvent(object sender, PlayerDisconnectReceivedRemoteEvent e)
         {
-            mapViewModel.PlayerDisconnected(e);
+            mapViewModel.PlayerDisconnected(e.Player);
         }
 
-        private void SignalrPlayerHub_PlayerLocationEvent(object sender, SignalrPlayerV2 e)
+        private void LogEvents_OtherPlayerLocationReceivedRemoteEvent(object sender, OtherPlayerLocationReceivedRemoteEvent e)
         {
-            mapViewModel.PlayerLocationEvent(e);
+            mapViewModel.PlayerLocationEvent(e.Player);
+        }
+
+        private void LogEvents_PayerChangedEvent(object sender, PayerChangedEvent e)
+        {
+            if (mapViewModel.LoadDefaultMap(Map))
+            {
+                Map.ZoneName = mapViewModel.ZoneName;
+                Map.Height = Math.Abs(mapViewModel.AABB.MaxHeight);
+                Map.Width = Math.Abs(mapViewModel.AABB.MaxWidth);
+            }
         }
 
         private void Map_PanAndZoomCanvas_MouseDownEvent(object sender, MouseButtonEventArgs e)
@@ -174,6 +180,8 @@ namespace EQTool.UI
                 logEvents.YouZonedEvent -= LogParser_PlayerZonedEvent;
                 logEvents.EnteredWorldEvent -= LogParser_EnteredWorldEvent;
                 logEvents.SlainEvent -= LogParser_DeathEvent;
+                logEvents.OtherPlayerLocationReceivedRemoteEvent -= LogEvents_OtherPlayerLocationReceivedRemoteEvent;
+                logEvents.PlayerDisconnectReceivedRemoteEvent -= LogEvents_PlayerDisconnectReceivedRemoteEvent;
             }
 
             KeyDown -= PanAndZoomCanvas_KeyDown;
@@ -182,11 +190,6 @@ namespace EQTool.UI
                 Map.CancelTimerEvent -= Map_CancelTimerEvent;
                 Map.TimerMenu_ClosedEvent -= Map_TimerMenu_ClosedEvent;
                 Map.TimerMenu_OpenedEvent -= Map_TimerMenu_OpenedEvent;
-            }
-            if (signalrPlayerHub != null)
-            {
-                signalrPlayerHub.PlayerLocationEvent -= SignalrPlayerHub_PlayerLocationEvent;
-                signalrPlayerHub.PlayerDisconnected -= SignalrPlayerHub_PlayerDisconnected;
             }
             base.OnClosing(e);
         }

@@ -157,13 +157,17 @@ namespace EQTool.ViewModels
             }
         }
 
-        private void Reset()
+        public void Reset()
         {
             Transform = new MatrixTransform();
             EllipseTransform = new MatrixTransform();
             CurrentScaling = 1.0f;
             Canvas?.Children?.Clear();
-            Players.Clear();
+            var players = Players.ToList();
+            foreach (var item in players)
+            {
+                _ = Players.Remove(item);
+            }
         }
 
         public void ToggleCenter()
@@ -375,68 +379,72 @@ namespace EQTool.ViewModels
 
         public void UpdateLocation(Point3D value1)
         {
-            if (MapLoading || PlayerLocation?.ArrowLine == null || Canvas == null || string.IsNullOrWhiteSpace(ZoneName))
+            appDispatcher.DispatchUI(() =>
             {
-                return;
-            }
-
-            if (!Zones.ZoneInfoMap.TryGetValue(ZoneName, out var zoneinfo))
-            {
-                if (failedzonelogcounter == 0 || failedzonelogcounter++ % 20 == 0)
+                if (MapLoading || PlayerLocation?.ArrowLine == null || Canvas == null || string.IsNullOrWhiteSpace(ZoneName))
                 {
-                    loggingService.Log($"Zone {ZoneName} Not found.", EventType.Error, activePlayer?.Player?.Server);
+                    return;
                 }
-            }
-            PlayerLocation.ArrowLine.Visibility = Visibility.Visible;
-            PlayerLocation.Ellipse.Visibility = Visibility.Visible;
-            PlayerLocation.PlayerName.Visibility = Visibility.Visible;
-            PlayerLocation.TrackingEllipse.Visibility = Visibility.Visible;
-            MapViewModelService.UpdateLocation(new UpdateLocationData
-            {
-                Trackingdistance = activePlayer?.Player?.TrackingDistance,
-                CurrentScaling = CurrentScaling,
-                MapOffset = MapOffset,
-                Oldlocation = Lastlocation,
-                Newlocation = value1,
-                PlayerLocationCircle = PlayerLocation,
-                Transform = Transform
-            });
 
-            CenterMapOnPlayer(value1);
-            Lastlocation = value1;
-            OnPropertyChanged(nameof(Title));
-            if (!zoneinfo.ShowAllMapLevels && Canvas.Children.Count > 0)
-            {
-                var lastloc = new Point3D(-(value1.Y + MapOffset.X), -(value1.X + MapOffset.Y), Lastlocation.Z);
-                foreach (var child in Canvas.Children)
+                if (!Zones.ZoneInfoMap.TryGetValue(ZoneName, out var zoneinfo))
                 {
-                    if (child is Line a)
+                    if (failedzonelogcounter == 0 || failedzonelogcounter++ % 20 == 0)
                     {
-                        var m = a.Tag as MapLine;
-                        //Debug.WriteLine($"{m.Points[0].Z}");
-                        //Debug.WriteLine($"{m.Points[1].Z}");
-                        //Debug.WriteLine($"{lastloc.Z}");
-                        var shortestdistance = Math.Abs(m.Points[0].Z - lastloc.Z);
-                        shortestdistance = Math.Min(Math.Abs(m.Points[1].Z - lastloc.Z), shortestdistance);
-                        MapOpacityHelper.AdjustOpacity(shortestdistance, a, zoneinfo);
+                        loggingService.Log($"Zone {ZoneName} Not found.", EventType.Error, activePlayer?.Player?.Server);
                     }
-                    else if (child is TextBlock t)
+                }
+                PlayerLocation.ArrowLine.Visibility = Visibility.Visible;
+                PlayerLocation.Ellipse.Visibility = Visibility.Visible;
+                PlayerLocation.PlayerName.Visibility = Visibility.Visible;
+                PlayerLocation.TrackingEllipse.Visibility = Visibility.Visible;
+                MapViewModelService.UpdateLocation(new UpdateLocationData
+                {
+                    Trackingdistance = activePlayer?.Player?.TrackingDistance,
+                    CurrentScaling = CurrentScaling,
+                    MapOffset = MapOffset,
+                    Oldlocation = Lastlocation,
+                    Newlocation = value1,
+                    PlayerLocationCircle = PlayerLocation,
+                    Transform = Transform
+                });
+
+                CenterMapOnPlayer(value1);
+                Lastlocation = value1;
+                OnPropertyChanged(nameof(Title));
+                if (!zoneinfo.ShowAllMapLevels && Canvas.Children.Count > 0)
+                {
+                    var lastloc = new Point3D(-(value1.Y + MapOffset.X), -(value1.X + MapOffset.Y), Lastlocation.Z);
+                    foreach (var child in Canvas.Children)
                     {
-                        MapOpacityHelper.AdjustOpacity(t, zoneinfo, lastloc);
-                    }
-                    else if (child is Ellipse e)
-                    {
-                        if (e != PlayerLocation.Ellipse && PlayerLocation.TrackingEllipse != e)
+                        if (child is Line a)
                         {
-                            if (e.Tag is MapLabel m)
+                            var m = a.Tag as MapLine;
+                            //Debug.WriteLine($"{m.Points[0].Z}");
+                            //Debug.WriteLine($"{m.Points[1].Z}");
+                            //Debug.WriteLine($"{lastloc.Z}");
+                            var shortestdistance = Math.Abs(m.Points[0].Z - lastloc.Z);
+                            shortestdistance = Math.Min(Math.Abs(m.Points[1].Z - lastloc.Z), shortestdistance);
+                            MapOpacityHelper.AdjustOpacity(shortestdistance, a, zoneinfo);
+                        }
+                        else if (child is TextBlock t)
+                        {
+                            MapOpacityHelper.AdjustOpacity(t, zoneinfo, lastloc);
+                        }
+                        else if (child is Ellipse e)
+                        {
+                            if (e != PlayerLocation.Ellipse && PlayerLocation.TrackingEllipse != e)
                             {
-                                var shortestdistance = Math.Abs(m.Point.Z - lastloc.Z);
-                                MapOpacityHelper.AdjustOpacity(shortestdistance, e, zoneinfo);
+                                if (e.Tag is MapLabel m)
+                                {
+                                    var shortestdistance = Math.Abs(m.Point.Z - lastloc.Z);
+                                    MapOpacityHelper.AdjustOpacity(shortestdistance, e, zoneinfo);
+                                }
                             }
                         }
                     }
                 }
-            }
+
+            });
         }
 
         public void UpdateTimerWidgest()

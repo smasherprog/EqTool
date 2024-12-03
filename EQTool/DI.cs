@@ -59,7 +59,7 @@ namespace EQTool
             _ = builder.RegisterType<Services.PlayerTrackerService>().AsSelf().SingleInstance();
             _ = builder.RegisterType<Services.ZoneActivityTrackingService>().AsSelf().SingleInstance();
             _ = builder.RegisterType<Services.TimersService>().AsSelf().SingleInstance();
-            _ = builder.RegisterType<Models.SignalrPlayerHub>().As<Models.ISignalrPlayerHub>().SingleInstance();
+            _ = builder.RegisterType<Models.SignalrPlayerHub>().SingleInstance();
             _ = builder.RegisterType<Services.SettingsTestRunOverlay>().AsSelf().SingleInstance();
             _ = builder.RegisterType<TextToSpeach>().As<ITextToSpeach>().SingleInstance();
 
