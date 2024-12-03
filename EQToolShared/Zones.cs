@@ -626,7 +626,7 @@ namespace EQToolShared
                 {
                     "",
                 },
-                RespawnTime = new TimeSpan(0, 6, 40)
+                RespawnTime = new TimeSpan(0,24, 00)
             });
             ZoneInfoMap.Add("erudnint", new ZoneInfo
             {
