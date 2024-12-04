@@ -626,7 +626,14 @@ namespace EQToolShared
                 {
                     "",
                 },
-                RespawnTime = new TimeSpan(0,24, 00)
+                RespawnTime = new TimeSpan(0, 24, 00),
+                NpcContainsSpawnTimes = new List<NpcSpawnTime>
+                 {
+                      new NpcSpawnTime {
+                            Name = "shark",
+                            RespawnTime =new TimeSpan(0, 6, 40)
+                      }
+                 }
             });
             ZoneInfoMap.Add("erudnint", new ZoneInfo
             {
@@ -637,7 +644,14 @@ namespace EQToolShared
                 {
                     "",
                 },
-                RespawnTime = new TimeSpan(0, 24, 0)
+                RespawnTime = new TimeSpan(0, 24, 0),
+                NpcContainsSpawnTimes = new List<NpcSpawnTime>
+                 {
+                      new NpcSpawnTime {
+                            Name = "shark",
+                            RespawnTime =new TimeSpan(0, 6, 40)
+                      }
+                 }
             });
             ZoneInfoMap.Add("erudsxing", new ZoneInfo
             {
@@ -1679,7 +1693,7 @@ namespace EQToolShared
                 ZoneLevelHeight = 10,
                 NotableNPCs = new List<string>() { "Ziglark Whisperwing", "Lord Yelinak" },
                 RespawnTime = new TimeSpan(0, 30, 0),
-                 NPCThatAOE = new List<NPCThatAOE>
+                NPCThatAOE = new List<NPCThatAOE>
                  {
                       new NPCThatAOE
                       {

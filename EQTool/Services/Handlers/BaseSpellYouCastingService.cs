@@ -20,7 +20,7 @@ namespace EQTool.Services.Handlers
             "Harmshield",
             "Quivering Veil of Xarn",
             "Boon of the Garou",
-            "Theft of thought"
+            "Theft of Thought"
         };
 
         private readonly List<string> SpellsThatNeedCounts = new List<string>()

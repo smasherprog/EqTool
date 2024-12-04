@@ -55,6 +55,18 @@ namespace EQTool.Services.Parsing
                         });
                         return true;
                     }
+                    else if (userCastingSpell.name == "Theft of Thought" && line == "Your target has no mana to affect")
+                    {
+                        debugOutput.WriteLine($"{userCastingSpell.name} Message: {line}", OutputType.Spells);
+                        logEvents.Handle(new YouFinishCastingEvent
+                        {
+                            Spell = userCastingSpell,
+                            TargetName = EQSpells.SpaceYou,
+                            TimeStamp = timestamp,
+                            Line = line,
+                            LineCounter = lineCounter
+                        });
+                    }
                 }
             }
 

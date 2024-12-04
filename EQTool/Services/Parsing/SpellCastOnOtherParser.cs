@@ -91,7 +91,7 @@ namespace EQTool.Services.Parsing
                         });
                         return true;
                     }
-                    else if (message.EndsWith(userCastingSpell.cast_on_other))
+                    else if (!string.IsNullOrWhiteSpace(userCastingSpell.cast_on_other) && message.EndsWith(userCastingSpell.cast_on_other))
                     {
                         logEvents.Handle(new SpellCastOnOtherEvent
                         {
@@ -134,25 +134,20 @@ namespace EQTool.Services.Parsing
             if (spells.CastOtherSpells.TryGetValue(spellmessage, out var foundspells))
             {
                 foundspells = foundspells.Where(a => !IgnoreSpellsForGuesses.Contains(a.name)).ToList();
-                foundspells = foundspells.Where(a =>
-                     a.SpellType != SpellType.PointBlankAreaofEffect &&
-                     a.SpellType != SpellType.TargetedAreaofEffect &&
-                     a.SpellType != SpellType.TargetedAreaofEffectLifeTap &&
-                     a.SpellType != SpellType.AreaofEffectUndead &&
-                     a.SpellType != SpellType.AreaofEffectSummoned &&
-                     a.SpellType != SpellType.AreaofEffectCaster &&
-                     a.SpellType != SpellType.AreaPCOnly &&
-                     a.SpellType != SpellType.AreaNPCOnly &&
-                     a.SpellType != SpellType.AreaofEffectPCV2
-                ).ToList();
                 if (!foundspells.Any())
                 {
                     return false;
                 }
+
                 var spellsfound = string.Join(",", foundspells.Select(a => a.name));
                 if (MasterNPCList.NPCs.Contains(targetname))
                 {
+                    _ = foundspells.RemoveAll(a => a.name == "Tsunami");
                     targetname = " " + targetname;
+                }
+                else
+                {
+                    _ = foundspells.RemoveAll(a => a.name == "Waves of the Deep Sea");
                 }
                 debugOutput.WriteLine($"{spellsfound} Message: {spellmessage}", OutputType.Spells);
                 logEvents.Handle(new SpellCastOnOtherEvent

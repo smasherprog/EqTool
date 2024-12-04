@@ -19,7 +19,7 @@ namespace EQTool.Services.Parsing
         {
             if (line.StartsWith(Youhavefinishedmemorizing))
             {
-                var spell = line.Replace(Youhavefinishedmemorizing, string.Empty);
+                var spell = line.Replace(Youhavefinishedmemorizing, string.Empty).Trim(new char[] { ' ', '.' });
                 debugOutput.WriteLine($"Message: {line}", OutputType.Spells);
                 logEvents.Handle(new YouHaveFinishedMemorizingEvent { SpellName = spell, Line = line, TimeStamp = timestamp, LineCounter = lineCounter });
                 return true;

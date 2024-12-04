@@ -77,9 +77,9 @@
                     <DataTemplate DataType="{x:Type vm:CounterViewModel}">
                         <Grid Visibility="{Binding ColumnVisibility}">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="8*"/>
+                                <ColumnDefinition Width="6*"/>
                                 <ColumnDefinition Width="4*"/>
-                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="1*"/>
                             </Grid.ColumnDefinitions>
                             <ProgressBar Grid.Column="0" Grid.ColumnSpan="3" Value="100" Maximum="100" Foreground="{Binding ProgressBarColor}"  />
                             <StackPanel Orientation="Horizontal" Grid.Column="0" >
@@ -104,9 +104,8 @@
                     <DataTemplate DataType="{x:Type vm:RollViewModel}">
                         <Grid Visibility="{Binding ColumnVisibility}">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="8*"/>
-                                <ColumnDefinition Width="4*"/>
-                                <ColumnDefinition Width="2*"/>
+                                <ColumnDefinition Width="5*"/>
+                                <ColumnDefinition Width="4*"/> 
                             </Grid.ColumnDefinitions>
                             <ProgressBar Grid.Column="0" Grid.ColumnSpan="3"  Value="{Binding PercentLeft}"  Maximum="100"  Foreground="{Binding ProgressBarColor}"  />
                             <StackPanel Orientation="Horizontal" Grid.Column="0" >
@@ -119,12 +118,7 @@
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Grid.Column="1" >
                                 <TextBlock HorizontalAlignment="Left" FontWeight="Bold" Text="{Binding RollText}"/>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal" Grid.Column="2" HorizontalAlignment="Right">
-                                <Button Margin="5, 0, 0, 0" Width="14" Height="14" Click="RemoveSingleItem" ToolTip="Remove from list">
-                                    <Image Source="pack://application:,,,/Images/Trash.png"/>
-                                </Button>
-                            </StackPanel>
+                            </StackPanel> 
                         </Grid>
                     </DataTemplate>
                     <DataTemplate DataType="{x:Type vm:SpellViewModel}">
@@ -163,15 +157,13 @@
                                                     <DockPanel HorizontalAlignment="{Binding HorizontalAlignment, RelativeSource={RelativeSource AncestorType=ContentPresenter}, Mode=OneWayToSource}">
                                                         <Grid>
                                                             <Grid.ColumnDefinitions>
-                                                                <ColumnDefinition Width="3*"/>
-                                                                <ColumnDefinition Width="3*"/>
-                                                                <ColumnDefinition Width="3*"/>
+                                                                <ColumnDefinition Width="4*"/>
+                                                                <ColumnDefinition Width="4*"/>
+                                                                <ColumnDefinition Width="1*"/>
                                                             </Grid.ColumnDefinitions>
                                                             <TextBlock Grid.Column="0" Text="{Binding Name}" FontWeight="Bold" FontSize="{DynamicResource GlobalFontSize}"  />
                                                             <TextBlock Grid.Column="1" Text="{Binding Items[0].TargetClassString}" FontWeight="Bold" FontSize="{DynamicResource GlobalFontSize}"  />
-                                                            <StackPanel Orientation="Horizontal" Grid.Column="2" HorizontalAlignment="Right">
-                                                                <TextBlock Text="{Binding ItemCount}" FontSize="{DynamicResource GlobalFontSize}" FontWeight="Bold" Margin="10,0,0,0"  />
-                                                                <TextBlock Text=" effect(s)" FontSize="{DynamicResource GlobalFontSize}"  />
+                                                            <StackPanel Orientation="Horizontal" Grid.Column="2" HorizontalAlignment="Right">  
                                                                 <Button Margin="0, 0, 0, 0" HorizontalAlignment="Right"  Width="14" Height="14" Click="RemoveFromSpells" ToolTip="Remove from list">
                                                                     <Image Source="pack://application:,,,/Images/Trash.png"/>
                                                                 </Button>

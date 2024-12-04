@@ -48,6 +48,20 @@ namespace EQtoolsTests
         }
 
         [TestMethod]
+        public void YouSlainShouldNotShowUp()
+        {
+            logEvents.ConfirmedDeathEvent += (a, e) =>
+            {
+                Assert.AreEqual(e.Victim, "a frost giant scout");
+                Assert.AreEqual(e.Killer, "You");
+                CalledCounter++;
+            };
+            logParser.Push("You have been slain by Ajorek the Crimson Fang!", DateTime.Now);
+            logParser.Push("Your faction standing with ClawsofVeeshan got better.", DateTime.Now);
+            Assert.AreEqual(CalledCounter, 0);
+        }
+
+        [TestMethod]
         public void SlainInMiddle()
         {
             logEvents.ConfirmedDeathEvent += (a, e) =>
@@ -357,6 +371,6 @@ namespace EQtoolsTests
             logParser.Push("Your faction standing with UndeadFrogloksofGuk could not possibly get any worse.", DateTime.Now);
             logParser.Push("Varer judges you amiably -- You would probably win this fight..it's not certain though.", DateTime.Now);
             Assert.AreEqual(CalledCounter, 3);
-        } 
+        }
     }
 }

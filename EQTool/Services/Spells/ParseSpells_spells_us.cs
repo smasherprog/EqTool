@@ -164,7 +164,7 @@ namespace EQTool.Services
             var spellsfile = new FileInfo(settings.DefaultEqDirectory + spellfile);
             if (spellsfile.Exists)
             {
-                var spellfilename = $"SpellCache{servers}_9";
+                var spellfilename = $"SpellCache{servers}_10";
                 if (!isdebug)
                 {
                     spellfilename = new string(spellfilename.Where(a => char.IsLetterOrDigit(a)).ToArray()) + ".bin";
@@ -191,6 +191,18 @@ namespace EQTool.Services
                  DescrNumber.Taelosia,
                  DescrNumber.Discord
                 };
+                var ignorespelltypes = new List<SpellType>()
+                {
+                    SpellType.TargetedAreaofEffectLifeTap,
+                    SpellType.AreaofEffectCaster,
+                    SpellType.AreaPCOnly,
+                    SpellType.AreaNPCOnly,
+                    SpellType.AreaofEffectPCV2,
+                    SpellType.RagZhezumSpecial,
+                    SpellType.Corpse,
+                    SpellType.TargetedAreaofEffectLifeTap,
+                    SpellType.TargetedAreaofEffectLifeTap,
+                };
                 foreach (var item in spellastext)
                 {
                     var spell = ParseP99Line(item);
@@ -203,7 +215,12 @@ namespace EQTool.Services
                         continue;
                     }
 
-                    if (IgnoreIds.Contains(spell.id))
+                    if (IgnoreIds.Contains(spell.id) ||
+                        ignorespelltypes.Contains(spell.SpellType) ||
+                        spell.name.Contains("Translocate") ||
+                         spell.name.Contains("Portal") ||
+                          spell.name.Contains("Gate")
+                        )
                     {
                         continue;
                     }
@@ -262,6 +279,12 @@ namespace EQTool.Services
                         continue;
                     }
 
+                    if (spell.name.IndexOf("beta", StringComparison.OrdinalIgnoreCase) != -1)
+                    {
+                        //Debug.WriteLine($"Skipping {spell.name} NPC");
+                        continue;
+                    }
+
                     if (spell.resisttype > ResistType.DISEASE)
                     {
                         //Debug.WriteLine($"Skipping {spell.name} ResistType");
@@ -298,7 +321,7 @@ namespace EQTool.Services
                         peggylev.name = "Peggy Levitate";
                         peggylev.buffduration = 120;
                         peggylev.buffdurationformula = 12;
-                        peggylev.casttime = 6000; 
+                        peggylev.casttime = 6000;
                         if (!spells.ContainsKey(peggylev.name))
                         {
                             spells.Add(peggylev.name, peggylev);

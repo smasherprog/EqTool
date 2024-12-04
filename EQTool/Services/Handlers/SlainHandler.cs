@@ -98,8 +98,8 @@ namespace EQTool.Services.Handlers
 
         private void LogEvents_ExperienceGainedEvent(object sender, ExpGainedEvent e)
         {
-            Victim = "Experience Slain Guess";
-            Killer = "You";
+            Victim = "Exp Slain";
+            Killer = EQSpells.You;
             if (ExpMessage)
             {
                 DoEvent(new ConfirmedDeathEvent
@@ -113,8 +113,8 @@ namespace EQTool.Services.Handlers
                 Reset();
                 AlreadyEmitted = true;
             }
-            Victim = "Experience Slain Guess";
-            Killer = "You";
+            Victim = "Exp Slain";
+            Killer = EQSpells.You;
             LineNumber = e.LineCounter;
             ExpMessage = true;
         }
@@ -122,8 +122,8 @@ namespace EQTool.Services.Handlers
         private void LogEvents_FactionEvent(object sender, FactionEvent e)
         {
             LineNumber = e.LineCounter;
-            Victim = "Faction Slain Guess";
-            Killer = "You";
+            Victim = "Faction Slain";
+            Killer = EQSpells.You;
 
             if ((FactionMessages.Any() && FactionMessages[0] == e.Line) || FactionMessages.Count == 5)
             {
@@ -138,14 +138,19 @@ namespace EQTool.Services.Handlers
                 Reset();
             }
             LineNumber = e.LineCounter;
-            Victim = "Faction Slain Guess";
-            Killer = "You";
+            Victim = "Faction Slain";
+            Killer = EQSpells.You;
             FactionMessages.Add(e.Line);
 
         }
 
         private void LogEvents_SlainEvent(object sender, SlainEvent e)
         {
+            if (e.Victim == EQSpells.You)
+            {
+                return;
+            }
+
             Victim = e.Victim;
             Killer = e.Killer;
             LineNumber = e.LineCounter;
