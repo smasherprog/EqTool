@@ -133,7 +133,7 @@ namespace EQTool.Services.Parsing
         {
             if (spells.CastOtherSpells.TryGetValue(spellmessage, out var foundspells))
             {
-                foundspells = foundspells.Where(a => !IgnoreSpellsForGuesses.Contains(a.name)).ToList();
+                foundspells = foundspells.Where(a => !IgnoreSpellsForGuesses.Contains(a.name) && a.SpellType != SpellType.TargetedAreaofEffect).ToList();
                 if (!foundspells.Any())
                 {
                     return false;

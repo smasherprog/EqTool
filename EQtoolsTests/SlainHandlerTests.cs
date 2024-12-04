@@ -192,7 +192,7 @@ namespace EQtoolsTests
         {
             logEvents.ConfirmedDeathEvent += (a, e) =>
             {
-                Assert.AreEqual(e.Victim, "Faction Slain Guess");
+                Assert.AreEqual(e.Victim, "Faction Slain");
                 Assert.AreEqual(e.Killer, "You");
                 CalledCounter++;
             };
@@ -217,7 +217,7 @@ namespace EQtoolsTests
                 }
                 else
                 {
-                    Assert.AreEqual(e.Victim, "Faction Slain Guess");
+                    Assert.AreEqual(e.Victim, "Faction Slain");
                     Assert.AreEqual(e.Killer, "You");
                 }
                 CalledCounter++;
@@ -295,7 +295,7 @@ namespace EQtoolsTests
                 }
                 else
                 {
-                    Assert.AreEqual(e.Victim, "Experience Slain Guess");
+                    Assert.AreEqual(e.Victim, "Exp Slain");
                     Assert.AreEqual(e.Killer, "You");
                     expkillcount++;
                 }
