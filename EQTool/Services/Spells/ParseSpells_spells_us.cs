@@ -69,6 +69,19 @@ namespace EQTool.Services
             "Lava Breath - Test",
             "Vengeance of the Undying",
             "Gift of A'err",
+            "Extended Regeneration",
+            "Aura of Battle",
+            "Regrowth",
+            "Regrowth of the Grove",
+            "Nature's Recovery",
+            "Regrowth of Dar Khura",
+            "Vampyre Regeneration",
+            "Aura of Courage",
+            "Aura of Daring",
+            "Aura of Bravery",
+            "Aura of Valor",
+            "Aura of Resolution",
+            "Refreshment"
         };
         private readonly List<int> IgnoreIds = new List<int>()
         {
@@ -218,8 +231,13 @@ namespace EQTool.Services
                     if (IgnoreIds.Contains(spell.id) ||
                         ignorespelltypes.Contains(spell.SpellType) ||
                         spell.name.Contains("Translocate") ||
-                         spell.name.Contains("Portal") ||
-                          spell.name.Contains("Gate")
+                        spell.name.Contains("Translocation") ||
+                        spell.name.Contains("Prayer to ") ||
+                        spell.name.Contains(" Port") ||
+                        spell.name.Contains("Journey:") ||
+                        spell.name.Contains("Ring of ") ||
+                        spell.name.Contains("Portal") ||
+                        spell.name.Contains("Gate")
                         )
                     {
                         continue;
