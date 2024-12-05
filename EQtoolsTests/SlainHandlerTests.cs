@@ -1,12 +1,9 @@
 ﻿using Autofac;
-using EQTool.Models;
 using EQTool.Services;
-using EQTool.Services.Handlers;
 using EQTool.ViewModels;
 using EQToolShared.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using System.Collections.Generic;
 
 namespace EQtoolsTests
 {
@@ -15,18 +12,14 @@ namespace EQtoolsTests
     {
         private readonly LogParser logParser;
         private readonly LogEvents logEvents;
-        private readonly ActivePlayer activePlayer;
         private int CalledCounter = 0;
 
         public SlainHandlerTests()
         {
             logParser = container.Resolve<LogParser>();
             logEvents = container.Resolve<LogEvents>();
-            activePlayer = container.Resolve<ActivePlayer>();
-            _ = container.Resolve<IEnumerable<BaseHandler>>();
-            _ = container.Resolve<IEnumerable<IEqLogParser>>();
-            activePlayer.Player.Level = 54;
-            activePlayer.Player.PlayerClass = PlayerClasses.Cleric;
+            player.Player.Level = 54;
+            player.Player.PlayerClass = PlayerClasses.Cleric;
         }
 
         [TestMethod]
@@ -45,6 +38,17 @@ namespace EQtoolsTests
             logParser.Push("Your faction standing with Kromzek got worse.", DateTime.Now);
             logParser.Push("You gain experience!!", DateTime.Now);
             Assert.AreEqual(CalledCounter, 1);
+        }
+
+        [TestMethod]
+        public void HappyPathAllThreeMessagesWithNumberIncrement()
+        {
+            logParser.Push("You have slain a frost giant scout!", DateTime.Now);
+            logParser.Push("You have slain a frost giant scout!", DateTime.Now);
+            logParser.Push("You have slain a frost giant scout!", DateTime.Now);
+            var spells = container.Resolve<SpellWindowViewModel>();
+
+            Assert.AreEqual(spells.SpellList.Count, 3);
         }
 
         [TestMethod]
