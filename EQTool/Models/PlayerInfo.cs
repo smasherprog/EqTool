@@ -557,6 +557,28 @@ namespace EQTool.Models
             }
         }
 
+        private bool _FTETimerAudio;
+        public bool FTETimerAudio
+        {
+            get => _FTETimerAudio;
+            set
+            {
+                _FTETimerAudio = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _FTETimerOverlay;
+        public bool FTETimerOverlay
+        {
+            get => _FTETimerOverlay;
+            set
+            {
+                _FTETimerOverlay = value;
+                OnPropertyChanged();
+            }
+        }
+
         private bool _InvisFadingAudio;
         public bool InvisFadingAudio
         {

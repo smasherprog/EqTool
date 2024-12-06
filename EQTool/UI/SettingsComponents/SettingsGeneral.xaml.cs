@@ -889,6 +889,7 @@ namespace EQTool.UI.SettingsComponents
             SettingsWindowData.ActivePlayer.Player.LevFadingOverlay = true;
             SettingsWindowData.ActivePlayer.Player.InvisFadingOverlay = true;
             SettingsWindowData.ActivePlayer.Player.FTEOverlay = true;
+            SettingsWindowData.ActivePlayer.Player.FTETimerOverlay = true;
             SettingsWindowData.ActivePlayer.Player.CharmBreakOverlay = true;
             SettingsWindowData.ActivePlayer.Player.FailedFeignOverlay = true;
             SettingsWindowData.ActivePlayer.Player.GroupInviteOverlay = true;
@@ -907,6 +908,7 @@ namespace EQTool.UI.SettingsComponents
             SettingsWindowData.ActivePlayer.Player.LevFadingAudio = true;
             SettingsWindowData.ActivePlayer.Player.InvisFadingAudio = true;
             SettingsWindowData.ActivePlayer.Player.FTEAudio = true;
+            SettingsWindowData.ActivePlayer.Player.FTETimerAudio = true;
             SettingsWindowData.ActivePlayer.Player.CharmBreakAudio = true;
             SettingsWindowData.ActivePlayer.Player.FailedFeignAudio = true;
             SettingsWindowData.ActivePlayer.Player.GroupInviteAudio = true;
@@ -1025,6 +1027,11 @@ namespace EQTool.UI.SettingsComponents
         private void toggleSpellConsoleOutput(object sender, RoutedEventArgs e)
         {
             debugOutput.LogSpells = true;
+        }
+
+        private void testFTETimers(object sender, RoutedEventArgs e)
+        {
+            settingsTestRunOverlay.RunTest(OverlayTypes.FTETimerEvent);
         }
     }
 }

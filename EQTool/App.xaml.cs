@@ -381,12 +381,17 @@ namespace EQTool
                 : TimeSpan.FromMinutes(20);
         }
 
-        private DateTime LastUIRun = DateTime.Now;
+        private DateTime? LastUIRun = null;
         private void UITimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
             var vm = container.Resolve<SpellWindowViewModel>();
             var now = DateTime.Now;
-            var dt_ms = (now - LastUIRun).TotalMilliseconds;
+            var dt_ms = 0.0;
+            if (LastUIRun.HasValue)
+            {
+                dt_ms = (now - LastUIRun.Value).TotalMilliseconds;
+            }
+
             LastUIRun = now;
             vm.UpdateSpells(dt_ms);
         }

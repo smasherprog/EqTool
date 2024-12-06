@@ -5,6 +5,7 @@
         HealedYou,
         EnrageEvent,
         FTEEvent,
+        FTETimerEvent,
         FailedFeignEvent,
         CharmBreakEvent,
         LevitateEvent,

@@ -19,6 +19,7 @@ namespace EQTool.Services
             actions[(int)OverlayTypes.LevitateEvent] = LevitateEvent;
             actions[(int)OverlayTypes.InvisEvent] = InvisEvent;
             actions[(int)OverlayTypes.FTEEvent] = FTEEvent;
+            actions[(int)OverlayTypes.FTETimerEvent] = FTETimerEvent;
             actions[(int)OverlayTypes.CharmBreakEvent] = CharmBreakEvent;
             actions[(int)OverlayTypes.FailedFeignEvent] = FailedFeignEvent;
             actions[(int)OverlayTypes.GroupInviteEvent] = GroupInviteEvent;
@@ -138,6 +139,12 @@ namespace EQTool.Services
             activePlayer.Player.FTEAudio = true;
             activePlayer.Player.FTEOverlay = true;
             logParser.Push("Dagarn the Destroyer engages Tzvia!", DateTime.Now);
+        }
+        private void FTETimerEvent()
+        {
+            activePlayer.Player.FTETimerAudio = true;
+            activePlayer.Player.FTETimerOverlay = true;
+            logParser.Push("Zlandicar engages Tzvia!", DateTime.Now);
         }
 
         private void EnrageEvent()
