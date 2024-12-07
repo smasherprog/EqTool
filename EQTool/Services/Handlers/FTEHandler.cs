@@ -54,7 +54,7 @@ namespace EQTool.Services.Handlers
                 });
             }
             var start = "--97% Rule--";
-            if (NintySevenPercentMobs.Contains(e.NPCName) || e.NPCName == "Lodizal")
+            if (NintySevenPercentMobs.Contains(e.NPCName))
             {
                 var spell = spells.AllSpells.FirstOrDefault(a => a.name == "Spirit of Wolf");
                 appDispatcher.DispatchUI(() =>
