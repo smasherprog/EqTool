@@ -188,11 +188,18 @@ namespace EQTool.ViewModels
                 var timerTypes = new List<SpellViewModelType>() { SpellViewModelType.Roll, SpellViewModelType.Spell, SpellViewModelType.Timer };
                 foreach (var item in SpellList.Where(a => timerTypes.Contains(a.SpellViewModelType)).Cast<TimerViewModel>().ToList())
                 {
+                    var hidespell = false;
+                    if (settings.YouOnlySpells)
+                    {
+                        hidespell = !(MasterNPCList.NPCs.Contains(item.GroupName.Trim()) || item.GroupName == CustomTimer.CustomerTime || item.GroupName == EQSpells.SpaceYou);
+                    }
+
                     item.TotalRemainingDuration = item.TotalRemainingDuration.Subtract(TimeSpan.FromMilliseconds(dt_ms));
                     if (item.TotalRemainingDuration.TotalSeconds <= 0)
                     {
                         itemstoremove.Add(item);
                     }
+                    item.ColumnVisibility = hidespell ? System.Windows.Visibility.Collapsed : System.Windows.Visibility.Visible;
                 }
                 var spells = SpellList.Where(a => a.SpellViewModelType == SpellViewModelType.Spell).Cast<SpellViewModel>().ToList();
 
@@ -220,10 +227,16 @@ namespace EQTool.ViewModels
                 var persistentTypes = new List<SpellViewModelType>() { SpellViewModelType.Persistent, SpellViewModelType.Counter };
                 foreach (var item in SpellList.Where(a => persistentTypes.Contains(a.SpellViewModelType)).Cast<PersistentViewModel>().ToList())
                 {
+                    var hidespell = false;
+                    if (settings.YouOnlySpells)
+                    {
+                        hidespell = !(MasterNPCList.NPCs.Contains(item.GroupName.Trim()) || item.GroupName == CustomTimer.CustomerTime || item.GroupName == EQSpells.SpaceYou);
+                    }
                     if ((d - item.UpdatedDateTime).TotalMinutes > 20)
                     {
                         itemstoremove.Add(item);
                     }
+                    item.ColumnVisibility = hidespell ? System.Windows.Visibility.Collapsed : System.Windows.Visibility.Visible;
                 }
 
                 var groupedspellList = SpellList.GroupBy(a => a.GroupName).ToList();
@@ -273,7 +286,7 @@ namespace EQTool.ViewModels
 
                 foreach (var spell in spellstoremove)
                 {
-                    if (!MasterNPCList.NPCs.Contains(spell.GroupName))
+                    if (!MasterNPCList.NPCs.Contains(spell.GroupName.Trim()))
                     {
                         _ = SpellList.Remove(spell);
                     }
