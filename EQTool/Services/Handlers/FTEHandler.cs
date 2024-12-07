@@ -54,7 +54,7 @@ namespace EQTool.Services.Handlers
                 });
             }
             var start = "--97% Rule--";
-            if (NintySevenPercentMobs.Contains(e.NPCName))
+            if (NintySevenPercentMobs.Contains(e.NPCName) || e.NPCName == "Lodizal")
             {
                 var spell = spells.AllSpells.FirstOrDefault(a => a.name == "Spirit of Wolf");
                 appDispatcher.DispatchUI(() =>
@@ -68,6 +68,25 @@ namespace EQTool.Services.Handlers
                         Icon = spell.SpellIcon,
                         TotalDuration = TimeSpan.FromSeconds(61),
                         TotalRemainingDuration = TimeSpan.FromSeconds(61),
+                        UpdatedDateTime = DateTime.Now,
+                        ProgressBarColor = Brushes.Orchid
+                    });
+                });
+            }
+            if (e.NPCName == "Lodizal")
+            {
+                var spell = spells.AllSpells.FirstOrDefault(a => a.name == "Spirit of Wolf");
+                appDispatcher.DispatchUI(() =>
+                {
+                    spellWindowViewModel.TryAdd(new TimerViewModel
+                    {
+                        PercentLeft = 100,
+                        GroupName = CustomTimer.CustomerTime,
+                        Name = $"--5 Minute Rule-- {e.NPCName}",
+                        Rect = spell.Rect,
+                        Icon = spell.SpellIcon,
+                        TotalDuration = TimeSpan.FromMinutes(5),
+                        TotalRemainingDuration = TimeSpan.FromMinutes(5),
                         UpdatedDateTime = DateTime.Now,
                         ProgressBarColor = Brushes.Orchid
                     });
