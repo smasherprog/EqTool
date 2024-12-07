@@ -208,7 +208,7 @@ namespace EQTool.ViewModels
                     var hidespell = false;
                     if (settings.YouOnlySpells)
                     {
-                        hidespell = item.GroupName != EQSpells.SpaceYou;
+                        hidespell = !(MasterNPCList.NPCs.Contains(item.GroupName.Trim()) || item.GroupName == CustomTimer.CustomerTime || item.GroupName == EQSpells.SpaceYou);
                     }
                     else if (RaidModeEnabled && player.PlayerClass.HasValue)
                     {
