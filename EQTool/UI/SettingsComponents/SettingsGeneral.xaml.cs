@@ -1017,16 +1017,16 @@ namespace EQTool.UI.SettingsComponents
 
         private void openConsoleWindow(object sender, RoutedEventArgs e)
         {
-            debugOutput.OpenConsole();
+            windowFactory.CreateWindow<Console>().Show();
         }
 
         private void toggleMapConsoleOutput(object sender, RoutedEventArgs e)
         {
-            debugOutput.LogMapping = true;
+            debugOutput.LogMapping = !debugOutput.LogMapping;
         }
         private void toggleSpellConsoleOutput(object sender, RoutedEventArgs e)
         {
-            debugOutput.LogSpells = true;
+            debugOutput.LogSpells = !debugOutput.LogSpells;
         }
 
         private void testFTETimers(object sender, RoutedEventArgs e)

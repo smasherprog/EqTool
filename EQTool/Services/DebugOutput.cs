@@ -1,7 +1,6 @@
-﻿using System;
-using System.Diagnostics;
+﻿using EQTool.ViewModels;
 using System.Linq;
-using System.Runtime.InteropServices;
+using System.Windows.Media;
 
 namespace EQTool.Services
 {
@@ -23,82 +22,50 @@ namespace EQTool.Services
 
     public class DebugOutput
     {
-        public DebugOutput()
+        private readonly ConsoleViewModel consoleViewModel;
+        public DebugOutput(ConsoleViewModel consoleViewModel)
         {
+            this.consoleViewModel = consoleViewModel;
         }
-
-        [DllImport("Kernel32")]
-        public static extern bool AllocConsole();
-
-        [DllImport("Kernel32", SetLastError = true)]
-        public static extern bool FreeConsole();
-
-        [DllImport("kernel32.dll")]
-        private static extern bool AttachConsole(uint dwProcessId);
-
-        private const uint ATTACH_PARENT_PROCESS = 0x0ffffffff;
-        private bool ConsoleCreated = false;
         public bool LogMapping { get; set; }
         public bool LogSpells { get; set; }
-        public void OpenConsole()
-        {
-            _ = FreeConsole();
-            ConsoleCreated = AllocConsole();
-            _ = AttachConsole(ATTACH_PARENT_PROCESS);
-        }
-
         public void WriteLine(string text, OutputType outputType, MessageType messageType = MessageType.Informational,
             [System.Runtime.CompilerServices.CallerMemberName] string membName = "",
             [System.Runtime.CompilerServices.CallerFilePath] string filePath = "",
             [System.Runtime.CompilerServices.CallerLineNumber] int lineNumber = 0)
         {
             text = "Line: " + lineNumber + " | " + filePath.Split('\\').Last() + " | " + membName + ":\t" + text;
-            if (!ConsoleCreated)
-            {
-                Debug.WriteLine(text);
-                return;
-            }
 
-            var colorchanged = false;
+            var color = Brushes.White;
             if (messageType == MessageType.Warning)
             {
-                colorchanged = true;
-                Console.ForegroundColor = ConsoleColor.DarkYellow;
+                color = Brushes.Orange;
             }
             else if (messageType == MessageType.Success)
             {
-                colorchanged = true;
-                Console.ForegroundColor = ConsoleColor.Green;
+                color = Brushes.Green;
             }
             else if (messageType == MessageType.Error)
             {
-                colorchanged = true;
-                Console.ForegroundColor = ConsoleColor.Red;
+                color = Brushes.Red;
             }
             else if (messageType == MessageType.RemoteMessageReceived)
             {
-                colorchanged = true;
-                Console.ForegroundColor = ConsoleColor.Blue;
+                color = Brushes.Blue;
             }
             else if (messageType == MessageType.RemoteMessageSent)
             {
-                colorchanged = true;
-                Console.ForegroundColor = ConsoleColor.Cyan;
+                color = Brushes.Cyan;
             }
-
 
             if (outputType == OutputType.Map && LogMapping)
             {
-                Console.WriteLine(text);
+                consoleViewModel.WriteLine(text, color);
             }
 
             if (outputType == OutputType.Spells && LogSpells)
             {
-                Console.WriteLine(text);
-            }
-            if (colorchanged)
-            {
-                Console.ResetColor();
+                consoleViewModel.WriteLine(text, color);
             }
         }
     }

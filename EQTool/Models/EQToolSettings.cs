@@ -78,6 +78,20 @@ namespace EQTool.Models
             set => _DpsWindowState = value ?? new WindowState();
         }
 
+        private WindowState _ConsoleWindowState;
+        public WindowState ConsoleWindowState
+        {
+            get
+            {
+                if (_ConsoleWindowState == null)
+                {
+                    _ConsoleWindowState = new WindowState();
+                }
+                return _ConsoleWindowState;
+            }
+            set => _ConsoleWindowState = value ?? new WindowState();
+        }
+
         private WindowState _MapWindowState;
         public WindowState MapWindowState
         {

@@ -4,6 +4,7 @@ using EQTool.Models;
 using EQTool.Services;
 using EQTool.Services.Handlers;
 using EQTool.Services.P99LoginMiddlemand;
+using EQTool.ViewModels;
 using System;
 using System.Linq;
 
@@ -54,6 +55,7 @@ namespace EQTool
             _ = builder.RegisterType<Services.LoggingService>().AsSelf().SingleInstance();
             _ = builder.RegisterType<FightHistory>().AsSelf().SingleInstance();
             _ = builder.RegisterType<SpellDurations>().AsSelf().SingleInstance();
+            _ = builder.RegisterType<ConsoleViewModel>().AsSelf().SingleInstance();
             _ = builder.RegisterType<DebugOutput>().AsSelf().SingleInstance();
 
             _ = builder.RegisterType<Services.PlayerTrackerService>().AsSelf().SingleInstance();
