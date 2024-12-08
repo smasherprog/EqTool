@@ -248,5 +248,11 @@ namespace EQTool.Services
         {
             OtherPlayerLocationReceivedRemoteEvent?.Invoke(this, e);
         }
+
+        public event EventHandler<NPCBeginsToGateEvent> NPCBeginsToGateEvent;
+        public void Handle(NPCBeginsToGateEvent e)
+        {
+            NPCBeginsToGateEvent?.Invoke(this, e);
+        }
     }
 }

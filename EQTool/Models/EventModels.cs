@@ -87,6 +87,11 @@ namespace EQTool.Models
         public string Name { get; set; }
     }
 
+    public class NPCBeginsToGateEvent : BaseLogParseEvent
+    {
+        public string NPCName { get; set; }
+    }
+
     public class SlainEvent : BaseLogParseEvent
     {
         public string Victim { get; set; }

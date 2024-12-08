@@ -392,6 +392,26 @@ namespace EQTool.Models
             }
         }
 
+        private bool _MobGatingAudio;
+        public bool MobGatingAudio
+        {
+            get => _MobGatingAudio;
+            set
+            {
+                _MobGatingAudio = value;
+                OnPropertyChanged();
+            }
+        }
+        private bool _MobGatingOverlay;
+        public bool MobGatingOverlay
+        {
+            get => _MobGatingOverlay;
+            set
+            {
+                _MobGatingOverlay = value;
+                OnPropertyChanged();
+            }
+        }
 
         private bool _EnteringZoneAudio;
         public bool EnteringZoneAudio

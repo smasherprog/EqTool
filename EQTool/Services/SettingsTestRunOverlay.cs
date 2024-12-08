@@ -28,6 +28,7 @@ namespace EQTool.Services
             actions[(int)OverlayTypes.ResistSpellEvent] = ResistSpellEvent;
             actions[(int)OverlayTypes.RandomRollEvent] = RandomRollEvent;
             actions[(int)OverlayTypes.DeathLoopEvent] = DeathLoopEvent;
+            actions[(int)OverlayTypes.MobGatingEvent] = MobGatingEvent;
         }
 
         public void RunTest(OverlayTypes overlayType)
@@ -152,6 +153,13 @@ namespace EQTool.Services
             activePlayer.Player.EnrageAudio = true;
             activePlayer.Player.EnrageOverlay = true;
             logParser.Push("Visceryn has become ENRAGED.", DateTime.Now);
+        }
+
+        private void MobGatingEvent()
+        {
+            activePlayer.Player.MobGatingAudio = true;
+            activePlayer.Player.MobGatingOverlay = true;
+            logParser.Push("Hoshkar begins to cast the gate spell.", DateTime.Now);
         }
     }
 }

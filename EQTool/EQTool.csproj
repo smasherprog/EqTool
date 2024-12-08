@@ -328,6 +328,7 @@
     <Compile Include="Services\BinarySerializer.cs" />
     <Compile Include="Services\DebugOutput.cs" />
     <Compile Include="Services\Handlers\DamageHandler.cs" />
+    <Compile Include="Services\Handlers\BeginsToCastTheGateSpellHandler.cs" />
     <Compile Include="Services\Handlers\PlayerChangeHandler.cs" />
     <Compile Include="Services\Handlers\PlayerLocationHandler.cs" />
     <Compile Include="Services\Handlers\MendWoundsHandler.cs" />
@@ -345,6 +346,7 @@
     <Compile Include="Services\Handlers\DeathTouchHandler.cs" />
     <Compile Include="Services\Handlers\RandomRollHandler.cs" />
     <Compile Include="Services\Handlers\SpawnTimerHandler.cs" />
+    <Compile Include="Services\Parsing\BeginsToCastTheGateSpellParser.cs" />
     <Compile Include="Services\Parsing\ExpGainedParser.cs" />
     <Compile Include="Services\Handlers\SlainHandler.cs" />
     <Compile Include="Services\Parsing\SpellCastOnOtherParser.cs" />

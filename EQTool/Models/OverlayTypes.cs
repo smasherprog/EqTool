@@ -6,6 +6,7 @@
         EnrageEvent,
         FTEEvent,
         FTETimerEvent,
+        MobGatingEvent,
         FailedFeignEvent,
         CharmBreakEvent,
         LevitateEvent,
