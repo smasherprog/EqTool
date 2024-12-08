@@ -254,5 +254,10 @@ namespace EQTool.Services
         {
             NPCBeginsToGateEvent?.Invoke(this, e);
         }
+        public event EventHandler<RingWarEvent> RingWarEvent;
+        public void Handle(RingWarEvent e)
+        {
+            RingWarEvent?.Invoke(this, e);
+        }
     }
 }

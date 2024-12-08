@@ -53,6 +53,10 @@ namespace EQTool.Models
     public class CampEvent : BaseLogParseEvent { }
     public class EnteredWorldEvent : BaseLogParseEvent { }
     public class QuakeEvent : BaseLogParseEvent { }
+    public class RingWarEvent : BaseLogParseEvent
+    {
+        public int RoundNumber { get; set; }
+    }
     public class InvisEvent : BaseLogParseEvent
     {
         public Services.Parsing.InvisParser.InvisStatus InvisStatus { get; set; }

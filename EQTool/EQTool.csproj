@@ -327,6 +327,7 @@
     <Compile Include="Models\FightHistory.cs" />
     <Compile Include="Services\BinarySerializer.cs" />
     <Compile Include="Services\DebugOutput.cs" />
+    <Compile Include="Services\Handlers\RingWarHandler.cs" />
     <Compile Include="Services\Handlers\DamageHandler.cs" />
     <Compile Include="Services\Handlers\BeginsToCastTheGateSpellHandler.cs" />
     <Compile Include="Services\Handlers\PlayerChangeHandler.cs" />
@@ -349,6 +350,7 @@
     <Compile Include="Services\Parsing\BeginsToCastTheGateSpellParser.cs" />
     <Compile Include="Services\Parsing\ExpGainedParser.cs" />
     <Compile Include="Services\Handlers\SlainHandler.cs" />
+    <Compile Include="Services\Parsing\RingWarParser.cs" />
     <Compile Include="Services\Parsing\SpellCastOnOtherParser.cs" />
     <Compile Include="Services\Parsing\SpellCastOnYouParser.cs" />
     <Compile Include="Services\Parsing\MendWoundsParser.cs" />
