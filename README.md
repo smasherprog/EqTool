@@ -18,7 +18,7 @@ Features:
 <br/>
 <ul>
  <li><b>p99 middlemand</b> ported from https://github.com/Zaela/p99-login-middlemand is now supported!</li>
- <li>The TOP 5 Random rolls show up in the triggers window. </li> 
+ <li>Random rolls show up in the triggers window. </li> 
  <li>See others on the map in real time. Also support for NParse map location sharing automatically if location sharing is set to everyone. </li> 
 <li>Kael faction pull timer Automatically added for everyone regardless of what zone you are in. </li> 
 <li>Kill timer detection: When you kill a mob sometimes you miss the slain message. Now, when you miss the slain message, if you get either an exp message or a faction message a timer will appear correctly. Since it is unknown what the name of the mob is that died when you received a faction message only, the name of the timer is 'Faction Slain Guess'  and 'Experience Slain Guess'.</li> 
