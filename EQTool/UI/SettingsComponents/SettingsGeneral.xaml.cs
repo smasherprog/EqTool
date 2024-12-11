@@ -900,7 +900,7 @@ namespace EQTool.UI.SettingsComponents
             SettingsWindowData.ActivePlayer.Player.ChChainOverlay = true;
             SettingsWindowData.ActivePlayer.Player.ChChainWarningOverlay = true;
             SettingsWindowData.ActivePlayer.Player.EnteringZoneOverlay = true;
-            SettingsWindowData.ActivePlayer.Player.MobGatingAudio = true;
+            SettingsWindowData.ActivePlayer.Player.MobGatingOverlay = true;
             SaveConfig();
         }
         private void selectallAudio(object sender, RoutedEventArgs e)
@@ -918,8 +918,8 @@ namespace EQTool.UI.SettingsComponents
             SettingsWindowData.ActivePlayer.Player.ResistWarningAudio = true;
             SettingsWindowData.ActivePlayer.Player.DeathLoopAudio = true;
             SettingsWindowData.ActivePlayer.Player.ChChainWarningAudio = true;
-            SettingsWindowData.ActivePlayer.Player.EnteringZoneOverlay = true;
-            SettingsWindowData.ActivePlayer.Player.MobGatingOverlay = true;
+            SettingsWindowData.ActivePlayer.Player.EnteringZoneAudio = true;
+            SettingsWindowData.ActivePlayer.Player.MobGatingAudio = true;
             SaveConfig();
         }
 
