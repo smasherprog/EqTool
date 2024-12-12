@@ -51,7 +51,7 @@ namespace EQTool.Services
             }
             else if (messageType == MessageType.RemoteMessageReceived)
             {
-                color = Brushes.Blue;
+                color = Brushes.DarkSalmon;
             }
             else if (messageType == MessageType.RemoteMessageSent)
             {

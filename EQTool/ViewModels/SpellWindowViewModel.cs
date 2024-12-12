@@ -193,6 +193,10 @@ namespace EQTool.ViewModels
                     {
                         hidespell = !(MasterNPCList.NPCs.Contains(item.GroupName.Trim()) || item.GroupName == CustomTimer.CustomerTime || item.GroupName == EQSpells.SpaceYou);
                     }
+                    else if (RaidModeEnabled && item.GroupName != EQSpells.SpaceYou)
+                    {
+                        hidespell = true;
+                    }
 
                     item.TotalRemainingDuration = item.TotalRemainingDuration.Subtract(TimeSpan.FromMilliseconds(dt_ms));
                     if (item.TotalRemainingDuration.TotalSeconds <= 0)

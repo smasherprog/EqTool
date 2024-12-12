@@ -239,6 +239,8 @@ namespace EQTool.UI.SettingsComponents
             var listofspells = new List<CastTest>
             {
                 new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Heroic Bond"), TargetName = EQSpells.SpaceYou},
+                new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Stonestance Discipline"), TargetName = "Pigy"},
+                new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Defensive Discipline"), TargetName = "Huntor"},
 
                 new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Heroic Bond"), TargetName = "Aasgard"},
                 new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Chloroplast"), TargetName = "Aasgard"},
