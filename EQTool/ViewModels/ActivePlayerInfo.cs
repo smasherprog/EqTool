@@ -74,6 +74,7 @@ namespace EQTool.ViewModels
 
                     playerchanged = tempplayer != Player;
                     Player = tempplayer;
+                    Player.LastUpdate = DateTime.Now;
                 }
                 else
                 {
@@ -98,7 +99,7 @@ namespace EQTool.ViewModels
                 _UserCastingSpell = value;
                 OnPropertyChanged();
             }
-        } 
+        }
 
         private DateTime? _UserCastSpellDateTime;
 

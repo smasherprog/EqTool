@@ -199,6 +199,17 @@ namespace EQTool.Models
             }
         }
 
+        private DateTime? _LastUpdate;
+        public DateTime? LastUpdate
+        {
+            get => _LastUpdate;
+            set
+            {
+                _LastUpdate = value;
+                OnPropertyChanged();
+            }
+        }
+
         private int? _TrackingSkill;
         public int? TrackingSkill
         {

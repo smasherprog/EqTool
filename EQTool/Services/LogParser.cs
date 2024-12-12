@@ -141,6 +141,10 @@ namespace EQTool.Services
                 try
                 {
                     var playerchanged = activePlayer.Update();
+                    if (playerchanged)
+                    {
+                        toolSettingsLoad.Save(settings);
+                    }
                     var filepath = activePlayer.LogFileName;
                     if (playerchanged || filepath != LastLogFilename)
                     {
