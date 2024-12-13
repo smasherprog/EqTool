@@ -189,15 +189,18 @@ namespace EQTool.ViewModels
                 foreach (var item in SpellList.Where(a => timerTypes.Contains(a.SpellViewModelType)).Cast<TimerViewModel>().ToList())
                 {
                     var hidespell = false;
-                    if (settings.YouOnlySpells)
+                    if (item.GetType() != typeof(RollViewModel))
                     {
-                        hidespell = !(MasterNPCList.NPCs.Contains(item.GroupName.Trim()) || item.GroupName == CustomTimer.CustomerTime || item.GroupName == EQSpells.SpaceYou);
+                        if (settings.YouOnlySpells)
+                        {
+                            hidespell = !(MasterNPCList.NPCs.Contains(item.GroupName.Trim()) || item.GroupName == CustomTimer.CustomerTime || item.GroupName == EQSpells.SpaceYou);
+                        }
+                        else if (RaidModeEnabled && item.GroupName != EQSpells.SpaceYou)
+                        {
+                            hidespell = true;
+                        }
                     }
-                    else if (RaidModeEnabled && item.GroupName != EQSpells.SpaceYou)
-                    {
-                        hidespell = true;
-                    }
-
+                     
                     item.TotalRemainingDuration = item.TotalRemainingDuration.Subtract(TimeSpan.FromMilliseconds(dt_ms));
                     if (item.TotalRemainingDuration.TotalSeconds <= 0)
                     {
