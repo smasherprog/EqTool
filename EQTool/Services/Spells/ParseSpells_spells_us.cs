@@ -71,8 +71,6 @@ namespace EQTool.Services
             "Gift of A'err",
             "Extended Regeneration",
             "Aura of Battle",
-            "Regrowth",
-            "Regrowth of the Grove",
             "Nature's Recovery",
             "Regrowth of Dar Khura",
             "Vampyre Regeneration",
@@ -177,7 +175,7 @@ namespace EQTool.Services
             var spellsfile = new FileInfo(settings.DefaultEqDirectory + spellfile);
             if (spellsfile.Exists)
             {
-                var spellfilename = $"SpellCache{servers}_1";
+                var spellfilename = $"SpellCache{servers}_2";
                 if (!isdebug)
                 {
                     spellfilename = new string(spellfilename.Where(a => char.IsLetterOrDigit(a)).ToArray()) + ".bin";
