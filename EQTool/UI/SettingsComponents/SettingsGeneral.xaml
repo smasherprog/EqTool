@@ -205,6 +205,12 @@
                     <CheckBox IsChecked="{Binding ActivePlayer.Player.MobGatingAudio}" Click="Savesettings" MinWidth="30"></CheckBox>
                     <Button Content="▶" Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="testMobGating" ToolTip="Test Mob Gating" />
                 </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Spell Worn Off" VerticalAlignment="Center" FontWeight="Bold"  MinWidth="100"/>
+                    <CheckBox IsChecked="{Binding ActivePlayer.Player.WornOffOverlay}" Click="Savesettings" MinWidth="75"></CheckBox>
+                    <CheckBox IsChecked="{Binding ActivePlayer.Player.WornOffAudio}" Click="Savesettings" MinWidth="30"></CheckBox>
+                    <Button Content="▶" Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="testWornOff" ToolTip="Test Spell Has Worn Off" />
+                </StackPanel>
                 <Separator/>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Chain Formats" VerticalAlignment="Center" FontWeight="Bold" MinWidth="100"/>

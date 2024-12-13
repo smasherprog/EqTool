@@ -29,7 +29,8 @@ namespace EQTool.Services.Handlers
             var text = $"{target} resisted the {e.Spell.name} spell";
             if (doAlert)
             {
-                textToSpeach.Say(text);
+                // keep audible bandwidth low, let more detail show up in written alert
+                textToSpeach.Say($"{target} resisted");
             }
             doAlert = activePlayer?.Player?.ResistWarningOverlay ?? false;
             if (doAlert)

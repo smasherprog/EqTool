@@ -885,41 +885,90 @@ namespace EQTool.UI.SettingsComponents
 
         private void selectallVisual(object sender, RoutedEventArgs e)
         {
-            SettingsWindowData.ActivePlayer.Player.EnrageOverlay = true;
-            SettingsWindowData.ActivePlayer.Player.LevFadingOverlay = true;
-            SettingsWindowData.ActivePlayer.Player.InvisFadingOverlay = true;
-            SettingsWindowData.ActivePlayer.Player.FTEOverlay = true;
-            SettingsWindowData.ActivePlayer.Player.FTETimerOverlay = true;
-            SettingsWindowData.ActivePlayer.Player.CharmBreakOverlay = true;
-            SettingsWindowData.ActivePlayer.Player.FailedFeignOverlay = true;
-            SettingsWindowData.ActivePlayer.Player.GroupInviteOverlay = true;
-            SettingsWindowData.ActivePlayer.Player.DragonRoarOverlay = true;
-            SettingsWindowData.ActivePlayer.Player.RootWarningOverlay = true;
-            SettingsWindowData.ActivePlayer.Player.ResistWarningOverlay = true;
-            SettingsWindowData.ActivePlayer.Player.DeathLoopOverlay = true;
-            SettingsWindowData.ActivePlayer.Player.ChChainOverlay = true;
-            SettingsWindowData.ActivePlayer.Player.ChChainWarningOverlay = true;
-            SettingsWindowData.ActivePlayer.Player.EnteringZoneOverlay = true;
-            SettingsWindowData.ActivePlayer.Player.MobGatingOverlay = true;
+            // make button behavior a toggle button, just use the first one in the list as the indicator
+            if (SettingsWindowData.ActivePlayer.Player.EnrageOverlay)
+            {
+                SettingsWindowData.ActivePlayer.Player.EnrageOverlay = false;
+                SettingsWindowData.ActivePlayer.Player.LevFadingOverlay = false;
+                SettingsWindowData.ActivePlayer.Player.InvisFadingOverlay = false;
+                SettingsWindowData.ActivePlayer.Player.FTEOverlay = false;
+                SettingsWindowData.ActivePlayer.Player.FTETimerOverlay = false;
+                SettingsWindowData.ActivePlayer.Player.CharmBreakOverlay = false;
+                SettingsWindowData.ActivePlayer.Player.FailedFeignOverlay = false;
+                SettingsWindowData.ActivePlayer.Player.GroupInviteOverlay = false;
+                SettingsWindowData.ActivePlayer.Player.DragonRoarOverlay = false;
+                SettingsWindowData.ActivePlayer.Player.RootWarningOverlay = false;
+                SettingsWindowData.ActivePlayer.Player.ResistWarningOverlay = false;
+                SettingsWindowData.ActivePlayer.Player.DeathLoopOverlay = false;
+                SettingsWindowData.ActivePlayer.Player.ChChainOverlay = false;
+                SettingsWindowData.ActivePlayer.Player.ChChainWarningOverlay = false;
+                SettingsWindowData.ActivePlayer.Player.EnteringZoneOverlay = false;
+                SettingsWindowData.ActivePlayer.Player.MobGatingOverlay = false;
+                SettingsWindowData.ActivePlayer.Player.WornOffOverlay = false;
+            }
+            else
+            {
+                SettingsWindowData.ActivePlayer.Player.EnrageOverlay = true;
+                SettingsWindowData.ActivePlayer.Player.LevFadingOverlay = true;
+                SettingsWindowData.ActivePlayer.Player.InvisFadingOverlay = true;
+                SettingsWindowData.ActivePlayer.Player.FTEOverlay = true;
+                SettingsWindowData.ActivePlayer.Player.FTETimerOverlay = true;
+                SettingsWindowData.ActivePlayer.Player.CharmBreakOverlay = true;
+                SettingsWindowData.ActivePlayer.Player.FailedFeignOverlay = true;
+                SettingsWindowData.ActivePlayer.Player.GroupInviteOverlay = true;
+                SettingsWindowData.ActivePlayer.Player.DragonRoarOverlay = true;
+                SettingsWindowData.ActivePlayer.Player.RootWarningOverlay = true;
+                SettingsWindowData.ActivePlayer.Player.ResistWarningOverlay = true;
+                SettingsWindowData.ActivePlayer.Player.DeathLoopOverlay = true;
+                SettingsWindowData.ActivePlayer.Player.ChChainOverlay = true;
+                SettingsWindowData.ActivePlayer.Player.ChChainWarningOverlay = true;
+                SettingsWindowData.ActivePlayer.Player.EnteringZoneOverlay = true;
+                SettingsWindowData.ActivePlayer.Player.MobGatingOverlay = true;
+                SettingsWindowData.ActivePlayer.Player.WornOffOverlay = true;
+            }
             SaveConfig();
         }
         private void selectallAudio(object sender, RoutedEventArgs e)
         {
-            SettingsWindowData.ActivePlayer.Player.EnrageAudio = true;
-            SettingsWindowData.ActivePlayer.Player.LevFadingAudio = true;
-            SettingsWindowData.ActivePlayer.Player.InvisFadingAudio = true;
-            SettingsWindowData.ActivePlayer.Player.FTEAudio = true;
-            SettingsWindowData.ActivePlayer.Player.FTETimerAudio = true;
-            SettingsWindowData.ActivePlayer.Player.CharmBreakAudio = true;
-            SettingsWindowData.ActivePlayer.Player.FailedFeignAudio = true;
-            SettingsWindowData.ActivePlayer.Player.GroupInviteAudio = true;
-            SettingsWindowData.ActivePlayer.Player.DragonRoarAudio = true;
-            SettingsWindowData.ActivePlayer.Player.RootWarningAudio = true;
-            SettingsWindowData.ActivePlayer.Player.ResistWarningAudio = true;
-            SettingsWindowData.ActivePlayer.Player.DeathLoopAudio = true;
-            SettingsWindowData.ActivePlayer.Player.ChChainWarningAudio = true;
-            SettingsWindowData.ActivePlayer.Player.EnteringZoneAudio = true;
-            SettingsWindowData.ActivePlayer.Player.MobGatingAudio = true;
+            // make button behavior a toggle button, just use the first one in the list as the indicator
+            if (SettingsWindowData.ActivePlayer.Player.EnrageAudio)
+            {
+                SettingsWindowData.ActivePlayer.Player.EnrageAudio = false;
+                SettingsWindowData.ActivePlayer.Player.LevFadingAudio = false;
+                SettingsWindowData.ActivePlayer.Player.InvisFadingAudio = false;
+                SettingsWindowData.ActivePlayer.Player.FTEAudio = false;
+                SettingsWindowData.ActivePlayer.Player.FTETimerAudio = false;
+                SettingsWindowData.ActivePlayer.Player.CharmBreakAudio = false;
+                SettingsWindowData.ActivePlayer.Player.FailedFeignAudio = false;
+                SettingsWindowData.ActivePlayer.Player.GroupInviteAudio = false;
+                SettingsWindowData.ActivePlayer.Player.DragonRoarAudio = false;
+                SettingsWindowData.ActivePlayer.Player.RootWarningAudio = false;
+                SettingsWindowData.ActivePlayer.Player.ResistWarningAudio = false;
+                SettingsWindowData.ActivePlayer.Player.DeathLoopAudio = false;
+                SettingsWindowData.ActivePlayer.Player.ChChainWarningAudio = false;
+                SettingsWindowData.ActivePlayer.Player.EnteringZoneAudio = false;
+                SettingsWindowData.ActivePlayer.Player.MobGatingAudio = false;
+                SettingsWindowData.ActivePlayer.Player.WornOffAudio = false;
+            }
+            else
+            {
+                SettingsWindowData.ActivePlayer.Player.EnrageAudio = true;
+                SettingsWindowData.ActivePlayer.Player.LevFadingAudio = true;
+                SettingsWindowData.ActivePlayer.Player.InvisFadingAudio = true;
+                SettingsWindowData.ActivePlayer.Player.FTEAudio = true;
+                SettingsWindowData.ActivePlayer.Player.FTETimerAudio = true;
+                SettingsWindowData.ActivePlayer.Player.CharmBreakAudio = true;
+                SettingsWindowData.ActivePlayer.Player.FailedFeignAudio = true;
+                SettingsWindowData.ActivePlayer.Player.GroupInviteAudio = true;
+                SettingsWindowData.ActivePlayer.Player.DragonRoarAudio = true;
+                SettingsWindowData.ActivePlayer.Player.RootWarningAudio = true;
+                SettingsWindowData.ActivePlayer.Player.ResistWarningAudio = true;
+                SettingsWindowData.ActivePlayer.Player.DeathLoopAudio = true;
+                SettingsWindowData.ActivePlayer.Player.ChChainWarningAudio = true;
+                SettingsWindowData.ActivePlayer.Player.EnteringZoneAudio = true;
+                SettingsWindowData.ActivePlayer.Player.MobGatingAudio = true;
+                SettingsWindowData.ActivePlayer.Player.WornOffAudio = true;
+            }
             SaveConfig();
         }
 
@@ -1039,6 +1088,11 @@ namespace EQTool.UI.SettingsComponents
         private void testMobGating(object sender, RoutedEventArgs e)
         {
             settingsTestRunOverlay.RunTest(OverlayTypes.MobGatingEvent);
+        }
+
+        private void testWornOff(object sender, RoutedEventArgs e)
+        {
+            settingsTestRunOverlay.RunTest(OverlayTypes.WornOffEvent);
         }
     }
 }

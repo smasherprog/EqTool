@@ -7,6 +7,7 @@
         FTEEvent,
         FTETimerEvent,
         MobGatingEvent,
+        WornOffEvent,
         FailedFeignEvent,
         CharmBreakEvent,
         LevitateEvent,
