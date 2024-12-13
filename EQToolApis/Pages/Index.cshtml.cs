@@ -12,15 +12,15 @@ namespace EQToolApis.Pages
     {
         public readonly DBData AllData;
         public readonly NoteableNPCCache noteableNPCCache;
-        public List<TODModel> GreenNoteableNPCs = new List<TODModel>();
+        public List<TODModel> GreenNoteableNPCs = new();
         public ServerMessage ServerMessage { get; set; } = new ServerMessage();
-        public List<DateTimeOffset> Quakes = new List<DateTimeOffset>();
+        public List<DateTimeOffset> Quakes = new();
         public static PigParseStats[] PigParseStats = new PigParseStats[(int)Servers.MaxServers]
         {
-            new PigParseStats(){ Server = Servers.Green },
-            new PigParseStats(){ Server = Servers.Blue },
-            new PigParseStats(){ Server = Servers.Red },
-            new PigParseStats(){ Server = Servers.Quarm },
+            new(){ Server = Servers.Green },
+            new(){ Server = Servers.Blue },
+            new(){ Server = Servers.Red },
+            new(){ Server = Servers.Quarm },
         };
         private static DateTime LastPigParseStat = DateTime.UtcNow;
 
@@ -34,7 +34,7 @@ namespace EQToolApis.Pages
                     if ((DateTime.UtcNow - LastPigParseStat).TotalSeconds > 20)
                     {
                         LastPigParseStat = DateTime.UtcNow;
-                        var list = MapHub.connections.ToArray();
+                        var list = PPHub.connections.ToArray();
                         foreach (var server in Enum.GetValues<Servers>().Where(a => a != Servers.MaxServers))
                         {
                             PigParseStats[(int)server].PigParsePlayerCount = list.Count(a => a.Value.Server == server);
@@ -43,7 +43,7 @@ namespace EQToolApis.Pages
                                 .Where(a => a.Server == server)
                                 .GroupBy(a => a.Zone)
                                 .Select(a => new PigParseZoneStat { Zone = a.Key, Count = a.Count() })
-                                .Where(a => a.Zone != "fearplane" && a.Zone != "hateplane" && a.Zone != "sleeper")
+                                .Where(a => a.Zone is not "fearplane" and not "hateplane" and not "sleeper")
                                 .ToList();
                             var lasthour = DateTime.UtcNow.AddHours(-1);
                             PigParseStats[(int)server].PigParseUniquePlayerCount = eQToolContext.EqToolExceptions.Where(a => a.Server == server && a.DateCreated > lasthour).Select(a => a.IpAddress).Distinct().Count();
@@ -56,8 +56,8 @@ namespace EQToolApis.Pages
             ServerMessage = eQToolContext.ServerMessages.FirstOrDefault();
             var keyname = new List<KeyValuePair<string, string>>()
             {
-                new KeyValuePair<string, string>("westwastes", "Scout Charisa"),
-                new KeyValuePair<string, string>("westwastes", "a Kromzek Captain")
+                new("westwastes", "Scout Charisa"),
+                new("westwastes", "a Kromzek Captain")
             };
             Quakes = eQToolContext.QuakeTimes.OrderByDescending(a => a.DateTime).Take(3).Select(a => a.DateTime).ToList();
             foreach (var item in keyname)

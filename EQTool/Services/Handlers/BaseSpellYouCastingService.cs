@@ -63,7 +63,7 @@ namespace EQTool.Services.Handlers
                 spellWindowViewModel.TryAdd(new TimerViewModel
                 {
                     PercentLeft = 100,
-                    GroupName = targetName,
+                    GroupName = EQSpells.SpaceYou,
                     TargetClass = targetclass,
                     Name = spellname,
                     Rect = spell.Rect,
@@ -81,7 +81,7 @@ namespace EQTool.Services.Handlers
                 if (spell.name == "Evasive Discipline")
                 {
                     float baseseconds = 15 * 60;
-                    float levelrange = 60 - 51;
+                    float levelrange = 60 - 52;
                     float secondsrange = (15 - 7) * 60;
                     var secondsperlevelrange = secondsrange / levelrange;
                     float playerleveltick = playerlevel - 52;
@@ -90,7 +90,7 @@ namespace EQTool.Services.Handlers
                 else if (spell.name == "Defensive Discipline")
                 {
                     float baseseconds = 15 * 60;
-                    float levelrange = 60 - 54;
+                    float levelrange = 60 - 55;
                     float secondsrange = (15 - 10) * 60;
                     var secondsperlevelrange = secondsrange / levelrange;
                     float playerleveltick = playerlevel - 55;
@@ -99,29 +99,40 @@ namespace EQTool.Services.Handlers
                 else if (spell.name == "Precision Discipline")
                 {
                     float baseseconds = 30 * 60;
-                    float levelrange = 60 - 56;
+                    float levelrange = 60 - 57;
                     float secondsrange = (30 - 27) * 60;
                     var secondsperlevelrange = secondsrange / levelrange;
                     float playerleveltick = playerlevel - 57;
                     basetime = (int)(baseseconds - (playerleveltick * secondsperlevelrange));
                 }
-
-                var vm = new SpellViewModel
+                else if (spell.name == "Stonestance Discipline")
                 {
-                    UpdatedDateTime = DateTime.Now,
-                    PercentLeft = 100,
-                    Type = spell.type,
-                    SpellType = spell.SpellType,
-                    GroupName = targetName,
-                    TargetClass = targetclass,
-                    Name = spellname,
-                    Rect = spell.Rect,
-                    Icon = spell.SpellIcon,
-                    Classes = spell.Classes,
-                    TotalDuration = TimeSpan.FromSeconds(basetime),
-                    TotalRemainingDuration = TimeSpan.FromSeconds(basetime)
-                };
-                spellWindowViewModel.TryAdd(vm);
+                    float baseseconds = 12 * 60;
+                    float levelrange = 60 - 51;
+                    float secondsrange = (12 - 4) * 60;
+                    var secondsperlevelrange = secondsrange / levelrange;
+                    float playerleveltick = playerlevel - 51;
+                    basetime = (int)(baseseconds - (playerleveltick * secondsperlevelrange));
+                }
+                else if (spell.name == "Voiddance Discipline")
+                {
+                    float baseseconds = 60 * 60;
+                    float levelrange = 60 - 54;
+                    float secondsrange = (60 - 54) * 60;
+                    var secondsperlevelrange = secondsrange / levelrange;
+                    float playerleveltick = playerlevel - 54;
+                    basetime = (int)(baseseconds - (playerleveltick * secondsperlevelrange));
+                }
+                else if (spell.name == "Innerflame Discipline")
+                {
+                    float baseseconds = 60 * 60;
+                    float levelrange = 60 - 56;
+                    float secondsrange = (30 - 26) * 60;
+                    var secondsperlevelrange = secondsrange / levelrange;
+                    float playerleveltick = playerlevel - 56;
+                    basetime = (int)(baseseconds - (playerleveltick * secondsperlevelrange));
+                }
+
                 spellWindowViewModel.TryAdd(new TimerViewModel
                 {
                     PercentLeft = 100,
@@ -130,8 +141,8 @@ namespace EQTool.Services.Handlers
                     Name = spellname,
                     Rect = spell.Rect,
                     Icon = spell.SpellIcon,
-                    TotalDuration = TimeSpan.FromSeconds((int)((spell.recastTime + delayOffset) / 1000.0)),
-                    TotalRemainingDuration = TimeSpan.FromSeconds((int)((spell.recastTime + delayOffset) / 1000.0)),
+                    TotalDuration = TimeSpan.FromSeconds(basetime),
+                    TotalRemainingDuration = TimeSpan.FromSeconds(basetime),
                     UpdatedDateTime = DateTime.Now,
                     ProgressBarColor = Brushes.SkyBlue
                 });
