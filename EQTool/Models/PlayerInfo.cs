@@ -738,6 +738,28 @@ namespace EQTool.Models
             }
         }
 
+        private bool _WornOffOverlay;
+        public bool WornOffOverlay
+        {
+            get => _WornOffOverlay;
+            set
+            {
+                _WornOffOverlay = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _WornOffAudio;
+        public bool WornOffAudio
+        {
+            get => _WornOffAudio;
+            set
+            {
+                _WornOffAudio = value;
+                OnPropertyChanged();
+            }
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected void OnPropertyChanged([CallerMemberName] string name = null)

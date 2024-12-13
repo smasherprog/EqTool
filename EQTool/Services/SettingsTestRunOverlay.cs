@@ -29,6 +29,7 @@ namespace EQTool.Services
             actions[(int)OverlayTypes.RandomRollEvent] = RandomRollEvent;
             actions[(int)OverlayTypes.DeathLoopEvent] = DeathLoopEvent;
             actions[(int)OverlayTypes.MobGatingEvent] = MobGatingEvent;
+            actions[(int)OverlayTypes.WornOffEvent] = WornOffEvent;
         }
 
         public void RunTest(OverlayTypes overlayType)
@@ -161,5 +162,13 @@ namespace EQTool.Services
             activePlayer.Player.MobGatingOverlay = true;
             logParser.Push("Hoshkar begins to cast the gate spell.", DateTime.Now);
         }
+
+        private void WornOffEvent()
+        {
+            activePlayer.Player.WornOffAudio = true;
+            activePlayer.Player.WornOffOverlay = true;
+            logParser.Push("Your Venom of the Snake spell has worn off.", DateTime.Now);
+        }
+
     }
 }
