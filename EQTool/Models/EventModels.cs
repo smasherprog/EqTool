@@ -75,11 +75,6 @@ namespace EQTool.Models
         public string NpcName { get; set; }
     }
 
-    public class WornOffEvent : BaseLogParseEvent
-    {
-        public string SpellName { get; set; }
-    }
-
     //
     // Event class to carry all info from DamageParser to interested listeners
     //
