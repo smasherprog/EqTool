@@ -14,13 +14,13 @@ using EQTool.Models;
 namespace EQtoolsTests
 {
     [TestClass]
-    public class WornOffTests : BaseTestClass
+    public class SpellWornOffOtherTests : BaseTestClass
     {
-        private readonly WornOffParser parser;
+        private readonly SpellWornOffOtherParser parser;
 
-        public WornOffTests()
+        public SpellWornOffOtherTests()
         {
-            parser = container.Resolve<WornOffParser>();
+            parser = container.Resolve<SpellWornOffOtherParser>();
         }
 
         [TestMethod]
@@ -28,7 +28,7 @@ namespace EQtoolsTests
         {
             var now = DateTime.Now;
             var line = "Your Venom of the Snake spell has worn off.";
-            var e = parser.WornOffCheck(line, now, 0);
+            var e = parser.MatchWornOffOther(line, now, 0);
 
             Assert.IsNotNull(e);
             Assert.AreEqual(now, e.TimeStamp);
@@ -41,7 +41,7 @@ namespace EQtoolsTests
         {
             var now = DateTime.Now;
             var line = "Your Boil Blood spell has worn off.";
-            var e = parser.WornOffCheck(line, now, 0);
+            var e = parser.MatchWornOffOther(line, now, 0);
 
             Assert.IsNotNull(e);
             Assert.AreEqual(now, e.TimeStamp);
@@ -54,7 +54,7 @@ namespace EQtoolsTests
         {
             var now = DateTime.Now;
             var line = "Your Fear spell has worn off.";
-            var e = parser.WornOffCheck(line, now, 0);
+            var e = parser.MatchWornOffOther(line, now, 0);
 
             Assert.IsNotNull(e);
             Assert.AreEqual(now, e.TimeStamp);

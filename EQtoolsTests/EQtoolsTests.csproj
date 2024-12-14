@@ -209,7 +209,7 @@
     <Compile Include="Fakes\TextToSpeachFake.cs" />
     <Compile Include="PlayerLevelDetectionParserTests.cs" />
     <Compile Include="CustomTimerHandlerTests.cs" />
-    <Compile Include="WornOffTests.cs" />
+    <Compile Include="SpellWornOffOtherTests.cs" />
     <Compile Include="ZoneSpawnTimeTests.cs" />
     <Compile Include="CompleteHealCommsHandlerTests.cs" />
     <Compile Include="RandomRollTests.cs" />
