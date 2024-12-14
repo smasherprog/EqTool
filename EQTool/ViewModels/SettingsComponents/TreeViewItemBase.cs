@@ -8,7 +8,9 @@ namespace EQTool.ViewModels.SettingsComponents
         General,
         Player,
         Server,
-        Trigger
+        Trigger,
+        Global,
+        Zone
     }
 
     public abstract class TreeViewItemBase : INotifyPropertyChanged

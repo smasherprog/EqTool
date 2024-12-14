@@ -484,6 +484,8 @@
     <Compile Include="ViewModels\SettingsComponents\SettingsPlayerViewModel.cs" />
     <Compile Include="ViewModels\SettingsComponents\SettingsServerViewModel.cs" />
     <Compile Include="ViewModels\SettingsComponents\TreeGeneral.cs" />
+    <Compile Include="ViewModels\SettingsComponents\TreeZone.cs" />
+    <Compile Include="ViewModels\SettingsComponents\TreeGlobal.cs" />
     <Compile Include="ViewModels\SettingsComponents\TreeServer.cs" />
     <Compile Include="ViewModels\SettingsComponents\TreeTrigger.cs" />
     <Compile Include="ViewModels\SettingsComponents\TreePlayer.cs" />

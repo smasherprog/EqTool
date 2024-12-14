@@ -1,4 +1,5 @@
-﻿using System.Collections.ObjectModel;
+﻿using EQTool.Models;
+using System.Collections.ObjectModel;
 
 namespace EQTool.ViewModels.SettingsComponents
 {
@@ -9,8 +10,10 @@ namespace EQTool.ViewModels.SettingsComponents
             Children = new ObservableCollection<TreeTrigger>();
         }
 
-        public string Name { get; set; }
-
+        public TreeServer Parent { get; set; }
+        public string Name => Player.Name;
+        public string LastPlayed => Player.LastUpdate.HasValue ? Player.LastUpdate.Value.ToShortDateString() : string.Empty;
+        public PlayerInfo Player { get; set; }
         public ObservableCollection<TreeTrigger> Children { get; set; }
         public override TreeViewItemType Type => TreeViewItemType.Player;
     }
