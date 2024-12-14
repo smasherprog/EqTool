@@ -11,7 +11,7 @@ namespace EQTool.ViewModels.SettingsComponents
         }
 
         public TreeServer Parent { get; set; }
-        public string Name => Player.Name;
+        public string Name => Player.Name + (!string.IsNullOrWhiteSpace(Player.GuildName) ? $"<{Player.GuildName}>" : string.Empty);
         public string LastPlayed => Player.LastUpdate.HasValue ? Player.LastUpdate.Value.ToShortDateString() : string.Empty;
         public PlayerInfo Player { get; set; }
         public ObservableCollection<TreeTrigger> Children { get; set; }
