@@ -88,12 +88,6 @@ namespace EQTool.Services
             EnrageEvent?.Invoke(this, e);
         }
 
-        public event EventHandler<WornOffEvent> WornOffEvent;
-        public void Handle(WornOffEvent e)
-        {
-            WornOffEvent?.Invoke(this, e);
-        }
-
         public event EventHandler<LevitateEvent> LevitateEvent;
         public void Handle(LevitateEvent e)
         {
