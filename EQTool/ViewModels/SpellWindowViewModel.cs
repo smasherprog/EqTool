@@ -191,16 +191,19 @@ namespace EQTool.ViewModels
                     var hidespell = false;
                     if (item.GetType() != typeof(RollViewModel))
                     {
-                        if (settings.YouOnlySpells)
+                        if (!MasterNPCList.NPCs.Contains(item.GroupName.Trim()))
                         {
-                            hidespell = !(MasterNPCList.NPCs.Contains(item.GroupName.Trim()) || item.GroupName == CustomTimer.CustomerTime || item.GroupName == EQSpells.SpaceYou);
-                        }
-                        else if (RaidModeEnabled && item.GroupName != EQSpells.SpaceYou)
-                        {
-                            hidespell = true;
+                            if (settings.YouOnlySpells)
+                            {
+                                hidespell = !(item.GroupName == CustomTimer.CustomerTime || item.GroupName == EQSpells.SpaceYou);
+                            }
+                            else if (RaidModeEnabled && item.GroupName != EQSpells.SpaceYou)
+                            {
+                                hidespell = true;
+                            }
                         }
                     }
-                     
+
                     item.TotalRemainingDuration = item.TotalRemainingDuration.Subtract(TimeSpan.FromMilliseconds(dt_ms));
                     if (item.TotalRemainingDuration.TotalSeconds <= 0)
                     {
@@ -213,21 +216,25 @@ namespace EQTool.ViewModels
                 foreach (var item in spells)
                 {
                     var hidespell = false;
-                    if (settings.YouOnlySpells)
+                    if (!MasterNPCList.NPCs.Contains(item.GroupName.Trim()))
                     {
-                        hidespell = !(MasterNPCList.NPCs.Contains(item.GroupName.Trim()) || item.GroupName == CustomTimer.CustomerTime || item.GroupName == EQSpells.SpaceYou);
-                    }
-                    else if (RaidModeEnabled && player.PlayerClass.HasValue)
-                    {
-                        if (item.GroupName != EQSpells.SpaceYou)
+                        if (settings.YouOnlySpells)
                         {
-                            hidespell = SpellUIExtensions.HideSpell(new List<EQToolShared.Enums.PlayerClasses>() { player.PlayerClass.Value }, item.Classes) || item.SpellType == SpellType.Self;
+                            hidespell = !(item.GroupName == CustomTimer.CustomerTime || item.GroupName == EQSpells.SpaceYou);
+                        }
+                        else if (RaidModeEnabled && player.PlayerClass.HasValue)
+                        {
+                            if (item.GroupName != EQSpells.SpaceYou)
+                            {
+                                hidespell = SpellUIExtensions.HideSpell(new List<EQToolShared.Enums.PlayerClasses>() { player.PlayerClass.Value }, item.Classes) || item.SpellType == SpellType.Self;
+                            }
+                        }
+                        else
+                        {
+                            hidespell = SpellUIExtensions.HideSpell(player.ShowSpellsForClasses, item.Classes) && item.GroupName != EQSpells.SpaceYou;
                         }
                     }
-                    else
-                    {
-                        hidespell = SpellUIExtensions.HideSpell(player.ShowSpellsForClasses, item.Classes) && item.GroupName != EQSpells.SpaceYou;
-                    }
+
                     item.ColumnVisibility = hidespell ? System.Windows.Visibility.Collapsed : System.Windows.Visibility.Visible;
                 }
                 var d = DateTime.Now;
