@@ -102,7 +102,7 @@
                                     <ColumnDefinition SharedSizeGroup="lastPlayedDate"/> 
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Grid.Column="0" Text="🐉"/>
-                                <TextBlock Grid.Column="0" Text="{Binding Name}" Margin="16,0,0,0" />
+                                <TextBlock Grid.Column="0" Text="{Binding Name}" Margin="16,0,0,0" FontWeight="{Binding NameWeight}" />
                                 <TextBlock Grid.Column="1" Text="{Binding LastPlayed}" />
                             </Grid> 
                         </HierarchicalDataTemplate>

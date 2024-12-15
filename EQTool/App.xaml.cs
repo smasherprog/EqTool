@@ -288,15 +288,19 @@ namespace EQTool
             if (EQToolSettings.LoginMiddleMand)
             {
                 var loginmiddlemand = container.Resolve<LoginMiddlemand>();
-                if (loginmiddlemand.IsConfiguredCorrectly())
+                Task.Factory.StartNew(() =>
                 {
-                    loginmiddlemand.StartListening();
-                    Thread.Sleep(50); //give time to start up
-                }
-                else
-                {
-                    EQToolSettings.LoginMiddleMand = false;
-                }
+                    Thread.Sleep(2000); //give time to start up
+                    if (loginmiddlemand.IsConfiguredCorrectly())
+                    {
+                        loginmiddlemand.StartListening();
+
+                    }
+                    else
+                    {
+                        EQToolSettings.LoginMiddleMand = false;
+                    }
+                });
             }
             var hasvalideqdir = FindEq.IsValidEqFolder(EQToolSettings.DefaultEqDirectory);
             if (!hasvalideqdir || FindEq.TryCheckLoggingEnabled(EQToolSettings.DefaultEqDirectory) == false)
