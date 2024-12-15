@@ -907,6 +907,7 @@ namespace EQTool.UI.SettingsComponents
                 SettingsWindowData.ActivePlayer.Player.EnteringZoneOverlay = false;
                 SettingsWindowData.ActivePlayer.Player.MobGatingOverlay = false;
                 SettingsWindowData.ActivePlayer.Player.WornOffOverlay = false;
+                SettingsWindowData.ActivePlayer.Player.TellsYouOverlay = false;
             }
             else
             {
@@ -927,6 +928,7 @@ namespace EQTool.UI.SettingsComponents
                 SettingsWindowData.ActivePlayer.Player.EnteringZoneOverlay = true;
                 SettingsWindowData.ActivePlayer.Player.MobGatingOverlay = true;
                 SettingsWindowData.ActivePlayer.Player.WornOffOverlay = true;
+                SettingsWindowData.ActivePlayer.Player.TellsYouOverlay = true;
             }
             SaveConfig();
         }
@@ -951,6 +953,7 @@ namespace EQTool.UI.SettingsComponents
                 SettingsWindowData.ActivePlayer.Player.EnteringZoneAudio = false;
                 SettingsWindowData.ActivePlayer.Player.MobGatingAudio = false;
                 SettingsWindowData.ActivePlayer.Player.WornOffAudio = false;
+                SettingsWindowData.ActivePlayer.Player.TellsYouAudio = false;
             }
             else
             {
@@ -970,6 +973,7 @@ namespace EQTool.UI.SettingsComponents
                 SettingsWindowData.ActivePlayer.Player.EnteringZoneAudio = true;
                 SettingsWindowData.ActivePlayer.Player.MobGatingAudio = true;
                 SettingsWindowData.ActivePlayer.Player.WornOffAudio = true;
+                SettingsWindowData.ActivePlayer.Player.TellsYouAudio = true;
             }
             SaveConfig();
         }
@@ -1096,5 +1100,11 @@ namespace EQTool.UI.SettingsComponents
         {
             settingsTestRunOverlay.RunTest(OverlayTypes.WornOffEvent);
         }
+
+        private void testTellsYou(object sender, RoutedEventArgs e)
+        {
+            settingsTestRunOverlay.RunTest(OverlayTypes.TellsYouEvent);
+        }
+
     }
 }
