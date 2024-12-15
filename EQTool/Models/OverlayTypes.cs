@@ -4,20 +4,21 @@
     {
         HealedYou,
         EnrageEvent,
-        FTEEvent,
-        FTETimerEvent,
-        MobGatingEvent,
-        WornOffEvent,
-        FailedFeignEvent,
-        CharmBreakEvent,
         LevitateEvent,
         InvisEvent,
+        FTEEvent,
+        FTETimerEvent,
+        CharmBreakEvent,
+        FailedFeignEvent,
         GroupInviteEvent,
         DragonFearEvent,
         RootBreakEvent,
         ResistSpellEvent,
         RandomRollEvent,
         DeathLoopEvent,
+        MobGatingEvent,
+        WornOffEvent,
+        TellsYouEvent,
         MaxTypes
     }
 }

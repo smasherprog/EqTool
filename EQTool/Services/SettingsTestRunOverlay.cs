@@ -30,6 +30,7 @@ namespace EQTool.Services
             actions[(int)OverlayTypes.DeathLoopEvent] = DeathLoopEvent;
             actions[(int)OverlayTypes.MobGatingEvent] = MobGatingEvent;
             actions[(int)OverlayTypes.WornOffEvent] = WornOffEvent;
+            actions[(int)OverlayTypes.TellsYouEvent] = TellsYouEvent;
         }
 
         public void RunTest(OverlayTypes overlayType)
@@ -170,5 +171,11 @@ namespace EQTool.Services
             logParser.Push("Your Venom of the Snake spell has worn off.", DateTime.Now);
         }
 
+        private void TellsYouEvent()
+        {
+            activePlayer.Player.TellsYouAudio = true;
+            activePlayer.Player.TellsYouOverlay = true;
+            logParser.Push("Azleep tells you, 'Have a nice day.'", DateTime.Now);
+        }
     }
 }

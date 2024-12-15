@@ -760,6 +760,31 @@ namespace EQTool.Models
             }
         }
 
+        private bool _TellsYouOverlay;
+        public bool TellsYouOverlay
+        {
+            get => _TellsYouOverlay;
+            set
+            {
+                _TellsYouOverlay = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _TellsYouAudio;
+        public bool TellsYouAudio
+        {
+            get => _TellsYouAudio;
+            set
+            {
+                _TellsYouAudio = value;
+                OnPropertyChanged();
+            }
+        }
+
+
+
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected void OnPropertyChanged([CallerMemberName] string name = null)

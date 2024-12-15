@@ -11,6 +11,7 @@ namespace EQTool.Services.Handlers
 {
     public class BaseSpellYouCastingHandler
     {
+        // spells with long recast times, that need a cooldown timer
         public static readonly List<string> SpellsThatNeedTimers = new List<string>()
         {
             "Dictate",
@@ -23,6 +24,7 @@ namespace EQTool.Services.Handlers
             "Theft of Thought"
         };
 
+        // spells that we wish to count how many times they have been cast
         private readonly List<string> SpellsThatNeedCounts = new List<string>()
         {
             "Mana Sieve",
@@ -41,6 +43,29 @@ namespace EQTool.Services.Handlers
             "Shrieking Howl",
             "Static Strike",
             "Rage of Zek"
+        };
+
+        // all the charm spells
+        public static List<string> AllCharmSpells = new List<string>()
+        {
+            "Dictate",
+            "Charm",
+            "Beguile",
+            "Cajoling Whispers",
+            "Allure",
+            "Boltran's Agacerie",
+            "Befriend Animal",
+            "Charm Animals",
+            "Beguile Plants",
+            "Beguile Animals",
+            "Allure of the Wild",
+            "Call of Karana",
+            "Tunare's Request",
+            "Dominate Undead",
+            "Beguile Undead",
+            "Cajole Undead",
+            "Thrall of Bones",
+            "Enslave Death"
         };
 
         private readonly SpellWindowViewModel spellWindowViewModel;
@@ -65,7 +90,7 @@ namespace EQTool.Services.Handlers
                     PercentLeft = 100,
                     GroupName = EQSpells.SpaceYou,
                     TargetClass = targetclass,
-                    Name = spellname,
+                    Name = $"{spellname} Cooldown",
                     Rect = spell.Rect,
                     Icon = spell.SpellIcon,
                     TotalDuration = TimeSpan.FromSeconds((int)((spell.recastTime + delayOffset) / 1000.0)),
@@ -161,7 +186,7 @@ namespace EQTool.Services.Handlers
                     UpdatedDateTime = DateTime.Now,
                     GroupName = grpname,
                     TargetClass = targetclass,
-                    Name = spellname,
+                    Name = $"{spellname} Cooldown",
                     Rect = spell.Rect,
                     Icon = spell.SpellIcon,
                     Count = 1,
