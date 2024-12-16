@@ -83,7 +83,7 @@ namespace EQTool.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        ///   Looks up a localized resource of benefit_detriment System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap Copy {
             get {
@@ -93,7 +93,7 @@ namespace EQTool.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        ///   Looks up a localized resource of benefit_detriment System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap dps {
             get {
@@ -103,7 +103,7 @@ namespace EQTool.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        ///   Looks up a localized resource of benefit_detriment System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap HyperlinkForward {
             get {
@@ -113,7 +113,7 @@ namespace EQTool.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        ///   Looks up a localized resource of benefit_detriment System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap map {
             get {
@@ -123,7 +123,7 @@ namespace EQTool.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        ///   Looks up a localized resource of benefit_detriment System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap open_folder {
             get {
@@ -133,7 +133,7 @@ namespace EQTool.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        ///   Looks up a localized resource of benefit_detriment System.Drawing.Icon similar to (Icon).
         /// </summary>
         internal static System.Drawing.Icon pig {
             get {
@@ -143,7 +143,7 @@ namespace EQTool.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        ///   Looks up a localized resource of benefit_detriment System.Drawing.Icon similar to (Icon).
         /// </summary>
         internal static System.Drawing.Icon sickpic {
             get {
@@ -199,7 +199,7 @@ namespace EQTool.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        ///   Looks up a localized resource of benefit_detriment System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap toolbox {
             get {
@@ -209,7 +209,7 @@ namespace EQTool.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        ///   Looks up a localized resource of benefit_detriment System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap wizard {
             get {

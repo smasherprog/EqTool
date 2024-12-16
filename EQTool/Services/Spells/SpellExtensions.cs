@@ -25,7 +25,7 @@ namespace EQTool.Services
                 Rect = new System.Windows.Int32Rect(),
                 SpellIcon = null,
                 pvp_buffdurationformula = spell.pvp_buffdurationformula,
-                type = spell.type,
+                benefit_detriment = spell.benefit_detriment,
                 SpellType = spell.SpellType,
                 DescrNumber = spell.DescrNumber,
                 ResistCheck = spell.ResistCheck,

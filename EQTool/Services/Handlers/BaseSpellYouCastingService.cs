@@ -204,7 +204,7 @@ namespace EQTool.Services.Handlers
                     {
                         UpdatedDateTime = DateTime.Now,
                         PercentLeft = 100,
-                        Type = spell.type,
+                        BenefitDetriment = spell.benefit_detriment,
                         SpellType = spell.SpellType,
                         GroupName = grpname,
                         TargetClass = targetclass,
@@ -215,7 +215,13 @@ namespace EQTool.Services.Handlers
                         TotalDuration = spellduration,
                         TotalRemainingDuration = spellduration
                     };
-                    spellWindowViewModel.TryAdd(vm);
+
+                    // set all beneficial spell types to overwrite/refresh, and all detrimental types to create multiple timers
+                    bool overWrite = true;
+                    if (spell.benefit_detriment == EQToolShared.Enums.SpellBenefitDetriment.Detrimental)
+                        overWrite = false;
+
+                    spellWindowViewModel.TryAdd(vm, overWrite);
                 }
             }
         }
