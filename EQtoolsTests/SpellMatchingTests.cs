@@ -179,15 +179,16 @@ namespace EQtoolsTests
             var spell = spells.AllSpells.FirstOrDefault(a => a.name == spellname);
             var line = $"{YouBeginCasting} {spellname}";
             player.Player.Level = 54;
-            player.Player.PlayerClass = PlayerClasses.Cleric;
+            player.Player.PlayerClass = PlayerClasses.Enchanter;
             logParser.Push(line, DateTime.Now);
 
-            line = $"jobob {spell.cast_on_other}";
+            line = $"Jobob{spell.cast_on_other}";
             logParser.Push(line, DateTime.Now.AddMilliseconds(spell.casttime + 200));
 
-            var spelltimer = spellWindowViewModel.SpellList.FirstOrDefault(a => a.Name == spellname && a.SpellViewModelType == SpellViewModelType.Timer) as TimerViewModel;
+            string timerText = $"{spellname} Cooldown";
+            var spelltimer = spellWindowViewModel.SpellList.FirstOrDefault(a => a.Name == timerText && a.SpellViewModelType == SpellViewModelType.Timer) as TimerViewModel;
             Assert.IsNotNull(spelltimer);
-            Assert.AreEqual(spelltimer.Name, spellname);
+            Assert.AreEqual(spelltimer.Name, timerText);
 
             var spellvm = spellWindowViewModel.SpellList.FirstOrDefault(a => a.Name == spellname && a.SpellViewModelType == SpellViewModelType.Spell) as SpellViewModel;
             Assert.IsNotNull(spellvm);
@@ -206,7 +207,7 @@ namespace EQtoolsTests
             logParser.Push(line, DateTime.Now);
             var spell = spellWindowViewModel.SpellList.FirstOrDefault();
             Assert.IsNotNull(spell);
-            Assert.AreEqual(spell.Name, "Mana Sieve");
+            Assert.AreEqual(spell.Name, "Mana Sieve Cooldown");
         }
 
         [TestMethod]
