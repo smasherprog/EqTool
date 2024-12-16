@@ -46,7 +46,7 @@ namespace EQTool.Services.Parsing
             var match = wornOffRegex.Match(line);
             if (match.Success)
             {
-                // return an Event of the correct type
+                // return an Event of the correct benefit_detriment
                 rv = new SpellWornOffOtherEvent
                 {
                     TimeStamp = timestamp,

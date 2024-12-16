@@ -61,7 +61,7 @@ namespace EQTool.Models
     ///* 150 */	int16		RecourseLink;
     ///* 151 */	int			Spacing4[4];
     ///* 155 */	int			descnum; // eqstr of description of spell
-    ///* 156 */	int			typedescnum; // eqstr of type description
+    ///* 156 */	int			typedescnum; // eqstr of benefit_detriment description
     ///* 157 */	int			effectdescnum; // eqstr of effect description
     ///* 158 */	int			Spacing5[17];
     ///* 175 */	// last field is 174
@@ -277,7 +277,7 @@ namespace EQTool.Models
         public string name { get; set; } // Victim of the spell  
         public string cast_on_you { get; set; }
         public string cast_on_other { get; set; }
-        public SpellTypes type { get; set; }
+        public SpellBenefitDetriment benefit_detriment { get; set; }
         public int casttime { get; set; }
         public int recastTime { get; set; }
         public Dictionary<PlayerClasses, int> Classes { get; set; }

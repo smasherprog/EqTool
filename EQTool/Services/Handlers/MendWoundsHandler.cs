@@ -27,7 +27,7 @@ namespace EQTool.Services.Handlers
             {
                 UpdatedDateTime = DateTime.Now,
                 PercentLeft = 100,
-                Type = HealSpell.type,
+                BenefitDetriment = HealSpell.benefit_detriment,
                 SpellType = HealSpell.SpellType,
                 GroupName = EQSpells.SpaceYou,
                 Name = "Mend",

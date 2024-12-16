@@ -301,15 +301,19 @@ namespace EQTool.ViewModels
             });
         }
 
-        public void TryAdd(SpellViewModel match)
+        // try to add a new timer.  set overWrite = true (default) to overwrite/refresh any existing timer, or false to create multiple timers of same name
+        public void TryAdd(SpellViewModel match, bool overWrite = true)
         {
             appDispatcher.DispatchUI(() =>
             {
-                if (SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Spell &&
-                string.Equals(a.Name, match.Name, StringComparison.OrdinalIgnoreCase) &&
-                string.Equals(match.GroupName, a.GroupName, StringComparison.OrdinalIgnoreCase)) is SpellViewModel s)
+                if (overWrite)
                 {
-                    _ = SpellList.Remove(s);
+                    if (SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Spell &&
+                    string.Equals(a.Name, match.Name, StringComparison.OrdinalIgnoreCase) &&
+                    string.Equals(match.GroupName, a.GroupName, StringComparison.OrdinalIgnoreCase)) is SpellViewModel s)
+                    {
+                        _ = SpellList.Remove(s);
+                    }
                 }
                 SpellList.Add(match);
             });
@@ -382,7 +386,7 @@ namespace EQTool.ViewModels
                         {
                             UpdatedDateTime = DateTime.Now,
                             PercentLeft = 100,
-                            Type = match.type,
+                            BenefitDetriment = match.benefit_detriment,
                             SpellType = match.SpellType,
                             GroupName = EQSpells.SpaceYou,
                             Name = match.name,
