@@ -6,6 +6,7 @@ using EQTool.ViewModels.SpellWindow;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Linq;
+using System.Security.Policy;
 
 namespace EQtoolsTests
 {
@@ -98,5 +99,40 @@ namespace EQtoolsTests
             Assert.AreEqual(dteffect.TotalDuration.TotalSeconds, 119, 2);
             Assert.AreEqual(dteffect.GroupName, EQSpells.SpaceYou);
         }
+
+        [TestMethod]
+        public void Frostreavers()
+        {
+            // two casts, but since this is a beneficial spell, should be 1 timer
+            logParser.Push("You feel the blessing of ancient Coldain heroes.", DateTime.Now);
+            logParser.Push("You feel the blessing of ancient Coldain heroes.", DateTime.Now);
+            var spelleffect = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Spell && a.Name == "Frostreaver's Blessing") as SpellViewModel;
+            Assert.IsNotNull(spelleffect);
+            Assert.AreEqual(3600.0, spelleffect.TotalDuration.TotalSeconds);
+            Assert.AreEqual(spelleffect.GroupName, EQSpells.SpaceYou);
+            Assert.AreEqual(1, spellWindowViewModel.SpellList.Count);
+        }
+
+        [TestMethod]
+        public void Dazzle()
+        {
+            //[Sun Dec 15 19:39:13 2024] You begin casting Dazzle.
+            //[Sun Dec 15 19:39:15 2024] Orc centurion has been mesmerized.
+
+            // two casts, and since this is a detrimental spell, should be two timers
+            logParser.Push("You begin casting Dazzle.", DateTime.Now);
+            logParser.Push("Orc centurion has been mesmerized.", DateTime.Now.AddSeconds(2.0));
+            logParser.Push("You begin casting Dazzle.", DateTime.Now.AddSeconds(10.0));
+            logParser.Push("Orc centurion has been mesmerized.", DateTime.Now.AddSeconds(12.0));
+
+            var spelleffect = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Spell && a.Name == "Dazzle") as SpellViewModel;
+            Assert.IsNotNull(spelleffect);
+            Assert.AreEqual(96.0, spelleffect.TotalDuration.TotalSeconds);
+            Assert.AreEqual(" Orc centurion", spelleffect.GroupName);
+            Assert.AreEqual(2, spellWindowViewModel.SpellList.Count);
+        }
+
+
+
     }
 }
