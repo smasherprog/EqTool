@@ -217,9 +217,9 @@ namespace EQTool.Services.Handlers
                     };
 
                     // set all beneficial spell types to overwrite/refresh, and all detrimental types to create multiple timers
-                    bool overWrite = false;
-                    if (spell.benefit_detriment == EQToolShared.Enums.SpellBenefitDetriment.Beneficial)
-                        overWrite = true;
+                    bool overWrite = true;
+                    if (spell.benefit_detriment == EQToolShared.Enums.SpellBenefitDetriment.Detrimental)
+                        overWrite = false;
 
                     spellWindowViewModel.TryAdd(vm, overWrite);
                 }
