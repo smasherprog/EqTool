@@ -259,5 +259,14 @@ namespace EQTool.Services
         {
             RingWarEvent?.Invoke(this, e);
         }
+
+
+
+        // this should be the final eventhandler definition!
+        public event EventHandler<UserDefinedTriggerEvent> UserDefinedTriggerEvent;
+        public void Handle(UserDefinedTriggerEvent e)
+        {
+            UserDefinedTriggerEvent?.Invoke(this, e);
+        }
     }
 }

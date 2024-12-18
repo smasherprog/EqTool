@@ -1,7 +1,9 @@
-﻿using EQToolShared.Enums;
+﻿using EQTool.Services;
+using EQToolShared.Enums;
 using EQToolShared.Map;
 using System;
 using System.Collections.Generic;
+using System.Windows;
 using System.Windows.Media.Media3D;
 
 namespace EQTool.Models
@@ -86,6 +88,16 @@ namespace EQTool.Models
         public string DamageType { get; set; }
     }
 
+    //
+    // Event class to carry info from UserDefinedTriggerParser to interested listeners
+    //
+    public class UserDefinedTriggerEvent : BaseLogParseEvent
+    {
+        // we could carry just the TriggerID, and force listeners to search the trigger list using the TriggerID
+        // to find the desired trigger.  OR - let's just pass the whole trigger and eliminate that downstream search
+        public UserDefinedTrigger Trigger { get; set; }
+    }
+
     public class ConEvent : BaseLogParseEvent
     {
         public string Name { get; set; }
@@ -130,15 +142,15 @@ namespace EQTool.Models
     {
         public enum Channel
         {
-            NONE = 0b_0000_0000,
-            TELL = 0b_0000_0001,
-            SAY = 0b_0000_0010,
-            GROUP = 0b_0000_0100,
-            GUILD = 0b_0000_1000,
+            NONE    = 0b_0000_0000,
+            TELL    = 0b_0000_0001,
+            SAY     = 0b_0000_0010,
+            GROUP   = 0b_0000_0100,
+            GUILD   = 0b_0000_1000,
             AUCTION = 0b_0001_0000,
-            OOC = 0b_0010_0000,
-            SHOUT = 0b_0100_0000,
-            ANY = TELL | SAY | GROUP | GUILD | AUCTION | OOC | SHOUT
+            OOC     = 0b_0010_0000,
+            SHOUT   = 0b_0100_0000,
+            ANY     = TELL | SAY | GROUP | GUILD | AUCTION | OOC | SHOUT
         }
 
         public CommsEvent.Channel TheChannel { get; set; }

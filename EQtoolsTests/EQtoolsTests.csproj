@@ -210,6 +210,7 @@
     <Compile Include="PlayerLevelDetectionParserTests.cs" />
     <Compile Include="CustomTimerHandlerTests.cs" />
     <Compile Include="SpellWornOffOtherTests.cs" />
+    <Compile Include="UserDefinedTriggerTests.cs" />
     <Compile Include="ZoneSpawnTimeTests.cs" />
     <Compile Include="CompleteHealCommsHandlerTests.cs" />
     <Compile Include="RandomRollTests.cs" />

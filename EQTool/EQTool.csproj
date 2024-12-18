@@ -336,6 +336,7 @@
     <Compile Include="Services\Handlers\SpellCastOnYouHandler.cs" />
     <Compile Include="Services\Handlers\BaseSpellYouCastingService.cs" />
     <Compile Include="Services\Handlers\TellsYouHandler.cs" />
+    <Compile Include="Services\Handlers\UserDefinedTriggerHandler.cs" />
     <Compile Include="Services\Handlers\YouFinishCastingHandler.cs" />
     <Compile Include="Services\Handlers\YouBeginCastingHandler.cs" />
     <Compile Include="Services\Handlers\YouHaveFinishedMemorizingHandler.cs" />
@@ -355,12 +356,14 @@
     <Compile Include="Services\Parsing\SpellCastOnOtherParser.cs" />
     <Compile Include="Services\Parsing\SpellCastOnYouParser.cs" />
     <Compile Include="Services\Parsing\MendWoundsParser.cs" />
+    <Compile Include="Services\Parsing\UserDefinedTriggerParser.cs" />
     <Compile Include="Services\Parsing\YouFinishCastingParser.cs" />
     <Compile Include="Services\Parsing\YouBeginCastingParser.cs" />
     <Compile Include="Services\Parsing\YouHaveFinishedMemorizingParser.cs" />
     <Compile Include="Services\Parsing\YourSpellInterupptedParser.cs" />
     <Compile Include="Services\Parsing\LineParser.cs" />
     <Compile Include="Services\Parsing\FactionParser.cs" />
+    <Compile Include="Services\UserDefinedTrigger.cs" />
     <Compile Include="Services\UserComponentSettingsManagementFactory.cs" />
     <Compile Include="Services\WindowFactory.cs" />
     <Compile Include="Services\Handlers\YouZonedHandler.cs" />
