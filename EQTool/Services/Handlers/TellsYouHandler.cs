@@ -34,26 +34,30 @@ namespace EQTool.Services.Handlers
                 // was the tell to player?
                 if ((commsEvent.Receiver == "You") || (commsEvent.Receiver == "you"))
                 {
-                    // screen out tells from pets who are responding to /pet attack
-                    if (commsEvent.Content.StartsWith("Attacking") == false)
+                    // screen out sender names containing a space - this will screen out most vendors
+                    if (commsEvent.Sender.Contains(" ") == false)
                     {
-                        // text to be displayed / spoken
-                        string text = $"{commsEvent.Sender} sent a tell";
-
-                        // text to speech?
-                        if (activePlayer?.Player?.TellsYouAudio == true)
+                        // screen out tells from pets who are responding to /pet attack
+                        if (commsEvent.Content.StartsWith("Attacking") == false)
                         {
-                            textToSpeach.Say(text);
-                        }
+                            // text to be displayed / spoken
+                            string text = $"{commsEvent.Sender} sent a tell";
 
-                        if (activePlayer?.Player?.TellsYouOverlay == true)
-                        {
-                            _ = System.Threading.Tasks.Task.Factory.StartNew(() =>
+                            // text to speech?
+                            if (activePlayer?.Player?.TellsYouAudio == true)
                             {
-                                logEvents.Handle(new OverlayEvent { Text = text, ForeGround = Brushes.Red, Reset = false });
-                                System.Threading.Thread.Sleep(5000);
-                                logEvents.Handle(new OverlayEvent { Text = text, ForeGround = Brushes.Red, Reset = true });
-                            });
+                                textToSpeach.Say(text);
+                            }
+
+                            if (activePlayer?.Player?.TellsYouOverlay == true)
+                            {
+                                _ = System.Threading.Tasks.Task.Factory.StartNew(() =>
+                                {
+                                    logEvents.Handle(new OverlayEvent { Text = text, ForeGround = Brushes.Red, Reset = false });
+                                    System.Threading.Thread.Sleep(5000);
+                                    logEvents.Handle(new OverlayEvent { Text = text, ForeGround = Brushes.Red, Reset = true });
+                                });
+                            }
                         }
                     }
                 }
