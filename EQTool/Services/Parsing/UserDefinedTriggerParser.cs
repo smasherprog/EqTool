@@ -63,12 +63,12 @@ namespace EQTool.Services.Parsing
                         // found a match, so fire off the event
                         logEvents.Handle(e);
                     }
-                }
+                                                             }
             }
 
             // return false in all cases, so a user-defined trigger doesn't accidentally usurp one of PigParser's hard coded triggers, 
-            // also, need to ensure this handler is FIRST, so a hard-coded PigParser handler doesn't handle it first and prevent this handler
-            // from getting a shot at it
+            // also, need to ensure this parser is FIRST, so a hard-coded PigParser parser doesn't handle it first and prevent this
+            // user defined parser from getting a shot at it
             return false;
         }
 
@@ -79,7 +79,7 @@ namespace EQTool.Services.Parsing
             UserDefinedTriggerEvent returnValue = null;
 
             // do the regex search
-            Regex regex = new Regex(trigger.SearchText);
+            Regex regex = trigger.TriggerRegex;
             var match = regex.Match(line);
             if (match.Success)
             {

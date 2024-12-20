@@ -17,6 +17,16 @@ namespace EQTool.Services
         public bool TriggerEnabled { get; set; }
         public string TriggerName { get; set; }
 
+        // each trigger will have its own Regex instance, to prevent them from having to be rebuilt every time
+        // the regex will be configured on the call to SearchText.set()
+        private Regex triggerRegex;
+        public Regex TriggerRegex { get { return triggerRegex; }}
+
+        // set up a regex to search for gina-style regex entries, for use in SearchText and DisplayText and AudioText
+        // finds simplified regex patterns of {some_name}
+        private const string ginaRegexPattern = @"\{(?<xxx>\w+)\}";
+        private readonly Regex ginaRegex = new Regex(ginaRegexPattern, RegexOptions.Compiled);
+
         //
         // there are a couple of things going on here:
         //      - The user can define search patterns using a simplified regular expression syntax (similar to Gina)
@@ -30,7 +40,7 @@ namespace EQTool.Services
         //                  (target, a poor rabbit)
         //                  (damage, 1000)
         //
-        public readonly Hashtable valueHash = new Hashtable();     // list of named groups and their parsed values that we find in the search text
+        private readonly Hashtable valueHash = new Hashtable();     // list of named groups and their parsed values that we find in the search text
         private string searchText;                                  // contains user-input simplified gina-style regex
         private string searchTextConverted;                         // contains actual regex
         public string SearchText
@@ -57,13 +67,9 @@ namespace EQTool.Services
                 //      - spaces, to capture multi-word targets, i.e. "Spider Queen D`Zee"
                 //      - the ` back tick, which actually appears in quite a few mob names
 
-                // regex to find gina-style simplified regex input, {some_name}
-                const string ginaNamedGroupPattern = @"\{(?<xxx>\w+)\}";
-
-                Regex regex = new Regex(ginaNamedGroupPattern, RegexOptions.Compiled);
-                Match match = regex.Match(searchTextConverted);
 
                 // walk the list of matches, replacing the user match with the real match
+                Match match = ginaRegex.Match(searchTextConverted);
                 while (match.Success)
                 {
                     // Handle match here...
@@ -71,7 +77,7 @@ namespace EQTool.Services
 
                     // use regex to replace the gina named group with the real regex named group
                     // do them one group at a time
-                    searchTextConverted = regex.Replace(searchTextConverted, $"(?<{group_name}>[\\w` ]+)", 1);
+                    searchTextConverted = ginaRegex.Replace(searchTextConverted, $"(?<{group_name}>[\\w` ]+)", 1);
 
                     // at this point we know the key, but not the value, so add it to the list for later
                     valueHash.Add(group_name, "");
@@ -85,6 +91,9 @@ namespace EQTool.Services
                 {
                     Console.WriteLine($"    key = {entry.Key}, value = {entry.Value}");
                 }
+
+                // set up the regex for this trigger
+                triggerRegex = new Regex(searchTextConverted);
             }
         }
 
@@ -143,13 +152,9 @@ namespace EQTool.Services
         private string ProcessOutputText(string inputText)
         {
             string rv = inputText;
-            // regex to find gina-style simplified regex input, {some_name}
-            const string ginaNamedGroupPattern = @"\{(?<xxx>\w+)\}";
-
-            Regex regex = new Regex(ginaNamedGroupPattern, RegexOptions.Compiled);
-            Match match = regex.Match(rv);
 
             // walk the list of matches, replacing the user match with the real match
+            Match match = ginaRegex.Match(rv);
             while (match.Success)
             {
                 // Handle match here...
@@ -161,7 +166,7 @@ namespace EQTool.Services
                     // use regex to replace the gina named group with value from the hashtable
                     // do them one group at a time
                     string replace_text = $"{valueHash[group_name]}";
-                    rv = regex.Replace(rv, replace_text, 1);
+                    rv = ginaRegex.Replace(rv, replace_text, 1);
                 }
 
                 match = match.NextMatch();
