@@ -2,13 +2,6 @@
 using EQTool.ViewModels;
 using System.Windows.Media;
 
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using static System.Net.Mime.MediaTypeNames;
-
 namespace EQTool.Services.Handlers
 {
     public class UserDefinedTriggerHandler : BaseHandler
@@ -28,6 +21,7 @@ namespace EQTool.Services.Handlers
         //
         private void LogEvents_UserDefinedTriggerEvent(object sender, UserDefinedTriggerEvent triggerEvent)
         {
+            return;
             // text to speech?
             if (triggerEvent.Trigger.AudioEnabled == true)
             {
