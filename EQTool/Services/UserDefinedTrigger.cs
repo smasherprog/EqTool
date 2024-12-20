@@ -12,6 +12,7 @@ namespace EQTool.Services
     // class for simple non-timer Triggers
     public class UserDefinedTrigger
     {
+
         // simple properties
         public int TriggerID { get; set; }
         public bool TriggerEnabled { get; set; }
@@ -138,6 +139,8 @@ namespace EQTool.Services
         public bool AudioEnabled { get; set; }
 
         private string audioText;
+
+
         public string AudioText
         {
             set { audioText = value; }
