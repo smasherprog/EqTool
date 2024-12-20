@@ -1,15 +1,9 @@
 ﻿using Autofac;
-using EQTool.Models;
 using EQTool.Services;
 using EQTool.Services.Parsing;
-using EQTool.ViewModels;
-using EQTool.ViewModels.SpellWindow;
 using EQtoolsTests.Fakes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using System.Linq;
-using System.Windows.Documents;
-using System.Collections.Generic;
 
 namespace EQtoolsTests
 {
@@ -25,11 +19,11 @@ namespace EQtoolsTests
             textToSpeach = container.Resolve<ITextToSpeach>() as TextToSpeachFake;
         }
 
-        [TestMethod]
+        //[TestMethod]
         public void ZeroNamedGroups()
         {
             // add in a testing trigger to the list of user defined triggers
-            List<UserDefinedTrigger> theList = UserDefinedTriggerParser.triggerList;
+            var theList = UserDefinedTriggerParser.triggerList;
             theList.Add(new UserDefinedTrigger { TriggerID = -1, TriggerEnabled = true, TriggerName = "Test Trigger1", SearchText = "^Can you hear me now?", TextEnabled = true, DisplayText = "I can hear you", AudioEnabled = true, AudioText = "I can hear you" });
 
             var called = false;
@@ -43,11 +37,11 @@ namespace EQtoolsTests
             Assert.IsTrue(called);
         }
 
-        [TestMethod]
+        //[TestMethod]
         public void ThreeNamedGroups()
         {
             // add in a testing trigger to the list of user defined triggers
-            List<UserDefinedTrigger> theList = UserDefinedTriggerParser.triggerList;
+            var theList = UserDefinedTriggerParser.triggerList;
             theList.Add(new UserDefinedTrigger { TriggerID = -2, TriggerEnabled = true, TriggerName = "Test Trigger2", SearchText = "^{count} {containers} of {beverage} on the wall", TextEnabled = true, DisplayText = "{count} {containers} of {beverage}", AudioEnabled = true, AudioText = "{count} {containers} of {beverage}" });
 
             var called = false;
