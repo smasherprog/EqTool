@@ -3,10 +3,13 @@ using EQTool.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Windows.Shapes;
+using static System.Windows.Forms.LinkLabel;
 
 namespace EQTool.Services.Parsing
 {
@@ -17,25 +20,10 @@ namespace EQTool.Services.Parsing
     //
     public class UserDefinedTriggerParser : IEqLogParser
     { 
-        // todo - revise this to read from disk
-        public static List<UserDefinedTrigger> triggerList = new List<UserDefinedTrigger>()
-            {
-                new UserDefinedTrigger { TriggerID = 100, TriggerEnabled = true, TriggerName = "Spell Interrupted", SearchText = "^Your spell is interrupted.", TextEnabled = true, DisplayText = "Spell Interrupted", AudioEnabled = true, AudioText = "Interrupted" },
-                new UserDefinedTrigger { TriggerID = 101, TriggerEnabled = true, TriggerName = "Spell Fizzle", SearchText = "^Your spell fizzles!", TextEnabled = true, DisplayText = "Spell Fizzles", AudioEnabled = true, AudioText = "Fizzle" },
-                new UserDefinedTrigger { TriggerID = 102, TriggerEnabled = true, TriggerName = "Backstabber", SearchText = "^{backstabber} backstabs {target} for {damage} points of damage\\.", TextEnabled = true, DisplayText = "{backstabber} backstabs {target} for {damage}", AudioEnabled = true, AudioText = "Backstabber" },
-                new UserDefinedTrigger { TriggerID = 103, TriggerEnabled = true, TriggerName = "Corpse Need Consent", SearchText = "^You do not have consent to summon that corpse", TextEnabled = true, DisplayText = "Need Consent", AudioEnabled = true, AudioText = "Need Consent" },
-                new UserDefinedTrigger { TriggerID = 104, TriggerEnabled = true, TriggerName = "Corpse Out of Range", SearchText = "^The corpse is too far away to summon", TextEnabled = true, DisplayText = "Corpse OOR", AudioEnabled = true, AudioText = "Corpse out of range" },
-                new UserDefinedTrigger { TriggerID = 105, TriggerEnabled = true, TriggerName = "Select a Target", SearchText = "^(You must first select a target for this spell)|(You must first click on the being you wish to attack)", TextEnabled = true, DisplayText = "Select a target", AudioEnabled = true, AudioText = "Select a target" },
-                new UserDefinedTrigger { TriggerID = 106, TriggerEnabled = true, TriggerName = "Insufficient Mana", SearchText = "^Insufficient Mana to cast this spell!", TextEnabled = true, DisplayText = "OOM", AudioEnabled = true, AudioText = "out of mana" },
-                new UserDefinedTrigger { TriggerID = 107, TriggerEnabled = true, TriggerName = "Target Out of Range", SearchText = "^Your target is out of range", TextEnabled = true, DisplayText = "Target out of range", AudioEnabled = true, AudioText = "Out of range" },
-                new UserDefinedTrigger { TriggerID = 108, TriggerEnabled = true, TriggerName = "Spell Did Not Take Hold", SearchText = "^Your spell did not take hold", TextEnabled = true, DisplayText = "Spell did not take hold", AudioEnabled = true, AudioText = "Spell did not take hold" },
-                new UserDefinedTrigger { TriggerID = 109, TriggerEnabled = true, TriggerName = "Must be standing to cast", SearchText = "^(You must be standing)|(You are too distracted to cast a spell now)", TextEnabled = true, DisplayText = "Stand up!", AudioEnabled = true, AudioText = "stand up" },
-                new UserDefinedTrigger { TriggerID = 110, TriggerEnabled = true, TriggerName = "Dispelled", SearchText = "^You feel a bit dispelled", TextEnabled = true, DisplayText = "You have been dispelled", AudioEnabled = true, AudioText = "dispelled" },
-                new UserDefinedTrigger { TriggerID = 111, TriggerEnabled = true, TriggerName = "Regen Faded", SearchText = "^You have stopped regenerating", TextEnabled = true, DisplayText = "===== Regen faded =====", AudioEnabled = true, AudioText = "re-gen faded" },
-                new UserDefinedTrigger { TriggerID = 112, TriggerEnabled = true, TriggerName = "Can't See Target", SearchText = "^You can't see your target", TextEnabled = true, DisplayText = "Can't see target", AudioEnabled = true, AudioText = "Can't see target" },
-                new UserDefinedTrigger { TriggerID = 113, TriggerEnabled = true, TriggerName = "Sense Heading", SearchText = "^You think you are heading {direction}", TextEnabled = true, DisplayText = "Direction = {direction}", AudioEnabled = true, AudioText = "{direction}" },
-                new UserDefinedTrigger { TriggerID = 114, TriggerEnabled = true, TriggerName = "Sense Heading Failed", SearchText = "^You have no idea what direction you are facing", TextEnabled = true, DisplayText = "No idea", AudioEnabled = true, AudioText = "no idea" },
-            };
+        // UserTriggers file and the corresponding Triggers
+        private const string userTriggerFileName = "UserTriggers.txt";
+        private readonly List<string> triggerFileContents = new List<string>();                 // the raw file contents
+        public static List<UserDefinedTrigger> triggerList = new List<UserDefinedTrigger>();    // the corresponding UserDefinedTriggers from the file
 
         private readonly ActivePlayer activePlayer;
         private readonly LogEvents logEvents;
@@ -45,6 +33,9 @@ namespace EQTool.Services.Parsing
         {
             this.activePlayer = activePlayer;
             this.logEvents = logEvents;
+
+            // load triggers from file
+            LoadTriggers();
         }
 
         // handle a line from the log file
@@ -99,6 +90,118 @@ namespace EQTool.Services.Parsing
             }
 
             return returnValue;
+        }
+
+        //
+        // utility function to load the trigger file
+        //
+        private bool triggersLoaded = false;
+        private bool LoadTriggers()
+        {
+            if (!triggersLoaded)
+            {
+                // if the trigger file does not exist, then create a starter default set
+                if (File.Exists(userTriggerFileName) == false)
+                {
+                    CreateDefaultTriggerFile(userTriggerFileName);
+                }
+
+                // read the file
+                Console.WriteLine($"Reading UserTrigger file: [{userTriggerFileName}]");
+                using (StreamReader reader = new StreamReader(userTriggerFileName))
+                {
+                    // read a line
+                    string line;
+                    while ((line = reader.ReadLine()) != null)
+                    {
+                        Console.WriteLine(line);
+                        triggerFileContents.Add(line);
+
+                        // attempt to create a trigger from this line
+                        char commentChar = '#';
+                        if (line.IndexOf(commentChar) != 0)
+                        {
+                            // split the line into fields
+                            char fieldSeparater = ';';
+                            string[] fields = line.Split(fieldSeparater);
+                            if (fields.Count() == 8)
+                            {
+                                // create the trigger and add it to the list
+                                UserDefinedTrigger t = new UserDefinedTrigger()
+                                {
+                                    TriggerID       = int.Parse(fields[0]),
+                                    TriggerEnabled  = (int.Parse(fields[1]) == 1),
+                                    TriggerName     = fields[2],
+                                    SearchText      = fields[3],
+                                    TextEnabled     = (int.Parse(fields[4]) == 1),
+                                    DisplayText     = fields[5],
+                                    AudioEnabled    = (int.Parse(fields[6]) == 1),
+                                    AudioText       = fields[7],
+                                };
+                                triggerList.Add(t);
+                            }
+                        }
+                    }
+                }
+
+                triggersLoaded = true;
+            }
+
+            return true;
+        }
+
+
+        // utility function to create a starter user triggers file
+        private bool CreateDefaultTriggerFile(string fileName)
+        {
+            List<string> fileContents = new List<string>();
+            fileContents.Add("#");
+            fileContents.Add("# comment line:                 hashtag # in first column");
+            fileContents.Add("# field separator symbol:       semi-colon ;");
+            fileContents.Add("#");
+            fileContents.Add("# fields:");
+            fileContents.Add("#   triggerID       int         unique value for this trigger");
+            fileContents.Add("#   triggerEnabled  int         1/0 boolean enable/disable this trigger");
+            fileContents.Add("#   triggerName     string      descriptive name");
+            fileContents.Add("#   searchText      string      pattern to match (can be regular expression)");
+            fileContents.Add("#   textEnabled     int         1/0 boolean enable/disable text alerts");
+            fileContents.Add("#   displayText     string      text to be displayed when this trigger finds a matching line in the log");
+            fileContents.Add("#   audioEnabled    int         1/0 boolean enable/disable audible text-to-speech alerts");
+            fileContents.Add("#   audioText       string      text to be spoken when this trigger finds a matching line in the log");
+            fileContents.Add("# ");
+            fileContents.Add("# triggerID;triggerEnabled;triggerName;searchText;textEnabled;displayText;audioEnabled;audioText");
+            fileContents.Add("#");
+            fileContents.Add("# Note: PigParse must be restarted for any changes to be made effective!");
+            fileContents.Add("#");
+            fileContents.Add("100;1;Spell Interrupted;^Your spell is interrupted.;1;Spell Interrupted;0;Interrupted");
+            fileContents.Add("101;1;Spell Fizzle;^Your spell fizzles!;1;Spell Fizzles;0;Fizzle");
+            fileContents.Add("102;1;Backstabber;^{backstabber} backstabs {target} for {damage} points of damage.;1;{backstabber} backstabs {target} for {damage};0;Backstabber");
+            fileContents.Add("103;1;Corpse Need Consent;^You do not have consent to summon that corpse;1;Need Consent;0;Need Consent");
+            fileContents.Add("104;1;Corpse Out of Range;^The corpse is too far away to summon;1;Corpse OOR;0;Corpse out of range");
+            fileContents.Add("105;1;Select a Target;^(You must first select a target for this spell)|(You must first click on the being you wish to attack);1;Select a target;0;Select a target");
+            fileContents.Add("106;1;Insufficient Mana;^Insufficient Mana to cast this spell!;1;OOM;0;out of mana");
+            fileContents.Add("107;1;Target Out of Range;^Your target is out of range;1;Target out of range;0;Out of range");
+            fileContents.Add("108;1;Spell Did Not Take Hold;^Your spell did not take hold;1;Spell did not take hold;0;Spell did not take hold");
+            fileContents.Add("109;1;Must be standing to cast;^(You must be standing)|(You are too distracted to cast a spell now);1;Stand up!;0;stand up");
+            fileContents.Add("110;1;Dispelled;^You feel a bit dispelled;1;You have been dispelled;0;dispelled");
+            fileContents.Add("111;1;Regen Faded;^You have stopped regenerating;1;===== Regen faded =====;0;re-gen faded");
+            fileContents.Add("112;1;Can't See Target;^You can't see your target;1;Can't see target;0;Can't see target");
+            fileContents.Add("113;1;Sense Heading;^You think you are heading {direction};1;Direction = {direction};0;{direction}");
+            fileContents.Add("114;1;Sense Heading Failed;^You have no idea what direction you are facing;1;No idea;0;no idea");
+
+            // write the file
+            Console.WriteLine($"Creating file: [{fileName}]");
+            using (StreamWriter writer = new StreamWriter(fileName))
+            {
+                foreach (string line in fileContents)
+                {
+                    // write a line
+                    Console.WriteLine(line);
+                    writer.WriteLine(line);
+                }
+            }
+
+            return true;
         }
     }
 }

@@ -21,7 +21,6 @@ namespace EQTool.Services.Handlers
         //
         private void LogEvents_UserDefinedTriggerEvent(object sender, UserDefinedTriggerEvent triggerEvent)
         {
-            return;
             // text to speech?
             if (triggerEvent.Trigger.AudioEnabled == true)
             {

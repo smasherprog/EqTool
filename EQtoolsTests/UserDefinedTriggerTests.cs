@@ -19,7 +19,7 @@ namespace EQtoolsTests
             textToSpeach = container.Resolve<ITextToSpeach>() as TextToSpeachFake;
         }
 
-        //[TestMethod]
+        [TestMethod]
         public void ZeroNamedGroups()
         {
             // add in a testing trigger to the list of user defined triggers
@@ -37,7 +37,7 @@ namespace EQtoolsTests
             Assert.IsTrue(called);
         }
 
-        //[TestMethod]
+        [TestMethod]
         public void ThreeNamedGroups()
         {
             // add in a testing trigger to the list of user defined triggers
