@@ -22,11 +22,14 @@ namespace EQTool.Services.Parsing
     { 
         // UserTriggers file and the corresponding Triggers
         private const string userTriggerFileName = "UserTriggers.txt";
-        private readonly List<string> triggerFileContents = new List<string>();                 // the raw file contents
+        private static readonly List<string> triggerFileContents = new List<string>();          // the raw file contents
         public static List<UserDefinedTrigger> triggerList = new List<UserDefinedTrigger>();    // the corresponding UserDefinedTriggers from the file
 
         private readonly ActivePlayer activePlayer;
         private readonly LogEvents logEvents;
+
+        // watcher for the UserTriggers.txt file changed
+        private readonly FileSystemWatcher watcher;
 
         // ctor
         public UserDefinedTriggerParser(ActivePlayer activePlayer, LogEvents logEvents) 
@@ -34,8 +37,25 @@ namespace EQTool.Services.Parsing
             this.activePlayer = activePlayer;
             this.logEvents = logEvents;
 
+            // set up the watcher for the user triggers file changed notification
+            string cwd = System.IO.Directory.GetCurrentDirectory();
+            Console.WriteLine($"cwd = {cwd}");
+            watcher = new FileSystemWatcher(cwd);
+            watcher.NotifyFilter = NotifyFilters.Attributes
+                     | NotifyFilters.CreationTime
+                     | NotifyFilters.DirectoryName
+                     | NotifyFilters.FileName
+                     | NotifyFilters.LastAccess
+                     | NotifyFilters.LastWrite
+                     | NotifyFilters.Security
+                     | NotifyFilters.Size;
+            watcher.Changed += OnChanged;
+            watcher.Filter = userTriggerFileName;
+            watcher.IncludeSubdirectories = true;
+            watcher.EnableRaisingEvents = true;
+
             // load triggers from file
-            LoadTriggers();
+            ReadTriggers();
         }
 
         // handle a line from the log file
@@ -95,64 +115,65 @@ namespace EQTool.Services.Parsing
         //
         // utility function to load the trigger file
         //
-        private bool triggersLoaded = false;
-        private bool LoadTriggers()
+        private static bool ReadTriggers()
         {
-            if (!triggersLoaded)
+            // clear out any old triggers, if needed
+            triggerFileContents.Clear();
+            triggerList.Clear();
+
+            // if the trigger file does not exist, then create a starter default set
+            if (File.Exists(userTriggerFileName) == false)
             {
-                // if the trigger file does not exist, then create a starter default set
-                if (File.Exists(userTriggerFileName) == false)
-                {
-                    CreateDefaultTriggerFile(userTriggerFileName);
-                }
+                CreateDefaultTriggerFile(userTriggerFileName);
+            }
 
-                // read the file
-                Console.WriteLine($"Reading UserTrigger file: [{userTriggerFileName}]");
-                using (StreamReader reader = new StreamReader(userTriggerFileName))
+            // read the file, open it in read-only mode
+            Console.WriteLine($"Reading UserTrigger file: [{userTriggerFileName}]");
+            var fs = new FileStream(userTriggerFileName, FileMode.Open, FileAccess.Read);
+            using (StreamReader reader = new StreamReader(fs))
+            {
+                // read a line
+                string line;
+                while ((line = reader.ReadLine()) != null)
                 {
-                    // read a line
-                    string line;
-                    while ((line = reader.ReadLine()) != null)
+                    Console.WriteLine(line);
+                    triggerFileContents.Add(line);
+
+                    // attempt to create a trigger from this line
+                    char commentChar = '#';
+                    if (line.IndexOf(commentChar) != 0)
                     {
-                        Console.WriteLine(line);
-                        triggerFileContents.Add(line);
-
-                        // attempt to create a trigger from this line
-                        char commentChar = '#';
-                        if (line.IndexOf(commentChar) != 0)
+                        // split the line into fields
+                        char fieldSeparater = ';';
+                        string[] fields = line.Split(fieldSeparater);
+                        if (fields.Count() == 8)
                         {
-                            // split the line into fields
-                            char fieldSeparater = ';';
-                            string[] fields = line.Split(fieldSeparater);
-                            if (fields.Count() == 8)
+                            // create the trigger and add it to the list
+                            UserDefinedTrigger t = new UserDefinedTrigger()
                             {
-                                // create the trigger and add it to the list
-                                UserDefinedTrigger t = new UserDefinedTrigger()
-                                {
-                                    TriggerID       = int.Parse(fields[0]),
-                                    TriggerEnabled  = (int.Parse(fields[1]) == 1),
-                                    TriggerName     = fields[2],
-                                    SearchText      = fields[3],
-                                    TextEnabled     = (int.Parse(fields[4]) == 1),
-                                    DisplayText     = fields[5],
-                                    AudioEnabled    = (int.Parse(fields[6]) == 1),
-                                    AudioText       = fields[7],
-                                };
-                                triggerList.Add(t);
-                            }
+                                TriggerID = int.Parse(fields[0]),
+                                TriggerEnabled = (int.Parse(fields[1]) == 1),
+                                TriggerName = fields[2],
+                                SearchText = fields[3],
+                                TextEnabled = (int.Parse(fields[4]) == 1),
+                                DisplayText = fields[5],
+                                AudioEnabled = (int.Parse(fields[6]) == 1),
+                                AudioText = fields[7],
+                            };
+                            triggerList.Add(t);
                         }
                     }
                 }
-
-                triggersLoaded = true;
             }
+
+
 
             return true;
         }
 
 
         // utility function to create a starter user triggers file
-        private bool CreateDefaultTriggerFile(string fileName)
+        private static bool CreateDefaultTriggerFile(string fileName)
         {
             List<string> fileContents = new List<string>();
             fileContents.Add("#");
@@ -170,8 +191,6 @@ namespace EQTool.Services.Parsing
             fileContents.Add("#   audioText       string      text to be spoken when this trigger finds a matching line in the log");
             fileContents.Add("# ");
             fileContents.Add("# triggerID;triggerEnabled;triggerName;searchText;textEnabled;displayText;audioEnabled;audioText");
-            fileContents.Add("#");
-            fileContents.Add("# Note: PigParse must be restarted for any changes to be made effective!");
             fileContents.Add("#");
             fileContents.Add("100;1;Spell Interrupted;^Your spell is interrupted.;1;Spell Interrupted;0;Interrupted");
             fileContents.Add("101;1;Spell Fizzle;^Your spell fizzles!;1;Spell Fizzles;0;Fizzle");
@@ -203,5 +222,23 @@ namespace EQTool.Services.Parsing
 
             return true;
         }
+
+
+        //
+        // callback for when UserTriggers.txt changes
+        //
+        private static void OnChanged(object sender, FileSystemEventArgs e)
+        {
+            if (e.ChangeType != WatcherChangeTypes.Changed)
+            {
+                return;
+            }
+            // wait 1 second for the editor which presumably just saved the file can let go
+            System.Threading.Thread.Sleep(1000);
+            ReadTriggers();
+            Console.WriteLine($"Changed: {e.FullPath}");
+            
+        }
+
     }
 }

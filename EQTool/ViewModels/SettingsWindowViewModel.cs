@@ -223,6 +223,12 @@ namespace EQTool.ViewModels
             }
         }
 
+        private string _cwd = System.IO.Directory.GetCurrentDirectory();
+        public string CurrentWorkingDirectory
+        {
+            get { return _cwd; }
+        }
+
         private string _EqPath = string.Empty;
         public string EqPath
         {
