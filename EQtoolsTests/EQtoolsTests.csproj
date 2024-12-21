@@ -200,6 +200,7 @@
     <Compile Include="BaseTestClass.cs" />
     <Compile Include="InvisFadingTests.cs" />
     <Compile Include="DragonEffectTests.cs" />
+    <Compile Include="ItemBeginsToGlowTests.cs" />
     <Compile Include="SpellViewModelTests.cs" />
     <Compile Include="SlainHandlerTests.cs" />
     <Compile Include="DeathTests.cs" />

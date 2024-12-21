@@ -10,10 +10,10 @@ namespace EQtoolsTests
     [TestClass]
     public class PlayerLevelDetectionParserTests : BaseTestClass
     {
-        private readonly LogParser logParser; 
+        private readonly LogParser logParser;
 
         public PlayerLevelDetectionParserTests()
-        { 
+        {
             logParser = container.Resolve<LogParser>();
             player.Player = new PlayerInfo { };
         }
@@ -28,22 +28,22 @@ namespace EQtoolsTests
             logParser.Push(line, DateTime.Now);
             Assert.AreEqual(player.Player.Level, 60);
         }
-         
+
         [TestMethod]
         public void TestLevelClassDetectionThroughSpells()
         {
             _ = container.Resolve<EQSpells>();
-            var line = "You begin casting Aegolism.";
+            var line = "You have finished memorizing Aegolism.";
             logParser.Push(line, DateTime.Now);
             Assert.AreEqual(player.Player.Level, 60);
             Assert.AreEqual(player.Player.PlayerClass, PlayerClasses.Cleric);
         }
-          
+
         [TestMethod]
         public void TestLevelDetectionThroughBackstab()
         {
             var message = "You backstab a willowisp for 56 points of damage.";
-            logParser.Push(message, DateTime.Now); 
+            logParser.Push(message, DateTime.Now);
             Assert.AreEqual(player.Player.PlayerClass, PlayerClasses.Rogue);
         }
 

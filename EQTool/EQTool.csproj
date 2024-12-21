@@ -349,9 +349,11 @@
     <Compile Include="Services\Handlers\DeathTouchHandler.cs" />
     <Compile Include="Services\Handlers\RandomRollHandler.cs" />
     <Compile Include="Services\Handlers\SpawnTimerHandler.cs" />
+    <Compile Include="Services\Handlers\YourItemBeginsToGlowHandler.cs" />
     <Compile Include="Services\Parsing\BeginsToCastTheGateSpellParser.cs" />
     <Compile Include="Services\Parsing\ExpGainedParser.cs" />
     <Compile Include="Services\Handlers\SlainHandler.cs" />
+    <Compile Include="Services\Parsing\YourItemBeginsToGlowParser.cs" />
     <Compile Include="Services\Parsing\RingWarParser.cs" />
     <Compile Include="Services\Parsing\SpellCastOnOtherParser.cs" />
     <Compile Include="Services\Parsing\SpellCastOnYouParser.cs" />

@@ -1,7 +1,6 @@
 ﻿using EQTool.Models;
 using System;
 using System.Text.RegularExpressions;
-using System.Windows.Shapes;
 
 namespace EQTool.Services.Parsing
 {
@@ -13,20 +12,18 @@ namespace EQTool.Services.Parsing
         private const string wornOffPattern = @"^Your (?<spell_name>[\w ]+) spell has worn off\.";
         private readonly Regex wornOffRegex = new Regex(wornOffPattern, RegexOptions.Compiled);
 
-        private readonly EQSpells spells;
         private readonly LogEvents logEvents;
         private readonly DebugOutput debugOutput;
 
-        public SpellWornOffOtherParser(EQSpells spells, LogEvents logEvents, DebugOutput debugOutput)
+        public SpellWornOffOtherParser(LogEvents logEvents, DebugOutput debugOutput)
         {
-            this.spells = spells;
             this.logEvents = logEvents;
             this.debugOutput = debugOutput;
         }
 
         public bool Handle(string line, DateTime timestamp, int lineCounter)
         {
-            SpellWornOffOtherEvent e = MatchWornOffOther(line, timestamp, lineCounter);
+            var e = MatchWornOffOther(line, timestamp, lineCounter);
             if (e != null)
             {
                 debugOutput.WriteLine($"Spell: {e.SpellName}, Line: {line}", OutputType.Spells);

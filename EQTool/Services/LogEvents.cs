@@ -130,6 +130,12 @@ namespace EQTool.Services
             SpellWornOffOtherEvent?.Invoke(this, e);
         }
 
+        public event EventHandler<YourItemBeginsToGlow> YourItemBeginsToGlow;
+        public void Handle(YourItemBeginsToGlow e)
+        {
+            YourItemBeginsToGlow?.Invoke(this, e);
+        }
+
         public event EventHandler<YouZonedEvent> YouZonedEvent;
         public void Handle(YouZonedEvent e)
         {
