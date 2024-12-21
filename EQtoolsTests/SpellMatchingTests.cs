@@ -155,7 +155,7 @@ namespace EQtoolsTests
             logParser.Push(line, DateTime.Now);
             var spell = spellWindowViewModel.SpellList.FirstOrDefault();
             Assert.IsNotNull(spell);
-            Assert.AreEqual(spell.Name, "Evasive Discipline");
+            Assert.AreEqual("Evasive Discipline Cooldown", spell.Name);
         }
 
         [TestMethod]
@@ -206,8 +206,9 @@ namespace EQtoolsTests
             };
             logParser.Push(line, DateTime.Now);
             var spell = spellWindowViewModel.SpellList.FirstOrDefault();
+            string timerText = $"{spell.Name} Cooldown";
             Assert.IsNotNull(spell);
-            Assert.AreEqual(spell.Name, "Mana Sieve Cooldown");
+            Assert.AreEqual("Mana Sieve Cooldown", timerText);
         }
 
         [TestMethod]
