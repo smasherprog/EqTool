@@ -42,7 +42,9 @@ namespace EQTool.Services.Handlers
             "Storm Strike",
             "Shrieking Howl",
             "Static Strike",
-            "Rage of Zek"
+            "Rage of Zek",
+            "Blinding Luminance",
+            "Flash of Light"
         };
 
         // all the charm spells
@@ -163,7 +165,7 @@ namespace EQTool.Services.Handlers
                     PercentLeft = 100,
                     GroupName = targetName,
                     TargetClass = targetclass,
-                    Name = spellname,
+                    Name = spellname + " Cooldown",
                     Rect = spell.Rect,
                     Icon = spell.SpellIcon,
                     TotalDuration = TimeSpan.FromSeconds(basetime),
@@ -186,7 +188,7 @@ namespace EQTool.Services.Handlers
                     UpdatedDateTime = DateTime.Now,
                     GroupName = grpname,
                     TargetClass = targetclass,
-                    Name = $"{spellname} Cooldown",
+                    Name = $"{spellname}",
                     Rect = spell.Rect,
                     Icon = spell.SpellIcon,
                     Count = 1,
@@ -217,9 +219,11 @@ namespace EQTool.Services.Handlers
                     };
 
                     // set all beneficial spell types to overwrite/refresh, and all detrimental types to create multiple timers
-                    bool overWrite = true;
+                    var overWrite = true;
                     if (spell.benefit_detriment == EQToolShared.Enums.SpellBenefitDetriment.Detrimental)
+                    {
                         overWrite = false;
+                    }
 
                     spellWindowViewModel.TryAdd(vm, overWrite);
                 }
