@@ -202,6 +202,14 @@ namespace EQTool.Services.Handlers
                 spellduration = spellduration.Add(TimeSpan.FromMilliseconds(delayOffset));
                 if (spellduration.TotalSeconds > 0)
                 {
+                    // set all beneficial spell types to overwrite/refresh, and all detrimental types to create multiple timers
+                    var overWrite = true;
+                    if (spell.benefit_detriment == EQToolShared.Enums.SpellBenefitDetriment.Detrimental)
+                    {
+                        overWrite = false;
+                        spellduration = spellduration.Add(TimeSpan.FromMilliseconds(6000));
+                    }
+
                     var vm = new SpellViewModel
                     {
                         UpdatedDateTime = DateTime.Now,
@@ -218,12 +226,6 @@ namespace EQTool.Services.Handlers
                         TotalRemainingDuration = spellduration
                     };
 
-                    // set all beneficial spell types to overwrite/refresh, and all detrimental types to create multiple timers
-                    var overWrite = true;
-                    if (spell.benefit_detriment == EQToolShared.Enums.SpellBenefitDetriment.Detrimental)
-                    {
-                        overWrite = false;
-                    }
 
                     spellWindowViewModel.TryAdd(vm, overWrite);
                 }

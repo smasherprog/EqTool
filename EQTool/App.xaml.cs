@@ -163,7 +163,7 @@ namespace EQTool
             }
             catch (UnauthorizedAccessException)
             {
-                _ = MessageBox.Show("EQTool is running from a directory where it does not have permission to save settings. Please, move it to a folder where it can write!", "EQTool Permissions!", MessageBoxButton.OK, MessageBoxImage.Error);
+                _ = MessageBox.Show("Pigparse is running from a directory where it does not have permission to save settings. Please, move it to a folder where it can write!", "Pigparse Permissions!", MessageBoxButton.OK, MessageBoxImage.Error);
                 return true;
             }
             try
@@ -171,6 +171,12 @@ namespace EQTool
                 File.Delete("test.json");
             }
             catch { }
+            var cwd = Directory.GetCurrentDirectory();
+            if (cwd.ToLower().Contains("program files"))
+            {
+                _ = MessageBox.Show("Pigparse is running from a directory where it does not have permission to save settings. Please, move it to a folder where it can write!", "Pigparse Permissions!", MessageBoxButton.OK, MessageBoxImage.Error);
+                return true;
+            }
             return false;
         }
 
@@ -186,7 +192,7 @@ namespace EQTool
             SetupExceptionHandling();
             if (!WaitForEQToolToStop())
             {
-                MessageBox.Show("Another EQTool is currently running. You must shut that one down first!", "Multiple EQTools running!", MessageBoxButton.OK, MessageBoxImage.Error);
+                MessageBox.Show("Another Pigparse is currently running. You must shut that one down first!", "Multiple Pigparse running!", MessageBoxButton.OK, MessageBoxImage.Error);
                 App.Current.Shutdown();
                 return;
             }

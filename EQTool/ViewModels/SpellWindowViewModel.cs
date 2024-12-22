@@ -206,7 +206,6 @@ namespace EQTool.ViewModels
                             }
                         }
                     }
-
                     item.TotalRemainingDuration = item.TotalRemainingDuration.Subtract(TimeSpan.FromMilliseconds(dt_ms));
                     if (item.TotalRemainingDuration.TotalSeconds <= 0)
                     {

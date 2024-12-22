@@ -6,7 +6,6 @@ using EQTool.ViewModels.SpellWindow;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Linq;
-using System.Security.Policy;
 
 namespace EQtoolsTests
 {
@@ -132,7 +131,37 @@ namespace EQtoolsTests
             Assert.AreEqual(2, spellWindowViewModel.SpellList.Count);
         }
 
+        [TestMethod]
+        public void GuessParalyzingEarch()
+        {
+            player.Player.PlayerClass = EQToolShared.Enums.PlayerClasses.Necromancer;
+            player.Player.Level = 60;
+            // two casts, and since this is a detrimental spell, should be two timers
+            logParser.Push("You begin casting Paralyzing Earth.", DateTime.Now);
+            logParser.Push("A froglok dar knight hits YOU for 95 points of damage.", DateTime.Now);
+            logParser.Push("A froglok dar knight hits YOU for 17 points of damage.", DateTime.Now.AddSeconds(3));
+            logParser.Push("You regain your concentration and continue your casting.", DateTime.Now.AddSeconds(3));
+            logParser.Push("A froglok dar knight's feet adhere to the ground.", DateTime.Now.AddSeconds(3));
 
+            var spelleffect = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Spell && a.Name == "Paralyzing Earth") as SpellViewModel;
+            Assert.IsNotNull(spelleffect);
+        }
+
+        [TestMethod]
+        public void PreventMultipleSpellsFrombeingRemoved()
+        {
+            player.Player.PlayerClass = EQToolShared.Enums.PlayerClasses.Necromancer;
+            player.Player.Level = 60;
+            var d = DateTime.Now;
+            logParser.Push(spellWindowViewModel, "You begin casting Clinging Darkness.", d);
+            logParser.Push(spellWindowViewModel, "A wooly mammoth is surrounded by darkness.", d.AddSeconds(2));
+            logParser.Push(spellWindowViewModel, "You begin casting Clinging Darkness.", d.AddSeconds(10));
+            logParser.Push(spellWindowViewModel, "A tundra mammoth is surrounded by darkness.", d.AddSeconds(13));
+            logParser.Push(spellWindowViewModel, "Your Clinging Darkness spell has worn off.", d.AddSeconds(43));
+            spellWindowViewModel.UpdateSpells(1000);
+            var spelleffecst = spellWindowViewModel.SpellList.Where(a => a.SpellViewModelType == SpellViewModelType.Spell && a.Name == "Clinging Darkness").Cast<SpellViewModel>();
+            Assert.AreEqual(spelleffecst.Count(), 1);
+        }
 
     }
 }
