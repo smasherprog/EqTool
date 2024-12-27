@@ -19,22 +19,17 @@ namespace EQTool.Services.Parsing
                 logEvents.Handle(new RingWarEvent { RoundNumber = 1, TimeStamp = timestamp, Line = line, LineCounter = lineCounter });
                 return true;
             }
-            else if (line == "Seneschal Aldikar shouts, 'Enough! Show yourself coward! Your blasphemous words shall be etched upon your spacious brow. All will mock you for generations to come. Your own god will forsake you when he witnesses your defeat here today!'")
+            else if (line == "Narandi the Wretched shouts, 'Warriors! Charge through these pompous fools. Any you manage to capture shall become your personal slaves. The outlanders and the Seneschal must die! Bring me their heads!'")
             {
                 logEvents.Handle(new RingWarEvent { RoundNumber = 2, TimeStamp = timestamp, Line = line, LineCounter = lineCounter });
                 return true;
             }
-            else if (line == "Narandi the Wretched shouts, 'Enough chatter. Our veterans approach now to finish you. You have been tested and your weaknesses have been assessed. Bid farewell to your dear Thurgadin, those of you who are fortunate enough to survive the slaughter shall make a new home in the Kromrif slave pens!'")
+            else if (line == "Narandi the Wretched shouts, 'Veterans! Be sure that this time we allow none of the stumpymen to escape to create yet another city. This shall be our final war with these unworthy beings.'")
             {
                 logEvents.Handle(new RingWarEvent { RoundNumber = 3, TimeStamp = timestamp, Line = line, LineCounter = lineCounter });
                 return true;
             }
             return false;
-        }
-
-        private bool IsQuake(string line)
-        {
-            return line.Contains("You feel you should get somewhere safe as soon as possible");
         }
     }
 }
