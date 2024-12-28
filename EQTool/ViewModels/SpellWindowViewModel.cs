@@ -189,9 +189,9 @@ namespace EQTool.ViewModels
                 foreach (var item in SpellList.Where(a => timerTypes.Contains(a.SpellViewModelType)).Cast<TimerViewModel>().ToList())
                 {
                     var hidespell = false;
-                    if (item.GroupName != CustomTimer.CustomerTime && !item.TargetClass.HasValue)
+                    if (item.GroupName != CustomTimer.CustomerTime)
                     {
-                        if (item.SpellViewModelType == SpellViewModelType.Timer)
+                        if (item.SpellViewModelType == SpellViewModelType.Timer && item.TargetClass.HasValue)
                         {
                             if (!MasterNPCList.NPCs.Contains(item.GroupName.Trim()))
                             {
