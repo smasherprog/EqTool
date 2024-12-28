@@ -4,6 +4,7 @@ using EQTool.ViewModels;
 using EQToolShared;
 using System;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace EQTool.Services.Parsing
 {
@@ -16,7 +17,7 @@ namespace EQTool.Services.Parsing
 
         private void LogEvents_CommsEvent(object sender, CommsEvent e)
         {
-            if (e.TheChannel == CommsEvent.Channel.TELL)
+            if (e.TheChannel == CommsEvent.Channel.TELL || e.TheChannel == CommsEvent.Channel.SAY)
             {
                 return;
             }
@@ -27,6 +28,9 @@ namespace EQTool.Services.Parsing
                 logEvents.Handle(m);
             }
         }
+
+        private readonly Regex rchregex = new Regex(@"\bCH\b", RegexOptions.IgnoreCase | RegexOptions.Compiled);
+        private readonly Regex cleanSpacesRegex = new Regex(@"\s{2,}", RegexOptions.Compiled);
 
         public CompleteHealEvent ChCheck(string sender, string line, DateTime timestamp)
         {
@@ -42,6 +46,14 @@ namespace EQTool.Services.Parsing
                 }
             }
 
+            if (line.IndexOf(" rch ", System.StringComparison.OrdinalIgnoreCase) != -1)
+            {
+                line = rchregex.Replace(line, "");
+                line = cleanSpacesRegex.Replace(line, " ").Trim();
+
+                chwordfound = " rch ";
+                chindex = line.IndexOf(" rch ", System.StringComparison.OrdinalIgnoreCase);
+            }
             if (chindex == -1)
             {
                 chwordfound = " rch ";

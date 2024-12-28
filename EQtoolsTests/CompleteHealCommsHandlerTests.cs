@@ -537,5 +537,20 @@ namespace EQtoolsTests
             logParser.Push("Mutao tells the group, 'CH >      johny  '", DateTime.Now);
             Assert.IsTrue(isCalled);
         }
+
+        [TestMethod]
+        public void Parse27()
+        {
+            logEvents.CompleteHealEvent += (s, d) =>
+            {
+                Assert.AreEqual(d.Recipient, "Beefwich");
+                Assert.AreEqual(d.Caster, "Mutao");
+                Assert.AreEqual(d.Position, "BBB");
+                Assert.AreEqual(d.Tag, string.Empty);
+                isCalled = true;
+            };
+            logParser.Push("Mutao tells the group, 'GG RCH BBB CH -- Beefwich'", DateTime.Now);
+            Assert.IsTrue(isCalled);
+        }
     }
 }
