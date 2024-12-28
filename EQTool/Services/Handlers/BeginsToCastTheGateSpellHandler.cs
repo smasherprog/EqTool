@@ -6,7 +6,7 @@ namespace EQTool.Services.Handlers
 {
     public class BeginsToCastTheGateSpellHandler : BaseHandler
     {
-        public BeginsToCastTheGateSpellHandler(LogEvents logEvents, ActivePlayer activePlayer, EQToolSettings eQToolSettings, ITextToSpeach textToSpeach) : base(logEvents, activePlayer, eQToolSettings, textToSpeach)
+        public BeginsToCastTheGateSpellHandler(BaseHandlerData baseHandlerData) : base(baseHandlerData)
         {
             this.logEvents.NPCBeginsToGateEvent += LogEvents_NPCBeginsToGateEvent;
         }

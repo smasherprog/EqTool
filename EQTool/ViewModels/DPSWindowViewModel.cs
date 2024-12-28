@@ -1,6 +1,5 @@
 ﻿using EQTool.Models;
 using EQTool.Services;
-using EQTool.Services.Fight;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -13,14 +12,12 @@ namespace EQTool.ViewModels
     public class DPSWindowViewModel : INotifyPropertyChanged
     {
         private readonly IAppDispatcher appDispatcher;
-        private readonly FightLogService fightLogService;
-        public DPSWindowViewModel(IAppDispatcher appDispatcher, FightLogService fightLogService, ActivePlayer activePlayer, SessionPlayerDamage sessionPlayerDamage)
+        public DPSWindowViewModel(IAppDispatcher appDispatcher, ActivePlayer activePlayer, SessionPlayerDamage sessionPlayerDamage)
         {
             this.appDispatcher = appDispatcher;
-            this.fightLogService = fightLogService;
             Title = "Dps Meter v" + App.Version;
-            this.ActivePlayer = activePlayer;
-            this.SessionPlayerDamage = sessionPlayerDamage;
+            ActivePlayer = activePlayer;
+            SessionPlayerDamage = sessionPlayerDamage;
         }
 
         public ObservableCollection<EntittyDPS> _EntityList = new ObservableCollection<EntittyDPS>();
@@ -89,7 +86,7 @@ namespace EQTool.ViewModels
             var timeup = Math.Abs((now - lasttime).TotalSeconds);
             var secondstosubtract = groupcount * 20;
             secondstosubtract = Math.Min(60, secondstosubtract);
-            var secthreshhold = 80 - secondstosubtract;
+            _ = 80 - secondstosubtract;
             return timeup > 40;
         }
 
@@ -120,7 +117,6 @@ namespace EQTool.ViewModels
                         e.TargetTotalDamage = totaldmg;
                     }
                 }
-                fightLogService.Log(itemstormove);
                 foreach (var item in itemstormove)
                 {
                     _ = EntityList.Remove(item);
@@ -129,16 +125,16 @@ namespace EQTool.ViewModels
                 var you = _EntityList.FirstOrDefault(a => a.SourceName == "You" && a.TotalSeconds > 20);
                 if (you != null)
                 {
-                    if (this.ActivePlayer.Player != null)
+                    if (ActivePlayer.Player != null)
                     {
-                        this.ActivePlayer.Player.BestPlayerDamage.HighestDPS = Math.Max(this.ActivePlayer.Player.BestPlayerDamage.HighestDPS, you.DPS);
-                        this.ActivePlayer.Player.BestPlayerDamage.TargetTotalDamage = Math.Max(this.ActivePlayer.Player.BestPlayerDamage.TargetTotalDamage, you.TotalDamage);
-                        this.ActivePlayer.Player.BestPlayerDamage.HighestHit = Math.Max(this.ActivePlayer.Player.BestPlayerDamage.HighestHit, you.HighestHit);
+                        ActivePlayer.Player.BestPlayerDamage.HighestDPS = Math.Max(ActivePlayer.Player.BestPlayerDamage.HighestDPS, you.DPS);
+                        ActivePlayer.Player.BestPlayerDamage.TargetTotalDamage = Math.Max(ActivePlayer.Player.BestPlayerDamage.TargetTotalDamage, you.TotalDamage);
+                        ActivePlayer.Player.BestPlayerDamage.HighestHit = Math.Max(ActivePlayer.Player.BestPlayerDamage.HighestHit, you.HighestHit);
                     }
                     //this.OnPropertyChanged(nameof(ActivePlayer));
-                    this.SessionPlayerDamage.CurrentSessionPlayerDamage.HighestDPS = Math.Max(this.SessionPlayerDamage.CurrentSessionPlayerDamage.HighestDPS, you.DPS);
-                    this.SessionPlayerDamage.CurrentSessionPlayerDamage.TargetTotalDamage = Math.Max(this.SessionPlayerDamage.CurrentSessionPlayerDamage.TargetTotalDamage, you.TotalDamage);
-                    this.SessionPlayerDamage.CurrentSessionPlayerDamage.HighestHit = Math.Max(this.SessionPlayerDamage.CurrentSessionPlayerDamage.HighestHit, you.HighestHit);
+                    SessionPlayerDamage.CurrentSessionPlayerDamage.HighestDPS = Math.Max(SessionPlayerDamage.CurrentSessionPlayerDamage.HighestDPS, you.DPS);
+                    SessionPlayerDamage.CurrentSessionPlayerDamage.TargetTotalDamage = Math.Max(SessionPlayerDamage.CurrentSessionPlayerDamage.TargetTotalDamage, you.TotalDamage);
+                    SessionPlayerDamage.CurrentSessionPlayerDamage.HighestHit = Math.Max(SessionPlayerDamage.CurrentSessionPlayerDamage.HighestHit, you.HighestHit);
                     //this.OnPropertyChanged(nameof(SessionPlayerDamage));
                 }
             });

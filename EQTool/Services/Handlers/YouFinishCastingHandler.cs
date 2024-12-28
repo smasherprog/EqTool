@@ -1,5 +1,4 @@
 ﻿using EQTool.Models;
-using EQTool.ViewModels;
 using System.Collections.Generic;
 
 namespace EQTool.Services.Handlers
@@ -17,24 +16,13 @@ namespace EQTool.Services.Handlers
             "Allure",
             "Boltran's Agacerie"
         };
-        private readonly IAppDispatcher appDispatcher;
-        private readonly BaseSpellYouCastingHandler baseSpellYouCastingHandler;
-        private readonly DebugOutput debugOutput;
+        private readonly SpellHandlerService baseSpellYouCastingHandler;
 
-        public YouFinishCastingHandler(
-            BaseSpellYouCastingHandler baseSpellYouCastingHandler,
-            IAppDispatcher appDispatcher,
-            LogEvents logEvents,
-            ActivePlayer activePlayer,
-            EQToolSettings eQToolSettings,
-            ITextToSpeach textToSpeach,
-            DebugOutput debugOutput) : base(logEvents, activePlayer, eQToolSettings, textToSpeach)
+        public YouFinishCastingHandler(SpellHandlerService baseSpellYouCastingHandler, BaseHandlerData baseHandlerData) : base(baseHandlerData)
         {
             this.baseSpellYouCastingHandler = baseSpellYouCastingHandler;
-            this.appDispatcher = appDispatcher;
-            this.logEvents.YouFinishCastingEvent += LogEvents_YouFinishCastingEvent;
-            this.logEvents.LineEvent += LogEvents_LineEvent;
-            this.debugOutput = debugOutput;
+            logEvents.YouFinishCastingEvent += LogEvents_YouFinishCastingEvent;
+            logEvents.LineEvent += LogEvents_LineEvent;
         }
 
         private void LogEvents_LineEvent(object sender, LineEvent e)

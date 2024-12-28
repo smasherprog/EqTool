@@ -1,19 +1,17 @@
 ﻿using EQTool.Models;
-using EQTool.ViewModels;
 
 namespace EQTool.Services.Handlers
 {
     public class PlayerChangeHandler : BaseHandler
-    { 
-        public PlayerChangeHandler(LogEvents logEvents, ActivePlayer activePlayer, EQToolSettings eQToolSettings, ITextToSpeach textToSpeach) :
-            base(logEvents, activePlayer, eQToolSettings, textToSpeach)
+    {
+        public PlayerChangeHandler(BaseHandlerData baseHandlerData) : base(baseHandlerData)
         {
-            this.logEvents.PayerChangedEvent += LogEvents_PayerChangedEvent;
+            logEvents.PayerChangedEvent += LogEvents_PayerChangedEvent;
         }
 
         private void LogEvents_PayerChangedEvent(object sender, PayerChangedEvent e)
         {
-            this.activePlayer.Location = null;
-        } 
+            activePlayer.Location = null;
+        }
     }
 }

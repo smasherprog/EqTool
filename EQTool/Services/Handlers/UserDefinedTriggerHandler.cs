@@ -1,24 +1,15 @@
 ﻿using EQTool.Models;
-using EQTool.ViewModels;
 using System.Windows.Media;
 
 namespace EQTool.Services.Handlers
 {
     public class UserDefinedTriggerHandler : BaseHandler
     {
-        //
-        // ctor
-        //
-        // register this service as a listener for the Events it cares about
-        //
-        public UserDefinedTriggerHandler(LogEvents logEvents, ActivePlayer activePlayer, EQToolSettings eQToolSettings, ITextToSpeach textToSpeach) : base(logEvents, activePlayer, eQToolSettings, textToSpeach)
+        public UserDefinedTriggerHandler(BaseHandlerData baseHandlerData) : base(baseHandlerData)
         {
-            this.logEvents.UserDefinedTriggerEvent += LogEvents_UserDefinedTriggerEvent;
+            logEvents.UserDefinedTriggerEvent += LogEvents_UserDefinedTriggerEvent;
         }
 
-        //
-        // function that gets called for a UserDefinedTriggerEvent
-        //
         private void LogEvents_UserDefinedTriggerEvent(object sender, UserDefinedTriggerEvent triggerEvent)
         {
             // text to speech?

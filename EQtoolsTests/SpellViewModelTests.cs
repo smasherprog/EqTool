@@ -79,6 +79,15 @@ namespace EQtoolsTests
         }
 
         [TestMethod]
+        public void ClericDA3()
+        {
+            logParser.Push("Someone is surrounded by a divine barrier.", DateTime.Now);
+            var dteffect = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Timer && a.Name == "Divine Barrier Cooldown") as TimerViewModel;
+            Assert.AreEqual(dteffect.TotalDuration.TotalSeconds, 900.0);
+            Assert.AreEqual(dteffect.GroupName, "Someone");
+        }
+
+        [TestMethod]
         public void Dictate()
         {
             logParser.Push("You begin casting Dictate.", DateTime.Now);
@@ -86,7 +95,7 @@ namespace EQtoolsTests
             var dteffect = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Timer && a.Name == "Dictate Cooldown") as TimerViewModel;
             Assert.AreEqual(dteffect.TotalDuration.TotalSeconds, 299.0, 2);
             var spelleffect = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Spell && a.Name == "Dictate") as SpellViewModel;
-            Assert.AreEqual(spelleffect.TotalDuration.TotalSeconds, 47.0, 2);
+            Assert.AreEqual(spelleffect.TotalDuration.TotalSeconds, 52.0, 2);
         }
 
         [TestMethod]
@@ -126,7 +135,7 @@ namespace EQtoolsTests
 
             var spelleffect = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Spell && a.Name == "Dazzle") as SpellViewModel;
             Assert.IsNotNull(spelleffect);
-            Assert.AreEqual(96.0, spelleffect.TotalDuration.TotalSeconds);
+            Assert.AreEqual(102.0, spelleffect.TotalDuration.TotalSeconds, .1);
             Assert.AreEqual(" Orc centurion", spelleffect.GroupName);
             Assert.AreEqual(2, spellWindowViewModel.SpellList.Count);
         }
@@ -162,6 +171,5 @@ namespace EQtoolsTests
             var spelleffecst = spellWindowViewModel.SpellList.Where(a => a.SpellViewModelType == SpellViewModelType.Spell && a.Name == "Clinging Darkness").Cast<SpellViewModel>();
             Assert.AreEqual(spelleffecst.Count(), 1);
         }
-
     }
 }

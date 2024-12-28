@@ -57,17 +57,10 @@ namespace EQTool.Services.Handlers
         //
         // ctor
         //
-        public CustomTimerHandler(
-            SpellWindowViewModel spellWindowViewModel,
-            LogEvents logEvents,
-            EQSpells spells,
-            ActivePlayer activePlayer,
-            EQToolSettings eQToolSettings,
-            ITextToSpeach textToSpeach) : base(logEvents, activePlayer, eQToolSettings, textToSpeach)
+        public CustomTimerHandler(EQSpells spells, SpellWindowViewModel spellWindowViewModel, BaseHandlerData baseHandlerData) : base(baseHandlerData)
         {
             this.spellWindowViewModel = spellWindowViewModel;
-            this.logEvents.CommsEvent += LogEvents_CommsEvent;
-            this.spellWindowViewModel = spellWindowViewModel;
+            logEvents.CommsEvent += LogEvents_CommsEvent;
             this.spells = spells;
         }
 

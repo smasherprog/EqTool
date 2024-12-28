@@ -2,8 +2,8 @@ using EQTool.Models;
 using EQTool.ViewModels;
 using EQTool.ViewModels.SpellWindow;
 using System;
-using System.Linq;
 using System.Diagnostics;
+using System.Linq;
 using System.Text.RegularExpressions;
 using System.Windows.Media;
 
@@ -24,20 +24,13 @@ namespace EQTool.Services.Handlers
         //
         // register this service as a listener for the Events it cares about
         //
-        public SpawnTimerHandler(
-            LogEvents logEvents, 
-            SpellWindowViewModel spellWindowViewModel,
-            EQSpells spells,
-            ActivePlayer activePlayer, 
-            EQToolSettings eQToolSettings, 
-            ITextToSpeach textToSpeach)
-            : base(logEvents, activePlayer, eQToolSettings, textToSpeach)
+        public SpawnTimerHandler(SpellWindowViewModel spellWindowViewModel, EQSpells spells, BaseHandlerData baseHandlerData) : base(baseHandlerData)
         {
             this.spellWindowViewModel = spellWindowViewModel;
             this.spells = spells;
-            this.logEvents.ExpGainedEvent += LogEvents_ExpGainedEvent;
-            this.logEvents.SlainEvent += LogEvents_SlainEvent;
-            this.logEvents.FactionEvent += LogEvents_FactionEvent;
+            logEvents.ExpGainedEvent += LogEvents_ExpGainedEvent;
+            logEvents.SlainEvent += LogEvents_SlainEvent;
+            logEvents.FactionEvent += LogEvents_FactionEvent;
         }
 
         // getter for the spawn timer Model

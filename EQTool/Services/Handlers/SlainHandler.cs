@@ -13,7 +13,6 @@ namespace EQTool.Services.Handlers
     {
         private readonly SpellWindowViewModel spellWindowViewModel;
         private readonly PlayerTrackerService playerTrackerService;
-        private readonly IAppDispatcher appDispatcher;
         private readonly EQSpells spells;
         private readonly FightHistory fightHistory;
 
@@ -26,26 +25,21 @@ namespace EQTool.Services.Handlers
 
         public SlainHandler(
             PlayerTrackerService playerTrackerService,
-            IAppDispatcher appDispatcher,
-            LogEvents logEvents,
             EQSpells spells,
             FightHistory fightHistory,
-            ActivePlayer activePlayer,
-            EQToolSettings eQToolSettings,
             SpellWindowViewModel spellWindowViewModel,
-            ITextToSpeach textToSpeach) : base(logEvents, activePlayer, eQToolSettings, textToSpeach)
+            BaseHandlerData baseHandlerData) : base(baseHandlerData)
         {
             this.fightHistory = fightHistory;
             this.spells = spells;
-            this.appDispatcher = appDispatcher;
             this.playerTrackerService = playerTrackerService;
             this.spellWindowViewModel = spellWindowViewModel;
-            this.logEvents.SlainEvent += LogEvents_SlainEvent;
-            this.logEvents.FactionEvent += LogEvents_FactionEvent;
-            this.logEvents.ExpGainedEvent += LogEvents_ExperienceGainedEvent;
-            this.logEvents.PayerChangedEvent += LogEvents_PayerChangedEvent;
-            this.logEvents.LineEvent += LogEvents_LineEvent;
-            this.logEvents.CommsEvent += LogEvents_CommsEvent;
+            logEvents.SlainEvent += LogEvents_SlainEvent;
+            logEvents.FactionEvent += LogEvents_FactionEvent;
+            logEvents.ExpGainedEvent += LogEvents_ExperienceGainedEvent;
+            logEvents.PayerChangedEvent += LogEvents_PayerChangedEvent;
+            logEvents.LineEvent += LogEvents_LineEvent;
+            logEvents.CommsEvent += LogEvents_CommsEvent;
         }
 
         private void LogEvents_CommsEvent(object sender, CommsEvent e)

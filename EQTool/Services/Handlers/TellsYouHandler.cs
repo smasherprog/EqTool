@@ -1,31 +1,14 @@
 ﻿using EQTool.Models;
-using EQTool.ViewModels;
 using System.Windows.Media;
-
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace EQTool.Services.Handlers
 {
-    // alert user when a tell is received
     public class TellsYouHandler : BaseHandler
     {
-        //
-        // ctor
-        //
-        // register this service as a listener for the Events it cares about
-        //
-        public TellsYouHandler(LogEvents logEvents, ActivePlayer activePlayer, EQToolSettings eQToolSettings, ITextToSpeach textToSpeach) : base(logEvents, activePlayer, eQToolSettings, textToSpeach)
+        public TellsYouHandler(BaseHandlerData baseHandlerData) : base(baseHandlerData)
         {
-            this.logEvents.CommsEvent += LogEvents_CommsEvent;
+            logEvents.CommsEvent += LogEvents_CommsEvent;
         }
-
-        //
-        // function that gets called for a CommsEvent
-        //
         private void LogEvents_CommsEvent(object sender, CommsEvent commsEvent)
         {
             // tell?
@@ -41,7 +24,7 @@ namespace EQTool.Services.Handlers
                         if (commsEvent.Content.StartsWith("Attacking") == false)
                         {
                             // text to be displayed / spoken
-                            string text = $"{commsEvent.Sender} sent a tell";
+                            var text = $"{commsEvent.Sender} sent a tell";
 
                             // text to speech?
                             if (activePlayer?.Player?.TellsYouAudio == true)

@@ -1,31 +1,20 @@
 ﻿using EQTool.Models;
-using EQTool.ViewModels;
 using System.Linq;
 
 namespace EQTool.Services.Handlers
 {
     public class SpellCastOnOtherHandler : BaseHandler
     {
-        private readonly IAppDispatcher appDispatcher;
-        private readonly BaseSpellYouCastingHandler baseSpellYouCastingHandler;
+        private readonly SpellHandlerService baseSpellYouCastingHandler;
         private readonly SpellDurations spellDurations;
-        private readonly DebugOutput debugOutput;
 
         public SpellCastOnOtherHandler(
             SpellDurations spellDurations,
-            LogEvents logEvents,
-            BaseSpellYouCastingHandler baseSpellYouCastingHandler,
-            ActivePlayer activePlayer,
-            EQToolSettings eQToolSettings,
-            IAppDispatcher appDispatcher,
-            ITextToSpeach textToSpeach,
-            DebugOutput debugOutput) : base(logEvents, activePlayer, eQToolSettings, textToSpeach)
+            SpellHandlerService baseSpellYouCastingHandler, BaseHandlerData baseHandlerData) : base(baseHandlerData)
         {
-            this.debugOutput = debugOutput;
-            this.appDispatcher = appDispatcher;
             this.spellDurations = spellDurations;
             this.baseSpellYouCastingHandler = baseSpellYouCastingHandler;
-            this.logEvents.SpellCastOnOtherEvent += LogEvents_SpellCastOnOtherEvent;
+            logEvents.SpellCastOnOtherEvent += LogEvents_SpellCastOnOtherEvent;
         }
 
         private void LogEvents_SpellCastOnOtherEvent(object sender, SpellCastOnOtherEvent e)

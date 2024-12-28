@@ -1,14 +1,13 @@
 ﻿using EQTool.Models;
-using EQTool.ViewModels;
 using System.Windows.Media;
 
 namespace EQTool.Services.Handlers
 {
     public class FailedFeignHandler : BaseHandler
     {
-        public FailedFeignHandler(LogEvents logEvents, ActivePlayer activePlayer, EQToolSettings eQToolSettings, ITextToSpeach textToSpeach) : base(logEvents, activePlayer, eQToolSettings, textToSpeach)
+        public FailedFeignHandler(BaseHandlerData baseHandlerData) : base(baseHandlerData)
         {
-            this.logEvents.FailedFeignEvent += LogParser_FailedFeignEvent;
+            logEvents.FailedFeignEvent += LogParser_FailedFeignEvent;
         }
 
         private void LogParser_FailedFeignEvent(object sender, FailedFeignEvent e)

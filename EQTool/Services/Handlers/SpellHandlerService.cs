@@ -9,23 +9,27 @@ using System.Windows.Media;
 
 namespace EQTool.Services.Handlers
 {
-    public class BaseSpellYouCastingHandler
+    public class SpellHandlerService
     {
         // spells with long recast times, that need a cooldown timer
         public static readonly List<string> SpellsThatNeedTimers = new List<string>()
         {
-            "Dictate",
-            "Harvest",
             "Divine Aura",
             "Divine Barrier",
             "Harmshield",
             "Quivering Veil of Xarn",
+        };
+
+        public static readonly List<string> SpellsThatNeedTimersUnderYou = new List<string>()
+        {
+            "Dictate",
+            "Harvest",
             "Boon of the Garou",
             "Theft of Thought"
         };
 
         // spells that we wish to count how many times they have been cast
-        private readonly List<string> SpellsThatNeedCounts = new List<string>()
+        public static readonly List<string> SpellsThatNeedCounts = new List<string>()
         {
             "Mana Sieve",
             "LowerElement",
@@ -74,7 +78,7 @@ namespace EQTool.Services.Handlers
         private readonly ActivePlayer activePlayer;
         private readonly PlayerTrackerService playerTrackerService;
 
-        public BaseSpellYouCastingHandler(PlayerTrackerService playerTrackerService, SpellWindowViewModel spellWindowViewModel, ActivePlayer activePlayer)
+        public SpellHandlerService(PlayerTrackerService playerTrackerService, SpellWindowViewModel spellWindowViewModel, ActivePlayer activePlayer)
         {
             this.playerTrackerService = playerTrackerService;
             this.spellWindowViewModel = spellWindowViewModel;
@@ -85,12 +89,28 @@ namespace EQTool.Services.Handlers
         {
             var targetclass = playerTrackerService.GetPlayer(targetName)?.PlayerClass;
             var spellname = spell.name;
-            if (SpellsThatNeedTimers.Any(a => string.Equals(spell.name, a, StringComparison.OrdinalIgnoreCase)))
+            if (SpellsThatNeedTimersUnderYou.Any(a => string.Equals(spell.name, a, StringComparison.OrdinalIgnoreCase)))
             {
                 spellWindowViewModel.TryAdd(new TimerViewModel
                 {
                     PercentLeft = 100,
                     GroupName = EQSpells.SpaceYou,
+                    TargetClass = targetclass,
+                    Name = $"{spellname} Cooldown",
+                    Rect = spell.Rect,
+                    Icon = spell.SpellIcon,
+                    TotalDuration = TimeSpan.FromSeconds((int)((spell.recastTime + delayOffset) / 1000.0)),
+                    TotalRemainingDuration = TimeSpan.FromSeconds((int)((spell.recastTime + delayOffset) / 1000.0)),
+                    UpdatedDateTime = DateTime.Now,
+                    ProgressBarColor = Brushes.SkyBlue
+                });
+            }
+            else if (SpellsThatNeedTimers.Any(a => string.Equals(spell.name, a, StringComparison.OrdinalIgnoreCase)))
+            {
+                spellWindowViewModel.TryAdd(new TimerViewModel
+                {
+                    PercentLeft = 100,
+                    GroupName = targetName,
                     TargetClass = targetclass,
                     Name = $"{spellname} Cooldown",
                     Rect = spell.Rect,

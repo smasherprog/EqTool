@@ -8,15 +8,13 @@ namespace EQTool.Services.Handlers
 {
     public class MendWoundsHandler : BaseHandler
     {
-        private readonly IAppDispatcher appDispatcher;
         private readonly Spell HealSpell;
         private readonly SpellWindowViewModel spellWindowViewModel;
 
-        public MendWoundsHandler(SpellWindowViewModel spellWindowViewModel, EQSpells spells, IAppDispatcher appDispatcher, LogEvents logEvents, ActivePlayer activePlayer, EQToolSettings eQToolSettings, ITextToSpeach textToSpeach) : base(logEvents, activePlayer, eQToolSettings, textToSpeach)
+        public MendWoundsHandler(SpellWindowViewModel spellWindowViewModel, EQSpells spells, BaseHandlerData baseHandlerData) : base(baseHandlerData)
         {
             this.spellWindowViewModel = spellWindowViewModel;
-            this.appDispatcher = appDispatcher;
-            this.logEvents.MendWoundsEvent += LogEvents_MendWoundsEvent;
+            logEvents.MendWoundsEvent += LogEvents_MendWoundsEvent;
             HealSpell = spells.AllSpells.FirstOrDefault(a => a.name == "Chloroplast") ?? spells.AllSpells.FirstOrDefault(a => a.name == "Regeneration");
         }
 

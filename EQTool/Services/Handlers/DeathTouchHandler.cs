@@ -10,7 +10,6 @@ namespace EQTool.Services.Handlers
     public class DeathTouchHandler : BaseHandler
     {
         private readonly SpellWindowViewModel spellWindowViewModel;
-        private readonly PlayerTrackerService playerTrackerService;
         private readonly EQSpells spells;
         private readonly List<string> NPCsThatDeathTouch = new List<string>()
         {
@@ -18,19 +17,13 @@ namespace EQTool.Services.Handlers
             "Dread"
         };
 
-        public DeathTouchHandler(
+        public DeathTouchHandler(EQSpells spells,
             SpellWindowViewModel spellWindowViewModel,
-            PlayerTrackerService playerTrackerService,
-            LogEvents logEvents,
-            EQSpells spells,
-            ActivePlayer activePlayer,
-            EQToolSettings eQToolSettings,
-            ITextToSpeach textToSpeach) : base(logEvents, activePlayer, eQToolSettings, textToSpeach)
+            PlayerTrackerService playerTrackerService, BaseHandlerData baseHandlerData) : base(baseHandlerData)
         {
             this.spells = spells;
-            this.playerTrackerService = playerTrackerService;
             this.spellWindowViewModel = spellWindowViewModel;
-            this.logEvents.CommsEvent += LogEvents_CommsEvent;
+            logEvents.CommsEvent += LogEvents_CommsEvent;
         }
 
         private void LogEvents_CommsEvent(object sender, CommsEvent e)

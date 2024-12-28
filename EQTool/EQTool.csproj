@@ -334,7 +334,7 @@
     <Compile Include="Services\Handlers\PlayerLocationHandler.cs" />
     <Compile Include="Services\Handlers\MendWoundsHandler.cs" />
     <Compile Include="Services\Handlers\SpellCastOnYouHandler.cs" />
-    <Compile Include="Services\Handlers\BaseSpellYouCastingService.cs" />
+    <Compile Include="Services\Handlers\SpellHandlerService.cs" />
     <Compile Include="Services\Handlers\TellsYouHandler.cs" />
     <Compile Include="Services\Handlers\UserDefinedTriggerHandler.cs" />
     <Compile Include="Services\Handlers\YouFinishCastingHandler.cs" />
@@ -465,7 +465,6 @@
     <Compile Include="Services\Parsing\PlayerWhoLogParse.cs" />
     <Compile Include="Services\UpdateService.cs" />
     <Compile Include="Services\HSLColor.cs" />
-    <Compile Include="Services\Fight\FightLogService.cs" />
     <Compile Include="Services\Parsing\LocationParser.cs" />
     <Compile Include="Services\Map\MapLoad.cs" />
     <Compile Include="Services\Parsing\MobInfoParsing.cs" />

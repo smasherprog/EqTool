@@ -1,5 +1,7 @@
 ﻿using EQTool.Models;
 using EQTool.ViewModels;
+using EQTool.ViewModels.SpellWindow;
+using System.Linq;
 using System.Windows.Media;
 
 namespace EQTool.Services.Handlers
@@ -7,19 +9,17 @@ namespace EQTool.Services.Handlers
     public class ResistHandler : BaseHandler
     {
         private readonly SpellWindowViewModel spellWindowViewModel;
-        private readonly SpellDurations spellDurations;
+        private readonly FightHistory fightHistory;
+        private readonly SpellHandlerService spellHandlerService;
+        private readonly EQSpells eQSpells;
 
-        public ResistHandler(
-            SpellDurations spellDurations,
-            SpellWindowViewModel spellWindowViewModel,
-            LogEvents logEvents,
-            ActivePlayer activePlayer,
-            EQToolSettings eQToolSettings,
-            ITextToSpeach textToSpeach) : base(logEvents, activePlayer, eQToolSettings, textToSpeach)
+        public ResistHandler(SpellWindowViewModel spellWindowViewModel, FightHistory fightHistory, BaseHandlerData baseHandlerData, SpellHandlerService spellHandlerService, EQSpells eQSpells) : base(baseHandlerData)
         {
-            this.spellDurations = spellDurations;
             this.spellWindowViewModel = spellWindowViewModel;
-            this.logEvents.ResistSpellEvent += LogParser_ResistSpellEvent;
+            logEvents.ResistSpellEvent += LogParser_ResistSpellEvent;
+            this.fightHistory = fightHistory;
+            this.spellHandlerService = spellHandlerService;
+            this.eQSpells = eQSpells;
         }
 
         private void LogParser_ResistSpellEvent(object sender, ResistSpellEvent e)
@@ -41,7 +41,37 @@ namespace EQTool.Services.Handlers
                     System.Threading.Thread.Sleep(3000);
                     logEvents.Handle(new OverlayEvent { Text = text, ForeGround = Brushes.Red, Reset = true });
                 });
-            } 
+            }
+
+            if (SpellHandlerService.SpellsThatNeedCounts.Any(a => a == e.Spell.name))
+            {
+                appDispatcher.DispatchUI(() =>
+                {
+                    var currentarget = fightHistory.GetMostRecentTarget(e.TimeStamp);
+                    CounterViewModel spell = null;
+                    if (!string.IsNullOrWhiteSpace(currentarget))
+                    {
+                        spell = spellWindowViewModel.SpellList.FirstOrDefault(a => a.GroupName.Contains(currentarget) && a.Name == e.Spell.name && a.SpellViewModelType == ViewModels.SpellWindow.SpellViewModelType.Counter) as CounterViewModel;
+                        if (spell == null)
+                        {
+                            var s = eQSpells.AllSpells.FirstOrDefault(a => a.name == e.Spell.name);
+                            spellHandlerService.Handle(s, currentarget, 0, e.TimeStamp);
+                        }
+                        else
+                        {
+                            spell.Count++;
+                        }
+                    }
+                    else
+                    {
+                        spell = spellWindowViewModel.SpellList.FirstOrDefault(a => a.Name == e.Spell.name && a.SpellViewModelType == ViewModels.SpellWindow.SpellViewModelType.Counter) as CounterViewModel;
+                        if (spell != null)
+                        {
+                            spell.Count++;
+                        }
+                    }
+                });
+            }
         }
     }
 }

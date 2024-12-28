@@ -10,13 +10,11 @@ namespace EQTool.Services.Handlers
     public class RingWarHandler : BaseHandler
     {
         private readonly SpellWindowViewModel spellWindowViewModel;
-        private readonly IAppDispatcher appDispatcher;
         private readonly EQSpells spells;
 
-        public RingWarHandler(LogEvents logEvents, ActivePlayer activePlayer, EQToolSettings eQToolSettings, ITextToSpeach textToSpeach, IAppDispatcher appDispatcher, SpellWindowViewModel spellWindowViewModel, EQSpells spells) : base(logEvents, activePlayer, eQToolSettings, textToSpeach)
+        public RingWarHandler(SpellWindowViewModel spellWindowViewModel, EQSpells spells, BaseHandlerData baseHandlerData) : base(baseHandlerData)
         {
-            this.logEvents.RingWarEvent += LogEvents_RingWarEvent;
-            this.appDispatcher = appDispatcher;
+            logEvents.RingWarEvent += LogEvents_RingWarEvent;
             this.spellWindowViewModel = spellWindowViewModel;
             this.spells = spells;
         }

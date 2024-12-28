@@ -33,7 +33,6 @@ namespace EQTool.Services.Parsing
 
             // set up the watcher for the user triggers file changed notification
             var cwd = System.IO.Directory.GetCurrentDirectory();
-            Console.WriteLine($"cwd = {cwd}");
             watcher = new FileSystemWatcher(cwd)
             {
                 NotifyFilter = NotifyFilters.Attributes

@@ -1,6 +1,5 @@
 ﻿using EQTool.Models;
 using EQTool.Services.Parsing;
-using EQTool.ViewModels;
 using System.Windows.Media;
 
 namespace EQTool.Services.Handlers
@@ -8,9 +7,9 @@ namespace EQTool.Services.Handlers
 
     public class LevitateHandler : BaseHandler
     {
-        public LevitateHandler(LogEvents logEvents, ActivePlayer activePlayer, EQToolSettings eQToolSettings, ITextToSpeach textToSpeach) : base(logEvents, activePlayer, eQToolSettings, textToSpeach)
+        public LevitateHandler(BaseHandlerData baseHandlerData) : base(baseHandlerData)
         {
-            this.logEvents.LevitateEvent += LogParser_LevEvent;
+            logEvents.LevitateEvent += LogParser_LevEvent;
         }
 
         private void LogParser_LevEvent(object sender, LevitateEvent e)

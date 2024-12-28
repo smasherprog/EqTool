@@ -1,6 +1,5 @@
 ﻿using EQTool.Models;
 using EQTool.ViewModels;
-using System.Collections.Generic;
 using System.Windows.Media;
 
 namespace EQTool.Services.Handlers
@@ -9,15 +8,10 @@ namespace EQTool.Services.Handlers
     {
         private readonly SpellWindowViewModel spellWindowViewModel;
 
-        public SpellWornOffOtherHandler(
-            SpellWindowViewModel spellWindowViewModel,
-            LogEvents logEvents,
-            ActivePlayer activePlayer,
-            EQToolSettings eQToolSettings,
-            ITextToSpeach textToSpeach) : base(logEvents, activePlayer, eQToolSettings, textToSpeach)
+        public SpellWornOffOtherHandler(SpellWindowViewModel spellWindowViewModel, BaseHandlerData baseHandlerData) : base(baseHandlerData)
         {
             this.spellWindowViewModel = spellWindowViewModel;
-            this.logEvents.SpellWornOffOtherEvent += LogEvents_SpellWornOffOtherEvent;
+            logEvents.SpellWornOffOtherEvent += LogEvents_SpellWornOffOtherEvent;
         }
 
         private void LogEvents_SpellWornOffOtherEvent(object sender, SpellWornOffOtherEvent e)
@@ -45,8 +39,8 @@ namespace EQTool.Services.Handlers
             if (e.Line == "Your charm spell has worn off.")
             {
                 // go find the charm spell on the timer bar and remove it
-                spellWindowViewModel.TryRemoveUnambiguousSpellOther(BaseSpellYouCastingHandler.AllCharmSpells);
-                spellWindowViewModel.TryRemoveUnambiguousSpellSelf(BaseSpellYouCastingHandler.AllCharmSpells);
+                spellWindowViewModel.TryRemoveUnambiguousSpellOther(SpellHandlerService.AllCharmSpells);
+                spellWindowViewModel.TryRemoveUnambiguousSpellSelf(SpellHandlerService.AllCharmSpells);
 
                 // if the user has requested just to be notified for charm breaks
                 if (activePlayer?.Player?.CharmBreakAudio == true)

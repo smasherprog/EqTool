@@ -13,7 +13,6 @@ namespace EQTool.Services.Handlers
         private readonly PigParseApi pigParseApi;
         private readonly EQSpells spells;
         private readonly SpellWindowViewModel spellWindowViewModel;
-        private readonly IAppDispatcher appDispatcher;
         private readonly List<string> NintySevenPercentMobs = new List<string>()
         {
             "Zlandicar",
@@ -21,13 +20,12 @@ namespace EQTool.Services.Handlers
             "Lord Yelinak"
         };
 
-        public FTEHandler(IAppDispatcher appDispatcher, SpellWindowViewModel spellWindowViewModel, LogEvents logEvents, PigParseApi pigParseApi, ActivePlayer activePlayer, EQToolSettings eQToolSettings, ITextToSpeach textToSpeach, EQSpells spells) : base(logEvents, activePlayer, eQToolSettings, textToSpeach)
+        public FTEHandler(EQSpells spells, SpellWindowViewModel spellWindowViewModel, PigParseApi pigParseApi, BaseHandlerData baseHandlerData) : base(baseHandlerData)
         {
-            this.appDispatcher = appDispatcher;
             this.pigParseApi = pigParseApi;
             this.spells = spells;
             this.spellWindowViewModel = spellWindowViewModel;
-            this.logEvents.FTEEvent += LogParser_FTEEvent;
+            logEvents.FTEEvent += LogParser_FTEEvent;
         }
 
         private void LogParser_FTEEvent(object sender, FTEEvent e)
