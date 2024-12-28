@@ -1732,6 +1732,29 @@ namespace EQToolShared
                         Name = "Lord Nagafen",
                         SpellEffects = new List<string>(){ "Dragon Roar", "Lava Breath" }
                       }
+                 },
+                NpcContainsSpawnTimes = new List<NpcSpawnTime>()
+                 {
+                     new NpcSpawnTime
+                     {
+                          Name = "Fire Giant",
+                           RespawnTime = TimeSpan.FromHours(8)
+                     }
+                 },
+                NpcSpawnTimes = new List<NpcSpawnTime>()
+                 {
+                     new NpcSpawnTime {
+                         Name = "King Tranix",
+                          RespawnTime = TimeSpan.FromHours(8)
+                     },
+                    new NpcSpawnTime {
+                         Name = "Warlord Skarlon",
+                          RespawnTime = TimeSpan.FromHours(8)
+                     },
+                    new NpcSpawnTime {
+                         Name = "Magi Rokyl",
+                          RespawnTime = TimeSpan.FromHours(8)
+                     }
                  }
             });
             ZoneInfoMap.Add("soltemple", new ZoneInfo
