@@ -228,7 +228,7 @@ namespace EQTool.Services.Handlers
                     var overWrite = true;
                     if (spell.benefit_detriment == EQToolShared.Enums.SpellBenefitDetriment.Detrimental)
                     {
-                        overWrite = false;
+                        overWrite = !isnpc;
                         spellduration = spellduration.Add(TimeSpan.FromMilliseconds(6000));
                     }
 
@@ -249,7 +249,7 @@ namespace EQTool.Services.Handlers
                     };
 
 
-                    spellWindowViewModel.TryAdd(vm, overWrite && isnpc);
+                    spellWindowViewModel.TryAdd(vm, overWrite);
                 }
             }
         }
