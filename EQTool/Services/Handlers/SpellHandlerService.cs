@@ -196,9 +196,11 @@ namespace EQTool.Services.Handlers
             }
 
             var grpname = targetName;
+            var isnpc = false;
             if (MasterNPCList.NPCs.Contains(grpname))
             {
                 grpname = " " + grpname;
+                isnpc = true;
             }
             var needscount = SpellsThatNeedCounts.Contains(spellname);
             if (needscount)
@@ -247,7 +249,7 @@ namespace EQTool.Services.Handlers
                     };
 
 
-                    spellWindowViewModel.TryAdd(vm, overWrite);
+                    spellWindowViewModel.TryAdd(vm, overWrite && isnpc);
                 }
             }
         }
