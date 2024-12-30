@@ -194,18 +194,9 @@ namespace EQTool.ViewModels
                         itemstoremove.Add(item);
                     }
                     var hidespell = false;
-                    if (item.GroupName != CustomTimer.CustomerTime && item.GroupName != EQSpells.SpaceYou)
+                    if (!item.GroupName.StartsWith(" "))
                     {
-                        if (item.GroupName.StartsWith(" "))
-                        {
-                            continue;
-                        }
-                        var isnpc = MasterNPCList.NPCs.Contains(item.GroupName.Trim());
-                        if (isnpc)
-                        {
-                            continue;
-                        }
-                        else if (item.SpellViewModelType == SpellViewModelType.Timer)
+                        if (item.SpellViewModelType == SpellViewModelType.Timer)
                         {
                             if (settings.YouOnlySpells || RaidModeEnabled)
                             {
