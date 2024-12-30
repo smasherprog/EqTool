@@ -196,6 +196,10 @@ namespace EQTool.ViewModels
                     var hidespell = false;
                     if (item.GroupName != CustomTimer.CustomerTime && item.GroupName != EQSpells.SpaceYou)
                     {
+                        if (item.GroupName.StartsWith(" "))
+                        {
+                            continue;
+                        }
                         var isnpc = MasterNPCList.NPCs.Contains(item.GroupName.Trim());
                         if (isnpc)
                         {
