@@ -24,7 +24,7 @@ namespace EQTool.Services.Parsing
                 logEvents.Handle(new RingWarEvent { RoundNumber = 2, TimeStamp = timestamp, Line = line, LineCounter = lineCounter });
                 return true;
             }
-            else if (line == "Narandi the Wretched shouts, 'Veterans! Be sure that this time we allow none of the stumpymen to escape to create yet another city. This shall be our final war with these unworthy beings.'")
+            else if (line == "Narandi the Wretched shouts, 'Enough chatter. Our veterans approach now to finish you. You have been tested and your weaknesses have been assessed. Bid farewell to your dear Thurgadin, those of you who are fortunate enough to survive the slaughter shall make a new home in the Kromrif slave pens!'")
             {
                 logEvents.Handle(new RingWarEvent { RoundNumber = 3, TimeStamp = timestamp, Line = line, LineCounter = lineCounter });
                 return true;
