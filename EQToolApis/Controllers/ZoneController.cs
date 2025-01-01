@@ -3,6 +3,7 @@ using EQToolApis.Hubs;
 using EQToolApis.Services;
 using EQToolShared;
 using EQToolShared.APIModels.ZoneControllerModels;
+using EQToolShared.Enums;
 using EQToolShared.HubModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.SignalR;
@@ -63,9 +64,24 @@ namespace EQToolApis.Controllers
                 return;
             }
             var d = DateTimeOffset.UtcNow.AddHours(-2);
-            if (!dbcontext.QuakeTimes.Any(a => a.DateTime > d))
+            if (!dbcontext.QuakeTimes.Any(a => a.DateTime > d && a.Server == Servers.Green))
             {
-                _ = dbcontext.QuakeTimes.Add(new DB.Models.QuakeTime { DateTime = DateTimeOffset.UtcNow });
+                _ = dbcontext.QuakeTimes.Add(new DB.Models.QuakeTime { DateTime = DateTimeOffset.UtcNow, Server = Servers.Green });
+            }
+        }
+
+        [Route("quakev2/{server}"), HttpGet]
+        public void Quake(Servers server)
+        {
+            var ip = HttpContext.Connection.RemoteIpAddress?.ToString();
+            if (string.IsNullOrWhiteSpace(ip) || dbcontext.IPBans.Any(a => a.IpAddress == ip))
+            {
+                return;
+            }
+            var d = DateTimeOffset.UtcNow.AddHours(-2);
+            if (!dbcontext.QuakeTimes.Any(a => a.DateTime > d && a.Server == server))
+            {
+                _ = dbcontext.QuakeTimes.Add(new DB.Models.QuakeTime { DateTime = DateTimeOffset.UtcNow, Server = server });
             }
         }
     }

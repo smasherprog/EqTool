@@ -81,14 +81,12 @@ namespace EQTool.Services
 
         }
 
-        public void SendQuake()
+        public void SendQuake(Servers server)
         {
             try
             {
-                var url = $"https://pigparse.azurewebsites.net/api/zone/quake";
-                var json = "{}";
-                var data = new StringContent(json, Encoding.UTF8, "application/json");
-                var res = App.httpclient.PostAsync(url, data).Result;
+                var url = $"https://pigparse.azurewebsites.net/api/zone/quakev2/" + server;
+                var res = App.httpclient.GetAsync(url).Result;
                 if (res.StatusCode == System.Net.HttpStatusCode.OK)
                 {
                     _ = res.Content.ReadAsStringAsync().Result;

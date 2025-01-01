@@ -366,7 +366,11 @@ namespace EQTool
 
         private void LogParser_QuakeEvent(object sender, QuakeEvent e)
         {
-            container.Resolve<PigParseApi>().SendQuake();
+            var server = container?.Resolve<ActivePlayer>()?.Player?.Server;
+            if (server.HasValue)
+            {
+                container.Resolve<PigParseApi>().SendQuake(server.Value);
+            }
         }
 
         [DllImport("user32.dll")]
