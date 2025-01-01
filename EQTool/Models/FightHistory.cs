@@ -20,6 +20,10 @@ namespace EQTool.Models
 
         public void Add(string name, DateTime lastSeen)
         {
+            if (name == EQSpells.SpaceYou)
+            {
+                return;
+            }
             var entry = fightEntries.FirstOrDefault(e => e.Name == name);
             if (entry != null)
             {
