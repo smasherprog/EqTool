@@ -20,7 +20,7 @@ namespace EQTool.Models
 
         public void Add(string name, DateTime lastSeen)
         {
-            if (name == EQSpells.SpaceYou)
+            if (name == EQSpells.You || name == EQSpells.You.Trim())
             {
                 return;
             }
