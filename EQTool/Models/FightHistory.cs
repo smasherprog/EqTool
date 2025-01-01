@@ -1,4 +1,5 @@
-﻿using System;
+﻿using EQToolShared;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -51,7 +52,14 @@ namespace EQTool.Models
         public string GetMostRecentTarget(DateTime now)
         {
             clean(now);
-            return fightEntries.OrderByDescending(e => e.LastSeen).FirstOrDefault()?.Name;
+            foreach (var item in fightEntries.OrderByDescending(e => e.LastSeen).Take(5))
+            {
+                if (MasterNPCList.NPCs.Contains(item.Name))
+                {
+                    return item.Name;
+                }
+            }
+            return string.Empty;
         }
 
         public List<string> IsEngaged(List<string> names, DateTime now)
