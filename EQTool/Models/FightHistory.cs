@@ -21,7 +21,7 @@ namespace EQTool.Models
 
         public void Add(string name, DateTime lastSeen)
         {
-            if (name == EQSpells.You || name == EQSpells.You.Trim())
+            if (string.Equals(name, EQSpells.You, StringComparison.OrdinalIgnoreCase) || string.Equals(name, EQSpells.You.Trim(), StringComparison.OrdinalIgnoreCase))
             {
                 return;
             }
