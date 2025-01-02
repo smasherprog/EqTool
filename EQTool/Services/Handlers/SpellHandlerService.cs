@@ -196,10 +196,10 @@ namespace EQTool.Services.Handlers
             }
 
             var grpname = targetName;
-            var isnpc = false;
-            if (MasterNPCList.NPCs.Contains(grpname))
+            var isnpc = false; 
+            if (MasterNPCList.NPCs.Contains(grpname.Trim()))
             {
-                grpname = " " + grpname;
+                grpname = " " + grpname.Trim();
                 isnpc = true;
             }
             var needscount = SpellsThatNeedCounts.Contains(spellname);

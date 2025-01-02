@@ -171,5 +171,18 @@ namespace EQtoolsTests
             var spelleffecst = spellWindowViewModel.SpellList.Where(a => a.SpellViewModelType == SpellViewModelType.Spell && a.Name == "Clinging Darkness").Cast<SpellViewModel>();
             Assert.AreEqual(spelleffecst.Count(), 1);
         }
+
+        [TestMethod]
+        public void MakeSureDetrimentalSpellsShowMultipleTimes()
+        {
+            player.Player.PlayerClass = EQToolShared.Enums.PlayerClasses.Rogue;
+            player.Player.Level = 60;
+            var d = DateTime.Now;
+            logParser.Push(spellWindowViewModel, "A frost giant sentinel hits YOU for 35 points of damage.", d);
+            logParser.Push(spellWindowViewModel, "A frost giant sentinel yawns.", d); 
+            logParser.Push(spellWindowViewModel, "A frost giant sentinel yawns.", d);
+
+            Assert.AreEqual(spellWindowViewModel.SpellList.Count(), 2);
+        }
     }
 }
