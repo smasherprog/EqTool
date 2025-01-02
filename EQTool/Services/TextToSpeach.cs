@@ -14,8 +14,8 @@ namespace EQTool.Services
     {
         // keep a dictionary of recent audio alert phrases, key = phrase to be spoken, value = DateTime of last occurence.
         // If the same phrase comes again inside audioAlertCooldown seconds, stay silent 
-        private int audioAlertCooldownSeconds = 5;
-        private Dictionary<string, DateTime> audioAlertHistory = new Dictionary<string, DateTime>();
+        private const int audioAlertCooldownSeconds = 5;
+        private readonly Dictionary<string, DateTime> audioAlertHistory = new Dictionary<string, DateTime>();
 
         private readonly EQToolSettings eQToolSettings;
 
