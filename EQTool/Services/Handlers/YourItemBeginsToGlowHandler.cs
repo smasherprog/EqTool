@@ -6,11 +6,8 @@ namespace EQTool.Services.Handlers
     public class YourItemBeginsToGlowHandler : BaseHandler
     {
         private readonly EQSpells spells;
-        private readonly SpellHandlerService baseSpellYouCastingHandler;
 
-        public YourItemBeginsToGlowHandler(
-            SpellHandlerService baseSpellYouCastingHandler,
-            EQSpells spells, BaseHandlerData baseHandlerData) : base(baseHandlerData)
+        public YourItemBeginsToGlowHandler(EQSpells spells, BaseHandlerData baseHandlerData) : base(baseHandlerData)
         {
             this.spells = spells;
             logEvents.YourItemBeginsToGlow += LogEvents_YourItemBeginsToGlow;

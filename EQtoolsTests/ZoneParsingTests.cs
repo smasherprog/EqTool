@@ -1,5 +1,4 @@
 ﻿using Autofac;
-using EQTool.Services;
 using EQTool.Services.Parsing;
 using EQToolShared;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -11,12 +10,10 @@ namespace EQtoolsTests
     public class ZoneParsingTests : BaseTestClass
     {
         private readonly YouZonedParser youZonedParser;
-        private readonly LogEvents logEvents;
 
         public ZoneParsingTests()
         {
             youZonedParser = container.Resolve<YouZonedParser>();
-            logEvents = container.Resolve<LogEvents>();
         }
 
         [TestMethod]

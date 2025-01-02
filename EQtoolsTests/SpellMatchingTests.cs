@@ -19,7 +19,6 @@ namespace EQtoolsTests
         private readonly SpellDurations spellDurations;
         private readonly EQSpells spells;
         private const string YouBeginCasting = "You begin casting ";
-        private const string DummyEntryToForceEmitEvent = "You can't use that command right now...";
 
         public SpellMatchingTests()
         {

@@ -39,12 +39,11 @@ namespace EQTool.UI
             UITimer.Enabled = true;
             DpsList.ItemsSource = dPSWindowViewModel.EntityList;
             var view = (ListCollectionView)CollectionViewSource.GetDefaultView(dPSWindowViewModel.EntityList);
+            view.IsLiveGrouping = true;
+            view.IsLiveSorting = true;
             view.GroupDescriptions.Add(new PropertyGroupDescription(nameof(EntittyDPS.TargetName)));
             view.LiveGroupingProperties.Add(nameof(EntittyDPS.TargetName));
-            view.IsLiveGrouping = true;
-            view.SortDescriptions.Add(new SortDescription(nameof(EntittyDPS.TargetName), ListSortDirection.Ascending));
             view.SortDescriptions.Add(new SortDescription(nameof(EntittyDPS.TotalDamage), ListSortDirection.Descending));
-            view.IsLiveSorting = true;
             view.LiveSortingProperties.Add(nameof(EntittyDPS.TotalDamage));
         }
 

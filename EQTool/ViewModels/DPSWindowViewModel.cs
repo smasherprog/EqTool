@@ -6,6 +6,7 @@ using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Windows.Data;
 
 namespace EQTool.ViewModels
 {
@@ -137,6 +138,8 @@ namespace EQTool.ViewModels
                     SessionPlayerDamage.CurrentSessionPlayerDamage.HighestHit = Math.Max(SessionPlayerDamage.CurrentSessionPlayerDamage.HighestHit, you.HighestHit);
                     //this.OnPropertyChanged(nameof(SessionPlayerDamage));
                 }
+                var view = (ListCollectionView)CollectionViewSource.GetDefaultView(EntityList);
+                view.Refresh();
             });
         }
 

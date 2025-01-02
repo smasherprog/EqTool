@@ -152,8 +152,8 @@ namespace EQtoolsTests
             logParser.Push("You regain your concentration and continue your casting.", DateTime.Now.AddSeconds(3));
             logParser.Push("A froglok dar knight's feet adhere to the ground.", DateTime.Now.AddSeconds(3));
 
-            var spelleffect = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Spell && a.Name == "Paralyzing Earth") as SpellViewModel;
-            Assert.IsNotNull(spelleffect);
+            var spelleffect = spellWindowViewModel.SpellList.FirstOrDefault();
+            Assert.AreEqual("Paralyzing Earth", spelleffect.Name);
         }
 
         [TestMethod]
