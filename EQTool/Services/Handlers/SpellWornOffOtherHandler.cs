@@ -16,6 +16,10 @@ namespace EQTool.Services.Handlers
 
         private void LogEvents_SpellWornOffOtherEvent(object sender, SpellWornOffOtherEvent e)
         {
+            if (SpellHandlerService.SpellsThatNeedCounts.Contains(e.SpellName))
+            {
+                return;
+            }
             // handle the case where the user has asked for audible/visual alerts on any spell fading
             var fadedText = $"{e.SpellName} faded";
             if (activePlayer?.Player?.WornOffAudio == true)
