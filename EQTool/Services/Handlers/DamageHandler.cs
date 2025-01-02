@@ -1,4 +1,5 @@
 ﻿using EQTool.Models;
+using EQToolShared;
 
 namespace EQTool.Services.Handlers
 {
@@ -13,6 +14,10 @@ namespace EQTool.Services.Handlers
 
         private void LogEvents_DamageEvent(object sender, DamageEvent e)
         {
+            if (MasterNPCList.NPCs.Contains(e.TargetName) && MasterNPCList.NPCs.Contains(e.TargetName))
+            {
+                return;
+            }
             fightHistory.Add(e.TargetName, e.TimeStamp);
             fightHistory.Add(e.AttackerName, e.TimeStamp);
         }
