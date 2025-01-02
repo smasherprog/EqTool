@@ -9,30 +9,6 @@ namespace EQTool.Services.Handlers
     {
         private readonly SpellWindowViewModel spellWindowViewModel;
 
-        // this list is to let us deal with the fact that the game gives a generic message on charm break, but we'd like to know what the
-        // real corresponding spell on the timer window might be, so we can remove it from the timer window
-        private readonly List<string> AllCharmSpells = new List<string>()
-        {
-            "Dictate",
-            "Charm",
-            "Beguile",
-            "Cajoling Whispers",
-            "Allure",
-            "Boltran's Agacerie",
-            "Befriend Animal",
-            "Charm Animals",
-            "Beguile Plants",
-            "Beguile Animals",
-            "Allure of the Wild",
-            "Call of Karana",
-            "Tunare's Request",
-            "Dominate Undead",
-            "Beguile Undead",
-            "Cajole Undead",
-            "Thrall of Bones",
-            "Enslave Death"
-        };
-
         public SpellWornOffOtherHandler(
             SpellWindowViewModel spellWindowViewModel,
             LogEvents logEvents,
@@ -68,8 +44,9 @@ namespace EQTool.Services.Handlers
             // handle the case where we get the generic Charm Break message, but we'd like to remove the corresponding charm spell from the timer list
             if (e.Line == "Your charm spell has worn off.")
             {
-                spellWindowViewModel.TryRemoveUnambiguousSpellOther(AllCharmSpells);
-                spellWindowViewModel.TryRemoveUnambiguousSpellSelf(AllCharmSpells);
+                // go find the charm spell on the timer bar and remove it
+                spellWindowViewModel.TryRemoveUnambiguousSpellOther(BaseSpellYouCastingHandler.AllCharmSpells);
+                spellWindowViewModel.TryRemoveUnambiguousSpellSelf(BaseSpellYouCastingHandler.AllCharmSpells);
 
                 // if the user has requested just to be notified for charm breaks
                 if (activePlayer?.Player?.CharmBreakAudio == true)

@@ -74,7 +74,8 @@ namespace EQTool.ViewModels
 
                     playerchanged = tempplayer != Player;
                     Player = tempplayer;
-                    Player.LastUpdate = DateTime.Now;
+                    if (Player != null)
+                        Player.LastUpdate = DateTime.Now;
                 }
                 else
                 {

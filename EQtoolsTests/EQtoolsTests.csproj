@@ -198,7 +198,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="BaseTestClass.cs" />
+    <Compile Include="InvisFadingTests.cs" />
     <Compile Include="DragonEffectTests.cs" />
+    <Compile Include="ItemBeginsToGlowTests.cs" />
     <Compile Include="SpellViewModelTests.cs" />
     <Compile Include="SlainHandlerTests.cs" />
     <Compile Include="DeathTests.cs" />
@@ -210,6 +212,7 @@
     <Compile Include="PlayerLevelDetectionParserTests.cs" />
     <Compile Include="CustomTimerHandlerTests.cs" />
     <Compile Include="SpellWornOffOtherTests.cs" />
+    <Compile Include="UserDefinedTriggerTests.cs" />
     <Compile Include="ZoneSpawnTimeTests.cs" />
     <Compile Include="CompleteHealCommsHandlerTests.cs" />
     <Compile Include="RandomRollTests.cs" />

@@ -189,18 +189,24 @@ namespace EQTool.ViewModels
                 foreach (var item in SpellList.Where(a => timerTypes.Contains(a.SpellViewModelType)).Cast<TimerViewModel>().ToList())
                 {
                     var hidespell = false;
-                    if (item.GetType() != typeof(RollViewModel))
+                    if (item.GroupName != CustomTimer.CustomerTime)
                     {
-                        if (settings.YouOnlySpells)
+                        if (item.SpellViewModelType == SpellViewModelType.Timer)
                         {
-                            hidespell = !(MasterNPCList.NPCs.Contains(item.GroupName.Trim()) || item.GroupName == CustomTimer.CustomerTime || item.GroupName == EQSpells.SpaceYou);
-                        }
-                        else if (RaidModeEnabled && item.GroupName != EQSpells.SpaceYou)
-                        {
-                            hidespell = true;
+                            if (!MasterNPCList.NPCs.Contains(item.GroupName.Trim()))
+                            {
+                                if (settings.YouOnlySpells)
+                                {
+                                    hidespell = !(item.GroupName == CustomTimer.CustomerTime || item.GroupName == EQSpells.SpaceYou);
+                                }
+                                else if (RaidModeEnabled && item.GroupName != EQSpells.SpaceYou)
+                                {
+                                    hidespell = true;
+                                }
+                            }
                         }
                     }
-                     
+
                     item.TotalRemainingDuration = item.TotalRemainingDuration.Subtract(TimeSpan.FromMilliseconds(dt_ms));
                     if (item.TotalRemainingDuration.TotalSeconds <= 0)
                     {
@@ -213,21 +219,25 @@ namespace EQTool.ViewModels
                 foreach (var item in spells)
                 {
                     var hidespell = false;
-                    if (settings.YouOnlySpells)
+                    if (!MasterNPCList.NPCs.Contains(item.GroupName.Trim()))
                     {
-                        hidespell = !(MasterNPCList.NPCs.Contains(item.GroupName.Trim()) || item.GroupName == CustomTimer.CustomerTime || item.GroupName == EQSpells.SpaceYou);
-                    }
-                    else if (RaidModeEnabled && player.PlayerClass.HasValue)
-                    {
-                        if (item.GroupName != EQSpells.SpaceYou)
+                        if (settings.YouOnlySpells)
                         {
-                            hidespell = SpellUIExtensions.HideSpell(new List<EQToolShared.Enums.PlayerClasses>() { player.PlayerClass.Value }, item.Classes) || item.SpellType == SpellType.Self;
+                            hidespell = !(item.GroupName == CustomTimer.CustomerTime || item.GroupName == EQSpells.SpaceYou);
+                        }
+                        else if (RaidModeEnabled && player.PlayerClass.HasValue)
+                        {
+                            if (item.GroupName != EQSpells.SpaceYou)
+                            {
+                                hidespell = SpellUIExtensions.HideSpell(new List<EQToolShared.Enums.PlayerClasses>() { player.PlayerClass.Value }, item.Classes) || item.SpellType == SpellType.Self;
+                            }
+                        }
+                        else
+                        {
+                            hidespell = SpellUIExtensions.HideSpell(player.ShowSpellsForClasses, item.Classes) && item.GroupName != EQSpells.SpaceYou;
                         }
                     }
-                    else
-                    {
-                        hidespell = SpellUIExtensions.HideSpell(player.ShowSpellsForClasses, item.Classes) && item.GroupName != EQSpells.SpaceYou;
-                    }
+
                     item.ColumnVisibility = hidespell ? System.Windows.Visibility.Collapsed : System.Windows.Visibility.Visible;
                 }
                 var d = DateTime.Now;
@@ -301,15 +311,19 @@ namespace EQTool.ViewModels
             });
         }
 
-        public void TryAdd(SpellViewModel match)
+        // try to add a new timer.  set overWrite = true (default) to overwrite/refresh any existing timer, or false to create multiple timers of same name
+        public void TryAdd(SpellViewModel match, bool overWrite = true)
         {
             appDispatcher.DispatchUI(() =>
             {
-                if (SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Spell &&
-                string.Equals(a.Name, match.Name, StringComparison.OrdinalIgnoreCase) &&
-                string.Equals(match.GroupName, a.GroupName, StringComparison.OrdinalIgnoreCase)) is SpellViewModel s)
+                if (overWrite)
                 {
-                    _ = SpellList.Remove(s);
+                    if (SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Spell &&
+                    string.Equals(a.Name, match.Name, StringComparison.OrdinalIgnoreCase) &&
+                    string.Equals(match.GroupName, a.GroupName, StringComparison.OrdinalIgnoreCase)) is SpellViewModel s)
+                    {
+                        _ = SpellList.Remove(s);
+                    }
                 }
                 SpellList.Add(match);
             });
@@ -382,7 +396,7 @@ namespace EQTool.ViewModels
                         {
                             UpdatedDateTime = DateTime.Now,
                             PercentLeft = 100,
-                            Type = match.type,
+                            BenefitDetriment = match.benefit_detriment,
                             SpellType = match.SpellType,
                             GroupName = EQSpells.SpaceYou,
                             Name = match.name,

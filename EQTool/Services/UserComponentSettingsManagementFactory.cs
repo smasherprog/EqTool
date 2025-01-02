@@ -8,7 +8,7 @@ using System.Windows.Controls;
 namespace EQTool.Services
 {
     public class UserComponentSettingsManagementFactory
-    { 
+    {
         private readonly ILifetimeScope container;
         private readonly Dictionary<TreeViewItemType, Type> userComponentTypes = new Dictionary<TreeViewItemType, Type>();
         public UserComponentSettingsManagementFactory(ILifetimeScope container)
@@ -17,6 +17,8 @@ namespace EQTool.Services
             userComponentTypes.Add(TreeViewItemType.General, typeof(SettingsGeneral));
             userComponentTypes.Add(TreeViewItemType.Server, typeof(SettingsServer));
             userComponentTypes.Add(TreeViewItemType.Player, typeof(SettingsPlayer));
+            userComponentTypes.Add(TreeViewItemType.Zone, typeof(SettingsGeneral));
+            userComponentTypes.Add(TreeViewItemType.Global, typeof(SettingsGeneral));
         }
 
         public UserControl CreateComponent(TreeViewItemType userComponentSettingsManagementType)

@@ -244,6 +244,7 @@ namespace EQToolApis.Services
             [AutomaticRetry(Attempts = 0), DisplayName("ReadFutureMessages {0}")]
             public string ReadFutureMessages(Servers server)
             {
+
                 discordService.Login();
                 var lastidread = dBData.ServerData[(int)server].OrderByDescendingDiscordMessageId ?? (server == Servers.Green ? 1186054170009145345 : 1186055073739055265);
                 var possiblemessages2 = discordService.ReadMessages(lastidread, server);

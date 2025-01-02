@@ -429,7 +429,7 @@ namespace EQTool.Services
                 var buffduration = int.Parse(splits[17]);
                 var buffdurationformula = int.Parse(splits[16]);
                 var pvp_buffdurationformula = (splits.Length >= 181) ? int.Parse(splits[181 - offset]) : 0;
-                var type = int.Parse(splits[83 - offset]);
+                var benefit_detriment = int.Parse(splits[83 - offset]);
                 var casttime = int.Parse(splits[13]);
                 var cast_on_other = splits[7].Trim();
                 var cast_on_you = splits[6].Trim();
@@ -444,7 +444,7 @@ namespace EQTool.Services
                     buffduration = buffduration,
                     buffdurationformula = buffdurationformula,
                     pvp_buffdurationformula = pvp_buffdurationformula,
-                    type = (SpellTypes)type,
+                    benefit_detriment = (SpellBenefitDetriment)benefit_detriment,
                     cast_on_other = cast_on_other,
                     casttime = casttime,
                     cast_on_you = cast_on_you,

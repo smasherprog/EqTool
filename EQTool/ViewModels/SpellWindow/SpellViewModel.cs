@@ -10,24 +10,20 @@ namespace EQTool.ViewModels.SpellWindow
         public Dictionary<PlayerClasses, int> Classes { get; set; } = new Dictionary<PlayerClasses, int>();
         public override SpellViewModelType SpellViewModelType => SpellViewModelType.Spell;
         public SpellType SpellType { get; set; }
-        private SpellTypes _Type = 0;
-        public SpellTypes Type
+        private SpellBenefitDetriment _BenefitDetrimentFlag = 0;
+        public SpellBenefitDetriment BenefitDetriment
         {
-            get => _Type;
+            get => _BenefitDetrimentFlag;
             set
             {
-                _Type = value;
-                if (_Type == SpellTypes.Beneficial)
+                _BenefitDetrimentFlag = value;
+                if (_BenefitDetrimentFlag == SpellBenefitDetriment.Beneficial)
                 {
                     ProgressBarColor = Brushes.MediumAquamarine;
                 }
-                else if (_Type == SpellTypes.Detrimental)
+                else if (_BenefitDetrimentFlag == SpellBenefitDetriment.Detrimental)
                 {
                     ProgressBarColor = Brushes.OrangeRed;
-                }
-                else if (_Type >= SpellTypes.Other)
-                {
-                    ProgressBarColor = Brushes.DarkSeaGreen;
                 }
                 else
                 {

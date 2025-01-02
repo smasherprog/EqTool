@@ -102,7 +102,7 @@
                 </StackPanel>
             </StackPanel>
         </TabItem>
-        <TabItem Header="Overlay">
+        <TabItem Header="Text &amp; Audio Alerts" Height="20" VerticalAlignment="Top">
             <StackPanel Orientation="Vertical" Margin="5, 5, 5, 5">
 
                 <StackPanel Orientation="Horizontal">
@@ -113,7 +113,7 @@
 
                 <StackPanel Orientation="Horizontal">
                     <TextBlock VerticalAlignment="Center" FontWeight="Bold"  MinWidth="75"/>
-                    <TextBlock Text="Visual Alert" VerticalAlignment="Center" FontWeight="Bold"  MinWidth="75"/>
+                    <TextBlock Text="Text Alert" VerticalAlignment="Center" FontWeight="Bold"  MinWidth="75"/>
                     <TextBlock Text="Audio Alert" VerticalAlignment="Center" FontWeight="Bold"  />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
@@ -211,6 +211,12 @@
                     <CheckBox IsChecked="{Binding ActivePlayer.Player.WornOffAudio}" Click="Savesettings" MinWidth="30"></CheckBox>
                     <Button Content="▶" Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="testWornOff" ToolTip="Test Spell Has Worn Off" />
                 </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Tells You" VerticalAlignment="Center" FontWeight="Bold"  MinWidth="100"/>
+                    <CheckBox IsChecked="{Binding ActivePlayer.Player.TellsYouOverlay}" Click="Savesettings" MinWidth="75"></CheckBox>
+                    <CheckBox IsChecked="{Binding ActivePlayer.Player.TellsYouAudio}" Click="Savesettings" MinWidth="30"></CheckBox>
+                    <Button Content="▶" Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="testTellsYou" ToolTip="Test tells to you" />
+                </StackPanel>
                 <Separator/>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Chain Formats" VerticalAlignment="Center" FontWeight="Bold" MinWidth="100"/>
@@ -235,9 +241,14 @@
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Above will warn you when its your turn to cast CH" Foreground="Red"/>
                 </StackPanel>
+                <Separator/>
+                <StackPanel Orientation="Vertical">
+                    <TextBlock Text="Additional user-defined triggers can be found / edited in file &quot;UserTriggers.txt&apos;, located:" HorizontalAlignment="Center" FontStyle="Italic" Foreground="Blue"/>
+                    <TextBlock Text="{Binding CurrentWorkingDirectory}" HorizontalAlignment="Center" FontStyle="Italic" Foreground="Blue"/>
+                </StackPanel>
             </StackPanel>
         </TabItem>
-        <TabItem Header="Triggers">
+        <TabItem Header="Triggers" HorizontalAlignment="Left" Margin="-2,-2,0,0" Width="58">
             <StackPanel Orientation="Vertical" Margin="5, 5, 5, 5">
                 <StackPanel Orientation="Vertical"  Margin="0, 0, 0, 8">
                     <StackPanel Orientation="Horizontal" ToolTip="This setting will switch to show only spells you care about when raid mode is detected.">

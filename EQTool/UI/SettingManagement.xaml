@@ -12,7 +12,6 @@
         MinHeight="600" 
         MinWidth="600"
        WindowStyle="None" 
-   SizeToContent="WidthAndHeight"
    AllowsTransparency="True">
     <WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="0" ResizeBorderThickness="5" />
@@ -56,16 +55,18 @@
                     </StackPanel>
                 </Grid>
             </Border>
-            <Grid Grid.Row="1" >
+            
+            <Grid Grid.Row="1"  Grid.IsSharedSizeScope="True">
                 <Grid.ColumnDefinitions>
                     <ColumnDefinition Width="30*"/>
                     <ColumnDefinition Width="70*"/>
                 </Grid.ColumnDefinitions>
+              
                 <TreeView SelectedItemChanged="TreeView_SelectedItemChanged" Grid.Column="0" ItemsSource="{Binding TreeItems}">
                     <TreeView.ItemContainerStyle>
                         <Style TargetType="TreeViewItem">
-                            <Setter Property="IsSelected" Value="{Binding IsSelected}" />
-                            <Setter Property="IsExpanded" Value="{Binding IsExpanded}" />
+                            <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
+                            <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
                             <EventSetter Event="PreviewMouseRightButtonDown" Handler="OnPreviewMouseRightButtonDown" />
                         </Style>
                     </TreeView.ItemContainerStyle>
@@ -82,13 +83,30 @@
                                 <TextBlock Text="{Binding Name}" Margin="0,0,4,0" />
                             </StackPanel>
                         </HierarchicalDataTemplate>
-                        <HierarchicalDataTemplate DataType="{x:Type vm:TreePlayer}" ItemsSource="{Binding Children}">
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="🐉"/>
+                        <HierarchicalDataTemplate DataType="{x:Type vm:TreeZone}" ItemsSource="{Binding Children}">
+                            <StackPanel Orientation="Horizontal" >
+                                <TextBlock Text="🖧" />
                                 <TextBlock Text="{Binding Name}" Margin="0,0,4,0" />
                             </StackPanel>
                         </HierarchicalDataTemplate>
-                        <HierarchicalDataTemplate DataType="{x:Type vm:TreeTrigger}" ItemsSource="{Binding Children}">
+                        <HierarchicalDataTemplate DataType="{x:Type vm:TreeGlobal}" ItemsSource="{Binding Children}">
+                            <StackPanel Orientation="Horizontal" >
+                                <TextBlock Text="🖧" />
+                                <TextBlock Text="{Binding Name}" Margin="0,0,4,0" />
+                            </StackPanel>
+                        </HierarchicalDataTemplate>
+                        <HierarchicalDataTemplate DataType="{x:Type vm:TreePlayer}" ItemsSource="{Binding Children}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition SharedSizeGroup="PlayerName"/>
+                                    <ColumnDefinition SharedSizeGroup="lastPlayedDate"/> 
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="🐉"/>
+                                <TextBlock Grid.Column="0" Text="{Binding Name}" Margin="16,0,0,0" />
+                                <TextBlock Grid.Column="1" Text="{Binding LastPlayed}" />
+                            </Grid> 
+                        </HierarchicalDataTemplate>
+                        <HierarchicalDataTemplate DataType="{x:Type vm:TreeTrigger}" ItemsSource="{Binding Children}"> 
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="🗲"/>
                                 <TextBlock Text="{Binding Name}" />

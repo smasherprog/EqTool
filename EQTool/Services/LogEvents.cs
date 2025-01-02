@@ -88,12 +88,6 @@ namespace EQTool.Services
             EnrageEvent?.Invoke(this, e);
         }
 
-        public event EventHandler<WornOffEvent> WornOffEvent;
-        public void Handle(WornOffEvent e)
-        {
-            WornOffEvent?.Invoke(this, e);
-        }
-
         public event EventHandler<LevitateEvent> LevitateEvent;
         public void Handle(LevitateEvent e)
         {
@@ -134,6 +128,12 @@ namespace EQTool.Services
         public void Handle(SpellWornOffOtherEvent e)
         {
             SpellWornOffOtherEvent?.Invoke(this, e);
+        }
+
+        public event EventHandler<YourItemBeginsToGlow> YourItemBeginsToGlow;
+        public void Handle(YourItemBeginsToGlow e)
+        {
+            YourItemBeginsToGlow?.Invoke(this, e);
         }
 
         public event EventHandler<YouZonedEvent> YouZonedEvent;
@@ -264,6 +264,15 @@ namespace EQTool.Services
         public void Handle(RingWarEvent e)
         {
             RingWarEvent?.Invoke(this, e);
+        }
+
+
+
+        // this should be the final eventhandler definition!
+        public event EventHandler<UserDefinedTriggerEvent> UserDefinedTriggerEvent;
+        public void Handle(UserDefinedTriggerEvent e)
+        {
+            UserDefinedTriggerEvent?.Invoke(this, e);
         }
     }
 }
