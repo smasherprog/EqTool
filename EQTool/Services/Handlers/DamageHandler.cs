@@ -14,7 +14,7 @@ namespace EQTool.Services.Handlers
 
         private void LogEvents_DamageEvent(object sender, DamageEvent e)
         {
-            if (MasterNPCList.NPCs.Contains(e.TargetName) && MasterNPCList.NPCs.Contains(e.TargetName))
+            if (MasterNPCList.NPCs.Contains(e.TargetName) && MasterNPCList.NPCs.Contains(e.AttackerName))
             {
                 return;
             }
