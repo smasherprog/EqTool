@@ -1,26 +1,21 @@
 ﻿using EQTool.Models;
-using EQTool.ViewModels;
 
 namespace EQTool.Services.Handlers
 {
     public class SpellCastOnYouHandler : BaseHandler
-    {  
-        private readonly BaseSpellYouCastingHandler baseSpellYouCastingHandler;
+    {
+        private readonly SpellHandlerService baseSpellYouCastingHandler;
 
-        public SpellCastOnYouHandler( 
-            BaseSpellYouCastingHandler baseSpellYouCastingHandler,
-            LogEvents logEvents,
-            ActivePlayer activePlayer,
-            EQToolSettings eQToolSettings,
-            ITextToSpeach textToSpeach) : base(logEvents, activePlayer, eQToolSettings, textToSpeach)
-        { 
+        public SpellCastOnYouHandler(
+            SpellHandlerService baseSpellYouCastingHandler, BaseHandlerData baseHandlerData) : base(baseHandlerData)
+        {
             this.baseSpellYouCastingHandler = baseSpellYouCastingHandler;
-            this.logEvents.SpellCastOnYouEvent += LogEvents_SpellCastOnYouEvent;
+            logEvents.SpellCastOnYouEvent += LogEvents_SpellCastOnYouEvent;
         }
 
         private void LogEvents_SpellCastOnYouEvent(object sender, SpellCastOnYouEvent e)
         {
-            this.baseSpellYouCastingHandler.Handle(e.Spell, EQSpells.SpaceYou, 0, e.TimeStamp); 
+            baseSpellYouCastingHandler.Handle(e.Spell, EQSpells.SpaceYou, 0, e.TimeStamp);
         }
     }
 }

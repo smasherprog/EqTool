@@ -1,5 +1,4 @@
 ﻿using EQTool.Models;
-using EQTool.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,9 +8,9 @@ namespace EQTool.Services.Handlers
 {
     public class RootHasWornOffHandler : BaseHandler
     {
-        public RootHasWornOffHandler(LogEvents logEvents, ActivePlayer activePlayer, EQToolSettings eQToolSettings, ITextToSpeach textToSpeach) : base(logEvents, activePlayer, eQToolSettings, textToSpeach)
+        public RootHasWornOffHandler(BaseHandlerData baseHandlerData) : base(baseHandlerData)
         {
-            this.logEvents.SpellWornOffOtherEvent += LogParser_SpellWornOtherOffEvent;
+            logEvents.SpellWornOffOtherEvent += LogParser_SpellWornOtherOffEvent;
         }
 
         private readonly List<string> RootSpells = new List<string>()

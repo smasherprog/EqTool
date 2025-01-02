@@ -9,23 +9,27 @@ using System.Windows.Media;
 
 namespace EQTool.Services.Handlers
 {
-    public class BaseSpellYouCastingHandler
+    public class SpellHandlerService
     {
         // spells with long recast times, that need a cooldown timer
         public static readonly List<string> SpellsThatNeedTimers = new List<string>()
         {
-            "Dictate",
-            "Harvest",
             "Divine Aura",
             "Divine Barrier",
             "Harmshield",
             "Quivering Veil of Xarn",
+        };
+
+        public static readonly List<string> SpellsThatNeedTimersUnderYou = new List<string>()
+        {
+            "Dictate",
+            "Harvest",
             "Boon of the Garou",
             "Theft of Thought"
         };
 
         // spells that we wish to count how many times they have been cast
-        private readonly List<string> SpellsThatNeedCounts = new List<string>()
+        public static readonly List<string> SpellsThatNeedCounts = new List<string>()
         {
             "Mana Sieve",
             "LowerElement",
@@ -74,7 +78,7 @@ namespace EQTool.Services.Handlers
         private readonly ActivePlayer activePlayer;
         private readonly PlayerTrackerService playerTrackerService;
 
-        public BaseSpellYouCastingHandler(PlayerTrackerService playerTrackerService, SpellWindowViewModel spellWindowViewModel, ActivePlayer activePlayer)
+        public SpellHandlerService(PlayerTrackerService playerTrackerService, SpellWindowViewModel spellWindowViewModel, ActivePlayer activePlayer)
         {
             this.playerTrackerService = playerTrackerService;
             this.spellWindowViewModel = spellWindowViewModel;
@@ -85,12 +89,28 @@ namespace EQTool.Services.Handlers
         {
             var targetclass = playerTrackerService.GetPlayer(targetName)?.PlayerClass;
             var spellname = spell.name;
-            if (SpellsThatNeedTimers.Any(a => string.Equals(spell.name, a, StringComparison.OrdinalIgnoreCase)))
+            if (SpellsThatNeedTimersUnderYou.Any(a => string.Equals(spell.name, a, StringComparison.OrdinalIgnoreCase)))
             {
                 spellWindowViewModel.TryAdd(new TimerViewModel
                 {
                     PercentLeft = 100,
                     GroupName = EQSpells.SpaceYou,
+                    TargetClass = targetclass,
+                    Name = $"{spellname} Cooldown",
+                    Rect = spell.Rect,
+                    Icon = spell.SpellIcon,
+                    TotalDuration = TimeSpan.FromSeconds((int)((spell.recastTime + delayOffset) / 1000.0)),
+                    TotalRemainingDuration = TimeSpan.FromSeconds((int)((spell.recastTime + delayOffset) / 1000.0)),
+                    UpdatedDateTime = DateTime.Now,
+                    ProgressBarColor = Brushes.SkyBlue
+                });
+            }
+            else if (SpellsThatNeedTimers.Any(a => string.Equals(spell.name, a, StringComparison.OrdinalIgnoreCase)))
+            {
+                spellWindowViewModel.TryAdd(new TimerViewModel
+                {
+                    PercentLeft = 100,
+                    GroupName = targetName,
                     TargetClass = targetclass,
                     Name = $"{spellname} Cooldown",
                     Rect = spell.Rect,
@@ -176,9 +196,11 @@ namespace EQTool.Services.Handlers
             }
 
             var grpname = targetName;
+            var isnpc = false;
             if (MasterNPCList.NPCs.Contains(grpname))
             {
                 grpname = " " + grpname;
+                isnpc = true;
             }
             var needscount = SpellsThatNeedCounts.Contains(spellname);
             if (needscount)
@@ -202,6 +224,14 @@ namespace EQTool.Services.Handlers
                 spellduration = spellduration.Add(TimeSpan.FromMilliseconds(delayOffset));
                 if (spellduration.TotalSeconds > 0)
                 {
+                    // set all beneficial spell types to overwrite/refresh, and all detrimental types to create multiple timers
+                    var overWrite = true;
+                    if (spell.benefit_detriment == EQToolShared.Enums.SpellBenefitDetriment.Detrimental)
+                    {
+                        overWrite = !isnpc;
+                        spellduration = spellduration.Add(TimeSpan.FromMilliseconds(6000));
+                    }
+
                     var vm = new SpellViewModel
                     {
                         UpdatedDateTime = DateTime.Now,
@@ -218,12 +248,6 @@ namespace EQTool.Services.Handlers
                         TotalRemainingDuration = spellduration
                     };
 
-                    // set all beneficial spell types to overwrite/refresh, and all detrimental types to create multiple timers
-                    var overWrite = true;
-                    if (spell.benefit_detriment == EQToolShared.Enums.SpellBenefitDetriment.Detrimental)
-                    {
-                        overWrite = false;
-                    }
 
                     spellWindowViewModel.TryAdd(vm, overWrite);
                 }

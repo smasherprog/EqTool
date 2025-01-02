@@ -1,15 +1,14 @@
 ﻿using EQTool.Models;
 using EQTool.Services.Parsing;
-using EQTool.ViewModels;
 using System.Windows.Media;
 
 namespace EQTool.Services.Handlers
 {
     public class InvisHandler : BaseHandler
     {
-        public InvisHandler(LogEvents logEvents, ActivePlayer activePlayer, EQToolSettings eQToolSettings, ITextToSpeach textToSpeach) : base(logEvents, activePlayer, eQToolSettings, textToSpeach)
+        public InvisHandler(BaseHandlerData baseHandlerData) : base(baseHandlerData)
         {
-            this.logEvents.InvisEvent += LogParser_InvisEvent;
+            logEvents.InvisEvent += LogParser_InvisEvent;
         }
 
         private void LogParser_InvisEvent(object sender, InvisEvent e)

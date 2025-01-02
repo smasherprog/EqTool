@@ -12,20 +12,18 @@ namespace EQTool.Services.Handlers
     {
         private readonly SpellWindowViewModel spellWindowViewModel;
         private readonly EQSpells spells;
-        private readonly IAppDispatcher appDispatcher;
 
-        public DragonRoarHandler(IAppDispatcher appDispatcher, EQSpells spells, SpellWindowViewModel spellWindowViewModel, LogEvents logEvents, ActivePlayer activePlayer, EQToolSettings eQToolSettings, ITextToSpeach textToSpeach) : base(logEvents, activePlayer, eQToolSettings, textToSpeach)
+        public DragonRoarHandler(EQSpells spells, SpellWindowViewModel spellWindowViewModel, BaseHandlerData baseHandlerData) : base(baseHandlerData)
         {
-            this.appDispatcher = appDispatcher;
             this.spells = spells;
             this.spellWindowViewModel = spellWindowViewModel;
-            this.logEvents.DragonRoarEvent += LogEvents_DragonRoarEvent;
-            this.logEvents.DragonRoarRemoteEvent += LogEvents_DragonRoarRemoteEvent;
+            logEvents.DragonRoarEvent += LogEvents_DragonRoarEvent;
+            logEvents.DragonRoarRemoteEvent += LogEvents_DragonRoarRemoteEvent;
         }
 
         private void LogEvents_DragonRoarRemoteEvent(object sender, DragonRoarRemoteEvent e)
         {
-            var ploc = this.activePlayer.Location; 
+            var ploc = activePlayer.Location;
             if (ploc.HasValue && e.Location.HasValue)
             {
                 if (Point3D.Subtract(e.Location.Value, ploc.Value).Length > 1000)
@@ -43,10 +41,9 @@ namespace EQTool.Services.Handlers
 
         private void LogEvents_DragonRoarEvent(Spell spell)
         {
-            this.appDispatcher.DispatchUI(() =>
+            appDispatcher.DispatchUI(() =>
             {
-                var exists = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Timer && a.GroupName == CustomTimer.CustomerTime && a.Name == spell.name) as TimerViewModel;
-                if (exists != null && exists.TotalRemainingDuration.TotalSeconds > 2)
+                if (spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Timer && a.GroupName == CustomTimer.CustomerTime && a.Name == spell.name) is TimerViewModel exists && exists.TotalRemainingDuration.TotalSeconds > 2)
                 {
                     return;
                 }

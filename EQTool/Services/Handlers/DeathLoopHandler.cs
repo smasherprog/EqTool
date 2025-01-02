@@ -1,5 +1,4 @@
 ﻿using EQTool.Models;
-using EQTool.ViewModels;
 using System;
 using System.Diagnostics;
 
@@ -41,12 +40,12 @@ namespace EQTool.Services.Handlers
         //
         // register this service as a listener for the Events it cares about
         //
-        public DeathLoopHandler(LogEvents logEvents, ActivePlayer activePlayer, EQToolSettings eQToolSettings, ITextToSpeach textToSpeach) : base(logEvents, activePlayer, eQToolSettings, textToSpeach)
+        public DeathLoopHandler(BaseHandlerData baseHandlerData) : base(baseHandlerData)
         {
-            this.logEvents.SlainEvent += LogEvents_DeathEvent;
-            this.logEvents.DamageEvent += LogEvents_DamageEvent;
-            this.logEvents.YouBeginCastingEvent += LogEvents_YouBeginCastingEvent;
-            this.logEvents.CommsEvent += LogEvents_CommsEvent;
+            logEvents.SlainEvent += LogEvents_DeathEvent;
+            logEvents.DamageEvent += LogEvents_DamageEvent;
+            logEvents.YouBeginCastingEvent += LogEvents_YouBeginCastingEvent;
+            logEvents.CommsEvent += LogEvents_CommsEvent;
         }
 
         public bool IsDeathLooping()

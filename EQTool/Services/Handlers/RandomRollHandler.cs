@@ -10,21 +10,14 @@ namespace EQTool.Services.Handlers
     {
         private readonly SpellWindowViewModel spellWindowViewModel;
         private readonly EQSpells spells;
-        private readonly IAppDispatcher appDispatcher;
 
         public RandomRollHandler(
             SpellWindowViewModel spellWindowViewModel,
-            EQSpells spells,
-            LogEvents logEvents,
-            IAppDispatcher appDispatcher,
-            ActivePlayer activePlayer,
-            EQToolSettings eQToolSettings,
-            ITextToSpeach textToSpeach) : base(logEvents, activePlayer, eQToolSettings, textToSpeach)
+            EQSpells spells, BaseHandlerData baseHandlerData) : base(baseHandlerData)
         {
-            this.appDispatcher = appDispatcher;
             this.spells = spells;
             this.spellWindowViewModel = spellWindowViewModel;
-            this.logEvents.RandomRollEvent += LogEvents_RandomRollEvent;
+            logEvents.RandomRollEvent += LogEvents_RandomRollEvent;
         }
 
         private void LogEvents_RandomRollEvent(object sender, RandomRollEvent e)

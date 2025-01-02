@@ -22,7 +22,8 @@ namespace EQTool.Services
         private readonly LogEvents logEvents;
         private readonly LineParser lineParser;
         private bool Processing = false;
-        public DateTime LastYouActivity { get; private set; }
+        public DateTime LastYouActivity { get; private set; } = DateTime.Now.AddMonths(-1);
+        public DateTime LastEntryDateTime { get; private set; } = DateTime.Now;
         private long? LastLogReadOffset { get; set; } = null;
         private int LineCounter = 0;
 
@@ -47,7 +48,6 @@ namespace EQTool.Services
             UITimer = new System.Timers.Timer(100);
             UITimer.Elapsed += Poll;
             UITimer.Enabled = true;
-            LastYouActivity = DateTime.Now.AddMonths(-1);
         }
 
         public void Push(string line)
@@ -97,6 +97,7 @@ namespace EQTool.Services
             }
             LineCounter += 1;
             var timestamp = LogFileDateTimeParse.ParseDateTime(date);
+            LastEntryDateTime = timestamp;
             foreach (var handler in eqLogParsers)
             {
                 if (handler.Handle(message, timestamp, LineCounter))

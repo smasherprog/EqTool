@@ -1,26 +1,25 @@
 ﻿using EQTool.Models;
-using EQTool.ViewModels;
+using EQToolShared;
 
 namespace EQTool.Services.Handlers
 {
     public class DamageHandler : BaseHandler
     {
         private readonly FightHistory fightHistory;
-        public DamageHandler(
-            FightHistory fightHistory,
-            LogEvents logEvents,
-            ActivePlayer activePlayer, 
-            EQToolSettings eQToolSettings,
-            ITextToSpeach textToSpeach) : base(logEvents, activePlayer, eQToolSettings, textToSpeach)
-        { 
+        public DamageHandler(FightHistory fightHistory, BaseHandlerData baseHandlerData) : base(baseHandlerData)
+        {
             this.fightHistory = fightHistory;
-            this.logEvents.DamageEvent += LogEvents_DamageEvent; 
+            logEvents.DamageEvent += LogEvents_DamageEvent;
         }
-         
+
         private void LogEvents_DamageEvent(object sender, DamageEvent e)
-        { 
-            this.fightHistory.Add(e.TargetName, e.TimeStamp); 
-            this.fightHistory.Add(e.AttackerName, e.TimeStamp);
-        } 
+        {
+            if (MasterNPCList.NPCs.Contains(e.TargetName) && MasterNPCList.NPCs.Contains(e.AttackerName))
+            {
+                return;
+            }
+            fightHistory.Add(e.TargetName, e.TimeStamp);
+            fightHistory.Add(e.AttackerName, e.TimeStamp);
+        }
     }
 }

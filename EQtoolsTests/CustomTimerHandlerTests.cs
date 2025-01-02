@@ -12,13 +12,11 @@ namespace EQtoolsTests
     public class CustomTimerHandlerTests : BaseTestClass
     {
         private readonly LogParser logParser;
-        private readonly LogEvents logEvents;
         private readonly SpellWindowViewModel spellWindowViewModel;
 
         public CustomTimerHandlerTests()
         {
             logParser = container.Resolve<LogParser>();
-            logEvents = container.Resolve<LogEvents>();
             spellWindowViewModel = container.Resolve<SpellWindowViewModel>();
         }
 

@@ -6,7 +6,6 @@ using EQTool.ViewModels.SpellWindow;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Linq;
-using System.Security.Policy;
 
 namespace EQtoolsTests
 {
@@ -80,6 +79,15 @@ namespace EQtoolsTests
         }
 
         [TestMethod]
+        public void ClericDA3()
+        {
+            logParser.Push("Someone is surrounded by a divine barrier.", DateTime.Now);
+            var dteffect = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Timer && a.Name == "Divine Barrier Cooldown") as TimerViewModel;
+            Assert.AreEqual(dteffect.TotalDuration.TotalSeconds, 900.0);
+            Assert.AreEqual(dteffect.GroupName, "Someone");
+        }
+
+        [TestMethod]
         public void Dictate()
         {
             logParser.Push("You begin casting Dictate.", DateTime.Now);
@@ -87,7 +95,7 @@ namespace EQtoolsTests
             var dteffect = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Timer && a.Name == "Dictate Cooldown") as TimerViewModel;
             Assert.AreEqual(dteffect.TotalDuration.TotalSeconds, 299.0, 2);
             var spelleffect = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Spell && a.Name == "Dictate") as SpellViewModel;
-            Assert.AreEqual(spelleffect.TotalDuration.TotalSeconds, 47.0, 2);
+            Assert.AreEqual(spelleffect.TotalDuration.TotalSeconds, 52.0, 2);
         }
 
         [TestMethod]
@@ -127,12 +135,41 @@ namespace EQtoolsTests
 
             var spelleffect = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Spell && a.Name == "Dazzle") as SpellViewModel;
             Assert.IsNotNull(spelleffect);
-            Assert.AreEqual(96.0, spelleffect.TotalDuration.TotalSeconds);
+            Assert.AreEqual(102.0, spelleffect.TotalDuration.TotalSeconds, .1);
             Assert.AreEqual(" Orc centurion", spelleffect.GroupName);
             Assert.AreEqual(2, spellWindowViewModel.SpellList.Count);
         }
 
+        [TestMethod]
+        public void GuessParalyzingEarch()
+        {
+            player.Player.PlayerClass = EQToolShared.Enums.PlayerClasses.Necromancer;
+            player.Player.Level = 60;
+            // two casts, and since this is a detrimental spell, should be two timers
+            logParser.Push("You begin casting Paralyzing Earth.", DateTime.Now);
+            logParser.Push("A froglok dar knight hits YOU for 95 points of damage.", DateTime.Now);
+            logParser.Push("A froglok dar knight hits YOU for 17 points of damage.", DateTime.Now.AddSeconds(3));
+            logParser.Push("You regain your concentration and continue your casting.", DateTime.Now.AddSeconds(3));
+            logParser.Push("A froglok dar knight's feet adhere to the ground.", DateTime.Now.AddSeconds(3));
 
+            var spelleffect = spellWindowViewModel.SpellList.FirstOrDefault();
+            Assert.AreEqual("Paralyzing Earth", spelleffect.Name);
+        }
 
+        [TestMethod]
+        public void PreventMultipleSpellsFrombeingRemoved()
+        {
+            player.Player.PlayerClass = EQToolShared.Enums.PlayerClasses.Necromancer;
+            player.Player.Level = 60;
+            var d = DateTime.Now;
+            logParser.Push(spellWindowViewModel, "You begin casting Clinging Darkness.", d);
+            logParser.Push(spellWindowViewModel, "A wooly mammoth is surrounded by darkness.", d.AddSeconds(2));
+            logParser.Push(spellWindowViewModel, "You begin casting Clinging Darkness.", d.AddSeconds(10));
+            logParser.Push(spellWindowViewModel, "A tundra mammoth is surrounded by darkness.", d.AddSeconds(13));
+            logParser.Push(spellWindowViewModel, "Your Clinging Darkness spell has worn off.", d.AddSeconds(43));
+            spellWindowViewModel.UpdateSpells(1000);
+            var spelleffecst = spellWindowViewModel.SpellList.Where(a => a.SpellViewModelType == SpellViewModelType.Spell && a.Name == "Clinging Darkness").Cast<SpellViewModel>();
+            Assert.AreEqual(spelleffecst.Count(), 1);
+        }
     }
 }

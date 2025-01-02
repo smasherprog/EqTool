@@ -188,58 +188,42 @@ namespace EQTool.ViewModels
                 var timerTypes = new List<SpellViewModelType>() { SpellViewModelType.Roll, SpellViewModelType.Spell, SpellViewModelType.Timer };
                 foreach (var item in SpellList.Where(a => timerTypes.Contains(a.SpellViewModelType)).Cast<TimerViewModel>().ToList())
                 {
-                    var hidespell = false;
-                    if (item.GroupName != CustomTimer.CustomerTime)
-                    {
-                        if (item.SpellViewModelType == SpellViewModelType.Timer)
-                        {
-                            if (!MasterNPCList.NPCs.Contains(item.GroupName.Trim()))
-                            {
-                                if (settings.YouOnlySpells)
-                                {
-                                    hidespell = !(item.GroupName == CustomTimer.CustomerTime || item.GroupName == EQSpells.SpaceYou);
-                                }
-                                else if (RaidModeEnabled && item.GroupName != EQSpells.SpaceYou)
-                                {
-                                    hidespell = true;
-                                }
-                            }
-                        }
-                    }
-
                     item.TotalRemainingDuration = item.TotalRemainingDuration.Subtract(TimeSpan.FromMilliseconds(dt_ms));
                     if (item.TotalRemainingDuration.TotalSeconds <= 0)
                     {
                         itemstoremove.Add(item);
                     }
-                    item.ColumnVisibility = hidespell ? System.Windows.Visibility.Collapsed : System.Windows.Visibility.Visible;
-                }
-                var spells = SpellList.Where(a => a.SpellViewModelType == SpellViewModelType.Spell).Cast<SpellViewModel>().ToList();
-
-                foreach (var item in spells)
-                {
                     var hidespell = false;
-                    if (!MasterNPCList.NPCs.Contains(item.GroupName.Trim()))
+                    if (!item.GroupName.StartsWith(" "))
                     {
-                        if (settings.YouOnlySpells)
+                        if (item.SpellViewModelType == SpellViewModelType.Timer)
                         {
-                            hidespell = !(item.GroupName == CustomTimer.CustomerTime || item.GroupName == EQSpells.SpaceYou);
-                        }
-                        else if (RaidModeEnabled && player.PlayerClass.HasValue)
-                        {
-                            if (item.GroupName != EQSpells.SpaceYou)
+                            if (settings.YouOnlySpells || RaidModeEnabled)
                             {
-                                hidespell = SpellUIExtensions.HideSpell(new List<EQToolShared.Enums.PlayerClasses>() { player.PlayerClass.Value }, item.Classes) || item.SpellType == SpellType.Self;
+                                hidespell = true;
                             }
                         }
-                        else
+                        else if (item.SpellViewModelType == SpellViewModelType.Spell)
                         {
-                            hidespell = SpellUIExtensions.HideSpell(player.ShowSpellsForClasses, item.Classes) && item.GroupName != EQSpells.SpaceYou;
+                            var s = item as SpellViewModel;
+                            if (settings.YouOnlySpells)
+                            {
+                                hidespell = true;
+                            }
+                            else if (RaidModeEnabled && player.PlayerClass.HasValue)
+                            {
+                                hidespell = SpellUIExtensions.HideSpell(new List<EQToolShared.Enums.PlayerClasses>() { player.PlayerClass.Value }, s.Classes) || s.SpellType == SpellType.Self;
+                            }
+                            else
+                            {
+                                hidespell = SpellUIExtensions.HideSpell(player.ShowSpellsForClasses, s.Classes);
+                            }
                         }
                     }
 
                     item.ColumnVisibility = hidespell ? System.Windows.Visibility.Collapsed : System.Windows.Visibility.Visible;
                 }
+
                 var d = DateTime.Now;
                 var persistentTypes = new List<SpellViewModelType>() { SpellViewModelType.Persistent, SpellViewModelType.Counter };
                 foreach (var item in SpellList.Where(a => persistentTypes.Contains(a.SpellViewModelType)).Cast<PersistentViewModel>().ToList())

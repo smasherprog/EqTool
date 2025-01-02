@@ -1,14 +1,13 @@
 ﻿using EQTool.Models;
-using EQTool.ViewModels;
 using System.Windows.Media;
 
 namespace EQTool.Services.Handlers
 {
     public class EnrageHandler : BaseHandler
     {
-        public EnrageHandler(LogEvents logEvents, ActivePlayer activePlayer, EQToolSettings eQToolSettings, ITextToSpeach textToSpeach) : base(logEvents, activePlayer, eQToolSettings, textToSpeach)
+        public EnrageHandler(BaseHandlerData baseHandlerData) : base(baseHandlerData)
         {
-            this.logEvents.EnrageEvent += LogParser_EnrageEvent;
+            logEvents.EnrageEvent += LogParser_EnrageEvent;
         }
 
         private void LogParser_EnrageEvent(object sender, EnrageEvent e)

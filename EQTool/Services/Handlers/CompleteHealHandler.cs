@@ -1,5 +1,4 @@
 ﻿using EQTool.Models;
-using EQTool.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -16,9 +15,9 @@ namespace EQTool.Services.Handlers
 
         private readonly List<ChainAudioData> chainDatas = new List<ChainAudioData>();
 
-        public CompleteHealHandler(LogEvents logEvents, ActivePlayer activePlayer, EQToolSettings eQToolSettings, ITextToSpeach textToSpeach) : base(logEvents, activePlayer, eQToolSettings, textToSpeach)
+        public CompleteHealHandler(BaseHandlerData baseHandlerData) : base(baseHandlerData)
         {
-            this.logEvents.CompleteHealEvent += LogParser_CHEvent;
+            logEvents.CompleteHealEvent += LogParser_CHEvent;
         }
 
         private void LogParser_CHEvent(object sender, CompleteHealEvent e)

@@ -25,7 +25,9 @@ namespace EQTool.Services.Parsing
 
         private bool IsQuake(string line)
         {
-            return line.Contains("You feel you should get somewhere safe as soon as possible");
+            return line == "You feel you should get somewhere safe as soon as possible." ||
+                line == "The gods have awoken to unleash their wrath across Norrath." ||
+                line == "You feel the need to get somewhere safe quickly.";
         }
     }
 }

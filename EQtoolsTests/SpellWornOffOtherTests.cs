@@ -1,11 +1,11 @@
-﻿using EQTool.Services;
-using EQTool.ViewModels.SpellWindow;
+﻿using Autofac;
+using EQTool.Services;
+using EQTool.Services.Parsing;
 using EQTool.ViewModels;
+using EQTool.ViewModels.SpellWindow;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Linq;
-using Autofac;
-using EQTool.Services.Parsing;
 
 namespace EQtoolsTests
 {
@@ -18,7 +18,7 @@ namespace EQtoolsTests
 
         public SpellWornOffOtherTests()
         {
-            parser = container.Resolve<SpellWornOffOtherParser>(); 
+            parser = container.Resolve<SpellWornOffOtherParser>();
             spellWindowViewModel = container.Resolve<SpellWindowViewModel>();
             logParser = container.Resolve<LogParser>();
         }
@@ -39,11 +39,11 @@ namespace EQtoolsTests
         [TestMethod]
         public void VenomOfTheSnakeViewModel()
         {
-            this.player.Player.PlayerClass = EQToolShared.Enums.PlayerClasses.Necromancer;
-            this.player.Player.Level = 53;
+            player.Player.PlayerClass = EQToolShared.Enums.PlayerClasses.Necromancer;
+            player.Player.Level = 53;
             logParser.Push("Someone has been poisoned.", DateTime.Now);
             var dteffect = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Spell && a.Name == "Envenomed Bolt") as SpellViewModel;
-            Assert.AreEqual(dteffect.TotalDuration.TotalSeconds, 41, 2);
+            Assert.AreEqual(dteffect.TotalDuration.TotalSeconds, 46, 2);
             logParser.Push("Your Envenomed Bolt spell has worn off.", DateTime.Now.AddSeconds(40));
             dteffect = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Spell && a.Name == "Envenomed Bolt") as SpellViewModel;
             Assert.IsNull(dteffect);

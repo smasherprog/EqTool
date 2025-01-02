@@ -1,7 +1,6 @@
 ﻿using Autofac;
 using EQTool.Models;
 using EQTool.Services;
-using EQTool.ViewModels;
 using EQToolShared.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
@@ -13,16 +12,14 @@ namespace EQtoolsTests
     {
         private readonly LogParser logParser;
         private readonly LogEvents logEvents;
-        private readonly ActivePlayer activePlayer;
         private bool isCalled = false;
 
         public CompleteHealCommsHandlerTests()
         {
             logParser = container.Resolve<LogParser>();
             logEvents = container.Resolve<LogEvents>();
-            activePlayer = container.Resolve<ActivePlayer>();
-            activePlayer.Player.Level = 54;
-            activePlayer.Player.PlayerClass = PlayerClasses.Cleric;
+            player.Player.Level = 54;
+            player.Player.PlayerClass = PlayerClasses.Cleric;
         }
 
         [TestMethod]
@@ -262,7 +259,7 @@ namespace EQtoolsTests
                 Assert.AreEqual(d.Tag, "GG");
                 isCalled = true;
             };
-            activePlayer.Player.ChChainTagOverlay = "GG";
+            player.Player.ChChainTagOverlay = "GG";
             logParser.Push("Hanbox tells the guild, 'GG 001 CH --Beefwich'", DateTime.Now);
             Assert.IsTrue(isCalled);
         }
@@ -275,7 +272,7 @@ namespace EQtoolsTests
                 Assert.Fail("Should not get here");
             };
 
-            activePlayer.Player.ChChainTagOverlay = "GG";
+            player.Player.ChChainTagOverlay = "GG";
             logParser.Push("Hanbox tells the guild, 'CA 001 CH --Beefwich'", DateTime.Now);
         }
 
@@ -287,7 +284,7 @@ namespace EQtoolsTests
                 Assert.Fail("Should not get here");
             };
 
-            activePlayer.Player.ChChainTagOverlay = "GGG";
+            player.Player.ChChainTagOverlay = "GGG";
             logParser.Push("Windarie tells the group, 'Bufzyn 111 --- CH on << Tinialita  >> --- 111'", DateTime.Now);
         }
 
@@ -303,7 +300,7 @@ namespace EQtoolsTests
                 isCalled = true;
             };
 
-            activePlayer.Player.ChChainTagOverlay = "CA";
+            player.Player.ChChainTagOverlay = "CA";
             logParser.Push("You say out of character, 'CA 002 CH -- Aaryk'", DateTime.Now);
             Assert.IsTrue(isCalled);
         }
@@ -436,7 +433,7 @@ namespace EQtoolsTests
                 Assert.AreEqual(d.Tag, "GG");
                 isCalled = true;
             };
-            activePlayer.Player.ChChainTagOverlay = "GG";
+            player.Player.ChChainTagOverlay = "GG";
             logParser.Push("Mutao auctions, 'GG RCH AAA -- TARGET'", DateTime.Now);
             Assert.IsTrue(isCalled);
         }
@@ -535,6 +532,21 @@ namespace EQtoolsTests
                 isCalled = true;
             };
             logParser.Push("Mutao tells the group, 'CH >      johny  '", DateTime.Now);
+            Assert.IsTrue(isCalled);
+        }
+
+        [TestMethod]
+        public void Parse27()
+        {
+            logEvents.CompleteHealEvent += (s, d) =>
+            {
+                Assert.AreEqual(d.Recipient, "Beefwich");
+                Assert.AreEqual(d.Caster, "Mutao");
+                Assert.AreEqual(d.Position, "BBB");
+                Assert.AreEqual(d.Tag, string.Empty);
+                isCalled = true;
+            };
+            logParser.Push("Mutao tells the group, 'GG RCH BBB CH -- Beefwich'", DateTime.Now);
             Assert.IsTrue(isCalled);
         }
     }

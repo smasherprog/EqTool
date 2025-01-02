@@ -1,5 +1,4 @@
 ﻿using Autofac;
-using EQTool.Services;
 using EQTool.Services.Handlers;
 using EQTool.Services.Parsing;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -13,18 +12,16 @@ namespace EQtoolsTests
     {
         private readonly SlainParser slainParser;
         private readonly CommsParser playerCommsParser;
-        private readonly DamageParser damageParser; 
+        private readonly DamageParser damageParser;
         private readonly DeathLoopHandler deathLoopHandler;
-        private readonly LogEvents logEvents;
 
         public DeathTests()
         {
             slainParser = container.Resolve<SlainParser>();
             playerCommsParser = container.Resolve<CommsParser>();
-            damageParser = container.Resolve<DamageParser>(); 
+            damageParser = container.Resolve<DamageParser>();
 
             deathLoopHandler = container.Resolve<DeathLoopHandler>();
-            logEvents = container.Resolve<LogEvents>();
         }
 
         [TestMethod]

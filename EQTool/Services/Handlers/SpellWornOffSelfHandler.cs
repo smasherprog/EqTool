@@ -7,15 +7,10 @@ namespace EQTool.Services.Handlers
     {
         private readonly SpellWindowViewModel spellWindowViewModel;
 
-        public SpellWornOffSelfHandler(
-            SpellWindowViewModel spellWindowViewModel,
-            LogEvents logEvents,
-            ActivePlayer activePlayer,
-            EQToolSettings eQToolSettings,
-            ITextToSpeach textToSpeach) : base(logEvents, activePlayer, eQToolSettings, textToSpeach)
+        public SpellWornOffSelfHandler(SpellWindowViewModel spellWindowViewModel, BaseHandlerData baseHandlerData) : base(baseHandlerData)
         {
             this.spellWindowViewModel = spellWindowViewModel;
-            this.logEvents.SpellWornOffSelfEvent += LogEvents_SpellWornOffSelfEvent;
+            logEvents.SpellWornOffSelfEvent += LogEvents_SpellWornOffSelfEvent;
         }
 
         private void LogEvents_SpellWornOffSelfEvent(object sender, SpellWornOffSelfEvent e)
