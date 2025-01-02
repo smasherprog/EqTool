@@ -20,6 +20,7 @@ namespace EQTool.Services.Handlers
             {
                 return;
             }
+
             // handle the case where the user has asked for audible/visual alerts on any spell fading
             var fadedText = $"{e.SpellName} faded";
             if (activePlayer?.Player?.WornOffAudio == true)
