@@ -1,12 +1,9 @@
 using EQToolApis.DB;
-using EQToolApis.DB.Models;
 using EQToolApis.Hubs;
 using EQToolApis.Models;
 using EQToolApis.Services;
-using EQToolShared;
 using EQToolShared.Enums;
 using Hangfire;
-using Hangfire.Dashboard;
 using Hangfire.SqlServer;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.EntityFrameworkCore;
@@ -144,8 +141,8 @@ builder.Services.Configure<DiscordServiceOptions>(options =>
     {
         var dbcontext = scope.ServiceProvider.GetRequiredService<EQToolContext>();
         dbcontext.Database.SetCommandTimeout(TimeSpan.FromMinutes(10));
-        var allplayers = dbcontext.EQAuctionPlayersV2.AsNoTracking().ToList();
-        d.Players = allplayers.Select(a => new AuctionPlayer { EQAuctionPlayerId = a.EQAuctionPlayerId, Name = a.Name }).ToDictionary(a => a.EQAuctionPlayerId);
+        var allplayers = dbcontext.EQAuctionPlayersV2.AsNoTracking().Select(a => new AuctionPlayer { EQAuctionPlayerId = a.EQAuctionPlayerId, Name = a.Name }).ToList();
+        d.Players = allplayers.ToDictionary(a => a.EQAuctionPlayerId);
     }
     return d;
 })
@@ -161,38 +158,38 @@ using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<EQToolContext>();
     db.Database.Migrate();
-    var zones = Zones.ZoneInfoMap;
-    var dbzones = db.EQZones.ToList();
-    var notablenpcs = db.EQNotableNPCs.ToList();
-    foreach (var zone in zones)
-    {
-        if (!dbzones.Any(a => a.Name == zone.Value.Name))
-        {
-            _ = db.EQZones.Add(new EQZone
-            {
-                Name = zone.Value.Name
-            });
-        }
-    }
-    dbzones = db.EQZones.ToList();
-    foreach (var zone in zones)
-    {
-        var dbzone = dbzones.FirstOrDefault(a => a.Name == zone.Value.Name);
-        if (dbzone != null)
-        {
-            foreach (var npc in zone.Value.NotableNPCs.Where(a => !string.IsNullOrWhiteSpace(a)))
-            {
-                if (!notablenpcs.Any(a => a.Name == npc))
-                {
-                    _ = db.EQNotableNPCs.Add(new EQNotableNPC
-                    {
-                        Name = npc,
-                        EQZoneId = dbzone.EQZoneId
-                    });
-                }
-            }
-        }
-    }
+    //var zones = Zones.ZoneInfoMap;
+    //var dbzones = db.EQZones.ToList();
+    //var notablenpcs = db.EQNotableNPCs.ToList();
+    //foreach (var zone in zones)
+    //{
+    //    if (!dbzones.Any(a => a.Name == zone.Value.Name))
+    //    {
+    //        _ = db.EQZones.Add(new EQZone
+    //        {
+    //            Name = zone.Value.Name
+    //        });
+    //    }
+    //}
+    //dbzones = db.EQZones.ToList();
+    //foreach (var zone in zones)
+    //{
+    //    var dbzone = dbzones.FirstOrDefault(a => a.Name == zone.Value.Name);
+    //    if (dbzone != null)
+    //    {
+    //        foreach (var npc in zone.Value.NotableNPCs.Where(a => !string.IsNullOrWhiteSpace(a)))
+    //        {
+    //            if (!notablenpcs.Any(a => a.Name == npc))
+    //            {
+    //                _ = db.EQNotableNPCs.Add(new EQNotableNPC
+    //                {
+    //                    Name = npc,
+    //                    EQZoneId = dbzone.EQZoneId
+    //                });
+    //            }
+    //        }
+    //    }
+    //}
     db.SaveChanges();
 }
 
@@ -206,7 +203,7 @@ app.UseEndpoints(endpoints =>
     endpoints.MapControllers();
     endpoints.MapHangfireDashboard("/hangfire", new DashboardOptions()
     {
-        Authorization = new List<IDashboardAuthorizationFilter> { new HangFireAuthorizationFilter() }
+        Authorization = [new HangFireAuthorizationFilter()]
     })
     .RequireAuthorization("HangfireAccess");
 });

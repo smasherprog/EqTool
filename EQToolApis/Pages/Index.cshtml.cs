@@ -42,8 +42,8 @@ namespace EQToolApis.Pages
                         {
                             if (server == Servers.Quarm)
                             {
-                                PigParseStats[(int)server].PigParsePlayerCount = p99list.Count(a => a.Value.Server == server);
-                                PigParseStats[(int)server].zoneStats = p99list
+                                PigParseStats[(int)server].PigParsePlayerCount = quarmlist.Count(a => a.Value.Server == server);
+                                PigParseStats[(int)server].zoneStats = quarmlist
                                     .Select(a => a.Value)
                                     .Where(a => a.Server == server)
                                     .GroupBy(a => a.Zone)
@@ -55,8 +55,8 @@ namespace EQToolApis.Pages
                             }
                             else
                             {
-                                PigParseStats[(int)server].PigParsePlayerCount = quarmlist.Count(a => a.Value.Server == server);
-                                PigParseStats[(int)server].zoneStats = quarmlist
+                                PigParseStats[(int)server].PigParsePlayerCount = p99list.Count(a => a.Value.Server == server);
+                                PigParseStats[(int)server].zoneStats = p99list
                                     .Select(a => a.Value)
                                     .Where(a => a.Server == server)
                                     .GroupBy(a => a.Zone)
