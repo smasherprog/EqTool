@@ -908,6 +908,7 @@ namespace EQTool.UI.SettingsComponents
                 SettingsWindowData.ActivePlayer.Player.MobGatingOverlay = false;
                 SettingsWindowData.ActivePlayer.Player.WornOffOverlay = false;
                 SettingsWindowData.ActivePlayer.Player.TellsYouOverlay = false;
+                SettingsWindowData.ActivePlayer.Player.RunSpeedOverlay = false;
             }
             else
             {
@@ -929,6 +930,7 @@ namespace EQTool.UI.SettingsComponents
                 SettingsWindowData.ActivePlayer.Player.MobGatingOverlay = true;
                 SettingsWindowData.ActivePlayer.Player.WornOffOverlay = true;
                 SettingsWindowData.ActivePlayer.Player.TellsYouOverlay = true;
+                SettingsWindowData.ActivePlayer.Player.RunSpeedOverlay = true;
             }
             SaveConfig();
         }

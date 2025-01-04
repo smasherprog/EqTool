@@ -19,16 +19,14 @@ namespace EQTool.Services.Parsing
         private static readonly List<string> triggerFileContents = new List<string>();          // the raw file contents
         public static List<UserDefinedTrigger> triggerList = new List<UserDefinedTrigger>();    // the corresponding UserDefinedTriggers from the file
 
-        private readonly ActivePlayer activePlayer;
         private readonly LogEvents logEvents;
 
         // watcher for the UserTriggers.txt file changed
         private readonly FileSystemWatcher watcher;
 
         // ctor
-        public UserDefinedTriggerParser(ActivePlayer activePlayer, LogEvents logEvents)
+        public UserDefinedTriggerParser(LogEvents logEvents)
         {
-            this.activePlayer = activePlayer;
             this.logEvents = logEvents;
 
             // set up the watcher for the user triggers file changed notification

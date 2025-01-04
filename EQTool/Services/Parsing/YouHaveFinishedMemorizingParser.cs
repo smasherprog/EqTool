@@ -26,7 +26,7 @@ namespace EQTool.Services.Parsing
                 debugOutput.WriteLine($"Message: {line}", OutputType.Spells);
                 logEvents.Handle(new YouHaveFinishedMemorizingEvent { SpellName = spell, Line = line, TimeStamp = timestamp, LineCounter = lineCounter });
                 var foundspell = spells.AllSpells.FirstOrDefault(a => a.name == spell);
-                if (foundspell.Classes.Count == 1)
+                if ((foundspell != null) && (foundspell.Classes.Count == 1))
                 {
                     logEvents.Handle(new ClassDetectedEvent { TimeStamp = timestamp, LineCounter = lineCounter, Line = line, PlayerClass = foundspell.Classes.FirstOrDefault().Key });
                     logEvents.Handle(new PlayerLevelDetectionEvent { TimeStamp = timestamp, LineCounter = lineCounter, Line = line, PlayerLevel = foundspell.Classes.FirstOrDefault().Value });
