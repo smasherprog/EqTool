@@ -6,13 +6,13 @@
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script>
     $(document).ready(function () {
-        var key = $(".mytime").each(function (i, obj) {
-            var element = $(this); // <div> or <span> element.
-            var utc = element.attr("utc"); // "2018-12-28T02:36:13.6774675Z"
-            var d = new Date(utc);
-            var l = d.toLocaleString(); // Runs client side, so will be client's local time!
-            element.text(l);
-        });
+    var key = $(".mytime").each(function (i, obj) {
+    var element = $(this); // <div> or <span> element.
+    var utc = element.attr("utc"); // "2018-12-28T02:36:13.6774675Z"
+    var d = new Date(utc);
+    var l = d.toLocaleString(); // Runs client side, so will be client's local time!
+    element.text(l);
+    });
     });
 </script>
 <div class="container-fluid">
@@ -67,195 +67,66 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-lg-8 offset-lg-2 col-12">
-            <div class="card-deck">
-                <div class="card border-success mb-3">
-                    <div class="card-body">
-                        <h5 class="card-title text-success">Green Server</h5>
-                        <p class="card-text">
-                            <table>
-                                <tbody>
-                                    <tr>
-                                        <th>Total Actioned Items</th>
-                                        <td>@Model.AllData.ServerData[(int)Servers.Green].TotalEQTunnelAuctionItems.ToString("n0")</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Total Actions</th>
-                                        <td>@Model.AllData.ServerData[(int)Servers.Green].TotalEQTunnelMessages.ToString("n0")</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Last Updated</th>
-                                        <td class="mytime" utc="@Model.AllData.ServerData[(int)Servers.Green].RecentImportTimeStamp.ToString("o")"></td>
-                                    </tr>
-                                    <tr>
-                                        <th>Oldest Import</th>
-                                        <td class="mytime" utc="@Model.AllData.ServerData[(int)Servers.Green].OldestImportTimeStamp.ToString("o")"></td>
-                                    </tr>
-                                    <tr>
-                                        <th>Map Users</th>
-                                        <td>@EQToolApis.Pages.IndexModel.PigParseStats[(int)Servers.Green].PigParsePlayerCount</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Unique Users</th>
-                                        <td>@EQToolApis.Pages.IndexModel.PigParseStats[(int)Servers.Green].PigParseUniquePlayerCount</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Top Zones</th>
-                                        <td>
-                                            @foreach (var z in EQToolApis.Pages.IndexModel.PigParseStats[(int)Servers.Green].zoneStats.OrderByDescending(a => a.Count).Where(a => a.Count > 0).Take(5))
-                                            {
-                                                <text>@z.Zone:@z.Count/</text>
-                                            }
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </p>
-                        <a href="/ServerIndex/@Servers.Green" class="btn btn-success">Prices</a>
+        <div class="col-sm-12 col-lg-10 offset-lg-1">
+            <div class="row">
+                @foreach (var item in EQToolApis.Pages.IndexModel.PigParseStats)
+                { 
+                    <div class="col-6 card border-@item.CssClass mb-1">
+                        <div class="card-body">
+                            <h5 class="card-title text-@item.CssClass">@item.Server Server</h5>
+                            <p class="card-text">
+                                <table>
+                                    <tbody>
+                                        @if (item.Server == Servers.Green || item.Server == Servers.Blue)
+                                        {
+                                            <tr>
+                                                <th>Total Actioned Items</th>
+                                                <td>@Model.AllData.ServerData[(int)item.Server].TotalEQTunnelAuctionItems.ToString("n0")</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Total Actions</th>
+                                                <td>@Model.AllData.ServerData[(int)item.Server].TotalEQTunnelMessages.ToString("n0")</td>
+                                            </tr>
+                                            <tr>
+                                                <th>Last Updated</th>
+                                                <td class="mytime" utc="@Model.AllData.ServerData[(int)item.Server].RecentImportTimeStamp.ToString("o")"></td>
+                                            </tr>
+                                            <tr>
+                                                <th>Oldest Import</th>
+                                                <td class="mytime" utc="@Model.AllData.ServerData[(int)item.Server].OldestImportTimeStamp.ToString("o")"></td>
+                                            </tr>
+                                        }
+
+                                        <tr>
+                                            <th>Map Users</th>
+                                            <td>@item.PigParsePlayerCount</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Unique Users</th>
+                                            <td>@item.PigParseUniquePlayerCount</td>
+                                        </tr>
+                                        <tr>
+                                            <th>Top Zones</th>
+                                            <td>
+                                                @foreach (var z in @item.zoneStats.OrderByDescending(a => a.Count).Where(a => a.Count > 0).Take(5))
+                                                {
+                                                    <text>@z.Zone:@z.Count/</text>
+                                                }
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </p>
+                            @if (item.Server == Servers.Green || item.Server == Servers.Blue)
+                            {
+                                <a href="/ServerIndex/@item.Server" class="btn btn-success">Prices</a>
+                            }
+                        </div>
                     </div>
-                </div>
-                <div class="card border-primary mb-3">
-                    <div class="card-body">
-                        <h5 class="card-title text-primary">Blue Server</h5>
-                        <p class="card-text">
-                            <table>
-                                <tbody>
-                                    <tr>
-                                        <th>Total Actioned Items</th>
-                                        <td>@Model.AllData.ServerData[(int)Servers.Blue].TotalEQTunnelAuctionItems.ToString("n0")</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Total Actions</th>
-                                        <td>@Model.AllData.ServerData[(int)Servers.Blue].TotalEQTunnelMessages.ToString("n0")</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Last Updated</th>
-                                        <td class="mytime" utc="@Model.AllData.ServerData[(int)Servers.Blue].RecentImportTimeStamp.ToString("o")"></td>
-                                    </tr>
-                                    <tr>
-                                        <th>Oldest Import</th>
-                                        <td class="mytime" utc="@Model.AllData.ServerData[(int)Servers.Blue].OldestImportTimeStamp.ToString("o")"></td>
-                                    </tr>
-                                    <tr>
-                                        <th>Map Users</th>
-                                        <td>@EQToolApis.Pages.IndexModel.PigParseStats[(int)Servers.Blue].PigParsePlayerCount</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Unique Users</th>
-                                        <td>@EQToolApis.Pages.IndexModel.PigParseStats[(int)Servers.Blue].PigParseUniquePlayerCount</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Top Zones</th>
-                                        <td>
-                                            @foreach (var z in EQToolApis.Pages.IndexModel.PigParseStats[(int)Servers.Blue].zoneStats.OrderByDescending(a => a.Count).Where(a => a.Count > 0).Take(5))
-                                            {
-                                                <text>@z.Zone:@z.Count/</text>
-                                            }
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </p>
-                        <a href="/ServerIndex/@Servers.Blue" class="btn btn-primary">Prices</a>
-                    </div>
-                </div>
+                }
             </div>
         </div>
-    </div>
-    <div class="row">
-        <div class="col-lg-8 offset-lg-2 col-12">
-            <div class="card-deck">
-                <div class="card border-danger mb-3">
-                    <div class="card-body">
-                        <h5 class="card-title text-danger">Red Server</h5>
-                        <p class="card-text">
-                            <table>
-                                <tbody>
-                                    <tr>
-                                        <th>Total Actioned Items</th>
-                                        <td>N/A</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Total Actions</th>
-                                        <td>N/A</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Last Updated</th>
-                                        <td>N/A</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Oldest Import</th>
-                                        <td>N/A</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Map Users</th>
-                                        <td>@EQToolApis.Pages.IndexModel.PigParseStats[(int)Servers.Red].PigParsePlayerCount</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Unique Users</th>
-                                        <td>@EQToolApis.Pages.IndexModel.PigParseStats[(int)Servers.Red].PigParseUniquePlayerCount</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Top Zones</th>
-                                        <td>
-                                            @foreach (var z in EQToolApis.Pages.IndexModel.PigParseStats[(int)Servers.Red].zoneStats.OrderByDescending(a => a.Count).Where(a => a.Count > 0).Take(5))
-                                            {
-                                                <text>@z.Zone:@z.Count/</text>
-                                            }
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </p>
-                    </div>
-                </div>
-                <div class="card border-warning mb-3">
-                    <div class="card-body">
-                        <h5 class="card-title text-warning">Quarm Server</h5>
-                        <p class="card-text">
-                            <table>
-                                <tbody>
-                                    <tr>
-                                        <th>Total Actioned Items</th>
-                                        <td>N/A</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Total Actions</th>
-                                        <td>N/A</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Last Updated</th>
-                                        <td>N/A</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Oldest Import</th>
-                                        <td>N/A</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Map Users</th>
-                                        <td>@EQToolApis.Pages.IndexModel.PigParseStats[(int)Servers.Quarm].PigParsePlayerCount</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Unique Users</th>
-                                        <td>@EQToolApis.Pages.IndexModel.PigParseStats[(int)Servers.Quarm].PigParseUniquePlayerCount</td>
-                                    </tr>
-                                    <tr>
-                                        <th>Top Zones</th>
-                                        <td>
-                                            @foreach (var z in EQToolApis.Pages.IndexModel.PigParseStats[(int)Servers.Quarm].zoneStats.OrderByDescending(a => a.Count).Where(a => a.Count > 0).Take(5))
-                                            {
-                                                <text>@z.Zone:@z.Count/</text>
-                                            }
-                                        </td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
+    </div> 
     <div class="row">
         <div class="col-lg-8 offset-lg-2 col-12">
             <div class="card-deck">

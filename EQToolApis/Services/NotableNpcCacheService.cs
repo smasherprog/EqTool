@@ -21,6 +21,7 @@ namespace EQToolApis.Services
             var zones = Zones.ZoneInfoMap;
             var dbzones = toolContext.EQZones.ToList();
             var notablenpcs = toolContext.EQNotableNPCs.ToList();
+            var lastdateweCareAbout = DateTimeOffset.Now.AddDays(-5);
             foreach (Servers server in Enum.GetValues(typeof(Servers)))
             {
                 if (server == Servers.MaxServers)
@@ -28,7 +29,7 @@ namespace EQToolApis.Services
                     continue;
                 }
                 var deathnpcs = toolContext.EQNotableActivities
-                .Where(a => a.Server == server && a.IsDeath)
+                .Where(a => a.Server == server && a.IsDeath && a.ActivityTime > lastdateweCareAbout)
                 .GroupBy(a => a.EQNotableNPCId)
                 .Select(a => new
                 {
@@ -37,7 +38,7 @@ namespace EQToolApis.Services
                 }).ToList();
 
                 var lastseennpcs = toolContext.EQNotableActivities
-                   .Where(a => a.Server == server && !a.IsDeath)
+                   .Where(a => a.Server == server && !a.IsDeath && a.ActivityTime > lastdateweCareAbout)
                    .GroupBy(a => a.EQNotableNPCId)
                    .Select(a => new
                    {

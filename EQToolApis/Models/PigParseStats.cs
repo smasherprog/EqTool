@@ -12,6 +12,7 @@ namespace EQToolApis.Models
         public Servers Server { get; set; }
         public int PigParsePlayerCount { get; set; }
         public int PigParseUniquePlayerCount { get; set; }
-        public List<PigParseZoneStat> zoneStats { get; set; } = new List<PigParseZoneStat>();
+        public List<PigParseZoneStat> zoneStats { get; set; } = [];
+        public string CssClass { get; set; }
     }
 }

@@ -36,7 +36,7 @@ namespace EQToolApis.Models
     public class PlayerCacheV2
     {
         public ReaderWriterLockSlim PlayersLock = new();
-        public Dictionary<int, AuctionPlayer> Players = new();
+        public Dictionary<int, AuctionPlayer> Players = [];
     }
 
     public class NoteableNPC
@@ -50,7 +50,7 @@ namespace EQToolApis.Models
 
     public class NoteableNPCZone
     {
-        public Dictionary<string, List<NoteableNPC>> Zones = new();
+        public Dictionary<string, List<NoteableNPC>> Zones = [];
     }
 
     public class NoteableNPCCache

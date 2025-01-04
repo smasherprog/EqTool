@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EQToolApis.DB.Models
 {
-    [PrimaryKey(nameof(EQNotableActivityId))]
+    [PrimaryKey(nameof(EQNotableActivityId)), Index(nameof(ActivityTime)), Index(nameof(Server), nameof(IsDeath), nameof(ActivityTime))]
     public class EQNotableActivity
     {
         public int EQNotableActivityId { get; set; }
