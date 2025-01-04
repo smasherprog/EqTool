@@ -126,63 +126,67 @@
                 }
             </div>
         </div>
-    </div> 
-    <div class="row">
-        <div class="col-lg-8 offset-lg-2 col-12">
-            <div class="card-deck">
-                <div class="card border-success mb-3">
-                    <div class="card-body">
-                        <h5 class="card-title text-success">Green Server TOD's <small>(times are all Local times)</small></h5>
-                        <p class="card-text">
-                            <table>
-                                <tbody>
-                                    @foreach (var item in Model.GreenNoteableNPCs)
-                                    {
-                                        <tr>
-                                            <th class="pr-5">@item.Name</th>
-                                            @if (item.EventTime.HasValue)
-                                            {
-                                                <td class="mytime" utc="@item.EventTime.Value.ToString("o")"></td>
-                                            }
-                                            else
-                                            {
-                                                <td>N/A</td>
-                                            }
+    </div>
 
-                                        </tr>
-                                        @foreach (var fixedtime in item.FixedTimeNPCDateTimes)
+    <div class="row">
+        <div class="col-sm-12 col-lg-8 offset-lg-2">
+            <div class="row">
+                @for (var j = 0; j < Model.NoteableNPCs.Count; j++)
+                {
+                    <div class="col-6 card border-@EQToolApis.Pages.IndexModel.PigParseStats[j].CssClass mb-1">
+                        <div class="card-body">
+                            <h5 class="card-title text-@EQToolApis.Pages.IndexModel.PigParseStats[j].CssClass">@EQToolApis.Pages.IndexModel.PigParseStats[j].Server Server</h5>
+                            <p class="card-text">
+                                <table>
+                                    <tbody>
+                                        @foreach (var item in Model.NoteableNPCs[j])
                                         {
                                             <tr>
-                                                <th class="text-right">(Guess)</th>
-                                                <td class="mytime" utc="@fixedtime.ToString("o")"></td>
-                                            </tr>
-                                        }
-                                        @foreach (var rangedtime in item.RangeTimeNPCDateTime)
-                                        {
-                                            <tr>
-                                                @if (item.RangeTimeNPCDateTime.Count > 1)
+                                                <th class="pr-5">@item.Name</th>
+                                                @if (item.EventTime.HasValue)
                                                 {
-                                                    <th class="text-right">(Guess)</th>
+                                                    <td class="mytime" utc="@item.EventTime.Value.ToString("o")"></td>
                                                 }
                                                 else
                                                 {
-                                                    <th class="text-right">(Window)</th>
+                                                    <td>N/A</td>
                                                 }
 
-                                                <td>
-                                                    <span class="mytime" utc="@rangedtime.BegWindow.ToString("o")"></span>
-                                                    <span> - </span>
-                                                    <span class="mytime" utc="@rangedtime.EndWindow.ToString("o")"></span>
-                                                </td>
                                             </tr>
+                                            @foreach (var fixedtime in item.FixedTimeNPCDateTimes)
+                                            {
+                                                <tr>
+                                                    <th class="text-right">(Guess)</th>
+                                                    <td class="mytime" utc="@fixedtime.ToString("o")"></td>
+                                                </tr>
+                                            }
+                                            @foreach (var rangedtime in item.RangeTimeNPCDateTime)
+                                            {
+                                                <tr>
+                                                    @if (item.RangeTimeNPCDateTime.Count > 1)
+                                                    {
+                                                        <th class="text-right">(Guess)</th>
+                                                    }
+                                                    else
+                                                    {
+                                                        <th class="text-right">(Window)</th>
+                                                    }
+
+                                                    <td>
+                                                        <span class="mytime" utc="@rangedtime.BegWindow.ToString("o")"></span>
+                                                        <span> - </span>
+                                                        <span class="mytime" utc="@rangedtime.EndWindow.ToString("o")"></span>
+                                                    </td>
+                                                </tr>
+                                            }
                                         }
-                                    }
-                                </tbody>
-                            </table>
-                        </p>
+                                    </tbody>
+                                </table>
+                            </p> 
+                        </div>
                     </div>
-                </div>
+                }
             </div>
         </div>
-    </div>
+    </div> 
 </div> 

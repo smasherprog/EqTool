@@ -158,6 +158,7 @@ using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<EQToolContext>();
     db.Database.Migrate();
+    scope.ServiceProvider.GetRequiredService<NotableNpcCacheService>().BuildCache();
     //var zones = Zones.ZoneInfoMap;
     //var dbzones = db.EQZones.ToList();
     //var notablenpcs = db.EQNotableNPCs.ToList();
@@ -260,7 +261,6 @@ if (isrelease)
         var runnow = scope.ServiceProvider.GetRequiredService<IBackgroundJobClient>();
         runnow.Schedule<UIDataBuild>((a) => a.BuildDataGreen(), TimeSpan.FromSeconds(30));
         runnow.Schedule<UIDataBuild>((a) => a.BuildDataBlue(), TimeSpan.FromSeconds(15));
-        runnow.Schedule<NotableNpcCacheService>((a) => a.BuildCache(), TimeSpan.FromSeconds(10));
     }
 }
 else

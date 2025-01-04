@@ -12,7 +12,11 @@ namespace EQToolApis.Pages
     {
         public readonly DBData AllData;
         public readonly NoteableNPCCache noteableNPCCache;
-        public List<TODModel> GreenNoteableNPCs = [];
+        public List<List<TODModel>> NoteableNPCs =
+        [
+            [],
+            []
+        ];
         public ServerMessage ServerMessage { get; set; } = new ServerMessage();
         public List<DateTimeOffset> Quakes = [];
         public static PigParseStats[] PigParseStats = new PigParseStats[(int)Servers.MaxServers]
@@ -78,38 +82,42 @@ namespace EQToolApis.Pages
                 new("westwastes", "a Kromzek Captain")
             };
             Quakes = eQToolContext.QuakeTimes.OrderByDescending(a => a.DateTime).Take(3).Select(a => a.DateTime).ToList();
-            foreach (var item in keyname)
+            for (var server = 0; server < NoteableNPCs.Count; server++)
             {
-                var def = new TODModel
+                foreach (var item in keyname)
                 {
-                    FixedTimeNPCDateTimes = [],
-                    RangeTimeNPCDateTime = [],
-                    Name = item.Value
-                };
-                GreenNoteableNPCs.Add(def);
-                if (noteableNPCCache.ServerData[(int)Servers.Green].Zones.TryGetValue(item.Key, out var npc))
-                {
-                    var n = npc.FirstOrDefault(a => a.Name == item.Value);
-                    if (n != null)
+                    var def = new TODModel
                     {
-                        def.EventTime = n.LastDeath ?? n.LastSeen ?? null;
-                        if (n.Name == "Scout Charisa" && def.EventTime.HasValue)
+                        FixedTimeNPCDateTimes = [],
+                        RangeTimeNPCDateTime = [],
+                        Name = item.Value
+                    };
+                    NoteableNPCs[server].Add(def);
+                    if (noteableNPCCache.ServerData[server].Zones.TryGetValue(item.Key, out var npc))
+                    {
+                        var n = npc.FirstOrDefault(a => a.Name == item.Value);
+                        if (n != null)
                         {
-                            for (var i = 1; i <= 5; i++)
+                            def.EventTime = n.LastDeath ?? n.LastSeen ?? null;
+                            if (n.Name == "Scout Charisa" && def.EventTime.HasValue)
                             {
-                                def.FixedTimeNPCDateTimes.Add(def.EventTime.Value.AddHours(10 * i));
+                                for (var i = 1; i <= 5; i++)
+                                {
+                                    def.FixedTimeNPCDateTimes.Add(def.EventTime.Value.AddHours(10 * i));
+                                }
                             }
-                        }
-                        else if (n.Name == "a Kromzek Captain" && def.EventTime.HasValue)
-                        {
-                            for (var i = 1; i <= 5; i++)
+                            else if (n.Name == "a Kromzek Captain" && def.EventTime.HasValue)
                             {
-                                def.FixedTimeNPCDateTimes.Add(def.EventTime.Value.AddHours(10 * i));
+                                for (var i = 1; i <= 5; i++)
+                                {
+                                    def.FixedTimeNPCDateTimes.Add(def.EventTime.Value.AddHours(10 * i));
+                                }
                             }
                         }
                     }
                 }
             }
+
         }
 
 
