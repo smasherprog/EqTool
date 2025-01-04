@@ -1,7 +1,9 @@
 using EQToolApis.DB;
+using EQToolApis.DB.Models;
 using EQToolApis.Hubs;
 using EQToolApis.Models;
 using EQToolApis.Services;
+using EQToolShared;
 using EQToolShared.Enums;
 using Hangfire;
 using Hangfire.SqlServer;
@@ -158,40 +160,42 @@ using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<EQToolContext>();
     db.Database.Migrate();
-    scope.ServiceProvider.GetRequiredService<NotableNpcCacheService>().BuildCache();
-    //var zones = Zones.ZoneInfoMap;
-    //var dbzones = db.EQZones.ToList();
-    //var notablenpcs = db.EQNotableNPCs.ToList();
-    //foreach (var zone in zones)
-    //{
-    //    if (!dbzones.Any(a => a.Name == zone.Value.Name))
-    //    {
-    //        _ = db.EQZones.Add(new EQZone
-    //        {
-    //            Name = zone.Value.Name
-    //        });
-    //    }
-    //}
-    //dbzones = db.EQZones.ToList();
-    //foreach (var zone in zones)
-    //{
-    //    var dbzone = dbzones.FirstOrDefault(a => a.Name == zone.Value.Name);
-    //    if (dbzone != null)
-    //    {
-    //        foreach (var npc in zone.Value.NotableNPCs.Where(a => !string.IsNullOrWhiteSpace(a)))
-    //        {
-    //            if (!notablenpcs.Any(a => a.Name == npc))
-    //            {
-    //                _ = db.EQNotableNPCs.Add(new EQNotableNPC
-    //                {
-    //                    Name = npc,
-    //                    EQZoneId = dbzone.EQZoneId
-    //                });
-    //            }
-    //        }
-    //    }
-    //}
+
+    var zones = Zones.ZoneInfoMap;
+    var dbzones = db.EQZones.ToList();
+    var notablenpcs = db.EQNotableNPCs.ToList();
+    foreach (var zone in zones)
+    {
+        if (!dbzones.Any(a => a.Name == zone.Value.Name))
+        {
+            _ = db.EQZones.Add(new EQZone
+            {
+                Name = zone.Value.Name
+            });
+        }
+    }
+    dbzones = db.EQZones.ToList();
+    foreach (var zone in zones)
+    {
+        var dbzone = dbzones.FirstOrDefault(a => a.Name == zone.Value.Name);
+        if (dbzone != null)
+        {
+            foreach (var npc in zone.Value.NotableNPCs.Where(a => !string.IsNullOrWhiteSpace(a)))
+            {
+                if (!notablenpcs.Any(a => a.Name == npc))
+                {
+                    _ = db.EQNotableNPCs.Add(new EQNotableNPC
+                    {
+                        Name = npc,
+                        EQZoneId = dbzone.EQZoneId
+                    });
+                }
+            }
+        }
+    }
     db.SaveChanges();
+    scope.ServiceProvider.GetRequiredService<NotableNpcCacheService>().BuildCache();
+
 }
 
 app.UseHttpsRedirection();
