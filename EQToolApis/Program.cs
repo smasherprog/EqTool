@@ -141,7 +141,7 @@ builder.Services.Configure<DiscordServiceOptions>(options =>
     {
         var dbcontext = scope.ServiceProvider.GetRequiredService<EQToolContext>();
         dbcontext.Database.SetCommandTimeout(TimeSpan.FromMinutes(10));
-        var allplayers = dbcontext.EQAuctionPlayersV2.AsNoTracking().Select(a => new AuctionPlayer { EQAuctionPlayerId = a.EQAuctionPlayerId, Name = a.Name }).ToList();
+        var allplayers = dbcontext.EQAuctionPlayersV2.Select(a => new AuctionPlayer { EQAuctionPlayerId = a.EQAuctionPlayerId, Name = a.Name }).ToList();
         d.Players = allplayers.ToDictionary(a => a.EQAuctionPlayerId);
     }
     return d;
