@@ -782,6 +782,16 @@ namespace EQTool.Models
             }
         }
 
+        private bool _RunSpeedOverlay;
+        public bool RunSpeedOverlay
+        {
+            get => _RunSpeedOverlay;
+            set
+            {
+                _RunSpeedOverlay = value;
+                OnPropertyChanged();
+            }
+        }
 
 
 
