@@ -175,7 +175,7 @@ namespace EQTool.Services
             var spellsfile = new FileInfo(settings.DefaultEqDirectory + spellfile);
             if (spellsfile.Exists)
             {
-                var spellfilename = $"SpellCache{servers}_3";
+                var spellfilename = $"SpellCache{servers}_4";
                 if (!isdebug)
                 {
                     spellfilename = new string(spellfilename.Where(a => char.IsLetterOrDigit(a)).ToArray()) + ".bin";
@@ -234,8 +234,7 @@ namespace EQTool.Services
                         spell.name.Contains(" Port") ||
                         spell.name.Contains("Journey:") ||
                         spell.name.Contains("Ring of ") ||
-                        spell.name.Contains("Portal") ||
-                        spell.name.Contains("Gate")
+                        spell.name.Contains("Portal")
                         )
                     {
                         continue;
