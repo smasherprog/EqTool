@@ -1075,7 +1075,15 @@ namespace EQToolShared
                 {
                     "",
                 },
-                RespawnTime = new TimeSpan(0, 6, 40)
+                RespawnTime = new TimeSpan(0, 24, 0),
+                NpcSpawnTimes = new List<NpcSpawnTime>()
+                 {
+                      new NpcSpawnTime
+                      {
+                           Name = "King Kazon Stormhammer",
+                            RespawnTime = new TimeSpan(0, 6, 40)
+                      }
+                 }
             });
             ZoneInfoMap.Add("kaladimb", new ZoneInfo
             {
@@ -1086,7 +1094,7 @@ namespace EQToolShared
                 {
                     "",
                 },
-                RespawnTime = new TimeSpan(0, 6, 40)
+                RespawnTime = new TimeSpan(0, 24, 0)
             });
             ZoneInfoMap.Add("karnor", new ZoneInfo
             {
