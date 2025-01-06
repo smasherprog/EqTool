@@ -32,7 +32,14 @@ namespace EQTool.Services.Handlers
                         activePlayer.UserCastingSpell = null;
                         activePlayer.UserCastSpellDateTime = null;
                     });
-                    baseSpellYouCastingHandler.Handle(userCastingSpell, e.TargetName, 0, e.TimeStamp);
+                    var target = e.TargetName;
+                    if (string.Equals(userCastingSpell.name, "Theft of Thought", System.StringComparison.OrdinalIgnoreCase) ||
+                        string.Equals(userCastingSpell.name, "dictate", System.StringComparison.OrdinalIgnoreCase)
+                        )
+                    {
+                        target = EQSpells.SpaceYou;
+                    }
+                    baseSpellYouCastingHandler.Handle(userCastingSpell, target, 0, e.TimeStamp);
                     return;
                 }
                 else

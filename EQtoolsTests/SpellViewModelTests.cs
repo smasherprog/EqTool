@@ -54,6 +54,7 @@ namespace EQtoolsTests
             logParser.Push("You gather mana from your surroundings.", DateTime.Now);
             var dteffect = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Timer && a.Name == "Harvest Cooldown") as TimerViewModel;
             Assert.AreEqual(dteffect.TotalDuration.TotalSeconds, 600.0);
+            Assert.AreEqual(EQSpells.SpaceYou, dteffect.GroupName);
         }
 
         //this DOES NOT HAVE a landed message
@@ -179,7 +180,7 @@ namespace EQtoolsTests
             player.Player.Level = 60;
             var d = DateTime.Now;
             logParser.Push(spellWindowViewModel, "A frost giant sentinel hits YOU for 35 points of damage.", d);
-            logParser.Push(spellWindowViewModel, "A frost giant sentinel yawns.", d); 
+            logParser.Push(spellWindowViewModel, "A frost giant sentinel yawns.", d);
             logParser.Push(spellWindowViewModel, "A frost giant sentinel yawns.", d);
 
             Assert.AreEqual(spellWindowViewModel.SpellList.Count(), 2);
