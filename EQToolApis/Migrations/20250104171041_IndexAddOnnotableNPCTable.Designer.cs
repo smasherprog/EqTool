@@ -4,6 +4,7 @@ using EQToolApis.DB;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace EQToolApis.Migrations
 {
     [DbContext(typeof(EQToolContext))]
-    partial class EQToolContextModelSnapshot : ModelSnapshot
+    [Migration("20250104171041_IndexAddOnnotableNPCTable")]
+    partial class IndexAddOnnotableNPCTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -433,19 +436,13 @@ namespace EQToolApis.Migrations
 
             modelBuilder.Entity("EQToolApis.DB.Models.QuakeTime", b =>
                 {
-                    b.Property<int>("QuakeTimeId")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("QuakeTimeId"));
-
                     b.Property<DateTimeOffset>("DateTime")
                         .HasColumnType("datetimeoffset");
 
                     b.Property<byte>("Server")
                         .HasColumnType("tinyint");
 
-                    b.HasKey("QuakeTimeId");
+                    b.HasKey("DateTime");
 
                     b.ToTable("QuakeTimes");
                 });

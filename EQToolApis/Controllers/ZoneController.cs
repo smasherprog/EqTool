@@ -67,6 +67,7 @@ namespace EQToolApis.Controllers
             if (!dbcontext.QuakeTimes.Any(a => a.DateTime > d && a.Server == Servers.Green))
             {
                 _ = dbcontext.QuakeTimes.Add(new DB.Models.QuakeTime { DateTime = DateTimeOffset.UtcNow, Server = Servers.Green });
+                _ = dbcontext.SaveChanges();
             }
         }
 
@@ -82,6 +83,7 @@ namespace EQToolApis.Controllers
             if (!dbcontext.QuakeTimes.Any(a => a.DateTime > d && a.Server == server))
             {
                 _ = dbcontext.QuakeTimes.Add(new DB.Models.QuakeTime { DateTime = DateTimeOffset.UtcNow, Server = server });
+                _ = dbcontext.SaveChanges();
             }
         }
     }

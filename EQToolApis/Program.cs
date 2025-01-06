@@ -6,7 +6,6 @@ using EQToolApis.Services;
 using EQToolShared;
 using EQToolShared.Enums;
 using Hangfire;
-using Hangfire.Dashboard;
 using Hangfire.SqlServer;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.EntityFrameworkCore;
@@ -144,8 +143,8 @@ builder.Services.Configure<DiscordServiceOptions>(options =>
     {
         var dbcontext = scope.ServiceProvider.GetRequiredService<EQToolContext>();
         dbcontext.Database.SetCommandTimeout(TimeSpan.FromMinutes(10));
-        var allplayers = dbcontext.EQAuctionPlayersV2.AsNoTracking().ToList();
-        d.Players = allplayers.Select(a => new AuctionPlayer { EQAuctionPlayerId = a.EQAuctionPlayerId, Name = a.Name }).ToDictionary(a => a.EQAuctionPlayerId);
+        var allplayers = dbcontext.EQAuctionPlayersV2.Select(a => new AuctionPlayer { EQAuctionPlayerId = a.EQAuctionPlayerId, Name = a.Name }).ToList();
+        d.Players = allplayers.ToDictionary(a => a.EQAuctionPlayerId);
     }
     return d;
 })
@@ -161,6 +160,7 @@ using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<EQToolContext>();
     db.Database.Migrate();
+
     var zones = Zones.ZoneInfoMap;
     var dbzones = db.EQZones.ToList();
     var notablenpcs = db.EQNotableNPCs.ToList();
@@ -194,6 +194,8 @@ using (var scope = app.Services.CreateScope())
         }
     }
     db.SaveChanges();
+    scope.ServiceProvider.GetRequiredService<NotableNpcCacheService>().BuildCache();
+
 }
 
 app.UseHttpsRedirection();
@@ -206,7 +208,7 @@ app.UseEndpoints(endpoints =>
     endpoints.MapControllers();
     endpoints.MapHangfireDashboard("/hangfire", new DashboardOptions()
     {
-        Authorization = new List<IDashboardAuthorizationFilter> { new HangFireAuthorizationFilter() }
+        Authorization = [new HangFireAuthorizationFilter()]
     })
     .RequireAuthorization("HangfireAccess");
 });
@@ -263,7 +265,6 @@ if (isrelease)
         var runnow = scope.ServiceProvider.GetRequiredService<IBackgroundJobClient>();
         runnow.Schedule<UIDataBuild>((a) => a.BuildDataGreen(), TimeSpan.FromSeconds(30));
         runnow.Schedule<UIDataBuild>((a) => a.BuildDataBlue(), TimeSpan.FromSeconds(15));
-        runnow.Schedule<NotableNpcCacheService>((a) => a.BuildCache(), TimeSpan.FromSeconds(10));
     }
 }
 else

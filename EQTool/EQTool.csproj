@@ -330,6 +330,7 @@
     <Compile Include="Models\FightHistory.cs" />
     <Compile Include="Services\BinarySerializer.cs" />
     <Compile Include="Services\DebugOutput.cs" />
+    <Compile Include="Services\Handlers\QuakeHandler.cs" />
     <Compile Include="Services\Handlers\RingWarHandler.cs" />
     <Compile Include="Services\Handlers\DamageHandler.cs" />
     <Compile Include="Services\Handlers\BeginsToCastTheGateSpellHandler.cs" />

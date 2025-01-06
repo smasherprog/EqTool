@@ -347,7 +347,6 @@ namespace EQTool
             container.Resolve<ZoneActivityTrackingService>();
             container.Resolve<IEnumerable<BaseHandler>>();
 
-            logEvents.QuakeEvent += LogParser_QuakeEvent;
             App.Current.Resources["GlobalFontSize"] = (double)(EQToolSettings?.FontSize ?? 12);
             ((App)System.Windows.Application.Current).UpdateBackgroundOpacity("MyWindowStyleDPS", EQToolSettings.DpsWindowState.Opacity.Value);
             ((App)System.Windows.Application.Current).UpdateBackgroundOpacity("MyWindowStyleMap", EQToolSettings.MapWindowState.Opacity.Value);
@@ -362,15 +361,6 @@ namespace EQTool
             style.Setters.Add(new Setter(Window.BackgroundProperty, newcolor));
             style.Setters.Add(new Setter(Window.FontSizeProperty, (double)EQToolSettings.FontSize.Value));
             App.Current.Resources[name] = style;
-        }
-
-        private void LogParser_QuakeEvent(object sender, QuakeEvent e)
-        {
-            var server = container?.Resolve<ActivePlayer>()?.Player?.Server;
-            if (server.HasValue)
-            {
-                container.Resolve<PigParseApi>().SendQuake(server.Value);
-            }
         }
 
         [DllImport("user32.dll")]

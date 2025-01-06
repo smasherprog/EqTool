@@ -12,21 +12,27 @@ namespace EQToolApis.Pages
     {
         public readonly DBData AllData;
         public readonly NoteableNPCCache noteableNPCCache;
-        public List<TODModel> GreenNoteableNPCs = new();
+        public List<List<TODModel>> NoteableNPCs =
+        [
+            [],
+            []
+        ];
         public ServerMessage ServerMessage { get; set; } = new ServerMessage();
-        public List<DateTimeOffset> Quakes = new();
+        public List<DateTimeOffset> Quakes = [];
         public static PigParseStats[] PigParseStats = new PigParseStats[(int)Servers.MaxServers]
         {
-            new(){ Server = Servers.Green },
-            new(){ Server = Servers.Blue },
-            new(){ Server = Servers.Red },
-            new(){ Server = Servers.Quarm },
+            new(){ Server = Servers.Green, CssClass = "success"},
+            new(){ Server = Servers.Blue , CssClass = "primary"},
+            new(){ Server = Servers.Red , CssClass = "danger"},
+            new(){ Server = Servers.Quarm , CssClass = "warning"},
         };
-        private static DateTime LastPigParseStat = DateTime.UtcNow;
+        private static DateTime LastPigParseStat = DateTime.UtcNow.AddMinutes(-10);
 
         public NoteableNPCZone[] ServerData { get; set; } = new NoteableNPCZone[(int)Servers.MaxServers];
         public IndexModel(DBData allData, EQToolContext eQToolContext, NoteableNPCCache noteableNPCCache)
         {
+            this.noteableNPCCache = noteableNPCCache;
+            AllData = allData;
             if ((DateTime.UtcNow - LastPigParseStat).TotalSeconds > 20)
             {
                 lock (PigParseStats)
@@ -34,25 +40,41 @@ namespace EQToolApis.Pages
                     if ((DateTime.UtcNow - LastPigParseStat).TotalSeconds > 20)
                     {
                         LastPigParseStat = DateTime.UtcNow;
-                        var list = PPHub.connections.ToArray();
+                        var p99list = PPHub.connections.ToArray();
+                        var quarmlist = MapHub.connections.ToArray();
                         foreach (var server in Enum.GetValues<Servers>().Where(a => a != Servers.MaxServers))
                         {
-                            PigParseStats[(int)server].PigParsePlayerCount = list.Count(a => a.Value.Server == server);
-                            PigParseStats[(int)server].zoneStats = list
-                                .Select(a => a.Value)
-                                .Where(a => a.Server == server)
-                                .GroupBy(a => a.Zone)
-                                .Select(a => new PigParseZoneStat { Zone = a.Key, Count = a.Count() })
-                                .Where(a => a.Zone is not "fearplane" and not "hateplane" and not "sleeper")
-                                .ToList();
-                            var lasthour = DateTime.UtcNow.AddHours(-1);
-                            PigParseStats[(int)server].PigParseUniquePlayerCount = eQToolContext.EqToolExceptions.Where(a => a.Server == server && a.DateCreated > lasthour).Select(a => a.IpAddress).Distinct().Count();
+                            if (server == Servers.Quarm)
+                            {
+                                PigParseStats[(int)server].PigParsePlayerCount = quarmlist.Count(a => a.Value.Server == server);
+                                PigParseStats[(int)server].zoneStats = quarmlist
+                                    .Select(a => a.Value)
+                                    .Where(a => a.Server == server)
+                                    .GroupBy(a => a.Zone)
+                                    .Select(a => new PigParseZoneStat { Zone = a.Key, Count = a.Count() })
+                                    .Where(a => a.Zone is not "fearplane" and not "hateplane" and not "sleeper")
+                                    .ToList();
+                                var lasthour = DateTime.UtcNow.AddHours(-1);
+                                PigParseStats[(int)server].PigParseUniquePlayerCount = eQToolContext.EqToolExceptions.Where(a => a.Server == server && a.DateCreated > lasthour).Select(a => a.IpAddress).Distinct().Count();
+                            }
+                            else
+                            {
+                                PigParseStats[(int)server].PigParsePlayerCount = p99list.Count(a => a.Value.Server == server);
+                                PigParseStats[(int)server].zoneStats = p99list
+                                    .Select(a => a.Value)
+                                    .Where(a => a.Server == server)
+                                    .GroupBy(a => a.Zone)
+                                    .Select(a => new PigParseZoneStat { Zone = a.Key, Count = a.Count() })
+                                    .Where(a => a.Zone is not "fearplane" and not "hateplane" and not "sleeper")
+                                    .ToList();
+                                var lasthour = DateTime.UtcNow.AddHours(-1);
+                                PigParseStats[(int)server].PigParseUniquePlayerCount = eQToolContext.EqToolExceptions.Where(a => a.Server == server && a.DateCreated > lasthour).Select(a => a.IpAddress).Distinct().Count();
+                            }
                         }
                     }
                 }
             }
-            AllData = allData;
-            this.noteableNPCCache = noteableNPCCache;
+
             ServerMessage = eQToolContext.ServerMessages.FirstOrDefault();
             var keyname = new List<KeyValuePair<string, string>>()
             {
@@ -60,38 +82,42 @@ namespace EQToolApis.Pages
                 new("westwastes", "a Kromzek Captain")
             };
             Quakes = eQToolContext.QuakeTimes.OrderByDescending(a => a.DateTime).Take(3).Select(a => a.DateTime).ToList();
-            foreach (var item in keyname)
+            for (var server = 0; server < NoteableNPCs.Count; server++)
             {
-                var def = new TODModel
+                foreach (var item in keyname)
                 {
-                    FixedTimeNPCDateTimes = new List<DateTimeOffset>(),
-                    RangeTimeNPCDateTime = new List<RangeTimeNPCDateTime>(),
-                    Name = item.Value
-                };
-                GreenNoteableNPCs.Add(def);
-                if (noteableNPCCache.ServerData[(int)Servers.Green].Zones.TryGetValue(item.Key, out var npc))
-                {
-                    var n = npc.FirstOrDefault(a => a.Name == item.Value);
-                    if (n != null)
+                    var def = new TODModel
                     {
-                        def.EventTime = n.LastDeath ?? n.LastSeen ?? null;
-                        if (n.Name == "Scout Charisa" && def.EventTime.HasValue)
+                        FixedTimeNPCDateTimes = [],
+                        RangeTimeNPCDateTime = [],
+                        Name = item.Value
+                    };
+                    NoteableNPCs[server].Add(def);
+                    if (noteableNPCCache.ServerData[server].Zones.TryGetValue(item.Key, out var npc))
+                    {
+                        var n = npc.FirstOrDefault(a => a.Name == item.Value);
+                        if (n != null)
                         {
-                            for (var i = 1; i <= 5; i++)
+                            def.EventTime = n.LastDeath ?? n.LastSeen ?? null;
+                            if (n.Name == "Scout Charisa" && def.EventTime.HasValue)
                             {
-                                def.FixedTimeNPCDateTimes.Add(def.EventTime.Value.AddHours(10 * i));
+                                for (var i = 1; i <= 5; i++)
+                                {
+                                    def.FixedTimeNPCDateTimes.Add(def.EventTime.Value.AddHours(10 * i));
+                                }
                             }
-                        }
-                        else if (n.Name == "a Kromzek Captain" && def.EventTime.HasValue)
-                        {
-                            for (var i = 1; i <= 5; i++)
+                            else if (n.Name == "a Kromzek Captain" && def.EventTime.HasValue)
                             {
-                                def.FixedTimeNPCDateTimes.Add(def.EventTime.Value.AddHours(10 * i));
+                                for (var i = 1; i <= 5; i++)
+                                {
+                                    def.FixedTimeNPCDateTimes.Add(def.EventTime.Value.AddHours(10 * i));
+                                }
                             }
                         }
                     }
                 }
             }
+
         }
 
 

@@ -24,7 +24,7 @@ namespace EQTool.Services.Handlers
             if (userCastingSpell != null && userCastSpellDateTime != null)
             {
                 var dt = e.TimeStamp - userCastSpellDateTime.Value;
-                if (dt.TotalMilliseconds >= (userCastingSpell.casttime - 300) && e.Spells.Any(a => a.name == userCastingSpell.name))
+                if (dt.TotalMilliseconds >= (userCastingSpell.casttime - 600) && e.Spells.Any(a => a.name == userCastingSpell.name))
                 {
                     debugOutput.WriteLine($"Casting spell guess based on timer for {userCastingSpell.name} on Target: {e.TargetName}", OutputType.Spells);
                     appDispatcher.DispatchUI(() =>
@@ -32,7 +32,14 @@ namespace EQTool.Services.Handlers
                         activePlayer.UserCastingSpell = null;
                         activePlayer.UserCastSpellDateTime = null;
                     });
-                    baseSpellYouCastingHandler.Handle(userCastingSpell, e.TargetName, 0, e.TimeStamp);
+                    var target = e.TargetName;
+                    if (string.Equals(userCastingSpell.name, "Theft of Thought", System.StringComparison.OrdinalIgnoreCase) ||
+                        string.Equals(userCastingSpell.name, "dictate", System.StringComparison.OrdinalIgnoreCase)
+                        )
+                    {
+                        target = EQSpells.SpaceYou;
+                    }
+                    baseSpellYouCastingHandler.Handle(userCastingSpell, target, 0, e.TimeStamp);
                     return;
                 }
                 else
