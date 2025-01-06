@@ -197,10 +197,18 @@ namespace EQTool.Services.Handlers
                     grpname = " " + grpname;
                 }
                 var grp = spellWindowViewModel.SpellList.Where(a => string.Equals(a.GroupName, grpname, StringComparison.OrdinalIgnoreCase)).ToList();
-                foreach (var item in grp)
+
+                // Only sweep thru the group list and remove spells if we are running with TimerRecast mode in RecastCurrentTimer mode
+                // if we are running AddNewTimer mode, then this group could have multiple timers in it for different mobs
+                // so do not remove the timers on death
+                if (activePlayer?.Player?.TimerRecast == TimerRecast.RestartCurrentTimer)
                 {
-                    _ = spellWindowViewModel.SpellList.Remove(item);
+                    foreach (var item in grp)
+                    {
+                        _ = spellWindowViewModel.SpellList.Remove(item);
+                    }
                 }
+
                 var exisitngdeathentry = spellWindowViewModel.SpellList.FirstOrDefault(a => string.Equals(a.Name, add.Name, StringComparison.OrdinalIgnoreCase) && CustomTimer.CustomerTime == a.GroupName);
                 if (exisitngdeathentry != null)
                 {

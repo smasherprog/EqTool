@@ -92,19 +92,23 @@ namespace EQtoolsTests
         {
             logParser.Push("You begin casting Dictate.", DateTime.Now);
             logParser.Push(DummyEntryToForceEmitEvent, DateTime.Now.AddSeconds(7));
+
+            // expected = cast + recast - 7 = 5 + 300 - 7 = 298
             var dteffect = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Timer && a.Name == "Dictate Cooldown") as TimerViewModel;
-            Assert.AreEqual(dteffect.TotalDuration.TotalSeconds, 299.0, 2);
+            Assert.AreEqual(298.0, dteffect.TotalDuration.TotalSeconds, 2);
+
+            // exptected = cast + duration - 7 = 5 + 48 - 7 = 46
             var spelleffect = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Spell && a.Name == "Dictate") as SpellViewModel;
-            Assert.AreEqual(spelleffect.TotalDuration.TotalSeconds, 52.0, 2);
+            Assert.AreEqual(46.0, spelleffect.TotalDuration.TotalSeconds, 2);
         }
 
         [TestMethod]
         public void TOT()
         {
             logParser.Push("You begin casting Theft of Thought.", DateTime.Now);
-            logParser.Push("Someone staggers.", DateTime.Now.AddSeconds(3));
+            logParser.Push("Someone staggers.", DateTime.Now.AddSeconds(2));
             var dteffect = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Timer && a.Name == "Theft of Thought Cooldown") as TimerViewModel;
-            Assert.AreEqual(dteffect.TotalDuration.TotalSeconds, 119, 2);
+            Assert.AreEqual(120, dteffect.TotalDuration.TotalSeconds, 2);
             Assert.AreEqual(dteffect.GroupName, EQSpells.SpaceYou);
         }
 

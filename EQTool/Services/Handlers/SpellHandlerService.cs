@@ -224,14 +224,27 @@ namespace EQTool.Services.Handlers
                 spellduration = spellduration.Add(TimeSpan.FromMilliseconds(delayOffset));
                 if (spellduration.TotalSeconds > 0)
                 {
-                    // set all beneficial spell types to overwrite/refresh, and all detrimental types to create multiple timers
+                    // figure out whether or not to overwrite/reset this timer
+                    // the only time we don't want to overWrite is 
+                    //  - target is NPC, and
+                    //  - detrimental spell, and
+                    //  - TimerRecast in StartNewTimer mode
                     var overWrite = true;
-                    if (spell.benefit_detriment == EQToolShared.Enums.SpellBenefitDetriment.Detrimental)
+                    if (isnpc == true)
                     {
-                        overWrite = !isnpc;
-                        spellduration = spellduration.Add(TimeSpan.FromMilliseconds(6000));
+                        if (spell.benefit_detriment == EQToolShared.Enums.SpellBenefitDetriment.Detrimental)
+                        {
+                            // add an extra tick to duration, to ensure PigParse timers don't expire before the "Your XXX spell has worn off" message
+                            spellduration = spellduration.Add(TimeSpan.FromMilliseconds(6000));
+
+                            if (activePlayer?.Player?.TimerRecast == TimerRecast.StartNewTimer)
+                            {
+                                overWrite = false;
+                            }
+                        }
                     }
 
+                    // create new SpellViewModel
                     var vm = new SpellViewModel
                     {
                         UpdatedDateTime = DateTime.Now,
@@ -248,7 +261,7 @@ namespace EQTool.Services.Handlers
                         TotalRemainingDuration = spellduration
                     };
 
-
+                    // add the timer
                     spellWindowViewModel.TryAdd(vm, overWrite);
                 }
             }

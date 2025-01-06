@@ -270,6 +270,7 @@ namespace EQTool.ViewModels
         public ObservableCollection<string> InstalledVoices { get; set; } = new ObservableCollection<string>();
         public ObservableCollection<BoolStringClass> SelectedPlayerClasses { get; set; } = new ObservableCollection<BoolStringClass>();
         public List<MapLocationSharing> LocationShareOptions => Enum.GetValues(typeof(MapLocationSharing)).Cast<MapLocationSharing>().ToList();
+        public List<TimerRecast> TimerRecastOptions => Enum.GetValues(typeof(TimerRecast)).Cast<TimerRecast>().ToList();
         public List<PlayerClasses> PlayerClasses => Enum.GetValues(typeof(PlayerClasses)).Cast<PlayerClasses>().Where(a => a != EQToolShared.Enums.PlayerClasses.Other).ToList();
 
         public bool EqRunning
