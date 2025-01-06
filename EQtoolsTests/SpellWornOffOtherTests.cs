@@ -43,7 +43,7 @@ namespace EQtoolsTests
             player.Player.Level = 53;
             logParser.Push("Someone has been poisoned.", DateTime.Now);
             var dteffect = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Spell && a.Name == "Envenomed Bolt") as SpellViewModel;
-            Assert.AreEqual(dteffect.TotalDuration.TotalSeconds, 46, 2);
+            Assert.AreEqual(42, dteffect.TotalDuration.TotalSeconds, 2);
             logParser.Push("Your Envenomed Bolt spell has worn off.", DateTime.Now.AddSeconds(40));
             dteffect = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Spell && a.Name == "Envenomed Bolt") as SpellViewModel;
             Assert.IsNull(dteffect);

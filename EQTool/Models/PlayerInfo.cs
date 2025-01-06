@@ -155,6 +155,12 @@ namespace EQTool.Models
         public int TotalSecondsLeft { get; set; }
     }
 
+    public enum TimerRecast
+    {
+        StartNewTimer,
+        RestartCurrentTimer
+    }
+
     [Serializable]
     public class PlayerInfo : INotifyPropertyChanged
     {
@@ -261,6 +267,17 @@ namespace EQTool.Models
             set
             {
                 _MapLocationSharing = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private TimerRecast _timerRecast = TimerRecast.StartNewTimer;
+        public TimerRecast TimerRecast
+        {
+            get => _timerRecast;
+            set
+            {
+                _timerRecast = value;
                 OnPropertyChanged();
             }
         }
