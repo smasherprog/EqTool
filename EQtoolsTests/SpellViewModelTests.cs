@@ -146,12 +146,11 @@ namespace EQtoolsTests
         {
             player.Player.PlayerClass = EQToolShared.Enums.PlayerClasses.Necromancer;
             player.Player.Level = 60;
-            // two casts, and since this is a detrimental spell, should be two timers
             logParser.Push("You begin casting Paralyzing Earth.", DateTime.Now);
             logParser.Push("A froglok dar knight hits YOU for 95 points of damage.", DateTime.Now);
-            logParser.Push("A froglok dar knight hits YOU for 17 points of damage.", DateTime.Now.AddSeconds(3));
-            logParser.Push("You regain your concentration and continue your casting.", DateTime.Now.AddSeconds(3));
-            logParser.Push("A froglok dar knight's feet adhere to the ground.", DateTime.Now.AddSeconds(3));
+            logParser.Push("A froglok dar knight hits YOU for 17 points of damage.", DateTime.Now.AddSeconds(2));
+            logParser.Push("You regain your concentration and continue your casting.", DateTime.Now.AddSeconds(2));
+            logParser.Push("A froglok dar knight's feet adhere to the ground.", DateTime.Now.AddSeconds(2));
 
             var spelleffect = spellWindowViewModel.SpellList.FirstOrDefault();
             Assert.AreEqual("Paralyzing Earth", spelleffect.Name);
