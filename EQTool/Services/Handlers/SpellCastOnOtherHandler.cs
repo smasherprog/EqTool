@@ -44,6 +44,7 @@ namespace EQTool.Services.Handlers
                 }
                 else
                 {
+                    debugOutput.WriteLine($"Skipped dt >= {userCastingSpell.casttime - 600} AND {e.Spells.Any(a => a.name == userCastingSpell.name)}", OutputType.Spells);
                     userCastingSpell = null;
                     userCastSpellDateTime = null;
                 }

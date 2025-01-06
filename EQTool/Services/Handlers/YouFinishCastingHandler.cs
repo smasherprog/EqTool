@@ -42,6 +42,7 @@ namespace EQTool.Services.Handlers
                         debugOutput.WriteLine($"Casting spell guess based on timer for {userCastingSpell.name}", OutputType.Spells);
                         baseSpellYouCastingHandler.Handle(userCastingSpell, EQSpells.SpaceYou, deltaOffset, e.TimeStamp);
                     }
+                    debugOutput.WriteLine($"Clearing spell because {dt.TotalMilliseconds}ms has elapsed to complete casting {userCastingSpell.casttime + 1000}ms for the spell {userCastingSpell.name}", OutputType.Spells);
                     appDispatcher.DispatchUI(() =>
                     {
                         activePlayer.UserCastingSpell = null;

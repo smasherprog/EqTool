@@ -1,4 +1,5 @@
 ﻿using EQTool.ViewModels;
+using System.Diagnostics;
 using System.Linq;
 using System.Windows.Media;
 
@@ -35,7 +36,7 @@ namespace EQTool.Services
             [System.Runtime.CompilerServices.CallerLineNumber] int lineNumber = 0)
         {
             text = "Line: " + lineNumber + " | " + filePath.Split('\\').Last() + " | " + membName + ":\t" + text;
-
+            Debug.WriteLine(text);
             var color = Brushes.White;
             if (messageType == MessageType.Warning)
             {

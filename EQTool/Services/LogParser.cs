@@ -102,7 +102,7 @@ namespace EQTool.Services
             {
                 if (handler.Handle(message, timestamp, LineCounter))
                 {
-                    Debug.WriteLine($"--Handled by {handler.GetType().Name}: {message}");
+                    Debug.WriteLine($"--Handled by {handler.GetType().Name}: {line1}");
                     lineParser.Handle(message, timestamp, LineCounter);
                     return;
                 }
