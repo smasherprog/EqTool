@@ -10,6 +10,7 @@
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
     </UserControl.Resources>
     <TabControl>
+        
         <TabItem Header="General">
             <StackPanel Orientation="Vertical" Margin="5, 5, 5, 5">
                 <StackPanel Orientation="Vertical" Visibility="{Binding MissingConfiguration, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}">
@@ -102,15 +103,14 @@
                 </StackPanel>
             </StackPanel>
         </TabItem>
+        
         <TabItem Header="Text &amp; Audio Alerts" Height="20" VerticalAlignment="Top">
             <StackPanel Orientation="Vertical" Margin="5, 5, 5, 5">
-
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Installed Voices" VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
                     <ComboBox SelectedItem="{Binding SelectedVoice}" ItemsSource="{Binding InstalledVoices}" MinWidth="105"></ComboBox>
                     <Button Content="▶" Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="textvoice" ToolTip="Test Voice" />
                 </StackPanel>
-
                 <StackPanel Orientation="Horizontal">
                     <TextBlock VerticalAlignment="Center" FontWeight="Bold"  MinWidth="75"/>
                     <TextBlock Text="Text Alert" VerticalAlignment="Center" FontWeight="Bold"  MinWidth="75"/>
@@ -252,6 +252,7 @@
                 </StackPanel>
             </StackPanel>
         </TabItem>
+        
         <TabItem Header="Triggers" HorizontalAlignment="Left" Margin="-2,-2,0,0" Width="58">
             <StackPanel Orientation="Vertical" Margin="5, 5, 5, 5">
                 <StackPanel Orientation="Vertical"  Margin="0, 0, 0, 8">
@@ -305,7 +306,102 @@
                 </StackPanel>
             </StackPanel>
         </TabItem>
-        <TabItem Header="Map">
+        
+        <TabItem Header="Pet" Height="20" VerticalAlignment="Top">
+            <StackPanel Orientation="Vertical" Margin="5, 5, 5, 5">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Pet Name" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
+                    <TextBlock Text="Bakalakadaka" VerticalAlignment="Center" FontWeight="Normal"  MinWidth="200"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Caster Class" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
+                    <TextBlock Text="Necro" VerticalAlignment="Center" FontWeight="Normal"  MinWidth="200"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Spell Name" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
+                    <TextBlock Text="Emissary of Thule" VerticalAlignment="Center" FontWeight="Normal"  MinWidth="200"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Spell Level" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
+                    <TextBlock Text="59" VerticalAlignment="Center" FontWeight="Normal"  MinWidth="200"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Reagents" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
+                    <TextBlock Text="2x Bone Chips, Peridot" VerticalAlignment="Center" FontWeight="Normal"  MinWidth="200"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Pet Class" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
+                    <TextBlock Text="Warrior" VerticalAlignment="Center" FontWeight="Normal"  MinWidth="200"/>
+                </StackPanel>
+                <Border BorderBrush="Gray" BorderThickness="2" >
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="75" />
+                            <ColumnDefinition Width="75" />
+                            <ColumnDefinition Width="75" />
+                            <ColumnDefinition Width="75" />
+                            <ColumnDefinition Width="75" />
+                        </Grid.ColumnDefinitions>
+
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="14" />
+                            <RowDefinition Height="14" />
+                            <RowDefinition Height="14" />
+                            <RowDefinition Height="14" />
+                            <RowDefinition Height="14" />
+                            <RowDefinition Height="14" />
+                            <RowDefinition Height="14" />
+                        </Grid.RowDefinitions>
+                        
+                        <TextBlock Grid.Row="0" Grid.Column="0" Text="Rank" TextAlignment="Center" FontStyle="Italic" FontWeight="Bold" FontSize="10"/>
+                        <TextBlock Grid.Row="0" Grid.Column="1" Text="Pet Level" TextAlignment="Center" FontStyle="Italic" FontWeight="Bold" FontSize="10"/>
+                        <TextBlock Grid.Row="0" Grid.Column="2" Text="Melee" TextAlignment="Center" FontStyle="Italic" FontWeight="Bold" FontSize="10"/>
+                        <TextBlock Grid.Row="0" Grid.Column="3" Text="Bash/Kick" TextAlignment="Center" FontStyle="Italic" FontWeight="Bold" FontSize="10"/>
+                        <TextBlock Grid.Row="0" Grid.Column="4" Text="Lifetap" TextAlignment="Center" FontStyle="Italic" FontWeight="Bold" FontSize="10"/>
+
+                        <TextBlock Grid.Row="1" Grid.Column="0" Text="1/5" TextAlignment="Center" FontWeight="Normal" FontSize="10"/>
+                        <TextBlock Grid.Row="1" Grid.Column="1" Text="43" TextAlignment="Center" FontWeight="Normal" FontSize="10"/>
+                        <TextBlock Grid.Row="1" Grid.Column="2" Text="52" TextAlignment="Center" FontWeight="Normal" FontSize="10"/>
+                        <TextBlock Grid.Row="1" Grid.Column="3" Text="24" TextAlignment="Center" FontWeight="Normal" FontSize="10"/>
+                        <TextBlock Grid.Row="1" Grid.Column="4" Text="44" TextAlignment="Center" FontWeight="Normal" FontSize="10"/>
+
+                        <TextBlock Grid.Row="2" Grid.Column="0" Text="2/5" TextAlignment="Center" FontWeight="Normal" FontSize="10"/>
+                        <TextBlock Grid.Row="2" Grid.Column="1" Text="44" TextAlignment="Center" FontWeight="Normal" FontSize="10"/>
+                        <TextBlock Grid.Row="2" Grid.Column="2" Text="55" TextAlignment="Center" FontWeight="Normal" FontSize="10"/>
+                        <TextBlock Grid.Row="2" Grid.Column="3" Text="24" TextAlignment="Center" FontWeight="Normal" FontSize="10"/>
+                        <TextBlock Grid.Row="2" Grid.Column="4" Text="45" TextAlignment="Center" FontWeight="Normal" FontSize="10"/>
+
+                        <TextBlock Grid.Row="3" Grid.Column="0" Text="3/5" TextAlignment="Center" FontWeight="Normal" FontSize="10"/>
+                        <TextBlock Grid.Row="3" Grid.Column="1" Text="45" TextAlignment="Center" FontWeight="Normal" FontSize="10"/>
+                        <TextBlock Grid.Row="3" Grid.Column="2" Text="56" TextAlignment="Center" FontWeight="Normal" FontSize="10"/>
+                        <TextBlock Grid.Row="3" Grid.Column="3" Text="25" TextAlignment="Center" FontWeight="Normal" FontSize="10"/>
+                        <TextBlock Grid.Row="3" Grid.Column="4" Text="46" TextAlignment="Center" FontWeight="Normal" FontSize="10"/>
+
+                        <TextBlock Grid.Row="4" Grid.Column="0" Text="4/5" TextAlignment="Center" FontWeight="Normal" FontSize="10" Background="LightGreen"/>
+                        <TextBlock Grid.Row="4" Grid.Column="1" Text="46" TextAlignment="Center" FontWeight="Normal" FontSize="10" Background="LightGreen"/>
+                        <TextBlock Grid.Row="4" Grid.Column="2" Text="59" TextAlignment="Center" FontWeight="Normal" FontSize="10" Background="LightGreen"/>
+                        <TextBlock Grid.Row="4" Grid.Column="3" Text="25" TextAlignment="Center" FontWeight="Normal" FontSize="10" Background="LightGreen"/>
+                        <TextBlock Grid.Row="4" Grid.Column="4" Text="47" TextAlignment="Center" FontWeight="Normal" FontSize="10" Background="LightGreen"/>
+                        
+                        <TextBlock Grid.Row="5" Grid.Column="0" Text="5/5" TextAlignment="Center" FontWeight="Normal" FontSize="10"/>
+                        <TextBlock Grid.Row="5" Grid.Column="1" Text="47" TextAlignment="Center" FontWeight="Normal" FontSize="10"/>
+                        <TextBlock Grid.Row="5" Grid.Column="2" Text="61" TextAlignment="Center" FontWeight="Normal" FontSize="10"/>
+                        <TextBlock Grid.Row="5" Grid.Column="3" Text="26" TextAlignment="Center" FontWeight="Normal" FontSize="10"/>
+                        <TextBlock Grid.Row="5" Grid.Column="4" Text="48" TextAlignment="Center" FontWeight="Normal" FontSize="10"/>
+
+                        <TextBlock Grid.Row="6" Grid.Column="0" Text="6/5*" TextAlignment="Center" FontWeight="Normal" FontSize="10"/>
+                        <TextBlock Grid.Row="6" Grid.Column="1" Text="48" TextAlignment="Center" FontWeight="Normal" FontSize="10"/>
+                        <TextBlock Grid.Row="6" Grid.Column="2" Text="62" TextAlignment="Center" FontWeight="Normal" FontSize="10"/>
+                        <TextBlock Grid.Row="6" Grid.Column="3" Text="26" TextAlignment="Center" FontWeight="Normal" FontSize="10"/>
+                        <TextBlock Grid.Row="6" Grid.Column="4" Text="49" TextAlignment="Center" FontWeight="Normal" FontSize="10"/>
+
+                    </Grid>
+                </Border>
+            </StackPanel>
+
+        </TabItem>
+        
+        <TabItem Header="Map" HorizontalAlignment="Right" Margin="0,-2,-2,0" Width="91">
             <StackPanel Orientation="Vertical" Margin="5, 5, 5, 5">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Always on top" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
@@ -329,6 +425,7 @@
                 </StackPanel>
             </StackPanel>
         </TabItem>
+        
         <TabItem Header="Experimental">
             <StackPanel Orientation="Vertical" Margin="5, 5, 5, 5" HorizontalAlignment="Stretch">
                 <StackPanel Orientation="Horizontal">
@@ -355,6 +452,7 @@
                 </StackPanel> 
             </StackPanel>
         </TabItem>
+        
         <TabItem Header="Debug" Name="DebugTab">
             <StackPanel Orientation="Vertical" Margin="5, 5, 5, 5" HorizontalAlignment="Stretch"> 
                 <StackPanel Orientation="Horizontal">
