@@ -25,7 +25,7 @@ namespace EQTool.Models
             {
                 return;
             }
-            var entry = fightEntries.FirstOrDefault(e => e.Name == name);
+            var entry = fightEntries.FirstOrDefault(e => string.Equals(e.Name, name, StringComparison.OrdinalIgnoreCase));
             if (entry != null)
             {
                 entry.LastSeen = lastSeen;
@@ -39,14 +39,14 @@ namespace EQTool.Models
 
         public void Remove(string name, DateTime lastSeen)
         {
-            _ = fightEntries.RemoveAll(a => a.Name == name);
+            _ = fightEntries.RemoveAll(a => string.Equals(a.Name, name, StringComparison.OrdinalIgnoreCase));
             clean(lastSeen);
         }
 
         public bool IsEngaged(string name, DateTime now)
         {
             clean(now);
-            return fightEntries.Any(e => e.Name == name);
+            return fightEntries.Any(e => string.Equals(e.Name, name, StringComparison.OrdinalIgnoreCase));
         }
 
         public string GetMostRecentTarget(DateTime now)
@@ -65,7 +65,7 @@ namespace EQTool.Models
         public List<string> IsEngaged(List<string> names, DateTime now)
         {
             clean(now);
-            return fightEntries.Where(e => names.Contains(e.Name)).Select(a => a.Name).ToList();
+            return fightEntries.Where(e => names.Any(a => string.Equals(a, e.Name, StringComparison.OrdinalIgnoreCase))).Select(a => a.Name).ToList();
         }
 
         public void clean(DateTime lastSeen)

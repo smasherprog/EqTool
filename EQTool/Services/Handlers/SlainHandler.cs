@@ -171,8 +171,8 @@ namespace EQTool.Services.Handlers
                 LineCounter = e.LineCounter,
                 TimeStamp = e.TimeStamp,
             });
-
-            if (playerTrackerService.IsPlayer(e.Victim) || (!MasterNPCList.NPCs.Contains(e.Victim) && !guess))
+            var isnpc = MasterNPCList.NPCs.Contains(e.Victim);
+            if (playerTrackerService.IsPlayer(e.Victim) || (!isnpc && !guess))
             {
                 return;
             }
@@ -191,24 +191,6 @@ namespace EQTool.Services.Handlers
             };
             appDispatcher.DispatchUI(() =>
             {
-                var grpname = e.Victim;
-                if (MasterNPCList.NPCs.Contains(grpname))
-                {
-                    grpname = " " + grpname;
-                }
-                var grp = spellWindowViewModel.SpellList.Where(a => string.Equals(a.GroupName, grpname, StringComparison.OrdinalIgnoreCase)).ToList();
-
-                // Only sweep thru the group list and remove spells if we are running with TimerRecast mode in RecastCurrentTimer mode
-                // if we are running AddNewTimer mode, then this group could have multiple timers in it for different mobs
-                // so do not remove the timers on death
-                if (activePlayer?.Player?.TimerRecast == TimerRecast.RestartCurrentTimer)
-                {
-                    foreach (var item in grp)
-                    {
-                        _ = spellWindowViewModel.SpellList.Remove(item);
-                    }
-                }
-
                 var exisitngdeathentry = spellWindowViewModel.SpellList.FirstOrDefault(a => string.Equals(a.Name, add.Name, StringComparison.OrdinalIgnoreCase) && CustomTimer.CustomerTime == a.GroupName);
                 if (exisitngdeathentry != null)
                 {
