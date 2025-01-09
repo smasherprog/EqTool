@@ -27,8 +27,8 @@ namespace EQTool.Services.Handlers
 
         private void LogEvents_LineEvent(object sender, LineEvent e)
         {
-            //the purpose of this function is to fire off spell cast events for eqSpells that do not have a landed message.
-            //For example, many charm eqSpells dont let the user know that it has landed. 
+            //the purpose of this function is to fire off spell cast events for spells that do not have a landed message.
+            //For example, many charm spells dont let the user know that it has landed. 
             var userCastingSpell = activePlayer.UserCastingSpell;
             var userCastSpellDateTime = activePlayer.UserCastSpellDateTime;
             if (userCastingSpell != null && userCastSpellDateTime != null)

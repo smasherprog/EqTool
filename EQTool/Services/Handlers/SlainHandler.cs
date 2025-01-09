@@ -198,7 +198,7 @@ namespace EQTool.Services.Handlers
                 }
                 var grp = spellWindowViewModel.SpellList.Where(a => string.Equals(a.GroupName, grpname, StringComparison.OrdinalIgnoreCase)).ToList();
 
-                // Only sweep thru the group list and remove eqSpells if we are running with TimerRecast mode in RecastCurrentTimer mode
+                // Only sweep thru the group list and remove spells if we are running with TimerRecast mode in RecastCurrentTimer mode
                 // if we are running AddNewTimer mode, then this group could have multiple timers in it for different mobs
                 // so do not remove the timers on death
                 if (activePlayer?.Player?.TimerRecast == TimerRecast.RestartCurrentTimer)

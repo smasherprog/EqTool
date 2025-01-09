@@ -11,7 +11,7 @@ namespace EQTool.Services.Handlers
 {
     public class SpellHandlerService
     {
-        // eqSpells with long recast times, that need a cooldown timer
+        // spells with long recast times, that need a cooldown timer
         public static readonly List<string> SpellsThatNeedTimers = new List<string>()
         {
             "Dictate",
@@ -23,7 +23,7 @@ namespace EQTool.Services.Handlers
             "Boon of the Garou",
             "Theft of Thought"
         };
-        // eqSpells that we wish to count how many times they have been cast
+        // spells that we wish to count how many times they have been cast
         public static readonly List<string> SpellsThatNeedCounts = new List<string>()
         {
             "Mana Sieve",
@@ -46,7 +46,7 @@ namespace EQTool.Services.Handlers
             "Flash of Light"
         };
 
-        // all the charm eqSpells
+        // all the charm spells
         public static List<string> AllCharmSpells = new List<string>()
         {
             "Dictate",
