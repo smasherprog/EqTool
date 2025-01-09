@@ -336,11 +336,12 @@
                 <Border BorderBrush="Gray" BorderThickness="2" >
                     <Grid>
                         <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="75" />
-                            <ColumnDefinition Width="75" />
-                            <ColumnDefinition Width="75" />
-                            <ColumnDefinition Width="75" />
-                            <ColumnDefinition Width="75" />
+                            <ColumnDefinition Width="70" />
+                            <ColumnDefinition Width="70" />
+                            <ColumnDefinition Width="70" />
+                            <ColumnDefinition Width="70" />
+                            <ColumnDefinition Width="70" />
+                            <ColumnDefinition Width="70" />
                         </Grid.ColumnDefinitions>
 
                         <Grid.RowDefinitions>
@@ -358,42 +359,49 @@
                         <TextBlock Grid.Row="0" Grid.Column="2" Text="Melee" TextAlignment="Center" FontStyle="Italic" FontWeight="Bold" FontSize="10"/>
                         <TextBlock Grid.Row="0" Grid.Column="3" Text="Bash/Kick" TextAlignment="Center" FontStyle="Italic" FontWeight="Bold" FontSize="10"/>
                         <TextBlock Grid.Row="0" Grid.Column="4" Text="Lifetap" TextAlignment="Center" FontStyle="Italic" FontWeight="Bold" FontSize="10"/>
+                        <TextBlock Grid.Row="0" Grid.Column="5" Text="Description" TextAlignment="Center" FontStyle="Italic" FontWeight="Bold" FontSize="10"/>
 
                         <TextBlock Grid.Row="1" Grid.Column="0" Text="1/5" TextAlignment="Center" FontWeight="Normal" FontSize="10"/>
                         <TextBlock Grid.Row="1" Grid.Column="1" Text="43" TextAlignment="Center" FontWeight="Normal" FontSize="10"/>
                         <TextBlock Grid.Row="1" Grid.Column="2" Text="52" TextAlignment="Center" FontWeight="Normal" FontSize="10"/>
                         <TextBlock Grid.Row="1" Grid.Column="3" Text="24" TextAlignment="Center" FontWeight="Normal" FontSize="10"/>
                         <TextBlock Grid.Row="1" Grid.Column="4" Text="44" TextAlignment="Center" FontWeight="Normal" FontSize="10"/>
+                        <TextBlock Grid.Row="1" Grid.Column="5" Text="" TextAlignment="Center" FontWeight="Normal" FontSize="10"/>
 
                         <TextBlock Grid.Row="2" Grid.Column="0" Text="2/5" TextAlignment="Center" FontWeight="Normal" FontSize="10"/>
                         <TextBlock Grid.Row="2" Grid.Column="1" Text="44" TextAlignment="Center" FontWeight="Normal" FontSize="10"/>
                         <TextBlock Grid.Row="2" Grid.Column="2" Text="55" TextAlignment="Center" FontWeight="Normal" FontSize="10"/>
                         <TextBlock Grid.Row="2" Grid.Column="3" Text="24" TextAlignment="Center" FontWeight="Normal" FontSize="10"/>
                         <TextBlock Grid.Row="2" Grid.Column="4" Text="45" TextAlignment="Center" FontWeight="Normal" FontSize="10"/>
+                        <TextBlock Grid.Row="2" Grid.Column="5" Text="" TextAlignment="Center" FontWeight="Normal" FontSize="10"/>
 
                         <TextBlock Grid.Row="3" Grid.Column="0" Text="3/5" TextAlignment="Center" FontWeight="Normal" FontSize="10"/>
                         <TextBlock Grid.Row="3" Grid.Column="1" Text="45" TextAlignment="Center" FontWeight="Normal" FontSize="10"/>
                         <TextBlock Grid.Row="3" Grid.Column="2" Text="56" TextAlignment="Center" FontWeight="Normal" FontSize="10"/>
                         <TextBlock Grid.Row="3" Grid.Column="3" Text="25" TextAlignment="Center" FontWeight="Normal" FontSize="10"/>
                         <TextBlock Grid.Row="3" Grid.Column="4" Text="46" TextAlignment="Center" FontWeight="Normal" FontSize="10"/>
+                        <TextBlock Grid.Row="3" Grid.Column="5" Text="" TextAlignment="Center" FontWeight="Normal" FontSize="10"/>
 
                         <TextBlock Grid.Row="4" Grid.Column="0" Text="4/5" TextAlignment="Center" FontWeight="Normal" FontSize="10" Background="LightGreen"/>
                         <TextBlock Grid.Row="4" Grid.Column="1" Text="46" TextAlignment="Center" FontWeight="Normal" FontSize="10" Background="LightGreen"/>
                         <TextBlock Grid.Row="4" Grid.Column="2" Text="59" TextAlignment="Center" FontWeight="Normal" FontSize="10" Background="LightGreen"/>
                         <TextBlock Grid.Row="4" Grid.Column="3" Text="25" TextAlignment="Center" FontWeight="Normal" FontSize="10" Background="LightGreen"/>
                         <TextBlock Grid.Row="4" Grid.Column="4" Text="47" TextAlignment="Center" FontWeight="Normal" FontSize="10" Background="LightGreen"/>
+                        <TextBlock Grid.Row="4" Grid.Column="5" Text="" TextAlignment="Center" FontWeight="Normal" FontSize="10" Background="LightGreen"/>
                         
                         <TextBlock Grid.Row="5" Grid.Column="0" Text="5/5" TextAlignment="Center" FontWeight="Normal" FontSize="10"/>
                         <TextBlock Grid.Row="5" Grid.Column="1" Text="47" TextAlignment="Center" FontWeight="Normal" FontSize="10"/>
                         <TextBlock Grid.Row="5" Grid.Column="2" Text="61" TextAlignment="Center" FontWeight="Normal" FontSize="10"/>
                         <TextBlock Grid.Row="5" Grid.Column="3" Text="26" TextAlignment="Center" FontWeight="Normal" FontSize="10"/>
                         <TextBlock Grid.Row="5" Grid.Column="4" Text="48" TextAlignment="Center" FontWeight="Normal" FontSize="10"/>
+                        <TextBlock Grid.Row="5" Grid.Column="5" Text="Max" TextAlignment="Center" FontWeight="Normal" FontSize="10"/>
 
                         <TextBlock Grid.Row="6" Grid.Column="0" Text="6/5*" TextAlignment="Center" FontWeight="Normal" FontSize="10"/>
                         <TextBlock Grid.Row="6" Grid.Column="1" Text="48" TextAlignment="Center" FontWeight="Normal" FontSize="10"/>
                         <TextBlock Grid.Row="6" Grid.Column="2" Text="62" TextAlignment="Center" FontWeight="Normal" FontSize="10"/>
                         <TextBlock Grid.Row="6" Grid.Column="3" Text="26" TextAlignment="Center" FontWeight="Normal" FontSize="10"/>
                         <TextBlock Grid.Row="6" Grid.Column="4" Text="49" TextAlignment="Center" FontWeight="Normal" FontSize="10"/>
+                        <TextBlock Grid.Row="6" Grid.Column="5" Text="Max+Focus" TextAlignment="Center" FontWeight="Normal" FontSize="10"/>
 
                     </Grid>
                 </Border>

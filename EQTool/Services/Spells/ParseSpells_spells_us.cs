@@ -407,6 +407,7 @@ namespace EQTool.Services
             try
             {
                 var splits = line.Split('^');
+                var spellName = splits[1];
                 var classes = new Dictionary<PlayerClasses, int>();
                 for (var i = 104 - offset; i < 104 - offset + (int)PlayerClasses.Enchanter + 1; i++)
                 {
@@ -436,10 +437,25 @@ namespace EQTool.Services
                 var spell_icon = int.Parse(splits[144 - spelliconoffset]);
                 var ResistCheck = int.Parse(splits[147 - offset]);
                 var recasttime = int.Parse(splits[15]);
+
+                // extract the reagent info
+                var petReagents = new List<Tuple<PetReagent, int>>();
+                for (int ndx = 58; ndx <= 61; ndx++)
+                {
+                    // get the reagent ID (fields 58-61)and the associated quantity (fields 62-65)
+                    PetReagent petReagent = (PetReagent)Enum.Parse(typeof (PetReagent), splits[ndx]);
+                    int quantity = int.Parse(splits[ndx+4]);
+                    if (petReagent != PetReagent.NotUsed)
+                    {
+                        // add the tuple to the list
+                        petReagents.Add(new Tuple<PetReagent, int>(petReagent, quantity));
+                    }
+                }
+
                 var ret = new SpellBase
                 {
                     id = id,
-                    name = splits[1],
+                    name = spellName,
                     buffduration = buffduration,
                     buffdurationformula = buffdurationformula,
                     pvp_buffdurationformula = pvp_buffdurationformula,
@@ -454,7 +470,8 @@ namespace EQTool.Services
                     ResistCheck = ResistCheck,
                     DescrNumber = descrtype,
                     SpellType = spelltype,
-                    recastTime = recasttime
+                    recastTime = recasttime,
+                    PetReagents = petReagents
                 };
 
                 if (EpicSpells.TryGetValue(ret.name, out var foundepic))
