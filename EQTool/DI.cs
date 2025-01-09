@@ -57,6 +57,8 @@ namespace EQTool
             _ = builder.RegisterType<SpellDurations>().AsSelf().SingleInstance();
             _ = builder.RegisterType<ConsoleViewModel>().AsSelf().SingleInstance();
             _ = builder.RegisterType<DebugOutput>().AsSelf().SingleInstance();
+            _ = builder.RegisterType<WindowFactory>().AsSelf().SingleInstance();
+            _ = builder.RegisterType<AppRoot>().AsSelf().SingleInstance();
 
             _ = builder.RegisterType<Services.PlayerTrackerService>().AsSelf().SingleInstance();
             _ = builder.RegisterType<Services.ZoneActivityTrackingService>().AsSelf().SingleInstance();

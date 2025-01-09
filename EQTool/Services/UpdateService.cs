@@ -1,5 +1,6 @@
 ﻿using Autofac;
 using EQTool.Services.P99LoginMiddlemand;
+using EQTool.ViewModels;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
@@ -9,12 +10,25 @@ using System.IO.Compression;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using static EQTool.App;
 
 namespace EQTool.Services
 {
+
     public class UpdateService
     {
+        private readonly LoginMiddlemand loginMiddlemand;
+        private readonly LoggingService loggingService;
+        private readonly ActivePlayer activePlayer;
+        private readonly IAppDispatcher appDispatcher;
+
+        public UpdateService(LoginMiddlemand loginMiddlemand, LoggingService loggingService, ActivePlayer activePlayer, IAppDispatcher appDispatcher)
+        {
+            this.loginMiddlemand = loginMiddlemand;
+            this.loggingService = loggingService;
+            this.activePlayer = activePlayer;
+            this.appDispatcher = appDispatcher;
+        }
+
         private static void _CopyFilesRecursively(string sourcePath, string targetPath)
         {
             foreach (var file in Directory.GetFiles(sourcePath))
@@ -41,8 +55,21 @@ namespace EQTool.Services
                 }
             }
         }
+        public class GithubAsset
+        {
+            public string browser_download_url { get; set; }
+        }
 
-        private readonly AppDispatcher appDispatcher = new AppDispatcher();
+        public class GithubVersionInfo
+        {
+            public List<GithubAsset> assets { get; set; }
+            public string name { get; set; }
+            public string tag_name { get; set; }
+            public bool prerelease { get; set; }
+            public DateTime created_at { get; set; }
+            public DateTime published_at { get; set; }
+        }
+
         public enum UpdateStatus
         {
             UpdatesApplied,
@@ -95,7 +122,7 @@ namespace EQTool.Services
             return UpdateStatus.NoUpdateApplied;
         }
 
-        public void CheckForUpdates(string currentversion1, string versiontype, Autofac.IContainer container, bool firstRun)
+        public void CheckForUpdates(string currentversion1, string versiontype, bool firstRun)
         {
             _ = Task.Factory.StartNew(() =>
             {
@@ -113,7 +140,7 @@ namespace EQTool.Services
 
                     var version = new string(currentversion.Where(a => char.IsDigit(a) || a == '.').ToArray());
                     version = version.Trim('.');
-                    var json = httpclient.GetAsync(new Uri("https://api.github.com/repos/smasherprog/EqTool/releases")).Result.Content.ReadAsStringAsync().Result;
+                    var json = App.httpclient.GetAsync(new Uri("https://api.github.com/repos/smasherprog/EqTool/releases")).Result.Content.ReadAsStringAsync().Result;
                     var githubdata = JsonConvert.DeserializeObject<List<GithubVersionInfo>>(json);
                     var releases = githubdata.OrderByDescending(a => a.published_at).Where(a => a.name != null && a.prerelease == prerelease && a.assets != null && a.assets.Any()).ToList();
                     var release = releases.FirstOrDefault();
@@ -142,8 +169,7 @@ namespace EQTool.Services
                             _ = System.IO.Directory.CreateDirectory(System.IO.Directory.GetCurrentDirectory() + "/NewVersion");
                             File.WriteAllBytes(System.IO.Directory.GetCurrentDirectory() + "/NewVersion/" + filename, fileBytes);
                         }
-                        var logingmiddlemand = container?.Resolve<LoginMiddlemand>();
-                        logingmiddlemand?.StopListening();
+                        loginMiddlemand.StopListening();
                         if (Thread.CurrentThread == App.Current.Dispatcher.Thread)
                         {
                             System.Windows.Application.Current.Shutdown();
@@ -181,10 +207,11 @@ namespace EQTool.Services
                             (App.Current as App).ShowBalloonTip(3000, "PigParse Update Failed", "There was a problem updating pigparse, please check github for the latest update!", System.Windows.Forms.ToolTipIcon.Warning);
                         });
                     }
-                    container?.Resolve<LoggingService>().Log(ex.ToString(), EQToolShared.Enums.EventType.Update, null);
+                    loggingService.Log(ex.ToString(), EQToolShared.Enums.EventType.Update, activePlayer.Player?.Server);
                     File.AppendAllText("Errors.txt", ex.ToString());
                 }
             });
         }
+
     }
 }

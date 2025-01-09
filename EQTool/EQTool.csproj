@@ -328,6 +328,7 @@
     </ApplicationDefinition>
     <Compile Include="Models\CustomTimer.cs" />
     <Compile Include="Models\FightHistory.cs" />
+    <Compile Include="Services\AppRoot.cs" />
     <Compile Include="Services\BinarySerializer.cs" />
     <Compile Include="Services\DebugOutput.cs" />
     <Compile Include="Services\Handlers\QuakeHandler.cs" />
@@ -354,6 +355,7 @@
     <Compile Include="Services\Handlers\RandomRollHandler.cs" />
     <Compile Include="Services\Handlers\SpawnTimerHandler.cs" />
     <Compile Include="Services\Handlers\YourItemBeginsToGlowHandler.cs" />
+    <Compile Include="Services\MenuService.cs" />
     <Compile Include="Services\Parsing\BeginsToCastTheGateSpellParser.cs" />
     <Compile Include="Services\Parsing\ExpGainedParser.cs" />
     <Compile Include="Services\Handlers\SlainHandler.cs" />
