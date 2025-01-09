@@ -194,7 +194,7 @@ namespace EQtoolsTests
         {
             player.Player.PlayerClass = EQToolShared.Enums.PlayerClasses.Rogue;
             player.Player.Level = 60;
-            player.Player.TimerRecast = TimerRecast.RestartCurrentTimer;
+
             logParser.Push("A Dizok Underling hits a Dizok Observer for 37 points of damage.", DateTime.Now);
             logParser.Push("A Dizok Underling hits a Dizok Observer for 121 points of damage.", DateTime.Now);
             logParser.Push("a Dizok Observer has been slain by a Dizok Underling!", DateTime.Now);
