@@ -191,6 +191,21 @@ namespace EQTool.Services.Handlers
             };
             appDispatcher.DispatchUI(() =>
             {
+                var grpname = e.Victim;
+                if (isnpc)
+                {
+                    grpname = " " + grpname;
+                }
+                var grp = spellWindowViewModel.SpellList.Where(a => string.Equals(a.GroupName, grpname, StringComparison.OrdinalIgnoreCase)).ToList();
+
+                if (activePlayer?.Player?.TimerRecast == TimerRecast.RestartCurrentTimer)
+                {
+                    foreach (var item in grp)
+                    {
+                        _ = spellWindowViewModel.SpellList.Remove(item);
+                    }
+                }
+
                 var exisitngdeathentry = spellWindowViewModel.SpellList.FirstOrDefault(a => string.Equals(a.Name, add.Name, StringComparison.OrdinalIgnoreCase) && CustomTimer.CustomerTime == a.GroupName);
                 if (exisitngdeathentry != null)
                 {
