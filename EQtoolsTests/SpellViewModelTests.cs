@@ -188,5 +188,29 @@ namespace EQtoolsTests
 
             Assert.AreEqual(spellWindowViewModel.SpellList.Count(), 2);
         }
+
+        [TestMethod]
+        public void SlainTest1()
+        {
+            player.Player.PlayerClass = EQToolShared.Enums.PlayerClasses.Rogue;
+            player.Player.Level = 60;
+            player.Player.TimerRecast = TimerRecast.RestartCurrentTimer;
+            logParser.Push("A Dizok Underling hits a Dizok Observer for 37 points of damage.", DateTime.Now);
+            logParser.Push("A Dizok Underling hits a Dizok Observer for 121 points of damage.", DateTime.Now);
+            logParser.Push("a Dizok Observer has been slain by a Dizok Underling!", DateTime.Now);
+            logParser.Push("Your faction standing with GoblinsofMountainDeath got better.", DateTime.Now);
+            logParser.Push("Your faction standing with SarnakCollective could not possibly get any worse.", DateTime.Now);
+            logParser.Push("You gain party experience!!", DateTime.Now);
+            logParser.Push("a Dizok Observer begins to shake as the mana burns within its body.", DateTime.Now);
+            Assert.AreEqual(spellWindowViewModel.SpellList.Count(), 1);
+            logParser.Push("A Dizok Underling hits a Dizok Observer for 37 points of damage.", DateTime.Now);
+            logParser.Push("A Dizok Underling hits a Dizok Observer for 121 points of damage.", DateTime.Now);
+            logParser.Push("a Dizok Observer has been slain by a Dizok Underling!", DateTime.Now);
+            logParser.Push("Your faction standing with GoblinsofMountainDeath got better.", DateTime.Now);
+            logParser.Push("Your faction standing with SarnakCollective could not possibly get any worse.", DateTime.Now);
+            logParser.Push("You gain party experience!!", DateTime.Now);
+            logParser.Push("a Dizok Observer begins to shake as the mana burns within its body.", DateTime.Now);
+            Assert.AreEqual(spellWindowViewModel.SpellList.Count(), 2);
+        }
     }
 }

@@ -84,6 +84,7 @@ namespace EQtoolsTests
             Assert.AreEqual(CalledCounter, 1);
         }
 
+
         [TestMethod]
         public void SlainAtEnd()
         {
