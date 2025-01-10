@@ -201,6 +201,7 @@
     <Compile Include="InvisFadingTests.cs" />
     <Compile Include="DragonEffectTests.cs" />
     <Compile Include="ItemBeginsToGlowTests.cs" />
+    <Compile Include="PetTests.cs" />
     <Compile Include="SpellCounterTests.cs" />
     <Compile Include="SpellViewModelTests.cs" />
     <Compile Include="SlainHandlerTests.cs" />
