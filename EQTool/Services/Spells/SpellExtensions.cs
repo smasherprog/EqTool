@@ -30,7 +30,8 @@ namespace EQTool.Services
                 DescrNumber = spell.DescrNumber,
                 ResistCheck = spell.ResistCheck,
                 resisttype = spell.resisttype,
-                recastTime = spell.recastTime
+                recastTime = spell.recastTime,
+                PetReagents = spell.PetReagents
             };
 
             if (spellfilenumber > 0 && spellfilenumber <= 7)

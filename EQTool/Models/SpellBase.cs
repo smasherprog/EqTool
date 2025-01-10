@@ -270,6 +270,16 @@ namespace EQTool.Models
         HasteSpellFocus = 145
     }
 
+    public enum PetReagent
+    {
+        TinyDagger = 13080,
+        Peridot = 10028,
+        BoneChip = 13073,
+        Malachite = 10015,
+        LapisLazuli = 10016,
+        NotUsed = -1
+    }
+
     [Serializable]
     public class SpellBase
     {
@@ -290,5 +300,6 @@ namespace EQTool.Models
         public DescrNumber DescrNumber { get; set; }
         public ResistType resisttype { get; set; }
         public SpellType SpellType { get; set; }
+        public List<Tuple<PetReagent, int>> PetReagents { get; set; } 
     }
 }
