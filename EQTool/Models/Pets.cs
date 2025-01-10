@@ -59,8 +59,7 @@ namespace EQTool.Models
 
             // extract these data from the already-parsed spells file
             Spell spell = spells.AllSpells.FirstOrDefault(a => a.name == spellName);
-            CasterClass = spell.Classes.Keys.First();
-            CasterLevel = spell.Classes[CasterClass];
+            Classes = spell.Classes;
             PetReagents = spell.PetReagents;
 
             MageType = "";
@@ -70,8 +69,7 @@ namespace EQTool.Models
         }
 
         public string                           SpellName { get; }
-        public PlayerClasses                    CasterClass { get; }
-        public int                              CasterLevel { get; }
+        public Dictionary<PlayerClasses, int>   Classes { get; set; }
         public List<PetRank>                    PetRankList { get; }
         public List<Tuple<PetReagent, int>>     PetReagents { get; }
 
