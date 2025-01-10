@@ -23,34 +23,39 @@ namespace EQTool.Services.Handlers
         {
             var spell = spells.AllSpells.FirstOrDefault(a => a.name == "Disease Cloud");
             var startingtime = 0;
-            for (var i = 1; i <= 7; i++)
+            for (var round = 1; round <= 3; round++)
             {
+                for (var i = 1; i <= 7; i++)
+                {
+                    startingtime += 210;
+                    spellWindowViewModel.TryAdd(new TimerViewModel
+                    {
+                        PercentLeft = 100,
+                        GroupName = $" Wave {round} Ring War",
+                        Name = $"Round {i}",
+                        Rect = spell.Rect,
+                        Icon = spell.SpellIcon,
+                        TotalDuration = TimeSpan.FromSeconds(startingtime),
+                        TotalRemainingDuration = TimeSpan.FromSeconds(startingtime),
+                        UpdatedDateTime = DateTime.Now,
+                        ProgressBarColor = Brushes.LightSeaGreen
+                    });
+                }
+                startingtime += 300;
                 spellWindowViewModel.TryAdd(new TimerViewModel
                 {
                     PercentLeft = 100,
-                    GroupName = $" Wave {e.RoundNumber} Ring War",
-                    Name = $"Round {i}",
+                    GroupName = $" Wave {round} Ring War",
+                    Name = $"-- Break --",
                     Rect = spell.Rect,
                     Icon = spell.SpellIcon,
-                    TotalDuration = TimeSpan.FromSeconds(startingtime + 210),
-                    TotalRemainingDuration = TimeSpan.FromSeconds(startingtime + 210),
+                    TotalDuration = TimeSpan.FromSeconds(startingtime),
+                    TotalRemainingDuration = TimeSpan.FromSeconds(startingtime),
                     UpdatedDateTime = DateTime.Now,
-                    ProgressBarColor = Brushes.LightSeaGreen
+                    ProgressBarColor = Brushes.MediumAquamarine
                 });
-                startingtime += 210;
             }
-            spellWindowViewModel.TryAdd(new TimerViewModel
-            {
-                PercentLeft = 100,
-                GroupName = $" Wave {e.RoundNumber} Ring War",
-                Name = $"-- Break --",
-                Rect = spell.Rect,
-                Icon = spell.SpellIcon,
-                TotalDuration = TimeSpan.FromSeconds(startingtime + 300),
-                TotalRemainingDuration = TimeSpan.FromSeconds(startingtime + 300),
-                UpdatedDateTime = DateTime.Now,
-                ProgressBarColor = Brushes.MediumAquamarine
-            });
+
         }
     }
 }
