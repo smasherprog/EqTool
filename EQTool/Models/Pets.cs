@@ -230,15 +230,54 @@ namespace EQTool.Models
             _PetSpellDictionary[petSpell.SpellName] = petSpell;
 
             // 
+            // Shaman pets
+            //
+            petSpell = new PetSpell(spellName: "Companion Spirit", spells: eqSpells);
+            petSpell.PetRankList.Add(new PetRank(rank: "1/5", petLevel: 22, maxMelee: 22, maxBashKick: 16));
+            petSpell.PetRankList.Add(new PetRank(rank: "2/5", petLevel: 23, maxMelee: 23, maxBashKick: 17));
+            petSpell.PetRankList.Add(new PetRank(rank: "3/5", petLevel: 24, maxMelee: 26, maxBashKick: 17));
+            petSpell.PetRankList.Add(new PetRank(rank: "4/5", petLevel: 25, maxMelee: 28, maxBashKick: 18));
+            petSpell.PetRankList.Add(new PetRank(rank: "5/5", petLevel: 26, maxMelee: 30, maxBashKick: 18, description: "Max"));
+            _PetSpellDictionary[petSpell.SpellName] = petSpell;
+
+            petSpell = new PetSpell(spellName: "Vigilant Spirit", spells: eqSpells);
+            petSpell.PetRankList.Add(new PetRank(rank: "1/5", petLevel: 24, maxMelee: 27, maxBashKick: 17));
+            petSpell.PetRankList.Add(new PetRank(rank: "2/5", petLevel: 25, maxMelee: 28, maxBashKick: 18));
+            petSpell.PetRankList.Add(new PetRank(rank: "3/5", petLevel: 26, maxMelee: 31, maxBashKick: 18));
+            petSpell.PetRankList.Add(new PetRank(rank: "4/5", petLevel: 27, maxMelee: 33, maxBashKick: 19));
+            petSpell.PetRankList.Add(new PetRank(rank: "5/5", petLevel: 28, maxMelee: 35, maxBashKick: 19, description: "Max"));
+            _PetSpellDictionary[petSpell.SpellName] = petSpell;
+
+            petSpell = new PetSpell(spellName: "Guardian Spirit", spells: eqSpells);
+            petSpell.PetRankList.Add(new PetRank(rank: "1/5", petLevel: 28, maxMelee: 35, maxBashKick: 19));
+            petSpell.PetRankList.Add(new PetRank(rank: "2/5", petLevel: 29, maxMelee: 37, maxBashKick: 20));
+            petSpell.PetRankList.Add(new PetRank(rank: "3/5", petLevel: 30, maxMelee: 39, maxBashKick: 20));
+            petSpell.PetRankList.Add(new PetRank(rank: "4/5", petLevel: 31, maxMelee: 41, maxBashKick: 21));
+            petSpell.PetRankList.Add(new PetRank(rank: "5/5", petLevel: 32, maxMelee: 43, maxBashKick: 21, description: "Max"));
+            _PetSpellDictionary[petSpell.SpellName] = petSpell;
+
+            petSpell = new PetSpell(spellName: "Frenzied Spirit", spells: eqSpells);
+            petSpell.PetRankList.Add(new PetRank(rank: "1/5", petLevel: 32, maxMelee: 43, maxBashKick: 21));
+            petSpell.PetRankList.Add(new PetRank(rank: "2/5", petLevel: 33, maxMelee: 45, maxBashKick: 22));
+            petSpell.PetRankList.Add(new PetRank(rank: "3/5", petLevel: 34, maxMelee: 47, maxBashKick: 22));
+            petSpell.PetRankList.Add(new PetRank(rank: "4/5", petLevel: 35, maxMelee: 49, maxBashKick: 23));
+            petSpell.PetRankList.Add(new PetRank(rank: "5/5", petLevel: 36, maxMelee: 51, maxBashKick: 23, description: "Max"));
+            _PetSpellDictionary[petSpell.SpellName] = petSpell;
+
+            petSpell = new PetSpell(spellName: "Spirit of the Howler", spells: eqSpells);
+            petSpell.PetRankList.Add(new PetRank(rank: "1/5", petLevel: 35, maxMelee: 45, maxBashKick: 22));
+            petSpell.PetRankList.Add(new PetRank(rank: "2/5", petLevel: 36, maxMelee: 47, maxBashKick: 22));
+            petSpell.PetRankList.Add(new PetRank(rank: "3/5", petLevel: 37, maxMelee: 49, maxBashKick: 23));
+            petSpell.PetRankList.Add(new PetRank(rank: "4/5", petLevel: 38, maxMelee: 51, maxBashKick: 23));
+            petSpell.PetRankList.Add(new PetRank(rank: "5/5", petLevel: 39, maxMelee: 52, maxBashKick: 24, description: "Max"));
+            _PetSpellDictionary[petSpell.SpellName] = petSpell;
+
+            // 
             // todo - Enchanter pets
             //
 
             // 
             // todo - Generic charmed pet
-            //
-
-            // 
-            // todo - Shaman pets
             //
 
             // 
