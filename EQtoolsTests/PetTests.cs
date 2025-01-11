@@ -28,7 +28,7 @@ namespace EQtoolsTests
             PetSpell spell = petSpells["Emissary of Thule"];
 
             // necro 59
-            //Assert.AreEqual(PlayerClasses.Necromancer, spell.CasterClass);
+            //Assert.AreEqual(PlayerClasses.Necromancer, spell.CasterClasses);
             //Assert.AreEqual(59, spell.CasterLevel);
 
             // 6x pet ranks: 5x min to max, 1x max+focus

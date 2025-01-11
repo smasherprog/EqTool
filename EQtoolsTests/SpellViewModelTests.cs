@@ -127,12 +127,14 @@ namespace EQtoolsTests
         }
 
         [TestMethod]
-        public void Dazzle()
+        public void Dazzle1()
         {
             //[Sun Dec 15 19:39:13 2024] You begin casting Dazzle.
             //[Sun Dec 15 19:39:15 2024] Orc centurion has been mesmerized.
 
-            // two casts, and since this is a detrimental spell, should be two timers
+            // recast mode in StartNew
+            // two casts, and since we are in StartNew mode, should be two timers
+            player.Player.TimerRecast = TimerRecast.StartNewTimer;
             logParser.Push("You begin casting Dazzle.", DateTime.Now);
             logParser.Push("Orc centurion has been mesmerized.", DateTime.Now.AddSeconds(2.0));
             logParser.Push("You begin casting Dazzle.", DateTime.Now.AddSeconds(10.0));
@@ -143,6 +145,27 @@ namespace EQtoolsTests
             Assert.AreEqual(102.0, spelleffect.TotalDuration.TotalSeconds, .1);
             Assert.AreEqual(" Orc centurion", spelleffect.GroupName);
             Assert.AreEqual(2, spellWindowViewModel.SpellList.Count);
+        }
+
+        [TestMethod]
+        public void Dazzle2()
+        {
+            //[Sun Dec 15 19:39:13 2024] You begin casting Dazzle.
+            //[Sun Dec 15 19:39:15 2024] Orc centurion has been mesmerized.
+
+            // recast mode in Restart
+            // two casts, but since we are in Restart mode, should be just one timers
+            player.Player.TimerRecast = TimerRecast.RestartCurrentTimer;
+            logParser.Push("You begin casting Dazzle.", DateTime.Now);
+            logParser.Push("Orc centurion has been mesmerized.", DateTime.Now.AddSeconds(2.0));
+            logParser.Push("You begin casting Dazzle.", DateTime.Now.AddSeconds(10.0));
+            logParser.Push("Orc centurion has been mesmerized.", DateTime.Now.AddSeconds(12.0));
+
+            var spelleffect = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Spell && a.Name == "Dazzle") as SpellViewModel;
+            Assert.IsNotNull(spelleffect);
+            Assert.AreEqual(102.0, spelleffect.TotalDuration.TotalSeconds, .1);
+            Assert.AreEqual(" Orc centurion", spelleffect.GroupName);
+            Assert.AreEqual(1, spellWindowViewModel.SpellList.Count);
         }
 
         [TestMethod]
@@ -179,6 +202,8 @@ namespace EQtoolsTests
         [TestMethod]
         public void MakeSureDetrimentalSpellsShowMultipleTimes()
         {
+            // two casts, and since we are in StartNew mode, should be two timers
+            player.Player.TimerRecast = TimerRecast.StartNewTimer;
             player.Player.PlayerClass = EQToolShared.Enums.PlayerClasses.Rogue;
             player.Player.Level = 60;
             var d = DateTime.Now;

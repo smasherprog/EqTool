@@ -5,13 +5,29 @@ using EQTool.ViewModels;
 using System.Collections.Generic;
 using System.Linq;
 using EQToolShared.Enums;
+using System.Configuration;
+using System.Drawing;
 
 
 
 namespace EQTool.Models
 {
     //
-    // class to represent a single pet rank, i.e. the stats for the max pet, or min pet, and all inbetween
+    // basic data structure (where ----o indicates a container):
+    //
+    // Pets ----o PetSpell ----o PetRank
+    //
+    //      Pets:       Contains a Dictionary of all PetSpell objects, where key = spell name, value = associated PetSpell object
+    //                  Global list, loaded by DI
+    //      PetSpell:   One object for each different pet spell
+    //                  Contains a List of PetRank objects
+    //      PetRank:    Has the relevant stats (pet level, max melee, and so on) for that rank of that PetSpell
+    //
+
+    // ===============================================================================================================
+
+    //
+    // class to represent a single pet rank, ndx.e. the stats for the max pet, or min pet, and all inbetween
     //
     public class PetRank
     {
@@ -46,6 +62,8 @@ namespace EQTool.Models
 
     }
 
+    // ===============================================================================================================
+
     //
     // class to represent a Pet Spell
     // note that this class has a list of all the possible PetRanks for this spell
@@ -69,23 +87,25 @@ namespace EQTool.Models
         }
 
         public string                           SpellName { get; }
-        public Dictionary<PlayerClasses, int>   Classes { get; set; }
-        public List<PetRank>                    PetRankList { get; }
+        public Dictionary<PlayerClasses, int>   Classes { get; }
         public List<Tuple<PetReagent, int>>     PetReagents { get; }
+        public List<PetRank>                    PetRankList { get; }
 
-        // todo - i'm not sure this field is needed?
+        // todo - I'm not sure this field is needed?
         // use enum instead?
         public string                           MageType { get; }           
 
     }
 
+    // ===============================================================================================================
+
+    //
+    // class to serve as a container for all PetSpell objects
+    //
     public class Pets
     {
         // reference to DI global
         private readonly EQSpells eqSpells;
-
-        // container of all PetSpells, key = spell name, value = corresponding PetSpell object
-        private Dictionary<string, PetSpell> _PetSpellDictionary = new Dictionary<string, PetSpell>();
 
         // ctor
         public Pets(EQSpells eqSpells)
@@ -94,20 +114,26 @@ namespace EQTool.Models
         }
 
         // returns dictionary of PetSpell objects, key = spell name, value = corresponding PetSpell object
+        private Dictionary<string, PetSpell> _PetSpellDictionary = new Dictionary<string, PetSpell>();
         public Dictionary<string, PetSpell> PetSpellDictionary
         {
             get
             {
+                // if the dictionary is empty...
                 if (_PetSpellDictionary.Any() == false)
                 {
-                    LoadSpells();
+                    // the spells must be loaded before we can load the pets
+                    if (eqSpells.AllSpells.Any() == true)
+                    {
+                        LoadPetSpells();
+                    }
                 }
                 return _PetSpellDictionary;
             }
         }
 
         // load all the PetSpell data
-        public void LoadSpells()
+        private void LoadPetSpells()
         {
             //
             // necro pets

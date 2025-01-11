@@ -40,10 +40,11 @@ namespace EQTool.ViewModels
     {
         private readonly EQToolSettings toolSettings;
 
-        public SettingsWindowViewModel(ActivePlayer activePlayer, EQToolSettings toolSettings)
+        public SettingsWindowViewModel(ActivePlayer activePlayer, EQToolSettings toolSettings, PetViewModel petViewModel)
         {
             this.toolSettings = toolSettings;
             ActivePlayer = activePlayer;
+            PetViewModel = petViewModel;
             for (var i = 12; i < 72; i++)
             {
                 FontSizes.Add(i);
@@ -185,6 +186,18 @@ namespace EQTool.ViewModels
                 ((App)System.Windows.Application.Current).UpdateBackgroundOpacity("MyWindowStyleTrigger", value);
                 OnPropertyChanged();
             }
+        }
+
+        private PetViewModel _PetViewModel;
+        public PetViewModel PetViewModel
+        {
+            get => _PetViewModel;
+            set
+            {
+                _PetViewModel = value;
+                OnPropertyChanged();
+            }
+
         }
 
         private ActivePlayer _ActivePlayer;
