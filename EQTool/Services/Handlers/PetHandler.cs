@@ -29,14 +29,15 @@ namespace EQTool.Services.Handlers
             if (playerPet.Pets.PetSpellDictionary.ContainsKey(e.Spell.name))
             {
                 // we are casting a pet spell, initialize the pet display
-                //PetSpell petSpell = playerPet.Pets.PetSpellDictionary[e.Spell.name];
-                //playerPet.PetSpell = petSpell;
+                PetSpell petSpell = playerPet.Pets.PetSpellDictionary[e.Spell.name];
+                playerPet.PetSpell = petSpell;
 
                 // testing
-                PetSpell petSpell = playerPet.Pets.PetSpellDictionary["Emissary of Thule"];
-                playerPet.PetSpell = petSpell;
-                playerPet.PetName = "Bakalakadaka";
-                playerPet.CheckMaxMelee(61);
+                //PetSpell petSpell = playerPet.Pets.PetSpellDictionary["Emissary of Thule"];
+                //playerPet.PetSpell = petSpell;
+                //playerPet.PetName = "Bakalakadaka";
+                //playerPet.CheckMaxMelee(55);
+                //playerPet.CheckMaxMelee(61);
             }
         }
 

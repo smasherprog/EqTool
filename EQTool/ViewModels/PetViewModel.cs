@@ -56,9 +56,6 @@ namespace EQTool.ViewModels
                 }
 
                 OnPropertyChanged();
-                OnPropertyChanged(nameof(PetSpell.Classes));
-                OnPropertyChanged(nameof(PetSpell.PetReagents));
-                OnPropertyChanged(nameof(PetSpell.PetRankList));
             }
         }
 
@@ -70,17 +67,9 @@ namespace EQTool.ViewModels
             PetSpell = null;
             SpellName = "";
 
-            Classes.Clear();
-            OnPropertyChanged(nameof(Classes));
-            ClassNames = "";
-            ClassLevels = "";
-
-            PetReagents.Clear();
-            OnPropertyChanged(nameof(PetReagents));
-            PetReagentsText = "";
-
-            PetRankList.Clear();
-            OnPropertyChanged(nameof(PetRankList));
+            Classes = null;
+            PetReagents = null;
+            PetRankList = null;
 
             ResetRowBackgrounds();
         }
@@ -105,30 +94,33 @@ namespace EQTool.ViewModels
                 _Classes = value;
 
                 // set the dervied ClassNames string property
-                string classNames = "";
-                int ndx = 0;
-                foreach (PlayerClasses playerClasses in _Classes.Keys)
+                if (_Classes != null)
                 {
-                    classNames += playerClasses.ToString();
-                    if (++ndx < _Classes.Keys.Count)
+                    string classNames = "";
+                    int ndx = 0;
+                    foreach (PlayerClasses playerClasses in _Classes.Keys)
                     {
-                        classNames += ", ";
+                        classNames += $"{playerClasses}";
+                        if (++ndx < _Classes.Keys.Count)
+                        {
+                            classNames += ", ";
+                        }
                     }
-                }
-                ClassNames = classNames;
+                    ClassNames = classNames;
 
-                // set the derived ClassLevels string property
-                string classLevels = "";
-                ndx = 0;
-                foreach (int level in _Classes.Values)
-                {
-                    classLevels += $"{level}";
-                    if (++ndx < _Classes.Values.Count)
+                    // set the derived ClassLevels string property
+                    string classLevels = "";
+                    ndx = 0;
+                    foreach (int level in _Classes.Values)
                     {
-                        classLevels += ", ";
+                        classLevels += $"{level}";
+                        if (++ndx < _Classes.Values.Count)
+                        {
+                            classLevels += ", ";
+                        }
                     }
+                    ClassLevels = classLevels;
                 }
-                ClassLevels = classLevels;
                 OnPropertyChanged();
             }
         }
@@ -158,18 +150,21 @@ namespace EQTool.ViewModels
                 // set the field value
                 _PetReagents = value;
 
-                // set the dervied string property
-                string reagentText = "";
-                int ndx = 0;
-                foreach (Tuple<PetReagent, int> pair in _PetReagents)
+                if (_PetReagents != null)
                 {
-                    reagentText += $"{pair.Item2}x {pair.Item1}";
-                    if (++ndx < _PetReagents.Count)
+                    // set the dervied string property
+                    string reagentText = "";
+                    int ndx = 0;
+                    foreach (Tuple<PetReagent, int> pair in _PetReagents)
                     {
-                        reagentText += ", ";
+                        reagentText += $"{pair.Item2}x {pair.Item1}";
+                        if (++ndx < _PetReagents.Count)
+                        {
+                            reagentText += ", ";
+                        }
                     }
+                    PetReagentsText = reagentText;
                 }
-                PetReagentsText = reagentText;
                 OnPropertyChanged();
             }
         }
