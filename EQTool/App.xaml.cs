@@ -248,7 +248,6 @@ namespace EQTool
         private void InitStuff()
         {
             container.Resolve<LoggingService>().Log(string.Empty, EventType.StartUp, null);
-            container.Resolve<SpellWindowViewModel>();
             UpdateTimer = new System.Timers.Timer(1000 * 60);
             UpdateTimer.Elapsed += UpdateTimer_Elapsed;
             UpdateTimer.Enabled = true;
