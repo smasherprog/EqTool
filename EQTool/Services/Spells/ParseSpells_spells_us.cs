@@ -175,7 +175,7 @@ namespace EQTool.Services
             var spellsfile = new FileInfo(settings.DefaultEqDirectory + spellfile);
             if (spellsfile.Exists)
             {
-                var spellfilename = $"SpellCache{servers}_5";
+                var spellfilename = $"SpellCache{servers}_6";
                 if (!isdebug)
                 {
                     spellfilename = new string(spellfilename.Where(a => char.IsLetterOrDigit(a)).ToArray()) + ".bin";
@@ -440,11 +440,11 @@ namespace EQTool.Services
 
                 // extract the reagent info
                 var petReagents = new List<Tuple<PetReagent, int>>();
-                for (int ndx = 58; ndx <= 61; ndx++)
+                for (var ndx = 58; ndx <= 61; ndx++)
                 {
                     // get the reagent ID (fields 58-61)and the associated quantity (fields 62-65)
-                    PetReagent petReagent = (PetReagent)Enum.Parse(typeof (PetReagent), splits[ndx]);
-                    int quantity = int.Parse(splits[ndx+4]);
+                    var petReagent = (PetReagent)Enum.Parse(typeof(PetReagent), splits[ndx]);
+                    var quantity = int.Parse(splits[ndx + 4]);
                     if (petReagent != PetReagent.NotUsed)
                     {
                         // add the tuple to the list
