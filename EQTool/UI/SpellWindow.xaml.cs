@@ -28,7 +28,6 @@ namespace EQTool.UI
         {
             this.settingsWindowViewModel = settingsWindowViewModel;
             loggingService.Log(string.Empty, EventType.OpenMap, activePlayer?.Player?.Server);
-            DataContext = this.spellWindowViewModel = spellWindowViewModel;
             spellWindowViewModel.WindowFrameBrush = spellWindowViewModel.NonRaidModeLinearGradientBrush = new LinearGradientBrush
             {
                 StartPoint = new System.Windows.Point(0, 0.5),
@@ -49,6 +48,7 @@ namespace EQTool.UI
                             new GradientStop(System.Windows.Media.Colors.Gray, 1)
                     }
             };
+            DataContext = this.spellWindowViewModel = spellWindowViewModel;
             InitializeComponent();
             base.Init();
         }
