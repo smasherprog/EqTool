@@ -74,8 +74,6 @@ namespace EQTool.ViewModels
             });
         }
 
-        public LinearGradientBrush NonRaidModeLinearGradientBrush;
-        public LinearGradientBrush RaidModeLinearGradientBrush;
         private LinearGradientBrush _WindowFrameBrush;
 
         public LinearGradientBrush WindowFrameBrush
@@ -102,12 +100,30 @@ namespace EQTool.ViewModels
                 if (_RaidModeEnabled)
                 {
                     RaidModeButtonToolTip = "Disable Raid Mode";
-                    WindowFrameBrush = RaidModeLinearGradientBrush;
+                    WindowFrameBrush = new LinearGradientBrush
+                    {
+                        StartPoint = new System.Windows.Point(0, 0.5),
+                        EndPoint = new System.Windows.Point(1, 0.5),
+                        GradientStops = new GradientStopCollection()
+                        {
+                                new GradientStop(System.Windows.Media.Colors.OrangeRed, .4),
+                                new GradientStop(System.Windows.Media.Colors.Gray, 1)
+                        }
+                    };
                 }
                 else
                 {
                     RaidModeButtonToolTip = "Enable Raid Mode";
-                    WindowFrameBrush = NonRaidModeLinearGradientBrush;
+                    WindowFrameBrush = new LinearGradientBrush
+                    {
+                        StartPoint = new System.Windows.Point(0, 0.5),
+                        EndPoint = new System.Windows.Point(1, 0.5),
+                        GradientStops = new GradientStopCollection()
+                        {
+                                new GradientStop(System.Windows.Media.Colors.CadetBlue, .4),
+                                new GradientStop(System.Windows.Media.Colors.Gray, 1)
+                        }
+                    };
                 }
                 OnPropertyChanged(nameof(RaidModeButtonToolTip));
                 OnPropertyChanged();
