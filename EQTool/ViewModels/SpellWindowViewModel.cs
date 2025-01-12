@@ -74,11 +74,28 @@ namespace EQTool.ViewModels
             });
         }
 
-        private LinearGradientBrush _WindowFrameBrush;
+        private LinearGradientBrush _WindowFrameBrush = null;
 
         public LinearGradientBrush WindowFrameBrush
         {
-            get => _WindowFrameBrush;
+            get
+            {
+                if (_WindowFrameBrush == null)
+                {
+                    _WindowFrameBrush = new LinearGradientBrush
+                    {
+                        StartPoint = new System.Windows.Point(0, 0.5),
+                        EndPoint = new System.Windows.Point(1, 0.5),
+                        GradientStops = new GradientStopCollection()
+                    {
+                            new GradientStop(System.Windows.Media.Colors.CadetBlue, .4),
+                            new GradientStop(System.Windows.Media.Colors.Gray, 1)
+                    }
+                    };
+                }
+
+                return _WindowFrameBrush;
+            }
             set
             {
                 _WindowFrameBrush = value;
