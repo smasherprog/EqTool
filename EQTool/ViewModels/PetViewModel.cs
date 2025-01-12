@@ -14,149 +14,181 @@ namespace EQTool.ViewModels
     // view model for Pet window.  readonly data that is displayed, cannot be edited by user
     public class PetViewModel : INotifyPropertyChanged
     {
-        // for testing
-        // global DI list of pets
-        //public readonly PlayerPet playerPet;
-
-        // the PetSpell for this spell and for display
-        private PetSpell _PetSpell = null;
-
         // max number of pet ranks = 6 (5x normal ranks, 1x focused rank)
         private const int RankRowsCount = 6;
 
         // ctor
-
-        // for testing
-        //public PetViewModel(PlayerPet playerPet)
         public PetViewModel()
         {
-            // for testing
-            //this.playerPet = playerPet;
-
             // initialize the row colors
             for (int ndx = 0; ndx < RankRowsCount; ndx++)
             {
                 _RowColor.Add(new System.Windows.Media.SolidColorBrush());
             }
             ResetRowBackgrounds();
-
-            // just for testing
-            // this does work, but since it jacks up the order of DI instancing, it can't work with other DI instnances
-            //Pets pets = playerPet.Pets;
-            //PetSpell p = pets.PetSpellDictionary["Emissary of Thule"];
-            //PetSpell p = pets.PetSpellDictionary["Minion of Shadows"];
-            //PetSpell p = pets.PetSpellDictionary["Leering Corpse"];
-            //SetPetSpell(p);
-            //HighLightRow(1);
-            //SetPetName("Bakalakadaka");
         }
 
-        // set the pet name
-        public void SetPetName(string petName)
+        // name of the pet
+        private string _PetName = "";
+        public string PetName 
+        { 
+            get { return _PetName; }
+            set { _PetName = value; OnPropertyChanged(); }
+        }
+
+        // the PetSpell for this spell and for display
+        private PetSpell _PetSpell = null;
+        public PetSpell PetSpell
         {
-            _PetName = petName;
-            OnPropertyChanged();
+            get { return _PetSpell; }
+            set
+            {
+                // set the petspell
+                _PetSpell = value;
+
+                // set the derived fields
+                if (PetSpell != null)
+                {
+                    SpellName = PetSpell.SpellName;
+                    Classes = PetSpell.Classes;
+                    PetReagents = PetSpell.PetReagents;
+                    PetRankList = PetSpell.PetRankList;
+                }
+
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(PetSpell.Classes));
+                OnPropertyChanged(nameof(PetSpell.PetReagents));
+                OnPropertyChanged(nameof(PetSpell.PetRankList));
+            }
         }
 
-        // set the pet spell, populate all fields
-        public void SetPetSpell(PetSpell petSpell)
-        {
-            _PetSpell = petSpell;
-
-            _SpellName = petSpell.SpellName;
-            _Classes = petSpell.Classes;
-            _PetReagents = petSpell.PetReagents;
-            _PetRankList = petSpell.PetRankList;
-
-            OnPropertyChanged();
-        }
 
         // clear all fields
         public void Reset()
         {
-            _PetSpell = null;
-            _PetName = "";
-            _SpellName = "";
-            _Classes.Clear();
-            _PetReagents.Clear();
-            _PetRankList.Clear();
+            PetName = "";
+            PetSpell = null;
+            SpellName = "";
+
+            Classes.Clear();
+            OnPropertyChanged(nameof(Classes));
+            ClassNames = "";
+            ClassLevels = "";
+
+            PetReagents.Clear();
+            OnPropertyChanged(nameof(PetReagents));
+            PetReagentsText = "";
+
+            PetRankList.Clear();
+            OnPropertyChanged(nameof(PetRankList));
+
             ResetRowBackgrounds();
-
-            OnPropertyChanged();
         }
-
-
-        // name of the pet
-        private string _PetName = "";
-        public string PetName { get { return _PetName; } }
 
         // spell name
         private string _SpellName = "";
-        public string SpellName { get { return _SpellName; } }
+        public string SpellName
+        {
+            get { return _SpellName; } 
+            set { _SpellName = value; OnPropertyChanged(); }
+        }
 
         // dictionary of (classes, required levels) for this spell
         // key = PlayerClasses enu, value = level require
         private Dictionary<PlayerClasses, int> _Classes = new Dictionary<PlayerClasses, int>();
-        public string ClassNames
-        {
-            get
+        public Dictionary<PlayerClasses, int> Classes 
+        { 
+            get { return _Classes; }
+            set
             {
-                string rv = "";
+                // set the field value
+                _Classes = value;
+
+                // set the dervied ClassNames string property
+                string classNames = "";
                 int ndx = 0;
                 foreach (PlayerClasses playerClasses in _Classes.Keys)
                 {
-                    rv += playerClasses.ToString();
+                    classNames += playerClasses.ToString();
                     if (++ndx < _Classes.Keys.Count)
                     {
-                        rv += ", ";
+                        classNames += ", ";
                     }
                 }
-                return rv;
-            }
-        }
-        public string ClassLevels
-        {
-            get
-            {
-                // convert that data structure into a single readable string for display
-                string rv = "";
-                int ndx = 0;
+                ClassNames = classNames;
+
+                // set the derived ClassLevels string property
+                string classLevels = "";
+                ndx = 0;
                 foreach (int level in _Classes.Values)
                 {
-                    rv += $"{level}";
+                    classLevels += $"{level}";
                     if (++ndx < _Classes.Values.Count)
                     {
-                        rv += ", ";
+                        classLevels += ", ";
                     }
                 }
-                return rv;
+                ClassLevels = classLevels;
+                OnPropertyChanged();
             }
         }
 
+        private string _ClassNames = "";
+        public string ClassNames
+        {
+            get { return _ClassNames; }
+            set { _ClassNames = value; OnPropertyChanged(); }
+        }
+
+        private string _ClassLevels = "";
+        public string ClassLevels
+        {
+            get { return _ClassLevels; }
+            set { _ClassLevels = value; OnPropertyChanged(); }
+        }
+
+
         // reagents, kept in a list of pairs of (PetReagent enum, number of that reagent required)
         private List<Tuple<PetReagent, int>> _PetReagents = new List<Tuple<PetReagent, int>>();
-        public string PetReagentsText
+        public List<Tuple<PetReagent, int>> PetReagents
         {
-            get
+            get { return _PetReagents; }
+            set
             {
-                // convert that data structure into a single readable string for display
-                string rv = "";
+                // set the field value
+                _PetReagents = value;
+
+                // set the dervied string property
+                string reagentText = "";
                 int ndx = 0;
                 foreach (Tuple<PetReagent, int> pair in _PetReagents)
                 {
-                    rv += $"{pair.Item2}x {pair.Item1}";
+                    reagentText += $"{pair.Item2}x {pair.Item1}";
                     if (++ndx < _PetReagents.Count)
                     {
-                        rv += ", ";
+                        reagentText += ", ";
                     }
                 }
-                return rv;
+                PetReagentsText = reagentText;
+                OnPropertyChanged();
             }
+        }
+
+        private string _PetReagentsText = "";
+        public string PetReagentsText
+        {
+            get { return _PetReagentsText; }
+            set { _PetReagentsText = value; OnPropertyChanged(); }
         }
 
         // list of PetRank objects
         private List<PetRank> _PetRankList = new List<PetRank>();
-        public List<PetRank> PetRankList { get { return _PetRankList; } }
+        public List<PetRank> PetRankList 
+        { 
+            get { return _PetRankList; } 
+            set { _PetRankList = value; OnPropertyChanged(); }
+        }
+
 
         // data to support dynamic highlighting of any given row
         private readonly System.Windows.Media.Brush _HighLightColor = System.Windows.Media.Brushes.LightGreen;
@@ -173,6 +205,9 @@ namespace EQTool.ViewModels
             {
                 _RowColor[ndx] = _NormalColor;
                 //_RowColor[ndx] = _HighLightColor;
+
+                // force the changed property to match what the XAML field is binding to
+                OnPropertyChanged(nameof(RowColor));
             }
         }
 
@@ -183,13 +218,10 @@ namespace EQTool.ViewModels
             {
                 ResetRowBackgrounds();
                 _RowColor[ndx] = _HighLightColor;
-            }
-            OnPropertyChanged();
-        }
 
-        public bool Update()
-        {
-            return true;
+                // force the changed property to match what the XAML field is binding to
+                OnPropertyChanged(nameof(RowColor));
+            }
         }
 
 

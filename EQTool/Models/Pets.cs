@@ -15,15 +15,13 @@ using System.Runtime.CompilerServices;
 namespace EQTool.Models
 {
     //
-    // basic data structure (where ___o indicates has-many, ___. indicates has-one):
+    // basic data structure (where ---o indicates has-many, ---. indicates has-one):
     //
-    // [Pets] ____. [PLayerPet]
-    //        \___o [PetSpell] ___o [PetRank]
-    //
-    //      Pets:       Contains in instance of the PlayerPet, representing the actual in-game pet
-    //                  Contains a Dictionary of all PetSpell objects, where key = spell name, value = associated PetSpell object
-    //                  Global list, loaded by DI
+    // [PLayerPet] ---. [Pets] ---o [PetSpell] ---o [PetRank]
+    // 
     //      PlayerPet:  Represents the actual in-game pet
+    //                  Global, loaded by DI
+    //      Pets:       Contains a Dictionary of all PetSpell objects, where key = spell name, value = associated PetSpell object
     //      PetSpell:   One object for each different pet spell
     //                  Contains a List of PetRank objects
     //      PetRank:    Has the relevant stats (pet level, max melee, and so on) for that rank of that PetSpell
@@ -36,30 +34,20 @@ namespace EQTool.Models
     //
     public class PlayerPet
     {
-        //private SettingsWindowViewModel viewModel;
-        private Pets        pets;
+        private PetViewModel    petViewModel;
+        private Pets            pets;
 
-        private PetSpell    petSpell = null;
-        private string      petName = "";
+        private PetSpell        petSpell = null;
+        private string          petName = "";
 
-        private int         maxObservedMelee = 0;
-        private int         rankIndex = -1;
+        private int             maxObservedMelee = 0;
+        private int             rankIndex = -1;
 
         // ctor
-        //public PlayerPet(EQSpells spells, SettingsWindowViewModel vm)
-        public PlayerPet(EQSpells spells)
+        public PlayerPet(EQSpells spells, PetViewModel vm)
         {
-            pets = new Pets(spells);
-            //viewModel = vm;
-
-            // just for testing
-            //PetSpell p = pets.PetSpellDictionary["Emissary of Thule"];
-            //PetSpell p = pets.PetSpellDictionary["Minion of Shadows"];
-            //PetSpell p = pets.PetSpellDictionary["Leering Corpse"];
-            //PetSpell = p;
-            //PetName = "Bakalakadaka";
-            //rankIndex = 1;
-            //viewModel.PetViewModel.HighLightRow(rankIndex);
+            this.petViewModel = vm;
+            this.pets = new Pets(spells);
         }
 
         public Pets Pets { get { return pets; } }
@@ -74,7 +62,7 @@ namespace EQTool.Models
             rankIndex = -1;
 
             // tell VM
-            //viewModel.PetViewModel.Reset();
+            petViewModel.Reset();
         }
 
         // get/set the PetSpell
@@ -87,7 +75,7 @@ namespace EQTool.Models
                 petSpell = value;
 
                 // tell VM
-                //viewModel.PetViewModel.SetPetSpell(petSpell);
+                petViewModel.PetSpell = value;
             }
         }
 
@@ -103,7 +91,7 @@ namespace EQTool.Models
                 petName = value;
 
                 // tell VM
-                //viewModel.PetViewModel.SetPetName(petName);
+                petViewModel.PetName = value;
             }
         }
 
@@ -129,7 +117,7 @@ namespace EQTool.Models
                             rankIndex = ndx;
 
                             // tell VM
-                            //viewModel.PetViewModel.HighLightRow(rankIndex);
+                            petViewModel.HighLightRow(rankIndex);
                         }
                     }
                 }

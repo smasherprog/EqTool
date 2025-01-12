@@ -200,16 +200,6 @@ namespace EQTool.ViewModels
 
         }
 
-        public string WAG 
-        { 
-            get;
-            set
-            {
-                
-                OnPropertyChanged();
-            }
-        }
-
         private ActivePlayer _ActivePlayer;
         public ActivePlayer ActivePlayer
         {
@@ -332,7 +322,6 @@ namespace EQTool.ViewModels
         public void Update()
         {
             _ = ActivePlayer.Update();
-            _ = PetViewModel.Update();
             OnPropertyChanged(nameof(ActivePlayer));
             OnPropertyChanged(nameof(PetViewModel));
             OnPropertyChanged(nameof(HasCharName));

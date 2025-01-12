@@ -13,47 +13,38 @@ namespace EQTool.Services.Handlers
     {
         // reference to DI global
         private readonly PlayerPet playerPet;
-        private readonly SettingsWindowViewModel viewModel;
 
         // ctor
-        public PetHandler(BaseHandlerData baseHandlerData, PlayerPet playerPet, SettingsWindowViewModel vm) : base(baseHandlerData)
-        //public PetHandler(BaseHandlerData baseHandlerData) : base(baseHandlerData)
-        //public PetHandler(BaseHandlerData baseHandlerData, PlayerPet playerPet) : base(baseHandlerData)
-        //public PetHandler(BaseHandlerData baseHandlerData, SettingsWindowViewModel vm) : base(baseHandlerData)
+        public PetHandler(BaseHandlerData baseHandlerData, PlayerPet playerPet) : base(baseHandlerData)
         {
-            viewModel = vm;
             this.playerPet = playerPet;
 
             logEvents.YouBeginCastingEvent += LogEvents_YouBeginCastingEvent;
+            logEvents.YouZonedEvent += LogEvents_YouZonedEvent;
         }
 
         private void LogEvents_YouBeginCastingEvent(object sender, YouBeginCastingEvent e)
         {
-            //PlayerPet pp = viewModel.PetViewModel.playerPet;
-
             // is this a pet spell ?
             if (playerPet.Pets.PetSpellDictionary.ContainsKey(e.Spell.name))
             {
-                // wake up the pet displays
-                PetSpell ps = playerPet.Pets.PetSpellDictionary[e.Spell.name];
-                viewModel.PetViewModel.SetPetSpell(ps);
-                playerPet.PetSpell = ps;
+                // we are casting a pet spell, initialize the pet display
+                //PetSpell petSpell = playerPet.Pets.PetSpellDictionary[e.Spell.name];
+                //playerPet.PetSpell = petSpell;
 
-                //Pets pets = playerPet.Pets;
-                //PetSpell p = pets.PetSpellDictionary["Emissary of Thule"];
-                //PetSpell p = pets.PetSpellDictionary["Minion of Shadows"];
-                //PetSpell p = pets.PetSpellDictionary["Leering Corpse"];
-                //playerPet.PetSpell = p;
-
-                //playerPet.PetName = "Bakalakadaka";
-                //rankIndex = 1;
-
+                // testing
+                PetSpell petSpell = playerPet.Pets.PetSpellDictionary["Emissary of Thule"];
+                playerPet.PetSpell = petSpell;
+                playerPet.PetName = "Bakalakadaka";
+                playerPet.CheckMaxMelee(61);
             }
-
-
         }
 
-
+        // zoning = loss of pet
+        private void LogEvents_YouZonedEvent(object sender, YouZonedEvent e)
+        {
+            playerPet.Reset();
+        }
 
     }
 }

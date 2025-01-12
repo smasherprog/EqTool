@@ -315,7 +315,7 @@
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Spell Name" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
-                    <TextBlock Text="{Binding PetViewModel.SpellName}" VerticalAlignment="Center" FontWeight="Normal"  MinWidth="200"/>
+                    <TextBlock Text="{Binding PetViewModel.SpellName, Mode=OneWay}" VerticalAlignment="Center" FontWeight="Normal"  MinWidth="200"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Caster Class" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
