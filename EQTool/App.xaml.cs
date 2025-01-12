@@ -36,13 +36,17 @@ namespace EQTool
         private System.Windows.Forms.MenuItem OverlayMenuItem;
         private System.Windows.Forms.MenuItem SettingsMenuItem;
         private System.Windows.Forms.MenuItem MobInfoMenuItem;
-        private LogParser logParser => container.Resolve<LogParser>();
-        private LogEvents logEvents => container.Resolve<LogEvents>();
         private System.Timers.Timer UpdateTimer;
         private System.Timers.Timer UITimer;
-        private SignalrPlayerHub signalrPlayerHub;
 
         private EQToolSettings _EQToolSettings;
+#if DEBUG
+        private readonly bool IsDebug = true;
+#else
+         private bool IsDebug = false;
+#endif
+
+
 
         private EQToolSettings EQToolSettings
         {
@@ -60,9 +64,10 @@ namespace EQTool
         private const string programName = "eqtool";
         private bool WaitForEQToolToStop()
         {
-#if DEBUG
-            return true;
-#endif
+            if (IsDebug)
+            {
+                return true;
+            }
             var counter = 0;
             int count;
             do
@@ -259,7 +264,6 @@ namespace EQTool
             var gitHubMenuItem = new System.Windows.Forms.MenuItem("Suggestions", Suggestions);
             var whythepig = new System.Windows.Forms.MenuItem("Pigparse Discord", WhyThePig);
             var updates = new System.Windows.Forms.MenuItem("Check for Update", CheckForUpdates);
-            var versionstring = Assembly.GetExecutingAssembly().GetName().Version.ToString();
             var logo = EQTool.Properties.Resources.pig;
 
 #if BETA || DEBUG
@@ -297,7 +301,6 @@ namespace EQTool
                 if (loginmiddlemand.IsConfiguredCorrectly())
                 {
                     loginmiddlemand.StartListening();
-                    Thread.Sleep(50); //give time to start up
                 }
                 else
                 {
@@ -341,8 +344,7 @@ namespace EQTool
                     OpenSettingsWindow();
                 }
             }
-            signalrPlayerHub = container.Resolve<SignalrPlayerHub>();
-
+            container.Resolve<SignalrPlayerHub>();
             container.Resolve<PlayerTrackerService>();
             container.Resolve<ZoneActivityTrackingService>();
             container.Resolve<IEnumerable<BaseHandler>>();
@@ -399,54 +401,39 @@ namespace EQTool
         private bool updatecalled = false;
         private void UpdateTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
-#if DEBUG
-            return;
-#endif
-            var dispatcher = container.Resolve<IAppDispatcher>();
-            dispatcher.DispatchUI(() =>
+            if (!IsDebug)
             {
-                if (updatecalled)
+                var dispatcher = container.Resolve<IAppDispatcher>();
+                dispatcher.DispatchUI(() =>
                 {
-                    return;
-                }
-                updatecalled = true;
-                try
-                {
-                    var idletime = GetIdleTime();
-                    var spellstuff = container.Resolve<SpellWindowViewModel>();
-                    var logParser = container.Resolve<LogParser>();
-                    if (spellstuff != null)
+                    if (updatecalled)
                     {
-                        if (spellstuff.SpellList.Count() < 2 && (DateTime.Now - logParser.LastYouActivity).TotalMinutes > 10 && idletime.TotalMinutes > 10)
+                        return;
+                    }
+                    updatecalled = true;
+                    try
+                    {
+                        var idletime = GetIdleTime();
+                        var spellstuff = container.Resolve<SpellWindowViewModel>();
+                        var logParser = container.Resolve<LogParser>();
+                        if (spellstuff != null)
+                        {
+                            if (spellstuff.SpellList.Count() < 2 && (DateTime.Now - logParser.LastYouActivity).TotalMinutes > 10 && idletime.TotalMinutes > 10)
+                            {
+                                new UpdateService().CheckForUpdates(Version, VersionType, container, false);
+                            }
+                        }
+                        else if ((DateTime.Now - logParser.LastYouActivity).TotalMinutes > 10 && idletime.TotalMinutes > 10)
                         {
                             new UpdateService().CheckForUpdates(Version, VersionType, container, false);
                         }
                     }
-                    else if ((DateTime.Now - logParser.LastYouActivity).TotalMinutes > 10 && idletime.TotalMinutes > 10)
+                    finally
                     {
-                        new UpdateService().CheckForUpdates(Version, VersionType, container, false);
+                        updatecalled = false;
                     }
-                }
-                finally
-                {
-                    updatecalled = false;
-                }
-            });
-        }
-
-        public class GithubAsset
-        {
-            public string browser_download_url { get; set; }
-        }
-
-        public class GithubVersionInfo
-        {
-            public List<GithubAsset> assets { get; set; }
-            public string name { get; set; }
-            public string tag_name { get; set; }
-            public bool prerelease { get; set; }
-            public DateTime created_at { get; set; }
-            public DateTime published_at { get; set; }
+                });
+            }
         }
 
         private static string _Version = string.Empty;
@@ -506,16 +493,51 @@ namespace EQTool
 
         private void ToggleWindow<T>(System.Windows.Forms.MenuItem m) where T : BaseSaveStateWindow
         {
-            var w = WindowList.FirstOrDefault(a => a.GetType() == typeof(T));
-            m.Checked = !m.Checked;
-            if (m.Checked)
+            var dispatcher = container.Resolve<IAppDispatcher>();
+            dispatcher.DispatchUI(() =>
             {
+                var w = WindowList.FirstOrDefault(a => a.GetType() == typeof(T));
+                m.Checked = !m.Checked;
+                if (m.Checked)
+                {
+                    if (w != null)
+                    {
+                        _ = w.Focus();
+                    }
+                    else
+                    {
+                        w?.Close();
+                        w = container.Resolve<T>();
+                        WindowList.Add(w);
+                        w.Closed += (se, ee) =>
+                        {
+                            m.Checked = false;
+                            _ = WindowList.Remove(w);
+                        };
+                        w.Show();
+                    }
+                }
+                else
+                {
+                    w?.CloseWindow();
+                    _ = WindowList.Remove(w);
+                }
+            });
+        }
+
+        private void OpenWindow<T>(System.Windows.Forms.MenuItem m) where T : BaseSaveStateWindow
+        {
+            var dispatcher = container.Resolve<IAppDispatcher>();
+            dispatcher.DispatchUI(() =>
+            {
+                var w = WindowList.FirstOrDefault(a => a.GetType() == typeof(T));
                 if (w != null)
                 {
                     _ = w.Focus();
                 }
                 else
                 {
+                    m.Checked = true;
                     w?.Close();
                     w = container.Resolve<T>();
                     WindowList.Add(w);
@@ -526,39 +548,9 @@ namespace EQTool
                     };
                     w.Show();
                 }
-            }
-            else
-            {
-                w?.CloseWindow();
-                _ = WindowList.Remove(w);
-            }
+            });
         }
 
-        private void OpenWindow<T>(System.Windows.Forms.MenuItem m) where T : BaseSaveStateWindow
-        {
-            var w = WindowList.FirstOrDefault(a => a.GetType() == typeof(T));
-            if (w != null)
-            {
-                _ = w.Focus();
-            }
-            else
-            {
-                m.Checked = true;
-                w?.Close();
-                w = container.Resolve<T>();
-                WindowList.Add(w);
-                w.Closed += (se, ee) =>
-                {
-                    m.Checked = false;
-                    _ = WindowList.Remove(w);
-                };
-                w.Show();
-            }
-        }
-        public T CreateObject<T>()
-        {
-            return container.Resolve<T>();
-        }
         public void ToggleMapWindow(object sender, EventArgs e)
         {
             var s = (System.Windows.Forms.MenuItem)sender;

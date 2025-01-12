@@ -28,43 +28,17 @@ namespace EQTool.ViewModels
             this.appDispatcher = appDispatcher;
             this.settings = settings;
             this.spells = spells;
-
-            this.appDispatcher.DispatchUI(() =>
-            {
-                Title = "Triggers v" + App.Version;
-                var view = (ListCollectionView)CollectionViewSource.GetDefaultView(SpellList);
-                view.GroupDescriptions.Add(new PropertyGroupDescription(nameof(TimerViewModel.GroupName)));
-                view.LiveGroupingProperties.Add(nameof(TimerViewModel.GroupName));
-                view.IsLiveGrouping = true;
-                view.SortDescriptions.Add(new SortDescription(nameof(TimerViewModel.Sorting), ListSortDirection.Ascending));
-                view.SortDescriptions.Add(new SortDescription(nameof(RollViewModel.Roll), ListSortDirection.Descending));
-                view.SortDescriptions.Add(new SortDescription(nameof(TimerViewModel.TotalRemainingDuration), ListSortDirection.Ascending));
-                view.IsLiveSorting = true;
-                view.LiveSortingProperties.Add(nameof(TimerViewModel.TotalRemainingDuration));
-
-                _WindowFrameBrush = NonRaidModeLinearGradientBrush = new LinearGradientBrush
-                {
-                    StartPoint = new System.Windows.Point(0, 0.5),
-                    EndPoint = new System.Windows.Point(1, 0.5),
-                    GradientStops = new GradientStopCollection()
-                        {
-                            new GradientStop(System.Windows.Media.Colors.CadetBlue, .4),
-                            new GradientStop(System.Windows.Media.Colors.Gray, 1)
-                        }
-                };
-                RaidModeLinearGradientBrush = new LinearGradientBrush
-                {
-                    StartPoint = new System.Windows.Point(0, 0.5),
-                    EndPoint = new System.Windows.Point(1, 0.5),
-                    GradientStops = new GradientStopCollection()
-                        {
-                            new GradientStop(System.Windows.Media.Colors.OrangeRed, .4),
-                            new GradientStop(System.Windows.Media.Colors.Gray, 1)
-                        }
-                };
-            });
+            Title = "Triggers v" + App.Version;
+            var view = (ListCollectionView)CollectionViewSource.GetDefaultView(SpellList);
+            view.GroupDescriptions.Add(new PropertyGroupDescription(nameof(TimerViewModel.GroupName)));
+            view.LiveGroupingProperties.Add(nameof(TimerViewModel.GroupName));
+            view.IsLiveGrouping = true;
+            view.SortDescriptions.Add(new SortDescription(nameof(TimerViewModel.Sorting), ListSortDirection.Ascending));
+            view.SortDescriptions.Add(new SortDescription(nameof(RollViewModel.Roll), ListSortDirection.Descending));
+            view.SortDescriptions.Add(new SortDescription(nameof(TimerViewModel.TotalRemainingDuration), ListSortDirection.Ascending));
+            view.IsLiveSorting = true;
+            view.LiveSortingProperties.Add(nameof(TimerViewModel.TotalRemainingDuration));
         }
-
 
         public ObservableCollection<PersistentViewModel> _SpellList = new ObservableCollection<PersistentViewModel>();
         public ObservableCollection<PersistentViewModel> SpellList
@@ -100,8 +74,8 @@ namespace EQTool.ViewModels
             });
         }
 
-        private LinearGradientBrush NonRaidModeLinearGradientBrush;
-        private LinearGradientBrush RaidModeLinearGradientBrush;
+        public LinearGradientBrush NonRaidModeLinearGradientBrush;
+        public LinearGradientBrush RaidModeLinearGradientBrush;
         private LinearGradientBrush _WindowFrameBrush;
 
         public LinearGradientBrush WindowFrameBrush

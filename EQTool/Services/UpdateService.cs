@@ -41,6 +41,20 @@ namespace EQTool.Services
                 }
             }
         }
+        public class GithubAsset
+        {
+            public string browser_download_url { get; set; }
+        }
+
+        public class GithubVersionInfo
+        {
+            public List<GithubAsset> assets { get; set; }
+            public string name { get; set; }
+            public string tag_name { get; set; }
+            public bool prerelease { get; set; }
+            public DateTime created_at { get; set; }
+            public DateTime published_at { get; set; }
+        }
 
         private readonly AppDispatcher appDispatcher = new AppDispatcher();
         public enum UpdateStatus
