@@ -443,12 +443,14 @@ namespace EQTool.Services
                 for (var ndx = 58; ndx <= 61; ndx++)
                 {
                     // get the reagent ID (fields 58-61)and the associated quantity (fields 62-65)
-                    var petReagent = (PetReagent)Enum.Parse(typeof(PetReagent), splits[ndx]);
-                    var quantity = int.Parse(splits[ndx + 4]);
-                    if (petReagent != PetReagent.NotUsed)
+                    if (Enum.TryParse<PetReagent>(splits[ndx], out var petReagent))
                     {
-                        // add the tuple to the list
-                        petReagents.Add(new Tuple<PetReagent, int>(petReagent, quantity));
+                        var quantity = int.Parse(splits[ndx + 4]);
+                        if (petReagent != PetReagent.NotUsed)
+                        {
+                            // add the tuple to the list
+                            petReagents.Add(new Tuple<PetReagent, int>(petReagent, quantity));
+                        }
                     }
                 }
 
