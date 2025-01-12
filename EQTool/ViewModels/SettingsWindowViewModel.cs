@@ -200,6 +200,16 @@ namespace EQTool.ViewModels
 
         }
 
+        public string WAG 
+        { 
+            get;
+            set
+            {
+                
+                OnPropertyChanged();
+            }
+        }
+
         private ActivePlayer _ActivePlayer;
         public ActivePlayer ActivePlayer
         {
@@ -236,7 +246,7 @@ namespace EQTool.ViewModels
             }
         }
 
-        private string _cwd = System.IO.Directory.GetCurrentDirectory();
+        private readonly string _cwd = System.IO.Directory.GetCurrentDirectory();
         public string CurrentWorkingDirectory
         {
             get { return _cwd; }
@@ -322,7 +332,9 @@ namespace EQTool.ViewModels
         public void Update()
         {
             _ = ActivePlayer.Update();
+            _ = PetViewModel.Update();
             OnPropertyChanged(nameof(ActivePlayer));
+            OnPropertyChanged(nameof(PetViewModel));
             OnPropertyChanged(nameof(HasCharName));
             OnPropertyChanged(nameof(HasNoCharName));
         }

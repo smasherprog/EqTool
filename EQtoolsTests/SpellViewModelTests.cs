@@ -127,7 +127,7 @@ namespace EQtoolsTests
         }
 
         [TestMethod]
-        public void Dazzle1()
+        public void Dazzle_StartNewTimer()
         {
             //[Sun Dec 15 19:39:13 2024] You begin casting Dazzle.
             //[Sun Dec 15 19:39:15 2024] Orc centurion has been mesmerized.
@@ -148,7 +148,7 @@ namespace EQtoolsTests
         }
 
         [TestMethod]
-        public void Dazzle2()
+        public void Dazzle_RestartCurrentTimer()
         {
             //[Sun Dec 15 19:39:13 2024] You begin casting Dazzle.
             //[Sun Dec 15 19:39:15 2024] Orc centurion has been mesmerized.

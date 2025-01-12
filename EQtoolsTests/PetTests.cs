@@ -13,23 +13,21 @@ namespace EQtoolsTests
     [TestClass]
     public class PetTests : BaseTestClass
     {
-        private readonly Pets pets;
+        private readonly PlayerPet playerPet;
 
         // ctor
         public PetTests()
         {
-            pets = container.Resolve<Pets>();
+            playerPet = container.Resolve<PlayerPet>();
         }
 
         [TestMethod]
         public void TestLoad()
         {
+            Pets pets = playerPet.Pets;
+
             var petSpells = pets.PetSpellDictionary;
             PetSpell spell = petSpells["Emissary of Thule"];
-
-            // necro 59
-            //Assert.AreEqual(PlayerClasses.Necromancer, spell.CasterClasses);
-            //Assert.AreEqual(59, spell.CasterLevel);
 
             // 6x pet ranks: 5x min to max, 1x max+focus
             Assert.AreEqual(6, spell.PetRankList.Count);

@@ -46,7 +46,7 @@ namespace EQTool
             _ = builder.RegisterType<Services.ParseSpells_spells_us>().AsSelf().SingleInstance();
             _ = builder.RegisterType<ViewModels.SettingsWindowViewModel>().AsSelf().SingleInstance();
             _ = builder.RegisterType<Models.EQSpells>().AsSelf().SingleInstance();
-            _ = builder.RegisterType<Models.Pets>().AsSelf().SingleInstance();
+            _ = builder.RegisterType<Models.PlayerPet>().AsSelf().SingleInstance();
             _ = builder.RegisterType<ViewModels.ActivePlayer>().AsSelf().SingleInstance();
             _ = builder.RegisterType<ViewModels.SpellWindowViewModel>().AsSelf().SingleInstance();
             _ = builder.RegisterType<Services.LogParser>().AsSelf().SingleInstance();

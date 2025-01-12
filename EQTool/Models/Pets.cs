@@ -7,22 +7,136 @@ using System.Linq;
 using EQToolShared.Enums;
 using System.Configuration;
 using System.Drawing;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 
 
 namespace EQTool.Models
 {
     //
-    // basic data structure (where ----o indicates a container):
+    // basic data structure (where ___o indicates has-many, ___. indicates has-one):
     //
-    // Pets ----o PetSpell ----o PetRank
+    // [Pets] ____. [PLayerPet]
+    //        \___o [PetSpell] ___o [PetRank]
     //
-    //      Pets:       Contains a Dictionary of all PetSpell objects, where key = spell name, value = associated PetSpell object
+    //      Pets:       Contains in instance of the PlayerPet, representing the actual in-game pet
+    //                  Contains a Dictionary of all PetSpell objects, where key = spell name, value = associated PetSpell object
     //                  Global list, loaded by DI
+    //      PlayerPet:  Represents the actual in-game pet
     //      PetSpell:   One object for each different pet spell
     //                  Contains a List of PetRank objects
     //      PetRank:    Has the relevant stats (pet level, max melee, and so on) for that rank of that PetSpell
     //
+
+    // ===============================================================================================================
+
+    //
+    // class to represent the actual in-game pet
+    //
+    public class PlayerPet
+    {
+        //private SettingsWindowViewModel viewModel;
+        private Pets        pets;
+
+        private PetSpell    petSpell = null;
+        private string      petName = "";
+
+        private int         maxObservedMelee = 0;
+        private int         rankIndex = -1;
+
+        // ctor
+        //public PlayerPet(EQSpells spells, SettingsWindowViewModel vm)
+        public PlayerPet(EQSpells spells)
+        {
+            pets = new Pets(spells);
+            //viewModel = vm;
+
+            // just for testing
+            //PetSpell p = pets.PetSpellDictionary["Emissary of Thule"];
+            //PetSpell p = pets.PetSpellDictionary["Minion of Shadows"];
+            //PetSpell p = pets.PetSpellDictionary["Leering Corpse"];
+            //PetSpell = p;
+            //PetName = "Bakalakadaka";
+            //rankIndex = 1;
+            //viewModel.PetViewModel.HighLightRow(rankIndex);
+        }
+
+        public Pets Pets { get { return pets; } }
+
+        // reset pet data
+        public void Reset()
+        {
+            petSpell = null;
+            petName = "";
+
+            maxObservedMelee = 0;
+            rankIndex = -1;
+
+            // tell VM
+            //viewModel.PetViewModel.Reset();
+        }
+
+        // get/set the PetSpell
+        public PetSpell PetSpell 
+        { 
+            get { return petSpell; } 
+            set 
+            { 
+                Reset();
+                petSpell = value;
+
+                // tell VM
+                //viewModel.PetViewModel.SetPetSpell(petSpell);
+            }
+        }
+
+        // is the pet active in game?
+        public bool IsActive { get { return (petSpell != null); } }
+
+        // get/set the Pet Name
+        public string PetName 
+        { 
+            get { return petName; }
+            set 
+            { 
+                petName = value;
+
+                // tell VM
+                //viewModel.PetViewModel.SetPetName(petName);
+            }
+        }
+
+        // is pet name known?
+        public bool IsPetNameKnown { get { return (petName != ""); } }
+
+        // check for a new max melee, and/or a new rank
+        public void CheckMaxMelee(int damage)
+        {
+            if (IsActive)
+            {
+                // new high?
+                if (damage > maxObservedMelee)
+                {
+                    maxObservedMelee = damage;
+
+                    // walk the list of ranks and see if this matches a rank
+                    for (int ndx = 0; ndx < petSpell.PetRankList.Count; ndx++)
+                    {
+                        PetRank petRank = petSpell.PetRankList[ndx];
+                        if (damage == petRank.MaxMelee)
+                        {
+                            rankIndex = ndx;
+
+                            // tell VM
+                            //viewModel.PetViewModel.HighLightRow(rankIndex);
+                        }
+                    }
+                }
+            }
+        }
+
+    }
 
     // ===============================================================================================================
 
@@ -65,7 +179,7 @@ namespace EQTool.Models
     // ===============================================================================================================
 
     //
-    // class to represent a Pet Spell
+    // class to represent a Pet Spell, such as "Leering Corpse", "Emissary of Thule", etc
     // note that this class has a list of all the possible PetRanks for this spell
     //
     public class PetSpell
@@ -104,7 +218,7 @@ namespace EQTool.Models
     //
     public class Pets
     {
-        // reference to DI global
+        // reference to DI globals
         private readonly EQSpells eqSpells;
 
         // ctor
@@ -114,7 +228,7 @@ namespace EQTool.Models
         }
 
         // returns dictionary of PetSpell objects, key = spell name, value = corresponding PetSpell object
-        private Dictionary<string, PetSpell> _PetSpellDictionary = new Dictionary<string, PetSpell>();
+        private readonly Dictionary<string, PetSpell> _PetSpellDictionary = new Dictionary<string, PetSpell>();
         public Dictionary<string, PetSpell> PetSpellDictionary
         {
             get
@@ -122,7 +236,7 @@ namespace EQTool.Models
                 // if the dictionary is empty...
                 if (_PetSpellDictionary.Any() == false)
                 {
-                    // the spells must be loaded before we can load the pets
+                    // the spells must be loaded before we can load the pets, since we extract some info from the spells data structure
                     if (eqSpells.AllSpells.Any() == true)
                     {
                         LoadPetSpells();

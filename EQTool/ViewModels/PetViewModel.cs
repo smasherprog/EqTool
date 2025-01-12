@@ -14,8 +14,9 @@ namespace EQTool.ViewModels
     // view model for Pet window.  readonly data that is displayed, cannot be edited by user
     public class PetViewModel : INotifyPropertyChanged
     {
+        // for testing
         // global DI list of pets
-        private readonly Pets pets;
+        //public readonly PlayerPet playerPet;
 
         // the PetSpell for this spell and for display
         private PetSpell _PetSpell = null;
@@ -24,9 +25,13 @@ namespace EQTool.ViewModels
         private const int RankRowsCount = 6;
 
         // ctor
-        public PetViewModel(Pets pets)
+
+        // for testing
+        //public PetViewModel(PlayerPet playerPet)
+        public PetViewModel()
         {
-            this.pets = pets;
+            // for testing
+            //this.playerPet = playerPet;
 
             // initialize the row colors
             for (int ndx = 0; ndx < RankRowsCount; ndx++)
@@ -36,6 +41,8 @@ namespace EQTool.ViewModels
             ResetRowBackgrounds();
 
             // just for testing
+            // this does work, but since it jacks up the order of DI instancing, it can't work with other DI instnances
+            //Pets pets = playerPet.Pets;
             //PetSpell p = pets.PetSpellDictionary["Emissary of Thule"];
             //PetSpell p = pets.PetSpellDictionary["Minion of Shadows"];
             //PetSpell p = pets.PetSpellDictionary["Leering Corpse"];
@@ -65,7 +72,7 @@ namespace EQTool.ViewModels
         }
 
         // clear all fields
-        public void Clear()
+        public void Reset()
         {
             _PetSpell = null;
             _PetName = "";
@@ -152,11 +159,11 @@ namespace EQTool.ViewModels
         public List<PetRank> PetRankList { get { return _PetRankList; } }
 
         // data to support dynamic highlighting of any given row
-        private System.Windows.Media.Brush _HighLightColor = System.Windows.Media.Brushes.LightGreen;
-        private System.Windows.Media.Brush _NormalColor = System.Windows.Media.Brushes.White;
+        private readonly System.Windows.Media.Brush _HighLightColor = System.Windows.Media.Brushes.LightGreen;
+        private readonly System.Windows.Media.Brush _NormalColor = System.Windows.Media.Brushes.White;
 
         // list of colors, 1 per row
-        private List<System.Windows.Media.Brush> _RowColor = new List<System.Windows.Media.Brush>();
+        private readonly List<System.Windows.Media.Brush> _RowColor = new List<System.Windows.Media.Brush>();
         public List<System.Windows.Media.Brush> RowColor { get { return _RowColor; } }
 
         // un-highlight all row colors
@@ -165,6 +172,7 @@ namespace EQTool.ViewModels
             for (int ndx = 0; ndx < RankRowsCount; ndx++)
             {
                 _RowColor[ndx] = _NormalColor;
+                //_RowColor[ndx] = _HighLightColor;
             }
         }
 
@@ -177,6 +185,11 @@ namespace EQTool.ViewModels
                 _RowColor[ndx] = _HighLightColor;
             }
             OnPropertyChanged();
+        }
+
+        public bool Update()
+        {
+            return true;
         }
 
 

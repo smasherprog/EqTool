@@ -90,7 +90,7 @@ namespace EQTool.Shapes
         {
             get
             {
-                // Clear out the PathGeometry.
+                // Reset out the PathGeometry.
                 pathgeo.Figures.Clear();
 
                 // Define a single PathFigure with the points.
