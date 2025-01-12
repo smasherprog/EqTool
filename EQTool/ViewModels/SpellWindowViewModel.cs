@@ -28,6 +28,7 @@ namespace EQTool.ViewModels
             this.appDispatcher = appDispatcher;
             this.settings = settings;
             this.spells = spells;
+
             Title = "Triggers v" + App.Version;
             var view = (ListCollectionView)CollectionViewSource.GetDefaultView(SpellList);
             view.GroupDescriptions.Add(new PropertyGroupDescription(nameof(TimerViewModel.GroupName)));
@@ -38,6 +39,7 @@ namespace EQTool.ViewModels
             view.SortDescriptions.Add(new SortDescription(nameof(TimerViewModel.TotalRemainingDuration), ListSortDirection.Ascending));
             view.IsLiveSorting = true;
             view.LiveSortingProperties.Add(nameof(TimerViewModel.TotalRemainingDuration));
+
         }
 
         public ObservableCollection<PersistentViewModel> _SpellList = new ObservableCollection<PersistentViewModel>();
