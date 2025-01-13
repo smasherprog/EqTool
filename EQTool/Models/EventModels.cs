@@ -157,6 +157,27 @@ namespace EQTool.Models
         public string Sender { get; set; }
     }
 
+    //
+    // event class for pet-related occurrences
+    //
+    public class PetEvent : BaseLogParseEvent
+    {
+        public enum PetIncident
+        {
+            NONE        = 0b_0000_0000,
+            LEADER      = 0b_0000_0001,
+            RECLAIMED   = 0b_0000_0010,
+            DEATH       = 0b_0000_0100,
+            CREATION    = 0b_0000_1000,
+            GETLOST     = 0b_0001_0000,
+            ANY         = NONE | LEADER | RECLAIMED | DEATH | CREATION | GETLOST
+        }
+
+        public string PetName { get; set; }
+        public PetEvent.PetIncident Incident { get; set; }
+
+    }
+
     public class YouBeginCastingEvent : BaseLogParseEvent
     {
         public Spell Spell { get; set; }

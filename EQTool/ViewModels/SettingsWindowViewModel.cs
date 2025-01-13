@@ -40,10 +40,11 @@ namespace EQTool.ViewModels
     {
         private readonly EQToolSettings toolSettings;
 
-        public SettingsWindowViewModel(ActivePlayer activePlayer, EQToolSettings toolSettings)
+        public SettingsWindowViewModel(ActivePlayer activePlayer, EQToolSettings toolSettings, PetViewModel petViewModel)
         {
             this.toolSettings = toolSettings;
             ActivePlayer = activePlayer;
+            PetViewModel = petViewModel;
             for (var i = 12; i < 72; i++)
             {
                 FontSizes.Add(i);
@@ -187,6 +188,18 @@ namespace EQTool.ViewModels
             }
         }
 
+        private PetViewModel _PetViewModel;
+        public PetViewModel PetViewModel
+        {
+            get => _PetViewModel;
+            set
+            {
+                _PetViewModel = value;
+                OnPropertyChanged();
+            }
+
+        }
+
         private ActivePlayer _ActivePlayer;
         public ActivePlayer ActivePlayer
         {
@@ -223,7 +236,7 @@ namespace EQTool.ViewModels
             }
         }
 
-        private string _cwd = System.IO.Directory.GetCurrentDirectory();
+        private readonly string _cwd = System.IO.Directory.GetCurrentDirectory();
         public string CurrentWorkingDirectory
         {
             get { return _cwd; }
@@ -310,6 +323,7 @@ namespace EQTool.ViewModels
         {
             _ = ActivePlayer.Update();
             OnPropertyChanged(nameof(ActivePlayer));
+            OnPropertyChanged(nameof(PetViewModel));
             OnPropertyChanged(nameof(HasCharName));
             OnPropertyChanged(nameof(HasNoCharName));
         }

@@ -311,31 +311,30 @@
             <StackPanel Orientation="Vertical" Margin="5, 5, 5, 5">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Pet Name" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
-                    <TextBlock Text="Bakalakadaka" VerticalAlignment="Center" FontWeight="Normal"  MinWidth="200"/>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Caster Class" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
-                    <TextBlock Text="Necro" VerticalAlignment="Center" FontWeight="Normal"  MinWidth="200"/>
+                    <TextBlock Text="{Binding PetViewModel.PetName, Mode=OneWay}" VerticalAlignment="Center" FontWeight="Normal"  MinWidth="200"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Spell Name" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
-                    <TextBlock Text="Emissary of Thule" VerticalAlignment="Center" FontWeight="Normal"  MinWidth="200"/>
+                    <TextBlock Text="{Binding PetViewModel.SpellName, Mode=OneWay}" VerticalAlignment="Center" FontWeight="Normal"  MinWidth="200"/>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Caster Class" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
+                    <TextBlock Text="{Binding PetViewModel.ClassNames, Mode=OneWay}" VerticalAlignment="Center" FontWeight="Normal"  MinWidth="200"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Spell Level" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
-                    <TextBlock Text="59" VerticalAlignment="Center" FontWeight="Normal"  MinWidth="200"/>
+                    <TextBlock Text="{Binding PetViewModel.ClassLevels, Mode=OneWay}" VerticalAlignment="Center" FontWeight="Normal"  MinWidth="200"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Reagents" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
-                    <TextBlock Text="2x Bone Chips, Peridot" VerticalAlignment="Center" FontWeight="Normal"  MinWidth="200"/>
+                    <TextBlock Text="{Binding PetViewModel.PetReagentsText, Mode=OneWay}" VerticalAlignment="Center" FontWeight="Normal"  MinWidth="200"/>
                 </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Pet Class" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
-                    <TextBlock Text="Warrior" VerticalAlignment="Center" FontWeight="Normal"  MinWidth="200"/>
-                </StackPanel>
+
                 <Border BorderBrush="Gray" BorderThickness="2" >
                     <Grid>
                         <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="70" />
+                            <ColumnDefinition Width="70" />
                             <ColumnDefinition Width="70" />
                             <ColumnDefinition Width="70" />
                             <ColumnDefinition Width="70" />
@@ -355,54 +354,68 @@
                         </Grid.RowDefinitions>
                         
                         <TextBlock Grid.Row="0" Grid.Column="0" Text="Rank" TextAlignment="Center" FontStyle="Italic" FontWeight="Bold" FontSize="10"/>
-                        <TextBlock Grid.Row="0" Grid.Column="1" Text="Pet Level" TextAlignment="Center" FontStyle="Italic" FontWeight="Bold" FontSize="10"/>
-                        <TextBlock Grid.Row="0" Grid.Column="2" Text="Melee" TextAlignment="Center" FontStyle="Italic" FontWeight="Bold" FontSize="10"/>
-                        <TextBlock Grid.Row="0" Grid.Column="3" Text="Bash/Kick" TextAlignment="Center" FontStyle="Italic" FontWeight="Bold" FontSize="10"/>
-                        <TextBlock Grid.Row="0" Grid.Column="4" Text="Lifetap" TextAlignment="Center" FontStyle="Italic" FontWeight="Bold" FontSize="10"/>
-                        <TextBlock Grid.Row="0" Grid.Column="5" Text="Description" TextAlignment="Center" FontStyle="Italic" FontWeight="Bold" FontSize="10"/>
+                        <TextBlock Grid.Row="0" Grid.Column="1" Text="Description" TextAlignment="Center" FontStyle="Italic" FontWeight="Bold" FontSize="10"/>
+                        <TextBlock Grid.Row="0" Grid.Column="2" Text="Pet Level" TextAlignment="Center" FontStyle="Italic" FontWeight="Bold" FontSize="10"/>
+                        <TextBlock Grid.Row="0" Grid.Column="3" Text="Max Melee" TextAlignment="Center" FontStyle="Italic" FontWeight="Bold" FontSize="10"/>
+                        <TextBlock Grid.Row="0" Grid.Column="4" Text="Max Bash/Kick" TextAlignment="Center" FontStyle="Italic" FontWeight="Bold" FontSize="10"/>
+                        <TextBlock Grid.Row="0" Grid.Column="5" Text="Lifetap" TextAlignment="Center" FontStyle="Italic" FontWeight="Bold" FontSize="10"/>
+                        <TextBlock Grid.Row="0" Grid.Column="6" Text="Max Backstab" TextAlignment="Center" FontStyle="Italic" FontWeight="Bold" FontSize="10"/>
+                        <TextBlock Grid.Row="0" Grid.Column="7" Text="Dmg Shield" TextAlignment="Center" FontStyle="Italic" FontWeight="Bold" FontSize="10"/>
 
-                        <TextBlock Grid.Row="1" Grid.Column="0" Text="1/5" TextAlignment="Center" FontWeight="Normal" FontSize="10"/>
-                        <TextBlock Grid.Row="1" Grid.Column="1" Text="43" TextAlignment="Center" FontWeight="Normal" FontSize="10"/>
-                        <TextBlock Grid.Row="1" Grid.Column="2" Text="52" TextAlignment="Center" FontWeight="Normal" FontSize="10"/>
-                        <TextBlock Grid.Row="1" Grid.Column="3" Text="24" TextAlignment="Center" FontWeight="Normal" FontSize="10"/>
-                        <TextBlock Grid.Row="1" Grid.Column="4" Text="44" TextAlignment="Center" FontWeight="Normal" FontSize="10"/>
-                        <TextBlock Grid.Row="1" Grid.Column="5" Text="" TextAlignment="Center" FontWeight="Normal" FontSize="10"/>
+                        <TextBlock Grid.Row="1" Grid.Column="0" Text="{Binding PetViewModel.PetRankList[0].Rank}" TextAlignment="Center" FontWeight="Normal" FontSize="10" Background="{Binding PetViewModel.RowColor[0], Mode=OneWay}"/>
+                        <TextBlock Grid.Row="1" Grid.Column="1" Text="{Binding PetViewModel.PetRankList[0].Description}" TextAlignment="Center" FontWeight="Normal" FontSize="10" Background="{Binding PetViewModel.RowColor[0], Mode=OneWay}"/>
+                        <TextBlock Grid.Row="1" Grid.Column="2" Text="{Binding PetViewModel.PetRankList[0].PetLevel}" TextAlignment="Center" FontWeight="Normal" FontSize="10" Background="{Binding PetViewModel.RowColor[0], Mode=OneWay}"/>
+                        <TextBlock Grid.Row="1" Grid.Column="3" Text="{Binding PetViewModel.PetRankList[0].MaxMelee}" TextAlignment="Center" FontWeight="Normal" FontSize="10" Background="{Binding PetViewModel.RowColor[0], Mode=OneWay}"/>
+                        <TextBlock Grid.Row="1" Grid.Column="4" Text="{Binding PetViewModel.PetRankList[0].MaxBashKick}" TextAlignment="Center" FontWeight="Normal" FontSize="10" Background="{Binding PetViewModel.RowColor[0], Mode=OneWay}"/>
+                        <TextBlock Grid.Row="1" Grid.Column="5" Text="{Binding PetViewModel.PetRankList[0].LifetapProc}" TextAlignment="Center" FontWeight="Normal" FontSize="10" Background="{Binding PetViewModel.RowColor[0], Mode=OneWay}"/>
+                        <TextBlock Grid.Row="1" Grid.Column="6" Text="{Binding PetViewModel.PetRankList[0].MaxBackstab}" TextAlignment="Center" FontWeight="Normal" FontSize="10" Background="{Binding PetViewModel.RowColor[0], Mode=OneWay}"/>
+                        <TextBlock Grid.Row="1" Grid.Column="7" Text="{Binding PetViewModel.PetRankList[0].DamageShield}" TextAlignment="Center" FontWeight="Normal" FontSize="10" Background="{Binding PetViewModel.RowColor[0], Mode=OneWay}"/>
 
-                        <TextBlock Grid.Row="2" Grid.Column="0" Text="2/5" TextAlignment="Center" FontWeight="Normal" FontSize="10"/>
-                        <TextBlock Grid.Row="2" Grid.Column="1" Text="44" TextAlignment="Center" FontWeight="Normal" FontSize="10"/>
-                        <TextBlock Grid.Row="2" Grid.Column="2" Text="55" TextAlignment="Center" FontWeight="Normal" FontSize="10"/>
-                        <TextBlock Grid.Row="2" Grid.Column="3" Text="24" TextAlignment="Center" FontWeight="Normal" FontSize="10"/>
-                        <TextBlock Grid.Row="2" Grid.Column="4" Text="45" TextAlignment="Center" FontWeight="Normal" FontSize="10"/>
-                        <TextBlock Grid.Row="2" Grid.Column="5" Text="" TextAlignment="Center" FontWeight="Normal" FontSize="10"/>
+                        <TextBlock Grid.Row="2" Grid.Column="0" Text="{Binding PetViewModel.PetRankList[1].Rank}" TextAlignment="Center" FontWeight="Normal" FontSize="10" Background="{Binding PetViewModel.RowColor[1], Mode=OneWay}"/>
+                        <TextBlock Grid.Row="2" Grid.Column="1" Text="{Binding PetViewModel.PetRankList[1].Description}" TextAlignment="Center" FontWeight="Normal" FontSize="10" Background="{Binding PetViewModel.RowColor[1], Mode=OneWay}"/>
+                        <TextBlock Grid.Row="2" Grid.Column="2" Text="{Binding PetViewModel.PetRankList[1].PetLevel}" TextAlignment="Center" FontWeight="Normal" FontSize="10" Background="{Binding PetViewModel.RowColor[1], Mode=OneWay}"/>
+                        <TextBlock Grid.Row="2" Grid.Column="3" Text="{Binding PetViewModel.PetRankList[1].MaxMelee}" TextAlignment="Center" FontWeight="Normal" FontSize="10" Background="{Binding PetViewModel.RowColor[1], Mode=OneWay}"/>
+                        <TextBlock Grid.Row="2" Grid.Column="4" Text="{Binding PetViewModel.PetRankList[1].MaxBashKick}" TextAlignment="Center" FontWeight="Normal" FontSize="10" Background="{Binding PetViewModel.RowColor[1], Mode=OneWay}"/>
+                        <TextBlock Grid.Row="2" Grid.Column="5" Text="{Binding PetViewModel.PetRankList[1].LifetapProc}" TextAlignment="Center" FontWeight="Normal" FontSize="10" Background="{Binding PetViewModel.RowColor[1], Mode=OneWay}"/>
+                        <TextBlock Grid.Row="2" Grid.Column="6" Text="{Binding PetViewModel.PetRankList[1].MaxBackstab}" TextAlignment="Center" FontWeight="Normal" FontSize="10" Background="{Binding PetViewModel.RowColor[1], Mode=OneWay}"/>
+                        <TextBlock Grid.Row="2" Grid.Column="7" Text="{Binding PetViewModel.PetRankList[1].DamageShield}" TextAlignment="Center" FontWeight="Normal" FontSize="10" Background="{Binding PetViewModel.RowColor[1], Mode=OneWay}"/>
 
-                        <TextBlock Grid.Row="3" Grid.Column="0" Text="3/5" TextAlignment="Center" FontWeight="Normal" FontSize="10"/>
-                        <TextBlock Grid.Row="3" Grid.Column="1" Text="45" TextAlignment="Center" FontWeight="Normal" FontSize="10"/>
-                        <TextBlock Grid.Row="3" Grid.Column="2" Text="56" TextAlignment="Center" FontWeight="Normal" FontSize="10"/>
-                        <TextBlock Grid.Row="3" Grid.Column="3" Text="25" TextAlignment="Center" FontWeight="Normal" FontSize="10"/>
-                        <TextBlock Grid.Row="3" Grid.Column="4" Text="46" TextAlignment="Center" FontWeight="Normal" FontSize="10"/>
-                        <TextBlock Grid.Row="3" Grid.Column="5" Text="" TextAlignment="Center" FontWeight="Normal" FontSize="10"/>
+                        <TextBlock Grid.Row="3" Grid.Column="0" Text="{Binding PetViewModel.PetRankList[2].Rank}" TextAlignment="Center" FontWeight="Normal" FontSize="10" Background="{Binding PetViewModel.RowColor[2], Mode=OneWay}"/>
+                        <TextBlock Grid.Row="3" Grid.Column="1" Text="{Binding PetViewModel.PetRankList[2].Description}" TextAlignment="Center" FontWeight="Normal" FontSize="10" Background="{Binding PetViewModel.RowColor[2], Mode=OneWay}"/>
+                        <TextBlock Grid.Row="3" Grid.Column="2" Text="{Binding PetViewModel.PetRankList[2].PetLevel}" TextAlignment="Center" FontWeight="Normal" FontSize="10" Background="{Binding PetViewModel.RowColor[2], Mode=OneWay}"/>
+                        <TextBlock Grid.Row="3" Grid.Column="3" Text="{Binding PetViewModel.PetRankList[2].MaxMelee}" TextAlignment="Center" FontWeight="Normal" FontSize="10" Background="{Binding PetViewModel.RowColor[2], Mode=OneWay}"/>
+                        <TextBlock Grid.Row="3" Grid.Column="4" Text="{Binding PetViewModel.PetRankList[2].MaxBashKick}" TextAlignment="Center" FontWeight="Normal" FontSize="10" Background="{Binding PetViewModel.RowColor[2], Mode=OneWay}"/>
+                        <TextBlock Grid.Row="3" Grid.Column="5" Text="{Binding PetViewModel.PetRankList[2].LifetapProc}" TextAlignment="Center" FontWeight="Normal" FontSize="10" Background="{Binding PetViewModel.RowColor[2], Mode=OneWay}"/>
+                        <TextBlock Grid.Row="3" Grid.Column="6" Text="{Binding PetViewModel.PetRankList[2].MaxBackstab}" TextAlignment="Center" FontWeight="Normal" FontSize="10" Background="{Binding PetViewModel.RowColor[2], Mode=OneWay}"/>
+                        <TextBlock Grid.Row="3" Grid.Column="7" Text="{Binding PetViewModel.PetRankList[2].DamageShield}" TextAlignment="Center" FontWeight="Normal" FontSize="10" Background="{Binding PetViewModel.RowColor[2], Mode=OneWay}"/>
 
-                        <TextBlock Grid.Row="4" Grid.Column="0" Text="4/5" TextAlignment="Center" FontWeight="Normal" FontSize="10" Background="LightGreen"/>
-                        <TextBlock Grid.Row="4" Grid.Column="1" Text="46" TextAlignment="Center" FontWeight="Normal" FontSize="10" Background="LightGreen"/>
-                        <TextBlock Grid.Row="4" Grid.Column="2" Text="59" TextAlignment="Center" FontWeight="Normal" FontSize="10" Background="LightGreen"/>
-                        <TextBlock Grid.Row="4" Grid.Column="3" Text="25" TextAlignment="Center" FontWeight="Normal" FontSize="10" Background="LightGreen"/>
-                        <TextBlock Grid.Row="4" Grid.Column="4" Text="47" TextAlignment="Center" FontWeight="Normal" FontSize="10" Background="LightGreen"/>
-                        <TextBlock Grid.Row="4" Grid.Column="5" Text="" TextAlignment="Center" FontWeight="Normal" FontSize="10" Background="LightGreen"/>
+                        <TextBlock Grid.Row="4" Grid.Column="0" Text="{Binding PetViewModel.PetRankList[3].Rank}" TextAlignment="Center" FontWeight="Normal" FontSize="10" Background="{Binding PetViewModel.RowColor[3], Mode=OneWay}"/>
+                        <TextBlock Grid.Row="4" Grid.Column="1" Text="{Binding PetViewModel.PetRankList[3].Description}" TextAlignment="Center" FontWeight="Normal" FontSize="10" Background="{Binding PetViewModel.RowColor[3], Mode=OneWay}"/>
+                        <TextBlock Grid.Row="4" Grid.Column="2" Text="{Binding PetViewModel.PetRankList[3].PetLevel}" TextAlignment="Center" FontWeight="Normal" FontSize="10" Background="{Binding PetViewModel.RowColor[3], Mode=OneWay}"/>
+                        <TextBlock Grid.Row="4" Grid.Column="3" Text="{Binding PetViewModel.PetRankList[3].MaxMelee}" TextAlignment="Center" FontWeight="Normal" FontSize="10" Background="{Binding PetViewModel.RowColor[3], Mode=OneWay}"/>
+                        <TextBlock Grid.Row="4" Grid.Column="4" Text="{Binding PetViewModel.PetRankList[3].MaxBashKick}" TextAlignment="Center" FontWeight="Normal" FontSize="10" Background="{Binding PetViewModel.RowColor[3], Mode=OneWay}"/>
+                        <TextBlock Grid.Row="4" Grid.Column="5" Text="{Binding PetViewModel.PetRankList[3].LifetapProc}" TextAlignment="Center" FontWeight="Normal" FontSize="10" Background="{Binding PetViewModel.RowColor[3], Mode=OneWay}"/>
+                        <TextBlock Grid.Row="4" Grid.Column="6" Text="{Binding PetViewModel.PetRankList[3].MaxBackstab}" TextAlignment="Center" FontWeight="Normal" FontSize="10" Background="{Binding PetViewModel.RowColor[3], Mode=OneWay}"/>
+                        <TextBlock Grid.Row="4" Grid.Column="7" Text="{Binding PetViewModel.PetRankList[3].DamageShield}" TextAlignment="Center" FontWeight="Normal" FontSize="10" Background="{Binding PetViewModel.RowColor[3], Mode=OneWay}"/>
+
+                        <TextBlock Grid.Row="5" Grid.Column="0" Text="{Binding PetViewModel.PetRankList[4].Rank}" TextAlignment="Center" FontWeight="Normal" FontSize="10" Background="{Binding PetViewModel.RowColor[4], Mode=OneWay}"/>
+                        <TextBlock Grid.Row="5" Grid.Column="1" Text="{Binding PetViewModel.PetRankList[4].Description}" TextAlignment="Center" FontWeight="Normal" FontSize="10"  Background="{Binding PetViewModel.RowColor[4], Mode=OneWay}"/>
+                        <TextBlock Grid.Row="5" Grid.Column="2" Text="{Binding PetViewModel.PetRankList[4].PetLevel}" TextAlignment="Center" FontWeight="Normal" FontSize="10"  Background="{Binding PetViewModel.RowColor[4], Mode=OneWay}"/>
+                        <TextBlock Grid.Row="5" Grid.Column="3" Text="{Binding PetViewModel.PetRankList[4].MaxMelee}" TextAlignment="Center" FontWeight="Normal" FontSize="10"  Background="{Binding PetViewModel.RowColor[4], Mode=OneWay}"/>
+                        <TextBlock Grid.Row="5" Grid.Column="4" Text="{Binding PetViewModel.PetRankList[4].MaxBashKick}" TextAlignment="Center" FontWeight="Normal" FontSize="10"  Background="{Binding PetViewModel.RowColor[4], Mode=OneWay}"/>
+                        <TextBlock Grid.Row="5" Grid.Column="5" Text="{Binding PetViewModel.PetRankList[4].LifetapProc}" TextAlignment="Center" FontWeight="Normal" FontSize="10"  Background="{Binding PetViewModel.RowColor[4], Mode=OneWay}"/>
+                        <TextBlock Grid.Row="5" Grid.Column="6" Text="{Binding PetViewModel.PetRankList[4].MaxBackstab}" TextAlignment="Center" FontWeight="Normal" FontSize="10"  Background="{Binding PetViewModel.RowColor[4], Mode=OneWay}"/>
+                        <TextBlock Grid.Row="5" Grid.Column="7" Text="{Binding PetViewModel.PetRankList[4].DamageShield}" TextAlignment="Center" FontWeight="Normal" FontSize="10"  Background="{Binding PetViewModel.RowColor[4], Mode=OneWay}"/>
+
+                        <TextBlock Grid.Row="6" Grid.Column="0" Text="{Binding PetViewModel.PetRankList[5].Rank}" TextAlignment="Center" FontWeight="Normal" FontSize="10"  Background="{Binding PetViewModel.RowColor[5], Mode=OneWay}"/>
+                        <TextBlock Grid.Row="6" Grid.Column="1" Text="{Binding PetViewModel.PetRankList[5].Description}" TextAlignment="Center" FontWeight="Normal" FontSize="10" Background="{Binding PetViewModel.RowColor[5], Mode=OneWay}"/>
+                        <TextBlock Grid.Row="6" Grid.Column="2" Text="{Binding PetViewModel.PetRankList[5].PetLevel}" TextAlignment="Center" FontWeight="Normal" FontSize="10" Background="{Binding PetViewModel.RowColor[5], Mode=OneWay}"/>
+                        <TextBlock Grid.Row="6" Grid.Column="3" Text="{Binding PetViewModel.PetRankList[5].MaxMelee}" TextAlignment="Center" FontWeight="Normal" FontSize="10" Background="{Binding PetViewModel.RowColor[5], Mode=OneWay}"/>
+                        <TextBlock Grid.Row="6" Grid.Column="4" Text="{Binding PetViewModel.PetRankList[5].MaxBashKick}" TextAlignment="Center" FontWeight="Normal" FontSize="10" Background="{Binding PetViewModel.RowColor[5], Mode=OneWay}"/>
+                        <TextBlock Grid.Row="6" Grid.Column="5" Text="{Binding PetViewModel.PetRankList[5].LifetapProc}" TextAlignment="Center" FontWeight="Normal" FontSize="10" Background="{Binding PetViewModel.RowColor[5], Mode=OneWay}"/>
+                        <TextBlock Grid.Row="6" Grid.Column="6" Text="{Binding PetViewModel.PetRankList[5].MaxBackstab}" TextAlignment="Center" FontWeight="Normal" FontSize="10" Background="{Binding PetViewModel.RowColor[5], Mode=OneWay}"/>
+                        <TextBlock Grid.Row="6" Grid.Column="7" Text="{Binding PetViewModel.PetRankList[5].DamageShield}" TextAlignment="Center" FontWeight="Normal" FontSize="10" Background="{Binding PetViewModel.RowColor[5], Mode=OneWay}"/>
                         
-                        <TextBlock Grid.Row="5" Grid.Column="0" Text="5/5" TextAlignment="Center" FontWeight="Normal" FontSize="10"/>
-                        <TextBlock Grid.Row="5" Grid.Column="1" Text="47" TextAlignment="Center" FontWeight="Normal" FontSize="10"/>
-                        <TextBlock Grid.Row="5" Grid.Column="2" Text="61" TextAlignment="Center" FontWeight="Normal" FontSize="10"/>
-                        <TextBlock Grid.Row="5" Grid.Column="3" Text="26" TextAlignment="Center" FontWeight="Normal" FontSize="10"/>
-                        <TextBlock Grid.Row="5" Grid.Column="4" Text="48" TextAlignment="Center" FontWeight="Normal" FontSize="10"/>
-                        <TextBlock Grid.Row="5" Grid.Column="5" Text="Max" TextAlignment="Center" FontWeight="Normal" FontSize="10"/>
-
-                        <TextBlock Grid.Row="6" Grid.Column="0" Text="6/5*" TextAlignment="Center" FontWeight="Normal" FontSize="10"/>
-                        <TextBlock Grid.Row="6" Grid.Column="1" Text="48" TextAlignment="Center" FontWeight="Normal" FontSize="10"/>
-                        <TextBlock Grid.Row="6" Grid.Column="2" Text="62" TextAlignment="Center" FontWeight="Normal" FontSize="10"/>
-                        <TextBlock Grid.Row="6" Grid.Column="3" Text="26" TextAlignment="Center" FontWeight="Normal" FontSize="10"/>
-                        <TextBlock Grid.Row="6" Grid.Column="4" Text="49" TextAlignment="Center" FontWeight="Normal" FontSize="10"/>
-                        <TextBlock Grid.Row="6" Grid.Column="5" Text="Max+Focus" TextAlignment="Center" FontWeight="Normal" FontSize="10"/>
-
                     </Grid>
                 </Border>
             </StackPanel>

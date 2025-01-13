@@ -5,13 +5,142 @@ using EQTool.ViewModels;
 using System.Collections.Generic;
 using System.Linq;
 using EQToolShared.Enums;
+using System.Configuration;
+using System.Drawing;
+using System.ComponentModel;
+using System.Runtime.CompilerServices;
 
 
 
 namespace EQTool.Models
 {
     //
-    // class to represent a single pet rank, i.e. the stats for the max pet, or min pet, and all inbetween
+    // basic data structure (where ---o indicates has-many, ---. indicates has-one):
+    //
+    // [PLayerPet] ---. [Pets] ---o [PetSpell] ---o [PetRank]
+    // 
+    //      PlayerPet:  Represents the actual in-game pet
+    //                  Global, loaded by DI
+    //      Pets:       Contains a Dictionary of all PetSpell objects, where key = spell name, value = associated PetSpell object
+    //      PetSpell:   One object for each different pet spell
+    //                  Contains a List of PetRank objects
+    //      PetRank:    Has the relevant stats (pet level, max melee, and so on) for that rank of that PetSpell
+    //
+
+    // ===============================================================================================================
+
+    //
+    // class to represent the actual in-game pet
+    //
+    public class PlayerPet
+    {
+        private readonly PetViewModel petViewModel;
+
+
+        private int maxObservedMelee = 0;
+
+        // ctor
+        public PlayerPet(EQSpells spells, PetViewModel vm)
+        {
+            this.petViewModel = vm;
+
+            // create the container of all the PetSpell objects
+            this._Pets = new Pets(spells);
+        }
+
+        // reset PlayerPet data
+        public void Reset()
+        {
+            _PetSpell = null;
+            _PetName = "";
+
+            maxObservedMelee = 0;
+            rankIndex = -1;
+
+            // tell VM
+            petViewModel.Reset();
+        }
+
+        // container of all PetSpell objects
+        private readonly Pets _Pets;
+        public Pets Pets
+        {
+            get
+            {
+                return _Pets;
+            }
+        }
+
+        // get/set the PetSpell
+        private PetSpell _PetSpell = null;
+        public PetSpell PetSpell 
+        { 
+            get { return _PetSpell; } 
+            set 
+            { 
+                Reset();
+                _PetSpell = value;
+
+                // tell VM
+                petViewModel.PetSpell = value;
+            }
+        }
+
+        // is the pet active in game?
+        public bool IsActive { get { return (_PetSpell != null); } }
+
+        // get/set the Pet Name
+        private string _PetName = "";
+        public string PetName 
+        { 
+            get { return _PetName; }
+            set 
+            { 
+                _PetName = value;
+
+                // tell VM
+                petViewModel.PetName = value;
+            }
+        }
+
+        // is pet name known?
+        public bool IsPetNameKnown { get { return (_PetName != ""); } }
+
+        // check for a new max melee, and/or a new rank
+        public void CheckMaxMelee(int damage)
+        {
+            if (IsActive && IsPetNameKnown)
+            {
+                // new high?
+                if (damage > maxObservedMelee)
+                {
+                    maxObservedMelee = damage;
+
+                    // walk the list of ranks and see if this matches a rank
+                    for (int ndx = 0; ndx < _PetSpell.PetRankList.Count; ndx++)
+                    {
+                        PetRank petRank = _PetSpell.PetRankList[ndx];
+                        if (damage == petRank.MaxMelee)
+                        {
+                            rankIndex = ndx;
+
+                            // tell VM
+                            petViewModel.HighLightRow(rankIndex);
+                        }
+                    }
+                }
+            }
+        }
+
+        private int rankIndex = -1;
+        public int RankIndex { get { return rankIndex; } }
+
+    }
+
+    // ===============================================================================================================
+
+    //
+    // class to represent a single pet rank, ndx.e. the stats for the max pet, or min pet, and all inbetween
     //
     public class PetRank
     {
@@ -46,8 +175,10 @@ namespace EQTool.Models
 
     }
 
+    // ===============================================================================================================
+
     //
-    // class to represent a Pet Spell
+    // class to represent a Pet Spell, such as "Leering Corpse", "Emissary of Thule", etc
     // note that this class has a list of all the possible PetRanks for this spell
     //
     public class PetSpell
@@ -69,23 +200,25 @@ namespace EQTool.Models
         }
 
         public string                           SpellName { get; }
-        public Dictionary<PlayerClasses, int>   Classes { get; set; }
-        public List<PetRank>                    PetRankList { get; }
+        public Dictionary<PlayerClasses, int>   Classes { get; }
         public List<Tuple<PetReagent, int>>     PetReagents { get; }
+        public List<PetRank>                    PetRankList { get; }
 
-        // todo - i'm not sure this field is needed?
+        // todo - I'm not sure this field is needed?
         // use enum instead?
         public string                           MageType { get; }           
 
     }
 
+    // ===============================================================================================================
+
+    //
+    // class to serve as a container for all PetSpell objects
+    //
     public class Pets
     {
-        // reference to DI global
+        // reference to DI globals
         private readonly EQSpells eqSpells;
-
-        // container of all PetSpells, key = spell name, value = corresponding PetSpell object
-        private Dictionary<string, PetSpell> _PetSpellDictionary = new Dictionary<string, PetSpell>();
 
         // ctor
         public Pets(EQSpells eqSpells)
@@ -94,23 +227,29 @@ namespace EQTool.Models
         }
 
         // returns dictionary of PetSpell objects, key = spell name, value = corresponding PetSpell object
+        private readonly Dictionary<string, PetSpell> _PetSpellDictionary = new Dictionary<string, PetSpell>();
         public Dictionary<string, PetSpell> PetSpellDictionary
         {
             get
             {
+                // if the dictionary is empty...
                 if (_PetSpellDictionary.Any() == false)
                 {
-                    LoadSpells();
+                    // the spells must be loaded before we can load the _Pets, since we extract some info from the spells data structure
+                    if (eqSpells.AllSpells.Any() == true)
+                    {
+                        LoadPetSpells();
+                    }
                 }
                 return _PetSpellDictionary;
             }
         }
 
         // load all the PetSpell data
-        public void LoadSpells()
+        private void LoadPetSpells()
         {
             //
-            // necro pets
+            // necro _Pets
             //
             PetSpell petSpell = new PetSpell(spellName: "Cavorting Bones", spells: eqSpells);
             petSpell.PetRankList.Add(new PetRank(rank: "1/2", petLevel: 1, maxMelee: 8, maxBashKick: 0));
@@ -230,7 +369,50 @@ namespace EQTool.Models
             _PetSpellDictionary[petSpell.SpellName] = petSpell;
 
             // 
-            // todo - Enchanter pets
+            // Shaman _Pets
+            //
+            petSpell = new PetSpell(spellName: "Companion Spirit", spells: eqSpells);
+            petSpell.PetRankList.Add(new PetRank(rank: "1/5", petLevel: 22, maxMelee: 22, maxBashKick: 16));
+            petSpell.PetRankList.Add(new PetRank(rank: "2/5", petLevel: 23, maxMelee: 23, maxBashKick: 17));
+            petSpell.PetRankList.Add(new PetRank(rank: "3/5", petLevel: 24, maxMelee: 26, maxBashKick: 17));
+            petSpell.PetRankList.Add(new PetRank(rank: "4/5", petLevel: 25, maxMelee: 28, maxBashKick: 18));
+            petSpell.PetRankList.Add(new PetRank(rank: "5/5", petLevel: 26, maxMelee: 30, maxBashKick: 18, description: "Max"));
+            _PetSpellDictionary[petSpell.SpellName] = petSpell;
+
+            petSpell = new PetSpell(spellName: "Vigilant Spirit", spells: eqSpells);
+            petSpell.PetRankList.Add(new PetRank(rank: "1/5", petLevel: 24, maxMelee: 27, maxBashKick: 17));
+            petSpell.PetRankList.Add(new PetRank(rank: "2/5", petLevel: 25, maxMelee: 28, maxBashKick: 18));
+            petSpell.PetRankList.Add(new PetRank(rank: "3/5", petLevel: 26, maxMelee: 31, maxBashKick: 18));
+            petSpell.PetRankList.Add(new PetRank(rank: "4/5", petLevel: 27, maxMelee: 33, maxBashKick: 19));
+            petSpell.PetRankList.Add(new PetRank(rank: "5/5", petLevel: 28, maxMelee: 35, maxBashKick: 19, description: "Max"));
+            _PetSpellDictionary[petSpell.SpellName] = petSpell;
+
+            petSpell = new PetSpell(spellName: "Guardian Spirit", spells: eqSpells);
+            petSpell.PetRankList.Add(new PetRank(rank: "1/5", petLevel: 28, maxMelee: 35, maxBashKick: 19));
+            petSpell.PetRankList.Add(new PetRank(rank: "2/5", petLevel: 29, maxMelee: 37, maxBashKick: 20));
+            petSpell.PetRankList.Add(new PetRank(rank: "3/5", petLevel: 30, maxMelee: 39, maxBashKick: 20));
+            petSpell.PetRankList.Add(new PetRank(rank: "4/5", petLevel: 31, maxMelee: 41, maxBashKick: 21));
+            petSpell.PetRankList.Add(new PetRank(rank: "5/5", petLevel: 32, maxMelee: 43, maxBashKick: 21, description: "Max"));
+            _PetSpellDictionary[petSpell.SpellName] = petSpell;
+
+            petSpell = new PetSpell(spellName: "Frenzied Spirit", spells: eqSpells);
+            petSpell.PetRankList.Add(new PetRank(rank: "1/5", petLevel: 32, maxMelee: 43, maxBashKick: 21));
+            petSpell.PetRankList.Add(new PetRank(rank: "2/5", petLevel: 33, maxMelee: 45, maxBashKick: 22));
+            petSpell.PetRankList.Add(new PetRank(rank: "3/5", petLevel: 34, maxMelee: 47, maxBashKick: 22));
+            petSpell.PetRankList.Add(new PetRank(rank: "4/5", petLevel: 35, maxMelee: 49, maxBashKick: 23));
+            petSpell.PetRankList.Add(new PetRank(rank: "5/5", petLevel: 36, maxMelee: 51, maxBashKick: 23, description: "Max"));
+            _PetSpellDictionary[petSpell.SpellName] = petSpell;
+
+            petSpell = new PetSpell(spellName: "Spirit of the Howler", spells: eqSpells);
+            petSpell.PetRankList.Add(new PetRank(rank: "1/5", petLevel: 35, maxMelee: 45, maxBashKick: 22));
+            petSpell.PetRankList.Add(new PetRank(rank: "2/5", petLevel: 36, maxMelee: 47, maxBashKick: 22));
+            petSpell.PetRankList.Add(new PetRank(rank: "3/5", petLevel: 37, maxMelee: 49, maxBashKick: 23));
+            petSpell.PetRankList.Add(new PetRank(rank: "4/5", petLevel: 38, maxMelee: 51, maxBashKick: 23));
+            petSpell.PetRankList.Add(new PetRank(rank: "5/5", petLevel: 39, maxMelee: 52, maxBashKick: 24, description: "Max"));
+            _PetSpellDictionary[petSpell.SpellName] = petSpell;
+
+            // 
+            // todo - Enchanter _Pets
             //
 
             // 
@@ -238,11 +420,7 @@ namespace EQTool.Models
             //
 
             // 
-            // todo - Shaman pets
-            //
-
-            // 
-            // todo - Mage pets
+            // todo - Mage _Pets
             //
 
         }
