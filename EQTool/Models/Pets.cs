@@ -34,29 +34,25 @@ namespace EQTool.Models
     //
     public class PlayerPet
     {
-        private PetViewModel    petViewModel;
-        private Pets            pets;
+        private readonly PetViewModel petViewModel;
 
-        private PetSpell        petSpell = null;
-        private string          petName = "";
 
-        private int             maxObservedMelee = 0;
-        private int             rankIndex = -1;
+        private int maxObservedMelee = 0;
 
         // ctor
         public PlayerPet(EQSpells spells, PetViewModel vm)
         {
             this.petViewModel = vm;
-            this.pets = new Pets(spells);
+
+            // create the container of all the PetSpell objects
+            this._Pets = new Pets(spells);
         }
 
-        public Pets Pets { get { return pets; } }
-
-        // reset pet data
+        // reset PlayerPet data
         public void Reset()
         {
-            petSpell = null;
-            petName = "";
+            _PetSpell = null;
+            _PetName = "";
 
             maxObservedMelee = 0;
             rankIndex = -1;
@@ -65,14 +61,25 @@ namespace EQTool.Models
             petViewModel.Reset();
         }
 
+        // container of all PetSpell objects
+        private readonly Pets _Pets;
+        public Pets Pets
+        {
+            get
+            {
+                return _Pets;
+            }
+        }
+
         // get/set the PetSpell
+        private PetSpell _PetSpell = null;
         public PetSpell PetSpell 
         { 
-            get { return petSpell; } 
+            get { return _PetSpell; } 
             set 
             { 
                 Reset();
-                petSpell = value;
+                _PetSpell = value;
 
                 // tell VM
                 petViewModel.PetSpell = value;
@@ -80,15 +87,16 @@ namespace EQTool.Models
         }
 
         // is the pet active in game?
-        public bool IsActive { get { return (petSpell != null); } }
+        public bool IsActive { get { return (_PetSpell != null); } }
 
         // get/set the Pet Name
+        private string _PetName = "";
         public string PetName 
         { 
-            get { return petName; }
+            get { return _PetName; }
             set 
             { 
-                petName = value;
+                _PetName = value;
 
                 // tell VM
                 petViewModel.PetName = value;
@@ -96,12 +104,12 @@ namespace EQTool.Models
         }
 
         // is pet name known?
-        public bool IsPetNameKnown { get { return (petName != ""); } }
+        public bool IsPetNameKnown { get { return (_PetName != ""); } }
 
         // check for a new max melee, and/or a new rank
         public void CheckMaxMelee(int damage)
         {
-            if (IsActive)
+            if (IsActive && IsPetNameKnown)
             {
                 // new high?
                 if (damage > maxObservedMelee)
@@ -109,9 +117,9 @@ namespace EQTool.Models
                     maxObservedMelee = damage;
 
                     // walk the list of ranks and see if this matches a rank
-                    for (int ndx = 0; ndx < petSpell.PetRankList.Count; ndx++)
+                    for (int ndx = 0; ndx < _PetSpell.PetRankList.Count; ndx++)
                     {
-                        PetRank petRank = petSpell.PetRankList[ndx];
+                        PetRank petRank = _PetSpell.PetRankList[ndx];
                         if (damage == petRank.MaxMelee)
                         {
                             rankIndex = ndx;
@@ -123,6 +131,9 @@ namespace EQTool.Models
                 }
             }
         }
+
+        private int rankIndex = -1;
+        public int RankIndex { get { return rankIndex; } }
 
     }
 
@@ -224,7 +235,7 @@ namespace EQTool.Models
                 // if the dictionary is empty...
                 if (_PetSpellDictionary.Any() == false)
                 {
-                    // the spells must be loaded before we can load the pets, since we extract some info from the spells data structure
+                    // the spells must be loaded before we can load the _Pets, since we extract some info from the spells data structure
                     if (eqSpells.AllSpells.Any() == true)
                     {
                         LoadPetSpells();
@@ -238,7 +249,7 @@ namespace EQTool.Models
         private void LoadPetSpells()
         {
             //
-            // necro pets
+            // necro _Pets
             //
             PetSpell petSpell = new PetSpell(spellName: "Cavorting Bones", spells: eqSpells);
             petSpell.PetRankList.Add(new PetRank(rank: "1/2", petLevel: 1, maxMelee: 8, maxBashKick: 0));
@@ -358,7 +369,7 @@ namespace EQTool.Models
             _PetSpellDictionary[petSpell.SpellName] = petSpell;
 
             // 
-            // Shaman pets
+            // Shaman _Pets
             //
             petSpell = new PetSpell(spellName: "Companion Spirit", spells: eqSpells);
             petSpell.PetRankList.Add(new PetRank(rank: "1/5", petLevel: 22, maxMelee: 22, maxBashKick: 16));
@@ -401,7 +412,7 @@ namespace EQTool.Models
             _PetSpellDictionary[petSpell.SpellName] = petSpell;
 
             // 
-            // todo - Enchanter pets
+            // todo - Enchanter _Pets
             //
 
             // 
@@ -409,7 +420,7 @@ namespace EQTool.Models
             //
 
             // 
-            // todo - Mage pets
+            // todo - Mage _Pets
             //
 
         }

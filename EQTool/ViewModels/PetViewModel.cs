@@ -47,7 +47,7 @@ namespace EQTool.ViewModels
                 _PetSpell = value;
 
                 // set the derived fields
-                if (PetSpell != null)
+                if (_PetSpell != null)
                 {
                     SpellName = PetSpell.SpellName;
                     Classes = PetSpell.Classes;
@@ -92,6 +92,8 @@ namespace EQTool.ViewModels
             {
                 // set the field value
                 _Classes = value;
+                ClassNames = "";
+                ClassLevels = "";
 
                 // set the dervied ClassNames string property
                 if (_Classes != null)
@@ -149,6 +151,7 @@ namespace EQTool.ViewModels
             {
                 // set the field value
                 _PetReagents = value;
+                PetReagentsText = "";
 
                 if (_PetReagents != null)
                 {

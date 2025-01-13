@@ -359,6 +359,7 @@
     <Compile Include="Services\Parsing\BeginsToCastTheGateSpellParser.cs" />
     <Compile Include="Services\Parsing\ExpGainedParser.cs" />
     <Compile Include="Services\Handlers\SlainHandler.cs" />
+    <Compile Include="Services\Parsing\PetParser.cs" />
     <Compile Include="Services\Parsing\YourItemBeginsToGlowParser.cs" />
     <Compile Include="Services\Parsing\RingWarParser.cs" />
     <Compile Include="Services\Parsing\SpellCastOnOtherParser.cs" />
