@@ -43,7 +43,7 @@ namespace EQTool
 #if DEBUG
         private readonly bool IsDebug = true;
 #else
-         private bool IsDebug = false;
+         private readonly bool IsDebug = false;
 #endif
 
 
@@ -247,13 +247,14 @@ namespace EQTool
 
         private void InitStuff()
         {
+            container.Resolve<LoggingService>().Log(string.Empty, EventType.StartUp, null);
             UpdateTimer = new System.Timers.Timer(1000 * 60);
             UpdateTimer.Elapsed += UpdateTimer_Elapsed;
             UpdateTimer.Enabled = true;
             UITimer = new System.Timers.Timer(1000);
             UITimer.Elapsed += UITimer_Elapsed;
             UITimer.Enabled = true;
-            container.Resolve<LoggingService>().Log(string.Empty, EventType.StartUp, null);
+
             SettingsMenuItem = new System.Windows.Forms.MenuItem("Settings", ToggleSettingsWindow);
 
             SpellsMenuItem = new System.Windows.Forms.MenuItem("Triggers", ToggleSpellsWindow);
@@ -493,51 +494,16 @@ namespace EQTool
 
         private void ToggleWindow<T>(System.Windows.Forms.MenuItem m) where T : BaseSaveStateWindow
         {
-            var dispatcher = container.Resolve<IAppDispatcher>();
-            dispatcher.DispatchUI(() =>
+            var w = WindowList.FirstOrDefault(a => a.GetType() == typeof(T));
+            m.Checked = !m.Checked;
+            if (m.Checked)
             {
-                var w = WindowList.FirstOrDefault(a => a.GetType() == typeof(T));
-                m.Checked = !m.Checked;
-                if (m.Checked)
-                {
-                    if (w != null)
-                    {
-                        _ = w.Focus();
-                    }
-                    else
-                    {
-                        w?.Close();
-                        w = container.Resolve<T>();
-                        WindowList.Add(w);
-                        w.Closed += (se, ee) =>
-                        {
-                            m.Checked = false;
-                            _ = WindowList.Remove(w);
-                        };
-                        w.Show();
-                    }
-                }
-                else
-                {
-                    w?.CloseWindow();
-                    _ = WindowList.Remove(w);
-                }
-            });
-        }
-
-        private void OpenWindow<T>(System.Windows.Forms.MenuItem m) where T : BaseSaveStateWindow
-        {
-            var dispatcher = container.Resolve<IAppDispatcher>();
-            dispatcher.DispatchUI(() =>
-            {
-                var w = WindowList.FirstOrDefault(a => a.GetType() == typeof(T));
                 if (w != null)
                 {
                     _ = w.Focus();
                 }
                 else
                 {
-                    m.Checked = true;
                     w?.Close();
                     w = container.Resolve<T>();
                     WindowList.Add(w);
@@ -548,7 +514,34 @@ namespace EQTool
                     };
                     w.Show();
                 }
-            });
+            }
+            else
+            {
+                w?.CloseWindow();
+                _ = WindowList.Remove(w);
+            }
+        }
+
+        private void OpenWindow<T>(System.Windows.Forms.MenuItem m) where T : BaseSaveStateWindow
+        {
+            var w = WindowList.FirstOrDefault(a => a.GetType() == typeof(T));
+            if (w != null)
+            {
+                _ = w.Focus();
+            }
+            else
+            {
+                m.Checked = true;
+                w?.Close();
+                w = container.Resolve<T>();
+                WindowList.Add(w);
+                w.Closed += (se, ee) =>
+                {
+                    m.Checked = false;
+                    _ = WindowList.Remove(w);
+                };
+                w.Show();
+            }
         }
 
         public void ToggleMapWindow(object sender, EventArgs e)

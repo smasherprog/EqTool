@@ -29,21 +29,27 @@ namespace EQTool.ViewModels
             this.settings = settings;
             this.spells = spells;
             Title = "Triggers v" + App.Version;
-            var view = (ListCollectionView)CollectionViewSource.GetDefaultView(SpellList);
-            view.GroupDescriptions.Add(new PropertyGroupDescription(nameof(TimerViewModel.GroupName)));
-            view.LiveGroupingProperties.Add(nameof(TimerViewModel.GroupName));
-            view.IsLiveGrouping = true;
-            view.SortDescriptions.Add(new SortDescription(nameof(TimerViewModel.Sorting), ListSortDirection.Ascending));
-            view.SortDescriptions.Add(new SortDescription(nameof(RollViewModel.Roll), ListSortDirection.Descending));
-            view.SortDescriptions.Add(new SortDescription(nameof(TimerViewModel.TotalRemainingDuration), ListSortDirection.Ascending));
-            view.IsLiveSorting = true;
-            view.LiveSortingProperties.Add(nameof(TimerViewModel.TotalRemainingDuration));
         }
 
         public ObservableCollection<PersistentViewModel> _SpellList = new ObservableCollection<PersistentViewModel>();
         public ObservableCollection<PersistentViewModel> SpellList
         {
-            get => _SpellList;
+            get
+            {
+                var view = (ListCollectionView)CollectionViewSource.GetDefaultView(_SpellList);
+                if (view.GroupDescriptions.Count == 0)
+                {
+                    view.GroupDescriptions.Add(new PropertyGroupDescription(nameof(TimerViewModel.GroupName)));
+                    view.LiveGroupingProperties.Add(nameof(TimerViewModel.GroupName));
+                    view.IsLiveGrouping = true;
+                    view.SortDescriptions.Add(new SortDescription(nameof(TimerViewModel.Sorting), ListSortDirection.Ascending));
+                    view.SortDescriptions.Add(new SortDescription(nameof(RollViewModel.Roll), ListSortDirection.Descending));
+                    view.SortDescriptions.Add(new SortDescription(nameof(TimerViewModel.TotalRemainingDuration), ListSortDirection.Ascending));
+                    view.IsLiveSorting = true;
+                    view.LiveSortingProperties.Add(nameof(TimerViewModel.TotalRemainingDuration));
+                }
+                return _SpellList;
+            }
             set
             {
                 _SpellList = value;
@@ -74,13 +80,28 @@ namespace EQTool.ViewModels
             });
         }
 
-        public LinearGradientBrush NonRaidModeLinearGradientBrush;
-        public LinearGradientBrush RaidModeLinearGradientBrush;
-        private LinearGradientBrush _WindowFrameBrush;
+        private LinearGradientBrush _WindowFrameBrush = null;
 
         public LinearGradientBrush WindowFrameBrush
         {
-            get => _WindowFrameBrush;
+            get
+            {
+                if (_WindowFrameBrush == null)
+                {
+                    _WindowFrameBrush = new LinearGradientBrush
+                    {
+                        StartPoint = new System.Windows.Point(0, 0.5),
+                        EndPoint = new System.Windows.Point(1, 0.5),
+                        GradientStops = new GradientStopCollection()
+                    {
+                            new GradientStop(System.Windows.Media.Colors.CadetBlue, .4),
+                            new GradientStop(System.Windows.Media.Colors.Gray, 1)
+                    }
+                    };
+                }
+
+                return _WindowFrameBrush;
+            }
             set
             {
                 _WindowFrameBrush = value;
@@ -102,12 +123,30 @@ namespace EQTool.ViewModels
                 if (_RaidModeEnabled)
                 {
                     RaidModeButtonToolTip = "Disable Raid Mode";
-                    WindowFrameBrush = RaidModeLinearGradientBrush;
+                    WindowFrameBrush = new LinearGradientBrush
+                    {
+                        StartPoint = new System.Windows.Point(0, 0.5),
+                        EndPoint = new System.Windows.Point(1, 0.5),
+                        GradientStops = new GradientStopCollection()
+                        {
+                                new GradientStop(System.Windows.Media.Colors.OrangeRed, .4),
+                                new GradientStop(System.Windows.Media.Colors.Gray, 1)
+                        }
+                    };
                 }
                 else
                 {
                     RaidModeButtonToolTip = "Enable Raid Mode";
-                    WindowFrameBrush = NonRaidModeLinearGradientBrush;
+                    WindowFrameBrush = new LinearGradientBrush
+                    {
+                        StartPoint = new System.Windows.Point(0, 0.5),
+                        EndPoint = new System.Windows.Point(1, 0.5),
+                        GradientStops = new GradientStopCollection()
+                        {
+                                new GradientStop(System.Windows.Media.Colors.CadetBlue, .4),
+                                new GradientStop(System.Windows.Media.Colors.Gray, 1)
+                        }
+                    };
                 }
                 OnPropertyChanged(nameof(RaidModeButtonToolTip));
                 OnPropertyChanged();

@@ -6,7 +6,6 @@ using EQToolShared.Enums;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
 
 namespace EQTool.UI
 {
@@ -29,26 +28,6 @@ namespace EQTool.UI
             this.settingsWindowViewModel = settingsWindowViewModel;
             loggingService.Log(string.Empty, EventType.OpenMap, activePlayer?.Player?.Server);
             DataContext = this.spellWindowViewModel = spellWindowViewModel;
-            spellWindowViewModel.WindowFrameBrush = spellWindowViewModel.NonRaidModeLinearGradientBrush = new LinearGradientBrush
-            {
-                StartPoint = new System.Windows.Point(0, 0.5),
-                EndPoint = new System.Windows.Point(1, 0.5),
-                GradientStops = new GradientStopCollection()
-                    {
-                            new GradientStop(System.Windows.Media.Colors.CadetBlue, .4),
-                            new GradientStop(System.Windows.Media.Colors.Gray, 1)
-                    }
-            };
-            spellWindowViewModel.RaidModeLinearGradientBrush = new LinearGradientBrush
-            {
-                StartPoint = new System.Windows.Point(0, 0.5),
-                EndPoint = new System.Windows.Point(1, 0.5),
-                GradientStops = new GradientStopCollection()
-                    {
-                            new GradientStop(System.Windows.Media.Colors.OrangeRed, .4),
-                            new GradientStop(System.Windows.Media.Colors.Gray, 1)
-                    }
-            };
             InitializeComponent();
             base.Init();
         }
