@@ -249,7 +249,7 @@ namespace EQTool.Models
         private void LoadPetSpells()
         {
             //
-            // necro _Pets
+            // necro Pets
             //
             PetSpell petSpell = new PetSpell(spellName: "Cavorting Bones", spells: eqSpells);
             petSpell.PetRankList.Add(new PetRank(rank: "1/2", petLevel: 1, maxMelee: 8, maxBashKick: 0));
@@ -369,7 +369,7 @@ namespace EQTool.Models
             _PetSpellDictionary[petSpell.SpellName] = petSpell;
 
             // 
-            // Shaman _Pets
+            // Shaman Pets
             //
             petSpell = new PetSpell(spellName: "Companion Spirit", spells: eqSpells);
             petSpell.PetRankList.Add(new PetRank(rank: "1/5", petLevel: 22, maxMelee: 22, maxBashKick: 16));
@@ -412,8 +412,105 @@ namespace EQTool.Models
             _PetSpellDictionary[petSpell.SpellName] = petSpell;
 
             // 
-            // todo - Enchanter _Pets
+            // Enchanter Pets
             //
+            petSpell = new PetSpell(spellName: "Pendril's Animation", spells: eqSpells);
+            petSpell.PetRankList.Add(new PetRank(rank: "1/2", petLevel: 1, maxMelee: 7, maxBashKick: 0));
+            petSpell.PetRankList.Add(new PetRank(rank: "2/2", petLevel: 2, maxMelee: 9, maxBashKick: 0, description: "Max"));
+            _PetSpellDictionary[petSpell.SpellName] = petSpell;
+
+            petSpell = new PetSpell(spellName: "Juli`s Animation", spells: eqSpells);
+            petSpell.PetRankList.Add(new PetRank(rank: "1/3", petLevel: 3, maxMelee: 9, maxBashKick: 0));
+            petSpell.PetRankList.Add(new PetRank(rank: "2/3", petLevel: 4, maxMelee: 10, maxBashKick: 0));
+            petSpell.PetRankList.Add(new PetRank(rank: "3/3", petLevel: 5, maxMelee: 12, maxBashKick: 0, description: "Max"));
+            _PetSpellDictionary[petSpell.SpellName] = petSpell;
+
+            petSpell = new PetSpell(spellName: "Mircyl's Animation", spells: eqSpells);
+            petSpell.PetRankList.Add(new PetRank(rank: "1/4", petLevel: 6, maxMelee: 9, maxBashKick: 8));
+            petSpell.PetRankList.Add(new PetRank(rank: "2/4", petLevel: 7, maxMelee: 10, maxBashKick: 10));
+            petSpell.PetRankList.Add(new PetRank(rank: "3/4", petLevel: 8, maxMelee: 12, maxBashKick: 12));
+            petSpell.PetRankList.Add(new PetRank(rank: "4/4", petLevel: 9, maxMelee: 14, maxBashKick: 13, description: "Max"));
+            _PetSpellDictionary[petSpell.SpellName] = petSpell;
+
+            petSpell = new PetSpell(spellName: "Kilan`s Animation", spells: eqSpells);
+            petSpell.PetRankList.Add(new PetRank(rank: "1/4", petLevel: 9, maxMelee: 11, maxBashKick: 11));
+            petSpell.PetRankList.Add(new PetRank(rank: "2/4", petLevel: 10, maxMelee: 13, maxBashKick: 13));
+            petSpell.PetRankList.Add(new PetRank(rank: "3/4", petLevel: 11, maxMelee: 15, maxBashKick: 14));
+            petSpell.PetRankList.Add(new PetRank(rank: "4/4", petLevel: 12, maxMelee: 17, maxBashKick: 15, description: "Max"));
+            _PetSpellDictionary[petSpell.SpellName] = petSpell;
+
+            petSpell = new PetSpell(spellName: "Shalee`s Animation", spells: eqSpells);
+            petSpell.PetRankList.Add(new PetRank(rank: "1/5", petLevel: 12, maxMelee: 12, maxBashKick: 12));
+            petSpell.PetRankList.Add(new PetRank(rank: "2/5", petLevel: 13, maxMelee: 14, maxBashKick: 14));
+            petSpell.PetRankList.Add(new PetRank(rank: "3/5", petLevel: 14, maxMelee: 16, maxBashKick: 15));
+            petSpell.PetRankList.Add(new PetRank(rank: "4/5", petLevel: 15, maxMelee: 18, maxBashKick: 15));
+            petSpell.PetRankList.Add(new PetRank(rank: "5/5", petLevel: 16, maxMelee: 20, maxBashKick: 16, description: "Max"));
+            _PetSpellDictionary[petSpell.SpellName] = petSpell;
+
+            petSpell = new PetSpell(spellName: "Sisna`s Animation", spells: eqSpells);
+            petSpell.PetRankList.Add(new PetRank(rank: "1/5", petLevel: 16, maxMelee: 14, maxBashKick: 14));
+            petSpell.PetRankList.Add(new PetRank(rank: "2/5", petLevel: 17, maxMelee: 16, maxBashKick: 15));
+            petSpell.PetRankList.Add(new PetRank(rank: "3/5", petLevel: 18, maxMelee: 18, maxBashKick: 15));
+            petSpell.PetRankList.Add(new PetRank(rank: "4/5", petLevel: 19, maxMelee: 20, maxBashKick: 16));
+            petSpell.PetRankList.Add(new PetRank(rank: "5/5", petLevel: 20, maxMelee: 22, maxBashKick: 16, description: "Max"));
+            _PetSpellDictionary[petSpell.SpellName] = petSpell;
+
+            petSpell = new PetSpell(spellName: "Sagar`s Animation", spells: eqSpells);
+            petSpell.PetRankList.Add(new PetRank(rank: "1/5", petLevel: 19, maxMelee: 18, maxBashKick: 15));
+            petSpell.PetRankList.Add(new PetRank(rank: "2/5", petLevel: 20, maxMelee: 20, maxBashKick: 16));
+            petSpell.PetRankList.Add(new PetRank(rank: "3/5", petLevel: 21, maxMelee: 22, maxBashKick: 16));
+            petSpell.PetRankList.Add(new PetRank(rank: "4/5", petLevel: 22, maxMelee: 23, maxBashKick: 17));
+            petSpell.PetRankList.Add(new PetRank(rank: "5/5", petLevel: 23, maxMelee: 26, maxBashKick: 17, description: "Max"));
+            _PetSpellDictionary[petSpell.SpellName] = petSpell;
+
+            petSpell = new PetSpell(spellName: "Uleen`s Animation", spells: eqSpells);
+            petSpell.PetRankList.Add(new PetRank(rank: "1/5", petLevel: 22, maxMelee: 20, maxBashKick: 16));
+            petSpell.PetRankList.Add(new PetRank(rank: "2/5", petLevel: 23, maxMelee: 22, maxBashKick: 16));
+            petSpell.PetRankList.Add(new PetRank(rank: "3/5", petLevel: 24, maxMelee: 23, maxBashKick: 17));
+            petSpell.PetRankList.Add(new PetRank(rank: "4/5", petLevel: 25, maxMelee: 26, maxBashKick: 17));
+            petSpell.PetRankList.Add(new PetRank(rank: "5/5", petLevel: 26, maxMelee: 28, maxBashKick: 18, description: "Max"));
+            _PetSpellDictionary[petSpell.SpellName] = petSpell;
+
+            petSpell = new PetSpell(spellName: "Boltran`s Animation", spells: eqSpells);
+            petSpell.PetRankList.Add(new PetRank(rank: "1/5", petLevel: 25, maxMelee: 26, maxBashKick: 17));
+            petSpell.PetRankList.Add(new PetRank(rank: "2/5", petLevel: 26, maxMelee: 28, maxBashKick: 18));
+            petSpell.PetRankList.Add(new PetRank(rank: "3/5", petLevel: 27, maxMelee: 30, maxBashKick: 18));
+            petSpell.PetRankList.Add(new PetRank(rank: "4/5", petLevel: 28, maxMelee: 32, maxBashKick: 19));
+            petSpell.PetRankList.Add(new PetRank(rank: "5/5", petLevel: 29, maxMelee: 34, maxBashKick: 19, description: "Max"));
+            _PetSpellDictionary[petSpell.SpellName] = petSpell;
+
+            petSpell = new PetSpell(spellName: "Aanya's Animation", spells: eqSpells);
+            petSpell.PetRankList.Add(new PetRank(rank: "1/5", petLevel: 29, maxMelee: 32, maxBashKick: 19));
+            petSpell.PetRankList.Add(new PetRank(rank: "2/5", petLevel: 30, maxMelee: 34, maxBashKick: 19));
+            petSpell.PetRankList.Add(new PetRank(rank: "3/5", petLevel: 31, maxMelee: 36, maxBashKick: 20));
+            petSpell.PetRankList.Add(new PetRank(rank: "4/5", petLevel: 32, maxMelee: 38, maxBashKick: 20));
+            petSpell.PetRankList.Add(new PetRank(rank: "5/5", petLevel: 33, maxMelee: 40, maxBashKick: 21, description: "Max"));
+            _PetSpellDictionary[petSpell.SpellName] = petSpell;
+
+            petSpell = new PetSpell(spellName: "Yegoreff`s Animation", spells: eqSpells);
+            petSpell.PetRankList.Add(new PetRank(rank: "1/5", petLevel: 33, maxMelee: 40, maxBashKick: 21));
+            petSpell.PetRankList.Add(new PetRank(rank: "2/5", petLevel: 34, maxMelee: 42, maxBashKick: 21));
+            petSpell.PetRankList.Add(new PetRank(rank: "3/5", petLevel: 35, maxMelee: 44, maxBashKick: 22));
+            petSpell.PetRankList.Add(new PetRank(rank: "4/5", petLevel: 36, maxMelee: 45, maxBashKick: 22));
+            petSpell.PetRankList.Add(new PetRank(rank: "5/5", petLevel: 37, maxMelee: 48, maxBashKick: 23, description: "Max"));
+            _PetSpellDictionary[petSpell.SpellName] = petSpell;
+
+            petSpell = new PetSpell(spellName: "Kintaz`s Animation", spells: eqSpells);
+            petSpell.PetRankList.Add(new PetRank(rank: "1/5", petLevel: 37, maxMelee: 45, maxBashKick: 22));
+            petSpell.PetRankList.Add(new PetRank(rank: "2/5", petLevel: 38, maxMelee: 47, maxBashKick: 22));
+            petSpell.PetRankList.Add(new PetRank(rank: "3/5", petLevel: 39, maxMelee: 49, maxBashKick: 23));
+            petSpell.PetRankList.Add(new PetRank(rank: "4/5", petLevel: 40, maxMelee: 51, maxBashKick: 23));
+            petSpell.PetRankList.Add(new PetRank(rank: "5/5", petLevel: 41, maxMelee: 52, maxBashKick: 24, description: "Max"));
+            _PetSpellDictionary[petSpell.SpellName] = petSpell;
+
+            petSpell = new PetSpell(spellName: "Zumaik`s Animation", spells: eqSpells);
+            petSpell.PetRankList.Add(new PetRank(rank: "1/5", petLevel: 44, maxMelee: 49, maxBashKick: 23));
+            petSpell.PetRankList.Add(new PetRank(rank: "2/5", petLevel: 45, maxMelee: 51, maxBashKick: 23));
+            petSpell.PetRankList.Add(new PetRank(rank: "3/5", petLevel: 46, maxMelee: 52, maxBashKick: 24));
+            petSpell.PetRankList.Add(new PetRank(rank: "4/5", petLevel: 47, maxMelee: 55, maxBashKick: 24));
+            petSpell.PetRankList.Add(new PetRank(rank: "5/5", petLevel: 48, maxMelee: 56, maxBashKick: 25, description: "Max"));
+            _PetSpellDictionary[petSpell.SpellName] = petSpell;
+
 
             // 
             // todo - Generic charmed pet
