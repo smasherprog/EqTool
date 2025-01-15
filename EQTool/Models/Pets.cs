@@ -150,7 +150,7 @@ namespace EQTool.Models
                         int maxMelee,
                         int maxBashKick = 0,
                         int maxBackstab = 0,
-                        int lifetapProc = 0,
+                        string lifetapOrProc = "",
                         int damageShield = 0,
                         string description = "")
         {
@@ -159,7 +159,7 @@ namespace EQTool.Models
             MaxMelee = maxMelee;
             MaxBashKick = maxBashKick;
             MaxBackstab = maxBackstab;
-            LifetapProc = lifetapProc;
+            LifetapOrProc = lifetapOrProc;
             DamageShield = damageShield;
             Description = description;
         }
@@ -169,7 +169,7 @@ namespace EQTool.Models
         public int      MaxMelee { get; }
         public int      MaxBashKick { get; }
         public int      MaxBackstab { get; }
-        public int      LifetapProc { get; }
+        public string   LifetapOrProc { get; }
         public int      DamageShield { get; }
         public string   Description { get; }
 
@@ -193,10 +193,17 @@ namespace EQTool.Models
             Classes = spell.Classes;
             PetReagents = spell.PetReagents;
 
-            MageType = "";
-
             // create an empty list, ready to be populated
             PetRankList = new List<PetRank>();
+        }
+
+        // a kind-of copy ctor - for use with the Mage pet near-clones situation
+        public PetSpell(string spellName, PetSpell source)
+        {
+            SpellName = spellName;
+            Classes = source.Classes;
+            PetReagents = source.PetReagents;
+            PetRankList = source.PetRankList;
         }
 
         public string                           SpellName { get; }
@@ -204,11 +211,9 @@ namespace EQTool.Models
         public List<Tuple<PetReagent, int>>     PetReagents { get; }
         public List<PetRank>                    PetRankList { get; }
 
-        // todo - I'm not sure this field is needed?
-        // use enum instead?
-        public string                           MageType { get; }           
-
     }
+
+
 
     // ===============================================================================================================
 
@@ -342,12 +347,12 @@ namespace EQTool.Models
             _PetSpellDictionary[petSpell.SpellName] = petSpell;
 
             petSpell = new PetSpell(spellName: "Minion of Shadows", spells: eqSpells);
-            petSpell.PetRankList.Add(new PetRank(rank: "1/5", petLevel: 40, maxMelee: 49, maxBackstab: 147, lifetapProc: 40));
-            petSpell.PetRankList.Add(new PetRank(rank: "2/5", petLevel: 41, maxMelee: 51, maxBackstab: 153, lifetapProc: 41));
-            petSpell.PetRankList.Add(new PetRank(rank: "3/5", petLevel: 42, maxMelee: 52, maxBackstab: 159, lifetapProc: 42));
-            petSpell.PetRankList.Add(new PetRank(rank: "4/5", petLevel: 43, maxMelee: 55, maxBackstab: 165, lifetapProc: 43));
-            petSpell.PetRankList.Add(new PetRank(rank: "5/5", petLevel: 44, maxMelee: 56, maxBackstab: 171, lifetapProc: 44, description: "Max"));
-            petSpell.PetRankList.Add(new PetRank(rank: "6/5", petLevel: 45, maxMelee: 59, maxBackstab: 177, lifetapProc: 45, description: "Max+Focus"));
+            petSpell.PetRankList.Add(new PetRank(rank: "1/5", petLevel: 40, maxMelee: 49, maxBackstab: 147, lifetapOrProc: "40"));
+            petSpell.PetRankList.Add(new PetRank(rank: "2/5", petLevel: 41, maxMelee: 51, maxBackstab: 153, lifetapOrProc: "41"));
+            petSpell.PetRankList.Add(new PetRank(rank: "3/5", petLevel: 42, maxMelee: 52, maxBackstab: 159, lifetapOrProc: "42"));
+            petSpell.PetRankList.Add(new PetRank(rank: "4/5", petLevel: 43, maxMelee: 55, maxBackstab: 165, lifetapOrProc: "43"));
+            petSpell.PetRankList.Add(new PetRank(rank: "5/5", petLevel: 44, maxMelee: 56, maxBackstab: 171, lifetapOrProc: "44", description: "Max"));
+            petSpell.PetRankList.Add(new PetRank(rank: "6/5", petLevel: 45, maxMelee: 59, maxBackstab: 177, lifetapOrProc: "45", description: "Max+Focus"));
             _PetSpellDictionary[petSpell.SpellName] = petSpell;
 
             petSpell = new PetSpell(spellName: "Servant of Bones", spells: eqSpells);
@@ -360,12 +365,12 @@ namespace EQTool.Models
             _PetSpellDictionary[petSpell.SpellName] = petSpell;
 
             petSpell = new PetSpell(spellName: "Emissary of Thule", spells: eqSpells);
-            petSpell.PetRankList.Add(new PetRank(rank: "1/5", petLevel: 43, maxMelee: 52, maxBashKick: 24, lifetapProc: 44));
-            petSpell.PetRankList.Add(new PetRank(rank: "2/5", petLevel: 44, maxMelee: 55, maxBashKick: 24, lifetapProc: 45));
-            petSpell.PetRankList.Add(new PetRank(rank: "3/5", petLevel: 45, maxMelee: 56, maxBashKick: 25, lifetapProc: 46));
-            petSpell.PetRankList.Add(new PetRank(rank: "4/5", petLevel: 46, maxMelee: 59, maxBashKick: 25, lifetapProc: 47));
-            petSpell.PetRankList.Add(new PetRank(rank: "5/5", petLevel: 47, maxMelee: 61, maxBashKick: 26, lifetapProc: 48, description: "Max"));
-            petSpell.PetRankList.Add(new PetRank(rank: "6/5", petLevel: 48, maxMelee: 62, maxBashKick: 26, lifetapProc: 49, description: "Max+Focus"));
+            petSpell.PetRankList.Add(new PetRank(rank: "1/5", petLevel: 43, maxMelee: 52, maxBashKick: 24, lifetapOrProc: "44"));
+            petSpell.PetRankList.Add(new PetRank(rank: "2/5", petLevel: 44, maxMelee: 55, maxBashKick: 24, lifetapOrProc: "45"));
+            petSpell.PetRankList.Add(new PetRank(rank: "3/5", petLevel: 45, maxMelee: 56, maxBashKick: 25, lifetapOrProc: "46"));
+            petSpell.PetRankList.Add(new PetRank(rank: "4/5", petLevel: 46, maxMelee: 59, maxBashKick: 25, lifetapOrProc: "47"));
+            petSpell.PetRankList.Add(new PetRank(rank: "5/5", petLevel: 47, maxMelee: 61, maxBashKick: 26, lifetapOrProc: "48", description: "Max"));
+            petSpell.PetRankList.Add(new PetRank(rank: "6/5", petLevel: 48, maxMelee: 62, maxBashKick: 26, lifetapOrProc: "49", description: "Max+Focus"));
             _PetSpellDictionary[petSpell.SpellName] = petSpell;
 
             // 
@@ -511,14 +516,257 @@ namespace EQTool.Models
             petSpell.PetRankList.Add(new PetRank(rank: "5/5", petLevel: 48, maxMelee: 56, maxBashKick: 25, description: "Max"));
             _PetSpellDictionary[petSpell.SpellName] = petSpell;
 
+            // 
+            // Mage Pets
+            //
+            // note we are taking advantage of the fact that the Air/Earth/Fire/Water pet spells all have same stats for their ranks,
+            // so we add the PetRank objects to the first one, then use the special copy ctor to clone the others
+            //
+
+            // level 4
+            string baseSpellName = "Elementalkin";
+            petSpell = new PetSpell(spellName: $"{baseSpellName}: Air", spells: eqSpells);
+            petSpell.PetRankList.Add(new PetRank(rank: "1/3", petLevel: 4, maxMelee: 8, maxBashKick: 0, lifetapOrProc: "5", damageShield: 6));
+            petSpell.PetRankList.Add(new PetRank(rank: "2/3", petLevel: 5, maxMelee: 10, maxBashKick: 0, lifetapOrProc: "6", damageShield: 7));
+            petSpell.PetRankList.Add(new PetRank(rank: "3/3", petLevel: 6, maxMelee: 12, maxBashKick: 10, lifetapOrProc: "7", damageShield: 8, description: "Max"));
+            _PetSpellDictionary[petSpell.SpellName] = petSpell;
+
+            petSpell = new PetSpell($"{baseSpellName}: Earth", petSpell);
+            _PetSpellDictionary[petSpell.SpellName] = petSpell;
+            petSpell = new PetSpell($"{baseSpellName}: Fire", petSpell);
+            _PetSpellDictionary[petSpell.SpellName] = petSpell;
+            petSpell = new PetSpell($"{baseSpellName}: Water", petSpell);
+            _PetSpellDictionary[petSpell.SpellName] = petSpell;
+
+            // level 8
+            baseSpellName = "Elementaling";
+            petSpell = new PetSpell(spellName: $"{baseSpellName}: Air", spells: eqSpells);
+            petSpell.PetRankList.Add(new PetRank(rank: "1/4", petLevel: 6, maxMelee: 10, maxBashKick: 9, lifetapOrProc: "7", damageShield: 8));
+            petSpell.PetRankList.Add(new PetRank(rank: "2/4", petLevel: 7, maxMelee: 12, maxBashKick: 11, lifetapOrProc: "8", damageShield: 9));
+            petSpell.PetRankList.Add(new PetRank(rank: "3/4", petLevel: 8, maxMelee: 14, maxBashKick: 12, lifetapOrProc: "9", damageShield: 10));
+            petSpell.PetRankList.Add(new PetRank(rank: "4/4", petLevel: 9, maxMelee: 16, maxBashKick: 14, lifetapOrProc: "10", damageShield: 11, description: "Max"));
+            _PetSpellDictionary[petSpell.SpellName] = petSpell;
+
+            petSpell = new PetSpell($"{baseSpellName}: Earth", petSpell);
+            _PetSpellDictionary[petSpell.SpellName] = petSpell;
+            petSpell = new PetSpell($"{baseSpellName}: Fire", petSpell);
+            _PetSpellDictionary[petSpell.SpellName] = petSpell;
+            petSpell = new PetSpell($"{baseSpellName}: Water", petSpell);
+            _PetSpellDictionary[petSpell.SpellName] = petSpell;
+
+            // level 12
+            baseSpellName = "Elemental";
+            petSpell = new PetSpell(spellName: $"{baseSpellName}: Air", spells: eqSpells);
+            petSpell.PetRankList.Add(new PetRank(rank: "1/4", petLevel: 10, maxMelee: 12, maxBashKick: 12, lifetapOrProc: "11", damageShield: 12));
+            petSpell.PetRankList.Add(new PetRank(rank: "2/4", petLevel: 11, maxMelee: 14, maxBashKick: 14, lifetapOrProc: "12", damageShield: 13));
+            petSpell.PetRankList.Add(new PetRank(rank: "3/4", petLevel: 12, maxMelee: 16, maxBashKick: 15, lifetapOrProc: "13", damageShield: 14));
+            petSpell.PetRankList.Add(new PetRank(rank: "4/4", petLevel: 13, maxMelee: 18, maxBashKick: 15, lifetapOrProc: "14", damageShield: 15, description: "Max"));
+            _PetSpellDictionary[petSpell.SpellName] = petSpell;
+
+            petSpell = new PetSpell($"{baseSpellName}: Earth", petSpell);
+            _PetSpellDictionary[petSpell.SpellName] = petSpell;
+            petSpell = new PetSpell($"{baseSpellName}: Fire", petSpell);
+            _PetSpellDictionary[petSpell.SpellName] = petSpell;
+            petSpell = new PetSpell($"{baseSpellName}: Water", petSpell);
+            _PetSpellDictionary[petSpell.SpellName] = petSpell;
+
+            // level 16
+            baseSpellName = "Minor Summoning";
+            petSpell = new PetSpell(spellName: $"{baseSpellName}: Air", spells: eqSpells);
+            petSpell.PetRankList.Add(new PetRank(rank: "1/5", petLevel: 10, maxMelee: 12, maxBashKick: 12, lifetapOrProc: "14", damageShield: 15));
+            petSpell.PetRankList.Add(new PetRank(rank: "2/5", petLevel: 11, maxMelee: 14, maxBashKick: 14, lifetapOrProc: "15", damageShield: 16));
+            petSpell.PetRankList.Add(new PetRank(rank: "3/5", petLevel: 12, maxMelee: 16, maxBashKick: 15, lifetapOrProc: "16", damageShield: 17));
+            petSpell.PetRankList.Add(new PetRank(rank: "4/5", petLevel: 12, maxMelee: 18, maxBashKick: 15, lifetapOrProc: "17", damageShield: 18));
+            petSpell.PetRankList.Add(new PetRank(rank: "5/5", petLevel: 13, maxMelee: 20, maxBashKick: 16, lifetapOrProc: "18", damageShield: 19, description: "Max"));
+            _PetSpellDictionary[petSpell.SpellName] = petSpell;
+
+            petSpell = new PetSpell($"{baseSpellName}: Earth", petSpell);
+            _PetSpellDictionary[petSpell.SpellName] = petSpell;
+            petSpell = new PetSpell($"{baseSpellName}: Fire", petSpell);
+            _PetSpellDictionary[petSpell.SpellName] = petSpell;
+            petSpell = new PetSpell($"{baseSpellName}: Water", petSpell);
+            _PetSpellDictionary[petSpell.SpellName] = petSpell;
+
+            // level 20
+            baseSpellName = "Lesser Summoning";
+            petSpell = new PetSpell(spellName: $"{baseSpellName}: Air", spells: eqSpells);
+            petSpell.PetRankList.Add(new PetRank(rank: "1/5", petLevel: 15, maxMelee: 14, maxBashKick: 14, lifetapOrProc: "17", damageShield: 18));
+            petSpell.PetRankList.Add(new PetRank(rank: "2/5", petLevel: 16, maxMelee: 16, maxBashKick: 15, lifetapOrProc: "18", damageShield: 19));
+            petSpell.PetRankList.Add(new PetRank(rank: "3/5", petLevel: 17, maxMelee: 18, maxBashKick: 15, lifetapOrProc: "19", damageShield: 20));
+            petSpell.PetRankList.Add(new PetRank(rank: "4/5", petLevel: 18, maxMelee: 20, maxBashKick: 16, lifetapOrProc: "20", damageShield: 21));
+            petSpell.PetRankList.Add(new PetRank(rank: "5/5", petLevel: 19, maxMelee: 22, maxBashKick: 16, lifetapOrProc: "21", damageShield: 22, description: "Max"));
+            _PetSpellDictionary[petSpell.SpellName] = petSpell;
+
+            petSpell = new PetSpell($"{baseSpellName}: Earth", petSpell);
+            _PetSpellDictionary[petSpell.SpellName] = petSpell;
+            petSpell = new PetSpell($"{baseSpellName}: Fire", petSpell);
+            _PetSpellDictionary[petSpell.SpellName] = petSpell;
+            petSpell = new PetSpell($"{baseSpellName}: Water", petSpell);
+            _PetSpellDictionary[petSpell.SpellName] = petSpell;
+
+            // level 24
+            baseSpellName = "Summoning";
+            petSpell = new PetSpell(spellName: $"{baseSpellName}: Air", spells: eqSpells);
+            petSpell.PetRankList.Add(new PetRank(rank: "1/5", petLevel: 19, maxMelee: 16, maxBashKick: 15, lifetapOrProc: "20", damageShield: 21));
+            petSpell.PetRankList.Add(new PetRank(rank: "2/5", petLevel: 20, maxMelee: 18, maxBashKick: 15, lifetapOrProc: "21", damageShield: 22));
+            petSpell.PetRankList.Add(new PetRank(rank: "3/5", petLevel: 21, maxMelee: 20, maxBashKick: 16, lifetapOrProc: "22", damageShield: 23));
+            petSpell.PetRankList.Add(new PetRank(rank: "4/5", petLevel: 22, maxMelee: 22, maxBashKick: 16, lifetapOrProc: "23", damageShield: 24));
+            petSpell.PetRankList.Add(new PetRank(rank: "5/5", petLevel: 23, maxMelee: 23, maxBashKick: 17, lifetapOrProc: "24", damageShield: 25, description: "Max"));
+            _PetSpellDictionary[petSpell.SpellName] = petSpell;
+
+            petSpell = new PetSpell($"{baseSpellName}: Earth", petSpell);
+            _PetSpellDictionary[petSpell.SpellName] = petSpell;
+            petSpell = new PetSpell($"{baseSpellName}: Fire", petSpell);
+            _PetSpellDictionary[petSpell.SpellName] = petSpell;
+            petSpell = new PetSpell($"{baseSpellName}: Water", petSpell);
+            _PetSpellDictionary[petSpell.SpellName] = petSpell;
+
+            // level 29
+            baseSpellName = "Greater Summoning";
+            petSpell = new PetSpell(spellName: $"{baseSpellName}: Air", spells: eqSpells);
+            petSpell.PetRankList.Add(new PetRank(rank: "1/5", petLevel: 22, maxMelee: 20, maxBashKick: 16, lifetapOrProc: "23", damageShield: 24));
+            petSpell.PetRankList.Add(new PetRank(rank: "2/5", petLevel: 23, maxMelee: 22, maxBashKick: 16, lifetapOrProc: "24", damageShield: 25));
+            petSpell.PetRankList.Add(new PetRank(rank: "3/5", petLevel: 24, maxMelee: 23, maxBashKick: 17, lifetapOrProc: "25", damageShield: 26));
+            petSpell.PetRankList.Add(new PetRank(rank: "4/5", petLevel: 25, maxMelee: 26, maxBashKick: 17, lifetapOrProc: "26", damageShield: 27));
+            petSpell.PetRankList.Add(new PetRank(rank: "5/5", petLevel: 26, maxMelee: 28, maxBashKick: 18, lifetapOrProc: "27", damageShield: 28, description: "Max"));
+            _PetSpellDictionary[petSpell.SpellName] = petSpell;
+
+            petSpell = new PetSpell($"{baseSpellName}: Earth", petSpell);
+            _PetSpellDictionary[petSpell.SpellName] = petSpell;
+            petSpell = new PetSpell($"{baseSpellName}: Fire", petSpell);
+            _PetSpellDictionary[petSpell.SpellName] = petSpell;
+            petSpell = new PetSpell($"{baseSpellName}: Water", petSpell);
+            _PetSpellDictionary[petSpell.SpellName] = petSpell;
+
+            // level 34
+            baseSpellName = "Minor Conjuration";
+            petSpell = new PetSpell(spellName: $"{baseSpellName}: Air", spells: eqSpells);
+            petSpell.PetRankList.Add(new PetRank(rank: "1/5", petLevel: 25, maxMelee: 26, maxBashKick: 17, lifetapOrProc: "26", damageShield: 27));
+            petSpell.PetRankList.Add(new PetRank(rank: "2/5", petLevel: 26, maxMelee: 28, maxBashKick: 18, lifetapOrProc: "27", damageShield: 28));
+            petSpell.PetRankList.Add(new PetRank(rank: "3/5", petLevel: 27, maxMelee: 30, maxBashKick: 18, lifetapOrProc: "28", damageShield: 29));
+            petSpell.PetRankList.Add(new PetRank(rank: "4/5", petLevel: 28, maxMelee: 32, maxBashKick: 19, lifetapOrProc: "29", damageShield: 30));
+            petSpell.PetRankList.Add(new PetRank(rank: "5/5", petLevel: 29, maxMelee: 34, maxBashKick: 19, lifetapOrProc: "30", damageShield: 31, description: "Max"));
+            _PetSpellDictionary[petSpell.SpellName] = petSpell;
+
+            petSpell = new PetSpell($"{baseSpellName}: Earth", petSpell);
+            _PetSpellDictionary[petSpell.SpellName] = petSpell;
+            petSpell = new PetSpell($"{baseSpellName}: Fire", petSpell);
+            _PetSpellDictionary[petSpell.SpellName] = petSpell;
+            petSpell = new PetSpell($"{baseSpellName}: Water", petSpell);
+            _PetSpellDictionary[petSpell.SpellName] = petSpell;
+
+            // level 39
+            baseSpellName = "Lesser Conjuration";
+            petSpell = new PetSpell(spellName: $"{baseSpellName}: Air", spells: eqSpells);
+            petSpell.PetRankList.Add(new PetRank(rank: "1/5", petLevel: 29, maxMelee: 32, maxBashKick: 19, lifetapOrProc: "30", damageShield: 31));
+            petSpell.PetRankList.Add(new PetRank(rank: "2/5", petLevel: 30, maxMelee: 34, maxBashKick: 19, lifetapOrProc: "31", damageShield: 32));
+            petSpell.PetRankList.Add(new PetRank(rank: "3/5", petLevel: 31, maxMelee: 36, maxBashKick: 20, lifetapOrProc: "32", damageShield: 33));
+            petSpell.PetRankList.Add(new PetRank(rank: "4/5", petLevel: 32, maxMelee: 38, maxBashKick: 20, lifetapOrProc: "33", damageShield: 34));
+            petSpell.PetRankList.Add(new PetRank(rank: "5/5", petLevel: 33, maxMelee: 40, maxBashKick: 21, lifetapOrProc: "34", damageShield: 35, description: "Max"));
+            _PetSpellDictionary[petSpell.SpellName] = petSpell;
+
+            petSpell = new PetSpell($"{baseSpellName}: Earth", petSpell);
+            _PetSpellDictionary[petSpell.SpellName] = petSpell;
+            petSpell = new PetSpell($"{baseSpellName}: Fire", petSpell);
+            _PetSpellDictionary[petSpell.SpellName] = petSpell;
+            petSpell = new PetSpell($"{baseSpellName}: Water", petSpell);
+            _PetSpellDictionary[petSpell.SpellName] = petSpell;
+
+            // level 44 - todo guessed at bash/kick stats
+            baseSpellName = "Conjuration";
+            petSpell = new PetSpell(spellName: $"{baseSpellName}: Air", spells: eqSpells);
+            petSpell.PetRankList.Add(new PetRank(rank: "1/5", petLevel: 33, maxMelee: 40, maxBashKick: 21, lifetapOrProc: "34", damageShield: 35));
+            petSpell.PetRankList.Add(new PetRank(rank: "2/5", petLevel: 34, maxMelee: 42, maxBashKick: 21, lifetapOrProc: "35", damageShield: 36));
+            petSpell.PetRankList.Add(new PetRank(rank: "3/5", petLevel: 35, maxMelee: 44, maxBashKick: 22, lifetapOrProc: "36", damageShield: 37));
+            petSpell.PetRankList.Add(new PetRank(rank: "4/5", petLevel: 36, maxMelee: 45, maxBashKick: 22, lifetapOrProc: "37", damageShield: 38));
+            petSpell.PetRankList.Add(new PetRank(rank: "5/5", petLevel: 37, maxMelee: 48, maxBashKick: 23, lifetapOrProc: "38", damageShield: 39, description: "Max"));
+            _PetSpellDictionary[petSpell.SpellName] = petSpell;
+
+            petSpell = new PetSpell($"{baseSpellName}: Earth", petSpell);
+            _PetSpellDictionary[petSpell.SpellName] = petSpell;
+            petSpell = new PetSpell($"{baseSpellName}: Fire", petSpell);
+            _PetSpellDictionary[petSpell.SpellName] = petSpell;
+            petSpell = new PetSpell($"{baseSpellName}: Water", petSpell);
+            _PetSpellDictionary[petSpell.SpellName] = petSpell;
+
+            // level 49
+            baseSpellName = "Greater Conjuration";
+            petSpell = new PetSpell(spellName: $"{baseSpellName}: Air", spells: eqSpells);
+            petSpell.PetRankList.Add(new PetRank(rank: "1/5", petLevel: 37, maxMelee: 48, maxBashKick: 23, lifetapOrProc: "38", damageShield: 39));
+            petSpell.PetRankList.Add(new PetRank(rank: "2/5", petLevel: 38, maxMelee: 50, maxBashKick: 23, lifetapOrProc: "39", damageShield: 40));
+            petSpell.PetRankList.Add(new PetRank(rank: "3/5", petLevel: 39, maxMelee: 52, maxBashKick: 24, lifetapOrProc: "40", damageShield: 41));
+            petSpell.PetRankList.Add(new PetRank(rank: "4/5", petLevel: 40, maxMelee: 54, maxBashKick: 24, lifetapOrProc: "41", damageShield: 42));
+            petSpell.PetRankList.Add(new PetRank(rank: "5/5", petLevel: 41, maxMelee: 56, maxBashKick: 25, lifetapOrProc: "42", damageShield: 43, description: "Max"));
+            petSpell.PetRankList.Add(new PetRank(rank: "6/5", petLevel: 42, maxMelee: 58, maxBashKick: 25, lifetapOrProc: "43", damageShield: 44, description: "Max+Focus"));
+            _PetSpellDictionary[petSpell.SpellName] = petSpell;
+
+            petSpell = new PetSpell($"{baseSpellName}: Earth", petSpell);
+            _PetSpellDictionary[petSpell.SpellName] = petSpell;
+            petSpell = new PetSpell($"{baseSpellName}: Fire", petSpell);
+            _PetSpellDictionary[petSpell.SpellName] = petSpell;
+            petSpell = new PetSpell($"{baseSpellName}: Water", petSpell);
+            _PetSpellDictionary[petSpell.SpellName] = petSpell;
+
+            // level 51 - todo guessed at all stats for the 6/5 rank
+            petSpell = new PetSpell(spellName: "Vocarate: Earth", spells: eqSpells);
+            petSpell.PetRankList.Add(new PetRank(rank: "1/5", petLevel: 41, maxMelee: 50, maxBashKick: 23, lifetapOrProc: "51", damageShield: 39));
+            petSpell.PetRankList.Add(new PetRank(rank: "2/5", petLevel: 42, maxMelee: 52, maxBashKick: 24, lifetapOrProc: "52", damageShield: 40));
+            petSpell.PetRankList.Add(new PetRank(rank: "3/5", petLevel: 43, maxMelee: 54, maxBashKick: 24, lifetapOrProc: "53", damageShield: 41));
+            petSpell.PetRankList.Add(new PetRank(rank: "4/5", petLevel: 44, maxMelee: 56, maxBashKick: 25, lifetapOrProc: "54", damageShield: 42));
+            petSpell.PetRankList.Add(new PetRank(rank: "5/5", petLevel: 45, maxMelee: 58, maxBashKick: 25, lifetapOrProc: "55", damageShield: 43, description: "Max"));
+            petSpell.PetRankList.Add(new PetRank(rank: "6/5", petLevel: 46, maxMelee: 60, maxBashKick: 26, lifetapOrProc: "56", damageShield: 44, description: "Max+Focus"));
+            _PetSpellDictionary[petSpell.SpellName] = petSpell;
+
+            // level 52 - todo guessed at max melee for the 6/5 rank
+            petSpell = new PetSpell(spellName: "Vocarate: Fire", spells: eqSpells);
+            petSpell.PetRankList.Add(new PetRank(rank: "1/5", petLevel: 41, maxMelee: 21, maxBashKick: 0, lifetapOrProc: "83,110,179", damageShield: 2));
+            petSpell.PetRankList.Add(new PetRank(rank: "2/5", petLevel: 42, maxMelee: 22, maxBashKick: 0, lifetapOrProc: "83,110,179", damageShield: 2));
+            petSpell.PetRankList.Add(new PetRank(rank: "3/5", petLevel: 43, maxMelee: 25, maxBashKick: 0, lifetapOrProc: "83,110,179", damageShield: 2));
+            petSpell.PetRankList.Add(new PetRank(rank: "4/5", petLevel: 44, maxMelee: 27, maxBashKick: 0, lifetapOrProc: "83,110,179", damageShield: 2));
+            petSpell.PetRankList.Add(new PetRank(rank: "5/5", petLevel: 45, maxMelee: 28, maxBashKick: 0, lifetapOrProc: "83,110,179", damageShield: 2, description: "Max"));
+            petSpell.PetRankList.Add(new PetRank(rank: "6/5", petLevel: 46, maxMelee: 30, maxBashKick: 0, lifetapOrProc: "83,110,179", damageShield: 2, description: "Max+Focus"));
+            _PetSpellDictionary[petSpell.SpellName] = petSpell;
+
+            // todo - level 53
+            // todo - level 54
+            // todo - level 55
+            // todo - level 56
+            // todo - level 57
+            // todo - level 58
+            // todo - level 59
+            // todo - level 60
+
+            // Monster Summoning 1
+            petSpell = new PetSpell("Monster Summoning I", spells: eqSpells);
+            petSpell.PetRankList.Add(new PetRank(rank: "1/5", petLevel: 25, maxMelee: 26, maxBashKick: 17, lifetapOrProc: "26"));
+            petSpell.PetRankList.Add(new PetRank(rank: "2/5", petLevel: 26, maxMelee: 28, maxBashKick: 18, lifetapOrProc: "27"));
+            petSpell.PetRankList.Add(new PetRank(rank: "3/5", petLevel: 27, maxMelee: 30, maxBashKick: 18, lifetapOrProc: "28"));
+            petSpell.PetRankList.Add(new PetRank(rank: "4/5", petLevel: 28, maxMelee: 32, maxBashKick: 19, lifetapOrProc: "29"));
+            petSpell.PetRankList.Add(new PetRank(rank: "5/5", petLevel: 29, maxMelee: 34, maxBashKick: 19, lifetapOrProc: "30"));
+            _PetSpellDictionary[petSpell.SpellName] = petSpell;
+
+            // Monster Summoning 2
+            // todo - does this spell really not have a proc or damage shield
+            petSpell = new PetSpell("Monster Summoning II", spells: eqSpells);
+            petSpell.PetRankList.Add(new PetRank(rank: "1/5", petLevel: 37, maxMelee: 48, maxBashKick: 23));
+            petSpell.PetRankList.Add(new PetRank(rank: "2/5", petLevel: 38, maxMelee: 50, maxBashKick: 23));
+            petSpell.PetRankList.Add(new PetRank(rank: "3/5", petLevel: 39, maxMelee: 52, maxBashKick: 24));
+            petSpell.PetRankList.Add(new PetRank(rank: "4/5", petLevel: 40, maxMelee: 54, maxBashKick: 24));
+            petSpell.PetRankList.Add(new PetRank(rank: "5/5", petLevel: 41, maxMelee: 56, maxBashKick: 25));
+            _PetSpellDictionary[petSpell.SpellName] = petSpell;
+
+            // todo - Monster Summoning 3
+
+
+            // mage epic pet
+            petSpell = new PetSpell(spellName: "Manifest Elements", spells: eqSpells);
+            petSpell.PetRankList.Add(new PetRank(rank: "1/1", petLevel: 49, maxMelee: 67, maxBashKick: 27, lifetapOrProc: "143", damageShield: 50, description: "Epic Pet"));
+            _PetSpellDictionary[petSpell.SpellName] = petSpell;
 
             // 
             // todo - Generic charmed pet
             //
 
-            // 
-            // todo - Mage _Pets
-            //
 
         }
 
