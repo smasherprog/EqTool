@@ -797,7 +797,6 @@ namespace EQTool.Models
             _PetSpellDictionary[petSpell.SpellName] = petSpell;
 
             // Monster Summoning 2
-            // todo - does this spell really not have a proc or damage shield
             petSpell = new PetSpell("Monster Summoning II", spells: eqSpells);
             petSpell.PetRankList.Add(new PetRank(rank: "1/5", petLevel: 37, maxMelee: 48, maxBashKick: 23));
             petSpell.PetRankList.Add(new PetRank(rank: "2/5", petLevel: 38, maxMelee: 50, maxBashKick: 23));
@@ -806,8 +805,14 @@ namespace EQTool.Models
             petSpell.PetRankList.Add(new PetRank(rank: "5/5", petLevel: 41, maxMelee: 56, maxBashKick: 25));
             _PetSpellDictionary[petSpell.SpellName] = petSpell;
 
-            // todo - Monster Summoning 3
-
+            // Monster Summoning 3 - todo guessed at all data
+            petSpell = new PetSpell("Monster Summoning III", spells: eqSpells);
+            petSpell.PetRankList.Add(new PetRank(rank: "1/5", petLevel: 44, maxMelee: 52, maxBashKick: 24));
+            petSpell.PetRankList.Add(new PetRank(rank: "2/5", petLevel: 45, maxMelee: 54, maxBashKick: 24));
+            petSpell.PetRankList.Add(new PetRank(rank: "3/5", petLevel: 46, maxMelee: 56, maxBashKick: 25));
+            petSpell.PetRankList.Add(new PetRank(rank: "4/5", petLevel: 47, maxMelee: 58, maxBashKick: 25));
+            petSpell.PetRankList.Add(new PetRank(rank: "5/5", petLevel: 48, maxMelee: 60, maxBashKick: 26));
+            _PetSpellDictionary[petSpell.SpellName] = petSpell;
 
             // mage epic pet
             petSpell = new PetSpell(spellName: "Manifest Elements", spells: eqSpells);
