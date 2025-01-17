@@ -20,13 +20,12 @@ namespace EQTool.Services.Handlers
             this.playerPet = playerPet;
 
             logEvents.YouBeginCastingEvent += LogEvents_YouBeginCastingEvent;
-            logEvents.YouZonedEvent += LogEvents_YouZonedEvent;
+            logEvents.LoadingPleaseWaitEvent += LogEvents_LoadingPleaseWaitEvent;
+            logEvents.WelcomeEvent += LogEvents_WelcomeEvent;
             logEvents.SlainEvent += LogEvents_SlainEvent;
             logEvents.SpellWornOffOtherEvent += LogEvents_SpellWornOffOtherEvent;
             logEvents.PetEvent += LogEvents_PetEvent;
             logEvents.DamageEvent += LogEvents_DamageEvent;
-
-
         }
 
         private void LogEvents_YouBeginCastingEvent(object sender, YouBeginCastingEvent e)
@@ -48,7 +47,13 @@ namespace EQTool.Services.Handlers
         }
 
         // zoning = loss of pet
-        private void LogEvents_YouZonedEvent(object sender, YouZonedEvent e)
+        private void LogEvents_LoadingPleaseWaitEvent(object sender, LoadingPleaseWaitEvent e)
+        {
+            playerPet.Reset();
+        }
+
+        // entering game = ensure starting with no pet
+        private void LogEvents_WelcomeEvent(object sender, WelcomeEvent e)
         {
             playerPet.Reset();
         }
@@ -142,6 +147,5 @@ namespace EQTool.Services.Handlers
                 }
             }
         }
-
     }
 }

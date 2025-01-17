@@ -178,6 +178,14 @@ namespace EQTool.Models
 
     }
 
+    public class LoadingPleaseWaitEvent : BaseLogParseEvent
+    {
+    }
+
+    public class WelcomeEvent : BaseLogParseEvent
+    {
+    }
+
     public class YouBeginCastingEvent : BaseLogParseEvent
     {
         public Spell Spell { get; set; }
