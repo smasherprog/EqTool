@@ -737,7 +737,7 @@ namespace EQTool.Models
             petSpell.PetRankList.Add(new PetRank(rank: "6/5", petLevel: 46, maxMelee: 58, maxBashKick: 72, lifetapOrProc: "56", description: "Max+Focus"));
             _PetSpellDictionary[petSpell.SpellName] = petSpell;
 
-            // level 54 - todo guessed at all stats for the 6/5 rank
+            // level 54 
             petSpell = new PetSpell(spellName: "Vocarate: Water", spells: eqSpells);
             petSpell.PetRankList.Add(new PetRank(rank: "1/5", petLevel: 41, maxMelee: 48, maxBashKick: 0, lifetapOrProc: "102", maxBackstab: 144));
             petSpell.PetRankList.Add(new PetRank(rank: "2/5", petLevel: 42, maxMelee: 50, maxBashKick: 0, lifetapOrProc: "104", maxBackstab: 150));
@@ -745,6 +745,15 @@ namespace EQTool.Models
             petSpell.PetRankList.Add(new PetRank(rank: "4/5", petLevel: 44, maxMelee: 54, maxBashKick: 0, lifetapOrProc: "108", maxBackstab: 162));
             petSpell.PetRankList.Add(new PetRank(rank: "5/5", petLevel: 45, maxMelee: 56, maxBashKick: 0, lifetapOrProc: "110", maxBackstab: 168, description: "Max"));
             petSpell.PetRankList.Add(new PetRank(rank: "6/5", petLevel: 46, maxMelee: 58, maxBashKick: 0, lifetapOrProc: "112", maxBackstab: 174, description: "Max+Focus"));
+            _PetSpellDictionary[petSpell.SpellName] = petSpell;
+
+            // level 56
+            petSpell = new PetSpell(spellName: "Dyzil's Deafening Decoy", spells: eqSpells);
+            petSpell.PetRankList.Add(new PetRank(rank: "1/5", petLevel: 41, maxMelee: 38, maxBashKick: 20, lifetapOrProc: "42", damageShield: 43));
+            petSpell.PetRankList.Add(new PetRank(rank: "2/5", petLevel: 42, maxMelee: 40, maxBashKick: 21, lifetapOrProc: "43", damageShield: 44));
+            petSpell.PetRankList.Add(new PetRank(rank: "3/5", petLevel: 43, maxMelee: 42, maxBashKick: 21, lifetapOrProc: "44", damageShield: 45));
+            petSpell.PetRankList.Add(new PetRank(rank: "4/5", petLevel: 44, maxMelee: 44, maxBashKick: 22, lifetapOrProc: "45", damageShield: 46));
+            petSpell.PetRankList.Add(new PetRank(rank: "5/5", petLevel: 45, maxMelee: 45, maxBashKick: 22, lifetapOrProc: "46", damageShield: 47, description: "Max"));
             _PetSpellDictionary[petSpell.SpellName] = petSpell;
 
             // level 57 - todo guessed at all data
@@ -818,12 +827,6 @@ namespace EQTool.Models
             petSpell = new PetSpell(spellName: "Manifest Elements", spells: eqSpells);
             petSpell.PetRankList.Add(new PetRank(rank: "1/1", petLevel: 49, maxMelee: 67, maxBashKick: 27, lifetapOrProc: "143", damageShield: 50, description: "Epic Pet"));
             _PetSpellDictionary[petSpell.SpellName] = petSpell;
-
-            // 
-            // todo - Generic charmed pet
-            //
-
-
         }
 
 
