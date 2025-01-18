@@ -53,6 +53,23 @@ namespace EQtoolsTests
         }
 
         [TestMethod]
+        public void TestPacifyDuration()
+        {
+            var spellname = "Pacify";
+            var spellclass = spells.AllSpells.FirstOrDefault(a => a.name == spellname);
+            var line = YouBeginCasting + " " + spellname;
+            player.Player.Level = 50;
+            player.Player.PlayerClass = PlayerClasses.Enchanter;
+            logParser.Push(line, DateTime.Now);
+            line = "Joe " + spellclass.cast_on_other;
+            logParser.Push(line, DateTime.Now);
+
+            var effect = spellWindowViewModel.SpellList.FirstOrDefault() as TimerViewModel;
+            Assert.IsNotNull(effect);
+            Assert.AreEqual(effect.TotalDuration.TotalSeconds, 210);
+        }
+
+        [TestMethod]
         public void TestHarvestCoolDown()
         {
             var spellname = "Harvest";
