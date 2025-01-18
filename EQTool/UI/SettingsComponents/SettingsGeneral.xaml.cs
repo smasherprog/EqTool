@@ -15,7 +15,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Media;
 using System.Windows.Navigation;
 
 namespace EQTool.UI.SettingsComponents
@@ -81,7 +80,7 @@ namespace EQTool.UI.SettingsComponents
             }
             DebugTab.Visibility = Visibility.Collapsed;
             this.settingsTestRunOverlay = settingsTestRunOverlay;
-#if DEBUG
+#if DEBUG || BETA
             DebugTab.Visibility = Visibility.Visible;
 #endif
             ComponentInitialized = true;
