@@ -227,7 +227,7 @@ namespace EQTool
             {
                 return;
             }
-            else if (did_update == UpdateService.UpdateStatus.NoUpdateApplied && !IsDebug)
+            else if (did_update == UpdateService.UpdateStatus.NoUpdateApplied)
             {
                 UpdateService.CheckForUpdates(Version, VersionType, container, true);
             }

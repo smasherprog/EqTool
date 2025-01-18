@@ -119,7 +119,11 @@ namespace EQTool.Services
                 CheckForUpdates(currentversion1, versiontype, appDispatcher, loggingService, loginMiddlemand, firstRun);
             });
         }
-
+#if DEBUG
+        private const bool IsDebug = true;
+#else
+        private const bool IsDebug = false;
+#endif
         public static void CheckForUpdates(string currentversion1, string versiontype, IAppDispatcher appDispatcher, LoggingService loggingService, LoginMiddlemand loginMiddlemand, bool firstRun)
         {
             try
@@ -142,7 +146,7 @@ namespace EQTool.Services
                 var release = releases.FirstOrDefault();
                 var downloadurl = release.assets.Where(a => !string.IsNullOrWhiteSpace(a.browser_download_url) && a.browser_download_url.Contains(VersionType)).Select(a => a.browser_download_url).FirstOrDefault();
                 var newversion = release.tag_name;
-                if (version != newversion)
+                if (version != newversion && !IsDebug)
                 {
                     appDispatcher?.DispatchUI(() =>
                     {

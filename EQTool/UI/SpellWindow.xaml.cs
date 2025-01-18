@@ -57,5 +57,10 @@ namespace EQTool.UI
         {
             settingsWindowViewModel.RaidModeDetection = !settingsWindowViewModel.RaidModeDetection;
         }
+
+        private void AddDeathTimer(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

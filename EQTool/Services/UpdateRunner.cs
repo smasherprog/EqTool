@@ -9,11 +9,6 @@ namespace EQTool.Services
     public class UpdateRunner : IDisposable
     {
         private System.Timers.Timer timer;
-#if DEBUG
-        private readonly bool IsDebug = true;
-#else
-        private readonly bool IsDebug = false;
-#endif
         private readonly SpellWindowViewModel spellWindowViewModel;
         private readonly IAppDispatcher appDispatcher;
         private readonly LogParser logParser;
@@ -54,25 +49,22 @@ namespace EQTool.Services
         private bool updatecalled = false;
         private void UpdateTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
-            if (!IsDebug)
+            if (updatecalled)
             {
-                if (updatecalled)
+                return;
+            }
+            updatecalled = true;
+            try
+            {
+                var idletime = GetIdleTime();
+                if (spellWindowViewModel?.SpellList.Count() < 2 && (DateTime.Now - logParser.LastYouActivity).TotalMinutes > 10 && idletime.TotalMinutes > 10)
                 {
-                    return;
+                    UpdateService.CheckForUpdates(App.Version, App.VersionType, appDispatcher, loggingService, loginMiddlemand, false);
                 }
-                updatecalled = true;
-                try
-                {
-                    var idletime = GetIdleTime();
-                    if (spellWindowViewModel?.SpellList.Count() < 2 && (DateTime.Now - logParser.LastYouActivity).TotalMinutes > 10 && idletime.TotalMinutes > 10)
-                    {
-                        UpdateService.CheckForUpdates(App.Version, App.VersionType, appDispatcher, loggingService, loginMiddlemand, false);
-                    }
-                }
-                finally
-                {
-                    updatecalled = false;
-                }
+            }
+            finally
+            {
+                updatecalled = false;
             }
         }
 
