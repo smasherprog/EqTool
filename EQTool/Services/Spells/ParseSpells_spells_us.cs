@@ -176,7 +176,7 @@ namespace EQTool.Services
             var spellsfile = new FileInfo(settings.DefaultEqDirectory + spellfile);
             if (spellsfile.Exists)
             {
-                var spellfilename = $"SpellCache{servers}_6";
+                var spellfilename = $"SpellCache{servers}_7";
                 if (!isdebug)
                 {
                     spellfilename = new string(spellfilename.Where(a => char.IsLetterOrDigit(a)).ToArray()) + ".bin";
@@ -255,6 +255,11 @@ namespace EQTool.Services
                         {
                             spell.Classes.Add(PlayerClasses.Shaman, 35);
                         }
+                    }
+
+                    if (spell.name == "Pacify")
+                    {
+                        spell.buffduration = 35;
                     }
 
                     if (spell.name == "LowerElement")
