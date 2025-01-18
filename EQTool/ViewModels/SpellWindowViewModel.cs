@@ -31,14 +31,15 @@ namespace EQTool.ViewModels
             Title = "Triggers v" + App.Version;
         }
 
-        public ObservableCollection<PersistentViewModel> _SpellList = new ObservableCollection<PersistentViewModel>();
+        private ObservableCollection<PersistentViewModel> _SpellList;
         public ObservableCollection<PersistentViewModel> SpellList
         {
             get
             {
-                var view = (ListCollectionView)CollectionViewSource.GetDefaultView(_SpellList);
-                if (view.GroupDescriptions.Count == 0)
+                if (_SpellList == null)
                 {
+                    _SpellList = new ObservableCollection<PersistentViewModel>();
+                    var view = (ListCollectionView)CollectionViewSource.GetDefaultView(_SpellList);
                     view.GroupDescriptions.Add(new PropertyGroupDescription(nameof(TimerViewModel.GroupName)));
                     view.LiveGroupingProperties.Add(nameof(TimerViewModel.GroupName));
                     view.IsLiveGrouping = true;
