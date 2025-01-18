@@ -13,6 +13,7 @@ namespace EQTool.UI
     {
         private readonly SpellWindowViewModel spellWindowViewModel;
         private readonly SettingsWindowViewModel settingsWindowViewModel;
+        private readonly IAppDispatcher appDispatcher;
 
         public SpellWindow(
             TimersService timersService,
@@ -25,6 +26,7 @@ namespace EQTool.UI
             IAppDispatcher appDispatcher,
             LoggingService loggingService) : base(settings.SpellWindowState, toolSettingsLoad, settings)
         {
+            this.appDispatcher = appDispatcher;
             this.settingsWindowViewModel = settingsWindowViewModel;
             loggingService.Log(string.Empty, EventType.OpenMap, activePlayer?.Player?.Server);
             DataContext = this.spellWindowViewModel = spellWindowViewModel;
@@ -35,17 +37,24 @@ namespace EQTool.UI
         private void RemoveSingleItem(object sender, RoutedEventArgs e)
         {
             var name = (sender as Button).DataContext;
-            _ = spellWindowViewModel.SpellList.Remove(name as PersistentViewModel);
+            appDispatcher.DispatchUI(() =>
+            {
+
+                _ = spellWindowViewModel.SpellList.Remove(name as PersistentViewModel);
+            });
         }
 
         private void RemoveFromSpells(object sender, RoutedEventArgs e)
         {
             var name = ((sender as Button).DataContext as dynamic)?.Name as string;
-            var items = spellWindowViewModel.SpellList.Where(a => a.GroupName == name).ToList();
-            foreach (var item in items)
+            appDispatcher.DispatchUI(() =>
             {
-                _ = spellWindowViewModel.SpellList.Remove(item);
-            }
+                var items = spellWindowViewModel.SpellList.Where(a => a.GroupName == name).ToList();
+                foreach (var item in items)
+                {
+                    _ = spellWindowViewModel.SpellList.Remove(item);
+                }
+            });
         }
 
         private void ClearAllOtherSpells(object sender, RoutedEventArgs e)
