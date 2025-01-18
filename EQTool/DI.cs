@@ -66,6 +66,8 @@ namespace EQTool
             _ = builder.RegisterType<Models.SignalrPlayerHub>().SingleInstance();
             _ = builder.RegisterType<Services.SettingsTestRunOverlay>().AsSelf().SingleInstance();
             _ = builder.RegisterType<TextToSpeach>().As<ITextToSpeach>().SingleInstance();
+            _ = builder.RegisterType<UIRunner>().AsSelf().SingleInstance();
+            _ = builder.RegisterType<UpdateRunner>().AsSelf().SingleInstance();
 
             return builder.Build();
         }

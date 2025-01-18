@@ -374,6 +374,8 @@
     <Compile Include="Services\Parsing\YourSpellInterupptedParser.cs" />
     <Compile Include="Services\Parsing\LineParser.cs" />
     <Compile Include="Services\Parsing\FactionParser.cs" />
+    <Compile Include="Services\UIRunner.cs" />
+    <Compile Include="Services\UpdateRunner.cs" />
     <Compile Include="Services\UserDefinedTrigger.cs" />
     <Compile Include="Services\UserComponentSettingsManagementFactory.cs" />
     <Compile Include="Services\WindowFactory.cs" />
