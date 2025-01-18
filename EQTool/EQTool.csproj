@@ -331,6 +331,7 @@
     <Compile Include="Models\Pets.cs" />
     <Compile Include="Services\BinarySerializer.cs" />
     <Compile Include="Services\DebugOutput.cs" />
+    <Compile Include="Services\Handlers\PetHandler.cs" />
     <Compile Include="Services\Handlers\QuakeHandler.cs" />
     <Compile Include="Services\Handlers\RingWarHandler.cs" />
     <Compile Include="Services\Handlers\DamageHandler.cs" />
@@ -358,6 +359,9 @@
     <Compile Include="Services\Parsing\BeginsToCastTheGateSpellParser.cs" />
     <Compile Include="Services\Parsing\ExpGainedParser.cs" />
     <Compile Include="Services\Handlers\SlainHandler.cs" />
+    <Compile Include="Services\Parsing\LoadingPleaseWaitParser.cs" />
+    <Compile Include="Services\Parsing\PetParser.cs" />
+    <Compile Include="Services\Parsing\WelcomeParser.cs" />
     <Compile Include="Services\Parsing\YourItemBeginsToGlowParser.cs" />
     <Compile Include="Services\Parsing\RingWarParser.cs" />
     <Compile Include="Services\Parsing\SpellCastOnOtherParser.cs" />
@@ -490,6 +494,7 @@
     <Compile Include="ViewModels\ActivePlayerInfo.cs" />
     <Compile Include="Services\TimersService.cs" />
     <Compile Include="ViewModels\ConsoleViewModel.cs" />
+    <Compile Include="ViewModels\PetViewModel.cs" />
     <Compile Include="ViewModels\SettingsComponents\SettingsGeneralViewModel.cs" />
     <Compile Include="ViewModels\SettingsComponents\SettingsPlayerViewModel.cs" />
     <Compile Include="ViewModels\SettingsComponents\SettingsServerViewModel.cs" />

@@ -20,7 +20,7 @@ namespace EQTool.Services.Handlers
                     // screen out sender names containing a space - this will screen out most vendors
                     if (commsEvent.Sender.Contains(" ") == false)
                     {
-                        // screen out tells from pets who are responding to /pet attack
+                        // screen out tells from _Pets who are responding to /pet attack
                         if (commsEvent.Content.StartsWith("Attacking") == false)
                         {
                             // text to be displayed / spoken

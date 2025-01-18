@@ -150,7 +150,8 @@ namespace EQTool.Services
             { "Barrier of Force", new EpicSpellTime{ CastTime = 15000, PlayerClass= PlayerClasses.Wizard } },
             { "Dance of the Blade", new EpicSpellTime{ CastTime = 0, PlayerClass= PlayerClasses.Bard } },
             { "Celestial Tranquility", new EpicSpellTime{ CastTime = 0, PlayerClass= PlayerClasses.Monk } },
-            { "Seething Fury", new EpicSpellTime{ CastTime = 0, PlayerClass= PlayerClasses.Rogue } }
+            { "Seething Fury", new EpicSpellTime{ CastTime = 0, PlayerClass= PlayerClasses.Rogue } },
+            { "Manifest Elements", new EpicSpellTime{ CastTime = 0, PlayerClass= PlayerClasses.Magician } }
         };
         private readonly List<SpellType> IgnoreSpellTypes = new List<SpellType>()
         {

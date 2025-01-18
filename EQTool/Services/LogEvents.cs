@@ -57,6 +57,24 @@ namespace EQTool.Services
         {
             CommsEvent?.Invoke(this, e);
         }
+        
+        public event EventHandler<PetEvent> PetEvent;
+        public void Handle(PetEvent e)
+        {
+            PetEvent?.Invoke(this, e);
+        }
+
+        public event EventHandler<LoadingPleaseWaitEvent> LoadingPleaseWaitEvent;
+        public void Handle(LoadingPleaseWaitEvent e)
+        {
+            LoadingPleaseWaitEvent?.Invoke(this, e);
+        }
+
+        public event EventHandler<WelcomeEvent> WelcomeEvent;
+        public void Handle(WelcomeEvent e)
+        {
+            WelcomeEvent?.Invoke(this, e);
+        }
 
         public event EventHandler<QuakeEvent> QuakeEvent;
         public void Handle(QuakeEvent e)

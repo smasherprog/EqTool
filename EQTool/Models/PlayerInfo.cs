@@ -271,7 +271,7 @@ namespace EQTool.Models
             }
         }
 
-        private TimerRecast _timerRecast = TimerRecast.StartNewTimer;
+        private TimerRecast _timerRecast = TimerRecast.RestartCurrentTimer;
         public TimerRecast TimerRecast
         {
             get => _timerRecast;

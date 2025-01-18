@@ -15,6 +15,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Media;
 using System.Windows.Navigation;
 
 namespace EQTool.UI.SettingsComponents
@@ -36,6 +37,7 @@ namespace EQTool.UI.SettingsComponents
         private readonly LogEvents logEvents;
         private readonly DebugOutput debugOutput;
         private readonly bool ComponentInitialized = false;
+
         public SettingsGeneral(
             LogEvents logEvents,
             WindowFactory windowFactory,
