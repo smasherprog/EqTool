@@ -6,10 +6,10 @@
 Instructions:
 <ul>
 <li>
-<h2>Project 1999: Download <a href="https://github.com/smasherprog/EqTool/releases/download/5.24.121.4/EQTool_P995.24.121.4.zip">Windows P99</a>, Unzip it and run EQTool.exe</h2>
+<h2>Project 1999: Download <a href="https://github.com/smasherprog/EqTool/releases/download/5.25.118.2/EQTool_P995.25.118.2.zip">Windows P99</a>, Unzip it and run EQTool.exe</h2>
 </li> 
  <li>
-<h2>Linux Project 1999 Download <a href="https://github.com/smasherprog/EqTool/releases/download/5.24.121.4/EQTool_Linux5.24.121.4.zip">Linux P99</a>, Unzip it and run EQTool.exe</h2>
+<h2>Linux Project 1999 Download <a href="https://github.com/smasherprog/EqTool/releases/download/5.25.118.2/EQTool_Linux5.25.118.2.zip">Linux P99</a>, Unzip it and run EQTool.exe</h2>
 </li>
  <li><h3><a href="https://discord.gg/pp3sM4wFEE">Discord</a></h3></li>
 <li>The program runs in the system tray. Look there to reopen spells window or settings! Program will check for updates on startup and self update if required, but if you want to check for a new Update, use the menu in the system tray!</li> 
