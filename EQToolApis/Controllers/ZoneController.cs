@@ -1,5 +1,6 @@
 ﻿using EQToolApis.DB;
 using EQToolApis.Hubs;
+using EQToolApis.Models;
 using EQToolApis.Services;
 using EQToolShared;
 using EQToolShared.APIModels.ZoneControllerModels;
@@ -19,6 +20,13 @@ namespace EQToolApis.Controllers
         private readonly IHubContext<MapHub> mapHubContext;
         private readonly IHubContext<PPHub> ppHubContext;
         private DateTime LastKaelFactionSend = DateTime.UtcNow.AddMonths(-2);
+        private static readonly QuakeCache[] QuakeCache = new QuakeCache[(int)Servers.MaxServers]
+        {
+            new() { Server = Servers.Green, DateTime = DateTimeOffset.MinValue },
+            new() { Server = Servers.Blue, DateTime = DateTimeOffset.MinValue },
+            new() { Server = Servers.Red, DateTime = DateTimeOffset.MinValue },
+            new() { Server = Servers.Quarm, DateTime = DateTimeOffset.MinValue }
+        };
 
         public ZoneController(EQToolContext dbcontext, NpcTrackingService notableNpcService, IHubContext<MapHub> mapHubContext, IHubContext<PPHub> ppHubContext)
         {
@@ -64,10 +72,17 @@ namespace EQToolApis.Controllers
                 return;
             }
             var d = DateTimeOffset.UtcNow.AddHours(-2);
-            if (!dbcontext.QuakeTimes.Any(a => a.DateTime > d && a.Server == Servers.Green))
+            lock (QuakeCache)
             {
-                _ = dbcontext.QuakeTimes.Add(new DB.Models.QuakeTime { DateTime = DateTimeOffset.UtcNow, Server = Servers.Green });
-                _ = dbcontext.SaveChanges();
+                if (QuakeCache[(int)Servers.Green].DateTime < d)
+                {
+                    QuakeCache[(int)Servers.Green].DateTime = DateTimeOffset.Now;
+                    if (!dbcontext.QuakeTimes.Any(a => a.DateTime > d && a.Server == Servers.Green))
+                    {
+                        _ = dbcontext.QuakeTimes.Add(new DB.Models.QuakeTime { DateTime = DateTimeOffset.UtcNow, Server = Servers.Green });
+                        _ = dbcontext.SaveChanges();
+                    }
+                }
             }
         }
 
@@ -80,10 +95,17 @@ namespace EQToolApis.Controllers
                 return;
             }
             var d = DateTimeOffset.UtcNow.AddHours(-2);
-            if (!dbcontext.QuakeTimes.Any(a => a.DateTime > d && a.Server == server))
+            lock (QuakeCache)
             {
-                _ = dbcontext.QuakeTimes.Add(new DB.Models.QuakeTime { DateTime = DateTimeOffset.UtcNow, Server = server });
-                _ = dbcontext.SaveChanges();
+                if (QuakeCache[(int)server].DateTime < d)
+                {
+                    QuakeCache[(int)server].DateTime = DateTimeOffset.Now;
+                    if (!dbcontext.QuakeTimes.Any(a => a.DateTime > d && a.Server == server))
+                    {
+                        _ = dbcontext.QuakeTimes.Add(new DB.Models.QuakeTime { DateTime = DateTimeOffset.UtcNow, Server = server });
+                        _ = dbcontext.SaveChanges();
+                    }
+                }
             }
         }
     }
