@@ -73,7 +73,7 @@ namespace EQToolApis.Services
                 try
                 {
                     return result.StatusCode == System.Net.HttpStatusCode.Unauthorized
-                ? new List<Message>()
+                ? []
                 : Newtonsoft.Json.JsonConvert.DeserializeObject<List<Message>>(resultstring);
                 }
                 catch (Exception e)
@@ -101,7 +101,7 @@ namespace EQToolApis.Services
                 try
                 {
                     return result.StatusCode == System.Net.HttpStatusCode.Unauthorized
-                ? new List<Message>()
+                ? []
                 : Newtonsoft.Json.JsonConvert.DeserializeObject<List<Message>>(resultstring);
                 }
                 catch (Exception e)
@@ -137,7 +137,7 @@ namespace EQToolApis.Services
                 this.discordService = discordService;
                 for (var i = 0; i < ThrottleList.Length; i++)
                 {
-                    ThrottleList[i] = new List<ThrottledItem>();
+                    ThrottleList[i] = [];
                 }
             }
 
@@ -179,7 +179,7 @@ namespace EQToolApis.Services
                             DiscordMessageId = item.id,
                             Server = server,
                             TunnelTimestamp = item.timestamp,
-                            EQTunnelAuctionItems = new List<EQTunnelAuctionItemV2>()
+                            EQTunnelAuctionItems = []
                         };
 
                         foreach (var it in discordpricingdata.Items)

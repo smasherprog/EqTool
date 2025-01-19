@@ -160,7 +160,8 @@ namespace EQTool.Services.Handlers
         }
 
         private int deathcounter = 1;
-        private void DoEvent(ConfirmedDeathEvent e, bool guess)
+
+        public void DoEvent(ConfirmedDeathEvent e, bool guess)
         {
             fightHistory.Remove(Victim, e.TimeStamp);
             logEvents.Handle(new ConfirmedDeathEvent

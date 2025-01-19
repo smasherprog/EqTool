@@ -8,11 +8,11 @@ namespace EQtoolsTests
 {
     [TestClass]
     public class AuctionParsingTests : BaseTestClass
-    { 
+    {
         private readonly DiscordAuctionParse discordAuctionParse;
         public AuctionParsingTests()
-        { 
-            discordAuctionParse = this.container.Resolve<DiscordAuctionParse>();
+        {
+            discordAuctionParse = container.Resolve<DiscordAuctionParse>();
         }
 
         //[TestMethod]
@@ -66,19 +66,19 @@ namespace EQtoolsTests
             Assert.AreEqual(AuctionType.WTS, item.AuctionType);
             Assert.IsNull(item.Price);
 
-            result.Items.FirstOrDefault(a => a.Name == "Othmir Fur");
+            _ = result.Items.FirstOrDefault(a => a.Name == "Othmir Fur");
             Assert.AreEqual(AuctionType.WTS, item.AuctionType);
             Assert.IsNull(item.Price);
 
-            result.Items.FirstOrDefault(a => a.Name == "Black Ice Leggings");
+            _ = result.Items.FirstOrDefault(a => a.Name == "Black Ice Leggings");
             Assert.AreEqual(AuctionType.WTS, item.AuctionType);
             Assert.IsNull(item.Price);
 
-            result.Items.FirstOrDefault(a => a.Name == "Spell: Focus of Spirit");
+            _ = result.Items.FirstOrDefault(a => a.Name == "Spell: Focus of Spirit");
             Assert.AreEqual(AuctionType.WTS, item.AuctionType);
             Assert.IsNull(item.Price);
 
-            result.Items.FirstOrDefault(a => a.Name == "Crustacean Shell Shield");
+            _ = result.Items.FirstOrDefault(a => a.Name == "Crustacean Shell Shield");
             Assert.AreEqual(AuctionType.WTS, item.AuctionType);
             Assert.IsNull(item.Price);
         }

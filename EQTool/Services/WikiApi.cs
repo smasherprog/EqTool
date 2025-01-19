@@ -2,6 +2,7 @@
 using EQToolShared;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -137,6 +138,17 @@ namespace EQTool.Services
                     else
                     {
                         return response;
+                    }
+                }
+                else if (res.StatusCode == System.Net.HttpStatusCode.NotFound)
+                {
+                    var textInfo = new CultureInfo("en-US", false).TextInfo;
+                    name = HttpUtility.UrlEncode(textInfo.ToTitleCase(name).Replace(' ', '_'));
+                    url = $"https://wiki.project1999.com/{name}?action=raw";
+                    res = App.httpclient.GetAsync(url).Result;
+                    if (res.StatusCode == System.Net.HttpStatusCode.OK)
+                    {
+                        return res.Content.ReadAsStringAsync().Result;
                     }
                 }
             }

@@ -104,7 +104,7 @@
             </StackPanel>
         </TabItem>
         
-        <TabItem Header="Text &amp; Audio Alerts" Height="20" VerticalAlignment="Top">
+        <TabItem Header="Text &amp; Audio Alerts">
             <StackPanel Orientation="Vertical" Margin="5, 5, 5, 5">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Installed Voices" VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
@@ -253,7 +253,7 @@
             </StackPanel>
         </TabItem>
         
-        <TabItem Header="Triggers" HorizontalAlignment="Left" Margin="-2,-2,0,0" Width="58">
+        <TabItem Header="Triggers">
             <StackPanel Orientation="Vertical" Margin="5, 5, 5, 5">
                 <StackPanel Orientation="Vertical"  Margin="0, 0, 0, 8">
                     <StackPanel Orientation="Horizontal" ToolTip="This setting will switch to show only spells you care about when raid mode is detected.">
@@ -307,7 +307,7 @@
             </StackPanel>
         </TabItem>
         
-        <TabItem Header="Pet" Height="20" VerticalAlignment="Top">
+        <TabItem Header="Pet">
             <StackPanel Orientation="Vertical" Margin="5, 5, 5, 5">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Pet Name" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
@@ -418,11 +418,10 @@
                         
                     </Grid>
                 </Border>
-            </StackPanel>
-
+            </StackPanel> 
         </TabItem>
         
-        <TabItem Header="Map" HorizontalAlignment="Right" Margin="0,-2,-2,0" Width="91">
+        <TabItem Header="Map">
             <StackPanel Orientation="Vertical" Margin="5, 5, 5, 5">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Always on top" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>

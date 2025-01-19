@@ -14,7 +14,6 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Reflection;
-using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -36,17 +35,13 @@ namespace EQTool
         private System.Windows.Forms.MenuItem OverlayMenuItem;
         private System.Windows.Forms.MenuItem SettingsMenuItem;
         private System.Windows.Forms.MenuItem MobInfoMenuItem;
-        private System.Timers.Timer UpdateTimer;
-        private System.Timers.Timer UITimer;
 
         private EQToolSettings _EQToolSettings;
 #if DEBUG
         private readonly bool IsDebug = true;
 #else
-         private readonly bool IsDebug = false;
+        private readonly bool IsDebug = false;
 #endif
-
-
 
         private EQToolSettings EQToolSettings
         {
@@ -81,12 +76,16 @@ namespace EQTool
                 Thread.Sleep(3000);
             }
             while (count != 1);
+            if (counter > 1)
+            {
+                Thread.Sleep(1000);
+            }
             return true;
         }
 
         public void CheckForUpdates(object sender, EventArgs e)
         {
-            new UpdateService().CheckForUpdates(Version, VersionType, container, false);
+            UpdateService.CheckForUpdates(Version, VersionType, container, false);
         }
 
         public class ExceptionRequest
@@ -197,7 +196,7 @@ namespace EQTool
             SetupExceptionHandling();
             if (!WaitForEQToolToStop())
             {
-                MessageBox.Show("Another Pigparse is currently running. You must shut that one down first!", "Multiple Pigparse running!", MessageBoxButton.OK, MessageBoxImage.Error);
+                _ = MessageBox.Show("Another Pigparse is currently running. You must shut that one down first!", "Multiple Pigparse running!", MessageBoxButton.OK, MessageBoxImage.Error);
                 App.Current.Shutdown();
                 return;
             }
@@ -207,7 +206,7 @@ namespace EQTool
                 var path = Path.Combine(curr, "eqgame.exe");
                 if (File.Exists(path))
                 {
-                    MessageBox.Show("Pigparse does not support running from in the EQ directory. Please move the pigparse and try again", "Pigparse Invalid Folder!", MessageBoxButton.OK, MessageBoxImage.Error);
+                    _ = MessageBox.Show("Pigparse does not support running from in the EQ directory. Please move the pigparse and try again", "Pigparse Invalid Folder!", MessageBoxButton.OK, MessageBoxImage.Error);
                     App.Current.Shutdown();
                     return;
                 }
@@ -222,17 +221,15 @@ namespace EQTool
             {
                 LogUnhandledException(ex, "DI.Init", null);
             }
-            var updateservice = new UpdateService();
-            var did_update = updateservice.ApplyUpdate(e.Args.FirstOrDefault());
+
+            var did_update = UpdateService.ApplyUpdate(e.Args.FirstOrDefault());
             if (did_update == UpdateService.UpdateStatus.UpdatesApplied)
             {
                 return;
             }
             else if (did_update == UpdateService.UpdateStatus.NoUpdateApplied)
             {
-#if !DEBUG
-                updateservice.CheckForUpdates(Version, VersionType, container, true);
-#endif
+                UpdateService.CheckForUpdates(Version, VersionType, container, true);
             }
             try
             {
@@ -248,15 +245,7 @@ namespace EQTool
         private void InitStuff()
         {
             container.Resolve<LoggingService>().Log(string.Empty, EventType.StartUp, null);
-            UpdateTimer = new System.Timers.Timer(1000 * 60);
-            UpdateTimer.Elapsed += UpdateTimer_Elapsed;
-            UpdateTimer.Enabled = true;
-            UITimer = new System.Timers.Timer(1000);
-            UITimer.Elapsed += UITimer_Elapsed;
-            UITimer.Enabled = true;
-
             SettingsMenuItem = new System.Windows.Forms.MenuItem("Settings", ToggleSettingsWindow);
-
             SpellsMenuItem = new System.Windows.Forms.MenuItem("Triggers", ToggleSpellsWindow);
             MapMenuItem = new System.Windows.Forms.MenuItem("Map", ToggleMapWindow);
             DpsMeterMenuItem = new System.Windows.Forms.MenuItem("Dps", ToggleDPSWindow);
@@ -349,6 +338,8 @@ namespace EQTool
             container.Resolve<PlayerTrackerService>();
             container.Resolve<ZoneActivityTrackingService>();
             container.Resolve<IEnumerable<BaseHandler>>();
+            container.Resolve<UIRunner>();
+            container.Resolve<UpdateRunner>();
 
             App.Current.Resources["GlobalFontSize"] = (double)(EQToolSettings?.FontSize ?? 12);
             ((App)System.Windows.Application.Current).UpdateBackgroundOpacity("MyWindowStyleDPS", EQToolSettings.DpsWindowState.Opacity.Value);
@@ -364,77 +355,6 @@ namespace EQTool
             style.Setters.Add(new Setter(Window.BackgroundProperty, newcolor));
             style.Setters.Add(new Setter(Window.FontSizeProperty, (double)EQToolSettings.FontSize.Value));
             App.Current.Resources[name] = style;
-        }
-
-        [DllImport("user32.dll")]
-        private static extern bool GetLastInputInfo(ref LASTINPUTINFO plii);
-
-        [StructLayout(LayoutKind.Sequential)]
-        private struct LASTINPUTINFO
-        {
-            public uint cbSize;
-            public int dwTime;
-        }
-        public static TimeSpan GetIdleTime()
-        {
-            var lastInPut = new LASTINPUTINFO();
-            lastInPut.cbSize = (uint)System.Runtime.InteropServices.Marshal.SizeOf(lastInPut);
-            return GetLastInputInfo(ref lastInPut)
-                ? TimeSpan.FromMilliseconds(Environment.TickCount - lastInPut.dwTime)
-                : TimeSpan.FromMinutes(20);
-        }
-
-        private DateTime? LastUIRun = null;
-        private void UITimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
-        {
-            var vm = container.Resolve<SpellWindowViewModel>();
-            var now = DateTime.Now;
-            var dt_ms = 0.0;
-            if (LastUIRun.HasValue)
-            {
-                dt_ms = (now - LastUIRun.Value).TotalMilliseconds;
-            }
-
-            LastUIRun = now;
-            vm.UpdateSpells(dt_ms);
-        }
-
-        private bool updatecalled = false;
-        private void UpdateTimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
-        {
-            if (!IsDebug)
-            {
-                var dispatcher = container.Resolve<IAppDispatcher>();
-                dispatcher.DispatchUI(() =>
-                {
-                    if (updatecalled)
-                    {
-                        return;
-                    }
-                    updatecalled = true;
-                    try
-                    {
-                        var idletime = GetIdleTime();
-                        var spellstuff = container.Resolve<SpellWindowViewModel>();
-                        var logParser = container.Resolve<LogParser>();
-                        if (spellstuff != null)
-                        {
-                            if (spellstuff.SpellList.Count() < 2 && (DateTime.Now - logParser.LastYouActivity).TotalMinutes > 10 && idletime.TotalMinutes > 10)
-                            {
-                                new UpdateService().CheckForUpdates(Version, VersionType, container, false);
-                            }
-                        }
-                        else if ((DateTime.Now - logParser.LastYouActivity).TotalMinutes > 10 && idletime.TotalMinutes > 10)
-                        {
-                            new UpdateService().CheckForUpdates(Version, VersionType, container, false);
-                        }
-                    }
-                    finally
-                    {
-                        updatecalled = false;
-                    }
-                });
-            }
         }
 
         private static string _Version = string.Empty;
