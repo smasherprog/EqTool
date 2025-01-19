@@ -1,8 +1,10 @@
 ﻿using EQTool.Models;
 using EQTool.Services;
+using EQTool.Services.Handlers;
 using EQTool.ViewModels;
 using EQTool.ViewModels.SpellWindow;
 using EQToolShared.Enums;
+using System;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -14,6 +16,7 @@ namespace EQTool.UI
         private readonly SpellWindowViewModel spellWindowViewModel;
         private readonly SettingsWindowViewModel settingsWindowViewModel;
         private readonly IAppDispatcher appDispatcher;
+        private readonly SlainHandler slainHandler;
 
         public SpellWindow(
             TimersService timersService,
@@ -24,8 +27,10 @@ namespace EQTool.UI
             EQToolSettingsLoad toolSettingsLoad,
             ActivePlayer activePlayer,
             IAppDispatcher appDispatcher,
+            SlainHandler slainHandler,
             LoggingService loggingService) : base(settings.SpellWindowState, toolSettingsLoad, settings)
         {
+            this.slainHandler = slainHandler;
             this.appDispatcher = appDispatcher;
             this.settingsWindowViewModel = settingsWindowViewModel;
             loggingService.Log(string.Empty, EventType.OpenMap, activePlayer?.Player?.Server);
@@ -68,7 +73,14 @@ namespace EQTool.UI
 
         private void AddDeathTimer(object sender, RoutedEventArgs e)
         {
-
+            slainHandler.DoEvent(new ConfirmedDeathEvent
+            {
+                Killer = EQSpells.SpaceYou,
+                Line = "Triggered from spells UI",
+                LineCounter = -1,
+                TimeStamp = DateTime.Now,
+                Victim = "Zone Death Timer"
+            }, true);
         }
     }
 }
