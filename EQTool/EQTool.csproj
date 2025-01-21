@@ -365,10 +365,9 @@
     <Compile Include="Services\Parsing\YourItemBeginsToGlowParser.cs" />
     <Compile Include="Services\Parsing\RingWarParser.cs" />
     <Compile Include="Services\Parsing\SpellCastOnOtherParser.cs" />
-    <Compile Include="Services\Parsing\SpellCastOnYouParser.cs" />
     <Compile Include="Services\Parsing\MendWoundsParser.cs" />
     <Compile Include="Services\Parsing\UserDefinedTriggerParser.cs" />
-    <Compile Include="Services\Parsing\YouFinishCastingParser.cs" />
+    <Compile Include="Services\Parsing\YouFinishCasting_SpellCastOnYou_Parser.cs" />
     <Compile Include="Services\Parsing\YouBeginCastingParser.cs" />
     <Compile Include="Services\Parsing\YouHaveFinishedMemorizingParser.cs" />
     <Compile Include="Services\Parsing\YourSpellInterupptedParser.cs" />

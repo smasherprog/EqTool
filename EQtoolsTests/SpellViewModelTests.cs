@@ -169,6 +169,17 @@ namespace EQtoolsTests
         }
 
         [TestMethod]
+        public void GuessUltravision()
+        {
+            player.Player.PlayerClass = EQToolShared.Enums.PlayerClasses.Shaman;
+            player.Player.Level = 45;
+            logParser.Push("You begin casting Ultravision.", DateTime.Now);
+            logParser.Push("Your eyes tingle.", DateTime.Now.AddSeconds(5));
+            var spelleffect = spellWindowViewModel.SpellList.FirstOrDefault();
+            Assert.AreEqual("Ultravision", spelleffect.Name);
+        }
+
+        [TestMethod]
         public void GuessParalyzingEarch()
         {
             player.Player.PlayerClass = EQToolShared.Enums.PlayerClasses.Necromancer;
