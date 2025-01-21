@@ -214,7 +214,7 @@
                         </ListView.ItemContainerStyle>
                     </ListView>
                 </StackPanel>
-                <StackPanel Orientation="Vertical" Visibility="{Binding HasNoErrors}">
+                <StackPanel Orientation="Vertical" Width="220" Visibility="{Binding HasNoErrors}">
                     <TextBlock>Known Loot</TextBlock>
                     <ListView Margin="10, 0, 0, 0" Style="{StaticResource MyListViewStyle}" ItemsSource="{Binding KnownLoot}" MaxHeight="300">
                         <ListView.View>
