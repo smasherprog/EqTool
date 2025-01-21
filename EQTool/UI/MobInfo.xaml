@@ -298,7 +298,7 @@
                 </StackPanel>
                 <StackPanel Orientation="Vertical" Visibility="{Binding HasNoErrors}">
                     <StackPanel Orientation="Horizontal">
-                        <Image Source="{Binding ImageUrl}" Stretch="Uniform"  MaxHeight="250" MaxWidth="250" />
+                        <Image Source="{Binding ImageUrl}" Stretch="Uniform"  Height="250" Width="250" />
                     </StackPanel>
                 </StackPanel>
             </StackPanel>
