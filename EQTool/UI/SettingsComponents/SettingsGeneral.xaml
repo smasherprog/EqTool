@@ -100,6 +100,11 @@
                     <TextBlock Text="Login Middlemand is a copy of the code from:"></TextBlock>
                     <TextBlock Text="https://github.com/Zaela/p99-login-middlemand"></TextBlock>
                     <TextBlock Text="Please, report any issues on discord!"></TextBlock>
+                    <Separator/>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Group Leader: " VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="120" Margin="0,5,0,0"/>
+                        <TextBlock Text="{Binding GroupLeaderName}" HorizontalAlignment="Center" FontWeight="Bold" FontStyle="Italic" Foreground="Blue" Margin="0,5,0,0"/>
+                    </StackPanel>
                 </StackPanel>
             </StackPanel>
         </TabItem>

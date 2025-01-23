@@ -331,6 +331,7 @@
     <Compile Include="Models\Pets.cs" />
     <Compile Include="Services\BinarySerializer.cs" />
     <Compile Include="Services\DebugOutput.cs" />
+    <Compile Include="Services\Handlers\GroupLeaderHandler.cs" />
     <Compile Include="Services\Handlers\PetHandler.cs" />
     <Compile Include="Services\Handlers\QuakeHandler.cs" />
     <Compile Include="Services\Handlers\RingWarHandler.cs" />
@@ -359,6 +360,7 @@
     <Compile Include="Services\Parsing\BeginsToCastTheGateSpellParser.cs" />
     <Compile Include="Services\Parsing\ExpGainedParser.cs" />
     <Compile Include="Services\Handlers\SlainHandler.cs" />
+    <Compile Include="Services\Parsing\GroupLeaderParser.cs" />
     <Compile Include="Services\Parsing\LoadingPleaseWaitParser.cs" />
     <Compile Include="Services\Parsing\PetParser.cs" />
     <Compile Include="Services\Parsing\WelcomeParser.cs" />

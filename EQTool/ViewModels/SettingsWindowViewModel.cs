@@ -242,6 +242,13 @@ namespace EQTool.ViewModels
             get { return _cwd; }
         }
 
+        private string _GroupLeaderName = "None";
+        public string GroupLeaderName
+        {
+            get { return _GroupLeaderName; }
+            set { _GroupLeaderName = value; OnPropertyChanged(); }
+        }
+
         private string _EqPath = string.Empty;
         public string EqPath
         {
