@@ -186,6 +186,11 @@ namespace EQTool.Models
     {
     }
 
+    public class GroupLeaderEvent : BaseLogParseEvent
+    {
+        public string GroupLeaderName { get; set; } = string.Empty;
+    }
+
     public class YouBeginCastingEvent : BaseLogParseEvent
     {
         public Spell Spell { get; set; }

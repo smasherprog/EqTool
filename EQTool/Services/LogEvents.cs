@@ -76,6 +76,12 @@ namespace EQTool.Services
             WelcomeEvent?.Invoke(this, e);
         }
 
+        public event EventHandler<GroupLeaderEvent> GroupLeaderEvent;
+        public void Handle(GroupLeaderEvent e)
+        {
+            GroupLeaderEvent?.Invoke(this, e);
+        }
+
         public event EventHandler<QuakeEvent> QuakeEvent;
         public void Handle(QuakeEvent e)
         {
