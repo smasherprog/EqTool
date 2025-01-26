@@ -1,11 +1,11 @@
 ﻿using EQTool.Models;
 using EQTool.Services.Handlers;
+using EQTool.Services.IO;
 using EQTool.Services.Parsing;
 using EQTool.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
-using System.IO;
 using System.Linq;
 
 namespace EQTool.Services
@@ -15,16 +15,14 @@ namespace EQTool.Services
         private System.Timers.Timer UITimer;
         private readonly ActivePlayer activePlayer;
         private readonly IAppDispatcher appDispatcher;
-        private string LastLogFilename = string.Empty;
         private readonly EQToolSettings settings;
         private readonly EQToolSettingsLoad toolSettingsLoad;
         private readonly List<IEqLogParser> eqLogParsers;
-        private readonly LogEvents logEvents;
         private readonly LineParser lineParser;
+        private readonly FileReader fileReader;
         private bool Processing = false;
         public DateTime LastYouActivity { get; private set; } = DateTime.Now.AddMonths(-1);
         public DateTime LastEntryDateTime { get; private set; } = DateTime.Now;
-        private long? LastLogReadOffset { get; set; } = null;
         private int LineCounter = 0;
 
         public LogParser(
@@ -34,17 +32,17 @@ namespace EQTool.Services
             ActivePlayer activePlayer,
             IAppDispatcher appDispatcher,
             EQToolSettings settings,
-             LogEvents logEvents,
+             FileReader fileReader,
              LineParser lineParser
             )
         {
             this.eqLogParsers = eqLogParsers.ToList();
-            this.logEvents = logEvents;
             this.lineParser = lineParser;
             this.toolSettingsLoad = toolSettingsLoad;
             this.activePlayer = activePlayer;
             this.appDispatcher = appDispatcher;
             this.settings = settings;
+            this.fileReader = fileReader;
             UITimer = new System.Timers.Timer(100);
             UITimer.Elapsed += Poll;
             UITimer.Enabled = true;
@@ -147,37 +145,13 @@ namespace EQTool.Services
                         toolSettingsLoad.Save(settings);
                     }
                     var filepath = activePlayer.LogFileName;
-                    if (playerchanged || filepath != LastLogFilename)
-                    {
-                        LastLogReadOffset = null;
-                        LastLogFilename = filepath;
-                    }
-
                     if (string.IsNullOrWhiteSpace(filepath))
                     {
                         Debug.WriteLine($"No playerfile found!");
                         return;
                     }
 
-                    var fileinfo = new FileInfo(filepath);
-                    if (!LastLogReadOffset.HasValue || (LastLogReadOffset > fileinfo.Length && fileinfo.Length > 0))
-                    {
-                        Debug.WriteLine($"Player Switched or new Player detected {filepath} {fileinfo.Length}");
-                        LastLogReadOffset = fileinfo.Length;
-                        logEvents.Handle(new PayerChangedEvent { TimeStamp = DateTime.Now });
-                    }
-                    var linelist = new List<string>();
-                    using (var stream = new FileStream(filepath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
-                    using (var reader = new StreamReader(stream))
-                    {
-                        _ = stream.Seek(LastLogReadOffset.Value, SeekOrigin.Begin);
-                        while (!reader.EndOfStream)
-                        {
-                            var line = reader.ReadLine();
-                            linelist.Add(line);
-                            LastLogReadOffset = stream.Position;
-                        }
-                    }
+                    var linelist = fileReader.ReadNext(filepath);
                     foreach (var line in linelist)
                     {
                         MainRun(line);

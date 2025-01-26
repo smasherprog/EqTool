@@ -68,6 +68,7 @@ namespace EQTool
             _ = builder.RegisterType<TextToSpeach>().As<ITextToSpeach>().SingleInstance();
             _ = builder.RegisterType<UIRunner>().AsSelf().SingleInstance();
             _ = builder.RegisterType<UpdateRunner>().AsSelf().SingleInstance();
+            _ = builder.RegisterType<Services.IO.FileReader>().As<Services.IO.IFileReader>().SingleInstance();
 
             return builder.Build();
         }

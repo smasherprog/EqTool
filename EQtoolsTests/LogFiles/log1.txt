@@ -1,0 +1,93 @@
+﻿[Sat Nov 23 19:13:32 2024] Your Location is -561.00, -5043.00, -194.40
+[Sat Nov 23 19:13:32 2024] You land.
+[Sat Nov 23 19:13:32 2024] Your Location is -561.00, -5043.00, -194.40
+[Sat Nov 23 19:13:32 2024] You land.
+[Sat Nov 23 19:13:32 2024] Your Location is -561.00, -5043.00, -194.40
+[Sat Nov 23 19:13:32 2024] You land.
+[Sat Nov 23 19:13:32 2024] Your Location is -561.00, -5043.00, -194.40
+[Sat Nov 23 19:13:32 2024] You land.
+[Sat Nov 23 19:13:32 2024] Your Location is -561.00, -5043.00, -194.40
+[Sat Nov 23 19:13:32 2024] You land.
+[Sat Nov 23 19:13:32 2024] Your Location is -561.00, -5043.00, -194.40
+[Sat Nov 23 19:13:32 2024] You land.
+[Sat Nov 23 19:13:32 2024] Your Location is -561.00, -5043.00, -194.40
+[Sat Nov 23 19:13:32 2024] You land.
+[Sat Nov 23 19:13:32 2024] Your Location is -561.00, -5043.00, -194.40
+[Sat Nov 23 19:13:32 2024] You land.
+[Sat Nov 23 19:13:32 2024] Your Location is -561.00, -5043.00, -194.40
+[Sat Nov 23 19:13:32 2024] You land.
+[Sat Nov 23 19:13:32 2024] Your Location is -561.00, -5043.00, -194.40
+[Sat Nov 23 19:13:32 2024] You land.
+[Sat Nov 23 19:13:32 2024] Your Location is -561.00, -5043.00, -194.40
+[Sat Nov 23 19:13:32 2024] You land.
+[Sat Nov 23 19:13:32 2024] Your Location is -561.00, -5043.00, -194.40
+[Sat Nov 23 19:13:32 2024] You land.
+[Sat Nov 23 19:13:32 2024] Your Location is -561.00, -5043.00, -194.40
+[Sat Nov 23 19:13:32 2024] You land.
+[Sat Nov 23 19:13:32 2024] Your Location is -561.00, -5043.00, -194.40
+[Sat Nov 23 19:13:32 2024] You land.
+[Sat Nov 23 19:13:32 2024] Your Location is -561.00, -5043.00, -194.40
+[Sat Nov 23 19:13:32 2024] You land.
+[Sat Nov 23 19:13:32 2024] Your Location is -561.00, -5043.00, -194.40
+[Sat Nov 23 19:13:32 2024] You land.
+[Sat Nov 23 19:13:32 2024] Your Location is -561.00, -5043.00, -194.40
+[Sat Nov 23 19:13:32 2024] You land.
+[Sat Nov 23 19:13:32 2024] Your Location is -561.00, -5043.00, -194.40
+[Sat Nov 23 19:13:32 2024] You land.
+[Sat Nov 23 19:13:32 2024] Your Location is -561.00, -5043.00, -194.40
+[Sat Nov 23 19:13:32 2024] You land.
+[Sat Nov 23 19:13:32 2024] Your Location is -561.00, -5043.00, -194.40
+[Sat Nov 23 19:13:32 2024] You land.
+[Sat Nov 23 19:13:32 2024] Your Location is -561.00, -5043.00, -194.40
+[Sat Nov 23 19:13:32 2024] You land.
+[Sat Nov 23 19:13:32 2024] Your Location is -561.00, -5043.00, -194.40
+[Sat Nov 23 19:13:32 2024] You land.
+[Sat Nov 23 19:13:32 2024] Your Location is -561.00, -5043.00, -194.40
+[Sat Nov 23 19:13:32 2024] You land.
+[Sat Nov 23 19:13:32 2024] Your Location is -561.00, -5043.00, -194.40
+[Sat Nov 23 19:13:32 2024] You land.
+[Sat Nov 23 19:13:32 2024] Your Location is -561.00, -5043.00, -194.40
+[Sat Nov 23 19:13:32 2024] You land.
+[Sat Nov 23 19:13:32 2024] Your Location is -561.00, -5043.00, -194.40
+[Sat Nov 23 19:13:32 2024] You land.
+[Sat Nov 23 19:13:32 2024] Your Location is -561.00, -5043.00, -194.40
+[Sat Nov 23 19:13:32 2024] You land.
+[Sat Nov 23 19:13:32 2024] Your Location is -561.00, -5043.00, -194.40
+[Sat Nov 23 19:13:32 2024] You land.
+[Sat Nov 23 19:13:32 2024] Your Location is -561.00, -5043.00, -194.40
+[Sat Nov 23 19:13:32 2024] You land.
+[Sat Nov 23 19:13:32 2024] Your Location is -561.00, -5043.00, -194.40
+[Sat Nov 23 19:13:32 2024] You land.
+[Sat Nov 23 19:13:32 2024] Your Location is -561.00, -5043.00, -194.40
+[Sat Nov 23 19:13:32 2024] You land.
+[Sat Nov 23 19:13:32 2024] Your Location is -561.00, -5043.00, -194.40
+[Sat Nov 23 19:13:32 2024] You land.
+[Sat Nov 23 19:13:32 2024] Welcome to EverQuest!
+[Sat Nov 23 19:13:32 2024] You have entered Kael Drakkel.
+[Sat Nov 23 19:13:32 2024] MESSAGE OF THE DAY: Welcome to Project 1999: Green! Please take the time to visit our forums and review the Play-Nice-Policy! Friendly reminder that Real Money Trading (RMT) including account, platinum or item buying/selling will result in a permanent ban. Dual boxing multiple characters at one time will also result in a ban. 
+[Sat Nov 23 19:13:32 2024] GUILD MOTD: empty
+[Sat Nov 23 19:13:37 2024] Your Location is -200.16, 3197.07, -394.02
+[Sat Nov 23 19:13:37 2024] Nejiranger tells the guild, 'empty'
+[Sat Nov 23 19:13:39 2024] Your Location is -223.30, 3195.20, -394.17
+[Sat Nov 23 19:13:40 2024] Your Location is -223.30, 3195.20, -394.28
+[Sat Nov 23 19:13:42 2024] Nejiranger tells the guild, 'empty'
+[Sat Nov 23 19:13:42 2024] Ouallada tells the guild, 'empty'
+[Sat Nov 23 19:13:43 2024] Your Location is -197.41, 3190.37, -393.67
+[Sat Nov 23 19:13:44 2024] Your Location is -151.09, 3174.87, -393.69
+[Sat Nov 23 19:13:45 2024] Your Location is -148.73, 3174.03, -393.86
+[Sat Nov 23 19:13:46 2024] Your Location is -148.73, 3174.03, -393.98
+[Sat Nov 23 19:13:48 2024] Christmastime tells the guild, 'empty'
+[Sat Nov 23 19:13:48 2024] Soulmender tells the guild, 'empty'
+[Sat Nov 23 19:13:50 2024] Plano tells the guild, 'empty'
+[Sat Nov 23 19:13:50 2024] Christmastime tells the guild, 'empty'
+[Sat Nov 23 19:13:52 2024] Nejiranger tells the guild,'empty'
+[Sat Nov 23 19:13:57 2024] Wellah tells the guild, 'empty'
+[Sat Nov 23 19:14:01 2024] Beginning to memorize Fufil`s Curtailing Chant...
+[Sat Nov 23 19:14:02 2024] You have finished memorizing Fufil`s Curtailing Chant.
+[Sat Nov 23 19:14:03 2024] Your Location is -143.31, 3198.18, -393.83
+[Sat Nov 23 19:14:03 2024] LOADING, PLEASE WAIT...
+[Sat Nov 23 19:14:12 2024] You have entered The Wakening Lands.
+[Sat Nov 23 19:14:12 2024] Plano tells the guild, 'empty'
+[Sat Nov 23 19:14:15 2024] Plano tells the guild, 'empty'
+[Sat Nov 23 19:14:16 2024] Your Location is -561.00, -5043.00, -194.40
+[Sat Nov 23 19:14:16 2024] You land.
