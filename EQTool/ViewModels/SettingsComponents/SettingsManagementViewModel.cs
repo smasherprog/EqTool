@@ -37,7 +37,7 @@ namespace EQTool.ViewModels.SettingsComponents
             // add a top level Triggers item
             var triggerTree = new TreeTrigger
             {
-                Name = "General",
+                Name = "Triggers",
                 IsSelected = true
             };
 
