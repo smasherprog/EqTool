@@ -26,31 +26,56 @@ namespace EQTool.ViewModels.SettingsComponents
                 Name = "General",
                 IsSelected = true
             });
+
+            //_TreeItems.Add(new TreeTrigger
+            //{
+            //    Name = "Triggers",
+            //    IsSelected = true
+            //});
+
+
+            // add a top level Triggers item
+            var triggerTree = new TreeTrigger
+            {
+                Name = "General",
+                IsSelected = true
+            };
+
+            for (int i = 10; i < 15; i++)
+            {
+                triggerTree.Children.Add(new TreeTrigger
+                {
+                    Name = i.ToString(),
+                });
+            }
+
+            _TreeItems.Add(triggerTree);
+
             foreach (var item in Enum.GetValues(typeof(Servers)).Cast<Servers>().Where(a => a != Servers.MaxServers && a != Servers.Quarm).ToList())
             {
                 var players = settings.Players.Where(a => a.Server == item).ToList();
-                var serv = new TreeServer
+                var treeServer = new TreeServer
                 {
                     Children = new ObservableCollection<TreeViewItemBase>(),
                     Name = item.ToString()
                 };
-                _TreeItems.Add(serv);
-                serv.Children.Add(new TreeGlobal
+                _TreeItems.Add(treeServer);
+                treeServer.Children.Add(new TreeGlobal
                 {
                     Name = "Global",
                     Children = new ObservableCollection<TreeTrigger>()
                 });
-                serv.Children.Add(new TreeZone
+                treeServer.Children.Add(new TreeZone
                 {
                     Name = "Zone(s)",
                     Children = new ObservableCollection<TreeTrigger>()
                 });
                 foreach (var p in players.OrderBy(a => a.Name))
                 {
-                    serv.Children.Add(new TreePlayer
+                    treeServer.Children.Add(new TreePlayer
                     {
                         Player = p,
-                        Parent = serv,
+                        Parent = treeServer,
                         Children = new ObservableCollection<TreeTrigger>()
                     });
                 }
