@@ -27,13 +27,6 @@ namespace EQTool.ViewModels.SettingsComponents
                 IsSelected = true
             });
 
-            //_TreeItems.Add(new TreeTrigger
-            //{
-            //    Name = "Triggers",
-            //    IsSelected = true
-            //});
-
-
             // add a top level Triggers item
             var triggerTree = new TreeTrigger
             {
