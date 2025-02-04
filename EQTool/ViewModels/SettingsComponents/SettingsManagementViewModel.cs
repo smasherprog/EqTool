@@ -31,8 +31,8 @@ namespace EQTool.ViewModels.SettingsComponents
             var triggerTree = new TreeTrigger
             {
                 Name = "Triggers",
-                IsSelected = true
             };
+            _TreeItems.Add(triggerTree);
 
             for (int i = 10; i < 15; i++)
             {
@@ -41,8 +41,6 @@ namespace EQTool.ViewModels.SettingsComponents
                     Name = i.ToString(),
                 });
             }
-
-            _TreeItems.Add(triggerTree);
 
             foreach (var item in Enum.GetValues(typeof(Servers)).Cast<Servers>().Where(a => a != Servers.MaxServers && a != Servers.Quarm).ToList())
             {
