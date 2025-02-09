@@ -8,7 +8,7 @@ using System.Text.RegularExpressions;
 using System.Web;
 using System.Windows;
 
-namespace EQTool.ViewModels
+namespace EQTool.ViewModels.MobInfoComponents
 {
     public class TestUriViewModel : INotifyPropertyChanged
     {
