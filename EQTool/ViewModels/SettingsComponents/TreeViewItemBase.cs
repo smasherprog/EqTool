@@ -12,6 +12,11 @@ namespace EQTool.ViewModels.SettingsComponents
         Global,
         Zone
     }
+    public enum MobInfoItemType
+    {
+        Mob,
+        Pet
+    }
 
     public abstract class TreeViewItemBase : INotifyPropertyChanged
     {

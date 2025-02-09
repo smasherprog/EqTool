@@ -1,4 +1,5 @@
 ﻿using EQTool.Models;
+using EQTool.ViewModels.MobInfoComponents;
 using EQToolShared.Enums;
 using EQToolShared.Map;
 using System;
@@ -236,16 +237,12 @@ namespace EQTool.ViewModels
             }
         }
 
-        private readonly string _cwd = System.IO.Directory.GetCurrentDirectory();
-        public string CurrentWorkingDirectory
-        {
-            get { return _cwd; }
-        }
+        public string CurrentWorkingDirectory { get; } = System.IO.Directory.GetCurrentDirectory();
 
         private string _GroupLeaderName = "None";
         public string GroupLeaderName
         {
-            get { return _GroupLeaderName; }
+            get => _GroupLeaderName;
             set { _GroupLeaderName = value; OnPropertyChanged(); }
         }
 
@@ -282,7 +279,7 @@ namespace EQTool.ViewModels
             }
         }
 
-        public bool IsLoggingDisabled => !_IsLoggingEnabled; 
+        public bool IsLoggingDisabled => !_IsLoggingEnabled;
         public bool MissingConfiguration => DoesNotHaveEqPath || IsLoggingDisabled;
         public bool NotMissingConfiguration => HasEqPath && IsLoggingEnabled;
         public bool HasCharName => !string.IsNullOrWhiteSpace(ActivePlayer?.Player?.Name);

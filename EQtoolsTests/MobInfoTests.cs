@@ -1,5 +1,6 @@
 ﻿using EQTool.Services.Parsing;
 using EQTool.ViewModels;
+using EQTool.ViewModels.MobInfoComponents;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Linq;
@@ -481,7 +482,7 @@ High MR, Summons
             Assert.IsFalse(shouldremove);
             shouldremove = DPSWindowViewModel.ShouldRemove(now, now.AddSeconds(-41), now.AddSeconds(-60), 1);
             Assert.IsTrue(shouldremove);
-        
+
             //shouldremove = DPSWindowViewModel.ShouldRemove(now, null, now.AddSeconds(-59), 1);
             //Assert.IsFalse(shouldremove);
             //shouldremove = DPSWindowViewModel.ShouldRemove(now, null, now.AddSeconds(-61), 1);

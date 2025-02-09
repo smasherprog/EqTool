@@ -164,13 +164,18 @@ namespace EQTool.Models
     {
         public enum PetIncident
         {
-            NONE        = 0b_0000_0000,
-            LEADER      = 0b_0000_0001,
-            RECLAIMED   = 0b_0000_0010,
-            DEATH       = 0b_0000_0100,
-            CREATION    = 0b_0000_1000,
-            GETLOST     = 0b_0001_0000,
-            ANY         = NONE | LEADER | RECLAIMED | DEATH | CREATION | GETLOST
+            NONE,
+            LEADER,
+            RECLAIMED,
+            DEATH,
+            CREATION,
+            GETLOST,
+            PETATTACK,
+            PETLIFETAP,
+            PETFOLLOWME,
+            SITSTAND,
+            GUARD,
+            ANY,
         }
 
         public string PetName { get; set; }

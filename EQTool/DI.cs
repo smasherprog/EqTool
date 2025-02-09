@@ -45,8 +45,10 @@ namespace EQTool
             _ = builder.RegisterType<Services.SpellIcons>().AsSelf().SingleInstance();
             _ = builder.RegisterType<Services.ParseSpells_spells_us>().AsSelf().SingleInstance();
             _ = builder.RegisterType<ViewModels.SettingsWindowViewModel>().AsSelf().SingleInstance();
-            _ = builder.RegisterType<ViewModels.PetViewModel>().AsSelf().SingleInstance();
-            _ = builder.RegisterType<Models.PlayerPet>().AsSelf().SingleInstance();
+            _ = builder.RegisterType<ViewModels.MobInfoComponents.PetViewModel>().AsSelf().SingleInstance();
+            _ = builder.RegisterType<ViewModels.MobInfoComponents.MobInfoViewModel>().AsSelf().SingleInstance();
+            _ = builder.RegisterType<ViewModels.MobInfoComponents.MobInfoManagementViewModel>().AsSelf().SingleInstance();
+
             _ = builder.RegisterType<Models.EQSpells>().AsSelf().SingleInstance();
             _ = builder.RegisterType<ViewModels.ActivePlayer>().AsSelf().SingleInstance();
             _ = builder.RegisterType<ViewModels.SpellWindowViewModel>().AsSelf().SingleInstance();
@@ -69,6 +71,8 @@ namespace EQTool
             _ = builder.RegisterType<UIRunner>().AsSelf().SingleInstance();
             _ = builder.RegisterType<UpdateRunner>().AsSelf().SingleInstance();
             _ = builder.RegisterType<Services.IO.FileReader>().As<Services.IO.IFileReader>().SingleInstance();
+
+            _ = builder.RegisterType<Pets>().AsSelf().SingleInstance();
 
             return builder.Build();
         }

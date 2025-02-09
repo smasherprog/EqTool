@@ -330,6 +330,7 @@
     <Compile Include="Models\FightHistory.cs" />
     <Compile Include="Models\Pets.cs" />
     <Compile Include="Services\BinarySerializer.cs" />
+    <Compile Include="Services\Handlers\ConHandler.cs" />
     <Compile Include="Services\IO\FileReader.cs" />
     <Compile Include="Services\DebugOutput.cs" />
     <Compile Include="Services\Handlers\GroupLeaderHandler.cs" />
@@ -403,6 +404,12 @@
     <Compile Include="Services\Parsing\YouZonedParser.cs" />
     <Compile Include="UI\Console.xaml.cs">
       <DependentUpon>Console.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\MobInfoComponents\MobComponent.xaml.cs">
+      <DependentUpon>MobComponent.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\MobInfoComponents\PetComponent.xaml.cs">
+      <DependentUpon>PetComponent.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\SettingManagement.xaml.cs">
       <DependentUpon>SettingManagement.xaml</DependentUpon>
@@ -498,7 +505,8 @@
     <Compile Include="ViewModels\ActivePlayerInfo.cs" />
     <Compile Include="Services\TimersService.cs" />
     <Compile Include="ViewModels\ConsoleViewModel.cs" />
-    <Compile Include="ViewModels\PetViewModel.cs" />
+    <Compile Include="ViewModels\MobInfoComponents\MobInfoManagementViewModel.cs" />
+    <Compile Include="ViewModels\MobInfoComponents\PetViewModel.cs" />
     <Compile Include="ViewModels\SettingsComponents\SettingsGeneralViewModel.cs" />
     <Compile Include="ViewModels\SettingsComponents\SettingsPlayerViewModel.cs" />
     <Compile Include="ViewModels\SettingsComponents\SettingsServerViewModel.cs" />
@@ -516,7 +524,7 @@
     <Compile Include="ViewModels\SpellWindow\CounterViewModel.cs" />
     <Compile Include="ViewModels\SpellWindow\TimerViewModel.cs" />
     <Compile Include="ViewModels\ZoneViewModel.cs" />
-    <Compile Include="ViewModels\MobInfoViewModel.cs" />
+    <Compile Include="ViewModels\MobInfoComponents\MobInfoViewModel.cs" />
     <Compile Include="ViewModels\MapViewModel.cs" />
     <Compile Include="ViewModels\DPSWindowViewModel.cs" />
     <Compile Include="ViewModels\SpellWindowViewModel.cs" />
@@ -543,6 +551,14 @@
     </Compile>
     <Compile Include="UI\BaseSaveStateWindow.cs" />
     <Page Include="UI\Console.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\MobInfoComponents\MobComponent.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\MobInfoComponents\PetComponent.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1135,5 +1151,6 @@
   <ItemGroup>
     <Resource Include="ILLink\ILLink.Descriptors.LibraryBuild.xml" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
