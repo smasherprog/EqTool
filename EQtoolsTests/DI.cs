@@ -74,6 +74,10 @@ namespace EQtoolsTests
             _ = builder.RegisterType<EQTool.Models.EQSpells>().AsSelf().SingleInstance();
             _ = builder.RegisterType<EQTool.ViewModels.ActivePlayer>().AsSelf().SingleInstance();
             _ = builder.RegisterType<EQTool.ViewModels.SpellWindowViewModel>().AsSelf().SingleInstance();
+            _ = builder.RegisterType<EQTool.ViewModels.MobInfoComponents.PetViewModel>().AsSelf().SingleInstance();
+            _ = builder.RegisterType<EQTool.ViewModels.MobInfoComponents.MobInfoViewModel>().AsSelf().SingleInstance();
+            _ = builder.RegisterType<EQTool.ViewModels.MobInfoComponents.MobInfoManagementViewModel>().AsSelf().SingleInstance();
+
             _ = builder.RegisterType<EQTool.Services.LogParser>().AsSelf().SingleInstance();
             _ = builder.RegisterType<EQTool.ViewModels.DPSWindowViewModel>().AsSelf().SingleInstance();
             _ = builder.RegisterType<EQToolShared.Discord.DiscordAuctionParse>().AsSelf().SingleInstance();
@@ -81,6 +85,8 @@ namespace EQtoolsTests
             _ = builder.RegisterType<FightHistory>().AsSelf().SingleInstance();
             _ = builder.RegisterType<SpellDurations>().AsSelf().SingleInstance();
             _ = builder.RegisterType<EQTool.Services.IO.FileReader>().As<EQTool.Services.IO.IFileReader>().SingleInstance();
+
+            _ = builder.RegisterType<Pets>().AsSelf().SingleInstance();
 
             var b = builder.Build();
             var settings = b.Resolve<EQTool.Models.EQToolSettings>();

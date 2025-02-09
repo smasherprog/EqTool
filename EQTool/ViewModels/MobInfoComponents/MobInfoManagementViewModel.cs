@@ -13,7 +13,6 @@ namespace EQTool.ViewModels.MobInfoComponents
         public MobInfoManagementViewModel(UserComponentSettingsManagementFactory userComponentFactory)
         {
             this.userComponentFactory = userComponentFactory;
-            UserControl = userComponentFactory.CreateComponent(_MobInfoItemType);
         }
 
         private MobInfoItemType _MobInfoItemType = SettingsComponents.MobInfoItemType.Mob;
@@ -33,7 +32,15 @@ namespace EQTool.ViewModels.MobInfoComponents
 
         public UserControl UserControl
         {
-            get => _userControl;
+            get
+            {
+                if (_userControl == null)
+                {
+                    _userControl = userComponentFactory.CreateComponent(_MobInfoItemType);
+                }
+
+                return _userControl;
+            }
             set
             {
                 _userControl = value;
