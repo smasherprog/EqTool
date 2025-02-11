@@ -19,6 +19,7 @@ namespace EQToolApis.Controllers
     public class ExceptionReportController : ControllerBase
     {
         private readonly EQToolContext dbcontext;
+        private readonly List<string> allowedprefix = ["P99", "Linux", "Beta"];
         public ExceptionReportController(EQToolContext dbcontext)
         {
             this.dbcontext = dbcontext;
@@ -28,16 +29,20 @@ namespace EQToolApis.Controllers
         public void Update([FromBody] ExceptionRequest model)
         {
             var ip = HttpContext.Connection.RemoteIpAddress?.ToString();
-            _ = dbcontext.EqToolExceptions.Add(new DB.Models.EqToolException
+
+            if (allowedprefix.Contains(model.Version) || model.Server == Servers.Quarm)
             {
-                Exception = model.Message,
-                Version = model.Version,
-                DateCreated = DateTime.UtcNow,
-                EventType = model.EventType,
-                IpAddress = ip,
-                BuildType = model.BuildType,
-                Server = model.Server
-            });
+                _ = dbcontext.EqToolExceptions.Add(new DB.Models.EqToolException
+                {
+                    Exception = model.Message,
+                    Version = model.Version,
+                    DateCreated = DateTime.UtcNow,
+                    EventType = model.EventType,
+                    IpAddress = ip,
+                    BuildType = model.BuildType,
+                    Server = model.Server
+                });
+            }
 
             _ = dbcontext.SaveChanges();
         }
