@@ -98,7 +98,10 @@ namespace EQTool.Models
         public Pets(EQSpells eqSpells)
         {
             this.eqSpells = eqSpells;
-            LoadPetSpells();
+            if (eqSpells.AllSpells?.Any() == true)
+            {
+                LoadPetSpells();
+            }
         }
 
         // returns dictionary of PetSpell objects, key = spell name, value = corresponding PetSpell object

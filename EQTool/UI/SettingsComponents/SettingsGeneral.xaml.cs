@@ -166,7 +166,13 @@ namespace EQTool.UI.SettingsComponents
                         {
                             TryUpdateSettings();
                             TryCheckLoggingEnabled();
+                            SaveConfig();
+                            if (SettingsWindowData.IsLoggingEnabled)
+                            {
+                                _ = System.Windows.Forms.MessageBox.Show("Please, close and re open Pigparse in the system tray for settings to take effect!", "Message");
+                            }
                         });
+
                     }
                     else
                     {
@@ -211,6 +217,11 @@ namespace EQTool.UI.SettingsComponents
             catch { }
             TryUpdateSettings();
             TryCheckLoggingEnabled();
+            SaveConfig();
+            if (SettingsWindowData.IsLoggingEnabled)
+            {
+                _ = System.Windows.Forms.MessageBox.Show("Please, close and re open Pigparse in the system tray for settings to take effect!", "Message");
+            }
         }
 
         private void Savesettings(object sender, RoutedEventArgs e)
