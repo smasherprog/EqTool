@@ -1,5 +1,4 @@
-﻿using EQTool.Services;
-using EQToolShared.Enums;
+﻿using EQToolShared.Enums;
 using EQToolShared.Map;
 using System;
 using System.Collections.Generic;
@@ -84,16 +83,6 @@ namespace EQTool.Models
         public string AttackerName { get; set; }
         public int DamageDone { get; set; }
         public string DamageType { get; set; }
-    }
-
-    //
-    // Event class to carry info from UserDefinedTriggerParser to interested listeners
-    //
-    public class UserDefinedTriggerEvent : BaseLogParseEvent
-    {
-        // we could carry just the TriggerID, and force listeners to search the trigger list using the TriggerID
-        // to find the desired trigger.  OR - let's just pass the whole trigger and eliminate that downstream search
-        public UserDefinedTrigger Trigger { get; set; }
     }
 
     public class ConEvent : BaseLogParseEvent

@@ -370,7 +370,6 @@
     <Compile Include="Services\Parsing\RingWarParser.cs" />
     <Compile Include="Services\Parsing\SpellCastOnOtherParser.cs" />
     <Compile Include="Services\Parsing\MendWoundsParser.cs" />
-    <Compile Include="Services\Parsing\UserDefinedTriggerParser.cs" />
     <Compile Include="Services\Parsing\YouFinishCasting_SpellCastOnYou_Parser.cs" />
     <Compile Include="Services\Parsing\YouBeginCastingParser.cs" />
     <Compile Include="Services\Parsing\YouHaveFinishedMemorizingParser.cs" />

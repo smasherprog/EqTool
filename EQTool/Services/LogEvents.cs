@@ -57,7 +57,7 @@ namespace EQTool.Services
         {
             CommsEvent?.Invoke(this, e);
         }
-        
+
         public event EventHandler<PetEvent> PetEvent;
         public void Handle(PetEvent e)
         {
@@ -288,15 +288,6 @@ namespace EQTool.Services
         public void Handle(RingWarEvent e)
         {
             RingWarEvent?.Invoke(this, e);
-        }
-
-
-
-        // this should be the final eventhandler definition!
-        public event EventHandler<UserDefinedTriggerEvent> UserDefinedTriggerEvent;
-        public void Handle(UserDefinedTriggerEvent e)
-        {
-            UserDefinedTriggerEvent?.Invoke(this, e);
         }
     }
 }
