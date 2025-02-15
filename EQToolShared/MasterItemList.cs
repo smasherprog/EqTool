@@ -11,7 +11,8 @@ namespace EQToolShared
         public static List<char> ValidChars = new List<char>();
         static MasterItemList()
         {
-            ItemsFastLoop = Properties.Resources.MasterItemList.Split(',').Distinct().ToList();
+            var temp = Properties.Resources.MasterItemList.Split(',');
+            ItemsFastLoop = temp.Distinct().OrderBy(s => !char.IsDigit(s.FirstOrDefault())).ThenByDescending(a => a.Length).ToList();
             ItemsFastLoopup = new HashSet<string>(ItemsFastLoop, StringComparer.OrdinalIgnoreCase);
             for (var i = 0; i < ItemsFastLoop.Count; i++)
             {
