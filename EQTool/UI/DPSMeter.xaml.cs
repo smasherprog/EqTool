@@ -57,7 +57,7 @@ namespace EQTool.UI
             var zone = activePlayer?.Player?.Zone;
             if (!string.IsNullOrWhiteSpace(zone) && Zones.ZoneInfoMap.TryGetValue(zone, out var fzone))
             {
-                if (fzone.NotableNPCs.Any(a => a == e.Victim))
+                if (fzone.NotableNPCs.Any(a => a == e.Victim) && !Zones.KaelFactionMobs.Any(a => a == e.Victim))
                 {
                     copytoclipboard(e.Victim);
                 }

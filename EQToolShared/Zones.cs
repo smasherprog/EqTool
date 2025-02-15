@@ -1026,6 +1026,19 @@ namespace EQToolShared
                 NotableNPCs = new List<string>()
                 {
                     "The Avatar of War","The Statue of Rallos Zek","Derakor the Vindicator","King Tormax","Bjrakor the Cold","Captain Bvellos","Gkrean Prophet of Tallon","Semkak Prophet of Vallon","Gorul Longshanks","Keldor Dek`Torek","Noble Helssen","Slaggak the Trainer","Staff Sergeant Drioc","Vkjor","Wenglawks Kkeak"
+                    ,"Bygloirn Omorden",
+                        "Dagron Stonecutter",
+                        "Barlek Stonefist",
+                        "Gragek Mjlorkigar",
+                        "Kelenek Bluadfeth",
+                        "Veldern Blackhammer",
+                        "Kragek Thunderforge",
+                        "Stoem Lekbar",
+                        "Bjarorm Mjlorn",
+                        "Ulkar Jollkarek",
+                        "Vylleam Vyaeltor",
+                        "Jaglorm Ygorr",
+                        "Yeeldan Spiritcaller"
                 },
                 RespawnTime = new TimeSpan(0, 28, 0),
                 NpcSpawnTimes = new List<NpcSpawnTime>
