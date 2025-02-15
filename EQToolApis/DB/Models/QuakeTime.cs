@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EQToolApis.DB.Models
 {
-    [PrimaryKey(nameof(QuakeTimeId))]
+    [PrimaryKey(nameof(QuakeTimeId)), Index(nameof(DateTime))]
     public class QuakeTime
     {
         public int QuakeTimeId { get; set; }
