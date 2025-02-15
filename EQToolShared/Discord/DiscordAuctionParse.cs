@@ -22,7 +22,7 @@ namespace EQToolShared.Discord
 
     public class DiscordAuctionParse
     {
-        private bool IsAuctionTyoe(string input)
+        private bool IsAuctionType(string input)
         {
             var searchstring = "wts";
             var searchstringindex = input.IndexOf(searchstring, StringComparison.OrdinalIgnoreCase);
@@ -49,7 +49,7 @@ namespace EQToolShared.Discord
 
         private bool isPricing(string input, int i)
         {
-            return (input[i] == '.' || char.ToLower(input[i]) == 'k' || char.ToLower(input[i]) == 'p' || char.ToLower(input[i]) == ' ' || char.IsDigit(input[i]));
+            return input[i] == '.' || char.ToLower(input[i]) == 'k' || char.ToLower(input[i]) == 'p' || char.ToLower(input[i]) == ' ' || char.IsDigit(input[i]);
         }
 
         private readonly List<string> IgnoreItemsList = new List<string>(){
@@ -71,7 +71,7 @@ namespace EQToolShared.Discord
             var pricestartindex = -1;
             var itemstartindex = -1;
             var itemname = string.Empty;
-            foreach (var item in MasterItemList.Items)
+            foreach (var item in MasterItemList.ItemsFastLoop)
             {
                 itembreakindex = input.IndexOf(item, StringComparison.OrdinalIgnoreCase);
                 if (itembreakindex != -1)
@@ -204,7 +204,11 @@ namespace EQToolShared.Discord
 
         public Auction Parse(string input)
         {
-            if (string.IsNullOrWhiteSpace(input) || input.Length > 1000) return null;
+            if (string.IsNullOrWhiteSpace(input) || input.Length > 1000)
+            {
+                return null;
+            }
+
             var ret = new Auction();
             var searchstring = " auctions, '";
             var searchstringindex = input.IndexOf(searchstring, StringComparison.OrdinalIgnoreCase);
@@ -215,7 +219,7 @@ namespace EQToolShared.Discord
             ret.Player = input.Substring(0, searchstringindex).Trim();
             input = input.Substring(searchstringindex + searchstring.Length);
             //replace all instances of x15   or    x4 
-            string pattern = @"x\d+";
+            var pattern = @"x\d+";
             input = Regex.Replace(input, pattern, string.Empty);
 
             //replace all instances of 15x   or    4x
@@ -224,7 +228,7 @@ namespace EQToolShared.Discord
 
             //replace all instances of (got 2)    or    (got a few) 
             pattern = @"\((?!Azia|Beza)[^\)]*\)";
-            string result = Regex.Replace(input, pattern, string.Empty);
+            _ = Regex.Replace(input, pattern, string.Empty);
 
             //replace all instances of x 4     or   x 7
             pattern = @"x \d+";
@@ -242,6 +246,7 @@ namespace EQToolShared.Discord
             }
 
             var tempstring = string.Empty;
+            input = input.Replace("Talisen, Bow of the Trailblazer", "TTTTT");//only item in game with a comma :(
             for (var i = 0; i < input.Length; i++)
             {
                 if (MasterItemList.ValidChars.Contains(input[i]) || char.IsDigit(input[i]) || input[i] == ' ')
@@ -253,18 +258,18 @@ namespace EQToolShared.Discord
                     tempstring += ' ';
                 }
             }
-
+            tempstring = tempstring.Replace("TTTTT", "Talisen, Bow of the Trailblazer");
             input = tempstring.Replace(" - ", " ");
 
-            var auctiontype = IsAuctionTyoe(input);
+            var auctiontype = IsAuctionType(input);
             if (!auctiontype)
             {
                 return null;
             }
             input = input.Trim('\'');
-
-            NextItem item = null;
             var counter = 0;
+
+            NextItem item;
             do
             {
                 item = GetItem(input);
@@ -272,7 +277,7 @@ namespace EQToolShared.Discord
                 {
                     input = item.Input;
                     input = Trim(input);
-                    if (MasterItemList.Items.Contains(item.Name))
+                    if (MasterItemList.ItemsFastLoopup.Contains(item.Name))
                     {
                         ret.Items.Add(new Auctionitem
                         {

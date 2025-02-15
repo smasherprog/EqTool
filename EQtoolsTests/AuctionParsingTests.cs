@@ -57,6 +57,20 @@ namespace EQtoolsTests
         }
 
         [TestMethod]
+        public void FixTalisen()
+        {
+            var result = discordAuctionParse.Parse("Fpwar auctions, 'WTB Talisen, Bow of the Trailblazer 200pp/Nathsar Helm 400pp'");
+            Assert.AreEqual("Fpwar", result.Player);
+            var item = result.Items.FirstOrDefault(a => a.Name == "Talisen, Bow of the Trailblazer");
+            Assert.AreEqual(AuctionType.WTB, item.AuctionType);
+            Assert.AreEqual(200, item.Price);
+
+            item = result.Items.FirstOrDefault(a => a.Name == "Nathsar Helm");
+            Assert.AreEqual(AuctionType.WTB, item.AuctionType);
+            Assert.AreEqual(400, item.Price);
+        }
+
+        [TestMethod]
         public void Parse4()
         {
             var result = discordAuctionParse.Parse("Darkinvader auctions, 'WTS Skyfury Scimitar / Othmir Fur x15 / Black Ice Leggings / Spell: Focus of Spirit / Spell: Death Pact / Crustacean Shell Gauntlets / Crustacean Shell Shield'");
