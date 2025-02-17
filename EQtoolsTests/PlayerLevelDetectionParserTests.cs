@@ -4,6 +4,7 @@ using EQTool.Services;
 using EQToolShared.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Linq;
 
 namespace EQtoolsTests
 {
@@ -11,7 +12,7 @@ namespace EQtoolsTests
     public class PlayerLevelDetectionParserTests : BaseTestClass
     {
         private readonly LogParser logParser;
-
+        private const string YouBeginCasting = "You begin casting ";
         public PlayerLevelDetectionParserTests()
         {
             logParser = container.Resolve<LogParser>();
@@ -31,12 +32,57 @@ namespace EQtoolsTests
 
         [TestMethod]
         public void TestLevelClassDetectionThroughSpells()
-        {
-            _ = container.Resolve<EQSpells>();
+        { 
             var line = "You have finished memorizing Aegolism.";
             logParser.Push(line, DateTime.Now);
             Assert.AreEqual(player.Player.Level, 60);
             Assert.AreEqual(player.Player.PlayerClass, PlayerClasses.Cleric);
+        }
+
+        [TestMethod]
+        public void TestLevelClassDetectionThroughCasting()
+        {
+            var spells = container.Resolve<EQSpells>();
+            var s = spells.AllSpells.FirstOrDefault(a => a.name == "Aegolism"); 
+            var line = YouBeginCasting + "Aegolism";
+            logParser.Push(line, DateTime.Now);
+            Assert.AreEqual(player.Player.Level, 60);
+            Assert.AreEqual(player.Player.PlayerClass, PlayerClasses.Cleric);
+        }
+
+        [TestMethod]
+        public void TestLevelClassDetectionThroughCasting_DemiLich()
+        {
+            var spells = container.Resolve<EQSpells>();
+            var s = spells.AllSpells.FirstOrDefault(a => a.name == "Demi Lich");
+            var line = YouBeginCasting + "Demi Lich";
+            logParser.Push(line, DateTime.Now);
+            Assert.AreEqual(player.Player.Level, 60);
+            Assert.AreEqual(player.Player.PlayerClass, PlayerClasses.Necromancer);
+        }
+
+        [TestMethod]
+        public void TestLevelClassDetectionThroughCasting_EnchIllusion()
+        {
+            var spells = container.Resolve<EQSpells>();
+            var s = spells.AllSpells.FirstOrDefault(a => a.name == "Illusion: Dark Elf");
+            var line = YouBeginCasting + "Shallow Breath"; 
+            logParser.Push(line, DateTime.Now);
+            line = YouBeginCasting + "Illusion: Dark Elf"; 
+            logParser.Push(line, DateTime.Now);
+            Assert.AreEqual(player.Player.Level, 12);
+            Assert.AreEqual(player.Player.PlayerClass, PlayerClasses.Enchanter);
+        }
+
+        [TestMethod]
+        public void TestLevelClassDetectionThroughCasting_EnchIllusion_ClassWarrior()
+        {
+            var spells = container.Resolve<EQSpells>();
+            var s = spells.AllSpells.FirstOrDefault(a => a.name == "Illusion: Dark Elf");
+            var line = YouBeginCasting + "Illusion: Dark Elf";
+            player.Player.PlayerClass = PlayerClasses.Warrior;
+            logParser.Push(line, DateTime.Now); 
+            Assert.AreEqual(player.Player.PlayerClass, PlayerClasses.Warrior);
         }
 
         [TestMethod]

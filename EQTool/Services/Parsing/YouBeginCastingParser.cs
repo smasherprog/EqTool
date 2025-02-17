@@ -1,6 +1,7 @@
 ﻿using EQTool.Models;
 using EQTool.ViewModels;
 using System;
+using System.Linq;
 
 namespace EQTool.Services.Parsing
 {
@@ -31,6 +32,23 @@ namespace EQTool.Services.Parsing
                 {
                     var foundspell = spellDurations.MatchClosestLevelToSpell(foundspells, timestamp);
                     debugOutput.WriteLine($"{foundspell.name} Message: {line}", OutputType.Spells);
+                    if (foundspell.Classes.Count == 1)
+                    {
+                        if (activePlayer.Player.PlayerClass == EQToolShared.Enums.PlayerClasses.Enchanter &&
+                            foundspell.Classes.ContainsKey(EQToolShared.Enums.PlayerClasses.Enchanter))
+                        {
+                            logEvents.Handle(new PlayerLevelDetectionEvent { TimeStamp = timestamp, LineCounter = lineCounter, Line = line, PlayerLevel = foundspell.Classes.FirstOrDefault().Value });
+                        }
+                        else
+                        {
+                            if (foundspell.DescrNumber != DescrNumber.IllusionPlayer && foundspell.DescrNumber != DescrNumber.IllusionOther)
+                            {
+                                logEvents.Handle(new ClassDetectedEvent { TimeStamp = timestamp, LineCounter = lineCounter, Line = line, PlayerClass = foundspell.Classes.FirstOrDefault().Key });
+                            }
+
+                            logEvents.Handle(new PlayerLevelDetectionEvent { TimeStamp = timestamp, LineCounter = lineCounter, Line = line, PlayerLevel = foundspell.Classes.FirstOrDefault().Value });
+                        }
+                    }
                     logEvents.Handle(new YouBeginCastingEvent { Line = line, LineCounter = lineCounter, TimeStamp = timestamp, Spell = foundspell });
                     return true;
                 }
