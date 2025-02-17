@@ -17,17 +17,7 @@ namespace EQtoolsTests
         {
             var format = "ddd MMM dd HH:mm:ss yyyy";
             return "[" + d.ToString(format) + "] " + msg;
-        }
-
-        [TestMethod]
-        public void ParseEnterWorld()
-        {
-            var enterworldparser = container.Resolve<EnterWorldParser>();
-            Assert.IsFalse(enterworldparser.HasEnteredWorld("take about 5 more seconds to prepare your camp."));
-            Assert.IsFalse(enterworldparser.HasEnteredWorld("45 2023] Welcome to EverQuest!"));
-            Assert.IsFalse(enterworldparser.HasEnteredWorld("You have entered Plane of Mischief."));
-            Assert.IsTrue(enterworldparser.HasEnteredWorld("Welcome to EverQuest!"));
-        }
+        } 
 
         private const string ResponseFromServer = @"{{Disambig3|[[Orc Legionnaire (Crushbone)]] (Faydwer Version)}}
 {{Disambig3|[[Orc Legionnaire (Deathfist)]] (Antonica Version)}}";

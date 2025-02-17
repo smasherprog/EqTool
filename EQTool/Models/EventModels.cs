@@ -50,8 +50,7 @@ namespace EQTool.Models
         public PlayerInfo PlayerInfo { get; set; }
     }
     public class WhoEvent : BaseLogParseEvent { }
-    public class CampEvent : BaseLogParseEvent { }
-    public class EnteredWorldEvent : BaseLogParseEvent { }
+    public class CampEvent : BaseLogParseEvent { } 
     public class QuakeEvent : BaseLogParseEvent { }
     public class RingWarEvent : BaseLogParseEvent
     {
@@ -213,6 +212,8 @@ namespace EQTool.Models
         public bool isYou { get; set; }
     }
 
+    //this event will be called BEFORE the player data is swapped out. Subscribe to this event if you need to do things before the player data is changed.
+    //If there is no previous player, then this will not be called.
     public class PayerChangedEvent : BaseLogParseEvent
     {
     }

@@ -98,13 +98,7 @@ namespace EQTool.Services
         public void Handle(WhoEvent e)
         {
             WhoEvent?.Invoke(this, e);
-        }
-
-        public event EventHandler<EnteredWorldEvent> EnteredWorldEvent;
-        public void Handle(EnteredWorldEvent e)
-        {
-            EnteredWorldEvent?.Invoke(this, e);
-        }
+        } 
 
         public event EventHandler<EnrageEvent> EnrageEvent;
         public void Handle(EnrageEvent e)

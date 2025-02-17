@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Windows.Shapes;
 
 namespace EQTool.Services.IO
 {
@@ -37,7 +38,6 @@ namespace EQTool.Services.IO
                 newPlayerEventEmitted = true;
                 Debug.WriteLine($"Player Switched or new Player detected {filepath} {fileinfo.Length}");
                 LastLogReadOffset = fileinfo.Length;
-                logEvents.Handle(new PayerChangedEvent { TimeStamp = DateTime.Now });
             }
             var linelist = new List<string>();
             using (var stream = new FileStream(filepath, FileMode.Open, FileAccess.Read, FileShare.ReadWrite))
@@ -51,15 +51,23 @@ namespace EQTool.Services.IO
                         gobackBytes = 0;
                     }
                     _ = stream.Seek((long)gobackBytes, SeekOrigin.Begin);
+                    var templinelist = new List<string>();
                     while (!reader.EndOfStream)
                     {
                         var line = reader.ReadLine();
-                        if (line.IndexOf("Welcome to EverQuest!") != -1)
+                        templinelist.Add(line);
+                    }
+                    var lastfoundindex = 0;
+                    for (var lineindex = 0; lineindex < templinelist.Count; lineindex++)
+                    {
+                        var index = templinelist[lineindex].IndexOf("Welcome to EverQuest!");
+                        if (index != -1)
                         {
-                            linelist.Add(line);
-                            break;
+                            lastfoundindex = lineindex;
                         }
                     }
+
+                    linelist = templinelist.GetRange(lastfoundindex, templinelist.Count - lastfoundindex);
                 }
                 else
                 {

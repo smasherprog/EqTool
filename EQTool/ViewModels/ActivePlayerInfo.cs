@@ -1,4 +1,5 @@
 ﻿using EQTool.Models;
+using EQTool.Services;
 using EQToolShared.Enums;
 using System;
 using System.ComponentModel;
@@ -12,9 +13,11 @@ namespace EQTool.ViewModels
     public class ActivePlayer : INotifyPropertyChanged
     {
         private readonly EQToolSettings settings;
-        public ActivePlayer(EQToolSettings settings)
+        private readonly LogEvents logEvents;
+        public ActivePlayer(EQToolSettings settings, LogEvents logEvents)
         {
-            this.settings = settings;
+            this.settings = settings; 
+            this.logEvents = logEvents;
         }
 
         public static PlayerInfo GetInfoFromString(string logfilenbame)
@@ -65,14 +68,21 @@ namespace EQTool.ViewModels
 
                     if (tempplayer == null)
                     {
-                        players.Add(parseinfo);
+                        players.Add(parseinfo); 
                     }
                     else
                     {
                         tempplayer.Server = parseinfo.Server;
                     }
-
+                    if (Player != null && tempplayer != Player)
+                    {
+                        logEvents.Handle(new PayerChangedEvent { TimeStamp = DateTime.Now });
+                    }
                     playerchanged = tempplayer != Player;
+                    if(tempplayer == null)
+                    {
+                        tempplayer = parseinfo;
+                    }
                     Player = tempplayer;
                     if (Player != null)
                         Player.LastUpdate = DateTime.Now;

@@ -3,23 +3,27 @@ using EQTool.ViewModels;
 
 namespace EQTool.Services.Handlers
 {
-    public class EnterWorldHandler : BaseHandler
+    public class WelcomeHandler : BaseHandler
     {
         private readonly SpellWindowViewModel spellWindowViewModel;
 
-        public EnterWorldHandler(SpellWindowViewModel spellWindowViewModel, BaseHandlerData baseHandlerData) : base(baseHandlerData)
+        public WelcomeHandler(SpellWindowViewModel spellWindowViewModel, BaseHandlerData baseHandlerData) : base(baseHandlerData)
         {
             this.spellWindowViewModel = spellWindowViewModel;
-            logEvents.EnteredWorldEvent += LogEvents_EnteredWorldEvent;
+            logEvents.WelcomeEvent += LogEvents_WelcomeEvent;
         }
 
-        private void LogEvents_EnteredWorldEvent(object sender, EnteredWorldEvent e)
+        private void LogEvents_WelcomeEvent(object sender, WelcomeEvent e)
         {
-            spellWindowViewModel.ClearYouSpells();
-            if (activePlayer.Player != null)
+            this.appDispatcher.DispatchUI(() =>
             {
-                spellWindowViewModel.AddSavedYouSpells(activePlayer.Player.YouSpells);
-            }
-        }
+                spellWindowViewModel.ClearYouSpells();
+                if (activePlayer.Player != null)
+                {
+                    spellWindowViewModel.AddSavedYouSpells(activePlayer.Player.YouSpells);
+                    activePlayer.Player.YouSpells.Clear();
+                }
+            });
+        } 
     }
 }

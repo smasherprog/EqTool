@@ -19,9 +19,8 @@ namespace EQTool.Services.Handlers
                 appDispatcher.DispatchUI(() =>
                 {
                     activePlayer.Player.PlayerClass = e.PlayerClass;
-                });
-
-                toolSettingsLoad.Save(eQToolSettings);
+                    toolSettingsLoad.Save(eQToolSettings);
+                }); 
             }
         }
     }

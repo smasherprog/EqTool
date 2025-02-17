@@ -331,6 +331,7 @@
     <Compile Include="Models\Pets.cs" />
     <Compile Include="Services\BinarySerializer.cs" />
     <Compile Include="Services\Handlers\ConHandler.cs" />
+    <Compile Include="Services\Handlers\EnterWorldHandler.cs" />
     <Compile Include="Services\IO\FileReader.cs" />
     <Compile Include="Services\DebugOutput.cs" />
     <Compile Include="Services\Handlers\GroupLeaderHandler.cs" />
@@ -353,7 +354,6 @@
     <Compile Include="Services\Handlers\SpellCastOnOtherHandler.cs" />
     <Compile Include="Services\Handlers\SpellWornOffOtherHandler.cs" />
     <Compile Include="Services\Handlers\SpellWornOffSelfHandler.cs" />
-    <Compile Include="Services\Handlers\EnterWorldHandler.cs" />
     <Compile Include="Services\Handlers\CampHandler.cs" />
     <Compile Include="Services\Handlers\DeathTouchHandler.cs" />
     <Compile Include="Services\Handlers\RandomRollHandler.cs" />
@@ -376,6 +376,7 @@
     <Compile Include="Services\Parsing\YourSpellInterupptedParser.cs" />
     <Compile Include="Services\Parsing\LineParser.cs" />
     <Compile Include="Services\Parsing\FactionParser.cs" />
+    <Compile Include="Services\SavePlayerStateService.cs" />
     <Compile Include="Services\UIRunner.cs" />
     <Compile Include="Services\UpdateRunner.cs" />
     <Compile Include="Services\UserDefinedTrigger.cs" />
@@ -475,7 +476,6 @@
     <Compile Include="Services\Handlers\CompleteHealCommsHandler.cs" />
     <Compile Include="Services\Parsing\QuakeParser.cs" />
     <Compile Include="Services\Parsing\Helpers\LogFileDateTimeParse.cs" />
-    <Compile Include="Services\Parsing\EnterWorldParser.cs" />
     <Compile Include="Services\SettingsTestRunOverlay.cs" />
     <Compile Include="Services\SignalrPlayerHub.cs" />
     <Compile Include="Services\Parsing\SpellWornOffSelfParser.cs" />

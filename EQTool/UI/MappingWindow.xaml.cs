@@ -43,7 +43,7 @@ namespace EQTool.UI
             Map.Width = Math.Abs(mapViewModel.AABB.MaxWidth);
             this.logEvents.PlayerLocationEvent += LogParser_PlayerLocationEvent;
             this.logEvents.YouZonedEvent += LogParser_PlayerZonedEvent;
-            this.logEvents.EnteredWorldEvent += LogParser_EnteredWorldEvent;
+            this.logEvents.WelcomeEvent += LogEvents_WelcomeEvent; ;
             this.logEvents.SlainEvent += LogParser_DeathEvent;
             this.logEvents.PayerChangedEvent += LogEvents_PayerChangedEvent;
             this.logEvents.OtherPlayerLocationReceivedRemoteEvent += LogEvents_OtherPlayerLocationReceivedRemoteEvent;
@@ -56,7 +56,6 @@ namespace EQTool.UI
             UITimer.Elapsed += UITimer_Elapsed;
             UITimer.Enabled = true;
         }
-
         private void LogEvents_PlayerDisconnectReceivedRemoteEvent(object sender, PlayerDisconnectReceivedRemoteEvent e)
         {
             mapViewModel.PlayerDisconnected(e.Player);
@@ -145,7 +144,8 @@ namespace EQTool.UI
             }
         }
 
-        private void LogParser_EnteredWorldEvent(object sender, EnteredWorldEvent e)
+
+        private void LogEvents_WelcomeEvent(object sender, WelcomeEvent e)
         {
             if (mapViewModel.LoadDefaultMap(Map))
             {
@@ -154,7 +154,7 @@ namespace EQTool.UI
                 Map.Width = Math.Abs(mapViewModel.AABB.MaxWidth);
             }
         }
-
+         
         private void LogParser_PlayerZonedEvent(object sender, YouZonedEvent e)
         {
             if (mapViewModel.LoadMap(e.ShortName, Map))
@@ -178,7 +178,7 @@ namespace EQTool.UI
             {
                 logEvents.PlayerLocationEvent -= LogParser_PlayerLocationEvent;
                 logEvents.YouZonedEvent -= LogParser_PlayerZonedEvent;
-                logEvents.EnteredWorldEvent -= LogParser_EnteredWorldEvent;
+                logEvents.WelcomeEvent -= LogEvents_WelcomeEvent;
                 logEvents.SlainEvent -= LogParser_DeathEvent;
                 logEvents.OtherPlayerLocationReceivedRemoteEvent -= LogEvents_OtherPlayerLocationReceivedRemoteEvent;
                 logEvents.PlayerDisconnectReceivedRemoteEvent -= LogEvents_PlayerDisconnectReceivedRemoteEvent;
