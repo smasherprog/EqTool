@@ -65,6 +65,7 @@
   <ItemGroup>
     <Compile Include="APIModels\ItemControllerModels.cs" />
     <Compile Include="APIModels\PlayerControllerModels.cs" />
+    <Compile Include="APIModels\BoatControllerModels.cs" />
     <Compile Include="APIModels\ZoneControllerModels.cs" />
     <Compile Include="Discord\DiscordAuctionParse.cs" />
     <Compile Include="Discord\Models.cs" />

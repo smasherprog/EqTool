@@ -1,4 +1,5 @@
 ﻿using EQToolShared;
+using EQToolShared.APIModels.BoatControllerModels;
 using EQToolShared.APIModels.ItemControllerModels;
 using EQToolShared.APIModels.PlayerControllerModels;
 using EQToolShared.APIModels.ZoneControllerModels;
@@ -10,6 +11,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
+using System.Windows;
 
 namespace EQTool.Services
 {
@@ -129,6 +131,22 @@ namespace EQTool.Services
         public Player GetPlayerData(string players, Servers server)
         {
             return GetPlayerData(new List<string>() { players }, server).FirstOrDefault();
+        }
+
+        internal void SendBoatData(BoatActivityRequest boatActivityRequest)
+        {
+            try
+            {
+                var url = $"https://pigparse.azurewebsites.net/api/boat/seen";
+                var json = JsonConvert.SerializeObject(boatActivityRequest);
+                var data = new StringContent(json, Encoding.UTF8, "application/json");
+                var res = App.httpclient.PostAsync(url, data).Result;
+                if (res.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    _ = res.Content.ReadAsStringAsync().Result;
+                }
+            }
+            catch { }
         }
     }
 }

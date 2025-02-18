@@ -50,8 +50,12 @@ namespace EQTool.Models
         public PlayerInfo PlayerInfo { get; set; }
     }
     public class WhoEvent : BaseLogParseEvent { }
-    public class CampEvent : BaseLogParseEvent { } 
+    public class CampEvent : BaseLogParseEvent { }
     public class QuakeEvent : BaseLogParseEvent { }
+    public class BoatEvent : BaseLogParseEvent
+    {
+        public string ZoneName { get; set; }
+    }
     public class RingWarEvent : BaseLogParseEvent
     {
     }

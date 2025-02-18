@@ -1,9 +1,6 @@
-﻿using EQTool.Models;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
-using System.Windows.Shapes;
 
 namespace EQTool.Services.IO
 {

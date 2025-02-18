@@ -1,7 +1,5 @@
 ﻿using EQTool.Models;
 using EQTool.ViewModels;
-using EQTool.ViewModels.SpellWindow;
-using System.Linq;
 
 namespace EQTool.Services.Handlers
 {

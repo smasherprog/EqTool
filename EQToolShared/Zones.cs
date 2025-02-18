@@ -25,7 +25,17 @@ namespace EQToolShared
         public List<NpcSpawnTime> NpcSpawnTimes { get; set; } = new List<NpcSpawnTime>();
         public List<NpcSpawnTime> NpcContainsSpawnTimes { get; set; } = new List<NpcSpawnTime>();
         public List<string> NotableNPCs { get; set; } = new List<string>();
+
         public List<NPCThatAOE> NPCThatAOE = new List<NPCThatAOE>();
+    }
+    public class BoatInfo
+    {
+        public string BoatName { get; set; }
+        public string ZoneStartAnnoucement { get; set; }
+        public string ZoneStart { get; set; }
+        public string ZoneEnd { get; set; }
+        public string ZoneEndAnnoucement { get; set; }
+        public int RoundTripTimeInSeconds { get; set; }
     }
 
     public static class ZoneSpawnTimes
@@ -75,9 +85,30 @@ namespace EQToolShared
         public static readonly Dictionary<string, string> ZoneNameMapper = new Dictionary<string, string>();
         public static readonly Dictionary<string, string> ZoneWhoMapper = new Dictionary<string, string>();
         public static readonly Dictionary<string, ZoneInfo> ZoneInfoMap = new Dictionary<string, ZoneInfo>();
+        public static readonly List<BoatInfo> Boats = new List<BoatInfo>();
 
         static Zones()
         {
+            Boats.Add(new BoatInfo
+            {
+                BoatName = "Barrel Barge",
+                ZoneStart = "oasis",
+                ZoneStartAnnoucement = "Rack Stonebelly shouts, 'Da Barrel Barge will be here soon soon!'",
+                ZoneEnd = "timorous",
+                ZoneEndAnnoucement = string.Empty,
+                RoundTripTimeInSeconds = 779
+            });
+
+            Boats.Add(new BoatInfo
+            {
+                BoatName = "Bloated Belly",
+                ZoneStart = "overthere",
+                ZoneStartAnnoucement = "Rack Stonebelly shouts, 'Da Bloated Belly be leaving da Overdere",
+                ZoneEnd = "timorous",
+                ZoneEndAnnoucement = string.Empty,
+                RoundTripTimeInSeconds = 779
+            });
+
             ZoneInfoMap.Add("airplane", new ZoneInfo
             {
                 Name = "airplane",

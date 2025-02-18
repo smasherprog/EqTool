@@ -330,6 +330,7 @@
     <Compile Include="Models\FightHistory.cs" />
     <Compile Include="Models\Pets.cs" />
     <Compile Include="Services\BinarySerializer.cs" />
+    <Compile Include="Services\Handlers\BoatHandler.cs" />
     <Compile Include="Services\Handlers\ConHandler.cs" />
     <Compile Include="Services\Handlers\EnterWorldHandler.cs" />
     <Compile Include="Services\IO\FileReader.cs" />
@@ -365,6 +366,7 @@
     <Compile Include="Services\Parsing\GroupLeaderParser.cs" />
     <Compile Include="Services\Parsing\LoadingPleaseWaitParser.cs" />
     <Compile Include="Services\Parsing\PetParser.cs" />
+    <Compile Include="Services\Parsing\BoatParser.cs" />
     <Compile Include="Services\Parsing\WelcomeParser.cs" />
     <Compile Include="Services\Parsing\YourItemBeginsToGlowParser.cs" />
     <Compile Include="Services\Parsing\RingWarParser.cs" />

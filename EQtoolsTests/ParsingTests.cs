@@ -1,6 +1,4 @@
-﻿using Autofac;
-using EQTool.Services;
-using EQTool.Services.Parsing;
+﻿using EQTool.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 

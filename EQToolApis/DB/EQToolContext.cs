@@ -21,6 +21,7 @@ namespace EQToolApis.DB
         public DbSet<EQZone> EQZones { get; set; }
 
         public DbSet<EQDeath> EQDeaths { get; set; }
+        public DbSet<EQBoatActivity> EQBoatActivites { get; set; } 
 
         // public DbSet<EQAuctionPlayer> EQAuctionPlayers { get; set; }
 

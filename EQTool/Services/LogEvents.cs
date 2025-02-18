@@ -283,5 +283,11 @@ namespace EQTool.Services
         {
             RingWarEvent?.Invoke(this, e);
         }
+
+        public event EventHandler<BoatEvent> BoatEvent;
+        public void Handle(BoatEvent e)
+        {
+            BoatEvent?.Invoke(this, e);
+        } 
     }
 }

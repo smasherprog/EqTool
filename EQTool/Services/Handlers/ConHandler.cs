@@ -1,5 +1,4 @@
 ﻿using EQTool.Models;
-using EQTool.ViewModels;
 using EQTool.ViewModels.MobInfoComponents;
 using System;
 using System.Linq;
