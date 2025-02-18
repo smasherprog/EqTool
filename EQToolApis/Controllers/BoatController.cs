@@ -32,13 +32,14 @@ namespace EQToolApis.Controllers
                 return;
             }
             var mintime = DateTimeOffset.Now.AddMinutes(-1);
-            if (!this.dbcontext.EQBoatActivites.Any(a => a.Zone == model.Zone && a.Server == model.Server && a.LastSeen > mintime))
+            if (!this.dbcontext.EQBoatActivites.Any(a => a.Zone == model.Zone && a.Boat == model.Boat && a.Server == model.Server && a.LastSeen > mintime))
             {
                 this.dbcontext.Add(new EQBoatActivity
                 {
                     Zone = model.Zone,
                     LastSeen = DateTimeOffset.Now,
-                    Server = model.Server
+                    Server = model.Server,
+                    Boat = model.Boat
                 });
                 this.dbcontext.SaveChanges();
             }
@@ -52,13 +53,19 @@ namespace EQToolApis.Controllers
             {
                 return new List<BoatActivityResponce>();
             }
-            var zones = Zones.Boats.Select(a => a.ZoneStart).ToList();
-            var dbzones = this.dbcontext.EQBoatActivites.Where(a => a.Server == server && zones.Contains(a.Zone))
-                .GroupBy(a => a.Zone)
+
+            var dbzones = this.dbcontext.EQBoatActivites.Where(a => a.Server == server)
+                .GroupBy(a => a.Boat)
+                .Select(a => new
+                {
+                    Boat = a.Key,
+                    Data = a.OrderByDescending(b => b.EQBoatActivityId).Select(b => new { b.LastSeen, b.Zone }).FirstOrDefault()
+                }).ToList()
                 .Select(a => new BoatActivityResponce
                 {
-                    Zone = a.Key,
-                    LastSeen = a.OrderByDescending(a => a.LastSeen).Select(b => b.LastSeen).FirstOrDefault()
+                    Boat = a.Boat,
+                    Zone = a.Data.Zone,
+                    LastSeen = a.Data.LastSeen
                 }).ToList();
             return dbzones;
         }

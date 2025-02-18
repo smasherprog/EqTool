@@ -1,4 +1,5 @@
-﻿using EQToolShared.Enums;
+﻿using EQToolShared;
+using EQToolShared.Enums;
 using EQToolShared.Map;
 using System;
 using System.Collections.Generic;
@@ -54,6 +55,7 @@ namespace EQTool.Models
     public class QuakeEvent : BaseLogParseEvent { }
     public class BoatEvent : BaseLogParseEvent
     {
+        public Boats Boat { get; set; }
         public string ZoneName { get; set; }
     }
     public class RingWarEvent : BaseLogParseEvent

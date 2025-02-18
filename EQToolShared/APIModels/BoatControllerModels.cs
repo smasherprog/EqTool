@@ -8,6 +8,8 @@ namespace EQToolShared.APIModels.BoatControllerModels
     {
         [Required]
         public string Zone { get; set; } 
+        [EnumDataType(typeof(EQToolShared.Boats))]
+        public Boats Boat { get; set; }
         [EnumDataType(typeof(Servers))]
         public Servers Server { get; set; }
     } 
@@ -15,6 +17,8 @@ namespace EQToolShared.APIModels.BoatControllerModels
     {
         [Required]
         public string Zone { get; set; }
+        [EnumDataType(typeof(EQToolShared.Boats))]
+        public Boats Boat { get; set; }
         [Required]
         public DateTimeOffset LastSeen { get; set; }
     }

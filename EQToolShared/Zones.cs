@@ -30,7 +30,7 @@ namespace EQToolShared
     }
     public class BoatInfo
     {
-        public string BoatName { get; set; }
+        public Boats Boat { get; set; }
         public string ZoneStartAnnoucement { get; set; }
         public string ZoneStart { get; set; }
         public string ZoneEnd { get; set; }
@@ -64,6 +64,12 @@ namespace EQToolShared
             return new TimeSpan(0, 6, 40);
         }
     }
+    public enum Boats
+    {
+        BarrelBarge,
+        BloatedBelly,
+        MaidensVoyage
+    }
 
     public static class Zones
     {
@@ -91,7 +97,7 @@ namespace EQToolShared
         {
             Boats.Add(new BoatInfo
             {
-                BoatName = "Barrel Barge",
+                Boat = EQToolShared.Boats.BarrelBarge,
                 ZoneStart = "oasis",
                 ZoneStartAnnoucement = "Rack Stonebelly shouts, 'Da Barrel Barge will be here soon soon!'",
                 ZoneEnd = "timorous",
@@ -101,12 +107,22 @@ namespace EQToolShared
 
             Boats.Add(new BoatInfo
             {
-                BoatName = "Bloated Belly",
+                Boat = EQToolShared.Boats.BloatedBelly, 
                 ZoneStart = "overthere",
                 ZoneStartAnnoucement = "Rack Stonebelly shouts, 'Da Bloated Belly be leaving da Overdere",
                 ZoneEnd = "timorous",
                 ZoneEndAnnoucement = string.Empty,
                 RoundTripTimeInSeconds = 779
+            });
+             
+            Boats.Add(new BoatInfo
+            {
+                Boat = EQToolShared.Boats.MaidensVoyage, 
+                ZoneStart = "firiona",
+                ZoneStartAnnoucement = "Glisse Bluesea shouts 'The Maiden's Voyage is now ready to be boarded. Please form an orderly line to the shuttles, and remember, no pushing!",
+                ZoneEnd = "butcher",
+                ZoneEndAnnoucement = string.Empty,
+                RoundTripTimeInSeconds = 1230
             });
 
             ZoneInfoMap.Add("airplane", new ZoneInfo

@@ -24,7 +24,8 @@ namespace EQTool.Services.Parsing
                         Line = line,
                         LineCounter = lineCounter,
                         TimeStamp = timestamp,
-                        ZoneName = item.ZoneStart
+                        ZoneName = item.ZoneStart,
+                        Boat = item.Boat
                     });
                     return true;
                 }

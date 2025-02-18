@@ -21,6 +21,7 @@ namespace EQTool.Services.Handlers
             {
                 pigParseApi.SendBoatData(new BoatActivityRequest
                 {
+                    Boat = e.Boat,
                     Server = s.Value,
                     Zone = e.ZoneName
                 });
