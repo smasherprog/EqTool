@@ -17,11 +17,10 @@ namespace EQTool.Services
         private Point3D? LastLocation = null;
 
         public ZoneActivityTrackingService(LogEvents logParser, ActivePlayer activePlayer, PigParseApi pigParseApi, LoggingService loggingService)
-        {
-            _ = activePlayer.Update();
+        { 
             this.logParser = logParser;
             this.logParser.SlainEvent += LogParser_DeathEvent;
-            this.logParser.ConEvent += LogParser_ConEvent; ;
+            this.logParser.ConEvent += LogParser_ConEvent;  
             this.logParser.PlayerLocationEvent += LogParser_PlayerLocationEvent;
             this.pigParseApi = pigParseApi;
             this.activePlayer = activePlayer;

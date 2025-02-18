@@ -37,7 +37,7 @@ namespace EQTool.Services.Handlers
             logEvents.SlainEvent += LogEvents_SlainEvent;
             logEvents.FactionEvent += LogEvents_FactionEvent;
             logEvents.ExpGainedEvent += LogEvents_ExperienceGainedEvent;
-            logEvents.PayerChangedEvent += LogEvents_PayerChangedEvent;
+            logEvents.BeforePlayerChangedEvent += LogEvents_PayerChangedEvent;
             logEvents.LineEvent += LogEvents_LineEvent;
             logEvents.CommsEvent += LogEvents_CommsEvent;
         }
@@ -77,7 +77,7 @@ namespace EQTool.Services.Handlers
             }
         }
 
-        private void LogEvents_PayerChangedEvent(object sender, PayerChangedEvent e)
+        private void LogEvents_PayerChangedEvent(object sender, BeforePlayerChangedEvent e)
         {
             Reset();
         }

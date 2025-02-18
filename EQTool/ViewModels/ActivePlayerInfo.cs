@@ -16,7 +16,7 @@ namespace EQTool.ViewModels
         private readonly LogEvents logEvents;
         public ActivePlayer(EQToolSettings settings, LogEvents logEvents)
         {
-            this.settings = settings; 
+            this.settings = settings;
             this.logEvents = logEvents;
         }
 
@@ -68,7 +68,7 @@ namespace EQTool.ViewModels
 
                     if (tempplayer == null)
                     {
-                        players.Add(parseinfo); 
+                        players.Add(parseinfo);
                     }
                     else
                     {
@@ -76,10 +76,10 @@ namespace EQTool.ViewModels
                     }
                     if (Player != null && tempplayer != Player)
                     {
-                        logEvents.Handle(new PayerChangedEvent { TimeStamp = DateTime.Now });
+                        logEvents.Handle(new BeforePlayerChangedEvent { TimeStamp = DateTime.Now });
                     }
                     playerchanged = tempplayer != Player;
-                    if(tempplayer == null)
+                    if (tempplayer == null)
                     {
                         tempplayer = parseinfo;
                     }
@@ -96,7 +96,11 @@ namespace EQTool.ViewModels
             {
 
             }
+            if (playerchanged && Player != null)
+            {
+                logEvents.Handle(new AfterPlayerChangedEvent { TimeStamp = DateTime.Now });
 
+            }
             return playerchanged;
         }
 

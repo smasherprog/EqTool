@@ -3,18 +3,18 @@ using EQTool.ViewModels;
 
 namespace EQTool.Services.Handlers
 {
-    public class PlayerChangeHandler : BaseHandler
+    public class BeforePlayerChangeHandler : BaseHandler
     {
         private readonly SpellWindowViewModel spellWindowViewModel;
         private readonly SavePlayerStateService savePlayerStateService;
-        public PlayerChangeHandler(BaseHandlerData baseHandlerData, SpellWindowViewModel spellWindowViewModel, SavePlayerStateService savePlayerStateService) : base(baseHandlerData)
+        public BeforePlayerChangeHandler(BaseHandlerData baseHandlerData, SpellWindowViewModel spellWindowViewModel, SavePlayerStateService savePlayerStateService) : base(baseHandlerData)
         {
             this.spellWindowViewModel = spellWindowViewModel;
             this.savePlayerStateService = savePlayerStateService;
-            logEvents.PayerChangedEvent += LogEvents_PayerChangedEvent;
+            logEvents.BeforePlayerChangedEvent += LogEvents_PayerChangedEvent;
         }
 
-        private void LogEvents_PayerChangedEvent(object sender, PayerChangedEvent e)
+        private void LogEvents_PayerChangedEvent(object sender, BeforePlayerChangedEvent e)
         {
             this.savePlayerStateService.TrySaveYouSpellData();
             spellWindowViewModel.ClearYouSpells();
