@@ -73,6 +73,39 @@ namespace EQToolApis.Migrations
                     b.ToTable("EQAuctionPlayersV2");
                 });
 
+            modelBuilder.Entity("EQToolApis.DB.Models.EQBoatActivity", b =>
+                {
+                    b.Property<int>("EQBoatActivityId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("EQBoatActivityId"));
+
+                    b.Property<int>("Boat")
+                        .HasColumnType("int");
+
+                    b.Property<DateTimeOffset>("LastSeen")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<byte>("Server")
+                        .HasColumnType("tinyint");
+
+                    b.Property<string>("Zone")
+                        .IsRequired()
+                        .HasMaxLength(48)
+                        .HasColumnType("nvarchar(48)");
+
+                    b.HasKey("EQBoatActivityId");
+
+                    b.HasIndex("Server");
+
+                    b.HasIndex("Server", "Zone");
+
+                    b.HasIndex("Server", "Boat", "Zone", "LastSeen");
+
+                    b.ToTable("EQBoatActivites");
+                });
+
             modelBuilder.Entity("EQToolApis.DB.Models.EQDeath", b =>
                 {
                     b.Property<int>("EQDeathId")
@@ -446,6 +479,8 @@ namespace EQToolApis.Migrations
                         .HasColumnType("tinyint");
 
                     b.HasKey("QuakeTimeId");
+
+                    b.HasIndex("DateTime");
 
                     b.ToTable("QuakeTimes");
                 });

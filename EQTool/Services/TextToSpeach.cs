@@ -1,8 +1,6 @@
 ﻿using EQTool.Models;
-using System.Collections;
 using System;
 using System.Collections.Generic;
-using System.Windows.Documents;
 
 namespace EQTool.Services
 {

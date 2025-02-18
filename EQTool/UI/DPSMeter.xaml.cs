@@ -57,7 +57,7 @@ namespace EQTool.UI
             var zone = activePlayer?.Player?.Zone;
             if (!string.IsNullOrWhiteSpace(zone) && Zones.ZoneInfoMap.TryGetValue(zone, out var fzone))
             {
-                if (fzone.NotableNPCs.Any(a => a == e.Victim))
+                if (fzone.NotableNPCs.Any(a => a == e.Victim) && !Zones.KaelFactionMobs.Any(a => a == e.Victim))
                 {
                     copytoclipboard(e.Victim);
                 }
@@ -98,21 +98,16 @@ namespace EQTool.UI
                 fights.Add($"{item.SourceName} {item.PercentOfTotalDamage}% DPS:{item.TotalDPS} DMG:{item.TotalDamage}");
             }
             var fightdetails = "Fight Details: " + name + " Dmg: " + (items.FirstOrDefault()?.TargetTotalDamage ?? 0) + "    " + string.Join(" / ", fights);
-            for (var i = 0; i < 2; i++)
+
+            try
             {
-                try
-                {
-                    System.Windows.Forms.Clipboard.SetText(fightdetails, System.Windows.Forms.TextDataFormat.Text);
-                    (App.Current as App).ShowBalloonTip(4000, "DPS Copied", $"DPS for the fight with {name} has been copied to clipboard", System.Windows.Forms.ToolTipIcon.Info);
-                    Thread.Sleep(10);
-                }
-                catch (Exception)
-                {
-                    if (i == 1)
-                    {
-                        throw;
-                    }
-                }
+                System.Windows.Forms.Clipboard.SetText(fightdetails, System.Windows.Forms.TextDataFormat.Text);
+                (App.Current as App).ShowBalloonTip(4000, "DPS Copied", $"DPS for the fight with {name} has been copied to clipboard", System.Windows.Forms.ToolTipIcon.Info);
+                Thread.Sleep(10);
+            }
+            catch (Exception)
+            {
+
             }
         }
 

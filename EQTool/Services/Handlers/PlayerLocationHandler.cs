@@ -2,7 +2,6 @@
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
 using EQTool.Models;
-using EQTool.ViewModels;
 
 namespace EQTool.Services.Handlers
 {

@@ -19,6 +19,7 @@ namespace EQTool.Services.Parsing
             if (line == "It will take about 5 more seconds to prepare your camp.")
             {
                 StillCamping = true;
+                Debug.WriteLine("CampEvent Start");
                 _ = System.Threading.Tasks.Task.Factory.StartNew(() =>
                 {
                     System.Threading.Thread.Sleep(1000 * 6);

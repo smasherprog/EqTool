@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using EQTool.UI.MobInfoComponents;
 using EQTool.UI.SettingsComponents;
 using EQTool.ViewModels.SettingsComponents;
 using System;
@@ -11,6 +12,7 @@ namespace EQTool.Services
     {
         private readonly ILifetimeScope container;
         private readonly Dictionary<TreeViewItemType, Type> userComponentTypes = new Dictionary<TreeViewItemType, Type>();
+        private readonly Dictionary<MobInfoItemType, Type> modinfoComponentTypes = new Dictionary<MobInfoItemType, Type>();
         public UserComponentSettingsManagementFactory(ILifetimeScope container)
         {
             this.container = container;
@@ -19,11 +21,20 @@ namespace EQTool.Services
             userComponentTypes.Add(TreeViewItemType.Player, typeof(SettingsPlayer));
             userComponentTypes.Add(TreeViewItemType.Zone, typeof(SettingsGeneral));
             userComponentTypes.Add(TreeViewItemType.Global, typeof(SettingsGeneral));
+
+            modinfoComponentTypes.Add(MobInfoItemType.Mob, typeof(MobComponent));
+            modinfoComponentTypes.Add(MobInfoItemType.Pet, typeof(PetComponent));
         }
 
         public UserControl CreateComponent(TreeViewItemType userComponentSettingsManagementType)
         {
             var t = userComponentTypes[userComponentSettingsManagementType];
+            return container.Resolve(t) as UserControl;
+        }
+
+        public UserControl CreateComponent(MobInfoItemType modInfoItemType)
+        {
+            var t = modinfoComponentTypes[modInfoItemType];
             return container.Resolve(t) as UserControl;
         }
 

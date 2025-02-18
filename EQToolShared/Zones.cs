@@ -25,7 +25,17 @@ namespace EQToolShared
         public List<NpcSpawnTime> NpcSpawnTimes { get; set; } = new List<NpcSpawnTime>();
         public List<NpcSpawnTime> NpcContainsSpawnTimes { get; set; } = new List<NpcSpawnTime>();
         public List<string> NotableNPCs { get; set; } = new List<string>();
+
         public List<NPCThatAOE> NPCThatAOE = new List<NPCThatAOE>();
+    }
+    public class BoatInfo
+    {
+        public Boats Boat { get; set; }
+        public string ZoneStartAnnoucement { get; set; }
+        public string ZoneStart { get; set; }
+        public string ZoneEnd { get; set; }
+        public string ZoneEndAnnoucement { get; set; }
+        public int RoundTripTimeInSeconds { get; set; }
     }
 
     public static class ZoneSpawnTimes
@@ -54,6 +64,12 @@ namespace EQToolShared
             return new TimeSpan(0, 6, 40);
         }
     }
+    public enum Boats
+    {
+        BarrelBarge,
+        BloatedBelly,
+        MaidensVoyage
+    }
 
     public static class Zones
     {
@@ -75,9 +91,40 @@ namespace EQToolShared
         public static readonly Dictionary<string, string> ZoneNameMapper = new Dictionary<string, string>();
         public static readonly Dictionary<string, string> ZoneWhoMapper = new Dictionary<string, string>();
         public static readonly Dictionary<string, ZoneInfo> ZoneInfoMap = new Dictionary<string, ZoneInfo>();
+        public static readonly List<BoatInfo> Boats = new List<BoatInfo>();
 
         static Zones()
         {
+            Boats.Add(new BoatInfo
+            {
+                Boat = EQToolShared.Boats.BarrelBarge,
+                ZoneStart = "oasis",
+                ZoneStartAnnoucement = "Rack Stonebelly shouts, 'Da Barrel Barge will be here soon soon!'",
+                ZoneEnd = "timorous",
+                ZoneEndAnnoucement = string.Empty,
+                RoundTripTimeInSeconds = 779
+            });
+
+            Boats.Add(new BoatInfo
+            {
+                Boat = EQToolShared.Boats.BloatedBelly, 
+                ZoneStart = "overthere",
+                ZoneStartAnnoucement = "Rack Stonebelly shouts, 'Da Bloated Belly be leaving da Overdere",
+                ZoneEnd = "timorous",
+                ZoneEndAnnoucement = string.Empty,
+                RoundTripTimeInSeconds = 779
+            });
+             
+            Boats.Add(new BoatInfo
+            {
+                Boat = EQToolShared.Boats.MaidensVoyage, 
+                ZoneStart = "firiona",
+                ZoneStartAnnoucement = "Glisse Bluesea shouts 'The Maiden's Voyage is now ready to be boarded. Please form an orderly line to the shuttles, and remember, no pushing!",
+                ZoneEnd = "butcher",
+                ZoneEndAnnoucement = string.Empty,
+                RoundTripTimeInSeconds = 1230
+            });
+
             ZoneInfoMap.Add("airplane", new ZoneInfo
             {
                 Name = "airplane",
@@ -1025,8 +1072,8 @@ namespace EQToolShared
                 ZoneLevelHeight = 10,
                 NotableNPCs = new List<string>()
                 {
-                    "The Avatar of War","The Statue of Rallos Zek","Derakor the Vindicator","King Tormax","Bjrakor the Cold","Captain Bvellos","Gkrean Prophet of Tallon","Semkak Prophet of Vallon","Gorul Longshanks","Keldor Dek`Torek","Noble Helssen","Slaggak the Trainer","Staff Sergeant Drioc","Vkjor","Wenglawks Kkeak",
-                        "Bygloirn Omorden",
+                    "The Avatar of War","The Statue of Rallos Zek","Derakor the Vindicator","King Tormax","Bjrakor the Cold","Captain Bvellos","Gkrean Prophet of Tallon","Semkak Prophet of Vallon","Gorul Longshanks","Keldor Dek`Torek","Noble Helssen","Slaggak the Trainer","Staff Sergeant Drioc","Vkjor","Wenglawks Kkeak"
+                    ,"Bygloirn Omorden",
                         "Dagron Stonecutter",
                         "Barlek Stonefist",
                         "Gragek Mjlorkigar",

@@ -1,12 +1,8 @@
 ﻿using EQTool.Models;
-using EQTool.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
-using System.Windows.Media.TextFormatting;
 
 namespace EQTool.Services.Parsing
 {
@@ -14,7 +10,6 @@ namespace EQTool.Services.Parsing
     public class PetParser : IEqLogParser
     {
         private readonly LogEvents logEvents;
-        private readonly ActivePlayer activePlayer;
 
         private const string patternPetNotThere = "You don't have a pet to command!";
         private const string patternPetCreation = @"^(?<pet_name>[\w` ]+) says 'At your service Master.'";
@@ -22,18 +17,29 @@ namespace EQTool.Services.Parsing
         private const string patternPetLeader = @"^(?<pet_name>[\w` ]+) says 'My leader is (?<leader_name>[\w` ]+).'";
         private const string patternPetDeath = @"^(?<pet_name>[\w` ]+) says 'Sorry to have failed you, oh Great One.'";
         private const string patternPetGetLost = @"^(?<pet_name>[\w` ]+) says 'As you wish, oh great one.'";
+        private const string patternPetFollowMe = @"^(?<pet_name>[\w` ]+) says 'Following you, Master.'";
+        private const string patternPetSitStand = @"^(?<pet_name>[\w` ]+) says 'Changing position, Master.'";
+        private const string patternGuarding = @"^(?<pet_name>[\w` ]+) says 'Guarding with my life..oh splendid one.'";
+        private const string patternPetLifetapproc = @"^(?<pet_name>[\w` ]+) says 'Ahhh, I feel much better now...'";
+        private const string patternPetAttacking = @"^(?<pet_name>[\w` ]+) tells you, 'Attacking (.*?) Master.'";
 
-        private readonly Regex regexPetCreation = new Regex(patternPetCreation, RegexOptions.Compiled);
-        private readonly Regex regexPetReclaimed = new Regex(patternPetReclaimed, RegexOptions.Compiled);
-        private readonly Regex regexPetLeader = new Regex(patternPetLeader, RegexOptions.Compiled);
-        private readonly Regex regexPetDeath = new Regex(patternPetDeath, RegexOptions.Compiled);
-        private readonly Regex regexPetGetLost = new Regex(patternPetGetLost, RegexOptions.Compiled);
+        private readonly Regex[] regexPatches = new Regex[(int)PetEvent.PetIncident.ANY];
+        private readonly List<PetEvent.PetIncident> PetEventTypes = Enum.GetValues(typeof(PetEvent.PetIncident)).Cast<PetEvent.PetIncident>().Where(a => a != PetEvent.PetIncident.NONE && a != PetEvent.PetIncident.ANY).ToList();
 
         // ctor
-        public PetParser(LogEvents logEvents, ActivePlayer activePlayer)
+        public PetParser(LogEvents logEvents)
         {
             this.logEvents = logEvents;
-            this.activePlayer = activePlayer;
+            regexPatches[(int)PetEvent.PetIncident.CREATION] = new Regex(patternPetCreation, RegexOptions.Compiled);
+            regexPatches[(int)PetEvent.PetIncident.RECLAIMED] = new Regex(patternPetReclaimed, RegexOptions.Compiled);
+            regexPatches[(int)PetEvent.PetIncident.LEADER] = new Regex(patternPetLeader, RegexOptions.Compiled);
+            regexPatches[(int)PetEvent.PetIncident.DEATH] = new Regex(patternPetDeath, RegexOptions.Compiled);
+            regexPatches[(int)PetEvent.PetIncident.GETLOST] = new Regex(patternPetGetLost, RegexOptions.Compiled);
+            regexPatches[(int)PetEvent.PetIncident.PETLIFETAP] = new Regex(patternPetLifetapproc, RegexOptions.Compiled);
+            regexPatches[(int)PetEvent.PetIncident.PETATTACK] = new Regex(patternPetAttacking, RegexOptions.Compiled);
+            regexPatches[(int)PetEvent.PetIncident.PETFOLLOWME] = new Regex(patternPetFollowMe, RegexOptions.Compiled);
+            regexPatches[(int)PetEvent.PetIncident.SITSTAND] = new Regex(patternPetSitStand, RegexOptions.Compiled);
+            regexPatches[(int)PetEvent.PetIncident.GUARD] = new Regex(patternGuarding, RegexOptions.Compiled);
         }
 
 
@@ -41,9 +47,9 @@ namespace EQTool.Services.Parsing
         // If we find what we are seeking, fire off our event
         public bool Handle(string line, DateTime timestamp, int lineCounter)
         {
-            bool rv = false;
+            var rv = false;
 
-            PetEvent petEvent = Match(line, timestamp, lineCounter);
+            var petEvent = Match(line, timestamp, lineCounter);
             if (petEvent != null)
             {
                 logEvents.Handle(petEvent);
@@ -52,16 +58,32 @@ namespace EQTool.Services.Parsing
             return rv;
         }
 
+        private PetEvent Match(string line, DateTime timestamp, int lineCounter, PetEvent.PetIncident petIncident)
+        {
+            var match = regexPatches[(int)petIncident].Match(line);
+            if (match.Success)
+            {
+                return new PetEvent
+                {
+                    Line = line,
+                    TimeStamp = timestamp,
+                    LineCounter = lineCounter,
+                    PetName = match.Groups["pet_name"].Value,
+                    Incident = petIncident
+                };
+            }
+
+            return null;
+        }
+
         // parse this line to see if it contains pet-specific items
         // returns a PetEvent object or null
         public PetEvent Match(string line, DateTime timestamp, int lineCounter)
         {
-            PetEvent rv = null;
-
             // no pet
             if (patternPetNotThere == line)
             {
-                rv = new PetEvent
+                return new PetEvent
                 {
                     Line = line,
                     TimeStamp = timestamp,
@@ -71,83 +93,16 @@ namespace EQTool.Services.Parsing
                 };
             }
 
-            // pet creation
-            var match = regexPetCreation.Match(line);
-            if (match.Success)
+            foreach (var item in PetEventTypes)
             {
-                rv = new PetEvent
+                var match = Match(line, timestamp, lineCounter, item);
+                if (match != null)
                 {
-                    Line = line,
-                    TimeStamp = timestamp,
-                    LineCounter = lineCounter,
-                    PetName = match.Groups["pet_name"].Value,
-                    Incident = PetEvent.PetIncident.CREATION
-                };
-            }
-
-            // pet reclaimed
-            match = regexPetReclaimed.Match(line);
-            if (match.Success)
-            {
-                rv = new PetEvent
-                {
-                    Line = line,
-                    TimeStamp = timestamp,
-                    LineCounter = lineCounter,
-                    PetName = match.Groups["pet_name"].Value,
-                    Incident = PetEvent.PetIncident.RECLAIMED
-                };
-            }
-
-            // response to /pet leader
-            match = regexPetLeader.Match(line);
-            if (match.Success)
-            {
-                string leaderName = match.Groups["leader_name"].Value;
-
-                // are we the pet leader?
-                if (leaderName == activePlayer.Player.Name)
-                {
-                    rv = new PetEvent
-                    {
-                        Line = line,
-                        TimeStamp = timestamp,
-                        LineCounter = lineCounter,
-                        PetName = match.Groups["pet_name"].Value,
-                        Incident = PetEvent.PetIncident.LEADER
-                    };
+                    return match;
                 }
             }
 
-            // pet died
-            match = regexPetDeath.Match(line);
-            if (match.Success)
-            {
-                rv = new PetEvent
-                {
-                    Line = line,
-                    TimeStamp = timestamp,
-                    LineCounter = lineCounter,
-                    PetName = match.Groups["pet_name"].Value,
-                    Incident = PetEvent.PetIncident.DEATH
-                };
-            }
-
-            // pet get lost
-            match = regexPetGetLost.Match(line);
-            if (match.Success)
-            {
-                rv = new PetEvent
-                {
-                    Line = line,
-                    TimeStamp = timestamp,
-                    LineCounter = lineCounter,
-                    PetName = match.Groups["pet_name"].Value,
-                    Incident = PetEvent.PetIncident.GETLOST
-                };
-            }
-
-            return rv;
+            return null;
         }
     }
 }

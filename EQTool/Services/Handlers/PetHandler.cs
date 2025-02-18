@@ -1,10 +1,5 @@
 ﻿using EQTool.Models;
-using EQTool.ViewModels;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using EQTool.ViewModels.MobInfoComponents;
 
 namespace EQTool.Services.Handlers
 {
@@ -12,37 +7,42 @@ namespace EQTool.Services.Handlers
     public class PetHandler : BaseHandler
     {
         // reference to DI global
-        private readonly PlayerPet playerPet;
+        private readonly PetViewModel playerPet;
+        private readonly Pets pets;
+        private string lastZoneName = string.Empty;
 
         // ctor
-        public PetHandler(BaseHandlerData baseHandlerData, PlayerPet playerPet) : base(baseHandlerData)
+        public PetHandler(BaseHandlerData baseHandlerData, PetViewModel playerPet, Pets pets) : base(baseHandlerData)
         {
             this.playerPet = playerPet;
-
+            this.pets = pets;
             logEvents.YouBeginCastingEvent += LogEvents_YouBeginCastingEvent;
             logEvents.LoadingPleaseWaitEvent += LogEvents_LoadingPleaseWaitEvent;
             logEvents.WelcomeEvent += LogEvents_WelcomeEvent;
+            logEvents.YouZonedEvent += LogEvents_YouZonedEvent;
             logEvents.SlainEvent += LogEvents_SlainEvent;
             logEvents.SpellWornOffOtherEvent += LogEvents_SpellWornOffOtherEvent;
             logEvents.PetEvent += LogEvents_PetEvent;
             logEvents.DamageEvent += LogEvents_DamageEvent;
         }
 
+        private void LogEvents_YouZonedEvent(object sender, YouZonedEvent e)
+        {
+            if (e.ShortName != lastZoneName)
+            {
+                lastZoneName = e.ShortName;
+                playerPet.Reset();
+            }
+        }
+
         private void LogEvents_YouBeginCastingEvent(object sender, YouBeginCastingEvent e)
         {
             // is this a pet spell ?
-            if (playerPet.Pets.PetSpellDictionary.ContainsKey(e.Spell.name))
+            if (pets.PetSpellDictionary.ContainsKey(e.Spell.name))
             {
                 // we are casting a pet spell, initialize the pet display
-                PetSpell _PetSpell = playerPet.Pets.PetSpellDictionary[e.Spell.name];
+                var _PetSpell = pets.PetSpellDictionary[e.Spell.name];
                 playerPet.PetSpell = _PetSpell;
-
-                //testing
-                //PetSpell petSpell = playerPet.Pets.PetSpellDictionary["Emissary of Thule"];
-                //playerPet.PetSpell = petSpell;
-                //playerPet.PetName = "Bakalakadaka";
-                //playerPet.CheckMaxMelee(55);
-                //playerPet.CheckMaxMelee(61);
             }
         }
 
@@ -103,12 +103,17 @@ namespace EQTool.Services.Handlers
                 // our pet?
                 if (e.PetName == playerPet.PetName)
                 {
-                   playerPet.Reset();
+                    playerPet.Reset();
                 }
             }
 
-            // pet leader
-            else if (e.Incident == PetEvent.PetIncident.LEADER)
+            // pet
+            else if (e.Incident == PetEvent.PetIncident.LEADER
+                || e.Incident == PetEvent.PetIncident.PETATTACK
+                || e.Incident == PetEvent.PetIncident.PETFOLLOWME
+                || e.Incident == PetEvent.PetIncident.SITSTAND
+                || e.Incident == PetEvent.PetIncident.GUARD
+                || e.Incident == PetEvent.PetIncident.PETLIFETAP)
             {
                 playerPet.PetName = e.PetName;
             }

@@ -18,7 +18,7 @@ namespace EQToolApis.Pages
             []
         ];
         public ServerMessage ServerMessage { get; set; } = new ServerMessage();
-        public List<DateTimeOffset> Quakes = [];
+        public List<QuakeCache> Quakes = [];
         public static PigParseStats[] PigParseStats = new PigParseStats[(int)Servers.MaxServers]
         {
             new(){ Server = Servers.Green, CssClass = "success"},
@@ -81,7 +81,7 @@ namespace EQToolApis.Pages
                 new("westwastes", "Scout Charisa"),
                 new("westwastes", "a Kromzek Captain")
             };
-            Quakes = eQToolContext.QuakeTimes.OrderByDescending(a => a.DateTime).Take(3).Select(a => a.DateTime).ToList();
+            Quakes = eQToolContext.QuakeTimes.OrderByDescending(a => a.DateTime).Take(10).Select(a => new QuakeCache { DateTime = a.DateTime, Server = a.Server }).ToList(); ;
             for (var server = 0; server < NoteableNPCs.Count; server++)
             {
                 foreach (var item in keyname)

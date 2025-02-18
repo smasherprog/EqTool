@@ -57,7 +57,7 @@ namespace EQTool.Services
         {
             CommsEvent?.Invoke(this, e);
         }
-        
+
         public event EventHandler<PetEvent> PetEvent;
         public void Handle(PetEvent e)
         {
@@ -98,13 +98,7 @@ namespace EQTool.Services
         public void Handle(WhoEvent e)
         {
             WhoEvent?.Invoke(this, e);
-        }
-
-        public event EventHandler<EnteredWorldEvent> EnteredWorldEvent;
-        public void Handle(EnteredWorldEvent e)
-        {
-            EnteredWorldEvent?.Invoke(this, e);
-        }
+        } 
 
         public event EventHandler<EnrageEvent> EnrageEvent;
         public void Handle(EnrageEvent e)
@@ -290,13 +284,10 @@ namespace EQTool.Services
             RingWarEvent?.Invoke(this, e);
         }
 
-
-
-        // this should be the final eventhandler definition!
-        public event EventHandler<UserDefinedTriggerEvent> UserDefinedTriggerEvent;
-        public void Handle(UserDefinedTriggerEvent e)
+        public event EventHandler<BoatEvent> BoatEvent;
+        public void Handle(BoatEvent e)
         {
-            UserDefinedTriggerEvent?.Invoke(this, e);
-        }
+            BoatEvent?.Invoke(this, e);
+        } 
     }
 }

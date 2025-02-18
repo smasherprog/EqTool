@@ -21,9 +21,8 @@ namespace EQtoolsTests
         {
             spellWindowViewModel = container.Resolve<SpellWindowViewModel>();
             logParser = container.Resolve<LogParser>();
-        }
+        } 
 
-        //this has a message that it has landed
         [TestMethod]
         public void NecroDA1()
         {
@@ -192,6 +191,19 @@ namespace EQtoolsTests
 
             var spelleffect = spellWindowViewModel.SpellList.FirstOrDefault();
             Assert.AreEqual("Paralyzing Earth", spelleffect.Name);
+        }
+
+        [TestMethod]
+        public void GuessDruidThorns()
+        {
+            player.Player.PlayerClass = EQToolShared.Enums.PlayerClasses.Druid;
+            player.Player.Level = 60;
+            logParser.Push("You begin casting Legacy of Thorn.", DateTime.Now); 
+            logParser.Push("Someone is surrounded by a thorny barrier.", DateTime.Now.AddSeconds(3)); 
+
+            var spelleffect = spellWindowViewModel.SpellList.FirstOrDefault();
+            Assert.AreEqual("Legacy of Thorn", spelleffect.Name);
+            Assert.AreEqual("Someone", spelleffect.GroupName);
         }
 
         [TestMethod]

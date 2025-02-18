@@ -1,4 +1,4 @@
-﻿using EQTool.Services;
+﻿using EQToolShared;
 using EQToolShared.Enums;
 using EQToolShared.Map;
 using System;
@@ -52,8 +52,12 @@ namespace EQTool.Models
     }
     public class WhoEvent : BaseLogParseEvent { }
     public class CampEvent : BaseLogParseEvent { }
-    public class EnteredWorldEvent : BaseLogParseEvent { }
     public class QuakeEvent : BaseLogParseEvent { }
+    public class BoatEvent : BaseLogParseEvent
+    {
+        public Boats Boat { get; set; }
+        public string ZoneName { get; set; }
+    }
     public class RingWarEvent : BaseLogParseEvent
     {
     }
@@ -84,16 +88,6 @@ namespace EQTool.Models
         public string AttackerName { get; set; }
         public int DamageDone { get; set; }
         public string DamageType { get; set; }
-    }
-
-    //
-    // Event class to carry info from UserDefinedTriggerParser to interested listeners
-    //
-    public class UserDefinedTriggerEvent : BaseLogParseEvent
-    {
-        // we could carry just the TriggerID, and force listeners to search the trigger list using the TriggerID
-        // to find the desired trigger.  OR - let's just pass the whole trigger and eliminate that downstream search
-        public UserDefinedTrigger Trigger { get; set; }
     }
 
     public class ConEvent : BaseLogParseEvent
@@ -164,13 +158,18 @@ namespace EQTool.Models
     {
         public enum PetIncident
         {
-            NONE        = 0b_0000_0000,
-            LEADER      = 0b_0000_0001,
-            RECLAIMED   = 0b_0000_0010,
-            DEATH       = 0b_0000_0100,
-            CREATION    = 0b_0000_1000,
-            GETLOST     = 0b_0001_0000,
-            ANY         = NONE | LEADER | RECLAIMED | DEATH | CREATION | GETLOST
+            NONE,
+            LEADER,
+            RECLAIMED,
+            DEATH,
+            CREATION,
+            GETLOST,
+            PETATTACK,
+            PETLIFETAP,
+            PETFOLLOWME,
+            SITSTAND,
+            GUARD,
+            ANY,
         }
 
         public string PetName { get; set; }
@@ -219,6 +218,8 @@ namespace EQTool.Models
         public bool isYou { get; set; }
     }
 
+    //this event will be called BEFORE the player data is swapped out. Subscribe to this event if you need to do things before the player data is changed.
+    //If there is no previous player, then this will not be called.
     public class PayerChangedEvent : BaseLogParseEvent
     {
     }

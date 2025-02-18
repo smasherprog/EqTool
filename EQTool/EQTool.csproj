@@ -330,6 +330,9 @@
     <Compile Include="Models\FightHistory.cs" />
     <Compile Include="Models\Pets.cs" />
     <Compile Include="Services\BinarySerializer.cs" />
+    <Compile Include="Services\Handlers\BoatHandler.cs" />
+    <Compile Include="Services\Handlers\ConHandler.cs" />
+    <Compile Include="Services\Handlers\EnterWorldHandler.cs" />
     <Compile Include="Services\IO\FileReader.cs" />
     <Compile Include="Services\DebugOutput.cs" />
     <Compile Include="Services\Handlers\GroupLeaderHandler.cs" />
@@ -352,7 +355,6 @@
     <Compile Include="Services\Handlers\SpellCastOnOtherHandler.cs" />
     <Compile Include="Services\Handlers\SpellWornOffOtherHandler.cs" />
     <Compile Include="Services\Handlers\SpellWornOffSelfHandler.cs" />
-    <Compile Include="Services\Handlers\EnterWorldHandler.cs" />
     <Compile Include="Services\Handlers\CampHandler.cs" />
     <Compile Include="Services\Handlers\DeathTouchHandler.cs" />
     <Compile Include="Services\Handlers\RandomRollHandler.cs" />
@@ -364,18 +366,19 @@
     <Compile Include="Services\Parsing\GroupLeaderParser.cs" />
     <Compile Include="Services\Parsing\LoadingPleaseWaitParser.cs" />
     <Compile Include="Services\Parsing\PetParser.cs" />
+    <Compile Include="Services\Parsing\BoatParser.cs" />
     <Compile Include="Services\Parsing\WelcomeParser.cs" />
     <Compile Include="Services\Parsing\YourItemBeginsToGlowParser.cs" />
     <Compile Include="Services\Parsing\RingWarParser.cs" />
     <Compile Include="Services\Parsing\SpellCastOnOtherParser.cs" />
     <Compile Include="Services\Parsing\MendWoundsParser.cs" />
-    <Compile Include="Services\Parsing\UserDefinedTriggerParser.cs" />
     <Compile Include="Services\Parsing\YouFinishCasting_SpellCastOnYou_Parser.cs" />
     <Compile Include="Services\Parsing\YouBeginCastingParser.cs" />
     <Compile Include="Services\Parsing\YouHaveFinishedMemorizingParser.cs" />
     <Compile Include="Services\Parsing\YourSpellInterupptedParser.cs" />
     <Compile Include="Services\Parsing\LineParser.cs" />
     <Compile Include="Services\Parsing\FactionParser.cs" />
+    <Compile Include="Services\SavePlayerStateService.cs" />
     <Compile Include="Services\UIRunner.cs" />
     <Compile Include="Services\UpdateRunner.cs" />
     <Compile Include="Services\UserDefinedTrigger.cs" />
@@ -403,6 +406,12 @@
     <Compile Include="Services\Parsing\YouZonedParser.cs" />
     <Compile Include="UI\Console.xaml.cs">
       <DependentUpon>Console.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\MobInfoComponents\MobComponent.xaml.cs">
+      <DependentUpon>MobComponent.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\MobInfoComponents\PetComponent.xaml.cs">
+      <DependentUpon>PetComponent.xaml</DependentUpon>
     </Compile>
     <Compile Include="UI\SettingManagement.xaml.cs">
       <DependentUpon>SettingManagement.xaml</DependentUpon>
@@ -469,7 +478,6 @@
     <Compile Include="Services\Handlers\CompleteHealCommsHandler.cs" />
     <Compile Include="Services\Parsing\QuakeParser.cs" />
     <Compile Include="Services\Parsing\Helpers\LogFileDateTimeParse.cs" />
-    <Compile Include="Services\Parsing\EnterWorldParser.cs" />
     <Compile Include="Services\SettingsTestRunOverlay.cs" />
     <Compile Include="Services\SignalrPlayerHub.cs" />
     <Compile Include="Services\Parsing\SpellWornOffSelfParser.cs" />
@@ -498,7 +506,8 @@
     <Compile Include="ViewModels\ActivePlayerInfo.cs" />
     <Compile Include="Services\TimersService.cs" />
     <Compile Include="ViewModels\ConsoleViewModel.cs" />
-    <Compile Include="ViewModels\PetViewModel.cs" />
+    <Compile Include="ViewModels\MobInfoComponents\MobInfoManagementViewModel.cs" />
+    <Compile Include="ViewModels\MobInfoComponents\PetViewModel.cs" />
     <Compile Include="ViewModels\SettingsComponents\SettingsGeneralViewModel.cs" />
     <Compile Include="ViewModels\SettingsComponents\SettingsPlayerViewModel.cs" />
     <Compile Include="ViewModels\SettingsComponents\SettingsServerViewModel.cs" />
@@ -516,7 +525,7 @@
     <Compile Include="ViewModels\SpellWindow\CounterViewModel.cs" />
     <Compile Include="ViewModels\SpellWindow\TimerViewModel.cs" />
     <Compile Include="ViewModels\ZoneViewModel.cs" />
-    <Compile Include="ViewModels\MobInfoViewModel.cs" />
+    <Compile Include="ViewModels\MobInfoComponents\MobInfoViewModel.cs" />
     <Compile Include="ViewModels\MapViewModel.cs" />
     <Compile Include="ViewModels\DPSWindowViewModel.cs" />
     <Compile Include="ViewModels\SpellWindowViewModel.cs" />
@@ -543,6 +552,14 @@
     </Compile>
     <Compile Include="UI\BaseSaveStateWindow.cs" />
     <Page Include="UI\Console.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\MobInfoComponents\MobComponent.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\MobInfoComponents\PetComponent.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -1135,5 +1152,6 @@
   <ItemGroup>
     <Resource Include="ILLink\ILLink.Descriptors.LibraryBuild.xml" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
