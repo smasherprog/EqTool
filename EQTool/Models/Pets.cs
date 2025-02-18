@@ -187,20 +187,20 @@ namespace EQTool.Models
             PetSpellDictionary[petSpell.SpellName] = petSpell;
 
             petSpell = new PetSpell(spellName: "Cackling Bones", spells: eqSpells);
-            petSpell.PetRankList.Add(new PetRank(rank: "1/5", petLevel: 33, maxMelee: 39, maxBashKick: 20));
-            petSpell.PetRankList.Add(new PetRank(rank: "2/5", petLevel: 34, maxMelee: 41, maxBashKick: 21));
-            petSpell.PetRankList.Add(new PetRank(rank: "3/5", petLevel: 35, maxMelee: 43, maxBashKick: 21));
-            petSpell.PetRankList.Add(new PetRank(rank: "4/5", petLevel: 36, maxMelee: 45, maxBashKick: 22));
-            petSpell.PetRankList.Add(new PetRank(rank: "5/5", petLevel: 37, maxMelee: 47, maxBashKick: 22, description: "Max"));
+            petSpell.PetRankList.Add(new PetRank(rank: "1/5", petLevel: 33, maxMelee: 39, maxBashKick: 20, lifetapOrProc: "41"));
+            petSpell.PetRankList.Add(new PetRank(rank: "2/5", petLevel: 34, maxMelee: 41, maxBashKick: 21, lifetapOrProc: "41"));
+            petSpell.PetRankList.Add(new PetRank(rank: "3/5", petLevel: 35, maxMelee: 43, maxBashKick: 21, lifetapOrProc: "41"));
+            petSpell.PetRankList.Add(new PetRank(rank: "4/5", petLevel: 36, maxMelee: 45, maxBashKick: 22, lifetapOrProc: "41"));
+            petSpell.PetRankList.Add(new PetRank(rank: "5/5", petLevel: 37, maxMelee: 47, maxBashKick: 22, lifetapOrProc: "41", description: "Max"));
             PetSpellDictionary[petSpell.SpellName] = petSpell;
 
             petSpell = new PetSpell(spellName: "Invoke Death", spells: eqSpells);
-            petSpell.PetRankList.Add(new PetRank(rank: "1/5", petLevel: 37, maxMelee: 47, maxBashKick: 22));
-            petSpell.PetRankList.Add(new PetRank(rank: "2/5", petLevel: 38, maxMelee: 49, maxBashKick: 23));
-            petSpell.PetRankList.Add(new PetRank(rank: "3/5", petLevel: 39, maxMelee: 51, maxBashKick: 23));
-            petSpell.PetRankList.Add(new PetRank(rank: "4/5", petLevel: 40, maxMelee: 52, maxBashKick: 24));
-            petSpell.PetRankList.Add(new PetRank(rank: "5/5", petLevel: 41, maxMelee: 55, maxBashKick: 24, description: "Max"));
-            petSpell.PetRankList.Add(new PetRank(rank: "6/5", petLevel: 42, maxMelee: 57, maxBashKick: 25, description: "Max+Focus"));
+            petSpell.PetRankList.Add(new PetRank(rank: "1/5", petLevel: 37, maxMelee: 47, maxBashKick: 22, lifetapOrProc: "42"));
+            petSpell.PetRankList.Add(new PetRank(rank: "2/5", petLevel: 38, maxMelee: 49, maxBashKick: 23, lifetapOrProc: "42"));
+            petSpell.PetRankList.Add(new PetRank(rank: "3/5", petLevel: 39, maxMelee: 51, maxBashKick: 23, lifetapOrProc: "42"));
+            petSpell.PetRankList.Add(new PetRank(rank: "4/5", petLevel: 40, maxMelee: 52, maxBashKick: 24, lifetapOrProc: "42"));
+            petSpell.PetRankList.Add(new PetRank(rank: "5/5", petLevel: 41, maxMelee: 55, maxBashKick: 24, lifetapOrProc: "42", description: "Max"));
+            petSpell.PetRankList.Add(new PetRank(rank: "6/5", petLevel: 42, maxMelee: 57, maxBashKick: 25, lifetapOrProc: "42", description: "Max+Focus"));
             PetSpellDictionary[petSpell.SpellName] = petSpell;
 
             petSpell = new PetSpell(spellName: "Minion of Shadows", spells: eqSpells);
