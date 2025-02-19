@@ -14,7 +14,8 @@ namespace EQTool.ViewModels.SpellWindow
         Counter,
         Roll,
         Spell,
-        Timer
+        Timer,
+        Boat
     }
 
     public class PersistentViewModel : INotifyPropertyChanged

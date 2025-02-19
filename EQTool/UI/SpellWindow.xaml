@@ -144,6 +144,21 @@
                             </StackPanel>
                         </Grid>
                     </DataTemplate>
+                    <DataTemplate DataType="{x:Type vm:BoatViewModel}">
+                        <Grid Visibility="{Binding ColumnVisibility}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <ProgressBar Grid.Column="0" Grid.ColumnSpan="2"  Value="{Binding PercentLeft}"  Maximum="100"  Foreground="{Binding ProgressBarColor}"  />
+                            <StackPanel Orientation="Horizontal" Grid.Column="0" >
+                                <TextBlock HorizontalAlignment="Left" FontWeight="Bold" Text="{Binding Name}"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Grid.Column="2" HorizontalAlignment="Right">
+                                <TextBlock TextAlignment="Right" FontWeight="Bold" Text="N/A"/>
+                            </StackPanel>
+                        </Grid>
+                    </DataTemplate>
                 </ListView.Resources>
                 <ListView.GroupStyle>
                     <GroupStyle>

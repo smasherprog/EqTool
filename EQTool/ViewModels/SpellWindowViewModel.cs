@@ -21,10 +21,12 @@ namespace EQTool.ViewModels
         private readonly IAppDispatcher appDispatcher;
         private readonly EQToolSettings settings;
         private readonly EQSpells spells;
+        private readonly PigParseApi pigParseApi;
 
-        public SpellWindowViewModel(ActivePlayer activePlayer, IAppDispatcher appDispatcher, EQToolSettings settings, EQSpells spells)
+        public SpellWindowViewModel(ActivePlayer activePlayer, IAppDispatcher appDispatcher, EQToolSettings settings, EQSpells spells, PigParseApi pigParseApi)
         {
             this.activePlayer = activePlayer;
+            this.pigParseApi = pigParseApi;
             this.appDispatcher = appDispatcher;
             this.settings = settings;
             this.spells = spells;
@@ -36,25 +38,39 @@ namespace EQTool.ViewModels
         {
             get
             {
-                if (_SpellList == null)
-                {
-                    _SpellList = new ObservableCollection<PersistentViewModel>();
-                    var view = (ListCollectionView)CollectionViewSource.GetDefaultView(_SpellList);
-                    view.GroupDescriptions.Add(new PropertyGroupDescription(nameof(TimerViewModel.GroupName)));
-                    view.LiveGroupingProperties.Add(nameof(TimerViewModel.GroupName));
-                    view.IsLiveGrouping = true;
-                    view.SortDescriptions.Add(new SortDescription(nameof(TimerViewModel.Sorting), ListSortDirection.Ascending));
-                    view.SortDescriptions.Add(new SortDescription(nameof(RollViewModel.Roll), ListSortDirection.Descending));
-                    view.SortDescriptions.Add(new SortDescription(nameof(TimerViewModel.TotalRemainingDuration), ListSortDirection.Ascending));
-                    view.IsLiveSorting = true;
-                    view.LiveSortingProperties.Add(nameof(TimerViewModel.TotalRemainingDuration));
-                }
+                CreateSpellList();
                 return _SpellList;
             }
             set
             {
                 _SpellList = value;
                 OnPropertyChanged();
+            }
+        }
+
+        private void CreateSpellList()
+        {
+            if (_SpellList == null)
+            {
+                _SpellList = new ObservableCollection<PersistentViewModel>();
+                var view = (ListCollectionView)CollectionViewSource.GetDefaultView(_SpellList);
+                view.GroupDescriptions.Add(new PropertyGroupDescription(nameof(TimerViewModel.GroupName)));
+                view.LiveGroupingProperties.Add(nameof(TimerViewModel.GroupName));
+                view.IsLiveGrouping = true;
+                view.SortDescriptions.Add(new SortDescription(nameof(TimerViewModel.Sorting), ListSortDirection.Ascending));
+                view.SortDescriptions.Add(new SortDescription(nameof(RollViewModel.Roll), ListSortDirection.Descending));
+                view.SortDescriptions.Add(new SortDescription(nameof(TimerViewModel.TotalRemainingDuration), ListSortDirection.Ascending));
+                view.IsLiveSorting = true;
+                view.LiveSortingProperties.Add(nameof(TimerViewModel.TotalRemainingDuration));
+
+                _SpellList.Add(new BoatViewModel
+                {
+                    Name = "Oasis -> Timorous Deep"
+                });
+                _SpellList.Add(new BoatViewModel
+                {
+                    Name = "Timorous Deep -> Oasis"
+                });
             }
         }
 
@@ -236,6 +252,19 @@ namespace EQTool.ViewModels
                     }
 
                     item.ColumnVisibility = hidespell ? System.Windows.Visibility.Collapsed : System.Windows.Visibility.Visible;
+                }
+
+                var boats = this._SpellList.Where(a => a.SpellViewModelType == SpellViewModelType.Boat).Cast<BoatViewModel>().ToList();
+                foreach (var boat in boats)
+                {
+                    if (player?.BoatSchedule == false)
+                    {
+                        boat.ColumnVisibility = Visibility.Collapsed;
+                    }
+                    else
+                    {
+                        boat.ColumnVisibility = Visibility.Visible;
+                    }
                 }
 
                 var d = DateTime.Now;
@@ -461,11 +490,26 @@ namespace EQTool.ViewModels
             });
         }
 
+        public void UpdateBoats()
+        {
+            var s = this.activePlayer.Player.Server;
+            if (s.HasValue)
+            {
+                var boatsapi = this.pigParseApi.GetBoatData(s.Value);
+                appDispatcher.DispatchUI(() =>
+                {
+                    var boats = this._SpellList.Where(a => a.SpellViewModelType == SpellViewModelType.Boat).Cast<BoatViewModel>().ToList();
+                });
+            }
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected void OnPropertyChanged([CallerMemberName] string name = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
+
+
     }
 }
