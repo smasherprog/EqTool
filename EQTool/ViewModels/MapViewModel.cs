@@ -359,8 +359,7 @@ namespace EQTool.ViewModels
         }
 
         public bool LoadDefaultMap(Canvas canvas)
-        {
-            _ = activePlayer.Update();
+        { 
             var z = Zones.TranslateToMapName(activePlayer.Player?.Zone);
             if (string.IsNullOrWhiteSpace(z))
             {

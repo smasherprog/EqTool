@@ -27,11 +27,11 @@ namespace EQTool.Services
         private readonly object ContainerLock = new object();
 
         public PlayerTrackerService(IAppDispatcher appDispatcher, LogEvents logEvents, ActivePlayer activePlayer, PigParseApi pigParseApi, LoggingService loggingService, SpellWindowViewModel spellWindowViewModel)
-        {
-            _ = activePlayer.Update();
+        { 
             CurrentZone = activePlayer.Player?.Zone;
             this.logEvents = logEvents;
             this.logEvents.YouZonedEvent += LogParser_PlayerZonedEvent;
+            this.logEvents.AfterPlayerChangedEvent += LogEvents_AfterPayerChangedEvent;
             this.logEvents.WhoPlayerEvent += LogParser_WhoPlayerEvent;
             UITimer = new System.Timers.Timer(20000);// every 20 seconds
             UITimer.Elapsed += UITimer_Elapsed;
@@ -41,6 +41,11 @@ namespace EQTool.Services
             this.loggingService = loggingService;
             this.spellWindowViewModel = spellWindowViewModel;
             this.appDispatcher = appDispatcher;
+        }
+
+        private void LogEvents_AfterPayerChangedEvent(object sender, AfterPlayerChangedEvent e)
+        {
+            CurrentZone = activePlayer.Player?.Zone;
         }
 
         public bool IsPlayer(string name)

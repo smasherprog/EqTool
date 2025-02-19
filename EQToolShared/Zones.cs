@@ -68,7 +68,8 @@ namespace EQToolShared
     {
         BarrelBarge,
         BloatedBelly,
-        MaidensVoyage
+        MaidensVoyage,
+        NroIcecladBoat
     }
 
     public static class Zones
@@ -107,22 +108,32 @@ namespace EQToolShared
 
             Boats.Add(new BoatInfo
             {
-                Boat = EQToolShared.Boats.BloatedBelly, 
+                Boat = EQToolShared.Boats.BloatedBelly,
                 ZoneStart = "overthere",
-                ZoneStartAnnoucement = "Rack Stonebelly shouts, 'Da Bloated Belly be leaving da Overdere",
+                ZoneStartAnnoucement = "Rack Stonebelly shouts, 'Rack Stonebelly shouts, 'Da Bloated Belly be leaving da Overdere now!'",
                 ZoneEnd = "timorous",
                 ZoneEndAnnoucement = string.Empty,
-                RoundTripTimeInSeconds = 779
+                RoundTripTimeInSeconds = 2025
             });
-             
+
             Boats.Add(new BoatInfo
             {
-                Boat = EQToolShared.Boats.MaidensVoyage, 
-                ZoneStart = "firiona",
-                ZoneStartAnnoucement = "Glisse Bluesea shouts 'The Maiden's Voyage is now ready to be boarded. Please form an orderly line to the shuttles, and remember, no pushing!",
-                ZoneEnd = "butcher",
+                Boat = EQToolShared.Boats.MaidensVoyage,
+                ZoneStart = "butcher",
+                ZoneStartAnnoucement = "Glisse Bluesea shouts, 'The Maiden's Voyage has departed the outpost at Firiona Vie. Please be ready to board the shuttles shortly, if you desire to make the journey to Kunark.",
+                ZoneEnd = "firiona",
                 ZoneEndAnnoucement = string.Empty,
                 RoundTripTimeInSeconds = 1230
+            });
+
+            Boats.Add(new BoatInfo
+            {
+                Boat = EQToolShared.Boats.NroIcecladBoat,
+                ZoneStart = "nro",
+                ZoneStartAnnoucement = "Frankel the Pirate says 'Thar she be mates. All aboard thats goin aboard!'",
+                ZoneEnd = "iceclad",
+                ZoneEndAnnoucement = string.Empty,
+                RoundTripTimeInSeconds = 519
             });
 
             ZoneInfoMap.Add("airplane", new ZoneInfo

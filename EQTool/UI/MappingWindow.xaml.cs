@@ -43,9 +43,9 @@ namespace EQTool.UI
             Map.Width = Math.Abs(mapViewModel.AABB.MaxWidth);
             this.logEvents.PlayerLocationEvent += LogParser_PlayerLocationEvent;
             this.logEvents.YouZonedEvent += LogParser_PlayerZonedEvent;
-            this.logEvents.WelcomeEvent += LogEvents_WelcomeEvent; ;
+            this.logEvents.WelcomeEvent += LogEvents_WelcomeEvent; 
             this.logEvents.SlainEvent += LogParser_DeathEvent;
-            this.logEvents.PayerChangedEvent += LogEvents_PayerChangedEvent;
+            this.logEvents.AfterPlayerChangedEvent += LogEvents_PayerChangedEvent;
             this.logEvents.OtherPlayerLocationReceivedRemoteEvent += LogEvents_OtherPlayerLocationReceivedRemoteEvent;
             this.logEvents.PlayerDisconnectReceivedRemoteEvent += LogEvents_PlayerDisconnectReceivedRemoteEvent;
             KeyDown += PanAndZoomCanvas_KeyDown;
@@ -66,7 +66,7 @@ namespace EQTool.UI
             mapViewModel.PlayerLocationEvent(e.Player);
         }
 
-        private void LogEvents_PayerChangedEvent(object sender, PayerChangedEvent e)
+        private void LogEvents_PayerChangedEvent(object sender, AfterPlayerChangedEvent e)
         {
             if (mapViewModel.LoadDefaultMap(Map))
             {

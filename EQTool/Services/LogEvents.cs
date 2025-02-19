@@ -172,10 +172,16 @@ namespace EQTool.Services
             RandomRollEvent?.Invoke(this, e);
         }
 
-        public event EventHandler<PayerChangedEvent> PayerChangedEvent;
-        public void Handle(PayerChangedEvent e)
+        public event EventHandler<AfterPlayerChangedEvent> AfterPlayerChangedEvent;
+        public void Handle(AfterPlayerChangedEvent e)
         {
-            PayerChangedEvent?.Invoke(this, e);
+            AfterPlayerChangedEvent?.Invoke(this, e);
+        }
+
+        public event EventHandler<BeforePlayerChangedEvent> BeforePlayerChangedEvent;
+        public void Handle(BeforePlayerChangedEvent e)
+        {
+            BeforePlayerChangedEvent?.Invoke(this, e);
         }
 
         public event EventHandler<ClassDetectedEvent> ClassDetectedEvent;

@@ -217,12 +217,16 @@ namespace EQTool.Models
         public Spell Spell { get; set; }
         public bool isYou { get; set; }
     }
-
-    //this event will be called BEFORE the player data is swapped out. Subscribe to this event if you need to do things before the player data is changed.
-    //If there is no previous player, then this will not be called.
-    public class PayerChangedEvent : BaseLogParseEvent
+     
+    public class AfterPlayerChangedEvent : BaseLogParseEvent
     {
     }
+    //this event will be called BEFORE the player data is swapped out. Subscribe to this event if you need to do things before the player data is changed.
+    //If there is no previous player, then this will not be called.
+    public class BeforePlayerChangedEvent : BaseLogParseEvent
+    {
+    }
+
 
     public class ClassDetectedEvent : BaseLogParseEvent
     {
