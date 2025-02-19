@@ -108,12 +108,9 @@ namespace EQTool.Services.Handlers
             }
 
             // pet
-            else if (e.Incident == PetEvent.PetIncident.LEADER
-                || e.Incident == PetEvent.PetIncident.PETATTACK
-                || e.Incident == PetEvent.PetIncident.PETFOLLOWME
-                || e.Incident == PetEvent.PetIncident.SITSTAND
-                || e.Incident == PetEvent.PetIncident.GUARD
-                || e.Incident == PetEvent.PetIncident.PETLIFETAP)
+            // note we don't check against other pet commands (follow, guard, sit, etc) because those reports are visible from 
+            // all nearby pets, and so it is hard to tell which is our pet vs someone else's pet
+            else if (e.Incident == PetEvent.PetIncident.LEADER)
             {
                 playerPet.PetName = e.PetName;
             }
@@ -147,8 +144,12 @@ namespace EQTool.Services.Handlers
                 // damage from our pet?
                 if (playerPet.PetName == e.AttackerName)
                 {
-                    // check the max damage / get pet rank
-                    playerPet.CheckMaxMelee(e.DamageDone);
+                    // only check against non-backstab, melee damage
+                    if (e.DamageType != "backstabs")
+                    {
+                        // check the max damage / get pet rank
+                        playerPet.CheckMaxMelee(e.DamageDone);
+                    }
                 }
             }
         }
