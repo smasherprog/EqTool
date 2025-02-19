@@ -107,10 +107,12 @@ namespace EQTool.Services.Handlers
                 }
             }
 
-            // pet
+            // pet leader, pet attacking, pet lifetap
             // note we don't check against other pet commands (follow, guard, sit, etc) because those reports are visible from 
             // all nearby pets, and so it is hard to tell which is our pet vs someone else's pet
-            else if (e.Incident == PetEvent.PetIncident.LEADER)
+            else if (e.Incident == PetEvent.PetIncident.LEADER
+                || e.Incident == PetEvent.PetIncident.PETATTACK
+                || e.Incident == PetEvent.PetIncident.PETLIFETAP)
             {
                 playerPet.PetName = e.PetName;
             }
