@@ -23,7 +23,7 @@ namespace EQTool.Services.Handlers
                 {
                     Boat = e.Boat,
                     Server = s.Value,
-                    Zone = e.ZoneName
+                    StartPoint = e.StartPoint
                 });
             }
         }

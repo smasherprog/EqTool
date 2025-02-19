@@ -31,11 +31,10 @@ namespace EQToolShared
     public class BoatInfo
     {
         public Boats Boat { get; set; }
-        public string ZoneStartAnnoucement { get; set; }
-        public string ZoneStart { get; set; }
-        public string ZoneEnd { get; set; }
-        public string ZoneEndAnnoucement { get; set; }
-        public int RoundTripTimeInSeconds { get; set; }
+        public string StartAnnoucement { get; set; }
+        public string StartPoint { get; set; }
+        public string EndPoint { get; set; }
+        public int TripTimeInSeconds { get; set; }
     }
 
     public static class ZoneSpawnTimes
@@ -99,41 +98,44 @@ namespace EQToolShared
             Boats.Add(new BoatInfo
             {
                 Boat = EQToolShared.Boats.BarrelBarge,
-                ZoneStart = "oasis",
-                ZoneStartAnnoucement = "Rack Stonebelly shouts, 'Da Barrel Barge will be here soon soon!'",
-                ZoneEnd = "timorous",
-                ZoneEndAnnoucement = string.Empty,
-                RoundTripTimeInSeconds = 779
+                StartPoint = "oasis",
+                StartAnnoucement = "Rack Stonebelly shouts, 'Da Barrel Barge will be here soon soon!'",
+                EndPoint = "timorous", 
+                TripTimeInSeconds = 779
             });
-
+            Boats.Add(new BoatInfo
+            {
+                Boat = EQToolShared.Boats.BarrelBarge,
+                StartPoint = "oasis",
+                StartAnnoucement = "Rack Stonebelly shouts, 'Da Barrel Barge will be here soon soon!'",
+                EndPoint = "timorous", 
+                TripTimeInSeconds = 779
+            });
             Boats.Add(new BoatInfo
             {
                 Boat = EQToolShared.Boats.BloatedBelly,
-                ZoneStart = "overthere",
-                ZoneStartAnnoucement = "Rack Stonebelly shouts, 'Rack Stonebelly shouts, 'Da Bloated Belly be leaving da Overdere now!'",
-                ZoneEnd = "timorous",
-                ZoneEndAnnoucement = string.Empty,
-                RoundTripTimeInSeconds = 2025
+                StartPoint = "overthere",
+                StartAnnoucement = "Rack Stonebelly shouts, 'Rack Stonebelly shouts, 'Da Bloated Belly be leaving da Overdere now!'",
+                EndPoint = "timorous", 
+                TripTimeInSeconds = 2025
             });
 
             Boats.Add(new BoatInfo
             {
                 Boat = EQToolShared.Boats.MaidensVoyage,
-                ZoneStart = "butcher",
-                ZoneStartAnnoucement = "Glisse Bluesea shouts, 'The Maiden's Voyage has departed the outpost at Firiona Vie. Please be ready to board the shuttles shortly, if you desire to make the journey to Kunark.",
-                ZoneEnd = "firiona",
-                ZoneEndAnnoucement = string.Empty,
-                RoundTripTimeInSeconds = 1230
+                StartPoint = "butcher",
+                StartAnnoucement = "Glisse Bluesea shouts, 'The Maiden's Voyage has departed the outpost at Firiona Vie. Please be ready to board the shuttles shortly, if you desire to make the journey to Kunark.",
+                EndPoint = "firiona", 
+                TripTimeInSeconds = 1230
             });
 
             Boats.Add(new BoatInfo
             {
                 Boat = EQToolShared.Boats.NroIcecladBoat,
-                ZoneStart = "nro",
-                ZoneStartAnnoucement = "Frankel the Pirate says 'Thar she be mates. All aboard thats goin aboard!'",
-                ZoneEnd = "iceclad",
-                ZoneEndAnnoucement = string.Empty,
-                RoundTripTimeInSeconds = 519
+                StartPoint = "nro",
+                StartAnnoucement = "Frankel the Pirate says 'Thar she be mates. All aboard thats goin aboard!'",
+                EndPoint = "iceclad", 
+                TripTimeInSeconds = 519
             });
 
             ZoneInfoMap.Add("airplane", new ZoneInfo

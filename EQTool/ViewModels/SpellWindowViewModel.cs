@@ -62,15 +62,14 @@ namespace EQTool.ViewModels
                 view.SortDescriptions.Add(new SortDescription(nameof(TimerViewModel.TotalRemainingDuration), ListSortDirection.Ascending));
                 view.IsLiveSorting = true;
                 view.LiveSortingProperties.Add(nameof(TimerViewModel.TotalRemainingDuration));
-
-                _SpellList.Add(new BoatViewModel
+                foreach (var item in Zones.Boats)
                 {
-                    Name = "Oasis -> Timorous Deep"
-                });
-                _SpellList.Add(new BoatViewModel
-                {
-                    Name = "Timorous Deep -> Oasis"
-                });
+                    _SpellList.Add(new BoatViewModel
+                    {
+                        Name = $"{item.StartPoint} -> {item.EndPoint}",
+                        Boat =item.Boat
+                    });
+                } 
             }
         }
 
@@ -499,6 +498,13 @@ namespace EQTool.ViewModels
                 appDispatcher.DispatchUI(() =>
                 {
                     var boats = this._SpellList.Where(a => a.SpellViewModelType == SpellViewModelType.Boat).Cast<BoatViewModel>().ToList();
+                    foreach(var boat in boatsapi)
+                    {
+                        var zoneboat = Zones.Boats.FirstOrDefault(a=> a.Boat == boat.Boat && a.StartPoint == boat.StartPoint);
+                        var b = boats.FirstOrDefault(a => a.Boat == boat.Boat && a.Name.StartsWith(boat.StartPoint));
+                        var now = DateTimeOffset.Now;
+
+                    }
                 });
             }
         }
@@ -508,8 +514,6 @@ namespace EQTool.ViewModels
         protected void OnPropertyChanged([CallerMemberName] string name = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
-        }
-
-
+        } 
     }
 }

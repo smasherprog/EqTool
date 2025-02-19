@@ -7,7 +7,7 @@ namespace EQToolShared.APIModels.BoatControllerModels
     public class BoatActivityRequest
     {
         [Required]
-        public string Zone { get; set; } 
+        public string StartPoint { get; set; } 
         [EnumDataType(typeof(EQToolShared.Boats))]
         public Boats Boat { get; set; }
         [EnumDataType(typeof(Servers))]
@@ -16,7 +16,7 @@ namespace EQToolShared.APIModels.BoatControllerModels
     public class BoatActivityResponce
     {
         [Required]
-        public string Zone { get; set; }
+        public string StartPoint { get; set; }
         [EnumDataType(typeof(EQToolShared.Boats))]
         public Boats Boat { get; set; }
         [Required]
