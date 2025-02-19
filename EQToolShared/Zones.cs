@@ -124,20 +124,34 @@ namespace EQToolShared
             {
                 Boat = EQToolShared.Boats.MaidensVoyage,
                 StartPoint = "butcher",
-                StartAnnoucement = "Glisse Bluesea shouts, 'The Maiden's Voyage has departed the outpost at Firiona Vie. Please be ready to board the shuttles shortly, if you desire to make the journey to Kunark.",
+                StartAnnoucement = "Glisse Bluesea shouts 'The Maiden's Voyage is now ready to be boarded. Please form an orderly line to the shuttles, and remember, no pushing!",
                 EndPoint = "firiona", 
                 TripTimeInSeconds = 1230
+            }); 
+            Boats.Add(new BoatInfo
+            {
+                Boat = EQToolShared.Boats.MaidensVoyage,
+                StartPoint = "firiona",
+                StartAnnoucement = "Glisse Bluesea shouts 'The Maiden's Voyage has departed the outpost at Firiona Vie. Please be ready to board the shuttles shortly, if you desire to make the journey to Kunark.",
+                EndPoint = "butcher",
+                TripTimeInSeconds = 1230
             });
-
             Boats.Add(new BoatInfo
             {
                 Boat = EQToolShared.Boats.NroIcecladBoat,
                 StartPoint = "nro",
                 StartAnnoucement = "Frankel the Pirate says 'Thar she be mates. All aboard thats goin aboard!'",
                 EndPoint = "iceclad", 
-                TripTimeInSeconds = 519
+                TripTimeInSeconds = 395
             });
-
+            Boats.Add(new BoatInfo
+            {
+                Boat = EQToolShared.Boats.NroIcecladBoat,
+                StartPoint = "iceclad",
+                StartAnnoucement = string.Empty,
+                EndPoint = "nro",
+                TripTimeInSeconds = 124
+            });
             ZoneInfoMap.Add("airplane", new ZoneInfo
             {
                 Name = "airplane",

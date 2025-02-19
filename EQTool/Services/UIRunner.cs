@@ -1,5 +1,6 @@
 ﻿using EQTool.ViewModels;
 using System;
+using System.Threading.Tasks;
 
 namespace EQTool.Services
 {
@@ -31,7 +32,10 @@ namespace EQTool.Services
             spellWindowViewModel.UpdateSpells(dt_ms);
             if (!LastBoatUpdate.HasValue || (LastBoatUpdate.HasValue && (now - LastBoatUpdate.Value).TotalMinutes > 5))
             {
-                spellWindowViewModel.UpdateBoats();
+                Task.Factory.StartNew(() =>
+                { 
+                    spellWindowViewModel.UpdateBoats();
+                });
                 LastBoatUpdate = now;
             }
         }
