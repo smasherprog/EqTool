@@ -22,50 +22,40 @@ namespace EQTool.Services
             var endBoat = boats.FirstOrDefault(a => a.Boat == boat.Boat && a.Name.StartsWith(startZoneBoat.EndPoint));
             var now = DateTimeOffset.Now;
             var dt = now - boat.LastSeen;
-            if (boat.Boat == Boats.BarrelBarge)
+            var totalseconds = 0;
+            if (dt.TotalSeconds > startZoneBoat.TripTimeInSeconds)
             {
-                var totalseconds = dt.TotalSeconds % startZoneBoat.TripTimeInSeconds;
-                var timeToOasisDock = 119 - totalseconds;
-                var timeToTDDock = 510 - totalseconds;
-                if (timeToOasisDock > 0)
-                {
-                    startBoat.TotalRemainingDuration = TimeSpan.FromSeconds(timeToOasisDock);
-                }
-                else
-                {
-                    startBoat.TotalRemainingDuration = TimeSpan.FromSeconds(Math.Abs(timeToOasisDock));
-                }
-                if (timeToTDDock > 0)
-                {
-                    endBoat.TotalRemainingDuration = TimeSpan.FromSeconds(timeToTDDock);
-                }
-                else
-                {
-                    endBoat.TotalRemainingDuration = TimeSpan.FromSeconds(Math.Abs(timeToTDDock));
-                }
+                totalseconds = (int)(dt.TotalSeconds / startZoneBoat.TripTimeInSeconds);
+                totalseconds = (int)((totalseconds * startZoneBoat.TripTimeInSeconds) - dt.TotalSeconds);
             }
-            //else if (boat.Boat == Boats.NroIcecladBoat)
-            //{
-            //    var totalseconds = dt.TotalSeconds % startZoneBoat.TripTimeInSeconds;
-            //    var timeToOasisDock = 119 - totalseconds;
-            //    var timeToTDDock = 510 - totalseconds;
-            //    if (timeToOasisDock > 0)
-            //    {
-            //        startBoat.TotalRemainingDuration = TimeSpan.FromSeconds(timeToOasisDock);
-            //    }
-            //    else
-            //    {
-            //        startBoat.TotalRemainingDuration = TimeSpan.FromSeconds(Math.Abs(timeToOasisDock));
-            //    }
-            //    if (timeToTDDock > 0)
-            //    {
-            //        endBoat.TotalRemainingDuration = TimeSpan.FromSeconds(timeToTDDock);
-            //    }
-            //    else
-            //    {
-            //        endBoat.TotalRemainingDuration = TimeSpan.FromSeconds(Math.Abs(timeToTDDock));
-            //    }
-            //}
+            else
+            {
+                totalseconds = (int)(dt.TotalSeconds);
+            }
+            var workingBoats = new List<Boats>() { Boats.BarrelBarge, Boats.NroIcecladBoat };
+            if (workingBoats.Contains(boat.Boat))
+            {
+                var timeToStartDock = startZoneBoat.AnnouncementToDockInSeconds - totalseconds;
+                var timeToEndDock = endZoneBoat.AnnouncementToDockInSeconds - totalseconds;
+                if (timeToStartDock > 0)
+                {
+                    startBoat.TotalRemainingDuration = TimeSpan.FromSeconds(timeToStartDock);
+                }
+                else
+                {
+                    timeToStartDock = startZoneBoat.TripTimeInSeconds - totalseconds + startZoneBoat.AnnouncementToDockInSeconds;
+                    startBoat.TotalRemainingDuration = TimeSpan.FromSeconds(timeToStartDock);
+                }
+                if (timeToEndDock > 0)
+                {
+                    endBoat.TotalRemainingDuration = TimeSpan.FromSeconds(timeToEndDock);
+                }
+                else
+                {
+                    timeToEndDock = endZoneBoat.TripTimeInSeconds - totalseconds + endZoneBoat.AnnouncementToDockInSeconds;
+                    endBoat.TotalRemainingDuration = TimeSpan.FromSeconds(timeToEndDock);
+                }
+            } 
         }
     }
 }
