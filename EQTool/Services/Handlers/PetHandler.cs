@@ -146,8 +146,8 @@ namespace EQTool.Services.Handlers
                 // damage from our pet?
                 if (playerPet.PetName == e.AttackerName)
                 {
-                    // only check against non-backstab, melee damage
-                    if (e.DamageType != "backstabs")
+                    // only check against melee damage (no backstab, no kick)
+                    if ((e.DamageType != "backstabs") && (e.DamageType != "kicks"))
                     {
                         // check the max damage / get pet rank
                         playerPet.CheckMaxMelee(e.DamageDone);
