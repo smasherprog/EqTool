@@ -520,6 +520,7 @@
     <Compile Include="ViewModels\SettingsComponents\TreeViewItemBase.cs" />
     <Compile Include="ViewModels\SettingsComponents\SettingsManagementViewModel.cs" />
     <Compile Include="ViewModels\SpawnTimerDialogViewModel.cs" />
+    <Compile Include="ViewModels\SpellWindow\BoatViewModel.cs" />
     <Compile Include="ViewModels\SpellWindow\RollViewModel.cs" />
     <Compile Include="ViewModels\SpellWindow\PersistentViewModel.cs" />
     <Compile Include="ViewModels\SpellWindow\CounterViewModel.cs" />

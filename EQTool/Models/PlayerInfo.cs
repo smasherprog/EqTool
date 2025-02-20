@@ -810,7 +810,16 @@ namespace EQTool.Models
             }
         }
 
-
+        private bool _BoatSchedule;
+        public bool BoatSchedule
+        {
+            get => _BoatSchedule;
+            set
+            {
+                _BoatSchedule = value;
+                OnPropertyChanged();
+            }
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
 

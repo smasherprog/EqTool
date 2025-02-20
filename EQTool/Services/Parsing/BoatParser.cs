@@ -17,14 +17,14 @@ namespace EQTool.Services.Parsing
         {
             foreach (var item in Zones.Boats)
             {
-                if (line.StartsWith(item.ZoneStartAnnoucement))
+                if (!string.IsNullOrWhiteSpace(item.StartAnnoucement) && line.StartsWith(item.StartAnnoucement))
                 {
                     this.logEvents.Handle(new BoatEvent
                     {
                         Line = line,
                         LineCounter = lineCounter,
                         TimeStamp = timestamp,
-                        ZoneName = item.ZoneStart,
+                        StartPoint = item.StartPoint,
                         Boat = item.Boat
                     });
                     return true;

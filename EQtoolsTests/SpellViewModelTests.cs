@@ -5,7 +5,9 @@ using EQTool.ViewModels;
 using EQTool.ViewModels.SpellWindow;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Documents;
 
 namespace EQtoolsTests
 {
@@ -118,13 +120,20 @@ namespace EQtoolsTests
             // two casts, but since this is a beneficial spell, should be 1 timer
             logParser.Push("You feel the blessing of ancient Coldain heroes.", DateTime.Now);
             logParser.Push("You feel the blessing of ancient Coldain heroes.", DateTime.Now);
-            var spelleffect = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Spell && a.Name == "Frostreaver's Blessing") as SpellViewModel;
+            var spelleffect = SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Spell && a.Name == "Frostreaver's Blessing") as SpellViewModel;
             Assert.IsNotNull(spelleffect);
             Assert.AreEqual(3600.0, spelleffect.TotalDuration.TotalSeconds);
             Assert.AreEqual(spelleffect.GroupName, EQSpells.SpaceYou);
-            Assert.AreEqual(1, spellWindowViewModel.SpellList.Count);
+            Assert.AreEqual(1, SpellList.Count);
         }
-
+        private List<PersistentViewModel> SpellList
+        {
+            get => this.spellWindowViewModel.SpellList.Where(a => a.SpellViewModelType == SpellViewModelType.Spell).ToList();
+        }
+        private List<PersistentViewModel> TimerList
+        {
+            get => this.spellWindowViewModel.SpellList.Where(a => a.SpellViewModelType == SpellViewModelType.Timer).ToList();
+        }
         [TestMethod]
         public void Dazzle_StartNewTimer()
         {
@@ -160,11 +169,11 @@ namespace EQtoolsTests
             logParser.Push("You begin casting Dazzle.", DateTime.Now.AddSeconds(10.0));
             logParser.Push("Orc centurion has been mesmerized.", DateTime.Now.AddSeconds(12.0));
 
-            var spelleffect = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Spell && a.Name == "Dazzle") as SpellViewModel;
+            var spelleffect = SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Spell && a.Name == "Dazzle") as SpellViewModel;
             Assert.IsNotNull(spelleffect);
             Assert.AreEqual(102.0, spelleffect.TotalDuration.TotalSeconds, .1);
             Assert.AreEqual(" Orc centurion", spelleffect.GroupName);
-            Assert.AreEqual(1, spellWindowViewModel.SpellList.Count);
+            Assert.AreEqual(1, SpellList.Count);
         }
 
         [TestMethod]
@@ -174,7 +183,7 @@ namespace EQtoolsTests
             player.Player.Level = 45;
             logParser.Push("You begin casting Ultravision.", DateTime.Now);
             logParser.Push("Your eyes tingle.", DateTime.Now.AddSeconds(5));
-            var spelleffect = spellWindowViewModel.SpellList.FirstOrDefault();
+            var spelleffect = SpellList.FirstOrDefault();
             Assert.AreEqual("Ultravision", spelleffect.Name);
         }
 
@@ -189,7 +198,7 @@ namespace EQtoolsTests
             logParser.Push("You regain your concentration and continue your casting.", DateTime.Now.AddSeconds(2));
             logParser.Push("A froglok dar knight's feet adhere to the ground.", DateTime.Now.AddSeconds(2));
 
-            var spelleffect = spellWindowViewModel.SpellList.FirstOrDefault();
+            var spelleffect = SpellList.FirstOrDefault();
             Assert.AreEqual("Paralyzing Earth", spelleffect.Name);
         }
 
@@ -201,7 +210,7 @@ namespace EQtoolsTests
             logParser.Push("You begin casting Legacy of Thorn.", DateTime.Now); 
             logParser.Push("Someone is surrounded by a thorny barrier.", DateTime.Now.AddSeconds(3)); 
 
-            var spelleffect = spellWindowViewModel.SpellList.FirstOrDefault();
+            var spelleffect = SpellList.FirstOrDefault();
             Assert.AreEqual("Legacy of Thorn", spelleffect.Name);
             Assert.AreEqual("Someone", spelleffect.GroupName);
         }
@@ -234,7 +243,7 @@ namespace EQtoolsTests
             logParser.Push(spellWindowViewModel, "A frost giant sentinel yawns.", d);
             logParser.Push(spellWindowViewModel, "A frost giant sentinel yawns.", d);
 
-            Assert.AreEqual(spellWindowViewModel.SpellList.Count(), 2);
+            Assert.AreEqual(SpellList.Count(), 2);
         }
 
         [TestMethod]
@@ -250,7 +259,7 @@ namespace EQtoolsTests
             logParser.Push("Your faction standing with SarnakCollective could not possibly get any worse.", DateTime.Now);
             logParser.Push("You gain party experience!!", DateTime.Now);
             logParser.Push("a Dizok Observer begins to shake as the mana burns within its body.", DateTime.Now);
-            Assert.AreEqual(spellWindowViewModel.SpellList.Count(), 1);
+            Assert.AreEqual(TimerList.Count(), 1);
             logParser.Push("A Dizok Underling hits a Dizok Observer for 37 points of damage.", DateTime.Now);
             logParser.Push("A Dizok Underling hits a Dizok Observer for 121 points of damage.", DateTime.Now);
             logParser.Push("a Dizok Observer has been slain by a Dizok Underling!", DateTime.Now);
@@ -258,7 +267,7 @@ namespace EQtoolsTests
             logParser.Push("Your faction standing with SarnakCollective could not possibly get any worse.", DateTime.Now);
             logParser.Push("You gain party experience!!", DateTime.Now);
             logParser.Push("a Dizok Observer begins to shake as the mana burns within its body.", DateTime.Now);
-            Assert.AreEqual(spellWindowViewModel.SpellList.Count(), 2);
+            Assert.AreEqual(TimerList.Count(), 2);
         }
     }
 }

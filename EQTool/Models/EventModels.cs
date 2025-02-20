@@ -56,7 +56,7 @@ namespace EQTool.Models
     public class BoatEvent : BaseLogParseEvent
     {
         public Boats Boat { get; set; }
-        public string ZoneName { get; set; }
+        public string StartPoint { get; set; }
     }
     public class RingWarEvent : BaseLogParseEvent
     {

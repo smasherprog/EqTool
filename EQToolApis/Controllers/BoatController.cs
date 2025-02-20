@@ -26,17 +26,17 @@ namespace EQToolApis.Controllers
             {
                 return;
             }
-            var zones = Zones.Boats.Select(a => a.ZoneStart).ToList();
-            if (!zones.Contains(model.Zone))
+            var zones = Zones.Boats.Select(a => a.StartPoint).ToList();
+            if (!zones.Contains(model.StartPoint))
             {
                 return;
             }
             var mintime = DateTimeOffset.Now.AddMinutes(-1);
-            if (!this.dbcontext.EQBoatActivites.Any(a => a.Zone == model.Zone && a.Boat == model.Boat && a.Server == model.Server && a.LastSeen > mintime))
+            if (!this.dbcontext.EQBoatActivites.Any(a => a.Zone == model.StartPoint && a.Boat == model.Boat && a.Server == model.Server && a.LastSeen > mintime))
             {
                 this.dbcontext.Add(new EQBoatActivity
                 {
-                    Zone = model.Zone,
+                    Zone = model.StartPoint,
                     LastSeen = DateTimeOffset.Now,
                     Server = model.Server,
                     Boat = model.Boat
@@ -64,7 +64,7 @@ namespace EQToolApis.Controllers
                 .Select(a => new BoatActivityResponce
                 {
                     Boat = a.Boat,
-                    Zone = a.Data.Zone,
+                    StartPoint = a.Data.Zone,
                     LastSeen = a.Data.LastSeen
                 }).ToList();
             return dbzones;

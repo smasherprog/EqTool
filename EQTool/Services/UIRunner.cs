@@ -1,5 +1,6 @@
 ﻿using EQTool.ViewModels;
 using System;
+using System.Threading.Tasks;
 
 namespace EQTool.Services
 {
@@ -17,6 +18,7 @@ namespace EQTool.Services
         }
 
         private DateTime? LastUIRun = null;
+        private DateTime? LastBoatUpdate = null;
         private void UITimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
             var now = DateTime.Now;
@@ -28,6 +30,14 @@ namespace EQTool.Services
 
             LastUIRun = now;
             spellWindowViewModel.UpdateSpells(dt_ms);
+            if (!LastBoatUpdate.HasValue || (LastBoatUpdate.HasValue && (now - LastBoatUpdate.Value).TotalMinutes > 5))
+            {
+                Task.Factory.StartNew(() =>
+                { 
+                    spellWindowViewModel.UpdateBoats();
+                });
+                LastBoatUpdate = now;
+            }
         }
 
         public void Dispose()

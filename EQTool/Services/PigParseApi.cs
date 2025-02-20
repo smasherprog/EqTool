@@ -133,7 +133,7 @@ namespace EQTool.Services
             return GetPlayerData(new List<string>() { players }, server).FirstOrDefault();
         }
 
-        internal void SendBoatData(BoatActivityRequest boatActivityRequest)
+        public void SendBoatData(BoatActivityRequest boatActivityRequest)
         {
             try
             {
@@ -147,6 +147,22 @@ namespace EQTool.Services
                 }
             }
             catch { }
+        }
+
+        public List<BoatActivityResponce> GetBoatData(Servers server)
+        {
+            try
+            {
+                var url = $"https://pigparse.azurewebsites.net/api/boat/serverActivity/{server}";
+                var res = App.httpclient.GetAsync(url).Result;
+                if (res.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    var response = res.Content.ReadAsStringAsync().Result;
+                    return Newtonsoft.Json.JsonConvert.DeserializeObject<List<BoatActivityResponce>>(response);
+                }
+            }
+            catch { }
+            return new List<BoatActivityResponce>();
         }
     }
 }
