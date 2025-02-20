@@ -330,6 +330,7 @@
     <Compile Include="Models\FightHistory.cs" />
     <Compile Include="Models\Pets.cs" />
     <Compile Include="Services\BinarySerializer.cs" />
+    <Compile Include="Services\BoatScheduleService.cs" />
     <Compile Include="Services\Handlers\BoatHandler.cs" />
     <Compile Include="Services\Handlers\ConHandler.cs" />
     <Compile Include="Services\Handlers\EnterWorldHandler.cs" />

@@ -155,7 +155,7 @@
                                 <TextBlock HorizontalAlignment="Left" FontWeight="Bold" Text="{Binding Name}"/>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Grid.Column="2" HorizontalAlignment="Right">
-                                <TextBlock TextAlignment="Right" FontWeight="Bold" Text="N/A"/>
+                                <TextBlock TextAlignment="Right" FontWeight="Bold" Text="{Binding SecondsLeftPretty}"/> 
                             </StackPanel>
                         </Grid>
                     </DataTemplate>

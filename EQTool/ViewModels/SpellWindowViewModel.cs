@@ -22,11 +22,13 @@ namespace EQTool.ViewModels
         private readonly EQToolSettings settings;
         private readonly EQSpells spells;
         private readonly PigParseApi pigParseApi;
+        private readonly BoatScheduleService boatScheduleService;
 
-        public SpellWindowViewModel(ActivePlayer activePlayer, IAppDispatcher appDispatcher, EQToolSettings settings, EQSpells spells, PigParseApi pigParseApi)
+        public SpellWindowViewModel(ActivePlayer activePlayer, IAppDispatcher appDispatcher, EQToolSettings settings, EQSpells spells, BoatScheduleService boatScheduleService, PigParseApi pigParseApi)
         {
             this.activePlayer = activePlayer;
             this.pigParseApi = pigParseApi;
+            this.boatScheduleService = boatScheduleService;
             this.appDispatcher = appDispatcher;
             this.settings = settings;
             this.spells = spells;
@@ -67,9 +69,10 @@ namespace EQTool.ViewModels
                     _SpellList.Add(new BoatViewModel
                     {
                         Name = $"{item.StartPoint} -> {item.EndPoint}",
-                        Boat =item.Boat
+                        Boat = item.Boat,
+                        TotalDuration = TimeSpan.FromSeconds(item.TripTimeInSeconds)
                     });
-                } 
+                }
             }
         }
 
@@ -254,8 +257,14 @@ namespace EQTool.ViewModels
                 }
 
                 var boats = this._SpellList.Where(a => a.SpellViewModelType == SpellViewModelType.Boat).Cast<BoatViewModel>().ToList();
-                foreach (var boat in boats)
-                {
+                foreach (var boat in boats.Where(a=> a.Boat == Boats.BarrelBarge))
+                { 
+                    boat.TotalRemainingDuration = boat.TotalRemainingDuration.Subtract(TimeSpan.FromMilliseconds(dt_ms));
+                    if (boat.TotalRemainingDuration.TotalSeconds <= 0)
+                    {
+                        var dt = TimeSpan.FromMilliseconds(boat.TotalRemainingDuration.Milliseconds);
+                        boat.TotalRemainingDuration = dt.Add(boat.TotalDuration);
+                    }
                     if (player?.BoatSchedule == false)
                     {
                         boat.ColumnVisibility = Visibility.Collapsed;
@@ -498,12 +507,9 @@ namespace EQTool.ViewModels
                 appDispatcher.DispatchUI(() =>
                 {
                     var boats = this._SpellList.Where(a => a.SpellViewModelType == SpellViewModelType.Boat).Cast<BoatViewModel>().ToList();
-                    foreach(var boat in boatsapi)
+                    foreach (var boat in boatsapi)
                     {
-                        var zoneboat = Zones.Boats.FirstOrDefault(a=> a.Boat == boat.Boat && a.StartPoint == boat.StartPoint);
-                        var b = boats.FirstOrDefault(a => a.Boat == boat.Boat && a.Name.StartsWith(boat.StartPoint));
-                        var now = DateTimeOffset.Now;
-
+                        this.boatScheduleService.UpdateBoatInformation(boat, boats);
                     }
                 });
             }
@@ -514,6 +520,6 @@ namespace EQTool.ViewModels
         protected void OnPropertyChanged([CallerMemberName] string name = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
-        } 
+        }
     }
 }
