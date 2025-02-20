@@ -52,6 +52,22 @@ namespace EQTool.ViewModels.SpellWindow
             }
         }
 
+        private Visibility _DeleteButtonVisibility = Visibility.Visible;
+
+        public Visibility DeleteButtonVisibility
+        {
+            get => _DeleteButtonVisibility;
+            set
+            {
+                if (_DeleteButtonVisibility == value)
+                {
+                    return;
+                }
+                _DeleteButtonVisibility = value;
+                OnPropertyChanged();
+            }
+        }
+
         public virtual SpellViewModelType SpellViewModelType => SpellViewModelType.Persistent;
 
         private Visibility _ColumnVisibility = Visibility.Visible;

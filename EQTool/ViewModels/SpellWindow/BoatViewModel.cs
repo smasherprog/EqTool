@@ -14,6 +14,7 @@ namespace EQTool.ViewModels.SpellWindow
         public BoatViewModel()
         {
             this.GroupName = "Boat Schedules";
+            this.DeleteButtonVisibility = Visibility.Collapsed;
         }
         public Boats Boat { get; set; } 
         public override string Sorting => "ZZZ";//force to sort last

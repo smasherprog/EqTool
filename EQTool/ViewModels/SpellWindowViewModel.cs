@@ -257,14 +257,18 @@ namespace EQTool.ViewModels
                 }
 
                 var boats = this._SpellList.Where(a => a.SpellViewModelType == SpellViewModelType.Boat).Cast<BoatViewModel>().ToList();
-                foreach (var boat in boats.Where(a=> a.Boat == Boats.BarrelBarge))
+                foreach (var boat in boats)
                 { 
-                    boat.TotalRemainingDuration = boat.TotalRemainingDuration.Subtract(TimeSpan.FromMilliseconds(dt_ms));
-                    if (boat.TotalRemainingDuration.TotalSeconds <= 0)
+                    if(boat.Boat == Boats.BarrelBarge)
                     {
-                        var dt = TimeSpan.FromMilliseconds(boat.TotalRemainingDuration.Milliseconds);
-                        boat.TotalRemainingDuration = dt.Add(boat.TotalDuration);
+                        boat.TotalRemainingDuration = boat.TotalRemainingDuration.Subtract(TimeSpan.FromMilliseconds(dt_ms));
+                        if (boat.TotalRemainingDuration.TotalSeconds <= 0)
+                        {
+                            var dt = TimeSpan.FromMilliseconds(boat.TotalRemainingDuration.Milliseconds);
+                            boat.TotalRemainingDuration = dt.Add(boat.TotalDuration);
+                        }
                     }
+                
                     if (player?.BoatSchedule == false)
                     {
                         boat.ColumnVisibility = Visibility.Collapsed;

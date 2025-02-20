@@ -44,6 +44,28 @@ namespace EQTool.Services
                     endBoat.TotalRemainingDuration = TimeSpan.FromSeconds(Math.Abs(timeToTDDock));
                 }
             }
+            //else if (boat.Boat == Boats.NroIcecladBoat)
+            //{
+            //    var totalseconds = dt.TotalSeconds % startZoneBoat.TripTimeInSeconds;
+            //    var timeToOasisDock = 119 - totalseconds;
+            //    var timeToTDDock = 510 - totalseconds;
+            //    if (timeToOasisDock > 0)
+            //    {
+            //        startBoat.TotalRemainingDuration = TimeSpan.FromSeconds(timeToOasisDock);
+            //    }
+            //    else
+            //    {
+            //        startBoat.TotalRemainingDuration = TimeSpan.FromSeconds(Math.Abs(timeToOasisDock));
+            //    }
+            //    if (timeToTDDock > 0)
+            //    {
+            //        endBoat.TotalRemainingDuration = TimeSpan.FromSeconds(timeToTDDock);
+            //    }
+            //    else
+            //    {
+            //        endBoat.TotalRemainingDuration = TimeSpan.FromSeconds(Math.Abs(timeToTDDock));
+            //    }
+            //}
         }
     }
 }
