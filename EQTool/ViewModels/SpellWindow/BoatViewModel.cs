@@ -15,7 +15,7 @@ namespace EQTool.ViewModels.SpellWindow
         {
             this.GroupName = "Boat Schedules";
         }
-        public Boats Boat { get; set; }
+        public Boats Boat { get; set; } 
         public override string Sorting => "ZZZ";//force to sort last
         public override SpellViewModelType SpellViewModelType => SpellViewModelType.Boat;
     }

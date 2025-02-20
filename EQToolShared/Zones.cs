@@ -66,8 +66,11 @@ namespace EQToolShared
     }
     public enum Boats
     {
+        //oasis boat
         BarrelBarge,
+        //overthere boat
         BloatedBelly,
+        //bb to fv 
         MaidensVoyage,
         NroIcecladBoat
     }

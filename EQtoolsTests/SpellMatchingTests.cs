@@ -199,7 +199,7 @@ namespace EQtoolsTests
             player.Player.Level = 54;
             player.Player.PlayerClass = PlayerClasses.Cleric;
             logParser.Push(line, DateTime.Now);
-            var spell = SpellList.FirstOrDefault();
+            var spell = TimerList.FirstOrDefault();
             Assert.IsNotNull(spell);
             Assert.AreEqual("Evasive Discipline Cooldown", spell.Name);
         }
@@ -213,7 +213,7 @@ namespace EQtoolsTests
             player.Player.Level = 54;
             player.Player.PlayerClass = PlayerClasses.Cleric;
             logParser.Push(line, DateTime.Now);
-            var spellvm = SpellList.FirstOrDefault(a => a.Name == spellname && a.SpellViewModelType == SpellViewModelType.Spell) as SpellViewModel;
+            var spellvm = SpellList.FirstOrDefault(a => a.Name == spellname) as SpellViewModel;
             Assert.IsNotNull(spellvm);
             Assert.AreEqual(spellvm.Name, spellname);
         }
@@ -232,11 +232,11 @@ namespace EQtoolsTests
             logParser.Push(line, DateTime.Now.AddMilliseconds(spell.casttime + 200));
 
             var timerText = $"{spellname} Cooldown";
-            var spelltimer = SpellList.FirstOrDefault(a => a.Name == timerText && a.SpellViewModelType == SpellViewModelType.Timer) as TimerViewModel;
+            var spelltimer = TimerList.FirstOrDefault(a => a.Name == timerText) as TimerViewModel;
             Assert.IsNotNull(spelltimer);
             Assert.AreEqual(spelltimer.Name, timerText);
 
-            var spellvm = SpellList.FirstOrDefault(a => a.Name == spellname && a.SpellViewModelType == SpellViewModelType.Spell) as SpellViewModel;
+            var spellvm = SpellList.FirstOrDefault(a => a.Name == spellname) as SpellViewModel;
             Assert.IsNotNull(spellvm);
             Assert.AreEqual(spellvm.Name, spellname);
         }
