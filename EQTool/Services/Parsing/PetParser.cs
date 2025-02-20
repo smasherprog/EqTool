@@ -20,7 +20,7 @@ namespace EQTool.Services.Parsing
         private const string patternPetFollowMe = @"^(?<pet_name>[\w` ]+) says 'Following you, Master.'";
         private const string patternPetSitStand = @"^(?<pet_name>[\w` ]+) says 'Changing position, Master.'";
         private const string patternGuarding = @"^(?<pet_name>[\w` ]+) says 'Guarding with my life..oh splendid one.'";
-        private const string patternPetLifetapproc = @"^(?<pet_name>[\w` ]+) says 'Ahhh, I feel much better now...'";
+        private const string patternPetLifetapproc = @"^(?<pet_name>[\w` ]+) beams a smile at [\w` ]+";
         private const string patternPetAttacking = @"^(?<pet_name>[\w` ]+) tells you, 'Attacking (.*?) Master.'";
 
         private readonly Regex[] regexPatches = new Regex[(int)PetEvent.PetIncident.ANY];

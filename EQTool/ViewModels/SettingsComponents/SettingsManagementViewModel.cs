@@ -34,6 +34,7 @@ namespace EQTool.ViewModels.SettingsComponents
             };
             _TreeItems.Add(triggerTree);
 
+            // add some bogus examples just for testing
             for (int i = 10; i < 15; i++)
             {
                 triggerTree.Children.Add(new TreeTrigger
