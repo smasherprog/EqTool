@@ -148,11 +148,11 @@ namespace EQtoolsTests
             logParser.Push("You begin casting Dazzle.", DateTime.Now.AddSeconds(10.0));
             logParser.Push("Orc centurion has been mesmerized.", DateTime.Now.AddSeconds(12.0));
 
-            var spelleffect = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Spell && a.Name == "Dazzle") as SpellViewModel;
+            var spelleffect = SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Spell && a.Name == "Dazzle") as SpellViewModel;
             Assert.IsNotNull(spelleffect);
             Assert.AreEqual(102.0, spelleffect.TotalDuration.TotalSeconds, .1);
             Assert.AreEqual(" Orc centurion", spelleffect.GroupName);
-            Assert.AreEqual(2, spellWindowViewModel.SpellList.Count);
+            Assert.AreEqual(2, SpellList.Count);
         }
 
         [TestMethod]
