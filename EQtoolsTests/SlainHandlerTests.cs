@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using EQTool.Services;
 using EQTool.ViewModels;
+using EQToolShared;
 using EQToolShared.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
@@ -48,7 +49,7 @@ namespace EQtoolsTests
             logParser.Push("You have slain a frost giant scout!", DateTime.Now);
             var spells = container.Resolve<SpellWindowViewModel>();
 
-            Assert.AreEqual(spells.SpellList.Count, 3);
+            Assert.AreEqual(spells.SpellList.Count, 3 + Zones.Boats.Count);
         }
 
         [TestMethod]

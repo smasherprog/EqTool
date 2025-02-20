@@ -17,7 +17,7 @@ namespace EQTool.Services.Parsing
         {
             foreach (var item in Zones.Boats)
             {
-                if (line.StartsWith(item.StartAnnoucement))
+                if (!string.IsNullOrWhiteSpace(item.StartAnnoucement) && line.StartsWith(item.StartAnnoucement))
                 {
                     this.logEvents.Handle(new BoatEvent
                     {

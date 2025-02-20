@@ -7,7 +7,9 @@ using EQTool.ViewModels.SpellWindow;
 using EQToolShared.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Windows.Documents;
 
 namespace EQtoolsTests
 {
@@ -48,7 +50,7 @@ namespace EQtoolsTests
             line = "Joe " + spellclass.cast_on_other;
             logParser.Push(line, DateTime.Now);
 
-            var effect = spellWindowViewModel.SpellList.FirstOrDefault();
+            var effect = SpellList.FirstOrDefault();
             Assert.IsNotNull(effect);
         }
 
@@ -64,7 +66,7 @@ namespace EQtoolsTests
             line = "Joe " + spellclass.cast_on_other;
             logParser.Push(line, DateTime.Now);
 
-            var effect = spellWindowViewModel.SpellList.FirstOrDefault() as TimerViewModel;
+            var effect = SpellList.FirstOrDefault() as TimerViewModel;
             Assert.IsNotNull(effect);
             Assert.AreEqual(effect.TotalDuration.TotalSeconds, 210);
         }
@@ -79,7 +81,7 @@ namespace EQtoolsTests
             var line = "Joe " + spellclass.cast_on_other;
             logParser.Push(line, DateTime.Now);
 
-            var effect = spellWindowViewModel.SpellList.FirstOrDefault();
+            var effect = TimerList.FirstOrDefault();
             Assert.AreEqual("Joe", effect.GroupName);
             Assert.IsNotNull(effect);
         }
@@ -177,6 +179,19 @@ namespace EQtoolsTests
             Assert.AreEqual(ret, 60);
         }
 
+        private List<PersistentViewModel> SpellList
+        {
+            get => this.spellWindowViewModel.SpellList.Where(a=> a.SpellViewModelType == SpellViewModelType.Spell).ToList();
+        }
+        private List<PersistentViewModel> TimerList
+        {
+            get => this.spellWindowViewModel.SpellList.Where(a => a.SpellViewModelType == SpellViewModelType.Timer).ToList();
+        }
+        private List<PersistentViewModel> CounterList
+        {
+            get => this.spellWindowViewModel.SpellList.Where(a => a.SpellViewModelType == SpellViewModelType.Counter).ToList();
+        }
+
         [TestMethod]
         public void TestWarriorDiscipline()
         {
@@ -184,7 +199,7 @@ namespace EQtoolsTests
             player.Player.Level = 54;
             player.Player.PlayerClass = PlayerClasses.Cleric;
             logParser.Push(line, DateTime.Now);
-            var spell = spellWindowViewModel.SpellList.FirstOrDefault();
+            var spell = SpellList.FirstOrDefault();
             Assert.IsNotNull(spell);
             Assert.AreEqual("Evasive Discipline Cooldown", spell.Name);
         }
@@ -198,7 +213,7 @@ namespace EQtoolsTests
             player.Player.Level = 54;
             player.Player.PlayerClass = PlayerClasses.Cleric;
             logParser.Push(line, DateTime.Now);
-            var spellvm = spellWindowViewModel.SpellList.FirstOrDefault(a => a.Name == spellname && a.SpellViewModelType == SpellViewModelType.Spell) as SpellViewModel;
+            var spellvm = SpellList.FirstOrDefault(a => a.Name == spellname && a.SpellViewModelType == SpellViewModelType.Spell) as SpellViewModel;
             Assert.IsNotNull(spellvm);
             Assert.AreEqual(spellvm.Name, spellname);
         }
@@ -217,11 +232,11 @@ namespace EQtoolsTests
             logParser.Push(line, DateTime.Now.AddMilliseconds(spell.casttime + 200));
 
             var timerText = $"{spellname} Cooldown";
-            var spelltimer = spellWindowViewModel.SpellList.FirstOrDefault(a => a.Name == timerText && a.SpellViewModelType == SpellViewModelType.Timer) as TimerViewModel;
+            var spelltimer = SpellList.FirstOrDefault(a => a.Name == timerText && a.SpellViewModelType == SpellViewModelType.Timer) as TimerViewModel;
             Assert.IsNotNull(spelltimer);
             Assert.AreEqual(spelltimer.Name, timerText);
 
-            var spellvm = spellWindowViewModel.SpellList.FirstOrDefault(a => a.Name == spellname && a.SpellViewModelType == SpellViewModelType.Spell) as SpellViewModel;
+            var spellvm = SpellList.FirstOrDefault(a => a.Name == spellname && a.SpellViewModelType == SpellViewModelType.Spell) as SpellViewModel;
             Assert.IsNotNull(spellvm);
             Assert.AreEqual(spellvm.Name, spellname);
         }
@@ -236,7 +251,7 @@ namespace EQtoolsTests
                 PlayerClass = PlayerClasses.Enchanter
             };
             logParser.Push(line, DateTime.Now);
-            var spell = spellWindowViewModel.SpellList.FirstOrDefault();
+            var spell = CounterList.FirstOrDefault();
             var timerText = $"{spell.Name} Cooldown";
             Assert.IsNotNull(spell);
             Assert.AreEqual("Mana Sieve Cooldown", timerText);
@@ -252,7 +267,7 @@ namespace EQtoolsTests
                 PlayerClass = PlayerClasses.Enchanter
             };
             logParser.Push(line, DateTime.Now);
-            var spell = spellWindowViewModel.SpellList.FirstOrDefault();
+            var spell = SpellList.FirstOrDefault();
             Assert.IsNotNull(spell);
             Assert.AreEqual(spell.Name, "Aura of Black Petals");
         }
@@ -268,7 +283,7 @@ namespace EQtoolsTests
                 PlayerClass = PlayerClasses.Cleric
             };
             logParser.Push(aegospell.cast_on_other, DateTime.Now);
-            var spell = spellWindowViewModel.SpellList.FirstOrDefault();
+            var spell = SpellList.FirstOrDefault();
             Assert.IsNotNull(spell);
             Assert.AreEqual(spell.Name, aego);
         }
@@ -285,7 +300,7 @@ namespace EQtoolsTests
             };
 
             logParser.Push("Jobob " + spell.cast_on_other, DateTime.Now);
-            var spellvm = spellWindowViewModel.SpellList.FirstOrDefault();
+            var spellvm = SpellList.FirstOrDefault();
             Assert.IsNotNull(spell);
             Assert.AreEqual(spellvm.Name, spellname);
         }
@@ -301,7 +316,7 @@ namespace EQtoolsTests
                 PlayerClass = PlayerClasses.Cleric
             };
             logParser.Push("Jobob " + spell.cast_on_other, DateTime.Now);
-            var spellvm = spellWindowViewModel.SpellList.FirstOrDefault();
+            var spellvm = SpellList.FirstOrDefault();
             Assert.IsNotNull(spellvm);
         }
 
@@ -316,7 +331,7 @@ namespace EQtoolsTests
                 PlayerClass = PlayerClasses.Cleric
             };
             logParser.Push("Jobob " + spell.cast_on_other, DateTime.Now);
-            var spellvm = spellWindowViewModel.SpellList.FirstOrDefault();
+            var spellvm = SpellList.FirstOrDefault();
             Assert.IsNotNull(spellvm);
         }
 
@@ -331,7 +346,7 @@ namespace EQtoolsTests
                 PlayerClass = PlayerClasses.Cleric
             };
             logParser.Push("Jobob " + shissarspell.cast_on_other, DateTime.Now);
-            var spellvm = spellWindowViewModel.SpellList.FirstOrDefault();
+            var spellvm = SpellList.FirstOrDefault();
             Assert.IsNotNull(spellvm);
             Assert.AreEqual(spellvm.Name, shissar);
         }
@@ -349,7 +364,7 @@ namespace EQtoolsTests
                 PlayerClass = PlayerClasses.Cleric
             };
             logParser.Push(line, DateTime.Now);
-            var spellvm = spellWindowViewModel.SpellList.FirstOrDefault();
+            var spellvm = SpellList.FirstOrDefault();
             Assert.IsNotNull(spellvm);
             Assert.AreEqual(spellvm.Name, shissar);
         }
@@ -362,7 +377,7 @@ namespace EQtoolsTests
             var shissarspell = spells.AllSpells.FirstOrDefault(a => a.name == shissar);
             var line = "Jobober " + shissarspell.cast_on_other;
             logParser.Push(line, DateTime.Now);
-            var spellvm = spellWindowViewModel.SpellList.FirstOrDefault() as SpellViewModel;
+            var spellvm = SpellList.FirstOrDefault() as SpellViewModel;
             Assert.IsNotNull(spellvm);
             Assert.AreEqual(spellvm.Name, shissar);
             Assert.AreEqual(5.4, spellvm.TotalDuration.TotalMinutes, .1);
@@ -383,7 +398,7 @@ namespace EQtoolsTests
             logParser.Push(line, DateTime.Now);
             line = "Jobober " + shissarspell.cast_on_other;
             logParser.Push(line, DateTime.Now);
-            var spellvm = spellWindowViewModel.SpellList.FirstOrDefault() as SpellViewModel;
+            var spellvm = SpellList.FirstOrDefault() as SpellViewModel;
             Assert.IsNotNull(spellvm);
         }
 
@@ -396,7 +411,7 @@ namespace EQtoolsTests
             player.Player.Level = 21;
             player.Player.PlayerClass = PlayerClasses.Magician;
             logParser.Push(line, DateTime.Now);
-            var spellvm = spellWindowViewModel.SpellList.FirstOrDefault() as SpellViewModel;
+            var spellvm = SpellList.FirstOrDefault() as SpellViewModel;
             Assert.IsNotNull(spellvm);
         }
 
@@ -410,7 +425,7 @@ namespace EQtoolsTests
             player.Player.Level = 60;
             player.Player.PlayerClass = PlayerClasses.Necromancer;
             logParser.Push(line, DateTime.Now);
-            var spellvm = spellWindowViewModel.SpellList.FirstOrDefault() as SpellViewModel;
+            var spellvm = SpellList.FirstOrDefault() as SpellViewModel;
             Assert.IsNotNull(spellvm);
             Assert.AreEqual(6, spellvm.TotalDuration.TotalMinutes, .2);
         }
@@ -424,7 +439,7 @@ namespace EQtoolsTests
             player.Player.Level = 52;
             player.Player.PlayerClass = PlayerClasses.Warrior;
             logParser.Push(line, DateTime.Now);
-            var spellvm = spellWindowViewModel.SpellList.FirstOrDefault() as CounterViewModel;
+            var spellvm = CounterList.FirstOrDefault() as CounterViewModel;
             Assert.IsNotNull(spellvm);
             Assert.AreEqual(1, spellvm.Count);
         }
@@ -439,7 +454,7 @@ namespace EQtoolsTests
             player.Player.PlayerClass = PlayerClasses.Necromancer;
 
             logParser.Push(line, DateTime.Now);
-            var spellvm = spellWindowViewModel.SpellList.FirstOrDefault() as SpellViewModel;
+            var spellvm = SpellList.FirstOrDefault() as SpellViewModel;
             Assert.IsNotNull(spellvm);
             Assert.AreEqual(6, spellvm.TotalDuration.TotalMinutes, .2);
             Assert.AreEqual(spellvm.Name, spellname);
@@ -456,7 +471,7 @@ namespace EQtoolsTests
             player.Player.PlayerClass = PlayerClasses.Shaman;
 
             logParser.Push(line, DateTime.Now);
-            var spellvm = spellWindowViewModel.SpellList.FirstOrDefault() as SpellViewModel;
+            var spellvm = SpellList.FirstOrDefault() as SpellViewModel;
             Assert.IsNotNull(spellvm);
             Assert.AreEqual(144, spellvm.TotalDuration.TotalMinutes);
             Assert.AreEqual(spellvm.Name, spellname);
@@ -473,7 +488,7 @@ namespace EQtoolsTests
             player.Player.PlayerClass = PlayerClasses.Necromancer;
 
             logParser.Push(line, DateTime.Now);
-            var spellvm = spellWindowViewModel.SpellList.FirstOrDefault() as SpellViewModel;
+            var spellvm = SpellList.FirstOrDefault() as SpellViewModel;
             Assert.IsNotNull(spellvm);
             Assert.AreEqual(6, spellvm.TotalDuration.TotalMinutes, .2);
             Assert.AreEqual(spellvm.Name, spellname);
@@ -491,7 +506,7 @@ namespace EQtoolsTests
             player.Player.PlayerClass = PlayerClasses.Necromancer;
 
             logParser.Push(line, DateTime.Now);
-            var spellvm = spellWindowViewModel.SpellList.FirstOrDefault() as SpellViewModel;
+            var spellvm = SpellList.FirstOrDefault() as SpellViewModel;
             Assert.IsNotNull(spellvm);
             Assert.AreEqual(7, spellvm.TotalDuration.TotalMinutes, .2);
             Assert.AreEqual(spellvm.Name, spellname);
@@ -509,7 +524,7 @@ namespace EQtoolsTests
             player.Player.PlayerClass = PlayerClasses.Cleric;
 
             logParser.Push(line, DateTime.Now);
-            var spellvm = spellWindowViewModel.SpellList.FirstOrDefault() as SpellViewModel;
+            var spellvm = SpellList.FirstOrDefault() as SpellViewModel;
             Assert.IsNotNull(spellvm);
             Assert.AreEqual(spellvm.Name, shissar);
             Assert.AreEqual(spellvm.GroupName, " A bottomless feaster");
@@ -525,7 +540,7 @@ namespace EQtoolsTests
             player.Player.PlayerClass = PlayerClasses.Necromancer;
 
             logParser.Push(line, DateTime.Now);
-            var spellvm = spellWindowViewModel.SpellList.FirstOrDefault() as SpellViewModel;
+            var spellvm = SpellList.FirstOrDefault() as SpellViewModel;
             Assert.IsNotNull(spellvm);
             Assert.AreEqual(spellvm.Name, shissar);
             Assert.AreEqual(spellvm.GroupName, " A Ratling");
@@ -541,7 +556,7 @@ namespace EQtoolsTests
             player.Player.PlayerClass = PlayerClasses.Necromancer;
 
             logParser.Push(line, DateTime.Now);
-            var spellvm = spellWindowViewModel.SpellList.FirstOrDefault() as SpellViewModel;
+            var spellvm = SpellList.FirstOrDefault() as SpellViewModel;
             Assert.IsNotNull(spellvm);
             Assert.AreEqual(spellvm.Name, shissar);
             Assert.AreEqual(spellvm.GroupName, " Gkrean Prophet of Tallon");
@@ -557,7 +572,7 @@ namespace EQtoolsTests
             player.Player.PlayerClass = PlayerClasses.Necromancer;
 
             logParser.Push(line, DateTime.Now);
-            var spellvm = spellWindowViewModel.SpellList.FirstOrDefault() as SpellViewModel;
+            var spellvm = SpellList.FirstOrDefault() as SpellViewModel;
             Assert.IsNotNull(spellvm);
             Assert.AreEqual(spellvm.Name, shissar);
             Assert.AreEqual(spellvm.GroupName, " A Ratling");
@@ -573,7 +588,7 @@ namespace EQtoolsTests
             player.Player.PlayerClass = PlayerClasses.Shaman;
 
             logParser.Push(line, DateTime.Now);
-            var spellvm = spellWindowViewModel.SpellList.FirstOrDefault() as SpellViewModel;
+            var spellvm = SpellList.FirstOrDefault() as SpellViewModel;
             Assert.IsNotNull(spellvm);
             Assert.AreEqual(spellvm.Name, shissar);
             Assert.AreEqual(spellvm.GroupName, " A Mangy Rat");
@@ -587,7 +602,7 @@ namespace EQtoolsTests
             _ = spells.CastOtherSpells.TryGetValue(line, out var spells1);
 
             logParser.Push(line, DateTime.Now);
-            var spellvm = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Spell) as SpellViewModel;
+            var spellvm = SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Spell) as SpellViewModel;
             Assert.IsNotNull(spellvm);
             Assert.AreEqual(spellvm.GroupName, "joe");
         }
@@ -656,7 +671,7 @@ namespace EQtoolsTests
             player.Player.Level = 54;
             player.Player.PlayerClass = PlayerClasses.Cleric;
             logParser.Push(line, DateTime.Now);
-            var spellvm = spellWindowViewModel.SpellList.FirstOrDefault() as SpellViewModel;
+            var spellvm = SpellList.FirstOrDefault() as SpellViewModel;
             Assert.IsNotNull(spellvm);
         }
 
@@ -671,7 +686,7 @@ namespace EQtoolsTests
                 PlayerClass = PlayerClasses.Cleric
             };
             logParser.Push(line, DateTime.Now);
-            var spellvm = spellWindowViewModel.SpellList.FirstOrDefault() as SpellViewModel;
+            var spellvm = SpellList.FirstOrDefault() as SpellViewModel;
             Assert.IsNotNull(spellvm);
         }
 
@@ -686,7 +701,7 @@ namespace EQtoolsTests
                 PlayerClass = PlayerClasses.Cleric
             };
             logParser.Push(line, DateTime.Now);
-            var spellvm = spellWindowViewModel.SpellList.FirstOrDefault() as SpellViewModel;
+            var spellvm = SpellList.FirstOrDefault() as SpellViewModel;
             Assert.IsNotNull(spellvm);
             Assert.AreEqual(spellvm.TotalDuration.TotalSeconds, 3600);
         }
