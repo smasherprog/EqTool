@@ -105,7 +105,7 @@
                         <Grid Visibility="{Binding ColumnVisibility}">
                             <Grid.ColumnDefinitions>
                                 <ColumnDefinition Width="5*"/>
-                                <ColumnDefinition Width="4*"/> 
+                                <ColumnDefinition Width="4*"/>
                             </Grid.ColumnDefinitions>
                             <ProgressBar Grid.Column="0" Grid.ColumnSpan="3"  Value="{Binding PercentLeft}"  Maximum="100"  Foreground="{Binding ProgressBarColor}"  />
                             <StackPanel Orientation="Horizontal" Grid.Column="0" >
@@ -118,7 +118,7 @@
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Grid.Column="1" >
                                 <TextBlock HorizontalAlignment="Left" FontWeight="Bold" Text="{Binding RollText}"/>
-                            </StackPanel> 
+                            </StackPanel>
                         </Grid>
                     </DataTemplate>
                     <DataTemplate DataType="{x:Type vm:SpellViewModel}">
@@ -147,15 +147,17 @@
                     <DataTemplate DataType="{x:Type vm:BoatViewModel}">
                         <Grid Visibility="{Binding ColumnVisibility}">
                             <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="6*"/>
+                                <ColumnDefinition Width="4*"/>
+                                <ColumnDefinition Width="2*"/>
                             </Grid.ColumnDefinitions>
-                            <ProgressBar Grid.Column="0" Grid.ColumnSpan="2"  Value="{Binding PercentLeft}"  Maximum="100"  Foreground="{Binding ProgressBarColor}"  />
-                            <StackPanel Orientation="Horizontal" Grid.Column="0" >
-                                <TextBlock HorizontalAlignment="Left" FontWeight="Bold" Text="{Binding Name}"/>
-                            </StackPanel>
+                            <ProgressBar Grid.Column="0" Grid.ColumnSpan="3"  Value="{Binding PercentLeft}"  Maximum="100"  Foreground="{Binding ProgressBarColor}"  />
+
+                            <TextBlock Grid.Column="0" FontWeight="Bold" Text="{Binding Name}"/>
+                            <TextBlock Grid.Column="1" FontSize="10" Text="{Binding LastSeen}"/>
+
                             <StackPanel Orientation="Horizontal" Grid.Column="2" HorizontalAlignment="Right">
-                                <TextBlock TextAlignment="Right" FontWeight="Bold" Text="{Binding SecondsLeftPretty}"/> 
+                                <TextBlock TextAlignment="Right" FontWeight="Bold" Text="{Binding SecondsLeftPretty}"/>
                             </StackPanel>
                         </Grid>
                     </DataTemplate>
@@ -185,7 +187,7 @@
                                                                     <Image Source="pack://application:,,,/Images/Trash.png"/>
                                                                 </Button>
                                                             </StackPanel>
-                                                        </Grid> 
+                                                        </Grid>
                                                     </DockPanel>
                                                 </Expander.Header>
                                                 <ItemsPresenter />

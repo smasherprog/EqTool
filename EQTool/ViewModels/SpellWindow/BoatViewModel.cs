@@ -16,7 +16,20 @@ namespace EQTool.ViewModels.SpellWindow
             this.GroupName = "Boat Schedules";
             this.DeleteButtonVisibility = Visibility.Collapsed;
         }
-        public BoatInfo Boat { get; set; } 
+
+        public string LastSeen { get; set; }
+        private DateTimeOffset _LastSeenDateTime { get; set; }
+        public DateTimeOffset LastSeenDateTime
+        {
+            get { return this._LastSeenDateTime; }
+            set
+            {
+                this._LastSeenDateTime = value;
+                this.LastSeen = value.LocalDateTime.ToString("MM/dd hh:mm:ss tt");
+                this.OnPropertyChanged(nameof(LastSeen));
+            }
+        }
+        public BoatInfo Boat { get; set; }
         public override string Sorting => "ZZZ";//force to sort last
         public override SpellViewModelType SpellViewModelType => SpellViewModelType.Boat;
     }

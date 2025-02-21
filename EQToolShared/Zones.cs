@@ -36,7 +36,7 @@ namespace EQToolShared
         public int AnnouncementToDockInSeconds { get; set; }
         public string StartPoint { get; set; }
         public string EndPoint { get; set; }
-        public int TripTimeInSeconds { get; set; } 
+        public double TripTimeInSeconds { get; set; } 
     }
 
     public static class ZoneSpawnTimes
@@ -108,7 +108,7 @@ namespace EQToolShared
                 StartAnnoucement = "Rack Stonebelly shouts, 'Da Barrel Barge will be here soon soon!'",
                 AnnouncementToDockInSeconds = 119,
                 EndPoint = "timorous",
-                TripTimeInSeconds = 779
+                TripTimeInSeconds = 779.25
             });
 
             Boats.Add(new BoatInfo
@@ -119,7 +119,7 @@ namespace EQToolShared
                 StartAnnoucement = string.Empty,
                 AnnouncementToDockInSeconds = 510,
                 EndPoint = "oasis",
-                TripTimeInSeconds = 779
+                TripTimeInSeconds = 779.25
             });
             Boats.Add(new BoatInfo
             {
@@ -129,7 +129,7 @@ namespace EQToolShared
                 StartAnnoucement = "Rack Stonebelly shouts, 'Rack Stonebelly shouts, 'Da Bloated Belly be leaving da Overdere now!'",
                 EndPoint = "timorous",
                 TripTimeInSeconds = 2025,
-                AnnouncementToDockInSeconds = 0
+                AnnouncementToDockInSeconds = 2025 - 60
             });
 
             Boats.Add(new BoatInfo
@@ -158,7 +158,7 @@ namespace EQToolShared
                 StartAnnoucement = "Frankel the Pirate says 'Thar she be mates. All aboard thats goin aboard!'",
                 AnnouncementToDockInSeconds =0,
                 EndPoint = "iceclad",
-                TripTimeInSeconds = 518
+                TripTimeInSeconds = 517.5
             });
             Boats.Add(new BoatInfo
             {
@@ -168,7 +168,7 @@ namespace EQToolShared
                 PrettyName = "Iceclad from NRo arrival",
                 StartAnnoucement = string.Empty,
                 EndPoint = "nro",
-                TripTimeInSeconds = 518
+                TripTimeInSeconds = 517.5
             });
             ZoneInfoMap.Add("airplane", new ZoneInfo
             {

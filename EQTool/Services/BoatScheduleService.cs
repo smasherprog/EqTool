@@ -34,18 +34,19 @@ namespace EQTool.Services
             if (SupportdBoats.Contains(boat.Boat))
             {
                 var timeToStartDock = startZoneBoat.AnnouncementToDockInSeconds - totalseconds;
-       
+                startBoat.LastSeenDateTime = boat.LastSeen;
                 if (timeToStartDock > 0)
                 {
                     startBoat.TotalRemainingDuration = TimeSpan.FromSeconds(timeToStartDock);
                 }
                 else
                 {
-                    timeToStartDock = startZoneBoat.TripTimeInSeconds - totalseconds + startZoneBoat.AnnouncementToDockInSeconds;
+                    timeToStartDock = (int)(startZoneBoat.TripTimeInSeconds - totalseconds + startZoneBoat.AnnouncementToDockInSeconds);
                     startBoat.TotalRemainingDuration = TimeSpan.FromSeconds(timeToStartDock);
                 }
                 if(endBoat!= null)
                 {
+                    endBoat.LastSeenDateTime = boat.LastSeen;
                     var timeToEndDock = endZoneBoat.AnnouncementToDockInSeconds - totalseconds;
                     if (timeToEndDock > 0)
                     {
@@ -53,7 +54,7 @@ namespace EQTool.Services
                     }
                     else
                     {
-                        timeToEndDock = endZoneBoat.TripTimeInSeconds - totalseconds + endZoneBoat.AnnouncementToDockInSeconds;
+                        timeToEndDock = (int)(endZoneBoat.TripTimeInSeconds - totalseconds + endZoneBoat.AnnouncementToDockInSeconds);
                         endBoat.TotalRemainingDuration = TimeSpan.FromSeconds(timeToEndDock);
                     }
                 }
