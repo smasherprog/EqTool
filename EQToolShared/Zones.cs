@@ -129,7 +129,7 @@ namespace EQToolShared
                 StartAnnoucement = "Rack Stonebelly shouts, 'Rack Stonebelly shouts, 'Da Bloated Belly be leaving da Overdere now!'",
                 EndPoint = "timorous",
                 TripTimeInSeconds = 2025,
-                AnnouncementToDockInSeconds = 2025 - 60
+                AnnouncementToDockInSeconds = 2025 - 50
             });
 
             Boats.Add(new BoatInfo
@@ -158,7 +158,7 @@ namespace EQToolShared
                 StartAnnoucement = "Frankel the Pirate says 'Thar she be mates. All aboard thats goin aboard!'",
                 AnnouncementToDockInSeconds =0,
                 EndPoint = "iceclad",
-                TripTimeInSeconds = 517.5
+                TripTimeInSeconds = 519
             });
             Boats.Add(new BoatInfo
             {
@@ -168,7 +168,7 @@ namespace EQToolShared
                 PrettyName = "Iceclad from NRo arrival",
                 StartAnnoucement = string.Empty,
                 EndPoint = "nro",
-                TripTimeInSeconds = 517.5
+                TripTimeInSeconds = 519
             });
             ZoneInfoMap.Add("airplane", new ZoneInfo
             {

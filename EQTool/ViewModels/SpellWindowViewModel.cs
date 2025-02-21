@@ -531,7 +531,7 @@ namespace EQTool.ViewModels
                     var boats = this._SpellList.Where(a => a.SpellViewModelType == SpellViewModelType.Boat).Cast<BoatViewModel>().ToList();
                     foreach (var boat in boatsapi)
                     {
-                        this.boatScheduleService.UpdateBoatInformation(boat, boats);
+                        this.boatScheduleService.UpdateBoatInformation(boat, boats, DateTimeOffset.Now);
                     }
                 });
             }

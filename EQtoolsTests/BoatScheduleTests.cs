@@ -45,7 +45,7 @@ namespace EQtoolsTests
                 LastSeen = d.AddSeconds(-10),
                 StartPoint = "oasis"
             };
-            this.boatScheduleService.UpdateBoatInformation(boat, boatViewModelList);
+            this.boatScheduleService.UpdateBoatInformation(boat, boatViewModelList, DateTimeOffset.Now);
             var startZoneBoat = Zones.Boats.FirstOrDefault(a => a.Boat == boat.Boat && a.StartPoint == boat.StartPoint);
             var endZoneBoat = Zones.Boats.FirstOrDefault(a => a.Boat == boat.Boat && a.StartPoint == startZoneBoat.EndPoint);
             var startBoat = boatViewModelList.FirstOrDefault(a => a.Boat == startZoneBoat);
@@ -64,7 +64,7 @@ namespace EQtoolsTests
                 LastSeen = d.AddSeconds(-200),
                 StartPoint = "oasis"
             };
-            this.boatScheduleService.UpdateBoatInformation(boat, boatViewModelList);
+            this.boatScheduleService.UpdateBoatInformation(boat, boatViewModelList, DateTimeOffset.Now);
             var startZoneBoat = Zones.Boats.FirstOrDefault(a => a.Boat == boat.Boat && a.StartPoint == boat.StartPoint);
             var endZoneBoat = Zones.Boats.FirstOrDefault(a => a.Boat == boat.Boat && a.StartPoint == startZoneBoat.EndPoint);
             var startBoat = boatViewModelList.FirstOrDefault(a => a.Boat == startZoneBoat);
@@ -84,7 +84,7 @@ namespace EQtoolsTests
                 LastSeen = d.AddSeconds((oasisboat.TripTimeInSeconds * -5) - 10),
                 StartPoint = "oasis"
             };
-            this.boatScheduleService.UpdateBoatInformation(boat, boatViewModelList); 
+            this.boatScheduleService.UpdateBoatInformation(boat, boatViewModelList, DateTimeOffset.Now); 
             var startZoneBoat = Zones.Boats.FirstOrDefault(a => a.Boat == boat.Boat && a.StartPoint == boat.StartPoint);
             var endZoneBoat = Zones.Boats.FirstOrDefault(a => a.Boat == boat.Boat && a.StartPoint == startZoneBoat.EndPoint);
             var startBoat = boatViewModelList.FirstOrDefault(a => a.Boat == startZoneBoat);
@@ -103,7 +103,7 @@ namespace EQtoolsTests
                 LastSeen = d.AddSeconds(-10),
                 StartPoint = "nro"
             };
-            this.boatScheduleService.UpdateBoatInformation(boat, boatViewModelList);
+            this.boatScheduleService.UpdateBoatInformation(boat, boatViewModelList, DateTimeOffset.Now);
             var startZoneBoat = Zones.Boats.FirstOrDefault(a => a.Boat == boat.Boat && a.StartPoint == boat.StartPoint);
             var endZoneBoat = Zones.Boats.FirstOrDefault(a => a.Boat == boat.Boat && a.StartPoint == startZoneBoat.EndPoint);
             var startBoat = boatViewModelList.FirstOrDefault(a => a.Boat == startZoneBoat);
@@ -111,6 +111,38 @@ namespace EQtoolsTests
             Assert.AreEqual((int)startBoat.TotalRemainingDuration.TotalSeconds, 508, 1);
             Assert.AreEqual((int)endBoat.TotalRemainingDuration.TotalSeconds, 297, 1);
         }
+
+        //[TestMethod]
+        //public void HappyTimeNroDrift()
+        //{
+        //    var d = DateTimeOffset.Now;
+        //    var boat = new BoatActivityResponce
+        //    {
+        //        Boat = EQToolShared.Boats.NroIcecladBoat,
+        //        LastSeen = DateTimeOffset.Parse("2025-02-21T04:45:19.5859369+00:00"),
+        //        StartPoint = "nro"
+        //    };
+        //    this.boatScheduleService.UpdateBoatInformation(boat, boatViewModelList, DateTimeOffset.Parse("2025-02-21T14:06:10.5866460+00:00"));
+        //    var startZoneBoat = Zones.Boats.FirstOrDefault(a => a.Boat == boat.Boat && a.StartPoint == boat.StartPoint);
+        //     var startBoat = boatViewModelList.FirstOrDefault(a => a.Boat == startZoneBoat);
+        //     Assert.AreEqual((int)startBoat.TotalRemainingDuration.TotalSeconds, 141, 1); 
+        //}
+
+        //[TestMethod]
+        //public void HappyTimeNroDrift1()
+        //{
+        //    var d = DateTimeOffset.Now;
+        //    var boat = new BoatActivityResponce
+        //    {
+        //        Boat = EQToolShared.Boats.NroIcecladBoat,
+        //        LastSeen = DateTimeOffset.Parse("2025-02-20T23:16:39.0589055+00:00"),
+        //        StartPoint = "nro"
+        //    };
+        //    this.boatScheduleService.UpdateBoatInformation(boat, boatViewModelList, DateTimeOffset.Parse("2025-02-21T14:06:10.5866460+00:00"));
+        //    var startZoneBoat = Zones.Boats.FirstOrDefault(a => a.Boat == boat.Boat && a.StartPoint == boat.StartPoint);
+        //    var startBoat = boatViewModelList.FirstOrDefault(a => a.Boat == startZoneBoat);
+        //    Assert.AreEqual((int)startBoat.TotalRemainingDuration.TotalSeconds, 141, 1);
+        //}
 
         [TestMethod]
         public void HappyTimeOverthere()
@@ -122,10 +154,10 @@ namespace EQtoolsTests
                 LastSeen = d.AddSeconds(-10),
                 StartPoint = "overthere"
             };
-            this.boatScheduleService.UpdateBoatInformation(boat, boatViewModelList);
+            this.boatScheduleService.UpdateBoatInformation(boat, boatViewModelList, DateTimeOffset.Now);
             var startZoneBoat = Zones.Boats.FirstOrDefault(a => a.Boat == boat.Boat && a.StartPoint == boat.StartPoint);
             var startBoat = boatViewModelList.FirstOrDefault(a => a.Boat == startZoneBoat);
-            Assert.AreEqual((int)startBoat.TotalRemainingDuration.TotalSeconds, 1955, 1);
+            Assert.AreEqual((int)startBoat.TotalRemainingDuration.TotalSeconds, 1965, 1);
         }
 
         [TestMethod]
@@ -139,10 +171,10 @@ namespace EQtoolsTests
                 LastSeen = d.AddSeconds(-overtherBoat.TripTimeInSeconds - 10),
                 StartPoint = "overthere"
             };
-            this.boatScheduleService.UpdateBoatInformation(boat, boatViewModelList);
+            this.boatScheduleService.UpdateBoatInformation(boat, boatViewModelList, DateTimeOffset.Now);
             var startZoneBoat = Zones.Boats.FirstOrDefault(a => a.Boat == boat.Boat && a.StartPoint == boat.StartPoint);
             var startBoat = boatViewModelList.FirstOrDefault(a => a.Boat == startZoneBoat);
-            Assert.AreEqual((int)startBoat.TotalRemainingDuration.TotalSeconds, 1955, 1);
+            Assert.AreEqual((int)startBoat.TotalRemainingDuration.TotalSeconds, 1965, 1);
         }
     }
 }

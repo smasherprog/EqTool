@@ -15,13 +15,13 @@ namespace EQTool.Services
 
         }
 
-        public void UpdateBoatInformation(BoatActivityResponce boat, List<BoatViewModel> boats)
+        public void UpdateBoatInformation(BoatActivityResponce boat, List<BoatViewModel> boats, DateTimeOffset now)
         {
             var startZoneBoat = Zones.Boats.FirstOrDefault(a => a.Boat == boat.Boat && a.StartPoint == boat.StartPoint);
             var endZoneBoat = Zones.Boats.FirstOrDefault(a => a.Boat == boat.Boat && a.StartPoint == startZoneBoat.EndPoint);
             var startBoat = boats.FirstOrDefault(a => a.Boat == startZoneBoat);
             var endBoat = boats.FirstOrDefault(a => a.Boat.Boat == boat.Boat && startBoat.Boat.EndPoint == a.Boat.StartPoint);
-            var now = DateTimeOffset.Now;
+         
             var dt = now - boat.LastSeen;
             var totalseconds = 0;
             var dtseconds = totalseconds = (int)Math.Abs(dt.TotalSeconds);
