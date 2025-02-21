@@ -139,7 +139,8 @@ namespace EQToolShared
                 PrettyName = "BB to FV arrival",
                 StartAnnoucement = "Glisse Bluesea shouts 'The Maiden's Voyage is now ready to be boarded. Please form an orderly line to the shuttles, and remember, no pushing!",
                 EndPoint = "firiona",
-                TripTimeInSeconds = 1230
+                TripTimeInSeconds = 1230,
+                AnnouncementToDockInSeconds = 0
             });
             Boats.Add(new BoatInfo
             {
@@ -148,7 +149,8 @@ namespace EQToolShared
                 PrettyName = "FV to BB arrival",
                 StartAnnoucement = "Glisse Bluesea shouts 'The Maiden's Voyage has departed the outpost at Firiona Vie. Please be ready to board the shuttles shortly, if you desire to make the journey to Kunark.",
                 EndPoint = "butcher",
-                TripTimeInSeconds = 1230
+                TripTimeInSeconds = 1230,
+                AnnouncementToDockInSeconds = 771
             });
             Boats.Add(new BoatInfo
             {

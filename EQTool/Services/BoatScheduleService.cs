@@ -9,7 +9,7 @@ namespace EQTool.Services
 {
     public class BoatScheduleService
     {
-        public static readonly List<Boats> SupportdBoats = new List<Boats>() { Boats.BarrelBarge, Boats.NroIcecladBoat, Boats.BloatedBelly };
+        public static readonly List<Boats> SupportdBoats = new List<Boats>() { Boats.BarrelBarge, Boats.NroIcecladBoat, Boats.BloatedBelly, Boats.MaidensVoyage };
         public BoatScheduleService()
         {
 
