@@ -35,7 +35,7 @@ namespace EQtoolsTests
         }
 
         [TestMethod]
-        public void HappyTimeNotPassed()
+        public void HappyTimeNotPassedOasis()
         {
             var d = DateTimeOffset.Now;
             var boat = new BoatActivityResponce
@@ -70,6 +70,25 @@ namespace EQtoolsTests
             var endBoat = boatViewModelList.FirstOrDefault(a => a.Boat == boat.Boat && a.Name.StartsWith(startZoneBoat.EndPoint));
             Assert.AreEqual((int)startBoat.TotalRemainingDuration.TotalSeconds, 698, 1);
             Assert.AreEqual((int)endBoat.TotalRemainingDuration.TotalSeconds, 310, 1);
+        }
+
+        [TestMethod]
+        public void HappyTimeNro()
+        {
+            var d = DateTimeOffset.Now;
+            var boat = new BoatActivityResponce
+            {
+                Boat = EQToolShared.Boats.NroIcecladBoat,
+                LastSeen = d.AddSeconds(-10),
+                StartPoint = "nro"
+            };
+            this.boatScheduleService.UpdateBoatInformation(boat, boatViewModelList);
+            var startZoneBoat = Zones.Boats.FirstOrDefault(a => a.Boat == boat.Boat && a.StartPoint == boat.StartPoint);
+            var endZoneBoat = Zones.Boats.FirstOrDefault(a => a.Boat == boat.Boat && a.StartPoint == startZoneBoat.EndPoint);
+            var startBoat = boatViewModelList.FirstOrDefault(a => a.Boat == boat.Boat && a.Name.StartsWith(boat.StartPoint));
+            var endBoat = boatViewModelList.FirstOrDefault(a => a.Boat == boat.Boat && a.Name.StartsWith(startZoneBoat.EndPoint));
+            Assert.AreEqual((int)startBoat.TotalRemainingDuration.TotalSeconds, 508, 1);
+            Assert.AreEqual((int)endBoat.TotalRemainingDuration.TotalSeconds, 297, 1);
         }
     }
 }

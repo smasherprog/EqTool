@@ -257,9 +257,10 @@ namespace EQTool.ViewModels
                 }
 
                 var boats = this._SpellList.Where(a => a.SpellViewModelType == SpellViewModelType.Boat).Cast<BoatViewModel>().ToList();
+                var boatslist = new List<Boats>() { Boats.BarrelBarge, Boats.NroIcecladBoat };
                 foreach (var boat in boats)
                 { 
-                    if(boat.Boat == Boats.BarrelBarge)
+                    if(boatslist.Contains(boat.Boat))
                     {
                         boat.TotalRemainingDuration = boat.TotalRemainingDuration.Subtract(TimeSpan.FromMilliseconds(dt_ms));
                         if (boat.TotalRemainingDuration.TotalSeconds <= 0)

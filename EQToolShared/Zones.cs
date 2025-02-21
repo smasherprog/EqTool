@@ -147,16 +147,18 @@ namespace EQToolShared
                 Boat = EQToolShared.Boats.NroIcecladBoat,
                 StartPoint = "nro",
                 StartAnnoucement = "Frankel the Pirate says 'Thar she be mates. All aboard thats goin aboard!'",
+                AnnouncementToDockInSeconds =0,
                 EndPoint = "iceclad",
-                TripTimeInSeconds = 395
+                TripTimeInSeconds = 518
             });
             Boats.Add(new BoatInfo
             {
                 Boat = EQToolShared.Boats.NroIcecladBoat,
+                AnnouncementToDockInSeconds = 307,
                 StartPoint = "iceclad",
                 StartAnnoucement = string.Empty,
                 EndPoint = "nro",
-                TripTimeInSeconds = 124
+                TripTimeInSeconds = 518
             });
             ZoneInfoMap.Add("airplane", new ZoneInfo
             {
