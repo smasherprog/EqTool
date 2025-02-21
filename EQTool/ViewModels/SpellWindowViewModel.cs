@@ -77,7 +77,7 @@ namespace EQTool.ViewModels
                     }
                     else if (item.Boat == Boats.NroIcecladBoat)
                     {
-                        boatcolor = Brushes.Chartreuse;
+                        boatcolor = Brushes.DeepPink;
                     }
                     else if (item.Boat == Boats.MaidensVoyage)
                     {
