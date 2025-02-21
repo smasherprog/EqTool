@@ -19,20 +19,17 @@ namespace EQTool.Services
         {
             var startZoneBoat = Zones.Boats.FirstOrDefault(a => a.Boat == boat.Boat && a.StartPoint == boat.StartPoint);
             var endZoneBoat = Zones.Boats.FirstOrDefault(a => a.Boat == boat.Boat && a.StartPoint == startZoneBoat.EndPoint);
-            var startBoat = boats.FirstOrDefault(a => a.Boat == boat.Boat && a.Name.StartsWith(boat.StartPoint));
-            var endBoat = boats.FirstOrDefault(a => a.Boat == boat.Boat && a.Name.StartsWith(startZoneBoat.EndPoint));
+            var startBoat = boats.FirstOrDefault(a => a.Boat == startZoneBoat);
+            var endBoat = boats.FirstOrDefault(a => a.Boat.Boat == boat.Boat && startBoat.Boat.EndPoint == a.Boat.StartPoint);
             var now = DateTimeOffset.Now;
             var dt = now - boat.LastSeen;
             var totalseconds = 0;
-            if (dt.TotalSeconds > startZoneBoat.TripTimeInSeconds)
+            var dtseconds = totalseconds = (int)Math.Abs(dt.TotalSeconds);
+            if (dtseconds > startZoneBoat.TripTimeInSeconds)
             {
-                totalseconds = (int)(dt.TotalSeconds / startZoneBoat.TripTimeInSeconds);
-                totalseconds = (int)((totalseconds * startZoneBoat.TripTimeInSeconds) - dt.TotalSeconds);
-            }
-            else
-            {
-                totalseconds = (int)(dt.TotalSeconds);
-            }
+                totalseconds = (int)(dtseconds / startZoneBoat.TripTimeInSeconds);
+                totalseconds = (int)(dtseconds- (totalseconds * startZoneBoat.TripTimeInSeconds));
+            } 
           
             if (SupportdBoats.Contains(boat.Boat))
             {

@@ -28,8 +28,9 @@ namespace EQtoolsTests
             {
                 boatViewModelList.Add(new BoatViewModel
                 {
-                    Name = $"{item.StartPoint} -> {item.EndPoint}",
-                    Boat = item.Boat
+                    Name = item.PrettyName,
+                    Boat = item,
+                    TotalDuration = TimeSpan.FromSeconds(item.TripTimeInSeconds)
                 });
             }
         }
@@ -47,8 +48,8 @@ namespace EQtoolsTests
             this.boatScheduleService.UpdateBoatInformation(boat, boatViewModelList);
             var startZoneBoat = Zones.Boats.FirstOrDefault(a => a.Boat == boat.Boat && a.StartPoint == boat.StartPoint);
             var endZoneBoat = Zones.Boats.FirstOrDefault(a => a.Boat == boat.Boat && a.StartPoint == startZoneBoat.EndPoint);
-            var startBoat = boatViewModelList.FirstOrDefault(a => a.Boat == boat.Boat && a.Name.StartsWith(boat.StartPoint));
-            var endBoat = boatViewModelList.FirstOrDefault(a => a.Boat == boat.Boat && a.Name.StartsWith(startZoneBoat.EndPoint));
+            var startBoat = boatViewModelList.FirstOrDefault(a => a.Boat == startZoneBoat);
+            var endBoat = boatViewModelList.FirstOrDefault(a => a.Boat.Boat == boat.Boat && startBoat.Boat.EndPoint == a.Boat.StartPoint);
             Assert.AreEqual((int)startBoat.TotalRemainingDuration.TotalSeconds, 109, 1);
             Assert.AreEqual((int)endBoat.TotalRemainingDuration.TotalSeconds, 500, 1);
         }
@@ -66,8 +67,8 @@ namespace EQtoolsTests
             this.boatScheduleService.UpdateBoatInformation(boat, boatViewModelList);
             var startZoneBoat = Zones.Boats.FirstOrDefault(a => a.Boat == boat.Boat && a.StartPoint == boat.StartPoint);
             var endZoneBoat = Zones.Boats.FirstOrDefault(a => a.Boat == boat.Boat && a.StartPoint == startZoneBoat.EndPoint);
-            var startBoat = boatViewModelList.FirstOrDefault(a => a.Boat == boat.Boat && a.Name.StartsWith(boat.StartPoint));
-            var endBoat = boatViewModelList.FirstOrDefault(a => a.Boat == boat.Boat && a.Name.StartsWith(startZoneBoat.EndPoint));
+            var startBoat = boatViewModelList.FirstOrDefault(a => a.Boat == startZoneBoat);
+            var endBoat = boatViewModelList.FirstOrDefault(a => a.Boat.Boat == boat.Boat && startBoat.Boat.EndPoint == a.Boat.StartPoint);
             Assert.AreEqual((int)startBoat.TotalRemainingDuration.TotalSeconds, 698, 1);
             Assert.AreEqual((int)endBoat.TotalRemainingDuration.TotalSeconds, 310, 1);
         }
@@ -85,10 +86,43 @@ namespace EQtoolsTests
             this.boatScheduleService.UpdateBoatInformation(boat, boatViewModelList);
             var startZoneBoat = Zones.Boats.FirstOrDefault(a => a.Boat == boat.Boat && a.StartPoint == boat.StartPoint);
             var endZoneBoat = Zones.Boats.FirstOrDefault(a => a.Boat == boat.Boat && a.StartPoint == startZoneBoat.EndPoint);
-            var startBoat = boatViewModelList.FirstOrDefault(a => a.Boat == boat.Boat && a.Name.StartsWith(boat.StartPoint));
-            var endBoat = boatViewModelList.FirstOrDefault(a => a.Boat == boat.Boat && a.Name.StartsWith(startZoneBoat.EndPoint));
+            var startBoat = boatViewModelList.FirstOrDefault(a => a.Boat == startZoneBoat);
+            var endBoat = boatViewModelList.FirstOrDefault(a => a.Boat.Boat == boat.Boat && startBoat.Boat.EndPoint == a.Boat.StartPoint);
             Assert.AreEqual((int)startBoat.TotalRemainingDuration.TotalSeconds, 508, 1);
             Assert.AreEqual((int)endBoat.TotalRemainingDuration.TotalSeconds, 297, 1);
+        }
+
+        [TestMethod]
+        public void HappyTimeOverthere()
+        {
+            var d = DateTimeOffset.Now;
+            var boat = new BoatActivityResponce
+            {
+                Boat = EQToolShared.Boats.BloatedBelly,
+                LastSeen = d.AddSeconds(-10),
+                StartPoint = "overthere"
+            };
+            this.boatScheduleService.UpdateBoatInformation(boat, boatViewModelList);
+            var startZoneBoat = Zones.Boats.FirstOrDefault(a => a.Boat == boat.Boat && a.StartPoint == boat.StartPoint);
+            var startBoat = boatViewModelList.FirstOrDefault(a => a.Boat == startZoneBoat);
+            Assert.AreEqual((int)startBoat.TotalRemainingDuration.TotalSeconds, 2025 - 10, 1);
+        }
+
+        [TestMethod]
+        public void HappyTimeOverthereOverTime()
+        {
+            var d = DateTimeOffset.Now;
+            var overtherBoat = Zones.Boats.FirstOrDefault(a => a.Boat == Boats.BloatedBelly);
+            var boat = new BoatActivityResponce
+            {
+                Boat = EQToolShared.Boats.BloatedBelly,
+                LastSeen = d.AddSeconds(-overtherBoat.TripTimeInSeconds - 10),
+                StartPoint = "overthere"
+            };
+            this.boatScheduleService.UpdateBoatInformation(boat, boatViewModelList);
+            var startZoneBoat = Zones.Boats.FirstOrDefault(a => a.Boat == boat.Boat && a.StartPoint == boat.StartPoint);
+            var startBoat = boatViewModelList.FirstOrDefault(a => a.Boat == startZoneBoat);
+            Assert.AreEqual((int)startBoat.TotalRemainingDuration.TotalSeconds, 2025 - 10, 1);
         }
     }
 }

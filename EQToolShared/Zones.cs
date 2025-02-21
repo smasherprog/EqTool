@@ -31,11 +31,12 @@ namespace EQToolShared
     public class BoatInfo
     {
         public Boats Boat { get; set; }
+        public string PrettyName { get; set; }
         public string StartAnnoucement { get; set; }
         public int AnnouncementToDockInSeconds { get; set; }
         public string StartPoint { get; set; }
         public string EndPoint { get; set; }
-        public int TripTimeInSeconds { get; set; }
+        public int TripTimeInSeconds { get; set; } 
     }
 
     public static class ZoneSpawnTimes
@@ -103,15 +104,18 @@ namespace EQToolShared
             {
                 Boat = EQToolShared.Boats.BarrelBarge,
                 StartPoint = "oasis",
+                PrettyName = "Oasis arrival",
                 StartAnnoucement = "Rack Stonebelly shouts, 'Da Barrel Barge will be here soon soon!'",
                 AnnouncementToDockInSeconds = 119,
                 EndPoint = "timorous",
                 TripTimeInSeconds = 779
             });
+
             Boats.Add(new BoatInfo
             {
                 Boat = EQToolShared.Boats.BarrelBarge,
                 StartPoint = "timorous",
+                PrettyName = "TD from Oasis arrival",
                 StartAnnoucement = string.Empty,
                 AnnouncementToDockInSeconds = 510,
                 EndPoint = "oasis",
@@ -121,6 +125,7 @@ namespace EQToolShared
             {
                 Boat = EQToolShared.Boats.BloatedBelly,
                 StartPoint = "overthere",
+                PrettyName = "Overthere arrival",
                 StartAnnoucement = "Rack Stonebelly shouts, 'Rack Stonebelly shouts, 'Da Bloated Belly be leaving da Overdere now!'",
                 EndPoint = "timorous",
                 TripTimeInSeconds = 2025,
@@ -131,6 +136,7 @@ namespace EQToolShared
             {
                 Boat = EQToolShared.Boats.MaidensVoyage,
                 StartPoint = "butcher",
+                PrettyName = "BB to FV arrival",
                 StartAnnoucement = "Glisse Bluesea shouts 'The Maiden's Voyage is now ready to be boarded. Please form an orderly line to the shuttles, and remember, no pushing!",
                 EndPoint = "firiona",
                 TripTimeInSeconds = 1230
@@ -139,6 +145,7 @@ namespace EQToolShared
             {
                 Boat = EQToolShared.Boats.MaidensVoyage,
                 StartPoint = "firiona",
+                PrettyName = "FV to BB arrival",
                 StartAnnoucement = "Glisse Bluesea shouts 'The Maiden's Voyage has departed the outpost at Firiona Vie. Please be ready to board the shuttles shortly, if you desire to make the journey to Kunark.",
                 EndPoint = "butcher",
                 TripTimeInSeconds = 1230
@@ -147,6 +154,7 @@ namespace EQToolShared
             {
                 Boat = EQToolShared.Boats.NroIcecladBoat,
                 StartPoint = "nro",
+                PrettyName = "NRo arrival",
                 StartAnnoucement = "Frankel the Pirate says 'Thar she be mates. All aboard thats goin aboard!'",
                 AnnouncementToDockInSeconds =0,
                 EndPoint = "iceclad",
@@ -157,6 +165,7 @@ namespace EQToolShared
                 Boat = EQToolShared.Boats.NroIcecladBoat,
                 AnnouncementToDockInSeconds = 307,
                 StartPoint = "iceclad",
+                PrettyName = "Iceclad from NRo arrival",
                 StartAnnoucement = string.Empty,
                 EndPoint = "nro",
                 TripTimeInSeconds = 518

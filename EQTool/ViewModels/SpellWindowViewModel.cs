@@ -66,11 +66,29 @@ namespace EQTool.ViewModels
                 view.LiveSortingProperties.Add(nameof(TimerViewModel.TotalRemainingDuration));
                 foreach (var item in Zones.Boats)
                 {
+                    var boatcolor = Brushes.Aquamarine;
+                    if (item.Boat == Boats.BloatedBelly)
+                    {
+                        boatcolor = Brushes.DarkSalmon;
+                    }
+                    else if (item.Boat == Boats.BarrelBarge)
+                    {
+                        boatcolor = Brushes.CadetBlue;
+                    }
+                    else if (item.Boat == Boats.NroIcecladBoat)
+                    {
+                        boatcolor = Brushes.Chartreuse;
+                    }
+                    else if (item.Boat == Boats.MaidensVoyage)
+                    {
+                        boatcolor = Brushes.DarkGoldenrod;
+                    }
                     _SpellList.Add(new BoatViewModel
                     {
-                        Name = $"{item.StartPoint} -> {item.EndPoint}",
-                        Boat = item.Boat,
-                        TotalDuration = TimeSpan.FromSeconds(item.TripTimeInSeconds)
+                        Name = item.PrettyName,
+                        Boat = item,
+                        TotalDuration = TimeSpan.FromSeconds(item.TripTimeInSeconds),
+                        ProgressBarColor = boatcolor,
                     });
                 }
             }
@@ -256,10 +274,10 @@ namespace EQTool.ViewModels
                     item.ColumnVisibility = hidespell ? System.Windows.Visibility.Collapsed : System.Windows.Visibility.Visible;
                 }
 
-                var boats = this._SpellList.Where(a => a.SpellViewModelType == SpellViewModelType.Boat).Cast<BoatViewModel>().ToList(); 
+                var boats = this._SpellList.Where(a => a.SpellViewModelType == SpellViewModelType.Boat).Cast<BoatViewModel>().ToList();
                 foreach (var boat in boats)
-                { 
-                    if(BoatScheduleService.SupportdBoats.Contains(boat.Boat))
+                {
+                    if (BoatScheduleService.SupportdBoats.Contains(boat.Boat.Boat))
                     {
                         boat.TotalRemainingDuration = boat.TotalRemainingDuration.Subtract(TimeSpan.FromMilliseconds(dt_ms));
                         if (boat.TotalRemainingDuration.TotalSeconds <= 0)
@@ -268,7 +286,7 @@ namespace EQTool.ViewModels
                             boat.TotalRemainingDuration = dt.Add(boat.TotalDuration);
                         }
                     }
-                
+
                     if (player?.BoatSchedule == false)
                     {
                         boat.ColumnVisibility = Visibility.Collapsed;
