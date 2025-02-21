@@ -9,6 +9,7 @@ namespace EQTool.Services
 {
     public class BoatScheduleService
     {
+        public static readonly List<Boats> SupportdBoats = new List<Boats>() { Boats.BarrelBarge, Boats.NroIcecladBoat, Boats.BloatedBelly };
         public BoatScheduleService()
         {
 
@@ -32,11 +33,11 @@ namespace EQTool.Services
             {
                 totalseconds = (int)(dt.TotalSeconds);
             }
-            var workingBoats = new List<Boats>() { Boats.BarrelBarge, Boats.NroIcecladBoat };
-            if (workingBoats.Contains(boat.Boat))
+          
+            if (SupportdBoats.Contains(boat.Boat))
             {
                 var timeToStartDock = startZoneBoat.AnnouncementToDockInSeconds - totalseconds;
-                var timeToEndDock = endZoneBoat.AnnouncementToDockInSeconds - totalseconds;
+       
                 if (timeToStartDock > 0)
                 {
                     startBoat.TotalRemainingDuration = TimeSpan.FromSeconds(timeToStartDock);
@@ -46,14 +47,18 @@ namespace EQTool.Services
                     timeToStartDock = startZoneBoat.TripTimeInSeconds - totalseconds + startZoneBoat.AnnouncementToDockInSeconds;
                     startBoat.TotalRemainingDuration = TimeSpan.FromSeconds(timeToStartDock);
                 }
-                if (timeToEndDock > 0)
+                if(endBoat!= null)
                 {
-                    endBoat.TotalRemainingDuration = TimeSpan.FromSeconds(timeToEndDock);
-                }
-                else
-                {
-                    timeToEndDock = endZoneBoat.TripTimeInSeconds - totalseconds + endZoneBoat.AnnouncementToDockInSeconds;
-                    endBoat.TotalRemainingDuration = TimeSpan.FromSeconds(timeToEndDock);
+                    var timeToEndDock = endZoneBoat.AnnouncementToDockInSeconds - totalseconds;
+                    if (timeToEndDock > 0)
+                    {
+                        endBoat.TotalRemainingDuration = TimeSpan.FromSeconds(timeToEndDock);
+                    }
+                    else
+                    {
+                        timeToEndDock = endZoneBoat.TripTimeInSeconds - totalseconds + endZoneBoat.AnnouncementToDockInSeconds;
+                        endBoat.TotalRemainingDuration = TimeSpan.FromSeconds(timeToEndDock);
+                    }
                 }
             } 
         }

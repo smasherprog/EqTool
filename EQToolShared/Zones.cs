@@ -123,7 +123,8 @@ namespace EQToolShared
                 StartPoint = "overthere",
                 StartAnnoucement = "Rack Stonebelly shouts, 'Rack Stonebelly shouts, 'Da Bloated Belly be leaving da Overdere now!'",
                 EndPoint = "timorous",
-                TripTimeInSeconds = 2025
+                TripTimeInSeconds = 2025,
+                AnnouncementToDockInSeconds = 0
             });
 
             Boats.Add(new BoatInfo

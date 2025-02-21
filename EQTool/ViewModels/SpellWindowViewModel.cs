@@ -256,11 +256,10 @@ namespace EQTool.ViewModels
                     item.ColumnVisibility = hidespell ? System.Windows.Visibility.Collapsed : System.Windows.Visibility.Visible;
                 }
 
-                var boats = this._SpellList.Where(a => a.SpellViewModelType == SpellViewModelType.Boat).Cast<BoatViewModel>().ToList();
-                var boatslist = new List<Boats>() { Boats.BarrelBarge, Boats.NroIcecladBoat };
+                var boats = this._SpellList.Where(a => a.SpellViewModelType == SpellViewModelType.Boat).Cast<BoatViewModel>().ToList(); 
                 foreach (var boat in boats)
                 { 
-                    if(boatslist.Contains(boat.Boat))
+                    if(BoatScheduleService.SupportdBoats.Contains(boat.Boat))
                     {
                         boat.TotalRemainingDuration = boat.TotalRemainingDuration.Subtract(TimeSpan.FromMilliseconds(dt_ms));
                         if (boat.TotalRemainingDuration.TotalSeconds <= 0)
