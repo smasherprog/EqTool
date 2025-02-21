@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Linq;
 
 namespace EQTool.Services.IO
 {
@@ -65,6 +66,12 @@ namespace EQTool.Services.IO
                     }
 
                     linelist = templinelist.GetRange(lastfoundindex, templinelist.Count - lastfoundindex);
+                    linelist = linelist.Where(a =>
+                    a.StartsWith("Welcome to EverQuest!") ||
+                    a.StartsWith("You have entered") ||
+                    a.StartsWith("MESSAGE OF THE DAY") ||
+                    a.StartsWith("GUILD MOTD")
+                    ).ToList();
                 }
                 else
                 {
