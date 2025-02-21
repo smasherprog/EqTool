@@ -74,6 +74,26 @@ namespace EQtoolsTests
         }
 
         [TestMethod]
+        public void HappyTimePassedOasisManyTimes()
+        {
+            var d = DateTimeOffset.Now;
+            var oasisboat = Zones.Boats.FirstOrDefault(a => a.Boat == Boats.BarrelBarge);
+            var boat = new BoatActivityResponce
+            {
+                Boat = EQToolShared.Boats.BarrelBarge,
+                LastSeen = d.AddSeconds((oasisboat.TripTimeInSeconds * -5) - 10),
+                StartPoint = "oasis"
+            };
+            this.boatScheduleService.UpdateBoatInformation(boat, boatViewModelList); 
+            var startZoneBoat = Zones.Boats.FirstOrDefault(a => a.Boat == boat.Boat && a.StartPoint == boat.StartPoint);
+            var endZoneBoat = Zones.Boats.FirstOrDefault(a => a.Boat == boat.Boat && a.StartPoint == startZoneBoat.EndPoint);
+            var startBoat = boatViewModelList.FirstOrDefault(a => a.Boat == startZoneBoat);
+            var endBoat = boatViewModelList.FirstOrDefault(a => a.Boat.Boat == boat.Boat && startBoat.Boat.EndPoint == a.Boat.StartPoint);
+            Assert.AreEqual((int)startBoat.TotalRemainingDuration.TotalSeconds, 109, 1);
+            Assert.AreEqual((int)endBoat.TotalRemainingDuration.TotalSeconds, 500, 1);
+        }
+
+        [TestMethod]
         public void HappyTimeNro()
         {
             var d = DateTimeOffset.Now;
