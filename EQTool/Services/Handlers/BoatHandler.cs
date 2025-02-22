@@ -1,6 +1,6 @@
 ﻿using EQTool.Models;
-using EQTool.ViewModels;
 using EQToolShared.APIModels.BoatControllerModels;
+using System.Threading.Tasks;
 
 namespace EQTool.Services.Handlers
 {
@@ -16,14 +16,17 @@ namespace EQTool.Services.Handlers
 
         private void LogEvents_BoatEvent(object sender, BoatEvent e)
         {
-            var s = this.activePlayer.Player?.Server;
+            var s = activePlayer.Player?.Server;
             if (s.HasValue)
             {
-                pigParseApi.SendBoatData(new BoatActivityRequest
+                _ = Task.Factory.StartNew(() =>
                 {
-                    Boat = e.Boat,
-                    Server = s.Value,
-                    StartPoint = e.StartPoint
+                    pigParseApi.SendBoatData(new BoatActivityRequest
+                    {
+                        Boat = e.Boat,
+                        Server = s.Value,
+                        StartPoint = e.StartPoint
+                    });
                 });
             }
         }

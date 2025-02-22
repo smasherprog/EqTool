@@ -67,10 +67,10 @@ namespace EQTool.Services.IO
 
                     linelist = templinelist.GetRange(lastfoundindex, templinelist.Count - lastfoundindex);
                     linelist = linelist.Where(a =>
-                    a.StartsWith("Welcome to EverQuest!") ||
-                    a.StartsWith("You have entered") ||
-                    a.StartsWith("MESSAGE OF THE DAY") ||
-                    a.StartsWith("GUILD MOTD")
+                    a.Contains("Welcome to EverQuest!") ||
+                    a.Contains("You have entered") ||
+                    a.Contains("MESSAGE OF THE DAY") ||
+                    a.Contains("GUILD MOTD")
                     ).ToList();
                 }
                 else
