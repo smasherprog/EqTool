@@ -14,13 +14,13 @@ namespace EQTool.Services.Handlers
 
         private void LogEvents_ClassDetectedEvent(object sender, ClassDetectedEvent e)
         {
-            if (activePlayer?.Player != null && activePlayer.Player.PlayerClass != e.PlayerClass)
+            if (activePlayer?.Player != null && !activePlayer.Player.PlayerClass.HasValue)
             {
                 appDispatcher.DispatchUI(() =>
                 {
                     activePlayer.Player.PlayerClass = e.PlayerClass;
                     toolSettingsLoad.Save(eQToolSettings);
-                }); 
+                });
             }
         }
     }
