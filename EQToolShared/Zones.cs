@@ -36,7 +36,7 @@ namespace EQToolShared
         public int AnnouncementToDockInSeconds { get; set; }
         public string StartPoint { get; set; }
         public string EndPoint { get; set; }
-        public double TripTimeInSeconds { get; set; } 
+        public double TripTimeInSeconds { get; set; }
     }
 
     public static class ZoneSpawnTimes
@@ -126,7 +126,7 @@ namespace EQToolShared
                 Boat = EQToolShared.Boats.BloatedBelly,
                 StartPoint = "overthere",
                 PrettyName = "Overthere arrival",
-                StartAnnoucement = "Rack Stonebelly shouts, 'Rack Stonebelly shouts, 'Da Bloated Belly be leaving da Overdere now!'",
+                StartAnnoucement = "Rack Stonebelly shouts, 'Rack Stonebelly shouts, 'Da Bloated Belly be leaving da Overdere now",
                 EndPoint = "timorous",
                 TripTimeInSeconds = 2025,
                 AnnouncementToDockInSeconds = 2025 - 50
@@ -158,7 +158,7 @@ namespace EQToolShared
                 StartPoint = "nro",
                 PrettyName = "NRo arrival",
                 StartAnnoucement = "Frankel the Pirate says 'Thar she be mates. All aboard thats goin aboard!'",
-                AnnouncementToDockInSeconds =0,
+                AnnouncementToDockInSeconds = 0,
                 EndPoint = "iceclad",
                 TripTimeInSeconds = 519
             });
