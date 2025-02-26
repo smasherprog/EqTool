@@ -126,7 +126,7 @@ namespace EQToolShared
                 Boat = EQToolShared.Boats.BloatedBelly,
                 StartPoint = "overthere",
                 PrettyName = "Overthere arrival",
-                StartAnnoucement = "Rack Stonebelly shouts, 'Rack Stonebelly shouts, 'Da Bloated Belly be leaving da Overdere now",
+                StartAnnoucement = "Rack Stonebelly shouts, 'Da Bloated Belly be leaving da Overdere now!'",
                 EndPoint = "timorous",
                 TripTimeInSeconds = 2025,
                 AnnouncementToDockInSeconds = 2025 - 50
