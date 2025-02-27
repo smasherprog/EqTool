@@ -136,7 +136,7 @@ namespace EQToolShared
             {
                 Boat = EQToolShared.Boats.MaidensVoyage,
                 StartPoint = "butcher",
-                PrettyName = "BB to FV arrival",
+                PrettyName = "BB to FV Transfer arrival",
                 StartAnnoucement = "Glisse Bluesea shouts 'The Maiden's Voyage is now ready to be boarded. Please form an orderly line to the shuttles, and remember, no pushing!",
                 EndPoint = "firiona",
                 TripTimeInSeconds = 1230,
@@ -146,7 +146,7 @@ namespace EQToolShared
             {
                 Boat = EQToolShared.Boats.MaidensVoyage,
                 StartPoint = "firiona",
-                PrettyName = "FV to BB arrival",
+                PrettyName = "FV Transfer to BB arrival",
                 StartAnnoucement = "Glisse Bluesea shouts 'The Maiden's Voyage has departed the outpost at Firiona Vie. Please be ready to board the shuttles shortly, if you desire to make the journey to Kunark.",
                 EndPoint = "butcher",
                 TripTimeInSeconds = 1230,
