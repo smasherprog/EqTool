@@ -9,7 +9,6 @@ namespace EQToolApis.Controllers
     {
         [MaxLength(24), Required]
         public string? Version { get; set; }
-        [Required]
         public string? Message { get; set; }
         public EventType? EventType { get; set; }
         public BuildType? BuildType { get; set; }
