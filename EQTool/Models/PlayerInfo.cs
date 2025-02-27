@@ -810,13 +810,21 @@ namespace EQTool.Models
             }
         }
 
-        private bool _BoatSchedule;
-        public bool BoatSchedule
+        private bool? _BoatScheduleR;
+        public bool? BoatScheduleR
         {
-            get => _BoatSchedule;
+            get => _BoatScheduleR == null ? true : _BoatScheduleR.Value;
             set
             {
-                _BoatSchedule = value;
+                if (value == null)
+                {
+                    _BoatScheduleR = true;
+                }
+                else
+                {
+                    _BoatScheduleR = value;
+                }
+
                 OnPropertyChanged();
             }
         }

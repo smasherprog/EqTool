@@ -274,7 +274,7 @@ namespace EQTool.ViewModels
                     item.ColumnVisibility = hidespell ? System.Windows.Visibility.Collapsed : System.Windows.Visibility.Visible;
                 }
 
-                var boats = this._SpellList.Where(a => a.SpellViewModelType == SpellViewModelType.Boat).Cast<BoatViewModel>().ToList();
+                var boats = _SpellList.Where(a => a.SpellViewModelType == SpellViewModelType.Boat).Cast<BoatViewModel>().ToList();
                 foreach (var boat in boats)
                 {
                     if (BoatScheduleService.SupportdBoats.Contains(boat.Boat.Boat))
@@ -287,7 +287,7 @@ namespace EQTool.ViewModels
                         }
                     }
 
-                    if (player?.BoatSchedule == false)
+                    if (player?.BoatScheduleR == false)
                     {
                         boat.ColumnVisibility = Visibility.Collapsed;
                     }
@@ -522,16 +522,16 @@ namespace EQTool.ViewModels
 
         public void UpdateBoats()
         {
-            var s = this.activePlayer.Player.Server;
+            var s = activePlayer.Player.Server;
             if (s.HasValue)
             {
-                var boatsapi = this.pigParseApi.GetBoatData(s.Value);
+                var boatsapi = pigParseApi.GetBoatData(s.Value);
                 appDispatcher.DispatchUI(() =>
                 {
-                    var boats = this._SpellList.Where(a => a.SpellViewModelType == SpellViewModelType.Boat).Cast<BoatViewModel>().ToList();
+                    var boats = _SpellList.Where(a => a.SpellViewModelType == SpellViewModelType.Boat).Cast<BoatViewModel>().ToList();
                     foreach (var boat in boatsapi)
                     {
-                        this.boatScheduleService.UpdateBoatInformation(boat, boats, DateTimeOffset.Now);
+                        boatScheduleService.UpdateBoatInformation(boat, boats, DateTimeOffset.Now);
                     }
                 });
             }

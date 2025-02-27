@@ -108,7 +108,7 @@ namespace EQToolShared
                 StartAnnoucement = "Rack Stonebelly shouts, 'Da Barrel Barge will be here soon soon!'",
                 AnnouncementToDockInSeconds = 119,
                 EndPoint = "timorous",
-                TripTimeInSeconds = 779.25
+                TripTimeInSeconds = 779.75
             });
 
             Boats.Add(new BoatInfo
@@ -119,7 +119,7 @@ namespace EQToolShared
                 StartAnnoucement = string.Empty,
                 AnnouncementToDockInSeconds = 510,
                 EndPoint = "oasis",
-                TripTimeInSeconds = 779.25
+                TripTimeInSeconds = 778.75
             });
             Boats.Add(new BoatInfo
             {

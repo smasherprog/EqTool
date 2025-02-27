@@ -261,6 +261,13 @@
         <TabItem Header="Triggers">
             <StackPanel Orientation="Vertical" Margin="5, 5, 5, 5">
                 <StackPanel Orientation="Vertical"  Margin="0, 0, 0, 8">
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Boat Schedule"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
+                        <CheckBox IsChecked="{Binding ActivePlayer.Player.BoatScheduleR}" Click="Savesettings" MinWidth="75"></CheckBox>
+                    </StackPanel>
+                    <DockPanel>
+                        <TextBlock MaxWidth="400" TextWrapping="Wrap" Text="Boat times are constantly being tweaked. More boats will be working soon!" />
+                    </DockPanel>
                     <StackPanel Orientation="Horizontal" ToolTip="This setting will switch to show only spells you care about when raid mode is detected.">
                         <TextBlock Text="Raid Detection" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
                         <CheckBox IsChecked="{Binding RaidModeDetection}" Click="Savesettings"></CheckBox>
@@ -452,14 +459,7 @@
         </TabItem>
         
         <TabItem Header="Experimental">
-            <StackPanel Orientation="Vertical" Margin="5, 5, 5, 5" HorizontalAlignment="Stretch">
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Boat Schedule"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
-                    <CheckBox IsChecked="{Binding ActivePlayer.Player.BoatSchedule}" Click="Savesettings" MinWidth="75"></CheckBox>
-                </StackPanel>
-                <DockPanel>
-                    <TextBlock MaxWidth="400" TextWrapping="Wrap" Text="Boat Schedules are NOT currently working. It will be working soon!" />
-                </DockPanel>
+            <StackPanel Orientation="Vertical" Margin="5, 5, 5, 5" HorizontalAlignment="Stretch"> 
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Timer Sharing"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
                     <CheckBox IsChecked="{Binding ActivePlayer.Player.ShareTimers}" Click="Savesettings" MinWidth="75"></CheckBox>
