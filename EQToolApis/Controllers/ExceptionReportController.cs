@@ -7,8 +7,9 @@ namespace EQToolApis.Controllers
 {
     public class ExceptionRequest
     {
-        [MaxLength(24)]
+        [MaxLength(24), Required]
         public string? Version { get; set; }
+        [Required]
         public string? Message { get; set; }
         public EventType? EventType { get; set; }
         public BuildType? BuildType { get; set; }
@@ -30,7 +31,7 @@ namespace EQToolApis.Controllers
         {
             var ip = HttpContext.Connection.RemoteIpAddress?.ToString();
 
-            if (allowedprefix.Contains(model.Version) || model.Server == Servers.Quarm)
+            if (allowedprefix.Any(model.Version.Contains) || model.Server == Servers.Quarm)
             {
                 _ = dbcontext.EqToolExceptions.Add(new DB.Models.EqToolException
                 {
