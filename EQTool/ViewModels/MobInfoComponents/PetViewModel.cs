@@ -213,8 +213,11 @@ namespace EQTool.ViewModels.MobInfoComponents
 
 
         // data to support dynamic highlighting of any given row
-        private readonly System.Windows.Media.Brush _HighLightColor = System.Windows.Media.Brushes.DarkGreen;
+        // pick a highlight color that is reasonably visible for both black and white font
+        private readonly System.Windows.Media.Brush _HighLightColor = System.Windows.Media.Brushes.LightSlateGray;
         private readonly System.Windows.Media.Brush _NormalColor = System.Windows.Media.Brushes.Transparent;
+        //private readonly System.Windows.Media.Brush _HighLightColor = System.Windows.Media.Brushes.DarkGreen;
+        //private readonly System.Windows.Media.Brush _HighLightColor = System.Windows.Media.Brushes.LightGreen;
 
         public List<System.Windows.Media.Brush> RowColor { get; } = new List<System.Windows.Media.Brush>();
 
@@ -224,7 +227,7 @@ namespace EQTool.ViewModels.MobInfoComponents
             for (var ndx = 0; ndx < RankRowsCount; ndx++)
             {
                 RowColor[ndx] = _NormalColor;
-                //_RowColor[ndx] = _HighLightColor;
+                //RowColor[ndx] = _HighLightColor;
 
                 // force the changed property to match what the XAML field is binding to
                 OnPropertyChanged(nameof(RowColor));

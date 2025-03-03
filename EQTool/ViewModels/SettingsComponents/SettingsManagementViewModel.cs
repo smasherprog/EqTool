@@ -1,5 +1,7 @@
 ﻿using EQTool.Models;
 using EQTool.Services;
+using EQTool.Services.Handlers;
+
 using EQToolShared.Enums;
 using System;
 using System.Collections.ObjectModel;
@@ -34,12 +36,12 @@ namespace EQTool.ViewModels.SettingsComponents
             };
             _TreeItems.Add(triggerTree);
 
-            // add some bogus examples just for testing
-            for (int i = 10; i < 15; i++)
+            //add the user defined triggers
+            foreach (var trigger in UserDefinedTriggerHandler.TriggerList)
             {
                 triggerTree.Children.Add(new TreeTrigger
                 {
-                    Name = i.ToString(),
+                    Name = trigger.TriggerName,
                 });
             }
 
