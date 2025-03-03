@@ -13,7 +13,17 @@ namespace EQTool.Services.Handlers
         // UserTriggers file and the corresponding Triggers
         private const string userTriggerFileName = "UserTriggers.txt";
         private static readonly List<string> triggerFileContents = new List<string>();          // the raw file contents
-        public static List<UserDefinedTrigger> triggerList = new List<UserDefinedTrigger>();    // the corresponding UserDefinedTriggers from the file
+        private static List<UserDefinedTrigger> triggerList = new List<UserDefinedTrigger>();    // the corresponding UserDefinedTriggers from the file
+        public static List<UserDefinedTrigger> TriggerList
+        {
+            get
+            {
+                // there should always be >0 triggers, so if this is true, they haven't been loaded yet.
+                if (triggerList.Count == 0)
+                    ReadTriggers();
+                return triggerList;
+            }
+        }
 
         // watcher for the UserTriggers.txt file changed
         private readonly FileSystemWatcher watcher;
