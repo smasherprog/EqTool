@@ -1401,6 +1401,11 @@ namespace EQToolShared
                             Name = "Jacker",
                             RespawnTime =  new TimeSpan(0, 8, 0)
                       },
+                      new NpcSpawnTime
+                      {
+                            Name = "Oosa Shadowthumper",
+                            RespawnTime =  new TimeSpan(0, 8, 0)
+                      },
                      new NpcSpawnTime
                       {
                             Name = "Karnan",
