@@ -17,6 +17,7 @@ Instructions:
 Features:
 <br/>
 <ul>
+ <li>Boat timers are build int!</li>
 <li>User Defined Triggers are now supported!</li>
 <li><b>p99 middlemand</b> ported from https://github.com/Zaela/p99-login-middlemand is now supported!</li>
 <li>Random rolls show up in the triggers window. </li> 
