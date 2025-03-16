@@ -119,7 +119,7 @@ namespace EQTool.Services.Handlers
             Victim = "Faction Slain";
             Killer = EQSpells.You;
 
-            if ((FactionMessages.Any() && FactionMessages[0] == e.Line) || FactionMessages.Count == 5)
+            if ((FactionMessages.Any() && FactionMessages[0] == e.Line) || FactionMessages.Count == 6)
             {
                 DoEvent(new ConfirmedDeathEvent
                 {

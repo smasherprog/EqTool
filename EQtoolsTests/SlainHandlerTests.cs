@@ -13,12 +13,14 @@ namespace EQtoolsTests
     {
         private readonly LogParser logParser;
         private readonly LogEvents logEvents;
+        private readonly SpellWindowViewModel spellWindowViewModel;
         private int CalledCounter = 0;
 
         public SlainHandlerTests()
         {
             logParser = container.Resolve<LogParser>();
             logEvents = container.Resolve<LogEvents>();
+            spellWindowViewModel = container.Resolve<SpellWindowViewModel>();
             player.Player.Level = 54;
             player.Player.PlayerClass = PlayerClasses.Cleric;
         }
@@ -377,6 +379,27 @@ namespace EQtoolsTests
             logParser.Push("Your faction standing with UndeadFrogloksofGuk could not possibly get any worse.", DateTime.Now);
             logParser.Push("Varer judges you amiably -- You would probably win this fight..it's not certain though.", DateTime.Now);
             Assert.AreEqual(CalledCounter, 3);
+        }
+
+        [TestMethod]
+        public void SlainNeriakTest()
+        {
+            logEvents.ConfirmedDeathEvent += (a, e) =>
+            {
+                CalledCounter++;
+            };
+            logParser.Push("You crush Uglan for 19 points of damage.", DateTime.Now);
+            logParser.Push("You have slain Uglan!", DateTime.Now);
+            logParser.Push("Your faction standing with EldritchCollective got better.", DateTime.Now);
+            logParser.Push("Your faction standing with KeepersoftheArt got better.", DateTime.Now);
+            logParser.Push("Your faction standing with KingAythoxThex got better.", DateTime.Now);
+
+            logParser.Push("Your faction standing with PrimordialMalice got better.", DateTime.Now);
+            logParser.Push("Your faction standing with QueenCristanosThex got worse.", DateTime.Now);
+            logParser.Push("Your faction standing with TheDead could not possibly get any worse.", DateTime.Now);
+            logParser.Push("You gain party experience!!", DateTime.Now);
+            logParser.Push("You fail to locate any food nearby.", DateTime.Now);
+            Assert.AreEqual(CalledCounter, 1);
         }
     }
 }
