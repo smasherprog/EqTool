@@ -997,7 +997,7 @@ namespace EQToolShared
             {
                 Name = "highkeep",
                 ShowAllMapLevels = false,
-                ZoneLevelHeight = 10,
+                ZoneLevelHeight = 6,
                 NotableNPCs = new List<string>()
                 {
                     "Captain Boshinko","Mistress Anna","Osargen","Princess Lenia",
