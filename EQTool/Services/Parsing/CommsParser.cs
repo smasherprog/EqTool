@@ -19,7 +19,7 @@ namespace EQTool.Services.Parsing
         private const string patternTells = @"^(?<sender>.+) ((say to your)|(tells the)) guild, '(?<content>.+)'";
         private const string patternInternalTell = @"^(?<sender>.+) -> (?<receiver>.+): (?<content>.+)";
         private const string patternIsNotOnline = @"^(?<content>.+) is not online at this time.";
-        private const string patternSays = @"^(?<sender>.+) (say|says), '(?<content>.+)'";
+        private const string patternSays = @"^(?<sender>.+) (say|says),? '(?<content>.+)'";
         private const string patternTold = @"^(?<sender>.+) (told|tells) (?<receiver>.+), '(?<content>.+)'";
         private const string patternAuctions = @"^(?<sender>.+) auction(s)?, '(?<content>.+)'";
         private const string patternOutOfCharacter = @"^(?<sender>.+) say(s)? out of character, '(?<content>.+)'";

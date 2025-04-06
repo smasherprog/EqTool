@@ -69,6 +69,7 @@ namespace EQTool.Services
             "Lava Breath - Test",
             "Vengeance of the Undying",
             "Gift of A'err",
+            "Zun`Muram's Terror",
             "Extended Regeneration",
             "Aura of Battle",
             "Nature's Recovery",
@@ -176,7 +177,7 @@ namespace EQTool.Services
             var spellsfile = new FileInfo(settings.DefaultEqDirectory + spellfile);
             if (spellsfile.Exists)
             {
-                var spellfilename = $"SpellCache{servers}_7";
+                var spellfilename = $"SpellCache{servers}_8";
                 if (!isdebug)
                 {
                     spellfilename = new string(spellfilename.Where(a => char.IsLetterOrDigit(a)).ToArray()) + ".bin";
@@ -260,6 +261,11 @@ namespace EQTool.Services
                     if (spell.name == "Pacify")
                     {
                         spell.buffduration = 35;
+                    }
+
+                    if (spell.name == "Wake of Tranquility")
+                    {
+                        spell.buffduration = 1000;// any number to make the duration work correctly
                     }
 
                     if (spell.name == "LowerElement")
@@ -366,11 +372,11 @@ namespace EQTool.Services
                     {
                         if (spellinlist.Classes.Any() && !spell.Classes.Any())
                         {
-                            //Debug.WriteLine($"NOT updating Duplicate Spell {spell.name}");
+                            //Debug.WriteLine($"NOT updating Duplicate Spells {spell.name}");
                         }
                         else
                         {
-                            //Debug.WriteLine($"Duplicate Spell Update {spell.name}");
+                            //Debug.WriteLine($"Duplicate Spells Update {spell.name}");
                             //skippedcounter++;
                             spells[spell.name] = spell;
                         }

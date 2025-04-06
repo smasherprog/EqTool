@@ -24,7 +24,7 @@ namespace EQtoolsTests
         {
             var dteffect = spellWindowViewModel.SpellList.FirstOrDefault(a => a.Name.StartsWith("--DT--"));
             Assert.IsNull(dteffect);
-            logParser.Push("Dread says, 'TINIALITA'", DateTime.Now);
+            logParser.Push("Dread says 'TINIALITA'", DateTime.Now);
             dteffect = spellWindowViewModel.SpellList.FirstOrDefault(a => a.Name.StartsWith("--DT--"));
             Assert.IsNotNull(dteffect);
             Assert.IsTrue(dteffect.Name == "--DT-- 'TINIALITA'");
@@ -45,7 +45,7 @@ namespace EQtoolsTests
         {
             var dteffect = spellWindowViewModel.SpellList.FirstOrDefault(a => a.Name.StartsWith("--DT--"));
             Assert.IsNull(dteffect);
-            logParser.Push("Fright says, 'TINIALITA'", DateTime.Now);
+            logParser.Push("Fright says 'TINIALITA'", DateTime.Now);
             dteffect = spellWindowViewModel.SpellList.FirstOrDefault(a => a.Name.StartsWith("--DT--"));
             Assert.IsNotNull(dteffect);
         }

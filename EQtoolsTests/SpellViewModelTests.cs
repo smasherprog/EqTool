@@ -7,7 +7,6 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Windows.Documents;
 
 namespace EQtoolsTests
 {
@@ -23,7 +22,7 @@ namespace EQtoolsTests
         {
             spellWindowViewModel = container.Resolve<SpellWindowViewModel>();
             logParser = container.Resolve<LogParser>();
-        } 
+        }
 
         [TestMethod]
         public void NecroDA1()
@@ -126,14 +125,8 @@ namespace EQtoolsTests
             Assert.AreEqual(spelleffect.GroupName, EQSpells.SpaceYou);
             Assert.AreEqual(1, SpellList.Count);
         }
-        private List<PersistentViewModel> SpellList
-        {
-            get => this.spellWindowViewModel.SpellList.Where(a => a.SpellViewModelType == SpellViewModelType.Spell).ToList();
-        }
-        private List<PersistentViewModel> TimerList
-        {
-            get => this.spellWindowViewModel.SpellList.Where(a => a.SpellViewModelType == SpellViewModelType.Timer).ToList();
-        }
+        private List<PersistentViewModel> SpellList => spellWindowViewModel.SpellList.Where(a => a.SpellViewModelType == SpellViewModelType.Spell).ToList();
+        private List<PersistentViewModel> TimerList => spellWindowViewModel.SpellList.Where(a => a.SpellViewModelType == SpellViewModelType.Timer).ToList();
         [TestMethod]
         public void Dazzle_StartNewTimer()
         {
@@ -207,12 +200,39 @@ namespace EQtoolsTests
         {
             player.Player.PlayerClass = EQToolShared.Enums.PlayerClasses.Druid;
             player.Player.Level = 60;
-            logParser.Push("You begin casting Legacy of Thorn.", DateTime.Now); 
-            logParser.Push("Someone is surrounded by a thorny barrier.", DateTime.Now.AddSeconds(3)); 
+            logParser.Push("You begin casting Legacy of Thorn.", DateTime.Now);
+            logParser.Push("Someone is surrounded by a thorny barrier.", DateTime.Now.AddSeconds(3));
 
             var spelleffect = SpellList.FirstOrDefault();
             Assert.AreEqual("Legacy of Thorn", spelleffect.Name);
             Assert.AreEqual("Someone", spelleffect.GroupName);
+        }
+
+        [TestMethod]
+        public void CloudOfSilence()
+        {
+            player.Player.PlayerClass = EQToolShared.Enums.PlayerClasses.Druid;
+            player.Player.Level = 60;
+            player.Player.Zone = "growthplane";
+            logParser.Push("You are in a cloud of silence.", DateTime.Now);
+
+            var spelleffect = TimerList.FirstOrDefault();
+            Assert.AreEqual("Cloud of Silence", spelleffect.Name);
+        }
+
+
+        [TestMethod]
+        public void TestWakeOfTranq()
+        {
+            player.Player.PlayerClass = EQToolShared.Enums.PlayerClasses.Necromancer;
+            player.Player.Level = 60;
+            var d = DateTime.Now;
+            logParser.Push(spellWindowViewModel, "You begin casting Wake of Tranquility.", d);
+            logParser.Push(spellWindowViewModel, "A wooly mammoth looks less aggressive.", d.AddSeconds(5));
+            logParser.Push(spellWindowViewModel, "A tundra mammoth looks less aggressive.", d.AddSeconds(5));
+            spellWindowViewModel.UpdateSpells(1000);
+            var spelleffecst = spellWindowViewModel.SpellList.Where(a => a.SpellViewModelType == SpellViewModelType.Spell && a.Name == "Wake of Tranquility").Cast<SpellViewModel>();
+            Assert.AreEqual(spelleffecst.Count(), 2);
         }
 
         [TestMethod]

@@ -133,7 +133,7 @@ namespace EQTool.Services.Parsing
         {
             if (spells.CastOtherSpells.TryGetValue(spellmessage, out var foundspells))
             {
-                foundspells = foundspells.Where(a => !IgnoreSpellsForGuesses.Contains(a.name) && a.SpellType != SpellType.TargetedAreaofEffect).ToList();
+                foundspells = foundspells.Where(a => (!IgnoreSpellsForGuesses.Contains(a.name) && a.SpellType != SpellType.TargetedAreaofEffect) || string.Equals(a.name, "Wake of Tranquility", StringComparison.OrdinalIgnoreCase)).ToList();
                 if (!foundspells.Any())
                 {
                     return false;
