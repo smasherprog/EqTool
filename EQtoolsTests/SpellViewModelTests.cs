@@ -236,6 +236,18 @@ namespace EQtoolsTests
         }
 
         [TestMethod]
+        public void TestRampage()
+        {
+            player.Player.PlayerClass = EQToolShared.Enums.PlayerClasses.Necromancer;
+            player.Player.Level = 60;
+            var d = DateTime.Now;
+            logParser.Push(spellWindowViewModel, "You feel the urge to rampage.", d);
+            spellWindowViewModel.UpdateSpells(1000);
+            var spelleffecst = spellWindowViewModel.SpellList.Where(a => a.SpellViewModelType == SpellViewModelType.Spell && a.Name == "Rampage").Cast<SpellViewModel>();
+            Assert.AreEqual(spelleffecst.Count(), 1);
+        }
+
+        [TestMethod]
         public void PreventMultipleSpellsFrombeingRemoved()
         {
             player.Player.PlayerClass = EQToolShared.Enums.PlayerClasses.Necromancer;

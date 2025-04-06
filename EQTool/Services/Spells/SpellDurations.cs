@@ -20,9 +20,9 @@ namespace EQTool.Services
 
         public Spell MatchDragonRoar(List<Spell> spells, DateTime timestamp)
         {
-            if (!string.IsNullOrWhiteSpace(this.activePlayer.Player?.Zone))
+            if (!string.IsNullOrWhiteSpace(activePlayer.Player?.Zone))
             {
-                if (Zones.ZoneInfoMap.TryGetValue(this.activePlayer.Player.Zone, out var zone))
+                if (Zones.ZoneInfoMap.TryGetValue(activePlayer.Player.Zone, out var zone))
                 {
                     var matchingnpcs = fightHistory.IsEngaged(zone.NPCThatAOE.Select(a => a.Name).ToList(), timestamp);
                     foreach (var item in matchingnpcs)
@@ -33,16 +33,16 @@ namespace EQTool.Services
                         {
                             return matchedspell;
                         }
-                    } 
+                    }
                 }
                 foreach (var npc in zone.NPCThatAOE)
-                { 
+                {
                     var matchedspell = spells.FirstOrDefault(a => npc.SpellEffects.Contains(a.name));
                     if (matchedspell != null)
                     {
                         return matchedspell;
                     }
-                } 
+                }
             }
 
             return null;
@@ -65,13 +65,13 @@ namespace EQTool.Services
         }
         public Spell MatchClosestLevelToSpell(Spell spell, DateTime timestamp)
         {
-            return this.MatchClosestLevelToSpell(new List<Spell> { spell }, timestamp);
+            return MatchClosestLevelToSpell(new List<Spell> { spell }, timestamp);
         }
 
         public Spell MatchClosestLevelToSpell(List<Spell> spells, DateTime timestamp)
         {
-            var playerClass = this.activePlayer.Player.PlayerClass;
-            var playerLevel = this.activePlayer.Player.Level;
+            var playerClass = activePlayer.Player.PlayerClass;
+            var playerLevel = activePlayer.Player.Level;
 
             if (playerClass.HasValue)
             {
@@ -191,7 +191,8 @@ namespace EQTool.Services
                     spell_ticks = Math.Min(spell_ticks, duration);
                     break;
                 case 7:
-                    spell_ticks = duration == 0 ? level : duration; 
+                    spell_ticks = level;
+                    spell_ticks = Math.Min(spell_ticks, duration);
                     break;
                 case 8:
                     spell_ticks = level + 10;

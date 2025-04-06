@@ -268,6 +268,11 @@ namespace EQTool.Services
                         spell.buffduration = 1000;// any number to make the duration work correctly
                     }
 
+                    if (spell.name == "Rampage")
+                    {
+                        spell.buffduration = 1000;// any number to make the duration work correctly
+                    }
+
                     if (spell.name == "LowerElement")
                     {
                         if (!spell.Classes.ContainsKey(PlayerClasses.Wizard))
