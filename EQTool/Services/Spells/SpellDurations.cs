@@ -191,8 +191,7 @@ namespace EQTool.Services
                     spell_ticks = Math.Min(spell_ticks, duration);
                     break;
                 case 7:
-                    spell_ticks = level;
-                    spell_ticks = Math.Min(spell_ticks, duration);
+                    spell_ticks = duration == 0 ? level : duration; 
                     break;
                 case 8:
                     spell_ticks = level + 10;
