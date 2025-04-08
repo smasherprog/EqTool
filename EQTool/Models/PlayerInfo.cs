@@ -157,7 +157,7 @@ namespace EQTool.Models
 
     public enum TimerRecast
     {
-        StartNewTimer,
+        StartNewTimer = 1,
         RestartCurrentTimer
     }
 
@@ -271,13 +271,28 @@ namespace EQTool.Models
             }
         }
 
-        private TimerRecast _timerRecast = TimerRecast.RestartCurrentTimer;
-        public TimerRecast TimerRecast
+        private TimerRecast? _timerRecast = TimerRecast.RestartCurrentTimer;
+        public TimerRecast? TimerRecastSetting
         {
-            get => _timerRecast;
+            get
+            {
+                if (_timerRecast == null)
+                {
+                    return TimerRecast.RestartCurrentTimer;
+                }
+                return _timerRecast;
+            }
             set
             {
-                _timerRecast = value;
+                if (value == null)
+                {
+                    _timerRecast = TimerRecast.RestartCurrentTimer;
+                }
+                else
+                {
+                    _timerRecast = value;
+                }
+
                 OnPropertyChanged();
             }
         }

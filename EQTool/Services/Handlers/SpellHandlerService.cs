@@ -216,7 +216,7 @@ namespace EQTool.Services.Handlers
                             // add an extra tick to duration, to ensure PigParse timers don't expire before the "Your XXX spell has worn off" message
                             spellduration = spellduration.Add(TimeSpan.FromMilliseconds(6000));
 
-                            if (activePlayer?.Player?.TimerRecast == TimerRecast.StartNewTimer)
+                            if (activePlayer?.Player?.TimerRecastSetting == TimerRecast.StartNewTimer)
                             {
                                 overWrite = false;
                             }

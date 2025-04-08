@@ -294,7 +294,7 @@
                                    VerticalAlignment="Center"  
                                    FontWeight="Bold"  
                                    MinWidth="100"/>
-                        <ComboBox SelectedItem="{Binding ActivePlayer.Player.TimerRecast}" 
+                        <ComboBox SelectedItem="{Binding ActivePlayer.Player.TimerRecastSetting}" 
                                   ItemsSource="{Binding TimerRecastOptions}" 
                                   ToolTip="Hint: Select 'StartNewTimer' for targets with same name"
                                   Margin="0,5,0,0" 

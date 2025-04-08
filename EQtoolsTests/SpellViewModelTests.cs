@@ -135,7 +135,7 @@ namespace EQtoolsTests
 
             // recast mode in StartNew
             // two casts, and since we are in StartNew mode, should be two timers
-            player.Player.TimerRecast = TimerRecast.StartNewTimer;
+            player.Player.TimerRecastSetting = TimerRecast.StartNewTimer;
             logParser.Push("You begin casting Dazzle.", DateTime.Now);
             logParser.Push("Orc centurion has been mesmerized.", DateTime.Now.AddSeconds(2.0));
             logParser.Push("You begin casting Dazzle.", DateTime.Now.AddSeconds(10.0));
@@ -156,7 +156,7 @@ namespace EQtoolsTests
 
             // recast mode in Restart
             // two casts, but since we are in Restart mode, should be just one timers
-            player.Player.TimerRecast = TimerRecast.RestartCurrentTimer;
+            player.Player.TimerRecastSetting = TimerRecast.RestartCurrentTimer;
             logParser.Push("You begin casting Dazzle.", DateTime.Now);
             logParser.Push("Orc centurion has been mesmerized.", DateTime.Now.AddSeconds(2.0));
             logParser.Push("You begin casting Dazzle.", DateTime.Now.AddSeconds(10.0));
@@ -267,7 +267,7 @@ namespace EQtoolsTests
         public void MakeSureDetrimentalSpellsShowMultipleTimes()
         {
             // two casts, and since we are in StartNew mode, should be two timers
-            player.Player.TimerRecast = TimerRecast.StartNewTimer;
+            player.Player.TimerRecastSetting = TimerRecast.StartNewTimer;
             player.Player.PlayerClass = EQToolShared.Enums.PlayerClasses.Rogue;
             player.Player.Level = 60;
             var d = DateTime.Now;

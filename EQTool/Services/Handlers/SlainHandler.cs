@@ -199,7 +199,7 @@ namespace EQTool.Services.Handlers
                 }
                 var grp = spellWindowViewModel.SpellList.Where(a => string.Equals(a.GroupName, grpname, StringComparison.OrdinalIgnoreCase)).ToList();
 
-                if (activePlayer?.Player?.TimerRecast == TimerRecast.RestartCurrentTimer)
+                if (activePlayer?.Player?.TimerRecastSetting == TimerRecast.RestartCurrentTimer)
                 {
                     foreach (var item in grp)
                     {
