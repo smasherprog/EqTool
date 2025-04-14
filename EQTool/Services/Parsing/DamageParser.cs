@@ -1,5 +1,6 @@
 ﻿using EQTool.Models;
 using EQTool.ViewModels;
+using EQToolShared;
 using EQToolShared.Enums;
 using System;
 using System.Text.RegularExpressions;
@@ -66,6 +67,36 @@ namespace EQTool.Services.Parsing
             return false;
         }
 
+        private void GuessLevelFromHit(DamageEvent damageEvent)
+        {
+            if (damageEvent.DamageDone <= 0 ||
+                string.IsNullOrWhiteSpace(damageEvent.AttackerName) ||
+                string.Equals("you", damageEvent.AttackerName, StringComparison.OrdinalIgnoreCase) ||
+                string.Equals("kick", damageEvent.DamageType, StringComparison.OrdinalIgnoreCase) ||
+                string.Equals("backstab", damageEvent.DamageType, StringComparison.OrdinalIgnoreCase))
+            {
+                return;
+            }
+
+            var added = 0;
+            if (damageEvent.AttackerName.IndexOf("giant", StringComparison.OrdinalIgnoreCase) != -1 || damageEvent.AttackerName.IndexOf("spectre", StringComparison.OrdinalIgnoreCase) != -1)
+            {
+                added = 20;
+            }
+
+            if (MasterNPCList.NPCs.Contains(damageEvent.AttackerName))
+            {
+                if (damageEvent.DamageDone <= 60)
+                {
+                    damageEvent.LevelGuess = (int?)(damageEvent.DamageDone / 2f);
+                }
+                else
+                {
+                    damageEvent.LevelGuess = (int?)(((damageEvent.DamageDone - added - 60f) / 4f) + 30f);
+                }
+            };
+        }
+
         public DamageEvent Match(string line, DateTime timestamp, int lineCounter)
         {
             // you hit
@@ -80,9 +111,10 @@ namespace EQTool.Services.Parsing
                     TargetName = match.Groups["target_name"].Value,
                     AttackerName = "You",
                     DamageDone = int.Parse(match.Groups["damage"].Value),
-                    DamageType = match.Groups["dmg_type"].Value
+                    DamageType = match.Groups["dmg_type"].Value,
+                    LevelGuess = null
                 };
-
+                GuessLevelFromHit(rv);
                 // if we see a backstab from current player, set current player class to rogue
                 if (rv.AttackerName == "You" && activePlayer.Player?.PlayerClass != PlayerClasses.Rogue)
                 {
@@ -105,6 +137,7 @@ namespace EQTool.Services.Parsing
                     LineCounter = lineCounter,
                     TimeStamp = timestamp,
                     TargetName = match.Groups["target_name"].Value,
+                    LevelGuess = null,
                     AttackerName = "You",
                     DamageDone = 0,
                     DamageType = match.Groups["dmg_type"].Value
@@ -115,7 +148,7 @@ namespace EQTool.Services.Parsing
             match = otherHitRegex.Match(line);
             if (match.Success)
             {
-                return new DamageEvent
+                var r = new DamageEvent
                 {
                     Line = line,
                     LineCounter = lineCounter,
@@ -125,13 +158,15 @@ namespace EQTool.Services.Parsing
                     DamageDone = int.Parse(match.Groups["damage"].Value),
                     DamageType = match.Groups["dmg_type"].Value
                 };
+                GuessLevelFromHit(r);
+                return r;
             }
 
             // others miss
             match = othersMissRegex.Match(line);
             if (match.Success)
             {
-                return new DamageEvent
+                var r = new DamageEvent
                 {
                     Line = line,
                     LineCounter = lineCounter,
@@ -141,12 +176,15 @@ namespace EQTool.Services.Parsing
                     DamageDone = 0,
                     DamageType = match.Groups["dmg_type"].Value
                 };
+                GuessLevelFromHit(r);
+                return r;
             }
 
             // non-melee damage (direct damage spell, or dmg shield, or weapon proc)
             match = nonMeleeRegex.Match(line);
-            return match.Success
-                ? new DamageEvent
+            if (match.Success)
+            {
+                var r = new DamageEvent
                 {
                     Line = line,
                     LineCounter = lineCounter,
@@ -154,9 +192,13 @@ namespace EQTool.Services.Parsing
                     TargetName = match.Groups["target_name"].Value,
                     AttackerName = "You",
                     DamageDone = int.Parse(match.Groups["damage"].Value),
-                    DamageType = "non-melee"
-                }
-                : null;
+                    DamageType = "non-melee",
+                    LevelGuess = null
+                };
+                //r.LevelGuess = GuessLevelFromHit(r.DamageDone, r.AttackerName);
+                return r;
+            }
+            return null;
         }
 
         public enum PetLevel

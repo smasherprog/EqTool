@@ -1,5 +1,6 @@
 ﻿using EQTool.Models;
 using EQTool.Services;
+using EQToolShared;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -174,6 +175,8 @@ namespace EQTool.ViewModels
                 var item = EntityList.FirstOrDefault(a => a.SourceName == entity.AttackerName && a.TargetName == entity.TargetName && !a.DeathTime.HasValue);
                 if (item == null)
                 {
+                    var istargetnpc = MasterNPCList.NPCs.Contains(entity.TargetName);
+                    var issourcenpc = MasterNPCList.NPCs.Contains(entity.AttackerName);
                     item = new EntittyDPS
                     {
                         SourceName = entity.AttackerName,
@@ -182,18 +185,26 @@ namespace EQTool.ViewModels
                         TotalDamage = entity.DamageDone,
                         TotalTwelveSecondDamage = entity.DamageDone,
                         TrailingDamage = entity.DamageDone,
-                        HighestHit = entity.DamageDone
+                        HighestHit = entity.DamageDone,
+                        Level = entity.LevelGuess,
+                        isSourceNpc = issourcenpc,
+                        isTargetNpc = istargetnpc,
                     };
                     EntityList.Add(item);
                 }
                 else
                 {
+                    item.Level = entity.LevelGuess;
                     //Debug.WriteLine($"{entity.TargetName} {entity.DamageDone}");
                     item.AddDamage(new EntittyDPS.DamagePerTime
                     {
                         TimeStamp = entity.TimeStamp,
                         Damage = entity.DamageDone
                     });
+                }
+                foreach (var it in EntityList.Where(a => a.TargetName == entity.AttackerName))
+                {
+                    it.Level = entity.LevelGuess;
                 }
             });
         }

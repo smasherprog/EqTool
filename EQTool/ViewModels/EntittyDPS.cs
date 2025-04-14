@@ -23,13 +23,51 @@ namespace EQTool.ViewModels
             }
         }
 
-        public string SourceName_and_Info => $"{_SourceName}    {TotalSeconds} sec";
+        private int? _Level;
+
+        public int? Level
+        {
+            get => _Level;
+            set
+            {
+                if (value > _Level || (value.HasValue && !_Level.HasValue))
+                {
+                    _Level = value;
+                    OnPropertyChanged(nameof(TargetName_and_Info));
+                    OnPropertyChanged(nameof(SourceName_and_Info));
+                }
+            }
+        }
+
+
+        public string SourceName_and_Info
+        {
+            get
+            {
+                var ret = $"{_SourceName}";
+                if (Level.HasValue && isSourceNpc)
+                {
+                    ret += $"  ({Level})";
+                }
+
+                ret += $"    {TotalSeconds} sec";
+                return ret;
+            }
+        }
+
+        public bool isTargetNpc { get; set; }
+
+        public bool isSourceNpc { get; set; }
 
         public string TargetName_and_Info
         {
             get
             {
                 var ret = _TargetName;
+                if (Level.HasValue && isTargetNpc)
+                {
+                    ret += $"  ({Level})";
+                }
                 if (DeathTime.HasValue)
                 {
                     ret += "  (Dead)";

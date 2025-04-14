@@ -88,6 +88,8 @@ namespace EQTool.Models
         public string AttackerName { get; set; }
         public int DamageDone { get; set; }
         public string DamageType { get; set; }
+
+        public int? LevelGuess { get; set; }
     }
 
     public class ConEvent : BaseLogParseEvent
@@ -217,7 +219,7 @@ namespace EQTool.Models
         public Spell Spell { get; set; }
         public bool isYou { get; set; }
     }
-     
+
     public class AfterPlayerChangedEvent : BaseLogParseEvent
     {
     }
