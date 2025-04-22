@@ -333,6 +333,7 @@
     <Compile Include="Services\BoatScheduleService.cs" />
     <Compile Include="Services\Handlers\BoatHandler.cs" />
     <Compile Include="Services\Handlers\ConHandler.cs" />
+    <Compile Include="Services\Handlers\DisciplineCooldownHandler.cs" />
     <Compile Include="Services\Handlers\EnterWorldHandler.cs" />
     <Compile Include="Services\IO\FileReader.cs" />
     <Compile Include="Services\DebugOutput.cs" />
@@ -362,6 +363,7 @@
     <Compile Include="Services\Handlers\SpawnTimerHandler.cs" />
     <Compile Include="Services\Handlers\YourItemBeginsToGlowHandler.cs" />
     <Compile Include="Services\Parsing\BeginsToCastTheGateSpellParser.cs" />
+    <Compile Include="Services\Parsing\DisciplineCooldownParser.cs" />
     <Compile Include="Services\Parsing\ExpGainedParser.cs" />
     <Compile Include="Services\Handlers\SlainHandler.cs" />
     <Compile Include="Services\Parsing\GroupLeaderParser.cs" />

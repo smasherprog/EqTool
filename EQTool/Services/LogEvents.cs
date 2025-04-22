@@ -52,10 +52,17 @@ namespace EQTool.Services
         {
             ConfirmedDeathEvent?.Invoke(this, e);
         }
+
         public event EventHandler<CommsEvent> CommsEvent;
         public void Handle(CommsEvent e)
         {
             CommsEvent?.Invoke(this, e);
+        }
+
+        public event EventHandler<DisciplineCooldownEvent> DisciplineCooldownEvent;
+        public void Handle(DisciplineCooldownEvent e)
+        {
+            DisciplineCooldownEvent?.Invoke(this, e);
         }
 
         public event EventHandler<PetEvent> PetEvent;

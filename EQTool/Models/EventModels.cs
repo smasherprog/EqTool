@@ -154,6 +154,15 @@ namespace EQTool.Models
     }
 
     //
+    // event class for discipline cooldown event
+    //
+    public class DisciplineCooldownEvent : BaseLogParseEvent
+    {
+        public int TotalTimerSeconds { get; set; }
+        public string DisciplineName { get; set; }
+    }
+
+    //
     // event class for pet-related occurrences
     //
     public class PetEvent : BaseLogParseEvent
