@@ -6,7 +6,11 @@
              xmlns:local="clr-namespace:EQTool.UI.SettingsComponents"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
-    <Grid Background="White">
-        <TextBlock Text="{Binding TreeTrigger.Name}"/>
-    </Grid>
+
+    <StackPanel Orientation="Vertical" Background="White">
+        <TextBlock  FontSize="20" Text="{Binding TreeTrigger.Trigger.TriggerName}"/>
+
+        <CheckBox Content="Enabled" IsChecked="{Binding TreeTrigger.Trigger.TriggerEnabled}"/>
+        <TextBlock Text="{Binding TreeTrigger.Trigger.TriggerRegExString}"/>
+    </StackPanel>
 </UserControl>

@@ -1,5 +1,4 @@
-﻿using EQToolShared.Enums;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
@@ -8,13 +7,6 @@ using System.Text.RegularExpressions;
 
 namespace EQTool.Models
 {
-    [Serializable]
-    public class ServerTrigger
-    {
-        public Servers Servers { get; set; }
-        public Trigger Trigger { get; set; }
-    }
-
     [Serializable]
     public class Trigger : INotifyPropertyChanged
     {

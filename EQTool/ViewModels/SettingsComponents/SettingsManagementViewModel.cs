@@ -35,24 +35,23 @@ namespace EQTool.ViewModels.SettingsComponents
                 Children = new ObservableCollection<TreeTrigger>()
             };
             _TreeItems.Add(triggers);
-
-            foreach (var trigger in UserDefinedTriggerHandler.TriggerList)
+            if (!settings.Triggers.Any())
             {
-                settings.Triggers.Add(new Models.Trigger
+                foreach (var trigger in UserDefinedTriggerHandler.TriggerList)
                 {
-                    TriggerEnabled = trigger.TriggerEnabled,
-                    TriggerName = trigger.TriggerName,
-                    TriggerRegExString = trigger.SearchText
-                });
+                    settings.Triggers.Add(new Models.Trigger
+                    {
+                        TriggerEnabled = trigger.TriggerEnabled,
+                        TriggerName = trigger.TriggerName,
+                        TriggerRegExString = trigger.SearchText
+                    });
+                }
             }
             eQToolSettingsLoad.Save(settings);
 
             foreach (var trigger in settings.Triggers)
             {
-                triggers.Children.Add(new TreeTrigger(trigger)
-                {
-                    Name = trigger.TriggerName
-                });
+                triggers.Children.Add(new TreeTrigger(trigger));
             }
 
             foreach (var item in Enum.GetValues(typeof(Servers)).Cast<Servers>().Where(a => a != Servers.MaxServers && a != Servers.Quarm).ToList())
