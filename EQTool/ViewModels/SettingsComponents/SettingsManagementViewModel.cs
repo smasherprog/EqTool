@@ -29,19 +29,29 @@ namespace EQTool.ViewModels.SettingsComponents
                 IsSelected = true
             });
 
-            // add a top level Triggers item
-            var triggerTree = new TreeTrigger
+            var triggers = new TreeGlobal
             {
                 Name = "Triggers",
+                Children = new ObservableCollection<TreeTrigger>()
             };
-            _TreeItems.Add(triggerTree);
+            _TreeItems.Add(triggers);
 
-            //add the user defined triggers
             foreach (var trigger in UserDefinedTriggerHandler.TriggerList)
             {
-                triggerTree.Children.Add(new TreeTrigger
+                settings.Triggers.Add(new Models.Trigger
                 {
-                    Name = trigger.TriggerName,
+                    TriggerEnabled = trigger.TriggerEnabled,
+                    TriggerName = trigger.TriggerName,
+                    TriggerRegExString = trigger.SearchText
+                });
+            }
+            eQToolSettingsLoad.Save(settings);
+
+            foreach (var trigger in settings.Triggers)
+            {
+                triggers.Children.Add(new TreeTrigger(trigger)
+                {
+                    Name = trigger.TriggerName
                 });
             }
 
@@ -54,11 +64,6 @@ namespace EQTool.ViewModels.SettingsComponents
                     Name = item.ToString()
                 };
                 _TreeItems.Add(treeServer);
-                treeServer.Children.Add(new TreeGlobal
-                {
-                    Name = "Global",
-                    Children = new ObservableCollection<TreeTrigger>()
-                });
                 treeServer.Children.Add(new TreeZone
                 {
                     Name = "Zone(s)",

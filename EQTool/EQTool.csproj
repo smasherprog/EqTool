@@ -419,6 +419,9 @@
     <Compile Include="UI\SettingManagement.xaml.cs">
       <DependentUpon>SettingManagement.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UI\SettingsComponents\SettingsTrigger.xaml.cs">
+      <DependentUpon>SettingsTrigger.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UI\SettingsComponents\SettingsGeneral.xaml.cs">
       <DependentUpon>SettingsGeneral.xaml</DependentUpon>
     </Compile>
@@ -512,6 +515,7 @@
     <Compile Include="ViewModels\MobInfoComponents\MobInfoManagementViewModel.cs" />
     <Compile Include="ViewModels\MobInfoComponents\PetViewModel.cs" />
     <Compile Include="ViewModels\SettingsComponents\SettingsGeneralViewModel.cs" />
+    <Compile Include="ViewModels\SettingsComponents\SettingsTriggerViewModel.cs" />
     <Compile Include="ViewModels\SettingsComponents\SettingsPlayerViewModel.cs" />
     <Compile Include="ViewModels\SettingsComponents\SettingsServerViewModel.cs" />
     <Compile Include="ViewModels\SettingsComponents\TreeGeneral.cs" />
@@ -522,6 +526,7 @@
     <Compile Include="ViewModels\SettingsComponents\TreePlayer.cs" />
     <Compile Include="ViewModels\SettingsComponents\TreeViewItemBase.cs" />
     <Compile Include="ViewModels\SettingsComponents\SettingsManagementViewModel.cs" />
+    <Compile Include="Models\Trigger.cs" />
     <Compile Include="ViewModels\SpawnTimerDialogViewModel.cs" />
     <Compile Include="ViewModels\SpellWindow\BoatViewModel.cs" />
     <Compile Include="ViewModels\SpellWindow\RollViewModel.cs" />
@@ -570,6 +575,10 @@
     <Page Include="UI\SettingManagement.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UI\SettingsComponents\SettingsTrigger.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="UI\SettingsComponents\SettingsGeneral.xaml">
       <SubType>Designer</SubType>
