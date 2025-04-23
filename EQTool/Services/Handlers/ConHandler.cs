@@ -1,7 +1,10 @@
 ﻿using EQTool.Models;
 using EQTool.ViewModels.MobInfoComponents;
+using EQToolShared.APIModels.ItemControllerModels;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Windows;
 
 namespace EQTool.Services.Handlers
@@ -33,37 +36,48 @@ namespace EQTool.Services.Handlers
             else
             {
                 mobInfoManagementViewModel.MobInfoItemType = ViewModels.SettingsComponents.MobInfoItemType.Mob;
-                try
+                var items = mobInfoViewModel.KnownLoot.Where(a => a.HasUrl == Visibility.Visible).Select(a => a.Name?.Trim()).Where(a => !string.IsNullOrWhiteSpace(a)).ToList();
+                Task.Factory.StartNew(() =>
                 {
-                    if (e.Name != mobInfoViewModel.Name)
+                    try
                     {
-                        mobInfoViewModel.Results = wikiApi.GetData(e.Name);
-                        var items = mobInfoViewModel.KnownLoot.Where(a => a.HasUrl == Visibility.Visible).Select(a => a.Name?.Trim()).Where(a => !string.IsNullOrWhiteSpace(a)).ToList();
-                        if (activePlayer?.Player?.Server != null && items.Any())
+                        if (e.Name != mobInfoViewModel.Name)
                         {
-                            var itemprices = pigParseApi.GetData(items, activePlayer.Player.Server.Value);
-                            foreach (var item in itemprices)
+                            var result = wikiApi.GetData(e.Name);
+                            var itemprices = new List<Item>();
+                            if (activePlayer?.Player?.Server != null && items.Any())
                             {
-                                var loot = mobInfoViewModel.KnownLoot.FirstOrDefault(a => a.Name.Equals(item.ItemName, StringComparison.OrdinalIgnoreCase));
-                                if (loot != null)
-                                {
-                                    loot.Price = item.TotalWTSLast6MonthsAverage.ToString();
-                                    loot.PriceUrl = $"https://pigparse.azurewebsites.net/ItemDetails/{item.EQitemId}";
-                                }
+                                itemprices = pigParseApi.GetData(items, activePlayer.Player.Server.Value);
                             }
+                            this.appDispatcher.DispatchUI(() =>
+                            {
+                                mobInfoViewModel.Results = result;
+                                if (activePlayer?.Player?.Server != null && items.Any())
+                                {
+                                    foreach (var item in itemprices)
+                                    {
+                                        var loot = mobInfoViewModel.KnownLoot.FirstOrDefault(a => a.Name.Equals(item.ItemName, StringComparison.OrdinalIgnoreCase));
+                                        if (loot != null)
+                                        {
+                                            loot.Price = item.TotalWTSLast6MonthsAverage.ToString();
+                                            loot.PriceUrl = $"https://pigparse.azurewebsites.net/ItemDetails/{item.EQitemId}";
+                                        }
+                                    }
+                                }
+                            });
+                        }
+
+                    }
+                    catch (Exception ex)
+                    {
+                        mobInfoViewModel.ErrorResults = ex.Message;
+                        if (!mobInfoViewModel.ErrorResults.Contains("The underlying connection was closed:"))
+                        {
+                            mobInfoViewModel.ErrorResults = "The server is down. Try again";
+                            App.LogUnhandledException(ex, $"LogParser_ConEvent {e.Name}", activePlayer?.Player?.Server);
                         }
                     }
-
-                }
-                catch (Exception ex)
-                {
-                    mobInfoViewModel.ErrorResults = ex.Message;
-                    if (!mobInfoViewModel.ErrorResults.Contains("The underlying connection was closed:"))
-                    {
-                        mobInfoViewModel.ErrorResults = "The server is down. Try again";
-                        App.LogUnhandledException(ex, $"LogParser_ConEvent {e.Name}", activePlayer?.Player?.Server);
-                    }
-                }
+                });
             }
         }
     }
