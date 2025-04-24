@@ -15,7 +15,7 @@ namespace EQtoolsTests
         {
             var trigger = new Trigger
             {
-                TriggerRegExString = "^{count} {containers} of {beverage} on the wall",
+                SearchText = "^{count} {containers} of {beverage} on the wall",
                 DisplayTextEnabled = true,
                 DisplayText = "{count} {containers} of {beverage}",
                 AudioEnabled = true,

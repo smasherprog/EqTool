@@ -16,7 +16,7 @@ namespace EQTool.Services
         // each trigger will have its own Regex instance, to prevent them from having to be rebuilt every time
         // the regex will be configured on the call to SearchText.set()
         private Regex triggerRegex;
-        public Regex TriggerRegex { get { return triggerRegex; }}
+        public Regex TriggerRegex { get { return triggerRegex; } }
 
         // set up a regex to search for gina-style regex entries, for use in SearchText and DisplayText and AudioText
         // finds simplified regex patterns of {some_name}

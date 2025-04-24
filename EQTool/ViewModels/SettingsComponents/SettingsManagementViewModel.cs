@@ -1,6 +1,5 @@
 ﻿using EQTool.Models;
 using EQTool.Services;
-using EQTool.Services.Handlers;
 
 using EQToolShared.Enums;
 using System;
@@ -35,23 +34,6 @@ namespace EQTool.ViewModels.SettingsComponents
                 Children = new ObservableCollection<TreeTrigger>()
             };
             _TreeItems.Add(triggers);
-            if (!settings.Triggers.Any())
-            {
-                foreach (var trigger in UserDefinedTriggerHandler.TriggerList)
-                {
-                    settings.Triggers.Add(new Models.Trigger
-                    {
-                        TriggerEnabled = trigger.TriggerEnabled,
-                        TriggerName = trigger.TriggerName,
-                        TriggerRegExString = trigger.SearchText,
-                        AudioEnabled = trigger.AudioEnabled,
-                        AudioText = trigger.AudioText,
-                        DisplayText = trigger.DisplayText,
-                        DisplayTextEnabled = trigger.TextEnabled
-                    });
-                }
-            }
-            eQToolSettingsLoad.Save(settings);
 
             foreach (var trigger in settings.Triggers)
             {

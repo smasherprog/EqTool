@@ -41,19 +41,38 @@ namespace EQTool.Models
             }
         }
 
-        private string _TriggerRegExString = string.Empty;
-        public string TriggerRegExString
+        private string _SearchText = string.Empty;
+        public string SearchText
         {
-            get { return this._TriggerRegExString; }
+            get { return this._SearchText; }
             set
             {
-                if (this._TriggerRegExString != value)
+                if (this._SearchText != value)
                 {
-                    this._TriggerRegExString = value;
-                    this._TriggerRegex = null;
+                    if (this._TriggerRegex != null)
+                    {
+                        this._TriggerRegex = BuildRegex(value);
+                        this._SearchText = value;
+                    }
+                    else
+                    {
+                        this._SearchText = value;
+                    }
                     this.OnPropertyChanged();
                 }
             }
+        }
+
+        private static Regex BuildRegex(string pattern)
+        {
+            var match = ginaRegex.Match(pattern);
+            while (match.Success)
+            {
+                string group_name = match.Groups["xxx"].Value;
+                pattern = ginaRegex.Replace(pattern, $"(?<{group_name}>[\\w` ]+)", 1);
+                match = match.NextMatch();
+            }
+            return new Regex(pattern, RegexOptions.IgnoreCase | RegexOptions.Compiled);
         }
 
         private Regex _TriggerRegex;
@@ -63,25 +82,18 @@ namespace EQTool.Models
             get
             {
                 //delay regex creation until its asked for
-                if (this._TriggerRegex == null && !string.IsNullOrWhiteSpace(this._TriggerRegExString))
+                if (this._TriggerRegex == null && !string.IsNullOrWhiteSpace(this._SearchText))
                 {
                     try
                     {
-                        var regexConverted = this._TriggerRegExString;
-                        var match = ginaRegex.Match(regexConverted);
-                        while (match.Success)
-                        {
-                            string group_name = match.Groups["xxx"].Value;
-                            regexConverted = ginaRegex.Replace(regexConverted, $"(?<{group_name}>[\\w` ]+)", 1);
-                            match = match.NextMatch();
-                        }
-                        this._TriggerRegex = new Regex(regexConverted, RegexOptions.IgnoreCase | RegexOptions.Compiled);
+                        this._TriggerRegex = BuildRegex(this._SearchText);
                     }
                     catch
                     {
                         this._TriggerRegex = null;
                     }
                 }
+
                 return this._TriggerRegex;
             }
         }

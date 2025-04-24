@@ -10,7 +10,13 @@
     <StackPanel Orientation="Vertical" Background="White">
         <TextBlock  FontSize="20" Text="{Binding TreeTrigger.Trigger.TriggerName}"/>
 
-        <CheckBox Content="Enabled" IsChecked="{Binding TreeTrigger.Trigger.TriggerEnabled}"/>
-        <TextBlock Text="{Binding TreeTrigger.Trigger.TriggerRegExString}"/>
+        <CheckBox Content="Trigger Enabled" IsChecked="{Binding TreeTrigger.Trigger.TriggerEnabled}"/>
+        <TextBox Text="{Binding TreeTrigger.Trigger.SearchText}"/>
+
+        <CheckBox Content="Display Text Enabled" IsChecked="{Binding TreeTrigger.Trigger.DisplayTextEnabled}"/>
+        <TextBox Text="{Binding TreeTrigger.Trigger.DisplayText}"/>
+
+        <CheckBox Content="Play Audio Enabled" IsChecked="{Binding TreeTrigger.Trigger.AudioEnabled}"/>
+        <TextBox Text="{Binding TreeTrigger.Trigger.AudioText}"/>
     </StackPanel>
 </UserControl>
