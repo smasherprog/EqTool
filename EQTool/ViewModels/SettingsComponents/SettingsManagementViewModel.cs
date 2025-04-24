@@ -43,7 +43,11 @@ namespace EQTool.ViewModels.SettingsComponents
                     {
                         TriggerEnabled = trigger.TriggerEnabled,
                         TriggerName = trigger.TriggerName,
-                        TriggerRegExString = trigger.SearchText
+                        TriggerRegExString = trigger.SearchText,
+                        AudioEnabled = trigger.AudioEnabled,
+                        AudioText = trigger.AudioText,
+                        DisplayText = trigger.DisplayText,
+                        DisplayTextEnabled = trigger.TextEnabled
                     });
                 }
             }

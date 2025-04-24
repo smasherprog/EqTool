@@ -50,71 +50,122 @@ namespace EQTool.Models
                 if (this._TriggerRegExString != value)
                 {
                     this._TriggerRegExString = value;
-                    this.OnPropertyChanged(nameof(TriggerRegex));
+                    this._TriggerRegex = null;
                     this.OnPropertyChanged();
                 }
             }
         }
-        private List<(string Name, string Value)> SimpleMapping = new List<(string Name, string Value)>();
-        private string _TriggerRegExStringConverted = string.Empty;
 
         private Regex _TriggerRegex;
-        private Regex TriggerRegex
+        [Newtonsoft.Json.JsonIgnore]
+        public Regex TriggerRegex
         {
             get
             {
-                //delay regex creation!
+                //delay regex creation until its asked for
                 if (this._TriggerRegex == null && !string.IsNullOrWhiteSpace(this._TriggerRegExString))
                 {
                     try
                     {
-                        this._TriggerRegExStringConverted = this._TriggerRegExString;
-                        var match = ginaRegex.Match(_TriggerRegExStringConverted);
+                        var regexConverted = this._TriggerRegExString;
+                        var match = ginaRegex.Match(regexConverted);
                         while (match.Success)
                         {
                             string group_name = match.Groups["xxx"].Value;
-                            _TriggerRegExStringConverted = ginaRegex.Replace(_TriggerRegExStringConverted, $"(?<{group_name}>[\\w` ]+)", 1);
-                            SimpleMapping.Add((group_name, string.Empty));
+                            regexConverted = ginaRegex.Replace(regexConverted, $"(?<{group_name}>[\\w` ]+)", 1);
                             match = match.NextMatch();
                         }
-                        this._TriggerRegex = new Regex(_TriggerRegExString, RegexOptions.IgnoreCase | RegexOptions.Compiled);
+                        this._TriggerRegex = new Regex(regexConverted, RegexOptions.IgnoreCase | RegexOptions.Compiled);
                     }
                     catch
                     {
                         this._TriggerRegex = null;
-                        this._TriggerRegExStringConverted = string.Empty;
                     }
                 }
                 return this._TriggerRegex;
             }
         }
 
-        public static bool Match(Trigger userTrigger, string line)
-        {
-            if (userTrigger._TriggerRegex == null)
-            {
-                return false;
-            }
+        public bool DisplayTextEnabled { get; set; }
+        public string DisplayText { get; set; }
 
-            var match = userTrigger._TriggerRegex.Match(line);
-            if (match.Success)
-            {
-                foreach (Group g in match.Groups)
-                {
-                    if (!userTrigger.SimpleMapping.Any(a => string.Equals(a.Name, g.Name, StringComparison.OrdinalIgnoreCase)))
-                    {
-                        userTrigger.SimpleMapping.Add((g.Name, g.Value));
-                    }
-                }
-            }
-            return match.Success;
-        }
+        public bool AudioEnabled { get; set; }
+        public string AudioText { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected void OnPropertyChanged([CallerMemberName] string name = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
+        }
+    }
+
+    public static class TriggerExtentions
+    {
+        private const string ginaRegexPattern = @"\{(?<xxx>\w+)\}";
+        private static Regex ginaRegex = new Regex(ginaRegexPattern, RegexOptions.Compiled);
+        public static bool Match(this Trigger trigger, string line)
+        {
+            if (trigger.TriggerRegex == null || !trigger.TriggerEnabled)
+            {
+                return false;
+            }
+
+            var namevaluePairs = new List<(string Name, string Value)>();
+            var match = trigger.TriggerRegex.Match(line);
+            if (match.Success)
+            {
+                foreach (Group g in match.Groups)
+                {
+                    if (!namevaluePairs.Any(a => string.Equals(a.Name, g.Name, StringComparison.OrdinalIgnoreCase)))
+                    {
+                        namevaluePairs.Add((g.Name, g.Value));
+                    }
+                }
+            }
+
+            if (trigger.DisplayTextEnabled)
+            {
+                trigger.DisplayText = ProcessOutputText(trigger.DisplayText, namevaluePairs);
+            }
+
+            if (trigger.AudioEnabled)
+            {
+                trigger.AudioText = ProcessOutputText(trigger.AudioText, namevaluePairs);
+            }
+
+            return match.Success;
+        }
+
+        // utility function to merge in the parsed values into the output simplified regex fields
+        // example:  Change the output text for a "Sense Heading" trigger from:
+        //      "Direction: {direction}"
+        // to
+        //      "Direction: East"
+        private static string ProcessOutputText(string inputText, List<(string Name, string Value)> namevaluePairs)
+        {
+            string rv = inputText;
+
+            // walk the list of matches, replacing the user match with the real match
+            Match match = ginaRegex.Match(rv);
+            while (match.Success)
+            {
+                // Handle match here...
+                string group_name = match.Groups["xxx"].Value;
+
+                // this key should be present, but confirm in case user made a typo
+                var nameValue = namevaluePairs.FirstOrDefault(a => string.Equals(a.Name, group_name, StringComparison.OrdinalIgnoreCase));
+                if (nameValue != default)
+                {
+                    // use regex to replace the gina named group with value from the hashtable
+                    // do them one group at a time
+                    string replace_text = $"{nameValue.Value}";
+                    rv = ginaRegex.Replace(rv, replace_text, 1);
+                }
+
+                match = match.NextMatch();
+            }
+            return rv;
         }
     }
 }
