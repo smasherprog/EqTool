@@ -22,45 +22,30 @@ namespace EQTool.ViewModels.SettingsComponents
             this.userComponentFactory = userComponentFactory;
             this.settings = settings;
             this.eQToolSettingsLoad = eQToolSettingsLoad;
-            _TreeItems.Add(new TreeGeneral
+            _TreeItems.Add(new TreeGeneral("General", null)
             {
-                Name = "General",
                 IsSelected = true
             });
 
-            var triggers = new TreeGlobal
-            {
-                Name = "Triggers",
-                Children = new ObservableCollection<TreeTrigger>()
-            };
+            var triggers = new TreeGlobal("Triggers", null);
             _TreeItems.Add(triggers);
 
             foreach (var trigger in settings.Triggers)
             {
-                triggers.Children.Add(new TreeTrigger(new TriggerViewModel(trigger, settings, eQToolSettingsLoad)));
+                triggers.Children.Add(new TreeTrigger(new TriggerViewModel(trigger, settings, eQToolSettingsLoad), triggers));
             }
 
             foreach (var item in Enum.GetValues(typeof(Servers)).Cast<Servers>().Where(a => a != Servers.MaxServers && a != Servers.Quarm).ToList())
             {
                 var players = settings.Players.Where(a => a.Server == item).ToList();
-                var treeServer = new TreeServer
-                {
-                    Children = new ObservableCollection<TreeViewItemBase>(),
-                    Name = item.ToString()
-                };
+                var treeServer = new TreeServer(item.ToString(), null);
                 _TreeItems.Add(treeServer);
-                treeServer.Children.Add(new TreeZone
-                {
-                    Name = "Zone(s)",
-                    Children = new ObservableCollection<TreeTrigger>()
-                });
+                treeServer.Children.Add(new TreeZone("Zone(s)", null));
                 foreach (var p in players.OrderBy(a => a.Name))
                 {
-                    treeServer.Children.Add(new TreePlayer
+                    treeServer.Children.Add(new TreePlayer(treeServer)
                     {
-                        Player = p,
-                        Parent = treeServer,
-                        Children = new ObservableCollection<TreeTrigger>()
+                        Player = p
                     });
                 }
             }
@@ -74,6 +59,36 @@ namespace EQTool.ViewModels.SettingsComponents
             {
                 //no menu yet
                 return null;
+            }
+            else if (item is TreeGlobal)
+            {
+                var mnuItem3 = new MenuItem
+                {
+                    Header = "Add Trigger"
+                };
+                mnuItem3.Click += AddTrigger;
+                var menu = new ContextMenu() { };
+                _ = menu.Items.Add(mnuItem3);
+                foreach (MenuItem i in menu.Items)
+                {
+                    i.Tag = item;
+                }
+                return menu;
+            }
+            else if (item is TreeTrigger)
+            {
+                var mnuItem3 = new MenuItem
+                {
+                    Header = "Delete Trigger"
+                };
+                mnuItem3.Click += DeleteTrigger;
+                var menu = new ContextMenu() { };
+                _ = menu.Items.Add(mnuItem3);
+                foreach (MenuItem i in menu.Items)
+                {
+                    i.Tag = item;
+                }
+                return menu;
             }
             else if (item is TreePlayer)
             {
@@ -92,6 +107,32 @@ namespace EQTool.ViewModels.SettingsComponents
             }
 
             return null;
+        }
+
+        private void AddTrigger(object sender, RoutedEventArgs e)
+        {
+            var s = sender as MenuItem;
+            if (s.Tag is TreeGlobal t)
+            {
+                var newtrigger = new TreeTrigger(new TriggerViewModel(settings, eQToolSettingsLoad), t);
+                newtrigger.IsSelected = true;
+                t.Children.Insert(0, newtrigger);
+            }
+        }
+
+        private void DeleteTrigger(object sender, RoutedEventArgs e)
+        {
+            var s = sender as MenuItem;
+            if (s.Tag is TreeTrigger t)
+            {
+                var result = System.Windows.MessageBox.Show($"Are you sure that you want to delete the trigger '{t.Name}'?", $"Delete Trigger '{t.Name}'", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                if (result == MessageBoxResult.Yes)
+                {
+                    _ = settings.Triggers.RemoveAll(a => a.TriggerId == t.Trigger.TriggerId);
+                    eQToolSettingsLoad.Save(settings);
+                    _ = t.Parent.Children.Remove(t);
+                }
+            }
         }
 
         private void PlayerDelete(object sender, System.Windows.RoutedEventArgs e)

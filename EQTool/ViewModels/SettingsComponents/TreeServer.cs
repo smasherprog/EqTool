@@ -1,20 +1,19 @@
 ﻿using EQToolShared.Enums;
-using System.Collections.ObjectModel;
 
 namespace EQTool.ViewModels.SettingsComponents
 {
     public class TreeServer : TreeViewItemBase
     {
-        public TreeServer()
+        public TreeServer(string name, TreeViewItemBase parent) : base(parent)
         {
-            Children = new ObservableCollection<TreeViewItemBase>();
+            this._Name = name;
         }
 
-        public string Name { get; set; }
+        private string _Name = string.Empty;
+        public override string Name { get { return _Name; } }
 
         public Servers Server { get; set; }
 
-        public ObservableCollection<TreeViewItemBase> Children { get; set; }
         public override TreeViewItemType Type => TreeViewItemType.Server;
     }
 

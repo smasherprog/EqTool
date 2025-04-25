@@ -27,7 +27,10 @@ namespace EQTool.Models
         {
             IsNewTrigger = true;
             this._Newtrigger = new Trigger();
+            this._Newtrigger.TriggerEnabled = false;
             this._Newtrigger.TriggerId = Guid.NewGuid();
+            this._Newtrigger.TriggerName = "New Trigger";
+            this._Newtrigger.SearchText = string.Empty;
             this.toolSettings = toolSettings;
             this.settingsLoad = settingsLoad;
             this.Copy(_Newtrigger, this._OldTrigger);
@@ -215,22 +218,30 @@ namespace EQTool.Models
             set
             {
                 this._OldTrigger.SearchText = value;
-                try
+                if (string.IsNullOrWhiteSpace(value))
                 {
-                    var r = this._OldTrigger.TriggerRegex;
-                    if (r == null)
+                    this.SearchTextErrorMessge = "Regex cannot be empty!";
+                }
+                else
+                {
+                    try
                     {
-                        this.SearchTextErrorMessge = "There was an error creating the regex!";
+                        var r = this._OldTrigger.TriggerRegex;
+                        if (r == null)
+                        {
+                            this.SearchTextErrorMessge = "There was an error creating the regex!";
+                        }
+                        else
+                        {
+                            this.SearchTextErrorMessge = string.Empty;
+                        }
                     }
-                    else
+                    catch (Exception ex)
                     {
-                        this.SearchTextErrorMessge = string.Empty;
+                        this.SearchTextErrorMessge = ex.Message;
                     }
                 }
-                catch (Exception ex)
-                {
-                    this.SearchTextErrorMessge = ex.Message;
-                }
+
                 this.OnPropertyChanged(nameof(IsDirty));
                 this.OnPropertyChanged();
             }

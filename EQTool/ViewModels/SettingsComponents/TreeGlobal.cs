@@ -1,20 +1,21 @@
 ﻿using EQToolShared.Enums;
-using System.Collections.ObjectModel;
 
 namespace EQTool.ViewModels.SettingsComponents
 {
     public class TreeGlobal : TreeViewItemBase
     {
-        public TreeGlobal()
+        public TreeGlobal(string name, TreeViewItemBase parent) : base(parent)
         {
-            Children = new ObservableCollection<TreeTrigger>();
+            this._Name = name;
         }
-
-        public string Name { get; set; }
+        private string _Name = string.Empty;
+        public override string Name
+        {
+            get { return this._Name; }
+        }
 
         public Servers Server { get; set; }
 
-        public ObservableCollection<TreeTrigger> Children { get; set; }
         public override TreeViewItemType Type => TreeViewItemType.Global;
     }
 
