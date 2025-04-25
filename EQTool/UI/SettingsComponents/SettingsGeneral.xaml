@@ -250,11 +250,7 @@
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Above will warn you when its your turn to cast CH" Foreground="Red"/>
                 </StackPanel>
-                <Separator/>
-                <StackPanel Orientation="Vertical">
-                    <TextBlock Text="Additional user-defined triggers can be found / edited in file &quot;UserTriggers.txt&apos;, located:" HorizontalAlignment="Center" FontStyle="Italic" Foreground="Blue"/>
-                    <TextBlock Text="{Binding CurrentWorkingDirectory}" HorizontalAlignment="Center" FontStyle="Italic" Foreground="Blue"/>
-                </StackPanel>
+                <Separator/> 
             </StackPanel>
         </TabItem>
         

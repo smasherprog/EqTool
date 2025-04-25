@@ -178,9 +178,7 @@ namespace EQTool.ViewModels.SettingsComponents
 
         public void TreeSelected(TreeViewItemBase p)
         {
-#if !RELEASE
             UserControl = userComponentFactory.CreateComponent(p.Type, p);
-#endif
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
