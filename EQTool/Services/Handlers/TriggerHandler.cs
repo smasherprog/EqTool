@@ -46,13 +46,25 @@ namespace EQTool.Services.Handlers
         private static Regex ginaRegex = new Regex(ginaRegexPattern, RegexOptions.Compiled);
         public static bool Match(Models.Trigger trigger, string line)
         {
-            if (trigger.TriggerRegex == null || !trigger.TriggerEnabled)
+            if (!trigger.TriggerEnabled)
             {
                 return false;
             }
 
+            Regex regex;
+            try
+            {
+                regex = trigger.TriggerRegex;
+            }
+            catch (Exception ex)
+            {
+                // this is a problem with the regex, so disable the trigger
+                trigger.TriggerEnabled = false;
+                return false;
+            }
+
             var namevaluePairs = new List<(string Name, string Value)>();
-            var match = trigger.TriggerRegex.Match(line);
+            var match = regex.Match(line);
             if (match.Success)
             {
                 foreach (Group g in match.Groups)
