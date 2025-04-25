@@ -24,7 +24,7 @@ namespace EQtoolsTests
         {
             // add in a testing trigger to the list of user defined triggers
             var settings = this.container.Resolve<EQToolSettings>();
-            settings.Triggers.Add(new Trigger { TriggerEnabled = true, TriggerName = "Test Trigger1", SearchText = "^Can you hear me now?", DisplayTextEnabled = true, DisplayText = "I can hear you", AudioEnabled = true, AudioText = "I can hear you" });
+            settings.Triggers.Add(new Trigger { TriggerEnabled = true, TriggerName = "Test Trigger1", SearchText = "^Can you hear me now?", DisplayTextEnabled = true, DisplayText = "I can hear you", AudioTextEnabled = true, AudioText = "I can hear you" });
 
             var called = false;
             textToSpeach.TextToSpeachCallback = (text) =>
@@ -42,7 +42,7 @@ namespace EQtoolsTests
         {
             // add in a testing trigger to the list of user defined triggers
             var settings = this.container.Resolve<EQToolSettings>();
-            settings.Triggers.Add(new Trigger { TriggerEnabled = true, TriggerName = "Test Trigger2", SearchText = "^{count} {containers} of {beverage} on the wall", DisplayTextEnabled = true, DisplayText = "{count} {containers} of {beverage}", AudioEnabled = true, AudioText = "{count} {containers} of {beverage}" });
+            settings.Triggers.Add(new Trigger { TriggerEnabled = true, TriggerName = "Test Trigger2", SearchText = "^{count} {containers} of {beverage} on the wall", DisplayTextEnabled = true, DisplayText = "{count} {containers} of {beverage}", AudioTextEnabled = true, AudioText = "{count} {containers} of {beverage}" });
 
             var called = false;
             textToSpeach.TextToSpeachCallback = (text) =>

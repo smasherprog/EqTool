@@ -5,13 +5,12 @@ namespace EQTool.ViewModels.SettingsComponents
 {
     public class TreeTrigger : TreeViewItemBase
     {
-        public TreeTrigger(Trigger userTrigger)
+        public TreeTrigger(TriggerViewModel userTrigger)
         {
             this.Trigger = userTrigger;
         }
 
-        public Trigger Trigger { get; set; }
-
+        public TriggerViewModel Trigger { get; set; }
         public string Name { get { return Trigger.TriggerName; } }
         public ObservableCollection<TreeViewItemBase> Children { get; set; } = new ObservableCollection<TreeViewItemBase>();
         public override TreeViewItemType Type => TreeViewItemType.Trigger;

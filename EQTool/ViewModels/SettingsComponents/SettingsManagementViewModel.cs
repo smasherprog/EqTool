@@ -37,7 +37,7 @@ namespace EQTool.ViewModels.SettingsComponents
 
             foreach (var trigger in settings.Triggers)
             {
-                triggers.Children.Add(new TreeTrigger(trigger));
+                triggers.Children.Add(new TreeTrigger(new TriggerViewModel(trigger, settings, eQToolSettingsLoad)));
             }
 
             foreach (var item in Enum.GetValues(typeof(Servers)).Cast<Servers>().Where(a => a != Servers.MaxServers && a != Servers.Quarm).ToList())

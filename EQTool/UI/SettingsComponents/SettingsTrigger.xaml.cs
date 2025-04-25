@@ -3,15 +3,19 @@ using System.Windows.Controls;
 
 namespace EQTool.UI.SettingsComponents
 {
-    /// <summary>
-    /// Interaction logic for SettingsPlayer.xaml
-    /// </summary>
     public partial class SettingsTrigger : UserControl
     {
-        public SettingsTrigger(TreeTrigger treePlayer)
+        private readonly TreeTrigger treeTrigger;
+        public SettingsTrigger(TreeTrigger treeTrigger)
         {
-            DataContext = new SettingsTriggerViewModel(treePlayer);
+            this.treeTrigger = treeTrigger;
+            DataContext = treeTrigger.Trigger;
             InitializeComponent();
+        }
+
+        private void Save(object sender, System.Windows.RoutedEventArgs e)
+        {
+            this.treeTrigger.Trigger.Save();
         }
     }
 }

@@ -516,7 +516,6 @@
     <Compile Include="ViewModels\MobInfoComponents\MobInfoManagementViewModel.cs" />
     <Compile Include="ViewModels\MobInfoComponents\PetViewModel.cs" />
     <Compile Include="ViewModels\SettingsComponents\SettingsGeneralViewModel.cs" />
-    <Compile Include="ViewModels\SettingsComponents\SettingsTriggerViewModel.cs" />
     <Compile Include="ViewModels\SettingsComponents\SettingsPlayerViewModel.cs" />
     <Compile Include="ViewModels\SettingsComponents\SettingsServerViewModel.cs" />
     <Compile Include="ViewModels\SettingsComponents\TreeGeneral.cs" />
@@ -528,6 +527,7 @@
     <Compile Include="ViewModels\SettingsComponents\TreeViewItemBase.cs" />
     <Compile Include="ViewModels\SettingsComponents\SettingsManagementViewModel.cs" />
     <Compile Include="Models\Trigger.cs" />
+    <Compile Include="ViewModels\SettingsComponents\TriggerViewModel.cs" />
     <Compile Include="ViewModels\SpawnTimerDialogViewModel.cs" />
     <Compile Include="ViewModels\SpellWindow\BoatViewModel.cs" />
     <Compile Include="ViewModels\SpellWindow\RollViewModel.cs" />

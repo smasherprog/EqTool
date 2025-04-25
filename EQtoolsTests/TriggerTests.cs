@@ -1,4 +1,5 @@
 ﻿using EQTool.Models;
+using EQTool.Services.Handlers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace EQtoolsTests
@@ -18,11 +19,11 @@ namespace EQtoolsTests
                 SearchText = "^{count} {containers} of {beverage} on the wall",
                 DisplayTextEnabled = true,
                 DisplayText = "{count} {containers} of {beverage}",
-                AudioEnabled = true,
+                AudioTextEnabled = true,
                 AudioText = "{count} {containers} of {beverage}",
                 TriggerEnabled = true
             };
-            var match = trigger.Match("99 flagons of wine on the wall");
+            var match = TriggerHandler.Match(trigger, "99 flagons of wine on the wall");
             Assert.IsTrue(match);
 
             Assert.AreEqual(trigger.DisplayText, "99 flagons of wine");

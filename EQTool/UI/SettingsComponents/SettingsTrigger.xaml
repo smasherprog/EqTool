@@ -8,15 +8,52 @@
              d:DesignHeight="450" d:DesignWidth="800">
 
     <StackPanel Orientation="Vertical" Background="White">
-        <TextBlock  FontSize="20" Text="{Binding TreeTrigger.Trigger.TriggerName}"/>
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="3*"/>
+                <ColumnDefinition Width="9*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
 
-        <CheckBox Content="Trigger Enabled" IsChecked="{Binding TreeTrigger.Trigger.TriggerEnabled}"/>
-        <TextBox Text="{Binding TreeTrigger.Trigger.SearchText}"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
 
-        <CheckBox Content="Display Text Enabled" IsChecked="{Binding TreeTrigger.Trigger.DisplayTextEnabled}"/>
-        <TextBox Text="{Binding TreeTrigger.Trigger.DisplayText}"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
 
-        <CheckBox Content="Play Audio Enabled" IsChecked="{Binding TreeTrigger.Trigger.AudioEnabled}"/>
-        <TextBox Text="{Binding TreeTrigger.Trigger.AudioText}"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <TextBlock Grid.Column="0">Trigger Name:</TextBlock>
+            <CheckBox Grid.Row="1" Grid.Column="0" Content="Trigger Enabled" IsChecked="{Binding TriggerEnabled}"/>
+            <TextBox Grid.Column="1" Text="{Binding TriggerName}" BorderBrush="{Binding TriggerNameBorderBrush}" />
+            <TextBlock Grid.Row="1" Grid.Column="1" Visibility="{Binding TriggerNameErrorMessgeVisible}" Foreground="Red" Text="{Binding TriggerNameErrorMessge}"></TextBlock>
+
+
+            <TextBlock Grid.Row="2"  Grid.Column="0">Search Text:</TextBlock>
+            <TextBox Grid.Row="2"  Grid.Column="1" Text="{Binding SearchText}" BorderBrush="{Binding SearchTextBorderBrush}" />
+            <TextBlock Grid.Row="3" Grid.Column="1" Visibility="{Binding SearchTextErrorMessgeVisible}" Foreground="Red" Text="{Binding SearchTextErrorMessge}"></TextBlock>
+
+            <TextBlock Grid.Row="4" Grid.Column="0">Display Text:</TextBlock>
+            <CheckBox Grid.Row="5" Grid.Column="0" Content="Display Text Enabled" IsChecked="{Binding DisplayTextEnabled}"/>
+            <TextBox  Grid.Row="4" Grid.Column="1" Text="{Binding DisplayText}" BorderBrush="{Binding DisplayTextBorderBrush}" />
+            <TextBlock Grid.Row="5" Grid.Column="1" Visibility="{Binding DisplayTextErrorMessgeVisible}" Foreground="Red" Text="{Binding DisplayTextErrorMessge}"></TextBlock>
+
+            <TextBlock Grid.Row="6" Grid.Column="0">Audio Text:</TextBlock>
+            <CheckBox Grid.Row="7" Grid.Column="0" Content="Audio Text Enabled" IsChecked="{Binding AudioTextEnabled}"/>
+            <TextBox  Grid.Row="6" Grid.Column="1" Text="{Binding AudioText}" BorderBrush="{Binding AudioTextBorderBrush}" />
+            <TextBlock Grid.Row="7" Grid.Column="1" Visibility="{Binding AudioTextErrorMessgeVisible}" Foreground="Red" Text="{Binding AudioTextErrorMessge}"></TextBlock>
+
+
+        </Grid>
+
+
+        <Button Visibility="{Binding IsDirty}" IsEnabled="{Binding IsSavable}" Click="Save">Save</Button>
     </StackPanel>
 </UserControl>

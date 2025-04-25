@@ -110,10 +110,11 @@ namespace EQTool.Services
                 {
                     ret1.Triggers.Add(new Models.Trigger
                     {
+                        TriggerId = Guid.NewGuid(),
                         TriggerEnabled = trigger.TriggerEnabled,
                         TriggerName = trigger.TriggerName,
                         SearchText = trigger.SearchText,
-                        AudioEnabled = trigger.AudioEnabled,
+                        AudioTextEnabled = trigger.AudioEnabled,
                         AudioText = trigger.AudioText,
                         DisplayText = trigger.DisplayText,
                         DisplayTextEnabled = trigger.TextEnabled
