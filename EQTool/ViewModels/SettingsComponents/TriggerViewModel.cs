@@ -49,14 +49,14 @@ namespace EQTool.Models
 
         private void Copy(Trigger src, Trigger dst)
         {
-            dst.TriggerId = src.TriggerId;
-            dst.TriggerName = src.TriggerName;
-            dst.AudioText = src.AudioText;
-            dst.AudioTextEnabled = src.AudioTextEnabled;
-            dst.DisplayText = src.DisplayText;
-            dst.DisplayTextEnabled = src.DisplayTextEnabled;
-            dst.SearchText = src.SearchText;
-            dst.TriggerEnabled = src.TriggerEnabled;
+            this.TriggerId = src.TriggerId;
+            this.TriggerName = src.TriggerName;
+            this.AudioText = src.AudioText;
+            this.AudioTextEnabled = src.AudioTextEnabled;
+            this.DisplayText = src.DisplayText;
+            this.DisplayTextEnabled = src.DisplayTextEnabled;
+            this.SearchText = src.SearchText;
+            this.TriggerEnabled = src.TriggerEnabled;
         }
 
         public bool IsSavable
@@ -160,6 +160,14 @@ namespace EQTool.Models
             set
             {
                 this._OldTrigger.TriggerName = value;
+                if (string.IsNullOrWhiteSpace(_OldTrigger.TriggerName) || _OldTrigger.TriggerName.Length < 4)
+                {
+                    TriggerNameErrorMessge = "Trigger Name must be at least 4 characters long!";
+                }
+                else
+                {
+                    TriggerNameErrorMessge = string.Empty;
+                }
                 this.OnPropertyChanged(nameof(IsDirty));
                 this.OnPropertyChanged();
             }
@@ -210,6 +218,7 @@ namespace EQTool.Models
                 if (_SearchTextErrorMessge != value)
                 {
                     _SearchTextErrorMessge = value;
+
                     this.OnPropertyChanged();
                     this.OnPropertyChanged(nameof(SearchTextErrorMessgeVisible));
                     this.OnPropertyChanged(nameof(SearchTextBorderBrush));
@@ -224,9 +233,9 @@ namespace EQTool.Models
             set
             {
                 this._OldTrigger.SearchText = value;
-                if (string.IsNullOrWhiteSpace(value))
+                if (string.IsNullOrWhiteSpace(_OldTrigger.SearchText) || _OldTrigger.SearchText.Length < 4)
                 {
-                    this.SearchTextErrorMessge = "Regex cannot be empty!";
+                    SearchTextErrorMessge = "Regex must be at least 4 characters long!";
                 }
                 else
                 {
@@ -306,6 +315,14 @@ namespace EQTool.Models
             set
             {
                 this._OldTrigger.DisplayText = value;
+                if (string.IsNullOrWhiteSpace(_OldTrigger.DisplayText) || _OldTrigger.DisplayText.Length < 4)
+                {
+                    DisplayTextErrorMessge = "DisplayText be at least 4 characters long!";
+                }
+                else
+                {
+                    DisplayTextErrorMessge = string.Empty;
+                }
                 this.OnPropertyChanged(nameof(IsDirty));
                 this.OnPropertyChanged();
             }
@@ -386,6 +403,14 @@ namespace EQTool.Models
             set
             {
                 this._OldTrigger.AudioText = value;
+                if (string.IsNullOrWhiteSpace(_OldTrigger.AudioText) || _OldTrigger.AudioText.Length < 4)
+                {
+                    AudioTextErrorMessge = "AudioText be at least 4 characters long!";
+                }
+                else
+                {
+                    AudioTextErrorMessge = string.Empty;
+                }
                 this.OnPropertyChanged(nameof(IsDirty));
                 this.OnPropertyChanged();
             }
