@@ -42,6 +42,7 @@ namespace EQTool.Models
             if (this.IsNewTrigger)
             {
                 this.toolSettings.Triggers.Add(this._Newtrigger);
+                this.IsNewTrigger = false;
             }
             this.settingsLoad.Save(toolSettings);
             this.OnPropertyChanged(nameof(IsDirty));
