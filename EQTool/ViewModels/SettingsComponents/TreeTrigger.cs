@@ -1,16 +1,16 @@
-﻿using System.Collections.ObjectModel;
+﻿using EQTool.Models;
 
 namespace EQTool.ViewModels.SettingsComponents
 {
     public class TreeTrigger : TreeViewItemBase
     {
-        public TreeTrigger()
+        public TreeTrigger(TriggerViewModel userTrigger, TreeViewItemBase parent) : base(parent)
         {
-            Children = new ObservableCollection<TreeViewItemBase>();
+            this.Trigger = userTrigger;
         }
 
-        public string Name { get; set; }
-        public ObservableCollection<TreeViewItemBase> Children { get; set; }
+        public TriggerViewModel Trigger { get; set; }
+        public override string Name { get { return Trigger.TriggerName; } }
         public override TreeViewItemType Type => TreeViewItemType.Trigger;
     }
 

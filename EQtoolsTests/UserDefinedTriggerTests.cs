@@ -1,6 +1,6 @@
 ﻿using Autofac;
+using EQTool.Models;
 using EQTool.Services;
-using EQTool.Services.Handlers;
 using EQtoolsTests.Fakes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
@@ -23,8 +23,8 @@ namespace EQtoolsTests
         public void ZeroNamedGroups()
         {
             // add in a testing trigger to the list of user defined triggers
-            var theList = UserDefinedTriggerHandler.TriggerList;
-            theList.Add(new UserDefinedTrigger { TriggerID = -1, TriggerEnabled = true, TriggerName = "Test Trigger1", SearchText = "^Can you hear me now?", TextEnabled = true, DisplayText = "I can hear you", AudioEnabled = true, AudioText = "I can hear you" });
+            var settings = this.container.Resolve<EQToolSettings>();
+            settings.Triggers.Add(new Trigger { TriggerEnabled = true, TriggerName = "Test Trigger1", SearchText = "^Can you hear me now?", DisplayTextEnabled = true, DisplayText = "I can hear you", AudioTextEnabled = true, AudioText = "I can hear you" });
 
             var called = false;
             textToSpeach.TextToSpeachCallback = (text) =>
@@ -41,8 +41,8 @@ namespace EQtoolsTests
         public void ThreeNamedGroups()
         {
             // add in a testing trigger to the list of user defined triggers
-            var theList = UserDefinedTriggerHandler.TriggerList;
-            theList.Add(new UserDefinedTrigger { TriggerID = -2, TriggerEnabled = true, TriggerName = "Test Trigger2", SearchText = "^{count} {containers} of {beverage} on the wall", TextEnabled = true, DisplayText = "{count} {containers} of {beverage}", AudioEnabled = true, AudioText = "{count} {containers} of {beverage}" });
+            var settings = this.container.Resolve<EQToolSettings>();
+            settings.Triggers.Add(new Trigger { TriggerEnabled = true, TriggerName = "Test Trigger2", SearchText = "^{count} {containers} of {beverage} on the wall", DisplayTextEnabled = true, DisplayText = "{count} {containers} of {beverage}", AudioTextEnabled = true, AudioText = "{count} {containers} of {beverage}" });
 
             var called = false;
             textToSpeach.TextToSpeachCallback = (text) =>

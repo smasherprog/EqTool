@@ -99,37 +99,40 @@ namespace EQTool
 
         public static void LogUnhandledException(Exception exception, string source, Servers? server)
         {
-            var build = BuildType.Release;
+            Task.Factory.StartNew(() =>
+            {
+                var build = BuildType.Release;
 #if TEST
             build =  BuildType.Test;
 #elif DEBUG
-            build = BuildType.Debug;
+                build = BuildType.Debug;
 #elif BETA
             build = BuildType.Beta;
 #endif
-            try
-            {
-                var msg = new ExceptionRequest
+                try
                 {
-                    Version = Version,
-                    Message = $"Unhandled exception ({source}) {exception}",
-                    EventType = EventType.Error,
-                    BuildType = build,
-                    Server = server
-                };
-                if (msg.Message.Contains("Server timeout (30000.00ms) elapsed without receiving a message from the server.") ||
-                    msg.Message.Contains("The 'InvokeCoreAsync' method cannot be called") ||
-                     msg.Message.Contains("The remote party closed the WebSocket connection") ||
-                     msg.Message.Contains("An internal WebSocket error occurred.")
-                    )
-                {
-                    return;
+                    var msg = new ExceptionRequest
+                    {
+                        Version = Version,
+                        Message = $"Unhandled exception ({source}) {exception}",
+                        EventType = EventType.Error,
+                        BuildType = build,
+                        Server = server
+                    };
+                    if (msg.Message.Contains("Server timeout (30000.00ms) elapsed without receiving a message from the server.") ||
+                        msg.Message.Contains("The 'InvokeCoreAsync' method cannot be called") ||
+                         msg.Message.Contains("The remote party closed the WebSocket connection") ||
+                         msg.Message.Contains("An internal WebSocket error occurred.")
+                        )
+                    {
+                        return;
+                    }
+                    var msagasjson = Newtonsoft.Json.JsonConvert.SerializeObject(msg);
+                    var content = new StringContent(msagasjson, Encoding.UTF8, "application/json");
+                    var result = httpclient.PostAsync("https://pigparse.azurewebsites.net/api/eqtool/exception", content).Result;
                 }
-                var msagasjson = Newtonsoft.Json.JsonConvert.SerializeObject(msg);
-                var content = new StringContent(msagasjson, Encoding.UTF8, "application/json");
-                var result = httpclient.PostAsync("https://pigparse.azurewebsites.net/api/eqtool/exception", content).Result;
-            }
-            catch { }
+                catch { }
+            });
         }
 
         private void SetupExceptionHandling()

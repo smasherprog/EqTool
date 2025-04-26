@@ -43,7 +43,8 @@ namespace EQtoolsTests
                     {
                         Closed = false,
                         State = System.Windows.WindowState.Normal
-                    }
+                    },
+                    Triggers = new System.Collections.Generic.List<Trigger>()
                 };
             }).AsSelf().SingleInstance();
 

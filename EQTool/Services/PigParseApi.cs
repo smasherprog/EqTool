@@ -11,7 +11,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Net.Http;
 using System.Text;
-using System.Windows;
+using System.Threading.Tasks;
 
 namespace EQTool.Services
 {
@@ -45,56 +45,64 @@ namespace EQTool.Services
 
         public void SendPlayerData(List<Player> players, Servers server)
         {
-            if (!players.Any())
+            Task.Factory.StartNew(() =>
             {
-                return;
-            }
-            Debug.WriteLine($"Sending {players.Count} Players");
-            var url = $"https://pigparse.azurewebsites.net/api/player/upsertplayers";
-            var json = JsonConvert.SerializeObject(new
-            {
-                Server = server,
-                Players = players
-            });
-            var data = new StringContent(json, Encoding.UTF8, "application/json");
-            var res = App.httpclient.PostAsync(url, data).Result;
-            if (res.StatusCode == System.Net.HttpStatusCode.OK)
-            {
-                _ = res.Content.ReadAsStringAsync().Result;
-            }
-        }
-
-        public void SendNPCActivity(NPCActivityRequest activity)
-        {
-            if (activity.NPCData.Name == "Scout Charisa" ||
-                activity.NPCData.Name == "a Kromzek Captain" ||
-                Zones.KaelFactionMobs.Contains(activity.NPCData.Name)
-                )
-            {
-                var url = $"https://pigparse.azurewebsites.net/api/zone/npcactivity";
-                var json = JsonConvert.SerializeObject(activity);
+                if (!players.Any())
+                {
+                    return;
+                }
+                Debug.WriteLine($"Sending {players.Count} Players");
+                var url = $"https://pigparse.azurewebsites.net/api/player/upsertplayers";
+                var json = JsonConvert.SerializeObject(new
+                {
+                    Server = server,
+                    Players = players
+                });
                 var data = new StringContent(json, Encoding.UTF8, "application/json");
                 var res = App.httpclient.PostAsync(url, data).Result;
                 if (res.StatusCode == System.Net.HttpStatusCode.OK)
                 {
                     _ = res.Content.ReadAsStringAsync().Result;
                 }
-            }
+            });
+        }
 
+        public void SendNPCActivity(NPCActivityRequest activity)
+        {
+            Task.Factory.StartNew(() =>
+            {
+                if (activity.NPCData.Name == "Scout Charisa" ||
+                    activity.NPCData.Name == "a Kromzek Captain" ||
+                    Zones.KaelFactionMobs.Contains(activity.NPCData.Name)
+                    )
+                {
+                    var url = $"https://pigparse.azurewebsites.net/api/zone/npcactivity";
+                    var json = JsonConvert.SerializeObject(activity);
+                    var data = new StringContent(json, Encoding.UTF8, "application/json");
+                    var res = App.httpclient.PostAsync(url, data).Result;
+                    if (res.StatusCode == System.Net.HttpStatusCode.OK)
+                    {
+                        _ = res.Content.ReadAsStringAsync().Result;
+                    }
+                }
+            });
         }
 
         public void SendQuake(Servers server)
         {
-            try
+            Task.Factory.StartNew(() =>
             {
-                var url = $"https://pigparse.azurewebsites.net/api/zone/quakev2/" + server;
-                var res = App.httpclient.GetAsync(url).Result;
-                if (res.StatusCode == System.Net.HttpStatusCode.OK)
+                try
                 {
-                    _ = res.Content.ReadAsStringAsync().Result;
+                    var url = $"https://pigparse.azurewebsites.net/api/zone/quakev2/" + server;
+                    var res = App.httpclient.GetAsync(url).Result;
+                    if (res.StatusCode == System.Net.HttpStatusCode.OK)
+                    {
+                        _ = res.Content.ReadAsStringAsync().Result;
+                    }
                 }
-            }
-            catch { }
+                catch { }
+            });
         }
 
         public List<Player> GetPlayerData(List<string> players, Servers server)
@@ -135,18 +143,21 @@ namespace EQTool.Services
 
         public void SendBoatData(BoatActivityRequest boatActivityRequest)
         {
-            try
+            Task.Factory.StartNew(() =>
             {
-                var url = $"https://pigparse.azurewebsites.net/api/boat/seen";
-                var json = JsonConvert.SerializeObject(boatActivityRequest);
-                var data = new StringContent(json, Encoding.UTF8, "application/json");
-                var res = App.httpclient.PostAsync(url, data).Result;
-                if (res.StatusCode == System.Net.HttpStatusCode.OK)
+                try
                 {
-                    _ = res.Content.ReadAsStringAsync().Result;
+                    var url = $"https://pigparse.azurewebsites.net/api/boat/seen";
+                    var json = JsonConvert.SerializeObject(boatActivityRequest);
+                    var data = new StringContent(json, Encoding.UTF8, "application/json");
+                    var res = App.httpclient.PostAsync(url, data).Result;
+                    if (res.StatusCode == System.Net.HttpStatusCode.OK)
+                    {
+                        _ = res.Content.ReadAsStringAsync().Result;
+                    }
                 }
-            }
-            catch { }
+                catch { }
+            });
         }
 
         public List<BoatActivityResponce> GetBoatData(Servers server)

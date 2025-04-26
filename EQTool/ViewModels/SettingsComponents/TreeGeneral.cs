@@ -2,11 +2,12 @@
 {
     public class TreeGeneral : TreeViewItemBase
     {
-        public TreeGeneral()
+        public TreeGeneral(string name, TreeViewItemBase parent) : base(parent)
         {
+            this._Name = name;
         }
-
-        public string Name { get; set; }
+        private string _Name = string.Empty;
+        public override string Name { get { return this._Name; } }
 
         public override TreeViewItemType Type => TreeViewItemType.General;
     }

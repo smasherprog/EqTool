@@ -1,4 +1,5 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Runtime.CompilerServices;
 
 namespace EQTool.ViewModels.SettingsComponents
@@ -20,6 +21,10 @@ namespace EQTool.ViewModels.SettingsComponents
 
     public abstract class TreeViewItemBase : INotifyPropertyChanged
     {
+        protected TreeViewItemBase(TreeViewItemBase parent)
+        {
+            this.Parent = parent;
+        }
         public abstract TreeViewItemType Type { get; }
 
         private bool isSelected;
@@ -49,6 +54,11 @@ namespace EQTool.ViewModels.SettingsComponents
                 }
             }
         }
+
+        public TreeViewItemBase Parent { get; set; }
+        public abstract string Name { get; }
+        public ObservableCollection<TreeViewItemBase> Children { get; set; } = new ObservableCollection<TreeViewItemBase>();
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected void OnPropertyChanged([CallerMemberName] string name = null)

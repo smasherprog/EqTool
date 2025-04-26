@@ -1,6 +1,7 @@
 ﻿using EQToolShared.Enums;
 using System.Net.Http;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace EQTool.Services
 {
@@ -10,29 +11,32 @@ namespace EQTool.Services
 
         public void Log(string message, EventType eventType, Servers? server)
         {
-            var build = BuildType.Release;
+            Task.Factory.StartNew(() =>
+            {
+                var build = BuildType.Release;
 #if TEST
             return;
 #elif DEBUG
-            build = BuildType.Debug;
+                build = BuildType.Debug;
 #elif BETA
             build = BuildType.Beta; 
 #endif
-            try
-            {
-                var msg = new App.ExceptionRequest
+                try
                 {
-                    Version = App.Version,
-                    Message = message,
-                    EventType = eventType,
-                    BuildType = build,
-                    Server = server
-                };
-                var msagasjson = Newtonsoft.Json.JsonConvert.SerializeObject(msg);
-                var content = new StringContent(msagasjson, Encoding.UTF8, "application/json");
-                var result = httpclient.PostAsync("https://pigparse.azurewebsites.net/api/eqtool/exception", content).Result;
-            }
-            catch { }
+                    var msg = new App.ExceptionRequest
+                    {
+                        Version = App.Version,
+                        Message = message,
+                        EventType = eventType,
+                        BuildType = build,
+                        Server = server
+                    };
+                    var msagasjson = Newtonsoft.Json.JsonConvert.SerializeObject(msg);
+                    var content = new StringContent(msagasjson, Encoding.UTF8, "application/json");
+                    var result = httpclient.PostAsync("https://pigparse.azurewebsites.net/api/eqtool/exception", content).Result;
+                }
+                catch { }
+            });
         }
     }
 }
