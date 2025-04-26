@@ -37,12 +37,12 @@
 
 
             <TextBlock Grid.Row="2"  Grid.Column="0">Search Text:</TextBlock>
-            <TextBox Grid.Row="2"  Grid.Column="1" Text="{Binding SearchText}" BorderBrush="{Binding SearchTextBorderBrush}" />
+            <TextBox Grid.Row="2"  Grid.Column="1"  Text="{Binding SearchText}" BorderBrush="{Binding SearchTextBorderBrush}" />
             <TextBlock Grid.Row="3" Grid.Column="1" Visibility="{Binding SearchTextErrorMessgeVisible}" Foreground="Red" Text="{Binding SearchTextErrorMessge}"></TextBlock>
 
-            <TextBlock Grid.Row="4" Grid.Column="0">Display Text:</TextBlock>
+            <TextBlock Grid.Row="4" Grid.Column="0"  Margin="0, 2, 0, 0" >Display Text:</TextBlock>
             <CheckBox Grid.Row="5" Grid.Column="0" Content="Display Text Enabled" IsChecked="{Binding DisplayTextEnabled}"/>
-            <TextBox  Grid.Row="4" Grid.Column="1" Text="{Binding DisplayText}" BorderBrush="{Binding DisplayTextBorderBrush}" />
+            <TextBox  Grid.Row="4" Grid.Column="1" Margin="0, 2, 0, 0" Text="{Binding DisplayText}" BorderBrush="{Binding DisplayTextBorderBrush}" />
             <TextBlock Grid.Row="5" Grid.Column="1" Visibility="{Binding DisplayTextErrorMessgeVisible}" Foreground="Red" Text="{Binding DisplayTextErrorMessge}"></TextBlock>
 
             <TextBlock Grid.Row="6" Grid.Column="0">Audio Text:</TextBlock>

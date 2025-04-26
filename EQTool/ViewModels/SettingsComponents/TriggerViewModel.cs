@@ -113,7 +113,7 @@ namespace EQTool.Models
             {
                 if (string.IsNullOrWhiteSpace(this._TriggerNameErrorMessge))
                 {
-                    return Brushes.Black;
+                    return DefaultBrush;
                 }
                 else
                 {
@@ -164,14 +164,20 @@ namespace EQTool.Models
                 this.OnPropertyChanged();
             }
         }
-
+        private static Brush DefaultBrush
+        {
+            get
+            {
+                return Brushes.Gray;
+            }
+        }
         public Brush SearchTextBorderBrush
         {
             get
             {
                 if (string.IsNullOrWhiteSpace(this._SearchTextErrorMessge))
                 {
-                    return Brushes.Black;
+                    return DefaultBrush;
                 }
                 else
                 {
@@ -253,7 +259,7 @@ namespace EQTool.Models
             {
                 if (string.IsNullOrWhiteSpace(this._DisplayTextErrorMessge))
                 {
-                    return Brushes.Black;
+                    return DefaultBrush;
                 }
                 else
                 {
@@ -333,7 +339,7 @@ namespace EQTool.Models
             {
                 if (string.IsNullOrWhiteSpace(this._AudioTextErrorMessge))
                 {
-                    return Brushes.Black;
+                    return DefaultBrush;
                 }
                 else
                 {
