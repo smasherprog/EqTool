@@ -20,7 +20,7 @@ namespace EQTool.Models
             this._Newtrigger = trigger;
             this.toolSettings = toolSettings;
             this.settingsLoad = settingsLoad;
-            this.Copy(_Newtrigger, this._OldTrigger);
+            this.CopyNewToSelf();
         }
 
         public TriggerViewModel(EQToolSettings toolSettings, EQToolSettingsLoad settingsLoad)
@@ -33,12 +33,12 @@ namespace EQTool.Models
             this._Newtrigger.SearchText = string.Empty;
             this.toolSettings = toolSettings;
             this.settingsLoad = settingsLoad;
-            this.Copy(_Newtrigger, this._OldTrigger);
+            this.CopyNewToSelf();
         }
 
         public void Save()
         {
-            this.Copy(this._OldTrigger, this._Newtrigger);
+            this.CopyOldToNew();
             if (this.IsNewTrigger)
             {
                 this.toolSettings.Triggers.Add(this._Newtrigger);
@@ -48,16 +48,28 @@ namespace EQTool.Models
             this.OnPropertyChanged(nameof(IsDirty));
         }
 
-        private void Copy(Trigger src, Trigger dst)
+        private void CopyOldToNew()
         {
-            this.TriggerId = src.TriggerId;
-            this.TriggerName = src.TriggerName;
-            this.AudioText = src.AudioText;
-            this.AudioTextEnabled = src.AudioTextEnabled;
-            this.DisplayText = src.DisplayText;
-            this.DisplayTextEnabled = src.DisplayTextEnabled;
-            this.SearchText = src.SearchText;
-            this.TriggerEnabled = src.TriggerEnabled;
+            _Newtrigger.TriggerId = _OldTrigger.TriggerId;
+            _Newtrigger.TriggerName = _OldTrigger.TriggerName;
+            _Newtrigger.AudioText = _OldTrigger.AudioText;
+            _Newtrigger.AudioTextEnabled = _OldTrigger.AudioTextEnabled;
+            _Newtrigger.DisplayText = _OldTrigger.DisplayText;
+            _Newtrigger.DisplayTextEnabled = _OldTrigger.DisplayTextEnabled;
+            _Newtrigger.SearchText = _OldTrigger.SearchText;
+            _Newtrigger.TriggerEnabled = _OldTrigger.TriggerEnabled;
+        }
+
+        private void CopyNewToSelf()
+        {
+            this.TriggerId = _Newtrigger.TriggerId;
+            this.TriggerName = _Newtrigger.TriggerName;
+            this.AudioText = _Newtrigger.AudioText;
+            this.AudioTextEnabled = _Newtrigger.AudioTextEnabled;
+            this.DisplayText = _Newtrigger.DisplayText;
+            this.DisplayTextEnabled = _Newtrigger.DisplayTextEnabled;
+            this.SearchText = _Newtrigger.SearchText;
+            this.TriggerEnabled = _Newtrigger.TriggerEnabled;
         }
 
         public bool IsSavable
