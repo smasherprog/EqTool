@@ -86,7 +86,7 @@ namespace EQTool.Services.Handlers
         //      "Direction: {direction}"
         // to
         //      "Direction: East"
-        private static string ProcessOutputText(string inputText, List<(string Name, string Value)> namevaluePairs)
+        public static string ProcessOutputText(string inputText, List<(string Name, string Value)> namevaluePairs)
         {
             var rv = inputText;
 

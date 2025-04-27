@@ -24,10 +24,12 @@ namespace EQtoolsTests
                 TriggerEnabled = true
             };
             var match = TriggerHandler.Match(trigger, "99 flagons of wine on the wall");
-            Assert.IsTrue(match);
+            Assert.IsTrue(match.match);
+            var audiotext = TriggerHandler.ProcessOutputText(trigger.AudioText, match.nameValuePairs);
+            var displaytext = TriggerHandler.ProcessOutputText(trigger.DisplayText, match.nameValuePairs);
 
-            Assert.AreEqual(trigger.DisplayText, "99 flagons of wine");
-            Assert.AreEqual(trigger.AudioText, "99 flagons of wine");
+            Assert.AreEqual(audiotext, "99 flagons of wine");
+            Assert.AreEqual(displaytext, "99 flagons of wine");
         }
     }
 }
