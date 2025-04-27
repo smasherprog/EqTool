@@ -32,22 +32,22 @@
             </Grid.RowDefinitions>
             <TextBlock Grid.Column="0">Trigger Name:</TextBlock>
             <CheckBox Grid.Row="1" Grid.Column="0" Content="Trigger Enabled" IsChecked="{Binding TriggerEnabled}"/>
-            <TextBox Grid.Column="1" Text="{Binding TriggerName}" BorderBrush="{Binding TriggerNameBorderBrush}" />
+            <TextBox Grid.Column="1" Text="{Binding TriggerName,Mode=TwoWay,Delay=500,UpdateSourceTrigger=PropertyChanged}" BorderBrush="{Binding TriggerNameBorderBrush}" />
             <TextBlock Grid.Row="1" Grid.Column="1" Visibility="{Binding TriggerNameErrorMessgeVisible}" Foreground="Red" Text="{Binding TriggerNameErrorMessge}"></TextBlock>
 
 
             <TextBlock Grid.Row="2"  Grid.Column="0">Search Text:</TextBlock>
-            <TextBox Grid.Row="2"  Grid.Column="1"  Text="{Binding SearchText}" BorderBrush="{Binding SearchTextBorderBrush}" />
+            <TextBox Grid.Row="2"  Grid.Column="1"  Text="{Binding SearchText,Mode=TwoWay,Delay=500,UpdateSourceTrigger=PropertyChanged}" BorderBrush="{Binding SearchTextBorderBrush}" />
             <TextBlock Grid.Row="3" Grid.Column="1" Visibility="{Binding SearchTextErrorMessgeVisible}" Foreground="Red" Text="{Binding SearchTextErrorMessge}"></TextBlock>
 
             <TextBlock Grid.Row="4" Grid.Column="0"  Margin="0, 2, 0, 0" >Display Text:</TextBlock>
             <CheckBox Grid.Row="5" Grid.Column="0" Content="Display Text Enabled" IsChecked="{Binding DisplayTextEnabled}"/>
-            <TextBox  Grid.Row="4" Grid.Column="1" Margin="0, 2, 0, 0" Text="{Binding DisplayText}" BorderBrush="{Binding DisplayTextBorderBrush}" />
+            <TextBox  Grid.Row="4" Grid.Column="1" Margin="0, 2, 0, 0" Text="{Binding DisplayText,Mode=TwoWay,Delay=500,UpdateSourceTrigger=PropertyChanged}" BorderBrush="{Binding DisplayTextBorderBrush}" />
             <TextBlock Grid.Row="5" Grid.Column="1" Visibility="{Binding DisplayTextErrorMessgeVisible}" Foreground="Red" Text="{Binding DisplayTextErrorMessge}"></TextBlock>
 
             <TextBlock Grid.Row="6" Grid.Column="0">Audio Text:</TextBlock>
             <CheckBox Grid.Row="7" Grid.Column="0" Content="Audio Text Enabled" IsChecked="{Binding AudioTextEnabled}"/>
-            <TextBox  Grid.Row="6" Grid.Column="1" Text="{Binding AudioText}" BorderBrush="{Binding AudioTextBorderBrush}" />
+            <TextBox  Grid.Row="6" Grid.Column="1" Text="{Binding AudioText,Mode=TwoWay,Delay=500,UpdateSourceTrigger=PropertyChanged}" BorderBrush="{Binding AudioTextBorderBrush}" />
             <TextBlock Grid.Row="7" Grid.Column="1" Visibility="{Binding AudioTextErrorMessgeVisible}" Foreground="Red" Text="{Binding AudioTextErrorMessge}"></TextBlock>
 
 
