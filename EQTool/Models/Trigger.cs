@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections;
 using System.Text.RegularExpressions;
-using System.Windows;
 
 namespace EQTool.Models
 {
@@ -38,7 +37,7 @@ namespace EQTool.Models
         public bool DisplayTextEnabled { get; set; }
         public string DisplayText { get; set; }
         [Newtonsoft.Json.JsonIgnore]
-        public string ConvertedDisplayText { get { return ProcessOutputText(AudioText); } }
+        public string ConvertedDisplayText { get { return ProcessOutputText(DisplayText); } }
 
         // properties to support text to be spoken via TTS
         // contains user-input simplified gina-style regex
