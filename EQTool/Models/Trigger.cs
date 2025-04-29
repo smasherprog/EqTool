@@ -99,7 +99,7 @@ namespace EQTool.Models
 
         // use this function to save the results after a regular expression search has been performed
         // if successful, then save the results into the trigger, for use later
-        internal void SaveNamedGroupValues(Match match)
+        public void SaveNamedGroupValues(Match match)
         {
             // walk the Groups list in the regex Match, and save the values we care about
             foreach (Group g in match.Groups)

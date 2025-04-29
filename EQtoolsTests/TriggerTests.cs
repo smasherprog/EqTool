@@ -23,10 +23,15 @@ namespace EQtoolsTests
                 AudioText = "{count} {containers} of {beverage}",
                 TriggerEnabled = true
             };
-            var match = TriggerHandler.Match(trigger, "99 flagons of wine on the wall");
-            Assert.IsTrue(match.match);
-            var audiotext = TriggerHandler.ProcessOutputText(trigger.AudioText, match.nameValuePairs);
-            var displaytext = TriggerHandler.ProcessOutputText(trigger.DisplayText, match.nameValuePairs);
+
+            string line = "99 flagons of wine on the wall";
+            var regex = trigger.TriggerRegex;
+            var match = regex.Match(line);
+            trigger.SaveNamedGroupValues(match);
+
+            Assert.IsTrue(match.Success);
+            var audiotext = trigger.ConvertedAudioText;
+            var displaytext = trigger.ConvertedDisplayText;
 
             Assert.AreEqual(audiotext, "99 flagons of wine");
             Assert.AreEqual(displaytext, "99 flagons of wine");
