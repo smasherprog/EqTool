@@ -28,7 +28,7 @@ namespace EQTool.Services.Handlers
                     // text to speech?
                     if (trigger.AudioTextEnabled == true)
                     {
-                        textToSpeach.Say(trigger.ConvertedAudioText);
+                        textToSpeach.Say(trigger.ExpandedAudioText);
                     }
 
                     // displayed text?
@@ -36,9 +36,9 @@ namespace EQTool.Services.Handlers
                     {
                         _ = System.Threading.Tasks.Task.Factory.StartNew(() =>
                         {
-                            logEvents.Handle(new OverlayEvent { Text = trigger.ConvertedDisplayText, ForeGround = Brushes.Red, Reset = false });
+                            logEvents.Handle(new OverlayEvent { Text = trigger.ExpandedDisplayText, ForeGround = Brushes.Red, Reset = false });
                             System.Threading.Thread.Sleep(5000);
-                            logEvents.Handle(new OverlayEvent { Text = trigger.ConvertedDisplayText, ForeGround = Brushes.Red, Reset = true });
+                            logEvents.Handle(new OverlayEvent { Text = trigger.ExpandedDisplayText, ForeGround = Brushes.Red, Reset = true });
                         });
                     }
                 }

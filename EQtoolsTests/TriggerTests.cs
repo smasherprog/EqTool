@@ -30,8 +30,8 @@ namespace EQtoolsTests
             trigger.SaveNamedGroupValues(match);
 
             Assert.IsTrue(match.Success);
-            var audiotext = trigger.ConvertedAudioText;
-            var displaytext = trigger.ConvertedDisplayText;
+            var audiotext = trigger.ExpandedAudioText;
+            var displaytext = trigger.ExpandedDisplayText;
 
             Assert.AreEqual(audiotext, "99 flagons of wine");
             Assert.AreEqual(displaytext, "99 flagons of wine");

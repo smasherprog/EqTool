@@ -4,6 +4,13 @@ using System.Text.RegularExpressions;
 
 namespace EQTool.Services
 {
+    //
+    // NOTE - All the functionality of this UserDefinedTrigger class has been moved
+    // to the Trigger class.  The only purpose this class serves is to migrate any
+    // old triggers in UserDefinedTriggers.txt, into the new Triggers class which
+    // is now being saved with the rest of the EqTool info in settings.json.
+    //
+
     // class for simple non-timer Triggers
     public class UserDefinedTrigger
     {
