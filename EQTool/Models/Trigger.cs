@@ -17,7 +17,13 @@ namespace EQTool.Models
         public string TriggerName { get; set; }
 
         // the search field
-        // contains user-input simplified gina-style regex
+        // may contain all regular expressions, and may also include simplified gina-style regular expressions
+        //      Simple text
+        //          Your spell fizzles!
+        //      Simplified Gina-style Regular Expression:
+        //          ^{backstabber} backstabs {target} for {damage} points of damage\.
+        //      Normal Regular Expression:
+        //          ^(?<backstabber>[\w` ]+) backstabs (?<target>[\w` ]+) for (?<damage>[\w` ]+) points of damage\.
         private string _SearchText = string.Empty;
         public string SearchText
         {
@@ -33,18 +39,20 @@ namespace EQTool.Models
         }
 
         // properties to support text to be displayed
-        // contains user-input simplified gina-style regex
+        // may contain simplified gina-style regex
+        //      Example:     Direction: {direction}
         public bool DisplayTextEnabled { get; set; }
         public string DisplayText { get; set; }
         [Newtonsoft.Json.JsonIgnore]
-        public string ConvertedDisplayText { get { return ProcessOutputText(DisplayText); } }
+        public string ExpandedDisplayText { get { return ExpandOutputText(DisplayText); } }
 
         // properties to support text to be spoken via TTS
-        // contains user-input simplified gina-style regex
+        // may contain simplified gina-style regex
+        //      Example:     Direction: {direction}
         public bool AudioTextEnabled { get; set; }
         public string AudioText { get; set; }
         [Newtonsoft.Json.JsonIgnore]
-        public string ConvertedAudioText { get { return ProcessOutputText(AudioText); } }
+        public string ExpandedAudioText { get { return ExpandOutputText(AudioText); } }
 
         // the regular expression for this trigger
         private Regex _TriggerRegex;
@@ -91,9 +99,9 @@ namespace EQTool.Models
         // Regular expression "named groups" from the user input are stored in a HashTable, with keys = the group names, and values = the parsed values
         //       Example:    Roger the Rogue backstabs a poor rabbit for 1000 points of damage
         // Resulting hashTable of (key, value) pairs:
-        //       (backstabber, Roger the Rogue)
-        //       (target, a poor rabbit)
-        //       (damage, 1000)
+        //          (backstabber, Roger the Rogue)
+        //          (target, a poor rabbit)
+        //          (damage, 1000)
         private readonly Hashtable valueHash = new Hashtable();     // list of named groups and their parsed values that we find in the search text
 
         // use this function to save the results after a regular expression search has been performed
@@ -121,9 +129,9 @@ namespace EQTool.Models
         //      "Direction: {direction}"
         // to
         //      "Direction: East"
-        private string ProcessOutputText(string inputText)
+        private string ExpandOutputText(string unExpandedText)
         {
-            string rv = inputText;
+            string rv = unExpandedText;
 
             // walk the list of matches, replacing the user match with the real match
             Match match = ginaRegex.Match(rv);

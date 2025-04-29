@@ -350,7 +350,6 @@
     <Compile Include="Services\Handlers\SpellCastOnYouHandler.cs" />
     <Compile Include="Services\Handlers\SpellHandlerService.cs" />
     <Compile Include="Services\Handlers\TellsYouHandler.cs" />
-    <Compile Include="Services\Handlers\UserDefinedTriggerHandler.cs" />
     <Compile Include="Services\Handlers\YouFinishCastingHandler.cs" />
     <Compile Include="Services\Handlers\YouBeginCastingHandler.cs" />
     <Compile Include="Services\Handlers\YouHaveFinishedMemorizingHandler.cs" />
