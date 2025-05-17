@@ -777,5 +777,16 @@ namespace EQtoolsTests
             Assert.AreEqual(AuctionType.WTS, item.AuctionType);
             Assert.IsNull(item.Price);
         }
+
+        [TestMethod]
+        public void Parse46()
+        {
+            var result = discordAuctionParse.Parse("Apollas auctions, 'WTS Spiked Seahorse Hide Belt 12k, Crown of King Tranix 5k, Massive Velium Battlehammer 4k, Heavy Velium Spear 4k'");
+            Assert.AreEqual("Apollas", result.Player);
+
+            var item = result.Items.FirstOrDefault(a => a.Name == "Crown of King Tranix");
+            Assert.AreEqual(AuctionType.WTS, item.AuctionType);
+            Assert.AreEqual(5000, item.Price);
+        }
     }
 }

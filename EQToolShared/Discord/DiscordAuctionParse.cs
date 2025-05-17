@@ -231,7 +231,7 @@ namespace EQToolShared.Discord
             _ = Regex.Replace(input, pattern, string.Empty);
 
             //replace all instances of x 4     or   x 7
-            pattern = @"x \d+";
+            pattern = @" x \d+";
             input = Regex.Replace(input, pattern, string.Empty);
 
             var removestrings = new List<string>() { "/stack", "/ea", "price", "paying" };
