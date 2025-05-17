@@ -47,7 +47,7 @@ namespace EQTool.Services.Handlers
         //                                ((?<mm>[0-9]+):)                                       Group "mm"      1 set of numbers followed by a colon
         //              (                                 )?                                                     0 or more hh and mm groups
         //                                                  (?<ss>[0-9]+)                        Group "ss"      1 set of numbers
-        //                                                               (-(?<label>.+))*       Group "label"   0 or more (dash, followed by a set of word characters)
+        //                                                               (-(?<label>.+))*        Group "label"   0 or more (dash, followed by a set of word characters)
         //
         // https://regex101.com/r/3d1UGb/1
         //
