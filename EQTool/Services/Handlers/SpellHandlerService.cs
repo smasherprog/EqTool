@@ -54,7 +54,7 @@ namespace EQTool.Services.Handlers
             "Beguile",
             "Cajoling Whispers",
             "Allure",
-            "Boltran's Agacerie",
+            "Boltran`s Agacerie",
             "Befriend Animal",
             "Charm Animals",
             "Beguile Plants",

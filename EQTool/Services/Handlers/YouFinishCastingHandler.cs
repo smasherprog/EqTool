@@ -14,7 +14,7 @@ namespace EQTool.Services.Handlers
             "Beguile",
             "Cajoling Whispers",
             "Allure",
-            "Boltran's Agacerie"
+            "Boltran`s Agacerie"
         };
         private readonly SpellHandlerService baseSpellYouCastingHandler;
 
