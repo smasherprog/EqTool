@@ -1099,7 +1099,15 @@ namespace EQToolShared
                 {
                     "Balix Misteyes","Corudoth","Garou","Lodizal","Midnight","Pulsating Icestorm","Stormfeather",
                 },
-                RespawnTime = new TimeSpan(0, 6, 40)
+                RespawnTime = new TimeSpan(0, 6, 40),
+                NpcSpawnTimes = new List<NpcSpawnTime>
+                 {
+                     new NpcSpawnTime
+                     {
+                        Name = "Ergrez Shortpaw",
+                        RespawnTime = new TimeSpan(0, 6, 0)
+                     }
+                 }
             });
             ZoneInfoMap.Add("innothule", new ZoneInfo
             {
