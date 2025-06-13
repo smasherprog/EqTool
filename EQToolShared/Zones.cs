@@ -1980,7 +1980,7 @@ namespace EQToolShared
                         RespawnTime = new TimeSpan(0, 6, 0)
                      }
                  },
-                RespawnTime = new TimeSpan(1, 12, 00),
+                RespawnTime = new TimeSpan(1, 13, 20),
                 NPCThatAOE = new List<NPCThatAOE>()
                  {
                     new NPCThatAOE
