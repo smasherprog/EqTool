@@ -200,6 +200,10 @@ namespace EQTool.Services.Handlers
             else
             {
                 var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(spell, activePlayer.Player?.PlayerClass, activePlayer.Player?.Level));
+                if (spell.name == "Voiddance Discipline")
+                {
+                    spellduration = TimeSpan.FromSeconds(8);
+                }
                 spellduration = spellduration.Add(TimeSpan.FromMilliseconds(delayOffset));
                 if (spellduration.TotalSeconds > 0)
                 {
