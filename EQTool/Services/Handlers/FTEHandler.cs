@@ -19,6 +19,11 @@ namespace EQTool.Services.Handlers
             "Dozekar the Cursed",
             "Lord Yelinak"
         };
+        private readonly List<string> NintySixPercentMobs = new List<string>()
+        {
+            "Dozekar the Cursed",
+            "Lord Yelinak"
+        };
 
         public FTEHandler(EQSpells spells, SpellWindowViewModel spellWindowViewModel, PigParseApi pigParseApi, BaseHandlerData baseHandlerData) : base(baseHandlerData)
         {
@@ -55,6 +60,13 @@ namespace EQTool.Services.Handlers
             if (NintySevenPercentMobs.Contains(e.NPCName))
             {
                 var spell = spells.AllSpells.FirstOrDefault(a => a.name == "Spirit of Wolf");
+                var timeleft = 61;
+                if (NintySixPercentMobs.Contains(e.NPCName) && activePlayer.Player.Server == EQToolShared.Enums.Servers.Green)
+                {
+                    start = "--96% Rule--";
+                    timeleft = 91;
+                }
+
                 appDispatcher.DispatchUI(() =>
                 {
                     spellWindowViewModel.TryAdd(new TimerViewModel
@@ -64,11 +76,11 @@ namespace EQTool.Services.Handlers
                         Name = $"{start} {e.NPCName}",
                         Rect = spell.Rect,
                         Icon = spell.SpellIcon,
-                        TotalDuration = TimeSpan.FromSeconds(61),
-                        TotalRemainingDuration = TimeSpan.FromSeconds(61),
+                        TotalDuration = TimeSpan.FromSeconds(timeleft),
+                        TotalRemainingDuration = TimeSpan.FromSeconds(timeleft),
                         UpdatedDateTime = DateTime.Now,
                         ProgressBarColor = Brushes.Orchid
-                    });
+                    }, true);
                 });
             }
             if (e.NPCName == "Lodizal")
@@ -93,47 +105,7 @@ namespace EQTool.Services.Handlers
             if (NintySevenPercentMobs.Contains(e.NPCName))
             {
                 doAlert = activePlayer?.Player?.FTETimerOverlay ?? false;
-                if (doAlert)
-                {
-                    _ = System.Threading.Tasks.Task.Factory.StartNew(() =>
-                    {
-                        System.Threading.Thread.Sleep(10000);
-                        logEvents.Handle(new OverlayEvent { Text = $"{start} 50 seconds", ForeGround = Brushes.Yellow, Reset = false });
-                        textToSpeach.Say("50 seconds");
-                        System.Threading.Thread.Sleep(10000);
-                        logEvents.Handle(new OverlayEvent { Text = $"{start} 40 seconds", ForeGround = Brushes.Yellow, Reset = false });
-                        textToSpeach.Say("40 seconds");
-                        System.Threading.Thread.Sleep(10000);
-                        logEvents.Handle(new OverlayEvent { Text = $"{start} 30 seconds", ForeGround = Brushes.Yellow, Reset = false });
-                        textToSpeach.Say("30 seconds");
-                        System.Threading.Thread.Sleep(10000);
-                        logEvents.Handle(new OverlayEvent { Text = $"{start} 20 seconds", ForeGround = Brushes.Yellow, Reset = false });
-                        textToSpeach.Say("20 seconds");
-                        System.Threading.Thread.Sleep(10000);
-                        logEvents.Handle(new OverlayEvent { Text = $"{start} 10 seconds", ForeGround = Brushes.Yellow, Reset = false });
-                        textToSpeach.Say("10 seconds");
-                        System.Threading.Thread.Sleep(5000);
-                        logEvents.Handle(new OverlayEvent { Text = $"{start} 5 seconds", ForeGround = Brushes.Yellow, Reset = false });
-                        textToSpeach.Say("5 seconds");
-                        System.Threading.Thread.Sleep(1000);
-                        logEvents.Handle(new OverlayEvent { Text = $"{start} 4 seconds", ForeGround = Brushes.Yellow, Reset = false });
-                        textToSpeach.Say("4");
-                        System.Threading.Thread.Sleep(1000);
-                        logEvents.Handle(new OverlayEvent { Text = $"{start} 3 seconds", ForeGround = Brushes.Yellow, Reset = false });
-                        textToSpeach.Say("3");
-                        System.Threading.Thread.Sleep(1000);
-                        logEvents.Handle(new OverlayEvent { Text = $"{start} 2 seconds", ForeGround = Brushes.Yellow, Reset = false });
-                        textToSpeach.Say("2");
-                        System.Threading.Thread.Sleep(1000);
-                        logEvents.Handle(new OverlayEvent { Text = $"{start} 1 seconds", ForeGround = Brushes.Yellow, Reset = false });
-                        textToSpeach.Say("1");
-                        System.Threading.Thread.Sleep(1000);
-                        logEvents.Handle(new OverlayEvent { Text = $"{start} Time up", ForeGround = Brushes.Yellow, Reset = false });
-                        textToSpeach.Say("Time up");
-                        System.Threading.Thread.Sleep(1000);
-                        logEvents.Handle(new OverlayEvent { Text = $"{start} Time up", ForeGround = Brushes.Yellow, Reset = true });
-                    });
-                }
+
             }
         }
     }

@@ -418,17 +418,21 @@ namespace EQTool.ViewModels
             });
         }
 
-        public void TryAdd(TimerViewModel match)
+        public void TryAdd(TimerViewModel match, bool allowDuplicates = false)
         {
             appDispatcher.DispatchUI(() =>
             {
-                var existing = SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Timer &&
-                string.Equals(a.Name, match.Name, StringComparison.OrdinalIgnoreCase) &&
-                string.Equals(match.GroupName, a.GroupName, StringComparison.OrdinalIgnoreCase));
-                if (existing != null)
+                if (!allowDuplicates)
                 {
-                    _ = SpellList.Remove(existing);
+                    var existing = SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Timer &&
+                     string.Equals(a.Name, match.Name, StringComparison.OrdinalIgnoreCase) &&
+                     string.Equals(match.GroupName, a.GroupName, StringComparison.OrdinalIgnoreCase));
+                    if (existing != null)
+                    {
+                        _ = SpellList.Remove(existing);
+                    }
                 }
+
                 SpellList.Add(match);
             });
         }

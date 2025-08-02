@@ -149,13 +149,7 @@
                     <CheckBox IsChecked="{Binding ActivePlayer.Player.FTEOverlay}" Click="Savesettings" MinWidth="75"></CheckBox>
                     <CheckBox IsChecked="{Binding ActivePlayer.Player.FTEAudio}" Click="Savesettings" MinWidth="30"></CheckBox>
                     <Button Content="▶" Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="testFTE" ToolTip="Test FTE" />
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="FTE 97% Timers" VerticalAlignment="Center" FontWeight="Bold"  MinWidth="100"/>
-                    <CheckBox IsChecked="{Binding ActivePlayer.Player.FTETimerOverlay}" Click="Savesettings" MinWidth="75"></CheckBox>
-                    <CheckBox IsChecked="{Binding ActivePlayer.Player.FTETimerAudio}" Click="Savesettings" MinWidth="30"></CheckBox>
-                    <Button Content="▶" Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="testFTETimers" ToolTip="Test FTE Timers" />
-                </StackPanel>
+                </StackPanel> 
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Charm Break" VerticalAlignment="Center" FontWeight="Bold"  MinWidth="100"/>
                     <CheckBox IsChecked="{Binding ActivePlayer.Player.CharmBreakOverlay}" Click="Savesettings" MinWidth="75"></CheckBox>
