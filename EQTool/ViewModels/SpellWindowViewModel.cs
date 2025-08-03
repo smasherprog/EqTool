@@ -252,6 +252,28 @@ namespace EQTool.ViewModels
                             {
                                 hidespell = true;
                             }
+                            if (item.Name.StartsWith("Scout Charisa Timer"))
+                            {
+                                if (settings.ShowScoutRollTime == false)
+                                {
+                                    hidespell = true;
+                                }
+                                else
+                                {
+                                    hidespell = true;
+                                }
+                            }
+                            else if (item.Name.StartsWith("Ring 8 Roll Timer"))
+                            {
+                                if (settings.ShowRing8RollTime == false)
+                                {
+                                    hidespell = true;
+                                }
+                                else
+                                {
+                                    hidespell = true;
+                                }
+                            }
                         }
                         else if (item.SpellViewModelType == SpellViewModelType.Spell)
                         {
@@ -267,6 +289,25 @@ namespace EQTool.ViewModels
                             else
                             {
                                 hidespell = SpellUIExtensions.HideSpell(player.ShowSpellsForClasses, s.Classes);
+                            }
+                        }
+                    }
+                    else if (item.GroupName == CustomTimer.CustomerTime && item.SpellViewModelType == SpellViewModelType.Timer)
+                    {
+                        if (item.Name.StartsWith("Scout Charisa Timer"))
+                        {
+                            hidespell = false;
+                            if (settings.ShowScoutRollTime == false)
+                            {
+                                hidespell = true;
+                            }
+                        }
+                        else if (item.Name.StartsWith("Ring 8 Roll Timer"))
+                        {
+                            hidespell = false;
+                            if (settings.ShowRing8RollTime == false)
+                            {
+                                hidespell = true;
                             }
                         }
                     }
@@ -287,7 +328,7 @@ namespace EQTool.ViewModels
                         }
                     }
 
-                    if (player?.BoatScheduleR == false)
+                    if (player?.BoatSchedule == false)
                     {
                         boat.ColumnVisibility = Visibility.Collapsed;
                     }
@@ -312,6 +353,8 @@ namespace EQTool.ViewModels
                     }
                     item.ColumnVisibility = hidespell ? System.Windows.Visibility.Collapsed : System.Windows.Visibility.Visible;
                 }
+
+
 
                 var groupedspellList = SpellList.GroupBy(a => a.GroupName).ToList();
                 foreach (var triggers in groupedspellList)
@@ -524,7 +567,8 @@ namespace EQTool.ViewModels
             });
         }
 
-        public void UpdateBoats()
+        private Spell RollTimerIcon = null;
+        public void UpdateAPITimers()
         {
             var s = activePlayer.Player.Server;
             if (s.HasValue)
@@ -536,6 +580,101 @@ namespace EQTool.ViewModels
                     foreach (var boat in boatsapi)
                     {
                         boatScheduleService.UpdateBoatInformation(boat, boats, DateTimeOffset.Now);
+                    }
+                });
+                var timersData = pigParseApi.GetRollTimers(s.Value);
+                appDispatcher.DispatchUI(() =>
+                {
+                    if (RollTimerIcon == null)
+                    {
+                        RollTimerIcon = spells.AllSpells.FirstOrDefault(a => a.name == "Feign Death");
+                    }
+                    var thingsToAdd = new List<TimerViewModel>();
+                    var timers = timersData.Where(a => a.RollTimerType == EQToolShared.APIModels.RollTimerType.Scout).ToList();
+
+                    if (timers.Any())
+                    {
+                        var timer = timers.Where(a => !a.Guess).OrderByDescending(a => a.DateTime).FirstOrDefault();
+                        if (timer == null)
+                        {
+                            timer = timers.Where(a => a.Guess).OrderByDescending(a => a.DateTime).FirstOrDefault();
+                        }
+
+                        var match = new TimerViewModel
+                        {
+                            PercentLeft = 100,
+                            GroupName = CustomTimer.CustomerTime,
+                            Name = "Ring 8 Roll Timer" + (timer.Guess ? " (Guess)" : ""),
+                            Rect = RollTimerIcon.Rect,
+                            Icon = RollTimerIcon.SpellIcon,
+                            TotalDuration = TimeSpan.FromHours(10),
+                            TotalRemainingDuration = TimeSpan.FromSeconds(10),
+                            UpdatedDateTime = DateTime.Now,
+                            ProgressBarColor = Brushes.LightGreen
+                        };
+
+                        match.Name = "Scout Charisa Timer";
+                        match.TotalDuration = TimeSpan.FromHours(10);
+                        if (timer.DateTime > DateTimeOffset.Now)
+                        {
+                            match.TotalRemainingDuration = timer.DateTime - DateTimeOffset.Now;
+                        }
+                        else
+                        {
+                            match.TotalRemainingDuration = TimeSpan.FromHours(10);
+                            match.Name = $"Scout Charisa Timer (UNKNOWN)";
+                        }
+                        thingsToAdd.Add(match);
+                    }
+
+                    timers = timersData.Where(a => a.RollTimerType == EQToolShared.APIModels.RollTimerType.Quake).ToList();
+
+                    if (timers.Any())
+                    {
+                        var timer = timers.Where(a => !a.Guess).OrderByDescending(a => a.DateTime).FirstOrDefault();
+                        var match = new TimerViewModel
+                        {
+                            PercentLeft = 100,
+                            GroupName = CustomTimer.CustomerTime,
+                            Name = "Ring 8 Roll Timer" + (timer.Guess ? " (Guess)" : ""),
+                            Rect = RollTimerIcon.Rect,
+                            Icon = RollTimerIcon.SpellIcon,
+                            TotalDuration = TimeSpan.FromHours(10),
+                            TotalRemainingDuration = TimeSpan.FromSeconds(10),
+                            UpdatedDateTime = DateTime.Now,
+                            ProgressBarColor = Brushes.LightGreen
+                        };
+
+                        match.Name = "Ring 8 Roll Timer";
+                        match.TotalDuration = TimeSpan.FromHours(24);
+                        while (timer.DateTime < DateTimeOffset.Now)
+                        {
+                            timer.DateTime = timer.DateTime.AddHours(24);
+                            if (timer.DateTime > DateTimeOffset.Now)
+                            {
+                                match.TotalRemainingDuration = timer.DateTime - DateTimeOffset.Now;
+                                match.TotalRemainingDuration -= TimeSpan.FromMinutes(30);//ring roll always 30 minutes before quake
+                            }
+                        }
+                        thingsToAdd.Add(match);
+                    }
+
+                    foreach (var timer in thingsToAdd)
+                    {
+                        var existing = SpellList.Where(a => a.SpellViewModelType == SpellViewModelType.Timer &&
+                         string.Equals(a.Name, timer.Name, StringComparison.OrdinalIgnoreCase) &&
+                         string.Equals(timer.GroupName, a.GroupName, StringComparison.OrdinalIgnoreCase))
+                        .Cast<TimerViewModel>()
+                        .FirstOrDefault();
+                        if (existing != null)
+                        {
+                            existing.TotalDuration = timer.TotalDuration;
+                            existing.TotalRemainingDuration = timer.TotalRemainingDuration;
+                        }
+                        else
+                        {
+                            SpellList.Add(timer);
+                        }
                     }
                 });
             }

@@ -106,6 +106,26 @@ namespace EQTool.ViewModels
             }
         }
 
+        public bool ShowRing8RollTime
+        {
+            get => toolSettings.ShowRing8RollTime ?? true;
+            set
+            {
+                toolSettings.ShowRing8RollTime = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool ShowScoutRollTime
+        {
+            get => toolSettings.ShowScoutRollTime ?? true;
+            set
+            {
+                toolSettings.ShowScoutRollTime = value;
+                OnPropertyChanged();
+            }
+        }
+
         public bool DpsAlwaysOnTop
         {
             get => toolSettings.DpsWindowState.AlwaysOnTop;

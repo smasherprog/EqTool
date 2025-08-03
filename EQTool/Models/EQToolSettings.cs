@@ -138,7 +138,22 @@ namespace EQTool.Models
         public List<Trigger> Triggers { get; set; } = new List<Trigger>();
         public bool YouOnlySpells { get; set; }
         public bool ShowRandomRolls { get; set; }
-        public bool? _RaidModeDetection;
+
+        private bool? _ShowRing8RollTime { get; set; } = true;
+        public bool? ShowRing8RollTime
+        {
+            get => _ShowRing8RollTime ?? true;
+            set { if (value == null) { _ShowRing8RollTime = true; } else { _ShowRing8RollTime = value; } }
+        }
+
+        private bool? _ShowScoutRollTime { get; set; } = true;
+        public bool? ShowScoutRollTime
+        {
+            get => _ShowScoutRollTime ?? true;
+            set { if (value == null) { _ShowScoutRollTime = true; } else { _ShowScoutRollTime = value; } }
+        }
+
+        private bool? _RaidModeDetection;
         public bool? RaidModeDetection
         {
             get => _RaidModeDetection ?? true;

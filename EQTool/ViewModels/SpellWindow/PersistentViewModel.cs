@@ -86,7 +86,7 @@ namespace EQTool.ViewModels.SpellWindow
             }
         }
 
-        public virtual string Sorting => _GroupName; 
+        public virtual string Sorting => _GroupName;
         private string _GroupName = string.Empty;
         public string GroupName
         {
@@ -98,7 +98,7 @@ namespace EQTool.ViewModels.SpellWindow
                     return;
                 }
                 _GroupName = value;
-                OnPropertyChanged(); 
+                OnPropertyChanged();
             }
         }
 

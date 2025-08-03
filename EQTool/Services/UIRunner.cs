@@ -32,9 +32,9 @@ namespace EQTool.Services
             spellWindowViewModel.UpdateSpells(dt_ms);
             if (!LastBoatUpdate.HasValue || (LastBoatUpdate.HasValue && (now - LastBoatUpdate.Value).TotalMinutes > 5))
             {
-                Task.Factory.StartNew(() =>
-                { 
-                    spellWindowViewModel.UpdateBoats();
+                _ = Task.Factory.StartNew(() =>
+                {
+                    spellWindowViewModel.UpdateAPITimers();
                 });
                 LastBoatUpdate = now;
             }

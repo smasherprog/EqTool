@@ -1,4 +1,5 @@
 ﻿using EQToolShared;
+using EQToolShared.APIModels;
 using EQToolShared.APIModels.BoatControllerModels;
 using EQToolShared.APIModels.ItemControllerModels;
 using EQToolShared.APIModels.PlayerControllerModels;
@@ -45,7 +46,7 @@ namespace EQTool.Services
 
         public void SendPlayerData(List<Player> players, Servers server)
         {
-            Task.Factory.StartNew(() =>
+            _ = Task.Factory.StartNew(() =>
             {
                 if (!players.Any())
                 {
@@ -69,7 +70,7 @@ namespace EQTool.Services
 
         public void SendNPCActivity(NPCActivityRequest activity)
         {
-            Task.Factory.StartNew(() =>
+            _ = Task.Factory.StartNew(() =>
             {
                 if (activity.NPCData.Name == "Scout Charisa" ||
                     activity.NPCData.Name == "a Kromzek Captain" ||
@@ -90,7 +91,7 @@ namespace EQTool.Services
 
         public void SendQuake(Servers server)
         {
-            Task.Factory.StartNew(() =>
+            _ = Task.Factory.StartNew(() =>
             {
                 try
                 {
@@ -143,7 +144,7 @@ namespace EQTool.Services
 
         public void SendBoatData(BoatActivityRequest boatActivityRequest)
         {
-            Task.Factory.StartNew(() =>
+            _ = Task.Factory.StartNew(() =>
             {
                 try
                 {
@@ -174,6 +175,22 @@ namespace EQTool.Services
             }
             catch { }
             return new List<BoatActivityResponce>();
+        }
+
+        public List<RollTimerModel> GetRollTimers(Servers server)
+        {
+            try
+            {
+                var url = $"https://pigparse.azurewebsites.net/api/rolltimer/timers/{server}";
+                var res = App.httpclient.GetAsync(url).Result;
+                if (res.StatusCode == System.Net.HttpStatusCode.OK)
+                {
+                    var response = res.Content.ReadAsStringAsync().Result;
+                    return Newtonsoft.Json.JsonConvert.DeserializeObject<List<RollTimerModel>>(response);
+                }
+            }
+            catch { }
+            return new List<RollTimerModel>();
         }
     }
 }
