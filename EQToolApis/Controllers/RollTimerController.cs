@@ -57,7 +57,7 @@ namespace EQToolApis.Controllers
                         var events = new List<(DateTimeOffset d, bool guess)>();
                         if (n.Name == "Scout Charisa" && eventTime.HasValue)
                         {
-                            var d = eventTime.Value.AddHours(10 * 2);
+                            var d = eventTime.Value.AddHours(10);
                             if (d > DateTimeOffset.Now)
                             {
                                 events.Add((d, false));
@@ -69,7 +69,7 @@ namespace EQToolApis.Controllers
                         }
                         else if (n.Name == "a Kromzek Captain" && eventTime.HasValue)
                         {
-                            var d = eventTime.Value.AddHours(10 * 2);
+                            var d = eventTime.Value.AddHours(10);
                             if (d > DateTimeOffset.Now)
                             {
                                 events.Add((d, false));
