@@ -15,6 +15,16 @@ namespace EQTool.Services.Handlers
         private readonly PlayerTrackerService playerTrackerService;
         private readonly EQSpells spells;
         private readonly FightHistory fightHistory;
+        private readonly List<string> POSBoss = new List<string>()
+        {
+            "Thunder Spirit Princess",
+            "Gorgalosk",
+            "Keeper of Souls",
+            "The Spiroc Lord",
+            "Bazzt Zzzt",
+            "Sister of the Spire"
+        };
+
 
         private string Victim = string.Empty;
         private string Killer = string.Empty;
@@ -190,6 +200,7 @@ namespace EQTool.Services.Handlers
                 GroupName = CustomTimer.CustomerTime,
                 ProgressBarColor = Brushes.LightSalmon
             };
+
             appDispatcher.DispatchUI(() =>
             {
                 var grpname = e.Victim;
@@ -215,6 +226,21 @@ namespace EQTool.Services.Handlers
                 }
 
                 spellWindowViewModel.TryAdd(add);
+                if (POSBoss.Contains(e.Victim))
+                {
+                    add = new TimerViewModel
+                    {
+                        Name = "--Sirran the Lunatic-- ",
+                        TotalDuration = TimeSpan.FromMinutes(15),
+                        TotalRemainingDuration = TimeSpan.FromMinutes(15),
+                        Icon = spell.SpellIcon,
+                        Rect = spell.Rect,
+                        PercentLeft = 100,
+                        GroupName = CustomTimer.CustomerTime,
+                        ProgressBarColor = Brushes.Coral
+                    };
+                    spellWindowViewModel.TryAdd(add, true);
+                }
             });
         }
     }
