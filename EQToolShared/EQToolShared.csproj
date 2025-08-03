@@ -63,6 +63,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="APIModels\RollTimerModel.cs" />
     <Compile Include="APIModels\ItemControllerModels.cs" />
     <Compile Include="APIModels\PlayerControllerModels.cs" />
     <Compile Include="APIModels\BoatControllerModels.cs" />
