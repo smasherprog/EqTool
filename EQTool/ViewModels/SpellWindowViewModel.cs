@@ -653,7 +653,15 @@ namespace EQTool.ViewModels
                             if (timer.DateTime > DateTimeOffset.Now)
                             {
                                 match.TotalRemainingDuration = timer.DateTime - DateTimeOffset.Now;
-                                match.TotalRemainingDuration -= TimeSpan.FromMinutes(30);//ring roll always 30 minutes before quake
+                                if (match.TotalRemainingDuration.TotalMinutes >= 30)
+                                {
+                                    match.TotalRemainingDuration -= TimeSpan.FromMinutes(30);//ring roll always 30 minutes before quake
+                                }
+                                else
+                                {
+                                    match.TotalRemainingDuration = TimeSpan.FromHours(24).Subtract(TimeSpan.FromMinutes(30 - match.TotalRemainingDuration.Minutes));
+
+                                }
                             }
                         }
                         thingsToAdd.Add(match);
