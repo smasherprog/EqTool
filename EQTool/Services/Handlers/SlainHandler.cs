@@ -17,7 +17,7 @@ namespace EQTool.Services.Handlers
         private readonly FightHistory fightHistory;
         private readonly List<string> POSBoss = new List<string>()
         {
-            "Thunder Spirit Princess",
+            "a Thunder Spirit Princess",
             "Gorgalosk",
             "Keeper of Souls",
             "The Spiroc Lord",
@@ -226,7 +226,7 @@ namespace EQTool.Services.Handlers
                 }
 
                 spellWindowViewModel.TryAdd(add);
-                if (POSBoss.Contains(e.Victim))
+                if (POSBoss.Any(a => string.Equals(a, e.Victim, StringComparison.OrdinalIgnoreCase)))
                 {
                     add = new TimerViewModel
                     {
