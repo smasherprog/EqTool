@@ -25,7 +25,6 @@ namespace EQTool.Services.Handlers
             "Sister of the Spire"
         };
 
-
         private string Victim = string.Empty;
         private string Killer = string.Empty;
         private readonly List<string> FactionMessages = new List<string>();

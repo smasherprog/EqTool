@@ -585,11 +585,17 @@ namespace EQTool.ViewModels
                 var timersData = pigParseApi.GetRollTimers(s.Value);
                 appDispatcher.DispatchUI(() =>
                 {
+                    var existing = SpellList.Where(a => a.SpellViewModelType == SpellViewModelType.Timer && (a.Name.StartsWith("Ring 8 Roll Timer") || a.Name.StartsWith("Scout Charisa Timer"))).ToList();
+                    foreach (var item in existing)
+                    {
+                        _ = SpellList.Remove(item);
+                    }
+
                     if (RollTimerIcon == null)
                     {
                         RollTimerIcon = spells.AllSpells.FirstOrDefault(a => a.name == "Feign Death");
                     }
-                    var thingsToAdd = new List<TimerViewModel>();
+
                     var timers = timersData.Where(a => a.RollTimerType == EQToolShared.APIModels.RollTimerType.Scout).ToList();
 
                     if (timers.Any())
@@ -624,7 +630,7 @@ namespace EQTool.ViewModels
                             match.TotalRemainingDuration = TimeSpan.FromHours(10);
                             match.Name = $"Scout Charisa Timer (UNKNOWN)";
                         }
-                        thingsToAdd.Add(match);
+                        SpellList.Add(match);
                     }
 
                     timers = timersData.Where(a => a.RollTimerType == EQToolShared.APIModels.RollTimerType.Quake).ToList();
@@ -664,25 +670,7 @@ namespace EQTool.ViewModels
                                 }
                             }
                         }
-                        thingsToAdd.Add(match);
-                    }
-
-                    foreach (var timer in thingsToAdd)
-                    {
-                        var existing = SpellList.Where(a => a.SpellViewModelType == SpellViewModelType.Timer &&
-                         string.Equals(a.Name, timer.Name, StringComparison.OrdinalIgnoreCase) &&
-                         string.Equals(timer.GroupName, a.GroupName, StringComparison.OrdinalIgnoreCase))
-                        .Cast<TimerViewModel>()
-                        .FirstOrDefault();
-                        if (existing != null)
-                        {
-                            existing.TotalDuration = timer.TotalDuration;
-                            existing.TotalRemainingDuration = timer.TotalRemainingDuration;
-                        }
-                        else
-                        {
-                            SpellList.Add(timer);
-                        }
+                        SpellList.Add(match);
                     }
                 });
             }
