@@ -71,6 +71,23 @@ namespace EQtoolsTests
         }
 
         [TestMethod]
+        public void TestRangerBindSight()
+        {
+            var spellname = "Bind Sight";
+            var spellclass = spells.AllSpells.FirstOrDefault(a => a.name == spellname);
+            var line = YouBeginCasting + " " + spellname;
+            player.Player.Level = 50;
+            player.Player.PlayerClass = PlayerClasses.Ranger;
+            logParser.Push(line, DateTime.Now);
+            line = "Your sight is bound.";
+            logParser.Push(line, DateTime.Now.AddSeconds(4));
+
+            var effect = SpellList.FirstOrDefault();
+            Assert.IsNotNull(effect);
+            Assert.AreEqual(effect.TotalDuration.TotalSeconds, 660);
+        }
+
+        [TestMethod]
         public void TestHarvestCoolDown()
         {
             var spellname = "Harvest";
