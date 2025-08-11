@@ -18,6 +18,7 @@ namespace EQTool.Services.Handlers
         private readonly List<string> POSBoss = new List<string>()
         {
             "a Thunder Spirit Princess",
+            "Protector of Sky",
             "Gorgalosk",
             "Keeper of Souls",
             "The Spiroc Lord",
@@ -236,7 +237,7 @@ namespace EQTool.Services.Handlers
                         Rect = spell.Rect,
                         PercentLeft = 100,
                         GroupName = CustomTimer.CustomerTime,
-                        ProgressBarColor = Brushes.Coral
+                        ProgressBarColor = Brushes.LightSkyBlue
                     };
                     spellWindowViewModel.TryAdd(add, true);
                 }
