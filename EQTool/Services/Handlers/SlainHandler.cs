@@ -239,7 +239,7 @@ namespace EQTool.Services.Handlers
                         GroupName = CustomTimer.CustomerTime,
                         ProgressBarColor = Brushes.LightSkyBlue
                     };
-                    spellWindowViewModel.TryAdd(add, true);
+                    spellWindowViewModel.TryAdd(add, false);
                 }
             });
         }
