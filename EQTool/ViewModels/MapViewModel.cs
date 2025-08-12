@@ -297,10 +297,11 @@ namespace EQTool.ViewModels
                     var widgets = timersService.LoadTimersForZone(ZoneName);
                     foreach (var mw in widgets)
                     {
+                        mw.Tag = mw.Name;
                         _ = canvas.Children.Add(mw);
                         Canvas.SetLeft(mw, -mw.TimerInfo.Location.X - MapOffset.X);
                         Canvas.SetTop(mw, -mw.TimerInfo.Location.Y - MapOffset.Y);
-                        mw.RenderTransform = new RotateTransform();
+                        mw.RenderTransform = Transform;
                     }
                     return true;
                 }
@@ -359,7 +360,7 @@ namespace EQTool.ViewModels
         }
 
         public bool LoadDefaultMap(Canvas canvas)
-        { 
+        {
             var z = Zones.TranslateToMapName(activePlayer.Player?.Zone);
             if (string.IsNullOrWhiteSpace(z))
             {
