@@ -80,67 +80,7 @@ Features:
   <li>Hanbox shouts, 'CH - name - 001'</li> 
 </ul>
 <h3>User Defined Triggers</h3>
-<ul>
-<li>PigParse now has the ability to accept user-defined triggers for text and audible alerts!</li>
-<li>The triggers are maintained in text file "UserTriggers.txt"</li>
-<li>"UserTriggers.txt" is located in whatever directory "EqTool.exe" was installed in.</li>
-<li>PigParse will auto-create that file if it is not present, with some handy starter kit triggers</li>
-<h5>Example "UserTriggers.txt"</h5>
-
-      #
-      # comment line:                 hashtag # in first column
-      # field separator symbol:       semi-colon ;
-      #
-      # fields:
-      #   triggerID       int         unique value for this trigger
-      #   triggerEnabled  int         1/0 boolean enable/disable this trigger
-      #   triggerName     string      descriptive name
-      #   searchText      string      pattern to match (can be regular expression)
-      #   textEnabled     int         1/0 boolean enable/disable text alerts
-      #   displayText     string      text to be displayed when this trigger finds a matching line in the log
-      #   audioEnabled    int         1/0 boolean enable/disable audible text-to-speech alerts
-      #   audioText       string      text to be spoken when this trigger finds a matching line in the log
-      # 
-      # triggerID;triggerEnabled;triggerName;searchText;textEnabled;displayText;audioEnabled;audioText
-      #
-      100;1;Spell Interrupted;^Your spell is interrupted.;1;Spell Interrupted;1;Interrupted
-      101;1;Spell Fizzle;^Your spell fizzles!;1;Spell Fizzles;1;Fizzle
-
-This file can be edited as desired.  What if you don't wish to receive the audio alert when you experience a spell fizzle?  Simple, edit the file, find the line for "Spell Fizzle", and change the 1 in the "audioEnabled" field (the 7th one) to a 0.  Example:
-
-      101;1;Spell Fizzle;^Your spell fizzles!;1;Spell Fizzles;0;Fizzle
-
-Or if you just wish to disable that entire trigger, you could change the 1 in the "triggerEnabled" field (the 2nd one) to a 0:
-
-      101;0;Spell Fizzle;^Your spell fizzles!;1;Spell Fizzles;1;Fizzle
-
-The real utility from this feature comes with the ability to add your own triggers.  Let's say you have a good friend, Brad, who you would like to be sure you get an extra alert any time Brad sends you a tell.
-
-      Brad tells you,'Let's camp the birds in SK'
-
-You could edit the "UserTriggers.txt" file, and add a new trigger that might look like this:
-
-      1000;1;Brad;Brad tells you;1;Brad wants something;1;Brad tell
-
-Now, any time the phrase "Brad tells you" shows up in the log file, you will get a text alert saying "Brad wants something" as well as a text-to-speech audible alert of "Brad tell". Note that there is nothing magic about the value in that first "triggerID" field, other than it should be a unique number from the other triggers.
-<br>
-<br>
-Let's do a more complex example.  Suppose you are a wily enchanter who likes to charm backstabbing mobs for added DPS, and you'd like to set up an alert for mobs that are backstabbing, so you can identify then charm them.  Actually, it turns out that there is already just such a trigger in the starter kit set of triggers, but let's pretend that isn't true, and create one as a learning example.  
-<br>
-Here's a sample line from the log file:
-
-      An undead barkeep backstabs YOU for 145 points of damage.
-
-Let's set up a trigger for that line.  Our first problem, how to set up a trigger that will match that line, regardless of who is doing the backstabbing, who is getting backstabbed, and for how many points of damage?  To answer that, we need to create some general pattern-matching text.  PigParse understands and uses the full set of regular expressions for searching text, and if you happen to know and understand regular expressions, you can absolutely key them into the search field and it will work.  But real regular expressions can be less than user-friendly, so let's make use of PigParse simplified regular expression capability.  It is best shown with an example:
-
-      Line from the log file:      An undead barkeep backstabs YOU for 145 points of damage.
-      searchText that will match:  {backstabber} backstabs {target} for {damage} points of damage.
-
-Now let's edit "UserTriggers.txt" and add our new trigger.  Note that the simplified regular expression fields can also be used in the text and audible alerts:
-
-      1002;1;Backstabber;^{backstabber} backstabs {target} for {damage} points of damage.;1;Backstabber = {backstabber};1;Backstabber
- 
-</ul>
+<ul> 
 <h3>Custom Timers (PigTimers)</h3>
 <ul>
 All below commands work in tells (keep them private!) or regular say (share with your friends!)
