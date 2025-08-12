@@ -1,6 +1,7 @@
 ﻿using EQTool.Models;
 using EQTool.Services;
 using EQTool.Services.Spells;
+using EQTool.ViewModels.MobInfoComponents;
 using EQTool.ViewModels.SpellWindow;
 using EQToolShared;
 using System;
@@ -23,14 +24,16 @@ namespace EQTool.ViewModels
         private readonly EQSpells spells;
         private readonly PigParseApi pigParseApi;
         private readonly BoatScheduleService boatScheduleService;
+        private readonly PetViewModel playerPet;
 
-        public SpellWindowViewModel(ActivePlayer activePlayer, IAppDispatcher appDispatcher, EQToolSettings settings, EQSpells spells, BoatScheduleService boatScheduleService, PigParseApi pigParseApi)
+        public SpellWindowViewModel(ActivePlayer activePlayer, IAppDispatcher appDispatcher, EQToolSettings settings, EQSpells spells, BoatScheduleService boatScheduleService, PigParseApi pigParseApi, PetViewModel playerPet)
         {
             this.activePlayer = activePlayer;
             this.pigParseApi = pigParseApi;
             this.boatScheduleService = boatScheduleService;
             this.appDispatcher = appDispatcher;
             this.settings = settings;
+            this.playerPet = playerPet;
             this.spells = spells;
             Title = "Triggers v" + App.Version;
         }
@@ -354,8 +357,6 @@ namespace EQTool.ViewModels
                     item.ColumnVisibility = hidespell ? System.Windows.Visibility.Collapsed : System.Windows.Visibility.Visible;
                 }
 
-
-
                 var groupedspellList = SpellList.GroupBy(a => a.GroupName).ToList();
                 foreach (var triggers in groupedspellList)
                 {
@@ -380,6 +381,16 @@ namespace EQTool.ViewModels
                         foreach (var spell in triggers)
                         {
                             spell.HeaderVisibility = System.Windows.Visibility.Visible;
+                        }
+                    }
+
+                    var groupname = triggers.FirstOrDefault()?.GroupName ?? string.Empty;
+                    if (playerPet.PetName == groupname)
+                    {
+                        foreach (var spell in triggers)
+                        {
+                            spell.HeaderVisibility = System.Windows.Visibility.Visible;
+                            spell.ColumnVisibility = System.Windows.Visibility.Visible;
                         }
                     }
                 }

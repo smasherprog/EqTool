@@ -3,6 +3,7 @@ using EQTool.Models;
 using EQTool.Services;
 using EQTool.Services.Parsing;
 using EQTool.ViewModels;
+using EQTool.ViewModels.MobInfoComponents;
 using EQTool.ViewModels.SpellWindow;
 using EQToolShared.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -85,6 +86,28 @@ namespace EQtoolsTests
             var effect = SpellList.FirstOrDefault();
             Assert.IsNotNull(effect);
             Assert.AreEqual(effect.TotalDuration.TotalSeconds, 660);
+        }
+
+        [TestMethod]
+        public void TestBurnoutIII_ForPet()
+        {
+            var settings = container.Resolve<EQToolSettings>();
+            settings.YouOnlySpells = true;
+            var pet = container.Resolve<PetViewModel>();
+            pet.PetName = "Xibab";
+            var spellname = "Burnout III";
+            var spellclass = spells.AllSpells.FirstOrDefault(a => a.name == spellname);
+            var line = YouBeginCasting + " " + spellname;
+            player.Player.Level = 59;
+            player.Player.PlayerClass = PlayerClasses.Magician;
+            logParser.Push(line, DateTime.Now);
+            line = "Xibab goes berserk.";
+            logParser.Push(line, DateTime.Now.AddSeconds(6));
+            spellWindowViewModel.UpdateSpells(1000);
+
+            var effect = SpellList.FirstOrDefault();
+            Assert.IsNotNull(effect);
+            Assert.AreEqual(effect.ColumnVisibility, System.Windows.Visibility.Visible);
         }
 
         [TestMethod]
