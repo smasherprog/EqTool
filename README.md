@@ -81,8 +81,6 @@ Features:
   <li>Hanbox shouts, 'RAMP2 CH --Beefwich'</li>
   <li>Hanbox shouts, 'CH - name - 001'</li> 
 </ul>
-<h3>User Defined Triggers</h3>
-<ul> 
 <h3>Custom Timers (PigTimers)</h3>
 <ul>
 All below commands work in tells (keep them private!) or regular say (share with your friends!)
