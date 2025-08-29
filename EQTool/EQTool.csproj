@@ -431,9 +431,6 @@
     <Compile Include="UI\SettingsComponents\SettingsServer.xaml.cs">
       <DependentUpon>SettingsServer.xaml</DependentUpon>
     </Compile>
-    <Compile Include="UI\SpawnTimerDialog.xaml.cs">
-      <DependentUpon>SpawnTimerDialog.xaml</DependentUpon>
-    </Compile>
     <Compile Include="UI\EventOverlay.xaml.cs">
       <DependentUpon>EventOverlay.xaml</DependentUpon>
     </Compile>
@@ -589,10 +586,6 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UI\SettingsComponents\SettingsServer.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="UI\SpawnTimerDialog.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

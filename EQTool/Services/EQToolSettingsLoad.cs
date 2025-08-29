@@ -123,29 +123,11 @@ namespace EQTool.Services
             }
         }
 
-        private static void CreateDefaultTriggerFile(string fileName)
+        public static List<UserDefinedTrigger> ReadTriggers()
         {
-            try
+            var ret = new List<UserDefinedTrigger>();
+            var lines = new[]
             {
-
-                var fileContents = new List<string>
-            {
-                "#",
-                "# comment line:                 hashtag # in first column",
-                "# field separator symbol:       semi-colon ;",
-                "#",
-                "# fields:",
-                "#   triggerID       int         unique value for this trigger",
-                "#   triggerEnabled  int         1/0 boolean enable/disable this trigger",
-                "#   triggerName     string      descriptive name",
-                "#   searchText      string      pattern to match (can be regular expression)",
-                "#   textEnabled     int         1/0 boolean enable/disable text alerts",
-                "#   displayText     string      text to be displayed when this trigger finds a matching line in the log",
-                "#   audioEnabled    int         1/0 boolean enable/disable audible text-to-speech alerts",
-                "#   audioText       string      text to be spoken when this trigger finds a matching line in the log",
-                "# ",
-                "# triggerID;triggerEnabled;triggerName;searchText;textEnabled;displayText;audioEnabled;audioText",
-                "#",
                 "100;1;Spell Interrupted;^Your spell is interrupted.;1;Spell Interrupted;0;Interrupted",
                 "101;1;Spell Fizzle;^Your spell fizzles!;1;Spell Fizzles;0;Fizzle",
                 "102;1;Backstabber;^{backstabber} backstabs {target} for {damage} points of damage.;1;{backstabber} backstabs {target} for {damage};0;Backstabber",
@@ -163,69 +145,25 @@ namespace EQTool.Services
                 "114;1;Sense Heading Failed;^You have no idea what direction you are facing;1;No idea;0;no idea"
             };
 
-                // write the file
-                Console.WriteLine($"Creating file: [{fileName}]");
-                using (var writer = new StreamWriter(fileName))
-                {
-                    foreach (var line in fileContents)
-                    {
-                        // write a line
-                        // Console.WriteLine(line);
-                        writer.WriteLine(line);
-                    }
-                }
-            }
-            catch { }
-        }
-
-        private static List<UserDefinedTrigger> ReadTriggers()
-        {
-            var ret = new List<UserDefinedTrigger>();
-            try
+            foreach (var line in lines)
             {
-                var userTriggerFileName = "UserTriggers.txt";
-                // if the trigger file does not exist, then create a starter default set
-                if (File.Exists(userTriggerFileName) == false)
+                var fields = line.Split(';');
+                if (fields.Length == 8)
                 {
-                    CreateDefaultTriggerFile(userTriggerFileName);
-                }
-                // read the file, open it in read-only mode
-                Console.WriteLine($"Reading UserTrigger file: [{userTriggerFileName}]");
-                var fs = new FileStream(userTriggerFileName, FileMode.Open, FileAccess.Read);
-                using (var reader = new StreamReader(fs))
-                {
-                    // read a line
-                    string line;
-                    while ((line = reader.ReadLine()) != null)
+                    var t = new UserDefinedTrigger()
                     {
-                        // attempt to create a trigger from this line
-                        var commentChar = '#';
-                        if (line.IndexOf(commentChar) != 0)
-                        {
-                            // split the line into fields
-                            var fieldSeparater = ';';
-                            var fields = line.Split(fieldSeparater);
-                            if (fields.Count() == 8)
-                            {
-                                // create the trigger and add it to the list
-                                var t = new UserDefinedTrigger()
-                                {
-                                    TriggerID = int.Parse(fields[0]),
-                                    TriggerEnabled = int.Parse(fields[1]) == 1,
-                                    TriggerName = fields[2],
-                                    SearchText = fields[3],
-                                    TextEnabled = int.Parse(fields[4]) == 1,
-                                    DisplayText = fields[5],
-                                    AudioEnabled = int.Parse(fields[6]) == 1,
-                                    AudioText = fields[7],
-                                };
-                                ret.Add(t);
-                            }
-                        }
-                    }
+                        TriggerID = int.Parse(fields[0]),
+                        TriggerEnabled = int.Parse(fields[1]) == 1,
+                        TriggerName = fields[2],
+                        SearchText = fields[3],
+                        TextEnabled = int.Parse(fields[4]) == 1,
+                        DisplayText = fields[5],
+                        AudioEnabled = int.Parse(fields[6]) == 1,
+                        AudioText = fields[7],
+                    };
+                    ret.Add(t);
                 }
             }
-            catch { }
             return ret;
         }
 

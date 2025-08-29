@@ -1,5 +1,5 @@
 ﻿using EQTool.Models;
-using EQTool.Services.Handlers;
+using EQTool.Services;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 
 namespace EQtoolsTests
@@ -24,7 +24,7 @@ namespace EQtoolsTests
                 TriggerEnabled = true
             };
 
-            string line = "99 flagons of wine on the wall";
+            var line = "99 flagons of wine on the wall";
             var regex = trigger.TriggerRegex;
             var match = regex.Match(line);
             trigger.SaveNamedGroupValues(match);
@@ -35,6 +35,13 @@ namespace EQtoolsTests
 
             Assert.AreEqual(audiotext, "99 flagons of wine");
             Assert.AreEqual(displaytext, "99 flagons of wine");
+        }
+
+        [TestMethod]
+        public void TestLoadTriggers()
+        {
+            var t = EQToolSettingsLoad.ReadTriggers();
+            Assert.IsTrue(t.Count > 0);
         }
     }
 }

@@ -45,35 +45,31 @@ namespace EQTool.Services
                             var licensetext = File.ReadAllText(root + "/license.txt");
                             if (licensetext.Contains("Project 1999"))
                             {
-                                var dirdata = GetUIFiles(root)
+                                var uifiles = GetUIFiles(root)
                                                             .OrderByDescending(a => a.LastWriteTime)
                                                             .Select(a => new { a.LastWriteTime, a.FullName })
                                                             .FirstOrDefault();
-                                if (dirdata != null)
+                                var directory = new DirectoryInfo(root);
+                                var maxmoddate = directory.GetFiles()
+                                .OrderByDescending(a => a.LastWriteTime)
+                                .Select(a => a.LastWriteTime)
+                                .FirstOrDefault();
+                                var match = new Match
                                 {
-                                    var directory = new DirectoryInfo(root);
-                                    var maxmoddate = directory.GetFiles()
-                                    .OrderByDescending(a => a.LastWriteTime)
-                                    .Select(a => (DateTime?)a.LastWriteTime)
-                                    .FirstOrDefault();
-                                    if (maxmoddate.HasValue)
-                                    {
-                                        possibles.Enqueue(new Match
-                                        {
-                                            LastModifiedDate = maxmoddate.Value,
-                                            EqBaseLocation = root,
-                                            HasCharUiFiles = false
-                                        });
-                                    }
+                                    LastModifiedDate = maxmoddate,
+                                    EqBaseLocation = root,
+                                    HasCharUiFiles = false
+                                };
+
+                                if (uifiles != null)
+                                {
+                                    match.HasCharUiFiles = true;
+                                    possibles.Enqueue(match);
                                 }
                                 else
                                 {
-                                    possibles.Enqueue(new Match
-                                    {
-                                        LastModifiedDate = dirdata.LastWriteTime,
-                                        EqBaseLocation = root,
-                                        HasCharUiFiles = true
-                                    });
+                                    match.HasCharUiFiles = false;
+                                    possibles.Enqueue(match);
                                 }
                             }
                         }

@@ -892,11 +892,6 @@ namespace EQTool.UI.SettingsComponents
             settingsTestRunOverlay.RunTest(OverlayTypes.DeathLoopEvent);
         }
 
-        private void openSpawnTimerDialog(object sender, RoutedEventArgs e)
-        {
-            _ = windowFactory.CreateWindow<SpawnTimerDialog>().ShowDialog();
-        }
-
         private void selectallVisual(object sender, RoutedEventArgs e)
         {
             // make button behavior a toggle button, just use the first one in the list as the indicator
