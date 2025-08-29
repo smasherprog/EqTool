@@ -51,6 +51,9 @@ namespace EQTool.Services.Handlers
         //
         // https://regex101.com/r/3d1UGb/1
         //
+        private const string customTimerPatternAlias =
+          @"^StartTimer-(((?<hh>[0-9]+):)?((?<mm>[0-9]+):))?(?<ss>[0-9]+)(-(?<label>.+))*";
+        private readonly Regex regexAlias = new Regex(customTimerPatternAlias, RegexOptions.Compiled);
         private readonly Regex regex = new Regex(customTimerPattern, RegexOptions.Compiled);
         private readonly SpellWindowViewModel spellWindowViewModel;
         private readonly EQSpells spells;
@@ -71,6 +74,10 @@ namespace EQTool.Services.Handlers
         {
             // use the regex to check for desired content
             var match = regex.Match(commsEvent.Content);
+            if (!match.Success)
+            {
+                match = regexAlias.Match(commsEvent.Content);
+            }
             if (match.Success)
             {
                 // get results from the rexex scan
