@@ -27,6 +27,7 @@ namespace EQTool.Services.Parsing
         {
             return line == "You feel you should get somewhere safe as soon as possible." ||
                 line == "The gods have awoken to unleash their wrath across Norrath." ||
+                line == "An unsettling silence smothers the land. Not a complete silence, but somehow quieter for it, the way a thick blanket of snow muffles the noise of the world. The chill of it pierces your bones, and you know, danger approaches." ||
                 line == "You feel the need to get somewhere safe quickly.";
         }
     }
