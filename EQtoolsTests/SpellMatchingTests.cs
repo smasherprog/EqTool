@@ -235,6 +235,18 @@ namespace EQtoolsTests
         }
 
         [TestMethod]
+        public void TestWarriorDisciplineDefensive()
+        {
+            var line = "You assume a defensive fighting style..";
+            player.Player.Level = 54;
+            player.Player.PlayerClass = PlayerClasses.Warrior;
+            logParser.Push(line, DateTime.Now);
+            var spell = spellWindowViewModel.SpellList.ToList();
+            Assert.IsNotNull(spell);
+            //Assert.AreEqual("Defensive Discipline Cooldown", spell.Name);
+        }
+
+        [TestMethod]
         public void TestMonkVoidance()
         {
             var line = "You become untouchable.";

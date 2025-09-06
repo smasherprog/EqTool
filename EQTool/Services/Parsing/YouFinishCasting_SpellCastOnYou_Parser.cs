@@ -78,6 +78,11 @@ namespace EQTool.Services.Parsing
                 }
             }
 
+            if (line.EndsWith(".."))
+            {
+                line = line.Substring(0, line.Length - 1);
+            }
+
             if (spells.CastOnYouSpells.TryGetValue(line, out var foundspells))
             {
                 foundspells = foundspells.Where(a => !IgnoreSpellsForGuesses.Contains(a.name)).ToList();
@@ -94,7 +99,7 @@ namespace EQTool.Services.Parsing
                     });
                     return true;
                 }
-                foundspell = spellDurations.MatchClosestLevelToSpell(foundspells, timestamp);
+                ive coofoundspell = spellDurations.MatchClosestLevelToSpell(foundspells, timestamp);
                 if (foundspell != null)
                 {
                     debugOutput.WriteLine($"{foundspell.name} Message: {line}", OutputType.Spells);
