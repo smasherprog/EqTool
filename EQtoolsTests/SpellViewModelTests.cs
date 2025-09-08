@@ -181,6 +181,17 @@ namespace EQtoolsTests
         }
 
         [TestMethod]
+        public void TestFluxStaff()
+        {
+            player.Player.PlayerClass = EQToolShared.Enums.PlayerClasses.Wizard;
+            player.Player.Level = 23;
+            logParser.Push("A deepwater crocodile looks uncomfortable.", DateTime.Now);
+            logParser.Push("A deepwater crocodile looks uncomfortable.", DateTime.Now.AddSeconds(5));
+            var spelleffect = spellWindowViewModel.SpellList.Where(a => a.SpellViewModelType == SpellViewModelType.Counter).Cast<CounterViewModel>().FirstOrDefault();
+            Assert.AreEqual(spelleffect.Count, 2);
+        }
+
+        [TestMethod]
         public void GuessParalyzingEarch()
         {
             player.Player.PlayerClass = EQToolShared.Enums.PlayerClasses.Necromancer;

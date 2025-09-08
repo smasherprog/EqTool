@@ -149,6 +149,12 @@ namespace EQTool.Services.Parsing
                 {
                     _ = foundspells.RemoveAll(a => a.name == "Waves of the Deep Sea");
                 }
+                var mailisment = foundspells.FirstOrDefault(a => a.name == "Malisement");
+                //not a good way to handle this, but if your a wizard, you should probably see the flux staff
+                if (activePlayer.Player.PlayerClass == EQToolShared.Enums.PlayerClasses.Wizard && mailisment != null)
+                {
+                    _ = foundspells.Remove(mailisment);
+                }
                 debugOutput.WriteLine($"{spellsfound} Message: {spellmessage}", OutputType.Spells);
                 logEvents.Handle(new SpellCastOnOtherEvent
                 {

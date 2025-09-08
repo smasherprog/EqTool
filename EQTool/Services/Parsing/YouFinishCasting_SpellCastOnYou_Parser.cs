@@ -99,7 +99,7 @@ namespace EQTool.Services.Parsing
                     });
                     return true;
                 }
-                ive coofoundspell = spellDurations.MatchClosestLevelToSpell(foundspells, timestamp);
+                var coofoundspell = spellDurations.MatchClosestLevelToSpell(foundspells, timestamp);
                 if (foundspell != null)
                 {
                     debugOutput.WriteLine($"{foundspell.name} Message: {line}", OutputType.Spells);
