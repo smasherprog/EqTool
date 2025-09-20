@@ -335,6 +335,7 @@
     <Compile Include="Services\Handlers\ConHandler.cs" />
     <Compile Include="Services\Handlers\DisciplineCooldownHandler.cs" />
     <Compile Include="Services\Handlers\EnterWorldHandler.cs" />
+    <Compile Include="Services\Handlers\AOWTimerHandler.cs" />
     <Compile Include="Services\Handlers\TriggerHandler.cs" />
     <Compile Include="Services\IO\FileReader.cs" />
     <Compile Include="Services\DebugOutput.cs" />
