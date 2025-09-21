@@ -204,6 +204,10 @@ namespace EQTool.Services.Handlers
                 {
                     spellduration = TimeSpan.FromSeconds(8);
                 }
+                if (spell.name == "Weapon Shield Discipline")
+                {
+                    spellduration = TimeSpan.FromSeconds(15);
+                }
                 spellduration = spellduration.Add(TimeSpan.FromMilliseconds(delayOffset));
                 if (spellduration.TotalSeconds > 0)
                 {
