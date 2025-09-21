@@ -204,7 +204,11 @@ namespace EQTool.Services.Handlers
                 {
                     spellduration = TimeSpan.FromSeconds(8);
                 }
-                if (spell.name == "Weapon Shield Discipline")
+                else if (spell.name == "Weapon Shield Discipline")
+                {
+                    spellduration = TimeSpan.FromSeconds(20);
+                }
+                else if (spell.name == "Deftdance Discipline")
                 {
                     spellduration = TimeSpan.FromSeconds(15);
                 }
