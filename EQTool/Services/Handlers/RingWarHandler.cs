@@ -42,6 +42,11 @@ namespace EQTool.Services.Handlers
                     });
                 }
                 startingtime += 300;
+                if (round == 3)
+                {
+                    startingtime += 4;
+                }
+
                 spellWindowViewModel.TryAdd(new TimerViewModel
                 {
                     PercentLeft = 100,
