@@ -1744,7 +1744,19 @@ namespace EQToolShared
                 ShowAllMapLevels = true,
                 ZoneLevelHeight = 10,
                 NotableNPCs = new List<string>() { "Ankhefenmut", "Findlegrob", "Sindlegrob", "Bindlegrob", "Blackwing", "Broog Bloodbeard", "Brother Zephyl", "Grazhak the Berserker", "Hasten Bootstrutter", "Maldyn the Unkempt", "monstrous zombie", "Mortificator Syythrak", "Oculys Ogrefiend", "Petrifin", "Quid Rilstone", "Rharzar", "Shardwing", "Tarskuk", "Theodast Wuggmump", "Zazamoukh" },
-                RespawnTime = new TimeSpan(0, 6, 40)
+                RespawnTime = new TimeSpan(0, 6, 40),
+                NpcSpawnTimes = new List<NpcSpawnTime>() {
+                     new NpcSpawnTime
+                     {
+                          Name = "Kindra Farseer",
+                            RespawnTime = TimeSpan.FromMinutes(20)
+                     },
+                       new NpcSpawnTime
+                     {
+                          Name = "Cynthia",
+                            RespawnTime = new TimeSpan(0, 5, 50)
+                     },
+                 }
             });
             ZoneInfoMap.Add("rivervale", new ZoneInfo
             {
