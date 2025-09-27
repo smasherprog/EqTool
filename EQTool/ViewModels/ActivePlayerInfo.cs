@@ -32,6 +32,9 @@ namespace EQTool.ViewModels
                 Name = charName,
                 PlayerClass = null,
                 Zone = "freportw",
+                ChChainOverlay = true,
+                ChChainWarningAudio = true,
+                ChChainWarningOverlay = true,
                 ShowSpellsForClasses = Enum.GetValues(typeof(PlayerClasses)).Cast<PlayerClasses>().ToList()
             };
 
@@ -85,7 +88,9 @@ namespace EQTool.ViewModels
                     }
                     Player = tempplayer;
                     if (Player != null)
+                    {
                         Player.LastUpdate = DateTime.Now;
+                    }
                 }
                 else
                 {
