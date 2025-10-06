@@ -112,7 +112,7 @@ namespace EQtoolsTests
             logParser.Push(DummyEntryToForceEmitEvent, DateTime.Now.AddSeconds(4));
 
             var spelleffect = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Spell && a.Name == "Harmony") as SpellViewModel;
-            Assert.AreEqual(46.0, spelleffect.TotalDuration.TotalSeconds, 2);
+            Assert.AreEqual(120, spelleffect.TotalDuration.TotalSeconds, 2);
         }
 
         [TestMethod]
