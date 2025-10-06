@@ -104,6 +104,18 @@ namespace EQtoolsTests
         }
 
         [TestMethod]
+        public void Harmony()
+        {
+            player.Player.PlayerClass = EQToolShared.Enums.PlayerClasses.Druid;
+            player.Player.Level = 60;
+            logParser.Push("You begin casting Harmony.", DateTime.Now);
+            logParser.Push(DummyEntryToForceEmitEvent, DateTime.Now.AddSeconds(4));
+
+            var spelleffect = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Spell && a.Name == "Harmony") as SpellViewModel;
+            Assert.AreEqual(46.0, spelleffect.TotalDuration.TotalSeconds, 2);
+        }
+
+        [TestMethod]
         public void TOT()
         {
             logParser.Push("You begin casting Theft of Thought.", DateTime.Now);

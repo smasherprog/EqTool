@@ -10,6 +10,7 @@ namespace EQTool.Services.Handlers
             "Harmshield",
             "Divine Aura",
             "Dictate",
+            "Harmony",
             "Charm",
             "Beguile",
             "Cajoling Whispers",
