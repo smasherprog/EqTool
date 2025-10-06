@@ -109,7 +109,7 @@ namespace EQtoolsTests
             player.Player.PlayerClass = EQToolShared.Enums.PlayerClasses.Druid;
             player.Player.Level = 60;
             logParser.Push("You begin casting Harmony.", DateTime.Now);
-            logParser.Push(DummyEntryToForceEmitEvent, DateTime.Now.AddSeconds(4));
+            logParser.Push(DummyEntryToForceEmitEvent, DateTime.Now.AddSeconds(5));
 
             var spelleffect = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Spell && a.Name == "Harmony") as SpellViewModel;
             Assert.AreEqual(120, spelleffect.TotalDuration.TotalSeconds, 2);
