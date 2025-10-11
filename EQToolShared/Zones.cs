@@ -1560,6 +1560,11 @@ namespace EQToolShared
                      },
                     new NpcSpawnTime
                      {
+                          Name = "Guard Buldoral",
+                          RespawnTime = new TimeSpan(0, 25, 0)
+                     },
+                    new NpcSpawnTime
+                     {
                           Name = "Guard Captain Latorl",
                           RespawnTime = new TimeSpan(0, 24, 0)
                      },
@@ -1750,6 +1755,10 @@ namespace EQToolShared
                      {
                           Name = "Kindra Farseer",
                             RespawnTime = TimeSpan.FromMinutes(20)
+                     }, new NpcSpawnTime
+                     {
+                          Name = "Tabien the Goodly",
+                            RespawnTime = new TimeSpan(2, 0, 0)
                      },
                        new NpcSpawnTime
                      {
