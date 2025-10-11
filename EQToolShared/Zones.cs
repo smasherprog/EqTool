@@ -1562,6 +1562,10 @@ namespace EQToolShared
                      {
                           Name = "Guard Buldoral",
                           RespawnTime = new TimeSpan(0, 25, 0)
+                     },  new NpcSpawnTime
+                     {
+                          Name = "Guard Abrebla",
+                          RespawnTime = new TimeSpan(0, 25, 0)
                      },
                     new NpcSpawnTime
                      {
