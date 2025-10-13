@@ -387,6 +387,7 @@
     <Compile Include="Services\UpdateRunner.cs" />
     <Compile Include="Services\UserDefinedTrigger.cs" />
     <Compile Include="Services\UserComponentSettingsManagementFactory.cs" />
+    <Compile Include="Services\WindowExtensions.cs" />
     <Compile Include="Services\WindowFactory.cs" />
     <Compile Include="Services\Handlers\YouZonedHandler.cs" />
     <Compile Include="Services\Handlers\PlayerLevelDetectionHandler.cs" />

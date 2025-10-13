@@ -136,6 +136,16 @@ namespace EQTool.ViewModels
             }
         }
 
+        public bool DpsClickThrough
+        {
+            get => toolSettings.DpsWindowState.IsClickThrough;
+            set
+            {
+                toolSettings.DpsWindowState.IsClickThrough = value;
+                OnPropertyChanged();
+            }
+        }
+        
         public double DPSWindowOpacity
         {
             get => toolSettings.DpsWindowState.Opacity ?? 1.0;
@@ -157,6 +167,16 @@ namespace EQTool.ViewModels
             }
         }
 
+        public bool MapClickThrough
+        {
+            get => toolSettings.MapWindowState.IsClickThrough;
+            set
+            {
+                toolSettings.MapWindowState.IsClickThrough = value;
+                OnPropertyChanged();
+            }
+        }
+        
         public double MapWindowOpacity
         {
             get => toolSettings.MapWindowState.Opacity ?? 1.0;
@@ -178,6 +198,16 @@ namespace EQTool.ViewModels
             }
         }
 
+        public bool MobClickThrough
+        {
+            get => toolSettings.MobWindowState.IsClickThrough;
+            set
+            {
+                toolSettings.MobWindowState.IsClickThrough = value;
+                OnPropertyChanged();
+            }
+        }
+        
         public bool SpellAlwaysOnTop
         {
             get => toolSettings.SpellWindowState.AlwaysOnTop;
@@ -188,6 +218,16 @@ namespace EQTool.ViewModels
             }
         }
 
+        public bool SpellClickThrough
+        {
+            get => toolSettings.SpellWindowState.IsClickThrough;
+            set
+            {
+                toolSettings.SpellWindowState.IsClickThrough = value;
+                OnPropertyChanged();
+            }
+        }
+        
         public bool ShowRandomRolls
         {
             get => toolSettings.ShowRandomRolls;

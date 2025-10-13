@@ -571,5 +571,28 @@ namespace EQTool
                 }
             }
         }
+        
+        public void ApplyClickThrough()
+        {
+            foreach (var item in WindowList)
+            {
+                if (item is DPSMeter w)
+                {
+                    w.SetClickThrough(EQToolSettings.DpsWindowState.IsClickThrough);
+                }
+                else if (item is MappingWindow w1)
+                {
+                    w1.SetClickThrough(EQToolSettings.MapWindowState.IsClickThrough);
+                }
+                else if (item is MobInfo w2)
+                {
+                    w2.SetClickThrough(EQToolSettings.MobWindowState.IsClickThrough);
+                }
+                else if (item is SpellWindow w3)
+                {
+                    w3.SetClickThrough(EQToolSettings.SpellWindowState.IsClickThrough);
+                }
+            }
+        }
     }
 }
