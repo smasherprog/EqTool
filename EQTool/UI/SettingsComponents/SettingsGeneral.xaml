@@ -81,6 +81,10 @@
                             <CheckBox IsChecked="{Binding DpsAlwaysOnTop}" Click="SaveAlwaysOntopCheckBoxSettings" ></CheckBox>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Click-Through" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="120"/>
+                            <CheckBox IsChecked="{Binding DpsClickThrough}" Click="SaveClickThroughCheckBoxSettings" ></CheckBox>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
                             <TextBlock Text="Window Opacity"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="120"/>
                             <Slider Value="{Binding DPSWindowOpacity}" Minimum=".01" Maximum="1" SmallChange=".1" TickFrequency=".1" ValueChanged="SaveSettings" MinWidth="150"/>
                         </StackPanel>
@@ -91,6 +95,10 @@
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="Always on top" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="120"/>
                             <CheckBox IsChecked="{Binding MobAlwaysOnTop}" Click="SaveAlwaysOntopCheckBoxSettings" ></CheckBox>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Click-Through" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="120"/>
+                            <CheckBox IsChecked="{Binding MobClickThrough}" Click="SaveClickThroughCheckBoxSettings" ></CheckBox>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="Login middlemand" VerticalAlignment="Center"  FontWeight="Bold" MinWidth="120"/>
@@ -275,6 +283,10 @@
                         <CheckBox IsChecked="{Binding SpellAlwaysOnTop}" Click="SaveAlwaysOntopCheckBoxSettings" ></CheckBox>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Click-Through" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
+                        <CheckBox IsChecked="{Binding SpellClickThrough}" Click="SaveClickThroughCheckBoxSettings" ></CheckBox>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Window Opacity"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
                         <Slider Value="{Binding TriggerWindowOpacity}" Minimum=".01" Maximum="1" SmallChange=".1" TickFrequency=".1" ValueChanged="SaveSettings" MinWidth="150"/>
                     </StackPanel>
@@ -322,6 +334,10 @@
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Always on top" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
                     <CheckBox IsChecked="{Binding MapAlwaysOnTop}" Click="SaveAlwaysOntopCheckBoxSettings" ></CheckBox>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Click-Through" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
+                    <CheckBox IsChecked="{Binding MapClickThrough}" Click="SaveClickThroughCheckBoxSettings" ></CheckBox>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Map Cache" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>

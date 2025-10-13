@@ -686,12 +686,19 @@ namespace EQTool.UI.SettingsComponents
         {
             SaveConfig();
         }
+        
         private void SaveAlwaysOntopCheckBoxSettings(object sender, RoutedEventArgs e)
         {
             SaveConfig();
             ((App)System.Windows.Application.Current).ApplyAlwaysOnTop();
         }
-
+        
+        private void SaveClickThroughCheckBoxSettings(object sender, RoutedEventArgs e)
+        {
+            SaveConfig();
+            ((App)System.Windows.Application.Current).ApplyClickThrough();
+        }
+        
         private void testenrage(object sender, RoutedEventArgs e)
         {
             settingsTestRunOverlay.RunTest(OverlayTypes.EnrageEvent);
