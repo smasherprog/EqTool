@@ -37,7 +37,7 @@ namespace EQTool.ViewModels
         }
     }
 
-    public class SettingsWindowViewModel : INotifyPropertyChanged
+    public class SettingsWindowViewModel : BaseWindowViewModel, INotifyPropertyChanged
     {
         private readonly EQToolSettings toolSettings;
 
@@ -350,13 +350,6 @@ namespace EQTool.ViewModels
             OnPropertyChanged(nameof(PetViewModel));
             OnPropertyChanged(nameof(HasCharName));
             OnPropertyChanged(nameof(HasNoCharName));
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected void OnPropertyChanged([CallerMemberName] string name = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
     }
 }

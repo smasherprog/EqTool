@@ -3,13 +3,14 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-    xmlns:local="clr-namespace:EQTool.UI"
-       mc:Ignorable="d" 
+        xmlns:local="clr-namespace:EQTool.UI"
+        mc:Ignorable="d"
         Style="{DynamicResource MyEventWindowStyle}"
-      Height="450" 
-    Width="640"  
-    WindowStyle="None"  
-    AllowsTransparency="True">
+        Height="450"
+        Width="640"
+        WindowStyle="None"
+        ResizeMode="{Binding CanResize}"
+        AllowsTransparency="True">
     <WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="0" ResizeBorderThickness="0" x:Name="WindowResizeChrome" />
     </WindowChrome.WindowChrome>

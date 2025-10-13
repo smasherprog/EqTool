@@ -28,7 +28,7 @@ namespace EQTool.UI
             ActivePlayer activePlayer,
             IAppDispatcher appDispatcher,
             SlainHandler slainHandler,
-            LoggingService loggingService) : base(settings.SpellWindowState, toolSettingsLoad, settings)
+            LoggingService loggingService) : base(spellWindowViewModel, settings.SpellWindowState, toolSettingsLoad, settings)
         {
             this.slainHandler = slainHandler;
             this.appDispatcher = appDispatcher;

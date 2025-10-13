@@ -509,7 +509,9 @@
     <Compile Include="Shapes\ArrowLineBase.cs" />
     <Compile Include="ViewModels\ActivePlayerInfo.cs" />
     <Compile Include="Services\TimersService.cs" />
+    <Compile Include="ViewModels\BaseWindowViewModel.cs" />
     <Compile Include="ViewModels\ConsoleViewModel.cs" />
+    <Compile Include="ViewModels\EventOverlayViewModel.cs" />
     <Compile Include="ViewModels\MobInfoComponents\MobInfoManagementViewModel.cs" />
     <Compile Include="ViewModels\MobInfoComponents\PetViewModel.cs" />
     <Compile Include="ViewModels\SettingsComponents\SettingsGeneralViewModel.cs" />

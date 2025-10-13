@@ -7,7 +7,7 @@ namespace EQTool.UI
     public partial class Console : BaseSaveStateWindow
     {
         public Console(ConsoleViewModel consoleViewModel, EQToolSettings settings, EQToolSettingsLoad toolSettingsLoad)
-              : base(settings.ConsoleWindowState, toolSettingsLoad, settings)
+              : base(consoleViewModel, settings.ConsoleWindowState, toolSettingsLoad, settings)
         {
             DataContext = consoleViewModel;
             InitializeComponent();

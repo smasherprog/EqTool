@@ -5,6 +5,7 @@ using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Threading;
+using EQTool.ViewModels;
 
 namespace EQTool.UI
 {
@@ -16,13 +17,16 @@ namespace EQTool.UI
             IsEnabled = false
         };
 
+        private readonly BaseWindowViewModel baseViewModel;
+        private readonly Models.WindowState windowState;
         private readonly EQToolSettingsLoad toolSettingsLoad;
         private readonly EQToolSettings settings;
-        private readonly Models.WindowState windowState;
         private bool InitCalled = false;
         protected DateTime LastWindowInteraction = DateTime.Now;
-        public BaseSaveStateWindow(Models.WindowState windowState, EQToolSettingsLoad toolSettingsLoad, EQToolSettings settings)
+
+        public BaseSaveStateWindow(BaseWindowViewModel baseViewModel, Models.WindowState windowState, EQToolSettingsLoad toolSettingsLoad, EQToolSettings settings)
         {
+            this.baseViewModel = baseViewModel;
             this.windowState = windowState;
             this.toolSettingsLoad = toolSettingsLoad;
             this.settings = settings;
@@ -90,8 +94,18 @@ namespace EQTool.UI
             DebounceSave();
         }
 
+        protected void Window_ToggleLock(object sender, RoutedEventArgs e)
+        {
+            baseViewModel.IsLocked = !baseViewModel.IsLocked;
+            LastWindowInteraction = DateTime.Now;
+            DebounceSave();
+        }
+        
         protected void DragWindow(object sender, MouseButtonEventArgs args)
         {
+            if (baseViewModel.IsLocked)
+                return;
+            
             LastWindowInteraction = DateTime.Now;
             DragMove();
         }
@@ -107,6 +121,7 @@ namespace EQTool.UI
                 Width = windowState.WindowRect.Value.Width;
                 WindowState = windowState.State;
             }
+            baseViewModel.IsLocked = windowState.IsLocked;
         }
 
         private void SaveWindowState(EQTool.Models.WindowState windowState)
@@ -120,6 +135,7 @@ namespace EQTool.UI
             };
             windowState.State = WindowState;
             windowState.AlwaysOnTop = Topmost;
+            windowState.IsLocked = baseViewModel.IsLocked;
         }
 
         protected override void OnClosing(CancelEventArgs e)
@@ -171,6 +187,16 @@ namespace EQTool.UI
         protected void MaximizeWindow(object sender, RoutedEventArgs e)
         {
             WindowState = WindowState == System.Windows.WindowState.Maximized ? System.Windows.WindowState.Normal : System.Windows.WindowState.Maximized;
+        }
+
+        protected void HoverZone_MouseEnter(object sender, MouseEventArgs e)
+        {
+            baseViewModel.IsMouseOverTitleArea = true;
+        }
+
+        protected void HoverZone_MouseLeave(object sender, MouseEventArgs e)
+        {
+            baseViewModel.IsMouseOverTitleArea = false;
         }
     }
 }

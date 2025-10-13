@@ -6,7 +6,7 @@ using System.Windows.Controls;
 
 namespace EQTool.ViewModels.MobInfoComponents
 {
-    public class MobInfoManagementViewModel : INotifyPropertyChanged
+    public class MobInfoManagementViewModel : BaseWindowViewModel, INotifyPropertyChanged
     {
         public string Title { get; set; } = "Mob Info v" + App.Version;
         private readonly UserComponentSettingsManagementFactory userComponentFactory;
@@ -46,12 +46,6 @@ namespace EQTool.ViewModels.MobInfoComponents
                 _userControl = value;
                 OnPropertyChanged();
             }
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged([CallerMemberName] string name = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
     }
 }
