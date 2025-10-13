@@ -52,9 +52,9 @@
                         </StackPanel>
                         <StackPanel Orientation="Horizontal"  HorizontalAlignment="Right">
                             <Button Content="L" Margin="1,1,10,1" FontSize="7" Width="10" Height="14" Padding="0" Click="Window_ToggleLock"/>
-                            <Button Content="_" Margin="1" FontSize="7" Width="10" Height="14" Padding="0" Click="MinimizeWindow"/>
-                            <Button Content="&#xF04B;" Margin="1" FontSize="7" Width="10" Height="14" Padding="0" Click="MaximizeWindow"/>
-                            <Button Content="X" Margin="1,1,2,1" FontSize="7" Width="10" Height="14" Padding="0" Click="CloseWindow" />
+                            <Button Content="_" Margin="1" FontSize="7" Width="10" Height="14" Padding="0" Visibility="{Binding ShowTitlebar}" Click="MinimizeWindow"/>
+                            <Button Content="&#xF04B;" Margin="1" FontSize="7" Width="10" Height="14" Padding="0" Visibility="{Binding ShowTitlebar}" Click="MaximizeWindow"/>
+                            <Button Content="X" Margin="1,1,2,1" FontSize="7" Width="10" Height="14" Padding="0" Visibility="{Binding ShowTitlebar}" Click="CloseWindow" />
                         </StackPanel>
                     </Grid>
                 </Border>

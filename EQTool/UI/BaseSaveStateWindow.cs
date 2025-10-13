@@ -42,6 +42,7 @@ namespace EQTool.UI
 
             InitCalled = true;
             AdjustWindow();
+            UpdateShowInTaskbar();
             timer.Tick += timer_Tick;
             SizeChanged += Window_SizeChanged;
             StateChanged += SpellWindow_StateChanged;
@@ -97,8 +98,11 @@ namespace EQTool.UI
         protected void Window_ToggleLock(object sender, RoutedEventArgs e)
         {
             baseViewModel.IsLocked = !baseViewModel.IsLocked;
+            windowState.IsLocked = baseViewModel.IsLocked;
+            
             LastWindowInteraction = DateTime.Now;
             DebounceSave();
+            UpdateShowInTaskbar();
         }
         
         protected void DragWindow(object sender, MouseButtonEventArgs args)
@@ -197,6 +201,11 @@ namespace EQTool.UI
         protected void HoverZone_MouseLeave(object sender, MouseEventArgs e)
         {
             baseViewModel.IsMouseOverTitleArea = false;
+        }
+        
+        public void UpdateShowInTaskbar()
+        {
+            ShowInTaskbar = !(windowState.IsLocked && windowState.AlwaysOnTop);
         }
     }
 }
