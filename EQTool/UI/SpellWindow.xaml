@@ -24,209 +24,209 @@
         <Grid Name="OutermostContainer">
             <Border Panel.ZIndex="1" Height="20" Margin="26,2,20,0" Background="Transparent" HorizontalAlignment="Stretch" VerticalAlignment="Top" IsHitTestVisible="{Binding IsTitleBarHidden}"
                     Visibility="{Binding IsLocked, Converter={StaticResource BooleanToVisibilityConverter}}" MouseEnter="HoverZone_MouseEnter" MouseLeave="HoverZone_MouseLeave" />
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-            <Border Grid.Row="0" Panel.ZIndex="2" Height="{Binding TitleBarHeight}" Background="{Binding WindowFrameBrush}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" CornerRadius="5,5,0,0" Margin="-1,0,-1,0"
-                    Visibility="{Binding EffectiveTitlebarVisibility}" MouseEnter="HoverZone_MouseEnter" MouseLeave="HoverZone_MouseLeave" MouseLeftButtonDown="DragWindow">
-                <Grid>
-                    <TextBlock Foreground="White" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,1,10,1" Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}, Path=Title}"/>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Border Grid.Row="0" Panel.ZIndex="2" Height="{Binding TitleBarHeight}" Background="{Binding WindowFrameBrush}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" CornerRadius="5,5,0,0" Margin="-1,0,-1,0"
+                        Visibility="{Binding EffectiveTitlebarVisibility}" MouseEnter="HoverZone_MouseEnter" MouseLeave="HoverZone_MouseLeave" MouseLeftButtonDown="DragWindow">
+                    <Grid>
+                        <TextBlock Foreground="White" FontWeight="Bold" HorizontalAlignment="Left" VerticalAlignment="Center" Margin="10,1,10,1" Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}, Path=Title}"/>
 
+                        <StackPanel Orientation="Horizontal"  HorizontalAlignment="Center">
+                            <Button Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="openmobinfo" ToolTip="Open Mob Info Window">
+                                <Image Source="pack://application:,,,/Images/toolbox.png"/>
+                            </Button>
+                            <Button Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="opendps" ToolTip="Open DPS Window">
+                                <Image Source="pack://application:,,,/Images/dps.png"/>
+                            </Button>
+                            <Button Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="openmap" ToolTip="Open Map Window">
+                                <Image Source="pack://application:,,,/Images/map.png"/>
+                            </Button>
+                            <Button Content="O" Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="opensettings" ToolTip="Open Settings Window" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal"  HorizontalAlignment="Right">
+                            <Button Content="L" Margin="1,1,10,1" FontSize="7" Width="10" Height="14" Padding="0" Click="Window_ToggleLock"/>
+                            <Button Content="_" Margin="1" FontSize="7" Width="10" Height="14" Padding="0" Click="MinimizeWindow"/>
+                            <Button Content="&#xF04B;" Margin="1" FontSize="7" Width="10" Height="14" Padding="0" Click="MaximizeWindow"/>
+                            <Button Content="X" Margin="1" FontSize="7" Width="10" Height="14" Padding="0" Click="CloseWindow" />
+                        </StackPanel>
+                    </Grid>
+                </Border>
+                <ListView ItemsSource="{Binding SpellList}" Grid.Column="0" Name="spelllistview" VirtualizingPanel.IsVirtualizing="True" 
+                          ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                          BorderThickness="0"
+                          VirtualizingPanel.VirtualizationMode="Recycling" Grid.Row="1" Background="Transparent">
+                    <ListView.Resources>
+                        <DataTemplate DataType="{x:Type vm:TimerViewModel}">
+                            <Grid Visibility="{Binding ColumnVisibility}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <ProgressBar Grid.Column="0" Grid.ColumnSpan="2" Value="{Binding PercentLeft}" Maximum="100"  Foreground="{Binding ProgressBarColor}"  />
+                                <StackPanel Orientation="Horizontal" Grid.Column="0" >
+                                    <Image Height="{DynamicResource GlobalFontSize}" Width="{DynamicResource GlobalFontSize}" IsEnabled="{Binding HasIcon}">
+                                        <Image.Source>
+                                            <CroppedBitmap Source="{Binding Icon.Icon}" SourceRect="{Binding Rect}" />
+                                        </Image.Source>
+                                    </Image>
+                                    <TextBlock HorizontalAlignment="Left" FontWeight="Bold" Text="{Binding Name}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Grid.Column="1" HorizontalAlignment="Right">
+                                    <TextBlock TextAlignment="Right" FontWeight="Bold" Text="{Binding SecondsLeftPretty}"/>
+                                    <Button Margin="5, 0, 0, 0" Width="14" Height="14" Click="RemoveSingleItem" ToolTip="Remove from list">
+                                        <Image Source="pack://application:,,,/Images/Trash.png"/>
+                                    </Button>
+                                </StackPanel>
+                            </Grid>
+                        </DataTemplate>
+                        <DataTemplate DataType="{x:Type vm:CounterViewModel}">
+                            <Grid Visibility="{Binding ColumnVisibility}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="6*"/>
+                                    <ColumnDefinition Width="4*"/>
+                                    <ColumnDefinition Width="1*"/>
+                                </Grid.ColumnDefinitions>
+                                <ProgressBar Grid.Column="0" Grid.ColumnSpan="3" Value="100" Maximum="100" Foreground="{Binding ProgressBarColor}"  />
+                                <StackPanel Orientation="Horizontal" Grid.Column="0" >
+                                    <Image Height="{DynamicResource GlobalFontSize}" Width="{DynamicResource GlobalFontSize}" IsEnabled="{Binding HasIcon}">
+                                        <Image.Source>
+                                            <CroppedBitmap Source="{Binding Icon.Icon}" SourceRect="{Binding Rect}" />
+                                        </Image.Source>
+                                    </Image>
+                                    <TextBlock HorizontalAlignment="Left" FontWeight="Bold" Text="{Binding Name}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Grid.Column="1" >
+                                    <TextBlock HorizontalAlignment="Left" FontWeight="Bold" Text=" Count --> "/>
+                                    <TextBlock HorizontalAlignment="Left" FontWeight="Bold" Text="{Binding Count}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Grid.Column="2" HorizontalAlignment="Right">
+                                    <Button Margin="5, 0, 0, 0" Width="14" Height="14" Click="RemoveSingleItem" ToolTip="Remove from list">
+                                        <Image Source="pack://application:,,,/Images/Trash.png"/>
+                                    </Button>
+                                </StackPanel>
+                            </Grid>
+                        </DataTemplate>
+                        <DataTemplate DataType="{x:Type vm:RollViewModel}">
+                            <Grid Visibility="{Binding ColumnVisibility}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="5*"/>
+                                    <ColumnDefinition Width="4*"/>
+                                </Grid.ColumnDefinitions>
+                                <ProgressBar Grid.Column="0" Grid.ColumnSpan="3"  Value="{Binding PercentLeft}"  Maximum="100"  Foreground="{Binding ProgressBarColor}"  />
+                                <StackPanel Orientation="Horizontal" Grid.Column="0" >
+                                    <Image Height="{DynamicResource GlobalFontSize}" Width="{DynamicResource GlobalFontSize}" IsEnabled="{Binding HasIcon}">
+                                        <Image.Source>
+                                            <CroppedBitmap Source="{Binding Icon.Icon}" SourceRect="{Binding Rect}" />
+                                        </Image.Source>
+                                    </Image>
+                                    <TextBlock HorizontalAlignment="Left" FontWeight="Bold" Text="{Binding Name}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Grid.Column="1" >
+                                    <TextBlock HorizontalAlignment="Left" FontWeight="Bold" Text="{Binding RollText}"/>
+                                </StackPanel>
+                            </Grid>
+                        </DataTemplate>
+                        <DataTemplate DataType="{x:Type vm:SpellViewModel}">
+                            <Grid Visibility="{Binding ColumnVisibility}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+                                <ProgressBar Grid.Column="0" Grid.ColumnSpan="2"  Value="{Binding PercentLeft}"  Maximum="100"  Foreground="{Binding ProgressBarColor}"  />
+                                <StackPanel Orientation="Horizontal" Grid.Column="0" >
+                                    <Image Height="{DynamicResource GlobalFontSize}" Width="{DynamicResource GlobalFontSize}" IsEnabled="{Binding HasIcon}">
+                                        <Image.Source>
+                                            <CroppedBitmap Source="{Binding Icon.Icon}" SourceRect="{Binding Rect}" />
+                                        </Image.Source>
+                                    </Image>
+                                    <TextBlock HorizontalAlignment="Left" FontWeight="Bold" Text="{Binding Name}"/>
+                                </StackPanel>
+                                <StackPanel Orientation="Horizontal" Grid.Column="2" HorizontalAlignment="Right">
+                                    <TextBlock TextAlignment="Right" FontWeight="Bold" Text="{Binding SecondsLeftPretty}"/>
+                                    <Button Margin="5, 0, 0, 0" Width="14" Height="14" Click="RemoveSingleItem" ToolTip="Remove from list">
+                                        <Image Source="pack://application:,,,/Images/Trash.png"/>
+                                    </Button>
+                                </StackPanel>
+                            </Grid>
+                        </DataTemplate>
+                        <DataTemplate DataType="{x:Type vm:BoatViewModel}">
+                            <Grid Visibility="{Binding ColumnVisibility}">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="6*"/>
+                                    <ColumnDefinition Width="4*"/>
+                                    <ColumnDefinition Width="2*"/>
+                                </Grid.ColumnDefinitions>
+                                <ProgressBar Grid.Column="0" Grid.ColumnSpan="3"  Value="{Binding PercentLeft}"  Maximum="100"  Foreground="{Binding ProgressBarColor}"  />
+
+                                <TextBlock Grid.Column="0" FontWeight="Bold" Text="{Binding Name}"/>
+                                <TextBlock Grid.Column="1" FontSize="10" Text="{Binding LastSeen}"/>
+
+                                <StackPanel Orientation="Horizontal" Grid.Column="2" HorizontalAlignment="Right">
+                                    <TextBlock TextAlignment="Right" FontWeight="Bold" Text="{Binding SecondsLeftPretty}"/>
+                                </StackPanel>
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.Resources>
+                    <ListView.GroupStyle>
+                        <GroupStyle>
+                            <GroupStyle.ContainerStyle>
+                                <Style TargetType="{x:Type GroupItem}">
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate>
+                                                <Expander IsExpanded="True" Visibility="{Binding Items[0].HeaderVisibility}" Background="LightGray">
+                                                    <Expander.Header>
+                                                        <DockPanel HorizontalAlignment="{Binding HorizontalAlignment, RelativeSource={RelativeSource AncestorType=ContentPresenter}, Mode=OneWayToSource}">
+                                                            <Grid>
+                                                                <Grid.ColumnDefinitions>
+                                                                    <ColumnDefinition Width="4*"/>
+                                                                    <ColumnDefinition Width="4*"/>
+                                                                    <ColumnDefinition Width="3*"/>
+                                                                </Grid.ColumnDefinitions>
+                                                                <TextBlock Grid.Column="0" Text="{Binding Name}" FontWeight="Bold" FontSize="{DynamicResource GlobalFontSize}"  />
+                                                                <TextBlock Grid.Column="1" Text="{Binding Items[0].TargetClassString}" FontWeight="Bold" FontSize="{DynamicResource GlobalFontSize}"  />
+                                                                <StackPanel Orientation="Horizontal" Grid.Column="2" HorizontalAlignment="Right">
+                                                                    <TextBlock Text="{Binding ItemCount}" FontSize="{DynamicResource GlobalFontSize}" FontWeight="Bold" Margin="10,0,0,0"  />
+                                                                    <TextBlock Text=" effect(s)" FontSize="{DynamicResource GlobalFontSize}"  />
+                                                                    <Button Visibility="{Binding Items[0].DeleteButtonVisibility}" Margin="0, 0, 0, 0" HorizontalAlignment="Right"  Width="14" Height="14" Click="RemoveFromSpells" ToolTip="Remove from list">
+                                                                        <Image Source="pack://application:,,,/Images/Trash.png"/>
+                                                                    </Button>
+                                                                </StackPanel>
+                                                            </Grid>
+                                                        </DockPanel>
+                                                    </Expander.Header>
+                                                    <ItemsPresenter />
+                                                </Expander>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </GroupStyle.ContainerStyle>
+                        </GroupStyle>
+                    </ListView.GroupStyle>
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="{x:Type ListViewItem}">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type ListViewItem}">
+                                        <ContentPresenter />
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                </ListView>
+                <Grid Grid.Row="1" VerticalAlignment="Bottom">
                     <StackPanel Orientation="Horizontal"  HorizontalAlignment="Center">
-                        <Button Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="openmobinfo" ToolTip="Open Mob Info Window">
-                            <Image Source="pack://application:,,,/Images/toolbox.png"/>
-                        </Button>
-                        <Button Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="opendps" ToolTip="Open DPS Window">
-                            <Image Source="pack://application:,,,/Images/dps.png"/>
-                        </Button>
-                        <Button Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="openmap" ToolTip="Open Map Window">
-                            <Image Source="pack://application:,,,/Images/map.png"/>
-                        </Button>
-                        <Button Content="O" Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="opensettings" ToolTip="Open Settings Window" />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal"  HorizontalAlignment="Right">
-                        <Button Content="L" Margin="1,1,10,1" FontSize="7" Width="10" Height="14" Padding="0" Click="Window_ToggleLock"/>
-                        <Button Content="_" Margin="1" FontSize="7" Width="10" Height="14" Padding="0" Click="MinimizeWindow"/>
-                        <Button Content="&#xF04B;" Margin="1" FontSize="7" Width="10" Height="14" Padding="0" Click="MaximizeWindow"/>
-                        <Button Content="X" Margin="1" FontSize="7" Width="10" Height="14" Padding="0" Click="CloseWindow" />
+                        <Button Content="R" Padding="0" FontSize="10" Width="14" Height="14" Visibility="{Binding RaidModeToggleButtonVisibility}" ToolTip="{Binding RaidModeButtonToolTip}" Click="RaidModleToggle" />
+                        <Button Content="X" Margin="5, 0, 0, 0" Padding="0" FontSize="10" Width="14" Height="14" Click="ClearAllOtherSpells" ToolTip="Clear all spells except yours"/>
+                        <Button Content="💀" Margin="15, 0, 0, 0" Padding="0" FontSize="10" Width="14" Height="14" Click="AddDeathTimer" ToolTip="Add Zone Death Timer"/>
                     </StackPanel>
                 </Grid>
-            </Border>
-            <ListView ItemsSource="{Binding SpellList}" Grid.Column="0" Name="spelllistview" VirtualizingPanel.IsVirtualizing="True" 
-                      ScrollViewer.HorizontalScrollBarVisibility="Disabled"
-                      BorderThickness="0"
-                      VirtualizingPanel.VirtualizationMode="Recycling" Grid.Row="1" Background="Transparent">
-                <ListView.Resources>
-                    <DataTemplate DataType="{x:Type vm:TimerViewModel}">
-                        <Grid Visibility="{Binding ColumnVisibility}">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <ProgressBar Grid.Column="0" Grid.ColumnSpan="2" Value="{Binding PercentLeft}" Maximum="100"  Foreground="{Binding ProgressBarColor}"  />
-                            <StackPanel Orientation="Horizontal" Grid.Column="0" >
-                                <Image Height="{DynamicResource GlobalFontSize}" Width="{DynamicResource GlobalFontSize}" IsEnabled="{Binding HasIcon}">
-                                    <Image.Source>
-                                        <CroppedBitmap Source="{Binding Icon.Icon}" SourceRect="{Binding Rect}" />
-                                    </Image.Source>
-                                </Image>
-                                <TextBlock HorizontalAlignment="Left" FontWeight="Bold" Text="{Binding Name}"/>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal" Grid.Column="1" HorizontalAlignment="Right">
-                                <TextBlock TextAlignment="Right" FontWeight="Bold" Text="{Binding SecondsLeftPretty}"/>
-                                <Button Margin="5, 0, 0, 0" Width="14" Height="14" Click="RemoveSingleItem" ToolTip="Remove from list">
-                                    <Image Source="pack://application:,,,/Images/Trash.png"/>
-                                </Button>
-                            </StackPanel>
-                        </Grid>
-                    </DataTemplate>
-                    <DataTemplate DataType="{x:Type vm:CounterViewModel}">
-                        <Grid Visibility="{Binding ColumnVisibility}">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="6*"/>
-                                <ColumnDefinition Width="4*"/>
-                                <ColumnDefinition Width="1*"/>
-                            </Grid.ColumnDefinitions>
-                            <ProgressBar Grid.Column="0" Grid.ColumnSpan="3" Value="100" Maximum="100" Foreground="{Binding ProgressBarColor}"  />
-                            <StackPanel Orientation="Horizontal" Grid.Column="0" >
-                                <Image Height="{DynamicResource GlobalFontSize}" Width="{DynamicResource GlobalFontSize}" IsEnabled="{Binding HasIcon}">
-                                    <Image.Source>
-                                        <CroppedBitmap Source="{Binding Icon.Icon}" SourceRect="{Binding Rect}" />
-                                    </Image.Source>
-                                </Image>
-                                <TextBlock HorizontalAlignment="Left" FontWeight="Bold" Text="{Binding Name}"/>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal" Grid.Column="1" >
-                                <TextBlock HorizontalAlignment="Left" FontWeight="Bold" Text=" Count --> "/>
-                                <TextBlock HorizontalAlignment="Left" FontWeight="Bold" Text="{Binding Count}"/>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal" Grid.Column="2" HorizontalAlignment="Right">
-                                <Button Margin="5, 0, 0, 0" Width="14" Height="14" Click="RemoveSingleItem" ToolTip="Remove from list">
-                                    <Image Source="pack://application:,,,/Images/Trash.png"/>
-                                </Button>
-                            </StackPanel>
-                        </Grid>
-                    </DataTemplate>
-                    <DataTemplate DataType="{x:Type vm:RollViewModel}">
-                        <Grid Visibility="{Binding ColumnVisibility}">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="5*"/>
-                                <ColumnDefinition Width="4*"/>
-                            </Grid.ColumnDefinitions>
-                            <ProgressBar Grid.Column="0" Grid.ColumnSpan="3"  Value="{Binding PercentLeft}"  Maximum="100"  Foreground="{Binding ProgressBarColor}"  />
-                            <StackPanel Orientation="Horizontal" Grid.Column="0" >
-                                <Image Height="{DynamicResource GlobalFontSize}" Width="{DynamicResource GlobalFontSize}" IsEnabled="{Binding HasIcon}">
-                                    <Image.Source>
-                                        <CroppedBitmap Source="{Binding Icon.Icon}" SourceRect="{Binding Rect}" />
-                                    </Image.Source>
-                                </Image>
-                                <TextBlock HorizontalAlignment="Left" FontWeight="Bold" Text="{Binding Name}"/>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal" Grid.Column="1" >
-                                <TextBlock HorizontalAlignment="Left" FontWeight="Bold" Text="{Binding RollText}"/>
-                            </StackPanel>
-                        </Grid>
-                    </DataTemplate>
-                    <DataTemplate DataType="{x:Type vm:SpellViewModel}">
-                        <Grid Visibility="{Binding ColumnVisibility}">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="Auto"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-                            <ProgressBar Grid.Column="0" Grid.ColumnSpan="2"  Value="{Binding PercentLeft}"  Maximum="100"  Foreground="{Binding ProgressBarColor}"  />
-                            <StackPanel Orientation="Horizontal" Grid.Column="0" >
-                                <Image Height="{DynamicResource GlobalFontSize}" Width="{DynamicResource GlobalFontSize}" IsEnabled="{Binding HasIcon}">
-                                    <Image.Source>
-                                        <CroppedBitmap Source="{Binding Icon.Icon}" SourceRect="{Binding Rect}" />
-                                    </Image.Source>
-                                </Image>
-                                <TextBlock HorizontalAlignment="Left" FontWeight="Bold" Text="{Binding Name}"/>
-                            </StackPanel>
-                            <StackPanel Orientation="Horizontal" Grid.Column="2" HorizontalAlignment="Right">
-                                <TextBlock TextAlignment="Right" FontWeight="Bold" Text="{Binding SecondsLeftPretty}"/>
-                                <Button Margin="5, 0, 0, 0" Width="14" Height="14" Click="RemoveSingleItem" ToolTip="Remove from list">
-                                    <Image Source="pack://application:,,,/Images/Trash.png"/>
-                                </Button>
-                            </StackPanel>
-                        </Grid>
-                    </DataTemplate>
-                    <DataTemplate DataType="{x:Type vm:BoatViewModel}">
-                        <Grid Visibility="{Binding ColumnVisibility}">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="6*"/>
-                                <ColumnDefinition Width="4*"/>
-                                <ColumnDefinition Width="2*"/>
-                            </Grid.ColumnDefinitions>
-                            <ProgressBar Grid.Column="0" Grid.ColumnSpan="3"  Value="{Binding PercentLeft}"  Maximum="100"  Foreground="{Binding ProgressBarColor}"  />
-
-                            <TextBlock Grid.Column="0" FontWeight="Bold" Text="{Binding Name}"/>
-                            <TextBlock Grid.Column="1" FontSize="10" Text="{Binding LastSeen}"/>
-
-                            <StackPanel Orientation="Horizontal" Grid.Column="2" HorizontalAlignment="Right">
-                                <TextBlock TextAlignment="Right" FontWeight="Bold" Text="{Binding SecondsLeftPretty}"/>
-                            </StackPanel>
-                        </Grid>
-                    </DataTemplate>
-                </ListView.Resources>
-                <ListView.GroupStyle>
-                    <GroupStyle>
-                        <GroupStyle.ContainerStyle>
-                            <Style TargetType="{x:Type GroupItem}">
-                                <Setter Property="Template">
-                                    <Setter.Value>
-                                        <ControlTemplate>
-                                            <Expander IsExpanded="True" Visibility="{Binding Items[0].HeaderVisibility}" Background="LightGray">
-                                                <Expander.Header>
-                                                    <DockPanel HorizontalAlignment="{Binding HorizontalAlignment, RelativeSource={RelativeSource AncestorType=ContentPresenter}, Mode=OneWayToSource}">
-                                                        <Grid>
-                                                            <Grid.ColumnDefinitions>
-                                                                <ColumnDefinition Width="4*"/>
-                                                                <ColumnDefinition Width="4*"/>
-                                                                <ColumnDefinition Width="3*"/>
-                                                            </Grid.ColumnDefinitions>
-                                                            <TextBlock Grid.Column="0" Text="{Binding Name}" FontWeight="Bold" FontSize="{DynamicResource GlobalFontSize}"  />
-                                                            <TextBlock Grid.Column="1" Text="{Binding Items[0].TargetClassString}" FontWeight="Bold" FontSize="{DynamicResource GlobalFontSize}"  />
-                                                            <StackPanel Orientation="Horizontal" Grid.Column="2" HorizontalAlignment="Right">
-                                                                <TextBlock Text="{Binding ItemCount}" FontSize="{DynamicResource GlobalFontSize}" FontWeight="Bold" Margin="10,0,0,0"  />
-                                                                <TextBlock Text=" effect(s)" FontSize="{DynamicResource GlobalFontSize}"  />
-                                                                <Button Visibility="{Binding Items[0].DeleteButtonVisibility}" Margin="0, 0, 0, 0" HorizontalAlignment="Right"  Width="14" Height="14" Click="RemoveFromSpells" ToolTip="Remove from list">
-                                                                    <Image Source="pack://application:,,,/Images/Trash.png"/>
-                                                                </Button>
-                                                            </StackPanel>
-                                                        </Grid>
-                                                    </DockPanel>
-                                                </Expander.Header>
-                                                <ItemsPresenter />
-                                            </Expander>
-                                        </ControlTemplate>
-                                    </Setter.Value>
-                                </Setter>
-                            </Style>
-                        </GroupStyle.ContainerStyle>
-                    </GroupStyle>
-                </ListView.GroupStyle>
-                <ListView.ItemContainerStyle>
-                    <Style TargetType="{x:Type ListViewItem}">
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="{x:Type ListViewItem}">
-                                    <ContentPresenter />
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-                </ListView.ItemContainerStyle>
-            </ListView>
-            <Grid Grid.Row="1" VerticalAlignment="Bottom">
-                <StackPanel Orientation="Horizontal"  HorizontalAlignment="Center">
-                    <Button Content="R" Padding="0" FontSize="10" Width="14" Height="14" Visibility="{Binding RaidModeToggleButtonVisibility}" ToolTip="{Binding RaidModeButtonToolTip}" Click="RaidModleToggle" />
-                    <Button Content="X" Margin="5, 0, 0, 0" Padding="0" FontSize="10" Width="14" Height="14" Click="ClearAllOtherSpells" ToolTip="Clear all spells except yours"/>
-                    <Button Content="💀" Margin="15, 0, 0, 0" Padding="0" FontSize="10" Width="14" Height="14" Click="AddDeathTimer" ToolTip="Add Zone Death Timer"/>
-                </StackPanel>
             </Grid>
-        </Grid>
         </Grid>
     </Border>
     

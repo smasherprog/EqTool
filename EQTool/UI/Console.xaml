@@ -25,45 +25,45 @@
         <Grid Name="OutermostContainer">
             <Border Panel.ZIndex="1" Height="20" Background="Transparent" HorizontalAlignment="Stretch" VerticalAlignment="Top" IsHitTestVisible="{Binding IsTitleBarHidden}"
                     Visibility="{Binding IsLocked, Converter={StaticResource BooleanToVisibilityConverter}}" MouseEnter="HoverZone_MouseEnter" MouseLeave="HoverZone_MouseLeave" />
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-                <Border Grid.Row="0" Panel.ZIndex="2" Height="{Binding TitleBarHeight}" Background="{StaticResource WindowFrameBrush}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" CornerRadius="5,5,0,0" Margin="-1,0,-1,0"
-                        Visibility="{Binding EffectiveTitlebarVisibility}" MouseEnter="HoverZone_MouseEnter" MouseLeave="HoverZone_MouseLeave" MouseLeftButtonDown="DragWindow">
-                <Grid>
-                    <TextBlock Foreground="White" FontWeight="Bold" VerticalAlignment="Center" Margin="10,1,10,1" Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}, Path=Title}"/>
-                    <StackPanel Orientation="Horizontal"  HorizontalAlignment="Center">
-                        <Button Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="openmobinfo" ToolTip="Open Mob Info Window">
-                            <Image Source="pack://application:,,,/Images/toolbox.png"/>
-                        </Button>
-                        <Button Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="openspells" ToolTip="Open Spells/Trigger Window">
-                            <Image Source="pack://application:,,,/Images/wizard.png"/>
-                        </Button>
-                        <Button Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="openmap" ToolTip="Open Map Window">
-                            <Image Source="pack://application:,,,/Images/map.png"/>
-                        </Button>
-                        <Button Content="O" Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="opensettings" ToolTip="Open Settings Window" />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal"  HorizontalAlignment="Right">
-                        <Button Content="L" Margin="1,1,10,1" FontSize="7" Width="10" Height="14" Padding="0" Click="Window_ToggleLock"/>
-                        <Button Content="_" Margin="1" FontSize="7" Width="10" Height="14" Padding="0" Click="MinimizeWindow"/>
-                        <Button Content="&#xF04B;" Margin="1" FontSize="7" Width="10" Height="14" Padding="0" Click="MaximizeWindow"/>
-                        <Button Content="X" Margin="1" FontSize="7" Width="10" Height="14" Padding="0" Click="CloseWindow" />
-                    </StackPanel>
-                </Grid>
-            </Border>
-            <ScrollViewer x:Name="ConsoleScroller" VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch" Margin="0" Background="Black" Grid.Row="1">
-                <ItemsControl ItemsSource="{Binding ConsoleOutput}">
-                    <ItemsControl.ItemTemplate>
-                        <DataTemplate>
-                            <TextBlock Text="{Binding Line}" TextWrapping="Wrap" Foreground="{Binding Brush}" FontFamily="Consolas"/>
-                        </DataTemplate>
-                    </ItemsControl.ItemTemplate>
-                </ItemsControl> 
-            </ScrollViewer> 
-        </Grid>
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                    <Border Grid.Row="0" Panel.ZIndex="2" Height="{Binding TitleBarHeight}" Background="{StaticResource WindowFrameBrush}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" CornerRadius="5,5,0,0" Margin="-1,0,-1,0"
+                            Visibility="{Binding EffectiveTitlebarVisibility}" MouseEnter="HoverZone_MouseEnter" MouseLeave="HoverZone_MouseLeave" MouseLeftButtonDown="DragWindow">
+                    <Grid>
+                        <TextBlock Foreground="White" FontWeight="Bold" VerticalAlignment="Center" Margin="10,1,10,1" Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}, Path=Title}"/>
+                        <StackPanel Orientation="Horizontal"  HorizontalAlignment="Center">
+                            <Button Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="openmobinfo" ToolTip="Open Mob Info Window">
+                                <Image Source="pack://application:,,,/Images/toolbox.png"/>
+                            </Button>
+                            <Button Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="openspells" ToolTip="Open Spells/Trigger Window">
+                                <Image Source="pack://application:,,,/Images/wizard.png"/>
+                            </Button>
+                            <Button Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="openmap" ToolTip="Open Map Window">
+                                <Image Source="pack://application:,,,/Images/map.png"/>
+                            </Button>
+                            <Button Content="O" Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="opensettings" ToolTip="Open Settings Window" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal"  HorizontalAlignment="Right">
+                            <Button Content="L" Margin="1,1,10,1" FontSize="7" Width="10" Height="14" Padding="0" Click="Window_ToggleLock"/>
+                            <Button Content="_" Margin="1" FontSize="7" Width="10" Height="14" Padding="0" Click="MinimizeWindow"/>
+                            <Button Content="&#xF04B;" Margin="1" FontSize="7" Width="10" Height="14" Padding="0" Click="MaximizeWindow"/>
+                            <Button Content="X" Margin="1" FontSize="7" Width="10" Height="14" Padding="0" Click="CloseWindow" />
+                        </StackPanel>
+                    </Grid>
+                </Border>
+                <ScrollViewer x:Name="ConsoleScroller" VerticalScrollBarVisibility="Auto" VerticalAlignment="Stretch" Margin="0" Background="Black" Grid.Row="1">
+                    <ItemsControl ItemsSource="{Binding ConsoleOutput}">
+                        <ItemsControl.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock Text="{Binding Line}" TextWrapping="Wrap" Foreground="{Binding Brush}" FontFamily="Consolas"/>
+                            </DataTemplate>
+                        </ItemsControl.ItemTemplate>
+                    </ItemsControl> 
+                </ScrollViewer> 
+            </Grid>
         </Grid>
     </Border>
 </local:BaseSaveStateWindow>
