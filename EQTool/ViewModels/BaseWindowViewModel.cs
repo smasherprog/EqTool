@@ -23,8 +23,8 @@ namespace EQTool.ViewModels
                 _IsMouseOverTitleArea = value;
                 TitleBarHeight = value ? titlebarSize : new GridLength(0);
                 OnPropertyChanged(nameof(TitleBarHeight));
-                OnPropertyChanged(nameof(IsTitleBarHidden));
                 OnPropertyChanged(nameof(EffectiveTitlebarVisibility));
+                OnPropertyChanged(nameof(IsTitleBarHidden));
                 OnPropertyChanged();
             }
         }
@@ -45,8 +45,8 @@ namespace EQTool.ViewModels
                 OnPropertyChanged(nameof(ShowTitlebar));
                 OnPropertyChanged(nameof(BorderThickness));
                 OnPropertyChanged(nameof(TitleBarHeight));
-                OnPropertyChanged(nameof(IsTitleBarHidden));
                 OnPropertyChanged(nameof(EffectiveTitlebarVisibility));
+                OnPropertyChanged(nameof(IsTitleBarHidden));
                 OnPropertyChanged();
             }
         }

@@ -18,7 +18,10 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Forms;
 using System.Windows.Media;
+using Application = System.Windows.Application;
+using MessageBox = System.Windows.MessageBox;
 
 namespace EQTool
 {
@@ -32,6 +35,7 @@ namespace EQTool
         private System.Windows.Forms.MenuItem MapMenuItem;
         private System.Windows.Forms.MenuItem SpellsMenuItem;
         private System.Windows.Forms.MenuItem DpsMeterMenuItem;
+        private System.Windows.Forms.MenuItem ClickThroughItem;
         private System.Windows.Forms.MenuItem OverlayMenuItem;
         private System.Windows.Forms.MenuItem SettingsMenuItem;
         private System.Windows.Forms.MenuItem MobInfoMenuItem;
@@ -252,6 +256,7 @@ namespace EQTool
             SpellsMenuItem = new System.Windows.Forms.MenuItem("Triggers", ToggleSpellsWindow);
             MapMenuItem = new System.Windows.Forms.MenuItem("Map", ToggleMapWindow);
             DpsMeterMenuItem = new System.Windows.Forms.MenuItem("Dps", ToggleDPSWindow);
+            ClickThroughItem = new System.Windows.Forms.MenuItem("Click-Through", ToggleClickThrough);
             OverlayMenuItem = new System.Windows.Forms.MenuItem("Overlay", ToggleOverlayWindow);
             MobInfoMenuItem = new System.Windows.Forms.MenuItem("Mob Info", ToggleMobInfoWindow);
             var gitHubMenuItem = new System.Windows.Forms.MenuItem("Suggestions", Suggestions);
@@ -276,6 +281,7 @@ namespace EQTool
                 {
                     //GroupSuggestionsMenuItem,
                     whythepig,
+                    ClickThroughItem,
                     OverlayMenuItem,
                     DpsMeterMenuItem,
                     MapMenuItem,
@@ -288,6 +294,8 @@ namespace EQTool
                     new System.Windows.Forms.MenuItem("Exit", OnExit)
                 }),
             };
+            SystemTrayIcon.MouseClick += OnSystemTrayMouseClick;
+            
             if (EQToolSettings.LoginMiddleMand)
             {
                 var loginmiddlemand = container.Resolve<LoginMiddlemand>();
@@ -337,6 +345,10 @@ namespace EQTool
                     OpenSettingsWindow();
                 }
             }
+            
+            ClickThroughItem.Checked = EQToolSettings.IsClickThroughMode;
+            ApplyClickThrough(EQToolSettings.IsClickThroughMode);
+            
             container.Resolve<SignalrPlayerHub>();
             container.Resolve<PlayerTrackerService>();
             container.Resolve<ZoneActivityTrackingService>();
@@ -537,7 +549,7 @@ namespace EQTool
         {
             OpenWindow<SpellWindow>(SpellsMenuItem);
         }
-
+        
         private void OnExit(object sender, EventArgs e)
         {
             var loginmiddlemand = container.Resolve<LoginMiddlemand>();
@@ -571,26 +583,47 @@ namespace EQTool
                 }
             }
         }
-        
-        public void ApplyClickThrough()
+
+        private void OnSystemTrayMouseClick(object sender, MouseEventArgs e)
         {
+            if (e.Button != MouseButtons.Left)
+                return;
+            
+            ApplyClickThrough(!EQToolSettings.IsClickThroughMode);
+            ClickThroughItem.Checked = EQToolSettings.IsClickThroughMode;
+        }
+        
+        private void ToggleClickThrough(object sender, EventArgs e)
+        {
+            ApplyClickThrough(!EQToolSettings.IsClickThroughMode);
+            ClickThroughItem.Checked = EQToolSettings.IsClickThroughMode;
+        }
+
+        private void ApplyClickThrough(bool isClickThrough)
+        {
+            EQToolSettings.IsClickThroughMode = isClickThrough;
+
             foreach (var item in WindowList)
             {
                 if (item is DPSMeter w)
                 {
-                    w.SetClickThrough(EQToolSettings.DpsWindowState.IsClickThrough);
+                    if (!isClickThrough || EQToolSettings.DpsWindowState.ClickThroughAllowed)
+                        w.SetClickThrough(isClickThrough);
                 }
                 else if (item is MappingWindow w1)
                 {
-                    w1.SetClickThrough(EQToolSettings.MapWindowState.IsClickThrough);
+                    if (!isClickThrough || EQToolSettings.MapWindowState.ClickThroughAllowed)
+                        w1.SetClickThrough(isClickThrough);
                 }
                 else if (item is MobInfo w2)
                 {
-                    w2.SetClickThrough(EQToolSettings.MobWindowState.IsClickThrough);
+                    if (!isClickThrough || EQToolSettings.MobWindowState.ClickThroughAllowed)
+                        w2.SetClickThrough(isClickThrough);
                 }
                 else if (item is SpellWindow w3)
                 {
-                    w3.SetClickThrough(EQToolSettings.SpellWindowState.IsClickThrough);
+                    if (!isClickThrough || EQToolSettings.SpellWindowState.ClickThroughAllowed)
+                        w3.SetClickThrough(isClickThrough);
                 }
             }
         }

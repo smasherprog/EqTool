@@ -78,12 +78,25 @@
                     <StackPanel Orientation="Vertical" Margin="0, 0, 0, 8">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="Always on top" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="120"/>
-                            <CheckBox IsChecked="{Binding DpsAlwaysOnTop}" Click="SaveAlwaysOntopCheckBoxSettings" ></CheckBox>
+                            <CheckBox VerticalAlignment="Center" IsChecked="{Binding DpsAlwaysOnTop}" Click="SaveAlwaysOntopCheckBoxSettings" ></CheckBox>
                         </StackPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="Click-Through" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="120"/>
-                            <CheckBox IsChecked="{Binding DpsClickThrough}" Click="SaveClickThroughCheckBoxSettings" ></CheckBox>
+                        
+                        <StackPanel Orientation="Horizontal" Margin="20,0,0,3">
+                            <StackPanel.Style>
+                                <Style TargetType="StackPanel">
+                                    <Setter Property="Opacity" Value="1.0"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding DpsAlwaysOnTop}" Value="False">
+                                            <Setter Property="Opacity" Value="0.5"/>
+                                            <Setter Property="IsEnabled" Value="False"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </StackPanel.Style>
+                            <TextBlock Text="Allow Click-Through" VerticalAlignment="Center" FontWeight="Bold" MinWidth="150"/>
+                            <CheckBox VerticalAlignment="Center" IsChecked="{Binding DpsClickThroughAllowed}" Click="SaveClickThroughCheckBoxSettings"/>
                         </StackPanel>
+                        
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="Window Opacity"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="120"/>
                             <Slider Value="{Binding DPSWindowOpacity}" Minimum=".01" Maximum="1" SmallChange=".1" TickFrequency=".1" ValueChanged="SaveSettings" MinWidth="150"/>
@@ -96,9 +109,20 @@
                             <TextBlock Text="Always on top" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="120"/>
                             <CheckBox IsChecked="{Binding MobAlwaysOnTop}" Click="SaveAlwaysOntopCheckBoxSettings" ></CheckBox>
                         </StackPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="Click-Through" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="120"/>
-                            <CheckBox IsChecked="{Binding MobClickThrough}" Click="SaveClickThroughCheckBoxSettings" ></CheckBox>
+                        <StackPanel Orientation="Horizontal" Margin="20,0,0,3">
+                            <StackPanel.Style>
+                                <Style TargetType="StackPanel">
+                                    <Setter Property="Opacity" Value="1.0"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding MobAlwaysOnTop}" Value="False">
+                                            <Setter Property="Opacity" Value="0.5"/>
+                                            <Setter Property="IsEnabled" Value="False"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </StackPanel.Style>
+                            <TextBlock Text="Allow Click-Through" VerticalAlignment="Center" FontWeight="Bold" MinWidth="150"/>
+                            <CheckBox VerticalAlignment="Center" IsChecked="{Binding MobClickThroughAllowed}" Click="SaveClickThroughCheckBoxSettings"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="Login middlemand" VerticalAlignment="Center"  FontWeight="Bold" MinWidth="120"/>
@@ -282,9 +306,20 @@
                         <TextBlock Text="Always on top" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
                         <CheckBox IsChecked="{Binding SpellAlwaysOnTop}" Click="SaveAlwaysOntopCheckBoxSettings" ></CheckBox>
                     </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Click-Through" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
-                        <CheckBox IsChecked="{Binding SpellClickThrough}" Click="SaveClickThroughCheckBoxSettings" ></CheckBox>
+                    <StackPanel Orientation="Horizontal" Margin="20,0,0,3">
+                        <StackPanel.Style>
+                            <Style TargetType="StackPanel">
+                                <Setter Property="Opacity" Value="1.0"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding SpellAlwaysOnTop}" Value="False">
+                                        <Setter Property="Opacity" Value="0.5"/>
+                                        <Setter Property="IsEnabled" Value="False"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </StackPanel.Style>
+                        <TextBlock Text="Allow Click-Through" VerticalAlignment="Center" FontWeight="Bold" MinWidth="130"/>
+                        <CheckBox VerticalAlignment="Center" IsChecked="{Binding SpellClickThroughAllowed}" Click="SaveClickThroughCheckBoxSettings"/>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Window Opacity"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
@@ -335,9 +370,20 @@
                     <TextBlock Text="Always on top" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
                     <CheckBox IsChecked="{Binding MapAlwaysOnTop}" Click="SaveAlwaysOntopCheckBoxSettings" ></CheckBox>
                 </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Click-Through" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
-                    <CheckBox IsChecked="{Binding MapClickThrough}" Click="SaveClickThroughCheckBoxSettings" ></CheckBox>
+                <StackPanel Orientation="Horizontal" Margin="20,0,0,3">
+                    <StackPanel.Style>
+                        <Style TargetType="StackPanel">
+                            <Setter Property="Opacity" Value="1.0"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding MapAlwaysOnTop}" Value="False">
+                                    <Setter Property="Opacity" Value="0.5"/>
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </StackPanel.Style>
+                    <TextBlock Text="Allow Click-Through" VerticalAlignment="Center" FontWeight="Bold" MinWidth="130"/>
+                    <CheckBox VerticalAlignment="Center" IsChecked="{Binding MapClickThroughAllowed}" Click="SaveClickThroughCheckBoxSettings"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Map Cache" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
