@@ -22,7 +22,7 @@ namespace EQTool.UI
         private readonly ActivePlayer activePlayer;
 
         public DPSMeter(LogEvents logEvents, DPSWindowViewModel dPSWindowViewModel, EQToolSettings settings, EQToolSettingsLoad toolSettingsLoad, LoggingService loggingService, ActivePlayer activePlayer)
-             : base(settings.DpsWindowState, toolSettingsLoad, settings)
+             : base(dPSWindowViewModel, settings.DpsWindowState, toolSettingsLoad, settings)
         {
             this.activePlayer = activePlayer;
             loggingService.Log(string.Empty, EventType.OpenDPS, activePlayer?.Player?.Server);

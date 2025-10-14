@@ -12,7 +12,7 @@ using System.Windows.Controls;
 
 namespace EQTool.ViewModels.SettingsComponents
 {
-    public class SettingsManagementViewModel : INotifyPropertyChanged
+    public class SettingsManagementViewModel : BaseWindowViewModel, INotifyPropertyChanged
     {
         private readonly UserComponentSettingsManagementFactory userComponentFactory;
         private readonly EQToolSettings settings;
@@ -179,13 +179,6 @@ namespace EQTool.ViewModels.SettingsComponents
         public void TreeSelected(TreeViewItemBase p)
         {
             UserControl = userComponentFactory.CreateComponent(p.Type, p);
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected void OnPropertyChanged([CallerMemberName] string name = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
     }
 }

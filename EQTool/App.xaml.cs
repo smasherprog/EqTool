@@ -552,18 +552,22 @@ namespace EQTool
                 if (item is DPSMeter w)
                 {
                     w.Topmost = EQToolSettings.DpsWindowState.AlwaysOnTop;
+                    w.UpdateShowInTaskbar();
                 }
                 else if (item is MappingWindow w1)
                 {
                     w1.Topmost = EQToolSettings.MapWindowState.AlwaysOnTop;
+                    w1.UpdateShowInTaskbar();
                 }
                 else if (item is MobInfo w2)
                 {
                     w2.Topmost = EQToolSettings.MobWindowState.AlwaysOnTop;
+                    w2.UpdateShowInTaskbar();
                 }
                 else if (item is SpellWindow w3)
                 {
                     w3.Topmost = EQToolSettings.SpellWindowState.AlwaysOnTop;
+                    w3.UpdateShowInTaskbar();
                 }
             }
         }

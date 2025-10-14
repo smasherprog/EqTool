@@ -16,7 +16,7 @@ using System.Windows.Media;
 
 namespace EQTool.ViewModels
 {
-    public class SpellWindowViewModel : INotifyPropertyChanged
+    public class SpellWindowViewModel : BaseWindowViewModel, INotifyPropertyChanged
     {
         private readonly ActivePlayer activePlayer;
         private readonly IAppDispatcher appDispatcher;
@@ -685,13 +685,6 @@ namespace EQTool.ViewModels
                     }
                 });
             }
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected void OnPropertyChanged([CallerMemberName] string name = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
     }
 }

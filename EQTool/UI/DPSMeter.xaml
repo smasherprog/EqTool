@@ -8,168 +8,176 @@
          Title="{Binding Title}" 
         Height="450" 
         Width="640"  
-        WindowStyle="None" 
+        WindowStyle="None"
+        ResizeMode="{Binding CanResize}"
         AllowsTransparency="True">
     <WindowChrome.WindowChrome>
         <WindowChrome CaptionHeight="0" ResizeBorderThickness="5" />
     </WindowChrome.WindowChrome>
     <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
         <LinearGradientBrush x:Key="WindowFrameBrush" StartPoint="0,0.5" EndPoint="1,0.5">
             <GradientStop Color="CadetBlue" Offset="0.4"/>
             <GradientStop Color="Gray" Offset="1"/>
         </LinearGradientBrush>
     </Window.Resources>
-    <Border CornerRadius="5" BorderBrush="{StaticResource WindowFrameBrush}" BorderThickness="1,0,1,1">
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="Auto" />
-                <RowDefinition Height="*" />
-            </Grid.RowDefinitions>
-            <Border Background="{StaticResource WindowFrameBrush}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" CornerRadius="5,5,0,0" Margin="-1,0,-1,0" MouseLeftButtonDown="DragWindow">
-                <Grid>
-                    <TextBlock Foreground="White" FontWeight="Bold" VerticalAlignment="Center" Margin="10,1,10,1" Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}, Path=Title}"/>
-                    <StackPanel Orientation="Horizontal"  HorizontalAlignment="Center">
-                        <Button Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="openmobinfo" ToolTip="Open Mob Info Window">
-                            <Image Source="pack://application:,,,/Images/toolbox.png"/>
-                        </Button>
-                        <Button Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="openspells" ToolTip="Open Spells/Trigger Window">
-                            <Image Source="pack://application:,,,/Images/wizard.png"/>
-                        </Button>
-                        <Button Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="openmap" ToolTip="Open Map Window">
-                            <Image Source="pack://application:,,,/Images/map.png"/>
-                        </Button>
-                        <Button Content="O" Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="opensettings" ToolTip="Open Settings Window" />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal"  HorizontalAlignment="Right">
-                        <Button Content="_" Margin="1" FontSize="7" Width="10" Height="10" Padding="0" Click="MinimizeWindow"/>
-                        <Button Content="&#xF04B;" Margin="1" FontSize="7" Width="10" Height="10" Padding="0" Click="MaximizeWindow"/>
-                        <Button Content="X" Margin="1" FontSize="7" Width="10" Height="10" Padding="0" Click="CloseWindow" />
-                    </StackPanel>
+    <Border CornerRadius="5" BorderBrush="{StaticResource WindowFrameBrush}" BorderThickness="{Binding BorderThickness}">
+        <Grid Name="OutermostContainer">
+            <Border Panel.ZIndex="1" Height="20" Background="Transparent" HorizontalAlignment="Stretch" VerticalAlignment="Top" IsHitTestVisible="{Binding IsTitleBarHidden}"
+                    Visibility="{Binding IsLocked, Converter={StaticResource BooleanToVisibilityConverter}}" MouseEnter="HoverZone_MouseEnter" MouseLeave="HoverZone_MouseLeave" />
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="*" />
+                </Grid.RowDefinitions>
+                    <Border Grid.Row="0" Panel.ZIndex="2" Height="{Binding TitleBarHeight}" Background="{StaticResource WindowFrameBrush}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" CornerRadius="5,5,0,0" Margin="-1,0,-1,0"
+                            Visibility="{Binding EffectiveTitlebarVisibility}" MouseEnter="HoverZone_MouseEnter" MouseLeave="HoverZone_MouseLeave" MouseLeftButtonDown="DragWindow">
+                    <Grid>
+                        <TextBlock Foreground="White" FontWeight="Bold" VerticalAlignment="Center" Margin="10,1,10,1" Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}, Path=Title}"/>
+                        <StackPanel Orientation="Horizontal"  HorizontalAlignment="Center">
+                            <Button Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="openmobinfo" ToolTip="Open Mob Info Window">
+                                <Image Source="pack://application:,,,/Images/toolbox.png"/>
+                            </Button>
+                            <Button Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="openspells" ToolTip="Open Spells/Trigger Window">
+                                <Image Source="pack://application:,,,/Images/wizard.png"/>
+                            </Button>
+                            <Button Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="openmap" ToolTip="Open Map Window">
+                                <Image Source="pack://application:,,,/Images/map.png"/>
+                            </Button>
+                            <Button Content="O" Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="opensettings" ToolTip="Open Settings Window" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal"  HorizontalAlignment="Right">
+                            <Button Content="L" Margin="1,1,10,1" FontSize="7" Width="10" Height="14" Padding="0" Click="Window_ToggleLock"/>
+                            <Button Content="_" Margin="1" FontSize="7" Width="10" Height="14" Padding="0" Visibility="{Binding ShowTitlebar}" Click="MinimizeWindow"/>
+                            <Button Content="&#xF04B;" Margin="1" FontSize="7" Width="10" Height="14" Padding="0" Visibility="{Binding ShowTitlebar}" Click="MaximizeWindow"/>
+                            <Button Content="X" Margin="1,1,2,1" FontSize="7" Width="10" Height="14" Padding="0" Visibility="{Binding ShowTitlebar}" Click="CloseWindow" />
+                        </StackPanel>
+                    </Grid>
+                </Border>
+                <Grid Grid.Row="1"  Background="LightGray">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="210" />
+                        <ColumnDefinition Width="70" />
+                        <ColumnDefinition Width="70" />
+                        <ColumnDefinition Width="70" /> 
+                    </Grid.ColumnDefinitions>
+                    <TextBlock HorizontalAlignment="Left" Grid.Column="0" FontWeight="Bold" Text="Source" ToolTip="The NPC/PC who is Dealing the damage" />
+                    <TextBlock HorizontalAlignment="Left" Grid.Column="1" FontWeight="Bold" Text="DPS" ToolTip="Total DPS!" />
+                    <TextBlock HorizontalAlignment="Left" Grid.Column="2" FontWeight="Bold" Text="Biggest" ToolTip="Biggest single hit!" />
+                    <TextBlock HorizontalAlignment="Left" Grid.Column="3" FontWeight="Bold" Text="DMG" ToolTip="Total Damage done!" />
+                </Grid> 
+                <Grid Grid.Row="2" Background="AliceBlue">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="210" />
+                        <ColumnDefinition Width="70" />
+                        <ColumnDefinition Width="70" />
+                        <ColumnDefinition Width="70" />
+                    </Grid.ColumnDefinitions>
+                    
+                    <TextBlock HorizontalAlignment="Left" Grid.Column="0" FontWeight="Bold" Text="Your All time Best" ToolTip="Your All time Best" />
+                    <TextBlock HorizontalAlignment="Left" Grid.Column="1" FontWeight="Bold" Text="{Binding ActivePlayer.Player.BestPlayerDamage.HighestDPS}" ToolTip="Total DPS!" />
+                    <TextBlock HorizontalAlignment="Left" Grid.Column="2" FontWeight="Bold" Text="{Binding ActivePlayer.Player.BestPlayerDamage.HighestHit}" ToolTip="Biggest single hit!" />
+                    <TextBlock HorizontalAlignment="Left" Grid.Column="3" FontWeight="Bold" Text="{Binding ActivePlayer.Player.BestPlayerDamage.TargetTotalDamage}" ToolTip="Total Damage done!" />
                 </Grid>
-            </Border>
-            <Grid Grid.Row="1"  Background="LightGray">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="210" />
-                    <ColumnDefinition Width="70" />
-                    <ColumnDefinition Width="70" />
-                    <ColumnDefinition Width="70" /> 
-                </Grid.ColumnDefinitions>
-                <TextBlock HorizontalAlignment="Left" Grid.Column="0" FontWeight="Bold" Text="Source" ToolTip="The NPC/PC who is Dealing the damage" />
-                <TextBlock HorizontalAlignment="Left" Grid.Column="1" FontWeight="Bold" Text="DPS" ToolTip="Total DPS!" />
-                <TextBlock HorizontalAlignment="Left" Grid.Column="2" FontWeight="Bold" Text="Biggest" ToolTip="Biggest single hit!" />
-                <TextBlock HorizontalAlignment="Left" Grid.Column="3" FontWeight="Bold" Text="DMG" ToolTip="Total Damage done!" />
-            </Grid> 
-            <Grid Grid.Row="2" Background="AliceBlue">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="210" />
-                    <ColumnDefinition Width="70" />
-                    <ColumnDefinition Width="70" />
-                    <ColumnDefinition Width="70" />
-                </Grid.ColumnDefinitions>
-                
-                <TextBlock HorizontalAlignment="Left" Grid.Column="0" FontWeight="Bold" Text="Your All time Best" ToolTip="Your All time Best" />
-                <TextBlock HorizontalAlignment="Left" Grid.Column="1" FontWeight="Bold" Text="{Binding ActivePlayer.Player.BestPlayerDamage.HighestDPS}" ToolTip="Total DPS!" />
-                <TextBlock HorizontalAlignment="Left" Grid.Column="2" FontWeight="Bold" Text="{Binding ActivePlayer.Player.BestPlayerDamage.HighestHit}" ToolTip="Biggest single hit!" />
-                <TextBlock HorizontalAlignment="Left" Grid.Column="3" FontWeight="Bold" Text="{Binding ActivePlayer.Player.BestPlayerDamage.TargetTotalDamage}" ToolTip="Total Damage done!" />
+                <Grid Grid.Row="3" Background="AliceBlue" Visibility="{Binding SessionPlayerDamage.LastSessionPlayerDamageVisability}">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="160" />
+                        <ColumnDefinition Width="50" />
+                        <ColumnDefinition Width="70" />
+                        <ColumnDefinition Width="70" />
+                        <ColumnDefinition Width="70" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock HorizontalAlignment="Left" Grid.Column="0" FontWeight="Bold" Text="Last Session" ToolTip="Last Session" />
+                    <Button Grid.Column="1" Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="RemoveLastSession" ToolTip="Remove Last session" >
+                        <Image Source="pack://application:,,,/Images/trash.png"/>
+                    </Button>
+                    <TextBlock HorizontalAlignment="Left" Grid.Column="2" FontWeight="Bold" Text="{Binding SessionPlayerDamage.LastSessionPlayerDamage.HighestDPS}" ToolTip="Total DPS!" />
+                    <TextBlock HorizontalAlignment="Left" Grid.Column="3" FontWeight="Bold" Text="{Binding SessionPlayerDamage.LastSessionPlayerDamage.HighestHit}" ToolTip="Biggest single hit!" />
+                    <TextBlock HorizontalAlignment="Left" Grid.Column="4" FontWeight="Bold" Text="{Binding SessionPlayerDamage.LastSessionPlayerDamage.TargetTotalDamage}" ToolTip="Total Damage done!" />
+                </Grid>
+                <Grid Grid.Row="4" Background="AliceBlue">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="160" />
+                        <ColumnDefinition Width="50" />
+                        <ColumnDefinition Width="70" />
+                        <ColumnDefinition Width="70" />
+                        <ColumnDefinition Width="70" />
+                    </Grid.ColumnDefinitions>
+                    <TextBlock HorizontalAlignment="Left" Grid.Column="0" FontWeight="Bold" Text="Current Session" ToolTip="Your All time Best" />
+                    <Button Grid.Column="1" Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="MoveCurrentToLastSession" ToolTip="Move current session data to Last" >
+                        <Image Source="pack://application:,,,/Images/trash.png"/>
+                    </Button>
+                    <TextBlock HorizontalAlignment="Left" Grid.Column="2" FontWeight="Bold" Text="{Binding SessionPlayerDamage.CurrentSessionPlayerDamage.HighestDPS}" ToolTip="Total DPS!" />
+                    <TextBlock HorizontalAlignment="Left" Grid.Column="3" FontWeight="Bold" Text="{Binding SessionPlayerDamage.CurrentSessionPlayerDamage.HighestHit}" ToolTip="Biggest single hit!" />
+                    <TextBlock HorizontalAlignment="Left" Grid.Column="4" FontWeight="Bold" Text="{Binding SessionPlayerDamage.CurrentSessionPlayerDamage.TargetTotalDamage}" ToolTip="Total Damage done!" />
+                </Grid>
+                <ListView Name="DpsList" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling" Grid.Row="5" Background="Transparent" Margin="-1,0,-1,-1">
+                    <ListView.ItemTemplate>
+                        <DataTemplate>
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="210" />
+                                    <ColumnDefinition Width="70" />
+                                    <ColumnDefinition Width="70" />
+                                    <ColumnDefinition Width="70" /> 
+                                </Grid.ColumnDefinitions>
+                                <ProgressBar Grid.Column="0" Grid.ColumnSpan="7" Value="{Binding PercentOfTotalDamage}"  Maximum="100"  Foreground="{Binding ProgressBarColor}"  />
+                                <TextBlock HorizontalAlignment="Stretch" Margin="10,0,0,0" Grid.Column="0" FontWeight="Bold" Text="{Binding SourceName_and_Info}" ToolTip="The NPC/PC who is Dealing the damage" />
+                                  <TextBlock HorizontalAlignment="Left" Grid.Column="1" FontWeight="Bold" Text="{Binding TotalDPS}" ToolTip="Total DPS!" />
+                                <TextBlock HorizontalAlignment="Left" Grid.Column="2" FontWeight="Bold" Text="{Binding HighestHit}" ToolTip="Biggest single hit!" />
+                                <TextBlock HorizontalAlignment="Left" Grid.Column="3" FontWeight="Bold" Text="{Binding TotalDamage}" ToolTip="Total Damage done!" />
+                            </Grid>
+                        </DataTemplate>
+                    </ListView.ItemTemplate>
+                    <ListView.GroupStyle>
+                        <GroupStyle>
+                            <GroupStyle.ContainerStyle>
+                                <Style TargetType="{x:Type GroupItem}">
+                                    <Setter Property="Template">
+                                        <Setter.Value>
+                                            <ControlTemplate>
+                                                <Expander IsExpanded="True" Background="LightGray">
+                                                    <Expander.Header>
+                                                        <Grid HorizontalAlignment="{Binding Path=HorizontalAlignment, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContentPresenter}}, Mode=OneWayToSource}" >
+                                                            <Grid.ColumnDefinitions>
+                                                                <ColumnDefinition Width="210" />
+                                                                <ColumnDefinition Width="70" />
+                                                                <ColumnDefinition Width="45"/>
+                                                                <ColumnDefinition Width="70" /> 
+                                                            </Grid.ColumnDefinitions>
+                                                            <TextBlock Grid.Column="0" Text="{Binding Items[0].TargetName_and_Info}" FontWeight="Bold" FontSize="{DynamicResource GlobalFontSize}" />
+                                                            <Button Grid.Column="1" Width="14" Height="14" Click="copytoclipboard" ToolTip="Copy Details to clipboard">
+                                                                <Image Source="pack://application:,,,/Images/Copy.png"/>
+                                                            </Button>
+                                                            <TextBlock  HorizontalAlignment="Left" Grid.Column="3" FontWeight="Bold" Text="{Binding Items[0].TargetTotalDamage}" />
+                                                        </Grid>
+                                                    </Expander.Header>
+                                                    <ItemsPresenter />
+                                                </Expander>
+                                            </ControlTemplate>
+                                        </Setter.Value>
+                                    </Setter>
+                                </Style>
+                            </GroupStyle.ContainerStyle>
+                        </GroupStyle>
+                    </ListView.GroupStyle>
+                    <ListView.ItemContainerStyle>
+                        <Style TargetType="{x:Type ListViewItem}">
+                            <Setter Property="Template">
+                                <Setter.Value>
+                                    <ControlTemplate TargetType="{x:Type ListViewItem}">
+                                        <ContentPresenter />
+                                    </ControlTemplate>
+                                </Setter.Value>
+                            </Setter>
+                        </Style>
+                    </ListView.ItemContainerStyle>
+                </ListView>
             </Grid>
-            <Grid Grid.Row="3" Background="AliceBlue" Visibility="{Binding SessionPlayerDamage.LastSessionPlayerDamageVisability}">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="160" />
-                    <ColumnDefinition Width="50" />
-                    <ColumnDefinition Width="70" />
-                    <ColumnDefinition Width="70" />
-                    <ColumnDefinition Width="70" />
-                </Grid.ColumnDefinitions>
-                <TextBlock HorizontalAlignment="Left" Grid.Column="0" FontWeight="Bold" Text="Last Session" ToolTip="Last Session" />
-                <Button Grid.Column="1" Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="RemoveLastSession" ToolTip="Remove Last session" >
-                    <Image Source="pack://application:,,,/Images/trash.png"/>
-                </Button>
-                <TextBlock HorizontalAlignment="Left" Grid.Column="2" FontWeight="Bold" Text="{Binding SessionPlayerDamage.LastSessionPlayerDamage.HighestDPS}" ToolTip="Total DPS!" />
-                <TextBlock HorizontalAlignment="Left" Grid.Column="3" FontWeight="Bold" Text="{Binding SessionPlayerDamage.LastSessionPlayerDamage.HighestHit}" ToolTip="Biggest single hit!" />
-                <TextBlock HorizontalAlignment="Left" Grid.Column="4" FontWeight="Bold" Text="{Binding SessionPlayerDamage.LastSessionPlayerDamage.TargetTotalDamage}" ToolTip="Total Damage done!" />
-            </Grid>
-            <Grid Grid.Row="4" Background="AliceBlue">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="160" />
-                    <ColumnDefinition Width="50" />
-                    <ColumnDefinition Width="70" />
-                    <ColumnDefinition Width="70" />
-                    <ColumnDefinition Width="70" />
-                </Grid.ColumnDefinitions>
-                <TextBlock HorizontalAlignment="Left" Grid.Column="0" FontWeight="Bold" Text="Current Session" ToolTip="Your All time Best" />
-                <Button Grid.Column="1" Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="MoveCurrentToLastSession" ToolTip="Move current session data to Last" >
-                    <Image Source="pack://application:,,,/Images/trash.png"/>
-                </Button>
-                <TextBlock HorizontalAlignment="Left" Grid.Column="2" FontWeight="Bold" Text="{Binding SessionPlayerDamage.CurrentSessionPlayerDamage.HighestDPS}" ToolTip="Total DPS!" />
-                <TextBlock HorizontalAlignment="Left" Grid.Column="3" FontWeight="Bold" Text="{Binding SessionPlayerDamage.CurrentSessionPlayerDamage.HighestHit}" ToolTip="Biggest single hit!" />
-                <TextBlock HorizontalAlignment="Left" Grid.Column="4" FontWeight="Bold" Text="{Binding SessionPlayerDamage.CurrentSessionPlayerDamage.TargetTotalDamage}" ToolTip="Total Damage done!" />
-            </Grid>
-            <ListView Name="DpsList" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling" Grid.Row="5" Background="Transparent">
-                <ListView.ItemTemplate>
-                    <DataTemplate>
-                        <Grid>
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="210" />
-                                <ColumnDefinition Width="70" />
-                                <ColumnDefinition Width="70" />
-                                <ColumnDefinition Width="70" /> 
-                            </Grid.ColumnDefinitions>
-                            <ProgressBar Grid.Column="0" Grid.ColumnSpan="7" Value="{Binding PercentOfTotalDamage}"  Maximum="100"  Foreground="{Binding ProgressBarColor}"  />
-                            <TextBlock HorizontalAlignment="Stretch" Margin="10,0,0,0" Grid.Column="0" FontWeight="Bold" Text="{Binding SourceName_and_Info}" ToolTip="The NPC/PC who is Dealing the damage" />
-                              <TextBlock HorizontalAlignment="Left" Grid.Column="1" FontWeight="Bold" Text="{Binding TotalDPS}" ToolTip="Total DPS!" />
-                            <TextBlock HorizontalAlignment="Left" Grid.Column="2" FontWeight="Bold" Text="{Binding HighestHit}" ToolTip="Biggest single hit!" />
-                            <TextBlock HorizontalAlignment="Left" Grid.Column="3" FontWeight="Bold" Text="{Binding TotalDamage}" ToolTip="Total Damage done!" />
-                        </Grid>
-                    </DataTemplate>
-                </ListView.ItemTemplate>
-                <ListView.GroupStyle>
-                    <GroupStyle>
-                        <GroupStyle.ContainerStyle>
-                            <Style TargetType="{x:Type GroupItem}">
-                                <Setter Property="Template">
-                                    <Setter.Value>
-                                        <ControlTemplate>
-                                            <Expander IsExpanded="True" Background="LightGray">
-                                                <Expander.Header>
-                                                    <Grid HorizontalAlignment="{Binding Path=HorizontalAlignment, RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type ContentPresenter}}, Mode=OneWayToSource}" >
-                                                        <Grid.ColumnDefinitions>
-                                                            <ColumnDefinition Width="210" />
-                                                            <ColumnDefinition Width="70" />
-                                                            <ColumnDefinition Width="45"/>
-                                                            <ColumnDefinition Width="70" /> 
-                                                        </Grid.ColumnDefinitions>
-                                                        <TextBlock Grid.Column="0" Text="{Binding Items[0].TargetName_and_Info}" FontWeight="Bold" FontSize="{DynamicResource GlobalFontSize}" />
-                                                        <Button Grid.Column="1" Width="14" Height="14" Click="copytoclipboard" ToolTip="Copy Details to clipboard">
-                                                            <Image Source="pack://application:,,,/Images/Copy.png"/>
-                                                        </Button>
-                                                        <TextBlock  HorizontalAlignment="Left" Grid.Column="3" FontWeight="Bold" Text="{Binding Items[0].TargetTotalDamage}" />
-                                                    </Grid>
-                                                </Expander.Header>
-                                                <ItemsPresenter />
-                                            </Expander>
-                                        </ControlTemplate>
-                                    </Setter.Value>
-                                </Setter>
-                            </Style>
-                        </GroupStyle.ContainerStyle>
-                    </GroupStyle>
-                </ListView.GroupStyle>
-                <ListView.ItemContainerStyle>
-                    <Style TargetType="{x:Type ListViewItem}">
-                        <Setter Property="Template">
-                            <Setter.Value>
-                                <ControlTemplate TargetType="{x:Type ListViewItem}">
-                                    <ContentPresenter />
-                                </ControlTemplate>
-                            </Setter.Value>
-                        </Setter>
-                    </Style>
-                </ListView.ItemContainerStyle>
-            </ListView>
         </Grid>
     </Border>
 </local:BaseSaveStateWindow>

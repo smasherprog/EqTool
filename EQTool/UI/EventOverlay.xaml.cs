@@ -26,6 +26,7 @@ namespace EQTool.UI
 
     public partial class EventOverlay : BaseSaveStateWindow
     {
+        private readonly EventOverlayViewModel eventOverlayViewModel;
         private readonly EQToolSettings settings;
         private readonly ActivePlayer activePlayer;
         private readonly List<ChainOverlayData> chainDatas = new List<ChainOverlayData>();
@@ -33,9 +34,10 @@ namespace EQTool.UI
         private readonly IAppDispatcher appDispatcher;
         private readonly LogEvents logEvents;
 
-        public EventOverlay(LogEvents logEvents, EQToolSettings settings, PigParseApi pigParseApi, EQToolSettingsLoad toolSettingsLoad, ActivePlayer activePlayer, IAppDispatcher appDispatcher)
-            : base(settings.OverlayWindowState, toolSettingsLoad, settings)
+        public EventOverlay(EventOverlayViewModel eventOverlayViewModel, LogEvents logEvents, EQToolSettings settings, PigParseApi pigParseApi, EQToolSettingsLoad toolSettingsLoad, ActivePlayer activePlayer, IAppDispatcher appDispatcher)
+            : base(eventOverlayViewModel, settings.OverlayWindowState, toolSettingsLoad, settings)
         {
+            this.eventOverlayViewModel = eventOverlayViewModel;
             this.logEvents = logEvents;
             this.pigParseApi = pigParseApi;
             this.appDispatcher = appDispatcher;

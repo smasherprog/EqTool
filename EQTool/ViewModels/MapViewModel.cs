@@ -66,7 +66,7 @@ namespace EQTool.ViewModels
         public DateTime LastSeen { get; set; }
     }
 
-    public class MapViewModel : INotifyPropertyChanged
+    public class MapViewModel : BaseWindowViewModel, INotifyPropertyChanged
     {
         private readonly MapLoad mapLoad;
         private readonly ActivePlayer activePlayer;
@@ -802,12 +802,6 @@ namespace EQTool.ViewModels
         public void TimerMenu_Opened()
         {
             TimerOpen = true;
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-        protected void OnPropertyChanged([CallerMemberName] string name = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
 
         public void PlayerLocationEvent(SignalrPlayerV2 e)
