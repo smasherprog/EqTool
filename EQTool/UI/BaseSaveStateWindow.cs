@@ -79,7 +79,7 @@ namespace EQTool.UI
         
         private void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            SetClickThrough(windowState.IsClickThrough);
+            SetClickThrough(windowState.ClickThroughAllowed);
         }
         
         private void SpellWindow_StateChanged(object sender, EventArgs e)
