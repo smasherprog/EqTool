@@ -670,7 +670,13 @@
     <EmbeddedResource Include="Images\logo.ico" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="Images\logo_t.ico" />
+  </ItemGroup>
+  <ItemGroup>
     <Resource Include="Images\sickpic.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="Images\sickpic_t.ico" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

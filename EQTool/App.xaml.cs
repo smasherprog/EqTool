@@ -262,11 +262,6 @@ namespace EQTool
             var gitHubMenuItem = new System.Windows.Forms.MenuItem("Suggestions", Suggestions);
             var whythepig = new System.Windows.Forms.MenuItem("Pigparse Discord", WhyThePig);
             var updates = new System.Windows.Forms.MenuItem("Check for Update", CheckForUpdates);
-            var logo = EQTool.Properties.Resources.pig;
-
-#if BETA || DEBUG
-            logo = EQTool.Properties.Resources.sickpic;
-#endif
 
             var version = new System.Windows.Forms.MenuItem(Version)
             {
@@ -275,7 +270,6 @@ namespace EQTool
             ToggleMenuButtons(false);
             SystemTrayIcon = new System.Windows.Forms.NotifyIcon
             {
-                Icon = logo,
                 Visible = true,
                 ContextMenu = new System.Windows.Forms.ContextMenu(new System.Windows.Forms.MenuItem[]
                 {
@@ -362,6 +356,15 @@ namespace EQTool
             ((App)System.Windows.Application.Current).UpdateBackgroundOpacity("MyWindowStyleTrigger", EQToolSettings.SpellWindowState.Opacity.Value);
         }
 
+        private void UpdateTrayIcon()
+        {
+#if BETA || DEBUG
+            SystemTrayIcon.Icon = EQToolSettings.IsClickThroughMode ? EQTool.Properties.Resources.sickpic_t : EQTool.Properties.Resources.sickpic;
+#else
+            SystemTrayIcon.Icon = EQToolSettings.IsClickThroughMode ? EQTool.Properties.Resources.pig_t : EQTool.Properties.Resources.pig;
+#endif
+        }
+        
         public void UpdateBackgroundOpacity(string name, double opacity)
         {
             var newcolor = (SolidColorBrush)new BrushConverter().ConvertFrom("#1a1919");
@@ -602,6 +605,7 @@ namespace EQTool
         private void ApplyClickThrough(bool isClickThrough)
         {
             EQToolSettings.IsClickThroughMode = isClickThrough;
+            UpdateTrayIcon();
 
             foreach (var item in WindowList)
             {
