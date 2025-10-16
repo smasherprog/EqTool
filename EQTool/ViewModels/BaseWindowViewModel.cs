@@ -6,13 +6,17 @@ namespace EQTool.ViewModels
 {
     public class BaseWindowViewModel : INotifyPropertyChanged
     {
-        private GridLength titlebarSize = new GridLength(20);
-        private Thickness borderThickness = new Thickness(1, 0, 1, 1);
+        private static GridLength noHeight = new GridLength(0);
+        private static GridLength defaultTitlebarSize = new GridLength(20);
+        private static Thickness noBorder = new Thickness(0);
+        private static Thickness defaultBorderThickness = new Thickness(1, 0, 1, 1);
+        private static Thickness defaultResizeBorderThickness = new Thickness(5, 5, 5, 5);
         
-        public ResizeMode CanResize { get; set; }
-        public Visibility ShowTitlebar { get; set; }
-        public Thickness BorderThickness { get; set; }
-        public GridLength TitleBarHeight { get; set; }
+        public ResizeMode CanResize { get; set; } = ResizeMode.CanResize;
+        public Visibility ShowTitlebar { get; set; } = Visibility.Visible;
+        public Thickness BorderThickness { get; set; } = defaultBorderThickness;
+        public Thickness ResizeBorderThickness { get; set; } = defaultResizeBorderThickness;
+        public GridLength TitleBarHeight { get; set; } = defaultTitlebarSize;
         
         private bool _IsMouseOverTitleArea;
         public bool IsMouseOverTitleArea
@@ -21,7 +25,7 @@ namespace EQTool.ViewModels
             set
             {
                 _IsMouseOverTitleArea = value;
-                TitleBarHeight = value ? titlebarSize : new GridLength(0);
+                TitleBarHeight = value ? defaultTitlebarSize : noHeight;
                 OnPropertyChanged(nameof(TitleBarHeight));
                 OnPropertyChanged(nameof(EffectiveTitlebarVisibility));
                 OnPropertyChanged(nameof(IsTitleBarHidden));
@@ -38,12 +42,14 @@ namespace EQTool.ViewModels
                 _IsLocked = value;
                 CanResize = value ? ResizeMode.NoResize : ResizeMode.CanResize;
                 ShowTitlebar = value ? Visibility.Hidden : Visibility.Visible;
-                BorderThickness = value ? new Thickness(0) : borderThickness;
-                TitleBarHeight = value ? new GridLength(0) : titlebarSize;
+                BorderThickness = value ? noBorder : defaultBorderThickness;
+                ResizeBorderThickness = value ? noBorder : defaultResizeBorderThickness;
+                TitleBarHeight = value ? noHeight : defaultTitlebarSize;
 
                 OnPropertyChanged(nameof(CanResize));
                 OnPropertyChanged(nameof(ShowTitlebar));
                 OnPropertyChanged(nameof(BorderThickness));
+                OnPropertyChanged(nameof(ResizeBorderThickness));
                 OnPropertyChanged(nameof(TitleBarHeight));
                 OnPropertyChanged(nameof(EffectiveTitlebarVisibility));
                 OnPropertyChanged(nameof(IsTitleBarHidden));
