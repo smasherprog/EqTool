@@ -77,9 +77,9 @@ namespace EQTool.UI
             Close();
         }
         
-        private void Window_Loaded(object sender, RoutedEventArgs e)
+        protected virtual void Window_Loaded(object sender, RoutedEventArgs e)
         {
-            SetClickThrough(windowState.ClickThroughAllowed);
+            SetClickThrough(settings.IsClickThroughMode && windowState.ClickThroughAllowed);
         }
         
         private void SpellWindow_StateChanged(object sender, EventArgs e)
@@ -147,7 +147,7 @@ namespace EQTool.UI
             windowState.IsLocked = baseViewModel.IsLocked;
         }
         
-        private void SetClickThrough(bool enable)
+        protected void SetClickThrough(bool enable)
         {
             WindowExtensions.SetClickThrough(this, enable);
         }

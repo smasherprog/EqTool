@@ -282,6 +282,11 @@ namespace EQTool.UI
             base.OnClosing(e);
         }
 
+        protected override void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            // Override default Click-Through logic and do nothing
+        }
+        
         private void Grid_MouseEnter(object sender, MouseEventArgs e)
         {
             WindowResizeChrome.ResizeBorderThickness = new Thickness(8);
