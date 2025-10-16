@@ -132,10 +132,23 @@ namespace EQTool.ViewModels
             set
             {
                 toolSettings.DpsWindowState.AlwaysOnTop = value;
+                if (!value)
+                    DpsClickThroughAllowed = false;
+                
                 OnPropertyChanged();
             }
         }
 
+        public bool DpsClickThroughAllowed
+        {
+            get => toolSettings.DpsWindowState.ClickThroughAllowed;
+            set
+            {
+                toolSettings.DpsWindowState.ClickThroughAllowed = value;
+                OnPropertyChanged();
+            }
+        }
+        
         public double DPSWindowOpacity
         {
             get => toolSettings.DpsWindowState.Opacity ?? 1.0;
@@ -153,10 +166,23 @@ namespace EQTool.ViewModels
             set
             {
                 toolSettings.MapWindowState.AlwaysOnTop = value;
+                if (!value)
+                    MapClickThroughAllowed = false;
+                
                 OnPropertyChanged();
             }
         }
 
+        public bool MapClickThroughAllowed
+        {
+            get => toolSettings.MapWindowState.ClickThroughAllowed;
+            set
+            {
+                toolSettings.MapWindowState.ClickThroughAllowed = value;
+                OnPropertyChanged();
+            }
+        }
+        
         public double MapWindowOpacity
         {
             get => toolSettings.MapWindowState.Opacity ?? 1.0;
@@ -174,20 +200,46 @@ namespace EQTool.ViewModels
             set
             {
                 toolSettings.MobWindowState.AlwaysOnTop = value;
+                if (!value)
+                    MobClickThroughAllowed = false;
+                
                 OnPropertyChanged();
             }
         }
 
+        public bool MobClickThroughAllowed
+        {
+            get => toolSettings.MobWindowState.ClickThroughAllowed;
+            set
+            {
+                toolSettings.MobWindowState.ClickThroughAllowed = value;
+                OnPropertyChanged();
+            }
+        }
+        
         public bool SpellAlwaysOnTop
         {
             get => toolSettings.SpellWindowState.AlwaysOnTop;
             set
             {
                 toolSettings.SpellWindowState.AlwaysOnTop = value;
+                if (!value)
+                    SpellClickThroughAllowed = false;
+                
                 OnPropertyChanged();
             }
         }
 
+        public bool SpellClickThroughAllowed
+        {
+            get => toolSettings.SpellWindowState.ClickThroughAllowed;
+            set
+            {
+                toolSettings.SpellWindowState.ClickThroughAllowed = value;
+                OnPropertyChanged();
+            }
+        }
+        
         public bool ShowRandomRolls
         {
             get => toolSettings.ShowRandomRolls;

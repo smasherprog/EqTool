@@ -12,6 +12,7 @@ namespace EQTool.Models
         public bool IsLocked { get; set; }
         public bool Closed { get; set; }
         public bool AlwaysOnTop { get; set; }
+        public bool ClickThroughAllowed { get; set; }
 
         private double _Opacity = 1.0;
         public double? Opacity
@@ -161,6 +162,7 @@ namespace EQTool.Models
             set { if (value == null) { _RaidModeDetection = true; } else { _RaidModeDetection = value; } }
         }
         public bool LoginMiddleMand { get; set; }
+        public bool IsClickThroughMode { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 

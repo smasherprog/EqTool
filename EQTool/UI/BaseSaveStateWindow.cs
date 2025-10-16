@@ -4,6 +4,7 @@ using System;
 using System.ComponentModel;
 using System.Windows;
 using System.Windows.Input;
+using System.Windows.Interop;
 using System.Windows.Threading;
 using EQTool.ViewModels;
 
@@ -36,9 +37,7 @@ namespace EQTool.UI
         protected void Init()
         {
             if (InitCalled)
-            {
                 return;
-            }
 
             InitCalled = true;
             AdjustWindow();
@@ -47,6 +46,7 @@ namespace EQTool.UI
             SizeChanged += Window_SizeChanged;
             StateChanged += SpellWindow_StateChanged;
             LocationChanged += Window_LocationChanged;
+            Loaded += Window_Loaded;
             windowState.Closed = false;
             SaveState();
         }
@@ -76,7 +76,12 @@ namespace EQTool.UI
             SaveState();
             Close();
         }
-
+        
+        protected virtual void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            SetClickThrough(settings.IsClickThroughMode && windowState.ClickThroughAllowed);
+        }
+        
         private void SpellWindow_StateChanged(object sender, EventArgs e)
         {
             LastWindowInteraction = DateTime.Now;
@@ -141,7 +146,12 @@ namespace EQTool.UI
             windowState.AlwaysOnTop = Topmost;
             windowState.IsLocked = baseViewModel.IsLocked;
         }
-
+        
+        protected void SetClickThrough(bool enable)
+        {
+            WindowExtensions.SetClickThrough(this, enable);
+        }
+        
         protected override void OnClosing(CancelEventArgs e)
         {
             if (timer != null)
@@ -154,6 +164,7 @@ namespace EQTool.UI
             LocationChanged -= Window_LocationChanged;
             base.OnClosing(e);
         }
+        
         protected void openmobinfo(object sender, RoutedEventArgs e)
         {
             (App.Current as App).OpenMobInfoWindow();
@@ -168,6 +179,7 @@ namespace EQTool.UI
         {
             (App.Current as App).OpenSettingsWindow();
         }
+        
         protected void openmap(object sender, RoutedEventArgs e)
         {
             (App.Current as App).OpenMapWindow();
