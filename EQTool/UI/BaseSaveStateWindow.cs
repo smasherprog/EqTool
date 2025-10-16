@@ -19,6 +19,7 @@ namespace EQTool.UI
             Interval = new TimeSpan(0, 0, 0, 0, 500),
             IsEnabled = false
         };
+        protected readonly IAppDispatcher appDispatcher;
         private readonly BaseWindowViewModel baseViewModel;
         private readonly Models.WindowState windowState;
         private readonly EQToolSettingsLoad toolSettingsLoad;
@@ -28,8 +29,9 @@ namespace EQTool.UI
         private bool InitCalled = false;
         protected DateTime LastWindowInteraction = DateTime.Now;
 
-        public BaseSaveStateWindow(BaseWindowViewModel baseViewModel, Models.WindowState windowState, EQToolSettingsLoad toolSettingsLoad, EQToolSettings settings)
+        public BaseSaveStateWindow(IAppDispatcher appDispatcher, BaseWindowViewModel baseViewModel, Models.WindowState windowState, EQToolSettingsLoad toolSettingsLoad, EQToolSettings settings)
         {
+            this.appDispatcher = appDispatcher;
             this.baseViewModel = baseViewModel;
             this.windowState = windowState;
             this.toolSettingsLoad = toolSettingsLoad;
@@ -217,10 +219,14 @@ namespace EQTool.UI
             Task.Run(async () =>
             {
                 await Task.Delay(150, debounceToken);
-                if (!debounceToken.IsCancellationRequested)
-                    baseViewModel.IsMouseOverTitleArea = true;
-            },
-            debounceToken);
+                appDispatcher.DispatchUI(() =>
+                {
+                    if (!debounceToken.IsCancellationRequested)
+                    {
+                        baseViewModel.IsMouseOverTitleArea = true;
+                    }
+                });
+            }, debounceToken);
         }
 
         protected void HoverZone_MouseLeave(object sender, MouseEventArgs e)
@@ -232,10 +238,14 @@ namespace EQTool.UI
             Task.Run(async () =>
             {
                 await Task.Delay(150, debounceToken);
-                if (!debounceToken.IsCancellationRequested)
-                    baseViewModel.IsMouseOverTitleArea = false;
-            },
-            debounceToken);
+                appDispatcher.DispatchUI(() =>
+                {
+                    if (!debounceToken.IsCancellationRequested)
+                    {
+                        baseViewModel.IsMouseOverTitleArea = false;
+                    }
+                });
+            }, debounceToken);
         }
         
         public void UpdateShowInTaskbar()
