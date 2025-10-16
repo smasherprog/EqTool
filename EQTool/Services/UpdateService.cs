@@ -72,7 +72,7 @@ namespace EQTool.Services
             {
                 if (parameter.Contains("ping"))
                 {
-                    var sourcedirectory = System.IO.Directory.GetCurrentDirectory();
+                    var sourcedirectory = KnownDirectories.GetExecutableDirectory();
                     var parentidirectory = Directory.GetParent(sourcedirectory).FullName;
                     CopyFilesRecursively(sourcedirectory, parentidirectory);
                     var path = Path.Combine(parentidirectory, programName);
@@ -161,25 +161,25 @@ namespace EQTool.Services
                     if (filename.EndsWith(".zip"))
                     {
                         File.WriteAllBytes("EqTool.zip", fileBytes);
-                        ZipFile.ExtractToDirectory("EqTool.zip", System.IO.Directory.GetCurrentDirectory() + "/NewVersion");
+                        ZipFile.ExtractToDirectory("EqTool.zip", KnownDirectories.GetExecutableDirectory() + "/NewVersion");
                     }
                     else
                     {
-                        _ = System.IO.Directory.CreateDirectory(System.IO.Directory.GetCurrentDirectory() + "/NewVersion");
-                        File.WriteAllBytes(System.IO.Directory.GetCurrentDirectory() + "/NewVersion/" + filename, fileBytes);
+                        _ = System.IO.Directory.CreateDirectory(KnownDirectories.GetExecutableDirectory() + "/NewVersion");
+                        File.WriteAllBytes(KnownDirectories.GetExecutableDirectory() + "/NewVersion/" + filename, fileBytes);
                     }
                     loginMiddlemand?.StopListening();
                     appDispatcher?.DispatchUI(() =>
                     {
                         System.Windows.Application.Current.Shutdown();
                     });
-                    var path = System.IO.Directory.GetCurrentDirectory() + $"/NewVersion/{programName}";
+                    var path = KnownDirectories.GetExecutableDirectory() + $"/NewVersion/{programName}";
                     _ = System.Diagnostics.Process.Start(new ProcessStartInfo
                     {
                         FileName = path,
                         Arguments = "ping",
                         UseShellExecute = true,
-                        WorkingDirectory = System.IO.Directory.GetCurrentDirectory() + "/NewVersion/"
+                        WorkingDirectory = KnownDirectories.GetExecutableDirectory() + "/NewVersion/"
                     });
                 }
             }

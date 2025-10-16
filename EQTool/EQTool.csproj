@@ -363,6 +363,7 @@
     <Compile Include="Services\Handlers\RandomRollHandler.cs" />
     <Compile Include="Services\Handlers\SpawnTimerHandler.cs" />
     <Compile Include="Services\Handlers\YourItemBeginsToGlowHandler.cs" />
+    <Compile Include="Services\KnownDirectories.cs" />
     <Compile Include="Services\Parsing\BeginsToCastTheGateSpellParser.cs" />
     <Compile Include="Services\Parsing\DisciplineCooldownParser.cs" />
     <Compile Include="Services\Parsing\ExpGainedParser.cs" />

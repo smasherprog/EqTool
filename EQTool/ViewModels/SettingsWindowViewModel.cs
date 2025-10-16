@@ -9,6 +9,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
+using EQTool.Services;
 
 namespace EQTool.ViewModels
 {
@@ -308,8 +309,6 @@ namespace EQTool.ViewModels
                 OnPropertyChanged();
             }
         }
-
-        public string CurrentWorkingDirectory { get; } = System.IO.Directory.GetCurrentDirectory();
 
         private string _GroupLeaderName = "None";
         public string GroupLeaderName

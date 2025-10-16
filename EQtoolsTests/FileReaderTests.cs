@@ -12,7 +12,7 @@ namespace EQtoolsTests
     {
         private readonly IFileReader fileReader;
         private readonly LogEvents logEvents;
-        private readonly string FilePath = Path.Combine(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName, "LogFiles");
+        private readonly string FilePath = Path.Combine(Directory.GetParent(KnownDirectories.GetExecutableDirectory()).Parent.FullName, "LogFiles");
 
         public FileReaderTests()
         {
