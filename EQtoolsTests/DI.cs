@@ -91,7 +91,7 @@ namespace EQtoolsTests
 
             var b = builder.Build();
             var settings = b.Resolve<EQTool.Models.EQToolSettings>();
-            settings.DefaultEqDirectory = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
+            settings.DefaultEqDirectory = Directory.GetParent(KnownDirectories.GetExecutableDirectory()).Parent.FullName;
             return b;
         }
     }

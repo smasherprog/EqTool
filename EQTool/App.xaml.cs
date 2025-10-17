@@ -163,14 +163,15 @@ namespace EQTool
 
         private bool ShouldShutDownDueToNoWriteAccess()
         {
+            var testFilePath = Path.Combine(KnownDirectories.GetExecutableDirectory(), "test.json");
             try
             {
-                File.Delete("test.json");
+                File.Delete(testFilePath);
             }
             catch { }
             try
             {
-                File.WriteAllText("test.json", "test");
+                File.WriteAllText(testFilePath, "test");
             }
             catch (UnauthorizedAccessException)
             {
@@ -179,10 +180,10 @@ namespace EQTool
             }
             try
             {
-                File.Delete("test.json");
+                File.Delete(testFilePath);
             }
             catch { }
-            var cwd = Directory.GetCurrentDirectory();
+            var cwd = KnownDirectories.GetExecutableDirectory();
             if (cwd.ToLower().Contains("program files"))
             {
                 _ = MessageBox.Show("Pigparse is running from a directory where it does not have permission to save settings. Please, move it to a folder where it can write!", "Pigparse Permissions!", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -209,7 +210,7 @@ namespace EQTool
             }
             try
             {
-                var curr = Directory.GetCurrentDirectory();
+                var curr = KnownDirectories.GetExecutableDirectory();
                 var path = Path.Combine(curr, "eqgame.exe");
                 if (File.Exists(path))
                 {
