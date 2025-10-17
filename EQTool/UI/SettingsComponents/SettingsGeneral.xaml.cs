@@ -696,6 +696,7 @@ namespace EQTool.UI.SettingsComponents
         private void SaveClickThroughCheckBoxSettings(object sender, RoutedEventArgs e)
         {
             SaveConfig();
+            ((App)System.Windows.Application.Current).ApplyClickThrough(settings.IsClickThroughMode);
         }
         
         private void testenrage(object sender, RoutedEventArgs e)

@@ -602,7 +602,7 @@ namespace EQTool
             ClickThroughItem.Checked = EQToolSettings.IsClickThroughMode;
         }
 
-        private void ApplyClickThrough(bool isClickThrough)
+        public void ApplyClickThrough(bool isClickThrough)
         {
             EQToolSettings.IsClickThroughMode = isClickThrough;
             UpdateTrayIcon();
@@ -611,23 +611,19 @@ namespace EQTool
             {
                 if (item is DPSMeter w)
                 {
-                    if (!isClickThrough || EQToolSettings.DpsWindowState.ClickThroughAllowed)
-                        w.SetClickThrough(isClickThrough);
+                    w.SetClickThrough(isClickThrough && EQToolSettings.DpsWindowState.ClickThroughAllowed);
                 }
                 else if (item is MappingWindow w1)
                 {
-                    if (!isClickThrough || EQToolSettings.MapWindowState.ClickThroughAllowed)
-                        w1.SetClickThrough(isClickThrough);
+                    w1.SetClickThrough(isClickThrough && EQToolSettings.MapWindowState.ClickThroughAllowed);
                 }
                 else if (item is MobInfo w2)
                 {
-                    if (!isClickThrough || EQToolSettings.MobWindowState.ClickThroughAllowed)
-                        w2.SetClickThrough(isClickThrough);
+                    w2.SetClickThrough(isClickThrough && EQToolSettings.MobWindowState.ClickThroughAllowed);
                 }
                 else if (item is SpellWindow w3)
                 {
-                    if (!isClickThrough || EQToolSettings.SpellWindowState.ClickThroughAllowed)
-                        w3.SetClickThrough(isClickThrough);
+                    w3.SetClickThrough(isClickThrough && EQToolSettings.SpellWindowState.ClickThroughAllowed);
                 }
             }
         }
