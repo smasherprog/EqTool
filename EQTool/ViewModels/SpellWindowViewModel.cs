@@ -555,6 +555,7 @@ namespace EQTool.ViewModels
                             SpellType = match.SpellType,
                             GroupName = EQSpells.SpaceYou,
                             Name = match.name,
+                            Caster = item.Caster,
                             Rect = match.Rect,
                             Icon = match.SpellIcon,
                             Classes = match.Classes,

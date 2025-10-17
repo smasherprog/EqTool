@@ -25,6 +25,7 @@ namespace EQTool.Services
             this.spellWindowViewModel = spellWindowViewModel;
             this.eQToolSettings = eQToolSettings;
         }
+        
         public void TrySaveYouSpellData()
         {
             if (activePlayer?.Player != null)
@@ -34,11 +35,12 @@ namespace EQTool.Services
                     if (!activePlayer.Player.YouSpells.Any())
                     {
                         var before = activePlayer.Player.YouSpells ?? new System.Collections.Generic.List<YouSpells>();
-                        activePlayer.Player.YouSpells = spellWindowViewModel.SpellList.Where(a => a.GroupName == EQSpells.SpaceYou && a.SpellViewModelType == ViewModels.SpellWindow.SpellViewModelType.Spell)
+                        activePlayer.Player.YouSpells = spellWindowViewModel.SpellList.Where(a => a.GroupName == EQSpells.SpaceYou && a.SpellViewModelType == SpellViewModelType.Spell)
                             .Cast<SpellViewModel>()
                             .Select(a => new YouSpells
                             {
                                 Name = a.Name,
+                                Caster = a.Caster,
                                 TotalSecondsLeft = (int)a.TotalRemainingDuration.TotalSeconds,
                             }).ToList();
                         toolSettingsLoad.Save(eQToolSettings);

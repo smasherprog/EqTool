@@ -152,6 +152,7 @@ namespace EQTool.Models
     public class YouSpells
     {
         public string Name { get; set; }
+        public string Caster { get; set; }
         public int TotalSecondsLeft { get; set; }
     }
 
