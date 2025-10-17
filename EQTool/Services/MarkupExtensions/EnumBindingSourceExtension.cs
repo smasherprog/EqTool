@@ -20,7 +20,9 @@ namespace EQTool.Services.MarkupExtensions
             set
             {
                 if (value == _EnumType)
+                {
                     return;
+                }
 
                 if (null != value)
                 {
@@ -38,7 +40,9 @@ namespace EQTool.Services.MarkupExtensions
         public override object ProvideValue(IServiceProvider serviceProvider)
         {
             if (null == _EnumType)
+            {
                 throw new InvalidOperationException("The EnumType must be specified.");
+            }
 
             var actualEnumType = Nullable.GetUnderlyingType(_EnumType) ?? _EnumType;
             var enumValues = Enum.GetValues(actualEnumType);
