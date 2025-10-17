@@ -41,7 +41,7 @@ namespace EQTool.Services.Handlers
                     if (SelfSpellsThatDontEmitCompletionLogMesssages.Contains(userCastingSpell.name))
                     {
                         debugOutput.WriteLine($"Casting spell guess based on timer for {userCastingSpell.name}", OutputType.Spells);
-                        baseSpellYouCastingHandler.Handle(userCastingSpell, EQSpells.SpaceYou, deltaOffset, e.TimeStamp);
+                        baseSpellYouCastingHandler.Handle(userCastingSpell, EQSpells.SpaceYou, EQSpells.SpaceYou, deltaOffset, e.TimeStamp);
                     }
                     debugOutput.WriteLine($"Clearing spell because {dt.TotalMilliseconds}ms has elapsed to complete casting {userCastingSpell.casttime + 1000}ms for the spell {userCastingSpell.name}", OutputType.Spells);
                     appDispatcher.DispatchUI(() =>
@@ -56,7 +56,7 @@ namespace EQTool.Services.Handlers
 
         private void LogEvents_YouFinishCastingEvent(object sender, YouFinishCastingEvent e)
         {
-            baseSpellYouCastingHandler.Handle(e.Spell, e.TargetName, 0, e.TimeStamp);
+            baseSpellYouCastingHandler.Handle(e.Spell, EQSpells.SpaceYou, e.TargetName, 0, e.TimeStamp);
             appDispatcher.DispatchUI(() =>
             {
                 activePlayer.UserCastingSpell = null;

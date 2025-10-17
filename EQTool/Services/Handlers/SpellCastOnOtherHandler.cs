@@ -39,7 +39,7 @@ namespace EQTool.Services.Handlers
                     {
                         target = EQSpells.SpaceYou;
                     }
-                    baseSpellYouCastingHandler.Handle(userCastingSpell, target, 0, e.TimeStamp);
+                    baseSpellYouCastingHandler.Handle(userCastingSpell, EQSpells.SpaceYou, target, 0, e.TimeStamp);
                     return;
                 }
                 else
@@ -59,7 +59,7 @@ namespace EQTool.Services.Handlers
                 }
             }
 
-            baseSpellYouCastingHandler.Handle(userCastingSpell, e.TargetName, 0, e.TimeStamp);
+            baseSpellYouCastingHandler.Handle(userCastingSpell, userCastingSpell?.NameIfSelfCast(e.TargetName), e.TargetName, 0, e.TimeStamp);
         }
     }
 }

@@ -92,7 +92,7 @@ namespace EQtoolsTests
         public void TestBurnoutIII_ForPet()
         {
             var settings = container.Resolve<EQToolSettings>();
-            settings.YouOnlySpells = true;
+            settings.SpellsFilter = SpellsFilterType.CastOnYou;
             var pet = container.Resolve<PetViewModel>();
             pet.PetName = "Xibab";
             var spellname = "Burnout III";

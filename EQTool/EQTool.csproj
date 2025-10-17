@@ -329,6 +329,7 @@
     <Compile Include="Models\CustomTimer.cs" />
     <Compile Include="Models\FightHistory.cs" />
     <Compile Include="Models\Pets.cs" />
+    <Compile Include="Models\SpellsFilterType.cs" />
     <Compile Include="Services\BinarySerializer.cs" />
     <Compile Include="Services\BoatScheduleService.cs" />
     <Compile Include="Services\Handlers\BoatHandler.cs" />
@@ -364,6 +365,7 @@
     <Compile Include="Services\Handlers\SpawnTimerHandler.cs" />
     <Compile Include="Services\Handlers\YourItemBeginsToGlowHandler.cs" />
     <Compile Include="Services\KnownDirectories.cs" />
+    <Compile Include="Services\MarkupExtensions\EnumBindingSourceExtension.cs" />
     <Compile Include="Services\Parsing\BeginsToCastTheGateSpellParser.cs" />
     <Compile Include="Services\Parsing\DisciplineCooldownParser.cs" />
     <Compile Include="Services\Parsing\ExpGainedParser.cs" />
@@ -384,6 +386,7 @@
     <Compile Include="Services\Parsing\LineParser.cs" />
     <Compile Include="Services\Parsing\FactionParser.cs" />
     <Compile Include="Services\SavePlayerStateService.cs" />
+    <Compile Include="Services\TypeConverters\EnumDescriptionTypeConverter.cs" />
     <Compile Include="Services\UIRunner.cs" />
     <Compile Include="Services\UpdateRunner.cs" />
     <Compile Include="Services\UserDefinedTrigger.cs" />
@@ -1169,6 +1172,5 @@
   <ItemGroup>
     <Resource Include="ILLink\ILLink.Descriptors.LibraryBuild.xml" />
   </ItemGroup>
-  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

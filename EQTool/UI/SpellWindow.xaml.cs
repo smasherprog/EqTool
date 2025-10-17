@@ -59,9 +59,14 @@ namespace EQTool.UI
             });
         }
 
-        private void ClearAllOtherSpells(object sender, RoutedEventArgs e)
+        private void ClearSpellsNotCastOnYou(object sender, RoutedEventArgs e)
         {
-            spellWindowViewModel.ClearAllOtherSpells();
+            spellWindowViewModel.ClearSpellsNotCastOnYou();
+        }
+        
+        private void ClearSpellsCastByOthers(object sender, RoutedEventArgs e)
+        {
+            spellWindowViewModel.ClearSpellsCastByOthers();
         }
 
         private void RaidModleToggle(object sender, RoutedEventArgs e)
