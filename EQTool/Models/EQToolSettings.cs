@@ -135,10 +135,10 @@ namespace EQTool.Models
             }
             set => _SettingsWindowState = value ?? new WindowState();
         }
-
+        
         public List<PlayerInfo> Players { get; set; } = new List<PlayerInfo>();
         public List<Trigger> Triggers { get; set; } = new List<Trigger>();
-        public bool YouOnlySpells { get; set; }
+        public SpellsFilterType SpellsFilter { get; set; }
         public bool ShowRandomRolls { get; set; }
 
         private bool? _ShowRing8RollTime { get; set; } = true;

@@ -13,6 +13,7 @@ using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
+using EQToolShared.Enums;
 
 namespace EQTool.ViewModels
 {
@@ -246,15 +247,22 @@ namespace EQTool.ViewModels
                     {
                         itemstoremove.Add(item);
                     }
+
                     var hidespell = false;
                     if (!item.GroupName.StartsWith(" "))
                     {
-                        if (item.SpellViewModelType == SpellViewModelType.Timer)
+                        if (item.SpellViewModelType == SpellViewModelType.Spell)
                         {
-                            if (settings.YouOnlySpells || RaidModeEnabled)
+                            var s = item as SpellViewModel;
+                            hidespell = ShouldFilterSpell(s, player);
+                        }
+                        else if (item.SpellViewModelType == SpellViewModelType.Timer)
+                        {
+                            if (settings.SpellsFilter == SpellsFilterType.CastOnYou || settings.SpellsFilter == SpellsFilterType.CastByOrOnYou || RaidModeEnabled) //TODO: Make custom timers their own setting instead of relying on the spell filter
                             {
                                 hidespell = true;
                             }
+
                             if (item.Name.StartsWith("Scout Charisa Timer"))
                             {
                                 if (settings.ShowScoutRollTime == false)
@@ -278,43 +286,35 @@ namespace EQTool.ViewModels
                                 }
                             }
                         }
-                        else if (item.SpellViewModelType == SpellViewModelType.Spell)
+                    }
+                    else
+                    {
+                        if (item.SpellViewModelType == SpellViewModelType.Spell)
                         {
                             var s = item as SpellViewModel;
-                            if (settings.YouOnlySpells)
+                            hidespell = ShouldFilterSpell(s, player);
+                        }
+                        else if (item.GroupName == CustomTimer.CustomerTime && item.SpellViewModelType == SpellViewModelType.Timer)
+                        {
+                            if (item.Name.StartsWith("Scout Charisa Timer"))
                             {
-                                hidespell = true;
+                                hidespell = false;
+                                if (settings.ShowScoutRollTime == false)
+                                {
+                                    hidespell = true;
+                                }
                             }
-                            else if (RaidModeEnabled && player.PlayerClass.HasValue)
+                            else if (item.Name.StartsWith("Ring 8 Roll Timer"))
                             {
-                                hidespell = SpellUIExtensions.HideSpell(new List<EQToolShared.Enums.PlayerClasses>() { player.PlayerClass.Value }, s.Classes) || s.SpellType == SpellType.Self;
-                            }
-                            else
-                            {
-                                hidespell = SpellUIExtensions.HideSpell(player.ShowSpellsForClasses, s.Classes);
+                                hidespell = false;
+                                if (settings.ShowRing8RollTime == false)
+                                {
+                                    hidespell = true;
+                                }
                             }
                         }
                     }
-                    else if (item.GroupName == CustomTimer.CustomerTime && item.SpellViewModelType == SpellViewModelType.Timer)
-                    {
-                        if (item.Name.StartsWith("Scout Charisa Timer"))
-                        {
-                            hidespell = false;
-                            if (settings.ShowScoutRollTime == false)
-                            {
-                                hidespell = true;
-                            }
-                        }
-                        else if (item.Name.StartsWith("Ring 8 Roll Timer"))
-                        {
-                            hidespell = false;
-                            if (settings.ShowRing8RollTime == false)
-                            {
-                                hidespell = true;
-                            }
-                        }
-                    }
-
+                    
                     item.ColumnVisibility = hidespell ? System.Windows.Visibility.Collapsed : System.Windows.Visibility.Visible;
                 }
 
@@ -346,7 +346,7 @@ namespace EQTool.ViewModels
                 foreach (var item in SpellList.Where(a => persistentTypes.Contains(a.SpellViewModelType)).Cast<PersistentViewModel>().ToList())
                 {
                     var hidespell = false;
-                    if (settings.YouOnlySpells)
+                    if (settings.SpellsFilter == SpellsFilterType.CastOnYou || settings.SpellsFilter == SpellsFilterType.CastByOrOnYou)    //TODO: Verify if we need to do any CastByYou checks here
                     {
                         hidespell = !(MasterNPCList.NPCs.Contains(item.GroupName.Trim()) || item.GroupName == CustomTimer.CustomerTime || item.GroupName == EQSpells.SpaceYou);
                     }
@@ -402,7 +402,27 @@ namespace EQTool.ViewModels
             });
         }
 
-        public void ClearAllOtherSpells()
+        private bool ShouldFilterSpell(SpellViewModel s, PlayerInfo player)
+        {
+            switch (settings.SpellsFilter)
+            {
+                case SpellsFilterType.CastOnYou when s.GroupName != EQSpells.SpaceYou:
+                case SpellsFilterType.CastByYou when !s.CastByYou(player):
+                case SpellsFilterType.CastByOrOnYou when !(s.GroupName == EQSpells.SpaceYou || s.CastByYou(player)):
+                    return true;
+                case SpellsFilterType.ByClass:
+                    return SpellUIExtensions.HideSpell(player.ShowSpellsForClasses, s.Classes);
+            }
+
+            if (RaidModeEnabled && player.PlayerClass.HasValue)
+            {
+                return SpellUIExtensions.HideSpell(new List<PlayerClasses> { player.PlayerClass.Value }, s.Classes) || s.CastByYou(player);
+            }
+
+            return false;
+        }
+
+        public void ClearSpellsNotCastOnYou()
         {
             appDispatcher.DispatchUI(() =>
             {
@@ -411,6 +431,26 @@ namespace EQTool.ViewModels
                 .Cast<SpellViewModel>()
                 .Where(a => a.GroupName != EQSpells.SpaceYou)
                 .ToList();
+
+                foreach (var spell in spellstoremove)
+                {
+                    if (!MasterNPCList.NPCs.Contains(spell.GroupName.Trim()))
+                    {
+                        _ = SpellList.Remove(spell);
+                    }
+                }
+            });
+        }
+        
+        public void ClearSpellsCastByOthers()
+        {
+            appDispatcher.DispatchUI(() =>
+            {
+                var spellstoremove = SpellList
+                    .Where(a => a.SpellViewModelType == SpellViewModelType.Spell)
+                    .Cast<SpellViewModel>()
+                    .Where(a => !a.CastByYou(activePlayer.Player))
+                    .ToList();
 
                 foreach (var spell in spellstoremove)
                 {

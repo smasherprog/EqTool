@@ -15,7 +15,7 @@ namespace EQTool.Services.Handlers
 
         private void LogEvents_SpellCastOnYouEvent(object sender, SpellCastOnYouEvent e)
         {
-            baseSpellYouCastingHandler.Handle(e.Spell, EQSpells.SpaceYou, 0, e.TimeStamp);
+            baseSpellYouCastingHandler.Handle(e.Spell, e.Spell.NameIfSelfCast(EQSpells.SpaceYou), EQSpells.SpaceYou, 0, e.TimeStamp);
         }
     }
 }

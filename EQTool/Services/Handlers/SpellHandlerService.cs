@@ -80,7 +80,7 @@ namespace EQTool.Services.Handlers
             this.activePlayer = activePlayer;
         }
 
-        public void Handle(Spell spell, string targetName, int delayOffset, DateTime timestamp)
+        public void Handle(Spell spell, string casterName, string targetName, int delayOffset, DateTime timestamp)
         {
             var targetclass = playerTrackerService.GetPlayer(targetName)?.PlayerClass;
             var spellname = spell.name;
@@ -241,6 +241,7 @@ namespace EQTool.Services.Handlers
                         UpdatedDateTime = DateTime.Now,
                         PercentLeft = 100,
                         BenefitDetriment = spell.benefit_detriment,
+                        Caster = casterName,
                         SpellType = spell.SpellType,
                         GroupName = grpname,
                         TargetClass = targetclass,

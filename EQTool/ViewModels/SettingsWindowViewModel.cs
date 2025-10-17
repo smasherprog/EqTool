@@ -261,7 +261,20 @@ namespace EQTool.ViewModels
                 OnPropertyChanged();
             }
         }
-
+        
+        public SpellsFilterType SpellsFilter
+        {
+            get => toolSettings.SpellsFilter;
+            set
+            {
+                toolSettings.SpellsFilter = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(ShowClassFilters));
+            }
+        }
+        
+        public bool ShowClassFilters => toolSettings.SpellsFilter == SpellsFilterType.ByClass;
+        
         private PetViewModel _PetViewModel;
         public PetViewModel PetViewModel
         {
