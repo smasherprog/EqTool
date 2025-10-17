@@ -15,7 +15,7 @@
         ResizeMode="{Binding CanResize}"
    AllowsTransparency="True">
     <WindowChrome.WindowChrome>
-        <WindowChrome CaptionHeight="0" ResizeBorderThickness="5" />
+        <WindowChrome CaptionHeight="0" ResizeBorderThickness="{Binding ResizeBorderThickness}" />
     </WindowChrome.WindowChrome>
     <Window.Resources>
         <Style TargetType="ListViewItem">

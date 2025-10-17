@@ -16,24 +16,22 @@ namespace EQTool.UI
         private readonly MapViewModel mapViewModel;
         private readonly ActivePlayer activePlayer;
         private readonly PlayerTrackerService playerTrackerService;
-        private readonly IAppDispatcher appDispatcher;
         private readonly System.Timers.Timer UITimer;
 
         public MappingWindow(
+            IAppDispatcher appDispatcher,
             MapViewModel mapViewModel,
             ActivePlayer activePlayer,
             LogEvents logEvents,
             EQToolSettings settings,
             PlayerTrackerService playerTrackerService,
             EQToolSettingsLoad toolSettingsLoad,
-            IAppDispatcher appDispatcher,
-            LoggingService loggingService) : base(mapViewModel, settings.MapWindowState, toolSettingsLoad, settings)
+            LoggingService loggingService) : base(appDispatcher, mapViewModel, settings.MapWindowState, toolSettingsLoad, settings)
         {
             loggingService.Log(string.Empty, EventType.OpenMap, activePlayer?.Player?.Server);
             this.activePlayer = activePlayer;
             this.logEvents = logEvents;
             this.playerTrackerService = playerTrackerService;
-            this.appDispatcher = appDispatcher;
             DataContext = this.mapViewModel = mapViewModel;
             InitializeComponent();
             base.Init();

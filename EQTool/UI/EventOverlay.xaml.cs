@@ -31,16 +31,14 @@ namespace EQTool.UI
         private readonly ActivePlayer activePlayer;
         private readonly List<ChainOverlayData> chainDatas = new List<ChainOverlayData>();
         private readonly PigParseApi pigParseApi;
-        private readonly IAppDispatcher appDispatcher;
         private readonly LogEvents logEvents;
 
-        public EventOverlay(EventOverlayViewModel eventOverlayViewModel, LogEvents logEvents, EQToolSettings settings, PigParseApi pigParseApi, EQToolSettingsLoad toolSettingsLoad, ActivePlayer activePlayer, IAppDispatcher appDispatcher)
-            : base(eventOverlayViewModel, settings.OverlayWindowState, toolSettingsLoad, settings)
+        public EventOverlay(IAppDispatcher appDispatcher, EventOverlayViewModel eventOverlayViewModel, LogEvents logEvents, EQToolSettings settings, PigParseApi pigParseApi, EQToolSettingsLoad toolSettingsLoad, ActivePlayer activePlayer)
+            : base(appDispatcher, eventOverlayViewModel, settings.OverlayWindowState, toolSettingsLoad, settings)
         {
             this.eventOverlayViewModel = eventOverlayViewModel;
             this.logEvents = logEvents;
             this.pigParseApi = pigParseApi;
-            this.appDispatcher = appDispatcher;
             this.activePlayer = activePlayer;
             this.settings = settings;
             InitializeComponent();

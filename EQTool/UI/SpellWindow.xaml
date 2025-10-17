@@ -16,13 +16,11 @@
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
     </Window.Resources>
     <WindowChrome.WindowChrome>
-        <WindowChrome 
-        CaptionHeight="0"
-        ResizeBorderThickness="5" />
+        <WindowChrome CaptionHeight="0" ResizeBorderThickness="{Binding ResizeBorderThickness}" />
     </WindowChrome.WindowChrome>
     <Border CornerRadius="5" BorderBrush="{Binding WindowFrameBrush}" BorderThickness="{Binding BorderThickness}">
         <Grid Name="OutermostContainer">
-            <Border Panel.ZIndex="1" Height="20" Margin="26,2,20,0" Background="Transparent" HorizontalAlignment="Stretch" VerticalAlignment="Top" IsHitTestVisible="{Binding IsTitleBarHidden}"
+            <Border Panel.ZIndex="1" Height="20" Margin="26,-3,26,0" Background="Transparent" HorizontalAlignment="Stretch" VerticalAlignment="Top" IsHitTestVisible="{Binding IsTitleBarHidden}"
                     Visibility="{Binding IsLocked, Converter={StaticResource BooleanToVisibilityConverter}}" MouseEnter="HoverZone_MouseEnter" MouseLeave="HoverZone_MouseLeave" />
             <Grid>
                 <Grid.RowDefinitions>
