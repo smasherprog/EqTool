@@ -145,21 +145,21 @@ namespace EQTool.Models
         public bool? ShowRing8RollTime
         {
             get => _ShowRing8RollTime ?? true;
-            set { if (value == null) { _ShowRing8RollTime = true; } else { _ShowRing8RollTime = value; } }
+            set => _ShowRing8RollTime = value ?? true;
         }
 
         private bool? _ShowScoutRollTime { get; set; } = true;
         public bool? ShowScoutRollTime
         {
             get => _ShowScoutRollTime ?? true;
-            set { if (value == null) { _ShowScoutRollTime = true; } else { _ShowScoutRollTime = value; } }
+            set => _ShowScoutRollTime = value ?? true;
         }
 
         private bool? _RaidModeDetection;
         public bool? RaidModeDetection
         {
             get => _RaidModeDetection ?? true;
-            set { if (value == null) { _RaidModeDetection = true; } else { _RaidModeDetection = value; } }
+            set => _RaidModeDetection = value ?? true;
         }
         public bool LoginMiddleMand { get; set; }
         public bool IsClickThroughMode { get; set; }

@@ -152,9 +152,10 @@ namespace EQTool.UI
             windowState.IsLocked = baseViewModel.IsLocked;
         }
         
-        protected void SetClickThrough(bool enable)
+        public void SetClickThrough(bool enable)
         {
-            WindowExtensions.SetClickThrough(this, enable);
+            this.ToggleClickThrough(enable);
+            baseViewModel.IsCurrentlyClickThrough = enable;
         }
         
         protected override void OnClosing(CancelEventArgs e)

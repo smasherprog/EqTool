@@ -18,6 +18,17 @@ namespace EQTool.ViewModels
         public Thickness ResizeBorderThickness { get; set; } = defaultResizeBorderThickness;
         public GridLength TitleBarHeight { get; set; } = defaultTitlebarSize;
         
+        private bool _IsCurrentlyClickThrough;
+        public bool IsCurrentlyClickThrough
+        {
+            get => _IsCurrentlyClickThrough;
+            set
+            {
+                _IsCurrentlyClickThrough = value;
+                OnPropertyChanged();
+            }
+        }
+        
         private bool _IsMouseOverTitleArea;
         public bool IsMouseOverTitleArea
         {

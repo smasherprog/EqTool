@@ -1,5 +1,5 @@
 ﻿using System.ComponentModel;
-using EQTool.TypeConverters;
+using EQTool.Services.TypeConverters;
 
 namespace EQTool.Models
 {
