@@ -684,6 +684,7 @@ namespace EQTool.UI.SettingsComponents
         {
             SaveConfig();
             ((App)System.Windows.Application.Current).ApplyAlwaysOnTop();
+            ((App)System.Windows.Application.Current).ApplyClickThrough(settings.IsClickThroughMode);
         }
         
         private void SaveClickThroughCheckBoxSettings(object sender, RoutedEventArgs e)

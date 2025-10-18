@@ -15,7 +15,7 @@ public static class WindowExtensions
     [DllImport("user32.dll")]
     private static extern int SetWindowLong(IntPtr hWnd, int nIndex, int dwNewLong);
 
-    public static void SetClickThrough(this Window window, bool enable)
+    public static void ToggleClickThrough(this Window window, bool enable)
     {
         var hwnd = new WindowInteropHelper(window).Handle;
         var exStyle = GetWindowLong(hwnd, GWL_EXSTYLE);

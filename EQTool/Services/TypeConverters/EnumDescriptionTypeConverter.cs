@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 
-namespace EQTool.TypeConverters
+namespace EQTool.Services.TypeConverters
 {
     // Attribute class that allows Enums and their Descriptions to be used in XAML code
     public class EnumDescriptionTypeConverter : EnumConverter

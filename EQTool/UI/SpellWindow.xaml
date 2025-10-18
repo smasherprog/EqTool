@@ -4,7 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EQTool.UI"
-        xmlns:vm="clr-namespace:EQTool.ViewModels.SpellWindow"               
+        xmlns:vm="clr-namespace:EQTool.ViewModels.SpellWindow"
         mc:Ignorable="d"  Style="{DynamicResource MyWindowStyleTrigger}"
         Title="{Binding Title}" 
         Height="450" 
@@ -219,10 +219,14 @@
                 </ListView>
                 <Grid Grid.Row="1" VerticalAlignment="Bottom">
                     <StackPanel Orientation="Horizontal"  HorizontalAlignment="Center">
-                        <Button Content="R" Padding="0" FontSize="10" Width="14" Height="14" Visibility="{Binding RaidModeToggleButtonVisibility}" ToolTip="{Binding RaidModeButtonToolTip}" Click="RaidModleToggle" />
-                        <Button Content="O" Margin="5, 0, 0, 0" Padding="0" FontSize="10" Width="14" Height="14" Click="ClearSpellsNotCastOnYou" ToolTip="Clear all spells that were not cast on you"/>
-                        <Button Content="Y" Margin="5, 0, 0, 0" Padding="0" FontSize="10" Width="14" Height="14" Click="ClearSpellsCastByOthers" ToolTip="Clear all spells that were cast by others"/>
-                        <Button Content="💀" Margin="15, 0, 0, 0" Padding="0" FontSize="10" Width="14" Height="14" Click="AddDeathTimer" ToolTip="Add Zone Death Timer"/>
+                        <Button Content="R" Padding="0" FontSize="10" Width="14" Height="14" Visibility="{Binding RaidModeToggleButtonVisibility}" ToolTip="{Binding RaidModeButtonToolTip}"
+                                Opacity="{Binding DataContext.ItemOpacity, RelativeSource={RelativeSource AncestorType=local:BaseSaveStateWindow}}" Click="RaidModleToggle" />
+                        <Button Content="O" Margin="5, 0, 0, 0" Padding="0" FontSize="10" Width="14" Height="14" Visibility="{Binding GenericButtonVisibility}" ToolTip="Clear all spells that were not cast on you"
+                                Opacity="{Binding DataContext.ItemOpacity, RelativeSource={RelativeSource AncestorType=local:BaseSaveStateWindow}}" Click="ClearSpellsNotCastOnYou" />
+                        <Button Content="Y" Margin="5, 0, 0, 0" Padding="0" FontSize="10" Width="14" Height="14" Visibility="{Binding GenericButtonVisibility}" ToolTip="Clear all spells that were cast by others"
+                                Opacity="{Binding DataContext.ItemOpacity, RelativeSource={RelativeSource AncestorType=local:BaseSaveStateWindow}}" Click="ClearSpellsCastByOthers"/>
+                        <Button Content="💀" Margin="15, 0, 0, 0" Padding="0" FontSize="10" Width="14" Height="14" Visibility="{Binding GenericButtonVisibility}" ToolTip="Add Zone Death Timer"
+                                Opacity="{Binding DataContext.ItemOpacity, RelativeSource={RelativeSource AncestorType=local:BaseSaveStateWindow}}" Click="AddDeathTimer" />
                     </StackPanel>
                 </Grid>
             </Grid>

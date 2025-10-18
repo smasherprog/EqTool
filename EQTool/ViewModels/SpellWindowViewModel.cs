@@ -37,6 +37,8 @@ namespace EQTool.ViewModels
             this.playerPet = playerPet;
             this.spells = spells;
             Title = "Triggers v" + App.Version;
+            settings.PropertyChanged += Base_PropertyChanged;
+            PropertyChanged += Base_PropertyChanged;
         }
 
         private ObservableCollection<PersistentViewModel> _SpellList;
@@ -218,7 +220,7 @@ namespace EQTool.ViewModels
 
         public Visibility RaidModeToggleButtonVisibility
         {
-            get => _RaidModeToggleButtonVisibility;
+            get => IsCurrentlyClickThrough ? Visibility.Hidden : _RaidModeToggleButtonVisibility;
             set
             {
                 if (_RaidModeToggleButtonVisibility == value)
@@ -229,6 +231,8 @@ namespace EQTool.ViewModels
                 OnPropertyChanged();
             }
         }
+
+        public Visibility GenericButtonVisibility => IsCurrentlyClickThrough ? Visibility.Hidden : Visibility.Visible;
 
         public void UpdateSpells(double dt_ms)
         {
@@ -555,6 +559,7 @@ namespace EQTool.ViewModels
                             SpellType = match.SpellType,
                             GroupName = EQSpells.SpaceYou,
                             Name = match.name,
+                            Caster = item.Caster,
                             Rect = match.Rect,
                             Icon = match.SpellIcon,
                             Classes = match.Classes,
@@ -724,6 +729,14 @@ namespace EQTool.ViewModels
                         SpellList.Add(match);
                     }
                 });
+            }
+        }
+        
+        private void Base_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(IsCurrentlyClickThrough))
+            {
+                OnPropertyChanged(nameof(GenericButtonVisibility));
             }
         }
     }
