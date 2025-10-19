@@ -55,7 +55,7 @@ namespace EQTool.Services.Handlers
                         if (spell == null)
                         {
                             var s = eQSpells.AllSpells.FirstOrDefault(a => a.name == e.Spell.name);
-                            spellHandlerService.Handle(s, currentarget, 0, e.TimeStamp);
+                            spellHandlerService.Handle(s, string.Empty, currentarget, 0, e.TimeStamp);  //TODO: Determine caster?
                         }
                         else
                         {

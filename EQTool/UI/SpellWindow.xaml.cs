@@ -15,7 +15,6 @@ namespace EQTool.UI
     {
         private readonly SpellWindowViewModel spellWindowViewModel;
         private readonly SettingsWindowViewModel settingsWindowViewModel;
-        private readonly IAppDispatcher appDispatcher;
         private readonly SlainHandler slainHandler;
 
         public SpellWindow(
@@ -28,10 +27,9 @@ namespace EQTool.UI
             ActivePlayer activePlayer,
             IAppDispatcher appDispatcher,
             SlainHandler slainHandler,
-            LoggingService loggingService) : base(settings.SpellWindowState, toolSettingsLoad, settings)
+            LoggingService loggingService) : base(appDispatcher, spellWindowViewModel, settings.SpellWindowState, toolSettingsLoad, settings)
         {
             this.slainHandler = slainHandler;
-            this.appDispatcher = appDispatcher;
             this.settingsWindowViewModel = settingsWindowViewModel;
             loggingService.Log(string.Empty, EventType.OpenMap, activePlayer?.Player?.Server);
             DataContext = this.spellWindowViewModel = spellWindowViewModel;
@@ -61,9 +59,14 @@ namespace EQTool.UI
             });
         }
 
-        private void ClearAllOtherSpells(object sender, RoutedEventArgs e)
+        private void ClearSpellsNotCastOnYou(object sender, RoutedEventArgs e)
         {
-            spellWindowViewModel.ClearAllOtherSpells();
+            spellWindowViewModel.ClearSpellsNotCastOnYou();
+        }
+        
+        private void ClearSpellsCastByOthers(object sender, RoutedEventArgs e)
+        {
+            spellWindowViewModel.ClearSpellsCastByOthers();
         }
 
         private void RaidModleToggle(object sender, RoutedEventArgs e)

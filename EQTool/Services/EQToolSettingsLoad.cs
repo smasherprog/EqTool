@@ -11,6 +11,7 @@ namespace EQTool.Services
 {
     public class EQToolSettingsLoad
     {
+        private static readonly string settingsFilePath = Path.Combine(KnownDirectories.GetExecutableDirectory(), "settings.json");
         private readonly FindEq findEq;
         private readonly LoggingService loggingService;
         private readonly object filelock = new object();
@@ -23,11 +24,11 @@ namespace EQTool.Services
 
         public EQToolSettings Load(int counter = 0)
         {
-            if (File.Exists("settings.json"))
+            if (File.Exists(settingsFilePath))
             {
                 try
                 {
-                    var json = File.ReadAllText("settings.json");
+                    var json = File.ReadAllText(settingsFilePath);
                     var ret1 = JsonConvert.DeserializeObject<EQToolSettings>(json);
                     if (ret1 != null)
                     {
@@ -65,7 +66,7 @@ namespace EQTool.Services
             {
                 DefaultEqDirectory = match?.EqBaseLocation,
                 EqLogDirectory = match?.EQlogLocation,
-                YouOnlySpells = false,
+                SpellsFilter = SpellsFilterType.ByClass,
                 Players = new System.Collections.Generic.List<PlayerInfo>(),
                 DpsWindowState = new WindowState
                 {
@@ -196,7 +197,7 @@ namespace EQTool.Services
 #endif
                 lock (filelock)
                 {
-                    File.WriteAllText("settings.json", txt);
+                    File.WriteAllText(settingsFilePath, txt);
                 }
             }
             catch (Exception)

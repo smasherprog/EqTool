@@ -136,8 +136,14 @@
   <data name="pig" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Images\logo.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="pig_t" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\logo_t.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="sickpic" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Images\sickpic.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="sickpic_t" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Images\sickpic_t.ico;System.Drawing.Icon, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="TestFight" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Files\testfight.txt;System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089;Windows-1252</value>

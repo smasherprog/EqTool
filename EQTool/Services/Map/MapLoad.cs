@@ -30,7 +30,7 @@ namespace EQTool.Services.Map
                 zone = "freportw";
             }
             var lines = new List<string>();
-            var checkformanualmaps = System.IO.Directory.GetCurrentDirectory() + "/maps";
+            var checkformanualmaps = KnownDirectories.GetExecutableDirectory() + "/maps";
 
             if (System.IO.Directory.Exists(checkformanualmaps))
             {
@@ -47,7 +47,7 @@ namespace EQTool.Services.Map
                 }
             }
             CleanCachedMaps(false);
-            checkformanualmaps = System.IO.Directory.GetCurrentDirectory() + $"/{CurrentMapVersion}";
+            checkformanualmaps = KnownDirectories.GetExecutableDirectory() + $"/{CurrentMapVersion}";
             if (System.IO.File.Exists(checkformanualmaps + "/" + zone + ".bin"))
             {
                 try
@@ -100,7 +100,7 @@ namespace EQTool.Services.Map
 
         public static void CleanCachedMaps(bool deleteAll)
         {
-            var oldcachedmaps = Directory.GetDirectories(System.IO.Directory.GetCurrentDirectory(), "cachedmaps*");
+            var oldcachedmaps = Directory.GetDirectories(KnownDirectories.GetExecutableDirectory(), "cachedmaps*");
 
             foreach (var item in oldcachedmaps)
             {

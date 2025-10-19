@@ -4,6 +4,9 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:EQTool.UI.SettingsComponents"
+             xmlns:sys="clr-namespace:System;assembly=mscorlib"
+             xmlns:models="clr-namespace:EQTool.Models"
+             xmlns:markupExtensions="clr-namespace:EQTool.Services.MarkupExtensions"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="400">
     <UserControl.Resources>
@@ -78,8 +81,25 @@
                     <StackPanel Orientation="Vertical" Margin="0, 0, 0, 8">
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="Always on top" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="120"/>
-                            <CheckBox IsChecked="{Binding DpsAlwaysOnTop}" Click="SaveAlwaysOntopCheckBoxSettings" ></CheckBox>
+                            <CheckBox VerticalAlignment="Center" IsChecked="{Binding DpsAlwaysOnTop}" Click="SaveAlwaysOntopCheckBoxSettings" ></CheckBox>
                         </StackPanel>
+                        
+                        <StackPanel Orientation="Horizontal" Margin="20,0,0,3">
+                            <StackPanel.Style>
+                                <Style TargetType="StackPanel">
+                                    <Setter Property="Opacity" Value="1.0"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding DpsAlwaysOnTop}" Value="False">
+                                            <Setter Property="Opacity" Value="0.5"/>
+                                            <Setter Property="IsEnabled" Value="False"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </StackPanel.Style>
+                            <TextBlock Text="Allow Click-Through" VerticalAlignment="Center" FontWeight="Bold" MinWidth="150"/>
+                            <CheckBox VerticalAlignment="Center" IsChecked="{Binding DpsClickThroughAllowed}" Click="SaveClickThroughCheckBoxSettings"/>
+                        </StackPanel>
+                        
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="Window Opacity"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="120"/>
                             <Slider Value="{Binding DPSWindowOpacity}" Minimum=".01" Maximum="1" SmallChange=".1" TickFrequency=".1" ValueChanged="SaveSettings" MinWidth="150"/>
@@ -91,6 +111,21 @@
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="Always on top" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="120"/>
                             <CheckBox IsChecked="{Binding MobAlwaysOnTop}" Click="SaveAlwaysOntopCheckBoxSettings" ></CheckBox>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="20,0,0,3">
+                            <StackPanel.Style>
+                                <Style TargetType="StackPanel">
+                                    <Setter Property="Opacity" Value="1.0"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding MobAlwaysOnTop}" Value="False">
+                                            <Setter Property="Opacity" Value="0.5"/>
+                                            <Setter Property="IsEnabled" Value="False"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </StackPanel.Style>
+                            <TextBlock Text="Allow Click-Through" VerticalAlignment="Center" FontWeight="Bold" MinWidth="150"/>
+                            <CheckBox VerticalAlignment="Center" IsChecked="{Binding MobClickThroughAllowed}" Click="SaveClickThroughCheckBoxSettings"/>
                         </StackPanel>
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="Login middlemand" VerticalAlignment="Center"  FontWeight="Bold" MinWidth="120"/>
@@ -274,6 +309,21 @@
                         <TextBlock Text="Always on top" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
                         <CheckBox IsChecked="{Binding SpellAlwaysOnTop}" Click="SaveAlwaysOntopCheckBoxSettings" ></CheckBox>
                     </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="20,0,0,3">
+                        <StackPanel.Style>
+                            <Style TargetType="StackPanel">
+                                <Setter Property="Opacity" Value="1.0"/>
+                                <Style.Triggers>
+                                    <DataTrigger Binding="{Binding SpellAlwaysOnTop}" Value="False">
+                                        <Setter Property="Opacity" Value="0.5"/>
+                                        <Setter Property="IsEnabled" Value="False"/>
+                                    </DataTrigger>
+                                </Style.Triggers>
+                            </Style>
+                        </StackPanel.Style>
+                        <TextBlock Text="Allow Click-Through" VerticalAlignment="Center" FontWeight="Bold" MinWidth="130"/>
+                        <CheckBox VerticalAlignment="Center" IsChecked="{Binding SpellClickThroughAllowed}" Click="SaveClickThroughCheckBoxSettings"/>
+                    </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Window Opacity"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
                         <Slider Value="{Binding TriggerWindowOpacity}" Minimum=".01" Maximum="1" SmallChange=".1" TickFrequency=".1" ValueChanged="SaveSettings" MinWidth="150"/>
@@ -281,10 +331,6 @@
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Random Rolls" ToolTip="Show Random rolls in Triggers window" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
                         <CheckBox IsChecked="{Binding ShowRandomRolls}" Click="SaveAlwaysOntopCheckBoxSettings" ></CheckBox>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Spells Me only"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
-                        <CheckBox x:Name="YouSpellsOnly" Click="YouSpells_Click" />
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="If detrimental timer is already running: " 
@@ -301,9 +347,13 @@
                                   VerticalAlignment="Center">
                         </ComboBox>
                     </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Spell Filters" VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
+                        <ComboBox SelectedItem="{Binding SpellsFilter}" ItemsSource="{Binding Source={markupExtensions:EnumBindingSource {x:Type models:SpellsFilterType}}}" MinWidth="100"></ComboBox>
+                    </StackPanel>
                 </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Spell Filters"  FontWeight="Bold" MinWidth="100" ToolTip="This will filter what shows up on other players."/>
+                <StackPanel Orientation="Horizontal" Visibility="{Binding ShowClassFilters, Converter={StaticResource BooleanToVisibilityConverter}}">
+                    <TextBlock Text="Class Filters" FontWeight="Bold" MinWidth="100" ToolTip="This will filter what shows up on other players."/>
                     <StackPanel Orientation="Vertical">
                         <ListBox IsEnabled="{Binding HasCharName}" ItemsSource="{Binding SelectedPlayerClasses}" MinWidth="150">
                             <ListBox.ItemTemplate>
@@ -322,6 +372,21 @@
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Always on top" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
                     <CheckBox IsChecked="{Binding MapAlwaysOnTop}" Click="SaveAlwaysOntopCheckBoxSettings" ></CheckBox>
+                </StackPanel>
+                <StackPanel Orientation="Horizontal" Margin="20,0,0,3">
+                    <StackPanel.Style>
+                        <Style TargetType="StackPanel">
+                            <Setter Property="Opacity" Value="1.0"/>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding MapAlwaysOnTop}" Value="False">
+                                    <Setter Property="Opacity" Value="0.5"/>
+                                    <Setter Property="IsEnabled" Value="False"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </StackPanel.Style>
+                    <TextBlock Text="Allow Click-Through" VerticalAlignment="Center" FontWeight="Bold" MinWidth="130"/>
+                    <CheckBox VerticalAlignment="Center" IsChecked="{Binding MapClickThroughAllowed}" Click="SaveClickThroughCheckBoxSettings"/>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Map Cache" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>

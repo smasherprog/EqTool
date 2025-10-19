@@ -12,10 +12,12 @@ namespace EQTool.UI
     public partial class SettingManagement : BaseSaveStateWindow
     {
         private readonly SettingsManagementViewModel settingsManagementViewModel;
+        
         public SettingManagement(
+            IAppDispatcher appDispatcher,
             SettingsManagementViewModel settingsManagementViewModel,
             EQToolSettingsLoad toolSettingsLoad,
-            EQToolSettings settings) : base(settings.SettingsWindowState, toolSettingsLoad, settings)
+            EQToolSettings settings) : base(appDispatcher, settingsManagementViewModel, settings.SettingsWindowState, toolSettingsLoad, settings)
         {
             DataContext = this.settingsManagementViewModel = settingsManagementViewModel;
             InitializeComponent();

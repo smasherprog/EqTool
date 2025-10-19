@@ -9,6 +9,7 @@ using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
+using EQTool.Services;
 
 namespace EQTool.ViewModels
 {
@@ -37,7 +38,7 @@ namespace EQTool.ViewModels
         }
     }
 
-    public class SettingsWindowViewModel : INotifyPropertyChanged
+    public class SettingsWindowViewModel : BaseWindowViewModel, INotifyPropertyChanged
     {
         private readonly EQToolSettings toolSettings;
 
@@ -132,10 +133,23 @@ namespace EQTool.ViewModels
             set
             {
                 toolSettings.DpsWindowState.AlwaysOnTop = value;
+                if (!value)
+                    DpsClickThroughAllowed = false;
+                
                 OnPropertyChanged();
             }
         }
 
+        public bool DpsClickThroughAllowed
+        {
+            get => toolSettings.DpsWindowState.ClickThroughAllowed;
+            set
+            {
+                toolSettings.DpsWindowState.ClickThroughAllowed = value;
+                OnPropertyChanged();
+            }
+        }
+        
         public double DPSWindowOpacity
         {
             get => toolSettings.DpsWindowState.Opacity ?? 1.0;
@@ -153,10 +167,23 @@ namespace EQTool.ViewModels
             set
             {
                 toolSettings.MapWindowState.AlwaysOnTop = value;
+                if (!value)
+                    MapClickThroughAllowed = false;
+                
                 OnPropertyChanged();
             }
         }
 
+        public bool MapClickThroughAllowed
+        {
+            get => toolSettings.MapWindowState.ClickThroughAllowed;
+            set
+            {
+                toolSettings.MapWindowState.ClickThroughAllowed = value;
+                OnPropertyChanged();
+            }
+        }
+        
         public double MapWindowOpacity
         {
             get => toolSettings.MapWindowState.Opacity ?? 1.0;
@@ -174,20 +201,46 @@ namespace EQTool.ViewModels
             set
             {
                 toolSettings.MobWindowState.AlwaysOnTop = value;
+                if (!value)
+                    MobClickThroughAllowed = false;
+                
                 OnPropertyChanged();
             }
         }
 
+        public bool MobClickThroughAllowed
+        {
+            get => toolSettings.MobWindowState.ClickThroughAllowed;
+            set
+            {
+                toolSettings.MobWindowState.ClickThroughAllowed = value;
+                OnPropertyChanged();
+            }
+        }
+        
         public bool SpellAlwaysOnTop
         {
             get => toolSettings.SpellWindowState.AlwaysOnTop;
             set
             {
                 toolSettings.SpellWindowState.AlwaysOnTop = value;
+                if (!value)
+                    SpellClickThroughAllowed = false;
+                
                 OnPropertyChanged();
             }
         }
 
+        public bool SpellClickThroughAllowed
+        {
+            get => toolSettings.SpellWindowState.ClickThroughAllowed;
+            set
+            {
+                toolSettings.SpellWindowState.ClickThroughAllowed = value;
+                OnPropertyChanged();
+            }
+        }
+        
         public bool ShowRandomRolls
         {
             get => toolSettings.ShowRandomRolls;
@@ -208,7 +261,20 @@ namespace EQTool.ViewModels
                 OnPropertyChanged();
             }
         }
-
+        
+        public SpellsFilterType SpellsFilter
+        {
+            get => toolSettings.SpellsFilter;
+            set
+            {
+                toolSettings.SpellsFilter = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(ShowClassFilters));
+            }
+        }
+        
+        public bool ShowClassFilters => toolSettings.SpellsFilter == SpellsFilterType.ByClass;
+        
         private PetViewModel _PetViewModel;
         public PetViewModel PetViewModel
         {
@@ -256,8 +322,6 @@ namespace EQTool.ViewModels
                 OnPropertyChanged();
             }
         }
-
-        public string CurrentWorkingDirectory { get; } = System.IO.Directory.GetCurrentDirectory();
 
         private string _GroupLeaderName = "None";
         public string GroupLeaderName
@@ -350,13 +414,6 @@ namespace EQTool.ViewModels
             OnPropertyChanged(nameof(PetViewModel));
             OnPropertyChanged(nameof(HasCharName));
             OnPropertyChanged(nameof(HasNoCharName));
-        }
-
-        public event PropertyChangedEventHandler PropertyChanged;
-
-        protected void OnPropertyChanged([CallerMemberName] string name = null)
-        {
-            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
     }
 }

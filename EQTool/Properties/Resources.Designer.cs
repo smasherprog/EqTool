@@ -145,9 +145,29 @@ namespace EQTool.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
         /// </summary>
+        internal static System.Drawing.Icon pig_t {
+            get {
+                object obj = ResourceManager.GetObject("pig_t", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
         internal static System.Drawing.Icon sickpic {
             get {
                 object obj = ResourceManager.GetObject("sickpic", resourceCulture);
+                return ((System.Drawing.Icon)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Icon similar to (Icon).
+        /// </summary>
+        internal static System.Drawing.Icon sickpic_t {
+            get {
+                object obj = ResourceManager.GetObject("sickpic_t", resourceCulture);
                 return ((System.Drawing.Icon)(obj));
             }
         }

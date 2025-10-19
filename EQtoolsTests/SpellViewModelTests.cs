@@ -204,7 +204,7 @@ namespace EQtoolsTests
         }
 
         [TestMethod]
-        public void GuessParalyzingEarch()
+        public void GuessParalyzingEarth()
         {
             player.Player.PlayerClass = EQToolShared.Enums.PlayerClasses.Necromancer;
             player.Player.Level = 60;

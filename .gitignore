@@ -45,3 +45,7 @@ working/
 *.vpj
 *.vpw
 *.vpwhist
+
+# JetBrains Rider
+.idea/
+*.DotSettings.user

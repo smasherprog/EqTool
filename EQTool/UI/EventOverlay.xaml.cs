@@ -26,19 +26,19 @@ namespace EQTool.UI
 
     public partial class EventOverlay : BaseSaveStateWindow
     {
+        private readonly EventOverlayViewModel eventOverlayViewModel;
         private readonly EQToolSettings settings;
         private readonly ActivePlayer activePlayer;
         private readonly List<ChainOverlayData> chainDatas = new List<ChainOverlayData>();
         private readonly PigParseApi pigParseApi;
-        private readonly IAppDispatcher appDispatcher;
         private readonly LogEvents logEvents;
 
-        public EventOverlay(LogEvents logEvents, EQToolSettings settings, PigParseApi pigParseApi, EQToolSettingsLoad toolSettingsLoad, ActivePlayer activePlayer, IAppDispatcher appDispatcher)
-            : base(settings.OverlayWindowState, toolSettingsLoad, settings)
+        public EventOverlay(IAppDispatcher appDispatcher, EventOverlayViewModel eventOverlayViewModel, LogEvents logEvents, EQToolSettings settings, PigParseApi pigParseApi, EQToolSettingsLoad toolSettingsLoad, ActivePlayer activePlayer)
+            : base(appDispatcher, eventOverlayViewModel, settings.OverlayWindowState, toolSettingsLoad, settings)
         {
+            this.eventOverlayViewModel = eventOverlayViewModel;
             this.logEvents = logEvents;
             this.pigParseApi = pigParseApi;
-            this.appDispatcher = appDispatcher;
             this.activePlayer = activePlayer;
             this.settings = settings;
             InitializeComponent();
@@ -280,6 +280,11 @@ namespace EQTool.UI
             base.OnClosing(e);
         }
 
+        protected override void Window_Loaded(object sender, RoutedEventArgs e)
+        {
+            // Override default Click-Through logic and do nothing
+        }
+        
         private void Grid_MouseEnter(object sender, MouseEventArgs e)
         {
             WindowResizeChrome.ResizeBorderThickness = new Thickness(8);

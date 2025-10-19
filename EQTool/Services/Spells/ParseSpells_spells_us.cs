@@ -177,7 +177,7 @@ namespace EQTool.Services
             var spellsfile = new FileInfo(settings.DefaultEqDirectory + spellfile);
             if (spellsfile.Exists)
             {
-                var spellfilename = $"SpellCache{servers}_1";
+                var spellfilename = Path.Combine(KnownDirectories.GetExecutableDirectory(), $"SpellCache{servers}_1");
                 if (!isdebug)
                 {
                     spellfilename = new string(spellfilename.Where(a => char.IsLetterOrDigit(a)).ToArray()) + ".bin";
@@ -404,8 +404,11 @@ namespace EQTool.Services
                 Debug.Write($"Took {stopwatch.ElapsedMilliseconds}ms to build spells");
                 try
                 {
-                    var filetodelete = Directory.GetFiles(Directory.GetCurrentDirectory(), "SpellCache*", SearchOption.TopDirectoryOnly).FirstOrDefault();
-                    File.Delete(filetodelete);
+                    var filetodelete = Directory.GetFiles(KnownDirectories.GetExecutableDirectory(), "SpellCache*", SearchOption.TopDirectoryOnly).FirstOrDefault();
+                    if (filetodelete != null)
+                    {
+                        File.Delete(filetodelete);
+                    }
                 }
                 catch (Exception)
                 {

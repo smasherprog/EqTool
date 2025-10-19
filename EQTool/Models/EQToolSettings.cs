@@ -9,8 +9,10 @@ namespace EQTool.Models
     {
         public Rect? WindowRect { get; set; }
         public System.Windows.WindowState State { get; set; }
+        public bool IsLocked { get; set; }
         public bool Closed { get; set; }
         public bool AlwaysOnTop { get; set; }
+        public bool ClickThroughAllowed { get; set; }
 
         private double _Opacity = 1.0;
         public double? Opacity
@@ -133,33 +135,34 @@ namespace EQTool.Models
             }
             set => _SettingsWindowState = value ?? new WindowState();
         }
-
+        
         public List<PlayerInfo> Players { get; set; } = new List<PlayerInfo>();
         public List<Trigger> Triggers { get; set; } = new List<Trigger>();
-        public bool YouOnlySpells { get; set; }
+        public SpellsFilterType SpellsFilter { get; set; }
         public bool ShowRandomRolls { get; set; }
 
         private bool? _ShowRing8RollTime { get; set; } = true;
         public bool? ShowRing8RollTime
         {
             get => _ShowRing8RollTime ?? true;
-            set { if (value == null) { _ShowRing8RollTime = true; } else { _ShowRing8RollTime = value; } }
+            set => _ShowRing8RollTime = value ?? true;
         }
 
         private bool? _ShowScoutRollTime { get; set; } = true;
         public bool? ShowScoutRollTime
         {
             get => _ShowScoutRollTime ?? true;
-            set { if (value == null) { _ShowScoutRollTime = true; } else { _ShowScoutRollTime = value; } }
+            set => _ShowScoutRollTime = value ?? true;
         }
 
         private bool? _RaidModeDetection;
         public bool? RaidModeDetection
         {
             get => _RaidModeDetection ?? true;
-            set { if (value == null) { _RaidModeDetection = true; } else { _RaidModeDetection = value; } }
+            set => _RaidModeDetection = value ?? true;
         }
         public bool LoginMiddleMand { get; set; }
+        public bool IsClickThroughMode { get; set; }
 
         public event PropertyChangedEventHandler PropertyChanged;
 

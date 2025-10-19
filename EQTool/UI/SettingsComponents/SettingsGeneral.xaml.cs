@@ -106,7 +106,6 @@ namespace EQTool.UI.SettingsComponents
             {
                 LoginMiddleMandCheckBox.IsChecked = true;
             }
-            YouSpellsOnly.IsChecked = settings.YouOnlySpells;
             var player = SettingsWindowData.ActivePlayer.Player;
 
             if (player?.ShowSpellsForClasses != null)
@@ -233,13 +232,7 @@ namespace EQTool.UI.SettingsComponents
         {
             SaveConfig();
         }
-
-        private void YouSpells_Click(object sender, RoutedEventArgs e)
-        {
-            var s = sender as System.Windows.Controls.CheckBox;
-            settings.YouOnlySpells = s.IsChecked ?? false;
-            SaveConfig();
-        }
+        
         private class CastTest
         {
             public Spell Spell { get; set; }
@@ -686,12 +679,20 @@ namespace EQTool.UI.SettingsComponents
         {
             SaveConfig();
         }
+        
         private void SaveAlwaysOntopCheckBoxSettings(object sender, RoutedEventArgs e)
         {
             SaveConfig();
             ((App)System.Windows.Application.Current).ApplyAlwaysOnTop();
+            ((App)System.Windows.Application.Current).ApplyClickThrough(settings.IsClickThroughMode);
         }
-
+        
+        private void SaveClickThroughCheckBoxSettings(object sender, RoutedEventArgs e)
+        {
+            SaveConfig();
+            ((App)System.Windows.Application.Current).ApplyClickThrough(settings.IsClickThroughMode);
+        }
+        
         private void testenrage(object sender, RoutedEventArgs e)
         {
             settingsTestRunOverlay.RunTest(OverlayTypes.EnrageEvent);

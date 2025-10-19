@@ -22,7 +22,7 @@ namespace EQtoolsTests
                 {
                     DefaultEqDirectory = string.Empty,
                     EqLogDirectory = string.Empty,
-                    YouOnlySpells = false,
+                    SpellsFilter = SpellsFilterType.ByClass,
                     Players = new System.Collections.Generic.List<EQTool.Models.PlayerInfo>(),
                     DpsWindowState = new EQTool.Models.WindowState
                     {
@@ -91,7 +91,7 @@ namespace EQtoolsTests
 
             var b = builder.Build();
             var settings = b.Resolve<EQTool.Models.EQToolSettings>();
-            settings.DefaultEqDirectory = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
+            settings.DefaultEqDirectory = Directory.GetParent(KnownDirectories.GetExecutableDirectory()).Parent.FullName;
             return b;
         }
     }
