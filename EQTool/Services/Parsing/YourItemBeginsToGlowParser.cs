@@ -14,6 +14,10 @@ namespace EQTool.Services.Parsing
 
         public bool Handle(string line, DateTime timestamp, int lineCounter)
         {
+            if (line == "Your hand begins to glow.")
+            {
+                return false;
+            }
             var m = Parse(line);
             if (!string.IsNullOrWhiteSpace(m))
             {

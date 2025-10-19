@@ -271,6 +271,19 @@ namespace EQtoolsTests
         }
 
         [TestMethod]
+        public void TestVampiricEmbrace()
+        {
+            player.Player.PlayerClass = EQToolShared.Enums.PlayerClasses.Necromancer;
+            player.Player.Level = 60;
+            var d = DateTime.Now;
+            logParser.Push(spellWindowViewModel, "You begin casting Vampiric Embrace.", d);
+            logParser.Push(spellWindowViewModel, "Your hand begins to glow.", d.AddSeconds(4));
+            spellWindowViewModel.UpdateSpells(1000);
+            var spelleffecst = spellWindowViewModel.SpellList.Where(a => a.SpellViewModelType == SpellViewModelType.Spell && a.Name == "Vampiric Embrace").Cast<SpellViewModel>();
+            Assert.AreEqual(spelleffecst.Count(), 1);
+        }
+
+        [TestMethod]
         public void PreventMultipleSpellsFrombeingRemoved()
         {
             player.Player.PlayerClass = EQToolShared.Enums.PlayerClasses.Necromancer;
