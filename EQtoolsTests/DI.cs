@@ -7,6 +7,7 @@ using EQtoolsTests.Fakes;
 using System;
 using System.IO;
 using System.Linq;
+using EQToolShared.Extensions;
 
 namespace EQtoolsTests
 {
@@ -91,7 +92,7 @@ namespace EQtoolsTests
 
             var b = builder.Build();
             var settings = b.Resolve<EQTool.Models.EQToolSettings>();
-            settings.DefaultEqDirectory = Directory.GetParent(KnownDirectories.GetExecutableDirectory()).Parent.FullName;
+            settings.DefaultEqDirectory = Directory.GetParent(Paths.ExecutableDirectory()).Parent.FullName;
             return b;
         }
     }

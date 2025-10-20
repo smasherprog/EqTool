@@ -206,6 +206,7 @@
     <Content Include="LogFiles\log1.txt">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+    <Compile Include="PathsTests.cs" />
     <Compile Include="PetTests.cs" />
     <Compile Include="SpellCounterTests.cs" />
     <Compile Include="SpellViewModelTests.cs" />

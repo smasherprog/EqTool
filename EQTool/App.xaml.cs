@@ -20,6 +20,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Media;
+using EQToolShared.Extensions;
 using Application = System.Windows.Application;
 using MessageBox = System.Windows.MessageBox;
 
@@ -163,7 +164,7 @@ namespace EQTool
 
         private bool ShouldShutDownDueToNoWriteAccess()
         {
-            var testFilePath = Path.Combine(KnownDirectories.GetExecutableDirectory(), "test.json");
+            var testFilePath = Paths.InExecutableDirectory("test.json");
             try
             {
                 File.Delete(testFilePath);
@@ -183,7 +184,7 @@ namespace EQTool
                 File.Delete(testFilePath);
             }
             catch { }
-            var cwd = KnownDirectories.GetExecutableDirectory();
+            var cwd = Paths.ExecutableDirectory();
             if (cwd.ToLower().Contains("program files"))
             {
                 _ = MessageBox.Show("Pigparse is running from a directory where it does not have permission to save settings. Please, move it to a folder where it can write!", "Pigparse Permissions!", MessageBoxButton.OK, MessageBoxImage.Error);
@@ -210,8 +211,8 @@ namespace EQTool
             }
             try
             {
-                var curr = KnownDirectories.GetExecutableDirectory();
-                var path = Path.Combine(curr, "eqgame.exe");
+                var curr = Paths.ExecutableDirectory();
+                var path = Paths.Combine(curr, "eqgame.exe");
                 if (File.Exists(path))
                 {
                     _ = MessageBox.Show("Pigparse does not support running from in the EQ directory. Please move the pigparse and try again", "Pigparse Invalid Folder!", MessageBoxButton.OK, MessageBoxImage.Error);

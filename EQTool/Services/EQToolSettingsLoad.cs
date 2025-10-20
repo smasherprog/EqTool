@@ -6,12 +6,13 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
+using EQToolShared.Extensions;
 
 namespace EQTool.Services
 {
     public class EQToolSettingsLoad
     {
-        private static readonly string settingsFilePath = Path.Combine(KnownDirectories.GetExecutableDirectory(), "settings.json");
+        private static readonly string settingsFilePath = Paths.InExecutableDirectory("settings.json");
         private readonly FindEq findEq;
         private readonly LoggingService loggingService;
         private readonly object filelock = new object();

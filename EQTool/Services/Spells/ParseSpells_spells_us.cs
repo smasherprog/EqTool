@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using EQToolShared.Extensions;
 
 namespace EQTool.Services
 {
@@ -173,19 +174,20 @@ namespace EQTool.Services
             var stopwatch = new Stopwatch();
             stopwatch.Start();
             var spells = new Dictionary<string, SpellBase>();
-            var spellfile = "/spells_us.txt";
-            var spellsfile = new FileInfo(settings.DefaultEqDirectory + spellfile);
+            var spellfile = "spells_us.txt";
+            var spellsfile = new FileInfo(Paths.Combine(settings.DefaultEqDirectory, spellfile));
             if (spellsfile.Exists)
             {
-                var spellfilename = Path.Combine(KnownDirectories.GetExecutableDirectory(), $"SpellCache{servers}_1");
+                var spellCacheName = $"SpellCache{servers}_1";
                 if (!isdebug)
                 {
-                    spellfilename = new string(spellfilename.Where(a => char.IsLetterOrDigit(a)).ToArray()) + ".bin";
-                    if (File.Exists(spellfilename))
+                    spellCacheName = new string(spellCacheName.Where(a => char.IsLetterOrDigit(a)).ToArray()) + ".bin";
+                    if (File.Exists(spellCacheName))
                     {
                         try
                         {
-                            _Spells = BinarySerializer.ReadFromBinaryFile<List<SpellBase>>(spellfilename);
+                            var spellFilePath = Paths.InExecutableDirectory(spellCacheName);
+                            _Spells = BinarySerializer.ReadFromBinaryFile<List<SpellBase>>(spellFilePath);
                             stopwatch.Stop();
                             Debug.Write($"Took {stopwatch.ElapsedMilliseconds}ms to build spells");
                             return _Spells;
@@ -196,8 +198,8 @@ namespace EQTool.Services
                         }
                     }
                 }
-
-                var spellastext = File.ReadAllLines(settings.DefaultEqDirectory + spellfile);
+                
+                var spellastext = File.ReadAllLines(Paths.Combine(settings.DefaultEqDirectory, spellfile));
                 var desctypes = new List<DescrNumber>() {
                  DescrNumber.ThePlanes,
                  DescrNumber.Luclin,
@@ -404,7 +406,7 @@ namespace EQTool.Services
                 Debug.Write($"Took {stopwatch.ElapsedMilliseconds}ms to build spells");
                 try
                 {
-                    var filetodelete = Directory.GetFiles(KnownDirectories.GetExecutableDirectory(), "SpellCache*", SearchOption.TopDirectoryOnly).FirstOrDefault();
+                    var filetodelete = Directory.GetFiles(Paths.ExecutableDirectory(), "*SpellCache*", SearchOption.TopDirectoryOnly).FirstOrDefault();
                     if (filetodelete != null)
                     {
                         File.Delete(filetodelete);
@@ -416,7 +418,7 @@ namespace EQTool.Services
                 }
                 try
                 {
-                    BinarySerializer.WriteToBinaryFile(spellfilename, _Spells);
+                    BinarySerializer.WriteToBinaryFile(Paths.InExecutableDirectory(spellCacheName), _Spells);
                 }
                 catch (Exception ex)
                 {
