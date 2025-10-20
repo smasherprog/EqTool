@@ -445,7 +445,32 @@ namespace EQToolShared
                       {
                             Name ="Thar Kelgand",
                             RespawnTime = new TimeSpan(0,6, 40)
-                      }
+                      },
+                      new NpcSpawnTime
+                      {
+                          Name = "Glorin Binfurr",
+                          RespawnTime = new TimeSpan(0, 22, 0)
+                      },
+                      new NpcSpawnTime
+                      {
+                          Name = "Magnus Boran",
+                          RespawnTime = new TimeSpan(0, 22, 0)
+                      },
+                      new NpcSpawnTime
+                      {
+                          Name = "Doran Glosglen",
+                          RespawnTime = new TimeSpan(0, 22, 0)
+                      },
+                      new NpcSpawnTime
+                      {
+                          Name = "Gann Dunbull",
+                          RespawnTime = new TimeSpan(0, 22, 0)
+                      },
+                      new NpcSpawnTime
+                      {
+                          Name = "Gibi Bilgum",
+                          RespawnTime = new TimeSpan(0, 22, 0)
+                      },
                  },
                 RespawnTime = new TimeSpan(0, 15, 0)
             });
