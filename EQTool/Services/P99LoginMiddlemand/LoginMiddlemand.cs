@@ -7,6 +7,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Text;
 using System.Threading;
+using EQToolShared.Extensions;
 
 namespace EQTool.Services.P99LoginMiddlemand
 {
@@ -678,7 +679,7 @@ namespace EQTool.Services.P99LoginMiddlemand
                 "[LoginServer]",
                 "Host=localhost:5998"
             };
-            System.IO.File.WriteAllLines(toolSettings.DefaultEqDirectory + "/eqhost.txt", lines);
+            System.IO.File.WriteAllLines(Paths.Combine(toolSettings.DefaultEqDirectory, "eqhost.txt"), lines);
         }
 
         public void RevertDefaultConfiguration()
@@ -688,7 +689,7 @@ namespace EQTool.Services.P99LoginMiddlemand
                 "[LoginServer]",
                 "Host=login.eqemulator.net:5998"
             };
-            System.IO.File.WriteAllLines(toolSettings.DefaultEqDirectory + "/eqhost.txt", lines);
+            System.IO.File.WriteAllLines(Paths.Combine(toolSettings.DefaultEqDirectory, "eqhost.txt"), lines);
         }
 
 
@@ -696,7 +697,7 @@ namespace EQTool.Services.P99LoginMiddlemand
         {
             try
             {
-                var lines = System.IO.File.ReadAllLines(eqdirectory + "/eqhost.txt");
+                var lines = System.IO.File.ReadAllLines(Paths.Combine(eqdirectory, "eqhost.txt"));
                 var hostline = lines.FirstOrDefault(x => x.StartsWith("host", StringComparison.OrdinalIgnoreCase));
                 if (!string.IsNullOrWhiteSpace(hostline))
                 {

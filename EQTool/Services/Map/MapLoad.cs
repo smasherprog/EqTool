@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Windows.Media.Media3D;
+using EQToolShared.Extensions;
 
 namespace EQTool.Services.Map
 {
@@ -30,7 +31,7 @@ namespace EQTool.Services.Map
                 zone = "freportw";
             }
             var lines = new List<string>();
-            var checkformanualmaps = KnownDirectories.GetExecutableDirectory() + "/maps";
+            var checkformanualmaps = Paths.InExecutableDirectory("maps");
 
             if (System.IO.Directory.Exists(checkformanualmaps))
             {
@@ -47,12 +48,12 @@ namespace EQTool.Services.Map
                 }
             }
             CleanCachedMaps(false);
-            checkformanualmaps = KnownDirectories.GetExecutableDirectory() + $"/{CurrentMapVersion}";
-            if (System.IO.File.Exists(checkformanualmaps + "/" + zone + ".bin"))
+            checkformanualmaps = Paths.InExecutableDirectory(CurrentMapVersion);
+            if (System.IO.File.Exists(Paths.Combine(checkformanualmaps, zone + ".bin")))
             {
                 try
                 {
-                    var data = BinarySerializer.ReadFromBinaryFile<ParsedData>(checkformanualmaps + "/" + zone + ".bin");
+                    var data = BinarySerializer.ReadFromBinaryFile<ParsedData>(Paths.Combine(checkformanualmaps, zone + ".bin"));
                     stop.Stop();
                     Debug.WriteLine($"Time to load map from Cache {zone} {stop.ElapsedMilliseconds}");
                     return data;
@@ -89,7 +90,7 @@ namespace EQTool.Services.Map
             Debug.WriteLine($"Time to load map {zone} {stop.ElapsedMilliseconds}");
             try
             {
-                BinarySerializer.WriteToBinaryFile(checkformanualmaps + "/" + zone + ".bin", d);
+                BinarySerializer.WriteToBinaryFile(Paths.Combine(checkformanualmaps, zone + ".bin"), d);
             }
             catch (Exception ex)
             {
@@ -100,7 +101,7 @@ namespace EQTool.Services.Map
 
         public static void CleanCachedMaps(bool deleteAll)
         {
-            var oldcachedmaps = Directory.GetDirectories(KnownDirectories.GetExecutableDirectory(), "cachedmaps*");
+            var oldcachedmaps = Directory.GetDirectories(Paths.ExecutableDirectory(), "cachedmaps*");
 
             foreach (var item in oldcachedmaps)
             {

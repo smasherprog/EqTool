@@ -10,6 +10,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
+using EQToolShared.Extensions;
 using static EQTool.App;
 
 namespace EQTool.Services
@@ -20,7 +21,7 @@ namespace EQTool.Services
         {
             foreach (var file in Directory.GetFiles(sourcePath))
             {
-                File.Copy(file, Path.Combine(targetPath, Path.GetFileName(file)), true);
+                File.Copy(file, Paths.Combine(targetPath, Path.GetFileName(file)), true);
             }
         }
         private static void CopyFilesRecursively(string sourcePath, string targetPath)
@@ -72,16 +73,17 @@ namespace EQTool.Services
             {
                 if (parameter.Contains("ping"))
                 {
-                    var sourcedirectory = KnownDirectories.GetExecutableDirectory();
-                    var parentidirectory = Directory.GetParent(sourcedirectory).FullName;
-                    CopyFilesRecursively(sourcedirectory, parentidirectory);
-                    var path = Path.Combine(parentidirectory, programName);
+                    // We are in the NewVersion subfolder, updating to a new version.
+                    var newVersionDirectory = Paths.ExecutableDirectory();
+                    var originalDirectory = Directory.GetParent(newVersionDirectory)?.FullName;
+                    CopyFilesRecursively(newVersionDirectory, originalDirectory);
+                    var path = Paths.Combine(originalDirectory, programName);
                     _ = System.Diagnostics.Process.Start(new ProcessStartInfo
                     {
                         FileName = path,
                         Arguments = "pong",
                         UseShellExecute = true,
-                        WorkingDirectory = parentidirectory
+                        WorkingDirectory = originalDirectory
                     });
                     App.Current.Shutdown();
                     return UpdateStatus.UpdatesApplied;
@@ -90,8 +92,9 @@ namespace EQTool.Services
                 {
                     try
                     {
-                        System.IO.Directory.Delete("NewVersion", true);
-                        System.IO.File.Delete("EqTool.zip");
+                        var sourceDirectory = Paths.ExecutableDirectory();
+                        System.IO.Directory.Delete(Paths.Combine(sourceDirectory, "NewVersion"), true);
+                        System.IO.File.Delete(Paths.Combine(sourceDirectory, "EqTool.zip"));
                     }
                     catch { }
                     return UpdateStatus.OldFilesDeleted;
@@ -152,34 +155,36 @@ namespace EQTool.Services
                     {
                         (App.Current as App).ShowBalloonTip(3000, "Downloading PigParse Update", "This might take a few seconds . . .", System.Windows.Forms.ToolTipIcon.Info);
                     });
-                    if (System.IO.Directory.Exists("NewVersion"))
+                    var newVersionDir = Paths.InExecutableDirectory("NewVersion");
+                    if (System.IO.Directory.Exists(newVersionDir))
                     {
-                        System.IO.Directory.Delete("NewVersion", true);
+                        System.IO.Directory.Delete(newVersionDir, true);
                     }
                     var fileBytes = App.httpclient.GetByteArrayAsync(downloadurl).Result;
                     var filename = Path.GetFileName(downloadurl);
                     if (filename.EndsWith(".zip"))
                     {
-                        File.WriteAllBytes("EqTool.zip", fileBytes);
-                        ZipFile.ExtractToDirectory("EqTool.zip", KnownDirectories.GetExecutableDirectory() + "/NewVersion");
+                        var zipPath = Paths.InExecutableDirectory("EqTool.zip");
+                        File.WriteAllBytes(zipPath, fileBytes);
+                        ZipFile.ExtractToDirectory(zipPath, newVersionDir);
                     }
                     else
                     {
-                        _ = System.IO.Directory.CreateDirectory(KnownDirectories.GetExecutableDirectory() + "/NewVersion");
-                        File.WriteAllBytes(KnownDirectories.GetExecutableDirectory() + "/NewVersion/" + filename, fileBytes);
+                        _ = System.IO.Directory.CreateDirectory(newVersionDir);
+                        File.WriteAllBytes(Paths.Combine(newVersionDir, filename), fileBytes);
                     }
                     loginMiddlemand?.StopListening();
                     appDispatcher?.DispatchUI(() =>
                     {
                         System.Windows.Application.Current.Shutdown();
                     });
-                    var path = KnownDirectories.GetExecutableDirectory() + $"/NewVersion/{programName}";
+                    var path = Paths.Combine(newVersionDir, programName);
                     _ = System.Diagnostics.Process.Start(new ProcessStartInfo
                     {
                         FileName = path,
                         Arguments = "ping",
                         UseShellExecute = true,
-                        WorkingDirectory = KnownDirectories.GetExecutableDirectory() + "/NewVersion/"
+                        WorkingDirectory = newVersionDir
                     });
                 }
             }

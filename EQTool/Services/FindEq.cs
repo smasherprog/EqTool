@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using EQToolShared.Extensions;
 
 namespace EQTool.Services
 {
@@ -42,7 +43,7 @@ namespace EQTool.Services
                         try
                         {
                             var root = Path.GetDirectoryName(item);
-                            var licensetext = File.ReadAllText(root + "/license.txt");
+                            var licensetext = File.ReadAllText(Paths.Combine(root, "license.txt"));
                             if (licensetext.Contains("Project 1999"))
                             {
                                 var uifiles = GetUIFiles(root)
@@ -113,7 +114,7 @@ namespace EQTool.Services
 
             try
             {
-                var licensetext = File.ReadAllText(rootfolder + "/license.txt");
+                var licensetext = File.ReadAllText(Paths.Combine(rootfolder, "license.txt"));
                 if (licensetext.Contains("Project 1999"))
                 {
                     return true;
@@ -128,7 +129,7 @@ namespace EQTool.Services
         {
             try
             {
-                var data = File.ReadAllLines(eqdir + "/eqclient.ini");
+                var data = File.ReadAllLines(Paths.Combine(eqdir, "eqclient.ini"));
                 foreach (var item in data)
                 {
                     var line = item.ToLower().Trim().Replace(" ", string.Empty);

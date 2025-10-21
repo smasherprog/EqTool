@@ -18,7 +18,7 @@ namespace EQtoolsTests
         //[TestMethod]
         //public void ParseDiscordMessage()
         //{
-        //    var filepath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "DiscordResponse.json");
+        //    var filepath = Paths.Combine(AppDomain.CurrentDomain.BaseDirectory, "DiscordResponse.json");
         //    var resultstring = File.ReadAllText(filepath);
         //    var outs = Newtonsoft.Json.JsonConvert.DeserializeObject<List<Message>>(resultstring);
         //    var Emissaryofthule = outs.Where(a => a.embeds.Any(b => b.fields.Any(c => c.Price.HasValue))).Take(4).ToList();

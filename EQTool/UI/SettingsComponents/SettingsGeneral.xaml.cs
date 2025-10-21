@@ -16,6 +16,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Navigation;
+using EQToolShared.Extensions;
 
 namespace EQTool.UI.SettingsComponents
 {
@@ -196,7 +197,8 @@ namespace EQTool.UI.SettingsComponents
                 }
                 else
                 {
-                    var data = File.ReadAllLines(settings.DefaultEqDirectory + "/eqclient.ini");
+                    var path = Paths.Combine(settings.DefaultEqDirectory, "eqclient.ini");
+                    var data = File.ReadAllLines(path);
                     var newlist = new List<string>();
                     foreach (var item in data)
                     {
@@ -210,7 +212,7 @@ namespace EQTool.UI.SettingsComponents
                             newlist.Add(item);
                         }
                     }
-                    File.WriteAllLines(settings.DefaultEqDirectory + "/eqclient.ini", newlist);
+                    File.WriteAllLines(path, newlist);
                 }
             }
             catch { }
