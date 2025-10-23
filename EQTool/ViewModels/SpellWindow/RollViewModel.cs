@@ -33,7 +33,7 @@
             set
             {
                 _MaxRoll = value;
-                GroupName = $" Random -- {_MaxRoll}";
+                Target = $" Random -- {_MaxRoll}";
                 OnPropertyChanged();
             }
         }

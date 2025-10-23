@@ -64,8 +64,8 @@ namespace EQTool.Services.Handlers
                 spellWindowViewModel.TryAdd(new TimerViewModel
                 {
                     PercentLeft = 100,
-                    GroupName = CustomTimer.CustomerTime,
-                    Name = $"Exp Timer [{Model.GetNextTimerCounter()}]",
+                    Target = CustomTimer.CustomerTime,
+                    Id = $"Exp Timer [{Model.GetNextTimerCounter()}]",
                     Rect = spell.Rect,
                     Icon = spell.SpellIcon,
                     TotalDuration = TimeSpan.FromSeconds(Model.DurationSeconds),
@@ -111,8 +111,8 @@ namespace EQTool.Services.Handlers
                     spellWindowViewModel.TryAdd(new TimerViewModel
                     {
                         PercentLeft = 100,
-                        GroupName = CustomTimer.CustomerTime,
-                        Name = $"Slain Timer: [{slainEvent.Victim}] [{Model.GetNextTimerCounter()}]",
+                        Target = CustomTimer.CustomerTime,
+                        Id = $"Slain Timer: [{slainEvent.Victim}] [{Model.GetNextTimerCounter()}]",
                         Rect = spell.Rect,
                         Icon = spell.SpellIcon,
                         TotalDuration = TimeSpan.FromSeconds(Model.DurationSeconds),
@@ -158,8 +158,8 @@ namespace EQTool.Services.Handlers
                     spellWindowViewModel.TryAdd(new TimerViewModel
                     {
                         PercentLeft = 100,
-                        GroupName = CustomTimer.CustomerTime,
-                        Name = $"Faction Timer: [{factionEvent.Faction}] [{Model.GetNextTimerCounter()}]",
+                        Target = CustomTimer.CustomerTime,
+                        Id = $"Faction Timer: [{factionEvent.Faction}] [{Model.GetNextTimerCounter()}]",
                         Rect = spell.Rect,
                         Icon = spell.SpellIcon,
                         TotalDuration = TimeSpan.FromSeconds(Model.DurationSeconds),

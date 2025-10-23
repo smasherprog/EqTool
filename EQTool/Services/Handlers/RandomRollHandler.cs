@@ -28,7 +28,7 @@ namespace EQTool.Services.Handlers
                 MaxRoll = e.MaxRoll,
                 TotalDuration = TimeSpan.FromMinutes(3),
                 Icon = icon.SpellIcon,
-                Name = e.PlayerName,
+                Id = e.PlayerName,
                 Roll = e.Roll,
                 PercentLeft = 100,
                 Rect = icon.Rect,
@@ -38,7 +38,7 @@ namespace EQTool.Services.Handlers
             appDispatcher.DispatchUI(() =>
             {
                 var rollsingroup = spellWindowViewModel.SpellList
-                    .Where(a => a.Name == trigger.Name && a.GroupName == trigger.GroupName && a.SpellViewModelType == SpellViewModelType.Roll)
+                    .Where(a => a.Id == trigger  .Id && a.Target == trigger.Target && a.SpellViewModelType == SpellViewModelType.Roll)
                     .Cast<RollViewModel>()
                     .ToList();
                 var rollorder = rollsingroup.Select(a => (int?)a.RollOrder).Max() ?? 0;

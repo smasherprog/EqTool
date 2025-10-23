@@ -191,38 +191,38 @@ namespace EQTool.Services.Handlers
             var spell = spells.AllSpells.FirstOrDefault(a => a.name == "Disease Cloud");
             var add = new TimerViewModel
             {
-                Name = "--Dead-- " + e.Victim,
+                Id = "--Dead-- " + e.Victim,
                 TotalDuration = TimeSpan.FromSeconds((int)zonetimer.TotalSeconds),
                 TotalRemainingDuration = TimeSpan.FromSeconds((int)zonetimer.TotalSeconds),
                 Icon = spell.SpellIcon,
                 Rect = spell.Rect,
                 PercentLeft = 100,
-                GroupName = CustomTimer.CustomerTime,
+                Target = CustomTimer.CustomerTime,
                 ProgressBarColor = Brushes.LightSalmon
             };
 
             appDispatcher.DispatchUI(() =>
             {
-                var grpname = e.Victim;
+                var targetName = e.Victim;
                 if (isnpc)
                 {
-                    grpname = " " + grpname;
+                    targetName = " " + targetName;
                 }
-                var grp = spellWindowViewModel.SpellList.Where(a => string.Equals(a.GroupName, grpname, StringComparison.OrdinalIgnoreCase)).ToList();
+                var targets = spellWindowViewModel.SpellList.Where(a => string.Equals(a.Target, targetName, StringComparison.OrdinalIgnoreCase)).ToList();
 
                 if (activePlayer?.Player?.TimerRecastSetting == TimerRecast.RestartCurrentTimer)
                 {
-                    foreach (var item in grp)
+                    foreach (var item in targets)
                     {
                         _ = spellWindowViewModel.SpellList.Remove(item);
                     }
                 }
 
-                var exisitngdeathentry = spellWindowViewModel.SpellList.FirstOrDefault(a => string.Equals(a.Name, add.Name, StringComparison.OrdinalIgnoreCase) && CustomTimer.CustomerTime == a.GroupName);
+                var exisitngdeathentry = spellWindowViewModel.SpellList.FirstOrDefault(a => string.Equals(a.Id, add.Id, StringComparison.OrdinalIgnoreCase) && CustomTimer.CustomerTime == a.Target);
                 if (exisitngdeathentry != null)
                 {
                     deathcounter = ++deathcounter > 999 ? 1 : deathcounter;
-                    add.Name += "_" + deathcounter;
+                    add.Id += "_" + deathcounter;
                 }
 
                 spellWindowViewModel.TryAdd(add);
@@ -230,13 +230,13 @@ namespace EQTool.Services.Handlers
                 {
                     add = new TimerViewModel
                     {
-                        Name = "--Sirran the Lunatic-- ",
+                        Id = "--Sirran the Lunatic-- ",
                         TotalDuration = TimeSpan.FromMinutes(15),
                         TotalRemainingDuration = TimeSpan.FromMinutes(15),
                         Icon = spell.SpellIcon,
                         Rect = spell.Rect,
                         PercentLeft = 100,
-                        GroupName = CustomTimer.CustomerTime,
+                        Target = CustomTimer.CustomerTime,
                         ProgressBarColor = Brushes.LightSkyBlue
                     };
                     spellWindowViewModel.TryAdd(add, false);

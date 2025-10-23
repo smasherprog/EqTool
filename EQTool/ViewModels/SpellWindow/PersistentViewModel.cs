@@ -23,17 +23,35 @@ namespace EQTool.ViewModels.SpellWindow
         public SpellIcon Icon { get; set; }
         public bool HasIcon => Icon != null;
         public Int32Rect Rect { get; set; }
-
-        protected string _Name = string.Empty;
-        public string Name
+        
+        private string _id;
+        public string Id
         {
-            get => _Name;
+            get => _id;
             set
             {
-                _Name = value;
+                _id = value;
                 OnPropertyChanged();
+                OnPropertyChanged(nameof(DisplayName));
             }
         }
+        
+        private string _target;
+        public string Target
+        {
+            get => _target;
+            set
+            {
+                _target = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(DisplayGroup));
+                OnPropertyChanged(nameof(Sorting));
+            }
+        }
+
+        public virtual string DisplayName => Id;
+        public virtual string DisplayGroup => Target;
+        public virtual string Sorting => DisplayGroup;
 
         protected Visibility _HeaderVisibility = Visibility.Visible;
         public Visibility HeaderVisibility
@@ -78,23 +96,6 @@ namespace EQTool.ViewModels.SpellWindow
                     return;
                 }
                 _ColumnVisibility = value;
-                OnPropertyChanged();
-            }
-        }
-
-        public virtual string Sorting => _GroupName;
-        
-        protected string _GroupName = string.Empty;
-        public string GroupName
-        {
-            get => _GroupName;
-            set
-            {
-                if (_GroupName == value)
-                {
-                    return;
-                }
-                _GroupName = value;
                 OnPropertyChanged();
             }
         }

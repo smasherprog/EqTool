@@ -51,7 +51,7 @@ namespace EQTool.Services.Handlers
                     CounterViewModel spell = null;
                     if (!string.IsNullOrWhiteSpace(currentarget))
                     {
-                        spell = spellWindowViewModel.SpellList.FirstOrDefault(a => a.GroupName.Contains(currentarget) && a.Name == e.Spell.name && a.SpellViewModelType == ViewModels.SpellWindow.SpellViewModelType.Counter) as CounterViewModel;
+                        spell = spellWindowViewModel.SpellList.FirstOrDefault(a => a.Target.Contains(currentarget) && a.Id == e.Spell.name && a.SpellViewModelType == SpellViewModelType.Counter) as CounterViewModel;
                         if (spell == null)
                         {
                             var s = eQSpells.AllSpells.FirstOrDefault(a => a.name == e.Spell.name);
@@ -64,7 +64,7 @@ namespace EQTool.Services.Handlers
                     }
                     else
                     {
-                        spell = spellWindowViewModel.SpellList.FirstOrDefault(a => a.Name == e.Spell.name && a.SpellViewModelType == ViewModels.SpellWindow.SpellViewModelType.Counter) as CounterViewModel;
+                        spell = spellWindowViewModel.SpellList.FirstOrDefault(a => a.Id == e.Spell.name && a.SpellViewModelType == SpellViewModelType.Counter) as CounterViewModel;
                         if (spell != null)
                         {
                             spell.Count++;

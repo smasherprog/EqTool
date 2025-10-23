@@ -121,10 +121,11 @@ namespace EQTool.Services
             }
             appDispatcher.DispatchUI(() =>
             {
-                var spellsMissingClasses = spellWindowViewModel.ActualSpellsInSpellList
-                    .Where(spell => !spell.TargetName.StartsWith(" "))
+                var spellsMissingClasses = spellWindowViewModel
+                    .SpellList.Where(x => x.SpellViewModelType == SpellViewModelType.Spell)
+                    .Where(spell => !spell.Target.StartsWith(" "))
                     .ToList();
-                var missingPlayerNames = spellsMissingClasses.Select(a => a.TargetName).Distinct().ToList();
+                var missingPlayerNames = spellsMissingClasses.Select(a => a.Target).Distinct().ToList();
                 if (missingPlayerNames.Any())
                 {
                     _ = Task.Factory.StartNew(() =>
@@ -160,7 +161,7 @@ namespace EQTool.Services
                 }
                 foreach (var p in players)
                 {
-                    foreach (var missingClass in spellsMissingClasses.Where(a => a.TargetName == p.Name))
+                    foreach (var missingClass in spellsMissingClasses.Where(a => a.Target == p.Name))
                     {
                         missingClass.TargetClass = p.PlayerClass;
                     }

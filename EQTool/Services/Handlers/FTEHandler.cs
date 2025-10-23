@@ -72,8 +72,8 @@ namespace EQTool.Services.Handlers
                     spellWindowViewModel.TryAdd(new TimerViewModel
                     {
                         PercentLeft = 100,
-                        GroupName = CustomTimer.CustomerTime,
-                        Name = $"{start} {e.NPCName}",
+                        Target = CustomTimer.CustomerTime,
+                        Id = $"{start} {e.NPCName}",
                         Rect = spell.Rect,
                         Icon = spell.SpellIcon,
                         TotalDuration = TimeSpan.FromSeconds(timeleft),
@@ -91,8 +91,8 @@ namespace EQTool.Services.Handlers
                     spellWindowViewModel.TryAdd(new TimerViewModel
                     {
                         PercentLeft = 100,
-                        GroupName = CustomTimer.CustomerTime,
-                        Name = $"--5 Minute Rule-- {e.NPCName}",
+                        Target = CustomTimer.CustomerTime,
+                        Id = $"--5 Minute Rule-- {e.NPCName}",
                         Rect = spell.Rect,
                         Icon = spell.SpellIcon,
                         TotalDuration = TimeSpan.FromMinutes(5),

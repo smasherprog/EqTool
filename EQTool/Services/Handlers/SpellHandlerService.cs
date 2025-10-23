@@ -89,9 +89,9 @@ namespace EQTool.Services.Handlers
                 spellWindowViewModel.TryAdd(new TimerViewModel
                 {
                     PercentLeft = 100,
-                    GroupName = targetName,
+                    Target = targetName,
                     TargetClass = targetclass,
-                    Name = $"{spellname} Cooldown",
+                    Id = $"{spellname} Cooldown",
                     Rect = spell.Rect,
                     Icon = spell.SpellIcon,
                     TotalDuration = TimeSpan.FromSeconds((int)((spell.recastTime + delayOffset) / 1000.0)),
@@ -162,9 +162,9 @@ namespace EQTool.Services.Handlers
                 spellWindowViewModel.TryAdd(new TimerViewModel
                 {
                     PercentLeft = 100,
-                    GroupName = targetName,
+                    Target = targetName,
                     TargetClass = targetclass,
-                    Name = spellname + " Cooldown",
+                    Id = spellname + " Cooldown",
                     Rect = spell.Rect,
                     Icon = spell.SpellIcon,
                     TotalDuration = TimeSpan.FromSeconds(basetime),
@@ -187,9 +187,9 @@ namespace EQTool.Services.Handlers
                 var vm = new CounterViewModel
                 {
                     UpdatedDateTime = DateTime.Now,
-                    GroupName = target,
+                    Target = target,
                     TargetClass = targetclass,
-                    Name = $"{spellname}",
+                    Id = $"{spellname}",
                     Rect = spell.Rect,
                     Icon = spell.SpellIcon,
                     Count = 1,
@@ -240,8 +240,8 @@ namespace EQTool.Services.Handlers
                         UpdatedDateTime = DateTime.Now,
                         PercentLeft = 100,
                         BenefitDetriment = spell.benefit_detriment,
-                        SpellName = spellname,
-                        TargetName = target,
+                        Id = spellname,
+                        Target = target,
                         Caster = casterName,
                         SpellType = spell.SpellType,
                         TargetClass = targetclass,

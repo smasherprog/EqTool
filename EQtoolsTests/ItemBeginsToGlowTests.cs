@@ -25,7 +25,7 @@ namespace EQtoolsTests
             logParser.Push("You begin casting Levitate.", DateTime.Now);
             logParser.Push("Your Pegasus Feather Cloak begins to glow.", DateTime.Now);
             logParser.Push("Your feet leave the ground.", DateTime.Now.AddSeconds(6));
-            var spell = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellViewModelType == EQTool.ViewModels.SpellWindow.SpellViewModelType.Spell && a.Name == "Peggy Levitate");
+            var spell = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellViewModelType == EQTool.ViewModels.SpellWindow.SpellViewModelType.Spell && a.Id == "Peggy Levitate");
             Assert.IsNotNull(spell);
         }
 

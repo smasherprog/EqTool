@@ -11,38 +11,6 @@ namespace EQTool.ViewModels.SpellWindow
         
         public Dictionary<PlayerClasses, int> Classes { get; set; } = new Dictionary<PlayerClasses, int>();
         
-        // The "real" Name field for spells. Must use this instead of Name when setting or else our Group by Spell / Group by Target logic will break.
-        private string _spellName;
-        public string SpellName
-        {
-            get => _spellName;
-            set
-            {
-                _spellName = value;
-                if (string.IsNullOrEmpty(Name))
-                {
-                    Name = _spellName;
-                }
-                OnPropertyChanged();
-            }
-        }
-        
-        // The "real" GroupName field for spells. Must use this instead of GroupName when setting or else our Group by Spell / Group by Target logic will break.
-        private string _targetName;
-        public string TargetName
-        {
-            get => _targetName;
-            set
-            {
-                _targetName = value;
-                if (string.IsNullOrEmpty(GroupName))
-                {
-                    GroupName = _targetName;
-                }
-                OnPropertyChanged();
-            }
-        }
-        
         public string Caster { get; set; }
         
         public SpellType SpellType { get; set; }
@@ -68,8 +36,10 @@ namespace EQTool.ViewModels.SpellWindow
                 }
             }
         }
-        
-        public override string Sorting => IsCategorizeBySpellName ? SpellName : TargetName;
+
+        public override string DisplayName => IsCategorizeBySpellName ? Target : Id;
+        public override string DisplayGroup => IsCategorizeBySpellName ? Id : Target;
+        public override string Sorting => IsCategorizeBySpellName ? Id : Target;
 
         private bool _IsCategorizeBySpellName;
         public bool IsCategorizeBySpellName
@@ -79,26 +49,12 @@ namespace EQTool.ViewModels.SpellWindow
             {
                 _IsCategorizeBySpellName = value;
                 
-                UpdateCategorization();
+                SyncTargetClassString(IsCategorizeBySpellName);
                 OnPropertyChanged();
+                OnPropertyChanged(nameof(DisplayName));
+                OnPropertyChanged(nameof(DisplayGroup));
                 OnPropertyChanged(nameof(Sorting));
             }
-        }
-
-        private void UpdateCategorization()
-        {
-            if (IsCategorizeBySpellName)
-            {
-                Name = TargetName;
-                GroupName = SpellName;
-            }
-            else
-            {
-                Name = SpellName;
-                GroupName = TargetName;
-            }
-            
-            SyncTargetClassString(IsCategorizeBySpellName);
         }
         
         public void UpdateSpellCategorization(EQToolSettings settings)
@@ -108,7 +64,7 @@ namespace EQTool.ViewModels.SpellWindow
                 : settings.BeneficialSpellsCategorizedBySpellName;
         }
         
-        public bool CastOnYou(PlayerInfo player) => TargetName == EQSpells.You || TargetName == EQSpells.SpaceYou || (player != null && TargetName == player.Name);
+        public bool CastOnYou(PlayerInfo player) => Target == EQSpells.You || Target == EQSpells.SpaceYou || (player != null && Target == player.Name);
         public bool CastByYou(PlayerInfo player) => Caster == EQSpells.You || Caster == EQSpells.SpaceYou || (player != null && Caster == player.Name);
     }
 }

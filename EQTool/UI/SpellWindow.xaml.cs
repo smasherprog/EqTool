@@ -39,19 +39,19 @@ namespace EQTool.UI
 
         private void RemoveSingleItem(object sender, RoutedEventArgs e)
         {
-            var name = (sender as Button).DataContext;
+            var vm = (sender as Button).DataContext;
             appDispatcher.DispatchUI(() =>
             {
-                _ = spellWindowViewModel.SpellList.Remove(name as PersistentViewModel);
+                _ = spellWindowViewModel.SpellList.Remove(vm as PersistentViewModel);
             });
         }
 
         private void RemoveFromSpells(object sender, RoutedEventArgs e)
         {
-            var name = ((sender as Button).DataContext as dynamic)?.Name as string;
+            var group = ((sender as Button).DataContext as dynamic)?.Name as string;
             appDispatcher.DispatchUI(() =>
             {
-                var items = spellWindowViewModel.SpellList.Where(a => a.GroupName == name).ToList();
+                var items = spellWindowViewModel.SpellList.Where(a => a.DisplayGroup == group).ToList();
                 foreach (var item in items)
                 {
                     _ = spellWindowViewModel.SpellList.Remove(item);
