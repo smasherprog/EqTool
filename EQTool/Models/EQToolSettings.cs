@@ -139,6 +139,39 @@ namespace EQTool.Models
         public List<PlayerInfo> Players { get; set; } = new List<PlayerInfo>();
         public List<Trigger> Triggers { get; set; } = new List<Trigger>();
         public SpellsFilterType SpellsFilter { get; set; }
+        
+        private bool _BeneficialSpellsCategorizedBySpellName;
+        public bool BeneficialSpellsCategorizedBySpellName
+        {
+            get => _BeneficialSpellsCategorizedBySpellName;
+            set
+            {
+                if (value == _BeneficialSpellsCategorizedBySpellName)
+                {
+                    return;
+                }
+
+                _BeneficialSpellsCategorizedBySpellName = value;
+                OnPropertyChanged();
+            }
+        }
+        
+        private bool _DetrimentalSpellsCategorizedBySpellName;
+        public bool DetrimentalSpellsCategorizedBySpellName
+        {
+            get => _DetrimentalSpellsCategorizedBySpellName;
+            set
+            {
+                if (value == _DetrimentalSpellsCategorizedBySpellName)
+                {
+                    return;
+                }
+
+                _DetrimentalSpellsCategorizedBySpellName = value;
+                OnPropertyChanged();
+            }
+        }
+        
         public bool ShowRandomRolls { get; set; }
 
         private bool? _ShowRing8RollTime { get; set; } = true;

@@ -18,14 +18,13 @@ namespace EQTool.ViewModels.SpellWindow
         Boat
     }
 
-    public class PersistentViewModel : INotifyPropertyChanged
+    public abstract class PersistentViewModel : INotifyPropertyChanged
     {
         public SpellIcon Icon { get; set; }
         public bool HasIcon => Icon != null;
         public Int32Rect Rect { get; set; }
 
-        private string _Name = string.Empty;
-
+        protected string _Name = string.Empty;
         public string Name
         {
             get => _Name;
@@ -36,8 +35,7 @@ namespace EQTool.ViewModels.SpellWindow
             }
         }
 
-        private Visibility _HeaderVisibility = Visibility.Visible;
-
+        protected Visibility _HeaderVisibility = Visibility.Visible;
         public Visibility HeaderVisibility
         {
             get => _HeaderVisibility;
@@ -52,8 +50,7 @@ namespace EQTool.ViewModels.SpellWindow
             }
         }
 
-        private Visibility _DeleteButtonVisibility = Visibility.Visible;
-
+        protected Visibility _DeleteButtonVisibility = Visibility.Visible;
         public Visibility DeleteButtonVisibility
         {
             get => _DeleteButtonVisibility;
@@ -70,8 +67,7 @@ namespace EQTool.ViewModels.SpellWindow
 
         public virtual SpellViewModelType SpellViewModelType => SpellViewModelType.Persistent;
 
-        private Visibility _ColumnVisibility = Visibility.Visible;
-
+        protected Visibility _ColumnVisibility = Visibility.Visible;
         public Visibility ColumnVisibility
         {
             get => _ColumnVisibility;
@@ -87,7 +83,8 @@ namespace EQTool.ViewModels.SpellWindow
         }
 
         public virtual string Sorting => _GroupName;
-        private string _GroupName = string.Empty;
+        
+        protected string _GroupName = string.Empty;
         public string GroupName
         {
             get => _GroupName;
@@ -103,24 +100,36 @@ namespace EQTool.ViewModels.SpellWindow
         }
 
         public string TargetClassString { get; set; }
-        private PlayerClasses? _TargetClass;
-
+        
+        protected PlayerClasses? _TargetClass;
         public PlayerClasses? TargetClass
         {
             get => _TargetClass;
             set
             {
                 _TargetClass = value;
-                TargetClassString = _TargetClass.HasValue ? _TargetClass.Value.ToString() : string.Empty;
-                OnPropertyChanged(nameof(TargetClassString));
+                SyncTargetClassString();
                 OnPropertyChanged();
             }
         }
 
+        protected void SyncTargetClassString(bool forceEmpty = false)
+        {
+            if (forceEmpty)
+            {
+                TargetClassString = string.Empty;
+            }
+            else
+            {
+                TargetClassString = _TargetClass.HasValue ? _TargetClass.Value.ToString() : string.Empty;
+            }
+            OnPropertyChanged(nameof(TargetClassString));
+        }
+
         public SolidColorBrush ProgressBarColor { get; set; } = Brushes.DarkSeaGreen;
         public DateTime UpdatedDateTime { get; set; } = DateTime.Now;
+        
         public event PropertyChangedEventHandler PropertyChanged;
-
         protected void OnPropertyChanged([CallerMemberName] string name = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));

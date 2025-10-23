@@ -332,6 +332,18 @@
                         <TextBlock Text="Random Rolls" ToolTip="Show Random rolls in Triggers window" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
                         <CheckBox IsChecked="{Binding ShowRandomRolls}" Click="SaveAlwaysOntopCheckBoxSettings" ></CheckBox>
                     </StackPanel>
+                    <GroupBox Header="Group Spells By Spell Name?" Margin="0,5,0,5">
+                        <StackPanel Orientation="Vertical" Margin="5">
+                            <StackPanel Orientation="Horizontal" Margin="0,2,0,2">
+                                <TextBlock Text="Detrimental Spells" VerticalAlignment="Center" MinWidth="100" />
+                                <CheckBox VerticalAlignment="Center" IsChecked="{Binding DetrimentalSpellsCategorizedBySpellName}" Click="Savesettings"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,2,0,2">
+                                <TextBlock Text="Beneficial Spells" VerticalAlignment="Center" MinWidth="100" />
+                                <CheckBox VerticalAlignment="Center" IsChecked="{Binding BeneficialSpellsCategorizedBySpellName}" Click="Savesettings"/>
+                            </StackPanel>
+                        </StackPanel>
+                    </GroupBox>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="If detrimental timer is already running: " 
                                    ToolTip="Hint: Select 'StartNewTimer' for targets with same name"

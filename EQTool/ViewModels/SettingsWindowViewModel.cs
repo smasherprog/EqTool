@@ -261,6 +261,26 @@ namespace EQTool.ViewModels
                 OnPropertyChanged();
             }
         }
+
+        public bool BeneficialSpellsCategorizedBySpellName
+        {
+            get => toolSettings.BeneficialSpellsCategorizedBySpellName;
+            set
+            {
+                toolSettings.BeneficialSpellsCategorizedBySpellName = value;
+                OnPropertyChanged();
+            }
+        }
+        
+        public bool DetrimentalSpellsCategorizedBySpellName
+        {
+            get => toolSettings.DetrimentalSpellsCategorizedBySpellName;
+            set
+            {
+                toolSettings.DetrimentalSpellsCategorizedBySpellName = value;
+                OnPropertyChanged();
+            }
+        }
         
         public SpellsFilterType SpellsFilter
         {

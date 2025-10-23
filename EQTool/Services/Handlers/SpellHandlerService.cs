@@ -174,11 +174,11 @@ namespace EQTool.Services.Handlers
                 });
             }
 
-            var grpname = targetName;
+            var target = targetName;
             var isnpc = false;
-            if (MasterNPCList.NPCs.Contains(grpname.Trim()))
+            if (MasterNPCList.NPCs.Contains(target.Trim()))
             {
-                grpname = " " + grpname.Trim();
+                target = " " + target.Trim();
                 isnpc = true;
             }
             var needscount = SpellsThatNeedCounts.Contains(spellname);
@@ -187,7 +187,7 @@ namespace EQTool.Services.Handlers
                 var vm = new CounterViewModel
                 {
                     UpdatedDateTime = DateTime.Now,
-                    GroupName = grpname,
+                    GroupName = target,
                     TargetClass = targetclass,
                     Name = $"{spellname}",
                     Rect = spell.Rect,
@@ -234,18 +234,17 @@ namespace EQTool.Services.Handlers
                             }
                         }
                     }
-
-                    // create new SpellViewModel
+                    
                     var vm = new SpellViewModel
                     {
                         UpdatedDateTime = DateTime.Now,
                         PercentLeft = 100,
                         BenefitDetriment = spell.benefit_detriment,
+                        SpellName = spellname,
+                        TargetName = target,
                         Caster = casterName,
                         SpellType = spell.SpellType,
-                        GroupName = grpname,
                         TargetClass = targetclass,
-                        Name = spellname,
                         Rect = spell.Rect,
                         Icon = spell.SpellIcon,
                         Classes = spell.Classes,
