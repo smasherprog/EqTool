@@ -446,19 +446,25 @@ namespace EQToolShared
                             Name ="Thar Kelgand",
                             RespawnTime = new TimeSpan(0,6, 40)
                       },
+                      // Kaladim Citizens with atypical timers
                       new NpcSpawnTime
                       {
-                          Name = "Glorin Binfurr",
+                          Name = "Alun Bilgum",
                           RespawnTime = new TimeSpan(0, 22, 0)
                       },
                       new NpcSpawnTime
                       {
-                          Name = "Magnus Boran",
+                          Name = "Darm Dundam",
                           RespawnTime = new TimeSpan(0, 22, 0)
                       },
                       new NpcSpawnTime
                       {
                           Name = "Doran Glosglen",
+                          RespawnTime = new TimeSpan(0, 22, 0)
+                      },
+                      new NpcSpawnTime
+                      {
+                          Name = "Ganbar Dundam",
                           RespawnTime = new TimeSpan(0, 22, 0)
                       },
                       new NpcSpawnTime
@@ -471,6 +477,17 @@ namespace EQToolShared
                           Name = "Gibi Bilgum",
                           RespawnTime = new TimeSpan(0, 22, 0)
                       },
+                      new NpcSpawnTime
+                      {
+                          Name = "Glorin Binfurr",
+                          RespawnTime = new TimeSpan(0, 22, 0)
+                      },
+                      new NpcSpawnTime
+                      {
+                          Name = "Magnus Boran",
+                          RespawnTime = new TimeSpan(0, 22, 0)
+                      },
+                      // End Kaladim citizens
                  },
                 RespawnTime = new TimeSpan(0, 15, 0)
             });
