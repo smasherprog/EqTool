@@ -99,9 +99,17 @@ namespace EQTool.ViewModels.SpellWindow
                 OnPropertyChanged();
             }
         }
-
-        public string TargetClassString { get; set; }
         
+        private string _targetClassString;
+        public string TargetClassString
+        {
+            get => _targetClassString;
+            set
+            {
+                _targetClassString = value;
+                OnPropertyChanged();
+            }
+        }
         protected PlayerClasses? _TargetClass;
         public PlayerClasses? TargetClass
         {
@@ -117,14 +125,9 @@ namespace EQTool.ViewModels.SpellWindow
         protected void SyncTargetClassString(bool forceEmpty = false)
         {
             if (forceEmpty)
-            {
                 TargetClassString = string.Empty;
-            }
             else
-            {
                 TargetClassString = _TargetClass.HasValue ? _TargetClass.Value.ToString() : string.Empty;
-            }
-            OnPropertyChanged(nameof(TargetClassString));
         }
 
         public SolidColorBrush ProgressBarColor { get; set; } = Brushes.DarkSeaGreen;

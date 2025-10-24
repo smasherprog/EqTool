@@ -262,22 +262,22 @@ namespace EQTool.ViewModels
             }
         }
 
-        public bool BeneficialSpellsCategorizedBySpellName
+        public SpellGroupingType BeneficialSpellGroupingType
         {
-            get => toolSettings.BeneficialSpellsCategorizedBySpellName;
+            get => toolSettings.BeneficialSpellGroupingType;
             set
             {
-                toolSettings.BeneficialSpellsCategorizedBySpellName = value;
+                toolSettings.BeneficialSpellGroupingType = value;
                 OnPropertyChanged();
             }
         }
         
-        public bool DetrimentalSpellsCategorizedBySpellName
+        public SpellGroupingType DetrimentalSpellGroupingType
         {
-            get => toolSettings.DetrimentalSpellsCategorizedBySpellName;
+            get => toolSettings.DetrimentalSpellGroupingType;
             set
             {
-                toolSettings.DetrimentalSpellsCategorizedBySpellName = value;
+                toolSettings.DetrimentalSpellGroupingType = value;
                 OnPropertyChanged();
             }
         }

@@ -329,6 +329,7 @@
     <Compile Include="Models\CustomTimer.cs" />
     <Compile Include="Models\FightHistory.cs" />
     <Compile Include="Models\Pets.cs" />
+    <Compile Include="Models\SpellGroupingType.cs" />
     <Compile Include="Models\SpellsFilterType.cs" />
     <Compile Include="Services\BinarySerializer.cs" />
     <Compile Include="Services\BoatScheduleService.cs" />
@@ -500,7 +501,6 @@
     <Compile Include="Services\Parsing\ConLogParse.cs" />
     <Compile Include="Services\Parsing\LevelLogParse.cs" />
     <Compile Include="Services\Parsing\SpellWornOffOtherParser.cs" />
-    <Compile Include="Services\Spells\SpellUIExtentions.cs" />
     <Compile Include="Services\PigParseApi.cs" />
     <Compile Include="Services\WikiApi.cs" />
     <Compile Include="Services\WindowBounds.cs" />

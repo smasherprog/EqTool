@@ -45,7 +45,7 @@ namespace EQTool.ViewModels.SpellWindow
         public bool IsCategorizeBySpellName
         {
             get => _IsCategorizeBySpellName;
-            private set
+            set
             {
                 _IsCategorizeBySpellName = value;
                 
@@ -55,13 +55,6 @@ namespace EQTool.ViewModels.SpellWindow
                 OnPropertyChanged(nameof(DisplayGroup));
                 OnPropertyChanged(nameof(Sorting));
             }
-        }
-        
-        public void UpdateSpellCategorization(EQToolSettings settings)
-        {
-            IsCategorizeBySpellName = BenefitDetriment == SpellBenefitDetriment.Detrimental
-                ? settings.DetrimentalSpellsCategorizedBySpellName
-                : settings.BeneficialSpellsCategorizedBySpellName;
         }
         
         public bool CastOnYou(PlayerInfo player) => Target == EQSpells.You || Target == EQSpells.SpaceYou || (player != null && Target == player.Name);
