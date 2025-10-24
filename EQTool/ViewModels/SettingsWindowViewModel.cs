@@ -10,6 +10,7 @@ using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using EQTool.Services;
+using System.IO;
 
 namespace EQTool.ViewModels
 {
@@ -135,7 +136,7 @@ namespace EQTool.ViewModels
                 toolSettings.DpsWindowState.AlwaysOnTop = value;
                 if (!value)
                     DpsClickThroughAllowed = false;
-                
+
                 OnPropertyChanged();
             }
         }
@@ -149,7 +150,7 @@ namespace EQTool.ViewModels
                 OnPropertyChanged();
             }
         }
-        
+
         public double DPSWindowOpacity
         {
             get => toolSettings.DpsWindowState.Opacity ?? 1.0;
@@ -169,7 +170,7 @@ namespace EQTool.ViewModels
                 toolSettings.MapWindowState.AlwaysOnTop = value;
                 if (!value)
                     MapClickThroughAllowed = false;
-                
+
                 OnPropertyChanged();
             }
         }
@@ -183,7 +184,7 @@ namespace EQTool.ViewModels
                 OnPropertyChanged();
             }
         }
-        
+
         public double MapWindowOpacity
         {
             get => toolSettings.MapWindowState.Opacity ?? 1.0;
@@ -203,7 +204,7 @@ namespace EQTool.ViewModels
                 toolSettings.MobWindowState.AlwaysOnTop = value;
                 if (!value)
                     MobClickThroughAllowed = false;
-                
+
                 OnPropertyChanged();
             }
         }
@@ -217,7 +218,7 @@ namespace EQTool.ViewModels
                 OnPropertyChanged();
             }
         }
-        
+
         public bool SpellAlwaysOnTop
         {
             get => toolSettings.SpellWindowState.AlwaysOnTop;
@@ -226,7 +227,7 @@ namespace EQTool.ViewModels
                 toolSettings.SpellWindowState.AlwaysOnTop = value;
                 if (!value)
                     SpellClickThroughAllowed = false;
-                
+
                 OnPropertyChanged();
             }
         }
@@ -240,7 +241,7 @@ namespace EQTool.ViewModels
                 OnPropertyChanged();
             }
         }
-        
+
         public bool ShowRandomRolls
         {
             get => toolSettings.ShowRandomRolls;
@@ -261,7 +262,7 @@ namespace EQTool.ViewModels
                 OnPropertyChanged();
             }
         }
-        
+
         public SpellsFilterType SpellsFilter
         {
             get => toolSettings.SpellsFilter;
@@ -272,9 +273,9 @@ namespace EQTool.ViewModels
                 OnPropertyChanged(nameof(ShowClassFilters));
             }
         }
-        
+
         public bool ShowClassFilters => toolSettings.SpellsFilter == SpellsFilterType.ByClass;
-        
+
         private PetViewModel _PetViewModel;
         public PetViewModel PetViewModel
         {
@@ -369,6 +370,7 @@ namespace EQTool.ViewModels
         public bool HasCharName => !string.IsNullOrWhiteSpace(ActivePlayer?.Player?.Name);
         public Visibility HasNoCharName => string.IsNullOrWhiteSpace(ActivePlayer?.Player?.Name) ? Visibility.Visible : Visibility.Collapsed;
         public ObservableCollection<string> InstalledVoices { get; set; } = new ObservableCollection<string>();
+        public ObservableCollection<string> UIFiles { get; set; } = new ObservableCollection<string>();
         public ObservableCollection<BoolStringClass> SelectedPlayerClasses { get; set; } = new ObservableCollection<BoolStringClass>();
         public List<MapLocationSharing> LocationShareOptions => Enum.GetValues(typeof(MapLocationSharing)).Cast<MapLocationSharing>().ToList();
         public List<TimerRecast> TimerRecastOptions => Enum.GetValues(typeof(TimerRecast)).Cast<TimerRecast>().ToList();
@@ -414,6 +416,23 @@ namespace EQTool.ViewModels
             OnPropertyChanged(nameof(PetViewModel));
             OnPropertyChanged(nameof(HasCharName));
             OnPropertyChanged(nameof(HasNoCharName));
+        }
+
+        public void RefreshUIFiles()
+        {
+            Application.Current.Dispatcher.Invoke(() =>
+            {
+                UIFiles.Clear();
+                if (!Directory.Exists(this.toolSettings.DefaultEqDirectory))
+                {
+                    return;
+                }
+                var uiFiles = Directory.GetFiles(this.toolSettings.DefaultEqDirectory, "UI_*.ini").ToList();
+                foreach (var file in uiFiles)
+                {
+                    UIFiles.Add(Path.GetFileNameWithoutExtension(file));
+                }
+            });
         }
     }
 }

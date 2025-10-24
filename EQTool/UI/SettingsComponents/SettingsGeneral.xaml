@@ -12,7 +12,7 @@
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
     </UserControl.Resources>
-    <TabControl>
+    <TabControl SelectionChanged="TabControl_SelectionChanged">
         
         <TabItem Header="General">
             <StackPanel Orientation="Vertical" Margin="5, 5, 5, 5">
@@ -406,18 +406,18 @@
                 </StackPanel>
             </StackPanel>
         </TabItem>
-        
+
         <TabItem Header="Experimental">
-            <StackPanel Orientation="Vertical" Margin="5, 5, 5, 5" HorizontalAlignment="Stretch"> 
+            <StackPanel Orientation="Vertical" Margin="5, 5, 5, 5" HorizontalAlignment="Stretch">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Timer Sharing"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
                     <CheckBox IsChecked="{Binding ActivePlayer.Player.ShareTimers}" Click="Savesettings" MinWidth="75"></CheckBox>
                 </StackPanel>
                 <DockPanel>
                     <TextBlock MaxWidth="400" TextWrapping="Wrap" Text="When this is checked, timers will be shared with those around you for detrimental spells. So, if you slow a mob, anyone within range will also see the slow timer. Same for dragon effects!" />
-                 </DockPanel> 
+                </DockPanel>
                 <TextBlock Text="Console Debugging" HorizontalAlignment="Center" FontWeight="Bold" Margin="5,5,0,0"/>
-                <StackPanel Orientation="Vertical" Margin="0, 0, 0, 8"> 
+                <StackPanel Orientation="Vertical" Margin="0, 0, 0, 8">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Window" VerticalAlignment="Center" FontWeight="Bold" MinWidth="100"/>
                         <Button Click="openConsoleWindow">Open</Button>
@@ -430,7 +430,26 @@
                         <TextBlock Text="Spell Logging" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
                         <CheckBox Name="SpellConsoleLog" Click="toggleSpellConsoleOutput" MinWidth="75"></CheckBox>
                     </StackPanel>
+                </StackPanel>
+            </StackPanel>
+        </TabItem>
+
+        <TabItem Header="UI">
+            <StackPanel Orientation="Vertical" Margin="5, 5, 5, 5" HorizontalAlignment="Stretch"> 
+                <StackPanel Orientation="Vertical">
+                    <TextBlock Text="You cannot have EQ runing for these operations to be successful." FontWeight="Bold" />
+                    <TextBlock  TextWrapping="Wrap" Text="Select a class and the master template. This will override all other UI files with the samel class in your EQ folder." />
                 </StackPanel> 
+            <StackPanel Orientation="Horizontal">
+                    <ComboBox Name="UIClassMaster" IsEditable="True"
+ IsReadOnly="True"
+ Text="-- Select Class --"  ItemsSource="{Binding PlayerClasses}" MinWidth="100"></ComboBox>
+                    <ComboBox Name="SelectedUIFile"  IsEditable="True"
+ IsReadOnly="True"
+ Text="-- Select UI File --" ItemsSource="{Binding UIFiles}" MinWidth="100" Margin="5, 0, 0, 0" ></ComboBox>
+                    <Button Click="SelectMasterUIFile" MinWidth="100" Margin="5, 0, 0, 0" >Use as Master</Button>
+                    <Button Content="⟳" Margin="5, 0, 0, 0" FontSize="7" Width="14"  Click="RefreshUIFiles" ToolTip="Refresh UI list" />
+                </StackPanel>
             </StackPanel>
         </TabItem>
         
