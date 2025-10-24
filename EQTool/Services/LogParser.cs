@@ -35,8 +35,8 @@ namespace EQTool.Services
              FileReader fileReader,
              LineParser lineParser
             )
-        {
-            this.eqLogParsers = eqLogParsers.ToList();
+        { 
+            this.eqLogParsers = eqLogParsers.OrderBy(a=> a.GetType().Name).ToList();
             this.lineParser = lineParser;
             this.toolSettingsLoad = toolSettingsLoad;
             this.activePlayer = activePlayer;
