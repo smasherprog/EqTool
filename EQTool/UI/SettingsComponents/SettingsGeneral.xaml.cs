@@ -93,7 +93,18 @@ namespace EQTool.UI.SettingsComponents
         {
             toolSettingsLoad.Save(settings);
         }
+        private void TabControl_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (e.Source is TabControl)
+            {
+                var tab = (sender as TabControl)?.SelectedItem as TabItem;
 
+                if (tab.Header as string == "UI")
+                {
+                   this.SettingsWindowData.RefreshUIFiles();
+                } 
+            }
+        } 
         private void TryUpdateSettings()
         {
             var logfounddata = FindEq.GetLogFileLocation(new FindEq.FindEQData { EqBaseLocation = settings.DefaultEqDirectory, EQlogLocation = string.Empty });
@@ -1117,6 +1128,67 @@ namespace EQTool.UI.SettingsComponents
         {
             settingsTestRunOverlay.RunTest(OverlayTypes.TellsYouEvent);
         }
+        
+         private void RefreshUIFiles(object sender, RoutedEventArgs e)
+        {
+            this.SettingsWindowData.RefreshUIFiles();
+        }
+        private void SelectMasterUIFile(object sender, RoutedEventArgs e)
+        {
+            if (!Directory.Exists(this.settings.DefaultEqDirectory))
+            {
+                return;
+            }
+            
+            var selectedClass = this.UIClassMaster.SelectedItem;
+            if (selectedClass == null)
+            {
+                return;
+            }
+            var selectedUIFile = this.SelectedUIFile.SelectedItem as string;
+            if (string.IsNullOrWhiteSpace(selectedUIFile))
+            {
+                return;
+            }
+            var classToCopy = selectedClass as PlayerClasses?;
+            if (classToCopy == null)
+            {
+                return;
+            }
+            var classes = this.settings.Players.Where(a=> a.PlayerClass == classToCopy.Value).ToList(); 
+            var masterUIFilePath = Path.Combine(this.settings.DefaultEqDirectory, selectedUIFile + ".ini");
+            var masterMacroFilePath = Path.Combine(this.settings.DefaultEqDirectory, selectedUIFile.Replace("UI_",string.Empty) + ".ini");
 
+            var masterUIFile = File.ReadAllText(masterUIFilePath);
+            var masterMacroFile = File.ReadAllText(masterMacroFilePath);
+
+            var message = $"This will overwrite the UI and Macro files for all {classToCopy.Value} characters\n{string.Join("\n", classes.Select(a=> a.Name))}\n files. Are you sure you want to continue?";
+
+            var messagebox = System.Windows.Forms.MessageBox.Show(message, "Overwrite UI Files", System.Windows.Forms.MessageBoxButtons.OKCancel);
+            if(messagebox == System.Windows.Forms.DialogResult.OK)
+            {
+                foreach (var player in classes)
+                { 
+                    var serverPart = "P1999Blue.ini";
+                    if (player.Server == Servers.Red)
+                    {
+                        serverPart = "P1999PVP.ini";
+                    }
+                    else if(player.Server == Servers.Green)
+                    {
+                        serverPart = "P1999Green.ini";
+                    }
+                    var uiFilePath = Path.Combine(this.settings.DefaultEqDirectory, $"UI_{player.Name}_{serverPart}");
+                    if(uiFilePath == masterUIFilePath)
+                    {
+                        continue;
+                    }
+                    var macroFilePath = Path.Combine(this.settings.DefaultEqDirectory, $"{player.Name}_{serverPart}");
+                    File.WriteAllText(uiFilePath, masterUIFile);
+                    File.WriteAllText(macroFilePath, masterMacroFile);
+                } 
+            }
+             System.Windows.Forms.MessageBox.Show("UI Files updated!", "UI Files updated!", System.Windows.Forms.MessageBoxButtons.OK);
+        }
     }
 }

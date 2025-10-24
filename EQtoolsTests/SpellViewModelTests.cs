@@ -204,6 +204,18 @@ namespace EQtoolsTests
         }
 
         [TestMethod]
+        public void GuessDruidEpic()
+        {
+            player.Player.PlayerClass = EQToolShared.Enums.PlayerClasses.Necromancer;
+            player.Player.Level = 60;
+            player.Player.Zone = "skyfire";
+            logParser.Push("A wyvern has been gripped by nature's wrath.", DateTime.Now); 
+
+            var spelleffect = spellWindowViewModel.SpellList.FirstOrDefault(a=> a.Id == "Wrath of Nature");
+            Assert.IsNotNull(spelleffect);
+        }
+
+        [TestMethod]
         public void GuessParalyzingEarth()
         {
             player.Player.PlayerClass = EQToolShared.Enums.PlayerClasses.Necromancer;

@@ -72,60 +72,59 @@ namespace EQTool.Services.Parsing
                     return true;
                 }
             }
-            else
-            {
-                var userCastingSpell = activePlayer.UserCastingSpell;
-                var userCastSpellDateTime = activePlayer.UserCastSpellDateTime;
-                if (userCastingSpell != null && userCastSpellDateTime != null)
-                {
-                    if (message == userCastingSpell.cast_on_you)
-                    {
-                        debugOutput.WriteLine($"Casting on yourself Detected for {userCastingSpell.name}", OutputType.Spells);
-                        logEvents.Handle(new YouFinishCastingEvent
-                        {
-                            Spell = userCastingSpell,
-                            TargetName = EQSpells.SpaceYou,
-                            TimeStamp = timestamp,
-                            Line = message,
-                            LineCounter = lineCounter
-                        });
-                        return true;
-                    }
-                    else if (!string.IsNullOrWhiteSpace(userCastingSpell.cast_on_other) && message.EndsWith(userCastingSpell.cast_on_other))
-                    {
-                        logEvents.Handle(new SpellCastOnOtherEvent
-                        {
-                            Spells = new List<Spell>() { userCastingSpell },
-                            TargetName = message.Replace(userCastingSpell.cast_on_other, string.Empty).Trim(),
-                            TimeStamp = timestamp,
-                            Line = message,
-                            LineCounter = lineCounter
-                        });
-                        return true;
-                    }
-                }
 
-                removename = 0;
-                const int maxspaces = 5;
-                for (var i = 0; i < maxspaces; i++)
+            var userCastingSpell = activePlayer.UserCastingSpell;
+            var userCastSpellDateTime = activePlayer.UserCastSpellDateTime;
+            if (userCastingSpell != null && userCastSpellDateTime != null)
+            {
+                if (message == userCastingSpell.cast_on_you)
                 {
-                    if (removename > message.Length)
+                    debugOutput.WriteLine($"Casting on yourself Detected for {userCastingSpell.name}", OutputType.Spells);
+                    logEvents.Handle(new YouFinishCastingEvent
                     {
-                        break;
-                    }
-                    removename = message.IndexOf(" ", removename + 1);
-                    if (removename != -1)
+                        Spell = userCastingSpell,
+                        TargetName = EQSpells.SpaceYou,
+                        TimeStamp = timestamp,
+                        Line = message,
+                        LineCounter = lineCounter
+                    });
+                    return true;
+                }
+                else if (!string.IsNullOrWhiteSpace(userCastingSpell.cast_on_other) && message.EndsWith(userCastingSpell.cast_on_other))
+                {
+                    logEvents.Handle(new SpellCastOnOtherEvent
                     {
-                        var firstpart = message.Substring(0, removename + 1).Trim();
-                        var spellmessage = message.Substring(removename).Trim();
-                        var matchedspell = Match(spellmessage, firstpart, timestamp, message, lineCounter);
-                        if (matchedspell)
-                        {
-                            return true;
-                        }
+                        Spells = new List<Spell>() { userCastingSpell },
+                        TargetName = message.Replace(userCastingSpell.cast_on_other, string.Empty).Trim(),
+                        TimeStamp = timestamp,
+                        Line = message,
+                        LineCounter = lineCounter
+                    });
+                    return true;
+                }
+            }
+
+            removename = 0;
+            const int maxspaces = 5;
+            for (var i = 0; i < maxspaces; i++)
+            {
+                if (removename > message.Length)
+                {
+                    break;
+                }
+                removename = message.IndexOf(" ", removename + 1);
+                if (removename != -1)
+                {
+                    var firstpart = message.Substring(0, removename + 1).Trim();
+                    var spellmessage = message.Substring(removename).Trim();
+                    var matchedspell = Match(spellmessage, firstpart, timestamp, message, lineCounter);
+                    if (matchedspell)
+                    {
+                        return true;
                     }
                 }
             }
+
             return false;
         }
 
