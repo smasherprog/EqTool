@@ -38,7 +38,7 @@ namespace EQTool.Services.Handlers
             appDispatcher.DispatchUI(() =>
             {
                 var rollsingroup = spellWindowViewModel.SpellList
-                    .Where(a => a.Id == trigger  .Id && a.Target == trigger.Target && a.SpellViewModelType == SpellViewModelType.Roll)
+                    .Where(a => a.Id == trigger.Id && a.Target == trigger.Target && a.SpellViewModelType == SpellViewModelType.Roll)
                     .Cast<RollViewModel>()
                     .ToList();
                 var rollorder = rollsingroup.Select(a => (int?)a.RollOrder).Max() ?? 0;

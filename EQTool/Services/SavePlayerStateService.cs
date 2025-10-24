@@ -36,7 +36,7 @@ namespace EQTool.Services
                     if (!activePlayer.Player.YouSpells.Any())
                     {
                         var before = activePlayer.Player.YouSpells ?? new List<YouSpells>();
-                        activePlayer.Player.YouSpells = spellWindowViewModel.SpellList.Where(x => x.SpellViewModelType == SpellViewModelType.Spell).Cast<SpellViewModel>()
+                        activePlayer.Player.YouSpells = spellWindowViewModel.SpellList.OfType<SpellViewModel>()
                             .Where(x => x.CastOnYou(activePlayer.Player))
                             .Select(a => new YouSpells
                             {
