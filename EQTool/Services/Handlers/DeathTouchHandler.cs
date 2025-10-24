@@ -37,11 +37,11 @@ namespace EQTool.Services.Handlers
             spellWindowViewModel.TryAdd(new TimerViewModel
             {
                 TotalDuration = TimeSpan.FromSeconds(45),
-                Name = $"--DT-- '{e.Content}'",
+                Id = $"--DT-- '{e.Content}'",
                 Icon = match.SpellIcon,
                 Rect = match.Rect,
                 PercentLeft = 100,
-                GroupName = CustomTimer.CustomerTime,
+                Target = CustomTimer.CustomerTime,
                 TotalRemainingDuration = TimeSpan.FromSeconds(45),
                 UpdatedDateTime = DateTime.Now,
             });

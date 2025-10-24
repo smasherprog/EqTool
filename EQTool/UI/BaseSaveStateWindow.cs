@@ -252,6 +252,10 @@ namespace EQTool.UI
         public void UpdateShowInTaskbar()
         {
             ShowInTaskbar = !(windowState.IsLocked && windowState.AlwaysOnTop);
+            if (!ShowInTaskbar && WindowState == System.Windows.WindowState.Minimized)
+            {
+                WindowState = System.Windows.WindowState.Normal;
+            }
         }
     }
 }

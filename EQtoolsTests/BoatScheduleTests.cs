@@ -28,7 +28,7 @@ namespace EQtoolsTests
             {
                 boatViewModelList.Add(new BoatViewModel
                 {
-                    Name = item.PrettyName,
+                    Id = item.PrettyName,
                     Boat = item,
                     TotalDuration = TimeSpan.FromSeconds(item.TripTimeInSeconds)
                 });

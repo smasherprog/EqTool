@@ -13,7 +13,7 @@ namespace EQTool.ViewModels.SpellWindow
     {
         public BoatViewModel()
         {
-            this.GroupName = "Boat Schedules";
+            this.Target = "Boat Schedules";
             this.DeleteButtonVisibility = Visibility.Collapsed;
         }
 

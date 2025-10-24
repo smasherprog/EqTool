@@ -18,26 +18,42 @@ namespace EQTool.ViewModels.SpellWindow
         Boat
     }
 
-    public class PersistentViewModel : INotifyPropertyChanged
+    public abstract class PersistentViewModel : INotifyPropertyChanged
     {
         public SpellIcon Icon { get; set; }
         public bool HasIcon => Icon != null;
         public Int32Rect Rect { get; set; }
-
-        private string _Name = string.Empty;
-
-        public string Name
+        
+        private string _id;
+        public string Id
         {
-            get => _Name;
+            get => _id;
             set
             {
-                _Name = value;
+                _id = value;
                 OnPropertyChanged();
+                OnPropertyChanged(nameof(DisplayName));
+            }
+        }
+        
+        private string _target;
+        public string Target
+        {
+            get => _target;
+            set
+            {
+                _target = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(DisplayGroup));
+                OnPropertyChanged(nameof(Sorting));
             }
         }
 
-        private Visibility _HeaderVisibility = Visibility.Visible;
+        public virtual string DisplayName => Id;
+        public virtual string DisplayGroup => Target;
+        public virtual string Sorting => DisplayGroup;
 
+        protected Visibility _HeaderVisibility = Visibility.Visible;
         public Visibility HeaderVisibility
         {
             get => _HeaderVisibility;
@@ -52,8 +68,7 @@ namespace EQTool.ViewModels.SpellWindow
             }
         }
 
-        private Visibility _DeleteButtonVisibility = Visibility.Visible;
-
+        protected Visibility _DeleteButtonVisibility = Visibility.Visible;
         public Visibility DeleteButtonVisibility
         {
             get => _DeleteButtonVisibility;
@@ -70,8 +85,7 @@ namespace EQTool.ViewModels.SpellWindow
 
         public virtual SpellViewModelType SpellViewModelType => SpellViewModelType.Persistent;
 
-        private Visibility _ColumnVisibility = Visibility.Visible;
-
+        protected Visibility _ColumnVisibility = Visibility.Visible;
         public Visibility ColumnVisibility
         {
             get => _ColumnVisibility;
@@ -85,42 +99,41 @@ namespace EQTool.ViewModels.SpellWindow
                 OnPropertyChanged();
             }
         }
-
-        public virtual string Sorting => _GroupName;
-        private string _GroupName = string.Empty;
-        public string GroupName
+        
+        private string _targetClassString;
+        public string TargetClassString
         {
-            get => _GroupName;
+            get => _targetClassString;
             set
             {
-                if (_GroupName == value)
-                {
-                    return;
-                }
-                _GroupName = value;
+                _targetClassString = value;
                 OnPropertyChanged();
             }
         }
-
-        public string TargetClassString { get; set; }
-        private PlayerClasses? _TargetClass;
-
+        protected PlayerClasses? _TargetClass;
         public PlayerClasses? TargetClass
         {
             get => _TargetClass;
             set
             {
                 _TargetClass = value;
-                TargetClassString = _TargetClass.HasValue ? _TargetClass.Value.ToString() : string.Empty;
-                OnPropertyChanged(nameof(TargetClassString));
+                SyncTargetClassString();
                 OnPropertyChanged();
             }
         }
 
+        protected void SyncTargetClassString(bool forceEmpty = false)
+        {
+            if (forceEmpty)
+                TargetClassString = string.Empty;
+            else
+                TargetClassString = _TargetClass.HasValue ? _TargetClass.Value.ToString() : string.Empty;
+        }
+
         public SolidColorBrush ProgressBarColor { get; set; } = Brushes.DarkSeaGreen;
         public DateTime UpdatedDateTime { get; set; } = DateTime.Now;
+        
         public event PropertyChangedEventHandler PropertyChanged;
-
         protected void OnPropertyChanged([CallerMemberName] string name = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));

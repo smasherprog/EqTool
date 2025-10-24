@@ -1,4 +1,5 @@
-﻿using EQTool.Models;
+﻿using System.Collections.Generic;
+using EQTool.Models;
 using EQTool.ViewModels;
 using EQTool.ViewModels.SpellWindow;
 using System.Linq;
@@ -34,12 +35,12 @@ namespace EQTool.Services
                 {
                     if (!activePlayer.Player.YouSpells.Any())
                     {
-                        var before = activePlayer.Player.YouSpells ?? new System.Collections.Generic.List<YouSpells>();
-                        activePlayer.Player.YouSpells = spellWindowViewModel.SpellList.Where(a => a.GroupName == EQSpells.SpaceYou && a.SpellViewModelType == SpellViewModelType.Spell)
-                            .Cast<SpellViewModel>()
+                        var before = activePlayer.Player.YouSpells ?? new List<YouSpells>();
+                        activePlayer.Player.YouSpells = spellWindowViewModel.SpellList.OfType<SpellViewModel>()
+                            .Where(x => x.CastOnYou(activePlayer.Player))
                             .Select(a => new YouSpells
                             {
-                                Name = a.Name,
+                                Name = a.Id,
                                 Caster = a.Caster,
                                 TotalSecondsLeft = (int)a.TotalRemainingDuration.TotalSeconds,
                             }).ToList();

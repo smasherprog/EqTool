@@ -50,7 +50,7 @@ namespace EQTool.Services
 
         public bool IsPlayer(string name)
         {
-            if (name == EQSpells.You || name == EQSpells.SpaceYou)
+            if (name == EQSpells.You || name == EQSpells.SpaceYou || name == activePlayer.Player.Name)
             {
                 return true;
             }
@@ -121,29 +121,29 @@ namespace EQTool.Services
             }
             appDispatcher.DispatchUI(() =>
             {
-                var spellsmissingclasses = spellWindowViewModel.SpellList
-                .Where(a => !a.GroupName.StartsWith(" ") && a.SpellViewModelType == ViewModels.SpellWindow.SpellViewModelType.Spell)
-                .Cast<SpellViewModel>()
-                .ToList();
-                var missingplayernames = spellsmissingclasses.Select(a => a.GroupName).Distinct().ToList();
-                if (missingplayernames.Any())
+                var spellsMissingClasses = spellWindowViewModel
+                    .SpellList.Where(x => x.SpellViewModelType == SpellViewModelType.Spell)
+                    .Where(spell => !spell.Target.StartsWith(" "))
+                    .ToList();
+                var missingPlayerNames = spellsMissingClasses.Select(a => a.Target).Distinct().ToList();
+                if (missingPlayerNames.Any())
                 {
                     _ = Task.Factory.StartNew(() =>
                     {
                         try
                         {
-                            var playersapi = pigParseApi.GetPlayerData(missingplayernames, activePlayer.Player.Server.Value);
+                            var playersApi = pigParseApi.GetPlayerData(missingPlayerNames, activePlayer.Player.Server.Value);
                             lock (ContainerLock)
                             {
-                                foreach (var item in playersapi)
+                                foreach (var p in playersApi)
                                 {
-                                    if (AllPlayers.TryGetValue(item.Name, out var player))
+                                    if (AllPlayers.TryGetValue(p.Name, out var player))
                                     {
-                                        player.PlayerClass = item.PlayerClass;
+                                        player.PlayerClass = p.PlayerClass;
                                     }
                                     else
                                     {
-                                        AllPlayers.Add(item.Name, item);
+                                        AllPlayers.Add(p.Name, p);
                                     }
                                 }
                             }
@@ -157,13 +157,13 @@ namespace EQTool.Services
                 var players = new List<EQToolShared.APIModels.PlayerControllerModels.Player>();
                 lock (ContainerLock)
                 {
-                    players = AllPlayers.Values.Where(a => missingplayernames.Contains(a.Name)).ToList();
+                    players = AllPlayers.Values.Where(a => missingPlayerNames.Contains(a.Name)).ToList();
                 }
-                foreach (var item in players)
+                foreach (var p in players)
                 {
-                    foreach (var missingclass in spellsmissingclasses.Where(a => a.GroupName == item.Name))
+                    foreach (var missingClass in spellsMissingClasses.Where(a => a.Target == p.Name))
                     {
-                        missingclass.TargetClass = item.PlayerClass;
+                        missingClass.TargetClass = p.PlayerClass;
                     }
                 }
             });

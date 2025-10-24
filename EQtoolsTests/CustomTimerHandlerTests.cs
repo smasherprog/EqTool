@@ -25,7 +25,7 @@ namespace EQtoolsTests
         {
             var line = "You say, 'PigTimer-30:00-StupidGoblin'";
             logParser.Push(line, DateTime.Now);
-            var timer = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Timer && a.Name == "StupidGoblin") as TimerViewModel;
+            var timer = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Timer && a.Id == "StupidGoblin") as TimerViewModel;
             Assert.IsNotNull(timer);
             Assert.IsTrue(timer.TotalDuration.TotalSeconds == 30 * 60);
         }
@@ -35,7 +35,7 @@ namespace EQtoolsTests
         {
             var line = "You say, 'PigTimer-30:20-StupidGoblin'";
             logParser.Push(line, DateTime.Now);
-            var timer = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Timer && a.Name == "StupidGoblin") as TimerViewModel;
+            var timer = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Timer && a.Id == "StupidGoblin") as TimerViewModel;
             Assert.IsNotNull(timer);
             Assert.IsTrue(timer.TotalDuration.TotalSeconds == (30 * 60) + 20);
         }
@@ -45,7 +45,7 @@ namespace EQtoolsTests
         {
             var line = "You say, 'PigTimer-90:20-StupidGoblin'";
             logParser.Push(line, DateTime.Now);
-            var timer = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Timer && a.Name == "StupidGoblin") as TimerViewModel;
+            var timer = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Timer && a.Id == "StupidGoblin") as TimerViewModel;
             Assert.IsNotNull(timer);
             Assert.IsTrue(timer.TotalDuration.TotalSeconds == (90 * 60) + 20);
         }
@@ -55,7 +55,7 @@ namespace EQtoolsTests
         {
             var line = "You say, 'PigTimer-30:00-StupidGoblin'";
             logParser.Push(line, DateTime.Now);
-            var timer = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Timer && a.Name == "StupidGoblin") as TimerViewModel;
+            var timer = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Timer && a.Id == "StupidGoblin") as TimerViewModel;
             Assert.IsNotNull(timer);
             Assert.IsTrue(timer.TotalDuration.TotalSeconds == 30 * 60);
         }
@@ -65,7 +65,7 @@ namespace EQtoolsTests
         {
             var line = "You say, 'PigTimer-30:00-StupidGoblin_with_club_near_me'";
             logParser.Push(line, DateTime.Now);
-            var timer = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Timer && a.Name == "StupidGoblin_with_club_near_me") as TimerViewModel;
+            var timer = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Timer && a.Id == "StupidGoblin_with_club_near_me") as TimerViewModel;
             Assert.IsNotNull(timer);
             Assert.IsTrue(timer.TotalDuration.TotalSeconds == 30 * 60);
         }
@@ -75,7 +75,7 @@ namespace EQtoolsTests
         {
             var line = "You say, 'PigTimer-02'";
             logParser.Push(line, DateTime.Now);
-            var timer = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Timer && a.Name == "PigTimer-02") as TimerViewModel;
+            var timer = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Timer && a.Id == "PigTimer-02") as TimerViewModel;
             Assert.IsNotNull(timer);
             Assert.IsTrue(timer.TotalDuration.TotalSeconds == 2);
         }
@@ -85,7 +85,7 @@ namespace EQtoolsTests
         {
             var line = "You say, 'PigTimer-02:03'";
             logParser.Push(line, DateTime.Now);
-            var timer = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Timer && a.Name == "PigTimer-02:03") as TimerViewModel;
+            var timer = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Timer && a.Id == "PigTimer-02:03") as TimerViewModel;
             Assert.IsNotNull(timer);
             Assert.IsTrue(timer.TotalDuration.TotalSeconds == (2 * 60) + 3);
         }
@@ -95,7 +95,7 @@ namespace EQtoolsTests
         {
             var line = "You say, 'PigTimer-02:03:04'";
             logParser.Push(line, DateTime.Now);
-            var timer = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Timer && a.Name == "PigTimer-02:03:04") as TimerViewModel;
+            var timer = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Timer && a.Id == "PigTimer-02:03:04") as TimerViewModel;
             Assert.IsNotNull(timer);
             Assert.IsTrue(timer.TotalDuration.TotalSeconds == (2 * 3600) + (3 * 60) + 4);
         }
@@ -105,7 +105,7 @@ namespace EQtoolsTests
         {
             var line = "You say, 'PigTimer-02-xyzzy'";
             logParser.Push(line, DateTime.Now);
-            var timer = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Timer && a.Name == "xyzzy") as TimerViewModel;
+            var timer = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Timer && a.Id == "xyzzy") as TimerViewModel;
             Assert.IsNotNull(timer);
             Assert.IsTrue(timer.TotalDuration.TotalSeconds == 2);
         }
@@ -115,7 +115,7 @@ namespace EQtoolsTests
         {
             var line = "You say, 'PigTimer-02:03-xyzzy'";
             logParser.Push(line, DateTime.Now);
-            var timer = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Timer && a.Name == "xyzzy") as TimerViewModel;
+            var timer = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Timer && a.Id == "xyzzy") as TimerViewModel;
             Assert.IsNotNull(timer);
             Assert.IsTrue(timer.TotalDuration.TotalSeconds == (2 * 60) + 3);
         }
@@ -125,7 +125,7 @@ namespace EQtoolsTests
         {
             var line = "You say, 'PigTimer-02:03:04-xyzzy'";
             logParser.Push(line, DateTime.Now);
-            var timer = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Timer && a.Name == "xyzzy") as TimerViewModel;
+            var timer = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Timer && a.Id == "xyzzy") as TimerViewModel;
             Assert.IsNotNull(timer);
             Assert.IsTrue(timer.TotalDuration.TotalSeconds == (2 * 3600) + (3 * 60) + 4);
         }

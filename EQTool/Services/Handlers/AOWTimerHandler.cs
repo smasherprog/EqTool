@@ -29,8 +29,8 @@ namespace EQTool.Services.Handlers
                     spellWindowViewModel.TryAdd(new TimerViewModel
                     {
                         PercentLeft = 100,
-                        GroupName = CustomTimer.CustomerTime,
-                        Name = $"The Avatar of War Lockout",
+                        Target = CustomTimer.CustomerTime,
+                        Id = $"The Avatar of War Lockout",
                         Rect = spell.Rect,
                         Icon = spell.SpellIcon,
                         TotalDuration = TimeSpan.FromMinutes(20),

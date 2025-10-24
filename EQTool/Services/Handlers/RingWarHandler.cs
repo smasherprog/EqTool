@@ -31,8 +31,8 @@ namespace EQTool.Services.Handlers
                     spellWindowViewModel.TryAdd(new TimerViewModel
                     {
                         PercentLeft = 100,
-                        GroupName = $" Wave {round} Ring War",
-                        Name = $"Round {i}",
+                        Target = $" Wave {round} Ring War",
+                        Id = $"Round {i}",
                         Rect = spell.Rect,
                         Icon = spell.SpellIcon,
                         TotalDuration = TimeSpan.FromSeconds(startingtime),
@@ -50,8 +50,8 @@ namespace EQTool.Services.Handlers
                 spellWindowViewModel.TryAdd(new TimerViewModel
                 {
                     PercentLeft = 100,
-                    GroupName = $" Wave {round} Ring War",
-                    Name = $"-- Break --",
+                    Target = $" Wave {round} Ring War",
+                    Id = $"-- Break --",
                     Rect = spell.Rect,
                     Icon = spell.SpellIcon,
                     TotalDuration = TimeSpan.FromSeconds(startingtime),
@@ -60,7 +60,6 @@ namespace EQTool.Services.Handlers
                     ProgressBarColor = Brushes.MediumAquamarine
                 });
             }
-
         }
     }
 }

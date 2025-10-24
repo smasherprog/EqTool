@@ -32,8 +32,8 @@ namespace EQTool.Services.Handlers
                 spellWindowViewModel.TryAdd(new TimerViewModel
                 {
                     PercentLeft = 100,
-                    GroupName = EQSpells.SpaceYou,
-                    Name = timerName,
+                    Target = EQSpells.SpaceYou,
+                    Id = timerName,
                     Rect = spell.Rect,
                     Icon = spell.SpellIcon,
                     TotalDuration = TimeSpan.FromSeconds(durationSeconds),

@@ -35,8 +35,8 @@ namespace EQTool.Services.Handlers
             spellWindowViewModel.TryAdd(new TimerViewModel
             {
                 PercentLeft = 100,
-                GroupName = CustomTimer.CustomerTime,
-                Name = discCooldownEvent.DisciplineName,
+                Target = CustomTimer.CustomerTime,
+                Id = discCooldownEvent.DisciplineName,
                 Rect = spell.Rect,
                 Icon = spell.SpellIcon,
                 TotalDuration = TimeSpan.FromSeconds(discCooldownEvent.TotalTimerSeconds),

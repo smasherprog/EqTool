@@ -232,8 +232,8 @@ namespace EQTool.Models
             return new TimerViewModel
             {
                 PercentLeft = 100,
-                GroupName = CustomTimer.CustomerTime,
-                Name = e.Name,
+                Target = CustomTimer.CustomerTime,
+                Id = e.Name,
                 Rect = spellicon.Rect,
                 Icon = spellicon.SpellIcon,
                 TotalDuration = TimeSpan.FromSeconds(e.DurationInSeconds),

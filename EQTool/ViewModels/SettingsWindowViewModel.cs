@@ -263,6 +263,26 @@ namespace EQTool.ViewModels
             }
         }
 
+        public SpellGroupingType BeneficialSpellGroupingType
+        {
+            get => toolSettings.BeneficialSpellGroupingType;
+            set
+            {
+                toolSettings.BeneficialSpellGroupingType = value;
+                OnPropertyChanged();
+            }
+        }
+        
+        public SpellGroupingType DetrimentalSpellGroupingType
+        {
+            get => toolSettings.DetrimentalSpellGroupingType;
+            set
+            {
+                toolSettings.DetrimentalSpellGroupingType = value;
+                OnPropertyChanged();
+            }
+        }
+        
         public SpellsFilterType SpellsFilter
         {
             get => toolSettings.SpellsFilter;

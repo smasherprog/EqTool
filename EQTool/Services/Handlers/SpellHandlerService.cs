@@ -89,9 +89,9 @@ namespace EQTool.Services.Handlers
                 spellWindowViewModel.TryAdd(new TimerViewModel
                 {
                     PercentLeft = 100,
-                    GroupName = spellname == "Theft of Thought" ? EQSpells.SpaceYou : targetName,
+                    Target = spellname == "Theft of Thought" ? EQSpells.SpaceYou : targetName,
                     TargetClass = targetclass,
-                    Name = $"{spellname} Cooldown",
+                    Id = $"{spellname} Cooldown",
                     Rect = spell.Rect,
                     Icon = spell.SpellIcon,
                     TotalDuration = TimeSpan.FromSeconds((int)((spell.recastTime + delayOffset) / 1000.0)),
@@ -162,9 +162,9 @@ namespace EQTool.Services.Handlers
                 spellWindowViewModel.TryAdd(new TimerViewModel
                 {
                     PercentLeft = 100,
-                    GroupName = targetName,
+                    Target = targetName,
                     TargetClass = targetclass,
-                    Name = spellname + " Cooldown",
+                    Id = spellname + " Cooldown",
                     Rect = spell.Rect,
                     Icon = spell.SpellIcon,
                     TotalDuration = TimeSpan.FromSeconds(basetime),
@@ -174,11 +174,11 @@ namespace EQTool.Services.Handlers
                 });
             }
 
-            var grpname = targetName;
+            var target = targetName;
             var isnpc = false;
-            if (MasterNPCList.NPCs.Contains(grpname.Trim()))
+            if (MasterNPCList.NPCs.Contains(target.Trim()))
             {
-                grpname = " " + grpname.Trim();
+                target = " " + target.Trim();
                 isnpc = true;
             }
             var needscount = SpellsThatNeedCounts.Contains(spellname);
@@ -187,9 +187,9 @@ namespace EQTool.Services.Handlers
                 var vm = new CounterViewModel
                 {
                     UpdatedDateTime = DateTime.Now,
-                    GroupName = grpname,
+                    Target = target,
                     TargetClass = targetclass,
-                    Name = $"{spellname}",
+                    Id = $"{spellname}",
                     Rect = spell.Rect,
                     Icon = spell.SpellIcon,
                     Count = 1,
@@ -235,18 +235,17 @@ namespace EQTool.Services.Handlers
                             }
                         }
                     }
-
-                    // create new SpellViewModel
+                    
                     var vm = new SpellViewModel
                     {
                         UpdatedDateTime = DateTime.Now,
                         PercentLeft = 100,
                         BenefitDetriment = spell.benefit_detriment,
+                        Id = spellname,
+                        Target = target,
                         Caster = casterName,
                         SpellType = spell.SpellType,
-                        GroupName = grpname,
                         TargetClass = targetclass,
-                        Name = spellname,
                         Rect = spell.Rect,
                         Icon = spell.SpellIcon,
                         Classes = spell.Classes,

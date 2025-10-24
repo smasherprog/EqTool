@@ -42,10 +42,10 @@ namespace EQtoolsTests
             player.Player.PlayerClass = EQToolShared.Enums.PlayerClasses.Necromancer;
             player.Player.Level = 53;
             logParser.Push("Someone has been poisoned.", DateTime.Now);
-            var dteffect = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Spell && a.Name == "Envenomed Bolt") as SpellViewModel;
+            var dteffect = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Spell && a.Id == "Envenomed Bolt") as SpellViewModel;
             Assert.AreEqual(42, dteffect.TotalDuration.TotalSeconds, 2);
             logParser.Push("Your Envenomed Bolt spell has worn off.", DateTime.Now.AddSeconds(40));
-            dteffect = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Spell && a.Name == "Envenomed Bolt") as SpellViewModel;
+            dteffect = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Spell && a.Id == "Envenomed Bolt") as SpellViewModel;
             Assert.IsNull(dteffect);
         }
 

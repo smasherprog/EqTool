@@ -107,8 +107,8 @@ namespace EQTool.Services.Handlers
                 spellWindowViewModel.TryAdd(new TimerViewModel
                 {
                     PercentLeft = 100,
-                    GroupName = CustomTimer.CustomerTime,
-                    Name = label != "" ? label : $"{match}",
+                    Target = CustomTimer.CustomerTime,
+                    Id = label != "" ? label : $"{match}",
                     Rect = spell.Rect,
                     Icon = spell.SpellIcon,
                     TotalDuration = TimeSpan.FromSeconds(timerSeconds),

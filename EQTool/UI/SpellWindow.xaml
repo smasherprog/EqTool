@@ -70,7 +70,7 @@
                                             <CroppedBitmap Source="{Binding Icon.Icon}" SourceRect="{Binding Rect}" />
                                         </Image.Source>
                                     </Image>
-                                    <TextBlock HorizontalAlignment="Left" FontWeight="Bold" Text="{Binding Name}"/>
+                                    <TextBlock HorizontalAlignment="Left" FontWeight="Bold" Text="{Binding DisplayName}"/>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Grid.Column="1" HorizontalAlignment="Right">
                                     <TextBlock TextAlignment="Right" FontWeight="Bold" Text="{Binding SecondsLeftPretty}"/>
@@ -94,7 +94,7 @@
                                             <CroppedBitmap Source="{Binding Icon.Icon}" SourceRect="{Binding Rect}" />
                                         </Image.Source>
                                     </Image>
-                                    <TextBlock HorizontalAlignment="Left" FontWeight="Bold" Text="{Binding Name}"/>
+                                    <TextBlock HorizontalAlignment="Left" FontWeight="Bold" Text="{Binding DisplayName}"/>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Grid.Column="1" >
                                     <TextBlock HorizontalAlignment="Left" FontWeight="Bold" Text=" Count --> "/>
@@ -120,7 +120,7 @@
                                             <CroppedBitmap Source="{Binding Icon.Icon}" SourceRect="{Binding Rect}" />
                                         </Image.Source>
                                     </Image>
-                                    <TextBlock HorizontalAlignment="Left" FontWeight="Bold" Text="{Binding Name}"/>
+                                    <TextBlock HorizontalAlignment="Left" FontWeight="Bold" Text="{Binding DisplayName}"/>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Grid.Column="1" >
                                     <TextBlock HorizontalAlignment="Left" FontWeight="Bold" Text="{Binding RollText}"/>
@@ -140,7 +140,7 @@
                                             <CroppedBitmap Source="{Binding Icon.Icon}" SourceRect="{Binding Rect}" />
                                         </Image.Source>
                                     </Image>
-                                    <TextBlock HorizontalAlignment="Left" FontWeight="Bold" Text="{Binding Name}"/>
+                                    <TextBlock HorizontalAlignment="Left" FontWeight="Bold" Text="{Binding DisplayName}"/>
                                 </StackPanel>
                                 <StackPanel Orientation="Horizontal" Grid.Column="2" HorizontalAlignment="Right">
                                     <TextBlock TextAlignment="Right" FontWeight="Bold" Text="{Binding SecondsLeftPretty}"/>
@@ -159,7 +159,7 @@
                                 </Grid.ColumnDefinitions>
                                 <ProgressBar Grid.Column="0" Grid.ColumnSpan="3"  Value="{Binding PercentLeft}"  Maximum="100"  Foreground="{Binding ProgressBarColor}"  />
 
-                                <TextBlock Grid.Column="0" FontWeight="Bold" Text="{Binding Name}"/>
+                                <TextBlock Grid.Column="0" FontWeight="Bold" Text="{Binding DisplayName}"/>
                                 <TextBlock Grid.Column="1" FontSize="10" Text="{Binding LastSeen}"/>
 
                                 <StackPanel Orientation="Horizontal" Grid.Column="2" HorizontalAlignment="Right">
