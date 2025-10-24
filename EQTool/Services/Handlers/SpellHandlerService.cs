@@ -89,7 +89,7 @@ namespace EQTool.Services.Handlers
                 spellWindowViewModel.TryAdd(new TimerViewModel
                 {
                     PercentLeft = 100,
-                    GroupName = targetName,
+                    GroupName = spellname == "Theft of Thought" ? EQSpells.SpaceYou : targetName,
                     TargetClass = targetclass,
                     Name = $"{spellname} Cooldown",
                     Rect = spell.Rect,
@@ -211,7 +211,8 @@ namespace EQTool.Services.Handlers
                 else if (spell.name == "Deftdance Discipline")
                 {
                     spellduration = TimeSpan.FromSeconds(15);
-                }
+                }  
+               
                 spellduration = spellduration.Add(TimeSpan.FromMilliseconds(delayOffset));
                 if (spellduration.TotalSeconds > 0)
                 {

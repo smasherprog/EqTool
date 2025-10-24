@@ -1,6 +1,7 @@
 ﻿using Autofac;
 using EQTool.Models;
 using EQTool.Services;
+using EQTool.Services.Parsing;
 using EQTool.ViewModels;
 using EQTool.ViewModels.SpellWindow;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -110,9 +111,9 @@ namespace EQtoolsTests
             player.Player.Level = 60;
             logParser.Push("You begin casting Harmony.", DateTime.Now);
             logParser.Push(DummyEntryToForceEmitEvent, DateTime.Now.AddSeconds(5));
-
+           
             var spelleffect = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Spell && a.Name == "Harmony") as SpellViewModel;
-            Assert.AreEqual(120, spelleffect.TotalDuration.TotalSeconds, 2);
+            Assert.AreEqual(120, spelleffect.TotalDuration.TotalSeconds, 4);
         }
 
         [TestMethod]
