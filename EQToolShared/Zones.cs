@@ -1078,6 +1078,11 @@ namespace EQToolShared
                     {
                         Name = "Captain Boshinko",
                         RespawnTime = new TimeSpan(0, 6, 0)
+                    },    
+                    new NpcSpawnTime
+                    {
+                        Name = "Dyrna Nlith",
+                        RespawnTime = new TimeSpan(0, 6, 0)
                     }
                 },
                 RespawnTime = new TimeSpan(0, 18, 0)
