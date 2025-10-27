@@ -464,6 +464,7 @@
                         <Button Click="FixNightVision" Margin="5, 0, 0, 0">Fix Night vision</Button>
                     </StackPanel>
                     <StackPanel Orientation="Vertical">
+                        <TextBlock HorizontalAlignment="Center" Text="If you want to revert, download the patch files from project1999 and apply them."></TextBlock>
                         <TextBlock HorizontalAlignment="Center" Text="Click images below to see the larger images!"></TextBlock>
                         <Button Click="BadNightVision" MaxWidth="500">
                             <Image Source="https://pigparse.azurewebsites.net/Content/bad.png"/>
