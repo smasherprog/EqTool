@@ -9,7 +9,21 @@
     <ApplicationInsightsResourceId>/subscriptions/fc1796be-a6b4-4ed9-99dd-5287fc0c4375/resourceGroups/EQTool/providers/microsoft.insights/components/PigParse</ApplicationInsightsResourceId>
     <UserSecretsId>62ce98aa-651d-4005-b774-d9d1dd57e122</UserSecretsId>
     <Configurations>Debug;Release;Test;Linux</Configurations>
-  </PropertyGroup> 
+  </PropertyGroup>
+
+  <ItemGroup>
+    <None Remove="Content\bad.png" />
+    <None Remove="Content\good.png" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Content Include="Content\bad.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Content\good.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+  </ItemGroup> 
   <ItemGroup>
     <PackageReference Include="Azure.Identity" Version="1.17.0" />
     <PackageReference Include="Hangfire.AspNetCore" Version="1.8.21" />
