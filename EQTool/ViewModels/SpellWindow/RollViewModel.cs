@@ -1,5 +1,9 @@
-﻿namespace EQTool.ViewModels.SpellWindow
+﻿using System.Diagnostics;
+using EQTool.Services;
+
+namespace EQTool.ViewModels.SpellWindow
 {
+    [DebuggerDisplay("Group = {DisplayGroup} Sorting = {GroupSorting} | Id = {Id}, Target = {Target}")]
     public class RollViewModel : TimerViewModel
     {
         private int _Roll = 0;
@@ -40,7 +44,7 @@
 
         public string RollText => $" (#{RollOrder}) Roll --> {Roll}";
 
-        public override string Sorting => " y";
+        public override string GroupSorting => SortingPrefixes.Topmost + DisplayGroup;
 
         public override SpellViewModelType SpellViewModelType => SpellViewModelType.Roll;
     }

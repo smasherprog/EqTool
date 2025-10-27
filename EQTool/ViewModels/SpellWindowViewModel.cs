@@ -67,7 +67,7 @@ namespace EQTool.ViewModels
                 view.GroupDescriptions.Add(new PropertyGroupDescription(nameof(TimerViewModel.DisplayGroup)));
                 view.LiveGroupingProperties.Add(nameof(TimerViewModel.DisplayGroup));
                 view.IsLiveGrouping = true;
-                view.SortDescriptions.Add(new SortDescription(nameof(TimerViewModel.Sorting), ListSortDirection.Ascending));
+                view.SortDescriptions.Add(new SortDescription(nameof(TimerViewModel.GroupSorting), ListSortDirection.Ascending));
                 view.SortDescriptions.Add(new SortDescription(nameof(RollViewModel.Roll), ListSortDirection.Descending));
                 view.SortDescriptions.Add(new SortDescription(nameof(TimerViewModel.TotalRemainingDuration), ListSortDirection.Ascending));
                 view.IsLiveSorting = true;
@@ -234,7 +234,7 @@ namespace EQTool.ViewModels
 
         public Visibility GenericButtonVisibility => IsCurrentlyClickThrough ? Visibility.Hidden : Visibility.Visible;
 
-        public void UpdateSpells(double dt_ms)
+        public void UpdateTriggers(double dt_ms)
         {
             appDispatcher.DispatchUI(() =>
             {
@@ -247,7 +247,7 @@ namespace EQTool.ViewModels
                 UpdateSpells(dt_ms, itemsToRemove);
                 UpdateBoats(dt_ms);
                 UpdatePersistentCounters(itemsToRemove);
-                UpdateGroupVisibility();
+                UpdateGlobalVisibility();
 
                 foreach (var item in itemsToRemove)
                 {
@@ -269,7 +269,7 @@ namespace EQTool.ViewModels
                 }
 
                 var hideTrigger = false;
-                if (item.SpellViewModelType == SpellViewModelType.Spell && item is SpellViewModel spell)
+                if (item is SpellViewModel spell)
                 {
                     hideTrigger = ShouldFilterSpell(spell, activePlayer.Player);
                 }
@@ -278,7 +278,9 @@ namespace EQTool.ViewModels
                     if (item.Target == CustomTimer.CustomerTime)
                     {
                         if (RaidModeEnabled) //TODO: Make custom timers their own setting in addition to raid mode
+                        {
                             hideTrigger = true;
+                        }
                         else
                         {
                             if (item.Id.StartsWith(CustomTimer.ScoutTime) && settings.ShowScoutRollTime == false)
@@ -330,10 +332,11 @@ namespace EQTool.ViewModels
             foreach (var item in SpellList.Where(a => persistentTypes.Contains(a.SpellViewModelType)).ToList())
             {
                 var hideTrigger = false;
-                if (settings.SpellsFilter == SpellsFilterType.CastOnYou || settings.SpellsFilter == SpellsFilterType.CastByOrOnYou)    //TODO: Verify if we need to do any CastByYou checks here
+                if (item is CounterViewModel counter)
                 {
-                    hideTrigger = !(MasterNPCList.NPCs.Contains(item.Target.Trim()) || item.Target == CustomTimer.CustomerTime || item.Target == EQSpells.SpaceYou);
+                    hideTrigger = ShouldFilterSpell(counter, activePlayer.Player);
                 }
+
                 if ((d - item.UpdatedDateTime).TotalMinutes > 20)
                 {
                     itemsToRemove.Add(item);
@@ -342,7 +345,7 @@ namespace EQTool.ViewModels
             }
         }
 
-        private void UpdateGroupVisibility()
+        private void UpdateGlobalVisibility()
         {
             var groupedTriggerList = SpellList.GroupBy(a => a.DisplayGroup).ToList();
             foreach (var triggers in groupedTriggerList)
@@ -391,17 +394,26 @@ namespace EQTool.ViewModels
                 case SpellsFilterType.CastOnYou when !s.CastOnYou(player):
                 case SpellsFilterType.CastByYou when !s.CastByYou(player):
                 case SpellsFilterType.CastByOrOnYou when !(s.CastOnYou(player) || s.CastByYou(player)):
+                {
+                    if (RaidModeEnabled && (MasterNPCList.NPCs.Contains(s.Target.Trim()) || s.Target == CustomTimer.CustomerTime))
+                    {
+                        return false;   // We want to show npcs when in raid mode, even if normally filtered
+                    }
+                    
                     return true;
+                }
                 case SpellsFilterType.ByClass:
+                {
+                    if (RaidModeEnabled && ((player.PlayerClass.HasValue && IsClassSpellAllowed(s.Classes, new[] {player.PlayerClass.Value})) || s.CastByYou(player)))
+                    {
+                        return false;   // We want to show the players' class spells when in raid mode, even if normally filtered
+                    }
+                    
                     return !IsClassSpellAllowed(s.Classes, player.ShowSpellsForClasses);
+                }
+                default:
+                    return false;
             }
-
-            if (RaidModeEnabled && player.PlayerClass.HasValue)
-            {
-                return !(IsClassSpellAllowed(s.Classes, new []{ player.PlayerClass.Value }) || s.CastByYou(player));
-            }
-
-            return false;
         }
         
         private static bool IsClassSpellAllowed(Dictionary<PlayerClasses, int> spellClasses, IEnumerable<PlayerClasses> allowedClasses)
@@ -475,7 +487,7 @@ namespace EQTool.ViewModels
                 string.Equals(a.Id, match.Id, StringComparison.OrdinalIgnoreCase) &&
                 string.Equals(match.Target, a.Target, StringComparison.OrdinalIgnoreCase)) is CounterViewModel s)
                 {
-                    s.Count += 1;
+                    s.AddCount(match.Caster);
                     s.UpdatedDateTime = DateTime.Now;
                 }
                 else
@@ -735,12 +747,19 @@ namespace EQTool.ViewModels
 
         private void UpdateGroupingForSpell(SpellViewModel spell)
         {
-            if (GetGroupingType(spell) == SpellGroupingType.ByTarget)
-                spell.IsCategorizeBySpellName = false;
-            else if (GetGroupingType(spell) == SpellGroupingType.BySpell)
-                spell.IsCategorizeBySpellName = true;
-            else if (GetGroupingType(spell) == SpellGroupingType.BySpellExceptYou)
-                spell.IsCategorizeBySpellName = !spell.CastOnYou(activePlayer.Player);
+            var groupingType = GetGroupingType(spell);
+            if (groupingType == SpellGroupingType.ByTarget)
+            {
+                spell.IsCategorizeById = false;
+            }
+            else if (groupingType == SpellGroupingType.BySpell)
+            {
+                spell.IsCategorizeById = true;
+            }
+            else if (groupingType == SpellGroupingType.BySpellExceptYou)
+            {
+                spell.IsCategorizeById = !spell.CastOnYou(activePlayer.Player);
+            }
             // Originally was trying for a "MostConcise" or "Automatic" option here as well, but it was more trouble than it was worth. Maybe later.
         }
 
@@ -754,7 +773,9 @@ namespace EQTool.ViewModels
             if (e.NewItems != null)
             {
                 foreach (var s in e.NewItems.OfType<SpellViewModel>())
+                {
                     UpdateGroupingForSpell(s);
+                }
             }
         }
         

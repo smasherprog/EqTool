@@ -254,7 +254,7 @@ namespace EQTool.UI.SettingsComponents
         }
         private void testspellsclicked(object sender, RoutedEventArgs e)
         {
-            var peoplenames = new List<string>() { "Joe", "Huntor", "Sanare", "Pigy", "Leutin", "Bealls", "Vasanle", "Jenkins", "Charlie" };
+            var peoplenames = new List<string>() { " You ", "Joe", "Huntor", "Sanare", "Pigy", "Leutin", "Bealls", "Vasanle", "Jenkins", "Charlie" };
             var listofspells = new List<CastTest>
                    {
                 new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Heroic Bond"), TargetName = EQSpells.SpaceYou},

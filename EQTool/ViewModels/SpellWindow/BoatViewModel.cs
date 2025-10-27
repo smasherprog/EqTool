@@ -1,36 +1,34 @@
-﻿using EQTool.Models;
-using EQToolShared;
-using EQToolShared.Enums;
-using System;
-using System.ComponentModel;
-using System.Runtime.CompilerServices;
+﻿using System;
+using System.Diagnostics;
 using System.Windows;
-using System.Windows.Media;
+using EQTool.Services;
+using EQToolShared;
 
 namespace EQTool.ViewModels.SpellWindow
 {
+    [DebuggerDisplay("Group = {DisplayGroup} Sorting = {GroupSorting} | Id = {Id}, Target = {Target}")]
     public class BoatViewModel : TimerViewModel
     {
         public BoatViewModel()
         {
-            this.Target = "Boat Schedules";
-            this.DeleteButtonVisibility = Visibility.Collapsed;
+            Target = "Boat Schedules";
+            DeleteButtonVisibility = Visibility.Collapsed;
         }
 
         public string LastSeen { get; set; }
         private DateTimeOffset _LastSeenDateTime { get; set; }
         public DateTimeOffset LastSeenDateTime
         {
-            get { return this._LastSeenDateTime; }
+            get => _LastSeenDateTime;
             set
             {
-                this._LastSeenDateTime = value;
-                this.LastSeen = value.LocalDateTime.ToString("MM/dd hh:mm:ss tt");
-                this.OnPropertyChanged(nameof(LastSeen));
+                _LastSeenDateTime = value;
+                LastSeen = value.LocalDateTime.ToString("MM/dd hh:mm:ss tt");
+                OnPropertyChanged(nameof(LastSeen));
             }
         }
         public BoatInfo Boat { get; set; }
-        public override string Sorting => "ZZZ";//force to sort last
+        public override string GroupSorting => SortingPrefixes.Bottommost + DisplayGroup;
         public override SpellViewModelType SpellViewModelType => SpellViewModelType.Boat;
     }
 }

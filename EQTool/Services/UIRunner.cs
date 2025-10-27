@@ -29,7 +29,7 @@ namespace EQTool.Services
             }
 
             LastUIRun = now;
-            spellWindowViewModel.UpdateSpells(dt_ms);
+            spellWindowViewModel.UpdateTriggers(dt_ms);
             if (!LastBoatUpdate.HasValue || (LastBoatUpdate.HasValue && (now - LastBoatUpdate.Value).TotalMinutes > 5))
             {
                 _ = Task.Factory.StartNew(() =>

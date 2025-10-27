@@ -103,7 +103,7 @@ namespace EQtoolsTests
             logParser.Push(line, DateTime.Now);
             line = "Xibab goes berserk.";
             logParser.Push(line, DateTime.Now.AddSeconds(6));
-            spellWindowViewModel.UpdateSpells(1000);
+            spellWindowViewModel.UpdateTriggers(1000);
 
             var effect = SpellList.FirstOrDefault();
             Assert.IsNotNull(effect);
@@ -286,7 +286,7 @@ namespace EQtoolsTests
             logParser.Push(line, DateTime.Now.AddMilliseconds(spell.casttime + 200));
 
             var timerText = $"{spellname} Cooldown";
-            var spelltimer = TimerList.FirstOrDefault(a => a.Id == timerText) as TimerViewModel;
+            var spelltimer = TimerList.FirstOrDefault(a => a.Id == timerText) as SpellViewModel;
             Assert.IsNotNull(spelltimer);
             Assert.AreEqual(spelltimer.Id, timerText);
 

@@ -42,12 +42,12 @@ namespace EQtoolsTests
                 for (var time = 0; time < timeslices; time++)
                 {
                     totaltime -= 100;
-                    spellWindowViewModel.UpdateSpells(100);
+                    spellWindowViewModel.UpdateTriggers(100);
                 }
 
                 if (totaltime > 0)
                 {
-                    spellWindowViewModel.UpdateSpells(totaltime);
+                    spellWindowViewModel.UpdateTriggers(totaltime);
                 }
             }
             logParser.Push(message, datetime);

@@ -4,6 +4,7 @@ using EQTool.ViewModels.SpellWindow;
 using System;
 using System.Linq;
 using System.Windows.Media;
+using EQToolShared.Enums;
 
 namespace EQTool.Services.Handlers
 {
@@ -29,17 +30,18 @@ namespace EQTool.Services.Handlers
                 var timerName = $"{e.SpellName} Cooldown";
                 var durationSeconds = spell.recastTime / 1000;
 
-                spellWindowViewModel.TryAdd(new TimerViewModel
+                spellWindowViewModel.TryAdd(new SpellViewModel
                 {
                     PercentLeft = 100,
-                    Target = EQSpells.SpaceYou,
                     Id = timerName,
+                    Target = EQSpells.SpaceYou,
+                    Caster = EQSpells.SpaceYou,
                     Rect = spell.Rect,
                     Icon = spell.SpellIcon,
+                    BenefitDetriment = SpellBenefitDetriment.Cooldown,
                     TotalDuration = TimeSpan.FromSeconds(durationSeconds),
                     TotalRemainingDuration = TimeSpan.FromSeconds(durationSeconds),
-                    UpdatedDateTime = DateTime.Now,
-                    ProgressBarColor = Brushes.SkyBlue
+                    UpdatedDateTime = DateTime.Now
                 });
             }
         }
