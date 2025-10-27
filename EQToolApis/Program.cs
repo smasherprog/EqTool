@@ -5,6 +5,7 @@ using EQToolApis.Models;
 using EQToolApis.Services;
 using EQToolShared;
 using EQToolShared.Enums;
+using EQToolShared.Extensions;
 using Hangfire;
 using Hangfire.SqlServer;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
@@ -12,7 +13,6 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Web;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
-using EQToolShared.Extensions;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,7 +21,6 @@ var hangfirecon = builder.Configuration.GetConnectionString("HangfireConnection"
 builder.Services.AddDbContext<EQToolContext>(opts => opts.UseSqlServer(sqlconstring)).AddScoped<EQToolContext>();
 builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
         .AddMicrosoftIdentityWebApp(builder.Configuration.GetSection("AzureAd"));
-
 builder.Services.AddRazorPages();
 builder.Services.AddSignalR();
 builder.Services.AddControllers();
@@ -157,6 +156,7 @@ builder.Services.Configure<DiscordServiceOptions>(options =>
 builder.Services.AddMvc();
 builder.Services.AddApplicationInsightsTelemetry();
 var app = builder.Build();
+
 using (var scope = app.Services.CreateScope())
 {
     var db = scope.ServiceProvider.GetRequiredService<EQToolContext>();
@@ -198,7 +198,7 @@ using (var scope = app.Services.CreateScope())
     scope.ServiceProvider.GetRequiredService<NotableNpcCacheService>().BuildCache();
 
 }
-
+app.UseStaticFiles();
 app.UseHttpsRedirection();
 app.UseRouting();
 app.UseResponseCaching();
