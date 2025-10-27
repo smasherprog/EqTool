@@ -201,7 +201,14 @@ namespace EQTool.Properties {
                 return ResourceManager.GetString("TestFight2", resourceCulture);
             }
         }
-        
+        internal static byte[] VisionFix
+        {
+            get
+            {
+                object obj = ResourceManager.GetObject("VisionFix", resourceCulture);
+                return ((byte[])(obj));
+            }
+        }
         /// <summary>
         ///   Looks up a localized string similar to [Sun Apr 23 08:43:28 2023] You have entered Plane of Mischief. 
         ///[Sun Apr 23 08:43:30 2023] Your Location is 1939.00, -519.00, -6.25

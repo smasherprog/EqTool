@@ -13,7 +13,7 @@
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
     </UserControl.Resources>
     <TabControl SelectionChanged="TabControl_SelectionChanged">
-        
+
         <TabItem Header="General">
             <StackPanel Orientation="Vertical" Margin="5, 5, 5, 5">
                 <StackPanel Orientation="Vertical" Visibility="{Binding MissingConfiguration, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}">
@@ -83,7 +83,7 @@
                             <TextBlock Text="Always on top" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="120"/>
                             <CheckBox VerticalAlignment="Center" IsChecked="{Binding DpsAlwaysOnTop}" Click="SaveAlwaysOntopCheckBoxSettings" ></CheckBox>
                         </StackPanel>
-                        
+
                         <StackPanel Orientation="Horizontal" Margin="20,0,0,3">
                             <StackPanel.Style>
                                 <Style TargetType="StackPanel">
@@ -99,7 +99,7 @@
                             <TextBlock Text="Allow Click-Through" VerticalAlignment="Center" FontWeight="Bold" MinWidth="150"/>
                             <CheckBox VerticalAlignment="Center" IsChecked="{Binding DpsClickThroughAllowed}" Click="SaveClickThroughCheckBoxSettings"/>
                         </StackPanel>
-                        
+
                         <StackPanel Orientation="Horizontal">
                             <TextBlock Text="Window Opacity"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="120"/>
                             <Slider Value="{Binding DPSWindowOpacity}" Minimum=".01" Maximum="1" SmallChange=".1" TickFrequency=".1" ValueChanged="SaveSettings" MinWidth="150"/>
@@ -143,7 +143,7 @@
                 </StackPanel>
             </StackPanel>
         </TabItem>
-        
+
         <TabItem Header="Text &amp; Audio Alerts">
             <StackPanel Orientation="Vertical" Margin="5, 5, 5, 5">
                 <StackPanel Orientation="Horizontal">
@@ -184,7 +184,7 @@
                     <CheckBox IsChecked="{Binding ActivePlayer.Player.FTEOverlay}" Click="Savesettings" MinWidth="75"></CheckBox>
                     <CheckBox IsChecked="{Binding ActivePlayer.Player.FTEAudio}" Click="Savesettings" MinWidth="30"></CheckBox>
                     <Button Content="▶" Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="testFTE" ToolTip="Test FTE" />
-                </StackPanel> 
+                </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Charm Break" VerticalAlignment="Center" FontWeight="Bold"  MinWidth="100"/>
                     <CheckBox IsChecked="{Binding ActivePlayer.Player.CharmBreakOverlay}" Click="Savesettings" MinWidth="75"></CheckBox>
@@ -279,10 +279,10 @@
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Above will warn you when its your turn to cast CH" Foreground="Red"/>
                 </StackPanel>
-                <Separator/> 
+                <Separator/>
             </StackPanel>
         </TabItem>
-        
+
         <TabItem Header="Triggers">
             <StackPanel Orientation="Vertical" Margin="5, 5, 5, 5">
                 <StackPanel Orientation="Vertical"  Margin="0, 0, 0, 8">
@@ -378,7 +378,7 @@
                 </StackPanel>
             </StackPanel>
         </TabItem>
-         
+
         <TabItem Header="Map">
             <StackPanel Orientation="Vertical" Margin="5, 5, 5, 5">
                 <StackPanel Orientation="Horizontal">
@@ -447,26 +447,38 @@
         </TabItem>
 
         <TabItem Header="UI">
-            <StackPanel Orientation="Vertical" Margin="5, 5, 5, 5" HorizontalAlignment="Stretch"> 
-                <StackPanel Orientation="Vertical">
-                    <TextBlock Text="You cannot have EQ runing for these operations to be successful." FontWeight="Bold" />
-                    <TextBlock  TextWrapping="Wrap" Text="Select a class and the master template. This will override all other UI files with the samel class in your EQ folder." />
-                </StackPanel> 
-            <StackPanel Orientation="Horizontal">
-                    <ComboBox Name="UIClassMaster" IsEditable="True"
- IsReadOnly="True"
- Text="-- Select Class --"  ItemsSource="{Binding PlayerClasses}" MinWidth="100"></ComboBox>
-                    <ComboBox Name="SelectedUIFile"  IsEditable="True"
- IsReadOnly="True"
- Text="-- Select UI File --" ItemsSource="{Binding UIFiles}" MinWidth="100" Margin="5, 0, 0, 0" ></ComboBox>
-                    <Button Click="SelectMasterUIFile" MinWidth="100" Margin="5, 0, 0, 0" >Use as Master</Button>
-                    <Button Content="⟳" Margin="5, 0, 0, 0" FontSize="7" Width="14"  Click="RefreshUIFiles" ToolTip="Refresh UI list" />
+            <ScrollViewer>
+                <StackPanel Orientation="Vertical" Margin="5, 5, 5, 5" HorizontalAlignment="Stretch">
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock Text="You cannot have EQ runing for these operations to be successful." FontWeight="Bold" />
+                        <TextBlock  TextWrapping="Wrap" Text="Select a class and the master template. This will override all other UI files with the samel class in your EQ folder." />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <ComboBox Name="UIClassMaster" IsEditable="True" IsReadOnly="True" Text="-- Select Class --"  ItemsSource="{Binding PlayerClasses}" MinWidth="100"></ComboBox>
+                        <ComboBox Name="SelectedUIFile"  IsEditable="True" IsReadOnly="True" Text="-- Select UI File --" ItemsSource="{Binding UIFiles}" MinWidth="100" Margin="5, 0, 0, 0" ></ComboBox>
+                        <Button Click="SelectMasterUIFile" MinWidth="100" Margin="5, 0, 0, 0" >Use as Master</Button>
+                        <Button Content="⟳" Margin="5, 0, 0, 0" FontSize="7" Width="14"  Click="RefreshUIFiles" ToolTip="Refresh UI list" />
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Night Vision Fix" Margin="0, 3, 0, 0" FontWeight="Bold" />
+                        <Button Click="FixNightVision" Margin="5, 0, 0, 0">Fix Night vision</Button>
+                    </StackPanel>
+                    <StackPanel Orientation="Vertical">
+                        <TextBlock HorizontalAlignment="Center" Text="Click images below to see the larger images!"></TextBlock>
+                        <Button Click="BadNightVision" MaxWidth="500">
+                            <Image Source="https://pigparse.azurewebsites.net/Content/bad.png"/>
+                        </Button>
+                        <Button Click="GoodNightVision" MaxWidth="500">
+                            <Image Source="https://pigparse.azurewebsites.net/Content/good.png"/>
+                        </Button>
+                    </StackPanel>
                 </StackPanel>
-            </StackPanel>
+            </ScrollViewer>
+           
         </TabItem>
-        
+
         <TabItem Header="Debug" Name="DebugTab">
-            <StackPanel Orientation="Vertical" Margin="5, 5, 5, 5" HorizontalAlignment="Stretch">  
+            <StackPanel Orientation="Vertical" Margin="5, 5, 5, 5" HorizontalAlignment="Stretch">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Random Roll"  VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
                     <Button Click="testRandomRolls" MinWidth="100">Test Random Rolls</Button>
@@ -494,7 +506,7 @@
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Run Log File"  VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
                     <Button Click="selectLogFile">Select File</Button>
-                </StackPanel> 
+                </StackPanel>
                 <StackPanel Orientation="Horizontal" HorizontalAlignment="Stretch">
                     <TextBlock Text="Log Push"  VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
                     <TextBox x:Name="LogPushText" MinWidth="150"></TextBox>

@@ -11,6 +11,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
 using System.IO;
+using System.IO.Compression;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -1214,6 +1215,69 @@ namespace EQTool.UI.SettingsComponents
                     File.WriteAllText(macroFilePath, masterMacroFile);
                 }
                 _ = System.Windows.Forms.MessageBox.Show("UI Files updated!", "UI Files updated!", System.Windows.Forms.MessageBoxButtons.OK);
+            }
+        }
+
+        public static void CopyDirectory(string sourceDir, string destDir)
+        {
+            // Copy all files
+            foreach (var file in Directory.GetFiles(sourceDir))
+            {
+                var fileName = Path.GetFileName(file);
+                var destFile = Path.Combine(destDir, fileName);
+                File.Copy(file, destFile, true);
+            }
+
+            // Recursively copy subdirectories
+            foreach (var subDir in Directory.GetDirectories(sourceDir))
+            {
+                var dirName = Path.GetFileName(subDir);
+                var destSubDir = Path.Combine(destDir, dirName);
+                CopyDirectory(subDir, destSubDir);
+            }
+        }
+
+        private void FixNightVision(object sender, RoutedEventArgs e)
+        {
+            var messagebox = System.Windows.Forms.MessageBox.Show("MAKE SURE EQ IS NOT RUNNING!!! \nThis will fix your night vision, are you sure?", "Night vision fix", System.Windows.Forms.MessageBoxButtons.OKCancel);
+            if (messagebox == System.Windows.Forms.DialogResult.OK)
+            {
+                var fightlines = Properties.Resources.VisionFix;
+                var src = Path.GetTempFileName();
+                File.WriteAllBytes(src, fightlines);
+                var dst = Path.GetTempPath() + Path.GetFileNameWithoutExtension(Path.GetTempFileName());
+                Thread.Sleep(500);
+                ZipFile.ExtractToDirectory(src, dst);
+                CopyDirectory(dst, settings.DefaultEqDirectory);
+                _ = System.Windows.Forms.MessageBox.Show("You can now start EQ and your night vision will be fixed!", "Files updated!", System.Windows.Forms.MessageBoxButtons.OK);
+            }
+        }
+
+        private void BadNightVision(object sender, RoutedEventArgs e)
+        {
+            GotoUrl("https://pigparse.azurewebsites.net/Content/bad.png");
+        }
+
+        private void GoodNightVision(object sender, RoutedEventArgs e)
+        {
+            GotoUrl("https://pigparse.azurewebsites.net/Content/good.png");
+        }
+
+        private void GotoUrl(string url)
+        {
+            try
+            {
+                // This uses the system default browser
+                var psi = new ProcessStartInfo
+                {
+                    FileName = url,
+                    UseShellExecute = true
+                };
+                _ = Process.Start(psi);
+            }
+            catch (Exception ex)
+            {
+                _ = MessageBox.Show($"Failed to open link: {ex.Message}");
             }
         }
     }
