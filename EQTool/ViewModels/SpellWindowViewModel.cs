@@ -244,7 +244,7 @@ namespace EQTool.ViewModels
                 RaidModeEnabled = raidModeDetection && player?.PlayerClass != null && SpellTargetCount > minimumTargetsForRaidMode;
                
                 var itemsToRemove = new List<PersistentViewModel>();
-                UpdateSpells(dt_ms, itemsToRemove);
+                UpdateSpellsAndTimers(dt_ms, itemsToRemove);
                 UpdateBoats(dt_ms);
                 UpdatePersistentCounters(itemsToRemove);
                 UpdateGlobalVisibility();
@@ -256,7 +256,7 @@ namespace EQTool.ViewModels
             });
         }
 
-        private void UpdateSpells(double dt_ms, List<PersistentViewModel> itemsToRemove)
+        private void UpdateSpellsAndTimers(double dt_ms, List<PersistentViewModel> itemsToRemove)
         {
             var timerTypes = new List<SpellViewModelType> { SpellViewModelType.Roll, SpellViewModelType.Spell, SpellViewModelType.Timer };
             
@@ -389,31 +389,33 @@ namespace EQTool.ViewModels
 
         private bool ShouldFilterSpell(SpellViewModel s, PlayerInfo player)
         {
+            if (RaidModeEnabled)
+            {
+                if (s.CastByYou(player) || s.CastOnYou(player))
+                {
+                    return false;
+                }
+                // Detrimental spells on raid targets should always be shown in raid mode
+                if (s.Target == CustomTimer.CustomerTime || (MasterNPCList.NPCs.Contains(s.Target.Trim()) && s.BenefitDetriment == SpellBenefitDetriment.Detrimental))
+                {
+                    return false;
+                }
+                
+                // The Player class's spells should always be shown in raid mode
+                return !(player.PlayerClass.HasValue && IsClassSpellAllowed(s.Classes, new[] {player.PlayerClass.Value}));
+            }
+            
             switch (settings.SpellsFilter)
             {
                 case SpellsFilterType.CastOnYou when !s.CastOnYou(player):
                 case SpellsFilterType.CastByYou when !s.CastByYou(player):
                 case SpellsFilterType.CastByOrOnYou when !(s.CastOnYou(player) || s.CastByYou(player)):
-                {
-                    if (RaidModeEnabled && (MasterNPCList.NPCs.Contains(s.Target.Trim()) || s.Target == CustomTimer.CustomerTime))
-                    {
-                        return false;   // We want to show npcs when in raid mode, even if normally filtered
-                    }
-                    
                     return true;
-                }
                 case SpellsFilterType.ByClass:
-                {
-                    if (RaidModeEnabled && ((player.PlayerClass.HasValue && IsClassSpellAllowed(s.Classes, new[] {player.PlayerClass.Value})) || s.CastByYou(player)))
-                    {
-                        return false;   // We want to show the players' class spells when in raid mode, even if normally filtered
-                    }
-                    
                     return !IsClassSpellAllowed(s.Classes, player.ShowSpellsForClasses);
-                }
-                default:
-                    return false;
             }
+
+            return false;
         }
         
         private static bool IsClassSpellAllowed(Dictionary<PlayerClasses, int> spellClasses, IEnumerable<PlayerClasses> allowedClasses)

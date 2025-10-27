@@ -103,6 +103,7 @@ namespace EQTool.Services.Handlers
                     Caster = casterName,
                     Rect = spell.Rect,
                     Icon = spell.SpellIcon,
+                    Classes = spell.Classes,
                     BenefitDetriment = SpellBenefitDetriment.Cooldown,
                     TotalDuration = TimeSpan.FromSeconds((int)((spell.recastTime + delayOffset) / 1000.0)),
                     TotalRemainingDuration = TimeSpan.FromSeconds((int)((spell.recastTime + delayOffset) / 1000.0)),
@@ -177,6 +178,7 @@ namespace EQTool.Services.Handlers
                     Caster = casterName,    // Should always be the same as target?
                     Rect = spell.Rect,
                     Icon = spell.SpellIcon,
+                    Classes = spell.Classes,
                     BenefitDetriment = SpellBenefitDetriment.Cooldown,
                     TotalDuration = TimeSpan.FromSeconds(basetime),
                     TotalRemainingDuration = TimeSpan.FromSeconds(basetime),

@@ -38,6 +38,7 @@ namespace EQTool.Services.Handlers
                     Caster = EQSpells.SpaceYou,
                     Rect = spell.Rect,
                     Icon = spell.SpellIcon,
+                    Classes = spell.Classes,
                     BenefitDetriment = SpellBenefitDetriment.Cooldown,
                     TotalDuration = TimeSpan.FromSeconds(durationSeconds),
                     TotalRemainingDuration = TimeSpan.FromSeconds(durationSeconds),
