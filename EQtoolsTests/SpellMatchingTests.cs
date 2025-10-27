@@ -120,7 +120,7 @@ namespace EQtoolsTests
             var line = "Joe " + spellclass.cast_on_other;
             logParser.Push(line, DateTime.Now);
 
-            var effect = TimerList.FirstOrDefault();
+            var effect = SpellList.FirstOrDefault();
             Assert.AreEqual("Joe", effect.Target);
             Assert.IsNotNull(effect);
         }
@@ -229,7 +229,7 @@ namespace EQtoolsTests
             player.Player.Level = 54;
             player.Player.PlayerClass = PlayerClasses.Cleric;
             logParser.Push(line, DateTime.Now);
-            var spell = TimerList.FirstOrDefault();
+            var spell = SpellList.FirstOrDefault();
             Assert.IsNotNull(spell);
             Assert.AreEqual("Evasive Discipline Cooldown", spell.Id);
         }
@@ -237,11 +237,12 @@ namespace EQtoolsTests
         [TestMethod]
         public void TestWarriorDisciplineDefensive()
         {
+            var spellname = "Defensive Discipline";
             var line = "You assume a defensive fighting style..";
             player.Player.Level = 54;
             player.Player.PlayerClass = PlayerClasses.Warrior;
             logParser.Push(line, DateTime.Now);
-            var spell = spellWindowViewModel.SpellList.ToList();
+            var spell = spellWindowViewModel.SpellList.FirstOrDefault(a => a.Id == spellname);
             Assert.IsNotNull(spell);
             //Assert.AreEqual("Defensive Discipline Cooldown", spell.Id);
         }
@@ -249,11 +250,12 @@ namespace EQtoolsTests
         [TestMethod]
         public void TestMonkVoidance()
         {
+            var spellname = "Voiddance Discipline";
             var line = "You become untouchable.";
             player.Player.Level = 60;
             player.Player.PlayerClass = PlayerClasses.Monk;
             logParser.Push(line, DateTime.Now);
-            var spell = SpellList.FirstOrDefault();
+            var spell = SpellList.FirstOrDefault(a => a.Id == spellname);
             Assert.IsNotNull(spell);
             Assert.AreEqual(8, spell.TotalRemainingDuration.Seconds);
         }
@@ -286,7 +288,7 @@ namespace EQtoolsTests
             logParser.Push(line, DateTime.Now.AddMilliseconds(spell.casttime + 200));
 
             var timerText = $"{spellname} Cooldown";
-            var spelltimer = TimerList.FirstOrDefault(a => a.Id == timerText) as SpellViewModel;
+            var spelltimer = SpellList.FirstOrDefault(a => a.Id == timerText) as SpellViewModel;
             Assert.IsNotNull(spelltimer);
             Assert.AreEqual(spelltimer.Id, timerText);
 
