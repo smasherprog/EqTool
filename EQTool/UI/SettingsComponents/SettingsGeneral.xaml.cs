@@ -5,6 +5,7 @@ using EQTool.Services.P99LoginMiddlemand;
 using EQTool.Services.Parsing;
 using EQTool.ViewModels;
 using EQToolShared.Enums;
+using EQToolShared.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -16,7 +17,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Navigation;
-using EQToolShared.Extensions;
 
 namespace EQTool.UI.SettingsComponents
 {
@@ -99,12 +99,12 @@ namespace EQTool.UI.SettingsComponents
             {
                 var tab = (sender as TabControl)?.SelectedItem as TabItem;
 
-                if (tab.Header as string == "UI")
+                if ((tab.Header as string) == "UI")
                 {
-                   this.SettingsWindowData.RefreshUIFiles();
-                } 
+                    SettingsWindowData.RefreshUIFiles();
+                }
             }
-        } 
+        }
         private void TryUpdateSettings()
         {
             var logfounddata = FindEq.GetLogFileLocation(new FindEq.FindEQData { EqBaseLocation = settings.DefaultEqDirectory, EQlogLocation = string.Empty });
@@ -245,7 +245,7 @@ namespace EQTool.UI.SettingsComponents
         {
             SaveConfig();
         }
-        
+
         private class CastTest
         {
             public Spell Spell { get; set; }
@@ -255,7 +255,7 @@ namespace EQTool.UI.SettingsComponents
         {
             var peoplenames = new List<string>() { "Joe", "Huntor", "Sanare", "Pigy", "Leutin", "Bealls", "Vasanle", "Jenkins", "Charlie" };
             var listofspells = new List<CastTest>
-            {
+                   {
                 new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Heroic Bond"), TargetName = EQSpells.SpaceYou},
                 new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Stonestance Discipline"), TargetName = "Pigy"},
                 new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Defensive Discipline"), TargetName = "Huntor"},
@@ -692,20 +692,20 @@ namespace EQTool.UI.SettingsComponents
         {
             SaveConfig();
         }
-        
+
         private void SaveAlwaysOntopCheckBoxSettings(object sender, RoutedEventArgs e)
         {
             SaveConfig();
             ((App)System.Windows.Application.Current).ApplyAlwaysOnTop();
             ((App)System.Windows.Application.Current).ApplyClickThrough(settings.IsClickThroughMode);
         }
-        
+
         private void SaveClickThroughCheckBoxSettings(object sender, RoutedEventArgs e)
         {
             SaveConfig();
             ((App)System.Windows.Application.Current).ApplyClickThrough(settings.IsClickThroughMode);
         }
-        
+
         private void testenrage(object sender, RoutedEventArgs e)
         {
             settingsTestRunOverlay.RunTest(OverlayTypes.EnrageEvent);
@@ -1128,24 +1128,24 @@ namespace EQTool.UI.SettingsComponents
         {
             settingsTestRunOverlay.RunTest(OverlayTypes.TellsYouEvent);
         }
-        
-         private void RefreshUIFiles(object sender, RoutedEventArgs e)
+
+        private void RefreshUIFiles(object sender, RoutedEventArgs e)
         {
-            this.SettingsWindowData.RefreshUIFiles();
+            SettingsWindowData.RefreshUIFiles();
         }
         private void SelectMasterUIFile(object sender, RoutedEventArgs e)
         {
-            if (!Directory.Exists(this.settings.DefaultEqDirectory))
+            if (!Directory.Exists(settings.DefaultEqDirectory))
             {
                 return;
             }
-            
-            var selectedClass = this.UIClassMaster.SelectedItem;
+
+            var selectedClass = UIClassMaster.SelectedItem;
             if (selectedClass == null)
             {
                 return;
             }
-            var selectedUIFile = this.SelectedUIFile.SelectedItem as string;
+            var selectedUIFile = SelectedUIFile.SelectedItem as string;
             if (string.IsNullOrWhiteSpace(selectedUIFile))
             {
                 return;
@@ -1155,40 +1155,66 @@ namespace EQTool.UI.SettingsComponents
             {
                 return;
             }
-            var classes = this.settings.Players.Where(a=> a.PlayerClass == classToCopy.Value).ToList(); 
-            var masterUIFilePath = Path.Combine(this.settings.DefaultEqDirectory, selectedUIFile + ".ini");
-            var masterMacroFilePath = Path.Combine(this.settings.DefaultEqDirectory, selectedUIFile.Replace("UI_",string.Empty) + ".ini");
+            var classes = settings.Players.Where(a => a.PlayerClass == classToCopy.Value).ToList();
+
+            var masterUIFilePath = Path.Combine(settings.DefaultEqDirectory, selectedUIFile + ".ini");
+            var masterMacroFilePath = Path.Combine(settings.DefaultEqDirectory, selectedUIFile.Replace("UI_", string.Empty) + ".ini");
 
             var masterUIFile = File.ReadAllText(masterUIFilePath);
             var masterMacroFile = File.ReadAllText(masterMacroFilePath);
+            var classlist = string.Empty;
+            foreach (var player in classes)
+            {
+                var serverPart = "P1999Blue.ini";
+                if (player.Server == Servers.Red)
+                {
+                    serverPart = "P1999PVP.ini";
+                }
+                else if (player.Server == Servers.Green)
+                {
+                    serverPart = "P1999Green.ini";
+                }
+                var uiFilePath = Path.Combine(settings.DefaultEqDirectory, $"UI_{player.Name}_{serverPart}");
+                if (uiFilePath == masterUIFilePath)
+                {
+                    continue;
+                }
+                classlist += $"{player.Name}\n";
+            }
 
-            var message = $"This will overwrite the UI and Macro files for all {classToCopy.Value} characters\n{string.Join("\n", classes.Select(a=> a.Name))}\n files. Are you sure you want to continue?";
+            if (string.IsNullOrWhiteSpace(classlist))
+            {
+                _ = System.Windows.Forms.MessageBox.Show("No other characters found to copy UI files to!", "No Characters Found", System.Windows.Forms.MessageBoxButtons.OK);
+                return;
+            }
+
+            var message = $"This will overwrite the UI and Macro files for all {classToCopy.Value} characters\n{classlist}\n files. Are you sure you want to continue?";
 
             var messagebox = System.Windows.Forms.MessageBox.Show(message, "Overwrite UI Files", System.Windows.Forms.MessageBoxButtons.OKCancel);
-            if(messagebox == System.Windows.Forms.DialogResult.OK)
+            if (messagebox == System.Windows.Forms.DialogResult.OK)
             {
                 foreach (var player in classes)
-                { 
+                {
                     var serverPart = "P1999Blue.ini";
                     if (player.Server == Servers.Red)
                     {
                         serverPart = "P1999PVP.ini";
                     }
-                    else if(player.Server == Servers.Green)
+                    else if (player.Server == Servers.Green)
                     {
                         serverPart = "P1999Green.ini";
                     }
-                    var uiFilePath = Path.Combine(this.settings.DefaultEqDirectory, $"UI_{player.Name}_{serverPart}");
-                    if(uiFilePath == masterUIFilePath)
+                    var uiFilePath = Path.Combine(settings.DefaultEqDirectory, $"UI_{player.Name}_{serverPart}");
+                    if (uiFilePath == masterUIFilePath)
                     {
                         continue;
                     }
-                    var macroFilePath = Path.Combine(this.settings.DefaultEqDirectory, $"{player.Name}_{serverPart}");
+                    var macroFilePath = Path.Combine(settings.DefaultEqDirectory, $"{player.Name}_{serverPart}");
                     File.WriteAllText(uiFilePath, masterUIFile);
                     File.WriteAllText(macroFilePath, masterMacroFile);
-                } 
+                }
+                _ = System.Windows.Forms.MessageBox.Show("UI Files updated!", "UI Files updated!", System.Windows.Forms.MessageBoxButtons.OK);
             }
-             System.Windows.Forms.MessageBox.Show("UI Files updated!", "UI Files updated!", System.Windows.Forms.MessageBoxButtons.OK);
         }
     }
 }
