@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Media;
+using EQToolShared.Enums;
 
 namespace EQTool.Services.Handlers
 {
@@ -21,7 +22,14 @@ namespace EQTool.Services.Handlers
             "Quivering Veil of Xarn",
             "Harvest",
             "Boon of the Garou",
+            "Wandering Mind",
             "Theft of Thought"
+        };
+        // spells with cooldowns that have targets and should be forced to self for the target
+        public static readonly List<string> CooldownsThatShouldBeOnCaster = new List<string>()
+        {
+            "Wnadering Mind",
+            "Theft of Thought",
         };
         // spells that we wish to count how many times they have been cast
         public static readonly List<string> SpellsThatNeedCounts = new List<string>()
@@ -86,18 +94,20 @@ namespace EQTool.Services.Handlers
             var spellname = spell.name;
             if (SpellsThatNeedTimers.Any(a => string.Equals(spell.name, a, StringComparison.OrdinalIgnoreCase)))
             {
-                spellWindowViewModel.TryAdd(new TimerViewModel
+                spellWindowViewModel.TryAdd(new SpellViewModel
                 {
                     PercentLeft = 100,
-                    Target = spellname == "Theft of Thought" ? EQSpells.SpaceYou : targetName,
-                    TargetClass = targetclass,
                     Id = $"{spellname} Cooldown",
+                    Target = CooldownsThatShouldBeOnCaster.Contains(spellname) ? casterName : targetName,
+                    TargetClass = targetclass,
+                    Caster = casterName,
                     Rect = spell.Rect,
                     Icon = spell.SpellIcon,
+                    Classes = spell.Classes,
+                    BenefitDetriment = SpellBenefitDetriment.Cooldown,
                     TotalDuration = TimeSpan.FromSeconds((int)((spell.recastTime + delayOffset) / 1000.0)),
                     TotalRemainingDuration = TimeSpan.FromSeconds((int)((spell.recastTime + delayOffset) / 1000.0)),
-                    UpdatedDateTime = DateTime.Now,
-                    ProgressBarColor = Brushes.SkyBlue
+                    UpdatedDateTime = DateTime.Now
                 });
             }
             else if (spell.name.EndsWith("Discipline"))
@@ -159,18 +169,20 @@ namespace EQTool.Services.Handlers
                     basetime = (int)(baseseconds - (playerleveltick * secondsperlevelrange));
                 }
 
-                spellWindowViewModel.TryAdd(new TimerViewModel
+                spellWindowViewModel.TryAdd(new SpellViewModel
                 {
                     PercentLeft = 100,
+                    Id = spellname + " Cooldown",
                     Target = targetName,
                     TargetClass = targetclass,
-                    Id = spellname + " Cooldown",
+                    Caster = casterName,    // Should always be the same as target?
                     Rect = spell.Rect,
                     Icon = spell.SpellIcon,
+                    Classes = spell.Classes,
+                    BenefitDetriment = SpellBenefitDetriment.Cooldown,
                     TotalDuration = TimeSpan.FromSeconds(basetime),
                     TotalRemainingDuration = TimeSpan.FromSeconds(basetime),
-                    UpdatedDateTime = DateTime.Now,
-                    ProgressBarColor = Brushes.SkyBlue
+                    UpdatedDateTime = DateTime.Now
                 });
             }
 
@@ -187,13 +199,13 @@ namespace EQTool.Services.Handlers
                 var vm = new CounterViewModel
                 {
                     UpdatedDateTime = DateTime.Now,
+                    BenefitDetriment = spell.benefit_detriment,
                     Target = target,
                     TargetClass = targetclass,
+                    Caster = casterName,
                     Id = $"{spellname}",
                     Rect = spell.Rect,
                     Icon = spell.SpellIcon,
-                    Count = 1,
-                    ProgressBarColor = Brushes.OrangeRed
                 };
                 spellWindowViewModel.TryAdd(vm);
             }

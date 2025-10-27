@@ -2,9 +2,11 @@
 using EQToolShared.Enums;
 using System;
 using System.ComponentModel;
+using System.Diagnostics;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Media;
+using EQTool.Services;
 
 namespace EQTool.ViewModels.SpellWindow
 {
@@ -18,6 +20,7 @@ namespace EQTool.ViewModels.SpellWindow
         Boat
     }
 
+    [DebuggerDisplay("Group = {DisplayGroup} Sorting = {GroupSorting} | Id = {Id}, Target = {Target}")]
     public abstract class PersistentViewModel : INotifyPropertyChanged
     {
         public SpellIcon Icon { get; set; }
@@ -45,14 +48,45 @@ namespace EQTool.ViewModels.SpellWindow
                 _target = value;
                 OnPropertyChanged();
                 OnPropertyChanged(nameof(DisplayGroup));
-                OnPropertyChanged(nameof(Sorting));
+                OnPropertyChanged(nameof(GroupSorting));
             }
         }
 
-        public virtual string DisplayName => Id;
-        public virtual string DisplayGroup => Target;
-        public virtual string Sorting => DisplayGroup;
-
+        public virtual string DisplayName => IsCategorizeById ? Target : Id;
+        public virtual string DisplayGroup => IsCategorizeById ? Id : Target;
+        public virtual string GroupSorting
+        {
+            get
+            {
+                var groupName = DisplayGroup;
+                if (groupName.StartsWith(" ") && groupName != EQSpells.SpaceYou)
+                {
+                    return SortingPrefixes.Primary + groupName;
+                }
+                if (groupName == EQSpells.SpaceYou)
+                {
+                    return SortingPrefixes.Secondary + groupName;
+                }
+                return SortingPrefixes.Tertiary + groupName;
+            }
+        }
+        
+        private bool _IsCategorizeById;
+        public bool IsCategorizeById
+        {
+            get => _IsCategorizeById;
+            set
+            {
+                _IsCategorizeById = value;
+                UpdateTargetClassString();
+                
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(DisplayName));
+                OnPropertyChanged(nameof(DisplayGroup));
+                OnPropertyChanged(nameof(GroupSorting));
+            }
+        }
+        
         protected Visibility _HeaderVisibility = Visibility.Visible;
         public Visibility HeaderVisibility
         {
@@ -100,6 +134,8 @@ namespace EQTool.ViewModels.SpellWindow
             }
         }
         
+        public virtual bool ShouldKeepTargetClassString => !IsCategorizeById;
+        
         private string _targetClassString;
         public string TargetClassString
         {
@@ -110,6 +146,7 @@ namespace EQTool.ViewModels.SpellWindow
                 OnPropertyChanged();
             }
         }
+        
         protected PlayerClasses? _TargetClass;
         public PlayerClasses? TargetClass
         {
@@ -117,14 +154,14 @@ namespace EQTool.ViewModels.SpellWindow
             set
             {
                 _TargetClass = value;
-                SyncTargetClassString();
+                UpdateTargetClassString();
                 OnPropertyChanged();
             }
         }
 
-        protected void SyncTargetClassString(bool forceEmpty = false)
+        protected void UpdateTargetClassString()
         {
-            if (forceEmpty)
+            if (!ShouldKeepTargetClassString)
                 TargetClassString = string.Empty;
             else
                 TargetClassString = _TargetClass.HasValue ? _TargetClass.Value.ToString() : string.Empty;

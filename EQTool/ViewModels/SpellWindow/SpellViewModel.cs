@@ -1,10 +1,13 @@
 ﻿using EQTool.Models;
 using EQToolShared.Enums;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Windows.Media;
+using EQTool.Services;
 
 namespace EQTool.ViewModels.SpellWindow
 {
+    [DebuggerDisplay("Group = {DisplayGroup} Sorting = {GroupSorting} | Spell = {Id}, Target = {Target}, Caster = {Caster}")]
     public class SpellViewModel : TimerViewModel
     {
         public override SpellViewModelType SpellViewModelType => SpellViewModelType.Spell;
@@ -30,34 +33,44 @@ namespace EQTool.ViewModels.SpellWindow
                 {
                     ProgressBarColor = Brushes.OrangeRed;
                 }
+                else if (_BenefitDetrimentFlag == SpellBenefitDetriment.Cooldown)
+                {
+                    ProgressBarColor = Brushes.SkyBlue;
+                }
                 else
                 {
                     ProgressBarColor = Brushes.DarkSeaGreen;
                 }
             }
         }
-
-        public override string DisplayName => IsCategorizeBySpellName ? Target : Id;
-        public override string DisplayGroup => IsCategorizeBySpellName ? Id : Target;
-        public override string Sorting => IsCategorizeBySpellName ? Id : Target;
-
-        private bool _IsCategorizeBySpellName;
-        public bool IsCategorizeBySpellName
+        
+        public override string GroupSorting
         {
-            get => _IsCategorizeBySpellName;
-            set
+            get
             {
-                _IsCategorizeBySpellName = value;
+                var groupName = DisplayGroup;
+                if ((groupName.StartsWith(" ") && groupName != EQSpells.SpaceYou) || (IsCategorizeById && BenefitDetriment == SpellBenefitDetriment.Detrimental))
+                {
+                    return SortingPrefixes.Primary + groupName;
+                }
+                if (groupName == EQSpells.SpaceYou)
+                {
+                    return SortingPrefixes.Secondary + groupName;
+                }
+                if (IsCategorizeById && BenefitDetriment == SpellBenefitDetriment.Cooldown)
+                {
+                    return SortingPrefixes.Tertiary + groupName;
+                }
+                if (IsCategorizeById && BenefitDetriment == SpellBenefitDetriment.Beneficial)
+                {
+                    return SortingPrefixes.Quaternary + groupName;
+                }
                 
-                SyncTargetClassString(IsCategorizeBySpellName);
-                OnPropertyChanged();
-                OnPropertyChanged(nameof(DisplayName));
-                OnPropertyChanged(nameof(DisplayGroup));
-                OnPropertyChanged(nameof(Sorting));
+                return SortingPrefixes.Tertiary + groupName;
             }
         }
         
         public bool CastOnYou(PlayerInfo player) => Target == EQSpells.You || Target == EQSpells.SpaceYou || (player != null && Target == player.Name);
-        public bool CastByYou(PlayerInfo player) => Caster == EQSpells.You || Caster == EQSpells.SpaceYou || (player != null && Caster == player.Name);
+        public virtual bool CastByYou(PlayerInfo player) => Caster == EQSpells.You || Caster == EQSpells.SpaceYou || (player != null && Caster == player.Name);
     }
 }

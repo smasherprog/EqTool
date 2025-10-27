@@ -59,7 +59,7 @@ namespace EQTool.Services.Handlers
                         }
                         else
                         {
-                            spell.Count++;
+                            spell.AddCount(!e.isYou ? EQSpells.SpaceYou : null);
                         }
                     }
                     else
@@ -67,7 +67,7 @@ namespace EQTool.Services.Handlers
                         spell = spellWindowViewModel.SpellList.FirstOrDefault(a => a.Id == e.Spell.name && a.SpellViewModelType == SpellViewModelType.Counter) as CounterViewModel;
                         if (spell != null)
                         {
-                            spell.Count++;
+                            spell.AddCount(!e.isYou ? EQSpells.SpaceYou : null);
                         }
                     }
                 });

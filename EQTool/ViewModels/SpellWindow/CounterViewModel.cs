@@ -1,18 +1,40 @@
-﻿namespace EQTool.ViewModels.SpellWindow
+﻿using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using EQTool.Models;
+using EQTool.Services;
+using EQToolShared.Enums;
+
+namespace EQTool.ViewModels.SpellWindow
 {
-    public class CounterViewModel : PersistentViewModel
+    [DebuggerDisplay("Group = {DisplayGroup} Sorting = {GroupSorting} | Count = {Count}, Spell = {Id}, Target = {Target}, Caster = {Caster}")]
+    public class CounterViewModel : SpellViewModel
     {
-        private int _Count = 0;
+        public override SpellViewModelType SpellViewModelType => SpellViewModelType.Counter;
+        
+        private int _Count = 1;
         public int Count
         {
             get => _Count;
-            set
+            private set
             {
                 _Count = value;
                 OnPropertyChanged();
             }
         }
+        
+        public override string GroupSorting => SortingPrefixes.Primary + DisplayGroup;
 
-        public override SpellViewModelType SpellViewModelType => SpellViewModelType.Counter;
+        public void AddCount(string caster)
+        {
+            if (!string.IsNullOrWhiteSpace(caster))
+            {
+                casters.Add(caster);
+            }
+            Count++;
+        }
+        
+        private HashSet<string> casters = new HashSet<string>();
+        public override bool CastByYou(PlayerInfo player) => casters.Any(x => x == EQSpells.You || x == EQSpells.SpaceYou || (player != null && x == player.Name));
     }
 }
