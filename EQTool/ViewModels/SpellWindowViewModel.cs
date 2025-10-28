@@ -277,20 +277,14 @@ namespace EQTool.ViewModels
                 {
                     if (item.Target == CustomTimer.CustomerTime)
                     {
-                        if (RaidModeEnabled) //TODO: Make custom timers their own setting in addition to raid mode
+                        //TODO: Make misc custom timers their own setting as well
+                        if (item.Id.StartsWith(CustomTimer.ScoutTime) && (RaidModeEnabled || settings.ShowScoutRollTime == false))
                         {
                             hideTrigger = true;
                         }
-                        else
+                        if (item.Id.StartsWith(CustomTimer.Ring8) && (RaidModeEnabled || settings.ShowRing8RollTime == false))
                         {
-                            if (item.Id.StartsWith(CustomTimer.ScoutTime) && settings.ShowScoutRollTime == false)
-                            {
-                                hideTrigger = true;
-                            }
-                            else if (item.Id.StartsWith(CustomTimer.Ring8) && settings.ShowRing8RollTime == false)
-                            {
-                                hideTrigger = true;
-                            }
+                            hideTrigger = true;
                         }
                     }
                 }
