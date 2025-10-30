@@ -275,16 +275,24 @@ namespace EQTool.ViewModels
                 }
                 else if (item.SpellViewModelType == SpellViewModelType.Timer)
                 {
+                    //TODO: Make misc custom timers their own setting as well
                     if (item.Target == CustomTimer.CustomerTime)
                     {
-                        //TODO: Make misc custom timers their own setting as well
-                        if (item.Id.StartsWith(CustomTimer.ScoutTime) && (RaidModeEnabled || settings.ShowScoutRollTime == false))
+                        if (item.Id.StartsWith(CustomTimer.ScoutTime))
                         {
-                            hideTrigger = true;
+                            hideTrigger = false;
+                            if (settings.ShowScoutRollTime == false)
+                            {
+                                hideTrigger = true;
+                            }
                         }
-                        if (item.Id.StartsWith(CustomTimer.Ring8) && (RaidModeEnabled || settings.ShowRing8RollTime == false))
+                        if (item.Id.StartsWith(CustomTimer.Ring8))
                         {
-                            hideTrigger = true;
+                            hideTrigger = false;
+                            if (settings.ShowRing8RollTime == false)
+                            {
+                                hideTrigger = true;
+                            }
                         }
                     }
                 }
