@@ -877,6 +877,38 @@ namespace EQToolShared
                 },
                 RespawnTime = new TimeSpan(0, 6, 40)
             });
+            var listofGuards = new List<string>()
+            {
+                "Guard Bittmin",
+                "Guard Chirven",
+                "Guard Drake",
+                "Guard Dreikin",
+                "Guard Fentallin",
+                "Guard Goemin",
+                "Guard Hirazen",
+                "Guard Javin",
+                "Guard Nekropo",
+                "Guard Nlool",
+                "Guard Orpheen",
+                "Guard Popal",
+                "Guard Quallith",
+                "Guard Ranlan",
+                "Guard Relok",
+                "Guard Sarvik",
+                "Guard Sheg",
+                "Guard Topplo",
+                "Guard Ullindin",
+                "Guard Wytiffin",
+                "Guard Xyxax",
+                "Guard Yandellen",
+                "Guard Zeph",
+                "Guard Zintrin"
+            };
+            var guardspawns = listofGuards.Select(guard => new NpcSpawnTime
+            {
+                Name = guard,
+                RespawnTime = new TimeSpan(0, 24, 0)
+            }).ToList();
             ZoneInfoMap.Add("freporte", new ZoneInfo
             {
                 Name = "freporte",
@@ -886,7 +918,8 @@ namespace EQToolShared
                 {
                     "",
                 },
-                RespawnTime = new TimeSpan(0, 6, 40)
+                RespawnTime = new TimeSpan(0, 6, 40),
+                NpcSpawnTimes = guardspawns
             });
             ZoneInfoMap.Add("freportn", new ZoneInfo
             {
@@ -1760,7 +1793,15 @@ namespace EQToolShared
                 ShowAllMapLevels = true,
                 ZoneLevelHeight = 10,
                 NotableNPCs = new List<string>() { "", },
-                RespawnTime = new TimeSpan(0, 6, 40)
+                RespawnTime = new TimeSpan(0, 6, 40),
+                NpcSpawnTimes = new List<NpcSpawnTime>()
+                {
+                    new NpcSpawnTime
+                    {
+                        Name = "Guard Ason",
+                         RespawnTime = new TimeSpan(0, 6, 0)
+                    }
+                }
             });
             ZoneInfoMap.Add("qeynos", new ZoneInfo
             {
