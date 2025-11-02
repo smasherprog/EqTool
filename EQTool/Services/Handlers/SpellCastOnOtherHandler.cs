@@ -33,9 +33,7 @@ namespace EQTool.Services.Handlers
                         activePlayer.UserCastSpellDateTime = null;
                     });
                     var target = e.TargetName;
-                    if (string.Equals(userCastingSpell.name, "Theft of Thought", System.StringComparison.OrdinalIgnoreCase) ||
-                        string.Equals(userCastingSpell.name, "dictate", System.StringComparison.OrdinalIgnoreCase)
-                        )
+                    if (SpellHandlerService.AllCharmSpells.Any(charmSpell => string.Equals(userCastingSpell.name, charmSpell, System.StringComparison.OrdinalIgnoreCase)))
                     {
                         target = EQSpells.SpaceYou;
                     }

@@ -13,7 +13,7 @@ namespace EQTool.Services.Handlers
     public class SpellHandlerService
     {
         // spells with long recast times, that need a cooldown timer
-        public static readonly List<string> SpellsThatNeedTimers = new List<string>()
+        public static readonly List<string> SpellsThatNeedCooldownTimers = new List<string>()
         {
             "Dictate",
             "Divine Aura",
@@ -25,12 +25,7 @@ namespace EQTool.Services.Handlers
             "Wandering Mind",
             "Theft of Thought"
         };
-        // spells with cooldowns that have targets and should be forced to self for the target
-        public static readonly List<string> CooldownsThatShouldBeOnCaster = new List<string>()
-        {
-            "Wnadering Mind",
-            "Theft of Thought",
-        };
+
         // spells that we wish to count how many times they have been cast
         public static readonly List<string> SpellsThatNeedCounts = new List<string>()
         {
@@ -90,102 +85,8 @@ namespace EQTool.Services.Handlers
 
         public void Handle(Spell spell, string casterName, string targetName, int delayOffset, DateTime timestamp)
         {
-            var targetclass = playerTrackerService.GetPlayer(targetName)?.PlayerClass;
             var spellname = spell.name;
-            if (SpellsThatNeedTimers.Any(a => string.Equals(spell.name, a, StringComparison.OrdinalIgnoreCase)))
-            {
-                spellWindowViewModel.TryAdd(new SpellViewModel
-                {
-                    PercentLeft = 100,
-                    Id = $"{spellname} Cooldown",
-                    Target = CooldownsThatShouldBeOnCaster.Contains(spellname) ? casterName : targetName,
-                    TargetClass = targetclass,
-                    Caster = casterName,
-                    Rect = spell.Rect,
-                    Icon = spell.SpellIcon,
-                    Classes = spell.Classes,
-                    BenefitDetriment = SpellBenefitDetriment.Cooldown,
-                    TotalDuration = TimeSpan.FromSeconds((int)((spell.recastTime + delayOffset) / 1000.0)),
-                    TotalRemainingDuration = TimeSpan.FromSeconds((int)((spell.recastTime + delayOffset) / 1000.0)),
-                    UpdatedDateTime = DateTime.Now
-                });
-            }
-            else if (spell.name.EndsWith("Discipline"))
-            {
-                var basetime = (int)((spell.recastTime + delayOffset) / 1000.0);
-                var playerlevel = activePlayer.Player.Level;
-                if (spell.name == "Evasive Discipline")
-                {
-                    float baseseconds = 15 * 60;
-                    float levelrange = 60 - 52;
-                    float secondsrange = (15 - 7) * 60;
-                    var secondsperlevelrange = secondsrange / levelrange;
-                    float playerleveltick = playerlevel - 52;
-                    basetime = (int)(baseseconds - (playerleveltick * secondsperlevelrange));
-                }
-                else if (spell.name == "Defensive Discipline")
-                {
-                    float baseseconds = 15 * 60;
-                    float levelrange = 60 - 55;
-                    float secondsrange = (15 - 10) * 60;
-                    var secondsperlevelrange = secondsrange / levelrange;
-                    float playerleveltick = playerlevel - 55;
-                    basetime = (int)(baseseconds - (playerleveltick * secondsperlevelrange));
-                }
-                else if (spell.name == "Precision Discipline")
-                {
-                    float baseseconds = 30 * 60;
-                    float levelrange = 60 - 57;
-                    float secondsrange = (30 - 27) * 60;
-                    var secondsperlevelrange = secondsrange / levelrange;
-                    float playerleveltick = playerlevel - 57;
-                    basetime = (int)(baseseconds - (playerleveltick * secondsperlevelrange));
-                }
-                else if (spell.name == "Stonestance Discipline")
-                {
-                    float baseseconds = 12 * 60;
-                    float levelrange = 60 - 51;
-                    float secondsrange = (12 - 4) * 60;
-                    var secondsperlevelrange = secondsrange / levelrange;
-                    float playerleveltick = playerlevel - 51;
-                    basetime = (int)(baseseconds - (playerleveltick * secondsperlevelrange));
-                }
-                else if (spell.name == "Voiddance Discipline")
-                {
-                    float baseseconds = 60 * 60;
-                    float levelrange = 60 - 54;
-                    float secondsrange = (60 - 54) * 60;
-                    var secondsperlevelrange = secondsrange / levelrange;
-                    float playerleveltick = playerlevel - 54;
-                    basetime = (int)(baseseconds - (playerleveltick * secondsperlevelrange));
-                }
-                else if (spell.name == "Innerflame Discipline")
-                {
-                    float baseseconds = 60 * 60;
-                    float levelrange = 60 - 56;
-                    float secondsrange = (30 - 26) * 60;
-                    var secondsperlevelrange = secondsrange / levelrange;
-                    float playerleveltick = playerlevel - 56;
-                    basetime = (int)(baseseconds - (playerleveltick * secondsperlevelrange));
-                }
-
-                spellWindowViewModel.TryAdd(new SpellViewModel
-                {
-                    PercentLeft = 100,
-                    Id = spellname + " Cooldown",
-                    Target = targetName,
-                    TargetClass = targetclass,
-                    Caster = casterName,    // Should always be the same as target?
-                    Rect = spell.Rect,
-                    Icon = spell.SpellIcon,
-                    Classes = spell.Classes,
-                    BenefitDetriment = SpellBenefitDetriment.Cooldown,
-                    TotalDuration = TimeSpan.FromSeconds(basetime),
-                    TotalRemainingDuration = TimeSpan.FromSeconds(basetime),
-                    UpdatedDateTime = DateTime.Now
-                });
-            }
-
+            var targetclass = playerTrackerService.GetPlayer(targetName)?.PlayerClass;
             var target = targetName;
             var isnpc = false;
             if (MasterNPCList.NPCs.Contains(target.Trim()))
@@ -193,6 +94,9 @@ namespace EQTool.Services.Handlers
                 target = " " + target.Trim();
                 isnpc = true;
             }
+            
+            AddCooldownTimerIfNecessary(spell, casterName, target, delayOffset);
+            
             var needscount = SpellsThatNeedCounts.Contains(spellname);
             if (needscount)
             {
@@ -236,7 +140,7 @@ namespace EQTool.Services.Handlers
                     var overWrite = true;
                     if (isnpc == true)
                     {
-                        if (spell.benefit_detriment == EQToolShared.Enums.SpellBenefitDetriment.Detrimental)
+                        if (spell.benefit_detriment == SpellBenefitDetriment.Detrimental)
                         {
                             // add an extra tick to duration, to ensure PigParse timers don't expire before the "Your XXX spell has worn off" message
                             spellduration = spellduration.Add(TimeSpan.FromMilliseconds(6000));
@@ -270,5 +174,106 @@ namespace EQTool.Services.Handlers
                 }
             }
         }
+
+        private void AddCooldownTimerIfNecessary(Spell spell, string casterName, string target, int delayOffset)
+        {
+            var casterOrTargetClass = playerTrackerService.GetPlayer(TargetOnlyIfUnknownCaster(casterName, target.Trim()))?.PlayerClass;
+            var spellname = spell.name;
+            if (SpellsThatNeedCooldownTimers.Any(a => string.Equals(spell.name, a, StringComparison.OrdinalIgnoreCase)))
+            {
+                spellWindowViewModel.TryAdd(new SpellViewModel
+                {
+                    PercentLeft = 100,
+                    Id = $"{spellname} Cooldown",
+                    Target = TargetOnlyIfUnknownCaster(casterName, target),
+                    TargetClass = casterOrTargetClass,
+                    Caster = casterName,
+                    Rect = spell.Rect,
+                    Icon = spell.SpellIcon,
+                    Classes = spell.Classes,
+                    BenefitDetriment = SpellBenefitDetriment.Cooldown,
+                    TotalDuration = TimeSpan.FromSeconds((int)((spell.recastTime + delayOffset) / 1000.0)),
+                    TotalRemainingDuration = TimeSpan.FromSeconds((int)((spell.recastTime + delayOffset) / 1000.0)),
+                    UpdatedDateTime = DateTime.Now
+                });
+            }
+            else if (spell.name.EndsWith("Discipline"))
+            {
+                var basetime = (int)((spell.recastTime + delayOffset) / 1000.0);
+                var playerlevel = activePlayer.Player.Level;
+                if (spell.name == "Evasive Discipline")
+                {
+                    float baseseconds = 15 * 60;
+                    float levelrange = 60 - 52;
+                    float secondsrange = (15 - 7) * 60;
+                    var secondsperlevelrange = secondsrange / levelrange;
+                    float playerleveltick = Math.Max(playerlevel, 52) - 52;
+                    basetime = (int)(baseseconds - (playerleveltick * secondsperlevelrange));
+                }
+                else if (spell.name == "Defensive Discipline")
+                {
+                    float baseseconds = 15 * 60;
+                    float levelrange = 60 - 55;
+                    float secondsrange = (15 - 10) * 60;
+                    var secondsperlevelrange = secondsrange / levelrange;
+                    float playerleveltick = Math.Max(playerlevel, 55) - 55;
+                    basetime = (int)(baseseconds - (playerleveltick * secondsperlevelrange));
+                }
+                else if (spell.name == "Precision Discipline")
+                {
+                    float baseseconds = 30 * 60;
+                    float levelrange = 60 - 57;
+                    float secondsrange = (30 - 27) * 60;
+                    var secondsperlevelrange = secondsrange / levelrange;
+                    float playerleveltick = Math.Max(playerlevel, 57) - 57;
+                    basetime = (int)(baseseconds - (playerleveltick * secondsperlevelrange));
+                }
+                else if (spell.name == "Stonestance Discipline")
+                {
+                    float baseseconds = 12 * 60;
+                    float levelrange = 60 - 51;
+                    float secondsrange = (12 - 4) * 60;
+                    var secondsperlevelrange = secondsrange / levelrange;
+                    float playerleveltick = Math.Max(playerlevel, 51) - 51;
+                    basetime = (int)(baseseconds - (playerleveltick * secondsperlevelrange));
+                }
+                else if (spell.name == "Voiddance Discipline")
+                {
+                    float baseseconds = 60 * 60;
+                    float levelrange = 60 - 54;
+                    float secondsrange = (60 - 54) * 60;
+                    var secondsperlevelrange = secondsrange / levelrange;
+                    float playerleveltick = Math.Max(playerlevel, 54) - 54;
+                    basetime = (int)(baseseconds - (playerleveltick * secondsperlevelrange));
+                }
+                else if (spell.name == "Innerflame Discipline")
+                {
+                    float baseseconds = 60 * 60;
+                    float levelrange = 60 - 56;
+                    float secondsrange = (30 - 26) * 60;
+                    var secondsperlevelrange = secondsrange / levelrange;
+                    float playerleveltick = Math.Max(playerlevel, 56) - 56;
+                    basetime = (int)(baseseconds - (playerleveltick * secondsperlevelrange));
+                }
+
+                spellWindowViewModel.TryAdd(new SpellViewModel
+                {
+                    PercentLeft = 100,
+                    Id = spellname + " Cooldown",
+                    Target = TargetOnlyIfUnknownCaster(casterName, target),
+                    TargetClass = casterOrTargetClass,
+                    Caster = casterName,
+                    Rect = spell.Rect,
+                    Icon = spell.SpellIcon,
+                    Classes = spell.Classes,
+                    BenefitDetriment = SpellBenefitDetriment.Cooldown,
+                    TotalDuration = TimeSpan.FromSeconds(basetime),
+                    TotalRemainingDuration = TimeSpan.FromSeconds(basetime),
+                    UpdatedDateTime = DateTime.Now
+                });
+            }
+        }
+
+        private static string TargetOnlyIfUnknownCaster(string casterName, string target) => string.IsNullOrWhiteSpace(casterName) ? target : casterName;
     }
 }

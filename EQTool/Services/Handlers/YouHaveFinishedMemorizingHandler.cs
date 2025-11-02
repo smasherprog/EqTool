@@ -24,7 +24,7 @@ namespace EQTool.Services.Handlers
 
         private void LogEvents_YouHaveFinishedMemorizingEvent(object sender, YouHaveFinishedMemorizingEvent e)
         {
-            if (SpellHandlerService.SpellsThatNeedTimers.Contains(e.SpellName))
+            if (SpellHandlerService.SpellsThatNeedCooldownTimers.Contains(e.SpellName))
             {
                 var spell = spells.AllSpells.FirstOrDefault(a => a.name == e.SpellName);
                 var timerName = $"{e.SpellName} Cooldown";
