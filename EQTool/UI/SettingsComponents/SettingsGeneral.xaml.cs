@@ -250,28 +250,36 @@ namespace EQTool.UI.SettingsComponents
         private class CastTest
         {
             public Spell Spell { get; set; }
+            public string CasterName { get; set; }
             public string TargetName { get; set; }
         }
         private void testspellsclicked(object sender, RoutedEventArgs e)
         {
-            var peoplenames = new List<string>() { " You ", "Joe", "Huntor", "Sanare", "Pigy", "Leutin", "Bealls", "Vasanle", "Jenkins", "Charlie" };
+            var peoplenames = new List<string>() { "Joe", "Huntor", "Sanare", "Pigy", "Leutin", "Bealls", "Vasanle", "Jenkins", "Charlie" };
             var listofspells = new List<CastTest>
-                   {
+            {
+                                
+                new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Boon of the Clear Mind"), CasterName = EQSpells.SpaceYou, TargetName = EQSpells.SpaceYou },
+                new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Overwhelming Splendor"), CasterName = EQSpells.SpaceYou, TargetName = EQSpells.SpaceYou },
+                new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Gift of Brilliance"), CasterName = EQSpells.SpaceYou, TargetName = EQSpells.SpaceYou },
                 new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Heroic Bond"), TargetName = EQSpells.SpaceYou},
+                new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Dictate"), CasterName = EQSpells.SpaceYou, TargetName = EQSpells.SpaceYou },
+                
                 new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Stonestance Discipline"), TargetName = "Pigy"},
                 new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Defensive Discipline"), TargetName = "Huntor"},
 
                 new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Heroic Bond"), TargetName = "Aasgard"},
                 new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Chloroplast"), TargetName = "Aasgard"},
                 new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Shield of Words"), TargetName = "Aasgard"},
-                new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Boon of the Clear Mind"), TargetName = "Aasgard"},
-                new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Gift of Brilliance"), TargetName = "Aasgard"},
+                new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Boon of the Clear Mind"), CasterName = EQSpells.SpaceYou, TargetName = "Aasgard"},
+                new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Gift of Brilliance"), CasterName = EQSpells.SpaceYou, TargetName = "Aasgard"},
                 new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Defensive Discipline"), TargetName = "Aasgard"},
 
-                new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Mana Sieve"), TargetName = "a bad guy"},
-                new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Mana Sieve"), TargetName = "a bad guy"},
-                new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Harvest"), TargetName = EQSpells.SpaceYou},
-                new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Quivering Veil of Xarn"), TargetName = EQSpells.SpaceYou},
+                new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Theft of Thought"), CasterName = EQSpells.SpaceYou, TargetName = "a bad guy" },
+                new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Mana Sieve"), CasterName = EQSpells.SpaceYou, TargetName = "a bad guy"},
+                new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Mana Sieve"), CasterName = "SomeOtherEnchanter", TargetName = "a bad guy"},
+                new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Harvest"), TargetName = "DrWizardGuy"},
+                new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Quivering Veil of Xarn"), CasterName = "NecroManGuy", TargetName = "NecroManGuy"},
 
                 new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "LowerElement"), TargetName = "Tunare"},
                 new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "LowerElement"), TargetName = "Tunare"},
@@ -305,21 +313,31 @@ namespace EQTool.UI.SettingsComponents
                 listofspells.Add(new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Improved Invis vs Undead"), TargetName = item });
                 listofspells.Add(new CastTest { Spell = spells.AllSpells.FirstOrDefault(a => a.name == "Grim Aura"), TargetName = item });
             }
+            
+            var timeOfLog = DateTime.Now;
             foreach (var item in listofspells)
             {
+                if (item.CasterName != null)
+                {
+                    PushLog(item.CasterName == EQSpells.SpaceYou ? $"You begin casting {item.Spell.name}" : $"{item.CasterName} begins to cast a spell.", timeOfLog);
+                    timeOfLog += TimeSpan.FromSeconds(item.Spell.casttime);
+                }
+                
                 if (item.TargetName == EQSpells.SpaceYou)
                 {
-                    PushLog(item.Spell.cast_on_you);
+                    PushLog(item.Spell.cast_on_you, timeOfLog);
                 }
                 else
                 {
-                    PushLog(item.TargetName + " " + item.Spell.cast_on_other);
+                    PushLog(item.TargetName + " " + item.Spell.cast_on_other, timeOfLog);
                 }
                 // logEvents.Handle(item);
             }
-            PushLog("Fright says, 'Luetin'");
-            PushLog("You say, 'PigTimer-6:40-Guard_George'");
-            PushLog("You say, 'PigTimer-1:06:40-King_Wanderer'");
+
+            timeOfLog += TimeSpan.FromSeconds(6);
+            PushLog("Fright says, 'Luetin'", timeOfLog);
+            PushLog("You say, 'PigTimer-6:40-Guard_George'", timeOfLog);
+            PushLog("You say, 'PigTimer-1:06:40-King_Wanderer'", timeOfLog);
         }
 
         private void CheckBoxZone_Checked(object sender, RoutedEventArgs e)
@@ -445,8 +463,13 @@ namespace EQTool.UI.SettingsComponents
             PushLog(logtext);
         }
 
-        private void PushLog(string message)
+        private void PushLog(string message, DateTime timeStamp = default)
         {
+            if (timeStamp == default)
+            {
+                timeStamp = DateTime.Now;
+            }
+            
             var logtext = message?.Trim();
             if (string.IsNullOrWhiteSpace(logtext))
             {
@@ -455,8 +478,7 @@ namespace EQTool.UI.SettingsComponents
             if (!logtext.StartsWith("["))
             {
                 var format = "ddd MMM dd HH:mm:ss yyyy";
-                var d = DateTime.Now;
-                logtext = "[" + d.ToString(format) + "] " + logtext;
+                logtext = "[" + timeStamp.ToString(format) + "] " + logtext;
             }
             logParser.Push(logtext);
         }

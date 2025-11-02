@@ -48,12 +48,18 @@ namespace EQTool.UI
             AdjustWindow();
             UpdateShowInTaskbar();
             timer.Tick += timer_Tick;
+            SourceInitialized += Window_SourceInitialized;
             SizeChanged += Window_SizeChanged;
             StateChanged += SpellWindow_StateChanged;
             LocationChanged += Window_LocationChanged;
             Loaded += Window_Loaded;
             windowState.Closed = false;
             SaveState();
+        }
+
+        private void Window_SourceInitialized(object sender, EventArgs e)
+        {
+            this.ApplyMaximizeWindowBoundsFix();
         }
 
         private void timer_Tick(object sender, EventArgs e)
@@ -254,7 +260,8 @@ namespace EQTool.UI
             ShowInTaskbar = !(windowState.IsLocked && windowState.AlwaysOnTop);
             if (!ShowInTaskbar && WindowState == System.Windows.WindowState.Minimized)
             {
-                WindowState = System.Windows.WindowState.Normal;
+                // If our window got stuck somehow and it's not showing on the taskbar, re-adjust
+                AdjustWindow();
             }
         }
     }

@@ -1,22 +1,17 @@
 ﻿using EQTool.Models;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace EQTool.Services.Handlers
 {
     public class YouFinishCastingHandler : BaseHandler
     {
-        private readonly List<string> SelfSpellsThatDontEmitCompletionLogMesssages = new List<string>()
-        {
+        private readonly List<string> SelfSpellsThatDontEmitCompletionLogMesssages = new List<string>(
+            SpellHandlerService.AllCharmSpells.Concat(new [] {
             "Harmshield",
             "Divine Aura",
-            "Dictate",
-            "Harmony",
-            "Charm",
-            "Beguile",
-            "Cajoling Whispers",
-            "Allure",
-            "Boltran`s Agacerie"
-        };
+            "Harmony"
+        }));
         private readonly SpellHandlerService baseSpellYouCastingHandler;
 
         public YouFinishCastingHandler(SpellHandlerService baseSpellYouCastingHandler, BaseHandlerData baseHandlerData) : base(baseHandlerData)
