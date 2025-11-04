@@ -221,10 +221,10 @@ namespace EQTool.Services
             OverlayEvent?.Invoke(this, e);
         }
 
-        public event EventHandler<YourSpellInterupptedEvent> YourSpellInterupptedEvent;
+        public event EventHandler<YourSpellInterupptedEvent> YourSpellInteruptedEvent;
         public void Handle(YourSpellInterupptedEvent e)
         {
-            YourSpellInterupptedEvent?.Invoke(this, e);
+            YourSpellInteruptedEvent?.Invoke(this, e);
         }
 
         public event EventHandler<YouBeginCastingEvent> YouBeginCastingEvent;

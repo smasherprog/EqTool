@@ -13,8 +13,7 @@ namespace EQTool.Services.Handlers
         {
             appDispatcher.DispatchUI(() =>
             {
-                activePlayer.UserCastingSpell = e.Spell;
-                activePlayer.UserCastSpellDateTime = e.TimeStamp;
+                activePlayer.StartCastingSpell(e.Spell, e.TimeStamp);
             });
         }
     }

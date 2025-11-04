@@ -353,7 +353,7 @@
     <Compile Include="Services\Handlers\YouFinishCastingHandler.cs" />
     <Compile Include="Services\Handlers\YouBeginCastingHandler.cs" />
     <Compile Include="Services\Handlers\YouHaveFinishedMemorizingHandler.cs" />
-    <Compile Include="Services\Handlers\YourSpellInterupptedHandler.cs" />
+    <Compile Include="Services\Handlers\YourSpellInterruptedHandler.cs" />
     <Compile Include="Services\Handlers\SpellCastOnOtherHandler.cs" />
     <Compile Include="Services\Handlers\SpellWornOffOtherHandler.cs" />
     <Compile Include="Services\Handlers\SpellWornOffSelfHandler.cs" />

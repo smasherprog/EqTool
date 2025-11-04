@@ -286,7 +286,7 @@ namespace EQtoolsTests
             Assert.AreEqual(EQSpells.SpaceYou, spellEffect.Caster);
             Assert.AreEqual(" A froglok dar knight", spellEffect.Target);
         }
-
+        
         [TestMethod]
         public void GuessDruidThorns()
         {
@@ -319,23 +319,44 @@ namespace EQtoolsTests
         [TestMethod]
         public void TestWakeOfTranq()
         {
-            player.Player.PlayerClass = EQToolShared.Enums.PlayerClasses.Necromancer;
+            player.Player.PlayerClass = EQToolShared.Enums.PlayerClasses.Druid;
             player.Player.Level = 60;
             var d = DateTime.Now;
             logParser.Push(spellWindowViewModel, "You begin casting Wake of Tranquility.", d);
-            logParser.Push(spellWindowViewModel, "A wooly mammoth looks less aggressive.", d.AddSeconds(5));
-            logParser.Push(spellWindowViewModel, "A tundra mammoth looks less aggressive.", d.AddSeconds(5));
+            logParser.Push(spellWindowViewModel, "A wooly mammoth looks less aggressive.", d.AddSeconds(4));
+            logParser.Push(spellWindowViewModel, "A tundra mammoth looks less aggressive.", d.AddSeconds(4.1));
+            logParser.Push(spellWindowViewModel, "A tundra mammoth looks less aggressive.", d.AddSeconds(4.2));
             spellWindowViewModel.UpdateTriggers(1000);
             
             var spellEffects = spellWindowViewModel.SpellList.Where(a => a.SpellViewModelType == SpellViewModelType.Spell && a.Id == "Wake of Tranquility").Cast<SpellViewModel>();
-            // TODO: Only one of these is being tagged properly. Ideally every single one would be tagged as " You " for the caster
-            // TODO: If we ever fix that, update this test to be an .All instead of .Any
-            Assert.IsTrue(spellEffects.Any(x => x.Caster == EQSpells.SpaceYou));
+            Assert.IsTrue(spellEffects.All(x => x.Caster == EQSpells.SpaceYou));
             Assert.Contains(" A wooly mammoth", spellEffects.Select(x => x.Target));
             Assert.Contains(" A tundra mammoth", spellEffects.Select(x => x.Target));
             Assert.HasCount(2, spellEffects);
         }
 
+        [TestMethod]
+        public void TestMesmerization()
+        {
+            player.Player.PlayerClass = EQToolShared.Enums.PlayerClasses.Enchanter;
+            player.Player.Level = 58;
+            var d = DateTime.Now;
+            logParser.Push(spellWindowViewModel, "You begin casting Mesmerization.", d);
+            logParser.Push(spellWindowViewModel, "A shard spider has been mesmerized.", d.AddSeconds(3));
+            logParser.Push(spellWindowViewModel, "A crystal statue has been mesmerized.", d.AddSeconds(3.1));
+            logParser.Push(spellWindowViewModel, "A crystalline devourer has been mesmerized.", d.AddSeconds(3.15));
+            logParser.Push(spellWindowViewModel, "A Blizzard Hunter has been mesmerized.", d.AddSeconds(3.2));
+            spellWindowViewModel.UpdateTriggers(1000);
+            
+            var spellEffects = spellWindowViewModel.SpellList.Where(a => a.SpellViewModelType == SpellViewModelType.Spell && a.Id == "Mesmerization").Cast<SpellViewModel>();
+            Assert.IsTrue(spellEffects.All(x => x.Caster == EQSpells.SpaceYou));
+            Assert.Contains(" A shard spider", spellEffects.Select(x => x.Target));
+            Assert.Contains(" A crystal statue", spellEffects.Select(x => x.Target));
+            Assert.Contains(" A crystalline devourer", spellEffects.Select(x => x.Target));
+            Assert.Contains(" A Blizzard Hunter", spellEffects.Select(x => x.Target));
+            Assert.HasCount(4, spellEffects);
+        }
+        
         [TestMethod]
         public void TestRampage()
         {

@@ -1,6 +1,6 @@
-﻿using EQTool.Models;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
+using EQTool.Models;
 
 namespace EQTool.Services.Handlers
 {
@@ -41,11 +41,9 @@ namespace EQTool.Services.Handlers
                     debugOutput.WriteLine($"Clearing spell because {dt.TotalMilliseconds}ms has elapsed to complete casting {userCastingSpell.casttime + 1000}ms for the spell {userCastingSpell.name}", OutputType.Spells);
                     appDispatcher.DispatchUI(() =>
                     {
-                        activePlayer.UserCastingSpell = null;
-                        activePlayer.UserCastSpellDateTime = null;
+                        activePlayer.FinishUserCastingSpell();
                     });
                 }
-
             }
         }
 
@@ -54,8 +52,7 @@ namespace EQTool.Services.Handlers
             baseSpellYouCastingHandler.Handle(e.Spell, EQSpells.SpaceYou, e.TargetName, 0, e.TimeStamp);
             appDispatcher.DispatchUI(() =>
             {
-                activePlayer.UserCastingSpell = null;
-                activePlayer.UserCastSpellDateTime = null;
+                activePlayer.FinishUserCastingSpell();
             });
         }
     }
