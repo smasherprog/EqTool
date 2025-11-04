@@ -21,26 +21,32 @@ namespace EQTool.Services.Handlers
 
         private void LogEvents_LineEvent(object sender, LineEvent e)
         {
-            if (e.Line == "The Avatar of War shouts 'Who dares defile my temple?! Come forth and face me!'")
+            if (e.Line != "The Avatar of War shouts 'Who dares defile my temple?! Come forth and face me!'")
             {
-                var spell = spells.AllSpells.FirstOrDefault(a => a.name == "Spirit of Wolf");
-                appDispatcher.DispatchUI(() =>
-                {
-                    spellWindowViewModel.TryAdd(new TimerViewModel
-                    {
-                        PercentLeft = 100,
-                        Target = CustomTimer.CustomerTime,
-                        Id = $"The Avatar of War Lockout",
-                        Rect = spell.Rect,
-                        Icon = spell.SpellIcon,
-                        TotalDuration = TimeSpan.FromMinutes(20),
-                        TotalRemainingDuration = TimeSpan.FromMinutes(20),
-                        UpdatedDateTime = DateTime.Now,
-                        ProgressBarColor = Brushes.Orchid
-                    }, true);
-                });
+                return;
             }
 
+            spells.AllSpells.TryGetValue("Spirit of Wolf", out var spell);
+            if (spell == null)
+            {
+                return;
+            }
+                
+            appDispatcher.DispatchUI(() =>
+            {
+                spellWindowViewModel.TryAdd(new TimerViewModel
+                {
+                    PercentLeft = 100,
+                    Target = CustomTimer.CustomerTime,
+                    Id = $"The Avatar of War Lockout",
+                    Rect = spell.Rect,
+                    Icon = spell.SpellIcon,
+                    TotalDuration = TimeSpan.FromMinutes(20),
+                    TotalRemainingDuration = TimeSpan.FromMinutes(20),
+                    UpdatedDateTime = DateTime.Now,
+                    ProgressBarColor = Brushes.Orchid
+                }, true);
+            });
         }
     }
 }

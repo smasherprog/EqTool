@@ -22,7 +22,11 @@ namespace EQTool.Services.Handlers
 
         private void LogEvents_RandomRollEvent(object sender, RandomRollEvent e)
         {
-            var icon = spells.AllSpells.FirstOrDefault(a => a.name == "Invisibility");
+            if (!spells.AllSpells.TryGetValue("Invisibility", out var icon))
+            {
+                return;
+            }
+            
             var trigger = new RollViewModel
             {
                 MaxRoll = e.MaxRoll,

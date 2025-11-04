@@ -35,6 +35,8 @@ namespace EQTool.Services.Handlers
 
         private void LogParser_FTEEvent(object sender, FTEEvent e)
         {
+            spells.AllSpells.TryGetValue("Spirit of Wolf", out var timerVisuals);
+            
             if (activePlayer?.Player?.FTEAudio == true)
             {
                 textToSpeach.Say($"{e.FTEPerson} F T E {e.NPCName}");
@@ -59,14 +61,13 @@ namespace EQTool.Services.Handlers
             var start = "--97% Rule--";
             if (NintySevenPercentMobs.Contains(e.NPCName))
             {
-                var spell = spells.AllSpells.FirstOrDefault(a => a.name == "Spirit of Wolf");
                 var timeleft = 61;
                 if (NintySixPercentMobs.Contains(e.NPCName) && activePlayer.Player.Server == EQToolShared.Enums.Servers.Green)
                 {
                     start = "--96% Rule--";
                     timeleft = 91;
                 }
-
+                
                 appDispatcher.DispatchUI(() =>
                 {
                     spellWindowViewModel.TryAdd(new TimerViewModel
@@ -74,8 +75,8 @@ namespace EQTool.Services.Handlers
                         PercentLeft = 100,
                         Target = CustomTimer.CustomerTime,
                         Id = $"{start} {e.NPCName}",
-                        Rect = spell.Rect,
-                        Icon = spell.SpellIcon,
+                        Rect = timerVisuals.Rect,
+                        Icon = timerVisuals.SpellIcon,
                         TotalDuration = TimeSpan.FromSeconds(timeleft),
                         TotalRemainingDuration = TimeSpan.FromSeconds(timeleft),
                         UpdatedDateTime = DateTime.Now,
@@ -85,7 +86,6 @@ namespace EQTool.Services.Handlers
             }
             if (e.NPCName == "Lodizal")
             {
-                var spell = spells.AllSpells.FirstOrDefault(a => a.name == "Spirit of Wolf");
                 appDispatcher.DispatchUI(() =>
                 {
                     spellWindowViewModel.TryAdd(new TimerViewModel
@@ -93,8 +93,8 @@ namespace EQTool.Services.Handlers
                         PercentLeft = 100,
                         Target = CustomTimer.CustomerTime,
                         Id = $"--5 Minute Rule-- {e.NPCName}",
-                        Rect = spell.Rect,
-                        Icon = spell.SpellIcon,
+                        Rect = timerVisuals.Rect,
+                        Icon = timerVisuals.SpellIcon,
                         TotalDuration = TimeSpan.FromMinutes(5),
                         TotalRemainingDuration = TimeSpan.FromMinutes(5),
                         UpdatedDateTime = DateTime.Now,
@@ -105,7 +105,6 @@ namespace EQTool.Services.Handlers
             if (NintySevenPercentMobs.Contains(e.NPCName))
             {
                 doAlert = activePlayer?.Player?.FTETimerOverlay ?? false;
-
             }
         }
     }

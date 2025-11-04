@@ -33,18 +33,20 @@ namespace EQTool.Services.Handlers
                 return;
             }
 
-            var match = spells.AllSpells.FirstOrDefault(a => a.name == "Disease Cloud");
-            spellWindowViewModel.TryAdd(new TimerViewModel
+            if (spells.AllSpells.TryGetValue("Disease Cloud", out var match))
             {
-                TotalDuration = TimeSpan.FromSeconds(45),
-                Id = $"--DT-- '{e.Content}'",
-                Icon = match.SpellIcon,
-                Rect = match.Rect,
-                PercentLeft = 100,
-                Target = CustomTimer.CustomerTime,
-                TotalRemainingDuration = TimeSpan.FromSeconds(45),
-                UpdatedDateTime = DateTime.Now,
-            });
+                spellWindowViewModel.TryAdd(new TimerViewModel
+                {
+                    TotalDuration = TimeSpan.FromSeconds(45),
+                    Id = $"--DT-- '{e.Content}'",
+                    Icon = match.SpellIcon,
+                    Rect = match.Rect,
+                    PercentLeft = 100,
+                    Target = CustomTimer.CustomerTime,
+                    TotalRemainingDuration = TimeSpan.FromSeconds(45),
+                    UpdatedDateTime = DateTime.Now,
+                });
+            }
         }
     }
 }

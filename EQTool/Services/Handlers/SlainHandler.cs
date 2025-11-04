@@ -188,14 +188,14 @@ namespace EQTool.Services.Handlers
                 return;
             }
             var zonetimer = ZoneSpawnTimes.GetSpawnTime(e.Victim, activePlayer?.Player?.Zone);
-            var spell = spells.AllSpells.FirstOrDefault(a => a.name == "Disease Cloud");
+            spells.AllSpells.TryGetValue("Disease Cloud", out var timerVisuals);
             var add = new TimerViewModel
             {
                 Id = "--Dead-- " + e.Victim,
                 TotalDuration = TimeSpan.FromSeconds((int)zonetimer.TotalSeconds),
                 TotalRemainingDuration = TimeSpan.FromSeconds((int)zonetimer.TotalSeconds),
-                Icon = spell.SpellIcon,
-                Rect = spell.Rect,
+                Icon = timerVisuals.SpellIcon,
+                Rect = timerVisuals.Rect,
                 PercentLeft = 100,
                 Target = CustomTimer.CustomerTime,
                 ProgressBarColor = Brushes.LightSalmon
@@ -233,8 +233,8 @@ namespace EQTool.Services.Handlers
                         Id = "--Sirran the Lunatic-- ",
                         TotalDuration = TimeSpan.FromMinutes(15),
                         TotalRemainingDuration = TimeSpan.FromMinutes(15),
-                        Icon = spell.SpellIcon,
-                        Rect = spell.Rect,
+                        Icon = timerVisuals.SpellIcon,
+                        Rect = timerVisuals.Rect,
                         PercentLeft = 100,
                         Target = CustomTimer.CustomerTime,
                         ProgressBarColor = Brushes.LightSkyBlue

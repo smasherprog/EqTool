@@ -549,8 +549,7 @@ namespace EQTool.ViewModels
             {
                 foreach (var item in youSpells)
                 {
-                    var match = spells.AllSpells.FirstOrDefault(a => string.Equals(a.name, item.Name, StringComparison.OrdinalIgnoreCase));
-                    if (match == null)
+                    if (!spells.AllSpells.TryGetValue(item.Name, out var match))
                     {
                         continue;
                     }
@@ -666,7 +665,7 @@ namespace EQTool.ViewModels
 
                     if (RollTimerIcon == null)
                     {
-                        RollTimerIcon = spells.AllSpells.FirstOrDefault(a => a.name == "Feign Death");
+                        spells.AllSpells.TryGetValue("Feign Death", out RollTimerIcon);
                     }
 
                     var timers = timersData.Where(a => a.RollTimerType == EQToolShared.APIModels.RollTimerType.Scout).ToList();

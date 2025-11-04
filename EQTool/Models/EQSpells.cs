@@ -9,9 +9,8 @@ namespace EQTool.Models
 {
     public class EQSpells
     {
-        private readonly List<Spell> _AllSpells = new List<Spell>();
-
-        public List<Spell> AllSpells
+        private readonly Dictionary<string, Spell> _AllSpells = new Dictionary<string, Spell>(StringComparer.OrdinalIgnoreCase);
+        public Dictionary<string, Spell> AllSpells
         {
             get
             {
@@ -22,8 +21,8 @@ namespace EQTool.Models
                 return _AllSpells;
             }
         }
+        
         private readonly Dictionary<string, List<Spell>> _CastOtherSpells = new Dictionary<string, List<Spell>>(StringComparer.OrdinalIgnoreCase);
-
         public Dictionary<string, List<Spell>> CastOtherSpells
         {
             get
@@ -35,8 +34,8 @@ namespace EQTool.Models
                 return _CastOtherSpells;
             }
         }
+        
         private readonly Dictionary<string, List<Spell>> _CastOnYouSpells = new Dictionary<string, List<Spell>>(StringComparer.OrdinalIgnoreCase);
-
         public Dictionary<string, List<Spell>> CastOnYouSpells
         {
             get
@@ -107,7 +106,9 @@ namespace EQTool.Models
                 {
                     continue;
                 }
-                _AllSpells.Add(mappedspell);
+
+                // The duplicate key check should only be relevant for "no spell" entries (which we never look up by key anyways), but just in case we'll handle them all the same.
+                _AllSpells.Add(!_AllSpells.ContainsKey(mappedspell.name) ? mappedspell.name : $"{mappedspell.name}#{mappedspell.id}", mappedspell);
 
                 if (!string.IsNullOrWhiteSpace(mappedspell.cast_on_other))
                 {
@@ -115,29 +116,29 @@ namespace EQTool.Models
                     {
                         Debug.WriteLine("Skipping Other invis spell. Cant detect difference between gate and invis");
                     }
-                    else if (_CastOtherSpells.TryGetValue(mappedspell.cast_on_other, out var innerval))
+                    else if (_CastOtherSpells.TryGetValue(mappedspell.cast_on_other, out _))
                     {
                         _CastOtherSpells[mappedspell.cast_on_other].Add(mappedspell);
                     }
                     else
                     {
-                        _CastOtherSpells.Add(mappedspell.cast_on_other, new List<Spell>() { mappedspell });
+                        _CastOtherSpells.Add(mappedspell.cast_on_other, new List<Spell> { mappedspell });
                     }
                 }
                 if (!string.IsNullOrWhiteSpace(mappedspell.name) && mappedspell.Classes.Any(a => a.Value > 0))
                 {
-                    if (_YouCastSpells.TryGetValue(mappedspell.name, out var innerval))
+                    if (_YouCastSpells.TryGetValue(mappedspell.name, out _))
                     {
                         _YouCastSpells[mappedspell.name].Add(mappedspell);
                     }
                     else
                     {
-                        _YouCastSpells.Add(mappedspell.name, new List<Spell>() { mappedspell });
+                        _YouCastSpells.Add(mappedspell.name, new List<Spell> { mappedspell });
                     }
                 }
                 if (!string.IsNullOrWhiteSpace(mappedspell.cast_on_you))
                 {
-                    if (_CastOnYouSpells.TryGetValue(mappedspell.cast_on_you, out var innerval))
+                    if (_CastOnYouSpells.TryGetValue(mappedspell.cast_on_you, out _))
                     {
                         if (!(mappedspell.Classes.Any() && mappedspell.SpellType == SpellType.Self))
                         {
@@ -146,18 +147,18 @@ namespace EQTool.Models
                     }
                     else
                     {
-                        _CastOnYouSpells.Add(mappedspell.cast_on_you, new List<Spell>() { mappedspell });
+                        _CastOnYouSpells.Add(mappedspell.cast_on_you, new List<Spell> { mappedspell });
                     }
                 }
                 if (!string.IsNullOrWhiteSpace(mappedspell.spell_fades))
                 {
-                    if (_WornOffSpells.TryGetValue(mappedspell.spell_fades, out var innerval))
+                    if (_WornOffSpells.TryGetValue(mappedspell.spell_fades, out _))
                     {
                         _WornOffSpells[mappedspell.spell_fades].Add(mappedspell);
                     }
                     else
                     {
-                        _WornOffSpells.Add(mappedspell.spell_fades, new List<Spell>() { mappedspell });
+                        _WornOffSpells.Add(mappedspell.spell_fades, new List<Spell> { mappedspell });
                     }
                 }
             }

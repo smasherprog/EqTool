@@ -54,7 +54,7 @@ namespace EQTool.Services.Handlers
                         spell = spellWindowViewModel.SpellList.FirstOrDefault(a => a.Target.Contains(currentarget) && a.Id == e.Spell.name && a.SpellViewModelType == SpellViewModelType.Counter) as CounterViewModel;
                         if (spell == null)
                         {
-                            var s = eQSpells.AllSpells.FirstOrDefault(a => a.name == e.Spell.name);
+                            eQSpells.AllSpells.TryGetValue(e.Spell.name, out var s);
                             spellHandlerService.Handle(s, string.Empty, currentarget, 0, e.TimeStamp);  //TODO: Determine caster?
                         }
                         else

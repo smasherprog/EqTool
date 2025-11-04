@@ -190,7 +190,7 @@ namespace EQtoolsTests
                     logParser.Push(message, DateTime.Now);
                     foreach (var spellname in npc.SpellEffects)
                     {
-                        var spell = spells.AllSpells.FirstOrDefault(a => a.name == spellname);
+                        spells.AllSpells.TryGetValue(spellname, out var spell);
                         logParser.Push(spell.cast_on_you, DateTime.Now);
                         var effect = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Timer && a.Id == spellname) as TimerViewModel;
                         Assert.IsNotNull(effect, $"{spellname} not found");
@@ -212,7 +212,7 @@ namespace EQtoolsTests
                     spellWindowViewModel.SpellList.Clear();
                     foreach (var spellname in npc.SpellEffects)
                     {
-                        var spell = spells.AllSpells.FirstOrDefault(a => a.name == spellname);
+                        spells.AllSpells.TryGetValue(spellname, out var spell);
                         logParser.Push($"You resist the {spellname} spell!", DateTime.Now);
                         var effect = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Timer && a.Id == spellname) as TimerViewModel;
                         Assert.IsNotNull(effect, $"{spellname} not found");

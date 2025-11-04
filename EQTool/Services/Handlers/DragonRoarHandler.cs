@@ -31,7 +31,11 @@ namespace EQTool.Services.Handlers
                     return;
                 }
             }
-            LogEvents_DragonRoarEvent(spells.AllSpells.FirstOrDefault(a => a.name == e.SpellName));
+
+            if (spells.AllSpells.TryGetValue(e.SpellName, out var spell))
+            {
+                LogEvents_DragonRoarEvent(spell);
+            }
         }
 
         private void LogEvents_DragonRoarEvent(object sender, DragonRoarEvent e)
