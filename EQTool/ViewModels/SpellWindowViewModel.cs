@@ -393,14 +393,18 @@ namespace EQTool.ViewModels
         {
             if (RaidModeEnabled)
             {
-                if (s.CastByYou(player) || s.CastOnYou(player))
+                if (s.CastByYou(player) || s.CastOnYou(player) || s.Target == CustomTimer.CustomerTime)
                 {
                     return false;
                 }
-                // Detrimental spells on raid targets should always be shown in raid mode
-                if (s.Target == CustomTimer.CustomerTime || (MasterNPCList.NPCs.Contains(s.Target.Trim()) && s.BenefitDetriment == SpellBenefitDetriment.Detrimental))
+                
+                if (MasterNPCList.NPCs.Contains(s.Target.Trim()))
                 {
-                    return false;
+                    // Detrimental spells and cooldowns on raid targets should always be shown in raid mode
+                    if (s.BenefitDetriment == SpellBenefitDetriment.Cooldown || s.BenefitDetriment == SpellBenefitDetriment.Detrimental)
+                    {
+                        return false;
+                    }
                 }
                 
                 // The Player class's spells should always be shown in raid mode
