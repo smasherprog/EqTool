@@ -178,6 +178,11 @@ namespace EQTool.ViewModels
         
         public void FinishUserCastingSpell()
         {
+            if (_UserCastingSpell == null)
+            {
+                return;
+            }
+            
             // Determine if we should let the currently casting spell remain to give us a buffer to parse additional AoE lines, or to clear it now
             switch (_UserCastingSpell.SpellType)
             {
