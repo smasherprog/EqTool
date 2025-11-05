@@ -17,11 +17,13 @@ namespace EQTool.ViewModels
         private CancellationTokenSource aoeDebounceTs;
         private readonly EQToolSettings settings;
         private readonly LogEvents logEvents;
+        private readonly IAppDispatcher appDispatcher;
 
-        public ActivePlayer(EQToolSettings settings, LogEvents logEvents)
+        public ActivePlayer(EQToolSettings settings, LogEvents logEvents, IAppDispatcher appDispatcher)
         {
             this.settings = settings;
             this.logEvents = logEvents;
+            this.appDispatcher = appDispatcher;
         }
 
         public static PlayerInfo GetInfoFromString(string logfilenbame)
@@ -172,13 +174,16 @@ namespace EQTool.ViewModels
         
         public void StartCastingSpell(Spell spell, DateTime startedCastingOnDateTime)
         {
-            UserCastingSpell = spell;
-            UserCastSpellDateTime = startedCastingOnDateTime;
+            appDispatcher.DispatchUI(() =>
+            {
+                UserCastingSpell = spell;
+                UserCastSpellDateTime = startedCastingOnDateTime;
+            });
         }
         
         public void FinishUserCastingSpell()
         {
-            if (_UserCastingSpell == null)
+            if (UserCastingSpell == null)
             {
                 return;
             }
@@ -213,15 +218,21 @@ namespace EQTool.ViewModels
                     return;
                 }
 
-                ClearUserCastingSpellImmediately();
+                appDispatcher.DispatchUI(() =>
+                {
+                    ClearUserCastingSpellImmediately();
+                });
             }, debounceToken);
         }
 
         public void ClearUserCastingSpellImmediately()
         {
-            aoeDebounceTs?.Cancel();
-            UserCastingSpell = null;
-            UserCastSpellDateTime = null;
+            appDispatcher.DispatchUI(() =>
+            {
+                aoeDebounceTs?.Cancel();
+                UserCastingSpell = null;
+                UserCastSpellDateTime = null;
+            });
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

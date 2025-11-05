@@ -51,10 +51,7 @@ namespace EQTool.Services.Handlers
 
                 if (isValidCast)
                 {
-                    appDispatcher.DispatchUI(() =>
-                    {
-                        activePlayer.FinishUserCastingSpell();
-                    });
+                    activePlayer.FinishUserCastingSpell();
                     baseSpellYouCastingHandler.Handle(userCastingSpell, EQSpells.SpaceYou, target, 0, e.TimeStamp);
                     return;
                 }

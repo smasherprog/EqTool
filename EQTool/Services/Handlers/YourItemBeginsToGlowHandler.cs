@@ -17,10 +17,7 @@ namespace EQTool.Services.Handlers
         {
             if (e.ItemName == "Pegasus Feather Cloak" && spells.AllSpells.TryGetValue("Peggy Levitate", out var foundSpell))
             {
-                appDispatcher.DispatchUI(() =>
-                {
-                    activePlayer.StartCastingSpell(foundSpell, e.TimeStamp);
-                });
+                activePlayer.StartCastingSpell(foundSpell, e.TimeStamp);
             }
         }
     }

@@ -39,10 +39,7 @@ namespace EQTool.Services.Handlers
                         baseSpellYouCastingHandler.Handle(userCastingSpell, EQSpells.SpaceYou, EQSpells.SpaceYou, deltaOffset, e.TimeStamp);
                     }
                     debugOutput.WriteLine($"Clearing spell because {dt.TotalMilliseconds}ms has elapsed to complete casting {userCastingSpell.casttime + 1000}ms for the spell {userCastingSpell.name}", OutputType.Spells);
-                    appDispatcher.DispatchUI(() =>
-                    {
-                        activePlayer.FinishUserCastingSpell();
-                    });
+                    activePlayer.FinishUserCastingSpell();
                 }
             }
         }
@@ -50,10 +47,7 @@ namespace EQTool.Services.Handlers
         private void LogEvents_YouFinishCastingEvent(object sender, YouFinishCastingEvent e)
         {
             baseSpellYouCastingHandler.Handle(e.Spell, EQSpells.SpaceYou, e.TargetName, 0, e.TimeStamp);
-            appDispatcher.DispatchUI(() =>
-            {
-                activePlayer.FinishUserCastingSpell();
-            });
+            activePlayer.FinishUserCastingSpell();
         }
     }
 }
