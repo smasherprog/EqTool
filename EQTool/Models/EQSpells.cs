@@ -107,8 +107,13 @@ namespace EQTool.Models
                     continue;
                 }
 
-                // The duplicate key check should only be relevant for "no spell" entries (which we never look up by key anyways), but just in case we'll handle them all the same.
-                _AllSpells.Add(!_AllSpells.ContainsKey(mappedspell.name) ? mappedspell.name : $"{mappedspell.name}#{mappedspell.id}", mappedspell);
+                // The duplicate key check should only be relevant for "no spell" entries (which we are already handling and never look up directly anyways), but just in case we'll handle them all the same.
+                var key = mappedspell.name;
+                if (mappedspell.name.Equals("no spell", StringComparison.OrdinalIgnoreCase) || _AllSpells.ContainsKey(mappedspell.name))
+                {
+                    key = $"{mappedspell.name}#{mappedspell.id}";
+                }
+                _AllSpells.Add(key, mappedspell);
 
                 if (!string.IsNullOrWhiteSpace(mappedspell.cast_on_other))
                 {

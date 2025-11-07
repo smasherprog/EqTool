@@ -11,10 +11,7 @@ namespace EQTool.Services.Handlers
 
         private void LogEvents_YourSpellInterruptedEvent(object sender, YourSpellInterupptedEvent e)
         {
-            appDispatcher.DispatchUI(() =>
-            {
-                activePlayer.ClearUserCastingSpellImmediately();
-            });
+            activePlayer.ClearUserCastingSpellImmediately();
         }
     }
 }
