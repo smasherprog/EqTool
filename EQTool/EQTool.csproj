@@ -379,7 +379,7 @@
     <Compile Include="Services\Parsing\YouFinishCasting_SpellCastOnYou_Parser.cs" />
     <Compile Include="Services\Parsing\YouBeginCastingParser.cs" />
     <Compile Include="Services\Parsing\YouHaveFinishedMemorizingParser.cs" />
-    <Compile Include="Services\Parsing\YourSpellInterupptedParser.cs" />
+    <Compile Include="Services\Parsing\YourSpellInterruptedParser.cs" />
     <Compile Include="Services\Parsing\LineParser.cs" />
     <Compile Include="Services\Parsing\FactionParser.cs" />
     <Compile Include="Services\SavePlayerStateService.cs" />

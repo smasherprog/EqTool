@@ -66,7 +66,7 @@ namespace EQTool.Services.Parsing
                     else if (userCastingSpell.name == "Theft of Thought" && line == "Your target has no mana to affect")
                     {
                         debugOutput.WriteLine($"{userCastingSpell.name} Message: {line}", OutputType.Spells);
-                        logEvents.Handle(new YourSpellInterupptedEvent
+                        logEvents.Handle(new YourSpellInterruptedEvent
                         {
                             TimeStamp = timestamp,
                             Line = line,

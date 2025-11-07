@@ -6,10 +6,10 @@ namespace EQTool.Services.Handlers
     {
         public YourSpellInterruptedHandler(BaseHandlerData baseHandlerData) : base(baseHandlerData)
         {
-            logEvents.YourSpellInteruptedEvent += LogEvents_YourSpellInterruptedEvent;
+            logEvents.YourSpellInterruptedEvent += LogEvents_YourSpellInterruptedEvent;
         }
 
-        private void LogEvents_YourSpellInterruptedEvent(object sender, YourSpellInterupptedEvent e)
+        private void LogEvents_YourSpellInterruptedEvent(object sender, YourSpellInterruptedEvent e)
         {
             activePlayer.ClearUserCastingSpellImmediately();
         }

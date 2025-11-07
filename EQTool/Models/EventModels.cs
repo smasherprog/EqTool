@@ -266,7 +266,7 @@ namespace EQTool.Models
         public string SpellName { get; set; }
     }
 
-    public class YourSpellInterupptedEvent : BaseLogParseEvent
+    public class YourSpellInterruptedEvent : BaseLogParseEvent
     {
     }
     public class DragonRoarEvent : BaseLogParseEvent
