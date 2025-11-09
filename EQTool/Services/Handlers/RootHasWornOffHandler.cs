@@ -18,7 +18,7 @@ namespace EQTool.Services.Handlers
             "Root",
             "Fetter",
             "Enstill",
-            "Immobalize",
+            "Immobilize",
             "Paralyzing Earth",
             "Grasping Roots",
             "Ensnaring Roots",

@@ -103,19 +103,21 @@ namespace EQTool.Services.Handlers
                 Console.WriteLine($"match found [{match}], hh = [{hh}], mm = [{mm}], ss = [{ss}], label = [{label}], totalseconds = [{timerSeconds}]");
 
                 var spellname = "Feign Death";
-                var spell = spells.AllSpells.FirstOrDefault(a => a.name == spellname);
-                spellWindowViewModel.TryAdd(new TimerViewModel
+                if (spells.AllSpells.TryGetValue(spellname, out var spell))
                 {
-                    PercentLeft = 100,
-                    Target = CustomTimer.CustomerTime,
-                    Id = label != "" ? label : $"{match}",
-                    Rect = spell.Rect,
-                    Icon = spell.SpellIcon,
-                    TotalDuration = TimeSpan.FromSeconds(timerSeconds),
-                    TotalRemainingDuration = TimeSpan.FromSeconds(timerSeconds),
-                    UpdatedDateTime = DateTime.Now,
-                    ProgressBarColor = Brushes.DarkSeaGreen
-                });
+                    spellWindowViewModel.TryAdd(new TimerViewModel
+                    {
+                        PercentLeft = 100,
+                        Target = CustomTimer.CustomerTime,
+                        Id = label != "" ? label : $"{match}",
+                        Rect = spell.Rect,
+                        Icon = spell.SpellIcon,
+                        TotalDuration = TimeSpan.FromSeconds(timerSeconds),
+                        TotalRemainingDuration = TimeSpan.FromSeconds(timerSeconds),
+                        UpdatedDateTime = DateTime.Now,
+                        ProgressBarColor = Brushes.DarkSeaGreen
+                    });
+                }
             }
         }
     }

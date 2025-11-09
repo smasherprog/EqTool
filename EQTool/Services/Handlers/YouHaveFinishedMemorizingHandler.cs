@@ -24,27 +24,32 @@ namespace EQTool.Services.Handlers
 
         private void LogEvents_YouHaveFinishedMemorizingEvent(object sender, YouHaveFinishedMemorizingEvent e)
         {
-            if (SpellHandlerService.SpellsThatNeedCooldownTimers.Contains(e.SpellName))
+            if (!SpellHandlerService.SpellsThatNeedCooldownTimers.Contains(e.SpellName))
             {
-                var spell = spells.AllSpells.FirstOrDefault(a => a.name == e.SpellName);
-                var timerName = $"{e.SpellName} Cooldown";
-                var durationSeconds = spell.recastTime / 1000;
-
-                spellWindowViewModel.TryAdd(new SpellViewModel
-                {
-                    PercentLeft = 100,
-                    Id = timerName,
-                    Target = EQSpells.SpaceYou,
-                    Caster = EQSpells.SpaceYou,
-                    Rect = spell.Rect,
-                    Icon = spell.SpellIcon,
-                    Classes = spell.Classes,
-                    BenefitDetriment = SpellBenefitDetriment.Cooldown,
-                    TotalDuration = TimeSpan.FromSeconds(durationSeconds),
-                    TotalRemainingDuration = TimeSpan.FromSeconds(durationSeconds),
-                    UpdatedDateTime = DateTime.Now
-                });
+                return;
             }
+            if (!spells.AllSpells.TryGetValue(e.SpellName, out var spell))
+            {
+                return;
+            }
+                
+            var timerName = $"{e.SpellName} Cooldown";
+            var durationSeconds = spell.recastTime / 1000;
+
+            spellWindowViewModel.TryAdd(new SpellViewModel
+            {
+                PercentLeft = 100,
+                Id = timerName,
+                Target = EQSpells.SpaceYou,
+                Caster = EQSpells.SpaceYou,
+                Rect = spell.Rect,
+                Icon = spell.SpellIcon,
+                Classes = spell.Classes,
+                BenefitDetriment = SpellBenefitDetriment.Cooldown,
+                TotalDuration = TimeSpan.FromSeconds(durationSeconds),
+                TotalRemainingDuration = TimeSpan.FromSeconds(durationSeconds),
+                UpdatedDateTime = DateTime.Now
+            });
         }
     }
 }

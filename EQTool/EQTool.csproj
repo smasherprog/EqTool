@@ -353,7 +353,7 @@
     <Compile Include="Services\Handlers\YouFinishCastingHandler.cs" />
     <Compile Include="Services\Handlers\YouBeginCastingHandler.cs" />
     <Compile Include="Services\Handlers\YouHaveFinishedMemorizingHandler.cs" />
-    <Compile Include="Services\Handlers\YourSpellInterupptedHandler.cs" />
+    <Compile Include="Services\Handlers\YourSpellInterruptedHandler.cs" />
     <Compile Include="Services\Handlers\SpellCastOnOtherHandler.cs" />
     <Compile Include="Services\Handlers\SpellWornOffOtherHandler.cs" />
     <Compile Include="Services\Handlers\SpellWornOffSelfHandler.cs" />
@@ -379,7 +379,7 @@
     <Compile Include="Services\Parsing\YouFinishCasting_SpellCastOnYou_Parser.cs" />
     <Compile Include="Services\Parsing\YouBeginCastingParser.cs" />
     <Compile Include="Services\Parsing\YouHaveFinishedMemorizingParser.cs" />
-    <Compile Include="Services\Parsing\YourSpellInterupptedParser.cs" />
+    <Compile Include="Services\Parsing\YourSpellInterruptedParser.cs" />
     <Compile Include="Services\Parsing\LineParser.cs" />
     <Compile Include="Services\Parsing\FactionParser.cs" />
     <Compile Include="Services\SavePlayerStateService.cs" />

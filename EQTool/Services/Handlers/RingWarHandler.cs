@@ -21,7 +21,7 @@ namespace EQTool.Services.Handlers
 
         private void LogEvents_RingWarEvent(object sender, RingWarEvent e)
         {
-            var spell = spells.AllSpells.FirstOrDefault(a => a.name == "Disease Cloud");
+            spells.AllSpells.TryGetValue("Disease Cloud", out var timerVisuals);
             var startingtime = 0;
             for (var round = 1; round <= 3; round++)
             {
@@ -33,8 +33,8 @@ namespace EQTool.Services.Handlers
                         PercentLeft = 100,
                         Target = $" Wave {round} Ring War",
                         Id = $"Round {i}",
-                        Rect = spell.Rect,
-                        Icon = spell.SpellIcon,
+                        Rect = timerVisuals.Rect,
+                        Icon = timerVisuals.SpellIcon,
                         TotalDuration = TimeSpan.FromSeconds(startingtime),
                         TotalRemainingDuration = TimeSpan.FromSeconds(startingtime),
                         UpdatedDateTime = DateTime.Now,
@@ -52,8 +52,8 @@ namespace EQTool.Services.Handlers
                     PercentLeft = 100,
                     Target = $" Wave {round} Ring War",
                     Id = $"-- Break --",
-                    Rect = spell.Rect,
-                    Icon = spell.SpellIcon,
+                    Rect = timerVisuals.Rect,
+                    Icon = timerVisuals.SpellIcon,
                     TotalDuration = TimeSpan.FromSeconds(startingtime),
                     TotalRemainingDuration = TimeSpan.FromSeconds(startingtime),
                     UpdatedDateTime = DateTime.Now,

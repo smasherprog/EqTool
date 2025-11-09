@@ -58,7 +58,7 @@ namespace EQTool.Models
             SpellName = spellName;
 
             // extract these data from the already-parsed spells file
-            var spell = spells.AllSpells.FirstOrDefault(a => a.name == spellName);
+            spells.AllSpells.TryGetValue(spellName, out var spell);
             Classes = spell.Classes;
             PetReagents = spell.PetReagents;
 

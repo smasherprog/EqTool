@@ -227,8 +227,11 @@ namespace EQTool.Models
 
         private TimerViewModel Create(HubCustomTimer e)
         {
-            var spellicon = spells.AllSpells.FirstOrDefault(a => a.name == e.SpellNameIcon) ??
-                spells.AllSpells.FirstOrDefault(a => a.name == "Feign Death");
+            if (!spells.AllSpells.TryGetValue(e.SpellNameIcon, out var spellicon))
+            {
+                spells.AllSpells.TryGetValue("Feign Death", out spellicon);
+            }
+
             return new TimerViewModel
             {
                 PercentLeft = 100,

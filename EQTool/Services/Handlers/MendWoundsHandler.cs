@@ -15,7 +15,13 @@ namespace EQTool.Services.Handlers
         {
             this.spellWindowViewModel = spellWindowViewModel;
             logEvents.MendWoundsEvent += LogEvents_MendWoundsEvent;
-            HealSpell = spells.AllSpells.FirstOrDefault(a => a.name == "Chloroplast") ?? spells.AllSpells.FirstOrDefault(a => a.name == "Regeneration");
+            
+            if (!spells.AllSpells.TryGetValue("Chloroplast", out var spell))
+            {
+                spells.AllSpells.TryGetValue("Regeneration", out spell);
+            }
+            
+            HealSpell = spell;
         }
 
         private void LogEvents_MendWoundsEvent(object sender, MendWoundsEvent e)

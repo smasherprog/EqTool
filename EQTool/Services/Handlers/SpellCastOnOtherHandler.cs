@@ -1,5 +1,6 @@
 ﻿using EQTool.Models;
 using System.Linq;
+using EQToolShared.Enums;
 
 namespace EQTool.Services.Handlers
 {
@@ -23,28 +24,36 @@ namespace EQTool.Services.Handlers
             var userCastSpellDateTime = activePlayer.UserCastSpellDateTime;
             if (userCastingSpell != null && userCastSpellDateTime != null)
             {
+                var isValidCast = false;
+                var target = e.TargetName;
                 var dt = e.TimeStamp - userCastSpellDateTime.Value;
                 if (dt.TotalMilliseconds >= (userCastingSpell.casttime - 600) && e.Spells.Any(a => a.name == userCastingSpell.name))
                 {
                     debugOutput.WriteLine($"Casting spell guess based on timer for {userCastingSpell.name} on Target: {e.TargetName}", OutputType.Spells);
-                    appDispatcher.DispatchUI(() =>
-                    {
-                        activePlayer.UserCastingSpell = null;
-                        activePlayer.UserCastSpellDateTime = null;
-                    });
-                    var target = e.TargetName;
+                    isValidCast = true;
                     if (SpellHandlerService.AllCharmSpells.Any(charmSpell => string.Equals(userCastingSpell.name, charmSpell, System.StringComparison.OrdinalIgnoreCase)))
                     {
                         target = EQSpells.SpaceYou;
                     }
-                    baseSpellYouCastingHandler.Handle(userCastingSpell, EQSpells.SpaceYou, target, 0, e.TimeStamp);
-                    return;
+                }
+                else if (activePlayer.Player.PlayerClass == PlayerClasses.Enchanter && userCastingSpell.name == "Alliance" && dt.TotalMilliseconds <= 0.2)
+                {
+                    debugOutput.WriteLine($"Handling Rod of Insidious Glamour Clicky ({userCastingSpell.name}) on Target: {e.TargetName}", OutputType.Spells);
+                    isValidCast = true;
                 }
                 else
                 {
-                    debugOutput.WriteLine($"Skipped dt >= {userCastingSpell.casttime - 600} AND {e.Spells.Any(a => a.name == userCastingSpell.name)}", OutputType.Spells);
+                    debugOutput.WriteLine($"Dubious player cast detected: dt >= {userCastingSpell.casttime - 600} for spell {e.Spells.Any(a => a.name == userCastingSpell.name)}", OutputType.Spells);
                     userCastingSpell = null;
                     userCastSpellDateTime = null;
+                    isValidCast = false;
+                }
+
+                if (isValidCast)
+                {
+                    activePlayer.FinishUserCastingSpell();
+                    baseSpellYouCastingHandler.Handle(userCastingSpell, EQSpells.SpaceYou, target, 0, e.TimeStamp);
+                    return;
                 }
             }
 

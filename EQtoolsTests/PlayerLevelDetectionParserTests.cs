@@ -25,6 +25,7 @@ namespace EQtoolsTests
             var line = "You have gained a level! Welcome to level 2!";
             logParser.Push(line, DateTime.Now);
             Assert.AreEqual(player.Player.Level, 2);
+            
             line = "You have gained a level! Welcome to level 60!";
             logParser.Push(line, DateTime.Now);
             Assert.AreEqual(player.Player.Level, 60);
@@ -35,6 +36,7 @@ namespace EQtoolsTests
         { 
             var line = "You have finished memorizing Aegolism.";
             logParser.Push(line, DateTime.Now);
+            
             Assert.AreEqual(player.Player.Level, 60);
             Assert.AreEqual(player.Player.PlayerClass, PlayerClasses.Cleric);
         }
@@ -43,9 +45,12 @@ namespace EQtoolsTests
         public void TestLevelClassDetectionThroughCasting()
         {
             var spells = container.Resolve<EQSpells>();
-            var s = spells.AllSpells.FirstOrDefault(a => a.name == "Aegolism"); 
+            spells.AllSpells.TryGetValue("Aegolism", out var s); 
+            Assert.IsNotNull(s);
+            
             var line = YouBeginCasting + "Aegolism";
             logParser.Push(line, DateTime.Now);
+            
             Assert.AreEqual(player.Player.Level, 60);
             Assert.AreEqual(player.Player.PlayerClass, PlayerClasses.Cleric);
         }
@@ -54,9 +59,12 @@ namespace EQtoolsTests
         public void TestLevelClassDetectionThroughCasting_DemiLich()
         {
             var spells = container.Resolve<EQSpells>();
-            var s = spells.AllSpells.FirstOrDefault(a => a.name == "Demi Lich");
+            spells.AllSpells.TryGetValue("Demi Lich", out var s);
+            Assert.IsNotNull(s);
+            
             var line = YouBeginCasting + "Demi Lich";
             logParser.Push(line, DateTime.Now);
+            
             Assert.AreEqual(player.Player.Level, 60);
             Assert.AreEqual(player.Player.PlayerClass, PlayerClasses.Necromancer);
         }
@@ -65,11 +73,14 @@ namespace EQtoolsTests
         public void TestLevelClassDetectionThroughCasting_EnchIllusion()
         {
             var spells = container.Resolve<EQSpells>();
-            var s = spells.AllSpells.FirstOrDefault(a => a.name == "Illusion: Dark Elf");
+            spells.AllSpells.TryGetValue("Illusion: Dark Elf", out var s);
+            Assert.IsNotNull(s);
+            
             var line = YouBeginCasting + "Shallow Breath"; 
             logParser.Push(line, DateTime.Now);
             line = YouBeginCasting + "Illusion: Dark Elf"; 
             logParser.Push(line, DateTime.Now);
+            
             Assert.AreEqual(player.Player.Level, 12);
             Assert.AreEqual(player.Player.PlayerClass, PlayerClasses.Enchanter);
         }
@@ -78,10 +89,13 @@ namespace EQtoolsTests
         public void TestLevelClassDetectionThroughCasting_EnchIllusion_ClassWarrior()
         {
             var spells = container.Resolve<EQSpells>();
-            var s = spells.AllSpells.FirstOrDefault(a => a.name == "Illusion: Dark Elf");
+            spells.AllSpells.TryGetValue("Illusion: Dark Elf", out var s);
+            Assert.IsNotNull(s);
+            
             var line = YouBeginCasting + "Illusion: Dark Elf";
             player.Player.PlayerClass = PlayerClasses.Warrior;
             logParser.Push(line, DateTime.Now); 
+            
             Assert.AreEqual(player.Player.PlayerClass, PlayerClasses.Warrior);
         }
 
@@ -89,7 +103,9 @@ namespace EQtoolsTests
         public void TestLevelDetectionThroughBackstab()
         {
             var message = "You backstab a willowisp for 56 points of damage.";
+            
             logParser.Push(message, DateTime.Now);
+            
             Assert.AreEqual(player.Player.PlayerClass, PlayerClasses.Rogue);
         }
 

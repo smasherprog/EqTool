@@ -35,8 +35,7 @@ namespace EQTool.Services.Parsing
             if (resistmessage)
             {
                 var spellname = line.Replace("You resist the ", string.Empty).Replace(" spell!", string.Empty).Trim();
-                var spell = spells.AllSpells.FirstOrDefault(a => a.name == spellname);
-                if (spell != null)
+                if (spells.AllSpells.TryGetValue(spellname, out var spell))
                 {
                     if (spellDurations.IsDragonRoarSpell(spell))
                     {
@@ -57,8 +56,7 @@ namespace EQTool.Services.Parsing
             if (resistmessage)
             {
                 var spellname = line.Replace("Your target resisted the ", string.Empty).Replace(" spell.", string.Empty).Trim();
-                var spell = spells.AllSpells.FirstOrDefault(a => a.name == spellname);
-                if (spell != null)
+                if (spells.AllSpells.TryGetValue(spellname, out var spell))
                 {
                     return new ResistSpellEvent { Spell = spell, isYou = false, TimeStamp = timestamp, Line = line, LineCounter = lineCounter };
                 }

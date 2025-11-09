@@ -225,14 +225,14 @@ namespace EQTool.UI
 
             Task.Run(async () =>
             {
-                await Task.Delay(150, debounceToken);
-                appDispatcher.DispatchUI(() =>
+                await Task.Delay(200, debounceToken);
+                if (!debounceToken.IsCancellationRequested)
                 {
-                    if (!debounceToken.IsCancellationRequested)
+                    appDispatcher.DispatchUI(() =>
                     {
                         baseViewModel.IsMouseOverTitleArea = true;
-                    }
-                });
+                    });
+                }
             }, debounceToken);
         }
 
@@ -244,7 +244,7 @@ namespace EQTool.UI
 
             Task.Run(async () =>
             {
-                await Task.Delay(150, debounceToken);
+                await Task.Delay(200, debounceToken);
                 appDispatcher.DispatchUI(() =>
                 {
                     if (!debounceToken.IsCancellationRequested)
