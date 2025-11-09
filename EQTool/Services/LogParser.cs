@@ -35,28 +35,32 @@ namespace EQTool.Services
              FileReader fileReader,
              LineParser lineParser
             )
-        { 
+        {
             this.eqLogParsers = eqLogParsers.ToList();
             //below I am forcing the order of parsers because the first one to handle the line wins.
             //So, the parsers should be ordered from most common to least common.
             var spellparsers = this.eqLogParsers.Where(a => a.GetType().Name.StartsWith("You") || a.GetType().Name.StartsWith("Spell")).ToList();
             foreach (var parser in spellparsers)
             {
-                this.eqLogParsers.Remove(parser);
+                _ = this.eqLogParsers.Remove(parser);
                 this.eqLogParsers.Insert(0, parser);
             }
 
             var commsparser = this.eqLogParsers.OfType<CommsParser>().FirstOrDefault();
-            this.eqLogParsers.Remove(commsparser);
+            _ = this.eqLogParsers.Remove(commsparser);
             this.eqLogParsers.Insert(0, commsparser);
 
+            var perparser = this.eqLogParsers.OfType<PetParser>().FirstOrDefault();
+            _ = this.eqLogParsers.Remove(perparser);
+            this.eqLogParsers.Insert(0, perparser);
+
             var factionparser = this.eqLogParsers.OfType<FactionParser>().FirstOrDefault();
-            this.eqLogParsers.Remove(factionparser);
+            _ = this.eqLogParsers.Remove(factionparser);
             this.eqLogParsers.Insert(0, factionparser);
 
             var damageparser = this.eqLogParsers.OfType<DamageParser>().FirstOrDefault();
-            this.eqLogParsers.Remove(damageparser);
-            this.eqLogParsers.Insert(0, damageparser); 
+            _ = this.eqLogParsers.Remove(damageparser);
+            this.eqLogParsers.Insert(0, damageparser);
 
             this.lineParser = lineParser;
             this.toolSettingsLoad = toolSettingsLoad;
