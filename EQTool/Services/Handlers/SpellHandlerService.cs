@@ -27,7 +27,7 @@ namespace EQTool.Services.Handlers
         };
 
         // spells that we wish to count how many times they have been cast
-        public static readonly List<string> SpellsThatNeedCounts = new List<string>()
+            public static readonly List<string> SpellsThatNeedCounts = new List<string>()
         {
             "Mana Sieve",
             "LowerElement",
@@ -47,6 +47,14 @@ namespace EQTool.Services.Handlers
             "Rage of Zek",
             "Blinding Luminance",
             "Flash of Light"
+        };
+
+        // bard spells for which we want resist/hit summaries
+        public static readonly List<string> BardSpellsThatNeedResists = new List<string>()
+        {
+            "Chords of Dissonance",
+            "Denon's Disruptive Discord",
+            "Selo's Consonant Chain"
         };
 
         // all the charm spells

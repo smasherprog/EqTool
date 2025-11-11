@@ -1302,5 +1302,52 @@ namespace EQTool.UI.SettingsComponents
                 _ = MessageBox.Show($"Failed to open link: {ex.Message}");
             }
         }
+
+        private void testBardCounts(object sender, RoutedEventArgs e)
+        {
+            var button = sender as System.Windows.Controls.Button;
+            if (!button?.IsEnabled ?? true)
+            {
+                return;
+            }
+
+            if (SettingsWindowData.ActivePlayer?.Player == null)
+            {
+                return;
+            }
+
+            // ensure overlay/audio are enabled for the test
+            SettingsWindowData.ActivePlayer.Player.BardCountTextAlert = true;
+            SettingsWindowData.ActivePlayer.Player.BardCountAudio = true;
+
+            // open overlay to show the visual test (matches other tests' behavior)
+            ((App)System.Windows.Application.Current).OpenOverLayWindow();
+
+            button.IsEnabled = false;
+            _ = Task.Factory.StartNew(() =>
+            {
+                try
+                {
+                    // simulate the sequence from your example
+                    // small sleeps to keep events inside the bard tracking window
+                    PushLog("Your Location is 206.11, -13.83, 3.44");
+
+                    for (int i = 0; i < 5; i++)
+                    {
+                        PushLog("A death beetle winces.");
+                    }
+
+                    // one resist
+                    PushLog("Your target resisted the Chords of Dissonance spell.");
+
+                    // optional skill gain message to match example
+                    PushLog("You have become better at Stringed Instruments! (58)");
+                }
+                finally
+                {
+                    appDispatcher.DispatchUI(() => { button.IsEnabled = true; });
+                }
+            });
+        }
     }
 }
