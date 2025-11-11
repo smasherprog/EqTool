@@ -252,6 +252,12 @@
                     <Button Content="▶" Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="testTellsYou" ToolTip="Test tells to you" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Bard Hit Counts" VerticalAlignment="Center" FontWeight="Bold" MinWidth="100"/>
+                    <CheckBox IsChecked="{Binding ActivePlayer.Player.BardCountTextAlert}" Click="Savesettings" MinWidth="75"></CheckBox>
+                    <CheckBox IsChecked="{Binding ActivePlayer.Player.BardCountAudio}" Click="Savesettings" MinWidth="30"></CheckBox>
+                    <Button Content="▶" Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="testBardCounts" ToolTip="Test Bard Hit Counts" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Run Speed" VerticalAlignment="Center" FontWeight="Bold"  MinWidth="100"/>
                     <CheckBox IsChecked="{Binding ActivePlayer.Player.RunSpeedOverlay}" Click="Savesettings" MinWidth="75"></CheckBox>
                 </StackPanel>

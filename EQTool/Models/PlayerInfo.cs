@@ -826,6 +826,28 @@ namespace EQTool.Models
             }
         }
 
+        private bool _BardCountTextAlert;
+        public bool BardCountTextAlert
+        {
+            get => _BardCountTextAlert;
+            set
+            {
+                _BardCountTextAlert = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _BardCountAudio;
+        public bool BardCountAudio
+        {
+            get => _BardCountAudio;
+            set
+            {
+                _BardCountAudio = value;
+                OnPropertyChanged();
+            }
+        }
+
         private bool? _BoatSchedule;
         public bool? BoatSchedule
         {
