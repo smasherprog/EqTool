@@ -52,9 +52,15 @@ namespace EQTool.Services.Handlers
                 }
             }
 
-            // "surrounded by chains of music" is a per-target message for some bard spells.
+            // "is bound by silver strands of music" is a per-target message for some bard spells.
             // Treat this as a hit.
-            if (e.Line.IndexOf("surrounded by chains of music", StringComparison.OrdinalIgnoreCase) >= 0)
+            if (e.Line.IndexOf("is bound by silver strands of music", StringComparison.OrdinalIgnoreCase) >= 0)
+            {
+                CreateOrAttachSession(e.TimeStamp, GetActiveSpellName(), hitOnly: true);
+                return;
+            }
+
+            if (e.Line.IndexOf("is bound in chords of music", StringComparison.OrdinalIgnoreCase) >= 0)
             {
                 CreateOrAttachSession(e.TimeStamp, GetActiveSpellName(), hitOnly: true);
                 return;

@@ -54,7 +54,8 @@ namespace EQTool.Services.Handlers
         {
             "Chords of Dissonance",
             "Denon's Disruptive Discord",
-            "Selo's Consonant Chain"
+            "Selo's Chords of Cessation",
+            "Selo's Assonant Strane"
         };
 
         // all the charm spells
