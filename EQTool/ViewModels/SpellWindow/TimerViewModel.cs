@@ -1,7 +1,6 @@
 ﻿using System;
 using EQTool.Models;
 using EQTool.Services;
-using EQToolShared.Extensions;
 
 namespace EQTool.ViewModels.SpellWindow
 {

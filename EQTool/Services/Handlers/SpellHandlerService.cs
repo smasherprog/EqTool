@@ -40,7 +40,7 @@ namespace EQTool.Services.Handlers
         };
 
         // all the charm spells
-        public static List<string> AllCharmSpells = new List<string>
+        public static readonly List<string> AllCharmSpells = new List<string>
         {
             "Dictate",
             "Charm",
@@ -63,7 +63,7 @@ namespace EQTool.Services.Handlers
         };
 
         // all the paci spells, which we treat like detrimental even though they aren't.
-        public static List<string> AllPaciSpells = new List<string>
+        public static readonly List<string> AllPaciSpells = new List<string>
         {
             "Lull Animal",
             "Calm Animal",
@@ -77,7 +77,7 @@ namespace EQTool.Services.Handlers
             "Wake of Tranquility"
         };
         
-        public static List<string> IllusionSpellPartialNames = new List<string>
+        public static readonly List<string> IllusionSpellPartialNames = new List<string>
         {
             "Illusion",
             "Boon of the Garou",
