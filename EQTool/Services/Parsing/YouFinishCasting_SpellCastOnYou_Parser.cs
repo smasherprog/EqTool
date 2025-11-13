@@ -63,15 +63,30 @@ namespace EQTool.Services.Parsing
                         });
                         return true;
                     }
-                    else if (userCastingSpell.name == "Theft of Thought" && line == "Your target has no mana to affect")
+                    else if (userCastingSpell.name == "Theft of Thought")
                     {
-                        debugOutput.WriteLine($"{userCastingSpell.name} Message: {line}", OutputType.Spells);
-                        logEvents.Handle(new YourSpellInterruptedEvent
+                        if (line == "Your target has no mana to affect")
                         {
-                            TimeStamp = timestamp,
-                            Line = line,
-                            LineCounter = lineCounter
-                        });
+                            debugOutput.WriteLine($"{userCastingSpell.name} Message: {line}", OutputType.Spells);
+                            logEvents.Handle(new YourSpellInterruptedEvent
+                            {
+                                TimeStamp = timestamp,
+                                Line = line,
+                                LineCounter = lineCounter
+                            });
+                        }
+                        else if (line.StartsWith("You try to cast a spell on") && line.EndsWith("but they are protected."))
+                        {
+                            debugOutput.WriteLine($"{userCastingSpell.name} Message: {line}", OutputType.Spells);
+                            logEvents.Handle(new YouFinishCastingEvent
+                            {
+                                Spell = userCastingSpell,
+                                TargetName = EQSpells.SpaceYou,
+                                TimeStamp = timestamp,
+                                Line = line,
+                                LineCounter = lineCounter
+                            });
+                        } 
                     }
                 }
             }

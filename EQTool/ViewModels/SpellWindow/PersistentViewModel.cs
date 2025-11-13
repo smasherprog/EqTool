@@ -20,7 +20,7 @@ namespace EQTool.ViewModels.SpellWindow
         Boat
     }
 
-    [DebuggerDisplay("Group = {DisplayGroup} Sorting = {GroupSorting} | Id = {Id}, Target = {Target}")]
+    [DebuggerDisplay("Group = '{DisplayGroup}' Sorting = '{GroupSorting}' | Id = '{Id}', Target = '{Target}'")]
     public abstract class PersistentViewModel : INotifyPropertyChanged
     {
         public SpellIcon Icon { get; set; }
@@ -46,11 +46,15 @@ namespace EQTool.ViewModels.SpellWindow
             set
             {
                 _target = value;
+                IsPlayerTarget = !_target.StartsWith(" ") || _target == EQSpells.SpaceYou;
                 OnPropertyChanged();
+                OnPropertyChanged(nameof(IsPlayerTarget));
                 OnPropertyChanged(nameof(DisplayGroup));
                 OnPropertyChanged(nameof(GroupSorting));
             }
         }
+
+        public bool IsPlayerTarget { get; private set; }
 
         public virtual string DisplayName => IsCategorizeById ? Target : Id;
         public virtual string DisplayGroup => IsCategorizeById ? Id : Target;
@@ -77,6 +81,10 @@ namespace EQTool.ViewModels.SpellWindow
             get => _IsCategorizeById;
             set
             {
+                if (_IsCategorizeById == value)
+                {
+                    return;
+                }
                 _IsCategorizeById = value;
                 UpdateTargetClassString();
                 

@@ -2,12 +2,13 @@
 using EQToolShared.Enums;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using System.Windows.Media;
 using EQTool.Services;
 
 namespace EQTool.ViewModels.SpellWindow
 {
-    [DebuggerDisplay("Group = {DisplayGroup} Sorting = {GroupSorting} | Spell = {Id}, Target = {Target}, Caster = {Caster}")]
+    [DebuggerDisplay("Group = '{DisplayGroup}' Sorting = '{GroupSorting}' | Spell = '{Id}', Target = '{Target}', Caster = '{Caster}'")]
     public class SpellViewModel : TimerViewModel
     {
         public override SpellViewModelType SpellViewModelType => SpellViewModelType.Spell;
@@ -72,5 +73,6 @@ namespace EQTool.ViewModels.SpellWindow
         
         public bool CastOnYou(PlayerInfo player) => Target == EQSpells.You || Target == EQSpells.SpaceYou || (player != null && Target == player.Name);
         public virtual bool CastByYou(PlayerInfo player) => Caster == EQSpells.You || Caster == EQSpells.SpaceYou || (player != null && Caster == player.Name);
+        public bool CastByYourClass(PlayerInfo player) => CastByYou(player) || (player.PlayerClass.HasValue && Classes.ContainsKey(player.PlayerClass.Value));
     }
 }

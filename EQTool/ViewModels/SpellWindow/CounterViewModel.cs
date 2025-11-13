@@ -7,7 +7,7 @@ using EQToolShared.Enums;
 
 namespace EQTool.ViewModels.SpellWindow
 {
-    [DebuggerDisplay("Group = {DisplayGroup} Sorting = {GroupSorting} | Count = {Count}, Spell = {Id}, Target = {Target}, Caster = {Caster}")]
+    [DebuggerDisplay("Group = '{DisplayGroup}' Sorting = '{GroupSorting}' | Count = '{Count}', Spell = '{Id}', Target = '{Target}', Caster = '{Caster}'")]
     public class CounterViewModel : SpellViewModel
     {
         public override SpellViewModelType SpellViewModelType => SpellViewModelType.Counter;
