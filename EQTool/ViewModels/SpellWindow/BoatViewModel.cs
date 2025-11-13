@@ -6,7 +6,7 @@ using EQToolShared;
 
 namespace EQTool.ViewModels.SpellWindow
 {
-    [DebuggerDisplay("Group = {DisplayGroup} Sorting = {GroupSorting} | Id = {Id}, Target = {Target}")]
+    [DebuggerDisplay("Group = '{DisplayGroup}' Sorting = '{GroupSorting}' | Id = '{Id}', Target = '{Target}'")]
     public class BoatViewModel : TimerViewModel
     {
         public BoatViewModel()

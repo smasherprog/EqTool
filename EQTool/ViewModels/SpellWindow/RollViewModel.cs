@@ -3,7 +3,7 @@ using EQTool.Services;
 
 namespace EQTool.ViewModels.SpellWindow
 {
-    [DebuggerDisplay("Group = {DisplayGroup} Sorting = {GroupSorting} | Id = {Id}, Target = {Target}")]
+    [DebuggerDisplay("Group = '{DisplayGroup}' Sorting = '{GroupSorting}' | Id = '{Id}', Target = '{Target}'")]
     public class RollViewModel : TimerViewModel
     {
         private int _Roll = 0;
