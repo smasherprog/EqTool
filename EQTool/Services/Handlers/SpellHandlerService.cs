@@ -1,12 +1,12 @@
-﻿using EQTool.Models;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using EQTool.Models;
 using EQTool.ViewModels;
 using EQTool.ViewModels.SpellWindow;
 using EQToolShared;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Windows.Media;
 using EQToolShared.Enums;
+using EQToolShared.Extensions;
 
 namespace EQTool.Services.Handlers
 {
@@ -76,6 +76,16 @@ namespace EQTool.Services.Handlers
             "Pacify",
             "Wake of Tranquility"
         };
+        
+        public static List<string> IllusionSpellPartialNames = new List<string>
+        {
+            "Illusion",
+            "Boon of the Garou",
+            "Form of the",
+            "Wolf Form",
+            "Call of Bones",
+            "Lich"
+        };
 
         private readonly SpellWindowViewModel spellWindowViewModel;
         private readonly ActivePlayer activePlayer;
@@ -103,7 +113,7 @@ namespace EQTool.Services.Handlers
             // Try and fix up the caster if it can be easily inferred and is empty.
             if (string.IsNullOrWhiteSpace(casterName))
             {
-                if (spellname.IndexOf("Discipline", StringComparison.OrdinalIgnoreCase) >= 0    // Is a discipline
+                if (spellname.Contains("Discipline", StringComparison.OrdinalIgnoreCase)
                 || spell.SpellType == SpellType.Self)   // Shouldn't be necessary tbh but doesn't hurt to have a failsafe here.
                 {
                     casterName = target;

@@ -1,8 +1,3 @@
-using EQTool.Models;
-using EQTool.Services;
-using EQTool.ViewModels.MobInfoComponents;
-using EQTool.ViewModels.SpellWindow;
-using EQToolShared;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -12,7 +7,13 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
+using EQTool.Models;
+using EQTool.Services;
+using EQTool.ViewModels.MobInfoComponents;
+using EQTool.ViewModels.SpellWindow;
+using EQToolShared;
 using EQToolShared.Enums;
+using EQToolShared.Extensions;
 
 namespace EQTool.ViewModels
 {
@@ -595,7 +596,7 @@ namespace EQTool.ViewModels
                     .Where(spell => string.Equals(spell.Id, possibleSpell, StringComparison.OrdinalIgnoreCase) && !spell.CastOnYou(activePlayer.Player))
                     .ToList();
                 
-                if (spells.Count() == 1)
+                if (spells.Count == 1)
                 {
                     _ = SpellList.Remove(spells.FirstOrDefault());
                 }
@@ -616,7 +617,7 @@ namespace EQTool.ViewModels
                     .Where(spell => possibleSpellNames.Any(name => string.Equals(spell.Id, name, StringComparison.OrdinalIgnoreCase)))
                     .ToList();
                 
-                if (spells.Count() == 1)
+                if (spells.Count == 1)
                 {
                     _ = SpellList.Remove(spells.FirstOrDefault());
                 }
@@ -633,10 +634,30 @@ namespace EQTool.ViewModels
             appDispatcher.DispatchUI(() =>
             {
                 var spells = SpellList.OfType<SpellViewModel>()
-                    .Where(spell => possibleSpellNames.Any(name => string.Equals(spell.Id, name, StringComparison.OrdinalIgnoreCase)) && spell.CastOnYou(activePlayer.Player))
+                    .Where(spell => possibleSpellNames.Any(name => spell.CastOnYou(activePlayer.Player) && string.Equals(spell.Id, name, StringComparison.OrdinalIgnoreCase)))
                     .ToList();
                 
-                if (spells.Count() == 1)
+                if (spells.Count == 1)
+                {
+                    _ = SpellList.Remove(spells.FirstOrDefault());
+                }
+            });
+        }
+        
+        public void TryRemoveAmbiguousSpellSelf(List<string> partialSpellNames)
+        {
+            if (!partialSpellNames.Any())
+            {
+                return;
+            }
+
+            appDispatcher.DispatchUI(() =>
+            {
+                var spells = SpellList.OfType<SpellViewModel>()
+                    .Where(spell => spell.CastOnYou(activePlayer.Player) && partialSpellNames.Any(name => spell.Id.Contains(name, StringComparison.OrdinalIgnoreCase)))
+                    .ToList();
+                
+                if (spells.Count == 1)
                 {
                     _ = SpellList.Remove(spells.FirstOrDefault());
                 }

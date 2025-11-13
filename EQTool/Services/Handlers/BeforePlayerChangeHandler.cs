@@ -16,7 +16,10 @@ namespace EQTool.Services.Handlers
 
         private void LogEvents_PayerChangedEvent(object sender, BeforePlayerChangedEvent e)
         {
-            this.savePlayerStateService.TrySaveYouSpellData();
+            spellWindowViewModel.TryRemoveAmbiguousSpellSelf(SpellHandlerService.IllusionSpellPartialNames);
+            spellWindowViewModel.TryRemoveUnambiguousSpellSelf(SpellHandlerService.AllCharmSpells);
+            savePlayerStateService.TrySaveYouSpellData();
+            
             spellWindowViewModel.ClearYouSpells();
             appDispatcher.DispatchUI(() =>
             { 
