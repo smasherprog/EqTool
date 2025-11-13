@@ -12,22 +12,12 @@ namespace EQTool.Services.Handlers
 {
     public class SpellHandlerService
     {
-        // spells with long recast times, that need a cooldown timer
-        public static readonly List<string> SpellsThatNeedCooldownTimers = new List<string>()
-        {
-            "Dictate",
-            "Divine Aura",
-            "Divine Barrier",
-            "Harmshield",
-            "Quivering Veil of Xarn",
-            "Harvest",
-            "Boon of the Garou",
-            "Wandering Mind",
-            "Theft of Thought"
-        };
-
+        // If it's this long they deserve a timer.
+        public static TimeSpan MinimumRecastForYouCooldownTimer = TimeSpan.FromSeconds(18);
+        public static TimeSpan MinimumRecastForOtherCooldownTimer = TimeSpan.FromSeconds(60);
+        
         // spells that we wish to count how many times they have been cast
-        public static readonly List<string> SpellsThatNeedCounts = new List<string>()
+        public static readonly List<string> SpellsThatNeedCounts = new List<string>
         {
             "Mana Sieve",
             "LowerElement",
@@ -50,7 +40,7 @@ namespace EQTool.Services.Handlers
         };
 
         // all the charm spells
-        public static List<string> AllCharmSpells = new List<string>()
+        public static List<string> AllCharmSpells = new List<string>
         {
             "Dictate",
             "Charm",
@@ -70,6 +60,21 @@ namespace EQTool.Services.Handlers
             "Cajole Undead",
             "Thrall of Bones",
             "Enslave Death"
+        };
+
+        // all the paci spells, which we treat like detrimental even though they aren't.
+        public static List<string> AllPaciSpells = new List<string>
+        {
+            "Lull Animal",
+            "Calm Animal",
+            "Harmony",
+            "Numb the Dead",
+            "Rest the Dead",
+            "Lull",
+            "Soothe",
+            "Calm",
+            "Pacify",
+            "Wake of Tranquility"
         };
 
         private readonly SpellWindowViewModel spellWindowViewModel;
@@ -95,6 +100,16 @@ namespace EQTool.Services.Handlers
                 isnpc = true;
             }
             
+            // Try and fix up the caster if it can be easily inferred and is empty.
+            if (string.IsNullOrWhiteSpace(casterName))
+            {
+                if (spellname.IndexOf("Discipline", StringComparison.OrdinalIgnoreCase) >= 0    // Is a discipline
+                || spell.SpellType == SpellType.Self)   // Shouldn't be necessary tbh but doesn't hurt to have a failsafe here.
+                {
+                    casterName = target;
+                }
+            }
+            
             AddCooldownTimerIfNecessary(spell, casterName, target, delayOffset);
             
             var needscount = SpellsThatNeedCounts.Contains(spellname);
@@ -115,41 +130,41 @@ namespace EQTool.Services.Handlers
             }
             else
             {
-                var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(spell, activePlayer.Player?.PlayerClass, activePlayer.Player?.Level));
+                var spellDuration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(spell, activePlayer.Player?.PlayerClass, activePlayer.Player?.Level));
                 if (spell.name == "Voiddance Discipline")
                 {
-                    spellduration = TimeSpan.FromSeconds(8);
+                    spellDuration = TimeSpan.FromSeconds(8);
                 }
                 else if (spell.name == "Weapon Shield Discipline")
                 {
-                    spellduration = TimeSpan.FromSeconds(20);
+                    spellDuration = TimeSpan.FromSeconds(20);
                 }
                 else if (spell.name == "Deftdance Discipline")
                 {
-                    spellduration = TimeSpan.FromSeconds(15);
-                }  
-               
-                spellduration = spellduration.Add(TimeSpan.FromMilliseconds(delayOffset));
-                if (spellduration.TotalSeconds > 0)
+                    spellDuration = TimeSpan.FromSeconds(15);
+                }
+                
+                var remainingDuration = spellDuration.Add(TimeSpan.FromMilliseconds(delayOffset));
+                if (spellDuration.TotalSeconds > 0)
                 {
-                    // figure out whether or not to overwrite/reset this timer
+                    // figure out whether to overwrite/reset this timer
                     // the only time we don't want to overWrite is 
                     //  - target is NPC, and
                     //  - detrimental spell, and
                     //  - TimerRecast in StartNewTimer mode
                     var overWrite = true;
-                    if (isnpc == true)
+                    if (isnpc && spell.benefit_detriment == SpellBenefitDetriment.Detrimental)
                     {
-                        if (spell.benefit_detriment == SpellBenefitDetriment.Detrimental)
-                        {
-                            // add an extra tick to duration, to ensure PigParse timers don't expire before the "Your XXX spell has worn off" message
-                            spellduration = spellduration.Add(TimeSpan.FromMilliseconds(6000));
-
-                            if (activePlayer?.Player?.TimerRecastSetting == TimerRecast.StartNewTimer)
-                            {
-                                overWrite = false;
-                            }
-                        }
+                        //TODO: This could be better. Maybe just do a time diff on the log timestamp vs datetime now?
+                        var serverTick = TimeSpan.FromMilliseconds(6000);
+                        spellDuration = spellDuration.Add(serverTick);
+                        remainingDuration = remainingDuration.Add(serverTick);
+                    }
+                    if (activePlayer?.Player?.TimerRecastSetting == TimerRecast.StartNewTimer
+                        && (spell.benefit_detriment == SpellBenefitDetriment.Detrimental
+                        || AllPaciSpells.Any(x => x.Equals(spellname, StringComparison.OrdinalIgnoreCase))))
+                    {
+                        overWrite = false;
                     }
                     
                     var vm = new SpellViewModel
@@ -165,8 +180,8 @@ namespace EQTool.Services.Handlers
                         Rect = spell.Rect,
                         Icon = spell.SpellIcon,
                         Classes = spell.Classes,
-                        TotalDuration = spellduration,
-                        TotalRemainingDuration = spellduration
+                        TotalDuration = spellDuration,
+                        TotalRemainingDuration = remainingDuration
                     };
 
                     // add the timer
@@ -177,22 +192,26 @@ namespace EQTool.Services.Handlers
 
         private void AddCooldownTimerIfNecessary(Spell spell, string casterName, string target, int delayOffset)
         {
-            var casterOrTargetClass = playerTrackerService.GetPlayer(TargetOnlyIfUnknownCaster(casterName, target.Trim()))?.PlayerClass;
-            var spellname = spell.name;
-            if (SpellsThatNeedCooldownTimers.Any(a => string.Equals(spell.name, a, StringComparison.OrdinalIgnoreCase)))
+            var spellName = spell.name;
+            var cooldownRecipient = TargetOnlyIfUnknownCaster(casterName, target);
+            var cooldownRecipientClass = playerTrackerService.GetPlayer(cooldownRecipient)?.PlayerClass;
+            var cooldown = TimeSpan.FromSeconds((int)(spell.recastTime / 1000.0)); 
+            
+            if ((cooldownRecipient == EQSpells.SpaceYou && cooldown >= MinimumRecastForYouCooldownTimer)
+            || (cooldownRecipient != EQSpells.SpaceYou && cooldown >= MinimumRecastForOtherCooldownTimer))
             {
                 spellWindowViewModel.TryAdd(new SpellViewModel
                 {
                     PercentLeft = 100,
-                    Id = $"{spellname} Cooldown",
-                    Target = TargetOnlyIfUnknownCaster(casterName, target),
-                    TargetClass = casterOrTargetClass,
+                    Id = $"{spellName} Cooldown",
+                    Target = cooldownRecipient,
+                    TargetClass = cooldownRecipientClass,
                     Caster = casterName,
                     Rect = spell.Rect,
                     Icon = spell.SpellIcon,
                     Classes = spell.Classes,
                     BenefitDetriment = SpellBenefitDetriment.Cooldown,
-                    TotalDuration = TimeSpan.FromSeconds((int)((spell.recastTime + delayOffset) / 1000.0)),
+                    TotalDuration = cooldown,
                     TotalRemainingDuration = TimeSpan.FromSeconds((int)((spell.recastTime + delayOffset) / 1000.0)),
                     UpdatedDateTime = DateTime.Now
                 });
@@ -259,9 +278,9 @@ namespace EQTool.Services.Handlers
                 spellWindowViewModel.TryAdd(new SpellViewModel
                 {
                     PercentLeft = 100,
-                    Id = spellname + " Cooldown",
-                    Target = TargetOnlyIfUnknownCaster(casterName, target),
-                    TargetClass = casterOrTargetClass,
+                    Id = $"{spellName} Cooldown",
+                    Target = cooldownRecipient,
+                    TargetClass = cooldownRecipientClass,
                     Caster = casterName,
                     Rect = spell.Rect,
                     Icon = spell.SpellIcon,

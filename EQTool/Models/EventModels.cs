@@ -254,6 +254,7 @@ namespace EQTool.Models
         public int MaxRoll { get; set; }
         public int Roll { get; set; }
     }
+    
     public class CompleteHealEvent : BaseLogParseEvent
     {
         public string Recipient { get; set; }
@@ -261,7 +262,13 @@ namespace EQTool.Models
         public string Position { get; set; }
         public string Caster { get; set; }
     }
+    
     public class YouHaveFinishedMemorizingEvent : BaseLogParseEvent
+    {
+        public string SpellName { get; set; }
+    }
+
+    public class YouForgetEvent : BaseLogParseEvent
     {
         public string SpellName { get; set; }
     }
@@ -269,6 +276,7 @@ namespace EQTool.Models
     public class YourSpellInterruptedEvent : BaseLogParseEvent
     {
     }
+    
     public class DragonRoarEvent : BaseLogParseEvent
     {
         public Spell Spell { get; set; }
