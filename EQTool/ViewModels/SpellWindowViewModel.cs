@@ -118,14 +118,27 @@ namespace EQTool.ViewModels
         {
             appDispatcher.DispatchUI(() =>
             {
-                var itemstoremove = SpellList.Where(a => (a is SpellViewModel vm) && vm.CastOnYou(activePlayer.Player)).ToList();
-                foreach (var item in itemstoremove)
-                {
+                var itemsToRemove = SpellList.Where(s => s is SpellViewModel vm && vm.CastOnYou(activePlayer.Player)).ToList();
+                foreach (var item in itemsToRemove)
                     _ = SpellList.Remove(item);
-                }
             });
         }
-
+        
+        public void ClearYouSpellsExceptPersistentCooldowns()
+        {
+            appDispatcher.DispatchUI(() =>
+            {
+                var nonDisciplinCooldowns = SpellList
+                    .Where(s => s is SpellViewModel vm
+                        && vm.CastOnYou(activePlayer.Player)
+                        && !(vm.BenefitDetriment == SpellBenefitDetriment.Cooldown && s.Id.Contains("Discipline", StringComparison.OrdinalIgnoreCase)))
+                    .ToList();
+                
+                foreach (var item in nonDisciplinCooldowns)
+                    _ = SpellList.Remove(item);
+            });
+        }
+        
         private LinearGradientBrush _WindowFrameBrush = null;
         public LinearGradientBrush WindowFrameBrush
         {
@@ -409,7 +422,7 @@ namespace EQTool.ViewModels
                 }
                 
                 // The Player class's spells should always be shown in raid mode
-                return !(player.PlayerClass.HasValue && IsClassSpellAllowed(s.Classes, new[] {player.PlayerClass.Value}));
+                return !s.CastByYourClass(activePlayer.Player);
             }
             
             switch (settings.SpellsFilter)

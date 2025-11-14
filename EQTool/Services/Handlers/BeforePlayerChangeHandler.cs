@@ -11,10 +11,10 @@ namespace EQTool.Services.Handlers
         {
             this.spellWindowViewModel = spellWindowViewModel;
             this.savePlayerStateService = savePlayerStateService;
-            logEvents.BeforePlayerChangedEvent += LogEvents_PayerChangedEvent;
+            logEvents.BeforePlayerChangedEvent += LogEvents_PlayerChangedEvent;
         }
 
-        private void LogEvents_PayerChangedEvent(object sender, BeforePlayerChangedEvent e)
+        private void LogEvents_PlayerChangedEvent(object sender, BeforePlayerChangedEvent e)
         {
             spellWindowViewModel.TryRemoveByPartialSpellNamesSelf(EQSpells.IllusionPartialNames);
             spellWindowViewModel.TryRemoveUnambiguousSpellSelf(EQSpells.Charms);
