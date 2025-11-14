@@ -82,6 +82,15 @@ namespace EQTool.Models
             "Wake of Tranquility"
         };
         
+        // bard spells for which we want resist/hit summaries
+        public static readonly List<string> BardSpellsThatNeedResists = new List<string>()
+        {
+            "Chords of Dissonance",
+            "Denon's Disruptive Discord",
+            "Selo's Chords of Cessation",
+            "Selo's Assonant Strane"
+        };
+        
         public static readonly List<string> IllusionPartialNames = new List<string>
         {
             "Illusion",
