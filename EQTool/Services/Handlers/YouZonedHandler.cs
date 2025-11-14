@@ -46,8 +46,8 @@ namespace EQTool.Services.Handlers
                 });
             }
             
-            spellWindowViewModel.TryRemoveAmbiguousSpellSelf(SpellHandlerService.IllusionSpellPartialNames);
-            spellWindowViewModel.TryRemoveUnambiguousSpellSelf(SpellHandlerService.AllCharmSpells);
+            spellWindowViewModel.TryRemoveByPartialSpellNamesSelf(EQSpells.IllusionPartialNames);
+            spellWindowViewModel.TryRemoveUnambiguousSpellSelf(EQSpells.Charms);
         }
     }
 }

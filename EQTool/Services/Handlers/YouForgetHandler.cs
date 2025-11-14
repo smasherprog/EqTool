@@ -25,7 +25,7 @@ namespace EQTool.Services.Handlers
                 return;
                 
             var durationSeconds = TimeSpan.FromSeconds((int)(spell.recastTime / 1000.0));
-            if (durationSeconds < SpellHandlerService.MinimumRecastForYouCooldownTimer)
+            if (durationSeconds < EQSpells.MinimumRecastForYouCooldownTimer)
                 return;
             
             spellWindowViewModel.TryRemoveUnambiguousSpellSelf(new List<string> { $"{e.SpellName} Cooldown" });

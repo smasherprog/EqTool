@@ -30,7 +30,7 @@ namespace EQTool.Services.Handlers
             }
                 
             var durationSeconds = TimeSpan.FromSeconds((int)(spell.recastTime / 1000.0));
-            if (durationSeconds < SpellHandlerService.MinimumRecastForYouCooldownTimer)
+            if (durationSeconds < EQSpells.MinimumRecastForYouCooldownTimer)
             {
                 return;
             }

@@ -16,8 +16,8 @@ namespace EQTool.Services.Handlers
 
         private void LogEvents_PayerChangedEvent(object sender, BeforePlayerChangedEvent e)
         {
-            spellWindowViewModel.TryRemoveAmbiguousSpellSelf(SpellHandlerService.IllusionSpellPartialNames);
-            spellWindowViewModel.TryRemoveUnambiguousSpellSelf(SpellHandlerService.AllCharmSpells);
+            spellWindowViewModel.TryRemoveByPartialSpellNamesSelf(EQSpells.IllusionPartialNames);
+            spellWindowViewModel.TryRemoveUnambiguousSpellSelf(EQSpells.Charms);
             savePlayerStateService.TrySaveYouSpellData();
             
             spellWindowViewModel.ClearYouSpells();

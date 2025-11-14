@@ -644,7 +644,7 @@ namespace EQTool.ViewModels
             });
         }
         
-        public void TryRemoveAmbiguousSpellSelf(List<string> partialSpellNames)
+        public void TryRemoveByPartialSpellNamesSelf(List<string> partialSpellNames)
         {
             if (!partialSpellNames.Any())
             {
@@ -657,10 +657,7 @@ namespace EQTool.ViewModels
                     .Where(spell => spell.CastOnYou(activePlayer.Player) && partialSpellNames.Any(name => spell.Id.Contains(name, StringComparison.OrdinalIgnoreCase)))
                     .ToList();
                 
-                if (spells.Count == 1)
-                {
-                    _ = SpellList.Remove(spells.FirstOrDefault());
-                }
+                _ = SpellList.Remove(spells.FirstOrDefault());
             });
         }
 

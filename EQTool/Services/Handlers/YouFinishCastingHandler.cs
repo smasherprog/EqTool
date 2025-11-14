@@ -6,12 +6,6 @@ namespace EQTool.Services.Handlers
 {
     public class YouFinishCastingHandler : BaseHandler
     {
-        private readonly List<string> SelfSpellsThatDontEmitCompletionLogMesssages = new List<string>(
-            SpellHandlerService.AllCharmSpells.Concat(new [] {
-            "Harmshield",
-            "Divine Aura",
-            "Harmony"
-        }));
         private readonly SpellHandlerService baseSpellYouCastingHandler;
 
         public YouFinishCastingHandler(SpellHandlerService baseSpellYouCastingHandler, BaseHandlerData baseHandlerData) : base(baseHandlerData)
@@ -33,7 +27,7 @@ namespace EQTool.Services.Handlers
                 if (dt.TotalMilliseconds > userCastingSpell.casttime + 1000)
                 {
                     var deltaOffset = (int)(userCastingSpell.casttime - dt.TotalMilliseconds);
-                    if (SelfSpellsThatDontEmitCompletionLogMesssages.Contains(userCastingSpell.name))
+                    if (EQSpells.SpellsThatDontEmitCompletionMessages.Contains(userCastingSpell.name))
                     {
                         debugOutput.WriteLine($"Casting spell guess based on timer for {userCastingSpell.name}", OutputType.Spells);
                         baseSpellYouCastingHandler.Handle(userCastingSpell, EQSpells.SpaceYou, EQSpells.SpaceYou, deltaOffset, e.TimeStamp);

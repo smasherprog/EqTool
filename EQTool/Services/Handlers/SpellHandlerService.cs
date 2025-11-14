@@ -12,81 +12,6 @@ namespace EQTool.Services.Handlers
 {
     public class SpellHandlerService
     {
-        // If it's this long they deserve a timer.
-        public static TimeSpan MinimumRecastForYouCooldownTimer = TimeSpan.FromSeconds(18);
-        public static TimeSpan MinimumRecastForOtherCooldownTimer = TimeSpan.FromSeconds(60);
-        
-        // spells that we wish to count how many times they have been cast
-        public static readonly List<string> SpellsThatNeedCounts = new List<string>
-        {
-            "Mana Sieve",
-            "LowerElement",
-            "Concussion",
-            "Flame Lick",
-            "Jolt",
-            "Cinder Jolt",
-            "Rage of Vallon",
-            "Waves of the Deep Sea",
-            "Anarchy",
-            "Breath of the Sea",
-            "Frostbite",
-            "Judgment of Ice",
-            "Storm Strike",
-            "Shrieking Howl",
-            "Static Strike",
-            "Rage of Zek",
-            "Blinding Luminance",
-            "Flash of Light"
-        };
-
-        // all the charm spells
-        public static readonly List<string> AllCharmSpells = new List<string>
-        {
-            "Dictate",
-            "Charm",
-            "Beguile",
-            "Cajoling Whispers",
-            "Allure",
-            "Boltran`s Agacerie",
-            "Befriend Animal",
-            "Charm Animals",
-            "Beguile Plants",
-            "Beguile Animals",
-            "Allure of the Wild",
-            "Call of Karana",
-            "Tunare's Request",
-            "Dominate Undead",
-            "Beguile Undead",
-            "Cajole Undead",
-            "Thrall of Bones",
-            "Enslave Death"
-        };
-
-        // all the paci spells, which we treat like detrimental even though they aren't.
-        public static readonly List<string> AllPaciSpells = new List<string>
-        {
-            "Lull Animal",
-            "Calm Animal",
-            "Harmony",
-            "Numb the Dead",
-            "Rest the Dead",
-            "Lull",
-            "Soothe",
-            "Calm",
-            "Pacify",
-            "Wake of Tranquility"
-        };
-        
-        public static readonly List<string> IllusionSpellPartialNames = new List<string>
-        {
-            "Illusion",
-            "Boon of the Garou",
-            "Form of the",
-            "Wolf Form",
-            "Call of Bones",
-            "Lich"
-        };
-
         private readonly SpellWindowViewModel spellWindowViewModel;
         private readonly ActivePlayer activePlayer;
         private readonly PlayerTrackerService playerTrackerService;
@@ -122,7 +47,7 @@ namespace EQTool.Services.Handlers
             
             AddCooldownTimerIfNecessary(spell, casterName, target, delayOffset);
             
-            var needscount = SpellsThatNeedCounts.Contains(spellname);
+            var needscount = EQSpells.SpellsThatNeedCounts.Contains(spellname);
             if (needscount)
             {
                 var vm = new CounterViewModel
@@ -172,7 +97,7 @@ namespace EQTool.Services.Handlers
                     }
                     if (activePlayer?.Player?.TimerRecastSetting == TimerRecast.StartNewTimer
                         && (spell.benefit_detriment == SpellBenefitDetriment.Detrimental
-                        || AllPaciSpells.Any(x => x.Equals(spellname, StringComparison.OrdinalIgnoreCase))))
+                        || EQSpells.Lulls.Any(x => x.Equals(spellname, StringComparison.OrdinalIgnoreCase))))
                     {
                         overWrite = false;
                     }
@@ -207,8 +132,8 @@ namespace EQTool.Services.Handlers
             var cooldownRecipientClass = playerTrackerService.GetPlayer(cooldownRecipient)?.PlayerClass;
             var cooldown = TimeSpan.FromSeconds((int)(spell.recastTime / 1000.0)); 
             
-            if ((cooldownRecipient == EQSpells.SpaceYou && cooldown >= MinimumRecastForYouCooldownTimer)
-            || (cooldownRecipient != EQSpells.SpaceYou && cooldown >= MinimumRecastForOtherCooldownTimer))
+            if ((cooldownRecipient == EQSpells.SpaceYou && cooldown >= EQSpells.MinimumRecastForYouCooldownTimer)
+            || (cooldownRecipient != EQSpells.SpaceYou && cooldown >= EQSpells.MinimumRecastForOtherCooldownTimer))
             {
                 spellWindowViewModel.TryAdd(new SpellViewModel
                 {

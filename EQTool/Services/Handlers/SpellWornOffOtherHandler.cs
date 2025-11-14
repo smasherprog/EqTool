@@ -16,7 +16,7 @@ namespace EQTool.Services.Handlers
 
         private void LogEvents_SpellWornOffOtherEvent(object sender, SpellWornOffOtherEvent e)
         {
-            if (SpellHandlerService.SpellsThatNeedCounts.Contains(e.SpellName))
+            if (EQSpells.SpellsThatNeedCounts.Contains(e.SpellName))
             {
                 return;
             }
@@ -44,8 +44,8 @@ namespace EQTool.Services.Handlers
             if (e.Line == "Your charm spell has worn off.")
             {
                 // go find the charm spell on the timer bar and remove it
-                spellWindowViewModel.TryRemoveUnambiguousSpellOther(SpellHandlerService.AllCharmSpells);
-                spellWindowViewModel.TryRemoveUnambiguousSpellSelf(SpellHandlerService.AllCharmSpells);
+                spellWindowViewModel.TryRemoveUnambiguousSpellOther(EQSpells.Charms);
+                spellWindowViewModel.TryRemoveUnambiguousSpellSelf(EQSpells.Charms);
 
                 // if the user has requested just to be notified for charm breaks
                 if (activePlayer?.Player?.CharmBreakAudio == true)

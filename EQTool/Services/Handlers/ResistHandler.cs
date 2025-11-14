@@ -43,7 +43,7 @@ namespace EQTool.Services.Handlers
                 });
             }
 
-            if (SpellHandlerService.SpellsThatNeedCounts.Any(a => a == e.Spell.name))
+            if (EQSpells.SpellsThatNeedCounts.Any(a => a == e.Spell.name))
             {
                 appDispatcher.DispatchUI(() =>
                 {
