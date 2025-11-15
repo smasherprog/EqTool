@@ -3,12 +3,13 @@ using EQTool.ViewModels;
 using EQTool.ViewModels.SpellWindow;
 using System;
 using System.Linq;
+using EQToolShared.Enums;
 
 namespace EQTool.Services.Handlers
 {
     public class MendWoundsHandler : BaseHandler
     {
-        private readonly Spell HealSpell;
+        private readonly Spell TimerVisuals;
         private readonly SpellWindowViewModel spellWindowViewModel;
 
         public MendWoundsHandler(SpellWindowViewModel spellWindowViewModel, EQSpells spells, BaseHandlerData baseHandlerData) : base(baseHandlerData)
@@ -21,7 +22,7 @@ namespace EQTool.Services.Handlers
                 spells.AllSpells.TryGetValue("Regeneration", out spell);
             }
             
-            HealSpell = spell;
+            TimerVisuals = spell;
         }
 
         private void LogEvents_MendWoundsEvent(object sender, MendWoundsEvent e)
@@ -31,13 +32,13 @@ namespace EQTool.Services.Handlers
             {
                 UpdatedDateTime = DateTime.Now,
                 PercentLeft = 100,
-                BenefitDetriment = HealSpell.benefit_detriment,
-                SpellType = HealSpell.SpellType,
-                Id = "Mend",
+                BenefitDetriment = SpellBenefitDetriment.Cooldown,
+                SpellType = SpellType.Self,
+                Id = "Mend Cooldown",
                 Target = EQSpells.SpaceYou,
-                Rect = HealSpell.Rect,
-                Icon = HealSpell.SpellIcon,
-                Classes = HealSpell.Classes,
+                Rect = TimerVisuals.Rect,
+                Icon = TimerVisuals.SpellIcon,
+                Classes = TimerVisuals.Classes,
                 TotalDuration = spellduration,
                 TotalRemainingDuration = spellduration,
                 TargetClass = EQToolShared.Enums.PlayerClasses.Monk

@@ -1,8 +1,3 @@
-using EQTool.Models;
-using EQTool.Services;
-using EQTool.ViewModels.MobInfoComponents;
-using EQTool.ViewModels.SpellWindow;
-using EQToolShared;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -12,7 +7,13 @@ using System.Linq;
 using System.Windows;
 using System.Windows.Data;
 using System.Windows.Media;
+using EQTool.Models;
+using EQTool.Services;
+using EQTool.ViewModels.MobInfoComponents;
+using EQTool.ViewModels.SpellWindow;
+using EQToolShared;
 using EQToolShared.Enums;
+using EQToolShared.Extensions;
 
 namespace EQTool.ViewModels
 {
@@ -117,14 +118,27 @@ namespace EQTool.ViewModels
         {
             appDispatcher.DispatchUI(() =>
             {
-                var itemstoremove = SpellList.Where(a => (a is SpellViewModel vm) && vm.CastOnYou(activePlayer.Player)).ToList();
-                foreach (var item in itemstoremove)
-                {
+                var itemsToRemove = SpellList.Where(s => s is SpellViewModel vm && vm.CastOnYou(activePlayer.Player)).ToList();
+                foreach (var item in itemsToRemove)
                     _ = SpellList.Remove(item);
-                }
             });
         }
-
+        
+        public void ClearYouSpellsExceptPersistentCooldowns()
+        {
+            appDispatcher.DispatchUI(() =>
+            {
+                var nonDisciplinCooldowns = SpellList
+                    .Where(s => s is SpellViewModel vm
+                        && vm.CastOnYou(activePlayer.Player)
+                        && !(vm.BenefitDetriment == SpellBenefitDetriment.Cooldown && s.Id.Contains("Discipline", StringComparison.OrdinalIgnoreCase)))
+                    .ToList();
+                
+                foreach (var item in nonDisciplinCooldowns)
+                    _ = SpellList.Remove(item);
+            });
+        }
+        
         private LinearGradientBrush _WindowFrameBrush = null;
         public LinearGradientBrush WindowFrameBrush
         {
@@ -408,7 +422,7 @@ namespace EQTool.ViewModels
                 }
                 
                 // The Player class's spells should always be shown in raid mode
-                return !(player.PlayerClass.HasValue && IsClassSpellAllowed(s.Classes, new[] {player.PlayerClass.Value}));
+                return !s.CastByYourClass(activePlayer.Player);
             }
             
             switch (settings.SpellsFilter)
@@ -595,7 +609,7 @@ namespace EQTool.ViewModels
                     .Where(spell => string.Equals(spell.Id, possibleSpell, StringComparison.OrdinalIgnoreCase) && !spell.CastOnYou(activePlayer.Player))
                     .ToList();
                 
-                if (spells.Count() == 1)
+                if (spells.Count == 1)
                 {
                     _ = SpellList.Remove(spells.FirstOrDefault());
                 }
@@ -616,7 +630,7 @@ namespace EQTool.ViewModels
                     .Where(spell => possibleSpellNames.Any(name => string.Equals(spell.Id, name, StringComparison.OrdinalIgnoreCase)))
                     .ToList();
                 
-                if (spells.Count() == 1)
+                if (spells.Count == 1)
                 {
                     _ = SpellList.Remove(spells.FirstOrDefault());
                 }
@@ -633,13 +647,30 @@ namespace EQTool.ViewModels
             appDispatcher.DispatchUI(() =>
             {
                 var spells = SpellList.OfType<SpellViewModel>()
-                    .Where(spell => possibleSpellNames.Any(name => string.Equals(spell.Id, name, StringComparison.OrdinalIgnoreCase)) && spell.CastOnYou(activePlayer.Player))
+                    .Where(spell => possibleSpellNames.Any(name => spell.CastOnYou(activePlayer.Player) && string.Equals(spell.Id, name, StringComparison.OrdinalIgnoreCase)))
                     .ToList();
                 
-                if (spells.Count() == 1)
+                if (spells.Count == 1)
                 {
                     _ = SpellList.Remove(spells.FirstOrDefault());
                 }
+            });
+        }
+        
+        public void TryRemoveByPartialSpellNamesSelf(List<string> partialSpellNames)
+        {
+            if (!partialSpellNames.Any())
+            {
+                return;
+            }
+
+            appDispatcher.DispatchUI(() =>
+            {
+                var spells = SpellList.OfType<SpellViewModel>()
+                    .Where(spell => spell.CastOnYou(activePlayer.Player) && partialSpellNames.Any(name => spell.Id.Contains(name, StringComparison.OrdinalIgnoreCase)))
+                    .ToList();
+                
+                _ = SpellList.Remove(spells.FirstOrDefault());
             });
         }
 

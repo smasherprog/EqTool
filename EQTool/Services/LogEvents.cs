@@ -268,10 +268,17 @@ namespace EQTool.Services
         {
             DragonRoarRemoteEvent?.Invoke(this, e);
         }
+        
         public event EventHandler<YouHaveFinishedMemorizingEvent> YouHaveFinishedMemorizingEvent;
         public void Handle(YouHaveFinishedMemorizingEvent e)
         {
             YouHaveFinishedMemorizingEvent?.Invoke(this, e);
+        }
+        
+        public event EventHandler<YouForgetEvent> YouForgetEvent;
+        public void Handle(YouForgetEvent e)
+        {
+            YouForgetEvent?.Invoke(this, e);
         }
 
         public event EventHandler<PlayerDisconnectReceivedRemoteEvent> PlayerDisconnectReceivedRemoteEvent;

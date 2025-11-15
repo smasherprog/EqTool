@@ -260,21 +260,21 @@ namespace EQTool.UI.SettingsComponents
             var listofspells = new List<CastTest>
             {
                                 
-                new CastTest { Spell = spells.AllSpells["Boon of the Clear Mind"], CasterName = EQSpells.SpaceYou, TargetName = EQSpells.SpaceYou },
+                new CastTest { Spell = spells.AllSpells["Gift of Pure Thought"], CasterName = EQSpells.SpaceYou, TargetName = EQSpells.SpaceYou },
                 new CastTest { Spell = spells.AllSpells["Overwhelming Splendor"], CasterName = EQSpells.SpaceYou, TargetName = EQSpells.SpaceYou },
                 new CastTest { Spell = spells.AllSpells["Gift of Brilliance"], CasterName = EQSpells.SpaceYou, TargetName = EQSpells.SpaceYou },
                 new CastTest { Spell = spells.AllSpells["Heroic Bond"], TargetName = EQSpells.SpaceYou},
                 new CastTest { Spell = spells.AllSpells["Dictate"], CasterName = EQSpells.SpaceYou, TargetName = EQSpells.SpaceYou },
                 
-                new CastTest { Spell = spells.AllSpells["Stonestance Discipline"], TargetName = "Pigy"},
-                new CastTest { Spell = spells.AllSpells["Defensive Discipline"], TargetName = "Huntor"},
+                new CastTest { Spell = spells.AllSpells["Stonestance Discipline"], CasterName = "Pigy", TargetName = "Pigy"},
+                new CastTest { Spell = spells.AllSpells["Visions of Grandeur"], CasterName = EQSpells.SpaceYou, TargetName = "Pigy" },
+                new CastTest { Spell = spells.AllSpells["Defensive Discipline"], CasterName = "Huntor", TargetName = "Huntor"},
 
                 new CastTest { Spell = spells.AllSpells["Heroic Bond"], TargetName = "Aasgard"},
                 new CastTest { Spell = spells.AllSpells["Chloroplast"], TargetName = "Aasgard"},
                 new CastTest { Spell = spells.AllSpells["Shield of Words"], TargetName = "Aasgard"},
-                new CastTest { Spell = spells.AllSpells["Boon of the Clear Mind"], CasterName = EQSpells.SpaceYou, TargetName = "Aasgard"},
-                new CastTest { Spell = spells.AllSpells["Gift of Brilliance"], CasterName = EQSpells.SpaceYou, TargetName = "Aasgard"},
-                new CastTest { Spell = spells.AllSpells["Defensive Discipline"], TargetName = "Aasgard"},
+                new CastTest { Spell = spells.AllSpells["Visions of Grandeur"], CasterName = EQSpells.SpaceYou, TargetName = "Aasgard" },
+                new CastTest { Spell = spells.AllSpells["Defensive Discipline"], CasterName = "Aasgard", TargetName = "Aasgard"},
 
                 new CastTest { Spell = spells.AllSpells["Theft of Thought"], CasterName = EQSpells.SpaceYou, TargetName = "a bad guy" },
                 new CastTest { Spell = spells.AllSpells["Mana Sieve"], CasterName = EQSpells.SpaceYou, TargetName = "a bad guy"},
@@ -309,6 +309,8 @@ namespace EQTool.UI.SettingsComponents
                 listofspells.Add(new CastTest { Spell = spells.AllSpells["Disease Cloud"], TargetName = item });
                 listofspells.Add(new CastTest { Spell = spells.AllSpells["Lesser Shielding"], TargetName = item });
                 listofspells.Add(new CastTest { Spell = spells.AllSpells["Shadow Compact"], TargetName = item });
+                listofspells.Add(new CastTest { Spell = spells.AllSpells["Gift of Pure Thought"], CasterName = EQSpells.SpaceYou, TargetName = item });
+                listofspells.Add(new CastTest { Spell = spells.AllSpells["Group Resist Magic"], CasterName = EQSpells.SpaceYou, TargetName = item });
                 listofspells.Add(new CastTest { Spell = spells.AllSpells["Heroic Bond"], TargetName = item });
                 listofspells.Add(new CastTest { Spell = spells.AllSpells["Improved Invis vs Undead"], TargetName = item });
                 listofspells.Add(new CastTest { Spell = spells.AllSpells["Grim Aura"], TargetName = item });

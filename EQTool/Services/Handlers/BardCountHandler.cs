@@ -34,7 +34,7 @@ namespace EQTool.Services.Handlers
             if (m.Success)
             {
                 var spellName = m.Groups["spell"].Value.Trim();
-                if (SpellHandlerService.BardSpellsThatNeedResists.Any(a => string.Equals(a, spellName, StringComparison.OrdinalIgnoreCase)))
+                if (EQSpells.BardSpellsThatNeedResists.Any(a => string.Equals(a, spellName, StringComparison.OrdinalIgnoreCase)))
                 {
                     CreateOrAttachSession(e.TimeStamp, spellName, isResist: true, forceCreate: true);
                     return;
@@ -45,7 +45,7 @@ namespace EQTool.Services.Handlers
             if (m.Success)
             {
                 var spellName = m.Groups["spell"].Value.Trim();
-                if (SpellHandlerService.BardSpellsThatNeedResists.Any(a => string.Equals(a, spellName, StringComparison.OrdinalIgnoreCase)))
+                if (EQSpells.BardSpellsThatNeedResists.Any(a => string.Equals(a, spellName, StringComparison.OrdinalIgnoreCase)))
                 {
                     CreateOrAttachSession(e.TimeStamp, spellName, isResist: true, forceCreate: true);
                     return;
@@ -78,7 +78,7 @@ namespace EQTool.Services.Handlers
             if (e == null || e.Spell?.name == null) return;
 
             var spellName = e.Spell.name;
-            if (SpellHandlerService.BardSpellsThatNeedResists.Any(a => string.Equals(a, spellName, StringComparison.OrdinalIgnoreCase)))
+            if (EQSpells.BardSpellsThatNeedResists.Any(a => string.Equals(a, spellName, StringComparison.OrdinalIgnoreCase)))
             {
                 CreateOrAttachSession(e.TimeStamp, spellName, isResist: true, forceCreate: true);
             }
@@ -90,8 +90,8 @@ namespace EQTool.Services.Handlers
             // If we know the spell name and it's either in the configured list or forced, try to attach/create a named session
             if (!string.IsNullOrWhiteSpace(possibleSpell) &&
                 (forceCreate
-                 || SpellHandlerService.SpellsThatNeedCounts.Any(a => a.Equals(possibleSpell, StringComparison.OrdinalIgnoreCase))
-                 || SpellHandlerService.BardSpellsThatNeedResists.Any(a => a.Equals(possibleSpell, StringComparison.OrdinalIgnoreCase))))
+                 || EQSpells.SpellsThatNeedCounts.Any(a => a.Equals(possibleSpell, StringComparison.OrdinalIgnoreCase))
+                 || EQSpells.BardSpellsThatNeedResists.Any(a => a.Equals(possibleSpell, StringComparison.OrdinalIgnoreCase))))
             {
                 lock (_lock)
                 {
@@ -107,7 +107,7 @@ namespace EQTool.Services.Handlers
                         return;
                     }
 
-                    // no named session found — try to find a recent anonymous session (created by winces/chains)
+                    // no named session found ï¿½ try to find a recent anonymous session (created by winces/chains)
                     var anon = _sessions.Where(a => string.IsNullOrWhiteSpace(a.SpellName)
                                                     && Math.Abs((timestamp - a.StartTime).TotalMilliseconds) <= TrackWindowMillis)
                                         .OrderByDescending(a => a.StartTime)
@@ -122,7 +122,7 @@ namespace EQTool.Services.Handlers
                     }
                 }
                     
-                // no existing session at all — create a new named session
+                // no existing session at all ï¿½ create a new named session
                 var ns = CreateSession(possibleSpell, timestamp);
                 if (hitOnly) ns.Hits = 1;
                 if (isResist) ns.Resists = 1;
@@ -146,7 +146,7 @@ namespace EQTool.Services.Handlers
                     return;
                 }
 
-                // no recent session — create a new anonymous session
+                // no recent session ï¿½ create a new anonymous session
                 var anon = CreateSession(null, timestamp);
                 if (hitOnly) anon.Hits = 1;
                 if (isResist) anon.Resists = 1;

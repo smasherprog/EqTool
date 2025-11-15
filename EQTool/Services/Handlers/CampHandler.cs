@@ -17,7 +17,10 @@ namespace EQTool.Services.Handlers
 
         private void LogEvents_CampEvent(object sender, CampEvent e)
         {
-            this.savePlayerStateService.TrySaveYouSpellData();
+            spellWindowViewModel.TryRemoveByPartialSpellNamesSelf(EQSpells.IllusionPartialNames);
+            spellWindowViewModel.TryRemoveUnambiguousSpellSelf(EQSpells.Charms);
+            savePlayerStateService.TrySaveYouSpellData();
+            
             spellWindowViewModel.ClearYouSpells();
             appDispatcher.DispatchUI(() =>
             {  

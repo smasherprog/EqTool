@@ -337,6 +337,7 @@
     <Compile Include="Services\Handlers\EnterWorldHandler.cs" />
     <Compile Include="Services\Handlers\AOWTimerHandler.cs" />
     <Compile Include="Services\Handlers\TriggerHandler.cs" />
+    <Compile Include="Services\Handlers\YouForgetHandler.cs" />
     <Compile Include="Services\IO\FileReader.cs" />
     <Compile Include="Services\DebugOutput.cs" />
     <Compile Include="Services\Handlers\GroupLeaderHandler.cs" />
@@ -373,6 +374,7 @@
     <Compile Include="Services\Parsing\PetParser.cs" />
     <Compile Include="Services\Parsing\BoatParser.cs" />
     <Compile Include="Services\Parsing\WelcomeParser.cs" />
+    <Compile Include="Services\Parsing\YouForgetParser.cs" />
     <Compile Include="Services\Parsing\YourItemBeginsToGlowParser.cs" />
     <Compile Include="Services\Parsing\RingWarParser.cs" />
     <Compile Include="Services\Parsing\SpellCastOnOtherParser.cs" />
