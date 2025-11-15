@@ -871,7 +871,8 @@ namespace EQTool.ViewModels
                     if (!targetsToReference.TryGetValue(target, out var spellsOnTarget))
                         continue;
 
-                    if (spellsOnTarget.Count(x => x.ColumnVisibility == Visibility.Visible) > instances.Count)
+                    var visibleSpellsOnTargetCount = spellsOnTarget.Count(x => x.ColumnVisibility == Visibility.Visible);
+                    if (visibleSpellsOnTargetCount > 1 && visibleSpellsOnTargetCount > targetsForSpell.Count())
                     {
                         shouldCategorizeById = false;
                         break;
