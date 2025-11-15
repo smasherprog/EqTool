@@ -58,6 +58,8 @@ namespace EQTool.ViewModels.SpellWindow
 
         public virtual string DisplayName => IsCategorizeById ? Target : Id;
         public virtual string DisplayGroup => IsCategorizeById ? Id : Target;
+        public virtual string ByIdDisplayGroup() => Id.TrimEnd(" Cooldown");   // For cooldowns, we want it to be grouped with the spell itself.
+        
         public virtual string GroupSorting
         {
             get

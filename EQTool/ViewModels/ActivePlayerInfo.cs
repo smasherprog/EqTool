@@ -205,24 +205,11 @@ namespace EQTool.ViewModels
 
         public void ClearUserCastingSpellLater(Spell spell, DateTime? castedOn)
         {
-            aoeDebounceTs?.Cancel();
-            aoeDebounceTs = new CancellationTokenSource();
-            var debounceToken = aoeDebounceTs.Token;
-
-            Task.Run(async () =>
+            appDispatcher.DebounceToUI(ref aoeDebounceTs, 200, ClearUserCastingSpellImmediately, () =>
             {
-                await Task.Delay(200, debounceToken);
                 var castTimeDiff = Math.Abs(((castedOn ?? DateTime.MaxValue) - (UserCastSpellDateTime ?? DateTime.MinValue)).TotalMilliseconds);
-                if (debounceToken.IsCancellationRequested || UserCastingSpell != spell || castTimeDiff > 200)
-                {
-                    return;
-                }
-
-                appDispatcher.DispatchUI(() =>
-                {
-                    ClearUserCastingSpellImmediately();
-                });
-            }, debounceToken);
+                return UserCastingSpell != spell || castTimeDiff > 200;
+            });
         }
 
         public void ClearUserCastingSpellImmediately()

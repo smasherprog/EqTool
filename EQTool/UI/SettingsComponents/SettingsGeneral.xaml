@@ -341,12 +341,12 @@
                     <GroupBox Header="Spell Grouping" Margin="0,5,0,5">
                         <StackPanel Orientation="Vertical" Margin="5">
                             <StackPanel Orientation="Horizontal" Margin="0,2,0,2">
-                                <TextBlock Text="Beneficial Spells" VerticalAlignment="Center" MinWidth="100" />
-                                <ComboBox SelectedItem="{Binding BeneficialSpellGroupingType}" ItemsSource="{Binding Source={markupExtensions:EnumBindingSource {x:Type models:SpellGroupingType}}}" MinWidth="100"></ComboBox>
+                                <TextBlock Text="Player Spells" VerticalAlignment="Center" MinWidth="100" />
+                                <ComboBox SelectedItem="{Binding PlayerSpellGroupingType}" ItemsSource="{Binding Source={markupExtensions:EnumBindingSource {x:Type models:SpellGroupingType}}}" MinWidth="100"/>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Margin="0,2,0,2">
-                                <TextBlock Text="Detrimental Spells" VerticalAlignment="Center" MinWidth="100" />
-                                <ComboBox SelectedItem="{Binding DetrimentalSpellGroupingType}" ItemsSource="{Binding Source={markupExtensions:EnumBindingSource {x:Type models:SpellGroupingType}}}" MinWidth="100"></ComboBox>
+                                <TextBlock Text="Npc Spells" VerticalAlignment="Center" MinWidth="100" />
+                                <ComboBox SelectedItem="{Binding NpcSpellGroupingType}" ItemsSource="{Binding Source={markupExtensions:EnumBindingSource {x:Type models:SpellGroupingType}, Exclude=BySpellExceptYou}}" MinWidth="100" />
                             </StackPanel>
                         </StackPanel>
                     </GroupBox>
@@ -357,7 +357,7 @@
                                    FontWeight="Bold"  
                                    MinWidth="100"/>
                         <ComboBox SelectedItem="{Binding ActivePlayer.Player.TimerRecastSetting}" 
-                                  ItemsSource="{Binding TimerRecastOptions}" 
+                                  ItemsSource="{Binding Source={markupExtensions:EnumBindingSource {x:Type models:TimerRecast}}}" 
                                   ToolTip="Hint: Select 'StartNewTimer' for targets with same name"
                                   Margin="0,5,0,0" 
                                   FontSize="14" 
@@ -481,7 +481,6 @@
                     </StackPanel>
                 </StackPanel>
             </ScrollViewer>
-           
         </TabItem>
 
         <TabItem Header="Debug" Name="DebugTab">

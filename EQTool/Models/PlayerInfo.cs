@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
+using EQTool.Services.TypeConverters;
 
 namespace EQTool.Models
 {
@@ -156,9 +157,12 @@ namespace EQTool.Models
         public int TotalSecondsLeft { get; set; }
     }
 
+    [TypeConverter(typeof(EnumDescriptionTypeConverter))]
     public enum TimerRecast
     {
+        [Description("Start New Timer")]
         StartNewTimer = 1,
+        [Description("Restart Current Timer")]
         RestartCurrentTimer
     }
 
@@ -177,7 +181,6 @@ namespace EQTool.Models
         }
 
         private PlayerDamage _BestPlayerDamage;
-
         public PlayerDamage BestPlayerDamage
         {
             get

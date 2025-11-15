@@ -226,40 +226,12 @@ namespace EQTool.UI
         
         protected void HoverZone_MouseEnter(object sender, MouseEventArgs e)
         {
-            hoverDebounceTs?.Cancel();
-            hoverDebounceTs = new CancellationTokenSource();
-            var debounceToken = hoverDebounceTs.Token;
-
-            Task.Run(async () =>
-            {
-                await Task.Delay(200, debounceToken);
-                if (!debounceToken.IsCancellationRequested)
-                {
-                    appDispatcher.DispatchUI(() =>
-                    {
-                        baseViewModel.IsMouseOverTitleArea = true;
-                    });
-                }
-            }, debounceToken);
+            appDispatcher.DebounceToUI(ref hoverDebounceTs, 250, () => baseViewModel.IsMouseOverTitleArea = true);
         }
 
         protected void HoverZone_MouseLeave(object sender, MouseEventArgs e)
         {
-            hoverDebounceTs?.Cancel();
-            hoverDebounceTs = new CancellationTokenSource();
-            var debounceToken = hoverDebounceTs.Token;
-
-            Task.Run(async () =>
-            {
-                await Task.Delay(200, debounceToken);
-                appDispatcher.DispatchUI(() =>
-                {
-                    if (!debounceToken.IsCancellationRequested)
-                    {
-                        baseViewModel.IsMouseOverTitleArea = false;
-                    }
-                });
-            }, debounceToken);
+            appDispatcher.DebounceToUI(ref hoverDebounceTs, 250, () => baseViewModel.IsMouseOverTitleArea = false);
         }
         
         public void UpdateShowInTaskbar()

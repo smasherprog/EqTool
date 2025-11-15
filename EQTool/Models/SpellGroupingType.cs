@@ -6,6 +6,8 @@ namespace EQTool.Models
     [TypeConverter(typeof(EnumDescriptionTypeConverter))]
     public enum SpellGroupingType
     {
+        [Description("Automatic")]
+        Automatic,
         [Description("By Target")]
         ByTarget,
         [Description("By Spell")]
