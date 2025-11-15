@@ -37,7 +37,7 @@ namespace EQTool.Services
             }
         }
 
-        public void DebounceToUI(ref CancellationTokenSource debounceCancellationSource, int delay, Action action) => DebounceToUI(ref debounceCancellationSource, delay, action, () => true);
+        public void DebounceToUI(ref CancellationTokenSource debounceCancellationSource, int delay, Action action) => DebounceToUI(ref debounceCancellationSource, delay, action, () => false);
         public void DebounceToUI(ref CancellationTokenSource debounceCancellationSource, int delay, Action action, Func<bool> shouldCancel)
         {
             debounceCancellationSource?.Cancel();
