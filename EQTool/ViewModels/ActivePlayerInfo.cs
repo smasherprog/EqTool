@@ -205,7 +205,7 @@ namespace EQTool.ViewModels
 
         public void ClearUserCastingSpellLater(Spell spell, DateTime? castedOn)
         {
-            appDispatcher.DebounceToUI(ref aoeDebounceTs, 200, ClearUserCastingSpellImmediately, () =>
+            appDispatcher.DebounceToUI(ref aoeDebounceTs, 200, ClearUserCastingSpellImmediately, shouldCancel: () =>
             {
                 var castTimeDiff = Math.Abs(((castedOn ?? DateTime.MaxValue) - (UserCastSpellDateTime ?? DateTime.MinValue)).TotalMilliseconds);
                 return UserCastingSpell != spell || castTimeDiff > 200;

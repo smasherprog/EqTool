@@ -61,10 +61,13 @@ namespace EQTool.ViewModels
             }
         }
         
-        public Dictionary<string, List<PersistentViewModel>> ActiveSpells = new Dictionary<string, List<PersistentViewModel>>();
-        public Dictionary<string, List<PersistentViewModel>> ActiveTargets = new Dictionary<string, List<PersistentViewModel>>();
-        public Dictionary<string, List<PersistentViewModel>> NpcTargets = new Dictionary<string, List<PersistentViewModel>>();
-        public Dictionary<string, List<PersistentViewModel>> PlayerTargets = new Dictionary<string, List<PersistentViewModel>>();
+        // These are all updated whenever the SpellList is modified in any way, using the same exact object references, so it's not as bad as it looks.
+        // The purpose of these lists is to assist our automatic grouping logic. Categorized lookups that are vastly more performant than using linq on lists make the whole thing much smoother.
+        private Dictionary<string, List<PersistentViewModel>> activeSpellIds = new Dictionary<string, List<PersistentViewModel>>();
+        private Dictionary<string, List<PersistentViewModel>> activeTargets = new Dictionary<string, List<PersistentViewModel>>();
+        private Dictionary<string, List<PersistentViewModel>> npcTargets = new Dictionary<string, List<PersistentViewModel>>();
+        private Dictionary<string, List<PersistentViewModel>> playerTargets = new Dictionary<string, List<PersistentViewModel>>();
+        private HashSet<SpellViewModel> recentlyImpactedSpells = new HashSet<SpellViewModel>();
         
         private void CreateTriggerList()
         {
@@ -790,6 +793,25 @@ namespace EQTool.ViewModels
             }
         }
 
+        private CancellationTokenSource timersModifiedDebounceTs;
+        private void QueueSpellGroupingReevaluation(int delay, bool findRelated = true)
+        {
+            // We need to queue the re-evaluation with a debounce cancellation because we don't want to be doing constant iteration over the whole list while it is actively being modified.
+            // There is also an issue when removing whole groups that can cause the removal to remove the wrong items because the ReevaluateRelatedGroupings function actively reshapes the groupings after every pass.
+            // This debounce is necessary to ensure we do not waste unnecessary time or cause undesirable side effects when doing bulk operations or when several timers fall off at roughly the same time.
+            
+            var evaluationItemCount = recentlyImpactedSpells.Count;
+            appDispatcher.DebounceToUI(ref timersModifiedDebounceTs, delay, () =>
+                {
+                    var safeCloneOfRecentlyImpacted = recentlyImpactedSpells.ToList();  // Clone it to ensure we are not working on a reference that is actively being modified.
+                    recentlyImpactedSpells.Clear();
+                    var spellsToReevaluate = findRelated ? GetAllRelatedSpells(safeCloneOfRecentlyImpacted) : safeCloneOfRecentlyImpacted;
+
+                    ReevaluateRelatedGroupings(spellsToReevaluate);
+                },
+                shouldCancel: () => evaluationItemCount != recentlyImpactedSpells.Count);
+        }
+        
         private void ReevaluateRelatedGroupings(IEnumerable<SpellViewModel> spellsToEvaluate)
         {
             var visibleSpells = spellsToEvaluate.Where(s => s.ColumnVisibility == Visibility.Visible).ToList();
@@ -835,7 +857,7 @@ namespace EQTool.ViewModels
             foreach (var s in spellsToEvaluate)
                 s.IsCategorizeById = false;
 
-            GroupByIdIfItMakesSense(NpcTargets, spellsToEvaluate);
+            GroupByIdIfItMakesSense(npcTargets, spellsToEvaluate);
         }
         
         private void ApplyPlayerGrouping(IEnumerable<SpellViewModel> spellsToEvaluate)
@@ -848,15 +870,15 @@ namespace EQTool.ViewModels
                 s.IsCategorizeById = false;
             
             // If we only have one or two targets, leave it alone.
-            var totalGlobalUniqueTargetCount = PlayerTargets.Keys.Count;
+            var totalGlobalUniqueTargetCount = playerTargets.Keys.Count;
             if (totalGlobalUniqueTargetCount < 3)
                 return;
             
-            GroupByIdIfItMakesSense(PlayerTargets, spellsToEvaluate);
+            GroupByIdIfItMakesSense(playerTargets, spellsToEvaluate);
             FixOrphanedTargets(spellsToEvaluate);
         }
 
-        private void GroupByIdIfItMakesSense(Dictionary<string, List<PersistentViewModel>> targetsToReference, IEnumerable<SpellViewModel> spellsToEvaluate)
+        private static void GroupByIdIfItMakesSense(Dictionary<string, List<PersistentViewModel>> targetsToReference, IEnumerable<SpellViewModel> spellsToEvaluate)
         {
             // Try to group by spell name when it would reduce the total number of visible groups
             var spellsById = spellsToEvaluate.GroupBy(s => s.Id).ToDictionary(g => g.Key, g => g.ToList());
@@ -913,24 +935,36 @@ namespace EQTool.ViewModels
         {
             var groupingType = GetGroupingType(spell);
             if (groupingType == SpellGroupingType.ByTarget)
-            {
                 spell.IsCategorizeById = false;
-            }
             else if (groupingType == SpellGroupingType.BySpell)
-            {
                 spell.IsCategorizeById = true;
-            }
             else if (groupingType == SpellGroupingType.BySpellExceptYou)
-            {
                 spell.IsCategorizeById = !spell.CastOnYou(activePlayer.Player);
-            }
+            
             // Automatic grouping handled elsewhere due to it needed to evaluate the whole list at once.
         }
         
-        private SpellGroupingType GetGroupingType(SpellViewModel spell)
-            => spell.IsPlayerTarget
-                ? settings.PlayerSpellGroupingType
-                : settings.NpcSpellGroupingType;
+        private void AddToActiveSpellLookups(SpellViewModel newItem)
+        {
+            activeTargets.SafelyAdd(newItem.Target, newItem);
+            activeSpellIds.SafelyAdd(newItem.Id, newItem);
+                
+            if (newItem.IsPlayerTarget)
+                playerTargets.SafelyAdd(newItem.Target, newItem);
+            else
+                npcTargets.SafelyAdd(newItem.Target, newItem);
+        }
+        
+        private void RemoveFromActiveSpellLookups(SpellViewModel oldItem)
+        {
+            activeTargets.SafelyRemove(oldItem.Target, oldItem);
+            activeSpellIds.SafelyAdd(oldItem.Id, oldItem);
+                
+            if (oldItem.IsPlayerTarget)
+                playerTargets.SafelyRemove(oldItem.Target, oldItem);
+            else
+                npcTargets.SafelyRemove(oldItem.Target, oldItem);
+        }
 
         private List<SpellViewModel> GetAllRelatedSpells(SpellViewModel spell)
             => GetAllRelatedSpells(new List<string> { spell.Id }, new List<string> { spell.Target });
@@ -947,7 +981,7 @@ namespace EQTool.ViewModels
             var relevantSpells = new HashSet<SpellViewModel>();
             foreach (var spellName in relevantSpellNames)
             {
-                if (!ActiveSpells.TryGetValue(spellName, out var list))
+                if (!activeSpellIds.TryGetValue(spellName, out var list))
                     continue;
 
                 foreach (var item in list)
@@ -959,7 +993,7 @@ namespace EQTool.ViewModels
 
             foreach (var target in relevantTargets)
             {
-                if (!ActiveTargets.TryGetValue(target, out var list))
+                if (!activeTargets.TryGetValue(target, out var list))
                     continue;
 
                 foreach (var item in list)
@@ -971,76 +1005,48 @@ namespace EQTool.ViewModels
 
             return relevantSpells.ToList();
         }
+                        
+        private bool IsAutomaticMode() => settings.PlayerSpellGroupingType == SpellGroupingType.Automatic || settings.NpcSpellGroupingType == SpellGroupingType.Automatic;
+        
+        private SpellGroupingType GetGroupingType(SpellViewModel spell)
+            => spell.IsPlayerTarget
+                ? settings.PlayerSpellGroupingType
+                : settings.NpcSpellGroupingType;
         
         private void SpellList_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
             if (e.NewItems == null && e.OldItems == null)
                 return;
 
-            var isAutomaticMode = settings.PlayerSpellGroupingType == SpellGroupingType.Automatic || settings.NpcSpellGroupingType == SpellGroupingType.Automatic;
+            var isAutomaticMode = IsAutomaticMode();
             
-            if (e.NewItems != null)
+            var newItems = (e.NewItems ?? new List<PersistentViewModel>()).OfType<SpellViewModel>().Where(x => x.ColumnVisibility == Visibility.Visible);
+            var oldItems = (e.OldItems ?? new List<PersistentViewModel>()).OfType<SpellViewModel>().Where(x => x.ColumnVisibility == Visibility.Visible);
+            
+            foreach (var newItem in newItems)
             {
-                foreach (var newItem in e.NewItems.OfType<SpellViewModel>())
-                {
-                    ActiveTargets.SafelyAdd(newItem.Target, newItem);
-                    ActiveSpells.SafelyAdd(newItem.Id, newItem);
-                    
-                    if (newItem.IsPlayerTarget)
-                        PlayerTargets.SafelyAdd(newItem.Target, newItem);
-                    else
-                        NpcTargets.SafelyAdd(newItem.Target, newItem);
+                AddToActiveSpellLookups(newItem);
 
-                    if (isAutomaticMode)
-                        recentlyImpactedSpells.Add(newItem);
-                    else
-                        HandleNonConciseGroupingForSpell(newItem);
-                }
+                if (isAutomaticMode)
+                    recentlyImpactedSpells.Add(newItem);
+                else
+                    HandleNonConciseGroupingForSpell(newItem);  // If not in automatic mode, we can just update each item individually as they come in.
             }
             
-            if (e.OldItems != null)
+            foreach (var oldItem in oldItems)
             {
-                foreach (var oldItem in e.OldItems.OfType<SpellViewModel>())
-                {
-                    ActiveTargets.SafelyRemove(oldItem.Target, oldItem);
-                    ActiveSpells.SafelyAdd(oldItem.Id, oldItem);
-                    
-                    if (oldItem.IsPlayerTarget)
-                        PlayerTargets.SafelyRemove(oldItem.Target, oldItem);
-                    else
-                        NpcTargets.SafelyRemove(oldItem.Target, oldItem);
-                    
-                    if (isAutomaticMode)
-                        recentlyImpactedSpells.Add(oldItem);
-                }
+                RemoveFromActiveSpellLookups(oldItem);
+
+                if (isAutomaticMode)
+                    recentlyImpactedSpells.Add(oldItem);
             }
 
-            if (!isAutomaticMode)
+            if (!recentlyImpactedSpells.Any() && !isAutomaticMode)
                 return;
 
             QueueSpellGroupingReevaluation(1000);
         }
         
-        private HashSet<SpellViewModel> recentlyImpactedSpells = new HashSet<SpellViewModel>();
-        private CancellationTokenSource listModifiedDebounceTs;
-        private void QueueSpellGroupingReevaluation(int delay)
-        {
-            // We need to queue the re-evaluation with a debounce cancellation because we don't want to be doing constant iteration over the whole list while it is actively being modified.
-            // There is also an issue when removing whole groups that can cause the removal to remove the wrong items because the ReevaluateRelatedGroupings function actively reshapes the groupings after every pass.
-            // This debounce is necessary to ensure we do not waste unnecessary time or cause undesirable side effects when doing bulk operations or when several timers fall off at roughly the same time.
-            
-            var evaluationItemCount = recentlyImpactedSpells.Count;
-            appDispatcher.DebounceToUI(ref listModifiedDebounceTs, delay,
-                () =>
-                {
-                    var safeCloneOfRecentlyImpacted = recentlyImpactedSpells.ToList();
-                    recentlyImpactedSpells.Clear();
-                    
-                    ReevaluateRelatedGroupings(GetAllRelatedSpells(safeCloneOfRecentlyImpacted));
-                },
-                () => evaluationItemCount != recentlyImpactedSpells.Count);
-        }
-
         private void Base_PropertyChanged(object sender, PropertyChangedEventArgs e)
         {
             if (e.PropertyName == nameof(IsCurrentlyClickThrough))
@@ -1054,8 +1060,17 @@ namespace EQTool.ViewModels
                 if (_SpellList == null)
                     return;
                 
-                recentlyImpactedSpells = _SpellList.OfType<SpellViewModel>().ToHashSet();
-                QueueSpellGroupingReevaluation(1250);
+                var isAutomaticMode = IsAutomaticMode();
+                if (isAutomaticMode)
+                {
+                    recentlyImpactedSpells = _SpellList.OfType<SpellViewModel>().ToHashSet();
+                    QueueSpellGroupingReevaluation(1250, findRelated: false);    // Don't need to find related since we're doing the whole list.
+                }
+                else
+                {
+                    recentlyImpactedSpells.Clear();
+                    ReevaluateRelatedGroupings(_SpellList.OfType<SpellViewModel>());
+                }
             }
         }
     }
