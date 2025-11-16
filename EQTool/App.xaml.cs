@@ -316,29 +316,71 @@ namespace EQTool
             else
             {
                 ToggleMenuButtons(true);
+                if (!EQToolSettings.SettingsWindowState.Closed)
+                {
+                    try
+                    {
+                        OpenSettingsWindow();
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.WriteLine($"Failed to open SettingsWindow: {ex}");
+                    }
+                }
                 if (!EQToolSettings.SpellWindowState.Closed)
                 {
-                    OpenSpellsWindow();
+                    try
+                    {
+                        OpenSpellsWindow();
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.WriteLine($"Failed to open SpellWindow: {ex}");
+                    }
                 }
                 if (!EQToolSettings.DpsWindowState.Closed)
                 {
-                    OpenDPSWindow();
+                    try
+                    {
+                        OpenDPSWindow();
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.WriteLine($"Failed to open DPSWindow: {ex}");
+                    }
                 }
                 if (!EQToolSettings.MapWindowState.Closed)
                 {
-                    OpenMapWindow();
-                }
-                if (!EQToolSettings.MobWindowState.Closed)
-                {
-                    OpenMobInfoWindow();
+                    try
+                    {
+                        OpenMapWindow();
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.WriteLine($"Failed to open MapWindow: {ex}");
+                    }
                 }
                 if (!EQToolSettings.OverlayWindowState.Closed)
                 {
-                    OpenOverLayWindow();
+                    try
+                    {
+                        OpenOverLayWindow();
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.WriteLine($"Failed to open OverlayWindow: {ex}");
+                    }
                 }
-                if (!EQToolSettings.SettingsWindowState.Closed)
+                if (!EQToolSettings.MobWindowState.Closed)
                 {
-                    OpenSettingsWindow();
+                    try
+                    {
+                        OpenMobInfoWindow();
+                    }
+                    catch (Exception ex)
+                    {
+                        Debug.WriteLine($"Failed to open MobInfoWindow: {ex}");
+                    }
                 }
             }
             
