@@ -27,21 +27,13 @@ namespace EQTool.ViewModels.SpellWindow
             {
                 _BenefitDetrimentFlag = value;
                 if (_BenefitDetrimentFlag == SpellBenefitDetriment.Beneficial)
-                {
                     ProgressBarColor = Brushes.MediumAquamarine;
-                }
                 else if (_BenefitDetrimentFlag == SpellBenefitDetriment.Detrimental)
-                {
                     ProgressBarColor = Brushes.OrangeRed;
-                }
                 else if (_BenefitDetrimentFlag == SpellBenefitDetriment.Cooldown)
-                {
                     ProgressBarColor = Brushes.SkyBlue;
-                }
                 else
-                {
                     ProgressBarColor = Brushes.DarkSeaGreen;
-                }
             }
         }
         
@@ -51,23 +43,13 @@ namespace EQTool.ViewModels.SpellWindow
             {
                 var groupName = DisplayGroup;
                 if ((groupName.StartsWith(" ") && groupName != EQSpells.SpaceYou) || (IsCategorizeById && BenefitDetriment == SpellBenefitDetriment.Detrimental))
-                {
                     return SortingPrefixes.Primary + groupName;
-                }
                 if (groupName == EQSpells.SpaceYou)
-                {
                     return SortingPrefixes.Secondary + groupName;
-                }
-                if (IsCategorizeById && BenefitDetriment == SpellBenefitDetriment.Cooldown)
-                {
+                if (IsCategorizeById && BenefitDetriment != SpellBenefitDetriment.Detrimental)
                     return SortingPrefixes.Tertiary + groupName;
-                }
-                if (IsCategorizeById && BenefitDetriment == SpellBenefitDetriment.Beneficial)
-                {
-                    return SortingPrefixes.Quaternary + groupName;
-                }
                 
-                return SortingPrefixes.Tertiary + groupName;
+                return SortingPrefixes.Quaternary + groupName;
             }
         }
         

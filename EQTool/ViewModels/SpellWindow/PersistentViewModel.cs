@@ -73,7 +73,7 @@ namespace EQTool.ViewModels.SpellWindow
                 {
                     return SortingPrefixes.Secondary + groupName;
                 }
-                return SortingPrefixes.Tertiary + groupName;
+                return SortingPrefixes.Quaternary + groupName;
             }
         }
         
