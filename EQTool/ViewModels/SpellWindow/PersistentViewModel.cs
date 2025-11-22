@@ -65,14 +65,11 @@ namespace EQTool.ViewModels.SpellWindow
             get
             {
                 var groupName = DisplayGroup;
-                if (groupName.StartsWith(" ") && groupName != EQSpells.SpaceYou)
-                {
+                if (!IsPlayerTarget)
                     return SortingPrefixes.Primary + groupName;
-                }
                 if (groupName == EQSpells.SpaceYou)
-                {
                     return SortingPrefixes.Secondary + groupName;
-                }
+                
                 return SortingPrefixes.Quaternary + groupName;
             }
         }

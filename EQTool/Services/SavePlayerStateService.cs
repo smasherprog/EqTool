@@ -37,7 +37,7 @@ namespace EQTool.Services
                     {
                         var before = activePlayer.Player.YouSpells ?? new List<YouSpells>();
                         activePlayer.Player.YouSpells = spellWindowViewModel.SpellList.OfType<SpellViewModel>()
-                            .Where(x => x.CastOnYou(activePlayer.Player))
+                            .Where(x => x.CastOnYou())
                             .Select(a => new YouSpells
                             {
                                 Name = a.Id,

@@ -54,9 +54,8 @@ namespace EQTool.ViewModels.SpellWindow
             get
             {
                 if (DisplayGroup == CustomTimer.CustomerTime)
-                {
                     return SortingPrefixes.Topmost + DisplayGroup;
-                }
+                
                 return base.GroupSorting;
             }
         }
