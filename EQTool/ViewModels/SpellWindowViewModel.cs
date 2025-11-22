@@ -870,26 +870,34 @@ namespace EQTool.ViewModels
         
         private void ReevaluateRelatedGroupings(IEnumerable<SpellViewModel> spellsToEvaluate)
         {
-            var visibleSpells = spellsToEvaluate.Where(s => s.ColumnVisibility == Visibility.Visible).ToList();
+            var visibleSpells = spellsToEvaluate.Where(s => s.ColumnVisibility == Visibility.Visible);
 
             var nonConciseGroupingSpells = new List<SpellViewModel>();
             if (settings.PlayerSpellGroupingType == SpellGroupingType.Automatic && settings.NpcSpellGroupingType == SpellGroupingType.Automatic)
             {
-                ApplyGrouping(visibleSpells);
+                var playerSpells = visibleSpells.Where(s => s.IsPlayerTarget);
+                //GroupingAlgorithm2(playerTargets, playerSpells);
+                GroupingAlgorithm1(playerTargets, playerSpells);
+                
+                var npcSpells = visibleSpells.Where(s => !s.IsPlayerTarget);
+                //GroupingAlgorithm2(npcTargets, npcSpells);
+                GroupingAlgorithm1(npcTargets, npcSpells);
             }
             else if (settings.PlayerSpellGroupingType == SpellGroupingType.Automatic)
             {
                 nonConciseGroupingSpells.AddRange(spellsToEvaluate.Where(s => !s.IsPlayerTarget));  // Handle em all, even the hidden ones
                 
                 var playerSpells = visibleSpells.Where(s => s.IsPlayerTarget);
-                ApplyGrouping(playerSpells);
+                //GroupingAlgorithm2(playerTargets, playerSpells);
+                GroupingAlgorithm1(playerTargets, playerSpells);
             }
             else if (settings.NpcSpellGroupingType == SpellGroupingType.Automatic)
             {
                 nonConciseGroupingSpells.AddRange(spellsToEvaluate.Where(s => s.IsPlayerTarget));  // Handle em all, even the hidden ones
                 
                 var npcSpells = visibleSpells.Where(s => !s.IsPlayerTarget);
-                ApplyGrouping(npcSpells);
+                //GroupingAlgorithm2(npcTargets, npcSpells);
+                GroupingAlgorithm1(npcTargets, npcSpells);
             }
             else
             {
@@ -900,20 +908,26 @@ namespace EQTool.ViewModels
                 HandleNonConciseGroupingForSpell(spell);
         }
         
-        private void ApplyGrouping(IEnumerable<SpellViewModel> spellsToEvaluate)
+        private void GroupingAlgorithm1(Dictionary<string, List<PersistentViewModel>> targetsToReference, IEnumerable<SpellViewModel> spellsToEvaluate)
         {
             if (!spellsToEvaluate.Any())
                 return;
             
-            // Try to group by spell name when it would reduce the total number of visible groups
             var spellsById = spellsToEvaluate.GroupBy(s => s.Id).ToDictionary(g => g.Key, g => g.ToList());
+            if (targetsToReference.Count < 3)
+            {
+                foreach (var spell in spellsToEvaluate)
+                    spell.IsCategorizeById = false;
+                
+                return;
+            }
+            
             foreach (var grp in spellsById)
             {
-                // var spellId = grp.Key;
                 var instances = grp.Value;
                 var targetsForSpell = instances.Select(x => x.Target).Distinct();
                 var targetCount = targetsForSpell.Count();
-            
+                
                 foreach (var spell in instances)
                 {
                     if (targetCount == 1)
@@ -923,7 +937,87 @@ namespace EQTool.ViewModels
                 }
             }
         }
+        
+        // I never could get this one to do what I wanted, so it's semi-abandoned for now.
+        // TODO: If we have no issues with the other algorithm after 02/01/2025, you should just delete this method and rename the GroupingAlgorithm1 method
+        private void GroupingAlgorithm2(Dictionary<string, List<PersistentViewModel>> targetsToReference, IEnumerable<SpellViewModel> spellsToEvaluate)
+        {
+            var spellsById = spellsToEvaluate.GroupBy(s => s.Id).ToDictionary(g => g.Key, g => g.ToList());
+            
+            // Try to group by spell name when it would reduce the total number of visible groups
+            foreach (var grp in spellsById)
+            {
+                var spellId = grp.Key;
+                var instances = grp.Value;
+                var targetsForSpell = instances.Select(x => x.Target).Distinct();
+                var isYourClassesSpell = instances.First().CastByYourClass(activePlayer.Player);
+                
+                var reasonsToDoItForTarget = new Dictionary<string, List<string>>();
+                var reasonsToDoItForSpell = new Dictionary<string, List<string>>();
+                var reasonsToNotDoItForTarget = new Dictionary<string, List<string>>();
+                var reasonsToNotDoItForSpell = new Dictionary<string, List<string>>();
+                
+                foreach (var target in targetsForSpell)
+                {
+                    if (!targetsToReference.TryGetValue(target, out var spellsOnTarget))
+                        continue;
+                    
+                    spellsOnTarget = spellsOnTarget.Where(x => x.ColumnVisibility == Visibility.Visible).ToList();  // Only want to use visible spells for calcs
+                    var spellsOnTargetCount =  spellsOnTarget.Count;
+                    var countWithoutThisSpell = spellsOnTarget.Count(x => x.Id != spellId);
+                    var targetsForSpellCount = targetsForSpell.Count();
 
+                    var stateSummary = $"{spellId} on {target} - Total Spells on Target: {spellsOnTargetCount} | Total Without this Spell: {countWithoutThisSpell} | Total Targets with this Spell: {targetsForSpellCount} | Class spell? {isYourClassesSpell}";
+
+                    if (countWithoutThisSpell == 1)
+                    {
+                        var reason = $"Removing this spell would orphan the target. Details: {stateSummary}";
+                        reasonsToNotDoItForTarget.SafelyAdd(target, reason);
+                        // reasonsToNotDoItForSpell.SafelyAdd(spellId, reason);
+                    }
+                    
+                    if (spellsOnTargetCount > 1 && spellsOnTargetCount > targetsForSpellCount)
+                    {
+                        var reason = $"Target with many spells, and their total spell count outweighs the number of targets for this spell. Details: {stateSummary}";
+                        reasonsToNotDoItForTarget.SafelyAdd(target, reason);
+                        // reasonsToNotDoItForSpell.SafelyAdd(spellId, reason);
+                    }
+
+                    if (spellsOnTargetCount <= targetsForSpellCount)
+                    {
+                        if (isYourClassesSpell && targetsForSpellCount > 1) // Slight lean towards grouping by spell when it's related to the player.
+                        {
+                            var reason = $"The player's spell cast on many targets. Details: {stateSummary}";
+                            reasonsToDoItForTarget.SafelyAdd(target, reason);
+                            reasonsToDoItForSpell.SafelyAdd(spellId, reason);
+                        }
+                    }
+                    else if (spellsOnTargetCount < targetsForSpellCount)
+                    {
+                        if (countWithoutThisSpell < 2)
+                        {
+                            var reason = $"Removing this spell from the target group would reduce the target spells to almost nothing. Details: {stateSummary}";
+                            reasonsToDoItForTarget.SafelyAdd(target, reason);
+                            reasonsToDoItForSpell.SafelyAdd(spellId, reason);
+                        }
+                    }
+                }
+            
+                foreach (var spell in instances)
+                {
+                    reasonsToDoItForTarget.TryGetValue(spell.Target, out var reasonsToDoItOnTarget);
+                    reasonsToDoItForSpell.TryGetValue(spell.Id, out var reasonsToDoItOnSpell);
+                    reasonsToNotDoItForTarget.TryGetValue(spell.Target, out var reasonsToNotDoItOnTarget);
+                    reasonsToNotDoItForSpell.TryGetValue(spell.Id, out var reasonsToNotDoItOnSpell);
+
+                    var reasonsToDoItCount = (reasonsToDoItOnTarget?.Count ?? 0) + (reasonsToDoItOnSpell?.Count ?? 0);
+                    var reasonsNotToDoIt =  (reasonsToNotDoItOnTarget?.Count ?? 0) + (reasonsToNotDoItOnSpell?.Count ?? 0);
+
+                    spell.IsCategorizeById = reasonsToDoItCount >= reasonsNotToDoIt;
+                }
+            }
+        }
+        
         private void HandleNonConciseGroupingForSpell(SpellViewModel spell)
         {
             var groupingType = GetGroupingType(spell);
@@ -941,7 +1035,7 @@ namespace EQTool.ViewModels
         {
             activeTargets.SafelyAdd(newItem.Target, newItem);
             activeSpellIds.SafelyAdd(newItem.Id, newItem);
-                
+            
             if (newItem.IsPlayerTarget)
                 playerTargets.SafelyAdd(newItem.Target, newItem);
             else
@@ -952,7 +1046,7 @@ namespace EQTool.ViewModels
         {
             activeTargets.SafelyRemove(oldItem.Target, oldItem);
             activeSpellIds.SafelyRemove(oldItem.Id, oldItem);
-                
+            
             if (oldItem.IsPlayerTarget)
                 playerTargets.SafelyRemove(oldItem.Target, oldItem);
             else

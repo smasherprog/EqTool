@@ -28,16 +28,16 @@ namespace EQtoolsTests
 
     public static class LogParserExtension
     {
-        public static DateTime PushAuthenticSpellCast(this LogParser logParser, SpellWindowViewModel spellWindowViewModel, Spell spell, string target, string caster = null, DateTime? dateTime = null)
-            => logParser.PushAuthenticAoESpellCast(spellWindowViewModel, spell, new List<string> { target }, EQSpells.You, dateTime);
+        public static DateTime PushAuthenticSpellCast(this LogParser logParser, Spell spell, string target, string caster = null, DateTime? dateTime = null)
+            => logParser.PushAuthenticAoESpellCast(spell, new List<string> { target }, caster: EQSpells.You, dateTime: dateTime);
         
-        public static DateTime PushAuthenticAoESpellCast(this LogParser logParser, SpellWindowViewModel spellWindowViewModel, Spell spell, List<string> targets, string caster = null, DateTime? dateTime = null)
+        public static DateTime PushAuthenticAoESpellCast(this LogParser logParser, Spell spell, List<string> targets, string caster = null, DateTime? dateTime = null)
         {
             var timeOfLog = dateTime ?? logParser.LastEntryDateTime;
             if (!string.IsNullOrWhiteSpace(caster))
             {
                 if (IsYou(caster))
-                    logParser.Push(spellWindowViewModel, $"You begin casting {spell.name}", timeOfLog);
+                    logParser.Push($"You begin casting {spell.name}", timeOfLog);
                 else if (!string.IsNullOrWhiteSpace(caster))
                     logParser.Push($"{caster} begins to cast a spell.", timeOfLog);
                 
@@ -45,21 +45,28 @@ namespace EQtoolsTests
             }
 
             foreach (var target in targets)
-                logParser.Push(spellWindowViewModel, IsYou(target) ? spell.cast_on_you : $"{target} {spell.cast_on_other}", timeOfLog);
+                logParser.Push(IsYou(target) ? spell.cast_on_you : $"{target} {spell.cast_on_other}", timeOfLog);
             
             return timeOfLog;
         }
 
         public static void Push(this LogParser logParser, SpellWindowViewModel spellWindowViewModel, string message, DateTime datetime)
         {
-            //this parsing is needed because the logger will truncate anything beyond a seconds worth of time
-            var d = datetime.ToString("G");
-            var logdatetime = DateTime.Parse(d);
-            var diff = logdatetime - logParser.LastEntryDateTime;
-            Debug.WriteLine($"BEG datetime {logdatetime} logdatetime {logParser.LastEntryDateTime}");
+            var logStyleDateTime = ToLogStyleDateTime(datetime);
+            Debug.WriteLine($"BEG datetime {logStyleDateTime} logdatetime {logParser.LastEntryDateTime}");
+            UpdateTriggers(logParser, spellWindowViewModel, datetime, message);
+            logParser.Push(message, datetime);
+            Debug.WriteLine($"END datetime {logStyleDateTime} logdatetime {logParser.LastEntryDateTime}");
+        }
+
+        public static void UpdateTriggers(this LogParser logParser, SpellWindowViewModel spellWindowViewModel, DateTime datetime, string reason = null)
+        {
+            var logStyleDateTime = ToLogStyleDateTime(datetime);
+            var diff = logStyleDateTime - logParser.LastEntryDateTime;
+            
             if (diff.TotalMilliseconds >= 1000)
             {
-                Debug.WriteLine($"Fast forwarding {diff.TotalMilliseconds}ms for log line '{message}'");
+                Debug.WriteLine($"Fast forwarding {diff.TotalMilliseconds}ms" + (string.IsNullOrWhiteSpace(reason) ? "" : $"for {reason}"));
                 var totaltime = diff.TotalMilliseconds;
                 var timeslices = totaltime / 100;
                 for (var time = 0; time < timeslices; time++)
@@ -69,14 +76,13 @@ namespace EQtoolsTests
                 }
 
                 if (totaltime > 0)
-                {
                     spellWindowViewModel.UpdateTriggers(totaltime);
-                }
             }
-            logParser.Push(message, datetime);
-            Debug.WriteLine($"END datetime {logdatetime} logdatetime {logParser.LastEntryDateTime}");
         }
 
+        //this parsing is needed because the logger will truncate anything beyond a seconds worth of time
+        private static DateTime ToLogStyleDateTime(DateTime datetime) => DateTime.Parse(datetime.ToString("G"));
+        
         private static bool IsYou(string caster) => caster == EQSpells.SpaceYou || caster == EQSpells.You;
     }
 }
