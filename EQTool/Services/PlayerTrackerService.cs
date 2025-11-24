@@ -1,12 +1,13 @@
-﻿using EQTool.Models;
-using EQTool.ViewModels;
-using EQTool.ViewModels.SpellWindow;
-using EQToolShared.Enums;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using EQTool.Models;
+using EQTool.ViewModels;
+using EQTool.ViewModels.SpellWindow;
+using EQToolShared.APIModels.PlayerControllerModels;
+using EQToolShared.Enums;
 
 namespace EQTool.Services
 {
@@ -19,9 +20,9 @@ namespace EQTool.Services
         private readonly SpellWindowViewModel spellWindowViewModel;
         private readonly IAppDispatcher appDispatcher;
 
-        private readonly Dictionary<string, EQToolShared.APIModels.PlayerControllerModels.Player> AllPlayers = new Dictionary<string, EQToolShared.APIModels.PlayerControllerModels.Player>(StringComparer.InvariantCultureIgnoreCase);
-        private readonly Dictionary<string, EQToolShared.APIModels.PlayerControllerModels.Player> PlayersInZones = new Dictionary<string, EQToolShared.APIModels.PlayerControllerModels.Player>(StringComparer.InvariantCultureIgnoreCase);
-        private readonly Dictionary<string, EQToolShared.APIModels.PlayerControllerModels.Player> DirtyPlayers = new Dictionary<string, EQToolShared.APIModels.PlayerControllerModels.Player>(StringComparer.InvariantCultureIgnoreCase);
+        private readonly Dictionary<string, Player> AllPlayers = new Dictionary<string, Player>(StringComparer.InvariantCultureIgnoreCase);
+        private readonly Dictionary<string, Player> PlayersInZones = new Dictionary<string, Player>(StringComparer.InvariantCultureIgnoreCase);
+        private readonly Dictionary<string, Player> DirtyPlayers = new Dictionary<string, Player>(StringComparer.InvariantCultureIgnoreCase);
         private string CurrentZone;
         private readonly System.Timers.Timer UITimer;
         private readonly object ContainerLock = new object();
@@ -61,7 +62,7 @@ namespace EQTool.Services
             }
         }
 
-        public EQToolShared.APIModels.PlayerControllerModels.Player GetPlayer(string name)
+        public Player GetPlayer(string name)
         {
             if (string.IsNullOrWhiteSpace(name) || name.StartsWith(" "))
             {
@@ -77,15 +78,24 @@ namespace EQTool.Services
             }
         }
 
+        public List<Player> GetNearbyClasses(PlayerClasses searchClass)
+        {
+            var otherPlayers = PlayersInZones.Values.Where(p => p?.PlayerClass == searchClass).Select(p => p).ToList();
+            if (activePlayer?.Player?.PlayerClass == searchClass)
+                otherPlayers.Add(activePlayer.Player.ToPlayer());
+            
+            return otherPlayers;
+        }
+
         private void UITimer_Elapsed(object sender, System.Timers.ElapsedEventArgs e)
         {
-            var playerstosync = new List<EQToolShared.APIModels.PlayerControllerModels.Player>();
+            var playerstosync = new List<Player>();
             if (activePlayer.Player?.Server == null)
             {
                 return;
             }
 
-            var playerswithoutclasses = new List<EQToolShared.APIModels.PlayerControllerModels.Player>();
+            var playerswithoutclasses = new List<Player>();
 
             lock (ContainerLock)
             {
@@ -154,7 +164,7 @@ namespace EQTool.Services
                         }
                     });
                 }
-                var players = new List<EQToolShared.APIModels.PlayerControllerModels.Player>();
+                var players = new List<Player>();
                 lock (ContainerLock)
                 {
                     players = AllPlayers.Values.Where(a => missingPlayerNames.Contains(a.Name)).ToList();

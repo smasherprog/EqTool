@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using EQTool.Services.TypeConverters;
+using EQToolShared.APIModels.PlayerControllerModels;
 
 namespace EQTool.Models
 {
@@ -870,8 +871,15 @@ namespace EQTool.Models
             }
         }
 
+        public Player ToPlayer() => new Player
+        {
+            Name = Name,
+            PlayerClass =  PlayerClass,
+            Level = Level,
+            GuildName = GuildName,
+        };
+        
         public event PropertyChangedEventHandler PropertyChanged;
-
         protected void OnPropertyChanged([CallerMemberName] string name = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using EQTool.Models;
 using EQTool.ViewModels;
 using EQTool.ViewModels.SpellWindow;
@@ -28,6 +29,7 @@ namespace EQTool.Services.Handlers
             
             casterName = CleanupCasterName(spell, casterName, targetName);
             targetName = CleanupTargetName(targetIsNpc, targetName);
+            casterName = TryGuessCasterNameForLayHandsIfNecessary(spell, casterName);
 
             var cooldownRecipient = TargetOnlyIfUnknownCaster(casterName, targetName);
             var cooldownRecipientClass = playerTrackerService.GetPlayer(cooldownRecipient)?.PlayerClass;
@@ -159,6 +161,37 @@ namespace EQTool.Services.Handlers
             }
 
             return baseTime;
+        }
+        
+        // TODO: This guesswork engine could be part of a greater whole in the future. For now it's just a lazy proof of concept specifically for layhands.
+        private string TryGuessCasterNameForLayHandsIfNecessary(Spell spell, string casterName)
+        {
+            if (spell.name != "Lay on Hands" || !string.IsNullOrWhiteSpace(casterName))
+                return casterName;
+
+            var potentialCasters = playerTrackerService.GetNearbyClasses(PlayerClasses.Paladin).Select(x => x.Name).ToList();
+            var existingCds = spellWindowViewModel.SpellList.Where(x => x.Id.Equals("Lay on Hands Cooldown"));
+            if (existingCds.Any())
+            {
+                foreach (var cd in existingCds.Where(cd => potentialCasters.Contains(cd.Target)))
+                    potentialCasters.Remove(cd.Target);
+            }
+
+            if (potentialCasters.Count == 1)
+            {
+                casterName = potentialCasters.First();
+                if (casterName == activePlayer?.Player?.Name)
+                    casterName = EQSpells.SpaceYou;
+            }
+            else if (potentialCasters.Count > 1)
+            {
+                if (activePlayer?.Player?.PlayerClass == PlayerClasses.Paladin)
+                    casterName = EQSpells.SpaceYou; // Just let the player have it. They can figure it out themselves.
+                else
+                    casterName = potentialCasters.First();
+            }
+            
+            return casterName;
         }
 
         private static string TargetOnlyIfUnknownCaster(string casterName, string target) => string.IsNullOrWhiteSpace(casterName) ? target : casterName;
