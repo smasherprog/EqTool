@@ -55,6 +55,6 @@ namespace EQTool.ViewModels.SpellWindow
         
         public bool CastOnYou() => Target == EQSpells.You || Target == EQSpells.SpaceYou;
         public virtual bool CastByYou() => Caster == EQSpells.You || Caster == EQSpells.SpaceYou || (SpellType == SpellType.Self && CastOnYou());
-        public bool CastByYourClass(PlayerInfo player) => player.PlayerClass.HasValue && Classes.ContainsKey(player.PlayerClass.Value) || CastByYou();
+        public bool CastByYourClass(PlayerInfo player) => player?.PlayerClass != null && Classes.ContainsKey(player.PlayerClass.Value) || CastByYou();
     }
 }

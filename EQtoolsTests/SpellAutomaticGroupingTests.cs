@@ -89,6 +89,38 @@ namespace EQtoolsTests
         }
         
         [TestMethod]
+        public void DuoBuffScenario1_AllByTarget()
+        {
+            /* 2 buff spells cast on 2 players, all cast by the player's class.
+             * Several orphaned spells on the player.
+             * Everything should be grouped by Target */
+            
+            // Arrange
+            settings.NpcSpellGroupingType = SpellGroupingType.ByTarget;
+            settings.PlayerSpellGroupingType = SpellGroupingType.Automatic;
+            
+            var groupBuffTargets = new List<string> { EQSpells.You, "Joe" };
+            var logTime = DateTime.Now.Subtract(TimeSpan.FromMinutes(1));
+
+            // Act
+            var expectations = new List<Expectation>();
+            logTime = PushAuthenticSpellCast(expectations, ExpectedGrouping.ByTarget, "Enlightenment", EQSpells.You, EQSpells.You, logTime);
+            logTime = PushAuthenticSpellCast(expectations, ExpectedGrouping.ByTarget, "Overwhelming Splendor", EQSpells.You, EQSpells.You, logTime);
+            logTime = PushAuthenticSpellCast(expectations, ExpectedGrouping.ByTarget, "Augment", EQSpells.You, EQSpells.You, logTime);
+            logTime = PushAuthenticSpellCast(expectations, ExpectedGrouping.ByTarget, "Gift of Brilliance", EQSpells.You, EQSpells.You, logTime);
+            logTime = PushAuthenticSpellCast(expectations, ExpectedGrouping.ByTarget, "Visions of Grandeur", "Aasgard", EQSpells.You, logTime);
+            
+            logTime = PushAuthenticAoESpellCast(expectations, ExpectedGrouping.ByTarget, "Group Resist Magic", groupBuffTargets, EQSpells.You, logTime);
+            logTime = PushAuthenticAoESpellCast(expectations, ExpectedGrouping.ByTarget, "Gift of Pure Thought", groupBuffTargets, EQSpells.You, logTime);
+            
+            logParser.UpdateTriggers(spellWindowViewModel, logTime);
+            SleepToLetHandlersProcess();
+            
+            // Assert
+            AssertSpellListMatchesExpectations(expectations);
+        }
+        
+        [TestMethod]
         public void ComplexBuffScenario1_PerformsAsExpected()
         {
             /* 4 orphan spells on you.

@@ -387,6 +387,7 @@
     <Compile Include="Services\Parsing\FactionParser.cs" />
     <Compile Include="Services\SavePlayerStateService.cs" />
     <Compile Include="Services\SortingPrefixes.cs" />
+    <Compile Include="Services\SpellGroupingEngine.cs" />
     <Compile Include="Services\TypeConverters\EnumDescriptionTypeConverter.cs" />
     <Compile Include="Services\UIRunner.cs" />
     <Compile Include="Services\UpdateRunner.cs" />
