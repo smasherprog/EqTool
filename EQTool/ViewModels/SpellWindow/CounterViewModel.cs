@@ -3,7 +3,6 @@ using System.Diagnostics;
 using System.Linq;
 using EQTool.Models;
 using EQTool.Services;
-using EQToolShared.Enums;
 
 namespace EQTool.ViewModels.SpellWindow
 {
