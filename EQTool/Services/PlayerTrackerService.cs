@@ -121,9 +121,9 @@ namespace EQTool.Services
             }
             appDispatcher.DispatchUI(() =>
             {
-                var spellsMissingClasses = spellWindowViewModel
-                    .SpellList.Where(x => x.SpellViewModelType == SpellViewModelType.Spell)
-                    .Where(spell => !spell.Target.StartsWith(" "))
+                var spellsMissingClasses = spellWindowViewModel.SpellList
+                    .OfType<SpellViewModel>()
+                    .Where(spell => spell.IsPlayerTarget)
                     .ToList();
                 var missingPlayerNames = spellsMissingClasses.Select(a => a.Target).Distinct().ToList();
                 if (missingPlayerNames.Any())

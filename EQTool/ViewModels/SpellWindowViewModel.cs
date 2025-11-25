@@ -118,7 +118,7 @@ namespace EQTool.ViewModels
         {
             appDispatcher.DispatchUI(() =>
             {
-                var itemsToRemove = SpellList.Where(s => s is SpellViewModel vm && vm.CastOnYou(activePlayer.Player)).ToList();
+                var itemsToRemove = SpellList.Where(s => s is SpellViewModel vm && vm.CastOnYou()).ToList();
                 foreach (var item in itemsToRemove)
                     _ = SpellList.Remove(item);
             });
@@ -130,7 +130,7 @@ namespace EQTool.ViewModels
             {
                 var nonDisciplinCooldowns = SpellList
                     .Where(s => s is SpellViewModel vm
-                        && vm.CastOnYou(activePlayer.Player)
+                        && vm.CastOnYou()
                         && !(vm.BenefitDetriment == SpellBenefitDetriment.Cooldown && s.Id.Contains("Discipline", StringComparison.OrdinalIgnoreCase)))
                     .ToList();
                 
@@ -407,7 +407,7 @@ namespace EQTool.ViewModels
         {
             if (RaidModeEnabled)
             {
-                if (s.CastByYou(player) || s.CastOnYou(player) || s.Target == CustomTimer.CustomerTime)
+                if (s.CastByYou() || s.CastOnYou() || s.Target == CustomTimer.CustomerTime)
                 {
                     return false;
                 }
@@ -427,9 +427,9 @@ namespace EQTool.ViewModels
             
             switch (settings.SpellsFilter)
             {
-                case SpellsFilterType.CastOnYou when !s.CastOnYou(player):
-                case SpellsFilterType.CastByYou when !s.CastByYou(player):
-                case SpellsFilterType.CastByOrOnYou when !(s.CastOnYou(player) || s.CastByYou(player)):
+                case SpellsFilterType.CastOnYou when !s.CastOnYou():
+                case SpellsFilterType.CastByYou when !s.CastByYou():
+                case SpellsFilterType.CastByOrOnYou when !(s.CastOnYou() || s.CastByYou()):
                     return true;
                 case SpellsFilterType.ByClass:
                     return !IsClassSpellAllowed(s.Classes, player.ShowSpellsForClasses);
@@ -454,7 +454,7 @@ namespace EQTool.ViewModels
             {
                 var spellsToRemove = SpellList
                     .OfType<SpellViewModel>()
-                    .Where(a => !a.CastOnYou(activePlayer.Player))
+                    .Where(a => !a.CastOnYou())
                     .ToList();
                 
                 foreach (var spell in spellsToRemove)
@@ -473,7 +473,7 @@ namespace EQTool.ViewModels
             {
                 var spellToRemove = SpellList
                     .OfType<SpellViewModel>()
-                    .Where(a => !a.CastByYou(activePlayer.Player))
+                    .Where(a => !a.CastByYou())
                     .ToList();
                 
                 foreach (var spell in spellToRemove)
@@ -606,7 +606,7 @@ namespace EQTool.ViewModels
             {
                 var spells = SpellList
                     .OfType<SpellViewModel>()
-                    .Where(spell => string.Equals(spell.Id, possibleSpell, StringComparison.OrdinalIgnoreCase) && !spell.CastOnYou(activePlayer.Player))
+                    .Where(spell => string.Equals(spell.Id, possibleSpell, StringComparison.OrdinalIgnoreCase) && !spell.CastOnYou())
                     .ToList();
                 
                 if (spells.Count == 1)
@@ -647,7 +647,7 @@ namespace EQTool.ViewModels
             appDispatcher.DispatchUI(() =>
             {
                 var spells = SpellList.OfType<SpellViewModel>()
-                    .Where(spell => possibleSpellNames.Any(name => spell.CastOnYou(activePlayer.Player) && string.Equals(spell.Id, name, StringComparison.OrdinalIgnoreCase)))
+                    .Where(spell => possibleSpellNames.Any(name => spell.CastOnYou() && string.Equals(spell.Id, name, StringComparison.OrdinalIgnoreCase)))
                     .ToList();
                 
                 if (spells.Count == 1)
@@ -667,7 +667,7 @@ namespace EQTool.ViewModels
             appDispatcher.DispatchUI(() =>
             {
                 var spells = SpellList.OfType<SpellViewModel>()
-                    .Where(spell => spell.CastOnYou(activePlayer.Player) && partialSpellNames.Any(name => spell.Id.Contains(name, StringComparison.OrdinalIgnoreCase)))
+                    .Where(spell => spell.CastOnYou() && partialSpellNames.Any(name => spell.Id.Contains(name, StringComparison.OrdinalIgnoreCase)))
                     .ToList();
                 
                 _ = SpellList.Remove(spells.FirstOrDefault());
@@ -796,7 +796,7 @@ namespace EQTool.ViewModels
             }
             else if (groupingType == SpellGroupingType.BySpellExceptYou)
             {
-                spell.IsCategorizeById = !spell.CastOnYou(activePlayer.Player);
+                spell.IsCategorizeById = !spell.CastOnYou();
             }
             // Originally was trying for a "MostConcise" or "Automatic" option here as well, but it was more trouble than it was worth. Maybe later.
         }
