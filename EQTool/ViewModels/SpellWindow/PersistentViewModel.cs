@@ -58,20 +58,19 @@ namespace EQTool.ViewModels.SpellWindow
 
         public virtual string DisplayName => IsCategorizeById ? Target : Id;
         public virtual string DisplayGroup => IsCategorizeById ? Id : Target;
+        public virtual string ByIdDisplayGroup() => Id.TrimEnd(" Cooldown");   // For cooldowns, we want it to be grouped with the spell itself.
+        
         public virtual string GroupSorting
         {
             get
             {
                 var groupName = DisplayGroup;
-                if (groupName.StartsWith(" ") && groupName != EQSpells.SpaceYou)
-                {
+                if (!IsPlayerTarget)
                     return SortingPrefixes.Primary + groupName;
-                }
                 if (groupName == EQSpells.SpaceYou)
-                {
                     return SortingPrefixes.Secondary + groupName;
-                }
-                return SortingPrefixes.Tertiary + groupName;
+                
+                return SortingPrefixes.Quaternary + groupName;
             }
         }
         

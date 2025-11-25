@@ -3,11 +3,15 @@ using EQTool.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 
 namespace EQTool.Services.Parsing
 {
     public class YouFinishCasting_SpellCastOnYou_Parser : IEqLogParser
     {
+        private const string protectedPattern = @"^You try to cast a spell on (?<target_name>[\w ]+)\, but they are protected\.";
+        private readonly Regex protectedRegex = new Regex(protectedPattern, RegexOptions.Compiled);
+        
         private readonly LogEvents logEvents;
         private readonly ActivePlayer activePlayer;
         private readonly EQSpells spells;
@@ -63,30 +67,31 @@ namespace EQTool.Services.Parsing
                         });
                         return true;
                     }
-                    else if (userCastingSpell.name == "Theft of Thought")
+                    else if (userCastingSpell.name == "Theft of Thought" && line == "Your target has no mana to affect")
                     {
-                        if (line == "Your target has no mana to affect")
+                        debugOutput.WriteLine($"{userCastingSpell.name} Message: {line}", OutputType.Spells);
+                        logEvents.Handle(new YourSpellInterruptedEvent
                         {
-                            debugOutput.WriteLine($"{userCastingSpell.name} Message: {line}", OutputType.Spells);
-                            logEvents.Handle(new YourSpellInterruptedEvent
-                            {
-                                TimeStamp = timestamp,
-                                Line = line,
-                                LineCounter = lineCounter
-                            });
-                        }
-                        else if (line.StartsWith("You try to cast a spell on") && line.EndsWith("but they are protected."))
+                            TimeStamp = timestamp,
+                            Line = line,
+                            LineCounter = lineCounter
+                        });
+                        return true;
+                    }
+                    
+                    var match = protectedRegex.Match(line);
+                    if (match.Success)
+                    {
+                        debugOutput.WriteLine($"{userCastingSpell.name} Message: {line}", OutputType.Spells);
+                        logEvents.Handle(new ResistSpellEvent
                         {
-                            debugOutput.WriteLine($"{userCastingSpell.name} Message: {line}", OutputType.Spells);
-                            logEvents.Handle(new YouFinishCastingEvent
-                            {
-                                Spell = userCastingSpell,
-                                TargetName = EQSpells.SpaceYou,
-                                TimeStamp = timestamp,
-                                Line = line,
-                                LineCounter = lineCounter
-                            });
-                        } 
+                            Spell = userCastingSpell,
+                            isYou = false,
+                            TimeStamp = timestamp,
+                            Line = line,
+                            LineCounter = lineCounter
+                        });
+                        return true;
                     }
                 }
             }

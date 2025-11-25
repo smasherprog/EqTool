@@ -127,6 +127,9 @@ namespace EQTool.Services.Handlers
 
         private void AddCooldownTimerIfNecessary(Spell spell, string casterName, string target, int delayOffset)
         {
+            if (spell.name.EndsWith("Recourse", StringComparison.OrdinalIgnoreCase))    // Recourse effects tend to mirror their counterpart and are already handled elsewhere.
+                return;
+            
             var spellName = spell.name;
             var cooldownRecipient = TargetOnlyIfUnknownCaster(casterName, target);
             var cooldownRecipientClass = playerTrackerService.GetPlayer(cooldownRecipient)?.PlayerClass;
