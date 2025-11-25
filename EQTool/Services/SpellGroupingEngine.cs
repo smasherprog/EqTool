@@ -12,9 +12,8 @@ namespace EQTool.Services
         private readonly PlayerInfo activePlayer;
         private readonly EQToolSettings settings;
 
-        // Lookups
         private readonly List<SpellViewModel> allSpells = new List<SpellViewModel>();
-        private readonly Dictionary<string, List<SpellViewModel>> activeSpellIds = new Dictionary<string, List<SpellViewModel>>(StringComparer.Ordinal);
+        private readonly Dictionary<string, List<SpellViewModel>> spellsById = new Dictionary<string, List<SpellViewModel>>(StringComparer.Ordinal);
         private readonly Dictionary<string, List<SpellViewModel>> spellsByTarget = new Dictionary<string, List<SpellViewModel>>(StringComparer.Ordinal);
 
         public SpellGroupingEngine(PlayerInfo activePlayer, EQToolSettings settings)
@@ -23,82 +22,115 @@ namespace EQTool.Services
             this.settings = settings;
         }
         
-        public void Recategorize(IEnumerable<SpellViewModel> deltaSpells = null)
+        public void Recategorize(IEnumerable<SpellViewModel> changedSpells = null)
         {
-            if (deltaSpells != null && deltaSpells.Any())
-                deltaSpells = AllSpellsRelatedToTargetOrId(deltaSpells);
+            if (changedSpells != null && changedSpells.Any())
+                changedSpells = GetConnectedSpells(changedSpells);
             
-            var spellsToGroup = GetSpellsToEvaluate(deltaSpells ?? allSpells);
-            if (!spellsToGroup.Any())
+            var visibleForEval = GetSpellsNeedingAutomaticGrouping(changedSpells ?? allSpells);
+            if (!visibleForEval.Any())
                 return;
 
-            RunFullCategorization(spellsToGroup);
+            PerformAutomaticGrouping(visibleForEval);
         }
 
-        private IEnumerable<SpellViewModel> AllSpellsRelatedToTargetOrId(IEnumerable<SpellViewModel> sourceSpells)
+        private IEnumerable<SpellViewModel> GetConnectedSpells(IEnumerable<SpellViewModel> changedSpells)
         {
-            var relevantTargets = sourceSpells.Select(s => s.Target).ToHashSet();
-            var relevantNames = sourceSpells.Select(s => s.Id).ToHashSet();
+            var seed = changedSpells as IList<SpellViewModel> ?? changedSpells.ToList();
+            if (!seed.Any())
+                return Enumerable.Empty<SpellViewModel>();
+            
+            var visitedIds = new HashSet<string>(StringComparer.Ordinal);
+            var visitedTargets = new HashSet<string>(StringComparer.Ordinal);
+            var connected = new HashSet<SpellViewModel>();
 
-            var related = new HashSet<SpellViewModel>();
-            foreach (var target in relevantTargets)
+            var idQueue = new Queue<string>();
+            var targetQueue = new Queue<string>();
+
+            foreach (var spell in seed)
             {
-                if (!spellsByTarget.TryGetValue(target, out var associated))
-                    continue;
+                connected.Add(spell);
 
-                foreach (var s in associated)
+                if (visitedIds.Add(spell.Id))
+                    idQueue.Enqueue(spell.Id);
+
+                if (visitedTargets.Add(spell.Target))
+                    targetQueue.Enqueue(spell.Target);
+            }
+
+            while (idQueue.Count > 0 || targetQueue.Count > 0)
+            {
+                while (targetQueue.Count > 0)
                 {
-                    relevantNames.Add(s.Id);    // Every spell on every related target has to be added to the pile.
-                    related.Add(s);
+                    var target = targetQueue.Dequeue();
+                    if (!spellsByTarget.TryGetValue(target, out var spellsOnTarget))
+                        continue;
+
+                    foreach (var spell in spellsOnTarget.Where(spell => connected.Add(spell)))
+                    {
+                        if (visitedIds.Add(spell.Id))
+                            idQueue.Enqueue(spell.Id);
+
+                        if (visitedTargets.Add(spell.Target))
+                            targetQueue.Enqueue(spell.Target);
+                    }
+                }
+
+                while (idQueue.Count > 0)
+                {
+                    var id = idQueue.Dequeue();
+                    if (!spellsById.TryGetValue(id, out var spellsWithId))
+                        continue;
+
+                    foreach (var spell in spellsWithId.Where(spell => connected.Add(spell)))
+                    {
+                        if (visitedTargets.Add(spell.Target))
+                            targetQueue.Enqueue(spell.Target);
+
+                        if (visitedIds.Add(spell.Id))
+                            idQueue.Enqueue(spell.Id);
+                    }
                 }
             }
 
-            foreach (var name in relevantNames)
-            {
-                if (!activeSpellIds.TryGetValue(name, out var associated))
-                    continue;
-
-                foreach (var s in associated)
-                    related.Add(s);
-            }
-                
-            return related.ToList();
+            return connected.ToList();
         }
 
-        public void AddSpells(IEnumerable<SpellViewModel> newSpells)
+        public void AddSpells(IEnumerable<SpellViewModel> spells)
         {
-            foreach (var spell in newSpells)
+            foreach (var spell in spells)
             {
                 allSpells.Add(spell);
-                activeSpellIds.SafelyAdd(spell.Id, spell);
+                spellsById.SafelyAdd(spell.Id, spell);
                 spellsByTarget.SafelyAdd(spell.Target, spell);
             }
         }
 
-        public void RemoveSpells(IEnumerable<SpellViewModel> removedSpells)
+        public void RemoveSpells(IEnumerable<SpellViewModel> spells)
         {
-            foreach (var spell in removedSpells)
+            foreach (var spell in spells)
             {
                 allSpells.Remove(spell);
-                activeSpellIds.SafelyRemove(spell.Id, spell);
+                spellsById.SafelyRemove(spell.Id, spell);
                 spellsByTarget.SafelyRemove(spell.Target, spell);
             }
         }
-        
-        public void HandleNonConciseGroupingForSpell(SpellViewModel spell)
+
+        public void ApplyNonAutomaticGroupingRule(SpellViewModel spell)
         {
-            var groupingType = GetGroupingType(spell);
-            if (groupingType == SpellGroupingType.ByTarget)
+            var mode = GetConfiguredGroupingMode(spell);
+
+            if (mode == SpellGroupingType.ByTarget)
                 spell.IsCategorizeById = false;
-            else if (groupingType == SpellGroupingType.BySpell)
+            else if (mode == SpellGroupingType.BySpell)
                 spell.IsCategorizeById = true;
-            else if (groupingType == SpellGroupingType.BySpellExceptYou)
+            else if (mode == SpellGroupingType.BySpellExceptYou)
                 spell.IsCategorizeById = !spell.CastOnYou();
             
             // Automatic grouping handled elsewhere due to it needed to evaluate the whole list at once.
         }
         
-        private IEnumerable<SpellViewModel> GetSpellsToEvaluate(IEnumerable<SpellViewModel> baselineSpells)
+        private IEnumerable<SpellViewModel> GetSpellsNeedingAutomaticGrouping(IEnumerable<SpellViewModel> spells)
         {
             var playerMode = settings.PlayerSpellGroupingType == SpellGroupingType.Automatic;
             var npcMode = settings.NpcSpellGroupingType == SpellGroupingType.Automatic;
@@ -106,10 +138,10 @@ namespace EQTool.Services
             if (!playerMode && !npcMode)
                 return Enumerable.Empty<SpellViewModel>();
 
-            return baselineSpells.Where(s => s.ColumnVisibility == Visibility.Visible && ((s.IsPlayerTarget && playerMode) || (!s.IsPlayerTarget && npcMode)));
+            return spells.Where(s => s.ColumnVisibility == Visibility.Visible && ((s.IsPlayerTarget && playerMode) || (!s.IsPlayerTarget && npcMode)));
         }
 
-        private SpellGroupingType GetGroupingType(SpellViewModel spell)
+        private SpellGroupingType GetConfiguredGroupingMode(SpellViewModel spell)
             => spell.IsPlayerTarget
                 ? settings.PlayerSpellGroupingType
                 : settings.NpcSpellGroupingType;
@@ -117,141 +149,156 @@ namespace EQTool.Services
         // -----------------------
         // Branch-and-bound algorithm. Determine what should be grouped by target and what should be grouped by Id.
         // -----------------------
-        private void RunFullCategorization(IEnumerable<SpellViewModel> visibleSpells)
+        private void PerformAutomaticGrouping(IEnumerable<SpellViewModel> visibleSpells)
         {
-            var context = new BatchAndBoundContext(activePlayer, visibleSpells);
+            var context = new BranchAndBoundContext(activePlayer, visibleSpells);
             
-            var totalUnassignedTargets = context.RemainingSpellsPerTarget.Count(c => c > 0);
-            ComputeSpellGroups(context, 0, 0, 0, totalUnassignedTargets);
+            var unassignedTargetCount = context.RemainingSpellsPerTarget.Count(x => x > 0);
+            ComputeOptimalGroups(context, 0, 0, 0, unassignedTargetCount);
 
             // Apply our chosen state
             foreach (var spell in visibleSpells)
-                spell.IsCategorizeById = context.BestChosenGroups.Contains(spell.Id);
+                spell.IsCategorizeById = context.SelectedIdGroups.Contains(spell.Id);
         }
 
-        private static void ComputeSpellGroups(BatchAndBoundContext context, int grpIndex, int chosenGroupCount, int chosenSpellCount, int unassignedTargetCount)
+        private static void ComputeOptimalGroups(
+            BranchAndBoundContext context,
+            int groupIndex,
+            int selectedGroupCount,
+            int totalSpellsSelectedById,
+            int remainingTargets)
         {
-            var stateKey = grpIndex + "|" + new string(context.GroupSelectionMask);
-            if (!context.VisitedStates.Add(stateKey))
+            var stateKey = groupIndex + "|" + new string(context.SelectionMask);
+            if (!context.Visited.Add(stateKey))
                 return;
 
-            var lowerBoundCategoryCount = chosenGroupCount + unassignedTargetCount;
-            if (lowerBoundCategoryCount > context.BestCategoryCount)
+            var lowerBound = selectedGroupCount + remainingTargets;
+            if (lowerBound > context.BestCategoryCount)
                 return;
 
-            if (grpIndex >= context.GroupInfo.Length)
+            if (groupIndex >= context.Groups.Length)
             {
-                var totalCategories = chosenGroupCount + unassignedTargetCount;
-                if (totalCategories < context.BestCategoryCount || (totalCategories == context.BestCategoryCount && chosenSpellCount > context.BestNameSpellCount))
+                var finalCategories = selectedGroupCount + remainingTargets;
+                if (finalCategories < context.BestCategoryCount ||
+                    (finalCategories == context.BestCategoryCount && totalSpellsSelectedById > context.BestNameSpellCount))
                 {
-                    context.BestCategoryCount = totalCategories;
-                    context.BestNameSpellCount = chosenSpellCount;
-                    context.BestChosenGroups.Clear();
-                    for (var i = 0; i < context.GroupInfo.Length; i++)
-                    {
-                        if (context.GroupSelectionMask[i] == '1')
-                            context.BestChosenGroups.Add(context.GroupInfo[i].Name);
-                    }
+                    context.BestCategoryCount = finalCategories;
+                    context.BestNameSpellCount = totalSpellsSelectedById;
+                    context.SelectedIdGroups.Clear();
+
+                    for (var i = 0; i < context.Groups.Length; i++)
+                        if (context.SelectionMask[i] == '1')
+                            context.SelectedIdGroups.Add(context.Groups[i].GroupId);
                 }
                 return;
             }
 
-            var group = context.GroupInfo[grpIndex];
+            var group = context.Groups[groupIndex];
             if (group.SpellCount > 1)
             {
-                context.GroupSelectionMask[grpIndex] = '1';
-                var decrementedTargets = new List<int>();
-                foreach (var tIdx in context.TargetsCoveredByGroup[grpIndex])
+                context.SelectionMask[groupIndex] = '1';
+                var touchedTargets = new List<int>();
+
+                foreach (var t in context.TargetIndicesPerGroup[groupIndex])
                 {
-                    context.RemainingSpellsPerTarget[tIdx]--;
-                    if (context.RemainingSpellsPerTarget[tIdx] == 0)
-                        unassignedTargetCount--;
-                    
-                    decrementedTargets.Add(tIdx);
+                    context.RemainingSpellsPerTarget[t]--;
+                    if (context.RemainingSpellsPerTarget[t] == 0)
+                        remainingTargets--;
+
+                    touchedTargets.Add(t);
                 }
 
-                ComputeSpellGroups(context, grpIndex + 1, chosenGroupCount + 1, chosenSpellCount + group.SpellCount, unassignedTargetCount);
+                ComputeOptimalGroups(
+                    context,
+                    groupIndex + 1,
+                    selectedGroupCount + 1,
+                    totalSpellsSelectedById + group.SpellCount,
+                    remainingTargets);
 
-                // Undo changes
-                foreach (var tIdx in decrementedTargets)
+                foreach (var t in touchedTargets)
                 {
-                    if (context.RemainingSpellsPerTarget[tIdx] == 0)
-                        unassignedTargetCount++;
-                    
-                    context.RemainingSpellsPerTarget[tIdx]++;
+                    if (context.RemainingSpellsPerTarget[t] == 0)
+                        remainingTargets++;
+                    context.RemainingSpellsPerTarget[t]++;
                 }
 
-                context.GroupSelectionMask[grpIndex] = '0';
+                context.SelectionMask[groupIndex] = '0';
             }
 
-            ComputeSpellGroups(context, grpIndex + 1, chosenGroupCount, chosenSpellCount, unassignedTargetCount);
+            ComputeOptimalGroups(context, groupIndex + 1, selectedGroupCount, totalSpellsSelectedById, remainingTargets);
         }
 
-        private class BatchAndBoundContext
+        private class BranchAndBoundContext
         {
-            public SpellGroupInfo[] GroupInfo { get; }
-            public List<int>[] TargetsCoveredByGroup { get; }
+            public SpellIdGroupInfo[] Groups { get; }
+            public List<int>[] TargetIndicesPerGroup { get; }
             public int[] RemainingSpellsPerTarget { get; }
-            public string[] AllTargets { get; }
-            public char[] GroupSelectionMask { get; }
-            public HashSet<string> VisitedStates { get; } = new HashSet<string>(StringComparer.Ordinal);
-            public HashSet<string> BestChosenGroups { get; } = new HashSet<string>();
+            public string[] TargetList { get; }
+            public char[] SelectionMask { get; }
+            public HashSet<string> Visited { get; } = new HashSet<string>(StringComparer.Ordinal);
+            public HashSet<string> SelectedIdGroups { get; } = new HashSet<string>();
             
             public int BestCategoryCount { get; set; } = int.MaxValue;
             public int BestNameSpellCount { get; set; } = -1;
 
-            public BatchAndBoundContext(PlayerInfo activePlayer, IEnumerable<SpellViewModel> visibleSpells)
+            public BranchAndBoundContext(PlayerInfo activePlayer, IEnumerable<SpellViewModel> visibleSpells)
             {
-                var spellsById = visibleSpells.GroupBy(s => s.Id).ToDictionary(g => g.Key, g => g.ToList());
+                var groupsById = visibleSpells
+                    .GroupBy(s => s.Id)
+                    .ToDictionary(g => g.Key, g => g.ToList());
 
-                GroupInfo = spellsById.Values
+                Groups = groupsById.Values
                     .Select(list =>
                     {
-                        var group = new SpellGroupInfo
+                        var info = new SpellIdGroupInfo
                         {
-                            Name = list[0].Id,
+                            GroupId = list[0].Id,
                             Spells = list,
                             SpellCount = list.Count,
                             DistinctTargetCount = list.Select(s => s.Target).Distinct().Count(),
-                            MatchesPlayerClass = list.Any(s => s.CastByYourClass(activePlayer))
+                            CastableByPlayerClass = list.Any(s => s.CastByYourClass(activePlayer))
                         };
-                        group.Impact = group.SpellCount - group.DistinctTargetCount;
-                        return group;
+                        info.PriorityScore = info.SpellCount - info.DistinctTargetCount;
+                        return info;
                     })
-                    .OrderByDescending(g => g.MatchesPlayerClass)
-                    .ThenByDescending(g => g.Impact)
+                    .OrderByDescending(g => g.CastableByPlayerClass)
+                    .ThenByDescending(g => g.PriorityScore)
                     .ThenByDescending(g => g.SpellCount)
                     .ToArray();
 
-                AllTargets = visibleSpells.Select(s => s.Target).Distinct().ToArray();
-                var targetIndexLookup = AllTargets.Select((t, i) => (t, i)).ToDictionary(x => x.t, x => x.i, StringComparer.Ordinal);
+                TargetList = visibleSpells.Select(s => s.Target).Distinct().ToArray();
+                var targetIndex = TargetList
+                    .Select((t, i) => (t, i))
+                    .ToDictionary(x => x.t, x => x.i, StringComparer.Ordinal);
 
-                TargetsCoveredByGroup = new List<int>[GroupInfo.Length];
-                RemainingSpellsPerTarget = new int[AllTargets.Length];
+                TargetIndicesPerGroup = new List<int>[Groups.Length];
+                RemainingSpellsPerTarget = new int[TargetList.Length];
 
-                for (var i = 0; i < GroupInfo.Length; i++)
+                for (var i = 0; i < Groups.Length; i++)
                 {
-                    var targetIndices = GroupInfo[i].Spells.Select(s => targetIndexLookup[s.Target]).Distinct().ToList();
-                    TargetsCoveredByGroup[i] = targetIndices;
+                    var indices = Groups[i].Spells
+                        .Select(s => targetIndex[s.Target])
+                        .Distinct()
+                        .ToList();
 
-                    foreach (var idx in targetIndices)
+                    TargetIndicesPerGroup[i] = indices;
+
+                    foreach (var idx in indices)
                         RemainingSpellsPerTarget[idx]++;
                 }
-
-                BestChosenGroups.Clear();
-                VisitedStates.Clear();
-                GroupSelectionMask = Enumerable.Repeat('0', GroupInfo.Length).ToArray();
+                
+                SelectionMask = Enumerable.Repeat('0', Groups.Length).ToArray();
             }
         }
 
-        private class SpellGroupInfo
+        private class SpellIdGroupInfo
         {
-            public string Name { get; set; }
+            public string GroupId { get; set; }
             public List<SpellViewModel> Spells { get; set; }
             public int SpellCount { get; set; }
             public int DistinctTargetCount { get; set; }
-            public bool MatchesPlayerClass { get; set; }
-            public int Impact { get; set; }
+            public bool CastableByPlayerClass { get; set; }
+            public int PriorityScore { get; set; }
         }
     }
 }

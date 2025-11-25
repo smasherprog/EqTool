@@ -65,7 +65,7 @@ namespace EQtoolsTests
         [TestMethod]
         public void BasicGroupBuffScenario1_AllById()
         {
-            /* 2 group buff spells cast on 5 players, all cast by the player's class.
+            /* 2 group buff spells cast on 5 players, all cast by your class.
              * No orphaned spells of any kind.
              * Everything should be grouped by Spell Id */
             
@@ -91,8 +91,8 @@ namespace EQtoolsTests
         [TestMethod]
         public void DuoBuffScenario1_AllByTarget()
         {
-            /* 2 buff spells cast on 2 players, all cast by the player's class.
-             * Several orphaned spells on the player.
+            /* 2 buff spells cast on 2 players, all cast by your class.
+             * Several orphaned spells on you.
              * Everything should be grouped by Target */
             
             // Arrange

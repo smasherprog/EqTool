@@ -809,7 +809,7 @@ namespace EQTool.ViewModels
             {
                 // Non-automatic mode: handle individually
                 foreach (var spell in SpellList.OfType<SpellViewModel>())
-                    engine.HandleNonConciseGroupingForSpell(spell);
+                    engine.ApplyNonAutomaticGroupingRule(spell);
             }
         }
         
