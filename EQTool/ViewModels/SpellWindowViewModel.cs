@@ -830,7 +830,7 @@ namespace EQTool.ViewModels
             },
             shouldCancel: () => evaluationItemCount != recentlyImpactedSpells.Count);
         }
-                        
+        
         private bool IsAutomaticMode() => settings.PlayerSpellGroupingType == SpellGroupingType.Automatic || settings.NpcSpellGroupingType == SpellGroupingType.Automatic;
         
         private void SpellList_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
