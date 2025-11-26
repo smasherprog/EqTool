@@ -22,21 +22,46 @@ namespace EQTool.Services
             this.settings = settings;
         }
         
-        public void Recategorize(IEnumerable<SpellViewModel> changedSpells = null)
+        public void Recategorize(IEnumerable<SpellViewModel> recentSpells = null)
         {
-            if (changedSpells != null && changedSpells.Any())
-                changedSpells = GetConnectedSpells(changedSpells);
+            if (recentSpells != null && recentSpells.Any())
+                recentSpells = GetConnectedSpells(recentSpells);
             
-            var visibleForEval = GetSpellsNeedingAutomaticGrouping(changedSpells ?? allSpells);
-            if (!visibleForEval.Any())
+            var allRelatedSpells = recentSpells ?? allSpells;
+            if (!allRelatedSpells.Any())
                 return;
 
-            PerformAutomaticGrouping(visibleForEval);
+            var nonConciseGroupingSpells = new List<SpellViewModel>();
+            var adaptiveGroupingSpells = new List<SpellViewModel>();
+            if (settings.PlayerSpellGroupingType == SpellGroupingType.Adaptive && settings.NpcSpellGroupingType == SpellGroupingType.Adaptive)
+            {
+                adaptiveGroupingSpells = allRelatedSpells.Where(s => s.ColumnVisibility == Visibility.Visible).ToList();
+            }
+            else if (settings.PlayerSpellGroupingType == SpellGroupingType.Adaptive)
+            {
+                nonConciseGroupingSpells.AddRange(allRelatedSpells.Where(s => !s.IsPlayerTarget));  // Handle em all, even the hidden ones
+                adaptiveGroupingSpells = allRelatedSpells.Where(s => s.ColumnVisibility == Visibility.Visible && s.IsPlayerTarget).ToList();
+            }
+            else if (settings.NpcSpellGroupingType == SpellGroupingType.Adaptive)
+            {
+                nonConciseGroupingSpells.AddRange(allRelatedSpells.Where(s => s.IsPlayerTarget));  // Handle em all, even the hidden ones
+                adaptiveGroupingSpells = allRelatedSpells.Where(s => s.ColumnVisibility == Visibility.Visible && !s.IsPlayerTarget).ToList();
+            }
+            else
+            {
+                nonConciseGroupingSpells.AddRange(allRelatedSpells);
+            }
+            
+            foreach (var spell in nonConciseGroupingSpells)
+                ApplyNonAdaptiveGroupingRules(spell);
+            
+            if (adaptiveGroupingSpells.Any())
+                PerformAdaptiveGrouping(adaptiveGroupingSpells);
         }
 
-        private IEnumerable<SpellViewModel> GetConnectedSpells(IEnumerable<SpellViewModel> changedSpells)
+        private IEnumerable<SpellViewModel> GetConnectedSpells(IEnumerable<SpellViewModel> recentSpells)
         {
-            var seed = changedSpells as IList<SpellViewModel> ?? changedSpells.ToList();
+            var seed = recentSpells as IList<SpellViewModel> ?? recentSpells.ToList();
             if (!seed.Any())
                 return Enumerable.Empty<SpellViewModel>();
             
@@ -116,7 +141,7 @@ namespace EQTool.Services
             }
         }
 
-        public void ApplyNonAutomaticGroupingRule(SpellViewModel spell)
+        private void ApplyNonAdaptiveGroupingRules(SpellViewModel spell)
         {
             var mode = GetConfiguredGroupingMode(spell);
 
@@ -129,17 +154,6 @@ namespace EQTool.Services
             
             // Automatic grouping handled elsewhere due to it needed to evaluate the whole list at once.
         }
-        
-        private IEnumerable<SpellViewModel> GetSpellsNeedingAutomaticGrouping(IEnumerable<SpellViewModel> spells)
-        {
-            var playerMode = settings.PlayerSpellGroupingType == SpellGroupingType.Automatic;
-            var npcMode = settings.NpcSpellGroupingType == SpellGroupingType.Automatic;
-
-            if (!playerMode && !npcMode)
-                return Enumerable.Empty<SpellViewModel>();
-
-            return spells.Where(s => s.ColumnVisibility == Visibility.Visible && ((s.IsPlayerTarget && playerMode) || (!s.IsPlayerTarget && npcMode)));
-        }
 
         private SpellGroupingType GetConfiguredGroupingMode(SpellViewModel spell)
             => spell.IsPlayerTarget
@@ -149,7 +163,7 @@ namespace EQTool.Services
         // -----------------------
         // Branch-and-bound algorithm. Determine what should be grouped by target and what should be grouped by Id.
         // -----------------------
-        private void PerformAutomaticGrouping(IEnumerable<SpellViewModel> visibleSpells)
+        private void PerformAdaptiveGrouping(IEnumerable<SpellViewModel> visibleSpells)
         {
             var context = new BranchAndBoundContext(activePlayer, visibleSpells);
             
@@ -161,14 +175,9 @@ namespace EQTool.Services
                 spell.IsCategorizeById = context.SelectedIdGroups.Contains(spell.Id);
         }
 
-        private static void ComputeOptimalGroups(
-            BranchAndBoundContext context,
-            int groupIndex,
-            int selectedGroupCount,
-            int totalSpellsSelectedById,
-            int remainingTargets)
+        private static void ComputeOptimalGroups(BranchAndBoundContext context, int groupIndex, int selectedGroupCount, int totalSpellsSelectedById, int remainingTargets)
         {
-            var stateKey = groupIndex + "|" + new string(context.SelectionMask);
+            var stateKey = groupIndex + "|" + new string(context.DecisionCache);
             if (!context.Visited.Add(stateKey))
                 return;
 
@@ -187,8 +196,10 @@ namespace EQTool.Services
                     context.SelectedIdGroups.Clear();
 
                     for (var i = 0; i < context.Groups.Length; i++)
-                        if (context.SelectionMask[i] == '1')
+                    {
+                        if (context.DecisionCache[i] == '1')
                             context.SelectedIdGroups.Add(context.Groups[i].GroupId);
+                    }
                 }
                 return;
             }
@@ -196,7 +207,7 @@ namespace EQTool.Services
             var group = context.Groups[groupIndex];
             if (group.SpellCount > 1)
             {
-                context.SelectionMask[groupIndex] = '1';
+                context.DecisionCache[groupIndex] = '1';
                 var touchedTargets = new List<int>();
 
                 foreach (var t in context.TargetIndicesPerGroup[groupIndex])
@@ -208,21 +219,17 @@ namespace EQTool.Services
                     touchedTargets.Add(t);
                 }
 
-                ComputeOptimalGroups(
-                    context,
-                    groupIndex + 1,
-                    selectedGroupCount + 1,
-                    totalSpellsSelectedById + group.SpellCount,
-                    remainingTargets);
+                ComputeOptimalGroups(context, groupIndex + 1, selectedGroupCount + 1, totalSpellsSelectedById + group.SpellCount, remainingTargets);
 
                 foreach (var t in touchedTargets)
                 {
                     if (context.RemainingSpellsPerTarget[t] == 0)
                         remainingTargets++;
+                    
                     context.RemainingSpellsPerTarget[t]++;
                 }
 
-                context.SelectionMask[groupIndex] = '0';
+                context.DecisionCache[groupIndex] = '0';
             }
 
             ComputeOptimalGroups(context, groupIndex + 1, selectedGroupCount, totalSpellsSelectedById, remainingTargets);
@@ -233,8 +240,7 @@ namespace EQTool.Services
             public SpellIdGroupInfo[] Groups { get; }
             public List<int>[] TargetIndicesPerGroup { get; }
             public int[] RemainingSpellsPerTarget { get; }
-            public string[] TargetList { get; }
-            public char[] SelectionMask { get; }
+            public char[] DecisionCache { get; }
             public HashSet<string> Visited { get; } = new HashSet<string>(StringComparer.Ordinal);
             public HashSet<string> SelectedIdGroups { get; } = new HashSet<string>();
             
@@ -247,18 +253,26 @@ namespace EQTool.Services
                     .GroupBy(s => s.Id)
                     .ToDictionary(g => g.Key, g => g.ToList());
 
+                var groupCount = groupsById.Count;
+                var classSpellWeight = (int) Math.Log(groupCount, 2);       // Log weight since it's weak on small datasets and strong on larger ones.
+                
                 Groups = groupsById.Values
-                    .Select(list =>
+                    .Select(instances =>
                     {
                         var info = new SpellIdGroupInfo
                         {
-                            GroupId = list[0].Id,
-                            Spells = list,
-                            SpellCount = list.Count,
-                            DistinctTargetCount = list.Select(s => s.Target).Distinct().Count(),
-                            CastableByPlayerClass = list.Any(s => s.CastByYourClass(activePlayer))
+                            GroupId = instances[0].Id,
+                            Spells = instances,
+                            SpellCount = instances.Count,
+                            DistinctTargetCount = instances.Select(s => s.Target).Distinct().Count(),
+                            CastableByPlayerClass = instances.Any(s => s.CastByYourClass(activePlayer))
                         };
+                        
                         info.PriorityScore = info.SpellCount - info.DistinctTargetCount;
+                        // Attribute a bit more weight towards grouping by spell Id when the spell is cast by your class.
+                        if (info.CastableByPlayerClass)
+                            info.PriorityScore += classSpellWeight;
+                        
                         return info;
                     })
                     .OrderByDescending(g => g.CastableByPlayerClass)
@@ -266,13 +280,11 @@ namespace EQTool.Services
                     .ThenByDescending(g => g.SpellCount)
                     .ToArray();
 
-                TargetList = visibleSpells.Select(s => s.Target).Distinct().ToArray();
-                var targetIndex = TargetList
-                    .Select((t, i) => (t, i))
-                    .ToDictionary(x => x.t, x => x.i, StringComparer.Ordinal);
+                var distinctTargets = visibleSpells.Select(s => s.Target).Distinct().ToArray();
+                var targetIndex = distinctTargets.Select((t, i) => (t, i)).ToDictionary(x => x.t, x => x.i, StringComparer.Ordinal);
 
                 TargetIndicesPerGroup = new List<int>[Groups.Length];
-                RemainingSpellsPerTarget = new int[TargetList.Length];
+                RemainingSpellsPerTarget = new int[distinctTargets.Length];
 
                 for (var i = 0; i < Groups.Length; i++)
                 {
@@ -287,7 +299,7 @@ namespace EQTool.Services
                         RemainingSpellsPerTarget[idx]++;
                 }
                 
-                SelectionMask = Enumerable.Repeat('0', Groups.Length).ToArray();
+                DecisionCache = Enumerable.Repeat('0', Groups.Length).ToArray();
             }
         }
 

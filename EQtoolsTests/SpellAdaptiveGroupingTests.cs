@@ -13,14 +13,14 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 namespace EQtoolsTests
 {
     [TestClass]
-    public class SpellAutomaticGroupingTests : BaseTestClass
+    public class SpellAdaptiveGroupingTests : BaseTestClass
     {
         private readonly LogParser logParser;
         private readonly SpellWindowViewModel spellWindowViewModel;
         private readonly EQSpells eqSpells;
         private readonly EQToolSettings settings;
 
-        public SpellAutomaticGroupingTests()
+        public SpellAdaptiveGroupingTests()
         {
             spellWindowViewModel = container.Resolve<SpellWindowViewModel>();
             logParser = container.Resolve<LogParser>();
@@ -43,7 +43,7 @@ namespace EQtoolsTests
              * Everything should be grouped by Target */
             
             // Arrange
-            settings.NpcSpellGroupingType = SpellGroupingType.Automatic;
+            settings.NpcSpellGroupingType = SpellGroupingType.Adaptive;
             settings.PlayerSpellGroupingType = SpellGroupingType.ByTarget;
             var logTime = DateTime.Now.Subtract(TimeSpan.FromMinutes(1));
 
@@ -71,7 +71,7 @@ namespace EQtoolsTests
             
             // Arrange
             settings.NpcSpellGroupingType = SpellGroupingType.ByTarget;
-            settings.PlayerSpellGroupingType = SpellGroupingType.Automatic;
+            settings.PlayerSpellGroupingType = SpellGroupingType.Adaptive;
             
             var groupBuffTargets = new List<string> { EQSpells.You, "Joe", "Huntor", "Sanare", "Pigy" };
             var logTime = DateTime.Now.Subtract(TimeSpan.FromMinutes(1));
@@ -97,7 +97,7 @@ namespace EQtoolsTests
             
             // Arrange
             settings.NpcSpellGroupingType = SpellGroupingType.ByTarget;
-            settings.PlayerSpellGroupingType = SpellGroupingType.Automatic;
+            settings.PlayerSpellGroupingType = SpellGroupingType.Adaptive;
             
             var groupBuffTargets = new List<string> { EQSpells.You, "Joe" };
             var logTime = DateTime.Now.Subtract(TimeSpan.FromMinutes(1));
@@ -130,7 +130,7 @@ namespace EQtoolsTests
             
             // Arrange
             settings.NpcSpellGroupingType = SpellGroupingType.ByTarget;
-            settings.PlayerSpellGroupingType = SpellGroupingType.Automatic;
+            settings.PlayerSpellGroupingType = SpellGroupingType.Adaptive;
 
             var groupBuffTargets = new List<string> { EQSpells.You, "Joe", "Huntor", "Sanare", "Pigy" };
             var logTime = DateTime.Now.Subtract(TimeSpan.FromMinutes(1));
@@ -163,7 +163,7 @@ namespace EQtoolsTests
             
             // Arrange
             settings.NpcSpellGroupingType = SpellGroupingType.ByTarget;
-            settings.PlayerSpellGroupingType = SpellGroupingType.Automatic;
+            settings.PlayerSpellGroupingType = SpellGroupingType.Adaptive;
 
             var groupBuffTargets = new List<string> { EQSpells.You, "Joe", "Huntor", "Sanare", "Pigy" };
             var oneOffTargets = new List<string> {"Aasgard", "Pigy"};

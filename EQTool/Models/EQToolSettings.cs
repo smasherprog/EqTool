@@ -154,7 +154,7 @@ namespace EQTool.Models
             }
         }
 
-        private SpellGroupingType _PlayerSpellGroupingType = SpellGroupingType.Automatic;
+        private SpellGroupingType _PlayerSpellGroupingType = SpellGroupingType.ByTarget;
         public SpellGroupingType PlayerSpellGroupingType
         {
             get => _PlayerSpellGroupingType;
@@ -170,7 +170,7 @@ namespace EQTool.Models
             }
         }
 
-        private SpellGroupingType _NpcSpellGroupingType = SpellGroupingType.Automatic;
+        private SpellGroupingType _NpcSpellGroupingType = SpellGroupingType.ByTarget;
         public SpellGroupingType NpcSpellGroupingType
         {
             get => _NpcSpellGroupingType;

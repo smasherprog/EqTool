@@ -222,7 +222,7 @@ namespace EQTool.ViewModels
                         }
                     };
                 }
-                QueueFullSpellListReevaluationIfNecessary();
+                QueueFullSpellListReevaluation();
                 OnPropertyChanged(nameof(RaidModeButtonToolTip));
                 OnPropertyChanged();
             }
@@ -799,39 +799,33 @@ namespace EQTool.ViewModels
             }
         }
         
-        private void QueueFullSpellListReevaluationIfNecessary()
-        {
-            if (IsAutomaticMode())
-            {
-                engine.Recategorize();
-            }
-            else
-            {
-                // Non-automatic mode: handle individually
-                foreach (var spell in SpellList.OfType<SpellViewModel>())
-                    engine.ApplyNonAutomaticGroupingRule(spell);
-            }
-        }
-        
         private CancellationTokenSource timersModifiedDebounceTs;
-        private void QueueSpellGroupingReevaluation(int delay)
+        private void QueueFullSpellListReevaluation() => QueueSpellGroupingReevaluation(groupRevaluationDebounceTime, useRecentlyModified: false);
+        private void QueueSpellGroupingReevaluation(int delay, bool useRecentlyModified = true)
         {
             // We need to queue the re-evaluation with a debounce cancellation because we don't want to be doing constant iteration over the whole list while it is actively being modified.
-            // There is also an issue when removing whole groups that can cause the removal to remove the wrong items because the ReevaluateRelatedGroupings function actively reshapes the groupings after every pass.
+            // There is also an issue when the user removes whole groups at once that can cause it to remove items the user did not mean to remove due to the grouping changing in the middle of that process.
             // This debounce is necessary to ensure we do not waste unnecessary time or cause undesirable side effects when doing bulk operations or when several timers fall off at roughly the same time.
             
             var evaluationItemCount = recentlyImpactedSpells.Count;
             appDispatcher.DebounceToUI(ref timersModifiedDebounceTs, delay, () =>
             {
-                var safeCloneOfRecentlyImpacted = recentlyImpactedSpells.ToList();  // Clone it since we're about to wipe it clean
-                recentlyImpactedSpells.Clear();
-                
-                engine.Recategorize(safeCloneOfRecentlyImpacted);
+                if (useRecentlyModified)
+                {
+                    var safeCloneOfRecentlyImpacted = recentlyImpactedSpells.ToList();  // Clone it since we're about to wipe it clean but want to use it.
+                    recentlyImpactedSpells.Clear();
+                    engine.Recategorize(safeCloneOfRecentlyImpacted);
+                }
+                else
+                {
+                    recentlyImpactedSpells.Clear();
+                    engine.Recategorize(recentSpells: null);
+                }
             },
-            shouldCancel: () => evaluationItemCount != recentlyImpactedSpells.Count);
+            shouldCancel: () => useRecentlyModified && evaluationItemCount != recentlyImpactedSpells.Count);
         }
         
-        private bool IsAutomaticMode() => settings.PlayerSpellGroupingType == SpellGroupingType.Automatic || settings.NpcSpellGroupingType == SpellGroupingType.Automatic;
+        private bool IsAdaptiveMode() => settings.PlayerSpellGroupingType == SpellGroupingType.Adaptive || settings.NpcSpellGroupingType == SpellGroupingType.Adaptive;
         
         private void SpellList_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
@@ -860,7 +854,7 @@ namespace EQTool.ViewModels
                 if (_SpellList == null)
                     return;
                 
-                QueueFullSpellListReevaluationIfNecessary();
+                QueueFullSpellListReevaluation();
             }
         }
     }
