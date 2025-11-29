@@ -1,4 +1,5 @@
-﻿using EQTool.Models;
+﻿using System;
+using EQTool.Models;
 using EQTool.ViewModels;
 using EQTool.ViewModels.SpellWindow;
 using System.Linq;
@@ -8,21 +9,44 @@ namespace EQTool.Services.Handlers
 {
     public class ResistHandler : BaseHandler
     {
+        private readonly CooldownHandlerService cooldownService;
         private readonly SpellWindowViewModel spellWindowViewModel;
         private readonly FightHistory fightHistory;
         private readonly SpellHandlerService spellHandlerService;
         private readonly EQSpells eQSpells;
 
-        public ResistHandler(SpellWindowViewModel spellWindowViewModel, FightHistory fightHistory, BaseHandlerData baseHandlerData, SpellHandlerService spellHandlerService, EQSpells eQSpells) : base(baseHandlerData)
+        public ResistHandler(
+            CooldownHandlerService cooldownService,
+            SpellHandlerService spellHandlerService,
+            SpellWindowViewModel spellWindowViewModel,
+            FightHistory fightHistory,
+            BaseHandlerData baseHandlerData,
+            EQSpells eQSpells) : base(baseHandlerData)
         {
+            this.cooldownService = cooldownService;
             this.spellWindowViewModel = spellWindowViewModel;
-            logEvents.ResistSpellEvent += LogParser_ResistSpellEvent;
             this.fightHistory = fightHistory;
             this.spellHandlerService = spellHandlerService;
             this.eQSpells = eQSpells;
+            
+            logEvents.ResistSpellEvent += LogParser_ResistSpellEvent;
         }
 
         private void LogParser_ResistSpellEvent(object sender, ResistSpellEvent e)
+        {
+            var casterName = !e.isYou ? EQSpells.SpaceYou : null;   // Not a perfect guess. You could technically have cast it on yourself and resisted it.
+            var targetName = e.isYou ? EQSpells.SpaceYou : fightHistory.GetMostRecentTarget(e.TimeStamp);
+            var isNpc = !e.isYou && targetName != null;
+            
+            HandleAlert(e);
+
+            if (EQSpells.SpellsThatNeedCounts.Any(a => a == e.Spell.name))
+                HandleCountTimer(e, targetName, casterName, isNpc);
+            else
+                cooldownService.AddCooldownTimerIfNecessary(e.Spell, casterName, targetName, isNpc, 0, e.TimeStamp);
+        }
+
+        private void HandleAlert(ResistSpellEvent e)
         {
             var doAlert = activePlayer?.Player?.ResistWarningAudio ?? false;
             var target = e.isYou ? "You " : "Your target ";
@@ -42,36 +66,37 @@ namespace EQTool.Services.Handlers
                     logEvents.Handle(new OverlayEvent { Text = text, ForeGround = Brushes.Red, Reset = true });
                 });
             }
+        }
 
-            if (EQSpells.SpellsThatNeedCounts.Any(a => a == e.Spell.name))
+        private void HandleCountTimer(ResistSpellEvent e, string targetName, string casterName, bool isNpc)
+        {
+            var shouldTryAddCooldown = true;
+            appDispatcher.DispatchUI(() =>
             {
-                appDispatcher.DispatchUI(() =>
+                CounterViewModel spell = null;
+                if (!string.IsNullOrWhiteSpace(targetName))
                 {
-                    var currentarget = fightHistory.GetMostRecentTarget(e.TimeStamp);
-                    CounterViewModel spell = null;
-                    if (!string.IsNullOrWhiteSpace(currentarget))
+                    spell = spellWindowViewModel.SpellList.FirstOrDefault(a => a.Target.Contains(targetName) && a.Id == e.Spell.name && a.SpellViewModelType == SpellViewModelType.Counter) as CounterViewModel;
+                    if (spell == null)
                     {
-                        spell = spellWindowViewModel.SpellList.FirstOrDefault(a => a.Target.Contains(currentarget) && a.Id == e.Spell.name && a.SpellViewModelType == SpellViewModelType.Counter) as CounterViewModel;
-                        if (spell == null)
-                        {
-                            eQSpells.AllSpells.TryGetValue(e.Spell.name, out var s);
-                            spellHandlerService.Handle(s, string.Empty, currentarget, 0, e.TimeStamp);  //TODO: Determine caster?
-                        }
-                        else
-                        {
-                            spell.AddCount(!e.isYou ? EQSpells.SpaceYou : null);
-                        }
+                        eQSpells.AllSpells.TryGetValue(e.Spell.name, out var s);
+                        spellHandlerService.Handle(s, casterName, targetName, 0, e.TimeStamp);
+                        shouldTryAddCooldown = false;    // Spell handler also parses cooldowns so no need to do anything for that here. I don't love this but what can you do.
                     }
                     else
                     {
-                        spell = spellWindowViewModel.SpellList.FirstOrDefault(a => a.Id == e.Spell.name && a.SpellViewModelType == SpellViewModelType.Counter) as CounterViewModel;
-                        if (spell != null)
-                        {
-                            spell.AddCount(!e.isYou ? EQSpells.SpaceYou : null);
-                        }
+                        spell.AddCount(casterName);
                     }
-                });
-            }
+                }
+                else
+                {
+                    spell = spellWindowViewModel.SpellList.FirstOrDefault(a => a.Id == e.Spell.name && a.SpellViewModelType == SpellViewModelType.Counter) as CounterViewModel;
+                    spell?.AddCount(casterName);
+                }
+            });
+            
+            if (shouldTryAddCooldown)
+                cooldownService.AddCooldownTimerIfNecessary(e.Spell, casterName, targetName, isNpc, 0, e.TimeStamp);
         }
     }
 }

@@ -1,23 +1,23 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using EQTool.Models;
 using EQTool.ViewModels;
 using EQTool.ViewModels.SpellWindow;
 using EQToolShared;
 using EQToolShared.Enums;
-using EQToolShared.Extensions;
 
 namespace EQTool.Services.Handlers
 {
     public class SpellHandlerService
     {
+        private readonly CooldownHandlerService cooldownService;
         private readonly SpellWindowViewModel spellWindowViewModel;
         private readonly ActivePlayer activePlayer;
         private readonly PlayerTrackerService playerTrackerService;
 
-        public SpellHandlerService(PlayerTrackerService playerTrackerService, SpellWindowViewModel spellWindowViewModel, ActivePlayer activePlayer)
+        public SpellHandlerService(CooldownHandlerService cooldownService, PlayerTrackerService playerTrackerService, SpellWindowViewModel spellWindowViewModel, ActivePlayer activePlayer)
         {
+            this.cooldownService = cooldownService;
             this.playerTrackerService = playerTrackerService;
             this.spellWindowViewModel = spellWindowViewModel;
             this.activePlayer = activePlayer;
@@ -25,39 +25,30 @@ namespace EQTool.Services.Handlers
 
         public void Handle(Spell spell, string casterName, string targetName, int delayOffset, DateTime timestamp)
         {
-            var spellname = spell.name;
-            var targetclass = playerTrackerService.GetPlayer(targetName)?.PlayerClass;
+            var spellName = spell.name;
+            var targetClass = playerTrackerService.GetPlayer(targetName)?.PlayerClass;
             var target = targetName;
-            var isnpc = false;
+            var isNpcTarget = false;
             if (MasterNPCList.NPCs.Contains(target.Trim()))
             {
                 target = " " + target.Trim();
-                isnpc = true;
+                isNpcTarget = true;
             }
+            casterName = CleanupCasterName(spell, casterName, targetName);
             
-            // Try and fix up the caster if it can be easily inferred and is empty.
-            if (string.IsNullOrWhiteSpace(casterName))
-            {
-                if (spellname.Contains("Discipline", StringComparison.OrdinalIgnoreCase)
-                || spell.SpellType == SpellType.Self)   // Shouldn't be necessary tbh but doesn't hurt to have a failsafe here.
-                {
-                    casterName = target;
-                }
-            }
+            cooldownService.AddCooldownTimerIfNecessary(spell, casterName, targetName, isNpcTarget, delayOffset, timestamp);
             
-            AddCooldownTimerIfNecessary(spell, casterName, target, delayOffset);
-            
-            var needscount = EQSpells.SpellsThatNeedCounts.Contains(spellname);
-            if (needscount)
+            var needsCount = EQSpells.SpellsThatNeedCounts.Contains(spellName);
+            if (needsCount)
             {
                 var vm = new CounterViewModel
                 {
                     UpdatedDateTime = DateTime.Now,
                     BenefitDetriment = spell.benefit_detriment,
                     Target = target,
-                    TargetClass = targetclass,
+                    TargetClass = targetClass,
                     Caster = casterName,
-                    Id = $"{spellname}",
+                    Id = $"{spellName}",
                     Rect = spell.Rect,
                     Icon = spell.SpellIcon,
                 };
@@ -88,7 +79,7 @@ namespace EQTool.Services.Handlers
                     //  - detrimental spell, and
                     //  - TimerRecast in StartNewTimer mode
                     var overWrite = true;
-                    if (isnpc && spell.benefit_detriment == SpellBenefitDetriment.Detrimental)
+                    if (isNpcTarget && spell.benefit_detriment == SpellBenefitDetriment.Detrimental)
                     {
                         //TODO: This could be better. Maybe just do a time diff on the log timestamp vs datetime now?
                         var serverTick = TimeSpan.FromMilliseconds(6000);
@@ -97,7 +88,7 @@ namespace EQTool.Services.Handlers
                     }
                     if (activePlayer?.Player?.TimerRecastSetting == TimerRecast.StartNewTimer
                         && (spell.benefit_detriment == SpellBenefitDetriment.Detrimental
-                        || EQSpells.Lulls.Any(x => x.Equals(spellname, StringComparison.OrdinalIgnoreCase))))
+                        || EQSpells.Lulls.Any(x => x.Equals(spellName, StringComparison.OrdinalIgnoreCase))))
                     {
                         overWrite = false;
                     }
@@ -107,11 +98,11 @@ namespace EQTool.Services.Handlers
                         UpdatedDateTime = DateTime.Now,
                         PercentLeft = 100,
                         BenefitDetriment = spell.benefit_detriment,
-                        Id = spellname,
+                        Id = spellName,
                         Target = target,
                         Caster = casterName,
                         SpellType = spell.SpellType,
-                        TargetClass = targetclass,
+                        TargetClass = targetClass,
                         Rect = spell.Rect,
                         Icon = spell.SpellIcon,
                         Classes = spell.Classes,
@@ -124,120 +115,20 @@ namespace EQTool.Services.Handlers
                 }
             }
         }
-
-        private void AddCooldownTimerIfNecessary(Spell spell, string casterName, string target, int delayOffset)
+        
+        private static string CleanupCasterName(Spell spell, string casterName, string targetName)
         {
-            if (spell.name.EndsWith("Recourse", StringComparison.OrdinalIgnoreCase))    // Recourse effects tend to mirror their counterpart and are already handled elsewhere.
-                return;
-            
-            var spellName = spell.name;
-            var cooldownRecipient = TargetOnlyIfUnknownCaster(casterName, target);
-            var cooldownRecipientClass = playerTrackerService.GetPlayer(cooldownRecipient)?.PlayerClass;
-            
-            var cooldown = TimeSpan.FromSeconds((int)(spell.recastTime / 1000.0)); 
-            if (spell.name.EndsWith("Discipline", StringComparison.OrdinalIgnoreCase))
+            // Try and fix up the caster if it can be easily inferred and is empty.
+            if (string.IsNullOrWhiteSpace(casterName))
             {
-                var discCooldown = TimeSpan.FromSeconds(GetDisciplineCooldownSeconds(spell, delayOffset));
-                spellWindowViewModel.TryAdd(new SpellViewModel
+                if (spell.name.Contains("Discipline", StringComparison.OrdinalIgnoreCase)
+                    || spell.SpellType == SpellType.Self)   // Shouldn't be necessary tbh but doesn't hurt to have a failsafe here
                 {
-                    PercentLeft = 100,
-                    Id = $"{spellName} Cooldown",
-                    Target = cooldownRecipient,
-                    TargetClass = cooldownRecipientClass,
-                    Caster = casterName,
-                    Rect = spell.Rect,
-                    Icon = spell.SpellIcon,
-                    Classes = spell.Classes,
-                    BenefitDetriment = SpellBenefitDetriment.Cooldown,
-                    TotalDuration = discCooldown,
-                    TotalRemainingDuration = discCooldown,
-                    UpdatedDateTime = DateTime.Now
-                });
+                    casterName = targetName;
+                }
             }
-            else if ((cooldownRecipient == EQSpells.SpaceYou && cooldown >= EQSpells.MinimumRecastForYouCooldownTimer)
-                 || (cooldownRecipient != EQSpells.SpaceYou && cooldown >= EQSpells.MinimumRecastForOtherCooldownTimer))
-            {
-                spellWindowViewModel.TryAdd(new SpellViewModel
-                {
-                    PercentLeft = 100,
-                    Id = $"{spellName} Cooldown",
-                    Target = cooldownRecipient,
-                    TargetClass = cooldownRecipientClass,
-                    Caster = casterName,
-                    Rect = spell.Rect,
-                    Icon = spell.SpellIcon,
-                    Classes = spell.Classes,
-                    BenefitDetriment = SpellBenefitDetriment.Cooldown,
-                    TotalDuration = cooldown,
-                    TotalRemainingDuration = TimeSpan.FromSeconds((int)((spell.recastTime + delayOffset) / 1000.0)),
-                    UpdatedDateTime = DateTime.Now
-                });
-            }
+
+            return casterName;
         }
-
-        //TODO: Re-write this a little so that we can separate the "True Cooldown" and the "Time Remaining" as two separate values
-        private int GetDisciplineCooldownSeconds(Spell spell, int delayOffset)
-        {
-            var basetime = (int)((spell.recastTime + delayOffset) / 1000.0);
-            var playerlevel = activePlayer.Player.Level;
-            if (spell.name == "Evasive Discipline")
-            {
-                float baseseconds = 15 * 60;
-                float levelrange = 60 - 52;
-                float secondsrange = (15 - 7) * 60;
-                var secondsperlevelrange = secondsrange / levelrange;
-                float playerleveltick = Math.Max(playerlevel, 52) - 52;
-                basetime = (int)(baseseconds - (playerleveltick * secondsperlevelrange));
-            }
-            else if (spell.name == "Defensive Discipline")
-            {
-                float baseseconds = 15 * 60;
-                float levelrange = 60 - 55;
-                float secondsrange = (15 - 10) * 60;
-                var secondsperlevelrange = secondsrange / levelrange;
-                float playerleveltick = Math.Max(playerlevel, 55) - 55;
-                basetime = (int)(baseseconds - (playerleveltick * secondsperlevelrange));
-            }
-            else if (spell.name == "Precision Discipline")
-            {
-                float baseseconds = 30 * 60;
-                float levelrange = 60 - 57;
-                float secondsrange = (30 - 27) * 60;
-                var secondsperlevelrange = secondsrange / levelrange;
-                float playerleveltick = Math.Max(playerlevel, 57) - 57;
-                basetime = (int)(baseseconds - (playerleveltick * secondsperlevelrange));
-            }
-            else if (spell.name == "Stonestance Discipline")
-            {
-                float baseseconds = 12 * 60;
-                float levelrange = 60 - 51;
-                float secondsrange = (12 - 4) * 60;
-                var secondsperlevelrange = secondsrange / levelrange;
-                float playerleveltick = Math.Max(playerlevel, 51) - 51;
-                basetime = (int)(baseseconds - (playerleveltick * secondsperlevelrange));
-            }
-            else if (spell.name == "Voiddance Discipline")
-            {
-                float baseseconds = 60 * 60;
-                float levelrange = 60 - 54;
-                float secondsrange = (60 - 54) * 60;
-                var secondsperlevelrange = secondsrange / levelrange;
-                float playerleveltick = Math.Max(playerlevel, 54) - 54;
-                basetime = (int)(baseseconds - (playerleveltick * secondsperlevelrange));
-            }
-            else if (spell.name == "Innerflame Discipline")
-            {
-                float baseseconds = 60 * 60;
-                float levelrange = 60 - 56;
-                float secondsrange = (30 - 26) * 60;
-                var secondsperlevelrange = secondsrange / levelrange;
-                float playerleveltick = Math.Max(playerlevel, 56) - 56;
-                basetime = (int)(baseseconds - (playerleveltick * secondsperlevelrange));
-            }
-
-            return basetime;
-        }
-
-        private static string TargetOnlyIfUnknownCaster(string casterName, string target) => string.IsNullOrWhiteSpace(casterName) ? target : casterName;
     }
 }
