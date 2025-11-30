@@ -9,6 +9,8 @@ namespace EQTool.Services
 {
     public class SpellGroupingEngine
     {
+        private readonly object _lock = new object();
+        
         private readonly PlayerInfo activePlayer;
         private readonly EQToolSettings settings;
 
@@ -22,39 +24,35 @@ namespace EQTool.Services
             this.settings = settings;
         }
         
-        public void Recategorize(IEnumerable<SpellViewModel> recentSpells = null)
+        public void Recategorize()
         {
-            if (recentSpells != null && recentSpells.Any())
-                recentSpells = GetConnectedSpells(recentSpells);
-            
-            var allRelatedSpells = recentSpells ?? allSpells;
-            if (!allRelatedSpells.Any())
+            if (!allSpells.Any())
                 return;
 
             var nonConciseGroupingSpells = new List<SpellViewModel>();
             var adaptiveGroupingSpells = new List<SpellViewModel>();
             if (settings.PlayerSpellGroupingType == SpellGroupingType.Adaptive && settings.NpcSpellGroupingType == SpellGroupingType.Adaptive)
             {
-                adaptiveGroupingSpells = allRelatedSpells.Where(s => s.ColumnVisibility == Visibility.Visible).ToList();
+                adaptiveGroupingSpells = allSpells.Where(s => s.ColumnVisibility == Visibility.Visible).ToList();
             }
             else if (settings.PlayerSpellGroupingType == SpellGroupingType.Adaptive)
             {
-                nonConciseGroupingSpells.AddRange(allRelatedSpells.Where(s => !s.IsPlayerTarget));  // Handle em all, even the hidden ones
-                adaptiveGroupingSpells = allRelatedSpells.Where(s => s.ColumnVisibility == Visibility.Visible && s.IsPlayerTarget).ToList();
+                nonConciseGroupingSpells.AddRange(allSpells.Where(s => !s.IsPlayerTarget)); // Handle em all, even the hidden ones
+                adaptiveGroupingSpells = allSpells.Where(s => s.ColumnVisibility == Visibility.Visible && s.IsPlayerTarget).ToList();
             }
             else if (settings.NpcSpellGroupingType == SpellGroupingType.Adaptive)
             {
-                nonConciseGroupingSpells.AddRange(allRelatedSpells.Where(s => s.IsPlayerTarget));  // Handle em all, even the hidden ones
-                adaptiveGroupingSpells = allRelatedSpells.Where(s => s.ColumnVisibility == Visibility.Visible && !s.IsPlayerTarget).ToList();
+                nonConciseGroupingSpells.AddRange(allSpells.Where(s => s.IsPlayerTarget)); // Handle em all, even the hidden ones
+                adaptiveGroupingSpells = allSpells.Where(s => s.ColumnVisibility == Visibility.Visible && !s.IsPlayerTarget).ToList();
             }
             else
             {
-                nonConciseGroupingSpells.AddRange(allRelatedSpells);
+                nonConciseGroupingSpells.AddRange(allSpells);
             }
             
             foreach (var spell in nonConciseGroupingSpells)
                 ApplyNonAdaptiveGroupingRules(spell);
-            
+
             if (adaptiveGroupingSpells.Any())
                 PerformAdaptiveGrouping(adaptiveGroupingSpells);
         }
@@ -161,7 +159,9 @@ namespace EQTool.Services
                 : settings.NpcSpellGroupingType;
 
         // -----------------------
-        // Branch-and-bound algorithm. Determine what should be grouped by target and what should be grouped by Id.
+        // Branch-and-bound algorithm.
+        // Determines what should be grouped by target, and what should be grouped by Id.
+        // It looks a little "voodoo"-ey but it's a decently optimized algo for accomplishing what we want.
         // -----------------------
         private void PerformAdaptiveGrouping(IEnumerable<SpellViewModel> visibleSpells)
         {

@@ -4,6 +4,7 @@ using System.Windows.Markup;
 
 namespace EQTool.Services.MarkupExtensions
 {
+    // This extension will allow you to take an enum Type and then create a bindable list of enum values for a control.
     public class EnumBindingSourceExtension : MarkupExtension
     {
         public EnumBindingSourceExtension() { }
@@ -13,6 +14,12 @@ namespace EQTool.Services.MarkupExtensions
             EnumType = enumType;
         }
 
+        /// <summary>
+        /// Comma-separated list of enum names to exclude
+        /// e.g. "BySpellExceptYou,SomethingElse"
+        /// </summary>
+        public string Exclude { get; set; }
+        
         private Type _EnumType;
         public Type EnumType
         {
@@ -34,12 +41,6 @@ namespace EQTool.Services.MarkupExtensions
                 _EnumType = value;
             }
         }
-
-        /// <summary>
-        /// Comma-separated list of enum names to exclude
-        /// e.g. "BySpellExceptYou,SomethingElse"
-        /// </summary>
-        public string Exclude { get; set; }
 
         public override object ProvideValue(IServiceProvider serviceProvider)
         {
