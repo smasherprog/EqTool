@@ -31,16 +31,15 @@ namespace EQtoolsTests
             player.Player.Level = 60;
             player.Player.PlayerClass = PlayerClasses.Enchanter;
             settings._SpellsFilter = SpellsFilterType.ByClass;
-            spellWindowViewModel.groupRevaluationDebounceTime = 25;    // Don't want the default value for tests, we just need something semi-noticeable 
+            spellWindowViewModel.groupRevaluationDebounceTime = 50;    // Don't want the default value for tests, we just need something semi-noticeable 
         }
 
         [TestMethod]
         public void RoutineDebuffScenario1_AllAreGroupedByTarget()
         {
-            /* 2 "orphan" spells on 2 different targets.
-             * 3 instances of Tash on those same 2 targets.
-             * Don't group anything by Id because it would leave the npcs with single orphaned spells and result in 3 distinct groupings
-             * Everything should be grouped by Target */
+            /* 2 orphan spells on 2 different targets | Expected: Group By Target
+             * 3 instances of Tash on those same 2 targets | Expected: Group By Target
+             * Don't group anything by Id because it would leave the npcs with single orphaned spells and result in 3 distinct groupings */
             
             // Arrange
             settings.NpcSpellGroupingType = SpellGroupingType.Adaptive;
@@ -65,9 +64,8 @@ namespace EQtoolsTests
         [TestMethod]
         public void BasicGroupBuffScenario1_AllById()
         {
-            /* 2 group buff spells cast on 5 players, all cast by your class.
-             * No orphaned spells of any kind.
-             * Everything should be grouped by Spell Id */
+            /* 2 group buff spells cast on 5 players, all cast by your class | Expected: Group By Id
+             * No orphaned spells of any kind. */
             
             // Arrange
             settings.NpcSpellGroupingType = SpellGroupingType.ByTarget;
@@ -91,9 +89,9 @@ namespace EQtoolsTests
         [TestMethod]
         public void DuoBuffScenario1_AllByTarget()
         {
-            /* 2 buff spells cast on 2 players, all cast by your class.
-             * Several orphaned spells on you.
-             * Everything should be grouped by Target */
+            /* 4 orphan spells on you | Expected: Group By Target
+             * 1 orphan spell on one player | Expected: Group by Target
+             * 2 buff spells cast on 2 players, all cast by your class | Expected: Group By Target */
             
             // Arrange
             settings.NpcSpellGroupingType = SpellGroupingType.ByTarget;
@@ -119,14 +117,47 @@ namespace EQtoolsTests
             // Assert
             AssertSpellListMatchesExpectations(expectations);
         }
+                        
+        [TestMethod]
+        public void AllGroupedById_SomeSpellsFallOff_OrphanIsNowGroupedByTarget()
+        {
+            /* 2 instances of VoG (class spell) on 2 different players | Expected: Group By Id
+             * 2 of your own group buffs on you, with those same buffs on 4 others | Expected: Group by Target
+             * 1 existing instance of VoG falls off | Expected: Now Group by Target */
+            
+            // Arrange
+            settings.NpcSpellGroupingType = SpellGroupingType.ByTarget;
+            settings.PlayerSpellGroupingType = SpellGroupingType.Adaptive;
+
+            var groupBuffTargets = new List<string> { EQSpells.You, "Joe", "Huntor", "Sanare", "Pigy" };
+            var logTime = DateTime.Now.Subtract(TimeSpan.FromMinutes(1));
+            
+            var expectations = new List<Expectation>();
+            logTime = PushAuthenticAoESpellCast(expectations, ExpectedGrouping.ById, "Group Resist Magic", groupBuffTargets, EQSpells.You, logTime);
+            logTime = PushAuthenticAoESpellCast(expectations, ExpectedGrouping.ById, "Gift of Pure Thought", groupBuffTargets, EQSpells.You, logTime);
+            
+            // Should be ById first, until we remove the one from Aasgard
+            logTime = PushAuthenticSpellCast(expectations, ExpectedGrouping.ByTarget, "Visions of Grandeur", "Pigy", EQSpells.You, logTime);
+            logTime = PushAuthenticSpellCast("Visions of Grandeur", "Aasgard", caster: null, logTime);
+            
+            logParser.UpdateTriggers(spellWindowViewModel, logTime);
+            SleepToLetHandlersProcess();
+
+            // Act
+            var toRemove = spellWindowViewModel.SpellList.FirstOrDefault(x => x.Id == "Visions of Grandeur" && x.Target == "Aasgard");
+            spellWindowViewModel.SpellList.Remove(toRemove);
+            SleepToLetHandlersProcess();
+            
+            // Assert
+            AssertSpellListMatchesExpectations(expectations);
+        }
         
         [TestMethod]
         public void ComplexBuffScenario1_PerformsAsExpected()
         {
-            /* 4 orphan spells on you.
-             * 1 instance of VoG (class spell) on 1 player.
-             * 2 of your own group buffs on you, with those same buffs on 4 others.
-             * Group everything by Id except for the orphan spells cast on you and the extra player */
+            /* 4 orphan spells on you | Expected: Group By Target
+             * 1 instance of VoG (class spell) on 1 player | Expected: Group By Target
+             * 2 of your own group buffs on you, with those same buffs on 4 others | Expected: Group By Id */
             
             // Arrange
             settings.NpcSpellGroupingType = SpellGroupingType.ByTarget;
@@ -156,10 +187,9 @@ namespace EQtoolsTests
         [TestMethod]
         public void ComplexBuffScenario2_PerformsAsExpected()
         {
-            /* 4 orphan spells on you.
-             * 2 instances of VoG (class spell) on 2 different players.
-             * 2 of your own group buffs on you, with those same buffs on 4 others.
-             * Group everything by Id except for the orphan spells cast on you */
+            /* 4 orphan spells on you | Expected: Group by target
+             * 2 instances of VoG (class spell) on 2 different players | Expected: Group by Id
+             * 2 of your own group buffs on you, with those same buffs on 4 others | Expected: Group by Id */
             
             // Arrange
             settings.NpcSpellGroupingType = SpellGroupingType.ByTarget;
@@ -209,12 +239,20 @@ namespace EQtoolsTests
 
         // Let all the handlers and debounces process.
         // I don't love doing this but there's not really a clean way to bypass the debounce without redesigning some stuff or overhauling how we're testing this
-        private static void SleepToLetHandlersProcess() => Thread.Sleep(300);
+        private static void SleepToLetHandlersProcess() => Thread.Sleep(150);
         
         // Lazily just adding an extra check for a " target" in addition to their exact name so we don't have to figure out if they are an npc or a player
         private static bool LazyMatches(Expectation expectation, SpellViewModel instance)
             => instance.Id == expectation.SpellName && (instance.Target == expectation.Target  || instance.Target == " " + expectation.Target);
 
+        private DateTime PushAuthenticSpellCast(string spellName, string target, string caster = null, DateTime? dateTime = null)
+        {
+            var spell = eqSpells.AllSpells[spellName];
+            var dt = logParser.PushAuthenticSpellCast(spell, target, caster: caster, dateTime);
+            
+            return dt;
+        }
+        
         private DateTime PushAuthenticSpellCast(List<Expectation> expectations, ExpectedGrouping grouping, string spellName, string target, string caster = null, DateTime? dateTime = null)
         {
             var spell = eqSpells.AllSpells[spellName];

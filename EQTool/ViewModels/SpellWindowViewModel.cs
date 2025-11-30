@@ -8,6 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
+using System.Windows.Documents;
 using System.Windows.Media;
 using EQTool.Models;
 using EQTool.Services;
@@ -32,7 +33,6 @@ namespace EQTool.ViewModels
         private readonly PigParseApi pigParseApi;
         private readonly BoatScheduleService boatScheduleService;
         private readonly PetViewModel playerPet;
-        private HashSet<SpellViewModel> recentlyImpactedSpells = new HashSet<SpellViewModel>();
         
         internal int groupRevaluationDebounceTime { get; set; } = 1000;  // Debounce delay for re-evaluating the ByTarget / BySpell Grouping of the list. It's internal so that tests can change it for speed.
 
@@ -79,7 +79,7 @@ namespace EQTool.ViewModels
             if (_SpellList == null)
             {
                 _SpellList = new ObservableCollection<PersistentViewModel>();
-                SpellList.CollectionChanged += SpellList_CollectionChanged;
+                _SpellList.CollectionChanged += SpellList_CollectionChanged;
                 var view = (ListCollectionView)CollectionViewSource.GetDefaultView(_SpellList);
                 view.GroupDescriptions.Add(new PropertyGroupDescription(nameof(TimerViewModel.DisplayGroup)));
                 view.LiveGroupingProperties.Add(nameof(TimerViewModel.DisplayGroup));
@@ -800,32 +800,12 @@ namespace EQTool.ViewModels
         }
         
         private CancellationTokenSource timersModifiedDebounceTs;
-        private void QueueFullSpellListReevaluation() => QueueSpellGroupingReevaluation(groupRevaluationDebounceTime, useRecentlyModified: false);
-        private void QueueSpellGroupingReevaluation(int delay, bool useRecentlyModified = true)
+        private void QueueFullSpellListReevaluation() => QueueSpellGroupingReevaluation(groupRevaluationDebounceTime);
+        private void QueueSpellGroupingReevaluation(int delay)
         {
             // We need to queue the re-evaluation with a debounce cancellation because we don't want to be doing constant iteration over the whole list while it is actively being modified.
-            // There is also an issue when the user removes whole groups at once that can cause it to remove items the user did not mean to remove due to the grouping changing in the middle of that process.
-            // This debounce is necessary to ensure we do not waste unnecessary time or cause undesirable side effects when doing bulk operations or when several timers fall off at roughly the same time.
-            
-            var evaluationItemCount = recentlyImpactedSpells.Count;
-            appDispatcher.DebounceToUI(ref timersModifiedDebounceTs, delay, () =>
-            {
-                if (useRecentlyModified)
-                {
-                    var safeCloneOfRecentlyImpacted = recentlyImpactedSpells.ToList();  // Clone it since we're about to wipe it clean but want to use it.
-                    recentlyImpactedSpells.Clear();
-                    engine.Recategorize(safeCloneOfRecentlyImpacted);
-                }
-                else
-                {
-                    recentlyImpactedSpells.Clear();
-                    engine.Recategorize(recentSpells: null);
-                }
-            },
-            shouldCancel: () => useRecentlyModified && evaluationItemCount != recentlyImpactedSpells.Count);
+            appDispatcher.DebounceToUI(ref timersModifiedDebounceTs, delay, () => engine.Recategorize());
         }
-        
-        private bool IsAdaptiveMode() => settings.PlayerSpellGroupingType == SpellGroupingType.Adaptive || settings.NpcSpellGroupingType == SpellGroupingType.Adaptive;
         
         private void SpellList_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
@@ -835,8 +815,7 @@ namespace EQTool.ViewModels
             engine.AddSpells(newSpells);
             engine.RemoveSpells(removedSpells);
 
-            recentlyImpactedSpells.UnionWith(newSpells.Concat(removedSpells));
-
+            var recentlyImpactedSpells = new List<SpellViewModel>(newSpells.Concat(removedSpells));
             if (recentlyImpactedSpells.Any())
                 QueueSpellGroupingReevaluation(groupRevaluationDebounceTime);
         }

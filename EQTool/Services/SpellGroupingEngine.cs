@@ -9,6 +9,8 @@ namespace EQTool.Services
 {
     public class SpellGroupingEngine
     {
+        private readonly object _lock = new object();
+        
         private readonly PlayerInfo activePlayer;
         private readonly EQToolSettings settings;
 
@@ -22,41 +24,41 @@ namespace EQTool.Services
             this.settings = settings;
         }
         
-        public void Recategorize(IEnumerable<SpellViewModel> recentSpells = null)
+        public void Recategorize()
         {
-            if (recentSpells != null && recentSpells.Any())
-                recentSpells = GetConnectedSpells(recentSpells);
-            
-            var allRelatedSpells = recentSpells ?? allSpells;
-            if (!allRelatedSpells.Any())
-                return;
+            // Shouldn't be super necessary due to the debounce, but as an extra safety net, all recategorizations must be done before another is allowed to begin.
+            lock (_lock)
+            {
+                if (!allSpells.Any())
+                    return;
 
-            var nonConciseGroupingSpells = new List<SpellViewModel>();
-            var adaptiveGroupingSpells = new List<SpellViewModel>();
-            if (settings.PlayerSpellGroupingType == SpellGroupingType.Adaptive && settings.NpcSpellGroupingType == SpellGroupingType.Adaptive)
-            {
-                adaptiveGroupingSpells = allRelatedSpells.Where(s => s.ColumnVisibility == Visibility.Visible).ToList();
+                var nonConciseGroupingSpells = new List<SpellViewModel>();
+                var adaptiveGroupingSpells = new List<SpellViewModel>();
+                if (settings.PlayerSpellGroupingType == SpellGroupingType.Adaptive && settings.NpcSpellGroupingType == SpellGroupingType.Adaptive)
+                {
+                    adaptiveGroupingSpells = allSpells.Where(s => s.ColumnVisibility == Visibility.Visible).ToList();
+                }
+                else if (settings.PlayerSpellGroupingType == SpellGroupingType.Adaptive)
+                {
+                    nonConciseGroupingSpells.AddRange(allSpells.Where(s => !s.IsPlayerTarget)); // Handle em all, even the hidden ones
+                    adaptiveGroupingSpells = allSpells.Where(s => s.ColumnVisibility == Visibility.Visible && s.IsPlayerTarget).ToList();
+                }
+                else if (settings.NpcSpellGroupingType == SpellGroupingType.Adaptive)
+                {
+                    nonConciseGroupingSpells.AddRange(allSpells.Where(s => s.IsPlayerTarget)); // Handle em all, even the hidden ones
+                    adaptiveGroupingSpells = allSpells.Where(s => s.ColumnVisibility == Visibility.Visible && !s.IsPlayerTarget).ToList();
+                }
+                else
+                {
+                    nonConciseGroupingSpells.AddRange(allSpells);
+                }
+
+                foreach (var spell in nonConciseGroupingSpells)
+                    ApplyNonAdaptiveGroupingRules(spell);
+
+                if (adaptiveGroupingSpells.Any())
+                    PerformAdaptiveGrouping(adaptiveGroupingSpells);
             }
-            else if (settings.PlayerSpellGroupingType == SpellGroupingType.Adaptive)
-            {
-                nonConciseGroupingSpells.AddRange(allRelatedSpells.Where(s => !s.IsPlayerTarget));  // Handle em all, even the hidden ones
-                adaptiveGroupingSpells = allRelatedSpells.Where(s => s.ColumnVisibility == Visibility.Visible && s.IsPlayerTarget).ToList();
-            }
-            else if (settings.NpcSpellGroupingType == SpellGroupingType.Adaptive)
-            {
-                nonConciseGroupingSpells.AddRange(allRelatedSpells.Where(s => s.IsPlayerTarget));  // Handle em all, even the hidden ones
-                adaptiveGroupingSpells = allRelatedSpells.Where(s => s.ColumnVisibility == Visibility.Visible && !s.IsPlayerTarget).ToList();
-            }
-            else
-            {
-                nonConciseGroupingSpells.AddRange(allRelatedSpells);
-            }
-            
-            foreach (var spell in nonConciseGroupingSpells)
-                ApplyNonAdaptiveGroupingRules(spell);
-            
-            if (adaptiveGroupingSpells.Any())
-                PerformAdaptiveGrouping(adaptiveGroupingSpells);
         }
 
         private IEnumerable<SpellViewModel> GetConnectedSpells(IEnumerable<SpellViewModel> recentSpells)

@@ -18,11 +18,9 @@ namespace EQTool.UI
         private readonly SlainHandler slainHandler;
 
         public SpellWindow(
-            TimersService timersService,
             EQToolSettings settings,
             SpellWindowViewModel spellWindowViewModel,
             SettingsWindowViewModel settingsWindowViewModel,
-            LogEvents logEvents,
             EQToolSettingsLoad toolSettingsLoad,
             ActivePlayer activePlayer,
             IAppDispatcher appDispatcher,
@@ -39,7 +37,7 @@ namespace EQTool.UI
 
         private void RemoveSingleItem(object sender, RoutedEventArgs e)
         {
-            var vm = (sender as Button).DataContext;
+            var vm = (sender as Button)?.DataContext;
             appDispatcher.DispatchUI(() =>
             {
                 _ = spellWindowViewModel.SpellList.Remove(vm as PersistentViewModel);
@@ -48,7 +46,7 @@ namespace EQTool.UI
 
         private void RemoveFromSpells(object sender, RoutedEventArgs e)
         {
-            var group = ((sender as Button).DataContext as dynamic)?.Name as string;
+            var group = ((sender as Button)?.DataContext as dynamic)?.Name as string;
             appDispatcher.DispatchUI(() =>
             {
                 var items = spellWindowViewModel.SpellList.Where(a => a.DisplayGroup == group).ToList();
@@ -69,7 +67,7 @@ namespace EQTool.UI
             spellWindowViewModel.ClearSpellsCastByOthers();
         }
 
-        private void RaidModleToggle(object sender, RoutedEventArgs e)
+        private void RaidModeToggle(object sender, RoutedEventArgs e)
         {
             settingsWindowViewModel.RaidModeDetection = !settingsWindowViewModel.RaidModeDetection;
         }
