@@ -138,36 +138,50 @@ namespace EQTool.Models
         
         public List<PlayerInfo> Players { get; set; } = new List<PlayerInfo>();
         public List<Trigger> Triggers { get; set; } = new List<Trigger>();
-        public SpellsFilterType SpellsFilter { get; set; }
-
-        private SpellGroupingType _BeneficialSpellGroupingType = SpellGroupingType.ByTarget;
-        public SpellGroupingType BeneficialSpellGroupingType
+        public SpellsFilterType _SpellsFilter = SpellsFilterType.ByClass;
+        public SpellsFilterType SpellsFilter
         {
-            get => _BeneficialSpellGroupingType;
+            get => _SpellsFilter;
             set
             {
-                if (value == _BeneficialSpellGroupingType)
+                if (value == _SpellsFilter)
                 {
                     return;
                 }
-
-                _BeneficialSpellGroupingType = value;
+                
+                _SpellsFilter = value;
                 OnPropertyChanged();
             }
         }
 
-        private SpellGroupingType _DetrimentalSpellGroupingType = SpellGroupingType.ByTarget;
-        public SpellGroupingType DetrimentalSpellGroupingType
+        private SpellGroupingType _PlayerSpellGroupingType = SpellGroupingType.ByTarget;
+        public SpellGroupingType PlayerSpellGroupingType
         {
-            get => _DetrimentalSpellGroupingType;
+            get => _PlayerSpellGroupingType;
             set
             {
-                if (value == _DetrimentalSpellGroupingType)
+                if (value == _PlayerSpellGroupingType)
                 {
                     return;
                 }
 
-                _DetrimentalSpellGroupingType = value;
+                _PlayerSpellGroupingType = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private SpellGroupingType _NpcSpellGroupingType = SpellGroupingType.ByTarget;
+        public SpellGroupingType NpcSpellGroupingType
+        {
+            get => _NpcSpellGroupingType;
+            set
+            {
+                if (value == _NpcSpellGroupingType)
+                {
+                    return;
+                }
+
+                _NpcSpellGroupingType = value;
                 OnPropertyChanged();
             }
         }

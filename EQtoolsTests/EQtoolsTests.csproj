@@ -206,6 +206,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="SpellAdaptiveGroupingTests.cs" />
     <Compile Include="BaseTestClass.cs" />
     <Compile Include="BoatScheduleTests.cs" />
     <Compile Include="GroupLeaderTests.cs" />

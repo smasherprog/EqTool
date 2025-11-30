@@ -4,14 +4,18 @@ using System.Collections.ObjectModel;
 using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
+using System.Windows.Documents;
 using System.Windows.Media;
 using EQTool.Models;
 using EQTool.Services;
 using EQTool.ViewModels.MobInfoComponents;
 using EQTool.ViewModels.SpellWindow;
 using EQToolShared;
+using EQToolShared.APIModels.PlayerControllerModels;
 using EQToolShared.Enums;
 using EQToolShared.Extensions;
 
@@ -21,6 +25,7 @@ namespace EQTool.ViewModels
     {
         private const int minimumTargetsForRaidMode = 10;
         
+        private readonly SpellGroupingEngine engine;
         private readonly ActivePlayer activePlayer;
         private readonly IAppDispatcher appDispatcher;
         private readonly EQToolSettings settings;
@@ -29,8 +34,19 @@ namespace EQTool.ViewModels
         private readonly BoatScheduleService boatScheduleService;
         private readonly PetViewModel playerPet;
         
-        public SpellWindowViewModel(ActivePlayer activePlayer, IAppDispatcher appDispatcher, EQToolSettings settings, EQSpells spells, BoatScheduleService boatScheduleService, PigParseApi pigParseApi, PetViewModel playerPet)
+        internal int groupRevaluationDebounceTime { get; set; } = 1000;  // Debounce delay for re-evaluating the ByTarget / BySpell Grouping of the list. It's internal so that tests can change it for speed.
+
+        public SpellWindowViewModel(
+            SpellGroupingEngine engine,
+            ActivePlayer activePlayer,
+            IAppDispatcher appDispatcher,
+            EQToolSettings settings,
+            EQSpells spells,
+            BoatScheduleService boatScheduleService,
+            PigParseApi pigParseApi,
+            PetViewModel playerPet)
         {
+            this.engine = engine;
             this.activePlayer = activePlayer;
             this.pigParseApi = pigParseApi;
             this.boatScheduleService = boatScheduleService;
@@ -42,7 +58,7 @@ namespace EQTool.ViewModels
             settings.PropertyChanged += Base_PropertyChanged;
             PropertyChanged += Base_PropertyChanged;
         }
-
+        
         private ObservableCollection<PersistentViewModel> _SpellList;
         public ObservableCollection<PersistentViewModel> SpellList
         {
@@ -57,13 +73,13 @@ namespace EQTool.ViewModels
                 OnPropertyChanged();
             }
         }
-
+        
         private void CreateTriggerList()
         {
             if (_SpellList == null)
             {
                 _SpellList = new ObservableCollection<PersistentViewModel>();
-                SpellList.CollectionChanged += SpellList_CollectionChanged;
+                _SpellList.CollectionChanged += SpellList_CollectionChanged;
                 var view = (ListCollectionView)CollectionViewSource.GetDefaultView(_SpellList);
                 view.GroupDescriptions.Add(new PropertyGroupDescription(nameof(TimerViewModel.DisplayGroup)));
                 view.LiveGroupingProperties.Add(nameof(TimerViewModel.DisplayGroup));
@@ -206,6 +222,7 @@ namespace EQTool.ViewModels
                         }
                     };
                 }
+                QueueFullSpellListReevaluation();
                 OnPropertyChanged(nameof(RaidModeButtonToolTip));
                 OnPropertyChanged();
             }
@@ -407,7 +424,7 @@ namespace EQTool.ViewModels
         {
             if (RaidModeEnabled)
             {
-                if (s.CastByYou() || s.CastOnYou() || s.Target == CustomTimer.CustomerTime)
+                if (s.Target == CustomTimer.CustomerTime || s.CastByYou() || s.CastOnYou() || s.CastByYourClass(player))
                 {
                     return false;
                 }
@@ -421,8 +438,7 @@ namespace EQTool.ViewModels
                     }
                 }
                 
-                // The Player class's spells should always be shown in raid mode
-                return !s.CastByYourClass(activePlayer.Player);
+                return true;
             }
             
             switch (settings.SpellsFilter)
@@ -437,7 +453,7 @@ namespace EQTool.ViewModels
 
             return false;
         }
-        
+
         private static bool IsClassSpellAllowed(Dictionary<PlayerClasses, int> spellClasses, IEnumerable<PlayerClasses> allowedClasses)
         {
             if (allowedClasses == null || spellClasses == null || spellClasses.Count == 0)
@@ -782,39 +798,26 @@ namespace EQTool.ViewModels
                 });
             }
         }
-
-        private void UpdateGroupingForSpell(SpellViewModel spell)
+        
+        private CancellationTokenSource timersModifiedDebounceTs;
+        private void QueueFullSpellListReevaluation() => QueueSpellGroupingReevaluation(groupRevaluationDebounceTime);
+        private void QueueSpellGroupingReevaluation(int delay)
         {
-            var groupingType = GetGroupingType(spell);
-            if (groupingType == SpellGroupingType.ByTarget)
-            {
-                spell.IsCategorizeById = false;
-            }
-            else if (groupingType == SpellGroupingType.BySpell)
-            {
-                spell.IsCategorizeById = true;
-            }
-            else if (groupingType == SpellGroupingType.BySpellExceptYou)
-            {
-                spell.IsCategorizeById = !spell.CastOnYou();
-            }
-            // Originally was trying for a "MostConcise" or "Automatic" option here as well, but it was more trouble than it was worth. Maybe later.
+            // We need to queue the re-evaluation with a debounce cancellation because we don't want to be doing constant iteration over the whole list while it is actively being modified.
+            appDispatcher.DebounceToUI(ref timersModifiedDebounceTs, delay, () => engine.Recategorize());
         }
-
-        private SpellGroupingType GetGroupingType(SpellViewModel spell)
-            => spell.BenefitDetriment == SpellBenefitDetriment.Detrimental
-                ? settings.DetrimentalSpellGroupingType
-                : settings.BeneficialSpellGroupingType;
         
         private void SpellList_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
         {
-            if (e.NewItems != null)
-            {
-                foreach (var s in e.NewItems.OfType<SpellViewModel>())
-                {
-                    UpdateGroupingForSpell(s);
-                }
-            }
+            var newSpells = (e.NewItems ?? Array.Empty<SpellViewModel>()).OfType<SpellViewModel>();
+            var removedSpells = (e.OldItems ?? Array.Empty<SpellViewModel>()).OfType<SpellViewModel>();
+
+            engine.AddSpells(newSpells);
+            engine.RemoveSpells(removedSpells);
+
+            var recentlyImpactedSpells = new List<SpellViewModel>(newSpells.Concat(removedSpells));
+            if (recentlyImpactedSpells.Any())
+                QueueSpellGroupingReevaluation(groupRevaluationDebounceTime);
         }
         
         private void Base_PropertyChanged(object sender, PropertyChangedEventArgs e)
@@ -823,13 +826,14 @@ namespace EQTool.ViewModels
             {
                 OnPropertyChanged(nameof(GenericButtonVisibility));
             }
-
-            if (e.PropertyName == nameof(settings.BeneficialSpellGroupingType) || e.PropertyName == nameof(settings.DetrimentalSpellGroupingType))
+            else if (e.PropertyName == nameof(settings.PlayerSpellGroupingType)
+            || e.PropertyName == nameof(settings.NpcSpellGroupingType)
+            || e.PropertyName == nameof(settings.SpellsFilter))
             {
-                foreach (var spell in SpellList.OfType<SpellViewModel>())
-                {
-                    UpdateGroupingForSpell(spell);
-                }
+                if (_SpellList == null)
+                    return;
+                
+                QueueFullSpellListReevaluation();
             }
         }
     }

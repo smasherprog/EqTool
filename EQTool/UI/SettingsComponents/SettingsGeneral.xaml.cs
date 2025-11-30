@@ -276,9 +276,9 @@ namespace EQTool.UI.SettingsComponents
                 new CastTest { Spell = spells.AllSpells["Visions of Grandeur"], CasterName = EQSpells.SpaceYou, TargetName = "Aasgard" },
                 new CastTest { Spell = spells.AllSpells["Defensive Discipline"], CasterName = "Aasgard", TargetName = "Aasgard"},
 
-                new CastTest { Spell = spells.AllSpells["Theft of Thought"], CasterName = EQSpells.SpaceYou, TargetName = "a geonid shaman" },
-                new CastTest { Spell = spells.AllSpells["Mana Sieve"], CasterName = EQSpells.SpaceYou, TargetName = "a geonid shaman"},
-                new CastTest { Spell = spells.AllSpells["Mana Sieve"], CasterName = "SomeOtherEnchanter", TargetName = "a geonid shaman"},
+                new CastTest { Spell = spells.AllSpells["Theft of Thought"], CasterName = EQSpells.SpaceYou, TargetName = " a geonid shaman" },
+                new CastTest { Spell = spells.AllSpells["Mana Sieve"], CasterName = EQSpells.SpaceYou, TargetName = " a geonid shaman"},
+                new CastTest { Spell = spells.AllSpells["Mana Sieve"], CasterName = "SomeOtherEnchanter", TargetName = " a geonid shaman"},
                 new CastTest { Spell = spells.AllSpells["Harvest"], TargetName = "DrWizardGuy"},
                 new CastTest { Spell = spells.AllSpells["Quivering Veil of Xarn"], CasterName = "Necromanguy", TargetName = "Necromanguy"},
 

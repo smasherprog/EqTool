@@ -263,22 +263,22 @@ namespace EQTool.ViewModels
             }
         }
 
-        public SpellGroupingType BeneficialSpellGroupingType
+        public SpellGroupingType PlayerSpellGroupingType
         {
-            get => toolSettings.BeneficialSpellGroupingType;
+            get => toolSettings.PlayerSpellGroupingType;
             set
             {
-                toolSettings.BeneficialSpellGroupingType = value;
+                toolSettings.PlayerSpellGroupingType = value;
                 OnPropertyChanged();
             }
         }
         
-        public SpellGroupingType DetrimentalSpellGroupingType
+        public SpellGroupingType NpcSpellGroupingType
         {
-            get => toolSettings.DetrimentalSpellGroupingType;
+            get => toolSettings.NpcSpellGroupingType;
             set
             {
-                toolSettings.DetrimentalSpellGroupingType = value;
+                toolSettings.NpcSpellGroupingType = value;
                 OnPropertyChanged();
             }
         }
@@ -393,7 +393,6 @@ namespace EQTool.ViewModels
         public ObservableCollection<string> UIFiles { get; set; } = new ObservableCollection<string>();
         public ObservableCollection<BoolStringClass> SelectedPlayerClasses { get; set; } = new ObservableCollection<BoolStringClass>();
         public List<MapLocationSharing> LocationShareOptions => Enum.GetValues(typeof(MapLocationSharing)).Cast<MapLocationSharing>().ToList();
-        public List<TimerRecast> TimerRecastOptions => Enum.GetValues(typeof(TimerRecast)).Cast<TimerRecast>().ToList();
         public List<PlayerClasses> PlayerClasses => Enum.GetValues(typeof(PlayerClasses)).Cast<PlayerClasses>().Where(a => a != EQToolShared.Enums.PlayerClasses.Other).ToList();
 
         public bool EqRunning
