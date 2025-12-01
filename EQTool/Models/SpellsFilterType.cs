@@ -6,13 +6,11 @@ namespace EQTool.Models
     [TypeConverter(typeof(EnumDescriptionTypeConverter))]
     public enum SpellsFilterType
     {
-        [Description("By Class")]
-        ByClass,
-        [Description("Cast On You")]
-        CastOnYou,
+        [Description("Allowed Classes")]
+        ByClass = 0,
         [Description("Cast By You")]
-        CastByYou,
-        [Description("Cast By or On You")]
-        CastByOrOnYou
+        CastByYou = 1,
+        [Description("Cast By Your Class")]
+        CastByYourClass = 4,
     }
 }

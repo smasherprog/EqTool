@@ -366,6 +366,10 @@
                         </ComboBox>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="Always show spells cast on you?"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
+                        <CheckBox IsChecked="{Binding SpellsFilterAlwaysShowCastOnYou}" Click="Savesettings" MinWidth="75" Margin="7,0,0,0"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,8,0,0">
                         <TextBlock Text="Spell Filters" VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
                         <ComboBox SelectedItem="{Binding SpellsFilter}" ItemsSource="{Binding Source={markupExtensions:EnumBindingSource {x:Type models:SpellsFilterType}}}" MinWidth="100"></ComboBox>
                     </StackPanel>

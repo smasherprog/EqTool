@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
@@ -138,12 +139,18 @@ namespace EQTool.Models
         
         public List<PlayerInfo> Players { get; set; } = new List<PlayerInfo>();
         public List<Trigger> Triggers { get; set; } = new List<Trigger>();
+        
         public SpellsFilterType _SpellsFilter = SpellsFilterType.ByClass;
         public SpellsFilterType SpellsFilter
         {
             get => _SpellsFilter;
             set
             {
+                if ((int) value == 3) // Legacy setting. Lazy Migration. We should avoid adding a new 3 in the future, but if we do, we can just delete this block.
+                {
+                    value = SpellsFilterType.CastByYou;
+                }
+                
                 if (value == _SpellsFilter)
                 {
                     return;
@@ -153,7 +160,22 @@ namespace EQTool.Models
                 OnPropertyChanged();
             }
         }
+        
+        private bool _SpellsFilterAlwaysShowCastOnYou = true;
+        public bool SpellsFilterAlwaysShowCastOnYou
+        {
+            get => _SpellsFilterAlwaysShowCastOnYou;
+            set
+            {
+                if (value == _SpellsFilterAlwaysShowCastOnYou)
+                {
+                    return;
+                }
 
+                _SpellsFilterAlwaysShowCastOnYou = value;
+                OnPropertyChanged();
+            }
+        }
         private SpellGroupingType _PlayerSpellGroupingType = SpellGroupingType.ByTarget;
         public SpellGroupingType PlayerSpellGroupingType
         {
@@ -210,7 +232,6 @@ namespace EQTool.Models
         }
         public bool LoginMiddleMand { get; set; }
         public bool IsClickThroughMode { get; set; }
-
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected void OnPropertyChanged([CallerMemberName] string name = null)
