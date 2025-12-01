@@ -18,6 +18,7 @@ namespace EQtoolsTests
     {
         private readonly LogParser logParser;
         private readonly SpellWindowViewModel spellWindowViewModel;
+        private readonly PlayerTrackerService playerTrackerService;
         private readonly SpellDurations spellDurations;
         private readonly EQSpells spells;
         private const string YouBeginCasting = "You begin casting ";
@@ -25,6 +26,7 @@ namespace EQtoolsTests
         public SpellMatchingTests()
         {
             spellWindowViewModel = container.Resolve<SpellWindowViewModel>();
+            playerTrackerService = container.Resolve<PlayerTrackerService>();
             spellDurations = container.Resolve<SpellDurations>();
             spells = container.Resolve<EQSpells>();
             logParser = container.Resolve<LogParser>();
@@ -299,7 +301,53 @@ namespace EQtoolsTests
         }
 
         [TestMethod]
-        public void TestManaSeive()
+        public void TestLayHands_YouCast()
+        {
+            // Arrange
+            player.Player.Name = "Stevebrown";
+            player.Player.Level = 40;
+            player.Player.PlayerClass = PlayerClasses.Paladin;
+            var spellName = "Lay on Hands";
+            spells.AllSpells.TryGetValue(spellName, out var spell);
+            
+            // Act
+            _ = logParser.PushAuthenticSpellCast(spell, target: EQSpells.You);
+            
+            // Assert
+            var cooldown = SpellList.FirstOrDefault(a => a.Id == $"{spellName} Cooldown");
+            Assert.IsNotNull(cooldown);
+            Assert.AreEqual(EQSpells.SpaceYou, cooldown.Target);
+        }
+        
+        [TestMethod]
+        public void TestLayHands_OtherCast()
+        {
+            // Arrange
+            player.Player.Name = "Delfofthebla";
+            player.Player.Level = 60;
+            player.Player.PlayerClass = PlayerClasses.Enchanter;
+            player.Player.Zone = "The Hole";
+            var pally = new PlayerInfo
+            {
+                Name = "Omedowski",
+                PlayerClass = PlayerClasses.Paladin,
+                Level = 59,
+            };
+            var spellName = "Lay on Hands";
+            spells.AllSpells.TryGetValue(spellName, out var spell);
+            
+            // Act
+            var logTime = logParser.PushAuthenticLocalWho("Hole", new List<PlayerInfo> {player.Player, pally}, DateTime.Now);
+            logTime = logParser.PushAuthenticSpellCast(spell, target: EQSpells.You, caster: null, logTime);
+            
+            // Assert
+            var cooldown = SpellList.FirstOrDefault(a => a.Id == $"{spellName} Cooldown");
+            Assert.IsNotNull(cooldown);
+            Assert.AreEqual(pally.Name, cooldown.Target);
+        }
+
+        [TestMethod]
+        public void TestManaSieve()
         {
             var line = "An ancient Frost guardian staggers in pain.";
             player.Player = new PlayerInfo

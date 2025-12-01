@@ -251,7 +251,7 @@ namespace EQtoolsTests
             var spellEffect = spellWindowViewModel.SpellList.Where(a => a.SpellViewModelType == SpellViewModelType.Counter).Cast<CounterViewModel>().FirstOrDefault();
             Assert.IsNotNull(spellEffect);
             Assert.AreEqual(2, spellEffect.Count);
-            Assert.AreEqual(string.Empty, spellEffect.Caster);
+            Assert.AreEqual(EQSpells.SpaceYou, spellEffect.Caster);
             Assert.AreEqual(" A deepwater crocodile", spellEffect.Target);
         }
 

@@ -7,14 +7,18 @@ namespace EQTool.Services.Handlers
     public class SpellCastOnOtherHandler : BaseHandler
     {
         private readonly SpellHandlerService baseSpellYouCastingHandler;
+        private readonly CasterGuessingService casterGuessingService;
         private readonly SpellDurations spellDurations;
 
         public SpellCastOnOtherHandler(
+            SpellHandlerService baseSpellYouCastingHandler,
+            CasterGuessingService casterGuessingService,
             SpellDurations spellDurations,
-            SpellHandlerService baseSpellYouCastingHandler, BaseHandlerData baseHandlerData) : base(baseHandlerData)
+            BaseHandlerData baseHandlerData) : base(baseHandlerData)
         {
-            this.spellDurations = spellDurations;
             this.baseSpellYouCastingHandler = baseSpellYouCastingHandler;
+            this.casterGuessingService = casterGuessingService;
+            this.spellDurations = spellDurations;
             logEvents.SpellCastOnOtherEvent += LogEvents_SpellCastOnOtherEvent;
         }
 
@@ -66,7 +70,8 @@ namespace EQTool.Services.Handlers
                 }
             }
 
-            baseSpellYouCastingHandler.Handle(userCastingSpell, userCastingSpell?.NameIfSelfCast(e.TargetName), e.TargetName, 0, e.TimeStamp);
+            var caster = casterGuessingService.TryGuessNameForTimer(userCastingSpell, e.TargetName, requireCertainty: false);
+            baseSpellYouCastingHandler.Handle(userCastingSpell, caster, e.TargetName, 0, e.TimeStamp);
         }
     }
 }

@@ -50,6 +50,7 @@ namespace EQTool
             _ = builder.RegisterType<Services.SpellIcons>().AsSelf().SingleInstance();
             _ = builder.RegisterType<Services.ParseSpells_spells_us>().AsSelf().SingleInstance();
             _ = builder.RegisterType<Services.SpellGroupingEngine>().AsSelf().SingleInstance();
+            _ = builder.RegisterType<Services.CasterGuessingService>().AsSelf().SingleInstance();
             _ = builder.RegisterType<Services.PlayerTrackerService>().AsSelf().SingleInstance();
             _ = builder.RegisterType<Services.ZoneActivityTrackingService>().AsSelf().SingleInstance();
             _ = builder.RegisterType<Services.TimersService>().AsSelf().SingleInstance();

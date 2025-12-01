@@ -34,7 +34,6 @@ namespace EQTool.Services.Handlers
                 target = " " + target.Trim();
                 isNpcTarget = true;
             }
-            casterName = CleanupCasterName(spell, casterName, targetName);
             
             cooldownService.AddCooldownTimerIfNecessary(spell, casterName, targetName, isNpcTarget, delayOffset, timestamp);
             
@@ -114,21 +113,6 @@ namespace EQTool.Services.Handlers
                     spellWindowViewModel.TryAdd(vm, overWrite);
                 }
             }
-        }
-        
-        private static string CleanupCasterName(Spell spell, string casterName, string targetName)
-        {
-            // Try and fix up the caster if it can be easily inferred and is empty.
-            if (string.IsNullOrWhiteSpace(casterName))
-            {
-                if (spell.name.Contains("Discipline", StringComparison.OrdinalIgnoreCase)
-                    || spell.SpellType == SpellType.Self)   // Shouldn't be necessary tbh but doesn't hurt to have a failsafe here
-                {
-                    casterName = targetName;
-                }
-            }
-
-            return casterName;
         }
     }
 }

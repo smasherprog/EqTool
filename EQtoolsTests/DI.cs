@@ -73,15 +73,18 @@ namespace EQtoolsTests
             _ = builder.RegisterType<EQTool.Services.SpellIcons>().AsSelf().SingleInstance();
             _ = builder.RegisterType<EQTool.Services.ParseSpells_spells_us>().AsSelf().SingleInstance();
             _ = builder.RegisterType<EQTool.Services.SpellGroupingEngine>().AsSelf().SingleInstance();
-            _ = builder.RegisterType<EQTool.ViewModels.SettingsWindowViewModel>().AsSelf().SingleInstance();
+            _ = builder.RegisterType<EQTool.Services.CasterGuessingService>().AsSelf().SingleInstance();
+            _ = builder.RegisterType<EQTool.Services.LogParser>().AsSelf().SingleInstance();
+            
             _ = builder.RegisterType<EQTool.Models.EQSpells>().AsSelf().SingleInstance();
+            
+            _ = builder.RegisterType<EQTool.ViewModels.SettingsWindowViewModel>().AsSelf().SingleInstance();
             _ = builder.RegisterType<EQTool.ViewModels.ActivePlayer>().AsSelf().SingleInstance();
             _ = builder.RegisterType<EQTool.ViewModels.SpellWindowViewModel>().AsSelf().SingleInstance();
             _ = builder.RegisterType<EQTool.ViewModels.MobInfoComponents.PetViewModel>().AsSelf().SingleInstance();
             _ = builder.RegisterType<EQTool.ViewModels.MobInfoComponents.MobInfoViewModel>().AsSelf().SingleInstance();
             _ = builder.RegisterType<EQTool.ViewModels.MobInfoComponents.MobInfoManagementViewModel>().AsSelf().SingleInstance();
 
-            _ = builder.RegisterType<EQTool.Services.LogParser>().AsSelf().SingleInstance();
             _ = builder.RegisterType<EQTool.ViewModels.DPSWindowViewModel>().AsSelf().SingleInstance();
             _ = builder.RegisterType<EQToolShared.Discord.DiscordAuctionParse>().AsSelf().SingleInstance();
             _ = builder.RegisterType<TextToSpeachFake>().As<ITextToSpeach>().SingleInstance();

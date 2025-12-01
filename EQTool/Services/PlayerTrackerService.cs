@@ -21,7 +21,7 @@ namespace EQTool.Services
         private readonly IAppDispatcher appDispatcher;
 
         private readonly Dictionary<string, Player> AllPlayers = new Dictionary<string, Player>(StringComparer.InvariantCultureIgnoreCase);
-        private readonly Dictionary<string, Player> PlayersInZones = new Dictionary<string, Player>(StringComparer.InvariantCultureIgnoreCase);
+        private readonly Dictionary<string, Player> PlayersInZone = new Dictionary<string, Player>(StringComparer.InvariantCultureIgnoreCase);
         private readonly Dictionary<string, Player> DirtyPlayers = new Dictionary<string, Player>(StringComparer.InvariantCultureIgnoreCase);
         private string CurrentZone;
         private readonly System.Timers.Timer UITimer;
@@ -32,7 +32,7 @@ namespace EQTool.Services
             CurrentZone = activePlayer.Player?.Zone;
             this.logEvents = logEvents;
             this.logEvents.YouZonedEvent += LogParser_PlayerZonedEvent;
-            this.logEvents.AfterPlayerChangedEvent += LogEvents_AfterPayerChangedEvent;
+            this.logEvents.AfterPlayerChangedEvent += LogEvents_AfterPlayerChangedEvent;
             this.logEvents.WhoPlayerEvent += LogParser_WhoPlayerEvent;
             UITimer = new System.Timers.Timer(20000);// every 20 seconds
             UITimer.Elapsed += UITimer_Elapsed;
@@ -44,7 +44,7 @@ namespace EQTool.Services
             this.appDispatcher = appDispatcher;
         }
 
-        private void LogEvents_AfterPayerChangedEvent(object sender, AfterPlayerChangedEvent e)
+        private void LogEvents_AfterPlayerChangedEvent(object sender, AfterPlayerChangedEvent e)
         {
             CurrentZone = activePlayer.Player?.Zone;
         }
@@ -78,12 +78,17 @@ namespace EQTool.Services
             }
         }
 
-        public List<Player> GetNearbyClasses(PlayerClasses searchClass)
+        public List<Player> GetNearbyClasses(PlayerClasses searchClass) => GetNearbyClasses(new List<PlayerClasses> {searchClass});
+        public List<Player> GetNearbyClasses(IEnumerable<PlayerClasses> searchClasses)
         {
-            var otherPlayers = PlayersInZones.Values.Where(p => p?.PlayerClass == searchClass).Select(p => p).ToList();
-            if (activePlayer?.Player?.PlayerClass == searchClass)
-                otherPlayers.Add(activePlayer.Player.ToPlayer());
+            var otherPlayers = PlayersInZone.Values
+                .Where(piz => piz?.PlayerClass != null && searchClasses.Contains(piz.PlayerClass.Value))
+                .Select(piz => piz)
+                .ToList();
             
+            if (activePlayer?.Player?.PlayerClass != null && searchClasses.Contains(activePlayer.Player.PlayerClass.Value))
+                otherPlayers.Add(activePlayer.Player.ToPlayer());
+
             return otherPlayers;
         }
 
@@ -218,24 +223,27 @@ namespace EQTool.Services
                     Debug.WriteLine($"Adding {e.PlayerInfo.Name} {e.PlayerInfo.Level} {e.PlayerInfo.GuildName} {e.PlayerInfo.PlayerClass}");
                 }
 
-                if (!PlayersInZones.ContainsKey(e.PlayerInfo.Name))
+                if (!PlayersInZone.ContainsKey(e.PlayerInfo.Name))
                 {
-                    PlayersInZones[e.PlayerInfo.Name] = e.PlayerInfo;
+                    PlayersInZone[e.PlayerInfo.Name] = e.PlayerInfo;
                 }
             }
-
         }
 
         private void LogParser_PlayerZonedEvent(object sender, YouZonedEvent e)
         {
             lock (ContainerLock)
             {
-                if (CurrentZone != activePlayer.Player?.Zone)
+                if (CurrentZone == activePlayer.Player?.Zone)
+                    return;
+
+                if (CurrentZone != null && activePlayer.Player?.Zone != null)
                 {
-                    CurrentZone = activePlayer.Player?.Zone;
                     Debug.WriteLine("Clearing zone Players");
-                    PlayersInZones.Clear();
+                    PlayersInZone.Clear();
                 }
+
+                CurrentZone = activePlayer.Player?.Zone;
             }
         }
     }

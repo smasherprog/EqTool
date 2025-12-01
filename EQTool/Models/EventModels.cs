@@ -4,6 +4,7 @@ using EQToolShared.Map;
 using System;
 using System.Collections.Generic;
 using System.Windows.Media.Media3D;
+using EQToolShared.APIModels.PlayerControllerModels;
 
 namespace EQTool.Models
 {
@@ -50,7 +51,13 @@ namespace EQTool.Models
         public Point3D Location { get; set; }
         public PlayerInfo PlayerInfo { get; set; }
     }
+    
     public class WhoEvent : BaseLogParseEvent { }
+    public class WhoPlayerEvent : BaseLogParseEvent
+    {
+        public Player PlayerInfo { get; set; }
+    }
+    
     public class CampEvent : BaseLogParseEvent { }
     public class QuakeEvent : BaseLogParseEvent { }
     public class BoatEvent : BaseLogParseEvent
@@ -115,11 +122,7 @@ namespace EQTool.Models
 
         public string Killer { get; set; }
     }
-
-    public class WhoPlayerEvent : BaseLogParseEvent
-    {
-        public EQToolShared.APIModels.PlayerControllerModels.Player PlayerInfo { get; set; }
-    }
+    
     public class FailedFeignEvent : BaseLogParseEvent
     {
         public string PersonWhoFailedFeign { get; set; }

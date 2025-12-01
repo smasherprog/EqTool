@@ -12,7 +12,8 @@ namespace EQTool.Services
 {
     public class LogParser : IDisposable
     {
-        private System.Timers.Timer UITimer;
+        private const string TimestampFormat = "ddd MMM dd HH:mm:ss yyyy";
+        
         private readonly ActivePlayer activePlayer;
         private readonly IAppDispatcher appDispatcher;
         private readonly EQToolSettings settings;
@@ -20,6 +21,8 @@ namespace EQTool.Services
         private readonly List<IEqLogParser> eqLogParsers;
         private readonly LineParser lineParser;
         private readonly FileReader fileReader;
+        
+        private System.Timers.Timer UITimer;
         private bool Processing = false;
         public DateTime LastYouActivity { get; private set; } = DateTime.Now.AddMonths(-1);
         public DateTime LastEntryDateTime { get; private set; } = DateTime.Now;
@@ -32,9 +35,8 @@ namespace EQTool.Services
             ActivePlayer activePlayer,
             IAppDispatcher appDispatcher,
             EQToolSettings settings,
-             FileReader fileReader,
-             LineParser lineParser
-            )
+            FileReader fileReader,
+            LineParser lineParser)
         {
             this.eqLogParsers = eqLogParsers.ToList();
             //below I am forcing the order of parsers because the first one to handle the line wins.
@@ -85,21 +87,17 @@ namespace EQTool.Services
         {
             var logtext = message?.Trim();
             if (string.IsNullOrWhiteSpace(logtext))
-            {
                 return;
-            }
-            if (!logtext.StartsWith("["))
-            {
-                var format = "ddd MMM dd HH:mm:ss yyyy";
-                var d = datetime;
-                logtext = "[" + d.ToString(format) + "] " + logtext;
-            }
+
+            if (!HasTimestampPrefix(logtext))
+                logtext = $"[{datetime.ToString(TimestampFormat)}] {logtext}";
+
             Push(logtext);
         }
 
-        private void MainRun(string line1)
+        private void MainRun(string line)
         {
-            if (line1 == null || line1.Length < 27)
+            if (line == null || line.Length < 27)
             {
                 return;
             }
@@ -107,8 +105,8 @@ namespace EQTool.Services
             try
             {
 #endif
-            var date = line1.Substring(1, 24);
-            var message = line1.Substring(27).Trim();
+            var date = line.Substring(1, 24);
+            var message = line.Substring(27).Trim();
             if (string.IsNullOrWhiteSpace(message))
             {
                 return;
@@ -125,7 +123,7 @@ namespace EQTool.Services
             {
                 if (handler.Handle(message, timestamp, LineCounter))
                 {
-                    Debug.WriteLine($"--Handled by {handler.GetType().Name}: {line1}");
+                    Debug.WriteLine($"--Handled by {handler.GetType().Name}: {line}");
                     lineParser.Handle(message, timestamp, LineCounter);
                     return;
                 }
@@ -193,6 +191,27 @@ namespace EQTool.Services
             });
         }
 
+        private bool HasTimestampPrefix(string line)
+        {
+            if (string.IsNullOrWhiteSpace(line))
+                return false;
+
+            if (!line.StartsWith("["))
+                return false;
+
+            var closing = line.IndexOf(']');
+            if (closing <= 1)
+                return false;
+
+            var inner = line.Substring(1, closing - 1);
+            return DateTime.TryParseExact(
+                inner,
+                TimestampFormat,
+                System.Globalization.CultureInfo.InvariantCulture,
+                System.Globalization.DateTimeStyles.None,
+                out _);
+        }
+        
         public void Dispose()
         {
             UITimer.Stop();

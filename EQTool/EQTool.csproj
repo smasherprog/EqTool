@@ -330,6 +330,7 @@
     <Compile Include="Models\SpellsFilterType.cs" />
     <Compile Include="Services\BinarySerializer.cs" />
     <Compile Include="Services\BoatScheduleService.cs" />
+    <Compile Include="Services\CasterGuessingService.cs" />
     <Compile Include="Services\Handlers\BardCountHandler.cs" />
     <Compile Include="Services\Handlers\BoatHandler.cs" />
     <Compile Include="Services\Handlers\ConHandler.cs" />

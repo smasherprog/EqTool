@@ -11,13 +11,15 @@ namespace EQTool.Services.Handlers
     {
         private readonly SpellWindowViewModel spellWindowViewModel;
         private readonly ActivePlayer activePlayer;
+        private readonly CasterGuessingService casterGuessingService;
         private readonly PlayerTrackerService playerTrackerService;
 
-        public CooldownHandlerService(PlayerTrackerService playerTrackerService, SpellWindowViewModel spellWindowViewModel, ActivePlayer activePlayer)
+        public CooldownHandlerService(ActivePlayer activePlayer, CasterGuessingService casterGuessingService, PlayerTrackerService playerTrackerService, SpellWindowViewModel spellWindowViewModel)
         {
+            this.activePlayer = activePlayer;
+            this.casterGuessingService = casterGuessingService;
             this.playerTrackerService = playerTrackerService;
             this.spellWindowViewModel = spellWindowViewModel;
-            this.activePlayer = activePlayer;
         }
 
         public void AddCooldownTimerIfNecessary(Spell spell, string casterName, string targetName, bool targetIsNpc, int delayOffset, DateTime timeStamp)
@@ -26,10 +28,12 @@ namespace EQTool.Services.Handlers
                 return;
             
             var spellName = spell.name;
+            var timerId = $"{spellName} Cooldown";
             
-            casterName = CleanupCasterName(spell, casterName, targetName);
             targetName = CleanupTargetName(targetIsNpc, targetName);
-            casterName = TryGuessCasterNameForLayHandsIfNecessary(spell, casterName);
+            
+            if (string.IsNullOrWhiteSpace(casterName))
+                casterName = casterGuessingService.TryGuessNameForTimer(spell, timerId, targetName, requireCertainty: false);
 
             var cooldownRecipient = TargetOnlyIfUnknownCaster(casterName, targetName);
             var cooldownRecipientClass = playerTrackerService.GetPlayer(cooldownRecipient)?.PlayerClass;
@@ -43,7 +47,7 @@ namespace EQTool.Services.Handlers
                 spellWindowViewModel.TryAdd(new SpellViewModel
                 {
                     PercentLeft = 100,
-                    Id = $"{spellName} Cooldown",
+                    Id = timerId,
                     Target = cooldownRecipient,
                     TargetClass = cooldownRecipientClass,
                     Caster = casterName,
@@ -62,7 +66,7 @@ namespace EQTool.Services.Handlers
                 spellWindowViewModel.TryAdd(new SpellViewModel
                 {
                     PercentLeft = 100,
-                    Id = $"{spellName} Cooldown",
+                    Id = timerId,
                     Target = cooldownRecipient,
                     TargetClass = cooldownRecipientClass,
                     Caster = casterName,
@@ -75,29 +79,6 @@ namespace EQTool.Services.Handlers
                     UpdatedDateTime = DateTime.Now
                 });
             }
-        }
-
-        private static string CleanupTargetName(bool targetIsNpc, string targetName)
-        {
-            if (targetName != null && targetIsNpc && !targetName.StartsWith(" "))
-                targetName = $" {targetName}";
-            
-            return targetName;
-        }
-
-        private static string CleanupCasterName(Spell spell, string casterName, string targetName)
-        {
-            // Try and fix up the caster if it can be easily inferred and is empty.
-            if (string.IsNullOrWhiteSpace(casterName))
-            {
-                if (spell.name.Contains("Discipline", StringComparison.OrdinalIgnoreCase)
-                || spell.SpellType == SpellType.Self)   // Shouldn't be necessary tbh but doesn't hurt to have a failsafe here
-                {
-                    casterName = targetName;
-                }
-            }
-
-            return casterName;
         }
 
         //TODO: Re-write this a little so that we can separate the "True Cooldown" and the "Time Remaining" as two separate values
@@ -162,38 +143,15 @@ namespace EQTool.Services.Handlers
 
             return baseTime;
         }
-        
-        // TODO: This guesswork engine could be part of a greater whole in the future. For now it's just a lazy proof of concept specifically for layhands.
-        private string TryGuessCasterNameForLayHandsIfNecessary(Spell spell, string casterName)
+
+        private static string CleanupTargetName(bool targetIsNpc, string targetName)
         {
-            if (spell.name != "Lay on Hands" || !string.IsNullOrWhiteSpace(casterName))
-                return casterName;
-
-            var potentialCasters = playerTrackerService.GetNearbyClasses(PlayerClasses.Paladin).Select(x => x.Name).ToList();
-            var existingCds = spellWindowViewModel.SpellList.Where(x => x.Id.Equals("Lay on Hands Cooldown"));
-            if (existingCds.Any())
-            {
-                foreach (var cd in existingCds.Where(cd => potentialCasters.Contains(cd.Target)))
-                    potentialCasters.Remove(cd.Target);
-            }
-
-            if (potentialCasters.Count == 1)
-            {
-                casterName = potentialCasters.First();
-                if (casterName == activePlayer?.Player?.Name)
-                    casterName = EQSpells.SpaceYou;
-            }
-            else if (potentialCasters.Count > 1)
-            {
-                if (activePlayer?.Player?.PlayerClass == PlayerClasses.Paladin)
-                    casterName = EQSpells.SpaceYou; // Just let the player have it. They can figure it out themselves.
-                else
-                    casterName = potentialCasters.First();
-            }
+            if (targetName != null && targetIsNpc && !targetName.StartsWith(" "))
+                targetName = $" {targetName}";
             
-            return casterName;
+            return targetName;
         }
-
+        
         private static string TargetOnlyIfUnknownCaster(string casterName, string target) => string.IsNullOrWhiteSpace(casterName) ? target : casterName;
     }
 }

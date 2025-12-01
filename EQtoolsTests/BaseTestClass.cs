@@ -6,6 +6,8 @@ using EQToolShared.Enums;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
+
 namespace EQtoolsTests
 {
     public class BaseTestClass
@@ -28,17 +30,69 @@ namespace EQtoolsTests
 
     public static class LogParserExtension
     {
+        public static DateTime PushAuthenticLocalWho(this LogParser logParser, string zone, PlayerInfo playerInZone, DateTime? dateTime = null)
+            => logParser.PushAuthenticLocalWho(zone, new List<PlayerInfo> {playerInZone}, dateTime);
+        
+        public static DateTime PushAuthenticLocalWho(this LogParser logParser, string zone, IEnumerable<PlayerInfo> playersInZone, DateTime? dateTime = null)
+        {
+            var timeOfLog = dateTime ?? logParser.LastEntryDateTime;
+            logParser.Push("Players on EverQuest:", timeOfLog);
+            logParser.Push("---------------------------", timeOfLog);
+
+            foreach (var playerInfo in playersInZone)
+            {
+                if (string.IsNullOrWhiteSpace(playerInfo.GuildName))
+                    logParser.Push($"[{playerInfo.Level} {playerInfo.PlayerClass}] {playerInfo.Name} (Human)", timeOfLog); //TODO: Not always human
+                else
+                    logParser.Push($"[{playerInfo.Level} {playerInfo.PlayerClass}] {playerInfo.Name} (Human) <{playerInfo.GuildName}>", timeOfLog); //TODO: Not always human
+            }
+            
+            var playerCount = playersInZone.Count();
+            if (playerCount == 1)
+                logParser.Push($"There is 1 player in {zone}.", timeOfLog);
+            else
+                logParser.Push($"There are {playerCount} players in {zone}.", timeOfLog);
+            
+            return timeOfLog.Add(TimeSpan.FromSeconds(1));
+        }
+        
+        public static DateTime PushAuthenticGlobalWho(this LogParser logParser, string zone, PlayerInfo playerInZone, DateTime? dateTime = null)
+            => logParser.PushAuthenticGlobalWho(zone, new List<PlayerInfo> {playerInZone}, dateTime);
+        
+        public static DateTime PushAuthenticGlobalWho(this LogParser logParser, string zone, IEnumerable<PlayerInfo> playersInZone, DateTime? dateTime = null)
+        {
+            var timeOfLog = dateTime ?? logParser.LastEntryDateTime;
+            logParser.Push("Players in EverQuest:", timeOfLog);
+            logParser.Push("---------------------------", timeOfLog);
+            
+            foreach (var playerInfo in playersInZone)
+            {
+                if (string.IsNullOrWhiteSpace(playerInfo.GuildName))
+                    logParser.Push($"[{playerInfo.Level} {playerInfo.PlayerClass}] {playerInfo.Name} (Human) ZONE: {zone}", timeOfLog); //TODO: Not always human
+                else
+                    logParser.Push($"[{playerInfo.Level} {playerInfo.PlayerClass}] {playerInfo.Name} (Human) <{playerInfo.GuildName}> ZONE: {zone}", timeOfLog); //TODO: Not always human
+            }
+            
+            var playerCount = playersInZone.Count();
+            if (playerCount == 1)
+                logParser.Push($"There is 1 player in Everquest.", timeOfLog);
+            else
+                logParser.Push($"There are {playerCount} players in Everquest.", timeOfLog);
+            
+            return timeOfLog.Add(TimeSpan.FromSeconds(1));
+        }
+        
         public static DateTime PushAuthenticSpellCast(this LogParser logParser, Spell spell, string target, string caster = null, DateTime? dateTime = null)
-            => logParser.PushAuthenticAoESpellCast(spell, new List<string> { target }, caster: EQSpells.You, dateTime: dateTime);
+            => logParser.PushAuthenticAoESpellCast(spell, new List<string> { target }, caster, dateTime: dateTime);
         
         public static DateTime PushAuthenticAoESpellCast(this LogParser logParser, Spell spell, List<string> targets, string caster = null, DateTime? dateTime = null)
         {
             var timeOfLog = dateTime ?? logParser.LastEntryDateTime;
-            if (!string.IsNullOrWhiteSpace(caster))
+            if (spell.casttime > 0 && !string.IsNullOrWhiteSpace(caster))
             {
                 if (IsYou(caster))
                     logParser.Push($"You begin casting {spell.name}", timeOfLog);
-                else if (!string.IsNullOrWhiteSpace(caster))
+                else
                     logParser.Push($"{caster} begins to cast a spell.", timeOfLog);
                 
                 timeOfLog += TimeSpan.FromSeconds(spell.casttime);
