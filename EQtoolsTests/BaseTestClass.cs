@@ -28,13 +28,22 @@ namespace EQtoolsTests
 
     public static class LogParserExtension
     {
+        public static DateTime PushAuthenticWeaponProc(this LogParser logParser, Spell spell, string target, DateTime? dateTime = null)
+            => logParser.PushAuthenticAoESpellCast(isWeaponProc: true, spell, new List<string> { target }, caster: null, dateTime);
+        
+        public static DateTime PushAuthenticAoEWeaponProc(this LogParser logParser, Spell spell, List<string> targets, DateTime? dateTime = null)
+            => logParser.PushAuthenticAoESpellCast(isWeaponProc: true, spell, targets, caster: null, dateTime);
+        
         public static DateTime PushAuthenticSpellCast(this LogParser logParser, Spell spell, string target, string caster = null, DateTime? dateTime = null)
-            => logParser.PushAuthenticAoESpellCast(spell, new List<string> { target }, caster: EQSpells.You, dateTime: dateTime);
+            => logParser.PushAuthenticAoESpellCast(isWeaponProc: false, spell, new List<string> { target }, caster, dateTime);
         
         public static DateTime PushAuthenticAoESpellCast(this LogParser logParser, Spell spell, List<string> targets, string caster = null, DateTime? dateTime = null)
+            => logParser.PushAuthenticAoESpellCast(isWeaponProc: true, spell, targets, caster, dateTime);
+        
+        public static DateTime PushAuthenticAoESpellCast(this LogParser logParser, bool isWeaponProc, Spell spell, List<string> targets, string caster = null, DateTime? dateTime = null)
         {
             var timeOfLog = dateTime ?? logParser.LastEntryDateTime;
-            if (!string.IsNullOrWhiteSpace(caster))
+            if (!string.IsNullOrWhiteSpace(caster) && !isWeaponProc)
             {
                 if (IsYou(caster))
                     logParser.Push($"You begin casting {spell.name}", timeOfLog);
