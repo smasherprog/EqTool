@@ -15,6 +15,7 @@ namespace EQtoolsTests
     public class SpellViewModelTests : BaseTestClass
     {
         private readonly LogParser logParser;
+        private readonly EQSpells spells;
         private readonly SpellWindowViewModel spellWindowViewModel;
         private const string YouBeginCasting = "You begin casting ";
         private const string DummyEntryToForceEmitEvent = "You can't use that command right now...";
@@ -23,8 +24,9 @@ namespace EQtoolsTests
 
         public SpellViewModelTests()
         {
-            spellWindowViewModel = container.Resolve<SpellWindowViewModel>();
             logParser = container.Resolve<LogParser>();
+            spells = container.Resolve<EQSpells>();
+            spellWindowViewModel = container.Resolve<SpellWindowViewModel>();
         }
 
         [TestMethod]
@@ -355,6 +357,49 @@ namespace EQtoolsTests
             Assert.Contains(" A crystalline devourer", spellEffects.Select(x => x.Target));
             Assert.Contains(" A Blizzard Hunter", spellEffects.Select(x => x.Target));
             Assert.HasCount(4, spellEffects);
+        }
+        
+        [TestMethod]
+        public void TestPrimalWeapon()
+        {
+            var spell = spells.AllSpells["Primal Avatar"];
+            player.Player.PlayerClass = EQToolShared.Enums.PlayerClasses.Monk;
+            player.Player.Level = 60;
+            player.Player.Zone = "growthplane";
+            logParser.PushAuthenticWeaponProc(spell, EQSpells.SpaceYou, DateTime.Now);
+
+            var effects = spellWindowViewModel.SpellList.Where(a => a.SpellViewModelType == SpellViewModelType.Spell && a.Id.Contains(spell.name)).Cast<SpellViewModel>();
+            Assert.IsNotNull(effects);
+            Assert.IsFalse(effects.Any(x => x.Id == $"{spell.name} Cooldown")); // No CD for primal weapon procs.
+        }
+        
+        [TestMethod]
+        public void TestPrimalAvatar_YouCast_Other()
+        {
+            var spell = spells.AllSpells["Primal Avatar"];
+            player.Player.PlayerClass = EQToolShared.Enums.PlayerClasses.Shaman;
+            player.Player.Level = 60;
+            player.Player.Zone = "growthplane";
+            logParser.PushAuthenticSpellCast(spell, target: "SomeMonk", caster: EQSpells.SpaceYou, DateTime.Now);
+
+            var effects = spellWindowViewModel.SpellList.Where(a => a.SpellViewModelType == SpellViewModelType.Spell && a.Id.Contains(spell.name)).Cast<SpellViewModel>();
+            Assert.IsNotNull(effects);
+            Assert.IsTrue(effects.Any(x => x.Id == $"{spell.name} Cooldown" && x.Target == EQSpells.SpaceYou));
+            Assert.IsTrue(effects.Any(x => x.Id == spell.name && x.Target == "SomeMonk"));
+        }
+        
+        [TestMethod]
+        public void TestPrimalAvatar_OtherCast_Other()
+        {
+            var spell = spells.AllSpells["Primal Avatar"];
+            player.Player.PlayerClass = EQToolShared.Enums.PlayerClasses.Druid;
+            player.Player.Level = 60;
+            player.Player.Zone = "growthplane";
+            logParser.PushAuthenticSpellCast(spell, target: "SomeMonk", caster: null, DateTime.Now);    // Unknown Caster
+
+            var effects = spellWindowViewModel.SpellList.Where(a => a.SpellViewModelType == SpellViewModelType.Spell && a.Id.Contains(spell.name)).Cast<SpellViewModel>();
+            Assert.IsNotNull(effects);
+            Assert.IsFalse(effects.Any(x => x.Id == $"{spell.name} Cooldown")); // No CD for unknown casters since it could just be a primal proc
         }
         
         [TestMethod]

@@ -63,16 +63,22 @@ namespace EQTool.Services
 
         public EQToolShared.APIModels.PlayerControllerModels.Player GetPlayer(string name)
         {
-            if (string.IsNullOrWhiteSpace(name) || name.StartsWith(" "))
+            if (string.IsNullOrWhiteSpace(name))
+                return null;
+            
+            if (name.StartsWith(" "))
             {
+                if ((name == EQSpells.SpaceYou || name == EQSpells.You) && activePlayer.Player != null)
+                    return activePlayer.Player.ToPlayer();
+                
                 return null;
             }
+            
             lock (ContainerLock)
             {
                 if (AllPlayers.TryGetValue(name, out var p))
-                {
                     return p;
-                }
+                
                 return null;
             }
         }

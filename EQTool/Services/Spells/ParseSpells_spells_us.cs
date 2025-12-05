@@ -379,6 +379,11 @@ namespace EQTool.Services
                     {
                         spell.name = "Manicial Strength";
                     }
+                    
+                    if (spell.name == "Lay on Hands")
+                    {
+                        spell.recastTime = 4320000; // 72 minutes in milliseconds
+                    }
 
                     if (spells.TryGetValue(spell.name, out var spellinlist))
                     {
