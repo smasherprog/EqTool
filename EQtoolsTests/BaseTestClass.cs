@@ -38,7 +38,7 @@ namespace EQtoolsTests
             => logParser.PushAuthenticAoESpellCast(isWeaponProc: false, spell, new List<string> { target }, caster, dateTime);
         
         public static DateTime PushAuthenticAoESpellCast(this LogParser logParser, Spell spell, List<string> targets, string caster = null, DateTime? dateTime = null)
-            => logParser.PushAuthenticAoESpellCast(isWeaponProc: true, spell, targets, caster, dateTime);
+            => logParser.PushAuthenticAoESpellCast(isWeaponProc: false, spell, targets, caster, dateTime);
         
         public static DateTime PushAuthenticAoESpellCast(this LogParser logParser, bool isWeaponProc, Spell spell, List<string> targets, string caster = null, DateTime? dateTime = null)
         {
