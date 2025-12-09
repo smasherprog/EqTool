@@ -178,7 +178,7 @@ namespace EQTool.Services
             var spellsfile = new FileInfo(Paths.Combine(settings.DefaultEqDirectory, spellfile));
             if (spellsfile.Exists)
             {
-                var spellCacheName = $"SpellCache{servers}_1";
+                var spellCacheName = $"SpellCache{servers}_2";
                 if (!isdebug)
                 {
                     spellCacheName = new string(spellCacheName.Where(a => char.IsLetterOrDigit(a)).ToArray()) + ".bin";
@@ -285,6 +285,15 @@ namespace EQTool.Services
                         if (!spell.Classes.ContainsKey(PlayerClasses.Wizard))
                         {
                             spell.Classes.Add(PlayerClasses.Wizard, 51);
+                        }
+                    }
+
+                    if (spell.name == "Soul Well")
+                    {
+                        spell.casttime = 13 * 1000; 
+                        if (!spell.Classes.ContainsKey(PlayerClasses.Necromancer))
+                        {
+                            spell.Classes.Add(PlayerClasses.Necromancer, 50);
                         }
                     }
 
@@ -514,6 +523,7 @@ namespace EQTool.Services
                     ret.Classes[foundepic.PlayerClass] = 46;
                 }
 
+                
                 return ret;
             }
             catch (Exception e)
