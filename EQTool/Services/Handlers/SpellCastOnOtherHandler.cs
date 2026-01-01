@@ -31,7 +31,7 @@ namespace EQTool.Services.Handlers
                 {
                     debugOutput.WriteLine($"Casting spell guess based on timer for {userCastingSpell.name} on Target: {e.TargetName}", OutputType.Spells);
                     isValidCast = true;
-                    if (SpellHandlerService.AllCharmSpells.Any(charmSpell => string.Equals(userCastingSpell.name, charmSpell, System.StringComparison.OrdinalIgnoreCase)))
+                    if (EQSpells.Charms.Any(charmSpell => string.Equals(userCastingSpell.name, charmSpell, System.StringComparison.OrdinalIgnoreCase)))
                     {
                         target = EQSpells.SpaceYou;
                     }

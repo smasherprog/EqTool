@@ -3,11 +3,10 @@ using System.Diagnostics;
 using System.Linq;
 using EQTool.Models;
 using EQTool.Services;
-using EQToolShared.Enums;
 
 namespace EQTool.ViewModels.SpellWindow
 {
-    [DebuggerDisplay("Group = {DisplayGroup} Sorting = {GroupSorting} | Count = {Count}, Spell = {Id}, Target = {Target}, Caster = {Caster}")]
+    [DebuggerDisplay("Group = '{DisplayGroup}' Sorting = '{GroupSorting}' | Count = '{Count}', Spell = '{Id}', Target = '{Target}', Caster = '{Caster}'")]
     public class CounterViewModel : SpellViewModel
     {
         public override SpellViewModelType SpellViewModelType => SpellViewModelType.Counter;
@@ -35,6 +34,6 @@ namespace EQTool.ViewModels.SpellWindow
         }
         
         private HashSet<string> casters = new HashSet<string>();
-        public override bool CastByYou(PlayerInfo player) => casters.Any(x => x == EQSpells.You || x == EQSpells.SpaceYou || (player != null && x == player.Name));
+        public override bool CastByYou() => casters.Any(x => x == EQSpells.You || x == EQSpells.SpaceYou);
     }
 }

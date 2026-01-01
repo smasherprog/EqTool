@@ -75,6 +75,7 @@
     <Compile Include="Enums\SpellBenefitDetriment.cs" />
     <Compile Include="Enums\PlayerClasses.cs" />
     <Compile Include="Enums\Servers.cs" />
+    <Compile Include="Extensions\DictionaryExtensions.cs" />
     <Compile Include="Extensions\Paths.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="HubModels\BaseSignalRModel.cs" />

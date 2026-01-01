@@ -9,6 +9,7 @@ using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Threading;
 using EQTool.ViewModels;
+using WindowState = System.Windows.WindowState;
 
 namespace EQTool.UI
 {
@@ -146,13 +147,19 @@ namespace EQTool.UI
 
         private void SaveWindowState(EQTool.Models.WindowState windowState)
         {
-            windowState.WindowRect = new Rect
+            // When the window is minimized, the OS resizes the window to very odd numbers.
+            // They remember how to resize it, but we do not. Maximizing it does this too, but that at least makes sense
+            // So we'll just not save the size when it's in an abnormal state.
+            if (WindowState == WindowState.Normal)  
             {
-                X = Left,
-                Y = Top,
-                Height = Height,
-                Width = Width
-            };
+                windowState.WindowRect = new Rect
+                {
+                    X = Left,
+                    Y = Top,
+                    Height = Height,
+                    Width = Width
+                };
+            }
             windowState.State = WindowState;
             windowState.AlwaysOnTop = Topmost;
             windowState.IsLocked = baseViewModel.IsLocked;
@@ -219,40 +226,12 @@ namespace EQTool.UI
         
         protected void HoverZone_MouseEnter(object sender, MouseEventArgs e)
         {
-            hoverDebounceTs?.Cancel();
-            hoverDebounceTs = new CancellationTokenSource();
-            var debounceToken = hoverDebounceTs.Token;
-
-            Task.Run(async () =>
-            {
-                await Task.Delay(200, debounceToken);
-                if (!debounceToken.IsCancellationRequested)
-                {
-                    appDispatcher.DispatchUI(() =>
-                    {
-                        baseViewModel.IsMouseOverTitleArea = true;
-                    });
-                }
-            }, debounceToken);
+            appDispatcher.DebounceToUI(ref hoverDebounceTs, 250, () => baseViewModel.IsMouseOverTitleArea = true);
         }
 
         protected void HoverZone_MouseLeave(object sender, MouseEventArgs e)
         {
-            hoverDebounceTs?.Cancel();
-            hoverDebounceTs = new CancellationTokenSource();
-            var debounceToken = hoverDebounceTs.Token;
-
-            Task.Run(async () =>
-            {
-                await Task.Delay(200, debounceToken);
-                appDispatcher.DispatchUI(() =>
-                {
-                    if (!debounceToken.IsCancellationRequested)
-                    {
-                        baseViewModel.IsMouseOverTitleArea = false;
-                    }
-                });
-            }, debounceToken);
+            appDispatcher.DebounceToUI(ref hoverDebounceTs, 250, () => baseViewModel.IsMouseOverTitleArea = false);
         }
         
         public void UpdateShowInTaskbar()

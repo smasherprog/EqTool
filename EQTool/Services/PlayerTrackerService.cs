@@ -63,16 +63,22 @@ namespace EQTool.Services
 
         public EQToolShared.APIModels.PlayerControllerModels.Player GetPlayer(string name)
         {
-            if (string.IsNullOrWhiteSpace(name) || name.StartsWith(" "))
+            if (string.IsNullOrWhiteSpace(name))
+                return null;
+            
+            if (name.StartsWith(" "))
             {
+                if ((name == EQSpells.SpaceYou || name == EQSpells.You) && activePlayer.Player != null)
+                    return activePlayer.Player.ToPlayer();
+                
                 return null;
             }
+            
             lock (ContainerLock)
             {
                 if (AllPlayers.TryGetValue(name, out var p))
-                {
                     return p;
-                }
+                
                 return null;
             }
         }
@@ -121,9 +127,9 @@ namespace EQTool.Services
             }
             appDispatcher.DispatchUI(() =>
             {
-                var spellsMissingClasses = spellWindowViewModel
-                    .SpellList.Where(x => x.SpellViewModelType == SpellViewModelType.Spell)
-                    .Where(spell => !spell.Target.StartsWith(" "))
+                var spellsMissingClasses = spellWindowViewModel.SpellList
+                    .OfType<SpellViewModel>()
+                    .Where(spell => spell.IsPlayerTarget)
                     .ToList();
                 var missingPlayerNames = spellsMissingClasses.Select(a => a.Target).Distinct().ToList();
                 if (missingPlayerNames.Any())

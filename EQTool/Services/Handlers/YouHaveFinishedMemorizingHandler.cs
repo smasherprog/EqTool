@@ -24,18 +24,18 @@ namespace EQTool.Services.Handlers
 
         private void LogEvents_YouHaveFinishedMemorizingEvent(object sender, YouHaveFinishedMemorizingEvent e)
         {
-            if (!SpellHandlerService.SpellsThatNeedCooldownTimers.Contains(e.SpellName))
-            {
-                return;
-            }
             if (!spells.AllSpells.TryGetValue(e.SpellName, out var spell))
             {
                 return;
             }
                 
+            var durationSeconds = TimeSpan.FromSeconds((int)(spell.recastTime / 1000.0));
+            if (durationSeconds < EQSpells.MinimumRecastForYouCooldownTimer)
+            {
+                return;
+            }
+            
             var timerName = $"{e.SpellName} Cooldown";
-            var durationSeconds = spell.recastTime / 1000;
-
             spellWindowViewModel.TryAdd(new SpellViewModel
             {
                 PercentLeft = 100,
@@ -46,8 +46,8 @@ namespace EQTool.Services.Handlers
                 Icon = spell.SpellIcon,
                 Classes = spell.Classes,
                 BenefitDetriment = SpellBenefitDetriment.Cooldown,
-                TotalDuration = TimeSpan.FromSeconds(durationSeconds),
-                TotalRemainingDuration = TimeSpan.FromSeconds(durationSeconds),
+                TotalDuration = durationSeconds,
+                TotalRemainingDuration = durationSeconds,
                 UpdatedDateTime = DateTime.Now
             });
         }

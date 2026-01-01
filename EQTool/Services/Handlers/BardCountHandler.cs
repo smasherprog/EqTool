@@ -118,7 +118,7 @@ namespace EQTool.Services.Handlers
                         return;
                     }
 
-                    // no named session found — try to find a recent anonymous session (created by winces/chains)
+                    // no named session found ï¿½ try to find a recent anonymous session (created by winces/chains)
                     var anon = _sessions.Where(a => string.IsNullOrWhiteSpace(a.SpellName)
                                                     && a.LastEventTime.HasValue
                                                     && Math.Abs((timestamp - a.LastEventTime.Value).TotalMilliseconds) <= TrackWindowMillis)
@@ -134,7 +134,7 @@ namespace EQTool.Services.Handlers
                         return;
                     }
 
-                    // no existing session at all — create a new named session (inside lock to avoid races)
+                    // no existing session at all ï¿½ create a new named session (inside lock to avoid races)
                     s = CreateSession(normalized, timestamp);
                     if (hitOnly) s.Hits = 1;
                     if (isResist) s.Resists = 1;
@@ -179,10 +179,10 @@ namespace EQTool.Services.Handlers
             // Normalize various quote marks and whitespace
             var n = name.Trim();
             n = n.Replace('`', '\'')
-                 .Replace('’', '\'')
-                 .Replace('‘', '\'')
-                 .Replace('“', '"')
-                 .Replace('”', '"');
+                 .Replace('ï¿½', '\'')
+                 .Replace('ï¿½', '\'')
+                 .Replace('ï¿½', '"')
+                 .Replace('ï¿½', '"');
             // collapse multiple spaces
             while (n.Contains("  ")) n = n.Replace("  ", " ");
             return n;

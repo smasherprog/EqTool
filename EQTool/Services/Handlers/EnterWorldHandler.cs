@@ -15,9 +15,8 @@ namespace EQTool.Services.Handlers
 
         private void LogEvents_WelcomeEvent(object sender, WelcomeEvent e)
         {
-            this.appDispatcher.DispatchUI(() =>
+            appDispatcher.DispatchUI(() =>
             {
-                spellWindowViewModel.ClearYouSpells();
                 if (activePlayer.Player != null)
                 {
                     spellWindowViewModel.AddSavedYouSpells(activePlayer.Player.YouSpells);

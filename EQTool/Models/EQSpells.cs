@@ -9,6 +9,106 @@ namespace EQTool.Models
 {
     public class EQSpells
     {
+        public const string ZoneLoadingMessage = "LOADING, PLEASE WAIT...";
+
+        public const string Your = "Your ";
+        public const string You = "You";
+        public const string SpaceYou = " You ";
+        public const string SpellHasWornoff = "spell has worn off.";
+        private const string InvisMessage = " fades away";
+        
+        // If it's this long they deserve a timer.
+        public static TimeSpan MinimumRecastForYouCooldownTimer = TimeSpan.FromSeconds(18);
+        public static TimeSpan MinimumRecastForOtherCooldownTimer = TimeSpan.FromSeconds(60);
+        
+        // spells that we wish to count how many times they have been cast
+        public static readonly List<string> SpellsThatNeedCounts = new List<string>
+        {
+            "Mana Sieve",
+            "LowerElement",
+            "Concussion",
+            "Flame Lick",
+            "Jolt",
+            "Cinder Jolt",
+            "Rage of Vallon",
+            "Waves of the Deep Sea",
+            "Anarchy",
+            "Breath of the Sea",
+            "Frostbite",
+            "Judgment of Ice",
+            "Storm Strike",
+            "Shrieking Howl",
+            "Static Strike",
+            "Rage of Zek",
+            "Blinding Luminance",
+            "Flash of Light"
+        };
+
+        // all the charm spells
+        public static readonly List<string> Charms = new List<string>
+        {
+            "Dictate",
+            "Charm",
+            "Beguile",
+            "Cajoling Whispers",
+            "Allure",
+            "Boltran`s Agacerie",
+            "Befriend Animal",
+            "Charm Animals",
+            "Beguile Plants",
+            "Beguile Animals",
+            "Allure of the Wild",
+            "Call of Karana",
+            "Tunare's Request",
+            "Dominate Undead",
+            "Beguile Undead",
+            "Cajole Undead",
+            "Thrall of Bones",
+            "Enslave Death"
+        };
+
+        // all the paci spells, which we treat like detrimental even though they aren't.
+        public static readonly List<string> Lulls = new List<string>
+        {
+            "Lull Animal",
+            "Calm Animal",
+            "Harmony",
+            "Numb the Dead",
+            "Rest the Dead",
+            "Lull",
+            "Soothe",
+            "Calm",
+            "Pacify",
+            "Wake of Tranquility"
+        };
+        
+        // bard spells for which we want resist/hit summaries
+        public static readonly List<string> BardSpellsThatNeedResists = new List<string>()
+        {
+            "Chords of Dissonance",
+            "Denon's Disruptive Discord",
+            "Selo's Chords of Cessation",
+            "Selo's Assonant Strane"
+        };
+        
+        public static readonly List<string> IllusionPartialNames = new List<string>
+        {
+            "Illusion",
+            "Boon of the Garou",
+            "Form of the",
+            "Wolf Form",
+            "Call of Bones",
+            "Lich"
+        };
+        
+        public static readonly List<string> SpellsThatDontEmitCompletionMessages = new List<string>(
+            Charms.Concat(new [] {
+                "Panic Animal",
+                "Harmshield",
+                "Divine Aura",
+                "Harmony"
+            }));
+        
         private readonly Dictionary<string, Spell> _AllSpells = new Dictionary<string, Spell>(StringComparer.OrdinalIgnoreCase);
         public Dictionary<string, Spell> AllSpells
         {
@@ -73,14 +173,7 @@ namespace EQTool.Models
                 return _WornOffSpells;
             }
         }
-
-        public const string ZoneLoadingMessage = "LOADING, PLEASE WAIT...";
-
-        public const string Your = "Your ";
-        public const string You = "You";
-        public const string SpaceYou = " You ";
-        public const string SpellHasWornoff = "spell has worn off.";
-        private const string InvisMessage = " fades away";
+        
         private readonly ParseSpells_spells_us parseSpells;
         private readonly SpellIcons spellIcons;
 

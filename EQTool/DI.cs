@@ -41,32 +41,36 @@ namespace EQTool
             {
                 return a.Resolve<Services.EQToolSettingsLoad>().Load();
             }).AsSelf().SingleInstance();
+            
+            _ = builder.RegisterType<Models.SignalrPlayerHub>().SingleInstance();
+            _ = builder.RegisterType<Models.EQSpells>().AsSelf().SingleInstance();
+            _ = builder.RegisterType<Models.SessionPlayerDamage>().AsSelf().SingleInstance();
+            
             _ = builder.RegisterType<Services.AppDispatcher>().As<Services.IAppDispatcher>().SingleInstance();
             _ = builder.RegisterType<Services.SpellIcons>().AsSelf().SingleInstance();
             _ = builder.RegisterType<Services.ParseSpells_spells_us>().AsSelf().SingleInstance();
+            _ = builder.RegisterType<Services.SpellGroupingEngine>().AsSelf().SingleInstance();
+            _ = builder.RegisterType<Services.PlayerTrackerService>().AsSelf().SingleInstance();
+            _ = builder.RegisterType<Services.ZoneActivityTrackingService>().AsSelf().SingleInstance();
+            _ = builder.RegisterType<Services.TimersService>().AsSelf().SingleInstance();
+            _ = builder.RegisterType<Services.SettingsTestRunOverlay>().AsSelf().SingleInstance();
+            _ = builder.RegisterType<Services.LoggingService>().AsSelf().SingleInstance();
+            _ = builder.RegisterType<Services.LogParser>().AsSelf().SingleInstance();
+            
             _ = builder.RegisterType<ViewModels.SettingsWindowViewModel>().AsSelf().SingleInstance();
             _ = builder.RegisterType<ViewModels.MobInfoComponents.PetViewModel>().AsSelf().SingleInstance();
             _ = builder.RegisterType<ViewModels.MobInfoComponents.MobInfoViewModel>().AsSelf().SingleInstance();
             _ = builder.RegisterType<ViewModels.MobInfoComponents.MobInfoManagementViewModel>().AsSelf().SingleInstance();
-
-            _ = builder.RegisterType<Models.EQSpells>().AsSelf().SingleInstance();
             _ = builder.RegisterType<ViewModels.ActivePlayer>().AsSelf().SingleInstance();
             _ = builder.RegisterType<ViewModels.SpellWindowViewModel>().AsSelf().SingleInstance();
-            _ = builder.RegisterType<Services.LogParser>().AsSelf().SingleInstance();
             _ = builder.RegisterType<ViewModels.DPSWindowViewModel>().AsSelf().SingleInstance();
             _ = builder.RegisterType<ViewModels.ZoneViewModel>().AsSelf().SingleInstance();
-            _ = builder.RegisterType<Models.SessionPlayerDamage>().AsSelf().SingleInstance();
-            _ = builder.RegisterType<Services.LoggingService>().AsSelf().SingleInstance();
+            
             _ = builder.RegisterType<FightHistory>().AsSelf().SingleInstance();
             _ = builder.RegisterType<SpellDurations>().AsSelf().SingleInstance();
             _ = builder.RegisterType<ConsoleViewModel>().AsSelf().SingleInstance();
             _ = builder.RegisterType<DebugOutput>().AsSelf().SingleInstance();
 
-            _ = builder.RegisterType<Services.PlayerTrackerService>().AsSelf().SingleInstance();
-            _ = builder.RegisterType<Services.ZoneActivityTrackingService>().AsSelf().SingleInstance();
-            _ = builder.RegisterType<Services.TimersService>().AsSelf().SingleInstance();
-            _ = builder.RegisterType<Models.SignalrPlayerHub>().SingleInstance();
-            _ = builder.RegisterType<Services.SettingsTestRunOverlay>().AsSelf().SingleInstance();
             _ = builder.RegisterType<TextToSpeach>().As<ITextToSpeach>().SingleInstance();
             _ = builder.RegisterType<UIRunner>().AsSelf().SingleInstance();
             _ = builder.RegisterType<UpdateRunner>().AsSelf().SingleInstance();

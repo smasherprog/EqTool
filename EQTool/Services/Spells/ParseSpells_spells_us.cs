@@ -178,7 +178,7 @@ namespace EQTool.Services
             var spellsfile = new FileInfo(Paths.Combine(settings.DefaultEqDirectory, spellfile));
             if (spellsfile.Exists)
             {
-                var spellCacheName = $"SpellCache{servers}_1";
+                var spellCacheName = $"SpellCache{servers}_2";
                 if (!isdebug)
                 {
                     spellCacheName = new string(spellCacheName.Where(a => char.IsLetterOrDigit(a)).ToArray()) + ".bin";
@@ -288,6 +288,15 @@ namespace EQTool.Services
                         }
                     }
 
+                    if (spell.name == "Soul Well")
+                    {
+                        spell.casttime = 13 * 1000; 
+                        if (!spell.Classes.ContainsKey(PlayerClasses.Necromancer))
+                        {
+                            spell.Classes.Add(PlayerClasses.Necromancer, 50);
+                        }
+                    }
+
                     if (spell.Classes.Any() && spell.Classes.All(a => a.Value > 60 && a.Value <= 255))
                     {
                         //Debug.WriteLine($"Skipping {spell.name} Class Level Out of range");
@@ -378,6 +387,11 @@ namespace EQTool.Services
                     if (spell.name == "Maniacal Strength")
                     {
                         spell.name = "Manicial Strength";
+                    }
+                    
+                    if (spell.name == "Lay on Hands")
+                    {
+                        spell.recastTime = 4320000; // 72 minutes in milliseconds
                     }
 
                     if (spells.TryGetValue(spell.name, out var spellinlist))
@@ -509,6 +523,7 @@ namespace EQTool.Services
                     ret.Classes[foundepic.PlayerClass] = 46;
                 }
 
+                
                 return ret;
             }
             catch (Exception e)

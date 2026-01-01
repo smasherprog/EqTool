@@ -152,6 +152,7 @@ namespace EQTool.Services.Handlers
         {
             if (e.Victim == EQSpells.You)
             {
+                spellWindowViewModel.ClearYouSpellsExceptPersistentCooldowns();
                 return;
             }
 
