@@ -974,7 +974,50 @@ namespace EQToolShared
                 {
                     "",
                 },
-                RespawnTime = new TimeSpan(0, 7, 5)
+                RespawnTime = new TimeSpan(0, 7, 5),
+                NpcSpawnTimes = new List<NpcSpawnTime>()
+                 {
+                      new NpcSpawnTime
+                      {
+                        Name = "Captain Silverwind",
+                        RespawnTime = new TimeSpan(0, 24, 0)
+                      },
+                      new NpcSpawnTime
+                      {
+                        Name = "Captain Fayfear",
+                        RespawnTime = new TimeSpan(0, 24, 0)
+                      },
+                     new NpcSpawnTime
+                      {
+                        Name = "Captain Briarstorm",
+                        RespawnTime = new TimeSpan(0, 24, 0)
+                      },
+                      new NpcSpawnTime
+                      {
+                        Name = "Captain Brookrock",
+                        RespawnTime = new TimeSpan(0, 24, 0)
+                      },
+                      new NpcSpawnTime
+                      {
+                        Name = "Captain Crystalwind",
+                        RespawnTime = new TimeSpan(0, 24, 0)
+                      },
+                      new NpcSpawnTime
+                      {
+                        Name = "Captain Dayblaze",
+                        RespawnTime = new TimeSpan(0, 24, 0)
+                      },
+                     new NpcSpawnTime
+                      {
+                        Name = "Captain Eaglesong",
+                        RespawnTime = new TimeSpan(0, 24, 0)
+                      },
+                      new NpcSpawnTime
+                      {
+                        Name = "Captain Fayfield",
+                        RespawnTime = new TimeSpan(0, 24, 0)
+                      }
+                 }
             });
             ZoneInfoMap.Add("greatdivide", new ZoneInfo
             {
@@ -1111,7 +1154,7 @@ namespace EQToolShared
                     {
                         Name = "Captain Boshinko",
                         RespawnTime = new TimeSpan(0, 6, 0)
-                    },    
+                    },
                     new NpcSpawnTime
                     {
                         Name = "Dyrna Nlith",
@@ -1562,7 +1605,25 @@ namespace EQToolShared
                 ShowAllMapLevels = true,
                 ZoneLevelHeight = 10,
                 NotableNPCs = new List<string>() { "Dorn B`Dynn", "Dunedigger", "Rahotep", },
-                RespawnTime = new TimeSpan(0, 6, 40)
+                RespawnTime = new TimeSpan(0, 6, 40),
+                NpcSpawnTimes = new List<NpcSpawnTime>()
+                 {
+                     new NpcSpawnTime
+                        {
+                        Name = "Guard Fintran",
+                        RespawnTime = new TimeSpan(0, 11, 40)
+                        },
+                     new NpcSpawnTime
+                        {
+                        Name = "Guard Stoutman",
+                        RespawnTime = new TimeSpan(0, 11, 40)
+                        },
+                     new NpcSpawnTime
+                        {
+                        Name = "Guard Brendyl",
+                        RespawnTime = new TimeSpan(0, 11, 40)
+                        }
+                 }
             });
             ZoneInfoMap.Add("nurga", new ZoneInfo
             {
