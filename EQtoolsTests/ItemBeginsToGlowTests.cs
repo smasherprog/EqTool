@@ -29,5 +29,15 @@ namespace EQtoolsTests
             Assert.IsNotNull(spell);
         }
 
+        [TestMethod]
+        public void NecroStaff()
+        {
+            logParser.Push("You begin casting Soul Well.", DateTime.Now);
+            logParser.Push("Your Shissar Seance Staff begins to glow.", DateTime.Now);
+            logParser.Push("You feel your life force drain away.", DateTime.Now.AddSeconds(14));
+            logParser.Push("A sepulcher skeleton staggers.", DateTime.Now.AddSeconds(14));
+            var spell = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellViewModelType == EQTool.ViewModels.SpellWindow.SpellViewModelType.Spell && a.Id == "Soul Well");
+            Assert.IsNotNull(spell);
+        }
     }
 }

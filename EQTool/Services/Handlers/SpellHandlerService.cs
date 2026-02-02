@@ -125,13 +125,13 @@ namespace EQTool.Services.Handlers
             }
         }
 
-        private void AddCooldownTimerIfNecessary(Spell spell, string casterName, string target, int delayOffset)
+        private void AddCooldownTimerIfNecessary(Spell spell, string spellCaster, string spellTarget, int delayOffset)
         {
             if (spell.name.EndsWith("Recourse", StringComparison.OrdinalIgnoreCase))    // Recourse effects tend to mirror their counterpart and are already handled elsewhere.
                 return;
             
             var spellName = spell.name;
-            var cooldownRecipient = TargetOnlyIfUnknownCaster(casterName, target);
+            var cooldownRecipient = TargetOnlyIfUnknownCaster(spellCaster, spellTarget);
             var cooldownRecipientClass = playerTrackerService.GetPlayer(cooldownRecipient)?.PlayerClass;
             
             var cooldown = TimeSpan.FromSeconds((int)(spell.recastTime / 1000.0)); 
@@ -144,7 +144,7 @@ namespace EQTool.Services.Handlers
                     Id = $"{spellName} Cooldown",
                     Target = cooldownRecipient,
                     TargetClass = cooldownRecipientClass,
-                    Caster = casterName,
+                    Caster = spellCaster,
                     Rect = spell.Rect,
                     Icon = spell.SpellIcon,
                     Classes = spell.Classes,
@@ -157,13 +157,22 @@ namespace EQTool.Services.Handlers
             else if ((cooldownRecipient == EQSpells.SpaceYou && cooldown >= EQSpells.MinimumRecastForYouCooldownTimer)
                  || (cooldownRecipient != EQSpells.SpaceYou && cooldown >= EQSpells.MinimumRecastForOtherCooldownTimer))
             {
+                // Could be a shaman or could be a primal weapon proc. We may not want a cooldown.
+                if (spell.name == "Primal Avatar")
+                {
+                    // If we know who the caster is, and they are a shaman, it's a true avatar cast. Otherwise treat it as a primal wep proc.
+                    var isPrimalProc = !(!string.IsNullOrWhiteSpace(spellCaster) && spellCaster == cooldownRecipient && cooldownRecipientClass == PlayerClasses.Shaman);
+                    if (isPrimalProc)
+                        return;
+                }
+                
                 spellWindowViewModel.TryAdd(new SpellViewModel
                 {
                     PercentLeft = 100,
                     Id = $"{spellName} Cooldown",
                     Target = cooldownRecipient,
                     TargetClass = cooldownRecipientClass,
-                    Caster = casterName,
+                    Caster = spellCaster,
                     Rect = spell.Rect,
                     Icon = spell.SpellIcon,
                     Classes = spell.Classes,

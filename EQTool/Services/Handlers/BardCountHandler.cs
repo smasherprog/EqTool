@@ -14,9 +14,12 @@ namespace EQTool.Services.Handlers
     {
         private readonly object _lock = new object();
         private readonly List<Session> _sessions = new List<Session>();
+
+        // Accept variants: with/without "the" and "spell"
+        private readonly Regex _resistTargetRegex = new Regex(@"^Your target resisted(?: the)? (?<spell>.+?)(?: spell)?\.$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+        private readonly Regex _resistYouRegex = new Regex(@"^You resist(?: the)? (?<spell>.+?)(?: spell)?!?$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
         private readonly Regex _winceRegex = new Regex(@"\bwinces\.$", RegexOptions.Compiled | RegexOptions.IgnoreCase);
-        private readonly Regex _resistTargetRegex = new Regex(@"^Your target resisted the (?<spell>.+?) spell\.", RegexOptions.Compiled | RegexOptions.IgnoreCase);
-        private readonly Regex _resistYouRegex = new Regex(@"^You resist the (?<spell>.+?) spell!?", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+
         private const int TrackWindowMillis = 500; // adjust to your latency
 
         public BardCountHandler(BaseHandlerData baseHandlerData) : base(baseHandlerData)
@@ -33,8 +36,8 @@ namespace EQTool.Services.Handlers
             var m = _resistTargetRegex.Match(e.Line);
             if (m.Success)
             {
-                var spellName = m.Groups["spell"].Value.Trim();
-                if (EQSpells.BardSpellsThatNeedResists.Any(a => string.Equals(a, spellName, StringComparison.OrdinalIgnoreCase)))
+                var spellName = NormalizeSpellName(m.Groups["spell"].Value);
+                if (SpellHandlerService.BardSpellsThatNeedResists.Any(a => string.Equals(NormalizeSpellName(a), spellName, StringComparison.OrdinalIgnoreCase)))
                 {
                     CreateOrAttachSession(e.TimeStamp, spellName, isResist: true, forceCreate: true);
                     return;
@@ -44,8 +47,8 @@ namespace EQTool.Services.Handlers
             m = _resistYouRegex.Match(e.Line);
             if (m.Success)
             {
-                var spellName = m.Groups["spell"].Value.Trim();
-                if (EQSpells.BardSpellsThatNeedResists.Any(a => string.Equals(a, spellName, StringComparison.OrdinalIgnoreCase)))
+                var spellName = NormalizeSpellName(m.Groups["spell"].Value);
+                if (SpellHandlerService.BardSpellsThatNeedResists.Any(a => string.Equals(NormalizeSpellName(a), spellName, StringComparison.OrdinalIgnoreCase)))
                 {
                     CreateOrAttachSession(e.TimeStamp, spellName, isResist: true, forceCreate: true);
                     return;
@@ -77,8 +80,8 @@ namespace EQTool.Services.Handlers
         {
             if (e == null || e.Spell?.name == null) return;
 
-            var spellName = e.Spell.name;
-            if (EQSpells.BardSpellsThatNeedResists.Any(a => string.Equals(a, spellName, StringComparison.OrdinalIgnoreCase)))
+            var spellName = NormalizeSpellName(e.Spell.name);
+            if (SpellHandlerService.BardSpellsThatNeedResists.Any(a => string.Equals(NormalizeSpellName(a), spellName, StringComparison.OrdinalIgnoreCase)))
             {
                 CreateOrAttachSession(e.TimeStamp, spellName, isResist: true, forceCreate: true);
             }
@@ -87,91 +90,149 @@ namespace EQTool.Services.Handlers
         // start or attach to an existing session
         private void CreateOrAttachSession(DateTime timestamp, string possibleSpell, bool hitOnly = false, bool isResist = false, bool forceCreate = false)
         {
+            var normalized = NormalizeSpellName(possibleSpell);
+
             // If we know the spell name and it's either in the configured list or forced, try to attach/create a named session
-            if (!string.IsNullOrWhiteSpace(possibleSpell) &&
+            if (!string.IsNullOrWhiteSpace(normalized) &&
                 (forceCreate
-                 || EQSpells.SpellsThatNeedCounts.Any(a => a.Equals(possibleSpell, StringComparison.OrdinalIgnoreCase))
-                 || EQSpells.BardSpellsThatNeedResists.Any(a => a.Equals(possibleSpell, StringComparison.OrdinalIgnoreCase))))
+                 || SpellHandlerService.SpellsThatNeedCounts.Any(a => string.Equals(NormalizeSpellName(a), normalized, StringComparison.OrdinalIgnoreCase))
+                 || SpellHandlerService.BardSpellsThatNeedResists.Any(a => string.Equals(NormalizeSpellName(a), normalized, StringComparison.OrdinalIgnoreCase))))
             {
+                Session s;
                 lock (_lock)
                 {
-                    // try to find an existing named session for this spell
-                    var s = _sessions.Where(a => !string.IsNullOrWhiteSpace(a.SpellName) && string.Equals(a.SpellName, possibleSpell, StringComparison.OrdinalIgnoreCase)
-                                                && Math.Abs((timestamp - a.StartTime).TotalMilliseconds) <= TrackWindowMillis)
-                                     .OrderByDescending(a => a.StartTime)
-                                     .FirstOrDefault();
+                    // try to find an existing named session for this spell within the window of last activity
+                    s = _sessions.Where(a => !string.IsNullOrWhiteSpace(a.SpellName)
+                                              && string.Equals(NormalizeSpellName(a.SpellName), normalized, StringComparison.OrdinalIgnoreCase)
+                                              && a.LastEventTime.HasValue
+                                              && Math.Abs((timestamp - a.LastEventTime.Value).TotalMilliseconds) <= TrackWindowMillis)
+                                 .OrderByDescending(a => a.LastEventTime)
+                                 .FirstOrDefault();
                     if (s != null)
                     {
                         if (hitOnly) s.Hits++;
                         if (isResist) s.Resists++;
+                        s.LastEventTime = timestamp;
+                        // reschedule finalize after last activity
+                        ScheduleFinalize(s);
                         return;
                     }
 
                     // no named session found � try to find a recent anonymous session (created by winces/chains)
                     var anon = _sessions.Where(a => string.IsNullOrWhiteSpace(a.SpellName)
-                                                    && Math.Abs((timestamp - a.StartTime).TotalMilliseconds) <= TrackWindowMillis)
-                                        .OrderByDescending(a => a.StartTime)
+                                                    && a.LastEventTime.HasValue
+                                                    && Math.Abs((timestamp - a.LastEventTime.Value).TotalMilliseconds) <= TrackWindowMillis)
+                                        .OrderByDescending(a => a.LastEventTime)
                                         .FirstOrDefault();
                     if (anon != null)
                     {
-                        // attach anonymous session to this spell name so resist/hit are reported together
-                        anon.SpellName = possibleSpell;
+                        anon.SpellName = normalized;
                         if (hitOnly) anon.Hits++;
                         if (isResist) anon.Resists++;
+                        anon.LastEventTime = timestamp;
+                        ScheduleFinalize(anon);
                         return;
                     }
+
+                    // no existing session at all � create a new named session (inside lock to avoid races)
+                    s = CreateSession(normalized, timestamp);
+                    if (hitOnly) s.Hits = 1;
+                    if (isResist) s.Resists = 1;
+                    s.LastEventTime = timestamp;
                 }
-                    
-                // no existing session at all � create a new named session
-                var ns = CreateSession(possibleSpell, timestamp);
-                if (hitOnly) ns.Hits = 1;
-                if (isResist) ns.Resists = 1;
-                ScheduleFinalize(ns);
+
+                ScheduleFinalize(s);
                 return;
             }
 
             // anonymous session when spell name unknown or not configured - attach to the most recent session within window
+            Session recent;
             lock (_lock)
             {
-                // Prefer any recent session (named or anonymous) so lines with identical timestamps are grouped together.
-                var recent = _sessions
-                    .Where(a => Math.Abs((timestamp - a.StartTime).TotalMilliseconds) <= TrackWindowMillis)
-                    .OrderByDescending(a => a.StartTime)
+                recent = _sessions
+                    .Where(a => a.LastEventTime.HasValue
+                                && Math.Abs((timestamp - a.LastEventTime.Value).TotalMilliseconds) <= TrackWindowMillis)
+                    .OrderByDescending(a => a.LastEventTime)
                     .FirstOrDefault();
 
                 if (recent != null)
                 {
                     if (hitOnly) recent.Hits++;
                     if (isResist) recent.Resists++;
-                    return;
+                    recent.LastEventTime = timestamp;
                 }
-
-                // no recent session � create a new anonymous session
-                var anon = CreateSession(null, timestamp);
-                if (hitOnly) anon.Hits = 1;
-                if (isResist) anon.Resists = 1;
-                ScheduleFinalize(anon);
+                else
+                {
+                    recent = CreateSession(null, timestamp);
+                    if (hitOnly) recent.Hits = 1;
+                    if (isResist) recent.Resists = 1;
+                    recent.LastEventTime = timestamp;
+                }
             }
+
+            ScheduleFinalize(recent);
+        }
+
+        private static string NormalizeSpellName(string name)
+        {
+            if (string.IsNullOrWhiteSpace(name)) return name;
+            // Normalize various quote marks and whitespace
+            var n = name.Trim();
+            n = n.Replace('`', '\'')
+                 .Replace('�', '\'')
+                 .Replace('�', '\'')
+                 .Replace('�', '"')
+                 .Replace('�', '"');
+            // collapse multiple spaces
+            while (n.Contains("  ")) n = n.Replace("  ", " ");
+            return n;
         }
 
         private Session CreateSession(string spellName, DateTime start)
         {
-            var s = new Session { SpellName = spellName, StartTime = start, Hits = 0, Resists = 0 };
+            var s = new Session { SpellName = spellName, StartTime = start, LastEventTime = start, Hits = 0, Resists = 0 };
             lock (_lock) _sessions.Add(s);
             return s;
         }
 
         private void ScheduleFinalize(Session s)
         {
+            CancellationTokenSource cts;
+            lock (_lock)
+            {
+                if (s.Cts != null)
+                {
+                    try { s.Cts.Cancel(); } catch { }
+                }
+                s.Cts = new CancellationTokenSource();
+                cts = s.Cts;
+            }
+
             _ = Task.Run(async () =>
             {
-                await Task.Delay(TrackWindowMillis).ConfigureAwait(false);
-                FinalizeSession(s);
+                try
+                {
+                    await Task.Delay(TrackWindowMillis, cts.Token).ConfigureAwait(false);
+                }
+                catch (TaskCanceledException)
+                {
+                    return; // rescheduled
+                }
+                FinalizeSession(s, cts);
             });
         }
 
-        private void FinalizeSession(Session s)
+        private void FinalizeSession(Session s, CancellationTokenSource expectedCts = null)
         {
+            lock (_lock)
+            {
+                if (expectedCts != null && !ReferenceEquals(s.Cts, expectedCts))
+                {
+                    return; // a newer schedule exists
+                }
+                s.Cts = null;
+            }
+
             var removed = false;
             lock (_lock)
             {
@@ -223,7 +284,7 @@ namespace EQTool.Services.Handlers
         {
             try
             {
-                return activePlayer?.UserCastingSpell?.name;
+                return NormalizeSpellName(activePlayer?.UserCastingSpell?.name);
             }
             catch
             {
@@ -235,8 +296,10 @@ namespace EQTool.Services.Handlers
         {
             public string SpellName;
             public DateTime StartTime;
+            public DateTime? LastEventTime;
             public int Hits;
             public int Resists;
+            public CancellationTokenSource Cts;
         }
     }
 }

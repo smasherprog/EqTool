@@ -248,7 +248,7 @@ namespace EQtoolsTests
         private DateTime PushAuthenticSpellCast(string spellName, string target, string caster = null, DateTime? dateTime = null)
         {
             var spell = eqSpells.AllSpells[spellName];
-            var dt = logParser.PushAuthenticSpellCast(spell, target, caster: caster, dateTime);
+            var dt = logParser.PushAuthenticSpellCast(spell, target, caster, dateTime);
             
             return dt;
         }
@@ -256,7 +256,7 @@ namespace EQtoolsTests
         private DateTime PushAuthenticSpellCast(List<Expectation> expectations, ExpectedGrouping grouping, string spellName, string target, string caster = null, DateTime? dateTime = null)
         {
             var spell = eqSpells.AllSpells[spellName];
-            var dt = logParser.PushAuthenticSpellCast(spell, target, caster: caster, dateTime);
+            var dt = logParser.PushAuthenticSpellCast(spell, target, caster, dateTime);
             expectations.Add(new Expectation(spell.name, target == EQSpells.You ? EQSpells.SpaceYou : target, grouping));
             
             return dt;
@@ -265,7 +265,7 @@ namespace EQtoolsTests
         private DateTime PushAuthenticAoESpellCast(List<Expectation> expectations, ExpectedGrouping grouping, string spellName, List<string> targets, string caster = null, DateTime? dateTime = null)
         {
             var spell = eqSpells.AllSpells[spellName];
-            var dt = logParser.PushAuthenticAoESpellCast(spell, targets, caster: caster, dateTime);
+            var dt = logParser.PushAuthenticAoESpellCast(spell, targets, caster, dateTime);
             expectations.AddRange(targets.Select(target => new Expectation(spell.name, target == EQSpells.You ? EQSpells.SpaceYou : target, grouping)));
             
             return dt;

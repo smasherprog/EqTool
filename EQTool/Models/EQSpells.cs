@@ -103,6 +103,7 @@ namespace EQTool.Models
         
         public static readonly List<string> SpellsThatDontEmitCompletionMessages = new List<string>(
             Charms.Concat(new [] {
+                "Panic Animal",
                 "Harmshield",
                 "Divine Aura",
                 "Harmony"

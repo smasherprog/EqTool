@@ -283,6 +283,7 @@ namespace EQTool.ViewModels
             }
         }
         
+        public bool ShowClassFilters => toolSettings.SpellsFilter == SpellsFilterType.ByClass;
         public SpellsFilterType SpellsFilter
         {
             get => toolSettings.SpellsFilter;
@@ -294,7 +295,15 @@ namespace EQTool.ViewModels
             }
         }
 
-        public bool ShowClassFilters => toolSettings.SpellsFilter == SpellsFilterType.ByClass;
+        public bool SpellsFilterAlwaysShowCastOnYou
+        {
+            get => toolSettings.SpellsFilterAlwaysShowCastOnYou;
+            set
+            {
+                toolSettings.SpellsFilterAlwaysShowCastOnYou = value;
+                OnPropertyChanged();
+            }
+        }
 
         private PetViewModel _PetViewModel;
         public PetViewModel PetViewModel
@@ -305,7 +314,6 @@ namespace EQTool.ViewModels
                 _PetViewModel = value;
                 OnPropertyChanged();
             }
-
         }
 
         private ActivePlayer _ActivePlayer;

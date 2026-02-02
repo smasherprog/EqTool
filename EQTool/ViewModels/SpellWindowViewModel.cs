@@ -440,12 +440,14 @@ namespace EQTool.ViewModels
                 
                 return true;
             }
+
+            if (settings.SpellsFilterAlwaysShowCastOnYou && s.CastOnYou())
+                return false;
             
             switch (settings.SpellsFilter)
             {
-                case SpellsFilterType.CastOnYou when !s.CastOnYou():
                 case SpellsFilterType.CastByYou when !s.CastByYou():
-                case SpellsFilterType.CastByOrOnYou when !(s.CastOnYou() || s.CastByYou()):
+                case SpellsFilterType.CastByYourClass when !s.CastByYourClass(player):
                     return true;
                 case SpellsFilterType.ByClass:
                     return !IsClassSpellAllowed(s.Classes, player.ShowSpellsForClasses);
@@ -789,7 +791,6 @@ namespace EQTool.ViewModels
                                 else
                                 {
                                     match.TotalRemainingDuration = TimeSpan.FromHours(24).Subtract(TimeSpan.FromMinutes(30 - match.TotalRemainingDuration.Minutes));
-
                                 }
                             }
                         }
@@ -827,6 +828,7 @@ namespace EQTool.ViewModels
                 OnPropertyChanged(nameof(GenericButtonVisibility));
             }
             else if (e.PropertyName == nameof(settings.PlayerSpellGroupingType)
+            || e.PropertyName == nameof(settings.SpellsFilterAlwaysShowCastOnYou)
             || e.PropertyName == nameof(settings.NpcSpellGroupingType)
             || e.PropertyName == nameof(settings.SpellsFilter))
             {

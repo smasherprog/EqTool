@@ -9,8 +9,6 @@ namespace EQTool.Services
 {
     public class SpellGroupingEngine
     {
-        private readonly object _lock = new object();
-        
         private readonly PlayerInfo activePlayer;
         private readonly EQToolSettings settings;
 
