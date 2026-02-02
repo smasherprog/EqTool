@@ -30,14 +30,17 @@ namespace EQTool.Services.Handlers
 
         private void LogEvents_LineEvent(object sender, LineEvent e)
         {
-            if (e?.Line == null) return;
+            if (e?.Line == null)
+            {
+                return;
+            }
 
             // parse resist lines directly (covers cases where ResistParser didn't produce an event)
             var m = _resistTargetRegex.Match(e.Line);
             if (m.Success)
             {
                 var spellName = NormalizeSpellName(m.Groups["spell"].Value);
-                if (SpellHandlerService.BardSpellsThatNeedResists.Any(a => string.Equals(NormalizeSpellName(a), spellName, StringComparison.OrdinalIgnoreCase)))
+                if (EQSpells.BardSpellsThatNeedResists.Any(a => string.Equals(NormalizeSpellName(a), spellName, StringComparison.OrdinalIgnoreCase)))
                 {
                     CreateOrAttachSession(e.TimeStamp, spellName, isResist: true, forceCreate: true);
                     return;
@@ -48,7 +51,7 @@ namespace EQTool.Services.Handlers
             if (m.Success)
             {
                 var spellName = NormalizeSpellName(m.Groups["spell"].Value);
-                if (SpellHandlerService.BardSpellsThatNeedResists.Any(a => string.Equals(NormalizeSpellName(a), spellName, StringComparison.OrdinalIgnoreCase)))
+                if (EQSpells.BardSpellsThatNeedResists.Any(a => string.Equals(NormalizeSpellName(a), spellName, StringComparison.OrdinalIgnoreCase)))
                 {
                     CreateOrAttachSession(e.TimeStamp, spellName, isResist: true, forceCreate: true);
                     return;
@@ -78,10 +81,13 @@ namespace EQTool.Services.Handlers
 
         private void LogEvents_ResistSpellEvent(object sender, ResistSpellEvent e)
         {
-            if (e == null || e.Spell?.name == null) return;
+            if (e == null || e.Spell?.name == null)
+            {
+                return;
+            }
 
             var spellName = NormalizeSpellName(e.Spell.name);
-            if (SpellHandlerService.BardSpellsThatNeedResists.Any(a => string.Equals(NormalizeSpellName(a), spellName, StringComparison.OrdinalIgnoreCase)))
+            if (EQSpells.BardSpellsThatNeedResists.Any(a => string.Equals(NormalizeSpellName(a), spellName, StringComparison.OrdinalIgnoreCase)))
             {
                 CreateOrAttachSession(e.TimeStamp, spellName, isResist: true, forceCreate: true);
             }
@@ -95,8 +101,8 @@ namespace EQTool.Services.Handlers
             // If we know the spell name and it's either in the configured list or forced, try to attach/create a named session
             if (!string.IsNullOrWhiteSpace(normalized) &&
                 (forceCreate
-                 || SpellHandlerService.SpellsThatNeedCounts.Any(a => string.Equals(NormalizeSpellName(a), normalized, StringComparison.OrdinalIgnoreCase))
-                 || SpellHandlerService.BardSpellsThatNeedResists.Any(a => string.Equals(NormalizeSpellName(a), normalized, StringComparison.OrdinalIgnoreCase))))
+                 || EQSpells.SpellsThatNeedCounts.Any(a => string.Equals(NormalizeSpellName(a), normalized, StringComparison.OrdinalIgnoreCase))
+                 || EQSpells.BardSpellsThatNeedResists.Any(a => string.Equals(NormalizeSpellName(a), normalized, StringComparison.OrdinalIgnoreCase))))
             {
                 Session s;
                 lock (_lock)
@@ -110,8 +116,16 @@ namespace EQTool.Services.Handlers
                                  .FirstOrDefault();
                     if (s != null)
                     {
-                        if (hitOnly) s.Hits++;
-                        if (isResist) s.Resists++;
+                        if (hitOnly)
+                        {
+                            s.Hits++;
+                        }
+
+                        if (isResist)
+                        {
+                            s.Resists++;
+                        }
+
                         s.LastEventTime = timestamp;
                         // reschedule finalize after last activity
                         ScheduleFinalize(s);
@@ -127,8 +141,16 @@ namespace EQTool.Services.Handlers
                     if (anon != null)
                     {
                         anon.SpellName = normalized;
-                        if (hitOnly) anon.Hits++;
-                        if (isResist) anon.Resists++;
+                        if (hitOnly)
+                        {
+                            anon.Hits++;
+                        }
+
+                        if (isResist)
+                        {
+                            anon.Resists++;
+                        }
+
                         anon.LastEventTime = timestamp;
                         ScheduleFinalize(anon);
                         return;
@@ -136,8 +158,16 @@ namespace EQTool.Services.Handlers
 
                     // no existing session at all � create a new named session (inside lock to avoid races)
                     s = CreateSession(normalized, timestamp);
-                    if (hitOnly) s.Hits = 1;
-                    if (isResist) s.Resists = 1;
+                    if (hitOnly)
+                    {
+                        s.Hits = 1;
+                    }
+
+                    if (isResist)
+                    {
+                        s.Resists = 1;
+                    }
+
                     s.LastEventTime = timestamp;
                 }
 
@@ -157,15 +187,31 @@ namespace EQTool.Services.Handlers
 
                 if (recent != null)
                 {
-                    if (hitOnly) recent.Hits++;
-                    if (isResist) recent.Resists++;
+                    if (hitOnly)
+                    {
+                        recent.Hits++;
+                    }
+
+                    if (isResist)
+                    {
+                        recent.Resists++;
+                    }
+
                     recent.LastEventTime = timestamp;
                 }
                 else
                 {
                     recent = CreateSession(null, timestamp);
-                    if (hitOnly) recent.Hits = 1;
-                    if (isResist) recent.Resists = 1;
+                    if (hitOnly)
+                    {
+                        recent.Hits = 1;
+                    }
+
+                    if (isResist)
+                    {
+                        recent.Resists = 1;
+                    }
+
                     recent.LastEventTime = timestamp;
                 }
             }
@@ -175,7 +221,10 @@ namespace EQTool.Services.Handlers
 
         private static string NormalizeSpellName(string name)
         {
-            if (string.IsNullOrWhiteSpace(name)) return name;
+            if (string.IsNullOrWhiteSpace(name))
+            {
+                return name;
+            }
             // Normalize various quote marks and whitespace
             var n = name.Trim();
             n = n.Replace('`', '\'')
@@ -184,14 +233,22 @@ namespace EQTool.Services.Handlers
                  .Replace('�', '"')
                  .Replace('�', '"');
             // collapse multiple spaces
-            while (n.Contains("  ")) n = n.Replace("  ", " ");
+            while (n.Contains("  "))
+            {
+                n = n.Replace("  ", " ");
+            }
+
             return n;
         }
 
         private Session CreateSession(string spellName, DateTime start)
         {
             var s = new Session { SpellName = spellName, StartTime = start, LastEventTime = start, Hits = 0, Resists = 0 };
-            lock (_lock) _sessions.Add(s);
+            lock (_lock)
+            {
+                _sessions.Add(s);
+            }
+
             return s;
         }
 
@@ -238,14 +295,27 @@ namespace EQTool.Services.Handlers
             {
                 removed = _sessions.Remove(s);
             }
-            if (!removed) return;
+            if (!removed)
+            {
+                return;
+            }
 
             var total = s.Hits + s.Resists;
-            if (total == 0) return;
+            if (total == 0)
+            {
+                return;
+            }
 
             var parts = new List<string> { $"{total} Total" };
-            if (s.Hits > 0) parts.Add($"{s.Hits} Hit{(s.Hits == 1 ? "" : "s")}");
-            if (s.Resists > 0) parts.Add($"{s.Resists} Resist{(s.Resists == 1 ? "" : "s")}");
+            if (s.Hits > 0)
+            {
+                parts.Add($"{s.Hits} Hit{(s.Hits == 1 ? "" : "s")}");
+            }
+
+            if (s.Resists > 0)
+            {
+                parts.Add($"{s.Resists} Resist{(s.Resists == 1 ? "" : "s")}");
+            }
 
             var text = string.Join(" | ", parts);
 

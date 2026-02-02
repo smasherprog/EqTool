@@ -154,6 +154,7 @@ builder.Services.Configure<DiscordServiceOptions>(options =>
 .AddScoped<NpcTrackingService>();
 
 builder.Services.AddMvc();
+builder.Services.AddAntiforgery();
 builder.Services.AddApplicationInsightsTelemetry();
 var app = builder.Build();
 

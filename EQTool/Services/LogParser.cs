@@ -39,7 +39,10 @@ namespace EQTool.Services
             this.eqLogParsers = eqLogParsers.ToList();
             //below I am forcing the order of parsers because the first one to handle the line wins.
             //So, the parsers should be ordered from most common to least common.
-            var spellparsers = this.eqLogParsers.Where(a => a.GetType().Name.StartsWith("You") || a.GetType().Name.StartsWith("Spell")).ToList();
+            var spellparsers = this.eqLogParsers
+                .Where(a => a.GetType().Name.StartsWith("You") || a.GetType().Name.StartsWith("Spell"))
+                .OrderBy(a => a.GetType().Name.StartsWith("You"))
+                .ToList();
             foreach (var parser in spellparsers)
             {
                 _ = this.eqLogParsers.Remove(parser);

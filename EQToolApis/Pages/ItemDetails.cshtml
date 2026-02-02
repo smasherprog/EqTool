@@ -1,5 +1,10 @@
 ﻿@page "/ItemDetails/{itemid}"
+@inject Microsoft.AspNetCore.Antiforgery.IAntiforgery Antiforgery
 @model EQToolApis.Pages.ItemDetailsModel
+@{
+    var requestToken = Antiforgery.GetAndStoreTokens(HttpContext).RequestToken;
+}
+
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.6.2/css/bootstrap.min.css" integrity="sha512-rt/SrQ4UNIaGfDyEXZtNcyWvQeOq0QLygHluFQcSjaGB04IxWhal71tKuzP6K8eYXYB6vJV4pHkXcmFGGQ1/0w==" crossorigin="anonymous" referrerpolicy="no-referrer" />
@@ -262,9 +267,14 @@
                 chart.data.datasets = chartdata;
                 chart.update();
             }
-
-            $.get("/api/item/getdetails/@Model.ItemId", function (data, status) {
-                originaldata = data;
+            $.ajax({
+            url: "/api/item/getdetails/@Model.ItemId",
+            type: "GET", // Use the GET method
+            headers: {
+                   RequestVerificationToken: document.getElementById("RequestVerificationToken").value
+            },
+            success: function(data) {
+               originaldata = data;
                 let name = data.itemName.replaceAll(' ', '_');
                 let imgurl = 'https://p99-item-thumbnails.s3.amazonaws.com/' + name + '.png';
                 if (name.indexOf('Spell:_') !== -1) {
@@ -306,7 +316,7 @@
                     onSelectAll: function (options) { updatedata(); },
                     onChange: function (option, checked, select) { updatedata(); }
 
-                }); 
+                });
                 var nopricingdata = false;
                 if (data.items && data.items.every(function (a) { return a.p === null || a.p === undefined; })) {
                     data.items.push({
@@ -321,7 +331,7 @@
                     if (!nopricingdata) {
                         bottomdev = averageFromData(data.items) - standardDeviationFromData(data.items);
                     }
-                   
+
                     for (let i = 0; i < data.items.length; i++) {
                         if (data.items[i].u == 0) {
                             data.items[i].u = 'WTS';
@@ -339,7 +349,7 @@
                             data.items[i].hasPricing = true;
                         }
                     }
-                } 
+                }
                 let ele = document.getElementById('TableData');
                 table = new Tabulator(ele,
                     {
@@ -381,12 +391,19 @@
                         progressiveRenderMargin: 350
                     });
                 updatedata();
-            });
+            },
+            error: function(error) {
+                // Handle errors here
+                console.error("Error:", error);
+            }
         });
+
+            });
     </script>
 </head>
 
 <body>
+    <input id="RequestVerificationToken" type="hidden" value="@requestToken" />
     <div class="row">
         <div class="col-12">
             <button type="button" onclick="history.back()" class="btn btn-primary float-left">Go Back</button>

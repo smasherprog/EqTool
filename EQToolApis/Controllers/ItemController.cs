@@ -110,7 +110,7 @@ namespace EQToolApis.Controllers
         [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Any, VaryByQueryKeys = new[] { "*" })]
         public List<Item> GetMultipleItem([DefaultValue(Servers.Green)] Servers server, [FromQuery] List<string> itemnames)
         {
-            itemnames ??= new List<string>();
+            itemnames ??= [];
             itemnames = itemnames.Where(a => !string.IsNullOrWhiteSpace(a)).Distinct().ToList();
             var items = context.EQitemsV2
                         .Where(a => a.Server == server && itemnames.Contains(a.ItemName))
@@ -225,8 +225,8 @@ namespace EQToolApis.Controllers
                     .Where(a => a.ItemName == itemname && a.Server == server)
                     .Select(a => a.ItemName)
                     .FirstOrDefault(),
-                Items = new List<ItemAuctionDetail>(),
-                Players = new Dictionary<int, string>()
+                Items = [],
+                Players = []
             };
             playerCachev2.PlayersLock.EnterReadLock();
             try
@@ -258,19 +258,21 @@ namespace EQToolApis.Controllers
         /// <param name="itemid"></param>
         /// <returns></returns>
         [Route("api/item/getdetails/{itemid}")]
+        [ValidateAntiForgeryToken]
         [HttpGet]
         [ResponseCache(Duration = 60, Location = ResponseCacheLocation.Any, VaryByQueryKeys = new[] { "*" })]
         public ItemDetail GetItemDetail([DefaultValue(22741)] int itemid)
         {
             var items = context.EQTunnelAuctionItemsV2
                 .Where(a => a.EQitemId == itemid)
+                .OrderByDescending(a => a.EQTunnelMessageId)
                 .Select(a => new
                 {
                     a.EQTunnelMessage.AuctionType,
                     a.AuctionPrice,
                     a.EQTunnelMessage.EQAuctionPlayerId,
                     a.EQTunnelMessage.TunnelTimestamp
-                }).ToList();
+                }).Take(2000).ToList();
 
             ItemDetail Item = new()
             {
@@ -278,10 +280,10 @@ namespace EQToolApis.Controllers
                     .Where(a => a.EQitemId == itemid)
                     .Select(a => a.ItemName)
                     .FirstOrDefault(),
-                Items = new List<ItemAuctionDetail>(),
-                Players = new Dictionary<int, string>()
+                Items = [],
+                Players = []
             };
-            this.playerCachev2.PlayersLock.EnterReadLock();
+            playerCachev2.PlayersLock.EnterReadLock();
             try
             {
                 foreach (var i in items)
@@ -298,7 +300,7 @@ namespace EQToolApis.Controllers
             }
             finally
             {
-                this.playerCachev2.PlayersLock.ExitReadLock();
+                playerCachev2.PlayersLock.ExitReadLock();
             }
             Item.Items = Item.Items.OrderByDescending(a => a.t).ToList();
             return Item;
@@ -313,7 +315,7 @@ namespace EQToolApis.Controllers
         [HttpPost]
         public Auction AuctionParse([FromBody, DefaultValue("Fuxi auctions, 'WTS Silver Chitin Hand Wraps 1.3 / Nilitim's Grimoire Pg. 300 x3 / Nilitim's Grimoire Pg. 116 / Nilitim's Grimoire Pg. 115 / Nilitim's Grimoire Pg. 35 / Salil's Writ Pg. 174 L 5pp ea last call pst WTB Spell: Pillar of Lightning 50p l Sarnak-Hide Mask 50p l Arctic Wyvern Hide 300p/stack l WTS Ring of stealthy travel 14k WTS Bag of the Tinkerers 5300pp.  5250ea for qty 2+.  5200 for qty 4+.  (price firm) pst WTB Scepter of the Forlorn paying 5k WTB'")] string message)
         {
-            return this.discordAuctionParse.Parse(message);
+            return discordAuctionParse.Parse(message);
         }
     }
 }

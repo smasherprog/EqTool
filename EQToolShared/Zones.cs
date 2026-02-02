@@ -1199,6 +1199,20 @@ namespace EQToolShared
                      {
                          Name = "Grenix Mucktail",
                          RespawnTime = new TimeSpan(0, 22, 0)
+                     },
+                        new NpcSpawnTime
+                     {
+                         Name = "Greth Truksorn",
+                         RespawnTime = new TimeSpan(0, 15, 0)
+                     },
+                     new NpcSpawnTime
+                     {
+                         Name = "Dalishea",
+                         RespawnTime = new TimeSpan(0, 15, 0)
+                     },  new NpcSpawnTime
+                     {
+                         Name = "Brenon",
+                         RespawnTime = new TimeSpan(0, 15, 0)
                      }
                  }
             });
