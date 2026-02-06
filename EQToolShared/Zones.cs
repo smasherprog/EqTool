@@ -1016,7 +1016,102 @@ namespace EQToolShared
                       {
                         Name = "Captain Fayfield",
                         RespawnTime = new TimeSpan(0, 24, 0)
-                      }
+                      },
+                    new NpcSpawnTime
+                        {
+                            Name = "Guard Fireblight",
+                            RespawnTime = new TimeSpan(0, 24, 0)
+                        },
+                        new NpcSpawnTime
+                        {
+                            Name = "Guard Frostfallen",
+                            RespawnTime = new TimeSpan(0, 24, 0)
+                        },
+                        new NpcSpawnTime
+                        {
+                            Name = "Guard Marshmoor",
+                            RespawnTime = new TimeSpan(0, 24, 0)
+                        },
+                        new NpcSpawnTime
+                        {
+                            Name = "Guard Moonwind",
+                            RespawnTime = new TimeSpan(0, 24, 0)
+                        },
+                        new NpcSpawnTime
+                        {
+                            Name = "Guard Nitegazer",
+                            RespawnTime = new TimeSpan(0, 24, 0)
+                        },
+                        new NpcSpawnTime
+                        {
+                            Name = "Guard Noonshadow",
+                            RespawnTime = new TimeSpan(0, 24, 0)
+                        },
+                        new NpcSpawnTime
+                        {
+                            Name = "Guard Oakwillow",
+                            RespawnTime = new TimeSpan(0, 24, 0)
+                        },
+                        new NpcSpawnTime
+                        {
+                            Name = "Guard Orcflayer",
+                            RespawnTime = new TimeSpan(0, 24, 0)
+                        },
+                        new NpcSpawnTime
+                        {
+                            Name = "Guard Pinebramble",
+                            RespawnTime = new TimeSpan(0, 24, 0)
+                        },
+                        new NpcSpawnTime
+                        {
+                            Name = "Guard Pineshade",
+                            RespawnTime = new TimeSpan(0, 24, 0)
+                        },
+                        new NpcSpawnTime
+                        {
+                            Name = "Guard Rainstrider",
+                            RespawnTime = new TimeSpan(0, 24, 0)
+                        },
+                        new NpcSpawnTime
+                        {
+                            Name = "Guard Starstrike",
+                            RespawnTime = new TimeSpan(0, 24, 0)
+                        },
+                        new NpcSpawnTime
+                        {
+                            Name = "Guard Streamtree",
+                            RespawnTime = new TimeSpan(0, 24, 0)
+                        },
+                        new NpcSpawnTime
+                        {
+                            Name = "Guard Sunblaze",
+                            RespawnTime = new TimeSpan(0, 24, 0)
+                        },
+                        new NpcSpawnTime
+                        {
+                            Name = "Guard Sunweaver",
+                            RespawnTime = new TimeSpan(0, 24, 0)
+                        },
+                        new NpcSpawnTime
+                        {
+                            Name = "Guard Tangleroot",
+                            RespawnTime = new TimeSpan(0, 24, 0)
+                        },
+                        new NpcSpawnTime
+                        {
+                            Name = "Guard Treestrider",
+                            RespawnTime = new TimeSpan(0, 24, 0)
+                        },
+                        new NpcSpawnTime
+                        {
+                            Name = "Guard Valewatcher",
+                            RespawnTime = new TimeSpan(0, 24, 0)
+                        },
+                        new NpcSpawnTime
+                        {
+                            Name = "Liutenant Leafstalker",
+                            RespawnTime = new TimeSpan(0, 24, 0)
+                        }
                  }
             });
             ZoneInfoMap.Add("greatdivide", new ZoneInfo
@@ -2174,7 +2269,7 @@ namespace EQToolShared
                     new NPCThatAOE
                     {
                         Name = "Dozekar the Cursed",
-                        SpellEffects = new List<string>(){  "Silver Breath" }
+                        SpellEffects = new List<string>(){ "Silver Breath" }
                     },
                     new NPCThatAOE
                     {
