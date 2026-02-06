@@ -133,6 +133,85 @@ namespace EQtoolsTests
 
 [[Category:Lake Rathetear]]";
 
+        private const string ResponsFromServerUrlInName = @"{{Namedmobpage
+
+| imagefilename     = npc_sir_edwin_motte.png
+
+| emu_id            = 4077
+| illia_id          = 899
+
+| name              = Sir Edwin Motte[https://web.archive.org/web/20010419182617/http://eqbeastiary.allakhazam.com:80/search.shtml?id=899]
+| race              = [[Human]]
+| class             = ''Quest NPC''
+| level             = 33
+| agro_radius       = 70
+| run_speed         = 1.55
+
+| zone              = various ([[Qeynos Hills]])
+| location          = 3% @ (1432, -2239)
+
+| AC                = 233
+| HP                = 1419
+| HP_regen          = 1
+| mana_regen        = 1
+
+| attacks_per_round = 2
+| attack_speed      = 93%
+| damage_per_hit    = 13  - 66
+| special           = None
+
+| description = Location in Qeynos Hill:  Every 24 minutes a mob spawns at the West Karana zoneline and spends the next three minutes walking toward Qeynos, where, upon arrival, it despawns.  Sir Edwin Motte shares this spawn with several NPCs, including [[Guard Westyn]], [[Wyle Bimlin]], [[Isabella Cellus]], [[Lars McMannus]], [[Tol Nicelot]], [[Gornolin]], [[Crumpy Irontoe]], [[Talym Shoontar]], [[Barn Bloodstone]], and [[Buzzlin Bornahm]], all of whom seem to be characters from other zones on a trip to Qeynos.
+
+Location in East Freeport:  Seafarer's Roost Loc. -209.17, -886.15 Shares this spawn with several NPCs, including [[Groflah Steadirt]], [[Trolon Lightleer]] there is a faction hit. Sir Edwin Motte will despawn at somepoint in this location East Freeport:  Seafarer's Roost so down him quickly.
+Spotted up in the same room with Trolon Lightleer also spawned not 10 feet away,beware a 60 bard can spawn in place of Trolon and bash your head in (8/19/19)
+
+Location in Highpass Hold:  Tiger's Roar Tavern (need verification)
+
+Location in Rathe Mountains:  (3941.51, -1366.49) Three part inn, near the Feerott zone line. Other PHs that spawn in that same cycle, [[Bunk Odon]], [[Hogus Dumrmas]], [[Sylp Tyanathin]], [[Fandl Arathin]], [[Jars Legola]], [[Zepin Winsle]], [[Gwynn Marthank]], [[Tal Godin]],  [[Rell Ostodl]], [[Peltin Funter]], [[Tann Cellus]], [[Jyle Windstorm]] - Spawn in the southern room. The placeholders stay up for 45 seconds. They de-spawn, and a new one pops up very quickly. Takes a while for Motte to spawn.
+
+ 
+
+| known_loot = 
+
+<ul><li>  {{:Ringmail Cape}}                 <span class='drare'>(Rare)</span> <span class='ddb'>[1] 1x 25% (34%)</span>
+</li><li> {{:Ringmail Bracelet}}             <span class='drare'>(Rare)</span> <span class='ddb'>[1] 1x 25% (33%)</span>
+</li><li> {{:Ringmail Skirt}}             <span class='drare'>(Rare)</span> <span class='ddb'>[1] 1x 25% (33%)</span>
+</li><li> {{:Fine Steel Spear}}             <span class='drare'>(Rare)</span> <span class='ddb'>[1] 1x 25% (33%)</span>
+</li><li> {{:Fine Steel Two Handed Sword}}   <span class='drare'>(Rare)</span> <span class='ddb'>[1] 1x 25% (33%)</span>
+</li><li> {{:Head of Sir Edwin Motte}}       <span class='drare'>(Always)</span> <span class='ddb'>[2] 1x 100% (100%)</span>
+</li></ul>
+
+| factions = 
+
+* [[Guards of Qeynos]] <span class='profac'>(-30)</span>
+* [[Knights of Truth]] <span class='profac'>(-30)</span>
+* [[Steel Warriors]] <span class='profac'>(-30)</span>
+
+| opposing_factions = 
+
+* [[Corrupt Qeynos Guards]] <span class='oppfac'>(10)</span>
+* [[Freeport Militia]] <span class='oppfac'>(10)</span>
+
+| related_quests = 
+
+* [[Necromancer Epic Quest]]
+
+}}
+
+[[Category:Qeynos Hills]][[Category:East Freeport]][[Category:Rathe Mountains]][[Category:Highpass Hold]]";
+
+        [TestMethod]
+        public void ParseName_WithUrlInIt()
+        {
+            var model = new MobInfoViewModel
+            {
+                Results = ResponsFromServerUrlInName
+            };
+            Assert.AreEqual("Sir Edwin Motte", model.Name);
+            Assert.AreEqual("Quest NPC", model.Class);
+            // Assert.AreEqual("[[Lava Breath]], Enrage, Summon, Uncharmable, Unfearable, Unmezzable, See Invis", model.Special);
+        }
+
         [TestMethod]
         public void ParseName1()
         {

@@ -402,8 +402,13 @@ namespace EQTool.ViewModels.MobInfoComponents
             cleanresults = cleanresults.Replace("\r\n", "\n").Replace("|imagefilename", "^imagefilename").Replace("| ", "^");
             var splits = cleanresults.Split('^').Where(a => !string.IsNullOrWhiteSpace(a)).Select(a => a.Trim().TrimStart('\n')).ToList();
             Name = GetValue("name", splits);
+            if (Name.Contains("["))
+            {
+                var namesplits = Name.Split('[');
+                Name = namesplits[0].Trim();
+            }
             Race = GetValue("race", splits);
-            Class = GetValue("class", splits)?.Replace("[[", string.Empty).Replace("]]", string.Empty);
+            Class = GetValue("class", splits)?.Replace("[[", string.Empty).Replace("]]", string.Empty).Trim(new[] { '\'' });
             var lvl = GetValue("level", splits)?.Where(a => char.IsDigit(a) || a == ' ' || a == '-')?.ToArray();
             if (lvl != null)
             {
