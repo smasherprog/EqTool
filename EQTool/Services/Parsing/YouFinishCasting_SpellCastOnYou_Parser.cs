@@ -11,7 +11,7 @@ namespace EQTool.Services.Parsing
     {
         private const string protectedPattern = @"^You try to cast a spell on (?<target_name>[\w ]+)\, but they are protected\.";
         private readonly Regex protectedRegex = new Regex(protectedPattern, RegexOptions.Compiled);
-        
+
         private readonly LogEvents logEvents;
         private readonly ActivePlayer activePlayer;
         private readonly EQSpells spells;
@@ -38,7 +38,7 @@ namespace EQTool.Services.Parsing
             if (userCastingSpell != null && userCastSpellDateTime != null)
             {
                 var dt = timestamp - userCastSpellDateTime.Value;
-                if (dt.TotalMilliseconds >= (userCastingSpell.casttime - 300))
+                if (dt.TotalMilliseconds >= (userCastingSpell.casttime - 600))
                 {
                     if (line == userCastingSpell.cast_on_you)
                     {
@@ -78,7 +78,7 @@ namespace EQTool.Services.Parsing
                         });
                         return true;
                     }
-                    
+
                     var match = protectedRegex.Match(line);
                     if (match.Success)
                     {
