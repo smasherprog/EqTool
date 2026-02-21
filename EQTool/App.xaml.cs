@@ -6,6 +6,7 @@ using EQTool.Services.P99LoginMiddlemand;
 using EQTool.UI;
 using EQTool.ViewModels;
 using EQToolShared.Enums;
+using EQToolShared.Extensions;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -20,7 +21,6 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Forms;
 using System.Windows.Media;
-using EQToolShared.Extensions;
 using Application = System.Windows.Application;
 using MessageBox = System.Windows.MessageBox;
 
@@ -291,7 +291,7 @@ namespace EQTool
                 }),
             };
             SystemTrayIcon.MouseClick += OnSystemTrayMouseClick;
-            
+
             if (EQToolSettings.LoginMiddleMand)
             {
                 var loginmiddlemand = container.Resolve<LoginMiddlemand>();
@@ -383,16 +383,16 @@ namespace EQTool
                     }
                 }
             }
-            
+
             ClickThroughItem.Checked = EQToolSettings.IsClickThroughMode;
             ApplyClickThrough(EQToolSettings.IsClickThroughMode);
-            
-            container.Resolve<SignalrPlayerHub>();
-            container.Resolve<PlayerTrackerService>();
-            container.Resolve<ZoneActivityTrackingService>();
-            container.Resolve<IEnumerable<BaseHandler>>();
-            container.Resolve<UIRunner>();
-            container.Resolve<UpdateRunner>();
+
+            _ = container.Resolve<SignalrPlayerHub>();
+            _ = container.Resolve<PlayerTrackerService>();
+            _ = container.Resolve<ZoneActivityTrackingService>();
+            _ = container.Resolve<IEnumerable<BaseHandler>>();
+            _ = container.Resolve<UIRunner>();
+            _ = container.Resolve<UpdateRunner>();
 
             App.Current.Resources["GlobalFontSize"] = (double)(EQToolSettings?.FontSize ?? 12);
             ((App)System.Windows.Application.Current).UpdateBackgroundOpacity("MyWindowStyleDPS", EQToolSettings.DpsWindowState.Opacity.Value);
@@ -408,7 +408,7 @@ namespace EQTool
             SystemTrayIcon.Icon = EQToolSettings.IsClickThroughMode ? EQTool.Properties.Resources.pig_t : EQTool.Properties.Resources.pig;
 #endif
         }
-        
+
         public void UpdateBackgroundOpacity(string name, double opacity)
         {
             var newcolor = (SolidColorBrush)new BrushConverter().ConvertFrom("#1a1919");
@@ -596,7 +596,7 @@ namespace EQTool
         {
             OpenWindow<SpellWindow>(SpellsMenuItem);
         }
-        
+
         private void OnExit(object sender, EventArgs e)
         {
             var loginmiddlemand = container.Resolve<LoginMiddlemand>();
@@ -634,12 +634,14 @@ namespace EQTool
         private void OnSystemTrayMouseClick(object sender, MouseEventArgs e)
         {
             if (e.Button != MouseButtons.Left)
+            {
                 return;
-            
+            }
+
             ApplyClickThrough(!EQToolSettings.IsClickThroughMode);
             ClickThroughItem.Checked = EQToolSettings.IsClickThroughMode;
         }
-        
+
         private void ToggleClickThrough(object sender, EventArgs e)
         {
             ApplyClickThrough(!EQToolSettings.IsClickThroughMode);

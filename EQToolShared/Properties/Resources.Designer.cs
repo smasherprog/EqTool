@@ -76,6 +76,11 @@ namespace EQToolShared.Properties {
             get {
                 return ResourceManager.GetString("MasterNPCList", resourceCulture);
             }
+        } 
+		internal static string items_vendor_prices {
+            get {
+                return ResourceManager.GetString("items_vendor_prices", resourceCulture);
+            }
         }
     }
 }
