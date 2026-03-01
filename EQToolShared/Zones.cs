@@ -636,7 +636,15 @@ namespace EQToolShared
                 {
                     "Orc Taskmaster","Orc Trainer","Orc Warlord","Ambassador DVinn","Lord Darish","Rondo Dunfire","Retlon Brenclog","Emperor Crush","The Prophet",
                 },
-                RespawnTime = new TimeSpan(0, 9, 00)
+                RespawnTime = new TimeSpan(0, 9, 00),
+                NpcSpawnTimes = new List<NpcSpawnTime>() {
+                     new NpcSpawnTime
+                     {
+                            Name = "Retlon Brenclog",
+                         RespawnTime = new TimeSpan(0, 3, 0)
+                     }
+                 }
+
             });
             ZoneInfoMap.Add("crystal", new ZoneInfo
             {
