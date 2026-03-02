@@ -222,7 +222,15 @@ namespace EQToolShared
                 {
                    "Boondin Babbinsbort","Commander Windstream","An Elf Skeleton","Gynok Moltor","Priest Amiaz","Skeleton Lrodd","The Thaumaturgist"
                 },
-                RespawnTime = new TimeSpan(0, 19, 0)
+                RespawnTime = new TimeSpan(0, 19, 0),
+                NpcSpawnTimes = new List<NpcSpawnTime>()
+                 {
+                     new NpcSpawnTime
+                     {
+                          Name = "An Elf Skeleton",
+                          RespawnTime = new TimeSpan(0, 6, 40)
+                     }
+                 }
             });
             ZoneInfoMap.Add("beholder", new ZoneInfo
             {
