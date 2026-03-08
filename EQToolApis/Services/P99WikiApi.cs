@@ -52,9 +52,8 @@ namespace EQToolApis.Services
             }
 
             try
-            {
-
-                var data = toolContext.P99WikiByNames.FirstOrDefault(a => a.Name == name && a.ZoneName == zone);
+            { 
+                var data = toolContext.P99WikiByNames.FirstOrDefault(a => a.Name == name && a.ZoneName == null);
                 if (data != null)
                 {
                     return data.Data;
@@ -74,7 +73,7 @@ namespace EQToolApis.Services
                         if (res.StatusCode == System.Net.HttpStatusCode.OK)
                         {
                             var stringres = res.Content.ReadAsStringAsync().Result;
-                            data = toolContext.P99WikiByNames.FirstOrDefault(a => a.Name == name && a.ZoneName == zone);
+                            data = toolContext.P99WikiByNames.FirstOrDefault(a => a.Name == name);
                             if (data != null)
                             {
                                 return data.Data;
@@ -82,7 +81,7 @@ namespace EQToolApis.Services
                             _ = toolContext.Add(new P99WikiByName
                             {
                                 Name = name,
-                                ZoneName = zone,
+                                ZoneName = null,
                                 Data = stringres
                             });
                             _ = toolContext.SaveChanges();
@@ -119,7 +118,7 @@ namespace EQToolApis.Services
                     else
                     {
                         var stringres = res.Content.ReadAsStringAsync().Result;
-                        data = toolContext.P99WikiByNames.FirstOrDefault(a => a.Name == name && a.ZoneName == zone);
+                        data = toolContext.P99WikiByNames.FirstOrDefault(a => a.Name == name);
                         if (data != null)
                         {
                             return data.Data;
@@ -127,7 +126,7 @@ namespace EQToolApis.Services
                         _ = toolContext.Add(new P99WikiByName
                         {
                             Name = name,
-                            ZoneName = zone,
+                            ZoneName = null,
                             Data = stringres
                         });
                         _ = toolContext.SaveChanges();
@@ -143,7 +142,7 @@ namespace EQToolApis.Services
                     if (res.StatusCode == System.Net.HttpStatusCode.OK)
                     {
                         var stringres = res.Content.ReadAsStringAsync().Result;
-                        data = toolContext.P99WikiByNames.FirstOrDefault(a => a.Name == name && a.ZoneName == zone);
+                        data = toolContext.P99WikiByNames.FirstOrDefault(a => a.Name == name);
                         if (data != null)
                         {
                             return data.Data;
@@ -151,7 +150,7 @@ namespace EQToolApis.Services
                         _ = toolContext.Add(new P99WikiByName
                         {
                             Name = name,
-                            ZoneName = zone,
+                            ZoneName = null,
                             Data = stringres
                         });
                         _ = toolContext.SaveChanges();

@@ -1,7 +1,11 @@
 ﻿using EQTool.ViewModels;
 using EQToolShared;
+using EQToolShared.APIModels.ItemControllerModels;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Text;
 
 namespace EQTool.Services
 {
@@ -18,8 +22,14 @@ namespace EQTool.Services
             var currentzone = activePlayer?.Player?.Zone;
             try
             {
-                var url = $"https://pigparse.azurewebsites.net/api/item/wiki/{name}?zonename={currentzone}";
-                var res = App.httpclient.GetAsync(url).Result;
+                var url = $"https://pigparse.azurewebsites.net/api/item/wiki";
+                var json = JsonConvert.SerializeObject(new P99WikiLookup
+                {
+                    Name = name,
+                    Zone = currentzone
+                });
+                var data = new StringContent(json, Encoding.UTF8, "application/json");
+                var res = App.httpclient.PostAsync(url, data).Result;
                 if (res.StatusCode == System.Net.HttpStatusCode.OK)
                 {
                     var response = res.Content.ReadAsStringAsync().Result;

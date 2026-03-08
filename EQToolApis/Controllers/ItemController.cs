@@ -325,11 +325,11 @@ namespace EQToolApis.Controllers
         /// </summary>
         /// <param name="message"></param>
         /// <returns></returns>
-        [Route("api/item/wiki/{name}")]
-        [HttpGet]
-        public string Wiki([Required] string name, string? zonename)
+        [Route("api/item/wiki")]
+        [HttpPost]
+        public string Wiki([Required] P99WikiLookup model)
         {
-            return p99WikiApi.GetData(name, zonename);
+            return p99WikiApi.GetData(model.Name, model.Zone);
         }
     }
 }

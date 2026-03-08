@@ -175,4 +175,10 @@ namespace EQToolShared.APIModels.ItemControllerModels
         [Required]
         public List<string> Itemnames { get; set; } = new List<string>();
     }
+
+    public class P99WikiLookup
+    {
+        public string Name { get; set; } = string.Empty;
+        public string Zone { get; set; } = string.Empty;
+    }
 }
