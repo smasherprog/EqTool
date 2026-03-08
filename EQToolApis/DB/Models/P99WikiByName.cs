@@ -9,11 +9,11 @@ namespace EQToolApis.DB.Models
         public int P99WikiByNameId { get; set; }
 
         [MaxLength(48)]
-        public string ZoneName { get; set; } = string.Empty;
+        public string? ZoneName { get; set; }
 
         [MaxLength(64), Required]
         public string Name { get; set; } = string.Empty;
 
-        public string Data { get; set; } = string.Empty;
+        public string Data { get; set; }
     }
 }
