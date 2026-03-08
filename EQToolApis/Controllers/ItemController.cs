@@ -326,7 +326,7 @@ namespace EQToolApis.Controllers
         /// <param name="message"></param>
         /// <returns></returns>
         [Route("api/item/wiki/{name}")]
-        [HttpPost]
+        [HttpGet]
         public string Wiki([Required] string name, string? zonename)
         {
             return p99WikiApi.GetData(name, zonename);
