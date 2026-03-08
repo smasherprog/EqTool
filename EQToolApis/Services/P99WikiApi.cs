@@ -72,6 +72,11 @@ namespace EQToolApis.Services
                         if (res.StatusCode == System.Net.HttpStatusCode.OK)
                         {
                             var stringres = res.Content.ReadAsStringAsync().Result;
+                            data = toolContext.P99WikiByNames.FirstOrDefault(a => a.Name == name && a.ZoneName == zone);
+                            if (data != null)
+                            {
+                                return data.Data;
+                            }
                             _ = toolContext.Add(new P99WikiByName
                             {
                                 Name = name,
@@ -93,6 +98,11 @@ namespace EQToolApis.Services
                             if (res.StatusCode == System.Net.HttpStatusCode.OK)
                             {
                                 var stringres = res.Content.ReadAsStringAsync().Result;
+                                data = toolContext.P99WikiByNames.FirstOrDefault(a => a.Name == name && a.ZoneName == zone);
+                                if (data != null)
+                                {
+                                    return data.Data;
+                                }
                                 _ = toolContext.Add(new P99WikiByName
                                 {
                                     Name = name,
@@ -107,6 +117,11 @@ namespace EQToolApis.Services
                     else
                     {
                         var stringres = res.Content.ReadAsStringAsync().Result;
+                        data = toolContext.P99WikiByNames.FirstOrDefault(a => a.Name == name && a.ZoneName == zone);
+                        if (data != null)
+                        {
+                            return data.Data;
+                        }
                         _ = toolContext.Add(new P99WikiByName
                         {
                             Name = name,
@@ -126,6 +141,11 @@ namespace EQToolApis.Services
                     if (res.StatusCode == System.Net.HttpStatusCode.OK)
                     {
                         var stringres = res.Content.ReadAsStringAsync().Result;
+                        data = toolContext.P99WikiByNames.FirstOrDefault(a => a.Name == name && a.ZoneName == zone);
+                        if (data != null)
+                        {
+                            return data.Data;
+                        }
                         _ = toolContext.Add(new P99WikiByName
                         {
                             Name = name,

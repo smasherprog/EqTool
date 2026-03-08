@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace EQToolApis.DB.Models
 {
-    [PrimaryKey(nameof(P99WikiByNameId))]
+    [PrimaryKey(nameof(P99WikiByNameId)), Index(nameof(Name)), Index(nameof(Name), nameof(ZoneName))]
     public class P99WikiByName
     {
         public int P99WikiByNameId { get; set; }
