@@ -28,8 +28,9 @@ namespace EQToolApis.Services
                 return string.Empty;
             }
 
+            var cleanname = name.Replace('_', ' ');
             name = name.Replace(' ', '_');
-            if (!MasterNPCList.NPCs.Contains(name.Replace('_', ' ')) && !MasterItemList.ItemsFastLoopup.Contains(name.Replace('_', ' ')))
+            if (!MasterNPCList.NPCs.Contains(cleanname) && !MasterItemList.ItemsFastLoopup.Contains(cleanname))
             {
                 return string.Empty;
             }
@@ -52,8 +53,8 @@ namespace EQToolApis.Services
             }
 
             try
-            { 
-                var data = toolContext.P99WikiByNames.FirstOrDefault(a => a.Name == name && a.ZoneName == null);
+            {
+                var data = toolContext.P99WikiByNames.FirstOrDefault(a => a.Name == cleanname && a.ZoneName == null);
                 if (data != null)
                 {
                     return data.Data;
@@ -73,14 +74,15 @@ namespace EQToolApis.Services
                         if (res.StatusCode == System.Net.HttpStatusCode.OK)
                         {
                             var stringres = res.Content.ReadAsStringAsync().Result;
-                            data = toolContext.P99WikiByNames.FirstOrDefault(a => a.Name == name);
+                            cleanname = name.Replace('_', ' ');
+                            data = toolContext.P99WikiByNames.FirstOrDefault(a => a.Name == cleanname);
                             if (data != null)
                             {
                                 return data.Data;
                             }
                             _ = toolContext.Add(new P99WikiByName
                             {
-                                Name = name,
+                                Name = cleanname,
                                 ZoneName = null,
                                 Data = stringres
                             });
@@ -99,14 +101,15 @@ namespace EQToolApis.Services
                             if (res.StatusCode == System.Net.HttpStatusCode.OK)
                             {
                                 var stringres = res.Content.ReadAsStringAsync().Result;
-                                data = toolContext.P99WikiByNames.FirstOrDefault(a => a.Name == name && a.ZoneName == zone);
+                                cleanname = name.Replace('_', ' ');
+                                data = toolContext.P99WikiByNames.FirstOrDefault(a => a.Name == cleanname && a.ZoneName == zone);
                                 if (data != null)
                                 {
                                     return data.Data;
                                 }
                                 _ = toolContext.Add(new P99WikiByName
                                 {
-                                    Name = name,
+                                    Name = cleanname,
                                     ZoneName = zone,
                                     Data = stringres
                                 });
@@ -118,14 +121,14 @@ namespace EQToolApis.Services
                     else
                     {
                         var stringres = res.Content.ReadAsStringAsync().Result;
-                        data = toolContext.P99WikiByNames.FirstOrDefault(a => a.Name == name);
+                        data = toolContext.P99WikiByNames.FirstOrDefault(a => a.Name == cleanname);
                         if (data != null)
                         {
                             return data.Data;
                         }
                         _ = toolContext.Add(new P99WikiByName
                         {
-                            Name = name,
+                            Name = cleanname,
                             ZoneName = null,
                             Data = stringres
                         });
@@ -142,7 +145,8 @@ namespace EQToolApis.Services
                     if (res.StatusCode == System.Net.HttpStatusCode.OK)
                     {
                         var stringres = res.Content.ReadAsStringAsync().Result;
-                        data = toolContext.P99WikiByNames.FirstOrDefault(a => a.Name == name);
+                        cleanname = name.Replace('_', ' ');
+                        data = toolContext.P99WikiByNames.FirstOrDefault(a => a.Name == cleanname);
                         if (data != null)
                         {
                             return data.Data;
