@@ -28,6 +28,12 @@ namespace EQToolApis.Services
                 return string.Empty;
             }
 
+            name = name.Replace(' ', '_');
+            if (!MasterNPCList.NPCs.Contains(name.Replace('_', ' ')) && !MasterItemList.ItemsFastLoopup.Contains(name.Replace('_', ' ')))
+            {
+                return string.Empty;
+            }
+
             if (name == "Snitch" && zone == "mischiefplane")
             {
                 name = "Snitch_(PoM)";
@@ -47,11 +53,7 @@ namespace EQToolApis.Services
 
             try
             {
-                name = name.Replace(' ', '_');
-                if (!MasterNPCList.NPCs.Contains(name.Replace('_', ' ')) && !MasterItemList.ItemsFastLoopup.Contains(name.Replace('_', ' ')))
-                {
-                    return string.Empty;
-                }
+
                 var data = toolContext.P99WikiByNames.FirstOrDefault(a => a.Name == name && a.ZoneName == zone);
                 if (data != null)
                 {
