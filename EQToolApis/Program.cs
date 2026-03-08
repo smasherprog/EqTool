@@ -151,6 +151,7 @@ builder.Services.Configure<DiscordServiceOptions>(options =>
 .AddSingleton<NoteableNPCCache>()
 .AddScoped<UIDataBuild>()
 .AddScoped<NotableNpcCacheService>()
+.AddScoped<P99WikiApi>()
 .AddScoped<NpcTrackingService>();
 
 builder.Services.AddMvc();
