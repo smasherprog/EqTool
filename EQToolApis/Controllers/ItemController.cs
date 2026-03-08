@@ -16,13 +16,15 @@ namespace EQToolApis.Controllers
         private readonly EQToolContext context;
         private readonly PlayerCacheV2 playerCachev2;
         private readonly DiscordAuctionParse discordAuctionParse;
+        private readonly P99WikiApi p99WikiApi;
 
-        public ItemController(UIDataBuild uIDataBuild, EQToolContext context, PlayerCacheV2 playerCachev2, DiscordAuctionParse discordAuctionParse)
+        public ItemController(UIDataBuild uIDataBuild, EQToolContext context, PlayerCacheV2 playerCachev2, DiscordAuctionParse discordAuctionParse, P99WikiApi p99WikiApi)
         {
             this.uIDataBuild = uIDataBuild;
             this.context = context;
             this.playerCachev2 = playerCachev2;
             this.discordAuctionParse = discordAuctionParse;
+            this.p99WikiApi = p99WikiApi;
         }
 
         /// <summary>
@@ -316,6 +318,18 @@ namespace EQToolApis.Controllers
         public Auction AuctionParse([FromBody, DefaultValue("Fuxi auctions, 'WTS Silver Chitin Hand Wraps 1.3 / Nilitim's Grimoire Pg. 300 x3 / Nilitim's Grimoire Pg. 116 / Nilitim's Grimoire Pg. 115 / Nilitim's Grimoire Pg. 35 / Salil's Writ Pg. 174 L 5pp ea last call pst WTB Spell: Pillar of Lightning 50p l Sarnak-Hide Mask 50p l Arctic Wyvern Hide 300p/stack l WTS Ring of stealthy travel 14k WTS Bag of the Tinkerers 5300pp.  5250ea for qty 2+.  5200 for qty 4+.  (price firm) pst WTB Scepter of the Forlorn paying 5k WTB'")] string message)
         {
             return discordAuctionParse.Parse(message);
+        }
+
+        /// <summary>
+        /// Will return wiki information in raw format.
+        /// </summary>
+        /// <param name="message"></param>
+        /// <returns></returns>
+        [Route("api/item/wiki/{name}")]
+        [HttpPost]
+        public string Wiki([Required] string name, string? zonename)
+        {
+            return p99WikiApi.GetData(name, zonename);
         }
     }
 }

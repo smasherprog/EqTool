@@ -133,7 +133,6 @@ namespace EQTool.Services
                                 return res.Content.ReadAsStringAsync().Result;
                             }
                         }
-
                     }
                     else
                     {

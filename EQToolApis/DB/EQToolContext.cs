@@ -21,7 +21,7 @@ namespace EQToolApis.DB
         public DbSet<EQZone> EQZones { get; set; }
 
         public DbSet<EQDeath> EQDeaths { get; set; }
-        public DbSet<EQBoatActivity> EQBoatActivites { get; set; } 
+        public DbSet<EQBoatActivity> EQBoatActivites { get; set; }
 
         // public DbSet<EQAuctionPlayer> EQAuctionPlayers { get; set; }
 
@@ -42,7 +42,7 @@ namespace EQToolApis.DB
         //    public DbSet<EQTunnelMessage> EQTunnelMessages { get; set; }
 
         public DbSet<EQTunnelMessageV2> EQTunnelMessagesV2 { get; set; }
-
+        public DbSet<P99WikiByName> P99WikiByNames { get; set; }
         public DbSet<Player> Players { get; set; }
 
         public DbSet<ServerMessage> ServerMessages { get; set; }
