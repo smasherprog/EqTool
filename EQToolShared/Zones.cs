@@ -1286,21 +1286,6 @@ namespace EQToolShared
                 RespawnTime = new TimeSpan(0, 5, 0),
                 NpcSpawnTimes = new List<NpcSpawnTime>()
                  {
-                     new NpcSpawnTime
-                     {
-                         Name = "Hagnis Shralok",
-                         RespawnTime = new TimeSpan(0, 22, 0)
-                     },
-                      new NpcSpawnTime
-                     {
-                         Name = "Recfek Shralok",
-                         RespawnTime = new TimeSpan(0, 22, 0)
-                     },
-                      new NpcSpawnTime
-                     {
-                         Name = "Vopuk Shralok",
-                         RespawnTime = new TimeSpan(0, 22, 0)
-                     },
                       new NpcSpawnTime
                      {
                          Name = "Vexven Mucktail",
