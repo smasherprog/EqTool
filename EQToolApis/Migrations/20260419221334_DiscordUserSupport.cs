@@ -1,16 +1,16 @@
-using Microsoft.EntityFrameworkCore.Migrations;
+﻿using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
 namespace EQToolApis.Migrations
 {
     /// <inheritdoc />
-    public partial class AddDiscordUserTable : Migration
+    public partial class DiscordUserSupport : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.CreateTable(
+            _ = migrationBuilder.CreateTable(
                 name: "DiscordUsers",
                 columns: table => new
                 {
@@ -25,20 +25,15 @@ namespace EQToolApis.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_DiscordUsers", x => x.DiscordUserId);
+                    _ = table.PrimaryKey("PK_DiscordUsers", x => x.DiscordUserId);
                 });
-
-            migrationBuilder.CreateIndex(
-                name: "IX_DiscordUsers_DiscordId",
-                table: "DiscordUsers",
-                column: "DiscordId",
-                unique: true);
         }
 
         /// <inheritdoc />
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropTable(name: "DiscordUsers");
+            _ = migrationBuilder.DropTable(
+                name: "DiscordUsers");
         }
     }
 }

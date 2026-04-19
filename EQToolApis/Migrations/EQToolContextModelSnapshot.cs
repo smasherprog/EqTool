@@ -58,20 +58,6 @@ namespace EQToolApis.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("DiscordUserId"));
 
-                    b.Property<string>("DiscordId")
-                        .IsRequired()
-                        .HasMaxLength(32)
-                        .HasColumnType("nvarchar(32)");
-
-                    b.Property<string>("Username")
-                        .IsRequired()
-                        .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)");
-
-                    b.Property<string>("Email")
-                        .HasMaxLength(256)
-                        .HasColumnType("nvarchar(256)");
-
                     b.Property<string>("Avatar")
                         .HasMaxLength(256)
                         .HasColumnType("nvarchar(256)");
@@ -79,13 +65,24 @@ namespace EQToolApis.Migrations
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime2");
 
+                    b.Property<string>("DiscordId")
+                        .IsRequired()
+                        .HasMaxLength(32)
+                        .HasColumnType("nvarchar(32)");
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(256)
+                        .HasColumnType("nvarchar(256)");
+
                     b.Property<DateTime>("LastLoginAt")
                         .HasColumnType("datetime2");
 
-                    b.HasKey("DiscordUserId");
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasMaxLength(64)
+                        .HasColumnType("nvarchar(64)");
 
-                    b.HasIndex("DiscordId")
-                        .IsUnique();
+                    b.HasKey("DiscordUserId");
 
                     b.ToTable("DiscordUsers");
                 });
