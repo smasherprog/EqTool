@@ -465,6 +465,29 @@ namespace EQTool.UI.SettingsComponents
             PushLog(logtext);
         }
 
+        private async void testSecuredApi_Click(object sender, RoutedEventArgs e)
+        {
+            var token = settings.DiscordApiToken;
+            if (string.IsNullOrEmpty(token))
+            {
+                MessageBox.Show("Not logged in with Discord. Use Login with Discord from the system tray.", "Discord API Test", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            try
+            {
+                var request = new System.Net.Http.HttpRequestMessage(System.Net.Http.HttpMethod.Get, "https://pigparse.azurewebsites.net/api/secured/test");
+                request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
+                var response = await App.httpclient.SendAsync(request);
+                var body = await response.Content.ReadAsStringAsync();
+                MessageBox.Show($"Status: {(int)response.StatusCode}\n\n{body}", "Discord API Test");
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Error: {ex.Message}", "Discord API Test", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
+        }
+
         private void PushLog(string message, DateTime timeStamp = default)
         {
             if (timeStamp == default)

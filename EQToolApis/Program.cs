@@ -3,6 +3,7 @@ using EQToolApis.DB.Models;
 using EQToolApis.Hubs;
 using EQToolApis.Models;
 using EQToolApis.Services;
+using Microsoft.AspNetCore.Authentication;
 using EQToolShared;
 using EQToolShared.Enums;
 using EQToolShared.Extensions;
@@ -99,6 +100,9 @@ builder.Services.AddAuthentication()
             }
         };
     });
+
+builder.Services.AddAuthentication()
+    .AddScheme<AuthenticationSchemeOptions, ApiTokenAuthHandler>("ApiToken", _ => { });
 
 builder.Services.AddRazorPages();
 builder.Services.AddSignalR();

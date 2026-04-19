@@ -232,6 +232,9 @@ namespace EQTool.Models
         }
         public bool LoginMiddleMand { get; set; }
         public bool IsClickThroughMode { get; set; }
+        public string DiscordUsername { get; set; }
+        public string DiscordId { get; set; }
+        public string DiscordApiToken { get; set; }
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected void OnPropertyChanged([CallerMemberName] string name = null)

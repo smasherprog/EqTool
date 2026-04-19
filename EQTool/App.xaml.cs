@@ -40,6 +40,7 @@ namespace EQTool
         private System.Windows.Forms.MenuItem OverlayMenuItem;
         private System.Windows.Forms.MenuItem SettingsMenuItem;
         private System.Windows.Forms.MenuItem MobInfoMenuItem;
+        private System.Windows.Forms.MenuItem DiscordLoginMenuItem;
 
         private EQToolSettings _EQToolSettings;
 #if DEBUG
@@ -264,6 +265,9 @@ namespace EQTool
             var gitHubMenuItem = new System.Windows.Forms.MenuItem("Suggestions", Suggestions);
             var whythepig = new System.Windows.Forms.MenuItem("Pigparse Discord", WhyThePig);
             var updates = new System.Windows.Forms.MenuItem("Check for Update", CheckForUpdates);
+            DiscordLoginMenuItem = new System.Windows.Forms.MenuItem(
+                string.IsNullOrEmpty(EQToolSettings.DiscordUsername) ? "Login with Discord" : $"Discord: {EQToolSettings.DiscordUsername}",
+                ToggleDiscordLogin);
 
             var version = new System.Windows.Forms.MenuItem(Version)
             {
@@ -277,6 +281,7 @@ namespace EQTool
                 {
                     //GroupSuggestionsMenuItem,
                     whythepig,
+                    DiscordLoginMenuItem,
                     ClickThroughItem,
                     OverlayMenuItem,
                     DpsMeterMenuItem,
@@ -463,6 +468,43 @@ namespace EQTool
             {
                 FileName = "https://discord.gg/rkU8ewzWWk",
                 UseShellExecute = true
+            });
+        }
+
+        private void ToggleDiscordLogin(object sender, EventArgs e)
+        {
+            if (!string.IsNullOrEmpty(EQToolSettings.DiscordUsername))
+            {
+                EQToolSettings.DiscordUsername = null;
+                EQToolSettings.DiscordId = null;
+                EQToolSettings.DiscordApiToken = null;
+                container.Resolve<EQToolSettingsLoad>().Save(EQToolSettings);
+                DiscordLoginMenuItem.Text = "Login with Discord";
+                return;
+            }
+
+            DiscordLoginMenuItem.Enabled = false;
+            DiscordLoginMenuItem.Text = "Logging in...";
+            var authService = new DiscordAuthService();
+            authService.LoginAsync().ContinueWith(t =>
+            {
+                var result = t.Result;
+                Dispatcher.Invoke(() =>
+                {
+                    DiscordLoginMenuItem.Enabled = true;
+                    if (!string.IsNullOrEmpty(result?.Username))
+                    {
+                        EQToolSettings.DiscordUsername = result.Username;
+                        EQToolSettings.DiscordId = result.DiscordId;
+                        EQToolSettings.DiscordApiToken = result.ApiToken;
+                        container.Resolve<EQToolSettingsLoad>().Save(EQToolSettings);
+                        DiscordLoginMenuItem.Text = $"Discord: {result.Username} (click to logout)";
+                    }
+                    else
+                    {
+                        DiscordLoginMenuItem.Text = "Login with Discord";
+                    }
+                });
             });
         }
         private void Suggestions(object sender, EventArgs e)

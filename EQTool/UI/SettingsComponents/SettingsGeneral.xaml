@@ -522,6 +522,10 @@
                     <TextBox x:Name="LogPushText" MinWidth="150"></TextBox>
                     <Button Click="logpush">Push</Button>
                 </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Discord API"  VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
+                    <Button Click="testSecuredApi_Click" MinWidth="100">Test Secured API</Button>
+                </StackPanel>
             </StackPanel>
         </TabItem>
     </TabControl>

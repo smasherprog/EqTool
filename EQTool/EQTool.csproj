@@ -549,6 +549,7 @@
     <Compile Include="Models\PlayerInfo.cs" />
     <Compile Include="ViewModels\SpellWindow\SpellViewModel.cs" />
     <Compile Include="Models\vecs.cs" />
+    <Compile Include="Services\DiscordAuthService.cs" />
     <Compile Include="Services\EQToolSettingsLoad.cs" />
     <Compile Include="DI.cs" />
     <Compile Include="Services\FindEq.cs" />

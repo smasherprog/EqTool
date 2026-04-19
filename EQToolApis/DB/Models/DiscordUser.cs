@@ -15,5 +15,7 @@ namespace EQToolApis.DB.Models
         public string? Avatar { get; set; }
         public DateTime CreatedAt { get; set; }
         public DateTime LastLoginAt { get; set; }
+        [MaxLength(64)]
+        public string? ApiToken { get; set; }
     }
 }
