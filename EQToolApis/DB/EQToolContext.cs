@@ -48,6 +48,8 @@ namespace EQToolApis.DB
         public DbSet<ServerMessage> ServerMessages { get; set; }
 
         public DbSet<EqToolException> EqToolExceptions { get; set; }
+
+        public DbSet<DiscordUser> DiscordUsers { get; set; }
         protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
         {
             base.ConfigureConventions(configurationBuilder);

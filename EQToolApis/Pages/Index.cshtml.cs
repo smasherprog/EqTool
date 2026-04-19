@@ -3,8 +3,10 @@ using EQToolApis.DB.Models;
 using EQToolApis.Hubs;
 using EQToolApis.Models;
 using EQToolShared.Enums;
+using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Security.Claims;
 
 namespace EQToolApis.Pages
 {
@@ -29,6 +31,8 @@ namespace EQToolApis.Pages
         private static DateTime LastPigParseStat = DateTime.UtcNow.AddMinutes(-10);
 
         public NoteableNPCZone[] ServerData { get; set; } = new NoteableNPCZone[(int)Servers.MaxServers];
+        public string? DiscordUsername { get; private set; }
+        public string? DiscordAvatar { get; private set; }
         public IndexModel(DBData allData, EQToolContext eQToolContext, NoteableNPCCache noteableNPCCache)
         {
             this.noteableNPCCache = noteableNPCCache;
@@ -121,8 +125,14 @@ namespace EQToolApis.Pages
         }
 
 
-        public IActionResult OnGet()
+        public async Task<IActionResult> OnGetAsync()
         {
+            var result = await HttpContext.AuthenticateAsync("DiscordCookie");
+            if (result.Succeeded && result.Principal != null)
+            {
+                DiscordUsername = result.Principal.FindFirst(ClaimTypes.Name)?.Value;
+                DiscordAvatar = result.Principal.FindFirst("urn:discord:avatar")?.Value;
+            }
             return Page();
         }
     }

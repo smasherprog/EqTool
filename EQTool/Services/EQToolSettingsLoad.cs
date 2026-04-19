@@ -1,12 +1,12 @@
 ﻿using EQTool.Models;
 using EQToolShared.Enums;
+using EQToolShared.Extensions;
 using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading;
-using EQToolShared.Extensions;
 
 namespace EQTool.Services
 {

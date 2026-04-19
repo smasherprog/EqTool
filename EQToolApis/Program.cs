@@ -8,11 +8,15 @@ using EQToolShared.Enums;
 using EQToolShared.Extensions;
 using Hangfire;
 using Hangfire.SqlServer;
+using Microsoft.AspNetCore.Authentication.OAuth;
 using Microsoft.AspNetCore.Authentication.OpenIdConnect;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Identity.Web;
 using Microsoft.OpenApi.Models;
+using System.Net.Http.Headers;
 using System.Reflection;
+using System.Security.Claims;
+using System.Text.Json;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -21,6 +25,81 @@ var hangfirecon = builder.Configuration.GetConnectionString("HangfireConnection"
 builder.Services.AddDbContext<EQToolContext>(opts => opts.UseSqlServer(sqlconstring)).AddScoped<EQToolContext>();
 builder.Services.AddAuthentication(OpenIdConnectDefaults.AuthenticationScheme)
         .AddMicrosoftIdentityWebApp(builder.Configuration.GetSection("AzureAd"));
+
+builder.Services.AddAuthentication()
+    .AddCookie("DiscordCookie", options =>
+    {
+        options.Cookie.Name = "DiscordSession";
+        options.LoginPath = "/Account/Login";
+        options.LogoutPath = "/Account/Logout";
+        options.ExpireTimeSpan = TimeSpan.FromDays(30);
+        options.SlidingExpiration = true;
+    })
+    .AddOAuth("Discord", options =>
+    {
+        options.SignInScheme = "DiscordCookie";
+        options.ClientId = builder.Configuration["DiscordOAuth:ClientId"] ?? string.Empty;
+        options.ClientSecret = builder.Configuration["DiscordOAuth:ClientSecret"] ?? string.Empty;
+        options.AuthorizationEndpoint = "https://discord.com/api/oauth2/authorize";
+        options.TokenEndpoint = "https://discord.com/api/oauth2/token";
+        options.UserInformationEndpoint = "https://discord.com/api/users/@me";
+        options.CallbackPath = "/signin-discord";
+        options.Scope.Add("identify");
+        options.Scope.Add("email");
+        options.Events = new OAuthEvents
+        {
+            OnCreatingTicket = async ctx =>
+            {
+                using var request = new HttpRequestMessage(HttpMethod.Get, ctx.Options.UserInformationEndpoint);
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", ctx.AccessToken);
+                using var response = await ctx.Backchannel.SendAsync(request, ctx.HttpContext.RequestAborted);
+                response.EnsureSuccessStatusCode();
+                using var doc = JsonDocument.Parse(await response.Content.ReadAsStringAsync(ctx.HttpContext.RequestAborted));
+                var root = doc.RootElement;
+
+                var discordId = root.TryGetProperty("id", out var idProp) ? idProp.GetString() : null;
+                var username = root.TryGetProperty("username", out var userProp) ? userProp.GetString() : null;
+                var email = root.TryGetProperty("email", out var emailProp) ? emailProp.GetString() : null;
+                var avatar = root.TryGetProperty("avatar", out var avatarProp) ? avatarProp.GetString() : null;
+
+                if (ctx.Principal?.Identity is System.Security.Claims.ClaimsIdentity identity)
+                {
+                    if (discordId != null) identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, discordId));
+                    if (username != null) identity.AddClaim(new Claim(ClaimTypes.Name, username));
+                    if (email != null) identity.AddClaim(new Claim(ClaimTypes.Email, email));
+                    if (avatar != null) identity.AddClaim(new Claim("urn:discord:avatar", avatar));
+                }
+
+                if (discordId != null && username != null)
+                {
+                    using var scope = ctx.HttpContext.RequestServices.CreateScope();
+                    var db = scope.ServiceProvider.GetRequiredService<EQToolContext>();
+                    var existing = await db.DiscordUsers.FirstOrDefaultAsync(u => u.DiscordId == discordId);
+                    if (existing == null)
+                    {
+                        db.DiscordUsers.Add(new DiscordUser
+                        {
+                            DiscordId = discordId,
+                            Username = username,
+                            Email = email,
+                            Avatar = avatar,
+                            CreatedAt = DateTime.UtcNow,
+                            LastLoginAt = DateTime.UtcNow
+                        });
+                    }
+                    else
+                    {
+                        existing.Username = username;
+                        existing.Email = email;
+                        existing.Avatar = avatar;
+                        existing.LastLoginAt = DateTime.UtcNow;
+                    }
+                    await db.SaveChangesAsync();
+                }
+            }
+        };
+    });
+
 builder.Services.AddRazorPages();
 builder.Services.AddSignalR();
 builder.Services.AddControllers();
