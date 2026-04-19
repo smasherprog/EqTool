@@ -40,7 +40,6 @@ namespace EQTool.Services
                 Process.Start(new ProcessStartInfo { FileName = loginUrl, UseShellExecute = true });
 
                 var context = httpListener.GetContext();
-                httpListener.Stop();
 
                 var responseHtml = "<html><body style='font-family:sans-serif;text-align:center;padding-top:60px'>" +
                                    "<h2>Login successful!</h2><p>You can close this window and return to Pigparse.</p>" +
@@ -50,6 +49,8 @@ namespace EQTool.Services
                 context.Response.ContentType = "text/html";
                 context.Response.OutputStream.Write(buffer, 0, buffer.Length);
                 context.Response.OutputStream.Close();
+
+                httpListener.Stop();
 
                 var query = context.Request.QueryString;
                 return new DiscordAuthResult
