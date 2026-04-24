@@ -2,14 +2,9 @@
 using EQTool.Services;
 using System;
 using System.ComponentModel;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
-using System.Windows.Interop;
 using System.Windows.Threading;
-using EQTool.ViewModels;
-using WindowState = System.Windows.WindowState;
 
 namespace EQTool.UI
 {
@@ -20,20 +15,14 @@ namespace EQTool.UI
             Interval = new TimeSpan(0, 0, 0, 0, 500),
             IsEnabled = false
         };
-        protected readonly IAppDispatcher appDispatcher;
-        private readonly BaseWindowViewModel baseViewModel;
-        private readonly Models.WindowState windowState;
+
         private readonly EQToolSettingsLoad toolSettingsLoad;
         private readonly EQToolSettings settings;
-        
-        private CancellationTokenSource hoverDebounceTs;
+        private readonly Models.WindowState windowState;
         private bool InitCalled = false;
         protected DateTime LastWindowInteraction = DateTime.Now;
-
-        public BaseSaveStateWindow(IAppDispatcher appDispatcher, BaseWindowViewModel baseViewModel, Models.WindowState windowState, EQToolSettingsLoad toolSettingsLoad, EQToolSettings settings)
+        public BaseSaveStateWindow(Models.WindowState windowState, EQToolSettingsLoad toolSettingsLoad, EQToolSettings settings)
         {
-            this.appDispatcher = appDispatcher;
-            this.baseViewModel = baseViewModel;
             this.windowState = windowState;
             this.toolSettingsLoad = toolSettingsLoad;
             this.settings = settings;
@@ -43,24 +32,18 @@ namespace EQTool.UI
         protected void Init()
         {
             if (InitCalled)
+            {
                 return;
+            }
 
             InitCalled = true;
             AdjustWindow();
-            UpdateShowInTaskbar();
             timer.Tick += timer_Tick;
-            SourceInitialized += Window_SourceInitialized;
             SizeChanged += Window_SizeChanged;
             StateChanged += SpellWindow_StateChanged;
             LocationChanged += Window_LocationChanged;
-            Loaded += Window_Loaded;
             windowState.Closed = false;
             SaveState();
-        }
-
-        private void Window_SourceInitialized(object sender, EventArgs e)
-        {
-            this.ApplyMaximizeWindowBoundsFix();
         }
 
         private void timer_Tick(object sender, EventArgs e)
@@ -88,12 +71,7 @@ namespace EQTool.UI
             SaveState();
             Close();
         }
-        
-        protected virtual void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            SetClickThrough(settings.IsClickThroughMode && windowState.ClickThroughAllowed);
-        }
-        
+
         private void SpellWindow_StateChanged(object sender, EventArgs e)
         {
             LastWindowInteraction = DateTime.Now;
@@ -112,21 +90,8 @@ namespace EQTool.UI
             DebounceSave();
         }
 
-        protected void Window_ToggleLock(object sender, RoutedEventArgs e)
-        {
-            baseViewModel.IsLocked = !baseViewModel.IsLocked;
-            windowState.IsLocked = baseViewModel.IsLocked;
-            
-            LastWindowInteraction = DateTime.Now;
-            DebounceSave();
-            UpdateShowInTaskbar();
-        }
-        
         protected void DragWindow(object sender, MouseButtonEventArgs args)
         {
-            if (baseViewModel.IsLocked)
-                return;
-            
             LastWindowInteraction = DateTime.Now;
             DragMove();
         }
@@ -142,35 +107,21 @@ namespace EQTool.UI
                 Width = windowState.WindowRect.Value.Width;
                 WindowState = windowState.State;
             }
-            baseViewModel.IsLocked = windowState.IsLocked;
         }
 
         private void SaveWindowState(EQTool.Models.WindowState windowState)
         {
-            // When the window is minimized, the OS resizes the window to very odd numbers.
-            // They remember how to resize it, but we do not. Maximizing it does this too, but that at least makes sense
-            // So we'll just not save the size when it's in an abnormal state.
-            if (WindowState == WindowState.Normal)  
+            windowState.WindowRect = new Rect
             {
-                windowState.WindowRect = new Rect
-                {
-                    X = Left,
-                    Y = Top,
-                    Height = Height,
-                    Width = Width
-                };
-            }
+                X = Left,
+                Y = Top,
+                Height = Height,
+                Width = Width
+            };
             windowState.State = WindowState;
             windowState.AlwaysOnTop = Topmost;
-            windowState.IsLocked = baseViewModel.IsLocked;
         }
-        
-        public void SetClickThrough(bool enable)
-        {
-            this.ToggleClickThrough(enable);
-            baseViewModel.IsCurrentlyClickThrough = enable;
-        }
-        
+
         protected override void OnClosing(CancelEventArgs e)
         {
             if (timer != null)
@@ -183,7 +134,6 @@ namespace EQTool.UI
             LocationChanged -= Window_LocationChanged;
             base.OnClosing(e);
         }
-        
         protected void openmobinfo(object sender, RoutedEventArgs e)
         {
             (App.Current as App).OpenMobInfoWindow();
@@ -198,7 +148,6 @@ namespace EQTool.UI
         {
             (App.Current as App).OpenSettingsWindow();
         }
-        
         protected void openmap(object sender, RoutedEventArgs e)
         {
             (App.Current as App).OpenMapWindow();
@@ -222,26 +171,6 @@ namespace EQTool.UI
         protected void MaximizeWindow(object sender, RoutedEventArgs e)
         {
             WindowState = WindowState == System.Windows.WindowState.Maximized ? System.Windows.WindowState.Normal : System.Windows.WindowState.Maximized;
-        }
-        
-        protected void HoverZone_MouseEnter(object sender, MouseEventArgs e)
-        {
-            appDispatcher.DebounceToUI(ref hoverDebounceTs, 250, () => baseViewModel.IsMouseOverTitleArea = true);
-        }
-
-        protected void HoverZone_MouseLeave(object sender, MouseEventArgs e)
-        {
-            appDispatcher.DebounceToUI(ref hoverDebounceTs, 250, () => baseViewModel.IsMouseOverTitleArea = false);
-        }
-        
-        public void UpdateShowInTaskbar()
-        {
-            ShowInTaskbar = !(windowState.IsLocked && windowState.AlwaysOnTop);
-            if (!ShowInTaskbar && WindowState == System.Windows.WindowState.Minimized)
-            {
-                // If our window got stuck somehow and it's not showing on the taskbar, re-adjust
-                AdjustWindow();
-            }
         }
     }
 }

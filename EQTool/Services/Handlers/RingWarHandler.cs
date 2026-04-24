@@ -21,7 +21,7 @@ namespace EQTool.Services.Handlers
 
         private void LogEvents_RingWarEvent(object sender, RingWarEvent e)
         {
-            spells.AllSpells.TryGetValue("Disease Cloud", out var timerVisuals);
+            var spell = spells.AllSpells.FirstOrDefault(a => a.name == "Disease Cloud");
             var startingtime = 0;
             for (var round = 1; round <= 3; round++)
             {
@@ -31,10 +31,10 @@ namespace EQTool.Services.Handlers
                     spellWindowViewModel.TryAdd(new TimerViewModel
                     {
                         PercentLeft = 100,
-                        Target = $" Wave {round} Ring War",
-                        Id = $"Round {i}",
-                        Rect = timerVisuals.Rect,
-                        Icon = timerVisuals.SpellIcon,
+                        GroupName = $" Wave {round} Ring War",
+                        Name = $"Round {i}",
+                        Rect = spell.Rect,
+                        Icon = spell.SpellIcon,
                         TotalDuration = TimeSpan.FromSeconds(startingtime),
                         TotalRemainingDuration = TimeSpan.FromSeconds(startingtime),
                         UpdatedDateTime = DateTime.Now,
@@ -50,16 +50,17 @@ namespace EQTool.Services.Handlers
                 spellWindowViewModel.TryAdd(new TimerViewModel
                 {
                     PercentLeft = 100,
-                    Target = $" Wave {round} Ring War",
-                    Id = $"-- Break --",
-                    Rect = timerVisuals.Rect,
-                    Icon = timerVisuals.SpellIcon,
+                    GroupName = $" Wave {round} Ring War",
+                    Name = $"-- Break --",
+                    Rect = spell.Rect,
+                    Icon = spell.SpellIcon,
                     TotalDuration = TimeSpan.FromSeconds(startingtime),
                     TotalRemainingDuration = TimeSpan.FromSeconds(startingtime),
                     UpdatedDateTime = DateTime.Now,
                     ProgressBarColor = Brushes.MediumAquamarine
                 });
             }
+
         }
     }
 }

@@ -1,9 +1,5 @@
-﻿using System.Diagnostics;
-using EQTool.Services;
-
-namespace EQTool.ViewModels.SpellWindow
+﻿namespace EQTool.ViewModels.SpellWindow
 {
-    [DebuggerDisplay("Group = '{DisplayGroup}' Sorting = '{GroupSorting}' | Id = '{Id}', Target = '{Target}'")]
     public class RollViewModel : TimerViewModel
     {
         private int _Roll = 0;
@@ -37,14 +33,14 @@ namespace EQTool.ViewModels.SpellWindow
             set
             {
                 _MaxRoll = value;
-                Target = $" Random -- {_MaxRoll}";
+                GroupName = $" Random -- {_MaxRoll}";
                 OnPropertyChanged();
             }
         }
 
         public string RollText => $" (#{RollOrder}) Roll --> {Roll}";
 
-        public override string GroupSorting => SortingPrefixes.Topmost + DisplayGroup;
+        public override string Sorting => " y";
 
         public override SpellViewModelType SpellViewModelType => SpellViewModelType.Roll;
     }

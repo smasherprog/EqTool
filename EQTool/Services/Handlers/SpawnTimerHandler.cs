@@ -60,14 +60,14 @@ namespace EQTool.Services.Handlers
                 //        EndTTS = Model.EndTTS,
 
                 var spellname = "Feign Death";
-                spells.AllSpells.TryGetValue(spellname, out var timerVisuals);
+                var spell = spells.AllSpells.FirstOrDefault(a => a.name == spellname);
                 spellWindowViewModel.TryAdd(new TimerViewModel
                 {
                     PercentLeft = 100,
-                    Target = CustomTimer.CustomerTime,
-                    Id = $"Exp Timer [{Model.GetNextTimerCounter()}]",
-                    Rect = timerVisuals.Rect,
-                    Icon = timerVisuals.SpellIcon,
+                    GroupName = CustomTimer.CustomerTime,
+                    Name = $"Exp Timer [{Model.GetNextTimerCounter()}]",
+                    Rect = spell.Rect,
+                    Icon = spell.SpellIcon,
                     TotalDuration = TimeSpan.FromSeconds(Model.DurationSeconds),
                     TotalRemainingDuration = TimeSpan.FromSeconds(Model.DurationSeconds),
                     UpdatedDateTime = DateTime.Now,
@@ -106,14 +106,15 @@ namespace EQTool.Services.Handlers
                     //        EndText = Model.EndText,
                     //        EndTTS = Model.EndTTS,
 
-                    spells.AllSpells.TryGetValue("Feign Death", out var timerVisuals);
+                    var spellname = "Feign Death";
+                    var spell = spells.AllSpells.FirstOrDefault(a => a.name == spellname);
                     spellWindowViewModel.TryAdd(new TimerViewModel
                     {
                         PercentLeft = 100,
-                        Target = CustomTimer.CustomerTime,
-                        Id = $"Slain Timer: [{slainEvent.Victim}] [{Model.GetNextTimerCounter()}]",
-                        Rect = timerVisuals.Rect,
-                        Icon = timerVisuals.SpellIcon,
+                        GroupName = CustomTimer.CustomerTime,
+                        Name = $"Slain Timer: [{slainEvent.Victim}] [{Model.GetNextTimerCounter()}]",
+                        Rect = spell.Rect,
+                        Icon = spell.SpellIcon,
                         TotalDuration = TimeSpan.FromSeconds(Model.DurationSeconds),
                         TotalRemainingDuration = TimeSpan.FromSeconds(Model.DurationSeconds),
                         UpdatedDateTime = DateTime.Now,
@@ -153,14 +154,14 @@ namespace EQTool.Services.Handlers
                     //        EndTTS = Model.EndTTS,
 
                     var spellname = "Feign Death";
-                    spells.AllSpells.TryGetValue(spellname, out var timerVisuals);
+                    var spell = spells.AllSpells.FirstOrDefault(a => a.name == spellname);
                     spellWindowViewModel.TryAdd(new TimerViewModel
                     {
                         PercentLeft = 100,
-                        Target = CustomTimer.CustomerTime,
-                        Id = $"Faction Timer: [{factionEvent.Faction}] [{Model.GetNextTimerCounter()}]",
-                        Rect = timerVisuals.Rect,
-                        Icon = timerVisuals.SpellIcon,
+                        GroupName = CustomTimer.CustomerTime,
+                        Name = $"Faction Timer: [{factionEvent.Faction}] [{Model.GetNextTimerCounter()}]",
+                        Rect = spell.Rect,
+                        Icon = spell.SpellIcon,
                         TotalDuration = TimeSpan.FromSeconds(Model.DurationSeconds),
                         TotalRemainingDuration = TimeSpan.FromSeconds(Model.DurationSeconds),
                         UpdatedDateTime = DateTime.Now,

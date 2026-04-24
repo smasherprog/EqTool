@@ -268,20 +268,22 @@ namespace EQTool.UI.SettingsComponents
                 
                 new CastTest { Spell = spells.AllSpells["Stonestance Discipline"], CasterName = "Pigy", TargetName = "Pigy"},
                 new CastTest { Spell = spells.AllSpells["Visions of Grandeur"], CasterName = EQSpells.SpaceYou, TargetName = "Pigy" },
+                new CastTest { Spell = spells.AllSpells["Heroic Bond"], TargetName =  "Pigy"},
                 new CastTest { Spell = spells.AllSpells["Defensive Discipline"], CasterName = "Huntor", TargetName = "Huntor"},
-
+                new CastTest { Spell = spells.AllSpells["Heroic Bond"], TargetName =  "Huntor"}, 
+                new CastTest { Spell = spells.AllSpells["Heroic Bond"], TargetName =  "Vasanle"},
+                new CastTest { Spell = spells.AllSpells["Heroic Bond"], TargetName =  "babbany"},
                 new CastTest { Spell = spells.AllSpells["Heroic Bond"], TargetName = "Aasgard"},
                 new CastTest { Spell = spells.AllSpells["Chloroplast"], TargetName = "Aasgard"},
                 new CastTest { Spell = spells.AllSpells["Shield of Words"], TargetName = "Aasgard"},
                 new CastTest { Spell = spells.AllSpells["Visions of Grandeur"], CasterName = EQSpells.SpaceYou, TargetName = "Aasgard" },
                 new CastTest { Spell = spells.AllSpells["Defensive Discipline"], CasterName = "Aasgard", TargetName = "Aasgard"},
-
+                new CastTest { Spell = spells.AllSpells["Heroic Bond"], TargetName =  "Aasgard"}, 
                 new CastTest { Spell = spells.AllSpells["Theft of Thought"], CasterName = EQSpells.SpaceYou, TargetName = " a geonid shaman" },
                 new CastTest { Spell = spells.AllSpells["Mana Sieve"], CasterName = EQSpells.SpaceYou, TargetName = " a geonid shaman"},
                 new CastTest { Spell = spells.AllSpells["Mana Sieve"], CasterName = "SomeOtherEnchanter", TargetName = " a geonid shaman"},
                 new CastTest { Spell = spells.AllSpells["Harvest"], TargetName = "DrWizardGuy"},
                 new CastTest { Spell = spells.AllSpells["Quivering Veil of Xarn"], CasterName = "Necromanguy", TargetName = "Necromanguy"},
-
                 new CastTest { Spell = spells.AllSpells["LowerElement"], TargetName = "Tunare"},
                 new CastTest { Spell = spells.AllSpells["LowerElement"], TargetName = "Tunare"},
                 new CastTest { Spell = spells.AllSpells["LowerElement"], TargetName = "Tunare"},
@@ -289,17 +291,14 @@ namespace EQTool.UI.SettingsComponents
                 new CastTest { Spell = spells.AllSpells["LowerElement"], TargetName = "Tunare"},
                 new CastTest { Spell = spells.AllSpells["LowerElement"], TargetName = "Tunare"},
                 new CastTest { Spell = spells.AllSpells["Malo"], TargetName = "Tunare"},
-                new CastTest { Spell = spells.AllSpells["Turgur's Insects"], TargetName = "Tunare"},
-
+                new CastTest { Spell = spells.AllSpells["Turgur's Insects"], TargetName = "Tunare"},  
                 new CastTest { Spell = spells.AllSpells["Concussion"], TargetName = "Tunare"},
                 new CastTest { Spell = spells.AllSpells["Concussion"], TargetName = "Tunare"},
-
                 new CastTest { Spell = spells.AllSpells["Flame Lick"], TargetName = "Tunare"},
                 new CastTest { Spell = spells.AllSpells["Flame Lick"], TargetName = "Tunare"},
-
+                new CastTest { Spell = spells.AllSpells["Flame Lick"], TargetName = "Tunare"},
                 new CastTest { Spell = spells.AllSpells["Jolt"], TargetName = "Tunare"},
                 new CastTest { Spell = spells.AllSpells["Jolt"], TargetName = "Tunare"},
-
                 new CastTest { Spell = spells.AllSpells["Cinder Jolt"], TargetName = "Tunare"},
                 new CastTest { Spell = spells.AllSpells["Cinder Jolt"], TargetName = "Tunare"},
             };
@@ -744,15 +743,8 @@ namespace EQTool.UI.SettingsComponents
         private void SaveAlwaysOntopCheckBoxSettings(object sender, RoutedEventArgs e)
         {
             SaveConfig();
-            ((App)System.Windows.Application.Current).ApplyAlwaysOnTop();
-            ((App)System.Windows.Application.Current).ApplyClickThrough(settings.IsClickThroughMode);
-        }
-
-        private void SaveClickThroughCheckBoxSettings(object sender, RoutedEventArgs e)
-        {
-            SaveConfig();
-            ((App)System.Windows.Application.Current).ApplyClickThrough(settings.IsClickThroughMode);
-        }
+            ((App)System.Windows.Application.Current).ApplyAlwaysOnTop(); 
+        } 
 
         private void testenrage(object sender, RoutedEventArgs e)
         {

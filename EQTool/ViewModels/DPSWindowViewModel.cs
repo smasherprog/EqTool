@@ -11,7 +11,7 @@ using System.Windows.Data;
 
 namespace EQTool.ViewModels
 {
-    public class DPSWindowViewModel : BaseWindowViewModel, INotifyPropertyChanged
+    public class DPSWindowViewModel : INotifyPropertyChanged
     {
         private readonly IAppDispatcher appDispatcher;
         public DPSWindowViewModel(IAppDispatcher appDispatcher, ActivePlayer activePlayer, SessionPlayerDamage sessionPlayerDamage)
@@ -207,6 +207,13 @@ namespace EQTool.ViewModels
                     it.Level = entity.LevelGuess;
                 }
             });
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void OnPropertyChanged([CallerMemberName] string name = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
     }
 }

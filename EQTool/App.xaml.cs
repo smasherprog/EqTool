@@ -258,8 +258,7 @@ namespace EQTool
             SettingsMenuItem = new System.Windows.Forms.MenuItem("Settings", ToggleSettingsWindow);
             SpellsMenuItem = new System.Windows.Forms.MenuItem("Triggers", ToggleSpellsWindow);
             MapMenuItem = new System.Windows.Forms.MenuItem("Map", ToggleMapWindow);
-            DpsMeterMenuItem = new System.Windows.Forms.MenuItem("Dps", ToggleDPSWindow);
-            ClickThroughItem = new System.Windows.Forms.MenuItem("Click-Through", ToggleClickThrough);
+            DpsMeterMenuItem = new System.Windows.Forms.MenuItem("Dps", ToggleDPSWindow); 
             OverlayMenuItem = new System.Windows.Forms.MenuItem("Overlay", ToggleOverlayWindow);
             MobInfoMenuItem = new System.Windows.Forms.MenuItem("Mob Info", ToggleMobInfoWindow);
             var gitHubMenuItem = new System.Windows.Forms.MenuItem("Suggestions", Suggestions);
@@ -295,7 +294,6 @@ namespace EQTool
                     new System.Windows.Forms.MenuItem("Exit", OnExit)
                 }),
             };
-            SystemTrayIcon.MouseClick += OnSystemTrayMouseClick;
 
             if (EQToolSettings.LoginMiddleMand)
             {
@@ -389,9 +387,6 @@ namespace EQTool
                 }
             }
 
-            ClickThroughItem.Checked = EQToolSettings.IsClickThroughMode;
-            ApplyClickThrough(EQToolSettings.IsClickThroughMode);
-
             _ = container.Resolve<SignalrPlayerHub>();
             _ = container.Resolve<PlayerTrackerService>();
             _ = container.Resolve<ZoneActivityTrackingService>();
@@ -408,9 +403,9 @@ namespace EQTool
         private void UpdateTrayIcon()
         {
 #if BETA || DEBUG
-            SystemTrayIcon.Icon = EQToolSettings.IsClickThroughMode ? EQTool.Properties.Resources.sickpic_t : EQTool.Properties.Resources.sickpic;
+            SystemTrayIcon.Icon = EQTool.Properties.Resources.sickpic;
 #else
-            SystemTrayIcon.Icon = EQToolSettings.IsClickThroughMode ? EQTool.Properties.Resources.pig_t : EQTool.Properties.Resources.pig;
+            SystemTrayIcon.Icon = EQTool.Properties.Resources.pig;
 #endif
         }
 
@@ -671,49 +666,6 @@ namespace EQTool
                     w3.UpdateShowInTaskbar();
                 }
             }
-        }
-
-        private void OnSystemTrayMouseClick(object sender, MouseEventArgs e)
-        {
-            if (e.Button != MouseButtons.Left)
-            {
-                return;
-            }
-
-            ApplyClickThrough(!EQToolSettings.IsClickThroughMode);
-            ClickThroughItem.Checked = EQToolSettings.IsClickThroughMode;
-        }
-
-        private void ToggleClickThrough(object sender, EventArgs e)
-        {
-            ApplyClickThrough(!EQToolSettings.IsClickThroughMode);
-            ClickThroughItem.Checked = EQToolSettings.IsClickThroughMode;
-        }
-
-        public void ApplyClickThrough(bool isClickThrough)
-        {
-            EQToolSettings.IsClickThroughMode = isClickThrough;
-            UpdateTrayIcon();
-
-            foreach (var item in WindowList)
-            {
-                if (item is DPSMeter w)
-                {
-                    w.SetClickThrough(isClickThrough && EQToolSettings.DpsWindowState.ClickThroughAllowed);
-                }
-                else if (item is MappingWindow w1)
-                {
-                    w1.SetClickThrough(isClickThrough && EQToolSettings.MapWindowState.ClickThroughAllowed);
-                }
-                else if (item is MobInfo w2)
-                {
-                    w2.SetClickThrough(isClickThrough && EQToolSettings.MobWindowState.ClickThroughAllowed);
-                }
-                else if (item is SpellWindow w3)
-                {
-                    w3.SetClickThrough(isClickThrough && EQToolSettings.SpellWindowState.ClickThroughAllowed);
-                }
-            }
-        }
+        } 
     }
 }

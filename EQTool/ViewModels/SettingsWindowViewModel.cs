@@ -6,11 +6,10 @@ using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
-using EQTool.Services;
-using System.IO;
 
 namespace EQTool.ViewModels
 {
@@ -39,7 +38,7 @@ namespace EQTool.ViewModels
         }
     }
 
-    public class SettingsWindowViewModel : BaseWindowViewModel, INotifyPropertyChanged
+    public class SettingsWindowViewModel : INotifyPropertyChanged
     {
         private readonly EQToolSettings toolSettings;
 
@@ -134,19 +133,6 @@ namespace EQTool.ViewModels
             set
             {
                 toolSettings.DpsWindowState.AlwaysOnTop = value;
-                if (!value)
-                    DpsClickThroughAllowed = false;
-
-                OnPropertyChanged();
-            }
-        }
-
-        public bool DpsClickThroughAllowed
-        {
-            get => toolSettings.DpsWindowState.ClickThroughAllowed;
-            set
-            {
-                toolSettings.DpsWindowState.ClickThroughAllowed = value;
                 OnPropertyChanged();
             }
         }
@@ -168,19 +154,6 @@ namespace EQTool.ViewModels
             set
             {
                 toolSettings.MapWindowState.AlwaysOnTop = value;
-                if (!value)
-                    MapClickThroughAllowed = false;
-
-                OnPropertyChanged();
-            }
-        }
-
-        public bool MapClickThroughAllowed
-        {
-            get => toolSettings.MapWindowState.ClickThroughAllowed;
-            set
-            {
-                toolSettings.MapWindowState.ClickThroughAllowed = value;
                 OnPropertyChanged();
             }
         }
@@ -202,19 +175,6 @@ namespace EQTool.ViewModels
             set
             {
                 toolSettings.MobWindowState.AlwaysOnTop = value;
-                if (!value)
-                    MobClickThroughAllowed = false;
-
-                OnPropertyChanged();
-            }
-        }
-
-        public bool MobClickThroughAllowed
-        {
-            get => toolSettings.MobWindowState.ClickThroughAllowed;
-            set
-            {
-                toolSettings.MobWindowState.ClickThroughAllowed = value;
                 OnPropertyChanged();
             }
         }
@@ -225,19 +185,6 @@ namespace EQTool.ViewModels
             set
             {
                 toolSettings.SpellWindowState.AlwaysOnTop = value;
-                if (!value)
-                    SpellClickThroughAllowed = false;
-
-                OnPropertyChanged();
-            }
-        }
-
-        public bool SpellClickThroughAllowed
-        {
-            get => toolSettings.SpellWindowState.ClickThroughAllowed;
-            set
-            {
-                toolSettings.SpellWindowState.ClickThroughAllowed = value;
                 OnPropertyChanged();
             }
         }
@@ -263,48 +210,6 @@ namespace EQTool.ViewModels
             }
         }
 
-        public SpellGroupingType PlayerSpellGroupingType
-        {
-            get => toolSettings.PlayerSpellGroupingType;
-            set
-            {
-                toolSettings.PlayerSpellGroupingType = value;
-                OnPropertyChanged();
-            }
-        }
-        
-        public SpellGroupingType NpcSpellGroupingType
-        {
-            get => toolSettings.NpcSpellGroupingType;
-            set
-            {
-                toolSettings.NpcSpellGroupingType = value;
-                OnPropertyChanged();
-            }
-        }
-        
-        public bool ShowClassFilters => toolSettings.SpellsFilter == SpellsFilterType.ByClass;
-        public SpellsFilterType SpellsFilter
-        {
-            get => toolSettings.SpellsFilter;
-            set
-            {
-                toolSettings.SpellsFilter = value;
-                OnPropertyChanged();
-                OnPropertyChanged(nameof(ShowClassFilters));
-            }
-        }
-
-        public bool SpellsFilterAlwaysShowCastOnYou
-        {
-            get => toolSettings.SpellsFilterAlwaysShowCastOnYou;
-            set
-            {
-                toolSettings.SpellsFilterAlwaysShowCastOnYou = value;
-                OnPropertyChanged();
-            }
-        }
-
         private PetViewModel _PetViewModel;
         public PetViewModel PetViewModel
         {
@@ -314,6 +219,7 @@ namespace EQTool.ViewModels
                 _PetViewModel = value;
                 OnPropertyChanged();
             }
+
         }
 
         private ActivePlayer _ActivePlayer;
@@ -351,6 +257,8 @@ namespace EQTool.ViewModels
                 OnPropertyChanged();
             }
         }
+
+        public string CurrentWorkingDirectory { get; } = System.IO.Directory.GetCurrentDirectory();
 
         private string _GroupLeaderName = "None";
         public string GroupLeaderName
@@ -398,9 +306,9 @@ namespace EQTool.ViewModels
         public bool HasCharName => !string.IsNullOrWhiteSpace(ActivePlayer?.Player?.Name);
         public Visibility HasNoCharName => string.IsNullOrWhiteSpace(ActivePlayer?.Player?.Name) ? Visibility.Visible : Visibility.Collapsed;
         public ObservableCollection<string> InstalledVoices { get; set; } = new ObservableCollection<string>();
-        public ObservableCollection<string> UIFiles { get; set; } = new ObservableCollection<string>();
         public ObservableCollection<BoolStringClass> SelectedPlayerClasses { get; set; } = new ObservableCollection<BoolStringClass>();
         public List<MapLocationSharing> LocationShareOptions => Enum.GetValues(typeof(MapLocationSharing)).Cast<MapLocationSharing>().ToList();
+        public List<TimerRecast> TimerRecastOptions => Enum.GetValues(typeof(TimerRecast)).Cast<TimerRecast>().ToList();
         public List<PlayerClasses> PlayerClasses => Enum.GetValues(typeof(PlayerClasses)).Cast<PlayerClasses>().Where(a => a != EQToolShared.Enums.PlayerClasses.Other).ToList();
 
         public bool EqRunning
@@ -434,7 +342,8 @@ namespace EQTool.ViewModels
         public ObservableCollection<string> Zones { get; set; } = new ObservableCollection<string>();
         public ObservableCollection<int> FontSizes { get; set; } = new ObservableCollection<int>();
         public ObservableCollection<int> Levels { get; set; } = new ObservableCollection<int>();
-        public ObservableCollection<int?> TrackSkills { get; set; } = new ObservableCollection<int?>();
+        public ObservableCollection<int?> TrackSkills { get; set; } = new ObservableCollection<int?>(); 
+        public ObservableCollection<string> UIFiles { get; set; } = new ObservableCollection<string>();
 
         public void Update()
         {
@@ -460,6 +369,12 @@ namespace EQTool.ViewModels
                     UIFiles.Add(Path.GetFileNameWithoutExtension(file));
                 }
             });
+        }
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected void OnPropertyChanged([CallerMemberName] string name = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
     }
 }

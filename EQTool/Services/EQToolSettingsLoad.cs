@@ -66,8 +66,7 @@ namespace EQTool.Services
             var ret = new EQToolSettings
             {
                 DefaultEqDirectory = match?.EqBaseLocation,
-                EqLogDirectory = match?.EQlogLocation,
-                SpellsFilter = SpellsFilterType.ByClass,
+                EqLogDirectory = match?.EQlogLocation, 
                 Players = new System.Collections.Generic.List<PlayerInfo>(),
                 DpsWindowState = new WindowState
                 {

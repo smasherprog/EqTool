@@ -152,7 +152,6 @@ namespace EQTool.Services.Handlers
         {
             if (e.Victim == EQSpells.You)
             {
-                spellWindowViewModel.ClearYouSpellsExceptPersistentCooldowns();
                 return;
             }
 
@@ -189,41 +188,41 @@ namespace EQTool.Services.Handlers
                 return;
             }
             var zonetimer = ZoneSpawnTimes.GetSpawnTime(e.Victim, activePlayer?.Player?.Zone);
-            spells.AllSpells.TryGetValue("Disease Cloud", out var timerVisuals);
+            var spell = spells.AllSpells.FirstOrDefault(a => a.name == "Disease Cloud");
             var add = new TimerViewModel
             {
-                Id = "--Dead-- " + e.Victim,
+                Name = "--Dead-- " + e.Victim,
                 TotalDuration = TimeSpan.FromSeconds((int)zonetimer.TotalSeconds),
                 TotalRemainingDuration = TimeSpan.FromSeconds((int)zonetimer.TotalSeconds),
-                Icon = timerVisuals.SpellIcon,
-                Rect = timerVisuals.Rect,
+                Icon = spell.SpellIcon,
+                Rect = spell.Rect,
                 PercentLeft = 100,
-                Target = CustomTimer.CustomerTime,
+                GroupName = CustomTimer.CustomerTime,
                 ProgressBarColor = Brushes.LightSalmon
             };
 
             appDispatcher.DispatchUI(() =>
             {
-                var targetName = e.Victim;
+                var grpname = e.Victim;
                 if (isnpc)
                 {
-                    targetName = " " + targetName;
+                    grpname = " " + grpname;
                 }
-                var targets = spellWindowViewModel.SpellList.Where(a => string.Equals(a.Target, targetName, StringComparison.OrdinalIgnoreCase)).ToList();
+                var grp = spellWindowViewModel.SpellList.Where(a => string.Equals(a.GroupName, grpname, StringComparison.OrdinalIgnoreCase)).ToList();
 
                 if (activePlayer?.Player?.TimerRecastSetting == TimerRecast.RestartCurrentTimer)
                 {
-                    foreach (var item in targets)
+                    foreach (var item in grp)
                     {
                         _ = spellWindowViewModel.SpellList.Remove(item);
                     }
                 }
 
-                var exisitngdeathentry = spellWindowViewModel.SpellList.FirstOrDefault(a => string.Equals(a.Id, add.Id, StringComparison.OrdinalIgnoreCase) && CustomTimer.CustomerTime == a.Target);
+                var exisitngdeathentry = spellWindowViewModel.SpellList.FirstOrDefault(a => string.Equals(a.Name, add.Name, StringComparison.OrdinalIgnoreCase) && CustomTimer.CustomerTime == a.GroupName);
                 if (exisitngdeathentry != null)
                 {
                     deathcounter = ++deathcounter > 999 ? 1 : deathcounter;
-                    add.Id += "_" + deathcounter;
+                    add.Name += "_" + deathcounter;
                 }
 
                 spellWindowViewModel.TryAdd(add);
@@ -231,13 +230,13 @@ namespace EQTool.Services.Handlers
                 {
                     add = new TimerViewModel
                     {
-                        Id = "--Sirran the Lunatic-- ",
+                        Name = "--Sirran the Lunatic-- ",
                         TotalDuration = TimeSpan.FromMinutes(15),
                         TotalRemainingDuration = TimeSpan.FromMinutes(15),
-                        Icon = timerVisuals.SpellIcon,
-                        Rect = timerVisuals.Rect,
+                        Icon = spell.SpellIcon,
+                        Rect = spell.Rect,
                         PercentLeft = 100,
-                        Target = CustomTimer.CustomerTime,
+                        GroupName = CustomTimer.CustomerTime,
                         ProgressBarColor = Brushes.LightSkyBlue
                     };
                     spellWindowViewModel.TryAdd(add, false);

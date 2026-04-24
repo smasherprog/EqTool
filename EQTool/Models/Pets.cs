@@ -98,7 +98,7 @@ namespace EQTool.Models
         public Pets(EQSpells eqSpells)
         {
             this.eqSpells = eqSpells;
-            if (eqSpells.AllSpells?.Any() == true)
+            if (eqSpells.AllSpells?.Count > 0)
             {
                 LoadPetSpells();
             }

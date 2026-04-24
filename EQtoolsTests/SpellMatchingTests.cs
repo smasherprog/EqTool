@@ -35,7 +35,7 @@ namespace EQtoolsTests
         {
             Assert.IsNotNull(spells);
             Assert.IsNotNull(spells.AllSpells);
-            Assert.IsTrue(spells.AllSpells.Any());
+            Assert.IsTrue(spells.AllSpells.Count > 0);
         }
 
         [TestMethod]

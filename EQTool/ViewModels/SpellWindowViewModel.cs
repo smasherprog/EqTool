@@ -1,31 +1,22 @@
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Collections.Specialized;
-using System.ComponentModel;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using System.Windows;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Media;
 using EQTool.Models;
-using EQTool.Services;
+using EQTool.Services; 
 using EQTool.ViewModels.MobInfoComponents;
 using EQTool.ViewModels.SpellWindow;
 using EQToolShared;
-using EQToolShared.APIModels.PlayerControllerModels;
-using EQToolShared.Enums;
-using EQToolShared.Extensions;
+using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
+using System.ComponentModel;
+using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Windows;
+using System.Windows.Data;
+using System.Windows.Media;
 
 namespace EQTool.ViewModels
 {
-    public class SpellWindowViewModel : BaseWindowViewModel, INotifyPropertyChanged
+    public class SpellWindowViewModel : INotifyPropertyChanged
     {
-        private const int minimumTargetsForRaidMode = 10;
-        
-        private readonly SpellGroupingEngine engine;
         private readonly ActivePlayer activePlayer;
         private readonly IAppDispatcher appDispatcher;
         private readonly EQToolSettings settings;
@@ -33,20 +24,9 @@ namespace EQTool.ViewModels
         private readonly PigParseApi pigParseApi;
         private readonly BoatScheduleService boatScheduleService;
         private readonly PetViewModel playerPet;
-        
-        internal int groupRevaluationDebounceTime { get; set; } = 1000;  // Debounce delay for re-evaluating the ByTarget / BySpell Grouping of the list. It's internal so that tests can change it for speed.
 
-        public SpellWindowViewModel(
-            SpellGroupingEngine engine,
-            ActivePlayer activePlayer,
-            IAppDispatcher appDispatcher,
-            EQToolSettings settings,
-            EQSpells spells,
-            BoatScheduleService boatScheduleService,
-            PigParseApi pigParseApi,
-            PetViewModel playerPet)
+        public SpellWindowViewModel(ActivePlayer activePlayer, IAppDispatcher appDispatcher, EQToolSettings settings, EQSpells spells, BoatScheduleService boatScheduleService, PigParseApi pigParseApi, PetViewModel playerPet)
         {
-            this.engine = engine;
             this.activePlayer = activePlayer;
             this.pigParseApi = pigParseApi;
             this.boatScheduleService = boatScheduleService;
@@ -55,16 +35,14 @@ namespace EQTool.ViewModels
             this.playerPet = playerPet;
             this.spells = spells;
             Title = "Triggers v" + App.Version;
-            settings.PropertyChanged += Base_PropertyChanged;
-            PropertyChanged += Base_PropertyChanged;
         }
-        
+
         private ObservableCollection<PersistentViewModel> _SpellList;
         public ObservableCollection<PersistentViewModel> SpellList
         {
             get
             {
-                CreateTriggerList();
+                CreateSpellList();
                 return _SpellList;
             }
             set
@@ -73,18 +51,17 @@ namespace EQTool.ViewModels
                 OnPropertyChanged();
             }
         }
-        
-        private void CreateTriggerList()
+
+        private void CreateSpellList()
         {
             if (_SpellList == null)
             {
                 _SpellList = new ObservableCollection<PersistentViewModel>();
-                _SpellList.CollectionChanged += SpellList_CollectionChanged;
                 var view = (ListCollectionView)CollectionViewSource.GetDefaultView(_SpellList);
-                view.GroupDescriptions.Add(new PropertyGroupDescription(nameof(TimerViewModel.DisplayGroup)));
-                view.LiveGroupingProperties.Add(nameof(TimerViewModel.DisplayGroup));
+                view.GroupDescriptions.Add(new PropertyGroupDescription(nameof(TimerViewModel.GroupName)));
+                view.LiveGroupingProperties.Add(nameof(TimerViewModel.GroupName));
                 view.IsLiveGrouping = true;
-                view.SortDescriptions.Add(new SortDescription(nameof(TimerViewModel.GroupSorting), ListSortDirection.Ascending));
+                view.SortDescriptions.Add(new SortDescription(nameof(TimerViewModel.Sorting), ListSortDirection.Ascending));
                 view.SortDescriptions.Add(new SortDescription(nameof(RollViewModel.Roll), ListSortDirection.Descending));
                 view.SortDescriptions.Add(new SortDescription(nameof(TimerViewModel.TotalRemainingDuration), ListSortDirection.Ascending));
                 view.IsLiveSorting = true;
@@ -110,7 +87,7 @@ namespace EQTool.ViewModels
                     }
                     _SpellList.Add(new BoatViewModel
                     {
-                        Id = item.PrettyName,
+                        Name = item.PrettyName,
                         Boat = item,
                         TotalDuration = TimeSpan.FromSeconds(item.TripTimeInSeconds),
                         ProgressBarColor = boatcolor,
@@ -118,7 +95,7 @@ namespace EQTool.ViewModels
                 }
             }
         }
-        
+
         private string _Title = null;
         public string Title
         {
@@ -134,28 +111,16 @@ namespace EQTool.ViewModels
         {
             appDispatcher.DispatchUI(() =>
             {
-                var itemsToRemove = SpellList.Where(s => s is SpellViewModel vm && vm.CastOnYou()).ToList();
-                foreach (var item in itemsToRemove)
+                var itemstoremove = SpellList.Where(a => a.GroupName == EQSpells.SpaceYou).ToList();
+                foreach (var item in itemstoremove)
+                {
                     _ = SpellList.Remove(item);
+                }
             });
         }
-        
-        public void ClearYouSpellsExceptPersistentCooldowns()
-        {
-            appDispatcher.DispatchUI(() =>
-            {
-                var nonDisciplinCooldowns = SpellList
-                    .Where(s => s is SpellViewModel vm
-                        && vm.CastOnYou()
-                        && !(vm.BenefitDetriment == SpellBenefitDetriment.Cooldown && s.Id.Contains("Discipline", StringComparison.OrdinalIgnoreCase)))
-                    .ToList();
-                
-                foreach (var item in nonDisciplinCooldowns)
-                    _ = SpellList.Remove(item);
-            });
-        }
-        
+
         private LinearGradientBrush _WindowFrameBrush = null;
+
         public LinearGradientBrush WindowFrameBrush
         {
             get
@@ -164,12 +129,12 @@ namespace EQTool.ViewModels
                 {
                     _WindowFrameBrush = new LinearGradientBrush
                     {
-                        StartPoint = new Point(0, 0.5),
-                        EndPoint = new Point(1, 0.5),
+                        StartPoint = new System.Windows.Point(0, 0.5),
+                        EndPoint = new System.Windows.Point(1, 0.5),
                         GradientStops = new GradientStopCollection()
                     {
-                            new GradientStop(Colors.CadetBlue, .4),
-                            new GradientStop(Colors.Gray, 1)
+                            new GradientStop(System.Windows.Media.Colors.CadetBlue, .4),
+                            new GradientStop(System.Windows.Media.Colors.Gray, 1)
                     }
                     };
                 }
@@ -199,12 +164,12 @@ namespace EQTool.ViewModels
                     RaidModeButtonToolTip = "Disable Raid Mode";
                     WindowFrameBrush = new LinearGradientBrush
                     {
-                        StartPoint = new Point(0, 0.5),
-                        EndPoint = new Point(1, 0.5),
+                        StartPoint = new System.Windows.Point(0, 0.5),
+                        EndPoint = new System.Windows.Point(1, 0.5),
                         GradientStops = new GradientStopCollection()
                         {
-                            new GradientStop(Colors.OrangeRed, .4),
-                            new GradientStop(Colors.Gray, 1)
+                                new GradientStop(System.Windows.Media.Colors.OrangeRed, .4),
+                                new GradientStop(System.Windows.Media.Colors.Gray, 1)
                         }
                     };
                 }
@@ -213,29 +178,28 @@ namespace EQTool.ViewModels
                     RaidModeButtonToolTip = "Enable Raid Mode";
                     WindowFrameBrush = new LinearGradientBrush
                     {
-                        StartPoint = new Point(0, 0.5),
-                        EndPoint = new Point(1, 0.5),
+                        StartPoint = new System.Windows.Point(0, 0.5),
+                        EndPoint = new System.Windows.Point(1, 0.5),
                         GradientStops = new GradientStopCollection()
                         {
-                            new GradientStop(Colors.CadetBlue, .4),
-                            new GradientStop(Colors.Gray, 1)
+                                new GradientStop(System.Windows.Media.Colors.CadetBlue, .4),
+                                new GradientStop(System.Windows.Media.Colors.Gray, 1)
                         }
                     };
                 }
-                QueueFullSpellListReevaluation();
                 OnPropertyChanged(nameof(RaidModeButtonToolTip));
                 OnPropertyChanged();
             }
         }
 
-        private int _SpellTargetCount = 0;
-        private int SpellTargetCount
+        private int _SpellGroupCount = 0;
+        private int SpellGroupCount
         {
-            get => _SpellTargetCount;
+            get => _SpellGroupCount;
             set
             {
-                _SpellTargetCount = value;
-                if (_SpellTargetCount > minimumTargetsForRaidMode)
+                _SpellGroupCount = value;
+                if (_SpellGroupCount > 10)
                 {
                     RaidModeToggleButtonVisibility = Visibility.Visible;
                 }
@@ -249,9 +213,10 @@ namespace EQTool.ViewModels
         public string RaidModeButtonToolTip { get; set; } = "Disable Raid Mode";
 
         private Visibility _RaidModeToggleButtonVisibility = Visibility.Collapsed;
+
         public Visibility RaidModeToggleButtonVisibility
         {
-            get => IsCurrentlyClickThrough ? Visibility.Hidden : _RaidModeToggleButtonVisibility;
+            get => _RaidModeToggleButtonVisibility;
             set
             {
                 if (_RaidModeToggleButtonVisibility == value)
@@ -263,240 +228,195 @@ namespace EQTool.ViewModels
             }
         }
 
-        public Visibility GenericButtonVisibility => IsCurrentlyClickThrough ? Visibility.Hidden : Visibility.Visible;
-
-        public void UpdateTriggers(double dt_ms)
+        public void UpdateSpells(double dt_ms)
         {
             appDispatcher.DispatchUI(() =>
             {
                 var player = activePlayer.Player;
-                var raidModeDetection = settings.RaidModeDetection ?? true;
-                SpellTargetCount = SpellList.Where(a => a.SpellViewModelType == SpellViewModelType.Spell).GroupBy(a => a.Target).Count();
-                RaidModeEnabled = raidModeDetection && player?.PlayerClass != null && SpellTargetCount > minimumTargetsForRaidMode;
-               
-                var itemsToRemove = new List<PersistentViewModel>();
-                UpdateSpellsAndTimers(dt_ms, itemsToRemove);
-                UpdateBoats(dt_ms);
-                UpdatePersistentCounters(itemsToRemove);
-                UpdateGlobalVisibility();
+                var raidmodedetection = settings.RaidModeDetection ?? true;
+                SpellGroupCount = SpellList.Where(a => a.SpellViewModelType == SpellViewModelType.Spell).GroupBy(a => a.GroupName).Count();
+                RaidModeEnabled = raidmodedetection && player?.PlayerClass != null && SpellGroupCount > 10;
+                var itemstoremove = new List<PersistentViewModel>();
+                var timerTypes = new List<SpellViewModelType>() { SpellViewModelType.Roll, SpellViewModelType.Spell, SpellViewModelType.Timer };
+                foreach (var item in SpellList.Where(a => timerTypes.Contains(a.SpellViewModelType)).Cast<TimerViewModel>().ToList())
+                {
+                    item.TotalRemainingDuration = item.TotalRemainingDuration.Subtract(TimeSpan.FromMilliseconds(dt_ms));
+                    if (item.TotalRemainingDuration.TotalSeconds <= 0)
+                    {
+                        itemstoremove.Add(item);
+                    }
+                    var hidespell = false;
+                    if (!item.GroupName.StartsWith(" "))
+                    {
+                        if (item.SpellViewModelType == SpellViewModelType.Timer)
+                        {
+                            if (settings.YouOnlySpells || RaidModeEnabled)
+                            {
+                                hidespell = true;
+                            }
+                            if (item.Name.StartsWith("Scout Charisa Timer"))
+                            {
+                                if (settings.ShowScoutRollTime == false)
+                                {
+                                    hidespell = true;
+                                }
+                                else
+                                {
+                                    hidespell = true;
+                                }
+                            }
+                            else if (item.Name.StartsWith("Ring 8 Roll Timer"))
+                            {
+                                if (settings.ShowRing8RollTime == false)
+                                {
+                                    hidespell = true;
+                                }
+                                else
+                                {
+                                    hidespell = true;
+                                }
+                            }
+                        }
+                        else if (item.SpellViewModelType == SpellViewModelType.Spell)
+                        {
+                            var s = item as SpellViewModel;
+                            if (settings.YouOnlySpells)
+                            {
+                                hidespell = true;
+                            }
+                            else if (RaidModeEnabled && player.PlayerClass.HasValue)
+                            {
+                                hidespell = SpellUIExtensions.HideSpell(new List<EQToolShared.Enums.PlayerClasses>() { player.PlayerClass.Value }, s.Classes) || s.SpellType == SpellType.Self;
+                            }
+                            else
+                            {
+                                hidespell = SpellUIExtensions.HideSpell(player.ShowSpellsForClasses, s.Classes);
+                            }
+                        }
+                    }
+                    else if (item.GroupName == CustomTimer.CustomerTime && item.SpellViewModelType == SpellViewModelType.Timer)
+                    {
+                        if (item.Name.StartsWith("Scout Charisa Timer"))
+                        {
+                            hidespell = false;
+                            if (settings.ShowScoutRollTime == false)
+                            {
+                                hidespell = true;
+                            }
+                        }
+                        else if (item.Name.StartsWith("Ring 8 Roll Timer"))
+                        {
+                            hidespell = false;
+                            if (settings.ShowRing8RollTime == false)
+                            {
+                                hidespell = true;
+                            }
+                        }
+                    }
 
-                foreach (var item in itemsToRemove)
+                    item.ColumnVisibility = hidespell ? System.Windows.Visibility.Collapsed : System.Windows.Visibility.Visible;
+                }
+
+                var boats = _SpellList.Where(a => a.SpellViewModelType == SpellViewModelType.Boat).Cast<BoatViewModel>().ToList();
+                foreach (var boat in boats)
+                {
+                    if (BoatScheduleService.SupportdBoats.Contains(boat.Boat.Boat))
+                    {
+                        boat.TotalRemainingDuration = boat.TotalRemainingDuration.Subtract(TimeSpan.FromMilliseconds(dt_ms));
+                        if (boat.TotalRemainingDuration.TotalSeconds <= 0)
+                        {
+                            var dt = TimeSpan.FromMilliseconds(boat.TotalRemainingDuration.Milliseconds);
+                            boat.TotalRemainingDuration = dt.Add(boat.TotalDuration);
+                        }
+                    }
+
+                    if (player?.BoatSchedule == false)
+                    {
+                        boat.ColumnVisibility = Visibility.Collapsed;
+                    }
+                    else
+                    {
+                        boat.ColumnVisibility = Visibility.Visible;
+                    }
+                }
+
+                var d = DateTime.Now;
+                var persistentTypes = new List<SpellViewModelType>() { SpellViewModelType.Persistent, SpellViewModelType.Counter };
+                foreach (var item in SpellList.Where(a => persistentTypes.Contains(a.SpellViewModelType)).Cast<PersistentViewModel>().ToList())
+                {
+                    var hidespell = false;
+                    if (settings.YouOnlySpells)
+                    {
+                        hidespell = !(MasterNPCList.NPCs.Contains(item.GroupName.Trim()) || item.GroupName == CustomTimer.CustomerTime || item.GroupName == EQSpells.SpaceYou);
+                    }
+                    if ((d - item.UpdatedDateTime).TotalMinutes > 20)
+                    {
+                        itemstoremove.Add(item);
+                    }
+                    item.ColumnVisibility = hidespell ? System.Windows.Visibility.Collapsed : System.Windows.Visibility.Visible;
+                }
+
+                var groupedspellList = SpellList.GroupBy(a => a.GroupName).ToList();
+                foreach (var triggers in groupedspellList)
+                {
+                    var allspellshidden = true;
+                    foreach (var spell in triggers)
+                    {
+                        if (spell.ColumnVisibility != System.Windows.Visibility.Collapsed)
+                        {
+                            allspellshidden = false;
+                        }
+                    }
+
+                    if (allspellshidden)
+                    {
+                        foreach (var spell in triggers)
+                        {
+                            spell.HeaderVisibility = System.Windows.Visibility.Collapsed;
+                        }
+                    }
+                    else
+                    {
+                        foreach (var spell in triggers)
+                        {
+                            spell.HeaderVisibility = System.Windows.Visibility.Visible;
+                        }
+                    }
+
+                    var groupname = triggers.FirstOrDefault()?.GroupName ?? string.Empty;
+                    if (playerPet.PetName == groupname)
+                    {
+                        foreach (var spell in triggers)
+                        {
+                            spell.HeaderVisibility = System.Windows.Visibility.Visible;
+                            spell.ColumnVisibility = System.Windows.Visibility.Visible;
+                        }
+                    }
+                }
+
+                foreach (var item in itemstoremove)
                 {
                     _ = SpellList.Remove(item);
                 }
             });
         }
 
-        private void UpdateSpellsAndTimers(double dt_ms, List<PersistentViewModel> itemsToRemove)
-        {
-            var timerTypes = new List<SpellViewModelType> { SpellViewModelType.Roll, SpellViewModelType.Spell, SpellViewModelType.Timer };
-            
-            foreach (var item in SpellList.Where(a => timerTypes.Contains(a.SpellViewModelType)).Cast<TimerViewModel>().ToList())
-            {
-                item.TotalRemainingDuration = item.TotalRemainingDuration.Subtract(TimeSpan.FromMilliseconds(dt_ms));
-                if (item.TotalRemainingDuration.TotalSeconds <= 0)
-                {
-                    itemsToRemove.Add(item);
-                }
-
-                var hideTrigger = false;
-                if (item is SpellViewModel spell)
-                {
-                    hideTrigger = ShouldFilterSpell(spell, activePlayer.Player);
-                }
-                else if (item.SpellViewModelType == SpellViewModelType.Timer)
-                {
-                    //TODO: Make misc custom timers their own setting as well
-                    if (item.Target == CustomTimer.CustomerTime)
-                    {
-                        if (item.Id.StartsWith(CustomTimer.ScoutTime))
-                        {
-                            hideTrigger = false;
-                            if (settings.ShowScoutRollTime == false)
-                            {
-                                hideTrigger = true;
-                            }
-                        }
-                        if (item.Id.StartsWith(CustomTimer.Ring8))
-                        {
-                            hideTrigger = false;
-                            if (settings.ShowRing8RollTime == false)
-                            {
-                                hideTrigger = true;
-                            }
-                        }
-                    }
-                }
-
-                item.ColumnVisibility = hideTrigger ? Visibility.Collapsed : Visibility.Visible;
-            }
-        }
-
-        private void UpdateBoats(double dt_ms)
-        {
-            var boats = _SpellList.OfType<BoatViewModel>().ToList();
-            foreach (var boat in boats)
-            {
-                if (BoatScheduleService.SupportdBoats.Contains(boat.Boat.Boat))
-                {
-                    boat.TotalRemainingDuration = boat.TotalRemainingDuration.Subtract(TimeSpan.FromMilliseconds(dt_ms));
-                    if (boat.TotalRemainingDuration.TotalSeconds <= 0)
-                    {
-                        var dt = TimeSpan.FromMilliseconds(boat.TotalRemainingDuration.Milliseconds);
-                        boat.TotalRemainingDuration = dt.Add(boat.TotalDuration);
-                    }
-                }
-
-                if (activePlayer.Player?.BoatSchedule == false)
-                {
-                    boat.ColumnVisibility = Visibility.Collapsed;
-                }
-                else
-                {
-                    boat.ColumnVisibility = Visibility.Visible;
-                }
-            }
-        }
-
-        private void UpdatePersistentCounters(List<PersistentViewModel> itemsToRemove)
-        {
-            var d = DateTime.Now;
-            var persistentTypes = new List<SpellViewModelType> { SpellViewModelType.Persistent, SpellViewModelType.Counter };
-            foreach (var item in SpellList.Where(a => persistentTypes.Contains(a.SpellViewModelType)).ToList())
-            {
-                var hideTrigger = false;
-                if (item is CounterViewModel counter)
-                {
-                    hideTrigger = ShouldFilterSpell(counter, activePlayer.Player);
-                }
-
-                if ((d - item.UpdatedDateTime).TotalMinutes > 20)
-                {
-                    itemsToRemove.Add(item);
-                }
-                item.ColumnVisibility = hideTrigger ? Visibility.Collapsed : Visibility.Visible;
-            }
-        }
-
-        private void UpdateGlobalVisibility()
-        {
-            var groupedTriggerList = SpellList.GroupBy(a => a.DisplayGroup).ToList();
-            foreach (var triggers in groupedTriggerList)
-            {
-                var allTriggersHidden = true;
-                foreach (var trigger in triggers)
-                {
-                    if (trigger.ColumnVisibility != Visibility.Collapsed)
-                    {
-                        allTriggersHidden = false;
-                    }
-                }
-
-                if (allTriggersHidden)
-                {
-                    foreach (var trigger in triggers)
-                    {
-                        trigger.HeaderVisibility = Visibility.Collapsed;
-                    }
-                }
-                else
-                {
-                    foreach (var trigger in triggers)
-                    {
-                        trigger.HeaderVisibility = Visibility.Visible;
-                    }
-                }
-
-                //TODO: Verify if this needs some fine-tuning with the new Id/Target/DisplayName/DisplayGroup system. It looks a little incompatible but I don't really understand its purpose
-                var groupName = triggers.FirstOrDefault()?.DisplayGroup ?? string.Empty;
-                if (playerPet.PetName == groupName)
-                {
-                    foreach (var trigger in triggers)
-                    {
-                        trigger.HeaderVisibility = Visibility.Visible;
-                        trigger.ColumnVisibility = Visibility.Visible;
-                    }
-                }
-            }
-        }
-
-        private bool ShouldFilterSpell(SpellViewModel s, PlayerInfo player)
-        {
-            if (RaidModeEnabled)
-            {
-                if (s.Target == CustomTimer.CustomerTime || s.CastByYou() || s.CastOnYou() || s.CastByYourClass(player))
-                {
-                    return false;
-                }
-                
-                if (MasterNPCList.NPCs.Contains(s.Target.Trim()))
-                {
-                    // Detrimental spells and cooldowns on raid targets should always be shown in raid mode
-                    if (s.BenefitDetriment == SpellBenefitDetriment.Cooldown || s.BenefitDetriment == SpellBenefitDetriment.Detrimental)
-                    {
-                        return false;
-                    }
-                }
-                
-                return true;
-            }
-
-            if (settings.SpellsFilterAlwaysShowCastOnYou && s.CastOnYou())
-                return false;
-            
-            switch (settings.SpellsFilter)
-            {
-                case SpellsFilterType.CastByYou when !s.CastByYou():
-                case SpellsFilterType.CastByYourClass when !s.CastByYourClass(player):
-                    return true;
-                case SpellsFilterType.ByClass:
-                    return !IsClassSpellAllowed(s.Classes, player.ShowSpellsForClasses);
-            }
-
-            return false;
-        }
-
-        private static bool IsClassSpellAllowed(Dictionary<PlayerClasses, int> spellClasses, IEnumerable<PlayerClasses> allowedClasses)
-        {
-            if (allowedClasses == null || spellClasses == null || spellClasses.Count == 0)
-            {
-                return true;
-            }
-
-            return allowedClasses.Any(spellClasses.ContainsKey);
-        }
-
-        public void ClearSpellsNotCastOnYou()
+        public void ClearAllOtherSpells()
         {
             appDispatcher.DispatchUI(() =>
             {
-                var spellsToRemove = SpellList
-                    .OfType<SpellViewModel>()
-                    .Where(a => !a.CastOnYou())
-                    .ToList();
-                
-                foreach (var spell in spellsToRemove)
+                var spellstoremove = SpellList
+                .Where(a => a.SpellViewModelType == SpellViewModelType.Spell)
+                .Cast<SpellViewModel>()
+                .Where(a => a.GroupName != EQSpells.SpaceYou)
+                .ToList();
+
+                foreach (var spell in spellstoremove)
                 {
-                    if (!MasterNPCList.NPCs.Contains(spell.Target.Trim()))
+                    if (!MasterNPCList.NPCs.Contains(spell.GroupName.Trim()))
                     {
                         _ = SpellList.Remove(spell);
                     }
-                }
-            });
-        }
-        
-        public void ClearSpellsCastByOthers()
-        {
-            appDispatcher.DispatchUI(() =>
-            {
-                var spellToRemove = SpellList
-                    .OfType<SpellViewModel>()
-                    .Where(a => !a.CastByYou())
-                    .ToList();
-                
-                foreach (var spell in spellToRemove)
-                {
-                    _ = SpellList.Remove(spell);
                 }
             });
         }
@@ -508,13 +428,13 @@ namespace EQTool.ViewModels
             {
                 if (overWrite)
                 {
-                    if (SpellList.OfType<SpellViewModel>().FirstOrDefault(a => string.Equals(a.Id, match.Id, StringComparison.OrdinalIgnoreCase)
-                    && string.Equals(match.Target, a.Target, StringComparison.OrdinalIgnoreCase)) is SpellViewModel spell)
+                    if (SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Spell &&
+                    string.Equals(a.Name, match.Name, StringComparison.OrdinalIgnoreCase) &&
+                    string.Equals(match.GroupName, a.GroupName, StringComparison.OrdinalIgnoreCase)) is SpellViewModel s)
                     {
-                        _ = SpellList.Remove(spell);
+                        _ = SpellList.Remove(s);
                     }
                 }
-                
                 SpellList.Add(match);
             });
         }
@@ -524,10 +444,10 @@ namespace EQTool.ViewModels
             appDispatcher.DispatchUI(() =>
             {
                 if (SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Counter &&
-                string.Equals(a.Id, match.Id, StringComparison.OrdinalIgnoreCase) &&
-                string.Equals(match.Target, a.Target, StringComparison.OrdinalIgnoreCase)) is CounterViewModel s)
+                string.Equals(a.Name, match.Name, StringComparison.OrdinalIgnoreCase) &&
+                string.Equals(match.GroupName, a.GroupName, StringComparison.OrdinalIgnoreCase)) is CounterViewModel s)
                 {
-                    s.AddCount(match.Caster);
+                    s.Count += 1;
                     s.UpdatedDateTime = DateTime.Now;
                 }
                 else
@@ -541,12 +461,8 @@ namespace EQTool.ViewModels
         {
             appDispatcher.DispatchUI(() =>
             {
-                var rollsInGroup = SpellList
-                    .OfType<RollViewModel>()
-                    .Where(a => string.Equals(match.Target, a.Target, StringComparison.OrdinalIgnoreCase))
-                    .ToList();
-                
-                foreach (var item in rollsInGroup)
+                var rollsingroup = SpellList.Where(a => string.Equals(match.GroupName, a.GroupName, StringComparison.OrdinalIgnoreCase) && a.SpellViewModelType == SpellViewModelType.Roll).Cast<RollViewModel>().ToList();
+                foreach (var item in rollsingroup)
                 {
                     //reset the timer on all of the rolls
                     item.TotalRemainingDuration = TimeSpan.FromTicks(match.TotalDuration.Ticks);
@@ -561,9 +477,9 @@ namespace EQTool.ViewModels
             {
                 if (!allowDuplicates)
                 {
-                    var existing = SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Timer
-                    && string.Equals(a.Id, match.Id, StringComparison.OrdinalIgnoreCase)
-                    && string.Equals(match.Target, a.Target, StringComparison.OrdinalIgnoreCase));
+                    var existing = SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Timer &&
+                     string.Equals(a.Name, match.Name, StringComparison.OrdinalIgnoreCase) &&
+                     string.Equals(match.GroupName, a.GroupName, StringComparison.OrdinalIgnoreCase));
                     if (existing != null)
                     {
                         _ = SpellList.Remove(existing);
@@ -574,121 +490,89 @@ namespace EQTool.ViewModels
             });
         }
 
-        public void AddSavedYouSpells(List<YouSpells> youSpells)
+        public void AddSavedYouSpells(List<YouSpells> youspells)
         {
-            if (youSpells == null || !youSpells.Any())
+            if (youspells == null || !youspells.Any())
             {
                 return;
             }
 
             appDispatcher.DispatchUI(() =>
             {
-                foreach (var item in youSpells)
+                foreach (var item in youspells)
                 {
-                    if (!spells.AllSpells.TryGetValue(item.Name, out var match))
+                    if (spells.AllSpells.TryGetValue(item.Name, out var match))
                     {
-                        continue;
+                        var spellduration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(match, activePlayer.Player?.PlayerClass, activePlayer.Player?.Level));
+                        var savedspellduration = item.TotalSecondsLeft;
+                        var uispell = new SpellViewModel
+                        {
+                            UpdatedDateTime = DateTime.Now,
+                            PercentLeft = 100,
+                            BenefitDetriment = match.benefit_detriment,
+                            SpellType = match.SpellType,
+                            GroupName = EQSpells.SpaceYou,
+                            Name = match.name,
+                            Rect = match.Rect,
+                            Icon = match.SpellIcon,
+                            Classes = match.Classes,
+                            TotalDuration = spellduration,
+                            TotalRemainingDuration = TimeSpan.FromSeconds(savedspellduration)
+                        };
+                        SpellList.Add(uispell);
                     }
-
-                    var spellDuration = TimeSpan.FromSeconds(SpellDurations.GetDuration_inSeconds(match, activePlayer.Player?.PlayerClass, activePlayer.Player?.Level));
-                    var savedSpellDuration = item.TotalSecondsLeft;
-                    var uiSpell = new SpellViewModel
-                    {
-                        UpdatedDateTime = DateTime.Now,
-                        PercentLeft = 100,
-                        BenefitDetriment = match.benefit_detriment,
-                        SpellType = match.SpellType,
-                        Id = match.name,
-                        Target = EQSpells.SpaceYou,
-                        Caster = item.Caster,
-                        Rect = match.Rect,
-                        Icon = match.SpellIcon,
-                        Classes = match.Classes,
-                        TotalDuration = spellDuration,
-                        TotalRemainingDuration = TimeSpan.FromSeconds(savedSpellDuration)
-                    };
-                        
-                    SpellList.Add(uiSpell);
                 }
             });
         }
 
-        public void TryRemoveUnambiguousSpellOther(string possibleSpell)
+        public void TryRemoveUnambiguousSpellOther(string possiblespell)
         {
-            if (string.IsNullOrWhiteSpace(possibleSpell))
+            if (string.IsNullOrWhiteSpace(possiblespell))
             {
                 return;
             }
 
             appDispatcher.DispatchUI(() =>
             {
-                var spells = SpellList
-                    .OfType<SpellViewModel>()
-                    .Where(spell => string.Equals(spell.Id, possibleSpell, StringComparison.OrdinalIgnoreCase) && !spell.CastOnYou())
-                    .ToList();
-                
-                if (spells.Count == 1)
+                var s = SpellList.Where(a => string.Equals(a.Name, possiblespell, StringComparison.OrdinalIgnoreCase) && a.GroupName != EQSpells.SpaceYou).ToList();
+                if (s.Count() == 1)
+                {
+                    _ = SpellList.Remove(s.FirstOrDefault());
+                }
+            });
+        }
+
+        public void TryRemoveUnambiguousSpellOther(List<string> possiblespellnames)
+        {
+            if (!possiblespellnames.Any())
+            {
+                return;
+            }
+
+            appDispatcher.DispatchUI(() =>
+            {
+                var spells = SpellList.Where(a => possiblespellnames.Any(b => string.Equals(a.Name, b, StringComparison.OrdinalIgnoreCase))).ToList();
+                if (spells.Count() == 1)
                 {
                     _ = SpellList.Remove(spells.FirstOrDefault());
                 }
             });
         }
 
-        public void TryRemoveUnambiguousSpellOther(List<string> possibleSpellNames)
+        public void TryRemoveUnambiguousSpellSelf(List<string> possiblespellnames)
         {
-            if (!possibleSpellNames.Any())
+            if (!possiblespellnames.Any())
             {
                 return;
             }
 
             appDispatcher.DispatchUI(() =>
             {
-                var spells = SpellList
-                    .OfType<SpellViewModel>()
-                    .Where(spell => possibleSpellNames.Any(name => string.Equals(spell.Id, name, StringComparison.OrdinalIgnoreCase)))
-                    .ToList();
-                
-                if (spells.Count == 1)
+                var spells = SpellList.Where(a => possiblespellnames.Any(b => string.Equals(a.Name, b, StringComparison.OrdinalIgnoreCase)) && a.GroupName == EQSpells.SpaceYou).ToList();
+                if (spells.Count() == 1)
                 {
                     _ = SpellList.Remove(spells.FirstOrDefault());
                 }
-            });
-        }
-
-        public void TryRemoveUnambiguousSpellSelf(List<string> possibleSpellNames)
-        {
-            if (!possibleSpellNames.Any())
-            {
-                return;
-            }
-
-            appDispatcher.DispatchUI(() =>
-            {
-                var spells = SpellList.OfType<SpellViewModel>()
-                    .Where(spell => possibleSpellNames.Any(name => spell.CastOnYou() && string.Equals(spell.Id, name, StringComparison.OrdinalIgnoreCase)))
-                    .ToList();
-                
-                if (spells.Count == 1)
-                {
-                    _ = SpellList.Remove(spells.FirstOrDefault());
-                }
-            });
-        }
-        
-        public void TryRemoveByPartialSpellNamesSelf(List<string> partialSpellNames)
-        {
-            if (!partialSpellNames.Any())
-            {
-                return;
-            }
-
-            appDispatcher.DispatchUI(() =>
-            {
-                var spells = SpellList.OfType<SpellViewModel>()
-                    .Where(spell => spell.CastOnYou() && partialSpellNames.Any(name => spell.Id.Contains(name, StringComparison.OrdinalIgnoreCase)))
-                    .ToList();
-                
-                _ = SpellList.Remove(spells.FirstOrDefault());
             });
         }
 
@@ -701,7 +585,7 @@ namespace EQTool.ViewModels
                 var boatsapi = pigParseApi.GetBoatData(s.Value);
                 appDispatcher.DispatchUI(() =>
                 {
-                    var boats = _SpellList.OfType<BoatViewModel>().ToList();
+                    var boats = _SpellList.Where(a => a.SpellViewModelType == SpellViewModelType.Boat).Cast<BoatViewModel>().ToList();
                     foreach (var boat in boatsapi)
                     {
                         boatScheduleService.UpdateBoatInformation(boat, boats, DateTimeOffset.Now);
@@ -710,7 +594,7 @@ namespace EQTool.ViewModels
                 var timersData = pigParseApi.GetRollTimers(s.Value);
                 appDispatcher.DispatchUI(() =>
                 {
-                    var existing = SpellList.Where(a => a.SpellViewModelType == SpellViewModelType.Timer && (a.Id.StartsWith(CustomTimer.Ring8) || a.Id.StartsWith(CustomTimer.ScoutTime))).ToList();
+                    var existing = SpellList.Where(a => a.SpellViewModelType == SpellViewModelType.Timer && (a.Name.StartsWith("Ring 8 Roll Timer") || a.Name.StartsWith("Scout Charisa Timer"))).ToList();
                     foreach (var item in existing)
                     {
                         _ = SpellList.Remove(item);
@@ -718,7 +602,8 @@ namespace EQTool.ViewModels
 
                     if (RollTimerIcon == null)
                     {
-                        spells.AllSpells.TryGetValue("Feign Death", out RollTimerIcon);
+                        spells.AllSpells.TryGetValue("Feign Death", out var feignDeath);
+                        RollTimerIcon = feignDeath;
                     }
 
                     var timers = timersData.Where(a => a.RollTimerType == EQToolShared.APIModels.RollTimerType.Scout).ToList();
@@ -734,17 +619,17 @@ namespace EQTool.ViewModels
                         var match = new TimerViewModel
                         {
                             PercentLeft = 100,
-                            Target = CustomTimer.CustomerTime,
-                            Id = CustomTimer.Ring8 + (timer.Guess ? " (Guess)" : ""),
+                            GroupName = CustomTimer.CustomerTime,
+                            Name = "Ring 8 Roll Timer" + (timer.Guess ? " (Guess)" : ""),
                             Rect = RollTimerIcon.Rect,
                             Icon = RollTimerIcon.SpellIcon,
                             TotalDuration = TimeSpan.FromHours(10),
-                            TotalRemainingDuration = TimeSpan.FromSeconds(minimumTargetsForRaidMode),
+                            TotalRemainingDuration = TimeSpan.FromSeconds(10),
                             UpdatedDateTime = DateTime.Now,
                             ProgressBarColor = Brushes.LightGreen
                         };
 
-                        match.Id = CustomTimer.ScoutTime;
+                        match.Name = "Scout Charisa Timer";
                         match.TotalDuration = TimeSpan.FromHours(10);
                         if (timer.DateTime > DateTimeOffset.Now)
                         {
@@ -753,7 +638,7 @@ namespace EQTool.ViewModels
                         else
                         {
                             match.TotalRemainingDuration = TimeSpan.FromHours(10);
-                            match.Id = $"Scout Charisa Timer (UNKNOWN)";
+                            match.Name = $"Scout Charisa Timer (UNKNOWN)";
                         }
                         SpellList.Add(match);
                     }
@@ -766,17 +651,17 @@ namespace EQTool.ViewModels
                         var match = new TimerViewModel
                         {
                             PercentLeft = 100,
-                            Target = CustomTimer.CustomerTime,
-                            Id = CustomTimer.Ring8 + (timer.Guess ? " (Guess)" : ""),
+                            GroupName = CustomTimer.CustomerTime,
+                            Name = "Ring 8 Roll Timer" + (timer.Guess ? " (Guess)" : ""),
                             Rect = RollTimerIcon.Rect,
                             Icon = RollTimerIcon.SpellIcon,
                             TotalDuration = TimeSpan.FromHours(10),
-                            TotalRemainingDuration = TimeSpan.FromSeconds(minimumTargetsForRaidMode),
+                            TotalRemainingDuration = TimeSpan.FromSeconds(10),
                             UpdatedDateTime = DateTime.Now,
                             ProgressBarColor = Brushes.LightGreen
                         };
 
-                        match.Id = CustomTimer.Ring8;
+                        match.Name = "Ring 8 Roll Timer";
                         match.TotalDuration = TimeSpan.FromHours(24);
                         while (timer.DateTime < DateTimeOffset.Now)
                         {
@@ -791,6 +676,7 @@ namespace EQTool.ViewModels
                                 else
                                 {
                                     match.TotalRemainingDuration = TimeSpan.FromHours(24).Subtract(TimeSpan.FromMinutes(30 - match.TotalRemainingDuration.Minutes));
+
                                 }
                             }
                         }
@@ -799,44 +685,12 @@ namespace EQTool.ViewModels
                 });
             }
         }
-        
-        private CancellationTokenSource timersModifiedDebounceTs;
-        private void QueueFullSpellListReevaluation() => QueueSpellGroupingReevaluation(groupRevaluationDebounceTime);
-        private void QueueSpellGroupingReevaluation(int delay)
-        {
-            // We need to queue the re-evaluation with a debounce cancellation because we don't want to be doing constant iteration over the whole list while it is actively being modified.
-            appDispatcher.DebounceToUI(ref timersModifiedDebounceTs, delay, () => engine.Recategorize());
-        }
-        
-        private void SpellList_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
-        {
-            var newSpells = (e.NewItems ?? Array.Empty<SpellViewModel>()).OfType<SpellViewModel>();
-            var removedSpells = (e.OldItems ?? Array.Empty<SpellViewModel>()).OfType<SpellViewModel>();
 
-            engine.AddSpells(newSpells);
-            engine.RemoveSpells(removedSpells);
+        public event PropertyChangedEventHandler PropertyChanged;
 
-            var recentlyImpactedSpells = new List<SpellViewModel>(newSpells.Concat(removedSpells));
-            if (recentlyImpactedSpells.Any())
-                QueueSpellGroupingReevaluation(groupRevaluationDebounceTime);
-        }
-        
-        private void Base_PropertyChanged(object sender, PropertyChangedEventArgs e)
+        protected void OnPropertyChanged([CallerMemberName] string name = null)
         {
-            if (e.PropertyName == nameof(IsCurrentlyClickThrough))
-            {
-                OnPropertyChanged(nameof(GenericButtonVisibility));
-            }
-            else if (e.PropertyName == nameof(settings.PlayerSpellGroupingType)
-            || e.PropertyName == nameof(settings.SpellsFilterAlwaysShowCastOnYou)
-            || e.PropertyName == nameof(settings.NpcSpellGroupingType)
-            || e.PropertyName == nameof(settings.SpellsFilter))
-            {
-                if (_SpellList == null)
-                    return;
-                
-                QueueFullSpellListReevaluation();
-            }
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
     }
 }

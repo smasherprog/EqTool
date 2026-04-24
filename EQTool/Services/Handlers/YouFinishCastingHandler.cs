@@ -1,11 +1,22 @@
-﻿using System.Collections.Generic;
-using System.Linq;
-using EQTool.Models;
+﻿using EQTool.Models;
+using System.Collections.Generic;
 
 namespace EQTool.Services.Handlers
 {
     public class YouFinishCastingHandler : BaseHandler
     {
+        private readonly List<string> SelfSpellsThatDontEmitCompletionLogMesssages = new List<string>()
+        {
+            "Harmshield",
+            "Divine Aura",
+            "Dictate",
+            "Harmony",
+            "Charm",
+            "Beguile",
+            "Cajoling Whispers",
+            "Allure",
+            "Boltran`s Agacerie"
+        };
         private readonly SpellHandlerService baseSpellYouCastingHandler;
 
         public YouFinishCastingHandler(SpellHandlerService baseSpellYouCastingHandler, BaseHandlerData baseHandlerData) : base(baseHandlerData)
@@ -27,21 +38,30 @@ namespace EQTool.Services.Handlers
                 if (dt.TotalMilliseconds > userCastingSpell.casttime + 1000)
                 {
                     var deltaOffset = (int)(userCastingSpell.casttime - dt.TotalMilliseconds);
-                    if (EQSpells.SpellsThatDontEmitCompletionMessages.Contains(userCastingSpell.name))
+                    if (SelfSpellsThatDontEmitCompletionLogMesssages.Contains(userCastingSpell.name))
                     {
                         debugOutput.WriteLine($"Casting spell guess based on timer for {userCastingSpell.name}", OutputType.Spells);
-                        baseSpellYouCastingHandler.Handle(userCastingSpell, EQSpells.SpaceYou, EQSpells.SpaceYou, deltaOffset, e.TimeStamp);
+                        baseSpellYouCastingHandler.Handle(userCastingSpell, EQSpells.SpaceYou, deltaOffset, e.TimeStamp);
                     }
                     debugOutput.WriteLine($"Clearing spell because {dt.TotalMilliseconds}ms has elapsed to complete casting {userCastingSpell.casttime + 1000}ms for the spell {userCastingSpell.name}", OutputType.Spells);
-                    activePlayer.FinishUserCastingSpell();
+                    appDispatcher.DispatchUI(() =>
+                    {
+                        activePlayer.UserCastingSpell = null;
+                        activePlayer.UserCastSpellDateTime = null;
+                    });
                 }
+
             }
         }
 
         private void LogEvents_YouFinishCastingEvent(object sender, YouFinishCastingEvent e)
         {
-            baseSpellYouCastingHandler.Handle(e.Spell, EQSpells.SpaceYou, e.TargetName, 0, e.TimeStamp);
-            activePlayer.FinishUserCastingSpell();
+            baseSpellYouCastingHandler.Handle(e.Spell, e.TargetName, 0, e.TimeStamp);
+            appDispatcher.DispatchUI(() =>
+            {
+                activePlayer.UserCastingSpell = null;
+                activePlayer.UserCastSpellDateTime = null;
+            });
         }
     }
 }

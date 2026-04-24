@@ -1,6 +1,4 @@
 ﻿using System;
-using EQTool.Models;
-using EQTool.Services;
 
 namespace EQTool.ViewModels.SpellWindow
 {
@@ -46,20 +44,6 @@ namespace EQTool.ViewModels.SpellWindow
                 return st;
             }
         }
-        
-        public override string DisplayGroup => IsCategorizeById ? ByIdDisplayGroup() : Target;
-        
-        public override string GroupSorting
-        {
-            get
-            {
-                if (DisplayGroup == CustomTimer.CustomerTime)
-                    return SortingPrefixes.Topmost + DisplayGroup;
-                
-                return base.GroupSorting;
-            }
-        }
-        
         public override SpellViewModelType SpellViewModelType => SpellViewModelType.Timer;
     }
 }
