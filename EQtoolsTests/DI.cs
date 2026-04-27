@@ -23,7 +23,6 @@ namespace EQtoolsTests
                 {
                     DefaultEqDirectory = string.Empty,
                     EqLogDirectory = string.Empty,
-                    SpellsFilter = SpellsFilterType.ByClass,
                     Players = new System.Collections.Generic.List<EQTool.Models.PlayerInfo>(),
                     DpsWindowState = new EQTool.Models.WindowState
                     {

@@ -28,7 +28,7 @@ namespace EQtoolsTests
             {
                 boatViewModelList.Add(new BoatViewModel
                 {
-                    Id = item.PrettyName,
+                    Name = item.PrettyName,
                     Boat = item,
                     TotalDuration = TimeSpan.FromSeconds(item.TripTimeInSeconds)
                 });
@@ -52,7 +52,7 @@ namespace EQtoolsTests
             var endBoat = boatViewModelList.FirstOrDefault(a => a.Boat.Boat == boat.Boat && startBoat.Boat.EndPoint == a.Boat.StartPoint);
             Assert.AreEqual((int)startBoat.TotalRemainingDuration.TotalSeconds, 109, 1);
             Assert.AreEqual((int)endBoat.TotalRemainingDuration.TotalSeconds, 500, 1);
-        } 
+        }
 
         [TestMethod]
         public void HappyTimePassedOasis()
@@ -84,7 +84,7 @@ namespace EQtoolsTests
                 LastSeen = d.AddSeconds((oasisboat.TripTimeInSeconds * -5) - 10),
                 StartPoint = "oasis"
             };
-            this.boatScheduleService.UpdateBoatInformation(boat, boatViewModelList, DateTimeOffset.Now); 
+            this.boatScheduleService.UpdateBoatInformation(boat, boatViewModelList, DateTimeOffset.Now);
             var startZoneBoat = Zones.Boats.FirstOrDefault(a => a.Boat == boat.Boat && a.StartPoint == boat.StartPoint);
             var endZoneBoat = Zones.Boats.FirstOrDefault(a => a.Boat == boat.Boat && a.StartPoint == startZoneBoat.EndPoint);
             var startBoat = boatViewModelList.FirstOrDefault(a => a.Boat == startZoneBoat);
