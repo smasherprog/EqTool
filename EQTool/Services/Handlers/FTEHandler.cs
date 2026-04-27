@@ -59,7 +59,7 @@ namespace EQTool.Services.Handlers
             var start = "--97% Rule--";
             if (NintySevenPercentMobs.Contains(e.NPCName))
             {
-                var spell = spells.AllSpells.FirstOrDefault(a => a.name == "Spirit of Wolf");
+                spells.AllSpells.TryGetValue("Spirit of Wolf", out var spell);
                 var timeleft = 61;
                 if (NintySixPercentMobs.Contains(e.NPCName) && activePlayer.Player.Server == EQToolShared.Enums.Servers.Green)
                 {
@@ -85,7 +85,7 @@ namespace EQTool.Services.Handlers
             }
             if (e.NPCName == "Lodizal")
             {
-                var spell = spells.AllSpells.FirstOrDefault(a => a.name == "Spirit of Wolf");
+                spells.AllSpells.TryGetValue("Spirit of Wolf", out var spell);
                 appDispatcher.DispatchUI(() =>
                 {
                     spellWindowViewModel.TryAdd(new TimerViewModel

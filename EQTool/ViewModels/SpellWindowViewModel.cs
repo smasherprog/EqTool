@@ -1,5 +1,6 @@
 using EQTool.Models;
-using EQTool.Services; 
+using EQTool.Services;
+using EQTool.Services.Spells;
 using EQTool.ViewModels.MobInfoComponents;
 using EQTool.ViewModels.SpellWindow;
 using EQToolShared;

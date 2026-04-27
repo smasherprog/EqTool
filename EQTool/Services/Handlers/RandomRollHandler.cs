@@ -22,32 +22,28 @@ namespace EQTool.Services.Handlers
 
         private void LogEvents_RandomRollEvent(object sender, RandomRollEvent e)
         {
-            if (!spells.AllSpells.TryGetValue("Invisibility", out var icon))
-            {
-                return;
-            }
-            
-            var trigger = new RollViewModel
+            spells.AllSpells.TryGetValue( "Invisibility", out var spellicon);
+            var spell = new RollViewModel
             {
                 MaxRoll = e.MaxRoll,
                 TotalDuration = TimeSpan.FromMinutes(3),
-                Icon = icon.SpellIcon,
-                Id = e.PlayerName,
+                Icon = spellicon.SpellIcon,
+                Name = e.PlayerName,
                 Roll = e.Roll,
                 PercentLeft = 100,
-                Rect = icon.Rect,
+                Rect = spellicon.Rect,
                 UpdatedDateTime = DateTime.Now,
                 TotalRemainingDuration = TimeSpan.FromMinutes(3)
             };
             appDispatcher.DispatchUI(() =>
             {
                 var rollsingroup = spellWindowViewModel.SpellList
-                    .Where(a => a.Id == trigger.Id && a.Target == trigger.Target && a.SpellViewModelType == SpellViewModelType.Roll)
+                    .Where(a => a.Name == spell.Name && a.GroupName == spell.GroupName && a.SpellViewModelType == SpellViewModelType.Roll)
                     .Cast<RollViewModel>()
                     .ToList();
                 var rollorder = rollsingroup.Select(a => (int?)a.RollOrder).Max() ?? 0;
-                trigger.RollOrder = rollorder + 1;
-                spellWindowViewModel.TryAdd(trigger);
+                spell.RollOrder = rollorder + 1;
+                spellWindowViewModel.TryAdd(spell);
             });
         }
     }

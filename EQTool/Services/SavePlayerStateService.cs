@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using EQTool.Models;
+﻿using EQTool.Models;
 using EQTool.ViewModels;
 using EQTool.ViewModels.SpellWindow;
 using System.Linq;
@@ -26,7 +25,6 @@ namespace EQTool.Services
             this.spellWindowViewModel = spellWindowViewModel;
             this.eQToolSettings = eQToolSettings;
         }
-        
         public void TrySaveYouSpellData()
         {
             if (activePlayer?.Player != null)
@@ -35,17 +33,16 @@ namespace EQTool.Services
                 {
                     if (!activePlayer.Player.YouSpells.Any())
                     {
-                        var before = activePlayer.Player.YouSpells ?? new List<YouSpells>();
-                        activePlayer.Player.YouSpells = spellWindowViewModel.SpellList.OfType<SpellViewModel>()
-                            .Where(x => x.CastOnYou())
+                        var before = activePlayer.Player.YouSpells ?? new System.Collections.Generic.List<YouSpells>();
+                        activePlayer.Player.YouSpells = spellWindowViewModel.SpellList.Where(a => a.GroupName == EQSpells.SpaceYou && a.SpellViewModelType == ViewModels.SpellWindow.SpellViewModelType.Spell)
+                            .Cast<SpellViewModel>()
                             .Select(a => new YouSpells
                             {
-                                Name = a.Id,
-                                Caster = a.Caster,
+                                Name = a.Name,
                                 TotalSecondsLeft = (int)a.TotalRemainingDuration.TotalSeconds,
                             }).ToList();
                         toolSettingsLoad.Save(eQToolSettings);
-                    } 
+                    }
                 });
             }
         }

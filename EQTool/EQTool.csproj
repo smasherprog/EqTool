@@ -411,6 +411,7 @@
     <Compile Include="Services\P99LoginMiddlemand\LoginMiddlemand.cs" />
     <Compile Include="Services\Parsing\CommsParser.cs" />
     <Compile Include="Services\Parsing\YouZonedParser.cs" />
+    <Compile Include="Spells\SpellUIExtensions.cs" />
     <Compile Include="UI\Console.xaml.cs">
       <DependentUpon>Console.xaml</DependentUpon>
     </Compile>

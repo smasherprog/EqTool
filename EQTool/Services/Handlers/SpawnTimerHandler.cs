@@ -60,7 +60,7 @@ namespace EQTool.Services.Handlers
                 //        EndTTS = Model.EndTTS,
 
                 var spellname = "Feign Death";
-                var spell = spells.AllSpells.FirstOrDefault(a => a.name == spellname);
+                spells.AllSpells.TryGetValue(spellname, out var spell); 
                 spellWindowViewModel.TryAdd(new TimerViewModel
                 {
                     PercentLeft = 100,
@@ -107,7 +107,7 @@ namespace EQTool.Services.Handlers
                     //        EndTTS = Model.EndTTS,
 
                     var spellname = "Feign Death";
-                    var spell = spells.AllSpells.FirstOrDefault(a => a.name == spellname);
+                    spells.AllSpells.TryGetValue(spellname, out var spell);
                     spellWindowViewModel.TryAdd(new TimerViewModel
                     {
                         PercentLeft = 100,
@@ -154,7 +154,7 @@ namespace EQTool.Services.Handlers
                     //        EndTTS = Model.EndTTS,
 
                     var spellname = "Feign Death";
-                    var spell = spells.AllSpells.FirstOrDefault(a => a.name == spellname);
+                    spells.AllSpells.TryGetValue(spellname, out var spell);
                     spellWindowViewModel.TryAdd(new TimerViewModel
                     {
                         PercentLeft = 100,

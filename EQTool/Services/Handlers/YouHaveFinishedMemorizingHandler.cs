@@ -25,7 +25,7 @@ namespace EQTool.Services.Handlers
         {
             if (SpellHandlerService.SpellsThatNeedTimers.Contains(e.SpellName))
             {
-                var spell = spells.AllSpells.FirstOrDefault(a => a.name == e.SpellName);
+                spells.AllSpells.TryGetValue(e.SpellName, out var spell);
                 var timerName = $"{e.SpellName} Cooldown";
                 var durationSeconds = spell.recastTime / 1000;
 

@@ -32,8 +32,8 @@ namespace EQTool.Services.Handlers
             {
                 return;
             }
-
-            var match = spells.AllSpells.FirstOrDefault(a => a.name == "Disease Cloud");
+             
+            spells.AllSpells.TryGetValue("Disease Cloud", out var match);
             spellWindowViewModel.TryAdd(new TimerViewModel
             {
                 TotalDuration = TimeSpan.FromSeconds(45),

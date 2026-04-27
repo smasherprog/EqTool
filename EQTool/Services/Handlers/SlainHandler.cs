@@ -188,7 +188,7 @@ namespace EQTool.Services.Handlers
                 return;
             }
             var zonetimer = ZoneSpawnTimes.GetSpawnTime(e.Victim, activePlayer?.Player?.Zone);
-            var spell = spells.AllSpells.FirstOrDefault(a => a.name == "Disease Cloud");
+            spells.AllSpells.TryGetValue("Disease Cloud", out var spell);
             var add = new TimerViewModel
             {
                 Name = "--Dead-- " + e.Victim,

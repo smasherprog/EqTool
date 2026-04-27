@@ -23,7 +23,7 @@ namespace EQTool.Services.Handlers
         {
             if (e.Line == "The Avatar of War shouts 'Who dares defile my temple?! Come forth and face me!'")
             {
-                var spell = spells.AllSpells.FirstOrDefault(a => a.name == "Spirit of Wolf");
+                spells.AllSpells.TryGetValue("Spirit of Wolf", out var spell);
                 appDispatcher.DispatchUI(() =>
                 {
                     spellWindowViewModel.TryAdd(new TimerViewModel

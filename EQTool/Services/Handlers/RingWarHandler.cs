@@ -21,7 +21,7 @@ namespace EQTool.Services.Handlers
 
         private void LogEvents_RingWarEvent(object sender, RingWarEvent e)
         {
-            var spell = spells.AllSpells.FirstOrDefault(a => a.name == "Disease Cloud");
+            spells.AllSpells.TryGetValue("Disease Cloud", out var spell); 
             var startingtime = 0;
             for (var round = 1; round <= 3; round++)
             {
