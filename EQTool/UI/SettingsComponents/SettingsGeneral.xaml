@@ -349,7 +349,7 @@
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Spells Me only"  VerticalAlignment="Center" FontWeight="Bold"  MinWidth="100"/>
-                        <CheckBox x:Name="YouSpellsOnly" Click="YouSpells_Click" />
+                        <CheckBox IsChecked="{Binding YouOnlySpells}" Click="SaveAlwaysOntopCheckBoxSettings" ></CheckBox> 
                     </StackPanel>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Visibility="{Binding ShowClassFilters, Converter={StaticResource BooleanToVisibilityConverter}}">

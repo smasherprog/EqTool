@@ -25,8 +25,8 @@ namespace EQTool.ViewModels
         private readonly PigParseApi pigParseApi;
         private readonly BoatScheduleService boatScheduleService;
         private readonly PetViewModel playerPet;
-        private readonly bool PCSpellsGroupedByTarget = true;
-        private readonly bool NPCSpellsGroupedByTarget = true;
+        private readonly bool PCSpellsGroupedByTarget = false;
+        private readonly bool NPCSpellsGroupedByTarget = false;
 
         public SpellWindowViewModel(ActivePlayer activePlayer, IAppDispatcher appDispatcher, EQToolSettings settings, EQSpells spells, BoatScheduleService boatScheduleService, PigParseApi pigParseApi, PetViewModel playerPet)
         {
@@ -274,10 +274,16 @@ namespace EQTool.ViewModels
                 }
 
                 //update spells
-                foreach (var s in SpellList.Where(a => a.SpellViewModelType == SpellViewModelType.Spell).Cast<SpellViewModel>().ToList())
+                foreach (var s in SpellList.Where(a => a.SpellViewModelType == SpellViewModelType.Spell).Cast<SpellViewModel>())
                 {
+                    var isNPCTarget = !s.IsTargetPlayer;
+                    if (s.GroupName == EQSpells.SpaceYou)
+                    {
+                        s.ColumnVisibility = System.Windows.Visibility.Visible;
+                        continue;
+                    }
                     var hidespell = false;
-                    if (settings.YouOnlySpells)
+                    if (settings.YouOnlySpells && s.GroupName != CustomTimer.CustomerTime && !isNPCTarget)
                     {
                         hidespell = true;
                     }
@@ -296,6 +302,11 @@ namespace EQTool.ViewModels
                 foreach (var item in SpellList.Where(a => a.SpellViewModelType == SpellViewModelType.Timer).Cast<TimerViewModel>().ToList())
                 {
                     var hidespell = false;
+                    if (!item.GroupName.StartsWith(" ") && (settings.YouOnlySpells || RaidModeEnabled))
+                    {
+                        hidespell = true;
+                    }
+
                     if (item.Name.StartsWith(CustomTimer.ScoutTime))
                     {
                         hidespell = settings.ShowScoutRollTime == false;
@@ -332,14 +343,13 @@ namespace EQTool.ViewModels
                 }
 
                 var d = DateTime.Now;
-                var persistentTypes = new List<SpellViewModelType>() { SpellViewModelType.Counter };
                 //these are for spells like mana seive which are a counter, or flame lick/ war epic procs which are persistent but we still want to hide them after a while if they aren't refreshed
-                foreach (var item in SpellList.Where(a => persistentTypes.Contains(a.SpellViewModelType)).Cast<BaseTriggerViewModel>().ToList())
+                foreach (var item in SpellList.Where(a => a.SpellViewModelType == SpellViewModelType.Counter).Cast<CounterViewModel>())
                 {
                     var hidespell = false;
                     if (settings.YouOnlySpells)
                     {
-                        hidespell = !(MasterNPCList.NPCs.Contains(item.GroupName.Trim()) || item.GroupName == CustomTimer.CustomerTime || item.GroupName == EQSpells.SpaceYou);
+                        hidespell = !(!item.IsTargetPlayer || item.GroupName == CustomTimer.CustomerTime || item.GroupName == EQSpells.SpaceYou);
                     }
                     if ((d - item.UpdatedDateTime).TotalMinutes > 10)
                     {
@@ -348,10 +358,37 @@ namespace EQTool.ViewModels
                     item.ColumnVisibility = hidespell ? System.Windows.Visibility.Collapsed : System.Windows.Visibility.Visible;
                 }
 
+                if (PCSpellsGroupedByTarget)
+                {
+                    foreach (var group in SpellList.Where(a => a.SpellViewModelType == SpellViewModelType.Spell).Cast<SpellViewModel>().GroupBy(a => a.GroupName))
+                    {
+                        var isNPCTarget = group.Key.StartsWith(" ") ? false : MasterNPCList.NPCs.Contains(group.Key.Trim());
+                        foreach (var s in group)
+                        {
+                            s.ColumnVisibility = System.Windows.Visibility.Visible;
+                            if (settings.YouOnlySpells && s.GroupName != CustomTimer.CustomerTime && !isNPCTarget)
+                            {
+                                s.ColumnVisibility = System.Windows.Visibility.Collapsed;
+                            }
+                            else if (RaidModeEnabled && player.PlayerClass.HasValue)
+                            {
+                                s.ColumnVisibility = SpellUIExtensions.HideSpell(new List<EQToolShared.Enums.PlayerClasses>() { player.PlayerClass.Value }, s.Classes) || s.SpellType == SpellType.Self ? System.Windows.Visibility.Collapsed : System.Windows.Visibility.Visible;
+                            }
+                            else
+                            {
+                                s.ColumnVisibility = SpellUIExtensions.HideSpell(player.ShowSpellsForClasses, s.Classes) ? System.Windows.Visibility.Collapsed : System.Windows.Visibility.Visible;
+                            }
+                        }
+                    }
+                }
+                if (NPCSpellsGroupedByTarget)
+                {
+
+                }
+
+
+
                 var groupedspellList = SpellList.GroupBy(a => a.GroupName).ToList();
-
-
-
                 foreach (var triggers in groupedspellList)
                 {
                     var allspellshidden = triggers.All(a => a.ColumnVisibility == System.Windows.Visibility.Collapsed);
@@ -485,6 +522,7 @@ namespace EQTool.ViewModels
                         var savedspellduration = item.TotalSecondsLeft;
                         var uispell = new SpellViewModel
                         {
+                            IsTargetPlayer = true,
                             UpdatedDateTime = DateTime.Now,
                             PercentLeft = 100,
                             BenefitDetriment = match.benefit_detriment,

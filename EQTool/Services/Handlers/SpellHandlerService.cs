@@ -96,7 +96,7 @@ namespace EQTool.Services.Handlers
                 spellWindowViewModel.TryAdd(new TimerViewModel
                 {
                     PercentLeft = 100,
-                    GroupName = spellname == "Theft of Thought" ? EQSpells.SpaceYou : targetName, 
+                    GroupName = spellname == "Theft of Thought" ? EQSpells.SpaceYou : targetName,
                     TargetClass = targetclass,
                     Name = $"{spellname} Cooldown",
                     Rect = spell.Rect,
@@ -193,6 +193,7 @@ namespace EQTool.Services.Handlers
             {
                 var vm = new CounterViewModel
                 {
+                    IsTargetPlayer = !isnpc,
                     UpdatedDateTime = DateTime.Now,
                     GroupName = grpname,
                     TargetClass = targetclass,
@@ -245,6 +246,7 @@ namespace EQTool.Services.Handlers
                     // create new SpellViewModel
                     var vm = new SpellViewModel
                     {
+                        IsTargetPlayer = !isnpc,
                         UpdatedDateTime = DateTime.Now,
                         PercentLeft = 100,
                         BenefitDetriment = spell.benefit_detriment,

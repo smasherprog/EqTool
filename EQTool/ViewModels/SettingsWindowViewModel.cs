@@ -198,6 +198,16 @@ namespace EQTool.ViewModels
                 OnPropertyChanged();
             }
         }
+        public bool YouOnlySpells
+        {
+            get => toolSettings.YouOnlySpells;
+            set
+            {
+                toolSettings.YouOnlySpells = value;
+                OnPropertyChanged();
+            }
+        }
+
 
         public double TriggerWindowOpacity
         {
@@ -342,7 +352,7 @@ namespace EQTool.ViewModels
         public ObservableCollection<string> Zones { get; set; } = new ObservableCollection<string>();
         public ObservableCollection<int> FontSizes { get; set; } = new ObservableCollection<int>();
         public ObservableCollection<int> Levels { get; set; } = new ObservableCollection<int>();
-        public ObservableCollection<int?> TrackSkills { get; set; } = new ObservableCollection<int?>(); 
+        public ObservableCollection<int?> TrackSkills { get; set; } = new ObservableCollection<int?>();
         public ObservableCollection<string> UIFiles { get; set; } = new ObservableCollection<string>();
 
         public void Update()
@@ -359,11 +369,11 @@ namespace EQTool.ViewModels
             Application.Current.Dispatcher.Invoke(() =>
             {
                 UIFiles.Clear();
-                if (!Directory.Exists(this.toolSettings.DefaultEqDirectory))
+                if (!Directory.Exists(toolSettings.DefaultEqDirectory))
                 {
                     return;
                 }
-                var uiFiles = Directory.GetFiles(this.toolSettings.DefaultEqDirectory, "UI_*.ini").ToList();
+                var uiFiles = Directory.GetFiles(toolSettings.DefaultEqDirectory, "UI_*.ini").ToList();
                 foreach (var file in uiFiles)
                 {
                     UIFiles.Add(Path.GetFileNameWithoutExtension(file));

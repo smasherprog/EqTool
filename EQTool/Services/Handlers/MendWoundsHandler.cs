@@ -2,7 +2,6 @@
 using EQTool.ViewModels;
 using EQTool.ViewModels.SpellWindow;
 using System;
-using System.Linq;
 
 namespace EQTool.Services.Handlers
 {
@@ -16,9 +15,9 @@ namespace EQTool.Services.Handlers
             this.spellWindowViewModel = spellWindowViewModel;
             logEvents.MendWoundsEvent += LogEvents_MendWoundsEvent;
 
-            if(!spells.AllSpells.TryGetValue("Chloroplast", out HealSpell))
+            if (!spells.AllSpells.TryGetValue("Chloroplast", out HealSpell))
             {
-                spells.AllSpells.TryGetValue("Regeneration", out HealSpell);
+                _ = spells.AllSpells.TryGetValue("Regeneration", out HealSpell);
             }
         }
 
@@ -27,6 +26,7 @@ namespace EQTool.Services.Handlers
             var spellduration = TimeSpan.FromMinutes(6);
             var vm = new SpellViewModel
             {
+                IsTargetPlayer = true,
                 UpdatedDateTime = DateTime.Now,
                 PercentLeft = 100,
                 BenefitDetriment = HealSpell.benefit_detriment,

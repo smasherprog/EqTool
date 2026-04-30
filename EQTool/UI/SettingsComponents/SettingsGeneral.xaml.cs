@@ -1366,12 +1366,5 @@ namespace EQTool.UI.SettingsComponents
                 }
             });
         }
-
-        private void YouSpells_Click(object sender, RoutedEventArgs e)
-        {
-            var s = sender as System.Windows.Controls.CheckBox;
-            settings.YouOnlySpells = s.IsChecked ?? false;
-            SaveConfig();
-        }
     }
 }

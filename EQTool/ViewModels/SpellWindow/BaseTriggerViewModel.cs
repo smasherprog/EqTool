@@ -117,6 +117,7 @@ namespace EQTool.ViewModels.SpellWindow
             }
         }
 
+        public bool IsTargetPlayer { get; set; }
         public SolidColorBrush ProgressBarColor { get; set; } = Brushes.DarkSeaGreen;
         public DateTime UpdatedDateTime { get; set; } = DateTime.Now;
         public event PropertyChangedEventHandler PropertyChanged;
