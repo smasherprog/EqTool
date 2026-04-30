@@ -28,8 +28,8 @@ namespace EQtoolsTests
             };
 
             var d = service.Parse("Cekenar engages Tzvia!", DateTime.Now, 0);
-            Assert.AreEqual(d.FTEPerson, "Tzvia");
-            Assert.AreEqual(d.NPCName, "Cekenar");
+            Assert.AreEqual("Tzvia", d.FTEPerson);
+            Assert.AreEqual("Cekenar", d.NPCName);
         }
 
         [TestMethod]
@@ -45,8 +45,8 @@ namespace EQtoolsTests
             };
 
             var d = service.Parse("Dagarn the Destroyer engages Tzvia!", DateTime.Now, 0);
-            Assert.AreEqual(d.FTEPerson, "Tzvia");
-            Assert.AreEqual(d.NPCName, "Dagarn the Destroyer");
+            Assert.AreEqual("Tzvia", d.FTEPerson);
+            Assert.AreEqual("Dagarn the Destroyer", d.NPCName);
         }
     }
 }

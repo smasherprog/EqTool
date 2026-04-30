@@ -24,11 +24,11 @@ namespace EQtoolsTests
         {
             var line = "You have gained a level! Welcome to level 2!";
             logParser.Push(line, DateTime.Now);
-            Assert.AreEqual(player.Player.Level, 2);
+            Assert.AreEqual(2, player.Player.Level);
             
             line = "You have gained a level! Welcome to level 60!";
             logParser.Push(line, DateTime.Now);
-            Assert.AreEqual(player.Player.Level, 60);
+            Assert.AreEqual(60, player.Player.Level);
         }
 
         [TestMethod]
@@ -37,8 +37,8 @@ namespace EQtoolsTests
             var line = "You have finished memorizing Aegolism.";
             logParser.Push(line, DateTime.Now);
             
-            Assert.AreEqual(player.Player.Level, 60);
-            Assert.AreEqual(player.Player.PlayerClass, PlayerClasses.Cleric);
+            Assert.AreEqual(60, player.Player.Level);
+            Assert.AreEqual(PlayerClasses.Cleric, player.Player.PlayerClass);
         }
 
         [TestMethod]
@@ -51,8 +51,8 @@ namespace EQtoolsTests
             var line = YouBeginCasting + "Aegolism";
             logParser.Push(line, DateTime.Now);
             
-            Assert.AreEqual(player.Player.Level, 60);
-            Assert.AreEqual(player.Player.PlayerClass, PlayerClasses.Cleric);
+            Assert.AreEqual(60, player.Player.Level);
+            Assert.AreEqual(PlayerClasses.Cleric, player.Player.PlayerClass);
         }
 
         [TestMethod]
@@ -65,8 +65,8 @@ namespace EQtoolsTests
             var line = YouBeginCasting + "Demi Lich";
             logParser.Push(line, DateTime.Now);
             
-            Assert.AreEqual(player.Player.Level, 60);
-            Assert.AreEqual(player.Player.PlayerClass, PlayerClasses.Necromancer);
+            Assert.AreEqual(60, player.Player.Level);
+            Assert.AreEqual(PlayerClasses.Necromancer, player.Player.PlayerClass);
         }
 
         [TestMethod]
@@ -81,8 +81,8 @@ namespace EQtoolsTests
             line = YouBeginCasting + "Illusion: Dark Elf"; 
             logParser.Push(line, DateTime.Now);
             
-            Assert.AreEqual(player.Player.Level, 12);
-            Assert.AreEqual(player.Player.PlayerClass, PlayerClasses.Enchanter);
+            Assert.AreEqual(12, player.Player.Level);
+            Assert.AreEqual(PlayerClasses.Enchanter, player.Player.PlayerClass);
         }
 
         [TestMethod]
@@ -96,7 +96,7 @@ namespace EQtoolsTests
             player.Player.PlayerClass = PlayerClasses.Warrior;
             logParser.Push(line, DateTime.Now); 
             
-            Assert.AreEqual(player.Player.PlayerClass, PlayerClasses.Warrior);
+            Assert.AreEqual(PlayerClasses.Warrior, player.Player.PlayerClass);
         }
 
         [TestMethod]
@@ -106,7 +106,7 @@ namespace EQtoolsTests
             
             logParser.Push(message, DateTime.Now);
             
-            Assert.AreEqual(player.Player.PlayerClass, PlayerClasses.Rogue);
+            Assert.AreEqual(PlayerClasses.Rogue, player.Player.PlayerClass);
         }
 
     }

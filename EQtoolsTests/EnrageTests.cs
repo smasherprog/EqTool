@@ -17,7 +17,7 @@ namespace EQtoolsTests
         {
             var service = container.Resolve<EnrageParser>();
             var d = service.EnrageCheck("Cekenar has become ENRAGED.", DateTime.Now, 0);
-            Assert.AreEqual(d.NpcName, "Cekenar");
+            Assert.AreEqual("Cekenar", d.NpcName);
         }
     }
 }

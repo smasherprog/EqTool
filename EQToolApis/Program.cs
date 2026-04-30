@@ -283,6 +283,9 @@ using (var scope = app.Services.CreateScope())
     scope.ServiceProvider.GetRequiredService<NotableNpcCacheService>().BuildCache();
 
 }
+var env = app.Services.GetRequiredService<IWebHostEnvironment>();
+EQToolApis.Models.EQItemImageList.Load(Path.Combine(env.WebRootPath, "Content", "imglst.dat"));
+
 app.UseStaticFiles();
 app.UseHttpsRedirection();
 app.UseRouting();

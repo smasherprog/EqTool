@@ -22,8 +22,8 @@ namespace EQtoolsTests
 
             Assert.IsNotNull(match);
             Assert.AreEqual("Whitewitch", match.PlayerName);
-            Assert.AreEqual(match.MaxRoll, 333);
-            Assert.AreEqual(match.Roll, 195);
+            Assert.AreEqual(333, match.MaxRoll);
+            Assert.AreEqual(195, match.Roll);
         }
 
         [TestMethod]
@@ -48,8 +48,8 @@ namespace EQtoolsTests
             match = service.Parse("**It could have been any number from 0 to 333, but this time it turned up a 195.", DateTime.Now, 0);
             Assert.IsNotNull(match);
             Assert.AreEqual("Steve", match.PlayerName);
-            Assert.AreEqual(match.MaxRoll, 333);
-            Assert.AreEqual(match.Roll, 195);
+            Assert.AreEqual(333, match.MaxRoll);
+            Assert.AreEqual(195, match.Roll);
         }
     }
 }

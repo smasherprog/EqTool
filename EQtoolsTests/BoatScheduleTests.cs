@@ -50,8 +50,8 @@ namespace EQtoolsTests
             var endZoneBoat = Zones.Boats.FirstOrDefault(a => a.Boat == boat.Boat && a.StartPoint == startZoneBoat.EndPoint);
             var startBoat = boatViewModelList.FirstOrDefault(a => a.Boat == startZoneBoat);
             var endBoat = boatViewModelList.FirstOrDefault(a => a.Boat.Boat == boat.Boat && startBoat.Boat.EndPoint == a.Boat.StartPoint);
-            Assert.AreEqual((int)startBoat.TotalRemainingDuration.TotalSeconds, 109, 1);
-            Assert.AreEqual((int)endBoat.TotalRemainingDuration.TotalSeconds, 500, 1);
+            Assert.AreEqual(109, (int)startBoat.TotalRemainingDuration.TotalSeconds, 1);
+            Assert.AreEqual(500, (int)endBoat.TotalRemainingDuration.TotalSeconds, 1);
         }
 
         [TestMethod]
@@ -69,8 +69,8 @@ namespace EQtoolsTests
             var endZoneBoat = Zones.Boats.FirstOrDefault(a => a.Boat == boat.Boat && a.StartPoint == startZoneBoat.EndPoint);
             var startBoat = boatViewModelList.FirstOrDefault(a => a.Boat == startZoneBoat);
             var endBoat = boatViewModelList.FirstOrDefault(a => a.Boat.Boat == boat.Boat && startBoat.Boat.EndPoint == a.Boat.StartPoint);
-            Assert.AreEqual((int)startBoat.TotalRemainingDuration.TotalSeconds, 698, 1);
-            Assert.AreEqual((int)endBoat.TotalRemainingDuration.TotalSeconds, 310, 1);
+            Assert.AreEqual(698, (int)startBoat.TotalRemainingDuration.TotalSeconds, 1);
+            Assert.AreEqual(310, (int)endBoat.TotalRemainingDuration.TotalSeconds, 1);
         }
 
         [TestMethod]
@@ -89,8 +89,8 @@ namespace EQtoolsTests
             var endZoneBoat = Zones.Boats.FirstOrDefault(a => a.Boat == boat.Boat && a.StartPoint == startZoneBoat.EndPoint);
             var startBoat = boatViewModelList.FirstOrDefault(a => a.Boat == startZoneBoat);
             var endBoat = boatViewModelList.FirstOrDefault(a => a.Boat.Boat == boat.Boat && startBoat.Boat.EndPoint == a.Boat.StartPoint);
-            Assert.AreEqual((int)startBoat.TotalRemainingDuration.TotalSeconds, 109, 1);
-            Assert.AreEqual((int)endBoat.TotalRemainingDuration.TotalSeconds, 500, 1);
+            Assert.AreEqual(109, (int)startBoat.TotalRemainingDuration.TotalSeconds, 1);
+            Assert.AreEqual(500, (int)endBoat.TotalRemainingDuration.TotalSeconds, 1);
         }
 
         [TestMethod]
@@ -108,8 +108,8 @@ namespace EQtoolsTests
             var endZoneBoat = Zones.Boats.FirstOrDefault(a => a.Boat == boat.Boat && a.StartPoint == startZoneBoat.EndPoint);
             var startBoat = boatViewModelList.FirstOrDefault(a => a.Boat == startZoneBoat);
             var endBoat = boatViewModelList.FirstOrDefault(a => a.Boat.Boat == boat.Boat && startBoat.Boat.EndPoint == a.Boat.StartPoint);
-            Assert.AreEqual((int)startBoat.TotalRemainingDuration.TotalSeconds, 508, 1);
-            Assert.AreEqual((int)endBoat.TotalRemainingDuration.TotalSeconds, 297, 1);
+            Assert.AreEqual(508, (int)startBoat.TotalRemainingDuration.TotalSeconds, 1);
+            Assert.AreEqual(297, (int)endBoat.TotalRemainingDuration.TotalSeconds, 1);
         }
 
         //[TestMethod]
@@ -157,7 +157,7 @@ namespace EQtoolsTests
             this.boatScheduleService.UpdateBoatInformation(boat, boatViewModelList, DateTimeOffset.Now);
             var startZoneBoat = Zones.Boats.FirstOrDefault(a => a.Boat == boat.Boat && a.StartPoint == boat.StartPoint);
             var startBoat = boatViewModelList.FirstOrDefault(a => a.Boat == startZoneBoat);
-            Assert.AreEqual((int)startBoat.TotalRemainingDuration.TotalSeconds, 1965, 1);
+            Assert.AreEqual(1965, (int)startBoat.TotalRemainingDuration.TotalSeconds, 1);
         }
 
         [TestMethod]
@@ -174,7 +174,7 @@ namespace EQtoolsTests
             this.boatScheduleService.UpdateBoatInformation(boat, boatViewModelList, DateTimeOffset.Now);
             var startZoneBoat = Zones.Boats.FirstOrDefault(a => a.Boat == boat.Boat && a.StartPoint == boat.StartPoint);
             var startBoat = boatViewModelList.FirstOrDefault(a => a.Boat == startZoneBoat);
-            Assert.AreEqual((int)startBoat.TotalRemainingDuration.TotalSeconds, 1965, 1);
+            Assert.AreEqual(1965, (int)startBoat.TotalRemainingDuration.TotalSeconds, 1);
         }
     }
 }

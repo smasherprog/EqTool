@@ -38,10 +38,10 @@ namespace EQtoolsTests
         {
             logEvents.CompleteHealEvent += (s, d) =>
             {
-                Assert.AreEqual(d.Recipient, "Wreckognize");
-                Assert.AreEqual(d.Caster, "Curaja");
-                Assert.AreEqual(d.Position, "014");
-                Assert.AreEqual(d.Tag, string.Empty);
+                Assert.AreEqual("Wreckognize", d.Recipient);
+                Assert.AreEqual("Curaja", d.Caster);
+                Assert.AreEqual("014", d.Position);
+                Assert.AreEqual(string.Empty, d.Tag);
                 isCalled = true;
             };
             logParser.Push("Curaja shouts, 'GG 014 CH -- Wreckognize'", DateTime.Now);
@@ -53,10 +53,10 @@ namespace EQtoolsTests
         {
             logEvents.CompleteHealEvent += (s, d) =>
             {
-                Assert.AreEqual(d.Recipient, "Beefwich");
-                Assert.AreEqual(d.Caster, "Hanbox");
-                Assert.AreEqual(d.Position, "001");
-                Assert.AreEqual(d.Tag, string.Empty);
+                Assert.AreEqual("Beefwich", d.Recipient);
+                Assert.AreEqual("Hanbox", d.Caster);
+                Assert.AreEqual("001", d.Position);
+                Assert.AreEqual(string.Empty, d.Tag);
                 isCalled = true;
             };
             logParser.Push("Hanbox shouts, 'GG 001 CH -- Beefwich'", DateTime.Now);
@@ -68,10 +68,10 @@ namespace EQtoolsTests
         {
             logEvents.CompleteHealEvent += (s, d) =>
             {
-                Assert.AreEqual(d.Recipient, "Beefwich");
-                Assert.AreEqual(d.Caster, "Hanbox");
-                Assert.AreEqual(d.Position, "001");
-                Assert.AreEqual(d.Tag, string.Empty);
+                Assert.AreEqual("Beefwich", d.Recipient);
+                Assert.AreEqual("Hanbox", d.Caster);
+                Assert.AreEqual("001", d.Position);
+                Assert.AreEqual(string.Empty, d.Tag);
                 isCalled = true;
             };
             logParser.Push("Hanbox shouts, 'GG 001 CH --Beefwich'", DateTime.Now);
@@ -83,9 +83,9 @@ namespace EQtoolsTests
         {
             logEvents.CompleteHealEvent += (s, d) =>
             {
-                Assert.AreEqual(d.Recipient, "Beefwich");
-                Assert.AreEqual(d.Caster, "Hanbox");
-                Assert.AreEqual(d.Position, "001");
+                Assert.AreEqual("Beefwich", d.Recipient);
+                Assert.AreEqual("Hanbox", d.Caster);
+                Assert.AreEqual("001", d.Position);
                 isCalled = true;
             };
             logParser.Push("Hanbox shouts, 'CH - Beefwich - 001'", DateTime.Now);
@@ -97,10 +97,10 @@ namespace EQtoolsTests
         {
             logEvents.CompleteHealEvent += (s, d) =>
             {
-                Assert.AreEqual(d.Recipient, "Beefwich");
-                Assert.AreEqual(d.Caster, "Hanbox");
-                Assert.AreEqual(d.Position, "RAMP1");
-                Assert.AreEqual(d.Tag, string.Empty);
+                Assert.AreEqual("Beefwich", d.Recipient);
+                Assert.AreEqual("Hanbox", d.Caster);
+                Assert.AreEqual("RAMP1", d.Position);
+                Assert.AreEqual(string.Empty, d.Tag);
                 isCalled = true;
             };
             logParser.Push("Hanbox shouts, 'CA RAMP1 CH --Beefwich'", DateTime.Now);
@@ -112,10 +112,10 @@ namespace EQtoolsTests
         {
             logEvents.CompleteHealEvent += (s, d) =>
             {
-                Assert.AreEqual(d.Recipient, "Beefwich");
-                Assert.AreEqual(d.Caster, "Hanbox");
-                Assert.AreEqual(d.Position, "RAMP2");
-                Assert.AreEqual(d.Tag, string.Empty);
+                Assert.AreEqual("Beefwich", d.Recipient);
+                Assert.AreEqual("Hanbox", d.Caster);
+                Assert.AreEqual("RAMP2", d.Position);
+                Assert.AreEqual(string.Empty, d.Tag);
                 isCalled = true;
             };
             logParser.Push("Hanbox shouts, 'CA RAMP2 CH --Beefwich'", DateTime.Now);
@@ -127,10 +127,10 @@ namespace EQtoolsTests
         {
             logEvents.CompleteHealEvent += (s, d) =>
             {
-                Assert.AreEqual(d.Recipient, "Beefwich");
-                Assert.AreEqual(d.Caster, "Hanbox");
-                Assert.AreEqual(d.Position, "RAMP2");
-                Assert.AreEqual(d.Tag, string.Empty);
+                Assert.AreEqual("Beefwich", d.Recipient);
+                Assert.AreEqual("Hanbox", d.Caster);
+                Assert.AreEqual("RAMP2", d.Position);
+                Assert.AreEqual(string.Empty, d.Tag);
                 isCalled = true;
             };
             logParser.Push("Hanbox shouts, 'RAMP2 CH --Beefwich'", DateTime.Now);
@@ -142,10 +142,10 @@ namespace EQtoolsTests
         {
             logEvents.CompleteHealEvent += (s, d) =>
             {
-                Assert.AreEqual(d.Recipient, "Beefwich");
-                Assert.AreEqual(d.Caster, "Hanbox");
-                Assert.AreEqual(d.Position, "RAMP01");
-                Assert.AreEqual(d.Tag, string.Empty);
+                Assert.AreEqual("Beefwich", d.Recipient);
+                Assert.AreEqual("Hanbox", d.Caster);
+                Assert.AreEqual("RAMP01", d.Position);
+                Assert.AreEqual(string.Empty, d.Tag);
                 isCalled = true;
             };
             logParser.Push("Hanbox shouts, 'RAMP01 CH --Beefwich'", DateTime.Now);
@@ -157,10 +157,10 @@ namespace EQtoolsTests
         {
             logEvents.CompleteHealEvent += (s, d) =>
             {
-                Assert.AreEqual(d.Recipient, "Beefwich");
-                Assert.AreEqual(d.Caster, "Hanbox");
-                Assert.AreEqual(d.Position, "001");
-                Assert.AreEqual(d.Tag, string.Empty);
+                Assert.AreEqual("Beefwich", d.Recipient);
+                Assert.AreEqual("Hanbox", d.Caster);
+                Assert.AreEqual("001", d.Position);
+                Assert.AreEqual(string.Empty, d.Tag);
                 isCalled = true;
             };
             logParser.Push("Hanbox shouts, 'GG 001 CH --Beefwich' 001", DateTime.Now);
@@ -172,10 +172,10 @@ namespace EQtoolsTests
         {
             logEvents.CompleteHealEvent += (s, d) =>
             {
-                Assert.AreEqual(d.Recipient, "name");
-                Assert.AreEqual(d.Caster, "Hanbox");
-                Assert.AreEqual(d.Position, "001");
-                Assert.AreEqual(d.Tag, string.Empty);
+                Assert.AreEqual("name", d.Recipient);
+                Assert.AreEqual("Hanbox", d.Caster);
+                Assert.AreEqual("001", d.Position);
+                Assert.AreEqual(string.Empty, d.Tag);
                 isCalled = true;
             };
             logParser.Push("Hanbox shouts, 'CH - name - 001'", DateTime.Now);
@@ -208,10 +208,10 @@ namespace EQtoolsTests
         {
             logEvents.CompleteHealEvent += (s, d) =>
             {
-                Assert.AreEqual(d.Recipient, "Sam");
-                Assert.AreEqual(d.Caster, "Wartburg");
-                Assert.AreEqual(d.Position, "004");
-                Assert.AreEqual(d.Tag, string.Empty);
+                Assert.AreEqual("Sam", d.Recipient);
+                Assert.AreEqual("Wartburg", d.Caster);
+                Assert.AreEqual("004", d.Position);
+                Assert.AreEqual(string.Empty, d.Tag);
                 isCalled = true;
             };
             logParser.Push("Wartburg says out of character, 'CA 004 CH -- Sam'", DateTime.Now);
@@ -223,9 +223,9 @@ namespace EQtoolsTests
         {
             logEvents.CompleteHealEvent += (s, d) =>
             {
-                Assert.AreEqual(d.Recipient, "Sam");
-                Assert.AreEqual(d.Caster, "Wartburg");
-                Assert.AreEqual(d.Position, "004");
+                Assert.AreEqual("Sam", d.Recipient);
+                Assert.AreEqual("Wartburg", d.Caster);
+                Assert.AreEqual("004", d.Position);
                 isCalled = true;
             };
             logParser.Push("Wartburg says out of character, '004 CH - Sam'", DateTime.Now);
@@ -237,10 +237,10 @@ namespace EQtoolsTests
         {
             logEvents.CompleteHealEvent += (s, d) =>
             {
-                Assert.AreEqual(d.Recipient, "Beefwich");
-                Assert.AreEqual(d.Caster, "Hanbox");
-                Assert.AreEqual(d.Position, "001");
-                Assert.AreEqual(d.Tag, string.Empty);
+                Assert.AreEqual("Beefwich", d.Recipient);
+                Assert.AreEqual("Hanbox", d.Caster);
+                Assert.AreEqual("001", d.Position);
+                Assert.AreEqual(string.Empty, d.Tag);
                 isCalled = true;
             };
             logParser.Push("Hanbox tells the guild, 'GG 001 CH --Beefwich'", DateTime.Now);
@@ -253,10 +253,10 @@ namespace EQtoolsTests
             logEvents.CompleteHealEvent += (s, d) =>
             {
 
-                Assert.AreEqual(d.Recipient, "Beefwich");
-                Assert.AreEqual(d.Caster, "Hanbox");
-                Assert.AreEqual(d.Position, "001");
-                Assert.AreEqual(d.Tag, "GG");
+                Assert.AreEqual("Beefwich", d.Recipient);
+                Assert.AreEqual("Hanbox", d.Caster);
+                Assert.AreEqual("001", d.Position);
+                Assert.AreEqual("GG", d.Tag);
                 isCalled = true;
             };
             player.Player.ChChainTagOverlay = "GG";
@@ -293,10 +293,10 @@ namespace EQtoolsTests
         {
             logEvents.CompleteHealEvent += (s, d) =>
             {
-                Assert.AreEqual(d.Recipient, "Aaryk");
-                Assert.AreEqual(d.Caster, "You");
-                Assert.AreEqual(d.Position, "002");
-                Assert.AreEqual(d.Tag, "CA");
+                Assert.AreEqual("Aaryk", d.Recipient);
+                Assert.AreEqual("You", d.Caster);
+                Assert.AreEqual("002", d.Position);
+                Assert.AreEqual("CA", d.Tag);
                 isCalled = true;
             };
 
@@ -340,9 +340,9 @@ namespace EQtoolsTests
         {
             logEvents.CompleteHealEvent += (s, d) =>
             {
-                Assert.AreEqual(d.Recipient, "Mandair");
-                Assert.AreEqual(d.Caster, "Windarie");
-                Assert.AreEqual(d.Position, "111");
+                Assert.AreEqual("Mandair", d.Recipient);
+                Assert.AreEqual("Windarie", d.Caster);
+                Assert.AreEqual("111", d.Position);
                 isCalled = true;
             };
             logParser.Push("Windarie auctions, '111 --- CH << Mandair  >> --- 111'", DateTime.Now);
@@ -354,9 +354,9 @@ namespace EQtoolsTests
         {
             logEvents.CompleteHealEvent += (s, d) =>
             {
-                Assert.AreEqual(d.Recipient, "Mandair");
-                Assert.AreEqual(d.Caster, "Mutao");
-                Assert.AreEqual(d.Position, "777");
+                Assert.AreEqual("Mandair", d.Recipient);
+                Assert.AreEqual("Mutao", d.Caster);
+                Assert.AreEqual("777", d.Position);
                 isCalled = true;
             };
             logParser.Push("Mutao auctions, '777 CH <>> Mandair <<> 777'", DateTime.Now);
@@ -368,9 +368,9 @@ namespace EQtoolsTests
         {
             logEvents.CompleteHealEvent += (s, d) =>
             {
-                Assert.AreEqual(d.Recipient, "Mandair");
-                Assert.AreEqual(d.Caster, "Mutao");
-                Assert.AreEqual(d.Position, "AAA");
+                Assert.AreEqual("Mandair", d.Recipient);
+                Assert.AreEqual("Mutao", d.Caster);
+                Assert.AreEqual("AAA", d.Position);
                 isCalled = true;
             };
             logParser.Push("Mutao auctions, 'AAA CH <>> Mandair <<> AAA'", DateTime.Now);
@@ -382,10 +382,10 @@ namespace EQtoolsTests
         {
             logEvents.CompleteHealEvent += (s, d) =>
             {
-                Assert.AreEqual(d.Recipient, "Mandair");
-                Assert.AreEqual(d.Caster, "Mutao");
-                Assert.AreEqual(d.Position, "AAA");
-                Assert.AreEqual(d.Tag, string.Empty);
+                Assert.AreEqual("Mandair", d.Recipient);
+                Assert.AreEqual("Mutao", d.Caster);
+                Assert.AreEqual("AAA", d.Position);
+                Assert.AreEqual(string.Empty, d.Tag);
                 isCalled = true;
             };
             logParser.Push("Mutao auctions, 'GGG AAA CH <>> Mandair <<> AAA'", DateTime.Now);
@@ -397,10 +397,10 @@ namespace EQtoolsTests
         {
             logEvents.CompleteHealEvent += (s, d) =>
             {
-                Assert.AreEqual(d.Recipient, "Mandair");
-                Assert.AreEqual(d.Caster, "Mutao");
-                Assert.AreEqual(d.Position, "AAA");
-                Assert.AreEqual(d.Tag, string.Empty);
+                Assert.AreEqual("Mandair", d.Recipient);
+                Assert.AreEqual("Mutao", d.Caster);
+                Assert.AreEqual("AAA", d.Position);
+                Assert.AreEqual(string.Empty, d.Tag);
                 isCalled = true;
             };
             logParser.Push("Mutao auctions, 'AAA CH <>> Mandair <<> AAA'", DateTime.Now);
@@ -412,10 +412,10 @@ namespace EQtoolsTests
         {
             logEvents.CompleteHealEvent += (s, d) =>
             {
-                Assert.AreEqual(d.Recipient, "Mandair");
-                Assert.AreEqual(d.Caster, "Mutao");
-                Assert.AreEqual(d.Position, "AAA");
-                Assert.AreEqual(d.Tag, string.Empty);
+                Assert.AreEqual("Mandair", d.Recipient);
+                Assert.AreEqual("Mutao", d.Caster);
+                Assert.AreEqual("AAA", d.Position);
+                Assert.AreEqual(string.Empty, d.Tag);
                 isCalled = true;
             };
             logParser.Push("Mutao auctions, 'AAA CH <>> Mandair <<>'", DateTime.Now);
@@ -427,10 +427,10 @@ namespace EQtoolsTests
         {
             logEvents.CompleteHealEvent += (s, d) =>
             {
-                Assert.AreEqual(d.Recipient, "TARGET");
-                Assert.AreEqual(d.Caster, "Mutao");
-                Assert.AreEqual(d.Position, "AAA");
-                Assert.AreEqual(d.Tag, "GG");
+                Assert.AreEqual("TARGET", d.Recipient);
+                Assert.AreEqual("Mutao", d.Caster);
+                Assert.AreEqual("AAA", d.Position);
+                Assert.AreEqual("GG", d.Tag);
                 isCalled = true;
             };
             player.Player.ChChainTagOverlay = "GG";
@@ -510,10 +510,10 @@ namespace EQtoolsTests
         {
             logEvents.CompleteHealEvent += (s, d) =>
             {
-                Assert.AreEqual(d.Recipient, "a shiverback");
-                Assert.AreEqual(d.Caster, "Mutao");
-                Assert.AreEqual(d.Position, "007");
-                Assert.AreEqual(d.Tag, string.Empty);
+                Assert.AreEqual("a shiverback", d.Recipient);
+                Assert.AreEqual("Mutao", d.Caster);
+                Assert.AreEqual("007", d.Position);
+                Assert.AreEqual(string.Empty, d.Tag);
                 isCalled = true;
             };
             logParser.Push("Mutao auctions, '007 CH --  a shiverback'", DateTime.Now);
@@ -525,10 +525,10 @@ namespace EQtoolsTests
         {
             logEvents.CompleteHealEvent += (s, d) =>
             {
-                Assert.AreEqual(d.Recipient, "johny");
-                Assert.AreEqual(d.Caster, "Mutao");
-                Assert.AreEqual(d.Position, "000");
-                Assert.AreEqual(d.Tag, string.Empty);
+                Assert.AreEqual("johny", d.Recipient);
+                Assert.AreEqual("Mutao", d.Caster);
+                Assert.AreEqual("000", d.Position);
+                Assert.AreEqual(string.Empty, d.Tag);
                 isCalled = true;
             };
             logParser.Push("Mutao tells the group, 'CH >      johny  '", DateTime.Now);
@@ -540,10 +540,10 @@ namespace EQtoolsTests
         {
             logEvents.CompleteHealEvent += (s, d) =>
             {
-                Assert.AreEqual(d.Recipient, "Beefwich");
-                Assert.AreEqual(d.Caster, "Mutao");
-                Assert.AreEqual(d.Position, "BBB");
-                Assert.AreEqual(d.Tag, string.Empty);
+                Assert.AreEqual("Beefwich", d.Recipient);
+                Assert.AreEqual("Mutao", d.Caster);
+                Assert.AreEqual("BBB", d.Position);
+                Assert.AreEqual(string.Empty, d.Tag);
                 isCalled = true;
             };
             logParser.Push("Mutao tells the group, 'GG RCH BBB CH -- Beefwich'", DateTime.Now);

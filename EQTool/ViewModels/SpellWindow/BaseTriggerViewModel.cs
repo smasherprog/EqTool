@@ -10,7 +10,7 @@ namespace EQTool.ViewModels.SpellWindow
 {
     public enum SpellViewModelType
     {
-        Persistent,
+        //Persistent,
         Counter,
         Roll,
         Spell,
@@ -18,7 +18,7 @@ namespace EQTool.ViewModels.SpellWindow
         Boat
     }
 
-    public class PersistentViewModel : INotifyPropertyChanged
+    public abstract class BaseTriggerViewModel : INotifyPropertyChanged
     {
         public SpellIcon Icon { get; set; }
         public bool HasIcon => Icon != null;
@@ -68,7 +68,7 @@ namespace EQTool.ViewModels.SpellWindow
             }
         }
 
-        public virtual SpellViewModelType SpellViewModelType => SpellViewModelType.Persistent;
+        public abstract SpellViewModelType SpellViewModelType { get; }
 
         private Visibility _ColumnVisibility = Visibility.Visible;
 

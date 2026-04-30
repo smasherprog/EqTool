@@ -348,9 +348,9 @@
                         </ComboBox>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Always show spells cast on you?"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
-                        <CheckBox IsChecked="{Binding SpellsFilterAlwaysShowCastOnYou}" Click="Savesettings" MinWidth="75" Margin="7,0,0,0"/>
-                    </StackPanel> 
+                        <TextBlock Text="Spells Me only"  VerticalAlignment="Center" FontWeight="Bold"  MinWidth="100"/>
+                        <CheckBox x:Name="YouSpellsOnly" Click="YouSpells_Click" />
+                    </StackPanel>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Visibility="{Binding ShowClassFilters, Converter={StaticResource BooleanToVisibilityConverter}}">
                     <TextBlock Text="Class Filters" FontWeight="Bold" MinWidth="100" ToolTip="This will filter what shows up on other players."/>

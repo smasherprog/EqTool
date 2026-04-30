@@ -30,28 +30,28 @@ namespace EQtoolsTests
             logParser.Push("You slash Bristlebane Puppet for 31 points of damage.", d);
             logParser.Push("Your target resisted the LowerElement spell.", d);
             var spell = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Counter && a.Name == "LowerElement") as CounterViewModel;
-            Assert.AreEqual(spell.Count, 1);
+            Assert.AreEqual(1, spell.Count);
             d = d.AddSeconds(1);
             logParser.Push("Your target resisted the LowerElement spell.", d);
             spell = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Counter && a.Name == "LowerElement") as CounterViewModel;
-            Assert.AreEqual(spell.Count, 2);
+            Assert.AreEqual(2, spell.Count);
             d = d.AddSeconds(1);
             logParser.Push("Your target resisted the Rage of Vallon spell.", d);
             spell = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Counter && a.Name == "Rage of Vallon") as CounterViewModel;
-            Assert.AreEqual(spell.Count, 1);
+            Assert.AreEqual(1, spell.Count);
             d = d.AddSeconds(1);
             logParser.Push("Bristlebane Puppet is weakened by the Rage of Vallon.", d);
             spell = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Counter && a.Name == "Rage of Vallon") as CounterViewModel;
-            Assert.AreEqual(spell.Count, 2)
+            Assert.AreEqual(2, spell.Count)
                 ; d = d.AddSeconds(1);
             logParser.Push("Your target resisted the Rage of Vallon spell.", d);
             spell = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Counter && a.Name == "Rage of Vallon") as CounterViewModel;
-            Assert.AreEqual(spell.Count, 3);
+            Assert.AreEqual(3, spell.Count);
             d = d.AddSeconds(1);
             logParser.Push("Your Rage of Vallon spell has worn off.", d);
             logParser.Push("Your target resisted the Rage of Vallon spell.", d);
             spell = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Counter && a.Name == "Rage of Vallon") as CounterViewModel;
-            Assert.AreEqual(spell.Count, 4);
+            Assert.AreEqual(4, spell.Count);
 
             d = d.AddSeconds(1);
             logParser.Push("Bristlebane Puppet was tormented.", d);
@@ -61,7 +61,7 @@ namespace EQtoolsTests
             d = d.AddSeconds(1);
             logParser.Push("Your target resisted the Rage of Vallon spell.", d);
             spell = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Counter && a.Name == "Rage of Vallon") as CounterViewModel;
-            Assert.AreEqual(spell.Count, 5);
+            Assert.AreEqual(5, spell.Count);
 
         }
     }

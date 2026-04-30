@@ -27,7 +27,7 @@ namespace EQtoolsTests
             logParser.Push("Dread says 'TINIALITA'", DateTime.Now);
             dteffect = spellWindowViewModel.SpellList.FirstOrDefault(a => a.Name.StartsWith("--DT--"));
             Assert.IsNotNull(dteffect);
-            Assert.IsTrue(dteffect.Name == "--DT-- 'TINIALITA'");
+            Assert.AreEqual("--DT-- 'TINIALITA'", dteffect.Name);
         }
 
         [TestMethod]

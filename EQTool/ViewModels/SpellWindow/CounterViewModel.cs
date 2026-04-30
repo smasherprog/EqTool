@@ -1,6 +1,6 @@
 ﻿namespace EQTool.ViewModels.SpellWindow
 {
-    public class CounterViewModel : PersistentViewModel
+    public class CounterViewModel : BaseTriggerViewModel
     {
         private int _Count = 0;
         public int Count

@@ -304,7 +304,7 @@ namespace EQtoolsTests
                 TargetTotalDamage = 1000
             };
 
-            Assert.AreEqual(r.PercentOfTotalDamage, 10);
+            Assert.AreEqual(10, r.PercentOfTotalDamage);
         }
 
         [TestMethod]

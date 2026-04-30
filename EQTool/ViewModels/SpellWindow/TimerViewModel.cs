@@ -2,7 +2,7 @@
 
 namespace EQTool.ViewModels.SpellWindow
 {
-    public class TimerViewModel : PersistentViewModel
+    public class TimerViewModel : BaseTriggerViewModel
     {
         public TimeSpan TotalDuration { get; set; }
 

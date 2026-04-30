@@ -133,7 +133,7 @@ namespace EQtoolsTests
             Assert.AreEqual(AuctionType.WTB, result.Items[0].AuctionType);
             Assert.AreEqual("Withered Leather Leggings", result.Items[0].Name);
             Assert.AreEqual(2000, result.Items[0].Price);
-            Assert.AreEqual(1, result.Items.Count);
+            Assert.HasCount(1, result.Items);
         }
 
         [TestMethod]
@@ -494,7 +494,7 @@ namespace EQtoolsTests
             Assert.AreEqual(AuctionType.WTS, item.AuctionType);
             Assert.IsNull(item.Price);
 
-            Assert.AreEqual(2, result.Items.Count);
+            Assert.HasCount(2, result.Items);
         }
 
 
@@ -541,7 +541,7 @@ namespace EQtoolsTests
         {
             var result = discordAuctionParse.Parse("Rightnow auctions, 'WTB Mage Spell  Burnout lV & Eye of  Tallon PST'");
             Assert.AreEqual("Rightnow", result.Player);
-            Assert.AreEqual(1, result.Items.Count);
+            Assert.HasCount(1, result.Items);
         }
 
 

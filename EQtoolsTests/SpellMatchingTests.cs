@@ -68,7 +68,7 @@ namespace EQtoolsTests
 
             var effect = SpellList.FirstOrDefault() as TimerViewModel;
             Assert.IsNotNull(effect);
-            Assert.AreEqual(effect.TotalDuration.TotalSeconds, 210);
+            Assert.AreEqual(210, effect.TotalDuration.TotalSeconds);
         }
 
         [TestMethod]
@@ -85,7 +85,7 @@ namespace EQtoolsTests
 
             var effect = SpellList.FirstOrDefault();
             Assert.IsNotNull(effect);
-            Assert.AreEqual(effect.TotalDuration.TotalSeconds, 660);
+            Assert.AreEqual(660, effect.TotalDuration.TotalSeconds);
         }
 
         [TestMethod]
@@ -107,7 +107,7 @@ namespace EQtoolsTests
 
             var effect = SpellList.FirstOrDefault();
             Assert.IsNotNull(effect);
-            Assert.AreEqual(effect.ColumnVisibility, System.Windows.Visibility.Visible);
+            Assert.AreEqual(System.Windows.Visibility.Visible, effect.ColumnVisibility);
         }
 
         [TestMethod]
@@ -139,7 +139,7 @@ namespace EQtoolsTests
             var grimauraname = "Grim Aura";
             var grimaura = spells.AllSpells[grimauraname];
             var ret = EQTool.Services.SpellDurations.MatchClosestLevelToSpell(grimaura, PlayerClasses.ShadowKnight, 30);
-            Assert.AreEqual(ret, 30);
+            Assert.AreEqual(30, ret);
         }
 
         [TestMethod]
@@ -148,7 +148,7 @@ namespace EQtoolsTests
             var spellname = "JourneymanBoots";
             var spell = spells.AllSpells[spellname];
             var ret = EQTool.Services.SpellDurations.MatchClosestLevelToSpell(spell, PlayerClasses.ShadowKnight, 35);
-            Assert.AreEqual(ret, 35);
+            Assert.AreEqual(35, ret);
         }
 
         [TestMethod]
@@ -158,7 +158,7 @@ namespace EQtoolsTests
             var spell = spells.AllSpells[spellname];
             var spell1 = spells.AllSpells.Values.Where(a => a.cast_on_other == spell.cast_on_other);
             var duration = SpellDurations.GetDuration_inSeconds(spell, PlayerClasses.ShadowKnight, 35);
-            Assert.AreEqual(duration, 0);
+            Assert.AreEqual(0, duration);
         }
 
         [TestMethod]
@@ -167,7 +167,7 @@ namespace EQtoolsTests
             var spellname = "Mana Sieve";
             var spell = spells.AllSpells[spellname];
             var spell1 = spells.AllSpells.Values.Where(a => a.cast_on_other == spell.cast_on_other).ToList();
-            Assert.AreEqual(1, spell1.Count);
+            Assert.HasCount(1, spell1);
         }
 
         [TestMethod]
@@ -176,7 +176,7 @@ namespace EQtoolsTests
             var grimauraname = "Grim Aura";
             var grimaura = spells.AllSpells[grimauraname];
             var ret = EQTool.Services.SpellDurations.MatchClosestLevelToSpell(grimaura, PlayerClasses.ShadowKnight, 60);
-            Assert.AreEqual(ret, 60);
+            Assert.AreEqual(60, ret);
         }
 
         [TestMethod]
@@ -188,7 +188,7 @@ namespace EQtoolsTests
             player.Player.Level = 60;
             player.Player.PlayerClass = PlayerClasses.ShadowKnight;
             var ret = spellDurations.MatchClosestLevelToSpell(spell1, DateTime.Now);
-            Assert.AreEqual(ret.name, "Symbol of Naltron");
+            Assert.AreEqual("Symbol of Naltron", ret.name);
         }
 
         [TestMethod]
@@ -197,7 +197,7 @@ namespace EQtoolsTests
             var grimauraname = "Grim Aura";
             var grimaura = spells.AllSpells[grimauraname];
             var ret = EQTool.Services.SpellDurations.MatchClosestLevelToSpell(grimaura, PlayerClasses.Necromancer, 1);
-            Assert.AreEqual(ret, 4);
+            Assert.AreEqual(4, ret);
         }
 
         [TestMethod]
@@ -206,7 +206,7 @@ namespace EQtoolsTests
             var grimauraname = "Grim Aura";
             var grimaura = spells.AllSpells[grimauraname];
             var ret = EQTool.Services.SpellDurations.MatchClosestLevelToSpell(grimaura, PlayerClasses.Necromancer, 60);
-            Assert.AreEqual(ret, 60);
+            Assert.AreEqual(60, ret);
         }
 
         [TestMethod]
@@ -215,12 +215,12 @@ namespace EQtoolsTests
             var grimauraname = "Grim Aura";
             var grimaura = spells.AllSpells[grimauraname];
             var ret = EQTool.Services.SpellDurations.MatchClosestLevelToSpell(grimaura, null, 60);
-            Assert.AreEqual(ret, 60);
+            Assert.AreEqual(60, ret);
         }
 
         private List<SpellViewModel> SpellList => spellWindowViewModel.SpellList.Where(a => a.SpellViewModelType == SpellViewModelType.Spell).Cast<SpellViewModel>().ToList();
-        private List<PersistentViewModel> TimerList => spellWindowViewModel.SpellList.Where(a => a.SpellViewModelType == SpellViewModelType.Timer).ToList();
-        private List<PersistentViewModel> CounterList => spellWindowViewModel.SpellList.Where(a => a.SpellViewModelType == SpellViewModelType.Counter).ToList();
+        private List<BaseTriggerViewModel> TimerList => spellWindowViewModel.SpellList.Where(a => a.SpellViewModelType == SpellViewModelType.Timer).ToList();
+        private List<BaseTriggerViewModel> CounterList => spellWindowViewModel.SpellList.Where(a => a.SpellViewModelType == SpellViewModelType.Counter).ToList();
 
         [TestMethod]
         public void TestWarriorDiscipline()
@@ -269,7 +269,7 @@ namespace EQtoolsTests
             logParser.Push(line, DateTime.Now);
             var spellvm = SpellList.FirstOrDefault(a => a.Name == spellname);
             Assert.IsNotNull(spellvm);
-            Assert.AreEqual(spellvm.Name, spellname);
+            Assert.AreEqual(spellname, spellvm.Name);
         }
 
         [TestMethod]
@@ -288,11 +288,11 @@ namespace EQtoolsTests
             var timerText = $"{spellname} Cooldown";
             var spelltimer = TimerList.FirstOrDefault(a => a.Name == timerText) as TimerViewModel;
             Assert.IsNotNull(spelltimer);
-            Assert.AreEqual(spelltimer.Name, timerText);
+            Assert.AreEqual(timerText, spelltimer.Name);
 
             var spellvm = SpellList.FirstOrDefault(a => a.Name == spellname);
             Assert.IsNotNull(spellvm);
-            Assert.AreEqual(spellvm.Name, spellname);
+            Assert.AreEqual(spellname, spellvm.Name);
         }
 
         [TestMethod]
@@ -323,7 +323,7 @@ namespace EQtoolsTests
             logParser.Push(line, DateTime.Now);
             var spell = SpellList.FirstOrDefault();
             Assert.IsNotNull(spell);
-            Assert.AreEqual(spell.Name, "Aura of Black Petals");
+            Assert.AreEqual("Aura of Black Petals", spell.Name);
         }
 
         [TestMethod]
@@ -339,7 +339,7 @@ namespace EQtoolsTests
             logParser.Push(aegospell.cast_on_other, DateTime.Now);
             var spell = SpellList.FirstOrDefault();
             Assert.IsNotNull(spell);
-            Assert.AreEqual(spell.Name, aego);
+            Assert.AreEqual(aego, spell.Name);
         }
 
         [TestMethod]
@@ -356,7 +356,7 @@ namespace EQtoolsTests
             logParser.Push("Jobob " + spell.cast_on_other, DateTime.Now);
             var spellvm = SpellList.FirstOrDefault();
             Assert.IsNotNull(spell);
-            Assert.AreEqual(spellvm.Name, spellname);
+            Assert.AreEqual(spellname, spellvm.Name);
         }
 
         [TestMethod]
@@ -402,7 +402,7 @@ namespace EQtoolsTests
             logParser.Push("Jobob " + shissarspell.cast_on_other, DateTime.Now);
             var spellvm = SpellList.FirstOrDefault();
             Assert.IsNotNull(spellvm);
-            Assert.AreEqual(spellvm.Name, shissar);
+            Assert.AreEqual(shissar, spellvm.Name);
         }
 
         [TestMethod]
@@ -420,7 +420,7 @@ namespace EQtoolsTests
             logParser.Push(line, DateTime.Now);
             var spellvm = SpellList.FirstOrDefault();
             Assert.IsNotNull(spellvm);
-            Assert.AreEqual(spellvm.Name, shissar);
+            Assert.AreEqual(shissar, spellvm.Name);
         }
 
         [TestMethod]
@@ -433,7 +433,7 @@ namespace EQtoolsTests
             logParser.Push(line, DateTime.Now);
             var spellvm = SpellList.FirstOrDefault();
             Assert.IsNotNull(spellvm);
-            Assert.AreEqual(spellvm.Name, shissar);
+            Assert.AreEqual(shissar, spellvm.Name);
             Assert.AreEqual(5.4, spellvm.TotalDuration.TotalMinutes, .1);
         }
 
@@ -511,8 +511,8 @@ namespace EQtoolsTests
             var spellvm = SpellList.FirstOrDefault();
             Assert.IsNotNull(spellvm);
             Assert.AreEqual(6, spellvm.TotalDuration.TotalMinutes, .2);
-            Assert.AreEqual(spellvm.Name, spellname);
-            Assert.AreEqual(spellvm.GroupName, "an Jobober");
+            Assert.AreEqual(spellname, spellvm.Name);
+            Assert.AreEqual("an Jobober", spellvm.GroupName);
         }
 
         [TestMethod]
@@ -528,8 +528,8 @@ namespace EQtoolsTests
             var spellvm = SpellList.FirstOrDefault();
             Assert.IsNotNull(spellvm);
             Assert.AreEqual(144, spellvm.TotalDuration.TotalMinutes);
-            Assert.AreEqual(spellvm.Name, spellname);
-            Assert.AreEqual(spellvm.GroupName, "an Jobober");
+            Assert.AreEqual(spellname, spellvm.Name);
+            Assert.AreEqual("an Jobober", spellvm.GroupName);
         }
 
         [TestMethod]
@@ -545,8 +545,8 @@ namespace EQtoolsTests
             var spellvm = SpellList.FirstOrDefault();
             Assert.IsNotNull(spellvm);
             Assert.AreEqual(6, spellvm.TotalDuration.TotalMinutes, .2);
-            Assert.AreEqual(spellvm.Name, spellname);
-            Assert.AreEqual(spellvm.GroupName, "an Jobober rager");
+            Assert.AreEqual(spellname, spellvm.Name);
+            Assert.AreEqual("an Jobober rager", spellvm.GroupName);
         }
 
         [TestMethod]
@@ -563,8 +563,8 @@ namespace EQtoolsTests
             var spellvm = SpellList.FirstOrDefault();
             Assert.IsNotNull(spellvm);
             Assert.AreEqual(7, spellvm.TotalDuration.TotalMinutes, .2);
-            Assert.AreEqual(spellvm.Name, spellname);
-            Assert.AreEqual(spellvm.GroupName, "an Jobober rager");
+            Assert.AreEqual(spellname, spellvm.Name);
+            Assert.AreEqual("an Jobober rager", spellvm.GroupName);
         }
 
         [TestMethod]
@@ -580,8 +580,8 @@ namespace EQtoolsTests
             logParser.Push(line, DateTime.Now);
             var spellvm = SpellList.FirstOrDefault();
             Assert.IsNotNull(spellvm);
-            Assert.AreEqual(spellvm.Name, shissar);
-            Assert.AreEqual(spellvm.GroupName, " A bottomless feaster");
+            Assert.AreEqual(shissar, spellvm.Name);
+            Assert.AreEqual(" A bottomless feaster", spellvm.GroupName);
         }
 
         [TestMethod]
@@ -596,8 +596,8 @@ namespace EQtoolsTests
             logParser.Push(line, DateTime.Now);
             var spellvm = SpellList.FirstOrDefault();
             Assert.IsNotNull(spellvm);
-            Assert.AreEqual(spellvm.Name, shissar);
-            Assert.AreEqual(spellvm.GroupName, " A Ratling");
+            Assert.AreEqual(shissar, spellvm.Name);
+            Assert.AreEqual(" A Ratling", spellvm.GroupName);
         }
 
         [TestMethod]
@@ -612,8 +612,8 @@ namespace EQtoolsTests
             logParser.Push(line, DateTime.Now);
             var spellvm = SpellList.FirstOrDefault();
             Assert.IsNotNull(spellvm);
-            Assert.AreEqual(spellvm.Name, shissar);
-            Assert.AreEqual(spellvm.GroupName, " Gkrean Prophet of Tallon");
+            Assert.AreEqual(shissar, spellvm.Name);
+            Assert.AreEqual(" Gkrean Prophet of Tallon", spellvm.GroupName);
         }
 
         [TestMethod]
@@ -628,8 +628,8 @@ namespace EQtoolsTests
             logParser.Push(line, DateTime.Now);
             var spellvm = SpellList.FirstOrDefault();
             Assert.IsNotNull(spellvm);
-            Assert.AreEqual(spellvm.Name, shissar);
-            Assert.AreEqual(spellvm.GroupName, " A Ratling");
+            Assert.AreEqual(shissar, spellvm.Name);
+            Assert.AreEqual(" A Ratling", spellvm.GroupName);
         }
 
         [TestMethod]
@@ -644,8 +644,8 @@ namespace EQtoolsTests
             logParser.Push(line, DateTime.Now);
             var spellvm = SpellList.FirstOrDefault();
             Assert.IsNotNull(spellvm);
-            Assert.AreEqual(spellvm.Name, shissar);
-            Assert.AreEqual(spellvm.GroupName, " A Mangy Rat");
+            Assert.AreEqual(shissar, spellvm.Name);
+            Assert.AreEqual(" A Mangy Rat", spellvm.GroupName);
         }
 
         [TestMethod]
@@ -658,7 +658,7 @@ namespace EQtoolsTests
             logParser.Push(line, DateTime.Now);
             var spellvm = SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Spell);
             Assert.IsNotNull(spellvm);
-            Assert.AreEqual(spellvm.GroupName, "joe");
+            Assert.AreEqual("joe", spellvm.GroupName);
         }
 
         [TestMethod]
@@ -713,7 +713,6 @@ namespace EQtoolsTests
             var foundspell = spellDurations.MatchClosestLevelToSpell(spells1, DateTime.Now);
             var duration = SpellDurations.GetDuration_inSeconds(foundspell, PlayerClasses.Cleric, 54);
             Assert.IsNotNull(foundspell);
-            Assert.IsNotNull(duration);
             Assert.AreEqual("Clarity II", foundspell.name);
         }
 
@@ -757,7 +756,7 @@ namespace EQtoolsTests
             logParser.Push(line, DateTime.Now);
             var spellvm = SpellList.FirstOrDefault();
             Assert.IsNotNull(spellvm);
-            Assert.AreEqual(spellvm.TotalDuration.TotalSeconds, 3600);
+            Assert.AreEqual(3600, spellvm.TotalDuration.TotalSeconds);
         }
 
         [TestMethod]
@@ -773,8 +772,8 @@ namespace EQtoolsTests
             var foundspell = spellDurations.MatchClosestLevelToSpell(spells1, DateTime.Now);
             var foundlevel = SpellDurations.MatchClosestLevelToSpell(foundspell, PlayerClasses.Cleric, 54);
             var duration = SpellDurations.GetDuration_inSeconds(foundspell, PlayerClasses.Cleric, 54);
-            Assert.AreEqual(duration, 2100);
-            Assert.AreEqual(foundlevel, 54);
+            Assert.AreEqual(2100, duration);
+            Assert.AreEqual(54, foundlevel);
         }
 
         [TestMethod]
@@ -782,7 +781,7 @@ namespace EQtoolsTests
         {
             var line = "Sat Oct 08 11:31:38 2022";
             var d = LogFileDateTimeParse.ParseDateTime(line);
-            Assert.AreEqual(d.ToString("M'/'d'/'yyyy hh:mm:ss tt"), "10/8/2022 11:31:38 AM");
+            Assert.AreEqual("10/8/2022 11:31:38 AM", d.ToString("M'/'d'/'yyyy hh:mm:ss tt"));
         }
 
     }

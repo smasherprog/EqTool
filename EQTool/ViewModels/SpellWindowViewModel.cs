@@ -25,6 +25,8 @@ namespace EQTool.ViewModels
         private readonly PigParseApi pigParseApi;
         private readonly BoatScheduleService boatScheduleService;
         private readonly PetViewModel playerPet;
+        private readonly bool PCSpellsGroupedByTarget = true;
+        private readonly bool NPCSpellsGroupedByTarget = true;
 
         public SpellWindowViewModel(ActivePlayer activePlayer, IAppDispatcher appDispatcher, EQToolSettings settings, EQSpells spells, BoatScheduleService boatScheduleService, PigParseApi pigParseApi, PetViewModel playerPet)
         {
@@ -38,8 +40,8 @@ namespace EQTool.ViewModels
             Title = "Triggers v" + App.Version;
         }
 
-        private ObservableCollection<PersistentViewModel> _SpellList;
-        public ObservableCollection<PersistentViewModel> SpellList
+        private ObservableCollection<BaseTriggerViewModel> _SpellList;
+        public ObservableCollection<BaseTriggerViewModel> SpellList
         {
             get
             {
@@ -57,7 +59,7 @@ namespace EQTool.ViewModels
         {
             if (_SpellList == null)
             {
-                _SpellList = new ObservableCollection<PersistentViewModel>();
+                _SpellList = new ObservableCollection<BaseTriggerViewModel>();
                 var view = (ListCollectionView)CollectionViewSource.GetDefaultView(_SpellList);
                 view.GroupDescriptions.Add(new PropertyGroupDescription(nameof(TimerViewModel.GroupName)));
                 view.LiveGroupingProperties.Add(nameof(TimerViewModel.GroupName));
@@ -228,6 +230,20 @@ namespace EQTool.ViewModels
                 OnPropertyChanged();
             }
         }
+        private int CountPCGroupsIfSwapped()
+        {
+            var player = activePlayer.Player;
+            if (player?.PlayerClass == null)
+            {
+                return 0;
+            }
+            var pcspells = SpellList.Where(a => a.SpellViewModelType == SpellViewModelType.Spell && a.GroupName != EQSpells.SpaceYou).Cast<SpellViewModel>().ToList();
+            if (pcspells.Any())
+            {
+                return pcspells.GroupBy(a => a.GroupName).Count();
+            }
+            return 0;
+        }
 
         public void UpdateSpells(double dt_ms)
         {
@@ -237,7 +253,9 @@ namespace EQTool.ViewModels
                 var raidmodedetection = settings.RaidModeDetection ?? true;
                 SpellGroupCount = SpellList.Where(a => a.SpellViewModelType == SpellViewModelType.Spell).GroupBy(a => a.GroupName).Count();
                 RaidModeEnabled = raidmodedetection && player?.PlayerClass != null && SpellGroupCount > 10;
-                var itemstoremove = new List<PersistentViewModel>();
+                var itemstoremove = new List<BaseTriggerViewModel>();
+
+                //run all timers remaining duration down, and remove any that are expired
                 var timerTypes = new List<SpellViewModelType>() { SpellViewModelType.Roll, SpellViewModelType.Spell, SpellViewModelType.Timer };
                 foreach (var item in SpellList.Where(a => timerTypes.Contains(a.SpellViewModelType)).Cast<TimerViewModel>().ToList())
                 {
@@ -246,73 +264,45 @@ namespace EQTool.ViewModels
                     {
                         itemstoremove.Add(item);
                     }
+                }
+
+                //update rolls
+                var randomRollsVisible = settings.ShowRandomRolls == false ? System.Windows.Visibility.Collapsed : System.Windows.Visibility.Visible;
+                foreach (var item in SpellList.Where(a => a.SpellViewModelType == SpellViewModelType.Roll).Cast<TimerViewModel>().ToList())
+                {
+                    item.ColumnVisibility = randomRollsVisible;
+                }
+
+                //update spells
+                foreach (var s in SpellList.Where(a => a.SpellViewModelType == SpellViewModelType.Spell).Cast<SpellViewModel>().ToList())
+                {
                     var hidespell = false;
-                    if (!item.GroupName.StartsWith(" "))
+                    if (settings.YouOnlySpells)
                     {
-                        if (item.SpellViewModelType == SpellViewModelType.Timer)
-                        {
-                            if (settings.YouOnlySpells || RaidModeEnabled)
-                            {
-                                hidespell = true;
-                            }
-                            if (item.Name.StartsWith("Scout Charisa Timer"))
-                            {
-                                if (settings.ShowScoutRollTime == false)
-                                {
-                                    hidespell = true;
-                                }
-                                else
-                                {
-                                    hidespell = true;
-                                }
-                            }
-                            else if (item.Name.StartsWith("Ring 8 Roll Timer"))
-                            {
-                                if (settings.ShowRing8RollTime == false)
-                                {
-                                    hidespell = true;
-                                }
-                                else
-                                {
-                                    hidespell = true;
-                                }
-                            }
-                        }
-                        else if (item.SpellViewModelType == SpellViewModelType.Spell)
-                        {
-                            var s = item as SpellViewModel;
-                            if (settings.YouOnlySpells)
-                            {
-                                hidespell = true;
-                            }
-                            else if (RaidModeEnabled && player.PlayerClass.HasValue)
-                            {
-                                hidespell = SpellUIExtensions.HideSpell(new List<EQToolShared.Enums.PlayerClasses>() { player.PlayerClass.Value }, s.Classes) || s.SpellType == SpellType.Self;
-                            }
-                            else
-                            {
-                                hidespell = SpellUIExtensions.HideSpell(player.ShowSpellsForClasses, s.Classes);
-                            }
-                        }
+                        hidespell = true;
                     }
-                    else if (item.GroupName == CustomTimer.CustomerTime && item.SpellViewModelType == SpellViewModelType.Timer)
+                    else if (RaidModeEnabled && player.PlayerClass.HasValue)
                     {
-                        if (item.Name.StartsWith("Scout Charisa Timer"))
-                        {
-                            hidespell = false;
-                            if (settings.ShowScoutRollTime == false)
-                            {
-                                hidespell = true;
-                            }
-                        }
-                        else if (item.Name.StartsWith("Ring 8 Roll Timer"))
-                        {
-                            hidespell = false;
-                            if (settings.ShowRing8RollTime == false)
-                            {
-                                hidespell = true;
-                            }
-                        }
+                        hidespell = SpellUIExtensions.HideSpell(new List<EQToolShared.Enums.PlayerClasses>() { player.PlayerClass.Value }, s.Classes) || s.SpellType == SpellType.Self;
+                    }
+                    else
+                    {
+                        hidespell = SpellUIExtensions.HideSpell(player.ShowSpellsForClasses, s.Classes);
+                    }
+
+                    s.ColumnVisibility = hidespell ? System.Windows.Visibility.Collapsed : System.Windows.Visibility.Visible;
+                }
+
+                foreach (var item in SpellList.Where(a => a.SpellViewModelType == SpellViewModelType.Timer).Cast<TimerViewModel>().ToList())
+                {
+                    var hidespell = false;
+                    if (item.Name.StartsWith(CustomTimer.ScoutTime))
+                    {
+                        hidespell = settings.ShowScoutRollTime == false;
+                    }
+                    else if (item.Name.StartsWith(CustomTimer.Ring8))
+                    {
+                        hidespell = settings.ShowRing8RollTime == false;
                     }
 
                     item.ColumnVisibility = hidespell ? System.Windows.Visibility.Collapsed : System.Windows.Visibility.Visible;
@@ -342,15 +332,16 @@ namespace EQTool.ViewModels
                 }
 
                 var d = DateTime.Now;
-                var persistentTypes = new List<SpellViewModelType>() { SpellViewModelType.Persistent, SpellViewModelType.Counter };
-                foreach (var item in SpellList.Where(a => persistentTypes.Contains(a.SpellViewModelType)).Cast<PersistentViewModel>().ToList())
+                var persistentTypes = new List<SpellViewModelType>() { SpellViewModelType.Counter };
+                //these are for spells like mana seive which are a counter, or flame lick/ war epic procs which are persistent but we still want to hide them after a while if they aren't refreshed
+                foreach (var item in SpellList.Where(a => persistentTypes.Contains(a.SpellViewModelType)).Cast<BaseTriggerViewModel>().ToList())
                 {
                     var hidespell = false;
                     if (settings.YouOnlySpells)
                     {
                         hidespell = !(MasterNPCList.NPCs.Contains(item.GroupName.Trim()) || item.GroupName == CustomTimer.CustomerTime || item.GroupName == EQSpells.SpaceYou);
                     }
-                    if ((d - item.UpdatedDateTime).TotalMinutes > 20)
+                    if ((d - item.UpdatedDateTime).TotalMinutes > 10)
                     {
                         itemstoremove.Add(item);
                     }
@@ -358,30 +349,16 @@ namespace EQTool.ViewModels
                 }
 
                 var groupedspellList = SpellList.GroupBy(a => a.GroupName).ToList();
+
+
+
                 foreach (var triggers in groupedspellList)
                 {
-                    var allspellshidden = true;
+                    var allspellshidden = triggers.All(a => a.ColumnVisibility == System.Windows.Visibility.Collapsed);
+                    var headerVisibility = allspellshidden ? System.Windows.Visibility.Collapsed : System.Windows.Visibility.Visible;
                     foreach (var spell in triggers)
                     {
-                        if (spell.ColumnVisibility != System.Windows.Visibility.Collapsed)
-                        {
-                            allspellshidden = false;
-                        }
-                    }
-
-                    if (allspellshidden)
-                    {
-                        foreach (var spell in triggers)
-                        {
-                            spell.HeaderVisibility = System.Windows.Visibility.Collapsed;
-                        }
-                    }
-                    else
-                    {
-                        foreach (var spell in triggers)
-                        {
-                            spell.HeaderVisibility = System.Windows.Visibility.Visible;
-                        }
+                        spell.HeaderVisibility = headerVisibility;
                     }
 
                     var groupname = triggers.FirstOrDefault()?.GroupName ?? string.Empty;
@@ -603,7 +580,7 @@ namespace EQTool.ViewModels
 
                     if (RollTimerIcon == null)
                     {
-                        spells.AllSpells.TryGetValue("Feign Death", out var feignDeath);
+                        _ = spells.AllSpells.TryGetValue("Feign Death", out var feignDeath);
                         RollTimerIcon = feignDeath;
                     }
 

@@ -44,7 +44,7 @@ namespace EQTool.UI
             var name = (sender as Button).DataContext;
             appDispatcher.DispatchUI(() =>
             {
-                _ = spellWindowViewModel.SpellList.Remove(name as PersistentViewModel);
+                _ = spellWindowViewModel.SpellList.Remove(name as BaseTriggerViewModel);
             });
         }
 

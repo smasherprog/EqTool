@@ -24,8 +24,8 @@ namespace EQtoolsTests
         {
             logEvents.FactionEvent += (s, e) =>
             {
-                Assert.AreEqual(e.Faction, "ClawsofVeeshan");
-                Assert.AreEqual(e.FactionStatus, EQTool.Models.FactionStatus.GotBetter);
+                Assert.AreEqual("ClawsofVeeshan", e.Faction);
+                Assert.AreEqual(EQTool.Models.FactionStatus.GotBetter, e.FactionStatus);
                 IsCalled = true;
             };
             _ = factionParser.Handle("Your faction standing with ClawsofVeeshan got better.", DateTime.Now, 0);
@@ -37,8 +37,8 @@ namespace EQtoolsTests
         {
             logEvents.FactionEvent += (s, e) =>
             {
-                Assert.AreEqual(e.Faction, "Coldain");
-                Assert.AreEqual(e.FactionStatus, EQTool.Models.FactionStatus.CouldNotGetBetter);
+                Assert.AreEqual("Coldain", e.Faction);
+                Assert.AreEqual(EQTool.Models.FactionStatus.CouldNotGetBetter, e.FactionStatus);
                 IsCalled = true;
             };
             _ = factionParser.Handle("Your faction standing with Coldain could not possibly get any better.", DateTime.Now, 0);
@@ -50,8 +50,8 @@ namespace EQtoolsTests
         {
             logEvents.FactionEvent += (s, e) =>
             {
-                Assert.AreEqual(e.Faction, "Coldain");
-                Assert.AreEqual(e.FactionStatus, EQTool.Models.FactionStatus.CouldNotGetWorse);
+                Assert.AreEqual("Coldain", e.Faction);
+                Assert.AreEqual(EQTool.Models.FactionStatus.CouldNotGetWorse, e.FactionStatus);
                 IsCalled = true;
             };
             _ = factionParser.Handle("Your faction standing with Coldain could not possibly get any worse.", DateTime.Now, 0);
@@ -63,8 +63,8 @@ namespace EQtoolsTests
         {
             logEvents.FactionEvent += (s, e) =>
             {
-                Assert.AreEqual(e.Faction, "ClawsofVeeshan");
-                Assert.AreEqual(e.FactionStatus, EQTool.Models.FactionStatus.GotWorse);
+                Assert.AreEqual("ClawsofVeeshan", e.Faction);
+                Assert.AreEqual(EQTool.Models.FactionStatus.GotWorse, e.FactionStatus);
                 IsCalled = true;
             };
             _ = factionParser.Handle("Your faction standing with ClawsofVeeshan got worse.", DateTime.Now, 0);
