@@ -25,8 +25,8 @@ namespace EQTool.ViewModels
         private readonly PigParseApi pigParseApi;
         private readonly BoatScheduleService boatScheduleService;
         private readonly PetViewModel playerPet;
-        private readonly bool PCSpellsGroupedByTarget = false;
-        private readonly bool NPCSpellsGroupedByTarget = false;
+        private bool PCSpellsGroupedByTarget = false;
+        private bool NPCSpellsGroupedByTarget = false;
 
         public SpellWindowViewModel(ActivePlayer activePlayer, IAppDispatcher appDispatcher, EQToolSettings settings, EQSpells spells, BoatScheduleService boatScheduleService, PigParseApi pigParseApi, PetViewModel playerPet)
         {
@@ -48,17 +48,13 @@ namespace EQTool.ViewModels
                 CreateSpellList();
                 return _SpellList;
             }
-            set
-            {
-                _SpellList = value;
-                OnPropertyChanged();
-            }
         }
 
         private void CreateSpellList()
         {
             if (_SpellList == null)
             {
+                NPCSpellsGroupedByTarget = PCSpellsGroupedByTarget = false;
                 _SpellList = new ObservableCollection<BaseTriggerViewModel>();
                 var view = (ListCollectionView)CollectionViewSource.GetDefaultView(_SpellList);
                 view.GroupDescriptions.Add(new PropertyGroupDescription(nameof(TimerViewModel.GroupName)));
@@ -96,6 +92,7 @@ namespace EQTool.ViewModels
                         ProgressBarColor = boatcolor,
                     });
                 }
+                OnPropertyChanged(nameof(SpellList));
             }
         }
 
@@ -230,20 +227,6 @@ namespace EQTool.ViewModels
                 OnPropertyChanged();
             }
         }
-        private int CountPCGroupsIfSwapped()
-        {
-            var player = activePlayer.Player;
-            if (player?.PlayerClass == null)
-            {
-                return 0;
-            }
-            var pcspells = SpellList.Where(a => a.SpellViewModelType == SpellViewModelType.Spell && a.GroupName != EQSpells.SpaceYou).Cast<SpellViewModel>().ToList();
-            if (pcspells.Any())
-            {
-                return pcspells.GroupBy(a => a.GroupName).Count();
-            }
-            return 0;
-        }
 
         public void UpdateSpells(double dt_ms)
         {
@@ -357,36 +340,23 @@ namespace EQTool.ViewModels
                     }
                     item.ColumnVisibility = hidespell ? System.Windows.Visibility.Collapsed : System.Windows.Visibility.Visible;
                 }
+                var spellsByGroupName = SpellList.Where(a => a.SpellViewModelType == SpellViewModelType.Spell && a.GroupName != EQSpells.SpaceYou).Cast<SpellViewModel>().GroupBy(a => a.GroupName).ToList();
+                var spellsByName = SpellList.Where(a => a.SpellViewModelType == SpellViewModelType.Spell && a.GroupName != EQSpells.SpaceYou).Cast<SpellViewModel>().GroupBy(a => a.Name).ToList();
 
-                if (PCSpellsGroupedByTarget)
+                if (spellsByGroupName.Count < spellsByName.Count)
                 {
-                    foreach (var group in SpellList.Where(a => a.SpellViewModelType == SpellViewModelType.Spell).Cast<SpellViewModel>().GroupBy(a => a.GroupName))
+                    foreach (var spell in SpellList.Where(a => a.SpellViewModelType == SpellViewModelType.Spell && a.GroupName != EQSpells.SpaceYou).Cast<SpellViewModel>())
                     {
-                        var isNPCTarget = group.Key.StartsWith(" ") ? false : MasterNPCList.NPCs.Contains(group.Key.Trim());
-                        foreach (var s in group)
-                        {
-                            s.ColumnVisibility = System.Windows.Visibility.Visible;
-                            if (settings.YouOnlySpells && s.GroupName != CustomTimer.CustomerTime && !isNPCTarget)
-                            {
-                                s.ColumnVisibility = System.Windows.Visibility.Collapsed;
-                            }
-                            else if (RaidModeEnabled && player.PlayerClass.HasValue)
-                            {
-                                s.ColumnVisibility = SpellUIExtensions.HideSpell(new List<EQToolShared.Enums.PlayerClasses>() { player.PlayerClass.Value }, s.Classes) || s.SpellType == SpellType.Self ? System.Windows.Visibility.Collapsed : System.Windows.Visibility.Visible;
-                            }
-                            else
-                            {
-                                s.ColumnVisibility = SpellUIExtensions.HideSpell(player.ShowSpellsForClasses, s.Classes) ? System.Windows.Visibility.Collapsed : System.Windows.Visibility.Visible;
-                            }
-                        }
+                        (spell.Name, spell.GroupName) = (spell.GroupName, spell.Name);
                     }
+                    PCSpellsGroupedByTarget = !PCSpellsGroupedByTarget;
                 }
+
+
                 if (NPCSpellsGroupedByTarget)
                 {
 
                 }
-
-
 
                 var groupedspellList = SpellList.GroupBy(a => a.GroupName).ToList();
                 foreach (var triggers in groupedspellList)
