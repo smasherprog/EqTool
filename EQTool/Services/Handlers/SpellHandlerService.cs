@@ -93,7 +93,7 @@ namespace EQTool.Services.Handlers
             var spellname = spell.name;
             if (SpellsThatNeedTimers.Any(a => string.Equals(spell.name, a, StringComparison.OrdinalIgnoreCase)))
             {
-                spellWindowViewModel.TryAdd(new TimerViewModel
+                spellWindowViewModel.TryAdd(new SpellViewModel
                 {
                     PercentLeft = 100,
                     GroupName = spellname == "Theft of Thought" ? EQSpells.SpaceYou : targetName,
@@ -104,7 +104,11 @@ namespace EQTool.Services.Handlers
                     TotalDuration = TimeSpan.FromSeconds((int)((spell.recastTime + delayOffset) / 1000.0)),
                     TotalRemainingDuration = TimeSpan.FromSeconds((int)((spell.recastTime + delayOffset) / 1000.0)),
                     UpdatedDateTime = DateTime.Now,
-                    ProgressBarColor = Brushes.SkyBlue
+                    ProgressBarColor = Brushes.SkyBlue,
+                    IsTargetPlayer = false,
+                    BenefitDetriment = spell.benefit_detriment,
+                    Classes = spell.Classes,
+                    SpellType = spell.SpellType
                 });
             }
             else if (spell.name.EndsWith("Discipline"))
@@ -166,7 +170,7 @@ namespace EQTool.Services.Handlers
                     basetime = (int)(baseseconds - (playerleveltick * secondsperlevelrange));
                 }
 
-                spellWindowViewModel.TryAdd(new TimerViewModel
+                spellWindowViewModel.TryAdd(new SpellViewModel
                 {
                     PercentLeft = 100,
                     GroupName = targetName,
@@ -177,7 +181,11 @@ namespace EQTool.Services.Handlers
                     TotalDuration = TimeSpan.FromSeconds(basetime),
                     TotalRemainingDuration = TimeSpan.FromSeconds(basetime),
                     UpdatedDateTime = DateTime.Now,
-                    ProgressBarColor = Brushes.SkyBlue
+                    ProgressBarColor = Brushes.SkyBlue,
+                    IsTargetPlayer = false,
+                    BenefitDetriment = spell.benefit_detriment,
+                    Classes = spell.Classes,
+                    SpellType = spell.SpellType
                 });
             }
 
