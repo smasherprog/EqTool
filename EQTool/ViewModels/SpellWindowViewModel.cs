@@ -340,22 +340,27 @@ namespace EQTool.ViewModels
                     }
                     item.ColumnVisibility = hidespell ? System.Windows.Visibility.Collapsed : System.Windows.Visibility.Visible;
                 }
-                var spellsByGroupName = SpellList.Where(a => a.SpellViewModelType == SpellViewModelType.Spell && a.GroupName != EQSpells.SpaceYou).Cast<SpellViewModel>().GroupBy(a => a.GroupName).ToList();
-                var spellsByName = SpellList.Where(a => a.SpellViewModelType == SpellViewModelType.Spell && a.GroupName != EQSpells.SpaceYou).Cast<SpellViewModel>().GroupBy(a => a.Name).ToList();
+                var spellsByGroupName = SpellList.Where(a => a.SpellViewModelType == SpellViewModelType.Spell && a.GroupName != EQSpells.SpaceYou && a.IsTargetPlayer).Cast<SpellViewModel>().GroupBy(a => a.GroupName).ToList();
+                var spellsByName = SpellList.Where(a => a.SpellViewModelType == SpellViewModelType.Spell && a.GroupName != EQSpells.SpaceYou && a.IsTargetPlayer).Cast<SpellViewModel>().GroupBy(a => a.Name).ToList();
 
                 if (spellsByGroupName.Count < spellsByName.Count)
                 {
-                    foreach (var spell in SpellList.Where(a => a.SpellViewModelType == SpellViewModelType.Spell && a.GroupName != EQSpells.SpaceYou).Cast<SpellViewModel>())
+                    foreach (var spell in SpellList.Where(a => a.SpellViewModelType == SpellViewModelType.Spell && a.GroupName != EQSpells.SpaceYou && a.IsTargetPlayer).Cast<SpellViewModel>())
                     {
                         (spell.Name, spell.GroupName) = (spell.GroupName, spell.Name);
                     }
                     PCSpellsGroupedByTarget = !PCSpellsGroupedByTarget;
                 }
 
-
+                spellsByGroupName = SpellList.Where(a => a.SpellViewModelType == SpellViewModelType.Spell && a.GroupName != EQSpells.SpaceYou && !a.IsTargetPlayer).Cast<SpellViewModel>().GroupBy(a => a.GroupName).ToList();
+                spellsByName = SpellList.Where(a => a.SpellViewModelType == SpellViewModelType.Spell && a.GroupName != EQSpells.SpaceYou && !a.IsTargetPlayer).Cast<SpellViewModel>().GroupBy(a => a.Name).ToList();
                 if (NPCSpellsGroupedByTarget)
                 {
-
+                    foreach (var spell in SpellList.Where(a => a.SpellViewModelType == SpellViewModelType.Spell && a.GroupName != EQSpells.SpaceYou && !a.IsTargetPlayer).Cast<SpellViewModel>())
+                    {
+                        (spell.Name, spell.GroupName) = (spell.GroupName, spell.Name);
+                    }
+                    NPCSpellsGroupedByTarget = !NPCSpellsGroupedByTarget;
                 }
 
                 var groupedspellList = SpellList.GroupBy(a => a.GroupName).ToList();
@@ -390,18 +395,16 @@ namespace EQTool.ViewModels
         {
             appDispatcher.DispatchUI(() =>
             {
+                PCSpellsGroupedByTarget = false;
                 var spellstoremove = SpellList
-                .Where(a => a.SpellViewModelType == SpellViewModelType.Spell)
+                .Where(a => a.SpellViewModelType == SpellViewModelType.Spell && a.IsTargetPlayer)
                 .Cast<SpellViewModel>()
                 .Where(a => a.GroupName != EQSpells.SpaceYou)
                 .ToList();
 
                 foreach (var spell in spellstoremove)
                 {
-                    if (!MasterNPCList.NPCs.Contains(spell.GroupName.Trim()))
-                    {
-                        _ = SpellList.Remove(spell);
-                    }
+                    _ = SpellList.Remove(spell);
                 }
             });
         }
@@ -411,10 +414,18 @@ namespace EQTool.ViewModels
         {
             appDispatcher.DispatchUI(() =>
             {
+                var spellname = match.Name;
+                var groupname = match.GroupName;
+                if ((match.IsTargetPlayer && PCSpellsGroupedByTarget) || (!match.IsTargetPlayer && NPCSpellsGroupedByTarget && match.Name != EQSpells.SpaceYou))
+                {
+                    match.GroupName = spellname;
+                    match.Name = groupname;
+                }
+
                 if (overWrite)
                 {
                     if (SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Spell &&
-                    string.Equals(a.Name, match.Name, StringComparison.OrdinalIgnoreCase) &&
+                    string.Equals(match.Name, a.Name, StringComparison.OrdinalIgnoreCase) &&
                     string.Equals(match.GroupName, a.GroupName, StringComparison.OrdinalIgnoreCase)) is SpellViewModel s)
                     {
                         _ = SpellList.Remove(s);
