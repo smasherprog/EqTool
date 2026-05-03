@@ -25,6 +25,14 @@ namespace EQTool.ViewModels.SpellWindow
                 {
                     ProgressBarColor = Brushes.OrangeRed;
                 }
+                else if (_BenefitDetrimentFlag == SpellBenefitDetriment.Cooldown)
+                {
+                    ProgressBarColor = Brushes.HotPink;
+                }
+                else if (_BenefitDetrimentFlag == SpellBenefitDetriment.Discpline)
+                {
+                    ProgressBarColor = Brushes.Orange;
+                }
                 else
                 {
                     ProgressBarColor = Brushes.DarkSeaGreen;

@@ -2,7 +2,6 @@
 using EQTool.ViewModels;
 using EQTool.ViewModels.SpellWindow;
 using System;
-using System.Linq;
 using System.Windows.Media;
 
 namespace EQTool.Services.Handlers
@@ -23,7 +22,7 @@ namespace EQTool.Services.Handlers
         {
             if (e.Line == "The Avatar of War shouts 'Who dares defile my temple?! Come forth and face me!'")
             {
-                spells.AllSpells.TryGetValue("Spirit of Wolf", out var spell);
+                _ = spells.AllSpells.TryGetValue("Spirit of Wolf", out var spell);
                 appDispatcher.DispatchUI(() =>
                 {
                     spellWindowViewModel.TryAdd(new TimerViewModel
@@ -35,6 +34,7 @@ namespace EQTool.Services.Handlers
                         Icon = spell.SpellIcon,
                         TotalDuration = TimeSpan.FromMinutes(20),
                         TotalRemainingDuration = TimeSpan.FromMinutes(20),
+
                         UpdatedDateTime = DateTime.Now,
                         ProgressBarColor = Brushes.Orchid
                     }, true);

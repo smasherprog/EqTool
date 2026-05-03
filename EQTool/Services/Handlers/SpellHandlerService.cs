@@ -90,6 +90,13 @@ namespace EQTool.Services.Handlers
         public void Handle(Spell spell, string targetName, int delayOffset, DateTime timestamp)
         {
             var targetclass = playerTrackerService.GetPlayer(targetName)?.PlayerClass;
+            var grpname = targetName;
+            var isnpc = false;
+            if (MasterNPCList.NPCs.Contains(grpname.Trim()))
+            {
+                grpname = " " + grpname.Trim();
+                isnpc = true;
+            }
             var spellname = spell.name;
             if (SpellsThatNeedTimers.Any(a => string.Equals(spell.name, a, StringComparison.OrdinalIgnoreCase)))
             {
@@ -104,9 +111,8 @@ namespace EQTool.Services.Handlers
                     TotalDuration = TimeSpan.FromSeconds((int)((spell.recastTime + delayOffset) / 1000.0)),
                     TotalRemainingDuration = TimeSpan.FromSeconds((int)((spell.recastTime + delayOffset) / 1000.0)),
                     UpdatedDateTime = DateTime.Now,
-                    ProgressBarColor = Brushes.SkyBlue,
-                    IsTargetPlayer = false,
-                    BenefitDetriment = spell.benefit_detriment,
+                    IsTargetPlayer = !isnpc,
+                    BenefitDetriment = EQToolShared.Enums.SpellBenefitDetriment.Cooldown,
                     Classes = spell.Classes,
                     SpellType = spell.SpellType
                 });
@@ -169,8 +175,7 @@ namespace EQTool.Services.Handlers
                     float playerleveltick = playerlevel - 56;
                     basetime = (int)(baseseconds - (playerleveltick * secondsperlevelrange));
                 }
-
-                spellWindowViewModel.TryAdd(new SpellViewModel
+                var spellCooldown = new SpellViewModel
                 {
                     PercentLeft = 100,
                     GroupName = targetName,
@@ -181,21 +186,14 @@ namespace EQTool.Services.Handlers
                     TotalDuration = TimeSpan.FromSeconds(basetime),
                     TotalRemainingDuration = TimeSpan.FromSeconds(basetime),
                     UpdatedDateTime = DateTime.Now,
-                    ProgressBarColor = Brushes.SkyBlue,
-                    IsTargetPlayer = false,
-                    BenefitDetriment = spell.benefit_detriment,
+                    IsTargetPlayer = true,
+                    BenefitDetriment = EQToolShared.Enums.SpellBenefitDetriment.Cooldown,
                     Classes = spell.Classes,
                     SpellType = spell.SpellType
-                });
+                };
+                spellWindowViewModel.TryAdd(spellCooldown);
             }
 
-            var grpname = targetName;
-            var isnpc = false;
-            if (MasterNPCList.NPCs.Contains(grpname.Trim()))
-            {
-                grpname = " " + grpname.Trim();
-                isnpc = true;
-            }
             var needscount = SpellsThatNeedCounts.Contains(spellname);
             if (needscount)
             {
@@ -257,7 +255,7 @@ namespace EQTool.Services.Handlers
                         IsTargetPlayer = !isnpc,
                         UpdatedDateTime = DateTime.Now,
                         PercentLeft = 100,
-                        BenefitDetriment = spell.benefit_detriment,
+                        BenefitDetriment = spell.name.Contains("Discipline") ? EQToolShared.Enums.SpellBenefitDetriment.Discpline : spell.benefit_detriment,
                         SpellType = spell.SpellType,
                         GroupName = grpname,
                         TargetClass = targetclass,

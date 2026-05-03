@@ -340,23 +340,36 @@ namespace EQTool.ViewModels
                     }
                     item.ColumnVisibility = hidespell ? System.Windows.Visibility.Collapsed : System.Windows.Visibility.Visible;
                 }
-                var spellsByGroupName = SpellList.Where(a => a.SpellViewModelType == SpellViewModelType.Spell && a.GroupName != EQSpells.SpaceYou && a.IsTargetPlayer).Cast<SpellViewModel>().GroupBy(a => a.GroupName).ToList();
-                var spellsByName = SpellList.Where(a => a.SpellViewModelType == SpellViewModelType.Spell && a.GroupName != EQSpells.SpaceYou && a.IsTargetPlayer).Cast<SpellViewModel>().GroupBy(a => a.Name).ToList();
 
-                if (spellsByGroupName.Count < spellsByName.Count)
+                var spellsQuery = SpellList.Where(a =>
+                a.SpellViewModelType == SpellViewModelType.Spell &&
+                a.GroupName != EQSpells.SpaceYou &&
+                a.GroupName != playerPet.PetName &&
+                a.IsTargetPlayer).Cast<SpellViewModel>().ToList();
+
+                var spellsByGroupName = spellsQuery.GroupBy(a => a.GroupName).ToList();
+                var spellsByName = spellsQuery.GroupBy(a => a.Name).ToList();
+
+                if (spellsByGroupName.Count > spellsByName.Count)
                 {
-                    foreach (var spell in SpellList.Where(a => a.SpellViewModelType == SpellViewModelType.Spell && a.GroupName != EQSpells.SpaceYou && a.IsTargetPlayer).Cast<SpellViewModel>())
+                    foreach (var spell in spellsQuery)
                     {
                         (spell.Name, spell.GroupName) = (spell.GroupName, spell.Name);
                     }
                     PCSpellsGroupedByTarget = !PCSpellsGroupedByTarget;
                 }
 
-                spellsByGroupName = SpellList.Where(a => a.SpellViewModelType == SpellViewModelType.Spell && a.GroupName != EQSpells.SpaceYou && !a.IsTargetPlayer).Cast<SpellViewModel>().GroupBy(a => a.GroupName).ToList();
-                spellsByName = SpellList.Where(a => a.SpellViewModelType == SpellViewModelType.Spell && a.GroupName != EQSpells.SpaceYou && !a.IsTargetPlayer).Cast<SpellViewModel>().GroupBy(a => a.Name).ToList();
-                if (NPCSpellsGroupedByTarget)
+                spellsQuery = SpellList.Where(a =>
+                a.SpellViewModelType == SpellViewModelType.Spell &&
+                !a.IsTargetPlayer &&
+                a.GroupName != playerPet.PetName &&
+                a.IsTargetPlayer).Cast<SpellViewModel>().ToList();
+
+                spellsByGroupName = spellsQuery.GroupBy(a => a.GroupName).ToList();
+                spellsByName = spellsQuery.GroupBy(a => a.Name).ToList();
+                if (spellsByGroupName.Count > spellsByName.Count)
                 {
-                    foreach (var spell in SpellList.Where(a => a.SpellViewModelType == SpellViewModelType.Spell && a.GroupName != EQSpells.SpaceYou && !a.IsTargetPlayer).Cast<SpellViewModel>())
+                    foreach (var spell in spellsQuery)
                     {
                         (spell.Name, spell.GroupName) = (spell.GroupName, spell.Name);
                     }
