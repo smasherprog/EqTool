@@ -19,7 +19,7 @@
             <GradientStop Color="Gray" Offset="1"/>
         </LinearGradientBrush>
     </Window.Resources>
-    <Border CornerRadius="5" BorderBrush="{StaticResource WindowFrameBrush}" BorderThickness="1,0,1,1">
+    <Border x:Name="WindowOuterBorder" CornerRadius="5" BorderBrush="{StaticResource WindowFrameBrush}" BorderThickness="1,0,1,1">
         <Grid>
             <Grid.RowDefinitions>
                 <RowDefinition Height="Auto" />
@@ -29,7 +29,7 @@
                 <RowDefinition Height="Auto" />
                 <RowDefinition Height="*" />
             </Grid.RowDefinitions>
-            <Border Background="{StaticResource WindowFrameBrush}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" CornerRadius="5,5,0,0" Margin="-1,0,-1,0" MouseLeftButtonDown="DragWindow">
+            <Border BorderThickness="0" x:Name="TitleBarBorder" Background="{StaticResource WindowFrameBrush}" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" CornerRadius="5,5,0,0" Margin="-1,0,-1,0" MouseLeftButtonDown="DragWindow">
                 <Grid>
                     <TextBlock Foreground="White" FontWeight="Bold" VerticalAlignment="Center" Margin="10,1,10,1" Text="{Binding RelativeSource={RelativeSource Mode=FindAncestor, AncestorType={x:Type Window}}, Path=Title}"/>
                     <StackPanel Orientation="Horizontal"  HorizontalAlignment="Center">
@@ -108,7 +108,7 @@
                 <TextBlock HorizontalAlignment="Left" Grid.Column="3" FontWeight="Bold" Text="{Binding SessionPlayerDamage.CurrentSessionPlayerDamage.HighestHit}" ToolTip="Biggest single hit!" />
                 <TextBlock HorizontalAlignment="Left" Grid.Column="4" FontWeight="Bold" Text="{Binding SessionPlayerDamage.CurrentSessionPlayerDamage.TargetTotalDamage}" ToolTip="Total Damage done!" />
             </Grid>
-            <ListView Name="DpsList" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling" Grid.Row="5" Background="Transparent">
+            <ListView BorderThickness="0" Name="DpsList" VirtualizingPanel.IsVirtualizing="True" VirtualizingPanel.VirtualizationMode="Recycling" Grid.Row="5" Background="Transparent">
                 <ListView.ItemTemplate>
                     <DataTemplate>
                         <Grid>

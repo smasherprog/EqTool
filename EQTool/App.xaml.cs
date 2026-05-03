@@ -19,7 +19,6 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Forms;
 using System.Windows.Media;
 using Application = System.Windows.Application;
 using MessageBox = System.Windows.MessageBox;
@@ -35,7 +34,7 @@ namespace EQTool
 
         private System.Windows.Forms.MenuItem MapMenuItem;
         private System.Windows.Forms.MenuItem SpellsMenuItem;
-        private System.Windows.Forms.MenuItem DpsMeterMenuItem; 
+        private System.Windows.Forms.MenuItem DpsMeterMenuItem;
         private System.Windows.Forms.MenuItem OverlayMenuItem;
         private System.Windows.Forms.MenuItem SettingsMenuItem;
         private System.Windows.Forms.MenuItem MobInfoMenuItem;
@@ -257,7 +256,7 @@ namespace EQTool
             SettingsMenuItem = new System.Windows.Forms.MenuItem("Settings", ToggleSettingsWindow);
             SpellsMenuItem = new System.Windows.Forms.MenuItem("Triggers", ToggleSpellsWindow);
             MapMenuItem = new System.Windows.Forms.MenuItem("Map", ToggleMapWindow);
-            DpsMeterMenuItem = new System.Windows.Forms.MenuItem("Dps", ToggleDPSWindow); 
+            DpsMeterMenuItem = new System.Windows.Forms.MenuItem("Dps", ToggleDPSWindow);
             OverlayMenuItem = new System.Windows.Forms.MenuItem("Overlay", ToggleOverlayWindow);
             MobInfoMenuItem = new System.Windows.Forms.MenuItem("Mob Info", ToggleMobInfoWindow);
             var gitHubMenuItem = new System.Windows.Forms.MenuItem("Suggestions", Suggestions);
@@ -279,7 +278,7 @@ namespace EQTool
                 {
                     //GroupSuggestionsMenuItem,
                     whythepig,
-                    DiscordLoginMenuItem, 
+                    DiscordLoginMenuItem,
                     OverlayMenuItem,
                     DpsMeterMenuItem,
                     MapMenuItem,
@@ -292,7 +291,11 @@ namespace EQTool
                     new System.Windows.Forms.MenuItem("Exit", OnExit)
                 }),
             };
-
+#if BETA || DEBUG
+            SystemTrayIcon.Icon = EQTool.Properties.Resources.sickpic;
+#else
+            SystemTrayIcon.Icon = EQTool.Properties.Resources.pig;
+#endif
             if (EQToolSettings.LoginMiddleMand)
             {
                 var loginmiddlemand = container.Resolve<LoginMiddlemand>();
@@ -398,15 +401,6 @@ namespace EQTool
             ((App)System.Windows.Application.Current).UpdateBackgroundOpacity("MyWindowStyleTrigger", EQToolSettings.SpellWindowState.Opacity.Value);
         }
 
-        private void UpdateTrayIcon()
-        {
-#if BETA || DEBUG
-            SystemTrayIcon.Icon = EQTool.Properties.Resources.sickpic;
-#else
-            SystemTrayIcon.Icon = EQTool.Properties.Resources.pig;
-#endif
-        }
-
         public void UpdateBackgroundOpacity(string name, double opacity)
         {
             var newcolor = (SolidColorBrush)new BrushConverter().ConvertFrom("#1a1919");
@@ -479,7 +473,7 @@ namespace EQTool
             DiscordLoginMenuItem.Enabled = false;
             DiscordLoginMenuItem.Text = "Logging in...";
             var authService = new DiscordAuthService();
-            authService.LoginAsync().ContinueWith(t =>
+            _ = authService.LoginAsync().ContinueWith(t =>
             {
                 var result = t.Result;
                 Dispatcher.Invoke(() =>
@@ -645,21 +639,21 @@ namespace EQTool
             {
                 if (item is DPSMeter w)
                 {
-                    w.Topmost = EQToolSettings.DpsWindowState.AlwaysOnTop; 
+                    w.Topmost = EQToolSettings.DpsWindowState.AlwaysOnTop;
                 }
                 else if (item is MappingWindow w1)
                 {
-                    w1.Topmost = EQToolSettings.MapWindowState.AlwaysOnTop; 
+                    w1.Topmost = EQToolSettings.MapWindowState.AlwaysOnTop;
                 }
                 else if (item is MobInfo w2)
                 {
-                    w2.Topmost = EQToolSettings.MobWindowState.AlwaysOnTop; 
+                    w2.Topmost = EQToolSettings.MobWindowState.AlwaysOnTop;
                 }
                 else if (item is SpellWindow w3)
                 {
-                    w3.Topmost = EQToolSettings.SpellWindowState.AlwaysOnTop; 
+                    w3.Topmost = EQToolSettings.SpellWindowState.AlwaysOnTop;
                 }
             }
-        } 
+        }
     }
 }
