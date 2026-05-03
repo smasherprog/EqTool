@@ -7,6 +7,7 @@ using System.Runtime.InteropServices;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Threading;
 
@@ -222,9 +223,15 @@ namespace EQTool.UI
                 return false;
             }
 
-            var thisRect = new Rect(Left, Top, Width, Height);
-            var eqWpfRect = new Rect(eqRect.Left, eqRect.Top, eqRect.Right - eqRect.Left, eqRect.Bottom - eqRect.Top);
-            return thisRect.IntersectsWith(eqWpfRect);
+            var thisHandle = new WindowInteropHelper(this).Handle;
+            if (thisHandle == IntPtr.Zero || !GetWindowRect(thisHandle, out var thisRect))
+            {
+                return false;
+            }
+
+            // Both rects are in physical pixels — safe to compare directly
+            return thisRect.Left < eqRect.Right && thisRect.Right > eqRect.Left &&
+                   thisRect.Top < eqRect.Bottom && thisRect.Bottom > eqRect.Top;
         }
 
         protected override void OnClosing(CancelEventArgs e)
