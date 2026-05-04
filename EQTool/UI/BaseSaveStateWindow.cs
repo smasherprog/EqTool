@@ -157,10 +157,13 @@ namespace EQTool.UI
 
         private void OnTransparencyTimerTick(object sender, EventArgs e)
         {
-            _transparencyTimer.Stop();
             if (IsOverlappingEQGame())
             {
                 HideChrome();
+            }
+            else
+            {
+                RestoreChrome();
             }
         }
 
