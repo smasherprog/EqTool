@@ -170,7 +170,7 @@ namespace EQTool.Services.Parsing
                 {
                     Caster = sender,
                     Position = position,
-                    Recipient = recipient,
+                    Recipient = recipient?.Trim(),
                     Tag = tag,
                     TimeStamp = timestamp
                 };
