@@ -95,17 +95,7 @@ namespace EQTool.ViewModels
                 ((App)System.Windows.Application.Current).UpdateBackgroundOpacity("MyWindowStyleTrigger", toolSettings.SpellWindowState.Opacity.Value);
                 OnPropertyChanged();
             }
-        }
-
-        public bool RaidModeDetection
-        {
-            get => toolSettings.RaidModeDetection ?? true;
-            set
-            {
-                toolSettings.RaidModeDetection = value;
-                OnPropertyChanged();
-            }
-        }
+        } 
 
         public bool ShowRing8RollTime
         {

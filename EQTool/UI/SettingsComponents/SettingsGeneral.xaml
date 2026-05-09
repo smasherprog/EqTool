@@ -302,11 +302,7 @@
                     </StackPanel>
                     <DockPanel>
                         <TextBlock MaxWidth="400" TextWrapping="Wrap" Text="Boat times are constantly being tweaked. More boats will be working soon!" />
-                    </DockPanel>
-                    <StackPanel Orientation="Horizontal" ToolTip="This setting will switch to show only spells you care about when raid mode is detected.">
-                        <TextBlock Text="Raid Detection" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
-                        <CheckBox IsChecked="{Binding RaidModeDetection}" Click="Savesettings"></CheckBox>
-                    </StackPanel>
+                    </DockPanel> 
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Always on top" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
                         <CheckBox IsChecked="{Binding SpellAlwaysOnTop}" Click="SaveAlwaysOntopCheckBoxSettings" ></CheckBox>

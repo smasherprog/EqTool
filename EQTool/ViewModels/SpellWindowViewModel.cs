@@ -192,6 +192,18 @@ namespace EQTool.ViewModels
             }
         }
 
+
+        private bool _RaidModeDetection = true;
+        public bool RaidModeDetection
+        {
+            get => _RaidModeDetection;
+            set
+            {
+                _RaidModeDetection = value;
+                OnPropertyChanged();
+            }
+        }
+
         private int _SpellGroupCount = 0;
         private int SpellGroupCount
         {
@@ -233,9 +245,8 @@ namespace EQTool.ViewModels
             appDispatcher.DispatchUI(() =>
             {
                 var player = activePlayer.Player;
-                var raidmodedetection = settings.RaidModeDetection ?? true;
                 SpellGroupCount = SpellList.Where(a => a.SpellViewModelType == SpellViewModelType.Spell).GroupBy(a => a.GroupName).Count();
-                RaidModeEnabled = raidmodedetection && player?.PlayerClass != null && SpellGroupCount > 10;
+                RaidModeEnabled = RaidModeDetection && player?.PlayerClass != null && SpellGroupCount > 10;
                 var itemstoremove = new List<BaseTriggerViewModel>();
 
                 //run all timers remaining duration down, and remove any that are expired

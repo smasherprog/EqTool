@@ -152,13 +152,6 @@ namespace EQTool.Models
             get => _ShowScoutRollTime ?? true;
             set { if (value == null) { _ShowScoutRollTime = true; } else { _ShowScoutRollTime = value; } }
         }
-
-        private bool? _RaidModeDetection;
-        public bool? RaidModeDetection
-        {
-            get => _RaidModeDetection ?? true;
-            set { if (value == null) { _RaidModeDetection = true; } else { _RaidModeDetection = value; } }
-        }
         public string DiscordUsername { get; set; }
         public string DiscordId { get; set; }
         public string DiscordApiToken { get; set; }
