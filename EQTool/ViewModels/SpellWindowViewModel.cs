@@ -355,7 +355,6 @@ namespace EQTool.ViewModels
                 var spellsQuery = SpellList.Where(a =>
                 a.SpellViewModelType == SpellViewModelType.Spell &&
                 a.GroupName != EQSpells.SpaceYou &&
-                a.GroupName != playerPet.PetName &&
                 a.IsTargetPlayer).Cast<SpellViewModel>().ToList();
 
                 var spellsByGroupName = spellsQuery.GroupBy(a => a.GroupName).ToList();
