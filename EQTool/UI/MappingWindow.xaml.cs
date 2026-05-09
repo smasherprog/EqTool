@@ -6,7 +6,9 @@ using EQToolShared.Enums;
 using System;
 using System.ComponentModel;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace EQTool.UI
 {
@@ -168,6 +170,34 @@ namespace EQTool.UI
         private void LogParser_PlayerLocationEvent(object sender, PlayerLocationEvent e)
         {
             mapViewModel.UpdateLocation(e.Location);
+        }
+
+        protected override void ApplyFadeEffect()
+        {
+            _savedWindowBackground = Background;
+            Background = new SolidColorBrush(Colors.Black) { Opacity = 0.25 };
+            if (FindName("WindowOuterBorder") is Border outerBorder)
+            {
+                _savedBorderThickness = outerBorder.BorderThickness;
+                outerBorder.BorderThickness = new Thickness(0);
+            }
+            if (FindName("TitleBarBorder") is Border titleBar)
+            {
+                titleBar.Opacity = 0.0;
+            }
+        }
+
+        protected override void RemoveFadeEffect()
+        {
+            Background = _savedWindowBackground;
+            if (FindName("WindowOuterBorder") is Border outerBorder)
+            {
+                outerBorder.BorderThickness = _savedBorderThickness;
+            }
+            if (FindName("TitleBarBorder") is Border titleBar)
+            {
+                titleBar.Opacity = 1.0;
+            }
         }
 
         protected override void OnClosing(CancelEventArgs e)

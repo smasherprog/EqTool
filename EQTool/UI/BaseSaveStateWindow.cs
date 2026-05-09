@@ -28,8 +28,8 @@ namespace EQTool.UI
         };
 
         private bool _isTransparent = false;
-        private Thickness _savedBorderThickness;
-        private Brush _savedWindowBackground;
+        protected Thickness _savedBorderThickness;
+        protected Brush _savedWindowBackground;
 
         [DllImport("user32.dll")]
         private static extern bool GetWindowRect(IntPtr hWnd, out WindowExtensions.RECT lpRect);
@@ -175,6 +175,22 @@ namespace EQTool.UI
             }
 
             _isTransparent = true;
+            ApplyFadeEffect();
+        }
+
+        private void RestoreChrome()
+        {
+            if (!_isTransparent)
+            {
+                return;
+            }
+
+            _isTransparent = false;
+            RemoveFadeEffect();
+        }
+
+        protected virtual void ApplyFadeEffect()
+        {
             _savedWindowBackground = Background;
             Background = Brushes.Transparent;
             if (FindName("WindowOuterBorder") is Border outerBorder)
@@ -188,14 +204,8 @@ namespace EQTool.UI
             }
         }
 
-        private void RestoreChrome()
+        protected virtual void RemoveFadeEffect()
         {
-            if (!_isTransparent)
-            {
-                return;
-            }
-
-            _isTransparent = false;
             Background = _savedWindowBackground;
             if (FindName("WindowOuterBorder") is Border outerBorder)
             {
