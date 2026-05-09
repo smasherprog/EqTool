@@ -373,8 +373,7 @@ namespace EQTool.ViewModels
                 spellsQuery = SpellList.Where(a =>
                 a.SpellViewModelType == SpellViewModelType.Spell &&
                 !a.IsTargetPlayer &&
-                a.GroupName != playerPet.PetName &&
-                a.IsTargetPlayer).Cast<SpellViewModel>().ToList();
+                a.GroupName != playerPet.PetName).Cast<SpellViewModel>().ToList();
 
                 spellsByGroupName = spellsQuery.GroupBy(a => a.GroupName).ToList();
                 spellsByName = spellsQuery.GroupBy(a => a.Name).ToList();
@@ -440,7 +439,7 @@ namespace EQTool.ViewModels
             {
                 var spellname = match.Name;
                 var groupname = match.GroupName;
-                if ((match.IsTargetPlayer && PCSpellsGroupedByTarget) || (!match.IsTargetPlayer && NPCSpellsGroupedByTarget && match.Name != EQSpells.SpaceYou))
+                if ((match.IsTargetPlayer && PCSpellsGroupedByTarget && match.GroupName != EQSpells.SpaceYou) || (!match.IsTargetPlayer && NPCSpellsGroupedByTarget))
                 {
                     match.GroupName = spellname;
                     match.Name = groupname;
