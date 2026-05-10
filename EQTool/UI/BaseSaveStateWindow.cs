@@ -242,9 +242,9 @@ namespace EQTool.UI
                 return false;
             }
 
-            // Both rects are in physical pixels — safe to compare directly
-            return thisRect.Left < eqRect.Right && thisRect.Right > eqRect.Left &&
-                   thisRect.Top < eqRect.Bottom && thisRect.Bottom > eqRect.Top;
+            // Both rects are in physical pixels — true only if this window is fully inside the EQ game window
+            return thisRect.Left >= eqRect.Left && thisRect.Right <= eqRect.Right &&
+                   thisRect.Top >= eqRect.Top && thisRect.Bottom <= eqRect.Bottom;
         }
 
         protected override void OnClosing(CancelEventArgs e)
