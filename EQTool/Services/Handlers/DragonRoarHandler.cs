@@ -31,7 +31,8 @@ namespace EQTool.Services.Handlers
                     return;
                 }
             }
-            spells.AllSpells.TryGetValue(e.SpellName, out var spell);
+            _ = spells.AllSpells.TryGetValue(e.SpellName, out var spell);
+            LogEvents_DragonRoarEvent(spell);
         }
 
         private void LogEvents_DragonRoarEvent(object sender, DragonRoarEvent e)

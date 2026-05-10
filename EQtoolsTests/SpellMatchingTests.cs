@@ -75,7 +75,7 @@ namespace EQtoolsTests
         public void TestRangerBindSight()
         {
             var spellname = "Bind Sight";
-            var spellclass = spells.AllSpells[spellname];
+            _ = spells.AllSpells[spellname];
             var line = YouBeginCasting + " " + spellname;
             player.Player.Level = 50;
             player.Player.PlayerClass = PlayerClasses.Ranger;
@@ -96,7 +96,7 @@ namespace EQtoolsTests
             var pet = container.Resolve<PetViewModel>();
             pet.PetName = "Xibab";
             var spellname = "Burnout III";
-            var spellclass = spells.AllSpells[spellname];
+            _ = spells.AllSpells[spellname];
             var line = YouBeginCasting + " " + spellname;
             player.Player.Level = 59;
             player.Player.PlayerClass = PlayerClasses.Magician;
@@ -120,7 +120,7 @@ namespace EQtoolsTests
             var line = "Joe " + spellclass.cast_on_other;
             logParser.Push(line, DateTime.Now);
 
-            var effect = TimerList.FirstOrDefault();
+            var effect = SpellList.FirstOrDefault();
             Assert.AreEqual("Joe", effect.GroupName);
             Assert.IsNotNull(effect);
         }
@@ -229,7 +229,7 @@ namespace EQtoolsTests
             player.Player.Level = 54;
             player.Player.PlayerClass = PlayerClasses.Cleric;
             logParser.Push(line, DateTime.Now);
-            var spell = TimerList.FirstOrDefault();
+            var spell = SpellList.FirstOrDefault();
             Assert.IsNotNull(spell);
             Assert.AreEqual("Evasive Discipline Cooldown", spell.Name);
         }
@@ -253,7 +253,7 @@ namespace EQtoolsTests
             player.Player.Level = 60;
             player.Player.PlayerClass = PlayerClasses.Monk;
             logParser.Push(line, DateTime.Now);
-            var spell = SpellList.FirstOrDefault();
+            var spell = SpellList.FirstOrDefault(a => !a.Name.Contains("Cooldown"));
             Assert.IsNotNull(spell);
             Assert.AreEqual(8, spell.TotalRemainingDuration.Seconds);
         }
@@ -286,7 +286,7 @@ namespace EQtoolsTests
             logParser.Push(line, DateTime.Now.AddMilliseconds(spell.casttime + 200));
 
             var timerText = $"{spellname} Cooldown";
-            var spelltimer = TimerList.FirstOrDefault(a => a.Name == timerText) as TimerViewModel;
+            var spelltimer = SpellList.FirstOrDefault(a => a.Name == timerText) as TimerViewModel;
             Assert.IsNotNull(spelltimer);
             Assert.AreEqual(timerText, spelltimer.Name);
 
@@ -571,7 +571,7 @@ namespace EQtoolsTests
         public void TestSpeedOfShissar2()
         {
             var shissar = "Speed of the Shissar";
-            var shissarspell = spells.AllSpells[shissar];
+            _ = spells.AllSpells[shissar];
             var line = "A bottomless feaster's body pulses with the spirit of the Shissar.";
             var player = container.Resolve<ActivePlayer>();
             player.Player.Level = 54;
@@ -588,7 +588,7 @@ namespace EQtoolsTests
         public void TestShamanEpic()
         {
             var shissar = "Curse of the Spirits";
-            var shissarspell = spells.AllSpells[shissar];
+            _ = spells.AllSpells[shissar];
             var line = "A Ratling is consumed by the raging spirits of the land.";
             player.Player.Level = 60;
             player.Player.PlayerClass = PlayerClasses.Necromancer;
@@ -604,7 +604,7 @@ namespace EQtoolsTests
         public void TestShamanEpic2()
         {
             var shissar = "Curse of the Spirits";
-            var shissarspell = spells.AllSpells[shissar];
+            _ = spells.AllSpells[shissar];
             var line = "Gkrean Prophet of Tallon is consumed by the raging spirits of the land.";
             player.Player.Level = 60;
             player.Player.PlayerClass = PlayerClasses.Necromancer;
@@ -620,7 +620,7 @@ namespace EQtoolsTests
         public void TestShamanEpic1()
         {
             var shissar = "Curse of the Spirits";
-            var shissarspell = spells.AllSpells[shissar];
+            _ = spells.AllSpells[shissar];
             var line = "A Ratling is consumed by the raging spirits of the land.";
             player.Player.Level = 60;
             player.Player.PlayerClass = PlayerClasses.Necromancer;
@@ -636,7 +636,7 @@ namespace EQtoolsTests
         public void TestShamanUsingTashStick()
         {
             var shissar = "Tashanian";
-            var shissarspell = spells.AllSpells[shissar];
+            _ = spells.AllSpells[shissar];
             var line = "A Mangy Rat glances nervously about.";
             player.Player.Level = 60;
             player.Player.PlayerClass = PlayerClasses.Shaman;
@@ -711,7 +711,7 @@ namespace EQtoolsTests
             player.Player.PlayerClass = PlayerClasses.Cleric;
             player.Player.Level = 54;
             var foundspell = spellDurations.MatchClosestLevelToSpell(spells1, DateTime.Now);
-            var duration = SpellDurations.GetDuration_inSeconds(foundspell, PlayerClasses.Cleric, 54);
+            _ = SpellDurations.GetDuration_inSeconds(foundspell, PlayerClasses.Cleric, 54);
             Assert.IsNotNull(foundspell);
             Assert.AreEqual("Clarity II", foundspell.name);
         }

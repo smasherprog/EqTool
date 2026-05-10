@@ -1,7 +1,6 @@
 ﻿using Autofac;
 using EQTool.Models;
 using EQTool.Services;
-using EQTool.Services.Parsing;
 using EQTool.ViewModels;
 using EQTool.ViewModels.SpellWindow;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -29,7 +28,7 @@ namespace EQtoolsTests
         public void NecroDA1()
         {
             logParser.Push("You are surrounded by the Quivering Veil of Xarn.", DateTime.Now);
-            var dteffect = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Timer && a.Name == "Quivering Veil of Xarn Cooldown") as TimerViewModel;
+            var dteffect = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Spell && a.Name == "Quivering Veil of Xarn Cooldown") as SpellViewModel;
             Assert.AreEqual(600.0, dteffect.TotalDuration.TotalSeconds);
             var spelleffect = spellWindowViewModel.SpellList.FirstOrDefault(a => a.Name == "Quivering Veil of Xarn") as SpellViewModel;
             spelleffect = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Spell && a.Name == "Quivering Veil of Xarn") as SpellViewModel;
@@ -42,7 +41,7 @@ namespace EQtoolsTests
         {
             logParser.Push(YouBeginCasting + " Harmshield.", DateTime.Now);
             logParser.Push(DummyEntryToForceEmitEvent, DateTime.Now.AddSeconds(3));
-            var dteffect = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Timer && a.Name == "Harmshield Cooldown") as TimerViewModel;
+            var dteffect = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Spell && a.Name == "Harmshield Cooldown") as SpellViewModel;
             Assert.AreEqual(599.0, dteffect.TotalDuration.TotalSeconds, 2);
             var spelleffect = spellWindowViewModel.SpellList.FirstOrDefault(a => a.Name == "Harmshield") as SpellViewModel;
             spelleffect = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Spell && a.Name == "Harmshield") as SpellViewModel;
@@ -53,7 +52,7 @@ namespace EQtoolsTests
         public void Harvest()
         {
             logParser.Push("You gather mana from your surroundings.", DateTime.Now);
-            var dteffect = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Timer && a.Name == "Harvest Cooldown") as TimerViewModel;
+            var dteffect = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Spell && a.Name == "Harvest Cooldown") as SpellViewModel;
             Assert.AreEqual(600.0, dteffect.TotalDuration.TotalSeconds);
             Assert.AreEqual(EQSpells.SpaceYou, dteffect.GroupName);
         }
@@ -64,7 +63,7 @@ namespace EQtoolsTests
         {
             logParser.Push(YouBeginCasting + " Divine Aura.", DateTime.Now);
             logParser.Push(DummyEntryToForceEmitEvent, DateTime.Now.AddSeconds(3));
-            var dteffect = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Timer && a.Name == "Divine Aura Cooldown") as TimerViewModel;
+            var dteffect = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Spell && a.Name == "Divine Aura Cooldown") as SpellViewModel;
             Assert.AreEqual(899.0, dteffect.TotalDuration.TotalSeconds, 2);
             var spelleffect = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Spell && a.Name == "Divine Aura") as SpellViewModel;
             Assert.AreEqual(17.0, spelleffect.TotalDuration.TotalSeconds, 2);
@@ -74,7 +73,7 @@ namespace EQtoolsTests
         public void ClericDA2()
         {
             logParser.Push("You are surrounded by a divine barrier.", DateTime.Now);
-            var dteffect = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Timer && a.Name == "Divine Barrier Cooldown") as TimerViewModel;
+            var dteffect = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Spell && a.Name == "Divine Barrier Cooldown") as SpellViewModel;
             Assert.AreEqual(900.0, dteffect.TotalDuration.TotalSeconds);
             var spelleffect = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Spell && a.Name == "Divine Barrier") as SpellViewModel;
             Assert.AreEqual(18.0, spelleffect.TotalDuration.TotalSeconds);
@@ -84,7 +83,7 @@ namespace EQtoolsTests
         public void ClericDA3()
         {
             logParser.Push("Someone is surrounded by a divine barrier.", DateTime.Now);
-            var dteffect = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Timer && a.Name == "Divine Barrier Cooldown") as TimerViewModel;
+            var dteffect = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Spell && a.Name == "Divine Barrier Cooldown") as SpellViewModel;
             Assert.AreEqual(900.0, dteffect.TotalDuration.TotalSeconds);
             Assert.AreEqual("Someone", dteffect.GroupName);
         }
@@ -96,7 +95,7 @@ namespace EQtoolsTests
             logParser.Push(DummyEntryToForceEmitEvent, DateTime.Now.AddSeconds(7));
 
             // expected = cast + recast - 7 = 5 + 300 - 7 = 298
-            var dteffect = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Timer && a.Name == "Dictate Cooldown") as TimerViewModel;
+            var dteffect = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Spell && a.Name == "Dictate Cooldown") as SpellViewModel;
             Assert.AreEqual(298.0, dteffect.TotalDuration.TotalSeconds, 2);
 
             // exptected = cast + duration - 7 = 5 + 48 - 7 = 46
@@ -121,7 +120,7 @@ namespace EQtoolsTests
         {
             logParser.Push("You begin casting Theft of Thought.", DateTime.Now);
             logParser.Push("Someone staggers.", DateTime.Now.AddSeconds(2));
-            var dteffect = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Timer && a.Name == "Theft of Thought Cooldown") as TimerViewModel;
+            var dteffect = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Spell && a.Name == "Theft of Thought Cooldown") as SpellViewModel;
             Assert.AreEqual(120, dteffect.TotalDuration.TotalSeconds, 2);
             Assert.AreEqual(EQSpells.SpaceYou, dteffect.GroupName);
         }
@@ -267,8 +266,8 @@ namespace EQtoolsTests
             logParser.Push(spellWindowViewModel, "A wooly mammoth looks less aggressive.", d.AddSeconds(5));
             logParser.Push(spellWindowViewModel, "A tundra mammoth looks less aggressive.", d.AddSeconds(5));
             spellWindowViewModel.UpdateSpells(1000);
-            var spelleffecst = spellWindowViewModel.SpellList.Where(a => a.SpellViewModelType == SpellViewModelType.Spell && a.Name == "Wake of Tranquility").Cast<SpellViewModel>();
-            Assert.AreEqual(2, spelleffecst.Count());
+            var spelleffecst = spellWindowViewModel.SpellList.Where(a => a.SpellViewModelType == SpellViewModelType.Spell && a.GroupName == "Wake of Tranquility").Cast<SpellViewModel>().ToList();
+            vasAssert.AreEqual(2, spelleffecst.Count());
         }
 
         [TestMethod]
@@ -308,7 +307,7 @@ namespace EQtoolsTests
             logParser.Push(spellWindowViewModel, "A tundra mammoth is surrounded by darkness.", d.AddSeconds(13));
             logParser.Push(spellWindowViewModel, "Your Clinging Darkness spell has worn off.", d.AddSeconds(43));
             spellWindowViewModel.UpdateSpells(1000);
-            var spelleffecst = spellWindowViewModel.SpellList.Where(a => a.SpellViewModelType == SpellViewModelType.Spell && a.Name == "Clinging Darkness").Cast<SpellViewModel>();
+            var spelleffecst = spellWindowViewModel.SpellList.Where(a => a.SpellViewModelType == SpellViewModelType.Spell && a.GroupName == "Clinging Darkness").Cast<SpellViewModel>();
             Assert.AreEqual(1, spelleffecst.Count());
         }
 
