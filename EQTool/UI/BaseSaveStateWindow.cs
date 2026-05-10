@@ -44,7 +44,14 @@ namespace EQTool.UI
         [DllImport("user32.dll")]
         private static extern IntPtr SetThreadDpiAwarenessContext(IntPtr dpiContext);
 
+        [DllImport("user32.dll")]
+        private static extern IntPtr MonitorFromWindow(IntPtr hwnd, uint dwFlags);
+
+        [DllImport("user32.dll")]
+        private static extern bool GetMonitorInfo(IntPtr hMonitor, ref WindowExtensions.MONITOR_INFO lpmi);
+
         private static readonly IntPtr DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2 = new IntPtr(-4);
+        private const uint MONITOR_DEFAULTTONEAREST = 2;
 
         [StructLayout(LayoutKind.Sequential)]
         private struct POINT { public int X; public int Y; }
@@ -269,6 +276,20 @@ namespace EQTool.UI
                 var bottomRight = new POINT { X = eqClient.Right, Y = eqClient.Bottom };
                 _ = ClientToScreen(eqHandle, ref topLeft);
                 _ = ClientToScreen(eqHandle, ref bottomRight);
+
+                // If EQ's client area covers the entire monitor it is running borderless/exclusive
+                // fullscreen — every overlay window will always be "inside" it, so don't hide chrome.
+                var monitorHandle = MonitorFromWindow(eqHandle, MONITOR_DEFAULTTONEAREST);
+                var monInfo = new WindowExtensions.MONITOR_INFO { cbSize = System.Runtime.InteropServices.Marshal.SizeOf(typeof(WindowExtensions.MONITOR_INFO)) };
+                if (GetMonitorInfo(monitorHandle, ref monInfo))
+                {
+                    var mon = monInfo.rcMonitor;
+                    if (topLeft.X <= mon.Left && topLeft.Y <= mon.Top &&
+                        bottomRight.X >= mon.Right && bottomRight.Y >= mon.Bottom)
+                    {
+                        return false;
+                    }
+                }
 
                 if (!GetWindowRect(thisHandle, out var thisRect))
                 {
