@@ -131,7 +131,7 @@ namespace EQTool.Services.Handlers
                 {
                     logEvents.Handle(new TimerBarEvent
                     {
-                        Name = $"{spellname}",
+                        Name = $"DA Timer",
                         TotalSeconds = 18
                     });
                 }
