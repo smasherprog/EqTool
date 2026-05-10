@@ -175,7 +175,7 @@ namespace EQTool.UI
         protected override void ApplyFadeEffect()
         {
             _savedWindowBackground = Background;
-            Background = new SolidColorBrush(Colors.Black) { Opacity = 0.25 };
+            Background = new SolidColorBrush(Colors.Black) { Opacity = 0.75 };
             if (FindName("WindowOuterBorder") is Border outerBorder)
             {
                 _savedBorderThickness = outerBorder.BorderThickness;
