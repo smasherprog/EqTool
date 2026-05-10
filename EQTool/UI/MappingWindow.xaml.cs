@@ -6,7 +6,9 @@ using EQToolShared.Enums;
 using System;
 using System.ComponentModel;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace EQTool.UI
 {
@@ -16,22 +18,24 @@ namespace EQTool.UI
         private readonly MapViewModel mapViewModel;
         private readonly ActivePlayer activePlayer;
         private readonly PlayerTrackerService playerTrackerService;
+        private readonly IAppDispatcher appDispatcher;
         private readonly System.Timers.Timer UITimer;
 
         public MappingWindow(
-            IAppDispatcher appDispatcher,
             MapViewModel mapViewModel,
             ActivePlayer activePlayer,
             LogEvents logEvents,
             EQToolSettings settings,
             PlayerTrackerService playerTrackerService,
             EQToolSettingsLoad toolSettingsLoad,
-            LoggingService loggingService) : base(appDispatcher, mapViewModel, settings.MapWindowState, toolSettingsLoad, settings)
+            IAppDispatcher appDispatcher,
+            LoggingService loggingService) : base(settings.MapWindowState, toolSettingsLoad, settings)
         {
             loggingService.Log(string.Empty, EventType.OpenMap, activePlayer?.Player?.Server);
             this.activePlayer = activePlayer;
             this.logEvents = logEvents;
             this.playerTrackerService = playerTrackerService;
+            this.appDispatcher = appDispatcher;
             DataContext = this.mapViewModel = mapViewModel;
             InitializeComponent();
             base.Init();
@@ -41,7 +45,7 @@ namespace EQTool.UI
             Map.Width = Math.Abs(mapViewModel.AABB.MaxWidth);
             this.logEvents.PlayerLocationEvent += LogParser_PlayerLocationEvent;
             this.logEvents.YouZonedEvent += LogParser_PlayerZonedEvent;
-            this.logEvents.WelcomeEvent += LogEvents_WelcomeEvent; 
+            this.logEvents.WelcomeEvent += LogEvents_WelcomeEvent;
             this.logEvents.SlainEvent += LogParser_DeathEvent;
             this.logEvents.AfterPlayerChangedEvent += LogEvents_PayerChangedEvent;
             this.logEvents.OtherPlayerLocationReceivedRemoteEvent += LogEvents_OtherPlayerLocationReceivedRemoteEvent;
@@ -152,7 +156,7 @@ namespace EQTool.UI
                 Map.Width = Math.Abs(mapViewModel.AABB.MaxWidth);
             }
         }
-         
+
         private void LogParser_PlayerZonedEvent(object sender, YouZonedEvent e)
         {
             if (mapViewModel.LoadMap(e.ShortName, Map))
@@ -166,6 +170,34 @@ namespace EQTool.UI
         private void LogParser_PlayerLocationEvent(object sender, PlayerLocationEvent e)
         {
             mapViewModel.UpdateLocation(e.Location);
+        }
+
+        protected override void ApplyFadeEffect()
+        {
+            _savedWindowBackground = Background;
+            Background = new SolidColorBrush(Colors.Black) { Opacity = 0.25 };
+            if (FindName("WindowOuterBorder") is Border outerBorder)
+            {
+                _savedBorderThickness = outerBorder.BorderThickness;
+                outerBorder.BorderThickness = new Thickness(0);
+            }
+            if (FindName("TitleBarBorder") is Border titleBar)
+            {
+                titleBar.Opacity = 0.0;
+            }
+        }
+
+        protected override void RemoveFadeEffect()
+        {
+            Background = _savedWindowBackground;
+            if (FindName("WindowOuterBorder") is Border outerBorder)
+            {
+                outerBorder.BorderThickness = _savedBorderThickness;
+            }
+            if (FindName("TitleBarBorder") is Border titleBar)
+            {
+                titleBar.Opacity = 1.0;
+            }
         }
 
         protected override void OnClosing(CancelEventArgs e)

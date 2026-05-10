@@ -371,7 +371,7 @@ High MR, Summons
             var splits = cleanresults.Split('^').Where(a => !string.IsNullOrWhiteSpace(a)).Select(a => a.Trim().TrimStart('\n')).ToList();
             var ret = MobInfoParsing.ParseKnownLoot(splits);
             Assert.IsNotNull(ret);
-            Assert.AreEqual(5, ret.Count);
+            Assert.HasCount(5, ret);
             Assert.IsTrue(ret.Any(a => a.Name == "Form of the Great Bear"));
             Assert.IsTrue(ret.Any(a => a.Name == "Circle of Cobalt Scar"));
             Assert.IsTrue(ret.Any(a => a.Name == "Stun Command"));
@@ -445,7 +445,7 @@ High MR, Summons
             };
             Assert.AreEqual("a burning guardian", model.Name);
             Assert.AreEqual("Warrior", model.Class);
-            Assert.AreEqual(3, model.Specials.Count);
+            Assert.HasCount(3, model.Specials);
             Assert.IsTrue(model.Specials.Any(a => a.Url.ToString() == "https://wiki.project1999.com/Rain_of_Molten_Lava"));
             Assert.IsTrue(model.Specials.Any(a => a.Url.ToString() == "https://wiki.project1999.com/Wave_of_Heat"));
         }
@@ -529,15 +529,15 @@ High MR, Summons
             };
             Assert.AreEqual("Gozzrem", model.Name);
             Assert.AreEqual("Cleric", model.Class);
-            Assert.AreEqual(12, model.Specials.Count);
-            Assert.AreEqual(2, model.Factions.Count);
+            Assert.HasCount(12, model.Specials);
+            Assert.HasCount(2, model.Factions);
             Assert.IsTrue(model.Factions.Any(a => a.Name == "Claws of Veeshan (-150)"));
             Assert.IsTrue(model.Factions.Any(a => a.Name == "Yelinak (-100)"));
-            Assert.AreEqual(3, model.OpposingFactions.Count);
+            Assert.HasCount(3, model.OpposingFactions);
             Assert.IsTrue(model.OpposingFactions.Any(a => a.Name == "Kromzek (100)"));
             Assert.IsTrue(model.OpposingFactions.Any(a => a.Name == "Drusella Sathir (-20)"));
             Assert.IsTrue(model.OpposingFactions.Any(a => a.Name == "Venril Sathir (-30)"));
-            Assert.AreEqual(7, model.RelatedQuests.Count);
+            Assert.HasCount(7, model.RelatedQuests);
             Assert.IsTrue(model.RelatedQuests.Any(a => a.Name == "Wisdom - The Long Battle"));
             Assert.IsTrue(model.RelatedQuests.Any(a => a.Url == "https://wiki.project1999.com/Wisdom_-_The_Long_Battle"));
             Assert.IsTrue(model.RelatedQuests.Any(a => a.Name == "Warrior Pike Quests"));

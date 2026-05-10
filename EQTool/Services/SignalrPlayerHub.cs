@@ -42,13 +42,13 @@ namespace EQTool.Models
               .WithAutomaticReconnect()
               .Build();
             _ = connection.On("PlayerLocationEvent", (SignalrPlayerV2 p) =>
+            {
+                if (!(p.Server == activePlayer?.Player?.Server && p.Name == activePlayer?.Player?.Name))
                 {
-                    if (!(p.Server == activePlayer?.Player?.Server && p.Name == activePlayer?.Player?.Name))
-                    {
-                        debugOutput.WriteLine($"{p.Zone}-{p.GuildName}-{p.Server}-{p.Sharing}-{p.Name}-({p.X},{p.Y},{p.Z})", OutputType.Map, MessageType.RemoteMessageReceived);
-                        this.logEvents.Handle(new OtherPlayerLocationReceivedRemoteEvent { Player = p });
-                    }
-                });
+                    debugOutput.WriteLine($"{p.Zone}-{p.GuildName}-{p.Server}-{p.Sharing}-{p.Name}-({p.X},{p.Y},{p.Z})", OutputType.Map, MessageType.RemoteMessageReceived);
+                    this.logEvents.Handle(new OtherPlayerLocationReceivedRemoteEvent { Player = p });
+                }
+            });
             _ = connection.On("PlayerDisconnected", (SignalrPlayerV2 p) =>
             {
                 if (!(p.Server == activePlayer?.Player?.Server && p.Name == activePlayer?.Player?.Name))
@@ -227,16 +227,15 @@ namespace EQTool.Models
 
         private TimerViewModel Create(HubCustomTimer e)
         {
-            if (string.IsNullOrWhiteSpace(e.SpellNameIcon) || !spells.AllSpells.TryGetValue(e.SpellNameIcon, out var spellicon))
+            if (!spells.AllSpells.TryGetValue(e.SpellNameIcon, out var spellicon))
             {
-                _ = spells.AllSpells.TryGetValue("Feign Death", out spellicon);
+                spells.AllSpells.TryGetValue("Feign Death", out spellicon);
             }
-
             return new TimerViewModel
             {
                 PercentLeft = 100,
-                Target = CustomTimer.CustomerTime,
-                Id = e.Name,
+                GroupName = CustomTimer.CustomerTime,
+                Name = e.Name,
                 Rect = spellicon.Rect,
                 Icon = spellicon.SpellIcon,
                 TotalDuration = TimeSpan.FromSeconds(e.DurationInSeconds),

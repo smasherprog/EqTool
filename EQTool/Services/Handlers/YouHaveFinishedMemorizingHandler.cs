@@ -4,7 +4,6 @@ using EQTool.ViewModels.SpellWindow;
 using System;
 using System.Linq;
 using System.Windows.Media;
-using EQToolShared.Enums;
 
 namespace EQTool.Services.Handlers
 {
@@ -24,32 +23,25 @@ namespace EQTool.Services.Handlers
 
         private void LogEvents_YouHaveFinishedMemorizingEvent(object sender, YouHaveFinishedMemorizingEvent e)
         {
-            if (!spells.AllSpells.TryGetValue(e.SpellName, out var spell))
+            if (SpellHandlerService.SpellsThatNeedTimers.Contains(e.SpellName))
             {
-                return;
+                spells.AllSpells.TryGetValue(e.SpellName, out var spell);
+                var timerName = $"{e.SpellName} Cooldown";
+                var durationSeconds = spell.recastTime / 1000;
+
+                spellWindowViewModel.TryAdd(new TimerViewModel
+                {
+                    PercentLeft = 100,
+                    GroupName = EQSpells.SpaceYou,
+                    Name = timerName,
+                    Rect = spell.Rect,
+                    Icon = spell.SpellIcon,
+                    TotalDuration = TimeSpan.FromSeconds(durationSeconds),
+                    TotalRemainingDuration = TimeSpan.FromSeconds(durationSeconds),
+                    UpdatedDateTime = DateTime.Now,
+                    ProgressBarColor = Brushes.SkyBlue
+                });
             }
-                
-            var durationSeconds = TimeSpan.FromSeconds((int)(spell.recastTime / 1000.0));
-            if (durationSeconds < EQSpells.MinimumRecastForYouCooldownTimer)
-            {
-                return;
-            }
-            
-            var timerName = $"{e.SpellName} Cooldown";
-            spellWindowViewModel.TryAdd(new SpellViewModel
-            {
-                PercentLeft = 100,
-                Id = timerName,
-                Target = EQSpells.SpaceYou,
-                Caster = EQSpells.SpaceYou,
-                Rect = spell.Rect,
-                Icon = spell.SpellIcon,
-                Classes = spell.Classes,
-                BenefitDetriment = SpellBenefitDetriment.Cooldown,
-                TotalDuration = durationSeconds,
-                TotalRemainingDuration = durationSeconds,
-                UpdatedDateTime = DateTime.Now
-            });
         }
     }
 }

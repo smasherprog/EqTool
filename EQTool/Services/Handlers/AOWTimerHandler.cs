@@ -2,7 +2,6 @@
 using EQTool.ViewModels;
 using EQTool.ViewModels.SpellWindow;
 using System;
-using System.Linq;
 using System.Windows.Media;
 
 namespace EQTool.Services.Handlers
@@ -21,32 +20,27 @@ namespace EQTool.Services.Handlers
 
         private void LogEvents_LineEvent(object sender, LineEvent e)
         {
-            if (e.Line != "The Avatar of War shouts 'Who dares defile my temple?! Come forth and face me!'")
+            if (e.Line == "The Avatar of War shouts 'Who dares defile my temple?! Come forth and face me!'")
             {
-                return;
+                _ = spells.AllSpells.TryGetValue("Spirit of Wolf", out var spell);
+                appDispatcher.DispatchUI(() =>
+                {
+                    spellWindowViewModel.TryAdd(new TimerViewModel
+                    {
+                        PercentLeft = 100,
+                        GroupName = CustomTimer.CustomerTime,
+                        Name = $"The Avatar of War Lockout",
+                        Rect = spell.Rect,
+                        Icon = spell.SpellIcon,
+                        TotalDuration = TimeSpan.FromMinutes(20),
+                        TotalRemainingDuration = TimeSpan.FromMinutes(20),
+
+                        UpdatedDateTime = DateTime.Now,
+                        ProgressBarColor = Brushes.Orchid
+                    }, true);
+                });
             }
 
-            spells.AllSpells.TryGetValue("Spirit of Wolf", out var spell);
-            if (spell == null)
-            {
-                return;
-            }
-                
-            appDispatcher.DispatchUI(() =>
-            {
-                spellWindowViewModel.TryAdd(new TimerViewModel
-                {
-                    PercentLeft = 100,
-                    Target = CustomTimer.CustomerTime,
-                    Id = $"The Avatar of War Lockout",
-                    Rect = spell.Rect,
-                    Icon = spell.SpellIcon,
-                    TotalDuration = TimeSpan.FromMinutes(20),
-                    TotalRemainingDuration = TimeSpan.FromMinutes(20),
-                    UpdatedDateTime = DateTime.Now,
-                    ProgressBarColor = Brushes.Orchid
-                }, true);
-            });
         }
     }
 }

@@ -2,27 +2,23 @@
 using EQTool.ViewModels;
 using EQTool.ViewModels.SpellWindow;
 using System;
-using System.Linq;
-using EQToolShared.Enums;
 
 namespace EQTool.Services.Handlers
 {
     public class MendWoundsHandler : BaseHandler
     {
-        private readonly Spell TimerVisuals;
+        private readonly Spell HealSpell;
         private readonly SpellWindowViewModel spellWindowViewModel;
 
         public MendWoundsHandler(SpellWindowViewModel spellWindowViewModel, EQSpells spells, BaseHandlerData baseHandlerData) : base(baseHandlerData)
         {
             this.spellWindowViewModel = spellWindowViewModel;
             logEvents.MendWoundsEvent += LogEvents_MendWoundsEvent;
-            
-            if (!spells.AllSpells.TryGetValue("Chloroplast", out var spell))
+
+            if (!spells.AllSpells.TryGetValue("Chloroplast", out HealSpell))
             {
-                spells.AllSpells.TryGetValue("Regeneration", out spell);
+                _ = spells.AllSpells.TryGetValue("Regeneration", out HealSpell);
             }
-            
-            TimerVisuals = spell;
         }
 
         private void LogEvents_MendWoundsEvent(object sender, MendWoundsEvent e)
@@ -30,15 +26,16 @@ namespace EQTool.Services.Handlers
             var spellduration = TimeSpan.FromMinutes(6);
             var vm = new SpellViewModel
             {
+                IsTargetPlayer = true,
                 UpdatedDateTime = DateTime.Now,
                 PercentLeft = 100,
-                BenefitDetriment = SpellBenefitDetriment.Cooldown,
-                SpellType = SpellType.Self,
-                Id = "Mend Cooldown",
-                Target = EQSpells.SpaceYou,
-                Rect = TimerVisuals.Rect,
-                Icon = TimerVisuals.SpellIcon,
-                Classes = TimerVisuals.Classes,
+                BenefitDetriment = HealSpell.benefit_detriment,
+                SpellType = HealSpell.SpellType,
+                GroupName = EQSpells.SpaceYou,
+                Name = "Mend",
+                Rect = HealSpell.Rect,
+                Icon = HealSpell.SpellIcon,
+                Classes = HealSpell.Classes,
                 TotalDuration = spellduration,
                 TotalRemainingDuration = spellduration,
                 TargetClass = EQToolShared.Enums.PlayerClasses.Monk

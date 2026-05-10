@@ -31,11 +31,7 @@ namespace EQTool.Services.Handlers
                     return;
                 }
             }
-
-            if (spells.AllSpells.TryGetValue(e.SpellName, out var spell))
-            {
-                LogEvents_DragonRoarEvent(spell);
-            }
+            spells.AllSpells.TryGetValue(e.SpellName, out var spell);
         }
 
         private void LogEvents_DragonRoarEvent(object sender, DragonRoarEvent e)
@@ -47,7 +43,7 @@ namespace EQTool.Services.Handlers
         {
             appDispatcher.DispatchUI(() =>
             {
-                if (spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Timer && a.Target == CustomTimer.CustomerTime && a.Id == spell.name) is TimerViewModel exists && exists.TotalRemainingDuration.TotalSeconds > 2)
+                if (spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Timer && a.GroupName == CustomTimer.CustomerTime && a.Name == spell.name) is TimerViewModel exists && exists.TotalRemainingDuration.TotalSeconds > 2)
                 {
                     return;
                 }
@@ -55,8 +51,8 @@ namespace EQTool.Services.Handlers
                 spellWindowViewModel.TryAdd(new TimerViewModel
                 {
                     PercentLeft = 100,
-                    Target = CustomTimer.CustomerTime,
-                    Id = spell.name,
+                    GroupName = CustomTimer.CustomerTime,
+                    Name = spell.name,
                     Rect = spell.Rect,
                     Icon = spell.SpellIcon,
                     TotalDuration = TimeSpan.FromSeconds((int)(spell.recastTime / 1000.0)),

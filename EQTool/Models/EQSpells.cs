@@ -16,11 +16,11 @@ namespace EQTool.Models
         public const string SpaceYou = " You ";
         public const string SpellHasWornoff = "spell has worn off.";
         private const string InvisMessage = " fades away";
-        
+
         // If it's this long they deserve a timer.
         public static TimeSpan MinimumRecastForYouCooldownTimer = TimeSpan.FromSeconds(18);
         public static TimeSpan MinimumRecastForOtherCooldownTimer = TimeSpan.FromSeconds(60);
-        
+
         // spells that we wish to count how many times they have been cast
         public static readonly List<string> SpellsThatNeedCounts = new List<string>
         {
@@ -81,7 +81,7 @@ namespace EQTool.Models
             "Pacify",
             "Wake of Tranquility"
         };
-        
+
         // bard spells for which we want resist/hit summaries
         public static readonly List<string> BardSpellsThatNeedResists = new List<string>()
         {
@@ -90,7 +90,7 @@ namespace EQTool.Models
             "Selo's Chords of Cessation",
             "Selo's Assonant Strane"
         };
-        
+
         public static readonly List<string> IllusionPartialNames = new List<string>
         {
             "Illusion",
@@ -100,15 +100,15 @@ namespace EQTool.Models
             "Call of Bones",
             "Lich"
         };
-        
+
         public static readonly List<string> SpellsThatDontEmitCompletionMessages = new List<string>(
-            Charms.Concat(new [] {
+            Charms.Concat(new[] {
                 "Panic Animal",
                 "Harmshield",
                 "Divine Aura",
                 "Harmony"
             }));
-        
+         
         private readonly Dictionary<string, Spell> _AllSpells = new Dictionary<string, Spell>(StringComparer.OrdinalIgnoreCase);
         public Dictionary<string, Spell> AllSpells
         {
@@ -121,8 +121,8 @@ namespace EQTool.Models
                 return _AllSpells;
             }
         }
-        
         private readonly Dictionary<string, List<Spell>> _CastOtherSpells = new Dictionary<string, List<Spell>>(StringComparer.OrdinalIgnoreCase);
+
         public Dictionary<string, List<Spell>> CastOtherSpells
         {
             get
@@ -134,8 +134,8 @@ namespace EQTool.Models
                 return _CastOtherSpells;
             }
         }
-        
         private readonly Dictionary<string, List<Spell>> _CastOnYouSpells = new Dictionary<string, List<Spell>>(StringComparer.OrdinalIgnoreCase);
+
         public Dictionary<string, List<Spell>> CastOnYouSpells
         {
             get
@@ -173,7 +173,7 @@ namespace EQTool.Models
                 return _WornOffSpells;
             }
         }
-        
+
         private readonly ParseSpells_spells_us parseSpells;
         private readonly SpellIcons spellIcons;
 
@@ -199,14 +199,10 @@ namespace EQTool.Models
                 {
                     continue;
                 }
-
-                // The duplicate key check should only be relevant for "no spell" entries (which we are already handling and never look up directly anyways), but just in case we'll handle them all the same.
-                var key = mappedspell.name;
-                if (mappedspell.name.Equals("no spell", StringComparison.OrdinalIgnoreCase) || _AllSpells.ContainsKey(mappedspell.name))
+                if (!_AllSpells.ContainsKey(mappedspell.name))
                 {
-                    key = $"{mappedspell.name}#{mappedspell.id}";
+                    _AllSpells.Add(mappedspell.name, mappedspell);
                 }
-                _AllSpells.Add(key, mappedspell);
 
                 if (!string.IsNullOrWhiteSpace(mappedspell.cast_on_other))
                 {
@@ -214,29 +210,29 @@ namespace EQTool.Models
                     {
                         Debug.WriteLine("Skipping Other invis spell. Cant detect difference between gate and invis");
                     }
-                    else if (_CastOtherSpells.TryGetValue(mappedspell.cast_on_other, out _))
+                    else if (_CastOtherSpells.TryGetValue(mappedspell.cast_on_other, out var innerval))
                     {
                         _CastOtherSpells[mappedspell.cast_on_other].Add(mappedspell);
                     }
                     else
                     {
-                        _CastOtherSpells.Add(mappedspell.cast_on_other, new List<Spell> { mappedspell });
+                        _CastOtherSpells.Add(mappedspell.cast_on_other, new List<Spell>() { mappedspell });
                     }
                 }
                 if (!string.IsNullOrWhiteSpace(mappedspell.name) && mappedspell.Classes.Any(a => a.Value > 0))
                 {
-                    if (_YouCastSpells.TryGetValue(mappedspell.name, out _))
+                    if (_YouCastSpells.TryGetValue(mappedspell.name, out var innerval))
                     {
                         _YouCastSpells[mappedspell.name].Add(mappedspell);
                     }
                     else
                     {
-                        _YouCastSpells.Add(mappedspell.name, new List<Spell> { mappedspell });
+                        _YouCastSpells.Add(mappedspell.name, new List<Spell>() { mappedspell });
                     }
                 }
                 if (!string.IsNullOrWhiteSpace(mappedspell.cast_on_you))
                 {
-                    if (_CastOnYouSpells.TryGetValue(mappedspell.cast_on_you, out _))
+                    if (_CastOnYouSpells.TryGetValue(mappedspell.cast_on_you, out var innerval))
                     {
                         if (!(mappedspell.Classes.Any() && mappedspell.SpellType == SpellType.Self))
                         {
@@ -245,18 +241,18 @@ namespace EQTool.Models
                     }
                     else
                     {
-                        _CastOnYouSpells.Add(mappedspell.cast_on_you, new List<Spell> { mappedspell });
+                        _CastOnYouSpells.Add(mappedspell.cast_on_you, new List<Spell>() { mappedspell });
                     }
                 }
                 if (!string.IsNullOrWhiteSpace(mappedspell.spell_fades))
                 {
-                    if (_WornOffSpells.TryGetValue(mappedspell.spell_fades, out _))
+                    if (_WornOffSpells.TryGetValue(mappedspell.spell_fades, out var innerval))
                     {
                         _WornOffSpells[mappedspell.spell_fades].Add(mappedspell);
                     }
                     else
                     {
-                        _WornOffSpells.Add(mappedspell.spell_fades, new List<Spell> { mappedspell });
+                        _WornOffSpells.Add(mappedspell.spell_fades, new List<Spell>() { mappedspell });
                     }
                 }
             }

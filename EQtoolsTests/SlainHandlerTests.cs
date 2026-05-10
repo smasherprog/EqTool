@@ -30,8 +30,8 @@ namespace EQtoolsTests
         {
             logEvents.ConfirmedDeathEvent += (a, e) =>
             {
-                Assert.AreEqual(e.Victim, "a frost giant scout");
-                Assert.AreEqual(e.Killer, "You");
+                Assert.AreEqual("a frost giant scout", e.Victim);
+                Assert.AreEqual("You", e.Killer);
                 CalledCounter++;
             };
             logParser.Push("You have slain a frost giant scout!", DateTime.Now);
@@ -40,7 +40,7 @@ namespace EQtoolsTests
             logParser.Push("Your faction standing with Kromrif got worse.", DateTime.Now);
             logParser.Push("Your faction standing with Kromzek got worse.", DateTime.Now);
             logParser.Push("You gain experience!!", DateTime.Now);
-            Assert.AreEqual(CalledCounter, 1);
+            Assert.AreEqual(1, CalledCounter);
         }
 
         [TestMethod]
@@ -51,7 +51,7 @@ namespace EQtoolsTests
             logParser.Push("You have slain a frost giant scout!", DateTime.Now);
             var spells = container.Resolve<SpellWindowViewModel>();
 
-            Assert.AreEqual(spells.SpellList.Count, 3 + Zones.Boats.Count);
+            Assert.HasCount(3 + Zones.Boats.Count, spells.SpellList);
         }
 
         [TestMethod]
@@ -59,13 +59,13 @@ namespace EQtoolsTests
         {
             logEvents.ConfirmedDeathEvent += (a, e) =>
             {
-                Assert.AreEqual(e.Victim, "a frost giant scout");
-                Assert.AreEqual(e.Killer, "You");
+                Assert.AreEqual("a frost giant scout", e.Victim);
+                Assert.AreEqual("You", e.Killer);
                 CalledCounter++;
             };
             logParser.Push("You have been slain by Ajorek the Crimson Fang!", DateTime.Now);
             logParser.Push("Your faction standing with ClawsofVeeshan got better.", DateTime.Now);
-            Assert.AreEqual(CalledCounter, 0);
+            Assert.AreEqual(0, CalledCounter);
         }
 
         [TestMethod]
@@ -73,8 +73,8 @@ namespace EQtoolsTests
         {
             logEvents.ConfirmedDeathEvent += (a, e) =>
             {
-                Assert.AreEqual(e.Victim, "a frost giant scout");
-                Assert.AreEqual(e.Killer, "You");
+                Assert.AreEqual("a frost giant scout", e.Victim);
+                Assert.AreEqual("You", e.Killer);
                 CalledCounter++;
             };
 
@@ -84,7 +84,7 @@ namespace EQtoolsTests
             logParser.Push("Your faction standing with Kromzek got worse.", DateTime.Now);
             logParser.Push("You have slain a frost giant scout!", DateTime.Now);
             logParser.Push("You gain experience!!", DateTime.Now);
-            Assert.AreEqual(CalledCounter, 1);
+            Assert.AreEqual(1, CalledCounter);
         }
 
 
@@ -93,8 +93,8 @@ namespace EQtoolsTests
         {
             logEvents.ConfirmedDeathEvent += (a, e) =>
             {
-                Assert.AreEqual(e.Victim, "a frost giant scout");
-                Assert.AreEqual(e.Killer, "You");
+                Assert.AreEqual("a frost giant scout", e.Victim);
+                Assert.AreEqual("You", e.Killer);
                 CalledCounter++;
             };
 
@@ -104,7 +104,7 @@ namespace EQtoolsTests
             logParser.Push("Your faction standing with Kromzek got worse.", DateTime.Now);
             logParser.Push("You gain experience!!", DateTime.Now);
             logParser.Push("You have slain a frost giant scout!", DateTime.Now);
-            Assert.AreEqual(CalledCounter, 1);
+            Assert.AreEqual(1, CalledCounter);
         }
 
         [TestMethod]
@@ -120,7 +120,7 @@ namespace EQtoolsTests
             logParser.Push("Your faction standing with Kromrif got worse.", DateTime.Now);
             logParser.Push("Your faction standing with Kromzek got worse.", DateTime.Now);
             logParser.Push("Lilrez begins to cast a spell.", DateTime.Now);
-            Assert.AreEqual(CalledCounter, 1);
+            Assert.AreEqual(1, CalledCounter);
         }
 
         [TestMethod]
@@ -128,15 +128,15 @@ namespace EQtoolsTests
         {
             logEvents.ConfirmedDeathEvent += (a, e) =>
             {
-                Assert.AreEqual(e.Victim, "a skeleton");
-                Assert.AreEqual(e.Killer, "You");
+                Assert.AreEqual("a skeleton", e.Victim);
+                Assert.AreEqual("You", e.Killer);
                 CalledCounter++;
             };
 
             logParser.Push("You crush a skeleton for 46 points of damage.", DateTime.Now);
             logParser.Push("You have slain a skeleton!", DateTime.Now);
             logParser.Push("Your Location is -0.26, 1844.07, -14.98", DateTime.Now);
-            Assert.AreEqual(CalledCounter, 1);
+            Assert.AreEqual(1, CalledCounter);
         }
 
         [TestMethod]
@@ -144,15 +144,15 @@ namespace EQtoolsTests
         {
             logEvents.ConfirmedDeathEvent += (a, e) =>
             {
-                Assert.AreEqual(e.Victim, "Robobard");
-                Assert.AreEqual(e.Killer, "Sontalak");
+                Assert.AreEqual("Robobard", e.Victim);
+                Assert.AreEqual("Sontalak", e.Killer);
                 CalledCounter++;
             };
 
             logParser.Push("Sontalak claws Robobard for 425 points of damage.", DateTime.Now);
             logParser.Push("Robobard has been slain by Sontalak!", DateTime.Now);
             logParser.Push("Sontalak says 'Ack!  I must be careful not to step on that body, it tastes much better when it is still crunchy, not pulped!'", DateTime.Now);
-            Assert.AreEqual(CalledCounter, 1);
+            Assert.AreEqual(1, CalledCounter);
         }
 
         [TestMethod]
@@ -160,15 +160,15 @@ namespace EQtoolsTests
         {
             logEvents.ConfirmedDeathEvent += (a, e) =>
             {
-                Assert.AreEqual(e.Victim, "Marantula");
-                Assert.AreEqual(e.Killer, "an ancient wyvern");
+                Assert.AreEqual("Marantula", e.Victim);
+                Assert.AreEqual("an ancient wyvern", e.Killer);
                 CalledCounter++;
             };
 
             logParser.Push("An ancient wyvern hits Marantula for 196 points of damage.", DateTime.Now);
             logParser.Push("Marantula has been slain by an ancient wyvern!", DateTime.Now);
             logParser.Push("Your Location is -388.49, -751.23, 43.72", DateTime.Now);
-            Assert.AreEqual(CalledCounter, 1);
+            Assert.AreEqual(1, CalledCounter);
         }
 
         [TestMethod]
@@ -178,13 +178,13 @@ namespace EQtoolsTests
             {
                 if (e.Victim == "Marantula")
                 {
-                    Assert.AreEqual(e.Victim, "Marantula");
-                    Assert.AreEqual(e.Killer, "an ancient wyvern");
+                    Assert.AreEqual("Marantula", e.Victim);
+                    Assert.AreEqual("an ancient wyvern", e.Killer);
                 }
                 else
                 {
-                    Assert.AreEqual(e.Victim, "Gluwen");
-                    Assert.AreEqual(e.Killer, "an ancient wyvern");
+                    Assert.AreEqual("Gluwen", e.Victim);
+                    Assert.AreEqual("an ancient wyvern", e.Killer);
                 }
                 CalledCounter++;
             };
@@ -192,7 +192,7 @@ namespace EQtoolsTests
             logParser.Push("An ancient wyvern hits Marantula for 196 points of damage.", DateTime.Now);
             logParser.Push("Marantula has been slain by an ancient wyvern!", DateTime.Now);
             logParser.Push("Gluwen has been slain by an ancient wyvern!", DateTime.Now);
-            Assert.AreEqual(CalledCounter, 2);
+            Assert.AreEqual(2, CalledCounter);
         }
 
         [TestMethod]
@@ -200,8 +200,8 @@ namespace EQtoolsTests
         {
             logEvents.ConfirmedDeathEvent += (a, e) =>
             {
-                Assert.AreEqual(e.Victim, "Faction Slain");
-                Assert.AreEqual(e.Killer, "You");
+                Assert.AreEqual("Faction Slain", e.Victim);
+                Assert.AreEqual("You", e.Killer);
                 CalledCounter++;
             };
 
@@ -210,7 +210,7 @@ namespace EQtoolsTests
             logParser.Push("Your faction standing with Kromrif got worse.", DateTime.Now);
             logParser.Push("Your faction standing with Kromzek got worse.", DateTime.Now);
             logParser.Push("Lilrez begins to cast a spell.", DateTime.Now);
-            Assert.AreEqual(CalledCounter, 1);
+            Assert.AreEqual(1, CalledCounter);
         }
 
         [TestMethod]
@@ -220,13 +220,13 @@ namespace EQtoolsTests
             {
                 if (e.Victim == "Marantula")
                 {
-                    Assert.AreEqual(e.Victim, "Marantula");
-                    Assert.AreEqual(e.Killer, "an ancient wyvern");
+                    Assert.AreEqual("Marantula", e.Victim);
+                    Assert.AreEqual("an ancient wyvern", e.Killer);
                 }
                 else
                 {
-                    Assert.AreEqual(e.Victim, "Faction Slain");
-                    Assert.AreEqual(e.Killer, "You");
+                    Assert.AreEqual("Faction Slain", e.Victim);
+                    Assert.AreEqual("You", e.Killer);
                 }
                 CalledCounter++;
             };
@@ -238,7 +238,7 @@ namespace EQtoolsTests
             logParser.Push("Lilrez begins to cast a spell.", DateTime.Now);
             logParser.Push("An ancient wyvern hits Marantula for 196 points of damage.", DateTime.Now);
             logParser.Push("Marantula has been slain by an ancient wyvern!", DateTime.Now);
-            Assert.AreEqual(CalledCounter, 2);
+            Assert.AreEqual(2, CalledCounter);
         }
 
         [TestMethod]
@@ -262,7 +262,7 @@ namespace EQtoolsTests
             logParser.Push("Your faction standing with Kromrif got worse.", DateTime.Now);
             logParser.Push("Your faction standing with Kromzek got worse.", DateTime.Now);
             logParser.Push("Jaerlin pierces a Drakkel Dire Wolf for 42 points of damage.", DateTime.Now);
-            Assert.AreEqual(CalledCounter, 3);
+            Assert.AreEqual(3, CalledCounter);
         }
 
         [TestMethod]
@@ -288,7 +288,7 @@ namespace EQtoolsTests
             logParser.Push("Your faction standing with Kromrif got worse.", DateTime.Now);
             logParser.Push("Your faction standing with Kromzek got worse.", DateTime.Now);
             logParser.Push("Jaerlin pierces a Drakkel Dire Wolf for 42 points of damage.", DateTime.Now);
-            Assert.AreEqual(CalledCounter, 5);
+            Assert.AreEqual(5, CalledCounter);
         }
 
         [TestMethod]
@@ -303,8 +303,8 @@ namespace EQtoolsTests
                 }
                 else
                 {
-                    Assert.AreEqual(e.Victim, "Exp Slain");
-                    Assert.AreEqual(e.Killer, "You");
+                    Assert.AreEqual("Exp Slain", e.Victim);
+                    Assert.AreEqual("You", e.Killer);
                     expkillcount++;
                 }
             };
@@ -314,8 +314,8 @@ namespace EQtoolsTests
             logParser.Push("You gain experience!!", DateTime.Now);
             logParser.Push("Jaerlin pierces a Drakkel Dire Wolf for 42 points of damage.", DateTime.Now);
 
-            Assert.AreEqual(expkillcount, 2);
-            Assert.AreEqual(CalledCounter, 1);
+            Assert.AreEqual(2, expkillcount);
+            Assert.AreEqual(1, CalledCounter);
         }
 
 
@@ -331,7 +331,7 @@ namespace EQtoolsTests
             logParser.Push("You have slain a frost giant scout!", DateTime.Now);
             logParser.Push("You have slain a frost giant scout!", DateTime.Now);
 
-            Assert.AreEqual(CalledCounter, 3);
+            Assert.AreEqual(3, CalledCounter);
         }
 
 
@@ -356,7 +356,7 @@ namespace EQtoolsTests
             logParser.Push("Your faction standing with Kromrif got worse.", DateTime.Now);
             logParser.Push("Your faction standing with Kromzek got worse.", DateTime.Now);
             logParser.Push("Jaerlin pierces a Drakkel Dire Wolf for 42 points of damage.", DateTime.Now);
-            Assert.AreEqual(CalledCounter, 3);
+            Assert.AreEqual(3, CalledCounter);
         }
 
         [TestMethod]
@@ -378,7 +378,7 @@ namespace EQtoolsTests
             logParser.Push("Your faction standing with FrogloksofGuk got better.", DateTime.Now);
             logParser.Push("Your faction standing with UndeadFrogloksofGuk could not possibly get any worse.", DateTime.Now);
             logParser.Push("Varer judges you amiably -- You would probably win this fight..it's not certain though.", DateTime.Now);
-            Assert.AreEqual(CalledCounter, 3);
+            Assert.AreEqual(3, CalledCounter);
         }
 
         [TestMethod]
@@ -399,7 +399,7 @@ namespace EQtoolsTests
             logParser.Push("Your faction standing with TheDead could not possibly get any worse.", DateTime.Now);
             logParser.Push("You gain party experience!!", DateTime.Now);
             logParser.Push("You fail to locate any food nearby.", DateTime.Now);
-            Assert.AreEqual(CalledCounter, 1);
+            Assert.AreEqual(1, CalledCounter);
         }
     }
 }

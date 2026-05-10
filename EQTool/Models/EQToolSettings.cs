@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
@@ -10,10 +9,8 @@ namespace EQTool.Models
     {
         public Rect? WindowRect { get; set; }
         public System.Windows.WindowState State { get; set; }
-        public bool IsLocked { get; set; }
         public bool Closed { get; set; }
         public bool AlwaysOnTop { get; set; }
-        public bool ClickThroughAllowed { get; set; }
 
         private double _Opacity = 1.0;
         public double? Opacity
@@ -136,105 +133,30 @@ namespace EQTool.Models
             }
             set => _SettingsWindowState = value ?? new WindowState();
         }
-        
+
         public List<PlayerInfo> Players { get; set; } = new List<PlayerInfo>();
         public List<Trigger> Triggers { get; set; } = new List<Trigger>();
-        
-        public SpellsFilterType _SpellsFilter = SpellsFilterType.ByClass;
-        public SpellsFilterType SpellsFilter
-        {
-            get => _SpellsFilter;
-            set
-            {
-                if ((int) value == 3) // Legacy setting. Lazy Migration. We should avoid adding a new 3 in the future, but if we do, we can just delete this block.
-                {
-                    value = SpellsFilterType.CastByYou;
-                }
-                
-                if (value == _SpellsFilter)
-                {
-                    return;
-                }
-                
-                _SpellsFilter = value;
-                OnPropertyChanged();
-            }
-        }
-        
-        private bool _SpellsFilterAlwaysShowCastOnYou = true;
-        public bool SpellsFilterAlwaysShowCastOnYou
-        {
-            get => _SpellsFilterAlwaysShowCastOnYou;
-            set
-            {
-                if (value == _SpellsFilterAlwaysShowCastOnYou)
-                {
-                    return;
-                }
-
-                _SpellsFilterAlwaysShowCastOnYou = value;
-                OnPropertyChanged();
-            }
-        }
-        private SpellGroupingType _PlayerSpellGroupingType = SpellGroupingType.ByTarget;
-        public SpellGroupingType PlayerSpellGroupingType
-        {
-            get => _PlayerSpellGroupingType;
-            set
-            {
-                if (value == _PlayerSpellGroupingType)
-                {
-                    return;
-                }
-
-                _PlayerSpellGroupingType = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private SpellGroupingType _NpcSpellGroupingType = SpellGroupingType.ByTarget;
-        public SpellGroupingType NpcSpellGroupingType
-        {
-            get => _NpcSpellGroupingType;
-            set
-            {
-                if (value == _NpcSpellGroupingType)
-                {
-                    return;
-                }
-
-                _NpcSpellGroupingType = value;
-                OnPropertyChanged();
-            }
-        }
-        
+        public bool YouOnlySpells { get; set; }
         public bool ShowRandomRolls { get; set; }
 
         private bool? _ShowRing8RollTime { get; set; } = true;
         public bool? ShowRing8RollTime
         {
             get => _ShowRing8RollTime ?? true;
-            set => _ShowRing8RollTime = value ?? true;
+            set { if (value == null) { _ShowRing8RollTime = true; } else { _ShowRing8RollTime = value; } }
         }
 
         private bool? _ShowScoutRollTime { get; set; } = true;
         public bool? ShowScoutRollTime
         {
             get => _ShowScoutRollTime ?? true;
-            set => _ShowScoutRollTime = value ?? true;
+            set { if (value == null) { _ShowScoutRollTime = true; } else { _ShowScoutRollTime = value; } }
         }
-
-        private bool? _RaidModeDetection;
-        public bool? RaidModeDetection
-        {
-            get => _RaidModeDetection ?? true;
-            set => _RaidModeDetection = value ?? true;
-        }
-        public bool LoginMiddleMand { get; set; }
-        public bool IsClickThroughMode { get; set; }
         public string DiscordUsername { get; set; }
         public string DiscordId { get; set; }
         public string DiscordApiToken { get; set; }
+        public bool LoginMiddleMand { get; set; }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected void OnPropertyChanged([CallerMemberName] string name = null)

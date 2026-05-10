@@ -33,15 +33,15 @@ namespace EQtoolsTests
             var audiotext = trigger.ExpandedAudioText;
             var displaytext = trigger.ExpandedDisplayText;
 
-            Assert.AreEqual(audiotext, "99 flagons of wine");
-            Assert.AreEqual(displaytext, "99 flagons of wine");
+            Assert.AreEqual("99 flagons of wine", audiotext);
+            Assert.AreEqual("99 flagons of wine", displaytext);
         }
 
         [TestMethod]
         public void TestLoadTriggers()
         {
             var t = EQToolSettingsLoad.ReadTriggers();
-            Assert.IsTrue(t.Count > 0);
+            Assert.IsNotEmpty(t);
         }
     }
 }

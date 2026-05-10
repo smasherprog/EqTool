@@ -7,5 +7,6 @@
         Unused2 = 2,
         Unused3 = 3,
         Cooldown = 4,
+        Discpline
     }
 }

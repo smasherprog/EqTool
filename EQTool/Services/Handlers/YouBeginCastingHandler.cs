@@ -11,7 +11,11 @@ namespace EQTool.Services.Handlers
 
         private void LogEvents_YouBeginCastingEvent(object sender, YouBeginCastingEvent e)
         {
-            activePlayer.StartCastingSpell(e.Spell, e.TimeStamp);
+            appDispatcher.DispatchUI(() =>
+            {
+                activePlayer.UserCastingSpell = e.Spell;
+                activePlayer.UserCastSpellDateTime = e.TimeStamp;
+            });
         }
     }
 }

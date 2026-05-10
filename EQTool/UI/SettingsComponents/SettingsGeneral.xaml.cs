@@ -253,55 +253,54 @@ namespace EQTool.UI.SettingsComponents
             public string CasterName { get; set; }
             public string TargetName { get; set; }
         }
-        
+
         private void testspellsclicked(object sender, RoutedEventArgs e)
         {
             var peoplenames = new List<string>() { "Joe", "Huntor", "Sanare", "Pigy", "Leutin", "Bealls", "Vasanle", "Jenkins", "Charlie" };
             var listofspells = new List<CastTest>
             {
-                                
+
                 new CastTest { Spell = spells.AllSpells["Gift of Pure Thought"], CasterName = EQSpells.SpaceYou, TargetName = EQSpells.SpaceYou },
                 new CastTest { Spell = spells.AllSpells["Overwhelming Splendor"], CasterName = EQSpells.SpaceYou, TargetName = EQSpells.SpaceYou },
                 new CastTest { Spell = spells.AllSpells["Gift of Brilliance"], CasterName = EQSpells.SpaceYou, TargetName = EQSpells.SpaceYou },
                 new CastTest { Spell = spells.AllSpells["Heroic Bond"], TargetName = EQSpells.SpaceYou},
                 new CastTest { Spell = spells.AllSpells["Dictate"], CasterName = EQSpells.SpaceYou, TargetName = EQSpells.SpaceYou },
-                
+
                 new CastTest { Spell = spells.AllSpells["Stonestance Discipline"], CasterName = "Pigy", TargetName = "Pigy"},
                 new CastTest { Spell = spells.AllSpells["Visions of Grandeur"], CasterName = EQSpells.SpaceYou, TargetName = "Pigy" },
+                new CastTest { Spell = spells.AllSpells["Heroic Bond"], TargetName =  "Pigy"},
                 new CastTest { Spell = spells.AllSpells["Defensive Discipline"], CasterName = "Huntor", TargetName = "Huntor"},
-
+                new CastTest { Spell = spells.AllSpells["Heroic Bond"], TargetName =  "Huntor"},
+                new CastTest { Spell = spells.AllSpells["Heroic Bond"], TargetName =  "Vasanle"},
+                new CastTest { Spell = spells.AllSpells["Heroic Bond"], TargetName =  "babbany"},
                 new CastTest { Spell = spells.AllSpells["Heroic Bond"], TargetName = "Aasgard"},
                 new CastTest { Spell = spells.AllSpells["Chloroplast"], TargetName = "Aasgard"},
                 new CastTest { Spell = spells.AllSpells["Shield of Words"], TargetName = "Aasgard"},
                 new CastTest { Spell = spells.AllSpells["Visions of Grandeur"], CasterName = EQSpells.SpaceYou, TargetName = "Aasgard" },
                 new CastTest { Spell = spells.AllSpells["Defensive Discipline"], CasterName = "Aasgard", TargetName = "Aasgard"},
-
+                new CastTest { Spell = spells.AllSpells["Heroic Bond"], TargetName =  "Aasgard"},
                 new CastTest { Spell = spells.AllSpells["Theft of Thought"], CasterName = EQSpells.SpaceYou, TargetName = " a geonid shaman" },
                 new CastTest { Spell = spells.AllSpells["Mana Sieve"], CasterName = EQSpells.SpaceYou, TargetName = " a geonid shaman"},
                 new CastTest { Spell = spells.AllSpells["Mana Sieve"], CasterName = "SomeOtherEnchanter", TargetName = " a geonid shaman"},
                 new CastTest { Spell = spells.AllSpells["Harvest"], TargetName = "DrWizardGuy"},
                 new CastTest { Spell = spells.AllSpells["Quivering Veil of Xarn"], CasterName = "Necromanguy", TargetName = "Necromanguy"},
-
-                new CastTest { Spell = spells.AllSpells["LowerElement"], TargetName = "Tunare"},
-                new CastTest { Spell = spells.AllSpells["LowerElement"], TargetName = "Tunare"},
-                new CastTest { Spell = spells.AllSpells["LowerElement"], TargetName = "Tunare"},
-                new CastTest { Spell = spells.AllSpells["LowerElement"], TargetName = "Tunare"},
-                new CastTest { Spell = spells.AllSpells["LowerElement"], TargetName = "Tunare"},
-                new CastTest { Spell = spells.AllSpells["LowerElement"], TargetName = "Tunare"},
-                new CastTest { Spell = spells.AllSpells["Malo"], TargetName = "Tunare"},
-                new CastTest { Spell = spells.AllSpells["Turgur's Insects"], TargetName = "Tunare"},
-
-                new CastTest { Spell = spells.AllSpells["Concussion"], TargetName = "Tunare"},
-                new CastTest { Spell = spells.AllSpells["Concussion"], TargetName = "Tunare"},
-
-                new CastTest { Spell = spells.AllSpells["Flame Lick"], TargetName = "Tunare"},
-                new CastTest { Spell = spells.AllSpells["Flame Lick"], TargetName = "Tunare"},
-
-                new CastTest { Spell = spells.AllSpells["Jolt"], TargetName = "Tunare"},
-                new CastTest { Spell = spells.AllSpells["Jolt"], TargetName = "Tunare"},
-
-                new CastTest { Spell = spells.AllSpells["Cinder Jolt"], TargetName = "Tunare"},
-                new CastTest { Spell = spells.AllSpells["Cinder Jolt"], TargetName = "Tunare"},
+                new CastTest { Spell = spells.AllSpells["LowerElement"], TargetName = " Tunare"},
+                new CastTest { Spell = spells.AllSpells["LowerElement"], TargetName = " Tunare"},
+                new CastTest { Spell = spells.AllSpells["LowerElement"], TargetName = " Tunare"},
+                new CastTest { Spell = spells.AllSpells["LowerElement"], TargetName = " Tunare"},
+                new CastTest { Spell = spells.AllSpells["LowerElement"], TargetName = " Tunare"},
+                new CastTest { Spell = spells.AllSpells["LowerElement"], TargetName = " Tunare"},
+                new CastTest { Spell = spells.AllSpells["Malo"], TargetName = " Tunare"},
+                new CastTest { Spell = spells.AllSpells["Turgur's Insects"], TargetName = " Tunare"},
+                new CastTest { Spell = spells.AllSpells["Concussion"], TargetName = " Tunare"},
+                new CastTest { Spell = spells.AllSpells["Concussion"], TargetName = " Tunare"},
+                new CastTest { Spell = spells.AllSpells["Flame Lick"], TargetName = " Tunare"},
+                new CastTest { Spell = spells.AllSpells["Flame Lick"], TargetName = " Tunare"},
+                new CastTest { Spell = spells.AllSpells["Flame Lick"], TargetName = " Tunare"},
+                new CastTest { Spell = spells.AllSpells["Jolt"], TargetName = " Tunare"},
+                new CastTest { Spell = spells.AllSpells["Jolt"], TargetName = " Tunare"},
+                new CastTest { Spell = spells.AllSpells["Cinder Jolt"], TargetName = " Tunare"},
+                new CastTest { Spell = spells.AllSpells["Cinder Jolt"], TargetName = " Tunare"},
             };
 
             foreach (var item in peoplenames)
@@ -315,7 +314,7 @@ namespace EQTool.UI.SettingsComponents
                 listofspells.Add(new CastTest { Spell = spells.AllSpells["Improved Invis vs Undead"], TargetName = item });
                 listofspells.Add(new CastTest { Spell = spells.AllSpells["Grim Aura"], TargetName = item });
             }
-            
+
             var timeOfLog = DateTime.Now;
             foreach (var item in listofspells)
             {
@@ -324,7 +323,7 @@ namespace EQTool.UI.SettingsComponents
                     PushLog(item.CasterName == EQSpells.SpaceYou ? $"You begin casting {item.Spell.name}" : $"{item.CasterName} begins to cast a spell.", timeOfLog);
                     timeOfLog += TimeSpan.FromSeconds(item.Spell.casttime);
                 }
-                
+
                 if (item.TargetName == EQSpells.SpaceYou)
                 {
                     PushLog(item.Spell.cast_on_you, timeOfLog);
@@ -470,7 +469,7 @@ namespace EQTool.UI.SettingsComponents
             var token = settings.DiscordApiToken;
             if (string.IsNullOrEmpty(token))
             {
-                MessageBox.Show("Not logged in with Discord. Use Login with Discord from the system tray.", "Discord API Test", MessageBoxButton.OK, MessageBoxImage.Warning);
+                _ = MessageBox.Show("Not logged in with Discord. Use Login with Discord from the system tray.", "Discord API Test", MessageBoxButton.OK, MessageBoxImage.Warning);
                 return;
             }
 
@@ -480,11 +479,11 @@ namespace EQTool.UI.SettingsComponents
                 request.Headers.Authorization = new System.Net.Http.Headers.AuthenticationHeaderValue("Bearer", token);
                 var response = await App.httpclient.SendAsync(request);
                 var body = await response.Content.ReadAsStringAsync();
-                MessageBox.Show($"Status: {(int)response.StatusCode}\n\n{body}", "Discord API Test");
+                _ = MessageBox.Show($"Status: {(int)response.StatusCode}\n\n{body}", "Discord API Test");
             }
             catch (Exception ex)
             {
-                MessageBox.Show($"Error: {ex.Message}", "Discord API Test", MessageBoxButton.OK, MessageBoxImage.Error);
+                _ = MessageBox.Show($"Error: {ex.Message}", "Discord API Test", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
 
@@ -494,7 +493,7 @@ namespace EQTool.UI.SettingsComponents
             {
                 timeStamp = DateTime.Now;
             }
-            
+
             var logtext = message?.Trim();
             if (string.IsNullOrWhiteSpace(logtext))
             {
@@ -745,13 +744,6 @@ namespace EQTool.UI.SettingsComponents
         {
             SaveConfig();
             ((App)System.Windows.Application.Current).ApplyAlwaysOnTop();
-            ((App)System.Windows.Application.Current).ApplyClickThrough(settings.IsClickThroughMode);
-        }
-
-        private void SaveClickThroughCheckBoxSettings(object sender, RoutedEventArgs e)
-        {
-            SaveConfig();
-            ((App)System.Windows.Application.Current).ApplyClickThrough(settings.IsClickThroughMode);
         }
 
         private void testenrage(object sender, RoutedEventArgs e)
@@ -1357,7 +1349,7 @@ namespace EQTool.UI.SettingsComponents
                     // small sleeps to keep events inside the bard tracking window
                     PushLog("Your Location is 206.11, -13.83, 3.44");
 
-                    for (int i = 0; i < 5; i++)
+                    for (var i = 0; i < 5; i++)
                     {
                         PushLog("A death beetle winces.");
                     }

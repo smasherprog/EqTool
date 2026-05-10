@@ -15,9 +15,14 @@ namespace EQTool.Services.Handlers
 
         private void LogEvents_YourItemBeginsToGlow(object sender, YourItemBeginsToGlow e)
         {
-            if (e.ItemName == "Pegasus Feather Cloak" && spells.AllSpells.TryGetValue("Peggy Levitate", out var foundSpell))
+            if (e.ItemName == "Pegasus Feather Cloak")
             {
-                activePlayer.StartCastingSpell(foundSpell, e.TimeStamp);
+                spells.AllSpells.TryGetValue("Peggy Levitate", out var foundspell);
+                appDispatcher.DispatchUI(() =>
+                {
+                    activePlayer.UserCastingSpell = foundspell;
+                    activePlayer.UserCastSpellDateTime = e.TimeStamp;
+                });
             }
         }
     }

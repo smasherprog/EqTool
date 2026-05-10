@@ -63,7 +63,7 @@ namespace EQtoolsTests
             {
                 name = "3.5k"
             };
-            Assert.AreEqual(obj.Price, 3500);
+            Assert.AreEqual(3500, obj.Price);
         }
     }
 }

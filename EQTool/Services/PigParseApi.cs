@@ -114,7 +114,7 @@ namespace EQTool.Services
                 {
                     return new List<Player>();
                 }
-                Debug.WriteLine($"Sending {players.Count} Players");
+                Debug.WriteLine($"Getting {players.Count} Players");
                 var url = $"https://pigparse.azurewebsites.net/api/player/getbynames";
                 var json = JsonConvert.SerializeObject(new PlayerRequest
                 {

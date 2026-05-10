@@ -12,7 +12,7 @@ namespace EQTool.ViewModels
         public Brush Brush { get; set; }
 
     }
-    public class ConsoleViewModel : BaseWindowViewModel, INotifyPropertyChanged
+    public class ConsoleViewModel : INotifyPropertyChanged
     {
         public ObservableCollection<ConsoleLine> ConsoleOutput { get; set; } = new ObservableCollection<ConsoleLine>();
         private readonly int MaxLines = 1000;
@@ -32,6 +32,12 @@ namespace EQTool.ViewModels
                     ConsoleOutput.RemoveAt(0);
                 }
             });
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+        protected void OnPropertyChanged([CallerMemberName] string name = null)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));
         }
     }
 }

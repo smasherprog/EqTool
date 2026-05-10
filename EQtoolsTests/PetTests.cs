@@ -25,10 +25,10 @@ namespace EQtoolsTests
             playerPet.PetName = "Bakalakadaka";
 
             // 6x pet ranks: 5x min to max, 1x max+focus
-            Assert.AreEqual(6, petSpell.PetRankList.Count);
+            Assert.HasCount(6, petSpell.PetRankList);
 
             // 2x bone chips, 1x peridot
-            Assert.AreEqual(2, petSpell.PetReagents.Count);
+            Assert.HasCount(2, petSpell.PetReagents);
 
             var reagent0 = petSpell.PetReagents[0];
             Assert.AreEqual(PetReagent.BoneChip, reagent0.Item1);

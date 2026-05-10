@@ -6,24 +6,18 @@ using System.ComponentModel;
 using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
-using System.Threading;
-using System.Threading.Tasks;
 using System.Windows.Media.Media3D;
 
 namespace EQTool.ViewModels
 {
     public class ActivePlayer : INotifyPropertyChanged
     {
-        private CancellationTokenSource aoeDebounceTs;
         private readonly EQToolSettings settings;
         private readonly LogEvents logEvents;
-        private readonly IAppDispatcher appDispatcher;
-
-        public ActivePlayer(EQToolSettings settings, LogEvents logEvents, IAppDispatcher appDispatcher)
+        public ActivePlayer(EQToolSettings settings, LogEvents logEvents)
         {
             this.settings = settings;
             this.logEvents = logEvents;
-            this.appDispatcher = appDispatcher;
         }
 
         public static PlayerInfo GetInfoFromString(string logfilenbame)
@@ -116,10 +110,11 @@ namespace EQTool.ViewModels
         }
 
         private Spell _UserCastingSpell;
+
         public Spell UserCastingSpell
         {
             get => _UserCastingSpell;
-            private set
+            set
             {
                 _UserCastingSpell = value;
                 OnPropertyChanged();
@@ -127,6 +122,7 @@ namespace EQTool.ViewModels
         }
 
         private DateTime? _UserCastSpellDateTime;
+
         public DateTime? UserCastSpellDateTime
         {
             get => _UserCastSpellDateTime;
@@ -138,6 +134,7 @@ namespace EQTool.ViewModels
         }
 
         private Point3D? _Location;
+
         public Point3D? Location
         {
             get => _Location;
@@ -162,6 +159,7 @@ namespace EQTool.ViewModels
         public string LogFileName;
 
         private PlayerInfo _Player;
+
         public PlayerInfo Player
         {
             get => _Player;
@@ -171,58 +169,9 @@ namespace EQTool.ViewModels
                 OnPropertyChanged();
             }
         }
-        
-        public void StartCastingSpell(Spell spell, DateTime startedCastingOnDateTime)
-        {
-            appDispatcher.DispatchUI(() =>
-            {
-                UserCastingSpell = spell;
-                UserCastSpellDateTime = startedCastingOnDateTime;
-            });
-        }
-        
-        public void FinishUserCastingSpell()
-        {
-            if (UserCastingSpell == null)
-            {
-                return;
-            }
-            
-            // Determine if we should let the currently casting spell remain to give us a buffer to parse additional AoE lines, or to clear it now
-            switch (_UserCastingSpell.SpellType)
-            {
-                case SpellType.PointBlankAreaofEffect:
-                case SpellType.TargetedAreaofEffect:
-                case SpellType.GroupV1:
-                case SpellType.Groupv2:
-                    ClearUserCastingSpellLater(_UserCastingSpell, _UserCastSpellDateTime);
-                    break;
-                default:
-                    ClearUserCastingSpellImmediately();
-                    break;
-            }
-        }
-
-        public void ClearUserCastingSpellLater(Spell spell, DateTime? castedOn)
-        {
-            appDispatcher.DebounceToUI(ref aoeDebounceTs, 200, ClearUserCastingSpellImmediately, shouldCancel: () =>
-            {
-                var castTimeDiff = Math.Abs(((castedOn ?? DateTime.MaxValue) - (UserCastSpellDateTime ?? DateTime.MinValue)).TotalMilliseconds);
-                return UserCastingSpell != spell || castTimeDiff > 200;
-            });
-        }
-
-        public void ClearUserCastingSpellImmediately()
-        {
-            appDispatcher.DispatchUI(() =>
-            {
-                aoeDebounceTs?.Cancel();
-                UserCastingSpell = null;
-                UserCastSpellDateTime = null;
-            });
-        }
 
         public event PropertyChangedEventHandler PropertyChanged;
+
         protected void OnPropertyChanged([CallerMemberName] string name = null)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(name));

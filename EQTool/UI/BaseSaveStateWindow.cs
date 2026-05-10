@@ -2,14 +2,14 @@
 using EQTool.Services;
 using System;
 using System.ComponentModel;
-using System.Threading;
-using System.Threading.Tasks;
+using System.Diagnostics;
+using System.Runtime.InteropServices;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Input;
 using System.Windows.Interop;
+using System.Windows.Media;
 using System.Windows.Threading;
-using EQTool.ViewModels;
-using WindowState = System.Windows.WindowState;
 
 namespace EQTool.UI
 {
@@ -20,20 +20,27 @@ namespace EQTool.UI
             Interval = new TimeSpan(0, 0, 0, 0, 500),
             IsEnabled = false
         };
-        protected readonly IAppDispatcher appDispatcher;
-        private readonly BaseWindowViewModel baseViewModel;
-        private readonly Models.WindowState windowState;
+
+        private readonly DispatcherTimer _transparencyTimer = new DispatcherTimer
+        {
+            Interval = TimeSpan.FromSeconds(5),
+            IsEnabled = false
+        };
+
+        private bool _isTransparent = false;
+        protected Thickness _savedBorderThickness;
+        protected Brush _savedWindowBackground;
+
+        [DllImport("user32.dll")]
+        private static extern bool GetWindowRect(IntPtr hWnd, out WindowExtensions.RECT lpRect);
+
         private readonly EQToolSettingsLoad toolSettingsLoad;
         private readonly EQToolSettings settings;
-        
-        private CancellationTokenSource hoverDebounceTs;
+        private readonly Models.WindowState windowState;
         private bool InitCalled = false;
         protected DateTime LastWindowInteraction = DateTime.Now;
-
-        public BaseSaveStateWindow(IAppDispatcher appDispatcher, BaseWindowViewModel baseViewModel, Models.WindowState windowState, EQToolSettingsLoad toolSettingsLoad, EQToolSettings settings)
+        public BaseSaveStateWindow(Models.WindowState windowState, EQToolSettingsLoad toolSettingsLoad, EQToolSettings settings)
         {
-            this.appDispatcher = appDispatcher;
-            this.baseViewModel = baseViewModel;
             this.windowState = windowState;
             this.toolSettingsLoad = toolSettingsLoad;
             this.settings = settings;
@@ -43,24 +50,21 @@ namespace EQTool.UI
         protected void Init()
         {
             if (InitCalled)
+            {
                 return;
+            }
 
             InitCalled = true;
             AdjustWindow();
-            UpdateShowInTaskbar();
             timer.Tick += timer_Tick;
-            SourceInitialized += Window_SourceInitialized;
             SizeChanged += Window_SizeChanged;
             StateChanged += SpellWindow_StateChanged;
             LocationChanged += Window_LocationChanged;
-            Loaded += Window_Loaded;
+            Activated += OnWindowActivated;
+            Deactivated += OnWindowDeactivated;
+            _transparencyTimer.Tick += OnTransparencyTimerTick;
             windowState.Closed = false;
             SaveState();
-        }
-
-        private void Window_SourceInitialized(object sender, EventArgs e)
-        {
-            this.ApplyMaximizeWindowBoundsFix();
         }
 
         private void timer_Tick(object sender, EventArgs e)
@@ -88,12 +92,7 @@ namespace EQTool.UI
             SaveState();
             Close();
         }
-        
-        protected virtual void Window_Loaded(object sender, RoutedEventArgs e)
-        {
-            SetClickThrough(settings.IsClickThroughMode && windowState.ClickThroughAllowed);
-        }
-        
+
         private void SpellWindow_StateChanged(object sender, EventArgs e)
         {
             LastWindowInteraction = DateTime.Now;
@@ -112,21 +111,8 @@ namespace EQTool.UI
             DebounceSave();
         }
 
-        protected void Window_ToggleLock(object sender, RoutedEventArgs e)
-        {
-            baseViewModel.IsLocked = !baseViewModel.IsLocked;
-            windowState.IsLocked = baseViewModel.IsLocked;
-            
-            LastWindowInteraction = DateTime.Now;
-            DebounceSave();
-            UpdateShowInTaskbar();
-        }
-        
         protected void DragWindow(object sender, MouseButtonEventArgs args)
         {
-            if (baseViewModel.IsLocked)
-                return;
-            
             LastWindowInteraction = DateTime.Now;
             DragMove();
         }
@@ -142,35 +128,125 @@ namespace EQTool.UI
                 Width = windowState.WindowRect.Value.Width;
                 WindowState = windowState.State;
             }
-            baseViewModel.IsLocked = windowState.IsLocked;
         }
 
         private void SaveWindowState(EQTool.Models.WindowState windowState)
         {
-            // When the window is minimized, the OS resizes the window to very odd numbers.
-            // They remember how to resize it, but we do not. Maximizing it does this too, but that at least makes sense
-            // So we'll just not save the size when it's in an abnormal state.
-            if (WindowState == WindowState.Normal)  
+            windowState.WindowRect = new Rect
             {
-                windowState.WindowRect = new Rect
-                {
-                    X = Left,
-                    Y = Top,
-                    Height = Height,
-                    Width = Width
-                };
-            }
+                X = Left,
+                Y = Top,
+                Height = Height,
+                Width = Width
+            };
             windowState.State = WindowState;
             windowState.AlwaysOnTop = Topmost;
-            windowState.IsLocked = baseViewModel.IsLocked;
         }
-        
-        public void SetClickThrough(bool enable)
+
+        private void OnWindowActivated(object sender, EventArgs e)
         {
-            this.ToggleClickThrough(enable);
-            baseViewModel.IsCurrentlyClickThrough = enable;
+            _transparencyTimer.Stop();
+            RestoreChrome();
         }
-        
+
+        private void OnWindowDeactivated(object sender, EventArgs e)
+        {
+            _transparencyTimer.Stop();
+            _transparencyTimer.Start();
+        }
+
+        private void OnTransparencyTimerTick(object sender, EventArgs e)
+        {
+            if (IsOverlappingEQGame())
+            {
+                HideChrome();
+            }
+            else
+            {
+                RestoreChrome();
+            }
+        }
+
+        private void HideChrome()
+        {
+            if (_isTransparent)
+            {
+                return;
+            }
+
+            _isTransparent = true;
+            ApplyFadeEffect();
+        }
+
+        private void RestoreChrome()
+        {
+            if (!_isTransparent)
+            {
+                return;
+            }
+
+            _isTransparent = false;
+            RemoveFadeEffect();
+        }
+
+        protected virtual void ApplyFadeEffect()
+        {
+            _savedWindowBackground = Background;
+            Background = Brushes.Transparent;
+            if (FindName("WindowOuterBorder") is Border outerBorder)
+            {
+                _savedBorderThickness = outerBorder.BorderThickness;
+                outerBorder.BorderThickness = new Thickness(0);
+            }
+            if (FindName("TitleBarBorder") is Border titleBar)
+            {
+                titleBar.Opacity = 0.0;
+            }
+        }
+
+        protected virtual void RemoveFadeEffect()
+        {
+            Background = _savedWindowBackground;
+            if (FindName("WindowOuterBorder") is Border outerBorder)
+            {
+                outerBorder.BorderThickness = _savedBorderThickness;
+            }
+            if (FindName("TitleBarBorder") is Border titleBar)
+            {
+                titleBar.Opacity = 1.0;
+            }
+        }
+
+        private bool IsOverlappingEQGame()
+        {
+            var processes = Process.GetProcessesByName("eqgame");
+            if (processes.Length == 0)
+            {
+                return false;
+            }
+
+            var eqHandle = processes[0].MainWindowHandle;
+            if (eqHandle == IntPtr.Zero)
+            {
+                return false;
+            }
+
+            if (!GetWindowRect(eqHandle, out var eqRect))
+            {
+                return false;
+            }
+
+            var thisHandle = new WindowInteropHelper(this).Handle;
+            if (thisHandle == IntPtr.Zero || !GetWindowRect(thisHandle, out var thisRect))
+            {
+                return false;
+            }
+
+            // Both rects are in physical pixels — safe to compare directly
+            return thisRect.Left < eqRect.Right && thisRect.Right > eqRect.Left &&
+                   thisRect.Top < eqRect.Bottom && thisRect.Bottom > eqRect.Top;
+        }
+
         protected override void OnClosing(CancelEventArgs e)
         {
             if (timer != null)
@@ -178,12 +254,15 @@ namespace EQTool.UI
                 timer.Tick -= timer_Tick;
             }
             timer?.Stop();
+            _transparencyTimer.Tick -= OnTransparencyTimerTick;
+            _transparencyTimer.Stop();
             SizeChanged -= Window_SizeChanged;
             StateChanged -= SpellWindow_StateChanged;
             LocationChanged -= Window_LocationChanged;
+            Activated -= OnWindowActivated;
+            Deactivated -= OnWindowDeactivated;
             base.OnClosing(e);
         }
-        
         protected void openmobinfo(object sender, RoutedEventArgs e)
         {
             (App.Current as App).OpenMobInfoWindow();
@@ -198,7 +277,6 @@ namespace EQTool.UI
         {
             (App.Current as App).OpenSettingsWindow();
         }
-        
         protected void openmap(object sender, RoutedEventArgs e)
         {
             (App.Current as App).OpenMapWindow();
@@ -222,26 +300,6 @@ namespace EQTool.UI
         protected void MaximizeWindow(object sender, RoutedEventArgs e)
         {
             WindowState = WindowState == System.Windows.WindowState.Maximized ? System.Windows.WindowState.Normal : System.Windows.WindowState.Maximized;
-        }
-        
-        protected void HoverZone_MouseEnter(object sender, MouseEventArgs e)
-        {
-            appDispatcher.DebounceToUI(ref hoverDebounceTs, 250, () => baseViewModel.IsMouseOverTitleArea = true);
-        }
-
-        protected void HoverZone_MouseLeave(object sender, MouseEventArgs e)
-        {
-            appDispatcher.DebounceToUI(ref hoverDebounceTs, 250, () => baseViewModel.IsMouseOverTitleArea = false);
-        }
-        
-        public void UpdateShowInTaskbar()
-        {
-            ShowInTaskbar = !(windowState.IsLocked && windowState.AlwaysOnTop);
-            if (!ShowInTaskbar && WindowState == System.Windows.WindowState.Minimized)
-            {
-                // If our window got stuck somehow and it's not showing on the taskbar, re-adjust
-                AdjustWindow();
-            }
         }
     }
 }
