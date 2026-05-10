@@ -115,11 +115,6 @@ namespace EQTool.UI
                 }
 
                 var random = new Random(DateTime.Now.Millisecond);
-                var color = System.Windows.Media.Color.FromRgb(
-                    (byte)random.Next(0, 40),
-                    (byte)random.Next(0, 40),
-                    (byte)random.Next(0, 40));
-                var colorA = System.Windows.Media.Color.FromArgb(140, color.R, color.G, color.B);
                 var targetwidth = chaindata.Canvas.ActualWidth / 10.0;
                 var target = new TextBlock
                 {
@@ -274,7 +269,7 @@ namespace EQTool.UI
                 var nameBorder = new Border
                 {
                     CornerRadius = new CornerRadius(3),
-                    Background = Brushes.SteelBlue,
+                    Background = Brushes.Chocolate,
                     BorderThickness = new Thickness(2),
                     BorderBrush = Brushes.Black,
                     Child = nameLabel

@@ -245,7 +245,20 @@ namespace EQTool.Services.Handlers
                 {
                     spellduration = TimeSpan.FromSeconds(15);
                 }
+                else if (spell.name == "Furious Discipline")
+                {
+                    spellduration = TimeSpan.FromSeconds(9);
+                }
+
                 spellduration = spellduration.Add(TimeSpan.FromMilliseconds(delayOffset));
+                if (spell.name.Contains("Discipline") && targetName == EQSpells.SpaceYou)
+                {
+                    logEvents.Handle(new TimerBarEvent
+                    {
+                        Name = spell.name,
+                        TotalSeconds = (int)spellduration.TotalSeconds
+                    });
+                }
                 if (spellduration.TotalSeconds > 0)
                 {
                     // figure out whether or not to overwrite/reset this timer

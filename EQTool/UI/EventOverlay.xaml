@@ -29,7 +29,7 @@
             </StackPanel> 
             <Grid Grid.Row="2"  Name="ChainStackPanel" IsHitTestVisible="False">
                 <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="Auto"/>
                     <ColumnDefinition  Width="*"/>
                 </Grid.ColumnDefinitions>  
             </Grid> 
