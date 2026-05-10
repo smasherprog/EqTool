@@ -34,6 +34,20 @@ namespace EQTool.UI
         [DllImport("user32.dll")]
         private static extern bool GetWindowRect(IntPtr hWnd, out WindowExtensions.RECT lpRect);
 
+        [DllImport("user32.dll")]
+        private static extern bool GetClientRect(IntPtr hWnd, out WindowExtensions.RECT lpRect);
+
+        [DllImport("user32.dll")]
+        private static extern bool ClientToScreen(IntPtr hWnd, ref POINT lpPoint);
+
+        [DllImport("user32.dll")]
+        private static extern IntPtr SetThreadDpiAwarenessContext(IntPtr dpiContext);
+
+        private static readonly IntPtr DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2 = new IntPtr(-4);
+
+        [StructLayout(LayoutKind.Sequential)]
+        private struct POINT { public int X; public int Y; }
+
         private readonly EQToolSettingsLoad toolSettingsLoad;
         private readonly EQToolSettings settings;
         private readonly Models.WindowState windowState;
@@ -231,20 +245,41 @@ namespace EQTool.UI
                 return false;
             }
 
-            if (!GetWindowRect(eqHandle, out var eqRect))
-            {
-                return false;
-            }
-
             var thisHandle = new WindowInteropHelper(this).Handle;
-            if (thisHandle == IntPtr.Zero || !GetWindowRect(thisHandle, out var thisRect))
+            if (thisHandle == IntPtr.Zero)
             {
                 return false;
             }
 
-            // Both rects are in physical pixels — true only if this window is fully inside the EQ game window
-            return thisRect.Left >= eqRect.Left && thisRect.Right <= eqRect.Right &&
-                   thisRect.Top >= eqRect.Top && thisRect.Bottom <= eqRect.Bottom;
+            // Switch to Per-Monitor DPI Aware V2 so all GetWindowRect / ClientToScreen calls
+            // return physical pixel coordinates regardless of each window's DPI awareness context.
+            var prevContext = SetThreadDpiAwarenessContext(DPI_AWARENESS_CONTEXT_PER_MONITOR_AWARE_V2);
+            try
+            {
+                // Use client rect so borderless/fullscreen EQ doesn't inflate the bounds to cover the whole monitor
+                if (!GetClientRect(eqHandle, out var eqClient))
+                {
+                    return false;
+                }
+
+                var topLeft = new POINT { X = eqClient.Left, Y = eqClient.Top };
+                var bottomRight = new POINT { X = eqClient.Right, Y = eqClient.Bottom };
+                ClientToScreen(eqHandle, ref topLeft);
+                ClientToScreen(eqHandle, ref bottomRight);
+
+                if (!GetWindowRect(thisHandle, out var thisRect))
+                {
+                    return false;
+                }
+
+                // True only if this window is fully inside the EQ game's client area (physical pixels)
+                return thisRect.Left >= topLeft.X && thisRect.Right <= bottomRight.X &&
+                       thisRect.Top >= topLeft.Y && thisRect.Bottom <= bottomRight.Y;
+            }
+            finally
+            {
+                SetThreadDpiAwarenessContext(prevContext);
+            }
         }
 
         protected override void OnClosing(CancelEventArgs e)
