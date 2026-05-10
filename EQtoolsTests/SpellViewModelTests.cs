@@ -267,7 +267,7 @@ namespace EQtoolsTests
             logParser.Push(spellWindowViewModel, "A tundra mammoth looks less aggressive.", d.AddSeconds(5));
             spellWindowViewModel.UpdateSpells(1000);
             var spelleffecst = spellWindowViewModel.SpellList.Where(a => a.SpellViewModelType == SpellViewModelType.Spell && a.GroupName == "Wake of Tranquility").Cast<SpellViewModel>().ToList();
-            vasAssert.AreEqual(2, spelleffecst.Count());
+            Assert.AreEqual(2, spelleffecst.Count());
         }
 
         [TestMethod]
