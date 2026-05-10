@@ -249,6 +249,14 @@ namespace EQTool.Services.Handlers
                 {
                     spellduration = TimeSpan.FromSeconds(9);
                 }
+                else if (spell.name == "Defensive Discipline")
+                {
+                    spellduration = TimeSpan.FromMinutes(3);
+                }
+                else if (spell.name == "Evasive Discipline")
+                {
+                    spellduration = TimeSpan.FromMinutes(3);
+                }
 
                 spellduration = spellduration.Add(TimeSpan.FromMilliseconds(delayOffset));
                 if (spell.name.Contains("Discipline") && targetName == EQSpells.SpaceYou)
