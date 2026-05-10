@@ -257,6 +257,14 @@ namespace EQTool.Services.Handlers
                 {
                     spellduration = TimeSpan.FromMinutes(3);
                 }
+                else if (spell.name == "Nimble Discipline")
+                {
+                    spellduration = TimeSpan.FromSeconds(12);
+                }
+                else if (spell.name == "Puretone Discipline")
+                {
+                    spellduration = TimeSpan.FromMinutes(4);
+                }
 
                 spellduration = spellduration.Add(TimeSpan.FromMilliseconds(delayOffset));
                 if (spell.name.Contains("Discipline") && targetName == EQSpells.SpaceYou)
