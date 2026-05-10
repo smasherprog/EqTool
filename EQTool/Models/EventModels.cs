@@ -332,4 +332,10 @@ namespace EQTool.Models
         public System.Windows.Media.Brush ForeGround { get; set; }
         public bool Reset { get; set; }
     }
+
+    public class TimerBarEvent
+    {
+        public string Name { get; set; }
+        public int TotalSeconds { get; set; }
+    }
 }

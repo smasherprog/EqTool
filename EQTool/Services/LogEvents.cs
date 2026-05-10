@@ -221,6 +221,12 @@ namespace EQTool.Services
             OverlayEvent?.Invoke(this, e);
         }
 
+        public event EventHandler<TimerBarEvent> TimerBarEvent;
+        public void Handle(TimerBarEvent e)
+        {
+            TimerBarEvent?.Invoke(this, e);
+        }
+
         public event EventHandler<YourSpellInterruptedEvent> YourSpellInterruptedEvent;
         public void Handle(YourSpellInterruptedEvent e)
         {

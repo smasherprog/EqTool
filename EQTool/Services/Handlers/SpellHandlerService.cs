@@ -23,6 +23,15 @@ namespace EQTool.Services.Handlers
             "Boon of the Garou",
             "Theft of Thought"
         };
+
+        public static readonly List<string> DASpells = new List<string>()
+        {
+            "Divine Aura",
+            "Divine Barrier",
+            "Harmshield",
+            "Quivering Veil of Xarn"
+        };
+
         // spells that we wish to count how many times they have been cast
         public static readonly List<string> SpellsThatNeedCounts = new List<string>()
         {
@@ -79,12 +88,14 @@ namespace EQTool.Services.Handlers
         private readonly SpellWindowViewModel spellWindowViewModel;
         private readonly ActivePlayer activePlayer;
         private readonly PlayerTrackerService playerTrackerService;
+        private readonly LogEvents logEvents;
 
-        public SpellHandlerService(PlayerTrackerService playerTrackerService, SpellWindowViewModel spellWindowViewModel, ActivePlayer activePlayer)
+        public SpellHandlerService(PlayerTrackerService playerTrackerService, SpellWindowViewModel spellWindowViewModel, ActivePlayer activePlayer, LogEvents logEvents)
         {
             this.playerTrackerService = playerTrackerService;
             this.spellWindowViewModel = spellWindowViewModel;
             this.activePlayer = activePlayer;
+            this.logEvents = logEvents;
         }
 
         public void Handle(Spell spell, string targetName, int delayOffset, DateTime timestamp)
@@ -116,6 +127,14 @@ namespace EQTool.Services.Handlers
                     Classes = spell.Classes,
                     SpellType = spell.SpellType
                 });
+                if (DASpells.Any(a => string.Equals(spell.name, a, StringComparison.OrdinalIgnoreCase)))
+                {
+                    logEvents.Handle(new TimerBarEvent
+                    {
+                        Name = $"{spellname}",
+                        TotalSeconds = 18
+                    });
+                }
             }
             else if (spell.name.EndsWith("Discipline"))
             {

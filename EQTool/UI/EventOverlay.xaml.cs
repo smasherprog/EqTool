@@ -24,20 +24,30 @@ namespace EQTool.UI
         public System.Timers.Timer CHTimer { get; set; }
     }
 
+    public class TimerBarData
+    {
+        public string Name { get; set; }
+        public List<FrameworkElement> ChildrenInRow { get; set; }
+        public RowDefinition RowDefinition { get; set; }
+        public Storyboard Storyboard { get; set; }
+        public ProgressBar ProgressBar { get; set; }
+        public TextBlock RemainingText { get; set; }
+        public System.Windows.Threading.DispatcherTimer TextTimer { get; set; }
+    }
+
     public partial class EventOverlay : BaseSaveStateWindow
     {
         private readonly EQToolSettings settings;
         private readonly ActivePlayer activePlayer;
         private readonly List<ChainOverlayData> chainDatas = new List<ChainOverlayData>();
-        private readonly PigParseApi pigParseApi;
+        private readonly List<TimerBarData> timerBarDatas = new List<TimerBarData>();
         private readonly IAppDispatcher appDispatcher;
         private readonly LogEvents logEvents;
 
-        public EventOverlay(LogEvents logEvents, EQToolSettings settings, PigParseApi pigParseApi, EQToolSettingsLoad toolSettingsLoad, ActivePlayer activePlayer, IAppDispatcher appDispatcher)
+        public EventOverlay(LogEvents logEvents, EQToolSettings settings, EQToolSettingsLoad toolSettingsLoad, ActivePlayer activePlayer, IAppDispatcher appDispatcher)
             : base(settings.OverlayWindowState, toolSettingsLoad, settings)
         {
             this.logEvents = logEvents;
-            this.pigParseApi = pigParseApi;
             this.appDispatcher = appDispatcher;
             this.activePlayer = activePlayer;
             this.settings = settings;
@@ -47,6 +57,7 @@ namespace EQTool.UI
             SaveState();
             logEvents.OverlayEvent += LogEvents_OverlayEvent;
             logEvents.CompleteHealEvent += LogParser_CHEvent;
+            logEvents.TimerBarEvent += LogEvents_TimerBarEvent;
         }
 
         private void LogEvents_OverlayEvent(object sender, OverlayEvent e)
@@ -178,11 +189,176 @@ namespace EQTool.UI
                                             }
                                         }
                                     }
+                                    foreach (var item in timerBarDatas)
+                                    {
+                                        foreach (var cell in item.ChildrenInRow)
+                                        {
+                                            var itemrow = Grid.GetRow(cell);
+                                            if (itemrow > rowremoved)
+                                            {
+                                                Grid.SetRow(cell, itemrow - 1);
+                                            }
+                                        }
+                                    }
                                 }
                             });
                         });
                     }
                 };
+                storyboard.Begin();
+            });
+        }
+
+        private void RemoveTimerBarRow(TimerBarData timerdata)
+        {
+            var rowremoved = Grid.GetRow(timerdata.ChildrenInRow.FirstOrDefault());
+            _ = timerBarDatas.Remove(timerdata);
+            foreach (var item in timerdata.ChildrenInRow)
+            {
+                ChainStackPanel.Children.Remove(item);
+            }
+            _ = ChainStackPanel.RowDefinitions.Remove(timerdata.RowDefinition);
+            foreach (var item in chainDatas)
+            {
+                foreach (var cell in item.ChildrenInRow)
+                {
+                    var itemrow = Grid.GetRow(cell);
+                    if (itemrow > rowremoved)
+                    {
+                        Grid.SetRow(cell, itemrow - 1);
+                    }
+                }
+            }
+            foreach (var item in timerBarDatas)
+            {
+                foreach (var cell in item.ChildrenInRow)
+                {
+                    var itemrow = Grid.GetRow(cell);
+                    if (itemrow > rowremoved)
+                    {
+                        Grid.SetRow(cell, itemrow - 1);
+                    }
+                }
+            }
+        }
+
+        private void LogEvents_TimerBarEvent(object sender, Models.TimerBarEvent e)
+        {
+            appDispatcher.DispatchUI(() =>
+            {
+                var existing = timerBarDatas.FirstOrDefault(t => t.Name == e.Name);
+                if (existing != null)
+                {
+                    existing.Storyboard.Stop();
+                    existing.TextTimer?.Stop();
+                    RemoveTimerBarRow(existing);
+                }
+
+                var timerdata = new TimerBarData
+                {
+                    Name = e.Name,
+                    ChildrenInRow = new List<FrameworkElement>(),
+                    RowDefinition = new RowDefinition { MaxHeight = 30 }
+                };
+
+                var nameLabel = new TextBlock
+                {
+                    Height = 30,
+                    FontSize = settings.FontSize.Value * 1.5,
+                    Text = e.Name,
+                    Padding = new Thickness(4),
+                    Foreground = Brushes.Black,
+                    TextAlignment = TextAlignment.Center,
+                    VerticalAlignment = VerticalAlignment.Center
+                };
+                var nameBorder = new Border
+                {
+                    CornerRadius = new CornerRadius(3),
+                    Background = Brushes.SteelBlue,
+                    BorderThickness = new Thickness(2),
+                    BorderBrush = Brushes.Black,
+                    Child = nameLabel
+                };
+
+                var progressBar = new ProgressBar
+                {
+                    Minimum = 0,
+                    Maximum = 100,
+                    Value = 100,
+                    Height = 26,
+                    Foreground = Brushes.SteelBlue,
+                    Background = new SolidColorBrush(System.Windows.Media.Color.FromArgb(200, 10, 10, 10)),
+                    BorderBrush = Brushes.Black,
+                    VerticalAlignment = VerticalAlignment.Center,
+                    IsHitTestVisible = false
+                };
+                timerdata.ProgressBar = progressBar;
+
+                var remainingText = new TextBlock
+                {
+                    Text = e.TotalSeconds.ToString(),
+                    Foreground = Brushes.White,
+                    FontSize = settings.FontSize.Value,
+                    FontWeight = FontWeights.Bold,
+                    HorizontalAlignment = HorizontalAlignment.Center,
+                    VerticalAlignment = VerticalAlignment.Center,
+                    IsHitTestVisible = false
+                };
+                timerdata.RemainingText = remainingText;
+
+                var barGrid = new Grid();
+                _ = barGrid.Children.Add(progressBar);
+                _ = barGrid.Children.Add(remainingText);
+
+                var getrow = ChainStackPanel.RowDefinitions.Count;
+                Grid.SetRow(nameBorder, getrow);
+                Grid.SetColumn(nameBorder, 0);
+                Grid.SetRow(barGrid, getrow);
+                Grid.SetColumn(barGrid, 1);
+
+                ChainStackPanel.RowDefinitions.Add(timerdata.RowDefinition);
+                _ = ChainStackPanel.Children.Add(nameBorder);
+                _ = ChainStackPanel.Children.Add(barGrid);
+                timerdata.ChildrenInRow.Add(nameBorder);
+                timerdata.ChildrenInRow.Add(barGrid);
+                timerBarDatas.Add(timerdata);
+
+                var animation = new DoubleAnimation
+                {
+                    From = 100,
+                    To = 0,
+                    Duration = TimeSpan.FromSeconds(e.TotalSeconds)
+                };
+                Storyboard.SetTarget(animation, progressBar);
+                Storyboard.SetTargetProperty(animation, new PropertyPath(ProgressBar.ValueProperty));
+
+                var storyboard = new Storyboard();
+                storyboard.Children.Add(animation);
+                timerdata.Storyboard = storyboard;
+
+                var startTime = DateTime.UtcNow;
+                var totalSeconds = e.TotalSeconds;
+                var textTimer = new System.Windows.Threading.DispatcherTimer
+                {
+                    Interval = TimeSpan.FromMilliseconds(200)
+                };
+                timerdata.TextTimer = textTimer;
+                textTimer.Tick += (s, ev) =>
+                {
+                    var remaining = totalSeconds - (DateTime.UtcNow - startTime).TotalSeconds;
+                    remainingText.Text = remaining > 0 ? Math.Ceiling(remaining).ToString() : "0";
+                };
+                textTimer.Start();
+
+                storyboard.Completed += (s, ev) =>
+                {
+                    appDispatcher.DispatchUI(() =>
+                    {
+                        timerdata.TextTimer?.Stop();
+                        RemoveTimerBarRow(timerdata);
+                    });
+                };
+
                 storyboard.Begin();
             });
         }
@@ -275,6 +451,7 @@ namespace EQTool.UI
             {
                 logEvents.OverlayEvent -= LogEvents_OverlayEvent;
                 logEvents.CompleteHealEvent -= LogParser_CHEvent;
+                logEvents.TimerBarEvent -= LogEvents_TimerBarEvent;
             }
 
             base.OnClosing(e);
