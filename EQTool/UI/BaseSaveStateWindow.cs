@@ -1,5 +1,6 @@
 ﻿using EQTool.Models;
 using EQTool.Services;
+using EQTool.ViewModels;
 using System;
 using System.ComponentModel;
 using System.Diagnostics;
@@ -51,13 +52,15 @@ namespace EQTool.UI
         private readonly EQToolSettingsLoad toolSettingsLoad;
         private readonly EQToolSettings settings;
         private readonly Models.WindowState windowState;
+        private readonly ConsoleViewModel consoleViewModel;
         private bool InitCalled = false;
         protected DateTime LastWindowInteraction = DateTime.Now;
-        public BaseSaveStateWindow(Models.WindowState windowState, EQToolSettingsLoad toolSettingsLoad, EQToolSettings settings)
+        public BaseSaveStateWindow(Models.WindowState windowState, EQToolSettingsLoad toolSettingsLoad, EQToolSettings settings, ConsoleViewModel consoleViewModel)
         {
             this.windowState = windowState;
             this.toolSettingsLoad = toolSettingsLoad;
             this.settings = settings;
+            this.consoleViewModel = consoleViewModel;
             windowState.Closed = false;
         }
 
@@ -264,13 +267,15 @@ namespace EQTool.UI
 
                 var topLeft = new POINT { X = eqClient.Left, Y = eqClient.Top };
                 var bottomRight = new POINT { X = eqClient.Right, Y = eqClient.Bottom };
-                ClientToScreen(eqHandle, ref topLeft);
-                ClientToScreen(eqHandle, ref bottomRight);
+                _ = ClientToScreen(eqHandle, ref topLeft);
+                _ = ClientToScreen(eqHandle, ref bottomRight);
 
                 if (!GetWindowRect(thisHandle, out var thisRect))
                 {
                     return false;
                 }
+                consoleViewModel.WriteLine($"{GetType().Name} EQ Client Rect in Screen Coords: Left={topLeft.X}, Top={topLeft.Y}, Right={bottomRight.X}, Bottom={bottomRight.Y}", Brushes.Green);
+                consoleViewModel.WriteLine($"{GetType().Name} This Window Rect in Screen Coords: Left={thisRect.Left}, Top={thisRect.Top}, Right={thisRect.Right}, Bottom={thisRect.Bottom}", Brushes.Green);
 
                 // True only if this window is fully inside the EQ game's client area (physical pixels)
                 return thisRect.Left >= topLeft.X && thisRect.Right <= bottomRight.X &&
@@ -278,7 +283,7 @@ namespace EQTool.UI
             }
             finally
             {
-                SetThreadDpiAwarenessContext(prevContext);
+                _ = SetThreadDpiAwarenessContext(prevContext);
             }
         }
 

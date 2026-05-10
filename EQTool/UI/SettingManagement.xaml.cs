@@ -1,5 +1,6 @@
 ﻿using EQTool.Models;
 using EQTool.Services;
+using EQTool.ViewModels;
 using EQTool.ViewModels.SettingsComponents;
 using System;
 using System.Windows;
@@ -15,7 +16,8 @@ namespace EQTool.UI
         public SettingManagement(
             SettingsManagementViewModel settingsManagementViewModel,
             EQToolSettingsLoad toolSettingsLoad,
-            EQToolSettings settings) : base(settings.SettingsWindowState, toolSettingsLoad, settings)
+            EQToolSettings settings,
+            ConsoleViewModel consoleViewModel) : base(settings.SettingsWindowState, toolSettingsLoad, settings, consoleViewModel)
         {
             DataContext = this.settingsManagementViewModel = settingsManagementViewModel;
             InitializeComponent();

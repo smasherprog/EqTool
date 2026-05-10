@@ -26,9 +26,9 @@ namespace EQTool.UI
             LogEvents logEvents,
             EQToolSettingsLoad toolSettingsLoad,
             ActivePlayer activePlayer,
-            IAppDispatcher appDispatcher,
+            IAppDispatcher appDispatcher, ConsoleViewModel consoleViewModel,
             SlainHandler slainHandler,
-            LoggingService loggingService) : base(settings.SpellWindowState, toolSettingsLoad, settings)
+            LoggingService loggingService) : base(settings.SpellWindowState, toolSettingsLoad, settings, consoleViewModel)
         {
             this.slainHandler = slainHandler;
             this.appDispatcher = appDispatcher;

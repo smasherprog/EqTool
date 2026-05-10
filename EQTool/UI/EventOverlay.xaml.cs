@@ -44,8 +44,8 @@ namespace EQTool.UI
         private readonly IAppDispatcher appDispatcher;
         private readonly LogEvents logEvents;
 
-        public EventOverlay(LogEvents logEvents, EQToolSettings settings, EQToolSettingsLoad toolSettingsLoad, ActivePlayer activePlayer, IAppDispatcher appDispatcher)
-            : base(settings.OverlayWindowState, toolSettingsLoad, settings)
+        public EventOverlay(LogEvents logEvents, EQToolSettings settings, EQToolSettingsLoad toolSettingsLoad, ActivePlayer activePlayer, IAppDispatcher appDispatcher, ConsoleViewModel consoleViewModel)
+            : base(settings.OverlayWindowState, toolSettingsLoad, settings, consoleViewModel)
         {
             this.logEvents = logEvents;
             this.appDispatcher = appDispatcher;

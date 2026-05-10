@@ -28,8 +28,8 @@ namespace EQTool.UI
             EQToolSettings settings,
             PlayerTrackerService playerTrackerService,
             EQToolSettingsLoad toolSettingsLoad,
-            IAppDispatcher appDispatcher,
-            LoggingService loggingService) : base(settings.MapWindowState, toolSettingsLoad, settings)
+            IAppDispatcher appDispatcher, ConsoleViewModel consoleViewModel,
+            LoggingService loggingService) : base(settings.MapWindowState, toolSettingsLoad, settings, consoleViewModel)
         {
             loggingService.Log(string.Empty, EventType.OpenMap, activePlayer?.Player?.Server);
             this.activePlayer = activePlayer;
