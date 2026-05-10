@@ -394,6 +394,7 @@ namespace EQTool
             _ = container.Resolve<IEnumerable<BaseHandler>>();
             _ = container.Resolve<UIRunner>();
             _ = container.Resolve<UpdateRunner>();
+            container.Resolve<InventoryWatcherService>().Start();
 
             App.Current.Resources["GlobalFontSize"] = (double)(EQToolSettings?.FontSize ?? 12);
             ((App)System.Windows.Application.Current).UpdateBackgroundOpacity("MyWindowStyleDPS", EQToolSettings.DpsWindowState.Opacity.Value);

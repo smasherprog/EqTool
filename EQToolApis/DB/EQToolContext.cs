@@ -50,6 +50,8 @@ namespace EQToolApis.DB
         public DbSet<EqToolException> EqToolExceptions { get; set; }
 
         public DbSet<DiscordUser> DiscordUsers { get; set; }
+        public DbSet<CharacterInventory> CharacterInventories { get; set; }
+        public DbSet<CharacterInventoryItem> CharacterInventoryItems { get; set; }
         protected override void ConfigureConventions(ModelConfigurationBuilder configurationBuilder)
         {
             base.ConfigureConventions(configurationBuilder);

@@ -41,11 +41,11 @@ namespace EQTool
             {
                 return a.Resolve<Services.EQToolSettingsLoad>().Load();
             }).AsSelf().SingleInstance();
-            
+
             _ = builder.RegisterType<Models.SignalrPlayerHub>().SingleInstance();
             _ = builder.RegisterType<Models.EQSpells>().AsSelf().SingleInstance();
             _ = builder.RegisterType<Models.SessionPlayerDamage>().AsSelf().SingleInstance();
-            
+
             _ = builder.RegisterType<Services.AppDispatcher>().As<Services.IAppDispatcher>().SingleInstance();
             _ = builder.RegisterType<Services.SpellIcons>().AsSelf().SingleInstance();
             _ = builder.RegisterType<Services.ParseSpells_spells_us>().AsSelf().SingleInstance();
@@ -55,7 +55,7 @@ namespace EQTool
             _ = builder.RegisterType<Services.SettingsTestRunOverlay>().AsSelf().SingleInstance();
             _ = builder.RegisterType<Services.LoggingService>().AsSelf().SingleInstance();
             _ = builder.RegisterType<Services.LogParser>().AsSelf().SingleInstance();
-            
+
             _ = builder.RegisterType<ViewModels.SettingsWindowViewModel>().AsSelf().SingleInstance();
             _ = builder.RegisterType<ViewModels.MobInfoComponents.PetViewModel>().AsSelf().SingleInstance();
             _ = builder.RegisterType<ViewModels.MobInfoComponents.MobInfoViewModel>().AsSelf().SingleInstance();
@@ -64,7 +64,7 @@ namespace EQTool
             _ = builder.RegisterType<ViewModels.SpellWindowViewModel>().AsSelf().SingleInstance();
             _ = builder.RegisterType<ViewModels.DPSWindowViewModel>().AsSelf().SingleInstance();
             _ = builder.RegisterType<ViewModels.ZoneViewModel>().AsSelf().SingleInstance();
-            
+
             _ = builder.RegisterType<FightHistory>().AsSelf().SingleInstance();
             _ = builder.RegisterType<SpellDurations>().AsSelf().SingleInstance();
             _ = builder.RegisterType<ConsoleViewModel>().AsSelf().SingleInstance();
@@ -74,6 +74,7 @@ namespace EQTool
             _ = builder.RegisterType<UIRunner>().AsSelf().SingleInstance();
             _ = builder.RegisterType<UpdateRunner>().AsSelf().SingleInstance();
             _ = builder.RegisterType<Services.IO.FileReader>().As<Services.IO.IFileReader>().SingleInstance();
+            _ = builder.RegisterType<InventoryWatcherService>().AsSelf().SingleInstance();
 
             _ = builder.RegisterType<Pets>().AsSelf().SingleInstance();
 
