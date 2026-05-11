@@ -1,0 +1,363 @@
+@page
+@model EQToolApis.Pages.CharactersModel
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.0.0/dist/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+<script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+<style>
+    .character-row { cursor: pointer; }
+    .character-row:hover { background-color: #f8f9fa; }
+
+    .eq-modal-content { background: #14131a; color: #d4af37; border: 1px solid #8b6914; }
+    .eq-modal-header { border-bottom: 1px solid #8b6914; padding: 12px 16px; }
+    .eq-modal-title { color: #f0d060; font-size: 1.2rem; font-weight: bold; letter-spacing: 1px; }
+    .eq-close { color: #d4af37; opacity: 0.8; font-size: 1.5rem; background: none; border: none; }
+    .eq-close:hover { opacity: 1; color: #fff; }
+
+    .eq-paperdoll { display: flex; align-items: flex-start; justify-content: center; gap: 0; }
+    .eq-col { display: flex; flex-direction: column; gap: 3px; padding: 8px 4px; }
+
+    .eq-slot { display: flex; align-items: center; gap: 3px; }
+    .eq-slot.right-col { flex-direction: row-reverse; }
+
+    .slot-label {
+        width: 72px;
+        font-size: 10px;
+        color: #7a6830;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        line-height: 1.2;
+    }
+    .left-col .slot-label { text-align: right; }
+    .right-col .slot-label { text-align: left; }
+    .bottom-col .slot-label { text-align: center; font-size: 10px; color: #7a6830; margin-top: 2px; }
+
+    .slot-icon-wrap { flex-shrink: 0; }
+    .slot-icon {
+        display: block;
+        width: 40px;
+        height: 40px;
+        border: 1px solid #3a3320;
+        background: #0a0a0f;
+        image-rendering: pixelated;
+    }
+    .slot-icon.has-item { border-color: #6b5010; cursor: pointer; }
+    .slot-icon.has-item:hover { border-color: #d4af37; box-shadow: 0 0 4px #d4af37; }
+
+    .eq-center-col {
+        width: 120px;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 8px 4px;
+    }
+    .eq-char-name {
+        font-size: 13px;
+        font-weight: bold;
+        color: #d4af37;
+        text-align: center;
+        word-break: break-all;
+        writing-mode: vertical-rl;
+        text-orientation: mixed;
+        letter-spacing: 2px;
+        opacity: 0.5;
+    }
+
+    .eq-bottom { display: flex; justify-content: center; flex-wrap: wrap; gap: 6px; padding: 6px 8px; border-top: 1px solid #2a2310; }
+    .eq-bottom-slot { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+
+    #eq-tooltip {
+        position: fixed;
+        display: none;
+        z-index: 9999;
+        background: #0d0d18;
+        border: 1px solid #c8a415;
+        padding: 8px 10px;
+        color: #f0e68c;
+        font-family: 'Courier New', monospace;
+        font-size: 11px;
+        white-space: pre-wrap;
+        max-width: 300px;
+        pointer-events: none;
+        box-shadow: 3px 3px 12px rgba(0,0,0,0.8);
+        line-height: 1.4;
+    }
+</style>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-8 offset-lg-2 col-12">
+            <div class="jumbotron">
+                <div class="float-right">
+                    @if (Model.DiscordUsername != null)
+                    {
+                        <span class="mr-3 text-muted">@Model.DiscordUsername</span>
+                        <a href="/Account/Logout" class="btn btn-sm btn-outline-secondary">Logout</a>
+                        <div class="mt-2 text-right">
+                            <a href="/Characters" class="btn btn-sm btn-outline-primary">My Characters</a>
+                        </div>
+                    }
+                </div>
+                <h1 class="display-4">My Characters</h1>
+                <p class="lead">Characters with uploaded inventories. Click a character to view their gear.</p>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-8 offset-lg-2 col-12">
+            @if (!Model.Characters.Any())
+            {
+                <div class="alert alert-info" role="alert">
+                    No characters found. Upload your inventory from the Pigarse desktop app to see your characters here.
+                </div>
+            }
+            else
+            {
+                <table class="table table-striped table-hover">
+                    <thead class="thead-dark">
+                        <tr>
+                            <th>Character</th>
+                            <th class="text-right">Items</th>
+                            <th class="text-right">Last Updated</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var character in Model.Characters)
+                        {
+                            <tr class="character-row" data-character="@character.CharacterName">
+                                <td>@character.CharacterName</td>
+                                <td class="text-right">@character.ItemCount</td>
+                                <td class="text-right mytime" utc="@character.UpdatedAt.ToString("o")">@character.UpdatedAt.ToString("u")</td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            }
+        </div>
+    </div>
+</div>
+
+<!-- Character gear modal -->
+<div class="modal fade" id="characterModal" tabindex="-1" role="dialog" aria-labelledby="characterModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document" style="max-width:640px;">
+        <div class="modal-content eq-modal-content">
+            <div class="eq-modal-header d-flex align-items-center justify-content-between">
+                <span class="eq-modal-title" id="characterModalLabel"></span>
+                <button type="button" class="eq-close" data-dismiss="modal" aria-label="Close">&times;</button>
+            </div>
+            <div class="modal-body p-0">
+                <div class="eq-paperdoll">
+                    <!-- Left column: label | icon -->
+                    <div class="eq-col left-col" id="eq-left-col"></div>
+                    <!-- Center: decorative character name -->
+                    <div class="eq-center-col">
+                        <div class="eq-char-name" id="eq-center-name"></div>
+                    </div>
+                    <!-- Right column: icon | label -->
+                    <div class="eq-col right-col" id="eq-right-col"></div>
+                </div>
+                <!-- Bottom slots: chest, legs, feet, waist, ammo, held -->
+                <div class="eq-bottom" id="eq-bottom-slots"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Floating item tooltip -->
+<div id="eq-tooltip"></div>
+
+<script>
+    $(document).ready(function () {
+        $('.mytime').each(function () {
+            var d = new Date($(this).attr('utc'));
+            $(this).text(d.toLocaleString());
+        });
+    });
+
+    const EMPTY_IMG = '/Content/Images/empty.png';
+
+    const LEFT_SLOTS = [
+        { key: 'Charm',     label: 'Charm' },
+        { key: 'Ear1',      label: 'Left Ear' },
+        { key: 'Head',      label: 'Head' },
+        { key: 'Face',      label: 'Face' },
+        { key: 'Neck',      label: 'Neck' },
+        { key: 'Shoulders', label: 'Shoulders' },
+        { key: 'Arms',      label: 'Arms' },
+        { key: 'Back',      label: 'Back' },
+    ];
+
+    const RIGHT_SLOTS = [
+        { key: 'Ear2',      label: 'Right Ear' },
+        { key: 'Wrist1',    label: 'Left Wrist' },
+        { key: 'Wrist2',    label: 'Right Wrist' },
+        { key: 'Range',     label: 'Range' },
+        { key: 'Hands',     label: 'Hands' },
+        { key: 'Primary',   label: 'Primary' },
+        { key: 'Secondary', label: 'Secondary' },
+        { key: 'Finger1',   label: 'Left Ring' },
+        { key: 'Finger2',   label: 'Right Ring' },
+    ];
+
+    const BOTTOM_SLOTS = [
+        { key: 'Chest', label: 'Chest' },
+        { key: 'Legs',  label: 'Legs' },
+        { key: 'Feet',  label: 'Feet' },
+        { key: 'Waist', label: 'Waist' },
+        { key: 'Ammo',  label: 'Ammo' },
+        { key: 'Held',  label: 'Held' },
+    ];
+
+    function makeSlotEl(slotKey, slotLabel, side) {
+        var div = document.createElement('div');
+        div.className = 'eq-slot' + (side === 'right' ? ' right-col' : '');
+        div.dataset.slot = slotKey;
+
+        var label = document.createElement('span');
+        label.className = 'slot-label';
+        label.textContent = slotLabel;
+
+        var iconWrap = document.createElement('div');
+        iconWrap.className = 'slot-icon-wrap';
+        var img = document.createElement('img');
+        img.className = 'slot-icon';
+        img.src = EMPTY_IMG;
+        img.width = 40;
+        img.height = 40;
+        iconWrap.appendChild(img);
+
+        if (side === 'right') {
+            div.appendChild(iconWrap);
+            div.appendChild(label);
+        } else {
+            div.appendChild(label);
+            div.appendChild(iconWrap);
+        }
+        return div;
+    }
+
+    function makeBottomSlotEl(slotKey, slotLabel) {
+        var div = document.createElement('div');
+        div.className = 'eq-bottom-slot';
+        div.dataset.slot = slotKey;
+
+        var iconWrap = document.createElement('div');
+        iconWrap.className = 'slot-icon-wrap';
+        var img = document.createElement('img');
+        img.className = 'slot-icon';
+        img.src = EMPTY_IMG;
+        img.width = 40;
+        img.height = 40;
+        iconWrap.appendChild(img);
+
+        var label = document.createElement('span');
+        label.className = 'bottom-col slot-label';
+        label.textContent = slotLabel;
+
+        div.appendChild(iconWrap);
+        div.appendChild(label);
+        return div;
+    }
+
+    function fillSlot(slotEl, item) {
+        if (!item) return;
+        var img = slotEl.querySelector('.slot-icon');
+        if (img) {
+            img.src = item.image || EMPTY_IMG;
+            img.classList.add('has-item');
+        }
+        var label = slotEl.querySelector('.slot-label');
+        if (label) {
+            label.textContent = item.name || label.textContent;
+            label.style.color = '#c8a415';
+        }
+        slotEl.dataset.tooltip = item.tooltip || '';
+        slotEl.dataset.name = item.name || '';
+    }
+
+    function populateModal(data) {
+        document.getElementById('characterModalLabel').textContent = data.characterName;
+        document.getElementById('eq-center-name').textContent = data.characterName;
+
+        var leftCol = document.getElementById('eq-left-col');
+        var rightCol = document.getElementById('eq-right-col');
+        var bottomDiv = document.getElementById('eq-bottom-slots');
+
+        leftCol.innerHTML = '';
+        rightCol.innerHTML = '';
+        bottomDiv.innerHTML = '';
+
+        LEFT_SLOTS.forEach(function (s) {
+            var el = makeSlotEl(s.key, s.label, 'left');
+            leftCol.appendChild(el);
+            fillSlot(el, data.slots[s.key]);
+        });
+
+        RIGHT_SLOTS.forEach(function (s) {
+            var el = makeSlotEl(s.key, s.label, 'right');
+            rightCol.appendChild(el);
+            fillSlot(el, data.slots[s.key]);
+        });
+
+        BOTTOM_SLOTS.forEach(function (s) {
+            var el = makeBottomSlotEl(s.key, s.label);
+            bottomDiv.appendChild(el);
+            fillSlot(el, data.slots[s.key]);
+        });
+
+        attachTooltipListeners();
+    }
+
+    var tip = document.getElementById('eq-tooltip');
+
+    function attachTooltipListeners() {
+        document.querySelectorAll('#characterModal .slot-icon-wrap').forEach(function (wrap) {
+            wrap.addEventListener('mouseenter', function () {
+                var slotEl = this.closest('[data-slot]');
+                var text = slotEl && slotEl.dataset.tooltip ? slotEl.dataset.tooltip : (slotEl && slotEl.dataset.name ? slotEl.dataset.name : '');
+                if (!text) return;
+                tip.textContent = text;
+                tip.style.display = 'block';
+                positionTip(this);
+            });
+            wrap.addEventListener('mousemove', function () {
+                positionTip(this);
+            });
+            wrap.addEventListener('mouseleave', function () {
+                tip.style.display = 'none';
+            });
+        });
+    }
+
+    function positionTip(el) {
+        var rect = el.getBoundingClientRect();
+        var tipW = tip.offsetWidth || 280;
+        var tipH = tip.offsetHeight || 180;
+        var left = rect.right + 8;
+        var top = rect.top;
+        if (left + tipW > window.innerWidth - 8) left = rect.left - tipW - 8;
+        if (top + tipH > window.innerHeight - 8) top = window.innerHeight - tipH - 8;
+        if (top < 8) top = 8;
+        tip.style.left = Math.max(0, left) + 'px';
+        tip.style.top = top + 'px';
+    }
+
+    document.getElementById('characterModal').addEventListener('hidden.bs.modal', function () {
+        tip.style.display = 'none';
+    });
+
+    document.querySelectorAll('.character-row').forEach(function (row) {
+        row.addEventListener('click', function () {
+            var name = this.dataset.character;
+            fetch('/Characters?handler=Equipment&character=' + encodeURIComponent(name))
+                .then(function (r) { return r.json(); })
+                .then(function (data) {
+                    populateModal(data);
+                    $('#characterModal').modal('show');
+                });
+        });
+    });
+</script>
