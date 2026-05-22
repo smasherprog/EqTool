@@ -352,33 +352,35 @@ namespace EQTool.ViewModels
                     item.ColumnVisibility = hidespell ? System.Windows.Visibility.Collapsed : System.Windows.Visibility.Visible;
                 }
 
-                var spellsQuery = SpellList.Where(a =>
+                var playerSpells = SpellList.Where(a =>
                 a.SpellViewModelType == SpellViewModelType.Spell &&
+                a.ColumnVisibility == Visibility.Visible &&
                 a.GroupName != EQSpells.SpaceYou &&
                 a.IsTargetPlayer).Cast<SpellViewModel>().ToList();
 
-                var spellsByGroupName = spellsQuery.GroupBy(a => a.GroupName).ToList();
-                var spellsByName = spellsQuery.GroupBy(a => a.Name).ToList();
+                var spellsByGroupName = playerSpells.GroupBy(a => a.GroupName).ToList();
+                var spellsByName = playerSpells.GroupBy(a => a.Name).ToList();
 
                 if (spellsByGroupName.Count > spellsByName.Count)
                 {
-                    foreach (var spell in spellsQuery)
+                    foreach (var spell in playerSpells)
                     {
                         (spell.Name, spell.GroupName) = (spell.GroupName, spell.Name);
                     }
                     PCSpellsGroupedByTarget = !PCSpellsGroupedByTarget;
                 }
 
-                spellsQuery = SpellList.Where(a =>
+                var npcSpells = SpellList.Where(a =>
                 a.SpellViewModelType == SpellViewModelType.Spell &&
+                a.ColumnVisibility == Visibility.Visible &&
                 !a.IsTargetPlayer &&
                 a.GroupName != playerPet.PetName).Cast<SpellViewModel>().ToList();
 
-                spellsByGroupName = spellsQuery.GroupBy(a => a.GroupName).ToList();
-                spellsByName = spellsQuery.GroupBy(a => a.Name).ToList();
+                spellsByGroupName = npcSpells.GroupBy(a => a.GroupName).ToList();
+                spellsByName = npcSpells.GroupBy(a => a.Name).ToList();
                 if (spellsByGroupName.Count > spellsByName.Count)
                 {
-                    foreach (var spell in spellsQuery)
+                    foreach (var spell in npcSpells)
                     {
                         (spell.Name, spell.GroupName) = (spell.GroupName, spell.Name);
                     }
