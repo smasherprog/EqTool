@@ -560,6 +560,11 @@ namespace EQTool.ViewModels
                 {
                     _ = SpellList.Remove(s.FirstOrDefault());
                 }
+                s = SpellList.Where(a => string.Equals(a.GroupName, possiblespell, StringComparison.OrdinalIgnoreCase)).ToList();
+                if (s.Count() == 1)
+                {
+                    _ = SpellList.Remove(s.FirstOrDefault());
+                }
             });
         }
 
@@ -573,6 +578,11 @@ namespace EQTool.ViewModels
             appDispatcher.DispatchUI(() =>
             {
                 var spells = SpellList.Where(a => possiblespellnames.Any(b => string.Equals(a.Name, b, StringComparison.OrdinalIgnoreCase))).ToList();
+                if (spells.Count() == 1)
+                {
+                    _ = SpellList.Remove(spells.FirstOrDefault());
+                }
+                spells = SpellList.Where(a => possiblespellnames.Any(b => string.Equals(a.GroupName, b, StringComparison.OrdinalIgnoreCase))).ToList();
                 if (spells.Count() == 1)
                 {
                     _ = SpellList.Remove(spells.FirstOrDefault());
