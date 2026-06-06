@@ -1,12 +1,12 @@
-﻿using EQToolShared.Enums;
+﻿using EQTool.Services.TypeConverters;
+using EQToolShared.APIModels.PlayerControllerModels;
+using EQToolShared.Enums;
 using EQToolShared.Map;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Runtime.CompilerServices;
 using System.Windows;
-using EQTool.Services.TypeConverters;
-using EQToolShared.APIModels.PlayerControllerModels;
 
 namespace EQTool.Models
 {
@@ -425,6 +425,28 @@ namespace EQTool.Models
             set
             {
                 _DragonRoarAudio = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool? _DiseasedCloudOverlay;
+        public bool DiseasedCloudOverlay
+        {
+            get => _DiseasedCloudOverlay ?? true;
+            set
+            {
+                _DiseasedCloudOverlay = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool? _DiseasedCloudAudio;
+        public bool DiseasedCloudAudio
+        {
+            get => _DiseasedCloudAudio ?? true;
+            set
+            {
+                _DiseasedCloudAudio = value;
                 OnPropertyChanged();
             }
         }
@@ -870,14 +892,17 @@ namespace EQTool.Models
                 OnPropertyChanged();
             }
         }
-        
-        public Player ToPlayer() => new Player
+
+        public Player ToPlayer()
         {
-            Name = Name,
-            PlayerClass = PlayerClass,
-            Level = Level,
-            GuildName = GuildName,
-        };
+            return new Player
+            {
+                Name = Name,
+                PlayerClass = PlayerClass,
+                Level = Level,
+                GuildName = GuildName,
+            };
+        }
 
         public event PropertyChangedEventHandler PropertyChanged;
         protected void OnPropertyChanged([CallerMemberName] string name = null)

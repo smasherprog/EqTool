@@ -19,6 +19,7 @@
         MobGatingEvent,
         WornOffEvent,
         TellsYouEvent,
+        DiseasedCloudEvent,
         MaxTypes
     }
 }

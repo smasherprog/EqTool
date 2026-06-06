@@ -31,6 +31,7 @@ namespace EQTool.Services
             actions[(int)OverlayTypes.MobGatingEvent] = MobGatingEvent;
             actions[(int)OverlayTypes.WornOffEvent] = WornOffEvent;
             actions[(int)OverlayTypes.TellsYouEvent] = TellsYouEvent;
+            actions[(int)OverlayTypes.DiseasedCloudEvent] = DiseasedCloudEvent;
         }
 
         public void RunTest(OverlayTypes overlayType)
@@ -176,6 +177,15 @@ namespace EQTool.Services
             activePlayer.Player.TellsYouAudio = true;
             activePlayer.Player.TellsYouOverlay = true;
             logParser.Push("Azleep tells you, 'Have a nice day.'", DateTime.Now);
+        }
+
+        private void DiseasedCloudEvent()
+        {
+            activePlayer.Player.DiseasedCloudAudio = true;
+            activePlayer.Player.DiseasedCloudOverlay = true;
+            _ = activePlayer.Player.Zone;
+            activePlayer.Player.Zone = "veeshan";
+            logParser.Push("Your body begins to rot.  You have taken 1250 points of damage.", DateTime.Now);
         }
     }
 }

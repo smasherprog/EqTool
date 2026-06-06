@@ -784,6 +784,11 @@ namespace EQTool.UI.SettingsComponents
         {
             settingsTestRunOverlay.RunTest(OverlayTypes.DragonFearEvent);
         }
+
+        private void testDiseasedCloud(object sender, RoutedEventArgs e)
+        {
+            settingsTestRunOverlay.RunTest(OverlayTypes.DiseasedCloudEvent);
+        }
         private void textvoice(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrWhiteSpace(SettingsWindowData.SelectedVoice))
@@ -960,6 +965,7 @@ namespace EQTool.UI.SettingsComponents
                 SettingsWindowData.ActivePlayer.Player.FailedFeignOverlay = false;
                 SettingsWindowData.ActivePlayer.Player.GroupInviteOverlay = false;
                 SettingsWindowData.ActivePlayer.Player.DragonRoarOverlay = false;
+                SettingsWindowData.ActivePlayer.Player.DiseasedCloudOverlay = false;
                 SettingsWindowData.ActivePlayer.Player.RootWarningOverlay = false;
                 SettingsWindowData.ActivePlayer.Player.ResistWarningOverlay = false;
                 SettingsWindowData.ActivePlayer.Player.DeathLoopOverlay = false;
@@ -982,6 +988,7 @@ namespace EQTool.UI.SettingsComponents
                 SettingsWindowData.ActivePlayer.Player.FailedFeignOverlay = true;
                 SettingsWindowData.ActivePlayer.Player.GroupInviteOverlay = true;
                 SettingsWindowData.ActivePlayer.Player.DragonRoarOverlay = true;
+                SettingsWindowData.ActivePlayer.Player.DiseasedCloudOverlay = true;
                 SettingsWindowData.ActivePlayer.Player.RootWarningOverlay = true;
                 SettingsWindowData.ActivePlayer.Player.ResistWarningOverlay = true;
                 SettingsWindowData.ActivePlayer.Player.DeathLoopOverlay = true;
@@ -1009,6 +1016,7 @@ namespace EQTool.UI.SettingsComponents
                 SettingsWindowData.ActivePlayer.Player.FailedFeignAudio = false;
                 SettingsWindowData.ActivePlayer.Player.GroupInviteAudio = false;
                 SettingsWindowData.ActivePlayer.Player.DragonRoarAudio = false;
+                SettingsWindowData.ActivePlayer.Player.DiseasedCloudAudio = false;
                 SettingsWindowData.ActivePlayer.Player.RootWarningAudio = false;
                 SettingsWindowData.ActivePlayer.Player.ResistWarningAudio = false;
                 SettingsWindowData.ActivePlayer.Player.DeathLoopAudio = false;
@@ -1029,6 +1037,7 @@ namespace EQTool.UI.SettingsComponents
                 SettingsWindowData.ActivePlayer.Player.FailedFeignAudio = true;
                 SettingsWindowData.ActivePlayer.Player.GroupInviteAudio = true;
                 SettingsWindowData.ActivePlayer.Player.DragonRoarAudio = true;
+                SettingsWindowData.ActivePlayer.Player.DiseasedCloudAudio = true;
                 SettingsWindowData.ActivePlayer.Player.RootWarningAudio = true;
                 SettingsWindowData.ActivePlayer.Player.ResistWarningAudio = true;
                 SettingsWindowData.ActivePlayer.Player.DeathLoopAudio = true;

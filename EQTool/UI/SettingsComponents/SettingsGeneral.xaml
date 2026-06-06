@@ -206,6 +206,12 @@
                     <Button Content="▶" Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="testDragonRoar" ToolTip="Test Dragon Roar" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="VP Hosh" VerticalAlignment="Center" FontWeight="Bold"  MinWidth="100"/>
+                    <CheckBox IsChecked="{Binding ActivePlayer.Player.DiseasedCloudOverlay}" Click="Savesettings" MinWidth="75"></CheckBox>
+                    <CheckBox IsChecked="{Binding ActivePlayer.Player.DiseasedCloudAudio}" Click="Savesettings" MinWidth="30"></CheckBox>
+                    <Button Content="▶" Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="testDiseasedCloud" ToolTip="Test VP Hosh Diseased Cloud for Word of Resto" />
+                </StackPanel>
+                <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Root Breaks" VerticalAlignment="Center" FontWeight="Bold"  MinWidth="100"/>
                     <CheckBox IsChecked="{Binding ActivePlayer.Player.RootWarningOverlay}" Click="Savesettings" MinWidth="75"></CheckBox>
                     <CheckBox IsChecked="{Binding ActivePlayer.Player.RootWarningAudio}" Click="Savesettings" MinWidth="30"></CheckBox>

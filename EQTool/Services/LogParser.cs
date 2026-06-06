@@ -124,6 +124,11 @@ namespace EQTool.Services
             LineCounter += 1;
             var timestamp = LogFileDateTimeParse.ParseDateTime(date);
             LastEntryDateTime = timestamp;
+            if (message.StartsWith("Your body begins to rot.  You have taken "))
+            {
+                message = "Your body begins to rot.";
+            }
+
             foreach (var handler in eqLogParsers)
             {
                 if (handler.Handle(message, timestamp, LineCounter))

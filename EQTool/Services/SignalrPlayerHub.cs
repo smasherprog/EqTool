@@ -178,6 +178,7 @@ namespace EQTool.Models
                 !recentlyEmittedSameRoar
                )
             {
+                _ = LastDragonRoars.RemoveAll(a => a.Spell.name == e.Spell.name);//make sure to remove it before adding
                 LastDragonRoars.Add(e);
                 debugOutput.WriteLine($"{e.Spell.name}-({LastPlayer.X},{LastPlayer.Y},{LastPlayer.Z})", OutputType.Map, MessageType.RemoteMessageSent);
                 InvokeAsync("DragonRoarEvent", new SignalRDragonRoar
@@ -229,7 +230,7 @@ namespace EQTool.Models
         {
             if (!spells.AllSpells.TryGetValue(e.SpellNameIcon, out var spellicon))
             {
-                spells.AllSpells.TryGetValue("Feign Death", out spellicon);
+                _ = spells.AllSpells.TryGetValue("Feign Death", out spellicon);
             }
             return new TimerViewModel
             {
