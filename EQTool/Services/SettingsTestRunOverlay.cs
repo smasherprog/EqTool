@@ -1,6 +1,8 @@
 ﻿using EQTool.Models;
 using EQTool.ViewModels;
 using System;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace EQTool.Services
 {
@@ -32,6 +34,7 @@ namespace EQTool.Services
             actions[(int)OverlayTypes.WornOffEvent] = WornOffEvent;
             actions[(int)OverlayTypes.TellsYouEvent] = TellsYouEvent;
             actions[(int)OverlayTypes.DiseasedCloudEvent] = DiseasedCloudEvent;
+            actions[(int)OverlayTypes.ZlandicarEvent] = ZlandicarEvent;
         }
 
         public void RunTest(OverlayTypes overlayType)
@@ -186,6 +189,20 @@ namespace EQTool.Services
             _ = activePlayer.Player.Zone;
             activePlayer.Player.Zone = "veeshan";
             logParser.Push("Your body begins to rot.  You have taken 1250 points of damage.", DateTime.Now);
+        }
+
+        private void ZlandicarEvent()
+        {
+            activePlayer.Player.ZlandicarOverlay = true;
+            activePlayer.Player.ZlandicarAudio = true;
+            var previousZone = activePlayer.Player.Zone;
+            activePlayer.Player.Zone = "necropolis";
+            logParser.Push($"You flee in terror.", DateTime.Now);
+            _ = Task.Factory.StartNew(() =>
+            {
+                Thread.Sleep(5000);
+                logParser.Push($"Your eardrums rupture.", DateTime.Now);
+            });
         }
     }
 }

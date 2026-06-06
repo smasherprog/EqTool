@@ -852,6 +852,28 @@ namespace EQTool.Models
             }
         }
 
+        private bool? _ZlandicarAudio;
+        public bool ZlandicarAudio
+        {
+            get => _ZlandicarAudio ?? true;
+            set
+            {
+                _ZlandicarAudio = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool? _ZlandicarOverlay;
+        public bool? ZlandicarOverlay
+        {
+            get => _ZlandicarOverlay ?? true;
+            set
+            {
+                _ZlandicarOverlay = value;
+                OnPropertyChanged();
+            }
+        }
+
         private bool _BardCountTextAlert;
         public bool BardCountTextAlert
         {

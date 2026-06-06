@@ -332,6 +332,7 @@
     <Compile Include="Services\Handlers\BoatHandler.cs" />
     <Compile Include="Services\Handlers\ConHandler.cs" />
     <Compile Include="Services\Handlers\DisciplineCooldownHandler.cs" />
+    <Compile Include="Services\Handlers\ZlandicarHandler.cs" />
     <Compile Include="Services\Handlers\EnterWorldHandler.cs" />
     <Compile Include="Services\Handlers\AOWTimerHandler.cs" />
     <Compile Include="Services\Handlers\TriggerHandler.cs" />

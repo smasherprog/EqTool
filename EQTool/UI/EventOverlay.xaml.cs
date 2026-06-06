@@ -283,7 +283,8 @@ namespace EQTool.UI
                     Height = 26,
                     Foreground = Brushes.SteelBlue,
                     Background = new SolidColorBrush(System.Windows.Media.Color.FromArgb(200, 10, 10, 10)),
-                    BorderBrush = Brushes.Black,
+                    BorderThickness = new Thickness(1),
+                    BorderBrush = Brushes.White,
                     VerticalAlignment = VerticalAlignment.Center,
                     IsHitTestVisible = false
                 };

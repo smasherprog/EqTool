@@ -20,6 +20,7 @@
         WornOffEvent,
         TellsYouEvent,
         DiseasedCloudEvent,
+        ZlandicarEvent,
         MaxTypes
     }
 }
