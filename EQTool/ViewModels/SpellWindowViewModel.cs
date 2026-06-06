@@ -370,22 +370,22 @@ namespace EQTool.ViewModels
                     PCSpellsGroupedByTarget = !PCSpellsGroupedByTarget;
                 }
 
-                var npcSpells = SpellList.Where(a =>
-                a.SpellViewModelType == SpellViewModelType.Spell &&
-                a.ColumnVisibility == Visibility.Visible &&
-                !a.IsTargetPlayer &&
-                a.GroupName != playerPet.PetName).Cast<SpellViewModel>().ToList();
+                //var npcSpells = SpellList.Where(a =>
+                //a.SpellViewModelType == SpellViewModelType.Spell &&
+                //a.ColumnVisibility == Visibility.Visible &&
+                //!a.IsTargetPlayer &&
+                //a.GroupName != playerPet.PetName).Cast<SpellViewModel>().ToList();
 
-                spellsByGroupName = npcSpells.GroupBy(a => a.GroupName).ToList();
-                spellsByName = npcSpells.GroupBy(a => a.Name).ToList();
-                if (spellsByGroupName.Count > spellsByName.Count)
-                {
-                    foreach (var spell in npcSpells)
-                    {
-                        (spell.Name, spell.GroupName) = (spell.GroupName, spell.Name);
-                    }
-                    NPCSpellsGroupedByTarget = !NPCSpellsGroupedByTarget;
-                }
+                //spellsByGroupName = npcSpells.GroupBy(a => a.GroupName).ToList();
+                //spellsByName = npcSpells.GroupBy(a => a.Name).ToList();
+                //if (spellsByGroupName.Count > spellsByName.Count)
+                //{
+                //    foreach (var spell in npcSpells)
+                //    {
+                //        (spell.Name, spell.GroupName) = (spell.GroupName, spell.Name);
+                //    }
+                //    NPCSpellsGroupedByTarget = !NPCSpellsGroupedByTarget;
+                //}
 
                 var groupedspellList = SpellList.GroupBy(a => a.GroupName).ToList();
                 foreach (var triggers in groupedspellList)
@@ -440,7 +440,7 @@ namespace EQTool.ViewModels
             {
                 var spellname = match.Name;
                 var groupname = match.GroupName;
-                if ((match.IsTargetPlayer && PCSpellsGroupedByTarget && match.GroupName != EQSpells.SpaceYou) || (!match.IsTargetPlayer && NPCSpellsGroupedByTarget))
+                if (match.IsTargetPlayer && PCSpellsGroupedByTarget && match.GroupName != EQSpells.SpaceYou /*|| (!match.IsTargetPlayer && NPCSpellsGroupedByTarget)*/)
                 {
                     match.GroupName = spellname;
                     match.Name = groupname;
