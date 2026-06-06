@@ -1617,7 +1617,7 @@ namespace EQToolShared
                     new NPCThatAOE
                     {
                         Name = "Zlandicar",
-                        SpellEffects = new List<string>() { "Dragon Roar", "Stun Breath", "Rotting Flesh", "Putrefy Flesh" }
+                        SpellEffects = new List<string>() { "Dragon Roar", "Stun Breath"}
                     }
                 }
             });
