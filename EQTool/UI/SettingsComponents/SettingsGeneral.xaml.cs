@@ -1296,6 +1296,11 @@ namespace EQTool.UI.SettingsComponents
 
         private void FixNightVision(object sender, RoutedEventArgs e)
         {
+            if (IsEqRunning())
+            {
+                _ = System.Windows.Forms.MessageBox.Show("Please close EQ before attempting to fix night vision!", "EQ is running", System.Windows.Forms.MessageBoxButtons.OK);
+                return;
+            }
             var messagebox = System.Windows.Forms.MessageBox.Show("MAKE SURE EQ IS NOT RUNNING!!! \nThis will fix your night vision, are you sure?", "Night vision fix", System.Windows.Forms.MessageBoxButtons.OKCancel);
             if (messagebox == System.Windows.Forms.DialogResult.OK)
             {
