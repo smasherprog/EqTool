@@ -67,6 +67,14 @@ namespace EQTool.Services.Handlers
             {
                 return;
             }
+            if (doOverlay)
+            {
+                logEvents.Handle(new TimerBarEvent
+                {
+                    Name = $"Word Of Resto",
+                    TotalSeconds = 7
+                });
+            }
 
             _ = System.Threading.Tasks.Task.Factory.StartNew(() =>
             {
