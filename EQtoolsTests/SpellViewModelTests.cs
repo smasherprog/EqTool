@@ -266,7 +266,7 @@ namespace EQtoolsTests
             logParser.Push(spellWindowViewModel, "A wooly mammoth looks less aggressive.", d.AddSeconds(5));
             logParser.Push(spellWindowViewModel, "A tundra mammoth looks less aggressive.", d.AddSeconds(5));
             spellWindowViewModel.UpdateSpells(1000);
-            var spelleffecst = spellWindowViewModel.SpellList.Where(a => a.SpellViewModelType == SpellViewModelType.Spell && a.GroupName == "Wake of Tranquility").Cast<SpellViewModel>().ToList();
+            var spelleffecst = spellWindowViewModel.SpellList.Where(a => a.SpellViewModelType == SpellViewModelType.Spell).Cast<SpellViewModel>().ToList();
             Assert.AreEqual(2, spelleffecst.Count());
         }
 
@@ -307,7 +307,7 @@ namespace EQtoolsTests
             logParser.Push(spellWindowViewModel, "A tundra mammoth is surrounded by darkness.", d.AddSeconds(13));
             logParser.Push(spellWindowViewModel, "Your Clinging Darkness spell has worn off.", d.AddSeconds(43));
             spellWindowViewModel.UpdateSpells(1000);
-            var spelleffecst = spellWindowViewModel.SpellList.Where(a => a.SpellViewModelType == SpellViewModelType.Spell && a.GroupName == "Clinging Darkness").Cast<SpellViewModel>();
+            var spelleffecst = spellWindowViewModel.SpellList.Where(a => a.SpellViewModelType == SpellViewModelType.Spell && a.GroupName == " A tundra mammoth").Cast<SpellViewModel>();
             Assert.AreEqual(1, spelleffecst.Count());
         }
 
