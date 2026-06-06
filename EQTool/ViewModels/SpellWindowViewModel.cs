@@ -277,7 +277,12 @@ namespace EQTool.ViewModels
                         continue;
                     }
                     var hidespell = false;
-                    if (settings.YouOnlySpells && s.GroupName != CustomTimer.CustomerTime && !isNPCTarget)
+
+                    if (isNPCTarget)
+                    {
+                        hidespell = false;
+                    }
+                    else if (settings.YouOnlySpells && s.GroupName != CustomTimer.CustomerTime)
                     {
                         hidespell = true;
                     }
