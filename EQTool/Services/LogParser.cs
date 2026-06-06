@@ -128,6 +128,10 @@ namespace EQTool.Services
             {
                 message = "Your body begins to rot.";
             }
+            if (message.StartsWith("Your eardrums rupture.  You have taken "))
+            {
+                message = "Your eardrums rupture.";
+            }
 
             foreach (var handler in eqLogParsers)
             {
