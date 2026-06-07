@@ -471,6 +471,25 @@
             </ScrollViewer>
         </TabItem>
 
+        <TabItem Header="Friends">
+            <StackPanel Orientation="Vertical" Margin="5,5,5,5">
+                <StackPanel Orientation="Horizontal" Margin="0,0,0,5">
+                    <TextBlock Text="Server" FontWeight="Bold" VerticalAlignment="Center" MinWidth="80"/>
+                    <ComboBox x:Name="FriendsServerComboBox" MinWidth="150" SelectionChanged="FriendsServerComboBox_SelectionChanged"/>
+                </StackPanel>
+                <TextBlock Text="Friends (one per line):" FontWeight="Bold" Margin="0,0,0,2"/>
+                <TextBox x:Name="FriendsTextBox" Height="300" AcceptsReturn="True"
+                         VerticalScrollBarVisibility="Auto" TextWrapping="NoWrap"
+                         FontFamily="Courier New" FontSize="13" Padding="3"/>
+                <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                    <Button Click="LoadFriendsButton_Click" MinWidth="100" Margin="0,0,5,0">Reload</Button>
+                    <Button Click="PushFriendsButton_Click" MinWidth="180">Push to All Character Files</Button>
+                </StackPanel>
+                <TextBlock TextWrapping="Wrap" Foreground="Gray" Margin="0,5,0,0"
+                           Text="Aggregates the [Friends] section from all character files for the selected server. Push overwrites that section in every file."/>
+            </StackPanel>
+        </TabItem>
+
         <TabItem Header="Debug" Name="DebugTab">
             <StackPanel Orientation="Vertical" Margin="5, 5, 5, 5" HorizontalAlignment="Stretch">
                 <StackPanel Orientation="Horizontal">

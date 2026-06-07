@@ -85,6 +85,7 @@ namespace EQTool.UI.SettingsComponents
 #if DEBUG || BETA
             DebugTab.Visibility = Visibility.Visible;
 #endif
+            InitializeFriendsTab();
             ComponentInitialized = true;
             MapConsoleLog.IsChecked = debugOutput.LogMapping;
             SpellConsoleLog.IsChecked = debugOutput.LogSpells;
@@ -103,6 +104,10 @@ namespace EQTool.UI.SettingsComponents
                 if ((tab.Header as string) == "UI")
                 {
                     SettingsWindowData.RefreshUIFiles();
+                }
+                else if ((tab.Header as string) == "Friends")
+                {
+                    LoadFriends();
                 }
             }
         }
@@ -1340,6 +1345,200 @@ namespace EQTool.UI.SettingsComponents
             catch (Exception ex)
             {
                 _ = MessageBox.Show($"Failed to open link: {ex.Message}");
+            }
+        }
+
+        private static readonly List<string> FriendsServerDisplayNames = new List<string> { "P1999Green", "P1999Blue", "P1999Red", "Real-Test" };
+
+        private void InitializeFriendsTab()
+        {
+            FriendsServerComboBox.ItemsSource = FriendsServerDisplayNames;
+            FriendsServerComboBox.SelectedIndex = 0;
+        }
+
+        private void FriendsServerComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            if (!ComponentInitialized)
+            {
+                return;
+            }
+            LoadFriends();
+        }
+
+        private void LoadFriendsButton_Click(object sender, RoutedEventArgs e)
+        {
+            LoadFriends();
+        }
+
+        private void PushFriendsButton_Click(object sender, RoutedEventArgs e)
+        {
+            PushFriends();
+        }
+
+        private string GetSelectedFriendServerSuffix()
+        {
+            var selected = FriendsServerComboBox.SelectedItem as string;
+            // Red server uses P1999PVP as the actual file suffix
+            if (selected == "P1999Red")
+            {
+                return "P1999PVP";
+            }
+            return selected ?? "P1999Green";
+        }
+
+        private List<string> GetFriendIniFiles()
+        {
+            if (!Directory.Exists(settings.DefaultEqDirectory))
+            {
+                return new List<string>();
+            }
+            var suffix = GetSelectedFriendServerSuffix();
+            return Directory.GetFiles(settings.DefaultEqDirectory, $"*_{suffix}.ini")
+                .Where(f => !Path.GetFileName(f).StartsWith("UI_", StringComparison.OrdinalIgnoreCase))
+                .ToList();
+        }
+
+        private List<string> ReadFriendsFromIni(string filePath)
+        {
+            var friends = new List<string>();
+            try
+            {
+                var lines = File.ReadAllLines(filePath);
+                var inFriendsSection = false;
+                foreach (var line in lines)
+                {
+                    var trimmed = line.Trim();
+                    if (trimmed.StartsWith("["))
+                    {
+                        inFriendsSection = trimmed.Equals("[Friends]", StringComparison.OrdinalIgnoreCase);
+                        continue;
+                    }
+                    if (inFriendsSection && !string.IsNullOrWhiteSpace(trimmed))
+                    {
+                        var eqIndex = trimmed.IndexOf('=');
+                        if (eqIndex > 0)
+                        {
+                            var name = trimmed.Substring(eqIndex + 1).Trim();
+                            if (!string.IsNullOrWhiteSpace(name) && !name.Equals("*NULL*", StringComparison.OrdinalIgnoreCase))
+                            {
+                                friends.Add(name);
+                            }
+                        }
+                    }
+                }
+            }
+            catch { }
+            return friends;
+        }
+
+        private void LoadFriends()
+        {
+            if (!Directory.Exists(settings.DefaultEqDirectory))
+            {
+                FriendsTextBox.Text = string.Empty;
+                return;
+            }
+
+            var files = GetFriendIniFiles();
+            if (files.Count == 0)
+            {
+                FriendsTextBox.Text = string.Empty;
+                return;
+            }
+
+            var allFriends = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            foreach (var file in files)
+            {
+                foreach (var friend in ReadFriendsFromIni(file))
+                {
+                    _ = allFriends.Add(friend);
+                }
+            }
+
+            FriendsTextBox.Text = string.Join(Environment.NewLine, allFriends.OrderBy(f => f, StringComparer.OrdinalIgnoreCase));
+        }
+
+        private void WriteFriendsToIni(string filePath, List<string> friendNames)
+        {
+            var lines = File.ReadAllLines(filePath).ToList();
+
+            var sectionStart = -1;
+            var sectionEnd = lines.Count;
+
+            for (var i = 0; i < lines.Count; i++)
+            {
+                var trimmed = lines[i].Trim();
+                if (trimmed.Equals("[Friends]", StringComparison.OrdinalIgnoreCase))
+                {
+                    sectionStart = i;
+                }
+                else if (sectionStart >= 0 && i > sectionStart && trimmed.StartsWith("["))
+                {
+                    sectionEnd = i;
+                    break;
+                }
+            }
+
+            var newFriendLines = Enumerable.Range(0, 100)
+                .Select(i => i < friendNames.Count ? $"Friend{i}={friendNames[i]}" : $"Friend{i}=*NULL*")
+                .ToList();
+
+            if (sectionStart >= 0)
+            {
+                lines.RemoveRange(sectionStart + 1, sectionEnd - sectionStart - 1);
+                lines.InsertRange(sectionStart + 1, newFriendLines);
+            }
+            else
+            {
+                if (lines.Count > 0 && !string.IsNullOrWhiteSpace(lines[lines.Count - 1]))
+                {
+                    lines.Add(string.Empty);
+                }
+                lines.Add("[Friends]");
+                lines.AddRange(newFriendLines);
+            }
+
+            File.WriteAllLines(filePath, lines);
+        }
+
+        private void PushFriends()
+        {
+            var files = GetFriendIniFiles();
+            if (files.Count == 0)
+            {
+                _ = MessageBox.Show("No character files found for this server.", "No Files", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
+            var friendNames = FriendsTextBox.Text
+                .Split(new[] { '\r', '\n' }, StringSplitOptions.RemoveEmptyEntries)
+                .Select(f => f.Trim())
+                .Where(f => !string.IsNullOrWhiteSpace(f) && !f.Equals("*NULL*", StringComparison.OrdinalIgnoreCase))
+                .Distinct(StringComparer.OrdinalIgnoreCase)
+                .OrderBy(f => f, StringComparer.OrdinalIgnoreCase)
+                .Take(100)
+                .ToList();
+
+            var errors = new List<string>();
+            foreach (var filePath in files)
+            {
+                try
+                {
+                    WriteFriendsToIni(filePath, friendNames);
+                }
+                catch (Exception ex)
+                {
+                    errors.Add($"{Path.GetFileName(filePath)}: {ex.Message}");
+                }
+            }
+
+            if (errors.Any())
+            {
+                _ = MessageBox.Show($"Errors updating some files:\n{string.Join("\n", errors)}", "Partial Success", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+            else
+            {
+                _ = MessageBox.Show($"Friends list pushed to {files.Count} file(s)!", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
             }
         }
 
