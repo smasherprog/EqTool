@@ -72,13 +72,13 @@ namespace EQTool.Services.Handlers
                 logEvents.Handle(new TimerBarEvent
                 {
                     Name = $"Word Of Resto",
-                    TotalSeconds = 7
+                    TotalSeconds = 8
                 });
             }
 
             _ = System.Threading.Tasks.Task.Factory.StartNew(() =>
             {
-                Thread.Sleep(7000);
+                Thread.Sleep(8000);
                 if (token.IsCancellationRequested)
                 {
                     return;
