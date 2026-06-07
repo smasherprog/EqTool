@@ -253,6 +253,7 @@ namespace EQTool
         private void InitStuff()
         {
             container.Resolve<LoggingService>().Log(string.Empty, EventType.StartUp, null);
+            container.Resolve<Services.LogArchiveService>().TryArchiveLogs();
             SettingsMenuItem = new System.Windows.Forms.MenuItem("Settings", ToggleSettingsWindow);
             SpellsMenuItem = new System.Windows.Forms.MenuItem("Triggers", ToggleSpellsWindow);
             MapMenuItem = new System.Windows.Forms.MenuItem("Map", ToggleMapWindow);

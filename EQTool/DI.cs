@@ -55,6 +55,7 @@ namespace EQTool
             _ = builder.RegisterType<Services.SettingsTestRunOverlay>().AsSelf().SingleInstance();
             _ = builder.RegisterType<Services.LoggingService>().AsSelf().SingleInstance();
             _ = builder.RegisterType<Services.LogParser>().AsSelf().SingleInstance();
+            _ = builder.RegisterType<Services.LogArchiveService>().AsSelf().SingleInstance();
 
             _ = builder.RegisterType<ViewModels.SettingsWindowViewModel>().AsSelf().SingleInstance();
             _ = builder.RegisterType<ViewModels.MobInfoComponents.PetViewModel>().AsSelf().SingleInstance();

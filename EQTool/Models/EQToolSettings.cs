@@ -157,6 +157,15 @@ namespace EQTool.Models
         public string DiscordApiToken { get; set; }
         public bool LoginMiddleMand { get; set; }
 
+        public bool LogArchiveEnabled { get; set; }
+
+        private int _LogArchiveSizeMB = 100;
+        public int LogArchiveSizeMB
+        {
+            get => _LogArchiveSizeMB;
+            set => _LogArchiveSizeMB = value < 1 ? 1 : value;
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         protected void OnPropertyChanged([CallerMemberName] string name = null)

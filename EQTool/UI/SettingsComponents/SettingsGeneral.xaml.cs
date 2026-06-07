@@ -37,7 +37,7 @@ namespace EQTool.UI.SettingsComponents
         private readonly WindowFactory windowFactory;
         private readonly LogEvents logEvents;
         private readonly DebugOutput debugOutput;
-        private readonly bool ComponentInitialized = false;
+        private readonly LogArchiveService logArchiveService;
 
         public SettingsGeneral(
             LogEvents logEvents,
@@ -53,7 +53,8 @@ namespace EQTool.UI.SettingsComponents
             DebugOutput debugOutput,
             EQToolSettingsLoad toolSettingsLoad,
             SettingsWindowViewModel settingsWindowData,
-            SettingsTestRunOverlay settingsTestRunOverlay)
+            SettingsTestRunOverlay settingsTestRunOverlay,
+            LogArchiveService logArchiveService)
         {
             this.debugOutput = debugOutput;
             this.loginMiddlemand = loginMiddlemand;
@@ -82,11 +83,11 @@ namespace EQTool.UI.SettingsComponents
             }
             DebugTab.Visibility = Visibility.Collapsed;
             this.settingsTestRunOverlay = settingsTestRunOverlay;
+            this.logArchiveService = logArchiveService;
 #if DEBUG || BETA
             DebugTab.Visibility = Visibility.Visible;
 #endif
             InitializeFriendsTab();
-            ComponentInitialized = true;
             MapConsoleLog.IsChecked = debugOutput.LogMapping;
             SpellConsoleLog.IsChecked = debugOutput.LogSpells;
         }
@@ -247,6 +248,21 @@ namespace EQTool.UI.SettingsComponents
             SaveConfig();
         }
 
+        private void LogArchiveCheckBox_Click(object sender, RoutedEventArgs e)
+        {
+            SaveConfig();
+            logArchiveService.TryArchiveLogs();
+        }
+
+        private void LogArchiveSizeMB_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            if (int.TryParse((sender as TextBox)?.Text, out var mb) && mb >= 1)
+            {
+                SettingsWindowData.LogArchiveSizeMB = mb;
+                SaveConfig();
+            }
+        }
+
         private void SaveSettings(object sender, RoutedPropertyChangedEventArgs<double> e)
         {
             SaveConfig();
@@ -368,11 +384,6 @@ namespace EQTool.UI.SettingsComponents
 
         private void zoneselectionchanged(object sender, SelectionChangedEventArgs e)
         {
-            if (!ComponentInitialized)
-            {
-                return;
-            }
-
             var player = SettingsWindowData.ActivePlayer.Player;
             if (player != null)
             {
@@ -1358,10 +1369,6 @@ namespace EQTool.UI.SettingsComponents
 
         private void FriendsServerComboBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
         {
-            if (!ComponentInitialized)
-            {
-                return;
-            }
             LoadFriends();
         }
 

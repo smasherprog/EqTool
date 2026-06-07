@@ -198,6 +198,25 @@ namespace EQTool.ViewModels
             }
         }
 
+        public bool LogArchiveEnabled
+        {
+            get => toolSettings.LogArchiveEnabled;
+            set
+            {
+                toolSettings.LogArchiveEnabled = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public int LogArchiveSizeMB
+        {
+            get => toolSettings.LogArchiveSizeMB;
+            set
+            {
+                toolSettings.LogArchiveSizeMB = value;
+                OnPropertyChanged();
+            }
+        }
 
         public double TriggerWindowOpacity
         {

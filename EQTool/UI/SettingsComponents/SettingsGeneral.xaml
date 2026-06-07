@@ -132,6 +132,33 @@
                     <TextBlock Text="https://github.com/Zaela/p99-login-middlemand"></TextBlock>
                     <TextBlock Text="Please, report any issues on discord!"></TextBlock>
                     <Separator/>
+                    <TextBlock Text="Log Archiving" HorizontalAlignment="Center" FontWeight="Bold" Margin="5,5,0,0"/>
+                    <StackPanel Orientation="Vertical" Margin="0,0,0,8">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Enable Archiving" VerticalAlignment="Center" FontWeight="Bold" MinWidth="120"/>
+                            <CheckBox IsChecked="{Binding LogArchiveEnabled}" Click="LogArchiveCheckBox_Click"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <StackPanel.Style>
+                                <Style TargetType="StackPanel">
+                                    <Setter Property="Opacity" Value="1.0"/>
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding LogArchiveEnabled}" Value="False">
+                                            <Setter Property="Opacity" Value="0.5"/>
+                                            <Setter Property="IsEnabled" Value="False"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </StackPanel.Style>
+                            <TextBlock Text="Archive at (MB)" VerticalAlignment="Center" FontWeight="Bold" MinWidth="120"/>
+                            <TextBox Text="{Binding LogArchiveSizeMB, UpdateSourceTrigger=PropertyChanged}" MinWidth="60" TextChanged="LogArchiveSizeMB_TextChanged"/>
+                        </StackPanel>
+                        <DockPanel>
+                            <TextBlock MaxWidth="400" TextWrapping="Wrap" Foreground="Gray"
+                                       Text="When a log file exceeds the size above it will be moved to an 'archive' subfolder and renamed with the current date and time."/>
+                        </DockPanel>
+                    </StackPanel>
+                    <Separator/>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Group Leader: " VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="120" Margin="0,5,0,0"/>
                         <TextBlock Text="{Binding GroupLeaderName}" HorizontalAlignment="Center" FontWeight="Bold" FontStyle="Italic" Foreground="Blue" Margin="0,5,0,0"/>
