@@ -17,7 +17,6 @@ namespace EQToolApis.Controllers
     {
         private readonly EQToolContext dbcontext;
         private readonly NpcTrackingService notableNpcService;
-        private readonly IHubContext<MapHub> mapHubContext;
         private readonly IHubContext<PPHub> ppHubContext;
         private DateTime LastKaelFactionSend = DateTime.UtcNow.AddMonths(-2);
         private static readonly QuakeCache[] QuakeCache = new QuakeCache[(int)Servers.MaxServers]
@@ -28,9 +27,8 @@ namespace EQToolApis.Controllers
             new() { Server = Servers.Quarm, DateTime = DateTimeOffset.MinValue }
         };
 
-        public ZoneController(EQToolContext dbcontext, NpcTrackingService notableNpcService, IHubContext<MapHub> mapHubContext, IHubContext<PPHub> ppHubContext)
+        public ZoneController(EQToolContext dbcontext, NpcTrackingService notableNpcService, IHubContext<PPHub> ppHubContext)
         {
-            this.mapHubContext = mapHubContext;
             this.ppHubContext = ppHubContext;
             this.dbcontext = dbcontext;
             this.notableNpcService = notableNpcService;
@@ -47,12 +45,6 @@ namespace EQToolApis.Controllers
             if (Zones.KaelFactionMobs.Contains(model.NPCData.Name) && model.IsDeath && (DateTime.UtcNow - LastKaelFactionSend).TotalSeconds > 10)
             {
                 LastKaelFactionSend = DateTime.UtcNow;
-                await mapHubContext.Clients.Group(model.Server.ToString()).SendAsync("AddCustomTrigger", new SignalrCustomTimer
-                {
-                    Server = model.Server,
-                    DurationInSeconds = 28 * 60,
-                    Name = "Next Kael Faction Pull"
-                });
                 await ppHubContext.Clients.Group(model.Server.ToString()).SendAsync("AddCustomTrigger", new SignalrCustomTimer
                 {
                     Server = model.Server,

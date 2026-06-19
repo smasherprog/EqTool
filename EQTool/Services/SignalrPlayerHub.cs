@@ -228,7 +228,7 @@ namespace EQTool.Models
 
         private TimerViewModel Create(HubCustomTimer e)
         {
-            if (!spells.AllSpells.TryGetValue(e.SpellNameIcon, out var spellicon))
+            if (e.SpellNameIcon == null || !spells.AllSpells.TryGetValue(e.SpellNameIcon, out var spellicon))
             {
                 _ = spells.AllSpells.TryGetValue("Feign Death", out spellicon);
             }
