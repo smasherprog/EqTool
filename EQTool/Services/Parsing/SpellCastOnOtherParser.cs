@@ -17,6 +17,7 @@ namespace EQTool.Services.Parsing
         private readonly List<string> IgnoreSpellsForGuesses = new List<string>(){
             "Tigir's Insects"
         };
+        private readonly Spell DragonRoar;
 
         public SpellCastOnOtherParser(SpellDurations spellDurations, LogEvents logEvents, EQSpells spells, DebugOutput debugOutput, ActivePlayer activePlayer)
         {
@@ -25,6 +26,7 @@ namespace EQTool.Services.Parsing
             this.logEvents = logEvents;
             this.spells = spells;
             this.activePlayer = activePlayer;
+            _ = this.spells.AllSpells.TryGetValue("Dragon Roar", out DragonRoar);
         }
 
         public bool Handle(string line, DateTime timestamp, int lineCounter)
@@ -36,6 +38,18 @@ namespace EQTool.Services.Parsing
             if (message.StartsWith("Your "))
             {
                 return false;
+            }
+            if (message == "You lose control of yourself!")
+            {
+                debugOutput.WriteLine($"{DragonRoar.name} Message: {message}", OutputType.Spells);
+                logEvents.Handle(new DragonRoarEvent
+                {
+                    Spell = DragonRoar,
+                    TimeStamp = timestamp,
+                    Line = message,
+                    LineCounter = lineCounter
+                });
+                return true;
             }
 
             var removename = message.IndexOf("'");
