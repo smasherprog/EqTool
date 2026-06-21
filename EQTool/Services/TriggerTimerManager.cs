@@ -316,14 +316,7 @@ namespace EQTool.Services
             {
                 foreach (var name in countersToReset)
                 {
-                    var counter = spellWindowViewModel.SpellList.FirstOrDefault(a =>
-                        a.SpellViewModelType == SpellViewModelType.Counter &&
-                        string.Equals(a.Name, name, StringComparison.OrdinalIgnoreCase) &&
-                        string.Equals(a.GroupName, TimerGroupName, StringComparison.OrdinalIgnoreCase));
-                    if (counter != null)
-                    {
-                        _ = spellWindowViewModel.SpellList.Remove(counter);
-                    }
+                    spellWindowViewModel.TryRemoveUnambiguousSpellOther(name);
                 }
             }
         }
