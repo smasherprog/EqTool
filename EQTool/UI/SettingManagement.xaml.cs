@@ -44,6 +44,50 @@ namespace EQTool.UI
             (sender as TreeViewItem).ContextMenu = settingsManagementViewModel.GetContextMenu(p);
         }
 
+        private void RenameTextBox_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (sender is TextBox tb && tb.IsVisible)
+            {
+                // Defer focus until after the context menu has fully closed and layout
+                // has settled, otherwise the TextBox never receives keyboard focus.
+                _ = Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    _ = tb.Focus();
+                    _ = Keyboard.Focus(tb);
+                    tb.SelectAll();
+                }), System.Windows.Threading.DispatcherPriority.Input);
+            }
+        }
+
+        private void RenameTextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            var tb = sender as TextBox;
+            if (e.Key == Key.Enter)
+            {
+                if (tb?.DataContext is TreeViewItemBase node)
+                {
+                    settingsManagementViewModel.CommitEdit(node);
+                }
+                e.Handled = true;
+            }
+            else if (e.Key == Key.Escape)
+            {
+                if (tb?.DataContext is TreeTriggerFolder folder)
+                {
+                    folder.CancelEdit();
+                }
+                e.Handled = true;
+            }
+        }
+
+        private void RenameTextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if ((sender as TextBox)?.DataContext is TreeViewItemBase node)
+            {
+                settingsManagementViewModel.CommitEdit(node);
+            }
+        }
+
         private static DependencyObject GetDependencyObjectFromVisualTree(DependencyObject startObject, Type type)
         {
             var parent = startObject;

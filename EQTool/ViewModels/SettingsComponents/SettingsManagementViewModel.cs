@@ -17,6 +17,9 @@ namespace EQTool.ViewModels.SettingsComponents
         private readonly UserComponentSettingsManagementFactory userComponentFactory;
         private readonly EQToolSettings settings;
         private readonly EQToolSettingsLoad eQToolSettingsLoad;
+        private TreeGlobal triggersRoot;
+        // The node that was Cut and is waiting to be Pasted (folder or trigger).
+        private TreeViewItemBase clipboardNode;
         public SettingsManagementViewModel(UserComponentSettingsManagementFactory userComponentFactory, EQToolSettings settings, EQToolSettingsLoad eQToolSettingsLoad)
         {
             this.userComponentFactory = userComponentFactory;
@@ -27,13 +30,9 @@ namespace EQTool.ViewModels.SettingsComponents
                 IsSelected = true
             });
 
-            var triggers = new TreeGlobal("Triggers", null);
-            _TreeItems.Add(triggers);
-
-            foreach (var trigger in settings.Triggers)
-            {
-                triggers.Children.Add(new TreeTrigger(new TriggerViewModel(trigger, settings, eQToolSettingsLoad), triggers));
-            }
+            triggersRoot = new TreeGlobal("Triggers", null);
+            _TreeItems.Add(triggersRoot);
+            BuildTriggerTree();
 
             foreach (var item in Enum.GetValues(typeof(Servers)).Cast<Servers>().Where(a => a != Servers.MaxServers && a != Servers.Quarm).ToList())
             {
@@ -53,6 +52,51 @@ namespace EQTool.ViewModels.SettingsComponents
 
         }
 
+        // Rebuilds the Triggers branch (folders + triggers) from the flat lists
+        // stored in settings. Folders are linked to their parents via ParentId and
+        // triggers are placed in their FolderId folder (or the root when null).
+        private void BuildTriggerTree()
+        {
+            triggersRoot.Children.Clear();
+            var folderNodes = new System.Collections.Generic.Dictionary<Guid, TreeTriggerFolder>();
+            foreach (var f in settings.TriggerFolders)
+            {
+                folderNodes[f.Id] = new TreeTriggerFolder(f, triggersRoot);
+            }
+
+            foreach (var f in settings.TriggerFolders)
+            {
+                var node = folderNodes[f.Id];
+                if (f.ParentId.HasValue && folderNodes.TryGetValue(f.ParentId.Value, out var parentNode))
+                {
+                    node.Parent = parentNode;
+                    parentNode.Children.Add(node);
+                }
+                else
+                {
+                    node.Parent = triggersRoot;
+                    triggersRoot.Children.Add(node);
+                }
+            }
+
+            foreach (var trigger in settings.Triggers)
+            {
+                TreeViewItemBase parent = triggersRoot;
+                if (trigger.FolderId.HasValue && folderNodes.TryGetValue(trigger.FolderId.Value, out var fnode))
+                {
+                    parent = fnode;
+                }
+                parent.Children.Add(new TreeTrigger(new TriggerViewModel(trigger, settings, eQToolSettingsLoad), parent));
+            }
+        }
+
+        private MenuItem BuildMenuItem(string header, RoutedEventHandler handler, TreeViewItemBase tag)
+        {
+            var menuItem = new MenuItem { Header = header, Tag = tag };
+            menuItem.Click += handler;
+            return menuItem;
+        }
+
         public ContextMenu GetContextMenu(TreeViewItemBase item)
         {
             if (item is TreeServer)
@@ -62,47 +106,41 @@ namespace EQTool.ViewModels.SettingsComponents
             }
             else if (item is TreeGlobal)
             {
-                var mnuItem3 = new MenuItem
+                // The root of the Triggers branch.
+                var menu = new ContextMenu();
+                _ = menu.Items.Add(BuildMenuItem("Add Trigger", AddTrigger, item));
+                _ = menu.Items.Add(BuildMenuItem("Add Folder", AddFolder, item));
+                if (clipboardNode != null)
                 {
-                    Header = "Add Trigger"
-                };
-                mnuItem3.Click += AddTrigger;
-                var menu = new ContextMenu() { };
-                _ = menu.Items.Add(mnuItem3);
-                foreach (MenuItem i in menu.Items)
-                {
-                    i.Tag = item;
+                    _ = menu.Items.Add(BuildMenuItem("Paste", PasteItem, item));
                 }
+                return menu;
+            }
+            else if (item is TreeTriggerFolder)
+            {
+                var menu = new ContextMenu();
+                _ = menu.Items.Add(BuildMenuItem("Add Trigger", AddTrigger, item));
+                _ = menu.Items.Add(BuildMenuItem("Add Folder", AddFolder, item));
+                _ = menu.Items.Add(BuildMenuItem("Rename", RenameItem, item));
+                _ = menu.Items.Add(BuildMenuItem("Cut", CutItem, item));
+                if (clipboardNode != null)
+                {
+                    _ = menu.Items.Add(BuildMenuItem("Paste", PasteItem, item));
+                }
+                _ = menu.Items.Add(BuildMenuItem("Delete", DeleteFolder, item));
                 return menu;
             }
             else if (item is TreeTrigger)
             {
-                var mnuItem3 = new MenuItem
-                {
-                    Header = "Delete Trigger"
-                };
-                mnuItem3.Click += DeleteTrigger;
-                var menu = new ContextMenu() { };
-                _ = menu.Items.Add(mnuItem3);
-                foreach (MenuItem i in menu.Items)
-                {
-                    i.Tag = item;
-                }
+                var menu = new ContextMenu();
+                _ = menu.Items.Add(BuildMenuItem("Cut", CutItem, item));
+                _ = menu.Items.Add(BuildMenuItem("Delete Trigger", DeleteTrigger, item));
                 return menu;
             }
             else if (item is TreePlayer)
             {
-                var mnuItem3 = new MenuItem
-                {
-                    Header = "Delete Saved Data"
-                };
-                mnuItem3.Click += PlayerDelete;
-                var menu = new ContextMenu() { };
-                _ = menu.Items.Add(mnuItem3);
-                foreach (MenuItem i in menu.Items)
-                {
-                    i.Tag = item;
-                }
+                var menu = new ContextMenu();
+                _ = menu.Items.Add(BuildMenuItem("Delete Saved Data", PlayerDelete, item));
                 return menu;
             }
 
@@ -111,12 +149,120 @@ namespace EQTool.ViewModels.SettingsComponents
 
         private void AddTrigger(object sender, RoutedEventArgs e)
         {
-            var s = sender as MenuItem;
-            if (s.Tag is TreeGlobal t)
+            if ((sender as MenuItem)?.Tag is TreeViewItemBase parent && (parent is TreeGlobal || parent is TreeTriggerFolder))
             {
-                var newtrigger = new TreeTrigger(new TriggerViewModel(settings, eQToolSettingsLoad), t);
-                newtrigger.IsSelected = true;
-                t.Children.Insert(0, newtrigger);
+                var vm = new TriggerViewModel(settings, eQToolSettingsLoad)
+                {
+                    FolderId = (parent as TreeTriggerFolder)?.Backing.Id
+                };
+                var newtrigger = new TreeTrigger(vm, parent) { IsSelected = true };
+                parent.Children.Insert(0, newtrigger);
+                parent.IsExpanded = true;
+            }
+        }
+
+        private void AddFolder(object sender, RoutedEventArgs e)
+        {
+            if ((sender as MenuItem)?.Tag is TreeViewItemBase parent && (parent is TreeGlobal || parent is TreeTriggerFolder))
+            {
+                var backing = new TriggerFolder
+                {
+                    Name = "New Folder",
+                    ParentId = (parent as TreeTriggerFolder)?.Backing.Id
+                };
+                var node = new TreeTriggerFolder(backing, parent);
+                parent.Children.Insert(0, node);
+                parent.IsExpanded = true;
+                node.IsSelected = true;
+                PersistTriggerTree();
+                node.BeginEdit();
+            }
+        }
+
+        private void RenameItem(object sender, RoutedEventArgs e)
+        {
+            if ((sender as MenuItem)?.Tag is TreeTriggerFolder folder)
+            {
+                folder.BeginEdit();
+            }
+        }
+
+        private void CutItem(object sender, RoutedEventArgs e)
+        {
+            clipboardNode = (sender as MenuItem)?.Tag as TreeViewItemBase;
+        }
+
+        private void PasteItem(object sender, RoutedEventArgs e)
+        {
+            if (clipboardNode == null)
+            {
+                return;
+            }
+            if (!((sender as MenuItem)?.Tag is TreeViewItemBase target) || !(target is TreeGlobal || target is TreeTriggerFolder))
+            {
+                return;
+            }
+            // Can't paste a node into itself or into one of its own descendants.
+            if (IsSelfOrDescendant(target, clipboardNode))
+            {
+                clipboardNode = null;
+                return;
+            }
+
+            _ = clipboardNode.Parent?.Children.Remove(clipboardNode);
+            clipboardNode.Parent = target;
+            target.Children.Insert(0, clipboardNode);
+            target.IsExpanded = true;
+            clipboardNode = null;
+            PersistTriggerTree();
+        }
+
+        // Returns true if 'candidate' is 'node' itself or anywhere in 'node's subtree.
+        private bool IsSelfOrDescendant(TreeViewItemBase candidate, TreeViewItemBase node)
+        {
+            var current = candidate;
+            while (current != null)
+            {
+                if (current == node)
+                {
+                    return true;
+                }
+                current = current.Parent;
+            }
+            return false;
+        }
+
+        private void DeleteFolder(object sender, RoutedEventArgs e)
+        {
+            if ((sender as MenuItem)?.Tag is TreeTriggerFolder t)
+            {
+                var result = System.Windows.MessageBox.Show($"Are you sure that you want to delete the folder '{t.Name}' and everything inside it?", $"Delete Folder '{t.Name}'", MessageBoxButton.YesNo, MessageBoxImage.Warning);
+                if (result == MessageBoxResult.Yes)
+                {
+                    RemoveTriggersUnder(t);
+                    if (clipboardNode != null && IsSelfOrDescendant(clipboardNode, t))
+                    {
+                        clipboardNode = null;
+                    }
+                    _ = t.Parent.Children.Remove(t);
+                    PersistTriggerTree();
+                }
+            }
+        }
+
+        // Removes the underlying Trigger of every TreeTrigger in this subtree from settings.Triggers.
+        private void RemoveTriggersUnder(TreeViewItemBase node)
+        {
+            foreach (var child in node.Children)
+            {
+                if (child is TreeTrigger tt)
+                {
+                    _ = settings.Triggers.RemoveAll(a => a.TriggerId == tt.Trigger.TriggerId);
+                }
+                else
+                {
+                    RemoveTriggersUnder(child);
+                }
             }
         }
 
@@ -129,8 +275,54 @@ namespace EQTool.ViewModels.SettingsComponents
                 if (result == MessageBoxResult.Yes)
                 {
                     _ = settings.Triggers.RemoveAll(a => a.TriggerId == t.Trigger.TriggerId);
-                    eQToolSettingsLoad.Save(settings);
+                    if (clipboardNode == t)
+                    {
+                        clipboardNode = null;
+                    }
                     _ = t.Parent.Children.Remove(t);
+                    eQToolSettingsLoad.Save(settings);
+                }
+            }
+        }
+
+        // Called when inline editing of a node's name finishes (Enter / focus lost).
+        public void CommitEdit(TreeViewItemBase node)
+        {
+            if (node == null || !node.IsEditing)
+            {
+                return;
+            }
+            node.IsEditing = false;
+            if (node is TreeTriggerFolder)
+            {
+                PersistTriggerTree();
+            }
+        }
+
+        // Walks the current tree and writes the folder hierarchy and each trigger's
+        // FolderId back into settings, then saves. This keeps the persisted flat
+        // lists in sync with the tree after any structural change.
+        private void PersistTriggerTree()
+        {
+            var folders = new System.Collections.Generic.List<TriggerFolder>();
+            WalkAndCollect(triggersRoot, null, folders);
+            settings.TriggerFolders = folders;
+            eQToolSettingsLoad.Save(settings);
+        }
+
+        private void WalkAndCollect(TreeViewItemBase node, Guid? parentId, System.Collections.Generic.List<TriggerFolder> folders)
+        {
+            foreach (var child in node.Children)
+            {
+                if (child is TreeTriggerFolder f)
+                {
+                    f.Backing.ParentId = parentId;
+                    folders.Add(f.Backing);
+                    WalkAndCollect(f, f.Backing.Id, folders);
+                }
+                else if (child is TreeTrigger t)
+                {
+                    t.Trigger.FolderId = parentId;
                 }
             }
         }

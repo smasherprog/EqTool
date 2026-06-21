@@ -21,6 +21,7 @@ namespace EQTool.Services
             userComponentTypes.Add(TreeViewItemType.Player, typeof(SettingsPlayer));
             userComponentTypes.Add(TreeViewItemType.Zone, typeof(SettingsGeneral));
             userComponentTypes.Add(TreeViewItemType.Global, typeof(SettingsGeneral));
+            userComponentTypes.Add(TreeViewItemType.TriggerFolder, typeof(SettingsGeneral));
 
             // todo - what is this intended to do?  do we need a SettingsTrigger defined??
             userComponentTypes.Add(TreeViewItemType.Trigger, typeof(SettingsTrigger));

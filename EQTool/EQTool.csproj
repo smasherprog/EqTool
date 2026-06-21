@@ -410,6 +410,9 @@
     <Compile Include="Services\Handlers\InvisHandler.cs" />
     <Compile Include="Services\Handlers\DeathLoopHandler.cs" />
     <Compile Include="Services\TextToSpeach.cs" />
+    <Compile Include="Services\AudioService.cs" />
+    <Compile Include="Services\TriggerActionExecutor.cs" />
+    <Compile Include="Services\TriggerTimerManager.cs" />
     <Compile Include="Services\Map\MapData.cs" />
     <Compile Include="Services\Map\ZoneSpawnTimes.cs" />
     <Compile Include="Services\P99LoginMiddlemand\LoginMiddlemand.cs" />
@@ -431,6 +434,11 @@
     <Compile Include="UI\SettingsComponents\SettingsTrigger.xaml.cs">
       <DependentUpon>SettingsTrigger.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UI\SettingsComponents\TriggerOutputEditor.xaml.cs">
+      <DependentUpon>TriggerOutputEditor.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UI\SettingsComponents\IntRangeRule.cs" />
+    <Compile Include="UI\SettingsComponents\StringToBrushConverter.cs" />
     <Compile Include="UI\SettingsComponents\SettingsGeneral.xaml.cs">
       <DependentUpon>SettingsGeneral.xaml</DependentUpon>
     </Compile>
@@ -527,10 +535,14 @@
     <Compile Include="ViewModels\SettingsComponents\TreeGlobal.cs" />
     <Compile Include="ViewModels\SettingsComponents\TreeServer.cs" />
     <Compile Include="ViewModels\SettingsComponents\TreeTrigger.cs" />
+    <Compile Include="ViewModels\SettingsComponents\TreeTriggerFolder.cs" />
     <Compile Include="ViewModels\SettingsComponents\TreePlayer.cs" />
     <Compile Include="ViewModels\SettingsComponents\TreeViewItemBase.cs" />
     <Compile Include="ViewModels\SettingsComponents\SettingsManagementViewModel.cs" />
     <Compile Include="Models\Trigger.cs" />
+    <Compile Include="Models\TriggerComponents.cs" />
+    <Compile Include="Models\TriggerColors.cs" />
+    <Compile Include="Models\TriggerFolder.cs" />
     <Compile Include="ViewModels\SettingsComponents\TriggerViewModel.cs" />
     <Compile Include="ViewModels\SpawnTimerDialogViewModel.cs" />
     <Compile Include="ViewModels\SpellWindow\BoatViewModel.cs" />
@@ -583,6 +595,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UI\SettingsComponents\SettingsTrigger.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="UI\SettingsComponents\TriggerOutputEditor.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>

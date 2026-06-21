@@ -91,8 +91,8 @@
                         </HierarchicalDataTemplate>
                         <HierarchicalDataTemplate DataType="{x:Type vm:TreeGlobal}" ItemsSource="{Binding Children}">
                             <StackPanel Orientation="Horizontal" >
-                                <TextBlock Text="🖧" />
-                                <TextBlock Text="{Binding Name}" Margin="0,0,4,0" />
+                                <Image Source="pack://application:,,,/Images/open-folder.png" Width="16" Height="16" Margin="0,0,4,0" VerticalAlignment="Center"/>
+                                <TextBlock Text="{Binding Name}" Margin="0,0,4,0" VerticalAlignment="Center" />
                             </StackPanel>
                         </HierarchicalDataTemplate>
                         <HierarchicalDataTemplate DataType="{x:Type vm:TreePlayer}" ItemsSource="{Binding Children}">
@@ -105,6 +105,38 @@
                                 <TextBlock Grid.Column="0" Text="{Binding Name}" Margin="16,0,0,0" />
                                 <TextBlock Grid.Column="1" Text="{Binding LastPlayed}" />
                             </Grid>
+                        </HierarchicalDataTemplate>
+                        <HierarchicalDataTemplate DataType="{x:Type vm:TreeTriggerFolder}" ItemsSource="{Binding Children}">
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="pack://application:,,,/Images/open-folder.png" Width="16" Height="16" Margin="0,0,4,0" VerticalAlignment="Center"/>
+                                <TextBlock Text="{Binding EditableName}" Margin="0,0,4,0" VerticalAlignment="Center">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsEditing}" Value="True">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                                <TextBox Text="{Binding EditableName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                         MinWidth="90" Margin="0,0,4,0" Padding="1,0,1,0"
+                                         KeyDown="RenameTextBox_KeyDown"
+                                         LostFocus="RenameTextBox_LostFocus"
+                                         IsVisibleChanged="RenameTextBox_IsVisibleChanged">
+                                    <TextBox.Style>
+                                        <Style TargetType="TextBox">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsEditing}" Value="True">
+                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBox.Style>
+                                </TextBox>
+                            </StackPanel>
                         </HierarchicalDataTemplate>
                         <HierarchicalDataTemplate DataType="{x:Type vm:TreeTrigger}" ItemsSource="{Binding Children}">
                             <StackPanel Orientation="Horizontal">

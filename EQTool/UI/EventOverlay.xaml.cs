@@ -281,7 +281,7 @@ namespace EQTool.UI
                     Maximum = 100,
                     Value = 100,
                     Height = 26,
-                    Foreground = Brushes.SteelBlue,
+                    Foreground = e.BarColor ?? Brushes.SteelBlue,
                     Background = new SolidColorBrush(System.Windows.Media.Color.FromArgb(200, 10, 10, 10)),
                     BorderThickness = new Thickness(1),
                     BorderBrush = Brushes.White,

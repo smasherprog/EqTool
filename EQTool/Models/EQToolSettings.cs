@@ -136,6 +136,7 @@ namespace EQTool.Models
 
         public List<PlayerInfo> Players { get; set; } = new List<PlayerInfo>();
         public List<Trigger> Triggers { get; set; } = new List<Trigger>();
+        public List<TriggerFolder> TriggerFolders { get; set; } = new List<TriggerFolder>();
         public bool YouOnlySpells { get; set; }
         public bool ShowRandomRolls { get; set; }
 

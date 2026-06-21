@@ -1,433 +1,268 @@
-﻿using EQTool.Services;
+using EQTool.Services;
 using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Windows;
 using System.Windows.Media;
 
 namespace EQTool.Models
 {
+    // View model backing the trigger editor. Binds directly to a live
+    // Trigger instance (and its sub-objects) and persists on Save.
     public class TriggerViewModel : INotifyPropertyChanged
     {
-        private readonly Trigger _Newtrigger;
-        private readonly Trigger _OldTrigger = new Trigger();
+        private readonly Trigger trigger;
         private readonly EQToolSettings toolSettings;
         private readonly EQToolSettingsLoad settingsLoad;
         private bool IsNewTrigger = false;
 
         public TriggerViewModel(Trigger trigger, EQToolSettings toolSettings, EQToolSettingsLoad settingsLoad)
         {
-            this._Newtrigger = trigger;
+            this.trigger = trigger;
             this.toolSettings = toolSettings;
             this.settingsLoad = settingsLoad;
-            this.CopyNewToSelf();
+            EnsureComponents();
+            RefreshValidation();
         }
 
         public TriggerViewModel(EQToolSettings toolSettings, EQToolSettingsLoad settingsLoad)
         {
             IsNewTrigger = true;
-            this._Newtrigger = new Trigger();
-            this._Newtrigger.TriggerEnabled = false;
-            this._Newtrigger.TriggerId = Guid.NewGuid();
-            this._Newtrigger.TriggerName = "New Trigger";
-            this._Newtrigger.SearchText = string.Empty;
+            this.trigger = new Trigger
+            {
+                TriggerId = Guid.NewGuid(),
+                TriggerEnabled = false,
+                TriggerName = "New Trigger",
+                SearchText = string.Empty,
+                Category = "Default",
+                UseRegex = false
+            };
             this.toolSettings = toolSettings;
             this.settingsLoad = settingsLoad;
-            this.CopyNewToSelf();
+            EnsureComponents();
+            RefreshValidation();
+        }
+
+        // Make sure every component object exists (and migrate legacy triggers so the
+        // Basic tab is populated from the old DisplayText/AudioText fields).
+        private void EnsureComponents()
+        {
+            if (trigger.Basic == null)
+            {
+                trigger.Basic = trigger.GetEffectiveBasic();
+            }
+            if (trigger.UseRegex == null)
+            {
+                // legacy triggers were always regex
+                trigger.UseRegex = true;
+            }
+            if (trigger.Timer == null)
+            {
+                trigger.Timer = new TriggerTimer();
+            }
+            if (trigger.TimerEnding == null)
+            {
+                trigger.TimerEnding = new TriggerTimerEnding();
+            }
+            if (trigger.TimerEnded == null)
+            {
+                trigger.TimerEnded = new TriggerTimerEnded();
+            }
+            if (trigger.Counter == null)
+            {
+                trigger.Counter = new TriggerCounter();
+            }
+            if (string.IsNullOrEmpty(trigger.Category))
+            {
+                trigger.Category = "Default";
+            }
         }
 
         public void Save()
         {
-            this.CopyOldToNew();
-            if (this.IsNewTrigger)
+            if (IsNewTrigger)
             {
-                this.toolSettings.Triggers.Add(this._Newtrigger);
-                this.IsNewTrigger = false;
+                toolSettings.Triggers.Add(trigger);
+                IsNewTrigger = false;
             }
-            this.settingsLoad.Save(toolSettings);
-            this.OnPropertyChanged(nameof(IsDirty));
+            settingsLoad.Save(toolSettings);
         }
 
-        private void CopyOldToNew()
+        // Structural property set by the Triggers tree (folder placement).
+        public Guid? FolderId
         {
-            _Newtrigger.TriggerId = _OldTrigger.TriggerId;
-            _Newtrigger.TriggerName = _OldTrigger.TriggerName;
-            _Newtrigger.AudioText = _OldTrigger.AudioText;
-            _Newtrigger.AudioTextEnabled = _OldTrigger.AudioTextEnabled;
-            _Newtrigger.DisplayText = _OldTrigger.DisplayText;
-            _Newtrigger.DisplayTextEnabled = _OldTrigger.DisplayTextEnabled;
-            _Newtrigger.SearchText = _OldTrigger.SearchText;
-            _Newtrigger.TriggerEnabled = _OldTrigger.TriggerEnabled;
+            get => trigger.FolderId;
+            set => trigger.FolderId = value;
         }
 
-        private void CopyNewToSelf()
-        {
-            this.TriggerId = _Newtrigger.TriggerId;
-            this.TriggerName = _Newtrigger.TriggerName;
-            this.AudioText = _Newtrigger.AudioText;
-            this.AudioTextEnabled = _Newtrigger.AudioTextEnabled;
-            this.DisplayText = _Newtrigger.DisplayText;
-            this.DisplayTextEnabled = _Newtrigger.DisplayTextEnabled;
-            this.SearchText = _Newtrigger.SearchText;
-            this.TriggerEnabled = _Newtrigger.TriggerEnabled;
-        }
+        public Guid TriggerId => trigger.TriggerId;
 
-        public bool IsSavable
-        {
-            get
-            {
-                return
-                    string.IsNullOrWhiteSpace(this._TriggerNameErrorMessge) &&
-                     string.IsNullOrWhiteSpace(this._SearchTextErrorMessge) &&
-                      string.IsNullOrWhiteSpace(this._AudioTextErrorMessge);
-            }
-        }
+        // The underlying trigger model (used by the editor's Test feature).
+        public Trigger Model => trigger;
 
-        public Visibility IsDirty
+        public string TriggerName
         {
-            get
-            {
-                return
-                    (this._OldTrigger.TriggerId != this._Newtrigger.TriggerId ||
-                    this._OldTrigger.TriggerName != this._Newtrigger.TriggerName ||
-                    this._OldTrigger.AudioText != this._Newtrigger.AudioText ||
-                    this._OldTrigger.AudioTextEnabled != this._Newtrigger.AudioTextEnabled ||
-                    this._OldTrigger.DisplayText != this._Newtrigger.DisplayText ||
-                    this._OldTrigger.DisplayTextEnabled != this._Newtrigger.DisplayTextEnabled ||
-                    this._OldTrigger.SearchText != this._Newtrigger.SearchText ||
-                    this._OldTrigger.TriggerEnabled != this._Newtrigger.TriggerEnabled) ? Visibility.Visible : Visibility.Collapsed;
-            }
-        }
-
-        public Guid TriggerId
-        {
-            get { return this._OldTrigger.TriggerId; }
+            get => trigger.TriggerName;
             set
             {
-                this._OldTrigger.TriggerId = value;
-                this.OnPropertyChanged();
+                trigger.TriggerName = value;
+                OnPropertyChanged();
+                RefreshValidation();
             }
         }
 
         public bool TriggerEnabled
         {
-            get { return this._OldTrigger.TriggerEnabled; }
-            set
-            {
-                this._OldTrigger.TriggerEnabled = value;
-                this.OnPropertyChanged(nameof(IsDirty));
-                this.OnPropertyChanged();
-            }
-        }
-
-        public Brush TriggerNameBorderBrush
-        {
-            get
-            {
-                if (string.IsNullOrWhiteSpace(this._TriggerNameErrorMessge))
-                {
-                    return DefaultBrush;
-                }
-                else
-                {
-                    return Brushes.Red;
-                }
-            }
-        }
-
-        public Visibility TriggerNameErrorMessgeVisible
-        {
-            get
-            {
-                if (string.IsNullOrWhiteSpace(this._TriggerNameErrorMessge))
-                {
-                    return Visibility.Collapsed;
-                }
-                else
-                {
-                    return Visibility.Visible;
-                }
-            }
-        }
-
-        private string _TriggerNameErrorMessge = string.Empty;
-        public string TriggerNameErrorMessge
-        {
-            get { return _TriggerNameErrorMessge; }
-            set
-            {
-                if (_TriggerNameErrorMessge != value)
-                {
-                    _TriggerNameErrorMessge = value;
-                    this.OnPropertyChanged();
-                    this.OnPropertyChanged(nameof(TriggerNameErrorMessgeVisible));
-                    this.OnPropertyChanged(nameof(TriggerNameBorderBrush));
-                    this.OnPropertyChanged(nameof(IsSavable));
-                }
-            }
-        }
-
-        public string TriggerName
-        {
-            get { return this._OldTrigger.TriggerName; }
-            set
-            {
-                this._OldTrigger.TriggerName = value;
-                if (string.IsNullOrWhiteSpace(_OldTrigger.TriggerName) || _OldTrigger.TriggerName.Length < 4)
-                {
-                    TriggerNameErrorMessge = "Trigger Name must be at least 4 characters long!";
-                }
-                else
-                {
-                    TriggerNameErrorMessge = string.Empty;
-                }
-                this.OnPropertyChanged(nameof(IsDirty));
-                this.OnPropertyChanged();
-            }
-        }
-        private static Brush DefaultBrush
-        {
-            get
-            {
-                return Brushes.Gray;
-            }
-        }
-        public Brush SearchTextBorderBrush
-        {
-            get
-            {
-                if (string.IsNullOrWhiteSpace(this._SearchTextErrorMessge))
-                {
-                    return DefaultBrush;
-                }
-                else
-                {
-                    return Brushes.Red;
-                }
-            }
-        }
-
-        public Visibility SearchTextErrorMessgeVisible
-        {
-            get
-            {
-                if (string.IsNullOrWhiteSpace(this._SearchTextErrorMessge))
-                {
-                    return Visibility.Collapsed;
-                }
-                else
-                {
-                    return Visibility.Visible;
-                }
-            }
-        }
-
-        private string _SearchTextErrorMessge = string.Empty;
-        public string SearchTextErrorMessge
-        {
-            get { return _SearchTextErrorMessge; }
-            set
-            {
-                if (_SearchTextErrorMessge != value)
-                {
-                    _SearchTextErrorMessge = value;
-
-                    this.OnPropertyChanged();
-                    this.OnPropertyChanged(nameof(SearchTextErrorMessgeVisible));
-                    this.OnPropertyChanged(nameof(SearchTextBorderBrush));
-                    this.OnPropertyChanged(nameof(IsSavable));
-                }
-            }
+            get => trigger.TriggerEnabled;
+            set { trigger.TriggerEnabled = value; OnPropertyChanged(); }
         }
 
         public string SearchText
         {
-            get { return this._OldTrigger.SearchText; }
+            get => trigger.SearchText;
             set
             {
-                this._OldTrigger.SearchText = value;
-                if (string.IsNullOrWhiteSpace(_OldTrigger.SearchText) || _OldTrigger.SearchText.Length < 4)
+                trigger.SearchText = value;
+                OnPropertyChanged();
+                RefreshValidation();
+            }
+        }
+
+        public bool UseRegex
+        {
+            get => trigger.EffectiveUseRegex;
+            set
+            {
+                trigger.UseRegex = value;
+                OnPropertyChanged();
+                OnPropertyChanged(nameof(CanUseFastCheck));
+                RefreshValidation();
+            }
+        }
+
+        public bool UseFastCheck
+        {
+            get => trigger.UseFastCheck;
+            set { trigger.UseFastCheck = value; OnPropertyChanged(); }
+        }
+
+        public bool CanUseFastCheck => !UseRegex;
+
+        public string Category
+        {
+            get => trigger.Category;
+            set { trigger.Category = value; OnPropertyChanged(); }
+        }
+
+        public string Comments
+        {
+            get => trigger.Comments;
+            set { trigger.Comments = value; OnPropertyChanged(); }
+        }
+
+        public ObservableCollection<string> Categories
+        {
+            get
+            {
+                var cats = toolSettings.Triggers
+                    .Select(a => a.Category)
+                    .Where(a => !string.IsNullOrWhiteSpace(a))
+                    .Distinct(StringComparer.OrdinalIgnoreCase)
+                    .OrderBy(a => a)
+                    .ToList();
+                if (!cats.Any(a => string.Equals(a, "Default", StringComparison.OrdinalIgnoreCase)))
                 {
-                    SearchTextErrorMessge = "Regex must be at least 4 characters long!";
+                    cats.Insert(0, "Default");
                 }
-                else
+                return new ObservableCollection<string>(cats);
+            }
+        }
+
+        // Component objects bound directly by the editor tabs.
+        public TriggerOutput Basic => trigger.Basic;
+        public TriggerTimer Timer => trigger.Timer;
+        public TriggerTimerEnding TimerEnding => trigger.TimerEnding;
+        public TriggerTimerEnded TimerEnded => trigger.TimerEnded;
+        public TriggerCounter Counter => trigger.Counter;
+
+        public List<KeyValuePair<TimerType, string>> TimerTypeOptions => new List<KeyValuePair<TimerType, string>>
+        {
+            new KeyValuePair<TimerType, string>(TimerType.NoTimer, "No Timer"),
+            new KeyValuePair<TimerType, string>(TimerType.CountDown, "Timer (Count Down)"),
+            new KeyValuePair<TimerType, string>(TimerType.CountUp, "Timer (Count Up)"),
+            new KeyValuePair<TimerType, string>(TimerType.Stopwatch, "Stopwatch"),
+            new KeyValuePair<TimerType, string>(TimerType.RepeatingTimer, "Repeating Timer"),
+        };
+
+        public List<KeyValuePair<TimerRestartBehavior, string>> RestartBehaviorOptions => new List<KeyValuePair<TimerRestartBehavior, string>>
+        {
+            new KeyValuePair<TimerRestartBehavior, string>(TimerRestartBehavior.StartNewTimer, "Start a new timer"),
+            new KeyValuePair<TimerRestartBehavior, string>(TimerRestartBehavior.RestartTimer, "Restart current timer"),
+            new KeyValuePair<TimerRestartBehavior, string>(TimerRestartBehavior.RestartTimerIfRunning, "Restart timer if running"),
+            new KeyValuePair<TimerRestartBehavior, string>(TimerRestartBehavior.DoNothing, "Do nothing"),
+        };
+
+        // ---- Validation ----
+
+        private void RefreshValidation()
+        {
+            OnPropertyChanged(nameof(TriggerNameErrorMessge));
+            OnPropertyChanged(nameof(TriggerNameErrorMessgeVisible));
+            OnPropertyChanged(nameof(TriggerNameBorderBrush));
+            OnPropertyChanged(nameof(SearchTextErrorMessge));
+            OnPropertyChanged(nameof(SearchTextErrorMessgeVisible));
+            OnPropertyChanged(nameof(SearchTextBorderBrush));
+            OnPropertyChanged(nameof(IsSavable));
+        }
+
+        public string TriggerNameErrorMessge =>
+            string.IsNullOrWhiteSpace(trigger.TriggerName) ? "Trigger Name is required." : string.Empty;
+
+        public Visibility TriggerNameErrorMessgeVisible =>
+            string.IsNullOrWhiteSpace(TriggerNameErrorMessge) ? Visibility.Collapsed : Visibility.Visible;
+
+        public Brush TriggerNameBorderBrush =>
+            string.IsNullOrWhiteSpace(TriggerNameErrorMessge) ? Brushes.Gray : Brushes.Red;
+
+        public string SearchTextErrorMessge
+        {
+            get
+            {
+                if (string.IsNullOrWhiteSpace(trigger.SearchText))
+                {
+                    return "Search Text is required.";
+                }
+                if (UseRegex)
                 {
                     try
                     {
-                        var r = this._OldTrigger.TriggerRegex;
+                        var r = trigger.TriggerRegex;
                         if (r == null)
                         {
-                            this.SearchTextErrorMessge = "There was an error creating the regex!";
-                        }
-                        else
-                        {
-                            this.SearchTextErrorMessge = string.Empty;
+                            return "There was an error creating the regex!";
                         }
                     }
                     catch (Exception ex)
                     {
-                        this.SearchTextErrorMessge = ex.Message;
+                        return ex.Message;
                     }
                 }
-
-                this.OnPropertyChanged(nameof(IsDirty));
-                this.OnPropertyChanged();
+                return string.Empty;
             }
         }
 
-        public Brush DisplayTextBorderBrush
-        {
-            get
-            {
-                if (string.IsNullOrWhiteSpace(this._DisplayTextErrorMessge))
-                {
-                    return DefaultBrush;
-                }
-                else
-                {
-                    return Brushes.Red;
-                }
-            }
-        }
+        public Visibility SearchTextErrorMessgeVisible =>
+            string.IsNullOrWhiteSpace(SearchTextErrorMessge) ? Visibility.Collapsed : Visibility.Visible;
 
-        public Visibility DisplayTextErrorMessgeVisible
-        {
-            get
-            {
-                if (string.IsNullOrWhiteSpace(this._DisplayTextErrorMessge))
-                {
-                    return Visibility.Collapsed;
-                }
-                else
-                {
-                    return Visibility.Visible;
-                }
-            }
-        }
+        public Brush SearchTextBorderBrush =>
+            string.IsNullOrWhiteSpace(SearchTextErrorMessge) ? Brushes.Gray : Brushes.Red;
 
-        private string _DisplayTextErrorMessge = string.Empty;
-        public string DisplayTextErrorMessge
-        {
-            get { return _DisplayTextErrorMessge; }
-            set
-            {
-                if (_DisplayTextErrorMessge != value)
-                {
-                    _DisplayTextErrorMessge = value;
-                    this.OnPropertyChanged();
-                    this.OnPropertyChanged(nameof(DisplayTextErrorMessgeVisible));
-                    this.OnPropertyChanged(nameof(DisplayTextBorderBrush));
-                    this.OnPropertyChanged(nameof(IsSavable));
-                }
-            }
-        }
-
-        public string DisplayText
-        {
-            get { return this._OldTrigger.DisplayText; }
-            set
-            {
-                this._OldTrigger.DisplayText = value;
-                if (string.IsNullOrWhiteSpace(_OldTrigger.DisplayText) || _OldTrigger.DisplayText.Length < 4)
-                {
-                    DisplayTextErrorMessge = "DisplayText be at least 4 characters long!";
-                }
-                else
-                {
-                    DisplayTextErrorMessge = string.Empty;
-                }
-                this.OnPropertyChanged(nameof(IsDirty));
-                this.OnPropertyChanged();
-            }
-        }
-
-        public bool DisplayTextEnabled
-        {
-            get { return this._OldTrigger.DisplayTextEnabled; }
-            set
-            {
-                this._OldTrigger.DisplayTextEnabled = value;
-                this.OnPropertyChanged(nameof(IsDirty));
-                this.OnPropertyChanged();
-            }
-        }
-
-        public bool AudioTextEnabled
-        {
-            get { return this._OldTrigger.AudioTextEnabled; }
-            set
-            {
-                this._OldTrigger.AudioTextEnabled = value;
-                this.OnPropertyChanged(nameof(IsDirty));
-                this.OnPropertyChanged();
-            }
-        }
-
-        public Brush AudioTextBorderBrush
-        {
-            get
-            {
-                if (string.IsNullOrWhiteSpace(this._AudioTextErrorMessge))
-                {
-                    return DefaultBrush;
-                }
-                else
-                {
-                    return Brushes.Red;
-                }
-            }
-        }
-
-        public Visibility AudioTextErrorMessgeVisible
-        {
-            get
-            {
-                if (string.IsNullOrWhiteSpace(this._AudioTextErrorMessge))
-                {
-                    return Visibility.Collapsed;
-                }
-                else
-                {
-                    return Visibility.Visible;
-                }
-            }
-        }
-
-        private string _AudioTextErrorMessge = string.Empty;
-        public string AudioTextErrorMessge
-        {
-            get { return _AudioTextErrorMessge; }
-            set
-            {
-                if (_AudioTextErrorMessge != value)
-                {
-                    _AudioTextErrorMessge = value;
-                    this.OnPropertyChanged();
-                    this.OnPropertyChanged(nameof(AudioTextErrorMessgeVisible));
-                    this.OnPropertyChanged(nameof(AudioTextBorderBrush));
-                    this.OnPropertyChanged(nameof(IsSavable));
-                }
-            }
-        }
-
-        public string AudioText
-        {
-            get { return this._OldTrigger.AudioText; }
-            set
-            {
-                this._OldTrigger.AudioText = value;
-                if (string.IsNullOrWhiteSpace(_OldTrigger.AudioText) || _OldTrigger.AudioText.Length < 4)
-                {
-                    AudioTextErrorMessge = "AudioText be at least 4 characters long!";
-                }
-                else
-                {
-                    AudioTextErrorMessge = string.Empty;
-                }
-                this.OnPropertyChanged(nameof(IsDirty));
-                this.OnPropertyChanged();
-            }
-        }
+        public bool IsSavable =>
+            string.IsNullOrWhiteSpace(TriggerNameErrorMessge) &&
+            string.IsNullOrWhiteSpace(SearchTextErrorMessge);
 
         public event PropertyChangedEventHandler PropertyChanged;
 

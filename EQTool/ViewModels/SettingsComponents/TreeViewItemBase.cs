@@ -11,7 +11,8 @@ namespace EQTool.ViewModels.SettingsComponents
         Server,
         Trigger,
         Global,
-        Zone
+        Zone,
+        TriggerFolder
     }
     public enum MobInfoItemType
     {
@@ -36,6 +37,21 @@ namespace EQTool.ViewModels.SettingsComponents
                 if (value != isSelected)
                 {
                     isSelected = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private bool isEditing;
+        // True while the item's name is being edited inline in the tree.
+        public bool IsEditing
+        {
+            get => isEditing;
+            set
+            {
+                if (value != isEditing)
+                {
+                    isEditing = value;
                     OnPropertyChanged();
                 }
             }

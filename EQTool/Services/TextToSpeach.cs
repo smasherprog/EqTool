@@ -7,6 +7,9 @@ namespace EQTool.Services
     public interface ITextToSpeach
     {
         void Say(string text);
+        // When interrupt is true, any in-progress speech is cancelled and the
+        // repeat-suppression cooldown is bypassed so the new phrase speaks immediately.
+        void Say(string text, bool interrupt);
     }
     public class TextToSpeach : ITextToSpeach
     {
@@ -48,11 +51,27 @@ namespace EQTool.Services
 
         public void Say(string text)
         {
+            Say(text, false);
+        }
+
+        public void Say(string text, bool interrupt)
+        {
 #if !LINUX
+            if (string.IsNullOrWhiteSpace(text))
+            {
+                return;
+            }
+
             // is this phrase not in the history?
             var now = DateTime.Now;
             var shouldSpeak = false;
-            if (audioAlertHistory.ContainsKey(text) == false)
+            if (interrupt)
+            {
+                // interrupting speech bypasses the repeat-suppression cooldown
+                shouldSpeak = true;
+                audioAlertHistory[text] = now;
+            }
+            else if (audioAlertHistory.ContainsKey(text) == false)
             {
                 shouldSpeak = true;
                 audioAlertHistory.Add(text, now);
@@ -84,7 +103,11 @@ namespace EQTool.Services
 
                 System.Threading.Tasks.Task.Factory.StartNew(() =>
                 {
-                    synth.Speak(text);
+                    if (interrupt)
+                    {
+                        synth.SpeakAsyncCancelAll();
+                    }
+                    synth.SpeakAsync(text);
                 });
             }
 #endif

@@ -337,5 +337,7 @@ namespace EQTool.Models
     {
         public string Name { get; set; }
         public int TotalSeconds { get; set; }
+        // Optional progress-bar color; falls back to the overlay default when null.
+        public System.Windows.Media.Brush BarColor { get; set; }
     }
 }

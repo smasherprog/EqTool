@@ -1,46 +1,45 @@
-﻿using EQTool.Models;
-using System;
-using System.Collections.Generic;
+using EQTool.Models;
 using System.Linq;
-using System.Text.RegularExpressions;
-using System.Windows.Media;
 
 namespace EQTool.Services.Handlers
 {
     public class TriggerHandler : BaseHandler
     {
-        public TriggerHandler(BaseHandlerData baseHandlerData) : base(baseHandlerData)
+        private readonly TriggerActionExecutor executor;
+        private readonly TriggerTimerManager timerManager;
+
+        public TriggerHandler(TriggerActionExecutor executor, TriggerTimerManager timerManager, BaseHandlerData baseHandlerData) : base(baseHandlerData)
         {
+            this.executor = executor;
+            this.timerManager = timerManager;
             logEvents.LineEvent += LogEvents_LineEvent;
         }
 
         private void LogEvents_LineEvent(object sender, LineEvent e)
         {
-            foreach (var trigger in eQToolSettings.Triggers.Where(a => a.TriggerEnabled))
-            {
-                // check for a match
-                var regex = trigger.TriggerRegex;
-                var match = regex.Match(e.Line);
-                if (match.Success)
-                {
-                    // save the values discovered in the named groups
-                    trigger.SaveNamedGroupValues(match);
-                    // text to speech?
-                    if (trigger.AudioTextEnabled == true)
-                    {
-                        textToSpeach.Say(trigger.ExpandedAudioText);
-                    }
+            // give active timers a chance to end early on this line
+            timerManager.OnLine(e.Line);
 
-                    // displayed text?
-                    if (trigger.DisplayTextEnabled == true)
-                    {
-                        _ = System.Threading.Tasks.Task.Factory.StartNew(() =>
-                        {
-                            logEvents.Handle(new OverlayEvent { Text = trigger.ExpandedDisplayText, ForeGround = Brushes.Red, Reset = false });
-                            System.Threading.Thread.Sleep(5000);
-                            logEvents.Handle(new OverlayEvent { Text = trigger.ExpandedDisplayText, ForeGround = Brushes.Red, Reset = true });
-                        });
-                    }
+            foreach (var trigger in eQToolSettings.Triggers.Where(a => a.TriggerEnabled).ToList())
+            {
+                if (!trigger.Matches(e.Line))
+                {
+                    continue;
+                }
+
+                // Basic tab output (display text / clipboard / audio)
+                executor.Execute(trigger.GetEffectiveBasic(), trigger.Expand);
+
+                // Timer tab
+                if (trigger.Timer != null && trigger.Timer.IsEnabled)
+                {
+                    timerManager.HandleTimerMatch(trigger);
+                }
+
+                // Counter tab
+                if (trigger.Counter != null && trigger.Counter.ResetEnabled)
+                {
+                    timerManager.HandleCounterMatch(trigger);
                 }
             }
         }

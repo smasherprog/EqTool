@@ -8,19 +8,64 @@ namespace EQTool.Models
     public class Trigger
     {
         // regex to support conversion of simplified regex to full "real" regex
-        private const string ginaRegexPattern = @"\{(?<xxx>\w+)\}";
-        private static Regex ginaRegex = new Regex(ginaRegexPattern, RegexOptions.Compiled);
+        private const string placeholderRegexPattern = @"\{(?<xxx>\w+)\}";
+        private static Regex placeholderRegex = new Regex(placeholderRegexPattern, RegexOptions.Compiled);
 
         // Trigger properties
         public Guid TriggerId { get; set; } = Guid.NewGuid();
         public bool TriggerEnabled { get; set; }
         public string TriggerName { get; set; }
 
+        // The folder this trigger lives in within the Triggers tree.
+        // null means it sits at the top level of the Triggers branch.
+        public Guid? FolderId { get; set; }
+
+        // Organizational/category label.
+        public string Category { get; set; } = "Default";
+        // Free-form user notes.
+        public string Comments { get; set; } = string.Empty;
+
+        // Whether SearchText is a regular expression (simplified {name} groups supported).
+        // Stored nullable so legacy triggers (which were always regex) default to regex.
+        public bool? UseRegex { get; set; }
+        [Newtonsoft.Json.JsonIgnore]
+        public bool EffectiveUseRegex => UseRegex ?? true;
+
+        // Fast (plain substring) check option, only meaningful when not using regex.
+        public bool UseFastCheck { get; set; }
+
+        // The Basic tab output. Null for legacy triggers (rebuilt from the legacy
+        // DisplayText/AudioText fields via GetEffectiveBasic()).
+        public TriggerOutput Basic { get; set; }
+
+        // Timer / counter configuration. Null == not configured.
+        public TriggerTimer Timer { get; set; }
+        public TriggerTimerEnding TimerEnding { get; set; }
+        public TriggerTimerEnded TimerEnded { get; set; }
+        public TriggerCounter Counter { get; set; }
+
+        // Returns the Basic output, constructing one from the legacy fields when a
+        // trigger predates the expanded editor (so old triggers keep working at runtime).
+        public TriggerOutput GetEffectiveBasic()
+        {
+            if (Basic != null)
+            {
+                return Basic;
+            }
+            return new TriggerOutput
+            {
+                DisplayTextEnabled = DisplayTextEnabled,
+                DisplayText = DisplayText ?? string.Empty,
+                AudioType = AudioTextEnabled ? TriggerAudioType.TextToSpeech : TriggerAudioType.None,
+                TtsText = AudioText ?? string.Empty
+            };
+        }
+
         // the search field
-        // may contain all regular expressions, and may also include simplified gina-style regular expressions
+        // may contain all regular expressions, and may also include simplified placeholder-style regular expressions
         //      Simple text
         //          Your spell fizzles!
-        //      Simplified Gina-style Regular Expression:
+        //      Simplified Placeholder-style Regular Expression:
         //          ^{backstabber} backstabs {target} for {damage} points of damage\.
         //      Normal Regular Expression:
         //          ^(?<backstabber>[\w` ]+) backstabs (?<target>[\w` ]+) for (?<damage>[\w` ]+) points of damage\.
@@ -39,7 +84,7 @@ namespace EQTool.Models
         }
 
         // properties to support text to be displayed
-        // may contain simplified gina-style regex
+        // may contain simplified placeholder-style regex
         //      Example:     Direction: {direction}
         public bool DisplayTextEnabled { get; set; }
         public string DisplayText { get; set; }
@@ -47,7 +92,7 @@ namespace EQTool.Models
         public string ExpandedDisplayText { get { return ExpandOutputText(DisplayText); } }
 
         // properties to support text to be spoken via TTS
-        // may contain simplified gina-style regex
+        // may contain simplified placeholder-style regex
         //      Example:     Direction: {direction}
         public bool AudioTextEnabled { get; set; }
         public string AudioText { get; set; }
@@ -65,7 +110,7 @@ namespace EQTool.Models
                 // delay regex creation until its asked for
                 if (this._TriggerRegex == null && !string.IsNullOrWhiteSpace(this._SearchText))
                 {
-                    // convert search text user input which may contain simplified gina-style regex, i.e.
+                    // convert search text user input which may contain simplified placeholder-style regex, i.e.
                     //      {some_name}
                     // to the real regex match input, i.e.
                     //      (?<some_name>[\w` ]+)
@@ -76,11 +121,11 @@ namespace EQTool.Models
                     //      - the ` back tick, which actually appears in quite a few mob names
                     //
                     var convertedSearchText = this._SearchText;
-                    var match = ginaRegex.Match(convertedSearchText);
+                    var match = placeholderRegex.Match(convertedSearchText);
                     while (match.Success)
                     {
                         string group_name = match.Groups["xxx"].Value;
-                        convertedSearchText = ginaRegex.Replace(convertedSearchText, $"(?<{group_name}>[\\w` ]+)", 1);
+                        convertedSearchText = placeholderRegex.Replace(convertedSearchText, $"(?<{group_name}>[\\w` ]+)", 1);
                         match = match.NextMatch();
                     }
 
@@ -92,7 +137,7 @@ namespace EQTool.Models
             }
         }
 
-        // The user can define search patterns using a simplified regular expression syntax (similar to Gina)
+        // The user can define search patterns using a simplified regular expression syntax
         //       Example:    ^{backstabber} backstabs {target} for {damage} points of damage\.
         // The simplified form gets converted into the real regex expression for use in creating the TriggerRegex
         //       Example:    ^(?<backstabber>[\w` ]+) backstabs (?<target>[\w` ]+) for (?<damage>[\w` ]+) points of damage\.
@@ -124,6 +169,41 @@ namespace EQTool.Models
             }
         }
 
+        // Public expansion of simplified {name} placeholders using the values captured
+        // from the last successful regex match. Used by all trigger outputs.
+        public string Expand(string text)
+        {
+            return string.IsNullOrEmpty(text) ? string.Empty : ExpandOutputText(text);
+        }
+
+        // Tests a log line against this trigger, honoring the regex/plain-text setting.
+        // On a regex match, captured named-group values are saved for output expansion.
+        public bool Matches(string line)
+        {
+            if (string.IsNullOrEmpty(line) || string.IsNullOrWhiteSpace(SearchText))
+            {
+                return false;
+            }
+
+            if (EffectiveUseRegex)
+            {
+                var regex = TriggerRegex;
+                if (regex == null)
+                {
+                    return false;
+                }
+                var match = regex.Match(line);
+                if (match.Success)
+                {
+                    SaveNamedGroupValues(match);
+                    return true;
+                }
+                return false;
+            }
+
+            return line.IndexOf(SearchText, StringComparison.OrdinalIgnoreCase) >= 0;
+        }
+
         // utility function to merge in the parsed values into the output simplified regex fields
         // example:  Change the output text for a "Sense Heading" trigger from:
         //      "Direction: {direction}"
@@ -134,7 +214,7 @@ namespace EQTool.Models
             string rv = unExpandedText;
 
             // walk the list of matches, replacing the user match with the real match
-            Match match = ginaRegex.Match(rv);
+            Match match = placeholderRegex.Match(rv);
             while (match.Success)
             {
                 // Handle match here...
@@ -143,10 +223,10 @@ namespace EQTool.Models
                 // this key should be present, but confirm in case user made a typo
                 if (valueHash.ContainsKey(group_name))
                 {
-                    // use regex to replace the gina named group with value from the hashtable
+                    // use regex to replace the placeholder named group with value from the hashtable
                     // do them one group at a time
                     string replace_text = $"{valueHash[group_name]}";
-                    rv = ginaRegex.Replace(rv, replace_text, 1);
+                    rv = placeholderRegex.Replace(rv, replace_text, 1);
                 }
 
                 match = match.NextMatch();

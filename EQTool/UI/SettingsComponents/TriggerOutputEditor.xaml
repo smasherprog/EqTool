@@ -1,0 +1,94 @@
+<UserControl x:Class="EQTool.UI.SettingsComponents.TriggerOutputEditor"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:EQTool.UI.SettingsComponents"
+             xmlns:models="clr-namespace:EQTool.Models"
+             mc:Ignorable="d"
+             d:DesignWidth="500">
+    <UserControl.Resources>
+        <local:StringToBrushConverter x:Key="StringToBrush"/>
+    </UserControl.Resources>
+    <StackPanel Orientation="Vertical">
+        <GroupBox Header="Text Settings" Margin="0,4,0,4">
+            <Grid Margin="4">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <CheckBox Grid.Row="0" Grid.Column="0" Content="Display Text" VerticalAlignment="Center" Margin="0,2,8,2"
+                          IsChecked="{Binding DisplayTextEnabled, Mode=TwoWay}"/>
+                <TextBox Grid.Row="0" Grid.Column="1" Margin="0,2,0,2"
+                         IsEnabled="{Binding DisplayTextEnabled}"
+                         Text="{Binding DisplayText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <ComboBox Grid.Row="0" Grid.Column="2" Width="110" Margin="6,2,0,2" VerticalAlignment="Center"
+                          IsEnabled="{Binding DisplayTextEnabled}"
+                          ItemsSource="{x:Static models:TriggerColors.Names}"
+                          SelectedItem="{Binding DisplayTextColor, Mode=TwoWay}"
+                          ToolTip="Display text color">
+                    <ComboBox.ItemTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <Border Width="12" Height="12" Margin="0,0,4,0" BorderBrush="Gray" BorderThickness="1"
+                                        Background="{Binding Converter={StaticResource StringToBrush}}"/>
+                                <TextBlock Text="{Binding}"/>
+                            </StackPanel>
+                        </DataTemplate>
+                    </ComboBox.ItemTemplate>
+                </ComboBox>
+            </Grid>
+        </GroupBox>
+
+        <GroupBox Header="Audio Settings" Margin="0,4,0,4">
+            <Grid Margin="4">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+
+                <RadioButton Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="3" Content="No Sound" Margin="0,2,0,2"
+                             IsChecked="{Binding IsNoSound, Mode=TwoWay}"/>
+
+                <RadioButton Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Content="Use Text To Speech" Margin="0,2,0,2"
+                             IsChecked="{Binding IsTextToSpeech, Mode=TwoWay}"/>
+                <TextBlock Grid.Row="2" Grid.Column="0" Text="Text to Say" Margin="20,2,8,2" VerticalAlignment="Center"
+                           IsEnabled="{Binding IsTextToSpeech}"/>
+                <TextBox Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="2" Margin="0,2,0,2"
+                         IsEnabled="{Binding IsTextToSpeech}"
+                         Text="{Binding TtsText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <CheckBox Grid.Row="3" Grid.Column="1" Content="Interrupt Speech" Margin="0,2,0,2"
+                          IsEnabled="{Binding IsTextToSpeech}"
+                          IsChecked="{Binding InterruptSpeech, Mode=TwoWay}"/>
+
+                <RadioButton Grid.Row="4" Grid.Column="0" Grid.ColumnSpan="3" Content="Play Sound File" Margin="0,2,0,2"
+                             IsChecked="{Binding IsSoundFile, Mode=TwoWay}"/>
+                <TextBlock Grid.Row="5" Grid.Column="0" Text="Sound File" Margin="20,2,8,2" VerticalAlignment="Center"
+                           IsEnabled="{Binding IsSoundFile}"/>
+                <TextBox Grid.Row="5" Grid.Column="1" Margin="0,2,4,2"
+                         IsEnabled="{Binding IsSoundFile}"
+                         Text="{Binding SoundFile, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                <Button Grid.Row="5" Grid.Column="2" Content="..." Width="30" Margin="0,2,0,2"
+                        IsEnabled="{Binding IsSoundFile}" Click="BrowseSoundFile"/>
+            </Grid>
+        </GroupBox>
+
+        <StackPanel Orientation="Horizontal" Margin="4,0,0,4">
+            <TextBlock Text="Test" VerticalAlignment="Center" Margin="0,0,8,0"/>
+            <Button Content="▶" Width="26" Foreground="Green" FontWeight="Bold" Click="TestAudio" ToolTip="Test the configured audio"/>
+        </StackPanel>
+    </StackPanel>
+</UserControl>

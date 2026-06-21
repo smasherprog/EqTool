@@ -72,6 +72,9 @@ namespace EQTool
             _ = builder.RegisterType<DebugOutput>().AsSelf().SingleInstance();
 
             _ = builder.RegisterType<TextToSpeach>().As<ITextToSpeach>().SingleInstance();
+            _ = builder.RegisterType<Services.AudioService>().As<Services.IAudioService>().SingleInstance();
+            _ = builder.RegisterType<Services.TriggerActionExecutor>().AsSelf().SingleInstance();
+            _ = builder.RegisterType<Services.TriggerTimerManager>().AsSelf().SingleInstance();
             _ = builder.RegisterType<UIRunner>().AsSelf().SingleInstance();
             _ = builder.RegisterType<UpdateRunner>().AsSelf().SingleInstance();
             _ = builder.RegisterType<Services.IO.FileReader>().As<Services.IO.IFileReader>().SingleInstance();
