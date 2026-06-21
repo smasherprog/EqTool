@@ -198,8 +198,8 @@ namespace EQTool.ViewModels.SettingsComponents
                 var menu = new ContextMenu();
                 if (folder.IsBuiltIn)
                 {
-                    // The Built In category can only be copied out of.
-                    _ = menu.Items.Add(BuildMenuItem("Copy", CopyItem, item));
+                    // The Built In category can only be enabled (copied out + enabled).
+                    _ = menu.Items.Add(BuildMenuItem("Enable", EnableBuiltIn, item));
                     return menu;
                 }
                 _ = menu.Items.Add(BuildMenuItem("Add Trigger", AddTrigger, item));
@@ -219,8 +219,8 @@ namespace EQTool.ViewModels.SettingsComponents
                 var menu = new ContextMenu();
                 if (trig.IsBuiltIn)
                 {
-                    // Built In triggers can only be copied out of the library.
-                    _ = menu.Items.Add(BuildMenuItem("Copy", CopyItem, item));
+                    // Built In triggers can only be enabled (copied out + enabled).
+                    _ = menu.Items.Add(BuildMenuItem("Enable", EnableBuiltIn, item));
                     return menu;
                 }
                 _ = menu.Items.Add(BuildMenuItem("Copy", CopyItem, item));
@@ -300,6 +300,63 @@ namespace EQTool.ViewModels.SettingsComponents
             clipboardNodes.Clear();
             clipboardNodes.AddRange(ResolveSelection(clicked));
             clipboardIsCopy = true;
+        }
+
+        // Copies the selected Built In trigger(s) into the editable Triggers section and
+        // enables them. Skips any whose Trigger Name + Search Text already exist there.
+        private void EnableBuiltIn(object sender, RoutedEventArgs e)
+        {
+            if (!((sender as MenuItem)?.Tag is TreeViewItemBase clicked))
+            {
+                return;
+            }
+
+            var sources = new System.Collections.Generic.List<TreeTrigger>();
+            foreach (var node in ResolveSelection(clicked))
+            {
+                CollectTriggerNodes(node, sources);
+            }
+
+            var added = false;
+            foreach (var tt in sources)
+            {
+                var source = tt.Trigger.Model;
+                var duplicate = settings.Triggers.Any(a =>
+                    string.Equals(a.TriggerName, source.TriggerName, StringComparison.OrdinalIgnoreCase) &&
+                    string.Equals(a.SearchText, source.SearchText, StringComparison.OrdinalIgnoreCase));
+                if (duplicate)
+                {
+                    continue;
+                }
+
+                var clone = CloneTrigger(source);
+                clone.TriggerEnabled = true;
+                settings.Triggers.Add(clone);
+                var newNode = NewTriggerNode(new TriggerViewModel(clone, settings, eQToolSettingsLoad), triggersRoot);
+                triggersRoot.Children.Add(newNode);
+                added = true;
+            }
+
+            if (added)
+            {
+                triggersRoot.IsExpanded = true;
+                SortChildren(triggersRoot);
+                PersistTriggerTree();
+            }
+        }
+
+        // Collects all trigger nodes within a subtree (the node itself if it is a trigger).
+        private void CollectTriggerNodes(TreeViewItemBase node, System.Collections.Generic.List<TreeTrigger> acc)
+        {
+            if (node is TreeTrigger t)
+            {
+                acc.Add(t);
+                return;
+            }
+            foreach (var child in node.Children)
+            {
+                CollectTriggerNodes(child, acc);
+            }
         }
 
         // Determines which nodes an operation should act on: the full multi-selection
