@@ -41,6 +41,9 @@ namespace EQTool.Services.Handlers
                 {
                     timerManager.HandleCounterMatch(trigger);
                 }
+
+                // A line is consumed by the first matching trigger; stop checking the rest.
+                return;
             }
         }
     }

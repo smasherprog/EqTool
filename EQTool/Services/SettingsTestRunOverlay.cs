@@ -17,22 +17,14 @@ namespace EQTool.Services
             this.activePlayer = activePlayer;
             this.logParser = logParser;
             actions[(int)OverlayTypes.HealedYou] = RunHealedYouTest;
-            actions[(int)OverlayTypes.EnrageEvent] = EnrageEvent;
-            actions[(int)OverlayTypes.LevitateEvent] = LevitateEvent;
-            actions[(int)OverlayTypes.InvisEvent] = InvisEvent;
             actions[(int)OverlayTypes.FTEEvent] = FTEEvent;
             actions[(int)OverlayTypes.FTETimerEvent] = FTETimerEvent;
-            actions[(int)OverlayTypes.CharmBreakEvent] = CharmBreakEvent;
-            actions[(int)OverlayTypes.FailedFeignEvent] = FailedFeignEvent;
-            actions[(int)OverlayTypes.GroupInviteEvent] = GroupInviteEvent;
             actions[(int)OverlayTypes.DragonFearEvent] = DragonFearEvent;
             actions[(int)OverlayTypes.RootBreakEvent] = RootBreakEvent;
             actions[(int)OverlayTypes.ResistSpellEvent] = ResistSpellEvent;
             actions[(int)OverlayTypes.RandomRollEvent] = RandomRollEvent;
             actions[(int)OverlayTypes.DeathLoopEvent] = DeathLoopEvent;
-            actions[(int)OverlayTypes.MobGatingEvent] = MobGatingEvent;
             actions[(int)OverlayTypes.WornOffEvent] = WornOffEvent;
-            actions[(int)OverlayTypes.TellsYouEvent] = TellsYouEvent;
             actions[(int)OverlayTypes.DiseasedCloudEvent] = DiseasedCloudEvent;
             actions[(int)OverlayTypes.ZlandicarEvent] = ZlandicarEvent;
         }
@@ -106,41 +98,6 @@ namespace EQTool.Services
             logParser.Push($"You flee in terror.", DateTime.Now);
         }
 
-        private void GroupInviteEvent()
-        {
-            activePlayer.Player.GroupInviteAudio = true;
-            activePlayer.Player.GroupInviteOverlay = true;
-            logParser.Push($"Tzvia invites you to join a group.", DateTime.Now);
-        }
-
-        private void InvisEvent()
-        {
-            activePlayer.Player.InvisFadingAudio = true;
-            activePlayer.Player.InvisFadingOverlay = true;
-            logParser.Push("You feel yourself starting to appear.", DateTime.Now);
-        }
-
-        private void LevitateEvent()
-        {
-            activePlayer.Player.LevFadingAudio = true;
-            activePlayer.Player.LevFadingOverlay = true;
-            logParser.Push("You feel as if you are about to fall.", DateTime.Now);
-        }
-
-        private void CharmBreakEvent()
-        {
-            activePlayer.Player.CharmBreakAudio = true;
-            activePlayer.Player.CharmBreakOverlay = true;
-            logParser.Push("Your charm spell has worn off.", DateTime.Now);
-        }
-
-        private void FailedFeignEvent()
-        {
-            activePlayer.Player.FailedFeignAudio = true;
-            activePlayer.Player.FailedFeignOverlay = true;
-            logParser.Push($"{activePlayer.Player.Name} has fallen to the ground.", DateTime.Now);
-        }
-
         private void FTEEvent()
         {
             activePlayer.Player.FTEAudio = true;
@@ -154,32 +111,11 @@ namespace EQTool.Services
             logParser.Push("Zlandicar engages Tzvia!", DateTime.Now);
         }
 
-        private void EnrageEvent()
-        {
-            activePlayer.Player.EnrageAudio = true;
-            activePlayer.Player.EnrageOverlay = true;
-            logParser.Push("Visceryn has become ENRAGED.", DateTime.Now);
-        }
-
-        private void MobGatingEvent()
-        {
-            activePlayer.Player.MobGatingAudio = true;
-            activePlayer.Player.MobGatingOverlay = true;
-            logParser.Push("Hoshkar begins to cast the gate spell.", DateTime.Now);
-        }
-
         private void WornOffEvent()
         {
             activePlayer.Player.WornOffAudio = true;
             activePlayer.Player.WornOffOverlay = true;
             logParser.Push("Your Venom of the Snake spell has worn off.", DateTime.Now);
-        }
-
-        private void TellsYouEvent()
-        {
-            activePlayer.Player.TellsYouAudio = true;
-            activePlayer.Player.TellsYouOverlay = true;
-            logParser.Push("Azleep tells you, 'Have a nice day.'", DateTime.Now);
         }
 
         private void DiseasedCloudEvent()

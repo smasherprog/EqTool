@@ -16,8 +16,22 @@ namespace EQTool.Models
                 CreateInvisFading(),
                 CreateFailedFeign(),
                 CreateGroupInvite(),
-                CreateNpcGating()
+                CreateNpcGating(),
+                CreateCharmBreak(),
+                CreateTellsYou()
             };
+        }
+
+        // "Your charm spell has worn off." -> charm break alert.
+        public static Trigger CreateCharmBreak()
+        {
+            return Build("Charm Break", "Your charm spell has worn off.", false, "Charm Break", "Charm Break");
+        }
+
+        // "<name> tells you, '...'" -> tell alert.
+        public static Trigger CreateTellsYou()
+        {
+            return Build("Tells You", "{name} tells you, ", true, "{name} sent a tell", "{name} sent a tell");
         }
         public static Trigger CreateEnraged()
         {

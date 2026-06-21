@@ -185,46 +185,10 @@
                     <Button Margin="60,0,0,0" Content="▶" FontSize="7" Width="14" Height="14" Padding="0" Click="selectallAudio" ToolTip="Select All Audio" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Enraged"  VerticalAlignment="Center" FontWeight="Bold"  MinWidth="100"/>
-                    <CheckBox IsChecked="{Binding ActivePlayer.Player.EnrageOverlay}" Click="Savesettings" MinWidth="75"></CheckBox>
-                    <CheckBox IsChecked="{Binding ActivePlayer.Player.EnrageAudio}" Click="Savesettings" MinWidth="30"></CheckBox>
-                    <Button Content="▶" Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="testenrage" ToolTip="Test Enrage" />
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Levitate Fading" VerticalAlignment="Center" FontWeight="Bold"  MinWidth="100"/>
-                    <CheckBox IsChecked="{Binding ActivePlayer.Player.LevFadingOverlay}" Click="Savesettings" MinWidth="75"></CheckBox>
-                    <CheckBox IsChecked="{Binding ActivePlayer.Player.LevFadingAudio}" Click="Savesettings" MinWidth="30"></CheckBox>
-                    <Button Content="▶" Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="testlevfading" ToolTip="Test Levitate fading" />
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Invis Fading" VerticalAlignment="Center" FontWeight="Bold"  MinWidth="100"/>
-                    <CheckBox IsChecked="{Binding ActivePlayer.Player.InvisFadingOverlay}" Click="Savesettings" MinWidth="75"></CheckBox>
-                    <CheckBox IsChecked="{Binding ActivePlayer.Player.InvisFadingAudio}" Click="Savesettings" MinWidth="30"></CheckBox>
-                    <Button Content="▶" Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="testinvisfading" ToolTip="Test Invis Fading" />
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
                     <TextBlock Text="FTE" VerticalAlignment="Center" FontWeight="Bold"  MinWidth="100"/>
                     <CheckBox IsChecked="{Binding ActivePlayer.Player.FTEOverlay}" Click="Savesettings" MinWidth="75"></CheckBox>
                     <CheckBox IsChecked="{Binding ActivePlayer.Player.FTEAudio}" Click="Savesettings" MinWidth="30"></CheckBox>
                     <Button Content="▶" Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="testFTE" ToolTip="Test FTE" />
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Charm Break" VerticalAlignment="Center" FontWeight="Bold"  MinWidth="100"/>
-                    <CheckBox IsChecked="{Binding ActivePlayer.Player.CharmBreakOverlay}" Click="Savesettings" MinWidth="75"></CheckBox>
-                    <CheckBox IsChecked="{Binding ActivePlayer.Player.CharmBreakAudio}" Click="Savesettings" MinWidth="30"></CheckBox>
-                    <Button Content="▶" Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="testCharmBreak" ToolTip="Test Charm Break" />
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Failed Feign" VerticalAlignment="Center" FontWeight="Bold"  MinWidth="100"/>
-                    <CheckBox IsChecked="{Binding ActivePlayer.Player.FailedFeignOverlay}" Click="Savesettings" MinWidth="75"></CheckBox>
-                    <CheckBox IsChecked="{Binding ActivePlayer.Player.FailedFeignAudio}" Click="Savesettings" MinWidth="30"></CheckBox>
-                    <Button Content="▶" Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="testFailedFeign" ToolTip="Test Failed Feign" />
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Group Invite" VerticalAlignment="Center" FontWeight="Bold"  MinWidth="100"/>
-                    <CheckBox IsChecked="{Binding ActivePlayer.Player.GroupInviteOverlay}" Click="Savesettings" MinWidth="75"></CheckBox>
-                    <CheckBox IsChecked="{Binding ActivePlayer.Player.GroupInviteAudio}" Click="Savesettings" MinWidth="30"></CheckBox>
-                    <Button Content="▶" Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="testGroupInvite" ToolTip="Test Group Invite" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Dragon Roar" VerticalAlignment="Center" FontWeight="Bold"  MinWidth="100"/>
@@ -269,32 +233,16 @@
                     <Button Content="▶" Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="textenteringZone" ToolTip="Test Entering Zone" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="NPC Gating" VerticalAlignment="Center" FontWeight="Bold"  MinWidth="100"/>
-                    <CheckBox IsChecked="{Binding ActivePlayer.Player.MobGatingOverlay}" Click="Savesettings" MinWidth="75"></CheckBox>
-                    <CheckBox IsChecked="{Binding ActivePlayer.Player.MobGatingAudio}" Click="Savesettings" MinWidth="30"></CheckBox>
-                    <Button Content="▶" Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="testMobGating" ToolTip="Test Mob Gating" />
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Spell Worn Off" VerticalAlignment="Center" FontWeight="Bold"  MinWidth="100"/>
                     <CheckBox IsChecked="{Binding ActivePlayer.Player.WornOffOverlay}" Click="Savesettings" MinWidth="75"></CheckBox>
                     <CheckBox IsChecked="{Binding ActivePlayer.Player.WornOffAudio}" Click="Savesettings" MinWidth="30"></CheckBox>
                     <Button Content="▶" Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="testWornOff" ToolTip="Test Spell Has Worn Off" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Tells You" VerticalAlignment="Center" FontWeight="Bold"  MinWidth="100"/>
-                    <CheckBox IsChecked="{Binding ActivePlayer.Player.TellsYouOverlay}" Click="Savesettings" MinWidth="75"></CheckBox>
-                    <CheckBox IsChecked="{Binding ActivePlayer.Player.TellsYouAudio}" Click="Savesettings" MinWidth="30"></CheckBox>
-                    <Button Content="▶" Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="testTellsYou" ToolTip="Test tells to you" />
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Bard Hit Counts" VerticalAlignment="Center" FontWeight="Bold" MinWidth="100"/>
                     <CheckBox IsChecked="{Binding ActivePlayer.Player.BardCountTextAlert}" Click="Savesettings" MinWidth="75"></CheckBox>
                     <CheckBox IsChecked="{Binding ActivePlayer.Player.BardCountAudio}" Click="Savesettings" MinWidth="30"></CheckBox>
                     <Button Content="▶" Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="testBardCounts" ToolTip="Test Bard Hit Counts" />
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Run Speed" VerticalAlignment="Center" FontWeight="Bold"  MinWidth="100"/>
-                    <CheckBox IsChecked="{Binding ActivePlayer.Player.RunSpeedOverlay}" Click="Savesettings" MinWidth="75"></CheckBox>
                 </StackPanel>
                 <Separator/>
                 <StackPanel Orientation="Horizontal">

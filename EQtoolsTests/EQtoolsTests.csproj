@@ -210,7 +210,6 @@
     <Compile Include="BaseTestClass.cs" />
     <Compile Include="BoatScheduleTests.cs" />
     <Compile Include="GroupLeaderTests.cs" />
-    <Compile Include="InvisFadingTests.cs" />
     <Compile Include="DragonEffectTests.cs" />
     <Compile Include="ItemBeginsToGlowTests.cs" />
     <Content Include="LogFiles\log1.txt">
@@ -237,7 +236,6 @@
     <Compile Include="CompleteHealCommsHandlerTests.cs" />
     <Compile Include="RandomRollTests.cs" />
     <Compile Include="FTETests.cs" />
-    <Compile Include="EnrageTests.cs" />
     <Compile Include="DI.cs" />
     <Compile Include="FindEqTests.cs" />
     <Compile Include="DiscordTests.cs" />

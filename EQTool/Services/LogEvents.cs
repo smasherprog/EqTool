@@ -107,35 +107,6 @@ namespace EQTool.Services
             WhoEvent?.Invoke(this, e);
         } 
 
-        public event EventHandler<EnrageEvent> EnrageEvent;
-        public void Handle(EnrageEvent e)
-        {
-            EnrageEvent?.Invoke(this, e);
-        }
-
-        public event EventHandler<LevitateEvent> LevitateEvent;
-        public void Handle(LevitateEvent e)
-        {
-            LevitateEvent?.Invoke(this, e);
-        }
-
-        public event EventHandler<InvisEvent> InvisEvent;
-        public void Handle(InvisEvent e)
-        {
-            InvisEvent?.Invoke(this, e);
-        }
-
-        public event EventHandler<FailedFeignEvent> FailedFeignEvent;
-        public void Handle(FailedFeignEvent e)
-        {
-            FailedFeignEvent?.Invoke(this, e);
-        }
-
-        public event EventHandler<GroupInviteEvent> GroupInviteEvent;
-        public void Handle(GroupInviteEvent e)
-        {
-            GroupInviteEvent?.Invoke(this, e);
-        }
 
         public event EventHandler<ResistSpellEvent> ResistSpellEvent;
         public void Handle(ResistSpellEvent e)
@@ -299,11 +270,6 @@ namespace EQTool.Services
             OtherPlayerLocationReceivedRemoteEvent?.Invoke(this, e);
         }
 
-        public event EventHandler<NPCBeginsToGateEvent> NPCBeginsToGateEvent;
-        public void Handle(NPCBeginsToGateEvent e)
-        {
-            NPCBeginsToGateEvent?.Invoke(this, e);
-        }
         public event EventHandler<RingWarEvent> RingWarEvent;
         public void Handle(RingWarEvent e)
         {

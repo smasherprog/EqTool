@@ -46,25 +46,6 @@ namespace EQTool.Services.Handlers
                 // go find the charm spell on the timer bar and remove it
                 spellWindowViewModel.TryRemoveUnambiguousSpellOther(SpellHandlerService.AllCharmSpells);
                 spellWindowViewModel.TryRemoveUnambiguousSpellSelf(SpellHandlerService.AllCharmSpells);
-
-                // if the user has requested just to be notified for charm breaks
-                if (activePlayer?.Player?.CharmBreakAudio == true)
-                {
-                    textToSpeach.Say($"Charm Break");
-                }
-
-                // if the user has requested just to be notified for charm breaks
-                var doAlert = activePlayer?.Player?.CharmBreakOverlay ?? false;
-                if (doAlert)
-                {
-                    _ = System.Threading.Tasks.Task.Factory.StartNew(() =>
-                    {
-                        var text = "Charm Break";
-                        logEvents.Handle(new OverlayEvent { Text = text, ForeGround = Brushes.Red, Reset = false });
-                        System.Threading.Thread.Sleep(3000);
-                        logEvents.Handle(new OverlayEvent { Text = text, ForeGround = Brushes.Red, Reset = true });
-                    });
-                }
             }
         }
     }

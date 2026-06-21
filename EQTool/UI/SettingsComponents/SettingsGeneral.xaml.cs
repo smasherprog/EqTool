@@ -762,38 +762,9 @@ namespace EQTool.UI.SettingsComponents
             ((App)System.Windows.Application.Current).ApplyAlwaysOnTop();
         }
 
-        private void testenrage(object sender, RoutedEventArgs e)
-        {
-            settingsTestRunOverlay.RunTest(OverlayTypes.EnrageEvent);
-        }
-
-        private void testlevfading(object sender, RoutedEventArgs e)
-        {
-            settingsTestRunOverlay.RunTest(OverlayTypes.LevitateEvent);
-        }
-        private void testinvisfading(object sender, RoutedEventArgs e)
-        {
-            settingsTestRunOverlay.RunTest(OverlayTypes.InvisEvent);
-        }
-
-        private void testCharmBreak(object sender, RoutedEventArgs e)
-        {
-            settingsTestRunOverlay.RunTest(OverlayTypes.CharmBreakEvent);
-        }
-
-        private void testFailedFeign(object sender, RoutedEventArgs e)
-        {
-            settingsTestRunOverlay.RunTest(OverlayTypes.FailedFeignEvent);
-        }
-
         private void testFTE(object sender, RoutedEventArgs e)
         {
             settingsTestRunOverlay.RunTest(OverlayTypes.FTEEvent);
-        }
-
-        private void testGroupInvite(object sender, RoutedEventArgs e)
-        {
-            settingsTestRunOverlay.RunTest(OverlayTypes.GroupInviteEvent);
         }
 
         private void testDragonRoar(object sender, RoutedEventArgs e)
@@ -975,16 +946,10 @@ namespace EQTool.UI.SettingsComponents
         private void selectallVisual(object sender, RoutedEventArgs e)
         {
             // make button behavior a toggle button, just use the first one in the list as the indicator
-            if (SettingsWindowData.ActivePlayer.Player.EnrageOverlay)
+            if (SettingsWindowData.ActivePlayer.Player.FTEOverlay)
             {
-                SettingsWindowData.ActivePlayer.Player.EnrageOverlay = false;
-                SettingsWindowData.ActivePlayer.Player.LevFadingOverlay = false;
-                SettingsWindowData.ActivePlayer.Player.InvisFadingOverlay = false;
                 SettingsWindowData.ActivePlayer.Player.FTEOverlay = false;
                 SettingsWindowData.ActivePlayer.Player.FTETimerOverlay = false;
-                SettingsWindowData.ActivePlayer.Player.CharmBreakOverlay = false;
-                SettingsWindowData.ActivePlayer.Player.FailedFeignOverlay = false;
-                SettingsWindowData.ActivePlayer.Player.GroupInviteOverlay = false;
                 SettingsWindowData.ActivePlayer.Player.DragonRoarOverlay = false;
                 SettingsWindowData.ActivePlayer.Player.ZlandicarOverlay = false;
                 SettingsWindowData.ActivePlayer.Player.DiseasedCloudOverlay = false;
@@ -994,21 +959,12 @@ namespace EQTool.UI.SettingsComponents
                 SettingsWindowData.ActivePlayer.Player.ChChainOverlay = false;
                 SettingsWindowData.ActivePlayer.Player.ChChainWarningOverlay = false;
                 SettingsWindowData.ActivePlayer.Player.EnteringZoneOverlay = false;
-                SettingsWindowData.ActivePlayer.Player.MobGatingOverlay = false;
                 SettingsWindowData.ActivePlayer.Player.WornOffOverlay = false;
-                SettingsWindowData.ActivePlayer.Player.TellsYouOverlay = false;
-                SettingsWindowData.ActivePlayer.Player.RunSpeedOverlay = false;
             }
             else
             {
-                SettingsWindowData.ActivePlayer.Player.EnrageOverlay = true;
-                SettingsWindowData.ActivePlayer.Player.LevFadingOverlay = true;
-                SettingsWindowData.ActivePlayer.Player.InvisFadingOverlay = true;
                 SettingsWindowData.ActivePlayer.Player.FTEOverlay = true;
                 SettingsWindowData.ActivePlayer.Player.FTETimerOverlay = true;
-                SettingsWindowData.ActivePlayer.Player.CharmBreakOverlay = true;
-                SettingsWindowData.ActivePlayer.Player.FailedFeignOverlay = true;
-                SettingsWindowData.ActivePlayer.Player.GroupInviteOverlay = true;
                 SettingsWindowData.ActivePlayer.Player.DragonRoarOverlay = true;
                 SettingsWindowData.ActivePlayer.Player.ZlandicarOverlay = true;
                 SettingsWindowData.ActivePlayer.Player.DiseasedCloudOverlay = true;
@@ -1018,26 +974,17 @@ namespace EQTool.UI.SettingsComponents
                 SettingsWindowData.ActivePlayer.Player.ChChainOverlay = true;
                 SettingsWindowData.ActivePlayer.Player.ChChainWarningOverlay = true;
                 SettingsWindowData.ActivePlayer.Player.EnteringZoneOverlay = true;
-                SettingsWindowData.ActivePlayer.Player.MobGatingOverlay = true;
                 SettingsWindowData.ActivePlayer.Player.WornOffOverlay = true;
-                SettingsWindowData.ActivePlayer.Player.TellsYouOverlay = true;
-                SettingsWindowData.ActivePlayer.Player.RunSpeedOverlay = true;
             }
             SaveConfig();
         }
         private void selectallAudio(object sender, RoutedEventArgs e)
         {
             // make button behavior a toggle button, just use the first one in the list as the indicator
-            if (SettingsWindowData.ActivePlayer.Player.EnrageAudio)
+            if (SettingsWindowData.ActivePlayer.Player.FTEAudio)
             {
-                SettingsWindowData.ActivePlayer.Player.EnrageAudio = false;
-                SettingsWindowData.ActivePlayer.Player.LevFadingAudio = false;
-                SettingsWindowData.ActivePlayer.Player.InvisFadingAudio = false;
                 SettingsWindowData.ActivePlayer.Player.FTEAudio = false;
                 SettingsWindowData.ActivePlayer.Player.FTETimerAudio = false;
-                SettingsWindowData.ActivePlayer.Player.CharmBreakAudio = false;
-                SettingsWindowData.ActivePlayer.Player.FailedFeignAudio = false;
-                SettingsWindowData.ActivePlayer.Player.GroupInviteAudio = false;
                 SettingsWindowData.ActivePlayer.Player.DragonRoarAudio = false;
                 SettingsWindowData.ActivePlayer.Player.ZlandicarAudio = false;
                 SettingsWindowData.ActivePlayer.Player.DiseasedCloudAudio = false;
@@ -1046,20 +993,12 @@ namespace EQTool.UI.SettingsComponents
                 SettingsWindowData.ActivePlayer.Player.DeathLoopAudio = false;
                 SettingsWindowData.ActivePlayer.Player.ChChainWarningAudio = false;
                 SettingsWindowData.ActivePlayer.Player.EnteringZoneAudio = false;
-                SettingsWindowData.ActivePlayer.Player.MobGatingAudio = false;
                 SettingsWindowData.ActivePlayer.Player.WornOffAudio = false;
-                SettingsWindowData.ActivePlayer.Player.TellsYouAudio = false;
             }
             else
             {
-                SettingsWindowData.ActivePlayer.Player.EnrageAudio = true;
-                SettingsWindowData.ActivePlayer.Player.LevFadingAudio = true;
-                SettingsWindowData.ActivePlayer.Player.InvisFadingAudio = true;
                 SettingsWindowData.ActivePlayer.Player.FTEAudio = true;
                 SettingsWindowData.ActivePlayer.Player.FTETimerAudio = true;
-                SettingsWindowData.ActivePlayer.Player.CharmBreakAudio = true;
-                SettingsWindowData.ActivePlayer.Player.FailedFeignAudio = true;
-                SettingsWindowData.ActivePlayer.Player.GroupInviteAudio = true;
                 SettingsWindowData.ActivePlayer.Player.DragonRoarAudio = true;
                 SettingsWindowData.ActivePlayer.Player.ZlandicarAudio = true;
                 SettingsWindowData.ActivePlayer.Player.DiseasedCloudAudio = true;
@@ -1068,9 +1007,7 @@ namespace EQTool.UI.SettingsComponents
                 SettingsWindowData.ActivePlayer.Player.DeathLoopAudio = true;
                 SettingsWindowData.ActivePlayer.Player.ChChainWarningAudio = true;
                 SettingsWindowData.ActivePlayer.Player.EnteringZoneAudio = true;
-                SettingsWindowData.ActivePlayer.Player.MobGatingAudio = true;
                 SettingsWindowData.ActivePlayer.Player.WornOffAudio = true;
-                SettingsWindowData.ActivePlayer.Player.TellsYouAudio = true;
             }
             SaveConfig();
         }
@@ -1188,19 +1125,9 @@ namespace EQTool.UI.SettingsComponents
             settingsTestRunOverlay.RunTest(OverlayTypes.FTETimerEvent);
         }
 
-        private void testMobGating(object sender, RoutedEventArgs e)
-        {
-            settingsTestRunOverlay.RunTest(OverlayTypes.MobGatingEvent);
-        }
-
         private void testWornOff(object sender, RoutedEventArgs e)
         {
             settingsTestRunOverlay.RunTest(OverlayTypes.WornOffEvent);
-        }
-
-        private void testTellsYou(object sender, RoutedEventArgs e)
-        {
-            settingsTestRunOverlay.RunTest(OverlayTypes.TellsYouEvent);
         }
 
         private void RefreshUIFiles(object sender, RoutedEventArgs e)

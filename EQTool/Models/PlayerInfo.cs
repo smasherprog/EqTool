@@ -462,27 +462,6 @@ namespace EQTool.Models
             }
         }
 
-        private bool _MobGatingAudio;
-        public bool MobGatingAudio
-        {
-            get => _MobGatingAudio;
-            set
-            {
-                _MobGatingAudio = value;
-                OnPropertyChanged();
-            }
-        }
-        private bool _MobGatingOverlay;
-        public bool MobGatingOverlay
-        {
-            get => _MobGatingOverlay;
-            set
-            {
-                _MobGatingOverlay = value;
-                OnPropertyChanged();
-            }
-        }
-
         private bool _EnteringZoneAudio;
         public bool EnteringZoneAudio
         {
@@ -515,115 +494,6 @@ namespace EQTool.Models
             }
         }
 
-        private bool _GroupInviteOverlay;
-        public bool GroupInviteOverlay
-        {
-            get => _GroupInviteOverlay;
-            set
-            {
-                _GroupInviteOverlay = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private bool _GroupInviteAudio;
-        public bool GroupInviteAudio
-        {
-            get => _GroupInviteAudio;
-            set
-            {
-                _GroupInviteAudio = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private bool _FailedFeignOverlay;
-        public bool FailedFeignOverlay
-        {
-            get => _FailedFeignOverlay;
-            set
-            {
-                _FailedFeignOverlay = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private bool _FailedFeignAudio;
-        public bool FailedFeignAudio
-        {
-            get => _FailedFeignAudio;
-            set
-            {
-                _FailedFeignAudio = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private bool _EnrageOverlay;
-        public bool EnrageOverlay
-        {
-            get => _EnrageOverlay;
-            set
-            {
-                _EnrageOverlay = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private bool _EnrageAudio;
-        public bool EnrageAudio
-        {
-            get => _EnrageAudio;
-            set
-            {
-                _EnrageAudio = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private bool _LevFadingAudio;
-        public bool LevFadingAudio
-        {
-            get => _LevFadingAudio;
-            set
-            {
-                _LevFadingAudio = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private bool _LevFadingOverlay;
-        public bool LevFadingOverlay
-        {
-            get => _LevFadingOverlay;
-            set
-            {
-                _LevFadingOverlay = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private bool _CharmBreakAudio;
-        public bool CharmBreakAudio
-        {
-            get => _CharmBreakAudio;
-            set
-            {
-                _CharmBreakAudio = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private bool _CharmBreakOverlay;
-        public bool CharmBreakOverlay
-        {
-            get => _CharmBreakOverlay;
-            set
-            {
-                _CharmBreakOverlay = value;
-                OnPropertyChanged();
-            }
-        }
 
         private bool _FTEAudio;
         public bool FTEAudio
@@ -665,28 +535,6 @@ namespace EQTool.Models
             set
             {
                 _FTETimerOverlay = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private bool _InvisFadingAudio;
-        public bool InvisFadingAudio
-        {
-            get => _InvisFadingAudio;
-            set
-            {
-                _InvisFadingAudio = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private bool _InvisFadingOverlay;
-        public bool InvisFadingOverlay
-        {
-            get => _InvisFadingOverlay;
-            set
-            {
-                _InvisFadingOverlay = value;
                 OnPropertyChanged();
             }
         }
@@ -819,38 +667,7 @@ namespace EQTool.Models
             }
         }
 
-        private bool _TellsYouOverlay;
-        public bool TellsYouOverlay
-        {
-            get => _TellsYouOverlay;
-            set
-            {
-                _TellsYouOverlay = value;
-                OnPropertyChanged();
-            }
-        }
 
-        private bool _TellsYouAudio;
-        public bool TellsYouAudio
-        {
-            get => _TellsYouAudio;
-            set
-            {
-                _TellsYouAudio = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private bool _RunSpeedOverlay;
-        public bool RunSpeedOverlay
-        {
-            get => _RunSpeedOverlay;
-            set
-            {
-                _RunSpeedOverlay = value;
-                OnPropertyChanged();
-            }
-        }
 
         private bool? _ZlandicarAudio;
         public bool ZlandicarAudio

@@ -145,17 +145,6 @@ namespace EQTool.ViewModels
             }
         }
 
-        private double runSpeed;
-        public double RunSpeed
-        {
-            get => runSpeed;
-            set
-            {
-                runSpeed = value;
-                OnPropertyChanged();
-            }
-        }
-
         public string LogFileName;
 
         private PlayerInfo _Player;

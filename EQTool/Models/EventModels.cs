@@ -61,24 +61,11 @@ namespace EQTool.Models
     public class RingWarEvent : BaseLogParseEvent
     {
     }
-    public class InvisEvent : BaseLogParseEvent
-    {
-        public Services.Parsing.InvisParser.InvisStatus InvisStatus { get; set; }
-    }
-    public class LevitateEvent : BaseLogParseEvent
-    {
-        public Services.Parsing.LevParser.LevStatus LevitateStatus { get; set; }
-    }
     public class FTEEvent : BaseLogParseEvent
     {
         public string NPCName { get; set; }
         public string FTEPerson { get; set; }
     }
-    public class EnrageEvent : BaseLogParseEvent
-    {
-        public string NpcName { get; set; }
-    }
-
     //
     // Event class to carry all info from DamageParser to interested listeners
     //
@@ -95,11 +82,6 @@ namespace EQTool.Models
     public class ConEvent : BaseLogParseEvent
     {
         public string Name { get; set; }
-    }
-
-    public class NPCBeginsToGateEvent : BaseLogParseEvent
-    {
-        public string NPCName { get; set; }
     }
 
     public class SlainEvent : BaseLogParseEvent
@@ -119,14 +101,6 @@ namespace EQTool.Models
     public class WhoPlayerEvent : BaseLogParseEvent
     {
         public EQToolShared.APIModels.PlayerControllerModels.Player PlayerInfo { get; set; }
-    }
-    public class FailedFeignEvent : BaseLogParseEvent
-    {
-        public string PersonWhoFailedFeign { get; set; }
-    }
-    public class GroupInviteEvent : BaseLogParseEvent
-    {
-        public string Inviter { get; set; }
     }
 
     //
