@@ -18,7 +18,8 @@ namespace EQToolApis.Controllers
         private readonly EQToolContext dbcontext;
         private readonly NpcTrackingService notableNpcService;
         private readonly IHubContext<PPHub> ppHubContext;
-        private DateTime LastKaelFactionSend = DateTime.UtcNow.AddMonths(-2);
+        private static DateTime LastKaelFactionSend = DateTime.UtcNow.AddMonths(-2);
+        private static DateTime LastKaelFactionEngagedSend = DateTime.UtcNow.AddMonths(-2);
         private static readonly QuakeCache[] QuakeCache = new QuakeCache[(int)Servers.MaxServers]
         {
             new() { Server = Servers.Green, DateTime = DateTimeOffset.MinValue },
@@ -42,15 +43,28 @@ namespace EQToolApis.Controllers
             {
                 return;
             }
-            if (Zones.KaelFactionMobs.Contains(model.NPCData.Name) && model.IsDeath && (DateTime.UtcNow - LastKaelFactionSend).TotalSeconds > 10)
+            if (Zones.KaelFactionMobs.Contains(model.NPCData.Name))
             {
-                LastKaelFactionSend = DateTime.UtcNow;
-                await ppHubContext.Clients.Group(model.Server.ToString()).SendAsync("AddCustomTrigger", new SignalrCustomTimer
+                if (model.IsDeath && (DateTime.UtcNow - LastKaelFactionSend).TotalSeconds > 10)
                 {
-                    Server = model.Server,
-                    DurationInSeconds = 28 * 60,
-                    Name = "Next Kael Faction Pull"
-                });
+                    LastKaelFactionSend = DateTime.UtcNow;
+                    await ppHubContext.Clients.Group(model.Server.ToString()).SendAsync("AddCustomTrigger", new SignalrCustomTimer
+                    {
+                        Server = model.Server,
+                        DurationInSeconds = 28 * 60,
+                        Name = "Next Kael Faction Pull"
+                    });
+                }
+                if (model.IsEngaged && (DateTime.UtcNow - LastKaelFactionEngagedSend).TotalSeconds > 30)
+                {
+                    LastKaelFactionEngagedSend = DateTime.UtcNow;
+                    await ppHubContext.Clients.Group(model.Server.ToString()).SendAsync("AddCustomTrigger", new SignalrCustomTimer
+                    {
+                        Server = model.Server,
+                        DurationInSeconds = 90,
+                        Name = "Kael Faction Pull In Progress"
+                    });
+                }
             }
             notableNpcService.Add(model, ip);
         }

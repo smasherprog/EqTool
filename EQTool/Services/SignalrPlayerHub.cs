@@ -11,6 +11,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Timers;
+using System.Windows.Media;
 using System.Windows.Media.Media3D;
 
 namespace EQTool.Models
@@ -59,7 +60,7 @@ namespace EQTool.Models
             });
             _ = connection.On("AddCustomTrigger", (SignalrCustomTimer p) =>
             {
-                FactionPullReceivedRemotely(p);
+                CustomTriggerReceived(p);
             });
             _ = connection.On("DragonRoarEvent", (SignalRDragonRoar p) =>
             {
@@ -217,7 +218,7 @@ namespace EQTool.Models
             }
         }
 
-        public void FactionPullReceivedRemotely(SignalrCustomTimer p)
+        public void CustomTriggerReceived(SignalrCustomTimer p)
         {
             if (p.Server == activePlayer?.Player?.Server)
             {
@@ -232,10 +233,16 @@ namespace EQTool.Models
             {
                 _ = spells.AllSpells.TryGetValue("Feign Death", out spellicon);
             }
+            var color = Brushes.DarkSeaGreen;
+            if (e.Name == "Kael Faction Pull In Progress")// should change these to be enums
+            {
+                color = Brushes.LightPink;
+            }
             return new TimerViewModel
             {
                 PercentLeft = 100,
                 GroupName = CustomTimer.CustomerTime,
+                ProgressBarColor = color,
                 Name = e.Name,
                 Rect = spellicon.Rect,
                 Icon = spellicon.SpellIcon,

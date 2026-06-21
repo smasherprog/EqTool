@@ -1,5 +1,6 @@
 ﻿using EQTool.Models;
 using EQTool.ViewModels;
+using EQToolShared;
 using EQToolShared.APIModels.ZoneControllerModels;
 using EQToolShared.Enums;
 using System;
@@ -15,13 +16,16 @@ namespace EQTool.Services
         private readonly ActivePlayer activePlayer;
         private readonly LoggingService loggingService;
         private Point3D? LastLocation = null;
+        private DateTime LastKaelFactionEngagedSend = DateTime.UtcNow.AddMonths(-2);
 
         public ZoneActivityTrackingService(LogEvents logParser, ActivePlayer activePlayer, PigParseApi pigParseApi, LoggingService loggingService)
-        { 
+        {
             this.logParser = logParser;
             this.logParser.SlainEvent += LogParser_DeathEvent;
-            this.logParser.ConEvent += LogParser_ConEvent;  
+            this.logParser.ConEvent += LogParser_ConEvent;
             this.logParser.PlayerLocationEvent += LogParser_PlayerLocationEvent;
+            this.logParser.DamageEvent += LogParser_DamageEvent;
+            this.logParser.SpellCastOnOtherEvent += LogParser_SpellCastOnOtherEvent;
             this.pigParseApi = pigParseApi;
             this.activePlayer = activePlayer;
             this.loggingService = loggingService;
@@ -82,6 +86,72 @@ namespace EQTool.Services
                     },
                     Server = activePlayer.Player.Server.Value,
                     IsDeath = true
+                });
+            }
+            catch (Exception ex)
+            {
+                loggingService.Log(ex.ToString(), EventType.Error, activePlayer?.Player?.Server);
+            }
+        }
+
+        private void LogParser_DamageEvent(object sender, DamageEvent e)
+        {
+            if (activePlayer.Player?.Server == null || !Zones.KaelFactionMobs.Contains(e.TargetName))
+            {
+                return;
+            }
+            if ((DateTime.UtcNow - LastKaelFactionEngagedSend).TotalSeconds < 15)
+            {
+                return;
+            }
+            LastKaelFactionEngagedSend = DateTime.UtcNow;
+            try
+            {
+                pigParseApi.SendNPCActivity(new NPCActivityRequest
+                {
+                    NPCData = new NPCData
+                    {
+                        LocX = LastLocation.HasValue ? LastLocation.Value.X : (double?)null,
+                        LocY = LastLocation.HasValue ? LastLocation.Value.Y : (double?)null,
+                        Zone = activePlayer.Player.Zone,
+                        Name = e.TargetName
+                    },
+                    Server = activePlayer.Player.Server.Value,
+                    IsDeath = false,
+                    IsEngaged = true
+                });
+            }
+            catch (Exception ex)
+            {
+                loggingService.Log(ex.ToString(), EventType.Error, activePlayer?.Player?.Server);
+            }
+        }
+
+        private void LogParser_SpellCastOnOtherEvent(object sender, SpellCastOnOtherEvent e)
+        {
+            if (activePlayer.Player?.Server == null || !Zones.KaelFactionMobs.Contains(e.TargetName))
+            {
+                return;
+            }
+            if ((DateTime.UtcNow - LastKaelFactionEngagedSend).TotalSeconds < 15)
+            {
+                return;
+            }
+            LastKaelFactionEngagedSend = DateTime.UtcNow;
+            try
+            {
+                pigParseApi.SendNPCActivity(new NPCActivityRequest
+                {
+                    NPCData = new NPCData
+                    {
+                        LocX = LastLocation.HasValue ? LastLocation.Value.X : (double?)null,
+                        LocY = LastLocation.HasValue ? LastLocation.Value.Y : (double?)null,
+                        Zone = activePlayer.Player.Zone,
+                        Name = e.TargetName
+                    },
+                    Server = activePlayer.Player.Server.Value,
+                    IsDeath = false,
+                    IsEngaged = true
                 });
             }
             catch (Exception ex)

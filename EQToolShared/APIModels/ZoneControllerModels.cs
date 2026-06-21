@@ -26,6 +26,7 @@ namespace EQToolShared.APIModels.ZoneControllerModels
         [Required]
         public NPCData NPCData { get; set; }
         public bool IsDeath { get; set; }
+        public bool IsEngaged { get; set; }
         [EnumDataType(typeof(Servers))]
         public Servers Server { get; set; }
     }
