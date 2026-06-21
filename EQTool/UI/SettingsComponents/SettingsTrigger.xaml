@@ -55,10 +55,7 @@
                     <StackPanel Grid.Row="4" Grid.Column="1" Orientation="Horizontal" Margin="0,2,0,2">
                         <CheckBox Content="Use Regular Expressions" VerticalAlignment="Center" Margin="0,0,16,0"
                                   IsChecked="{Binding UseRegex, Mode=TwoWay}"/>
-                        <CheckBox Content="Use Fast Check" VerticalAlignment="Center"
-                                  IsEnabled="{Binding CanUseFastCheck}"
-                                  IsChecked="{Binding UseFastCheck, Mode=TwoWay}"/>
-                        <CheckBox Content="Trigger Enabled" VerticalAlignment="Center" Margin="16,0,0,0"
+                        <CheckBox Content="Trigger Enabled" VerticalAlignment="Center"
                                   IsChecked="{Binding TriggerEnabled, Mode=TwoWay}"/>
                     </StackPanel>
 

@@ -36,9 +36,6 @@ namespace EQTool.Models
         [Newtonsoft.Json.JsonIgnore]
         public bool EffectiveUseRegex => UseRegex ?? true;
 
-        // Fast (plain substring) check option, only meaningful when not using regex.
-        public bool UseFastCheck { get; set; }
-
         // The Basic tab output. Null for legacy triggers (rebuilt from the legacy
         // DisplayText/AudioText fields via GetEffectiveBasic()).
         public TriggerOutput Basic { get; set; }

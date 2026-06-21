@@ -147,18 +147,9 @@ namespace EQTool.Models
             {
                 trigger.UseRegex = value;
                 OnPropertyChanged();
-                OnPropertyChanged(nameof(CanUseFastCheck));
                 RefreshValidation();
             }
         }
-
-        public bool UseFastCheck
-        {
-            get => trigger.UseFastCheck;
-            set { trigger.UseFastCheck = value; OnPropertyChanged(); }
-        }
-
-        public bool CanUseFastCheck => !UseRegex;
 
         public string Category
         {
