@@ -83,6 +83,11 @@ namespace EQTool.Models
 
         public void Save()
         {
+            if (trigger.IsBuiltIn)
+            {
+                // built-in library triggers are never persisted or modified
+                return;
+            }
             if (IsNewTrigger)
             {
                 toolSettings.Triggers.Add(trigger);
@@ -102,6 +107,10 @@ namespace EQTool.Models
 
         // The underlying trigger model (used by the editor's Test feature).
         public Trigger Model => trigger;
+
+        // Built-in (library) triggers are read-only until copied out.
+        public bool IsBuiltIn => trigger.IsBuiltIn;
+        public bool IsEditable => !trigger.IsBuiltIn;
 
         public string TriggerName
         {

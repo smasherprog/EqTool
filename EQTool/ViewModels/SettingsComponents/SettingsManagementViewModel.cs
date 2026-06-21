@@ -18,8 +18,10 @@ namespace EQTool.ViewModels.SettingsComponents
         private readonly EQToolSettings settings;
         private readonly EQToolSettingsLoad eQToolSettingsLoad;
         private TreeGlobal triggersRoot;
-        // The node that was Cut and is waiting to be Pasted (folder or trigger).
+        // The node that was Cut/Copied and is waiting to be Pasted (folder or trigger).
         private TreeViewItemBase clipboardNode;
+        // True when the clipboard node should be duplicated on paste (Copy), false to move (Cut).
+        private bool clipboardIsCopy;
         public SettingsManagementViewModel(UserComponentSettingsManagementFactory userComponentFactory, EQToolSettings settings, EQToolSettingsLoad eQToolSettingsLoad)
         {
             this.userComponentFactory = userComponentFactory;
@@ -58,6 +60,7 @@ namespace EQTool.ViewModels.SettingsComponents
         private void BuildTriggerTree()
         {
             triggersRoot.Children.Clear();
+            BuildBuiltInCategory();
             var folderNodes = new System.Collections.Generic.Dictionary<Guid, TreeTriggerFolder>();
             foreach (var f in settings.TriggerFolders)
             {
@@ -90,6 +93,21 @@ namespace EQTool.ViewModels.SettingsComponents
             }
         }
 
+        // Adds the read-only "Built In" library category and its triggers. This is
+        // created in code each session and is excluded from persistence.
+        private void BuildBuiltInCategory()
+        {
+            var folder = new TreeTriggerFolder(new TriggerFolder { Name = BuiltInTriggers.CategoryName }, triggersRoot)
+            {
+                IsBuiltIn = true
+            };
+            triggersRoot.Children.Add(folder);
+            foreach (var t in BuiltInTriggers.All())
+            {
+                folder.Children.Add(new TreeTrigger(new TriggerViewModel(t, settings, eQToolSettingsLoad), folder));
+            }
+        }
+
         private MenuItem BuildMenuItem(string header, RoutedEventHandler handler, TreeViewItemBase tag)
         {
             var menuItem = new MenuItem { Header = header, Tag = tag };
@@ -116,12 +134,19 @@ namespace EQTool.ViewModels.SettingsComponents
                 }
                 return menu;
             }
-            else if (item is TreeTriggerFolder)
+            else if (item is TreeTriggerFolder folder)
             {
                 var menu = new ContextMenu();
+                if (folder.IsBuiltIn)
+                {
+                    // The Built In category can only be copied out of.
+                    _ = menu.Items.Add(BuildMenuItem("Copy", CopyItem, item));
+                    return menu;
+                }
                 _ = menu.Items.Add(BuildMenuItem("Add Trigger", AddTrigger, item));
                 _ = menu.Items.Add(BuildMenuItem("Add Folder", AddFolder, item));
                 _ = menu.Items.Add(BuildMenuItem("Rename", RenameItem, item));
+                _ = menu.Items.Add(BuildMenuItem("Copy", CopyItem, item));
                 _ = menu.Items.Add(BuildMenuItem("Cut", CutItem, item));
                 if (clipboardNode != null)
                 {
@@ -130,9 +155,16 @@ namespace EQTool.ViewModels.SettingsComponents
                 _ = menu.Items.Add(BuildMenuItem("Delete", DeleteFolder, item));
                 return menu;
             }
-            else if (item is TreeTrigger)
+            else if (item is TreeTrigger trig)
             {
                 var menu = new ContextMenu();
+                if (trig.IsBuiltIn)
+                {
+                    // Built In triggers can only be copied out of the library.
+                    _ = menu.Items.Add(BuildMenuItem("Copy", CopyItem, item));
+                    return menu;
+                }
+                _ = menu.Items.Add(BuildMenuItem("Copy", CopyItem, item));
                 _ = menu.Items.Add(BuildMenuItem("Cut", CutItem, item));
                 _ = menu.Items.Add(BuildMenuItem("Delete Trigger", DeleteTrigger, item));
                 return menu;
@@ -190,6 +222,13 @@ namespace EQTool.ViewModels.SettingsComponents
         private void CutItem(object sender, RoutedEventArgs e)
         {
             clipboardNode = (sender as MenuItem)?.Tag as TreeViewItemBase;
+            clipboardIsCopy = false;
+        }
+
+        private void CopyItem(object sender, RoutedEventArgs e)
+        {
+            clipboardNode = (sender as MenuItem)?.Tag as TreeViewItemBase;
+            clipboardIsCopy = true;
         }
 
         private void PasteItem(object sender, RoutedEventArgs e)
@@ -202,19 +241,93 @@ namespace EQTool.ViewModels.SettingsComponents
             {
                 return;
             }
-            // Can't paste a node into itself or into one of its own descendants.
+            // Never allow pasting into the read-only Built In library.
+            if (target is TreeTriggerFolder tf && tf.IsBuiltIn)
+            {
+                return;
+            }
+
+            if (clipboardIsCopy)
+            {
+                // Duplicate the node (and its subtree) with fresh ids; the clone is
+                // always editable even when copied out of the Built In library.
+                var clone = CloneNode(clipboardNode, target);
+                if (clone == null)
+                {
+                    return;
+                }
+                target.Children.Insert(0, clone);
+                target.IsExpanded = true;
+                AddTriggerModels(clone);
+                PersistTriggerTree();
+                return;
+            }
+
+            // Move (Cut): can't paste a node into itself or one of its own descendants.
             if (IsSelfOrDescendant(target, clipboardNode))
             {
                 clipboardNode = null;
                 return;
             }
-
             _ = clipboardNode.Parent?.Children.Remove(clipboardNode);
             clipboardNode.Parent = target;
             target.Children.Insert(0, clipboardNode);
             target.IsExpanded = true;
             clipboardNode = null;
             PersistTriggerTree();
+        }
+
+        // Deep-clones a tree node (trigger or folder + subtree) with new ids. The clone
+        // is always a normal, editable node (built-in status is dropped).
+        private TreeViewItemBase CloneNode(TreeViewItemBase node, TreeViewItemBase parent)
+        {
+            if (node is TreeTrigger tt)
+            {
+                var clone = CloneTrigger(tt.Trigger.Model);
+                return new TreeTrigger(new TriggerViewModel(clone, settings, eQToolSettingsLoad), parent);
+            }
+            if (node is TreeTriggerFolder tf)
+            {
+                var backing = new TriggerFolder { Id = Guid.NewGuid(), Name = tf.Backing.Name };
+                var folderNode = new TreeTriggerFolder(backing, parent);
+                foreach (var child in tf.Children)
+                {
+                    var childClone = CloneNode(child, folderNode);
+                    if (childClone != null)
+                    {
+                        folderNode.Children.Add(childClone);
+                    }
+                }
+                return folderNode;
+            }
+            return null;
+        }
+
+        // JSON round-trip deep copy of a trigger with a fresh id. IsBuiltIn is JsonIgnore,
+        // so the clone is never marked built-in.
+        private Models.Trigger CloneTrigger(Models.Trigger source)
+        {
+            var json = Newtonsoft.Json.JsonConvert.SerializeObject(source);
+            var clone = Newtonsoft.Json.JsonConvert.DeserializeObject<Models.Trigger>(json);
+            clone.TriggerId = Guid.NewGuid();
+            clone.FolderId = null;
+            return clone;
+        }
+
+        // Registers the cloned trigger model(s) in settings so they persist.
+        private void AddTriggerModels(TreeViewItemBase node)
+        {
+            if (node is TreeTrigger tt)
+            {
+                settings.Triggers.Add(tt.Trigger.Model);
+            }
+            else
+            {
+                foreach (var child in node.Children)
+                {
+                    AddTriggerModels(child);
+                }
+            }
         }
 
         // Returns true if 'candidate' is 'node' itself or anywhere in 'node's subtree.
@@ -316,12 +429,21 @@ namespace EQTool.ViewModels.SettingsComponents
             {
                 if (child is TreeTriggerFolder f)
                 {
+                    // The Built In library is created in code and never persisted.
+                    if (f.IsBuiltIn)
+                    {
+                        continue;
+                    }
                     f.Backing.ParentId = parentId;
                     folders.Add(f.Backing);
                     WalkAndCollect(f, f.Backing.Id, folders);
                 }
                 else if (child is TreeTrigger t)
                 {
+                    if (t.IsBuiltIn)
+                    {
+                        continue;
+                    }
                     t.Trigger.FolderId = parentId;
                 }
             }

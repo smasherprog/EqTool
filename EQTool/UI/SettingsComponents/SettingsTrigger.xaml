@@ -22,7 +22,7 @@
     <ScrollViewer VerticalScrollBarVisibility="Auto" Background="White">
         <StackPanel Orientation="Vertical" Margin="6" Validation.Error="OnValidationError">
 
-            <GroupBox Header="General Settings">
+            <GroupBox x:Name="GeneralSettingsGroup" Header="General Settings">
                 <Grid Margin="4">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
@@ -75,7 +75,7 @@
                 </Grid>
             </GroupBox>
 
-            <TabControl Margin="0,6,0,0" MinHeight="320">
+            <TabControl x:Name="EditorTabs" Margin="0,6,0,0" MinHeight="320">
                 <!-- Basic -->
                 <TabItem Header="Basic">
                     <local:TriggerOutputEditor DataContext="{Binding Basic}" Margin="4"/>

@@ -83,6 +83,7 @@ namespace EQtoolsTests
             _ = builder.RegisterType<EQTool.ViewModels.DPSWindowViewModel>().AsSelf().SingleInstance();
             _ = builder.RegisterType<EQToolShared.Discord.DiscordAuctionParse>().AsSelf().SingleInstance();
             _ = builder.RegisterType<TextToSpeachFake>().As<ITextToSpeach>().SingleInstance();
+            _ = builder.RegisterType<EQTool.Services.AudioService>().As<EQTool.Services.IAudioService>().SingleInstance();
             _ = builder.RegisterType<FightHistory>().AsSelf().SingleInstance();
             _ = builder.RegisterType<SpellDurations>().AsSelf().SingleInstance();
             _ = builder.RegisterType<EQTool.Services.IO.FileReader>().As<EQTool.Services.IO.IFileReader>().SingleInstance();

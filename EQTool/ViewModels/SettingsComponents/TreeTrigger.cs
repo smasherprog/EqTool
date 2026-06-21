@@ -20,6 +20,7 @@ namespace EQTool.ViewModels.SettingsComponents
 
         public TriggerViewModel Trigger { get; set; }
         public override string Name { get { return Trigger.TriggerName; } }
+        public bool IsBuiltIn => Trigger?.IsBuiltIn ?? false;
         public override TreeViewItemType Type => TreeViewItemType.Trigger;
     }
 

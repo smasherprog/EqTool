@@ -25,6 +25,22 @@ namespace EQTool.UI.SettingsComponents
             {
                 npc.PropertyChanged += Trigger_PropertyChanged;
             }
+
+            // Built-in library triggers are read-only; they can only be copied out.
+            // Disable the tab contents (not the TabControl itself) so the user can
+            // still switch between Basic/Timer/Timer Ending/Timer Ended/Counter to view them.
+            if (treeTrigger.Trigger.IsBuiltIn)
+            {
+                GeneralSettingsGroup.IsEnabled = false;
+                foreach (var item in EditorTabs.Items)
+                {
+                    if (item is TabItem tab && tab.Content is System.Windows.UIElement content)
+                    {
+                        content.IsEnabled = false;
+                    }
+                }
+                SaveButton.Visibility = System.Windows.Visibility.Collapsed;
+            }
             UpdateSaveEnabled();
         }
 

@@ -542,6 +542,7 @@
     <Compile Include="Models\Trigger.cs" />
     <Compile Include="Models\TriggerComponents.cs" />
     <Compile Include="Models\TriggerColors.cs" />
+    <Compile Include="Models\BuiltInTriggers.cs" />
     <Compile Include="Models\TriggerFolder.cs" />
     <Compile Include="ViewModels\SettingsComponents\TriggerViewModel.cs" />
     <Compile Include="ViewModels\SpawnTimerDialogViewModel.cs" />

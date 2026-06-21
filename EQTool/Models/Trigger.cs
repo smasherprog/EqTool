@@ -20,6 +20,11 @@ namespace EQTool.Models
         // null means it sits at the top level of the Triggers branch.
         public Guid? FolderId { get; set; }
 
+        // Runtime-only marker for triggers in the read-only "Built In" library.
+        // Not persisted; built-in triggers are constructed in code each session.
+        [Newtonsoft.Json.JsonIgnore]
+        public bool IsBuiltIn { get; set; }
+
         // Organizational/category label.
         public string Category { get; set; } = "Default";
         // Free-form user notes.

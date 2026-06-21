@@ -13,6 +13,9 @@ namespace EQTool.ViewModels.SettingsComponents
 
         public TriggerFolder Backing { get; }
 
+        // True for the read-only "Built In" library category.
+        public bool IsBuiltIn { get; set; }
+
         public override string Name => Backing.Name;
 
         // Bound TwoWay by the inline rename TextBox. Kept separate from the
