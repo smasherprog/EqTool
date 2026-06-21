@@ -26,7 +26,127 @@ namespace EQTool.UI
 
         private void TreeView_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
+            // A plain (non-Ctrl) selection collapses the multi-selection down to the
+            // single newly-selected item, keeping the highlight consistent.
+            if ((Keyboard.Modifiers & ModifierKeys.Control) != ModifierKeys.Control)
+            {
+                ClearMultiSelect();
+                if (e.NewValue is TreeViewItemBase selected)
+                {
+                    selected.IsMultiSelected = true;
+                }
+            }
             settingsManagementViewModel.TreeSelected(e.NewValue as TreeViewItemBase);
+        }
+
+        // Ctrl+click toggles an item's membership in the multi-selection; a plain
+        // click clears the multi-selection and falls through to normal single-select.
+        private void OnPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            var obj = e.OriginalSource as DependencyObject;
+            // let the expand/collapse toggle work normally
+            if (IsInExpander(obj))
+            {
+                return;
+            }
+
+            var container = GetDependencyObjectFromVisualTree(obj, typeof(TreeViewItem)) as TreeViewItem;
+            if (!(container?.Header is TreeViewItemBase data))
+            {
+                return;
+            }
+
+            if ((Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
+            {
+                // toggle this item in/out of the selection without changing the
+                // primary selection (so the editor panel stays put)
+                if (data.IsMultiSelected)
+                {
+                    // removing from the selection is always allowed
+                    data.IsMultiSelected = false;
+                }
+                else
+                {
+                    // a multi-selection is all built-in or all non-built-in: only allow
+                    // adding an item that matches the current selection's kind.
+                    var anchor = FirstMultiSelected();
+                    if (anchor == null || IsBuiltInNode(anchor) == IsBuiltInNode(data))
+                    {
+                        data.IsMultiSelected = true;
+                    }
+                }
+                e.Handled = true;
+            }
+            // a non-Ctrl click is handled by TreeView_SelectedItemChanged
+        }
+
+        private static bool IsBuiltInNode(TreeViewItemBase node)
+        {
+            return (node is TreeTriggerFolder f && f.IsBuiltIn) || (node is TreeTrigger t && t.IsBuiltIn);
+        }
+
+        private TreeViewItemBase FirstMultiSelected()
+        {
+            foreach (var item in settingsManagementViewModel.TreeItems)
+            {
+                var found = FindMultiSelected(item);
+                if (found != null)
+                {
+                    return found;
+                }
+            }
+            return null;
+        }
+
+        private static TreeViewItemBase FindMultiSelected(TreeViewItemBase node)
+        {
+            if (node.IsMultiSelected)
+            {
+                return node;
+            }
+            foreach (var child in node.Children)
+            {
+                var found = FindMultiSelected(child);
+                if (found != null)
+                {
+                    return found;
+                }
+            }
+            return null;
+        }
+
+        private void ClearMultiSelect()
+        {
+            foreach (var item in settingsManagementViewModel.TreeItems)
+            {
+                ClearMultiSelectRecursive(item);
+            }
+        }
+
+        private static void ClearMultiSelectRecursive(TreeViewItemBase node)
+        {
+            node.IsMultiSelected = false;
+            foreach (var child in node.Children)
+            {
+                ClearMultiSelectRecursive(child);
+            }
+        }
+
+        private static bool IsInExpander(DependencyObject obj)
+        {
+            while (obj != null)
+            {
+                if (obj is System.Windows.Controls.Primitives.ToggleButton)
+                {
+                    return true;
+                }
+                if (obj is TreeViewItem)
+                {
+                    return false;
+                }
+                obj = VisualTreeHelper.GetParent(obj);
+            }
+            return false;
         }
 
         private void OnPreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)

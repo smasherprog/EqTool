@@ -41,7 +41,7 @@
                     <TextBlock Grid.Row="0" Grid.Column="0" Text="Trigger Name" VerticalAlignment="Center" Margin="0,2,8,2"/>
                     <TextBox Grid.Row="0" Grid.Column="1" Margin="0,2,0,2"
                              BorderBrush="{Binding TriggerNameBorderBrush}"
-                             Text="{Binding TriggerName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                             Text="{Binding TriggerName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Delay=500}"/>
                     <TextBlock Grid.Row="1" Grid.Column="1" Foreground="Red"
                                Visibility="{Binding TriggerNameErrorMessgeVisible}" Text="{Binding TriggerNameErrorMessge}"/>
 

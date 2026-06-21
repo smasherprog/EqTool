@@ -42,6 +42,21 @@ namespace EQTool.ViewModels.SettingsComponents
             }
         }
 
+        private bool isMultiSelected;
+        // True when the item is part of a Ctrl+click multi-selection.
+        public bool IsMultiSelected
+        {
+            get => isMultiSelected;
+            set
+            {
+                if (value != isMultiSelected)
+                {
+                    isMultiSelected = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
         private bool isEditing;
         // True while the item's name is being edited inline in the tree.
         public bool IsEditing
