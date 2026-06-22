@@ -24,8 +24,11 @@ Features:
 <li>Random rolls show up in the triggers window. </li> 
 <li>See others on the map in real time. Also support for NParse map location sharing automatically if location sharing is set to everyone. </li> 
 <li>Kael faction pull timer automatically added for everyone regardless of what zone you are in. </li> 
-<li>Scout timer automatically added for everyone regardless of what zone you are in. THIS IS AN ESTIMATE!</li>  
-<li>Ring 8 timer automatically added for everyone regardless of what zone you are in. THIS IS AN ESTIMATE!</li>  
+<li>Scout timer automatically added for everyone regardless of what zone you are in. THIS IS AN ESTIMATE! (Can be toggled off in settings.)</li>  
+<li>Ring 8 timer automatically added for everyone regardless of what zone you are in. THIS IS AN ESTIMATE! (Can be toggled off in settings.)</li>  
+<li>Ring War: when the Ring War starts, the full set of wave/round timers is automatically generated for you.</li>
+<li>Avatar of War lockout timer and Death Touch (Fright/Dread) timers are automatically tracked.</li>
+<li>Pet tracking: detects pet creation, death, reclaim, guard, follow, sit/stand, attack, and lifetap procs.</li>
 <li>Kill timer detection: When you kill a mob sometimes you miss the slain message. Now, when you miss the slain message, if you get either an exp message or a faction message a timer will appear correctly. Since it is unknown what the name of the mob is that died when you received a faction message only, the name of the timer is 'Faction Slain Guess'  and 'Experience Slain Guess'.</li> 
 <li>Detect EQ directory location instead of user required to enter it.</li> 
 <li>Detect Spells cast on others (this is a best guess as I am reading the log file so chloroplast and Regrowth of the growth have the same message)</li>
@@ -36,8 +39,8 @@ Features:
 <li>Auto detect level and class!</li>
 <li>DPS is trailing 12 second average.</li>
 <li>Show fight Session data for comparisons.</li>
-<li>The following spells have counters that are automatically tracked: <br/>Mana Seive<br/> LowerElement (Flux Staff Effect)<br/> Concussion<br/> Flame Lick<br/> Cinder Jolt<br/> Jolt.</li> 
-<li>The following Audio/Visual alerts are available: <br/>Enrage<br/> Levitate fading<br/> invis fading<br/> FTE<br/> Charm Break<br/> Failed Feign<br/> Group Invite<br/> Dragon Roar<br/> Root Break<br/> Resists<br/> and <b>CH CHain</b></li>
+<li>The following spells have counters that are automatically tracked: <br/>Mana Sieve<br/> LowerElement (Flux Staff Effect)<br/> Concussion<br/> Flame Lick<br/> Jolt<br/> Cinder Jolt<br/> Rage of Vallon<br/> Waves of the Deep Sea<br/> Anarchy<br/> Breath of the Sea<br/> Frostbite<br/> Judgment of Ice<br/> Storm Strike<br/> Shrieking Howl<br/> Static Strike<br/> Rage of Zek<br/> Blinding Luminance<br/> Flash of Light. Bard AOE resists (Chords of Dissonance, Denon's Disruptive Discord, Selo's Chords of Cessation, Selo's Assonant Strane) are also counted.</li> 
+<li>The following Audio/Visual alerts are available: <br/>Enrage<br/> Levitate fading<br/> Invis fading<br/> FTE (includes Guild)<br/> Charm Break<br/> Failed Feign<br/> Group Invite<br/> NPC Gating<br/> Tells You<br/> Dragon Roar (with 36 second recast timer)<br/> Root Break<br/> Resists<br/> Bard swarm/hit counts<br/> Zlandicar Roar<br/> VP Hosh (Diseased Cloud)<br/> Death Loop<br/> Zone Entry<br/> Spell Worn Off<br/> and <b>CH Chain</b></li>
 <li>Timers on map for easy TOD tracking!</li>
 <li>All Melee disciplines show in the cooldown section of the timers window.</li>
 <li>Pricing information in Mob info window.</li>
@@ -45,7 +48,11 @@ Features:
 <li>Raid Mod Detection: When the program detects that you are in a raid, the triggers window gets slimmed down. It will switch to show information specific to your class. For example, if you are a cleric, it will only show buffs that clerics can cast on others and your buffs. This makes the window actually useful on raids now. When raid mode is detected, the color of the triggers window switches to red indicated it is on. There is a checkbox in the settings window to disable this functionality.</li>
 <li>Maps</li>
  <li>Automatic self update.</li>
-<li>Automatic self update.</li>
+<li>DPS Meter window with current/last/all-time session comparisons.</li>
+<li>Real-time location sharing over the network (configurable: Everyone, Friends, Guild, or off).</li>
+<li>Per-server Friends list management that can be pushed to all of your character files.</li>
+<li>UI helpers: apply a master class UI file to all characters, and a Night Vision graphics fix (apply/revert).</li>
+<li>Automatic log archiving when your log file grows past a configurable size.</li>
 <li>Custom Map loading: If you have a folder called     maps       this will be checked for map files first. If no map files are found, the program will fallback to the built in map files. You can add your overrides for zone files. If you are making changes, you need to clear the cache files. There is a button in the settings -> map tab to clear these. Or you can delete the cachemaps folder.</li>
 <li>Custom Timers</li>
 </ul>
@@ -94,7 +101,7 @@ All below commands work in tells (keep them private!) or regular say (share with
       /say StartTimer-duration-label
  where
  
-      "StartTimer" is the identifying marker
+      "StartTimer" is the identifying marker ("PigTimer" also works as an alias)
       "duration" can be in time formats:
            hh:mm:ss
            mm:ss
