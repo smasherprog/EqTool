@@ -18,7 +18,42 @@ namespace EQTool.Models
                 CreateGroupInvite(),
                 CreateNpcGating(),
                 CreateCharmBreak(),
+                CreateDeathTouch(),
                 CreateTellsYou()
+            };
+        }
+
+        // "Fright says, 'Targetname'" / "Dread says, 'Targetname'" -> 45 second death touch timer.
+        // Fright and Dread announce their target by name (a single word) just before death touching it.
+        // Ported from the old DeathTouchHandler: shows a 45 second countdown named after the target.
+        public static Trigger CreateDeathTouch()
+        {
+            return new Trigger
+            {
+                IsBuiltIn = true,
+                TriggerEnabled = false,
+                TriggerId = Guid.NewGuid(),
+                TriggerName = "Death Touch (Fright/Dread)",
+                // real regex (not the simplified {name} form) so the target stays a single word
+                SearchText = @"^(?<npc>Fright|Dread) says,? '(?<target>[^' ]+)'",
+                UseRegex = true,
+                Category = CategoryName,
+                Basic = new TriggerOutput
+                {
+                    DisplayTextEnabled = true,
+                    DisplayText = "Death Touch: {target}",
+                    DisplayTextColor = "Red",
+                    AudioType = TriggerAudioType.TextToSpeech,
+                    TtsText = "Death touch on {target}"
+                },
+                Timer = new TriggerTimer
+                {
+                    TimerType = TimerType.CountDown,
+                    TimerName = "--DT-- '{target}'",
+                    Seconds = 45,
+                    RestartBehavior = TimerRestartBehavior.RestartTimer,
+                    BarColor = "Red"
+                }
             };
         }
 

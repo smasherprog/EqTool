@@ -1,4 +1,5 @@
-﻿using Autofac;
+using Autofac;
+using EQTool.Models;
 using EQTool.Services;
 using EQTool.ViewModels;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -7,20 +8,30 @@ using System.Linq;
 
 namespace EQtoolsTests
 {
+    // Exercises the built-in "Death Touch (Fright/Dread)" trigger that replaced the
+    // old DeathTouchHandler. Fright and Dread announce their target by name (a single
+    // word) just before death touching it, which starts a 45 second countdown timer.
     [TestClass]
-    public class DeathTouchHandlerTests : BaseTestClass
+    public class DeathTouchTriggerTests : BaseTestClass
     {
         private readonly LogParser logParser;
         private readonly SpellWindowViewModel spellWindowViewModel;
 
-        public DeathTouchHandlerTests()
+        public DeathTouchTriggerTests()
         {
             spellWindowViewModel = container.Resolve<SpellWindowViewModel>();
             logParser = container.Resolve<LogParser>();
+
+            // Built-in triggers are a read-only library that is disabled by default.
+            // Enable the Death Touch trigger so the trigger pipeline evaluates it.
+            var settings = container.Resolve<EQToolSettings>();
+            var trigger = BuiltInTriggers.CreateDeathTouch();
+            trigger.TriggerEnabled = true;
+            settings.Triggers.Add(trigger);
         }
 
         [TestMethod]
-        public void Test1()
+        public void SingleWordTargetCreatesTimer()
         {
             var dteffect = spellWindowViewModel.SpellList.FirstOrDefault(a => a.Name.StartsWith("--DT--"));
             Assert.IsNull(dteffect);
@@ -31,7 +42,7 @@ namespace EQtoolsTests
         }
 
         [TestMethod]
-        public void Test2()
+        public void MultiWordSayIsIgnored()
         {
             var dteffect = spellWindowViewModel.SpellList.FirstOrDefault(a => a.Name.StartsWith("--DT--"));
             Assert.IsNull(dteffect);
@@ -41,7 +52,7 @@ namespace EQtoolsTests
         }
 
         [TestMethod]
-        public void Test3()
+        public void FrightAlsoCreatesTimer()
         {
             var dteffect = spellWindowViewModel.SpellList.FirstOrDefault(a => a.Name.StartsWith("--DT--"));
             Assert.IsNull(dteffect);

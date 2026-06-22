@@ -357,7 +357,6 @@
     <Compile Include="Services\Handlers\SpellWornOffOtherHandler.cs" />
     <Compile Include="Services\Handlers\SpellWornOffSelfHandler.cs" />
     <Compile Include="Services\Handlers\CampHandler.cs" />
-    <Compile Include="Services\Handlers\DeathTouchHandler.cs" />
     <Compile Include="Services\Handlers\RandomRollHandler.cs" />
     <Compile Include="Services\Handlers\SpawnTimerHandler.cs" />
     <Compile Include="Services\Handlers\YourItemBeginsToGlowHandler.cs" />

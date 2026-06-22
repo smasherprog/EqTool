@@ -18,8 +18,6 @@ namespace EQTool.Services
     //  - increments/displays a match counter and resets it after inactivity
     public class TriggerTimerManager
     {
-        public const string TimerGroupName = " Triggers";
-
         private class ActiveTimer
         {
             public Trigger Trigger;
@@ -115,7 +113,7 @@ namespace EQTool.Services
                 var vm = new TimerViewModel
                 {
                     PercentLeft = 100,
-                    GroupName = TimerGroupName,
+                    GroupName = CustomTimer.CustomerTime,
                     Name = name,
                     TotalDuration = duration,
                     TotalRemainingDuration = duration,
@@ -224,7 +222,7 @@ namespace EQTool.Services
             spellWindowViewModel.TryAdd(new CounterViewModel
             {
                 Name = name,
-                GroupName = TimerGroupName,
+                GroupName = CustomTimer.CustomerTime,
                 UpdatedDateTime = DateTime.Now,
                 Count = 1
             });
