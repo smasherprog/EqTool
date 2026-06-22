@@ -303,7 +303,8 @@ namespace EQTool.ViewModels.SettingsComponents
         }
 
         // Copies the selected Built In trigger(s) into the editable Triggers section and
-        // enables them. Skips any whose Trigger Name + Search Text already exist there.
+        // enables them. Skips any that are already present - matched first by BuiltInId (which
+        // survives copy/cut and rename) and otherwise by Trigger Name + Search Text.
         private void EnableBuiltIn(object sender, RoutedEventArgs e)
         {
             if (!((sender as MenuItem)?.Tag is TreeViewItemBase clicked))
@@ -322,8 +323,10 @@ namespace EQTool.ViewModels.SettingsComponents
             {
                 var source = tt.Trigger.Model;
                 var duplicate = settings.Triggers.Any(a =>
-                    string.Equals(a.TriggerName, source.TriggerName, StringComparison.OrdinalIgnoreCase) &&
-                    string.Equals(a.SearchText, source.SearchText, StringComparison.OrdinalIgnoreCase));
+                    (!string.IsNullOrEmpty(source.BuiltInId) &&
+                        string.Equals(a.BuiltInId, source.BuiltInId, StringComparison.OrdinalIgnoreCase)) ||
+                    (string.Equals(a.TriggerName, source.TriggerName, StringComparison.OrdinalIgnoreCase) &&
+                        string.Equals(a.SearchText, source.SearchText, StringComparison.OrdinalIgnoreCase)));
                 if (duplicate)
                 {
                     continue;
@@ -484,13 +487,16 @@ namespace EQTool.ViewModels.SettingsComponents
         }
 
         // JSON round-trip deep copy of a trigger with a fresh id. IsBuiltIn is JsonIgnore,
-        // so the clone is never marked built-in.
+        // so the clone is never marked built-in. BuiltInId IS persisted and is deliberately
+        // carried across so a copied built-in stays recognizable (for duplicate detection and
+        // "already present" checks); only the per-instance TriggerId/FolderId are reset.
         private Models.Trigger CloneTrigger(Models.Trigger source)
         {
             var json = Newtonsoft.Json.JsonConvert.SerializeObject(source);
             var clone = Newtonsoft.Json.JsonConvert.DeserializeObject<Models.Trigger>(json);
             clone.TriggerId = Guid.NewGuid();
             clone.FolderId = null;
+            clone.BuiltInId = source.BuiltInId;
             return clone;
         }
 

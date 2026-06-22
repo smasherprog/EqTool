@@ -25,6 +25,13 @@ namespace EQTool.Models
         [Newtonsoft.Json.JsonIgnore]
         public bool IsBuiltIn { get; set; }
 
+        // Stable identifier of the built-in trigger this one originated from (e.g.
+        // "builtin:enraged"). Null for user-created triggers. Unlike TriggerId (which is
+        // regenerated on every copy), this value is persisted and deliberately carried across
+        // copy/cut operations so the code can recognize a trigger as a copy of a given built-in
+        // (e.g. to detect duplicates or whether a built-in is already present/enabled).
+        public string BuiltInId { get; set; }
+
         // Organizational/category label.
         public string Category { get; set; } = "Default";
         // Free-form user notes.

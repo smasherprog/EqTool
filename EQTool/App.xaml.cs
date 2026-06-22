@@ -254,6 +254,13 @@ namespace EQTool
         {
             container.Resolve<LoggingService>().Log(string.Empty, EventType.StartUp, null);
             container.Resolve<Services.LogArchiveService>().TryArchiveLogs();
+
+            // Add any built-in triggers that aren't already in the user's list and enable them.
+            if (BuiltInTriggers.EnsurePresentAndEnabled(EQToolSettings))
+            {
+                container.Resolve<EQToolSettingsLoad>().Save(EQToolSettings);
+            }
+
             SettingsMenuItem = new System.Windows.Forms.MenuItem("Settings", ToggleSettingsWindow);
             SpellsMenuItem = new System.Windows.Forms.MenuItem("Triggers", ToggleSpellsWindow);
             MapMenuItem = new System.Windows.Forms.MenuItem("Map", ToggleMapWindow);
