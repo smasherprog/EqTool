@@ -127,7 +127,9 @@ namespace EQTool.Models
         // "<name> tells you, '...'" -> tell alert.
         public static Trigger CreateTellsYou()
         {
-            return Build("builtin:tells-you", "Tells You", "{name} tells you, ", true, "{name} sent a tell", "{name} sent a tell");
+            // search text to use after {c} macro is added to the regex engine
+            // return Build("builtin:tells-you", "Tells You", "{name}(tells you, '| -> {c}: )(?!Attacking)", true, "{name} sent a tell", "{name} sent a tell");
+            return Build("builtin:tells-you", "Tells You", "{name}(tells you, '| ->)(?!Attacking)", true, "{name} sent a tell", "{name} sent a tell");
         }
         public static Trigger CreateEnraged()
         {
