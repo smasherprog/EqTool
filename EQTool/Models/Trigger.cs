@@ -9,27 +9,38 @@ namespace EQTool.Models
     {
         // regex to support conversion of simplified regex to full "real" regex
         private const string placeholderRegexPattern = @"\{(?<xxx>\w+)\}";
-        private static Regex placeholderRegex = new Regex(placeholderRegexPattern, RegexOptions.Compiled);
+        private static readonly Regex placeholderRegex = new Regex(placeholderRegexPattern, RegexOptions.Compiled);
+
+        private string _PlayerName { get; set; } = string.Empty;
+
+        [Newtonsoft.Json.JsonIgnore]
+        public string PlayerName
+        {
+            get => _PlayerName;
+            set
+            {
+                if (_PlayerName != value)
+                {
+                    _PlayerName = value;
+                    if (_hasContextToken)
+                    {
+                        // regex needs to be recompiled if it contains the {c} macro, since that macro is replaced with the current PlayerName
+                        _TriggerRegex = null;
+                    }
+                }
+            }
+        }
 
         // Trigger properties
         public Guid TriggerId { get; set; } = Guid.NewGuid();
         public bool TriggerEnabled { get; set; }
         public string TriggerName { get; set; }
 
-        // The folder this trigger lives in within the Triggers tree.
-        // null means it sits at the top level of the Triggers branch.
         public Guid? FolderId { get; set; }
 
-        // Runtime-only marker for triggers in the read-only "Built In" library.
-        // Not persisted; built-in triggers are constructed in code each session.
         [Newtonsoft.Json.JsonIgnore]
         public bool IsBuiltIn { get; set; }
 
-        // Stable identifier of the built-in trigger this one originated from (e.g.
-        // "builtin:enraged"). Null for user-created triggers. Unlike TriggerId (which is
-        // regenerated on every copy), this value is persisted and deliberately carried across
-        // copy/cut operations so the code can recognize a trigger as a copy of a given built-in
-        // (e.g. to detect duplicates or whether a built-in is already present/enabled).
         public string BuiltInId { get; set; }
 
         // Organizational/category label.
@@ -37,14 +48,11 @@ namespace EQTool.Models
         // Free-form user notes.
         public string Comments { get; set; } = string.Empty;
 
-        // Whether SearchText is a regular expression (simplified {name} groups supported).
-        // Stored nullable so legacy triggers (which were always regex) default to regex.
         public bool? UseRegex { get; set; }
+
         [Newtonsoft.Json.JsonIgnore]
         public bool EffectiveUseRegex => UseRegex ?? true;
 
-        // The Basic tab output. Null for legacy triggers (rebuilt from the legacy
-        // DisplayText/AudioText fields via GetEffectiveBasic()).
         public TriggerOutput Basic { get; set; }
 
         // Timer / counter configuration. Null == not configured.
@@ -79,15 +87,22 @@ namespace EQTool.Models
         //      Normal Regular Expression:
         //          ^(?<backstabber>[\w` ]+) backstabs (?<target>[\w` ]+) for (?<damage>[\w` ]+) points of damage\.
         private string _SearchText = string.Empty;
+
+        // Whether the pattern contains the {c} macro. Only {c} triggers depend on PlayerName, so
+        // only they need their compiled regex invalidated when the logged-in player changes.
+        // Computed once here (cold path) so the TriggerRegex hot path stays a cheap field check.
+        private bool _hasContextToken;
+
         public string SearchText
         {
-            get { return this._SearchText; }
+            get => _SearchText;
             set
             {
-                if (this._SearchText != value)
+                if (_SearchText != value)
                 {
-                    this._SearchText = value;
-                    this._TriggerRegex = null;
+                    _SearchText = value;
+                    _TriggerRegex = null;
+                    _hasContextToken = !string.IsNullOrEmpty(value) && _SearchText.IndexOf("{c}", StringComparison.OrdinalIgnoreCase) >= 0;
                 }
             }
         }
@@ -98,7 +113,7 @@ namespace EQTool.Models
         public bool DisplayTextEnabled { get; set; }
         public string DisplayText { get; set; }
         [Newtonsoft.Json.JsonIgnore]
-        public string ExpandedDisplayText { get { return ExpandOutputText(DisplayText); } }
+        public string ExpandedDisplayText => ExpandOutputText(DisplayText);
 
         // properties to support text to be spoken via TTS
         // may contain simplified placeholder-style regex
@@ -106,43 +121,46 @@ namespace EQTool.Models
         public bool AudioTextEnabled { get; set; }
         public string AudioText { get; set; }
         [Newtonsoft.Json.JsonIgnore]
-        public string ExpandedAudioText { get { return ExpandOutputText(AudioText); } }
+        public string ExpandedAudioText => ExpandOutputText(AudioText);
 
         // the regular expression for this trigger
         private Regex _TriggerRegex;
+
+        private string _compiledContext;
 
         [Newtonsoft.Json.JsonIgnore]
         public Regex TriggerRegex
         {
             get
             {
-                // delay regex creation until its asked for
-                if (this._TriggerRegex == null && !string.IsNullOrWhiteSpace(this._SearchText))
+                var context = PlayerName ?? string.Empty;
+                if (_TriggerRegex != null && _hasContextToken && _compiledContext != context)
                 {
-                    // convert search text user input which may contain simplified placeholder-style regex, i.e.
-                    //      {some_name}
-                    // to the real regex match input, i.e.
-                    //      (?<some_name>[\w` ]+)
-                    //
-                    // note the regex allows the field to contain
-                    //      - \w for any character found in words
-                    //      - spaces, to capture multi-word targets, i.e. "Spider Queen D`Zee"
-                    //      - the ` back tick, which actually appears in quite a few mob names
-                    //
-                    var convertedSearchText = this._SearchText;
+                    _TriggerRegex = null;
+                }
+
+                // delay regex creation until its asked for
+                if (_TriggerRegex == null && !string.IsNullOrWhiteSpace(_SearchText))
+                {
+                    // escape the PlayerName so any regex metacharacters in it (e.g. '.', '(') are
+                    // treated literally and can't break (or throw on compiling) the trigger pattern
+                    var escapedPlayerName = Regex.Escape(PlayerName ?? string.Empty);
+                    var convertedSearchText = _SearchText.Replace("{c}", escapedPlayerName).Replace("{C}", escapedPlayerName);
+
                     var match = placeholderRegex.Match(convertedSearchText);
                     while (match.Success)
                     {
-                        string group_name = match.Groups["xxx"].Value;
+                        var group_name = match.Groups["xxx"].Value;
                         convertedSearchText = placeholderRegex.Replace(convertedSearchText, $"(?<{group_name}>[\\w` ]+)", 1);
                         match = match.NextMatch();
                     }
 
                     // now that we've converted the simplified regex to the real regex pattern, create and return the Regex object
-                    this._TriggerRegex = new Regex(convertedSearchText, RegexOptions.IgnoreCase | RegexOptions.Compiled);
+                    _TriggerRegex = new Regex(convertedSearchText, RegexOptions.IgnoreCase | RegexOptions.Compiled);
+                    _compiledContext = context;
                 }
 
-                return this._TriggerRegex;
+                return _TriggerRegex;
             }
         }
 
@@ -213,28 +231,24 @@ namespace EQTool.Models
             return line.IndexOf(SearchText, StringComparison.OrdinalIgnoreCase) >= 0;
         }
 
-        // utility function to merge in the parsed values into the output simplified regex fields
-        // example:  Change the output text for a "Sense Heading" trigger from:
-        //      "Direction: {direction}"
-        // to
-        //      "Direction: East"
+
         private string ExpandOutputText(string unExpandedText)
         {
-            string rv = unExpandedText;
+            var rv = unExpandedText.Replace("{c}", PlayerName ?? string.Empty).Replace("{C}", PlayerName ?? string.Empty);
 
             // walk the list of matches, replacing the user match with the real match
-            Match match = placeholderRegex.Match(rv);
+            var match = placeholderRegex.Match(rv);
             while (match.Success)
             {
                 // Handle match here...
-                string group_name = match.Groups["xxx"].Value;
+                var group_name = match.Groups["xxx"].Value;
 
                 // this key should be present, but confirm in case user made a typo
                 if (valueHash.ContainsKey(group_name))
                 {
                     // use regex to replace the placeholder named group with value from the hashtable
                     // do them one group at a time
-                    string replace_text = $"{valueHash[group_name]}";
+                    var replace_text = $"{valueHash[group_name]}";
                     rv = placeholderRegex.Replace(rv, replace_text, 1);
                 }
 

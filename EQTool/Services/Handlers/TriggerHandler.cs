@@ -22,6 +22,7 @@ namespace EQTool.Services.Handlers
 
             foreach (var trigger in eQToolSettings.Triggers.Where(a => a.TriggerEnabled).ToList())
             {
+                trigger.PlayerName = activePlayer?.Player?.Name ?? string.Empty;
                 if (!trigger.Matches(e.Line))
                 {
                     continue;

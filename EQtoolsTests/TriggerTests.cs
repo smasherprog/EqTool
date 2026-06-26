@@ -43,5 +43,54 @@ namespace EQtoolsTests
             var t = EQToolSettingsLoad.ReadTriggers();
             Assert.IsNotEmpty(t);
         }
+
+        [TestMethod]
+        public void CurrentContextTokenSubstitutesIntoPatternAndOutput()
+        {
+            var trigger = new Trigger
+            {
+                SearchText = "{c} has been slain by {s}",
+                DisplayTextEnabled = true,
+                DisplayText = "{c} died to {s}!",
+                TriggerEnabled = true,
+                PlayerName = "Gandalf"
+            };
+            Assert.IsTrue(trigger.Matches("Gandalf has been slain by a Balrog"));
+            Assert.AreEqual("Gandalf died to a Balrog!", trigger.ExpandedDisplayText);
+
+        }
+
+        [TestMethod]
+        public void CurrentContextTokenRecompilesWhenContextChanges()
+        {
+            var trigger = new Trigger
+            {
+                SearchText = "{c} waves",
+                TriggerEnabled = true,
+                PlayerName = "Gandalf"
+            };
+            Assert.IsTrue(trigger.Matches("Gandalf waves"));
+            Assert.IsFalse(trigger.Matches("Frodo waves"));
+
+            trigger.PlayerName = "Frodo";
+            Assert.IsTrue(trigger.Matches("Frodo waves"));
+            Assert.IsFalse(trigger.Matches("Gandalf waves"));
+
+        }
+
+        [TestMethod]
+        public void CurrentContextTokenEscapesRegexMetacharacters()
+        {
+            var trigger = new Trigger
+            {
+                SearchText = "{c} waves",
+                TriggerEnabled = true,
+                PlayerName = "a.b(c)"
+            };
+            Assert.IsTrue(trigger.Matches("a.b(c) waves"));
+            // the '.' must be literal, not a regex wildcard
+            Assert.IsFalse(trigger.Matches("axb(c) waves"));
+
+        }
     }
 }
