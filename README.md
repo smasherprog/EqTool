@@ -124,6 +124,36 @@ Examples:
       StartTimer-1:02:00-LongTimer       1 hour, 2 minute timer, with label 'LongTimer'
 
 </ul>
+<h3>User Defined Trigger Tokens</h3>
+<p>When you create a User Defined Trigger, the <b>Search Text</b> (and the output/display/TTS fields) can use simplified placeholder tokens instead of raw regular expressions. The tokens are expanded for you before the pattern is compiled to a real regex.</p>
+<ul>
+ <li>
+  <b>{name}</b> — a <i>capture</i> token. It matches a word or phrase (letters, numbers, spaces, and the <code>`</code> backtick that appears in many mob names) and stores it under that name. Reuse the same <code>{name}</code> in the output to print what was captured. You can use any name you like (e.g. <code>{target}</code>, <code>{damage}</code>) and as many as you want.
+ </li>
+ <li>
+  <b>{c}</b> — a <i>current character</i> macro. It is replaced with the name of the character you are currently logged in as, <b>before</b> the pattern is matched. It captures nothing — think of it as "put my own name here". It works in the Search Text and in every output field (display text, alert text, text-to-speech). The substituted name is matched literally and is case-insensitive, and it automatically follows you when you switch characters.
+ </li>
+</ul>
+<p>Examples (assume you are logged in as <b>Gandalf</b>):</p>
+<ul>
+ <li>
+  <b>Search Text:</b> <code>{c} has been slain by {s}</code><br/>
+  <b>Display / TTS:</b> <code>{c} died to {s}!</code><br/>
+  Matches the log line <code>Gandalf has been slain by a Balrog</code> and outputs <code>Gandalf died to a Balrog!</code>
+ </li>
+ <li>
+  <b>Search Text:</b> <code>{c} tells you, '{message}'</code><br/>
+  <b>Display:</b> <code>Tell from someone to {c}: {message}</code><br/>
+  Fires only on tells sent to <i>your</i> current character, not anyone else's.
+ </li>
+ <li>
+  <b>Search Text:</b> <code>You begin casting {spell}</code><br/>
+  <b>TTS:</b> <code>{c} is casting {spell}</code><br/>
+  Uses <code>{c}</code> in the output only, to speak your own name.
+ </li>
+</ul>
+<p>Note: <code>{c}</code> is a macro, not a capture group, so it always resolves to whoever is currently logged in. If no character is detected yet, it expands to nothing.</p>
+
 <img width="1624" alt="image" src="https://github.com/smasherprog/EqTool/assets/3393733/3c53a1d8-44c4-499b-9e92-ea5d5f38275e">
 <h4>CH Chain overlay Below</h4>
  <img width="1174" alt="update1" src="https://github.com/smasherprog/EqTool/assets/3393733/86c08360-48d9-42c4-9a86-7fea652d8133">
