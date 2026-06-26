@@ -142,9 +142,10 @@ Examples:
   Matches the log line <code>Gandalf has been slain by a Balrog</code> and outputs <code>Gandalf died to a Balrog!</code>
  </li>
  <li>
-  <b>Search Text:</b> <code>{c} tells you, '{message}'</code><br/>
-  <b>Display:</b> <code>Tell from someone to {c}: {message}</code><br/>
-  Fires only on tells sent to <i>your</i> current character, not anyone else's.
+  <b>Search Text:</b> <code>^{c} has fallen to the ground</code><br/>
+  <b>Display / TTS:</b> <code>Failed feign death</code><br/>
+  Matches the log line <code>Gandalf has fallen to the ground</code> and outputs <code>Failed feign death</code>.
+  Would not fire on <code>SomeoneElse has fallen to the ground</code>.
  </li>
  <li>
   <b>Search Text:</b> <code>You begin casting {spell}</code><br/>
