@@ -126,19 +126,12 @@ namespace EQTool.Models
         // the regular expression for this trigger
         private Regex _TriggerRegex;
 
-        private string _compiledContext;
 
         [Newtonsoft.Json.JsonIgnore]
         public Regex TriggerRegex
         {
             get
             {
-                var context = PlayerName ?? string.Empty;
-                if (_TriggerRegex != null && _hasContextToken && _compiledContext != context)
-                {
-                    _TriggerRegex = null;
-                }
-
                 // delay regex creation until its asked for
                 if (_TriggerRegex == null && !string.IsNullOrWhiteSpace(_SearchText))
                 {
@@ -157,7 +150,7 @@ namespace EQTool.Models
 
                     // now that we've converted the simplified regex to the real regex pattern, create and return the Regex object
                     _TriggerRegex = new Regex(convertedSearchText, RegexOptions.IgnoreCase | RegexOptions.Compiled);
-                    _compiledContext = context;
+
                 }
 
                 return _TriggerRegex;
