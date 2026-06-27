@@ -53,6 +53,13 @@ namespace EQTool.Models
         // Free-form user notes.
         public string Comments { get; set; } = string.Empty;
 
+        public string Zone { get; set; }
+        public bool MatchesZone(string currentZone)
+        {
+            return string.IsNullOrEmpty(Zone) ||
+                string.Equals(Zone, currentZone, StringComparison.OrdinalIgnoreCase);
+        }
+
         public bool? UseRegex { get; set; }
 
         [Newtonsoft.Json.JsonIgnore]

@@ -20,8 +20,15 @@ namespace EQTool.Services.Handlers
             // give active timers a chance to end early on this line
             timerManager.OnLine(e.Line);
 
+            var currentZone = activePlayer?.Player?.Zone;
             foreach (var trigger in eQToolSettings.Triggers.Where(a => a.TriggerEnabled).ToList())
             {
+                // skip triggers restricted to a zone the player isn't currently in
+                if (!trigger.MatchesZone(currentZone))
+                {
+                    continue;
+                }
+
                 trigger.PlayerName = activePlayer?.Player?.Name ?? string.Empty;
                 if (!trigger.Matches(e.Line))
                 {

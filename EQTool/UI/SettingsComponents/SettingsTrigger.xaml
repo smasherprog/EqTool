@@ -36,6 +36,7 @@
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
                         <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
                     </Grid.RowDefinitions>
 
                     <TextBlock Grid.Row="0" Grid.Column="0" Text="Trigger Name" VerticalAlignment="Center" Margin="0,2,8,2"/>
@@ -65,8 +66,14 @@
                               ItemsSource="{Binding Categories}"
                               Text="{Binding Category, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
-                    <TextBlock Grid.Row="6" Grid.Column="0" Text="Comments" VerticalAlignment="Top" Margin="0,4,8,2"/>
-                    <TextBox Grid.Row="6" Grid.Column="1" Margin="0,2,0,2" MinHeight="50"
+                    <TextBlock Grid.Row="6" Grid.Column="0" Text="Zone" VerticalAlignment="Center" Margin="0,2,8,2"/>
+                    <ComboBox Grid.Row="6" Grid.Column="1" Margin="0,2,0,2" HorizontalAlignment="Left" MinWidth="200"
+                              ItemsSource="{Binding ZoneOptions}"
+                              SelectedItem="{Binding Zone, Mode=TwoWay}"
+                              ToolTip="Only fire this trigger while in this zone. 'All Zones' fires everywhere."/>
+
+                    <TextBlock Grid.Row="7" Grid.Column="0" Text="Comments" VerticalAlignment="Top" Margin="0,4,8,2"/>
+                    <TextBox Grid.Row="7" Grid.Column="1" Margin="0,2,0,2" MinHeight="50"
                              TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Auto"
                              Text="{Binding Comments, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 </Grid>

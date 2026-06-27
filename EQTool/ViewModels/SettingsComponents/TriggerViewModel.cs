@@ -222,6 +222,36 @@ namespace EQTool.Models
             set { Model.Comments = value; OnPropertyChanged(); }
         }
 
+        // Display value used by the zone dropdown for "fire in every zone". An empty Zone on the
+        // model maps to this option, and selecting it clears the model's Zone.
+        public const string AllZonesOption = "All Zones";
+
+        public string Zone
+        {
+            get => string.IsNullOrEmpty(Model.Zone) ? AllZonesOption : Model.Zone;
+            set
+            {
+                Model.Zone = string.Equals(value, AllZonesOption, StringComparison.OrdinalIgnoreCase)
+                    ? null
+                    : value;
+                OnPropertyChanged();
+            }
+        }
+
+        // "All Zones" followed by every known zone short name, alphabetized.
+        public List<string> ZoneOptions
+        {
+            get
+            {
+                var zones = EQToolShared.Zones.ZoneNames
+                    .Where(z => !string.IsNullOrWhiteSpace(z))
+                    .OrderBy(z => z, StringComparer.OrdinalIgnoreCase)
+                    .ToList();
+                zones.Insert(0, AllZonesOption);
+                return zones;
+            }
+        }
+
         public ObservableCollection<string> Categories
         {
             get
