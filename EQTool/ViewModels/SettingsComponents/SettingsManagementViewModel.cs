@@ -225,6 +225,7 @@ namespace EQTool.ViewModels.SettingsComponents
                     _ = menu.Items.Add(BuildMenuItem("Enable", EnableBuiltIn, item));
                     return menu;
                 }
+                _ = menu.Items.Add(BuildMenuItem(trig.Trigger.TriggerEnabled ? "Disable" : "Enable", ToggleTriggerEnabled, item));
                 _ = menu.Items.Add(BuildMenuItem("Copy", CopyItem, item));
                 _ = menu.Items.Add(BuildMenuItem("Cut", CutItem, item));
                 _ = menu.Items.Add(BuildMenuItem("Delete Trigger", DeleteTrigger, item));
@@ -596,6 +597,41 @@ namespace EQTool.ViewModels.SettingsComponents
         private void DeleteTrigger(object sender, RoutedEventArgs e)
         {
             DeleteSelection((sender as MenuItem)?.Tag as TreeViewItemBase);
+        }
+
+        // Enables or disables the clicked trigger (and the rest of the multi-selection, including
+        // triggers inside any selected folders). The clicked trigger's current state decides the
+        // direction, so a mixed selection becomes uniformly enabled/disabled. Built-in library
+        // triggers are read-only and skipped. Setting TriggerEnabled flows through the trigger's
+        // view model, which updates the tree's grayed-out styling live.
+        private void ToggleTriggerEnabled(object sender, RoutedEventArgs e)
+        {
+            if (!((sender as MenuItem)?.Tag is TreeTrigger clicked))
+            {
+                return;
+            }
+            var enable = !clicked.Trigger.TriggerEnabled;
+
+            var nodes = new System.Collections.Generic.List<TreeTrigger>();
+            foreach (var node in ResolveSelection(clicked))
+            {
+                CollectTriggerNodes(node, nodes);
+            }
+
+            var changed = false;
+            foreach (var tt in nodes.Where(t => !t.IsBuiltIn))
+            {
+                if (tt.Trigger.TriggerEnabled != enable)
+                {
+                    tt.Trigger.TriggerEnabled = enable;
+                    changed = true;
+                }
+            }
+
+            if (changed)
+            {
+                eQToolSettingsLoad.Save(settings);
+            }
         }
 
         // Called when inline editing of a node's name finishes (Enter / focus lost).

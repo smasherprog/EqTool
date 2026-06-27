@@ -85,7 +85,10 @@ namespace EQTool.Models
             }
             if (Model.Timer == null)
             {
-                Model.Timer = new TriggerTimer();
+                // No persisted timer means this trigger has no timer. Synthesize one set to
+                // NoTimer (TriggerTimer otherwise defaults to CountDown), so the editor shows
+                // "No Timer" instead of a Count Down with a spurious "Timer Name required" error.
+                Model.Timer = new TriggerTimer { TimerType = TimerType.NoTimer };
             }
             // "Count Up" and "Stopwatch" are no longer offered; coerce any trigger that still
             // carries one of those to Count Down so the dropdown shows a valid option instead of a

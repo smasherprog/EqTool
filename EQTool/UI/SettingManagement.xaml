@@ -154,7 +154,17 @@
                         <HierarchicalDataTemplate DataType="{x:Type vm:TreeTrigger}" ItemsSource="{Binding Children}">
                             <StackPanel Orientation="Horizontal">
                                 <TextBlock Text="🗲"/>
-                                <TextBlock Text="{Binding Name}" />
+                                <TextBlock Text="{Binding Name}">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsTriggerEnabled}" Value="False">
+                                                    <Setter Property="Foreground" Value="Gray"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
                             </StackPanel>
                         </HierarchicalDataTemplate>
                     </TreeView.Resources>

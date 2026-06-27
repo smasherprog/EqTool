@@ -40,7 +40,7 @@ namespace EQtoolsTests
         [TestMethod]
         public void TestLoadTriggers()
         {
-            var t = EQToolSettingsLoad.ReadTriggers();
+            var t = BuiltInTriggers.All();
             Assert.IsNotEmpty(t);
         }
 

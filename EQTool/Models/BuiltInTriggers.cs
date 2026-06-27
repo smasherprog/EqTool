@@ -1,71 +1,11 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace EQTool.Models
 {
     public static class BuiltInTriggers
     {
         public const string CategoryName = "Built In";
-
-        // Ensures every built-in trigger exists in the user's persisted trigger list and is
-        // enabled. This runs at program startup so newly shipped built-in triggers light up
-        // automatically. A built-in is considered already present when the user already has a
-        // trigger carrying the same BuiltInId (which survives copy/cut), so renaming or editing
-        // a copied built-in still counts as present and it is left untouched - preserving any
-        // edits or manual disables the user made. Only genuinely missing built-ins are added
-        // (enabled). Returns true when something was added so the caller can persist.
-        public static bool EnsurePresentAndEnabled(EQToolSettings settings)
-        {
-            if (settings == null)
-            {
-                return false;
-            }
-            if (settings.Triggers == null)
-            {
-                settings.Triggers = new List<Trigger>();
-            }
-
-            var changed = false;
-            foreach (var builtIn in All())
-            {
-                // Recognize an existing copy by its stable BuiltInId.
-                var existing = settings.Triggers.FirstOrDefault(t =>
-                    !string.IsNullOrEmpty(t.BuiltInId) &&
-                    string.Equals(t.BuiltInId, builtIn.BuiltInId, StringComparison.OrdinalIgnoreCase));
-
-                // Fall back to the legacy "Built In" category + name match for copies added
-                // before BuiltInId existed, and backfill the id so later runs and duplicate
-                // detection can rely on it.
-                if (existing == null)
-                {
-                    existing = settings.Triggers.FirstOrDefault(t =>
-                        string.IsNullOrEmpty(t.BuiltInId) &&
-                        string.Equals(t.Category, CategoryName, StringComparison.OrdinalIgnoreCase) &&
-                        string.Equals(t.TriggerName, builtIn.TriggerName, StringComparison.OrdinalIgnoreCase));
-                    if (existing != null)
-                    {
-                        existing.BuiltInId = builtIn.BuiltInId;
-                        changed = true;
-                    }
-                }
-
-                if (existing != null)
-                {
-                    continue;
-                }
-
-                // Copy it in as a normal, editable, enabled trigger living at the top level of
-                // the Triggers tree (mirrors what happens when a user copies one out of the
-                // read-only Built In library).
-                builtIn.IsBuiltIn = false;
-                builtIn.TriggerEnabled = true;
-                builtIn.FolderId = null;
-                settings.Triggers.Add(builtIn);
-                changed = true;
-            }
-            return changed;
-        }
 
         public static List<Trigger> All()
         {
@@ -79,7 +19,26 @@ namespace EQTool.Models
                 CreateNpcGating(),
                 CreateCharmBreak(),
                 CreateDeathTouch(),
-                CreateTellsYou()
+                CreateTellsYou(),
+
+                // Spell/combat feedback triggers ported from the old hardcoded trigger list.
+                // These only show overlay text (no audio) but keep their original audio text so
+                // the user can switch audio on if they want it.
+                BuildLegacy("builtin:spell-interrupted", "Spell Interrupted", "^Your spell is interrupted.", "Spell Interrupted", "Interrupted"),
+                BuildLegacy("builtin:spell-fizzle", "Spell Fizzle", "^Your spell fizzles!", "Spell Fizzles", "Fizzle"),
+                BuildLegacy("builtin:backstabber", "Backstabber", "^{backstabber} backstabs {target} for {damage} points of damage.", "{backstabber} backstabs {target} for {damage}", "Backstabber"),
+                BuildLegacy("builtin:corpse-need-consent", "Corpse Need Consent", "^You do not have consent to summon that corpse", "Need Consent", "Need Consent"),
+                BuildLegacy("builtin:corpse-out-of-range", "Corpse Out of Range", "^The corpse is too far away to summon", "Corpse OOR", "Corpse out of range"),
+                BuildLegacy("builtin:select-a-target", "Select a Target", "^(You must first select a target for this spell)|(You must first click on the being you wish to attack)", "Select a target", "Select a target"),
+                BuildLegacy("builtin:insufficient-mana", "Insufficient Mana", "^Insufficient Mana to cast this spell!", "OOM", "out of mana"),
+                BuildLegacy("builtin:target-out-of-range", "Target Out of Range", "^Your target is out of range", "Target out of range", "Out of range"),
+                BuildLegacy("builtin:spell-did-not-take-hold", "Spell Did Not Take Hold", "^Your spell did not take hold", "Spell did not take hold", "Spell did not take hold"),
+                BuildLegacy("builtin:must-be-standing", "Must be standing to cast", "^(You must be standing)|(You are too distracted to cast a spell now)", "Stand up!", "stand up"),
+                BuildLegacy("builtin:dispelled", "Dispelled", "^You feel a bit dispelled", "You have been dispelled", "dispelled"),
+                BuildLegacy("builtin:regen-faded", "Regen Faded", "^You have stopped regenerating", "===== Regen faded =====", "re-gen faded"),
+                BuildLegacy("builtin:cant-see-target", "Can't See Target", "^You can't see your target", "Can't see target", "Can't see target"),
+                BuildLegacy("builtin:sense-heading", "Sense Heading", "^You think you are heading {direction}", "Direction = {direction}", "{direction}"),
+                BuildLegacy("builtin:sense-heading-failed", "Sense Heading Failed", "^You have no idea what direction you are facing", "No idea", "no idea")
             };
         }
 
@@ -162,6 +121,31 @@ namespace EQTool.Models
         public static Trigger CreateNpcGating()
         {
             return Build("builtin:npc-gating", "NPC Gating", "{npc} begins to cast the gate spell.", true, "{npc} begins to Gate", "{npc} begins to Gate");
+        }
+
+        // A display-only built-in: shows overlay text and never speaks. The audio text is still
+        // stored (with AudioType None) so the user can flip on TTS later without retyping it.
+        private static Trigger BuildLegacy(string builtInId, string name, string searchText, string displayText, string audioText)
+        {
+            return new Trigger
+            {
+                IsBuiltIn = true,
+                BuiltInId = builtInId,
+                TriggerEnabled = false,
+                TriggerId = Guid.NewGuid(),
+                TriggerName = name,
+                SearchText = searchText,
+                UseRegex = true,
+                Category = CategoryName,
+                Basic = new TriggerOutput
+                {
+                    DisplayTextEnabled = true,
+                    DisplayText = displayText,
+                    DisplayTextColor = "Red",
+                    AudioType = TriggerAudioType.None,
+                    TtsText = audioText
+                }
+            };
         }
 
         private static Trigger Build(string builtInId, string name, string searchText, bool useRegex, string displayText, string ttsText)
