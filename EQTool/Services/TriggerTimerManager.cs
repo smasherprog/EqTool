@@ -117,7 +117,8 @@ namespace EQTool.Services
                     UpdatedDateTime = DateTime.Now,
                     ProgressBarColor = TriggerColors.ToBrush(trigger.Timer.BarColor, Brushes.MediumPurple)
                 };
-                if (spells.AllSpells.TryGetValue("Feign Death", out var spell))
+                var iconName = string.IsNullOrWhiteSpace(trigger.Timer.IconName) ? "Feign Death" : trigger.Timer.IconName;
+                if (spells.AllSpells.TryGetValue(iconName, out var spell) || spells.AllSpells.TryGetValue("Feign Death", out spell))
                 {
                     vm.Rect = spell.Rect;
                     vm.Icon = spell.SpellIcon;

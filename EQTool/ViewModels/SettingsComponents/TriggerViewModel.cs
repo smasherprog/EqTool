@@ -14,24 +14,25 @@ namespace EQTool.Models
     // Trigger instance (and its sub-objects) and persists on Save.
     public class TriggerViewModel : INotifyPropertyChanged
     {
-        private readonly Trigger trigger;
         private readonly EQToolSettings toolSettings;
         private readonly EQToolSettingsLoad settingsLoad;
+        private readonly EQSpells eqSpells;
         private bool IsNewTrigger = false;
 
-        public TriggerViewModel(Trigger trigger, EQToolSettings toolSettings, EQToolSettingsLoad settingsLoad)
+        public TriggerViewModel(Trigger trigger, EQToolSettings toolSettings, EQToolSettingsLoad settingsLoad, EQSpells eqSpells)
         {
-            this.trigger = trigger;
+            Model = trigger;
             this.toolSettings = toolSettings;
             this.settingsLoad = settingsLoad;
+            this.eqSpells = eqSpells;
             EnsureComponents();
             RefreshValidation();
         }
 
-        public TriggerViewModel(EQToolSettings toolSettings, EQToolSettingsLoad settingsLoad)
+        public TriggerViewModel(EQToolSettings toolSettings, EQToolSettingsLoad settingsLoad, EQSpells eqSpells)
         {
             IsNewTrigger = true;
-            this.trigger = new Trigger
+            Model = new Trigger
             {
                 TriggerId = Guid.NewGuid(),
                 TriggerEnabled = false,
@@ -42,87 +43,110 @@ namespace EQTool.Models
             };
             this.toolSettings = toolSettings;
             this.settingsLoad = settingsLoad;
+            this.eqSpells = eqSpells;
             EnsureComponents();
             RefreshValidation();
+        }
+
+        // Icons the user can pick from for the timer's display icon, sorted by name. Many spells
+        // share the same gem, so the list is de-duplicated by spell_icon (one entry per distinct
+        // icon). Feign Death is preferred as its group's representative so it stays the default.
+        private List<Spell> _iconOptions;
+        public List<Spell> IconOptions
+        {
+            get
+            {
+                if (_iconOptions == null)
+                {
+                    _iconOptions = eqSpells?.AllSpells.Values.Where(a => a.HasSpellIcon && a.Classes.Any() && !string.IsNullOrWhiteSpace(a.name))
+                     .GroupBy(a => a.spell_icon)
+                     // prefer Feign Death as its group's representative so it stays the default
+                     .Select(g => g.FirstOrDefault(s => string.Equals(s.name, "Feign Death", StringComparison.OrdinalIgnoreCase)) ?? g.First())
+                     .OrderBy(a => a.name)
+                     .ToList();
+                }
+                return _iconOptions;
+
+            }
         }
 
         // Make sure every component object exists (and migrate legacy triggers so the
         // Basic tab is populated from the old DisplayText/AudioText fields).
         private void EnsureComponents()
         {
-            if (trigger.Basic == null)
+            if (Model.Basic == null)
             {
-                trigger.Basic = trigger.GetEffectiveBasic();
+                Model.Basic = Model.GetEffectiveBasic();
             }
-            if (trigger.UseRegex == null)
+            if (Model.UseRegex == null)
             {
                 // legacy triggers were always regex
-                trigger.UseRegex = true;
+                Model.UseRegex = true;
             }
-            if (trigger.Timer == null)
+            if (Model.Timer == null)
             {
-                trigger.Timer = new TriggerTimer();
+                Model.Timer = new TriggerTimer();
             }
             // "Count Up" and "Stopwatch" are no longer offered; coerce any trigger that still
             // carries one of those to Count Down so the dropdown shows a valid option instead of a
             // blank selection. ("No Timer" is still a valid option, so it is left untouched.)
-            if (trigger.Timer.TimerType == TimerType.CountUp || trigger.Timer.TimerType == TimerType.Stopwatch)
+            if (Model.Timer.TimerType == TimerType.CountUp || Model.Timer.TimerType == TimerType.Stopwatch)
             {
-                trigger.Timer.TimerType = TimerType.CountDown;
+                Model.Timer.TimerType = TimerType.CountDown;
             }
             // The old "Restart timer if running" behavior was removed; a trigger persisted with it
             // now holds an undefined value, so fall back to "Start a new timer" for the dropdown.
-            if (!Enum.IsDefined(typeof(TimerRestartBehavior), trigger.Timer.RestartBehavior))
+            if (!Enum.IsDefined(typeof(TimerRestartBehavior), Model.Timer.RestartBehavior))
             {
-                trigger.Timer.RestartBehavior = TimerRestartBehavior.StartNewTimer;
+                Model.Timer.RestartBehavior = TimerRestartBehavior.StartNewTimer;
             }
-            if (trigger.TimerEnding == null)
+            if (Model.TimerEnding == null)
             {
-                trigger.TimerEnding = new TriggerTimerEnding();
+                Model.TimerEnding = new TriggerTimerEnding();
             }
-            if (trigger.TimerEnding.Output == null)
+            if (Model.TimerEnding.Output == null)
             {
-                trigger.TimerEnding.Output = new TriggerOutput();
+                Model.TimerEnding.Output = new TriggerOutput();
             }
-            if (trigger.TimerEnded == null)
+            if (Model.TimerEnded == null)
             {
-                trigger.TimerEnded = new TriggerTimerEnded();
+                Model.TimerEnded = new TriggerTimerEnded();
             }
-            if (trigger.TimerEnded.Output == null)
+            if (Model.TimerEnded.Output == null)
             {
-                trigger.TimerEnded.Output = new TriggerOutput();
+                Model.TimerEnded.Output = new TriggerOutput();
             }
-            if (trigger.Counter == null)
+            if (Model.Counter == null)
             {
-                trigger.Counter = new TriggerCounter();
+                Model.Counter = new TriggerCounter();
             }
-            if (string.IsNullOrEmpty(trigger.Category))
+            if (string.IsNullOrEmpty(Model.Category))
             {
-                trigger.Category = "Default";
+                Model.Category = "Default";
             }
 
             // Re-validate live as the user edits the sub-objects bound in the tabs. These are bound
             // directly (their DataContext is the sub-object, not this view model), so their changes
             // would not otherwise reach the editor's validation.
-            trigger.Basic.PropertyChanged += Component_PropertyChanged;
-            trigger.Timer.PropertyChanged += Component_PropertyChanged;
-            trigger.TimerEnding.PropertyChanged += Component_PropertyChanged;
-            trigger.TimerEnding.Output.PropertyChanged += Component_PropertyChanged;
-            trigger.TimerEnded.PropertyChanged += Component_PropertyChanged;
-            trigger.TimerEnded.Output.PropertyChanged += Component_PropertyChanged;
-            trigger.Counter.PropertyChanged += Component_PropertyChanged;
+            Model.Basic.PropertyChanged += Component_PropertyChanged;
+            Model.Timer.PropertyChanged += Component_PropertyChanged;
+            Model.TimerEnding.PropertyChanged += Component_PropertyChanged;
+            Model.TimerEnding.Output.PropertyChanged += Component_PropertyChanged;
+            Model.TimerEnded.PropertyChanged += Component_PropertyChanged;
+            Model.TimerEnded.Output.PropertyChanged += Component_PropertyChanged;
+            Model.Counter.PropertyChanged += Component_PropertyChanged;
         }
 
         public void Save()
         {
-            if (trigger.IsBuiltIn)
+            if (Model.IsBuiltIn)
             {
                 // built-in library triggers are never persisted or modified
                 return;
             }
             if (IsNewTrigger)
             {
-                toolSettings.Triggers.Add(trigger);
+                toolSettings.Triggers.Add(Model);
                 IsNewTrigger = false;
             }
             settingsLoad.Save(toolSettings);
@@ -131,25 +155,25 @@ namespace EQTool.Models
         // Structural property set by the Triggers tree (folder placement).
         public Guid? FolderId
         {
-            get => trigger.FolderId;
-            set => trigger.FolderId = value;
+            get => Model.FolderId;
+            set => Model.FolderId = value;
         }
 
-        public Guid TriggerId => trigger.TriggerId;
+        public Guid TriggerId => Model.TriggerId;
 
         // The underlying trigger model (used by the editor's Test feature).
-        public Trigger Model => trigger;
+        public Trigger Model { get; }
 
         // Built-in (library) triggers are read-only until copied out.
-        public bool IsBuiltIn => trigger.IsBuiltIn;
-        public bool IsEditable => !trigger.IsBuiltIn;
+        public bool IsBuiltIn => Model.IsBuiltIn;
+        public bool IsEditable => !Model.IsBuiltIn;
 
         public string TriggerName
         {
-            get => trigger.TriggerName;
+            get => Model.TriggerName;
             set
             {
-                trigger.TriggerName = value;
+                Model.TriggerName = value;
                 OnPropertyChanged();
                 RefreshValidation();
             }
@@ -157,16 +181,16 @@ namespace EQTool.Models
 
         public bool TriggerEnabled
         {
-            get => trigger.TriggerEnabled;
-            set { trigger.TriggerEnabled = value; OnPropertyChanged(); }
+            get => Model.TriggerEnabled;
+            set { Model.TriggerEnabled = value; OnPropertyChanged(); }
         }
 
         public string SearchText
         {
-            get => trigger.SearchText;
+            get => Model.SearchText;
             set
             {
-                trigger.SearchText = value;
+                Model.SearchText = value;
                 OnPropertyChanged();
                 RefreshValidation();
             }
@@ -174,10 +198,10 @@ namespace EQTool.Models
 
         public bool UseRegex
         {
-            get => trigger.EffectiveUseRegex;
+            get => Model.EffectiveUseRegex;
             set
             {
-                trigger.UseRegex = value;
+                Model.UseRegex = value;
                 OnPropertyChanged();
                 RefreshValidation();
             }
@@ -185,14 +209,14 @@ namespace EQTool.Models
 
         public string Category
         {
-            get => trigger.Category;
-            set { trigger.Category = value; OnPropertyChanged(); }
+            get => Model.Category;
+            set { Model.Category = value; OnPropertyChanged(); }
         }
 
         public string Comments
         {
-            get => trigger.Comments;
-            set { trigger.Comments = value; OnPropertyChanged(); }
+            get => Model.Comments;
+            set { Model.Comments = value; OnPropertyChanged(); }
         }
 
         public ObservableCollection<string> Categories
@@ -214,11 +238,11 @@ namespace EQTool.Models
         }
 
         // Component objects bound directly by the editor tabs.
-        public TriggerOutput Basic => trigger.Basic;
-        public TriggerTimer Timer => trigger.Timer;
-        public TriggerTimerEnding TimerEnding => trigger.TimerEnding;
-        public TriggerTimerEnded TimerEnded => trigger.TimerEnded;
-        public TriggerCounter Counter => trigger.Counter;
+        public TriggerOutput Basic => Model.Basic;
+        public TriggerTimer Timer => Model.Timer;
+        public TriggerTimerEnding TimerEnding => Model.TimerEnding;
+        public TriggerTimerEnded TimerEnded => Model.TimerEnded;
+        public TriggerCounter Counter => Model.Counter;
 
         public List<KeyValuePair<TimerType, string>> TimerTypeOptions => new List<KeyValuePair<TimerType, string>>
         {
@@ -276,7 +300,7 @@ namespace EQTool.Models
         }
 
         public string TriggerNameErrorMessge =>
-            string.IsNullOrWhiteSpace(trigger.TriggerName) ? "Trigger Name is required." : string.Empty;
+            string.IsNullOrWhiteSpace(Model.TriggerName) ? "Trigger Name is required." : string.Empty;
 
         public Visibility TriggerNameErrorMessgeVisible =>
             string.IsNullOrWhiteSpace(TriggerNameErrorMessge) ? Visibility.Collapsed : Visibility.Visible;
@@ -288,7 +312,7 @@ namespace EQTool.Models
         {
             get
             {
-                if (string.IsNullOrWhiteSpace(trigger.SearchText))
+                if (string.IsNullOrWhiteSpace(Model.SearchText))
                 {
                     return "Search Text is required.";
                 }
@@ -296,7 +320,7 @@ namespace EQTool.Models
                 {
                     try
                     {
-                        var r = trigger.TriggerRegex;
+                        var r = Model.TriggerRegex;
                         if (r == null)
                         {
                             return "There was an error creating the regex!";
@@ -322,7 +346,7 @@ namespace EQTool.Models
         {
             get
             {
-                var basic = trigger.Basic;
+                var basic = Model.Basic;
                 return basic != null && basic.DisplayTextEnabled && string.IsNullOrWhiteSpace(basic.DisplayText)
                     ? "Display Text is required when \"Display Text\" is checked."
                     : string.Empty;
@@ -337,7 +361,7 @@ namespace EQTool.Models
         {
             get
             {
-                var timer = trigger.Timer;
+                var timer = Model.Timer;
                 if (timer == null || timer.TimerType == TimerType.NoTimer)
                 {
                     return string.Empty;
@@ -363,7 +387,7 @@ namespace EQTool.Models
         {
             get
             {
-                var ending = trigger.TimerEnding;
+                var ending = Model.TimerEnding;
                 if (ending == null || !ending.Enabled)
                 {
                     return string.Empty;
@@ -388,7 +412,7 @@ namespace EQTool.Models
         {
             get
             {
-                var ended = trigger.TimerEnded;
+                var ended = Model.TimerEnded;
                 return ended != null && ended.Enabled && !HasOutput(ended.Output)
                     ? "Timer Ended must have display text or audio configured when enabled."
                     : string.Empty;
@@ -403,7 +427,7 @@ namespace EQTool.Models
         {
             get
             {
-                var counter = trigger.Counter;
+                var counter = Model.Counter;
                 return counter != null && counter.ResetEnabled && counter.ResetAfter.TotalMilliseconds <= 0
                     ? "Counter reset time must be greater than zero when reset is enabled."
                     : string.Empty;
@@ -436,20 +460,20 @@ namespace EQTool.Models
         }
 
         // Red borders for the specific invalid controls (mirrors Trigger Name / Search Text).
-        private bool TimerSelected => trigger.Timer != null && trigger.Timer.TimerType != TimerType.NoTimer;
+        private bool TimerSelected => Model.Timer != null && Model.Timer.TimerType != TimerType.NoTimer;
 
         public Brush TimerNameBorderBrush =>
-            TimerSelected && string.IsNullOrWhiteSpace(trigger.Timer.TimerName) ? Brushes.Red : Brushes.Gray;
+            TimerSelected && string.IsNullOrWhiteSpace(Model.Timer.TimerName) ? Brushes.Red : Brushes.Gray;
 
         public Brush TimerDurationBorderBrush =>
-            TimerSelected && trigger.Timer.Duration.TotalMilliseconds <= 0 ? Brushes.Red : Brushes.Gray;
+            TimerSelected && Model.Timer.Duration.TotalMilliseconds <= 0 ? Brushes.Red : Brushes.Gray;
 
         public Brush TimerEndingBorderBrush =>
-            trigger.TimerEnding != null && trigger.TimerEnding.Enabled && trigger.TimerEnding.Threshold.TotalMilliseconds <= 0
+            Model.TimerEnding != null && Model.TimerEnding.Enabled && Model.TimerEnding.Threshold.TotalMilliseconds <= 0
                 ? Brushes.Red : Brushes.Gray;
 
         public Brush CounterDurationBorderBrush =>
-            trigger.Counter != null && trigger.Counter.ResetEnabled && trigger.Counter.ResetAfter.TotalMilliseconds <= 0
+            Model.Counter != null && Model.Counter.ResetEnabled && Model.Counter.ResetAfter.TotalMilliseconds <= 0
                 ? Brushes.Red : Brushes.Gray;
 
         // Per-tab error flags so each tab header can highlight when that tab needs attention.

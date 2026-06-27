@@ -124,29 +124,48 @@
                         </Grid.RowDefinitions>
 
                         <TextBlock Grid.Row="0" Grid.Column="0" Text="Timer Type" VerticalAlignment="Center" Margin="0,2,8,2"/>
-                        <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Horizontal" Margin="0,2,0,2">
-                            <ComboBox MinWidth="160" VerticalAlignment="Center"
-                                      ItemsSource="{Binding TimerTypeOptions}"
-                                      SelectedValuePath="Key" DisplayMemberPath="Value"
-                                      SelectedValue="{Binding Timer.TimerType, Mode=TwoWay}"/>
-                            <TextBlock Text="Bar Color" VerticalAlignment="Center" Margin="12,0,6,0"/>
-                            <ComboBox Width="110" VerticalAlignment="Center"
-                                      ItemsSource="{x:Static models:TriggerColors.Names}"
-                                      SelectedItem="{Binding Timer.BarColor, Mode=TwoWay}"
-                                      ToolTip="Timer bar color in the Triggers window">
-                                <ComboBox.ItemTemplate>
-                                    <DataTemplate>
-                                        <StackPanel Orientation="Horizontal">
-                                            <Border Width="12" Height="12" Margin="0,0,4,0" BorderBrush="Gray" BorderThickness="1"
-                                                    Background="{Binding Converter={StaticResource StringToBrush}}"/>
-                                            <TextBlock Text="{Binding}"/>
-                                        </StackPanel>
-                                    </DataTemplate>
-                                </ComboBox.ItemTemplate>
-                            </ComboBox>
-                            <CheckBox Content="Show countdown in overlay" VerticalAlignment="Center" Margin="12,0,0,0"
-                                      ToolTip="Also show this timer's countdown bar in the overlay window"
-                                      IsChecked="{Binding Timer.ShowInOverlay, Mode=TwoWay}"/>
+                        <StackPanel Grid.Row="0" Grid.Column="1" Orientation="Vertical" Margin="0,2,0,2">
+                            <StackPanel Orientation="Horizontal">
+                                <ComboBox MinWidth="160" VerticalAlignment="Center"
+                                          ItemsSource="{Binding TimerTypeOptions}"
+                                          SelectedValuePath="Key" DisplayMemberPath="Value"
+                                          SelectedValue="{Binding Timer.TimerType, Mode=TwoWay}"/>
+                                <CheckBox Content="Show countdown in overlay" VerticalAlignment="Center" Margin="12,0,0,0"
+                                          ToolTip="Also show this timer's countdown bar in the overlay window"
+                                          IsChecked="{Binding Timer.ShowInOverlay, Mode=TwoWay}"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
+                                <TextBlock Text="Bar Color" VerticalAlignment="Center" Margin="0,0,6,0"/>
+                                <ComboBox Width="110" VerticalAlignment="Center"
+                                          ItemsSource="{x:Static models:TriggerColors.Names}"
+                                          SelectedItem="{Binding Timer.BarColor, Mode=TwoWay}"
+                                          ToolTip="Timer bar color in the Triggers window">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Border Width="12" Height="12" Margin="0,0,4,0" BorderBrush="Gray" BorderThickness="1"
+                                                        Background="{Binding Converter={StaticResource StringToBrush}}"/>
+                                                <TextBlock Text="{Binding}"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                                <TextBlock Text="Display Icon" VerticalAlignment="Center" Margin="12,0,6,0"/>
+                                <ComboBox Width="180" VerticalAlignment="Center"
+                                          ItemsSource="{Binding IconOptions}"
+                                          SelectedValuePath="name"
+                                          SelectedValue="{Binding Timer.IconName, Mode=TwoWay}"
+                                          ToolTip="Icon shown next to this timer in the Triggers window">
+                                    <ComboBox.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel Orientation="Horizontal">
+                                                <Image Width="16" Height="16" Margin="0,0,4,0" Source="{Binding CroppedIcon}"/>
+                                                <TextBlock Text="{Binding name}" VerticalAlignment="Center"/>
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ComboBox.ItemTemplate>
+                                </ComboBox>
+                            </StackPanel>
                         </StackPanel>
 
                         <TextBlock Grid.Row="1" Grid.Column="0" Text="Timer Name" VerticalAlignment="Center" Margin="0,2,8,2"/>

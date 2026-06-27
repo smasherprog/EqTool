@@ -17,16 +17,18 @@ namespace EQTool.ViewModels.SettingsComponents
         private readonly UserComponentSettingsManagementFactory userComponentFactory;
         private readonly EQToolSettings settings;
         private readonly EQToolSettingsLoad eQToolSettingsLoad;
+        private readonly EQSpells eqSpells;
         private TreeGlobal triggersRoot;
         // The node(s) that were Cut/Copied and are waiting to be Pasted (folders/triggers).
         private readonly System.Collections.Generic.List<TreeViewItemBase> clipboardNodes = new System.Collections.Generic.List<TreeViewItemBase>();
         // True when the clipboard nodes should be duplicated on paste (Copy), false to move (Cut).
         private bool clipboardIsCopy;
-        public SettingsManagementViewModel(UserComponentSettingsManagementFactory userComponentFactory, EQToolSettings settings, EQToolSettingsLoad eQToolSettingsLoad)
+        public SettingsManagementViewModel(UserComponentSettingsManagementFactory userComponentFactory, EQToolSettings settings, EQToolSettingsLoad eQToolSettingsLoad, EQSpells eqSpells)
         {
             this.userComponentFactory = userComponentFactory;
             this.settings = settings;
             this.eQToolSettingsLoad = eQToolSettingsLoad;
+            this.eqSpells = eqSpells;
             _TreeItems.Add(new TreeGeneral("General", null)
             {
                 IsSelected = true
@@ -89,7 +91,7 @@ namespace EQTool.ViewModels.SettingsComponents
                 {
                     parent = fnode;
                 }
-                parent.Children.Add(NewTriggerNode(new TriggerViewModel(trigger, settings, eQToolSettingsLoad), parent));
+                parent.Children.Add(NewTriggerNode(new TriggerViewModel(trigger, settings, eQToolSettingsLoad, eqSpells), parent));
             }
 
             SortRecursive(triggersRoot);
@@ -106,7 +108,7 @@ namespace EQTool.ViewModels.SettingsComponents
             triggersRoot.Children.Add(folder);
             foreach (var t in BuiltInTriggers.All())
             {
-                folder.Children.Add(NewTriggerNode(new TriggerViewModel(t, settings, eQToolSettingsLoad), folder));
+                folder.Children.Add(NewTriggerNode(new TriggerViewModel(t, settings, eQToolSettingsLoad, eqSpells), folder));
             }
         }
 
@@ -242,7 +244,7 @@ namespace EQTool.ViewModels.SettingsComponents
         {
             if ((sender as MenuItem)?.Tag is TreeViewItemBase parent && (parent is TreeGlobal || parent is TreeTriggerFolder))
             {
-                var vm = new TriggerViewModel(settings, eQToolSettingsLoad)
+                var vm = new TriggerViewModel(settings, eQToolSettingsLoad, eqSpells)
                 {
                     FolderId = (parent as TreeTriggerFolder)?.Backing.Id
                 };
@@ -335,7 +337,7 @@ namespace EQTool.ViewModels.SettingsComponents
                 var clone = CloneTrigger(source);
                 clone.TriggerEnabled = true;
                 settings.Triggers.Add(clone);
-                var newNode = NewTriggerNode(new TriggerViewModel(clone, settings, eQToolSettingsLoad), triggersRoot);
+                var newNode = NewTriggerNode(new TriggerViewModel(clone, settings, eQToolSettingsLoad, eqSpells), triggersRoot);
                 triggersRoot.Children.Add(newNode);
                 added = true;
             }
@@ -467,7 +469,7 @@ namespace EQTool.ViewModels.SettingsComponents
             if (node is TreeTrigger tt)
             {
                 var clone = CloneTrigger(tt.Trigger.Model);
-                return NewTriggerNode(new TriggerViewModel(clone, settings, eQToolSettingsLoad), parent);
+                return NewTriggerNode(new TriggerViewModel(clone, settings, eQToolSettingsLoad, eqSpells), parent);
             }
             if (node is TreeTriggerFolder tf)
             {

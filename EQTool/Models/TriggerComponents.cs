@@ -158,6 +158,10 @@ namespace EQTool.Models
         private string _BarColor = "MediumPurple";
         public string BarColor { get => _BarColor; set => Set(ref _BarColor, value); }
 
+        // Name of the spell whose icon is shown next to this timer. Defaults to Feign Death.
+        private string _IconName = "Feign Death";
+        public string IconName { get => _IconName; set => Set(ref _IconName, value); }
+
         // Also mirror this timer's countdown as an animated progress bar in the overlay window.
         private bool _ShowInOverlay;
         public bool ShowInOverlay { get => _ShowInOverlay; set => Set(ref _ShowInOverlay, value); }
