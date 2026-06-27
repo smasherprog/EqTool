@@ -158,9 +158,14 @@
                                     <TextBlock.Style>
                                         <Style TargetType="TextBlock">
                                             <Style.Triggers>
-                                                <DataTrigger Binding="{Binding IsTriggerEnabled}" Value="False">
+                                                <!-- Gray out disabled triggers, but keep the read-only Built In library entries black. -->
+                                                <MultiDataTrigger>
+                                                    <MultiDataTrigger.Conditions>
+                                                        <Condition Binding="{Binding IsTriggerEnabled}" Value="False"/>
+                                                        <Condition Binding="{Binding IsBuiltIn}" Value="False"/>
+                                                    </MultiDataTrigger.Conditions>
                                                     <Setter Property="Foreground" Value="Gray"/>
-                                                </DataTrigger>
+                                                </MultiDataTrigger>
                                             </Style.Triggers>
                                         </Style>
                                     </TextBlock.Style>
