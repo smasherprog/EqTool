@@ -11,6 +11,19 @@ namespace EQTool.UI.SettingsComponents
     {
         private System.Windows.Media.MediaPlayer testPlayer;
 
+        // Set by the host when an enabled Display Text field is empty, so the text box can show a
+        // red border. Defaults to false, so outputs that don't validate display text stay normal.
+        public static readonly System.Windows.DependencyProperty DisplayTextInvalidProperty =
+            System.Windows.DependencyProperty.Register(
+                nameof(DisplayTextInvalid), typeof(bool), typeof(TriggerOutputEditor),
+                new System.Windows.PropertyMetadata(false));
+
+        public bool DisplayTextInvalid
+        {
+            get => (bool)GetValue(DisplayTextInvalidProperty);
+            set => SetValue(DisplayTextInvalidProperty, value);
+        }
+
         public TriggerOutputEditor()
         {
             InitializeComponent();

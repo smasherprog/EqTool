@@ -25,7 +25,18 @@
                           IsChecked="{Binding DisplayTextEnabled, Mode=TwoWay}"/>
                 <TextBox Grid.Row="0" Grid.Column="1" Margin="0,2,0,2"
                          IsEnabled="{Binding DisplayTextEnabled}"
-                         Text="{Binding DisplayText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                         Text="{Binding DisplayText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                    <TextBox.Style>
+                        <Style TargetType="TextBox">
+                            <Style.Triggers>
+                                <DataTrigger Value="True"
+                                             Binding="{Binding DisplayTextInvalid, RelativeSource={RelativeSource AncestorType={x:Type local:TriggerOutputEditor}}}">
+                                    <Setter Property="BorderBrush" Value="Red"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBox.Style>
+                </TextBox>
                 <ComboBox Grid.Row="0" Grid.Column="2" Width="110" Margin="6,2,0,2" VerticalAlignment="Center"
                           IsEnabled="{Binding DisplayTextEnabled}"
                           ItemsSource="{x:Static models:TriggerColors.Names}"

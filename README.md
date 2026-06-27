@@ -133,6 +133,9 @@ Examples:
  <li>
   <b>{c}</b> — a <i>current character</i> macro. It is replaced with the name of the character you are currently logged in as, <b>before</b> the pattern is matched. It captures nothing — think of it as "put my own name here". It works in the Search Text and in every output field (display text, alert text, text-to-speech). The substituted name is matched literally and is case-insensitive, and it automatically follows you when you switch characters.
  </li>
+ <li>
+  <b>{COUNTER}</b> — a <i>match counter</i> macro. It is replaced with the number of times this trigger has matched. It works in the <b>Display Text</b>, <b>Text to Say</b>, and <b>Timer Name</b> output fields (case-insensitive). The count starts at <code>1</code> on the first match and grows with each match. It starts over whenever you switch characters, and if you enable the reset time on the trigger's <b>Counter</b> tab it also goes back to zero after that period of inactivity; otherwise it keeps counting for the session.
+ </li>
 </ul>
 <p>Examples (assume you are logged in as <b>Gandalf</b>):</p>
 <ul>

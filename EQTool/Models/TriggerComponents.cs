@@ -24,12 +24,13 @@ namespace EQTool.Models
     }
 
     // What to do when a trigger matches again while its timer is already running.
+    // Values are explicit so removing the old RestartTimerIfRunning (=2) doesn't renumber the
+    // others — existing saved triggers persist these as integers.
     public enum TimerRestartBehavior
     {
-        StartNewTimer,
-        RestartTimer,
-        RestartTimerIfRunning,
-        DoNothing
+        StartNewTimer = 0,
+        RestartTimer = 1,
+        DoNothing = 3
     }
 
     // Common base for the small editable models so two-way binding updates the UI.
@@ -132,7 +133,7 @@ namespace EQTool.Models
     [Serializable]
     public class TriggerTimer : TriggerNotifyBase
     {
-        private TimerType _TimerType = TimerType.NoTimer;
+        private TimerType _TimerType = TimerType.CountDown;
         public TimerType TimerType { get => _TimerType; set => Set(ref _TimerType, value); }
 
         private string _TimerName = string.Empty;
@@ -157,7 +158,7 @@ namespace EQTool.Models
         private string _BarColor = "MediumPurple";
         public string BarColor { get => _BarColor; set => Set(ref _BarColor, value); }
 
-        // Also display this timer as an animated bar in the overlay window.
+        // Also mirror this timer's countdown as an animated progress bar in the overlay window.
         private bool _ShowInOverlay;
         public bool ShowInOverlay { get => _ShowInOverlay; set => Set(ref _ShowInOverlay, value); }
 

@@ -79,6 +79,66 @@ namespace EQtoolsTests
         }
 
         [TestMethod]
+        public void CounterTokenReflectsMatchCount()
+        {
+            var trigger = new Trigger
+            {
+                SearchText = "You hit the target",
+                DisplayTextEnabled = true,
+                DisplayText = "Hit number {COUNTER}",
+                TriggerEnabled = true,
+                PlayerName = "Gandalf"
+            };
+
+            Assert.IsTrue(trigger.Matches("You hit the target"));
+            _ = trigger.CurrentCounter++;
+            Assert.AreEqual("Hit number 1", trigger.ExpandedDisplayText);
+
+            _ = trigger.CurrentCounter++;
+            Assert.AreEqual("Hit number 2", trigger.ExpandedDisplayText);
+        }
+
+        [TestMethod]
+        public void CounterTokenMatchesEveryCase()
+        {
+            var trigger = new Trigger
+            {
+                DisplayTextEnabled = true,
+                DisplayText = "{COUNTER} {counter} {Counter} {CoUnTeR}",
+                PlayerName = "Gandalf"
+            };
+
+            trigger.CurrentCounter = 7;
+            // every casing of the macro must resolve to the same count
+            Assert.AreEqual("7 7 7 7", trigger.ExpandedDisplayText);
+        }
+
+        [TestMethod]
+        public void CounterTokenIsCaseInsensitiveAndResetsWhenCharacterChanges()
+        {
+            var trigger = new Trigger
+            {
+                DisplayTextEnabled = true,
+                DisplayText = "count={counter}",
+                PlayerName = "Gandalf"
+            };
+
+            _ = trigger.CurrentCounter++;
+            _ = trigger.CurrentCounter++;
+            Assert.AreEqual("count=2", trigger.ExpandedDisplayText);
+
+            // switching characters starts the tally over
+            trigger.PlayerName = "Frodo";
+            Assert.AreEqual("count=0", trigger.ExpandedDisplayText);
+            _ = trigger.CurrentCounter++;
+            Assert.AreEqual("count=1", trigger.ExpandedDisplayText);
+
+            // the time-based reset clears it too
+            trigger.CurrentCounter = 0;
+            Assert.AreEqual("count=0", trigger.ExpandedDisplayText);
+        }
+
+        [TestMethod]
         public void CurrentContextTokenEscapesRegexMetacharacters()
         {
             var trigger = new Trigger

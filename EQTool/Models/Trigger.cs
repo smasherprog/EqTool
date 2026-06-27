@@ -11,6 +11,10 @@ namespace EQTool.Models
         private const string placeholderRegexPattern = @"\{(?<xxx>\w+)\}";
         private static readonly Regex placeholderRegex = new Regex(placeholderRegexPattern, RegexOptions.Compiled);
 
+        // The {COUNTER} macro, replaced in output fields with the number of times this trigger
+        // has matched. Matched case-insensitively, like {c}.
+        private static readonly Regex counterTokenRegex = new Regex(@"\{COUNTER\}", RegexOptions.Compiled | RegexOptions.IgnoreCase);
+
         private string _PlayerName { get; set; } = string.Empty;
 
         [Newtonsoft.Json.JsonIgnore]
@@ -27,6 +31,7 @@ namespace EQTool.Models
                         // regex needs to be recompiled if it contains the {c} macro, since that macro is replaced with the current PlayerName
                         _TriggerRegex = null;
                     }
+                    CurrentCounter = 0;
                 }
             }
         }
@@ -189,6 +194,9 @@ namespace EQTool.Models
             }
         }
 
+        [Newtonsoft.Json.JsonIgnore]
+        public long CurrentCounter { get; set; } = 0;
+
         // Public expansion of simplified {name} placeholders using the values captured
         // from the last successful regex match. Used by all trigger outputs.
         public string Expand(string text)
@@ -228,6 +236,13 @@ namespace EQTool.Models
         private string ExpandOutputText(string unExpandedText)
         {
             var rv = unExpandedText.Replace("{c}", PlayerName ?? string.Empty).Replace("{C}", PlayerName ?? string.Empty);
+
+            // replace the {COUNTER} macro before the generic placeholder loop, since {COUNTER}
+            // also matches the \w+ placeholder pattern but is a macro, not a captured group
+            if (counterTokenRegex.IsMatch(rv))
+            {
+                rv = counterTokenRegex.Replace(rv, CurrentCounter.ToString());
+            }
 
             // walk the list of matches, replacing the user match with the real match
             var match = placeholderRegex.Match(rv);

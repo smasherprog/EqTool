@@ -28,6 +28,9 @@ namespace EQTool.Services.Handlers
                     continue;
                 }
 
+                // bump the {COUNTER} tally before expanding any output so it reflects this match
+                trigger.CurrentCounter++;
+
                 // Basic tab output (display text / clipboard / audio)
                 executor.Execute(trigger.GetEffectiveBasic(), trigger.Expand);
 

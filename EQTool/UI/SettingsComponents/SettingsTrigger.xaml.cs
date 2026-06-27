@@ -1,6 +1,7 @@
 using EQTool.Models;
 using EQTool.Services;
 using EQTool.ViewModels.SettingsComponents;
+using System;
 using System.ComponentModel;
 using System.Windows.Controls;
 using System.Windows.Media;
@@ -10,15 +11,13 @@ namespace EQTool.UI.SettingsComponents
     public partial class SettingsTrigger : UserControl
     {
         private readonly TreeTrigger treeTrigger;
-        private readonly TriggerActionExecutor executor;
-        private readonly TriggerTimerManager timerManager;
+        private readonly LogParser logParser;
         private int validationErrorCount = 0;
 
-        public SettingsTrigger(TreeTrigger treeTrigger, TriggerActionExecutor executor, TriggerTimerManager timerManager)
+        public SettingsTrigger(TreeTrigger treeTrigger, LogParser logParser)
         {
             this.treeTrigger = treeTrigger;
-            this.executor = executor;
-            this.timerManager = timerManager;
+            this.logParser = logParser;
             DataContext = treeTrigger.Trigger;
             InitializeComponent();
             if (treeTrigger.Trigger is INotifyPropertyChanged npc)
@@ -90,21 +89,9 @@ namespace EQTool.UI.SettingsComponents
             {
                 return;
             }
-
-            // let any active timers from this trigger end early on the line, just like live
-            timerManager.OnLine(line);
-
+            logParser.Push(line, DateTime.Now);
             if (trigger.Matches(line))
             {
-                executor.Execute(trigger.GetEffectiveBasic(), trigger.Expand);
-                if (trigger.Timer != null && trigger.Timer.IsEnabled)
-                {
-                    timerManager.HandleTimerMatch(trigger);
-                }
-                if (trigger.Counter != null && trigger.Counter.ResetEnabled)
-                {
-                    timerManager.HandleCounterMatch(trigger);
-                }
                 TestResultText.Text = "Matched — outputs/timers fired.";
                 TestResultText.Foreground = Brushes.Green;
             }
@@ -117,7 +104,7 @@ namespace EQTool.UI.SettingsComponents
 
         private void Save(object sender, System.Windows.RoutedEventArgs e)
         {
-            this.treeTrigger.Trigger.Save();
+            treeTrigger.Trigger.Save();
         }
     }
 }

@@ -74,12 +74,41 @@
 
             <TabControl x:Name="EditorTabs" Margin="0,6,0,0" MinHeight="320">
                 <!-- Basic -->
-                <TabItem Header="Basic">
-                    <local:TriggerOutputEditor DataContext="{Binding Basic}" Margin="4"/>
+                <TabItem>
+                    <TabItem.Header>
+                        <TextBlock Text="Basic">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding BasicTabHasError}" Value="True">
+                                            <Setter Property="Foreground" Value="Red"/>
+                                            <Setter Property="FontWeight" Value="Bold"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                    </TabItem.Header>
+                    <local:TriggerOutputEditor DataContext="{Binding Basic}" Margin="4"
+                                               DisplayTextInvalid="{Binding DataContext.BasicTabHasError, RelativeSource={RelativeSource AncestorType={x:Type local:SettingsTrigger}}}"/>
                 </TabItem>
 
                 <!-- Timer -->
-                <TabItem Header="Timer">
+                <TabItem>
+                    <TabItem.Header>
+                        <TextBlock Text="Timer">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding TimerTabHasError}" Value="True">
+                                            <Setter Property="Foreground" Value="Red"/>
+                                            <Setter Property="FontWeight" Value="Bold"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                    </TabItem.Header>
                     <Grid Margin="6">
                         <Grid.ColumnDefinitions>
                             <ColumnDefinition Width="Auto"/>
@@ -115,17 +144,19 @@
                                     </DataTemplate>
                                 </ComboBox.ItemTemplate>
                             </ComboBox>
-                            <CheckBox Content="Show in overlay" VerticalAlignment="Center" Margin="12,0,0,0"
+                            <CheckBox Content="Show countdown in overlay" VerticalAlignment="Center" Margin="12,0,0,0"
+                                      ToolTip="Also show this timer's countdown bar in the overlay window"
                                       IsChecked="{Binding Timer.ShowInOverlay, Mode=TwoWay}"/>
                         </StackPanel>
 
                         <TextBlock Grid.Row="1" Grid.Column="0" Text="Timer Name" VerticalAlignment="Center" Margin="0,2,8,2"/>
                         <TextBox Grid.Row="1" Grid.Column="1" Margin="0,2,0,2"
+                                 BorderBrush="{Binding TimerNameBorderBrush}"
                                  Text="{Binding Timer.TimerName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
                         <TextBlock Grid.Row="2" Grid.Column="0" Text="Timer Duration" VerticalAlignment="Center" Margin="0,2,8,2"/>
                         <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal" Margin="0,2,0,2">
-                            <TextBox Width="40" Style="{StaticResource NumberBox}">
+                            <TextBox Width="40" Style="{StaticResource NumberBox}" BorderBrush="{Binding TimerDurationBorderBrush}">
                                 <TextBox.Text>
                                     <Binding Path="Timer.Hours" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" NotifyOnValidationError="True">
                                         <Binding.ValidationRules>
@@ -135,7 +166,7 @@
                                 </TextBox.Text>
                             </TextBox>
                             <TextBlock Text="h" Margin="2,0,8,0" VerticalAlignment="Center"/>
-                            <TextBox Width="40" Style="{StaticResource NumberBox}">
+                            <TextBox Width="40" Style="{StaticResource NumberBox}" BorderBrush="{Binding TimerDurationBorderBrush}">
                                 <TextBox.Text>
                                     <Binding Path="Timer.Minutes" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" NotifyOnValidationError="True">
                                         <Binding.ValidationRules>
@@ -145,7 +176,7 @@
                                 </TextBox.Text>
                             </TextBox>
                             <TextBlock Text="m" Margin="2,0,8,0" VerticalAlignment="Center"/>
-                            <TextBox Width="40" Style="{StaticResource NumberBox}">
+                            <TextBox Width="40" Style="{StaticResource NumberBox}" BorderBrush="{Binding TimerDurationBorderBrush}">
                                 <TextBox.Text>
                                     <Binding Path="Timer.Seconds" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" NotifyOnValidationError="True">
                                         <Binding.ValidationRules>
@@ -180,12 +211,26 @@
                 </TabItem>
 
                 <!-- Timer Ending -->
-                <TabItem Header="Timer Ending">
+                <TabItem>
+                    <TabItem.Header>
+                        <TextBlock Text="Timer Ending">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding TimerEndingTabHasError}" Value="True">
+                                            <Setter Property="Foreground" Value="Red"/>
+                                            <Setter Property="FontWeight" Value="Bold"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                    </TabItem.Header>
                     <StackPanel Margin="6">
                         <StackPanel Orientation="Horizontal" Margin="0,2,0,2">
                             <CheckBox Content="Notify when timer is down to" VerticalAlignment="Center" Margin="0,0,8,0"
                                       IsChecked="{Binding TimerEnding.Enabled, Mode=TwoWay}"/>
-                            <TextBox Width="40" Style="{StaticResource NumberBox}" IsEnabled="{Binding TimerEnding.Enabled}">
+                            <TextBox Width="40" Style="{StaticResource NumberBox}" IsEnabled="{Binding TimerEnding.Enabled}" BorderBrush="{Binding TimerEndingBorderBrush}">
                                 <TextBox.Text>
                                     <Binding Path="TimerEnding.Hours" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" NotifyOnValidationError="True">
                                         <Binding.ValidationRules>
@@ -195,7 +240,7 @@
                                 </TextBox.Text>
                             </TextBox>
                             <TextBlock Text="h" Margin="2,0,8,0" VerticalAlignment="Center"/>
-                            <TextBox Width="40" Style="{StaticResource NumberBox}" IsEnabled="{Binding TimerEnding.Enabled}">
+                            <TextBox Width="40" Style="{StaticResource NumberBox}" IsEnabled="{Binding TimerEnding.Enabled}" BorderBrush="{Binding TimerEndingBorderBrush}">
                                 <TextBox.Text>
                                     <Binding Path="TimerEnding.Minutes" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" NotifyOnValidationError="True">
                                         <Binding.ValidationRules>
@@ -205,7 +250,7 @@
                                 </TextBox.Text>
                             </TextBox>
                             <TextBlock Text="m" Margin="2,0,8,0" VerticalAlignment="Center"/>
-                            <TextBox Width="40" Style="{StaticResource NumberBox}" IsEnabled="{Binding TimerEnding.Enabled}">
+                            <TextBox Width="40" Style="{StaticResource NumberBox}" IsEnabled="{Binding TimerEnding.Enabled}" BorderBrush="{Binding TimerEndingBorderBrush}">
                                 <TextBox.Text>
                                     <Binding Path="TimerEnding.Seconds" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" NotifyOnValidationError="True">
                                         <Binding.ValidationRules>
@@ -221,7 +266,21 @@
                 </TabItem>
 
                 <!-- Timer Ended -->
-                <TabItem Header="Timer Ended">
+                <TabItem>
+                    <TabItem.Header>
+                        <TextBlock Text="Timer Ended">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding TimerEndedTabHasError}" Value="True">
+                                            <Setter Property="Foreground" Value="Red"/>
+                                            <Setter Property="FontWeight" Value="Bold"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                    </TabItem.Header>
                     <StackPanel Margin="6">
                         <CheckBox Content="Notify when timer ends" Margin="0,2,0,2"
                                   IsChecked="{Binding TimerEnded.Enabled, Mode=TwoWay}"/>
@@ -230,11 +289,25 @@
                 </TabItem>
 
                 <!-- Counter -->
-                <TabItem Header="Counter">
+                <TabItem>
+                    <TabItem.Header>
+                        <TextBlock Text="Counter">
+                            <TextBlock.Style>
+                                <Style TargetType="TextBlock">
+                                    <Style.Triggers>
+                                        <DataTrigger Binding="{Binding CounterTabHasError}" Value="True">
+                                            <Setter Property="Foreground" Value="Red"/>
+                                            <Setter Property="FontWeight" Value="Bold"/>
+                                        </DataTrigger>
+                                    </Style.Triggers>
+                                </Style>
+                            </TextBlock.Style>
+                        </TextBlock>
+                    </TabItem.Header>
                     <StackPanel Orientation="Horizontal" Margin="6,8,6,6" VerticalAlignment="Top">
                         <CheckBox Content="Reset counter if unmatched for" VerticalAlignment="Center" Margin="0,0,8,0"
                                   IsChecked="{Binding Counter.ResetEnabled, Mode=TwoWay}"/>
-                        <TextBox Width="40" VerticalAlignment="Center" Style="{StaticResource NumberBox}" IsEnabled="{Binding Counter.ResetEnabled}">
+                        <TextBox Width="40" VerticalAlignment="Center" Style="{StaticResource NumberBox}" IsEnabled="{Binding Counter.ResetEnabled}" BorderBrush="{Binding CounterDurationBorderBrush}">
                             <TextBox.Text>
                                 <Binding Path="Counter.Hours" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" NotifyOnValidationError="True">
                                     <Binding.ValidationRules>
@@ -244,7 +317,7 @@
                             </TextBox.Text>
                         </TextBox>
                         <TextBlock Text="h" Margin="2,0,8,0" VerticalAlignment="Center"/>
-                        <TextBox Width="40" VerticalAlignment="Center" Style="{StaticResource NumberBox}" IsEnabled="{Binding Counter.ResetEnabled}">
+                        <TextBox Width="40" VerticalAlignment="Center" Style="{StaticResource NumberBox}" IsEnabled="{Binding Counter.ResetEnabled}" BorderBrush="{Binding CounterDurationBorderBrush}">
                             <TextBox.Text>
                                 <Binding Path="Counter.Minutes" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" NotifyOnValidationError="True">
                                     <Binding.ValidationRules>
@@ -254,7 +327,7 @@
                             </TextBox.Text>
                         </TextBox>
                         <TextBlock Text="m" Margin="2,0,8,0" VerticalAlignment="Center"/>
-                        <TextBox Width="40" VerticalAlignment="Center" Style="{StaticResource NumberBox}" IsEnabled="{Binding Counter.ResetEnabled}">
+                        <TextBox Width="40" VerticalAlignment="Center" Style="{StaticResource NumberBox}" IsEnabled="{Binding Counter.ResetEnabled}" BorderBrush="{Binding CounterDurationBorderBrush}">
                             <TextBox.Text>
                                 <Binding Path="Counter.Seconds" Mode="TwoWay" UpdateSourceTrigger="PropertyChanged" NotifyOnValidationError="True">
                                     <Binding.ValidationRules>
@@ -283,6 +356,9 @@
                     <TextBlock x:Name="TestResultText" Margin="0,4,0,0" FontWeight="Bold"/>
                 </StackPanel>
             </GroupBox>
+
+            <TextBlock Foreground="Red" TextWrapping="Wrap" Margin="0,8,0,0"
+                       Visibility="{Binding ValidationSummaryVisible}" Text="{Binding ValidationSummary}"/>
 
             <Button x:Name="SaveButton" HorizontalAlignment="Right" Margin="0,8,0,0" Padding="20,4,20,4"
                     Click="Save" Content="Save"/>

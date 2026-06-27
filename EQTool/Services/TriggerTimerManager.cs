@@ -15,7 +15,7 @@ namespace EQTool.Services
     //  - cancels a timer early when an "end early" line is seen
     //  - fires the Timer Ending notification when the countdown crosses its threshold
     //  - fires the Timer Ended notification when the countdown reaches zero
-    //  - increments/displays a match counter and resets it after inactivity
+    //  - resets a trigger's {COUNTER} tally after a period of no matches (no widget is shown)
     public class TriggerTimerManager
     {
         private class ActiveTimer
@@ -29,7 +29,7 @@ namespace EQTool.Services
 
         private class ActiveCounter
         {
-            public string Name;
+            public Trigger Trigger;
             public DateTime LastMatchUtc;
             public TimeSpan ResetAfter;
         }
@@ -43,7 +43,7 @@ namespace EQTool.Services
         private readonly TriggerActionExecutor executor;
         private readonly IAppDispatcher appDispatcher;
         private readonly LogEvents logEvents;
-        private System.Windows.Threading.DispatcherTimer ticker;
+        private readonly System.Windows.Threading.DispatcherTimer ticker;
 
         public TriggerTimerManager(SpellWindowViewModel spellWindowViewModel, EQSpells spells, TriggerActionExecutor executor, IAppDispatcher appDispatcher, LogEvents logEvents)
         {
@@ -53,15 +53,13 @@ namespace EQTool.Services
             this.appDispatcher = appDispatcher;
             this.logEvents = logEvents;
 
-            appDispatcher.DispatchUI(() =>
+            ticker = new System.Windows.Threading.DispatcherTimer
             {
-                ticker = new System.Windows.Threading.DispatcherTimer
-                {
-                    Interval = TimeSpan.FromMilliseconds(250)
-                };
-                ticker.Tick += (s, e) => Tick();
-                ticker.Start();
-            });
+                Interval = TimeSpan.FromMilliseconds(250)
+            };
+            ticker.Tick += (s, e) => Tick();
+            ticker.Start();
+
         }
 
         // Called when a trigger that has a timer configured matches a log line.
@@ -90,7 +88,6 @@ namespace EQTool.Services
                         }
                         break;
                     case TimerRestartBehavior.RestartTimer:
-                    case TimerRestartBehavior.RestartTimerIfRunning:
                         if (existing != null)
                         {
                             existing.EndTimeUtc = DateTime.UtcNow.Add(duration);
@@ -139,7 +136,8 @@ namespace EQTool.Services
             }
         }
 
-        // When configured, mirrors the timer as an animated bar in the overlay window.
+        // When "Show in overlay" is checked, mirrors the timer's countdown as an animated bar in
+        // the overlay window. The bar is labeled with the timer/trigger name (not the Basic text).
         private void FireOverlayBar(Trigger trigger, string name, TimeSpan duration)
         {
             if (trigger?.Timer == null || !trigger.Timer.ShowInOverlay)
@@ -211,28 +209,22 @@ namespace EQTool.Services
             }
         }
 
-        // Called when a trigger with counter-reset enabled matches.
+        // Called when a trigger with counter-reset enabled matches. This only arms the inactivity
+        // reset for the trigger's {COUNTER} tally; it does not display anything in the spells window
+        // (only a configured Timer shows there).
         public void HandleCounterMatch(Trigger trigger)
         {
-            if (trigger?.Counter == null || !trigger.Counter.ResetEnabled)
+            if (trigger?.Counter == null || !trigger.Counter.ResetEnabled || trigger.Counter.ResetAfter.TotalMilliseconds <= 0)
             {
                 return;
             }
-            var name = trigger.Expand(trigger.TriggerName);
-            spellWindowViewModel.TryAdd(new CounterViewModel
-            {
-                Name = name,
-                GroupName = CustomTimer.CustomerTime,
-                UpdatedDateTime = DateTime.Now,
-                Count = 1
-            });
 
             lock (sync)
             {
-                var existing = activeCounters.FirstOrDefault(a => string.Equals(a.Name, name, StringComparison.OrdinalIgnoreCase));
+                var existing = activeCounters.FirstOrDefault(a => a.Trigger == trigger);
                 if (existing == null)
                 {
-                    activeCounters.Add(new ActiveCounter { Name = name, LastMatchUtc = DateTime.UtcNow, ResetAfter = trigger.Counter.ResetAfter });
+                    activeCounters.Add(new ActiveCounter { Trigger = trigger, LastMatchUtc = DateTime.UtcNow, ResetAfter = trigger.Counter.ResetAfter });
                 }
                 else
                 {
@@ -247,7 +239,6 @@ namespace EQTool.Services
             var now = DateTime.UtcNow;
             var endingToFire = new List<ActiveTimer>();
             var endedToFire = new List<ActiveTimer>();
-            var countersToReset = new List<string>();
 
             lock (sync)
             {
@@ -296,7 +287,8 @@ namespace EQTool.Services
                 {
                     if (c.ResetAfter.TotalMilliseconds > 0 && (now - c.LastMatchUtc) >= c.ResetAfter)
                     {
-                        countersToReset.Add(c.Name);
+                        // zero the {COUNTER} macro tally so it restarts on the next match
+                        c.Trigger.CurrentCounter = 0;
                         _ = activeCounters.Remove(c);
                     }
                 }
@@ -309,13 +301,6 @@ namespace EQTool.Services
             foreach (var t in endedToFire)
             {
                 executor.Execute(t.Trigger.TimerEnded.Output, t.Trigger.Expand);
-            }
-            if (countersToReset.Count > 0)
-            {
-                foreach (var name in countersToReset)
-                {
-                    spellWindowViewModel.TryRemoveUnambiguousSpellOther(name);
-                }
             }
         }
 
