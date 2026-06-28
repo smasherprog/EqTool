@@ -18,7 +18,7 @@ namespace EQTool.ViewModels.SettingsComponents
         private readonly EQToolSettings settings;
         private readonly EQToolSettingsLoad eQToolSettingsLoad;
         private readonly EQSpells eqSpells;
-        private TreeGlobal triggersRoot;
+        private readonly TreeGlobal triggersRoot;
         // The node(s) that were Cut/Copied and are waiting to be Pasted (folders/triggers).
         private readonly System.Collections.Generic.List<TreeViewItemBase> clipboardNodes = new System.Collections.Generic.List<TreeViewItemBase>();
         // True when the clipboard nodes should be duplicated on paste (Copy), false to move (Cut).
@@ -29,20 +29,16 @@ namespace EQTool.ViewModels.SettingsComponents
             this.settings = settings;
             this.eQToolSettingsLoad = eQToolSettingsLoad;
             this.eqSpells = eqSpells;
-            _TreeItems.Add(new TreeGeneral("General", null)
-            {
-                IsSelected = true
-            });
 
             triggersRoot = new TreeGlobal("Triggers", null);
-            _TreeItems.Add(triggersRoot);
             BuildTriggerTree();
+            TriggerTreeItems = triggersRoot.Children;
 
             foreach (var item in Enum.GetValues(typeof(Servers)).Cast<Servers>().Where(a => a != Servers.MaxServers && a != Servers.Quarm).ToList())
             {
                 var players = settings.Players.Where(a => a.Server == item).ToList();
                 var treeServer = new TreeServer(item.ToString(), null);
-                _TreeItems.Add(treeServer);
+                _characterTreeItems.Add(treeServer);
                 treeServer.Children.Add(new TreeZone("Zone(s)", null));
                 foreach (var p in players.OrderBy(a => a.Name))
                 {
@@ -52,8 +48,6 @@ namespace EQTool.ViewModels.SettingsComponents
                     });
                 }
             }
-            UserControl = this.userComponentFactory.CreateComponent(TreeViewItemType.General);
-
         }
 
         // Rebuilds the Triggers branch (folders + triggers) from the flat lists
@@ -106,10 +100,46 @@ namespace EQTool.ViewModels.SettingsComponents
                 IsBuiltIn = true
             };
             triggersRoot.Children.Add(folder);
+
+            // Built-in entries can declare a "/"-separated folder path (e.g. "Encounters/Kael")
+            // to be grouped into nested read-only sub-folders under the Built In category. The
+            // cache lets sibling triggers share the same folder nodes.
+            var folderCache = new System.Collections.Generic.Dictionary<string, TreeTriggerFolder>(StringComparer.OrdinalIgnoreCase);
             foreach (var t in BuiltInTriggers.All())
             {
-                folder.Children.Add(NewTriggerNode(new TriggerViewModel(t, settings, eQToolSettingsLoad, eqSpells), folder));
+                var parent = string.IsNullOrWhiteSpace(t.BuiltInFolder)
+                    ? folder
+                    : GetOrCreateBuiltInFolder(folder, t.BuiltInFolder, folderCache);
+                parent.Children.Add(NewTriggerNode(new TriggerViewModel(t, settings, eQToolSettingsLoad, eqSpells), parent));
             }
+        }
+
+        // Walks/creates the nested read-only folder chain for a built-in folder path under the
+        // Built In category, reusing previously created folders for shared path segments.
+        private TreeTriggerFolder GetOrCreateBuiltInFolder(TreeTriggerFolder root, string path, System.Collections.Generic.Dictionary<string, TreeTriggerFolder> cache)
+        {
+            var current = root;
+            var accumulated = string.Empty;
+            foreach (var segment in path.Split('/'))
+            {
+                var name = segment.Trim();
+                if (string.IsNullOrEmpty(name))
+                {
+                    continue;
+                }
+                accumulated = accumulated.Length == 0 ? name : accumulated + "/" + name;
+                if (!cache.TryGetValue(accumulated, out var next))
+                {
+                    next = new TreeTriggerFolder(new TriggerFolder { Name = name }, current)
+                    {
+                        IsBuiltIn = true
+                    };
+                    current.Children.Add(next);
+                    cache[accumulated] = next;
+                }
+                current = next;
+            }
+            return current;
         }
 
         // Adds a node and re-sorts the parent so children stay alphabetical.
@@ -174,6 +204,13 @@ namespace EQTool.ViewModels.SettingsComponents
             var menuItem = new MenuItem { Header = header, Tag = tag };
             menuItem.Click += handler;
             return menuItem;
+        }
+
+        // Context menu for the (hidden) Triggers root, used when right-clicking empty space
+        // in the Triggers tree so top-level folders/triggers can still be added or pasted.
+        public ContextMenu GetTriggerRootContextMenu()
+        {
+            return GetContextMenu(triggersRoot);
         }
 
         public ContextMenu GetContextMenu(TreeViewItemBase item)
@@ -704,35 +741,86 @@ namespace EQTool.ViewModels.SettingsComponents
             }
         }
 
-        private ObservableCollection<TreeViewItemBase> _TreeItems = new ObservableCollection<TreeViewItemBase>();
-        public ObservableCollection<TreeViewItemBase> TreeItems
+        private ObservableCollection<TreeViewItemBase> _triggerTreeItems = new ObservableCollection<TreeViewItemBase>();
+        // Root(s) of the Triggers tab tree (the Triggers branch).
+        public ObservableCollection<TreeViewItemBase> TriggerTreeItems
         {
-            get => _TreeItems;
+            get => _triggerTreeItems;
             set
             {
-                if (value != _TreeItems)
+                if (value != _triggerTreeItems)
                 {
-                    _TreeItems = value;
+                    _triggerTreeItems = value;
                     OnPropertyChanged();
                 }
             }
         }
 
-        private UserControl _userControl;
-
-        public UserControl UserControl
+        private ObservableCollection<TreeViewItemBase> _characterTreeItems = new ObservableCollection<TreeViewItemBase>();
+        // Root(s) of the Characters tab tree (one node per server).
+        public ObservableCollection<TreeViewItemBase> CharacterTreeItems
         {
-            get => _userControl;
+            get => _characterTreeItems;
             set
             {
-                _userControl = value;
+                if (value != _characterTreeItems)
+                {
+                    _characterTreeItems = value;
+                    OnPropertyChanged();
+                }
+            }
+        }
+
+        private UserControl _triggerUserControl;
+        // Detail editor shown on the right of the Triggers tab for the selected trigger.
+        public UserControl TriggerUserControl
+        {
+            get => _triggerUserControl;
+            set
+            {
+                _triggerUserControl = value;
                 OnPropertyChanged();
             }
         }
 
-        public void TreeSelected(TreeViewItemBase p)
+        private UserControl _characterUserControl;
+        // Detail editor shown on the right of the Characters tab for the selected server/character.
+        public UserControl CharacterUserControl
         {
-            UserControl = userComponentFactory.CreateComponent(p.Type, p);
+            get => _characterUserControl;
+            set
+            {
+                _characterUserControl = value;
+                OnPropertyChanged();
+            }
+        }
+
+        // Triggers tab selection: only an actual trigger has an editor; folders and the
+        // root clear the detail pane.
+        public void TriggerTreeSelected(TreeViewItemBase p)
+        {
+            if (p is TreeTrigger)
+            {
+                TriggerUserControl = userComponentFactory.CreateComponent(p.Type, p);
+            }
+            else
+            {
+                TriggerUserControl = null;
+            }
+        }
+
+        // Characters tab selection: servers and players show their detail editor; the
+        // Zone(s) placeholder clears the detail pane.
+        public void CharacterTreeSelected(TreeViewItemBase p)
+        {
+            if (p is TreePlayer || p is TreeServer)
+            {
+                CharacterUserControl = userComponentFactory.CreateComponent(p.Type, p);
+            }
+            else
+            {
+                CharacterUserControl = null;
+            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

@@ -2,7 +2,6 @@
 using EQTool.ViewModels;
 using EQTool.ViewModels.SpellWindow;
 using System.Linq;
-using System.Windows.Media;
 
 namespace EQTool.Services.Handlers
 {
@@ -24,25 +23,9 @@ namespace EQTool.Services.Handlers
 
         private void LogParser_ResistSpellEvent(object sender, ResistSpellEvent e)
         {
-            var doAlert = activePlayer?.Player?.ResistWarningAudio ?? false;
-            var target = e.isYou ? "You " : "Your target ";
-            var text = $"{target} resisted the {e.Spell.name} spell";
-            if (doAlert)
-            {
-                // keep audible bandwidth low, let more detail show up in written alert
-                textToSpeach.Say($"{target} resisted");
-            }
-            doAlert = activePlayer?.Player?.ResistWarningOverlay ?? false;
-            if (doAlert)
-            {
-                _ = System.Threading.Tasks.Task.Factory.StartNew(() =>
-                {
-                    logEvents.Handle(new OverlayEvent { Text = text, ForeGround = Brushes.Red, Reset = false });
-                    System.Threading.Thread.Sleep(3000);
-                    logEvents.Handle(new OverlayEvent { Text = text, ForeGround = Brushes.Red, Reset = true });
-                });
-            }
-
+            // The resist overlay/TTS alert now lives as the "Resist" built-in trigger (see
+            // BuiltInTriggers.CreateResist). This handler only keeps the resist counter tracking
+            // used for spells that need hit counts.
             if (SpellHandlerService.SpellsThatNeedCounts.Any(a => a == e.Spell.name))
             {
                 appDispatcher.DispatchUI(() =>

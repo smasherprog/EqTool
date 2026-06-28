@@ -1,5 +1,6 @@
 using EQTool.Models;
 using EQTool.Services;
+using EQTool.ViewModels;
 using EQTool.ViewModels.SettingsComponents;
 using System;
 using System.ComponentModel;
@@ -12,12 +13,14 @@ namespace EQTool.UI.SettingsComponents
     {
         private readonly TreeTrigger treeTrigger;
         private readonly LogParser logParser;
+        private readonly ActivePlayer activePlayer;
         private int validationErrorCount = 0;
 
-        public SettingsTrigger(TreeTrigger treeTrigger, LogParser logParser)
+        public SettingsTrigger(TreeTrigger treeTrigger, LogParser logParser, ActivePlayer activePlayer)
         {
             this.treeTrigger = treeTrigger;
             this.logParser = logParser;
+            this.activePlayer = activePlayer;
             DataContext = treeTrigger.Trigger;
             InitializeComponent();
             if (treeTrigger.Trigger is INotifyPropertyChanged npc)
@@ -89,6 +92,11 @@ namespace EQTool.UI.SettingsComponents
             {
                 return;
             }
+            var oldZone = activePlayer.Player.Zone;
+            if (!string.IsNullOrWhiteSpace(trigger.Zone))
+            {
+                activePlayer.Player.Zone = trigger.Zone;
+            }
             logParser.Push(line, DateTime.Now);
             if (trigger.Matches(line))
             {
@@ -100,6 +108,7 @@ namespace EQTool.UI.SettingsComponents
                 TestResultText.Text = "No match.";
                 TestResultText.Foreground = Brushes.DarkRed;
             }
+            activePlayer.Player.Zone = oldZone;
         }
 
         private void Save(object sender, System.Windows.RoutedEventArgs e)

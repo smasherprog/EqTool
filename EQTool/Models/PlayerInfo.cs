@@ -429,28 +429,6 @@ namespace EQTool.Models
             }
         }
 
-        private bool? _DiseasedCloudOverlay;
-        public bool DiseasedCloudOverlay
-        {
-            get => _DiseasedCloudOverlay ?? true;
-            set
-            {
-                _DiseasedCloudOverlay = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private bool? _DiseasedCloudAudio;
-        public bool DiseasedCloudAudio
-        {
-            get => _DiseasedCloudAudio ?? true;
-            set
-            {
-                _DiseasedCloudAudio = value;
-                OnPropertyChanged();
-            }
-        }
-
         private bool _DeathLoopOverlay;
         public bool DeathLoopOverlay
         {
@@ -458,27 +436,6 @@ namespace EQTool.Models
             set
             {
                 _DeathLoopOverlay = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private bool _EnteringZoneAudio;
-        public bool EnteringZoneAudio
-        {
-            get => _EnteringZoneAudio;
-            set
-            {
-                _EnteringZoneAudio = value;
-                OnPropertyChanged();
-            }
-        }
-        private bool _EnteringZoneOverlay;
-        public bool EnteringZoneOverlay
-        {
-            get => _EnteringZoneOverlay;
-            set
-            {
-                _EnteringZoneOverlay = value;
                 OnPropertyChanged();
             }
         }
@@ -493,7 +450,6 @@ namespace EQTool.Models
                 OnPropertyChanged();
             }
         }
-
 
         private bool _FTEAudio;
         public bool FTEAudio
@@ -622,52 +578,6 @@ namespace EQTool.Models
                 OnPropertyChanged();
             }
         }
-
-        private bool _ResistWarningOverlay;
-        public bool ResistWarningOverlay
-        {
-            get => _ResistWarningOverlay;
-            set
-            {
-                _ResistWarningOverlay = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private bool _ResistWarningAudio;
-        public bool ResistWarningAudio
-        {
-            get => _ResistWarningAudio;
-            set
-            {
-                _ResistWarningAudio = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private bool _WornOffOverlay;
-        public bool WornOffOverlay
-        {
-            get => _WornOffOverlay;
-            set
-            {
-                _WornOffOverlay = value;
-                OnPropertyChanged();
-            }
-        }
-
-        private bool _WornOffAudio;
-        public bool WornOffAudio
-        {
-            get => _WornOffAudio;
-            set
-            {
-                _WornOffAudio = value;
-                OnPropertyChanged();
-            }
-        }
-
-
 
         private bool? _ZlandicarAudio;
         public bool ZlandicarAudio

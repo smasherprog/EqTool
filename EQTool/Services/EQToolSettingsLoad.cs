@@ -46,6 +46,13 @@ namespace EQTool.Services
                             }
                         }
                         AddMissingEnums(ret1);
+                        var changed = EnableAvatarOfWarTriggerIfMissing(ret1);
+                        changed |= EnableVPHoskarRestoTriggerIfMissing(ret1);
+                        changed |= EnableSpellWornOffTriggerIfMissing(ret1);
+                        if (changed)
+                        {
+                            Save(ret1);
+                        }
                         return ret1;
                     }
                 }
@@ -65,7 +72,7 @@ namespace EQTool.Services
             var ret = new EQToolSettings
             {
                 DefaultEqDirectory = match?.EqBaseLocation,
-                EqLogDirectory = match?.EQlogLocation, 
+                EqLogDirectory = match?.EQlogLocation,
                 Players = new System.Collections.Generic.List<PlayerInfo>(),
                 DpsWindowState = new WindowState
                 {
@@ -97,7 +104,77 @@ namespace EQTool.Services
                 ShowRandomRolls = true
             };
             AddMissingEnums(ret);
+            if (ret.Triggers == null)
+            {
+                ret.Triggers = new List<Trigger>();
+            }
+            _ = EnableAvatarOfWarTriggerIfMissing(ret);
+            _ = EnableVPHoskarRestoTriggerIfMissing(ret);
+            _ = EnableSpellWornOffTriggerIfMissing(ret);
             return ret;
+        }
+
+        // Seeds and enables ONLY the Avatar of War lockout built-in, and only when the user doesn't
+        // already have it (matched by BuiltInId). Once it's in the user's trigger list they can
+        // disable or delete it without it coming back. This replaces the old always-on AOWTimerHandler.
+        // No other built-ins are auto-enabled here.
+        private bool EnableAvatarOfWarTriggerIfMissing(EQToolSettings settings)
+        {
+            // Already in the user's trigger list? Leave it exactly as the user has it.
+            if (settings.Triggers.Any(a => string.Equals(a.BuiltInId, BuiltInTriggers.AvatarOfWarBuiltInId, StringComparison.OrdinalIgnoreCase)))
+            {
+                return false;
+            }
+
+            var copy = BuiltInTriggers.CreateAvatarOfWarLockout();
+            copy.TriggerId = Guid.NewGuid();
+            copy.FolderId = null;
+            copy.BuiltInId = BuiltInTriggers.AvatarOfWarBuiltInId;
+            copy.TriggerEnabled = true;
+            settings.Triggers.Add(copy);
+            return true;
+        }
+
+        // Seeds and enables ONLY the VP Hoskar Resto built-in, and only when the user doesn't
+        // already have it (matched by BuiltInId). Same behavior as the Avatar of War seeding:
+        // once it's in the user's trigger list they can disable or delete it without it coming back.
+        // This replaces the old always-on DiseasedCloudHandler.
+        private bool EnableVPHoskarRestoTriggerIfMissing(EQToolSettings settings)
+        {
+            // Already in the user's trigger list? Leave it exactly as the user has it.
+            if (settings.Triggers.Any(a => string.Equals(a.BuiltInId, BuiltInTriggers.VPHoskarRestoBuiltInId, StringComparison.OrdinalIgnoreCase)))
+            {
+                return false;
+            }
+
+            var copy = BuiltInTriggers.CreateVPHoskarResto();
+            copy.TriggerId = Guid.NewGuid();
+            copy.FolderId = null;
+            copy.BuiltInId = BuiltInTriggers.VPHoskarRestoBuiltInId;
+            copy.TriggerEnabled = true;
+            settings.Triggers.Add(copy);
+            return true;
+        }
+
+        // Seeds and enables ONLY the Spell Worn Off built-in, and only when the user doesn't
+        // already have it (matched by BuiltInId). Same behavior as the Avatar of War seeding:
+        // once it's in the user's trigger list they can disable or delete it without it coming back.
+        // This replaces the alert portion of the old always-on SpellWornOffOtherHandler.
+        private bool EnableSpellWornOffTriggerIfMissing(EQToolSettings settings)
+        {
+            // Already in the user's trigger list? Leave it exactly as the user has it.
+            if (settings.Triggers.Any(a => string.Equals(a.BuiltInId, BuiltInTriggers.SpellWornOffBuiltInId, StringComparison.OrdinalIgnoreCase)))
+            {
+                return false;
+            }
+
+            var copy = BuiltInTriggers.CreateSpellWornOff();
+            copy.TriggerId = Guid.NewGuid();
+            copy.FolderId = null;
+            copy.BuiltInId = BuiltInTriggers.SpellWornOffBuiltInId;
+            copy.TriggerEnabled = true;
+            settings.Triggers.Add(copy);
+            return true;
         }
 
         private void AddMissingEnums(EQToolSettings settings)

@@ -20,6 +20,11 @@ namespace EQTool.Models
                 CreateCharmBreak(),
                 CreateDeathTouch(),
                 CreateTellsYou(),
+                CreateResist(),
+                CreateAvatarOfWarLockout(),
+                CreateVPHoskarResto(),
+                CreateSpellWornOff(),
+                CreateEnteredZone(),
 
                 // Spell/combat feedback triggers ported from the old hardcoded trigger list.
                 // These only show overlay text (no audio) but keep their original audio text so
@@ -58,11 +63,12 @@ namespace EQTool.Models
                 SearchText = @"^(?<npc>Fright|Dread) says,? '(?<target>[^' ]+)'",
                 UseRegex = true,
                 Category = CategoryName,
+                Zone = "fear",
                 Basic = new TriggerOutput
                 {
                     DisplayTextEnabled = true,
                     DisplayText = "Death Touch: {target}",
-                    DisplayTextColor = "Red",
+                    DisplayTextColor = "White",
                     AudioType = TriggerAudioType.TextToSpeech,
                     TtsText = "Death touch on {target}"
                 },
@@ -72,9 +78,127 @@ namespace EQTool.Models
                     TimerName = "--DT-- '{target}'",
                     Seconds = 45,
                     RestartBehavior = TimerRestartBehavior.RestartTimer,
-                    BarColor = "Red"
+                    BarColor = "DarkRed"
                 }
             };
+        }
+
+        public static Trigger CreateResist()
+        {
+            return new Trigger
+            {
+                IsBuiltIn = true,
+                BuiltInId = "builtin:resist",
+                TriggerEnabled = false,
+                TriggerId = Guid.NewGuid(),
+                TriggerName = "Resist",
+                SearchText = @"^(?:You resist the|Your target resisted the) (?<spell>.+) spell[!.]",
+                UseRegex = true,
+                Category = CategoryName,
+                Basic = new TriggerOutput
+                {
+                    DisplayTextEnabled = true,
+                    DisplayText = "Resisted: {spell}",
+                    DisplayTextColor = "Red",
+                    AudioType = TriggerAudioType.TextToSpeech,
+                    TtsText = "Resisted"
+                }
+            };
+        }
+
+        public const string AvatarOfWarBuiltInId = "builtin:aow-lockout";
+        public static Trigger CreateAvatarOfWarLockout()
+        {
+            return new Trigger
+            {
+                IsBuiltIn = true,
+                BuiltInId = AvatarOfWarBuiltInId,
+                BuiltInFolder = "Encounters/Kael",
+                TriggerEnabled = false,
+                TriggerId = Guid.NewGuid(),
+                TriggerName = "Avatar of War Lockout",
+                SearchText = "The Avatar of War shouts 'Who dares defile my temple?! Come forth and face me!'",
+                UseRegex = false,
+                Category = CategoryName,
+                Zone = "kael",
+                Timer = new TriggerTimer
+                {
+                    TimerType = TimerType.CountDown,
+                    TimerName = "The Avatar of War Lockout",
+                    Minutes = 20,
+                    RestartBehavior = TimerRestartBehavior.RestartTimer,
+                    BarColor = "Orchid",
+                    IconName = "Spirit of Wolf"
+                }
+            };
+        }
+
+        // Hoskar (VP) casts Diseased Cloud, after which you have ~8 seconds to land Word of
+        // Restoration. Fires on the Diseased Cloud cast (on you or others) or a resist of it,
+        // but only while in Veeshan's Peak. Shows an 8s "Word Of Resto" countdown, then alerts
+        // "Resto Now" when it ends. Ported from the old DiseasedCloudHandler. Lives under the
+        // Built In > Encounters > VP folder, and is auto-enabled for users on startup
+        // (see EQToolSettingsLoad.EnableVPHoskarRestoTriggerIfMissing).
+        public const string VPHoskarRestoBuiltInId = "builtin:vp-hoskar-resto";
+        public static Trigger CreateVPHoskarResto()
+        {
+            return new Trigger
+            {
+                IsBuiltIn = true,
+                BuiltInId = VPHoskarRestoBuiltInId,
+                BuiltInFolder = "Encounters/VP",
+                TriggerEnabled = false,
+                TriggerId = Guid.NewGuid(),
+                TriggerName = "Hoskar Resto",
+                // Diseased Cloud cast on you ("Your body begins to rot.") or others
+                // ("<name>'s body begins to rot."), or a resist of it.
+                SearchText = @"(body begins to rot\.|resist(ed)? the Diseased Cloud spell)",
+                UseRegex = true,
+                Category = CategoryName,
+                Zone = "veeshan",
+                Timer = new TriggerTimer
+                {
+                    TimerType = TimerType.CountDown,
+                    TimerName = "Word Of Resto",
+                    Seconds = 8,
+                    RestartBehavior = TimerRestartBehavior.RestartTimer,
+                    BarColor = "DarkGreen",
+                    IconName = "Diseased Cloud",
+                    ShowInOverlay = true
+                },
+                TimerEnded = new TriggerTimerEnded
+                {
+                    Enabled = true,
+                    Output = new TriggerOutput
+                    {
+                        DisplayTextEnabled = true,
+                        DisplayText = "Resto Now",
+                        DisplayTextColor = "Yellow",
+                        AudioType = TriggerAudioType.TextToSpeech,
+                        TtsText = "Resto Now"
+                    }
+                }
+            };
+        }
+
+        // "Your <spell> spell has worn off." -> "<spell> faded" alert. Ported from the alert
+        // portion of SpellWornOffOtherHandler (which still handles removing the faded spell from
+        // the timer window). Auto-enabled for users on startup
+        // (see EQToolSettingsLoad.EnableSpellWornOffTriggerIfMissing).
+        public const string SpellWornOffBuiltInId = "builtin:spell-worn-off";
+        public static Trigger CreateSpellWornOff()
+        {
+            return Build(SpellWornOffBuiltInId, "Spell Worn Off", @"^Your (?<spell>[\w ]+) spell has worn off\.", true, "{spell} faded", "{spell} faded");
+        }
+
+        // "You have entered <zone>." -> "You zoned into <zone>" alert. Ported from the alert
+        // portion of YouZonedHandler (which still tracks the player's current zone). The negative
+        // lookahead skips the non-zone "You have entered an Arena (PvP) area." / "...an area where..."
+        // messages so only real zone changes alert.
+        public const string EnteredZoneBuiltInId = "builtin:entered-zone";
+        public static Trigger CreateEnteredZone()
+        {
+            return Build(EnteredZoneBuiltInId, "Entered Zone", @"^You have entered (?!an Arena|an area)(?<zone>.+)\.", true, "You zoned into {zone}", "You zoned into {zone}");
         }
 
         // "Your charm spell has worn off." -> charm break alert.

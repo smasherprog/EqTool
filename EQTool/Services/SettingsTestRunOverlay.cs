@@ -16,16 +16,12 @@ namespace EQTool.Services
         {
             this.activePlayer = activePlayer;
             this.logParser = logParser;
-            actions[(int)OverlayTypes.HealedYou] = RunHealedYouTest;
             actions[(int)OverlayTypes.FTEEvent] = FTEEvent;
             actions[(int)OverlayTypes.FTETimerEvent] = FTETimerEvent;
             actions[(int)OverlayTypes.DragonFearEvent] = DragonFearEvent;
             actions[(int)OverlayTypes.RootBreakEvent] = RootBreakEvent;
-            actions[(int)OverlayTypes.ResistSpellEvent] = ResistSpellEvent;
             actions[(int)OverlayTypes.RandomRollEvent] = RandomRollEvent;
             actions[(int)OverlayTypes.DeathLoopEvent] = DeathLoopEvent;
-            actions[(int)OverlayTypes.WornOffEvent] = WornOffEvent;
-            actions[(int)OverlayTypes.DiseasedCloudEvent] = DiseasedCloudEvent;
             actions[(int)OverlayTypes.ZlandicarEvent] = ZlandicarEvent;
         }
 
@@ -37,10 +33,6 @@ namespace EQTool.Services
             }
             ((App)System.Windows.Application.Current).OpenOverLayWindow();
             actions[(int)overlayType]?.Invoke();
-        }
-
-        private void RunHealedYouTest()
-        {
         }
 
         private void RandomRollEvent()
@@ -77,13 +69,6 @@ namespace EQTool.Services
             logParser.Push("You have been slain by a brigand!", DateTime.Now);
         }
 
-        private void ResistSpellEvent()
-        {
-            activePlayer.Player.ResistWarningAudio = true;
-            activePlayer.Player.ResistWarningOverlay = true;
-            logParser.Push("Your target resisted the Rest the Dead spell.", DateTime.Now);
-        }
-
         private void RootBreakEvent()
         {
             activePlayer.Player.RootWarningAudio = true;
@@ -109,22 +94,6 @@ namespace EQTool.Services
             activePlayer.Player.FTETimerAudio = true;
             activePlayer.Player.FTETimerOverlay = true;
             logParser.Push("Zlandicar engages Tzvia!", DateTime.Now);
-        }
-
-        private void WornOffEvent()
-        {
-            activePlayer.Player.WornOffAudio = true;
-            activePlayer.Player.WornOffOverlay = true;
-            logParser.Push("Your Venom of the Snake spell has worn off.", DateTime.Now);
-        }
-
-        private void DiseasedCloudEvent()
-        {
-            activePlayer.Player.DiseasedCloudAudio = true;
-            activePlayer.Player.DiseasedCloudOverlay = true;
-            _ = activePlayer.Player.Zone;
-            activePlayer.Player.Zone = "veeshan";
-            logParser.Push("Your body begins to rot.  You have taken 1250 points of damage.", DateTime.Now);
         }
 
         private void ZlandicarEvent()

@@ -48,6 +48,12 @@ namespace EQTool.Models
 
         public string BuiltInId { get; set; }
 
+        // Optional "/"-separated folder path under the Built In category used to organize
+        // built-in library entries in the tree (e.g. "Encounters/Kael"). Display-only and
+        // never persisted - a copied-out user trigger keeps no folder path.
+        [Newtonsoft.Json.JsonIgnore]
+        public string BuiltInFolder { get; set; }
+
         // Organizational/category label.
         public string Category { get; set; } = "Default";
         // Free-form user notes.

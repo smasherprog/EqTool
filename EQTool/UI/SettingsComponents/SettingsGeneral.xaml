@@ -4,6 +4,7 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:EQTool.UI.SettingsComponents"
+             xmlns:vm="clr-namespace:EQTool.ViewModels.SettingsComponents"
              xmlns:sys="clr-namespace:System;assembly=mscorlib"
              xmlns:models="clr-namespace:EQTool.Models"
              xmlns:markupExtensions="clr-namespace:EQTool.Services.MarkupExtensions"
@@ -15,159 +16,182 @@
     <TabControl SelectionChanged="TabControl_SelectionChanged">
 
         <TabItem Header="General">
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
             <StackPanel Orientation="Vertical" Margin="5, 5, 5, 5">
-                <StackPanel Orientation="Vertical" Visibility="{Binding MissingConfiguration, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}">
-                    <TextBlock Text="Configuration missing!" FontWeight="Bold" FontSize="20" Foreground="Red"/>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Eq Path"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100" Foreground="Red" Visibility="{Binding DoesNotHaveEqPath, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}"/>
-                    <TextBlock Text="Eq Path"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100" Foreground="Green" Visibility="{Binding HasEqPath, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Visible}"/>
-                    <StackPanel Orientation="Horizontal" >
-                        <TextBlock Text="{Binding EqPath}" HorizontalAlignment="Left"/>
-                        <Button Margin="5,0,0,0" HorizontalAlignment="Right" Click="EqFolderButtonClicked">
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock>Browse</TextBlock>
-                                <Image Source="pack://application:,,,/Images/open-folder.png" Height="{DynamicResource GlobalFontSize}" Margin="5,0,0,0" ></Image>
+                <TextBlock Text="Configuration missing!" FontWeight="Bold" FontSize="20" Foreground="Red"
+                           Visibility="{Binding MissingConfiguration, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}"/>
+
+                <GroupBox Header="Configuration" Margin="0,0,0,6">
+                    <StackPanel Orientation="Vertical" Margin="4">
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Eq Path"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100" Foreground="Red" Visibility="{Binding DoesNotHaveEqPath, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}"/>
+                            <TextBlock Text="Eq Path"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100" Foreground="Green" Visibility="{Binding HasEqPath, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Visible}"/>
+                            <StackPanel Orientation="Horizontal" >
+                                <TextBlock Text="{Binding EqPath}" HorizontalAlignment="Left"/>
+                                <Button Margin="5,0,0,0" HorizontalAlignment="Right" Click="EqFolderButtonClicked">
+                                    <StackPanel Orientation="Horizontal">
+                                        <TextBlock>Browse</TextBlock>
+                                        <Image Source="pack://application:,,,/Images/open-folder.png" Height="{DynamicResource GlobalFontSize}" Margin="5,0,0,0" ></Image>
+                                    </StackPanel>
+                                </Button>
                             </StackPanel>
-                        </Button>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal">
+                            <TextBlock Text="Eq Log Path"  VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100" Foreground="Red" Visibility="{Binding DoesNotHaveEqPath, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}"/>
+                            <TextBlock Text="Eq Log Path"   VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100" Foreground="Green" Visibility="{Binding HasEqPath, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Visible}"/>
+                            <TextBlock Text="{Binding EqLogPath}" HorizontalAlignment="Left" MinWidth="150"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal"  Visibility="{Binding HasEqPath, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Visible}" >
+                            <TextBlock Text="Logging"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100" Visibility="{Binding IsLoggingEnabled, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}"/>
+                            <TextBlock Text="Logging"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100" Foreground="Red"  Visibility="{Binding IsLoggingDisabled, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Visible}"/>
+                            <TextBlock Visibility="{Binding IsLoggingEnabled, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}" Text="Logging Enabled!" Margin="5,5,0,0" HorizontalAlignment="Left" Foreground="Green"/>
+                            <Button Visibility="{Binding IsLoggingDisabled, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}" Name="enableLogging" Margin="5,5,0,0" Click="enableLogging_Click">Enable Logging</Button>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Visibility="{Binding IsLoggingDisabled, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}"  >
+                            <TextBlock HorizontalAlignment="Center" Text="You must enable loogging!"  FontWeight="Bold" Foreground="Red"/>
+                        </StackPanel>
                     </StackPanel>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Eq Log Path"  VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100" Foreground="Red" Visibility="{Binding DoesNotHaveEqPath, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}"/>
-                    <TextBlock Text="Eq Log Path"   VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100" Foreground="Green" Visibility="{Binding HasEqPath, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Visible}"/>
-                    <TextBlock Text="{Binding EqLogPath}" HorizontalAlignment="Left" MinWidth="150"/>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal"  Visibility="{Binding HasEqPath, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Visible}" >
-                    <TextBlock Text="Logging"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100" Visibility="{Binding IsLoggingEnabled, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}"/>
-                    <TextBlock Text="Logging"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100" Foreground="Red"  Visibility="{Binding IsLoggingDisabled, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Visible}"/>
-                    <TextBlock Visibility="{Binding IsLoggingEnabled, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}" Text="Logging Enabled!" Margin="5,5,0,0" HorizontalAlignment="Left" Foreground="Green"/>
-                    <Button Visibility="{Binding IsLoggingDisabled, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}" Name="enableLogging" Margin="5,5,0,0" Click="enableLogging_Click">Enable Logging</Button>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal" Visibility="{Binding IsLoggingDisabled, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Collapsed}"  >
-                    <TextBlock HorizontalAlignment="Center" Text="You must enable loogging!"  FontWeight="Bold" Foreground="Red"/>
-                </StackPanel>
+                </GroupBox>
+
                 <StackPanel Orientation="Vertical" HorizontalAlignment="Stretch" Visibility="{Binding NotMissingConfiguration, Converter={StaticResource BooleanToVisibilityConverter}, FallbackValue=Visible}">
                     <TextBlock Visibility="{Binding HasNoCharName}" HorizontalAlignment="Center" Text="Functionality disabled until you log in!"  FontWeight="Bold" Foreground="Red"/>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Character" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
-                        <TextBlock Text="{Binding ActivePlayer.Player.Name}" />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Guild" VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
-                        <TextBlock Text="{Binding ActivePlayer.Player.GuildName}" />
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Class" VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
-                        <ComboBox IsEnabled="{Binding HasCharName}" SelectedItem="{Binding ActivePlayer.Player.PlayerClass}" ItemsSource="{Binding PlayerClasses}" MinWidth="150"></ComboBox>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Track Skill" VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
-                        <ComboBox IsEnabled="{Binding ActivePlayer.Player.IsTrackableClass}" SelectedItem="{Binding ActivePlayer.Player.TrackingSkill}" ItemsSource="{Binding TrackSkills}" MinWidth="150"></ComboBox>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Zone" FontWeight="Bold" VerticalAlignment="Center" MinWidth="100"/>
-                        <ComboBox IsEnabled="{Binding HasCharName}" SelectedItem="{Binding ActivePlayer.Player.Zone}" ItemsSource="{Binding Zones}"  SelectionChanged="zoneselectionchanged" MinWidth="150"/>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Your Level"  FontWeight="Bold" VerticalAlignment="Center" MinWidth="100"/>
-                        <ComboBox  IsEnabled="{Binding HasCharName}" SelectedItem="{Binding ActivePlayer.Player.Level}" ItemsSource="{Binding Levels}" MinWidth="150"/>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Font Size"  FontWeight="Bold"  VerticalAlignment="Center" MinWidth="100"/>
-                        <ComboBox  SelectedItem="{Binding GlobalFontSize}" ItemsSource="{Binding FontSizes}" SelectionChanged="fontsizescombobox_SelectionChanged" MinWidth="150"/>
-                    </StackPanel>
 
-                    <TextBlock Text="Damage Window" HorizontalAlignment="Center" FontWeight="Bold" Margin="5,5,0,0"/>
-                    <StackPanel Orientation="Vertical" Margin="0, 0, 0, 8">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="Always on top" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="120"/>
-                            <CheckBox VerticalAlignment="Center" IsChecked="{Binding DpsAlwaysOnTop}" Click="SaveAlwaysOntopCheckBoxSettings" ></CheckBox>
-                        </StackPanel>
+                    <GroupBox Header="Character" Margin="0,0,0,6">
+                        <Grid Margin="4">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
 
-                        <StackPanel Orientation="Horizontal" Margin="20,0,0,3">
-                            <StackPanel.Style>
-                                <Style TargetType="StackPanel">
-                                    <Setter Property="Opacity" Value="1.0"/>
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding DpsAlwaysOnTop}" Value="False">
-                                            <Setter Property="Opacity" Value="0.5"/>
-                                            <Setter Property="IsEnabled" Value="False"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </StackPanel.Style> 
-                        </StackPanel>
+                            <TextBlock Grid.Row="0" Grid.Column="0" Text="Character" VerticalAlignment="Center" FontWeight="Bold" MinWidth="80" Margin="0,2,8,2"/>
+                            <TextBlock Grid.Row="0" Grid.Column="1" Grid.ColumnSpan="3" Text="{Binding ActivePlayer.Player.Name}" VerticalAlignment="Center" Margin="0,2,0,2"/>
 
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="Window Opacity"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="120"/>
-                            <Slider Value="{Binding DPSWindowOpacity}" Minimum=".01" Maximum="1" SmallChange=".1" TickFrequency=".1" ValueChanged="SaveSettings" MinWidth="150"/>
+                            <TextBlock Grid.Row="1" Grid.Column="0" Text="Guild" VerticalAlignment="Center" FontWeight="Bold" MinWidth="80" Margin="0,2,8,2"/>
+                            <TextBlock Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3" Text="{Binding ActivePlayer.Player.GuildName}" VerticalAlignment="Center" Margin="0,2,0,2"/>
+
+                            <TextBlock Grid.Row="2" Grid.Column="0" Text="Class" VerticalAlignment="Center" FontWeight="Bold" MinWidth="80" Margin="0,2,8,2"/>
+                            <ComboBox Grid.Row="2" Grid.Column="1" IsEnabled="{Binding HasCharName}" SelectedItem="{Binding ActivePlayer.Player.PlayerClass}" ItemsSource="{Binding PlayerClasses}" MinWidth="140" Margin="0,2,12,2"/>
+                            <TextBlock Grid.Row="2" Grid.Column="2" Text="Your Level" VerticalAlignment="Center" FontWeight="Bold" MinWidth="80" Margin="0,2,8,2"/>
+                            <ComboBox Grid.Row="2" Grid.Column="3" IsEnabled="{Binding HasCharName}" SelectedItem="{Binding ActivePlayer.Player.Level}" ItemsSource="{Binding Levels}" MinWidth="140" HorizontalAlignment="Left" Margin="0,2,0,2"/>
+
+                            <TextBlock Grid.Row="3" Grid.Column="0" Text="Zone" VerticalAlignment="Center" FontWeight="Bold" MinWidth="80" Margin="0,2,8,2"/>
+                            <ComboBox Grid.Row="3" Grid.Column="1" IsEnabled="{Binding HasCharName}" SelectedItem="{Binding ActivePlayer.Player.Zone}" ItemsSource="{Binding Zones}" SelectionChanged="zoneselectionchanged" MinWidth="140" Margin="0,2,12,2"/>
+                            <TextBlock Grid.Row="3" Grid.Column="2" Text="Track Skill" VerticalAlignment="Center" FontWeight="Bold" MinWidth="80" Margin="0,2,8,2"/>
+                            <ComboBox Grid.Row="3" Grid.Column="3" IsEnabled="{Binding ActivePlayer.Player.IsTrackableClass}" SelectedItem="{Binding ActivePlayer.Player.TrackingSkill}" ItemsSource="{Binding TrackSkills}" MinWidth="140" HorizontalAlignment="Left" Margin="0,2,0,2"/>
+                        </Grid>
+                    </GroupBox>
+
+                    <GroupBox Header="Display" Margin="0,0,0,6">
+                        <StackPanel Orientation="Horizontal" Margin="4">
+                            <TextBlock Text="Font Size"  FontWeight="Bold"  VerticalAlignment="Center" MinWidth="80" Margin="0,0,8,0"/>
+                            <ComboBox SelectedItem="{Binding GlobalFontSize}" ItemsSource="{Binding FontSizes}" SelectionChanged="fontsizescombobox_SelectionChanged" MinWidth="140"/>
                         </StackPanel>
-                    </StackPanel>
-                    <Separator/>
-                    <TextBlock Text="Mob Window" HorizontalAlignment="Center" FontWeight="Bold" Margin="5,5,0,0"/>
-                    <StackPanel Orientation="Vertical" Margin="0, 0, 0, 8">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="Always on top" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="120"/>
-                            <CheckBox IsChecked="{Binding MobAlwaysOnTop}" Click="SaveAlwaysOntopCheckBoxSettings" ></CheckBox>
+                    </GroupBox>
+
+                    <GroupBox Header="Overlay Windows" Margin="0,0,0,6">
+                        <Grid Margin="4">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="Auto"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                                <RowDefinition Height="Auto"/>
+                            </Grid.RowDefinitions>
+
+                            <TextBlock Grid.Row="0" Grid.Column="1" Text="On top" FontWeight="Bold" HorizontalAlignment="Center" Margin="8,0,8,4"/>
+                            <TextBlock Grid.Row="0" Grid.Column="2" Text="Opacity" FontWeight="Bold" Margin="8,0,0,4"/>
+
+                            <TextBlock Grid.Row="1" Grid.Column="0" Text="Damage" VerticalAlignment="Center" FontWeight="Bold" MinWidth="80" Margin="0,2,8,2"/>
+                            <CheckBox  Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" IsChecked="{Binding DpsAlwaysOnTop}" Click="SaveAlwaysOntopCheckBoxSettings"/>
+                            <Slider    Grid.Row="1" Grid.Column="2" VerticalAlignment="Center" Value="{Binding DPSWindowOpacity}" Minimum=".01" Maximum="1" SmallChange=".1" TickFrequency=".1" ValueChanged="SaveSettings" MinWidth="150" Margin="8,2,0,2"/>
+
+                            <TextBlock Grid.Row="2" Grid.Column="0" Text="Triggers" VerticalAlignment="Center" FontWeight="Bold" MinWidth="80" Margin="0,2,8,2"/>
+                            <CheckBox  Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" IsChecked="{Binding SpellAlwaysOnTop}" Click="SaveAlwaysOntopCheckBoxSettings"/>
+                            <Slider    Grid.Row="2" Grid.Column="2" VerticalAlignment="Center" Value="{Binding TriggerWindowOpacity}" Minimum=".01" Maximum="1" SmallChange=".1" TickFrequency=".1" ValueChanged="SaveSettings" MinWidth="150" Margin="8,2,0,2"/>
+
+                            <TextBlock Grid.Row="3" Grid.Column="0" Text="Mob" VerticalAlignment="Center" FontWeight="Bold" MinWidth="80" Margin="0,2,8,2"/>
+                            <CheckBox  Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" IsChecked="{Binding MobAlwaysOnTop}" Click="SaveAlwaysOntopCheckBoxSettings"/>
+                            <TextBlock Grid.Row="3" Grid.Column="2" Text="—" Foreground="Gray" VerticalAlignment="Center" Margin="8,2,0,2"/>
+
+                            <TextBlock Grid.Row="4" Grid.Column="0" Text="Map" VerticalAlignment="Center" FontWeight="Bold" MinWidth="80" Margin="0,2,8,2"/>
+                            <CheckBox  Grid.Row="4" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Center" IsChecked="{Binding MapAlwaysOnTop}" Click="SaveAlwaysOntopCheckBoxSettings"/>
+                            <Slider    Grid.Row="4" Grid.Column="2" VerticalAlignment="Center" Value="{Binding MapWindowOpacity}" Minimum=".01" Maximum="1" SmallChange=".1" TickFrequency=".1" ValueChanged="SaveSettings" MinWidth="150" Margin="8,2,0,2"/>
+                        </Grid>
+                    </GroupBox>
+
+                    <GroupBox Header="Map" Margin="0,0,0,6">
+                        <StackPanel Orientation="Vertical" Margin="4">
+                            <StackPanel Orientation="Horizontal" Margin="0,2,0,2">
+                                <TextBlock Text="Map Kill timers" ToolTip="Automatically add kill timers to the map. This is a per character setting" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="120"/>
+                                <CheckBox VerticalAlignment="Center" IsChecked="{Binding ActivePlayer.Player.MapKillTimers}"></CheckBox>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,2,0,2">
+                                <TextBlock Text="Location Share" VerticalAlignment="Center"  FontWeight="Bold" MinWidth="120"/>
+                                <ComboBox SelectedItem="{Binding ActivePlayer.Player.MapLocationSharing}" ItemsSource="{Binding LocationShareOptions}" MinWidth="150"></ComboBox>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,2,0,2">
+                                <TextBlock Text="Map Cache" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="120"/>
+                                <Button Click="deleteMapCache" ToolTip="Do this if you are managing map files and make changes.">Delete Cached Maps</Button>
+                            </StackPanel>
                         </StackPanel>
-                        <StackPanel Orientation="Horizontal" Margin="20,0,0,3">
-                            <StackPanel.Style>
-                                <Style TargetType="StackPanel">
-                                    <Setter Property="Opacity" Value="1.0"/>
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding MobAlwaysOnTop}" Value="False">
-                                            <Setter Property="Opacity" Value="0.5"/>
-                                            <Setter Property="IsEnabled" Value="False"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </StackPanel.Style> 
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="Login middlemand" VerticalAlignment="Center"  FontWeight="Bold" MinWidth="120"/>
-                            <CheckBox  Name="LoginMiddleMandCheckBox" Click="LoginMiddleMandToggle" MinWidth="75"></CheckBox>
-                        </StackPanel>
-                    </StackPanel>
-                    <TextBlock Text="Login Middlemand is a copy of the code from:"></TextBlock>
-                    <TextBlock Text="https://github.com/Zaela/p99-login-middlemand"></TextBlock>
-                    <TextBlock Text="Please, report any issues on discord!"></TextBlock>
-                    <Separator/>
-                    <TextBlock Text="Log Archiving" HorizontalAlignment="Center" FontWeight="Bold" Margin="5,5,0,0"/>
-                    <StackPanel Orientation="Vertical" Margin="0,0,0,8">
-                        <StackPanel Orientation="Horizontal">
-                            <TextBlock Text="Enable Archiving" VerticalAlignment="Center" FontWeight="Bold" MinWidth="120"/>
-                            <CheckBox IsChecked="{Binding LogArchiveEnabled}" Click="LogArchiveCheckBox_Click"/>
-                        </StackPanel>
-                        <StackPanel Orientation="Horizontal">
-                            <StackPanel.Style>
-                                <Style TargetType="StackPanel">
-                                    <Setter Property="Opacity" Value="1.0"/>
-                                    <Style.Triggers>
-                                        <DataTrigger Binding="{Binding LogArchiveEnabled}" Value="False">
-                                            <Setter Property="Opacity" Value="0.5"/>
-                                            <Setter Property="IsEnabled" Value="False"/>
-                                        </DataTrigger>
-                                    </Style.Triggers>
-                                </Style>
-                            </StackPanel.Style>
-                            <TextBlock Text="Archive at (MB)" VerticalAlignment="Center" FontWeight="Bold" MinWidth="120"/>
-                            <TextBox Text="{Binding LogArchiveSizeMB, UpdateSourceTrigger=PropertyChanged}" MinWidth="60" TextChanged="LogArchiveSizeMB_TextChanged"/>
-                        </StackPanel>
-                        <DockPanel>
-                            <TextBlock MaxWidth="400" TextWrapping="Wrap" Foreground="Gray"
+                    </GroupBox>
+
+                    <GroupBox Header="Log Archiving" Margin="0,0,0,6">
+                        <StackPanel Orientation="Vertical" Margin="4">
+                            <StackPanel Orientation="Horizontal" Margin="0,2,0,2">
+                                <TextBlock Text="Enable Archiving" VerticalAlignment="Center" FontWeight="Bold" MinWidth="120"/>
+                                <CheckBox VerticalAlignment="Center" IsChecked="{Binding LogArchiveEnabled}" Click="LogArchiveCheckBox_Click"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,2,0,2">
+                                <StackPanel.Style>
+                                    <Style TargetType="StackPanel">
+                                        <Setter Property="Opacity" Value="1.0"/>
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding LogArchiveEnabled}" Value="False">
+                                                <Setter Property="Opacity" Value="0.5"/>
+                                                <Setter Property="IsEnabled" Value="False"/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </StackPanel.Style>
+                                <TextBlock Text="Archive at (MB)" VerticalAlignment="Center" FontWeight="Bold" MinWidth="120"/>
+                                <TextBox VerticalAlignment="Center" Text="{Binding LogArchiveSizeMB, UpdateSourceTrigger=PropertyChanged}" MinWidth="60" TextChanged="LogArchiveSizeMB_TextChanged"/>
+                            </StackPanel>
+                            <TextBlock MaxWidth="400" TextWrapping="Wrap" Foreground="Gray" Margin="0,2,0,0"
                                        Text="When a log file exceeds the size above it will be moved to an 'archive' subfolder and renamed with the current date and time."/>
-                        </DockPanel>
-                    </StackPanel>
-                    <Separator/>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Group Leader: " VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="120" Margin="0,5,0,0"/>
-                        <TextBlock Text="{Binding GroupLeaderName}" HorizontalAlignment="Center" FontWeight="Bold" FontStyle="Italic" Foreground="Blue" Margin="0,5,0,0"/>
-                    </StackPanel>
+                        </StackPanel>
+                    </GroupBox>
+
+                    <GroupBox Header="Login Middlemand" Margin="0,0,0,6">
+                        <StackPanel Orientation="Vertical" Margin="4">
+                            <StackPanel Orientation="Horizontal" Margin="0,2,0,2">
+                                <TextBlock Text="Login middlemand" VerticalAlignment="Center"  FontWeight="Bold" MinWidth="120"/>
+                                <CheckBox VerticalAlignment="Center" Name="LoginMiddleMandCheckBox" Click="LoginMiddleMandToggle" MinWidth="75"></CheckBox>
+                            </StackPanel>
+                            <TextBlock Foreground="Gray" TextWrapping="Wrap" Margin="0,2,0,0"
+                                       Text="Login Middlemand is a copy of the code from https://github.com/Zaela/p99-login-middlemand. Please report any issues on discord!"/>
+                        </StackPanel>
+                    </GroupBox>
                 </StackPanel>
             </StackPanel>
+            </ScrollViewer>
         </TabItem>
 
         <TabItem Header="Text &amp; Audio Alerts">
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
             <StackPanel Orientation="Vertical" Margin="5, 5, 5, 5">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Installed Voices" VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
@@ -203,40 +227,16 @@
                      <Button Content="▶" Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="testZlandicar" ToolTip="Test Zlandicar (Dragon Roar then Stun Breath 5s later)" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="VP Hosh" VerticalAlignment="Center" FontWeight="Bold"  MinWidth="100"/>
-                    <CheckBox IsChecked="{Binding ActivePlayer.Player.DiseasedCloudOverlay}" Click="Savesettings" MinWidth="75"></CheckBox>
-                    <CheckBox IsChecked="{Binding ActivePlayer.Player.DiseasedCloudAudio}" Click="Savesettings" MinWidth="30"></CheckBox>
-                    <Button Content="▶" Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="testDiseasedCloud" ToolTip="Test VP Hosh Diseased Cloud for Word of Resto" />
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Root Breaks" VerticalAlignment="Center" FontWeight="Bold"  MinWidth="100"/>
                     <CheckBox IsChecked="{Binding ActivePlayer.Player.RootWarningOverlay}" Click="Savesettings" MinWidth="75"></CheckBox>
                     <CheckBox IsChecked="{Binding ActivePlayer.Player.RootWarningAudio}" Click="Savesettings" MinWidth="30"></CheckBox>
                     <Button Content="▶" Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="testRootBreak" ToolTip="Test Root Break" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Resists" VerticalAlignment="Center" FontWeight="Bold"  MinWidth="100"/>
-                    <CheckBox IsChecked="{Binding ActivePlayer.Player.ResistWarningOverlay}" Click="Savesettings" MinWidth="75"></CheckBox>
-                    <CheckBox IsChecked="{Binding ActivePlayer.Player.ResistWarningAudio}" Click="Savesettings" MinWidth="30"></CheckBox>
-                    <Button Content="▶" Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="testResists" ToolTip="Test Resist" />
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Death Loop" VerticalAlignment="Center" FontWeight="Bold"  MinWidth="100"/>
                     <CheckBox IsChecked="{Binding ActivePlayer.Player.DeathLoopOverlay}" Click="Savesettings" MinWidth="75"></CheckBox>
                     <CheckBox IsChecked="{Binding ActivePlayer.Player.DeathLoopAudio}" Click="Savesettings" MinWidth="30"></CheckBox>
                     <Button Content="▶" Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="testDeathLoop" ToolTip="Test Death Loop" />
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Entered Zone" VerticalAlignment="Center" FontWeight="Bold"  MinWidth="100"/>
-                    <CheckBox IsChecked="{Binding ActivePlayer.Player.EnteringZoneOverlay}" Click="Savesettings" MinWidth="75"></CheckBox>
-                    <CheckBox IsChecked="{Binding ActivePlayer.Player.EnteringZoneAudio}" Click="Savesettings" MinWidth="30"></CheckBox>
-                    <Button Content="▶" Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="textenteringZone" ToolTip="Test Entering Zone" />
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Spell Worn Off" VerticalAlignment="Center" FontWeight="Bold"  MinWidth="100"/>
-                    <CheckBox IsChecked="{Binding ActivePlayer.Player.WornOffOverlay}" Click="Savesettings" MinWidth="75"></CheckBox>
-                    <CheckBox IsChecked="{Binding ActivePlayer.Player.WornOffAudio}" Click="Savesettings" MinWidth="30"></CheckBox>
-                    <Button Content="▶" Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="testWornOff" ToolTip="Test Spell Has Worn Off" />
                 </StackPanel>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Bard Hit Counts" VerticalAlignment="Center" FontWeight="Bold" MinWidth="100"/>
@@ -269,11 +269,7 @@
                     <TextBlock Text="Above will warn you when its your turn to cast CH" Foreground="Red"/>
                 </StackPanel>
                 <Separator/>
-            </StackPanel>
-        </TabItem>
-
-        <TabItem Header="Triggers">
-            <StackPanel Orientation="Vertical" Margin="5, 5, 5, 5">
+                <!-- Trigger window settings (moved here from the former "Old Triggers" tab) -->
                 <StackPanel Orientation="Vertical"  Margin="0, 0, 0, 8">
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Boat Schedule"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
@@ -286,59 +282,40 @@
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Scout Timer"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
                         <CheckBox IsChecked="{Binding ShowScoutRollTime}" Click="Savesettings" MinWidth="75"></CheckBox>
-                    </StackPanel>
-                    <DockPanel>
-                        <TextBlock MaxWidth="400" TextWrapping="Wrap" Text="Boat times are constantly being tweaked. More boats will be working soon!" />
-                    </DockPanel> 
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Always on top" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
-                        <CheckBox IsChecked="{Binding SpellAlwaysOnTop}" Click="SaveAlwaysOntopCheckBoxSettings" ></CheckBox>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal" Margin="20,0,0,3">
-                        <StackPanel.Style>
-                            <Style TargetType="StackPanel">
-                                <Setter Property="Opacity" Value="1.0"/>
-                                <Style.Triggers>
-                                    <DataTrigger Binding="{Binding SpellAlwaysOnTop}" Value="False">
-                                        <Setter Property="Opacity" Value="0.5"/>
-                                        <Setter Property="IsEnabled" Value="False"/>
-                                    </DataTrigger>
-                                </Style.Triggers>
-                            </Style>
-                        </StackPanel.Style> 
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="Window Opacity"  VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
-                        <Slider Value="{Binding TriggerWindowOpacity}" Minimum=".01" Maximum="1" SmallChange=".1" TickFrequency=".1" ValueChanged="SaveSettings" MinWidth="150"/>
-                    </StackPanel>
+                    </StackPanel> 
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Random Rolls" ToolTip="Show Random rolls in Triggers window" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
                         <CheckBox IsChecked="{Binding ShowRandomRolls}" Click="SaveAlwaysOntopCheckBoxSettings" ></CheckBox>
-                    </StackPanel> 
+                    </StackPanel>
                     <StackPanel Orientation="Horizontal">
-                        <TextBlock Text="If detrimental timer is already running: " 
+                        <TextBlock Text="If detrimental timer is already running: "
                                    ToolTip="Hint: Select 'StartNewTimer' for targets with same name"
-                                   VerticalAlignment="Center"  
-                                   FontWeight="Bold"  
+                                   VerticalAlignment="Center"
+                                   FontWeight="Bold"
                                    MinWidth="100"/>
-                        <ComboBox SelectedItem="{Binding ActivePlayer.Player.TimerRecastSetting}" 
-                                  ItemsSource="{Binding Source={markupExtensions:EnumBindingSource {x:Type models:TimerRecast}}}" 
+                        <ComboBox SelectedItem="{Binding ActivePlayer.Player.TimerRecastSetting}"
+                                  ItemsSource="{Binding Source={markupExtensions:EnumBindingSource {x:Type models:TimerRecast}}}"
                                   ToolTip="Hint: Select 'StartNewTimer' for targets with same name"
-                                  Margin="0,5,0,0" 
-                                  FontSize="14" 
-                                  MinWidth="170" 
+                                  Margin="0,5,0,0"
+                                  FontSize="14"
+                                  MinWidth="170"
                                   VerticalAlignment="Center">
                         </ComboBox>
                     </StackPanel>
                     <StackPanel Orientation="Horizontal">
                         <TextBlock Text="Spells Me only"  VerticalAlignment="Center" FontWeight="Bold"  MinWidth="100"/>
-                        <CheckBox IsChecked="{Binding YouOnlySpells}" Click="SaveAlwaysOntopCheckBoxSettings" ></CheckBox> 
+                        <CheckBox IsChecked="{Binding YouOnlySpells}" Click="SaveAlwaysOntopCheckBoxSettings" ></CheckBox>
                     </StackPanel>
                 </StackPanel>
                 <StackPanel Orientation="Horizontal" Visibility="{Binding ShowClassFilters, Converter={StaticResource BooleanToVisibilityConverter}}">
                     <TextBlock Text="Class Filters" FontWeight="Bold" MinWidth="100" ToolTip="This will filter what shows up on other players."/>
                     <StackPanel Orientation="Vertical">
                         <ListBox IsEnabled="{Binding HasCharName}" ItemsSource="{Binding SelectedPlayerClasses}" MinWidth="150">
+                            <ListBox.ItemsPanel>
+                                <ItemsPanelTemplate>
+                                    <UniformGrid Columns="2"/>
+                                </ItemsPanelTemplate>
+                            </ListBox.ItemsPanel>
                             <ListBox.ItemTemplate>
                                 <DataTemplate>
                                     <CheckBox Content="{Binding TheText}" Tag="{Binding TheValue}" Unchecked="CheckBoxZone_Checked" Checked="CheckBoxZone_Checked" IsChecked="{Binding IsChecked}" Margin="0,5,0,0"/>
@@ -348,44 +325,146 @@
                     </StackPanel>
                 </StackPanel>
             </StackPanel>
+            </ScrollViewer>
         </TabItem>
 
-        <TabItem Header="Map">
-            <StackPanel Orientation="Vertical" Margin="5, 5, 5, 5">
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Always on top" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
-                    <CheckBox IsChecked="{Binding MapAlwaysOnTop}" Click="SaveAlwaysOntopCheckBoxSettings" ></CheckBox>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal" Margin="20,0,0,3">
-                    <StackPanel.Style>
-                        <Style TargetType="StackPanel">
-                            <Setter Property="Opacity" Value="1.0"/>
+        <TabItem Header="Triggers">
+            <Grid x:Name="TriggersTabRoot" Grid.IsSharedSizeScope="True">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="30*"/>
+                    <ColumnDefinition Width="70*"/>
+                </Grid.ColumnDefinitions>
+
+                <TreeView Grid.Column="0" SelectedItemChanged="TriggerTree_SelectedItemChanged" PreviewMouseRightButtonDown="TriggerTree_PreviewMouseRightButtonDown" ItemsSource="{Binding TriggerTreeItems}">
+                    <TreeView.ItemContainerStyle>
+                        <Style TargetType="TreeViewItem">
+                            <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
+                            <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
+                            <EventSetter Event="PreviewMouseRightButtonDown" Handler="OnPreviewMouseRightButtonDown" />
+                            <EventSetter Event="PreviewMouseLeftButtonDown" Handler="OnPreviewMouseLeftButtonDown" />
+                            <Style.Resources>
+                                <!-- Make the native single-selection highlight match the multi-select highlight -->
+                                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#FFB3D9FF" />
+                                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="Black" />
+                                <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" Color="#FFB3D9FF" />
+                                <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}" Color="Black" />
+                            </Style.Resources>
                             <Style.Triggers>
-                                <DataTrigger Binding="{Binding MapAlwaysOnTop}" Value="False">
-                                    <Setter Property="Opacity" Value="0.5"/>
-                                    <Setter Property="IsEnabled" Value="False"/>
+                                <DataTrigger Binding="{Binding IsMultiSelected}" Value="True">
+                                    <Setter Property="Background" Value="#FFB3D9FF" />
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>
-                    </StackPanel.Style> 
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Map Cache" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
-                    <Button Click="deleteMapCache" ToolTip="Do this if you are managing map files and make changes.">Delete Cached Maps</Button>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Map Kill timers" ToolTip="Automatically add kill timers to the map. This is a per character setting" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
-                    <CheckBox IsChecked="{Binding ActivePlayer.Player.MapKillTimers}"></CheckBox>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Window Opacity" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="100"/>
-                    <Slider Value="{Binding MapWindowOpacity}" Minimum=".01" Maximum="1" SmallChange=".1" TickFrequency=".1" ValueChanged="SaveSettings" MinWidth="150"/>
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Location Share" VerticalAlignment="Center"  FontWeight="Bold" MinWidth="100"/>
-                    <ComboBox SelectedItem="{Binding ActivePlayer.Player.MapLocationSharing}" ItemsSource="{Binding LocationShareOptions}" MinWidth="150"></ComboBox>
-                </StackPanel>
-            </StackPanel>
+                    </TreeView.ItemContainerStyle>
+                    <TreeView.Resources>
+                        <HierarchicalDataTemplate DataType="{x:Type vm:TreeGlobal}" ItemsSource="{Binding Children}">
+                            <StackPanel Orientation="Horizontal" >
+                                <Image Source="pack://application:,,,/Images/open-folder.png" Width="16" Height="16" Margin="0,0,4,0" VerticalAlignment="Center"/>
+                                <TextBlock Text="{Binding Name}" Margin="0,0,4,0" VerticalAlignment="Center" />
+                            </StackPanel>
+                        </HierarchicalDataTemplate>
+                        <HierarchicalDataTemplate DataType="{x:Type vm:TreeTriggerFolder}" ItemsSource="{Binding Children}">
+                            <StackPanel Orientation="Horizontal">
+                                <Image Source="pack://application:,,,/Images/open-folder.png" Width="16" Height="16" Margin="0,0,4,0" VerticalAlignment="Center"/>
+                                <TextBlock Text="{Binding EditableName}" Margin="0,0,4,0" VerticalAlignment="Center">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsEditing}" Value="True">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                                <TextBox Text="{Binding EditableName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
+                                         MinWidth="90" Margin="0,0,4,0" Padding="1,0,1,0"
+                                         KeyDown="RenameTextBox_KeyDown"
+                                         LostFocus="RenameTextBox_LostFocus"
+                                         IsVisibleChanged="RenameTextBox_IsVisibleChanged">
+                                    <TextBox.Style>
+                                        <Style TargetType="TextBox">
+                                            <Setter Property="Visibility" Value="Collapsed"/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsEditing}" Value="True">
+                                                    <Setter Property="Visibility" Value="Visible"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBox.Style>
+                                </TextBox>
+                            </StackPanel>
+                        </HierarchicalDataTemplate>
+                        <HierarchicalDataTemplate DataType="{x:Type vm:TreeTrigger}" ItemsSource="{Binding Children}">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="🗲"/>
+                                <TextBlock Text="{Binding Name}">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Style.Triggers>
+                                                <!-- Gray out disabled triggers, but keep the read-only Built In library entries black. -->
+                                                <MultiDataTrigger>
+                                                    <MultiDataTrigger.Conditions>
+                                                        <Condition Binding="{Binding IsTriggerEnabled}" Value="False"/>
+                                                        <Condition Binding="{Binding IsBuiltIn}" Value="False"/>
+                                                    </MultiDataTrigger.Conditions>
+                                                    <Setter Property="Foreground" Value="Gray"/>
+                                                </MultiDataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                            </StackPanel>
+                        </HierarchicalDataTemplate>
+                    </TreeView.Resources>
+                </TreeView>
+                <ContentControl Grid.Column="1" Content="{Binding TriggerUserControl}"/>
+            </Grid>
+        </TabItem>
+
+        <TabItem Header="Characters">
+            <Grid x:Name="CharactersTabRoot" Grid.IsSharedSizeScope="True">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="30*"/>
+                    <ColumnDefinition Width="70*"/>
+                </Grid.ColumnDefinitions>
+
+                <TreeView Grid.Column="0" SelectedItemChanged="CharacterTree_SelectedItemChanged" ItemsSource="{Binding CharacterTreeItems}">
+                    <TreeView.ItemContainerStyle>
+                        <Style TargetType="TreeViewItem">
+                            <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
+                            <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
+                            <EventSetter Event="PreviewMouseRightButtonDown" Handler="OnPreviewMouseRightButtonDown" />
+                        </Style>
+                    </TreeView.ItemContainerStyle>
+                    <TreeView.Resources>
+                        <HierarchicalDataTemplate DataType="{x:Type vm:TreeServer}" ItemsSource="{Binding Children}">
+                            <StackPanel Orientation="Horizontal" >
+                                <TextBlock Text="🖧" />
+                                <TextBlock Text="{Binding Name}" Margin="0,0,4,0" />
+                            </StackPanel>
+                        </HierarchicalDataTemplate>
+                        <HierarchicalDataTemplate DataType="{x:Type vm:TreeZone}" ItemsSource="{Binding Children}">
+                            <StackPanel Orientation="Horizontal" >
+                                <TextBlock Text="🖧" />
+                                <TextBlock Text="{Binding Name}" Margin="0,0,4,0" />
+                            </StackPanel>
+                        </HierarchicalDataTemplate>
+                        <HierarchicalDataTemplate DataType="{x:Type vm:TreePlayer}" ItemsSource="{Binding Children}">
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition SharedSizeGroup="PlayerName"/>
+                                    <ColumnDefinition SharedSizeGroup="lastPlayedDate"/>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Column="0" Text="🐉"/>
+                                <TextBlock Grid.Column="0" Text="{Binding Name}" Margin="16,0,0,0" />
+                                <TextBlock Grid.Column="1" Text="{Binding LastPlayed}" />
+                            </Grid>
+                        </HierarchicalDataTemplate>
+                    </TreeView.Resources>
+                </TreeView>
+                <ContentControl Grid.Column="1" Content="{Binding CharacterUserControl}"/>
+            </Grid>
         </TabItem>
 
         <TabItem Header="Experimental">

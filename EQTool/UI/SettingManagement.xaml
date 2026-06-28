@@ -5,7 +5,6 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:EQTool.UI"
-        xmlns:vm="clr-namespace:EQTool.ViewModels.SettingsComponents"
         mc:Ignorable="d"
         Title="SettingManagement" 
         Style="{DynamicResource MyWindowStyleDPS}"
@@ -56,126 +55,7 @@
                 </Grid>
             </Border>
 
-            <Grid Grid.Row="1"  Grid.IsSharedSizeScope="True">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="30*"/>
-                    <ColumnDefinition Width="70*"/>
-                </Grid.ColumnDefinitions>
-
-                <TreeView SelectedItemChanged="TreeView_SelectedItemChanged" Grid.Column="0" ItemsSource="{Binding TreeItems}">
-                    <TreeView.ItemContainerStyle>
-                        <Style TargetType="TreeViewItem">
-                            <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
-                            <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
-                            <EventSetter Event="PreviewMouseRightButtonDown" Handler="OnPreviewMouseRightButtonDown" />
-                            <EventSetter Event="PreviewMouseLeftButtonDown" Handler="OnPreviewMouseLeftButtonDown" />
-                            <Style.Resources>
-                                <!-- Make the native single-selection highlight match the multi-select highlight -->
-                                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#FFB3D9FF" />
-                                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="Black" />
-                                <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" Color="#FFB3D9FF" />
-                                <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}" Color="Black" />
-                            </Style.Resources>
-                            <Style.Triggers>
-                                <DataTrigger Binding="{Binding IsMultiSelected}" Value="True">
-                                    <Setter Property="Background" Value="#FFB3D9FF" />
-                                </DataTrigger>
-                            </Style.Triggers>
-                        </Style>
-                    </TreeView.ItemContainerStyle>
-                    <TreeView.Resources>
-                        <HierarchicalDataTemplate DataType="{x:Type vm:TreeGeneral}">
-                            <StackPanel Orientation="Horizontal"  >
-                                <TextBlock Text="⚙" />
-                                <TextBlock Text="{Binding Name}" Margin="0,0,4,0" />
-                            </StackPanel>
-                        </HierarchicalDataTemplate>
-                        <HierarchicalDataTemplate DataType="{x:Type vm:TreeServer}" ItemsSource="{Binding Children}">
-                            <StackPanel Orientation="Horizontal" >
-                                <TextBlock Text="🖧" />
-                                <TextBlock Text="{Binding Name}" Margin="0,0,4,0" />
-                            </StackPanel>
-                        </HierarchicalDataTemplate>
-                        <HierarchicalDataTemplate DataType="{x:Type vm:TreeZone}" ItemsSource="{Binding Children}">
-                            <StackPanel Orientation="Horizontal" >
-                                <TextBlock Text="🖧" />
-                                <TextBlock Text="{Binding Name}" Margin="0,0,4,0" />
-                            </StackPanel>
-                        </HierarchicalDataTemplate>
-                        <HierarchicalDataTemplate DataType="{x:Type vm:TreeGlobal}" ItemsSource="{Binding Children}">
-                            <StackPanel Orientation="Horizontal" >
-                                <Image Source="pack://application:,,,/Images/open-folder.png" Width="16" Height="16" Margin="0,0,4,0" VerticalAlignment="Center"/>
-                                <TextBlock Text="{Binding Name}" Margin="0,0,4,0" VerticalAlignment="Center" />
-                            </StackPanel>
-                        </HierarchicalDataTemplate>
-                        <HierarchicalDataTemplate DataType="{x:Type vm:TreePlayer}" ItemsSource="{Binding Children}">
-                            <Grid>
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition SharedSizeGroup="PlayerName"/>
-                                    <ColumnDefinition SharedSizeGroup="lastPlayedDate"/>
-                                </Grid.ColumnDefinitions>
-                                <TextBlock Grid.Column="0" Text="🐉"/>
-                                <TextBlock Grid.Column="0" Text="{Binding Name}" Margin="16,0,0,0" />
-                                <TextBlock Grid.Column="1" Text="{Binding LastPlayed}" />
-                            </Grid>
-                        </HierarchicalDataTemplate>
-                        <HierarchicalDataTemplate DataType="{x:Type vm:TreeTriggerFolder}" ItemsSource="{Binding Children}">
-                            <StackPanel Orientation="Horizontal">
-                                <Image Source="pack://application:,,,/Images/open-folder.png" Width="16" Height="16" Margin="0,0,4,0" VerticalAlignment="Center"/>
-                                <TextBlock Text="{Binding EditableName}" Margin="0,0,4,0" VerticalAlignment="Center">
-                                    <TextBlock.Style>
-                                        <Style TargetType="TextBlock">
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding IsEditing}" Value="True">
-                                                    <Setter Property="Visibility" Value="Collapsed"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </TextBlock.Style>
-                                </TextBlock>
-                                <TextBox Text="{Binding EditableName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                                         MinWidth="90" Margin="0,0,4,0" Padding="1,0,1,0"
-                                         KeyDown="RenameTextBox_KeyDown"
-                                         LostFocus="RenameTextBox_LostFocus"
-                                         IsVisibleChanged="RenameTextBox_IsVisibleChanged">
-                                    <TextBox.Style>
-                                        <Style TargetType="TextBox">
-                                            <Setter Property="Visibility" Value="Collapsed"/>
-                                            <Style.Triggers>
-                                                <DataTrigger Binding="{Binding IsEditing}" Value="True">
-                                                    <Setter Property="Visibility" Value="Visible"/>
-                                                </DataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </TextBox.Style>
-                                </TextBox>
-                            </StackPanel>
-                        </HierarchicalDataTemplate>
-                        <HierarchicalDataTemplate DataType="{x:Type vm:TreeTrigger}" ItemsSource="{Binding Children}">
-                            <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="🗲"/>
-                                <TextBlock Text="{Binding Name}">
-                                    <TextBlock.Style>
-                                        <Style TargetType="TextBlock">
-                                            <Style.Triggers>
-                                                <!-- Gray out disabled triggers, but keep the read-only Built In library entries black. -->
-                                                <MultiDataTrigger>
-                                                    <MultiDataTrigger.Conditions>
-                                                        <Condition Binding="{Binding IsTriggerEnabled}" Value="False"/>
-                                                        <Condition Binding="{Binding IsBuiltIn}" Value="False"/>
-                                                    </MultiDataTrigger.Conditions>
-                                                    <Setter Property="Foreground" Value="Gray"/>
-                                                </MultiDataTrigger>
-                                            </Style.Triggers>
-                                        </Style>
-                                    </TextBlock.Style>
-                                </TextBlock>
-                            </StackPanel>
-                        </HierarchicalDataTemplate>
-                    </TreeView.Resources>
-                </TreeView>
-                <UserControl Grid.Column="1" Content="{Binding UserControl}"></UserControl>
-            </Grid>
+            <ContentControl Grid.Row="1" x:Name="MainContent"/>
         </Grid>
     </Border>
 </local:BaseSaveStateWindow>

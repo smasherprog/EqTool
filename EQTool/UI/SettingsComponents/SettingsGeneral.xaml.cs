@@ -4,6 +4,7 @@ using EQTool.Services.Map;
 using EQTool.Services.P99LoginMiddlemand;
 using EQTool.Services.Parsing;
 using EQTool.ViewModels;
+using EQTool.ViewModels.SettingsComponents;
 using EQToolShared.Enums;
 using EQToolShared.Extensions;
 using System;
@@ -17,6 +18,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Input;
+using System.Windows.Media;
 using System.Windows.Navigation;
 
 namespace EQTool.UI.SettingsComponents
@@ -38,6 +41,7 @@ namespace EQTool.UI.SettingsComponents
         private readonly LogEvents logEvents;
         private readonly DebugOutput debugOutput;
         private readonly LogArchiveService logArchiveService;
+        private readonly SettingsManagementViewModel settingsManagementViewModel;
 
         public SettingsGeneral(
             LogEvents logEvents,
@@ -54,8 +58,10 @@ namespace EQTool.UI.SettingsComponents
             EQToolSettingsLoad toolSettingsLoad,
             SettingsWindowViewModel settingsWindowData,
             SettingsTestRunOverlay settingsTestRunOverlay,
-            LogArchiveService logArchiveService)
+            LogArchiveService logArchiveService,
+            SettingsManagementViewModel settingsManagementViewModel)
         {
+            this.settingsManagementViewModel = settingsManagementViewModel;
             this.debugOutput = debugOutput;
             this.loginMiddlemand = loginMiddlemand;
             this.logParser = logParser;
@@ -71,6 +77,10 @@ namespace EQTool.UI.SettingsComponents
             DataContext = SettingsWindowData = settingsWindowData;
             SettingsWindowData.EqPath = this.settings.DefaultEqDirectory;
             InitializeComponent();
+            // The Triggers and Characters tabs host the tree/editor master-detail and are
+            // driven by the settings management view model rather than the window view model.
+            TriggersTabRoot.DataContext = settingsManagementViewModel;
+            CharactersTabRoot.DataContext = settingsManagementViewModel;
             TryCheckLoggingEnabled();
 
             try
@@ -777,10 +787,6 @@ namespace EQTool.UI.SettingsComponents
             settingsTestRunOverlay.RunTest(OverlayTypes.ZlandicarEvent);
         }
 
-        private void testDiseasedCloud(object sender, RoutedEventArgs e)
-        {
-            settingsTestRunOverlay.RunTest(OverlayTypes.DiseasedCloudEvent);
-        }
         private void textvoice(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrWhiteSpace(SettingsWindowData.SelectedVoice))
@@ -884,11 +890,6 @@ namespace EQTool.UI.SettingsComponents
             settingsTestRunOverlay.RunTest(OverlayTypes.RootBreakEvent);
         }
 
-        private void testResists(object sender, RoutedEventArgs e)
-        {
-            settingsTestRunOverlay.RunTest(OverlayTypes.ResistSpellEvent);
-        }
-
         private void LoginMiddleMandToggle(object sender, RoutedEventArgs e)
         {
             var s = sender as System.Windows.Controls.CheckBox;
@@ -952,14 +953,10 @@ namespace EQTool.UI.SettingsComponents
                 SettingsWindowData.ActivePlayer.Player.FTETimerOverlay = false;
                 SettingsWindowData.ActivePlayer.Player.DragonRoarOverlay = false;
                 SettingsWindowData.ActivePlayer.Player.ZlandicarOverlay = false;
-                SettingsWindowData.ActivePlayer.Player.DiseasedCloudOverlay = false;
                 SettingsWindowData.ActivePlayer.Player.RootWarningOverlay = false;
-                SettingsWindowData.ActivePlayer.Player.ResistWarningOverlay = false;
                 SettingsWindowData.ActivePlayer.Player.DeathLoopOverlay = false;
                 SettingsWindowData.ActivePlayer.Player.ChChainOverlay = false;
                 SettingsWindowData.ActivePlayer.Player.ChChainWarningOverlay = false;
-                SettingsWindowData.ActivePlayer.Player.EnteringZoneOverlay = false;
-                SettingsWindowData.ActivePlayer.Player.WornOffOverlay = false;
             }
             else
             {
@@ -967,14 +964,10 @@ namespace EQTool.UI.SettingsComponents
                 SettingsWindowData.ActivePlayer.Player.FTETimerOverlay = true;
                 SettingsWindowData.ActivePlayer.Player.DragonRoarOverlay = true;
                 SettingsWindowData.ActivePlayer.Player.ZlandicarOverlay = true;
-                SettingsWindowData.ActivePlayer.Player.DiseasedCloudOverlay = true;
                 SettingsWindowData.ActivePlayer.Player.RootWarningOverlay = true;
-                SettingsWindowData.ActivePlayer.Player.ResistWarningOverlay = true;
                 SettingsWindowData.ActivePlayer.Player.DeathLoopOverlay = true;
                 SettingsWindowData.ActivePlayer.Player.ChChainOverlay = true;
                 SettingsWindowData.ActivePlayer.Player.ChChainWarningOverlay = true;
-                SettingsWindowData.ActivePlayer.Player.EnteringZoneOverlay = true;
-                SettingsWindowData.ActivePlayer.Player.WornOffOverlay = true;
             }
             SaveConfig();
         }
@@ -987,13 +980,9 @@ namespace EQTool.UI.SettingsComponents
                 SettingsWindowData.ActivePlayer.Player.FTETimerAudio = false;
                 SettingsWindowData.ActivePlayer.Player.DragonRoarAudio = false;
                 SettingsWindowData.ActivePlayer.Player.ZlandicarAudio = false;
-                SettingsWindowData.ActivePlayer.Player.DiseasedCloudAudio = false;
                 SettingsWindowData.ActivePlayer.Player.RootWarningAudio = false;
-                SettingsWindowData.ActivePlayer.Player.ResistWarningAudio = false;
                 SettingsWindowData.ActivePlayer.Player.DeathLoopAudio = false;
                 SettingsWindowData.ActivePlayer.Player.ChChainWarningAudio = false;
-                SettingsWindowData.ActivePlayer.Player.EnteringZoneAudio = false;
-                SettingsWindowData.ActivePlayer.Player.WornOffAudio = false;
             }
             else
             {
@@ -1001,13 +990,9 @@ namespace EQTool.UI.SettingsComponents
                 SettingsWindowData.ActivePlayer.Player.FTETimerAudio = true;
                 SettingsWindowData.ActivePlayer.Player.DragonRoarAudio = true;
                 SettingsWindowData.ActivePlayer.Player.ZlandicarAudio = true;
-                SettingsWindowData.ActivePlayer.Player.DiseasedCloudAudio = true;
                 SettingsWindowData.ActivePlayer.Player.RootWarningAudio = true;
-                SettingsWindowData.ActivePlayer.Player.ResistWarningAudio = true;
                 SettingsWindowData.ActivePlayer.Player.DeathLoopAudio = true;
                 SettingsWindowData.ActivePlayer.Player.ChChainWarningAudio = true;
-                SettingsWindowData.ActivePlayer.Player.EnteringZoneAudio = true;
-                SettingsWindowData.ActivePlayer.Player.WornOffAudio = true;
             }
             SaveConfig();
         }
@@ -1083,22 +1068,6 @@ namespace EQTool.UI.SettingsComponents
 
         }
 
-        private void textenteringZone(object sender, RoutedEventArgs e)
-        {
-            var button = sender as System.Windows.Controls.Button;
-            if (!button.IsEnabled)
-            {
-                return;
-            }
-            if (SettingsWindowData.ActivePlayer?.Player == null)
-            {
-                return;
-            }
-            SettingsWindowData.ActivePlayer.Player.EnteringZoneAudio = true;
-            SettingsWindowData.ActivePlayer.Player.EnteringZoneOverlay = true;
-            ((App)System.Windows.Application.Current).OpenOverLayWindow();
-            PushLog("You have entered East Commonlands.");
-        }
 
 
         private void deleteMapCache(object sender, RoutedEventArgs e)
@@ -1123,11 +1092,6 @@ namespace EQTool.UI.SettingsComponents
         private void testFTETimers(object sender, RoutedEventArgs e)
         {
             settingsTestRunOverlay.RunTest(OverlayTypes.FTETimerEvent);
-        }
-
-        private void testWornOff(object sender, RoutedEventArgs e)
-        {
-            settingsTestRunOverlay.RunTest(OverlayTypes.WornOffEvent);
         }
 
         private void RefreshUIFiles(object sender, RoutedEventArgs e)
@@ -1521,6 +1485,225 @@ namespace EQTool.UI.SettingsComponents
                     appDispatcher.DispatchUI(() => { button.IsEnabled = true; });
                 }
             });
+        }
+
+        // ---- Triggers / Characters tree handlers (master-detail) ----
+
+        private void TriggerTree_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            // A plain (non-Ctrl) selection collapses the multi-selection down to the
+            // single newly-selected item, keeping the highlight consistent.
+            if ((Keyboard.Modifiers & ModifierKeys.Control) != ModifierKeys.Control)
+            {
+                ClearMultiSelect();
+                if (e.NewValue is TreeViewItemBase selected)
+                {
+                    selected.IsMultiSelected = true;
+                }
+            }
+            settingsManagementViewModel.TriggerTreeSelected(e.NewValue as TreeViewItemBase);
+        }
+
+        private void CharacterTree_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
+        {
+            settingsManagementViewModel.CharacterTreeSelected(e.NewValue as TreeViewItemBase);
+        }
+
+        // Ctrl+click toggles an item's membership in the multi-selection; a plain
+        // click clears the multi-selection and falls through to normal single-select.
+        private void OnPreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            var obj = e.OriginalSource as DependencyObject;
+            // let the expand/collapse toggle work normally
+            if (IsInExpander(obj))
+            {
+                return;
+            }
+
+            var container = GetDependencyObjectFromVisualTree(obj, typeof(TreeViewItem)) as TreeViewItem;
+            if (!(container?.Header is TreeViewItemBase data))
+            {
+                return;
+            }
+
+            if ((Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
+            {
+                // toggle this item in/out of the selection without changing the
+                // primary selection (so the editor panel stays put)
+                if (data.IsMultiSelected)
+                {
+                    // removing from the selection is always allowed
+                    data.IsMultiSelected = false;
+                }
+                else
+                {
+                    // a multi-selection is all built-in or all non-built-in: only allow
+                    // adding an item that matches the current selection's kind.
+                    var anchor = FirstMultiSelected();
+                    if (anchor == null || IsBuiltInNode(anchor) == IsBuiltInNode(data))
+                    {
+                        data.IsMultiSelected = true;
+                    }
+                }
+                e.Handled = true;
+            }
+            // a non-Ctrl click is handled by TriggerTree_SelectedItemChanged
+        }
+
+        private static bool IsBuiltInNode(TreeViewItemBase node)
+        {
+            return (node is TreeTriggerFolder f && f.IsBuiltIn) || (node is TreeTrigger t && t.IsBuiltIn);
+        }
+
+        private TreeViewItemBase FirstMultiSelected()
+        {
+            foreach (var item in settingsManagementViewModel.TriggerTreeItems)
+            {
+                var found = FindMultiSelected(item);
+                if (found != null)
+                {
+                    return found;
+                }
+            }
+            return null;
+        }
+
+        private static TreeViewItemBase FindMultiSelected(TreeViewItemBase node)
+        {
+            if (node.IsMultiSelected)
+            {
+                return node;
+            }
+            foreach (var child in node.Children)
+            {
+                var found = FindMultiSelected(child);
+                if (found != null)
+                {
+                    return found;
+                }
+            }
+            return null;
+        }
+
+        private void ClearMultiSelect()
+        {
+            foreach (var item in settingsManagementViewModel.TriggerTreeItems)
+            {
+                ClearMultiSelectRecursive(item);
+            }
+        }
+
+        private static void ClearMultiSelectRecursive(TreeViewItemBase node)
+        {
+            node.IsMultiSelected = false;
+            foreach (var child in node.Children)
+            {
+                ClearMultiSelectRecursive(child);
+            }
+        }
+
+        private static bool IsInExpander(DependencyObject obj)
+        {
+            while (obj != null)
+            {
+                if (obj is System.Windows.Controls.Primitives.ToggleButton)
+                {
+                    return true;
+                }
+                if (obj is TreeViewItem)
+                {
+                    return false;
+                }
+                obj = VisualTreeHelper.GetParent(obj);
+            }
+            return false;
+        }
+
+        // Right-clicking empty space in the Triggers tree (not on an item) opens the
+        // hidden root's menu so top-level folders/triggers can still be added or pasted.
+        private void TriggerTree_PreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            if (GetDependencyObjectFromVisualTree(e.OriginalSource as DependencyObject, typeof(TreeViewItem)) is TreeViewItem)
+            {
+                // An item was clicked; let the item-level handler build its own menu.
+                return;
+            }
+            e.Handled = true;
+            (sender as TreeView).ContextMenu = settingsManagementViewModel.GetTriggerRootContextMenu();
+        }
+
+        private void OnPreviewMouseRightButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            var obj = e.OriginalSource as DependencyObject;
+            var item = GetDependencyObjectFromVisualTree(obj, typeof(TreeViewItem)) as TreeViewItem;
+            var p = (TreeViewItemBase)item.Header;
+            if (p == null)
+            {
+                return;
+            }
+
+            _ = item.Focus();
+            e.Handled = true;
+            (sender as TreeViewItem).ContextMenu = settingsManagementViewModel.GetContextMenu(p);
+        }
+
+        private void RenameTextBox_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            if (sender is TextBox tb && tb.IsVisible)
+            {
+                // Defer focus until after the context menu has fully closed and layout
+                // has settled, otherwise the TextBox never receives keyboard focus.
+                _ = Dispatcher.BeginInvoke(new Action(() =>
+                {
+                    _ = tb.Focus();
+                    _ = Keyboard.Focus(tb);
+                    tb.SelectAll();
+                }), System.Windows.Threading.DispatcherPriority.Input);
+            }
+        }
+
+        private void RenameTextBox_KeyDown(object sender, KeyEventArgs e)
+        {
+            var tb = sender as TextBox;
+            if (e.Key == Key.Enter)
+            {
+                if (tb?.DataContext is TreeViewItemBase node)
+                {
+                    settingsManagementViewModel.CommitEdit(node);
+                }
+                e.Handled = true;
+            }
+            else if (e.Key == Key.Escape)
+            {
+                if (tb?.DataContext is TreeTriggerFolder folder)
+                {
+                    folder.CancelEdit();
+                }
+                e.Handled = true;
+            }
+        }
+
+        private void RenameTextBox_LostFocus(object sender, RoutedEventArgs e)
+        {
+            if ((sender as TextBox)?.DataContext is TreeViewItemBase node)
+            {
+                settingsManagementViewModel.CommitEdit(node);
+            }
+        }
+
+        private static DependencyObject GetDependencyObjectFromVisualTree(DependencyObject startObject, Type type)
+        {
+            var parent = startObject;
+            while (parent != null)
+            {
+                if (type.IsInstanceOfType(parent))
+                {
+                    break;
+                }
+
+                parent = VisualTreeHelper.GetParent(parent);
+            }
+            return parent;
         }
     }
 }

@@ -1,6 +1,5 @@
 ﻿using EQTool.Models;
 using EQTool.ViewModels;
-using System.Windows.Media;
 
 namespace EQTool.Services.Handlers
 {
@@ -19,22 +18,6 @@ namespace EQTool.Services.Handlers
             if (SpellHandlerService.SpellsThatNeedCounts.Contains(e.SpellName))
             {
                 return;
-            }
-
-            // handle the case where the user has asked for audible/visual alerts on any spell fading
-            var fadedText = $"{e.SpellName} faded";
-            if (activePlayer?.Player?.WornOffAudio == true)
-            {
-                textToSpeach.Say(fadedText);
-            }
-            if (activePlayer?.Player?.WornOffOverlay == true)
-            {
-                _ = System.Threading.Tasks.Task.Factory.StartNew(() =>
-                {
-                    logEvents.Handle(new OverlayEvent { Text = fadedText, ForeGround = Brushes.Red, Reset = false });
-                    System.Threading.Thread.Sleep(5000);
-                    logEvents.Handle(new OverlayEvent { Text = fadedText, ForeGround = Brushes.Red, Reset = true });
-                });
             }
 
             // try and remove the matching spell from the timer list
