@@ -20,6 +20,7 @@ namespace EQTool.Models
                 CreateCharmBreak(),
                 CreateDeathTouch(),
                 CreateTellsYou(),
+                CreateExpGained(),
                 CreateResist(),
                 CreateAvatarOfWarLockout(),
                 CreateVPHoskarResto(),
@@ -44,6 +45,103 @@ namespace EQTool.Models
                 BuildLegacy("builtin:cant-see-target", "Can't See Target", "^You can't see your target", "Can't see target", "Can't see target"),
                 BuildLegacy("builtin:sense-heading", "Sense Heading", "^You think you are heading {direction}", "Direction = {direction}", "{direction}"),
                 BuildLegacy("builtin:sense-heading-failed", "Sense Heading Failed", "^You have no idea what direction you are facing", "No idea", "no idea")
+            };
+        }
+
+        // create trigger exp grinding
+        //  - triggers from "You gain experience" or "You gain party experience"
+        //  - uses {counter} as part of output, to help user keep track of spawns
+        //  - allow user to send a tell to ".exp" to immediately clear all timers of this type
+        public static Trigger CreateExpGained()
+        {
+            return new Trigger
+            {
+                IsBuiltIn = true,
+                BuiltInId = "builtin:exp-gained-0640",
+                TriggerEnabled = false,
+                TriggerId = Guid.NewGuid(),
+                TriggerName = "Exp Timer // ^You gain (party )?experience",
+                // real regex (not the simplified {name} form) so the target stays a single word
+                SearchText = @"^You gain (party )?experience",
+                UseRegex = true,
+                Category = CategoryName,
+                Comments =  "Note: Sending a tell to \".exp\", i.e. \"/t .exp\" will immediately terminate all timers of this type!\n" +
+                            "BB fishers = 6:40 and 22:00, " +
+                            "Chardok = 18:00, " +
+                            "COM = 22:00, " +
+                            "Crystal Caverns = 14:45, " +
+                            "Droga = 20:30, " +
+                            "Grobb = 24:00, " +
+                            "Hole = 21:30, " +
+                            "HS = 20:30, " +
+                            "Kael = 28:00, " +
+                            "Kedge = 22:00, " +
+                            "Lower Guk = 28:00, " +
+                            "MM = 23 min, " +
+                            "North Felwithe guards = 24:00, " +
+                            "Oasis specs = 16:30, " +
+                            "OOT specs/sisters = 6:00, " +
+                            "Paw = 22:00, " +
+                            "Perma = 22:00, " +
+                            "Seb Lair = 27:00, " +
+                            "Skyfire = 13:00, " +
+                            "Skyshrine = 30:00, " +
+                            "TD = 12:00, " +
+                            "TT = 6:40, " +
+                            "Wars Woods brutes = 6:40, " +
+                            "WK guards = 6:00, " +
+                            "WL = 14:30, ",
+
+                Basic = new TriggerOutput
+                {
+                    DisplayTextEnabled = false,
+                    AudioType = TriggerAudioType.None,
+                    TtsText = ""
+                },
+                Timer = new TriggerTimer
+                {
+                    TimerType = TimerType.CountDown,
+                    TimerName = "-- Exp Timer [{counter}] (.exp)",
+                    Minutes = 6,
+                    Seconds = 40,
+                    RestartBehavior = TimerRestartBehavior.StartNewTimer,
+                    EndEarlyTexts = new System.Collections.ObjectModel.ObservableCollection<EndEarlyEntry> 
+                    {
+                        new EndEarlyEntry 
+                        {
+                            SearchText = @"^\.exp",
+                            UseRegex = true,
+                        },
+                    }
+                },
+                TimerEnding = new TriggerTimerEnding
+                {
+                    Enabled = true,
+                    Seconds = 30,
+                    Output = new TriggerOutput
+                    {
+                        DisplayTextEnabled = true,
+                        DisplayText = "30 second warning",
+                        AudioType = TriggerAudioType.TextToSpeech, 
+                        TtsText = "30 second warning"
+                    }
+                },
+                TimerEnded = new TriggerTimerEnded
+                {
+                    Enabled = true,
+                    Output = new TriggerOutput
+                    {
+                        DisplayTextEnabled = true,
+                        DisplayText = "Pop [{counter}]",
+                        AudioType = TriggerAudioType.TextToSpeech,
+                        TtsText = "Pop"
+                    }
+                },
+                Counter = new TriggerCounter
+                {
+                    ResetEnabled = true,
+                    Minutes = 30,
+                }
             };
         }
 
@@ -210,7 +308,7 @@ namespace EQTool.Models
         // "<name> tells you, '...'" -> tell alert.
         public static Trigger CreateTellsYou()
         {
-            return Build("builtin:tells-you", "Tells You", "{name}(tells you, '| -> {c}: )(?!I'll give you|Attacking |Welcome to my bank|Come back soon)", true, "{name} sent a tell", "{name} sent a tell");
+            return Build("builtin:tells-you", "Tells You", "{name}( tells you, '| -> {c}: )(?!I'll give you|Attacking |Welcome to my bank|Come back soon)", true, "{name} sent a tell", "{name} sent a tell");
         }
         public static Trigger CreateEnraged()
         {
@@ -232,7 +330,7 @@ namespace EQTool.Models
         // "<name> has fallen to the ground." -> failed feign death alert.
         public static Trigger CreateFailedFeign()
         {
-            return Build("builtin:failed-feign", "Failed Feign", "{name} has fallen to the ground.", true, "{name} Feign Failed Death!", "{name} Failed Feign Death");
+            return Build("builtin:failed-feign", "Failed Feign", "{c} has fallen to the ground.", true, "{c} Feign Failed Death!", "{c} Failed Feign Death");
         }
 
         // "<name> invites you to join a group." -> group invite alert.
