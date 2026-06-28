@@ -22,6 +22,9 @@ namespace EQtoolsTests
             spellWindowViewModel = container.Resolve<SpellWindowViewModel>();
             logParser = container.Resolve<LogParser>();
 
+            // The Death Touch built-in only fires in the Plane of Fear, so put the player there.
+            player.Player.Zone = "fear";
+
             // Built-in triggers are a read-only library that is disabled by default.
             // Enable the Death Touch trigger so the trigger pipeline evaluates it.
             var settings = container.Resolve<EQToolSettings>();
