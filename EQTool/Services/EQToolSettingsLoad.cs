@@ -48,6 +48,8 @@ namespace EQTool.Services
                         AddMissingEnums(ret1);
                         var changed = EnableAvatarOfWarTriggerIfMissing(ret1);
                         changed |= EnableVPHoskarRestoTriggerIfMissing(ret1);
+                        changed |= EnableDragonRoarTriggerIfMissing(ret1);
+                        changed |= EnableDNStunBreathTriggerIfMissing(ret1);
                         changed |= EnableSpellWornOffTriggerIfMissing(ret1);
                         if (changed)
                         {
@@ -110,6 +112,8 @@ namespace EQTool.Services
             }
             _ = EnableAvatarOfWarTriggerIfMissing(ret);
             _ = EnableVPHoskarRestoTriggerIfMissing(ret);
+            _ = EnableDragonRoarTriggerIfMissing(ret);
+            _ = EnableDNStunBreathTriggerIfMissing(ret);
             _ = EnableSpellWornOffTriggerIfMissing(ret);
             return ret;
         }
@@ -151,6 +155,42 @@ namespace EQTool.Services
             copy.TriggerId = Guid.NewGuid();
             copy.FolderId = null;
             copy.BuiltInId = BuiltInTriggers.VPHoskarRestoBuiltInId;
+            copy.TriggerEnabled = true;
+            settings.Triggers.Add(copy);
+            return true;
+        }
+
+        // Seeds and enables ONLY the Dragon Roar built-in (necropolis), and only when the user
+        // doesn't already have it (matched by BuiltInId). Replaces part of the old ZlandicarHandler.
+        private bool EnableDragonRoarTriggerIfMissing(EQToolSettings settings)
+        {
+            if (settings.Triggers.Any(a => string.Equals(a.BuiltInId, BuiltInTriggers.DragonRoarBuiltInId, StringComparison.OrdinalIgnoreCase)))
+            {
+                return false;
+            }
+
+            var copy = BuiltInTriggers.CreateDragonRoar();
+            copy.TriggerId = Guid.NewGuid();
+            copy.FolderId = null;
+            copy.BuiltInId = BuiltInTriggers.DragonRoarBuiltInId;
+            copy.TriggerEnabled = true;
+            settings.Triggers.Add(copy);
+            return true;
+        }
+
+        // Seeds and enables ONLY the DN Stun Breath built-in (necropolis), and only when the user
+        // doesn't already have it (matched by BuiltInId). Replaces part of the old ZlandicarHandler.
+        private bool EnableDNStunBreathTriggerIfMissing(EQToolSettings settings)
+        {
+            if (settings.Triggers.Any(a => string.Equals(a.BuiltInId, BuiltInTriggers.DNStunBreathBuiltInId, StringComparison.OrdinalIgnoreCase)))
+            {
+                return false;
+            }
+
+            var copy = BuiltInTriggers.CreateDNStunBreath();
+            copy.TriggerId = Guid.NewGuid();
+            copy.FolderId = null;
+            copy.BuiltInId = BuiltInTriggers.DNStunBreathBuiltInId;
             copy.TriggerEnabled = true;
             settings.Triggers.Add(copy);
             return true;

@@ -332,7 +332,6 @@
     <Compile Include="Services\Handlers\BoatHandler.cs" />
     <Compile Include="Services\Handlers\ConHandler.cs" />
     <Compile Include="Services\Handlers\DisciplineCooldownHandler.cs" />
-    <Compile Include="Services\Handlers\ZlandicarHandler.cs" />
     <Compile Include="Services\Handlers\EnterWorldHandler.cs" />
     <Compile Include="Services\Handlers\TriggerHandler.cs" />
     <Compile Include="Services\Handlers\YouForgetHandler.cs" />
@@ -394,7 +393,6 @@
     <Compile Include="Services\Handlers\PlayerClassDetectedHandler.cs" />
     <Compile Include="Services\Handlers\RootHasWornOffHandler.cs" />
     <Compile Include="Services\Handlers\CompleteHealHandler.cs" />
-    <Compile Include="Services\Handlers\DragonRoarHandler.cs" />
     <Compile Include="Services\Handlers\FTEHandler.cs" />
     <Compile Include="Services\Handlers\BaseHandler.cs" />
     <Compile Include="Services\Handlers\DeathLoopHandler.cs" />

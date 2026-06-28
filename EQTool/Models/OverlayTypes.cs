@@ -4,11 +4,9 @@
     {
         FTEEvent,
         FTETimerEvent,
-        DragonFearEvent,
         RootBreakEvent,
         RandomRollEvent,
         DeathLoopEvent,
-        ZlandicarEvent,
         MaxTypes
     }
 }

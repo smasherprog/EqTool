@@ -777,16 +777,6 @@ namespace EQTool.UI.SettingsComponents
             settingsTestRunOverlay.RunTest(OverlayTypes.FTEEvent);
         }
 
-        private void testDragonRoar(object sender, RoutedEventArgs e)
-        {
-            settingsTestRunOverlay.RunTest(OverlayTypes.DragonFearEvent);
-        }
-
-        private void testZlandicar(object sender, RoutedEventArgs e)
-        {
-            settingsTestRunOverlay.RunTest(OverlayTypes.ZlandicarEvent);
-        }
-
         private void textvoice(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrWhiteSpace(SettingsWindowData.SelectedVoice))
@@ -951,7 +941,6 @@ namespace EQTool.UI.SettingsComponents
             {
                 SettingsWindowData.ActivePlayer.Player.FTEOverlay = false;
                 SettingsWindowData.ActivePlayer.Player.FTETimerOverlay = false;
-                SettingsWindowData.ActivePlayer.Player.DragonRoarOverlay = false;
                 SettingsWindowData.ActivePlayer.Player.ZlandicarOverlay = false;
                 SettingsWindowData.ActivePlayer.Player.RootWarningOverlay = false;
                 SettingsWindowData.ActivePlayer.Player.DeathLoopOverlay = false;
@@ -962,7 +951,6 @@ namespace EQTool.UI.SettingsComponents
             {
                 SettingsWindowData.ActivePlayer.Player.FTEOverlay = true;
                 SettingsWindowData.ActivePlayer.Player.FTETimerOverlay = true;
-                SettingsWindowData.ActivePlayer.Player.DragonRoarOverlay = true;
                 SettingsWindowData.ActivePlayer.Player.ZlandicarOverlay = true;
                 SettingsWindowData.ActivePlayer.Player.RootWarningOverlay = true;
                 SettingsWindowData.ActivePlayer.Player.DeathLoopOverlay = true;
@@ -978,7 +966,6 @@ namespace EQTool.UI.SettingsComponents
             {
                 SettingsWindowData.ActivePlayer.Player.FTEAudio = false;
                 SettingsWindowData.ActivePlayer.Player.FTETimerAudio = false;
-                SettingsWindowData.ActivePlayer.Player.DragonRoarAudio = false;
                 SettingsWindowData.ActivePlayer.Player.ZlandicarAudio = false;
                 SettingsWindowData.ActivePlayer.Player.RootWarningAudio = false;
                 SettingsWindowData.ActivePlayer.Player.DeathLoopAudio = false;
@@ -988,7 +975,6 @@ namespace EQTool.UI.SettingsComponents
             {
                 SettingsWindowData.ActivePlayer.Player.FTEAudio = true;
                 SettingsWindowData.ActivePlayer.Player.FTETimerAudio = true;
-                SettingsWindowData.ActivePlayer.Player.DragonRoarAudio = true;
                 SettingsWindowData.ActivePlayer.Player.ZlandicarAudio = true;
                 SettingsWindowData.ActivePlayer.Player.RootWarningAudio = true;
                 SettingsWindowData.ActivePlayer.Player.DeathLoopAudio = true;

@@ -24,6 +24,8 @@ namespace EQTool.Models
                 CreateResist(),
                 CreateAvatarOfWarLockout(),
                 CreateVPHoskarResto(),
+                CreateDragonRoar(),
+                CreateDNStunBreath(),
                 CreateSpellWornOff(),
                 CreateEnteredZone(),
 
@@ -65,7 +67,7 @@ namespace EQTool.Models
                 SearchText = @"^You gain (party )?experience",
                 UseRegex = true,
                 Category = CategoryName,
-                Comments =  "Note: Sending a tell to \".exp\", i.e. \"/t .exp\" will immediately terminate all timers of this type!\n" +
+                Comments = "Note: Sending a tell to \".exp\", i.e. \"/t .exp\" will immediately terminate all timers of this type!\n" +
                             "BB fishers = 6:40 and 22:00, " +
                             "Chardok = 18:00, " +
                             "COM = 22:00, " +
@@ -105,9 +107,9 @@ namespace EQTool.Models
                     Minutes = 6,
                     Seconds = 40,
                     RestartBehavior = TimerRestartBehavior.StartNewTimer,
-                    EndEarlyTexts = new System.Collections.ObjectModel.ObservableCollection<EndEarlyEntry> 
+                    EndEarlyTexts = new System.Collections.ObjectModel.ObservableCollection<EndEarlyEntry>
                     {
-                        new EndEarlyEntry 
+                        new EndEarlyEntry
                         {
                             SearchText = @"^\.exp",
                             UseRegex = true,
@@ -122,7 +124,7 @@ namespace EQTool.Models
                     {
                         DisplayTextEnabled = true,
                         DisplayText = "30 second warning",
-                        AudioType = TriggerAudioType.TextToSpeech, 
+                        AudioType = TriggerAudioType.TextToSpeech,
                         TtsText = "30 second warning"
                     }
                 },
@@ -154,6 +156,7 @@ namespace EQTool.Models
             {
                 IsBuiltIn = true,
                 BuiltInId = "builtin:death-touch",
+                BuiltInFolder = "Encounters",
                 TriggerEnabled = false,
                 TriggerId = Guid.NewGuid(),
                 TriggerName = "Death Touch (Fright/Dread)",
@@ -279,6 +282,70 @@ namespace EQTool.Models
             };
         }
 
+        // Zlandicar (Dragon Necropolis) casts Dragon Roar -> 36s fear timer. Fires on the fear
+        // message ("You flee in terror.") or a resist of it, only while in necropolis. Ported from
+        // the old ZlandicarHandler. Lives in the Built In root (not the DN folder) since Dragon Roar
+        // is a general dragon mechanic. Auto-enabled for users on startup
+        // (see EQToolSettingsLoad.EnableDragonRoarTriggerIfMissing).
+        public const string DragonRoarBuiltInId = "builtin:dragon-roar";
+        public static Trigger CreateDragonRoar()
+        {
+            return new Trigger
+            {
+                IsBuiltIn = true,
+                BuiltInId = DragonRoarBuiltInId,
+                BuiltInFolder = "Encounters",
+                TriggerEnabled = false,
+                TriggerId = Guid.NewGuid(),
+                TriggerName = "Dragon Roar",
+                SearchText = @"(You flee in terror\.|resist(ed)? the Dragon Roar spell)",
+                UseRegex = true,
+                Category = CategoryName,
+                Timer = new TriggerTimer
+                {
+                    TimerType = TimerType.CountDown,
+                    TimerName = "Dragon Roar",
+                    Seconds = 36,
+                    RestartBehavior = TimerRestartBehavior.RestartTimer,
+                    BarColor = "Orange",
+                    IconName = "Dragon Roar",
+                    ShowInOverlay = true
+                }
+            };
+        }
+
+        // Zlandicar (Dragon Necropolis) casts Stun Breath -> 12s timer. Fires on the cast (on you /
+        // others) or a resist of it, only while in necropolis. Ported from the old ZlandicarHandler.
+        // Lives under Built In > Encounters > DN. Auto-enabled for users on startup
+        // (see EQToolSettingsLoad.EnableDNStunBreathTriggerIfMissing).
+        public const string DNStunBreathBuiltInId = "builtin:dn-stun-breath";
+        public static Trigger CreateDNStunBreath()
+        {
+            return new Trigger
+            {
+                IsBuiltIn = true,
+                BuiltInId = DNStunBreathBuiltInId,
+                BuiltInFolder = "Encounters/DN",
+                TriggerEnabled = false,
+                TriggerId = Guid.NewGuid(),
+                TriggerName = "Stun Breath",
+                SearchText = @"(Your eardrums rupture\.|staggers with intense pain\.|resist(ed)? the Stun Breath spell)",
+                UseRegex = true,
+                Category = CategoryName,
+                Zone = "necropolis",
+                Timer = new TriggerTimer
+                {
+                    TimerType = TimerType.CountDown,
+                    TimerName = "Stun Breath",
+                    Seconds = 12,
+                    RestartBehavior = TimerRestartBehavior.RestartTimer,
+                    BarColor = "Orange",
+                    IconName = "Stun Breath",
+                    ShowInOverlay = true
+                }
+            };
+        }
+
         // "Your <spell> spell has worn off." -> "<spell> faded" alert. Ported from the alert
         // portion of SpellWornOffOtherHandler (which still handles removing the faded spell from
         // the timer window). Auto-enabled for users on startup
@@ -312,7 +379,9 @@ namespace EQTool.Models
         }
         public static Trigger CreateEnraged()
         {
-            return Build("builtin:enraged", "Enraged", "{npc} has become ENRAGED.", true, "{npc} ENRAGED", "{npc} is enraged");
+            var trigger = Build("builtin:enraged", "Enraged", "{npc} has become ENRAGED.", true, "{npc} ENRAGED", "{npc} is enraged");
+            trigger.BuiltInFolder = "Encounters";
+            return trigger;
         }
 
         // "You feel as if you are about to fall." -> "Levitate Fading".

@@ -1,8 +1,6 @@
 ﻿using EQTool.Models;
 using EQTool.ViewModels;
 using System;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace EQTool.Services
 {
@@ -18,11 +16,9 @@ namespace EQTool.Services
             this.logParser = logParser;
             actions[(int)OverlayTypes.FTEEvent] = FTEEvent;
             actions[(int)OverlayTypes.FTETimerEvent] = FTETimerEvent;
-            actions[(int)OverlayTypes.DragonFearEvent] = DragonFearEvent;
             actions[(int)OverlayTypes.RootBreakEvent] = RootBreakEvent;
             actions[(int)OverlayTypes.RandomRollEvent] = RandomRollEvent;
             actions[(int)OverlayTypes.DeathLoopEvent] = DeathLoopEvent;
-            actions[(int)OverlayTypes.ZlandicarEvent] = ZlandicarEvent;
         }
 
         public void RunTest(OverlayTypes overlayType)
@@ -76,13 +72,6 @@ namespace EQTool.Services
             logParser.Push("Your Paralyzing Earth spell has worn off.", DateTime.Now);
         }
 
-        private void DragonFearEvent()
-        {
-            activePlayer.Player.DragonRoarAudio = true;
-            activePlayer.Player.DragonRoarOverlay = true;
-            logParser.Push($"You flee in terror.", DateTime.Now);
-        }
-
         private void FTEEvent()
         {
             activePlayer.Player.FTEAudio = true;
@@ -94,20 +83,6 @@ namespace EQTool.Services
             activePlayer.Player.FTETimerAudio = true;
             activePlayer.Player.FTETimerOverlay = true;
             logParser.Push("Zlandicar engages Tzvia!", DateTime.Now);
-        }
-
-        private void ZlandicarEvent()
-        {
-            activePlayer.Player.ZlandicarOverlay = true;
-            activePlayer.Player.ZlandicarAudio = true;
-            var previousZone = activePlayer.Player.Zone;
-            activePlayer.Player.Zone = "necropolis";
-            logParser.Push($"You flee in terror.", DateTime.Now);
-            _ = Task.Factory.StartNew(() =>
-            {
-                Thread.Sleep(5000);
-                logParser.Push($"Your eardrums rupture.", DateTime.Now);
-            });
         }
     }
 }

@@ -213,19 +213,7 @@
                     <CheckBox IsChecked="{Binding ActivePlayer.Player.FTEOverlay}" Click="Savesettings" MinWidth="75"></CheckBox>
                     <CheckBox IsChecked="{Binding ActivePlayer.Player.FTEAudio}" Click="Savesettings" MinWidth="30"></CheckBox>
                     <Button Content="▶" Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="testFTE" ToolTip="Test FTE" />
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Dragon Roar" VerticalAlignment="Center" FontWeight="Bold"  MinWidth="100"/>
-                    <CheckBox IsChecked="{Binding ActivePlayer.Player.DragonRoarOverlay}" Click="Savesettings" MinWidth="75"></CheckBox>
-                    <CheckBox IsChecked="{Binding ActivePlayer.Player.DragonRoarAudio}" Click="Savesettings" MinWidth="30"></CheckBox>
-                    <Button Content="▶" Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="testDragonRoar" ToolTip="Test Dragon Roar" />
-                </StackPanel>
-                <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Zlandicar" VerticalAlignment="Center" FontWeight="Bold"  MinWidth="100"/>
-                    <CheckBox IsChecked="{Binding ActivePlayer.Player.ZlandicarOverlay}" Click="Savesettings" MinWidth="75"></CheckBox>
-                    <CheckBox IsChecked="{Binding ActivePlayer.Player.ZlandicarAudio}" Click="Savesettings" MinWidth="30"></CheckBox>
-                     <Button Content="▶" Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="testZlandicar" ToolTip="Test Zlandicar (Dragon Roar then Stun Breath 5s later)" />
-                </StackPanel>
+                </StackPanel> 
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Root Breaks" VerticalAlignment="Center" FontWeight="Bold"  MinWidth="100"/>
                     <CheckBox IsChecked="{Binding ActivePlayer.Player.RootWarningOverlay}" Click="Savesettings" MinWidth="75"></CheckBox>
