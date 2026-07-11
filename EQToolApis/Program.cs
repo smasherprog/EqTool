@@ -164,6 +164,7 @@ builder.Services.Configure<DiscordServiceOptions>(options =>
     options.token = builder.Configuration.GetValue<string>("DiscordToken");
 })
 .AddSingleton<ItemDataService>()
+.AddSingleton<CharacterProfileService>()
 .AddSingleton<IDiscordService, DiscordService>()
 .AddSingleton<EQToolShared.Discord.DiscordAuctionParse>()
 .AddSingleton<DBData>(a =>

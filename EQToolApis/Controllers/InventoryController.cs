@@ -1,5 +1,6 @@
 using EQToolApis.DB;
 using EQToolApis.DB.Models;
+using EQToolApis.Services;
 using EQToolShared.APIModels.InventoryControllerModels;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -14,10 +15,44 @@ namespace EQToolApis.Controllers
     public class InventoryController : ControllerBase
     {
         private readonly EQToolContext _context;
+        private readonly CharacterProfileService _profileService;
 
-        public InventoryController(EQToolContext context)
+        public InventoryController(EQToolContext context, CharacterProfileService profileService)
         {
             _context = context;
+            _profileService = profileService;
+        }
+
+        // Standalone HTML profile page for the desktop app's embedded browser panel.
+        [HttpGet("profile")]
+        public async Task<ContentResult> Profile(string character)
+        {
+            var assetBase = $"{Request.Scheme}://{Request.Host}";
+            ContentResult Html(CharacterProfile? profile, string message = "") =>
+                Content(CharacterProfileHtml.RenderDocument(profile, message, assetBase), "text/html");
+
+            var discordId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+            if (string.IsNullOrEmpty(discordId))
+            {
+                return Html(null, "Not logged in. Link Discord from the General tab.");
+            }
+
+            var discordUser = await _context.DiscordUsers.FirstOrDefaultAsync(u => u.DiscordId == discordId);
+            if (discordUser == null)
+            {
+                return Html(null, "Not logged in. Link Discord from the General tab.");
+            }
+
+            var inventory = await _context.CharacterInventories
+                .Include(c => c.Items)
+                .FirstOrDefaultAsync(c => c.DiscordUserId == discordUser.DiscordUserId && c.CharacterName == character);
+
+            if (inventory == null)
+            {
+                return Html(null, $"No inventory uploaded for {character}. Run /outputfile inventory in game while Pigparse is running.");
+            }
+
+            return Html(_profileService.BuildProfile(inventory));
         }
 
         [HttpPost("upload")]
