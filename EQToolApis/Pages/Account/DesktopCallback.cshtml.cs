@@ -33,13 +33,20 @@ namespace EQToolApis.Pages.Account
             var username = result.Principal.FindFirst(ClaimTypes.Name)?.Value ?? string.Empty;
             var discordId = result.Principal.FindFirst(ClaimTypes.NameIdentifier)?.Value ?? string.Empty;
 
-            var token = Convert.ToHexString(RandomNumberGenerator.GetBytes(32));
-
             var user = await _db.DiscordUsers.FirstOrDefaultAsync(u => u.DiscordId == discordId);
-            if (user != null)
+
+            // Reuse the existing token so logging in from another computer does not
+            // invalidate tokens already saved on other desktops; only mint one the
+            // first time (or after the token has been cleared server-side).
+            var token = user?.ApiToken;
+            if (string.IsNullOrEmpty(token))
             {
-                user.ApiToken = token;
-                await _db.SaveChangesAsync();
+                token = Convert.ToHexString(RandomNumberGenerator.GetBytes(32));
+                if (user != null)
+                {
+                    user.ApiToken = token;
+                    await _db.SaveChangesAsync();
+                }
             }
 
             var callbackUrl = $"http://127.0.0.1:{port}/?username={Uri.EscapeDataString(username)}&discord_id={Uri.EscapeDataString(discordId)}&api_token={Uri.EscapeDataString(token)}";
