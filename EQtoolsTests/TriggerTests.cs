@@ -143,6 +143,142 @@ namespace EQtoolsTests
             Assert.IsTrue(settings.Triggers.All(x => !x.Customized), "No built-in should remain customized after reset.");
         }
 
+        // A leftover duplicate from when a built-in shipped as a plain user trigger (no BuiltInId)
+        // is merged into the built-in by name: the library supplies the general section, the user's
+        // copy supplies its settings/enabled state, and the redundant seeded entry is dropped.
+        [TestMethod]
+        public void OrphanedDuplicateMergesIntoBuiltInByName()
+        {
+            var settings = new EQToolSettings();
+            EQToolSettingsLoad.SyncBuiltInTriggers(settings);
+            var seeded = settings.Triggers.First(x => x.BuiltInId == "builtin:cant-see-target");
+            seeded.TriggerEnabled = false;
+            var orphanId = System.Guid.NewGuid();
+            settings.Triggers.Add(new Trigger
+            {
+                TriggerId = orphanId,
+                TriggerName = "Can't See Target",
+                SearchText = "old user pattern",
+                TriggerEnabled = true,
+                DisplayTextEnabled = true,
+                DisplayText = "user display text"
+            });
+
+            var changed = EQToolSettingsLoad.SyncBuiltInTriggers(settings);
+
+            Assert.IsTrue(changed, "Adopting a duplicate should be reported so it gets persisted.");
+            var matches = settings.Triggers.Where(x => x.TriggerName == "Can't See Target").ToList();
+            Assert.AreEqual(1, matches.Count, "The duplicate and the seeded built-in should merge into one trigger.");
+            var merged = matches[0];
+            Assert.AreEqual("builtin:cant-see-target", merged.BuiltInId);
+            Assert.IsTrue(merged.IsBuiltIn);
+            Assert.AreEqual(orphanId, merged.TriggerId, "The user copy's id should be kept.");
+            Assert.AreEqual("^You can't see your target", merged.SearchText, "The general section should come from the built-in library.");
+            Assert.AreEqual("user display text", merged.DisplayText, "The user's output settings should be carried over.");
+            Assert.IsTrue(merged.TriggerEnabled, "The trigger stays enabled when either copy was enabled.");
+            Assert.IsTrue(merged.Customized, "The merge must be marked Customized so later syncs keep the carried-over settings.");
+        }
+
+        // The same merge also matches on search text when the names differ, and the general
+        // section (including the name) still comes from the library definition.
+        [TestMethod]
+        public void OrphanedDuplicateMergesIntoBuiltInBySearchText()
+        {
+            var settings = new EQToolSettings();
+            EQToolSettingsLoad.SyncBuiltInTriggers(settings);
+            settings.Triggers.Add(new Trigger
+            {
+                TriggerName = "my fizzle alert",
+                SearchText = "^Your spell fizzles!",
+                TriggerEnabled = true,
+                Basic = new TriggerOutput
+                {
+                    DisplayTextEnabled = true,
+                    DisplayText = "user fizzle text",
+                    AudioType = TriggerAudioType.TextToSpeech,
+                    TtsText = "user fizzle tts"
+                }
+            });
+
+            EQToolSettingsLoad.SyncBuiltInTriggers(settings);
+
+            Assert.IsFalse(settings.Triggers.Any(x => x.TriggerName == "my fizzle alert"), "The duplicate should have been absorbed.");
+            var merged = settings.Triggers.Single(x => x.BuiltInId == "builtin:spell-fizzle");
+            Assert.AreEqual("Spell Fizzle", merged.TriggerName, "The name should come from the built-in library.");
+            Assert.AreEqual("user fizzle text", merged.Basic.DisplayText, "The user's output settings should be carried over.");
+            Assert.IsTrue(merged.Customized);
+        }
+
+        // Several encounter AOE built-ins share one search pattern (differing only by zone), so a
+        // search-text match alone is ambiguous there and must not adopt the user trigger.
+        [TestMethod]
+        public void AmbiguousSearchTextDuplicateIsLeftAlone()
+        {
+            var settings = new EQToolSettings();
+            EQToolSettingsLoad.SyncBuiltInTriggers(settings);
+            var before = settings.Triggers.Count;
+            settings.Triggers.Add(new Trigger
+            {
+                TriggerName = "my silver breath",
+                SearchText = @"(You feel your skin freeze\.|skin freezes\.|You resist the Silver Breath spell!)",
+                TriggerEnabled = true
+            });
+
+            EQToolSettingsLoad.SyncBuiltInTriggers(settings);
+
+            var user = settings.Triggers.SingleOrDefault(x => x.TriggerName == "my silver breath");
+            Assert.IsNotNull(user, "An ambiguous duplicate should stay a user trigger.");
+            Assert.IsNull(user.BuiltInId);
+            Assert.AreEqual(before + 1, settings.Triggers.Count);
+        }
+
+        // If the user already customized the built-in itself, a same-named user trigger is left
+        // alone rather than guessing which copy's settings should win.
+        [TestMethod]
+        public void DuplicateOfACustomizedBuiltInIsLeftAlone()
+        {
+            var settings = new EQToolSettings();
+            EQToolSettingsLoad.SyncBuiltInTriggers(settings);
+            var seeded = settings.Triggers.First(x => x.BuiltInId == "builtin:cant-see-target");
+            seeded.Customized = true;
+            seeded.SearchText = "edited by user";
+            settings.Triggers.Add(new Trigger
+            {
+                TriggerName = "Can't See Target",
+                SearchText = "old user pattern",
+                TriggerEnabled = true
+            });
+
+            EQToolSettingsLoad.SyncBuiltInTriggers(settings);
+
+            Assert.AreEqual(2, settings.Triggers.Count(x => x.TriggerName == "Can't See Target"), "Neither copy should be merged or dropped.");
+            Assert.AreEqual("edited by user", settings.Triggers.Single(x => x.BuiltInId == "builtin:cant-see-target").SearchText);
+        }
+
+        // A copy of a built-in the user filed into their own folder (the Copy feature clears
+        // BuiltInId) is intentional and must not be absorbed back into the library.
+        [TestMethod]
+        public void BuiltInCopyInAFolderIsNotAdopted()
+        {
+            var settings = new EQToolSettings();
+            EQToolSettingsLoad.SyncBuiltInTriggers(settings);
+            var folderId = System.Guid.NewGuid();
+            settings.TriggerFolders.Add(new TriggerFolder { Id = folderId, Name = "My Folder" });
+            settings.Triggers.Add(new Trigger
+            {
+                TriggerName = "Can't See Target",
+                SearchText = "^You can't see your target",
+                FolderId = folderId,
+                TriggerEnabled = true
+            });
+
+            EQToolSettingsLoad.SyncBuiltInTriggers(settings);
+
+            var copy = settings.Triggers.SingleOrDefault(x => x.TriggerName == "Can't See Target" && string.IsNullOrEmpty(x.BuiltInId));
+            Assert.IsNotNull(copy, "The filed copy should remain an independent user trigger.");
+            Assert.AreEqual(folderId, copy.FolderId);
+        }
+
         [TestMethod]
         public void CurrentContextTokenSubstitutesIntoPatternAndOutput()
         {

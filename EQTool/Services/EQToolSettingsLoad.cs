@@ -112,8 +112,11 @@ namespace EQTool.Services
         //   - A built-in the user hasn't edited (Customized == false) has its definition refreshed
         //     from code, so fixes (regex/timer/folder) reach everyone; its enabled state + id are kept.
         //   - A built-in the user HAS edited (Customized == true) is left as-is, so their edits stick.
+        //   - A user trigger with no BuiltInId that matches a built-in by name or search text is a
+        //     duplicate left over from when that trigger shipped as a plain user trigger; it is
+        //     merged into the built-in (see AdoptOrphanedBuiltIn) instead of sitting at the tree root.
         //   - A newly shipped built-in is added enabled.
-        // Returns whether a new built-in was added (so the caller can persist the seed).
+        // Returns whether the trigger list changed in a way that should be persisted.
         public static bool SyncBuiltInTriggers(EQToolSettings settings)
         {
             if (settings.Triggers == null)
@@ -126,12 +129,64 @@ namespace EQTool.Services
                 .GroupBy(b => b.BuiltInId, StringComparer.OrdinalIgnoreCase)
                 .ToDictionary(g => g.Key, g => g.First(), StringComparer.OrdinalIgnoreCase);
 
-            var rebuilt = new List<Trigger>();
-            var present = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            // The entry (if any) already tracking each built-in id, so duplicate adoption can
+            // defer to a customized one and fold in the enabled state of an untouched one.
+            var trackedById = new Dictionary<string, Trigger>(StringComparer.OrdinalIgnoreCase);
             foreach (var t in settings.Triggers)
             {
-                if (!string.IsNullOrEmpty(t.BuiltInId) && defs.TryGetValue(t.BuiltInId, out var def))
+                if (!string.IsNullOrEmpty(t.BuiltInId) && defs.ContainsKey(t.BuiltInId) && !trackedById.ContainsKey(t.BuiltInId))
                 {
+                    trackedById[t.BuiltInId] = t;
+                }
+            }
+
+            // Adopt orphaned duplicates: user triggers (no BuiltInId) matching a built-in
+            // definition by name or search text become that built-in, keeping the user's settings.
+            var adoptions = new Dictionary<Trigger, Trigger>();
+            var claimed = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            foreach (var t in settings.Triggers)
+            {
+                if (!string.IsNullOrEmpty(t.BuiltInId))
+                {
+                    continue;
+                }
+                if (t.FolderId.HasValue || !string.IsNullOrWhiteSpace(t.BuiltInFolderPath))
+                {
+                    // Filed into a folder = an intentional copy of a built-in, not a legacy
+                    // duplicate (which predate folders and sit at the tree root).
+                    continue;
+                }
+                var def = FindBuiltInMatch(defs.Values, t);
+                if (def == null || claimed.Contains(def.BuiltInId))
+                {
+                    continue;
+                }
+                if (trackedById.TryGetValue(def.BuiltInId, out var tracked) && tracked.Customized)
+                {
+                    // The user already edited the built-in itself; don't guess which copy wins.
+                    continue;
+                }
+                adoptions[t] = AdoptOrphanedBuiltIn(def, t, tracked);
+                _ = claimed.Add(def.BuiltInId);
+            }
+
+            var rebuilt = new List<Trigger>();
+            var present = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            var changed = adoptions.Count > 0;
+            foreach (var t in settings.Triggers)
+            {
+                if (adoptions.TryGetValue(t, out var merged))
+                {
+                    _ = present.Add(merged.BuiltInId);
+                    rebuilt.Add(merged);
+                }
+                else if (!string.IsNullOrEmpty(t.BuiltInId) && defs.TryGetValue(t.BuiltInId, out var def))
+                {
+                    if (claimed.Contains(t.BuiltInId))
+                    {
+                        // Superseded by an adopted duplicate above; drop this copy.
+                        continue;
+                    }
                     _ = present.Add(t.BuiltInId);
                     if (t.Customized)
                     {
@@ -154,8 +209,6 @@ namespace EQTool.Services
                     rebuilt.Add(t);
                 }
             }
-
-            var changed = false;
             foreach (var def in defs.Values)
             {
                 if (present.Contains(def.BuiltInId))
@@ -171,6 +224,56 @@ namespace EQTool.Services
             settings.Triggers.Clear();
             settings.Triggers.AddRange(rebuilt);
             return changed;
+        }
+
+        // Finds the built-in definition an untagged user trigger duplicates: an exact name match
+        // wins; otherwise a search-text match counts only when exactly one built-in uses that
+        // pattern (several encounter AOEs share a pattern and differ only by zone).
+        private static Trigger FindBuiltInMatch(IEnumerable<Trigger> defs, Trigger trigger)
+        {
+            Trigger bySearch = null;
+            var searchMatches = 0;
+            foreach (var def in defs)
+            {
+                if (TextEquals(def.TriggerName, trigger.TriggerName))
+                {
+                    return def;
+                }
+                if (TextEquals(def.SearchText, trigger.SearchText))
+                {
+                    bySearch = def;
+                    searchMatches++;
+                }
+            }
+            return searchMatches == 1 ? bySearch : null;
+        }
+
+        private static bool TextEquals(string a, string b)
+        {
+            return !string.IsNullOrWhiteSpace(a) && !string.IsNullOrWhiteSpace(b)
+                && string.Equals(a.Trim(), b.Trim(), StringComparison.OrdinalIgnoreCase);
+        }
+
+        // Merges an orphaned duplicate into its built-in definition. The library supplies the
+        // general section (name, search text, category, zone, comments, folder); the user's copy
+        // supplies everything they configured (outputs, timers, counter) plus its id, and the
+        // trigger stays enabled if either copy was firing before the merge. Marked Customized so
+        // later syncs don't overwrite the carried-over settings with the library defaults.
+        private static Trigger AdoptOrphanedBuiltIn(Trigger def, Trigger orphan, Trigger tracked)
+        {
+            def.TriggerId = orphan.TriggerId;
+            def.TriggerEnabled = orphan.TriggerEnabled || (tracked?.TriggerEnabled ?? false);
+            def.Customized = true;
+            def.Basic = orphan.Basic;
+            def.DisplayTextEnabled = orphan.DisplayTextEnabled;
+            def.DisplayText = orphan.DisplayText;
+            def.AudioTextEnabled = orphan.AudioTextEnabled;
+            def.AudioText = orphan.AudioText;
+            def.Timer = orphan.Timer;
+            def.TimerEnding = orphan.TimerEnding;
+            def.TimerEnded = orphan.TimerEnded;
+            def.Counter = orphan.Counter;
+            return def;
         }
 
         private void AddMissingEnums(EQToolSettings settings)
