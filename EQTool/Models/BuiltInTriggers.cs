@@ -343,10 +343,13 @@ namespace EQTool.Models
             return Build("builtin:charm-break", "Charm Break", "Your charm spell has worn off.", false, "Charm Break", "Charm Break", "Combat");
         }
 
-        // "<name> tells you, '...'" -> tell alert.
+        // "<name> tells you, '...'" -> tell alert. The sender must be a single word: player names
+        // never contain spaces, so multi-word senders ("Peron ThreadSpinner tells you, ...") are
+        // merchants/NPCs and are excluded. Real regex (not the simplified {name} form, which also
+        // matches spaces), anchored so the engine can't skip to the last word of an NPC's name.
         public static Trigger CreateTellsYou()
         {
-            return Build("builtin:tells-you", "Tells You", "{name}( tells you, '| -> {c}: )(?!I'll give you|Attacking |Welcome to my bank|Come back soon)", true, "{name} sent a tell", "{name} sent a tell", "Utility");
+            return Build("builtin:tells-you", "Tells You", @"^(?<name>[\w`]+)( tells you, '| -> {c}: )(?!I'll give you|Attacking |Welcome to my bank|Come back soon)", true, "{name} sent a tell", "{name} sent a tell", "Utility");
         }
         public static Trigger CreateEnraged()
         {

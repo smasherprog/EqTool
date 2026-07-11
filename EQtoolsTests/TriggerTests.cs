@@ -279,6 +279,24 @@ namespace EQtoolsTests
             Assert.AreEqual(folderId, copy.FolderId);
         }
 
+        // Tells You must fire for real players (single-word names) but not for NPCs, whose names
+        // contain spaces (merchants, bankers, quest NPCs), and not for the filtered NPC/pet texts.
+        [TestMethod]
+        public void TellsYouIgnoresNpcSendersWithSpacesInTheirName()
+        {
+            var trigger = BuiltInTriggers.CreateTellsYou();
+            trigger.TriggerEnabled = true;
+            trigger.PlayerName = "Gandalf";
+
+            Assert.IsTrue(trigger.Matches("Thalistair tells you, 'omw'"), "A player tell should fire.");
+            Assert.IsTrue(trigger.Matches("Thalistair -> Gandalf: omw"), "The tell-window format should fire.");
+            Assert.AreEqual("Thalistair sent a tell", trigger.Expand(trigger.GetEffectiveBasic().DisplayText));
+
+            Assert.IsFalse(trigger.Matches("Peron ThreadSpinner tells you, 'That'll be 3 gold 2 copper for the Earring of the Frozen Skull.'"), "A merchant (multi-word name) should not fire.");
+            Assert.IsFalse(trigger.Matches("Cleonae Kalen tells you, 'I'll give you 9 gold 8 silver 8 copper per Globe of Fear'"), "A merchant buy offer should not fire.");
+            Assert.IsFalse(trigger.Matches("a spectre tells you, 'Attacking a spectre Master.'"), "A pet attack message should not fire.");
+        }
+
         [TestMethod]
         public void CurrentContextTokenSubstitutesIntoPatternAndOutput()
         {
