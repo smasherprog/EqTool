@@ -410,6 +410,21 @@ namespace EQTool.UI.SettingsComponents
             settingsTestRunOverlay.RunTest(OverlayTypes.RandomRollEvent);
         }
 
+        private void resetTriggers(object sender, RoutedEventArgs e)
+        {
+            var result = System.Windows.MessageBox.Show(
+                "This will delete ALL triggers and folders (including any you created) and restore the built-in defaults. This cannot be undone.\n\nAre you sure?",
+                "Reset Triggers",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Warning);
+            if (result != MessageBoxResult.Yes)
+            {
+                return;
+            }
+            settingsManagementViewModel.ResetTriggersToDefault();
+            _ = System.Windows.MessageBox.Show("Triggers have been reset to their defaults.", "Reset Triggers", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
         private void testDPS(object sender, RoutedEventArgs e)
         {
             var testdpsbutton = sender as System.Windows.Controls.Button;

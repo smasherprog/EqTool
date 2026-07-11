@@ -3,11 +3,11 @@ using Autofac.Features.ResolveAnything;
 using EQTool.Models;
 using EQTool.Services;
 using EQTool.Services.Handlers;
+using EQToolShared.Extensions;
 using EQtoolsTests.Fakes;
 using System;
 using System.IO;
 using System.Linq;
-using EQToolShared.Extensions;
 
 namespace EQtoolsTests
 {
@@ -19,7 +19,7 @@ namespace EQtoolsTests
             _ = builder.RegisterSource(new AnyConcreteTypeNotAlreadyRegisteredSource());
             _ = builder.Register(a =>
             {
-                return new EQTool.Models.EQToolSettings
+                var s = new EQTool.Models.EQToolSettings
                 {
                     DefaultEqDirectory = string.Empty,
                     EqLogDirectory = string.Empty,
@@ -46,6 +46,9 @@ namespace EQtoolsTests
                     },
                     Triggers = new System.Collections.Generic.List<Trigger>()
                 };
+                // Mirror the app: add all built-in triggers (enabled) into the trigger list.
+                _ = EQToolSettingsLoad.SyncBuiltInTriggers(s);
+                return s;
             }).AsSelf().SingleInstance();
 
             _ = builder.RegisterType<EQTool.Services.LogEvents>().AsSelf().SingleInstance();
@@ -70,7 +73,7 @@ namespace EQtoolsTests
 
             _ = builder.RegisterType<AppDispatcherFake>().As<EQTool.Services.IAppDispatcher>().SingleInstance();
             _ = builder.RegisterType<EQTool.Services.SpellIcons>().AsSelf().SingleInstance();
-            _ = builder.RegisterType<EQTool.Services.ParseSpells_spells_us>().AsSelf().SingleInstance(); 
+            _ = builder.RegisterType<EQTool.Services.ParseSpells_spells_us>().AsSelf().SingleInstance();
             _ = builder.RegisterType<EQTool.ViewModels.SettingsWindowViewModel>().AsSelf().SingleInstance();
             _ = builder.RegisterType<EQTool.Models.EQSpells>().AsSelf().SingleInstance();
             _ = builder.RegisterType<EQTool.ViewModels.ActivePlayer>().AsSelf().SingleInstance();

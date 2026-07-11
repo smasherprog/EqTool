@@ -103,6 +103,15 @@ namespace EQTool.Models
             {
                 Model.Timer.RestartBehavior = TimerRestartBehavior.StartNewTimer;
             }
+            // The Display Icon dropdown never offers a "no icon" choice, so its selection must always
+            // resolve to one of the icon options. Built-in triggers store the AOE spell name (e.g.
+            // "Stun Breath"), which usually isn't a real player-spell icon, and empty/legacy values
+            // match nothing either. Coerce any icon name that isn't in IconOptions to Feign Death so
+            // the dropdown shows a valid selection instead of a blank.
+            if (IconOptions == null || !IconOptions.Any(o => string.Equals(o.name, Model.Timer.IconName, StringComparison.OrdinalIgnoreCase)))
+            {
+                Model.Timer.IconName = "Feign Death";
+            }
             if (Model.TimerEnding == null)
             {
                 Model.TimerEnding = new TriggerTimerEnding();
@@ -144,10 +153,12 @@ namespace EQTool.Models
         {
             if (Model.IsBuiltIn)
             {
-                // built-in library triggers are never persisted or modified
-                return;
+                // The user edited a built-in. It already lives in the trigger list (seeded on load);
+                // mark it Customized so its edited definition isn't overwritten when built-ins are
+                // refreshed from code on the next load.
+                Model.Customized = true;
             }
-            if (IsNewTrigger)
+            else if (IsNewTrigger)
             {
                 toolSettings.Triggers.Add(Model);
                 IsNewTrigger = false;

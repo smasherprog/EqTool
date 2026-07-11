@@ -399,6 +399,7 @@
     <Compile Include="Services\TextToSpeach.cs" />
     <Compile Include="Services\AudioService.cs" />
     <Compile Include="Services\TriggerActionExecutor.cs" />
+    <Compile Include="Services\TriggerTestSampleGenerator.cs" />
     <Compile Include="Services\TriggerTimerManager.cs" />
     <Compile Include="Services\Map\MapData.cs" />
     <Compile Include="Services\Map\ZoneSpawnTimes.cs" />

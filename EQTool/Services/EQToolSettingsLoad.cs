@@ -46,12 +46,7 @@ namespace EQTool.Services
                             }
                         }
                         AddMissingEnums(ret1);
-                        var changed = EnableAvatarOfWarTriggerIfMissing(ret1);
-                        changed |= EnableVPHoskarRestoTriggerIfMissing(ret1);
-                        changed |= EnableDragonRoarTriggerIfMissing(ret1);
-                        changed |= EnableDNStunBreathTriggerIfMissing(ret1);
-                        changed |= EnableSpellWornOffTriggerIfMissing(ret1);
-                        if (changed)
+                        if (SyncBuiltInTriggers(ret1))
                         {
                             Save(ret1);
                         }
@@ -106,115 +101,76 @@ namespace EQTool.Services
                 ShowRandomRolls = true
             };
             AddMissingEnums(ret);
-            if (ret.Triggers == null)
-            {
-                ret.Triggers = new List<Trigger>();
-            }
-            _ = EnableAvatarOfWarTriggerIfMissing(ret);
-            _ = EnableVPHoskarRestoTriggerIfMissing(ret);
-            _ = EnableDragonRoarTriggerIfMissing(ret);
-            _ = EnableDNStunBreathTriggerIfMissing(ret);
-            _ = EnableSpellWornOffTriggerIfMissing(ret);
+            _ = SyncBuiltInTriggers(ret);
             return ret;
         }
 
-        // Seeds and enables ONLY the Avatar of War lockout built-in, and only when the user doesn't
-        // already have it (matched by BuiltInId). Once it's in the user's trigger list they can
-        // disable or delete it without it coming back. This replaces the old always-on AOWTimerHandler.
-        // No other built-ins are auto-enabled here.
-        private bool EnableAvatarOfWarTriggerIfMissing(EQToolSettings settings)
+        // Keeps the built-in triggers in settings.Triggers in sync with the definitions in code.
+        // Built-ins live in the trigger list like any other trigger (so their own TriggerEnabled is
+        // the single source of truth). The IsBuiltIn/BuiltInFolder markers aren't persisted, so they
+        // are re-derived here by BuiltInId.
+        //   - A built-in the user hasn't edited (Customized == false) has its definition refreshed
+        //     from code, so fixes (regex/timer/folder) reach everyone; its enabled state + id are kept.
+        //   - A built-in the user HAS edited (Customized == true) is left as-is, so their edits stick.
+        //   - A newly shipped built-in is added enabled.
+        // Returns whether a new built-in was added (so the caller can persist the seed).
+        public static bool SyncBuiltInTriggers(EQToolSettings settings)
         {
-            // Already in the user's trigger list? Leave it exactly as the user has it.
-            if (settings.Triggers.Any(a => string.Equals(a.BuiltInId, BuiltInTriggers.AvatarOfWarBuiltInId, StringComparison.OrdinalIgnoreCase)))
+            if (settings.Triggers == null)
             {
-                return false;
+                settings.Triggers = new List<Trigger>();
             }
 
-            var copy = BuiltInTriggers.CreateAvatarOfWarLockout();
-            copy.TriggerId = Guid.NewGuid();
-            copy.FolderId = null;
-            copy.BuiltInId = BuiltInTriggers.AvatarOfWarBuiltInId;
-            copy.TriggerEnabled = true;
-            settings.Triggers.Add(copy);
-            return true;
-        }
+            var defs = BuiltInTriggers.All()
+                .Where(b => !string.IsNullOrEmpty(b.BuiltInId))
+                .GroupBy(b => b.BuiltInId, StringComparer.OrdinalIgnoreCase)
+                .ToDictionary(g => g.Key, g => g.First(), StringComparer.OrdinalIgnoreCase);
 
-        // Seeds and enables ONLY the VP Hoskar Resto built-in, and only when the user doesn't
-        // already have it (matched by BuiltInId). Same behavior as the Avatar of War seeding:
-        // once it's in the user's trigger list they can disable or delete it without it coming back.
-        // This replaces the old always-on DiseasedCloudHandler.
-        private bool EnableVPHoskarRestoTriggerIfMissing(EQToolSettings settings)
-        {
-            // Already in the user's trigger list? Leave it exactly as the user has it.
-            if (settings.Triggers.Any(a => string.Equals(a.BuiltInId, BuiltInTriggers.VPHoskarRestoBuiltInId, StringComparison.OrdinalIgnoreCase)))
+            var rebuilt = new List<Trigger>();
+            var present = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            foreach (var t in settings.Triggers)
             {
-                return false;
+                if (!string.IsNullOrEmpty(t.BuiltInId) && defs.TryGetValue(t.BuiltInId, out var def))
+                {
+                    _ = present.Add(t.BuiltInId);
+                    if (t.Customized)
+                    {
+                        // Keep the user's edited definition; just re-derive the structural markers.
+                        t.IsBuiltIn = true;
+                        t.BuiltInFolder = def.BuiltInFolder;
+                        rebuilt.Add(t);
+                    }
+                    else
+                    {
+                        // Refresh the definition from code, preserving enabled state + id.
+                        def.TriggerEnabled = t.TriggerEnabled;
+                        def.TriggerId = t.TriggerId;
+                        rebuilt.Add(def);
+                    }
+                }
+                else
+                {
+                    // User trigger (or an orphaned built-in no longer defined in code).
+                    rebuilt.Add(t);
+                }
             }
 
-            var copy = BuiltInTriggers.CreateVPHoskarResto();
-            copy.TriggerId = Guid.NewGuid();
-            copy.FolderId = null;
-            copy.BuiltInId = BuiltInTriggers.VPHoskarRestoBuiltInId;
-            copy.TriggerEnabled = true;
-            settings.Triggers.Add(copy);
-            return true;
-        }
-
-        // Seeds and enables ONLY the Dragon Roar built-in (necropolis), and only when the user
-        // doesn't already have it (matched by BuiltInId). Replaces part of the old ZlandicarHandler.
-        private bool EnableDragonRoarTriggerIfMissing(EQToolSettings settings)
-        {
-            if (settings.Triggers.Any(a => string.Equals(a.BuiltInId, BuiltInTriggers.DragonRoarBuiltInId, StringComparison.OrdinalIgnoreCase)))
+            var changed = false;
+            foreach (var def in defs.Values)
             {
-                return false;
+                if (present.Contains(def.BuiltInId))
+                {
+                    continue;
+                }
+                // Newly shipped built-in: enabled the first time the user sees it.
+                def.TriggerEnabled = true;
+                rebuilt.Add(def);
+                changed = true;
             }
 
-            var copy = BuiltInTriggers.CreateDragonRoar();
-            copy.TriggerId = Guid.NewGuid();
-            copy.FolderId = null;
-            copy.BuiltInId = BuiltInTriggers.DragonRoarBuiltInId;
-            copy.TriggerEnabled = true;
-            settings.Triggers.Add(copy);
-            return true;
-        }
-
-        // Seeds and enables ONLY the DN Stun Breath built-in (necropolis), and only when the user
-        // doesn't already have it (matched by BuiltInId). Replaces part of the old ZlandicarHandler.
-        private bool EnableDNStunBreathTriggerIfMissing(EQToolSettings settings)
-        {
-            if (settings.Triggers.Any(a => string.Equals(a.BuiltInId, BuiltInTriggers.DNStunBreathBuiltInId, StringComparison.OrdinalIgnoreCase)))
-            {
-                return false;
-            }
-
-            var copy = BuiltInTriggers.CreateDNStunBreath();
-            copy.TriggerId = Guid.NewGuid();
-            copy.FolderId = null;
-            copy.BuiltInId = BuiltInTriggers.DNStunBreathBuiltInId;
-            copy.TriggerEnabled = true;
-            settings.Triggers.Add(copy);
-            return true;
-        }
-
-        // Seeds and enables ONLY the Spell Worn Off built-in, and only when the user doesn't
-        // already have it (matched by BuiltInId). Same behavior as the Avatar of War seeding:
-        // once it's in the user's trigger list they can disable or delete it without it coming back.
-        // This replaces the alert portion of the old always-on SpellWornOffOtherHandler.
-        private bool EnableSpellWornOffTriggerIfMissing(EQToolSettings settings)
-        {
-            // Already in the user's trigger list? Leave it exactly as the user has it.
-            if (settings.Triggers.Any(a => string.Equals(a.BuiltInId, BuiltInTriggers.SpellWornOffBuiltInId, StringComparison.OrdinalIgnoreCase)))
-            {
-                return false;
-            }
-
-            var copy = BuiltInTriggers.CreateSpellWornOff();
-            copy.TriggerId = Guid.NewGuid();
-            copy.FolderId = null;
-            copy.BuiltInId = BuiltInTriggers.SpellWornOffBuiltInId;
-            copy.TriggerEnabled = true;
-            settings.Triggers.Add(copy);
-            return true;
+            settings.Triggers.Clear();
+            settings.Triggers.AddRange(rebuilt);
+            return changed;
         }
 
         private void AddMissingEnums(EQToolSettings settings)

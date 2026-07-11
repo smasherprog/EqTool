@@ -204,6 +204,23 @@ namespace EQTool.UI
             });
         }
 
+        // Picks black or white for the countdown text drawn over a timer bar, whichever has the
+        // higher WCAG contrast ratio against the bar's fill color (white text vanishes on bright
+        // bars like White/Gold; black text vanishes on dark ones).
+        private static SolidColorBrush ContrastingTextBrush(Brush barBrush)
+        {
+            var color = (barBrush as SolidColorBrush)?.Color ?? Colors.SteelBlue;
+            double Channel(double v)
+            {
+                v /= 255.0;
+                return v <= 0.03928 ? v / 12.92 : Math.Pow((v + 0.055) / 1.055, 2.4);
+            }
+            var luminance = (0.2126 * Channel(color.R)) + (0.7152 * Channel(color.G)) + (0.0722 * Channel(color.B));
+            // Contrast vs white is 1.05/(L+0.05); vs black is (L+0.05)/0.05. White wins below
+            // L ≈ 0.179 (sqrt(1.05*0.05) - 0.05), black wins above it.
+            return luminance > 0.179 ? Brushes.Black : Brushes.White;
+        }
+
         private void RemoveTimerBarRow(TimerBarData timerdata)
         {
             var rowremoved = Grid.GetRow(timerdata.ChildrenInRow.FirstOrDefault());
@@ -253,18 +270,18 @@ namespace EQTool.UI
                 {
                     Name = e.Name,
                     ChildrenInRow = new List<FrameworkElement>(),
-                    RowDefinition = new RowDefinition { MaxHeight = 30 }
+                    RowDefinition = new RowDefinition { MaxHeight = settings.FontSize.Value * 2.2 }
                 };
 
                 var nameLabel = new TextBlock
                 {
-                    Height = 30,
+                    Height = settings.FontSize.Value * 2,
                     FontSize = settings.FontSize.Value * 1.5,
                     Text = e.Name,
-                    Padding = new Thickness(4),
                     Foreground = Brushes.Black,
                     TextAlignment = TextAlignment.Center,
-                    VerticalAlignment = VerticalAlignment.Center
+                    VerticalAlignment = VerticalAlignment.Center,
+                    Margin = new Thickness(4, 0, 4, 0)
                 };
                 var nameBorder = new Border
                 {
@@ -275,30 +292,41 @@ namespace EQTool.UI
                     Child = nameLabel
                 };
 
+                var barBrush = e.BarColor ?? Brushes.SteelBlue;
                 var progressBar = new ProgressBar
                 {
                     Minimum = 0,
                     Maximum = 100,
                     Value = 100,
-                    Height = 26,
-                    Foreground = e.BarColor ?? Brushes.SteelBlue,
+                    Height = settings.FontSize.Value * 2,
+                    Foreground = barBrush,
                     Background = new SolidColorBrush(System.Windows.Media.Color.FromArgb(200, 10, 10, 10)),
                     BorderThickness = new Thickness(1),
                     BorderBrush = Brushes.White,
-                    VerticalAlignment = VerticalAlignment.Center,
                     IsHitTestVisible = false
                 };
                 timerdata.ProgressBar = progressBar;
 
+                // Countdown text color is chosen to contrast the bar's fill color, with a thin glow
+                // of the opposite shade so it also stays readable over the near-black drained
+                // portion of the bar (the text sits over both regions as the bar empties).
+                var textBrush = ContrastingTextBrush(barBrush);
                 var remainingText = new TextBlock
                 {
                     Text = e.TotalSeconds.ToString(),
-                    Foreground = Brushes.White,
-                    FontSize = settings.FontSize.Value,
+                    Foreground = textBrush,
+                    FontSize = settings.FontSize.Value * 2,
                     FontWeight = FontWeights.Bold,
-                    HorizontalAlignment = HorizontalAlignment.Center,
                     VerticalAlignment = VerticalAlignment.Center,
-                    IsHitTestVisible = false
+                    Margin = new Thickness(10, 0, 0, 0),
+                    IsHitTestVisible = false,
+                    Effect = new System.Windows.Media.Effects.DropShadowEffect
+                    {
+                        Color = textBrush == Brushes.Black ? Colors.White : Colors.Black,
+                        ShadowDepth = 0,
+                        BlurRadius = 3,
+                        Opacity = 0.9
+                    }
                 };
                 timerdata.RemainingText = remainingText;
 

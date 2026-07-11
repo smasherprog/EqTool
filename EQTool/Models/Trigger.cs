@@ -43,10 +43,22 @@ namespace EQTool.Models
 
         public Guid? FolderId { get; set; }
 
+        // Set when this USER trigger lives directly under a built-in library folder (e.g.
+        // "Encounters/Kael"). Built-in folders are synthesized from code and have no stable ids,
+        // so user triggers anchor to them by "/"-separated path instead of FolderId. Null when the
+        // trigger has a user folder (FolderId) or sits at the root. Unrelated to BuiltInFolder,
+        // which is the non-persisted folder a BUILT-IN trigger's code definition declares.
+        public string BuiltInFolderPath { get; set; }
+
         [Newtonsoft.Json.JsonIgnore]
         public bool IsBuiltIn { get; set; }
 
         public string BuiltInId { get; set; }
+
+        // True once the user has edited a built-in trigger's definition. Keeps SyncBuiltInTriggers
+        // from refreshing (overwriting) their edits with the code definition on load. Only meaningful
+        // for built-ins.
+        public bool Customized { get; set; }
 
         // Optional "/"-separated folder path under the Built In category used to organize
         // built-in library entries in the tree (e.g. "Encounters/Kael"). Display-only and

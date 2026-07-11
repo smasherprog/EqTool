@@ -28,21 +28,19 @@ namespace EQTool.UI.SettingsComponents
                 npc.PropertyChanged += Trigger_PropertyChanged;
             }
 
-            // Built-in library triggers are read-only; they can only be copied out.
-            // Disable the tab contents (not the TabControl itself) so the user can
-            // still switch between Basic/Timer/Timer Ending/Timer Ended/Counter to view them.
+            // For built-in triggers the General Settings (name / search text / regex / zone /
+            // category / comments) are fixed; only the Basic / Timer / Timer Ending / Timer Ended /
+            // Counter tabs can be edited. Saving a tab edit marks the built-in Customized so its
+            // definition isn't overwritten when built-ins are refreshed from code on the next load.
             if (treeTrigger.Trigger.IsBuiltIn)
             {
                 GeneralSettingsGroup.IsEnabled = false;
-                foreach (var item in EditorTabs.Items)
-                {
-                    if (item is TabItem tab && tab.Content is System.Windows.UIElement content)
-                    {
-                        content.IsEnabled = false;
-                    }
-                }
-                SaveButton.Visibility = System.Windows.Visibility.Collapsed;
             }
+
+            // Pre-fill the Test box with a log line that matches this trigger, so the user can
+            // click Test straight away and see it fire (and can edit it to try variations).
+            TestLogLineText.Text = TriggerTestSampleGenerator.Generate(treeTrigger.Trigger.Model, activePlayer.Player?.Name);
+
             UpdateSaveEnabled();
         }
 

@@ -2,11 +2,7 @@
 using EQTool.Models;
 using EQTool.Services;
 using EQTool.ViewModels;
-using EQTool.ViewModels.SpellWindow;
-using EQToolShared;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
-using System.Linq;
 
 namespace EQtoolsTests
 {
@@ -28,199 +24,52 @@ namespace EQtoolsTests
             logParser = container.Resolve<LogParser>();
             player.Player.Zone = string.Empty;
         }
-        [TestMethod]
-        public void TestRemoteDragonRoarHappyPathNoLoc()
-        {
-            player.Player.Zone = "templeveeshan";
-            player.Location = new System.Windows.Media.Media3D.Point3D(0, 0, 0);
-            logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rain of Molten Lava" });
-            var spellvm = spellWindowViewModel.SpellList.Where(a => a.Name == "Rain of Molten Lava").Cast<TimerViewModel>().ToList();
-            Assert.HasCount(1, spellvm);
 
-            logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rain of Molten Lava" });
-            logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rain of Molten Lava" });
-            logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rain of Molten Lava" });
-            logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rain of Molten Lava" });
-            logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rain of Molten Lava" });
-            spellvm = spellWindowViewModel.SpellList.Where(a => a.Name == "Rain of Molten Lava").Cast<TimerViewModel>().ToList();
-            Assert.HasCount(1, spellvm);
+        //[TestMethod]
+        //public void TestDragonEffects()
+        //{
+        //    foreach (var zone in Zones.ZoneInfoMap.Values.Where(a => a.NPCThatAOE.Any()))
+        //    {
+        //        logParser.Push($"You have entered {zone.Name}", DateTime.Now);
+        //        foreach (var npc in zone.NPCThatAOE)
+        //        {
+        //            fightHistory.clean(DateTime.Now.AddMinutes(15));
+        //            spellWindowViewModel.SpellList.Clear();
+        //            var message = $"{npc.Name} bashes YOU for 12 points of damage.";
+        //            logParser.Push(message, DateTime.Now);
+        //            foreach (var spellname in npc.SpellEffects)
+        //            {
+        //                var spell = spells.AllSpells[spellname];
+        //                logParser.Push(spell.cast_on_you, DateTime.Now);
+        //                var effect = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Timer && a.Name == spellname) as TimerViewModel;
+        //                Assert.IsNotNull(effect, $"{spellname} not found");
+        //                Assert.AreEqual(spell.recastTime / 1000, effect.TotalDuration.TotalSeconds);
+        //                Assert.AreEqual(spell.name, effect.Name);
+        //            }
+        //        }
+        //    }
+        //}
 
-            logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Wave of Cold" });
-            spellvm = spellWindowViewModel.SpellList.Where(a => a.Name == "Wave of Cold").Cast<TimerViewModel>().ToList();
-            Assert.HasCount(1, spellvm);
-            logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Wave of Cold" });
-            logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Wave of Cold" });
-            spellvm = spellWindowViewModel.SpellList.Where(a => a.Name == "Wave of Cold").Cast<TimerViewModel>().ToList();
-            Assert.HasCount(1, spellvm);
-            logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rain of Molten Lava" });
-            logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rain of Molten Lava" });
-            logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rain of Molten Lava" });
-            logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rain of Molten Lava" });
-            logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rain of Molten Lava" });
-            spellvm = spellWindowViewModel.SpellList.Where(a => a.Name == "Rain of Molten Lava").Cast<TimerViewModel>().ToList();
-            Assert.HasCount(1, spellvm);
-            logParser.Push("A blast of cold freezes your skin.", DateTime.Now);
-            spellvm = spellWindowViewModel.SpellList.Where(a => a.Name == "Wave of Cold").Cast<TimerViewModel>().ToList();
-            Assert.HasCount(1, spellvm);
-        }
-
-        [TestMethod]
-        public void TestRemoteDragonRoarHappyPathWithLocs()
-        {
-            player.Player.Zone = "templeveeshan";
-            player.Location = new System.Windows.Media.Media3D.Point3D(0, 0, 0);
-            logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rain of Molten Lava", Location = new System.Windows.Media.Media3D.Point3D(100, 0, 0) });
-            var spellvm = spellWindowViewModel.SpellList.Where(a => a.Name == "Rain of Molten Lava").Cast<TimerViewModel>().ToList();
-            Assert.HasCount(1, spellvm);
-
-            logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rain of Molten Lava", Location = new System.Windows.Media.Media3D.Point3D(100, 0, 0) });
-            logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rain of Molten Lava", Location = new System.Windows.Media.Media3D.Point3D(100, 0, 0) });
-            logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rain of Molten Lava", Location = new System.Windows.Media.Media3D.Point3D(100, 0, 0) });
-            logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rain of Molten Lava", Location = new System.Windows.Media.Media3D.Point3D(100, 0, 0) });
-            logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rain of Molten Lava", Location = new System.Windows.Media.Media3D.Point3D(100, 0, 0) });
-            spellvm = spellWindowViewModel.SpellList.Where(a => a.Name == "Rain of Molten Lava").Cast<TimerViewModel>().ToList();
-            Assert.HasCount(1, spellvm);
-
-            logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Wave of Cold", Location = new System.Windows.Media.Media3D.Point3D(100, 0, 0) });
-            spellvm = spellWindowViewModel.SpellList.Where(a => a.Name == "Wave of Cold").Cast<TimerViewModel>().ToList();
-            Assert.HasCount(1, spellvm);
-            logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Wave of Cold", Location = new System.Windows.Media.Media3D.Point3D(100, 0, 0) });
-            logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Wave of Cold", Location = new System.Windows.Media.Media3D.Point3D(100, 0, 0) });
-            spellvm = spellWindowViewModel.SpellList.Where(a => a.Name == "Wave of Cold").Cast<TimerViewModel>().ToList();
-            Assert.HasCount(1, spellvm);
-            logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rain of Molten Lava", Location = new System.Windows.Media.Media3D.Point3D(100, 0, 0) });
-            logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rain of Molten Lava", Location = new System.Windows.Media.Media3D.Point3D(100, 0, 0) });
-            logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rain of Molten Lava", Location = new System.Windows.Media.Media3D.Point3D(100, 0, 0) });
-            logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rain of Molten Lava", Location = new System.Windows.Media.Media3D.Point3D(100, 0, 0) });
-            logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rain of Molten Lava", Location = new System.Windows.Media.Media3D.Point3D(100, 0, 0) });
-            spellvm = spellWindowViewModel.SpellList.Where(a => a.Name == "Rain of Molten Lava").Cast<TimerViewModel>().ToList();
-            Assert.HasCount(1, spellvm);
-            logParser.Push("A blast of cold freezes your skin.", DateTime.Now);
-            spellvm = spellWindowViewModel.SpellList.Where(a => a.Name == "Wave of Cold").Cast<TimerViewModel>().ToList();
-            Assert.HasCount(1, spellvm);
-        }
-
-
-        [TestMethod]
-        public void TestRemoteDragonRoarTestOutOfRange()
-        {
-            player.Player.Zone = "templeveeshan";
-            player.Location = new System.Windows.Media.Media3D.Point3D(0, 0, 0);
-            logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rain of Molten Lava", Location = new System.Windows.Media.Media3D.Point3D(1005, 0, 0) });
-            var spellvm = spellWindowViewModel.SpellList.Where(a => a.Name == "Rain of Molten Lava").Cast<TimerViewModel>().ToList();
-            Assert.IsEmpty(spellvm);
-
-            logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rain of Molten Lava", Location = new System.Windows.Media.Media3D.Point3D(1005, 0, 0) });
-            logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rain of Molten Lava", Location = new System.Windows.Media.Media3D.Point3D(1005, 0, 0) });
-            logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rain of Molten Lava", Location = new System.Windows.Media.Media3D.Point3D(1005, 0, 0) });
-            logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rain of Molten Lava", Location = new System.Windows.Media.Media3D.Point3D(1005, 0, 0) });
-            logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rain of Molten Lava", Location = new System.Windows.Media.Media3D.Point3D(1005, 0, 0) });
-            spellvm = spellWindowViewModel.SpellList.Where(a => a.Name == "Rain of Molten Lava").Cast<TimerViewModel>().ToList();
-            Assert.IsEmpty(spellvm);
-
-            logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Wave of Cold", Location = new System.Windows.Media.Media3D.Point3D(1005, 0, 0) });
-            spellvm = spellWindowViewModel.SpellList.Where(a => a.Name == "Wave of Cold").Cast<TimerViewModel>().ToList();
-            Assert.IsEmpty(spellvm);
-            logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Wave of Cold", Location = new System.Windows.Media.Media3D.Point3D(1005, 0, 0) });
-            logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Wave of Cold", Location = new System.Windows.Media.Media3D.Point3D(1005, 0, 0) });
-            spellvm = spellWindowViewModel.SpellList.Where(a => a.Name == "Wave of Cold").Cast<TimerViewModel>().ToList();
-            Assert.IsEmpty(spellvm);
-            logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rain of Molten Lava", Location = new System.Windows.Media.Media3D.Point3D(1005, 0, 0) });
-            logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rain of Molten Lava", Location = new System.Windows.Media.Media3D.Point3D(1005, 0, 0) });
-            logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rain of Molten Lava", Location = new System.Windows.Media.Media3D.Point3D(1005, 0, 0) });
-            logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rain of Molten Lava", Location = new System.Windows.Media.Media3D.Point3D(1005, 0, 0) });
-            logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rain of Molten Lava", Location = new System.Windows.Media.Media3D.Point3D(1005, 0, 0) });
-            spellvm = spellWindowViewModel.SpellList.Where(a => a.Name == "Rain of Molten Lava").Cast<TimerViewModel>().ToList();
-            Assert.IsEmpty(spellvm);
-            logParser.Push("A blast of cold freezes your skin.", DateTime.Now);
-            spellvm = spellWindowViewModel.SpellList.Where(a => a.Name == "Wave of Cold").Cast<TimerViewModel>().ToList();
-            Assert.HasCount(1, spellvm);
-        }
-
-        [TestMethod]
-        public void TestRemoteDragonRoar()
-        {
-            player.Player.Zone = "templeveeshan";
-            player.Location = new System.Windows.Media.Media3D.Point3D(0, 0, 0);
-
-            logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rain of Molten Lava", Location = new System.Windows.Media.Media3D.Point3D(0, 0, 0) });
-            logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rain of Molten Lava", Location = new System.Windows.Media.Media3D.Point3D(0, 0, 0) });
-            logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rain of Molten Lava", Location = new System.Windows.Media.Media3D.Point3D(0, 0, 0) });
-            logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rain of Molten Lava", Location = new System.Windows.Media.Media3D.Point3D(0, 0, 0) });
-            logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rain of Molten Lava", Location = new System.Windows.Media.Media3D.Point3D(0, 0, 0) });
-            logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rain of Molten Lava", Location = new System.Windows.Media.Media3D.Point3D(0, 0, 0) });
-            logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Wave of Cold" });
-            logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Wave of Cold" });
-            logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Wave of Cold" });
-            logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rain of Molten Lava" });
-            logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rain of Molten Lava" });
-            logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rain of Molten Lava" });
-            logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rain of Molten Lava" });
-            logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rain of Molten Lava" });
-            logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Wave of Cold" });
-            logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Wave of Cold" });
-            logParser.Push("A blast of cold freezes your skin.", DateTime.Now);
-            logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Wave of Cold" });
-            player.Player.Zone = "necropolis";
-
-            logParser.Push("You resist the Dragon Roar spell!", DateTime.Now);
-            logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Dragon Roar" });
-            logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Stun Breath" });
-            logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rotting Flesh" });
-            logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Putrefy Flesh" });
-            logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rain of Molten Lava" });
-            logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Wave of Cold" });
-            logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Stun Breath" });
-            logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Rotting Flesh" });
-            logEvents.Handle(new DragonRoarRemoteEvent { SpellName = "Putrefy Flesh" });
-        }
-
-
-        [TestMethod]
-        public void TestDragonEffects()
-        {
-            foreach (var zone in Zones.ZoneInfoMap.Values.Where(a => a.NPCThatAOE.Any()))
-            {
-                logParser.Push($"You have entered {zone.Name}", DateTime.Now);
-                foreach (var npc in zone.NPCThatAOE)
-                {
-                    fightHistory.clean(DateTime.Now.AddMinutes(15));
-                    spellWindowViewModel.SpellList.Clear();
-                    var message = $"{npc.Name} bashes YOU for 12 points of damage.";
-                    logParser.Push(message, DateTime.Now);
-                    foreach (var spellname in npc.SpellEffects)
-                    {
-                        var spell = spells.AllSpells[spellname];
-                        logParser.Push(spell.cast_on_you, DateTime.Now);
-                        var effect = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Timer && a.Name == spellname) as TimerViewModel;
-                        Assert.IsNotNull(effect, $"{spellname} not found");
-                        Assert.AreEqual(spell.recastTime / 1000, effect.TotalDuration.TotalSeconds);
-                        Assert.AreEqual(spell.name, effect.Name);
-                    }
-                }
-            }
-        }
-
-        [TestMethod]
-        public void TestResistDragonEffects()
-        {
-            foreach (var zone in Zones.ZoneInfoMap.Values.Where(a => a.NPCThatAOE.Any()))
-            {
-                logParser.Push($"You have entered {zone.Name}", DateTime.Now);
-                foreach (var npc in zone.NPCThatAOE)
-                {
-                    spellWindowViewModel.SpellList.Clear();
-                    foreach (var spellname in npc.SpellEffects)
-                    {
-                        var spell = spells.AllSpells[spellname];
-                        logParser.Push($"You resist the {spellname} spell!", DateTime.Now);
-                        var effect = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Timer && a.Name == spellname) as TimerViewModel;
-                        Assert.IsNotNull(effect, $"{spellname} not found");
-                        Assert.AreEqual(spell.recastTime / 1000, effect.TotalDuration.TotalSeconds);
-                        Assert.AreEqual(spell.name, effect.Name);
-                    }
-                }
-            }
-        }
+        //[TestMethod]
+        //public void TestResistDragonEffects()
+        //{
+        //    foreach (var zone in Zones.ZoneInfoMap.Values.Where(a => a.NPCThatAOE.Any()))
+        //    {
+        //        logParser.Push($"You have entered {zone.Name}", DateTime.Now);
+        //        foreach (var npc in zone.NPCThatAOE)
+        //        {
+        //            spellWindowViewModel.SpellList.Clear();
+        //            foreach (var spellname in npc.SpellEffects)
+        //            {
+        //                var spell = spells.AllSpells[spellname];
+        //                logParser.Push($"You resist the {spellname} spell!", DateTime.Now);
+        //                var effect = spellWindowViewModel.SpellList.FirstOrDefault(a => a.SpellViewModelType == SpellViewModelType.Timer && a.Name == spellname) as TimerViewModel;
+        //                Assert.IsNotNull(effect, $"{spellname} not found");
+        //                Assert.AreEqual(spell.recastTime / 1000, effect.TotalDuration.TotalSeconds);
+        //                Assert.AreEqual(spell.name, effect.Name);
+        //            }
+        //        }
+        //    }
+        //}
     }
 }

@@ -12,6 +12,19 @@
              d:DesignHeight="450" d:DesignWidth="400">
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="BooleanToVisibilityConverter"/>
+        <!-- Solid gold padlock marking built-in triggers/folders in the Triggers tree.
+             Drawn as vectors because WPF renders emoji as monochrome outlines only -
+             this reproduces the familiar gold-emoji look (gold body, gray shackle). -->
+        <DataTemplate x:Key="BuiltInLockIcon">
+            <Canvas Width="12" Height="14">
+                <Path Stroke="#8A8886" StrokeThickness="1.6" StrokeStartLineCap="Round" StrokeEndLineCap="Round"
+                      Data="M 3.2,6.4 V 4.4 A 2.8,2.8 0 0 1 8.8,4.4 V 6.4"/>
+                <Rectangle Canvas.Left="1.2" Canvas.Top="6" Width="9.6" Height="7.4" RadiusX="1.8" RadiusY="1.8"
+                           Fill="#FFC83D" Stroke="#C88F1A" StrokeThickness="0.8"/>
+                <Ellipse Canvas.Left="5" Canvas.Top="8" Width="2" Height="2" Fill="#96690C"/>
+                <Rectangle Canvas.Left="5.4" Canvas.Top="9.4" Width="1.2" Height="2.2" RadiusX="0.6" RadiusY="0.6" Fill="#96690C"/>
+            </Canvas>
+        </DataTemplate>
     </UserControl.Resources>
     <TabControl SelectionChanged="TabControl_SelectionChanged">
 
@@ -185,6 +198,17 @@
                                        Text="Login Middlemand is a copy of the code from https://github.com/Zaela/p99-login-middlemand. Please report any issues on discord!"/>
                         </StackPanel>
                     </GroupBox>
+
+                    <GroupBox Header="Triggers" Margin="0,0,0,6">
+                        <StackPanel Orientation="Vertical" Margin="4">
+                            <StackPanel Orientation="Horizontal" Margin="0,2,0,2">
+                                <TextBlock Text="Reset Triggers" VerticalAlignment="Center" FontWeight="Bold" MinWidth="120"/>
+                                <Button Click="resetTriggers" MinWidth="100">Reset Triggers</Button>
+                            </StackPanel>
+                            <TextBlock Foreground="Gray" TextWrapping="Wrap" Margin="0,2,0,0"
+                                       Text="Deletes ALL triggers and folders (including any you created) and restores the built-in defaults."/>
+                        </StackPanel>
+                    </GroupBox>
                 </StackPanel>
             </StackPanel>
             </ScrollViewer>
@@ -354,10 +378,18 @@
                         <HierarchicalDataTemplate DataType="{x:Type vm:TreeTriggerFolder}" ItemsSource="{Binding Children}">
                             <StackPanel Orientation="Horizontal">
                                 <Image Source="pack://application:,,,/Images/open-folder.png" Width="16" Height="16" Margin="0,0,4,0" VerticalAlignment="Center"/>
+                                <!-- Small gold lock marking built-in (read-only) library folders. -->
+                                <ContentControl ContentTemplate="{StaticResource BuiltInLockIcon}" Margin="0,0,4,0" VerticalAlignment="Center"
+                                                Visibility="{Binding IsBuiltIn, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                                 <TextBlock Text="{Binding EditableName}" Margin="0,0,4,0" VerticalAlignment="Center">
                                     <TextBlock.Style>
                                         <Style TargetType="TextBlock">
                                             <Style.Triggers>
+                                                <!-- Built-in library folders differ from user folders only by
+                                                     their gold lock icon; the text styling is identical. -->
+                                                <DataTrigger Binding="{Binding IsBuiltIn}" Value="True">
+                                                    <Setter Property="ToolTip" Value="Built-in folder (shipped with EQTool)"/>
+                                                </DataTrigger>
                                                 <DataTrigger Binding="{Binding IsEditing}" Value="True">
                                                     <Setter Property="Visibility" Value="Collapsed"/>
                                                 </DataTrigger>
@@ -384,20 +416,41 @@
                             </StackPanel>
                         </HierarchicalDataTemplate>
                         <HierarchicalDataTemplate DataType="{x:Type vm:TreeTrigger}" ItemsSource="{Binding Children}">
+                            <!-- Built-in triggers are visually distinct from user triggers solely by
+                                 their icon: a gold lock instead of the lightning bolt. Text styling is
+                                 identical so enabled/disabled coloring stays the only text cue. -->
                             <StackPanel Orientation="Horizontal">
-                                <TextBlock Text="🗲"/>
+                                <StackPanel.Style>
+                                    <Style TargetType="StackPanel">
+                                        <Style.Triggers>
+                                            <DataTrigger Binding="{Binding IsBuiltIn}" Value="True">
+                                                <Setter Property="ToolTip" Value="Built-in trigger (shipped with EQTool). Its name, search text and zone are locked; outputs and timers can still be edited."/>
+                                            </DataTrigger>
+                                        </Style.Triggers>
+                                    </Style>
+                                </StackPanel.Style>
+                                <!-- User triggers keep the lightning bolt; built-ins swap it for the gold lock. -->
+                                <TextBlock Text="🗲" Margin="0,0,2,0" VerticalAlignment="Center">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding IsBuiltIn}" Value="True">
+                                                    <Setter Property="Visibility" Value="Collapsed"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                                <ContentControl ContentTemplate="{StaticResource BuiltInLockIcon}" Margin="0,0,4,0" VerticalAlignment="Center"
+                                                Visibility="{Binding IsBuiltIn, Converter={StaticResource BooleanToVisibilityConverter}}"/>
                                 <TextBlock Text="{Binding Name}">
                                     <TextBlock.Style>
                                         <Style TargetType="TextBlock">
                                             <Style.Triggers>
-                                                <!-- Gray out disabled triggers, but keep the read-only Built In library entries black. -->
-                                                <MultiDataTrigger>
-                                                    <MultiDataTrigger.Conditions>
-                                                        <Condition Binding="{Binding IsTriggerEnabled}" Value="False"/>
-                                                        <Condition Binding="{Binding IsBuiltIn}" Value="False"/>
-                                                    </MultiDataTrigger.Conditions>
+                                                <!-- Gray out any disabled trigger (built-in or user). -->
+                                                <DataTrigger Binding="{Binding IsTriggerEnabled}" Value="False">
                                                     <Setter Property="Foreground" Value="Gray"/>
-                                                </MultiDataTrigger>
+                                                </DataTrigger>
                                             </Style.Triggers>
                                         </Style>
                                     </TextBlock.Style>

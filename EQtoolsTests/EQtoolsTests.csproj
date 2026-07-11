@@ -230,6 +230,8 @@
     <Compile Include="CustomTimerHandlerTests.cs" />
     <Compile Include="SpellWornOffOtherTests.cs" />
     <Compile Include="TriggerTests.cs" />
+    <Compile Include="TriggerTestSampleGeneratorTests.cs" />
+    <Compile Include="TriggerColorsTests.cs" />
     <Compile Include="UserDefinedTriggerTests.cs" />
     <Compile Include="FileReaderTests.cs" />
     <Compile Include="ZoneSpawnTimeTests.cs" />

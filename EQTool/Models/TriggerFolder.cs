@@ -12,5 +12,11 @@ namespace EQTool.Models
         public Guid Id { get; set; } = Guid.NewGuid();
         public string Name { get; set; } = "New Folder";
         public Guid? ParentId { get; set; }
+
+        // Set when this user folder lives directly under a built-in library folder (e.g.
+        // "Encounters/Kael"). Built-in folders are synthesized from code on every load and have no
+        // stable ids, so user folders anchor to them by "/"-separated path instead of ParentId.
+        // Null when the folder has a user parent (ParentId) or sits at the root.
+        public string BuiltInParentPath { get; set; }
     }
 }

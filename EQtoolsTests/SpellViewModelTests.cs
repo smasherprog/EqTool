@@ -332,6 +332,14 @@ namespace EQtoolsTests
             player.Player.PlayerClass = EQToolShared.Enums.PlayerClasses.Rogue;
             player.Player.Level = 60;
 
+            // This test counts kill timers; turn off the built-in triggers so they don't add their
+            // own timers (e.g. the Exp Timer on "You gain party experience").
+            var settings = container.Resolve<EQToolSettings>();
+            foreach (var t in settings.Triggers.Where(t => t.IsBuiltIn))
+            {
+                t.TriggerEnabled = false;
+            }
+
             logParser.Push("A Dizok Underling hits a Dizok Observer for 37 points of damage.", DateTime.Now);
             logParser.Push("A Dizok Underling hits a Dizok Observer for 121 points of damage.", DateTime.Now);
             logParser.Push("a Dizok Observer has been slain by a Dizok Underling!", DateTime.Now);
