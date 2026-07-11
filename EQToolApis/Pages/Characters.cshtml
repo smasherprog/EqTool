@@ -35,19 +35,23 @@
     .pg-table { width: 100%; border-collapse: collapse; }
     .pg-table th {
         text-align: left;
-        color: #6b7390;
+        color: #8b93b8;
         font-size: 11px;
         text-transform: uppercase;
         letter-spacing: 1px;
         padding: 12px 16px;
         border-bottom: 1px solid #242c49;
     }
-    .pg-table td { padding: 12px 16px; border-bottom: 1px solid #1b2138; }
+    .pg-table td { padding: 12px 16px; border-bottom: 1px solid #1b2138; color: #dfe4f5; }
     .pg-table tr:last-child td { border-bottom: none; }
     .pg-table .num { text-align: right; }
     .character-row { cursor: pointer; }
     .character-row:hover td { background: #1a2138; }
     .character-row .pg-charname { color: #ffffff; font-weight: bold; }
+    .pg-table .server-green { color: #4ade80; font-weight: bold; }
+    .pg-table .server-blue { color: #60a5fa; font-weight: bold; }
+    .pg-table .server-red { color: #f87171; font-weight: bold; }
+    .pg-table .server-quarm { color: #c084fc; font-weight: bold; }
 
     .pg-empty { padding: 40px 20px; text-align: center; color: #9aa3c0; }
 
@@ -102,7 +106,7 @@
                         {
                             <tr class="character-row" data-character="@character.CharacterName" data-server="@character.Server">
                                 <td class="pg-charname">@character.CharacterName</td>
-                                <td>@character.Server</td>
+                                <td class="server-@character.Server.ToString().ToLower()">@character.Server</td>
                                 <td class="num">@character.ItemCount</td>
                                 <td class="num mytime" utc="@character.UpdatedAt.ToString("o")">@character.UpdatedAt.ToString("u")</td>
                             </tr>
