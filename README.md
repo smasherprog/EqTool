@@ -58,6 +58,10 @@ Features:
 <li>Custom Map loading: If you have a folder called     maps       this will be checked for map files first. If no map files are found, the program will fallback to the built in map files. You can add your overrides for zone files. If you are making changes, you need to clear the cache files. There is a button in the settings -> map tab to clear these. Or you can delete the cachemaps folder.</li>
 <li>Custom Timers</li>
 </ul>
+<a href="https://youtu.be/gJvBndD36cs?si=z1HtYx3-rzvg_JTR">
+  <img src="https://markdown-videos-api.jorgenkh.no/youtube/gJvBndD36cs" alt="Watch the video" width="600">
+</a>
+
 <h5>Ch format is loosely: TAG POSITION CH TARGET</h5>
 <ul> 
  <li>
