@@ -19,7 +19,7 @@ Features:
 <ul>
 <li>Added Bard Swarm Count trigger.</li>
 <li>Boat timers are build int!</li>
-<li>User Defined Triggers are now supported!</li>
+<li>Full trigger system: create your own triggers with display text, text-to-speech, sounds, timers, and counters — plus a Built In library of ready-made triggers you can enable with one click.</li>
 <li><b>p99 middlemand</b> ported from https://github.com/Zaela/p99-login-middlemand is now supported!</li>
 <li>Random rolls show up in the triggers window. </li> 
 <li>See others on the map in real time. Also support for NParse map location sharing automatically if location sharing is set to everyone. </li> 
@@ -40,7 +40,9 @@ Features:
 <li>DPS is trailing 12 second average.</li>
 <li>Show fight Session data for comparisons.</li>
 <li>The following spells have counters that are automatically tracked: <br/>Mana Sieve<br/> LowerElement (Flux Staff Effect)<br/> Concussion<br/> Flame Lick<br/> Jolt<br/> Cinder Jolt<br/> Rage of Vallon<br/> Waves of the Deep Sea<br/> Anarchy<br/> Breath of the Sea<br/> Frostbite<br/> Judgment of Ice<br/> Storm Strike<br/> Shrieking Howl<br/> Static Strike<br/> Rage of Zek<br/> Blinding Luminance<br/> Flash of Light. Bard AOE resists (Chords of Dissonance, Denon's Disruptive Discord, Selo's Chords of Cessation, Selo's Assonant Strane) are also counted.</li> 
-<li>The following Audio/Visual alerts are available: <br/>Enrage<br/> Levitate fading<br/> Invis fading<br/> FTE (includes Guild)<br/> Charm Break<br/> Failed Feign<br/> Group Invite<br/> NPC Gating<br/> Tells You<br/> Dragon Roar (with 36 second recast timer)<br/> Root Break<br/> Resists<br/> Bard swarm/hit counts<br/> Zlandicar Roar<br/> VP Hosh (Diseased Cloud)<br/> Death Loop<br/> Zone Entry<br/> Spell Worn Off<br/> and <b>CH Chain</b></li>
+<li><b>Built-In Trigger Library</b>: ready-made triggers organized into <b>Combat</b>, <b>Encounters</b> (per-zone folders), and <b>Utility</b> in the Triggers settings tab (marked with a gold lock). Includes: Enrage, Levitate/Invis fading, Charm Break, Failed Feign, Group Invite, NPC Gating, Tells You, Resists, Dragon Roar (with 36 second timer), VP Hoskar Resto (Diseased Cloud), Death Touch (Fright/Dread), Avatar of War lockout, Spell Worn Off, Zone Entry, Exp Timer, spell feedback alerts (fizzle, interrupt, out of mana, resist, and more), and 30+ raid AOE warnings with countdown timers for Temple of Veeshan, Veeshan's Peak, Skyshrine, Sebilis, Skyfire, Kael, Sol B, Permafrost, Dragon Necropolis, Plane of Growth, and more. Each can be enabled/disabled individually; their outputs and timers can be customized, and triggers you haven't edited receive fixes automatically with updates.</li>
+<li>The following Audio/Visual alerts are also available: <br/>FTE (includes Guild)<br/> Root Break<br/> Bard swarm/hit counts<br/> Death Loop<br/> and <b>CH Chain</b></li>
+<li>Trigger editor quality of life: triggers can be restricted to a specific zone, colors are curated to stay readable on the overlay, and the Test box auto-generates a log line that fires the trigger so you can try it instantly.</li>
 <li>Timers on map for easy TOD tracking!</li>
 <li>All Melee disciplines show in the cooldown section of the timers window.</li>
 <li>Pricing information in Mob info window.</li>
@@ -256,6 +258,12 @@ Examples:
 <img alt="image" src="https://user-images.githubusercontent.com/3393733/232231377-1259ae63-f644-4e49-a246-8f1101f71190.png">
 <ul>
 <li>Turn on others hits in your eqsettings!</li>
+</ul>
+
+<h4>I messed up my triggers, how do I start over?</h4>
+<ul>
+<li>Goto General -> Reset Triggers.</li>
+<li>WARNING: this deletes ALL triggers and folders (including any you created) and restores the built-in defaults.</li>
 </ul>
 
 <h4>Map timers, how do they work?</h4>  
