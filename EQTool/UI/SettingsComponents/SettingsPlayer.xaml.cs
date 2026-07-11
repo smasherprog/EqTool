@@ -386,7 +386,7 @@ namespace EQTool.UI.SettingsComponents
             };
 
             var invStack = new StackPanel { Margin = new Thickness(12) };
-            invStack.Children.Add(MakeBagColumns(profile.General, 4));
+            invStack.Children.Add(MakeBagRows(profile.General, 4));
             ProfileItemDto heldItem = null;
             _ = profile.Equipped != null && profile.Equipped.TryGetValue("Held", out heldItem);
             if (heldItem != null)
@@ -399,7 +399,7 @@ namespace EQTool.UI.SettingsComponents
             invPane = invStack;
 
             var bankStack = new StackPanel { Margin = new Thickness(12), Visibility = Visibility.Collapsed };
-            bankStack.Children.Add(MakeBagColumns(profile.Bank, 8));
+            bankStack.Children.Add(MakeBagRows(profile.Bank, 4));
             var sharedRow = new StackPanel { Orientation = Orientation.Horizontal };
             if (profile.SharedBank != null)
             {
@@ -423,24 +423,26 @@ namespace EQTool.UI.SettingsComponents
             return MakePanel(content);
         }
 
-        // Bags render in two columns (inventory: 4 + 4, bank: 8 + 8).
-        private FrameworkElement MakeBagColumns(List<ProfileBagDto> bags, int perColumn)
+        // Bags render 4 across per row (inventory: 2 rows, bank: 4 rows).
+        private FrameworkElement MakeBagRows(List<ProfileBagDto> bags, int perRow)
         {
-            var columns = new StackPanel { Orientation = Orientation.Horizontal };
+            var rows = new StackPanel();
             if (bags == null)
             {
-                return columns;
+                return rows;
             }
-            for (var start = 0; start < bags.Count; start += perColumn)
+            for (var start = 0; start < bags.Count; start += perRow)
             {
-                var column = new StackPanel { Margin = new Thickness(0, 0, 24, 0) };
-                for (var i = start; i < Math.Min(start + perColumn, bags.Count); i++)
+                var row = new StackPanel { Orientation = Orientation.Horizontal };
+                for (var i = start; i < Math.Min(start + perRow, bags.Count); i++)
                 {
-                    column.Children.Add(MakeBagGroup(bags[i]));
+                    var group = MakeBagGroup(bags[i]);
+                    group.Margin = new Thickness(0, 4, 24, 10);
+                    row.Children.Add(group);
                 }
-                columns.Children.Add(column);
+                rows.Children.Add(row);
             }
-            return columns;
+            return rows;
         }
 
         private static TextBlock MakeTab(string text)

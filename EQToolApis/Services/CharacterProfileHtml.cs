@@ -46,8 +46,8 @@ namespace EQToolApis.Services
 .pp-tab:hover { color: #cdd3e6; text-decoration: none; }
 .pp-tab-active, .pp-tab-active:hover { color: #ffffff; border-bottom-color: #e8ecf8; }
 .pp-pane { padding: 12px 16px 16px 16px; font-size: 0; }
-.pp-bagcol { display: inline-block; vertical-align: top; margin-right: 24px; font-size: 0; }
-.pp-bag { display: block; margin: 6px 0 12px 0; font-size: 11px; }
+.pp-bagrow { font-size: 0; }
+.pp-bag { display: inline-block; vertical-align: top; margin: 6px 24px 12px 0; font-size: 11px; }
 .pp-bag-grid { width: 100px; font-size: 0; }
 .pp-shared { border-top: 1px solid #242c49; margin-top: 10px; padding-top: 8px; }
 .pp-shared-h { color: #6b7390; font-size: 11px; font-weight: bold; margin-bottom: 2px; }
@@ -229,13 +229,13 @@ function ppShowTab(name) {
             _ = sb.Append("<a id=\"pp-btn-bank\" class=\"pp-tab\" onclick=\"ppShowTab('bank')\">Bank</a>");
             _ = sb.Append("</div>");
 
-            // Bags render in two columns (inventory: 4 + 4, bank: 8 + 8).
-            void BagColumns(List<ProfileBag> bags, int perColumn)
+            // Bags render 4 across per row (inventory: 2 rows, bank: 4 rows).
+            void BagRows(List<ProfileBag> bags, int perRow)
             {
-                for (var start = 0; start < bags.Count; start += perColumn)
+                for (var start = 0; start < bags.Count; start += perRow)
                 {
-                    _ = sb.Append("<div class=\"pp-bagcol\">");
-                    foreach (var bag in bags.Skip(start).Take(perColumn))
+                    _ = sb.Append("<div class=\"pp-bagrow\">");
+                    foreach (var bag in bags.Skip(start).Take(perRow))
                     {
                         _ = sb.Append(BagGroup(bag, assetBase));
                     }
@@ -244,7 +244,7 @@ function ppShowTab(name) {
             }
 
             _ = sb.Append("<div id=\"pp-pane-inv\" class=\"pp-pane\">");
-            BagColumns(p.General, 4);
+            BagRows(p.General, 4);
             var held = p.Equipped.TryGetValue("Held", out var heldItem) ? heldItem : null;
             if (held != null)
             {
@@ -255,7 +255,7 @@ function ppShowTab(name) {
             _ = sb.Append("</div>");
 
             _ = sb.Append("<div id=\"pp-pane-bank\" class=\"pp-pane\" style=\"display:none\">");
-            BagColumns(p.Bank, 8);
+            BagRows(p.Bank, 4);
             _ = sb.Append("<div class=\"pp-shared\"><div class=\"pp-shared-h\">Shared Bank</div>");
             foreach (var item in p.SharedBank)
             {
