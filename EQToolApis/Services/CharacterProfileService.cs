@@ -47,6 +47,7 @@ namespace EQToolApis.Services
     public class CharacterProfile
     {
         public string CharacterName { get; set; } = string.Empty;
+        public Servers Server { get; set; }
         public DateTime UpdatedAt { get; set; }
         public Dictionary<string, ProfileItem?> Equipped { get; set; } = [];
         public List<ProfileBag> General { get; set; } = [];
@@ -79,6 +80,7 @@ namespace EQToolApis.Services
             var profile = new CharacterProfile
             {
                 CharacterName = inventory.CharacterName,
+                Server = inventory.Server,
                 UpdatedAt = inventory.UpdatedAt,
             };
 

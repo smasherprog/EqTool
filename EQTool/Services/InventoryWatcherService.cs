@@ -58,7 +58,8 @@ namespace EQTool.Services
             }
 
             var characterName = _activePlayer.Player?.Name;
-            if (string.IsNullOrEmpty(characterName))
+            var server = _activePlayer.Player?.Server;
+            if (string.IsNullOrEmpty(characterName) || server == null)
             {
                 return;
             }
@@ -72,6 +73,7 @@ namespace EQTool.Services
             var request = new InventoryUploadRequest
             {
                 CharacterName = characterName,
+                Server = server.Value,
                 Items = items
             };
 

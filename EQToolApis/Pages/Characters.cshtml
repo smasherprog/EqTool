@@ -92,6 +92,7 @@
                     <thead>
                         <tr>
                             <th>Character</th>
+                            <th>Server</th>
                             <th class="num">Items</th>
                             <th class="num">Last Updated</th>
                         </tr>
@@ -99,8 +100,9 @@
                     <tbody>
                         @foreach (var character in Model.Characters)
                         {
-                            <tr class="character-row" data-character="@character.CharacterName">
+                            <tr class="character-row" data-character="@character.CharacterName" data-server="@character.Server">
                                 <td class="pg-charname">@character.CharacterName</td>
+                                <td>@character.Server</td>
                                 <td class="num">@character.ItemCount</td>
                                 <td class="num mytime" utc="@character.UpdatedAt.ToString("o")">@character.UpdatedAt.ToString("u")</td>
                             </tr>
@@ -133,7 +135,8 @@
     document.querySelectorAll('.character-row').forEach(function (row) {
         row.addEventListener('click', function () {
             var name = this.dataset.character;
-            fetch('/Characters?handler=ProfileHtml&character=' + encodeURIComponent(name))
+            var server = this.dataset.server;
+            fetch('/Characters?handler=ProfileHtml&character=' + encodeURIComponent(name) + '&server=' + encodeURIComponent(server))
                 .then(function (r) { return r.text(); })
                 .then(function (html) {
                     containerEl.innerHTML = html;

@@ -179,7 +179,7 @@ function ppShowTab(name) {
             // Left: stats panel
             _ = sb.Append("<div class=\"pp-panel pp-stats\">");
             _ = sb.Append($"<div class=\"pp-charname\">{Enc(p.CharacterName)}</div>");
-            _ = sb.Append($"<div class=\"pp-updated\">Updated {p.UpdatedAt:yyyy-MM-dd}</div>");
+            _ = sb.Append($"<div class=\"pp-updated\">{Enc(p.Server.ToString())} &middot; Updated {p.UpdatedAt:yyyy-MM-dd}</div>");
             _ = sb.Append("<div class=\"pp-core\">");
             _ = sb.Append(CoreCell("HP", s.HP == 0 ? "&mdash;" : "+" + s.HP));
             _ = sb.Append(CoreCell("Mana", s.Mana == 0 ? "&mdash;" : "+" + s.Mana));

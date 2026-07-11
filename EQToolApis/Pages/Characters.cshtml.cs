@@ -1,5 +1,6 @@
 using EQToolApis.DB;
 using EQToolApis.Services;
+using EQToolShared.Enums;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -11,6 +12,7 @@ namespace EQToolApis.Pages
     public class CharacterSummary
     {
         public string CharacterName { get; set; } = string.Empty;
+        public Servers Server { get; set; }
         public int ItemCount { get; set; }
         public DateTime UpdatedAt { get; set; }
     }
@@ -50,16 +52,17 @@ namespace EQToolApis.Pages
                 .Select(c => new CharacterSummary
                 {
                     CharacterName = c.CharacterName,
+                    Server = c.Server,
                     ItemCount = c.Items.Count,
                     UpdatedAt = c.UpdatedAt
                 })
-                .OrderBy(c => c.CharacterName)
+                .OrderBy(c => c.CharacterName).ThenBy(c => c.Server)
                 .ToListAsync();
 
             return Page();
         }
 
-        public async Task<IActionResult> OnGetProfileHtmlAsync(string character)
+        public async Task<IActionResult> OnGetProfileHtmlAsync(string character, Servers server = Servers.Green)
         {
             var result = await HttpContext.AuthenticateAsync("DiscordCookie");
             if (!result.Succeeded || result.Principal == null)
@@ -75,7 +78,7 @@ namespace EQToolApis.Pages
 
             var inventory = await _db.CharacterInventories
                 .Include(c => c.Items)
-                .FirstOrDefaultAsync(c => c.DiscordUserId == user.DiscordUserId && c.CharacterName == character);
+                .FirstOrDefaultAsync(c => c.DiscordUserId == user.DiscordUserId && c.CharacterName == character && c.Server == server);
 
             if (inventory == null)
                 return Content("<div class=\"pp-message\">No inventory found for this character.</div>", "text/html");

@@ -15,6 +15,7 @@ namespace EQToolShared.APIModels.InventoryControllerModels
     public class InventoryUploadRequest
     {
         public string CharacterName { get; set; } = string.Empty;
+        public Servers Server { get; set; } = Servers.Green;
         public List<InventoryItemModel> Items { get; set; } = new List<InventoryItemModel>();
     }
 }

@@ -7,6 +7,38 @@
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid Background="#FF0B0E1A">
-        <WebBrowser x:Name="ProfileBrowser" />
+        <ScrollViewer x:Name="ProfileScroll"
+                      Visibility="Collapsed"
+                      VerticalScrollBarVisibility="Auto"
+                      HorizontalScrollBarVisibility="Disabled"
+                      Padding="12">
+            <Grid x:Name="ProfileHost">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="Auto" />
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+            </Grid>
+        </ScrollViewer>
+        <StackPanel x:Name="MessagePanel" VerticalAlignment="Center" HorizontalAlignment="Center" MaxWidth="440" Margin="20">
+            <TextBlock x:Name="MessageText"
+                       TextWrapping="Wrap"
+                       TextAlignment="Center"
+                       Foreground="#FF9AA3C0"
+                       FontSize="14"
+                       LineHeight="22" />
+            <Button x:Name="LoginButton"
+                    Content="Login with Discord"
+                    Visibility="Collapsed"
+                    Click="LoginButton_Click"
+                    Margin="0,20,0,0"
+                    Padding="18,9"
+                    HorizontalAlignment="Center"
+                    Background="#FF5865F2"
+                    Foreground="White"
+                    BorderThickness="0"
+                    FontWeight="Bold"
+                    FontSize="13"
+                    Cursor="Hand" />
+        </StackPanel>
     </Grid>
 </UserControl>
