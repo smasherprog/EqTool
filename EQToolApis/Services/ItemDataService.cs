@@ -54,11 +54,13 @@ namespace EQToolApis.Services
             }
         }
 
+        // imglst.dat's first column is an internal pigparse row id, NOT the in-game
+        // item id that inventory dumps contain (e.g. Backpack is 476 in imglst.dat
+        // but 17969 in game), so matching by id shows the wrong item's icon. The
+        // item name is the reliable key.
         public string GetImageUrl(int itemId, string itemName)
         {
-            if (itemId > 0 && _imageById.TryGetValue(itemId, out var img))
-                return $"/Content/Images/{img}";
-            if (_imageByName.TryGetValue(itemName, out img))
+            if (!string.IsNullOrEmpty(itemName) && _imageByName.TryGetValue(itemName.Trim(), out var img))
                 return $"/Content/Images/{img}";
             return "/Content/Images/Item_.png";
         }

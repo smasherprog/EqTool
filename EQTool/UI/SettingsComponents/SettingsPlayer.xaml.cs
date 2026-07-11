@@ -94,12 +94,14 @@ namespace EQTool.UI.SettingsComponents
         private static readonly Brush TooltipBorder = MakeBrush("#FF3C4670");
         private static readonly Brush TooltipText = MakeBrush("#FFDFE4F5");
 
+        // PULSE-style paperdoll: rings bookend row 2, weapons row centered at the
+        // bottom. Held (cursor) is rendered in the Inventory tab when occupied.
         private static readonly string[][] EquipRows = new string[][]
         {
             new[] { "Charm", "Ear1", "Head", "Face", "Ear2" },
-            new[] { "Finger1", "Neck", "Shoulders", "Arms", "Back", "Finger2" },
-            new[] { "Wrist1", "Chest", "Waist", "Legs", "Feet", "Wrist2" },
-            new[] { "Hands", "Primary", "Secondary", "Range", "Ammo", "Held" },
+            new[] { "Finger1", "Neck", "Shoulders", "Back", "Hands", "Finger2" },
+            new[] { "Wrist1", "Arms", "Chest", "Waist", "Legs", "Feet", "Wrist2" },
+            new[] { "Primary", "Secondary", "Range", "Ammo" },
         };
 
         private readonly EQToolSettings settings;
@@ -383,26 +385,21 @@ namespace EQTool.UI.SettingsComponents
                 Child = tabRow
             };
 
-            var invWrap = new WrapPanel { Margin = new Thickness(12) };
-            if (profile.General != null)
+            var invStack = new StackPanel { Margin = new Thickness(12) };
+            invStack.Children.Add(MakeBagColumns(profile.General, 4));
+            ProfileItemDto heldItem = null;
+            _ = profile.Equipped != null && profile.Equipped.TryGetValue("Held", out heldItem);
+            if (heldItem != null)
             {
-                foreach (var bag in profile.General)
-                {
-                    invWrap.Children.Add(MakeBagGroup(bag));
-                }
+                var heldSection = new StackPanel { Margin = new Thickness(0, 8, 0, 0) };
+                heldSection.Children.Add(new TextBlock { Text = "Held (cursor)", FontSize = 11, FontWeight = FontWeights.Bold, Foreground = TextMuted, Margin = new Thickness(2, 0, 0, 2) });
+                heldSection.Children.Add(MakeSlot(heldItem));
+                invStack.Children.Add(heldSection);
             }
-            invPane = invWrap;
+            invPane = invStack;
 
             var bankStack = new StackPanel { Margin = new Thickness(12), Visibility = Visibility.Collapsed };
-            var bankWrap = new WrapPanel();
-            if (profile.Bank != null)
-            {
-                foreach (var bag in profile.Bank)
-                {
-                    bankWrap.Children.Add(MakeBagGroup(bag));
-                }
-            }
-            bankStack.Children.Add(bankWrap);
+            bankStack.Children.Add(MakeBagColumns(profile.Bank, 8));
             var sharedRow = new StackPanel { Orientation = Orientation.Horizontal };
             if (profile.SharedBank != null)
             {
@@ -421,9 +418,29 @@ namespace EQTool.UI.SettingsComponents
 
             var content = new StackPanel();
             content.Children.Add(tabHeader);
-            content.Children.Add(invWrap);
+            content.Children.Add(invStack);
             content.Children.Add(bankStack);
             return MakePanel(content);
+        }
+
+        // Bags render in two columns (inventory: 4 + 4, bank: 8 + 8).
+        private FrameworkElement MakeBagColumns(List<ProfileBagDto> bags, int perColumn)
+        {
+            var columns = new StackPanel { Orientation = Orientation.Horizontal };
+            if (bags == null)
+            {
+                return columns;
+            }
+            for (var start = 0; start < bags.Count; start += perColumn)
+            {
+                var column = new StackPanel { Margin = new Thickness(0, 0, 24, 0) };
+                for (var i = start; i < Math.Min(start + perColumn, bags.Count); i++)
+                {
+                    column.Children.Add(MakeBagGroup(bags[i]));
+                }
+                columns.Children.Add(column);
+            }
+            return columns;
         }
 
         private static TextBlock MakeTab(string text)
@@ -452,7 +469,7 @@ namespace EQTool.UI.SettingsComponents
 
         private FrameworkElement MakeBagGroup(ProfileBagDto bag)
         {
-            var sp = new StackPanel { Margin = new Thickness(0, 4, 12, 4) };
+            var sp = new StackPanel { Margin = new Thickness(0, 4, 0, 10) };
             sp.Children.Add(MakeSlot(bag?.Container));
             if (bag?.Contents != null && bag.Contents.Count > 0)
             {
@@ -476,7 +493,8 @@ namespace EQTool.UI.SettingsComponents
                 Background = SlotBg,
                 BorderBrush = SlotBorder,
                 BorderThickness = new Thickness(1),
-                Margin = new Thickness(2)
+                Margin = new Thickness(2),
+                HorizontalAlignment = HorizontalAlignment.Left
             };
             if (item == null)
             {

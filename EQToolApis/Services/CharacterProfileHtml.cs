@@ -46,7 +46,8 @@ namespace EQToolApis.Services
 .pp-tab:hover { color: #cdd3e6; text-decoration: none; }
 .pp-tab-active, .pp-tab-active:hover { color: #ffffff; border-bottom-color: #e8ecf8; }
 .pp-pane { padding: 12px 16px 16px 16px; font-size: 0; }
-.pp-bag { display: inline-block; vertical-align: top; margin: 6px 14px 6px 0; font-size: 11px; }
+.pp-bagcol { display: inline-block; vertical-align: top; margin-right: 24px; font-size: 0; }
+.pp-bag { display: block; margin: 6px 0 12px 0; font-size: 11px; }
 .pp-bag-grid { width: 100px; font-size: 0; }
 .pp-shared { border-top: 1px solid #242c49; margin-top: 10px; padding-top: 8px; }
 .pp-shared-h { color: #6b7390; font-size: 11px; font-weight: bold; margin-bottom: 2px; }
@@ -114,12 +115,14 @@ function ppShowTab(name) {
 }
 ";
 
+        // PULSE-style paperdoll: rings bookend row 2, weapons row centered at the
+        // bottom. Held (cursor) is rendered in the Inventory tab when occupied.
         private static readonly string[][] EquipRows =
         [
             ["Charm", "Ear1", "Head", "Face", "Ear2"],
-            ["Finger1", "Neck", "Shoulders", "Arms", "Back", "Finger2"],
-            ["Wrist1", "Chest", "Waist", "Legs", "Feet", "Wrist2"],
-            ["Hands", "Primary", "Secondary", "Range", "Ammo", "Held"],
+            ["Finger1", "Neck", "Shoulders", "Back", "Hands", "Finger2"],
+            ["Wrist1", "Arms", "Chest", "Waist", "Legs", "Feet", "Wrist2"],
+            ["Primary", "Secondary", "Range", "Ammo"],
         ];
 
         private static string Enc(string s) => WebUtility.HtmlEncode(s ?? string.Empty);
@@ -226,18 +229,33 @@ function ppShowTab(name) {
             _ = sb.Append("<a id=\"pp-btn-bank\" class=\"pp-tab\" onclick=\"ppShowTab('bank')\">Bank</a>");
             _ = sb.Append("</div>");
 
-            _ = sb.Append("<div id=\"pp-pane-inv\" class=\"pp-pane\">");
-            foreach (var bag in p.General)
+            // Bags render in two columns (inventory: 4 + 4, bank: 8 + 8).
+            void BagColumns(List<ProfileBag> bags, int perColumn)
             {
-                _ = sb.Append(BagGroup(bag, assetBase));
+                for (var start = 0; start < bags.Count; start += perColumn)
+                {
+                    _ = sb.Append("<div class=\"pp-bagcol\">");
+                    foreach (var bag in bags.Skip(start).Take(perColumn))
+                    {
+                        _ = sb.Append(BagGroup(bag, assetBase));
+                    }
+                    _ = sb.Append("</div>");
+                }
+            }
+
+            _ = sb.Append("<div id=\"pp-pane-inv\" class=\"pp-pane\">");
+            BagColumns(p.General, 4);
+            var held = p.Equipped.TryGetValue("Held", out var heldItem) ? heldItem : null;
+            if (held != null)
+            {
+                _ = sb.Append("<div class=\"pp-shared\"><div class=\"pp-shared-h\">Held (cursor)</div>");
+                _ = sb.Append(Slot(held, assetBase));
+                _ = sb.Append("</div>");
             }
             _ = sb.Append("</div>");
 
             _ = sb.Append("<div id=\"pp-pane-bank\" class=\"pp-pane\" style=\"display:none\">");
-            foreach (var bag in p.Bank)
-            {
-                _ = sb.Append(BagGroup(bag, assetBase));
-            }
+            BagColumns(p.Bank, 8);
             _ = sb.Append("<div class=\"pp-shared\"><div class=\"pp-shared-h\">Shared Bank</div>");
             foreach (var item in p.SharedBank)
             {
