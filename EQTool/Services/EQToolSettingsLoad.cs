@@ -216,7 +216,14 @@ namespace EQTool.Services
                     continue;
                 }
                 // Newly shipped built-in: enabled the first time the user sees it.
-                //def.TriggerEnabled = true;
+                if (def.BuiltInFolder == "Encounters")
+                {
+                    def.TriggerEnabled = true;
+                }
+                else
+                {
+                    def.TriggerEnabled = false;
+                }
                 rebuilt.Add(def);
                 changed = true;
             }
