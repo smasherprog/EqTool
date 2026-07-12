@@ -216,7 +216,7 @@ namespace EQTool.Services
                     continue;
                 }
                 // Newly shipped built-in: enabled the first time the user sees it.
-                def.TriggerEnabled = true;
+                //def.TriggerEnabled = true;
                 rebuilt.Add(def);
                 changed = true;
             }

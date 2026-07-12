@@ -95,7 +95,7 @@ namespace EQTool.UI.SettingsComponents
         private static readonly Brush TooltipText = MakeBrush("#FFDFE4F5");
 
         // PULSE-style paperdoll: rings bookend row 2, weapons row centered at the
-        // bottom. Held (cursor) is rendered in the Inventory tab when occupied.
+        // bottom. Held (cursor) is intentionally not displayed.
         private static readonly string[][] EquipRows = new string[][]
         {
             new[] { "Charm", "Ear1", "Head", "Face", "Ear2" },
@@ -387,15 +387,6 @@ namespace EQTool.UI.SettingsComponents
 
             var invStack = new StackPanel { Margin = new Thickness(12) };
             invStack.Children.Add(MakeBagRows(profile.General, 4));
-            ProfileItemDto heldItem = null;
-            _ = profile.Equipped != null && profile.Equipped.TryGetValue("Held", out heldItem);
-            if (heldItem != null)
-            {
-                var heldSection = new StackPanel { Margin = new Thickness(0, 8, 0, 0) };
-                heldSection.Children.Add(new TextBlock { Text = "Held (cursor)", FontSize = 11, FontWeight = FontWeights.Bold, Foreground = TextMuted, Margin = new Thickness(2, 0, 0, 2) });
-                heldSection.Children.Add(MakeSlot(heldItem));
-                invStack.Children.Add(heldSection);
-            }
             invPane = invStack;
 
             var bankStack = new StackPanel { Margin = new Thickness(12), Visibility = Visibility.Collapsed };

@@ -116,7 +116,7 @@ function ppShowTab(name) {
 ";
 
         // PULSE-style paperdoll: rings bookend row 2, weapons row centered at the
-        // bottom. Held (cursor) is rendered in the Inventory tab when occupied.
+        // bottom. Held (cursor) is intentionally not displayed.
         private static readonly string[][] EquipRows =
         [
             ["Charm", "Ear1", "Head", "Face", "Ear2"],
@@ -245,13 +245,6 @@ function ppShowTab(name) {
 
             _ = sb.Append("<div id=\"pp-pane-inv\" class=\"pp-pane\">");
             BagRows(p.General, 4);
-            var held = p.Equipped.TryGetValue("Held", out var heldItem) ? heldItem : null;
-            if (held != null)
-            {
-                _ = sb.Append("<div class=\"pp-shared\"><div class=\"pp-shared-h\">Held (cursor)</div>");
-                _ = sb.Append(Slot(held, assetBase));
-                _ = sb.Append("</div>");
-            }
             _ = sb.Append("</div>");
 
             _ = sb.Append("<div id=\"pp-pane-bank\" class=\"pp-pane\" style=\"display:none\">");
