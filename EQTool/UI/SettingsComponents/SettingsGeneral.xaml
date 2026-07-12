@@ -476,6 +476,19 @@
                             <Setter Property="IsSelected" Value="{Binding IsSelected, Mode=TwoWay}" />
                             <Setter Property="IsExpanded" Value="{Binding IsExpanded, Mode=TwoWay}" />
                             <EventSetter Event="PreviewMouseRightButtonDown" Handler="OnPreviewMouseRightButtonDown" />
+                            <EventSetter Event="PreviewMouseLeftButtonDown" Handler="CharacterTree_PreviewMouseLeftButtonDown" />
+                            <Style.Resources>
+                                <!-- Make the native single-selection highlight match the multi-select highlight -->
+                                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightBrushKey}" Color="#FFB3D9FF" />
+                                <SolidColorBrush x:Key="{x:Static SystemColors.HighlightTextBrushKey}" Color="Black" />
+                                <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightBrushKey}" Color="#FFB3D9FF" />
+                                <SolidColorBrush x:Key="{x:Static SystemColors.InactiveSelectionHighlightTextBrushKey}" Color="Black" />
+                            </Style.Resources>
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding IsMultiSelected}" Value="True">
+                                    <Setter Property="Background" Value="#FFB3D9FF" />
+                                </DataTrigger>
+                            </Style.Triggers>
                         </Style>
                     </TreeView.ItemContainerStyle>
                     <TreeView.Resources>

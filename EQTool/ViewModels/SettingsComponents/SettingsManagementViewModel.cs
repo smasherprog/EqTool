@@ -766,17 +766,53 @@ namespace EQTool.ViewModels.SettingsComponents
 
         private void PlayerDelete(object sender, System.Windows.RoutedEventArgs e)
         {
-            var s = sender as MenuItem;
-            if (s.Tag is TreePlayer t)
+            if (!((sender as MenuItem)?.Tag is TreePlayer clicked))
             {
-                var result = System.Windows.MessageBox.Show($"Are you sure that you want to delete the saved settings for {t.Name}? This only deletes Pigparse data!", $"Delete Pigparse data for {t.Name}", MessageBoxButton.YesNo, MessageBoxImage.Warning);
-                if (result == MessageBoxResult.Yes)
-                {
-                    _ = settings.Players.Remove(t.Player);
-                    eQToolSettingsLoad.Save(settings);
-                    _ = t.Parent.Children.Remove(t);
-                }
+                return;
             }
+
+            var players = ResolveCharacterSelection(clicked);
+            var message = players.Count == 1
+                ? $"Are you sure that you want to delete the saved settings for {players[0].Name}? This only deletes Pigparse data!"
+                : $"Are you sure that you want to delete the saved settings for the {players.Count} selected characters? This only deletes Pigparse data!";
+            var title = players.Count == 1 ? $"Delete Pigparse data for {players[0].Name}" : $"Delete Pigparse data for {players.Count} characters";
+            var result = System.Windows.MessageBox.Show(message, title, MessageBoxButton.YesNo, MessageBoxImage.Warning);
+            if (result != MessageBoxResult.Yes)
+            {
+                return;
+            }
+
+            // Captured before removal: detaching a node can reset its IsSelected binding.
+            var deletingShownCharacter = players.Any(p => p.IsSelected);
+            foreach (var t in players)
+            {
+                _ = settings.Players.Remove(t.Player);
+                _ = t.Parent?.Children.Remove(t);
+            }
+            eQToolSettingsLoad.Save(settings);
+
+            // Don't leave the detail editor showing a character that no longer exists.
+            if (deletingShownCharacter)
+            {
+                CharacterUserControl = null;
+            }
+        }
+
+        // Determines which characters an operation should act on: the full multi-selection
+        // when the clicked character is part of it, otherwise just the clicked character.
+        private System.Collections.Generic.List<TreePlayer> ResolveCharacterSelection(TreePlayer clicked)
+        {
+            var selected = new System.Collections.Generic.List<TreeViewItemBase>();
+            foreach (var server in _characterTreeItems)
+            {
+                CollectMultiSelected(server, selected);
+            }
+            var players = selected.OfType<TreePlayer>().ToList();
+            if (players.Count > 0 && players.Contains(clicked))
+            {
+                return players;
+            }
+            return new System.Collections.Generic.List<TreePlayer> { clicked };
         }
 
         private ObservableCollection<TreeViewItemBase> _triggerTreeItems = new ObservableCollection<TreeViewItemBase>();

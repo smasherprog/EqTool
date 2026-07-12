@@ -1496,7 +1496,7 @@ namespace EQTool.UI.SettingsComponents
             // single newly-selected item, keeping the highlight consistent.
             if ((Keyboard.Modifiers & ModifierKeys.Control) != ModifierKeys.Control)
             {
-                ClearMultiSelect();
+                ClearMultiSelect(settingsManagementViewModel.TriggerTreeItems);
                 if (e.NewValue is TreeViewItemBase selected)
                 {
                     selected.IsMultiSelected = true;
@@ -1507,7 +1507,44 @@ namespace EQTool.UI.SettingsComponents
 
         private void CharacterTree_SelectedItemChanged(object sender, RoutedPropertyChangedEventArgs<object> e)
         {
+            // A plain (non-Ctrl) selection collapses the multi-selection down to the
+            // single newly-selected character, keeping the highlight consistent.
+            if ((Keyboard.Modifiers & ModifierKeys.Control) != ModifierKeys.Control)
+            {
+                ClearMultiSelect(settingsManagementViewModel.CharacterTreeItems);
+                if (e.NewValue is TreePlayer selected)
+                {
+                    selected.IsMultiSelected = true;
+                }
+            }
             settingsManagementViewModel.CharacterTreeSelected(e.NewValue as TreeViewItemBase);
+        }
+
+        // Ctrl+click in the Characters tree toggles a character's membership in the
+        // multi-selection; only characters (not servers or the Zone(s) node) participate.
+        private void CharacterTree_PreviewMouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            var obj = e.OriginalSource as DependencyObject;
+            // let the expand/collapse toggle work normally
+            if (IsInExpander(obj))
+            {
+                return;
+            }
+
+            var container = GetDependencyObjectFromVisualTree(obj, typeof(TreeViewItem)) as TreeViewItem;
+            if (!(container?.Header is TreePlayer data))
+            {
+                return;
+            }
+
+            if ((Keyboard.Modifiers & ModifierKeys.Control) == ModifierKeys.Control)
+            {
+                // toggle this character in/out of the selection without changing the
+                // primary selection (so the editor panel stays put)
+                data.IsMultiSelected = !data.IsMultiSelected;
+                e.Handled = true;
+            }
+            // a non-Ctrl click is handled by CharacterTree_SelectedItemChanged
         }
 
         // Ctrl+click toggles an item's membership in the multi-selection; a plain
@@ -1586,9 +1623,9 @@ namespace EQTool.UI.SettingsComponents
             return null;
         }
 
-        private void ClearMultiSelect()
+        private static void ClearMultiSelect(IEnumerable<TreeViewItemBase> roots)
         {
-            foreach (var item in settingsManagementViewModel.TriggerTreeItems)
+            foreach (var item in roots)
             {
                 ClearMultiSelectRecursive(item);
             }
@@ -1643,7 +1680,13 @@ namespace EQTool.UI.SettingsComponents
                 return;
             }
 
-            _ = item.Focus();
+            // Focusing a TreeViewItem also selects it, and a plain selection change
+            // collapses the multi-selection - so leave focus alone when the clicked
+            // item is already part of the multi-selection.
+            if (!p.IsMultiSelected)
+            {
+                _ = item.Focus();
+            }
             e.Handled = true;
             (sender as TreeViewItem).ContextMenu = settingsManagementViewModel.GetContextMenu(p);
         }
