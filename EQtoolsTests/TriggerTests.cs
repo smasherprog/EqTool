@@ -110,7 +110,8 @@ namespace EQtoolsTests
 
         // Mirrors what SettingsManagementViewModel.ResetTriggersToDefault does: clearing the trigger
         // and folder lists then re-seeding built-ins must drop every user trigger/folder and every
-        // built-in customization, leaving exactly the fresh-user default set (all built-ins enabled).
+        // built-in customization, leaving exactly the fresh-user default set (only built-ins in the
+        // top-level Encounters folder are enabled; everything else is seeded disabled).
         [TestMethod]
         public void ResettingTriggersRestoresBuiltInDefaults()
         {
@@ -139,7 +140,8 @@ namespace EQtoolsTests
             Assert.IsFalse(settings.Triggers.Any(x => x.TriggerName == "My Trigger"), "User triggers should be gone after reset.");
             Assert.IsTrue(settings.Triggers.All(x => !string.IsNullOrEmpty(x.BuiltInId)), "Only built-in triggers should remain.");
             Assert.AreEqual(expected, settings.Triggers.Count, "All built-in triggers should be restored.");
-            Assert.IsTrue(settings.Triggers.All(x => x.TriggerEnabled), "Reset built-ins should be enabled by default.");
+            Assert.IsTrue(settings.Triggers.Where(x => x.BuiltInFolder == "Encounters").All(x => x.TriggerEnabled), "Reset built-ins in the top-level Encounters folder should be enabled by default.");
+            Assert.IsTrue(settings.Triggers.Where(x => x.BuiltInFolder != "Encounters").All(x => !x.TriggerEnabled), "Reset built-ins outside the top-level Encounters folder should be disabled by default.");
             Assert.IsTrue(settings.Triggers.All(x => !x.Customized), "No built-in should remain customized after reset.");
         }
 

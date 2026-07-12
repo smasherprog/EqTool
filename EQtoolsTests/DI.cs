@@ -46,7 +46,8 @@ namespace EQtoolsTests
                     },
                     Triggers = new System.Collections.Generic.List<Trigger>()
                 };
-                // Mirror the app: add all built-in triggers (enabled) into the trigger list.
+                // Mirror the app: seed the built-in triggers into the trigger list (only the
+                // top-level Encounters folder is enabled; tests enable others as needed).
                 _ = EQToolSettingsLoad.SyncBuiltInTriggers(s);
                 return s;
             }).AsSelf().SingleInstance();

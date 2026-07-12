@@ -249,9 +249,17 @@ namespace EQtoolsTests
             player.Player.PlayerClass = EQToolShared.Enums.PlayerClasses.Druid;
             player.Player.Level = 60;
             player.Player.Zone = "growthplane";
+
+            // The Cloud of Silence timer comes from a built-in trigger, and built-ins
+            // outside the top-level Encounters folder are seeded disabled - enable it
+            // so the trigger pipeline evaluates it.
+            var settings = container.Resolve<EQToolSettings>();
+            settings.Triggers.First(x => x.BuiltInId == "builtin:pog-cloud-of-silence").TriggerEnabled = true;
+
             logParser.Push("You are in a cloud of silence.", DateTime.Now);
 
             var spelleffect = TimerList.FirstOrDefault();
+            Assert.IsNotNull(spelleffect);
             Assert.AreEqual("Cloud of Silence", spelleffect.Name);
         }
 

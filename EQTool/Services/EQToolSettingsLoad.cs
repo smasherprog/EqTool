@@ -115,7 +115,8 @@ namespace EQTool.Services
         //   - A user trigger with no BuiltInId that matches a built-in by name or search text is a
         //     duplicate left over from when that trigger shipped as a plain user trigger; it is
         //     merged into the built-in (see AdoptOrphanedBuiltIn) instead of sitting at the tree root.
-        //   - A newly shipped built-in is added enabled.
+        //   - A newly shipped built-in is added enabled only when it lives in the top-level
+        //     Encounters folder; everything else is added disabled.
         // Returns whether the trigger list changed in a way that should be persisted.
         public static bool SyncBuiltInTriggers(EQToolSettings settings)
         {

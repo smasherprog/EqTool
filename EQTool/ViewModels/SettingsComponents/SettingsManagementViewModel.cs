@@ -118,7 +118,8 @@ namespace EQTool.ViewModels.SettingsComponents
         }
 
         // Clears every trigger and user folder, then re-seeds the built-in library from code exactly
-        // as a brand-new user would get it (all built-ins present and enabled). This discards all
+        // as a brand-new user would get it (all built-ins present; only those in the top-level
+        // Encounters folder are enabled). This discards all
         // user-created triggers/folders and any customizations to built-ins, then persists and
         // rebuilds the tree. Used by the Debug tab's "Reset Triggers" button.
         public void ResetTriggersToDefault()

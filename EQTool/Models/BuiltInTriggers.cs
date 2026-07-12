@@ -393,8 +393,8 @@ namespace EQTool.Models
         // Encounter AOE warnings sourced from Zones.cs's NPCThatAOE lists. Each is a 12s overlay
         // countdown that fires on the spell's cast (on you / on others) or its resist, restricted to
         // the listed zone. Dragon Roar is intentionally NOT here (it has its own single trigger).
-        // To add another, append a row below; it is auto-registered in All() and auto-enabled on
-        // startup (see EQToolSettingsLoad).
+        // To add another, append a row below; it is auto-registered in All() and seeded disabled
+        // on startup like any other non-top-level built-in (see EQToolSettingsLoad).
         private sealed class AoeSpec
         {
             public string Spell;   // canonical spell name (used for the icon, and the BuiltInId when Id is null)
