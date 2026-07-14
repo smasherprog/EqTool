@@ -25,6 +25,19 @@ namespace EQTool.Models
         public string DefaultEqDirectory { get; set; }
         public string EqLogDirectory { get; set; }
         public string SelectedVoice { get; set; }
+
+        // Master volume (0-100) for all audio the tool produces: text-to-speech and sound files.
+        private int _GlobalAudioVolume = 100;
+        public int? GlobalAudioVolume
+        {
+            get => _GlobalAudioVolume;
+            set
+            {
+                var volume = value ?? 100;
+                _GlobalAudioVolume = volume < 0 ? 0 : (volume > 100 ? 100 : volume);
+            }
+        }
+
         private int _FontSize = 12;
         public int? FontSize
         {

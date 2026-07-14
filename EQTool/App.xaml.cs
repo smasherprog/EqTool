@@ -59,6 +59,13 @@ namespace EQTool
             }
         }
 
+        // Lets XAML-instantiated controls (which cannot use constructor injection)
+        // reach shared services such as audio playback and text-to-speech.
+        public T ResolveService<T>()
+        {
+            return container.Resolve<T>();
+        }
+
         public static List<BaseSaveStateWindow> WindowList = new List<BaseSaveStateWindow>();
         private const string programName = "eqtool";
         private bool WaitForEQToolToStop()

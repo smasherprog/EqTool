@@ -19,6 +19,13 @@ namespace EQTool.Services
         private readonly Dictionary<string, DateTime> audioAlertHistory = new Dictionary<string, DateTime>();
 
 #if !LINUX
+        // All synthesizer access runs on this serial task chain, in Say() call order.
+        // The synthesizer is not thread-safe, and unsynchronized access let phrases speak
+        // at the warm-up volume or let racing interrupts cancel each other. The chain only
+        // serializes the short configure-and-submit sections; the audio itself renders on
+        // the synthesizer's own internal queue, so nothing here waits for speech to finish.
+        private readonly object chainLock = new object();
+        private System.Threading.Tasks.Task synthWorkChain = System.Threading.Tasks.Task.CompletedTask;
         private readonly System.Speech.Synthesis.SpeechSynthesizer synth;
         private string LastSelectedVoice = string.Empty;
 #endif
@@ -39,15 +46,34 @@ namespace EQTool.Services
                 synth.SelectVoice(eQToolSettings.SelectedVoice);
                 LastSelectedVoice = eQToolSettings.SelectedVoice;
             }
-            System.Threading.Tasks.Task.Factory.StartNew(() =>
+            EnqueueSynthWork(() =>
             {
-                var previousVolume = synth.Volume;
-                synth.Volume = 1;
+                synth.Volume = 0;
                 synth.Speak("test");
-                synth.Volume = previousVolume;
             });
 #endif
         }
+
+#if !LINUX
+        // Appends work to the serial chain. Failures are swallowed per item so one bad
+        // phrase (e.g. a voice that failed to load) cannot kill speech for all later alerts.
+        private void EnqueueSynthWork(Action work)
+        {
+            lock (chainLock)
+            {
+                synthWorkChain = synthWorkChain.ContinueWith(_ =>
+                {
+                    try
+                    {
+                        work();
+                    }
+                    catch
+                    {
+                    }
+                }, System.Threading.Tasks.TaskScheduler.Default);
+            }
+        }
+#endif
 
         public void Say(string text)
         {
@@ -65,49 +91,59 @@ namespace EQTool.Services
             // is this phrase not in the history?
             var now = DateTime.Now;
             var shouldSpeak = false;
-            if (interrupt)
+            lock (audioAlertHistory)
             {
-                // interrupting speech bypasses the repeat-suppression cooldown
-                shouldSpeak = true;
-                audioAlertHistory[text] = now;
-            }
-            else if (audioAlertHistory.ContainsKey(text) == false)
-            {
-                shouldSpeak = true;
-                audioAlertHistory.Add(text, now);
-            }
-            else
-            {
-                // the history has an entry for this phrase.  Let's see how old it is
-                var prior = audioAlertHistory[text];
-                var elapsed = now - prior;
-                if (elapsed.TotalSeconds > audioAlertCooldownSeconds)
+                if (interrupt)
                 {
-                    // update the time stamp for this phrase
+                    // interrupting speech bypasses the repeat-suppression cooldown
                     shouldSpeak = true;
                     audioAlertHistory[text] = now;
+                }
+                else if (audioAlertHistory.ContainsKey(text) == false)
+                {
+                    shouldSpeak = true;
+                    audioAlertHistory.Add(text, now);
+                }
+                else
+                {
+                    // the history has an entry for this phrase.  Let's see how old it is
+                    var prior = audioAlertHistory[text];
+                    var elapsed = now - prior;
+                    if (elapsed.TotalSeconds > audioAlertCooldownSeconds)
+                    {
+                        // update the time stamp for this phrase
+                        shouldSpeak = true;
+                        audioAlertHistory[text] = now;
+                    }
                 }
             }
 
             if (shouldSpeak)
             {
-                if (string.IsNullOrWhiteSpace(eQToolSettings.SelectedVoice) && LastSelectedVoice != string.Empty)
+                EnqueueSynthWork(() =>
                 {
-                    synth.SetOutputToDefaultAudioDevice();
-                }
-                else if (!string.IsNullOrWhiteSpace(eQToolSettings.SelectedVoice) && LastSelectedVoice != eQToolSettings.SelectedVoice)
-                {
-                    synth.SelectVoice(eQToolSettings.SelectedVoice);
-                    LastSelectedVoice = eQToolSettings.SelectedVoice;
-                }
+                    if (string.IsNullOrWhiteSpace(eQToolSettings.SelectedVoice) && LastSelectedVoice != string.Empty)
+                    {
+                        synth.SetOutputToDefaultAudioDevice();
+                    }
+                    else if (!string.IsNullOrWhiteSpace(eQToolSettings.SelectedVoice) && LastSelectedVoice != eQToolSettings.SelectedVoice)
+                    {
+                        synth.SelectVoice(eQToolSettings.SelectedVoice);
+                        LastSelectedVoice = eQToolSettings.SelectedVoice;
+                    }
 
-                System.Threading.Tasks.Task.Factory.StartNew(() =>
-                {
+                    synth.Volume = eQToolSettings.GlobalAudioVolume ?? 100;
                     if (interrupt)
                     {
                         synth.SpeakAsyncCancelAll();
                     }
-                    synth.SpeakAsync(text);
+                    // A power-saving audio device takes a moment to wake and drops the
+                    // first samples it is handed, clipping the start of the phrase.
+                    // Leading silence gives it time to wake before the words begin.
+                    var prompt = new System.Speech.Synthesis.PromptBuilder();
+                    prompt.AppendBreak(TimeSpan.FromMilliseconds(250));
+                    prompt.AppendText(text);
+                    synth.SpeakAsync(prompt);
                 });
             }
 #endif

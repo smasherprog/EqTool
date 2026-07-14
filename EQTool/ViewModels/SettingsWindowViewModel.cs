@@ -117,6 +117,16 @@ namespace EQTool.ViewModels
             }
         }
 
+        public int GlobalAudioVolume
+        {
+            get => toolSettings.GlobalAudioVolume ?? 100;
+            set
+            {
+                toolSettings.GlobalAudioVolume = value;
+                OnPropertyChanged();
+            }
+        }
+
         public bool DpsAlwaysOnTop
         {
             get => toolSettings.DpsWindowState.AlwaysOnTop;

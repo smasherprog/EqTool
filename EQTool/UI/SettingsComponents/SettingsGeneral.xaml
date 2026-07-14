@@ -109,6 +109,15 @@
                         </StackPanel>
                     </GroupBox>
 
+                    <GroupBox Header="Audio" Margin="0,0,0,6">
+                        <StackPanel Orientation="Horizontal" Margin="4">
+                            <TextBlock Text="Volume"  FontWeight="Bold"  VerticalAlignment="Center" MinWidth="80" Margin="0,0,8,0"/>
+                            <Slider Value="{Binding GlobalAudioVolume}" Minimum="0" Maximum="100" SmallChange="1" LargeChange="10" TickFrequency="10" ValueChanged="SaveSettings" MinWidth="150" VerticalAlignment="Center"/>
+                            <TextBlock Text="{Binding GlobalAudioVolume, StringFormat={}{0}%}" VerticalAlignment="Center" MinWidth="35" Margin="8,0,0,0"/>
+                            <Button Content="▶" Margin="4,0,0,0" FontSize="7" Width="14" Height="14" Padding="0" Click="testVolume" ToolTip="Test Volume" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </GroupBox>
+
                     <GroupBox Header="Overlay Windows" Margin="0,0,0,6">
                         <Grid Margin="4">
                             <Grid.ColumnDefinitions>

@@ -42,6 +42,7 @@ namespace EQTool.UI.SettingsComponents
         private readonly DebugOutput debugOutput;
         private readonly LogArchiveService logArchiveService;
         private readonly SettingsManagementViewModel settingsManagementViewModel;
+        private readonly ITextToSpeach textToSpeach;
 
         public SettingsGeneral(
             LogEvents logEvents,
@@ -59,8 +60,10 @@ namespace EQTool.UI.SettingsComponents
             SettingsWindowViewModel settingsWindowData,
             SettingsTestRunOverlay settingsTestRunOverlay,
             LogArchiveService logArchiveService,
-            SettingsManagementViewModel settingsManagementViewModel)
+            SettingsManagementViewModel settingsManagementViewModel,
+            ITextToSpeach textToSpeach)
         {
+            this.textToSpeach = textToSpeach;
             this.settingsManagementViewModel = settingsManagementViewModel;
             this.debugOutput = debugOutput;
             this.loginMiddlemand = loginMiddlemand;
@@ -798,14 +801,13 @@ namespace EQTool.UI.SettingsComponents
             {
                 return;
             }
-#if !LINUX
-            System.Threading.Tasks.Task.Factory.StartNew(() =>
-            {
-                var synth = new System.Speech.Synthesis.SpeechSynthesizer();
-                synth.SelectVoice(SettingsWindowData.SelectedVoice);
-                synth.Speak($"You resist the Dragon Roar spell!");
-            });
-#endif
+            // The shared service picks up the selected voice and master volume from settings.
+            textToSpeach.Say("You resist the Dragon Roar spell!", true);
+        }
+
+        private void testVolume(object sender, RoutedEventArgs e)
+        {
+            textToSpeach.Say("This is a volume test", true);
         }
 
         private void testChChain(object sender, RoutedEventArgs e)

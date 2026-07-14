@@ -1,3 +1,4 @@
+using EQTool.Models;
 using System;
 
 namespace EQTool.Services
@@ -12,11 +13,13 @@ namespace EQTool.Services
     public class AudioService : IAudioService
     {
         private readonly IAppDispatcher appDispatcher;
+        private readonly EQToolSettings settings;
         private System.Windows.Media.MediaPlayer player;
 
-        public AudioService(IAppDispatcher appDispatcher)
+        public AudioService(IAppDispatcher appDispatcher, EQToolSettings settings)
         {
             this.appDispatcher = appDispatcher;
+            this.settings = settings;
         }
 
         public void Play(string soundFilePath)
@@ -35,6 +38,8 @@ namespace EQTool.Services
                         player = new System.Windows.Media.MediaPlayer();
                     }
                     player.Stop();
+                    // MediaPlayer volume is 0.0-1.0 and defaults to 0.5; map the 0-100 master volume onto it.
+                    player.Volume = (settings.GlobalAudioVolume ?? 100) / 100.0;
                     player.Open(new Uri(soundFilePath, UriKind.Absolute));
                     player.Play();
                 }

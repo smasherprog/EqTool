@@ -1,5 +1,5 @@
 using EQTool.Models;
-using System;
+using EQTool.Services;
 using System.Windows.Controls;
 
 namespace EQTool.UI.SettingsComponents
@@ -9,8 +9,6 @@ namespace EQTool.UI.SettingsComponents
     // and Timer Ended outputs.
     public partial class TriggerOutputEditor : UserControl
     {
-        private System.Windows.Media.MediaPlayer testPlayer;
-
         // Set by the host when an enabled Display Text field is empty, so the text box can show a
         // red border. Defaults to false, so outputs that don't validate display text stay normal.
         public static readonly System.Windows.DependencyProperty DisplayTextInvalidProperty =
@@ -47,39 +45,20 @@ namespace EQTool.UI.SettingsComponents
 
         private void TestAudio(object sender, System.Windows.RoutedEventArgs e)
         {
-            if (!(DataContext is TriggerOutput output))
+            // Tests play through the shared services so they honor the selected voice
+            // and the master volume from general settings, just like real alerts.
+            if (!(DataContext is TriggerOutput output) || !(System.Windows.Application.Current is App app))
             {
                 return;
             }
 
-            if (output.AudioType == TriggerAudioType.SoundFile && !string.IsNullOrWhiteSpace(output.SoundFile) && System.IO.File.Exists(output.SoundFile))
+            if (output.AudioType == TriggerAudioType.SoundFile && !string.IsNullOrWhiteSpace(output.SoundFile))
             {
-                try
-                {
-                    if (testPlayer == null)
-                    {
-                        testPlayer = new System.Windows.Media.MediaPlayer();
-                    }
-                    testPlayer.Stop();
-                    testPlayer.Open(new Uri(output.SoundFile, UriKind.Absolute));
-                    testPlayer.Play();
-                }
-                catch
-                {
-                }
+                app.ResolveService<IAudioService>().Play(output.SoundFile);
             }
             else if (output.AudioType == TriggerAudioType.TextToSpeech && !string.IsNullOrWhiteSpace(output.TtsText))
             {
-#if !LINUX
-                try
-                {
-                    var synth = new System.Speech.Synthesis.SpeechSynthesizer();
-                    synth.SpeakAsync(output.TtsText);
-                }
-                catch
-                {
-                }
-#endif
+                app.ResolveService<ITextToSpeach>().Say(output.TtsText, true);
             }
         }
     }
