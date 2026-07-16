@@ -2481,6 +2481,11 @@ namespace EQToolShared
                           Name = "A suit of sentient armor",
                           RespawnTime = new TimeSpan(0, 14, 30)
                       },
+                        new NpcSpawnTime
+                      {
+                          Name = "A storm giant escort",
+                          RespawnTime = new TimeSpan(0, 14, 30)
+                      },
                        new NpcSpawnTime
                       {
                           Name = "A faerie dragon",
