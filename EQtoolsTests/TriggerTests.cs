@@ -64,6 +64,7 @@ namespace EQtoolsTests
                 "Sense Heading",
                 "Sense Heading Failed",
                 "Tells You",
+                "You are drowning",
             };
             var all = BuiltInTriggers.All();
             foreach (var name in expected)
@@ -86,6 +87,7 @@ namespace EQtoolsTests
                 "Charm Break",
                 "Dispelled",
                 "Failed Feign",
+                "Healed you",
                 "Insufficient Mana",
                 "Must be standing to cast",
                 "NPC Gating",
@@ -297,6 +299,37 @@ namespace EQtoolsTests
             Assert.IsFalse(trigger.Matches("Peron ThreadSpinner tells you, 'That'll be 3 gold 2 copper for the Earring of the Frozen Skull.'"), "A merchant (multi-word name) should not fire.");
             Assert.IsFalse(trigger.Matches("Cleonae Kalen tells you, 'I'll give you 9 gold 8 silver 8 copper per Globe of Fear'"), "A merchant buy offer should not fire.");
             Assert.IsFalse(trigger.Matches("a spectre tells you, 'Attacking a spectre Master.'"), "A pet attack message should not fire.");
+        }
+
+        // "You are drowning" alerts with both display text and TTS audio.
+        [TestMethod]
+        public void DrowningAlertsWithTextAndAudio()
+        {
+            var trigger = BuiltInTriggers.CreateDrowning();
+            trigger.TriggerEnabled = true;
+            trigger.PlayerName = "Gandalf";
+
+            Assert.IsTrue(trigger.Matches("YOU are drowning!"));
+            var output = trigger.GetEffectiveBasic();
+            Assert.IsTrue(output.DisplayTextEnabled);
+            Assert.AreEqual("You are drowning!", trigger.Expand(output.DisplayText));
+            Assert.AreEqual(TriggerAudioType.TextToSpeech, output.AudioType);
+            Assert.AreEqual("You are drowning", trigger.Expand(output.TtsText));
+        }
+
+        // "Healed you" shows who healed you and for how much, display text only (no audio).
+        [TestMethod]
+        public void HealedYouShowsHealerAndAmountWithoutAudio()
+        {
+            var trigger = BuiltInTriggers.All().Single(x => x.BuiltInId == "builtin:healed-you");
+            trigger.TriggerEnabled = true;
+            trigger.PlayerName = "Gandalf";
+
+            Assert.IsTrue(trigger.Matches("Nimsake has healed you for 852 points of damage."));
+            Assert.AreEqual("Nimsake healed you for 852.", trigger.Expand(trigger.GetEffectiveBasic().DisplayText));
+            Assert.AreEqual(TriggerAudioType.None, trigger.GetEffectiveBasic().AudioType);
+
+            Assert.IsFalse(trigger.Matches("You have healed Nimsake for 200 points of damage."), "Healing someone else should not fire.");
         }
 
         [TestMethod]

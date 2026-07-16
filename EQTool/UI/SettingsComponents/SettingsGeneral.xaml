@@ -165,6 +165,10 @@
                                 <ComboBox SelectedItem="{Binding ActivePlayer.Player.MapLocationSharing}" ItemsSource="{Binding LocationShareOptions}" MinWidth="150"></ComboBox>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Margin="0,2,0,2">
+                                <TextBlock Text="Tracking Radius" ToolTip="Whose tracking radius circles are drawn on the map. This is a per character setting" VerticalAlignment="Center"  FontWeight="Bold" MinWidth="120"/>
+                                <ComboBox SelectedItem="{Binding ActivePlayer.Player.MapTrackingVisibility}" ItemsSource="{Binding Source={markupExtensions:EnumBindingSource {x:Type models:TrackingVisibility}}}" MinWidth="150"></ComboBox>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,2,0,2">
                                 <TextBlock Text="Map Cache" VerticalAlignment="Center"  FontWeight="Bold"  MinWidth="120"/>
                                 <Button Click="deleteMapCache" ToolTip="Do this if you are managing map files and make changes.">Delete Cached Maps</Button>
                             </StackPanel>

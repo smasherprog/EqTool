@@ -27,6 +27,7 @@ namespace EQTool.Models
                 CreateDragonRoar(),
                 CreateSpellWornOff(),
                 CreateEnteredZone(),
+                CreateDrowning(),
 
                 // Spell/combat feedback triggers ported from the old hardcoded trigger list.
                 // These only show overlay text (no audio) but keep their original audio text so
@@ -34,6 +35,7 @@ namespace EQTool.Models
                 BuildLegacy("builtin:spell-interrupted", "Spell Interrupted", "^Your spell is interrupted.", "Spell Interrupted", "Interrupted", "Combat"),
                 BuildLegacy("builtin:spell-fizzle", "Spell Fizzle", "^Your spell fizzles!", "Spell Fizzles", "Fizzle", "Combat"),
                 BuildLegacy("builtin:backstabber", "Backstabber", "^{backstabber} backstabs {target} for {damage} points of damage.", "{backstabber} backstabs {target} for {damage}", "Backstabber", "Combat"),
+                BuildLegacy("builtin:healed-you", "Healed you", "^{healer} has healed you for {damage} points of damage.", "{healer} healed you for {damage}.", "{healer} healed you for {damage}", "Combat"),
                 BuildLegacy("builtin:corpse-need-consent", "Corpse Need Consent", "^You do not have consent to summon that corpse", "Need Consent", "Need Consent", "Utility"),
                 BuildLegacy("builtin:corpse-out-of-range", "Corpse Out of Range", "^The corpse is too far away to summon", "Corpse OOR", "Corpse out of range", "Utility"),
                 BuildLegacy("builtin:select-a-target", "Select a Target", "^(You must first select a target for this spell)|(You must first click on the being you wish to attack)", "Select a target", "Select a target", "Utility"),
@@ -356,6 +358,12 @@ namespace EQTool.Models
             var trigger = Build("builtin:enraged", "Enraged", "{npc} has become ENRAGED.", true, "{npc} ENRAGED", "{npc} is enraged");
             trigger.BuiltInFolder = "Encounters";
             return trigger;
+        }
+
+        // "YOU are drowning!" -> drowning alert, both on screen and spoken.
+        public static Trigger CreateDrowning()
+        {
+            return Build("builtin:drowning", "You are drowning", @"^YOU are drowning!", true, "You are drowning!", "You are drowning", "Utility");
         }
 
         // "You feel as if you are about to fall." -> "Levitate Fading".

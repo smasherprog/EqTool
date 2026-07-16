@@ -239,10 +239,5 @@ namespace EQTool.UI
             mapViewModel.PanAndZoomCanvas_MouseWheel(e.GetPosition(Map), e.Delta);
             mapViewModel.CenterMapOnPlayer();
         }
-
-        protected void toggleCenterOnyou(object sender, RoutedEventArgs e)
-        {
-            mapViewModel.ToggleCenter();
-        }
     }
 }

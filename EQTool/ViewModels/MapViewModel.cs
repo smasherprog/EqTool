@@ -89,8 +89,18 @@ namespace EQTool.ViewModels
         private Vector _draggingDelta;
         private bool TimerOpen = false;
         private readonly TimersService timersService;
-        private bool CenterOnPlayer = false;
-        public Point CenterRelativeToCanvas = new Point(0, 0);
+
+        private bool _CenterOnPlayer = false;
+        public bool CenterOnPlayer
+        {
+            get => _CenterOnPlayer;
+            set
+            {
+                _CenterOnPlayer = value;
+                OnPropertyChanged();
+                CenterMapOnPlayer();
+            }
+        }
 
         public string MouseLocation => $"   {LastMouselocation.Y:0.##}, {LastMouselocation.X:0.##}";
 
@@ -170,25 +180,30 @@ namespace EQTool.ViewModels
             }
         }
 
-        public void ToggleCenter()
-        {
-            CenterOnPlayer = !CenterOnPlayer;
-            CenterMapOnPlayer();
-        }
-
         public void CenterMapOnPlayer()
         {
             CenterMapOnPlayer(Lastlocation);
         }
 
-        private void CenterMapOnPlayer(Point3D value1)
+        private void CenterMapOnPlayer(Point3D location)
         {
-            if (CenterOnPlayer && CurrentScaling != 1.0f)
+            // The arrow is hidden until the first location line is parsed for the current zone, so
+            // its visibility tells us whether Lastlocation is meaningful; without this we would
+            // center on (0,0,0) or on coordinates left over from the previous zone.
+            if (!CenterOnPlayer || Canvas == null || PlayerLocation?.ArrowLine == null || PlayerLocation.ArrowLine.Visibility != Visibility.Visible)
             {
-                var xScale = Lastlocation.X - value1.X;
-                var yScale = Lastlocation.Y - value1.Y;
-                MoveMap(yScale * -1, xScale * -1);
+                return;
             }
+
+            // The player marker is drawn at -(loc + MapOffset) * CurrentScaling, then shifted by the
+            // transform offset. The visible map area is the canvas rect, so move the map by however
+            // far the marker is from the canvas center. MoveMap translations get scaled by the
+            // transform matrix, so divide the correction by CurrentScaling.
+            var playerCanvasX = (-(location.Y + MapOffset.X) * CurrentScaling) + Transform.Value.OffsetX;
+            var playerCanvasY = (-(location.X + MapOffset.Y) * CurrentScaling) + Transform.Value.OffsetY;
+            var canvasCenterX = Math.Abs(AABB.MaxWidth) / 2;
+            var canvasCenterY = Math.Abs(AABB.MaxHeight) / 2;
+            MoveMap((canvasCenterX - playerCanvasX) / CurrentScaling, (canvasCenterY - playerCanvasY) / CurrentScaling);
         }
 
         public bool LoadMap(string zone, Canvas canvas)
@@ -276,19 +291,20 @@ namespace EQTool.ViewModels
                     {
                         Name = "You",
                         Canvas = Canvas,
-                        Trackingdistance = activePlayer?.Player?.TrackingDistance,
+                        Trackingdistance = GetTrackingDistance(),
                         AABB = AABB,
                         Transform = Transform
                     });
                     MapViewModelService.UpdateLocation(new UpdateLocationData
                     {
-                        Trackingdistance = activePlayer?.Player?.TrackingDistance,
+                        Trackingdistance = GetTrackingDistance(),
                         CurrentScaling = CurrentScaling,
                         MapOffset = MapOffset,
                         Oldlocation = Lastlocation,
                         Newlocation = Lastlocation,
                         PlayerLocationCircle = PlayerLocation,
                         Transform = Transform,
+                        EllipseTransform = EllipseTransform,
                     });
                     PlayerLocation.ArrowLine.Visibility = Visibility.Hidden;
                     PlayerLocation.Ellipse.Visibility = Visibility.Hidden;
@@ -322,7 +338,7 @@ namespace EQTool.ViewModels
             {
                 Name = signalrPlayer.Name,
                 Canvas = Canvas,
-                Trackingdistance = signalrPlayer.TrackingDistance,
+                Trackingdistance = GetTrackingDistance(signalrPlayer),
                 AABB = AABB,
                 Transform = Transform,
             });
@@ -369,6 +385,29 @@ namespace EQTool.ViewModels
             return LoadMap(z, canvas);
         }
 
+        private double? GetTrackingDistance()
+        {
+            return activePlayer?.Player?.MapTrackingVisibility == TrackingVisibility.NoOne
+                ? null
+                : activePlayer?.Player?.TrackingDistance;
+        }
+
+        private double? GetTrackingDistance(SignalrPlayerV2 player)
+        {
+            switch (activePlayer?.Player?.MapTrackingVisibility ?? TrackingVisibility.GuildOnly)
+            {
+                case TrackingVisibility.Everyone:
+                    return player.TrackingDistance;
+                case TrackingVisibility.NoOne:
+                    return null;
+                default:
+                    var guild = activePlayer?.Player?.GuildName?.Trim();
+                    return !string.IsNullOrWhiteSpace(guild) && string.Equals(guild, player.GuildName?.Trim(), StringComparison.OrdinalIgnoreCase)
+                        ? player.TrackingDistance
+                        : null;
+            }
+        }
+
 
         private static T Clamp<T>(T val, T min, T max) where T : IComparable<T>
         {
@@ -399,13 +438,14 @@ namespace EQTool.ViewModels
                 PlayerLocation.TrackingEllipse.Visibility = Visibility.Visible;
                 MapViewModelService.UpdateLocation(new UpdateLocationData
                 {
-                    Trackingdistance = activePlayer?.Player?.TrackingDistance,
+                    Trackingdistance = GetTrackingDistance(),
                     CurrentScaling = CurrentScaling,
                     MapOffset = MapOffset,
                     Oldlocation = Lastlocation,
                     Newlocation = value1,
                     PlayerLocationCircle = PlayerLocation,
-                    Transform = Transform
+                    Transform = Transform,
+                    EllipseTransform = EllipseTransform
                 });
 
                 CenterMapOnPlayer(value1);
@@ -773,24 +813,26 @@ namespace EQTool.ViewModels
             {
                 MapViewModelService.UpdateLocation(new UpdateLocationData
                 {
-                    Trackingdistance = item.Player.TrackingDistance,
+                    Trackingdistance = GetTrackingDistance(item.Player),
                     CurrentScaling = CurrentScaling,
                     MapOffset = MapOffset,
                     Oldlocation = new Point3D(item.Player.X.Value, item.Player.Y.Value, item.Player.Z.Value),
                     Newlocation = new Point3D(item.Player.X.Value, item.Player.Y.Value, item.Player.Z.Value),
                     PlayerLocationCircle = item,
-                    Transform = Transform
+                    Transform = Transform,
+                    EllipseTransform = EllipseTransform
                 });
             }
             MapViewModelService.UpdateLocation(new UpdateLocationData
             {
-                Trackingdistance = activePlayer?.Player?.TrackingDistance,
+                Trackingdistance = GetTrackingDistance(),
                 CurrentScaling = CurrentScaling,
                 MapOffset = MapOffset,
                 Oldlocation = Lastlocation,
                 Newlocation = Lastlocation,
                 PlayerLocationCircle = PlayerLocation,
-                Transform = Transform
+                Transform = Transform,
+                EllipseTransform = EllipseTransform
             });
         }
 
@@ -829,13 +871,14 @@ namespace EQTool.ViewModels
                 {
                     MapViewModelService.UpdateLocation(new UpdateLocationData
                     {
-                        Trackingdistance = e.TrackingDistance,
+                        Trackingdistance = GetTrackingDistance(e),
                         CurrentScaling = CurrentScaling,
                         MapOffset = MapOffset,
                         Oldlocation = new Point3D(p.Player.X.Value, p.Player.Y.Value, p.Player.Z.Value),
                         Newlocation = new Point3D(e.X.Value, e.Y.Value, e.Z.Value),
                         PlayerLocationCircle = p,
-                        Transform = Transform
+                        Transform = Transform,
+                        EllipseTransform = EllipseTransform
                     });
                     p.Player = e;
                     p.LastSeen = DateTime.Now;

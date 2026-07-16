@@ -167,6 +167,17 @@ namespace EQTool.Models
         RestartCurrentTimer
     }
 
+    [TypeConverter(typeof(EnumDescriptionTypeConverter))]
+    public enum TrackingVisibility
+    {
+        [Description("Everyone")]
+        Everyone = 1,
+        [Description("Guild Only")]
+        GuildOnly,
+        [Description("No One")]
+        NoOne
+    }
+
     [Serializable]
     public class PlayerInfo : INotifyPropertyChanged
     {
@@ -309,6 +320,17 @@ namespace EQTool.Models
             set
             {
                 _MapKillTimers = value ?? true;
+                OnPropertyChanged();
+            }
+        }
+
+        private TrackingVisibility? _MapTrackingVisibility = TrackingVisibility.GuildOnly;
+        public TrackingVisibility? MapTrackingVisibility
+        {
+            get => _MapTrackingVisibility ?? TrackingVisibility.GuildOnly;
+            set
+            {
+                _MapTrackingVisibility = value ?? TrackingVisibility.GuildOnly;
                 OnPropertyChanged();
             }
         }

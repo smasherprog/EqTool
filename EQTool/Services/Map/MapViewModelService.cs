@@ -27,6 +27,7 @@ namespace EQTool.Services.Map
         public double? Trackingdistance { get; set; }
         public float CurrentScaling { get; set; }
         public Transform Transform { get; set; }
+        public Transform EllipseTransform { get; set; }
     }
     public static class MapViewModelService
     {
@@ -87,10 +88,19 @@ namespace EQTool.Services.Map
             transform.Matrix = locationData.PlayerLocationCircle.ArrowLine.RotateTransform.Value * translation.Value;
             locationData.PlayerLocationCircle.ArrowLine.RenderTransform = transform;
 
-            var transform2 = new MatrixTransform();
-            var translation2 = new TranslateTransform(locationData.Transform.Value.OffsetX, locationData.Transform.Value.OffsetY);
-            transform2.Matrix = translation2.Value;
-            locationData.PlayerLocationCircle.Ellipse.RenderTransform = transform2;
+            // Use the live shared translation so the dot follows the map when it is panned or
+            // re-centered between location updates; a snapshot transform would leave it stranded.
+            if (locationData.EllipseTransform != null)
+            {
+                locationData.PlayerLocationCircle.Ellipse.RenderTransform = locationData.EllipseTransform;
+            }
+            else
+            {
+                var transform2 = new MatrixTransform();
+                var translation2 = new TranslateTransform(locationData.Transform.Value.OffsetX, locationData.Transform.Value.OffsetY);
+                transform2.Matrix = translation2.Value;
+                locationData.PlayerLocationCircle.Ellipse.RenderTransform = transform2;
+            }
 
             locationData.PlayerLocationCircle.TrackingEllipse.RenderTransform = locationData.Transform;
         }
