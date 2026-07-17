@@ -188,7 +188,7 @@ namespace EQTool.Services.Handlers
                 return;
             }
             var zonetimer = ZoneSpawnTimes.GetSpawnTime(e.Victim, activePlayer?.Player?.Zone);
-            spells.AllSpells.TryGetValue("Disease Cloud", out var spell);
+            _ = spells.AllSpells.TryGetValue("Disease Cloud", out var spell);
             var add = new TimerViewModel
             {
                 Name = "--Dead-- " + e.Victim,
@@ -210,12 +210,9 @@ namespace EQTool.Services.Handlers
                 }
                 var grp = spellWindowViewModel.SpellList.Where(a => string.Equals(a.GroupName, grpname, StringComparison.OrdinalIgnoreCase)).ToList();
 
-                if (activePlayer?.Player?.TimerRecastSetting == TimerRecast.RestartCurrentTimer)
+                foreach (var item in grp)
                 {
-                    foreach (var item in grp)
-                    {
-                        _ = spellWindowViewModel.SpellList.Remove(item);
-                    }
+                    _ = spellWindowViewModel.SpellList.Remove(item);
                 }
 
                 var exisitngdeathentry = spellWindowViewModel.SpellList.FirstOrDefault(a => string.Equals(a.Name, add.Name, StringComparison.OrdinalIgnoreCase) && CustomTimer.CustomerTime == a.GroupName);

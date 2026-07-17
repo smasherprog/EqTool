@@ -1,10 +1,13 @@
 ﻿using Autofac;
+using EQTool.Models;
 using EQTool.Services;
 using EQTool.ViewModels;
+using EQTool.ViewModels.SpellWindow;
 using EQToolShared;
 using EQToolShared.Enums;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
+using System.Linq;
 
 namespace EQtoolsTests
 {
@@ -379,6 +382,51 @@ namespace EQtoolsTests
             logParser.Push("Your faction standing with UndeadFrogloksofGuk could not possibly get any worse.", DateTime.Now);
             logParser.Push("Varer judges you amiably -- You would probably win this fight..it's not certain though.", DateTime.Now);
             Assert.AreEqual(3, CalledCounter);
+        }
+
+        [TestMethod]
+        public void NpcTimersRemovedOnDeath_RestartCurrentTimer()
+        {
+            player.Player.TimerRecastSetting = TimerRecast.RestartCurrentTimer;
+            logParser.Push("You begin casting Dazzle.", DateTime.Now);
+            logParser.Push("Orc centurion has been mesmerized.", DateTime.Now.AddSeconds(2.0));
+            Assert.HasCount(1, spellWindowViewModel.SpellList.Where(a => a.GroupName == " Orc centurion").ToList());
+
+            logParser.Push("You have slain Orc centurion!", DateTime.Now.AddSeconds(10.0));
+
+            Assert.HasCount(0, spellWindowViewModel.SpellList.Where(a => a.GroupName == " Orc centurion").ToList());
+        }
+
+        [TestMethod]
+        public void NpcTimersRemovedOnDeath_StartNewTimer()
+        {
+            player.Player.TimerRecastSetting = TimerRecast.StartNewTimer;
+            logParser.Push("You begin casting Dazzle.", DateTime.Now);
+            logParser.Push("Orc centurion has been mesmerized.", DateTime.Now.AddSeconds(2.0));
+            Assert.HasCount(1, spellWindowViewModel.SpellList.Where(a => a.GroupName == " Orc centurion").ToList());
+
+            logParser.Push("You have slain Orc centurion!", DateTime.Now.AddSeconds(10.0));
+
+            Assert.HasCount(0, spellWindowViewModel.SpellList.Where(a => a.GroupName == " Orc centurion").ToList());
+        }
+
+        [TestMethod]
+        public void NpcTimersAllCopiesRemovedOnDeath_StartNewTimer()
+        {
+            // in StartNewTimer mode the group can hold multiple copies of the same timer.
+            // a death clears the whole group, duplicates included.
+            player.Player.TimerRecastSetting = TimerRecast.StartNewTimer;
+            logParser.Push("You begin casting Dazzle.", DateTime.Now);
+            logParser.Push("Orc centurion has been mesmerized.", DateTime.Now.AddSeconds(2.0));
+            logParser.Push("You begin casting Dazzle.", DateTime.Now.AddSeconds(10.0));
+            logParser.Push("Orc centurion has been mesmerized.", DateTime.Now.AddSeconds(12.0));
+
+            var timers = spellWindowViewModel.SpellList.Where(a => a.GroupName == " Orc centurion").Cast<SpellViewModel>().ToList();
+            Assert.HasCount(2, timers);
+
+            logParser.Push("You have slain Orc centurion!", DateTime.Now.AddSeconds(20.0));
+
+            Assert.HasCount(0, spellWindowViewModel.SpellList.Where(a => a.GroupName == " Orc centurion").ToList());
         }
 
         [TestMethod]
