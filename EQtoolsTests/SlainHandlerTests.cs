@@ -411,10 +411,10 @@ namespace EQtoolsTests
         }
 
         [TestMethod]
-        public void NpcTimersAllCopiesRemovedOnDeath_StartNewTimer()
+        public void NpcTimersOldestCopyRemovedOnDeath_StartNewTimer()
         {
-            // in StartNewTimer mode the group can hold multiple copies of the same timer.
-            // a death clears the whole group, duplicates included.
+            // two same-named mobs each mezzed, so the group holds two copies of the timer.
+            // killing one should only remove the copy closest to expiring.
             player.Player.TimerRecastSetting = TimerRecast.StartNewTimer;
             logParser.Push("You begin casting Dazzle.", DateTime.Now);
             logParser.Push("Orc centurion has been mesmerized.", DateTime.Now.AddSeconds(2.0));
@@ -423,8 +423,16 @@ namespace EQtoolsTests
 
             var timers = spellWindowViewModel.SpellList.Where(a => a.GroupName == " Orc centurion").Cast<SpellViewModel>().ToList();
             Assert.HasCount(2, timers);
+            timers[0].TotalRemainingDuration = TimeSpan.FromSeconds(30);
+            timers[1].TotalRemainingDuration = TimeSpan.FromSeconds(90);
 
             logParser.Push("You have slain Orc centurion!", DateTime.Now.AddSeconds(20.0));
+
+            var remaining = spellWindowViewModel.SpellList.Where(a => a.GroupName == " Orc centurion").Cast<SpellViewModel>().ToList();
+            Assert.HasCount(1, remaining);
+            Assert.AreEqual(90.0, remaining[0].TotalRemainingDuration.TotalSeconds, .1);
+
+            logParser.Push("You have slain Orc centurion!", DateTime.Now.AddSeconds(30.0));
 
             Assert.HasCount(0, spellWindowViewModel.SpellList.Where(a => a.GroupName == " Orc centurion").ToList());
         }

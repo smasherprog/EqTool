@@ -210,6 +210,16 @@ namespace EQTool.Services.Handlers
                 }
                 var grp = spellWindowViewModel.SpellList.Where(a => string.Equals(a.GroupName, grpname, StringComparison.OrdinalIgnoreCase)).ToList();
 
+                if (activePlayer?.Player?.TimerRecastSetting == TimerRecast.StartNewTimer)
+                {
+                    // in StartNewTimer mode, other same-named mobs may still be alive with their own copies of these timers.
+                    // Only remove one copy of each timer -- the one closest to expiring, since the mob that just died is
+                    // presumed to be the one that was engaged first.
+                    grp = grp.GroupBy(a => a.Name, StringComparer.OrdinalIgnoreCase)
+                        .Select(g => g.OrderBy(a => (a as TimerViewModel)?.TotalRemainingDuration ?? TimeSpan.Zero).First())
+                        .ToList();
+                }
+
                 foreach (var item in grp)
                 {
                     _ = spellWindowViewModel.SpellList.Remove(item);
