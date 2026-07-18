@@ -22,7 +22,7 @@
     <ScrollViewer VerticalScrollBarVisibility="Auto" Background="White">
         <StackPanel Orientation="Vertical" Margin="6" Validation.Error="OnValidationError">
 
-            <GroupBox x:Name="GeneralSettingsGroup" Header="General Settings">
+            <GroupBox Header="General Settings">
                 <Grid Margin="4">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="Auto"/>
@@ -41,19 +41,33 @@
 
                     <TextBlock Grid.Row="0" Grid.Column="0" Text="Trigger Name" VerticalAlignment="Center" Margin="0,2,8,2"/>
                     <TextBox Grid.Row="0" Grid.Column="1" Margin="0,2,0,2"
+                             IsEnabled="{Binding IsEditable}"
                              BorderBrush="{Binding TriggerNameBorderBrush}"
                              Text="{Binding TriggerName, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged, Delay=500}"/>
                     <TextBlock Grid.Row="1" Grid.Column="1" Foreground="Red"
                                Visibility="{Binding TriggerNameErrorMessgeVisible}" Text="{Binding TriggerNameErrorMessge}"/>
 
                     <TextBlock Grid.Row="2" Grid.Column="0" Text="Search Text" VerticalAlignment="Center" Margin="0,2,8,2"/>
-                    <TextBox Grid.Row="2" Grid.Column="1" Margin="0,2,0,2"
-                             BorderBrush="{Binding SearchTextBorderBrush}"
-                             Text="{Binding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    <Grid Grid.Row="2" Grid.Column="1" Margin="0,2,0,2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBox Grid.Column="0"
+                                 IsEnabled="{Binding IsEditable}"
+                                 BorderBrush="{Binding SearchTextBorderBrush}"
+                                 Text="{Binding SearchText, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        <!-- Copy button is intentionally NOT bound to IsEditable so it stays usable for
+                             read-only built-in triggers. -->
+                        <Button x:Name="CopyRegexButton" Grid.Column="1" Margin="4,0,0,0" Padding="10,2,10,2"
+                                Content="Copy Regex" Click="CopyRegex"
+                                ToolTip="Copy this trigger's effective regular expression to the clipboard"/>
+                    </Grid>
                     <TextBlock Grid.Row="3" Grid.Column="1" Foreground="Red"
                                Visibility="{Binding SearchTextErrorMessgeVisible}" Text="{Binding SearchTextErrorMessge}"/>
 
-                    <StackPanel Grid.Row="4" Grid.Column="1" Orientation="Horizontal" Margin="0,2,0,2">
+                    <StackPanel Grid.Row="4" Grid.Column="1" Orientation="Horizontal" Margin="0,2,0,2"
+                                IsEnabled="{Binding IsEditable}">
                         <CheckBox Content="Use Regular Expressions" VerticalAlignment="Center" Margin="0,0,16,0"
                                   IsChecked="{Binding UseRegex, Mode=TwoWay}"/>
                         <CheckBox Content="Trigger Enabled" VerticalAlignment="Center"
@@ -63,17 +77,20 @@
                     <TextBlock Grid.Row="5" Grid.Column="0" Text="Category" VerticalAlignment="Center" Margin="0,2,8,2"/>
                     <ComboBox Grid.Row="5" Grid.Column="1" Margin="0,2,0,2" HorizontalAlignment="Left" MinWidth="140"
                               IsEditable="True"
+                              IsEnabled="{Binding IsEditable}"
                               ItemsSource="{Binding Categories}"
                               Text="{Binding Category, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
 
                     <TextBlock Grid.Row="6" Grid.Column="0" Text="Zone" VerticalAlignment="Center" Margin="0,2,8,2"/>
                     <ComboBox Grid.Row="6" Grid.Column="1" Margin="0,2,0,2" HorizontalAlignment="Left" MinWidth="200"
+                              IsEnabled="{Binding IsEditable}"
                               ItemsSource="{Binding ZoneOptions}"
                               SelectedItem="{Binding Zone, Mode=TwoWay}"
                               ToolTip="Only fire this trigger while in this zone. 'All Zones' fires everywhere."/>
 
                     <TextBlock Grid.Row="7" Grid.Column="0" Text="Comments" VerticalAlignment="Top" Margin="0,4,8,2"/>
                     <TextBox Grid.Row="7" Grid.Column="1" Margin="0,2,0,2" MinHeight="50"
+                             IsEnabled="{Binding IsEditable}"
                              TextWrapping="Wrap" AcceptsReturn="True" VerticalScrollBarVisibility="Auto"
                              Text="{Binding Comments, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
                 </Grid>

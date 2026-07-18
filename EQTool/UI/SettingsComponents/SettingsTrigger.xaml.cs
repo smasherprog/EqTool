@@ -28,14 +28,12 @@ namespace EQTool.UI.SettingsComponents
                 npc.PropertyChanged += Trigger_PropertyChanged;
             }
 
-            // For built-in triggers the General Settings (name / search text / regex / zone /
+            // For built-in triggers the General Settings inputs (name / search text / regex / zone /
             // category / comments) are fixed; only the Basic / Timer / Timer Ending / Timer Ended /
             // Counter tabs can be edited. Saving a tab edit marks the built-in Customized so its
             // definition isn't overwritten when built-ins are refreshed from code on the next load.
-            if (treeTrigger.Trigger.IsBuiltIn)
-            {
-                GeneralSettingsGroup.IsEnabled = false;
-            }
+            // The individual inputs bind IsEnabled to IsEditable (rather than disabling the whole
+            // group) so the "Copy Regex" button stays usable for read-only built-in triggers.
 
             // Pre-fill the Test box with a log line that matches this trigger, so the user can
             // click Test straight away and see it fire (and can edit it to try variations).
@@ -107,6 +105,46 @@ namespace EQTool.UI.SettingsComponents
                 TestResultText.Foreground = Brushes.DarkRed;
             }
             activePlayer.Player.Zone = oldZone;
+        }
+
+        // Copies this trigger's effective regular expression to the clipboard. Copies the converted
+        // "real" regex (simplified {name} placeholders expanded into named groups), falling back to
+        // the raw search text if a pattern can't be built. Works for built-in triggers too - their
+        // General Settings inputs are read-only, but this button is left enabled.
+        private void CopyRegex(object sender, System.Windows.RoutedEventArgs e)
+        {
+            var trigger = (DataContext as TriggerViewModel)?.Model;
+            if (trigger == null)
+            {
+                return;
+            }
+
+            string regex;
+            try
+            {
+                regex = trigger.TriggerRegex?.ToString();
+            }
+            catch (Exception)
+            {
+                regex = null;
+            }
+            if (string.IsNullOrEmpty(regex))
+            {
+                regex = trigger.SearchText;
+            }
+            if (string.IsNullOrEmpty(regex))
+            {
+                return;
+            }
+
+            try
+            {
+                System.Windows.Forms.Clipboard.SetText(regex, System.Windows.Forms.TextDataFormat.Text);
+                (App.Current as App)?.ShowBalloonTip(2000, "Regex Copied", "The trigger's regular expression has been copied to the clipboard.", System.Windows.Forms.ToolTipIcon.Info);
+            }
+            catch (Exception)
+            {
+            }
         }
 
         private void Save(object sender, System.Windows.RoutedEventArgs e)
