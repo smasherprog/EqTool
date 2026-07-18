@@ -5,7 +5,6 @@ using EQTool.Services.P99LoginMiddlemand;
 using EQTool.Services.Parsing;
 using EQTool.ViewModels;
 using EQTool.ViewModels.SettingsComponents;
-using EQToolShared.APIModels.UIFileControllerModels;
 using EQToolShared.Enums;
 using EQToolShared.Extensions;
 using System;
@@ -123,9 +122,9 @@ namespace EQTool.UI.SettingsComponents
                 {
                     SettingsWindowData.RefreshUIFiles();
                 }
-                else if ((tab.Header as string) == "UI Sync")
+                else if ((tab.Header as string) == "Characters")
                 {
-                    LoadManagedUIFiles();
+                    settingsManagementViewModel.RefreshAllCharacterSyncStatusOnce();
                 }
                 else if ((tab.Header as string) == "Friends")
                 {
@@ -1123,53 +1122,11 @@ namespace EQTool.UI.SettingsComponents
             return true;
         }
 
-        // Pulls the current server list off-thread and repopulates the grid, grouped
-        // by server (the CollectionViewSource groups; we sort so groups are contiguous).
-        private void LoadManagedUIFiles()
-        {
-            if (string.IsNullOrEmpty(settings.DiscordApiToken))
-            {
-                appDispatcher.DispatchUI(() => SettingsWindowData.ManagedUIFiles.Clear());
-                return;
-            }
-            _ = Task.Factory.StartNew(() =>
-            {
-                var files = uiFileSyncService.GetServerFiles()
-                    .OrderBy(a => a.Server)
-                    .ThenBy(a => a.PlayerName)
-                    .ToList();
-                appDispatcher.DispatchUI(() =>
-                {
-                    SettingsWindowData.ManagedUIFiles.Clear();
-                    foreach (var file in files)
-                    {
-                        SettingsWindowData.ManagedUIFiles.Add(file);
-                    }
-                });
-            });
-        }
-
-        private void RefreshManagedUIFiles(object sender, RoutedEventArgs e)
-        {
-            if (!RequireDiscordLogin())
-            {
-                return;
-            }
-            LoadManagedUIFiles();
-        }
-
+        // Two-way sync now, then refresh the per-character status on the Characters tab.
         private void SyncUIFilesNow(object sender, RoutedEventArgs e)
         {
             if (!RequireDiscordLogin())
             {
-                return;
-            }
-            if (!settings.SyncUIFiles)
-            {
-                _ = System.Windows.Forms.MessageBox.Show(
-                    "Enable 'UI file sync' first.",
-                    "UI file sync disabled",
-                    System.Windows.Forms.MessageBoxButtons.OK);
                 return;
             }
             _ = Task.Factory.StartNew(() =>
@@ -1179,47 +1136,16 @@ namespace EQTool.UI.SettingsComponents
                     uiFileSyncService.SyncNow();
                 }
                 catch { }
-                LoadManagedUIFiles();
+                settingsManagementViewModel.RefreshAllCharacterSyncStatus();
             });
         }
 
-        private void DeleteUIFile(object sender, RoutedEventArgs e)
+        // Re-pull the per-character UI sync status from the server (no upload/download).
+        private void RefreshUISyncStatus(object sender, RoutedEventArgs e)
         {
-            if (!RequireDiscordLogin())
-            {
-                return;
-            }
-            var meta = (sender as FrameworkElement)?.DataContext as UIFileMetadata;
-            if (meta == null || string.IsNullOrWhiteSpace(meta.FileName))
-            {
-                return;
-            }
-            var confirm = System.Windows.Forms.MessageBox.Show(
-                $"Delete '{meta.FileName}' from the server backup? Your local file is not affected.",
-                "Delete UI file backup",
-                System.Windows.Forms.MessageBoxButtons.OKCancel);
-            if (confirm != System.Windows.Forms.DialogResult.OK)
-            {
-                return;
-            }
-            var fileName = meta.FileName;
-            _ = Task.Factory.StartNew(() =>
-            {
-                var ok = uiFileSyncService.DeleteServerFile(fileName);
-                if (ok)
-                {
-                    appDispatcher.DispatchUI(() =>
-                    {
-                        var existing = SettingsWindowData.ManagedUIFiles
-                            .FirstOrDefault(a => string.Equals(a.FileName, fileName, StringComparison.OrdinalIgnoreCase));
-                        if (existing != null)
-                        {
-                            _ = SettingsWindowData.ManagedUIFiles.Remove(existing);
-                        }
-                    });
-                }
-            });
+            settingsManagementViewModel.RefreshAllCharacterSyncStatus();
         }
+
         private void SelectMasterUIFile(object sender, RoutedEventArgs e)
         {
             if (!Directory.Exists(settings.DefaultEqDirectory))

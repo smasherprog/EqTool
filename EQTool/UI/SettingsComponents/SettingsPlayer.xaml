@@ -7,38 +7,71 @@
              mc:Ignorable="d"
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid Background="#FF0B0E1A">
-        <ScrollViewer x:Name="ProfileScroll"
-                      Visibility="Collapsed"
-                      VerticalScrollBarVisibility="Auto"
-                      HorizontalScrollBarVisibility="Disabled"
-                      Padding="12">
-            <Grid x:Name="ProfileHost">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="Auto" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-            </Grid>
-        </ScrollViewer>
-        <StackPanel x:Name="MessagePanel" VerticalAlignment="Center" HorizontalAlignment="Center" MaxWidth="440" Margin="20">
-            <TextBlock x:Name="MessageText"
-                       TextWrapping="Wrap"
-                       TextAlignment="Center"
-                       Foreground="#FF9AA3C0"
-                       FontSize="14"
-                       LineHeight="22" />
-            <Button x:Name="LoginButton"
-                    Content="Login with Discord"
-                    Visibility="Collapsed"
-                    Click="LoginButton_Click"
-                    Margin="0,20,0,0"
-                    Padding="18,9"
-                    HorizontalAlignment="Center"
-                    Background="#FF5865F2"
-                    Foreground="White"
-                    BorderThickness="0"
-                    FontWeight="Bold"
-                    FontSize="13"
-                    Cursor="Hand" />
-        </StackPanel>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <!-- UI backup status/date for the selected character (bound live to the tree node). -->
+        <Border Grid.Row="0" Background="#FF131829" BorderBrush="#FF242C49" BorderThickness="0,0,0,1" Padding="12,6">
+            <StackPanel Orientation="Horizontal">
+                <TextBlock Text="UI Backup:" Foreground="#FF9AA3C0" FontWeight="Bold" VerticalAlignment="Center" Margin="0,0,6,0" />
+                <TextBlock FontWeight="Bold" VerticalAlignment="Center" Margin="0,0,8,0">
+                    <TextBlock.Style>
+                        <Style TargetType="TextBlock">
+                            <Setter Property="Text" Value="No UI files" />
+                            <Setter Property="Foreground" Value="#FF6B7390" />
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding TreePlayer.UiSyncStatus}" Value="Synced">
+                                    <Setter Property="Text" Value="✔ Backed up" />
+                                    <Setter Property="Foreground" Value="#FF4ADE80" />
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding TreePlayer.UiSyncStatus}" Value="NotSynced">
+                                    <Setter Property="Text" Value="⊗ Not backed up" />
+                                    <Setter Property="Foreground" Value="#FFF87171" />
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+                <TextBlock Text="{Binding TreePlayer.UiSyncDate}" Foreground="#FF9AA3C0" VerticalAlignment="Center" />
+            </StackPanel>
+        </Border>
+
+        <Grid Grid.Row="1">
+            <ScrollViewer x:Name="ProfileScroll"
+                          Visibility="Collapsed"
+                          VerticalScrollBarVisibility="Auto"
+                          HorizontalScrollBarVisibility="Disabled"
+                          Padding="12">
+                <Grid x:Name="ProfileHost">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                </Grid>
+            </ScrollViewer>
+            <StackPanel x:Name="MessagePanel" VerticalAlignment="Center" HorizontalAlignment="Center" MaxWidth="440" Margin="20">
+                <TextBlock x:Name="MessageText"
+                           TextWrapping="Wrap"
+                           TextAlignment="Center"
+                           Foreground="#FF9AA3C0"
+                           FontSize="14"
+                           LineHeight="22" />
+                <Button x:Name="LoginButton"
+                        Content="Login with Discord"
+                        Visibility="Collapsed"
+                        Click="LoginButton_Click"
+                        Margin="0,20,0,0"
+                        Padding="18,9"
+                        HorizontalAlignment="Center"
+                        Background="#FF5865F2"
+                        Foreground="White"
+                        BorderThickness="0"
+                        FontWeight="Bold"
+                        FontSize="13"
+                        Cursor="Hand" />
+            </StackPanel>
+        </Grid>
     </Grid>
 </UserControl>

@@ -55,7 +55,7 @@
                 </Grid>
             </Border>
 
-            <ContentControl Grid.Row="1" x:Name="MainContent"/>
+            <ContentControl Grid.Row="1" x:Name="MainContent" HorizontalContentAlignment="Stretch" VerticalContentAlignment="Stretch"/>
         </Grid>
     </Border>
 </local:BaseSaveStateWindow>

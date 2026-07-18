@@ -25,12 +25,6 @@
                 <Rectangle Canvas.Left="5.4" Canvas.Top="9.4" Width="1.2" Height="2.2" RadiusX="0.6" RadiusY="0.6" Fill="#96690C"/>
             </Canvas>
         </DataTemplate>
-        <!-- UI Sync tab: server-synced UI files grouped by server. -->
-        <CollectionViewSource x:Key="ManagedUIFilesView" Source="{Binding ManagedUIFiles}">
-            <CollectionViewSource.GroupDescriptions>
-                <PropertyGroupDescription PropertyName="Server"/>
-            </CollectionViewSource.GroupDescriptions>
-        </CollectionViewSource>
     </UserControl.Resources>
     <TabControl SelectionChanged="TabControl_SelectionChanged">
 
@@ -121,6 +115,21 @@
                             <Slider Value="{Binding GlobalAudioVolume}" Minimum="0" Maximum="100" SmallChange="1" LargeChange="10" TickFrequency="10" ValueChanged="SaveSettings" MinWidth="150" VerticalAlignment="Center"/>
                             <TextBlock Text="{Binding GlobalAudioVolume, StringFormat={}{0}%}" VerticalAlignment="Center" MinWidth="35" Margin="8,0,0,0"/>
                             <Button Content="▶" Margin="4,0,0,0" FontSize="7" Width="14" Height="14" Padding="0" Click="testVolume" ToolTip="Test Volume" VerticalAlignment="Center"/>
+                        </StackPanel>
+                    </GroupBox>
+
+                    <GroupBox Header="UI File Sync" Margin="0,0,0,6">
+                        <StackPanel Orientation="Vertical" Margin="4">
+                            <StackPanel Orientation="Horizontal">
+                                <TextBlock Text="Sync UI files" FontWeight="Bold" VerticalAlignment="Center" MinWidth="80" Margin="0,0,8,0"
+                                           ToolTip="Automatically back up and sync your character UI files to the server (requires Discord login). Per-character status shows on the Characters tab."/>
+                                <CheckBox IsChecked="{Binding SyncUIFiles}" Click="Savesettings" VerticalAlignment="Center"/>
+                                <TextBlock Text="(requires Discord login)" Foreground="Gray" VerticalAlignment="Center" Margin="8,0,0,0"/>
+                            </StackPanel>
+                            <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
+                                <Button Click="SyncUIFilesNow" MinWidth="100" Margin="0,0,5,0" ToolTip="Two-way sync now: newer files win, missing local files are restored.">Sync Now</Button>
+                                <Button Click="RefreshUISyncStatus" MinWidth="100" ToolTip="Refresh the per-character UI sync status from the server.">Refresh</Button>
+                            </StackPanel>
                         </StackPanel>
                     </GroupBox>
 
@@ -527,11 +536,31 @@
                             <Grid>
                                 <Grid.ColumnDefinitions>
                                     <ColumnDefinition SharedSizeGroup="PlayerName"/>
+                                    <ColumnDefinition SharedSizeGroup="PlayerSync"/>
                                     <ColumnDefinition SharedSizeGroup="lastPlayedDate"/>
+                                    <ColumnDefinition SharedSizeGroup="SyncDate"/>
                                 </Grid.ColumnDefinitions>
                                 <TextBlock Grid.Column="0" Text="🐉"/>
                                 <TextBlock Grid.Column="0" Text="{Binding Name}" Margin="16,0,0,0" />
-                                <TextBlock Grid.Column="1" Text="{Binding LastPlayed}" />
+                                <TextBlock Grid.Column="1" FontWeight="Bold" Margin="4,0,0,0" VerticalAlignment="Center" ToolTip="UI file sync status">
+                                    <TextBlock.Style>
+                                        <Style TargetType="TextBlock">
+                                            <Setter Property="Text" Value=""/>
+                                            <Style.Triggers>
+                                                <DataTrigger Binding="{Binding UiSyncStatus}" Value="Synced">
+                                                    <Setter Property="Text" Value="✔"/>
+                                                    <Setter Property="Foreground" Value="Green"/>
+                                                </DataTrigger>
+                                                <DataTrigger Binding="{Binding UiSyncStatus}" Value="NotSynced">
+                                                    <Setter Property="Text" Value="⊗"/>
+                                                    <Setter Property="Foreground" Value="Red"/>
+                                                </DataTrigger>
+                                            </Style.Triggers>
+                                        </Style>
+                                    </TextBlock.Style>
+                                </TextBlock>
+                                <TextBlock Grid.Column="2" Text="{Binding LastPlayed}" Margin="8,0,0,0" />
+                                <TextBlock Grid.Column="3" Text="{Binding UiSyncDate}" Margin="8,0,0,0" Foreground="Gray" ToolTip="Last UI sync (UTC)" />
                             </Grid>
                         </HierarchicalDataTemplate>
                     </TreeView.Resources>
@@ -594,50 +623,6 @@
                             <Image Source="https://pigparse.azurewebsites.net/Content/good.png"/>
                         </Button>
                     </StackPanel>
-                </StackPanel>
-            </ScrollViewer>
-        </TabItem>
-
-        <TabItem Header="UI Sync">
-            <ScrollViewer VerticalScrollBarVisibility="Auto">
-                <StackPanel Orientation="Vertical" Margin="5,5,5,5" HorizontalAlignment="Stretch">
-                    <TextBlock TextWrapping="Wrap" FontWeight="Bold"
-                               Text="Back up and sync your character UI files (UI_&lt;name&gt;_&lt;server&gt;.ini and its paired file). Requires a Discord login." />
-                    <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
-                        <TextBlock Text="Enable UI file sync" FontWeight="Bold" VerticalAlignment="Center" MinWidth="140"/>
-                        <CheckBox IsChecked="{Binding SyncUIFiles}" Click="Savesettings" VerticalAlignment="Center"/>
-                    </StackPanel>
-                    <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
-                        <Button Click="SyncUIFilesNow" MinWidth="100" Margin="0,0,5,0">Sync Now</Button>
-                        <Button Click="RefreshManagedUIFiles" MinWidth="100">Refresh</Button>
-                    </StackPanel>
-                    <TextBlock TextWrapping="Wrap" Foreground="Gray" Margin="0,5,0,5"
-                               Text="Newer files win in both directions, and files missing locally are restored from the server. Delete removes a file from the server backup only - your local file is not touched." />
-                    <DataGrid ItemsSource="{Binding Source={StaticResource ManagedUIFilesView}}"
-                              AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True"
-                              HeadersVisibility="Column" Height="320">
-                        <DataGrid.GroupStyle>
-                            <GroupStyle>
-                                <GroupStyle.HeaderTemplate>
-                                    <DataTemplate>
-                                        <TextBlock Text="{Binding Name}" FontWeight="Bold" Margin="2,4,2,2"/>
-                                    </DataTemplate>
-                                </GroupStyle.HeaderTemplate>
-                            </GroupStyle>
-                        </DataGrid.GroupStyle>
-                        <DataGrid.Columns>
-                            <DataGridTextColumn Header="Character" Binding="{Binding PlayerName}" Width="*"/>
-                            <DataGridTextColumn Header="File" Binding="{Binding FileName}" Width="2*"/>
-                            <DataGridTextColumn Header="Modified (UTC)" Binding="{Binding LastModifiedUtc, StringFormat=yyyy-MM-dd HH:mm}" Width="Auto"/>
-                            <DataGridTemplateColumn Header="" Width="Auto">
-                                <DataGridTemplateColumn.CellTemplate>
-                                    <DataTemplate>
-                                        <Button Content="Delete" Click="DeleteUIFile" Margin="2" Padding="6,0"/>
-                                    </DataTemplate>
-                                </DataGridTemplateColumn.CellTemplate>
-                            </DataGridTemplateColumn>
-                        </DataGrid.Columns>
-                    </DataGrid>
                 </StackPanel>
             </ScrollViewer>
         </TabItem>

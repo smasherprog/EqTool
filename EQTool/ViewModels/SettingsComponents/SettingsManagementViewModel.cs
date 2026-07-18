@@ -1,12 +1,15 @@
 ﻿using EQTool.Models;
 using EQTool.Services;
 
+using EQToolShared.APIModels.UIFileControllerModels;
 using EQToolShared.Enums;
 using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.Linq;
 using System.Runtime.CompilerServices;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -18,17 +21,22 @@ namespace EQTool.ViewModels.SettingsComponents
         private readonly EQToolSettings settings;
         private readonly EQToolSettingsLoad eQToolSettingsLoad;
         private readonly EQSpells eqSpells;
+        private readonly UIFileSyncService uiFileSyncService;
         private readonly TreeGlobal triggersRoot;
+        // One-shot guard: character UI-sync status is pulled from the server only once per
+        // settings-window session (first Characters-tab open), not on every tab switch.
+        private bool characterSyncStatusChecked;
         // The node(s) that were Cut/Copied and are waiting to be Pasted (folders/triggers).
         private readonly System.Collections.Generic.List<TreeViewItemBase> clipboardNodes = new System.Collections.Generic.List<TreeViewItemBase>();
         // True when the clipboard nodes should be duplicated on paste (Copy), false to move (Cut).
         private bool clipboardIsCopy;
-        public SettingsManagementViewModel(UserComponentSettingsManagementFactory userComponentFactory, EQToolSettings settings, EQToolSettingsLoad eQToolSettingsLoad, EQSpells eqSpells)
+        public SettingsManagementViewModel(UserComponentSettingsManagementFactory userComponentFactory, EQToolSettings settings, EQToolSettingsLoad eQToolSettingsLoad, EQSpells eqSpells, UIFileSyncService uiFileSyncService)
         {
             this.userComponentFactory = userComponentFactory;
             this.settings = settings;
             this.eQToolSettingsLoad = eQToolSettingsLoad;
             this.eqSpells = eqSpells;
+            this.uiFileSyncService = uiFileSyncService;
 
             triggersRoot = new TreeGlobal("Triggers", null);
             BuildTriggerTree();
@@ -224,8 +232,9 @@ namespace EQTool.ViewModels.SettingsComponents
         {
             if (item is TreeServer)
             {
-                //no menu yet
-                return null;
+                var menu = new ContextMenu();
+                _ = menu.Items.Add(BuildMenuItem("Refresh UI Sync (all characters)", RefreshServerUi, item));
+                return menu;
             }
             else if (item is TreeGlobal)
             {
@@ -295,6 +304,9 @@ namespace EQTool.ViewModels.SettingsComponents
             else if (item is TreePlayer)
             {
                 var menu = new ContextMenu();
+                _ = menu.Items.Add(BuildMenuItem("Refresh UI Sync", RefreshCharacterUi, item));
+                _ = menu.Items.Add(BuildMenuItem("Delete UI Data from Server", DeleteCharacterUi, item));
+                _ = menu.Items.Add(new Separator());
                 _ = menu.Items.Add(BuildMenuItem("Delete Saved Data", PlayerDelete, item));
                 return menu;
             }
@@ -814,6 +826,160 @@ namespace EQTool.ViewModels.SettingsComponents
                 return players;
             }
             return new System.Collections.Generic.List<TreePlayer> { clicked };
+        }
+
+        // ---- UI file sync status (Characters tab) ----
+
+        // Pulls the server list once per settings-window session (first Characters-tab open).
+        public void RefreshAllCharacterSyncStatusOnce()
+        {
+            if (characterSyncStatusChecked)
+            {
+                return;
+            }
+            RefreshAllCharacterSyncStatus();
+        }
+
+        // Re-pulls the full server list and refreshes every character's icon/date. Used by
+        // the General "Refresh" button and the server node's right-click "Refresh".
+        public void RefreshAllCharacterSyncStatus()
+        {
+            var players = new List<TreePlayer>();
+            foreach (var node in _characterTreeItems)
+            {
+                CollectTreePlayers(node, players);
+            }
+            characterSyncStatusChecked = true;
+            RefreshStatuses(players);
+        }
+
+        // Refreshes a single character's icon/date (per-character right-click "Refresh").
+        public void RefreshCharacterSyncStatus(TreePlayer player)
+        {
+            if (player != null)
+            {
+                RefreshStatuses(new List<TreePlayer> { player });
+            }
+        }
+
+        private void RefreshStatuses(List<TreePlayer> players)
+        {
+            if (players == null || players.Count == 0)
+            {
+                return;
+            }
+            _ = Task.Factory.StartNew(() =>
+            {
+                var serverFiles = uiFileSyncService.GetServerFiles();
+                var localKeys = new HashSet<string>(
+                    uiFileSyncService.GetLocalUiFiles().Select(i => CharacterKey(i.PlayerName, i.Server)));
+                _ = Application.Current.Dispatcher.BeginInvoke((Action)(() =>
+                {
+                    foreach (var tp in players)
+                    {
+                        ApplyStatus(tp, serverFiles, localKeys);
+                    }
+                }));
+            });
+        }
+
+        // Green check = backed up on the server, red circle-X = a local UI file exists but is
+        // not backed up, nothing = no UI file for that character.
+        private static void ApplyStatus(TreePlayer tp, List<UIFileMetadata> serverFiles, HashSet<string> localKeys)
+        {
+            var name = tp.Player?.Name;
+            var server = tp.Player?.Server;
+            if (string.IsNullOrWhiteSpace(name) || server == null)
+            {
+                tp.UiSyncStatus = UiSyncStatus.None;
+                tp.UiSyncDate = string.Empty;
+                return;
+            }
+
+            var matches = serverFiles
+                .Where(f => f.Server == server.Value && string.Equals(f.PlayerName, name, StringComparison.OrdinalIgnoreCase))
+                .ToList();
+            if (matches.Count > 0)
+            {
+                tp.UiSyncStatus = UiSyncStatus.Synced;
+                tp.UiSyncDate = matches.Max(f => f.LastModifiedUtc).ToString("yyyy-MM-dd HH:mm");
+            }
+            else if (localKeys.Contains(CharacterKey(name, server.Value)))
+            {
+                tp.UiSyncStatus = UiSyncStatus.NotSynced;
+                tp.UiSyncDate = string.Empty;
+            }
+            else
+            {
+                tp.UiSyncStatus = UiSyncStatus.None;
+                tp.UiSyncDate = string.Empty;
+            }
+        }
+
+        private static string CharacterKey(string name, Servers server)
+        {
+            return (name ?? string.Empty).ToLowerInvariant() + "|" + server;
+        }
+
+        private void CollectTreePlayers(TreeViewItemBase node, List<TreePlayer> acc)
+        {
+            if (node is TreePlayer tp)
+            {
+                acc.Add(tp);
+            }
+            foreach (var child in node.Children)
+            {
+                CollectTreePlayers(child, acc);
+            }
+        }
+
+        private void RefreshServerUi(object sender, RoutedEventArgs e)
+        {
+            RefreshAllCharacterSyncStatus();
+        }
+
+        private void RefreshCharacterUi(object sender, RoutedEventArgs e)
+        {
+            if ((sender as MenuItem)?.Tag is TreePlayer clicked)
+            {
+                RefreshCharacterSyncStatus(clicked);
+            }
+        }
+
+        // Deletes this character's UI backup (both files of the pair) from the server. Local
+        // files are left untouched.
+        private void DeleteCharacterUi(object sender, RoutedEventArgs e)
+        {
+            if (!((sender as MenuItem)?.Tag is TreePlayer clicked))
+            {
+                return;
+            }
+            var name = clicked.Player?.Name;
+            var server = clicked.Player?.Server;
+            if (string.IsNullOrWhiteSpace(name) || server == null)
+            {
+                return;
+            }
+            var result = MessageBox.Show(
+                $"Delete the server UI backup for {name} ({server})? Your local UI files are not affected.",
+                "Delete UI backup",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Warning);
+            if (result != MessageBoxResult.Yes)
+            {
+                return;
+            }
+            _ = Task.Factory.StartNew(() =>
+            {
+                var files = uiFileSyncService.GetServerFiles()
+                    .Where(f => f.Server == server.Value && string.Equals(f.PlayerName, name, StringComparison.OrdinalIgnoreCase))
+                    .ToList();
+                foreach (var f in files)
+                {
+                    _ = uiFileSyncService.DeleteServerFile(f.FileName);
+                }
+                RefreshCharacterSyncStatus(clicked);
+            });
         }
 
         private ObservableCollection<TreeViewItemBase> _triggerTreeItems = new ObservableCollection<TreeViewItemBase>();

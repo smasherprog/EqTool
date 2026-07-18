@@ -47,10 +47,15 @@ namespace EQTool.Services
             _loggingService = loggingService;
         }
 
-        private bool IsEnabled =>
-            _settings.SyncUIFiles &&
+        // Logged in with Discord - required for any server call (upload/list/download/delete).
+        private bool IsLoggedIn =>
             !string.IsNullOrEmpty(_settings.DiscordId) &&
             !string.IsNullOrEmpty(_settings.DiscordApiToken);
+
+        // Automatic sync is enabled: the opt-in toggle gates only the background behavior
+        // (watcher uploads + startup pull). Manual actions (Sync Now / Refresh / per-character
+        // right-click) work whenever logged in, regardless of the toggle.
+        private bool IsEnabled => _settings.SyncUIFiles && IsLoggedIn;
 
         public void Start()
         {
@@ -66,12 +71,16 @@ namespace EQTool.Services
                 _watcher.Changed += OnFileChanged;
             }
 
-            // Pull down anything newer/missing on startup without blocking InitStuff.
-            _ = Task.Factory.StartNew(() =>
+            // Automatic startup pull only when the opt-in toggle is on (and logged in).
+            // Runs off-thread so InitStuff is not blocked.
+            if (IsEnabled)
             {
-                try { SyncNow(); }
-                catch { }
-            });
+                _ = Task.Factory.StartNew(() =>
+                {
+                    try { SyncNow(); }
+                    catch { }
+                });
+            }
         }
 
         public void UpdateDirectory()
@@ -108,7 +117,7 @@ namespace EQTool.Services
 
         public void SyncNow()
         {
-            if (!IsEnabled)
+            if (!IsLoggedIn)
             {
                 return;
             }
@@ -289,7 +298,7 @@ namespace EQTool.Services
 
         public List<UIFileMetadata> GetServerFiles()
         {
-            if (!IsEnabled)
+            if (!IsLoggedIn)
             {
                 return new List<UIFileMetadata>();
             }
@@ -306,9 +315,24 @@ namespace EQTool.Services
             return new List<UIFileMetadata>();
         }
 
+        // Local UI pair files present on disk (parsed to player/server). Does not
+        // require a Discord login - it just reads the EQ folder.
+        public List<UIFileNameInfo> GetLocalUiFiles()
+        {
+            var result = new List<UIFileNameInfo>();
+            foreach (var path in EnumerateLocalPairFiles(GetEffectiveDirectory()))
+            {
+                if (UIFileName.TryParse(Path.GetFileName(path), out var info))
+                {
+                    result.Add(info);
+                }
+            }
+            return result;
+        }
+
         public bool DeleteServerFile(string fileName)
         {
-            if (!IsEnabled || string.IsNullOrWhiteSpace(fileName))
+            if (!IsLoggedIn || string.IsNullOrWhiteSpace(fileName))
             {
                 return false;
             }
