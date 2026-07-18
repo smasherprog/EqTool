@@ -1151,11 +1151,13 @@ namespace EQTool.UI.SettingsComponents
         }
 
         // Clears the saved Discord login on this computer (username, id, and API token).
+        // UI file sync requires a login, so logging out also turns it off.
         private void LogoutDiscord(object sender, RoutedEventArgs e)
         {
             settings.DiscordUsername = null;
             settings.DiscordId = null;
             settings.DiscordApiToken = null;
+            SettingsWindowData.SyncUIFiles = false;
             SaveConfig();
             SettingsWindowData.RefreshDiscordLoginState();
         }

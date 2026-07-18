@@ -902,7 +902,7 @@ namespace EQTool.ViewModels.SettingsComponents
             if (matches.Count > 0)
             {
                 tp.UiSyncStatus = UiSyncStatus.Synced;
-                tp.UiSyncDate = matches.Max(f => f.LastModifiedUtc).ToString("yyyy-MM-dd HH:mm");
+                tp.UiSyncDate = matches.Max(f => f.LastModifiedUtc).ToString("yyyy-MM-dd hh:mm tt");
             }
             else if (localKeys.Contains(CharacterKey(name, server.Value)))
             {
