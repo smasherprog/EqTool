@@ -168,7 +168,7 @@ namespace EQTool.Models
                 SearchText = @"^(?<npc>Fright|Dread) says,? '(?<target>[^' ]+)'",
                 UseRegex = true,
                 Category = CategoryName,
-                Zone = "fear",
+                Zone = "fearplane",
                 Basic = new TriggerOutput
                 {
                     DisplayTextEnabled = true,

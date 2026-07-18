@@ -118,6 +118,10 @@ namespace EQTool.UI.SettingsComponents
             {
                 var tab = (sender as TabControl)?.SelectedItem as TabItem;
 
+                // Keep the Sync Now / Refresh buttons' enabled state in sync with a login
+                // that may have happened elsewhere while this window was open.
+                SettingsWindowData.RefreshDiscordLoginState();
+
                 if ((tab.Header as string) == "UI")
                 {
                     SettingsWindowData.RefreshUIFiles();

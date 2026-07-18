@@ -218,6 +218,16 @@ namespace EQTool.ViewModels
             }
         }
 
+        // True when the user is logged in with Discord (has an API token). Gates the
+        // Sync Now / Refresh buttons. Call RefreshDiscordLoginState() to re-evaluate
+        // after a login/logout that happens while the settings window is open.
+        public bool IsDiscordLoggedIn => !string.IsNullOrWhiteSpace(toolSettings.DiscordApiToken);
+
+        public void RefreshDiscordLoginState()
+        {
+            OnPropertyChanged(nameof(IsDiscordLoggedIn));
+        }
+
         public bool LogArchiveEnabled
         {
             get => toolSettings.LogArchiveEnabled;

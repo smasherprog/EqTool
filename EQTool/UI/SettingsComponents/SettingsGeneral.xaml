@@ -127,8 +127,8 @@
                                 <TextBlock Text="(requires Discord login)" Foreground="Gray" VerticalAlignment="Center" Margin="8,0,0,0"/>
                             </StackPanel>
                             <StackPanel Orientation="Horizontal" Margin="0,6,0,0">
-                                <Button Click="SyncUIFilesNow" MinWidth="100" Margin="0,0,5,0" ToolTip="Two-way sync now: newer files win, missing local files are restored.">Sync Now</Button>
-                                <Button Click="RefreshUISyncStatus" MinWidth="100" ToolTip="Refresh the per-character UI sync status from the server.">Refresh</Button>
+                                <Button Click="SyncUIFilesNow" IsEnabled="{Binding IsDiscordLoggedIn}" MinWidth="100" Margin="0,0,5,0" ToolTip="Two-way sync now: newer files win, missing local files are restored.">Sync Now</Button>
+                                <Button Click="RefreshUISyncStatus" IsEnabled="{Binding IsDiscordLoggedIn}" MinWidth="100" ToolTip="Refresh the per-character UI sync status from the server.">Refresh</Button>
                             </StackPanel>
                         </StackPanel>
                     </GroupBox>
