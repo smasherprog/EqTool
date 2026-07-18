@@ -153,6 +153,8 @@ namespace EQTool.Models
         public bool YouOnlySpells { get; set; }
         public bool ShowRandomRolls { get; set; }
 
+        public bool SyncUIFiles { get; set; }
+
         private bool? _ShowRing8RollTime { get; set; } = true;
         public bool? ShowRing8RollTime
         {

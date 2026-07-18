@@ -208,6 +208,16 @@ namespace EQTool.ViewModels
             }
         }
 
+        public bool SyncUIFiles
+        {
+            get => toolSettings.SyncUIFiles;
+            set
+            {
+                toolSettings.SyncUIFiles = value;
+                OnPropertyChanged();
+            }
+        }
+
         public bool LogArchiveEnabled
         {
             get => toolSettings.LogArchiveEnabled;
@@ -373,6 +383,10 @@ namespace EQTool.ViewModels
         public ObservableCollection<int> Levels { get; set; } = new ObservableCollection<int>();
         public ObservableCollection<int?> TrackSkills { get; set; } = new ObservableCollection<int?>();
         public ObservableCollection<string> UIFiles { get; set; } = new ObservableCollection<string>();
+        // UI config files backed up on the server, shown in the UI Sync tab. Populated
+        // off-thread by SettingsGeneral (via the sync service) and grouped by server.
+        public ObservableCollection<EQToolShared.APIModels.UIFileControllerModels.UIFileMetadata> ManagedUIFiles { get; set; }
+            = new ObservableCollection<EQToolShared.APIModels.UIFileControllerModels.UIFileMetadata>();
 
         public void Update()
         {

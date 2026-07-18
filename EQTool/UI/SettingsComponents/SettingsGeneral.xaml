@@ -25,6 +25,12 @@
                 <Rectangle Canvas.Left="5.4" Canvas.Top="9.4" Width="1.2" Height="2.2" RadiusX="0.6" RadiusY="0.6" Fill="#96690C"/>
             </Canvas>
         </DataTemplate>
+        <!-- UI Sync tab: server-synced UI files grouped by server. -->
+        <CollectionViewSource x:Key="ManagedUIFilesView" Source="{Binding ManagedUIFiles}">
+            <CollectionViewSource.GroupDescriptions>
+                <PropertyGroupDescription PropertyName="Server"/>
+            </CollectionViewSource.GroupDescriptions>
+        </CollectionViewSource>
     </UserControl.Resources>
     <TabControl SelectionChanged="TabControl_SelectionChanged">
 
@@ -588,6 +594,50 @@
                             <Image Source="https://pigparse.azurewebsites.net/Content/good.png"/>
                         </Button>
                     </StackPanel>
+                </StackPanel>
+            </ScrollViewer>
+        </TabItem>
+
+        <TabItem Header="UI Sync">
+            <ScrollViewer VerticalScrollBarVisibility="Auto">
+                <StackPanel Orientation="Vertical" Margin="5,5,5,5" HorizontalAlignment="Stretch">
+                    <TextBlock TextWrapping="Wrap" FontWeight="Bold"
+                               Text="Back up and sync your character UI files (UI_&lt;name&gt;_&lt;server&gt;.ini and its paired file). Requires a Discord login." />
+                    <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                        <TextBlock Text="Enable UI file sync" FontWeight="Bold" VerticalAlignment="Center" MinWidth="140"/>
+                        <CheckBox IsChecked="{Binding SyncUIFiles}" Click="Savesettings" VerticalAlignment="Center"/>
+                    </StackPanel>
+                    <StackPanel Orientation="Horizontal" Margin="0,5,0,0">
+                        <Button Click="SyncUIFilesNow" MinWidth="100" Margin="0,0,5,0">Sync Now</Button>
+                        <Button Click="RefreshManagedUIFiles" MinWidth="100">Refresh</Button>
+                    </StackPanel>
+                    <TextBlock TextWrapping="Wrap" Foreground="Gray" Margin="0,5,0,5"
+                               Text="Newer files win in both directions, and files missing locally are restored from the server. Delete removes a file from the server backup only - your local file is not touched." />
+                    <DataGrid ItemsSource="{Binding Source={StaticResource ManagedUIFilesView}}"
+                              AutoGenerateColumns="False" CanUserAddRows="False" IsReadOnly="True"
+                              HeadersVisibility="Column" Height="320">
+                        <DataGrid.GroupStyle>
+                            <GroupStyle>
+                                <GroupStyle.HeaderTemplate>
+                                    <DataTemplate>
+                                        <TextBlock Text="{Binding Name}" FontWeight="Bold" Margin="2,4,2,2"/>
+                                    </DataTemplate>
+                                </GroupStyle.HeaderTemplate>
+                            </GroupStyle>
+                        </DataGrid.GroupStyle>
+                        <DataGrid.Columns>
+                            <DataGridTextColumn Header="Character" Binding="{Binding PlayerName}" Width="*"/>
+                            <DataGridTextColumn Header="File" Binding="{Binding FileName}" Width="2*"/>
+                            <DataGridTextColumn Header="Modified (UTC)" Binding="{Binding LastModifiedUtc, StringFormat=yyyy-MM-dd HH:mm}" Width="Auto"/>
+                            <DataGridTemplateColumn Header="" Width="Auto">
+                                <DataGridTemplateColumn.CellTemplate>
+                                    <DataTemplate>
+                                        <Button Content="Delete" Click="DeleteUIFile" Margin="2" Padding="6,0"/>
+                                    </DataTemplate>
+                                </DataGridTemplateColumn.CellTemplate>
+                            </DataGridTemplateColumn>
+                        </DataGrid.Columns>
+                    </DataGrid>
                 </StackPanel>
             </ScrollViewer>
         </TabItem>

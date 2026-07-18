@@ -336,6 +336,7 @@
     <Compile Include="Services\Handlers\TriggerHandler.cs" />
     <Compile Include="Services\Handlers\YouForgetHandler.cs" />
     <Compile Include="Services\InventoryWatcherService.cs" />
+    <Compile Include="Services\UIFileSyncService.cs" />
     <Compile Include="Services\IO\FileReader.cs" />
     <Compile Include="Services\DebugOutput.cs" />
     <Compile Include="Services\Handlers\GroupLeaderHandler.cs" />

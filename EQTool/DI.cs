@@ -79,6 +79,7 @@ namespace EQTool
             _ = builder.RegisterType<UpdateRunner>().AsSelf().SingleInstance();
             _ = builder.RegisterType<Services.IO.FileReader>().As<Services.IO.IFileReader>().SingleInstance();
             _ = builder.RegisterType<InventoryWatcherService>().AsSelf().SingleInstance();
+            _ = builder.RegisterType<UIFileSyncService>().AsSelf().SingleInstance();
 
             _ = builder.RegisterType<Pets>().AsSelf().SingleInstance();
 

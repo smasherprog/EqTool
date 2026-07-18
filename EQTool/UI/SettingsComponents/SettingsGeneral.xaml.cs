@@ -5,6 +5,7 @@ using EQTool.Services.P99LoginMiddlemand;
 using EQTool.Services.Parsing;
 using EQTool.ViewModels;
 using EQTool.ViewModels.SettingsComponents;
+using EQToolShared.APIModels.UIFileControllerModels;
 using EQToolShared.Enums;
 using EQToolShared.Extensions;
 using System;
@@ -43,6 +44,7 @@ namespace EQTool.UI.SettingsComponents
         private readonly LogArchiveService logArchiveService;
         private readonly SettingsManagementViewModel settingsManagementViewModel;
         private readonly ITextToSpeach textToSpeach;
+        private readonly UIFileSyncService uiFileSyncService;
 
         public SettingsGeneral(
             LogEvents logEvents,
@@ -61,8 +63,10 @@ namespace EQTool.UI.SettingsComponents
             SettingsTestRunOverlay settingsTestRunOverlay,
             LogArchiveService logArchiveService,
             SettingsManagementViewModel settingsManagementViewModel,
-            ITextToSpeach textToSpeach)
+            ITextToSpeach textToSpeach,
+            UIFileSyncService uiFileSyncService)
         {
+            this.uiFileSyncService = uiFileSyncService;
             this.textToSpeach = textToSpeach;
             this.settingsManagementViewModel = settingsManagementViewModel;
             this.debugOutput = debugOutput;
@@ -118,6 +122,10 @@ namespace EQTool.UI.SettingsComponents
                 if ((tab.Header as string) == "UI")
                 {
                     SettingsWindowData.RefreshUIFiles();
+                }
+                else if ((tab.Header as string) == "UI Sync")
+                {
+                    LoadManagedUIFiles();
                 }
                 else if ((tab.Header as string) == "Friends")
                 {
@@ -1100,6 +1108,117 @@ namespace EQTool.UI.SettingsComponents
         private void RefreshUIFiles(object sender, RoutedEventArgs e)
         {
             SettingsWindowData.RefreshUIFiles();
+        }
+
+        private bool RequireDiscordLogin()
+        {
+            if (string.IsNullOrEmpty(settings.DiscordApiToken))
+            {
+                _ = System.Windows.Forms.MessageBox.Show(
+                    "Log in with Discord first (tray menu) to sync UI files.",
+                    "Discord login required",
+                    System.Windows.Forms.MessageBoxButtons.OK);
+                return false;
+            }
+            return true;
+        }
+
+        // Pulls the current server list off-thread and repopulates the grid, grouped
+        // by server (the CollectionViewSource groups; we sort so groups are contiguous).
+        private void LoadManagedUIFiles()
+        {
+            if (string.IsNullOrEmpty(settings.DiscordApiToken))
+            {
+                appDispatcher.DispatchUI(() => SettingsWindowData.ManagedUIFiles.Clear());
+                return;
+            }
+            _ = Task.Factory.StartNew(() =>
+            {
+                var files = uiFileSyncService.GetServerFiles()
+                    .OrderBy(a => a.Server)
+                    .ThenBy(a => a.PlayerName)
+                    .ToList();
+                appDispatcher.DispatchUI(() =>
+                {
+                    SettingsWindowData.ManagedUIFiles.Clear();
+                    foreach (var file in files)
+                    {
+                        SettingsWindowData.ManagedUIFiles.Add(file);
+                    }
+                });
+            });
+        }
+
+        private void RefreshManagedUIFiles(object sender, RoutedEventArgs e)
+        {
+            if (!RequireDiscordLogin())
+            {
+                return;
+            }
+            LoadManagedUIFiles();
+        }
+
+        private void SyncUIFilesNow(object sender, RoutedEventArgs e)
+        {
+            if (!RequireDiscordLogin())
+            {
+                return;
+            }
+            if (!settings.SyncUIFiles)
+            {
+                _ = System.Windows.Forms.MessageBox.Show(
+                    "Enable 'UI file sync' first.",
+                    "UI file sync disabled",
+                    System.Windows.Forms.MessageBoxButtons.OK);
+                return;
+            }
+            _ = Task.Factory.StartNew(() =>
+            {
+                try
+                {
+                    uiFileSyncService.SyncNow();
+                }
+                catch { }
+                LoadManagedUIFiles();
+            });
+        }
+
+        private void DeleteUIFile(object sender, RoutedEventArgs e)
+        {
+            if (!RequireDiscordLogin())
+            {
+                return;
+            }
+            var meta = (sender as FrameworkElement)?.DataContext as UIFileMetadata;
+            if (meta == null || string.IsNullOrWhiteSpace(meta.FileName))
+            {
+                return;
+            }
+            var confirm = System.Windows.Forms.MessageBox.Show(
+                $"Delete '{meta.FileName}' from the server backup? Your local file is not affected.",
+                "Delete UI file backup",
+                System.Windows.Forms.MessageBoxButtons.OKCancel);
+            if (confirm != System.Windows.Forms.DialogResult.OK)
+            {
+                return;
+            }
+            var fileName = meta.FileName;
+            _ = Task.Factory.StartNew(() =>
+            {
+                var ok = uiFileSyncService.DeleteServerFile(fileName);
+                if (ok)
+                {
+                    appDispatcher.DispatchUI(() =>
+                    {
+                        var existing = SettingsWindowData.ManagedUIFiles
+                            .FirstOrDefault(a => string.Equals(a.FileName, fileName, StringComparison.OrdinalIgnoreCase));
+                        if (existing != null)
+                        {
+                            _ = SettingsWindowData.ManagedUIFiles.Remove(existing);
+                        }
+                    });
+                }
+            });
         }
         private void SelectMasterUIFile(object sender, RoutedEventArgs e)
         {

@@ -1,10 +1,10 @@
-﻿using System;
+﻿using EQToolShared.Extensions;
+using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using EQToolShared.Extensions;
 
 namespace EQTool.Services
 {
@@ -148,6 +148,47 @@ namespace EQTool.Services
         private static string GetVirtualStoreLocation(string path)
         {
             return Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData) + "\\VirtualStore\\" + path.Substring(3);
+        }
+
+        // Where the character UI/config .ini files actually live for the given EQ
+        // root. EQ installed under Program Files has its file writes redirected to
+        // the Windows VirtualStore, so the real files (and the folder to watch/write)
+        // may not be the root itself. Prefers wherever UI_*.ini already exist; on a
+        // fresh restore with none present, targets the VirtualStore for Program-Files
+        // installs, otherwise the root.
+        public static string GetEffectiveUiDirectory(string root)
+        {
+            if (string.IsNullOrWhiteSpace(root))
+            {
+                return root;
+            }
+
+            try
+            {
+                var directory = new DirectoryInfo(root);
+                if (directory.Exists && directory.GetFiles("UI_*.ini", SearchOption.TopDirectoryOnly).Any())
+                {
+                    return root;
+                }
+            }
+            catch { }
+
+            try
+            {
+                var virtualStore = GetVirtualStoreLocation(root);
+                var directory = new DirectoryInfo(virtualStore);
+                if (directory.Exists && directory.GetFiles("UI_*.ini", SearchOption.TopDirectoryOnly).Any())
+                {
+                    return virtualStore;
+                }
+            }
+            catch { }
+
+            if (root.IndexOf("Program Files", StringComparison.OrdinalIgnoreCase) >= 0)
+            {
+                return GetVirtualStoreLocation(root);
+            }
+            return root;
         }
 
 
