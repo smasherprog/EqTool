@@ -1,4 +1,5 @@
 ﻿using EQTool.Models;
+using EQTool.Services;
 using EQTool.ViewModels.MobInfoComponents;
 using EQToolShared.Enums;
 using EQToolShared.Map;
@@ -328,11 +329,22 @@ namespace EQTool.ViewModels
                 OnPropertyChanged(nameof(HasEqPath));
                 OnPropertyChanged(nameof(MissingConfiguration));
                 OnPropertyChanged(nameof(NotMissingConfiguration));
+                OnPropertyChanged(nameof(EqPathWarning));
+                OnPropertyChanged(nameof(HasEqPathWarning));
+                OnPropertyChanged(nameof(EqToolPathWarning));
+                OnPropertyChanged(nameof(HasEqToolPathWarning));
             }
         }
 
         public bool DoesNotHaveEqPath => string.IsNullOrWhiteSpace(_EqPath);
         public bool HasEqPath => !string.IsNullOrWhiteSpace(_EqPath);
+
+        // Warnings for install locations that break EQ/Pigparse file access (Program Files,
+        // Desktop, OneDrive; Pigparse also flags being inside the EverQuest folder).
+        public string EqPathWarning => InstallPathChecker.GetEqPathWarning(_EqPath);
+        public bool HasEqPathWarning => !string.IsNullOrEmpty(EqPathWarning);
+        public string EqToolPathWarning => InstallPathChecker.GetEqToolPathWarning(_EqPath);
+        public bool HasEqToolPathWarning => !string.IsNullOrEmpty(EqToolPathWarning);
 
         private bool _IsLoggingEnabled = false;
 

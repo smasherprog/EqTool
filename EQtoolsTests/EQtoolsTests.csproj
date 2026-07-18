@@ -253,6 +253,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="ZoneParsingTests.cs" />
     <Compile Include="UIFileNameTests.cs" />
+    <Compile Include="InstallPathCheckerTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="spells_us.txt">

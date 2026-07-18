@@ -1150,6 +1150,16 @@ namespace EQTool.UI.SettingsComponents
             settingsManagementViewModel.RefreshAllCharacterSyncStatus();
         }
 
+        // Clears the saved Discord login on this computer (username, id, and API token).
+        private void LogoutDiscord(object sender, RoutedEventArgs e)
+        {
+            settings.DiscordUsername = null;
+            settings.DiscordId = null;
+            settings.DiscordApiToken = null;
+            SaveConfig();
+            SettingsWindowData.RefreshDiscordLoginState();
+        }
+
         private void SelectMasterUIFile(object sender, RoutedEventArgs e)
         {
             if (!Directory.Exists(settings.DefaultEqDirectory))
