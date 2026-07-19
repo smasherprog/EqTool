@@ -469,6 +469,20 @@ namespace EQTool.UI.SettingsComponents
         {
             var sp = new StackPanel { Margin = new Thickness(0, 4, 0, 10) };
             sp.Children.Add(MakeSlot(bag?.Container));
+            var bagName = bag?.Container?.Name;
+            if (!string.IsNullOrEmpty(bagName))
+            {
+                sp.Children.Add(new TextBlock
+                {
+                    Text = bagName,
+                    Foreground = TextLabel,
+                    FontSize = 11,
+                    Width = 100,
+                    Margin = new Thickness(0, 1, 0, 3),
+                    HorizontalAlignment = HorizontalAlignment.Left,
+                    TextTrimming = TextTrimming.CharacterEllipsis
+                });
+            }
             if (bag?.Contents != null && bag.Contents.Count > 0)
             {
                 var grid = new UniformGrid { Columns = 2, HorizontalAlignment = HorizontalAlignment.Left };

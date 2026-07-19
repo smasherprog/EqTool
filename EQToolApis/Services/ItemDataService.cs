@@ -64,20 +64,42 @@ namespace EQToolApis.Services
             }
         }
 
+        private const string ScrollIcon = "Item_869.png";
+        private const string PlaceholderImage = "/Content/Images/Item_.png";
+
+        // imglst.dat assigns some items an unrelated icon; these win over the file.
+        private static readonly Dictionary<string, string> IconOverrides = new(StringComparer.OrdinalIgnoreCase)
+        {
+            // imglst.dat maps Water Flask to the maroon wine-bottle icon (704);
+            // use the clear-bottle icon the other Flask items share.
+            ["Water Flask"] = "Item_584.png",
+        };
+
         // imglst.dat's first column is an internal pigparse row id, NOT the in-game
         // item id that inventory dumps contain (e.g. Backpack is 476 in imglst.dat
         // but 17969 in game), so matching by id shows the wrong item's icon. The
         // item name is the reliable key.
         public string GetImageUrl(int itemId, string itemName)
         {
-            if (!string.IsNullOrEmpty(itemName))
-            {
-                if (_imageByName.TryGetValue(itemName.Trim(), out var img))
-                    return $"/Content/Images/{img}";
-                if (_imageByNorm.TryGetValue(NormalizeName(itemName), out img))
-                    return $"/Content/Images/{img}";
-            }
-            return "/Content/Images/Item_.png";
+            if (string.IsNullOrEmpty(itemName))
+                return PlaceholderImage;
+
+            var trimmed = itemName.Trim();
+
+            // Every "Spell: ..." item is a spell scroll in game, but imglst.dat
+            // mis-icons most of them (chests, rods, armor), so force the scroll.
+            if (trimmed.StartsWith("Spell: ", StringComparison.OrdinalIgnoreCase))
+                return $"/Content/Images/{ScrollIcon}";
+
+            if (IconOverrides.TryGetValue(trimmed, out var over))
+                return $"/Content/Images/{over}";
+
+            if (_imageByName.TryGetValue(trimmed, out var img))
+                return $"/Content/Images/{img}";
+            if (_imageByNorm.TryGetValue(NormalizeName(itemName), out img))
+                return $"/Content/Images/{img}";
+
+            return PlaceholderImage;
         }
 
         public string GetTooltip(string itemName)

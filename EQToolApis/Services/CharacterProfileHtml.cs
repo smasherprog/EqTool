@@ -49,6 +49,7 @@ namespace EQToolApis.Services
 .pp-bagrow { font-size: 0; }
 .pp-bag { display: inline-block; vertical-align: top; margin: 6px 24px 12px 0; font-size: 11px; }
 .pp-bag-grid { width: 100px; font-size: 0; }
+.pp-bag-name { width: 100px; color: #9aa3c0; font-size: 11px; margin: 1px 0 3px 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .pp-shared { border-top: 1px solid #242c49; margin-top: 10px; padding-top: 8px; }
 .pp-shared-h { color: #6b7390; font-size: 11px; font-weight: bold; margin-bottom: 2px; }
 #pp-tooltip { position: fixed; display: none; z-index: 99999; background: #0c101f; border: 1px solid #3c4670; border-radius: 8px; padding: 10px 12px; color: #dfe4f5; font-family: Consolas, 'Courier New', monospace; font-size: 12px; white-space: pre-wrap; max-width: 340px; line-height: 1.45; box-shadow: 0 6px 24px rgba(0,0,0,0.6); }
@@ -164,6 +165,10 @@ function ppShowTab(name) {
         {
             var sb = new StringBuilder("<div class=\"pp-bag\">");
             _ = sb.Append(Slot(bag.Container, assetBase));
+            if (!string.IsNullOrEmpty(bag.Container?.Name))
+            {
+                _ = sb.Append($"<div class=\"pp-bag-name\">{Enc(bag.Container!.Name)}</div>");
+            }
             if (bag.Contents.Count > 0)
             {
                 _ = sb.Append("<div class=\"pp-bag-grid\">");
