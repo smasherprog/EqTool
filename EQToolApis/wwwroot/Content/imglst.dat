@@ -4174,7 +4174,7 @@
 4425	Hammered Velium Warsword	Item_575.png
 4426	Hammerhead Helm	Item_747.png
 4427	Hand Drum	Item_1152.png
-4428	Hand Made Backpack	Item_554.png
+4428	Hand Made Backpack	Item_565.png
 4429	Hand of Deaen Greyforge	Item_744.png
 4430	Hand of Shadow	Item_971.png
 4431	Hand of the Maestro	Item_918.png
@@ -6872,37 +6872,37 @@
 7139	White Headband	Item_932.png
 7140	White Hellebore	Item_1200.png
 7141	White Lead	Item_1138.png
-7142	Spell: Daring	Item_746.png
-7146	Spell: Dead Man Floating	Item_869.png
-7148	Spell: Deadeye	Item_678.png
-7153	Spell: Deftness	Item_531.png
-7164	Spell: Diamondskin	Item_821.png
-7167	Spell: Dimensional Pocket	Item_884.png
-7169	Spell: Disease Cloud	Item_574.png
-7170	Spell: Disempower	Item_1187.png
-7172	Spell: Dismiss Summoned	Item_575.png
-7173	Spell: Dismiss Undead	Item_519.png
-7175	Spell: Divine Aura	Item_860.png
-7184	Spell: Steelskin	Item_1171.png
-7185	Spell: Stinging Swarm	Item_622.png
-7186	Spell: Storm Strength	Item_1001.png
-7188	Spell: Strength of Earth	Item_622.png
-7191	Spell: Strengthen	Item_521.png
-7194	Spell: Strip Enchantment	Item_1005.png
-7195	Spell: Stun	Item_1187.png
-7203	Spell: Suffocate	Item_574.png
-7205	Spell: Summon Arrows	Item_516.png
-7206	Spell: Summon Bandages	Item_633.png
-7207	Spell: Summon Coldstone	Item_943.png
-7210	Spell: Summon Dagger	Item_592.png
-7211	Spell: Summon Dead	Item_869.png
-7212	Spell: Summon Drink	Item_507.png
-7213	Spell: Summon Fang	Item_801.png
-7214	Spell: Summon Food	Item_891.png
-7215	Spell: Summon Heatstone	Item_947.png
-7216	Spell: Summon Orb	Item_2868.png
-7217	Spell: Summon Shard of the Core	Item_948.png
-7218	Spell: Summon Throwing Dagger	Item_722.png
+7142	Spell: Daring	Item_504.png
+7146	Spell: Dead Man Floating	Item_504.png
+7148	Spell: Deadeye	Item_504.png
+7153	Spell: Deftness	Item_504.png
+7164	Spell: Diamondskin	Item_504.png
+7167	Spell: Dimensional Pocket	Item_504.png
+7169	Spell: Disease Cloud	Item_504.png
+7170	Spell: Disempower	Item_504.png
+7172	Spell: Dismiss Summoned	Item_504.png
+7173	Spell: Dismiss Undead	Item_504.png
+7175	Spell: Divine Aura	Item_504.png
+7184	Spell: Steelskin	Item_504.png
+7185	Spell: Stinging Swarm	Item_504.png
+7186	Spell: Storm Strength	Item_504.png
+7188	Spell: Strength of Earth	Item_504.png
+7191	Spell: Strengthen	Item_504.png
+7194	Spell: Strip Enchantment	Item_504.png
+7195	Spell: Stun	Item_504.png
+7203	Spell: Suffocate	Item_504.png
+7205	Spell: Summon Arrows	Item_504.png
+7206	Spell: Summon Bandages	Item_504.png
+7207	Spell: Summon Coldstone	Item_504.png
+7210	Spell: Summon Dagger	Item_504.png
+7211	Spell: Summon Dead	Item_504.png
+7212	Spell: Summon Drink	Item_504.png
+7213	Spell: Summon Fang	Item_504.png
+7214	Spell: Summon Food	Item_504.png
+7215	Spell: Summon Heatstone	Item_504.png
+7216	Spell: Summon Orb	Item_504.png
+7217	Spell: Summon Shard of the Core	Item_504.png
+7218	Spell: Summon Throwing Dagger	Item_504.png
 7219	Plate Vambrace Mold	Item_1151.png
 7220	Plate Visor Mold	Item_1151.png
 7221	Platemail Helm	Item_550.png
@@ -8996,8 +8996,8 @@
 9318	Spectral Bow	Item_597.png
 9319	Spectral Pestle	Item_732.png
 9320	Spectral Shroud	Item_839.png
-9330	Spell: Enticement of Flame	Item_931.png
-9334	Spell: Lesser Conjuration: Earth	Item_518.png
+9330	Spell: Enticement of Flame	Item_504.png
+9334	Spell: Lesser Conjuration: Earth	Item_504.png
 9345	Sphere of Unrest	Item_507.png
 9346	Sphinx Claw	Item_801.png
 9347	Sphinx Crown	Item_523.png
@@ -9160,6 +9160,7 @@
 9505	Steelsilk Pauldron	Item_798.png
 9506	Steelsilk Vambraces	Item_622.png
 9507	Steelsilk Waistband	Item_549.png
+16547	A Stein	Item_708.png
 9508	Stein	Item_709.png
 9509	Stein (of Water)	Item_708.png
 9510	Stein of Bitter Cold	Item_708.png
@@ -10237,7 +10238,7 @@
 10588	Watchman`s Spectacles	Item_1161.png
 10589	Water Crystal Staff	Item_811.png
 10590	Water Dragon Scales	Item_1088.png
-10591	Water Flask	Item_704.png
+10591	Water Flask	Item_584.png
 10592	Water Reed	Item_583.png
 10593	Water Ring	Item_616.png
 10594	Water Sprinkler of Nem Ankh	Item_741.png
@@ -10649,371 +10650,371 @@
 11002	Zombie Flesh Bracer	Item_637.png
 11003	Zombie Heart	Item_1003.png
 11004	Zombie Skin	Item_823.png
-11007	Spell: Abolish Disease	Item_540.png
-11008	Spell: Abolish Poison	Item_699.png
-11010	Spell: Abundant Drink	Item_524.png
-11011	Spell: Abundant Food	Item_516.png
-11016	Spell: Affliction	Item_580.png
-11018	Spell: Agilmente`s Aria of Eagles	Item_524.png
-11019	Spell: Alacrity	Item_558.png
-11020	Spell: Alliance	Item_822.png
-11021	Spell: Allure	Item_869.png
-11022	Spell: Allure of Death	Item_789.png
-11025	Spell: Alter Plane: Sky	Item_566.png
-11026	Spell: Anarchy	Item_822.png
-11027	Spell: Angstlich`s Appalling Screech	Item_540.png
-11029	Spell: Animate Dead	Item_869.png
-11035	Spell: Arch Shielding	Item_567.png
-11036	Spell: Armor of Faith	Item_531.png
-11042	Spell: Atone	Item_602.png
-11044	Spell: Augment Death	Item_655.png
-11048	Spell: Bandoleer of Luclin	Item_591.png
-11050	Spell: Banish Summoned	Item_567.png
-11051	Spell: Banish Undead	Item_887.png
-11053	Spell: Banishment of Shadows	Item_582.png
-11054	Spell: Banshee Aura	Item_869.png
-11058	Spell: Befriend Animal	Item_582.png
-11061	Spell: Beguile Plants	Item_602.png
-11065	Spell: Berserker Strength	Item_1005.png
-11066	Spell: Bind Affinity	Item_674.png
-11069	Spell: Blanket of Forgetfulness	Item_869.png
-11071	Spell: Blaze	Item_738.png
-11072	Spell: Blinding Luminance	Item_973.png
-11075	Spell: Bobbing Corpse	Item_753.png
-11076	Spell: Boil Blood	Item_576.png
-11080	Spell: Bond of Death	Item_869.png
-11081	Spell: Bonds of Force	Item_641.png
-11085	Spell: Bramblecoat	Item_624.png
-11089	Spell: Breath of the Dead	Item_869.png
-11092	Spell: Bristlebane`s Bundle	Item_1025.png
-11096	Spell: Burn	Item_559.png
-11099	Spell: Burnout III	Item_635.png
-11102	Spell: Burst of Flame	Item_601.png
-11104	Spell: Cackling Bones	Item_869.png
-11107	Spell: Cajoling Whispers	Item_1043.png
-11109	Spell: Call of Bones	Item_869.png
-11110	Spell: Call of Earth	Item_624.png
-11116	Spell: Calm	Item_850.png
-11119	Spell: Cancel Magic	Item_519.png
-11122	Spell: Careless Lightning	Item_567.png
-11123	Spell: Cascading Darkness	Item_810.png
-11128	Spell: Cast Force	Item_809.png
-11131	Spell: Cazic Gate	Item_695.png
-11132	Spell: Cazic Portal	Item_810.png
-11139	Spell: Chant of Battle	Item_776.png
-11140	Spell: Chaos Flux	Item_569.png
-11141	Spell: Chaotic Feedback	Item_887.png
-11148	Spell: Chill Sight	Item_1044.png
-11151	Spell: Chloroplast	Item_646.png
-11152	Spell: Choke	Item_596.png
-11155	Spell: Cinder Bolt	Item_602.png
-11164	Spell: Circle of Karana	Item_500.png
-11166	Spell: Circle of Misty	Item_540.png
-11175	Spell: Clarity	Item_821.png
-11177	Spell: Clinging Darkness	Item_822.png
-11178	Spell: Cloud	Item_998.png
-11184	Spell: Color Shift	Item_1005.png
-11185	Spell: Color Skew	Item_869.png
-11187	Spell: Column of Fire	Item_550.png
-11192	Spell: Combust	Item_807.png
-11195	Spell: Companion Spirit	Item_802.png
-11196	Spell: Complete Healing	Item_600.png
-11199	Spell: Conflagration	Item_810.png
-11201	Spell: Conjuration: Air	Item_599.png
-11202	Spell: Conjuration: Earth	Item_836.png
-11203	Spell: Conjuration: Fire	Item_836.png
-11204	Spell: Conjuration: Water	Item_699.png
-11205	Spell: Conjure Corpse	Item_1126.png
-11208	Spell: Cornucopia	Item_537.png
-11209	Spell: Counteract Disease	Item_618.png
-11210	Spell: Counteract Poison	Item_599.png
-11214	Spell: Creeping Vision	Item_1131.png
-11218	Spell: Cure Disease	Item_805.png
-11219	Spell: Cure Poison	Item_521.png
-11221	Spell: Dagger of Symbols	Item_592.png
-11222	Spell: Dance of the Fireflies	Item_743.png
-11227	Spell: Dooming Darkness	Item_1177.png
-11228	Spell: Drain Soul	Item_810.png
-11235	Spell: Drones of Doom	Item_1083.png
-11236	Spell: Drowsy	Item_1181.png
-11239	Spell: Earthquake	Item_1083.png
-11241	Spell: Elemental Armor	Item_635.png
-11246	Spell: Elemental: Fire	Item_600.png
-11264	Spell: Enchant Silver	Item_859.png
-11270	Spell: Endure Magic	Item_524.png
-11272	Spell: Enduring Breath	Item_946.png
-11277	Spell: Engulfing Darkness	Item_574.png
-11278	Spell: Engulfing Roots	Item_1193.png
-11281	Spell: Ensnare	Item_740.png
-11282	Spell: Ensnaring Roots	Item_590.png
-11289	Spell: Envenomed Breath	Item_810.png
-11290	Spell: Evacuate	Item_686.png
-11296	Spell: Everfount	Item_584.png
-11301	Spell: Expel Undead	Item_581.png
-11304	Spell: Extinguish Fatigue	Item_524.png
-11307	Spell: Eye of Zomm	Item_848.png
-11309	Spell: Fade	Item_524.png
-11313	Spell: Fear	Item_800.png
+11007	Spell: Abolish Disease	Item_504.png
+11008	Spell: Abolish Poison	Item_504.png
+11010	Spell: Abundant Drink	Item_504.png
+11011	Spell: Abundant Food	Item_504.png
+11016	Spell: Affliction	Item_504.png
+11018	Spell: Agilmente`s Aria of Eagles	Item_504.png
+11019	Spell: Alacrity	Item_504.png
+11020	Spell: Alliance	Item_504.png
+11021	Spell: Allure	Item_504.png
+11022	Spell: Allure of Death	Item_504.png
+11025	Spell: Alter Plane: Sky	Item_504.png
+11026	Spell: Anarchy	Item_504.png
+11027	Spell: Angstlich`s Appalling Screech	Item_504.png
+11029	Spell: Animate Dead	Item_504.png
+11035	Spell: Arch Shielding	Item_504.png
+11036	Spell: Armor of Faith	Item_504.png
+11042	Spell: Atone	Item_504.png
+11044	Spell: Augment Death	Item_504.png
+11048	Spell: Bandoleer of Luclin	Item_504.png
+11050	Spell: Banish Summoned	Item_504.png
+11051	Spell: Banish Undead	Item_504.png
+11053	Spell: Banishment of Shadows	Item_504.png
+11054	Spell: Banshee Aura	Item_504.png
+11058	Spell: Befriend Animal	Item_504.png
+11061	Spell: Beguile Plants	Item_504.png
+11065	Spell: Berserker Strength	Item_504.png
+11066	Spell: Bind Affinity	Item_504.png
+11069	Spell: Blanket of Forgetfulness	Item_504.png
+11071	Spell: Blaze	Item_504.png
+11072	Spell: Blinding Luminance	Item_504.png
+11075	Spell: Bobbing Corpse	Item_504.png
+11076	Spell: Boil Blood	Item_504.png
+11080	Spell: Bond of Death	Item_504.png
+11081	Spell: Bonds of Force	Item_504.png
+11085	Spell: Bramblecoat	Item_504.png
+11089	Spell: Breath of the Dead	Item_504.png
+11092	Spell: Bristlebane`s Bundle	Item_504.png
+11096	Spell: Burn	Item_504.png
+11099	Spell: Burnout III	Item_504.png
+11102	Spell: Burst of Flame	Item_504.png
+11104	Spell: Cackling Bones	Item_504.png
+11107	Spell: Cajoling Whispers	Item_504.png
+11109	Spell: Call of Bones	Item_504.png
+11110	Spell: Call of Earth	Item_504.png
+11116	Spell: Calm	Item_504.png
+11119	Spell: Cancel Magic	Item_504.png
+11122	Spell: Careless Lightning	Item_504.png
+11123	Spell: Cascading Darkness	Item_504.png
+11128	Spell: Cast Force	Item_504.png
+11131	Spell: Cazic Gate	Item_504.png
+11132	Spell: Cazic Portal	Item_504.png
+11139	Spell: Chant of Battle	Item_504.png
+11140	Spell: Chaos Flux	Item_504.png
+11141	Spell: Chaotic Feedback	Item_504.png
+11148	Spell: Chill Sight	Item_504.png
+11151	Spell: Chloroplast	Item_504.png
+11152	Spell: Choke	Item_504.png
+11155	Spell: Cinder Bolt	Item_504.png
+11164	Spell: Circle of Karana	Item_504.png
+11166	Spell: Circle of Misty	Item_504.png
+11175	Spell: Clarity	Item_504.png
+11177	Spell: Clinging Darkness	Item_504.png
+11178	Spell: Cloud	Item_504.png
+11184	Spell: Color Shift	Item_504.png
+11185	Spell: Color Skew	Item_504.png
+11187	Spell: Column of Fire	Item_504.png
+11192	Spell: Combust	Item_504.png
+11195	Spell: Companion Spirit	Item_504.png
+11196	Spell: Complete Healing	Item_504.png
+11199	Spell: Conflagration	Item_504.png
+11201	Spell: Conjuration: Air	Item_504.png
+11202	Spell: Conjuration: Earth	Item_504.png
+11203	Spell: Conjuration: Fire	Item_504.png
+11204	Spell: Conjuration: Water	Item_504.png
+11205	Spell: Conjure Corpse	Item_504.png
+11208	Spell: Cornucopia	Item_504.png
+11209	Spell: Counteract Disease	Item_504.png
+11210	Spell: Counteract Poison	Item_504.png
+11214	Spell: Creeping Vision	Item_504.png
+11218	Spell: Cure Disease	Item_504.png
+11219	Spell: Cure Poison	Item_504.png
+11221	Spell: Dagger of Symbols	Item_504.png
+11222	Spell: Dance of the Fireflies	Item_504.png
+11227	Spell: Dooming Darkness	Item_504.png
+11228	Spell: Drain Soul	Item_504.png
+11235	Spell: Drones of Doom	Item_504.png
+11236	Spell: Drowsy	Item_504.png
+11239	Spell: Earthquake	Item_504.png
+11241	Spell: Elemental Armor	Item_504.png
+11246	Spell: Elemental: Fire	Item_504.png
+11264	Spell: Enchant Silver	Item_504.png
+11270	Spell: Endure Magic	Item_504.png
+11272	Spell: Enduring Breath	Item_504.png
+11277	Spell: Engulfing Darkness	Item_504.png
+11278	Spell: Engulfing Roots	Item_504.png
+11281	Spell: Ensnare	Item_504.png
+11282	Spell: Ensnaring Roots	Item_504.png
+11289	Spell: Envenomed Breath	Item_504.png
+11290	Spell: Evacuate	Item_504.png
+11296	Spell: Everfount	Item_504.png
+11301	Spell: Expel Undead	Item_504.png
+11304	Spell: Extinguish Fatigue	Item_504.png
+11307	Spell: Eye of Zomm	Item_504.png
+11309	Spell: Fade	Item_504.png
+11313	Spell: Fear	Item_504.png
 11315	Spell: Feedback	Item_504.png
-11316	Spell: Feet like Cat	Item_596.png
-11317	Spell: Feign Death	Item_617.png
-11320	Spell: Fingers of Fire	Item_575.png
-11322	Spell: Fire Bolt	Item_596.png
-11324	Spell: Fire Spiral of Al`Kabor	Item_967.png
-11325	Spell: Firefist	Item_529.png
-11327	Spell: Firestrike	Item_576.png
-11330	Spell: Flame Arc	Item_697.png
-11331	Spell: Flame Bolt	Item_809.png
-11332	Spell: Flame Flux	Item_809.png
-11333	Spell: Flame Lick	Item_859.png
-11334	Spell: Flame Shock	Item_519.png
-11335	Spell: Flare	Item_601.png
-11337	Spell: Fleeting Fury	Item_737.png
-11338	Spell: Force	Item_581.png
-11339	Spell: Force Shock	Item_1178.png
-11340	Spell: Force Spiral of Al`Kabor	Item_967.png
-11343	Spell: Form of the Great Wolf	Item_602.png
-11346	Spell: Fortitude	Item_854.png
-11353	Spell: Frost Shock	Item_1211.png
-11356	Spell: Frost Strike	Item_574.png
-11357	Spell: Furious Strength	Item_622.png
-11359	Spell: Fury	Item_668.png
-11361	Spell: Gale of Poison	Item_578.png
-11362	Spell: Gasping Embrace	Item_838.png
-11363	Spell: Gate	Item_880.png
-11364	Spell: Gather Shadows	Item_873.png
-11365	Spell: Gaze	Item_601.png
-11370	Spell: Gift of Xev	Item_812.png
-11372	Spell: Glamour	Item_519.png
-11375	Spell: Glimpse	Item_1129.png
-11376	Spell: Grasping Roots	Item_852.png
-11377	Spell: Gravity Flux	Item_967.png
-11380	Spell: Greater Conjuration: Air	Item_753.png
-11381	Spell: Greater Conjuration: Earth	Item_836.png
-11382	Spell: Greater Conjuration: Fire	Item_836.png
-11383	Spell: Greater Conjuration: Water	Item_699.png
-11384	Spell: Greater Healing	Item_585.png
-11386	Spell: Greater Summoning: Air	Item_599.png
-11387	Spell: Greater Summoning: Earth	Item_518.png
-11388	Spell: Greater Summoning: Fire	Item_688.png
-11389	Spell: Greater Summoning: Water	Item_706.png
-11394	Spell: Greater Wolf Form	Item_592.png
-11395	Spell: Grim Aura	Item_848.png
-11397	Spell: Guard	Item_578.png
-11400	Spell: Guardian Spirit	Item_668.png
-11404	Spell: Hammer of Wrath	Item_1002.png
-11406	Spell: Harmshield	Item_869.png
-11408	Spell: Haunting Corpse	Item_869.png
-11410	Spell: Healing	Item_675.png
-11411	Spell: Health	Item_540.png
-11413	Spell: Heat Blood	Item_604.png
-11414	Spell: Heat Sight	Item_771.png
-11418	Spell: Holy Might	Item_894.png
-11420	Spell: Hungry Earth	Item_869.png
-11423	Spell: Ice Shock	Item_810.png
-11429	Spell: Identify	Item_967.png
-11430	Spell: Ignite	Item_1186.png
-11432	Spell: Ignite Bones	Item_1040.png
-11434	Spell: Illusion: Barbarian	Item_843.png
-11435	Spell: Illusion: Dark Elf	Item_771.png
-11438	Spell: Illusion: Earth Elemental	Item_695.png
-11439	Spell: Illusion: Erudite	Item_771.png
-11441	Spell: Illusion: Gnome	Item_771.png
-11443	Spell: Illusion: Halfling	Item_992.png
-11444	Spell: Illusion: High Elf	Item_771.png
-11446	Spell: Illusion: Iksar	Item_871.png
-11448	Spell: Illusion: Skeleton	Item_510.png
-11450	Spell: Illusion: Tree	Item_809.png
-11452	Spell: Illusion: Water Elemental	Item_665.png
-11453	Spell: Illusion: Werewolf	Item_551.png
-11470	Spell: Immobilize	Item_1005.png
-11471	Spell: Immolate	Item_859.png
-11474	Spell: Improved Invisibility	Item_1018.png
-11476	Spell: Incapacitate	Item_890.png
-11478	Spell: Infectious Cloud	Item_601.png
-11480	Spell: Inferno Shield	Item_701.png
-11481	Spell: Inferno Shock	Item_847.png
-11485	Spell: Insidious Fever	Item_1168.png
-11487	Spell: Insipid Weakness	Item_1005.png
-11489	Spell: Intensify Death	Item_869.png
-11491	Spell: Invigor	Item_1166.png
-11492	Spell: Invisibility	Item_540.png
-11494	Spell: Invisibility versus Animals	Item_872.png
-11495	Spell: Invisibility versus Undead	Item_582.png
-11496	Spell: Invoke Death	Item_869.png
-11497	Spell: Invoke Fear	Item_869.png
-11499	Spell: Invoke Shadow	Item_869.png
-11502	Spell: Jolt	Item_596.png
-11505	Spell: Jonthan`s Whistling Warsong	Item_931.png
-11521	Spell: Leach	Item_740.png
-11528	Spell: Lesser Conjuration: Water	Item_706.png
-11529	Spell: Lesser Shielding	Item_622.png
-11530	Spell: Lesser Summoning: Air	Item_972.png
-11531	Spell: Lesser Summoning: Earth	Item_954.png
-11532	Spell: Lesser Summoning: Fire	Item_952.png
-11533	Spell: Lesser Summoning: Water	Item_972.png
-11535	Spell: Levitate	Item_703.png
-11536	Spell: Lich	Item_869.png
-11537	Spell: Lifedraw	Item_604.png
-11538	Spell: Lifespike	Item_576.png
-11539	Spell: Lifetap	Item_596.png
-11540	Spell: Light Healing	Item_709.png
-11544	Spell: Lightning Storm	Item_602.png
-11545	Spell: Lightning Strike	Item_1104.png
-11547	Spell: Locate Corpse	Item_810.png
-11548	Spell: Lull	Item_850.png
-11551	Spell: Lure of Frost	Item_893.png
-11559	Spell: Major Shielding	Item_601.png
-11561	Spell: Malaise	Item_668.png
-11562	Spell: Malaisement	Item_887.png
-11563	Spell: Malignant Dead	Item_869.png
-11567	Spell: Mana Sieve	Item_1005.png
-11572	Spell: Mark of Karn	Item_624.png
+11316	Spell: Feet like Cat	Item_504.png
+11317	Spell: Feign Death	Item_504.png
+11320	Spell: Fingers of Fire	Item_504.png
+11322	Spell: Fire Bolt	Item_504.png
+11324	Spell: Fire Spiral of Al`Kabor	Item_504.png
+11325	Spell: Firefist	Item_504.png
+11327	Spell: Firestrike	Item_504.png
+11330	Spell: Flame Arc	Item_504.png
+11331	Spell: Flame Bolt	Item_504.png
+11332	Spell: Flame Flux	Item_504.png
+11333	Spell: Flame Lick	Item_504.png
+11334	Spell: Flame Shock	Item_504.png
+11335	Spell: Flare	Item_504.png
+11337	Spell: Fleeting Fury	Item_504.png
+11338	Spell: Force	Item_504.png
+11339	Spell: Force Shock	Item_504.png
+11340	Spell: Force Spiral of Al`Kabor	Item_504.png
+11343	Spell: Form of the Great Wolf	Item_504.png
+11346	Spell: Fortitude	Item_504.png
+11353	Spell: Frost Shock	Item_504.png
+11356	Spell: Frost Strike	Item_504.png
+11357	Spell: Furious Strength	Item_504.png
+11359	Spell: Fury	Item_504.png
+11361	Spell: Gale of Poison	Item_504.png
+11362	Spell: Gasping Embrace	Item_504.png
+11363	Spell: Gate	Item_504.png
+11364	Spell: Gather Shadows	Item_504.png
+11365	Spell: Gaze	Item_504.png
+11370	Spell: Gift of Xev	Item_504.png
+11372	Spell: Glamour	Item_504.png
+11375	Spell: Glimpse	Item_504.png
+11376	Spell: Grasping Roots	Item_504.png
+11377	Spell: Gravity Flux	Item_504.png
+11380	Spell: Greater Conjuration: Air	Item_504.png
+11381	Spell: Greater Conjuration: Earth	Item_504.png
+11382	Spell: Greater Conjuration: Fire	Item_504.png
+11383	Spell: Greater Conjuration: Water	Item_504.png
+11384	Spell: Greater Healing	Item_504.png
+11386	Spell: Greater Summoning: Air	Item_504.png
+11387	Spell: Greater Summoning: Earth	Item_504.png
+11388	Spell: Greater Summoning: Fire	Item_504.png
+11389	Spell: Greater Summoning: Water	Item_504.png
+11394	Spell: Greater Wolf Form	Item_504.png
+11395	Spell: Grim Aura	Item_504.png
+11397	Spell: Guard	Item_504.png
+11400	Spell: Guardian Spirit	Item_504.png
+11404	Spell: Hammer of Wrath	Item_504.png
+11406	Spell: Harmshield	Item_504.png
+11408	Spell: Haunting Corpse	Item_504.png
+11410	Spell: Healing	Item_504.png
+11411	Spell: Health	Item_504.png
+11413	Spell: Heat Blood	Item_504.png
+11414	Spell: Heat Sight	Item_504.png
+11418	Spell: Holy Might	Item_504.png
+11420	Spell: Hungry Earth	Item_504.png
+11423	Spell: Ice Shock	Item_504.png
+11429	Spell: Identify	Item_504.png
+11430	Spell: Ignite	Item_504.png
+11432	Spell: Ignite Bones	Item_504.png
+11434	Spell: Illusion: Barbarian	Item_504.png
+11435	Spell: Illusion: Dark Elf	Item_504.png
+11438	Spell: Illusion: Earth Elemental	Item_504.png
+11439	Spell: Illusion: Erudite	Item_504.png
+11441	Spell: Illusion: Gnome	Item_504.png
+11443	Spell: Illusion: Halfling	Item_504.png
+11444	Spell: Illusion: High Elf	Item_504.png
+11446	Spell: Illusion: Iksar	Item_504.png
+11448	Spell: Illusion: Skeleton	Item_504.png
+11450	Spell: Illusion: Tree	Item_504.png
+11452	Spell: Illusion: Water Elemental	Item_504.png
+11453	Spell: Illusion: Werewolf	Item_504.png
+11470	Spell: Immobilize	Item_504.png
+11471	Spell: Immolate	Item_504.png
+11474	Spell: Improved Invisibility	Item_504.png
+11476	Spell: Incapacitate	Item_504.png
+11478	Spell: Infectious Cloud	Item_504.png
+11480	Spell: Inferno Shield	Item_504.png
+11481	Spell: Inferno Shock	Item_504.png
+11485	Spell: Insidious Fever	Item_504.png
+11487	Spell: Insipid Weakness	Item_504.png
+11489	Spell: Intensify Death	Item_504.png
+11491	Spell: Invigor	Item_504.png
+11492	Spell: Invisibility	Item_504.png
+11494	Spell: Invisibility versus Animals	Item_504.png
+11495	Spell: Invisibility versus Undead	Item_504.png
+11496	Spell: Invoke Death	Item_504.png
+11497	Spell: Invoke Fear	Item_504.png
+11499	Spell: Invoke Shadow	Item_504.png
+11502	Spell: Jolt	Item_504.png
+11505	Spell: Jonthan`s Whistling Warsong	Item_504.png
+11521	Spell: Leach	Item_504.png
+11528	Spell: Lesser Conjuration: Water	Item_504.png
+11529	Spell: Lesser Shielding	Item_504.png
+11530	Spell: Lesser Summoning: Air	Item_504.png
+11531	Spell: Lesser Summoning: Earth	Item_504.png
+11532	Spell: Lesser Summoning: Fire	Item_504.png
+11533	Spell: Lesser Summoning: Water	Item_504.png
+11535	Spell: Levitate	Item_504.png
+11536	Spell: Lich	Item_504.png
+11537	Spell: Lifedraw	Item_504.png
+11538	Spell: Lifespike	Item_504.png
+11539	Spell: Lifetap	Item_504.png
+11540	Spell: Light Healing	Item_504.png
+11544	Spell: Lightning Storm	Item_504.png
+11545	Spell: Lightning Strike	Item_504.png
+11547	Spell: Locate Corpse	Item_504.png
+11548	Spell: Lull	Item_504.png
+11551	Spell: Lure of Frost	Item_504.png
+11559	Spell: Major Shielding	Item_504.png
+11561	Spell: Malaise	Item_504.png
+11562	Spell: Malaisement	Item_504.png
+11563	Spell: Malignant Dead	Item_504.png
+11567	Spell: Mana Sieve	Item_504.png
+11572	Spell: Mark of Karn	Item_504.png
 11584	Spell: Mesmerization	Item_504.png
-11586	Spell: Mind Wipe	Item_1005.png
-11587	Spell: Minor Conjuration: Air	Item_599.png
-11589	Spell: Minor Conjuration: Fire	Item_688.png
-11591	Spell: Minor Healing	Item_708.png
-11594	Spell: Minor Summoning: Air	Item_514.png
-11595	Spell: Minor Summoning: Earth	Item_1135.png
-11596	Spell: Minor Summoning: Fire	Item_979.png
-11597	Spell: Minor Summoning: Water	Item_814.png
-11600	Spell: Modulating Rod	Item_821.png
-11611	Spell: Nek Portal	Item_602.png
-11613	Spell: Nimble	Item_524.png
-11615	Spell: Niv`s Melody of Preservation	Item_882.png
-11618	Spell: Nullify Magic	Item_967.png
-11622	Spell: O`Keils Radiation	Item_633.png
-11626	Spell: Pacify	Item_516.png
-11630	Spell: Pact of Shadow	Item_753.png
-11631	Spell: Panic Animal	Item_566.png
-11633	Spell: Paralyzing Earth	Item_967.png
-11638	Spell: Phantom Plate	Item_602.png
-11639	Spell: Pillage Enchantment	Item_869.png
-11640	Spell: Pillar of Fire	Item_967.png
-11647	Spell: Poison Bolt	Item_1123.png
-11650	Spell: Pouch of Quellious	Item_637.png
-11653	Spell: Project Lightning	Item_967.png
-11665	Spell: Quiver of Marr	Item_598.png
-11667	Spell: Radiant Visage	Item_1005.png
-11672	Spell: Rain of Fire	Item_1195.png
-11675	Spell: Rain of Swords	Item_890.png
-11676	Spell: Rampage	Item_1171.png
-11679	Spell: Reckless Strength	Item_601.png
-11681	Spell: Regeneration	Item_624.png
-11683	Spell: Regrowth of the Grove	Item_624.png
-11685	Spell: Rend	Item_838.png
-11686	Spell: Renew Bones	Item_869.png
-11689	Spell: Reoccurring Amnesia	Item_869.png
-11691	Spell: Resist Cold	Item_1121.png
-11694	Spell: Resist Magic	Item_602.png
-11699	Spell: Restless Bones	Item_869.png
-11700	Spell: Resurrection	Item_822.png
-11701	Spell: Resuscitate	Item_1090.png
-11705	Spell: Reviviscence	Item_741.png
-11708	Spell: Ring of Commons	Item_640.png
-11714	Spell: Ring of Misty	Item_635.png
-11721	Spell: Riotous Health	Item_624.png
-11726	Spell: Root	Item_602.png
-11727	Spell: Rune I	Item_955.png
-11728	Spell: Rune II	Item_947.png
-11729	Spell: Rune III	Item_519.png
-11730	Spell: Rune IV	Item_838.png
-11736	Spell: Scale of Wolf	Item_524.png
-11739	Spell: Scent of Darkness	Item_887.png
-11744	Spell: Scourge	Item_581.png
-11747	Spell: See Invisible	Item_1244.png
-11753	Spell: Selo`s Song of Travel	Item_624.png
-11757	Spell: Sentinel	Item_602.png
-11758	Spell: Serpent Sight	Item_1166.png
-11761	Spell: Shadow	Item_1179.png
-11763	Spell: Shadow Sight	Item_869.png
-11764	Spell: Shadow Step	Item_639.png
-11765	Spell: Shadow Vortex	Item_869.png
-11768	Spell: Shallow Breath	Item_811.png
-11769	Spell: Share Wolf Form	Item_516.png
-11773	Spell: Shield of Brambles	Item_575.png
-11775	Spell: Shield of Flame	Item_602.png
-11776	Spell: Shield of Lava	Item_810.png
-11780	Spell: Shield of Thistles	Item_519.png
-11781	Spell: Shield of Words	Item_811.png
-11783	Spell: Shieldskin	Item_560.png
-11786	Spell: Shiftless Deeds	Item_869.png
-11788	Spell: Shock of Fire	Item_811.png
-11789	Spell: Shock of Flame	Item_602.png
-11790	Spell: Shock of Frost	Item_1166.png
-11791	Spell: Shock of Ice	Item_575.png
-11794	Spell: Shock of Spikes	Item_575.png
-11796	Spell: Shock of Swords	Item_810.png
-11799	Spell: Shrink	Item_516.png
-11804	Spell: Sicken	Item_811.png
-11807	Spell: Siphon Life	Item_1148.png
-11808	Spell: Siphon Strength	Item_1049.png
-11811	Spell: Skin Like Diamond	Item_540.png
-11812	Spell: Skin Like Nature	Item_838.png
-11813	Spell: Skin Like Rock	Item_695.png
-11817	Spell: Smite	Item_601.png
-11818	Spell: Snare	Item_531.png
-11826	Spell: Soothe	Item_850.png
-11828	Spell: Spear of Warding	Item_776.png
-11830	Spell: Spikecoat	Item_560.png
-11831	Spell: Spirit Armor	Item_1176.png
-11833	Spell: Spirit of Cat	Item_894.png
-11834	Spell: Spirit of Cheetah	Item_798.png
-11837	Spell: Spirit of Ox	Item_635.png
-11840	Spell: Spirit of Wolf	Item_524.png
-11844	Spell: Spirit Strength	Item_540.png
-11845	Spell: Spirit Strike	Item_890.png
-11846	Spell: Spirit Tap	Item_1168.png
-11848	Spell: Spook the Dead	Item_566.png
-11849	Spell: Staff of Runes	Item_601.png
-11850	Spell: Staff of Symbols	Item_601.png
-11851	Spell: Staff of Tracing	Item_601.png
-11852	Spell: Staff of Warding	Item_601.png
-11853	Spell: Summon Waterstone	Item_946.png
-11854	Spell: Summon Wisp	Item_962.png
-11855	Spell: Summoning: Air	Item_972.png
-11856	Spell: Summoning: Earth	Item_518.png
-11857	Spell: Summoning: Fire	Item_952.png
-11858	Spell: Summoning: Water	Item_972.png
-11859	Spell: Sunbeam	Item_621.png
-11862	Spell: Superior Camouflage	Item_661.png
-11863	Spell: Superior Healing	Item_805.png
-11864	Spell: Supernova	Item_967.png
-11865	Spell: Surge of Enfeeblement	Item_869.png
-11866	Spell: Swift Like The Wind	Item_810.png
-11867	Spell: Sword of Runes	Item_636.png
-11869	Spell: Symbol of Naltron	Item_540.png
-11870	Spell: Symbol of Pinzarn	Item_624.png
-11874	Spell: Tagar`s Insects	Item_1176.png
-11875	Spell: Tainted Breath	Item_596.png
-11887	Spell: Tashan	Item_975.png
-11888	Spell: Tashani	Item_602.png
-11889	Spell: Tashania	Item_973.png
-11893	Spell: Tepid Deeds	Item_869.png
-11900	Spell: Thunder Strike	Item_574.png
-11904	Spell: Tishan`s Clash	Item_577.png
-11906	Spell: Togor`s Insects	Item_686.png
-11930	Spell: Treeform	Item_677.png
-11931	Spell: Tremor	Item_524.png
-11938	Spell: Turtle Skin	Item_779.png
-11942	Spell: Ultravision	Item_516.png
-11949	Spell: Valor	Item_622.png
-11950	Spell: Vampiric Curse	Item_869.png
-11951	Spell: Vampiric Embrace	Item_622.png
-11964	Spell: Voice Graft	Item_869.png
-11971	Spell: Walking Sleep	Item_575.png
-11974	Spell: Ward Undead	Item_602.png
-11978	Spell: Weaken	Item_592.png
-11991	Spell: Winter`s Roar	Item_516.png
-11995	Spell: Word of Healing	Item_854.png
-11996	Spell: Word of Health	Item_1037.png
-11997	Spell: Word of Pain	Item_1165.png
-12000	Spell: Word of Shadow	Item_869.png
-12001	Spell: Word of Souls	Item_869.png
-12004	Spell: Wrath	Item_581.png
-12005	Spell: Wrath of Al`Kabor	Item_967.png
-12007	Spell: Yaulp	Item_567.png
-12008	Spell: Yaulp II	Item_740.png
-12009	Spell: Yaulp III	Item_567.png
-12010	Spell: Yaulp IV	Item_975.png
+11586	Spell: Mind Wipe	Item_504.png
+11587	Spell: Minor Conjuration: Air	Item_504.png
+11589	Spell: Minor Conjuration: Fire	Item_504.png
+11591	Spell: Minor Healing	Item_504.png
+11594	Spell: Minor Summoning: Air	Item_504.png
+11595	Spell: Minor Summoning: Earth	Item_504.png
+11596	Spell: Minor Summoning: Fire	Item_504.png
+11597	Spell: Minor Summoning: Water	Item_504.png
+11600	Spell: Modulating Rod	Item_504.png
+11611	Spell: Nek Portal	Item_504.png
+11613	Spell: Nimble	Item_504.png
+11615	Spell: Niv`s Melody of Preservation	Item_504.png
+11618	Spell: Nullify Magic	Item_504.png
+11622	Spell: O`Keils Radiation	Item_504.png
+11626	Spell: Pacify	Item_504.png
+11630	Spell: Pact of Shadow	Item_504.png
+11631	Spell: Panic Animal	Item_504.png
+11633	Spell: Paralyzing Earth	Item_504.png
+11638	Spell: Phantom Plate	Item_504.png
+11639	Spell: Pillage Enchantment	Item_504.png
+11640	Spell: Pillar of Fire	Item_504.png
+11647	Spell: Poison Bolt	Item_504.png
+11650	Spell: Pouch of Quellious	Item_504.png
+11653	Spell: Project Lightning	Item_504.png
+11665	Spell: Quiver of Marr	Item_504.png
+11667	Spell: Radiant Visage	Item_504.png
+11672	Spell: Rain of Fire	Item_504.png
+11675	Spell: Rain of Swords	Item_504.png
+11676	Spell: Rampage	Item_504.png
+11679	Spell: Reckless Strength	Item_504.png
+11681	Spell: Regeneration	Item_504.png
+11683	Spell: Regrowth of the Grove	Item_504.png
+11685	Spell: Rend	Item_504.png
+11686	Spell: Renew Bones	Item_504.png
+11689	Spell: Reoccurring Amnesia	Item_504.png
+11691	Spell: Resist Cold	Item_504.png
+11694	Spell: Resist Magic	Item_504.png
+11699	Spell: Restless Bones	Item_504.png
+11700	Spell: Resurrection	Item_504.png
+11701	Spell: Resuscitate	Item_504.png
+11705	Spell: Reviviscence	Item_504.png
+11708	Spell: Ring of Commons	Item_504.png
+11714	Spell: Ring of Misty	Item_504.png
+11721	Spell: Riotous Health	Item_504.png
+11726	Spell: Root	Item_504.png
+11727	Spell: Rune I	Item_504.png
+11728	Spell: Rune II	Item_504.png
+11729	Spell: Rune III	Item_504.png
+11730	Spell: Rune IV	Item_504.png
+11736	Spell: Scale of Wolf	Item_504.png
+11739	Spell: Scent of Darkness	Item_504.png
+11744	Spell: Scourge	Item_504.png
+11747	Spell: See Invisible	Item_504.png
+11753	Spell: Selo`s Song of Travel	Item_504.png
+11757	Spell: Sentinel	Item_504.png
+11758	Spell: Serpent Sight	Item_504.png
+11761	Spell: Shadow	Item_504.png
+11763	Spell: Shadow Sight	Item_504.png
+11764	Spell: Shadow Step	Item_504.png
+11765	Spell: Shadow Vortex	Item_504.png
+11768	Spell: Shallow Breath	Item_504.png
+11769	Spell: Share Wolf Form	Item_504.png
+11773	Spell: Shield of Brambles	Item_504.png
+11775	Spell: Shield of Flame	Item_504.png
+11776	Spell: Shield of Lava	Item_504.png
+11780	Spell: Shield of Thistles	Item_504.png
+11781	Spell: Shield of Words	Item_504.png
+11783	Spell: Shieldskin	Item_504.png
+11786	Spell: Shiftless Deeds	Item_504.png
+11788	Spell: Shock of Fire	Item_504.png
+11789	Spell: Shock of Flame	Item_504.png
+11790	Spell: Shock of Frost	Item_504.png
+11791	Spell: Shock of Ice	Item_504.png
+11794	Spell: Shock of Spikes	Item_504.png
+11796	Spell: Shock of Swords	Item_504.png
+11799	Spell: Shrink	Item_504.png
+11804	Spell: Sicken	Item_504.png
+11807	Spell: Siphon Life	Item_504.png
+11808	Spell: Siphon Strength	Item_504.png
+11811	Spell: Skin Like Diamond	Item_504.png
+11812	Spell: Skin Like Nature	Item_504.png
+11813	Spell: Skin Like Rock	Item_504.png
+11817	Spell: Smite	Item_504.png
+11818	Spell: Snare	Item_504.png
+11826	Spell: Soothe	Item_504.png
+11828	Spell: Spear of Warding	Item_504.png
+11830	Spell: Spikecoat	Item_504.png
+11831	Spell: Spirit Armor	Item_504.png
+11833	Spell: Spirit of Cat	Item_504.png
+11834	Spell: Spirit of Cheetah	Item_504.png
+11837	Spell: Spirit of Ox	Item_504.png
+11840	Spell: Spirit of Wolf	Item_504.png
+11844	Spell: Spirit Strength	Item_504.png
+11845	Spell: Spirit Strike	Item_504.png
+11846	Spell: Spirit Tap	Item_504.png
+11848	Spell: Spook the Dead	Item_504.png
+11849	Spell: Staff of Runes	Item_504.png
+11850	Spell: Staff of Symbols	Item_504.png
+11851	Spell: Staff of Tracing	Item_504.png
+11852	Spell: Staff of Warding	Item_504.png
+11853	Spell: Summon Waterstone	Item_504.png
+11854	Spell: Summon Wisp	Item_504.png
+11855	Spell: Summoning: Air	Item_504.png
+11856	Spell: Summoning: Earth	Item_504.png
+11857	Spell: Summoning: Fire	Item_504.png
+11858	Spell: Summoning: Water	Item_504.png
+11859	Spell: Sunbeam	Item_504.png
+11862	Spell: Superior Camouflage	Item_504.png
+11863	Spell: Superior Healing	Item_504.png
+11864	Spell: Supernova	Item_504.png
+11865	Spell: Surge of Enfeeblement	Item_504.png
+11866	Spell: Swift Like The Wind	Item_504.png
+11867	Spell: Sword of Runes	Item_504.png
+11869	Spell: Symbol of Naltron	Item_504.png
+11870	Spell: Symbol of Pinzarn	Item_504.png
+11874	Spell: Tagar`s Insects	Item_504.png
+11875	Spell: Tainted Breath	Item_504.png
+11887	Spell: Tashan	Item_504.png
+11888	Spell: Tashani	Item_504.png
+11889	Spell: Tashania	Item_504.png
+11893	Spell: Tepid Deeds	Item_504.png
+11900	Spell: Thunder Strike	Item_504.png
+11904	Spell: Tishan`s Clash	Item_504.png
+11906	Spell: Togor`s Insects	Item_504.png
+11930	Spell: Treeform	Item_504.png
+11931	Spell: Tremor	Item_504.png
+11938	Spell: Turtle Skin	Item_504.png
+11942	Spell: Ultravision	Item_504.png
+11949	Spell: Valor	Item_504.png
+11950	Spell: Vampiric Curse	Item_504.png
+11951	Spell: Vampiric Embrace	Item_504.png
+11964	Spell: Voice Graft	Item_504.png
+11971	Spell: Walking Sleep	Item_504.png
+11974	Spell: Ward Undead	Item_504.png
+11978	Spell: Weaken	Item_504.png
+11991	Spell: Winter`s Roar	Item_504.png
+11995	Spell: Word of Healing	Item_504.png
+11996	Spell: Word of Health	Item_504.png
+11997	Spell: Word of Pain	Item_504.png
+12000	Spell: Word of Shadow	Item_504.png
+12001	Spell: Word of Souls	Item_504.png
+12004	Spell: Wrath	Item_504.png
+12005	Spell: Wrath of Al`Kabor	Item_504.png
+12007	Spell: Yaulp	Item_504.png
+12008	Spell: Yaulp II	Item_504.png
+12009	Spell: Yaulp III	Item_504.png
+12010	Spell: Yaulp IV	Item_504.png

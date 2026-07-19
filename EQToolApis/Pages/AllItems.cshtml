@@ -67,6 +67,7 @@
     .pg-table tr:last-child td { border-bottom: none; }
     .pg-table .num { text-align: right; }
     .pg-itemname { color: #ffffff; font-weight: bold; }
+    .pg-itemid { color: #8b93b8; font-variant-numeric: tabular-nums; }
     .pg-loc { color: #9aa3c0; }
     .pg-table .server-green { color: #4ade80; font-weight: bold; }
     .pg-table .server-blue { color: #60a5fa; font-weight: bold; }
@@ -88,7 +89,7 @@
             </div>
         }
         <h1 class="pg-title">All Items</h1>
-        <div class="pg-sub">Every item across all of your characters. Start typing to filter by item, character or location.</div>
+        <div class="pg-sub">Every item across all of your characters. Start typing to filter by item, item ID, character or location.</div>
     </div>
 
     @if (!Model.Items.Any())
@@ -100,7 +101,7 @@
     else
     {
         <div class="pg-searchbar">
-            <input type="text" id="item-search" class="pg-search" placeholder="Search items, characters or locations&hellip;" autocomplete="off" autofocus />
+            <input type="text" id="item-search" class="pg-search" placeholder="Search items, item IDs, characters or locations&hellip;" autocomplete="off" autofocus />
             <div class="pg-count"><span id="visible-count">@Model.Items.Count</span> of @Model.Items.Count items</div>
         </div>
 
@@ -109,6 +110,7 @@
                 <thead>
                     <tr>
                         <th>Item</th>
+                        <th>Item ID</th>
                         <th>Character</th>
                         <th>Server</th>
                         <th>Location</th>
@@ -120,6 +122,7 @@
                     {
                         <tr class="item-row" data-search="@item.Search">
                             <td><span class="pg-itemname">@item.Name</span></td>
+                            <td class="pg-itemid">@(item.ItemId > 0 ? item.ItemId.ToString() : "")</td>
                             <td>@item.Character</td>
                             <td class="server-@item.Server.ToString().ToLower()">@item.Server</td>
                             <td class="pg-loc">@item.Location</td>
@@ -127,7 +130,7 @@
                         </tr>
                     }
                     <tr id="no-match">
-                        <td colspan="5" class="pg-empty">No items match your search.</td>
+                        <td colspan="6" class="pg-empty">No items match your search.</td>
                     </tr>
                 </tbody>
             </table>

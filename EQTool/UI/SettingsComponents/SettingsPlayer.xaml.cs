@@ -24,6 +24,7 @@ namespace EQTool.UI.SettingsComponents
         public string Tooltip { get; set; }
         public int Count { get; set; }
         public int Capacity { get; set; }
+        public int ItemId { get; set; }
     }
 
     public class ProfileBagDto
@@ -542,6 +543,12 @@ namespace EQTool.UI.SettingsComponents
             border.Child = grid;
 
             var tooltipText = string.IsNullOrEmpty(item.Tooltip) ? item.Name : item.Tooltip;
+            if (item.ItemId > 0)
+            {
+                tooltipText = string.IsNullOrEmpty(tooltipText)
+                    ? "Item ID: " + item.ItemId
+                    : tooltipText + "\nItem ID: " + item.ItemId;
+            }
             if (!string.IsNullOrEmpty(tooltipText))
             {
                 border.ToolTip = new ToolTip

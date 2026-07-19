@@ -140,6 +140,10 @@ function ppShowTab(name) {
             }
 
             var tooltip = string.IsNullOrEmpty(item.Tooltip) ? item.Name : item.Tooltip;
+            if (item.ItemId > 0)
+            {
+                tooltip += "\nItem ID: " + item.ItemId;
+            }
             var tt = Enc(tooltip).Replace("\r", string.Empty).Replace("\n", "&#10;");
             var count = item.Count > 1 ? $"<span class=\"pp-count\">{item.Count}</span>" : string.Empty;
             return $"<span class=\"pp-slot pp-slot-item\" data-tt=\"{tt}\"><img src=\"{Enc(assetBase + item.Image)}\" alt=\"\"/>{count}</span>";

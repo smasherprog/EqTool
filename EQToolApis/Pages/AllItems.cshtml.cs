@@ -12,11 +12,12 @@ namespace EQToolApis.Pages
     public class AllItemRow
     {
         public string Name { get; set; } = string.Empty;
+        public int ItemId { get; set; }
         public string Character { get; set; } = string.Empty;
         public Servers Server { get; set; }
         public string Location { get; set; } = string.Empty;
         public int Count { get; set; }
-        // Pre-lowered "name character server location" blob the client filters against.
+        // Pre-lowered "name id character server location" blob the client filters against.
         public string Search { get; set; } = string.Empty;
     }
 
@@ -59,6 +60,7 @@ namespace EQToolApis.Pages
                 .Select(i => new
                 {
                     i.Name,
+                    i.ItemId,
                     Character = i.Inventory.CharacterName,
                     i.Inventory.Server,
                     i.Location,
@@ -73,11 +75,12 @@ namespace EQToolApis.Pages
                     return new AllItemRow
                     {
                         Name = r.Name,
+                        ItemId = r.ItemId,
                         Character = r.Character,
                         Server = r.Server,
                         Location = location,
                         Count = r.Count,
-                        Search = $"{r.Name} {r.Character} {r.Server} {location}".ToLowerInvariant(),
+                        Search = $"{r.Name} {(r.ItemId > 0 ? r.ItemId.ToString() : string.Empty)} {r.Character} {r.Server} {location}".ToLowerInvariant(),
                     };
                 })
                 .OrderBy(r => r.Name, StringComparer.OrdinalIgnoreCase)

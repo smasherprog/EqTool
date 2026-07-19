@@ -12,6 +12,7 @@ namespace EQToolApis.Services
         public string Tooltip { get; set; } = string.Empty;
         public int Count { get; set; }
         public int Capacity { get; set; }
+        public int ItemId { get; set; }
     }
 
     // One general/bank slot: the item sitting in the slot (possibly a container)
@@ -107,6 +108,7 @@ namespace EQToolApis.Services
                     Tooltip = _itemData.GetTooltip(item.Name),
                     Count = item.Count,
                     Capacity = item.Slots,
+                    ItemId = item.ItemId,
                 };
             }
 
