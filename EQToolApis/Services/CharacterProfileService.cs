@@ -92,6 +92,14 @@ namespace EQToolApis.Services
                 }
 
                 var item = items[idx];
+                // EQ's /outputfile inventory lists unused slots with the literal
+                // name "Empty"; treat those as unoccupied so they render as blank
+                // slots instead of a broken-icon placeholder.
+                if (string.Equals(item.Name, "Empty", StringComparison.OrdinalIgnoreCase))
+                {
+                    return null;
+                }
+
                 return new ProfileItem
                 {
                     Name = item.Name,

@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Hosting;
+using System.Text;
 
 namespace EQToolApis.Services
 {
@@ -7,6 +8,11 @@ namespace EQToolApis.Services
         private readonly Dictionary<int, string> _imageById = new();
         private readonly Dictionary<string, string> _imageByName = new(StringComparer.OrdinalIgnoreCase);
         private readonly Dictionary<string, string> _tooltipByName = new(StringComparer.OrdinalIgnoreCase);
+        // Normalized fallbacks: same values keyed by NormalizeName() so a lookup
+        // still hits when the inventory dump and the data files disagree on
+        // apostrophe style (' vs `) or on whitespace.
+        private readonly Dictionary<string, string> _imageByNorm = new(StringComparer.OrdinalIgnoreCase);
+        private readonly Dictionary<string, string> _tooltipByNorm = new(StringComparer.OrdinalIgnoreCase);
 
         public ItemDataService(IWebHostEnvironment env)
         {
@@ -26,6 +32,7 @@ namespace EQToolApis.Services
                 var img = parts[2].Trim();
                 _imageById[id] = img;
                 _imageByName.TryAdd(name, img);
+                _imageByNorm.TryAdd(NormalizeName(name), img);
             }
         }
 
@@ -48,7 +55,10 @@ namespace EQToolApis.Services
                     var name = chunk[..startIdx].Trim('\r', '\n', '\t', ' ');
                     var text = chunk[(startIdx + startMarker.Length)..].TrimEnd('"', '\r', '\n');
                     if (!string.IsNullOrEmpty(name))
+                    {
                         _tooltipByName.TryAdd(name, text.Trim());
+                        _tooltipByNorm.TryAdd(NormalizeName(name), text.Trim());
+                    }
                 }
                 pos = endIdx + endMarker.Length;
             }
@@ -60,12 +70,54 @@ namespace EQToolApis.Services
         // item name is the reliable key.
         public string GetImageUrl(int itemId, string itemName)
         {
-            if (!string.IsNullOrEmpty(itemName) && _imageByName.TryGetValue(itemName.Trim(), out var img))
-                return $"/Content/Images/{img}";
+            if (!string.IsNullOrEmpty(itemName))
+            {
+                if (_imageByName.TryGetValue(itemName.Trim(), out var img))
+                    return $"/Content/Images/{img}";
+                if (_imageByNorm.TryGetValue(NormalizeName(itemName), out img))
+                    return $"/Content/Images/{img}";
+            }
             return "/Content/Images/Item_.png";
         }
 
-        public string GetTooltip(string itemName) =>
-            _tooltipByName.TryGetValue(itemName, out var tt) ? tt : string.Empty;
+        public string GetTooltip(string itemName)
+        {
+            if (string.IsNullOrEmpty(itemName))
+                return string.Empty;
+            if (_tooltipByName.TryGetValue(itemName.Trim(), out var tt))
+                return tt;
+            return _tooltipByNorm.TryGetValue(NormalizeName(itemName), out tt) ? tt : string.Empty;
+        }
+
+        // Unifies apostrophe variants to a backtick (EQ's convention) and collapses
+        // internal whitespace so names match despite cosmetic differences between an
+        // inventory dump and the bundled data files.
+        private static string NormalizeName(string name)
+        {
+            if (string.IsNullOrEmpty(name))
+                return string.Empty;
+            var sb = new StringBuilder(name.Length);
+            var lastWasSpace = false;
+            foreach (var ch in name)
+            {
+                if (ch is '\'' or '`' or '‘' or '’' or '´')
+                {
+                    sb.Append('`');
+                    lastWasSpace = false;
+                }
+                else if (char.IsWhiteSpace(ch))
+                {
+                    if (!lastWasSpace && sb.Length > 0)
+                        sb.Append(' ');
+                    lastWasSpace = true;
+                }
+                else
+                {
+                    sb.Append(ch);
+                    lastWasSpace = false;
+                }
+            }
+            return sb.ToString().TrimEnd();
+        }
     }
 }

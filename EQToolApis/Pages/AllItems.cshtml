@@ -1,0 +1,181 @@
+@page
+@model EQToolApis.Pages.AllItemsModel
+
+<style>
+    html, body { background: #0b0e1a; margin: 0; padding: 0; }
+
+    .pg-wrap {
+        max-width: 1100px;
+        margin: 0 auto;
+        padding: 28px 18px 40px 18px;
+        font-family: 'Segoe UI', Arial, sans-serif;
+        color: #cdd3e6;
+        font-size: 14px;
+    }
+
+    .pg-topbar { margin-bottom: 22px; }
+    .pg-topbar:after { content: ""; display: block; clear: both; }
+    .pg-title { float: left; font-size: 26px; font-weight: bold; color: #ffffff; margin: 0; }
+    .pg-sub { clear: left; color: #6b7390; font-size: 13px; margin-top: 4px; }
+    .pg-user { float: right; text-align: right; color: #6b7390; font-size: 13px; }
+    .pg-user a {
+        display: inline-block;
+        color: #9aa3c0;
+        text-decoration: none;
+        border: 1px solid #242c49;
+        border-radius: 6px;
+        padding: 4px 12px;
+        margin-left: 10px;
+        background: #131829;
+    }
+    .pg-user a:hover { color: #ffffff; border-color: #3c4670; }
+
+    .pg-searchbar {
+        position: sticky;
+        top: 0;
+        z-index: 5;
+        background: #0b0e1a;
+        padding: 10px 0 14px 0;
+    }
+    .pg-search {
+        width: 100%;
+        box-sizing: border-box;
+        background: #131829;
+        border: 1px solid #242c49;
+        border-radius: 8px;
+        color: #ffffff;
+        font-size: 15px;
+        padding: 12px 16px;
+        outline: none;
+    }
+    .pg-search:focus { border-color: #3c4670; }
+    .pg-search::placeholder { color: #6b7390; }
+    .pg-count { color: #6b7390; font-size: 12px; margin-top: 6px; }
+
+    .pg-panel { background: #131829; border: 1px solid #242c49; border-radius: 10px; overflow: hidden; }
+    .pg-table { width: 100%; border-collapse: collapse; }
+    .pg-table th {
+        text-align: left;
+        color: #8b93b8;
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        padding: 12px 16px;
+        border-bottom: 1px solid #242c49;
+    }
+    .pg-table td { padding: 10px 16px; border-bottom: 1px solid #1b2138; color: #dfe4f5; vertical-align: middle; }
+    .pg-table tr:last-child td { border-bottom: none; }
+    .pg-table .num { text-align: right; }
+    .pg-item { white-space: nowrap; }
+    .pg-item img {
+        width: 24px;
+        height: 24px;
+        vertical-align: middle;
+        margin-right: 10px;
+        image-rendering: pixelated;
+    }
+    .pg-itemname { color: #ffffff; font-weight: bold; }
+    .pg-loc { color: #9aa3c0; }
+    .pg-table .server-green { color: #4ade80; font-weight: bold; }
+    .pg-table .server-blue { color: #60a5fa; font-weight: bold; }
+    .pg-table .server-red { color: #f87171; font-weight: bold; }
+    .pg-table .server-quarm { color: #c084fc; font-weight: bold; }
+
+    .pg-empty { padding: 40px 20px; text-align: center; color: #9aa3c0; }
+    #no-match { display: none; }
+</style>
+
+<div class="pg-wrap">
+    <div class="pg-topbar">
+        @if (Model.DiscordUsername != null)
+        {
+            <div class="pg-user">
+                <span>@Model.DiscordUsername</span>
+                <a href="/Characters">My Characters</a>
+                <a href="/Account/Logout">Logout</a>
+            </div>
+        }
+        <h1 class="pg-title">All Items</h1>
+        <div class="pg-sub">Every item across all of your characters. Start typing to filter by item, character or location.</div>
+    </div>
+
+    @if (!Model.Items.Any())
+    {
+        <div class="pg-panel">
+            <div class="pg-empty">No items found. Upload your inventory from the Pigparse desktop app to see your items here.</div>
+        </div>
+    }
+    else
+    {
+        <div class="pg-searchbar">
+            <input type="text" id="item-search" class="pg-search" placeholder="Search items, characters or locations&hellip;" autocomplete="off" autofocus />
+            <div class="pg-count"><span id="visible-count">@Model.Items.Count</span> of @Model.Items.Count items</div>
+        </div>
+
+        <div class="pg-panel">
+            <table class="pg-table">
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th>Character</th>
+                        <th>Server</th>
+                        <th>Location</th>
+                        <th class="num">Qty</th>
+                    </tr>
+                </thead>
+                <tbody id="item-rows">
+                    @foreach (var item in Model.Items)
+                    {
+                        <tr class="item-row" data-search="@item.Search">
+                            <td class="pg-item">
+                                <img src="@item.Image" loading="lazy" alt="" onerror="this.style.visibility='hidden'" />
+                                <span class="pg-itemname">@item.Name</span>
+                            </td>
+                            <td>@item.Character</td>
+                            <td class="server-@item.Server.ToString().ToLower()">@item.Server</td>
+                            <td class="pg-loc">@item.Location</td>
+                            <td class="num">@item.Count</td>
+                        </tr>
+                    }
+                    <tr id="no-match">
+                        <td colspan="5" class="pg-empty">No items match your search.</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    }
+</div>
+
+<script>
+    (function () {
+        var search = document.getElementById('item-search');
+        if (!search) { return; }
+
+        var rows = Array.prototype.slice.call(document.querySelectorAll('.item-row'));
+        var countEl = document.getElementById('visible-count');
+        var noMatch = document.getElementById('no-match');
+        var total = rows.length;
+
+        function applyFilter() {
+            var q = search.value.trim().toLowerCase();
+            var terms = q.split(/\s+/).filter(Boolean);
+            var visible = 0;
+
+            for (var i = 0; i < rows.length; i++) {
+                var hay = rows[i].getAttribute('data-search');
+                var show = true;
+                // Every term must match somewhere, so "sword bob" narrows to Bob's swords.
+                for (var t = 0; t < terms.length; t++) {
+                    if (hay.indexOf(terms[t]) === -1) { show = false; break; }
+                }
+                rows[i].style.display = show ? '' : 'none';
+                if (show) { visible++; }
+            }
+
+            countEl.textContent = visible;
+            noMatch.style.display = visible === 0 ? '' : 'none';
+        }
+
+        search.addEventListener('input', applyFilter);
+    })();
+</script>

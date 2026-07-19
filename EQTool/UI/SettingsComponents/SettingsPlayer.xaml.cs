@@ -94,13 +94,18 @@ namespace EQTool.UI.SettingsComponents
         private static readonly Brush TooltipBorder = MakeBrush("#FF3C4670");
         private static readonly Brush TooltipText = MakeBrush("#FFDFE4F5");
 
-        // PULSE-style paperdoll: rings bookend row 2, weapons row centered at the
-        // bottom. Held (cursor) is intentionally not displayed.
+        // In-game inventory grid: a uniform 5-column layout mirroring the EQ
+        // inventory window - ears/neck/head/face across the top, rings bookending
+        // row 2, wrists bookending row 3, and the weapon row centered at the
+        // bottom. Empty strings are spacer cells that render as blank slots so the
+        // columns stay aligned. Held (cursor) is intentionally not displayed.
+        // Keep this in sync with CharacterProfileHtml.EquipRows (the website copy).
         private static readonly string[][] EquipRows = new string[][]
         {
-            new[] { "Charm", "Ear1", "Head", "Face", "Ear2" },
-            new[] { "Finger1", "Neck", "Shoulders", "Back", "Hands", "Finger2" },
-            new[] { "Wrist1", "Arms", "Chest", "Waist", "Legs", "Feet", "Wrist2" },
+            new[] { "Ear1", "Neck", "Head", "Face", "Ear2" },
+            new[] { "Finger1", "Shoulders", "Arms", "Back", "Finger2" },
+            new[] { "Wrist1", "Chest", "Waist", "Legs", "Wrist2" },
+            new[] { "Charm", "Hands", "Feet", "", "" },
             new[] { "Primary", "Secondary", "Range", "Ammo" },
         };
 

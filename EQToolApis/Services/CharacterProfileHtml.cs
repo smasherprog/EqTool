@@ -115,13 +115,17 @@ function ppShowTab(name) {
 }
 ";
 
-        // PULSE-style paperdoll: rings bookend row 2, weapons row centered at the
-        // bottom. Held (cursor) is intentionally not displayed.
+        // In-game inventory grid: a uniform 5-column layout mirroring the EQ
+        // inventory window - ears/neck/head/face across the top, rings bookending
+        // row 2, wrists bookending row 3, and the weapon row centered at the
+        // bottom. Empty strings are spacer cells that render as blank slots so the
+        // columns stay aligned. Held (cursor) is intentionally not displayed.
         private static readonly string[][] EquipRows =
         [
-            ["Charm", "Ear1", "Head", "Face", "Ear2"],
-            ["Finger1", "Neck", "Shoulders", "Back", "Hands", "Finger2"],
-            ["Wrist1", "Arms", "Chest", "Waist", "Legs", "Feet", "Wrist2"],
+            ["Ear1", "Neck", "Head", "Face", "Ear2"],
+            ["Finger1", "Shoulders", "Arms", "Back", "Finger2"],
+            ["Wrist1", "Chest", "Waist", "Legs", "Wrist2"],
+            ["Charm", "Hands", "Feet", "", ""],
             ["Primary", "Secondary", "Range", "Ammo"],
         ];
 
