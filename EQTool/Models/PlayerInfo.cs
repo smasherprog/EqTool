@@ -473,6 +473,28 @@ namespace EQTool.Models
             }
         }
 
+        private bool _AfkAttackedOverlay;
+        public bool AfkAttackedOverlay
+        {
+            get => _AfkAttackedOverlay;
+            set
+            {
+                _AfkAttackedOverlay = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private bool _AfkAttackedAudio;
+        public bool AfkAttackedAudio
+        {
+            get => _AfkAttackedAudio;
+            set
+            {
+                _AfkAttackedAudio = value;
+                OnPropertyChanged();
+            }
+        }
+
         private bool _FTETimerAudio;
         public bool FTETimerAudio
         {

@@ -7,6 +7,7 @@
         RootBreakEvent,
         RandomRollEvent,
         DeathLoopEvent,
+        AfkAttackedEvent,
         MaxTypes
     }
 }

@@ -389,6 +389,7 @@
     <Compile Include="Services\UserDefinedTrigger.cs" />
     <Compile Include="Services\UserComponentSettingsManagementFactory.cs" />
     <Compile Include="Services\WindowExtensions.cs" />
+    <Compile Include="Services\ForegroundWindowHelper.cs" />
     <Compile Include="Services\WindowFactory.cs" />
     <Compile Include="Services\Handlers\YouZonedHandler.cs" />
     <Compile Include="Services\Handlers\PlayerLevelDetectionHandler.cs" />
@@ -396,6 +397,7 @@
     <Compile Include="Services\Handlers\RootHasWornOffHandler.cs" />
     <Compile Include="Services\Handlers\CompleteHealHandler.cs" />
     <Compile Include="Services\Handlers\FTEHandler.cs" />
+    <Compile Include="Services\Handlers\AfkAttackedHandler.cs" />
     <Compile Include="Services\Handlers\BaseHandler.cs" />
     <Compile Include="Services\Handlers\DeathLoopHandler.cs" />
     <Compile Include="Services\TextToSpeach.cs" />

@@ -291,6 +291,12 @@
                     <CheckBox IsChecked="{Binding ActivePlayer.Player.BardCountAudio}" Click="Savesettings" MinWidth="30"></CheckBox>
                     <Button Content="▶" Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="testBardCounts" ToolTip="Test Bard Hit Counts" />
                 </StackPanel>
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="AFK Attacked" ToolTip="Alerts you when you are being attacked while eqgame is not the focused window" VerticalAlignment="Center" FontWeight="Bold" MinWidth="100"/>
+                    <CheckBox IsChecked="{Binding ActivePlayer.Player.AfkAttackedOverlay}" Click="Savesettings" MinWidth="75"></CheckBox>
+                    <CheckBox IsChecked="{Binding ActivePlayer.Player.AfkAttackedAudio}" Click="Savesettings" MinWidth="30"></CheckBox>
+                    <Button Content="▶" Margin="1" FontSize="7" Width="14" Height="14" Padding="0" Click="testAfkAttacked" ToolTip="Test AFK Attacked" />
+                </StackPanel>
                 <Separator/>
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Chain Formats" VerticalAlignment="Center" FontWeight="Bold" MinWidth="100"/>

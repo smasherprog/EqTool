@@ -806,6 +806,11 @@ namespace EQTool.UI.SettingsComponents
             settingsTestRunOverlay.RunTest(OverlayTypes.FTEEvent);
         }
 
+        private void testAfkAttacked(object sender, RoutedEventArgs e)
+        {
+            settingsTestRunOverlay.RunTest(OverlayTypes.AfkAttackedEvent);
+        }
+
         private void textvoice(object sender, RoutedEventArgs e)
         {
             if (string.IsNullOrWhiteSpace(SettingsWindowData.SelectedVoice))

@@ -19,6 +19,7 @@ namespace EQTool.Services
             actions[(int)OverlayTypes.RootBreakEvent] = RootBreakEvent;
             actions[(int)OverlayTypes.RandomRollEvent] = RandomRollEvent;
             actions[(int)OverlayTypes.DeathLoopEvent] = DeathLoopEvent;
+            actions[(int)OverlayTypes.AfkAttackedEvent] = AfkAttackedEvent;
         }
 
         public void RunTest(OverlayTypes overlayType)
@@ -77,6 +78,14 @@ namespace EQTool.Services
             activePlayer.Player.FTEAudio = true;
             activePlayer.Player.FTEOverlay = true;
             logParser.Push("Dagarn the Destroyer engages Tzvia!", DateTime.Now);
+        }
+        private void AfkAttackedEvent()
+        {
+            activePlayer.Player.AfkAttackedAudio = true;
+            activePlayer.Player.AfkAttackedOverlay = true;
+            // The alert only fires while eqgame is not focused, which is the case when
+            // testing from the settings window.
+            logParser.Push("a giant rat hits YOU for 15 points of damage.", DateTime.Now);
         }
         private void FTETimerEvent()
         {
