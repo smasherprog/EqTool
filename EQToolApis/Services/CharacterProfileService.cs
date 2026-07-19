@@ -53,7 +53,6 @@ namespace EQToolApis.Services
         public Dictionary<string, ProfileItem?> Equipped { get; set; } = [];
         public List<ProfileBag> General { get; set; } = [];
         public List<ProfileBag> Bank { get; set; } = [];
-        public List<ProfileItem?> SharedBank { get; set; } = [];
         public ProfileStats Stats { get; set; } = new();
     }
 
@@ -155,13 +154,13 @@ namespace EQToolApis.Services
                 profile.General.Add(Bag($"General{i}", Enum.Parse<InventoryLocation>($"General{i}")));
             }
 
-            for (var i = 1; i <= 16; i++)
+            // Classic-era servers (P99 through Velious, Quarm through PoP) only
+            // expose 8 bank bag slots; higher slots never exist in-game, so they
+            // would only render as permanently empty cells.
+            for (var i = 1; i <= 8; i++)
             {
                 profile.Bank.Add(Bag($"Bank{i}", Enum.Parse<InventoryLocation>($"Bank{i}")));
             }
-
-            profile.SharedBank.Add(Slot(InventoryLocation.SharedBank1));
-            profile.SharedBank.Add(Slot(InventoryLocation.SharedBank2));
 
             profile.Stats = BuildStats(profile);
             return profile;

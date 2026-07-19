@@ -50,8 +50,6 @@ namespace EQToolApis.Services
 .pp-bag { display: inline-block; vertical-align: top; margin: 6px 24px 12px 0; font-size: 11px; }
 .pp-bag-grid { width: 100px; font-size: 0; }
 .pp-bag-name { width: 100px; color: #9aa3c0; font-size: 11px; margin: 1px 0 3px 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.pp-shared { border-top: 1px solid #242c49; margin-top: 10px; padding-top: 8px; }
-.pp-shared-h { color: #6b7390; font-size: 11px; font-weight: bold; margin-bottom: 2px; }
 #pp-tooltip { position: fixed; display: none; z-index: 99999; background: #0c101f; border: 1px solid #3c4670; border-radius: 8px; padding: 10px 12px; color: #dfe4f5; font-family: Consolas, 'Courier New', monospace; font-size: 12px; white-space: pre-wrap; max-width: 340px; line-height: 1.45; box-shadow: 0 6px 24px rgba(0,0,0,0.6); }
 .pp-message { color: #9aa3c0; text-align: center; padding: 60px 20px; font-size: 14px; }
 ";
@@ -242,7 +240,7 @@ function ppShowTab(name) {
             _ = sb.Append("<a id=\"pp-btn-bank\" class=\"pp-tab\" onclick=\"ppShowTab('bank')\">Bank</a>");
             _ = sb.Append("</div>");
 
-            // Bags render 4 across per row (inventory: 2 rows, bank: 4 rows).
+            // Bags render 4 across per row (inventory and bank each fill 2 rows).
             void BagRows(List<ProfileBag> bags, int perRow)
             {
                 for (var start = 0; start < bags.Count; start += perRow)
@@ -262,12 +260,7 @@ function ppShowTab(name) {
 
             _ = sb.Append("<div id=\"pp-pane-bank\" class=\"pp-pane\" style=\"display:none\">");
             BagRows(p.Bank, 4);
-            _ = sb.Append("<div class=\"pp-shared\"><div class=\"pp-shared-h\">Shared Bank</div>");
-            foreach (var item in p.SharedBank)
-            {
-                _ = sb.Append(Slot(item, assetBase));
-            }
-            _ = sb.Append("</div></div>");
+            _ = sb.Append("</div>");
 
             _ = sb.Append("</div>"); // pp-panel (tabs)
             _ = sb.Append("</div>"); // pp-main

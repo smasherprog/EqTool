@@ -536,8 +536,8 @@
 773	Black Sky Diamond	Item_965.png
 774	Black Steel Wrap	Item_719.png
 775	Black Stone Candlestick	Item_1128.png
-776	Black Symbol	Item_619.png
-777	Black Tear	Item_619.png
+776	Black Symbol	Item_967.png
+777	Black Tear	Item_734.png
 778	Black Tome with Silver Runes	Item_777.png
 779	Black Training Tunic*	Item_678.png
 780	Black Wolf Armplates	Item_543.png
@@ -2833,8 +2833,8 @@
 3081	Emerald Ring	Item_1041.png
 3082	Emerald Shard	Item_958.png
 3083	Emerald Spiroc Feather	Item_1146.png
-3084	Emerald Symbol	Item_542.png
-3085	Emerald Tear	Item_542.png
+3084	Emerald Symbol	Item_956.png
+3085	Emerald Tear	Item_734.png 
 3086	Emeraldberry Cyanide	Item_1074.png
 3087	Emissary Head	Item_986.png
 3088	Empty Bag	Item_690.png
@@ -3314,8 +3314,8 @@
 3565	Flake of Lodestone	Item_1032.png
 3566	Flame Agate	Item_955.png
 3567	Flame Etched Short Sword	Item_847.png
-3568	Flame Kissed Symbol	Item_542.png
-3569	Flame Kissed Tear	Item_764.png
+3568	Flame Kissed Symbol	Item_956.png
+3569	Flame Kissed Tear	Item_734.png 
 3570	Flame of Vox	Item_706.png
 3571	Flameless Lantern	Item_830.png
 3572	Flamesong	Item_890.png
@@ -5312,7 +5312,7 @@
 5564	Large Brick of High Quality Ore	Item_584.png
 5565	Large Brick of Medium Quality Ore	Item_1138.png
 5566	Large Brick of Mithril	Item_1138.png
-5567	Large Brick of Ore	Item_732.png
+5567	Large Brick of Ore	Item_1135.png
 5568	Large Brick of Skyiron	Item_1138.png
 5569	Large Brick of Velium	Item_1138.png
 5570	Large Bronze Boots	Item_524.png
@@ -6944,8 +6944,8 @@
 7257	Platinum Skull Ring	Item_1148.png
 7258	Platinum Speckled Powder	Item_739.png
 7259	Platinum Star Ruby Veil	Item_1062.png
-7260	Platinum Symbol	Item_769.png
-7261	Platinum Tear	Item_895.png
+7260	Platinum Symbol	Item_956.png
+7261	Platinum Tear	Item_734.png 
 7262	Platinum Thread	Item_853.png
 7263	Platinum Tiara	Item_523.png
 7264	Platinum Topaz Necklace	Item_1043.png
@@ -6956,8 +6956,8 @@
 7269	Pod of Water	Item_584.png
 7270	Poison Etched Wristband	Item_548.png
 7271	Poison Soaked Tunic	Item_632.png
-7272	Poison Symbol	Item_619.png
-7273	Poison Tear	Item_895.png
+7272	Poison Symbol	Item_956.png
+7273	Poison Tear	Item_734.png
 7274	Poison Vial	Item_861.png
 7275	Poison Washed Spaulders	Item_769.png
 7276	Poison Wind Censer	Item_578.png
@@ -7610,8 +7610,8 @@
 7927	Ruby Crown	Item_511.png
 7928	Ruby Electrum Ring	Item_1061.png
 7929	Ruby Pendant	Item_964.png
-7930	Ruby Symbol	Item_1056.png
-7931	Ruby Tear	Item_525.png
+7930	Ruby Symbol	Item_956.png
+7931	Ruby Tear	Item_734.png
 7932	Rugous Globe	Item_947.png
 7933	Ruined Backpack	Item_565.png
 7934	Ruined Battleworn Morning Star	Item_741.png
@@ -7781,8 +7781,8 @@
 8099	Runed Sea Shell (Cloud)	Item_998.png
 8100	Runed Sea Shell (Enduring Breath)	Item_998.png
 8101	Runed Shell Necklace	Item_998.png
-8102	Runed Symbol	Item_521.png
-8103	Runed Tear	Item_764.png
+8102	Runed Symbol	Item_956.png
+8103	Runed Tear	Item_734.png 
 8104	Runed Totem Staff	Item_602.png
 8105	Runed Velium Battlehammer	Item_567.png
 8106	Runed Velium Claidhmore	Item_1211.png
@@ -8116,9 +8116,9 @@
 8436	Serpentwood Staff	Item_602.png
 8437	Serrated Blade	Item_1168.png
 8438	Serrated Bone Dirk	Item_574.png
-8439	Serrated Dragon Tooth	Item_800.png
-8440	Serrated Symbol	Item_521.png
-8441	Serrated Tear	Item_658.png
+8439	Serrated Dragon Tooth	Item_800.png 
+8440	Serrated Symbol	Item_956.png
+8441	Serrated Tear	Item_734.png
 8442	Serrated Wire	Item_1140.png
 8443	Servant`s Blade	Item_590.png
 8444	Servant`s Staff	Item_601.png
@@ -8483,8 +8483,8 @@
 8805	Silver Stud	Item_544.png
 8806	Silver Swiftblade	Item_1211.png
 8807	Silver Sword of Yalrek	Item_575.png
-8808	Silver Symbol	Item_800.png
-8809	Silver Tear	Item_772.png
+8808	Silver Symbol	Item_956.png
+8809	Silver Tear	Item_764.png
 8810	Silver Thread	Item_853.png
 8811	Silver Tipped Arrowheads	Item_1100.png
 8812	Silver Turquoise Bracelet	Item_1044.png
@@ -8619,7 +8619,7 @@
 8941	Small Brick of High Quality Ore	Item_584.png
 8942	Small Brick of Medium Quality Ore	Item_1138.png
 8943	Small Brick of Mithril	Item_1138.png
-8944	Small Brick of Ore	Item_732.png
+8944	Small Brick of Ore	Item_1135.png
 8945	Small Brick of Skyiron	Item_1138.png
 8946	Small Brick of Unrefined Ore	Item_1138.png
 8947	Small Brick of Velium	Item_1138.png
@@ -8744,10 +8744,10 @@
 9066	Small Patchwork Sleeves	Item_634.png
 9067	Small Patchwork Tunic	Item_632.png
 9068	Small Pick	Item_768.png
-9069	Small Piece of High Quality Ore	Item_732.png
+9069	Small Piece of High Quality Ore	Item_1135.png
 9070	Small Piece of Mithril	Item_1135.png
-9071	Small Piece of Ore	Item_732.png
-9072	Small Piece of Velium	Item_732.png
+9071	Small Piece of Ore	Item_1135.png
+9072	Small Piece of Velium	Item_1135.png
 9073	Small Plate Belt Mold	Item_1151.png
 9074	Small Plate Boot Mold	Item_1151.png
 9075	Small Plate Bracer Mold	Item_1151.png
@@ -9160,7 +9160,6 @@
 9505	Steelsilk Pauldron	Item_798.png
 9506	Steelsilk Vambraces	Item_622.png
 9507	Steelsilk Waistband	Item_549.png
-16547	A Stein	Item_708.png
 9508	Stein	Item_709.png
 9509	Stein (of Water)	Item_708.png
 9510	Stein of Bitter Cold	Item_708.png
@@ -10288,8 +10287,8 @@
 10638	White Scaled Tunic	Item_678.png
 10639	White Spider Fur	Item_552.png
 10640	White Spiroc Feather	Item_1146.png
-10641	White Symbol	Item_800.png
-10642	White Tear	Item_800.png
+10641	White Symbol	Item_967.png
+10642	White Tear	Item_734.png
 10643	White Training Sash	Item_932.png
 10644	White Wine	Item_539.png
 10645	White Wolf Hide Robe	Item_838.png
@@ -11018,3 +11017,4 @@
 12008	Spell: Yaulp II	Item_504.png
 12009	Spell: Yaulp III	Item_504.png
 12010	Spell: Yaulp IV	Item_504.png
+12011	A Stein	Item_708.png

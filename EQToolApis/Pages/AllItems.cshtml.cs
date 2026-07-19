@@ -57,6 +57,9 @@ namespace EQToolApis.Pages
 
             var rows = await _db.CharacterInventoryItems
                 .Where(i => i.Inventory.DiscordUserId == user.DiscordUserId)
+                // EQ's /outputfile writes unused slots as the literal name "Empty";
+                // those are not real items, so keep them out of the list.
+                .Where(i => i.Name != "Empty")
                 .Select(i => new
                 {
                     i.Name,

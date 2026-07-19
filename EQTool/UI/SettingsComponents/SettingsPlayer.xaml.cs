@@ -63,7 +63,6 @@ namespace EQTool.UI.SettingsComponents
         public Dictionary<string, ProfileItemDto> Equipped { get; set; }
         public List<ProfileBagDto> General { get; set; }
         public List<ProfileBagDto> Bank { get; set; }
-        public List<ProfileItemDto> SharedBank { get; set; }
         public ProfileStatsDto Stats { get; set; }
     }
 
@@ -397,18 +396,6 @@ namespace EQTool.UI.SettingsComponents
 
             var bankStack = new StackPanel { Margin = new Thickness(12), Visibility = Visibility.Collapsed };
             bankStack.Children.Add(MakeBagRows(profile.Bank, 4));
-            var sharedRow = new StackPanel { Orientation = Orientation.Horizontal };
-            if (profile.SharedBank != null)
-            {
-                foreach (var item in profile.SharedBank)
-                {
-                    sharedRow.Children.Add(MakeSlot(item));
-                }
-            }
-            var shared = new StackPanel { Margin = new Thickness(0, 8, 0, 0) };
-            shared.Children.Add(new TextBlock { Text = "Shared Bank", FontSize = 11, FontWeight = FontWeights.Bold, Foreground = TextMuted, Margin = new Thickness(2, 0, 0, 2) });
-            shared.Children.Add(sharedRow);
-            bankStack.Children.Add(shared);
             bankPane = bankStack;
 
             ShowTab(inventory: true);
@@ -420,7 +407,7 @@ namespace EQTool.UI.SettingsComponents
             return MakePanel(content);
         }
 
-        // Bags render 4 across per row (inventory: 2 rows, bank: 4 rows).
+        // Bags render 4 across per row (inventory and bank each fill 2 rows).
         private FrameworkElement MakeBagRows(List<ProfileBagDto> bags, int perRow)
         {
             var rows = new StackPanel();
