@@ -8,7 +8,7 @@ namespace EQToolApis.DB.Models
     // One EverQuest UI config file backed up per Discord user. These are plain
     // text .ini configs, stored as varchar(max) in Azure SQL. One current version
     // per (user, file name): the unique index enforces the latest-wins upsert.
-    [Index(nameof(DiscordUserId), nameof(FileName), IsUnique = true)]
+    [Index(nameof(DiscordUserId), nameof(FileName), nameof(Server), IsUnique = true)]
     public class UIFile
     {
         public int UIFileId { get; set; }

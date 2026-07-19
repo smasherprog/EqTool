@@ -1,10 +1,10 @@
 using EQToolShared.Enums;
-using System;
-using System.Collections.Generic;
+using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
 
 namespace EQToolApis.DB.Models
 {
+    [Index(nameof(DiscordUserId), nameof(CharacterName), nameof(Server), IsUnique = true)]
     public class CharacterInventory
     {
         public int CharacterInventoryId { get; set; }
@@ -15,6 +15,6 @@ namespace EQToolApis.DB.Models
         public Servers Server { get; set; } = Servers.Green;
         public DateTime UpdatedAt { get; set; }
         public DiscordUser DiscordUser { get; set; } = null!;
-        public List<CharacterInventoryItem> Items { get; set; } = new List<CharacterInventoryItem>();
+        public List<CharacterInventoryItem> Items { get; set; } = [];
     }
 }
