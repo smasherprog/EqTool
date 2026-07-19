@@ -66,14 +66,6 @@
     .pg-table td { padding: 10px 16px; border-bottom: 1px solid #1b2138; color: #dfe4f5; vertical-align: middle; }
     .pg-table tr:last-child td { border-bottom: none; }
     .pg-table .num { text-align: right; }
-    .pg-item { white-space: nowrap; }
-    .pg-item img {
-        width: 24px;
-        height: 24px;
-        vertical-align: middle;
-        margin-right: 10px;
-        image-rendering: pixelated;
-    }
     .pg-itemname { color: #ffffff; font-weight: bold; }
     .pg-loc { color: #9aa3c0; }
     .pg-table .server-green { color: #4ade80; font-weight: bold; }
@@ -127,10 +119,7 @@
                     @foreach (var item in Model.Items)
                     {
                         <tr class="item-row" data-search="@item.Search">
-                            <td class="pg-item">
-                                <img src="@item.Image" loading="lazy" alt="" onerror="this.style.visibility='hidden'" />
-                                <span class="pg-itemname">@item.Name</span>
-                            </td>
+                            <td><span class="pg-itemname">@item.Name</span></td>
                             <td>@item.Character</td>
                             <td class="server-@item.Server.ToString().ToLower()">@item.Server</td>
                             <td class="pg-loc">@item.Location</td>

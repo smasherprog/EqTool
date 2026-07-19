@@ -1,5 +1,4 @@
 using EQToolApis.DB;
-using EQToolApis.Services;
 using EQToolShared.Enums;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
@@ -17,7 +16,6 @@ namespace EQToolApis.Pages
         public Servers Server { get; set; }
         public string Location { get; set; } = string.Empty;
         public int Count { get; set; }
-        public string Image { get; set; } = string.Empty;
         // Pre-lowered "name character server location" blob the client filters against.
         public string Search { get; set; } = string.Empty;
     }
@@ -25,15 +23,13 @@ namespace EQToolApis.Pages
     public class AllItemsModel : PageModel
     {
         private readonly EQToolContext _db;
-        private readonly ItemDataService _itemData;
 
         public string? DiscordUsername { get; private set; }
         public List<AllItemRow> Items { get; private set; } = [];
 
-        public AllItemsModel(EQToolContext db, ItemDataService itemData)
+        public AllItemsModel(EQToolContext db)
         {
             _db = db;
-            _itemData = itemData;
         }
 
         public async Task<IActionResult> OnGetAsync()
@@ -63,7 +59,6 @@ namespace EQToolApis.Pages
                 .Select(i => new
                 {
                     i.Name,
-                    i.ItemId,
                     Character = i.Inventory.CharacterName,
                     i.Inventory.Server,
                     i.Location,
@@ -82,7 +77,6 @@ namespace EQToolApis.Pages
                         Server = r.Server,
                         Location = location,
                         Count = r.Count,
-                        Image = _itemData.GetImageUrl(r.ItemId, r.Name),
                         Search = $"{r.Name} {r.Character} {r.Server} {location}".ToLowerInvariant(),
                     };
                 })
