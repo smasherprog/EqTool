@@ -3,6 +3,7 @@ using EQTool.ViewModels;
 using EQTool.ViewModels.SpellWindow;
 using System;
 using System.Linq;
+using System.Windows.Media;
 
 namespace EQTool.Services.Handlers
 {
@@ -23,6 +24,7 @@ namespace EQTool.Services.Handlers
         private void LogEvents_RandomRollEvent(object sender, RandomRollEvent e)
         {
             spells.AllSpells.TryGetValue( "Invisibility", out var spellicon);
+            var isyou = string.Equals(e.PlayerName, activePlayer?.Player?.Name, StringComparison.OrdinalIgnoreCase);
             var spell = new RollViewModel
             {
                 MaxRoll = e.MaxRoll,
@@ -32,6 +34,7 @@ namespace EQTool.Services.Handlers
                 Roll = e.Roll,
                 PercentLeft = 100,
                 Rect = spellicon.Rect,
+                IsTargetPlayer = isyou,
                 UpdatedDateTime = DateTime.Now,
                 TotalRemainingDuration = TimeSpan.FromMinutes(3)
             };
@@ -43,6 +46,13 @@ namespace EQTool.Services.Handlers
                     .ToList();
                 var rollorder = rollsingroup.Select(a => (int?)a.RollOrder).Max() ?? 0;
                 spell.RollOrder = rollorder + 1;
+                // Highlight your own roll so it's easy to spot in a crowded group; flag re-rolls
+                // (any roll after a player's first) with a distinct color. Your roll takes priority.
+                spell.ProgressBarColor = isyou
+                    ? Brushes.Gold
+                    : spell.RollOrder > 1
+                        ? Brushes.LightSkyBlue
+                        : Brushes.DarkSeaGreen;
                 spellWindowViewModel.TryAdd(spell);
             });
         }

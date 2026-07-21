@@ -55,6 +55,13 @@ namespace EQTool.Services
             r = random.Next(0, randomgroup);
             logParser.Push("**A Magic Die is rolled by Stigeon.", DateTime.Now);
             logParser.Push($"**It could have been any number from 0 to {randomgroup}, but this time it turned up a {r}.", DateTime.Now);
+            var playername = activePlayer?.Player?.Name;
+            if (!string.IsNullOrWhiteSpace(playername))
+            {
+                r = random.Next(0, randomgroup);
+                logParser.Push($"**A Magic Die is rolled by {playername}.", DateTime.Now);
+                logParser.Push($"**It could have been any number from 0 to {randomgroup}, but this time it turned up a {r}.", DateTime.Now);
+            }
         }
         private void DeathLoopEvent()
         {
